@@ -1,0 +1,93 @@
+{
+  "packet": "orch3_directinput_runtime_g",
+  "coverage": "concrete_runtime_composition_of_existing_reconstruction",
+  "new_reconstruction_count": 0,
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read_only_verified_bsp_wrappers",
+    "native_address": "00a982d0",
+    "original_abi": "thiscall ECX=backend, no stack arguments, EAX=this, final RET at00a983b0 length1",
+    "missing_definition_or_flow_gap": false
+  },
+  "native_evidence": [
+    {"address": "00a98322", "operation": "GetModuleHandleA(nullptr), IAT00ce215c"},
+    {"address": "00a9833b", "operation": "DirectInput8Create thunk00c2e016 -> IAT00ce2050; module handle, version800h, IID_D78D8C, actual backend+E0 output, null outer; HRESULT ignored"},
+    {"address": "00a98348", "operation": "Immediate actual interface AddRef through vslot4"},
+    {"address": "00a9834a", "operation": "Reload backend+E0 interface before actual EnumDevices vslot10, callbackA982B0, backend context, type0,flags1"},
+    {"range": ["00a98360", "00a9839b"], "operation": "Four native240h XInput allocations and A9A5A0 constructions, attach with requested slot-1"}
+  ],
+  "sdk_iid": {
+    "native_address": "00d78d8c",
+    "native_hex": "308079bf3a48a24daa995d64ed369700",
+    "sdk": "IID_IDirectInput8A",
+    "byte_comparison_passed": true
+  },
+  "composition": {
+    "implementation": "DirectInputRuntime",
+    "interfaces": ["DirectInputHost", "InputEnumerationDeviceFactory"],
+    "caller_bindings": [
+      "actual IDirectInput8A* slot by reference",
+      "DirectInputReferenceRegistry",
+      "MouseInputGlobals and explicit current sample preimage",
+      "JoystickInputServices including current window/clock and actual XInput function",
+      "XInputApi and XInputDeviceGlobals"
+    ],
+    "context_guards": ["ctx.devices is this factory base", "ctx.backend.direct_input is this host base"],
+    "enumeration": "existing enumerate_direct_input_devices with the same bound InputEnumerationContext and actual interface",
+    "factories": {
+      "keyboard": "create_keyboard_input_device_00a9a3e0",
+      "mouse": "create_mouse_input_device_00a9a290",
+      "joystick": "create_joystick_input_device_00a99940",
+      "pad": "new(nothrow) XInputDevice(index, actual api, actual globals)"
+    },
+    "copied_slots_groups_or_GUIDs": false,
+    "modified_existing_device_modules": false,
+    "required_libraries": ["dinput8.lib", "dxguid.lib"],
+    "registration": "one deferred target_sources line in cmake/startup.cmake"
+  },
+  "reference_ownership": {
+    "recorded": ["interface creation output", "each actual AddRef", "returned keyboard/mouse/joystick device reference", "each nonnull returned joystick effect reference"],
+    "recording_AddRef_calls": 0,
+    "implicit_destructor_Releases": 0,
+    "final_release": "caller invokes release_tracked_references after wrappers/callbacks finish; clear tracked interface slot then reverse-acquisition IUnknown::Release",
+    "registry_copying": "disabled",
+    "runtime_copying": "disabled",
+    "threading": "single-owner nonreentrant construction and final release",
+    "wrapper_deletion": "existing native borrowed-reference behavior unchanged; joystick effect Unload remains separate from final COM Release"
+  },
+  "failure_and_scope_boundaries": [
+    "Native unchecked null creation output differs from existing typed create_direct_input_devices false-return guard before AddRef.",
+    "Native nonnull creation output remains accepted despite failed HRESULT; actual HRESULT is retained for inspection.",
+    "Reinitializing over a nonnull interface slot is an explicit typed error.",
+    "Existing nothrow wrapper-allocation null results are preserved; registry bookkeeping may throw independently.",
+    "Existing helper exceptions after COM creation but before wrapper return can conceal output references; these are not claimed as tracked. Closing that helper-unwind contract needs a separate change.",
+    "Existing bring-up has no rollback of prior devices after later allocation or attachment failure.",
+    "Caller provides the already initialized canonical backend; runtime does not repeat the native base constructor or reset persistent GUID state.",
+    "No original object-layout, allocator or SEH ABI equivalence is claimed."
+  ],
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release /W4 /WX",
+    "build_passed": true,
+    "existing_ctests_passed": 2,
+    "seed_command": "python tools/ghidra_export.py verify-seeds",
+    "seed_matches": 8,
+    "fixture_source": "local/directinput_runtime_fixture.cpp",
+    "fixture_runner": "local/run_directinput_runtime_fixture.cmd",
+    "fixture_compile_command": "cl /nologo /EHsc /std:c++17 /MD /Iinclude local\\directinput_runtime_fixture.cpp /Felocal\\directinput_runtime_fixture.exe /Folocal\\directinput_runtime_fixture.obj /link build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib user32.lib",
+    "loaded_module_reported_path": "C:\\WINDOWS\\SYSTEM32\\DINPUT8.dll",
+    "fixture_result": {
+      "passed": true,
+      "real_DirectInput8Create_HRESULT": 0,
+      "created_interface_refs": 1,
+      "extra_AddRef": 1,
+      "explicit_Releases": 2,
+      "actual_XInput_wrappers": 4,
+      "context_guards": 3,
+      "hardware_enumeration": false
+    },
+    "not_exercised": ["real EnumDevices", "keyboard/mouse/joystick device creation", "device acquisition", "cooperative levels", "hardware samples", "window/focus changes", "haptics", "complete game startup/gameplay"],
+    "logs": ["local/directinput-runtime-build.log", "local/directinput-runtime-seeds.json", "local/directinput-runtime-fixture.log"]
+  }
+}

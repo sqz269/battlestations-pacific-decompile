@@ -1,0 +1,684 @@
+{
+  "annotation_events": [
+    {
+      "address": "00735510",
+      "before": {
+        "address": "00735510",
+        "function_name": "BSP_XLiveApplication_SetContextSix"
+      },
+      "after": {
+        "address": "00735510",
+        "name": "BSP_XLiveApplication_SetContextSix",
+        "evidence": "PUSH6, PUSH8001h, PUSH ECX, CALL00A4D3F2. Original IAT CE2698 resolves to ordinal5277 XUserSetContext. See docs/XLIVE_APPLICATION_CALLBACKS.md; names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00735520",
+      "before": {
+        "address": "00735520",
+        "function_name": "BSP_XLiveApplication_SetContextFour"
+      },
+      "after": {
+        "address": "00735520",
+        "name": "BSP_XLiveApplication_SetContextFour",
+        "evidence": "PUSH4, PUSH8001h, PUSH ECX, CALL00A4D3F2. Original IAT CE2698 resolves to ordinal5277 XUserSetContext. See docs/XLIVE_APPLICATION_CALLBACKS.md; names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00737d60",
+      "before": {
+        "address": "00737d60",
+        "function_name": "FUN_00737d60"
+      },
+      "after": {
+        "address": "00737d60",
+        "name": "BSP_XLiveApplication_ApplyProfileName",
+        "evidence": "737D78 loads F8ABE8; A3EAE0 captures selected name; 41E870 builds temporary; 737D8D/737DAE separately load E188A8; call7F9340 then7F9290; sized release and one-state EH cleanup. See docs/XLIVE_APPLICATION_CALLBACKS.md; names remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a3eae0",
+      "before": {
+        "address": "00a3eae0",
+        "function_name": "FUN_00a3eae0"
+      },
+      "after": {
+        "address": "00a3eae0",
+        "name": "BSP_XenonSystemManager_GetSelectedUsername",
+        "evidence": "A3EAE0 MOV EAX,[ECX+11C]; A3EAE6 SHL EAX,7; A3EAE9 LEA EAX,[EAX+ECX+90]; A3EAF0 RET. See docs/XLIVE_APPLICATION_CALLBACKS.md; names remain hypotheses. | Selected-user index/sentinel interpretation, not SDK sign-in status: A3ED14/A3ED43 pass +11C as SDK user index; A408AA/A408CA copy UI3B4 into it; actual cached sign-in status is +8C at A3ECCD. A3E66A/A3E672 gate callback18 on +11C==0. Existing C++ signin_state_11c spelling retained; other selector values remain uncertain."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a4bc80",
+      "before": {
+        "address": "00a4bc80",
+        "function_name": "FUN_00a4bc80"
+      },
+      "after": {
+        "address": "00a4bc80",
+        "name": "BSP_XLiveIpc_LastError",
+        "evidence": "Hypothesis, not a recovered symbol. Previous function name: FUN_00a4bc80. RET; EAX=DWORD GetLastError or 507h when zero. Raw Win32 error helper; no HRESULT conversion here. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a4bd40",
+      "before": {
+        "address": "00a4bd40",
+        "function_name": "BSP_XLiveIpc_EncodeProbe"
+      },
+      "after": {
+        "address": "00a4bd40",
+        "name": "BSP_XLiveIpc_EncodeProbe",
+        "evidence": "Hypothesis, not a recovered symbol. Previous function name: none; entry missing in Ghidra. __stdcall(buffer, uint32 capacity*, owner); RET12; EAX=HRESULT. Capacity>=8 writes {8,counter+27h}, increments unsigned counter, phase3. Does not change pointed capacity. Short capacity -> 8007007A without writes. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a4bd80",
+      "before": {
+        "address": "00a4bd80",
+        "function_name": "BSP_XLiveIpc_DecodeProbe"
+      },
+      "after": {
+        "address": "00a4bd80",
+        "name": "BSP_XLiveIpc_DecodeProbe",
+        "evidence": "Hypothesis, not a recovered symbol. Previous function name: none; entry missing in Ghidra. __stdcall(buffer, uint32 bytes, owner); RET12; EAX=HRESULT. Require size8, DWORD8 marker and complemented second DWORD equal current counter; success phase1, failure E_UNEXPECTED without state change. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a4bde0",
+      "before": {
+        "address": "00a4bde0",
+        "function_name": "FUN_00a4bde0"
+      },
+      "after": {
+        "address": "00a4bde0",
+        "name": "BSP_XLiveIpc_Destroy",
+        "evidence": "Hypothesis, not a recovered symbol. Previous function name: FUN_00a4bde0. ECX=2Ch IPC owner; RET. Signal stop event, wait1000 and ignore result, close/null thread then pipe/event, free/null receive/send buffers and free owner. Native wait does not ensure worker exit. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a4be50",
+      "before": {
+        "address": "00a4be50",
+        "function_name": "FUN_00a4be50"
+      },
+      "after": {
+        "address": "00a4be50",
+        "name": "BSP_XLiveIpc_RunLoop",
+        "evidence": "Hypothesis, not a recovered symbol. Previous function name: FUN_00a4be50. ECX=IPC owner; RET; EAX=signed HRESULT. Full phase1..7 worker: Sleep14897/system-time discard, synchronous encode callback, pending send/wait exact length, pending receive/wait, exact frame length, synchronous decode callback. Preserve EDI reset only after pending I/O; invalid phase E_UNEXPECTED. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a4c000",
+      "before": {
+        "address": "00a4c000",
+        "function_name": "BSP_XLiveIpc_ThreadEntry"
+      },
+      "after": {
+        "address": "00a4c000",
+        "name": "BSP_XLiveIpc_ThreadEntry",
+        "evidence": "Hypothesis, not a recovered symbol. Previous function name: none; entry missing in Ghidra. DWORD __stdcall(void* owner); RET4. Run worker loop; only E_ABORT avoids TerminateProcess(GetCurrentProcess(),8000FFFF). Original loop result is returned if termination API returns. Real kernel32 IAT operations, no dummy thread. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a4c030",
+      "before": {
+        "address": "00a4c030",
+        "function_name": "FUN_00a4c030"
+      },
+      "after": {
+        "address": "00a4c030",
+        "name": "BSP_XLiveIpc_Create",
+        "evidence": "Hypothesis, not a recovered symbol. Previous function name: FUN_00a4c030. ECX=output pointer; RET; EAX=signed HRESULT. Null output E_INVALIDARG; initial nothrow allocation failure null/E_OUTOFMEMORY. Preserve +14/+20 raw preimages, create manual-reset event, open pipe, query+allocate bounded frame buffers, start real worker before publishing output. All later failures cleanup and _exit(0); hidden post-free call at A4C20D is genuinely nonreturning. Evidence: docs/XLIVE_IPC.md; reports/xlive_ipc.json. Required linked pipe operations remain unreconstructed with uncertain library provenance. Win32 build/two CTests and one scripted synchronous fixture passed; no endpoints or game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5de34",
+      "before": {
+        "address": "00a5de34",
+        "function_name": "PIPEIPC_00a5de34",
+        "comment": "[BSP inventory 00a5de34] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5de34",
+        "name": "BSP_XLivePipe_Open",
+        "evidence": "Hypothesis, not a recovered symbol. Previous function name: PIPEIPC_00a5de34 (analyst block_pipe_ipc tag; library provenance uncertain). __stdcall(mode DWORD, stop HANDLE, output**); RET12; EAX=signed HRESULT. Validate output, use local creation output, publish null for negative result. Evidence: docs/XLIVE_PIPE_TRANSPORT.md; reports/xlive_pipe_transport.json. Assembly/raw tails checked; seven complete owner/control functions with required protocol lifecycle dependency. Strict Win32 build/two CTests and one synchronous fixture passed; no endpoints/game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5de68",
+      "before": {
+        "address": "00a5de68",
+        "function_name": "PIPEIPC_00a5de68",
+        "comment": "[BSP inventory 00a5de68] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5de68",
+        "name": "BSP_XLivePipe_Close",
+        "evidence": "Hypothesis, not a recovered symbol. Previous function name: PIPEIPC_00a5de68 (analyst block_pipe_ipc tag; library provenance uncertain). __stdcall(owner*); RET4; no consumed return contract. Ignore null and -1 owners; otherwise call full owner destruction. Evidence: docs/XLIVE_PIPE_TRANSPORT.md; reports/xlive_pipe_transport.json. Assembly/raw tails checked; seven complete owner/control functions with required protocol lifecycle dependency. Strict Win32 build/two CTests and one synchronous fixture passed; no endpoints/game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5e145",
+      "before": {
+        "address": "00a5e145",
+        "function_name": "PIPEIPC_00a5e145",
+        "comment": "[BSP inventory 00a5e145] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5e145",
+        "name": "BSP_XLivePipe_Construct",
+        "evidence": "Hypothesis, not a recovered symbol. Previous function name: PIPEIPC_00a5e145 (analyst block_pipe_ipc tag; library provenance uncertain). ECX=30h owner; RET; EAX=owner. Protocol initialization before own stores; pipe=-1, count0, state3, events+24/+28=null; mode and OVERLAPPED retain preimage. Evidence: docs/XLIVE_PIPE_TRANSPORT.md; reports/xlive_pipe_transport.json. Assembly/raw tails checked; seven complete owner/control functions with required protocol lifecycle dependency. Strict Win32 build/two CTests and one synchronous fixture passed; no endpoints/game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5e3d0",
+      "before": {
+        "address": "00a5e3d0",
+        "function_name": "PIPEIPC_00a5e3d0",
+        "comment": "[BSP inventory 00a5e3d0] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5e3d0",
+        "name": "BSP_XLivePipe_CopyLogonSid",
+        "evidence": "Hypothesis, not a recovered symbol. Previous function name: PIPEIPC_00a5e3d0 (analyst block_pipe_ipc tag; library provenance uncertain). __stdcall(HLOCAL* output); RET4; EAX=raw DWORD error. TOKEN_QUERY/groups sizing must yield122; copy first logon-ID SID. Groups free before token close; output success only, no group545, unexpected sizing success13, zero last-error fallback507. Evidence: docs/XLIVE_PIPE_TRANSPORT.md; reports/xlive_pipe_transport.json. Assembly/raw tails checked; seven complete owner/control functions with required protocol lifecycle dependency. Strict Win32 build/two CTests and one synchronous fixture passed; no endpoints/game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5e557",
+      "before": {
+        "address": "00a5e557",
+        "function_name": "PIPEIPC_00a5e557",
+        "comment": "[BSP inventory 00a5e557] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5e557",
+        "name": "BSP_XLivePipe_FindParentProcess",
+        "evidence": "Hypothesis, not a recovered symbol. Previous function name: PIPEIPC_00a5e557 (analyst block_pipe_ipc tag; library provenance uncertain). __stdcall(DWORD* output); RET4; EAX=raw DWORD error. Toolhelp PROCESSENTRY32W scan; open parent400h; require creation time strictly older. Failure leaves output untouched; comparison rejectionE9; close parent then snapshot. Evidence: docs/XLIVE_PIPE_TRANSPORT.md; reports/xlive_pipe_transport.json. Assembly/raw tails checked; seven complete owner/control functions with required protocol lifecycle dependency. Strict Win32 build/two CTests and one synchronous fixture passed; no endpoints/game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5e710",
+      "before": {
+        "address": "00a5e710",
+        "function_name": "PIPEIPC_00a5e710",
+        "comment": "[BSP inventory 00a5e710] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5e710",
+        "name": "BSP_XLivePipe_Destroy",
+        "evidence": "Hypothesis, not a recovered symbol. Previous function name: PIPEIPC_00a5e710 (analyst block_pipe_ipc tag; library provenance uncertain). __stdcall(owner*); RET4; no consumed return contract. Close pipe unless -1, including null; store -1. Close/clear nonnull completion event. Destroy protocol/free owner. Do not close borrowed stop or overlap event alias separately. Evidence: docs/XLIVE_PIPE_TRANSPORT.md; reports/xlive_pipe_transport.json. Assembly/raw tails checked; seven complete owner/control functions with required protocol lifecycle dependency. Strict Win32 build/two CTests and one synchronous fixture passed; no endpoints/game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5e844",
+      "before": {
+        "address": "00a5e844",
+        "function_name": "PIPEIPC_00a5e844",
+        "comment": "[BSP inventory 00a5e844] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5e844",
+        "name": "BSP_XLivePipe_Create",
+        "evidence": "Hypothesis, not a recovered symbol. Previous function name: PIPEIPC_00a5e844 (analyst block_pipe_ipc tag; library provenance uncertain). __stdcall(mode DWORD, stop HANDLE, output**); RET12; EAX=signed HRESULT. Full server/client named pipe creation, ACL/security descriptor, manual-reset initially-set completion event, +1C/+24 alias and 1/2 wait count. Native cleanup order, fields not cleared on failed-create closes, output null, signed HRESULT conversion. Protocol lifetime remains required genuine dependency. Evidence: docs/XLIVE_PIPE_TRANSPORT.md; reports/xlive_pipe_transport.json. Assembly/raw tails checked; seven complete owner/control functions with required protocol lifecycle dependency. Strict Win32 build/two CTests and one synchronous fixture passed; no endpoints/game/ABI validation."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a93f30",
+      "before": {
+        "address": "00a93f30",
+        "function_name": "FUN_00a93f30"
+      },
+      "after": {
+        "address": "00a93f30",
+        "name": "BSP_GamepadInputDevice_HasActivity",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; AL=boolean; RET A93F53/1, endA93F53 Scan codes0..89 through virtual query+20; stop on first nonzero."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a95bd0",
+      "before": {
+        "address": "00a95bd0",
+        "function_name": "BSP_GamepadInputDevice_GetClass"
+      },
+      "after": {
+        "address": "00a95bd0",
+        "name": "BSP_GamepadInputDevice_GetClass",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX unused; EAX=2; RET A95BD5/1, endA95BD5 Exact constant class2 leaf."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a98400",
+      "before": {
+        "address": "00a98400",
+        "function_name": "FUN_00a98400"
+      },
+      "after": {
+        "address": "00a98400",
+        "name": "BSP_JoystickInputDevice_ResetFeedback",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; RET A98434/1, endA98434 Actual COM SendForceFeedbackCommand2,20h,1, ignoring results."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a98750",
+      "before": {
+        "address": "00a98750",
+        "function_name": "BSP_JoystickInputDevice_QueryRelative"
+      },
+      "after": {
+        "address": "00a98750",
+        "name": "BSP_JoystickInputDevice_QueryRelative",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; stack code; AL=flag; RET4 A98777/3, endA98779 Nonzero binding kind and relative byte; independent of sample validity."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a98780",
+      "before": {
+        "address": "00a98780",
+        "function_name": "BSP_JoystickInputDevice_BindingDown"
+      },
+      "after": {
+        "address": "00a98780",
+        "name": "BSP_JoystickInputDevice_BindingDown",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; stack binding-record pointer; AL=down; RET4 A98917/3, endA98919; following9-DWORD table A9891C..A9893F Kinds0..8; button, absolute/relative axis, lower/upper halves and exact POV directions."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a98940",
+      "before": {
+        "address": "00a98940",
+        "function_name": "BSP_JoystickInputDevice_BindingValue"
+      },
+      "after": {
+        "address": "00a98940",
+        "name": "BSP_JoystickInputDevice_BindingValue",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; stack binding-record pointer; ST0=float; RET4 A98B63/3, endA98B65; following9-DWORD table A98B68..A98B8B x87 signed numerator/range division and native half-axis conditions; exact POV directions."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a98b90",
+      "before": {
+        "address": "00a98b90",
+        "function_name": "BSP_JoystickInputDevice_CountObjectsCallbackA"
+      },
+      "after": {
+        "address": "00a98b90",
+        "name": "BSP_JoystickInputDevice_CountObjectsCallbackA",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. stdcall DIDEVICEOBJECTINSTANCEA*, context; EAX=1; RET8 A98BAA/3, endA98BAC Increment object count iff type&1Fh; no SDK substitute."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a98bb0",
+      "before": {
+        "address": "00a98bb0",
+        "function_name": "BSP_JoystickInputDevice_SetRelativeBinding"
+      },
+      "after": {
+        "address": "00a98bb0",
+        "name": "BSP_JoystickInputDevice_SetRelativeBinding",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; stack code, byte/bool; RET8 A98BC2/3, endA98BC4 Write binding record+8 at native29C+code*12; typed bounds guard."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a98bd0",
+      "before": {
+        "address": "00a98bd0",
+        "function_name": "BSP_JoystickInputDevice_QueryDown"
+      },
+      "after": {
+        "address": "00a98bd0",
+        "name": "BSP_JoystickInputDevice_QueryDown",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; stack code; AL=down; RET4 A98C45/3, endA98C47; tail A98780 Xbox triggers21/22 and code64 precede valid/inhibited checks; nonzero mappings tail to binding query."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a98c50",
+      "before": {
+        "address": "00a98c50",
+        "function_name": "BSP_JoystickInputDevice_QueryValue"
+      },
+      "after": {
+        "address": "00a98c50",
+        "name": "BSP_JoystickInputDevice_QueryValue",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; stack code; ST0=float; RET4 A98CAF/3, endA98CB1; tail A98940 Xbox triggers21/22 and code64 precede valid/inhibited checks; other mapping float query."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a98e30",
+      "before": {
+        "address": "00a98e30",
+        "function_name": "FUN_00a98e30"
+      },
+      "after": {
+        "address": "00a98e30",
+        "name": "BSP_JoystickInputDevice_Poll",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; ignored stack float; AL=success; RET4 A9914B/3, endA9914D Poll failure Acquire; copy previous before GetDeviceState; x87 deadzone, detection, activity clock, then Xbox trigger import."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a99150",
+      "before": {
+        "address": "00a99150",
+        "function_name": "BSP_JoystickObject_InitializeName_Provisional"
+      },
+      "after": {
+        "address": "00a99150",
+        "name": "BSP_JoystickObject_InitializeName_Provisional",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=1Ch metadata record; RET A9915F/1, endA9915F Only zeros NativeString length/pointer; other native fields initially uninitialized and modeled explicitly."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a99160",
+      "before": {
+        "address": "00a99160",
+        "function_name": "BSP_JoystickObject_DestroyName_Provisional"
+      },
+      "after": {
+        "address": "00a99160",
+        "name": "BSP_JoystickObject_DestroyName_Provisional",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=1Ch metadata record; RET A9917C/1, endA9917C NativeString pool cleanup composed through canonical NativeString release; native does not clear the dead header."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a991f0",
+      "before": {
+        "address": "00a991f0",
+        "function_name": "CG_vector_deleting_dtor_00a991f0"
+      },
+      "after": {
+        "address": "00a991f0",
+        "name": "BSP_JoystickInputDevice_Destroy",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; no flags/array count; RET A992DE/1, endA992DE; Ghidra currently endsA99227 Ordinary game destructor, not vector-deleting helper: previous/current arrays, reverse metadata names, descriptors, effects Unload0/1, product name, base."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a992f0",
+      "before": {
+        "address": "00a992f0",
+        "function_name": "FUN_00a992f0"
+      },
+      "after": {
+        "address": "00a992f0",
+        "name": "BSP_JoystickInputDevice_DescribeObject",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; stack DIDEVICEOBJECTINSTANCEA*; EAX=1; RET4 A99705/3, endA99707 Copy name and custom descriptor; reserve button/POV slots; axis order1,0,3,2,4...; collect two feedback-axis offsets."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a99900",
+      "before": {
+        "address": "00a99900",
+        "function_name": "CG_scalar_deleting_dtor_00a99900"
+      },
+      "after": {
+        "address": "00a99900",
+        "name": "CG_scalar_deleting_dtor_00a99900",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=this; stack flags; EAX=this; RET4 A9991B/3, endA9991D Correct existing generated scalar-deleting classification retained; destroy first, free only if flags bit0."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a99920",
+      "before": {
+        "address": "00a99920",
+        "function_name": "BSP_JoystickInputDevice_ObjectCallbackA"
+      },
+      "after": {
+        "address": "00a99920",
+        "name": "BSP_JoystickInputDevice_ObjectCallbackA",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. stdcall DIDEVICEOBJECTINSTANCEA*, context; ECX=context into A992F0; RET8 A9992E/3, endA99930 Host-only exception transport catches at SDK callback and rethrows after EnumObjects; native normal return1."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a99940",
+      "before": {
+        "address": "00a99940",
+        "function_name": "CG_array_ctor_helper_00a99940"
+      },
+      "after": {
+        "address": "00a99940",
+        "name": "BSP_JoystickInputDevice_Construct",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=B48h object; stack DI8*, DIDEVICEINSTANCEA*; EAX=this; RET8 A99E8B/3, endA99E8D Custom format, product policy, COM setup, two effects and two polls; ordinary game constructor, not array constructor helper."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a95d70",
+      "before": {
+        "address": "00a95d70",
+        "function_name": "FUN_00a95d70"
+      },
+      "after": {
+        "address": "00a95d70",
+        "name": "BSP_GamepadInputDevice_Initialize_Provisional",
+        "evidence": "Hypothesis, not a recovered symbol. Read-only bsp.gpr /battlestationspacific.exe; packet orch3_joystick_device_f. docs/JOYSTICK_INPUT.md; reports/joystick_input.json. thiscall ECX=base object; EAX=this; RET A95E32/1, endA95E32 Canonical two zeroed256-byte histories plus empty force-request registry/sentinel and zero channel amplitudes; nonempty registry family excluded."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    }
+  ],
+  "readback_verified_count": 37,
+  "flow_limits": [
+    "A95A80 stored body still ends A95B93 after tail instruction repair",
+    "A991F0 stored body still ends A99227 after tail instruction repair; original last RET is A992DE",
+    "No callee no-return flags changed; no function deletion/recreation"
+  ],
+  "tag_corrections": "reports/orch3_joystick_tag_corrections_g.json"
+}

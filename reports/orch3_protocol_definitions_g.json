@@ -1,0 +1,100 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a5f939",
+    "end_address": "00a5f944"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a5f939",
+    "end_address": "00a5f943",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a5f939",
+    "disassemble_first": false,
+    "name": "BSP_XLivePipeProtocol_EnterValueLock"
+   },
+   "result": {
+    "success": true,
+    "address": "00a5f939",
+    "function_name": "BSP_XLivePipeProtocol_EnterValueLock",
+    "entry_point": "00a5f939",
+    "body_size": 11,
+    "message": "Function created successfully at 00a5f939",
+    "warnings": [
+     "Function name 'BSP_XLivePipeProtocol_EnterValueLock' \u2014 main part 'XLivePipeProtocol_EnterValueLock' is not PascalCase. Expected: XlivepipeprotocolEntervaluelock",
+     "Function name 'BSP_XLivePipeProtocol_EnterValueLock' \u2014 main part 'XLivePipeProtocol_EnterValueLock' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a5f939",
+   "end": "00a5f944",
+   "name": "BSP_XLivePipeProtocol_EnterValueLock",
+   "after": "Function: BSP_XLivePipeProtocol_EnterValueLock at 00a5f939\nSignature: undefined BSP_XLivePipeProtocol_EnterValueLock(void)\nEntry: 00a5f939\nBody: 00a5f939 - 00a5f943"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a5f944",
+    "end_address": "00a5f94f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a5f944",
+    "end_address": "00a5f94e",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a5f944",
+    "disassemble_first": false,
+    "name": "BSP_XLivePipeProtocol_LeaveValueLock"
+   },
+   "result": {
+    "success": true,
+    "address": "00a5f944",
+    "function_name": "BSP_XLivePipeProtocol_LeaveValueLock",
+    "entry_point": "00a5f944",
+    "body_size": 11,
+    "message": "Function created successfully at 00a5f944",
+    "warnings": [
+     "Function name 'BSP_XLivePipeProtocol_LeaveValueLock' \u2014 main part 'XLivePipeProtocol_LeaveValueLock' is not PascalCase. Expected: XlivepipeprotocolLeavevaluelock",
+     "Function name 'BSP_XLivePipeProtocol_LeaveValueLock' \u2014 main part 'XLivePipeProtocol_LeaveValueLock' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a5f944",
+   "end": "00a5f94f",
+   "name": "BSP_XLivePipeProtocol_LeaveValueLock",
+   "after": "Function: BSP_XLivePipeProtocol_LeaveValueLock at 00a5f944\nSignature: undefined BSP_XLivePipeProtocol_LeaveValueLock(void)\nEntry: 00a5f944\nBody: 00a5f944 - 00a5f94e"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

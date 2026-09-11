@@ -1,0 +1,48 @@
+{
+  "source": "reports/joystick_input.json",
+  "events": [
+    {
+      "address": "00a991f0",
+      "before_tag": {
+        "address": "00a991f0",
+        "name": "CG_vector_deleting_dtor_00a991f0",
+        "category": "cg_vector_deleting_dtor",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0011"
+      },
+      "correction": "game_owned_destructor",
+      "reason": "ECX object, no array/count/flags argument; actual owned-array/string and effect-Unload sequence, separate scalar deleting wrapper atA99900.",
+      "bookmark_removed": true,
+      "bookmark_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "00a991f0"
+      }
+    },
+    {
+      "address": "00a99940",
+      "before_tag": {
+        "address": "00a99940",
+        "name": "CG_array_ctor_helper_00a99940",
+        "category": "cg_array_ctor_helper",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0031"
+      },
+      "correction": "game_owned_constructor",
+      "reason": "Game vtable initialization, product-name Xbox360 policy, COM CreateDevice/EnumObjects/custom format/ranges/cooperation/effect construction/two polls. Merely calls CRT array construction helper.",
+      "bookmark_removed": true,
+      "bookmark_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "00a99940"
+      }
+    }
+  ],
+  "tag_shard_updated": true
+}

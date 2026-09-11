@@ -1,0 +1,533 @@
+{
+  "packet": "orch3_gamepad_force_requests_f",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "worker_read_only",
+  "entries": [
+    {
+      "address": "00a949a0",
+      "name_hypothesis": "BSP_GamepadForce_RefreshChannel",
+      "implementation": "refresh_gamepad_force_channel_00a949a0",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=device, stack channel, RET4",
+      "evidence": "Value before channel; positive maximum, no tick/expiration; store before output; enabled check at entry."
+    },
+    {
+      "address": "00a94b50",
+      "name_hypothesis": "BSP_GamepadForce_FindRequest",
+      "implementation": "find_gamepad_force_request_00a94b50",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=device, stack unsigned ID, EAX=request/null, RET4",
+      "evidence": "Native unsigned-key map lookup composed through std::map."
+    },
+    {
+      "address": "00a94bc0",
+      "name_hypothesis": "BSP_GamepadForce_SetRequestPayload",
+      "implementation": "set_gamepad_force_payload_00a94bc0",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=device, stack ID,float, EAX=found, RET8",
+      "evidence": "Write complete DWORD+C, then channel getter and immediate refresh; also preserves alternating-selector low-byte mutation."
+    },
+    {
+      "address": "00a94c50",
+      "name_hypothesis": "BSP_GamepadForce_SetEnabled",
+      "implementation": "set_gamepad_force_enabled_00a94c50",
+      "coverage": "function",
+      "original_abi": "fastcall CL=enable flag, RET",
+      "evidence": "Write global before backend read; per-channel reread; disabling outputs zero BEFORE saved-amplitude zero; reload groups after device."
+    },
+    {
+      "address": "00a94d40",
+      "name_hypothesis": "BSP_GamepadForce_FindCurrentRequest",
+      "implementation": "find_current_gamepad_force_request_00a94d40",
+      "coverage": "function",
+      "original_abi": "fastcall ECX=ID, EAX=request/null, RET",
+      "evidence": "Initial class2 count, first match, current backend reload after failed nonnull-device search."
+    },
+    {
+      "address": "00a95410",
+      "name_hypothesis": "BSP_GamepadForce_RemoveRequest",
+      "implementation": "remove_gamepad_force_request_00a95410",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=device, stack ID, AL=removed, RET4",
+      "evidence": "Capture channel, delete while node contains pointer, erase, then refresh."
+    },
+    {
+      "address": "00a954c0",
+      "name_hypothesis": "BSP_GamepadForce_PumpRequests",
+      "implementation": "pump_gamepad_force_requests_00a954c0",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=device, stack float seconds, RET4",
+      "evidence": "Snapshot/zero amplitudes; iterator advance before update; expire/delete/erase; channel then value; max aggregation; changed output0/1."
+    },
+    {
+      "address": "00a95780",
+      "name_hypothesis": "BSP_GamepadForce_InsertRequest",
+      "implementation": "insert_gamepad_force_request_00a95780",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=device, stack unsigned ID,request*, RET8; native return unspecified",
+      "evidence": "Unique-key insert result ignored natively; duplicate incoming request remains unowned but channel still queried; typed bool exposes ownership result."
+    },
+    {
+      "address": "00a957d0",
+      "name_hypothesis": "BSP_GamepadForce_ValidateHandle",
+      "implementation": "validate_gamepad_force_handle_00a957d0",
+      "coverage": "function",
+      "original_abi": "fastcall ECX=ID pointer, RET",
+      "evidence": "Nonzero ID cleared only when current-gamepad search returns null."
+    },
+    {
+      "address": "00a957f0",
+      "name_hypothesis": "BSP_GamepadForce_RemoveCurrentRequest",
+      "implementation": "remove_current_gamepad_force_request_00a957f0",
+      "coverage": "function",
+      "original_abi": "fastcall ECX=ID, RET; no reliable semantic native return",
+      "evidence": "Capture class2 count, remove first match; reload actual backend after every nonnull attempt including success."
+    },
+    {
+      "address": "00a95890",
+      "name_hypothesis": "BSP_GamepadForce_ClearRequests",
+      "implementation": "clear_gamepad_force_requests_00a95890",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=device, RET atA9595C",
+      "evidence": "Delete all request pointers in unsigned-key order, clear nodes, pump0 while derived output remains active."
+    },
+    {
+      "address": "00a95960",
+      "name_hypothesis": "BSP_GamepadForce_PumpCurrentRequests",
+      "implementation": "pump_current_gamepad_force_requests_00a95960",
+      "coverage": "function",
+      "original_abi": "stdcall stack float seconds, RET4 A959F9/3",
+      "evidence": "Capture initial class2 count, pump each nonnull current device and reload actual backend after each pump."
+    },
+    {
+      "address": "00a95a80",
+      "name_hypothesis": "BSP_GamepadForce_DestroyState",
+      "implementation": "destroy_gamepad_force_state_00a95a80",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=device, RET A95BC4/1; saved body currently endsA95B93",
+      "evidence": "Writes base D5B670 before request destruction, then empty pump; enabled changed amplitudes invoke BF698E purecall. Typed guard preserves cleanup and zeroing without invented derived dispatch."
+    },
+    {
+      "address": "00a95bf0",
+      "name_hypothesis": "BSP_GamepadForce_SubmitRequest",
+      "implementation": "submit_gamepad_force_request_00a95bf0",
+      "coverage": "function",
+      "original_abi": "fastcall ECX=unsigned active class2 index, EDX=request*, EAX=ID/0, RET",
+      "evidence": "Missing device deletes request; old global ID returned; next wraps and skips0; no collision search; insert then refresh."
+    },
+    {
+      "address": "00a98cc0",
+      "name_hypothesis": "BSP_GamepadForce_SetJoystickOutput",
+      "implementation": "set_joystick_force_00a98cc0",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=joystick, stack channel,float, RET8 A98E1C/3",
+      "evidence": "Absent effect skips clock; current timestamp vs deadline; 56-byte DIEFFECT; exact magnitude scaling/mode; reload effect, actual SetParameters flags20000100, ignored HRESULT."
+    },
+    {
+      "address": "008722d0",
+      "name_hypothesis": "BSP_GamepadForce_ConstantRequestConstruct",
+      "implementation": "ConstantGamepadForceRequest::ConstantGamepadForceRequest",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=14h request; stack channel,amplitude,remaining; EAX=this; RET0C 8722FC/3",
+      "evidence": "D0DB78 kind0, channel+8, amplitude+C, remaining+10."
+    },
+    {
+      "address": "00872350",
+      "name_hypothesis": "BSP_GamepadForce_FadingRequestConstruct",
+      "implementation": "FadingGamepadForceRequest::FadingGamepadForceRequest",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=18h request; stack channel,amplitude,duration; EAX=this; RET0C 872384/3",
+      "evidence": "D0DB8C kind1, elapsed+14 initialized0."
+    },
+    {
+      "address": "008723f0",
+      "name_hypothesis": "BSP_GamepadForce_AlternatingRequestConstruct",
+      "implementation": "AlternatingGamepadForceRequest::AlternatingGamepadForceRequest",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=28h request; stack channel,bool,firstValue,secondValue,firstPeriod,secondPeriod,duration; EAX=this; RET1C 87244C/3",
+      "evidence": "D0DBA0 kind2, selector byte+C, values+10/+14, periods+18/+1C, duration+20, phase+24 zero."
+    },
+    {
+      "address": "00872310",
+      "name_hypothesis": "BSP_GamepadForce_ConstantRequestChannel",
+      "implementation": "ConstantGamepadForceRequest::channel",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=request; EAX=channel+8; RET 872313/1",
+      "evidence": "Actual constant request channel getter."
+    },
+    {
+      "address": "00872320",
+      "name_hypothesis": "BSP_GamepadForce_ConstantRequestValue",
+      "implementation": "ConstantGamepadForceRequest::value",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=request; ST0=float+C; RET 872323/1",
+      "evidence": "Unclamped amplitude value."
+    },
+    {
+      "address": "00872330",
+      "name_hypothesis": "BSP_GamepadForce_ConstantRequestExpired",
+      "implementation": "ConstantGamepadForceRequest::expired",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=request; EAX=ordered remaining<=0; RET 872341/1",
+      "evidence": "COMISS0,remaining, JB excludes unordered and positive values."
+    },
+    {
+      "address": "008723a0",
+      "name_hypothesis": "BSP_GamepadForce_FadingRequestChannel",
+      "implementation": "FadingGamepadForceRequest::channel",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=request; EAX=channel+8; RET 8723A3/1",
+      "evidence": "Actual fading request channel getter."
+    },
+    {
+      "address": "008723b0",
+      "name_hypothesis": "BSP_GamepadForce_FadingRequestValue",
+      "implementation": "FadingGamepadForceRequest::value",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=request; ST0=float; RET 8723CB/1",
+      "evidence": "x87 amplitude*(duration-elapsed)/duration, then float store; no clamp or zero-duration guard."
+    },
+    {
+      "address": "008723d0",
+      "name_hypothesis": "BSP_GamepadForce_FadingRequestExpired",
+      "implementation": "FadingGamepadForceRequest::expired",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=request; EAX=ordered elapsed>=duration; RET 8723E4/1",
+      "evidence": "Exact inclusive expiration; NaN false."
+    },
+    {
+      "address": "00872460",
+      "name_hypothesis": "BSP_GamepadForce_AlternatingRequestChannel",
+      "implementation": "AlternatingGamepadForceRequest::channel",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=request; EAX=channel+8; RET 872463/1",
+      "evidence": "Actual alternating request channel getter."
+    },
+    {
+      "address": "00872470",
+      "name_hypothesis": "BSP_GamepadForce_AlternatingRequestValue",
+      "implementation": "AlternatingGamepadForceRequest::value",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=request; ST0=float; RET 872492/1",
+      "evidence": "Selector byte determines first value/period; strict period>phase selects first portion."
+    },
+    {
+      "address": "008724a0",
+      "name_hypothesis": "BSP_GamepadForce_AlternatingRequestExpired",
+      "implementation": "AlternatingGamepadForceRequest::expired",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=request; EAX=ordered phase>=duration; RET 8724B4/1",
+      "evidence": "Expiration uses wrapped phase, not a separate elapsed lifetime."
+    },
+    {
+      "address": "008724e0",
+      "name_hypothesis": "BSP_GamepadForce_ConstantRequestDeletingDestructor",
+      "implementation": "ConstantGamepadForceRequest::~ConstantGamepadForceRequest",
+      "coverage": "fragment",
+      "original_abi": "thiscall ECX=request; stack flags; EAX=this; RET4 8724FC/3",
+      "evidence": "Generated scalar deleting wrapper; base-vtable store then free iff bit0. Typed ownership paths compose flags1 through ordinary virtual delete."
+    },
+    {
+      "address": "00872500",
+      "name_hypothesis": "BSP_GamepadForce_FadingRequestDeletingDestructor",
+      "implementation": "FadingGamepadForceRequest::~FadingGamepadForceRequest",
+      "coverage": "fragment",
+      "original_abi": "thiscall ECX=request; stack flags; EAX=this; RET4 87251C/3",
+      "evidence": "Generated scalar deleting wrapper; no separately owned payload. Ordinary typed virtual deletion composition."
+    },
+    {
+      "address": "00872520",
+      "name_hypothesis": "BSP_GamepadForce_AlternatingRequestDeletingDestructor",
+      "implementation": "AlternatingGamepadForceRequest::~AlternatingGamepadForceRequest",
+      "coverage": "fragment",
+      "original_abi": "thiscall ECX=request; stack flags; EAX=this; RET4 87253C/3",
+      "evidence": "Generated scalar deleting wrapper; no separately owned payload. Ordinary typed virtual deletion composition."
+    },
+    {
+      "address": "00a93f90",
+      "name_hypothesis": "BSP_GamepadForce_ConstantRequestUpdate",
+      "implementation": "ConstantGamepadForceRequest::update",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=request; stack float seconds; RET4 A93FBC/3",
+      "evidence": "Do not subtract when remaining exactly FLT_MAX (D7A278 double); otherwise x87 subtract with float store."
+    },
+    {
+      "address": "00a93fc0",
+      "name_hypothesis": "BSP_GamepadForce_FadingRequestUpdate",
+      "implementation": "FadingGamepadForceRequest::update",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=request; stack float seconds; RET4 A93FCA/3",
+      "evidence": "x87 seconds+elapsed, float store."
+    },
+    {
+      "address": "00a94510",
+      "name_hypothesis": "BSP_GamepadForce_AlternatingRequestUpdate",
+      "implementation": "AlternatingGamepadForceRequest::update",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=request; stack float seconds; RET4 A94541/3",
+      "evidence": "Round phase+seconds and sum(periods) to floats; actual CRT fmod via BF857A/E15500; float store."
+    }
+  ],
+  "missing_definitions": [
+    {
+      "start": "008722d0",
+      "end_inclusive": "008722fe",
+      "byte_length": 47,
+      "last_instruction": "008722fc",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "00872350",
+      "end_inclusive": "00872386",
+      "byte_length": 55,
+      "last_instruction": "00872384",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "008723f0",
+      "end_inclusive": "0087244e",
+      "byte_length": 95,
+      "last_instruction": "0087244c",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "00872310",
+      "end_inclusive": "00872313",
+      "byte_length": 4,
+      "last_instruction": "00872313",
+      "last_instruction_length": 1
+    },
+    {
+      "start": "00872320",
+      "end_inclusive": "00872323",
+      "byte_length": 4,
+      "last_instruction": "00872323",
+      "last_instruction_length": 1
+    },
+    {
+      "start": "00872330",
+      "end_inclusive": "00872341",
+      "byte_length": 18,
+      "last_instruction": "00872341",
+      "last_instruction_length": 1
+    },
+    {
+      "start": "008723a0",
+      "end_inclusive": "008723a3",
+      "byte_length": 4,
+      "last_instruction": "008723a3",
+      "last_instruction_length": 1
+    },
+    {
+      "start": "008723b0",
+      "end_inclusive": "008723cb",
+      "byte_length": 28,
+      "last_instruction": "008723cb",
+      "last_instruction_length": 1
+    },
+    {
+      "start": "008723d0",
+      "end_inclusive": "008723e4",
+      "byte_length": 21,
+      "last_instruction": "008723e4",
+      "last_instruction_length": 1
+    },
+    {
+      "start": "00872460",
+      "end_inclusive": "00872463",
+      "byte_length": 4,
+      "last_instruction": "00872463",
+      "last_instruction_length": 1
+    },
+    {
+      "start": "00872470",
+      "end_inclusive": "00872492",
+      "byte_length": 35,
+      "last_instruction": "00872492",
+      "last_instruction_length": 1
+    },
+    {
+      "start": "008724a0",
+      "end_inclusive": "008724b4",
+      "byte_length": 21,
+      "last_instruction": "008724b4",
+      "last_instruction_length": 1
+    },
+    {
+      "start": "008724e0",
+      "end_inclusive": "008724fe",
+      "byte_length": 31,
+      "last_instruction": "008724fc",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "00872500",
+      "end_inclusive": "0087251e",
+      "byte_length": 31,
+      "last_instruction": "0087251c",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "00872520",
+      "end_inclusive": "0087253e",
+      "byte_length": 31,
+      "last_instruction": "0087253c",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "00a93f90",
+      "end_inclusive": "00a93fbe",
+      "byte_length": 47,
+      "last_instruction": "00a93fbc",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "00a93fc0",
+      "end_inclusive": "00a93fcc",
+      "byte_length": 13,
+      "last_instruction": "00a93fca",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "00a94510",
+      "end_inclusive": "00a94543",
+      "byte_length": 52,
+      "last_instruction": "00a94541",
+      "last_instruction_length": 3
+    }
+  ],
+  "metadata_repairs": [
+    {
+      "address": "00a95890",
+      "gap_start": "00a95923",
+      "gap_end_inclusive": "00a9592d",
+      "last_instruction": "00a9595c",
+      "last_instruction_length": 1,
+      "evidence": "BF65AC CALL_RETURN atA9591E; raw fallthrough ADD ESP4, compare sentinel, advance/free loop."
+    },
+    {
+      "address": "00a95a80",
+      "current_stored_body_end": "00a95b93",
+      "actual_last_instruction": "00a95bc4",
+      "last_instruction_length": 1,
+      "status": "Parent restored two false CALL_RETURN gaps; saved function-body extension remains blocked by disabled Java scripts. Worker used complete raw assembly."
+    }
+  ],
+  "prior_packet_corrections": [
+    {
+      "address": "00a99940",
+      "field": "direction_mode_b14",
+      "corrected_initial_value": 0,
+      "instruction": "00a99998",
+      "evidence": "MOV dword ptr [ESI+B14],EBX; EBX zero since A99967. Earlier temporary claim of uninitialized+B14 was wrong."
+    },
+    {
+      "address": "00a99710",
+      "vslot": "0x3c",
+      "corrected_role": "binding_display_name_getter",
+      "evidence": "NativeString output and code input, copy object name, suffix Left/Right/Up/Down. Separate bounded follow-up; not a force command."
+    },
+    {
+      "address": "00a991f0",
+      "status": "Parent restored instruction tail throughA992DE, but saved body still endsA99227; Java body extension disabled."
+    },
+    {
+      "addresses": [
+        "00a991f0",
+        "00a99940"
+      ],
+      "status": "Parent removed incorrect CG classifications under lock, preserving previous values; this packet makes no tag/Ghidra mutations."
+    }
+  ],
+  "canonical_state": {
+    "tree_offset": "0x20c",
+    "amplitude_offsets": [
+      "0x218",
+      "0x21c"
+    ],
+    "container": "std::map<uint32_t,unique_ptr<GamepadForceRequest>>",
+    "order": "unsigned_ID_ascending",
+    "same_device_groups": "InputBindingDeviceGroups class2, native B8/BC",
+    "enable_global": "00e12f2c",
+    "id_global": "00e12f30",
+    "id_image_default": 1,
+    "id_wrap": "Return oldID; increment nextID; if next becomes0, set1; no collision search"
+  },
+  "request_vtables": {
+    "00d0db78": "constant14h",
+    "00d0db8c": "fading18h",
+    "00d0dba0": "alternating28h",
+    "slots": [
+      "scalar_delete(flags)",
+      "channel",
+      "value_ST0",
+      "expired",
+      "update(float)"
+    ]
+  },
+  "ownership": {
+    "insert_success": "registry owns request",
+    "duplicate_ID": "existing entry retained, incoming pointer neither stored nor deleted; typed insert returnsfalse",
+    "missing_device_submit": "delete incoming request and return0",
+    "deletion_order": "Capture channel when required; destroy request with node pointer still present; erase; refresh aftererase",
+    "all_clear": "delete all requests ascending, then clear nodes, then pump0"
+  },
+  "destructor_dispatch": {
+    "base_vtable_store": "00a95aa2",
+    "base_vtable": "00d5b670",
+    "vslot38": "00bf698e __purecall",
+    "enabled_nonzero_amplitudes": "native purecall; typedlogic_error after requestcleanup and amplitudezeroing, no derived output",
+    "explicit_clear": "00a95890 still invokes live derived output"
+  },
+  "library_evidence": {
+    "00bf857a": "MOV EDX,E15500 then JMP C07EE0 __cintrindisp2; dispatch metadata string fmod",
+    "00d7a278": "double exact FLT_MAX 000000E0FFFFEF47",
+    "00ce4bd8": "double10000 000000000088C340",
+    "floating_conversion": "BF7420 native CRT; inspected SSE path intermediate double; realcompiler conversion used, fallback not validated"
+  },
+  "joystick_effect_update": {
+    "function": "00a98cc0",
+    "clock_global": "01090ab0",
+    "clock_vslot": "0x14",
+    "clock_conversion": "canonical timestamp_seconds_x87",
+    "deadline_comparison": "now>deadline zeroes amplitude; equality active; absent effect skips clock",
+    "pointer_reload": "effect loaded after clock again before SetParameters",
+    "sdk": "IDirectInputEffect::SetParameters",
+    "DIEFFECT_bytes": 56,
+    "flags": "0x20000100",
+    "HRESULT": "ignored",
+    "COM_ownership": "unchanged borrowed references; no AddRef/Release"
+  },
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "configuration": "MSVC Win32 Release /W4 /WX",
+    "build_passed": true,
+    "ctests_passed": 2,
+    "seed_command": "python tools/ghidra_export.py verify-seeds",
+    "seed_matches": 8,
+    "fixture_source": "local/gamepad_force_fixture.cpp",
+    "fixture_runner": "local/run_gamepad_force_fixture.cmd",
+    "fixture_compile": "cl /nologo /EHsc /std:c++17 /MD /Iinclude local\\gamepad_force_fixture.cpp /Felocal\\gamepad_force_fixture.exe /Folocal\\gamepad_force_fixture.obj /link build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib user32.lib",
+    "fixture_result": {
+      "passed": true,
+      "request_types": 3,
+      "global_reload": true,
+      "purecall_boundary": true,
+      "effect_updates": 3,
+      "hardware_calls": 0
+    },
+    "logs": [
+      "local/gamepad-force-build.log",
+      "local/gamepad-force-seeds.json",
+      "local/gamepad-force-fixture.log"
+    ],
+    "hardware_or_game_validation": false
+  },
+  "boundaries": [
+    "Host binds actual current input groups, single force state per actual device and real output; no duplicate state or fake production callback.",
+    "Action constructors/spatial attenuation at873450/873560/873750 are callers, not reconstructed here; request constructors and force submission are concrete.",
+    "A99710 display labels separate; native CRT/SDK/container internals retained.",
+    "Original SEH/allocation exception ABI and non-SSE floating conversion extremes not claimed."
+  ]
+}

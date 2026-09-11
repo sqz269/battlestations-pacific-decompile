@@ -1,0 +1,456 @@
+{
+  "packet": "orch3_joystick_device_f",
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read_only_verified_via_bsp_wrappers",
+    "native_allocation_size": "0xb48",
+    "native_vtable": "00d5b7f0"
+  },
+  "functions": [
+    {
+      "address": "00a99940",
+      "name_hypothesis": "BSP_JoystickInputDevice_Construct",
+      "implementation": "create_joystick_input_device_00a99940",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=B48h object; stack DI8*, DIDEVICEINSTANCEA*; EAX=this; RET8 A99E8B/3, endA99E8D",
+      "evidence": "Custom format, product policy, COM setup, two effects and two polls; ordinary game constructor, not array constructor helper."
+    },
+    {
+      "address": "00a95d70",
+      "name_hypothesis": "BSP_GamepadInputDevice_Initialize_Provisional",
+      "implementation": "JoystickInputDevice::JoystickInputDevice",
+      "coverage": "fragment",
+      "original_abi": "thiscall ECX=base object; EAX=this; RET A95E32/1, endA95E32",
+      "evidence": "Canonical two zeroed256-byte histories plus empty force-request registry/sentinel and zero channel amplitudes; nonempty registry family excluded."
+    },
+    {
+      "address": "00a98e30",
+      "name_hypothesis": "BSP_JoystickInputDevice_Poll",
+      "implementation": "JoystickInputDevice::poll_00a98e30",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=this; ignored stack float; AL=success; RET4 A9914B/3, endA9914D",
+      "evidence": "Poll failure Acquire; copy previous before GetDeviceState; x87 deadzone, detection, activity clock, then Xbox trigger import."
+    },
+    {
+      "address": "00a992f0",
+      "name_hypothesis": "BSP_JoystickInputDevice_DescribeObject",
+      "implementation": "describe_joystick_object_00a992f0",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=this; stack DIDEVICEOBJECTINSTANCEA*; EAX=1; RET4 A99705/3, endA99707",
+      "evidence": "Copy name and custom descriptor; reserve button/POV slots; axis order1,0,3,2,4...; collect two feedback-axis offsets."
+    },
+    {
+      "address": "00a98780",
+      "name_hypothesis": "BSP_JoystickInputDevice_BindingDown",
+      "implementation": "JoystickInputDevice::binding_down_00a98780",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=this; stack binding-record pointer; AL=down; RET4 A98917/3, endA98919; following9-DWORD table A9891C..A9893F",
+      "evidence": "Kinds0..8; button, absolute/relative axis, lower/upper halves and exact POV directions."
+    },
+    {
+      "address": "00a98940",
+      "name_hypothesis": "BSP_JoystickInputDevice_BindingValue",
+      "implementation": "JoystickInputDevice::binding_value_00a98940",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=this; stack binding-record pointer; ST0=float; RET4 A98B63/3, endA98B65; following9-DWORD table A98B68..A98B8B",
+      "evidence": "x87 signed numerator/range division and native half-axis conditions; exact POV directions."
+    },
+    {
+      "address": "00a99160",
+      "name_hypothesis": "BSP_JoystickObject_DestroyName_Provisional",
+      "implementation": "JoystickInputDevice::~JoystickInputDevice",
+      "coverage": "fragment",
+      "original_abi": "thiscall ECX=1Ch metadata record; RET A9917C/1, endA9917C",
+      "evidence": "NativeString pool cleanup composed through canonical NativeString release; native does not clear the dead header."
+    },
+    {
+      "address": "00a95a80",
+      "name_hypothesis": "BSP_GamepadInputDevice_Destroy_Provisional",
+      "implementation": "JoystickInputDevice::~JoystickInputDevice",
+      "coverage": "fragment",
+      "original_abi": "thiscall ECX=base object; RET A95BC4/1, endA95BC4; Ghidra currently endsA95B93",
+      "evidence": "Only constructor-empty force-request registry lifetime composition; general owned request deletion and tree mechanics excluded. No COM Release."
+    },
+    {
+      "address": "00a93f30",
+      "name_hypothesis": "BSP_GamepadInputDevice_HasActivity",
+      "implementation": "JoystickInputDevice::activity_00a93f30",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=this; AL=boolean; RET A93F53/1, endA93F53",
+      "evidence": "Scan codes0..89 through virtual query+20; stop on first nonzero."
+    },
+    {
+      "address": "00a99900",
+      "name_hypothesis": "CG_scalar_deleting_dtor_00a99900",
+      "implementation": "delete_joystick_input_device_00a99900",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=this; stack flags; EAX=this; RET4 A9991B/3, endA9991D",
+      "evidence": "Correct existing generated scalar-deleting classification retained; destroy first, free only if flags bit0."
+    },
+    {
+      "address": "00a991f0",
+      "name_hypothesis": "BSP_JoystickInputDevice_Destroy",
+      "implementation": "JoystickInputDevice::~JoystickInputDevice",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=this; no flags/array count; RET A992DE/1, endA992DE; Ghidra currently endsA99227",
+      "evidence": "Ordinary game destructor, not vector-deleting helper: previous/current arrays, reverse metadata names, descriptors, effects Unload0/1, product name, base."
+    },
+    {
+      "address": "00a98b90",
+      "name_hypothesis": "BSP_JoystickInputDevice_CountObjectsCallbackA",
+      "implementation": "count_joystick_objects_00a98b90",
+      "coverage": "function",
+      "original_abi": "stdcall DIDEVICEOBJECTINSTANCEA*, context; EAX=1; RET8 A98BAA/3, endA98BAC",
+      "evidence": "Increment object count iff type&1Fh; no SDK substitute."
+    },
+    {
+      "address": "00a99920",
+      "name_hypothesis": "BSP_JoystickInputDevice_ObjectCallbackA",
+      "implementation": "joystick_object_callback_00a99920",
+      "coverage": "function",
+      "original_abi": "stdcall DIDEVICEOBJECTINSTANCEA*, context; ECX=context into A992F0; RET8 A9992E/3, endA99930",
+      "evidence": "Host-only exception transport catches at SDK callback and rethrows after EnumObjects; native normal return1."
+    },
+    {
+      "address": "00a99150",
+      "name_hypothesis": "BSP_JoystickObject_InitializeName_Provisional",
+      "implementation": "JoystickObject::name",
+      "coverage": "fragment",
+      "original_abi": "thiscall ECX=1Ch metadata record; RET A9915F/1, endA9915F",
+      "evidence": "Only zeros NativeString length/pointer; other native fields initially uninitialized and modeled explicitly."
+    },
+    {
+      "address": "00a98bd0",
+      "name_hypothesis": "BSP_JoystickInputDevice_QueryDown",
+      "implementation": "JoystickInputDevice::query_20",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=this; stack code; AL=down; RET4 A98C45/3, endA98C47; tail A98780",
+      "evidence": "Xbox triggers21/22 and code64 precede valid/inhibited checks; nonzero mappings tail to binding query."
+    },
+    {
+      "address": "00a98c50",
+      "name_hypothesis": "BSP_JoystickInputDevice_QueryValue",
+      "implementation": "JoystickInputDevice::value_24",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=this; stack code; ST0=float; RET4 A98CAF/3, endA98CB1; tail A98940",
+      "evidence": "Xbox triggers21/22 and code64 precede valid/inhibited checks; other mapping float query."
+    },
+    {
+      "address": "00a98750",
+      "name_hypothesis": "BSP_JoystickInputDevice_QueryRelative",
+      "implementation": "JoystickInputDevice::query_1c",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=this; stack code; AL=flag; RET4 A98777/3, endA98779",
+      "evidence": "Nonzero binding kind and relative byte; independent of sample validity."
+    },
+    {
+      "address": "00a98400",
+      "name_hypothesis": "BSP_JoystickInputDevice_ResetFeedback",
+      "implementation": "JoystickInputDevice::on_slot_reset",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=this; RET A98434/1, endA98434",
+      "evidence": "Actual COM SendForceFeedbackCommand2,20h,1, ignoring results."
+    },
+    {
+      "address": "00a95bd0",
+      "name_hypothesis": "BSP_GamepadInputDevice_GetClass",
+      "implementation": "JoystickInputDevice::device_class",
+      "coverage": "function",
+      "original_abi": "thiscall ECX unused; EAX=2; RET A95BD5/1, endA95BD5",
+      "evidence": "Exact constant class2 leaf."
+    },
+    {
+      "address": "00a98bb0",
+      "name_hypothesis": "BSP_JoystickInputDevice_SetRelativeBinding",
+      "implementation": "JoystickInputDevice::set_relative_binding_00a98bb0",
+      "coverage": "function",
+      "original_abi": "thiscall ECX=this; stack code, byte/bool; RET8 A98BC2/3, endA98BC4",
+      "evidence": "Write binding record+8 at native29C+code*12; typed bounds guard."
+    }
+  ],
+  "missing_ghidra_definitions": [
+    {
+      "start": "00a95bd0",
+      "end_inclusive": "00a95bd5",
+      "byte_length": 6,
+      "last_instruction": "00a95bd5",
+      "last_instruction_length": 1
+    },
+    {
+      "start": "00a98750",
+      "end_inclusive": "00a98779",
+      "byte_length": 42,
+      "last_instruction": "00a98777",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "00a98780",
+      "end_inclusive": "00a98919",
+      "byte_length": 410,
+      "last_instruction": "00a98917",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "00a98940",
+      "end_inclusive": "00a98b65",
+      "byte_length": 550,
+      "last_instruction": "00a98b63",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "00a98b90",
+      "end_inclusive": "00a98bac",
+      "byte_length": 29,
+      "last_instruction": "00a98baa",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "00a98bb0",
+      "end_inclusive": "00a98bc4",
+      "byte_length": 21,
+      "last_instruction": "00a98bc2",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "00a98bd0",
+      "end_inclusive": "00a98c47",
+      "byte_length": 120,
+      "last_instruction": "00a98c45",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "00a98c50",
+      "end_inclusive": "00a98cb1",
+      "byte_length": 98,
+      "last_instruction": "00a98caf",
+      "last_instruction_length": 3
+    },
+    {
+      "start": "00a99150",
+      "end_inclusive": "00a9915f",
+      "byte_length": 16,
+      "last_instruction": "00a9915f",
+      "last_instruction_length": 1
+    },
+    {
+      "start": "00a99160",
+      "end_inclusive": "00a9917c",
+      "byte_length": 29,
+      "last_instruction": "00a9917c",
+      "last_instruction_length": 1
+    },
+    {
+      "start": "00a99920",
+      "end_inclusive": "00a99930",
+      "byte_length": 17,
+      "last_instruction": "00a9992e",
+      "last_instruction_length": 3
+    }
+  ],
+  "jump_table_data": [
+    {
+      "start": "00a9891c",
+      "end_inclusive": "00a9893f",
+      "count_dwords": 9
+    },
+    {
+      "start": "00a98b68",
+      "end_inclusive": "00a98b8b",
+      "count_dwords": 9
+    }
+  ],
+  "false_noreturn_repairs": [
+    {
+      "address": "00a991f0",
+      "current_end": "00a99227",
+      "actual_end": "00a992de",
+      "last_instruction": "00a992de",
+      "last_instruction_length": 1,
+      "evidence": "BF6989 free incorrectly terminates analysis; array/string/effect/base cleanup continues."
+    },
+    {
+      "address": "00a99900",
+      "missing_fallthrough_start": "00a99915",
+      "missing_fallthrough_end": "00a99917",
+      "actual_end": "00a9991d",
+      "last_instruction": "00a9991b",
+      "last_instruction_length": 3,
+      "evidence": "ADD ESP,4 after BF65AC; scalar-deleting classification remains correct."
+    },
+    {
+      "address": "00a95a80",
+      "current_end": "00a95b93",
+      "missing_tail_start": "00a95b94",
+      "actual_end": "00a95bc4",
+      "last_instruction": "00a95bc4",
+      "last_instruction_length": 1,
+      "evidence": "BF65AC call atA95B8F returns to reset header, base destruction, SEH epilogue. Also verify fallthrough ADD ESP,4 atA95B43 after earlier free."
+    }
+  ],
+  "tag_correction_requests": [
+    {
+      "old_record": {
+        "address": "00a99940",
+        "name": "CG_array_ctor_helper_00a99940",
+        "category": "cg_array_ctor_helper",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0031"
+      },
+      "proposed_classification": "game_owned_constructor",
+      "reason": "Game vtable initialization, product-name Xbox360 policy, COM CreateDevice/EnumObjects/custom format/ranges/cooperation/effect construction/two polls. Merely calls CRT array construction helper."
+    },
+    {
+      "old_record": {
+        "address": "00a991f0",
+        "name": "CG_vector_deleting_dtor_00a991f0",
+        "category": "cg_vector_deleting_dtor",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0011"
+      },
+      "proposed_classification": "game_owned_destructor",
+      "reason": "ECX object, no array/count/flags argument; actual owned-array/string and effect-Unload sequence, separate scalar deleting wrapper atA99900."
+    }
+  ],
+  "sdk_layout": {
+    "format_kind": "game_generated_absolute_axis_format_no_constant_table",
+    "DIDATAFORMAT_size": 24,
+    "DIOBJECTDATAFORMAT_size": 16,
+    "header": [
+      "24",
+      "16",
+      "1",
+      "object_count*4",
+      "object_count",
+      "descriptor_pointer"
+    ],
+    "descriptor": [
+      "null_GUID",
+      "index*4",
+      "original_dwType",
+      "original_dwFlags"
+    ],
+    "DIPROPRANGE_size": 24,
+    "DIPROPDWORD_size": 20,
+    "DIEFFECT_size": 56,
+    "GUID_ConstantForce_native": "00d78f5c",
+    "GUID_RampForce_native": "00d78f6c",
+    "SDK_GUID_equality": true,
+    "validation": "MSVC static_asserts plus all fields of generated4-object format/effects checked by explicit recording COM fixture; no standard joystick format substituted."
+  },
+  "import_contract": {
+    "library": "XINPUT1_3.dll",
+    "ordinal": 2,
+    "thunk": "00c2f166",
+    "iat": "00ce239c",
+    "abi": "DWORD __stdcall(DWORD userIndex, XINPUT_STATE*)",
+    "user_index": 0,
+    "output_size": 16,
+    "trigger_byte_offsets": [
+      6,
+      7
+    ],
+    "only_branch": "Xbox/XBOX/XBox plus360 product"
+  },
+  "lifetime": {
+    "device_COM": "borrowed_no_AddRef_or_Release",
+    "effect_COM": "borrowed_Unload_in_index_order_no_Release",
+    "owner_requirement": "Keep actual COM outputs and services alive; independently track SDK references; destroy typed object before releasing actual COM references.",
+    "typed_allocations": "standard new/delete for canonical slots"
+  },
+  "base_composition": {
+    "address": "00a95d70",
+    "coverage": "constructor_empty_force_request_registry_only",
+    "histories": {
+      "offsets": [
+        "0x0c",
+        "0x10c"
+      ],
+      "bytes_each": 256,
+      "canonical_type": "InputStateDevice"
+    },
+    "tree": {
+      "container_offset": "0x20c",
+      "header_offset": "0x210",
+      "count_offset": "0x214",
+      "initial_count": 0,
+      "sentinel_links": "self",
+      "sentinel_byte_15": 1
+    },
+    "channel_floats": {
+      "offsets": [
+        "0x218",
+        "0x21c"
+      ],
+      "initial_values": [
+        0,
+        0
+      ]
+    },
+    "general_request_family": "outside_packet"
+  },
+  "numerics": {
+    "deadzone_double": 0.20000000298023224,
+    "gain_double": 1.2500000046566129,
+    "span": "signed_wrapping_max_minus_min",
+    "midpoint": "signed_truncating_span_div2_then_float_round",
+    "conversion": "actual compiler conversion at native BF7420 CRT boundary; inspected native SSE path stores double; fallback and extreme inputs not validated",
+    "fixture_examples": [
+      {
+        "span": 1000,
+        "raw": 800,
+        "result": 750
+      },
+      {
+        "span": 1000,
+        "raw": 200,
+        "result": 251
+      }
+    ]
+  },
+  "remaining_boundaries": [
+    "A98CC0/A99710 vslots38/3C feedback amplitude/command family; A94440 binding configuration and other unused vslots.",
+    "General nonempty force-request registry A95A80/A954C0 and insertion/processing family; only constructor-empty composition represented.",
+    "Native uninitialized current/previous DWORD arrays and trigger floats require explicit typed initial values; undefined ranges/kinds and SDK failure outputs produce guards.",
+    "No native layout, SEH unwind, non-SSE floating conversion fallback, hardware or game-runtime compatibility claim."
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release /W4 /WX",
+      "passed": true,
+      "log": "local/joystick-input-build.log"
+    },
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "matched": 8,
+      "log": "local/joystick-input-seeds.json"
+    },
+    "fixture": {
+      "source": "local/joystick_input_fixture.cpp",
+      "runner": "local/run_joystick_input_fixture.cmd",
+      "compile_command": "cl /nologo /EHsc /std:c++17 /MD /Iinclude local\\joystick_input_fixture.cpp /Felocal\\joystick_input_fixture.exe /Folocal\\joystick_input_fixture.obj /link build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib user32.lib",
+      "run_command": "local\\joystick_input_fixture.exe",
+      "log": "local/joystick-input-fixture.log",
+      "passed": true,
+      "accepted_objects": 4,
+      "enum_passes": 2,
+      "effect_unloads": 2,
+      "com_releases": 0,
+      "negative_deadzone_result": 251,
+      "dynamic_sdk_layout_verified": true,
+      "interfaces": "explicit recording fixture doubles, no production stubs"
+    },
+    "hardware_or_game_runtime": false
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "annotation_events": [
+    {
+      "address": "00a5de84",
+      "before": {
+        "address": "00a5de84",
+        "function_name": "BSP_PipeIPC_WaitConnection"
+      },
+      "after": {
+        "address": "00a5de84",
+        "name": "BSP_PipeIPC_WaitConnection",
+        "evidence": "Reject null/-1 owner then ECX=owner, push timeout, callA5E750. Missing start; bytes begin immediately after close wrapper RET4. See docs/XLIVE_PIPE_IO.md and reports/xlive_pipe_io.json; descriptive names and PIPEIPC provenance remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5deaa",
+      "before": {
+        "address": "00a5deaa",
+        "function_name": "PIPEIPC_00a5deaa",
+        "comment": "[BSP inventory 00a5deaa] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5deaa",
+        "name": "BSP_PipeIPC_BeginRead",
+        "evidence": "Owner validation precedes buffer/nonzero count; ECX=owner invokes A5E1F7. See docs/XLIVE_PIPE_IO.md and reports/xlive_pipe_io.json; descriptive names and PIPEIPC provenance remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5dee8",
+      "before": {
+        "address": "00a5dee8",
+        "function_name": "PIPEIPC_00a5dee8",
+        "comment": "[BSP inventory 00a5dee8] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5dee8",
+        "name": "BSP_PipeIPC_FinishRead",
+        "evidence": "Owner validation precedes output-pointer validation; timeout unrestricted; callA5E7E6. See docs/XLIVE_PIPE_IO.md and reports/xlive_pipe_io.json; descriptive names and PIPEIPC provenance remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5df20",
+      "before": {
+        "address": "00a5df20",
+        "function_name": "PIPEIPC_00a5df20",
+        "comment": "[BSP inventory 00a5df20] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5df20",
+        "name": "BSP_PipeIPC_BeginWrite",
+        "evidence": "Owner validation precedes buffer/nonzero count; ECX=owner invokes A5E28B. See docs/XLIVE_PIPE_IO.md and reports/xlive_pipe_io.json; descriptive names and PIPEIPC provenance remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5df5e",
+      "before": {
+        "address": "00a5df5e",
+        "function_name": "PIPEIPC_00a5df5e",
+        "comment": "[BSP inventory 00a5df5e] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5df5e",
+        "name": "BSP_PipeIPC_FinishWrite",
+        "evidence": "Owner validation precedes output-pointer validation; timeout unrestricted; callA5E815. See docs/XLIVE_PIPE_IO.md and reports/xlive_pipe_io.json; descriptive names and PIPEIPC provenance remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5e16e",
+      "before": {
+        "address": "00a5e16e",
+        "function_name": "PIPEIPC_00a5e16e",
+        "comment": "[BSP inventory 00a5e16e] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5e16e",
+        "name": "BSP_PipeIPC_ConnectHandle",
+        "evidence": "Clear pending; SetLastError0 then ConnectNamedPipe. False/zero last error returns raw507; pending997 sets1 and returns0; connected535 signals actual hEvent. Only SetEvent failure converts positive errors to HRESULT. See docs/XLIVE_PIPE_IO.md and reports/xlive_pipe_io.json; descriptive names and PIPEIPC provenance remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5e1f7",
+      "before": {
+        "address": "00a5e1f7",
+        "function_name": "PIPEIPC_00a5e1f7",
+        "comment": "[BSP inventory 00a5e1f7] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5e1f7",
+        "name": "BSP_PipeIPC_SubmitRead",
+        "evidence": "Require state3, optional stop preflight; clear +18 then+14; SetLastError0; ReadFile uses same OVERLAPPED+C and local output preimage from PUSH ECX. True/pending997 sets state1 and returns8000000A. See docs/XLIVE_PIPE_IO.md and reports/xlive_pipe_io.json; descriptive names and PIPEIPC provenance remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5e28b",
+      "before": {
+        "address": "00a5e28b",
+        "function_name": "PIPEIPC_00a5e28b",
+        "comment": "[BSP inventory 00a5e28b] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5e28b",
+        "name": "BSP_PipeIPC_SubmitWrite",
+        "evidence": "Require state3, optional stop preflight; clear +18 then+14; SetLastError0; WriteFile uses same OVERLAPPED+C and local output preimage from PUSH ECX. True/pending997 sets state2 and returns8000000A. See docs/XLIVE_PIPE_IO.md and reports/xlive_pipe_io.json; descriptive names and PIPEIPC provenance remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5e31f",
+      "before": {
+        "address": "00a5e31f",
+        "function_name": "PIPEIPC_00a5e31f",
+        "comment": "[BSP inventory 00a5e31f] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5e31f",
+        "name": "BSP_PipeIPC_WaitIoResult",
+        "evidence": "WaitForMultipleObjects(+2C,&+24,FALSE,timeout); reload count after wait. Timeout/incomplete996 gives E_PENDING. Index0 GetOverlappedResult(FALSE); zero bytes E_FAIL, nonzero S_OK. Index1 CancelIo then E_ABORT; other results E_UNEXPECTED. See docs/XLIVE_PIPE_IO.md and reports/xlive_pipe_io.json; descriptive names and PIPEIPC provenance remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5e750",
+      "before": {
+        "address": "00a5e750",
+        "function_name": "PIPEIPC_00a5e750",
+        "comment": "[BSP inventory 00a5e750] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5e750",
+        "name": "BSP_PipeIPC_WaitServerConnection",
+        "evidence": "Require mode nonzero and state3/start or state0/continue. Capture pipe, clear offsets, connect helper. Negative result or pending0 returns immediately. Timeout sets state0 and800705B4. Completion returns0 without state3 or GetOverlappedResult; stop cancels then E_ABORT. See docs/XLIVE_PIPE_IO.md and reports/xlive_pipe_io.json; descriptive names and PIPEIPC provenance remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5e7e6",
+      "before": {
+        "address": "00a5e7e6",
+        "function_name": "PIPEIPC_00a5e7e6",
+        "comment": "[BSP inventory 00a5e7e6] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5e7e6",
+        "name": "BSP_PipeIPC_CompleteRead",
+        "evidence": "Require state1; callA5E31F; every result except exact8000000A resets current state to3, including cancellation/failure. See docs/XLIVE_PIPE_IO.md and reports/xlive_pipe_io.json; descriptive names and PIPEIPC provenance remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    },
+    {
+      "address": "00a5e815",
+      "before": {
+        "address": "00a5e815",
+        "function_name": "PIPEIPC_00a5e815",
+        "comment": "[BSP inventory 00a5e815] block_pipe_ipc (medium): inside Unidentified named-pipe IPC helper (non-MSVC-aligned build) range [00a5de34,00a607e8): immediately followed by Lua lbaselib code with NO Ghidra function defined between 00a607e8 and 00a60950 (Ghidra missed luaB_setfenv etc.)"
+      },
+      "after": {
+        "address": "00a5e815",
+        "name": "BSP_PipeIPC_CompleteWrite",
+        "evidence": "Require state2; callA5E31F; every result except exact8000000A resets current state to3, including cancellation/failure. See docs/XLIVE_PIPE_IO.md and reports/xlive_pipe_io.json; descriptive names and PIPEIPC provenance remain hypotheses."
+      },
+      "status": "applied",
+      "saved_readback": {
+        "name_matches": true,
+        "evidence_present": true,
+        "prior_comments_preserved": true
+      }
+    }
+  ],
+  "readback_verified_count": 12,
+  "flow_limits": [
+    "A95A80 stored body still ends A95B93 after tail instruction repair",
+    "A991F0 stored body still ends A99227 after tail instruction repair; original last RET is A992DE",
+    "No callee no-return flags changed; no function deletion/recreation"
+  ],
+  "tag_corrections": "reports/orch3_joystick_tag_corrections_g.json"
+}

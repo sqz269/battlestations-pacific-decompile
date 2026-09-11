@@ -1,0 +1,296 @@
+{
+  "packet": "orch3_xlive_pipe_transport_f",
+  "source": "src/xlive_pipe_transport.cpp",
+  "header": "include/bsp/xlive_pipe_transport.hpp",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_live_count": 63026,
+    "mode": "read-only",
+    "mutated": false,
+    "evidence": "capped assembly, decompile/export, proto, flow and terminal raw-byte queries"
+  },
+  "functions": [
+    {
+      "address": "00a5de34",
+      "name": "open_xlive_pipe_00a5de34",
+      "reviewed_name": "BSP_XLivePipe_Open",
+      "previous_function_name": "PIPEIPC_00a5de34",
+      "native_abi": "__stdcall(mode DWORD, stop HANDLE, output**); RET12; EAX=signed HRESULT",
+      "native_last_instruction": "00a5de65",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00a5de67",
+      "native_exclusive_end": "00a5de68",
+      "notes": "Validate output, use local creation output, publish null for negative result."
+    },
+    {
+      "address": "00a5de68",
+      "name": "close_xlive_pipe_00a5de68",
+      "reviewed_name": "BSP_XLivePipe_Close",
+      "previous_function_name": "PIPEIPC_00a5de68",
+      "native_abi": "__stdcall(owner*); RET4; no consumed return contract",
+      "native_last_instruction": "00a5de81",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00a5de83",
+      "native_exclusive_end": "00a5de84",
+      "notes": "Ignore null and -1 owners; otherwise call full owner destruction."
+    },
+    {
+      "address": "00a5e145",
+      "name": "construct_xlive_pipe_00a5e145",
+      "reviewed_name": "BSP_XLivePipe_Construct",
+      "previous_function_name": "PIPEIPC_00a5e145",
+      "native_abi": "ECX=30h owner; RET; EAX=owner",
+      "native_last_instruction": "00a5e168",
+      "native_last_instruction_length": 1,
+      "native_inclusive_end": "00a5e168",
+      "native_exclusive_end": "00a5e169",
+      "notes": "Protocol initialization before own stores; pipe=-1, count0, state3, events+24/+28=null; mode and OVERLAPPED retain preimage."
+    },
+    {
+      "address": "00a5e3d0",
+      "name": "copy_xlive_pipe_logon_sid_00a5e3d0",
+      "reviewed_name": "BSP_XLivePipe_CopyLogonSid",
+      "previous_function_name": "PIPEIPC_00a5e3d0",
+      "native_abi": "__stdcall(HLOCAL* output); RET4; EAX=raw DWORD error",
+      "native_last_instruction": "00a5e554",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00a5e556",
+      "native_exclusive_end": "00a5e557",
+      "notes": "TOKEN_QUERY/groups sizing must yield122; copy first logon-ID SID. Groups free before token close; output success only, no group545, unexpected sizing success13, zero last-error fallback507."
+    },
+    {
+      "address": "00a5e557",
+      "name": "find_xlive_pipe_parent_00a5e557",
+      "reviewed_name": "BSP_XLivePipe_FindParentProcess",
+      "previous_function_name": "PIPEIPC_00a5e557",
+      "native_abi": "__stdcall(DWORD* output); RET4; EAX=raw DWORD error",
+      "native_last_instruction": "00a5e6ca",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00a5e6cc",
+      "native_exclusive_end": "00a5e6cd",
+      "notes": "Toolhelp PROCESSENTRY32W scan; open parent400h; require creation time strictly older. Failure leaves output untouched; comparison rejectionE9; close parent then snapshot."
+    },
+    {
+      "address": "00a5e710",
+      "name": "destroy_xlive_pipe_00a5e710",
+      "reviewed_name": "BSP_XLivePipe_Destroy",
+      "previous_function_name": "PIPEIPC_00a5e710",
+      "native_abi": "__stdcall(owner*); RET4; no consumed return contract",
+      "native_last_instruction": "00a5e74d",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00a5e74f",
+      "native_exclusive_end": "00a5e750",
+      "notes": "Close pipe unless -1, including null; store -1. Close/clear nonnull completion event. Destroy protocol/free owner. Do not close borrowed stop or overlap event alias separately."
+    },
+    {
+      "address": "00a5e844",
+      "name": "create_xlive_pipe_00a5e844",
+      "reviewed_name": "BSP_XLivePipe_Create",
+      "previous_function_name": "PIPEIPC_00a5e844",
+      "native_abi": "__stdcall(mode DWORD, stop HANDLE, output**); RET12; EAX=signed HRESULT",
+      "native_last_instruction": "00a5eb6f",
+      "native_last_instruction_length": 3,
+      "native_inclusive_end": "00a5eb71",
+      "native_exclusive_end": "00a5eb72",
+      "notes": "Full server/client named pipe creation, ACL/security descriptor, manual-reset initially-set completion event, +1C/+24 alias and 1/2 wait count. Native cleanup order, fields not cleared on failed-create closes, output null, signed HRESULT conversion. Protocol lifetime remains required genuine dependency."
+    }
+  ],
+  "missing_function_starts": [],
+  "false_no_return_gaps": [
+    {
+      "function": "00a5e710",
+      "call": "00a5e745",
+      "callee": "00bf65ac",
+      "start": "00a5e74a",
+      "length": 2,
+      "inclusive_end": "00a5e74b",
+      "exclusive_end": "00a5e74c",
+      "bytes": "59 5f",
+      "instructions": "POP ECX; POP EDI"
+    },
+    {
+      "function": "00a5e844",
+      "call": "00a5eb40",
+      "callee": "00bf65ac",
+      "start": "00a5eb45",
+      "length": 3,
+      "inclusive_end": "00a5eb47",
+      "exclusive_end": "00a5eb48",
+      "bytes": "59 33 ff",
+      "instructions": "POP ECX; XOR EDI,EDI (clear returned owner on failure)"
+    }
+  ],
+  "parent_repair_commands": [
+    "python tools/bsp.py ghidra flow 00a5e710 00a5e844 --apply",
+    "python tools/bsp.py ghidra export 00a5e710 00a5e844 --force"
+  ],
+  "repair_caveats": [
+    "Parent only after lease release, using the standard tools write lock. Worker performed no mutations.",
+    "No missing starts among these seven functions, no interior block definitions requested.",
+    "BF65AC free returns at both sites; preserve the failure null-output store hidden by current no-return metadata."
+  ],
+  "canonical_native_state": {
+    "type": "bsp::XLivePipeNativeState",
+    "size_hex": "30",
+    "size_decimal": 48,
+    "fields": {
+      "00": "protocol pointer",
+      "04": "mode DWORD, ctor does not write",
+      "08": "pipe HANDLE",
+      "0c": "actual OVERLAPPED (20 bytes), ctor does not write",
+      "1c": "OVERLAPPED.hEvent alias of completion event after success",
+      "20": "I/O state DWORD, ctor3",
+      "24": "completion event, ctor null",
+      "28": "borrowed stop event, ctor null",
+      "2c": "wait handle count, ctor0; success1/2"
+    },
+    "projection": "XLivePipeTransport appends two borrowed host pointers after native prefix; standard throwing new allocates the projection. Not binary-compatible with original30h allocation.",
+    "sharing": "Future I/O/framing consumers must include this canonical definition and use the same actual OVERLAPPED/event fields."
+  },
+  "native_parameters": {
+    "path": "\\\\.\\pipe\\%08x",
+    "path_capacity_wchar": 18,
+    "server": {
+      "open_mode_hex": "40080003",
+      "pipe_mode": 6,
+      "max_instances": 1,
+      "out_buffer": 1024,
+      "in_buffer": 1024,
+      "timeout_ms": 5000,
+      "inherit_handles": false,
+      "security_descriptor_revision": 1,
+      "dacl_present": true,
+      "dacl_defaulted": true,
+      "network_sid_authority": 5,
+      "network_sid_rid": 2,
+      "deny_network_access_hex": "1fffff",
+      "set_logon_group_access_hex": "c0000000"
+    },
+    "client": {
+      "access_hex": "c0000000",
+      "share": 0,
+      "creation_disposition": 3,
+      "flags_hex": "40000000",
+      "message_mode": 2
+    },
+    "completion_event": {
+      "manual_reset": true,
+      "initial_state": true,
+      "name": null
+    },
+    "error_fallback_hex": "507",
+    "hresult_rule": "signed positive error -> (error&FFFF)|80070000; otherwise unchanged",
+    "temporary_cleanup_order": [
+      "FreeSid(network)",
+      "LocalFree(logon)",
+      "LocalFree(acl)",
+      "LocalFree(descriptor)"
+    ]
+  },
+  "provenance": {
+    "classification": "named-pipe behavior verified; game/vendor/library authorship uncertain",
+    "previous_names": "All seven prior PIPEIPC_* names are analyst-assigned medium block_pipe_ipc tags, not recovered library symbols. New BSP_XLivePipe_* names are hypotheses.",
+    "evidence": [
+      "Direct executable bodies, not imported PIPEIPC forwarding",
+      "Fixed pipe path at D25D80 used by E844",
+      "Actual Win32 ACL/token/pipe/event calls",
+      "Toolhelp retained API thunks A607E2/A607D6/A607D0 are one-instruction import forwarding bodies"
+    ],
+    "consequence": "Protocol and framing are unreconstructed dependencies, not exempt library code."
+  },
+  "fixed_formatter_boundary": {
+    "address": "00a5e6cd",
+    "callee": "00a5e0e7",
+    "implementation": "StringCchPrintfW for the one fixed 18-wchar path invocation",
+    "scope": "No generic CRT/STL formatting port, function record or whole-body equivalence claim."
+  },
+  "followup_packets": [
+    {
+      "candidate": "xlive_pipe_protocol",
+      "addresses": [
+        "00a5f416",
+        "00a5f336",
+        "00a5f371",
+        "00a5f1d8"
+      ],
+      "files": [
+        "include/bsp/xlive_pipe_protocol.hpp",
+        "src/xlive_pipe_protocol.cpp",
+        "docs/XLIVE_PIPE_PROTOCOL.md",
+        "reports/xlive_pipe_protocol.json"
+      ],
+      "direct_arithmetic_dependencies": [
+        "00a5ed9f",
+        "00a5eecb"
+      ],
+      "evidence": "A5F416 allocatesA8h/constructs, acquires CryptoAPI context and random seed, invokes substantial arithmetic; A5F371 releases provider, internal state and allocation without slot clear. Claim and expand direct helpers after lease checks.",
+      "required_interface": [
+        "XLivePipeProtocolHost::initialize_protocol_00a5f416(void*& slot)",
+        "XLivePipeProtocolHost::destroy_protocol_00a5f371(void* protocol)"
+      ]
+    },
+    {
+      "candidate": "xlive_pipe_io",
+      "addresses": [
+        "00a5deaa",
+        "00a5dee8",
+        "00a5df20",
+        "00a5df5e",
+        "00a5e1f7",
+        "00a5e28b",
+        "00a5e31f",
+        "00a5e7e6",
+        "00a5e815"
+      ],
+      "files": [
+        "include/bsp/xlive_pipe_io.hpp",
+        "src/xlive_pipe_io.cpp",
+        "docs/XLIVE_PIPE_IO.md",
+        "reports/xlive_pipe_io.json"
+      ],
+      "dependency": "Reuse this exact XLivePipeNativeState including OVERLAPPED and event aliases, not duplicate field ownership."
+    },
+    {
+      "candidate": "xlive_pipe_framing",
+      "addresses": [
+        "00a5df96",
+        "00a5dfce",
+        "00a5e055",
+        "00a5e09e",
+        "00a5f204",
+        "00a5f230",
+        "00a5f6c0",
+        "00a5f7c5"
+      ],
+      "files": [
+        "include/bsp/xlive_pipe_framing.hpp",
+        "src/xlive_pipe_framing.cpp",
+        "docs/XLIVE_PIPE_FRAMING.md",
+        "reports/xlive_pipe_framing.json"
+      ],
+      "dependencies_report": "reports/xlive_ipc.json"
+    }
+  ],
+  "validation": {
+    "build": "Strict MSVC Win32 Release scripts/build.ps1 passed; local/xlive-pipe-transport-build.log",
+    "ctests": "2/2 passed reconstructed_math and native_math_differential",
+    "verify_seeds": "8/8 disk/Ghidra matched",
+    "fixture": "One ignored synchronous local/xlive_pipe_transport_fixture.cpp passed via local/run_xlive_pipe_transport_fixture.cmd; local/xlive-pipe-transport-fixture.log",
+    "fixture_scope": "constructor preimage and ordering; parent process/time comparison; output preservation; ACL fields and temporary cleanup order; completion event alias; distinct failure/normal owner stores; null allocation and error normalization",
+    "named_pipes_opened": false,
+    "threads_started": false,
+    "process_operations_invoked": false,
+    "cryptographic_protocol_tested": false,
+    "dll_tested": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "domain_limits": [
+    "Protocol initializer/destructor remain required genuine host calls; no runtime context or protocol success invented.",
+    "Thrown allocator/protocol exceptions do not perform an invented RAII cleanup; returned-error cleanup is fully reconstructed.",
+    "Concrete Win32 adapter uses actual API calls; fixtures script endpoints/process APIs and execute memory operations only.",
+    "Input/output pointers and token group buffers follow native validity contracts; no fabricated backing memory.",
+    "No cancellation/join/shutdown semantics are added to transport destruction; IPC worker timeout lifetime hazard remains as documented in XLIVE_IPC.md."
+  ]
+}

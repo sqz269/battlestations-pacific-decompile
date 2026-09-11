@@ -4718,8 +4718,8 @@
       "id": "native_diagnostic_sink_lifetime3",
       "packet": "native_diagnostic_sink_lifetime3",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_source_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_FH3_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "004c14c0",
         "004bbca0",
@@ -4734,14 +4734,15 @@
       "source_ready": true,
       "prerequisite_packets": [],
       "discovery_evidence": "reports/native_buffer_device_reset_next.json",
-      "scope": "236 native bytes plus original FH3 records. Four-byte owner; raw8-byte guard points to actual lifetime section.native_section (counter physically+18). Real lifetime/CRT/Win32 providers already available; no GUI semantic singleton or invented registration callbacks."
+      "scope": "236 native bytes plus original FH3 records. Four-byte owner; raw8-byte guard points to actual lifetime section.native_section (counter physically+18). Real lifetime/CRT/Win32 providers already available; no GUI semantic singleton or invented registration callbacks.",
+      "evidence": "reports/native_diagnostic_sink_lifetime_audit.json"
     },
     {
       "id": "native_physical_buffer_lock2",
       "packet": "native_physical_buffer_lock2",
       "worker": "material_effect_plane",
       "done": false,
-      "state": "worker_assembly_source_and_fixture_preparation_pending_actual_diagnostic_provider",
+      "state": "worker_source_and_real_COM_fixture_complete_provenance_review_in_progress",
       "function_addresses": [
         "00b4b850",
         "00b4ba00"
@@ -4752,7 +4753,7 @@
         "docs/NATIVE_PHYSICAL_BUFFER_LOCK.md",
         "reports/native_physical_buffer_lock_audit.json"
       ],
-      "source_ready": false,
+      "source_ready": true,
       "prerequisite_packets": [
         "native_diagnostic_sink_lifetime3"
       ],
@@ -4813,8 +4814,8 @@
       "id": "native_renderer_reset_routes_next",
       "packet": "native_renderer_reset_routes_next",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_bounded_native_dependency_discovery_in_progress",
+      "done": true,
+      "state": "complete_bounded_native_reset_route_dependency_discovery_primary_revalidated",
       "function_addresses": [
         "00b24bf0",
         "00b262c0",
@@ -4827,14 +4828,15 @@
       "source_ready": false,
       "prerequisite_packets": [],
       "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
-      "scope": "Read-only full native renderer reset unbind/release/restore contracts and direct/indirect actual providers; explicit ready implementation packets."
+      "scope": "Read-only full native renderer reset unbind/release/restore contracts and direct/indirect actual providers; explicit ready implementation packets.",
+      "evidence": "reports/native_renderer_reset_routes_next.json"
     },
     {
       "id": "native_occlusion_query_device_reset2",
       "packet": "native_occlusion_query_device_reset2",
       "worker": "main",
-      "done": false,
-      "state": "primary_source_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_real_D3D9_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b5fe20",
         "00b5fe60"
@@ -4850,7 +4852,8 @@
         "native_shader_device_reset5"
       ],
       "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
-      "scope": "Complete60bytes: raw owner+10 query release and current renderer global/device getter CreateQuery9 directly into actual owner+10, without added guards or previous cleanup."
+      "scope": "Complete60bytes: raw owner+10 query release and current renderer global/device getter CreateQuery9 directly into actual owner+10, without added guards or previous cleanup.",
+      "evidence": "reports/native_occlusion_query_device_reset_audit.json"
     },
     {
       "id": "orch4_object_handle_resolvers_d",
@@ -4986,6 +4989,69 @@
       ],
       "integration_report": "reports/panel_observer_integration.json",
       "discovery_evidence": "docs/PANEL_OBSERVER_INTEGRATION.md"
+    },
+    {
+      "id": "native_renderer_vertex_layout_binding1",
+      "packet": "native_renderer_vertex_layout_binding1",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_actual_profile_contract_and_source_in_progress",
+      "function_addresses": [
+        "00b23f20"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_vertex_layout_binding.hpp",
+        "src/native_renderer_vertex_layout_binding.cpp",
+        "docs/NATIVE_RENDERER_VERTEX_LAYOUT_BINDING.md",
+        "reports/native_renderer_vertex_layout_binding_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+      "scope": "Complete226-byte raw renderer vertex-layout binding with actual D62AF4 hardware owner/current optional guard and full EH; independent actual provider review before implementation."
+    },
+    {
+      "id": "native_texture_device_reset4",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_explicit_seeded_scratch_API_and_source_in_progress",
+      "function_addresses": [
+        "00b3dd30",
+        "00b3dd90",
+        "00b33f10",
+        "00b33f20"
+      ],
+      "code_ownership": [
+        "include/bsp/native_texture_device_reset.hpp",
+        "src/native_texture_device_reset.cpp",
+        "docs/NATIVE_TEXTURE_DEVICE_RESET.md",
+        "reports/native_texture_device_reset_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [],
+      "scope": "452 native bytes plus16-byte pool table. Actual D619A0 surface providers; raw device argument/output cell seeded with input device, distinct reused surface-output cell seeded with captured owner at entry; preserve current reads and exact native RET/RET4 no-ops.",
+      "packet": "native_texture_device_reset4",
+      "discovery_evidence": "reports/native_renderer_reset_routes_next.json"
+    },
+    {
+      "id": "native_renderer_index_binding1",
+      "worker": null,
+      "done": false,
+      "state": "conditional_actual_current_profile_adapter_contract_required",
+      "function_addresses": [
+        "00b24b00"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_index_binding.hpp",
+        "src/native_renderer_index_binding.cpp",
+        "docs/NATIVE_RENDERER_INDEX_BINDING.md",
+        "reports/native_renderer_index_binding_audit.json"
+      ],
+      "source_ready": false,
+      "prerequisite_packets": [],
+      "scope": "236-byte actual renderer index binding. Full D61DE0 lifetime providers available; B48DC0 current physical table+1C tailcall needs explicit complete callable profile or actual token-selector provider binding. Numeric native table addresses are not host callable.",
+      "packet": "native_renderer_index_binding1",
+      "discovery_evidence": "reports/native_renderer_reset_routes_next.json"
     }
   ],
   "snapshot_after_analysis": {
