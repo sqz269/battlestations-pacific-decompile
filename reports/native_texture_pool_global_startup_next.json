@@ -1,0 +1,1213 @@
+{
+  "schema_version": 1,
+  "packet": "native_texture_pool_global_startup_next",
+  "status": "read_only_complete_body_byte_audited_cube_family_ready_packets",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-texture-pool-global-startup-next-20260910",
+  "branch": "agent/native-texture-pool-global-startup-next-20260910",
+  "base_commit": "3c1d701",
+  "owned_files": [
+    "docs/NATIVE_TEXTURE_POOL_GLOBAL_STARTUP_NEXT.md",
+    "reports/native_texture_pool_global_startup_next.json"
+  ],
+  "scope": "Two-file read-only discovery. Existing texture2D and render-target surface exact functions excluded; only remaining canonical0108DB70 cube family mapped. No C++/Ghidra/shared metadata changes.",
+  "routing_exclusions": [
+    {
+      "family": "texture2D",
+      "canonical_global": "0108db38",
+      "profile": "00d61940",
+      "source": "src/d3d9_texture2d_pool.cpp",
+      "action": "skip exact complete functions; no new implementation or recount",
+      "validation_boundary": "Current exact ledger and local source verified; no new execution of these prior complete packets.",
+      "entries": [
+        {
+          "address": "00b3ee80",
+          "cpp_function": "D3D9Texture2DPool::initialize_00b3ee80",
+          "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+          "ledger_shard": "config/reconstruction/00b30000.jsonl",
+          "ledger_key": {
+            "address": "00b3ee80",
+            "kind": "function"
+          },
+          "lookup": "python tools/bsp.py lookup 00b3ee80 --limit 3"
+        },
+        {
+          "address": "00b3e430",
+          "cpp_function": "D3D9Texture2DPool::destroy_00b3e430",
+          "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+          "ledger_shard": "config/reconstruction/00b30000.jsonl",
+          "ledger_key": {
+            "address": "00b3e430",
+            "kind": "function"
+          },
+          "lookup": "python tools/bsp.py lookup 00b3e430 --limit 3"
+        },
+        {
+          "address": "00b3d3b0",
+          "cpp_function": "D3D9Texture2DPool::free_table_unwind_00b3d3b0",
+          "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+          "ledger_shard": "config/reconstruction/00b30000.jsonl",
+          "ledger_key": {
+            "address": "00b3d3b0",
+            "kind": "function"
+          },
+          "lookup": "python tools/bsp.py lookup 00b3d3b0 --limit 3"
+        },
+        {
+          "address": "00b3e510",
+          "cpp_function": "D3D9Texture2DPool::trim_empty_slabs_00b3e510",
+          "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+          "ledger_shard": "config/reconstruction/00b30000.jsonl",
+          "ledger_key": {
+            "address": "00b3e510",
+            "kind": "function"
+          },
+          "lookup": "python tools/bsp.py lookup 00b3e510 --limit 3"
+        },
+        {
+          "address": "00cd7b60",
+          "cpp_function": "initialize_static_d3d9_texture2d_pool_00cd7b60",
+          "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+          "ledger_shard": "config/reconstruction/00cd0000.jsonl",
+          "ledger_key": {
+            "address": "00cd7b60",
+            "kind": "function"
+          },
+          "lookup": "python tools/bsp.py lookup 00cd7b60 --limit 3"
+        },
+        {
+          "address": "00ce0ca0",
+          "cpp_function": "destroy_static_d3d9_texture2d_pool_00ce0ca0",
+          "status": "actual_storage_integrated_strict_win32_build_and_original_native_differential_fixture_checked",
+          "ledger_shard": "config/reconstruction/00ce0000.jsonl",
+          "ledger_key": {
+            "address": "00ce0ca0",
+            "kind": "function"
+          },
+          "lookup": "python tools/bsp.py lookup 00ce0ca0 --limit 3"
+        }
+      ]
+    },
+    {
+      "family": "render_target_surface",
+      "canonical_global": "0108db00",
+      "profile": "00d6193c",
+      "source": "src/d3d9_surface_pool.cpp",
+      "action": "skip exact complete functions; no new implementation or recount",
+      "validation_boundary": "Current exact ledger and local source verified; no new execution of these prior complete packets.",
+      "entries": [
+        {
+          "address": "00b3ec60",
+          "cpp_function": "D3D9SurfacePool::initialize_00b3ec60",
+          "status": "typed_implementation_integrated_strict_win32_build_and_bounded_native_host_fixtures_passed",
+          "ledger_shard": "config/reconstruction/00b30000.jsonl",
+          "ledger_key": {
+            "address": "00b3ec60",
+            "kind": "function"
+          },
+          "lookup": "python tools/bsp.py lookup 00b3ec60 --limit 3"
+        },
+        {
+          "address": "00b3e2b0",
+          "cpp_function": "D3D9SurfacePool::destroy_00b3e2b0",
+          "status": "typed_implementation_integrated_strict_win32_build_and_bounded_native_host_fixtures_passed",
+          "ledger_shard": "config/reconstruction/00b30000.jsonl",
+          "ledger_key": {
+            "address": "00b3e2b0",
+            "kind": "function"
+          },
+          "lookup": "python tools/bsp.py lookup 00b3e2b0 --limit 3"
+        },
+        {
+          "address": "00b3d370",
+          "cpp_function": "D3D9SurfacePool::free_table_unwind_00b3d370",
+          "status": "typed_implementation_integrated_strict_win32_build_and_bounded_native_host_fixtures_passed",
+          "ledger_shard": "config/reconstruction/00b30000.jsonl",
+          "ledger_key": {
+            "address": "00b3d370",
+            "kind": "function"
+          },
+          "lookup": "python tools/bsp.py lookup 00b3d370 --limit 3"
+        },
+        {
+          "address": "00b3e390",
+          "cpp_function": "D3D9SurfacePool::trim_empty_slabs_00b3e390",
+          "status": "typed_implementation_integrated_strict_win32_build_and_bounded_native_host_fixtures_passed",
+          "ledger_shard": "config/reconstruction/00b30000.jsonl",
+          "ledger_key": {
+            "address": "00b3e390",
+            "kind": "function"
+          },
+          "lookup": "python tools/bsp.py lookup 00b3e390 --limit 3"
+        },
+        {
+          "address": "00cd7b40",
+          "cpp_function": "initialize_static_d3d9_surface_pool_00cd7b40",
+          "status": "typed_implementation_integrated_strict_win32_build_and_bounded_native_host_fixtures_passed",
+          "ledger_shard": "config/reconstruction/00cd0000.jsonl",
+          "ledger_key": {
+            "address": "00cd7b40",
+            "kind": "function"
+          },
+          "lookup": "python tools/bsp.py lookup 00cd7b40 --limit 3"
+        },
+        {
+          "address": "00ce0c90",
+          "cpp_function": "destroy_static_d3d9_surface_pool_00ce0c90",
+          "status": "typed_implementation_integrated_strict_win32_build_and_bounded_native_host_fixtures_passed",
+          "ledger_shard": "config/reconstruction/00ce0000.jsonl",
+          "ledger_key": {
+            "address": "00ce0c90",
+            "kind": "function"
+          },
+          "lookup": "python tools/bsp.py lookup 00ce0c90 --limit 3"
+        }
+      ]
+    }
+  ],
+  "requested_path_resolution": {
+    "native_texture_pool_allocate_files_present": false,
+    "native_render_texture_owner_files_present": false,
+    "actual_texture2d_pool_provider": "D3D9Texture2DPool in src/d3d9_texture2d_pool.cpp",
+    "current_owner_context": "NativeTexture2DOwnerContext borrows actual_texture_pool_0108db38",
+    "render_target_route": "B2A7C0 -> B3F2A0 -> actual0108DB00 surface pool"
+  },
+  "family_identification": {
+    "sdk_header": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\d3d9.h",
+    "sdk_header_sha256": "df78083ee8e75e6d3851422f6aa8abf6213e349f22bf27e7f161e98e8d90df04",
+    "method_offsets_computed_from_declaration_order": true,
+    "methods": [
+      {
+        "interface": "IDirect3DDevice9",
+        "name": "CreateCubeTexture",
+        "slot": 25,
+        "offset": 100,
+        "line": 459,
+        "declaration": "STDMETHOD(CreateCubeTexture)(THIS_ UINT EdgeLength,UINT Levels,DWORD Usage,D3DFORMAT Format,D3DPOOL Pool,IDirect3DCubeTexture9** ppCubeTexture,HANDLE* pSharedHandle) PURE;"
+      },
+      {
+        "interface": "IDirect3DDevice9",
+        "name": "CreateRenderTarget",
+        "slot": 28,
+        "offset": 112,
+        "line": 462,
+        "declaration": "STDMETHOD(CreateRenderTarget)(THIS_ UINT Width,UINT Height,D3DFORMAT Format,D3DMULTISAMPLE_TYPE MultiSample,DWORD MultisampleQuality,BOOL Lockable,IDirect3DSurface9** ppSurface,HANDLE* pSharedHandle) PURE;"
+      },
+      {
+        "interface": "IDirect3DCubeTexture9",
+        "name": "GetLevelCount",
+        "slot": 13,
+        "offset": 52,
+        "line": 1396,
+        "declaration": "STDMETHOD_(DWORD, GetLevelCount)(THIS) PURE;"
+      },
+      {
+        "interface": "IDirect3DCubeTexture9",
+        "name": "GetLevelDesc",
+        "slot": 17,
+        "offset": 68,
+        "line": 1400,
+        "declaration": "STDMETHOD(GetLevelDesc)(THIS_ UINT Level,D3DSURFACE_DESC *pDesc) PURE;"
+      }
+    ],
+    "route": "B2A473 loads actual renderer+1A10 device; B2A49D and B2A4D0 read slot64h; B2A4EB calls canonical0108DB70 allocate B3F2C0; B2A50B constructs via B3D650 on that returned owner. B3D650 calls cube GetLevelDesc+44 and GetLevelCount+34.",
+    "native_owner_profile": "00d61870",
+    "native_logical_base_profile": "00d5f280",
+    "pool_profile": "00d61944",
+    "pool_global": "0108db70",
+    "family_identification": "D3D9 cube texture confirmed by actual SDK method declaration and native creation route; source class names remain descriptive hypotheses.",
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "guarded_live_queries": true,
+    "spans": [
+      {
+        "address": "00b2a473",
+        "end_exclusive": "00b2a510",
+        "length": 157,
+        "kind": "cube_factory_actual_device_and_pool_owner_call_slice",
+        "hex": "8b87101a00008b7c2434538b5c2430558b6c243852895424188b088d542418528b5424185257565553508b4164ffd0837c241400753d85c074393d7c01768874323d0e000780742b8b4c2418e8acf1ffff8b4c24188b81101a00008b108b52646a008d4c2418518b4c2418515756555350ffd2b930000000e8d04d01008944243c85c05dc6442428015b74158b4c24388b54240c51528bc8e840310100",
+        "sha256": "e55de8c123177a6ec9a5f3037a092ce912347325383a545f30306875635a0721",
+        "disk_offset": 7513203,
+        "live_PE_match": true
+      },
+      {
+        "address": "00b3d650",
+        "end_exclusive": "00b3d6ca",
+        "length": 122,
+        "kind": "cube_owner_constructor_route_not_ready_packet",
+        "hex": "6aff6868edcb0064a100000000506489250000000083ec248b44243856578b7c243c508bf15789742410e8a169ffff33c08d54240c5289462cc7067018d6008b0f508944243c8b414457ffd08b4c2424894e248b178b423457ffd08b4c240c894e188b4c242c8946145f8bc65e64890d0000000083c430c20800",
+        "sha256": "86a572fb445ae113c3b466cb6c74eec7a6b04fec9d4240b1cb05dc8ec6f55ec2",
+        "disk_offset": 7591504,
+        "live_PE_match": true
+      }
+    ]
+  },
+  "pool_evidence": {
+    "target": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "verified_before_each_read": true
+    },
+    "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "span_count": 29,
+    "span_bytes": 1795,
+    "candidate_bytes": 1046,
+    "spans": [
+      {
+        "address": "00cd7b80",
+        "end_exclusive": "00cd7b96",
+        "length": 22,
+        "kind": "candidate_static_initializer",
+        "sha256": "54b684c5b9a7e46bb16ab2745bb247a6d367be5ff991d41b4f7f22b6735beaba",
+        "hex": "b970db0801e80675e6ff68b00cce00e861f4f1ff59c3",
+        "section": ".text",
+        "raw_backed_bytes": 22,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00cd7b80 --length 22"
+      },
+      {
+        "address": "00ce0cb0",
+        "end_exclusive": "00ce0cba",
+        "length": 10,
+        "kind": "candidate_static_destructor",
+        "sha256": "c9e40648e1aefd3670551e2349ec34e6e1f025fc06412a94ca6fcc3a1d116023",
+        "hex": "b970db0801e9f6d8e5ff",
+        "section": ".text",
+        "raw_backed_bytes": 10,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00ce0cb0 --length 10"
+      },
+      {
+        "address": "00b3f090",
+        "end_exclusive": "00b3f163",
+        "length": 211,
+        "kind": "candidate_pool_initializer",
+        "sha256": "6eb70fb8e1f244b28bf1d8525a9f0e274f7a8bdaea39f07861d5cfdbb38da0e3",
+        "hex": "6aff687eeecb0064a10000000050648925000000005153568bf133dbc706c0a0d700895e04a1b488e100894608a1b488e1003bc3578974240c74038970048935b488e1008d7e0c57895c241cc7064419d600ff150c22ce00895f18895e28895e2c895e30b820000000c74634ffffffff394630c64424180273456880000000894630e8a7640b008bf883c40433c0395e2c76198bcf3bcb74088b56288b1482891183c00183c1043b462c72e98b46283bc3740950e840780b0083c404897e288b4c24105f8bc65e5b64890d0000000083c410c3",
+        "section": ".text",
+        "raw_backed_bytes": 211,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00b3f090 --length 211"
+      },
+      {
+        "address": "00b3e5b0",
+        "end_exclusive": "00b3e63a",
+        "length": 138,
+        "kind": "candidate_pool_destructor",
+        "sha256": "9aea00ac56b7bbd0422348e26d29c7e2757a0e7ad174b7a6cbee1cc4b2e20514",
+        "hex": "56578bf933f639772cc7074419d60076178b47288b0cb051e8df7f0b0083c60183c4043b772c72e98b472885c0740950e8a4830b0083c404837f24008d770c7e15538b1d1022ce00834618ff56ffd3837e18007ff35b56ff151422ce008b470485c0c707c0a0d70074088b5708895008eb088b4708a3b488e1008b470885c074068b4f048948045f5ec3",
+        "section": ".text",
+        "raw_backed_bytes": 138,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00b3e5b0 --length 138"
+      },
+      {
+        "address": "00b3d3f0",
+        "end_exclusive": "00b3d3fe",
+        "length": 14,
+        "kind": "candidate_table_unwind",
+        "sha256": "2b161faa233a93513fab0865ad9806038a46dde8e54095d05a64670826f5b8a6",
+        "hex": "8b0185c0740750e88d950b0059c3",
+        "section": ".text",
+        "raw_backed_bytes": 14,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00b3d3f0 --length 14"
+      },
+      {
+        "address": "00b3e690",
+        "end_exclusive": "00b3e730",
+        "length": 160,
+        "kind": "candidate_trim_virtual",
+        "sha256": "7b83ae81613cf68aeee2277244c95855f469a69fe724da72fa41189fb1ca8ca4",
+        "hex": "56578bf133ff397e2c765aeb038d49008b46288b04b86683b8c006000020753d50e8f67e0b008b56288b4e2c8b4c8afc8bc2890cb883462cff83c4043b7e2c73198b56288b04ba83c030b92000000090893883c03483e90175f683ef0183c7013b7e2c72ab33c039462cc74634ffffffff762a8b4e28eb088da42400000000908b116683bac006000000750e83c00183c1043b462c72e95f5ec38946345f5ec3",
+        "section": ".text",
+        "raw_backed_bytes": 160,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00b3e690 --length 160"
+      },
+      {
+        "address": "00b3d2a0",
+        "end_exclusive": "00b3d2e0",
+        "length": 64,
+        "kind": "candidate_slab_initializer",
+        "sha256": "f0b65cf9775191385c4c3dbdb04121573fc09048c1d3d546094020bbaa94f85b",
+        "hex": "538b5c2408568bc15766c780c0060000200033d28d78308db0800600008d4900b91f0000002bca66890e891f83c20183c60283c73483fa207ce65f5e5bc20400",
+        "section": ".text",
+        "raw_backed_bytes": 64,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00b3d2a0 --length 64"
+      },
+      {
+        "address": "00b3f170",
+        "end_exclusive": "00b3f2a0",
+        "length": 304,
+        "kind": "candidate_raw_allocate",
+        "sha256": "6adcc84a9786c3ebcee78041195915fa3ee99ba4d171608401051b47237dcc43",
+        "hex": "5355568bf1578d5e0c53ff151822ce008343180183caff3956340f85920000008b462c68c4060000894634e87b760b0083c40485c0740f8b4e34518bc8e8eee0ffff8be8eb0233ed8b463039462c754c8d4400028d14850000000052894630e8ea630b008bf833c083c40439462c76198bcf85c974088b56288b1482891183c00183c1043b462c72e98b462885c0740950e883770b0083c404897e288b462c8b4e288d048185c07402892883462c0183caff8b4e288b46348b0481668180c0060000ffff0fb788c00600000fb7f90fb7bc78800600006bff3403f86685c9753f8b463483c0013b462c89563473318b4e288d0c818b296683bdc006000000751c83c00183c1043b462c72e901531853ff151022ce008bc75f5e5d5bc389463401531853ff151022ce008bc75f5e5d5bc3",
+        "section": ".text",
+        "raw_backed_bytes": 304,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00b3f170 --length 304"
+      },
+      {
+        "address": "00b3d940",
+        "end_exclusive": "00b3d9a5",
+        "length": 101,
+        "kind": "candidate_raw_return",
+        "sha256": "f893e0af8d343031471f8ccdaf44ec63b38d9546f8bfea58d98c9ea784f1cec9",
+        "hex": "5356578bf18d7e0c57ff151822ce00834718018b4424108b58308b4e288b0c992bc18bd0b84fecc44ef7eac1fa048bc2c1e81f03c20fb791c00600006689845180060000668381c0060000013b5e347303895e34834718ff57ff151022ce005f5e5bc20400",
+        "section": ".text",
+        "raw_backed_bytes": 101,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00b3d940 --length 101"
+      },
+      {
+        "address": "00b3f2c0",
+        "end_exclusive": "00b3f2ca",
+        "length": 10,
+        "kind": "candidate_canonical_allocate",
+        "sha256": "07d782fa13a440d10aec08addec48a644bb72ee0a755d7072b3643c505768250",
+        "hex": "b970db0801e9a6feffff",
+        "section": ".text",
+        "raw_backed_bytes": 10,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00b3f2c0 --length 10"
+      },
+      {
+        "address": "00b3dce0",
+        "end_exclusive": "00b3dcec",
+        "length": 12,
+        "kind": "candidate_canonical_return",
+        "sha256": "e2a284d6109c41c72ea4a8e0c93ca02dad353d71e2fefe3129e6d69da338736d",
+        "hex": "51b970db0801e855fcffffc3",
+        "section": ".text",
+        "raw_backed_bytes": 12,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00b3dce0 --length 12"
+      },
+      {
+        "address": "00cbee60",
+        "end_exclusive": "00cbee88",
+        "length": 40,
+        "kind": "constructor_eh_code",
+        "sha256": "198c54ac1ecb9adb8a6d66c9e61359ebe3dd4f86868b392be00501bfcf4cc0a3",
+        "hex": "8b4df0e9084b74ff8b4df083c10ce9fd4074ff8b4df083c128e972e5e7ffb8dc76df00e9bb7cf3ff",
+        "section": ".text",
+        "raw_backed_bytes": 40,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00cbee60 --length 40"
+      },
+      {
+        "address": "00df76c4",
+        "end_exclusive": "00df7700",
+        "length": 60,
+        "kind": "constructor_eh_map_funcinfo",
+        "sha256": "0938d32cb65f8dba3439cf33fb74ae09c8d05fa8782f84e1d29d18d86ef8f002",
+        "hex": "ffffffff60eecb000000000068eecb000100000073eecb002205931903000000c476df00000000000000000000000000000000000000000001000000",
+        "section": ".rdata",
+        "raw_backed_bytes": 60,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00df76c4 --length 60"
+      },
+      {
+        "address": "00402f70",
+        "end_exclusive": "00402f97",
+        "length": 39,
+        "kind": "existing_critical_section_cleanup",
+        "sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+        "hex": "568bf1837e18007e15578b3d1022ce00834618ff56ffd7837e18007ff35f56ff151422ce005ec3",
+        "section": ".text",
+        "raw_backed_bytes": 39,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00402f70 --length 39"
+      },
+      {
+        "address": "00403970",
+        "end_exclusive": "0040399b",
+        "length": 43,
+        "kind": "existing_allocator_unlink",
+        "sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+        "hex": "8b410485c0c701c0a0d70074088b5108895008eb088b4108a3b488e1008b410885c074068b4904894804c3",
+        "section": ".text",
+        "raw_backed_bytes": 43,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00403970 --length 43"
+      },
+      {
+        "address": "004b46b0",
+        "end_exclusive": "004b46d1",
+        "length": 33,
+        "kind": "existing_allocator_trim_dispatch",
+        "sha256": "e923ec2bcefde9c9f8c3293d50d6970eec15339703756ca573e592b46674b45f",
+        "hex": "568b35b488e10085f67414eb038d49008b068b108bceffd28b760885f675f15ec3",
+        "section": ".text",
+        "raw_backed_bytes": 33,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 004b46b0 --length 33"
+      },
+      {
+        "address": "00d6193c",
+        "end_exclusive": "00d61948",
+        "length": 12,
+        "kind": "adjacent_pool_profiles",
+        "sha256": "47004ed05dbef12937f2468b7213753c385955e316371224c22434662460c23c",
+        "hex": "90e3b30010e5b30090e6b300",
+        "section": ".rdata",
+        "raw_backed_bytes": 12,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00d6193c --length 12"
+      },
+      {
+        "address": "00d7a0c0",
+        "end_exclusive": "00d7a0c4",
+        "length": 4,
+        "kind": "base_profile",
+        "sha256": "02b0d2f98cdca124036199ae8e499b047ce80fb4c504cc3ab2f3b30da8cfb500",
+        "hex": "8e69bf00",
+        "section": ".rdata",
+        "raw_backed_bytes": 4,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00d7a0c0 --length 4"
+      },
+      {
+        "address": "00e188b4",
+        "end_exclusive": "00e188b8",
+        "length": 4,
+        "kind": "allocator_head_image_preimage",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "hex": "00000000",
+        "section": ".data",
+        "raw_backed_bytes": 0,
+        "PE_virtual_zero_fill_bytes": 4,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00e188b4 --length 4"
+      },
+      {
+        "address": "0108db70",
+        "end_exclusive": "0108dba8",
+        "length": 56,
+        "kind": "pool_image_preimage",
+        "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+        "hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "section": ".data",
+        "raw_backed_bytes": 0,
+        "PE_virtual_zero_fill_bytes": 56,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 0108db70 --length 56"
+      },
+      {
+        "address": "00ce3510",
+        "end_exclusive": "00ce3520",
+        "length": 16,
+        "kind": "initializer_table_slice",
+        "sha256": "b75413f7dd56b7851cff693d747c10ea73b2771d9eba464ae3f03c735a45c2ef",
+        "hex": "407bcd00607bcd00807bcd00a07bcd00",
+        "section": ".rdata",
+        "raw_backed_bytes": 16,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00ce3510 --length 16"
+      },
+      {
+        "address": "00bfbc47",
+        "end_exclusive": "00bfbcd9",
+        "length": 146,
+        "kind": "crt_initializer_dispatch",
+        "sha256": "f7ec982f84c4a0c364ffb44ddb181f37268086f5ae5240bbc575143d373922f1",
+        "hex": "833dd893d60000741a68d893d600e876b1010085c059740bff742404ff15d893d60059e8a0ab0000680837ce0068e836ce00e814feffff85c059597554565768266dc100e865b3ffffbe3427ce008bc6bfe436ce003bc759730f8b0685c07402ffd083c6043bf772f1833dd8fe0901005f5e741b68d8fe0901e80bb1010085c059740c6a006a026a00ff15d8fe090133c0c3",
+        "section": ".text",
+        "raw_backed_bytes": 146,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bfbc47 --length 146"
+      },
+      {
+        "address": "00bf6ff5",
+        "end_exclusive": "00bf7007",
+        "length": 18,
+        "kind": "crt_atexit",
+        "sha256": "09942fe4905f48be972c0e6824f517bcc0cde802100baff5d8a61369ddad30b6",
+        "hex": "ff742404e8bbfffffff7d81bc0f7d85948c3",
+        "section": ".text",
+        "raw_backed_bytes": 18,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf6ff5 --length 18"
+      },
+      {
+        "address": "00bf55be",
+        "end_exclusive": "00bf55c3",
+        "length": 5,
+        "kind": "new_thunk",
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+        "hex": "e958120000",
+        "section": ".text",
+        "raw_backed_bytes": 5,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf55be --length 5"
+      },
+      {
+        "address": "00bf65ac",
+        "end_exclusive": "00bf65b1",
+        "length": 5,
+        "kind": "free_thunk",
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "hex": "e917380000",
+        "section": ".text",
+        "raw_backed_bytes": 5,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf65ac --length 5"
+      },
+      {
+        "address": "00bf6989",
+        "end_exclusive": "00bf698e",
+        "length": 5,
+        "kind": "array_free_thunk",
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "hex": "e91efcffff",
+        "section": ".text",
+        "raw_backed_bytes": 5,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf6989 --length 5"
+      },
+      {
+        "address": "00bf681b",
+        "end_exclusive": "00bf6884",
+        "length": 105,
+        "kind": "existing_new_service",
+        "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+        "hex": "558bec83ec0ceb0dff7508e886ed000085c059740fff7508e8e236000085c05974e6c9c3f60574dd090101be68dd09017519830d74dd0901018bcee8a7ffffff682211ce00e89007000059568d4df4e837fbffff68c03ce0008d45f450c745f43c92d600e801000000",
+        "section": ".text",
+        "raw_backed_bytes": 105,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf681b --length 105"
+      },
+      {
+        "address": "00bf9dc8",
+        "end_exclusive": "00bf9e56",
+        "length": 142,
+        "kind": "existing_free_service",
+        "sha256": "d5bec1353d11880b9ac19e7aa0648037b7000906a0c9ba7754084429d0735955",
+        "hex": "6a0c68f02de000e82cde00008b750885f67475833d7ced09010375436a04e8367e0100598365fc0056e8477f0100598945e485c074095650e8637f01005959c745fcfeffffffe80b000000837de4007537ff7508eb0a6a04e80c7d010059c3566a00ff35bce10901ff15fc20ce0085c07516e84c5d00008bf0ff155822ce0050e8035d0000890659e8f0dd0000c3",
+        "section": ".text",
+        "raw_backed_bytes": 142,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00bf9dc8 --length 142"
+      },
+      {
+        "address": "00ce220c",
+        "end_exclusive": "00ce221c",
+        "length": 16,
+        "kind": "critical_section_import_cells",
+        "sha256": "e63ca8796f440b2771d5ea87b99fd73d03e56f217a1fd9ad1e318720c8f936d2",
+        "hex": "6c56a0008856a000a056a000b856a000",
+        "section": ".rdata",
+        "raw_backed_bytes": 16,
+        "PE_virtual_zero_fill_bytes": 0,
+        "live_PE_mapped_match": true,
+        "query": "tools/bsp.py ghidra bytes 00ce220c --length 16"
+      }
+    ],
+    "imports": [
+      {
+        "iat": "00ce220c",
+        "dll": "KERNEL32.dll",
+        "name": "InitializeCriticalSection"
+      },
+      {
+        "iat": "00ce2210",
+        "dll": "KERNEL32.dll",
+        "name": "LeaveCriticalSection"
+      },
+      {
+        "iat": "00ce2214",
+        "dll": "KERNEL32.dll",
+        "name": "DeleteCriticalSection"
+      },
+      {
+        "iat": "00ce2218",
+        "dll": "KERNEL32.dll",
+        "name": "EnterCriticalSection"
+      }
+    ],
+    "image_preimage_boundary": "Ghidra static image vs loader-mapped PE bytes, including explicit zero-filled virtual tails. This is not live game state or permission to reset actual globals."
+  },
+  "combined_evidence": {
+    "span_count": 31,
+    "span_bytes": 2074,
+    "candidate_count": 11,
+    "complete_candidate_bytes": 1046,
+    "all_live_PE_spans_match": true
+  },
+  "candidates": [
+    {
+      "address": "00b3d2a0",
+      "end_exclusive": "00b3d2e0",
+      "length": 64,
+      "sha256": "f0b65cf9775191385c4c3dbdb04121573fc09048c1d3d546094020bbaa94f85b",
+      "original_abi": "ECX actual6C4h slab; stack index; EAX same slab; RET4.",
+      "packet": "allocation5",
+      "old_name": "FUN_00b3d2a0",
+      "old_signature": "undefined FUN_00b3d2a0(void)",
+      "exact_function_exists": true,
+      "exact_complete_reconstruction_exists_at_discovery": false,
+      "original_export_exists_at_discovery": false,
+      "lookup": "python tools/bsp.py lookup 00b3d2a0 --limit 8",
+      "interpretive_name_is_hypothesis": true
+    },
+    {
+      "address": "00b3f170",
+      "end_exclusive": "00b3f2a0",
+      "length": 304,
+      "sha256": "6adcc84a9786c3ebcee78041195915fa3ee99ba4d171608401051b47237dcc43",
+      "original_abi": "ECX actual38h pool; EAX actual34h slot; RET. No own EH.",
+      "packet": "allocation5",
+      "old_name": "FUN_00b3f170",
+      "old_signature": "undefined FUN_00b3f170(void)",
+      "exact_function_exists": true,
+      "exact_complete_reconstruction_exists_at_discovery": false,
+      "original_export_exists_at_discovery": false,
+      "lookup": "python tools/bsp.py lookup 00b3f170 --limit 8",
+      "interpretive_name_is_hypothesis": true
+    },
+    {
+      "address": "00b3d940",
+      "end_exclusive": "00b3d9a5",
+      "length": 101,
+      "sha256": "f893e0af8d343031471f8ccdaf44ec63b38d9546f8bfea58d98c9ea784f1cec9",
+      "original_abi": "ECX actual pool; stack slot; RET4. Signed low32 byte difference /52.",
+      "packet": "allocation5",
+      "old_name": "FUN_00b3d940",
+      "old_signature": "undefined FUN_00b3d940(void)",
+      "exact_function_exists": true,
+      "exact_complete_reconstruction_exists_at_discovery": false,
+      "original_export_exists_at_discovery": false,
+      "lookup": "python tools/bsp.py lookup 00b3d940 --limit 8",
+      "interpretive_name_is_hypothesis": true
+    },
+    {
+      "address": "00b3f2c0",
+      "end_exclusive": "00b3f2ca",
+      "length": 10,
+      "sha256": "07d782fa13a440d10aec08addec48a644bb72ee0a755d7072b3643c505768250",
+      "original_abi": "No native args; ECX=108DB70; tail JMP B3F170; EAX actual slot.",
+      "packet": "allocation5",
+      "old_name": "CG_static_dtor_stub_00b3f2c0",
+      "old_signature": "undefined CG_static_dtor_stub_00b3f2c0(void)",
+      "exact_function_exists": true,
+      "exact_complete_reconstruction_exists_at_discovery": false,
+      "original_export_exists_at_discovery": false,
+      "lookup": "python tools/bsp.py lookup 00b3f2c0 --limit 8",
+      "interpretive_name_is_hypothesis": true
+    },
+    {
+      "address": "00b3dce0",
+      "end_exclusive": "00b3dcec",
+      "length": 12,
+      "sha256": "e2a284d6109c41c72ea4a8e0c93ca02dad353d71e2fefe3129e6d69da338736d",
+      "original_abi": "Incoming ECX slot; PUSH ECX, ECX=108DB70, CALL B3D940, RET.",
+      "packet": "allocation5",
+      "old_name": "FUN_00b3dce0",
+      "old_signature": "undefined FUN_00b3dce0(void)",
+      "exact_function_exists": true,
+      "exact_complete_reconstruction_exists_at_discovery": false,
+      "original_export_exists_at_discovery": false,
+      "lookup": "python tools/bsp.py lookup 00b3dce0 --limit 8",
+      "interpretive_name_is_hypothesis": true
+    },
+    {
+      "address": "00b3f090",
+      "end_exclusive": "00b3f163",
+      "length": 211,
+      "sha256": "6eb70fb8e1f244b28bf1d8525a9f0e274f7a8bdaea39f07861d5cfdbb38da0e3",
+      "original_abi": "ECX actual38h pool; EAX same pool; RET; native FH3 cleanup.",
+      "packet": "lifetime3",
+      "old_name": "FUN_00b3f090",
+      "old_signature": "undefined FUN_00b3f090(void)",
+      "exact_function_exists": true,
+      "exact_complete_reconstruction_exists_at_discovery": false,
+      "original_export_exists_at_discovery": false,
+      "lookup": "python tools/bsp.py lookup 00b3f090 --limit 8",
+      "interpretive_name_is_hypothesis": true
+    },
+    {
+      "address": "00b3e5b0",
+      "end_exclusive": "00b3e63a",
+      "length": 138,
+      "sha256": "9aea00ac56b7bbd0422348e26d29c7e2757a0e7ad174b7a6cbee1cc4b2e20514",
+      "original_abi": "ECX actual initialized pool; RET; no own EH.",
+      "packet": "lifetime3",
+      "old_name": "FUN_00b3e5b0",
+      "old_signature": "undefined FUN_00b3e5b0(void)",
+      "exact_function_exists": true,
+      "exact_complete_reconstruction_exists_at_discovery": false,
+      "original_export_exists_at_discovery": false,
+      "lookup": "python tools/bsp.py lookup 00b3e5b0 --limit 8",
+      "interpretive_name_is_hypothesis": true
+    },
+    {
+      "address": "00b3d3f0",
+      "end_exclusive": "00b3d3fe",
+      "length": 14,
+      "sha256": "2b161faa233a93513fab0865ad9806038a46dde8e54095d05a64670826f5b8a6",
+      "original_abi": "ECX actual table header (pool+28), not pool; first DWORD only; RET; no clear.",
+      "packet": "lifetime3",
+      "old_name": "FUN_00b3d3f0",
+      "old_signature": "undefined FUN_00b3d3f0(void)",
+      "exact_function_exists": true,
+      "exact_complete_reconstruction_exists_at_discovery": false,
+      "original_export_exists_at_discovery": false,
+      "lookup": "python tools/bsp.py lookup 00b3d3f0 --limit 8",
+      "interpretive_name_is_hypothesis": true
+    },
+    {
+      "address": "00b3e690",
+      "end_exclusive": "00b3e730",
+      "length": 160,
+      "sha256": "7b83ae81613cf68aeee2277244c95855f469a69fe724da72fa41189fb1ca8ca4",
+      "original_abi": "ECX actual pool; RET; no internal section enter/leave.",
+      "packet": "trim1",
+      "old_name": "FUN_00b3e690",
+      "old_signature": "undefined FUN_00b3e690(void)",
+      "exact_function_exists": true,
+      "exact_complete_reconstruction_exists_at_discovery": false,
+      "original_export_exists_at_discovery": false,
+      "lookup": "python tools/bsp.py lookup 00b3e690 --limit 8",
+      "interpretive_name_is_hypothesis": true
+    },
+    {
+      "address": "00cd7b80",
+      "end_exclusive": "00cd7b96",
+      "length": 22,
+      "sha256": "54b684c5b9a7e46bb16ab2745bb247a6d367be5ff991d41b4f7f22b6735beaba",
+      "original_abi": "No args; ECX=108DB70 for initialization; EAX atexit result; RET.",
+      "packet": "static2",
+      "old_name": null,
+      "old_signature": null,
+      "exact_function_exists": false,
+      "exact_complete_reconstruction_exists_at_discovery": false,
+      "original_export_exists_at_discovery": false,
+      "lookup": "python tools/bsp.py lookup 00cd7b80 --limit 8",
+      "interpretive_name_is_hypothesis": true
+    },
+    {
+      "address": "00ce0cb0",
+      "end_exclusive": "00ce0cba",
+      "length": 10,
+      "sha256": "c9e40648e1aefd3670551e2349ec34e6e1f025fc06412a94ca6fcc3a1d116023",
+      "original_abi": "No args; ECX=108DB70; tail JMP B3E5B0.",
+      "packet": "static2",
+      "old_name": "CG_static_init_00ce0cb0",
+      "old_signature": "undefined CG_static_init_00ce0cb0(void)",
+      "exact_function_exists": true,
+      "exact_complete_reconstruction_exists_at_discovery": false,
+      "original_export_exists_at_discovery": false,
+      "lookup": "python tools/bsp.py lookup 00ce0cb0 --limit 8",
+      "interpretive_name_is_hypothesis": true
+    }
+  ],
+  "storage": {
+    "canonical_global": "0108db70",
+    "size": 56,
+    "profile": "00d61944",
+    "virtual0": "00b3e690",
+    "shared_allocator_head": "00e188b4",
+    "fields": {
+      "00": "actual allocator base/derived profile",
+      "04": "actual previous link",
+      "08": "actual next link",
+      "0c": "actual24-byte Win32 CRITICAL_SECTION",
+      "24": "signed explicit recursion depth",
+      "28": "actual table pointer",
+      "2c": "current unsigned slab count",
+      "30": "current unsigned capacity",
+      "34": "earliest free index or FFFFFFFF"
+    },
+    "slab_size": 1732,
+    "slots": 32,
+    "slot_stride": 52,
+    "logical_owner_extent": "[0,30h)",
+    "slot_index_offset": 48,
+    "free_stack_offset": 1664,
+    "free_count_offset": 1728,
+    "untouched_padding_offset": 1730,
+    "profile_is_interchangeable_with_adjacent_pools": false
+  },
+  "packets": [
+    {
+      "id": "native_cube_texture_pool_allocate5",
+      "active_lease_packet_id": "native_cube_texture_pool_allocate4",
+      "label": "allocation5",
+      "addresses": [
+        "00b3d2a0",
+        "00b3f170",
+        "00b3d940",
+        "00b3f2c0",
+        "00b3dce0"
+      ],
+      "files": [
+        "include/bsp/native_cube_texture_pool_allocate.hpp",
+        "src/native_cube_texture_pool_allocate.cpp",
+        "docs/NATIVE_CUBE_TEXTURE_POOL_ALLOCATE.md",
+        "reports/native_cube_texture_pool_allocate_audit.json"
+      ],
+      "status": "approved_and_handed_to_worker_after_complete_byte_verification",
+      "owner": "agent/native-cube-texture-pool-allocate-20260910",
+      "source_ready": true,
+      "source_prerequisites": [
+        "Actual initialized38h pool and actual valid reached slab/table extents.",
+        "Existing real CRT allocation/free and actual Enter/LeaveCriticalSection."
+      ],
+      "composition_dependencies": [
+        "lifetime3 establishes actual initialized pool.",
+        "trim1 genuine binding is needed before publication if real new-handler traverses shared list."
+      ],
+      "named_incomplete_owner_dependencies_required_for_this_packet": [],
+      "canonical_interface": "New C++ wrappers may explicitly borrow actual0108DB70 pool; no private static pool/head or placeholder init callback."
+    },
+    {
+      "id": "native_cube_texture_pool_trim1",
+      "label": "trim1",
+      "addresses": [
+        "00b3e690"
+      ],
+      "files": [
+        "include/bsp/native_cube_texture_pool_trim.hpp",
+        "src/native_cube_texture_pool_trim.cpp",
+        "docs/NATIVE_CUBE_TEXTURE_POOL_TRIM.md",
+        "reports/native_cube_texture_pool_trim_audit.json"
+      ],
+      "status": "ready_assigned_to_discovery_worker_after_this_commit",
+      "owner": "particle_clock_lifetime",
+      "source_ready": true,
+      "source_prerequisites": [
+        "Actual valid pool/slabs/table and existing real free service."
+      ],
+      "composition_dependencies": [],
+      "frozen_api": [
+        "void trim_native_cube_texture_pool_00b3e690(void*) noexcept;",
+        "void bind_native_cube_texture_pool_trim_00d61944(void*, AllocatorListDomain&);"
+      ],
+      "binding": {
+        "profile": "00d61944",
+        "native_virtual0": "00b3e690",
+        "context": "actual pool",
+        "invoke": "actual trim function",
+        "establish_before_native_node_publication": true
+      }
+    },
+    {
+      "id": "native_cube_texture_pool_lifetime3",
+      "label": "lifetime3",
+      "addresses": [
+        "00b3f090",
+        "00b3e5b0",
+        "00b3d3f0"
+      ],
+      "files": [
+        "include/bsp/native_cube_texture_pool_lifetime.hpp",
+        "src/native_cube_texture_pool_lifetime.cpp",
+        "docs/NATIVE_CUBE_TEXTURE_POOL_LIFETIME.md",
+        "reports/native_cube_texture_pool_lifetime_audit.json"
+      ],
+      "status": "source_ready_assigned_to_lifetime_worker",
+      "owner": "system_fog_owner_discovery",
+      "source_ready": true,
+      "source_prerequisites": [
+        "Actual pool storage and shared AllocatorListDomain borrowing real head.",
+        "Actual CRT malloc/new-handler/free and real Win32 section initialization/destruction."
+      ],
+      "composition_dependencies": [
+        "native_cube_texture_pool_trim1 genuine binding before publication"
+      ],
+      "proposed_api": [
+        "void* initialize_native_cube_texture_pool_00b3f090(void*, AllocatorListDomain&);",
+        "void destroy_native_cube_texture_pool_00b3e5b0(void*, AllocatorListDomain&) noexcept;",
+        "void free_native_cube_texture_pool_table_00b3d3f0(void* actual_table_header) noexcept;"
+      ]
+    },
+    {
+      "id": "native_cube_texture_pool_static2",
+      "label": "static2",
+      "addresses": [
+        "00cd7b80",
+        "00ce0cb0"
+      ],
+      "files": [
+        "include/bsp/native_cube_texture_pool_static.hpp",
+        "src/native_cube_texture_pool_static.cpp",
+        "docs/NATIVE_CUBE_TEXTURE_POOL_STATIC.md",
+        "reports/native_cube_texture_pool_static_audit.json"
+      ],
+      "status": "ready_after_real_lifetime_and_trim_composition",
+      "owner": "integrator",
+      "source_ready": false,
+      "source_prerequisites": [
+        "One canonical actual0108DB70-equivalent storage/list binding and actual std::atexit registration."
+      ],
+      "composition_dependencies": [
+        "native_cube_texture_pool_lifetime3",
+        "native_cube_texture_pool_trim1"
+      ],
+      "registration_failure_rolls_back_pool": false
+    }
+  ],
+  "allocation_contract": {
+    "initialize_slab": "Write WORDfreecount32 first; 32 ordered WORD31-i at680+2*i and DWORDindex at30+34h*i; return actualslab; preserve logical payload and6C2 padding.",
+    "allocate_order": "Actual EnterCS then increment depth; when earliestFFFFFFFF publish currentcount, actual BF681B(6C4), initialize slab with currentearliest. If currentcount==currentcap publish2*cap+2 then BF55BE(4*cap), copy currenttable/count, free currenttable and publish captured replacement. Append capturedslab, count++; pop free-stack and update earliest; normal depth-- and actual LeaveCS.",
+    "allocate_failure": "No own EH, automatic leave, rollback or captured-slab release. Published earliest/cap and actual entered recursion remain as reached.",
+    "return_order": "Actual EnterCS/depth++; load currentslotDWORD+30 then currenttable/indexedslab; signedlow32(slot-slab)/52 using IMUL4EC4EC4F,SAR4,SHRsign correction; WORDstack store precedes CURRENTfreecount increment; lower currentearliest; depth-- and actualLeaveCS.",
+    "canonical_return_callers": [
+      "00cbd388",
+      "00cbd530"
+    ]
+  },
+  "lifetime_contract": {
+    "initialize": "Actual base list prepend; state0; profileD61944; actualInitializeCS; zero depth/table/count/cap; earliestFFFFFFFF; state2; publishcap32 beforealloc128; copy currenttable/count; free currenttable and publish only captured replacement.",
+    "new_handler_boundary": "Genuine profile/virtual binding must exist before publication, because existing real allocation new-handler can traverse actual current list.",
+    "destroy": "Capture initial nonempty count before derived profile. Currenttable/slab/currentcount loop; free currenttable; drain positive signed recursion decrement-before-Leave; DeleteCS; current previous captured beforebaseprofile, repair predecessor or actualhead, reloadnext and repairprevious. Own links and table/count/cap/earliest stay stale; rawpool and logicalowners notfreed.",
+    "table_leaf": "Confirmed complete14bytes B3D3F0; actual pool+28 receiver; free nonnullfirstword and clear nothing; POP ECX atB3D3FC."
+  },
+  "unwind": {
+    "handler": "00cbee7e",
+    "funcinfo": "00df76dc",
+    "map": "00df76c4",
+    "state_chain": [
+      2,
+      1,
+      0,
+      -1
+    ],
+    "actions": [
+      {
+        "state": 2,
+        "previous": 1,
+        "funclet": "00cbee73",
+        "call": "00b3d3f0",
+        "receiver": "captured actual pool+28"
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "funclet": "00cbee68",
+        "call": "00402f70",
+        "receiver": "captured actual pool+0C"
+      },
+      {
+        "state": 0,
+        "previous": -1,
+        "funclet": "00cbee60",
+        "call": "00403970",
+        "receiver": "captured actual pool"
+      }
+    ],
+    "section_initialization_failure_boundary": "State0 only; do not synthesize a C++ Win32 failure callback."
+  },
+  "trim_contract": "Free only WORDfreecount32. Afteractualfree reloadcurrenttable/count, swaplastpointer beforecount--, rewrite32 movedtokens+30stride34, rescan same index. Retain ignored tabletail. Capture nonempty-count test before sentinelwrite; capturetable once forfinalscan but reloadcount. No sectionentry/leave.",
+  "static_registration": {
+    "table_word": "00ce3518",
+    "callback": "00cd7b80",
+    "initializer_dispatcher": "00bfbc47",
+    "cpp_interval": [
+      "00ce2734",
+      "00ce36e4"
+    ],
+    "table_index": 889,
+    "atexit": "00bf6ff5",
+    "shutdown": "00ce0cb0",
+    "constructor": "00b3f090",
+    "destructor": "00b3e5b0",
+    "returns_atexit_result": true,
+    "CRT_dispatcher_ignores_initializer_return": true,
+    "registration_failure_rolls_back_pool": false,
+    "source_boundary": "One canonical actual storage/list binding and actual std::atexit; no private callback collector or original CRT global-state reconstruction."
+  },
+  "named_but_incomplete_owner_routes": [
+    {
+      "address": "00b34020",
+      "name": "BSP_LogicalTextureBase_ConstructUnnamed_D5F280",
+      "status": "named exact base, no complete reconstruction record",
+      "query": "python tools/bsp.py lookup 00b34020 --limit 5"
+    },
+    {
+      "address": "00b3d650",
+      "name": "FUN_00b3d650",
+      "status": "actual cube-owner constructor unported; full route bytes pinned only"
+    },
+    {
+      "address": "00b3ead0",
+      "name": "FUN_00b3ead0",
+      "status": "actual owner destructor unported; calls named-base providers"
+    },
+    {
+      "address": "00b3f410",
+      "name": "FUN_00b3f410",
+      "status": "owner deleting destructor unported; B3EAD0 then B3D940 when bit0"
+    },
+    {
+      "address": "00b2a380",
+      "name": "FUN_00b2a380",
+      "status": "actual cube creation factory unported; device/pool/owner route slice pinned only"
+    },
+    {
+      "address": "00b2c2d0",
+      "name": "BSP_TextureManager_LoadFromFile",
+      "status": "existing semantic loaded-file implementation is not an exact complete cube native-owner proof"
+    }
+  ],
+  "existing_shared_dependencies": [
+    {
+      "address": "00403970",
+      "provider": "AllocatorListDomain actual-list base unlink",
+      "packet_owned": false
+    },
+    {
+      "address": "004b46b0",
+      "provider": "AllocatorListDomain concrete current-profile list trim",
+      "packet_owned": false
+    },
+    {
+      "address": "00402f70",
+      "provider": "proven positive recursion drain and actualDeleteCS; local raw helper or coordinated extraction, no foreign pool object",
+      "packet_owned": false
+    },
+    {
+      "address": "00bf55be",
+      "chain": [
+        "00bf681b"
+      ],
+      "provider": "singleton_lifetime_allocate actualhostCRT malloc/_callnewh/retry/bad_alloc",
+      "packet_owned": false
+    },
+    {
+      "address": "00bf6989",
+      "chain": [
+        "00bf65ac",
+        "00bf9dc8"
+      ],
+      "provider": "singleton_lifetime_free actualhostCRTfree; not GetProcessHeap",
+      "packet_owned": false
+    }
+  ],
+  "saved_analysis_repairs_pending": [
+    {
+      "call_site": "00b3f144",
+      "gap_start": "00b3f149",
+      "gap_end_exclusive": "00b3f14c",
+      "gap_bytes": 3,
+      "meaning": "ADD ESP,4 before publishing captured replacement",
+      "action": "Repair erroneous returning-call flow override and decode proven continuation under write lock; preserve existing comments and refresh export."
+    },
+    {
+      "call_site": "00b3e5c8",
+      "gap_start": "00b3e5cd",
+      "gap_end_exclusive": "00b3e5d8",
+      "gap_bytes": 11,
+      "meaning": "index increment, stack cleanup, current-count comparison and loop",
+      "action": "Repair erroneous returning-call flow override and decode proven continuation under write lock; preserve existing comments and refresh export."
+    },
+    {
+      "call_site": "00b3e5e0",
+      "gap_start": "00b3e5e5",
+      "gap_end_exclusive": "00b3e5e8",
+      "gap_bytes": 3,
+      "meaning": "ADD ESP,4 before recursion drain",
+      "action": "Repair erroneous returning-call flow override and decode proven continuation under write lock; preserve existing comments and refresh export."
+    },
+    {
+      "call_site": "00b3e6b1",
+      "gap_start": "00b3e6b6",
+      "gap_end_exclusive": "00b3e6ed",
+      "gap_bytes": 55,
+      "meaning": "current table/count reload, last-pointer swap before count--, 32 moved token writes and rescan",
+      "action": "Repair erroneous returning-call flow override and decode proven continuation under write lock; preserve existing comments and refresh export."
+    },
+    {
+      "call_site": "00b3d3f7",
+      "gap_start": "00b3d3fc",
+      "gap_end_exclusive": "00b3d3fd",
+      "gap_bytes": 1,
+      "meaning": "POP ECX before RET",
+      "action": "Repair erroneous returning-call flow override and decode proven continuation under write lock; preserve existing comments and refresh export."
+    },
+    {
+      "call_site": "00b3f201",
+      "gap_start": "00b3f206",
+      "gap_end_exclusive": "00b3f209",
+      "gap_bytes": 3,
+      "meaning": "ADD ESP,4 before publishing captured replacement",
+      "action": "Repair erroneous returning-call flow override and decode proven continuation under write lock; preserve existing comments and refresh export."
+    },
+    {
+      "address": "00cd7b80",
+      "action": "Create exact22byte function rather than attributing it to enclosingCD7B60; preserve prior data/comments."
+    },
+    {
+      "address": "00b3f2c0",
+      "action": "Replace incorrect static-destructor-stub interpretation with verified canonical allocation once reconstructed."
+    },
+    {
+      "address": "00ce0cb0",
+      "action": "Replace incorrect static-initializer interpretation with verified shutdown thunk once reconstructed."
+    }
+  ],
+  "jump_alignment_gaps_not_to_repair": [
+    [
+      "00b3e69d",
+      "00b3e6a0"
+    ],
+    [
+      "00b3e708",
+      "00b3e710"
+    ]
+  ],
+  "coordination": {
+    "discovery_file_lease_only": true,
+    "all_candidates_unleased_when_initially_audited": true,
+    "allocation5_delegated_after_complete_byte_verification": true,
+    "active_allocation_lease": "agent/native-cube-texture-pool-allocate-20260910:native_cube_texture_pool_allocate4",
+    "active_allocation_lease_addresses": [
+      "00b3d2a0",
+      "00b3d940",
+      "00b3dce0",
+      "00b3f170",
+      "00b3f2c0"
+    ],
+    "discovery_has_no_address_mutation_ownership": true,
+    "shared_metadata_owner": "integrator"
+  },
+  "validation": {
+    "guarded_live_PE_spans_match": true,
+    "SDK_method_order_verified": true,
+    "ghidra_writes": false,
+    "CXX_changes": false,
+    "new_permanent_tests": false,
+    "build_run": false,
+    "differential_execution": false,
+    "original_binary_ABI_compatible": false,
+    "game_validation": false
+  }
+}
