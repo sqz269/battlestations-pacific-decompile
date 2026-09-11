@@ -164,8 +164,12 @@ void refresh_prompt_screen_00532360(FrontEndPromptScreen& screen, FrontEndPrompt
                 oldest.callback, 0, oldest.title, oldest.timeout, oldest.timeout_result,
                 std::move(countdown), oldest.dismissible);
             // Native deliberately re-reads the current first node after raise.
-            destroy_prompt_record_00530f90(screen.pending.front(), host.strings());
-            screen.pending.pop_front();
+            // 00531f10 unlinks that node before destroying its owned strings.
+            // A pool-release callback can re-enter refresh and must see the
+            // successor, not the record whose storage is being retired.
+            std::list<FrontEndPromptRecord> retired;
+            retired.splice(retired.begin(), screen.pending, screen.pending.begin());
+            destroy_prompt_record_00530f90(retired.front(), host.strings());
         } else {
             host.set_input_mapping(0x1c, 0);
             close_menu_command_screen(screen.menu, host.screens());

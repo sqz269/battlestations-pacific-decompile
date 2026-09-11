@@ -101,6 +101,15 @@ again, copying its by-value countdown key, and then erases the current first lis
 The node is deliberately re-read after raise. This order, the calls within each of the
 seven dismiss attempts, and the fresh clock sample on restoration are preserved.
 
+Retirement unlinks the chosen node **before** releasing its strings. Native list erase
+`00531f10` updates both neighbors at 00531f3f..00531f4e, calls string destruction at
+00531f51, frees the node at 00531f57, and only then decrements the stored list size at
+00531f5f. A storage-release callback can re-enter completion/refresh; it must see the
+successor at the front. The reconstruction splices the node into a private list before
+destruction and lets that private list release the node afterward. Its `pending.size()`
+changes at splice, earlier than the native stored size decrement; the exact transient
+size/empty-container behavior during re-entry remains outside this STL projection.
+
 `00532c50(menu, result)` is actual completion: capture the callback, clear it, force
 dismissible=true, then call `00532a20` for current. Only after the resulting refresh
 does it invoke the captured callback with the supplied result. Thus even a kind-3
@@ -203,6 +212,12 @@ timeout equality and final busy completion. It links the Release Win32 `bsp_core
 no repository test target was added. Source/command/binary hashes and results are in
 `reports/frontend_prompt_screen.json`. Both existing CTest checks pass, and all eight
 native differential seed byte checks match disk. No game or visual validation occurred.
+
+The same ignored fixture also checks the retirement ordering: with pending A,B, a
+release of retired A's string completes active A once. Nested refresh must restore B
+before A's callback. The pre-fix library fails this check with exit 2; the corrected
+library passes with exit 0. The failure check stops before intentionally exercising
+the old duplicate-retirement/double-free path.
 
 Limits: record allocation/STL machinery, exact exception unwinding, malformed containers,
 GUI creation/register/entry/layout, rendering, navigation internals, localization and

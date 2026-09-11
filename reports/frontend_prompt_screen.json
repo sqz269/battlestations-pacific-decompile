@@ -186,14 +186,14 @@
     "local_fixture": {
       "command": "cmd /d /c local\\frontend_prompts_probe.cmd",
       "exit": 0,
-      "scenario": "nondismissible busy -> interrupting notification -> accepted callback after busy restoration -> strict timeout equality -> busy completion result",
+      "scenario": "nondismissible busy -> interrupting notification -> accepted callback after busy restoration -> strict timeout equality -> busy completion result; release reentry during retired-node cleanup must expose the successor",
       "native_differential": false,
       "repository_test_target_added": false
     },
     "artifacts": [
       {
         "path": "local/frontend_prompts_probe.cpp",
-        "sha256": "b9152cdfebc792ebdcda1023e181024eb26ba4e3fb93f58eaf983c52a7e34b69"
+        "sha256": "415daa4652d87eb127535c6e6a75c970c40ccf0bd4ce27e16556d41fd906aad7"
       },
       {
         "path": "local/frontend_prompts_probe.cmd",
@@ -201,7 +201,7 @@
       },
       {
         "path": "local/frontend_prompts_probe.exe",
-        "sha256": "271348cc347c9ea511ac5e4fde53fa1a33d10f06b3b98df93167f8c97d767dd2"
+        "sha256": "fe9bb34621c9ec7e16c6241cdfe46e74ffc108fc078c68e0786e5561c78e6bae"
       },
       {
         "path": "local/frontend_prompts_probe.log",
@@ -209,15 +209,19 @@
       },
       {
         "path": "local/frontend_prompts_build.log",
-        "sha256": "553d2c9fbaf701252742be6eb0d6280adb3a07376c3186ac3d0da313574e45b5"
+        "sha256": "4ef503561286b08b5abf774b6dc97f61c77a4390782c389b4966eb3e0b391915"
       },
       {
         "path": "src/frontend_prompts.cpp",
-        "sha256": "1193bf1dd0f9046324f1a0a0a54ea67d8e97277943f1b103f1e511919cc9817c"
+        "sha256": "98065400089149d2f85a2a0ccb52d898ad0711b037a78317a356e4c134b41fa1"
       },
       {
         "path": "include/bsp/frontend_prompts.hpp",
         "sha256": "2f7afdcb1a0c67e577708f72edde545807afe381b291a71119f78986d39aa084"
+      },
+      {
+        "path": "local/frontend_prompts_retirement_baseline.log",
+        "sha256": "61d3c3fa8b9ec94be8a0ac44b8397682d9e805d57cedaa68de9d750663720f58"
       }
     ]
   },
@@ -227,6 +231,31 @@
     "GUI register/enter/layout, navigation, input, localization, callback ABI invocation remain native host contracts",
     "CRT00bf85b0 remains unresolved rounding contract; no guessed ceil/floor replacement",
     "constructor is a projection fragment; vector/list allocation traces and exact exception unwinding not reconstructed",
-    "valid slots, input-mode label indices, current prompt and native container invariants required"
-  ]
+    "valid slots, input-mode label indices, current prompt and native container invariants required",
+    "std::list pending size decreases at splice; native stored size decreases after string destruction and node free. Exact transient size/empty-list behavior under reentry is not reconstructed."
+  ],
+  "review_followup": {
+    "finding": "queued record remained linked during owned string destruction, allowing release reentry to restore/destroy the same node again",
+    "correction": "splice current front into a private std::list before destroy_prompt_record_00530f90; private list releases node afterward",
+    "native_evidence": {
+      "helper": "00531f10",
+      "unlink": [
+        "00531f44",
+        "00531f4e"
+      ],
+      "string_destructor_call": "00531f51",
+      "free_call": "00531f57",
+      "stored_size_decrement": "00531f5f",
+      "primary_repair_report": "reports/prompt_list_flow_repair.json"
+    },
+    "focused_probe": {
+      "baseline_commit": "ded56f6",
+      "baseline_exit": 2,
+      "baseline_log": "local/frontend_prompts_retirement_baseline.log",
+      "corrected_exit": 0,
+      "scenario": "pending[A,B]; release of retiredA title re-enters complete(activeA) once; nested refresh restoresB and callback sees currentB",
+      "failure_guard": "baseline detects wrong pending front and returns2 without deliberately duplicating string frees"
+    },
+    "remaining_projection_difference": "std::list pending size decreases at splice; native stored size decreases after string destruction and node free. Exact transient size/empty-list behavior under reentry is not reconstructed."
+  }
 }
