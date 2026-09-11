@@ -62,6 +62,7 @@
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/scene_property_bag.hpp"
 #include "bsp/entity_identity.hpp"
+#include "bsp/scene_property_bag_merge.hpp"
 #include "bsp/entity_think_dispatch.hpp"
 #include <algorithm>
 #include <cmath>
@@ -2074,6 +2075,34 @@ int main() {
                   && !detached.stalled,
             "the deferred-destroy drain unlinks a head that is on the chain and destroys an "
             "unlinked head without touching the header");
+    }
+
+    {
+        // 008F23E0 is not 008F54F0 with keep_existing = 0: it has no
+        // clone-and-insert branch, so a key the destination lacks is dropped.
+        bsp::ScenePropertyBagModel dest;
+        bsp::ScenePropertyValue skill;
+        skill.type = bsp::ScenePropertyType::Enum;
+        skill.int_value = 1; // SPNormal from universe/library/ship.props
+        bsp::scene_property_bag_insert(dest, 0, "Skill", skill);
+
+        bsp::ScenePropertyBagModel source;
+        bsp::ScenePropertyValue authored_skill;
+        authored_skill.type = bsp::ScenePropertyType::Enum;
+        authored_skill.int_value = 5; // Elite, scene175.scn line 26845
+        bsp::scene_property_bag_insert(source, 0, "skill", authored_skill);
+        bsp::ScenePropertyValue numbering;
+        numbering.type = bsp::ScenePropertyType::Int;
+        numbering.int_value = 7;
+        bsp::scene_property_bag_insert(source, 0, "Numbering", numbering);
+
+        bsp::scene_property_bag_assign_existing(dest, 0, source, 0);
+        const auto* merged = bsp::scene_property_bag_find(dest, 0, "Skill");
+        check(dest.bags[0].entries.size() == 1
+                  && merged != nullptr && merged->value.int_value == 5
+                  && bsp::scene_property_bag_find(dest, 0, "Numbering") == nullptr,
+            "008F23E0 overwrites a key the destination already has, case-insensitively, "
+            "and drops a key it does not");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
