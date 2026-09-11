@@ -165,3 +165,11 @@ prerequisites. The strong parent verifier passed 23 numeric rows with zero
 failures (20 direct calls and three resolved indirect calls). Named imports,
 tail transfers and the raw static initializer were read separately. The parent
 performs the combined build and integration.
+
+The integrator subsequently repaired the six listed call fallthrough gaps
+through the locked flow-repair tool and saved the project. All five affected
+pool functions report zero remaining gaps after calls. CD71F0..CD7205 is now
+defined and named as the pool initializer; CE0A80 is named as its registered
+destructor thunk. Prior annotations and mutation records are retained in the
+submission batch reports. The same probe also passed when rebuilt against the
+combined bsp_core library, with all seven submission-batch sources registered.
