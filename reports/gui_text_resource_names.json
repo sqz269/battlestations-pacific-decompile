@@ -1,0 +1,184 @@
+{
+  "packet": "orch5_gui_text_resource_names",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mutated": false
+  },
+  "source": "src/gui_text_resource_names.cpp",
+  "routines": [
+    {
+      "address": "00ab8c30",
+      "end_inclusive": "00ab8cd4",
+      "last_instruction_length": 3,
+      "native_abi": "__thiscall ECX Text; name-header pointer stack; RET4; no recovered useful native return value",
+      "coverage": "complete_supported_canonical_typed_string_domain",
+      "unread_ranges": [],
+      "scope": "Current native length/CRT equality early-out. Changed stored name before concrete getter/ordered stable descriptor lookup. Require SAME actual font association/domain; publish borrowed font, current alpha_texture_scale or live D7A24C, then actual shader release/clear after callbacks. Typed name allocation/layout and nativeSEH excluded."
+    },
+    {
+      "address": "00ab8e70",
+      "end_inclusive": "00ab8ed6",
+      "last_instruction_length": 3,
+      "native_abi": "__thiscall ECX Text; name-header pointer stack; RET4",
+      "coverage": "complete_supported_canonical_typed_string_domain",
+      "unread_ranges": [],
+      "scope": "Assign same shader_name member unless exact self-alias; always reach actual cached-shader invalidation, even equal spelling/self-alias. Capture raw shader after assignment, actual raw+04 release/current terminal callback, then live clear. Typed name allocation/layout and nativeSEH excluded."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00ab8c42",
+      "native": "00435c40",
+      "function": "00ab8c30",
+      "contract": "Same stored/incoming name bytes via nonowning8h views; native count equality then current CRT, early-out."
+    },
+    {
+      "address": "00ab8c5a",
+      "native": "0041dd40",
+      "function": "00ab8c30",
+      "contract": "Observed native assignment allocation, NOT invoked by canonical std::string projection; pool callbacks/ABI explicitly excluded."
+    },
+    {
+      "address": "00ab8c6f",
+      "native": "00bf7680",
+      "function": "00ab8c30",
+      "contract": "Native copy current destination length after source-length reload; canonical typed string assignment supplies valid stable-name value semantics only."
+    },
+    {
+      "address": "00ab8c77",
+      "native": "007371d0",
+      "function": "00ab8c30",
+      "contract": "Existing concrete getter with SAME live F8BF44 publication/real SingletonLifetimeManager; called after changed name store."
+    },
+    {
+      "address": "00ab8c7f",
+      "native": "00ac3570",
+      "function": "00ab8c30",
+      "contract": "Existing stable owned-descriptor first-match lookup using LIVE stored name after getter callbacks. Nonnull descriptor requires SAME NativeFontResourceOwners association."
+    },
+    {
+      "address": "00ab8cb3",
+      "native": "IAT00ce2220:InterlockedDecrement",
+      "function": "00ab8c30",
+      "contract": "Current shader captured at8CA5 after font/scalar stores; actual raw+04 decrement."
+    },
+    {
+      "address": "00ab8cc3",
+      "native": "captured_shader+vtable00",
+      "function": "00ab8c30",
+      "contract": "Terminal actual owner dispatch; live cache clear at8CC5 after callback, even replacement publication."
+    },
+    {
+      "address": "00ab8e8a",
+      "native": "0041dd40",
+      "function": "00ab8e70",
+      "contract": "Observed native allocation after pointer-identity gate, NOT invoked by std::string projection; pool callbacks/ABI excluded."
+    },
+    {
+      "address": "00ab8e9f",
+      "native": "00bf7680",
+      "function": "00ab8e70",
+      "contract": "Native copy current destination length; canonical typed member assignment supplies supported stable-name value semantics."
+    },
+    {
+      "address": "00ab8eb5",
+      "native": "IAT00ce2220:InterlockedDecrement",
+      "function": "00ab8e70",
+      "contract": "Current shader captured8EA7 after assignment; actual raw+04 decrement even for equal/self-alias name."
+    },
+    {
+      "address": "00ab8ec5",
+      "native": "captured_shader+vtable00",
+      "function": "00ab8e70",
+      "contract": "Terminal actual owner dispatch; live cache clear8EC7 only after callback."
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "00abb69a",
+      "native": "00ab8c30",
+      "function": "00abb630",
+      "contract": "One property Font header; EDI entry TextB651; ESI property readerB64B; calleeRET4."
+    },
+    {
+      "address": "00ab9dc9",
+      "native": "00ab8c30",
+      "function": "00ab98f0",
+      "contract": "ESI newly constructed child9D54; originalText restoredEDI fromESP10; source template=Text+1B0, name+1C8; one header/RET4."
+    },
+    {
+      "address": "00ab9e1f",
+      "native": "00ab8e70",
+      "function": "00ab98f0",
+      "contract": "ESI same new child, temporary NativeString GuiFontBilinear.mshd fromCEFD78; one header/RET4."
+    },
+    {
+      "address": "0059512a",
+      "native": "00ab8e70",
+      "function": "00594bf0",
+      "contract": "ESI entry receiver594C14; AAB4C0 result stored+2B8 at5950E3/reloaded595114; one temporary GuiFontBilinear.mshd header/RET4."
+    }
+  ],
+  "callers": {
+    "all_functions": [
+      "00abb630",
+      "00ab98f0",
+      "00594bf0"
+    ],
+    "all_call_sites": 4,
+    "data_xrefs": [],
+    "true_bodies": [
+      [
+        "00abb630",
+        "00abbe44"
+      ],
+      [
+        "00ab98f0",
+        "00ab9fc2"
+      ],
+      [
+        "00594bf0",
+        "005966cb"
+      ]
+    ],
+    "evidence": "Complete three listings captured;96 filtered callee-saved register/call lines plus exact setup/spill windows read. No capped caller listing, no orphan call site."
+  },
+  "producer_evidence": {
+    "native_font_constructor": "00AD55C0..00AD5690 full body: ECXfont,name/scale/alpha/uppercase stack,RET10 atAD568E/length3; AD5654 stores arg3 at+1C, AD5645 stores scale arg2 at+18.",
+    "registry_constructor_call": {
+      "address": "00ac3b4d",
+      "native": "00ad55c0",
+      "function": "00ac3910",
+      "contract": "alphatexturescale keyD5CAC0 -> FLD1/GetFloat -> FSTP ESP+48 at3A65 -> FLD3B22 -> FSTP argument3 at3B33. Independent scale_ratioD5CAD4 -> arg2. Complete native setup inspected."
+    },
+    "defaults": "D7A24C bytes0000803F verified; null font branch reads LIVE supplied constant, no literal fallback for missing ownership.",
+    "identity": "FontRegistryStartup owns stable FontRegistryOwnedFont::descriptor allocations; NativeFontResourceOwners explicitly binds those SAME pointers. Compatibility descriptor copies/semantic FontResources are not consumed."
+  },
+  "register_provenance": {
+    "font": "EBX=entryECX8C32,EDI=inputheader8C35,ESI=storedname+1C8 at8C39; ESI overwritten with CURRENT cached shader8CA5 after font/scalar stores. Clear uses original EBX after terminal callback.",
+    "shader": "EBX=entryECX8E72,EDI=inputheader8E75,ESI=storedname+1C0 at8E79; ESI overwritten with CURRENT shader8EA7; equality of strings is never tested.",
+    "assignment": "Native resize receives captured source length and preserve1/RET8; source length is re-read then current destination length copied via cdeclmemcpy cleanup0C. Native pooled allocation callbacks are outside typed-string domain."
+  },
+  "ownership": {
+    "text": "SAME GuiTextLifetime/GuiTextWidget strings,font pointer,alpha scalar,raw shader slot; no second cached headers.",
+    "registry": "Real existing getter+ordered owned-descriptor lookup; supplied F8BF44/manager outlive native publication, registry/descriptors outlive Text.",
+    "actual_fonts": "Every nonnull descriptor already associated with SAME actual FontData/image owner and render domain; missing association throws, never fake null/default font.",
+    "shaders": "Actual raw+04 decrement/current terminal owner; clear live slot after callback; no extra retain, early clear or substituted semantic cached flag."
+  },
+  "limitations": [
+    "Native pooled-string ABI/allocation callbacks and SEH are not reconstructed; canonical successful std::string operations use stable null-free DWORD-length names.",
+    "Current host CRT comparison is consumed from existing native-header/registry implementations; original process locale state is not reproduced.",
+    "Actual font-resource association must already be populated; this packet does not load/convert semantic textures or create a new font registry.",
+    "No geometry rebuild/shader load/factory enable or executable wiring."
+  ],
+  "verification": {
+    "strict_compile": "passed MSVC Win32 C++17 /W4 /WX /EHsc /permissive- using isolated new-header overlay/current integration headers",
+    "exact_call_verifier": "passed integrator tools/verify_report_calls.py:12 direct rows,0failed;4 indirect atomic/terminal-owner rows manually traced",
+    "worker_call_verifier": "passed worker tools/verify_report_calls.py:12 direct rows,0failed",
+    "new_tests": 0,
+    "runtime": "No executable path reaches new module; no game/render/original ABI claim."
+  },
+  "tool_issues": [],
+  "descriptive_names_are_hypotheses": true
+}
