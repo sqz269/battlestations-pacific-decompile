@@ -128,3 +128,8 @@ is made. Whole-object evidence remains broader than executed paths, and
 linked comparisons exclude relocation operands rather than proving every
 resolved target. The audit and immutable bundle retain exact build, test,
 seed, trace, archive, COFF and linked-code evidence for primary relinking.
+
+
+## Primary integration
+
+Primary registered all 2 complete source entries and passed the strict Win32 build, both existing CTests and eight fresh seeds. All three packets use the same frozen main library `b1fa83e3959f4db6a0cdeb207054a57057bea9749cd48f8b5d3037b7f09e14c5`. Unchanged focused fixture matches23 words for original/source destroy and directreset; actual nodefree changescurrenthead and headfree changescount/head/publicationdecoy. Original128 ownedbytes execute with complete current range/free providers and literal writableF8D41C mapping, no fixturePE overlap. Ten exact archive members/204 wholeCOFF code sections14514bytes469relocations;85 linked sections8154bytes checked outside relocation operands, not every resolved target. Original nativeEH and sourceguard unwind static only; inherited pool/free exception boundaries remain. No factory/getter/scalar-delete/nativeSEH/originalcallerABI or game claim. Reviewed names and evidence are saved with prior comments retained; all affected exports were forcibly refreshed. Immutable primary evidence: `local/registry_destroy_primary/`.

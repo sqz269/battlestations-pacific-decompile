@@ -78,6 +78,12 @@ temporary float3. Possible changes to it must survive suspension; they never
 change the independent pen accumulator. This correction preserves caller
 storage without implementing or declaring completion of the missing child tail.
 
+Subsequent full AB98F0 inspection confirms that arguments5/6 are never read.
+Only argument2 supplies the position, including the late child-position x read.
+The stable allocation and caller alias evidence remain valid; the extra slots
+must not be modeled as output buffers or hidden child-state storage. See
+`GUI_TEXT_GLYPH_CHILD.md` and `GUI_TEXT_GLYPH_REFERENCE.md` for the callee evidence.
+
 Both mappings remain active at the suspension point. The caller must retain
 this frame and its enclosing content continuation; it must execute the real
 glyph-child tail before calling `resume_gui_text_single_line_after_child_00ab9fd0`.

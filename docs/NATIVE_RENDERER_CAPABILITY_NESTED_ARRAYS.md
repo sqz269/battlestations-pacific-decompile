@@ -133,3 +133,8 @@ providers, and10,637 whole runtime code bytes. Map parsing strips every leading
 C++ exception or hardware/SEH injection was added. There is no gather, gamma,
 device, gameplay or native caller ABI claim. The audit records exact pins;
 `local/capability_nested_arrays/REPLAY.md` gives the unchanged fixture replay order.
+
+
+## Primary integration
+
+Primary registered all 4 complete source entries and passed the strict Win32 build, both existing CTests and eight fresh seeds. All three packets use the same frozen main library `b1fa83e3959f4db6a0cdeb207054a57057bea9749cd48f8b5d3037b7f09e14c5`. Unchanged original/full-main-library nested grow/copy/shrink sequence matches both344-byte traces under real allocator-induced pointer/count mutation with11 lifetime-specific pointer roles. All593 original bytes executed; three owned345bytes plus complete primitive130 match after declaredCALLs. Outer248 is full reviewed source/EH translation, not literal identity; RET0 specialization explicit. Three exact objects/20wholeownedCOFF/127 mappedsections450relocations,60actual imports and10637 runtimecodebytes verified. Private4096-byte original page unchanged after18 checked operand bindings, including actual linked__CxxFrameHandler3. No failure/new-handler/exception-path/nativeSEH/privateframealias/originalcallerABI, gather/device/gamma or game claim. Reviewed names and evidence are saved with prior comments retained; all affected exports were forcibly refreshed. Immutable primary evidence: `local/capability_nested_arrays_primary/`.

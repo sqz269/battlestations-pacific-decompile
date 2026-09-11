@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_resource_registry_destroy2",
-  "status": "two_complete_actual_registry_entries_primary_source_reviewed_strict_win32_and_focused_comparison_passed",
+  "status": "complete_actual_registry_destroy_reset_main_archive_native_composition_and_strict_Win32_checked",
   "utc": "2026-09-11T22:11:22.931996+00:00",
   "base_commit": "edee61176e1c6d4148f51640cddc0604a171443c",
   "branch": "agent/native-resource-registry-destroy2",
@@ -1402,5 +1402,93 @@
   "Ghidra_mutated": false,
   "shared_metadata_or_CMake_mutated": false,
   "original_installation_mutated": false,
-  "immutable_handoff": "local/registry_destroy_handoff/manifest.json; external self-independent read-only manifest includes report and all proof artifacts"
+  "immutable_handoff": "local/registry_destroy_handoff/manifest.json; external self-independent read-only manifest includes report and all proof artifacts",
+  "primary_integration": {
+    "status": "complete_actual_registry_destroy_reset_main_archive_native_composition_and_strict_Win32_checked",
+    "main_library_sha256": "b1fa83e3959f4db6a0cdeb207054a57057bea9749cd48f8b5d3037b7f09e14c5",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\destroy_result_nested_build_frozen\\manifest.json",
+      "bytes": 27555,
+      "sha256": "7dd0ca10e24911bd21cdedb9d442a8ae48d4cf6df4b277343df8446592241730"
+    },
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "exact_archive_objects": 10,
+    "whole_COFF_code_sections": 204,
+    "whole_COFF_code_bytes": 14514,
+    "whole_COFF_relocations": 469,
+    "linked_sections": 85,
+    "linked_code_bytes": 8154,
+    "owned_bytes": 128,
+    "trace_words": 23,
+    "top_level_comparisons": 2,
+    "original_owned_execution": true,
+    "original_CRT_helper_execution": false,
+    "boundary": "Unchanged focused fixture matches23 words for original/source destroy and directreset; actual nodefree changescurrenthead and headfree changescount/head/publicationdecoy. Original128 ownedbytes execute with complete current range/free providers and literal writableF8D41C mapping, no fixturePE overlap. Ten exact archive members/204 wholeCOFF code sections14514bytes469relocations;85 linked sections8154bytes checked outside relocation operands, not every resolved target. Original nativeEH and sourceguard unwind static only; inherited pool/free exception boundaries remain. No factory/getter/scalar-delete/nativeSEH/originalcallerABI or game claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\registry_destroy_primary\\sealed.json",
+      "bytes": 20701,
+      "sha256": "d6cb8a7cf3e7dcb492c868124ae185f80b79d35c3dce08cc416a6433cf41c895"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_destroy_result_nested_annotations.json",
+    "bytes": 12952,
+    "sha256": "9edc1ebe9b583a5cfc911924b804c81aca233f65b2377e28dbd76fbd69e9d094"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b1b5f0",
+      "name": "BSP_ResourceRegistry_Destroy",
+      "cpp_symbol": "bsp::destroy_native_resource_registry_00b1b5f0",
+      "source": "src/native_resource_registry_destroy.cpp",
+      "native_end_exclusive": "00b1b65f",
+      "status": "complete_actual_registry_destroy_reset_main_archive_native_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_registry_destroy_audit.json",
+      "original_abi": "Complete original register/stack/current storage and FP obligations recorded in public header and audit.",
+      "source_abi": "New explicit source interface; see full public header and audit.",
+      "original_owned_body_executed": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b19760",
+      "name": "BSP_ResourceRegistry_ResetPublicationAndBaseProfile",
+      "cpp_symbol": "bsp::reset_native_resource_registry_00b19760",
+      "source": "src/native_resource_registry_destroy.cpp",
+      "native_end_exclusive": "00b19771",
+      "status": "complete_actual_registry_destroy_reset_main_archive_native_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_resource_registry_destroy_audit.json",
+      "original_abi": "Complete original register/stack/current storage and FP obligations recorded in public header and audit.",
+      "source_abi": "New explicit source interface; see full public header and audit.",
+      "original_owned_body_executed": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00b1b5f0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b1b5f0\\decompiled.c",
+      "bytes": 2971,
+      "sha256": "4d09f96d6bf796846759573a4e29f439739513a5e929a7610a6d0f7ffc70e4e7"
+    },
+    {
+      "address": "00b19760",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b19760\\decompiled.c",
+      "bytes": 1489,
+      "sha256": "1f0640cd0ee44ef0148c0cdca85df130a3065d76e6edba33927e408d03fa8b27"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RESOURCE_REGISTRY_DESTROY.md",
+    "bytes": 9116,
+    "sha256": "22254c272c28bcdc0154114a629a1de8cde77eb0ba57788d6d36ec6d99e5c392"
+  },
+  "closure_utc": "2026-09-11T22:34:40.137293+00:00"
 }

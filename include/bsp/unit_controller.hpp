@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #include <cstdint>
 
 #include "bsp/world_ocean.hpp"
@@ -245,5 +246,104 @@ struct UnitControllerStepResult {
 UnitControllerStepResult run_unit_controller_apply_forces_009329c0(UnitControllerHost& host,
                                                                    UnitControllerState& state,
                                                                    float dt);
+
+// ---------------------------------------------------------------------------
+// The controller's only reads from the unit's own frame update.
+// Addresses: 0092D730, 0092BE80, 00815AA0, 00815370. Evidence and the full
+// call-site list are in docs/UNIT_CONTROLLER.md.
+// ---------------------------------------------------------------------------
+
+// The third 12-byte row of the basis 00C32000 returns, the row 0092D730 dots the
+// body's linear velocity against. The dot itself is already reconstructed as
+// bsp::unit_forward_speed_0092d730 in bsp/unit_motion.hpp and is not repeated.
+inline constexpr int kUnitControllerBodyAxisRowOffset = 0x18; // 0092D757
+
+// 0092BE80 is already declared above as unit_controller_update_0092be80. Its
+// body 0092BE80..0092BE82 is one instruction, RET 4; step 6 of 008255B0 and
+// 00825F20 both reach it as a direct call, so no override can intercept it.
+
+// 0082583E..00825868. The unit update turns the signed body-axis speed into the
+// 0/1 scalar it hands to 00815AA0: 1.0f while the hull is making way or dead in
+// the water, 0.0f while it is making sternway. The compare is FLDZ/FCOMIP with
+// JBE, so an unordered result keeps 1.0f.
+inline constexpr float kUnitEffectGateAhead = 1.0f;  // 00D7A24C, loaded before the call
+inline constexpr float kUnitEffectGateAstern = 0.0f; // 00825858, XORPS
+float unit_effect_intensity_gate_0082583e(float body_axis_speed) noexcept;
+
+// -- 00815370, one emitter group -------------------------------------------
+//
+// void __thiscall(group, float value), RET 4, body 00815370..008153DC. Two
+// pointer vectors, stride 4. Every element gets vtable slot 14h called with the
+// value. The two loops are NOT symmetric: the first tests each pointer, the
+// second dereferences without a test, so a null in the second vector faults.
+inline constexpr int kEffectGroupOffsetPrimaryBegin = 0x0C;   // 00815375
+inline constexpr int kEffectGroupOffsetPrimaryCount = 0x10;   // 00815378
+inline constexpr int kEffectGroupOffsetSecondaryBegin = 0x18; // 008153AA
+inline constexpr int kEffectGroupOffsetSecondaryCount = 0x1C; // 008153AD
+inline constexpr int kEffectGroupSetScalarVtableSlot = 0x14;  // 0081539A, 008153C8
+
+struct EffectGroupSpans {
+    std::size_t primary_count{0};   // +10h
+    std::size_t secondary_count{0}; // +1Ch
+};
+
+struct EffectGroupHost {
+    virtual ~EffectGroupHost() = default;
+    // The null test the first loop makes and the second loop does not.
+    virtual bool primary_present(std::size_t index) = 0;
+    // element->vtable[14h](value).
+    virtual void primary_set_scalar(std::size_t index, float value) = 0;
+    virtual void secondary_set_scalar(std::size_t index, float value) = 0;
+};
+
+std::size_t set_effect_group_scalar_00815370(EffectGroupHost& host, const EffectGroupSpans& spans,
+                                             float value);
+
+// -- 00815AA0, the unit-wide publish ---------------------------------------
+//
+// void __thiscall(unit, float gate), RET 4, body 00815AA0..00815D15. Computes
+// the 006FF270 intensity expression inline, multiplies it by the caller's gate
+// and pushes the product into every emitter group the unit owns.
+//
+// The two water anchors are updated before the change latch at +9D0h, so they
+// are written on every frame; everything after the latch is written only when
+// the product actually changed.
+inline constexpr int kUnitOffEffectIntensityLatch = 0x9D0; // 00815B5C
+
+// The single-pointer group fields, in native call order, after the latch.
+inline constexpr int kUnitEffectGroupFields[] = {
+    0x9E8, 0x9EC, 0xA00, 0xA04, 0xA08, 0xA0C, // 00815B45..00815BF5
+    0xB44, 0xB48, 0xB4C, 0xB50,               // 00815C53..00815CB5
+};
+
+struct UnitEffectIntensityState {
+    float published_latch{0.0f}; // +9D0h
+    bool intensity_override{false};  // +2F0h
+    float intensity_scale{0.0f};     // +2F4h
+};
+
+struct UnitEffectIntensityHost {
+    virtual ~UnitEffectIntensityHost() = default;
+    // DAT_00F87152, the same global 006FF270 reads.
+    virtual bool global_intensity_override() = 0;
+    // unit+A18h, the part count of step 12 of 008255B0.
+    virtual std::size_t part_count() = 0;
+    // The null test every call site makes. `unit_offset` is the field the group
+    // pointer came from; `index` indexes the +A14h part vector and the +B54h
+    // attachment slots and is 0 for the single-pointer fields.
+    virtual bool group_present(int unit_offset, std::size_t index) = 0;
+    // 00815370 on that group, with the computed product.
+    virtual void group_set_scalar(int unit_offset, std::size_t index, float value) = 0;
+};
+
+struct UnitEffectIntensityResult {
+    float value{0.0f};             // intensity * gate
+    bool latch_changed{false};     // false means the routine returned at 00815D0D
+    std::size_t groups_updated{0}; // 00815370 calls made
+};
+
+UnitEffectIntensityResult publish_unit_effect_intensity_00815aa0(UnitEffectIntensityState& state,
+                                                                 UnitEffectIntensityHost& host,
+                                                                 float gate);
 
 } // namespace bsp

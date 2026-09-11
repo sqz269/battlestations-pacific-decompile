@@ -1,0 +1,148 @@
+{
+  "packet": "orch5_text_submission_batch",
+  "worker_commits": [
+    "93694d06",
+    "15714279",
+    "1fd08c3f",
+    "07d3e108",
+    "a31145f1",
+    "2444f105",
+    "416aab9f",
+    "8399c807"
+  ],
+  "integrator_implementation_commit": "7a0133f7",
+  "registered_sources": [
+    "src/gui_text_runtime_submit.cpp",
+    "src/gui_text_clip_refresh.cpp",
+    "src/gui_text_resource_names.cpp",
+    "src/gui_text_glyph_child.cpp",
+    "src/gui_text_factory.cpp",
+    "src/gui_text_properties.cpp",
+    "src/gui_text_glyph_reference.cpp",
+    "src/native_gui_text_model_clone.cpp"
+  ],
+  "verification": [
+    {
+      "report": "reports/gui_text_clip_refresh.json",
+      "numeric_rows": 15,
+      "direct_rows": 15,
+      "reported_indirect_targets": 0,
+      "symbolic_indirect_rows": 1,
+      "failed": 0
+    },
+    {
+      "report": "reports/gui_text_resource_names.json",
+      "numeric_rows": 12,
+      "direct_rows": 12,
+      "reported_indirect_targets": 0,
+      "symbolic_indirect_rows": 4,
+      "failed": 0
+    },
+    {
+      "report": "reports/gui_text_glyph_child.json",
+      "numeric_rows": 39,
+      "direct_rows": 35,
+      "reported_indirect_targets": 4,
+      "symbolic_indirect_rows": 0,
+      "failed": 0
+    },
+    {
+      "report": "reports/gui_widget_timed_entries.json",
+      "numeric_rows": 35,
+      "direct_rows": 35,
+      "reported_indirect_targets": 0,
+      "symbolic_indirect_rows": 2,
+      "failed": 0
+    },
+    {
+      "report": "reports/gui_text_factory.json",
+      "numeric_rows": 23,
+      "direct_rows": 20,
+      "reported_indirect_targets": 3,
+      "symbolic_indirect_rows": 8,
+      "failed": 0
+    },
+    {
+      "report": "reports/gui_text_runtime_submit.json",
+      "numeric_rows": 352,
+      "direct_rows": 349,
+      "reported_indirect_targets": 3,
+      "symbolic_indirect_rows": 0,
+      "failed": 0
+    },
+    {
+      "report": "reports/gui_text_properties.json",
+      "numeric_rows": 23,
+      "direct_rows": 23,
+      "reported_indirect_targets": 0,
+      "symbolic_indirect_rows": 20,
+      "failed": 0
+    },
+    {
+      "report": "reports/gui_text_glyph_reference.json",
+      "numeric_rows": 27,
+      "direct_rows": 23,
+      "reported_indirect_targets": 4,
+      "symbolic_indirect_rows": 0,
+      "failed": 0
+    },
+    {
+      "report": "reports/native_gui_text_model_clone.json",
+      "numeric_rows": 38,
+      "direct_rows": 34,
+      "reported_indirect_targets": 4,
+      "symbolic_indirect_rows": 23,
+      "failed": 0
+    }
+  ],
+  "numeric_rows": 564,
+  "failed": 0,
+  "build": "scripts/build.ps1 Release MSVC Win32 passed at c38fd702 after the final concurrent main merge; both existing tests passed",
+  "existing_tests": [
+    "reconstructed_math passed",
+    "native_math_differential passed"
+  ],
+  "pool_probe": "Existing ignored focused probe rebuilt against this worktree bsp_core: actual allocator list and critical section,65 slots,slab compaction with payload preservation and hidden-id repair,LIFO reuse,explicit destruction; passed",
+  "new_permanent_tests": 0,
+  "independent_reviews": {
+    "2444f105": "command worker found no actionable findings in documented domain",
+    "416aab9f": "menu worker found no concrete findings in requested scope",
+    "8399c807": "command worker found no actionable findings in reviewed clone fragments"
+  },
+  "ghidra": {
+    "annotated_entries": 36,
+    "annotation_archive": "reports/orch5_text_submission_annotations.json",
+    "raw_functions_defined": [
+      "00ad3a40..00ad3a5e",
+      "00cd71f0..00cd7205"
+    ],
+    "pool_call_gaps_repaired": 6,
+    "timed_reserve_call_gaps_repaired": 1,
+    "global_no_return_changed": false,
+    "affected_exports_refreshed": true,
+    "additional_annotation_archive": "reports/orch5_text_model_clone_annotations.json",
+    "additional_affected_exports": [
+      "00b752b0",
+      "00b6f150",
+      "00b742a0",
+      "00b73f50",
+      "00b7be40"
+    ]
+  },
+  "remaining": [
+    "Canonical Text factory and remaining type/current70 dispatch wiring",
+    "Optional glyph-child construction, complete Model/mesh clone, attachment and content continuation",
+    "Nonzero timed-entry allocation provenance and concrete timed-type update bindings",
+    "Native pooled strings, Lua callbacks, SEH and binary entry-point ABI",
+    "Execution of new Text rendering paths and gameplay validation"
+  ],
+  "integration": {
+    "commit": "c38fd702c771ec7ee830700db035be391cea65a1",
+    "additional_main_parent": "df43adba196a8b9569b75dee95dd2b9ddc65689c",
+    "post_merge_build": "scripts/build.ps1 passed after the integration workflow merged additional Lua sources during its fast-forward retry",
+    "all_36_batch_annotations_saved": true,
+    "other_owner_annotations_deferred": 9,
+    "snapshot_and_indexes_refreshed": true,
+    "game_validated": false
+  }
+}

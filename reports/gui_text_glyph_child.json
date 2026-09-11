@@ -1,0 +1,397 @@
+{
+  "packet": "orch5_text_glyph_child",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": "src/gui_text_glyph_child.cpp",
+  "header": "include/bsp/gui_text_glyph_child.hpp",
+  "documentation": "docs/GUI_TEXT_GLYPH_CHILD.md",
+  "reconstructed": [
+    {
+      "address": "00ab81c0",
+      "name": "construct_gui_text_code_unit_00ab81c0",
+      "coverage": "complete_ordinary_valid_actual_storage_new_cpp_interface",
+      "end": "00ab8242",
+      "final_instruction": "00ab8240",
+      "final_instruction_length": 3,
+      "abi": "ECX actual 8-byte UTF16 header {DWORD code-unit length,DWORD buffer}; stack one DWORD code unit; EAX same header; RET4",
+      "domain": "Fresh/unowned actual header; valid same actual string pool publication/lifetime domain; no native SEH, x86 callable ABI, allocation-failure or exceptional lazy-singleton parity",
+      "operations": [
+        "Zero actual header before singleton lookup/allocation4",
+        "After allocation reload current unsigned length; copy first UTF16 unit when >=1; native zero-byte memcpy otherwise omitted",
+        "Return current nonnull previous buffer using DWORD-wrapped current_length*2+2 via actual pool",
+        "Publish original allocation then length1; write terminator then low16 code unit through live published pointer"
+      ],
+      "sole_caller": "00ab9e51"
+    },
+    {
+      "address": "00ab98f0",
+      "name": "GuiTextGlyphChildCallFrame",
+      "coverage": "analyzed_only_exact_borrowed_continuation_contract",
+      "end": "00ab9fc2",
+      "final_instruction": "00ab9fc0",
+      "final_instruction_length": 3,
+      "abi": "ECX Text; ten DWORD stack arguments; RET28h",
+      "excluded_range": "00ab9d33-00ab9fad",
+      "pending_native_address": "00ab9d33",
+      "first_missing_call": "00ab9d38",
+      "implementation": "No optional child instructions execute. Existing mapped writer owns the preceding prefix; borrowed frame does not repeat it, unlock, create a child, advance builders or resume content.",
+      "lifetime": "Caller retains stable float3 allocation, original actual stream mappings and enclosing content pending state. No new owner/tree or automatically completing destructor."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00ab81d1",
+      "native": "00419cc0",
+      "function": "00ab81c0",
+      "operation": "Actual singleton getter; no stack arguments; RET"
+    },
+    {
+      "address": "00ab81dc",
+      "native": "00bd1120",
+      "function": "00ab81c0",
+      "operation": "Actual sized pool allocation (4,1 unused); RET8; same published actual owner"
+    },
+    {
+      "address": "00ab81f2",
+      "native": "00bf7680",
+      "function": "00ab81c0",
+      "operation": "Current unsigned length<1 implies zero-byte memcpy(allocation,currentdata,length*2); three cdecl args, ADD ESP,0Ch atAB81F7; omitted zero-byte effect only"
+    },
+    {
+      "address": "00ab8216",
+      "native": "00419cc0",
+      "function": "00ab81c0",
+      "operation": "Actual singleton getter; no args despite already pushed subsequent return-block arguments; RET"
+    },
+    {
+      "address": "00ab821d",
+      "native": "00bd1510",
+      "function": "00ab81c0",
+      "operation": "Actual current nonnull data return (captureddata,currentlength*2+2,1 unused); RET0Ch; DWORD arithmetic"
+    }
+  ],
+  "native_child_steps_unimplemented": [
+    {
+      "address": "00ab9d38",
+      "native": "00ab78a0",
+      "function": "00ab98f0",
+      "operation": "FIRST MISSING CALL: ECX raw Text poolF8BDF0; no stack args; RET"
+    },
+    {
+      "address": "00ab9d4f",
+      "native": "00ab9650",
+      "function": "00ab98f0",
+      "operation": "Nonnull allocation ECX native Text constructor; no args; RET/EAXchild. No safe null fallback exists in native tail."
+    },
+    {
+      "address": "00ab9d70",
+      "native": "005dad40",
+      "function": "00ab98f0",
+      "operation": "ECX parent+194 existing vector; &localchild pointer; RET4; append before clone/bind/ownership attach"
+    },
+    {
+      "address": "00ab9d87",
+      "native": "00b752b0",
+      "function": "00ab98f0",
+      "operation": "Current reference Text [parent+1B0] primary Model virtual10; ECX actual node;(0x26,0);RET8; resolved by D62DE8+10"
+    },
+    {
+      "address": "00ab9d8c",
+      "native": "00aa6720",
+      "function": "00ab98f0",
+      "operation": "ECX child;(actual clone);RET4; bind same actual node"
+    },
+    {
+      "address": "00ab9d93",
+      "native": "00ab8530",
+      "function": "00ab98f0",
+      "operation": "Child ensure actual draw sections AFTER clone binding; no args;RET"
+    },
+    {
+      "address": "00ab9da5",
+      "native": "00aa8530",
+      "function": "00ab98f0",
+      "operation": "Child current34(1); Text D5C6C8+34;RET4"
+    },
+    {
+      "address": "00ab9db2",
+      "native": "00aa6bc0",
+      "function": "00ab98f0",
+      "operation": "Child borrowed listener ([parent+1AC],0);RET8; stores+DC/+79, no retain; direct+78=1 atAB9DB7"
+    },
+    {
+      "address": "00ab9dc9",
+      "native": "00ab8c30",
+      "function": "00ab98f0",
+      "operation": "Child font setter (&CURRENT reference Text+1C8);RET4"
+    },
+    {
+      "address": "00ab9e05",
+      "native": "00ab6c30",
+      "function": "00ab98f0",
+      "operation": "Child shadow (1,0,float[D5C5C0],&localRGBA{0,0,0,float[D7A24C]});RET10h"
+    },
+    {
+      "address": "00ab9e13",
+      "native": "0041e870",
+      "function": "00ab98f0",
+      "operation": "Actual NativeString temporary atS+24 fromCEFD78 GuiFontBilinear.mshd;RET4"
+    },
+    {
+      "address": "00ab9e1f",
+      "native": "00ab8e70",
+      "function": "00ab98f0",
+      "operation": "Child shader name (&temporary);RET4; cached+1EC released/cleared even same name"
+    },
+    {
+      "address": "00ab9e39",
+      "native": "00419cc0",
+      "function": "00ab98f0",
+      "operation": "Pool singleton getter; no args;RET; preceding pushes belong followingBD1510"
+    },
+    {
+      "address": "00ab9e40",
+      "native": "00bd1510",
+      "function": "00ab98f0",
+      "operation": "Actual pool return(capturednamebuffer,length+1,1 unused);RET0Ch"
+    },
+    {
+      "address": "00ab9e51",
+      "native": "00ab81c0",
+      "function": "00ab98f0",
+      "operation": "New leaf, ECX actual temporary UTF16 headerS+24; original argument10 DWORD low16;RET4/EAXsameheader"
+    },
+    {
+      "address": "00ab9e61",
+      "native": "00aba8d0",
+      "function": "00ab98f0",
+      "operation": "Child full content update(actual UTF16 wrapper fromEAX);RET4; may recursively require child; cannot treat prefix result as completion"
+    },
+    {
+      "address": "00ab9e71",
+      "native": "00ab6b50",
+      "function": "00ab98f0",
+      "operation": "Child current50(&child+50);Text D5C6C8+50;RET4; only after full content"
+    },
+    {
+      "address": "00ab9e8a",
+      "native": "00419cc0",
+      "function": "00ab98f0",
+      "operation": "Pool singleton getter; no args;RET"
+    },
+    {
+      "address": "00ab9e91",
+      "native": "00bd1510",
+      "function": "00ab98f0",
+      "operation": "Actual pool return(capturedUTF16buffer,currentlength*2+2,1 unused);RET0Ch"
+    },
+    {
+      "address": "00ab9e9b",
+      "native": "00aaa5a0",
+      "function": "00ab98f0",
+      "operation": "ECX parent;(existing child,0 insertion);RET8; actual ownership attach, no current74 call"
+    },
+    {
+      "address": "00ab9ec0",
+      "native": "00a9e0b0",
+      "function": "00ab98f0",
+      "operation": "Child current30(&float2{float[CE3800],float[CE3800]});Text D5C6C8+30;RET4; pivot0.5 not scale"
+    },
+    {
+      "address": "00ab9ecd",
+      "native": "00aa6750",
+      "function": "00ab98f0",
+      "operation": "CURRENT reference Text ECX; resolved-position float3 outS+18;RET4"
+    },
+    {
+      "address": "00ab9fa9",
+      "native": "00aa8240",
+      "function": "00ab98f0",
+      "operation": "Child resolved position(computedfloat3);RET4; last call endsAB9FAD; remaining common epilogue finalRET28h atAB9FC0"
+    }
+  ],
+  "caller_steps": [
+    {
+      "address": "00aba1f8",
+      "native": "00ab98f0",
+      "function": "00ab9fd0",
+      "operation": "Single-line all ten stack args; slots2/5/6 same native float3 address after adjusting each LEA for preceding pushes;RET28h"
+    },
+    {
+      "address": "00aba730",
+      "native": "00ab98f0",
+      "function": "00aba270",
+      "operation": "Wrapped all ten stack args; slots2/5/6 same native float3 address;RET28h"
+    }
+  ],
+  "producer_steps": [
+    {
+      "address": "005318f2",
+      "native": "00531130",
+      "function": "00531380",
+      "operation": "ECX respective button Text; (substitution wrapper,screen+10 listener,same button Text reference);RET0Ch; caller additionally writes1B4/1B8/1BC"
+    },
+    {
+      "address": "0053196f",
+      "native": "00531130",
+      "function": "00531380",
+      "operation": "ECX respective button Text; (substitution wrapper,screen+10 listener,same button Text reference);RET0Ch; caller additionally writes1B4/1B8/1BC"
+    },
+    {
+      "address": "005319e0",
+      "native": "00531130",
+      "function": "00531380",
+      "operation": "ECX respective button Text; (substitution wrapper,screen+10 listener,same button Text reference);RET0Ch; caller additionally writes1B4/1B8/1BC"
+    },
+    {
+      "address": "00531a51",
+      "native": "00531130",
+      "function": "00531380",
+      "operation": "ECX respective button Text; (substitution wrapper,screen+10 listener,same button Text reference);RET0Ch; caller additionally writes1B4/1B8/1BC"
+    },
+    {
+      "address": "0054d13d",
+      "native": "00531130",
+      "function": "0054c050",
+      "operation": "ECX loop widget [ESI], ESI starts owner+48/count5;(wrapper,EBP listener,same widget reference);RET0Ch"
+    },
+    {
+      "address": "005d2b03",
+      "native": "00531130",
+      "function": "005d26d0",
+      "operation": "ECX widget fromscreen+20/+24/+28;(wrapper,ESI+C listener,same widget reference);RET0Ch"
+    },
+    {
+      "address": "005d2b50",
+      "native": "00531130",
+      "function": "005d26d0",
+      "operation": "ECX widget fromscreen+20/+24/+28;(wrapper,ESI+C listener,same widget reference);RET0Ch"
+    },
+    {
+      "address": "005d2b91",
+      "native": "00531130",
+      "function": "005d26d0",
+      "operation": "ECX widget fromscreen+20/+24/+28;(wrapper,ESI+C listener,same widget reference);RET0Ch"
+    },
+    {
+      "address": "0062168b",
+      "native": "00531130",
+      "function": "0061fbe0",
+      "operation": "ECX target TextESI last producedEAXat62160C;(wrapper,live[ESP+14] listener,same target reference);RET0Ch; fullESI-writefilter"
+    }
+  ],
+  "argument_frame": {
+    "entry_esp": "P",
+    "steady_esp": "S=P-58h",
+    "return_address": "S+58h",
+    "slots": [
+      {
+        "slot": 1,
+        "offset": "S+5C",
+        "value": "Borrowed FontGlyphData*",
+        "boundary": "Overwritten by prefix; final first_vertex+1"
+      },
+      {
+        "slot": 2,
+        "offset": "S+60",
+        "value": "Borrowed stable float3*",
+        "boundary": "Original pointer unchanged; initial x/y and late x read only"
+      },
+      {
+        "slot": 3,
+        "offset": "S+64",
+        "value": "Actual logical vertex stream",
+        "boundary": "Slot overwritten first_vertex+2; actual stream inEAX"
+      },
+      {
+        "slot": 4,
+        "offset": "S+68",
+        "value": "Actual uint16 index slice",
+        "boundary": "Original pointer unchanged"
+      },
+      {
+        "slot": 5,
+        "offset": "S+6C",
+        "value": "Known callers alias arg2",
+        "boundary": "Unused full body"
+      },
+      {
+        "slot": 6,
+        "offset": "S+70",
+        "value": "Known callers alias arg2",
+        "boundary": "Unused full body"
+      },
+      {
+        "slot": 7,
+        "offset": "S+74",
+        "value": "Quad index DWORD",
+        "boundary": "Used by prefix low16 quad*4 index construction"
+      },
+      {
+        "slot": 8,
+        "offset": "S+78",
+        "value": "Height DWORD low16",
+        "boundary": "Reused finally packedwhiteFFFFFFFF then child allocation/pointer"
+      },
+      {
+        "slot": 9,
+        "offset": "S+7C",
+        "value": "First vertex DWORD",
+        "boundary": "Original unchanged"
+      },
+      {
+        "slot": 10,
+        "offset": "S+80",
+        "value": "Code-unit DWORD low16",
+        "boundary": "Substitution membership and AB81C0"
+      }
+    ],
+    "registers_at_ab9d33": {
+      "EDI": "Original parent Text, restored fromS+10 on color branches",
+      "ESI": "First vertex fromAB9961, overwritten child in tail",
+      "EBP": "First vertex+3 fromAB9BA7, overwritten minus1 in tail",
+      "EBX": "quad_index*4+2 afterAB9C45, overwritten1 in tail",
+      "EAX": "Actual vertex stream; overwritten allocation return",
+      "ECX_EDX_XMM0": "Dead prefix temporaries"
+    },
+    "live_tail_inputs": "ParentEDI, originalarg2 float3 pointer, originalarg10 lowword. No prefix float3 output locals; tail overwrites them with string temporaries and reference resolved position."
+  },
+  "producer_evidence": {
+    "function": "00531130",
+    "abi": "ECX Text; (UTF16 substitution wrapper, borrowed listener, borrowed reference Text);RET0Ch",
+    "fields": "+1A4 uses existing owned UTF16 string; +1AC/+1B0 are borrowed no-retain pointers, not a second event registry",
+    "constructors": "AB9650 andABB2C0 clear1AC/1B0; copyABB2C0 copies byte1B4 without copying1B8/1BC",
+    "explicit_offset_producer": "00531380 sets1B4=1,1B8=0/960,1BC=float[CED318]",
+    "final_position_bits": {
+      "x_subtract_double": "3f847ae140000000",
+      "y_subtract_double": "3f8c432ca0000000",
+      "z_subtract_double": "4059000000000000",
+      "input_x_bias_double": "403a000000000000",
+      "input_x_divisor": "960"
+    },
+    "final_position_domain": "Reload current reference and current1B4/1B8/1BC; if nonoffset and reference length!=1, use late originalarg2.x with float spill before x subtraction; all reference resolved coordinates include pivot."
+  },
+  "corrections": [
+    {
+      "was": "Caller slots2/5/6 alias equality could imply additional output pointers or mutable child-tail outputs in slots5/6.",
+      "is": "Full AB98F0 body never reads original stack slots5/6. Actualarg2 is read-only initialx/y and laterx input. Caller stable allocation and original alias equality remain valid.",
+      "evidence": "Full485-instruction listing; steadyS=P-58h; no reads of originalS+6C/S+70 after push-delta normalization; AB991E..AB992B andAB9F5E/AB9F62 read actualarg2; finalRET28h."
+    }
+  ],
+  "remaining_dependencies": [
+    "Actual Text type/factory composition remains disabled; raw pool allocation alone cannot supply canonical owner/lifetime.",
+    "Must preserve native ctor with initially null primary then pointer append -> reference Model clone -> bind -> ensure, without fresh scene/+74 substitution.",
+    "Actual Model B752B0 clone includes model pool/construction,B6F150 node copy,source geometry virtual10 and reference effects; complete composition absent.",
+    "Full recursive child ABA8D0/current50 and exact attachment ownership transfer must complete before positioning.",
+    "Canonical nonnull reference identity and live1B8/1BC storage remain prerequisites; no duplicate state or arithmetic-only bypass."
+  ],
+  "verification": {
+    "strict_compile": "Passed: MSVC Win32 /std:c++17 /EHsc /W4 /WX /O2 /fp:strict; src/gui_text_glyph_child.cpp",
+    "report_calls": "Passed stronger live verifier: 39 numeric call rows, 0 failed; four indirect targets require separately checked vtable/body evidence",
+    "native_differential": false,
+    "runtime_game": false,
+    "tests_added": 0,
+    "limits": "No factory activation, Text-child execution, build registration, ABI drop-in, rendering or game-parity claim. Parent performs combined build."
+  }
+}

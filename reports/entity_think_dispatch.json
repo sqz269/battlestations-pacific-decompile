@@ -1,0 +1,391 @@
+{
+  "packet": "cc2_entity_think_dispatch",
+  "owner": "agent/cc2-entity-think-dispatch",
+  "doc": "docs/ENTITY_THINK_DISPATCH.md",
+  "ghidra": "read-only; no renames, comments, prototypes or saves",
+  "summary": "The fixed-step entity think pass 00929460: the 0Ch-byte list object at 00F89AB0 and its pending twin at 00F89ABC, the 0Ch-byte node that carries only the entity pointer, the timed and untimed due rules, and the invocation path 00929150 -> 009290A0 -> BSP_MissionLuaHost_CallNamedThreadSafe which calls the think function by name with the entity's self key at +178h and no arguments. The shared countdown 00F89A04 makes an untimed think a three-second heartbeat that runs in the same call as collectgarbage(). Corrects the earlier reading that the walk stopped after the first erase.",
+  "routines": [
+    {
+      "address": "00929460",
+      "name": "BSP_EntityThinkList_RunDue",
+      "abi": "__cdecl void(float), RET 4 at 009295a9",
+      "body": "00929460-009295ab",
+      "coverage": "complete"
+    },
+    {
+      "address": "00929150",
+      "name": "BSP_EntityThink_CallScriptFunction",
+      "abi": "__fastcall void(entity in ECX), RET at 009291cf",
+      "body": "00929150-009291cf",
+      "coverage": "complete; the sized-storage-pool pair 00419CC0/00BD1510 is described as a contract"
+    },
+    {
+      "address": "00928380",
+      "name": "BSP_EntityList_AppendCopiesOf",
+      "abi": "__thiscall void(list* this in ECX, const list* src), RET 4 at 009283db",
+      "body": "00928380-009283dd",
+      "coverage": "complete"
+    },
+    {
+      "address": "00928330",
+      "name": "BSP_EntityList_Clear",
+      "abi": "__thiscall void(list* this in ECX), RET at 00928375",
+      "body": "00928330-00928375",
+      "coverage": "complete including the listing gap 0092836c-00928373"
+    },
+    {
+      "address": "00928300",
+      "name": "BSP_EntityList_EraseByEntity",
+      "abi": "__thiscall int(list* this in ECX, entity), RET 4",
+      "body": "00928300-0092832d",
+      "coverage": "complete"
+    },
+    {
+      "address": "00928030",
+      "name": "BSP_EntityList_EraseNode",
+      "abi": "__thiscall node*(list* this in ECX, node*), RET 4",
+      "body": "00928030-00928075",
+      "coverage": "complete including both listing gaps"
+    },
+    {
+      "address": "0088a240",
+      "name": "BSP_EntityList_PushBackEntity",
+      "abi": "__thiscall void(list* this in ECX, entity), RET 4",
+      "body": "0088a240-0088a296",
+      "coverage": "complete"
+    },
+    {
+      "address": "00874d00",
+      "name": "BSP_Game_RunExtraFixedStep",
+      "abi": "__fastcall void(char mode in CL), RET",
+      "body": "00874d00-00874dd7",
+      "coverage": "partial: the think-list decision and the mode argument only; the nine other fan-out rows it re-runs (00874d27-00874dd7) are docs/FIXED_STEP_FANOUT.md's and were not re-read"
+    },
+    {
+      "address": "00898150",
+      "name": "BSP_LuaBinding_SetThinkDelay",
+      "abi": "__fastcall int(lua_state in ECX)",
+      "body": "00898150-0089831a",
+      "coverage": "partial: the clamp at 008982b0 and the two entity writes at 008982cb/008982d1 only; the argument marshalling and the result count were not read"
+    }
+  ],
+  "host_steps": [
+    {
+      "step": 1,
+      "address": "009294e5",
+      "native": "00929150",
+      "function": "00929460",
+      "name": "run_entity_think_00929150",
+      "this": "entity (ECX from 00929484 MOV ECX,[EAX+8])",
+      "args": "none",
+      "ret": "RET",
+      "gate": "timed branch: +1DCh set, +1E0h > 0 and +1E0h - step <= 0"
+    },
+    {
+      "step": 2,
+      "address": "009294f5",
+      "native": "00929150",
+      "function": "00929460",
+      "name": "run_entity_think_00929150",
+      "this": "entity",
+      "args": "none",
+      "ret": "RET",
+      "gate": "untimed branch: +1DCh clear or +1E0h <= 0, and 00F89A04 < 0"
+    },
+    {
+      "step": 3,
+      "address": "0092952c",
+      "native": "00bf65ac",
+      "function": "00929460",
+      "name": "free_think_node",
+      "this": "none",
+      "args": "node",
+      "ret": "__cdecl, ADD ESP,4 at 00929531",
+      "gate": "entity ineligible; count decremented at 00929524"
+    },
+    {
+      "step": 4,
+      "address": "00929568",
+      "native": "0109cefc+vtable0Ch",
+      "function": "00929460",
+      "name": "gc_gate_predicate",
+      "this": "[0109CEFC]",
+      "args": "none",
+      "ret": "byte in AL, tested at 0092956a",
+      "gate": "00F89A04 < 0; callee body not read, named by slot"
+    },
+    {
+      "step": 5,
+      "address": "00929588",
+      "native": "006b8ad0",
+      "function": "00929460",
+      "name": "lua_run_string",
+      "this": "*(*(00E188A8)+1A08h)+4h, the mission Lua machine",
+      "args": "\"collectgarbage()\" (00D19480), 0, 0, 2",
+      "ret": "RET 10h",
+      "gate": "gate predicate returned non-zero"
+    },
+    {
+      "step": 6,
+      "address": "00929597",
+      "native": "00928380",
+      "function": "00929460",
+      "name": "splice_pending_into_live",
+      "this": "00F89AB0",
+      "args": "00F89ABC",
+      "ret": "RET 4",
+      "gate": "always"
+    },
+    {
+      "step": 7,
+      "address": "009295a1",
+      "native": "00928330",
+      "function": "00929460",
+      "name": "clear_pending",
+      "this": "00F89ABC",
+      "args": "none",
+      "ret": "RET",
+      "gate": "always"
+    },
+    {
+      "step": 8,
+      "address": "0092917a",
+      "native": "0041e870",
+      "function": "00929150",
+      "name": "native_string_assign",
+      "this": "ESP+8 scratch NativeString",
+      "args": "entity+1D8h",
+      "ret": "RET 4",
+      "gate": "entity+1D8h non-null"
+    },
+    {
+      "step": 9,
+      "address": "00929194",
+      "native": "009290a0",
+      "function": "00929150",
+      "name": "entity_call_named",
+      "this": "entity",
+      "args": "&name, 0, 0, -1",
+      "ret": "RET 10h",
+      "gate": "entity+1D8h non-null; forwards CallNamedThreadSafe(entity+178h, name, 0, 0, -1)"
+    },
+    {
+      "step": 10,
+      "address": "009291b4",
+      "native": "00419cc0",
+      "function": "00929150",
+      "name": "pool_for_block",
+      "this": "none",
+      "args": "buffer, size+1, 1",
+      "ret": "leaves the three arguments",
+      "gate": "the scratch string allocated a buffer"
+    },
+    {
+      "step": 11,
+      "address": "009291bb",
+      "native": "00bd1510",
+      "function": "00929150",
+      "name": "pool_return_block",
+      "this": "00419CC0's result",
+      "args": "the same three",
+      "ret": "consumes the three: the only cleanup is ADD ESP,0x14 at 009291cc for the SEH frame and the scratch",
+      "gate": "same"
+    }
+  ],
+  "callers": [
+    {
+      "address": "00875e64",
+      "native": "00929460",
+      "function": "00875bb0",
+      "name": "fixed step fan-out row 8",
+      "args": "0.05f (00D0DE84)",
+      "gate": "always"
+    },
+    {
+      "address": "00874d22",
+      "native": "00929460",
+      "function": "00874d00",
+      "name": "extra fixed step",
+      "args": "0.05f",
+      "gate": "CL == 0 (00874d14 TEST BL,BL / JNZ)"
+    },
+    {
+      "address": "00944d93",
+      "native": "00874d00",
+      "function": "00944680",
+      "name": "BSP_LuaBinding_Spawn",
+      "args": "CL = 1 at 00944d8f",
+      "gate": "settle-only: the think list is skipped"
+    },
+    {
+      "address": "00945311",
+      "native": "00874d00",
+      "function": "00944fd0",
+      "name": "BSP_LuaBinding_GenerateObject",
+      "args": "CL = 1 at 0094530f",
+      "gate": "settle-only"
+    },
+    {
+      "address": "00896976",
+      "native": "00874d00",
+      "function": "00896750",
+      "name": "BSP_LuaBinding_LaunchAirBaseSlot",
+      "args": "CL = 1 at 00896969",
+      "gate": "settle-only"
+    },
+    {
+      "address": "0046b916",
+      "native": "00874d00",
+      "function": "0046b730",
+      "name": "full extra step",
+      "args": "CL = 0 at 0046b914",
+      "gate": "runs the think list; the containing routine was not read"
+    },
+    {
+      "address": "0046b92e",
+      "native": "00874d00",
+      "function": "0046b730",
+      "name": "full extra step",
+      "args": "CL = 0 at 0046b92c",
+      "gate": "same"
+    }
+  ],
+  "registration_and_removal": [
+    {
+      "address": "0088a34b",
+      "native": "0088a240",
+      "function": "0088a330",
+      "name": "BSP_Entity_SetThinkScriptName pushes the entity on the pending list",
+      "this": "00F89ABC",
+      "args": "entity",
+      "gate": "entity+1D8h was null and the new name is non-null (0088a333, 0088a341)"
+    },
+    {
+      "address": "00929aa7",
+      "native": "00928300",
+      "function": "00929800",
+      "name": "entity death removes it from the live list",
+      "this": "00F89AB0",
+      "args": "entity",
+      "gate": "always on that path"
+    },
+    {
+      "address": "00929ab2",
+      "native": "00928300",
+      "function": "00929800",
+      "name": "entity death removes it from the pending list",
+      "this": "00F89ABC",
+      "args": "entity",
+      "gate": "always on that path"
+    },
+    {
+      "address": "00928323",
+      "native": "00928030",
+      "function": "00928300",
+      "name": "erase the matched node",
+      "this": "the list",
+      "args": "node",
+      "gate": "a node with +8h == entity was found"
+    }
+  ],
+  "list_layout": {
+    "size": "0xC",
+    "instances": {
+      "00f89ab0": "live think list; count 00F89AB0, head 00F89AB4, tail 00F89AB8",
+      "00f89abc": "pending registrations; count 00F89ABC, head 00F89AC0, tail 00F89AC4"
+    },
+    "fields": [
+      {"offset": "+0h", "name": "count", "evidence": "00929524 SUB dword ptr [00F89AB0],1; 009283cd ADD dword ptr [ESI],1"},
+      {"offset": "+4h", "name": "head", "evidence": "00929466 MOV EAX,[00F89AB4]; 00928387 MOV EDI,[EAX+4] in the producer"},
+      {"offset": "+8h", "name": "tail", "evidence": "0092951e MOV [00F89AB8],ECX; 009283c7 MOV [ESI+8],EAX"}
+    ]
+  },
+  "node_layout": {
+    "size": "0xC",
+    "allocated_at": ["00928396 PUSH 0xC into 00BF681B", "0088a240 operator new(0xC)"],
+    "fields": [
+      {"offset": "+0h", "name": "prev", "evidence": "009294fc MOV ECX,[EAX] then 00929502 MOV [ECX+4],ESI"},
+      {"offset": "+4h", "name": "next", "evidence": "0092948b MOV ESI,[EAX+4]; cursor advance at 00929539"},
+      {"offset": "+8h", "name": "entity", "evidence": "00929484 MOV ECX,[EAX+8], the this of every think call"}
+    ],
+    "note": "The node carries no name, interval or due time; all three live on the entity, which is why 00928380 rebuilds a node from *(src+8h) alone (00928393)."
+  },
+  "entity_fields": [
+    {"offset": "+5ch", "requirement": "set", "evidence": "00929487 CMP byte [ECX+5Ch],0 / JZ to the erase path; written 1 at 00922f4b inside 00922f30, a routine BSP_SEntity_InitAll (00925f20) drives"},
+    {"offset": "+5dh", "requirement": "clear", "evidence": "00929490; written 1 at 009272ef (FUN_00927050) and 009274ce (BSP_EntityEventQueues_FlushPending). Meaning unread."},
+    {"offset": "+60h", "requirement": "clear", "evidence": "00929496; no producer read"},
+    {"offset": "+5eh", "requirement": "clear", "evidence": "0092949c; no producer read"},
+    {"offset": "+1d8h", "requirement": "non-null think function name", "evidence": "009294a2; strdup at 0088a373, freed and nulled at 0088a35b/0088a363"},
+    {"offset": "+1dch", "requirement": "delay armed flag", "evidence": "009294ab; set 1 at 008982d1, cleared at 0088a37f"},
+    {"offset": "+1e0h", "requirement": "remaining delay in seconds", "evidence": "009294b4 MOVSS XMM0,[ECX+1E0h]; written at 008982cb with max(argument, 0.5f)"},
+    {"offset": "+178h", "requirement": "Lua self key for the named call", "evidence": "009290a0, docs/MISSION_LUA_SELF_TABLE.md"}
+  ],
+  "constants": [
+    {"address": "00d7a2b0", "type": "double", "value": "3.0", "evidence": "00929557 FADD double ptr; bytes 00 00 00 00 00 00 08 40"},
+    {"address": "00ce3800", "type": "float", "value": "0.5", "evidence": "bytes 00 00 00 3f; the clamp in 00898150"},
+    {"address": "00d0de84", "type": "float", "value": "0.05", "evidence": "bytes cd cc 4c 3d; the step both callers push"},
+    {"address": "00d19480", "type": "text", "value": "collectgarbage()", "evidence": "bytes read at 00d19480"},
+    {"address": "00f89a04", "type": "float", "value": "runtime countdown", "evidence": "00929460 FLD / 00929477 FSTP and 0092954b/0092955d"}
+  ],
+  "invocation": {
+    "path": "00929460 -> 00929150 -> 009290A0 -> 00887E50 BSP_MissionLuaHost_CallNamedThreadSafe",
+    "arguments": "self_key = entity+178h, name = the NativeString built from entity+1D8h, args = 0, stack_first = 0, stack_last = -1",
+    "consequence": "args = 0 skips the argument-vector block and stack_first = 0 disables stack forwarding (docs/MISSION_NAMED_CALL_ARGS.md), so the think function receives no arguments; it is resolved by name on every call, not held as a Lua reference",
+    "image_spelled": "the scope label \"SGameEntity::Call\" is assigned once inside 009290A0 under bit 0 of 00F89AD0"
+  },
+  "corrections": [
+    {
+      "was": "docs/FIXED_STEP_FANOUT.md item 8: the first node that fails the eligibility test is unlinked, freed and the routine returns, so at most one dead entry is reaped per step",
+      "is": "the walk continues after the free and reaps every ineligible node in one call",
+      "evidence": "00929531 ADD ESP,4 falls into 00929534 TEST ESI,ESI / 00929539 MOV EAX,ESI / 0092953b JNZ 0x00929484; the earlier reading came from pseudocode truncated by the non-returning _free annotation"
+    },
+    {
+      "was": "same item: the refill and the collectgarbage() run described before the list walk",
+      "is": "only the subtraction precedes the walk; the refill and the collection follow it, so the untimed branch always tests the pre-refill value and every untimed think shares one expiry with the collection",
+      "evidence": "00929477 FSTP precedes the loop entry at 0092947d; 00929542 COMISS and 0092954b-00929588 follow 00929541 POP ESI"
+    },
+    {
+      "was": "same item: the list at 00F89AB4 with +0h prev, +4h next, +8h entity, tail 00F89AB8, count 00F89AB0",
+      "is": "00F89AB0 is the 0Ch-byte list object and 00F89AB4 is only its head field; the quoted offsets are the node's",
+      "evidence": "00929592 MOV ECX,0xF89AB0 is the this of 00928380, whose body reads [ECX], [ECX+4] and [ECX+8]"
+    },
+    {
+      "was": "00929460's ledger evidence: refilled from (float)00D7A2B0",
+      "is": "the refill constant is a double, 3.0",
+      "evidence": "00929557 FADD double ptr [00D7A2B0]"
+    },
+    {
+      "was": "include/bsp/lua_binding_core.hpp: kEntityThinkStateByteOffset (+1DCh) 'always cleared'",
+      "is": "cleared by its own producer 0088A330 and set by the delay binding 00898150 together with the float delay at +1E0h",
+      "evidence": "008982cb MOVSS store and 008982d1 MOV byte [ESI+1DCh],1"
+    }
+  ],
+  "no_ghidra_function": "none; every address in the doc's Addresses line is the start of a Ghidra function",
+  "listing_gaps": [
+    {
+      "function": "00928330",
+      "range": "0092836c-00928373",
+      "bytes": "83 c4 04 83 3e 00 75 c4",
+      "meaning": "ADD ESP,4 / CMP [ESI],0 / JNZ 0x00928338 - the pop is a loop, so the routine clears the whole list, not one node as its pseudocode shows"
+    },
+    {
+      "function": "00928030",
+      "range": "0092805f-00928068",
+      "bytes": "83 c4 04 8b c6 5e c2 04 00",
+      "meaning": "ADD ESP,4 / MOV EAX,ESI / POP ESI / RET 4; EAX is the erased node's successor"
+    },
+    {
+      "function": "00928030",
+      "range": "00928076-0092807d",
+      "bytes": "83 c4 04 8b c6 5e c2 04",
+      "meaning": "the same epilogue on the tail path, where ESI was zeroed at 0092806c"
+    }
+  ],
+  "run_time_evidence": "none; bsp_game.exe does not reach the in-mission fixed step (docs/GAME_EXECUTABLE.md), so checklist rule 6 does not apply to any claim here",
+  "open_questions": [
+    "+5Dh, +5Eh and +60h gate eligibility and no producer body was read",
+    "[0109CEFC]->vtable[+0Ch] is the GC gate; the singleton is shared with BSP_ResourceManager_LoadAndCache (00b807bc, 00b809c7) but the predicate was not read",
+    "a think function that destroys another entity reaches 00929800, which frees that entity's live node through 00928300; if that node is the successor captured at 0092948b the cursor dangles. No such call site was found and the erase path, unlike registration, is not deferred.",
+    "FUN_0046B730, the only caller that asks for a full extra step, was not read"
+  ]
+}

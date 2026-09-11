@@ -1,0 +1,4689 @@
+{
+  "schema": 1,
+  "created_utc": "2026-09-11T22:52:03.048177+00:00",
+  "status": "complete_reviewed_main_archive_source_and_bounded_native_proof",
+  "base_commit": "a6bf59522952dd9023ccb4f3e876e1015eabe62c",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_fallback",
+  "ownership": {
+    "packet": "native_crt_pow_fallback1",
+    "addresses": [
+      "00bfeb6d"
+    ],
+    "original_extent": [
+      "00bfeb6d",
+      "00bfed32"
+    ],
+    "files": [
+      "src/native_crt_pow_fallback.cpp",
+      "include/bsp/native_crt_pow_fallback.hpp",
+      "docs/NATIVE_CRT_POW_FALLBACK.md",
+      "reports/native_crt_pow_fallback_audit.json"
+    ]
+  },
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "original": [
+    {
+      "address": "00bfeb6d",
+      "length": 453,
+      "end_exclusive": "00bfed32",
+      "role": "complete_owned_fallback",
+      "bytes_hex": "8bc8509bd93c2466813c247f027405e82498000081e10000f07f8d54240881f90000f07f0f849d000000e8399800000f848e000000a90000f07f0f84f60000008a4c240f80e1800f8553010000d9f1e8cf97000080f9017502d9e0833d78dd0901000f85599800008d0d5858e100ba1d000000e994980000833d78dd0901000f853c9800008d0d5858e100ba1d000000e82e9700005ac38d542408e8c8970000f644241608750341eb33dec1b801000000ebc5f644240e0875f0dec1b807000000ebb533c9eb1633c925ffff0f000b44241075c38d542408e88b9700008b44240c8bd0250000f07f81e2ffff0f003d0000f07f75060b54240875b885c975bb83ec748bcc5183ec10dd1c24dd5c24089bdd7108e89fb1010083c41059dd6108dd0183c47485c00f8495970000b801000000e942ffffff8b44240c25ffff0f000b4424080f85f7feffffddd88b44241425ffffff7f0b442410743de8660000008a6c240fc0ed07f7442417800000007416db2dd066e10084cd7402d9e0b802000000e9f2feffffd9ee84cd0f8431970000d9e0e92a970000ddd8d9e8e921970000d9c1e81e000000d9e084c90f859cfeffffddd8ddd8db2d705ce100b801000000e9b3feffff",
+      "sha256": "ae19f7cb6cf7dd3a9b92571af200a59255b12bf08189887f696833197e4f8596",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 123,
+      "assembly": [
+        "00bfeb6d: mov ecx, eax",
+        "00bfeb6f: push eax",
+        "00bfeb70: wait ",
+        "00bfeb71: fnstcw word ptr [esp]",
+        "00bfeb74: cmp word ptr [esp], 0x27f",
+        "00bfeb7a: je 0xbfeb81",
+        "00bfeb7c: call 0xc083a5",
+        "00bfeb81: and ecx, 0x7ff00000",
+        "00bfeb87: lea edx, [esp + 8]",
+        "00bfeb8b: cmp ecx, 0x7ff00000",
+        "00bfeb91: je 0xbfec34",
+        "00bfeb97: call 0xc083d5",
+        "00bfeb9c: je 0xbfec30",
+        "00bfeba2: test eax, 0x7ff00000",
+        "00bfeba7: je 0xbfeca3",
+        "00bfebad: mov cl, byte ptr [esp + 0xf]",
+        "00bfebb1: and cl, 0x80",
+        "00bfebb4: jne 0xbfed0d",
+        "00bfebba: fyl2x ",
+        "00bfebbc: call 0xc08390",
+        "00bfebc1: cmp cl, 1",
+        "00bfebc4: jne 0xbfebc8",
+        "00bfebc6: fchs ",
+        "00bfebc8: cmp dword ptr [0x109dd78], 0",
+        "00bfebcf: jne 0xc0842e",
+        "00bfebd5: lea ecx, [0xe15858]",
+        "00bfebdb: mov edx, 0x1d",
+        "00bfebe0: jmp 0xc08479",
+        "00bfebe5: cmp dword ptr [0x109dd78], 0",
+        "00bfebec: jne 0xc0842e",
+        "00bfebf2: lea ecx, [0xe15858]",
+        "00bfebf8: mov edx, 0x1d",
+        "00bfebfd: call 0xc08330",
+        "00bfec02: pop edx",
+        "00bfec03: ret ",
+        "00bfec04: lea edx, [esp + 8]",
+        "00bfec08: call 0xc083d5",
+        "00bfec0d: test byte ptr [esp + 0x16], 8",
+        "00bfec12: jne 0xbfec17",
+        "00bfec14: inc ecx",
+        "00bfec15: jmp 0xbfec4a",
+        "00bfec17: faddp st(1)",
+        "00bfec19: mov eax, 1",
+        "00bfec1e: jmp 0xbfebe5",
+        "00bfec20: test byte ptr [esp + 0xe], 8",
+        "00bfec25: jne 0xbfec17",
+        "00bfec27: faddp st(1)",
+        "00bfec29: mov eax, 7",
+        "00bfec2e: jmp 0xbfebe5",
+        "00bfec30: xor ecx, ecx",
+        "00bfec32: jmp 0xbfec4a",
+        "00bfec34: xor ecx, ecx",
+        "00bfec36: and eax, 0xfffff",
+        "00bfec3b: or eax, dword ptr [esp + 0x10]",
+        "00bfec3f: jne 0xbfec04",
+        "00bfec41: lea edx, [esp + 8]",
+        "00bfec45: call 0xc083d5",
+        "00bfec4a: mov eax, dword ptr [esp + 0xc]",
+        "00bfec4e: mov edx, eax",
+        "00bfec50: and eax, 0x7ff00000",
+        "00bfec55: and edx, 0xfffff",
+        "00bfec5b: cmp eax, 0x7ff00000",
+        "00bfec60: jne 0xbfec68",
+        "00bfec62: or edx, dword ptr [esp + 8]",
+        "00bfec66: jne 0xbfec20",
+        "00bfec68: test ecx, ecx",
+        "00bfec6a: jne 0xbfec27",
+        "00bfec6c: sub esp, 0x74",
+        "00bfec6f: mov ecx, esp",
+        "00bfec71: push ecx",
+        "00bfec72: sub esp, 0x10",
+        "00bfec75: fstp qword ptr [esp]",
+        "00bfec78: fstp qword ptr [esp + 8]",
+        "00bfec7c: wait ",
+        "00bfec7d: fnsave dword ptr [ecx + 8]",
+        "00bfec80: call 0xc19e24",
+        "00bfec85: add esp, 0x10",
+        "00bfec88: pop ecx",
+        "00bfec89: frstor dword ptr [ecx + 8]",
+        "00bfec8c: fld qword ptr [ecx]",
+        "00bfec8e: add esp, 0x74",
+        "00bfec91: test eax, eax",
+        "00bfec93: je 0xc0842e",
+        "00bfec99: mov eax, 1",
+        "00bfec9e: jmp 0xbfebe5",
+        "00bfeca3: mov eax, dword ptr [esp + 0xc]",
+        "00bfeca7: and eax, 0xfffff",
+        "00bfecac: or eax, dword ptr [esp + 8]",
+        "00bfecb0: jne 0xbfebad",
+        "00bfecb6: fstp st(0)",
+        "00bfecb8: mov eax, dword ptr [esp + 0x14]",
+        "00bfecbc: and eax, 0x7fffffff",
+        "00bfecc1: or eax, dword ptr [esp + 0x10]",
+        "00bfecc5: je 0xbfed04",
+        "00bfecc7: call 0xbfed32",
+        "00bfeccc: mov ch, byte ptr [esp + 0xf]",
+        "00bfecd0: shr ch, 7",
+        "00bfecd3: test dword ptr [esp + 0x17], 0x80",
+        "00bfecdb: je 0xbfecf3",
+        "00bfecdd: fld xword ptr [0xe166d0]",
+        "00bfece3: test ch, cl",
+        "00bfece5: je 0xbfece9",
+        "00bfece7: fchs ",
+        "00bfece9: mov eax, 2",
+        "00bfecee: jmp 0xbfebe5",
+        "00bfecf3: fldz ",
+        "00bfecf5: test ch, cl",
+        "00bfecf7: je 0xc0842e",
+        "00bfecfd: fchs ",
+        "00bfecff: jmp 0xc0842e",
+        "00bfed04: fstp st(0)",
+        "00bfed06: fld1 ",
+        "00bfed08: jmp 0xc0842e",
+        "00bfed0d: fld st(1)",
+        "00bfed0f: call 0xbfed32",
+        "00bfed14: fchs ",
+        "00bfed16: test cl, cl",
+        "00bfed18: jne 0xbfebba",
+        "00bfed1e: fstp st(0)",
+        "00bfed20: fstp st(0)",
+        "00bfed22: fld xword ptr [0xe15c70]",
+        "00bfed28: mov eax, 1",
+        "00bfed2d: jmp 0xbfebe5"
+      ]
+    },
+    {
+      "address": "00bfeb10",
+      "length": 84,
+      "end_exclusive": "00bfeb64",
+      "role": "bounded_public_caller_shape_only_SSE2_not_implemented",
+      "bytes_hex": "833da0ee090100743283ec080fae5c24048b44240425801f00003d801f0000750fd93c24668b04246683e07f6683f87f8d6424087505e915a7010083ec14d9c9dd1c24dd5424088b44240ce80d00000083c414c3",
+      "sha256": "b3beb57cc454f176724b8b08a07f64930e11c1f4cc2178a697a31fa3aeb67b1c",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 23,
+      "assembly": [
+        "00bfeb10: cmp dword ptr [0x109eea0], 0",
+        "00bfeb17: je 0xbfeb4b",
+        "00bfeb19: sub esp, 8",
+        "00bfeb1c: stmxcsr dword ptr [esp + 4]",
+        "00bfeb21: mov eax, dword ptr [esp + 4]",
+        "00bfeb25: and eax, 0x1f80",
+        "00bfeb2a: cmp eax, 0x1f80",
+        "00bfeb2f: jne 0xbfeb40",
+        "00bfeb31: fnstcw word ptr [esp]",
+        "00bfeb34: mov ax, word ptr [esp]",
+        "00bfeb38: and ax, 0x7f",
+        "00bfeb3c: cmp ax, 0x7f",
+        "00bfeb40: lea esp, [esp + 8]",
+        "00bfeb44: jne 0xbfeb4b",
+        "00bfeb46: jmp 0xc19260",
+        "00bfeb4b: sub esp, 0x14",
+        "00bfeb4e: fxch st(1)",
+        "00bfeb50: fstp qword ptr [esp]",
+        "00bfeb53: fst qword ptr [esp + 8]",
+        "00bfeb57: mov eax, dword ptr [esp + 0xc]",
+        "00bfeb5b: call 0xbfeb6d",
+        "00bfeb60: add esp, 0x14",
+        "00bfeb63: ret "
+      ]
+    },
+    {
+      "address": "00c083a5",
+      "length": 23,
+      "end_exclusive": "00c083bc",
+      "role": "complete_control_provider",
+      "bytes_hex": "8b54240481e20003000083ca7f6689542406d96c2406c3",
+      "sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 6,
+      "assembly": [
+        "00c083a5: mov edx, dword ptr [esp + 4]",
+        "00c083a9: and edx, 0x300",
+        "00c083af: or edx, 0x7f",
+        "00c083b2: mov word ptr [esp + 6], dx",
+        "00c083b7: fldcw word ptr [esp + 6]",
+        "00c083bb: ret "
+      ]
+    },
+    {
+      "address": "00c083d5",
+      "length": 67,
+      "end_exclusive": "00c08418",
+      "role": "complete_double_load_provider",
+      "bytes_hex": "8b4204250000f07f3d0000f07f7403dd02c38b420483ec0a0d0000ff7f894424068b42048b0a0fa4c80bc1e10b89442404890c24db2c2483c40aa9000000008b4204c3",
+      "sha256": "49756c88592603c59a91d5ecf8589dab665fc8a2ad0f138e5d6e3c3b05c21169",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 21,
+      "assembly": [
+        "00c083d5: mov eax, dword ptr [edx + 4]",
+        "00c083d8: and eax, 0x7ff00000",
+        "00c083dd: cmp eax, 0x7ff00000",
+        "00c083e2: je 0xc083e7",
+        "00c083e4: fld qword ptr [edx]",
+        "00c083e6: ret ",
+        "00c083e7: mov eax, dword ptr [edx + 4]",
+        "00c083ea: sub esp, 0xa",
+        "00c083ed: or eax, 0x7fff0000",
+        "00c083f2: mov dword ptr [esp + 6], eax",
+        "00c083f6: mov eax, dword ptr [edx + 4]",
+        "00c083f9: mov ecx, dword ptr [edx]",
+        "00c083fb: shld eax, ecx, 0xb",
+        "00c083ff: shl ecx, 0xb",
+        "00c08402: mov dword ptr [esp + 4], eax",
+        "00c08406: mov dword ptr [esp], ecx",
+        "00c08409: fld xword ptr [esp]",
+        "00c0840c: add esp, 0xa",
+        "00c0840f: test eax, 0",
+        "00c08414: mov eax, dword ptr [edx + 4]",
+        "00c08417: ret "
+      ]
+    },
+    {
+      "address": "00c08390",
+      "length": 21,
+      "end_exclusive": "00c083a5",
+      "role": "complete_exp2_provider",
+      "bytes_hex": "d9c0d9fcdce1d9c9d9e0d9f0d9e8dec1d9fdddd9c3",
+      "sha256": "2dce0bc1ec224128643a743b9a3cab6795651b19324ae7b387a872b7d615ab3b",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 11,
+      "assembly": [
+        "00c08390: fld st(0)",
+        "00c08392: frndint ",
+        "00c08394: fsubr st(1), st(0)",
+        "00c08396: fxch st(1)",
+        "00c08398: fchs ",
+        "00c0839a: f2xm1 ",
+        "00c0839c: fld1 ",
+        "00c0839e: faddp st(1)",
+        "00c083a0: fscale ",
+        "00c083a2: fstp st(1)",
+        "00c083a4: ret "
+      ]
+    },
+    {
+      "address": "00c0842e",
+      "length": 13,
+      "end_exclusive": "00c0843b",
+      "role": "complete_restore_tail_provider",
+      "bytes_hex": "66813c247f027403d92c245ac3",
+      "sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 5,
+      "assembly": [
+        "00c0842e: cmp word ptr [esp], 0x27f",
+        "00c08434: je 0xc08439",
+        "00c08436: fldcw word ptr [esp]",
+        "00c08439: pop edx",
+        "00c0843a: ret "
+      ]
+    },
+    {
+      "address": "00c08479",
+      "length": 163,
+      "end_exclusive": "00c0851c",
+      "role": "complete_result_status_provider",
+      "bytes_hex": "83ec08dd14248b44240483c408250000f07f743d3d0000f07f745f668b0424663d7f02742a6683e02075219bdfe06683e0207418b80800000083fa1d7407e88bfeffff5ac3e86dfeffff5ac3d92c245ac3dd059ca6d600d9c9d9fdddd9d9c0d9e1dc1d8ca6d6009bdfe09eb80400000073c7dc0daca6d600ebbfdd0594a6d600d9c9d9fdddd9d9c0d9e1dc1d84a6d6009bdfe09eb803000000769edc0da4a6d600eb96",
+      "sha256": "78a64b0bd08a6d69aa9cc724b569fdb3da3929e6dd8e6886a87e2d40326a3ead",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 57,
+      "assembly": [
+        "00c08479: sub esp, 8",
+        "00c0847c: fst qword ptr [esp]",
+        "00c0847f: mov eax, dword ptr [esp + 4]",
+        "00c08483: add esp, 8",
+        "00c08486: and eax, 0x7ff00000",
+        "00c0848b: je 0xc084ca",
+        "00c0848d: cmp eax, 0x7ff00000",
+        "00c08492: je 0xc084f3",
+        "00c08494: mov ax, word ptr [esp]",
+        "00c08498: cmp ax, 0x27f",
+        "00c0849c: je 0xc084c8",
+        "00c0849e: and ax, 0x20",
+        "00c084a2: jne 0xc084c5",
+        "00c084a4: wait ",
+        "00c084a5: fnstsw ax",
+        "00c084a7: and ax, 0x20",
+        "00c084ab: je 0xc084c5",
+        "00c084ad: mov eax, 8",
+        "00c084b2: cmp edx, 0x1d",
+        "00c084b5: je 0xc084be",
+        "00c084b7: call 0xc08347",
+        "00c084bc: pop edx",
+        "00c084bd: ret ",
+        "00c084be: call 0xc08330",
+        "00c084c3: pop edx",
+        "00c084c4: ret ",
+        "00c084c5: fldcw word ptr [esp]",
+        "00c084c8: pop edx",
+        "00c084c9: ret ",
+        "00c084ca: fld qword ptr [0xd6a69c]",
+        "00c084d0: fxch st(1)",
+        "00c084d2: fscale ",
+        "00c084d4: fstp st(1)",
+        "00c084d6: fld st(0)",
+        "00c084d8: fabs ",
+        "00c084da: fcomp qword ptr [0xd6a68c]",
+        "00c084e0: wait ",
+        "00c084e1: fnstsw ax",
+        "00c084e3: sahf ",
+        "00c084e4: mov eax, 4",
+        "00c084e9: jae 0xc084b2",
+        "00c084eb: fmul qword ptr [0xd6a6ac]",
+        "00c084f1: jmp 0xc084b2",
+        "00c084f3: fld qword ptr [0xd6a694]",
+        "00c084f9: fxch st(1)",
+        "00c084fb: fscale ",
+        "00c084fd: fstp st(1)",
+        "00c084ff: fld st(0)",
+        "00c08501: fabs ",
+        "00c08503: fcomp qword ptr [0xd6a684]",
+        "00c08509: wait ",
+        "00c0850a: fnstsw ax",
+        "00c0850c: sahf ",
+        "00c0850d: mov eax, 3",
+        "00c08512: jbe 0xc084b2",
+        "00c08514: fmul qword ptr [0xd6a6a4]",
+        "00c0851a: jmp 0xc084b2"
+      ]
+    },
+    {
+      "address": "00c08330",
+      "length": 83,
+      "end_exclusive": "00c08383",
+      "role": "complete_shared_error_provider",
+      "bytes_hex": "558bec83c4e08945e08b45188945f08b451c8945f4eb09558bec83c4e08945e0dd5df8894de48b45108b4d148945e8894dec8d45088d4de0505152e819f1010083c40cdd45f866817d087f027403d96d08c9c3",
+      "sha256": "8d9caad7489b4d2ffdace4b370d50b29976ca686df0316daff644710ebaa1cd3",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 32,
+      "assembly": [
+        "00c08330: push ebp",
+        "00c08331: mov ebp, esp",
+        "00c08333: add esp, -0x20",
+        "00c08336: mov dword ptr [ebp - 0x20], eax",
+        "00c08339: mov eax, dword ptr [ebp + 0x18]",
+        "00c0833c: mov dword ptr [ebp - 0x10], eax",
+        "00c0833f: mov eax, dword ptr [ebp + 0x1c]",
+        "00c08342: mov dword ptr [ebp - 0xc], eax",
+        "00c08345: jmp 0xc08350",
+        "00c08347: push ebp",
+        "00c08348: mov ebp, esp",
+        "00c0834a: add esp, -0x20",
+        "00c0834d: mov dword ptr [ebp - 0x20], eax",
+        "00c08350: fstp qword ptr [ebp - 8]",
+        "00c08353: mov dword ptr [ebp - 0x1c], ecx",
+        "00c08356: mov eax, dword ptr [ebp + 0x10]",
+        "00c08359: mov ecx, dword ptr [ebp + 0x14]",
+        "00c0835c: mov dword ptr [ebp - 0x18], eax",
+        "00c0835f: mov dword ptr [ebp - 0x14], ecx",
+        "00c08362: lea eax, [ebp + 8]",
+        "00c08365: lea ecx, [ebp - 0x20]",
+        "00c08368: push eax",
+        "00c08369: push ecx",
+        "00c0836a: push edx",
+        "00c0836b: call 0xc27489",
+        "00c08370: add esp, 0xc",
+        "00c08373: fld qword ptr [ebp - 8]",
+        "00c08376: cmp word ptr [ebp + 8], 0x27f",
+        "00c0837c: je 0xc08381",
+        "00c0837e: fldcw word ptr [ebp + 8]",
+        "00c08381: leave ",
+        "00c08382: ret "
+      ]
+    },
+    {
+      "address": "00c19e24",
+      "length": 318,
+      "end_exclusive": "00c19f62",
+      "role": "complete_special_provider",
+      "bytes_hex": "558becd9ee56dc550833d233f6dfe0dd4508f6c4417502d9e0b80000f07f394514b90000f0ff753d395510757fd9e8d8d1dfe0f6c4057a11dddaddd9ddd8dd05a065e100e9e1000000d8d1dfe0ddd9f6c4418b45187507ddd8e9cf000000ddd9e9c8000000394d147542395510753dd9e8d8d1dfe0f6c4057a09ddd8ddd8e9a7000000dddaded9dfe0f6c4058b45187a0bdd05a065e100e991000000dd05a865e10033f6dd1846e98d00000039450cddd87526395508757fdc5510dfe0f6c4050f8b76ffffffdc5510dfe0f6c4418b4518745addd8d9e8eb54394d0cddd875593955087554dd45105151dd1c24e8aafeffffd9ee59dc5510598bc8dfe0f6c4057a1183f901ddd8dd05a065e100751bd9e0eb17dc5510dfe0f6c441751483f9017508ddd8dd05c065e1008b4518dd18eb08ddd8d9e8ebf3ddd88bc65e5dc3",
+      "sha256": "bb908989912e1763ace71e1577482c3166c8854f6ef32640ba7ff6e4c0978e70",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 123,
+      "assembly": [
+        "00c19e24: push ebp",
+        "00c19e25: mov ebp, esp",
+        "00c19e27: fldz ",
+        "00c19e29: push esi",
+        "00c19e2a: fcom qword ptr [ebp + 8]",
+        "00c19e2d: xor edx, edx",
+        "00c19e2f: xor esi, esi",
+        "00c19e31: fnstsw ax",
+        "00c19e33: fld qword ptr [ebp + 8]",
+        "00c19e36: test ah, 0x41",
+        "00c19e39: jne 0xc19e3d",
+        "00c19e3b: fchs ",
+        "00c19e3d: mov eax, 0x7ff00000",
+        "00c19e42: cmp dword ptr [ebp + 0x14], eax",
+        "00c19e45: mov ecx, 0xfff00000",
+        "00c19e4a: jne 0xc19e89",
+        "00c19e4c: cmp dword ptr [ebp + 0x10], edx",
+        "00c19e4f: jne 0xc19ed0",
+        "00c19e51: fld1 ",
+        "00c19e53: fcom st(1)",
+        "00c19e55: fnstsw ax",
+        "00c19e57: test ah, 5",
+        "00c19e5a: jp 0xc19e6d",
+        "00c19e5c: fstp st(2)",
+        "00c19e5e: fstp st(1)",
+        "00c19e60: fstp st(0)",
+        "00c19e62: fld qword ptr [0xe165a0]",
+        "00c19e68: jmp 0xc19f4e",
+        "00c19e6d: fcom st(1)",
+        "00c19e6f: fnstsw ax",
+        "00c19e71: fstp st(1)",
+        "00c19e73: test ah, 0x41",
+        "00c19e76: mov eax, dword ptr [ebp + 0x18]",
+        "00c19e79: jne 0xc19e82",
+        "00c19e7b: fstp st(0)",
+        "00c19e7d: jmp 0xc19f51",
+        "00c19e82: fstp st(1)",
+        "00c19e84: jmp 0xc19f51",
+        "00c19e89: cmp dword ptr [ebp + 0x14], ecx",
+        "00c19e8c: jne 0xc19ed0",
+        "00c19e8e: cmp dword ptr [ebp + 0x10], edx",
+        "00c19e91: jne 0xc19ed0",
+        "00c19e93: fld1 ",
+        "00c19e95: fcom st(1)",
+        "00c19e97: fnstsw ax",
+        "00c19e99: test ah, 5",
+        "00c19e9c: jp 0xc19ea7",
+        "00c19e9e: fstp st(0)",
+        "00c19ea0: fstp st(0)",
+        "00c19ea2: jmp 0xc19f4e",
+        "00c19ea7: fstp st(2)",
+        "00c19ea9: fcompp ",
+        "00c19eab: fnstsw ax",
+        "00c19ead: test ah, 5",
+        "00c19eb0: mov eax, dword ptr [ebp + 0x18]",
+        "00c19eb3: jp 0xc19ec0",
+        "00c19eb5: fld qword ptr [0xe165a0]",
+        "00c19ebb: jmp 0xc19f51",
+        "00c19ec0: fld qword ptr [0xe165a8]",
+        "00c19ec6: xor esi, esi",
+        "00c19ec8: fstp qword ptr [eax]",
+        "00c19eca: inc esi",
+        "00c19ecb: jmp 0xc19f5d",
+        "00c19ed0: cmp dword ptr [ebp + 0xc], eax",
+        "00c19ed3: fstp st(0)",
+        "00c19ed5: jne 0xc19efd",
+        "00c19ed7: cmp dword ptr [ebp + 8], edx",
+        "00c19eda: jne 0xc19f5b",
+        "00c19edc: fcom qword ptr [ebp + 0x10]",
+        "00c19edf: fnstsw ax",
+        "00c19ee1: test ah, 5",
+        "00c19ee4: jnp 0xc19e60",
+        "00c19eea: fcom qword ptr [ebp + 0x10]",
+        "00c19eed: fnstsw ax",
+        "00c19eef: test ah, 0x41",
+        "00c19ef2: mov eax, dword ptr [ebp + 0x18]",
+        "00c19ef5: je 0xc19f51",
+        "00c19ef7: fstp st(0)",
+        "00c19ef9: fld1 ",
+        "00c19efb: jmp 0xc19f51",
+        "00c19efd: cmp dword ptr [ebp + 0xc], ecx",
+        "00c19f00: fstp st(0)",
+        "00c19f02: jne 0xc19f5d",
+        "00c19f04: cmp dword ptr [ebp + 8], edx",
+        "00c19f07: jne 0xc19f5d",
+        "00c19f09: fld qword ptr [ebp + 0x10]",
+        "00c19f0c: push ecx",
+        "00c19f0d: push ecx",
+        "00c19f0e: fstp qword ptr [esp]",
+        "00c19f11: call 0xc19dc0",
+        "00c19f16: fldz ",
+        "00c19f18: pop ecx",
+        "00c19f19: fcom qword ptr [ebp + 0x10]",
+        "00c19f1c: pop ecx",
+        "00c19f1d: mov ecx, eax",
+        "00c19f1f: fnstsw ax",
+        "00c19f21: test ah, 5",
+        "00c19f24: jp 0xc19f37",
+        "00c19f26: cmp ecx, 1",
+        "00c19f29: fstp st(0)",
+        "00c19f2b: fld qword ptr [0xe165a0]",
+        "00c19f31: jne 0xc19f4e",
+        "00c19f33: fchs ",
+        "00c19f35: jmp 0xc19f4e",
+        "00c19f37: fcom qword ptr [ebp + 0x10]",
+        "00c19f3a: fnstsw ax",
+        "00c19f3c: test ah, 0x41",
+        "00c19f3f: jne 0xc19f55",
+        "00c19f41: cmp ecx, 1",
+        "00c19f44: jne 0xc19f4e",
+        "00c19f46: fstp st(0)",
+        "00c19f48: fld qword ptr [0xe165c0]",
+        "00c19f4e: mov eax, dword ptr [ebp + 0x18]",
+        "00c19f51: fstp qword ptr [eax]",
+        "00c19f53: jmp 0xc19f5d",
+        "00c19f55: fstp st(0)",
+        "00c19f57: fld1 ",
+        "00c19f59: jmp 0xc19f4e",
+        "00c19f5b: fstp st(0)",
+        "00c19f5d: mov eax, esi",
+        "00c19f5f: pop esi",
+        "00c19f60: pop ebp",
+        "00c19f61: ret "
+      ]
+    },
+    {
+      "address": "00bfed32",
+      "length": 40,
+      "end_exclusive": "00bfed5a",
+      "role": "complete_parity_provider",
+      "bytes_hex": "d9c0d9fcd8d9b1009bdfe09e7517dc0d5058e100fec1d9c0d9fcded99bdfe09e7502fec1c3ddd8c3",
+      "sha256": "4992e4a823cb56e02edb6481710eef718febe9d00b78c20e6070af69bcfc55fd",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 21,
+      "assembly": [
+        "00bfed32: fld st(0)",
+        "00bfed34: frndint ",
+        "00bfed36: fcomp st(1)",
+        "00bfed38: mov cl, 0",
+        "00bfed3a: wait ",
+        "00bfed3b: fnstsw ax",
+        "00bfed3d: sahf ",
+        "00bfed3e: jne 0xbfed57",
+        "00bfed40: fmul qword ptr [0xe15850]",
+        "00bfed46: inc cl",
+        "00bfed48: fld st(0)",
+        "00bfed4a: frndint ",
+        "00bfed4c: fcompp ",
+        "00bfed4e: wait ",
+        "00bfed4f: fnstsw ax",
+        "00bfed51: sahf ",
+        "00bfed52: jne 0xbfed56",
+        "00bfed54: inc cl",
+        "00bfed56: ret ",
+        "00bfed57: fstp st(0)",
+        "00bfed59: ret "
+      ]
+    },
+    {
+      "address": "00c19dc0",
+      "length": 100,
+      "end_exclusive": "00c19e24",
+      "role": "complete_integer_type_provider",
+      "bytes_hex": "558bec5151dd45085151dd1c24e85d07feffa89059597548dd45085151dd1c24e863e70000dc5d085959dfe0f6c4447a2fdd450851dc0d80a2d70051dd5df8dd45f8dd1c24e83ee70000dc5df85959dfe0f6c4447a056a0258c9c333c040c9c333c0c9c3",
+      "sha256": "5d1cd56beacef97036b0e601692f067ca7866513d859c094856c8df773d2053b",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 49,
+      "assembly": [
+        "00c19dc0: push ebp",
+        "00c19dc1: mov ebp, esp",
+        "00c19dc3: push ecx",
+        "00c19dc4: push ecx",
+        "00c19dc5: fld qword ptr [ebp + 8]",
+        "00c19dc8: push ecx",
+        "00c19dc9: push ecx",
+        "00c19dca: fstp qword ptr [esp]",
+        "00c19dcd: call 0xbfa52f",
+        "00c19dd2: test al, 0x90",
+        "00c19dd4: pop ecx",
+        "00c19dd5: pop ecx",
+        "00c19dd6: jne 0xc19e20",
+        "00c19dd8: fld qword ptr [ebp + 8]",
+        "00c19ddb: push ecx",
+        "00c19ddc: push ecx",
+        "00c19ddd: fstp qword ptr [esp]",
+        "00c19de0: call 0xc28548",
+        "00c19de5: fcomp qword ptr [ebp + 8]",
+        "00c19de8: pop ecx",
+        "00c19de9: pop ecx",
+        "00c19dea: fnstsw ax",
+        "00c19dec: test ah, 0x44",
+        "00c19def: jp 0xc19e20",
+        "00c19df1: fld qword ptr [ebp + 8]",
+        "00c19df4: push ecx",
+        "00c19df5: fmul qword ptr [0xd7a280]",
+        "00c19dfb: push ecx",
+        "00c19dfc: fstp qword ptr [ebp - 8]",
+        "00c19dff: fld qword ptr [ebp - 8]",
+        "00c19e02: fstp qword ptr [esp]",
+        "00c19e05: call 0xc28548",
+        "00c19e0a: fcomp qword ptr [ebp - 8]",
+        "00c19e0d: pop ecx",
+        "00c19e0e: pop ecx",
+        "00c19e0f: fnstsw ax",
+        "00c19e11: test ah, 0x44",
+        "00c19e14: jp 0xc19e1b",
+        "00c19e16: push 2",
+        "00c19e18: pop eax",
+        "00c19e19: leave ",
+        "00c19e1a: ret ",
+        "00c19e1b: xor eax, eax",
+        "00c19e1d: inc eax",
+        "00c19e1e: leave ",
+        "00c19e1f: ret ",
+        "00c19e20: xor eax, eax",
+        "00c19e22: leave ",
+        "00c19e23: ret "
+      ]
+    },
+    {
+      "address": "00c12f3e",
+      "length": 91,
+      "end_exclusive": "00c12f99",
+      "role": "complete_sptype_provider",
+      "bytes_hex": "558bec33d2817d0c0000f07f750a395508751833c0405dc3817d0c0000f0ff750a39550875056a02585dc38b4d0eb8f87f000023c8663bc875046a03ebea6681f9f07f7512f7450cffff0700750539550874046a04ebd133c05dc3",
+      "sha256": "8da8f43c35003777f547ce2903c0cc655f41647bdbb2f7740c11506109fcdabc",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 37,
+      "assembly": [
+        "00c12f3e: push ebp",
+        "00c12f3f: mov ebp, esp",
+        "00c12f41: xor edx, edx",
+        "00c12f43: cmp dword ptr [ebp + 0xc], 0x7ff00000",
+        "00c12f4a: jne 0xc12f56",
+        "00c12f4c: cmp dword ptr [ebp + 8], edx",
+        "00c12f4f: jne 0xc12f69",
+        "00c12f51: xor eax, eax",
+        "00c12f53: inc eax",
+        "00c12f54: pop ebp",
+        "00c12f55: ret ",
+        "00c12f56: cmp dword ptr [ebp + 0xc], 0xfff00000",
+        "00c12f5d: jne 0xc12f69",
+        "00c12f5f: cmp dword ptr [ebp + 8], edx",
+        "00c12f62: jne 0xc12f69",
+        "00c12f64: push 2",
+        "00c12f66: pop eax",
+        "00c12f67: pop ebp",
+        "00c12f68: ret ",
+        "00c12f69: mov ecx, dword ptr [ebp + 0xe]",
+        "00c12f6c: mov eax, 0x7ff8",
+        "00c12f71: and ecx, eax",
+        "00c12f73: cmp cx, ax",
+        "00c12f76: jne 0xc12f7c",
+        "00c12f78: push 3",
+        "00c12f7a: jmp 0xc12f66",
+        "00c12f7c: cmp cx, 0x7ff0",
+        "00c12f81: jne 0xc12f95",
+        "00c12f83: test dword ptr [ebp + 0xc], 0x7ffff",
+        "00c12f8a: jne 0xc12f91",
+        "00c12f8c: cmp dword ptr [ebp + 8], edx",
+        "00c12f8f: je 0xc12f95",
+        "00c12f91: push 4",
+        "00c12f93: jmp 0xc12f66",
+        "00c12f95: xor eax, eax",
+        "00c12f97: pop ebp",
+        "00c12f98: ret "
+      ]
+    },
+    {
+      "address": "00bfa52f",
+      "length": 148,
+      "end_exclusive": "00bfa5c3",
+      "role": "complete_fpclass_provider",
+      "bytes_hex": "558bec8b450eb9f07f00008bd023d1663bd1752ddd45085151dd1c24e8ee890100485959741448740c48740533c0405dc36a02eb026a04585dc3b8000200005dc325008000006685d28bc8751df7450cffff0f007506837d0800740ef7d81bc083e09005800000005dc3d9eedc5d08dfe0f6c4448bc17a0cf7d81bc083e0e083c0405dc3f7d81bc02508ffffff05000100005dc3",
+      "sha256": "489c05df5e3dcacce2e2bd3a8884e3fa8b4a93cab87a8c025683e5abb01dadf9",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 66,
+      "assembly": [
+        "00bfa52f: push ebp",
+        "00bfa530: mov ebp, esp",
+        "00bfa532: mov eax, dword ptr [ebp + 0xe]",
+        "00bfa535: mov ecx, 0x7ff0",
+        "00bfa53a: mov edx, eax",
+        "00bfa53c: and edx, ecx",
+        "00bfa53e: cmp dx, cx",
+        "00bfa541: jne 0xbfa570",
+        "00bfa543: fld qword ptr [ebp + 8]",
+        "00bfa546: push ecx",
+        "00bfa547: push ecx",
+        "00bfa548: fstp qword ptr [esp]",
+        "00bfa54b: call 0xc12f3e",
+        "00bfa550: dec eax",
+        "00bfa551: pop ecx",
+        "00bfa552: pop ecx",
+        "00bfa553: je 0xbfa569",
+        "00bfa555: dec eax",
+        "00bfa556: je 0xbfa564",
+        "00bfa558: dec eax",
+        "00bfa559: je 0xbfa560",
+        "00bfa55b: xor eax, eax",
+        "00bfa55d: inc eax",
+        "00bfa55e: pop ebp",
+        "00bfa55f: ret ",
+        "00bfa560: push 2",
+        "00bfa562: jmp 0xbfa566",
+        "00bfa564: push 4",
+        "00bfa566: pop eax",
+        "00bfa567: pop ebp",
+        "00bfa568: ret ",
+        "00bfa569: mov eax, 0x200",
+        "00bfa56e: pop ebp",
+        "00bfa56f: ret ",
+        "00bfa570: and eax, 0x8000",
+        "00bfa575: test dx, dx",
+        "00bfa578: mov ecx, eax",
+        "00bfa57a: jne 0xbfa599",
+        "00bfa57c: test dword ptr [ebp + 0xc], 0xfffff",
+        "00bfa583: jne 0xbfa58b",
+        "00bfa585: cmp dword ptr [ebp + 8], 0",
+        "00bfa589: je 0xbfa599",
+        "00bfa58b: neg eax",
+        "00bfa58d: sbb eax, eax",
+        "00bfa58f: and eax, 0xffffff90",
+        "00bfa592: add eax, 0x80",
+        "00bfa597: pop ebp",
+        "00bfa598: ret ",
+        "00bfa599: fldz ",
+        "00bfa59b: fcomp qword ptr [ebp + 8]",
+        "00bfa59e: fnstsw ax",
+        "00bfa5a0: test ah, 0x44",
+        "00bfa5a3: mov eax, ecx",
+        "00bfa5a5: jp 0xbfa5b3",
+        "00bfa5a7: neg eax",
+        "00bfa5a9: sbb eax, eax",
+        "00bfa5ab: and eax, 0xffffffe0",
+        "00bfa5ae: add eax, 0x40",
+        "00bfa5b1: pop ebp",
+        "00bfa5b2: ret ",
+        "00bfa5b3: neg eax",
+        "00bfa5b5: sbb eax, eax",
+        "00bfa5b7: and eax, 0xffffff08",
+        "00bfa5bc: add eax, 0x100",
+        "00bfa5c1: pop ebp",
+        "00bfa5c2: ret "
+      ]
+    },
+    {
+      "address": "00c28548",
+      "length": 17,
+      "end_exclusive": "00c28559",
+      "role": "complete_frnd_provider",
+      "bytes_hex": "5151dd44240cd9fcdd1c24dd04245959c3",
+      "sha256": "f0569f9986dd9a4e0e5221fe827399ad64814ea5ee48f12ced110ca75a4b6ca4",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 9,
+      "assembly": [
+        "00c28548: push ecx",
+        "00c28549: push ecx",
+        "00c2854a: fld qword ptr [esp + 0xc]",
+        "00c2854e: frndint ",
+        "00c28550: fstp qword ptr [esp]",
+        "00c28553: fld qword ptr [esp]",
+        "00c28556: pop ecx",
+        "00c28557: pop ecx",
+        "00c28558: ret "
+      ]
+    },
+    {
+      "address": "00c27489",
+      "length": 252,
+      "end_exclusive": "00c27585",
+      "role": "original_concrete_error_provider_identity",
+      "bytes_hex": "558bec83e4f081ec84000000a19055e10033c4898424800000008b45100fb70853568b750c8b064857894c240c742b48742448741d48741648741f484874074875746a10eb16c70601000000eb686a12eb0a6a11eb066a04eb026a085b518d7e185753e873befeff83c40c85c075478b450883f810741183f816740c83f81d740783642450feeb158b4c2450dd461083e1e3dd5c244083c903894c2450578d4e085150538d44241c508d44242450e8e6bdfeff83c41868ffff0000ff742410e85ac3feff833e0859597414833dd06be10000750b56e8e20f000085c0597508ff36e8d6bffeff598b8c248c0000005f5e5b33cce89f6bfdff8be55dc3",
+      "sha256": "d37fbe839752e461c499e00efbab214ced7ec9949db486196587fe39b0adc498",
+      "fresh_guarded_live_equals_installed_PE": true,
+      "instruction_count": 102,
+      "assembly": [
+        "00c27489: push ebp",
+        "00c2748a: mov ebp, esp",
+        "00c2748c: and esp, 0xfffffff0",
+        "00c2748f: sub esp, 0x84",
+        "00c27495: mov eax, dword ptr [0xe15590]",
+        "00c2749a: xor eax, esp",
+        "00c2749c: mov dword ptr [esp + 0x80], eax",
+        "00c274a3: mov eax, dword ptr [ebp + 0x10]",
+        "00c274a6: movzx ecx, word ptr [eax]",
+        "00c274a9: push ebx",
+        "00c274aa: push esi",
+        "00c274ab: mov esi, dword ptr [ebp + 0xc]",
+        "00c274ae: mov eax, dword ptr [esi]",
+        "00c274b0: dec eax",
+        "00c274b1: push edi",
+        "00c274b2: mov dword ptr [esp + 0xc], ecx",
+        "00c274b6: je 0xc274e3",
+        "00c274b8: dec eax",
+        "00c274b9: je 0xc274df",
+        "00c274bb: dec eax",
+        "00c274bc: je 0xc274db",
+        "00c274be: dec eax",
+        "00c274bf: je 0xc274d7",
+        "00c274c1: dec eax",
+        "00c274c2: je 0xc274e3",
+        "00c274c4: dec eax",
+        "00c274c5: dec eax",
+        "00c274c6: je 0xc274cf",
+        "00c274c8: dec eax",
+        "00c274c9: jne 0xc2753f",
+        "00c274cb: push 0x10",
+        "00c274cd: jmp 0xc274e5",
+        "00c274cf: mov dword ptr [esi], 1",
+        "00c274d5: jmp 0xc2753f",
+        "00c274d7: push 0x12",
+        "00c274d9: jmp 0xc274e5",
+        "00c274db: push 0x11",
+        "00c274dd: jmp 0xc274e5",
+        "00c274df: push 4",
+        "00c274e1: jmp 0xc274e5",
+        "00c274e3: push 8",
+        "00c274e5: pop ebx",
+        "00c274e6: push ecx",
+        "00c274e7: lea edi, [esi + 0x18]",
+        "00c274ea: push edi",
+        "00c274eb: push ebx",
+        "00c274ec: call 0xc13364",
+        "00c274f1: add esp, 0xc",
+        "00c274f4: test eax, eax",
+        "00c274f6: jne 0xc2753f",
+        "00c274f8: mov eax, dword ptr [ebp + 8]",
+        "00c274fb: cmp eax, 0x10",
+        "00c274fe: je 0xc27511",
+        "00c27500: cmp eax, 0x16",
+        "00c27503: je 0xc27511",
+        "00c27505: cmp eax, 0x1d",
+        "00c27508: je 0xc27511",
+        "00c2750a: and dword ptr [esp + 0x50], 0xfffffffe",
+        "00c2750f: jmp 0xc27526",
+        "00c27511: mov ecx, dword ptr [esp + 0x50]",
+        "00c27515: fld qword ptr [esi + 0x10]",
+        "00c27518: and ecx, 0xffffffe3",
+        "00c2751b: fstp qword ptr [esp + 0x40]",
+        "00c2751f: or ecx, 3",
+        "00c27522: mov dword ptr [esp + 0x50], ecx",
+        "00c27526: push edi",
+        "00c27527: lea ecx, [esi + 8]",
+        "00c2752a: push ecx",
+        "00c2752b: push eax",
+        "00c2752c: push ebx",
+        "00c2752d: lea eax, [esp + 0x1c]",
+        "00c27531: push eax",
+        "00c27532: lea eax, [esp + 0x24]",
+        "00c27536: push eax",
+        "00c27537: call 0xc13322",
+        "00c2753c: add esp, 0x18",
+        "00c2753f: push 0xffff",
+        "00c27544: push dword ptr [esp + 0x10]",
+        "00c27548: call 0xc138a7",
+        "00c2754d: cmp dword ptr [esi], 8",
+        "00c27550: pop ecx",
+        "00c27551: pop ecx",
+        "00c27552: je 0xc27568",
+        "00c27554: cmp dword ptr [0xe16bd0], 0",
+        "00c2755b: jne 0xc27568",
+        "00c2755d: push esi",
+        "00c2755e: call 0xc28545",
+        "00c27563: test eax, eax",
+        "00c27565: pop ecx",
+        "00c27566: jne 0xc27570",
+        "00c27568: push dword ptr [esi]",
+        "00c2756a: call 0xc13545",
+        "00c2756f: pop ecx",
+        "00c27570: mov ecx, dword ptr [esp + 0x8c]",
+        "00c27577: pop edi",
+        "00c27578: pop esi",
+        "00c27579: pop ebx",
+        "00c2757a: xor ecx, esp",
+        "00c2757c: call 0xbfe120",
+        "00c27581: mov esp, ebp",
+        "00c27583: pop ebp",
+        "00c27584: ret "
+      ]
+    },
+    {
+      "address": "0109dd78",
+      "length": 4,
+      "end_exclusive": "0109dd7c",
+      "role": "actual_current_dispatch_cell_initial_bytes_not_runtime_policy",
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00e15850",
+      "length": 12,
+      "end_exclusive": "00e1585c",
+      "role": "actual_half_and_pow_name",
+      "bytes_hex": "000000000000e03f706f7700",
+      "sha256": "dbf9bb47c4956c375a8f106a8383caf2958f9ea5249b31d5fe1e364a7547ebd4",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00e15c70",
+      "length": 10,
+      "end_exclusive": "00e15c7a",
+      "role": "actual_negative_NaN80",
+      "bytes_hex": "00000000000000c0ffff",
+      "sha256": "0fcc362376c4ddd013c8ccedf9bea0af6d50faf7ea7df49e0ec0b37cab6a9c30",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00e165a0",
+      "length": 16,
+      "end_exclusive": "00e165b0",
+      "role": "actual_special_infinity_and_negative_qNaN",
+      "bytes_hex": "000000000000f07f000000000000f8ff",
+      "sha256": "6ace709b080bed5f6d0e73b22b686aa04fb22ea2b2acf571962c5d87b9f12ffb",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00e165c0",
+      "length": 8,
+      "end_exclusive": "00e165c8",
+      "role": "actual_special_negative_zero",
+      "bytes_hex": "0000000000000080",
+      "sha256": "e6ad6c9a3a3b7658c35bacf6553fcb8ffe34387534a648fe18f875b8f7a86ddb",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00e166d0",
+      "length": 10,
+      "end_exclusive": "00e166da",
+      "role": "actual_infinity80",
+      "bytes_hex": "0000000000000080ff7f",
+      "sha256": "f6114c7deeaa5c86e80b9e90dec3848f245b02f9a1030de801abe67377428fec",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00d7a280",
+      "length": 8,
+      "end_exclusive": "00d7a288",
+      "role": "actual_special_half",
+      "bytes_hex": "000000000000e03f",
+      "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00d6a684",
+      "length": 48,
+      "end_exclusive": "00d6a6b4",
+      "role": "actual_status_literal_region",
+      "bytes_hex": "ffffffffffffef7f000000000000100000000000000098c00000000000009840000000000000f07f0000000000000000",
+      "sha256": "f3bdc6621362bc6a44394cef3193941e482d8d3188d2bee69ee40fd3077a8d9a",
+      "fresh_guarded_live_equals_installed_PE": true
+    },
+    {
+      "address": "00e16bd0",
+      "length": 4,
+      "end_exclusive": "00e16bd4",
+      "role": "actual_error_runtime_bypass_initial_cell",
+      "bytes_hex": "94260000",
+      "sha256": "ee668c09cd59ec598c72c344113e4dc44d6a14a89da2358cf8a8fb2f47c3c865",
+      "fresh_guarded_live_equals_installed_PE": true
+    }
+  ],
+  "naming": "Descriptive new source binding; preserve actual matched library names in existing providers; no invented recovered BFEB6D symbol.",
+  "public_interface": {
+    "name": "bsp::evaluate_native_crt_pow_fallback_00bfeb6d",
+    "declaration": "void __cdecl evaluate_native_crt_pow_fallback_00bfeb6d()",
+    "assembly_CALL_only": true,
+    "ordinary_cpp_call_safe": false,
+    "original_address_or_drop_in_ABI_claim": false,
+    "register_inputs": {
+      "EAX": "already-loaded caller y high DWORD",
+      "ST0": "current caller y",
+      "EBP": "actual current109DD78 cell pointer",
+      "EBX": "actual D6A684 status literal region",
+      "ESI": "actual D7A280 special half cell",
+      "EDI": "actual E165A0 constant-region anchor"
+    },
+    "entry_stack_hex_offsets": {
+      "00": "real return",
+      "04": "current x qword",
+      "0c": "current y qword",
+      "14": "readable scratch DWORD"
+    },
+    "input_EAX_or_ST0_recomputed_from_slots": false,
+    "context": "16-byte description of four borrowed pointers; caller loads registers, body never reads aggregate",
+    "additional_free_x87_slots": 3,
+    "normal_result": "ST0 current result; current packed-CW DWORD in EDX",
+    "normal_return": "Packed word consumed before RET; outer caller removes original20-byte x/y/scratch frame",
+    "normal_nonvolatile_binding_restoration": true,
+    "nonlocal_exit_binding_restore_promised": false,
+    "volatile_and_FP_boundary": "Original raw instruction/helper effects except documented intermediate parity EDX pointer; concrete C++ error-provider limits inherited"
+  },
+  "original_state": {
+    "packed_T": "ESP just after original PUSH EAX",
+    "T_offsets_hex": {
+      "00": "packed saved-CW/scratch DWORD",
+      "04": "return",
+      "08": "x",
+      "10": "y",
+      "18": "scratch"
+    },
+    "waiting_FSTCW": "9BD93C24 writes only low word; high scratch remains caller y bits unless C083A5 writes working word",
+    "default_027f_skips_prepare": true,
+    "helper_C083A5_reads_current_packed_DWORD": true,
+    "current_109dd78_rereads": [
+      "00bfebc8",
+      "00bfebe5"
+    ],
+    "initial_zero_not_runtime_policy": true,
+    "current_loader_flags_immediately_consumed": true,
+    "unaligned_sign_read": {
+      "address": "00bfecd3",
+      "relative": "T+17h",
+      "bytes": 4,
+      "mask": 128,
+      "extent": "y sign byte plus three caller scratch bytes",
+      "narrowed": false,
+      "zero_initialized": false
+    },
+    "current_x87_rounding_precision_status_tags_exceptions": true,
+    "no_new_CW_or_FP_policy": true
+  },
+  "literal_binding": {
+    "actual_immutable_regions": true,
+    "entry_time_snapshot": false,
+    "context_size": 16,
+    "regions": [
+      {
+        "register": "EBP",
+        "original_base": "0109dd78",
+        "bytes": 4,
+        "mutable_current_cell": true
+      },
+      {
+        "register": "EBX",
+        "original_base": "00d6a684",
+        "bytes": 48,
+        "read_extents": [
+          [
+            0,
+            8
+          ],
+          [
+            8,
+            16
+          ],
+          [
+            16,
+            24
+          ],
+          [
+            24,
+            32
+          ],
+          [
+            32,
+            40
+          ],
+          [
+            40,
+            48
+          ]
+        ]
+      },
+      {
+        "register": "ESI",
+        "original_base": "00d7a280",
+        "bytes": 8,
+        "bits_hex": "000000000000e03f"
+      },
+      {
+        "register": "EDI",
+        "original_anchor": "00e165a0",
+        "preserves_original_relative_layout": true,
+        "cells": [
+          {
+            "address": "00e15850",
+            "offset": -3408,
+            "bytes": 8,
+            "bits_hex": "000000000000e03f",
+            "role": "parity half"
+          },
+          {
+            "address": "00e15858",
+            "offset": -3400,
+            "bytes": 4,
+            "bits_hex": "706f7700",
+            "role": "actual pow name address"
+          },
+          {
+            "address": "00e15c70",
+            "offset": -2352,
+            "bytes": 10,
+            "bits_hex": "00000000000000c0ffff",
+            "role": "negative NaN80"
+          },
+          {
+            "address": "00e165a0",
+            "offset": 0,
+            "bytes": 8,
+            "bits_hex": "000000000000f07f",
+            "role": "special infinity"
+          },
+          {
+            "address": "00e165a8",
+            "offset": 8,
+            "bytes": 8,
+            "bits_hex": "000000000000f8ff",
+            "role": "special negative qNaN"
+          },
+          {
+            "address": "00e165c0",
+            "offset": 32,
+            "bytes": 8,
+            "bits_hex": "0000000000000080",
+            "role": "special negative zero"
+          },
+          {
+            "address": "00e166d0",
+            "offset": 304,
+            "bytes": 10,
+            "bits_hex": "0000000000000080ff7f",
+            "role": "infinity80"
+          }
+        ]
+      }
+    ],
+    "gaps_unread": true,
+    "not_copied_or_synthesized_table": true,
+    "validity": "Actual borrowed cells valid for every reached access; no validation added",
+    "parent_address_changes": [
+      {
+        "site": "00bfebc8",
+        "compiled_offset": 91,
+        "original_instruction": "cmp dword ptr [0x109dd78], 0",
+        "compiled_instruction": "cmp dword ptr [ebp], 0",
+        "base": "ebp",
+        "displacement": 0,
+        "original_cell": "0109dd78",
+        "operand_width": 4,
+        "materializes_address_only": false,
+        "read_extent": [
+          0,
+          4
+        ]
+      },
+      {
+        "site": "00bfebd5",
+        "compiled_offset": 104,
+        "original_instruction": "lea ecx, [0xe15858]",
+        "compiled_instruction": "lea ecx, [edi - 0xd48]",
+        "base": "edi",
+        "displacement": -3400,
+        "original_cell": "00e15858",
+        "operand_width": 4,
+        "materializes_address_only": true,
+        "read_extent": null
+      },
+      {
+        "site": "00bfebe5",
+        "compiled_offset": 120,
+        "original_instruction": "cmp dword ptr [0x109dd78], 0",
+        "compiled_instruction": "cmp dword ptr [ebp], 0",
+        "base": "ebp",
+        "displacement": 0,
+        "original_cell": "0109dd78",
+        "operand_width": 4,
+        "materializes_address_only": false,
+        "read_extent": [
+          0,
+          4
+        ]
+      },
+      {
+        "site": "00bfebf2",
+        "compiled_offset": 133,
+        "original_instruction": "lea ecx, [0xe15858]",
+        "compiled_instruction": "lea ecx, [edi - 0xd48]",
+        "base": "edi",
+        "displacement": -3400,
+        "original_cell": "00e15858",
+        "operand_width": 4,
+        "materializes_address_only": true,
+        "read_extent": null
+      },
+      {
+        "site": "00bfecdd",
+        "compiled_offset": 372,
+        "original_instruction": "fld xword ptr [0xe166d0]",
+        "compiled_instruction": "fld xword ptr [edi + 0x130]",
+        "base": "edi",
+        "displacement": 304,
+        "original_cell": "00e166d0",
+        "operand_width": 10,
+        "materializes_address_only": false,
+        "read_extent": [
+          304,
+          314
+        ]
+      },
+      {
+        "site": "00bfed22",
+        "compiled_offset": 441,
+        "original_instruction": "fld xword ptr [0xe15c70]",
+        "compiled_instruction": "fld xword ptr [edi - 0x930]",
+        "base": "edi",
+        "displacement": -2352,
+        "original_cell": "00e15c70",
+        "operand_width": 10,
+        "materializes_address_only": false,
+        "read_extent": [
+          -2352,
+          -2342
+        ]
+      }
+    ],
+    "LEA_name_materializes_original_pointer_without_character_read": true
+  },
+  "source_adaptations": {
+    "parent_body_bytes": 457,
+    "original_body_bytes": 453,
+    "two_inserted_XCHG_instructions": [
+      {
+        "compiled_offset": 275,
+        "bytes_hex": "87de",
+        "instruction": "xchg esi, ebx"
+      },
+      {
+        "compiled_offset": 282,
+        "bytes_hex": "87de",
+        "instruction": "xchg esi, ebx"
+      }
+    ],
+    "swap_effect": "Only EBX/ESI roles exchanged around original C19E24 CALL; no stack/flags/FP effect; restored on normal return",
+    "parity_thunk": {
+      "symbol": "?bind_native_pow_parity_half@?A0x9f93a179@bsp@@YAXXZ",
+      "bytes": 11,
+      "COFF_bytes_hex": "8d97b0f2ffffe900000000",
+      "COFF_sha256": "3ebae9194cf955138e94e9127998b738cff7af655d396994132fb55830500e82",
+      "relocation": {
+        "offset": 7,
+        "symbol_index": 15,
+        "symbol": "?classify_native_crt_power_exponent_00bfed32@bsp@@YIXPAXPBX@Z",
+        "symbol_value": 0,
+        "type": 20,
+        "COFF_addend": 0
+      },
+      "instruction_effect": "LEA EDX,[EDI-D50h] then JMP complete BFED32; no stack/flags/FP effect; EDX only register change",
+      "caller_old_EDX_dead_proof": [
+        {
+          "continuation": "00bfeccc",
+          "visited_instructions": [
+            "00bfebe5",
+            "00bfebec",
+            "00bfebf2",
+            "00bfebf8",
+            "00bfeccc",
+            "00bfecd0",
+            "00bfecd3",
+            "00bfecdb",
+            "00bfecdd",
+            "00bfece3",
+            "00bfece5",
+            "00bfece7",
+            "00bfece9",
+            "00bfecee",
+            "00bfecf3",
+            "00bfecf5",
+            "00bfecf7",
+            "00bfecfd",
+            "00bfecff"
+          ],
+          "first_full_EDX_writes": [
+            "00c08439 POP EDX via full restore tail",
+            "00bfebf8",
+            "00c08439 POP EDX via full restore tail",
+            "00c08439 POP EDX via full restore tail"
+          ],
+          "no_old_EDX_read": true
+        },
+        {
+          "continuation": "00bfed14",
+          "visited_instructions": [
+            "00bfebba",
+            "00bfebbc",
+            "00bfebc1",
+            "00bfebc4",
+            "00bfebc6",
+            "00bfebc8",
+            "00bfebcf",
+            "00bfebd5",
+            "00bfebdb",
+            "00bfebe5",
+            "00bfebec",
+            "00bfebf2",
+            "00bfebf8",
+            "00bfed14",
+            "00bfed16",
+            "00bfed18",
+            "00bfed1e",
+            "00bfed20",
+            "00bfed22",
+            "00bfed28",
+            "00bfed2d"
+          ],
+          "first_full_EDX_writes": [
+            "00c08439 POP EDX via full restore tail",
+            "00bfebf8",
+            "00c08439 POP EDX via full restore tail",
+            "00bfebdb"
+          ],
+          "no_old_EDX_read": true
+        }
+      ]
+    },
+    "six_same_length_parent_memory_operands": true,
+    "internal_branch_remapping_and_external_tails": true,
+    "helper_original_CL_AX_flags_preserved": true,
+    "no_extra_argument_or_return_wrapper": true,
+    "compiler_spelling_corrections": [
+      "FADDP st(1),st(0) retains DE C1 at both sites",
+      "Explicit near ptr on four original external near Jcc",
+      "Scoped C4414 push/disable/pop only around naked parent",
+      "Exact TEST CH,CL84CD emits at BFECE3/BFECF5"
+    ],
+    "scoped_diagnostic_exception": "C4414 only around naked parent; original four external Jcc are already six-byte near forms, all proved with exact relocations. /W4 /WX /fp:strict remain global.",
+    "final_source_diff": "local/pow_fallback/final_source_diff.patch",
+    "diff_baseline": "Reviewed spelling reconstructed by reversing known spelling changes in preserved before_test_encoding.cpp; not a separately captured original snapshot"
+  },
+  "special_path": {
+    "allocation_bytes": 116,
+    "output_cell_bytes": 8,
+    "output_initialization": "unwritten original scratch",
+    "x87_save_area_bytes": 108,
+    "original_child_arguments_bytes": 20,
+    "exact_order": [
+      "allocate74h",
+      "capture output pointer in ECX",
+      "push output pointer",
+      "allocate10h args",
+      "FSTP x",
+      "FSTP y",
+      "waiting FSAVE at output+8",
+      "new XCHG binds half",
+      "full original C19E24 call",
+      "new XCHG restores bindings",
+      "add10h args",
+      "pop actual output pointer",
+      "FRSTOR output+8",
+      "FLD current output qword",
+      "add74h",
+      "test status"
+    ],
+    "FSAVE_bytes": "9bdd7108",
+    "FRSTOR_bytes": "dd6108",
+    "special_runs_under_FSAVE_reset_environment": true,
+    "default_output_synthesized": false,
+    "EH_guard": false,
+    "new_nonlocal_restore": false
+  },
+  "dependencies": {
+    "direct_complete_original_targets": [
+      "00c083a5",
+      "00c083d5",
+      "00c08390",
+      "00c0842e",
+      "00c08479",
+      "00c08330",
+      "00c19e24",
+      "00bfed32"
+    ],
+    "complete_raw_indirect": [
+      "00c19dc0",
+      "00bfa52f",
+      "00c12f3e",
+      "00c28548",
+      "00c08347 shared source entry"
+    ],
+    "raw_original_bytes": 1537,
+    "existing_unary_thunk_bytes": 5,
+    "original_internal_classification_eight_byte_arguments_unchanged": true,
+    "concrete_provider": "bsp::legacy_crt_87except_00c27489",
+    "runtime": "Existing persistent bound LegacyCrtMathRuntime with actual E16BD0 cell and owning CRT errno accessor",
+    "inherited_provider_limits": [
+      "Actual installed owner provides persistent runtime global and errno accessor binding",
+      "Original CRT TLS/startup initialization is borrowed service boundary; not reconstructed",
+      "Reserved FPIEEE stack bytes initialized tozero and reserved x87 precision encoding01 not contracted",
+      "Unused binary32 __raise_exc_ex variant not exposed",
+      "Native differential checks x87 exceptionflags, not complete instruction/data pointer or condition-code state",
+      "No gameplay validation"
+    ],
+    "arbitrary_callback": false,
+    "host_pow": false,
+    "full_native_SEH_FP_or_volatile_equivalence": false,
+    "new_runtime_case": false,
+    "missing_direct_source_dependencies": []
+  },
+  "source_review": "Primary reviewed full original/source/header and approved design; explicit FADDP/near spelling, narrow C4414 scope and exact TEST84CD corrections subsequently approved. Final source diff and whole-instruction/provider proof independently reviewed and approved before seal.",
+  "validation": {
+    "fresh_guarded_live_PE_spans": 24,
+    "fresh_guarded_distinct_bytes": 1993,
+    "owned_original_bytes": 453,
+    "owned_original_instructions": 123,
+    "compiled_parent_bytes": 457,
+    "compiled_parent_instructions": 125,
+    "complete_raw_provider_bytes": 1084,
+    "complete_raw_provider_instructions": 437,
+    "complete_raw_original_bytes": 1537,
+    "owned_relocations": 16,
+    "all_raw_relocations": 24,
+    "parent_address_changes": 6,
+    "established_provider_address_changes": 13,
+    "all_original_instruction_bytes_accounted": true,
+    "four_full_external_near_Jcc_and_symbol_relocations": [
+      {
+        "original_site": "00bfebcf",
+        "compiled_offset": 98,
+        "bytes": 6,
+        "relocation": {
+          "offset": 100,
+          "symbol_index": 12,
+          "symbol": "?restore_native_crt_x87_control_tail_00c0842e@bsp@@YAXXZ",
+          "symbol_value": 0,
+          "type": 20,
+          "COFF_addend": 0,
+          "original_site": "00bfebcf",
+          "original_target": "00c0842e",
+          "synthetic_bound_target": "10020000",
+          "parity_new_binding_thunk": false
+        }
+      },
+      {
+        "original_site": "00bfebec",
+        "compiled_offset": 127,
+        "bytes": 6,
+        "relocation": {
+          "offset": 129,
+          "symbol_index": 12,
+          "symbol": "?restore_native_crt_x87_control_tail_00c0842e@bsp@@YAXXZ",
+          "symbol_value": 0,
+          "type": 20,
+          "COFF_addend": 0,
+          "original_site": "00bfebec",
+          "original_target": "00c0842e",
+          "synthetic_bound_target": "10020000",
+          "parity_new_binding_thunk": false
+        }
+      },
+      {
+        "original_site": "00bfec93",
+        "compiled_offset": 298,
+        "bytes": 6,
+        "relocation": {
+          "offset": 300,
+          "symbol_index": 12,
+          "symbol": "?restore_native_crt_x87_control_tail_00c0842e@bsp@@YAXXZ",
+          "symbol_value": 0,
+          "type": 20,
+          "COFF_addend": 0,
+          "original_site": "00bfec93",
+          "original_target": "00c0842e",
+          "synthetic_bound_target": "10020000",
+          "parity_new_binding_thunk": false
+        }
+      },
+      {
+        "original_site": "00bfecf7",
+        "compiled_offset": 398,
+        "bytes": 6,
+        "relocation": {
+          "offset": 400,
+          "symbol_index": 12,
+          "symbol": "?restore_native_crt_x87_control_tail_00c0842e@bsp@@YAXXZ",
+          "symbol_value": 0,
+          "type": 20,
+          "COFF_addend": 0,
+          "original_site": "00bfecf7",
+          "original_target": "00c0842e",
+          "synthetic_bound_target": "10020000",
+          "parity_new_binding_thunk": false
+        }
+      }
+    ],
+    "FADDP_original_bytes": "dec1",
+    "TEST_CH_CL_original_bytes": "84cd",
+    "wait_FSTCW_and_wait_FSAVE_bytes": true,
+    "FRSTOR_and_current_output_order": true,
+    "full_unaligned_DWORD_sign_read": true,
+    "eight_normal_CFG_exits": [
+      {
+        "offset": 98,
+        "kind": "jne",
+        "target": "10020000",
+        "entry_stack_delta": -4,
+        "CW_top_tail": true
+      },
+      {
+        "offset": 115,
+        "kind": "jmp",
+        "target": "10060000",
+        "entry_stack_delta": -4,
+        "CW_top_tail": true
+      },
+      {
+        "offset": 127,
+        "kind": "jne",
+        "target": "10020000",
+        "entry_stack_delta": -4,
+        "CW_top_tail": true
+      },
+      {
+        "offset": 150,
+        "kind": "RET",
+        "packed_CW_already_consumed": true,
+        "return_stack_delta": 4
+      },
+      {
+        "offset": 398,
+        "kind": "je",
+        "target": "10020000",
+        "entry_stack_delta": -4,
+        "CW_top_tail": true
+      },
+      {
+        "offset": 406,
+        "kind": "jmp",
+        "target": "10020000",
+        "entry_stack_delta": -4,
+        "CW_top_tail": true
+      },
+      {
+        "offset": 415,
+        "kind": "jmp",
+        "target": "10020000",
+        "entry_stack_delta": -4,
+        "CW_top_tail": true
+      },
+      {
+        "offset": 298,
+        "kind": "je",
+        "target": "10020000",
+        "entry_stack_delta": -4,
+        "CW_top_tail": true
+      }
+    ],
+    "normal_CW_stack_and_binding_roles": true,
+    "both_parity_old_EDX_dead": true,
+    "actual_archive_objects": 9,
+    "whole_COFF_sections": 121,
+    "all_sections_symbols_relocations_recorded": true,
+    "complete_concrete_provider_object_frozen": true,
+    "sole_actual_bsp_core_archive": true,
+    "separate_provider_compile": false,
+    "strict_release_win32_build": true,
+    "compiler_options": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "scoped_warning_exception": "C4414 in naked parent only; each emitted near Jcc fully checked",
+    "existing_CTests_passed": 2,
+    "fresh_seed_matches": 8,
+    "new_permanent_tests": 0,
+    "new_runtime_fixture": false,
+    "synthetic_relocations_not_linked_runtime_postimages": true,
+    "game_or_display_calls": false
+  },
+  "actual_artifacts": {
+    "library": {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 40520454,
+      "sha256": "19af2101975b5bff68cbfb5a769fda8b9cdc06cdaa388bb7156aa618275851db"
+    },
+    "archive_objects": [
+      {
+        "name": "native_crt_pow_fallback",
+        "actual_object": {
+          "path": "build/win32/bsp_core.dir/Release/native_crt_pow_fallback.obj",
+          "bytes": 2102,
+          "sha256": "2b0bd5bd5f350b233d426a5e4a947f856865356bbed651d71e68273e8d552f75"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\native_crt_pow_fallback.obj",
+          "offset": 31145288,
+          "bytes": 2102,
+          "sha256": "2b0bd5bd5f350b233d426a5e4a947f856865356bbed651d71e68273e8d552f75"
+        }
+      },
+      {
+        "name": "native_crt_x87_control",
+        "actual_object": {
+          "path": "build/win32/bsp_core.dir/Release/native_crt_x87_control.obj",
+          "bytes": 916,
+          "sha256": "94f5242ce086dce55dc0ed88c5da2384e12cc94c0981c2f02cbc82dcc6d9637a"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\native_crt_x87_control.obj",
+          "offset": 33337382,
+          "bytes": 916,
+          "sha256": "94f5242ce086dce55dc0ed88c5da2384e12cc94c0981c2f02cbc82dcc6d9637a"
+        }
+      },
+      {
+        "name": "native_crt_x87_double_load",
+        "actual_object": {
+          "path": "build/win32/bsp_core.dir/Release/native_crt_x87_double_load.obj",
+          "bytes": 794,
+          "sha256": "1517c24dc2c000d8604b02d43c379863494e333ca980580ef9d65594dfcce9df"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\native_crt_x87_double_load.obj",
+          "offset": 33340694,
+          "bytes": 794,
+          "sha256": "1517c24dc2c000d8604b02d43c379863494e333ca980580ef9d65594dfcce9df"
+        }
+      },
+      {
+        "name": "native_crt_x87_power_leaves",
+        "actual_object": {
+          "path": "build/win32/bsp_core.dir/Release/native_crt_x87_power_leaves.obj",
+          "bytes": 939,
+          "sha256": "2139d5f8b33c7ab42415f9dce5398b6f0abbf4e0bcf3018699cc01af7230ba91"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\native_crt_x87_power_leaves.obj",
+          "offset": 33339694,
+          "bytes": 939,
+          "sha256": "2139d5f8b33c7ab42415f9dce5398b6f0abbf4e0bcf3018699cc01af7230ba91"
+        }
+      },
+      {
+        "name": "native_crt_x87_result_status",
+        "actual_object": {
+          "path": "build/win32/bsp_core.dir/Release/native_crt_x87_result_status.obj",
+          "bytes": 1061,
+          "sha256": "46e8ba9ffa8f43b8e90e133423ed4dc553f89c33fd35fb2fd53f13b054863982"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\native_crt_x87_result_status.obj",
+          "offset": 31144166,
+          "bytes": 1061,
+          "sha256": "46e8ba9ffa8f43b8e90e133423ed4dc553f89c33fd35fb2fd53f13b054863982"
+        }
+      },
+      {
+        "name": "native_crt_x87_error_dispatch",
+        "actual_object": {
+          "path": "build/win32/bsp_core.dir/Release/native_crt_x87_error_dispatch.obj",
+          "bytes": 2697,
+          "sha256": "094d6abb5561cbdf4396e3e6073d2fae4ccd6049c1ea41638d972824882a7bb5"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\native_crt_x87_error_dispatch.obj",
+          "offset": 33334624,
+          "bytes": 2697,
+          "sha256": "094d6abb5561cbdf4396e3e6073d2fae4ccd6049c1ea41638d972824882a7bb5"
+        }
+      },
+      {
+        "name": "native_crt_pow_special",
+        "actual_object": {
+          "path": "build/win32/bsp_core.dir/Release/native_crt_pow_special.obj",
+          "bytes": 1455,
+          "sha256": "a2c35d69c652c4c499cc019daadde3ef2a9a20e6dcd601f96d9e5a8ca21a40a8"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\native_crt_pow_special.obj",
+          "offset": 33333108,
+          "bytes": 1455,
+          "sha256": "a2c35d69c652c4c499cc019daadde3ef2a9a20e6dcd601f96d9e5a8ca21a40a8"
+        }
+      },
+      {
+        "name": "native_crt_double_classification",
+        "actual_object": {
+          "path": "build/win32/bsp_core.dir/Release/native_crt_double_classification.obj",
+          "bytes": 1275,
+          "sha256": "68da516d8c04a27b686e96b221ecc1a84cbaee41b4f8d2c03bd36d4f000c8b66"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\native_crt_double_classification.obj",
+          "offset": 33338358,
+          "bytes": 1275,
+          "sha256": "68da516d8c04a27b686e96b221ecc1a84cbaee41b4f8d2c03bd36d4f000c8b66"
+        }
+      },
+      {
+        "name": "legacy_crt_math",
+        "actual_object": {
+          "path": "build/win32/bsp_core.dir/Release/legacy_crt_math.obj",
+          "bytes": 18520,
+          "sha256": "0a3cd7f456badbbcece7db40dad40932449cf87836ee613b9236e892f71533f3"
+        },
+        "archive_member": {
+          "name": "bsp_core.dir\\Release\\legacy_crt_math.obj",
+          "offset": 34684208,
+          "bytes": 18520,
+          "sha256": "0a3cd7f456badbbcece7db40dad40932449cf87836ee613b9236e892f71533f3"
+        }
+      }
+    ],
+    "complete_function_proofs": [
+      {
+        "original_address": "00bfeb6d",
+        "symbol": "?evaluate_native_crt_pow_fallback_00bfeb6d@bsp@@YAXXZ",
+        "object": "native_crt_pow_fallback",
+        "original_bytes": 453,
+        "compiled_bytes": 457,
+        "original_instruction_count": 123,
+        "compiled_instruction_count": 125,
+        "COFF_sha256": "217d03293b12cca48e5d7d9aac958990cabbb7f665ea14c8d78afca396dab625",
+        "COFF_bytes_hex": "8bc8509bd93c2466813c247f027405e80000000081e10000f07f8d54240881f90000f07f0f849d000000e8000000000f848e000000a90000f07f0f84fa0000008a4c240f80e1800f8557010000d9f1e80000000080f9017502d9e083bd00000000000f85000000008d8fb8f2ffffba1d000000e90000000083bd00000000000f85000000008d8fb8f2ffffba1d000000e8000000005ac38d542408e800000000f644241608750341eb33dec1b801000000ebc5f644240e0875f0dec1b807000000ebb533c9eb1633c925ffff0f000b44241075c38d542408e8000000008b44240c8bd0250000f07f81e2ffff0f003d0000f07f75060b54240875b885c975bb83ec748bcc5183ec10dd1c24dd5c24089bdd710887dee80000000087de83c41059dd6108dd0183c47485c00f8400000000b801000000e93effffff8b44240c25ffff0f000b4424080f85f3feffffddd88b44241425ffffff7f0b442410743de8000000008a6c240fc0ed07f7442417800000007416dbaf3001000084cd7402d9e0b802000000e9eefeffffd9ee84cd0f8400000000d9e0e900000000ddd8d9e8e900000000d9c1e800000000d9e084c90f8598feffffddd8ddd8dbafd0f6ffffb801000000e9affeffff",
+        "original_sha256": "ae19f7cb6cf7dd3a9b92571af200a59255b12bf08189887f696833197e4f8596",
+        "complete_original_equal_after_only_declared_changes": true,
+        "relocations": [
+          {
+            "offset": 16,
+            "symbol_index": 11,
+            "symbol": "?prepare_native_crt_x87_control_00c083a5@bsp@@YAXXZ",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfeb7c",
+            "original_target": "00c083a5",
+            "synthetic_bound_target": "10010000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 43,
+            "symbol_index": 13,
+            "symbol": "?load_native_crt_double_x87_00c083d5@bsp@@YIIPAXPBX@Z",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfeb97",
+            "original_target": "00c083d5",
+            "synthetic_bound_target": "10030000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 80,
+            "symbol_index": 14,
+            "symbol": "?exp2_native_crt_x87_00c08390@bsp@@YAXXZ",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfebbc",
+            "original_target": "00c08390",
+            "synthetic_bound_target": "10040000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 100,
+            "symbol_index": 12,
+            "symbol": "?restore_native_crt_x87_control_tail_00c0842e@bsp@@YAXXZ",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfebcf",
+            "original_target": "00c0842e",
+            "synthetic_bound_target": "10020000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 116,
+            "symbol_index": 16,
+            "symbol": "?finish_native_crt_x87_result_status_tail_00c08479@bsp@@YAXXZ",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfebe0",
+            "original_target": "00c08479",
+            "synthetic_bound_target": "10060000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 129,
+            "symbol_index": 12,
+            "symbol": "?restore_native_crt_x87_control_tail_00c0842e@bsp@@YAXXZ",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfebec",
+            "original_target": "00c0842e",
+            "synthetic_bound_target": "10020000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 145,
+            "symbol_index": 17,
+            "symbol": "?dispatch_native_crt_binary_error_00c08330@bsp@@YAXXZ",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfebfd",
+            "original_target": "00c08330",
+            "synthetic_bound_target": "10070000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 156,
+            "symbol_index": 13,
+            "symbol": "?load_native_crt_double_x87_00c083d5@bsp@@YIIPAXPBX@Z",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfec08",
+            "original_target": "00c083d5",
+            "synthetic_bound_target": "10030000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 217,
+            "symbol_index": 13,
+            "symbol": "?load_native_crt_double_x87_00c083d5@bsp@@YIIPAXPBX@Z",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfec45",
+            "original_target": "00c083d5",
+            "synthetic_bound_target": "10030000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 278,
+            "symbol_index": 18,
+            "symbol": "?evaluate_native_crt_pow_special_00c19e24@bsp@@YAHIIIIPAX@Z",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfec80",
+            "original_target": "00c19e24",
+            "synthetic_bound_target": "10090000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 300,
+            "symbol_index": 12,
+            "symbol": "?restore_native_crt_x87_control_tail_00c0842e@bsp@@YAXXZ",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfec93",
+            "original_target": "00c0842e",
+            "synthetic_bound_target": "10020000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 351,
+            "symbol_index": 19,
+            "symbol": "?bind_native_pow_parity_half@?A0x9f93a179@bsp@@YAXXZ",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfecc7",
+            "original_target": "00bfed32",
+            "synthetic_bound_target": "10100000",
+            "parity_new_binding_thunk": true
+          },
+          {
+            "offset": 400,
+            "symbol_index": 12,
+            "symbol": "?restore_native_crt_x87_control_tail_00c0842e@bsp@@YAXXZ",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfecf7",
+            "original_target": "00c0842e",
+            "synthetic_bound_target": "10020000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 407,
+            "symbol_index": 12,
+            "symbol": "?restore_native_crt_x87_control_tail_00c0842e@bsp@@YAXXZ",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfecff",
+            "original_target": "00c0842e",
+            "synthetic_bound_target": "10020000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 416,
+            "symbol_index": 12,
+            "symbol": "?restore_native_crt_x87_control_tail_00c0842e@bsp@@YAXXZ",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfed08",
+            "original_target": "00c0842e",
+            "synthetic_bound_target": "10020000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 423,
+            "symbol_index": 19,
+            "symbol": "?bind_native_pow_parity_half@?A0x9f93a179@bsp@@YAXXZ",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfed0f",
+            "original_target": "00bfed32",
+            "synthetic_bound_target": "10100000",
+            "parity_new_binding_thunk": true
+          }
+        ],
+        "address_adaptations": [
+          {
+            "site": "00bfebc8",
+            "compiled_offset": 91,
+            "original_instruction": "cmp dword ptr [0x109dd78], 0",
+            "compiled_instruction": "cmp dword ptr [ebp], 0",
+            "base": "ebp",
+            "displacement": 0,
+            "original_cell": "0109dd78",
+            "operand_width": 4,
+            "materializes_address_only": false,
+            "read_extent": [
+              0,
+              4
+            ]
+          },
+          {
+            "site": "00bfebd5",
+            "compiled_offset": 104,
+            "original_instruction": "lea ecx, [0xe15858]",
+            "compiled_instruction": "lea ecx, [edi - 0xd48]",
+            "base": "edi",
+            "displacement": -3400,
+            "original_cell": "00e15858",
+            "operand_width": 4,
+            "materializes_address_only": true,
+            "read_extent": null
+          },
+          {
+            "site": "00bfebe5",
+            "compiled_offset": 120,
+            "original_instruction": "cmp dword ptr [0x109dd78], 0",
+            "compiled_instruction": "cmp dword ptr [ebp], 0",
+            "base": "ebp",
+            "displacement": 0,
+            "original_cell": "0109dd78",
+            "operand_width": 4,
+            "materializes_address_only": false,
+            "read_extent": [
+              0,
+              4
+            ]
+          },
+          {
+            "site": "00bfebf2",
+            "compiled_offset": 133,
+            "original_instruction": "lea ecx, [0xe15858]",
+            "compiled_instruction": "lea ecx, [edi - 0xd48]",
+            "base": "edi",
+            "displacement": -3400,
+            "original_cell": "00e15858",
+            "operand_width": 4,
+            "materializes_address_only": true,
+            "read_extent": null
+          },
+          {
+            "site": "00bfecdd",
+            "compiled_offset": 372,
+            "original_instruction": "fld xword ptr [0xe166d0]",
+            "compiled_instruction": "fld xword ptr [edi + 0x130]",
+            "base": "edi",
+            "displacement": 304,
+            "original_cell": "00e166d0",
+            "operand_width": 10,
+            "materializes_address_only": false,
+            "read_extent": [
+              304,
+              314
+            ]
+          },
+          {
+            "site": "00bfed22",
+            "compiled_offset": 441,
+            "original_instruction": "fld xword ptr [0xe15c70]",
+            "compiled_instruction": "fld xword ptr [edi - 0x930]",
+            "base": "edi",
+            "displacement": -2352,
+            "original_cell": "00e15c70",
+            "operand_width": 10,
+            "materializes_address_only": false,
+            "read_extent": [
+              -2352,
+              -2342
+            ]
+          }
+        ],
+        "complete_control_flow_edges": [
+          {
+            "original_site": "00bfeb7a",
+            "original_target": "00bfeb81",
+            "compiled_offset": 13,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10000014"
+          },
+          {
+            "original_site": "00bfeb7c",
+            "original_target": "00c083a5",
+            "compiled_offset": 15,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10010000"
+          },
+          {
+            "original_site": "00bfeb91",
+            "original_target": "00bfec34",
+            "compiled_offset": 36,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100000c7"
+          },
+          {
+            "original_site": "00bfeb97",
+            "original_target": "00c083d5",
+            "compiled_offset": 42,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10030000"
+          },
+          {
+            "original_site": "00bfeb9c",
+            "original_target": "00bfec30",
+            "compiled_offset": 47,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100000c3"
+          },
+          {
+            "original_site": "00bfeba7",
+            "original_target": "00bfeca3",
+            "compiled_offset": 58,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1000013a"
+          },
+          {
+            "original_site": "00bfebb4",
+            "original_target": "00bfed0d",
+            "compiled_offset": 71,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100001a4"
+          },
+          {
+            "original_site": "00bfebbc",
+            "original_target": "00c08390",
+            "compiled_offset": 79,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10040000"
+          },
+          {
+            "original_site": "00bfebc4",
+            "original_target": "00bfebc8",
+            "compiled_offset": 87,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1000005b"
+          },
+          {
+            "original_site": "00bfebcf",
+            "original_target": "00c0842e",
+            "compiled_offset": 98,
+            "instruction": "jne",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10020000"
+          },
+          {
+            "original_site": "00bfebe0",
+            "original_target": "00c08479",
+            "compiled_offset": 115,
+            "instruction": "jmp",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10060000"
+          },
+          {
+            "original_site": "00bfebec",
+            "original_target": "00c0842e",
+            "compiled_offset": 127,
+            "instruction": "jne",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10020000"
+          },
+          {
+            "original_site": "00bfebfd",
+            "original_target": "00c08330",
+            "compiled_offset": 144,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10070000"
+          },
+          {
+            "original_site": "00bfec08",
+            "original_target": "00c083d5",
+            "compiled_offset": 155,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10030000"
+          },
+          {
+            "original_site": "00bfec12",
+            "original_target": "00bfec17",
+            "compiled_offset": 165,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100000aa"
+          },
+          {
+            "original_site": "00bfec15",
+            "original_target": "00bfec4a",
+            "compiled_offset": 168,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100000dd"
+          },
+          {
+            "original_site": "00bfec1e",
+            "original_target": "00bfebe5",
+            "compiled_offset": 177,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10000078"
+          },
+          {
+            "original_site": "00bfec25",
+            "original_target": "00bfec17",
+            "compiled_offset": 184,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100000aa"
+          },
+          {
+            "original_site": "00bfec2e",
+            "original_target": "00bfebe5",
+            "compiled_offset": 193,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10000078"
+          },
+          {
+            "original_site": "00bfec32",
+            "original_target": "00bfec4a",
+            "compiled_offset": 197,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100000dd"
+          },
+          {
+            "original_site": "00bfec3f",
+            "original_target": "00bfec04",
+            "compiled_offset": 210,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10000097"
+          },
+          {
+            "original_site": "00bfec45",
+            "original_target": "00c083d5",
+            "compiled_offset": 216,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10030000"
+          },
+          {
+            "original_site": "00bfec60",
+            "original_target": "00bfec68",
+            "compiled_offset": 243,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100000fb"
+          },
+          {
+            "original_site": "00bfec66",
+            "original_target": "00bfec20",
+            "compiled_offset": 249,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100000b3"
+          },
+          {
+            "original_site": "00bfec6a",
+            "original_target": "00bfec27",
+            "compiled_offset": 253,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100000ba"
+          },
+          {
+            "original_site": "00bfec80",
+            "original_target": "00c19e24",
+            "compiled_offset": 277,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10090000"
+          },
+          {
+            "original_site": "00bfec93",
+            "original_target": "00c0842e",
+            "compiled_offset": 298,
+            "instruction": "je",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10020000"
+          },
+          {
+            "original_site": "00bfec9e",
+            "original_target": "00bfebe5",
+            "compiled_offset": 309,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10000078"
+          },
+          {
+            "original_site": "00bfecb0",
+            "original_target": "00bfebad",
+            "compiled_offset": 327,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10000040"
+          },
+          {
+            "original_site": "00bfecc5",
+            "original_target": "00bfed04",
+            "compiled_offset": 348,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1000019b"
+          },
+          {
+            "original_site": "00bfecc7",
+            "original_target": "00bfed32",
+            "compiled_offset": 350,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10100000"
+          },
+          {
+            "original_site": "00bfecdb",
+            "original_target": "00bfecf3",
+            "compiled_offset": 370,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1000018a"
+          },
+          {
+            "original_site": "00bfece5",
+            "original_target": "00bfece9",
+            "compiled_offset": 380,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10000180"
+          },
+          {
+            "original_site": "00bfecee",
+            "original_target": "00bfebe5",
+            "compiled_offset": 389,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10000078"
+          },
+          {
+            "original_site": "00bfecf7",
+            "original_target": "00c0842e",
+            "compiled_offset": 398,
+            "instruction": "je",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10020000"
+          },
+          {
+            "original_site": "00bfecff",
+            "original_target": "00c0842e",
+            "compiled_offset": 406,
+            "instruction": "jmp",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10020000"
+          },
+          {
+            "original_site": "00bfed08",
+            "original_target": "00c0842e",
+            "compiled_offset": 415,
+            "instruction": "jmp",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10020000"
+          },
+          {
+            "original_site": "00bfed0f",
+            "original_target": "00bfed32",
+            "compiled_offset": 422,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10100000"
+          },
+          {
+            "original_site": "00bfed18",
+            "original_target": "00bfebba",
+            "compiled_offset": 431,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1000004d"
+          },
+          {
+            "original_site": "00bfed2d",
+            "original_target": "00bfebe5",
+            "compiled_offset": 452,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10000078"
+          }
+        ],
+        "original_to_compiled_instruction_offsets": {
+          "12577645": 0,
+          "12577647": 2,
+          "12577648": 3,
+          "12577649": 4,
+          "12577652": 7,
+          "12577658": 13,
+          "12577660": 15,
+          "12577665": 20,
+          "12577671": 26,
+          "12577675": 30,
+          "12577681": 36,
+          "12577687": 42,
+          "12577692": 47,
+          "12577698": 53,
+          "12577703": 58,
+          "12577709": 64,
+          "12577713": 68,
+          "12577716": 71,
+          "12577722": 77,
+          "12577724": 79,
+          "12577729": 84,
+          "12577732": 87,
+          "12577734": 89,
+          "12577736": 91,
+          "12577743": 98,
+          "12577749": 104,
+          "12577755": 110,
+          "12577760": 115,
+          "12577765": 120,
+          "12577772": 127,
+          "12577778": 133,
+          "12577784": 139,
+          "12577789": 144,
+          "12577794": 149,
+          "12577795": 150,
+          "12577796": 151,
+          "12577800": 155,
+          "12577805": 160,
+          "12577810": 165,
+          "12577812": 167,
+          "12577813": 168,
+          "12577815": 170,
+          "12577817": 172,
+          "12577822": 177,
+          "12577824": 179,
+          "12577829": 184,
+          "12577831": 186,
+          "12577833": 188,
+          "12577838": 193,
+          "12577840": 195,
+          "12577842": 197,
+          "12577844": 199,
+          "12577846": 201,
+          "12577851": 206,
+          "12577855": 210,
+          "12577857": 212,
+          "12577861": 216,
+          "12577866": 221,
+          "12577870": 225,
+          "12577872": 227,
+          "12577877": 232,
+          "12577883": 238,
+          "12577888": 243,
+          "12577890": 245,
+          "12577894": 249,
+          "12577896": 251,
+          "12577898": 253,
+          "12577900": 255,
+          "12577903": 258,
+          "12577905": 260,
+          "12577906": 261,
+          "12577909": 264,
+          "12577912": 267,
+          "12577916": 271,
+          "12577917": 272,
+          "12577920": 277,
+          "12577925": 284,
+          "12577928": 287,
+          "12577929": 288,
+          "12577932": 291,
+          "12577934": 293,
+          "12577937": 296,
+          "12577939": 298,
+          "12577945": 304,
+          "12577950": 309,
+          "12577955": 314,
+          "12577959": 318,
+          "12577964": 323,
+          "12577968": 327,
+          "12577974": 333,
+          "12577976": 335,
+          "12577980": 339,
+          "12577985": 344,
+          "12577989": 348,
+          "12577991": 350,
+          "12577996": 355,
+          "12578000": 359,
+          "12578003": 362,
+          "12578011": 370,
+          "12578013": 372,
+          "12578019": 378,
+          "12578021": 380,
+          "12578023": 382,
+          "12578025": 384,
+          "12578030": 389,
+          "12578035": 394,
+          "12578037": 396,
+          "12578039": 398,
+          "12578045": 404,
+          "12578047": 406,
+          "12578052": 411,
+          "12578054": 413,
+          "12578056": 415,
+          "12578061": 420,
+          "12578063": 422,
+          "12578068": 427,
+          "12578070": 429,
+          "12578072": 431,
+          "12578078": 437,
+          "12578080": 439,
+          "12578082": 441,
+          "12578088": 447,
+          "12578093": 452
+        }
+      },
+      {
+        "original_address": "00c083a5",
+        "symbol": "?prepare_native_crt_x87_control_00c083a5@bsp@@YAXXZ",
+        "object": "native_crt_x87_control",
+        "original_bytes": 23,
+        "compiled_bytes": 23,
+        "original_instruction_count": 6,
+        "compiled_instruction_count": 6,
+        "COFF_sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902",
+        "COFF_bytes_hex": "8b54240481e20003000083ca7f6689542406d96c2406c3",
+        "original_sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902",
+        "complete_original_equal_after_only_declared_changes": true,
+        "relocations": [],
+        "address_adaptations": [],
+        "complete_control_flow_edges": [],
+        "original_to_compiled_instruction_offsets": null
+      },
+      {
+        "original_address": "00c0842e",
+        "symbol": "?restore_native_crt_x87_control_tail_00c0842e@bsp@@YAXXZ",
+        "object": "native_crt_x87_control",
+        "original_bytes": 13,
+        "compiled_bytes": 13,
+        "original_instruction_count": 5,
+        "compiled_instruction_count": 5,
+        "COFF_sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd",
+        "COFF_bytes_hex": "66813c247f027403d92c245ac3",
+        "original_sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd",
+        "complete_original_equal_after_only_declared_changes": true,
+        "relocations": [],
+        "address_adaptations": [],
+        "complete_control_flow_edges": [
+          {
+            "original_site": "00c08434",
+            "original_target": "00c08439",
+            "compiled_offset": 6,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1002000b"
+          }
+        ],
+        "original_to_compiled_instruction_offsets": null
+      },
+      {
+        "original_address": "00c083d5",
+        "symbol": "?load_native_crt_double_x87_00c083d5@bsp@@YIIPAXPBX@Z",
+        "object": "native_crt_x87_double_load",
+        "original_bytes": 67,
+        "compiled_bytes": 67,
+        "original_instruction_count": 21,
+        "compiled_instruction_count": 21,
+        "COFF_sha256": "49756c88592603c59a91d5ecf8589dab665fc8a2ad0f138e5d6e3c3b05c21169",
+        "COFF_bytes_hex": "8b4204250000f07f3d0000f07f7403dd02c38b420483ec0a0d0000ff7f894424068b42048b0a0fa4c80bc1e10b89442404890c24db2c2483c40aa9000000008b4204c3",
+        "original_sha256": "49756c88592603c59a91d5ecf8589dab665fc8a2ad0f138e5d6e3c3b05c21169",
+        "complete_original_equal_after_only_declared_changes": true,
+        "relocations": [],
+        "address_adaptations": [],
+        "complete_control_flow_edges": [
+          {
+            "original_site": "00c083e2",
+            "original_target": "00c083e7",
+            "compiled_offset": 13,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10030012"
+          }
+        ],
+        "original_to_compiled_instruction_offsets": null
+      },
+      {
+        "original_address": "00c08390",
+        "symbol": "?exp2_native_crt_x87_00c08390@bsp@@YAXXZ",
+        "object": "native_crt_x87_power_leaves",
+        "original_bytes": 21,
+        "compiled_bytes": 21,
+        "original_instruction_count": 11,
+        "compiled_instruction_count": 11,
+        "COFF_sha256": "2dce0bc1ec224128643a743b9a3cab6795651b19324ae7b387a872b7d615ab3b",
+        "COFF_bytes_hex": "d9c0d9fcdce1d9c9d9e0d9f0d9e8dec1d9fdddd9c3",
+        "original_sha256": "2dce0bc1ec224128643a743b9a3cab6795651b19324ae7b387a872b7d615ab3b",
+        "complete_original_equal_after_only_declared_changes": true,
+        "relocations": [],
+        "address_adaptations": [],
+        "complete_control_flow_edges": [],
+        "original_to_compiled_instruction_offsets": null
+      },
+      {
+        "original_address": "00bfed32",
+        "symbol": "?classify_native_crt_power_exponent_00bfed32@bsp@@YIXPAXPBX@Z",
+        "object": "native_crt_x87_power_leaves",
+        "original_bytes": 40,
+        "compiled_bytes": 40,
+        "original_instruction_count": 21,
+        "compiled_instruction_count": 21,
+        "COFF_sha256": "0b85f5aeccf5896b61d6aeda697809bf07ba5a1a316c9bb00ace7aa8a2b8e910",
+        "COFF_bytes_hex": "d9c0d9fcd8d9b1009bdfe09e7517dc8a00000000fec1d9c0d9fcded99bdfe09e7502fec1c3ddd8c3",
+        "original_sha256": "4992e4a823cb56e02edb6481710eef718febe9d00b78c20e6070af69bcfc55fd",
+        "complete_original_equal_after_only_declared_changes": true,
+        "relocations": [],
+        "address_adaptations": [
+          {
+            "site": "00bfed40",
+            "compiled_offset": 14,
+            "original_instruction": "fmul qword ptr [0xe15850]",
+            "compiled_instruction": "fmul qword ptr [edx]",
+            "base": "edx",
+            "displacement": 0,
+            "original_cell": "00e15850",
+            "operand_width": 8,
+            "materializes_address_only": false,
+            "read_extent": [
+              0,
+              8
+            ]
+          }
+        ],
+        "complete_control_flow_edges": [
+          {
+            "original_site": "00bfed3e",
+            "original_target": "00bfed57",
+            "compiled_offset": 12,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10050025"
+          },
+          {
+            "original_site": "00bfed52",
+            "original_target": "00bfed56",
+            "compiled_offset": 32,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10050024"
+          }
+        ],
+        "original_to_compiled_instruction_offsets": null
+      },
+      {
+        "original_address": "00c08479",
+        "symbol": "?finish_native_crt_x87_result_status_tail_00c08479@bsp@@YAXXZ",
+        "object": "native_crt_x87_result_status",
+        "original_bytes": 163,
+        "compiled_bytes": 163,
+        "original_instruction_count": 57,
+        "compiled_instruction_count": 57,
+        "COFF_sha256": "8a68d289190593060033d97a290d90cc49efeb3b6a0e57c48ada215dc50a0efb",
+        "COFF_bytes_hex": "83ec08dd14248b44240483c408250000f07f743d3d0000f07f745f668b0424663d7f02742a6683e02075219bdfe06683e0207418b80800000083fa1d7407e8000000005ac3e8000000005ac3d92c245ac3dd8318000000d9c9d9fdddd9d9c0d9e1dc9b080000009bdfe09eb80400000073c7dc8b28000000ebbfdd8310000000d9c9d9fdddd9d9c0d9e1dc9b000000009bdfe09eb803000000769edc8b20000000eb96",
+        "original_sha256": "78a64b0bd08a6d69aa9cc724b569fdb3da3929e6dd8e6886a87e2d40326a3ead",
+        "complete_original_equal_after_only_declared_changes": true,
+        "relocations": [
+          {
+            "offset": 63,
+            "symbol_index": 10,
+            "symbol": "?dispatch_native_crt_unary_error_00c08347@bsp@@YAXXZ",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00c084b7",
+            "original_target": "00c08347",
+            "synthetic_bound_target": "10110000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 70,
+            "symbol_index": 9,
+            "symbol": "?dispatch_native_crt_binary_error_00c08330@bsp@@YAXXZ",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00c084be",
+            "original_target": "00c08330",
+            "synthetic_bound_target": "10070000",
+            "parity_new_binding_thunk": false
+          }
+        ],
+        "address_adaptations": [
+          {
+            "site": "00c084ca",
+            "compiled_offset": 81,
+            "original_instruction": "fld qword ptr [0xd6a69c]",
+            "compiled_instruction": "fld qword ptr [ebx + 0x18]",
+            "base": "ebx",
+            "displacement": 24,
+            "original_cell": "00d6a69c",
+            "operand_width": 8,
+            "materializes_address_only": false,
+            "read_extent": [
+              24,
+              32
+            ]
+          },
+          {
+            "site": "00c084da",
+            "compiled_offset": 97,
+            "original_instruction": "fcomp qword ptr [0xd6a68c]",
+            "compiled_instruction": "fcomp qword ptr [ebx + 8]",
+            "base": "ebx",
+            "displacement": 8,
+            "original_cell": "00d6a68c",
+            "operand_width": 8,
+            "materializes_address_only": false,
+            "read_extent": [
+              8,
+              16
+            ]
+          },
+          {
+            "site": "00c084eb",
+            "compiled_offset": 114,
+            "original_instruction": "fmul qword ptr [0xd6a6ac]",
+            "compiled_instruction": "fmul qword ptr [ebx + 0x28]",
+            "base": "ebx",
+            "displacement": 40,
+            "original_cell": "00d6a6ac",
+            "operand_width": 8,
+            "materializes_address_only": false,
+            "read_extent": [
+              40,
+              48
+            ]
+          },
+          {
+            "site": "00c084f3",
+            "compiled_offset": 122,
+            "original_instruction": "fld qword ptr [0xd6a694]",
+            "compiled_instruction": "fld qword ptr [ebx + 0x10]",
+            "base": "ebx",
+            "displacement": 16,
+            "original_cell": "00d6a694",
+            "operand_width": 8,
+            "materializes_address_only": false,
+            "read_extent": [
+              16,
+              24
+            ]
+          },
+          {
+            "site": "00c08503",
+            "compiled_offset": 138,
+            "original_instruction": "fcomp qword ptr [0xd6a684]",
+            "compiled_instruction": "fcomp qword ptr [ebx]",
+            "base": "ebx",
+            "displacement": 0,
+            "original_cell": "00d6a684",
+            "operand_width": 8,
+            "materializes_address_only": false,
+            "read_extent": [
+              0,
+              8
+            ]
+          },
+          {
+            "site": "00c08514",
+            "compiled_offset": 155,
+            "original_instruction": "fmul qword ptr [0xd6a6a4]",
+            "compiled_instruction": "fmul qword ptr [ebx + 0x20]",
+            "base": "ebx",
+            "displacement": 32,
+            "original_cell": "00d6a6a4",
+            "operand_width": 8,
+            "materializes_address_only": false,
+            "read_extent": [
+              32,
+              40
+            ]
+          }
+        ],
+        "complete_control_flow_edges": [
+          {
+            "original_site": "00c0848b",
+            "original_target": "00c084ca",
+            "compiled_offset": 18,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10060051"
+          },
+          {
+            "original_site": "00c08492",
+            "original_target": "00c084f3",
+            "compiled_offset": 25,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1006007a"
+          },
+          {
+            "original_site": "00c0849c",
+            "original_target": "00c084c8",
+            "compiled_offset": 35,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1006004f"
+          },
+          {
+            "original_site": "00c084a2",
+            "original_target": "00c084c5",
+            "compiled_offset": 41,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1006004c"
+          },
+          {
+            "original_site": "00c084ab",
+            "original_target": "00c084c5",
+            "compiled_offset": 50,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1006004c"
+          },
+          {
+            "original_site": "00c084b5",
+            "original_target": "00c084be",
+            "compiled_offset": 60,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10060045"
+          },
+          {
+            "original_site": "00c084b7",
+            "original_target": "00c08347",
+            "compiled_offset": 62,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10110000"
+          },
+          {
+            "original_site": "00c084be",
+            "original_target": "00c08330",
+            "compiled_offset": 69,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10070000"
+          },
+          {
+            "original_site": "00c084e9",
+            "original_target": "00c084b2",
+            "compiled_offset": 112,
+            "instruction": "jae",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10060039"
+          },
+          {
+            "original_site": "00c084f1",
+            "original_target": "00c084b2",
+            "compiled_offset": 120,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10060039"
+          },
+          {
+            "original_site": "00c08512",
+            "original_target": "00c084b2",
+            "compiled_offset": 153,
+            "instruction": "jbe",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10060039"
+          },
+          {
+            "original_site": "00c0851a",
+            "original_target": "00c084b2",
+            "compiled_offset": 161,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10060039"
+          }
+        ],
+        "original_to_compiled_instruction_offsets": null
+      },
+      {
+        "original_address": "00c08330",
+        "symbol": "?dispatch_native_crt_binary_error_00c08330@bsp@@YAXXZ",
+        "object": "native_crt_x87_error_dispatch",
+        "original_bytes": 83,
+        "compiled_bytes": 83,
+        "original_instruction_count": 32,
+        "compiled_instruction_count": 32,
+        "COFF_sha256": "6df77e4c47c71625a427b7f1d3294bceef86c9c99f4dc4ab87aca480a9e5c699",
+        "COFF_bytes_hex": "558bec83c4e08945e08b45188945f08b451c8945f4eb09558bec83c4e08945e0dd5df8894de48b45108b4d148945e8894dec8d45088d4de0505152e80000000083c40cdd45f866817d087f027403d96d08c9c3",
+        "original_sha256": "8d9caad7489b4d2ffdace4b370d50b29976ca686df0316daff644710ebaa1cd3",
+        "complete_original_equal_after_only_declared_changes": true,
+        "relocations": [
+          {
+            "offset": 60,
+            "symbol_index": 24,
+            "symbol": "?legacy_crt_87except_00c27489@bsp@@YAXHPAUCameraAxesCrtException@1@PAG@Z",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00c0836b",
+            "original_target": "00c27489",
+            "synthetic_bound_target": "10120000",
+            "parity_new_binding_thunk": false
+          }
+        ],
+        "address_adaptations": [],
+        "complete_control_flow_edges": [
+          {
+            "original_site": "00c08345",
+            "original_target": "00c08350",
+            "compiled_offset": 21,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10070020"
+          },
+          {
+            "original_site": "00c0836b",
+            "original_target": "00c27489",
+            "compiled_offset": 59,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10120000"
+          },
+          {
+            "original_site": "00c0837c",
+            "original_target": "00c08381",
+            "compiled_offset": 76,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10070051"
+          }
+        ],
+        "original_to_compiled_instruction_offsets": null
+      },
+      {
+        "original_address": "00c19dc0",
+        "symbol": "?native_crt_d_inttype_00c19dc0@bsp@@YAHII@Z",
+        "object": "native_crt_pow_special",
+        "original_bytes": 100,
+        "compiled_bytes": 100,
+        "original_instruction_count": 49,
+        "compiled_instruction_count": 49,
+        "COFF_sha256": "54f715dd8b3aff6cf946366e5b04db8055e77843d45e3fbec8036d22726a3736",
+        "COFF_bytes_hex": "558bec5151dd45085151dd1c24e800000000a89059597548dd45085151dd1c24e800000000dc5d085959dfe0f6c4447a2fdd450851dc8b0000000051dd5df8dd45f8dd1c24e800000000dc5df85959dfe0f6c4447a056a0258c9c333c040c9c333c0c9c3",
+        "original_sha256": "5d1cd56beacef97036b0e601692f067ca7866513d859c094856c8df773d2053b",
+        "complete_original_equal_after_only_declared_changes": true,
+        "relocations": [
+          {
+            "offset": 14,
+            "symbol_index": 12,
+            "symbol": "?native_crt_fpclass_00bfa52f@bsp@@YAHIII@Z",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00c19dcd",
+            "original_target": "00bfa52f",
+            "synthetic_bound_target": "100b0000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 33,
+            "symbol_index": 13,
+            "symbol": "?native_crt_frnd_st0_00c28548@bsp@@YAXII@Z",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00c19de0",
+            "original_target": "00c28548",
+            "synthetic_bound_target": "100c0000",
+            "parity_new_binding_thunk": false
+          },
+          {
+            "offset": 70,
+            "symbol_index": 13,
+            "symbol": "?native_crt_frnd_st0_00c28548@bsp@@YAXII@Z",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00c19e05",
+            "original_target": "00c28548",
+            "synthetic_bound_target": "100c0000",
+            "parity_new_binding_thunk": false
+          }
+        ],
+        "address_adaptations": [
+          {
+            "site": "00c19df5",
+            "compiled_offset": 53,
+            "original_instruction": "fmul qword ptr [0xd7a280]",
+            "compiled_instruction": "fmul qword ptr [ebx]",
+            "base": "ebx",
+            "displacement": 0,
+            "original_cell": "00d7a280",
+            "operand_width": 8,
+            "materializes_address_only": false,
+            "read_extent": [
+              0,
+              8
+            ]
+          }
+        ],
+        "complete_control_flow_edges": [
+          {
+            "original_site": "00c19dcd",
+            "original_target": "00bfa52f",
+            "compiled_offset": 13,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "100b0000"
+          },
+          {
+            "original_site": "00c19dd6",
+            "original_target": "00c19e20",
+            "compiled_offset": 22,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10080060"
+          },
+          {
+            "original_site": "00c19de0",
+            "original_target": "00c28548",
+            "compiled_offset": 32,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "100c0000"
+          },
+          {
+            "original_site": "00c19def",
+            "original_target": "00c19e20",
+            "compiled_offset": 47,
+            "instruction": "jp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10080060"
+          },
+          {
+            "original_site": "00c19e05",
+            "original_target": "00c28548",
+            "compiled_offset": 69,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "100c0000"
+          },
+          {
+            "original_site": "00c19e14",
+            "original_target": "00c19e1b",
+            "compiled_offset": 84,
+            "instruction": "jp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1008005b"
+          }
+        ],
+        "original_to_compiled_instruction_offsets": null
+      },
+      {
+        "original_address": "00c19e24",
+        "symbol": "?evaluate_native_crt_pow_special_00c19e24@bsp@@YAHIIIIPAX@Z",
+        "object": "native_crt_pow_special",
+        "original_bytes": 318,
+        "compiled_bytes": 318,
+        "original_instruction_count": 123,
+        "compiled_instruction_count": 123,
+        "COFF_sha256": "4f592d345cd7f51812643090f3976ae86e822b1f0171dfb25a3d3db25685373d",
+        "COFF_bytes_hex": "558becd9ee56dc550833d233f6dfe0dd4508f6c4417502d9e0b80000f07f394514b90000f0ff753d395510757fd9e8d8d1dfe0f6c4057a11dddaddd9ddd8dd8700000000e9e1000000d8d1dfe0ddd9f6c4418b45187507ddd8e9cf000000ddd9e9c8000000394d147542395510753dd9e8d8d1dfe0f6c4057a09ddd8ddd8e9a7000000dddaded9dfe0f6c4058b45187a0bdd8700000000e991000000dd870800000033f6dd1846e98d00000039450cddd87526395508757fdc5510dfe0f6c4050f8b76ffffffdc5510dfe0f6c4418b4518745addd8d9e8eb54394d0cddd875593955087554dd45105151dd1c24e800000000d9ee59dc5510598bc8dfe0f6c4057a1183f901ddd8dd8700000000751bd9e0eb17dc5510dfe0f6c441751483f9017508ddd8dd87200000008b4518dd18eb08ddd8d9e8ebf3ddd88bc65e5dc3",
+        "original_sha256": "bb908989912e1763ace71e1577482c3166c8854f6ef32640ba7ff6e4c0978e70",
+        "complete_original_equal_after_only_declared_changes": true,
+        "relocations": [
+          {
+            "offset": 238,
+            "symbol_index": 10,
+            "symbol": "?native_crt_d_inttype_00c19dc0@bsp@@YAHII@Z",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00c19f11",
+            "original_target": "00c19dc0",
+            "synthetic_bound_target": "10080000",
+            "parity_new_binding_thunk": false
+          }
+        ],
+        "address_adaptations": [
+          {
+            "site": "00c19e62",
+            "compiled_offset": 62,
+            "original_instruction": "fld qword ptr [0xe165a0]",
+            "compiled_instruction": "fld qword ptr [edi]",
+            "base": "edi",
+            "displacement": 0,
+            "original_cell": "00e165a0",
+            "operand_width": 8,
+            "materializes_address_only": false,
+            "read_extent": [
+              0,
+              8
+            ]
+          },
+          {
+            "site": "00c19eb5",
+            "compiled_offset": 145,
+            "original_instruction": "fld qword ptr [0xe165a0]",
+            "compiled_instruction": "fld qword ptr [edi]",
+            "base": "edi",
+            "displacement": 0,
+            "original_cell": "00e165a0",
+            "operand_width": 8,
+            "materializes_address_only": false,
+            "read_extent": [
+              0,
+              8
+            ]
+          },
+          {
+            "site": "00c19ec0",
+            "compiled_offset": 156,
+            "original_instruction": "fld qword ptr [0xe165a8]",
+            "compiled_instruction": "fld qword ptr [edi + 8]",
+            "base": "edi",
+            "displacement": 8,
+            "original_cell": "00e165a8",
+            "operand_width": 8,
+            "materializes_address_only": false,
+            "read_extent": [
+              8,
+              16
+            ]
+          },
+          {
+            "site": "00c19f2b",
+            "compiled_offset": 263,
+            "original_instruction": "fld qword ptr [0xe165a0]",
+            "compiled_instruction": "fld qword ptr [edi]",
+            "base": "edi",
+            "displacement": 0,
+            "original_cell": "00e165a0",
+            "operand_width": 8,
+            "materializes_address_only": false,
+            "read_extent": [
+              0,
+              8
+            ]
+          },
+          {
+            "site": "00c19f48",
+            "compiled_offset": 292,
+            "original_instruction": "fld qword ptr [0xe165c0]",
+            "compiled_instruction": "fld qword ptr [edi + 0x20]",
+            "base": "edi",
+            "displacement": 32,
+            "original_cell": "00e165c0",
+            "operand_width": 8,
+            "materializes_address_only": false,
+            "read_extent": [
+              32,
+              40
+            ]
+          }
+        ],
+        "complete_control_flow_edges": [
+          {
+            "original_site": "00c19e39",
+            "original_target": "00c19e3d",
+            "compiled_offset": 21,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10090019"
+          },
+          {
+            "original_site": "00c19e4a",
+            "original_target": "00c19e89",
+            "compiled_offset": 38,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10090065"
+          },
+          {
+            "original_site": "00c19e4f",
+            "original_target": "00c19ed0",
+            "compiled_offset": 43,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100900ac"
+          },
+          {
+            "original_site": "00c19e5a",
+            "original_target": "00c19e6d",
+            "compiled_offset": 54,
+            "instruction": "jp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10090049"
+          },
+          {
+            "original_site": "00c19e68",
+            "original_target": "00c19f4e",
+            "compiled_offset": 68,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1009012a"
+          },
+          {
+            "original_site": "00c19e79",
+            "original_target": "00c19e82",
+            "compiled_offset": 85,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1009005e"
+          },
+          {
+            "original_site": "00c19e7d",
+            "original_target": "00c19f51",
+            "compiled_offset": 89,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1009012d"
+          },
+          {
+            "original_site": "00c19e84",
+            "original_target": "00c19f51",
+            "compiled_offset": 96,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1009012d"
+          },
+          {
+            "original_site": "00c19e8c",
+            "original_target": "00c19ed0",
+            "compiled_offset": 104,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100900ac"
+          },
+          {
+            "original_site": "00c19e91",
+            "original_target": "00c19ed0",
+            "compiled_offset": 109,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100900ac"
+          },
+          {
+            "original_site": "00c19e9c",
+            "original_target": "00c19ea7",
+            "compiled_offset": 120,
+            "instruction": "jp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10090083"
+          },
+          {
+            "original_site": "00c19ea2",
+            "original_target": "00c19f4e",
+            "compiled_offset": 126,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1009012a"
+          },
+          {
+            "original_site": "00c19eb3",
+            "original_target": "00c19ec0",
+            "compiled_offset": 143,
+            "instruction": "jp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1009009c"
+          },
+          {
+            "original_site": "00c19ebb",
+            "original_target": "00c19f51",
+            "compiled_offset": 151,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1009012d"
+          },
+          {
+            "original_site": "00c19ecb",
+            "original_target": "00c19f5d",
+            "compiled_offset": 167,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10090139"
+          },
+          {
+            "original_site": "00c19ed5",
+            "original_target": "00c19efd",
+            "compiled_offset": 177,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100900d9"
+          },
+          {
+            "original_site": "00c19eda",
+            "original_target": "00c19f5b",
+            "compiled_offset": 182,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10090137"
+          },
+          {
+            "original_site": "00c19ee4",
+            "original_target": "00c19e60",
+            "compiled_offset": 192,
+            "instruction": "jnp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1009003c"
+          },
+          {
+            "original_site": "00c19ef5",
+            "original_target": "00c19f51",
+            "compiled_offset": 209,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1009012d"
+          },
+          {
+            "original_site": "00c19efb",
+            "original_target": "00c19f51",
+            "compiled_offset": 215,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1009012d"
+          },
+          {
+            "original_site": "00c19f02",
+            "original_target": "00c19f5d",
+            "compiled_offset": 222,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10090139"
+          },
+          {
+            "original_site": "00c19f07",
+            "original_target": "00c19f5d",
+            "compiled_offset": 227,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10090139"
+          },
+          {
+            "original_site": "00c19f11",
+            "original_target": "00c19dc0",
+            "compiled_offset": 237,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "10080000"
+          },
+          {
+            "original_site": "00c19f24",
+            "original_target": "00c19f37",
+            "compiled_offset": 256,
+            "instruction": "jp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10090113"
+          },
+          {
+            "original_site": "00c19f31",
+            "original_target": "00c19f4e",
+            "compiled_offset": 269,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1009012a"
+          },
+          {
+            "original_site": "00c19f35",
+            "original_target": "00c19f4e",
+            "compiled_offset": 273,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1009012a"
+          },
+          {
+            "original_site": "00c19f3f",
+            "original_target": "00c19f55",
+            "compiled_offset": 283,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10090131"
+          },
+          {
+            "original_site": "00c19f44",
+            "original_target": "00c19f4e",
+            "compiled_offset": 288,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1009012a"
+          },
+          {
+            "original_site": "00c19f53",
+            "original_target": "00c19f5d",
+            "compiled_offset": 303,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "10090139"
+          },
+          {
+            "original_site": "00c19f59",
+            "original_target": "00c19f4e",
+            "compiled_offset": 309,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "1009012a"
+          }
+        ],
+        "original_to_compiled_instruction_offsets": null
+      },
+      {
+        "original_address": "00c12f3e",
+        "symbol": "?native_crt_sptype_00c12f3e@bsp@@YAHIII@Z",
+        "object": "native_crt_double_classification",
+        "original_bytes": 91,
+        "compiled_bytes": 91,
+        "original_instruction_count": 37,
+        "compiled_instruction_count": 37,
+        "COFF_sha256": "8da8f43c35003777f547ce2903c0cc655f41647bdbb2f7740c11506109fcdabc",
+        "COFF_bytes_hex": "558bec33d2817d0c0000f07f750a395508751833c0405dc3817d0c0000f0ff750a39550875056a02585dc38b4d0eb8f87f000023c8663bc875046a03ebea6681f9f07f7512f7450cffff0700750539550874046a04ebd133c05dc3",
+        "original_sha256": "8da8f43c35003777f547ce2903c0cc655f41647bdbb2f7740c11506109fcdabc",
+        "complete_original_equal_after_only_declared_changes": true,
+        "relocations": [],
+        "address_adaptations": [],
+        "complete_control_flow_edges": [
+          {
+            "original_site": "00c12f4a",
+            "original_target": "00c12f56",
+            "compiled_offset": 12,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100a0018"
+          },
+          {
+            "original_site": "00c12f4f",
+            "original_target": "00c12f69",
+            "compiled_offset": 17,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100a002b"
+          },
+          {
+            "original_site": "00c12f5d",
+            "original_target": "00c12f69",
+            "compiled_offset": 31,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100a002b"
+          },
+          {
+            "original_site": "00c12f62",
+            "original_target": "00c12f69",
+            "compiled_offset": 36,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100a002b"
+          },
+          {
+            "original_site": "00c12f76",
+            "original_target": "00c12f7c",
+            "compiled_offset": 56,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100a003e"
+          },
+          {
+            "original_site": "00c12f7a",
+            "original_target": "00c12f66",
+            "compiled_offset": 60,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100a0028"
+          },
+          {
+            "original_site": "00c12f81",
+            "original_target": "00c12f95",
+            "compiled_offset": 67,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100a0057"
+          },
+          {
+            "original_site": "00c12f8a",
+            "original_target": "00c12f91",
+            "compiled_offset": 76,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100a0053"
+          },
+          {
+            "original_site": "00c12f8f",
+            "original_target": "00c12f95",
+            "compiled_offset": 81,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100a0057"
+          },
+          {
+            "original_site": "00c12f93",
+            "original_target": "00c12f66",
+            "compiled_offset": 85,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100a0028"
+          }
+        ],
+        "original_to_compiled_instruction_offsets": null
+      },
+      {
+        "original_address": "00bfa52f",
+        "symbol": "?native_crt_fpclass_00bfa52f@bsp@@YAHIII@Z",
+        "object": "native_crt_double_classification",
+        "original_bytes": 148,
+        "compiled_bytes": 148,
+        "original_instruction_count": 66,
+        "compiled_instruction_count": 66,
+        "COFF_sha256": "8095c8474514fb1020450a0ed03afb6f9d6d1dce2fdbd91e9102ea8de509f5e0",
+        "COFF_bytes_hex": "558bec8b450eb9f07f00008bd023d1663bd1752ddd45085151dd1c24e800000000485959741448740c48740533c0405dc36a02eb026a04585dc3b8000200005dc325008000006685d28bc8751df7450cffff0f007506837d0800740ef7d81bc083e09005800000005dc3d9eedc5d08dfe0f6c4448bc17a0cf7d81bc083e0e083c0405dc3f7d81bc02508ffffff05000100005dc3",
+        "original_sha256": "489c05df5e3dcacce2e2bd3a8884e3fa8b4a93cab87a8c025683e5abb01dadf9",
+        "complete_original_equal_after_only_declared_changes": true,
+        "relocations": [
+          {
+            "offset": 29,
+            "symbol_index": 12,
+            "symbol": "?native_crt_sptype_00c12f3e@bsp@@YAHIII@Z",
+            "symbol_value": 0,
+            "type": 20,
+            "COFF_addend": 0,
+            "original_site": "00bfa54b",
+            "original_target": "00c12f3e",
+            "synthetic_bound_target": "100a0000",
+            "parity_new_binding_thunk": false
+          }
+        ],
+        "address_adaptations": [],
+        "complete_control_flow_edges": [
+          {
+            "original_site": "00bfa541",
+            "original_target": "00bfa570",
+            "compiled_offset": 18,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100b0041"
+          },
+          {
+            "original_site": "00bfa54b",
+            "original_target": "00c12f3e",
+            "compiled_offset": 28,
+            "instruction": "call",
+            "kind": "declared external COFF binding",
+            "synthetic_target": "100a0000"
+          },
+          {
+            "original_site": "00bfa553",
+            "original_target": "00bfa569",
+            "compiled_offset": 36,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100b003a"
+          },
+          {
+            "original_site": "00bfa556",
+            "original_target": "00bfa564",
+            "compiled_offset": 39,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100b0035"
+          },
+          {
+            "original_site": "00bfa559",
+            "original_target": "00bfa560",
+            "compiled_offset": 42,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100b0031"
+          },
+          {
+            "original_site": "00bfa562",
+            "original_target": "00bfa566",
+            "compiled_offset": 51,
+            "instruction": "jmp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100b0037"
+          },
+          {
+            "original_site": "00bfa57a",
+            "original_target": "00bfa599",
+            "compiled_offset": 75,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100b006a"
+          },
+          {
+            "original_site": "00bfa583",
+            "original_target": "00bfa58b",
+            "compiled_offset": 84,
+            "instruction": "jne",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100b005c"
+          },
+          {
+            "original_site": "00bfa589",
+            "original_target": "00bfa599",
+            "compiled_offset": 90,
+            "instruction": "je",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100b006a"
+          },
+          {
+            "original_site": "00bfa5a5",
+            "original_target": "00bfa5b3",
+            "compiled_offset": 118,
+            "instruction": "jp",
+            "kind": "internal mapped branch",
+            "synthetic_target": "100b0084"
+          }
+        ],
+        "original_to_compiled_instruction_offsets": null
+      },
+      {
+        "original_address": "00c28548",
+        "symbol": "?native_crt_frnd_st0_00c28548@bsp@@YAXII@Z",
+        "object": "native_crt_double_classification",
+        "original_bytes": 17,
+        "compiled_bytes": 17,
+        "original_instruction_count": 9,
+        "compiled_instruction_count": 9,
+        "COFF_sha256": "f0569f9986dd9a4e0e5221fe827399ad64814ea5ee48f12ced110ca75a4b6ca4",
+        "COFF_bytes_hex": "5151dd44240cd9fcdd1c24dd04245959c3",
+        "original_sha256": "f0569f9986dd9a4e0e5221fe827399ad64814ea5ee48f12ced110ca75a4b6ca4",
+        "complete_original_equal_after_only_declared_changes": true,
+        "relocations": [],
+        "address_adaptations": [],
+        "complete_control_flow_edges": [],
+        "original_to_compiled_instruction_offsets": null
+      }
+    ],
+    "new_parity_thunk": {
+      "symbol": "?bind_native_pow_parity_half@?A0x9f93a179@bsp@@YAXXZ",
+      "bytes": 11,
+      "COFF_bytes_hex": "8d97b0f2ffffe900000000",
+      "COFF_sha256": "3ebae9194cf955138e94e9127998b738cff7af655d396994132fb55830500e82",
+      "relocation": {
+        "offset": 7,
+        "symbol_index": 15,
+        "symbol": "?classify_native_crt_power_exponent_00bfed32@bsp@@YIXPAXPBX@Z",
+        "symbol_value": 0,
+        "type": 20,
+        "COFF_addend": 0
+      },
+      "instruction_effect": "LEA EDX,[EDI-D50h] then JMP complete BFED32; no stack/flags/FP effect; EDX only register change",
+      "caller_old_EDX_dead_proof": [
+        {
+          "continuation": "00bfeccc",
+          "visited_instructions": [
+            "00bfebe5",
+            "00bfebec",
+            "00bfebf2",
+            "00bfebf8",
+            "00bfeccc",
+            "00bfecd0",
+            "00bfecd3",
+            "00bfecdb",
+            "00bfecdd",
+            "00bfece3",
+            "00bfece5",
+            "00bfece7",
+            "00bfece9",
+            "00bfecee",
+            "00bfecf3",
+            "00bfecf5",
+            "00bfecf7",
+            "00bfecfd",
+            "00bfecff"
+          ],
+          "first_full_EDX_writes": [
+            "00c08439 POP EDX via full restore tail",
+            "00bfebf8",
+            "00c08439 POP EDX via full restore tail",
+            "00c08439 POP EDX via full restore tail"
+          ],
+          "no_old_EDX_read": true
+        },
+        {
+          "continuation": "00bfed14",
+          "visited_instructions": [
+            "00bfebba",
+            "00bfebbc",
+            "00bfebc1",
+            "00bfebc4",
+            "00bfebc6",
+            "00bfebc8",
+            "00bfebcf",
+            "00bfebd5",
+            "00bfebdb",
+            "00bfebe5",
+            "00bfebec",
+            "00bfebf2",
+            "00bfebf8",
+            "00bfed14",
+            "00bfed16",
+            "00bfed18",
+            "00bfed1e",
+            "00bfed20",
+            "00bfed22",
+            "00bfed28",
+            "00bfed2d"
+          ],
+          "first_full_EDX_writes": [
+            "00c08439 POP EDX via full restore tail",
+            "00bfebf8",
+            "00c08439 POP EDX via full restore tail",
+            "00bfebdb"
+          ],
+          "no_old_EDX_read": true
+        }
+      ]
+    },
+    "existing_unary_thunk": {
+      "symbol": "?dispatch_native_crt_unary_error_00c08347@bsp@@YAXXZ",
+      "bytes": 5,
+      "COFF_bytes_hex": "e917000000",
+      "relocation": {
+        "offset": 1,
+        "symbol_index": 22,
+        "symbol": "?dispatch_native_crt_binary_error_00c08330@bsp@@YAXXZ",
+        "symbol_value": 0,
+        "type": 20,
+        "COFF_addend": 23
+      },
+      "single_JMP_target_plus17h": true
+    },
+    "concrete_provider": {
+      "symbol": "?legacy_crt_87except_00c27489@bsp@@YAXHPAUCameraAxesCrtException@1@PAG@Z",
+      "whole_compiled_section": {
+        "index": 36,
+        "name": ".text$mn",
+        "size": 420,
+        "data_offset": 7269,
+        "sha256": "5ca6b51e86a3870936a8c1e53d9f39cd22c4efc4a4ff29c0c3b147d4b19b42a0",
+        "characteristics": "60501020",
+        "relocations": [
+          {
+            "offset": 29,
+            "symbol_index": 249,
+            "symbol": "___security_cookie",
+            "symbol_value": 0,
+            "type": 6
+          },
+          {
+            "offset": 40,
+            "symbol_index": 176,
+            "symbol": "?runtime_binding@?A0xf274e878@bsp@@3U?$atomic@PBULegacyCrtMathRuntime@bsp@@@std@@A",
+            "symbol_value": 0,
+            "type": 6
+          },
+          {
+            "offset": 90,
+            "symbol_index": 146,
+            "symbol": "$LN28",
+            "symbol_value": 388,
+            "type": 6
+          },
+          {
+            "offset": 142,
+            "symbol_index": 136,
+            "symbol": "?handle_00c13364@?A0xf274e878@bsp@@YA_NIAANI@Z",
+            "symbol_value": 0,
+            "type": 20
+          },
+          {
+            "offset": 162,
+            "symbol_index": 144,
+            "symbol": "_memset",
+            "symbol_value": 0,
+            "type": 20
+          },
+          {
+            "offset": 243,
+            "symbol_index": 138,
+            "symbol": "?raise_00c13322@?A0xf274e878@bsp@@YAXAAUIeeeRecord@12@AAIIHAAUCameraAxesCrtException@2@@Z",
+            "symbol_value": 0,
+            "type": 20
+          },
+          {
+            "offset": 304,
+            "symbol_index": 142,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_value": 0,
+            "type": 20
+          },
+          {
+            "offset": 344,
+            "symbol_index": 142,
+            "symbol": "@__security_check_cookie@4",
+            "symbol_value": 0,
+            "type": 20
+          },
+          {
+            "offset": 356,
+            "symbol_index": 212,
+            "symbol": "??_C@_0CL@PIJCHJM@Legacy?5CRT?5math?5runtime?5has?5not?5@",
+            "symbol_value": 0,
+            "type": 6
+          },
+          {
+            "offset": 367,
+            "symbol_index": 113,
+            "symbol": "??0logic_error@std@@QAE@PBD@Z",
+            "symbol_value": 0,
+            "type": 20
+          },
+          {
+            "offset": 372,
+            "symbol_index": 206,
+            "symbol": "__TI2?AVlogic_error@std@@",
+            "symbol_value": 0,
+            "type": 6
+          },
+          {
+            "offset": 384,
+            "symbol_index": 143,
+            "symbol": "__CxxThrowException@8",
+            "symbol_value": 0,
+            "type": 20
+          },
+          {
+            "offset": 388,
+            "symbol_index": 147,
+            "symbol": "$LN5",
+            "symbol_value": 94,
+            "type": 6
+          },
+          {
+            "offset": 392,
+            "symbol_index": 148,
+            "symbol": "$LN7",
+            "symbol_value": 101,
+            "type": 6
+          },
+          {
+            "offset": 396,
+            "symbol_index": 149,
+            "symbol": "$LN8",
+            "symbol_value": 108,
+            "type": 6
+          },
+          {
+            "offset": 400,
+            "symbol_index": 150,
+            "symbol": "$LN9",
+            "symbol_value": 115,
+            "type": 6
+          },
+          {
+            "offset": 404,
+            "symbol_index": 147,
+            "symbol": "$LN5",
+            "symbol_value": 94,
+            "type": 6
+          },
+          {
+            "offset": 408,
+            "symbol_index": 154,
+            "symbol": "$LN12",
+            "symbol_value": 256,
+            "type": 6
+          },
+          {
+            "offset": 412,
+            "symbol_index": 151,
+            "symbol": "$LN10",
+            "symbol_value": 122,
+            "type": 6
+          },
+          {
+            "offset": 416,
+            "symbol_index": 152,
+            "symbol": "$LN11",
+            "symbol_value": 130,
+            "type": 6
+          }
+        ]
+      },
+      "COFF_bytes_hex": "538bdc83ec0883e4f083c404558b6b04896c24048bec81eca8000000a10000000033c58945fc8b0d000000008b4310568b730c57898d7cffffff85c90f84210100000fb7108b0648899578ffffff83f8070f87a9000000ff248500000000bf08000000eb22bf04000000eb1bbf11000000eb14bf12000000eb0dc70601000000eb7ebf10000000528d46185057e80000000083c40c84c075616a708d45806a0050e8000000008b4b0883c40c83f910740a83f916740583f91d75298d4610898570ffffff8d45b089856cffffff8b8570ffffff8b956cffffffdd00dd1ac745c0030000005651578d8578ffffff508d458050e80000000083c4148b8d7cffffff9bd9bd74ffffffd9ad78ffffff833e0874048b018b008b0683f801751e8b4104ffd0c700210000005f5e8b4dfc33cde8000000008be55d8be35bc383f802740583f803750b8b4104ffd0c700220000008b4dfc5f33cd5ee8000000008be55d8be35bc368000000008d8d60ffffffe80000000068000000008d8560ffffff50e8000000000000000000000000000000000000000000000000000000000000000000000000",
+      "COFF_sha256": "5ca6b51e86a3870936a8c1e53d9f39cd22c4efc4a4ff29c0c3b147d4b19b42a0",
+      "original_byte_equality_claim": false,
+      "normal_EBX_save_restore_checked": true,
+      "preservation_boundary": "Established actual Win32 cdecl/runtime ABI; no arbitrary callback or full original FP/SEH/volatile equivalence"
+    }
+  },
+  "diagnostic_artifacts": {
+    "failed_build_logs": [
+      "local/pow_fallback/build_attempt1.log",
+      "local/pow_fallback/build_attempt2.log"
+    ],
+    "successful_pre_TEST_encoding_fix_log": "local/pow_fallback/build_attempt3.log",
+    "pre_TEST_encoding_fix_archive_directory": "local/pow_fallback/attempt3_archive",
+    "final_frozen_directory": "local/pow_fallback/frozen",
+    "diagnostic_archive_is_not_final_proof": true
+  },
+  "limitations": [
+    "Assembly-only caller registers/raw stack contract is not ordinary C++ pow or original-address ABI compatibility.",
+    "Original immutable literal-region layout and actual current global binding are explicit; no synthesized table/snapshot or forced dispatch policy.",
+    "Register swaps, CW restoration and FRSTOR obligations apply to normal returns; no new native EH/nonlocal cleanup guarantee.",
+    "Original classification readable-tail and parity precision/rounding limits remain, as do complete concrete error-provider FP/runtime/SEH limits.",
+    "Synthetic relocation binding and full object proof are not linked-runtime, hardware-exception or game validation.",
+    "BFEB10 public/SSE2 C19260-C19279 path and renderer gamma remain separate;109EEA0 is neither read nor forced by this source.",
+    "No shared CMake/metadata/Ghidra or installed-game changes; ignored build hook registers existing result-status provider at this base."
+  ],
+  "artifact_pins": [
+    {
+      "path": "local/pow_fallback/00bfa52f_assembly.txt",
+      "bytes": 1470,
+      "sha256": "be173a120324f174a2827d490f04a931ede98cbb3d8c994c580cd92e7418d7a5"
+    },
+    {
+      "path": "local/pow_fallback/00bfa52f_original.bin",
+      "bytes": 148,
+      "sha256": "489c05df5e3dcacce2e2bd3a8884e3fa8b4a93cab87a8c025683e5abb01dadf9"
+    },
+    {
+      "path": "local/pow_fallback/00bfeb10_assembly.txt",
+      "bytes": 634,
+      "sha256": "9bc564d038ceb21b87dae3b1eef34744842fc5f44704ef847689cc8db4e9ca82"
+    },
+    {
+      "path": "local/pow_fallback/00bfeb10_original.bin",
+      "bytes": 84,
+      "sha256": "b3beb57cc454f176724b8b08a07f64930e11c1f4cc2178a697a31fa3aeb67b1c"
+    },
+    {
+      "path": "local/pow_fallback/00bfeb6d_assembly.txt",
+      "bytes": 3139,
+      "sha256": "f25df4684fb8ea0c4727dd74f4d6c973ece9bb806dccbbb9951bd6fbcc44ca65"
+    },
+    {
+      "path": "local/pow_fallback/00bfeb6d_original.bin",
+      "bytes": 453,
+      "sha256": "ae19f7cb6cf7dd3a9b92571af200a59255b12bf08189887f696833197e4f8596"
+    },
+    {
+      "path": "local/pow_fallback/00bfed32_assembly.txt",
+      "bytes": 409,
+      "sha256": "dde703bf30af5ddb67e41ee06fa438dc278ba4afe15f93df9aa208f1c20faa62"
+    },
+    {
+      "path": "local/pow_fallback/00bfed32_original.bin",
+      "bytes": 40,
+      "sha256": "4992e4a823cb56e02edb6481710eef718febe9d00b78c20e6070af69bcfc55fd"
+    },
+    {
+      "path": "local/pow_fallback/00c08330_assembly.txt",
+      "bytes": 981,
+      "sha256": "f2fae71613d2005876deecdf9fc7c628f711f9b63800ba51e39a21eecdb5825a"
+    },
+    {
+      "path": "local/pow_fallback/00c08330_original.bin",
+      "bytes": 83,
+      "sha256": "8d9caad7489b4d2ffdace4b370d50b29976ca686df0316daff644710ebaa1cd3"
+    },
+    {
+      "path": "local/pow_fallback/00c08390_assembly.txt",
+      "bytes": 214,
+      "sha256": "eaadef5f6c06af629cccd6f0649fe9d09dbd79f4f8eb160a059ba4213a259a84"
+    },
+    {
+      "path": "local/pow_fallback/00c08390_original.bin",
+      "bytes": 21,
+      "sha256": "2dce0bc1ec224128643a743b9a3cab6795651b19324ae7b387a872b7d615ab3b"
+    },
+    {
+      "path": "local/pow_fallback/00c083a5_assembly.txt",
+      "bytes": 174,
+      "sha256": "9fc7105d632abdf027e28704edd247f86276f8c17313d3a6364db85aea45ad7b"
+    },
+    {
+      "path": "local/pow_fallback/00c083a5_original.bin",
+      "bytes": 23,
+      "sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902"
+    },
+    {
+      "path": "local/pow_fallback/00c083d5_assembly.txt",
+      "bytes": 625,
+      "sha256": "2d8265b18c622a5bb76e45b0c28408a08551f3bbf445d8382a27b700b0a0b5e6"
+    },
+    {
+      "path": "local/pow_fallback/00c083d5_original.bin",
+      "bytes": 67,
+      "sha256": "49756c88592603c59a91d5ecf8589dab665fc8a2ad0f138e5d6e3c3b05c21169"
+    },
+    {
+      "path": "local/pow_fallback/00c0842e_assembly.txt",
+      "bytes": 122,
+      "sha256": "d4d1e0d9024bd7800d77ba8047dff68f1154d858bb0fe097f7bc348095c3bba3"
+    },
+    {
+      "path": "local/pow_fallback/00c0842e_original.bin",
+      "bytes": 13,
+      "sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd"
+    },
+    {
+      "path": "local/pow_fallback/00c08479_assembly.txt",
+      "bytes": 1312,
+      "sha256": "c9dd13542b8bde4a9f32766e3b59db38dad9ae7ba8bcea9af7ce5ae34cb45a1f"
+    },
+    {
+      "path": "local/pow_fallback/00c08479_original.bin",
+      "bytes": 163,
+      "sha256": "78a64b0bd08a6d69aa9cc724b569fdb3da3929e6dd8e6886a87e2d40326a3ead"
+    },
+    {
+      "path": "local/pow_fallback/00c12f3e_assembly.txt",
+      "bytes": 921,
+      "sha256": "5565071973aba1a0e2351dd8b39c3685fbf1ee04cfbadda1a74b7d45374f161d"
+    },
+    {
+      "path": "local/pow_fallback/00c12f3e_original.bin",
+      "bytes": 91,
+      "sha256": "8da8f43c35003777f547ce2903c0cc655f41647bdbb2f7740c11506109fcdabc"
+    },
+    {
+      "path": "local/pow_fallback/00c19dc0_assembly.txt",
+      "bytes": 1120,
+      "sha256": "13b744f512e7a19e469d1551dd0cf90b79923e4ae2e67be12376feca68cfa87f"
+    },
+    {
+      "path": "local/pow_fallback/00c19dc0_original.bin",
+      "bytes": 100,
+      "sha256": "5d1cd56beacef97036b0e601692f067ca7866513d859c094856c8df773d2053b"
+    },
+    {
+      "path": "local/pow_fallback/00c19e24_assembly.txt",
+      "bytes": 3055,
+      "sha256": "5428e343a663da055dee2a60ff7784ce170c1f78efc9bb8b57034c282cdfab45"
+    },
+    {
+      "path": "local/pow_fallback/00c19e24_original.bin",
+      "bytes": 318,
+      "sha256": "bb908989912e1763ace71e1577482c3166c8854f6ef32640ba7ff6e4c0978e70"
+    },
+    {
+      "path": "local/pow_fallback/00c27489_assembly.txt",
+      "bytes": 2524,
+      "sha256": "9d145e638f65b53156d278a01c6f02bae46690b538fd3b512d2db3a80bfda5d2"
+    },
+    {
+      "path": "local/pow_fallback/00c27489_original.bin",
+      "bytes": 252,
+      "sha256": "d37fbe839752e461c499e00efbab214ced7ec9949db486196587fe39b0adc498"
+    },
+    {
+      "path": "local/pow_fallback/00c28548_assembly.txt",
+      "bytes": 205,
+      "sha256": "e3252b01fca97b6d122f344b521958316851f0547f8795a6efa86986dcef8173"
+    },
+    {
+      "path": "local/pow_fallback/00c28548_original.bin",
+      "bytes": 17,
+      "sha256": "f0569f9986dd9a4e0e5221fe827399ad64814ea5ee48f12ced110ca75a4b6ca4"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/bsp_core.lib",
+      "bytes": 40520454,
+      "sha256": "fc177a5ab746735fd9ea57787286d6b8112d4621d3fde1fcb197747ff08a7937"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/legacy_crt_math.obj",
+      "bytes": 18520,
+      "sha256": "0a3cd7f456badbbcece7db40dad40932449cf87836ee613b9236e892f71533f3"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/legacy_crt_math_archive_member.obj",
+      "bytes": 18520,
+      "sha256": "0a3cd7f456badbbcece7db40dad40932449cf87836ee613b9236e892f71533f3"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_double_classification.obj",
+      "bytes": 1275,
+      "sha256": "68da516d8c04a27b686e96b221ecc1a84cbaee41b4f8d2c03bd36d4f000c8b66"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_double_classification_archive_member.obj",
+      "bytes": 1275,
+      "sha256": "68da516d8c04a27b686e96b221ecc1a84cbaee41b4f8d2c03bd36d4f000c8b66"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_pow_fallback.obj",
+      "bytes": 2102,
+      "sha256": "157566e1680ff233046b6c46a0bbcb0b0d5ac470d4229b0e6c1d2e87faa59906"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_pow_fallback_archive_member.obj",
+      "bytes": 2102,
+      "sha256": "157566e1680ff233046b6c46a0bbcb0b0d5ac470d4229b0e6c1d2e87faa59906"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_pow_special.obj",
+      "bytes": 1455,
+      "sha256": "a2c35d69c652c4c499cc019daadde3ef2a9a20e6dcd601f96d9e5a8ca21a40a8"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_pow_special_archive_member.obj",
+      "bytes": 1455,
+      "sha256": "a2c35d69c652c4c499cc019daadde3ef2a9a20e6dcd601f96d9e5a8ca21a40a8"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_x87_control.obj",
+      "bytes": 916,
+      "sha256": "94f5242ce086dce55dc0ed88c5da2384e12cc94c0981c2f02cbc82dcc6d9637a"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_x87_control_archive_member.obj",
+      "bytes": 916,
+      "sha256": "94f5242ce086dce55dc0ed88c5da2384e12cc94c0981c2f02cbc82dcc6d9637a"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_x87_double_load.obj",
+      "bytes": 794,
+      "sha256": "1517c24dc2c000d8604b02d43c379863494e333ca980580ef9d65594dfcce9df"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_x87_double_load_archive_member.obj",
+      "bytes": 794,
+      "sha256": "1517c24dc2c000d8604b02d43c379863494e333ca980580ef9d65594dfcce9df"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_x87_error_dispatch.obj",
+      "bytes": 2697,
+      "sha256": "094d6abb5561cbdf4396e3e6073d2fae4ccd6049c1ea41638d972824882a7bb5"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_x87_error_dispatch_archive_member.obj",
+      "bytes": 2697,
+      "sha256": "094d6abb5561cbdf4396e3e6073d2fae4ccd6049c1ea41638d972824882a7bb5"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_x87_power_leaves.obj",
+      "bytes": 939,
+      "sha256": "2139d5f8b33c7ab42415f9dce5398b6f0abbf4e0bcf3018699cc01af7230ba91"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_x87_power_leaves_archive_member.obj",
+      "bytes": 939,
+      "sha256": "2139d5f8b33c7ab42415f9dce5398b6f0abbf4e0bcf3018699cc01af7230ba91"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_x87_result_status.obj",
+      "bytes": 1061,
+      "sha256": "46e8ba9ffa8f43b8e90e133423ed4dc553f89c33fd35fb2fd53f13b054863982"
+    },
+    {
+      "path": "local/pow_fallback/attempt3_archive/native_crt_x87_result_status_archive_member.obj",
+      "bytes": 1061,
+      "sha256": "46e8ba9ffa8f43b8e90e133423ed4dc553f89c33fd35fb2fd53f13b054863982"
+    },
+    {
+      "path": "local/pow_fallback/before_test_encoding.cpp",
+      "bytes": 7683,
+      "sha256": "2868176359be8b560109a116485864d2f48fe298db93ffa5d52abb764b850b32"
+    },
+    {
+      "path": "local/pow_fallback/build.log",
+      "bytes": 2359,
+      "sha256": "7518cdf439a952f778d0e8d35c8e5bb49b7e8586fc5bbd0930839cfe85d9f893"
+    },
+    {
+      "path": "local/pow_fallback/build_attempt1.log",
+      "bytes": 21964,
+      "sha256": "29b9a14959d0d35e740fc21cb70bf0963dab602908ba865c84d30e6822bafe48"
+    },
+    {
+      "path": "local/pow_fallback/build_attempt2.log",
+      "bytes": 2086,
+      "sha256": "1f217f5487684b680ac07b1e30f18162ff6a060bcc4e932db103e6d08196428a"
+    },
+    {
+      "path": "local/pow_fallback/build_attempt3.log",
+      "bytes": 4277,
+      "sha256": "3d89b35962e9d33ecfef44c7c330f326bef4d87218e03537535812dfda9e780c"
+    },
+    {
+      "path": "local/pow_fallback/build_library.ps1",
+      "bytes": 832,
+      "sha256": "4f357e445b7246b42870907ffb4073c3ffd343fabcb928493a62fd984d0821b0"
+    },
+    {
+      "path": "local/pow_fallback/capture.py",
+      "bytes": 3797,
+      "sha256": "7142e09864d02f39ea17190ab3c8d6a572227cb6c10cf9470c8364c0b8b8d08c"
+    },
+    {
+      "path": "local/pow_fallback/configure.log",
+      "bytes": 247,
+      "sha256": "e6ad118e08c86e1e83cf3654a931b3568f48f6dc4764f1af04c6156c52cd60a1"
+    },
+    {
+      "path": "local/pow_fallback/extra.cmake",
+      "bytes": 160,
+      "sha256": "99eda14c89ac5cf25f78e7a484dd699a585ce384b8ec0aabd4efdea948006070"
+    },
+    {
+      "path": "local/pow_fallback/final_source_diff.patch",
+      "bytes": 3239,
+      "sha256": "30e7cc024f9ea9f460b7e7256480f4a59765e3df69c720ee76e63893448a15e8"
+    },
+    {
+      "path": "local/pow_fallback/final_source_diff.py",
+      "bytes": 1181,
+      "sha256": "af8f00d93523a66555ea944124e605078f6e8e0231a6d51bc3172f571ce7bb41"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00bfa52f_compiled.bin",
+      "bytes": 148,
+      "sha256": "8095c8474514fb1020450a0ed03afb6f9d6d1dce2fdbd91e9102ea8de509f5e0"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00bfa52f_synthetic_bound.bin",
+      "bytes": 148,
+      "sha256": "db22c579115419e888cc8a840bed296f97c66568828ef50fd490009f060a7255"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00bfeb6d_compiled.bin",
+      "bytes": 457,
+      "sha256": "217d03293b12cca48e5d7d9aac958990cabbb7f665ea14c8d78afca396dab625"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00bfeb6d_synthetic_bound.bin",
+      "bytes": 457,
+      "sha256": "e436ec0bfbcc95f5221fe47578d2c7098f75c3e68ac5f2e8518c114070beee0b"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00bfed32_compiled.bin",
+      "bytes": 40,
+      "sha256": "0b85f5aeccf5896b61d6aeda697809bf07ba5a1a316c9bb00ace7aa8a2b8e910"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00bfed32_synthetic_bound.bin",
+      "bytes": 40,
+      "sha256": "0b85f5aeccf5896b61d6aeda697809bf07ba5a1a316c9bb00ace7aa8a2b8e910"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c08330_compiled.bin",
+      "bytes": 83,
+      "sha256": "6df77e4c47c71625a427b7f1d3294bceef86c9c99f4dc4ab87aca480a9e5c699"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c08330_synthetic_bound.bin",
+      "bytes": 83,
+      "sha256": "1507f170bf8df898b283d9fa135549b294092e17dee8007f0e070fe51b28cf15"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c08390_compiled.bin",
+      "bytes": 21,
+      "sha256": "2dce0bc1ec224128643a743b9a3cab6795651b19324ae7b387a872b7d615ab3b"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c08390_synthetic_bound.bin",
+      "bytes": 21,
+      "sha256": "2dce0bc1ec224128643a743b9a3cab6795651b19324ae7b387a872b7d615ab3b"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c083a5_compiled.bin",
+      "bytes": 23,
+      "sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c083a5_synthetic_bound.bin",
+      "bytes": 23,
+      "sha256": "e6ec999d45c3c78e22ed722d9cdd003ca3e8685d7954a7d030915df1e55eb902"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c083d5_compiled.bin",
+      "bytes": 67,
+      "sha256": "49756c88592603c59a91d5ecf8589dab665fc8a2ad0f138e5d6e3c3b05c21169"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c083d5_synthetic_bound.bin",
+      "bytes": 67,
+      "sha256": "49756c88592603c59a91d5ecf8589dab665fc8a2ad0f138e5d6e3c3b05c21169"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c0842e_compiled.bin",
+      "bytes": 13,
+      "sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c0842e_synthetic_bound.bin",
+      "bytes": 13,
+      "sha256": "b0971b5d2cb4945dc056293d2dac8d989fc1d1488b22edb4125e67fdf93c85bd"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c08479_compiled.bin",
+      "bytes": 163,
+      "sha256": "8a68d289190593060033d97a290d90cc49efeb3b6a0e57c48ada215dc50a0efb"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c08479_synthetic_bound.bin",
+      "bytes": 163,
+      "sha256": "e354c74c6b06dc73d57a4bc7310016819b77915b74b7e5396fa6707b014c3bf9"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c12f3e_compiled.bin",
+      "bytes": 91,
+      "sha256": "8da8f43c35003777f547ce2903c0cc655f41647bdbb2f7740c11506109fcdabc"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c12f3e_synthetic_bound.bin",
+      "bytes": 91,
+      "sha256": "8da8f43c35003777f547ce2903c0cc655f41647bdbb2f7740c11506109fcdabc"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c19dc0_compiled.bin",
+      "bytes": 100,
+      "sha256": "54f715dd8b3aff6cf946366e5b04db8055e77843d45e3fbec8036d22726a3736"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c19dc0_synthetic_bound.bin",
+      "bytes": 100,
+      "sha256": "62ff5cc971592104aee03e2bc96a4504403283d62b7d036ae609dd900005645e"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c19e24_compiled.bin",
+      "bytes": 318,
+      "sha256": "4f592d345cd7f51812643090f3976ae86e822b1f0171dfb25a3d3db25685373d"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c19e24_synthetic_bound.bin",
+      "bytes": 318,
+      "sha256": "c7703e0a6bc46d4a59da04ee71d4120d6dce51750e95d2a67d7c8cba28eb5995"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c28548_compiled.bin",
+      "bytes": 17,
+      "sha256": "f0569f9986dd9a4e0e5221fe827399ad64814ea5ee48f12ced110ca75a4b6ca4"
+    },
+    {
+      "path": "local/pow_fallback/frozen/00c28548_synthetic_bound.bin",
+      "bytes": 17,
+      "sha256": "f0569f9986dd9a4e0e5221fe827399ad64814ea5ee48f12ced110ca75a4b6ca4"
+    },
+    {
+      "path": "local/pow_fallback/frozen/bsp_core.lib",
+      "bytes": 40520454,
+      "sha256": "19af2101975b5bff68cbfb5a769fda8b9cdc06cdaa388bb7156aa618275851db"
+    },
+    {
+      "path": "local/pow_fallback/frozen/build/win32/bsp_core.dir/Release/bsp_core.tlog/CL.command.1.tlog",
+      "bytes": 1123918,
+      "sha256": "921e904432c9bb01fe2ecbb0aa193bfe7ab44b1ed6a21bcd78ef5b7792840d08"
+    },
+    {
+      "path": "local/pow_fallback/frozen/build/win32/bsp_core.vcxproj",
+      "bytes": 128353,
+      "sha256": "8ffbe71462b40700a563d97e8ae49fefe666e5070b0408ad77b686edbcaae4ae"
+    },
+    {
+      "path": "local/pow_fallback/frozen/build/win32/CMakeCache.txt",
+      "bytes": 19105,
+      "sha256": "92a3794dc390d1b31685bda87f5f3296b8fa04cd09ea285ea8344183790d1661"
+    },
+    {
+      "path": "local/pow_fallback/frozen/build/win32/Testing/Temporary/LastTest.log",
+      "bytes": 1749,
+      "sha256": "8489ef573d8971be88803a169ba6ccaa40f3476cc9ac74d58902e0da1d208a2a"
+    },
+    {
+      "path": "local/pow_fallback/frozen/cmake/startup.cmake",
+      "bytes": 42576,
+      "sha256": "1472ba03de5dcef20dbaa683e6bf2412943739e43df143760b3dad6c3f9d29a4"
+    },
+    {
+      "path": "local/pow_fallback/frozen/CMakeLists.txt",
+      "bytes": 13553,
+      "sha256": "1c29c881cb797efcc39401d99a7270ce8210dda66379db9fa7ceda26d5699874"
+    },
+    {
+      "path": "local/pow_fallback/frozen/config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "local/pow_fallback/frozen/docs/LEGACY_CRT_MATH.md",
+      "bytes": 5953,
+      "sha256": "4b19307fd3088714af624429e6d85b9d9bf9515b9800d7d2d83f999450cbbe4d"
+    },
+    {
+      "path": "local/pow_fallback/frozen/docs/NATIVE_CRT_POW_FALLBACK_SUPPORT_DISCOVERY.md",
+      "bytes": 16080,
+      "sha256": "88a6b0927ca153d89060dd64afa3df101a4b950bf283fca588d8e878962f133c"
+    },
+    {
+      "path": "local/pow_fallback/frozen/include/bsp/legacy_crt_math.hpp",
+      "bytes": 1108,
+      "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39"
+    },
+    {
+      "path": "local/pow_fallback/frozen/include/bsp/native_crt_double_classification.hpp",
+      "bytes": 2939,
+      "sha256": "73991ffa5379b7804dafe2c91f0d33cc6a2cda2f5762e288e628e701459c848e"
+    },
+    {
+      "path": "local/pow_fallback/frozen/include/bsp/native_crt_pow_fallback.hpp",
+      "bytes": 3651,
+      "sha256": "8c7fb6322c799593fa22b7054243660281699aad8472cc6b1e88071b4686f6ef"
+    },
+    {
+      "path": "local/pow_fallback/frozen/include/bsp/native_crt_pow_special.hpp",
+      "bytes": 3450,
+      "sha256": "d63cf3c8dc4e9ef15cb9fa6f2d55d4f96cab4b2fe91a889235f827f634c8c9bc"
+    },
+    {
+      "path": "local/pow_fallback/frozen/include/bsp/native_crt_x87_control.hpp",
+      "bytes": 1868,
+      "sha256": "8e93f12ba4ddb11d454df85e554db5c748bf32cce0019d6e4a82c53e232d7ce1"
+    },
+    {
+      "path": "local/pow_fallback/frozen/include/bsp/native_crt_x87_double_load.hpp",
+      "bytes": 1486,
+      "sha256": "f9f2aa4cb6f8e6b049679f8b6faad99f45408c05c6fd96f2bf388010ffee4772"
+    },
+    {
+      "path": "local/pow_fallback/frozen/include/bsp/native_crt_x87_error_dispatch.hpp",
+      "bytes": 2553,
+      "sha256": "62f1ccc668389168fe0d54f48bb7b3b25fca8ef9a8d6b337958b13e8a3dca438"
+    },
+    {
+      "path": "local/pow_fallback/frozen/include/bsp/native_crt_x87_power_leaves.hpp",
+      "bytes": 2640,
+      "sha256": "0ce10e42e6280c08f71b0e581249dbebdfb22cebe2b3c62c5b98996aaced4fb5"
+    },
+    {
+      "path": "local/pow_fallback/frozen/include/bsp/native_crt_x87_result_status.hpp",
+      "bytes": 2841,
+      "sha256": "dc7264ae958dd83c0e9d8485176805103217d0fa96a5fa57bc45f54201625902"
+    },
+    {
+      "path": "local/pow_fallback/frozen/include/bsp/system_camera_axes.hpp",
+      "bytes": 3143,
+      "sha256": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594"
+    },
+    {
+      "path": "local/pow_fallback/frozen/legacy87except_compiled.bin",
+      "bytes": 420,
+      "sha256": "5ca6b51e86a3870936a8c1e53d9f39cd22c4efc4a4ff29c0c3b147d4b19b42a0"
+    },
+    {
+      "path": "local/pow_fallback/frozen/legacy_crt_math.obj",
+      "bytes": 18520,
+      "sha256": "0a3cd7f456badbbcece7db40dad40932449cf87836ee613b9236e892f71533f3"
+    },
+    {
+      "path": "local/pow_fallback/frozen/legacy_crt_math_archive_member.obj",
+      "bytes": 18520,
+      "sha256": "0a3cd7f456badbbcece7db40dad40932449cf87836ee613b9236e892f71533f3"
+    },
+    {
+      "path": "local/pow_fallback/frozen/local/seed_reference.hpp",
+      "bytes": 2995,
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_double_classification.obj",
+      "bytes": 1275,
+      "sha256": "68da516d8c04a27b686e96b221ecc1a84cbaee41b4f8d2c03bd36d4f000c8b66"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_double_classification_archive_member.obj",
+      "bytes": 1275,
+      "sha256": "68da516d8c04a27b686e96b221ecc1a84cbaee41b4f8d2c03bd36d4f000c8b66"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_pow_fallback.obj",
+      "bytes": 2102,
+      "sha256": "2b0bd5bd5f350b233d426a5e4a947f856865356bbed651d71e68273e8d552f75"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_pow_fallback_archive_member.obj",
+      "bytes": 2102,
+      "sha256": "2b0bd5bd5f350b233d426a5e4a947f856865356bbed651d71e68273e8d552f75"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_pow_special.obj",
+      "bytes": 1455,
+      "sha256": "a2c35d69c652c4c499cc019daadde3ef2a9a20e6dcd601f96d9e5a8ca21a40a8"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_pow_special_archive_member.obj",
+      "bytes": 1455,
+      "sha256": "a2c35d69c652c4c499cc019daadde3ef2a9a20e6dcd601f96d9e5a8ca21a40a8"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_x87_control.obj",
+      "bytes": 916,
+      "sha256": "94f5242ce086dce55dc0ed88c5da2384e12cc94c0981c2f02cbc82dcc6d9637a"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_x87_control_archive_member.obj",
+      "bytes": 916,
+      "sha256": "94f5242ce086dce55dc0ed88c5da2384e12cc94c0981c2f02cbc82dcc6d9637a"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_x87_double_load.obj",
+      "bytes": 794,
+      "sha256": "1517c24dc2c000d8604b02d43c379863494e333ca980580ef9d65594dfcce9df"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_x87_double_load_archive_member.obj",
+      "bytes": 794,
+      "sha256": "1517c24dc2c000d8604b02d43c379863494e333ca980580ef9d65594dfcce9df"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_x87_error_dispatch.obj",
+      "bytes": 2697,
+      "sha256": "094d6abb5561cbdf4396e3e6073d2fae4ccd6049c1ea41638d972824882a7bb5"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_x87_error_dispatch_archive_member.obj",
+      "bytes": 2697,
+      "sha256": "094d6abb5561cbdf4396e3e6073d2fae4ccd6049c1ea41638d972824882a7bb5"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_x87_power_leaves.obj",
+      "bytes": 939,
+      "sha256": "2139d5f8b33c7ab42415f9dce5398b6f0abbf4e0bcf3018699cc01af7230ba91"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_x87_power_leaves_archive_member.obj",
+      "bytes": 939,
+      "sha256": "2139d5f8b33c7ab42415f9dce5398b6f0abbf4e0bcf3018699cc01af7230ba91"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_x87_result_status.obj",
+      "bytes": 1061,
+      "sha256": "46e8ba9ffa8f43b8e90e133423ed4dc553f89c33fd35fb2fd53f13b054863982"
+    },
+    {
+      "path": "local/pow_fallback/frozen/native_crt_x87_result_status_archive_member.obj",
+      "bytes": 1061,
+      "sha256": "46e8ba9ffa8f43b8e90e133423ed4dc553f89c33fd35fb2fd53f13b054863982"
+    },
+    {
+      "path": "local/pow_fallback/frozen/parity_thunk11_compiled.bin",
+      "bytes": 11,
+      "sha256": "3ebae9194cf955138e94e9127998b738cff7af655d396994132fb55830500e82"
+    },
+    {
+      "path": "local/pow_fallback/frozen/reports/legacy_crt_math_audit.json",
+      "bytes": 25570,
+      "sha256": "e5172c26e634b5138da1815242caed1a02bdb6f5115ff59eb6b991ba7a061b19"
+    },
+    {
+      "path": "local/pow_fallback/frozen/scripts/build.ps1",
+      "bytes": 1657,
+      "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+    },
+    {
+      "path": "local/pow_fallback/frozen/src/legacy_crt_math.cpp",
+      "bytes": 11469,
+      "sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce"
+    },
+    {
+      "path": "local/pow_fallback/frozen/src/native_crt_double_classification.cpp",
+      "bytes": 3402,
+      "sha256": "b21d367921a8ce037c8ea769bd715d5e9704a27808965049db2e30ffb87ba945"
+    },
+    {
+      "path": "local/pow_fallback/frozen/src/native_crt_pow_fallback.cpp",
+      "bytes": 7865,
+      "sha256": "3631ef0fe8f1ab156aa748b1aa75be8cc3a5fa998667097fe978eaa9efe043eb"
+    },
+    {
+      "path": "local/pow_fallback/frozen/src/native_crt_pow_special.cpp",
+      "bytes": 8031,
+      "sha256": "7ee0a957d57e7212c3972accf053d3a62766bb205e6de958b8b9ec5024adc8f5"
+    },
+    {
+      "path": "local/pow_fallback/frozen/src/native_crt_x87_control.cpp",
+      "bytes": 1114,
+      "sha256": "2548c6b8e18765d8d1e33f84df8dc88a0ce0cbc22df27cde9d2372292873bb2d"
+    },
+    {
+      "path": "local/pow_fallback/frozen/src/native_crt_x87_double_load.cpp",
+      "bytes": 1417,
+      "sha256": "b1b9242beb966805207b141169d0d5f210aeeb3730227be31247888c5c6cea05"
+    },
+    {
+      "path": "local/pow_fallback/frozen/src/native_crt_x87_error_dispatch.cpp",
+      "bytes": 2668,
+      "sha256": "a800a9c61a9d652e765bea27e4cd9b0c8790b2afcdb60ad4ec1703a9e50aeb4a"
+    },
+    {
+      "path": "local/pow_fallback/frozen/src/native_crt_x87_power_leaves.cpp",
+      "bytes": 1998,
+      "sha256": "4a8e6757a76c63b23b5d5609222a5018eb608dc080d2e1dea6b4b25948499990"
+    },
+    {
+      "path": "local/pow_fallback/frozen/src/native_crt_x87_result_status.cpp",
+      "bytes": 3472,
+      "sha256": "76c364f427f0568f9aefa80a41cb3f980b075deb2f8f9012ca17f64cb9349cb2"
+    },
+    {
+      "path": "local/pow_fallback/frozen/tools/bsp.py",
+      "bytes": 56330,
+      "sha256": "dbaf1d47cd88a74e7c21e49f0db1724715a72a783ca883d60d768ce7a5f941e1"
+    },
+    {
+      "path": "local/pow_fallback/frozen/tools/ghidra_export.py",
+      "bytes": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    },
+    {
+      "path": "local/pow_fallback/frozen/unary_thunk5_compiled.bin",
+      "bytes": 5,
+      "sha256": "8c3a1c871ef49dce0aba8376a0ae49780f8f49ad436e88aefa8a495fc0a47a54"
+    },
+    {
+      "path": "local/pow_fallback/generate_source.py",
+      "bytes": 5676,
+      "sha256": "aaf34f236f6e97fbec84cfb8d6cfb348b52c6d7012e103dc2b876cbb7d9347a5"
+    },
+    {
+      "path": "local/pow_fallback/guarded_capture.json",
+      "bytes": 18543,
+      "sha256": "9eb241c0165e346a0377795f741100ee58502407fec1a7ede2273dd3b3303078"
+    },
+    {
+      "path": "local/pow_fallback/inspect_drift.py",
+      "bytes": 833,
+      "sha256": "990c8c71a60cca77a0b1b359554e12941b2f945213a5370498ff10b1eb36f25a"
+    },
+    {
+      "path": "local/pow_fallback/instruction_mapping.json",
+      "bytes": 16729,
+      "sha256": "02c22e9b49b32a535b5a2e17bea7d4d9b02d217301f628547acd17667624788e"
+    },
+    {
+      "path": "local/pow_fallback/object_proof.json",
+      "bytes": 211975,
+      "sha256": "3a6050b64a1730a08d2005730ac3261d3ccb10055e4b367c08b99cf545312895"
+    },
+    {
+      "path": "local/pow_fallback/pins.json",
+      "bytes": 37412,
+      "sha256": "4efda7cedcd0dc1b5add4107e77c4bf503e482bf625d0674ba06b4edb45e2c77"
+    },
+    {
+      "path": "local/pow_fallback/prepare_proof.py",
+      "bytes": 1172,
+      "sha256": "1092f11d1184ecd3a745a4eb06ba1caf41042664af47508d2f1ee4edbb7534fc"
+    },
+    {
+      "path": "local/pow_fallback/prove.py",
+      "bytes": 24384,
+      "sha256": "9234127fa43579c968a433fd8190be2d93a60a0494bd8527b691bf8bdb3c0458"
+    },
+    {
+      "path": "local/pow_fallback/reviewed_spelling_reconstructed.cpp",
+      "bytes": 7331,
+      "sha256": "23959c5528a6c84e45d599db9d751762b5b69f9a1ab7e12942135a33308576ec"
+    },
+    {
+      "path": "local/pow_fallback/seal.py",
+      "bytes": 12536,
+      "sha256": "c020844f2099927b7bf385007796b1b08ab08a5c4305cd8513b6759786f8f816"
+    },
+    {
+      "path": "local/pow_fallback/seeds.json",
+      "bytes": 2976,
+      "sha256": "a28c998abc835df38ca4dd01282c56047b92d0b3c4f0a08272c87fc07e97f4c0"
+    },
+    {
+      "path": "src/native_crt_pow_fallback.cpp",
+      "bytes": 7865,
+      "sha256": "3631ef0fe8f1ab156aa748b1aa75be8cc3a5fa998667097fe978eaa9efe043eb"
+    },
+    {
+      "path": "include/bsp/native_crt_pow_fallback.hpp",
+      "bytes": 3651,
+      "sha256": "8c7fb6322c799593fa22b7054243660281699aad8472cc6b1e88071b4686f6ef"
+    },
+    {
+      "path": "docs/NATIVE_CRT_POW_FALLBACK.md",
+      "bytes": 10806,
+      "sha256": "de1206d73c8e0c32340f242822e9649c2f18c11b55098aac02d6f2b8f23376e5"
+    }
+  ],
+  "primary_integration": {
+    "status": "complete_reviewed_main_archive_source_and_bounded_native_proof",
+    "main_library_sha256": "e59c0a7d198e8059d3eb65064cd1857b72e48f91e858906a448a9b38d4414ccf",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_gather_build_frozen\\manifest.json",
+      "bytes": 28651,
+      "sha256": "b565fed09f76cacab0ab64c99aa09c8fc611522351a9fe053917cb333887267c"
+    },
+    "strict_Win32": true,
+    "existing_CTests": 2,
+    "fresh_seeds": 8,
+    "owned_original_bytes": 453,
+    "raw_provider_bytes": 1084,
+    "compiled_owned_bytes": 457,
+    "exact_archive_objects": 9,
+    "whole_COFF_sections": 121,
+    "normal_CFG_exits": 8,
+    "boundary": "Full453 original bytes become457 compiled bytes plus11-byte parity thunk. All123-to125 instruction mappings, six parent/current-address changes,13 raw-provider literal changes and all direct/internal/conditional bindings checked; twelve complete raw providers1084 bytes, total1537 raw original bytes. Both context XCHGs and normal CW-stack/EBX-ESI restoration at eight exits verified, oldEDX dead at both parity continuations. Preserve waiting FSAVE108-byte/FRSTOR, uninitialized current output, unaligned DWORD sign read and packed-CW scratch. Nine exact archive objects and all COFF sections; full existing actual owning-CRT error provider with inherited FP/precision/SEH boundaries. Static synthetic relocation proof only; no linked or runtime original/fallback/publicpow/SSE2/gamma/game claim.",
+    "original_owned_execution": false,
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_fallback_primary\\sealed.json",
+      "bytes": 51064,
+      "sha256": "c68bebdf42d042566640a6d051a785d05e4df41a5b290b0b6825a17df239992e"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_pow_gather_pointer_annotations.json",
+    "bytes": 5341,
+    "sha256": "c65b40e1408435ba1265407de7e927154932f774b2f3005cc4ec52116d3eaac7"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00bfeb6d",
+      "name": "evaluate_native_crt_pow_fallback_00bfeb6d",
+      "cpp_symbol": "bsp::evaluate_native_crt_pow_fallback_00bfeb6d",
+      "source": "src/native_crt_pow_fallback.cpp",
+      "native_end_exclusive": "00bfed32",
+      "status": "complete_reviewed_main_archive_source_and_bounded_native_proof",
+      "evidence": "reports/native_crt_pow_fallback_audit.json",
+      "original_abi": "Complete per-entry native contract in header and audit.",
+      "source_abi": "Explicit per-entry source binding and preconditions in header and audit; not general binary replacement.",
+      "original_owned_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00bfeb6d",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bfeb6d\\decompiled.c",
+      "bytes": 4482,
+      "sha256": "9a171b495928a87f3bce0adc8b2636878b6a3aeaca9e4a589c6631b95573cf33"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_POW_FALLBACK.md",
+    "bytes": 12077,
+    "sha256": "82d4caa753f6af8ff7cf56ca7ffc81e79dc043ce51ffea61a4ff8184b28bace0"
+  }
+}

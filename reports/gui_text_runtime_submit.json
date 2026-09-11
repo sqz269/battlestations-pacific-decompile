@@ -1,0 +1,2200 @@
+{
+  "packet": "orch5_text_submit",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "source": "src/gui_text_runtime_submit.cpp",
+  "routines": [
+    {
+      "address": "00ab6ab0",
+      "end_inclusive": "00ab6acd",
+      "name": "submit_gui_text_utf16_00ab6ab0",
+      "original_abi": "ECX Text, UTF16 wrapper stack, RET4",
+      "scope": "Complete supported typed-string caller composition; actual content may return explicit pending dependency; no native pool/SEH ABI claim."
+    },
+    {
+      "address": "00abaed0",
+      "end_inclusive": "00abaff8",
+      "name": "submit_gui_text_source_00abaed0",
+      "original_abi": "ECX Text, narrow wrapper and low-byte flag stack, RET8",
+      "scope": "Complete supported typed-string caller composition; actual content may return explicit pending dependency; no native pool/SEH ABI claim."
+    },
+    {
+      "address": "00abb000",
+      "end_inclusive": "00abb1c4",
+      "name": "submit_gui_text_ellipsis_00abb000",
+      "original_abi": "ECX Text, narrow wrapper/float width/low-byte flag stack, RET0Ch",
+      "scope": "Complete supported typed-string caller composition; actual content may return explicit pending dependency; no native pool/SEH ABI claim."
+    },
+    {
+      "address": "00abb1d0",
+      "end_inclusive": "00abb2b4",
+      "name": "rebuild_gui_text_content_00abb1d0",
+      "original_abi": "ECX Text, no stack arguments, RET",
+      "scope": "Complete supported typed-string caller composition; actual content may return explicit pending dependency; no native pool/SEH ABI claim."
+    },
+    {
+      "address": "00abbf30",
+      "end_inclusive": "00abbf47",
+      "name": "resize_gui_text_00abbf30",
+      "original_abi": "ECX Text, size-pair pointer stack, RET4",
+      "scope": "Complete supported typed-string caller composition; actual content may return explicit pending dependency; no native pool/SEH ABI claim."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00ab6ab8",
+      "native": "00aba8d0",
+      "function": "00ab6ab0",
+      "contract": "Actual composed content entry; outer temporaries and final-color obligation remain pending until completion."
+    },
+    {
+      "address": "00ab6ac8",
+      "native": "00ab6b50",
+      "function": "00ab6ab0",
+      "contract": "CURRENT Text50 resolved by D5C718 bytes50 6B AB00; run after caller temporary cleanup, including unchanged inner content."
+    },
+    {
+      "address": "00abaefa",
+      "native": "00435c40",
+      "function": "00abaed0",
+      "contract": "Existing native header equality over borrowed canonical typed-string views, using current host CRT comparison."
+    },
+    {
+      "address": "00abaf12",
+      "native": "0041dd40",
+      "function": "00abaed0",
+      "contract": "Typed source assignment projection; native pool allocation/reentry ABI excluded."
+    },
+    {
+      "address": "00abaf27",
+      "native": "00bf7680",
+      "function": "00abaed0",
+      "contract": "Typed source assignment copy, with native pooled-buffer layout/allocation callbacks excluded."
+    },
+    {
+      "address": "00abaf5a",
+      "native": "00a9fad0",
+      "function": "00abaed0",
+      "contract": "Existing locale resolver with SAME tables/runtime; typed string projection, native singleton/header ABI excluded."
+    },
+    {
+      "address": "00abaf66",
+      "native": "00aba8d0",
+      "function": "00abaed0",
+      "contract": "Actual composed content entry; outer temporaries and final-color obligation remain pending until completion."
+    },
+    {
+      "address": "00abaf9a",
+      "native": "004c5e60",
+      "function": "00abaed0",
+      "contract": "Typed bytewise zero-extension or empty-string construction; native header/pool ABI excluded."
+    },
+    {
+      "address": "00abafaa",
+      "native": "00aba8d0",
+      "function": "00abaed0",
+      "contract": "Actual composed content entry; outer temporaries and final-color obligation remain pending until completion."
+    },
+    {
+      "address": "00abafcb",
+      "native": "00419cc0",
+      "function": "00abaed0",
+      "contract": "Native temporary-cleanup pool lookup; typed C++ allocation cleanup preserves phase/order, native pool callbacks excluded."
+    },
+    {
+      "address": "00abafd2",
+      "native": "00bd1510",
+      "function": "00abaed0",
+      "contract": "Native temporary return; typed C++ cleanup preserves separate temporary lifetime/order, original allocator ABI excluded."
+    },
+    {
+      "address": "00abafe3",
+      "native": "00ab6b50",
+      "function": "00abaed0",
+      "contract": "CURRENT Text50 resolved by D5C718 bytes50 6B AB00; run after caller temporary cleanup, including unchanged inner content."
+    },
+    {
+      "address": "00abb02a",
+      "native": "00435c40",
+      "function": "00abb000",
+      "contract": "Existing native header equality over borrowed canonical typed-string views, using current host CRT comparison."
+    },
+    {
+      "address": "00abb042",
+      "native": "0041dd40",
+      "function": "00abb000",
+      "contract": "Typed source assignment projection; native pool allocation/reentry ABI excluded."
+    },
+    {
+      "address": "00abb057",
+      "native": "00bf7680",
+      "function": "00abb000",
+      "contract": "Typed source assignment copy, with native pooled-buffer layout/allocation callbacks excluded."
+    },
+    {
+      "address": "00abb0ac",
+      "native": "00a9fad0",
+      "function": "00abb000",
+      "contract": "Existing locale resolver with SAME tables/runtime; typed string projection, native singleton/header ABI excluded."
+    },
+    {
+      "address": "00abb0c5",
+      "native": "00ab8f00",
+      "function": "00abb000",
+      "contract": "Existing ellipsis operation on the SAME current actual-font data after conversion."
+    },
+    {
+      "address": "00abb0d2",
+      "native": "00aba8d0",
+      "function": "00abb000",
+      "contract": "Actual composed content entry; outer temporaries and final-color obligation remain pending until completion."
+    },
+    {
+      "address": "00abb0f0",
+      "native": "00419cc0",
+      "function": "00abb000",
+      "contract": "Native temporary-cleanup pool lookup; typed C++ allocation cleanup preserves phase/order, native pool callbacks excluded."
+    },
+    {
+      "address": "00abb0f7",
+      "native": "00bd1510",
+      "function": "00abb000",
+      "contract": "Native temporary return; typed C++ cleanup preserves separate temporary lifetime/order, original allocator ABI excluded."
+    },
+    {
+      "address": "00abb127",
+      "native": "004c5e60",
+      "function": "00abb000",
+      "contract": "Typed bytewise zero-extension or empty-string construction; native header/pool ABI excluded."
+    },
+    {
+      "address": "00abb144",
+      "native": "00ab8f00",
+      "function": "00abb000",
+      "contract": "Existing ellipsis operation on the SAME current actual-font data after conversion."
+    },
+    {
+      "address": "00abb151",
+      "native": "00aba8d0",
+      "function": "00abb000",
+      "contract": "Actual composed content entry; outer temporaries and final-color obligation remain pending until completion."
+    },
+    {
+      "address": "00abb16f",
+      "native": "00419cc0",
+      "function": "00abb000",
+      "contract": "Native temporary-cleanup pool lookup; typed C++ allocation cleanup preserves phase/order, native pool callbacks excluded."
+    },
+    {
+      "address": "00abb176",
+      "native": "00bd1510",
+      "function": "00abb000",
+      "contract": "Native temporary return; typed C++ cleanup preserves separate temporary lifetime/order, original allocator ABI excluded."
+    },
+    {
+      "address": "00abb197",
+      "native": "00419cc0",
+      "function": "00abb000",
+      "contract": "Native temporary-cleanup pool lookup; typed C++ allocation cleanup preserves phase/order, native pool callbacks excluded."
+    },
+    {
+      "address": "00abb19e",
+      "native": "00bd1510",
+      "function": "00abb000",
+      "contract": "Native temporary return; typed C++ cleanup preserves separate temporary lifetime/order, original allocator ABI excluded."
+    },
+    {
+      "address": "00abb1af",
+      "native": "00ab6b50",
+      "function": "00abb000",
+      "contract": "CURRENT Text50 resolved by D5C718 bytes50 6B AB00; run after caller temporary cleanup, including unchanged inner content."
+    },
+    {
+      "address": "00abb1f9",
+      "native": "004c8dd0",
+      "function": "00abb1d0",
+      "contract": "Typed owned copy of live stored UTF16 before clearing the stored cache."
+    },
+    {
+      "address": "00abb20f",
+      "native": "004c5e60",
+      "function": "00abb1d0",
+      "contract": "Typed bytewise zero-extension or empty-string construction; native header/pool ABI excluded."
+    },
+    {
+      "address": "00abb22e",
+      "native": "004c53e0",
+      "function": "00abb1d0",
+      "contract": "Clear the SAME stored text after saving it; original pool callbacks/SEH excluded."
+    },
+    {
+      "address": "00abb262",
+      "native": "00419cc0",
+      "function": "00abb1d0",
+      "contract": "Native temporary-cleanup pool lookup; typed C++ allocation cleanup preserves phase/order, native pool callbacks excluded."
+    },
+    {
+      "address": "00abb269",
+      "native": "00bd1510",
+      "function": "00abb1d0",
+      "contract": "Native temporary return; typed C++ cleanup preserves separate temporary lifetime/order, original allocator ABI excluded."
+    },
+    {
+      "address": "00abb275",
+      "native": "00aba8d0",
+      "function": "00abb1d0",
+      "contract": "Actual composed content entry; outer temporaries and final-color obligation remain pending until completion."
+    },
+    {
+      "address": "00abb29a",
+      "native": "00419cc0",
+      "function": "00abb1d0",
+      "contract": "Native temporary-cleanup pool lookup; typed C++ allocation cleanup preserves phase/order, native pool callbacks excluded."
+    },
+    {
+      "address": "00abb2a1",
+      "native": "00bd1510",
+      "function": "00abb1d0",
+      "contract": "Native temporary return; typed C++ cleanup preserves separate temporary lifetime/order, original allocator ABI excluded."
+    },
+    {
+      "address": "00abbf38",
+      "native": "00aa7970",
+      "function": "00abbf30",
+      "contract": "Actual x87 size-pair stores followed by canonical owner recompose, with no bounds refresh."
+    },
+    {
+      "address": "00abbf3f",
+      "native": "00abb1d0",
+      "function": "00abbf30",
+      "contract": "Capture current stored UTF16 AFTER size/recompose effects, then clear and submit saved copy."
+    },
+    {
+      "address": "00aa797f",
+      "native": "00aa7220",
+      "function": "00aa7970",
+      "contract": "Base size body recompose only; no bounds refresh. Typed Text legacy view mirrors the same canonical fields."
+    }
+  ],
+  "caller_sites": [
+    {
+      "address": "005d262e",
+      "native": "00ab6ab0",
+      "function": "005d24f0",
+      "instruction": "005d262e: CALL 0x00ab6ab0 "
+    },
+    {
+      "address": "005d09cd",
+      "native": "00ab6ab0",
+      "function": "005d09a0",
+      "instruction": "005d09cd: CALL 0x00ab6ab0 "
+    },
+    {
+      "address": "005d0a3b",
+      "native": "00ab6ab0",
+      "function": "005d09a0",
+      "instruction": "005d0a3b: CALL 0x00ab6ab0 "
+    },
+    {
+      "address": "0052f3fb",
+      "native": "00ab6ab0",
+      "function": "0052ee30",
+      "instruction": "0052f3fb: CALL 0x00ab6ab0 "
+    },
+    {
+      "address": "0052f30f",
+      "native": "00abaed0",
+      "function": "0052ee30",
+      "instruction": "0052f30f: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0052f46d",
+      "native": "00abaed0",
+      "function": "0052ee30",
+      "instruction": "0052f46d: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00618a9f",
+      "native": "00abaed0",
+      "function": "00618980",
+      "instruction": "00618a9f: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0054e089",
+      "native": "00abaed0",
+      "function": "0054e020",
+      "instruction": "0054e089: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0054e0d3",
+      "native": "00abaed0",
+      "function": "0054e020",
+      "instruction": "0054e0d3: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0054e248",
+      "native": "00abaed0",
+      "function": "0054e020",
+      "instruction": "0054e248: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005325d1",
+      "native": "00abaed0",
+      "function": "00530a60",
+      "instruction": "005325d1: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005325dc",
+      "native": "00abaed0",
+      "function": "00530a60",
+      "instruction": "005325dc: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00532702",
+      "native": "00abaed0",
+      "function": "00530a60",
+      "instruction": "00532702: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00532767",
+      "native": "00abaed0",
+      "function": "00530a60",
+      "instruction": "00532767: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005327af",
+      "native": "00abaed0",
+      "function": "00530a60",
+      "instruction": "005327af: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005327e8",
+      "native": "00abaed0",
+      "function": "00530a60",
+      "instruction": "005327e8: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00532821",
+      "native": "00abaed0",
+      "function": "00530a60",
+      "instruction": "00532821: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00532160",
+      "native": "00abaed0",
+      "function": "00532110",
+      "instruction": "00532160: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005e3727",
+      "native": "00abaed0",
+      "function": "005e3580",
+      "instruction": "005e3727: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005e38bd",
+      "native": "00abaed0",
+      "function": "005e3580",
+      "instruction": "005e38bd: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005e3b24",
+      "native": "00abaed0",
+      "function": "005e3580",
+      "instruction": "005e3b24: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005e3870",
+      "native": "00abb000",
+      "function": "005e3580",
+      "instruction": "005e3870: CALL 0x00abb000 "
+    },
+    {
+      "address": "005e3a07",
+      "native": "00abb000",
+      "function": "005e3580",
+      "instruction": "005e3a07: CALL 0x00abb000 "
+    },
+    {
+      "address": "00518acb",
+      "native": "00abaed0",
+      "function": "005189b0",
+      "instruction": "00518acb: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0054bc77",
+      "native": "00abaed0",
+      "function": "0054b530",
+      "instruction": "0054bc77: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0054be5c",
+      "native": "00abaed0",
+      "function": "0054b530",
+      "instruction": "0054be5c: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0054bcc3",
+      "native": "00abb000",
+      "function": "0054b530",
+      "instruction": "0054bcc3: CALL 0x00abb000 "
+    },
+    {
+      "address": "0054beac",
+      "native": "00abb000",
+      "function": "0054b530",
+      "instruction": "0054beac: CALL 0x00abb000 "
+    },
+    {
+      "address": "0052be15",
+      "native": "00abaed0",
+      "function": "0052bb10",
+      "instruction": "0052be15: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00529e66",
+      "native": "00abaed0",
+      "function": "00529d70",
+      "instruction": "00529e66: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00529ef6",
+      "native": "00abaed0",
+      "function": "00529d70",
+      "instruction": "00529ef6: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0052a1f4",
+      "native": "00abaed0",
+      "function": "0052a100",
+      "instruction": "0052a1f4: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0052a283",
+      "native": "00abaed0",
+      "function": "0052a100",
+      "instruction": "0052a283: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0052a915",
+      "native": "00abaed0",
+      "function": "0052a860",
+      "instruction": "0052a915: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005cc60d",
+      "native": "00abaed0",
+      "function": "005cc5e0",
+      "instruction": "005cc60d: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00682a7d",
+      "native": "00abaed0",
+      "function": "00682990",
+      "instruction": "00682a7d: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005b861c",
+      "native": "00abaed0",
+      "function": "005b8510",
+      "instruction": "005b861c: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005b8627",
+      "native": "00abaed0",
+      "function": "005b8510",
+      "instruction": "005b8627: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00aa412f",
+      "native": "00abaed0",
+      "function": "00aa40a0",
+      "instruction": "00aa412f: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00abbee2",
+      "native": "00abaed0",
+      "function": "00abbe50",
+      "instruction": "00abbee2: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00511404",
+      "native": "00abaed0",
+      "function": "00510c20",
+      "instruction": "00511404: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00511529",
+      "native": "00abaed0",
+      "function": "00510c20",
+      "instruction": "00511529: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00511780",
+      "native": "00abaed0",
+      "function": "00510c20",
+      "instruction": "00511780: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0051186f",
+      "native": "00abaed0",
+      "function": "00510c20",
+      "instruction": "0051186f: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00511935",
+      "native": "00abaed0",
+      "function": "00510c20",
+      "instruction": "00511935: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00511a66",
+      "native": "00abaed0",
+      "function": "00510c20",
+      "instruction": "00511a66: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005b8ad2",
+      "native": "00abaed0",
+      "function": "005b8a00",
+      "instruction": "005b8ad2: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005b8ae1",
+      "native": "00abaed0",
+      "function": "005b8a00",
+      "instruction": "005b8ae1: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0057cdc7",
+      "native": "00abaed0",
+      "function": "0057cb60",
+      "instruction": "0057cdc7: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0057c473",
+      "native": "00abaed0",
+      "function": "0057c360",
+      "instruction": "0057c473: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0054a0ed",
+      "native": "00abaed0",
+      "function": "0054a0c0",
+      "instruction": "0054a0ed: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0054a0f7",
+      "native": "00abaed0",
+      "function": "0054a0c0",
+      "instruction": "0054a0f7: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00500d37",
+      "native": "00abaed0",
+      "function": "00500a90",
+      "instruction": "00500d37: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00500bf8",
+      "native": "00abb000",
+      "function": "00500a90",
+      "instruction": "00500bf8: CALL 0x00abb000 "
+    },
+    {
+      "address": "00ab0d78",
+      "native": "00abaed0",
+      "function": "00ab0520",
+      "instruction": "00ab0d78: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00528602",
+      "native": "00abaed0",
+      "function": "00528240",
+      "instruction": "00528602: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0052a53e",
+      "native": "00abaed0",
+      "function": "0052a470",
+      "instruction": "0052a53e: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0052a54d",
+      "native": "00abaed0",
+      "function": "0052a470",
+      "instruction": "0052a54d: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0053ee6c",
+      "native": "00abaed0",
+      "function": "0053ee00",
+      "instruction": "0053ee6c: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0054a0a4",
+      "native": "00abaed0",
+      "function": "00549fc0",
+      "instruction": "0054a0a4: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0054e7aa",
+      "native": "00abaed0",
+      "function": "0054e6b0",
+      "instruction": "0054e7aa: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0055c981",
+      "native": "00abaed0",
+      "function": "0055c5a0",
+      "instruction": "0055c981: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0055c9d7",
+      "native": "00abaed0",
+      "function": "0055c5a0",
+      "instruction": "0055c9d7: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0055c306",
+      "native": "00abaed0",
+      "function": "0055c200",
+      "instruction": "0055c306: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0055d634",
+      "native": "00abaed0",
+      "function": "0055d380",
+      "instruction": "0055d634: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0055d7f5",
+      "native": "00abaed0",
+      "function": "0055d380",
+      "instruction": "0055d7f5: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0055d872",
+      "native": "00abaed0",
+      "function": "0055d380",
+      "instruction": "0055d872: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0055de51",
+      "native": "00abaed0",
+      "function": "0055d380",
+      "instruction": "0055de51: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0055e21b",
+      "native": "00abaed0",
+      "function": "0055d380",
+      "instruction": "0055e21b: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0055ebb3",
+      "native": "00abaed0",
+      "function": "0055e3a0",
+      "instruction": "0055ebb3: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0055ef76",
+      "native": "00abaed0",
+      "function": "0055e3a0",
+      "instruction": "0055ef76: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0055f3d2",
+      "native": "00abb000",
+      "function": "0055e3a0",
+      "instruction": "0055f3d2: CALL 0x00abb000 "
+    },
+    {
+      "address": "005608f2",
+      "native": "00abaed0",
+      "function": "00560430",
+      "instruction": "005608f2: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00560b35",
+      "native": "00abaed0",
+      "function": "00560430",
+      "instruction": "00560b35: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005616b5",
+      "native": "00abaed0",
+      "function": "00561660",
+      "instruction": "005616b5: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0056dbda",
+      "native": "00abaed0",
+      "function": "0056d9a0",
+      "instruction": "0056dbda: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0056e15b",
+      "native": "00abaed0",
+      "function": "0056dd80",
+      "instruction": "0056e15b: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0056e1f3",
+      "native": "00abaed0",
+      "function": "0056dd80",
+      "instruction": "0056e1f3: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0056e28b",
+      "native": "00abaed0",
+      "function": "0056dd80",
+      "instruction": "0056e28b: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0056ed99",
+      "native": "00abaed0",
+      "function": "0056ed20",
+      "instruction": "0056ed99: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00570416",
+      "native": "00abaed0",
+      "function": "00570300",
+      "instruction": "00570416: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0057704a",
+      "native": "00abaed0",
+      "function": "00576d20",
+      "instruction": "0057704a: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00577145",
+      "native": "00abaed0",
+      "function": "00576d20",
+      "instruction": "00577145: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005770c2",
+      "native": "00abb000",
+      "function": "00576d20",
+      "instruction": "005770c2: CALL 0x00abb000 "
+    },
+    {
+      "address": "0057783b",
+      "native": "00abaed0",
+      "function": "00577650",
+      "instruction": "0057783b: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00577f46",
+      "native": "00abaed0",
+      "function": "00577650",
+      "instruction": "00577f46: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00579278",
+      "native": "00abaed0",
+      "function": "005789c0",
+      "instruction": "00579278: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00579400",
+      "native": "00abaed0",
+      "function": "005789c0",
+      "instruction": "00579400: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0057933e",
+      "native": "00abb000",
+      "function": "005789c0",
+      "instruction": "0057933e: CALL 0x00abb000 "
+    },
+    {
+      "address": "00579c43",
+      "native": "00abaed0",
+      "function": "00579980",
+      "instruction": "00579c43: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00579db3",
+      "native": "00abaed0",
+      "function": "00579980",
+      "instruction": "00579db3: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00579cf7",
+      "native": "00abb000",
+      "function": "00579980",
+      "instruction": "00579cf7: CALL 0x00abb000 "
+    },
+    {
+      "address": "00588423",
+      "native": "00abaed0",
+      "function": "00588370",
+      "instruction": "00588423: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00595325",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "instruction": "00595325: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00595492",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "instruction": "00595492: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00595649",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "instruction": "00595649: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00595a50",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "instruction": "00595a50: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00595bbb",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "instruction": "00595bbb: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00595d77",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "instruction": "00595d77: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00596152",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "instruction": "00596152: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005961dc",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "instruction": "005961dc: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005962f7",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "instruction": "005962f7: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0059642e",
+      "native": "00abaed0",
+      "function": "00594bf0",
+      "instruction": "0059642e: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00596e10",
+      "native": "00abaed0",
+      "function": "005966f0",
+      "instruction": "00596e10: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00596e63",
+      "native": "00abaed0",
+      "function": "005966f0",
+      "instruction": "00596e63: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00596e9e",
+      "native": "00abaed0",
+      "function": "005966f0",
+      "instruction": "00596e9e: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00597e8e",
+      "native": "00abaed0",
+      "function": "00597870",
+      "instruction": "00597e8e: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005b156d",
+      "native": "00abaed0",
+      "function": "005adda0",
+      "instruction": "005b156d: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005b675e",
+      "native": "00abaed0",
+      "function": "005b6710",
+      "instruction": "005b675e: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005b6769",
+      "native": "00abaed0",
+      "function": "005b6710",
+      "instruction": "005b6769: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005b73c4",
+      "native": "00abaed0",
+      "function": "005b7390",
+      "instruction": "005b73c4: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005b95fb",
+      "native": "00abaed0",
+      "function": "005b94d0",
+      "instruction": "005b95fb: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005b9606",
+      "native": "00abaed0",
+      "function": "005b94d0",
+      "instruction": "005b9606: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005bc0c3",
+      "native": "00abaed0",
+      "function": "005bbf10",
+      "instruction": "005bc0c3: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005bc0d2",
+      "native": "00abaed0",
+      "function": "005bbf10",
+      "instruction": "005bc0d2: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0067d8f5",
+      "native": "00abaed0",
+      "function": "0067d870",
+      "instruction": "0067d8f5: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005d2c38",
+      "native": "00abaed0",
+      "function": "005d26d0",
+      "instruction": "005d2c38: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005d2c6e",
+      "native": "00abaed0",
+      "function": "005d26d0",
+      "instruction": "005d2c6e: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005d2ca4",
+      "native": "00abaed0",
+      "function": "005d26d0",
+      "instruction": "005d2ca4: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005d2d10",
+      "native": "00abaed0",
+      "function": "005d26d0",
+      "instruction": "005d2d10: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005d2d46",
+      "native": "00abaed0",
+      "function": "005d26d0",
+      "instruction": "005d2d46: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005d8352",
+      "native": "00abaed0",
+      "function": "005d73a0",
+      "instruction": "005d8352: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005d8362",
+      "native": "00abaed0",
+      "function": "005d73a0",
+      "instruction": "005d8362: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005e1b36",
+      "native": "00abaed0",
+      "function": "005e19e0",
+      "instruction": "005e1b36: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005e2ebd",
+      "native": "00abaed0",
+      "function": "005e2750",
+      "instruction": "005e2ebd: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005e5046",
+      "native": "00abaed0",
+      "function": "005e4fc0",
+      "instruction": "005e5046: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005e9086",
+      "native": "00abaed0",
+      "function": "005e8b20",
+      "instruction": "005e9086: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005e938d",
+      "native": "00abaed0",
+      "function": "005e8b20",
+      "instruction": "005e938d: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005e9453",
+      "native": "00abaed0",
+      "function": "005e8b20",
+      "instruction": "005e9453: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005e8d3e",
+      "native": "00abb000",
+      "function": "005e8b20",
+      "instruction": "005e8d3e: CALL 0x00abb000 "
+    },
+    {
+      "address": "005e8efb",
+      "native": "00abb000",
+      "function": "005e8b20",
+      "instruction": "005e8efb: CALL 0x00abb000 "
+    },
+    {
+      "address": "005e9fd6",
+      "native": "00abaed0",
+      "function": "005e9be0",
+      "instruction": "005e9fd6: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005e9fe5",
+      "native": "00abaed0",
+      "function": "005e9be0",
+      "instruction": "005e9fe5: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005ee8b4",
+      "native": "00abaed0",
+      "function": "005ee520",
+      "instruction": "005ee8b4: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005ef0b2",
+      "native": "00abaed0",
+      "function": "005eef60",
+      "instruction": "005ef0b2: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005ef0e0",
+      "native": "00abaed0",
+      "function": "005eef60",
+      "instruction": "005ef0e0: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005f07b5",
+      "native": "00abaed0",
+      "function": "005f0730",
+      "instruction": "005f07b5: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005f08d8",
+      "native": "00abaed0",
+      "function": "005f0800",
+      "instruction": "005f08d8: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005f271d",
+      "native": "00abaed0",
+      "function": "005f24d0",
+      "instruction": "005f271d: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005f27fa",
+      "native": "00abaed0",
+      "function": "005f24d0",
+      "instruction": "005f27fa: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005f7a7c",
+      "native": "00abaed0",
+      "function": "005f7310",
+      "instruction": "005f7a7c: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00600546",
+      "native": "00abaed0",
+      "function": "006003a0",
+      "instruction": "00600546: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006007c2",
+      "native": "00abaed0",
+      "function": "006003a0",
+      "instruction": "006007c2: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0060098a",
+      "native": "00abaed0",
+      "function": "006003a0",
+      "instruction": "0060098a: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00600b12",
+      "native": "00abaed0",
+      "function": "006003a0",
+      "instruction": "00600b12: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00600d22",
+      "native": "00abaed0",
+      "function": "006003a0",
+      "instruction": "00600d22: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0060204c",
+      "native": "00abaed0",
+      "function": "00601f80",
+      "instruction": "0060204c: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00602138",
+      "native": "00abaed0",
+      "function": "00601f80",
+      "instruction": "00602138: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00603748",
+      "native": "00abaed0",
+      "function": "00603120",
+      "instruction": "00603748: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00603786",
+      "native": "00abaed0",
+      "function": "00603120",
+      "instruction": "00603786: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0060e6aa",
+      "native": "00abaed0",
+      "function": "0060e440",
+      "instruction": "0060e6aa: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0060ea2a",
+      "native": "00abaed0",
+      "function": "0060e440",
+      "instruction": "0060ea2a: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0060edaa",
+      "native": "00abaed0",
+      "function": "0060e440",
+      "instruction": "0060edaa: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0060eee6",
+      "native": "00abaed0",
+      "function": "0060e440",
+      "instruction": "0060eee6: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00610540",
+      "native": "00abaed0",
+      "function": "00610070",
+      "instruction": "00610540: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00610922",
+      "native": "00abaed0",
+      "function": "00610070",
+      "instruction": "00610922: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006109f9",
+      "native": "00abaed0",
+      "function": "00610070",
+      "instruction": "006109f9: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00610aa5",
+      "native": "00abaed0",
+      "function": "00610070",
+      "instruction": "00610aa5: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00610d16",
+      "native": "00abaed0",
+      "function": "00610070",
+      "instruction": "00610d16: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006110fd",
+      "native": "00abaed0",
+      "function": "00610070",
+      "instruction": "006110fd: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006111d4",
+      "native": "00abaed0",
+      "function": "00610070",
+      "instruction": "006111d4: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00611285",
+      "native": "00abaed0",
+      "function": "00610070",
+      "instruction": "00611285: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00619e37",
+      "native": "00abaed0",
+      "function": "00619c50",
+      "instruction": "00619e37: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0061a90b",
+      "native": "00abaed0",
+      "function": "0061a6c0",
+      "instruction": "0061a90b: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0061a9fb",
+      "native": "00abaed0",
+      "function": "0061a6c0",
+      "instruction": "0061a9fb: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0061bb5a",
+      "native": "00abaed0",
+      "function": "0061b850",
+      "instruction": "0061bb5a: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0061bc58",
+      "native": "00abaed0",
+      "function": "0061b850",
+      "instruction": "0061bc58: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0061c5c4",
+      "native": "00abaed0",
+      "function": "0061bea0",
+      "instruction": "0061c5c4: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00682c42",
+      "native": "00abaed0",
+      "function": "00682bd0",
+      "instruction": "00682c42: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006216b5",
+      "native": "00abaed0",
+      "function": "0061fbe0",
+      "instruction": "006216b5: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062abe1",
+      "native": "00abaed0",
+      "function": "0062a970",
+      "instruction": "0062abe1: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062cca9",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062cca9: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062cf78",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062cf78: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062d02b",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062d02b: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062d35f",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062d35f: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062d4d5",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062d4d5: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062d73d",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062d73d: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062d7f4",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062d7f4: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062d85e",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062d85e: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062d8dc",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062d8dc: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062dc35",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062dc35: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062dd3d",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062dd3d: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062de6a",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062de6a: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062df21",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062df21: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062df8b",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062df8b: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062e009",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062e009: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062e34a",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062e34a: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062e4de",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062e4de: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062e595",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062e595: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062e5ff",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062e5ff: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062e67d",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062e67d: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062edeb",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062edeb: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062ef02",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062ef02: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062f2a5",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062f2a5: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062f57b",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062f57b: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062f79c",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062f79c: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062fc3f",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062fc3f: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062fd98",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062fd98: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062ffa6",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0062ffa6: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00630f2e",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "00630f2e: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00631129",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "00631129: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006311cc",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "006311cc: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00632243",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "00632243: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0063243e",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0063243e: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006324e1",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "006324e1: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0063388f",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0063388f: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00633fe3",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "00633fe3: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006347f1",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "006347f1: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00634df9",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "00634df9: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006353a0",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "006353a0: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00635c09",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "00635c09: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00635c52",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "00635c52: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00635d84",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "00635d84: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00635e84",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "00635e84: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006361b6",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "006361b6: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0063655b",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "0063655b: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006365d5",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "006365d5: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006369de",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "006369de: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00636a48",
+      "native": "00abaed0",
+      "function": "0062c2c0",
+      "instruction": "00636a48: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0062f3c9",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "0062f3c9: CALL 0x00abb000 "
+    },
+    {
+      "address": "00630938",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "00630938: CALL 0x00abb000 "
+    },
+    {
+      "address": "00630cf9",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "00630cf9: CALL 0x00abb000 "
+    },
+    {
+      "address": "0063131a",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "0063131a: CALL 0x00abb000 "
+    },
+    {
+      "address": "006315fb",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "006315fb: CALL 0x00abb000 "
+    },
+    {
+      "address": "00631c40",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "00631c40: CALL 0x00abb000 "
+    },
+    {
+      "address": "00632005",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "00632005: CALL 0x00abb000 "
+    },
+    {
+      "address": "0063262f",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "0063262f: CALL 0x00abb000 "
+    },
+    {
+      "address": "006329b4",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "006329b4: CALL 0x00abb000 "
+    },
+    {
+      "address": "00633023",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "00633023: CALL 0x00abb000 "
+    },
+    {
+      "address": "006330dd",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "006330dd: CALL 0x00abb000 "
+    },
+    {
+      "address": "00633197",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "00633197: CALL 0x00abb000 "
+    },
+    {
+      "address": "006335d4",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "006335d4: CALL 0x00abb000 "
+    },
+    {
+      "address": "00633a3b",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "00633a3b: CALL 0x00abb000 "
+    },
+    {
+      "address": "00633d85",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "00633d85: CALL 0x00abb000 "
+    },
+    {
+      "address": "00634235",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "00634235: CALL 0x00abb000 "
+    },
+    {
+      "address": "00634606",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "00634606: CALL 0x00abb000 "
+    },
+    {
+      "address": "006349cd",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "006349cd: CALL 0x00abb000 "
+    },
+    {
+      "address": "00634c1e",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "00634c1e: CALL 0x00abb000 "
+    },
+    {
+      "address": "00634f26",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "00634f26: CALL 0x00abb000 "
+    },
+    {
+      "address": "0063517b",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "0063517b: CALL 0x00abb000 "
+    },
+    {
+      "address": "006354b2",
+      "native": "00abb000",
+      "function": "0062c2c0",
+      "instruction": "006354b2: CALL 0x00abb000 "
+    },
+    {
+      "address": "00637173",
+      "native": "00abaed0",
+      "function": "00637080",
+      "instruction": "00637173: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006372ad",
+      "native": "00abaed0",
+      "function": "00637080",
+      "instruction": "006372ad: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0063cca3",
+      "native": "00abaed0",
+      "function": "0063c620",
+      "instruction": "0063cca3: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0063d694",
+      "native": "00abaed0",
+      "function": "0063d1e0",
+      "instruction": "0063d694: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0064306a",
+      "native": "00abaed0",
+      "function": "00642c20",
+      "instruction": "0064306a: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006481db",
+      "native": "00abaed0",
+      "function": "00648060",
+      "instruction": "006481db: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00649274",
+      "native": "00abaed0",
+      "function": "00648c20",
+      "instruction": "00649274: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006494a5",
+      "native": "00abb000",
+      "function": "00648c20",
+      "instruction": "006494a5: CALL 0x00abb000 "
+    },
+    {
+      "address": "0065bc41",
+      "native": "00abaed0",
+      "function": "0065bbc0",
+      "instruction": "0065bc41: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0066c5e8",
+      "native": "00abaed0",
+      "function": "0066b6c0",
+      "instruction": "0066c5e8: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0066c6a8",
+      "native": "00abaed0",
+      "function": "0066b6c0",
+      "instruction": "0066c6a8: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0066c7d0",
+      "native": "00abaed0",
+      "function": "0066b6c0",
+      "instruction": "0066c7d0: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0066caeb",
+      "native": "00abaed0",
+      "function": "0066b6c0",
+      "instruction": "0066caeb: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0066cbf8",
+      "native": "00abaed0",
+      "function": "0066b6c0",
+      "instruction": "0066cbf8: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00670767",
+      "native": "00abaed0",
+      "function": "00670020",
+      "instruction": "00670767: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00670e77",
+      "native": "00abaed0",
+      "function": "00670020",
+      "instruction": "00670e77: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00672201",
+      "native": "00abaed0",
+      "function": "00671d60",
+      "instruction": "00672201: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006722d3",
+      "native": "00abaed0",
+      "function": "00671d60",
+      "instruction": "006722d3: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0067236e",
+      "native": "00abaed0",
+      "function": "00671d60",
+      "instruction": "0067236e: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006759c5",
+      "native": "00abaed0",
+      "function": "00674b80",
+      "instruction": "006759c5: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00675ad3",
+      "native": "00abaed0",
+      "function": "00674b80",
+      "instruction": "00675ad3: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00675b7a",
+      "native": "00abaed0",
+      "function": "00674b80",
+      "instruction": "00675b7a: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00677a13",
+      "native": "00abaed0",
+      "function": "00675c40",
+      "instruction": "00677a13: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00677b5f",
+      "native": "00abaed0",
+      "function": "00675c40",
+      "instruction": "00677b5f: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0067841b",
+      "native": "00abaed0",
+      "function": "00675c40",
+      "instruction": "0067841b: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006784cd",
+      "native": "00abaed0",
+      "function": "00675c40",
+      "instruction": "006784cd: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00678552",
+      "native": "00abaed0",
+      "function": "00675c40",
+      "instruction": "00678552: CALL 0x00abaed0 "
+    },
+    {
+      "address": "006794f1",
+      "native": "00abaed0",
+      "function": "00675c40",
+      "instruction": "006794f1: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00679599",
+      "native": "00abaed0",
+      "function": "00675c40",
+      "instruction": "00679599: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00679620",
+      "native": "00abaed0",
+      "function": "00675c40",
+      "instruction": "00679620: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0067a174",
+      "native": "00abaed0",
+      "function": "00675c40",
+      "instruction": "0067a174: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0067a203",
+      "native": "00abaed0",
+      "function": "00675c40",
+      "instruction": "0067a203: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0067a2a3",
+      "native": "00abaed0",
+      "function": "00675c40",
+      "instruction": "0067a2a3: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0067a31c",
+      "native": "00abaed0",
+      "function": "00675c40",
+      "instruction": "0067a31c: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00673319",
+      "native": "00abaed0",
+      "function": "00673130",
+      "instruction": "00673319: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0067340e",
+      "native": "00abaed0",
+      "function": "00673130",
+      "instruction": "0067340e: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00aadcf4",
+      "native": "00abaed0",
+      "function": "00aadba0",
+      "instruction": "00aadcf4: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00abbd99",
+      "native": "00abaed0",
+      "function": "00abb630",
+      "instruction": "00abbd99: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0056d787",
+      "native": "00abaed0",
+      "function": "0056d660",
+      "instruction": "0056d787: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0056d83d",
+      "native": "00abaed0",
+      "function": "0056d660",
+      "instruction": "0056d83d: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0056d8e5",
+      "native": "00abaed0",
+      "function": "0056d660",
+      "instruction": "0056d8e5: CALL 0x00abaed0 "
+    },
+    {
+      "address": "0058c82d",
+      "native": "00abaed0",
+      "function": "0058c010",
+      "instruction": "0058c82d: CALL 0x00abaed0 "
+    },
+    {
+      "address": "00532eeb",
+      "native": "00abaed0",
+      "function": "00532dc0",
+      "instruction": "00532eeb: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005ebed0",
+      "native": "00abaed0",
+      "function": "005ebdd0",
+      "instruction": "005ebed0: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005ebf7b",
+      "native": "00abaed0",
+      "function": "005ebdd0",
+      "instruction": "005ebf7b: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005ebfbf",
+      "native": "00abaed0",
+      "function": "005ebdd0",
+      "instruction": "005ebfbf: CALL 0x00abaed0 "
+    },
+    {
+      "address": "005ec14c",
+      "native": "00abb000",
+      "function": "005ebdd0",
+      "instruction": "005ec14c: CALL 0x00abb000 "
+    },
+    {
+      "address": "005ec1a5",
+      "native": "00abb000",
+      "function": "005ebdd0",
+      "instruction": "005ec1a5: CALL 0x00abb000 "
+    },
+    {
+      "address": "00561fc2",
+      "native": "00abb000",
+      "function": "00561eb0",
+      "instruction": "00561fc2: CALL 0x00abb000 "
+    },
+    {
+      "address": "005620a8",
+      "native": "00abb000",
+      "function": "00561eb0",
+      "instruction": "005620a8: CALL 0x00abb000 "
+    },
+    {
+      "address": "0056218f",
+      "native": "00abb000",
+      "function": "00561eb0",
+      "instruction": "0056218f: CALL 0x00abb000 "
+    },
+    {
+      "address": "005003bc",
+      "native": "00abb000",
+      "function": "005001a0",
+      "instruction": "005003bc: CALL 0x00abb000 "
+    },
+    {
+      "address": "005005a1",
+      "native": "00abb000",
+      "function": "00500450",
+      "instruction": "005005a1: CALL 0x00abb000 "
+    },
+    {
+      "address": "005007b4",
+      "native": "00abb000",
+      "function": "00500640",
+      "instruction": "005007b4: CALL 0x00abb000 "
+    },
+    {
+      "address": "005009e3",
+      "native": "00abb000",
+      "function": "00500860",
+      "instruction": "005009e3: CALL 0x00abb000 "
+    },
+    {
+      "address": "00501008",
+      "native": "00abb000",
+      "function": "00500e90",
+      "instruction": "00501008: CALL 0x00abb000 "
+    },
+    {
+      "address": "00501240",
+      "native": "00abb000",
+      "function": "005010c0",
+      "instruction": "00501240: CALL 0x00abb000 "
+    },
+    {
+      "address": "00501460",
+      "native": "00abb000",
+      "function": "005012f0",
+      "instruction": "00501460: CALL 0x00abb000 "
+    },
+    {
+      "address": "00503483",
+      "native": "00abb000",
+      "function": "00503250",
+      "instruction": "00503483: CALL 0x00abb000 "
+    },
+    {
+      "address": "00561cbb",
+      "native": "00abb000",
+      "function": "00561be0",
+      "instruction": "00561cbb: CALL 0x00abb000 "
+    },
+    {
+      "address": "005628c7",
+      "native": "00abb000",
+      "function": "00562750",
+      "instruction": "005628c7: CALL 0x00abb000 "
+    },
+    {
+      "address": "005628ff",
+      "native": "00abb000",
+      "function": "00562750",
+      "instruction": "005628ff: CALL 0x00abb000 "
+    },
+    {
+      "address": "00564ef1",
+      "native": "00abb000",
+      "function": "00564e70",
+      "instruction": "00564ef1: CALL 0x00abb000 "
+    },
+    {
+      "address": "00565121",
+      "native": "00abb000",
+      "function": "005650c0",
+      "instruction": "00565121: CALL 0x00abb000 "
+    },
+    {
+      "address": "0060154f",
+      "native": "00abb000",
+      "function": "00601200",
+      "instruction": "0060154f: CALL 0x00abb000 "
+    },
+    {
+      "address": "00601c90",
+      "native": "00abb000",
+      "function": "00601200",
+      "instruction": "00601c90: CALL 0x00abb000 "
+    },
+    {
+      "address": "005dcc77",
+      "native": "00abb000",
+      "function": "005db050",
+      "instruction": "005dcc77: CALL 0x00abb000 "
+    },
+    {
+      "address": "005e5a8c",
+      "native": "00abb000",
+      "function": "005e51d0",
+      "instruction": "005e5a8c: CALL 0x00abb000 "
+    },
+    {
+      "address": "005f3da6",
+      "native": "00abb000",
+      "function": "005f3b50",
+      "instruction": "005f3da6: CALL 0x00abb000 "
+    },
+    {
+      "address": "00646d75",
+      "native": "00abb000",
+      "function": "00646d30",
+      "instruction": "00646d75: CALL 0x00abb000 "
+    },
+    {
+      "address": "00abb608",
+      "native": "00abb1d0",
+      "function": "00abb2c0",
+      "instruction": "00abb608: CALL 0x00abb1d0 "
+    },
+    {
+      "address": "00abbf3f",
+      "native": "00abb1d0",
+      "function": "00abbf30",
+      "instruction": "00abbf3f: CALL 0x00abb1d0 "
+    }
+  ],
+  "caller_audit": {
+    "live_call_xrefs": 315,
+    "verified_function_attribution_candidates": 313,
+    "containing_functions": 120,
+    "scope": "All live CALL xrefs enumerated; exact instruction and containing-function attribution verified. Full containing listings and bounded setup windows were acquired in local/submit-caller-listings. No complete caller behavior is reconstructed or inferred from the graph."
+  },
+  "raw_call_sites": [
+    {
+      "site": "005e99ca",
+      "target": "00abaed0",
+      "bytes": "e8 01 15 4d 00",
+      "scope": "unattributed raw CALL; no containing Ghidra function, not counted as a verified function row"
+    },
+    {
+      "site": "005e99d9",
+      "target": "00abaed0",
+      "bytes": "e8 f2 14 4d 00",
+      "scope": "unattributed raw CALL; no containing Ghidra function, not counted as a verified function row"
+    }
+  ],
+  "data_dispatch": {
+    "site": "00d5c720",
+    "target": "00abbf30",
+    "kind": "Text current58 data xref; no direct caller"
+  },
+  "order": [
+    "Source equality uses current length/CRT before localization flag, width, cache mutation or final color.",
+    "Changed source cache stores before conversion; live ordered -1 width fallback precedes conversion; font lookup for ellipsis follows conversion.",
+    "Converted and clipped temporaries survive pending content; clipped cleanup precedes converted cleanup, then current color reload.",
+    "UTF16 direct submission always has final color; force rebuild and resize have none beyond nested content.",
+    "Resize performs sequential x87 pair loads/stores then recompose; captures current text only afterwards; leaves bounds stale."
+  ],
+  "remaining": [
+    "Optional glyph-child factory and callee continuation",
+    "Undefined native alignment/position formats",
+    "Native string pool callbacks/layout, SEH and allocation-failure ABI",
+    "Full Text factory/property dispatch and runtime/gameplay validation"
+  ],
+  "verification": "See reports/orch5_text_submission_batch.json; existing tests do not execute new Text operations."
+}

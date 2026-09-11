@@ -4,6 +4,7 @@
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
 #include "bsp/game_settings.hpp"
+#include "bsp/game_tuning_singleton.hpp"
 #include "bsp/gui_icon.hpp"
 #include "bsp/gui_layer.hpp"
 #include "bsp/gui_layout_loader.hpp"
@@ -32,6 +33,7 @@
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_unit_creators.hpp"
 #include "bsp/unit_controller.hpp"
+#include "bsp/unit_instance_layout.hpp"
 #include "bsp/unit_motion.hpp"
 #include "bsp/unit_state_message.hpp"
 #include "bsp/input_settings.hpp"
@@ -48,6 +50,7 @@
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_state_entry.hpp"
 #include "bsp/mission_lua_host.hpp"
+#include "bsp/mission_named_call_args.hpp"
 #include "bsp/mission_tree_data.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_effects_startup.hpp"
@@ -55,7 +58,9 @@
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/plane_class_fields.hpp"
 #include "bsp/vehicle_class_fields.hpp"
+#include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/scene_property_bag.hpp"
+#include "bsp/entity_think_dispatch.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -1845,6 +1850,158 @@ int main() {
                          bsp::ScenePropertyType::IntArray, 8) == 32,
             "an installed `IA` property line decodes its leading token as the element "
             "count and yields eight values");
+    }
+
+    {
+        // 00887750's nargs accounting, which is easy to "correct" the wrong way.
+        // EBX is cleared at 00887780 and only the self-key block sets it to one,
+        // 0088793C adds the record count verbatim even for a tag-4 record that
+        // pushes nothing, and stack_first == 0 is the sentinel at 008877F2 that
+        // also stops stack_last from being normalised.
+        const bsp::MissionLuaStackRange none = bsp::resolve_named_call_stack_range(0, -1, 12);
+        const bsp::MissionLuaStackRange relative = bsp::resolve_named_call_stack_range(-3, -1, 12);
+        std::vector<bsp::MissionLuaArgument> arguments(2);
+        arguments[0].type = bsp::MissionLuaArgumentType::Number;
+        arguments[1].type = bsp::MissionLuaArgumentType::Skipped;
+        const bsp::NamedCallArgumentCounts without_self
+            = bsp::named_call_argument_count(false, arguments, none);
+        const bsp::NamedCallArgumentCounts with_self
+            = bsp::named_call_argument_count(true, arguments, relative);
+        check(!none.active && none.count == 0 && relative.active && relative.first == 10
+                  && relative.last == 12 && relative.count == 3 && without_self.declared == 2
+                  && without_self.pushed == 1 && with_self.declared == 6 && with_self.pushed == 5,
+            "the named call counts a skipped record in nargs but not on the stack, starts at zero "
+            "without a self key, and treats stack_first zero as the no-forwarding sentinel");
+    }
+
+    {
+        // 0081F1A2..0081F1C3: the instance keeps the pre-increment value and the
+        // global 00F87151 wraps only once it exceeds 0Bh, so twelve consecutive
+        // instances take 0..11 and the thirteenth takes 0 again.
+        const bsp::UnitSlotCounterStep last = bsp::unit_slot_counter_step(11);
+        const bsp::UnitSlotCounterStep before = bsp::unit_slot_counter_step(10);
+        check(last.stored == 11 && last.next == 0 && before.stored == 10
+                  && before.next == 11,
+            "the unit construction slot counter stores the pre-increment value and "
+            "wraps after 11, not at it");
+    }
+
+    {
+        // The installed Submarine row VehicleClass[8], comment "I400", is the one
+        // shipped submarine with no PeriscopeDepth key, so it is the row that
+        // exercises the alias branch 00854332 guards: with +810h left at the
+        // -1.0f default, the reader goes on to ask for SwimDepth1, which no
+        // shipped row provides either, and the slot keeps -1.0f. The row does
+        // provide UpSpeed and DownSpeed (1.1) and provides none of UpDownAccel,
+        // UpDownRotation or UpDownStopTime, which therefore take their literals.
+        bsp::VehicleClassLuaValue absent{};
+        bsp::VehicleClassLuaValue up_speed{};
+        up_speed.kind = bsp::VehicleClassValueKind::Number;
+        up_speed.number = 1.1;
+
+        const float periscope_depth = bsp::vehicle_class_number_or_00b66330(
+            absent, bsp::ShipLeafDefaults::kAbsentDepth);
+        const bool alias_taken = bsp::submarine_reads_swim_depth1(periscope_depth);
+        const float after_alias = alias_taken
+            ? bsp::vehicle_class_number_or_00b66330(absent,
+                                                    bsp::ShipLeafDefaults::kAbsentDepth)
+            : periscope_depth;
+
+        const bsp::ShipLeafFieldSpec* swim1 = bsp::ship_leaf_find_field(
+            bsp::ShipLeafClass::Submarine, "SwimDepth1");
+        const bsp::ShipLeafFieldSpec* depth = bsp::ship_leaf_find_field(
+            bsp::ShipLeafClass::Submarine, "PeriscopeDepth");
+        check(alias_taken && after_alias == bsp::ShipLeafDefaults::kAbsentDepth
+                  && swim1 != nullptr && depth != nullptr
+                  && swim1->offset == depth->offset
+                  && bsp::vehicle_class_number_or_00b66330(up_speed, 0.0F) > 1.0F
+                  && bsp::vehicle_class_number_or_00b66330(
+                         absent, bsp::ShipLeafDefaults::kUpDownRotation)
+                         == bsp::ShipLeafDefaults::kUpDownRotation,
+            "the installed I400 submarine row leaves +810h at -1.0f through the "
+            "SwimDepth1 alias branch and takes the literal UpDownRotation default");
+    }
+
+    {
+        // 00929460 never re-arms +1E0h, so an entity whose delay has run out stops
+        // being a timed entry and falls onto the shared countdown at 00F89A04. The
+        // risk is reading 009294BC as "expired means fire again"; it means the
+        // opposite, the entry waits for the three-second pass.
+        struct CountingHost : bsp::EntityThinkHost {
+            int thinks = 0;
+            void run_entity_think_00929150(std::uint32_t) override { ++thinks; }
+            void free_think_node_0092952c(const bsp::EntityThinkNode&) override {}
+            bool gc_gate_predicate_0109cefc_vtable0c() override { return false; }
+            void lua_run_string_006b8ad0(const char*, int) override {}
+            void splice_pending_into_live_00928380(bsp::EntityThinkList& live,
+                const bsp::EntityThinkList& pending) override {
+                live.nodes.insert(live.nodes.end(), pending.nodes.begin(), pending.nodes.end());
+            }
+            void clear_pending_00928330(bsp::EntityThinkList& pending) override {
+                pending.nodes.clear();
+            }
+        } host;
+        bsp::EntityThinkList live;
+        bsp::EntityThinkList pending;
+        bsp::register_pending_think_entity_0088a240(pending, 0x1000u);
+        std::vector<bsp::EntityThinkFields> fields(1);
+        fields[0].entity = 0x1000u;
+        fields[0].initialised = true;
+        fields[0].has_think_name = true;
+        fields[0].delay_armed = true;
+        fields[0].delay_seconds = bsp::clamp_think_delay(0.1f); // clamped to 0.5f at 008982B0
+        float countdown = 2.0f;
+        const float step = 0.05f;
+        int first_fire = -1;
+        for (int call = 0; call < 20; ++call) {
+            // The native decrements +1E0h only while walking the node, and a
+            // registration is spliced in at the end of the call that made it.
+            const bool walked = !live.nodes.empty();
+            const bsp::EntityThinkRunSummary summary = bsp::run_entity_think_list_00929460(
+                step, countdown, live, pending, fields, host);
+            if (summary.thinks_run != 0 && first_fire < 0) first_fire = call;
+            if (walked && fields[0].delay_armed && fields[0].delay_seconds > 0.0f) {
+                fields[0].delay_seconds
+                    = bsp::entity_think_delay_after_step(fields[0].delay_seconds, step);
+            }
+        }
+        const int after_timeout = host.thinks;
+        countdown = -0.01f; // the pass 00929542 tests, before the 3.0 refill
+        const bsp::EntityThinkRunSummary expired = bsp::run_entity_think_list_00929460(
+            step, countdown, live, pending, fields, host);
+        check(first_fire == 10 && after_timeout == 1 && expired.thinks_run == 1
+                  && expired.countdown_expired
+                  && std::fabs(countdown - (3.0f - 0.06f)) < 1e-5f,
+            "an armed think fires once when its clamped delay runs out, then waits for the "
+            "three-second script countdown instead of firing every step");
+    }
+
+    {
+        // 007D20F3..007D2144. The installed Scripts\datatables\PlaneGlobals.lua sets
+        // Dynamics/AccelCheatMul = 1.5 and AccelCheatMulMul = 1.15, so the plane class
+        // reader takes the scaling branch and 007D213C never runs. Below 1.0f the clamp
+        // runs, writes exactly 1.0f and is idempotent, which is why it is a guard and
+        // not a progressive per-class mutation of shared tuning.
+        bsp::GameTuningBlock block{};
+        block.dynamics_accel_cheat_mul = 1.5F;
+        block.dynamics_accel_cheat_mul_mul = 1.15F;
+        const float scaled = bsp::game_tuning_apply_accel_cheat_007d20f3(block, 2.0F);
+
+        bsp::GameTuningBlock low{};
+        low.dynamics_accel_cheat_mul = 0.8F;
+        low.dynamics_accel_cheat_mul_mul = 1.15F;
+        const float first = bsp::game_tuning_apply_accel_cheat_007d20f3(low, 2.0F);
+        const float clamped_once = low.dynamics_accel_cheat_mul;
+        const float second = bsp::game_tuning_apply_accel_cheat_007d20f3(low, 2.0F);
+
+        check(scaled == 1.5F * 1.15F * 2.0F
+                  && block.dynamics_accel_cheat_mul == 1.5F
+                  && first == 2.0F && clamped_once == 1.0F
+                  && second == 2.0F && low.dynamics_accel_cheat_mul == 1.0F
+                  && offsetof(bsp::GameTuningBlock, dynamics_accel_cheat_mul)
+                         == bsp::kGameTuningAccelCheatMul,
+            "the installed AccelCheatMul 1.5 scales Accel and leaves the tuning block "
+            "untouched, and a value below 1.0f clamps to exactly 1.0f idempotently");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
