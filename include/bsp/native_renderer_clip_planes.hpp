@@ -16,7 +16,8 @@ void set_native_renderer_clip_plane_00b23e50(void* actual_renderer,
 
 // Full B25040..B2507E: ECX renderer, stack float4, RET4. Set at current
 // active+19EC, increment its current value after return, then set state98
-// to DWORD((1 << (current_active &31))-1). Pending+19F0 is not written.
+// to DWORD((1 << (current_active &31))-1). No additional direct pending+19F0
+// store is added; unchecked child cache aliasing and callbacks remain visible.
 void append_native_renderer_clip_plane_00b25040(void* actual_renderer,
     const void* actual_four_coefficients, NativeRendererSynchronizationGlobals&);
 

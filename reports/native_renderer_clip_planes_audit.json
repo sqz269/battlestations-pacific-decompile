@@ -1199,8 +1199,8 @@
     },
     {
       "path": "include/bsp/native_renderer_clip_planes.hpp",
-      "bytes": 1627,
-      "sha256": "1c9dbe8d803f2d97a11e00e126f59d69ba9fb517c2325dc48a0ff29d975f1493"
+      "bytes": 1712,
+      "sha256": "022877a19219c3c5b17b4bfcb23bd91b1b5dce8f19845afb6acee9a4cef86e70"
     },
     {
       "path": "src/native_renderer_synchronization_actual.cpp",
@@ -1235,5 +1235,6 @@
   },
   "native_differential_fixture": false,
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "post_build_comment_clarification": "Header/doc only: no direct parent pending store; preserve unchecked child aliasing effects. No C++ code or declarations changed."
 }
