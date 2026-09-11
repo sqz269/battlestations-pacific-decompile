@@ -154,3 +154,8 @@ destruction and the absence of owner validation/output publication. Static
 FH3 and linked code complement this check; no native EH equivalence is claimed.
 Whole-object provenance is broader than executed paths. The immutable bundle
 keeps the reviewed fixture and trace for primary relinking.
+
+
+## Primary integration
+
+Primary registered both complete source entries and passed the strict Win32 build, both existing CTests and eight fresh seeds. All four packets were checked against the same frozen main library `5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8`. Unchanged focused fixture matches231 words for five original/source operations: mirrored near-child rotations, three-node partial range with11 returning invalid-handler calls, fullclear, captured-head repairs and aliased output. Actual free changes count13/0 and pool getter mutates captured key. Both owned entries, subtree, increment and rotations execute; extrema installed/static only here. Nine exact objects/198 code sections14256bytes461relocations;82 linked sections8238bytes checked outside relocation operands, not every resolved target. Separate source owning-exception payload/copy/destruction check; original EH static. Inherited actual pool-release noexcept/recreation-failure boundary and host RTTI/SEH/caller ABI limits remain. No full registry/factory/game claim. Reviewed names and evidence are saved with prior comments retained; correct CRT library names remain. All affected exports were forcibly refreshed. Immutable primary evidence: `local/registry_erase_primary/`.

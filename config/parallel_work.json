@@ -7311,6 +7311,82 @@
         "src/native_resource_registry_tree_leaves.cpp"
       ],
       "evidence": "reports/native_resource_registry_tree_leaves_audit.json"
+    },
+    {
+      "id": "native_crt_x87_error_dispatch2",
+      "packet": "native_crt_x87_error_dispatch2",
+      "state": "complete_shared_error_entries_main_archive_full_instruction_provider_binding_and_strict_Win32_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00c08330",
+        "00c08347"
+      ],
+      "code_ownership": [
+        "docs/native_crt_x87_error_dispatch.md",
+        "reports/native_crt_x87_error_dispatch_audit.json",
+        "src/native_crt_x87_error_dispatch.cpp",
+        "include/bsp/native_crt_x87_error_dispatch.hpp"
+      ],
+      "evidence": "reports/native_crt_x87_error_dispatch_audit.json"
+    },
+    {
+      "id": "native_resource_registry_erase2",
+      "packet": "native_resource_registry_erase2",
+      "state": "complete_actual_registry_erase_and_range_main_archive_native_composition_and_strict_Win32_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b19f90",
+        "00b1a2f0"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RESOURCE_REGISTRY_ERASE.md",
+        "reports/native_resource_registry_erase_audit.json",
+        "src/native_resource_registry_erase.cpp",
+        "include/bsp/native_resource_registry_erase.hpp"
+      ],
+      "evidence": "reports/native_resource_registry_erase_audit.json"
+    },
+    {
+      "id": "native_renderer_capability_array_reserves2",
+      "packet": "native_renderer_capability_array_reserves2",
+      "state": "complete_raw_capability_reserves_main_archive_full_instruction_native_composition_and_strict_Win32_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b22b30",
+        "00b236b0"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RENDERER_CAPABILITY_ARRAY_RESERVES.md",
+        "reports/native_renderer_capability_array_reserves_audit.json",
+        "src/native_renderer_capability_array_reserves.cpp",
+        "include/bsp/native_renderer_capability_array_reserves.hpp"
+      ],
+      "evidence": "reports/native_renderer_capability_array_reserves_audit.json"
+    },
+    {
+      "id": "native_crt_pow_special2",
+      "packet": "native_crt_pow_special2",
+      "state": "complete_raw_pow_special_entries_main_archive_instruction_literal_and_provider_closure_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00c19dc0",
+        "00c19e24"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_CRT_POW_SPECIAL.md",
+        "reports/native_crt_pow_special_audit.json",
+        "src/native_crt_pow_special.cpp",
+        "include/bsp/native_crt_pow_special.hpp"
+      ],
+      "evidence": "reports/native_crt_pow_special_audit.json"
     }
   ],
   "snapshot_after_analysis": {

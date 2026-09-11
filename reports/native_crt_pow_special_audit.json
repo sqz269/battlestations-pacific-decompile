@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "created_utc": "2026-09-11T22:01:13.601540+00:00",
-  "status": "Complete two raw source providers and three complete child bodies proved in actual strict library; no runtime claim",
+  "status": "complete_raw_pow_special_entries_main_archive_instruction_literal_and_provider_closure_checked",
   "base_commit": "0cee262a44eaa7e0e65be9a17d1cb5d632d126db",
   "worktree": "J:/PROG/battlestations-pacific-decompile-native_crt_pow_special",
   "ownership": {
@@ -1250,5 +1250,99 @@
       "bytes": 7069,
       "sha256": "6b3a8cb8109b378daf013b4857680d3c9c3b93237ebba91b124a757f35c553b7"
     }
-  ]
+  ],
+  "primary_integration": {
+    "status": "complete_raw_pow_special_entries_main_archive_instruction_literal_and_provider_closure_checked",
+    "main_library_sha256": "5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\error_erase_reserves_special_build_frozen\\manifest.json",
+      "bytes": 26871,
+      "sha256": "20e67dc6a422214cada2caa8045746c20ae8e17ac0a524deb7760ad00846f077"
+    },
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "worker_files": 60,
+    "report_pins": 59,
+    "fresh_spans": 8,
+    "fresh_bytes": 706,
+    "current_source_byte_drift": [],
+    "whole_COFF_sections": 11,
+    "exact_archive_objects": 2,
+    "owned_bytes": 418,
+    "provider_bytes": 256,
+    "owned_instructions": 172,
+    "provider_instructions": 112,
+    "declared_literal_changes": 6,
+    "owned_CALL_relocations": 4,
+    "provider_CALL_relocations": 1,
+    "original_owned_execution": false,
+    "boundary": "All418 owned and256 complete provider bytes proved, with six independently decoded same-length literal memory adaptations and five zero-addend CALL relocations. Eleven complete COFF sections/two actual archive objects retained. Every direct target is in the complete checked set; EBX/EDI no-write and original eight-byte nested arguments proved. Current FP environment and assembly-only caller obligations remain. No linked/runtime/SEH/caller ABI, fullpow/SSE2/gamma or game claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pow_special_primary\\sealed.json",
+      "bytes": 18481,
+      "sha256": "4fd105eeedd818f2c4196cde7a515f7d4322f9e6643343e4101357e9c7b81c2f"
+    }
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_error_erase_reserves_special_annotations.json",
+    "bytes": 16456,
+    "sha256": "b10cf9720fbc6581797d35cb147c86d48f7cd9a664972769d9c7bb787962a20f"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00c19dc0",
+      "name": "__d_inttype",
+      "cpp_symbol": "bsp::native_crt_d_inttype_00c19dc0",
+      "source": "src/native_crt_pow_special.cpp",
+      "native_end_exclusive": "00c19e24",
+      "status": "complete_raw_pow_special_entries_main_archive_instruction_literal_and_provider_closure_checked",
+      "evidence": "reports/native_crt_pow_special_audit.json",
+      "original_abi": "Complete original register, stack and current-storage/FP obligations recorded in public header and audit.",
+      "source_abi": "New explicit source interface; see full public header and audit.",
+      "original_owned_body_executed": false,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00c19e24",
+      "name": "BSP_CRT_Pow_HandleSpecialOperands",
+      "cpp_symbol": "bsp::evaluate_native_crt_pow_special_00c19e24",
+      "source": "src/native_crt_pow_special.cpp",
+      "native_end_exclusive": "00c19f62",
+      "status": "complete_raw_pow_special_entries_main_archive_instruction_literal_and_provider_closure_checked",
+      "evidence": "reports/native_crt_pow_special_audit.json",
+      "original_abi": "Complete original register, stack and current-storage/FP obligations recorded in public header and audit.",
+      "source_abi": "New explicit source interface; see full public header and audit.",
+      "original_owned_body_executed": false,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00c19dc0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c19dc0\\decompiled.c",
+      "bytes": 1951,
+      "sha256": "68fcc645429d47ab45764c5d61f0a505f167234911938d81572018a23f176192"
+    },
+    {
+      "address": "00c19e24",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c19e24\\decompiled.c",
+      "bytes": 3173,
+      "sha256": "a952d9aa3322319c493f6aaf78fcb5bade84834e805a0774107100d41601a963"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_POW_SPECIAL.md",
+    "bytes": 8085,
+    "sha256": "fcdb8831e183042e60f1552e51dbe2709527de89011973e294448505ca81b69f"
+  },
+  "closure_utc": "2026-09-11T22:20:32.415829+00:00"
 }

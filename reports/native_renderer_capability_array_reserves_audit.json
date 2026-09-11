@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "packet": "native_renderer_capability_array_reserves2",
-  "status": "complete_raw_source_strict_build_and_focused_original_full_provider_composition",
+  "status": "complete_raw_capability_reserves_main_archive_full_instruction_native_composition_and_strict_Win32_checked",
   "created_utc": "2026-09-11T21:57:15.329036+00:00",
   "base_commit": "8e2b6dea469a1cbccf1640c0cf70f71da64f9cba",
   "owned_files": [
@@ -1324,5 +1324,875 @@
     "Runtime does not exercise allocation failure/current new-handler, null computed destination, malformed extent, C++ exception or native hardware/SEH unwinding.",
     "Original reserve runtime composes compiled source providers, not original CRT; no gameplay/native drop-in caller ABI claim.",
     "Saved-analysis callsite gaps remain for primary repair after address lease transfer."
-  ]
+  ],
+  "primary_integration": {
+    "status": "complete_raw_capability_reserves_main_archive_full_instruction_native_composition_and_strict_Win32_checked",
+    "main_library_sha256": "5f30026b617779bef97bf7e96b9abd5f19b97374811502497f09d17a0593a0c8",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\error_erase_reserves_special_build_frozen\\manifest.json",
+      "bytes": 26871,
+      "sha256": "20e67dc6a422214cada2caa8045746c20ae8e17ac0a524deb7760ad00846f077"
+    },
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "worker_files": 78,
+    "report_pins": 22,
+    "fresh_spans": 6,
+    "fresh_bytes": 345,
+    "current_source_byte_drift": [],
+    "exact_archive_objects": 2,
+    "whole_owned_COFF_sections": 8,
+    "all_mapped_sections": 96,
+    "all_mapped_relocations": 332,
+    "actual_import_providers": 58,
+    "runtime_code_bytes": 8368,
+    "owned_bytes": 225,
+    "owned_instructions": 90,
+    "raw_trace_count": 4,
+    "raw_trace_bytes": 124,
+    "original_page_postimage_bytes": 4096,
+    "original_owned_execution": true,
+    "original_CRT_helper_execution": false,
+    "boundary": "Unchanged focused original/full-main-library allocator-mutation comparison passes both widths and negative-request no-growth. All225 original bytes/90 instructions exact except four bound direct provider CALL operands. Two exact members,8 ownedCOFF/96 mappedsections332relocations,58 actual imports and8368 whole runtime code bytes verified. Original private4096-byte page unchanged after execution; four raw124-byte traces compare with only explicit data-pointer identity normalization. Existing actual malloc/free providers are used through fixed source bridges. No allocationfailure/new-handler/null-destination/nativeSEH/callerABI, nested/gather/gamma or game claim.",
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\capability_array_reserves_primary\\sealed.json",
+      "bytes": 20600,
+      "sha256": "b4c44522de6265e6d8533d668367c0ae282aa0e0343f4b327ad74fdb8885d158"
+    }
+  },
+  "primary_saved_analysis_repair": {
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "addresses": [
+      "00b22b30",
+      "00b236b0"
+    ],
+    "events": [
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b22ba3",
+          "end_address": "00b22bad"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00b22ba3",
+          "end_address": "00b22bac",
+          "bytes_disassembled": 10,
+          "message": "Successfully disassembled 10 byte(s)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b22b9e"
+        },
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b22b9e (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b22b30"
+        },
+        "result": {
+          "success": true,
+          "address": "00b22b30",
+          "deleted_function": "FUN_00b22b30",
+          "body_size": 120,
+          "message": "Function 'FUN_00b22b30' deleted at 00b22b30"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b22b30",
+          "name": "FUN_00b22b30",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00b22b30",
+          "function_name": "FUN_00b22b30",
+          "entry_point": "00b22b30",
+          "body_size": 130,
+          "message": "Function created successfully at 00b22b30"
+        }
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00b23701",
+          "end_address": "00b2370a"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00b23701",
+          "end_address": "00b23709",
+          "bytes_disassembled": 9,
+          "message": "Successfully disassembled 9 byte(s)"
+        }
+      },
+      {
+        "endpoint": "clear_instruction_flow_override",
+        "body": {
+          "address": "00b236fc"
+        },
+        "result": {
+          "status": "success",
+          "message": "Success: Cleared flow override at 00b236fc (was: CALL_RETURN, now: NONE)"
+        }
+      },
+      {
+        "endpoint": "delete_function",
+        "body": {
+          "address": "00b236b0"
+        },
+        "result": {
+          "success": true,
+          "address": "00b236b0",
+          "deleted_function": "FUN_00b236b0",
+          "body_size": 86,
+          "message": "Function 'FUN_00b236b0' deleted at 00b236b0"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00b236b0",
+          "name": "FUN_00b236b0",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00b236b0",
+          "function_name": "FUN_00b236b0",
+          "entry_point": "00b236b0",
+          "body_size": 95,
+          "message": "Function created successfully at 00b236b0"
+        }
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ],
+    "functions": [
+      {
+        "address": "00b22b30",
+        "documentation_before": {
+          "hash": "89776ef92c7d9107da38f90361f9e85b7968eb3a740c46613443105239fd4136",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b22b30",
+          "function_name": "FUN_00b22b30",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            },
+            {
+              "name": "iVar4",
+              "type": "int",
+              "storage": "(register, 0x1c, 4)"
+            },
+            {
+              "name": "iVar3",
+              "type": "int",
+              "storage": "(register, 0x8, 4)"
+            },
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 18,
+              "name": "LAB_00b22b42"
+            },
+            {
+              "relative_offset": 64,
+              "name": "LAB_00b22b70"
+            },
+            {
+              "relative_offset": 89,
+              "name": "LAB_00b22b89"
+            },
+            {
+              "relative_offset": 107,
+              "name": "LAB_00b22b9b"
+            },
+            {
+              "relative_offset": 125,
+              "name": "LAB_00b22bad"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "function_before": "Function: FUN_00b22b30 at 00b22b30\nSignature: undefined FUN_00b22b30(void)\nEntry: 00b22b30\nBody: 00b22b30 - 00b22bb1",
+        "function_after": "Function: FUN_00b22b30 at 00b22b30\nSignature: undefined FUN_00b22b30(void)\nEntry: 00b22b30\nBody: 00b22b30 - 00b22bb1",
+        "documentation_after": {
+          "hash": "d2294b9b130ef68fbe861da5e196352d82f0fe3d22e0b86ae2dce5cdfe42edab",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b22b30",
+          "function_name": "FUN_00b22b30",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "iVar5",
+              "type": "int",
+              "storage": "(register, 0x1c, 4)"
+            },
+            {
+              "name": "puVar3",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            },
+            {
+              "name": "iVar4",
+              "type": "int",
+              "storage": "(register, 0x8, 4)"
+            },
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 18,
+              "name": "LAB_00b22b42"
+            },
+            {
+              "relative_offset": 64,
+              "name": "LAB_00b22b70"
+            },
+            {
+              "relative_offset": 89,
+              "name": "LAB_00b22b89"
+            },
+            {
+              "relative_offset": 107,
+              "name": "LAB_00b22b9b"
+            },
+            {
+              "relative_offset": 125,
+              "name": "LAB_00b22bad"
+            }
+          ],
+          "completeness_score": 50.0
+        }
+      },
+      {
+        "address": "00b236b0",
+        "documentation_before": {
+          "hash": "247933803670655498059e9bf3a9da1926ded142b2f2d9e622726e958e75ae0e",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b236b0",
+          "function_name": "FUN_00b236b0",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 18,
+              "name": "LAB_00b236c2"
+            },
+            {
+              "relative_offset": 51,
+              "name": "LAB_00b236e3"
+            },
+            {
+              "relative_offset": 62,
+              "name": "LAB_00b236ee"
+            },
+            {
+              "relative_offset": 73,
+              "name": "LAB_00b236f9"
+            },
+            {
+              "relative_offset": 90,
+              "name": "LAB_00b2370a"
+            }
+          ],
+          "completeness_score": 50.0
+        },
+        "function_before": "Function: FUN_00b236b0 at 00b236b0\nSignature: undefined FUN_00b236b0(void)\nEntry: 00b236b0\nBody: 00b236b0 - 00b2370e",
+        "function_after": "Function: FUN_00b236b0 at 00b236b0\nSignature: undefined FUN_00b236b0(void)\nEntry: 00b236b0\nBody: 00b236b0 - 00b2370e",
+        "documentation_after": {
+          "hash": "26d706b48f01cb34bbd3495ed2d2013918305e09018d1ce6901d0b2117e03509",
+          "source_program": "battlestationspacific.exe",
+          "source_address": "00b236b0",
+          "function_name": "FUN_00b236b0",
+          "return_type": "undefined",
+          "calling_convention": "unknown",
+          "parameters": [],
+          "local_variables": [
+            {
+              "name": "iVar2",
+              "type": "int",
+              "storage": "(register, 0x0, 4)"
+            },
+            {
+              "name": "puVar3",
+              "type": "undefined4 *",
+              "storage": "(register, 0x4, 4)"
+            },
+            {
+              "name": "puVar1",
+              "type": "undefined4 *",
+              "storage": "(register, 0x0, 4)"
+            }
+          ],
+          "comments": [],
+          "labels": [
+            {
+              "relative_offset": 18,
+              "name": "LAB_00b236c2"
+            },
+            {
+              "relative_offset": 51,
+              "name": "LAB_00b236e3"
+            },
+            {
+              "relative_offset": 62,
+              "name": "LAB_00b236ee"
+            },
+            {
+              "relative_offset": 73,
+              "name": "LAB_00b236f9"
+            },
+            {
+              "relative_offset": 90,
+              "name": "LAB_00b2370a"
+            }
+          ],
+          "completeness_score": 50.0
+        }
+      }
+    ],
+    "neighbor_documentation_before": {
+      "00b22bd0": {
+        "hash": "b98ca7bd566cfed95cab999689675ac3229f50165d0fe2dc3e019d479fd7ea0d",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b22bd0",
+        "function_name": "BSP_HardwareVertexLayoutTree_RotateLeft",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b22bd0]\nSymmetric current-root/parent links and sentinel child-parent guard. Original ABI: ECX actual tree; stack node; RET4; no semantic result. Complete actual-storage implementation in src/native_hardware_layout_tree.cpp; reports/native_hardware_layout_tree_audit.json. Full679byteerase throughB2F1A7 with two-child successor transplant omitted byoldpseudocode; freeoriginalnode, reloadcurrentcount, outputOWNERbeforeNODE. Actual12byteheader108D530; nodevalue20/color24/sentinel25. Owningout_of_range counts27includingNUL; assignmentbeforestate0, completedtemporarycleanuponly; fullcopy441760/destructor4412B0. Hostcompositionfixturepassed; independent originaltreecallercomparisonstillpending. StrictMSVCWin32+2existingCTests pass; no addedtrackedtests. Numericnativeprofilesaredata; new C++interface, no native ABI or game validation.\n\n[BSP reconstruction 00b22bd0] update\nFinal independent original-tree proof:44livePEspans2115bytes,1618behaviorwords,12original and12host measured OWNER-before-NODE stores,exact7CRT events. Original tree7 plus441760copy/4412B0cleanup execute via declared hostCRT/string service adapters. No general native exception ABI.  Final evidence in reports/native_hardware_layout_tree_audit.json and reports/native_cleanup_search_fidelity.json. StrictMSVCWin32+2existingCTests pass. New C++interfaces; no ABI/game claim.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b22be8"
+          },
+          {
+            "relative_offset": 50,
+            "name": "LAB_00b22c02"
+          },
+          {
+            "relative_offset": 67,
+            "name": "LAB_00b22c13"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "00b23640": {
+        "hash": "3ddfe681a3542969ccb71c8e0a812f6fb3837f95e16a4a78106ed5d382dfe9ef",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b23640",
+        "function_name": "BSP_ReferenceSlot_Assign",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b23640]\nECX destination slot,EDX sourceslot,RET,EAX destination. Identityskip, storenew and retain before olddecrement/finalvirtual0. Typedretainedtexture source assignment uses shared_ptr identity/ownership fragment; native intrusive ABI notported.\n\n[BSP reconstruction 00b23640] update\nReadsource first/olddestinationsecond; identity skipsallstores/atomics. Publishnew,retainnewnonnull,releasecapturedold; atzero currentprofile0 BD30E0 then currentprofile4 terminal. Newvalue published/retained before oldterminal. Original ABI: ECX destinationDWORDslot; EDX sourceDWORDslot; EAX destination; RET. Complete actual-storage implementation src/native_retained_memory_owners.cpp; reports/native_retained_memory_owners_audit.json. Sevenowned561bytes,22livePEspans761bytes; allpostimages/7primarylibraryproviders;8pairedcases3123DWORDs. OriginalctorallocationfailureFH3search1/unwind1; actualcounters/profiles/intrusiveatomics/currentdispatch. Stream exceptionalrelease edge unexercised under validacyclicsupportedprofiles andnonthrowingfree. StrictWin32+2CTest; no newtrackedtests, nativeABI/gamefalse.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "LVar3",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 28,
+            "name": "LAB_00b2365c"
+          },
+          {
+            "relative_offset": 54,
+            "name": "LAB_00b23676"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "00b23710": {
+        "hash": "3ddfe681a3542969ccb71c8e0a812f6fb3837f95e16a4a78106ed5d382dfe9ef",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b23710",
+        "function_name": "FUN_00b23710",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "LVar3",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 28,
+            "name": "LAB_00b2372c"
+          },
+          {
+            "relative_offset": 54,
+            "name": "LAB_00b23746"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "00bf6989": {
+        "hash": "b291eba04ee7171fc1126e41cb02d22f4536858bcdabd0ff59b2fbaeec1fb87f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf6989",
+        "function_name": "_free",
+        "return_type": "void",
+        "calling_convention": "__cdecl",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "_Memory",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "BVar2",
+            "type": "BOOL",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar3",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "DVar4",
+            "type": "DWORD",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "00bf65ac": {
+        "hash": "b291eba04ee7171fc1126e41cb02d22f4536858bcdabd0ff59b2fbaeec1fb87f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf65ac",
+        "function_name": "_free",
+        "return_type": "void",
+        "calling_convention": "__cdecl",
+        "plate_comment": "[BSP reconstruction 00bf65ac]\nRetain correct library name; actual matching host std::free service, not a no-op. Original ABI: cdecl pointer on stack; JMP CRT free body. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: host_crt_service_boundary; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "_Memory",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "BVar2",
+            "type": "BOOL",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar3",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "DVar4",
+            "type": "DWORD",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      }
+    },
+    "neighbor_documentation_after": {
+      "00b22bd0": {
+        "hash": "b98ca7bd566cfed95cab999689675ac3229f50165d0fe2dc3e019d479fd7ea0d",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b22bd0",
+        "function_name": "BSP_HardwareVertexLayoutTree_RotateLeft",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b22bd0]\nSymmetric current-root/parent links and sentinel child-parent guard. Original ABI: ECX actual tree; stack node; RET4; no semantic result. Complete actual-storage implementation in src/native_hardware_layout_tree.cpp; reports/native_hardware_layout_tree_audit.json. Full679byteerase throughB2F1A7 with two-child successor transplant omitted byoldpseudocode; freeoriginalnode, reloadcurrentcount, outputOWNERbeforeNODE. Actual12byteheader108D530; nodevalue20/color24/sentinel25. Owningout_of_range counts27includingNUL; assignmentbeforestate0, completedtemporarycleanuponly; fullcopy441760/destructor4412B0. Hostcompositionfixturepassed; independent originaltreecallercomparisonstillpending. StrictMSVCWin32+2existingCTests pass; no addedtrackedtests. Numericnativeprofilesaredata; new C++interface, no native ABI or game validation.\n\n[BSP reconstruction 00b22bd0] update\nFinal independent original-tree proof:44livePEspans2115bytes,1618behaviorwords,12original and12host measured OWNER-before-NODE stores,exact7CRT events. Original tree7 plus441760copy/4412B0cleanup execute via declared hostCRT/string service adapters. No general native exception ABI.  Final evidence in reports/native_hardware_layout_tree_audit.json and reports/native_cleanup_search_fidelity.json. StrictMSVCWin32+2existingCTests pass. New C++interfaces; no ABI/game claim.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "piVar1",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "piVar2",
+            "type": "int *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 24,
+            "name": "LAB_00b22be8"
+          },
+          {
+            "relative_offset": 50,
+            "name": "LAB_00b22c02"
+          },
+          {
+            "relative_offset": 67,
+            "name": "LAB_00b22c13"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "00b23640": {
+        "hash": "3ddfe681a3542969ccb71c8e0a812f6fb3837f95e16a4a78106ed5d382dfe9ef",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b23640",
+        "function_name": "BSP_ReferenceSlot_Assign",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 00b23640]\nECX destination slot,EDX sourceslot,RET,EAX destination. Identityskip, storenew and retain before olddecrement/finalvirtual0. Typedretainedtexture source assignment uses shared_ptr identity/ownership fragment; native intrusive ABI notported.\n\n[BSP reconstruction 00b23640] update\nReadsource first/olddestinationsecond; identity skipsallstores/atomics. Publishnew,retainnewnonnull,releasecapturedold; atzero currentprofile0 BD30E0 then currentprofile4 terminal. Newvalue published/retained before oldterminal. Original ABI: ECX destinationDWORDslot; EDX sourceDWORDslot; EAX destination; RET. Complete actual-storage implementation src/native_retained_memory_owners.cpp; reports/native_retained_memory_owners_audit.json. Sevenowned561bytes,22livePEspans761bytes; allpostimages/7primarylibraryproviders;8pairedcases3123DWORDs. OriginalctorallocationfailureFH3search1/unwind1; actualcounters/profiles/intrusiveatomics/currentdispatch. Stream exceptionalrelease edge unexercised under validacyclicsupportedprofiles andnonthrowingfree. StrictWin32+2CTest; no newtrackedtests, nativeABI/gamefalse.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "LVar3",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 28,
+            "name": "LAB_00b2365c"
+          },
+          {
+            "relative_offset": 54,
+            "name": "LAB_00b23676"
+          }
+        ],
+        "completeness_score": 100.0
+      },
+      "00b23710": {
+        "hash": "3ddfe681a3542969ccb71c8e0a812f6fb3837f95e16a4a78106ed5d382dfe9ef",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00b23710",
+        "function_name": "FUN_00b23710",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar2",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          },
+          {
+            "name": "LVar3",
+            "type": "LONG",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(unique, 0x17200, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 28,
+            "name": "LAB_00b2372c"
+          },
+          {
+            "relative_offset": 54,
+            "name": "LAB_00b23746"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "00bf6989": {
+        "hash": "b291eba04ee7171fc1126e41cb02d22f4536858bcdabd0ff59b2fbaeec1fb87f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf6989",
+        "function_name": "_free",
+        "return_type": "void",
+        "calling_convention": "__cdecl",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "_Memory",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "BVar2",
+            "type": "BOOL",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar3",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "DVar4",
+            "type": "DWORD",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 80.0
+      },
+      "00bf65ac": {
+        "hash": "b291eba04ee7171fc1126e41cb02d22f4536858bcdabd0ff59b2fbaeec1fb87f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00bf65ac",
+        "function_name": "_free",
+        "return_type": "void",
+        "calling_convention": "__cdecl",
+        "plate_comment": "[BSP reconstruction 00bf65ac]\nRetain correct library name; actual matching host std::free service, not a no-op. Original ABI: cdecl pointer on stack; JMP CRT free body. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: host_crt_service_boundary; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.",
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "_Memory",
+            "type": "void *"
+          }
+        ],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "BVar2",
+            "type": "BOOL",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "uVar5",
+            "type": "undefined4",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar3",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "DVar4",
+            "type": "DWORD",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      }
+    },
+    "status": "Complete130/95-byte reserve bodies saved with returning-free stack cleanup and publication restored. Existing comments/labels, neighboring functions, free thunk and global _free metadata preserved."
+  },
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_error_erase_reserves_special_annotations.json",
+    "bytes": 16456,
+    "sha256": "b10cf9720fbc6581797d35cb147c86d48f7cd9a664972769d9c7bb787962a20f"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b22b30",
+      "name": "BSP_RendererCapabilityRecords_Reserve",
+      "cpp_symbol": "bsp::reserve_native_capability_records_00b22b30",
+      "source": "src/native_renderer_capability_array_reserves.cpp",
+      "native_end_exclusive": "00b22bb2",
+      "status": "complete_raw_capability_reserves_main_archive_full_instruction_native_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_renderer_capability_array_reserves_audit.json",
+      "original_abi": "Complete original register, stack and current-storage/FP obligations recorded in public header and audit.",
+      "source_abi": "New explicit source interface; see full public header and audit.",
+      "original_owned_body_executed": true,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b236b0",
+      "name": "BSP_RendererCapabilityDwords_Reserve",
+      "cpp_symbol": "bsp::reserve_native_capability_dwords_00b236b0",
+      "source": "src/native_renderer_capability_array_reserves.cpp",
+      "native_end_exclusive": "00b2370f",
+      "status": "complete_raw_capability_reserves_main_archive_full_instruction_native_composition_and_strict_Win32_checked",
+      "evidence": "reports/native_renderer_capability_array_reserves_audit.json",
+      "original_abi": "Complete original register, stack and current-storage/FP obligations recorded in public header and audit.",
+      "source_abi": "New explicit source interface; see full public header and audit.",
+      "original_owned_body_executed": true,
+      "original_helper_body_executed": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "refreshed_exports": [
+    {
+      "address": "00b22b30",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b22b30\\decompiled.c",
+      "bytes": 2515,
+      "sha256": "8e35a9279db99020cafa2114f202b8dd701aa8f844eb57e6c229c45873bb3200"
+    },
+    {
+      "address": "00b236b0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b236b0\\decompiled.c",
+      "bytes": 2208,
+      "sha256": "4c7fd21c501c4742b2bd9da4a3044a92b3ac1e978d67b3be956f53de02e9f765"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_CAPABILITY_ARRAY_RESERVES.md",
+    "bytes": 7770,
+    "sha256": "a30fe824773156a4ba5b55ae5c0aea49e9fb01564762440a3e528aa475919fbe"
+  },
+  "closure_utc": "2026-09-11T22:20:32.399536+00:00"
 }
