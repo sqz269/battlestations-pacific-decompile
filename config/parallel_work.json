@@ -6051,6 +6051,31 @@
       ],
       "scope": "Complete raw indexed draw with inhibit/lost gates, discarded viewport-address leaf, native guard/mode branches, concrete borrowed logical count getter and current real DIP; no stream owner dependency.",
       "evidence": "reports/native_renderer_indexed_draw_audit.json"
+    },
+    {
+      "id": "orch4_effect_name_index_k",
+      "packet": "orch4_effect_name_index_k",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "reconstructed_build_and_fixture_tested_pending_integration",
+      "function_addresses": [
+        "00871750",
+        "00cdeb00",
+        "004bf370",
+        "00505ba0",
+        "00505340",
+        "00504bd0",
+        "00502170",
+        "0058d860",
+        "0058b520",
+        "00b65f80"
+      ],
+      "code_ownership": [
+        "include/bsp/gameplay_effect_name_index.hpp",
+        "src/gameplay_effect_name_index.cpp"
+      ],
+      "integration_report": "reports/gameplay_effect_name_index.json",
+      "discovery_evidence": "docs/GAMEPLAY_EFFECT_NAME_INDEX.md"
     }
   ],
   "snapshot_after_analysis": {

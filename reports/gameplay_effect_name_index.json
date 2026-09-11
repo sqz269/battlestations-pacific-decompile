@@ -1,0 +1,296 @@
+{
+  "packet": "orch4_effect_name_index_k",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00871750",
+      "name": "lookup_gameplay_effect_id_00871750",
+      "proposed_name": "BSP_GameplayEffectNameIndex_FindId",
+      "source": "src/gameplay_effect_name_index.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_NAME_INDEX.md",
+      "status": "reconstructed_normal_semantics_with_real_atexit",
+      "abi": "ECX unused; stack NativeString*; EAX signed ID; RET4.",
+      "meaning": "Guard set before init; real atexit; reload Lua Effects only when empty; numeric keys and string Name; two conversions/two temporaries; unique casefold insert retains prior ID.",
+      "previous_export_name": "FUN_00871750",
+      "name_is_hypothesis": true,
+      "last_instruction": "00871a7f",
+      "last_instruction_length": 3,
+      "end_exclusive": "00871a82",
+      "byte_span": 818,
+      "sha256": "a8c9d0f149e3f9207d43ad566e5a7bef9087c657bbd83e76ee5d86545a4aa81b",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX unused; stack NativeString*; EAX signed ID; RET4. Guard set before init; real atexit; reload Lua Effects only when empty; numeric keys and string Name; two conversions/two temporaries; unique casefold insert retains prior ID. Full-span disk/live bytes match SHA256 a8c9d0f149e3f9207d43ad566e5a7bef9087c657bbd83e76ee5d86545a4aa81b. See docs/GAMEPLAY_EFFECT_NAME_INDEX.md. Existing Lua/string/CRT/STL services reused; native SEH/ABI and gameplay unvalidated."
+    },
+    {
+      "address": "00cdeb00",
+      "name": "destroy_gameplay_effect_name_index_00cdeb00",
+      "proposed_name": "BSP_GameplayEffectNameIndex_AtExit",
+      "source": "src/gameplay_effect_name_index.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_NAME_INDEX.md",
+      "status": "reconstructed_normal_semantics_with_real_atexit",
+      "abi": "No inputs; EAX zero; RET at00CDEB3F.",
+      "meaning": "Captured full map range; pooled key destruction descending; reload/free head; clear head/count; preserve guard and allocator. Real CRT callback; stored body remains short after00CDEB2B.",
+      "previous_export_name": "FUN_00cdeb00",
+      "name_is_hypothesis": true,
+      "last_instruction": "00cdeb3f",
+      "last_instruction_length": 1,
+      "end_exclusive": "00cdeb40",
+      "byte_span": 64,
+      "sha256": "1b652392b521ec00347621b4e428be603a3ac4f28de9adfe7fe3753c2ddb397b",
+      "live_ghidra_bytes_equal_disk": true,
+      "stored_body_tail_complete": false,
+      "native_tail": [
+        "00cdeb2c: add esp, 4",
+        "00cdeb2f: xor eax, eax",
+        "00cdeb31: mov dword ptr [0xf87674], eax",
+        "00cdeb36: mov dword ptr [0xf87678], eax",
+        "00cdeb3b: pop esi",
+        "00cdeb3c: add esp, 8",
+        "00cdeb3f: ret "
+      ],
+      "evidence": "Hypothesis, not a recovered symbol. No inputs; EAX zero; RET at00CDEB3F. Captured full map range; pooled key destruction descending; reload/free head; clear head/count; preserve guard and allocator. Real CRT callback; stored body remains short after00CDEB2B. Full-span disk/live bytes match SHA256 1b652392b521ec00347621b4e428be603a3ac4f28de9adfe7fe3753c2ddb397b. See docs/GAMEPLAY_EFFECT_NAME_INDEX.md. Existing Lua/string/CRT/STL services reused; native SEH/ABI and gameplay unvalidated."
+    },
+    {
+      "address": "004bf370",
+      "name": "STL_CaseInsensitiveStringIntMap_LowerBound",
+      "proposed_name": "STL_CaseInsensitiveStringIntMap_LowerBound",
+      "source": null,
+      "document": "docs/GAMEPLAY_EFFECT_NAME_INDEX.md",
+      "status": "analyzed_reused_library_contract",
+      "abi": "ECX map; stack name; EAX node; RET4.",
+      "meaning": "Length-zero-gated CRT case-insensitive lower bound.",
+      "previous_export_name": "FUN_004bf370",
+      "name_is_hypothesis": true,
+      "last_instruction": "004bf3c0",
+      "last_instruction_length": 3,
+      "end_exclusive": "004bf3c3",
+      "byte_span": 83,
+      "sha256": "8ac68dfc6302377dafbe1e8c0a40b3e588dd48541486b323cf2b8d87d1fa0ddc",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX map; stack name; EAX node; RET4. Length-zero-gated CRT case-insensitive lower bound. Full-span disk/live bytes match SHA256 8ac68dfc6302377dafbe1e8c0a40b3e588dd48541486b323cf2b8d87d1fa0ddc. See docs/GAMEPLAY_EFFECT_NAME_INDEX.md. Existing Lua/string/CRT/STL services reused; native SEH/ABI and gameplay unvalidated."
+    },
+    {
+      "address": "00505ba0",
+      "name": "STL_CaseInsensitiveStringIntMap_InsertUnique",
+      "proposed_name": "STL_CaseInsensitiveStringIntMap_InsertUnique",
+      "source": null,
+      "document": "docs/GAMEPLAY_EFFECT_NAME_INDEX.md",
+      "status": "analyzed_reused_library_contract",
+      "abi": "ECX map; output iterator/bool and pair* stack; EAX output; RET8.",
+      "meaning": "Unique insertion keeps existing equivalent key/value; allocate only on miss.",
+      "previous_export_name": "FUN_00505ba0",
+      "name_is_hypothesis": true,
+      "last_instruction": "00505cb1",
+      "last_instruction_length": 3,
+      "end_exclusive": "00505cb4",
+      "byte_span": 276,
+      "sha256": "5120666f9dd822be5cd9e68601cdd2baf9a883607245cb0078222fcc62e781c1",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX map; output iterator/bool and pair* stack; EAX output; RET8. Unique insertion keeps existing equivalent key/value; allocate only on miss. Full-span disk/live bytes match SHA256 5120666f9dd822be5cd9e68601cdd2baf9a883607245cb0078222fcc62e781c1. See docs/GAMEPLAY_EFFECT_NAME_INDEX.md. Existing Lua/string/CRT/STL services reused; native SEH/ABI and gameplay unvalidated."
+    },
+    {
+      "address": "00505340",
+      "name": "STL_CaseInsensitiveStringIntMap_InsertRebalance",
+      "proposed_name": "STL_CaseInsensitiveStringIntMap_InsertRebalance",
+      "source": null,
+      "document": "docs/GAMEPLAY_EFFECT_NAME_INDEX.md",
+      "status": "analyzed_reused_library_contract",
+      "abi": "ECX map; output iterator, left flag, parent, pair* stack; EAX output; RET10h.",
+      "meaning": "Unsigned count limit15555554h branch throws; normal branch allocates1Ch node, publishes count/links, balances and returns. Old whole-body throw name disproven.",
+      "previous_export_name": "STL_xlen_throw_00505340",
+      "name_is_hypothesis": true,
+      "last_instruction": "00505529",
+      "last_instruction_length": 3,
+      "end_exclusive": "0050552c",
+      "byte_span": 492,
+      "sha256": "36396f5de1b886b97d17b72194857150b3ea9ef693a7d41ed90c8f26c0983e5b",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX map; output iterator, left flag, parent, pair* stack; EAX output; RET10h. Unsigned count limit15555554h branch throws; normal branch allocates1Ch node, publishes count/links, balances and returns. Old whole-body throw name disproven. Full-span disk/live bytes match SHA256 36396f5de1b886b97d17b72194857150b3ea9ef693a7d41ed90c8f26c0983e5b. See docs/GAMEPLAY_EFFECT_NAME_INDEX.md. Existing Lua/string/CRT/STL services reused; native SEH/ABI and gameplay unvalidated."
+    },
+    {
+      "address": "00504bd0",
+      "name": "STL_NativeStringIntNode1c_Allocate",
+      "proposed_name": "STL_NativeStringIntNode1c_Allocate",
+      "source": null,
+      "document": "docs/GAMEPLAY_EFFECT_NAME_INDEX.md",
+      "status": "analyzed_reused_library_contract",
+      "abi": "Five stack constructor arguments; EAX node; RET14h.",
+      "meaning": "Allocate1Ch, forward left/parent/right/pair/color to00502170.",
+      "previous_export_name": "FUN_00504bd0",
+      "name_is_hypothesis": true,
+      "last_instruction": "00504c3f",
+      "last_instruction_length": 3,
+      "end_exclusive": "00504c42",
+      "byte_span": 114,
+      "sha256": "104d749071838840e9e1d7a3d4f61ddea01cd60fa9e542f9b612202002399ed9",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. Five stack constructor arguments; EAX node; RET14h. Allocate1Ch, forward left/parent/right/pair/color to00502170. Full-span disk/live bytes match SHA256 104d749071838840e9e1d7a3d4f61ddea01cd60fa9e542f9b612202002399ed9. See docs/GAMEPLAY_EFFECT_NAME_INDEX.md. Existing Lua/string/CRT/STL services reused; native SEH/ABI and gameplay unvalidated."
+    },
+    {
+      "address": "00502170",
+      "name": "STL_NativeStringIntNode1c_Construct",
+      "proposed_name": "STL_NativeStringIntNode1c_Construct",
+      "source": null,
+      "document": "docs/GAMEPLAY_EFFECT_NAME_INDEX.md",
+      "status": "analyzed_reused_library_contract",
+      "abi": "ECX node; left/parent/right/pair/color stack; EAX this; RET14h.",
+      "meaning": "Write links; initialize and independently deep-copy NativeStringC; copy integer14 after key allocation; color18,nil19.",
+      "previous_export_name": "FUN_00502170",
+      "name_is_hypothesis": true,
+      "last_instruction": "005021dd",
+      "last_instruction_length": 3,
+      "end_exclusive": "005021e0",
+      "byte_span": 112,
+      "sha256": "ac1cb515e0722a311fcd794d6ce240fe56f75282fdf2e603d45f124ac8ce9e0f",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX node; left/parent/right/pair/color stack; EAX this; RET14h. Write links; initialize and independently deep-copy NativeStringC; copy integer14 after key allocation; color18,nil19. Full-span disk/live bytes match SHA256 ac1cb515e0722a311fcd794d6ce240fe56f75282fdf2e603d45f124ac8ce9e0f. See docs/GAMEPLAY_EFFECT_NAME_INDEX.md. Existing Lua/string/CRT/STL services reused; native SEH/ABI and gameplay unvalidated."
+    },
+    {
+      "address": "0058d860",
+      "name": "STL_NativeStringIntTree_EraseRange",
+      "proposed_name": "STL_NativeStringIntTree_EraseRange",
+      "source": null,
+      "document": "docs/GAMEPLAY_EFFECT_NAME_INDEX.md",
+      "status": "analyzed_reused_library_contract",
+      "abi": "ECX map; output iterator plus two owner/node iterator pairs; EAX output; RET14h.",
+      "meaning": "Complete full-range fast path clears keys/subtree then header/count; stock checked iterator path retained as library boundary.",
+      "previous_export_name": "FUN_0058d860",
+      "name_is_hypothesis": true,
+      "last_instruction": "0058d926",
+      "last_instruction_length": 3,
+      "end_exclusive": "0058d929",
+      "byte_span": 201,
+      "sha256": "681c5cd0311a638f7e8447fd4f835e5452248e002b7cbdf9a90829242a131674",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX map; output iterator plus two owner/node iterator pairs; EAX output; RET14h. Complete full-range fast path clears keys/subtree then header/count; stock checked iterator path retained as library boundary. Full-span disk/live bytes match SHA256 681c5cd0311a638f7e8447fd4f835e5452248e002b7cbdf9a90829242a131674. See docs/GAMEPLAY_EFFECT_NAME_INDEX.md. Existing Lua/string/CRT/STL services reused; native SEH/ABI and gameplay unvalidated."
+    },
+    {
+      "address": "0058b520",
+      "name": "STL_NativeStringIntTree_EraseSubtree",
+      "proposed_name": "STL_NativeStringIntTree_EraseSubtree",
+      "source": null,
+      "document": "docs/GAMEPLAY_EFFECT_NAME_INDEX.md",
+      "status": "analyzed_reused_library_contract",
+      "abi": "ECX map; stack root; RET4.",
+      "meaning": "Right recursion, capture left, release key current length+1, free current, loop left until nil19. No integer payload destruction.",
+      "previous_export_name": "FUN_0058b520",
+      "name_is_hypothesis": true,
+      "last_instruction": "0058b56f",
+      "last_instruction_length": 3,
+      "end_exclusive": "0058b572",
+      "byte_span": 82,
+      "sha256": "1a2385e6a41b4b87098be5174497ca481174aa97d3aec558db5479ce42cea570",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX map; stack root; RET4. Right recursion, capture left, release key current length+1, free current, loop left until nil19. No integer payload destruction. Full-span disk/live bytes match SHA256 1a2385e6a41b4b87098be5174497ca481174aa97d3aec558db5479ce42cea570. See docs/GAMEPLAY_EFFECT_NAME_INDEX.md. Existing Lua/string/CRT/STL services reused; native SEH/ABI and gameplay unvalidated."
+    },
+    {
+      "address": "00b65f80",
+      "name": "BSP_LuaObject_GetType",
+      "proposed_name": "BSP_LuaObject_GetType",
+      "source": null,
+      "document": "docs/GAMEPLAY_EFFECT_NAME_INDEX.md",
+      "status": "analyzed_reused_tracked_reference_type_contract",
+      "abi": "ECX LuaObject; EAX Lua type; RET or tailcall Lua type.",
+      "meaning": "Kind0 -> -1; kind2 -> live Lua type; other kinds ->5. Existing host type operation reused only for tracked index keys.",
+      "previous_export_name": "FUN_00b65f80",
+      "name_is_hypothesis": true,
+      "last_instruction": "00b65fa4",
+      "last_instruction_length": 1,
+      "end_exclusive": "00b65fa5",
+      "byte_span": 37,
+      "sha256": "53593c8d9423f412c32244072d52a20a84b1c97c648906da347a4d65d00f8f47",
+      "live_ghidra_bytes_equal_disk": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX LuaObject; EAX Lua type; RET or tailcall Lua type. Kind0 -> -1; kind2 -> live Lua type; other kinds ->5. Existing host type operation reused only for tracked index keys. Full-span disk/live bytes match SHA256 53593c8d9423f412c32244072d52a20a84b1c97c648906da347a4d65d00f8f47. See docs/GAMEPLAY_EFFECT_NAME_INDEX.md. Existing Lua/string/CRT/STL services reused; native SEH/ABI and gameplay unvalidated."
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cdeb00",
+      "last_instruction": "00cdeb3f",
+      "last_instruction_length": 1,
+      "end_exclusive": "00cdeb40",
+      "status": "defined; stored body remains truncated after00cdeb2b"
+    }
+  ],
+  "globals": {
+    "allocator": "00F87670 untouched",
+    "head": "00F87674",
+    "count": "00F87678",
+    "guard": "00F8767C bit0 set before allocation; preserved at exit",
+    "sentinel_bytes": 40,
+    "node_bytes": 28
+  },
+  "semantics": [
+    "Real atexit registration once; result discarded.",
+    "Empty count reloads current embedded game Lua1A0C Effects; nonempty cache persists.",
+    "Two float32/CRT integer conversions and two pooled temporaries before unique insertion; miss deep-copies another key.",
+    "Case-insensitive duplicate retains first ID; key cleanup descending; guard/allocator preserved."
+  ],
+  "required_services": [
+    "Bound process cache/context alive through actual CRT atexit",
+    "Current game embedded Lua1A0C",
+    "Actual NativeStringStorage",
+    "Live CRT conversion-mode binding"
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "tests": "Existing2/2 passed",
+    "build_log": "local/effect_name_index_k_build.log",
+    "fixture": "local/effect_name_index_k_fixture.log",
+    "fixture_source": "local/effect_name_index_fixture.cpp",
+    "fixture_scope": "Actual Lua and real atexit; empty reload, strict field/key filtering, duplicate first-ID retention, nonempty persistence, key ownership, first SSE invalid before allocator changes mode, second x87 low32 value, descending destruction and preserved static words.",
+    "library_sha256": "390133880a8e9e63e7c022aa0103af003457dc78c8cbbd7502b1ddc9a6f865cc",
+    "code_revision": "record after source commit",
+    "native_abi": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "definitions": "reports/gameplay_effect_name_index_definitions.json",
+    "flow": "reports/gameplay_effect_name_index_flow.json",
+    "internal_free_gaps_fixed": 1,
+    "tail_bytes_decoded": 20,
+    "stored_atexit_body_still_truncated": true,
+    "tags": "reports/gameplay_effect_name_index_tags.json",
+    "annotations": {
+      "count": 10,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "local/ghidra-annotations-20260911T163641Z.json",
+      "readback": "local/effect_name_index_k_comments.json",
+      "exports": "local/effect_name_index_k_final_exports.log"
+    }
+  },
+  "boundaries": [
+    "Canonical standard container; native topology/comparison counts/failure and invalid-iterator paths not ported.",
+    "Stable container topology through pooled allocation callbacks; no claim for callbacks that mutate the native tree during insertion/destruction.",
+    "Existing Lua host reference ABI; only tracked-key use of00B65F80 reused.",
+    "Definition/component acquisition and gameplay remain unimplemented."
+  ],
+  "followups": [
+    {
+      "packet": "effect_definition_acquisition",
+      "addresses": [
+        "00871b50",
+        "008700e0",
+        "0086b870"
+      ]
+    },
+    {
+      "packet": "effect_component_lifetime",
+      "addresses": [
+        "00870400",
+        "00871440",
+        "00870d00"
+      ]
+    },
+    {
+      "packet": "effect_name_index_stored_body_extent",
+      "addresses": [
+        "00cdeb00"
+      ],
+      "end_exclusive": "00cdeb40"
+    }
+  ]
+}
