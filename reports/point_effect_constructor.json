@@ -1,0 +1,241 @@
+{
+  "packet": "orch3_point_effect_constructor_z",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/point_effect_constructor.cpp",
+  "header": "include/bsp/point_effect_constructor.hpp",
+  "documentation": "docs/POINT_EFFECT_CONSTRUCTOR.md",
+  "native_spans": [
+    {
+      "name": "constructor",
+      "address": "008680b0",
+      "end_exclusive": "008683d7",
+      "length": 807,
+      "sha256": "8f8a42b2a50e7faa04b8609e956f2aba0cf699e807f394516f08ffe32f871522",
+      "live_disk_equal": true,
+      "operands": {
+        "00ce221c": [
+          199,
+          272
+        ],
+        "00ce2220": [
+          359,
+          703,
+          768
+        ],
+        "00d7a24c": [
+          107
+        ],
+        "00d7a238": [
+          502
+        ],
+        "00f87600": [
+          223
+        ],
+        "00f87604": [
+          217
+        ],
+        "00e188a8": [
+          300,
+          321,
+          585
+        ]
+      },
+      "calls": [
+        {
+          "address": "0086819d",
+          "target": "0xb6ed70"
+        },
+        {
+          "address": "008681b5",
+          "target": "0xb6f5a0"
+        },
+        {
+          "address": "00868202",
+          "target": "0xb6d890"
+        },
+        {
+          "address": "0086825b",
+          "target": "0x72aa80"
+        },
+        {
+          "address": "00868269",
+          "target": "0x53d9c0"
+        },
+        {
+          "address": "0086827c",
+          "target": "0xb6db70"
+        },
+        {
+          "address": "0086829d",
+          "target": "0x4134f0"
+        },
+        {
+          "address": "008682e2",
+          "target": "0x8672a0"
+        },
+        {
+          "address": "008682f3",
+          "target": "0xb6db70"
+        },
+        {
+          "address": "00868309",
+          "target": "0xb6db70"
+        },
+        {
+          "address": "0086835b",
+          "target": "0x6fbeb0"
+        },
+        {
+          "address": "0086838e",
+          "target": "0x4d1100"
+        },
+        {
+          "address": "00868395",
+          "target": "0x867500"
+        }
+      ]
+    },
+    {
+      "name": "unwind",
+      "address": "00c94fd0",
+      "end_exclusive": "00c9502c",
+      "length": 92,
+      "sha256": "3750646a820a80a85cd754e486e586ce79ece8a05d1909318bd60dac9d580529",
+      "live_disk_equal": true,
+      "operands": {},
+      "calls": []
+    },
+    {
+      "name": "map",
+      "address": "00dc6e94",
+      "end_exclusive": "00dc6ef8",
+      "length": 100,
+      "sha256": "8d1343c9108d2212802100afaa128c7ae1c4e51fde800e5f068a4f3dc263fa47",
+      "live_disk_equal": true,
+      "operands": {},
+      "calls": []
+    },
+    {
+      "name": "one",
+      "address": "00d7a24c",
+      "end_exclusive": "00d7a250",
+      "length": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_disk_equal": true,
+      "operands": {},
+      "calls": []
+    },
+    {
+      "name": "scale",
+      "address": "00d7a238",
+      "end_exclusive": "00d7a23c",
+      "length": 4,
+      "sha256": "0d66bd808e9247acb560fe33efaa62ad6f11ee6f85cc4f61bd17673263de04ee",
+      "live_disk_equal": true,
+      "operands": {},
+      "calls": []
+    }
+  ],
+  "reconstruction": {
+    "address": "008680b0",
+    "end_exclusive": "008683d7",
+    "length": 807,
+    "cpp_symbol": "construct_point_effect_instance_008680b0",
+    "behavior": "Complete807-byte8680B0..8683D6, end-exclusive8683D7; finalRET1C isC21C00 at8683D4. ECXfreshactual114h, sevenstackDWORDs consumedtemplate,parent,thirdword,matrixptr,transformlowbyte,optionlowbyte,tailword; EAXsameowner. Canonicalprefix/template/counters ->actualnodepoolallocate/B6F5A0 ->publish/retain/root-before-parent ->world/relative setter/cache ->actualrowstage ->4D1100/867500insertion ->consumedargumentreleaseLAST. Requiredactualnodecompanions andcurrentrowvirtual18, no fakeowner/count/factory. State5 unwindsparent/template/aux/entries/base; state6 returnsrawnode aftermemberfailure; no successfulnode110cleanup,counterrollback,rawpointfree orinsertionrollback. Hostpointassociation existsbefore row/insertion; failedconstructorretiresonlyhostassociation afterbasecleanup."
+  },
+  "eh_evidence": "VerifiedcompleteC95022 handler/funclets andDC6E94/mapDC6EB8: state7->5 rowtemporary6CF070,6->5 rawnodeB6E670,5->4 parent605FD0,4->3 template41DE40,3->2 aux8675B0,2->1 entries8675B0,1->0 baseBD30F0,0->-1 consumedargument41DE40. No successfulnode110cleanup/counterrollback. Cppcompositionfailurefixture verifiesargumentlast andnative retainedstate; originalEHdispatch unexecuted. docs/POINT_EFFECT_CONSTRUCTOR.md; reports/point_effect_constructor.json",
+  "canonical_binding": {
+    "node": "Requiredhostassociation step returnsrealNativePlainNodeReference foractualconstructedstorage, count andscene; usesexistingnode lookup/runtime/string/pool",
+    "effect": "Constructorallocatescanonicalborrowedcountcompanion beforeactualrowcallbacks/insertion; afterfailednativecleanup retiresonlyhostmetadata",
+    "name": "Borroworiginalcapturedtemplate+1C header, no preallocationvaluesnapshot",
+    "inputs": "Originalmatrix andcapturednativeowner spans remainlive acrosscallbacks",
+    "explicit_remaining": "Concreteapplicationnodeassociation andactualcurrentrowvirtual18 implementations required; no successfallback"
+  },
+  "validation": {
+    "strict_build": "PASS scripts/build.ps1; local/point-effect-constructor-z-build.log",
+    "existing_ctests": "2/2 pass",
+    "fixture": "PASS local/point-effect-constructor-z-fixture.log",
+    "fixture_source": "local/point_constructor_probe_z.cpp",
+    "native_cases": [
+      "Full807-bytebody includingfinalC21C00 matcheslive/disk andexplicitESPbalance passes",
+      "Bothtransformselector0/255 full114howner imagesmatchafteronlytemplate/nodepointer normalization",
+      "Actualnodepool/B6F5A0/string storage, matrices, counters, consumedtemplate ownership",
+      "Real4D1100/867500 insertion, actualpointcount2/templatecount1/nodecount2 andlockdepth0",
+      "Callerrelease thenactualmanagerreference removal ->fullpoint/node scalar andphysicalslotreuse"
+    ],
+    "cpp_failure_cases": [
+      "Nodenamestorageallocation throws: rawslot returned,state5members/base cleanup,argumentcallbacklast; countersretainincrements",
+      "Requiredrowfactory throws: entries/member/basecleanup, argumentcallbacklast, successfulnode count2andcountersretained, no livemanagerinsertion",
+      "Failedpointconstructor canonicalhostassociation removedwithoutnativepoint/nodefree; fixturemanuallycleansretainedstate afterassertions"
+    ],
+    "rebindings": [
+      "NativeconstructorCALLs ->existingcanonicalallocation/node/root/matrix/rowhelper/manager/insertion implementations",
+      "NativeInterlockedIATs ->realWin32atomic operations",
+      "Nativeglobal/scalar operands ->actualfixturefields/verifiedconstants",
+      "Rawnodeidentity temporarilyprojectedforcanonicalmatrixcallbacks thenrestored",
+      "Template terminal behavior andpreinitializedglobalreference transform arefixtureinputs, not gameownerimplementations"
+    ],
+    "coverage_limits": [
+      "Normalfullnativecomparison usesnullparent/emptyrows/optiongate; successfulgamecomponentfactoriesunexecuted",
+      "Originalpointnode dependenciesarecanonicalCpp implementations, not all copied originalbodies",
+      "NativeEHunexecuted; C++exceptiondomain andhostmetadata allocation are newABI",
+      "Nativefaults/premature callbackfrees outsidevalidspanpreconditions are not repaired"
+    ],
+    "original_exception_dispatch_executed": false,
+    "permanent_tests_added": 0,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "remaining": [
+    "Applicationnodeassociation andsuccessfulactualcomponentfactory routes",
+    "ConcretePointEffectConstruction adapter for8689C0andotherentrywrappers",
+    "OriginalEH, concurrency, binaryABI replacement andgameplay"
+  ],
+  "fixture_artifact_sha256": {
+    "local/point_constructor_probe_z.cpp": "c0de5488839d8c525719801f3439f235ce3ab4d8b104a0e8fde01a62ac41481d",
+    "local/run_point_constructor_probe_z.cmd": "2809a36d6ea628fec02f7ccdc758a633107015b79ba13daaf97f53c8942ff55f",
+    "local/point_constructor_native_bytes_z.hpp": "c36c729d4a3375466b0722e950ed6579a98f95d838719800a3531dac0ce8075a",
+    "local/point-constructor-byte-evidence-z.json": "8d47ada20b2e5d407cdde1659ec43369bc85212df6700e2d7576b6af589555ab"
+  },
+  "ghidra_annotations": {
+    "saved": true,
+    "audit_path": "local/ghidra-annotations-20260911T190504Z.json",
+    "readback_path": "local/point-constructor-z-comments.json",
+    "both_names_and_evidence_verified": true,
+    "previous_comments_preserved": true,
+    "old_and_new_values": [
+      {
+        "address": "008680b0",
+        "before": {
+          "address": "008680b0",
+          "function_name": "BSP_PointEffect_Construct_Provisional",
+          "comment": "[BSP reconstruction 008680b0]\nHypothesis, not recovered symbol. Actual114h constructor; ECX fresh allocation; stack parent, consumed template,transform selector,option byte,tail word; RET14. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json.\n\n[BSP reconstruction 008680b0] update\nHypothesis, not recovered symbol. Actual114h constructor; ECX actual114h storage; seven stack DWORD slots: consumed template, parent, third word, matrix pointer, transform low byte, option low byte, tail word; EAX same storage; RET1C. This corrects the previous parent integration annotation that confused this constructor ABI with the outer helper. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json.\n\n[BSP reconstruction 008680b0] update\nHypothesis, not recovered symbol. Actual114h constructor; ECX actual114h storage; seven stack DWORD slots: consumed template, parent, third word, matrix pointer, transform low byte, option low byte, tail word; EAX same storage; RET1C. This corrects the previous parent integration annotation that confused this constructor ABI with the outer helper. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json. | Packet orch3_effect_o_integration adds bounded8682D5..86838C actual row stage: resize current count, refresh current node then global19FC reference, option gate, capture current template extent, current row flags/required virtual18, reload destination backing afterfactory, assign and consume original temporary. Whole constructor/row factory/manager insertion remain required. True constructor ABI seven DWORDstackslots/RET1C. docs/POINT_EFFECT_ROW_OWNERSHIP.md; reports/effect_o_integration.json.\n\n[BSP reconstruction 008680b0] update\nHypothesis, not recovered symbol. Actual114h constructor; ECX actual114h storage; seven stack DWORD slots: consumed template, parent, third word, matrix pointer, transform low byte, option low byte, tail word; EAX same storage; RET1C. This corrects the previous parent integration annotation that confused this constructor ABI with the outer helper. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json. | Packet orch3_effect_o_integration adds bounded8682D5..86838C actual row stage: resize current count, refresh current node then global19FC reference, option gate, capture current template extent, current row flags/required virtual18, reload destination backing afterfactory, assign and consume original temporary. Whole constructor/row factory/manager insertion remain required. True constructor ABI seven DWORDstackslots/RET1C. docs/POINT_EFFECT_ROW_OWNERSHIP.md; reports/effect_o_integration.json. | Packet orch3_node_pool_composition_q adds only868193..8681BD: canonical B6ED70 actual raw allocation, nonnull B6F5A0 construction from captured template+1C through NativeStringStorage; on C++ constructor failure return captured slot viaB6E670 then rethrow to required outerstates5..0. No110 publication/retain/companion creation here. Original43-byte stage plus complete814-byte node constructor differential passed for empty/nonempty/threshold names with actual pools; reconstructed C++ failure reuses same slot. Wholeconstructor remains sevenDWORDarguments/RET1C, with actual scene/terminal, manager insertion and outerunwind still required. docs/NATIVE_NODE_POOL_COMPOSITION.md; reports/native_node_pool_composition.json. No original EHABI/gameplay proof."
+        },
+        "after": {
+          "address": "008680b0",
+          "name": "BSP_PointEffect_Construct",
+          "evidence": "Hypothesis, not recovered symbol. Actual114h constructor; ECX actual114h storage; seven stack DWORD slots: consumed template, parent, third word, matrix pointer, transform low byte, option low byte, tail word; EAX same storage; RET1C. This corrects the previous parent integration annotation that confused this constructor ABI with the outer helper. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json. | Packet orch3_effect_o_integration adds bounded8682D5..86838C actual row stage: resize current count, refresh current node then global19FC reference, option gate, capture current template extent, current row flags/required virtual18, reload destination backing afterfactory, assign and consume original temporary. Whole constructor/row factory/manager insertion remain required. True constructor ABI seven DWORDstackslots/RET1C. docs/POINT_EFFECT_ROW_OWNERSHIP.md; reports/effect_o_integration.json. | Packet orch3_node_pool_composition_q adds only868193..8681BD: canonical B6ED70 actual raw allocation, nonnull B6F5A0 construction from captured template+1C through NativeStringStorage; on C++ constructor failure return captured slot viaB6E670 then rethrow to required outerstates5..0. No110 publication/retain/companion creation here. Original43-byte stage plus complete814-byte node constructor differential passed for empty/nonempty/threshold names with actual pools; reconstructed C++ failure reuses same slot. Wholeconstructor remains sevenDWORDarguments/RET1C, with actual scene/terminal, manager insertion and outerunwind still required. docs/NATIVE_NODE_POOL_COMPOSITION.md; reports/native_node_pool_composition.json. No original EHABI/gameplay proof. | Hypothesis, not a recovered symbol. Complete807-byte8680B0..8683D6, end-exclusive8683D7; finalRET1C isC21C00 at8683D4. ECXfreshactual114h, sevenstackDWORDs consumedtemplate,parent,thirdword,matrixptr,transformlowbyte,optionlowbyte,tailword; EAXsameowner. Canonicalprefix/template/counters ->actualnodepoolallocate/B6F5A0 ->publish/retain/root-before-parent ->world/relative setter/cache ->actualrowstage ->4D1100/867500insertion ->consumedargumentreleaseLAST. Requiredactualnodecompanions andcurrentrowvirtual18, no fakeowner/count/factory. State5 unwindsparent/template/aux/entries/base; state6 returnsrawnode aftermemberfailure; no successfulnode110cleanup,counterrollback,rawpointfree orinsertionrollback. Hostpointassociation existsbefore row/insertion; failedconstructorretiresonlyhostassociation afterbasecleanup. StrictWin32/original807-byte fullbody withESPbalance, actualnode/string/manager/terminal lifecycle andCppfailurefixture passed. docs/POINT_EFFECT_CONSTRUCTOR.md; reports/point_effect_constructor.json. NewC++ABI; actualapplicationfactories/associations, originalEH andgameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00c95022",
+        "before": {
+          "address": "00c95022",
+          "function_name": "BSP_PointEffect_Construct_ExceptionHandler",
+          "comment": "[BSP reconstruction 00c95022]\nHypothesis, not a recovered symbol. 10-byte compiler EH handler MOV FuncInfoDC6E94 then JMP actual C++ frame handler for8680B0; callee consumes its extra by-value template on success and exception. Evidence: docs/POINT_EFFECT_OWNER.md and reports/point_effect_owner.json. Strict Win32 and focused lifetime fixture passed; no gameplay or binary ABI validation."
+        },
+        "after": {
+          "address": "00c95022",
+          "name": "BSP_PointEffect_Construct_ExceptionHandler",
+          "evidence": "Hypothesis, not a recovered symbol. 10-byte compiler EH handler MOV FuncInfoDC6E94 then JMP actual C++ frame handler for8680B0; callee consumes its extra by-value template on success and exception. Evidence: docs/POINT_EFFECT_OWNER.md and reports/point_effect_owner.json. Strict Win32 and focused lifetime fixture passed; no gameplay or binary ABI validation. | VerifiedcompleteC95022 handler/funclets andDC6E94/mapDC6EB8: state7->5 rowtemporary6CF070,6->5 rawnodeB6E670,5->4 parent605FD0,4->3 template41DE40,3->2 aux8675B0,2->1 entries8675B0,1->0 baseBD30F0,0->-1 consumedargument41DE40. No successfulnode110cleanup/counterrollback. Cppcompositionfailurefixture verifiesargumentlast andnative retainedstate; originalEHdispatch unexecuted. docs/POINT_EFFECT_CONSTRUCTOR.md; reports/point_effect_constructor.json"
+        },
+        "status": "applied"
+      }
+    ],
+    "exports_refreshed": true
+  }
+}
