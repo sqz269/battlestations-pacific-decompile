@@ -1,4 +1,5 @@
 #include "bsp/gui_render_order.hpp"
+#include "bsp/singleton_lifetime.hpp"
 
 #include <algorithm>
 
@@ -60,6 +61,20 @@ GuiCameraStore* GuiCameraStoreMap::find_00aa3280(
         }
     }
     return nullptr;
+}
+
+bool GuiCameraStoreMap::remove_owned_00aa4b30(GuiCameraStore* store) noexcept
+{
+    const auto at = std::find_if(entries_.begin(), entries_.end(),
+        [store](const Entry& entry) { return entry.second == store; });
+    if (at == entries_.end()) return false;
+    if (at->second) {
+        at->second->~GuiCameraStore();
+        singleton_lifetime_free(at->second);
+        at->second = nullptr;
+    }
+    entries_.erase(at);
+    return true;
 }
 
 GuiCameraPlacement gui_camera_placement_00aa3e00(
