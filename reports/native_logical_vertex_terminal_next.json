@@ -1,0 +1,3307 @@
+{
+  "packet": "native_logical_vertex_terminal_next",
+  "captured_utc": "2026-09-11T07:46:37.833344+00:00",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-logical_vertex_terminal_next",
+  "base_commit": "5bf77a32dddb3d9d92f519028df158222850aab2",
+  "owned_files": [
+    "docs/NATIVE_LOGICAL_VERTEX_TERMINAL_NEXT.md",
+    "reports/native_logical_vertex_terminal_next.json"
+  ],
+  "owned_addresses": [
+    "00b62010",
+    "00b4b5d0",
+    "00b4bf10",
+    "00b49570",
+    "00b42350",
+    "00ba7530",
+    "00bc6060",
+    "00b97100",
+    "00b8cc90",
+    "00b287c0",
+    "00ae47e0",
+    "00b93800",
+    "00b61d90",
+    "00b61e10",
+    "00b61f90"
+  ],
+  "conclusion": {
+    "status": "conditional_not_ready",
+    "new_ready_packets": 0,
+    "nonnull_field_4c_profile": null,
+    "producer": null,
+    "zero_slot": null,
+    "deleting_slot": null,
+    "allocation_domain": null,
+    "reason": "The current non-null field4c terminal is unresolved after exact candidate exclusions and producer escapes. Constructor zeroing is not a lifetime proof.",
+    "blocked_consumers": [
+      "full general logical-vertex owner destruction",
+      "00b24840",
+      "general renderer cache release"
+    ],
+    "forbidden_shortcuts": [
+      "constructor-null-only owner domain",
+      "generic terminal callback",
+      "selecting an available retained-memory owner without an actual writer/profile binding"
+    ]
+  },
+  "native_evidence": {
+    "captured_utc": "2026-09-11T07:42:49.449657+00:00",
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "guard": "Every live read used bsp.py ghidra bytes, which verifies saved project, program, language and image base before querying.",
+    "disk_binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "x86",
+      "timestamp": 1245831434,
+      "image_base": "00400000",
+      "entry_point": "00bfd2bd",
+      "sections": [
+        {
+          "name": ".text",
+          "rva": "00001000",
+          "virtual_size": 9306422,
+          "raw_size": 9310208,
+          "raw_offset": 4096,
+          "raw_sha256": "cb2aaf3dd3d53a675ef199343258ff981020a8ac64a90e2bceb9db1d47d4bef3"
+        },
+        {
+          "name": ".rdata",
+          "rva": "008e2000",
+          "virtual_size": 1202980,
+          "raw_size": 1204224,
+          "raw_offset": 9314304,
+          "raw_sha256": "89a0a4d440549220a314bd92f03bcb3a024f6b64017ceb41f02bfcce7cdca84f"
+        },
+        {
+          "name": ".data",
+          "rva": "00a08000",
+          "virtual_size": 2719452,
+          "raw_size": 65536,
+          "raw_offset": 10518528,
+          "raw_sha256": "aabce218df7a91423fa70e0b0408c06d7d5a6ebf69bda778a74f56de4a31365b"
+        },
+        {
+          "name": ".rsrc",
+          "rva": "00ca0000",
+          "virtual_size": 1630400,
+          "raw_size": 1634304,
+          "raw_offset": 10584064,
+          "raw_sha256": "a870847c34d68cd2c8201e038da43a67702763e057e7df4cae44aaa0f5f218dc"
+        }
+      ],
+      "imported_dlls": [
+        "fmodex.dll",
+        "DSOUND.dll",
+        "d3d9.dll",
+        "d3dx9_40.dll",
+        "binkw32.dll",
+        "USER32.dll",
+        "ole32.dll",
+        "SHELL32.dll",
+        "xlive.dll",
+        "KERNEL32.dll",
+        "ADVAPI32.dll",
+        "WS2_32.dll",
+        "POWRPROF.dll",
+        "fmod_event.dll",
+        "WINMM.dll",
+        "DINPUT8.dll",
+        "GDI32.dll",
+        "XINPUT1_3.dll"
+      ],
+      "note": "Current disk file only; identity with the saved Ghidra image is unverified."
+    },
+    "scope": "Exact listed byte spans only; not a whole-program live/disk or lifetime assertion.",
+    "spans": [
+      {
+        "address": "00b4b5d0",
+        "length": 280,
+        "role": "full_owned_logical_vertex_destructor",
+        "end_exclusive": "00b4b6e8",
+        "raw_offset": 7648720,
+        "bytes_hex": "6aff6830f9cb0064a100000000506489250000000083ec0c568bf189742404c7066c1dd600803ddcd6080100c74424180000000074138b0d94d3f800894c240ce8bb84feff88442408578b46602500f000003d00100000c644241c01753a8b3d94d3f80081c7f419000057ff151822ce00834718018b4e5856e8a2fdffffa194d3f80083800c1a0000ff05f419000050ff151022ce00eb068b4e588b51048b0d94d3f8005556e865b2fdff8b7e688b2d2022ce008d470450ffd585c075088b178b028bcfffd08b7e588d4f0451ffd585c05d75088b178b028bcfffd0803ddcd6080100c644241c005f740e8b4c2408518b4c2410e83784feff8bcec7442418ffffffffe8386901008b4c24105e64890d0000000083c418c3",
+        "sha256": "1240e286c7368e760937936a1b902cbb1f53bbe152425f30af656bc6b5a6572e",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4b6e7",
+            "operand": ""
+          }
+        ],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00b4bf10",
+        "length": 32,
+        "role": "full_owned_deleting_wrapper",
+        "end_exclusive": "00b4bf30",
+        "raw_offset": 7651088,
+        "bytes_hex": "568bf1e8b8f6fffff644240801740b56b918fe0801e846d6ffff8bc65ec20400",
+        "sha256": "8f865de6cdb18f616b354bde94369b79a4c05961d0a91e15749a62fd889deaa2",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4bf2d",
+            "operand": "4"
+          }
+        ],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00b49570",
+        "length": 105,
+        "role": "full_owned_slot_return",
+        "end_exclusive": "00b495d9",
+        "raw_offset": 7640432,
+        "bytes_hex": "535556578bf18d7e0c57ff151822ce00834718018b4424148b58748b4e288b0c992bc18be8b889888888f7ed03d5c1fa068bc2c1e81f03c20fb791400f000066898451000f0000668381400f0000013b5e347303895e34834718ff57ff151022ce005f5e5d5bc20400",
+        "sha256": "48e97972f0520d998f4cafde5d7cefd3db27e3cf743de6956885698ccac732de",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b495d6",
+            "operand": "4"
+          }
+        ],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00b62010",
+        "length": 135,
+        "role": "full_owned_vertex_base_destructor",
+        "end_exclusive": "00b62097",
+        "raw_offset": 7741456,
+        "bytes_hex": "6aff68a814cc0064a100000000506489250000000051568bf15789742408c706682bd6008b7e4c85ffc744241400000000741d8d470450ff152022ce0085c075088b178b028bcfffd0c7464c000000008b465085c0741050e83f45090083c404c74650000000008bcec7442414ffffffffe86a1007008b4c240c5f5e64890d0000000083c410c3",
+        "sha256": "f434f05c047d17dad1d47896f8950acd6430e05528c728ddef0a1bd988f4797c",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b62096",
+            "operand": ""
+          }
+        ],
+        "instructions_of_interest": [
+          {
+            "site": "00b6202e",
+            "bytes_hex": "c706682bd600",
+            "instruction": "mov dword ptr [esi], 0xd62b68"
+          },
+          {
+            "site": "00b62034",
+            "bytes_hex": "8b7e4c",
+            "instruction": "mov edi, dword ptr [esi + 0x4c]"
+          },
+          {
+            "site": "00b62037",
+            "bytes_hex": "85ff",
+            "instruction": "test edi, edi"
+          },
+          {
+            "site": "00b62039",
+            "bytes_hex": "c744241400000000",
+            "instruction": "mov dword ptr [esp + 0x14], 0"
+          },
+          {
+            "site": "00b62041",
+            "bytes_hex": "741d",
+            "instruction": "je 0xb62060"
+          },
+          {
+            "site": "00b62043",
+            "bytes_hex": "8d4704",
+            "instruction": "lea eax, [edi + 4]"
+          },
+          {
+            "site": "00b62046",
+            "bytes_hex": "50",
+            "instruction": "push eax"
+          },
+          {
+            "site": "00b62047",
+            "bytes_hex": "ff152022ce00",
+            "instruction": "call dword ptr [0xce2220]"
+          },
+          {
+            "site": "00b6204d",
+            "bytes_hex": "85c0",
+            "instruction": "test eax, eax"
+          },
+          {
+            "site": "00b6204f",
+            "bytes_hex": "7508",
+            "instruction": "jne 0xb62059"
+          },
+          {
+            "site": "00b62051",
+            "bytes_hex": "8b17",
+            "instruction": "mov edx, dword ptr [edi]"
+          },
+          {
+            "site": "00b62053",
+            "bytes_hex": "8b02",
+            "instruction": "mov eax, dword ptr [edx]"
+          },
+          {
+            "site": "00b62055",
+            "bytes_hex": "8bcf",
+            "instruction": "mov ecx, edi"
+          },
+          {
+            "site": "00b62057",
+            "bytes_hex": "ffd0",
+            "instruction": "call eax"
+          },
+          {
+            "site": "00b62059",
+            "bytes_hex": "c7464c00000000",
+            "instruction": "mov dword ptr [esi + 0x4c], 0"
+          },
+          {
+            "site": "00b62060",
+            "bytes_hex": "8b4650",
+            "instruction": "mov eax, dword ptr [esi + 0x50]"
+          },
+          {
+            "site": "00b62063",
+            "bytes_hex": "85c0",
+            "instruction": "test eax, eax"
+          },
+          {
+            "site": "00b62065",
+            "bytes_hex": "7410",
+            "instruction": "je 0xb62077"
+          },
+          {
+            "site": "00b62067",
+            "bytes_hex": "50",
+            "instruction": "push eax"
+          },
+          {
+            "site": "00b62068",
+            "bytes_hex": "e83f450900",
+            "instruction": "call 0xbf65ac"
+          },
+          {
+            "site": "00b6206d",
+            "bytes_hex": "83c404",
+            "instruction": "add esp, 4"
+          },
+          {
+            "site": "00b62070",
+            "bytes_hex": "c7465000000000",
+            "instruction": "mov dword ptr [esi + 0x50], 0"
+          },
+          {
+            "site": "00b62077",
+            "bytes_hex": "8bce",
+            "instruction": "mov ecx, esi"
+          },
+          {
+            "site": "00b62079",
+            "bytes_hex": "c7442414ffffffff",
+            "instruction": "mov dword ptr [esp + 0x14], 0xffffffff"
+          }
+        ]
+      },
+      {
+        "address": "00cbf920",
+        "length": 8,
+        "role": "full_logical_base_unwind",
+        "end_exclusive": "00cbf928",
+        "raw_offset": 9173280,
+        "bytes_hex": "8b4de8e9e826eaff",
+        "sha256": "0d2f3f73a5b43f6e0b1e0de27a93a8bfc94a29f2b3005690056003a533aa920f",
+        "live_matches_disk": true,
+        "returns": [],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00cbf928",
+        "length": 8,
+        "role": "full_logical_guard_unwind",
+        "end_exclusive": "00cbf930",
+        "raw_offset": 9173288,
+        "bytes_hex": "8d4dece9e017e6ff",
+        "sha256": "c3342cb979e3324be40ba5fb01e8217af305496cd4f434bfe5b252e96f36b9d3",
+        "live_matches_disk": true,
+        "returns": [],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00cbf930",
+        "length": 10,
+        "role": "full_logical_eh_handler",
+        "end_exclusive": "00cbf93a",
+        "raw_offset": 9173296,
+        "bytes_hex": "b8dc83df00e90972f3ff",
+        "sha256": "3b898590694becc63bc652ae02b3fa3e40b8047c883a427809034fda8721fb1d",
+        "live_matches_disk": true,
+        "returns": [],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00df83cc",
+        "length": 16,
+        "role": "logical_unwind_map",
+        "end_exclusive": "00df83dc",
+        "raw_offset": 10453964,
+        "bytes_hex": "ffffffff20f9cb000000000028f9cb00",
+        "sha256": "9edbebb318ce7656dde5d829aa516976ad5f1dc68c90b72323a488b86c4d6a10",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00df83dc",
+        "length": 36,
+        "role": "logical_funcinfo",
+        "end_exclusive": "00df8400",
+        "raw_offset": 10453980,
+        "bytes_hex": "2205931902000000cc83df00000000000000000000000000000000000000000001000000",
+        "sha256": "bb456250e5f901a4d8493f64e26ec2d8cc3cfa2a9d9797027a2cacf722958797",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00cc14a0",
+        "length": 8,
+        "role": "full_base_unwind",
+        "end_exclusive": "00cc14a8",
+        "raw_offset": 9180320,
+        "bytes_hex": "8b4df0e9c878e8ff",
+        "sha256": "6ea8ad6da7fd7771ff43ada45e76bf9da75a6ba2a76faaa17a4186b4708f9e2d",
+        "live_matches_disk": true,
+        "returns": [],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00cc14a8",
+        "length": 10,
+        "role": "full_base_eh_handler",
+        "end_exclusive": "00cc14b2",
+        "raw_offset": 9180328,
+        "bytes_hex": "b8eca2df00e99156f3ff",
+        "sha256": "4c0ae9f7ff7322c63f6e5d326fa135e761a7eefef42d28ef3ca3a2b3b8f3f3f4",
+        "live_matches_disk": true,
+        "returns": [],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00dfa2e4",
+        "length": 8,
+        "role": "base_unwind_map",
+        "end_exclusive": "00dfa2ec",
+        "raw_offset": 10461924,
+        "bytes_hex": "ffffffffa014cc00",
+        "sha256": "e91d4d716fcc89476f395945cb4aa417f0da90274c5ab87d0afdb69c7316586b",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00dfa2ec",
+        "length": 36,
+        "role": "base_funcinfo",
+        "end_exclusive": "00dfa310",
+        "raw_offset": 10461932,
+        "bytes_hex": "2205931901000000e4a2df00000000000000000000000000000000000000000001000000",
+        "sha256": "9c3fcb625b44a0bb09fba35d8c261f3c7a25a99b7f380a3ded7924e6291386ee",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b48d70",
+        "length": 5,
+        "role": "full_base_destructor_thunk",
+        "end_exclusive": "00b48d75",
+        "raw_offset": 7638384,
+        "bytes_hex": "e97ba30800",
+        "sha256": "ca2a7163930e8fc4129321ac2f55005085130fa2b722e83fb55f7ce6b013f273",
+        "live_matches_disk": true,
+        "returns": [],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00bd30e0",
+        "length": 14,
+        "role": "full_current_zero_terminal_dispatch",
+        "end_exclusive": "00bd30ee",
+        "raw_offset": 8204512,
+        "bytes_hex": "85c974098b018b50046a01ffd2c3",
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00bd30ed",
+            "operand": ""
+          }
+        ],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00bd30f0",
+        "length": 7,
+        "role": "full_refcounted_base_destructor",
+        "end_exclusive": "00bd30f7",
+        "raw_offset": 8204528,
+        "bytes_hex": "c70130b1ce00c3",
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00bd30f6",
+            "operand": ""
+          }
+        ],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00d61d6c",
+        "length": 52,
+        "role": "logical_profile_prefix",
+        "end_exclusive": "00d61da0",
+        "raw_offset": 9837932,
+        "bytes_hex": "e030bd0010bfb400408db400a0aab4008099b400809ab400308db400c08cb400d08cb400e08cb400108db400f08cb400b0aab400",
+        "sha256": "384e1478cf11d2935eb491ad4f9c0bb1de1808da1189228426b27a7a38a04c88",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d62b68",
+        "length": 52,
+        "role": "base_profile_prefix",
+        "end_exclusive": "00d62b9c",
+        "raw_offset": 9841512,
+        "bytes_hex": "e030bd00a020b6007094b400a0aab4008e69bf008e69bf008e69bf008e69bf008e69bf008e69bf008e69bf008e69bf00b0aab400",
+        "sha256": "954f4db150fba6b80028197b9cc667ac621ed6e2c8421f32f72fdddcf88ea182",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d61d1c",
+        "length": 8,
+        "role": "cpu_declaration_terminal_profile",
+        "end_exclusive": "00d61d24",
+        "raw_offset": 9837852,
+        "bytes_hex": "e030bd00a08cb400",
+        "sha256": "26802b61cb26bb3da7050c63a339ececb3ba56b75a9c20b9856d34498e9e5a78",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d61e34",
+        "length": 8,
+        "role": "private_vertex_terminal_profile",
+        "end_exclusive": "00d61e3c",
+        "raw_offset": 9838132,
+        "bytes_hex": "e030bd0040bbb400",
+        "sha256": "4c3aca5ca6d4601898bf06dfd1503833a5e27b4df9ffd642b6f3ac7dde43f865",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d61e7c",
+        "length": 8,
+        "role": "pooled_vertex_terminal_profile",
+        "end_exclusive": "00d61e84",
+        "raw_offset": 9838204,
+        "bytes_hex": "e030bd0030c2b400",
+        "sha256": "aed4f4e458012ea7e9987eef53501e32a5bf375522837b3dbb6f10297864ad09",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b61e20",
+        "length": 356,
+        "role": "full_base_constructor",
+        "end_exclusive": "00b61f84",
+        "raw_offset": 7740960,
+        "bytes_hex": "6aff688814cc0064a10000000050648925000000005153568bf1c70630b1ce00578974240cc7460401000000a1e0fe08018b7c242033db89464883c001a3e0fe080183c8ffc706682bd600895e5089461089461c894628895e18895e24895e3089463489463889463c894640894644895e08895e4c8b87cc00000053538bcf895c242089460cc7465400000040e8de5dfeff84c0742453538bcfe8815dfeff53538bcf894610e8155efeff53538bcf894618e8495dfeff894614536a038bcfe8ac5dfeff84c07427536a038bcfe84e5dfeff536a038bcf89461ce8e15dfeff536a038bcf894624e8145dfeff894620536a058bcfe8775dfeff84c07427536a058bcfe8195dfeff536a058bcf894628e8ac5dfeff536a058bcf894630e8df5cfeff89462c536a0a8bcfe8425dfeff84c0741c536a0a8bcfe8045dfeff83f804750d536a0a8bcfe8d55cfeff8946348b4c24105f8bc65e5b64890d0000000083c410c20400",
+        "sha256": "65814249bf85c9940a1681dbf7028b3ebbcf7109de5ce21cc2f15003569b9185",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b61f81",
+            "operand": "4"
+          }
+        ],
+        "instructions_of_interest": [
+          {
+            "site": "00b61e51",
+            "bytes_hex": "8b7c2420",
+            "instruction": "mov edi, dword ptr [esp + 0x20]"
+          },
+          {
+            "site": "00b61e55",
+            "bytes_hex": "33db",
+            "instruction": "xor ebx, ebx"
+          },
+          {
+            "site": "00b61e57",
+            "bytes_hex": "894648",
+            "instruction": "mov dword ptr [esi + 0x48], eax"
+          },
+          {
+            "site": "00b61e5a",
+            "bytes_hex": "83c001",
+            "instruction": "add eax, 1"
+          },
+          {
+            "site": "00b61e5d",
+            "bytes_hex": "a3e0fe0801",
+            "instruction": "mov dword ptr [0x108fee0], eax"
+          },
+          {
+            "site": "00b61e62",
+            "bytes_hex": "83c8ff",
+            "instruction": "or eax, 0xffffffff"
+          },
+          {
+            "site": "00b61e65",
+            "bytes_hex": "c706682bd600",
+            "instruction": "mov dword ptr [esi], 0xd62b68"
+          },
+          {
+            "site": "00b61e6b",
+            "bytes_hex": "895e50",
+            "instruction": "mov dword ptr [esi + 0x50], ebx"
+          },
+          {
+            "site": "00b61e6e",
+            "bytes_hex": "894610",
+            "instruction": "mov dword ptr [esi + 0x10], eax"
+          },
+          {
+            "site": "00b61e71",
+            "bytes_hex": "89461c",
+            "instruction": "mov dword ptr [esi + 0x1c], eax"
+          },
+          {
+            "site": "00b61e74",
+            "bytes_hex": "894628",
+            "instruction": "mov dword ptr [esi + 0x28], eax"
+          },
+          {
+            "site": "00b61e77",
+            "bytes_hex": "895e18",
+            "instruction": "mov dword ptr [esi + 0x18], ebx"
+          },
+          {
+            "site": "00b61e7a",
+            "bytes_hex": "895e24",
+            "instruction": "mov dword ptr [esi + 0x24], ebx"
+          },
+          {
+            "site": "00b61e7d",
+            "bytes_hex": "895e30",
+            "instruction": "mov dword ptr [esi + 0x30], ebx"
+          },
+          {
+            "site": "00b61e80",
+            "bytes_hex": "894634",
+            "instruction": "mov dword ptr [esi + 0x34], eax"
+          },
+          {
+            "site": "00b61e83",
+            "bytes_hex": "894638",
+            "instruction": "mov dword ptr [esi + 0x38], eax"
+          },
+          {
+            "site": "00b61e86",
+            "bytes_hex": "89463c",
+            "instruction": "mov dword ptr [esi + 0x3c], eax"
+          },
+          {
+            "site": "00b61e89",
+            "bytes_hex": "894640",
+            "instruction": "mov dword ptr [esi + 0x40], eax"
+          },
+          {
+            "site": "00b61e8c",
+            "bytes_hex": "894644",
+            "instruction": "mov dword ptr [esi + 0x44], eax"
+          },
+          {
+            "site": "00b61e8f",
+            "bytes_hex": "895e08",
+            "instruction": "mov dword ptr [esi + 8], ebx"
+          },
+          {
+            "site": "00b61e92",
+            "bytes_hex": "895e4c",
+            "instruction": "mov dword ptr [esi + 0x4c], ebx"
+          },
+          {
+            "site": "00b61e95",
+            "bytes_hex": "8b87cc000000",
+            "instruction": "mov eax, dword ptr [edi + 0xcc]"
+          },
+          {
+            "site": "00b61e9b",
+            "bytes_hex": "53",
+            "instruction": "push ebx"
+          }
+        ]
+      },
+      {
+        "address": "00b4a9b0",
+        "length": 228,
+        "role": "full_borrowed_physical_constructor",
+        "end_exclusive": "00b4aa94",
+        "raw_offset": 7645616,
+        "bytes_hex": "6aff6818f8cb0064a100000000506489250000000051535556578b7c24288bf15789742414e8467401008b44242433ed8bdd3bdf896c241cc7066c1dd600896e58896e5c896e68896e6c896e70894664c7466001000000742b3bfd897e68740a83c70457ff151c22ce003bdd74168d4b0451ff152022ce0085c075088b138b028bcbffd08b7e588b44242c3bf8742b3bc5894658740a83c00450ff151c22ce003bfd74168d4f0451ff152022ce0085c075088b178b028bcfffd08b4c2430894e5c8b0d94d3f80056e8c3dffdff8b4c24145f8bc65e5d5b64890d0000000083c410c21000",
+        "sha256": "263395697f964d336e8a77f0537016227b5ac6193e069c41f2f420454cd77e8c",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4aa91",
+            "operand": "0x10"
+          }
+        ],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00b4bc00",
+        "length": 758,
+        "role": "full_d3d9_logical_constructor",
+        "end_exclusive": "00b4bef6",
+        "raw_offset": 7650304,
+        "bytes_hex": "6aff68b0f9cb0064a100000000506489250000000083ec108b44242456578bf15089742410e8f661010033ffc7066c1dd600897e58897e68897e6c897e70803ddcd6080100897c242074138b0d94d3f800894c2414e8767efeff88442410538b5c24348bc383e00f83f803c6442424018bcb772fff2485f8beb400897c240c81c900000100eb1cc744240c01000000eb12c744240c02000000eb08c744240c03000000f6c1107405bf010000008bc125000f00003d000300007722741b3d00010000740f3d00020000752e81cf00400000eb2683cf02eb2183cf40eb1c3d00040000740f3d00050000750e81cf80000000eb0681cf000100008bd181e200f0000081fa00100000750681cf0002000081e100000f0081f900000100750383cf088b0d94d3f8008bc32500f000003d00100000558b6c24307555e87241fdff89465883c00450ff151c22ce008b3d94d3f80081c7f419000057ff151822ce00834718018b4e5856e875f4ffffa194d3f80005f419000083cfff01781850ff151022ce00897e5c8b7c2434e9fd000000c744243000000000e85541fdff8b4c24348b89cc0000008b100fafcd6a008d5c2434538b5c24185333db535751508b4268ffd0395c2430754d3bc374493d7c01768874423d0e000780743b8b0d94d3f800e88cd8fdff8b0d94d3f800e80141fdff8b4c24348b89cc0000008b100fafcd538d5c2434538b5c24185333db535751508b4268ffd06a2ce800aa0a0083c4043bc37430c70030b1ce00c740040100000089580889580c895810c700341ed60089581489581889581c895820895828895824eb0233c08b7c24348b5c24388946588b97cc0000000fafd5528b5424348bc88b008b40145352ffd08b4424308b088b510850ffd2c7465c00000000896e64895e608b5e683bdf5d742b85ff897e68740a83c70457ff151c22ce0085db74168d430450ff152022ce0085c075088b138b028bcbffd0803ddcd6080100c6442424005b740e8b4c2410518b4c2418e81f7cfeff8b4c24185f8bc65e64890d0000000083c41cc20c00",
+        "sha256": "97ebd5030eed737bb80dc522c2aea2112f98b326dd3b06246b703ff3db62fce9",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4bef3",
+            "operand": "0xc"
+          }
+        ],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00b620a0",
+        "length": 30,
+        "role": "full_base_deleting_wrapper",
+        "end_exclusive": "00b620be",
+        "raw_offset": 7741600,
+        "bytes_hex": "568bf1e868fffffff644240801740956e8f744090083c4048bc65ec20400",
+        "sha256": "49a98cb6a67dfe327b91a40298127f5264f85c2205f2d05f8cf46c1282789c5b",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b620bb",
+            "operand": "4"
+          }
+        ],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00b287c0",
+        "length": 234,
+        "role": "full_renderer_factory_producer_and_escape",
+        "end_exclusive": "00b288aa",
+        "raw_offset": 7505856,
+        "bytes_hex": "6aff6838d2cb0064a1000000005064892500000000515556578bf9b974000000e88b2b02008944240c33ed3bc5896c241874188b4c24248b542428518b4c242452518bc8e8f73302008be88b87b41a00003987b01a00008db7ac1a0000c7442418ffffffff751403c083f8017f05b801000000508bcee8d5a4ffff8b56048b068d049085c074028928834604018b178b42588bcfffd03c01753a8b87b81900003987b41900008db7b0190000751403c083f8017f05b801000000508bcee88ea4ffff8b4e048b168d048a85c074028928834604018b4c24105f5e8bc55d64890d0000000083c410c20c00",
+        "sha256": "1403a4015028fcf34e9c40de61707a76b03b8fcfc51cd877bcc2413d85725b0b",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b288a7",
+            "operand": "0xc"
+          }
+        ],
+        "instructions_of_interest": [
+          {
+            "site": "00b287fb",
+            "bytes_hex": "51",
+            "instruction": "push ecx"
+          },
+          {
+            "site": "00b287fc",
+            "bytes_hex": "8b4c2424",
+            "instruction": "mov ecx, dword ptr [esp + 0x24]"
+          },
+          {
+            "site": "00b28800",
+            "bytes_hex": "52",
+            "instruction": "push edx"
+          },
+          {
+            "site": "00b28801",
+            "bytes_hex": "51",
+            "instruction": "push ecx"
+          },
+          {
+            "site": "00b28802",
+            "bytes_hex": "8bc8",
+            "instruction": "mov ecx, eax"
+          },
+          {
+            "site": "00b28804",
+            "bytes_hex": "e8f7330200",
+            "instruction": "call 0xb4bc00"
+          },
+          {
+            "site": "00b28809",
+            "bytes_hex": "8be8",
+            "instruction": "mov ebp, eax"
+          },
+          {
+            "site": "00b2880b",
+            "bytes_hex": "8b87b41a0000",
+            "instruction": "mov eax, dword ptr [edi + 0x1ab4]"
+          },
+          {
+            "site": "00b28811",
+            "bytes_hex": "3987b01a0000",
+            "instruction": "cmp dword ptr [edi + 0x1ab0], eax"
+          },
+          {
+            "site": "00b28817",
+            "bytes_hex": "8db7ac1a0000",
+            "instruction": "lea esi, [edi + 0x1aac]"
+          },
+          {
+            "site": "00b2881d",
+            "bytes_hex": "c7442418ffffffff",
+            "instruction": "mov dword ptr [esp + 0x18], 0xffffffff"
+          },
+          {
+            "site": "00b28825",
+            "bytes_hex": "7514",
+            "instruction": "jne 0xb2883b"
+          },
+          {
+            "site": "00b28827",
+            "bytes_hex": "03c0",
+            "instruction": "add eax, eax"
+          },
+          {
+            "site": "00b28829",
+            "bytes_hex": "83f801",
+            "instruction": "cmp eax, 1"
+          },
+          {
+            "site": "00b2882c",
+            "bytes_hex": "7f05",
+            "instruction": "jg 0xb28833"
+          },
+          {
+            "site": "00b2882e",
+            "bytes_hex": "b801000000",
+            "instruction": "mov eax, 1"
+          },
+          {
+            "site": "00b28833",
+            "bytes_hex": "50",
+            "instruction": "push eax"
+          },
+          {
+            "site": "00b28834",
+            "bytes_hex": "8bce",
+            "instruction": "mov ecx, esi"
+          },
+          {
+            "site": "00b28836",
+            "bytes_hex": "e8d5a4ffff",
+            "instruction": "call 0xb22d10"
+          },
+          {
+            "site": "00b2883b",
+            "bytes_hex": "8b5604",
+            "instruction": "mov edx, dword ptr [esi + 4]"
+          },
+          {
+            "site": "00b2883e",
+            "bytes_hex": "8b06",
+            "instruction": "mov eax, dword ptr [esi]"
+          },
+          {
+            "site": "00b28840",
+            "bytes_hex": "8d0490",
+            "instruction": "lea eax, [eax + edx*4]"
+          },
+          {
+            "site": "00b28843",
+            "bytes_hex": "85c0",
+            "instruction": "test eax, eax"
+          },
+          {
+            "site": "00b28845",
+            "bytes_hex": "7402",
+            "instruction": "je 0xb28849"
+          },
+          {
+            "site": "00b28847",
+            "bytes_hex": "8928",
+            "instruction": "mov dword ptr [eax], ebp"
+          },
+          {
+            "site": "00b28849",
+            "bytes_hex": "83460401",
+            "instruction": "add dword ptr [esi + 4], 1"
+          },
+          {
+            "site": "00b2884d",
+            "bytes_hex": "8b17",
+            "instruction": "mov edx, dword ptr [edi]"
+          },
+          {
+            "site": "00b2884f",
+            "bytes_hex": "8b4258",
+            "instruction": "mov eax, dword ptr [edx + 0x58]"
+          },
+          {
+            "site": "00b28852",
+            "bytes_hex": "8bcf",
+            "instruction": "mov ecx, edi"
+          },
+          {
+            "site": "00b28854",
+            "bytes_hex": "ffd0",
+            "instruction": "call eax"
+          },
+          {
+            "site": "00b28856",
+            "bytes_hex": "3c01",
+            "instruction": "cmp al, 1"
+          },
+          {
+            "site": "00b28858",
+            "bytes_hex": "753a",
+            "instruction": "jne 0xb28894"
+          },
+          {
+            "site": "00b2885a",
+            "bytes_hex": "8b87b8190000",
+            "instruction": "mov eax, dword ptr [edi + 0x19b8]"
+          },
+          {
+            "site": "00b28860",
+            "bytes_hex": "3987b4190000",
+            "instruction": "cmp dword ptr [edi + 0x19b4], eax"
+          },
+          {
+            "site": "00b28866",
+            "bytes_hex": "8db7b0190000",
+            "instruction": "lea esi, [edi + 0x19b0]"
+          },
+          {
+            "site": "00b2886c",
+            "bytes_hex": "7514",
+            "instruction": "jne 0xb28882"
+          },
+          {
+            "site": "00b2886e",
+            "bytes_hex": "03c0",
+            "instruction": "add eax, eax"
+          },
+          {
+            "site": "00b28870",
+            "bytes_hex": "83f801",
+            "instruction": "cmp eax, 1"
+          },
+          {
+            "site": "00b28873",
+            "bytes_hex": "7f05",
+            "instruction": "jg 0xb2887a"
+          },
+          {
+            "site": "00b28875",
+            "bytes_hex": "b801000000",
+            "instruction": "mov eax, 1"
+          },
+          {
+            "site": "00b2887a",
+            "bytes_hex": "50",
+            "instruction": "push eax"
+          },
+          {
+            "site": "00b2887b",
+            "bytes_hex": "8bce",
+            "instruction": "mov ecx, esi"
+          },
+          {
+            "site": "00b2887d",
+            "bytes_hex": "e88ea4ffff",
+            "instruction": "call 0xb22d10"
+          },
+          {
+            "site": "00b28882",
+            "bytes_hex": "8b4e04",
+            "instruction": "mov ecx, dword ptr [esi + 4]"
+          },
+          {
+            "site": "00b28885",
+            "bytes_hex": "8b16",
+            "instruction": "mov edx, dword ptr [esi]"
+          },
+          {
+            "site": "00b28887",
+            "bytes_hex": "8d048a",
+            "instruction": "lea eax, [edx + ecx*4]"
+          },
+          {
+            "site": "00b2888a",
+            "bytes_hex": "85c0",
+            "instruction": "test eax, eax"
+          },
+          {
+            "site": "00b2888c",
+            "bytes_hex": "7402",
+            "instruction": "je 0xb28890"
+          },
+          {
+            "site": "00b2888e",
+            "bytes_hex": "8928",
+            "instruction": "mov dword ptr [eax], ebp"
+          },
+          {
+            "site": "00b28890",
+            "bytes_hex": "83460401",
+            "instruction": "add dword ptr [esi + 4], 1"
+          },
+          {
+            "site": "00b28894",
+            "bytes_hex": "8b4c2410",
+            "instruction": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "site": "00b28898",
+            "bytes_hex": "5f",
+            "instruction": "pop edi"
+          },
+          {
+            "site": "00b28899",
+            "bytes_hex": "5e",
+            "instruction": "pop esi"
+          },
+          {
+            "site": "00b2889a",
+            "bytes_hex": "8bc5",
+            "instruction": "mov eax, ebp"
+          }
+        ]
+      },
+      {
+        "address": "00ae47e0",
+        "length": 1084,
+        "role": "full_terrain_producer_and_draw_section_escape",
+        "end_exclusive": "00ae4c1c",
+        "raw_offset": 7227360,
+        "bytes_hex": "6aff68a89fcb0064a10000000050648925000000005153558b6c241c568b74243c578bf98bcdc744241000000000e8fdbe08008bc8e8660808008b5c242883c0ff89442424784feb0b8da424000000008b44242453508bcde883b50800d90083ec108bccd9198964243cd94004d95904d94008d95908d9400cd9590c8bcfe87de7ffff85c00f849a03000001442410836c24240179ba8b038b50408bcbffd2f6405c0275078bc8e8e4920800837c2410060f855c0100008b474c2b4748b96000000083c00189442424e832160a008944242833f63bc68974241c74098bc8e82d0f0a008bf08b442434508bcec7442420ffffffffe8771d0a008b4c243c518bcec7460804000000e8d41b0a008b5c242c8b138b42208bcbffd08b13894424348b42248bcbffd0b9740000008944243ce85c6a06008be8896c242c85edc744241c0100000074228b4f48c1e105518bcbe8cc4306008b542440508b44243c52508bcde86a600600eb0233c08b4c2430518947548bcec7442420ffffffffc7405400000080e818120a008b5754528bcee80d120a008b4c24488b5424248b44244433ed894e18528bce896e0c896e14894610e8fb0b0a008b4c243856e8c1f208008b1d2022ce008d460450ffd385c075088b168b028bceffd08b77543bf574158d4e0451ffd385c075088b168b028bceffd0896f548b4c24408b5424248d040a8b4c241464890d000000005f5e5d5b83c410c22800837f24000f85340100008b5f4c2b5f4883c301e895f5a4ff8bf08b442434508bcee8371c0a008b4c243c518bcec7460804000000e8941a0a008b6c242c8b55008b42208bcdffd08b5500894424348b42248bcdffd0b9740000008944243ce81a6906008944242c85c0c744241c0200000074248b4f48c1e105518bcde88c4206008b5424408b4c2430508b44243c5250e8285f0600eb0233c08b4c2430518947548bcec7442420ffffffffc7405400000080e8d6100a008b5754528bcee8cb100a008b4c244833c089460c8946148b442444894e18538bce894610e8bd0a0a008b4c243856e883f108008b2d2022ce008d560452ffd585c075088b068b108bceffd28b775485f674198d460450ffd585c075088b168b028bceffd0c74754000000008b4c24408d040b8b4c241464890d000000005f5e5d5b83c410c228008b4f2c85c9742f8b5424488b44244452508b4424448bd6528b542444508b442444528b542444508b44244452505355e87bfcffff8bf08b4f3085c9742d8b5424488b442444528b542440508b44244056528b542444508b442444528b54244450525355e847fcffff8bf08b4f3485c9742d8b4424488b542444508b442440528b54244056508b442444528b542444508b44244452505355e813fcffff8bf08b7f3885ff742f8b4c24488b5424448b44243c518b4c243c528b54243c56508b442440518b4c244052505153558bcfe8ddfbffff8bf08b4c24145f8bc65e5d64890d000000005b83c410c22800",
+        "sha256": "a808c96f546d9feee1be0032eabe763636951368aca4484ffa8c8af030daf896",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00ae49f0",
+            "operand": "0x28"
+          },
+          {
+            "site": "00ae4b2e",
+            "operand": "0x28"
+          },
+          {
+            "site": "00ae4c19",
+            "operand": "0x28"
+          }
+        ],
+        "instructions_of_interest": [
+          {
+            "site": "00ae4939",
+            "bytes_hex": "8b44243c",
+            "instruction": "mov eax, dword ptr [esp + 0x3c]"
+          },
+          {
+            "site": "00ae493d",
+            "bytes_hex": "52",
+            "instruction": "push edx"
+          },
+          {
+            "site": "00ae493e",
+            "bytes_hex": "50",
+            "instruction": "push eax"
+          },
+          {
+            "site": "00ae493f",
+            "bytes_hex": "8bcd",
+            "instruction": "mov ecx, ebp"
+          },
+          {
+            "site": "00ae4941",
+            "bytes_hex": "e86a600600",
+            "instruction": "call 0xb4a9b0"
+          },
+          {
+            "site": "00ae4946",
+            "bytes_hex": "eb02",
+            "instruction": "jmp 0xae494a"
+          },
+          {
+            "site": "00ae4948",
+            "bytes_hex": "33c0",
+            "instruction": "xor eax, eax"
+          },
+          {
+            "site": "00ae494a",
+            "bytes_hex": "8b4c2430",
+            "instruction": "mov ecx, dword ptr [esp + 0x30]"
+          },
+          {
+            "site": "00ae494e",
+            "bytes_hex": "51",
+            "instruction": "push ecx"
+          },
+          {
+            "site": "00ae494f",
+            "bytes_hex": "894754",
+            "instruction": "mov dword ptr [edi + 0x54], eax"
+          },
+          {
+            "site": "00ae4952",
+            "bytes_hex": "8bce",
+            "instruction": "mov ecx, esi"
+          },
+          {
+            "site": "00ae4954",
+            "bytes_hex": "c7442420ffffffff",
+            "instruction": "mov dword ptr [esp + 0x20], 0xffffffff"
+          },
+          {
+            "site": "00ae495c",
+            "bytes_hex": "c7405400000080",
+            "instruction": "mov dword ptr [eax + 0x54], 0x80000000"
+          },
+          {
+            "site": "00ae4963",
+            "bytes_hex": "e818120a00",
+            "instruction": "call 0xb85b80"
+          },
+          {
+            "site": "00ae4968",
+            "bytes_hex": "8b5754",
+            "instruction": "mov edx, dword ptr [edi + 0x54]"
+          },
+          {
+            "site": "00ae496b",
+            "bytes_hex": "52",
+            "instruction": "push edx"
+          },
+          {
+            "site": "00ae496c",
+            "bytes_hex": "8bce",
+            "instruction": "mov ecx, esi"
+          },
+          {
+            "site": "00ae496e",
+            "bytes_hex": "e80d120a00",
+            "instruction": "call 0xb85b80"
+          },
+          {
+            "site": "00ae4973",
+            "bytes_hex": "8b4c2448",
+            "instruction": "mov ecx, dword ptr [esp + 0x48]"
+          },
+          {
+            "site": "00ae4977",
+            "bytes_hex": "8b542424",
+            "instruction": "mov edx, dword ptr [esp + 0x24]"
+          },
+          {
+            "site": "00ae497b",
+            "bytes_hex": "8b442444",
+            "instruction": "mov eax, dword ptr [esp + 0x44]"
+          },
+          {
+            "site": "00ae497f",
+            "bytes_hex": "33ed",
+            "instruction": "xor ebp, ebp"
+          },
+          {
+            "site": "00ae4981",
+            "bytes_hex": "894e18",
+            "instruction": "mov dword ptr [esi + 0x18], ecx"
+          },
+          {
+            "site": "00ae4984",
+            "bytes_hex": "52",
+            "instruction": "push edx"
+          },
+          {
+            "site": "00ae4985",
+            "bytes_hex": "8bce",
+            "instruction": "mov ecx, esi"
+          },
+          {
+            "site": "00ae4987",
+            "bytes_hex": "896e0c",
+            "instruction": "mov dword ptr [esi + 0xc], ebp"
+          },
+          {
+            "site": "00ae498a",
+            "bytes_hex": "896e14",
+            "instruction": "mov dword ptr [esi + 0x14], ebp"
+          },
+          {
+            "site": "00ae498d",
+            "bytes_hex": "894610",
+            "instruction": "mov dword ptr [esi + 0x10], eax"
+          },
+          {
+            "site": "00ae4990",
+            "bytes_hex": "e8fb0b0a00",
+            "instruction": "call 0xb85590"
+          },
+          {
+            "site": "00ae4995",
+            "bytes_hex": "8b4c2438",
+            "instruction": "mov ecx, dword ptr [esp + 0x38]"
+          },
+          {
+            "site": "00ae4999",
+            "bytes_hex": "56",
+            "instruction": "push esi"
+          },
+          {
+            "site": "00ae499a",
+            "bytes_hex": "e8c1f20800",
+            "instruction": "call 0xb73c60"
+          },
+          {
+            "site": "00ae4a7c",
+            "bytes_hex": "50",
+            "instruction": "push eax"
+          },
+          {
+            "site": "00ae4a7d",
+            "bytes_hex": "8b44243c",
+            "instruction": "mov eax, dword ptr [esp + 0x3c]"
+          },
+          {
+            "site": "00ae4a81",
+            "bytes_hex": "52",
+            "instruction": "push edx"
+          },
+          {
+            "site": "00ae4a82",
+            "bytes_hex": "50",
+            "instruction": "push eax"
+          },
+          {
+            "site": "00ae4a83",
+            "bytes_hex": "e8285f0600",
+            "instruction": "call 0xb4a9b0"
+          },
+          {
+            "site": "00ae4a88",
+            "bytes_hex": "eb02",
+            "instruction": "jmp 0xae4a8c"
+          },
+          {
+            "site": "00ae4a8a",
+            "bytes_hex": "33c0",
+            "instruction": "xor eax, eax"
+          },
+          {
+            "site": "00ae4a8c",
+            "bytes_hex": "8b4c2430",
+            "instruction": "mov ecx, dword ptr [esp + 0x30]"
+          },
+          {
+            "site": "00ae4a90",
+            "bytes_hex": "51",
+            "instruction": "push ecx"
+          },
+          {
+            "site": "00ae4a91",
+            "bytes_hex": "894754",
+            "instruction": "mov dword ptr [edi + 0x54], eax"
+          },
+          {
+            "site": "00ae4a94",
+            "bytes_hex": "8bce",
+            "instruction": "mov ecx, esi"
+          },
+          {
+            "site": "00ae4a96",
+            "bytes_hex": "c7442420ffffffff",
+            "instruction": "mov dword ptr [esp + 0x20], 0xffffffff"
+          },
+          {
+            "site": "00ae4a9e",
+            "bytes_hex": "c7405400000080",
+            "instruction": "mov dword ptr [eax + 0x54], 0x80000000"
+          },
+          {
+            "site": "00ae4aa5",
+            "bytes_hex": "e8d6100a00",
+            "instruction": "call 0xb85b80"
+          },
+          {
+            "site": "00ae4aaa",
+            "bytes_hex": "8b5754",
+            "instruction": "mov edx, dword ptr [edi + 0x54]"
+          },
+          {
+            "site": "00ae4aad",
+            "bytes_hex": "52",
+            "instruction": "push edx"
+          },
+          {
+            "site": "00ae4aae",
+            "bytes_hex": "8bce",
+            "instruction": "mov ecx, esi"
+          },
+          {
+            "site": "00ae4ab0",
+            "bytes_hex": "e8cb100a00",
+            "instruction": "call 0xb85b80"
+          },
+          {
+            "site": "00ae4ab5",
+            "bytes_hex": "8b4c2448",
+            "instruction": "mov ecx, dword ptr [esp + 0x48]"
+          },
+          {
+            "site": "00ae4ab9",
+            "bytes_hex": "33c0",
+            "instruction": "xor eax, eax"
+          },
+          {
+            "site": "00ae4abb",
+            "bytes_hex": "89460c",
+            "instruction": "mov dword ptr [esi + 0xc], eax"
+          },
+          {
+            "site": "00ae4abe",
+            "bytes_hex": "894614",
+            "instruction": "mov dword ptr [esi + 0x14], eax"
+          },
+          {
+            "site": "00ae4ac1",
+            "bytes_hex": "8b442444",
+            "instruction": "mov eax, dword ptr [esp + 0x44]"
+          },
+          {
+            "site": "00ae4ac5",
+            "bytes_hex": "894e18",
+            "instruction": "mov dword ptr [esi + 0x18], ecx"
+          },
+          {
+            "site": "00ae4ac8",
+            "bytes_hex": "53",
+            "instruction": "push ebx"
+          },
+          {
+            "site": "00ae4ac9",
+            "bytes_hex": "8bce",
+            "instruction": "mov ecx, esi"
+          },
+          {
+            "site": "00ae4acb",
+            "bytes_hex": "894610",
+            "instruction": "mov dword ptr [esi + 0x10], eax"
+          },
+          {
+            "site": "00ae4ace",
+            "bytes_hex": "e8bd0a0a00",
+            "instruction": "call 0xb85590"
+          },
+          {
+            "site": "00ae4ad3",
+            "bytes_hex": "8b4c2438",
+            "instruction": "mov ecx, dword ptr [esp + 0x38]"
+          },
+          {
+            "site": "00ae4ad7",
+            "bytes_hex": "56",
+            "instruction": "push esi"
+          },
+          {
+            "site": "00ae4ad8",
+            "bytes_hex": "e883f10800",
+            "instruction": "call 0xb73c60"
+          }
+        ]
+      },
+      {
+        "address": "00b93800",
+        "length": 116,
+        "role": "full_compressed_metadata_producer_for_distinct_field_50",
+        "end_exclusive": "00b93874",
+        "raw_offset": 7944192,
+        "bytes_hex": "5356578b7c24108bcfe812f3fdff83e801508bcfe847fafdff8b108bc88b4224ffd08bc8e8d740fbff33c98bf0ba20000000f7e20f90c1f7d90bc851e87d1d06008b4c241883c404c1e6058bd85653e8cc610500538bcfe8c4f2fdff83e801508bcfe8f9f9fdff8bc8e822e5fcff5f5e5bc20800",
+        "sha256": "9f2d4f057b392410b7cdaa9737a67ddf37ed202331afc86c3939af2e329eb4a1",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b93871",
+            "operand": "8"
+          }
+        ],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00b61d90",
+        "length": 10,
+        "role": "full_distinct_field_50_setter",
+        "end_exclusive": "00b61d9a",
+        "raw_offset": 7740816,
+        "bytes_hex": "8b442404894150c20400",
+        "sha256": "2916e2994197d4418c7a26f60f4933c75db70f143977f040b32a03a89face977",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b61d97",
+            "operand": "4"
+          }
+        ],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00b61e10",
+        "length": 13,
+        "role": "full_distinct_field_50_getter",
+        "end_exclusive": "00b61e1d",
+        "raw_offset": 7740944,
+        "bytes_hex": "8b442404c1e005034150c20400",
+        "sha256": "5fe3cbfe6f2e7862e70bd7a669c43c07281175d6aa8cb4556254679bcc348c4a",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b61e1a",
+            "operand": "4"
+          }
+        ],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00b61f90",
+        "length": 115,
+        "role": "full_distinct_field_50_record_writer",
+        "end_exclusive": "00b62003",
+        "raw_offset": 7741328,
+        "bytes_hex": "568bf1837e5000752a8b068b5024ffd28bc8e85959feff33c9ba20000000f7e20f90c1f7d90bc851e80136090083c4048946508b4c240cd9018b442408c1e0050346505ed918d94104d95804d94108d95808d9410cd9580cd94110d95810d94114d95814d94118d95818d9411cd9581cc20800",
+        "sha256": "c533e58893f2bc1d61fc93006b429dde76ae0086c97e48d504a513881d8970d0",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b62000",
+            "operand": "8"
+          }
+        ],
+        "instructions_of_interest": []
+      },
+      {
+        "address": "00b42350",
+        "length": 4288,
+        "role": "full_material_constant_candidate_exclusion",
+        "end_exclusive": "00b43410",
+        "raw_offset": 7611216,
+        "bytes_hex": "81eca400000053558bd933ed396b6c5657895c2420765e8d735c8d9b000000008b068b48048b018b502c8b3d94d3f800ffd28b178b9230010000508b068b08518bcfffd28b068b48048b43748b118b523068e8db080168f0eb0801508b4370508b8424c800000050ffd283c50183c6043b6b6c72ab8bb424b80000008b46048b4820e8b94ffdff8b4e108b91980100008b8880000000895424108d14883bc289442418894424140f84970200008d49008b4424148b008b4c24108b7c881483ffff0f8eb8010000807810000f84900100008b43708b507c8b7078c1e20503d633ed3bf274298bcee8349401003bc775098bcee8399401008be88b43708b487c83c078c1e105030883c6203bf175d78b5424148b028b40088bcd83e9020f84d200000083e901747783e9010f854f010000d900c1e70481c7f4eb08018bcfd919d94010d95904d94020d95908d94030d9590cd94004d95910d94014d95914d94024d95918d94034d9591cd94008d95920d94018d95924d94028d95928d94038d9592cd9400cd95930d9401cd95934d9402cd95938d9403cd9593ce9e1000000d900c1e70481c7f4eb08018bcfd919d94010d95904d94020d95908d94030d9590cd94004d95910d94014d95914d94024d95918d94034d9591cd94008d95920d94018d95924d94028d95928d94038d9592ce98b000000f30f1000f30f11442434f30f104010f30f11442438f30f104020f30f1144243cf30f104030f30f11442440f30f104004f30f11442444f30f104014f30f11442448f30f104024c1e704f30f1144244cf30f10403481c7f4eb0801b9080000008d742434f30f11442450f3a5eb1e8b480c8b500803c903c951c1e7045281c7f4eb080157e8b4500b0083c40c8b4424148b008b4c24108b4c884c83f9ff0f8e87000000c1e10481c1ecdb08018078100074638b4008d900d919d94010d95904d94020d95908d94030d9590cd94004d95910d94014d95914d94024d95918d94034d9591cd94008d95920d94018d95924d94028d95928d94038d9592cd9400cd95930d9401cd95934d9402cd95938d9403cd9593ceb158b500c8b400803d203d2525051e816500b0083c40c8b4424188b4c24148b908000000083c1048d04903bc8894c24140f8573fdffff8bb424b80000008b4b70807930ff0f84c40000008b4e0c894c2418e853d804008b53700fb67a3033ed85c0894424100f8ea3000000c1e70481c7fceb0801eb038d49008b4c241855e846df04008bf0f6465c0275078bcee887b40200d986f000000083c501d95ff883c7303b6c2410d98600010000d95fccd98610010000d95fd0d98620010000d95fd4d986f4000000d95fd8d98604010000d95fdcd98614010000d95fe0d98624010000d95fe4d986f8000000d95fe8d98608010000d95fecd98618010000d95ff0d98628010000d95ff40f8c6bffffff8b43708a40323cff0f844d0100008b8c24b80000008b790c0fb6f08b873001000085c08944241874528b0089442410e8b73603008b6c2418508b4424148b500c8bcdffd284c074338bbf9001000085ff0f84050100008b45348b40088d0c40c1e10451c1e6045781c6f4eb080156e8a84e0b0083c40ce9e00000008b878801000085c08b53700fb672320f8ecb000000c1e60433ed81c6fceb080189442424eb0a8da424000000008d49008b87840100008b0428f6405c028944241075078bc8e846b302008b8f840100008d5429208bcf89542418e891b802008b4c2410508d4424385081c1f0000000518b4c24248d94248000000052e8bf108dff8bc8e8b8108dffd900d95ef883c630d9401083c560836c242401d95eccd94020d95ed0d94030d95ed4d94004d95ed8d94014d95edcd94024d95ee0d94034d95ee4d94008d95ee8d94018d95eecd94028d95ef0d94038d95ef40f8550ffffff8b4370807820ff0f57c00f84ac0100000fb650200fb648218b8424b800000089542428894c242c2bca8b501083ba98010000028b53148b92c4000000894c242474058b5220eb038b52248b400483784c0089542414c7442418000000000f8659010000c74424103c000000eb078d49008b4c2424837c2414000f843d01000085c90f84350100008b4c24108b1c01837b50008b138b74242c8b42240f9544241f2b7424288bcbffd08bc8e8914f00003bc67d0689442430eb068bc6897424300f57c033ed85c00f8ec90000008b54242c8b4c24288b442430f30f100d4ca2d7008bf18bfac1e704c1e60403c881c7fceb080181c6fceb080103d0894c24288954242c8d4d01807c241f00744b558bcbe83cf40100d900d95ef80f57c0d94004f30f100d4ca2d700d95efcb901000000d94008d91ed9400cd95e04d94010d95ff8d94014d95ffcd94018d91fd9401c8b442430d95f04eb26f30f114ef8f30f114efcf30f110ef30f114e04f30f1147f8f30f1147fcf30f1107f30f114704294c2414294c242403e983c61083c7103be80f8c70ffffff8b4c24188b9424b80000008b420483442410048b5c242083c1013b484c894c24180f82b4feffff8b4370807808ff8bac24b80000000f84d50100008b750cf6465c020fb6783e750a8bcee8ccb002000f57c08b43700fb640088bcf83e9020f842601000083e9010f84a500000083e9010f859a010000d986f0000000c1e00405f4eb0801d918d98600010000d95804d98610010000d95808d98620010000d9580cd986f4000000d95810d98604010000d95814d98614010000d95818d98624010000d9581cd986f8000000d95820d98608010000d95824d98618010000d95828d98628010000d9582cd986fc000000d95830d9860c010000d95834d9861c010000d95838d9862c010000d9583ce9fe000000d986f0000000c1e00405f4eb0801d918d98600010000d95804d98610010000d95808d98620010000d9580cd986f4000000d95810d98604010000d95814d98614010000d95818d98624010000d9581cd986f8000000d95820d98608010000d95824d98618010000d95828d98628010000d9582ce986000000f30f108ef0000000f30f114c2434f30f108e00010000f30f114c2438f30f108e10010000f30f114c243cf30f108e20010000f30f114c2440f30f108ef4000000f30f114c2444f30f108e04010000f30f114c2448f30f108e140100008bf8f30f114c244cf30f108e24010000c1e70481c7f4eb0801b9080000008d742434f30f114c2450f3a58b4b74807908ff0f84d80100008b750cf6465c028b53700fb67a3e750a8bcee8e7ae02000f57c08b43740fb640088bcf83e9020f842601000083e9010f84a500000083e9010f859a010000d986f0000000c1e00405ecdb0801d918d98600010000d95804d98610010000d95808d98620010000d9580cd986f4000000d95810d98604010000d95814d98614010000d95818d98624010000d9581cd986f8000000d95820d98608010000d95824d98618010000d95828d98628010000d9582cd986fc000000d95830d9860c010000d95834d9861c010000d95838d9862c010000d9583ce9fe000000d986f0000000c1e00405ecdb0801d918d98600010000d95804d98610010000d95808d98620010000d9580cd986f4000000d95810d98604010000d95814d98614010000d95818d98624010000d9581cd986f8000000d95820d98608010000d95824d98618010000d95828d98628010000d9582ce986000000f30f108ef0000000f30f114c2434f30f108e00010000f30f114c2438f30f108e10010000f30f114c243cf30f108e20010000f30f114c2440f30f108ef4000000f30f114c2444f30f108e04010000f30f114c2448f30f108e140100008bf8f30f114c244cf30f108e24010000c1e70481c7ecdb0801b9080000008d742434f30f114c2450f3a58b4b708a41333cff7423f30f104d180fb6c0c1e00405f4eb0801f30f1108f30f114004f30f114008f30f11400c8b53748a42333cff7423f30f104d180fb6c0c1e00405ecdb0801f30f1108f30f114004f30f114008f30f11400c8b43748a40343cff744bd945008b4d08d95c242083ec08d90538a2d7000fb6f0d95c2404d9442428d91c24e89c0803000f57c0d95c2434d9442434c1e60481c6ecdb0801d91ef30f114604f30f114608f30f11460c8b4b70807909ff0f84570100008bc18b4d0c0fb6703f0fb67809e8b8b102008bce83e9020f84cf00000083e901747783e9010f852c010000d900c1e70481c7f4eb08018bcfd919d94010d95904d94020d95908d94030d9590cd94004d95910d94014d95914d94024d95918d94034d9591cd94008d95920d94018d95924d94028d95928d94038d9592cd9400cd95930d9401cd95934d9402cd95938d9403cd9593ce9be000000d900c1e70481c7f4eb08018bcfd919d94010d95904d94020d95908d94030d9590cd94004d95910d94014d95914d94024d95918d94034d9591cd94008d95920d94018d95924d94028d95928d94038d9592ceb6bf30f1000f30f11442434f30f104010f30f11442438f30f104020f30f1144243cf30f104030f30f11442440f30f104004f30f11442444f30f104014f30f11442448f30f104024c1e704f30f1144244cf30f10403481c7f4eb0801b9080000008d742434f30f11442450f3a58b53748a42373cff742f8b4d048b49206a000fb6f0e87949fdff8b10c1e60481c6ecdb080189168b4804894e048b50088956088b400c89460c8b4b708a41373cff742f8b55048b4a206a000fb6f0e84049fdff8b08c1e60481c6f4eb0801890e8b50048956048b4808894e088b500c89560c837b7cff74228b3594d3f8008b0d9cd3f8008b3ee848a0fcff8b9730010000508b437c508bceffd2837b78ff74638b450c8b80700100008b481c8b3183c0183bf17505e8fc350b008b4e08e89179030085c074228b108b3594d3f8008b3e8bc88b4208ffd08b4b788b973001000050518bceffd2eb1b8b93840000008b0d94d3f8008b018b8030010000528b537852ffd08b4d0ce8e8aa02008b4b708a493580f9ff0f848c0200008b680483fd047c05bd040000008bd585d289542420db4424207d06d8057839ce000f57c0d95c2434d94424340fb6c9c1e10481c1f4eb0801f30f114104f30f114108d919f30f11410c8b4b700fb6713681feff0000000f843002000033d283fd040f8cb30100008bce8d7dfdc1e1048d5fff81c1fceb0801c1eb028d74de08897424208d9b000000008b308b3496f30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f1141f8f30f1149fcf30f1111f30f1159048b9e840100008959088b9e8801000089590c8b9e8c01000089591081c6840100008b760c8971148b308b749604f30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f114118f30f11491cf30f115120f30f1159248b9e840100008959288b9e8801000089592c8b9e8c01000089593081c6840100008b760c8971348b308b749608f30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f114138f30f11493cf30f115140f30f1159448b9e840100008959488b9e8801000089594c8b9e8c01000081c6840100008959508b760c8971548b308b74960cf30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f114158f30f11495cf30f115160f30f1159648b9e8401000081c6840100008959688b5e0489596c8b5e088959708b760c89717483c20481c1800000003bd70f8273feffff8b7424203bd5736ec1e60481c6fceb08018bce8b308b3496f30f1086ec010000f30f108ef0010000f30f1096f4010000f30f109ef8010000f30f1141f8f30f1149fcf30f1111f30f1159048bbe8401000081c6840100008979088b7e0489790c8b7e088979108b760c89711483c20183c1203bd5729d5f5e5d5b81c4a4000000c20800",
+        "sha256": "5b3d63fcdd42f9f5bb9cd7a02e08e3531472e87aa7409125153c83804f516091",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4340d",
+            "operand": "8"
+          }
+        ],
+        "instructions_of_interest": [
+          {
+            "site": "00b42900",
+            "bytes_hex": "7405",
+            "instruction": "je 0xb42907"
+          },
+          {
+            "site": "00b42902",
+            "bytes_hex": "8b5220",
+            "instruction": "mov edx, dword ptr [edx + 0x20]"
+          },
+          {
+            "site": "00b42905",
+            "bytes_hex": "eb03",
+            "instruction": "jmp 0xb4290a"
+          },
+          {
+            "site": "00b42907",
+            "bytes_hex": "8b5224",
+            "instruction": "mov edx, dword ptr [edx + 0x24]"
+          },
+          {
+            "site": "00b4290a",
+            "bytes_hex": "8b4004",
+            "instruction": "mov eax, dword ptr [eax + 4]"
+          },
+          {
+            "site": "00b4290d",
+            "bytes_hex": "83784c00",
+            "instruction": "cmp dword ptr [eax + 0x4c], 0"
+          },
+          {
+            "site": "00b42911",
+            "bytes_hex": "89542414",
+            "instruction": "mov dword ptr [esp + 0x14], edx"
+          },
+          {
+            "site": "00b42915",
+            "bytes_hex": "c744241800000000",
+            "instruction": "mov dword ptr [esp + 0x18], 0"
+          },
+          {
+            "site": "00b4291d",
+            "bytes_hex": "0f8659010000",
+            "instruction": "jbe 0xb42a7c"
+          },
+          {
+            "site": "00b42923",
+            "bytes_hex": "c74424103c000000",
+            "instruction": "mov dword ptr [esp + 0x10], 0x3c"
+          },
+          {
+            "site": "00b4292b",
+            "bytes_hex": "eb07",
+            "instruction": "jmp 0xb42934"
+          },
+          {
+            "site": "00b4292d",
+            "bytes_hex": "8d4900",
+            "instruction": "lea ecx, [ecx]"
+          },
+          {
+            "site": "00b42930",
+            "bytes_hex": "8b4c2424",
+            "instruction": "mov ecx, dword ptr [esp + 0x24]"
+          },
+          {
+            "site": "00b42934",
+            "bytes_hex": "837c241400",
+            "instruction": "cmp dword ptr [esp + 0x14], 0"
+          },
+          {
+            "site": "00b42939",
+            "bytes_hex": "0f843d010000",
+            "instruction": "je 0xb42a7c"
+          },
+          {
+            "site": "00b4293f",
+            "bytes_hex": "85c9",
+            "instruction": "test ecx, ecx"
+          },
+          {
+            "site": "00b42941",
+            "bytes_hex": "0f8435010000",
+            "instruction": "je 0xb42a7c"
+          },
+          {
+            "site": "00b42947",
+            "bytes_hex": "8b4c2410",
+            "instruction": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "site": "00b4294b",
+            "bytes_hex": "8b1c01",
+            "instruction": "mov ebx, dword ptr [ecx + eax]"
+          },
+          {
+            "site": "00b4294e",
+            "bytes_hex": "837b5000",
+            "instruction": "cmp dword ptr [ebx + 0x50], 0"
+          },
+          {
+            "site": "00b42952",
+            "bytes_hex": "8b13",
+            "instruction": "mov edx, dword ptr [ebx]"
+          },
+          {
+            "site": "00b42954",
+            "bytes_hex": "8b74242c",
+            "instruction": "mov esi, dword ptr [esp + 0x2c]"
+          },
+          {
+            "site": "00b42958",
+            "bytes_hex": "8b4224",
+            "instruction": "mov eax, dword ptr [edx + 0x24]"
+          },
+          {
+            "site": "00b4295b",
+            "bytes_hex": "0f9544241f",
+            "instruction": "setne byte ptr [esp + 0x1f]"
+          },
+          {
+            "site": "00b42960",
+            "bytes_hex": "2b742428",
+            "instruction": "sub esi, dword ptr [esp + 0x28]"
+          },
+          {
+            "site": "00b42964",
+            "bytes_hex": "8bcb",
+            "instruction": "mov ecx, ebx"
+          },
+          {
+            "site": "00b42966",
+            "bytes_hex": "ffd0",
+            "instruction": "call eax"
+          },
+          {
+            "site": "00b42968",
+            "bytes_hex": "8bc8",
+            "instruction": "mov ecx, eax"
+          },
+          {
+            "site": "00b4296a",
+            "bytes_hex": "e8914f0000",
+            "instruction": "call 0xb47900"
+          },
+          {
+            "site": "00b4296f",
+            "bytes_hex": "3bc6",
+            "instruction": "cmp eax, esi"
+          },
+          {
+            "site": "00b42971",
+            "bytes_hex": "7d06",
+            "instruction": "jge 0xb42979"
+          },
+          {
+            "site": "00b42973",
+            "bytes_hex": "89442430",
+            "instruction": "mov dword ptr [esp + 0x30], eax"
+          },
+          {
+            "site": "00b432f0",
+            "bytes_hex": "f30f115140",
+            "instruction": "movss dword ptr [ecx + 0x40], xmm2"
+          },
+          {
+            "site": "00b432f5",
+            "bytes_hex": "f30f115944",
+            "instruction": "movss dword ptr [ecx + 0x44], xmm3"
+          },
+          {
+            "site": "00b432fa",
+            "bytes_hex": "8b9e84010000",
+            "instruction": "mov ebx, dword ptr [esi + 0x184]"
+          },
+          {
+            "site": "00b43300",
+            "bytes_hex": "895948",
+            "instruction": "mov dword ptr [ecx + 0x48], ebx"
+          },
+          {
+            "site": "00b43303",
+            "bytes_hex": "8b9e88010000",
+            "instruction": "mov ebx, dword ptr [esi + 0x188]"
+          },
+          {
+            "site": "00b43309",
+            "bytes_hex": "89594c",
+            "instruction": "mov dword ptr [ecx + 0x4c], ebx"
+          },
+          {
+            "site": "00b4330c",
+            "bytes_hex": "8b9e8c010000",
+            "instruction": "mov ebx, dword ptr [esi + 0x18c]"
+          },
+          {
+            "site": "00b43312",
+            "bytes_hex": "81c684010000",
+            "instruction": "add esi, 0x184"
+          },
+          {
+            "site": "00b43318",
+            "bytes_hex": "895950",
+            "instruction": "mov dword ptr [ecx + 0x50], ebx"
+          },
+          {
+            "site": "00b4331b",
+            "bytes_hex": "8b760c",
+            "instruction": "mov esi, dword ptr [esi + 0xc]"
+          },
+          {
+            "site": "00b4331e",
+            "bytes_hex": "897154",
+            "instruction": "mov dword ptr [ecx + 0x54], esi"
+          }
+        ]
+      },
+      {
+        "address": "00ba7530",
+        "length": 6563,
+        "role": "full_locked_vertex_payload_candidate_exclusion",
+        "end_exclusive": "00ba8ed3",
+        "raw_offset": 8025392,
+        "bytes_hex": "6aff68aa3ccc0064a100000000506489250000000083ec2c5355565733db6a248bf1895c2414e8c0f204008bf883c404897c24243bfb895c2444742968703fd6008d4c2420e8f67287ff8d44241c508bcfc644244801c744241401000000e84daffcffeb0233c083cdfff644241001894630896c244474248b4c242083642410fe3bcb74178b44241c6a0183c0015051e8fb2687ff8bc8e8449f0200b958040000e85aa3fcff8bf8897c24243bfbc7442444030000007426685c3fd6008d4c2420e87a7287ff834c2410028d4c241c518bcfc644244804e874a4fcffeb0233c0f644241002894634896c244474248b4c242083642410fd3bcb74178b44241c6a0183c0015051e8852687ff8bc8e8ce9e02008b4e3453e8c587fcff8b4e3453e89c87fcff6a34e8c0f1040083c404894424243bc3c744244406000000740b8bc8e8db81f7ff8bf8eb0233ffa15444e1008bc80faf44244c0faf4c24508d54242c894c2430528bcf896c244889442430e89c82f7ff8b4e3457e8e3a2fcff3bfb74168d470450ff152022ce0085c075088b178b028bcfffd06a016a168d4c242c895c242c895c2430e8646687ff8b4424283bc374168b4c242483c101516848efd50050e889ff040083c40c8b0d94d3f8008b118b52388d44242450c744244807000000ffd28be88b4424283bc3c7442444ffffffff74178b4c24246a0183c1015150e88a2587ff8bc8e8d39d02008b0d94d3f8008b018b505c556a016a04ffd28bf88d450450ff152022ce0085c075098b55008b028bcdffd08b178b42105353538bcfffd0f30f10054ca2d700f30f100d60a2d700f30f10150038ce000f57dbf30f114c242c8b4c242c8908f30f114c24308b542430895004f30f115424348b4c2434894808f30f114424388b54243889500cf30f114c242c8b4c242c894818f30f114424308b54243089501cf30f115424348b4c2434894820f30f114424388b542438895024f30f1144242c8b4c242c894830f30f114c24308b542430895034f30f115424348b4c2434894838f30f114424388b54243889503cf30f1144242c8b4c242c894848f30f114424308b54243089504cf30f115424348b4c2434f30f114424388b542438894850895054f30f115810f30f114014f30f115828f30f11582cf30f114040f30f114044f30f114058f30f11585c8b078b50148bcfffd2b9bc000000e8c7c2fcff894424243bc3c74424440800000074098bc8e8c0c4fcffeb0233c05783cdff538bc88944241c896c244ce8e8c2fcff8d470450ff152022ce0085c075088b178b028bcfffd06a016a168d4c242c895c242c895c2430e84d6487ff8b4424283bc374168b4c242483c1015168443fd60050e872fd040083c40c8d4c2424c744244409000000e8fed998ff8b4c24283bcb89463c896c244474178b4424246a0183c0015051e87f2387ff8bc8e8c89b02008b4e3c5356e8ee10f7ff6a016a088d4c242c895c242c895c2430e8d96387ff8b4424283bc374168b54242483c2015268143ad60050e8fefc040083c40c6a018d86c0000000508d4c242c518b4e3cc74424500a000000e81d11f7ff8b4424283bc3896c244474178b4c24246a0183c1015150e8012387ff8bc8e84a9b02006a016a088d4c242c895c242c895c2430e8656387ff8b4424283bc374168b54242483c2015268083ad60050e88afc040083c40c6a018d86d0000000508d4c242c518b4e3cc74424500b000000e8a910f7ff8b4424283bc3896c244474178b4c24246a0183c1015150e88d2287ff8bc8e8d69a02006a016a088d4c242c895c242c895c2430e8f16287ff8b4424283bc374168b54242483c2015268fc39d60050e816fc040083c40c6a018d86e0000000508d4c242c518b4e3cc74424500c000000e83510f7ff8b4424283bc3896c244474178b4c24246a0183c1015150e8192287ff8bc8e8629a02006a016a088d4c242c895c242c895c2430e87d6287ff8b4424283bc374168b54242483c2015268f039d60050e8a2fb040083c40c6a018d86f0000000508d4c242c518b4e3cc74424500d000000e8c10ff7ff8b4424283bc3896c244474178b4c24246a0183c1015150e8a52187ff8bc8e8ee9902006a016a0b8d4c242c895c242c895c2430e8096287ff8b4424283bc374168b54242483c2015268383fd60050e82efb040083c40c8d869c000000508d4c2428518b4e3cc744244c0e000000e8af0ff7ff8b4c24283bcb896c244474178b4424246a0183c0015051e8332187ff8bc8e87c9902006a016a0a8d4c242c895c242c895c2430e8976187ff8b4424283bc374168b54242483c2015268e439d60050e8bcfa040083c40c8d8600010000508d4c2428518b4e3cc744244c0f000000e8fd0ef7ff8b4c24283bcb896c244474178b4424246a0183c0015051e8c12087ff8bc8e80a9902006a016a078d4c242c895c242c895c2430e8256187ff8b4424283bc374168b54242483c2015268303fd60050e84afa040083c40c8d860c010000508d4c2428518b4e3cc744244c10000000e88b0ef7ff8b4424283bc3896c244474178b4c24246a0183c1015150e84f2087ff8bc8e898980200e823c398ff8bf8c7470805000000895f0cc7471004000000895f14c74718020000008b563c528bcfe81be8fdff8b6c2414558bcfe8efe8fdff578bcde8a7bffcffb984010000e8edd1fcff8be8896c24243bebc7442444110000007426681c3fd6008d4c2420e88d6b87ff834c2410048d44241c508bcdc644244812e837d3fcffeb0233c0f644241004894638c7442444ffffffff74248b4c242083642410fb3bcb74178b44241c6a0183c0015051e8941f87ff8bc8e8dd970200d90560a2d7008b6c24148b4e3883ec08d9542404d91c245553e81fd4fcff8b4e30518b4e38e8335bfcff8d570452ff152022ce0085c075088b078b108bcfffd28d450450ff152022ce0085c075098b55008b028bcdffd06a24e88aea04008bf883c404897c24243bfbc744244414000000742668083fd6008d4c2420e8bc6a87ff834c2410088d4c241c518bcfc644244815e816a7fcffeb0233c083cdfff64424100889461c896c244474248b4c242083642410f73bcb74178b44241c6a0183c0015051e8c41e87ff8bc8e80d970200b958040000e8239bfcff8bf8897c24243bfbc744244417000000742668f03ed6008d4c2420e8436a87ff834c2410108d54241c528bcfc644244818e83d9cfcffeb0233c0f644241010894624896c244474248b4c242083642410ef3bcb74178b44241c6a0183c0015051e84e1e87ff8bc8e8979602008b4e246a07e88d7ffcff6a34e891e9040083c404894424243bc3c74424441a000000740b8bc8e8ac79f7ff8bf8eb0233ffa15444e1008bc80faf44244c0faf4c24508944242c8d44242c894c2430508bcf896c2448e86d7af7ff8b4e2457e8b49afcff3bfb74168d4f0451ff152022ce0085c075088b178b028bcfffd06a016a168d4c242c895c242c895c2430e8355e87ff8b4424283bc374168b4c242483c101516820efd50050e85af7040083c40c8b0d94d3f8008b118b52388d44242450c74424481b000000ffd28be88b4424283bc3c7442444ffffffff74178b4c24246a0183c1015150e85b1d87ff8bc8e8a49502008b0d94d3f8008b018b505c556a016a04ffd28bf88d450450ff152022ce0085c075098b55008b028bcdffd08b178b42105353538bcfffd08b0d5444e1008bd10faf54244c85d289542424db4424247d06d8057839ce00d9e80faf4c2450d9c0def285c9894c241cd9c9d95c2424db44241c7d06d8057839ce00d8f9f30f101560a2d700f30f101d0038ce000f57c9f30f10054ca2d700f30f1154242c8b4c242cf30f115424308b542430f30f115c2434f30f11442438f30f11442428f30f1154242cf30f11442430d95c241cd9442424d996b8000000d944241cf30f114c2424d996bc000000d9c1d9ee89088b4c2434d9c0895004dee28b542438894808d9c98b4c242489481089500c8b542428d95c2414d9442414895014d95c24248b4c2424d9c2894818d8c1f30f114424288b54242889501cd95c241cf30f11442428d944241c8b542428d95c24248b4c2424d9c1894820d8ec895024f30f115c2434f30f11442438d95c2424f30f10642424d9c1f30f114c24248b4c2424d8c4f30f116424288b542428d95c2424f30f106c2424894828f30f114c24248b4c242489502cf30f116c24288b5424288948308b4c242c8948388b4c24348950348b54243089503c894840f30f10742414d9c18b542438d8e9895044f30f114c24248b4c2424894848f30f117424248b4c2424f30f1074241c894850f30f114c24288b54242889504cf30f117424248b4c2424d95c2424f30f10742424dec1894858f30f114c24288b542428895054f30f114c24288b54242889505cf30f114c24248b4c2424d95c2424f30f107c2424894860d9c0f30f11742428d8ea8b542428895064f30f114c241c8b4c241c894868f30f117c24208b54242089506cf30f1144242c8b4c242c894870f30f115424308b542430895074f30f115c24348b4c2434894878f30f1144241c8b4c241cd95c241cd944241cf30f114424388b542438d95c241489507cdec18988800000008b4c2414f30f114424208b542420d95c2414d9442414899084000000f30f11442418d95c242c8b5424188988880000008b4c242cf30f1144243089908c0000008b542430898890000000f30f1144242c8b4c242c899094000000f30f116424308b542430f30f1054241c89889800000089909c000000f30f1144242c8b4c242c8988a0000000f30f116c24308b5424308990a4000000f30f1144242c8b4c242c8988a8000000f30f114424308b5424308990ac000000f30f115c24348b4c24348988b0000000f30f114424388b5424388990b4000000f30f114c24308b5424308990bc000000f30f1144242c8b4c242c8988b8000000f30f1154242c8b4c242cf30f10542414f30f114c24308b5424308988c00000008990c4000000f30f114c24308b542430f30f1154242c8b4c242c8988c80000008990cc000000f30f1144242c8b4c242cf30f117424308b5424308988d00000008990d40000000f28cff30f1144242c8b4c242cf30f114c24308b5424308988d80000008990dc0000008b078b50148bcfffd2b9bc000000e897b7fcff894424243bc3c74424441c00000074098bc8e890b9fcffeb0233c05783cdff538bc88944241c896c244ce8b8b7fcff8d470450ff152022ce0085c075088b178b028bcfffd06a016a138d4c242c895c242c895c2430e81d5987ff8b4424283bc374168b4c242483c1015168dc3ed60050e842f2040083c40c8d4c2424c74424441d000000e8cece98ff8b4c24283bcb894628896c244474178b4424246a0183c0015051e84f1887ff8bc8e8989002008b4e285356e8be05f7ff8bbe880000006a016a088d4c242c81c734010000895c242c895c2430e89d5887ff8b4424283bc374168b54242483c2015268143ad60050e8c2f1040083c40c8b4e286a01578d44242c50c74424501e000000e8e705f7ff8b4424283bc3896c244474178b4c24246a0183c1015150e8cb1787ff8bc8e8149002006a016a088d4c242c895c242c895c2430e82f5887ff8b4424283bc374168b4c242483c1015168083ad60050e854f1040083c40c8b4e286a018d5710528d44242c50c74424501f000000e87605f7ff8b4424283bc3896c244474178b4c24246a0183c1015150e85a1787ff8bc8e8a38f02006a016a088d4c242c895c242c895c2430e8be5787ff8b4424283bc374168b4c242483c1015168fc39d60050e8e3f0040083c40c8b4e286a018d5720528d44242c50c744245020000000e80505f7ff8b4424283bc3896c244474178b4c24246a0183c1015150e8e91687ff8bc8e8328f02006a016a088d4c242c895c242c895c2430e84d5787ff8b4424283bc374168b4c242483c1015168f039d60050e872f0040083c40c8b4e286a0183c730578d54242c52c744245021000000e89404f7ff8b4424283bc3896c244474178b4c24246a0183c1015150e8781687ff8bc8e8c18e02006a016a0b8d4c242c895c242c895c2430e8dc5687ff8b4424283bc374168b4c242483c1015168d03ed60050e801f0040083c40c8b4e288d86b8000000508d54242852c744244c22000000e86204f7ff8b4424283bc3896c244474178b4c24246a0183c1015150e8061687ff8bc8e84f8e0200e8dab898ff8bf8c7470805000000895f0cc7471004000000895f14c74718020000008b4628508bcfe8d2ddfdff8b6c2414558bcfe8a6defdff578bcde85eb5fcffb984010000e8a4c7fcff8be8896c24243bebc744244423000000742668c03ed6008d4c2430e8446187ff834c2410208d4c242c518bcdc644244824e8eec8fcffeb0233c0f644241020894620c7442444ffffffff74248b4c243083642410df3bcb74178b44242c6a0183c0015051e84b1587ff8bc8e8948d0200d90560a2d7008b6c24148b4e2083ec08d9542404d91c245553e8d6c9fcff8b561c8b4e2052e8ea50fcff8d470450ff152022ce0085c075088b178b028bcfffd08d4d0451ff152022ce0085c075098b55008b028bcdffd06a24e841e004008bf883c404897c24243bfbc744244426000000742668a83ed6008d4c2430e8736087ff834c2410408d4c242c518bcfc644244827e8cd9cfcffeb0233c083cdfff64424104089464c896c244474248b4c243083642410bf3bcb74178b44242c6a0183c0015051e87b1487ff8bc8e8c48c0200b958040000e8da90fcff8bf8897c24243bfbc744244429000000742968943ed6008d4c2430e8fa5f87ff814c2410800000008d54242c528bcfc64424482ae8f191fcffeb0233c0f644241080894654896c244474278b4c2430816424107fffffff3bcb74178b44242c6a0183c0015051e8ff1387ff8bc8e8488c02008b4e5453e83f75fcff6a34e843df040083c404894424243bc3c74424442c000000740b8bc8e85e6ff7ff8bf8eb0233ff8b4c24508b44244c8d54242c894c2430528bcf896c244889442430e82870f7ff8b4e5457e86f90fcff3bfb74168d470450ff152022ce0085c075088b178b028bcfffd06a016a168d4c242c895c242c895c2430e8f05387ff8b4424283bc374168b4c242483c101516848efd50050e815ed040083c40c8b0d94d3f8008b118b52388d44242450c74424482d000000ffd28be88b4424283bc3c7442444ffffffff74178b4c24246a0183c1015150e8161387ff8bc8e85f8b02008b0d94d3f8008b018b505c556a016a04ffd28bf88d450450ff152022ce0085c075098b55008b028bcdffd08b178b42105353538bcfffd0f30f10054ca2d700f30f100d60a2d700f30f10150038ce000f57dbf30f114c242c8b4c242c8908f30f114c24308b542430895004f30f115424348b4c2434894808f30f114424388b54243889500cf30f114c242c8b4c242c894818f30f114424308b54243089501cf30f115424348b4c2434894820f30f114424388b542438895024f30f1144242c8b4c242c894830f30f114c24308b542430895034f30f115424348b4c2434894838f30f114424388b54243889503cf30f1144242c8b4c242c894848f30f114424308b54243089504cf30f115424348b4c2434f30f114424388b542438894850895054f30f115810f30f114014f30f115828f30f11582cf30f114040f30f114044f30f114058f30f11585c8b078b50148bcfffd2b9bc000000e853b0fcff8944244c3bc3c74424442e000000740b8bc8e84cb2fcff8bd8eb0233db5733ed558bcbc744244cffffffffe873b0fcff8d470450ff152022ce0085c075088b178b028bcfffd06a016a158d4c242c896c242c896c2430e8d85187ff8b4424283bc574168b4c242483c10151687c3ed60050e8fdea040083c40c8d4c2424c74424442f000000e889c798ff8b4c24283bcd894658c7442444ffffffff74178b4424246a0183c0015051e8061187ff8bc8e84f8902008b4e5833ed5556e873fef6ffe8ceb398ff8bf8c7470805000000896f0cc7471004000000896f14c74718020000008b5658528bcfe8c6d8fdff538bcfe89ed9fdff578bcbe856b0fcffb984010000e89cc2fcff8be8896c244c85edc744244430000000742b68683ed6008d4c2430e83c5c87ff814c2410000100008d44242c508bcdc644244831e8e3c3fcff33edeb0433ed33c0f744241000010000894650c7442444ffffffff74278b4c243081642410fffeffff3bcd74178b44242c6a0183c0015051e8361087ff8bc8e87f880200d90560a2d7008b4e5083ec08d9542404d91c245355e8c5c4fcff8b4e4c518b4e50e8d94bfcff8d570452ff152022ce0085c075088b078b108bcfffd28d430450ff152022ce0085c075088b138b028bcbffd06a24e831db04008bd883c404895c244c3bddc744244433000000742f68583ed6008d4c2430e8635b87ff8b7c24108d4c242c81cf00020000518bcbc644244834897c2414e8b497fcffeb068b7c241033c0f7c700020000894608c7442444ffffffff74258b4c243081e7fffdffff3bcd74178b44242c6a0183c0015051e85b0f87ff8bc8e8a4870200b958040000e8ba8bfcff8bd8895c244c3bddc744244436000000742b68443ed6008d4c2430e8da5a87ff8d54242c81cf00040000528bcbc644244837897c2414e8cf8cfcffeb0233c083cbfff7c70004000089460c895c2444741f8b4c24303bcd74178b44242c6a0183c0015051e8e10e87ff8bc8e82a8702008b4e0cb0ff8844244e8844244d8844244c8844244f8b44244c50e84b70fcff8b4e0c6a01e80170fcff6a34e805da040083c4048944244c3bc5c744244439000000740b8bc8e8206af7ff8bf8eb0233ff8d4c242cb880000000518bcf895c24488944243089442434e8ed6af7ff8b4e0c57e8348bfcff6a40e8b8d9040083c4048944244c3bc5c74424443a00000074098bc8e8336df7ffeb0233c08b561452558bc8895c244c894618e81c6cf7ff3bfd74168d470450ff152022ce0085c075088b178b028bcfffd08b4c243c5f89ae80000000c78684000000010000005e5d5b64890d0000000083c438c20800",
+        "sha256": "93a031b598f14f8b01a58890ebacb6411a0d619f8533dee68718e380d0021e31",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00ba8ed0",
+            "operand": "8"
+          }
+        ],
+        "instructions_of_interest": [
+          {
+            "site": "00ba77b2",
+            "bytes_hex": "894808",
+            "instruction": "mov dword ptr [eax + 8], ecx"
+          },
+          {
+            "site": "00ba77b5",
+            "bytes_hex": "f30f11442438",
+            "instruction": "movss dword ptr [esp + 0x38], xmm0"
+          },
+          {
+            "site": "00ba77bb",
+            "bytes_hex": "8b542438",
+            "instruction": "mov edx, dword ptr [esp + 0x38]"
+          },
+          {
+            "site": "00ba77bf",
+            "bytes_hex": "89500c",
+            "instruction": "mov dword ptr [eax + 0xc], edx"
+          },
+          {
+            "site": "00ba77c2",
+            "bytes_hex": "f30f114c242c",
+            "instruction": "movss dword ptr [esp + 0x2c], xmm1"
+          },
+          {
+            "site": "00ba77c8",
+            "bytes_hex": "8b4c242c",
+            "instruction": "mov ecx, dword ptr [esp + 0x2c]"
+          },
+          {
+            "site": "00ba77cc",
+            "bytes_hex": "894818",
+            "instruction": "mov dword ptr [eax + 0x18], ecx"
+          },
+          {
+            "site": "00ba77cf",
+            "bytes_hex": "f30f11442430",
+            "instruction": "movss dword ptr [esp + 0x30], xmm0"
+          },
+          {
+            "site": "00ba77d5",
+            "bytes_hex": "8b542430",
+            "instruction": "mov edx, dword ptr [esp + 0x30]"
+          },
+          {
+            "site": "00ba77d9",
+            "bytes_hex": "89501c",
+            "instruction": "mov dword ptr [eax + 0x1c], edx"
+          },
+          {
+            "site": "00ba77dc",
+            "bytes_hex": "f30f11542434",
+            "instruction": "movss dword ptr [esp + 0x34], xmm2"
+          },
+          {
+            "site": "00ba77e2",
+            "bytes_hex": "8b4c2434",
+            "instruction": "mov ecx, dword ptr [esp + 0x34]"
+          },
+          {
+            "site": "00ba77e6",
+            "bytes_hex": "894820",
+            "instruction": "mov dword ptr [eax + 0x20], ecx"
+          },
+          {
+            "site": "00ba77e9",
+            "bytes_hex": "f30f11442438",
+            "instruction": "movss dword ptr [esp + 0x38], xmm0"
+          },
+          {
+            "site": "00ba77ef",
+            "bytes_hex": "8b542438",
+            "instruction": "mov edx, dword ptr [esp + 0x38]"
+          },
+          {
+            "site": "00ba77f3",
+            "bytes_hex": "895024",
+            "instruction": "mov dword ptr [eax + 0x24], edx"
+          },
+          {
+            "site": "00ba77f6",
+            "bytes_hex": "f30f1144242c",
+            "instruction": "movss dword ptr [esp + 0x2c], xmm0"
+          },
+          {
+            "site": "00ba77fc",
+            "bytes_hex": "8b4c242c",
+            "instruction": "mov ecx, dword ptr [esp + 0x2c]"
+          },
+          {
+            "site": "00ba7800",
+            "bytes_hex": "894830",
+            "instruction": "mov dword ptr [eax + 0x30], ecx"
+          },
+          {
+            "site": "00ba7803",
+            "bytes_hex": "f30f114c2430",
+            "instruction": "movss dword ptr [esp + 0x30], xmm1"
+          },
+          {
+            "site": "00ba7809",
+            "bytes_hex": "8b542430",
+            "instruction": "mov edx, dword ptr [esp + 0x30]"
+          },
+          {
+            "site": "00ba780d",
+            "bytes_hex": "895034",
+            "instruction": "mov dword ptr [eax + 0x34], edx"
+          },
+          {
+            "site": "00ba7810",
+            "bytes_hex": "f30f11542434",
+            "instruction": "movss dword ptr [esp + 0x34], xmm2"
+          },
+          {
+            "site": "00ba7816",
+            "bytes_hex": "8b4c2434",
+            "instruction": "mov ecx, dword ptr [esp + 0x34]"
+          },
+          {
+            "site": "00ba781a",
+            "bytes_hex": "894838",
+            "instruction": "mov dword ptr [eax + 0x38], ecx"
+          },
+          {
+            "site": "00ba781d",
+            "bytes_hex": "f30f11442438",
+            "instruction": "movss dword ptr [esp + 0x38], xmm0"
+          },
+          {
+            "site": "00ba7823",
+            "bytes_hex": "8b542438",
+            "instruction": "mov edx, dword ptr [esp + 0x38]"
+          },
+          {
+            "site": "00ba7827",
+            "bytes_hex": "89503c",
+            "instruction": "mov dword ptr [eax + 0x3c], edx"
+          },
+          {
+            "site": "00ba782a",
+            "bytes_hex": "f30f1144242c",
+            "instruction": "movss dword ptr [esp + 0x2c], xmm0"
+          },
+          {
+            "site": "00ba7830",
+            "bytes_hex": "8b4c242c",
+            "instruction": "mov ecx, dword ptr [esp + 0x2c]"
+          },
+          {
+            "site": "00ba7834",
+            "bytes_hex": "894848",
+            "instruction": "mov dword ptr [eax + 0x48], ecx"
+          },
+          {
+            "site": "00ba7837",
+            "bytes_hex": "f30f11442430",
+            "instruction": "movss dword ptr [esp + 0x30], xmm0"
+          },
+          {
+            "site": "00ba783d",
+            "bytes_hex": "8b542430",
+            "instruction": "mov edx, dword ptr [esp + 0x30]"
+          },
+          {
+            "site": "00ba7841",
+            "bytes_hex": "89504c",
+            "instruction": "mov dword ptr [eax + 0x4c], edx"
+          },
+          {
+            "site": "00ba7844",
+            "bytes_hex": "f30f11542434",
+            "instruction": "movss dword ptr [esp + 0x34], xmm2"
+          },
+          {
+            "site": "00ba784a",
+            "bytes_hex": "8b4c2434",
+            "instruction": "mov ecx, dword ptr [esp + 0x34]"
+          },
+          {
+            "site": "00ba784e",
+            "bytes_hex": "f30f11442438",
+            "instruction": "movss dword ptr [esp + 0x38], xmm0"
+          },
+          {
+            "site": "00ba7854",
+            "bytes_hex": "8b542438",
+            "instruction": "mov edx, dword ptr [esp + 0x38]"
+          },
+          {
+            "site": "00ba7858",
+            "bytes_hex": "894850",
+            "instruction": "mov dword ptr [eax + 0x50], ecx"
+          },
+          {
+            "site": "00ba785b",
+            "bytes_hex": "895054",
+            "instruction": "mov dword ptr [eax + 0x54], edx"
+          }
+        ]
+      },
+      {
+        "address": "00bc6060",
+        "length": 962,
+        "role": "full_locked_vertex_payload_candidate_exclusion_2",
+        "end_exclusive": "00bc6422",
+        "raw_offset": 8151136,
+        "bytes_hex": "6aff68f852cc0064a100000000506489250000000083ec1c5355568bd957895c2410e8291d00008b4424400f57c0c703e048d60033f6508bcb89742438f30f118384010000f30f118388010000e8ce85faffd9ee56518bcbd91c24e8b079faff8b4c2444e857f296ff8b0d94d3f8008b118b52648be88b4424485650896c2448ffd28bf857568bcde80329f5ff8d470450ff152022ce0085c075088b178b028bcfffd08b4c243c56518bcde83029f5ffb9bc000000e846dafaff894424443bc6c644243401740b8bc8e842dcfaff8be8eb0233edd90560a2d70083ec08d95424048bcbd91c245556c644244400e81ef0faff0f57c08d54241cf30f1144241cf30f11442420f30f11442424f30f10057049ce00528bcdf30f1144242ce8cfc4faff8d44241c508bcbe803e2faff6a016a0a8d4c241c8974241c89742420e89e7b85ff8b4424183bc674168b4c241483c1015168d8ebd50050e8c314030083c40c8b0d94d3f8008b118b52388d44241450c644243802ffd28bf08b44241885c0c64424340074178b4c24146a0183c1015150e8ca3a85ff8bc8e813b300008b0d94d3f8008b018b505c566a016a04ffd28bf88d460450ff152022ce0085c075088b168b028bceffd0e874dd96ff8bf033c9894e0c894e148b4c2440b804000000518bce894608894610c7461802000000e86c02fcff578bcee824f9fbff558bcee83c03fcff568bcde8f4d9faff8d560452ff152022ce0085c075088b068b108bceffd28b4424408b352022ce0083c00450ffd685c0750a8b4c24408b118b02ffd08b178b42106a006a006a008bcfffd0f30f10054ca2d7000f57c9f30f101560a2d700f30f101d4868ce00f30f1025b838ce00f30f1110f30f114004f30f11480883c9ff89480cf30f114818f30f11481cf30f115810f30f116014f30f114020f30f114024f30f11482889482cf30f114038f30f11483cf30f116030f30f116034f30f114040f30f115044f30f11484889484cf30f114058f30f11405cf30f116050f30f115854f30f115060f30f115064f30f11486889486cf30f114878f30f11407cf30f115870f30f1158748b178b42148bcfffd08d4f0451ffd685c075088b178b028bcfffd08b0d94d3f8008b118b42606a656a016a06ffd08bf0568bcde8ccd7faff8b168b420c6a006a006a008bceffd0b902000000668948046689480666c700000066c74002010066c74008030066c7400a00008b168b42108bceffd08b3d2022ce008d4e0451ffd785c075088b168b028bceffd08d4d0451ffd785c075098b55008b028bcdffd08b4c242c5f5e5d8bc35b64890d0000000083c428c21000",
+        "sha256": "f24bb0a6afa184e6519842d32522356cfbb988ebfd9af3e8c29709b94f8496b9",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00bc641f",
+            "operand": "0x10"
+          }
+        ],
+        "instructions_of_interest": [
+          {
+            "site": "00bc6290",
+            "bytes_hex": "ffd6",
+            "instruction": "call esi"
+          },
+          {
+            "site": "00bc6292",
+            "bytes_hex": "85c0",
+            "instruction": "test eax, eax"
+          },
+          {
+            "site": "00bc6294",
+            "bytes_hex": "750a",
+            "instruction": "jne 0xbc62a0"
+          },
+          {
+            "site": "00bc6296",
+            "bytes_hex": "8b4c2440",
+            "instruction": "mov ecx, dword ptr [esp + 0x40]"
+          },
+          {
+            "site": "00bc629a",
+            "bytes_hex": "8b11",
+            "instruction": "mov edx, dword ptr [ecx]"
+          },
+          {
+            "site": "00bc629c",
+            "bytes_hex": "8b02",
+            "instruction": "mov eax, dword ptr [edx]"
+          },
+          {
+            "site": "00bc629e",
+            "bytes_hex": "ffd0",
+            "instruction": "call eax"
+          },
+          {
+            "site": "00bc62a0",
+            "bytes_hex": "8b17",
+            "instruction": "mov edx, dword ptr [edi]"
+          },
+          {
+            "site": "00bc62a2",
+            "bytes_hex": "8b4210",
+            "instruction": "mov eax, dword ptr [edx + 0x10]"
+          },
+          {
+            "site": "00bc62a5",
+            "bytes_hex": "6a00",
+            "instruction": "push 0"
+          },
+          {
+            "site": "00bc62a7",
+            "bytes_hex": "6a00",
+            "instruction": "push 0"
+          },
+          {
+            "site": "00bc62a9",
+            "bytes_hex": "6a00",
+            "instruction": "push 0"
+          },
+          {
+            "site": "00bc62ab",
+            "bytes_hex": "8bcf",
+            "instruction": "mov ecx, edi"
+          },
+          {
+            "site": "00bc62ad",
+            "bytes_hex": "ffd0",
+            "instruction": "call eax"
+          },
+          {
+            "site": "00bc62af",
+            "bytes_hex": "f30f10054ca2d700",
+            "instruction": "movss xmm0, dword ptr [0xd7a24c]"
+          },
+          {
+            "site": "00bc62b7",
+            "bytes_hex": "0f57c9",
+            "instruction": "xorps xmm1, xmm1"
+          },
+          {
+            "site": "00bc62ba",
+            "bytes_hex": "f30f101560a2d700",
+            "instruction": "movss xmm2, dword ptr [0xd7a260]"
+          },
+          {
+            "site": "00bc62c2",
+            "bytes_hex": "f30f101d4868ce00",
+            "instruction": "movss xmm3, dword ptr [0xce6848]"
+          },
+          {
+            "site": "00bc62ca",
+            "bytes_hex": "f30f1025b838ce00",
+            "instruction": "movss xmm4, dword ptr [0xce38b8]"
+          },
+          {
+            "site": "00bc62d2",
+            "bytes_hex": "f30f1110",
+            "instruction": "movss dword ptr [eax], xmm2"
+          },
+          {
+            "site": "00bc62d6",
+            "bytes_hex": "f30f114004",
+            "instruction": "movss dword ptr [eax + 4], xmm0"
+          },
+          {
+            "site": "00bc62db",
+            "bytes_hex": "f30f114808",
+            "instruction": "movss dword ptr [eax + 8], xmm1"
+          },
+          {
+            "site": "00bc62e0",
+            "bytes_hex": "83c9ff",
+            "instruction": "or ecx, 0xffffffff"
+          },
+          {
+            "site": "00bc62e3",
+            "bytes_hex": "89480c",
+            "instruction": "mov dword ptr [eax + 0xc], ecx"
+          },
+          {
+            "site": "00bc62e6",
+            "bytes_hex": "f30f114818",
+            "instruction": "movss dword ptr [eax + 0x18], xmm1"
+          },
+          {
+            "site": "00bc62eb",
+            "bytes_hex": "f30f11481c",
+            "instruction": "movss dword ptr [eax + 0x1c], xmm1"
+          },
+          {
+            "site": "00bc62f0",
+            "bytes_hex": "f30f115810",
+            "instruction": "movss dword ptr [eax + 0x10], xmm3"
+          },
+          {
+            "site": "00bc62f5",
+            "bytes_hex": "f30f116014",
+            "instruction": "movss dword ptr [eax + 0x14], xmm4"
+          },
+          {
+            "site": "00bc62fa",
+            "bytes_hex": "f30f114020",
+            "instruction": "movss dword ptr [eax + 0x20], xmm0"
+          },
+          {
+            "site": "00bc62ff",
+            "bytes_hex": "f30f114024",
+            "instruction": "movss dword ptr [eax + 0x24], xmm0"
+          },
+          {
+            "site": "00bc6304",
+            "bytes_hex": "f30f114828",
+            "instruction": "movss dword ptr [eax + 0x28], xmm1"
+          },
+          {
+            "site": "00bc6309",
+            "bytes_hex": "89482c",
+            "instruction": "mov dword ptr [eax + 0x2c], ecx"
+          },
+          {
+            "site": "00bc630c",
+            "bytes_hex": "f30f114038",
+            "instruction": "movss dword ptr [eax + 0x38], xmm0"
+          },
+          {
+            "site": "00bc6311",
+            "bytes_hex": "f30f11483c",
+            "instruction": "movss dword ptr [eax + 0x3c], xmm1"
+          },
+          {
+            "site": "00bc6316",
+            "bytes_hex": "f30f116030",
+            "instruction": "movss dword ptr [eax + 0x30], xmm4"
+          },
+          {
+            "site": "00bc631b",
+            "bytes_hex": "f30f116034",
+            "instruction": "movss dword ptr [eax + 0x34], xmm4"
+          },
+          {
+            "site": "00bc6320",
+            "bytes_hex": "f30f114040",
+            "instruction": "movss dword ptr [eax + 0x40], xmm0"
+          },
+          {
+            "site": "00bc6325",
+            "bytes_hex": "f30f115044",
+            "instruction": "movss dword ptr [eax + 0x44], xmm2"
+          },
+          {
+            "site": "00bc632a",
+            "bytes_hex": "f30f114848",
+            "instruction": "movss dword ptr [eax + 0x48], xmm1"
+          },
+          {
+            "site": "00bc632f",
+            "bytes_hex": "89484c",
+            "instruction": "mov dword ptr [eax + 0x4c], ecx"
+          },
+          {
+            "site": "00bc6332",
+            "bytes_hex": "f30f114058",
+            "instruction": "movss dword ptr [eax + 0x58], xmm0"
+          },
+          {
+            "site": "00bc6337",
+            "bytes_hex": "f30f11405c",
+            "instruction": "movss dword ptr [eax + 0x5c], xmm0"
+          },
+          {
+            "site": "00bc633c",
+            "bytes_hex": "f30f116050",
+            "instruction": "movss dword ptr [eax + 0x50], xmm4"
+          },
+          {
+            "site": "00bc6341",
+            "bytes_hex": "f30f115854",
+            "instruction": "movss dword ptr [eax + 0x54], xmm3"
+          },
+          {
+            "site": "00bc6346",
+            "bytes_hex": "f30f115060",
+            "instruction": "movss dword ptr [eax + 0x60], xmm2"
+          },
+          {
+            "site": "00bc634b",
+            "bytes_hex": "f30f115064",
+            "instruction": "movss dword ptr [eax + 0x64], xmm2"
+          },
+          {
+            "site": "00bc6350",
+            "bytes_hex": "f30f114868",
+            "instruction": "movss dword ptr [eax + 0x68], xmm1"
+          },
+          {
+            "site": "00bc6355",
+            "bytes_hex": "89486c",
+            "instruction": "mov dword ptr [eax + 0x6c], ecx"
+          },
+          {
+            "site": "00bc6358",
+            "bytes_hex": "f30f114878",
+            "instruction": "movss dword ptr [eax + 0x78], xmm1"
+          },
+          {
+            "site": "00bc635d",
+            "bytes_hex": "f30f11407c",
+            "instruction": "movss dword ptr [eax + 0x7c], xmm0"
+          },
+          {
+            "site": "00bc6362",
+            "bytes_hex": "f30f115870",
+            "instruction": "movss dword ptr [eax + 0x70], xmm3"
+          },
+          {
+            "site": "00bc6367",
+            "bytes_hex": "f30f115874",
+            "instruction": "movss dword ptr [eax + 0x74], xmm3"
+          },
+          {
+            "site": "00bc636c",
+            "bytes_hex": "8b17",
+            "instruction": "mov edx, dword ptr [edi]"
+          },
+          {
+            "site": "00bc636e",
+            "bytes_hex": "8b4214",
+            "instruction": "mov eax, dword ptr [edx + 0x14]"
+          },
+          {
+            "site": "00bc6371",
+            "bytes_hex": "8bcf",
+            "instruction": "mov ecx, edi"
+          },
+          {
+            "site": "00bc6373",
+            "bytes_hex": "ffd0",
+            "instruction": "call eax"
+          },
+          {
+            "site": "00bc6375",
+            "bytes_hex": "8d4f04",
+            "instruction": "lea ecx, [edi + 4]"
+          },
+          {
+            "site": "00bc6378",
+            "bytes_hex": "51",
+            "instruction": "push ecx"
+          },
+          {
+            "site": "00bc6379",
+            "bytes_hex": "ffd6",
+            "instruction": "call esi"
+          },
+          {
+            "site": "00bc637b",
+            "bytes_hex": "85c0",
+            "instruction": "test eax, eax"
+          },
+          {
+            "site": "00bc637d",
+            "bytes_hex": "7508",
+            "instruction": "jne 0xbc6387"
+          },
+          {
+            "site": "00bc637f",
+            "bytes_hex": "8b17",
+            "instruction": "mov edx, dword ptr [edi]"
+          }
+        ]
+      },
+      {
+        "address": "00b97100",
+        "length": 499,
+        "role": "full_different_owner_embedded_array_candidate_exclusion",
+        "end_exclusive": "00b972f3",
+        "raw_offset": 7958784,
+        "bytes_hex": "6aff68ca2fcc0064a100000000506489250000000083ec2c55568bf1c70630b1ce005789742414c74604010000000f57c08d4424185033ff8d4e0c6881100000897c2448c706f838d600897e08f30f11442420f30f11442424e822feffff0f57c08d542420528d4e1c6800100000c644244801f30f11442428f30f1144242ce8fcfdffff0f57c08d442428508d6e2c68001000008bcdc644244802f30f11442430f30f11442434e8d4fdffff0f57c08d542430528d4e3c6800100000c644244803f30f11442438f30f1144243ce8aefdffff0f57c08d44240c508d4e4c6800100000c644244804f30f11442414e83efeffff0f57c08d542410528d4e5c6800100000c644244805f30f11442418e81efeffff0f57c0f30f100d0038ce00c644244006f30f11466cf30f114670f30f114674f30f114678f30f11467cf30f118680000000f30f118e84000000f30f118688000000f30f11868c000000eb038d49008b4d0485c9740c8b45082bc1c1f8033bf87208e89bf405000f57c08b45048d04f883c70181ff00100000f30f1100f30f1140047ccbd905e038d60083ec18d95c24148bced905dc38d600d95c2410d905d838d600d95c240cd905d438d600d95c2408d905d038d600d95c2404d905cc38d600d91c246805110000e8b1f8ffff8b4c24385f8bc65e5d64890d0000000083c438c3",
+        "sha256": "a9c83ba89b43d284b2389541a39f56d415be9b726944927dea75de5df376f676",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b972f2",
+            "operand": ""
+          }
+        ],
+        "instructions_of_interest": [
+          {
+            "site": "00b9710d",
+            "bytes_hex": "50",
+            "instruction": "push eax"
+          },
+          {
+            "site": "00b9710e",
+            "bytes_hex": "64892500000000",
+            "instruction": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "site": "00b97115",
+            "bytes_hex": "83ec2c",
+            "instruction": "sub esp, 0x2c"
+          },
+          {
+            "site": "00b97118",
+            "bytes_hex": "55",
+            "instruction": "push ebp"
+          },
+          {
+            "site": "00b97119",
+            "bytes_hex": "56",
+            "instruction": "push esi"
+          },
+          {
+            "site": "00b9711a",
+            "bytes_hex": "8bf1",
+            "instruction": "mov esi, ecx"
+          },
+          {
+            "site": "00b9711c",
+            "bytes_hex": "c70630b1ce00",
+            "instruction": "mov dword ptr [esi], 0xceb130"
+          },
+          {
+            "site": "00b97122",
+            "bytes_hex": "57",
+            "instruction": "push edi"
+          },
+          {
+            "site": "00b97123",
+            "bytes_hex": "89742414",
+            "instruction": "mov dword ptr [esp + 0x14], esi"
+          },
+          {
+            "site": "00b97127",
+            "bytes_hex": "c7460401000000",
+            "instruction": "mov dword ptr [esi + 4], 1"
+          },
+          {
+            "site": "00b9712e",
+            "bytes_hex": "0f57c0",
+            "instruction": "xorps xmm0, xmm0"
+          },
+          {
+            "site": "00b97131",
+            "bytes_hex": "8d442418",
+            "instruction": "lea eax, [esp + 0x18]"
+          },
+          {
+            "site": "00b97135",
+            "bytes_hex": "50",
+            "instruction": "push eax"
+          },
+          {
+            "site": "00b97136",
+            "bytes_hex": "33ff",
+            "instruction": "xor edi, edi"
+          },
+          {
+            "site": "00b97138",
+            "bytes_hex": "8d4e0c",
+            "instruction": "lea ecx, [esi + 0xc]"
+          },
+          {
+            "site": "00b9713b",
+            "bytes_hex": "6881100000",
+            "instruction": "push 0x1081"
+          },
+          {
+            "site": "00b97140",
+            "bytes_hex": "897c2448",
+            "instruction": "mov dword ptr [esp + 0x48], edi"
+          },
+          {
+            "site": "00b97144",
+            "bytes_hex": "c706f838d600",
+            "instruction": "mov dword ptr [esi], 0xd638f8"
+          },
+          {
+            "site": "00b9714a",
+            "bytes_hex": "897e08",
+            "instruction": "mov dword ptr [esi + 8], edi"
+          },
+          {
+            "site": "00b9714d",
+            "bytes_hex": "f30f11442420",
+            "instruction": "movss dword ptr [esp + 0x20], xmm0"
+          },
+          {
+            "site": "00b97153",
+            "bytes_hex": "f30f11442424",
+            "instruction": "movss dword ptr [esp + 0x24], xmm0"
+          },
+          {
+            "site": "00b97159",
+            "bytes_hex": "e822feffff",
+            "instruction": "call 0xb96f80"
+          },
+          {
+            "site": "00b9715e",
+            "bytes_hex": "0f57c0",
+            "instruction": "xorps xmm0, xmm0"
+          },
+          {
+            "site": "00b97161",
+            "bytes_hex": "8d542420",
+            "instruction": "lea edx, [esp + 0x20]"
+          },
+          {
+            "site": "00b97165",
+            "bytes_hex": "52",
+            "instruction": "push edx"
+          },
+          {
+            "site": "00b97166",
+            "bytes_hex": "8d4e1c",
+            "instruction": "lea ecx, [esi + 0x1c]"
+          },
+          {
+            "site": "00b97169",
+            "bytes_hex": "6800100000",
+            "instruction": "push 0x1000"
+          },
+          {
+            "site": "00b9716e",
+            "bytes_hex": "c644244801",
+            "instruction": "mov byte ptr [esp + 0x48], 1"
+          },
+          {
+            "site": "00b97173",
+            "bytes_hex": "f30f11442428",
+            "instruction": "movss dword ptr [esp + 0x28], xmm0"
+          },
+          {
+            "site": "00b97179",
+            "bytes_hex": "f30f1144242c",
+            "instruction": "movss dword ptr [esp + 0x2c], xmm0"
+          },
+          {
+            "site": "00b9717f",
+            "bytes_hex": "e8fcfdffff",
+            "instruction": "call 0xb96f80"
+          },
+          {
+            "site": "00b97184",
+            "bytes_hex": "0f57c0",
+            "instruction": "xorps xmm0, xmm0"
+          },
+          {
+            "site": "00b97187",
+            "bytes_hex": "8d442428",
+            "instruction": "lea eax, [esp + 0x28]"
+          },
+          {
+            "site": "00b9718b",
+            "bytes_hex": "50",
+            "instruction": "push eax"
+          },
+          {
+            "site": "00b9718c",
+            "bytes_hex": "8d6e2c",
+            "instruction": "lea ebp, [esi + 0x2c]"
+          },
+          {
+            "site": "00b9718f",
+            "bytes_hex": "6800100000",
+            "instruction": "push 0x1000"
+          },
+          {
+            "site": "00b97194",
+            "bytes_hex": "8bcd",
+            "instruction": "mov ecx, ebp"
+          },
+          {
+            "site": "00b97196",
+            "bytes_hex": "c644244802",
+            "instruction": "mov byte ptr [esp + 0x48], 2"
+          },
+          {
+            "site": "00b9719b",
+            "bytes_hex": "f30f11442430",
+            "instruction": "movss dword ptr [esp + 0x30], xmm0"
+          },
+          {
+            "site": "00b971a1",
+            "bytes_hex": "f30f11442434",
+            "instruction": "movss dword ptr [esp + 0x34], xmm0"
+          },
+          {
+            "site": "00b971a7",
+            "bytes_hex": "e8d4fdffff",
+            "instruction": "call 0xb96f80"
+          },
+          {
+            "site": "00b971ac",
+            "bytes_hex": "0f57c0",
+            "instruction": "xorps xmm0, xmm0"
+          },
+          {
+            "site": "00b971af",
+            "bytes_hex": "8d542430",
+            "instruction": "lea edx, [esp + 0x30]"
+          },
+          {
+            "site": "00b971b3",
+            "bytes_hex": "52",
+            "instruction": "push edx"
+          },
+          {
+            "site": "00b971b4",
+            "bytes_hex": "8d4e3c",
+            "instruction": "lea ecx, [esi + 0x3c]"
+          },
+          {
+            "site": "00b971b7",
+            "bytes_hex": "6800100000",
+            "instruction": "push 0x1000"
+          },
+          {
+            "site": "00b971bc",
+            "bytes_hex": "c644244803",
+            "instruction": "mov byte ptr [esp + 0x48], 3"
+          },
+          {
+            "site": "00b971c1",
+            "bytes_hex": "f30f11442438",
+            "instruction": "movss dword ptr [esp + 0x38], xmm0"
+          },
+          {
+            "site": "00b971c7",
+            "bytes_hex": "f30f1144243c",
+            "instruction": "movss dword ptr [esp + 0x3c], xmm0"
+          },
+          {
+            "site": "00b971cd",
+            "bytes_hex": "e8aefdffff",
+            "instruction": "call 0xb96f80"
+          },
+          {
+            "site": "00b971d2",
+            "bytes_hex": "0f57c0",
+            "instruction": "xorps xmm0, xmm0"
+          },
+          {
+            "site": "00b971d5",
+            "bytes_hex": "8d44240c",
+            "instruction": "lea eax, [esp + 0xc]"
+          },
+          {
+            "site": "00b971d9",
+            "bytes_hex": "50",
+            "instruction": "push eax"
+          },
+          {
+            "site": "00b971da",
+            "bytes_hex": "8d4e4c",
+            "instruction": "lea ecx, [esi + 0x4c]"
+          },
+          {
+            "site": "00b971dd",
+            "bytes_hex": "6800100000",
+            "instruction": "push 0x1000"
+          },
+          {
+            "site": "00b971e2",
+            "bytes_hex": "c644244804",
+            "instruction": "mov byte ptr [esp + 0x48], 4"
+          },
+          {
+            "site": "00b971e7",
+            "bytes_hex": "f30f11442414",
+            "instruction": "movss dword ptr [esp + 0x14], xmm0"
+          }
+        ]
+      },
+      {
+        "address": "00b8cc90",
+        "length": 1159,
+        "role": "full_raw_vertex_uv_payload_candidate_exclusion",
+        "end_exclusive": "00b8d117",
+        "raw_offset": 7916688,
+        "bytes_hex": "81ecbc0000005355568be98bb5bc010000b302845e5c5775078bcee8c00efefff30f1086f0000000f30f11442440f30f1086f4000000f30f11442444f30f1086f80000008bb5bc010000845e5cf30f1144244875078bcee8840efefff30f1086000100008bbc24d4000000f30f11442468f30f108604010000f30f1144246cf30f1086080100008bb424d0000000f30f11442470f30f10051834d600f30f11842498000000f30f10054ca2d700f30f1184249c00000033dbeb068d9b00000000d9838830e100f30f104710d84f34f30f11842480000000d95c2410d9838c30e100d84f38d95c2414d9842480000000d9ffd95c2430d9442430f30f104710d95c2418f30f11442458d9442458d9fed95c2438d9442418d84c2410d9442438d84c2414dee9d91ef30f104710f30f118424a0000000d98424a0000000d9fed95c242cd944242cf30f104710d95c2418f30f1144243cd944243cd9ffd95c2434d9442434d84c2414d9442418d84c2410dec1d95c2418d9442418d95604d95c2418d9442418d9c0d84c2468d95c245cd944246cd8c9d95c2460d84c2470d95c2464d906d95c2418d9442418d9c0d84c2440d95c244cd9442444d8c9d95c2450d84c2448d95c2454d944244cd844245cd95c2474d9442450d8442460d95c2478d9442454d8442464d95c247cd98598010000d8442474d99c2484000000d9859c010000d8442478d99c2488000000d985a0010000d844247cd99c248c000000d9842484000000d95c241cd9842488000000d95c2420d984248c000000d95c2424f30f10054ca2d7008b8dbc010000f30f11442428e8aa35feff508d8424c0000000508d4c2424e8185efdffd900d95c241cd94004d95c2420f30f104008f30f11442424d9400cd95c24288b842498000000d944241cd9442428d9c0defad9c9d99c24a8000000d87c2420d99c24ac000000d98424a8000000d99c2490000000d98424ac0000008b8c2490000000d99c2494000000890e8b9424940000008b8c249c000000895604894608894e0cd985ac000000d95c241851d944241c8d9424bc000000dc0db0a2d7008d4f18d95c241cd944241cd91c2452e876f5ffff8b0051894610d985840100008d8c24a8000000d91c24518d4f1ce857f5ffff8b1089561483c30883c62883fb200f8273fdffff8b4758f30f104014f30f11442410f30f1040188b4c241083c0148b8424d0000000894818f30f114424148b54241489501c8b4f58f30f10411cf30f104918f30f114424108b4c2410894840f30f114c24148b5424148950448b4f58f30f10411c83c11cf30f11442410f30f1041048b4c2410894868f30f114424148b54241489506c8b7f58f30f104714f30f104f20f30f114424108b4c2410f30f100560a2d700f30f114c24148b542414f30f100d5839ce00898890000000899094000000f30f114424108b4c2410f30f114424148b542414894820895024f30f114424108b4c2410f30f114c24148b5424145f89484889504cf30f114c240c8b4c240cf30f114c24108b5424105e894870895074f30f114c24088b4c2408f30f1144240c8b54240c5d89889800000089909c0000005b81c4bc000000c20800",
+        "sha256": "d6148732416746494c52b839391b6a999792473655b0d9ff396ef74c9056318b",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b8d114",
+            "operand": "8"
+          }
+        ],
+        "instructions_of_interest": [
+          {
+            "site": "00b8d0ac",
+            "bytes_hex": "8b542414",
+            "instruction": "mov edx, dword ptr [esp + 0x14]"
+          },
+          {
+            "site": "00b8d0b0",
+            "bytes_hex": "894820",
+            "instruction": "mov dword ptr [eax + 0x20], ecx"
+          },
+          {
+            "site": "00b8d0b3",
+            "bytes_hex": "895024",
+            "instruction": "mov dword ptr [eax + 0x24], edx"
+          },
+          {
+            "site": "00b8d0b6",
+            "bytes_hex": "f30f11442410",
+            "instruction": "movss dword ptr [esp + 0x10], xmm0"
+          },
+          {
+            "site": "00b8d0bc",
+            "bytes_hex": "8b4c2410",
+            "instruction": "mov ecx, dword ptr [esp + 0x10]"
+          },
+          {
+            "site": "00b8d0c0",
+            "bytes_hex": "f30f114c2414",
+            "instruction": "movss dword ptr [esp + 0x14], xmm1"
+          },
+          {
+            "site": "00b8d0c6",
+            "bytes_hex": "8b542414",
+            "instruction": "mov edx, dword ptr [esp + 0x14]"
+          },
+          {
+            "site": "00b8d0ca",
+            "bytes_hex": "5f",
+            "instruction": "pop edi"
+          },
+          {
+            "site": "00b8d0cb",
+            "bytes_hex": "894848",
+            "instruction": "mov dword ptr [eax + 0x48], ecx"
+          },
+          {
+            "site": "00b8d0ce",
+            "bytes_hex": "89504c",
+            "instruction": "mov dword ptr [eax + 0x4c], edx"
+          },
+          {
+            "site": "00b8d0d1",
+            "bytes_hex": "f30f114c240c",
+            "instruction": "movss dword ptr [esp + 0xc], xmm1"
+          },
+          {
+            "site": "00b8d0d7",
+            "bytes_hex": "8b4c240c",
+            "instruction": "mov ecx, dword ptr [esp + 0xc]"
+          },
+          {
+            "site": "00b8d0db",
+            "bytes_hex": "f30f114c2410",
+            "instruction": "movss dword ptr [esp + 0x10], xmm1"
+          },
+          {
+            "site": "00b8d0e1",
+            "bytes_hex": "8b542410",
+            "instruction": "mov edx, dword ptr [esp + 0x10]"
+          },
+          {
+            "site": "00b8d0e5",
+            "bytes_hex": "5e",
+            "instruction": "pop esi"
+          },
+          {
+            "site": "00b8d0e6",
+            "bytes_hex": "894870",
+            "instruction": "mov dword ptr [eax + 0x70], ecx"
+          },
+          {
+            "site": "00b8d0e9",
+            "bytes_hex": "895074",
+            "instruction": "mov dword ptr [eax + 0x74], edx"
+          },
+          {
+            "site": "00b8d0ec",
+            "bytes_hex": "f30f114c2408",
+            "instruction": "movss dword ptr [esp + 8], xmm1"
+          }
+        ]
+      },
+      {
+        "address": "00b4ec60",
+        "length": 33,
+        "role": "raw_getter_adjacent_candidate_block_not_a_claimed_function",
+        "end_exclusive": "00b4ec81",
+        "raw_offset": 7662688,
+        "bytes_hex": "8b4424048b108991440200008b50048991480200008b400889814c020000c20400",
+        "sha256": "65a8fea86ad1e7df666835393c49109a1e6a77ffc0a263a988f9ba7e9b70ddab",
+        "live_matches_disk": true,
+        "returns": [
+          {
+            "site": "00b4ec7e",
+            "operand": "4"
+          }
+        ],
+        "instructions_of_interest": [
+          {
+            "site": "00b4ec60",
+            "bytes_hex": "8b442404",
+            "instruction": "mov eax, dword ptr [esp + 4]"
+          },
+          {
+            "site": "00b4ec64",
+            "bytes_hex": "8b10",
+            "instruction": "mov edx, dword ptr [eax]"
+          },
+          {
+            "site": "00b4ec66",
+            "bytes_hex": "899144020000",
+            "instruction": "mov dword ptr [ecx + 0x244], edx"
+          },
+          {
+            "site": "00b4ec6c",
+            "bytes_hex": "8b5004",
+            "instruction": "mov edx, dword ptr [eax + 4]"
+          },
+          {
+            "site": "00b4ec6f",
+            "bytes_hex": "899148020000",
+            "instruction": "mov dword ptr [ecx + 0x248], edx"
+          },
+          {
+            "site": "00b4ec75",
+            "bytes_hex": "8b4008",
+            "instruction": "mov eax, dword ptr [eax + 8]"
+          },
+          {
+            "site": "00b4ec78",
+            "bytes_hex": "89814c020000",
+            "instruction": "mov dword ptr [ecx + 0x24c], eax"
+          },
+          {
+            "site": "00b4ec7e",
+            "bytes_hex": "c20400",
+            "instruction": "ret 4"
+          }
+        ]
+      },
+      {
+        "address": "00d15ad8",
+        "length": 8,
+        "role": "available_but_unbound_retained_backing_profile",
+        "end_exclusive": "00d15ae0",
+        "raw_offset": 9525976,
+        "bytes_hex": "e030bd0070448d00",
+        "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d642c0",
+        "length": 8,
+        "role": "available_but_unbound_retained_stream_profile",
+        "end_exclusive": "00d642c8",
+        "raw_offset": 9847488,
+        "bytes_hex": "e030bd00908fbb00",
+        "sha256": "2755848844406d8a6a0e5301377e32c2f3d1aa1b7a87abcb9856164311e22ec8",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d638f8",
+        "length": 8,
+        "role": "different_owner_profile_candidate_exclusion",
+        "end_exclusive": "00d63900",
+        "raw_offset": 9844984,
+        "bytes_hex": "e030bd00106fb900",
+        "sha256": "3b6fcbdce17af323352b7c62b4056f28a0aea1bc2103ebbea4d6b2e9081c22c9",
+        "live_matches_disk": true
+      }
+    ]
+  },
+  "evidence_count": {
+    "spans": 40,
+    "bytes": 17318,
+    "all_live_matches_disk": true
+  },
+  "prior_shell_revalidated": {
+    "source": "reports/native_logical_vertex_owner_next.json",
+    "logical_destruction_order": [
+      {
+        "site": "00b4b5ef",
+        "action": "Install D61D6C; saved actual owner and EH state0 before optional entry."
+      },
+      {
+        "site": "00b4b606",
+        "action": "If current mode, capture global F8D394, full B33AD0, save AL."
+      },
+      {
+        "site": "00b4b627",
+        "action": "Arm state1 before dynamic branch and separate lock."
+      },
+      {
+        "site": "00b4b62e",
+        "action": "Dynamic1000: capture current renderer+19F4, real Enter, increment captured section+18; current physical+58 -> B4B3F0(actual logical)."
+      },
+      {
+        "site": "00b4b64e",
+        "action": "Reload current global renderer; decrement its+1A0C then real Leave on its+19F4; no extra unwind state."
+      },
+      {
+        "site": "00b4b66b",
+        "action": "Non-dynamic path still reads current physical+4 even though EDX result is unused."
+      },
+      {
+        "site": "00b4b676",
+        "action": "Current global renderer -> full B268E0 raw logical-pointer removal."
+      },
+      {
+        "site": "00b4b67b",
+        "action": "Capture current declaration+68; InterlockedDecrement+4; if zero load its current table slot0 and call."
+      },
+      {
+        "site": "00b4b696",
+        "action": "After declaration terminal, capture current physical+58; decrement+4; current table slot0 on zero; neither owner field nulled."
+      },
+      {
+        "site": "00b4b6b3",
+        "action": "State0 before conditional current-mode normal guard leave with saved captured renderer."
+      },
+      {
+        "site": "00b4b6cb",
+        "action": "State-1 before full normal B62010 call; no double base cleanup on its exception."
+      }
+    ],
+    "base_destruction_order": [
+      {
+        "site": "00b6202e",
+        "action": "Install D62B68, capture current+4C and arm state0."
+      },
+      {
+        "site": "00b62047",
+        "action": "For captured nonnull pointee, real InterlockedDecrement at+4. Zero then current pointee table[0] call at B62057."
+      },
+      {
+        "site": "00b62059",
+        "action": "Clear owner+4C only after captured nonnull reference release/terminal returns."
+      },
+      {
+        "site": "00b62060",
+        "action": "Capture current+50; nonnull -> scalar free BF65AC."
+      },
+      {
+        "site": "00b62070",
+        "action": "Hidden returning-free continuation clears owner+50 only after free returns; missing in prior listing."
+      },
+      {
+        "site": "00b62079",
+        "action": "Disarm state before normal BD30F0 writes CEB130 only."
+      }
+    ],
+    "eh": {
+      "logical": {
+        "funcinfo": "00df83dc",
+        "length": 36,
+        "magic": "19930522",
+        "max_state": 2,
+        "unwind_map": "00df83cc",
+        "handler": "00cbf930",
+        "transitions": [
+          {
+            "state": 1,
+            "next": 0,
+            "funclet": "00cbf928",
+            "saved": "guard at frame-14",
+            "target": "00b21110"
+          },
+          {
+            "state": 0,
+            "next": -1,
+            "funclet": "00cbf920",
+            "saved": "actual owner at frame-18",
+            "target": "00b62010"
+          }
+        ],
+        "separate_19f4_unwind_action": false
+      },
+      "base": {
+        "funcinfo": "00dfa2ec",
+        "length": 36,
+        "magic": "19930522",
+        "max_state": 1,
+        "unwind_map": "00dfa2e4",
+        "handler": "00cc14a8",
+        "transitions": [
+          {
+            "state": 0,
+            "next": -1,
+            "funclet": "00cc14a0",
+            "saved": "actual owner at frame-10",
+            "target": "00b48d70 ->00bd30f0"
+          }
+        ]
+      },
+      "common": {
+        "catch_count": 0,
+        "ESTypeList": null,
+        "EHFlags": 1,
+        "second_exception_runtime_execution": "not executed in discovery; preserve FH3 behavior in eventual implementation comparison"
+      }
+    },
+    "scope": "The listed root/EH bytes were freshly matched; this is preservation of the completed shell pass, not a new reconstruction."
+  },
+  "producer_paths": [
+    {
+      "address": "00b287c0",
+      "end_exclusive": "00b288aa",
+      "abi": "ECX renderer; stack count,flags,declaration; EAX logical stream; RET 0Ch",
+      "constructor_call": {
+        "site": "00b28804",
+        "target": "00b4bc00"
+      },
+      "escapes": [
+        {
+          "site": "00b28847",
+          "destination": "renderer+1aac pointer array",
+          "count_site": "00b28849"
+        },
+        {
+          "site": "00b2888e",
+          "destination": "renderer+19b0 pointer array",
+          "count_site": "00b28890",
+          "condition": "current renderer virtual+58 at B28854 returns AL==1"
+        },
+        {
+          "site": "00b2889a",
+          "destination": "EAX result to caller"
+        }
+      ],
+      "field_4c_nonnull_writer_found": false,
+      "source_status": "Named factory remains a bounded dependency; B4BC00 has typed fragments rather than a full actual producer."
+    },
+    {
+      "address": "00ae47e0",
+      "end_exclusive": "00ae4c1c",
+      "abi": "ECX terrain owner; ten stack DWORDs; RET 28h; decompiler argument list not accepted",
+      "constructor_calls": [
+        {
+          "site": "00ae4941",
+          "target": "00b4a9b0"
+        },
+        {
+          "site": "00ae4a83",
+          "target": "00b4a9b0"
+        }
+      ],
+      "publications": [
+        {
+          "site": "00ae494f",
+          "destination": "terrain owner+54"
+        },
+        {
+          "site": "00ae4a91",
+          "destination": "terrain owner+54"
+        }
+      ],
+      "distinct_field_writes": [
+        {
+          "site": "00ae495c",
+          "field": "logical+54",
+          "value": "80000000"
+        },
+        {
+          "site": "00ae4a9e",
+          "field": "logical+54",
+          "value": "80000000"
+        }
+      ],
+      "escapes": [
+        {
+          "sites": [
+            "00ae4963",
+            "00ae496e",
+            "00ae4aa5",
+            "00ae4ab0"
+          ],
+          "target": "00b85b80",
+          "destination": "draw section retained vertex inputs"
+        },
+        {
+          "sites": [
+            "00ae499a",
+            "00ae4ad8"
+          ],
+          "target": "00b73c60",
+          "destination": "geometry draw section"
+        }
+      ],
+      "field_4c_nonnull_writer_found": false,
+      "source_status": "AE47E0 and B4A9B0 remain unnamed and without full actual reconstruction; B85B80 lacks full provider; named B73C60 is read-only contract."
+    },
+    {
+      "address": "00b93800",
+      "end_exclusive": "00b93874",
+      "distinct_field": "50",
+      "path": "Select last geometry stream, current virtual24 declaration, declaration count*20h raw allocation, read payload, reselect stream, B61D90 store+50.",
+      "supporting_functions": [
+        {
+          "address": "00b61d90",
+          "abi": "ECX stream; stack pointer; RET4",
+          "action": "Store raw pointer at+50"
+        },
+        {
+          "address": "00b61e10",
+          "abi": "ECX stream; stack index; EAX result; RET4",
+          "action": "Return [+50]+index*20h"
+        },
+        {
+          "address": "00b61f90",
+          "action": "Lazy count*20h allocation and eight-DWORD record copy through+50"
+        }
+      ],
+      "field_4c_nonnull_writer_found": false,
+      "source_status": "Typed mesh compressed payload/value fragments do not establish full actual retained-owner lifetime."
+    }
+  ],
+  "candidate_scan": {
+    "method": "PE raw opcode candidates then Capstone exact decoded non-stack memdisp4C; bounded nearest-entry/call-graph prioritization only",
+    "decoded_offset_candidates": 498,
+    "prioritized_geometry_or_memory_candidates": 31,
+    "limitation": "Not a whole-program absence proof. Raw bytes can be non-instructions; nearest entry is not function containment; escaped aliases and unreviewed candidates remain unresolved."
+  },
+  "excluded_candidates": [
+    {
+      "site": "00b4ec78",
+      "span": "00b4ec60",
+      "reason": "Decoded MOV[ECX+24C],EAX; not +4C. Raw33-byte block is not contained in the adjacent four-byte B4EC50 getter."
+    },
+    {
+      "site": "00b43309",
+      "span": "00b42350",
+      "reason": "Contiguous shader constant output +38..+54, source scene data+188; earlier B4290D +4C read is draw-section stream count, logical stream separately loaded B4294B."
+    },
+    {
+      "site": "00ba7841",
+      "span": "00ba7530",
+      "reason": "SSE-derived float store in locked vertex payload; no logical owner pointer store."
+    },
+    {
+      "site": "00bc632f",
+      "span": "00bc6060",
+      "reason": "EAX is current virtual+10 Lock result at BC62AD; payload record offsets+0C,+2C,+4C,+6C, then current virtual+14 Unlock at BC6373."
+    },
+    {
+      "site": "00b8d0ce",
+      "span": "00b8cc90",
+      "reason": "SSE-derived UV component in raw vertex output array, adjacent paired attribute stores."
+    },
+    {
+      "site": "00b971da",
+      "span": "00b97100",
+      "reason": "Embedded array LEA+4C in different owner with D638F8 profile installed at B97144."
+    }
+  ],
+  "static_reference_evidence": [
+    {
+      "role": "current static references to D62B68",
+      "text": "From 00b6202e in FUN_00b62010 [DATA]\nFrom 00b61e65 in BSP_LogicalVertexStreamBase_Construct [DATA]\n",
+      "limitation": "Current static analysis references only; no completeness claim for escaped aliases."
+    },
+    {
+      "role": "current static references to D61D6C",
+      "text": "From 00b4bc2c in BSP_D3D9LogicalVertexStream_Construct [DATA]\nFrom 00b4b5ef in BSP_LogicalVertexStream_Destruct [DATA]\nFrom 00b4a9e8 in FUN_00b4a9b0 [DATA]\n",
+      "limitation": "Current static analysis references only; no completeness claim for escaped aliases."
+    },
+    {
+      "role": "current direct constructor callers",
+      "text": "BSP_D3D9LogicalVertexStream_Construct @ 00b4bc00\nFUN_00b4a9b0 @ 00b4a9b0\n",
+      "limitation": "Current static analysis references only; no completeness claim for escaped aliases."
+    },
+    {
+      "role": "current direct borrowed constructor caller",
+      "text": "FUN_00ae47e0 @ 00ae47e0\n",
+      "limitation": "Current static analysis references only; no completeness claim for escaped aliases."
+    },
+    {
+      "role": "current direct D3D constructor caller",
+      "text": "BSP_Renderer_CreateRegisteredVertexStream @ 00b287c0\n",
+      "limitation": "Current static analysis references only; no completeness claim for escaped aliases."
+    },
+    {
+      "role": "current direct B23640 references belong to texture loading",
+      "text": "From 00b2c624 in BSP_TextureManager_LoadFromFile [UNCONDITIONAL_CALL]\nFrom 00b2c80e in BSP_TextureManager_LoadFromFile [UNCONDITIONAL_CALL]\n",
+      "limitation": "Current static analysis references only; no completeness claim for escaped aliases."
+    }
+  ],
+  "producer_ledger_evidence": [
+    {
+      "address": "00b287c0",
+      "query": "bsp.py lookup --limit 2",
+      "output": "00b287c0  BSP_Renderer_CreateRegisteredVertexStream  thunk=no  export=exports/bsp/functions/00b287c0\nsegment 84 [00b25dc0-00b402b0] 239 candidates wave 2  keywords: pf43cc, debugshader, mvfm, mshd, shaders, handmade, dsprites, dspritecamera\nledger name: BSP_Renderer_CreateRegisteredVertexStream - Renderer00d5f0a8+5C=00b287c0; reorder constructor arguments, append raw renderer registry pointers; registry factory remains a bounded dependency. Original ABI: ECX renderer; stack count,flags,declaration; EAX stream; RETCh. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_g\ncallers (0): \ncallees (3): 00b22d10 BSP_PointerArray_Reserve_00b22d10, 00b4b370 BSP_LogicalVertexStream_AllocateCpuSlot ...\ndocs (4): docs/D3D9_DRAW.md (Draw submission recovery); docs/GENERATED_INSTANCE_GEOMETRY.md (Generated instance geometry)\n",
+      "limitation": "Bounded ledger lookup; named or typed-fragment status does not establish full actual ownership implementation."
+    },
+    {
+      "address": "00ae47e0",
+      "query": "bsp.py lookup --limit 2",
+      "output": "00ae47e0  FUN_00ae47e0  thunk=no  export=none\nsegment 81 [00ada420-00af3750] 304 candidates wave 2  keywords: mshd, terrain, mvfm, visibility, group, atlas, particlefloating, treegroup\ncallers (2): 00ae47e0 FUN_00ae47e0, 00ae4cf0 FUN_00ae4cf0\ncallees (17): 00533fa0 BSP_DrawSection_Create, 00ae2fe0 FUN_00ae2fe0 ...\n",
+      "limitation": "Bounded ledger lookup; named or typed-fragment status does not establish full actual ownership implementation."
+    },
+    {
+      "address": "00b4a9b0",
+      "query": "bsp.py lookup --limit 2",
+      "output": "00b4a9b0  FUN_00b4a9b0  thunk=no  export=none\nsegment 85 [00b402e0-00b4b0a0] 122 candidates wave 0  keywords: uf44uf44uf44, shadow_passtrough, shfx, default, mvfm\ncallers (1): 00ae47e0 FUN_00ae47e0\ncallees (2): 00b28a40 FUN_00b28a40, 00b61e20 BSP_LogicalVertexStreamBase_Construct\n",
+      "limitation": "Bounded ledger lookup; named or typed-fragment status does not establish full actual ownership implementation."
+    },
+    {
+      "address": "00b4bc00",
+      "query": "bsp.py lookup --limit 2",
+      "output": "00b4bc00  BSP_D3D9LogicalVertexStream_Construct  thunk=no  export=exports/bsp/functions/00b4bc00\nsegment 86 [00b4b490-00b65ac0] 256 candidates wave 2  keywords: mshd, cSampleOffsets, posteffectsysobj, posteffectsyscam, oldfilm_dust, cSampleWeights, mvfm, vs_target\nledger name: BSP_D3D9LogicalVertexStream_Construct - Dynamic iff(flags&F000h)==1000h: retain renderer+1974, register logical stream, offsetFFFFFFFFh, original flags+60/count+64/declaration+68. Private allocation skipped. Original ABI: ECX stream; stack count,declaration,flags; EAX stream; RETCh. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/g\nreconstruction: fragment generated_dynamic_vertex_stream status=typed_build_and_installed_fixture_checked source=src/instance_geometry.cpp\nreconstruction: fragment mesh_managed_vertex_stream status=typed_build_and_installed_material_checked source=src/mesh_gpu_streams.cpp\ncallers (1): 00b287c0 BSP_Renderer_CreateRegisteredVertexStream\ncallees (8): 00b1feb0 BSP_D3D9Renderer_GetSharedVertexBuffer, 00b1fef0 BSP_D3D9Renderer_GetDevice ...\ndocs (5): docs/D3D9_DRAW.md (Draw submission recovery); docs/GENERATED_INSTANCE_GEOMETRY.md (Generated instance geometry)\n",
+      "limitation": "Bounded ledger lookup; named or typed-fragment status does not establish full actual ownership implementation."
+    },
+    {
+      "address": "00b85b80",
+      "query": "bsp.py lookup --limit 2",
+      "output": "00b85b80  FUN_00b85b80  thunk=no  export=none\nsegment 89 [00b80fd0-00b86e10] 99 candidates wave 2  keywords: cSceneResource, resourcedump_, refcounter, cNullSceneResource\ncallers (14): 0073ff50 FUN_0073ff50, 008023b0 FUN_008023b0 ...\ncallees (0): \ndocs (2): docs/GENERATED_INSTANCE_GEOMETRY.md (Generated instance geometry); docs/MESH_SUBSET_LOD_FIELDS.md (Mesh subset, LOD, and name fields)\n",
+      "limitation": "Bounded ledger lookup; named or typed-fragment status does not establish full actual ownership implementation."
+    },
+    {
+      "address": "00b73c60",
+      "query": "bsp.py lookup --limit 2",
+      "output": "00b73c60  BSP_Geometry_AppendDrawSection  thunk=no  export=none\nsegment 88 [00b6d3c0-00b80ed0] 357 candidates wave 2  keywords: c3dnodeanimator, cLight, cAnimTrack, cAmbientLight, c3dnode, cPointLight, cOptimized3dNodeAnimator, cMesh\nledger name: BSP_Geometry_AppendDrawSection - ECX geometry; section stack; RET4 through InterlockedIncrement tail jump. Append section in ordered pointer array+54, increment count+58 and intrusive section reference. Capacity growth helper remains external. Read-only contract; no new host implementation or runtime equivalence. reports/font_conte\ncallers (41): 00536310 FUN_00536310, 005a2340 FUN_005a2340 ...\ncallees (1): 00b72e10 FUN_00b72e10\ndocs (3): docs/FONT_CONTEXT_OWNERSHIP.md (Text-context update and retained geometry ownershi); docs/GENERATED_INSTANCE_GEOMETRY.md (Generated instance geometry)\n",
+      "limitation": "Bounded ledger lookup; named or typed-fragment status does not establish full actual ownership implementation."
+    },
+    {
+      "address": "00b93800",
+      "query": "bsp.py lookup --limit 2",
+      "output": "00b93800  BSP_Mesh_ReadCompressedVertexFormatData  thunk=no  export=none\nsegment 91 [00b8a2b0-00b999a0] 207 candidates wave 2  keywords: cRenderMeshResource, cGroupParamsResource, cGroup, flare, zoomfactor, targetname, simplecolor2, quadtreenode\nledger name: BSP_Mesh_ReadCompressedVertexFormatData - BSP reconstruction hypothesis: Select last stream using mesh+7Ch minus1 and+64h array; stream+24h returns declaration; declaration+10h element count times20h raw bytes; allocate and attach at stream+50h. No inline count or decompression; native multiplication/empty-stream behavior unchecked. ABI: In\nreconstruction: fragment mesh_compressed_format_payload status=typed_full_read_build_checked source=src/mesh_buffers.cpp\ncallers (1): 00b944e0 BSP_MeshHandle_ReadStructuredFields\ncallees (6): 00b47900 BSP_VertexDeclaration_GetElementCount, 00b61d90 BSP_LogicalVertexStream_SetCompressedFormatData ...\ndocs (4): docs/MESH_COMPRESSED_CONSUMER_BOUNDARY.md (Mesh compressed-vertex metadata consumer); docs/MESH_RESOURCE_INTEGRATION.md (Installed mesh resource decoding)\n",
+      "limitation": "Bounded ledger lookup; named or typed-fragment status does not establish full actual ownership implementation."
+    },
+    {
+      "address": "00b61d90",
+      "query": "bsp.py lookup --limit 2",
+      "output": "00b61d90  BSP_LogicalVertexStream_SetCompressedFormatData  thunk=no  export=none\nsegment 86 [00b4b490-00b65ac0] 256 candidates wave 2  keywords: mshd, cSampleOffsets, posteffectsysobj, posteffectsyscam, oldfilm_dust, cSampleWeights, mvfm, vs_target\nledger name: BSP_LogicalVertexStream_SetCompressedFormatData - BSP reconstruction hypothesis: Store pointer at stream+50h only. Does not free prior pointer or decode records; ownership lifecycle beyond setter remains separate. ABI: ECX logical vertex stream; stack raw allocation pointer; RET4; EAX incidental argument value. Evidence: docs/MESH_VERTEX_INDEX_PAYL\ncallers (1): 00b93800 BSP_Mesh_ReadCompressedVertexFormatData\ncallees (0): \ndocs (2): docs/MESH_COMPRESSED_CONSUMER_BOUNDARY.md (Mesh compressed-vertex metadata consumer); docs/MESH_VERTEX_INDEX_PAYLOADS.md (Mesh vertex and index payloads)\n",
+      "limitation": "Bounded ledger lookup; named or typed-fragment status does not establish full actual ownership implementation."
+    },
+    {
+      "address": "00b61e10",
+      "query": "bsp.py lookup --limit 2",
+      "output": "00b61e10  BSP_LogicalVertexStream_GetDecodeRecord  thunk=no  export=exports/bsp/functions/00b61e10\nsegment 86 [00b4b490-00b65ac0] 256 candidates wave 2  keywords: mshd, cSampleOffsets, posteffectsysobj, posteffectsyscam, oldfilm_dust, cSampleWeights, mvfm, vs_target\nledger name: BSP_LogicalVertexStream_GetDecodeRecord - Checked value projection in src/mesh_decode_bindings.cpp reads the actual parsed 32-byte element record as float4 scale then float4 offset. Native getter remains unchecked EAX=[ECX+50]+stack_index*20h, RET4. Complete 13-byte body matches original PE. Caller fragment00b428c0..00b42a7b now projected i\nreconstruction: fragment mesh_vertex_decode_record_value status=typed_build_and_installed_material_checked source=src/mesh_decode_bindings.cpp\ncallers (1): 00b42350 BSP_MaterialPass_BuildShaderConstants\ncallees (0): \ndocs (3): docs/MESH_COMPRESSED_CONSUMER_BOUNDARY.md (Mesh compressed-vertex metadata consumer); docs/MESH_VERTEX_DECODE_BINDING.md (Mesh vertex decode constants)\n",
+      "limitation": "Bounded ledger lookup; named or typed-fragment status does not establish full actual ownership implementation."
+    },
+    {
+      "address": "00b61f90",
+      "query": "bsp.py lookup --limit 2",
+      "output": "00b61f90  FUN_00b61f90  thunk=no  export=none\nsegment 86 [00b4b490-00b65ac0] 256 candidates wave 2  keywords: mshd, cSampleOffsets, posteffectsysobj, posteffectsyscam, oldfilm_dust, cSampleWeights, mvfm, vs_target\ncallers (0): \ncallees (2): 00b47900 BSP_VertexDeclaration_GetElementCount, 00bf55be operator_new\n",
+      "limitation": "Bounded ledger lookup; named or typed-fragment status does not establish full actual ownership implementation."
+    }
+  ],
+  "dependencies": [
+    {
+      "id": "cpu_declaration",
+      "field": "68",
+      "profile": "00d61d1c",
+      "zero_slot": "00bd30e0",
+      "deleting_slot": "00b48ca0",
+      "destructor": "00b48b70",
+      "return_leaf": "00b47950",
+      "actual_pool": "0108fd38",
+      "actual_type_sizes": "00d61cc0",
+      "source": "src/native_vertex_declaration_owner.cpp",
+      "header": "include/bsp/native_vertex_declaration_owner.hpp",
+      "status": "Current source/header pin retained for the established role; no execution rerun in this discovery.",
+      "admission": "Proved concrete CPU declaration profile; do not assume unknown current tables have this terminal."
+    },
+    {
+      "id": "private_physical_vertex",
+      "field": "58",
+      "profile": "00d61e34",
+      "zero_slot": "00bd30e0",
+      "deleting_slot": "00b4bb40",
+      "destructor": "00b4bab0",
+      "return_leaf": "00bf65ac",
+      "source": "src/native_physical_buffer_owner.cpp",
+      "header": "include/bsp/native_physical_buffer_owner.hpp",
+      "status": "Current source/header pin retained for the established role; no execution rerun in this discovery.",
+      "context": "NativePhysicalBufferOwnerContext borrows actual string storage, support singleton108FEDC, lifetime domain1090AA0, and actual physical pools"
+    },
+    {
+      "id": "pooled_physical_vertex",
+      "field": "58",
+      "profile": "00d61e7c",
+      "zero_slot": "00bd30e0",
+      "deleting_slot": "00b4c230",
+      "destructor": "00b4bab0",
+      "return_leaf": "00b49500",
+      "actual_pool": "0108fde0",
+      "source": "src/native_physical_buffer_owner.cpp",
+      "header": "include/bsp/native_physical_buffer_owner.hpp",
+      "status": "Current source/header pin retained for the established role; no execution rerun in this discovery."
+    },
+    {
+      "id": "unregistration",
+      "addresses": [
+        "00b268e0",
+        "00b25300",
+        "00b4b3f0",
+        "00b4b2e0"
+      ],
+      "source": "src/native_render_buffer_unregistration.cpp",
+      "header": "include/bsp/native_render_buffer_unregistration.hpp",
+      "status": "Current source/header pin retained for the established role; no execution rerun in this discovery."
+    },
+    {
+      "id": "optional_synchronization",
+      "addresses": [
+        "00b33ad0",
+        "00b33b00",
+        "00b21110"
+      ],
+      "source": "src/native_renderer_synchronization_actual.cpp",
+      "header": "include/bsp/native_renderer_synchronization_actual.hpp",
+      "status": "Current source/header pin retained for the established role; no execution rerun in this discovery."
+    },
+    {
+      "id": "separate_dynamic_section",
+      "address_sites": [
+        "00b4b62e",
+        "00b4b63b",
+        "00b4b641",
+        "00b4b64e",
+        "00b4b653",
+        "00b4b660"
+      ],
+      "actual_section_offset": "19f4",
+      "actual_depth_offset": "1a0c",
+      "status": "Current source/header pin retained for the established role; no execution rerun in this discovery."
+    },
+    {
+      "id": "base_scalar_free",
+      "address": "00bf65ac",
+      "source": "src/singleton_lifetime.cpp",
+      "header": "include/bsp/singleton_lifetime.hpp",
+      "status": "Current source/header pin retained for the established role; no execution rerun in this discovery."
+    },
+    {
+      "id": "additional_owner",
+      "field": "4c",
+      "profile": null,
+      "producer": null,
+      "zero_slot": null,
+      "deleting_slot": null,
+      "allocation_domain": null,
+      "status": "unresolved; blocks complete general actual-owner destruction; no callback or constructor-null restriction accepted"
+    },
+    {
+      "id": "available_but_unbound_retained_memory",
+      "field": "4c",
+      "candidate_profiles": [
+        {
+          "profile": "00d15ad8",
+          "zero_slot": "00bd30e0",
+          "deleting_slot": "008d4470"
+        },
+        {
+          "profile": "00d642c0",
+          "zero_slot": "00bd30e0",
+          "deleting_slot": "00bb8f90"
+        }
+      ],
+      "source": "src/native_retained_memory_owners.cpp",
+      "header": "include/bsp/native_retained_memory_owners.hpp",
+      "admitted": false,
+      "status": "No concrete logical field4c writer/profile relationship; B23640 callers observed only in texture loader."
+    }
+  ],
+  "ready_packets": [],
+  "previously_ready_leaf": {
+    "address": "00b49570",
+    "source": "reports/native_logical_vertex_owner_next.json",
+    "unchanged": true,
+    "new_readiness_credit": false,
+    "status": "Previously ready standalone slot-return leaf only; does not close general lifetime."
+  },
+  "conditional_packets": [
+    {
+      "id": "native_logical_vertex_owner",
+      "status": "conditional_not_ready",
+      "addresses": [
+        "00b4b5d0",
+        "00b4bf10",
+        "00b49570",
+        "00b62010"
+      ],
+      "support_addresses": [
+        "00cbf920",
+        "00cbf928",
+        "00cbf930",
+        "00cc14a0",
+        "00cc14a8",
+        "00b48d70"
+      ],
+      "files": [
+        "include/bsp/native_logical_vertex_owner.hpp",
+        "src/native_logical_vertex_owner.cpp",
+        "docs/NATIVE_LOGICAL_VERTEX_OWNER.md",
+        "reports/native_logical_vertex_owner_audit.json"
+      ],
+      "missing": "Concrete non-null +4C writer -> profile -> current zero/deleting terminal -> allocation domain, or complete admitted lifetime/escape proof.",
+      "terminal_addresses_to_claim": null,
+      "ownership": "Do not modify existing provider files; lease any newly proved terminal addresses only after actual evidence identifies them."
+    }
+  ],
+  "source_and_evidence_artifacts": [
+    {
+      "path": "docs/NATIVE_LOGICAL_VERTEX_TERMINAL_NEXT.md",
+      "role": "current discovery interpretation",
+      "bytes": 9340,
+      "sha256": "539eea0f99f350eaaf10d9e8b744d9d1676f0af6377dd6e7b08d3f9df320022b"
+    },
+    {
+      "path": "docs/NATIVE_LOGICAL_VERTEX_OWNER_NEXT.md",
+      "role": "prior completed shell discovery",
+      "bytes": 10706,
+      "sha256": "913aa44ba862a2a44b518dda8a145fd2439e859afb6cc5e9d28a9bbef8013c96"
+    },
+    {
+      "path": "reports/native_logical_vertex_owner_next.json",
+      "role": "prior completed shell evidence and readiness",
+      "bytes": 120075,
+      "sha256": "6b728943c7577f74ec4fab868b045492e47242c94e43bbdc2493597727d6ad20"
+    },
+    {
+      "path": "config/target.json",
+      "role": "current guarded saved-project target",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "src/native_vertex_declaration_owner.cpp",
+      "role": "actual field68 CPU declaration owner",
+      "bytes": 9604,
+      "sha256": "b2ba105ed138ff054858bee7999e424bdb6902e18fbe954153316af81241466c"
+    },
+    {
+      "path": "include/bsp/native_vertex_declaration_owner.hpp",
+      "role": "actual field68 CPU declaration owner",
+      "bytes": 3213,
+      "sha256": "8d247b03c4a954a71025c0a57bba407f47faf2d095fc8026233ce1b3f3f9c96f"
+    },
+    {
+      "path": "src/native_physical_buffer_owner.cpp",
+      "role": "actual field58 private and pooled physical vertex owner",
+      "bytes": 10263,
+      "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d"
+    },
+    {
+      "path": "include/bsp/native_physical_buffer_owner.hpp",
+      "role": "actual field58 private and pooled physical vertex owner",
+      "bytes": 4090,
+      "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45"
+    },
+    {
+      "path": "src/native_render_buffer_unregistration.cpp",
+      "role": "actual renderer and physical registration removal",
+      "bytes": 5514,
+      "sha256": "094d74b949d82182ef0f58761cfcd38520b83b65615456f3aa37521d0b9d2aea"
+    },
+    {
+      "path": "include/bsp/native_render_buffer_unregistration.hpp",
+      "role": "actual renderer and physical registration removal",
+      "bytes": 2244,
+      "sha256": "d81e02e8c18fd08e35e34878719b1db509c94ae5075a77251bdb5709616628b9"
+    },
+    {
+      "path": "src/native_renderer_synchronization_actual.cpp",
+      "role": "actual optional guard enter leave and unwind",
+      "bytes": 3242,
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+    },
+    {
+      "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+      "role": "actual optional guard enter leave and unwind",
+      "bytes": 2877,
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+    },
+    {
+      "path": "src/native_retained_memory_owners.cpp",
+      "role": "available retained backing and stream owners not bound to field4c",
+      "bytes": 6850,
+      "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93"
+    },
+    {
+      "path": "include/bsp/native_retained_memory_owners.hpp",
+      "role": "available retained backing and stream owners not bound to field4c",
+      "bytes": 3829,
+      "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "role": "actual shared allocation and scalar free domain",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "role": "actual shared allocation and scalar free domain",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    }
+  ],
+  "validation": {
+    "live_pe_spans_matched": true,
+    "project_program_verified": true,
+    "source_provider_pins": true,
+    "cpp_changed": false,
+    "build_run": false,
+    "new_tests": false,
+    "fixture_tested": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "ghidra_mutations": false,
+    "shared_metadata_edits": false,
+    "limitation": "Read-only discovery and artifact consistency only; source hashes and native byte agreement do not establish runtime or lifetime completeness."
+  }
+}
