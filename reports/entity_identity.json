@@ -1,0 +1,143 @@
+{
+  "packet": "cc2_entity_identity",
+  "worktree": "agent/cc2-entity-identity",
+  "ghidra": "read-only",
+  "names_are_hypotheses": true,
+  "doc": "docs/ENTITY_IDENTITY.md",
+  "subject": "The u16 entity id at entity+174h: the two handle tables that own it, the allocation and release rules, the backslash-path entity lookup 009251F0, and the Cloud scene creator's field writes.",
+  "headline": "The id is a slot index into one of two fixed-size handle tables, not a counter. 00927940 builds table A at 00F89A08 over ids [0, a) and table B at 00F89A5C over [a, a+b), so every reader selects with a single `id < A.count` test. 009517C0's second argument is a requested id, not a flag: zero pops the free list's tail, non-zero takes that exact slot. 009516D0 releases from the entity destructor 009287B0. The per-party lookup 009251F0 matches a case-insensitive backslash path, not a party:name pair. Neither Cloud creator writes +174h, a class pointer or a party field.",
+  "routines": [
+    {"address": "009517c0", "name": "BSP_EntityIdTable_Allocate", "abi": "__thiscall(table, uint16 requestedId, void* entity) -> uint16 in AX, RET 8", "coverage": "complete: 009517c0-0095181d"},
+    {"address": "009516d0", "name": "BSP_EntityIdTable_Release", "abi": "__thiscall(table, uint16 id), RET 4", "coverage": "complete: 009516d0-00951710"},
+    {"address": "00951720", "name": "BSP_EntityIdTable_RebuildFreeList", "abi": "__fastcall(table), RET 0", "coverage": "complete: 00951720-00951786"},
+    {"address": "00951560", "name": "BSP_EntityIdTable_Reset", "abi": "__fastcall(table), RET 0", "coverage": "complete: 00951560-00951614"},
+    {"address": "00951660", "name": "BSP_EntityIdTable_Construct", "abi": "__thiscall(table, uint16 firstId, uint32 idCount) -> table, RET 8", "coverage": "complete: 00951660-009516a5"},
+    {"address": "00927940", "name": "BSP_EntityHandleTablePair_Construct", "abi": "__thiscall(pair, uint32 lowCount, uint32 highCount) -> pair", "coverage": "complete: 00927940-00927994; the capacities are the caller's arguments and no caller exists in the image"},
+    {"address": "009251f0", "name": "BSP_SceneNode_FindByQualifiedName", "abi": "__stdcall(node, const char* name) -> node or null, RET 8; the incoming ECX is stored at 009251fb and never read", "coverage": "complete: 009251f0-009252b8; the vtable+10h name getter is a contract"},
+    {"address": "004e9e40", "name": "BSP_SceneCloud_Instantiate", "abi": "creator ABI: ECX dead (reloaded from stack arg 3), EDX = entity name, stack (parent, &frameBlock, properties, 0), RET 0x10", "coverage": "complete: 004e9e40-004e9f7c, read from the raw listing"},
+    {"address": "004e9920", "name": "BSP_SceneCloud_RegisterClass", "abi": "__thiscall(propertyBag), RET 0", "coverage": "complete: 004e9920-004e99a8, read from the raw listing"},
+    {"address": "004e9f80", "name": "BSP_SceneWaterMine_Instantiate", "abi": "same creator ABI, RET 0x10", "coverage": "complete: 004e9f80-004ea072, read from the raw listing; the type object's vtable[20h] spawn callee is a contract"},
+    {"address": "0048d6c0", "name": "BSP_SceneEntity_SetName", "abi": "__thiscall(entity, const char* name), RET 4", "coverage": "complete: 0048d6c0-0048d706"},
+    {"address": "00928630", "name": "BSP_GameEntity_Construct", "abi": "unchanged", "coverage": "not re-read: only the +174h store at 009286ed and the registry/id argument plumbing at 009286b8-009286e4, from the listing"}
+  ],
+  "table_layout": {
+    "size": "0x54",
+    "instances": ["00f89a08 (ids [0, a))", "00f89a5c (ids [a, a+b))"],
+    "fields": [
+      {"offset": "+0h", "field": "vtable 00d19b88", "producer": "00951660"},
+      {"offset": "+4h", "field": "first id", "producer": "00951660 param_1[1]", "consumer": "009517e0, 009516d5, 00521e3b"},
+      {"offset": "+8h", "field": "id count", "producer": "00951660 param_1[2]", "consumer": "00951721, 00521e33, 009287f5"},
+      {"offset": "+0ch", "field": "free list (0x20)", "producer": "00951560"},
+      {"offset": "+2ch", "field": "live list (0x20)", "producer": "00951560"},
+      {"offset": "+4ch", "field": "slot array, operator_new(count*10h)", "producer": "00951660 param_1[0x13]", "consumer": "00521e41"},
+      {"offset": "+50h", "field": "free slot count = count-1 at construction", "producer": "00951660 param_1[0x14]", "consumer": "009517c0, 00951815, 00951773, 009516fd"}
+    ]
+  },
+  "list_layout": {
+    "size": "0x20",
+    "shape": "an embedded 0x10 terminator node plus the head pointer at +10h; a node's +4h holds the address of the link that points at it, which makes unlink two unconditional stores",
+    "fields": [
+      {"offset": "+0h", "field": "terminator next, left 0", "producer": "00951560 *(this+0ch)=0, *(this+2ch)=0"},
+      {"offset": "+4h", "field": "terminator prev = tail node", "producer": "00951560 *(this+10h)=slots+10h", "consumer": "009517d4"},
+      {"offset": "+10h", "field": "head node", "producer": "00951560 *(this+1ch)=&slot[count-1], *(this+3ch)=this+2ch", "consumer": "00951808, 00951767"},
+      {"offset": "+14h", "field": "zeroed at reset, meaning unread", "producer": "00951560 *(this+20h)=0, *(this+40h)=0"}
+    ]
+  },
+  "slot_layout": {
+    "size": "0x10",
+    "fields": [
+      {"offset": "+0h", "field": "next (toward the terminator)", "producer": "00951560 first loop", "consumer": "009517f6"},
+      {"offset": "+4h", "field": "prev (address of the link pointing here)", "producer": "00951560 second loop", "consumer": "009517ea"},
+      {"offset": "+8h", "field": "u16 id = firstId + index; slot 0 is written as 0 and stays out of every list", "producer": "00951560", "consumer": "009517d7"},
+      {"offset": "+0ch", "field": "entity pointer, 0 while free", "producer": "009517f2", "consumer": "00521e4a, 00951737"}
+    ]
+  },
+  "allocation_rule": "009517c0: if free==0 rebuild (009517c6); requestedId==0 takes the free list tail and its stored id (009517d4), otherwise slots+(requestedId-first)*10h unchecked (009517dd); store the entity at +0ch, unlink, push at the head of the live list +3ch, free-=1. Ids are fixed to slots, so there is no counter and no wraparound; a fresh table hands out firstId+1 upward and released ids come back at the head, so recycling is FIFO and reserved id firstId is never issued.",
+  "release_rule": "009516d0: slots+(id-first)*10h, clear +0ch, unlink, push at the head of the free list +1ch, free+=1. Sole caller 00928810 in the destructor 009287b0, which picks the table from the id itself (009287f5 CMP ECX,[00f89a10]).",
+  "qualified_name_grammar": "component '\\\\' component ... '\\\\' leaf, case-insensitive, each component matched in full. 009251f0 first compares the whole remaining string with the node name through 00438e10; on a miss it requires children, a '\\\\' in the name (00925237 PUSH 0x5c), strlen(nodeName) == prefix length (00925263) and __strnicmp(name, nodeName, prefixLen)==0 (00925273) before recursing into every child with the remainder. No ':' or '@' form exists in the routine.",
+  "host_table": [
+    {"step": "allocate the id", "address": "009286e4", "native": "009517c0", "this": "00f89a08 on the non-zero flag arm, 00f89a5c on the zero arm", "args": "requested id [ESP+0x30], the instance", "ret": "uint16 in AX, stored at 009286ed", "gate": "always, in BSP_GameEntity_Construct"},
+    {"step": "release the id", "address": "00928810", "native": "009516d0", "this": "00f89a08 when id < [00f89a10], else 00f89a5c", "args": "the u16 at entity+174h", "ret": "void", "gate": "always, in the destructor 009287b0"},
+    {"step": "rebuild the free list", "address": "009517c6", "native": "00951720", "this": "the table", "args": "none", "ret": "void", "gate": "free count == 0"},
+    {"step": "construct table A", "address": "00927965", "native": "00951660", "this": "the pair", "args": "0, lowCount", "ret": "the table", "gate": "always"},
+    {"step": "construct table B", "address": "0092797b", "native": "00951660", "this": "pair+54h", "args": "lowCount, highCount", "ret": "the table", "gate": "always"},
+    {"step": "reset both tables on init", "address": "004e3f27", "native": "00951560", "this": "00f89a08", "args": "none", "ret": "void", "gate": "BSP_Game_OnInit"},
+    {"step": "reset both tables on mission load", "address": "004e01e8", "native": "00951560", "this": "00f89a08", "args": "none", "ret": "void", "gate": "BSP_Game_LoadMissionScene"},
+    {"step": "per-party name search", "address": "00925aca", "native": "009251f0", "this": "none (stdcall)", "args": "the party node, the name", "ret": "node or null", "gate": "each party of the registry *(*(00e188a8)+19cch)"},
+    {"step": "node name", "address": "0092521e", "native": "00438e10", "this": "the node name", "args": "the search name in EDX", "ret": "ordering", "gate": "node name non-null"},
+    {"step": "child by index", "address": "00925294", "native": "00467f30", "this": "node+48h", "args": "the index", "ret": "child or null", "gate": "the component matched and the node has children"},
+    {"step": "recurse into the child", "address": "0092529e", "native": "009251f0", "this": "none", "args": "the child, the remainder after the separator", "ret": "node or null", "gate": "as above"}
+  ],
+  "creator_call_sites": [
+    {"note": "the two Cloud creators and the WaterMine creator are not Ghidra functions, so these rows use site/callee instead of address/native: tools/verify_report_calls.py resolves a call site only inside a defined function"},
+    {"step": "read CloudType", "site": "004e9e65", "callee": "008f2260", "this": "the property bag (stack arg 3)", "args": "\"CloudType\" at 00ce5ff4", "ret": "property record or null", "gate": "none"},
+    {"step": "type tag", "site": "004e9e74", "callee": "none, [record+4h]", "this": "-", "args": "-", "ret": "int", "gate": "record non-null"},
+    {"step": "type name", "site": "004e9e87", "callee": "008f0df0", "this": "the record", "args": "none", "ret": "const char*", "gate": "tag 4 or 2"},
+    {"step": "resolve the class (result discarded)", "site": "004e9ea2", "callee": "00479970", "this": "a temporary string built at 004e9e91 by 0041e870", "args": "none", "ret": "the class, dropped", "gate": "tag gate passed"},
+    {"step": "resolve the class (result used)", "site": "004e9eeb", "callee": "00479970", "this": "a second temporary string", "args": "none", "ret": "the class", "gate": "tag gate passed"},
+    {"step": "create the cloud", "site": "004e9efc", "callee": "0047bba0", "this": "[[00e188a8]+21d0h]", "args": "the class", "ret": "the entity in EAX", "gate": "tag gate passed"},
+    {"step": "attach to the scene", "site": "004e9f4b", "callee": "indirect entity->vtable[98h]", "this": "the entity", "args": "parent, [[00e188a8]+19cch], &frameBlock", "ret": "void", "gate": "none, unchecked"},
+    {"step": "write the name", "site": "004e9f50", "callee": "0048d6c0", "this": "the entity", "args": "EDX at entry", "ret": "void", "gate": "none"},
+    {"step": "register pass: read CloudType", "site": "004e993d", "callee": "008f2260", "this": "the property bag in ECX", "args": "\"CloudType\"", "ret": "record", "gate": "none"},
+    {"step": "register pass: resolve the class", "site": "004e996f", "callee": "00479970", "this": "the temporary string", "args": "none", "ret": "dropped", "gate": "tag 4 or 2"},
+    {"step": "WaterMine: read Type", "site": "004e9fa5", "callee": "008f2260", "this": "the property bag", "args": "\"Type\" at 00ce4780", "ret": "record, value at +0ch as a dword", "gate": "none"},
+    {"step": "WaterMine: read Party", "site": "004e9fc7", "callee": "008f2260", "this": "the property bag", "args": "\"Party\" at 00ce5804", "ret": "record, value at +0ch", "gate": "none"},
+    {"step": "WaterMine: spawn", "site": "004e9feb", "callee": "indirect type->vtable[20h]", "this": "the type object", "args": "0, party, frame+30h, frame+20h, 0, 0, 0 (seven pushes)", "ret": "an object whose +0cch is the entity", "gate": "none"},
+    {"step": "WaterMine: write the name inline", "site": "004ea046", "callee": "0041dd40", "this": "entity+154h", "args": "strlen(name), 0", "ret": "void", "gate": "none"}
+  ],
+  "field_writes_004e9e40": {
+    "entity_name_154h": "not written inline; 0048d6c0 at 004e9f50 resizes the string at +154h and memcpies into +158h (the pair already declared as kUnitInstanceNameLengthOffset/kUnitInstanceNameBufferOffset in include/bsp/scene_unit_creators.hpp)",
+    "entity_id_174h": "not written by either Cloud creator; only 00928630 writes it, at 009286ed, inside the constructor the manager's vtable[8] reaches (callee not read)",
+    "class_pointers_354h_538h": "no store to +354h or +538h exists in 004e9e40-004e9f7c or 004e9920-004e99a8; the class object is the argument of the manager's vtable[8], not a field of the entity",
+    "party": "Cloud reads no Party property; in the neighbouring WaterMine creator the party is the second argument of the type object's vtable[20h] spawn (004e9feb) and never a field store in the creator"
+  },
+  "no_ghidra_function": [
+    {"start": "004e9e40", "end": "004e9f7c", "what": "the Cloud instantiate creator; 004e9910 ends at 004e991f and 004e9d40 at 004e9e35, so the factory's entry has no defined function. Read from ghidra bytes decoded with capstone (local/disasm_raw.py)"},
+    {"start": "004e9920", "end": "004e99a8", "what": "the Cloud registration creator, same situation"},
+    {"start": "004e9f80", "end": "004ea072", "what": "the WaterMine instantiate creator, read for the party and inline name evidence"},
+    {"start": "0042e950", "end": "0042e950", "what": "the vtable+10h node-name getter of 00cfc3d0; no function starts there, so its body was not read and the name getter's contract is inferred from its use"}
+  ],
+  "corrections": [
+    {"was": "docs/UNIT_INSTANCE_LAYOUT.md: `009517C0(registry, flag, instance)` with a creation flag", "is": "the second argument is a requested u16 id; zero means 'take the next free one' and non-zero addresses that exact slot (009517cf TEST AX,AX, 009517dd..009517e6)", "evidence": "009517c0 listing; 004e953d..004e9547 passes a scene creator's id through"},
+    {"was": "the id was described only as 'a u16 from a registry'", "is": "it is a slot index: id - firstId addresses a 0x10 slot whose +0ch is the entity pointer, which is what 00521e30 and its 24 inline copies read back", "evidence": "00951560, 009517c0, 00521e30"},
+    {"was": "docs/SCENE_DEFERRED_REFS.md: 009251f0 is 'the per-party name match, including the _strchr/__strnicmp qualified-name path'", "is": "the qualified form is a backslash-separated path with a full case-insensitive match per component, resolved by recursion into the child list at node+48h", "evidence": "00925237, 00925263, 00925273, 00925290-0092529e"},
+    {"was": "docs/SCENE_ENTITY_FACTORY.md: the creator ABI is 'ECX = the class id, EDX = the entity name, stack parent/&frame/properties/0', provisional until a creator body is read", "is": "confirmed from two creator bodies, with the refinement that ECX is dead on entry: 004e9e46 and 004e9f98 reload it from the property-bag stack argument before any use", "evidence": "004e9e46 MOV ECX,[ESP+0xc]; 004e9f98 MOV EDI,[ESP+0x24]"}
+  ],
+  "uncertainties": [
+    "The two table capacities are unknown: 00927940 has no caller in the image, so only the contiguity of the ranges is established.",
+    "00951720 tests slot i (00951737) but relinks slot i-firstId (00951741). Identical for the low table (firstId 0); for the high table it relinks the wrong slot and below i==firstId it addresses memory before the array. Recorded as an original defect, provisional: the path needs an exhausted table and no run-time evidence was collected.",
+    "004e9e40 resolves the class name twice and drops the first result (004e9ea2 vs 004e9eeb). The single resolve in the register pass suggests a lazy load followed by a fetch, but neither body proves it.",
+    "The vtable+10h name getter used by 009251f0 was read only as a slot value (00cfc3d0+10h = 0042e950, no Ghidra function), so its return is inferred from its use.",
+    "The 24 inline copies of the id resolve (xrefs of 00f89a10) were not read; only 00521e30 was."
+  ],
+  "tooling_problems": [
+    "`bsp.py ghidra disasm` refuses an address with no function and `disasm-raw` does not exist in this checkout, so the three creator bodies were decoded locally: `bsp.py ghidra bytes` plus capstone in local/disasm_raw.py. mcp__ghidra__disassemble_bytes returns only a byte count, and its non-dry form would mutate the program, so it was not used beyond a dry run.",
+    "`bsp.py find EntityId` returns nothing even though kEntityIdOffset and kUnitEntityIdRegistryPrimary exist in the headers; the ledger name search does not cover reconstruction identifiers."
+  ],
+  "reconstruction": {
+    "header": "include/bsp/entity_identity.hpp",
+    "source": "src/entity_identity.cpp",
+    "notes": "The tables are index-based; the native 'pointer to the link that points at me' in a slot's +4h is a modelling detail, not a layout claim, so the projection carries an in_live_list flag the native derives from its pointers. Where the native computes an unchecked address (009517dd, 009516d5, the sweep's biased index) the projection fails or skips instead, each commented with the diverging instruction. No offset or type name is redeclared: kUnitLayoutOffEntityId and kUnitInstanceNameLengthOffset stay where they are."
+  },
+  "build": "scripts/build.ps1, Win32 MSVC /W4 /WX: succeeded",
+  "tests": "ctest reconstructed_math: 1/1 passed, including one new case over the allocation rule (reserved first id, ascending never-used ids, FIFO recycling)",
+  "ledger_names": [
+    {"address": "009517c0", "name": "BSP_EntityIdTable_Allocate"},
+    {"address": "009516d0", "name": "BSP_EntityIdTable_Release"},
+    {"address": "00951720", "name": "BSP_EntityIdTable_RebuildFreeList"},
+    {"address": "00951560", "name": "BSP_EntityIdTable_Reset"},
+    {"address": "00951660", "name": "BSP_EntityIdTable_Construct"},
+    {"address": "00927940", "name": "BSP_EntityHandleTablePair_Construct"},
+    {"address": "009251f0", "name": "BSP_SceneNode_FindByQualifiedName"},
+    {"address": "0048d6c0", "name": "BSP_SceneEntity_SetName"},
+    {"address": "00467f30", "name": "BSP_SceneNodeList_ChildAt"},
+    {"address": "004e9e40", "name": "BSP_SceneCloud_Instantiate"},
+    {"address": "004e9920", "name": "BSP_SceneCloud_RegisterClass"},
+    {"address": "004e9f80", "name": "BSP_SceneWaterMine_Instantiate"}
+  ],
+  "follow_up_packets": [
+    {"id": "entity_id_table_capacities", "addresses": "00927940 00f89a08 00f89a5c", "what": "find what constructs the pair (no direct caller): a static initialiser or an indirect call, and with which two capacities"},
+    {"id": "entity_class_lua_load", "addresses": "00479970 004e9970", "what": "the CloudClass Lua table fallback and why the instantiate creator resolves twice"},
+    {"id": "scene_entity_attach_98h", "addresses": "004e9f4b", "what": "the entity vtable[98h] attach callee: where the id, the party and the class pointer are actually stored"}
+  ]
+}

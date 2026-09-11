@@ -59,6 +59,7 @@
 #include "bsp/vehicle_class_fields.hpp"
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/scene_property_bag.hpp"
+#include "bsp/entity_identity.hpp"
 #include "bsp/entity_think_dispatch.hpp"
 #include <algorithm>
 #include <cmath>
@@ -1973,6 +1974,25 @@ int main() {
                   && std::fabs(countdown - (3.0f - 0.06f)) < 1e-5f,
             "an armed think fires once when its clamped delay runs out, then waits for the "
             "three-second script countdown instead of firing every step");
+    }
+
+    {
+        // 00951560 leaves slot 0 out of the free list, so the table's first id
+        // is reserved; 009517C0 pops the free list's tail while 009516D0 pushes
+        // a released id at its head, so a recycled id is only reissued after
+        // every never-used one. Both halves are easy to invert.
+        bsp::EntityIdTable table = bsp::entity_id_table_construct_00951660(0, 4);
+        const char entity_a = 0, entity_b = 0, entity_c = 0, entity_d = 0;
+        const std::uint16_t first = bsp::entity_id_table_allocate_009517c0(table, 0, &entity_a);
+        const std::uint16_t second = bsp::entity_id_table_allocate_009517c0(table, 0, &entity_b);
+        bsp::entity_id_table_release_009516d0(table, first);
+        const std::uint16_t third = bsp::entity_id_table_allocate_009517c0(table, 0, &entity_c);
+        const std::uint16_t recycled = bsp::entity_id_table_allocate_009517c0(table, 0, &entity_d);
+        check(first == 1 && second == 2 && third == 3 && recycled == first
+                  && bsp::entity_id_table_lookup(table, recycled) == &entity_d
+                  && bsp::entity_id_table_lookup(table, 0) == nullptr,
+            "the entity id table reserves its first id, hands out never-used ids in ascending "
+            "order and only then reissues a released one");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
