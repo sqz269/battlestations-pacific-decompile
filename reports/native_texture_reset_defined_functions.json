@@ -1,0 +1,115 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00b33f10",
+      "end_exclusive": "00b33f11",
+      "length": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "function_before": "No function found for 00b33f10",
+      "prior_comments_preserved": true,
+      "function_after": "Function: BSP_Texture_ResetNoOp at 00b33f10\nSignature: undefined BSP_Texture_ResetNoOp(void)\nEntry: 00b33f10\nBody: 00b33f10 - 00b33f10"
+    },
+    {
+      "address": "00b33f20",
+      "end_exclusive": "00b33f23",
+      "length": 3,
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "function_before": "No function found for 00b33f20",
+      "prior_comments_preserved": true,
+      "function_after": "Function: BSP_Texture_RestoreNoOp at 00b33f20\nSignature: undefined BSP_Texture_RestoreNoOp(void)\nEntry: 00b33f20\nBody: 00b33f20 - 00b33f22"
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b33f10",
+        "end_address": "00b33f11"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b33f10",
+        "end_address": "00b33f10",
+        "bytes_disassembled": 1,
+        "message": "Successfully disassembled 1 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b33f10",
+        "name": "BSP_Texture_ResetNoOp",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b33f10",
+        "function_name": "BSP_Texture_ResetNoOp",
+        "entry_point": "00b33f10",
+        "body_size": 1,
+        "message": "Function created successfully at 00b33f10",
+        "warnings": [
+          "Function name 'BSP_Texture_ResetNoOp' \u2014 main part 'Texture_ResetNoOp' is not PascalCase. Expected: TextureResetnoop",
+          "Function name 'BSP_Texture_ResetNoOp' \u2014 main part 'Texture_ResetNoOp' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_Texture_ResetNoOp' does not start with a recognized verb. First word 'Texture_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00b33f20",
+        "end_address": "00b33f23"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00b33f20",
+        "end_address": "00b33f22",
+        "bytes_disassembled": 3,
+        "message": "Successfully disassembled 3 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00b33f20",
+        "name": "BSP_Texture_RestoreNoOp",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00b33f20",
+        "function_name": "BSP_Texture_RestoreNoOp",
+        "entry_point": "00b33f20",
+        "body_size": 3,
+        "message": "Function created successfully at 00b33f20",
+        "warnings": [
+          "Function name 'BSP_Texture_RestoreNoOp' \u2014 main part 'Texture_RestoreNoOp' is not PascalCase. Expected: TextureRestorenoop",
+          "Function name 'BSP_Texture_RestoreNoOp' \u2014 main part 'Texture_RestoreNoOp' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_Texture_RestoreNoOp' does not start with a recognized verb. First word 'Texture_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Two complete genuine native reset noops defined and project saved"
+}
