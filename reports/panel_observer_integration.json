@@ -75,7 +75,7 @@
     "build": "MSVC Win32 Release passed",
     "existing_tests": "reconstructed_math/native_math_differential2/2 passed",
     "log": "local/panel_observer_build.log",
-    "source_baseline": "d549d7a plus direct binding edits committed in this batch",
+    "source_baseline": "Compiled C++ source matches ca4fd98; commit recorded after passing combined build and fixtures",
     "library_sha256": "b08a9b2e7fa1ee11934610fb6ddae255d2d5ca49d736f1f7a5eee0ff07d3cfb3",
     "fixture_logs": [
       "local/panel_palette_integrated_fixture.log",
@@ -87,10 +87,11 @@
     ],
     "new_permanent_tests": 0,
     "game_validated": false,
-    "native_abi": false
+    "native_abi": false,
+    "tested_source_commit": "ca4fd9895af94e8d5dc84e633794562f7967c979"
   },
   "ghidra": {
-    "annotation": "pending final scoped application/readback",
+    "annotation": "45 names/evidence applied, saved and read back; earlier comments preserved",
     "defined_callbacks": "reports/object_handle_resolver_definitions.json",
     "flow_repairs": [
       "reports/observer_lifetime_flow_repair.json",
@@ -104,7 +105,10 @@
       "stored_body_complete": false,
       "reason": "Configured bridge disables run_script_inline; no script mutation occurred",
       "report": "reports/panel_sequence_body_extension.json"
-    }
+    },
+    "annotation_log": "local/ghidra-annotations-20260911T065508Z.json",
+    "readback": "local/panel_wave_comments.json",
+    "exports": "local/panel_wave_exports.log"
   },
   "remaining": [
     "00451c90 panel row publication",
