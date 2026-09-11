@@ -1,0 +1,184 @@
+{
+  "packet": "orch2_storage_operation",
+  "created_utc": "2026-09-11T01:40:18.487558+00:00",
+  "project": "bsp",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "worker_ghidra_policy": "read_only; every CLI client verifies project/program/language/image base",
+  "integrator_definition": {
+    "address": "006ad3c0",
+    "end_exclusive": "006ad3ea",
+    "bytes": 42,
+    "saved": true,
+    "record": "primary worktree reports/profile_persistence_definitions.json"
+  },
+  "ghidra_annotation": "Names and evidence recorded in repository; saved Ghidra annotation is delegated to primary integrator.",
+  "source": "src/storage_operation.cpp",
+  "header": "include/bsp/storage_operation.hpp",
+  "documentation": "docs/STORAGE_OPERATION_CONTINUATIONS.md",
+  "functions": [
+    {
+      "address": "006adb50",
+      "end_inclusive": "006addbe",
+      "old_name": "FUN_006adb50",
+      "name": "BSP_StorageOperation_RunContinuation",
+      "cpp_symbol": "bsp::run_storage_operation_006adb50",
+      "original_abi": "ECX=void(*)() continuation; RET",
+      "behavior": "Captures manager; optional initial guarded virtual44; stores callback once before loop. Interactive prompts return, Busy renders all3 calls then sets response3. States0/1/2 finish; clear global before callback, dismiss slot0 afterward only for nonnull callback.",
+      "disk_sha256": "fab4c655ab8ad24b6e8b541bb4758a3f4410b32534847986a79b5e43e1b56567",
+      "export_decompiled_sha256": "9198e7edf5ca09a997abd4643e7d83966d4a3cda49e57ba0784df08c556ff226",
+      "export_assembly_sha256": "9d7e3f4c84ab42db1be73d40a692d26f8641777b41fc3498dc387a34aadde3c5",
+      "flow_gaps": 0
+    },
+    {
+      "address": "006ad120",
+      "end_inclusive": "006ad134",
+      "old_name": "FUN_006ad120",
+      "name": "BSP_StorageOperation_IsStateZeroOrOne",
+      "cpp_symbol": "bsp::storage_state_is_zero_or_one_006ad120",
+      "original_abi": "ECX=manager; EAX=0/1; RET",
+      "behavior": "Returns true exactly for manager+08 equal0 or1.",
+      "disk_sha256": "27a1d4195e7017f7c0f69d7e1c371012cdf707febb88be584754d6dea6fe39bd",
+      "export_decompiled_sha256": "eb960e8d2b8c0d962e17762bdab6d4b37d0cb040934a367bd5c5df7c06dc78fc",
+      "export_assembly_sha256": "c6db606d95c42ea6b480d0d86f56b54a9ea60f265548f616ddd3df0897830d0f",
+      "flow_gaps": 0
+    },
+    {
+      "address": "006ad150",
+      "end_inclusive": "006ad164",
+      "old_name": "FUN_006ad150",
+      "name": "BSP_StorageOperation_HasUnobservedPrompt",
+      "cpp_symbol": "bsp::storage_prompt_pending_006ad150",
+      "original_abi": "ECX=manager; EAX=0/1; RET",
+      "behavior": "Tests manager+0C nonzero and+10 zero.",
+      "disk_sha256": "7bcd357268eea8d70b3c3ac70cdbdd084ababe5ba51fa544dba9dcb8c2ae4611",
+      "export_decompiled_sha256": "a7587ddba72f97a0f040676b4e5f662ce6727221197cbf743f1e173dbcac58c4",
+      "export_assembly_sha256": "2ea05175cdf92a00b51868fcc0a671037ac334ff51bf6ee5c092e7c3f5ea0b8d",
+      "flow_gaps": 0
+    },
+    {
+      "address": "006ad3c0",
+      "end_inclusive": "006ad3e9",
+      "old_name": "FUN_006ad3c0",
+      "name": "BSP_StorageOperation_RespondPrompt",
+      "cpp_symbol": "bsp::respond_storage_prompt_006ad3c0",
+      "original_abi": "ECX=int result; tail JMP006adb50",
+      "behavior": "Result1->response1; result0->response2; other->response3. Set response on current singleton then reload continuation slot and tail-resume. Integrator locked-created missing42-byte body.",
+      "disk_sha256": "8650de84afd8b2bba3bae5c9899d955565ed7cbbbfdfbc3c4bb38d0f81b2bcbb",
+      "export_decompiled_sha256": "9ae5426864c115cc5ca7af007c9d5aa5ad6c64234dceffc778b1b50c1a54315c",
+      "export_assembly_sha256": "c32899386396a3bec427b21d63daca845630b3279774f6345704041256b0fb2e",
+      "flow_gaps": 0
+    },
+    {
+      "address": "0057bda0",
+      "end_inclusive": "0057bdb0",
+      "old_name": "FUN_0057bda0",
+      "name": "BSP_StorageOperation_BeginUpdateGuard",
+      "cpp_symbol": "bsp::begin_storage_update_0057bda0",
+      "original_abi": "No arguments; RET",
+      "behavior": "Changes global byte00E194B8 from0 to1; preserves existing nonzero value.",
+      "disk_sha256": "6691822a6f32ea62237dca1c32330a74676e31453edab33325df957bd006edc1",
+      "export_decompiled_sha256": "7e498c7057ca58adf808d5cc5e38b9846b72895acfe22b62a553e5906b8416c8",
+      "export_assembly_sha256": "30b130589749bd69415259615a3d8ea378d98a7a53168013db3e9d5eee716f43",
+      "flow_gaps": 0
+    },
+    {
+      "address": "0057bdc0",
+      "end_inclusive": "0057bdd0",
+      "old_name": "FUN_0057bdc0",
+      "name": "BSP_StorageOperation_EndUpdateGuard",
+      "cpp_symbol": "bsp::end_storage_update_0057bdc0",
+      "original_abi": "No arguments; RET",
+      "behavior": "Clears nonzero global byte00E194B8; no nesting counter or restoration.",
+      "disk_sha256": "6188e330e82bdebe0482ddc2d8c59f0503c45633d87f09e05aef3b47edcb9ac9",
+      "export_decompiled_sha256": "a2cdd8a1938922b872a9d49bd1a5dc805f93c08708a8ac027f33d921756ee8f1",
+      "export_assembly_sha256": "28efd5f2cf96dc12dbfba5ec30f7614e5bec82692d5c7d8ecb88722b960a8155",
+      "flow_gaps": 0
+    },
+    {
+      "address": "00bd3580",
+      "end_inclusive": "00bd3586",
+      "old_name": "FUN_00bd3580",
+      "name": "BSP_StorageOperation_Update",
+      "cpp_symbol": "bsp::update_storage_00bd3580",
+      "original_abi": "ECX=manager; tail JMP virtual+44h",
+      "behavior": "Exact manager virtual+44 dispatch; required external storage progress.",
+      "disk_sha256": "bd4c5ae6ebd9ee4f61b447d7c06caa364363a25754593f865ecfbf1e501f5ec9",
+      "export_decompiled_sha256": "cb22b7736d59a2d60d5ac50801314224a006054873ad40b32057f827b19b2b55",
+      "export_assembly_sha256": "d27fdc4d24d2b31ae81ca3bb66ac625c57693c44cb00c04e48a3606637f0b24e",
+      "flow_gaps": 0
+    },
+    {
+      "address": "00bd3550",
+      "end_inclusive": "00bd3561",
+      "old_name": "FUN_00bd3550",
+      "name": "BSP_StorageOperation_SetResponse",
+      "cpp_symbol": "bsp::set_storage_response_00bd3550",
+      "original_abi": "ECX=manager; stack int response; RET4",
+      "behavior": "Stores response+1C then clears prompt+0C and observed+10; not a progress pump.",
+      "disk_sha256": "51f9af117d96d62a6e2299063032a620a8006455c637e6096c4a91a59e949255",
+      "export_decompiled_sha256": "2e8ee95fb7a91e54f48e9c6218a19709dc9b64efe07c19ee917a5e8cb9fd4290",
+      "export_assembly_sha256": "07a9f263025566d2e884fb59f2b635cd6e3f0bc2c0d80d8621b55b1c6791c5d7",
+      "flow_gaps": 0
+    },
+    {
+      "address": "00bd41a0",
+      "end_inclusive": "00bd41f4",
+      "old_name": "FUN_00bd41a0",
+      "name": "BSP_StorageOperation_CopyPrompt",
+      "cpp_symbol": "bsp::copy_storage_prompt_00bd41a0",
+      "original_abi": "ECX=manager; stack NativeString*,flagD*,flagE*,flagF*; RET10h",
+      "behavior": "Copies string+14 first with self-copy guard and destination length memcpy; then reads/stores bytes+0D,+0E,+0F sequentially, preserving aliases.",
+      "disk_sha256": "a3426cd5381cf7a181892c609060b2921de97cf5420bb48e8c16edfbfb15d3f4",
+      "export_decompiled_sha256": "e1bc8b6b243d2bb25d5227015bd08a69f50b173f332c3a9e1f6b66d0bac0d608",
+      "export_assembly_sha256": "53a873f4565a1936449f49fe58ef2a17c9c90ed039698cfd64a4b6a48df2c39c",
+      "flow_gaps": 0
+    }
+  ],
+  "supporting_exports": [
+    "00bd4140",
+    "00beb9b0",
+    "00531b00",
+    "00532a20"
+  ],
+  "uncertainty": [
+    "Descriptive names are hypotheses. Storage update, rendering, live frontend host and native ABI remain required external bindings.",
+    "First unsupported prompt-flag tuple leaves native EBP uninitialized; host projection throws logic_error. Later unsupported tuples retain last selected kind. Observed PC producer only emits000,001,110.",
+    "Global00E194B8 broader engine meaning is unproven. Driver ending on state2 is observed and must not be relabeled generic successful completion.",
+    "std::function and projected manager/globals are new C++ interfaces, not native layout or calling-convention compatibility."
+  ],
+  "validation": {
+    "verify_seeds": {
+      "passed": true,
+      "matching_ranges": 8
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release",
+      "architecture": "Win32",
+      "passed": true,
+      "ctest_passed": 2,
+      "log": "local/storage_operation_build.log"
+    },
+    "focused_fixture": {
+      "passed": true,
+      "source": "local/storage_operation_fixture.cpp",
+      "build_log": "local/storage_operation_fixture_build.log",
+      "run_log": "local/storage_operation_fixture_run.log",
+      "checks": [
+        "interactive return retains continuation",
+        "actual frontend prompt completion routes response1",
+        "callback replaced during update survives another loop iteration",
+        "clear before callback",
+        "nested synchronous continuation",
+        "Busy render3 order and response3",
+        "final slot cleanup"
+      ],
+      "source_sha256": "eac4c8c21862c068e2c5445b1dc4c59312afc5dc420876fb8f9cf803d3e2d7b0"
+    },
+    "native_differential_for_this_packet": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}
