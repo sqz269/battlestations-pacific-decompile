@@ -1,0 +1,450 @@
+{
+  "packet": "orch3_native_frame_job_execution_w",
+  "sources": [
+    "src/native_frame_job_execution.cpp"
+  ],
+  "headers": [
+    "include/bsp/native_frame_job_execution.hpp"
+  ],
+  "documentation": "docs/NATIVE_FRAME_JOB_EXECUTION.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "native_spans": [
+    {
+      "address": "004bfaa0",
+      "end_exclusive": "004bfaa3",
+      "length": 3,
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "kind": "function"
+    },
+    {
+      "address": "004bfab0",
+      "end_exclusive": "004bfabd",
+      "length": 13,
+      "sha256": "1e72502fa7cdde424805349aa2b80af66b5b16777db575127e29d419817074a8",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "kind": "function"
+    },
+    {
+      "address": "00be2ba0",
+      "end_exclusive": "00be2bb0",
+      "length": 16,
+      "sha256": "577d66deed6185398e014920ccfac75df88c55e7c859d50b558155dcf01aeb68",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "kind": "function"
+    },
+    {
+      "address": "00be2ea0",
+      "end_exclusive": "00be2f9d",
+      "length": 253,
+      "sha256": "6da7f8ccbdd568a8f0a5eec797f4f74ebe3c42a533b9ed0d5058255a3351c67c",
+      "live_disk_equal": true,
+      "rebound_operands": {
+        "00ce221c": [
+          181
+        ],
+        "00ce2220": [
+          93
+        ],
+        "00ce223c": [
+          52
+        ]
+      },
+      "kind": "function"
+    },
+    {
+      "address": "00be2fa0",
+      "end_exclusive": "00be301c",
+      "length": 124,
+      "sha256": "ed6c3f99d9a219c34013894c874ddbc78447883772950c328dfdab8d9242573d",
+      "live_disk_equal": true,
+      "rebound_operands": {
+        "00ce221c": [
+          69
+        ],
+        "00ce2220": [
+          4
+        ]
+      },
+      "kind": "function"
+    },
+    {
+      "address": "00be3020",
+      "end_exclusive": "00be3040",
+      "length": 32,
+      "sha256": "c0b88c4502a2eed0b6d6d1875c5a5dabc3a640653503dea1d2faf7c2a7789d18",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "kind": "function"
+    },
+    {
+      "address": "00be3110",
+      "end_exclusive": "00be3147",
+      "length": 55,
+      "sha256": "70b473c4703cf254e99bfd2a5b4214239e5e80a7949edb1338e1ad0c6d333ab4",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "kind": "function"
+    },
+    {
+      "address": "00be3150",
+      "end_exclusive": "00be31d1",
+      "length": 129,
+      "sha256": "eb793cd3796528031382ec2487eca7ff037085c6bd20d112b374263ab53ea997",
+      "live_disk_equal": true,
+      "rebound_operands": {
+        "00ce22cc": [
+          42
+        ]
+      },
+      "kind": "function"
+    },
+    {
+      "address": "00bf2ce0",
+      "end_exclusive": "00bf2cec",
+      "length": 12,
+      "sha256": "69be654f274e3fcaca10f253f30adf5b916a22950fb315a95e5b2aeae5c3687d",
+      "live_disk_equal": true,
+      "rebound_operands": {
+        "0109dbe4": [
+          1
+        ],
+        "00ce221c": [
+          7
+        ]
+      },
+      "kind": "function"
+    },
+    {
+      "address": "00bf2cf0",
+      "end_exclusive": "00bf2cfc",
+      "length": 12,
+      "sha256": "d8dd112ce50d5a6f9528e0319f7defc5324516e000ccb0865bd7a58cc9ae4789",
+      "live_disk_equal": true,
+      "rebound_operands": {
+        "0109dbe4": [
+          1
+        ],
+        "00ce2220": [
+          7
+        ]
+      },
+      "kind": "function"
+    },
+    {
+      "address": "00cc6b28",
+      "end_exclusive": "00cc6b32",
+      "length": 10,
+      "sha256": "332f9f8fb507b6f649c2a04802951326d6c9086db93c5708084cc88ff2938ef9",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "kind": "function"
+    },
+    {
+      "address": "00d6821c",
+      "end_exclusive": "00d6822c",
+      "length": 16,
+      "sha256": "961065846b722b86f72bfe064bfcd47827f3cd7348a5c679e35ef20a8c1275a7",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "kind": "data"
+    },
+    {
+      "address": "00d68650",
+      "end_exclusive": "00d68668",
+      "length": 24,
+      "sha256": "64cf20c66e4f8dc86a6020c0fc38300574a22f76f96edcb1e27051df60812a64",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "kind": "data"
+    },
+    {
+      "address": "00ce7554",
+      "end_exclusive": "00ce756c",
+      "length": 24,
+      "sha256": "2ebb201dffb89306044fd85b738ae180eb54dd22f5e16ac2b121a451a21cd93f",
+      "live_disk_equal": true,
+      "rebound_operands": {},
+      "kind": "data"
+    }
+  ],
+  "reconstructed": [
+    {
+      "address": "004bfaa0",
+      "cpp_symbol": "frame_job_optional_callback_004bfaa0",
+      "end_exclusive": "004bfaa3",
+      "original_abi": "RET4 only; no consumed ECX/argument",
+      "behavior": "Complete native empty callback, not an invented stub; no field writes."
+    },
+    {
+      "address": "004bfab0",
+      "cpp_symbol": "frame_job_dispatch_active_004bfab0",
+      "end_exclusive": "004bfabd",
+      "original_abi": "ECX secondarypool; AL signedactive18>0; upperEAX stale; RET",
+      "behavior": "Signed dispatch-active DWORD test, not worker-thread identity. Frame virtual10 consumer8683E0 selects deferred effect deletion from AL."
+    },
+    {
+      "address": "00be2ba0",
+      "cpp_symbol": "native_frame_job_thread_entry_00be2ba0",
+      "end_exclusive": "00be2bb0",
+      "original_abi": "Win32stdcall stackpool; EAX0; RET4",
+      "behavior": "Current poolvirtual0C then return0. New C++ interface validates actualD68650/CE7554 worker entry and receives existing execution binding explicitly."
+    },
+    {
+      "address": "00be2ea0",
+      "cpp_symbol": "run_native_frame_job_worker_00be2ea0",
+      "end_exclusive": "00be2f9d",
+      "original_abi": "ECX secondarypool; RET",
+      "behavior": "Register actual existing randomthread; actualWin32ID lookup; wait/reset currentstart; stoptest; atomic claim/execute/clear/compensate; signalcurrentdone; repeat. Stop signalsdone then unregister. State0 unwind only unregisters viaCC6B20/8F7D00/BD3050."
+    },
+    {
+      "address": "00be2fa0",
+      "cpp_symbol": "drain_native_frame_jobs_00be2fa0",
+      "end_exclusive": "00be301c",
+      "original_abi": "ECX secondarypool; RET",
+      "behavior": "Interlocked decrement claims LIFO index; actual currentjobvirtual00(capturedDWORD), clear capturedslot AFTERcallback; repeat and compensate negativeclaim once. Then currentdoneevents/currentworkercount waits."
+    },
+    {
+      "address": "00be3020",
+      "cpp_symbol": "enqueue_native_frame_job_00be3020",
+      "end_exclusive": "00be3040",
+      "original_abi": "ECX secondarypool; stackrawjob/DWORDargument; RET8",
+      "behavior": "Actual remaining20 read three times; third selects actualslot24+index*8; writejob thenargument, increment CURRENT count. No retain, bounds check or producer synchronization."
+    },
+    {
+      "address": "00be3110",
+      "cpp_symbol": "wake_native_frame_job_workers_00be3110",
+      "end_exclusive": "00be3147",
+      "original_abi": "ECX secondarypool; RET",
+      "behavior": "Per currentworker reset currentdone10 then signal currentstart0C; reload arrays/count. Concrete actualeventprofile D6821C and current slots use canonical Win32 helpers."
+    },
+    {
+      "address": "00be3150",
+      "cpp_symbol": "dispatch_native_frame_jobs_00be3150",
+      "end_exclusive": "00be31d1",
+      "original_abi": "ECX secondarypool; stacklowbyte useworkers; RET4",
+      "behavior": "Increment actual0109DBE4 then active18=1; nonzero wake/ResumeThread currenthandles, zero signaldone; caller drain/wait, active0, decrementsharedscope. No local EH rollback: job failure leaves active/scope set and capturedslot uncleared."
+    },
+    {
+      "address": "00bf2ce0",
+      "cpp_symbol": "enter_frame_job_scope_00bf2ce0",
+      "end_exclusive": "00bf2cec",
+      "original_abi": "No inputs; Interlocked result remains EAX; RET",
+      "behavior": "InterlockedIncrement actual0109DBE4; caller supplies that same atomic word, no substitute global. Preserves DWORD wrap and result."
+    },
+    {
+      "address": "00bf2cf0",
+      "cpp_symbol": "leave_frame_job_scope_00bf2cf0",
+      "end_exclusive": "00bf2cfc",
+      "original_abi": "No inputs; Interlocked result remains EAX; RET",
+      "behavior": "InterlockedDecrement actual0109DBE4; caller supplies that same atomic word, no substitute global. Preserves DWORD wrap and result."
+    }
+  ],
+  "ownership": "Actual138A4h secondary pool, existing10000-slot capacity, actual counters and raw unretained jobs. Borrow existing randomregistry, actual event/pool tables and required currentjob executor; no replacement pool/queue/counter.",
+  "definitions": "reports/native_frame_job_definitions_w.json",
+  "validation": {
+    "strict_build": "PASS scripts/build.ps1; local/native-frame-job-w-build.log",
+    "existing_ctests": "2/2 pass",
+    "fixture": "PASS local/native-frame-job-w-fixture.log",
+    "fixture_source": "local/frame_job_probe_w.cpp",
+    "native_cases": [
+      "All10 complete bodies and3 tables match live/disk",
+      "Signed predicate and sharedscope DWORD wrap/results",
+      "Serial LIFO, direct drain and callback-overwritten slot clear",
+      "Real event reset/start ordering and suspendedworker caller-only phase",
+      "One real suspended Win32 worker plus caller, two32-job dispatch cycles each original/rebuilt; every job exactlyonce, active/counter/slots restored",
+      "Actual worker stop/join with exit0; registration observed on worker and fallback checked on same worker after unregister"
+    ],
+    "rebindings": [
+      "IATs -> real Interlocked/GetCurrentThreadId/ResumeThread;0109DBE4 -> actualfixture atomic",
+      "Random register/unregister -> existing concrete registry",
+      "Internal dispatch targets -> copied original enqueue/drain/wake/scope/worker bodies",
+      "Executed original pool/event/job table entries -> callable original bodies/canonical event bridges",
+      "C++ Win32 entry wrapper receives actualpool and supplies existing execution binding",
+      "Instrumented jobs validate arguments/state/registration and mutate capturedslot; game-job execution not claimed"
+    ],
+    "cpp_failure_cases": [
+      "Dispatchjob throws: active1/sharedscope1, remainingdecremented, failedslot retained",
+      "Workerjob throws on registered currentthread: random unregister only, slot retained, doneevent unsignaled"
+    ],
+    "worker_scope": "One worker plus caller, repeatedtwice per implementation; not a general stress/performance test. Fixture creates worker storage/threads/events; production owner construction/lifetime remains separate.",
+    "original_exception_dispatch_executed": false,
+    "permanent_tests_added": 0,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "remaining": [
+    "Actual framepool owner allocation/suspendedthread creation/getter/destruction",
+    "Concrete game-job currentvirtual00 and point-effect virtual0 composition",
+    "Whole point-effect construction, originalEH/gameplay"
+  ],
+  "fixture_artifact_sha256": {
+    "local/frame_job_probe_w.cpp": "26d858e8fd7e462ae3cbc1adddc24fd9296289daa19f81b6f16fe957f7e8d022",
+    "local/run_frame_job_probe_w.cmd": "56d1c2d25bd41f125f1db2a4cc54b2fa5041b79f69cdf0cf4b35643a74bf897e",
+    "local/frame_job_native_bytes_w.hpp": "5f5cfbfda4718830463452d43cf1165ac619802c00ce86057b3620dc0f200f49",
+    "local/frame-job-byte-evidence-w.json": "9b775f0d2d2cf2fb8552d8152e43fa1d0f74c5cdab6551b311a0a29f1fc80cd4"
+  },
+  "ghidra_annotation_audit": [
+    {
+      "address": "004bfaa0",
+      "before": {
+        "address": "004bfaa0",
+        "function_name": "FUN_004bfaa0"
+      },
+      "after": {
+        "address": "004bfaa0",
+        "name": "BSP_FrameJobPool_OptionalCallback",
+        "evidence": "Hypothesis, not a recovered symbol. Complete native empty callback, not an invented stub; no field writes. Actual138A4h secondary storage; existing random/event owners and required currentjob execution binding. StrictWin32/original10-body plus real suspendedworker fixture passed. docs/NATIVE_FRAME_JOB_EXECUTION.md; reports/native_frame_job_execution.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "004bfab0",
+      "before": {
+        "address": "004bfab0",
+        "function_name": "FUN_004bfab0"
+      },
+      "after": {
+        "address": "004bfab0",
+        "name": "BSP_FrameJobPool_IsDispatching",
+        "evidence": "Hypothesis, not a recovered symbol. Signed dispatch-active DWORD test, not worker-thread identity. Frame virtual10 consumer8683E0 selects deferred effect deletion from AL. Actual138A4h secondary storage; existing random/event owners and required currentjob execution binding. StrictWin32/original10-body plus real suspendedworker fixture passed. docs/NATIVE_FRAME_JOB_EXECUTION.md; reports/native_frame_job_execution.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00be2ba0",
+      "before": {
+        "address": "00be2ba0",
+        "function_name": "FUN_00be2ba0"
+      },
+      "after": {
+        "address": "00be2ba0",
+        "name": "BSP_FrameJobPool_ThreadEntry",
+        "evidence": "Hypothesis, not a recovered symbol. Current poolvirtual0C then return0. New C++ interface validates actualD68650/CE7554 worker entry and receives existing execution binding explicitly. Actual138A4h secondary storage; existing random/event owners and required currentjob execution binding. StrictWin32/original10-body plus real suspendedworker fixture passed. docs/NATIVE_FRAME_JOB_EXECUTION.md; reports/native_frame_job_execution.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00be2ea0",
+      "before": {
+        "address": "00be2ea0",
+        "function_name": "FUN_00be2ea0"
+      },
+      "after": {
+        "address": "00be2ea0",
+        "name": "BSP_FrameJobPool_WorkerMain",
+        "evidence": "Hypothesis, not a recovered symbol. Register actual existing randomthread; actualWin32ID lookup; wait/reset currentstart; stoptest; atomic claim/execute/clear/compensate; signalcurrentdone; repeat. Stop signalsdone then unregister. State0 unwind only unregisters viaCC6B20/8F7D00/BD3050. Actual138A4h secondary storage; existing random/event owners and required currentjob execution binding. StrictWin32/original10-body plus real suspendedworker fixture passed. docs/NATIVE_FRAME_JOB_EXECUTION.md; reports/native_frame_job_execution.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00be2fa0",
+      "before": {
+        "address": "00be2fa0",
+        "function_name": "FUN_00be2fa0"
+      },
+      "after": {
+        "address": "00be2fa0",
+        "name": "BSP_FrameJobPool_DrainAndWait",
+        "evidence": "Hypothesis, not a recovered symbol. Interlocked decrement claims LIFO index; actual currentjobvirtual00(capturedDWORD), clear capturedslot AFTERcallback; repeat and compensate negativeclaim once. Then currentdoneevents/currentworkercount waits. Actual138A4h secondary storage; existing random/event owners and required currentjob execution binding. StrictWin32/original10-body plus real suspendedworker fixture passed. docs/NATIVE_FRAME_JOB_EXECUTION.md; reports/native_frame_job_execution.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00be3020",
+      "before": {
+        "address": "00be3020",
+        "function_name": "BSP_FrameJobPool_Enqueue",
+        "comment": "[BSP reconstruction 00be3020]\nHypothesis, not a recovered symbol. Frame job pool vtable +4h, __thiscall(pool+4, job, arg), RET 8: stores the (job, arg) pair at +24h + count*8 and increments the count; the pool 00be2fa0 drains last in first out (docs/GAME_RENDER_FRAME.md). Defined from disk-verified bytes by the integrator."
+      },
+      "after": {
+        "address": "00be3020",
+        "name": "BSP_FrameJobPool_Enqueue",
+        "evidence": "Hypothesis, not a recovered symbol. Frame job pool vtable +4h, __thiscall(pool+4, job, arg), RET 8: stores the (job, arg) pair at +24h + count*8 and increments the count; the pool 00be2fa0 drains last in first out (docs/GAME_RENDER_FRAME.md). Defined from disk-verified bytes by the integrator. | Packet orch3_native_frame_job_execution_w. Actual remaining20 read three times; third selects actualslot24+index*8; writejob thenargument, increment CURRENT count. No retain, bounds check or producer synchronization. Actual138A4h secondary storage; existing random/event owners and required currentjob execution binding. StrictWin32/original10-body plus real suspendedworker fixture passed. docs/NATIVE_FRAME_JOB_EXECUTION.md; reports/native_frame_job_execution.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00be3110",
+      "before": {
+        "address": "00be3110",
+        "function_name": "FUN_00be3110"
+      },
+      "after": {
+        "address": "00be3110",
+        "name": "BSP_FrameJobPool_WakeWorkers",
+        "evidence": "Hypothesis, not a recovered symbol. Per currentworker reset currentdone10 then signal currentstart0C; reload arrays/count. Concrete actualeventprofile D6821C and current slots use canonical Win32 helpers. Actual138A4h secondary storage; existing random/event owners and required currentjob execution binding. StrictWin32/original10-body plus real suspendedworker fixture passed. docs/NATIVE_FRAME_JOB_EXECUTION.md; reports/native_frame_job_execution.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00be3150",
+      "before": {
+        "address": "00be3150",
+        "function_name": "FUN_00be3150"
+      },
+      "after": {
+        "address": "00be3150",
+        "name": "BSP_FrameJobPool_Dispatch",
+        "evidence": "Hypothesis, not a recovered symbol. Increment actual0109DBE4 then active18=1; nonzero wake/ResumeThread currenthandles, zero signaldone; caller drain/wait, active0, decrementsharedscope. No local EH rollback: job failure leaves active/scope set and capturedslot uncleared. Actual138A4h secondary storage; existing random/event owners and required currentjob execution binding. StrictWin32/original10-body plus real suspendedworker fixture passed. docs/NATIVE_FRAME_JOB_EXECUTION.md; reports/native_frame_job_execution.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00bf2ce0",
+      "before": {
+        "address": "00bf2ce0",
+        "function_name": "FUN_00bf2ce0"
+      },
+      "after": {
+        "address": "00bf2ce0",
+        "name": "BSP_FrameJobScope_Enter",
+        "evidence": "Hypothesis, not a recovered symbol. InterlockedIncrement actual0109DBE4; caller supplies that same atomic word, no substitute global. Preserves DWORD wrap and result. Actual138A4h secondary storage; existing random/event owners and required currentjob execution binding. StrictWin32/original10-body plus real suspendedworker fixture passed. docs/NATIVE_FRAME_JOB_EXECUTION.md; reports/native_frame_job_execution.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00bf2cf0",
+      "before": {
+        "address": "00bf2cf0",
+        "function_name": "FUN_00bf2cf0"
+      },
+      "after": {
+        "address": "00bf2cf0",
+        "name": "BSP_FrameJobScope_Leave",
+        "evidence": "Hypothesis, not a recovered symbol. InterlockedDecrement actual0109DBE4; caller supplies that same atomic word, no substitute global. Preserves DWORD wrap and result. Actual138A4h secondary storage; existing random/event owners and required currentjob execution binding. StrictWin32/original10-body plus real suspendedworker fixture passed. docs/NATIVE_FRAME_JOB_EXECUTION.md; reports/native_frame_job_execution.json. New C++ ABI; nativeEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00cc6b28",
+      "before": {
+        "address": "00cc6b28",
+        "function_name": "FUN_00cc6b28"
+      },
+      "after": {
+        "address": "00cc6b28",
+        "name": "EH_FrameJobPool_WorkerMain",
+        "evidence": "Ten-byte compiler handler selectsE012FC/mapE012F4 state0->-1 CC6B20 ->8F7D00 ->BD3050 random unregistration only. No slot/count/done-event rollback. Verifiedbytes/defined/saved. docs/NATIVE_FRAME_JOB_EXECUTION.md; reports/native_frame_job_execution.json. Original exception dispatch unexecuted."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    }
+  ],
+  "ghidra_annotation_verification": "All11 names/evidence saved and read back, prior comments preserved;11 affected exports refreshed."
+}
