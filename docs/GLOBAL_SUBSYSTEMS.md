@@ -167,3 +167,14 @@ Win32 build, both existing checks, a focused singleton lifetime fixture and the
 existing startup fixture passed. Six false cleanup gaps and two stale inventory
 tags were corrected with prior state retained. Actual configuration population,
 effect virtual dispatch, native ABI/SEH and gameplay remain outstanding.
+
+## Correction from docs/GAMEPLAY_EFFECT_ACQUISITION.md
+
+The effect loop now invokes the reconstructed00871BA0/00871B50/008700E0 chain
+through `GlobalSubsystemContext::effect_acquisition`; the former acquisition host
+method is removed. The concrete manager/name index, cache-hit retain, fresh owner
+setup and cache-cell reload after temporary cleanup execute directly. Component
+virtual loading, vector append and zero-reference dispatch still require actual
+services. The existing startup fixture passed with concrete lookup/cache hits,
+eight Lua loads and its original publication/reference checks. See the acquisition
+report for this batch's separate build, fixture and integration provenance.

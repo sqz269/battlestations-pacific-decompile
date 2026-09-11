@@ -144,3 +144,12 @@ native-definition ABI or gameplay validation is claimed.
   through00A83FD0. Tracer returns a secondary pointer at+80; follow its native ABI.
 - Supported stored-body extent repairs through00870DC2 and0086EB47, plus the
   earlier manager/name-index tail extents documented in their packets.
+
+## Correction from docs/GAMEPLAY_EFFECT_ACQUISITION.md
+
+The previously open008700E0 acquisition sequence and00871B50/00871BA0 wrappers are
+now reconstructed around this allocation/identity code. Unique weak insertion,
+cache-hit retain and final cache-value reload after temporary cleanup are concrete.
+The00870400 component virtual remains a required service. Stored cleanup-body
+extents remain incomplete: the Java bridge execution gate rejected the read-only
+capability probe; see docs/GHIDRA_BODY_EXTENTS.md for the saved response.
