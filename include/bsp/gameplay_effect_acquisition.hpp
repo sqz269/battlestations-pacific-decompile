@@ -1,19 +1,21 @@
 #pragma once
 
 #include "bsp/gameplay_effect_definition.hpp"
-#include "bsp/gameplay_effect_components.hpp"
+#include "bsp/gameplay_effect_scalar_components.hpp"
 #include "bsp/gameplay_effect_name_index.hpp"
 #include "bsp/gui_lua_runtime.hpp"
 
 namespace bsp {
 // Concrete definition allocation publishes D0DA58, whose slot8 is00870400.
-// Its construction/iteration runs directly; component virtuals remain bound.
+// Its construction/iteration and seven component reader/cleanup pairs run
+// directly. Other current component tables require remaining services.
 struct GameplayEffectAcquisitionHost : GameplayEffectNameIndexHost,
     GameplayEffectComponentServices {};
 struct GameplayEffectAcquisitionContext {
     GameplayEffectManagerContext& manager;
     NativeStringStorage& strings;
     GameplayEffectAcquisitionHost& host;
+    GameplayEffectScalarComponentDispatcher& components;
 };
 
 //008700E0: ECX manager, stack out/ID/flag; EAX out, RETCh. ID<=0 stores

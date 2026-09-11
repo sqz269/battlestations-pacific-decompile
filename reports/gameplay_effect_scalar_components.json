@@ -1,0 +1,607 @@
+{
+  "packet": "orch4_effect_scalar_components_o",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00868de0",
+      "name": "read_effect_shake_00868de0",
+      "proposed_name": "BSP_EffectShake_ReadLua",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack retained LuaObject pointer; RET4.",
+      "meaning": "Base then truthiness Persistent20, bare float Radius24/Strength28.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00868eb2",
+      "last_instruction_length": 3,
+      "end_exclusive": "00868eb5",
+      "byte_span": 213,
+      "sha256": "e964519e44104d0cc28183c4b48aee5757a917db4fe889c021a1a17fc1f3d160",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack retained LuaObject pointer; RET4. Base then truthiness Persistent20, bare float Radius24/Strength28. Full-span disk/live SHA256 e964519e44104d0cc28183c4b48aee5757a917db4fe889c021a1a17fc1f3d160. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "00868ec0",
+      "name": "read_effect_rumble_base_00868ec0",
+      "proposed_name": "BSP_EffectRumble_ReadLuaBase",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack retained LuaObject pointer; RET4.",
+      "meaning": "Base then bare integer PowerType20 through binary32 and late CRT mode, bare float TimeTotal24/Radius28.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00868f92",
+      "last_instruction_length": 3,
+      "end_exclusive": "00868f95",
+      "byte_span": 213,
+      "sha256": "63b79f5523e9a26c2891284f7de2f46c8a5051434f3b08ba48d25000a11090cc",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack retained LuaObject pointer; RET4. Base then bare integer PowerType20 through binary32 and late CRT mode, bare float TimeTotal24/Radius28. Full-span disk/live SHA256 63b79f5523e9a26c2891284f7de2f46c8a5051434f3b08ba48d25000a11090cc. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "00868fa0",
+      "name": "read_effect_const_rumble_00868fa0",
+      "proposed_name": "BSP_EffectConstRumble_ReadLua",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack retained LuaObject pointer; RET4.",
+      "meaning": "Rumble base then bare float Magnitude2C.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0086900a",
+      "last_instruction_length": 3,
+      "end_exclusive": "0086900d",
+      "byte_span": 109,
+      "sha256": "d8d741c48cc144cdcd622507064e0d3b1e4cd35745958858b121d9a222e27bf4",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack retained LuaObject pointer; RET4. Rumble base then bare float Magnitude2C. Full-span disk/live SHA256 d8d741c48cc144cdcd622507064e0d3b1e4cd35745958858b121d9a222e27bf4. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "00869080",
+      "name": "read_effect_slope_rumble_00869080",
+      "proposed_name": "BSP_EffectSlopeRumble_ReadLua",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack retained LuaObject pointer; RET4.",
+      "meaning": "Rumble base then bare float StartMagnitude2C.",
+      "name_is_hypothesis": true,
+      "last_instruction": "008690ea",
+      "last_instruction_length": 3,
+      "end_exclusive": "008690ed",
+      "byte_span": 109,
+      "sha256": "2ae6f81fabdf02b6707a8bf11734cf12db89840f89c396833f9126ad8a14a672",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack retained LuaObject pointer; RET4. Rumble base then bare float StartMagnitude2C. Full-span disk/live SHA256 2ae6f81fabdf02b6707a8bf11734cf12db89840f89c396833f9126ad8a14a672. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "00869160",
+      "name": "read_effect_square_rumble_00869160",
+      "proposed_name": "BSP_EffectSquareRumble_ReadLua",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack retained LuaObject pointer; RET4.",
+      "meaning": "Rumble base then truthiness MaxStart2C, bare floats MinMagnitude30/MaxMagnitude34/MinTime38/MaxTime3C. Preserve padding2D..2F.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0086928b",
+      "last_instruction_length": 3,
+      "end_exclusive": "0086928e",
+      "byte_span": 302,
+      "sha256": "206cfd02a9670787f5b25342f7dc9eb26a780e07091c474a5e072beb0240dcf6",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack retained LuaObject pointer; RET4. Rumble base then truthiness MaxStart2C, bare floats MinMagnitude30/MaxMagnitude34/MinTime38/MaxTime3C. Preserve padding2D..2F. Full-span disk/live SHA256 206cfd02a9670787f5b25342f7dc9eb26a780e07091c474a5e072beb0240dcf6. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "008694c0",
+      "name": "read_effect_splash_008694c0",
+      "proposed_name": "BSP_EffectSplash_ReadLua",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack retained LuaObject pointer; RET4.",
+      "meaning": "Base then number-only Radius20 default1, Amplitude24 default0.1, Speed28 default1.",
+      "name_is_hypothesis": true,
+      "last_instruction": "008695a8",
+      "last_instruction_length": 3,
+      "end_exclusive": "008695ab",
+      "byte_span": 235,
+      "sha256": "81ec60e67c9f698bc468d550202f32586a6596bbedd76e00798083c4cdca3a02",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack retained LuaObject pointer; RET4. Base then number-only Radius20 default1, Amplitude24 default0.1, Speed28 default1. Full-span disk/live SHA256 81ec60e67c9f698bc468d550202f32586a6596bbedd76e00798083c4cdca3a02. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "00869fd0",
+      "name": "read_effect_light_00869fd0",
+      "proposed_name": "BSP_EffectLight_ReadLua",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack retained LuaObject pointer; RET4.",
+      "meaning": "Base, number-only Duration20 default2/Radius24 default10. DiffuseColor28..34 default(0,1,0,1); SpecularColor38..44 default(0,0,1,1). Tracked00B67D40 checks index5 nil then reads1..4 before publishing.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0086a17c",
+      "last_instruction_length": 3,
+      "end_exclusive": "0086a17f",
+      "byte_span": 431,
+      "sha256": "55645236512328bede4e0eb8a8b7ad165fa47d671affbfb97c556edc3fb53df3",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack retained LuaObject pointer; RET4. Base, number-only Duration20 default2/Radius24 default10. DiffuseColor28..34 default(0,1,0,1); SpecularColor38..44 default(0,0,1,1). Tracked00B67D40 checks index5 nil then reads1..4 before publishing. Full-span disk/live SHA256 55645236512328bede4e0eb8a8b7ad165fa47d671affbfb97c556edc3fb53df3. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "0086b2b0",
+      "name": "read_effect_waterdrops_0086b2b0",
+      "proposed_name": "BSP_EffectWaterdrops_ReadLua",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack retained LuaObject pointer; RET4.",
+      "meaning": "Base then number-only eight floats20..3C defaults(.5,4,.1,.25,.95,10,10,10), boolean-only bytes40..43 defaultfalse, number-only integer WaterdropCount44 default50. String-only Texture/default white.tga pooled constructor; release Lua field before current renderer[00F8D394] slot64(&name,0); direct owned result48 overwrite without old release; then destroy temporary name.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0086b626",
+      "last_instruction_length": 3,
+      "end_exclusive": "0086b629",
+      "byte_span": 889,
+      "sha256": "b6949e0cc71b7f24d130e5b8402bca50eaf37852ed7985d547ff68742447d546",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack retained LuaObject pointer; RET4. Base then number-only eight floats20..3C defaults(.5,4,.1,.25,.95,10,10,10), boolean-only bytes40..43 defaultfalse, number-only integer WaterdropCount44 default50. String-only Texture/default white.tga pooled constructor; release Lua field before current renderer[00F8D394] slot64(&name,0); direct owned result48 overwrite without old release; then destroy temporary name. Full-span disk/live SHA256 b6949e0cc71b7f24d130e5b8402bca50eaf37852ed7985d547ff68742447d546. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "0086b7e0",
+      "name": "destroy_effect_component_base_0086b7e0",
+      "proposed_name": "BSP_EffectComponent_Destruct",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; RET.",
+      "meaning": "Write D0D570, destroy actual name8/C through pool, preserve dangling header and callback mutations, then base00BD30F0 writes CEB130.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0086b846",
+      "last_instruction_length": 1,
+      "end_exclusive": "0086b847",
+      "byte_span": 103,
+      "sha256": "defd96217184042e32705e2cb0a7ff3e35dbb92f45f2989b2e6816cee05a62e5",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; RET. Write D0D570, destroy actual name8/C through pool, preserve dangling header and callback mutations, then base00BD30F0 writes CEB130. Full-span disk/live SHA256 defd96217184042e32705e2cb0a7ff3e35dbb92f45f2989b2e6816cee05a62e5. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "0086cd40",
+      "name": "destroy_effect_waterdrops_0086cd40",
+      "proposed_name": "BSP_EffectWaterdrops_Destruct",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; RET.",
+      "meaning": "Write D0D634, capture texture48, InterlockedDecrement(texture+4), current texture slot0 only on zero; clear actual48 after callback (including replacement); common component destructor.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0086cdaf",
+      "last_instruction_length": 1,
+      "end_exclusive": "0086cdb0",
+      "byte_span": 112,
+      "sha256": "7a1bb59137f3bc9f032aae192b265d98e6ae85a3d5f1d95b5707831c1508fa74",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; RET. Write D0D634, capture texture48, InterlockedDecrement(texture+4), current texture slot0 only on zero; clear actual48 after callback (including replacement); common component destructor. Full-span disk/live SHA256 7a1bb59137f3bc9f032aae192b265d98e6ae85a3d5f1d95b5707831c1508fa74. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "0086d0a0",
+      "name": "scalar_delete_effect_shake_0086d0a0",
+      "proposed_name": "CG_scalar_deleting_dtor_0086d0a0",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack flags; EAX original pointer; RET4.",
+      "meaning": "Shake: common destructor, flags bit0 free, original pointer return.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0086d0bb",
+      "last_instruction_length": 3,
+      "end_exclusive": "0086d0be",
+      "byte_span": 30,
+      "sha256": "1f74df273aefc4c1eebe02b2a57f67630b8425976779bcfbbdc73b1278270fa6",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. Shake: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 1f74df273aefc4c1eebe02b2a57f67630b8425976779bcfbbdc73b1278270fa6. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "0086d0c0",
+      "name": "scalar_delete_effect_waterdrops_0086d0c0",
+      "proposed_name": "CG_scalar_deleting_dtor_0086d0c0",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack flags; EAX original pointer; RET4.",
+      "meaning": "Waterdrops: derived destructor0086CD40, flags bit0 free, original pointer return.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0086d0db",
+      "last_instruction_length": 3,
+      "end_exclusive": "0086d0de",
+      "byte_span": 30,
+      "sha256": "895acba0a3bfbf599d5f863ae2955ea5fb51049f39601fad6ade9133676ee10c",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. Waterdrops: derived destructor0086CD40, flags bit0 free, original pointer return. Full-span disk/live SHA256 895acba0a3bfbf599d5f863ae2955ea5fb51049f39601fad6ade9133676ee10c. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "0086d0e0",
+      "name": "scalar_delete_effect_const_rumble_0086d0e0",
+      "proposed_name": "CG_scalar_deleting_dtor_0086d0e0",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack flags; EAX original pointer; RET4.",
+      "meaning": "ConstRumble: common destructor, flags bit0 free, original pointer return.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0086d0fb",
+      "last_instruction_length": 3,
+      "end_exclusive": "0086d0fe",
+      "byte_span": 30,
+      "sha256": "e6449cd791059b7dc6dbaa1fd533812608d21bcf74d24ba64df400200f413edc",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. ConstRumble: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 e6449cd791059b7dc6dbaa1fd533812608d21bcf74d24ba64df400200f413edc. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "0086d100",
+      "name": "scalar_delete_effect_slope_rumble_0086d100",
+      "proposed_name": "CG_scalar_deleting_dtor_0086d100",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack flags; EAX original pointer; RET4.",
+      "meaning": "SlopeRumble: common destructor, flags bit0 free, original pointer return.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0086d11b",
+      "last_instruction_length": 3,
+      "end_exclusive": "0086d11e",
+      "byte_span": 30,
+      "sha256": "f1debbd5617fc289a550772c726f203f44674d2355253162281b8b0f2c58641b",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. SlopeRumble: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 f1debbd5617fc289a550772c726f203f44674d2355253162281b8b0f2c58641b. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "0086d120",
+      "name": "scalar_delete_effect_square_rumble_0086d120",
+      "proposed_name": "CG_scalar_deleting_dtor_0086d120",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack flags; EAX original pointer; RET4.",
+      "meaning": "SquareRumble: common destructor, flags bit0 free, original pointer return.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0086d13b",
+      "last_instruction_length": 3,
+      "end_exclusive": "0086d13e",
+      "byte_span": 30,
+      "sha256": "b23edc75190bb899725eed0c772d2fd889f4e2bf2c8091798dae2d303c00eb80",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. SquareRumble: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 b23edc75190bb899725eed0c772d2fd889f4e2bf2c8091798dae2d303c00eb80. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "0086d140",
+      "name": "scalar_delete_effect_light_0086d140",
+      "proposed_name": "CG_scalar_deleting_dtor_0086d140",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack flags; EAX original pointer; RET4.",
+      "meaning": "Light: common destructor, flags bit0 free, original pointer return.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0086d15b",
+      "last_instruction_length": 3,
+      "end_exclusive": "0086d15e",
+      "byte_span": 30,
+      "sha256": "5d967bdecca0986cf8a14028aa95f93cd406c9b4561df73e4dde1c4017decf23",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. Light: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 5d967bdecca0986cf8a14028aa95f93cd406c9b4561df73e4dde1c4017decf23. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    },
+    {
+      "address": "0086d160",
+      "name": "scalar_delete_effect_splash_0086d160",
+      "proposed_name": "CG_scalar_deleting_dtor_0086d160",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_normal_flow_actual_component_storage",
+      "abi": "ECX actual component; stack flags; EAX original pointer; RET4.",
+      "meaning": "Splash: common destructor, flags bit0 free, original pointer return.",
+      "name_is_hypothesis": true,
+      "last_instruction": "0086d17b",
+      "last_instruction_length": 3,
+      "end_exclusive": "0086d17e",
+      "byte_span": 30,
+      "sha256": "8cbc55a80121a1cb6329cf97fa4f257f2a9dab587573781779a5bd64f486d665",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX actual component; stack flags; EAX original pointer; RET4. Splash: common destructor, flags bit0 free, original pointer return. Full-span disk/live SHA256 8cbc55a80121a1cb6329cf97fa4f257f2a9dab587573781779a5bd64f486d665. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated."
+    }
+  ],
+  "helper_projections": [
+    {
+      "address": "00b67d40",
+      "name": "effect_tracked_lua_vector4_or_00b67d40",
+      "proposed_name": "BSP_LuaObject_GetVector4OrDefault",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_tracked_reference_projection_native_borrowed_paths_analyzed",
+      "abi": "ECX LuaObject; stack output/fallback four-word pointers; EAX output; RET8.",
+      "meaning": "Tracked field projection: Table with index5 Nil, release5 then each index1..4 with bare lua_tonumber and binary32; publish all four only after release4. Missing entries zero and sparse index6 ignored. Native borrowed aliases remain outside this implementation.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00b67f03",
+      "last_instruction_length": 3,
+      "end_exclusive": "00b67f06",
+      "byte_span": 454,
+      "sha256": "6736aa5c189d5f464f4c797b5146a8fdd00c1bf663bb40e0dd1caa68c72e8646",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX LuaObject; stack output/fallback four-word pointers; EAX output; RET8. Tracked field projection: Table with index5 Nil, release5 then each index1..4 with bare lua_tonumber and binary32; publish all four only after release4. Missing entries zero and sparse index6 ignored. Native borrowed aliases remain outside this implementation. Full-span disk/live SHA256 6736aa5c189d5f464f4c797b5146a8fdd00c1bf663bb40e0dd1caa68c72e8646. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated.",
+      "implementation_symbol": "vector4_or",
+      "projection_boundary": "Only tracked get_by_name field references needed by Light/Waterdrops; native borrowed-alias paths are not generalized."
+    },
+    {
+      "address": "00b685c0",
+      "name": "effect_tracked_lua_string_or_00b685c0",
+      "proposed_name": "BSP_LuaObject_ConstructStringOrDefault",
+      "source": "src/gameplay_effect_scalar_components.cpp",
+      "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+      "status": "reconstructed_tracked_reference_projection_native_borrowed_paths_analyzed",
+      "abi": "ECX LuaObject; stack output native string/fallback C string; EAX output; RET8.",
+      "meaning": "Tracked field projection: only actual Lua String qualifies; else fallback C string. Construct actual8h output via0041E870, no input release or previous-output cleanup. Waterdrops destroys input before renderer call and output afterward.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00b68620",
+      "last_instruction_length": 3,
+      "end_exclusive": "00b68623",
+      "byte_span": 99,
+      "sha256": "a51e963e0593b462888ec81e4ec449c6992a6352649a84d814d50ac93c2f810d",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX LuaObject; stack output native string/fallback C string; EAX output; RET8. Tracked field projection: only actual Lua String qualifies; else fallback C string. Construct actual8h output via0041E870, no input release or previous-output cleanup. Waterdrops destroys input before renderer call and output afterward. Full-span disk/live SHA256 a51e963e0593b462888ec81e4ec449c6992a6352649a84d814d50ac93c2f810d. See docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md. Win32 and real-Lua acquisition/lifetime fixture passed; native reader/destructor differential, ABI/SEH and gameplay remain unvalidated.",
+      "implementation_symbol": "read_effect_waterdrops_0086b2b0",
+      "projection_boundary": "Only tracked get_by_name field references needed by Light/Waterdrops; native borrowed-alias paths are not generalized."
+    }
+  ],
+  "acquisition_integration": {
+    "address": "008700e0",
+    "name": "gameplay_effect_acquisition_concrete_scalar_component_dispatch",
+    "source": "src/gameplay_effect_acquisition.cpp",
+    "document": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md",
+    "status": "integrated_seven_concrete_component_readers_and_cleanup",
+    "evidence": "Hypothesis, not a recovered symbol. Acquisition requires the concrete current-vtable scalar component dispatcher: Shake, ConstRumble, SlopeRumble, SquareRumble, Light, Splash and Waterdrops read actual fields and destroy through verified scalar wrappers. Other current tables require remaining services; Waterdrops current renderer texture call remains bound. Same dispatcher supports actual definition teardown. Real-Lua acquisition/teardown and existing startup fixture passed."
+  },
+  "no_ghidra_function": [],
+  "read_only_constants": [
+    {
+      "address": "00ce3958",
+      "word": "40000000",
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    },
+    {
+      "address": "00ce3800",
+      "word": "3f000000",
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    },
+    {
+      "address": "00ce3d34",
+      "word": "40800000",
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    },
+    {
+      "address": "00ce3868",
+      "word": "3e800000",
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    },
+    {
+      "address": "00ced9e0",
+      "word": "3f733333",
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    },
+    {
+      "address": "00d7a2f0",
+      "word": "3dcccccd",
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    },
+    {
+      "address": "00ce38b8",
+      "word": "41200000",
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    },
+    {
+      "address": "00d7a24c",
+      "word": "3f800000",
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    }
+  ],
+  "read_only_dispatch_tables": [
+    {
+      "address": "00d0d5f4",
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d0a0",
+        "14": "00868de0"
+      },
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    },
+    {
+      "address": "00d0d76c",
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d0e0",
+        "14": "00868fa0"
+      },
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    },
+    {
+      "address": "00d0d78c",
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d100",
+        "14": "00869080"
+      },
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    },
+    {
+      "address": "00d0d7ac",
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d120",
+        "14": "00869160"
+      },
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    },
+    {
+      "address": "00d0d654",
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d140",
+        "14": "00869fd0"
+      },
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    },
+    {
+      "address": "00d0d674",
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d160",
+        "14": "008694c0"
+      },
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    },
+    {
+      "address": "00d0d634",
+      "slots": {
+        "00": "00bd30e0",
+        "04": "0086d0c0",
+        "14": "0086b2b0"
+      },
+      "disk_live_bytes_equal": true,
+      "section": ".rdata",
+      "section_characteristics": "40000040",
+      "read_only": true
+    }
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "tests": "Existing2/2 passed",
+    "build_log": "local/effect_scalar_o_build.log",
+    "seed_verification": "local/effect_scalar_o_verify_seeds.log",
+    "fixtures": [
+      {
+        "source": "local/effect_scalar_components_fixture.cpp",
+        "log": "local/effect_scalar_o_fixture.log",
+        "scope": "One real-Lua acquisition/lifetime fixture: seven concrete readers, required Sound fallback, numeric coercion/defaults, sparse colors/index5-before1..4, all texture default floats/bools/count/string-only fallback, texture overwrite without old release, zero callback replacement then actual-slot clearing, actual name ownership, flags2 no free.",
+        "source_sha256": "1084dc6ca79759327dbccc40bd6a34e034717da542484038d56ff017b6b6d0fc"
+      },
+      {
+        "source": "local/global_subsystems_fixture.cpp",
+        "log": "local/effect_scalar_o_startup_fixture.log",
+        "scope": "Existing full startup fixture updated for mandatory concrete component dispatcher; actual cache-hit acquisitions, eight Lua loads/publication/refcounts.",
+        "source_sha256": "55a85c43e4ea6a7ed4be7b6cf41bc070be67d7ff902dd8b16ebf0f5f2ff2bfed"
+      }
+    ],
+    "library_sha256": "01f3a993e2c162f32d61920d0f0937683191c4f05c0e74d7a52a08155a194f17",
+    "code_revision": "5b0dee1e07c90429988bea9b2f9c63587a4a645f",
+    "native_reader_destructor_differential": false,
+    "native_abi": false,
+    "game_validated": false,
+    "seed_functions_verified": 8
+  },
+  "ghidra": {
+    "prototypes": "reports/gameplay_effect_scalar_components_prototypes.json",
+    "prototypes_verified": 19,
+    "flow": "reports/gameplay_effect_scalar_components_flow.json",
+    "internal_gaps_repaired": 7,
+    "compiler_scalar_tags_preserved": true,
+    "annotations": {
+      "count": 20,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "local/ghidra-annotations-20260911T181734Z.json",
+      "readback": "local/effect_scalar_o_comments.json",
+      "exports": "local/effect_scalar_o_final_exports.log",
+      "all19_prototypes_verified_after_annotation": true
+    }
+  },
+  "boundaries": [
+    "Normal-flow bodies use actual component offsets and real Lua but host reference handles are not native14h LuaObjects.",
+    "Required renderer/texture call sites and remaining six component families are not replaced with invented payloads or successful no-ops.",
+    "Vector and string helper code is a tracked field projection; full borrowed-alias behavior remains outside this packet.",
+    "Integer conversions use existing binary32 and late CRT hardware path. Constant and vtable substitutions are disk/live verified read-only image data.",
+    "Waterdrops pseudocode still misidentifies temporary cleanup registers; source follows reviewed assembly.",
+    "No SEH, native reader/destructor differential, effect tick, render or gameplay validation is claimed."
+  ],
+  "followups": [
+    {
+      "packet": "effect_sound_reader_and_cleanup",
+      "addresses": [
+        "0086ef60",
+        "0086fb00"
+      ]
+    },
+    {
+      "packet": "remaining_effect_virtuals",
+      "document": "docs/GAMEPLAY_EFFECT_COMPONENTS.md",
+      "types": [
+        "Particle",
+        "Tracer",
+        "WaterTracer",
+        "Flare",
+        "ThunderStorm"
+      ]
+    },
+    {
+      "packet": "startup_effect_vector_append",
+      "addresses": [
+        "004d9c00"
+      ]
+    }
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_tested",
+    "validated_revision": "385e4917f99c5c857ecde3ecf7ab71cb0c466219",
+    "main_base": "0c08adba",
+    "log": "local/effect_scalar_o_integrate.log",
+    "build": "MSVC Win32 Release passed",
+    "tests": "Existing2/2 passed",
+    "library_sha256": "66375e00feedf9c3cdcc49bc719c9b598ba7bf161d182a92e5b22bf3a9c2acd3",
+    "fixture_provenance": "The scalar-component real-Lua fixture and existing startup fixture ran on source5b0dee1e and validation.library_sha256; this combined CTest build is separate.",
+    "ghidra_integration_saved_names": 20,
+    "prior_annotation_log": "../battlestations-pacific-decompile/local/ghidra-annotations-20260911T182058Z.json",
+    "native_abi": false,
+    "game_validated": false
+  }
+}

@@ -161,3 +161,13 @@ destructors. The slots below were checked against both disk and live Ghidra.
 |SquareRumble|0086D120|00869160|
 |Light|0086D140|00869FD0|
 |Splash|0086D160|008694C0|
+
+## Correction from docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md
+
+Seven current component tables now have concrete Lua readers and scalar
+cleanup: Shake, ConstRumble, SlopeRumble, SquareRumble, Light, Splash and
+Waterdrops. Acquisition requires their dispatcher, also usable for definition
+destruction. The remaining six table families still require services.
+Waterdrops retains a required current-renderer texture binding. See the new
+document for exact field/default rules, tracked color/string helper limits,
+texture callback order, flow repair and validation provenance.

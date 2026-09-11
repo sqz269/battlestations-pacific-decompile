@@ -27,10 +27,35 @@ Reached source dependencies are the complete raw tree routines in `native_vfs_da
 
 The focused ignored probe links the actual `bsp_core.lib` and executes unchanged original code for all eight functions plus the three FileStore search dependencies: eleven bodies, 871 bytes. Relative calls share one relocation delta; only external CRT and actual resize call targets are bridged. It compares returned values and the full 2048-byte record arena. Copies also compare the actual pool prefix through offset 8AD484 at identical addresses, preserving the live OS critical section. Cases cover case-insensitive hits, misses, zero headers with unusable data, empty storage, signed MPKG counts, MSAR truncated row count, duplicate-first behavior, recorded high-bit lengths, identity copies, empty copies, and abandonment of an unusable old output. This validates composition with the actual resize/pool implementation; it does not independently execute original pool code or native exception unwinding.
 
-`reports/native_vfs_lookup_leaves_audit.json` records fresh guarded original spans, current source and build artifacts, native profiles, the strict Win32 build, two existing CTests, eight seed checks, and the focused probe result. Ghidra, shared ledgers, source registration, renderer/node/getter files and original game files are untouched. Primary integration must register the new source and eight address records after review.
+`reports/native_vfs_lookup_leaves_audit.json` records fresh guarded original spans, current source and build artifacts, native profiles, the strict Win32 build, two existing CTests, eight seed checks, and the focused probe result. At worker handoff, shared Ghidra metadata and main source registration were unchanged. The primary subsequently registered all eight entries and completed the validation below.
 
 The original consumer investigation remains bounded and incomplete. B1A4F0 is pinned as a complete 1338-byte native consumer but is not reconstructed here. Its current virtual +4/+8/+C resource routes and BECCD0 message-pump policy need concrete dependency closure. Its direct append B1A3C0 requires 4DA180 reserve, 4D6F70 record copy and 4D45A0 destruction, including hidden post-free publication/cleanup paths obscured by no-return annotations. Existing B305F0/B30B40 cache analogues do not remove these requirements. The renderer pollers B21F70/B22030 retain the callback dependencies documented in the prior renderer reload discovery. Existing A84740 sound-cache and B31090 effect-cache interfaces remain qualified host/provider domains.
 
 The next ownership prerequisite should bind the actual pool through the existing alias chain: 4D48A0 copy-list -> 4D26A0 insertion -> 4CE6F0 node allocation -> 44BCB0 string copy, plus 4D05E0 clear and 4D0A10 destruction. Current APIs expose `SizedStoragePool&`; 4CE780 count growth, 4C3020 sentinel allocation, CRT allocation/free, returning iterator validation and native exception order must remain intact during any coordinated interface work. Then the concrete B1A3C0/4DA180/4D6F70/4D45A0 record closure can be recovered without substituting a pool or resource callback. No renderer, node or getter files were claimed for that future packet.
 
 These leaves also prepare the separate BDD440 membership visitor (D68398, provider +10) and BDD600 name-probe visitor (D683E8, provider +18). The current BDD0A0 source is explicitly qualified to the D683B0 date visitor. Extending those visitor domains requires their own full callback, stop, temporary ownership and dispatch packet; no general traversal closure is claimed by this leaf implementation.
+
+
+## Primary main-library integration
+
+Strict MSVC Win32 compilation, both existing CTests and eight fresh seeds
+passed. The primary verified 47 worker pins and 22 fresh guarded spans,
+3,117 bytes including all 605 owned bytes. The unchanged fixture linked the
+actual main archive and passed 50 original comparisons: 42 lookups and eight
+copies over eleven original bodies totaling 871 bytes. All 102,400 arena bytes
+and 72,786,976 actual owning-pool prefix bytes across the eight copy pairs
+matched, as did returned pointers and values. Pool/string/CRT bridges retain
+the existing rebuilt-provider boundary; original provider internals are not
+independently replayed.
+
+Seven exact archive members and 203 complete COFF sections were verified
+against linked bytes: 14,619 bytes and 626 relocations. All eight owned entries
+are retained separately. No runtime code postimage or native exception test
+was added. Three missing saved functions (BE5C40, BE6040 and BBA710) were
+defined from their complete bytes; previous names/comments were preserved,
+new descriptive names applied where needed, evidence saved and exports
+refreshed. Other visitor domains remain separate packets.
+
+The primary library SHA256 is `51b97fe1c5170423d42db1cf27bc0ad0e6476626593ed722a4a6ecb4c10c16a0`. The read-only bundle is
+`local/vfs_lookup_leaves_primary/`, seal `79601243c10696ba45ec44bbb5a7f33e33bf70ee1ccf5c028cfeeac1120a63e9`.
+Evidence is recorded in `reports/native_vfs_lookup_leaves_audit.json`.

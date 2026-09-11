@@ -51,7 +51,7 @@ void** acquire_gameplay_effect_by_id_008700e0(GameplayEffectManager& manager,
         name.value.assign_0041e870(context.strings, lua.to_string(name_field.value));
         auto* const fresh = allocate_gameplay_effect_definition_00870240_fragment();
         load_gameplay_effect_components_00870400(
-            *fresh, lua, definition.value, context.strings, context.host);
+            *fresh, lua, definition.value, context.strings, context.components);
         set_gameplay_effect_definition_identity_0086b870(
             *fresh, id, &name.value, context.strings);
         //0086F930: keep an equivalent existing ID, even after reentrant load.

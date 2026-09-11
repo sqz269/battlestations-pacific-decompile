@@ -1,0 +1,40 @@
+{
+ "repairs": [
+  {
+   "function": "004bf930",
+   "owner": "main",
+   "when": "2026-09-11T18:30:06Z",
+   "decompile_lines_before": 40,
+   "gaps": [
+    {
+     "site": "004bf985",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "004bf98a",
+     "gap_end_exclusive": "004bf993",
+     "bytes": 9,
+     "after_call": true,
+     "sha256": "fa2ef79c36380bc7cb66b5b677a09278f655e4f41dddc6328cce0fa4fe6c47f8"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "004bf985",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "004bf98a",
+      "gap_end_exclusive": "004bf993",
+      "bytes": 9,
+      "after_call": true,
+      "sha256": "fa2ef79c36380bc7cb66b5b677a09278f655e4f41dddc6328cce0fa4fe6c47f8"
+     },
+     "clear": "Success: Cleared flow override at 004bf985 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 9 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 42,
+   "gaps_remaining": 0
+  }
+ ]
+}

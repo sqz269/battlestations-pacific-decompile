@@ -1,0 +1,237 @@
+{
+  "packet": "native_hardware_layout_create_if_missing1",
+  "classification": "complete source reconstruction, strict Win32 build and focused original/full-library fixture tested; new context ABI",
+  "address": "00b60a10",
+  "end_exclusive": "00b60caa",
+  "original_bytes": 666,
+  "owned_functions": 1,
+  "descriptive_name": "create_native_hardware_layout_if_missing_00b60a10",
+  "source_files": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-create-if-missing\\src\\native_hardware_layout_create_if_missing.cpp",
+      "bytes": 7865,
+      "sha256": "e55b2d7928ae8a0e8b19ee58c23ac928b87c6c10cfdbcb5bcf6475b3dc2702a8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-create-if-missing\\include\\bsp\\native_hardware_layout_create_if_missing.hpp",
+      "bytes": 1601,
+      "sha256": "c164fca58bced9760e6d312df0c02b9789422ed949efa2819bf493f273e592f9"
+    }
+  ],
+  "original_abi": {
+    "ecx": "actual owner, raw hierarchy-independent hardware layout storage",
+    "stack_arguments": [],
+    "epilogue": "RET",
+    "return_value": "no semantic result",
+    "eh": "native FS:[0] registration; CC1346 -> DFA0EC (FH3), two states at DFA0DC"
+  },
+  "new_abi": {
+    "declaration": "void __fastcall create_native_hardware_layout_if_missing_00b60a10(void* actual_owner, NativeHardwareLayoutConstructContext* actual_context)",
+    "ecx": "actual owner",
+    "edx": "fixed context pointer; may be null on owner+40 hit",
+    "native_caller_compatible": false
+  },
+  "complete_control_flow": [
+    "B60A31 reads owner+40; nonzero returns before every other owner/context/storage/provider read.",
+    "B60A3E captures owner+38 once. B60A4D JBE/B60A6B JC use UNSIGNED copy bound over owner+8+0C*i into four pointer scratch slots. B60AB4 JLE and B60C16 JL use signed captured local count. Valid count0..4 only; negative bit patterns are not skipped by the copy loop.",
+    "B60AC4 takes captured declaration pointer; each raw iteration rereads its current +0C pointer and signed +10 count. Record stride20; usageDWORD indexes14 counters, output16 packed8-byte slots including END.",
+    "Every captured stream performs two diagnostic strings and complete resource-support singleton call, with no stream append/release and no second owner+40 gate.",
+    "B60C33 stores END firstDWORD, B60C41 captures actual renderer slot F8D394, B60C5E stores END secondDWORD; device current+1A10/currenttable+158 gets output address owner+40 and HRESULT is ignored.",
+    "Complete B47D60 recomputes stride from CURRENT owner count/list/declaration+CC after the API."
+  ],
+  "diagnostic_contract": {
+    "literal": "D61BD0 exact 13-byte VertexFormat including NUL, reconstructed readonly copy",
+    "temp_order": "capture data then length after full41DD40; nullable data gate before len+1 literal memcpy",
+    "record_order": "current owner+40 firstword; state0; zero recordstring header; full41DD40; capture length then data; second memcpy gated ONLY by captured temp length",
+    "state0": "CC1330 ->41DD20 on current temporary header",
+    "state1": "CC133B ->B3F4C0 on current diagnostic record, then state0",
+    "normal_cleanup": "state1 ->supportB3E730 ->state0 ->release captured recorddata/recordlength+1 ->disarmed ->release captured tempdata/templength+1",
+    "allocation_boundary": "ActualNativeStringPoolStorage with actual publication01090AA8, gate01090AA4 and canonical01090AA0 lifetime, composed NativeStringPoolLifetimeBinding. Each operation invokes complete419CC0 and completeBD1120/BD1510; both diagnostics share one owning storage. release noexcept contract is an explicit native-EH boundary."
+  },
+  "alignment": {
+    "address": "00b60abc",
+    "bytes_hex": "8d642400",
+    "assembly": "LEA ESP,[ESP]",
+    "reachable": false,
+    "included_in_full_owned_capture": true
+  },
+  "original_evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_guard": "Each bsp.py ghidra bytes batch verifies saved bsp project and /battlestationspacific.exe.",
+    "spans": [
+      {
+        "address": "00b60a10",
+        "length": 666,
+        "role": "owned",
+        "bytes_hex": "6aff684613cc0064a100000000506489250000000081ecf400000053558bd933ed396b40895c24140f85550200008b53385633f633c03bd55789742444761e8d4b088b39897cb4348b74244483c60183c00183c10c3bc28974244472e533c03bf589ac2400010000894424488944244c8944245089442454894424588944245c8944246089442464894424688944246c8944247089442474894424788944247c894424180f8e62010000eb088d6424008b4424188b4c843433f63969107e75668944241033ff8b410c668b143803c766895424120fb65004885424140fb65008885424150fb6500c8b400c8d448448885424160fb6108300018b442410885424178b9424000100008984d4800000008b9424000100008b4424148984d484000000838424000100000183c60183c7143b71107c926a016a0c8d4c2428896c2428896c242ce8e7d18bff8b7c24243bfd8b74242074128d46015068d01bd60057e80c6b090083c40c8b4b408d43406a01894c242c568d4c243489ac2414010000896c2434896c2438e8a4d18bff8b5c242c3bf58b6c2430740b535755e8d06a090083c40cc684240c01000001e870dbfdff85edc684240c0100000074136a018d43015055e8e8908bff8bc8e83109070085ffc784240c010000ffffffff74136a0183c6015657e8c6908bff8bc8e80f0907008b4424188b5c241c83c00133ed3b442444894424180f8ca4feffff8b84240001000066c7442410ff0066896c24128b5424108994c4800000008b942400010000a194d3f800c644241411c644241500c644241600c6442417008b4c2414898cd48400000083842400010000018b80101a00008b108b92580100008d4b40518d8c24840000005150ffd28bcbe8cf70feff5f5e8b8c24fc0000005d5b64890d0000000081c400010000c3",
+        "sha256": "c59c4233708dc12b8f72aadd36d91a76e53d174246ded72b7f6b408ee499c065",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b47d60",
+        "length": 40,
+        "role": "full_stride",
+        "bytes_hex": "33c039413889413c7e1d8d5108568bff8b328bb6cc00000001713c83c00183c20c3b41387cea5ec3",
+        "sha256": "5be5f862119a33437b5443efc9585ff62f411cd34a0d0940f3ac87879254aa54",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00cc1330",
+        "length": 11,
+        "role": "unwind_temporary",
+        "bytes_hex": "8d8d10ffffffe9e5c975ff",
+        "sha256": "770a0e9fa68da3692c23d6bdac29ddf48973ff4230d0c96907329186e0c6c195",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00cc133b",
+        "length": 11,
+        "role": "unwind_record",
+        "bytes_hex": "8d8d18ffffffe97ae1e7ff",
+        "sha256": "539af59430815590bd2c30e15753b3cd254a278e17095261a7ba1b0f45fa172e",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00cc1346",
+        "length": 10,
+        "role": "FH3_handler",
+        "bytes_hex": "b8eca0df00e9f357f3ff",
+        "sha256": "1447fa241efa878770571dc6d15dbca267105eafb36dae9e704788a2d7603242",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00dfa0dc",
+        "length": 16,
+        "role": "unwind_map",
+        "bytes_hex": "ffffffff3013cc00000000003b13cc00",
+        "sha256": "4f950535f86388fa0d2281d4b81db08b1a19212397d6d543e5790d03a49fe694",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00dfa0ec",
+        "length": 36,
+        "role": "FH3_info",
+        "bytes_hex": "2205931902000000dca0df00000000000000000000000000000000000000000001000000",
+        "sha256": "db38bd06854c213a1178436b1e4e47e6500d1cc9465945a55a5adf943e9901f5",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00d61bd0",
+        "length": 13,
+        "role": "readonly_literal",
+        "bytes_hex": "566572746578466f726d617400",
+        "sha256": "d646723f4c499d91c842bf483b646f9f94f258b07d7610ad1e89f94b3a6e8233",
+        "fresh_live_PE_match": true
+      }
+    ]
+  },
+  "dependencies": {
+    "complete_actual_library_members": [
+      {
+        "object": "native_hardware_layout_create_if_missing.obj",
+        "archive_member": "bsp_core.dir\\Release\\native_hardware_layout_create_if_missing.obj",
+        "sha256": "5bafc09124ae73cb94155b283b1da05fc80fbc0a5ce0e003b9b65a0b3a61ad58",
+        "exact_member_match": true
+      },
+      {
+        "object": "native_hardware_layout_fields.obj",
+        "archive_member": "bsp_core.dir\\Release\\native_hardware_layout_fields.obj",
+        "sha256": "21aee53e9bfcd2e6548237e1d53ab866eb430d2edadc1541a35a8bd6724641cd",
+        "exact_member_match": true
+      },
+      {
+        "object": "native_physical_buffer_owner.obj",
+        "archive_member": "bsp_core.dir\\Release\\native_physical_buffer_owner.obj",
+        "sha256": "3e2e1e7b9bbff1a9b9260ebcfae0ca58d22c0355ee9475aafc12b71d6acfc94b",
+        "exact_member_match": true
+      },
+      {
+        "object": "native_resource_support.obj",
+        "archive_member": "bsp_core.dir\\Release\\native_resource_support.obj",
+        "sha256": "9a7c74650901147748b50c88181c465c6652b0e80aab9bf54977c2011bf99661",
+        "exact_member_match": true
+      },
+      {
+        "object": "native_string.obj",
+        "archive_member": "bsp_core.dir\\Release\\native_string.obj",
+        "sha256": "8939dada081590837acb09f42bf145e551406c98bdea7710d20fc574824c5d5b",
+        "exact_member_match": true
+      },
+      {
+        "object": "native_string_pool_owner.obj",
+        "archive_member": "bsp_core.dir\\Release\\native_string_pool_owner.obj",
+        "sha256": "c22a4d1eac7bb7bfe86999c46573abc12c13bd0cdd2984213fdd5481f7b3aedb",
+        "exact_member_match": true
+      },
+      {
+        "object": "native_string_pool_storage.obj",
+        "archive_member": "bsp_core.dir\\Release\\native_string_pool_storage.obj",
+        "sha256": "c83aff40d7b78ecfe132ada33c49d581f75873443c7f4e081124f8cda3de6a50",
+        "exact_member_match": true
+      },
+      {
+        "object": "singleton_lifetime.obj",
+        "archive_member": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "sha256": "45f48db3d0cfacfe1b60023164cdc70815662b73810cf0b4c9487c695499ea2a",
+        "exact_member_match": true
+      }
+    ],
+    "original_body_runtime": "B60A10 full666 plus B47D60 full40; original FH3 handler/info/map and two full unwind helpers present and immutable",
+    "abi_bridges": "Original string resize/destroy/diagnostic and support calls map to full actual library providers with fixed context. Original419CC0+BD1510 normal-release pair composes through actual owning storage release; provider internals are not replaced. memcpy uses actual linked CRT."
+  },
+  "verification": {
+    "strict_build": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-create-if-missing\\local\\hardware_layout_create_if_missing_fixture\\strict_build.log",
+      "bytes": 3586,
+      "sha256": "b9cf10e9b33860475d356ada26538a75e8456bbd3f8a301367698fa4f637e893"
+    },
+    "initial_build": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-create-if-missing\\local\\hardware_layout_create_if_missing_fixture\\build.log",
+      "bytes": 20622,
+      "sha256": "1bbb00b9208f5f9450fdb2a86443e6b20262516161cf6ded4e2e503774c92552"
+    },
+    "seed_verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-create-if-missing\\local\\hardware_layout_create_if_missing_fixture\\seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "existing_ctests": 2,
+    "seeds": 8,
+    "permanent_new_tests": 0,
+    "frozen_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-create-if-missing\\local\\hardware_layout_create_if_missing_fixture\\frozen\\bsp_core.lib",
+      "bytes": 36311294,
+      "sha256": "12dce59544113aeb0df7d8d065b6d3c4013d1e5079cf25c9cc446c9f02b790fe"
+    },
+    "verified": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-create-if-missing\\local\\hardware_layout_create_if_missing_fixture\\verified.json",
+      "bytes": 323702,
+      "sha256": "63cbcf940b277495b006ba4a79dfbb14c1561c5c134e4edb955755bb3a14ff17"
+    },
+    "ignored_bundle": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-create-if-missing\\local\\hardware_layout_create_if_missing_fixture",
+    "immutable_manifest": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-create-if-missing\\local\\hardware_layout_create_if_missing_fixture\\sealed.json",
+    "linked_COFF_sections": 254,
+    "library_COFF_sections": 136,
+    "exact_archive_members": 8,
+    "source_header_files": 27,
+    "full_runtime_postimage_stages": 5,
+    "fresh_spans": 8,
+    "fresh_bytes": 803,
+    "focused_sequence": "After real actual-pool allocation, mutate owner count/list, second captured declaration raw pointer/data and actual renderer slot. Both native/source process two captured streams, use changed raw data/currentdevice, perform4allocations/4releases and actualHAL CreateVertexDeclaration S_OK/GetDeclaration exactelements. After realAPI mutate current strideinputs ->123. Paired initialhit succeeds with owner+38/earlierfields PAGE_NOACCESS and nullcontext.",
+    "compared_observable_bytes": 20788,
+    "literal_raw_arenas": "Two full0x5000-byte arenas and two full actual0x8AD4A0-byte pool postimages retained. Only returned COM identity at owner+40 normalized for arena comparison. Pool histories retained but not equated.",
+    "actual_import_observations": 68,
+    "actual_COM_observations": 6
+  },
+  "limitations": [
+    "New fixed-context Win32 C++ API; native caller/drop-in and native SEH/FH3 compatibility are not claimed.",
+    "Original complete B60A10 and stride B47D60 execute from guarded live/PE bytes, including original FH3 metadata and unwind helpers. Native string, diagnostic, support and owning pool storage cross pure fixed-context ABI bridges to actual complete frozen-library providers. The 419CC0+BD1510 pair maps to the owning NativeStringStorage release boundary, whose actual adapter calls both complete providers.",
+    "Storage observer delegates each operation to ActualNativeStringPoolStorage; only after real allocation does it mutate owner/current-renderer/declaration inputs. Full providers are neither replaced nor recompiled for instrumentation.",
+    "The real HAL API and GetDeclaration returned S_OK. Failure HRESULT and exception injection are not covered. Two cleanup states and native unwind targets are checked statically; native SEH, asynchronous mutation and throwing release/pool-lazy-recreation are outside this fixture and the existing noexcept storage boundary.",
+    "One mutation sequence plus protected unused-fields/null-context cache hit; valid four-stream/14-usage/16-output scratch domain only. No invalid-count overflow, gameplay, device-recreation loop or broad hardware compatibility claim."
+  ],
+  "readiness": "Ready for primary source integration and strict main library rebuild/provenance replay; no shared CMake/metadata/Ghidra edits in this packet."
+}

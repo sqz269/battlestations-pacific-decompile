@@ -1,6 +1,6 @@
 {
   "packet": "native_vfs_lookup_leaves",
-  "status": "eight_complete_actual_storage_leaves_strict_Win32_and_original_composition_checked",
+  "status": "complete_lookup_copy_leaves_main_Win32_original_compositions_and_linked_COFF_verified",
   "utc": "2026-09-11T18:02:07.702444+00:00",
   "base_main_commit": "9ed25d6e",
   "worker_evidence_root": "J:/PROG/battlestations-pacific-decompile-vfs-date-consumer",
@@ -2475,6 +2475,246 @@
   "abi_compatible": false,
   "game_validated": false,
   "Ghidra_mutations": false,
-  "annotations_applied": false,
-  "ledger_registered": false
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "primary_integration": {
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vfs_lookup_leaves_primary\\sealed.json",
+      "bytes": 145532,
+      "sha256": "79601243c10696ba45ec44bbb5a7f33e33bf70ee1ccf5c028cfeeac1120a63e9"
+    },
+    "main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vfs_lookup_leaves_primary\\bsp_core.lib",
+      "bytes": 36398444,
+      "sha256": "51b97fe1c5170423d42db1cf27bc0ad0e6476626593ed722a4a6ecb4c10c16a0"
+    },
+    "strict_main_build_passed": true,
+    "existing_CTests": 2,
+    "native_seeds": 8,
+    "new_permanent_tests": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "preparation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vfs_lookup_leaves_primary\\preparation.json",
+      "bytes": 123135,
+      "sha256": "dcb27dbbaa76e0c4e6c0d9db2d41d58b32539d4c7b8db5ce97c2794fe83957a3"
+    },
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vfs_lookup_leaves_primary\\verified.json",
+      "bytes": 189195,
+      "sha256": "ae4d050732f9084b8c56d0c1688aebf89e642bee1c45abe10f2e850a43fda7c3"
+    },
+    "worker_pins_verified": 47,
+    "current_files": 26,
+    "fresh_guarded_spans": 22,
+    "fresh_guarded_bytes": 3117,
+    "owned_original_bytes": 605,
+    "original_pairs": 50,
+    "lookup_pairs": 42,
+    "copy_pairs": 8,
+    "original_bodies": 11,
+    "original_bytes": 871,
+    "same_address_arena_bytes": 102400,
+    "actual_pool_prefix_per_copy_pair": 9098372,
+    "actual_pool_prefix_compared": 72786976,
+    "exact_main_archive_members": 7,
+    "complete_COFF_sections": 203,
+    "complete_COFF_bytes": 14619,
+    "all_relocations": 626,
+    "all_owned_entries_retained": 8,
+    "fixture_source_unchanged": true,
+    "source_compilation_in_fixture": false,
+    "runtime_code_postimages": false,
+    "defined_functions": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_vfs_lookup_leaves_defined_functions.json",
+      "bytes": 6658,
+      "sha256": "1bee7a5fbcdabe1d14c86ef13a248ad875221e366b744d12daa0640705ed0c01"
+    }
+  },
+  "main_registered": true,
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_vfs_lookup_leaves_annotations.json",
+    "bytes": 12837,
+    "sha256": "99aeddc6638d87bcf998d9319bd169cf2c58d395d84a9b3e31922c2302e0a190",
+    "project_saved": true,
+    "prior_names_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00be5c00",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00be5c00\\decompiled.c",
+      "bytes": 1719,
+      "sha256": "6c9537132e06eedbb095f6954a5c5eb05ae7cf5880470b358b3f54a6e010a8fa"
+    },
+    {
+      "address": "00be5c40",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00be5c40\\decompiled.c",
+      "bytes": 1455,
+      "sha256": "c99fee494a079e1187cff2c72b622a7081066c59f07bb5b7a2fa52408afa2b40"
+    },
+    {
+      "address": "00be6040",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00be6040\\decompiled.c",
+      "bytes": 1524,
+      "sha256": "f8093363d844f8531946f4613d393ef574d9f3a027b051cbec4f610045821162"
+    },
+    {
+      "address": "00bb5540",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bb5540\\decompiled.c",
+      "bytes": 1717,
+      "sha256": "2e41bebae999065e0c61741f2608be1fb13c2dd61dc9804bac5204b0bb8c7231"
+    },
+    {
+      "address": "00bb8e00",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bb8e00\\decompiled.c",
+      "bytes": 2344,
+      "sha256": "1554039eb32d7023016cdad0129b32f79fcecdb25683ac35d250d8fcf00575c2"
+    },
+    {
+      "address": "00bb8e80",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bb8e80\\decompiled.c",
+      "bytes": 1471,
+      "sha256": "bda59fced43557515a4882b15ae8925a151ab76879c5961b30ec0cbf6c83e2df"
+    },
+    {
+      "address": "00bba650",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bba650\\decompiled.c",
+      "bytes": 2203,
+      "sha256": "e2fdb8bdbfd0693c0291e6706d6d795025425f77f1d729739b20ea8783532255"
+    },
+    {
+      "address": "00bba710",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bba710\\decompiled.c",
+      "bytes": 1229,
+      "sha256": "28fa7bdbb8f9dbd90e2e0ed513686e5df6d251b2d1a6c40c837ba996ed9db938"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_VFS_LOOKUP_LEAVES.md",
+    "bytes": 10101,
+    "sha256": "898ff143f538192e11e48caf537ac3e8dcf0d908118ab778b75bb8f7ddb8d35d"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00be5c00",
+      "name": "contains_native_file_store_file_00be5c00",
+      "cpp_symbol": "bsp::contains_native_file_store_file_00be5c00",
+      "source": "src/native_vfs_lookup_leaves.cpp",
+      "native_end_exclusive": "00be5c3e",
+      "original_abi": "ECX actual FileStore; stack name; RET4; AL Boolean",
+      "status": "complete_lookup_copy_leaves_main_Win32_original_compositions_and_linked_COFF_verified",
+      "evidence": "reports/native_vfs_lookup_leaves_audit.json",
+      "external_import_forwarding": false,
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00be5c40",
+      "name": "probe_native_file_store_name_00be5c40",
+      "cpp_symbol": "bsp::probe_native_file_store_name_00be5c40",
+      "source": "src/native_vfs_lookup_leaves.cpp",
+      "native_end_exclusive": "00be5c7e",
+      "original_abi": "ECX actual FileStore; stack name; RET4; AL Boolean",
+      "status": "complete_lookup_copy_leaves_main_Win32_original_compositions_and_linked_COFF_verified",
+      "evidence": "reports/native_vfs_lookup_leaves_audit.json",
+      "external_import_forwarding": false,
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00be6040",
+      "name": "copy_native_file_store_name_00be6040",
+      "cpp_symbol": "bsp::copy_native_file_store_name_00be6040",
+      "source": "src/native_vfs_lookup_leaves.cpp",
+      "native_end_exclusive": "00be6090",
+      "original_abi": "ECX unused; stack output/name; RET8; EAX output",
+      "status": "complete_lookup_copy_leaves_main_Win32_original_compositions_and_linked_COFF_verified",
+      "evidence": "reports/native_vfs_lookup_leaves_audit.json",
+      "external_import_forwarding": false,
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bb5540",
+      "name": "copy_native_package_name_00bb5540",
+      "cpp_symbol": "bsp::copy_native_package_name_00bb5540",
+      "source": "src/native_vfs_lookup_leaves.cpp",
+      "native_end_exclusive": "00bb5590",
+      "original_abi": "ECX unused; stack output/name; RET8; EAX output",
+      "status": "complete_lookup_copy_leaves_main_Win32_original_compositions_and_linked_COFF_verified",
+      "evidence": "reports/native_vfs_lookup_leaves_audit.json",
+      "external_import_forwarding": false,
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bb8e00",
+      "name": "contains_native_mpkg_entry_00bb8e00",
+      "cpp_symbol": "bsp::contains_native_mpkg_entry_00bb8e00",
+      "source": "src/native_vfs_lookup_leaves.cpp",
+      "native_end_exclusive": "00bb8e6c",
+      "original_abi": "ECX actual archive state; stack name; RET4; AL Boolean",
+      "status": "complete_lookup_copy_leaves_main_Win32_original_compositions_and_linked_COFF_verified",
+      "evidence": "reports/native_vfs_lookup_leaves_audit.json",
+      "external_import_forwarding": false,
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bb8e80",
+      "name": "contains_native_mpkg_file_00bb8e80",
+      "cpp_symbol": "bsp::contains_native_mpkg_file_00bb8e80",
+      "source": "src/native_vfs_lookup_leaves.cpp",
+      "native_end_exclusive": "00bb8e88",
+      "original_abi": "ECX actual MPKG provider; stack name; MOV ECX,[ECX+14], tail JMP BB8E00; inherited RET4/AL Boolean",
+      "status": "complete_lookup_copy_leaves_main_Win32_original_compositions_and_linked_COFF_verified",
+      "evidence": "reports/native_vfs_lookup_leaves_audit.json",
+      "external_import_forwarding": false,
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bba650",
+      "name": "find_native_msar_file_index_00bba650",
+      "cpp_symbol": "bsp::find_native_msar_file_index_00bba650",
+      "source": "src/native_vfs_lookup_leaves.cpp",
+      "native_end_exclusive": "00bba706",
+      "original_abi": "ECX actual MSAR provider; stack name; RET4; EAX index or FFFFFFFF",
+      "status": "complete_lookup_copy_leaves_main_Win32_original_compositions_and_linked_COFF_verified",
+      "evidence": "reports/native_vfs_lookup_leaves_audit.json",
+      "external_import_forwarding": false,
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bba710",
+      "name": "contains_native_msar_file_00bba710",
+      "cpp_symbol": "bsp::contains_native_msar_file_00bba710",
+      "source": "src/native_vfs_lookup_leaves.cpp",
+      "native_end_exclusive": "00bba727",
+      "original_abi": "ECX actual MSAR provider; stack name; RET4; AL Boolean",
+      "status": "complete_lookup_copy_leaves_main_Win32_original_compositions_and_linked_COFF_verified",
+      "evidence": "reports/native_vfs_lookup_leaves_audit.json",
+      "external_import_forwarding": false,
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "closure_utc": "2026-09-11T18:24:40.890733+00:00"
 }

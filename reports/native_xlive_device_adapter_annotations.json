@@ -1,0 +1,32 @@
+[
+  {
+    "address": "00c2f1c0",
+    "before": {
+      "address": "00c2f1c0",
+      "function_name": "XLiveOnCreateDevice"
+    },
+    "after": {
+      "address": "00c2f1c0",
+      "evidence": "Complete six-byte 00c2f1c0 JMP import thunk through 00ce25d0, executable ordinal word for xlive.dll ordinal5005. Existing SDK name preserved. New C++ NativeXLiveDeviceAdapter borrows caller-owned XLiveLibrary module and resolves actual Win32 stdcall export; forwards unchanged device and presentation pointers, exposes full EAX. Missing module/export is source binding error, no fallback SDK result. Full B29670 caller1191bytes proves independently reread F8ABE8 gates, destroy before old-device release, create after resource restoration from renderer+1A10/+1A28, ignored SDK results. This adapter implements no gate, caller lifecycle, SDK internals, original IAT mutation or binary ABI. Four fresh guarded spans1211bytes match installed PE; full local game/system DLL hash/export tables inspected as files only. Strict main Win32/twoCTests/eightseeds pass; actual main lib/two exact objects/full165-and151-byte methods and relocations frozen. No DLL loaded/called, no runtime/linked fixture, game unvalidated. reports/native_xlive_device_adapter.json",
+      "old_name": "XLiveOnCreateDevice",
+      "name": "XLiveOnCreateDevice",
+      "saved_body_end": "00c2f1c5"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00c2f1c6",
+    "before": {
+      "address": "00c2f1c6",
+      "function_name": "XLiveOnDestroyDevice"
+    },
+    "after": {
+      "address": "00c2f1c6",
+      "evidence": "Complete six-byte 00c2f1c6 JMP import thunk through 00ce25d4, executable ordinal word for xlive.dll ordinal5006. Existing SDK name preserved. New C++ NativeXLiveDeviceAdapter borrows caller-owned XLiveLibrary module and resolves actual Win32 stdcall export; forwards no arguments, exposes full EAX. Missing module/export is source binding error, no fallback SDK result. Full B29670 caller1191bytes proves independently reread F8ABE8 gates, destroy before old-device release, create after resource restoration from renderer+1A10/+1A28, ignored SDK results. This adapter implements no gate, caller lifecycle, SDK internals, original IAT mutation or binary ABI. Four fresh guarded spans1211bytes match installed PE; full local game/system DLL hash/export tables inspected as files only. Strict main Win32/twoCTests/eightseeds pass; actual main lib/two exact objects/full165-and151-byte methods and relocations frozen. No DLL loaded/called, no runtime/linked fixture, game unvalidated. reports/native_xlive_device_adapter.json",
+      "old_name": "XLiveOnDestroyDevice",
+      "name": "XLiveOnDestroyDevice",
+      "saved_body_end": "00c2f1cb"
+    },
+    "status": "applied"
+  }
+]
