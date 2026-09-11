@@ -4424,8 +4424,8 @@
     {
       "id": "native_shader_device_reset5",
       "packet": "native_shader_device_reset5",
-      "done": false,
-      "state": "worker_source_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "worker": "particle_clock_lifetime",
       "function_addresses": [
         "00b1fef0",
@@ -4446,7 +4446,8 @@
         "Existing actual singleton allocation/free services",
         "Borrowed real current renderer-global slot, actual renderer and COM ABI storage"
       ],
-      "discovery_evidence": "reports/native_renderer_recreate_device_next.json"
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+      "evidence": "reports/native_shader_device_reset_audit.json"
     },
     {
       "id": "native_hardware_layout_device_release1",
@@ -4539,6 +4540,26 @@
       "prerequisite_packets": [],
       "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
       "scope": "Read-only full native save/restore/release contracts and named-but-incomplete actual physical wrapper/flags/diagnostic dependencies; explicit disjoint ready packets. No semantic substitutes for open native providers."
+    },
+    {
+      "id": "native_resource_creation_flags1",
+      "packet": "native_resource_creation_flags1",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_source_and_original_fixture_in_progress",
+      "function_addresses": [
+        "00b20a80"
+      ],
+      "code_ownership": [
+        "include/bsp/native_resource_creation_flags.hpp",
+        "src/native_resource_creation_flags.cpp",
+        "docs/NATIVE_RESOURCE_CREATION_FLAGS.md",
+        "reports/native_resource_creation_flags_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_buffer_device_reset_next.json",
+      "scope": "Full245byte raw register-ABI flags helper. Preserve early optional pool output and final usage output, including unsupported nibble leaves pool untouched and raw overlap semantics. No actual renderer or semantic fallback needed."
     }
   ],
   "snapshot_after_analysis": {

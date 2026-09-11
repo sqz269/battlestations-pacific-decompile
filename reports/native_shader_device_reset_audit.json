@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_shader_device_reset5",
-  "status": "complete_actual_storage_five_functions_strict_Win32_and_real_D3D9_original_instruction_fixture_passed",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
   "generated_utc": "2026-09-11T05:51:30.988045+00:00",
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910",
   "branch": "agent/native-shader-device-reset-20260910",
@@ -3957,5 +3957,616 @@
     "Real HAL storage/COM execution and complete original-body agreement do not establish original ABI replacement, full renderer recreation, visual output or game validation."
   ],
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "primary_integration": {
+    "verification": {
+      "matched_words": 5925,
+      "matching_bytes": 23700,
+      "record_count": 169,
+      "snapshot_count": 104,
+      "actual_totals": [
+        [
+          4,
+          6,
+          4,
+          8,
+          8,
+          6,
+          2
+        ]
+      ],
+      "malloc_byte_counts": [
+        [
+          128
+        ],
+        [
+          128
+        ],
+        [
+          144
+        ],
+        [
+          144
+        ]
+      ],
+      "COM_create_results": [
+        [
+          0,
+          100
+        ],
+        [
+          0,
+          100
+        ],
+        [
+          2289436780,
+          0
+        ],
+        [
+          0,
+          100
+        ],
+        [
+          0,
+          100
+        ],
+        [
+          2289436780,
+          0
+        ]
+      ],
+      "programs": [
+        {
+          "shader_type": 0,
+          "index": 0,
+          "bytes": 128,
+          "sha256": "2f25414e2f3587bfa897af1c6b2e7c34e0c82570bbd50c350595575d903f9115"
+        },
+        {
+          "shader_type": 0,
+          "index": 1,
+          "bytes": 128,
+          "sha256": "7242777cce75c3547481564b33b900052b216cca7d27026cabcbf2774ab1a66b"
+        },
+        {
+          "shader_type": 0,
+          "index": 2,
+          "bytes": 128,
+          "sha256": "7ac89c0a133cdccff81f457fd10717998027ee36609a83c4c5157775dde90698"
+        },
+        {
+          "shader_type": 0,
+          "index": 3,
+          "bytes": 128,
+          "sha256": "daf2b0c78509c9afbb7797d46652f605c689d2f9842f6a35c090257eb9aac23e"
+        },
+        {
+          "shader_type": 0,
+          "index": 4,
+          "bytes": 128,
+          "sha256": "7ba9fe7ef58d8e1c0ad7fc58babb87803aaf3229f41d1e1c2727eb545733f247"
+        },
+        {
+          "shader_type": 1,
+          "index": 0,
+          "bytes": 144,
+          "sha256": "3130b0be7ca7b085f7b4adbff87e1afc599eef30a6915963be94eaf0486a132f"
+        },
+        {
+          "shader_type": 1,
+          "index": 1,
+          "bytes": 144,
+          "sha256": "93cb1b4e91e0dfa23b30c04373e2e2e079da19d409db6fe8a92c4f13d8c5e3e7"
+        },
+        {
+          "shader_type": 1,
+          "index": 2,
+          "bytes": 144,
+          "sha256": "b00eda1fff145295e2fc3afccf5762f18066c1ed0bc5dd069b8e1c640e2cd455"
+        },
+        {
+          "shader_type": 1,
+          "index": 3,
+          "bytes": 144,
+          "sha256": "ea52d64bdadbd7ca6ae74d348eba5a5a1c19b09580f6bdb48eec7f64daf2ddcd"
+        },
+        {
+          "shader_type": 1,
+          "index": 4,
+          "bytes": 144,
+          "sha256": "812b55c670d252d791b36e8f21bd24c8b24f5b2f46dbd8d724331fc9b5a17f95"
+        }
+      ],
+      "runtime_spans": [
+        {
+          "address": 11665136,
+          "length": 7,
+          "end_exclusive": 11665143,
+          "disk_offset": 7470832,
+          "hex": "8b81101a0000c3",
+          "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+          "fresh_live_Ghidra_matches_installed_PE": true,
+          "postimage_hex": "8b81101a0000c3",
+          "postimage_sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+          "only_declared_changes": true
+        },
+        {
+          "address": 11921232,
+          "length": 105,
+          "end_exclusive": 11921337,
+          "disk_offset": 7726928,
+          "hex": "51568bf1578b7e0885ff74598b078b480457ffd18b178b420857ffd08b46088b088d542408526a00508b4110ffd08b4c240851e8366e09008b4e0883c4048d7c24085789460c8b11508b421051ffd08b460885c0740f8b088b510850ffd2c74608000000005f5e59c3",
+          "sha256": "edbbae631bdb5945138f75120eb40743096da533c4e0bfdfae7de17cdb7cccd0",
+          "fresh_live_Ghidra_matches_installed_PE": true,
+          "postimage_hex": "51568bf1578b7e0885ff74598b078b480457ffd18b178b420857ffd08b46088b088d542408526a00508b4110ffd08b4c240851e8366e09008b4e0883c4048d7c24085789460c8b11508b421051ffd08b460885c0740f8b088b510850ffd2c74608000000005f5e59c3",
+          "postimage_sha256": "edbbae631bdb5945138f75120eb40743096da533c4e0bfdfae7de17cdb7cccd0",
+          "only_declared_changes": true
+        },
+        {
+          "address": 11921424,
+          "length": 105,
+          "end_exclusive": 11921529,
+          "disk_offset": 7727120,
+          "hex": "51568bf1578b7e0885ff74598b078b480457ffd18b178b420857ffd08b46088b088d542408526a00508b4110ffd08b4c240851e8766d09008b4e0883c4048d7c24085789460c8b11508b421051ffd08b460885c0740f8b088b510850ffd2c74608000000005f5e59c3",
+          "sha256": "a3143e7952753a85cb753654c11e7e7123a1ae7dd9bd94cc05a3dfd9225e1bea",
+          "fresh_live_Ghidra_matches_installed_PE": true,
+          "postimage_hex": "51568bf1578b7e0885ff74598b078b480457ffd18b178b420857ffd08b46088b088d542408526a00508b4110ffd08b4c240851e8766d09008b4e0883c4048d7c24085789460c8b11508b421051ffd08b460885c0740f8b088b510850ffd2c74608000000005f5e59c3",
+          "postimage_sha256": "a3143e7952753a85cb753654c11e7e7123a1ae7dd9bd94cc05a3dfd9225e1bea",
+          "only_declared_changes": true
+        },
+        {
+          "address": 11921552,
+          "length": 68,
+          "end_exclusive": 11921620,
+          "disk_offset": 7727248,
+          "hex": "568bf1837e0800578d7e087534837e0c00742e8b0d94d3f800e84216fcff8b560c8b085752508b81a8010000ffd08b4e0c51e8c280090083c404c7460c000000005f5ec3",
+          "sha256": "2e7c0d9661ef0754834b4f26b3ef51ebb4de29121df9310e9d9e62d53a3f7b7d",
+          "fresh_live_Ghidra_matches_installed_PE": true,
+          "postimage_hex": "568bf1837e0800578d7e087534837e0c00742e8b0d94d30e03e84216fcff8b560c8b085752508b81a8010000ffd08b4e0c51e8c280090083c404c7460c000000005f5ec3",
+          "postimage_sha256": "2582afd382e3f307ab403517bca92f719ae1f05a17ea817db7f0a97f933f4597",
+          "only_declared_changes": true
+        },
+        {
+          "address": 11921632,
+          "length": 68,
+          "end_exclusive": 11921700,
+          "disk_offset": 7727328,
+          "hex": "568bf1837e0800578d7e087534837e0c00742e8b0d94d3f800e8f215fcff8b560c8b085752508b816c010000ffd08b4e0c51e87280090083c404c7460c000000005f5ec3",
+          "sha256": "8602129831d448716a42da9c0773dcb804d14f2631c778a39c372da93dea40e4",
+          "fresh_live_Ghidra_matches_installed_PE": true,
+          "postimage_hex": "568bf1837e0800578d7e087534837e0c00742e8b0d94d30e03e8f215fcff8b560c8b085752508b816c010000ffd08b4e0c51e87280090083c404c7460c000000005f5ec3",
+          "postimage_sha256": "bd9a330652dfac26c9fedd5a0aef66f3e0a96d295132f5999077feb39c42236c",
+          "only_declared_changes": true
+        },
+        {
+          "address": 12539326,
+          "length": 5,
+          "end_exclusive": 12539331,
+          "disk_offset": 8345022,
+          "hex": "e958120000",
+          "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+          "fresh_live_Ghidra_matches_installed_PE": true,
+          "postimage_hex": "e98de42a2d",
+          "postimage_sha256": "33ccc474085bd3d1aeedd8ae99ae443ee21542c5495143a6e95af73236a3be04",
+          "only_declared_changes": true
+        },
+        {
+          "address": 12544393,
+          "length": 5,
+          "end_exclusive": 12544398,
+          "disk_offset": 8350089,
+          "hex": "e91efcffff",
+          "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+          "fresh_live_Ghidra_matches_installed_PE": true,
+          "postimage_hex": "e922e12a2d",
+          "postimage_sha256": "832ae49680a6349221ee28c7ea556e720af79a1448a22bc5ee6c284d2bc9fc6e",
+          "only_declared_changes": true
+        }
+      ],
+      "providers": [
+        {
+          "symbol": "get_native_renderer_device_00b1fef0",
+          "provider": "bsp_core:native_shader_device_reset.obj",
+          "exact_map_line": " 0001:00006ce0       ?get_native_renderer_device_00b1fef0@bsp@@YAPAXPBX@Z 30007ce0 f   bsp_core:native_shader_device_reset.obj"
+        },
+        {
+          "symbol": "save_release_native_pixel_shader_00b5e750",
+          "provider": "bsp_core:native_shader_device_reset.obj",
+          "exact_map_line": " 0001:00006d90       ?save_release_native_pixel_shader_00b5e750@bsp@@YAXPAX@Z 30007d90 f   bsp_core:native_shader_device_reset.obj"
+        },
+        {
+          "symbol": "save_release_native_vertex_shader_00b5e810",
+          "provider": "bsp_core:native_shader_device_reset.obj",
+          "exact_map_line": " 0001:00006e20       ?save_release_native_vertex_shader_00b5e810@bsp@@YAXPAX@Z 30007e20 f   bsp_core:native_shader_device_reset.obj"
+        },
+        {
+          "symbol": "restore_native_pixel_shader_00b5e890",
+          "provider": "bsp_core:native_shader_device_reset.obj",
+          "exact_map_line": " 0001:00006cf0       ?restore_native_pixel_shader_00b5e890@bsp@@YAXPAXPBX@Z 30007cf0 f   bsp_core:native_shader_device_reset.obj"
+        },
+        {
+          "symbol": "restore_native_vertex_shader_00b5e8e0",
+          "provider": "bsp_core:native_shader_device_reset.obj",
+          "exact_map_line": " 0001:00006d40       ?restore_native_vertex_shader_00b5e8e0@bsp@@YAXPAXPBX@Z 30007d40 f   bsp_core:native_shader_device_reset.obj"
+        },
+        {
+          "symbol": "singleton_lifetime_allocate",
+          "provider": "bsp_core:singleton_lifetime.obj",
+          "exact_map_line": " 0001:00006ed0       ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 30007ed0 f   bsp_core:singleton_lifetime.obj"
+        },
+        {
+          "symbol": "singleton_lifetime_free",
+          "provider": "bsp_core:singleton_lifetime.obj",
+          "exact_map_line": " 0001:00006f30       ?singleton_lifetime_free@bsp@@YAXPAX@Z 30007f30 f   bsp_core:singleton_lifetime.obj"
+        }
+      ],
+      "operator_new_bridge": " 0001:00002a50       ?bridge_operator_new@@YAPAXI@Z 30003a50 f   fixture.obj",
+      "actual_modules": [
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+          "bytes": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "method": "malloc",
+          "reported_x86_module_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+          "physical_x86_PE014c_verified": true
+        },
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+          "bytes": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "method": "free",
+          "reported_x86_module_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+          "physical_x86_PE014c_verified": true
+        },
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "method": "pixel_GetFunction",
+          "reported_x86_module_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "physical_x86_PE014c_verified": true
+        },
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "method": "vertex_GetFunction",
+          "reported_x86_module_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "physical_x86_PE014c_verified": true
+        },
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "method": "CreatePixelShader",
+          "reported_x86_module_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "physical_x86_PE014c_verified": true
+        },
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "bytes": 1528480,
+          "sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "method": "CreateVertexShader",
+          "reported_x86_module_path": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "physical_x86_PE014c_verified": true
+        }
+      ],
+      "real_device_text": "NVIDIA GeForce RTX 5090\nnvldumd.dll\n4318 11141\nHAL HRESULT 0\nHAL HRESULT 0\n",
+      "actual_primary_library": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\bsp_core.lib",
+        "bytes": 27005214,
+        "sha256": "07e5f7de1881917f2ca637b16476eb43867c9648af77efbcfd798a58625de212"
+      },
+      "preparation": {
+        "worker": "J:\\PROG\\battlestations-pacific-decompile-native-shader-device-reset-20260910",
+        "worker_pins_verified": 38,
+        "SDK_verified": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\d3d9.h",
+        "current_sources_verified": 4,
+        "fresh_spans": [
+          {
+            "address": "00b1fef0",
+            "length": 7,
+            "sha256": "8e2f8eda5033d3403561544aec8eccd01530285ea93dcd284ef49a1308e871a6",
+            "fresh_live_PE_worker_match": true
+          },
+          {
+            "address": "00b5e750",
+            "length": 105,
+            "sha256": "edbbae631bdb5945138f75120eb40743096da533c4e0bfdfae7de17cdb7cccd0",
+            "fresh_live_PE_worker_match": true
+          },
+          {
+            "address": "00b5e810",
+            "length": 105,
+            "sha256": "a3143e7952753a85cb753654c11e7e7123a1ae7dd9bd94cc05a3dfd9225e1bea",
+            "fresh_live_PE_worker_match": true
+          },
+          {
+            "address": "00b5e890",
+            "length": 68,
+            "sha256": "2e7c0d9661ef0754834b4f26b3ef51ebb4de29121df9310e9d9e62d53a3f7b7d",
+            "fresh_live_PE_worker_match": true
+          },
+          {
+            "address": "00b5e8e0",
+            "length": 68,
+            "sha256": "8602129831d448716a42da9c0773dcb804d14f2631c778a39c372da93dea40e4",
+            "fresh_live_PE_worker_match": true
+          },
+          {
+            "address": "00bf55be",
+            "length": 5,
+            "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+            "fresh_live_PE_worker_match": true
+          },
+          {
+            "address": "00bf6989",
+            "length": 5,
+            "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+            "fresh_live_PE_worker_match": true
+          }
+        ],
+        "actual_primary_library": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\bsp_core.lib",
+          "bytes": 27005214,
+          "sha256": "07e5f7de1881917f2ca637b16476eb43867c9648af77efbcfd798a58625de212"
+        }
+      },
+      "artifact_pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\prepare_shader_reset_primary.py",
+          "bytes": 5029,
+          "sha256": "ce30dac126aad3bfe2bae2d395445e82ef84a9ad9036f6d048b7f22a62232c9f"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\build_shader_reset_primary_check.ps1",
+          "bytes": 1500,
+          "sha256": "a8a0608324b81e906ffbe124505afc7bc14107a6fc5b7c371ec53b18dab08ba9"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\verify_shader_reset_primary.py",
+          "bytes": 8588,
+          "sha256": "a82250dd683a8d89794f37457d226263ec1bc9ceb7a59c6cd40a1ec8858906ca"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_shader_device_reset_primary_build.txt",
+          "bytes": 1647,
+          "sha256": "4858156dc715737b9ac07d55bab372130b1a047dcee918aafbb9c3f165c22394"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_shader_device_reset_primary_fixture.txt",
+          "bytes": 187,
+          "sha256": "91a7c3a4c8eaff7326a06f595c6fa74d083ffd9472f7f3b1fb7cdf27a252c19c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\bridge_targets.txt",
+          "bytes": 40,
+          "sha256": "97b86019550a5d62d1883cfc89c0b17333bb5b19e0169623f134b5762e82ecca"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\bsp_core.lib",
+          "bytes": 27005214,
+          "sha256": "07e5f7de1881917f2ca637b16476eb43867c9648af77efbcfd798a58625de212"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\build_trim.cmd",
+          "bytes": 890,
+          "sha256": "966fb4c8186dfcb6f1aeaea7aa03f4a90961ac4801752544542191ba41183944"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\CreatePixelShader_module.txt",
+          "bytes": 30,
+          "sha256": "fff8b1403f6220f19efd73dea08b49fe50c4422603a3b7617995161da3730ca7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\CreateVertexShader_module.txt",
+          "bytes": 30,
+          "sha256": "fff8b1403f6220f19efd73dea08b49fe50c4422603a3b7617995161da3730ca7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\fixture.obj",
+          "bytes": 241599,
+          "sha256": "a0c9f4764022e1d69eb919454eb2f917d5375ac87b43187346702cfa29d2fb99"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\free_module.txt",
+          "bytes": 34,
+          "sha256": "8a8c1ee835e2f588d813f9f07c7db10632aa3eb096e5801bd7d3d81dd1e1711f"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\host_d3d_device.txt",
+          "bytes": 80,
+          "sha256": "c7a542675743ee27da0bcdbbcc705bfb3bdf647811f6f67cb1fcefd943590d7e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\host_shader_codes.bin",
+          "bytes": 1400,
+          "sha256": "22bba1a5e4682aef530a41faab821b913623e7e1c17395cde9db51e8106e98c7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\host_trace.bin",
+          "bytes": 23700,
+          "sha256": "e4b91499e8cff573040d35e014004b2ef07b2bdd704149141cc1755013d0bdf0"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\malloc_module.txt",
+          "bytes": 34,
+          "sha256": "8a8c1ee835e2f588d813f9f07c7db10632aa3eb096e5801bd7d3d81dd1e1711f"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\native_d3d_device.txt",
+          "bytes": 80,
+          "sha256": "c7a542675743ee27da0bcdbbcc705bfb3bdf647811f6f67cb1fcefd943590d7e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\native_shader_codes.bin",
+          "bytes": 1400,
+          "sha256": "22bba1a5e4682aef530a41faab821b913623e7e1c17395cde9db51e8106e98c7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\native_trace.bin",
+          "bytes": 23700,
+          "sha256": "e4b91499e8cff573040d35e014004b2ef07b2bdd704149141cc1755013d0bdf0"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\patched_spans.txt",
+          "bytes": 813,
+          "sha256": "5e1965ae401f16caa7f929c6d9aeb52cec3b0b0cc989c17aa737088107a13f07"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\pixel_GetFunction_module.txt",
+          "bytes": 30,
+          "sha256": "fff8b1403f6220f19efd73dea08b49fe50c4422603a3b7617995161da3730ca7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\primary_verified.json",
+          "bytes": 11352,
+          "sha256": "da91de4b7e538ea9331b75c3b4a2bce73026ab320a4b5fdb5ee3d0ac2ce5e5ec"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\shader_reset_diff.exe",
+          "bytes": 53248,
+          "sha256": "6bc0156c03b74a76976b49c84d9e4d96dc110fe9d53099c89dfc1f6b242b5f0f"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\shader_reset_diff.map",
+          "bytes": 85252,
+          "sha256": "86c8c45498e651af5899a419fb14de8d5c88f428d058adde20d5904d4340241e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\shader-reset-primary-check\\vertex_GetFunction_module.txt",
+          "bytes": 30,
+          "sha256": "fff8b1403f6220f19efd73dea08b49fe50c4422603a3b7617995161da3730ca7"
+        }
+      ]
+    },
+    "annotations_applied": true,
+    "ledger_registered": true,
+    "definition_and_save_report": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_shader_device_reset_defined_functions.json",
+      "bytes": 7891,
+      "sha256": "9ff1a7a1b3e2854c0c8b7b0e207218e7f54b063430fb3fcd6b40c3a53beb22a9"
+    }
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "restored_returning_free_continuations": true,
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_shader_device_reset_annotations.json",
+    "bytes": 10077,
+    "sha256": "72024caffb8b93466cdc21e74ec853735c01f3d75cb62fcfadef40835ec0f9af",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b1fef0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b1fef0\\decompiled.c",
+      "bytes": 2226,
+      "sha256": "6eae21d3d51582173ace76d892889a4b003388ef88b946ec79a082de99e07772"
+    },
+    {
+      "address": "00b5e750",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b5e750\\decompiled.c",
+      "bytes": 2664,
+      "sha256": "72a5754a9bc12e8fb22e304056b722f119cb6362949dfa944f5392f5800bbce5"
+    },
+    {
+      "address": "00b5e810",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b5e810\\decompiled.c",
+      "bytes": 2666,
+      "sha256": "14980942e9636ad2c0e90214b9bc25ed519abd843e17ffbf5ab61848e07abd2d"
+    },
+    {
+      "address": "00b5e890",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b5e890\\decompiled.c",
+      "bytes": 2019,
+      "sha256": "8a2bad44db87a4905aa591a6f531b7af5e7b07adeaff6c2c6cf371c14b25a0bc"
+    },
+    {
+      "address": "00b5e8e0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b5e8e0\\decompiled.c",
+      "bytes": 2025,
+      "sha256": "9d6a4de16cf5fdfd449fb730742f7b6dbfd807ea294edf48323505aac83d7188"
+    }
+  ],
+  "closure_utc": "2026-09-11T05:58:36.042854+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b1fef0",
+      "name": "get_native_renderer_device_00b1fef0",
+      "cpp_symbol": "get_native_renderer_device_00b1fef0",
+      "source": "src/native_shader_device_reset.cpp",
+      "native_end_exclusive": "00b1fef7",
+      "original_abi": "ECX actual renderer, EAX borrowed device, RET",
+      "evidence": "reports/native_shader_device_reset_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b5e750",
+      "name": "save_release_native_pixel_shader_00b5e750",
+      "cpp_symbol": "save_release_native_pixel_shader_00b5e750",
+      "source": "src/native_shader_device_reset.cpp",
+      "native_end_exclusive": "00b5e7b9",
+      "original_abi": "ECX actual shader owner, RET; no semantic result; reached COM calls use real Win32 stdcall ABI",
+      "evidence": "reports/native_shader_device_reset_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b5e810",
+      "name": "save_release_native_vertex_shader_00b5e810",
+      "cpp_symbol": "save_release_native_vertex_shader_00b5e810",
+      "source": "src/native_shader_device_reset.cpp",
+      "native_end_exclusive": "00b5e879",
+      "original_abi": "ECX actual shader owner, RET; no semantic result; reached COM calls use real Win32 stdcall ABI",
+      "evidence": "reports/native_shader_device_reset_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b5e890",
+      "name": "restore_native_pixel_shader_00b5e890",
+      "cpp_symbol": "restore_native_pixel_shader_00b5e890",
+      "source": "src/native_shader_device_reset.cpp",
+      "native_end_exclusive": "00b5e8d4",
+      "original_abi": "ECX actual shader owner, RET; no semantic result; reached COM calls use real Win32 stdcall ABI",
+      "evidence": "reports/native_shader_device_reset_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b5e8e0",
+      "name": "restore_native_vertex_shader_00b5e8e0",
+      "cpp_symbol": "restore_native_vertex_shader_00b5e8e0",
+      "source": "src/native_shader_device_reset.cpp",
+      "native_end_exclusive": "00b5e924",
+      "original_abi": "ECX actual shader owner, RET; no semantic result; reached COM calls use real Win32 stdcall ABI",
+      "evidence": "reports/native_shader_device_reset_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_SHADER_DEVICE_RESET.md",
+    "bytes": 9343,
+    "sha256": "8a294e50f77413eefffd4dd3e4577d76cab753ea1f07d4555f9a9385b54de72f"
+  }
 }

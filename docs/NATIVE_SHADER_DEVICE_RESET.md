@@ -58,7 +58,8 @@ the native routine does not add output repair or retry.
 
 The complete returning-free tails `B5E8C7..B5E8D0` and `B5E917..B5E920`, ten
 bytes each, contain `ADD ESP,4; MOV [ESI+0Ch],0`. They are present in both fresh
-Ghidra bytes and the installed PE although absent from the saved listings.
+Ghidra bytes and the installed PE. The primary restored both continuations
+and saved the complete function bodies and refreshed listings.
 Unrelated owner fields and all renderer bytes remain unmodified.
 
 ## SDK and complete native evidence
@@ -136,8 +137,15 @@ owned source into primary `bsp_core`; the strict fixture linked that exact
 library. No tracked tests were added. No production source changed after the
 API freeze and successful primary build.
 
-Shared CMake registration, ledger/packet updates, Ghidra annotations and flow
-repair at `B5E8C2` / `B5E912` remain integrator-owned. Existing correct getter
-naming must be preserved. Descriptive shader names are hypotheses. Valid
+The primary completed permanent CMake registration and repeated the full
+comparison against its frozen main library, SHA-256
+`07e5f7de1881917f2ca637b16476eb43867c9648af77efbcfd798a58625de212`.
+All 5,925 DWORDs, 104 snapshots, seven original runtime postimages, seven
+actual library providers and real Win32 modules passed independent checks.
+The primary also rechecked 38 worker pins, four current sources, installed SDK
+and seven fresh live/PE spans. Both existing CTests passed. Full reconstruction
+records and saved Ghidra annotations now cover all five entries; returning-free
+flows at `B5E8C2` / `B5E912` are restored and exports refreshed. The existing
+correct getter name and all prior comments were preserved. Descriptive shader names are hypotheses. Valid
 reached storage and COM lifetimes remain caller preconditions; no original
 ABI compatibility, complete renderer recreation or game validation is claimed.
