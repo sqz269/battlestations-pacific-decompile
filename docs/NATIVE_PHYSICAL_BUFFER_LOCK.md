@@ -150,3 +150,19 @@ host service binding. It does not establish original-caller drop-in ABI,
 complete buffer-owner lifetime, allocator failure or concurrent publication
 coverage, renderer integration, device reset, game compatibility or visual
 parity. Existing semantic buffer bindings and permanent tests are unchanged.
+
+## Primary integration
+
+The primary registered the source in CMake, passed the strict Win32 build and
+both existing CTests, and verified all eight native seeds. It independently
+checked 46 artifact pins, four current source/provider files and seven fresh
+live-Ghidra/installed-PE spans (588 bytes). The unchanged fixture linked the
+frozen actual main library `d0f1c03fb51b2b960a63a8755ff118dc61a96bc69953544d932cdf179b6c94cf`.
+All 20 paired cases, 5,396 literal DWORDs and 128 event frames agree, including
+16 pairs through actual D3D9 Lock and four null-COM pairs. Six complete main
+COFF/linked bodies and 369 complete runtime code snapshots were checked.
+All actual driver calls returned S_OK; ignored failure results remain established
+by source/original assembly rather than an observed failing driver call.
+Both names were preserved with appended evidence, saved Ghidra annotations,
+refreshed exports and complete reconstruction records. No permanent tests were
+added. This does not establish original-caller ABI or complete reset/gameplay.
