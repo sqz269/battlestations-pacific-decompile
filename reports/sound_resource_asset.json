@@ -1,0 +1,33 @@
+{
+  "packet": "orch3_sound_asset",
+  "source": "src/sound_resource_asset.cpp",
+  "header": "include/bsp/sound_resource_asset.hpp",
+  "documentation": "docs/SOUND_RESOURCE_ASSET.md",
+  "addresses": ["00a82ea0", "00a835b0", "00a83450", "00a823f0", "00a82720", "00bdc8b0", "00bd91f0"],
+  "status": "reconstructed_build_and_existing_tests_passed",
+  "native_allocation_bytes": 44,
+  "native_vtable": "00d5b118",
+  "native_fmod_create_info_bytes": 108,
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_worker_mutations": false,
+  "ghidra_repairs_requested": [
+    {"address": "00bd91f0", "reason": "Missing function", "end_inclusive": "00bd91fd", "instruction_lengths": [4, 1, 5, 1, 3], "body_bytes": 14, "ret_address": "00bd91fb", "ret_immediate": 4}
+  ],
+  "mode_cases": {"0": 2634, "1": 2642, "other": 2050, "options_byte_20_or_mask": 2097152},
+  "fsb_size_source": "Sound_getLength(bank, output, 8), not FMOD memory delta",
+  "event_size_source": "uint32(memory_after)-uint32(memory_before)",
+  "subsound_ownership": "Borrowed from bank; index 0; not separately released",
+  "timing": "x87 float product store, signed FILD PCM with 2^32 correction, x87 division and float store",
+  "loop_points": "x87 truncation to signed qword, low DWORD; end then start; time unit 1",
+  "vfs": "Canonical existing resolve/existence/open-memory and MemoryStream, with documented buffering/domain guards",
+  "fmod": "Required genuine proprietary DLL methods supplied through SoundResourceAssetFmodHost",
+  "uncertainty": [
+    "Typed resource and optional timing members are not the original native layout or replacement ABI",
+    "Failed VFS/incomplete reads and failed required FMOD output queries are outside the guarded host domain",
+    "Constructor exception cleanup follows native string-subobject unwind and does not synthesize completed-resource teardown",
+    "No global resource byte counter increment occurs in these inspected asset bodies",
+    "Descriptive names are hypotheses, not recovered symbols"
+  ],
+  "validation": {"win32_release_build": "passed", "existing_ctest": "2/2 passed: reconstructed_math, native_math_differential", "verify_seeds": "passed; all reported seed byte ranges match installed image", "build_log": "local/sound-asset-build-final.log", "seed_log": "local/sound-asset-seeds.log", "new_tests": 0, "installed_asset_runtime": "primary_owned_pending", "game_validated": false}
+}
