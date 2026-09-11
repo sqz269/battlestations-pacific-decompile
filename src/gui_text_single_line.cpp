@@ -97,8 +97,8 @@ std::optional<GuiTextSingleLineContinuation> emit(
         }
         frame.placement.code_unit = *frame.text_cursor; // Reload after bindings.
         // ABA1DE/E3/EA use one float3; ABA1F2 copies the separate pen x into
-        // it each time. Y/Z were initialized once at ABA168/16E. Preserve any
-        // child-tail writes across suspension and subsequent glyph calls.
+        // it each time. Y/Z were initialized once at ABA168/16E. Preserve the
+        // separate arg2 allocation through its late child-tail x read;5/6 are unused.
         (*frame.native_position)[0] = frame.placement.x;
         frame.placement.y = (*frame.native_position)[1];
         const auto result = write_gui_text_quad_00ab98f0_fragment(lifetime,
