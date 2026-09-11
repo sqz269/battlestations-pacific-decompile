@@ -707,5 +707,1225 @@
     "Original exception ABI and allocation-failure unwind execution are not fixture-tested.",
     "Stable tracked-object addresses, valid counts/extents,50 slots/five references and live shared domains are native caller contracts.",
     "New explicit C++ interfaces and host callable vtable adaptation are not original ABI replacements; rendering and gameplay unvalidated."
-  ]
+  ],
+  "utc": "2026-09-11T21:36:31.370598+00:00",
+  "tested_source_commit": "a0574eec9ace7b091742b4561aa44a6ed8e73f0f",
+  "source_sha256": {
+    "CMakeLists.txt": "9994069b642a04e03e88aec578200c96ea99f4addeeea1f70ef596bb81ec4ab4",
+    "cmake/lua.cmake": "50da26a918e8d494aba3ce414e5f550146348a91269318cdcff95e9ae2abe060",
+    "cmake/startup.cmake": "7fad14bd40d0a5544d47aad1446d45fa58275d810aa4fd1214a04b53e1c84cdf",
+    "docs/LUA_OBJECT_API.md": "db0bfa628f191bb6fb807761150a5358ea6a25d88efe2c589667a1abb84612f7",
+    "docs/NATIVE_SHADER_DESCRIPTOR_OWNER.md": "a6ad91901dc63708eb0ea751760ca1f15058cfd14f9b5c53570322d6acaf80a9",
+    "docs/NATIVE_SHADER_SAMPLER_OWNER.md": "bc14f1d07cef7c76d4637cf3f7f28d93c923b1e02322b0b581dd49d2441eb57f",
+    "docs/NATIVE_SHADER_SAMPLER_READER.md": "b6adc45260a0e3d53e727029ceb435ecae16d21f0b562f6224f1a63795f94ada",
+    "docs/NATIVE_SHADER_STATE_DEFINITIONS.md": "8c561e136215888a1042be89f407b6b2c8e314ab64afddaa3899e08a7dc1e604",
+    "docs/NATIVE_SHADER_STATE_READER.md": "08c9959bd0b279593829f4d4c05ef10a1cb4b9dc799d3a43f95e38967f911387",
+    "docs/SHADER_SAMPLER_TABLES.md": "2e7d350962bf69c03d3917e45a5d90b56d6a4055a5399e8886879190bc3f4c64",
+    "include/bsp/allocator_list.hpp": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+    "include/bsp/gui_lua_reader.hpp": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433",
+    "include/bsp/lua_numeric.hpp": "a8de255e2aaaad540cec67717e7d0efd7cc5f50d206bdd2137cabe1ed81acf60",
+    "include/bsp/lua_object.hpp": "37a2646655d6a821cf35999db5784bc64ebd70151e54383cdcd2754007469e01",
+    "include/bsp/native_lua_objects.hpp": "e9029424e453baf45f058619938bf7435f1d25ccc40ef9005a3b76ebf11ec269",
+    "include/bsp/native_material_effect_owner.hpp": "7d90fd6fe55483fc5b0957342edd07fc9a29707fda8ed962c02f33c45d5ce1bd",
+    "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+    "include/bsp/native_material_pass_base.hpp": "ff2143aa1f9265bbeed7b38c24a23ab2c504bc1dfe8b96d4c7767f095a318a70",
+    "include/bsp/native_material_pass_copy.hpp": "91759de34783c49066d70a643bdc4f985b98d4231673b59fc2b6e3cbca291aff",
+    "include/bsp/native_material_pass_owner.hpp": "30ce7e9a5eb8247e4988a947a39427deeecf4991c42cdb969c2ad403f27a4e18",
+    "include/bsp/native_material_pass_states.hpp": "4b0b577fb905790cbfa2c47dcddeef2ba7c111667a3b4d3cdf770c85ea52cab9",
+    "include/bsp/native_material_pools.hpp": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+    "include/bsp/native_render_batch_keys.hpp": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+    "include/bsp/native_render_context.hpp": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+    "include/bsp/native_shader_descriptor_owner.hpp": "4846aaf3f02e8967ae57c00135455b2ee3b6b913c82d790ba32dab80545b2d2e",
+    "include/bsp/native_shader_sampler_owner.hpp": "8a01ca946332bbcc7e4b7130f53cb2070c4cca082d33d75951d69fe152625a93",
+    "include/bsp/native_shader_sampler_reader.hpp": "a38669e5e48d733097b98c4974e97f842ca6a732dfa772b28e5ae17151afe6aa",
+    "include/bsp/native_shader_state_definitions.hpp": "68c3717cbe070ed5a4dd4e6c58550bd0cefea1ddf00cb5ef4f04c13aefcd8be8",
+    "include/bsp/native_shader_state_reader.hpp": "dee7e101ed0b3cadeaee3a86488c1cdd1cd1237a36a93a82f32cac5f45d56562",
+    "include/bsp/native_string.hpp": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72",
+    "include/bsp/native_string_pool_owner.hpp": "c434ef6a756fe1df206dddcdef70d4444159e4e5e756ec5bb43fc9b20a7f35bc",
+    "include/bsp/native_string_pool_storage.hpp": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749",
+    "include/bsp/render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+    "src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+    "src/gui_lua_reader.cpp": "d7bd22187f235cd436005f676dcc2eca13492661a9e67ed89c157fb6267f0293",
+    "src/lua_numeric.cpp": "4c19ba962c8964626d224a273a416794d1330efcca1ef953ca359f28f28f585c",
+    "src/native_lua_objects.cpp": "436a88150f9a7c19cf408d5ae299e30b1acee189e774970befeae47920406c40",
+    "src/native_material_effect_owner.cpp": "40f5096239820d15cebbc306bc8faedcb2e5cbaa6f7079c3389a3f1ffef5d0a0",
+    "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+    "src/native_material_pass_base.cpp": "e0d16654ffbabe7dc7dbd1c0a5dd0a6ff04e833c311215fe487435ff8771503b",
+    "src/native_material_pass_copy.cpp": "1b2419d3caf87732eb52a05e4dbd0f499d9ec2e76465301c2d14dc2fafbab357",
+    "src/native_material_pass_owner.cpp": "3fd1c2e7ccd4bf0d8793c79fc60298f55e6dc0ef43344fff7fc7f4468525a586",
+    "src/native_material_pass_states.cpp": "0404bc1ad539e8d65c83470e78b63a67332b8a55d0676632869182a89454a62c",
+    "src/native_material_pools.cpp": "912a99731808b59da5344f93a5d68ab46e295be668f17cb93f99d7baab19f317",
+    "src/native_render_batch_keys.cpp": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+    "src/native_render_context.cpp": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+    "src/native_shader_descriptor_owner.cpp": "007c75c946ecfee303586f2bc8e1f3fbc2cbef485df899e47f87acf38d9a8b48",
+    "src/native_shader_sampler_owner.cpp": "48ad13bb14a996c24be81bbcbd755cc21f06b494f8dcb1a0ccf9ca32b374b96f",
+    "src/native_shader_sampler_reader.cpp": "ad93db3d23715481fbacea527003b1fdb309a652af5d530f97edfd627ddcbe64",
+    "src/native_shader_state_definitions.cpp": "d5fd2d4f756031a6c791157b85082219cb5be788e2cdc4df24f3c117930fdff6",
+    "src/native_shader_state_reader.cpp": "df4dda941913a51bd27dad189e980244bac39a40302dcefa1550ea508d93ede5",
+    "src/native_string.cpp": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a",
+    "src/native_string_pool_owner.cpp": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c",
+    "src/native_string_pool_storage.cpp": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8",
+    "src/render_command_queue.cpp": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+    "src/shader_render_state_registry.inc": "b3e35dedd1bb2c87388d16f1779f042e1491cc6b3a2dc653658bf53f7f3b849c",
+    "src/shader_sampler_state_registry.inc": "d47454be250d020f82567023239e054c5f05f4a4864640a852410fb7a8125ca2",
+    "src/shader_texture_stage_state_registry.inc": "62183f8aca8bfc3ef2803efc8d3db0cf9c235460e94de587618a81e3648af557",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "src/storage_pool.cpp": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+  },
+  "artifacts_sha256": {
+    "local/native-shader-sampler-reader-annotation-addresses.json": "9815245e74ec22fd8c39fa1919d1bdb313c9813277893439bce3d4b7f3ea4b6a",
+    "local/native-shader-sampler-reader-annotation-verification.json": "5522b9aecebc624b9451c0598bd95c62833aef5093e403f2d0067a399fe34482",
+    "local/native-shader-sampler-reader-annotations.log": "b3d12e8fa72d53c0a0a9b1dd72f19997a9f8df50150426eaea81253d6c3b1464",
+    "local/native-shader-sampler-reader-boolean_gate-assembly.txt": "514b36e873d8766831b4b42b1332e5e68aea174b51458712efbe1f8d266044eb",
+    "local/native-shader-sampler-reader-boolean_gate-bytes.txt": "da6554a71c138e9e878cf5d12802eefb00830034dea4c3af99a1daf7cde8f3ed",
+    "local/native-shader-sampler-reader-boolean_gate.bin": "9ae938626879e532146a296707dc80666e8db32961527fe49b0f17a9a349d39b",
+    "local/native-shader-sampler-reader-boolean_get-assembly.txt": "d8e0985b86f5b6a40d99e4487f74121b7e8c9a59f63af96cb77f03bd8eec3507",
+    "local/native-shader-sampler-reader-boolean_get-bytes.txt": "a9a922df44c5c08fff2bb123e9a39c0f31db7d7c4784023dc2076a924b11864d",
+    "local/native-shader-sampler-reader-boolean_get.bin": "3d5abd88cfe58d6821e6b2ffdd27fe50fb7808fbf706ed6430a91c8938a377ee",
+    "local/native-shader-sampler-reader-build.log": "578eb6965c4420614e31fbdbc308fd3f78d443abda9a180d2c5af0ac66efe7ef",
+    "local/native-shader-sampler-reader-call-verification.log": "ad8f9ad986056b69badb9ffd4b92a75ec22660852b026e1f06e9147662643abd",
+    "local/native-shader-sampler-reader-capture.log": "425862855ede9126c87b765abc016f201002c212eced426fddc965384a960231",
+    "local/native-shader-sampler-reader-comments-after.json": "c7b96e3876517919b9faea71f0040218bd69ca853a4582c2705c4fa69d7f4edd",
+    "local/native-shader-sampler-reader-comments-after.log": "0e5fd5fc86f16d1c832757c5a9027d1c6c8f79c7b4e3228b4d4b5188714b6033",
+    "local/native-shader-sampler-reader-comments-before.json": "454d1236abc1fb9446e236516fe2c759a5acdfd7ff434e2aef095e7feb8f71b8",
+    "local/native-shader-sampler-reader-comments-before.log": "62c61fc4e47523f77f9dd9bf79b1baa4ab1249367ad0242be51b7d3450fbddad",
+    "local/native-shader-sampler-reader-commit-message.txt": "5f696be8a0d60472c08663c3885efdd37deb21c293e5aa93edbf5e969049b4db",
+    "local/native-shader-sampler-reader-evidence-verification.json": "3db1dd5daefa97da6ad4167ee161c8a9b9adda5d42a2b4282b9f5932ae27b88b",
+    "local/native-shader-sampler-reader-export-refresh.log": "a088d731d7fd51540eb25ca88bad654d2725cb93691f4d33abaf12df5ac43066",
+    "local/native-shader-sampler-reader-first-assembly.txt": "3c7f28e27af3fdec7f0bcecabe1500d46c21d487e74c3cd8c08be53baa4a46b0",
+    "local/native-shader-sampler-reader-first-bytes.txt": "2f111d064076349575f7628baaf006c5674219c52e88506f1be8eed9059463d1",
+    "local/native-shader-sampler-reader-first.bin": "da1b8268de13bf6ea4249424f652c4e6e1ee31a150b92c640fdbac82a0763a18",
+    "local/native-shader-sampler-reader-flow-repair.json": "583063b53aa7d18492c7a0e6817d4205455f5bc17bfd94c365edd7815a1d9570",
+    "local/native-shader-sampler-reader-flow.log": "622714a09593961913e1ab4a0e69a48cef73c34ae6c3c2b0097250b2429797b7",
+    "local/native-shader-sampler-reader-integer_gate-assembly.txt": "e3554934a8673b77cea04909fd3bf020be3bd739956ba84be8fec688e6cc0181",
+    "local/native-shader-sampler-reader-integer_gate-bytes.txt": "0a9fc128436cfcf66ab6ddd23864603349d2f66825b3c972af68ebe381da16bb",
+    "local/native-shader-sampler-reader-integer_gate.bin": "e86f071db4972e1dfdc9945c9ac80a7d6c4a1c1cdbcf1ee164ce18649ef41b9c",
+    "local/native-shader-sampler-reader-ledger.log": "453042934650a1fa1e450d353c2524971ad7cf890ff8dfa6cbbef4de1379114d",
+    "local/native-shader-sampler-reader-literal_ce4780_table-bytes.txt": "dd1d34dd55c96a090fe8be1a4f46339fd6bb7a23e99452ea59841e57abbac6ee",
+    "local/native-shader-sampler-reader-literal_ce4780_table.bin": "a129b9e613d0ab42ea8092a9ea96006844fe619dff93be7ccfd5723001cd5d84",
+    "local/native-shader-sampler-reader-literal_ce55b4_table-bytes.txt": "aba9f926a318a0ed2017685756b55f486f1823b2468e6ec53e870177b0224fd2",
+    "local/native-shader-sampler-reader-literal_ce55b4_table.bin": "789d7ac5e52324899a8c48116cdce4661dd08dcc0b432b6437f6a35490274a0e",
+    "local/native-shader-sampler-reader-literal_ce8ed0_table-bytes.txt": "c4ce7cf5ff4eb32536290dd96ee083bf0792a17a8c796dd740f5f43649e9493d",
+    "local/native-shader-sampler-reader-literal_ce8ed0_table.bin": "5458f37977e6129640e9a702b17242e615bf4672eff3161fe49121846d47a085",
+    "local/native-shader-sampler-reader-literal_d61a20_table-bytes.txt": "4b9f192025b7586c7e9333bb7fa7d0709259e9f909385eae0d553943e2d574a4",
+    "local/native-shader-sampler-reader-literal_d61a20_table.bin": "447408748370e037b2fd963cccb65afbdc005e6d48429dfc8ecae14b5aeef91d",
+    "local/native-shader-sampler-reader-literal_d62208_table-bytes.txt": "7edfff81565faed35ea6fae278a419d84f7d90c9765202b6584388b861819368",
+    "local/native-shader-sampler-reader-literal_d62208_table.bin": "7024940225e76773a3a20ab3268b8bdb011c7d1dbf5cfc3d5859c145c3b718ab",
+    "local/native-shader-sampler-reader-literal_d6221c_table-bytes.txt": "04d1543e4affa82bf8948df3c480d69e7d518cf5f7ea6f680152c17b27b24ce2",
+    "local/native-shader-sampler-reader-literal_d6221c_table.bin": "0eed6d42aae829899cc6e6ac6ed12d2af9401eaba0c94d5844b3d0e010e65353",
+    "local/native-shader-sampler-reader-literal_d6222c_table-bytes.txt": "06d6a53d83e68e4211c8a678f865aae464833c4c4658b4d29d676d698f061edf",
+    "local/native-shader-sampler-reader-literal_d6222c_table.bin": "f9d6d7d50bb495a2702263ba98aba1bf5fb989a85be133417bee1029a2e8016e",
+    "local/native-shader-sampler-reader-literal_d6223c_table-bytes.txt": "a4174497684ab8cf721a27c661a93d40c3437a818fd9ec5b246032c326d9e11a",
+    "local/native-shader-sampler-reader-literal_d6223c_table.bin": "6cca05b1f63f99be621ed22e951b73b2d7806fda729871b51f9ae661cc36a7e7",
+    "local/native-shader-sampler-reader-literal_d62250_table-bytes.txt": "e0752cd229ddeb6063a80c2b9ee579861245e87c430c3b53e4d24e5aef964031",
+    "local/native-shader-sampler-reader-literal_d62250_table.bin": "9aceb7fbab90518b9b92210f0d50fe65a6ad307ad4b426e78b18ca8d726cad33",
+    "local/native-shader-sampler-reader-names-after.txt": "233e0071c95f61841778725a3c6ed6ac0446d5c6d4dc9e87dc484bc7a55c30ec",
+    "local/native-shader-sampler-reader-names-before.txt": "337d32b6de215c4827feeb30d99db07975ae1694f509fdcf628415d3ec0a1eeb",
+    "local/native-shader-sampler-reader-names-expected.json": "fe0fa0194bd184cc68a49e9fc7e25afa9f1ce7f381c3209743b73b1a652a0893",
+    "local/native-shader-sampler-reader-native.hpp": "eedb02b692a9ec37bd97acc607c8fd1feb308dfecdafdaf59fe6164b245801b5",
+    "local/native-shader-sampler-reader-next-assembly.txt": "8f5867d1858b3f7ee467f872137aee3ad4cc1316c0c2d3839b0200d303332af9",
+    "local/native-shader-sampler-reader-next-bytes.txt": "e3d8abfc173569772902ad4c584816f34b8a180e3594a5d5ba52988656d83126",
+    "local/native-shader-sampler-reader-next.bin": "ff14695c7df23b3a65634ceecc5e5791bde67fdc249816ea2cec5dc5e6b12a41",
+    "local/native-shader-sampler-reader-outer-assembly.txt": "9648d55bf106239da845e3bf7989094b4272673b34dd8457eed9708f37de3fd2",
+    "local/native-shader-sampler-reader-outer-bytes.txt": "bafa898355b741e4e1163376649858f13321c741d049e8cd4dbaecb5616d6e76",
+    "local/native-shader-sampler-reader-outer.bin": "1e22f771cc9ae446482ae0df189a67024766c619ce2e0d86954019125e61055f",
+    "local/native-shader-sampler-reader-outer_unwind_code-assembly.txt": "042293a93da1ef0e1288775a208f6d933efcd84aa55491b916b49c9ca3694392",
+    "local/native-shader-sampler-reader-outer_unwind_code-bytes.txt": "acc2ec129013a29eaa5d463037df984eece1c6fa67d2b6589e1810a8a58b8412",
+    "local/native-shader-sampler-reader-outer_unwind_code.bin": "533b6c6823a951a2a360405e06f60ea32332892efc795aec3e3a62669f85f053",
+    "local/native-shader-sampler-reader-outer_unwind_meta_table-bytes.txt": "057b3ed6facc545b39d75c5545328008c7b4604db3b389e24835223a348193f6",
+    "local/native-shader-sampler-reader-outer_unwind_meta_table.bin": "f6aef4c12b35d218c31e2cf10bf22afb5bbdd389f567ad39b2ae237a33ed1bfe",
+    "local/native-shader-sampler-reader-probe-code.hpp": "b3910baa0c615c59c4516ccfda38ed0bb41398ca2e2adfecb4b337da467c86be",
+    "local/native-shader-sampler-reader-probe-result.log": "33e9ed37cad6d88f1494e5d813755f9e15dbbe883b85afac2964f5c8fb5c82f3",
+    "local/native-shader-sampler-reader-probe.asm": "d18856109a60fda5740db105cbb4d92e1b3533c6968e17009323f56429046739",
+    "local/native-shader-sampler-reader-probe.cpp": "4df0c632cf3f97d9a25d2f05234e709f75ea075ece371c8178048e1b76fd12f2",
+    "local/native-shader-sampler-reader-probe.exe": "c5ac0c5af4b8ce67b929a1858b8530ac1c9b2a80fe2b4ff996a124f650d26654",
+    "local/native-shader-sampler-reader-probe.obj": "fa90e5ecf9f6e10573b354bad4e3ce89f02cf27bcff83737d49be4377fa75fe3",
+    "local/native-shader-sampler-reader-probe_compile.log": "e553627511f10bd3cdd25503da7650c52dc707546abca49657f68396f7f18a1f",
+    "local/native-shader-sampler-reader-reserve-assembly.txt": "a55f4a40c1d81c5cca56f5d67e32def3423f527e5a1344eb2295c9d15be4df4c",
+    "local/native-shader-sampler-reader-reserve-bytes.txt": "9b50422a2f96ea1eb429e3fcecb8066c1b7ca10ae6c90f6a1aebf7c2aaac2de1",
+    "local/native-shader-sampler-reader-reserve.bin": "a238f2b0d6d467e9697088901d3ebba08eccefd05a49ae350c20a015a1709f0a",
+    "local/native-shader-sampler-reader-sampler-assembly.txt": "df5d244ee3b1cfb637664628b0d0c042bfb70caf59ad97ad8d4f4a05efffe55a",
+    "local/native-shader-sampler-reader-sampler-bytes.txt": "1891792e9f26806d7043e9d02776c8f38c90d38fd6b8f043cd434bfc7401a85b",
+    "local/native-shader-sampler-reader-sampler.bin": "2a72cdf3d77507ffc20c4d678a25be378fc9c4b2a03e172a05275f19f405ae4d",
+    "local/native-shader-sampler-reader-sampler_unwind_code-assembly.txt": "3c3201813d085edd8c37e3b1e66f447c665db6f755a802b7e5f4e34ffee71ac7",
+    "local/native-shader-sampler-reader-sampler_unwind_code-bytes.txt": "9a2e8a65b7eb2931b6a8654a1ab615dbdff2acdc191eab5a3bbbe045213493a7",
+    "local/native-shader-sampler-reader-sampler_unwind_code.bin": "5db872ce824c8d5c6ef20b3439c384c5ed34f3e322f8f37721ca005d5615e2d0",
+    "local/native-shader-sampler-reader-sampler_unwind_meta_table-bytes.txt": "63c29f508cd258938a14ededae6f96807d67d97f13e332eb28a1eff3da5fb487",
+    "local/native-shader-sampler-reader-sampler_unwind_meta_table.bin": "1cf7474974d4367dd52480802e994cd37ac2a36c27efa713fef3016d5a47acd2",
+    "local/native-shader-sampler-reader-spans.json": "fa1e5a09be6a9f27a5944b9b3fc05a6e588f541f4e033c747933bc0082ccc7c1",
+    "local/native-shader-sampler-reader-string_get-assembly.txt": "f281d10ef20ae82b05c5f877f4cee392b112264eb1171e8988a36ef57534be11",
+    "local/native-shader-sampler-reader-string_get-bytes.txt": "8dd3be4dd5ffd7a0fec87d8685b3ee4d21f5731cdb77768f9f2230b19fd4245f",
+    "local/native-shader-sampler-reader-string_get.bin": "bcd71685302bdb47c3e3e9845d29825d0b867f443005f0b15bfb44e5b5619cf4",
+    "local/native-shader-sampler-reader-table_gate-assembly.txt": "22112617c6f324c7072db4b4a084b1d40c4baa12faefdfbe3bdeedf26dea7443",
+    "local/native-shader-sampler-reader-table_gate-bytes.txt": "13e4d476ac964be760a1b64b11540e8fdb20d60b0bf4669e541fc41c9fb0ab84",
+    "local/native-shader-sampler-reader-table_gate.bin": "014354ba0c83651c08037591b62129b41fcba7a7ae6c2ffb4c7ca0548cd33dad",
+    "local/native-shader-sampler-reader-tested-source.txt": "e96e06b1b4980b523dace9591762a9f5fb6f44804771e0d7a306254e98194d31",
+    "local/native-shader-sampler-reader-unbound-assembly.txt": "4aa3527efdd9571b6b92fc45e1875c07de4cf6b0c0080c4f46247f8899983e90",
+    "local/native-shader-sampler-reader-unbound-bytes.txt": "c75a18e8a720df3af8ed8b898d8499d5c89b433a0461fef2df6770bd12e07a5c",
+    "local/native-shader-sampler-reader-unbound.bin": "1a074d76441dbb3e9e68937e8bec1054802e5e96e96fd2cf7c19f06b5fdfefc3",
+    "local/prepare_native_shader_sampler_reader.py": "65e45e95e955323c568cd29c004e85b92aa6017df1f69c8d0658e3df8f65e6d1",
+    "local/prepare_native_shader_sampler_reader_probe.py": "3a0b1257e6937fdd1f21300fe28eb39eadb73bae22d8c519ffcc8d3c53b63905",
+    "local/write_native_shader_sampler_reader_fixture.py": "e1c5ded2c35bd7d10e8d2b975f23863432f99f308afd81df5cc55cd16fffc351",
+    "local/run_native_shader_sampler_reader_probe.ps1": "653691c4d6316bd48e3fe32ea16ccb648553179c6ec38095bc80c64ec6baab1b",
+    "local/check_native_shader_sampler_reader_evidence.py": "86ddda1b7d3ba67a49f950b202c8369b5e9f24a0915a7064bfb4bdd11c6ab4b9",
+    "local/record_native_shader_sampler_reader.py": "36a6556e65e8e367c90f8812a6f3afdac6608753875c19b71424fdf320ff05d6",
+    "local/native_shader_sampler_reader_annotations.py": "0dedb1985f5a3d3a254ffa142d8f94d4695cb65ca91e50c2a6a19812af7106b6",
+    "local/finalize_native_shader_sampler_reader.py": "58e4fa93f5e8d3209e714f650a02f32cc0bde6d575de18e90ca9f1beb08542ac",
+    "local/native-shader-state-reader-native.hpp": "aba1f93b9bfcec80206d90f25fdc05ee6db193c15ec1b0d83b9a841adc98c177",
+    "local/native-shader-state-reader-spans.json": "35fc64a0a1a0eb6bccbbad7c4bffb475930ac23d5bf980cd67d7ae1bb32a545f",
+    "local/write_native_shader_state_reader_fixture.py": "157a59c07a3c568bcb5e4e116462269122ebb6621275e08e2b4a6bf3f2024a77",
+    "local/ghidra-annotations-20260911T213426Z.json": "f54c6b4b8b8efdc18998d9a2dbf849550d1c662d63e39f7ae57fc534f9358c48",
+    "local/native-shader-sampler-reader-tested/bsp_core.lib": "db55390ff433d383909029756539cb365b0f10c16afe657f593f99fbc61a8071",
+    "local/native-shader-sampler-reader-tested/bsp_lua511.lib": "3152f1378e15bb0eea5391d3d9b8b2dbaed92e9355f6676cc5f05222a0aaac24",
+    "local/native-shader-sampler-reader-tested/bsp_game.exe": "94a3f56e6c628cac8c84ab66b86b483d3eb3ca7111514b0ffdfba57a00f72a82",
+    "local/native-shader-sampler-reader-tested/LastTest.log": "5b1c84f227926cc25578f4c0f34ba781f70f6527cad75716112ded5ffe52e8cc"
+  },
+  "frozen_build_artifacts": [
+    {
+      "original": "build/win32/Release/bsp_core.lib",
+      "preserved": "local/native-shader-sampler-reader-tested/bsp_core.lib",
+      "sha256": "db55390ff433d383909029756539cb365b0f10c16afe657f593f99fbc61a8071"
+    },
+    {
+      "original": "build/win32/Release/bsp_lua511.lib",
+      "preserved": "local/native-shader-sampler-reader-tested/bsp_lua511.lib",
+      "sha256": "3152f1378e15bb0eea5391d3d9b8b2dbaed92e9355f6676cc5f05222a0aaac24"
+    },
+    {
+      "original": "build/win32/Release/bsp_game.exe",
+      "preserved": "local/native-shader-sampler-reader-tested/bsp_game.exe",
+      "sha256": "94a3f56e6c628cac8c84ab66b86b483d3eb3ca7111514b0ffdfba57a00f72a82"
+    },
+    {
+      "original": "build/win32/Testing/Temporary/LastTest.log",
+      "preserved": "local/native-shader-sampler-reader-tested/LastTest.log",
+      "sha256": "5b1c84f227926cc25578f4c0f34ba781f70f6527cad75716112ded5ffe52e8cc"
+    }
+  ],
+  "original_spans": [
+    {
+      "label": "sampler",
+      "address": "00b57b50",
+      "end_exclusive": "00b57fcd",
+      "bytes": 1149,
+      "sha256": "2a72cdf3d77507ffc20c4d678a25be378fc9c4b2a03e172a05275f19f405ae4d",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 34,
+          "target": 12544027
+        },
+        {
+          "offset": 103,
+          "target": 11958272
+        },
+        {
+          "offset": 114,
+          "target": 11952816
+        },
+        {
+          "offset": 124,
+          "target": 4319344
+        },
+        {
+          "offset": 154,
+          "target": 4316480
+        },
+        {
+          "offset": 178,
+          "target": 12547712
+        },
+        {
+          "offset": 210,
+          "target": 4299968
+        },
+        {
+          "offset": 217,
+          "target": 12391696
+        },
+        {
+          "offset": 233,
+          "target": 11958016
+        },
+        {
+          "offset": 250,
+          "target": 11958272
+        },
+        {
+          "offset": 265,
+          "target": 11952784
+        },
+        {
+          "offset": 281,
+          "target": 11958016
+        },
+        {
+          "offset": 298,
+          "target": 11958272
+        },
+        {
+          "offset": 313,
+          "target": 11954784
+        },
+        {
+          "offset": 330,
+          "target": 11958016
+        },
+        {
+          "offset": 358,
+          "target": 11958272
+        },
+        {
+          "offset": 373,
+          "target": 11952784
+        },
+        {
+          "offset": 388,
+          "target": 11958016
+        },
+        {
+          "offset": 422,
+          "target": 11958272
+        },
+        {
+          "offset": 437,
+          "target": 11952816
+        },
+        {
+          "offset": 447,
+          "target": 4319344
+        },
+        {
+          "offset": 477,
+          "target": 4316480
+        },
+        {
+          "offset": 502,
+          "target": 12547712
+        },
+        {
+          "offset": 534,
+          "target": 4299968
+        },
+        {
+          "offset": 541,
+          "target": 12391696
+        },
+        {
+          "offset": 554,
+          "target": 11958016
+        },
+        {
+          "offset": 571,
+          "target": 11958272
+        },
+        {
+          "offset": 586,
+          "target": 11954784
+        },
+        {
+          "offset": 603,
+          "target": 11958016
+        },
+        {
+          "offset": 627,
+          "target": 11958272
+        },
+        {
+          "offset": 642,
+          "target": 11952784
+        },
+        {
+          "offset": 658,
+          "target": 11958016
+        },
+        {
+          "offset": 675,
+          "target": 11958272
+        },
+        {
+          "offset": 690,
+          "target": 11952128
+        },
+        {
+          "offset": 707,
+          "target": 11958016
+        },
+        {
+          "offset": 731,
+          "target": 11958272
+        },
+        {
+          "offset": 749,
+          "target": 11952880
+        },
+        {
+          "offset": 765,
+          "target": 11958016
+        },
+        {
+          "offset": 786,
+          "target": 11958272
+        },
+        {
+          "offset": 801,
+          "target": 11952560
+        },
+        {
+          "offset": 818,
+          "target": 11958016
+        },
+        {
+          "offset": 828,
+          "target": 11937632
+        },
+        {
+          "offset": 882,
+          "target": 11958272
+        },
+        {
+          "offset": 911,
+          "target": 11893168
+        },
+        {
+          "offset": 924,
+          "target": 11958016
+        },
+        {
+          "offset": 970,
+          "target": 11958272
+        },
+        {
+          "offset": 985,
+          "target": 11952560
+        },
+        {
+          "offset": 1002,
+          "target": 11958016
+        },
+        {
+          "offset": 1012,
+          "target": 11937632
+        },
+        {
+          "offset": 1059,
+          "target": 11958272
+        },
+        {
+          "offset": 1084,
+          "target": 11893168
+        },
+        {
+          "offset": 1097,
+          "target": 11958016
+        }
+      ]
+    },
+    {
+      "label": "outer",
+      "address": "00b41830",
+      "end_exclusive": "00b419a9",
+      "bytes": 377,
+      "sha256": "1e22f771cc9ae446482ae0df189a67024766c619ce2e0d86954019125e61055f",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 45,
+          "target": 11958272
+        },
+        {
+          "offset": 60,
+          "target": 11952560
+        },
+        {
+          "offset": 79,
+          "target": 11958016
+        },
+        {
+          "offset": 104,
+          "target": 11958272
+        },
+        {
+          "offset": 122,
+          "target": 11951952
+        },
+        {
+          "offset": 136,
+          "target": 11951952
+        },
+        {
+          "offset": 160,
+          "target": 11956352
+        },
+        {
+          "offset": 174,
+          "target": 11953184
+        },
+        {
+          "offset": 196,
+          "target": 11954784
+        },
+        {
+          "offset": 216,
+          "target": 11893584
+        },
+        {
+          "offset": 253,
+          "target": 11748896
+        },
+        {
+          "offset": 289,
+          "target": 11956624
+        },
+        {
+          "offset": 303,
+          "target": 11953184
+        },
+        {
+          "offset": 322,
+          "target": 11958016
+        },
+        {
+          "offset": 335,
+          "target": 11958016
+        },
+        {
+          "offset": 352,
+          "target": 11958016
+        }
+      ]
+    },
+    {
+      "label": "reserve",
+      "address": "00b34620",
+      "end_exclusive": "00b3467f",
+      "bytes": 95,
+      "sha256": "a238f2b0d6d467e9697088901d3ebba08eccefd05a49ae350c20a015a1709f0a",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 32,
+          "target": 12539326
+        },
+        {
+          "offset": 76,
+          "target": 12544393
+        }
+      ]
+    },
+    {
+      "label": "integer_gate",
+      "address": "00b66a60",
+      "end_exclusive": "00b66ac3",
+      "bytes": 99,
+      "sha256": "e86f071db4972e1dfdc9945c9ac80a7d6c4a1c1cdbcf1ee164ce18649ef41b9c",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 24,
+          "target": 10909088
+        },
+        {
+          "offset": 47,
+          "target": 10909552
+        }
+      ]
+    },
+    {
+      "label": "string_get",
+      "address": "00b662b0",
+      "end_exclusive": "00b662c2",
+      "bytes": 18,
+      "sha256": "bcd71685302bdb47c3e3e9845d29825d0b867f443005f0b15bfb44e5b5619cf4",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 12,
+          "target": 10909712
+        }
+      ]
+    },
+    {
+      "label": "boolean_gate",
+      "address": "00b66000",
+      "end_exclusive": "00b66044",
+      "bytes": 68,
+      "sha256": "9ae938626879e532146a296707dc80666e8db32961527fe49b0f17a9a349d39b",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 36,
+          "target": 10909088
+        }
+      ]
+    },
+    {
+      "label": "table_gate",
+      "address": "00b661b0",
+      "end_exclusive": "00b661f3",
+      "bytes": 67,
+      "sha256": "014354ba0c83651c08037591b62129b41fcba7a7ae6c2ffb4c7ca0548cd33dad",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 36,
+          "target": 10909088
+        }
+      ]
+    },
+    {
+      "label": "boolean_get",
+      "address": "00b662f0",
+      "end_exclusive": "00b6632f",
+      "bytes": 63,
+      "sha256": "3d5abd88cfe58d6821e6b2ffdd27fe50fb7808fbf706ed6430a91c8938a377ee",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 23,
+          "target": 10909088
+        },
+        {
+          "offset": 41,
+          "target": 10909664
+        }
+      ]
+    },
+    {
+      "label": "unbound",
+      "address": "00b66420",
+      "end_exclusive": "00b6642f",
+      "bytes": 15,
+      "sha256": "1a074d76441dbb3e9e68937e8bec1054802e5e96e96fd2cf7c19f06b5fdfefc3",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "first",
+      "address": "00b67080",
+      "end_exclusive": "00b6718b",
+      "bytes": 267,
+      "sha256": "da1b8268de13bf6ea4249424f652c4e6e1ee31a150b92c640fdbac82a0763a18",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 29,
+          "target": 11955680
+        },
+        {
+          "offset": 59,
+          "target": 11955680
+        },
+        {
+          "offset": 82,
+          "target": 10908400
+        },
+        {
+          "offset": 93,
+          "target": 10910144
+        },
+        {
+          "offset": 107,
+          "target": 10912672
+        },
+        {
+          "offset": 126,
+          "target": 10908624
+        },
+        {
+          "offset": 197,
+          "target": 10908624
+        }
+      ]
+    },
+    {
+      "label": "next",
+      "address": "00b67190",
+      "end_exclusive": "00b672ac",
+      "bytes": 284,
+      "sha256": "ff14695c7df23b3a65634ceecc5e5791bde67fdc249816ea2cec5dc5e6b12a41",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 25,
+          "target": 11955680
+        },
+        {
+          "offset": 50,
+          "target": 10908624
+        },
+        {
+          "offset": 78,
+          "target": 10909040
+        },
+        {
+          "offset": 98,
+          "target": 11955680
+        },
+        {
+          "offset": 119,
+          "target": 10912672
+        },
+        {
+          "offset": 138,
+          "target": 10908624
+        },
+        {
+          "offset": 217,
+          "target": 10908624
+        }
+      ]
+    },
+    {
+      "label": "sampler_unwind_code",
+      "address": "00cc0590",
+      "end_exclusive": "00cc0612",
+      "bytes": 130,
+      "sha256": "5db872ce824c8d5c6ef20b3439c384c5ed34f3e322f8f37721ca005d5615e2d0",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 3,
+          "target": 11958016
+        },
+        {
+          "offset": 11,
+          "target": 4316448
+        },
+        {
+          "offset": 19,
+          "target": 11958016
+        },
+        {
+          "offset": 27,
+          "target": 11958016
+        },
+        {
+          "offset": 35,
+          "target": 11958016
+        },
+        {
+          "offset": 43,
+          "target": 11958016
+        },
+        {
+          "offset": 51,
+          "target": 4316448
+        },
+        {
+          "offset": 59,
+          "target": 11958016
+        },
+        {
+          "offset": 67,
+          "target": 11958016
+        },
+        {
+          "offset": 75,
+          "target": 11958016
+        },
+        {
+          "offset": 83,
+          "target": 11958016
+        },
+        {
+          "offset": 91,
+          "target": 11958016
+        },
+        {
+          "offset": 99,
+          "target": 11958016
+        },
+        {
+          "offset": 107,
+          "target": 11958016
+        },
+        {
+          "offset": 115,
+          "target": 11958016
+        },
+        {
+          "offset": 125,
+          "target": 12544835
+        }
+      ]
+    },
+    {
+      "label": "sampler_unwind_meta_table",
+      "address": "00df919c",
+      "end_exclusive": "00df9238",
+      "bytes": 156,
+      "sha256": "1cf7474974d4367dd52480802e994cd37ac2a36c27efa713fef3016d5a47acd2",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "outer_unwind_code",
+      "address": "00cbf030",
+      "end_exclusive": "00cbf05a",
+      "bytes": 42,
+      "sha256": "533b6c6823a951a2a360405e06f60ea32332892efc795aec3e3a62669f85f053",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": [
+        {
+          "offset": 3,
+          "target": 11958016
+        },
+        {
+          "offset": 11,
+          "target": 11958016
+        },
+        {
+          "offset": 19,
+          "target": 11958016
+        },
+        {
+          "offset": 27,
+          "target": 11958016
+        },
+        {
+          "offset": 37,
+          "target": 12544835
+        }
+      ]
+    },
+    {
+      "label": "outer_unwind_meta_table",
+      "address": "00df794c",
+      "end_exclusive": "00df7990",
+      "bytes": 68,
+      "sha256": "f6aef4c12b35d218c31e2cf10bf22afb5bbdd389f567ad39b2ae237a33ed1bfe",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "literal_ce8ed0_table",
+      "address": "00ce8ed0",
+      "end_exclusive": "00ce8ed5",
+      "bytes": 5,
+      "sha256": "5458f37977e6129640e9a702b17242e615bf4672eff3161fe49121846d47a085",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "literal_ce4780_table",
+      "address": "00ce4780",
+      "end_exclusive": "00ce4785",
+      "bytes": 5,
+      "sha256": "a129b9e613d0ab42ea8092a9ea96006844fe619dff93be7ccfd5723001cd5d84",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "literal_d61a20_table",
+      "address": "00d61a20",
+      "end_exclusive": "00d61a29",
+      "bytes": 9,
+      "sha256": "447408748370e037b2fd963cccb65afbdc005e6d48429dfc8ecae14b5aeef91d",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "literal_d62208_table",
+      "address": "00d62208",
+      "end_exclusive": "00d6221b",
+      "bytes": 19,
+      "sha256": "7024940225e76773a3a20ab3268b8bdb011c7d1dbf5cfc3d5859c145c3b718ab",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "literal_d6221c_table",
+      "address": "00d6221c",
+      "end_exclusive": "00d6222a",
+      "bytes": 14,
+      "sha256": "0eed6d42aae829899cc6e6ac6ed12d2af9401eaba0c94d5844b3d0e010e65353",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "literal_d6222c_table",
+      "address": "00d6222c",
+      "end_exclusive": "00d6223a",
+      "bytes": 14,
+      "sha256": "f9d6d7d50bb495a2702263ba98aba1bf5fb989a85be133417bee1029a2e8016e",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "literal_ce55b4_table",
+      "address": "00ce55b4",
+      "end_exclusive": "00ce55ba",
+      "bytes": 6,
+      "sha256": "789d7ac5e52324899a8c48116cdce4661dd08dcc0b432b6437f6a35490274a0e",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "literal_d6223c_table",
+      "address": "00d6223c",
+      "end_exclusive": "00d6224e",
+      "bytes": 18,
+      "sha256": "6cca05b1f63f99be621ed22e951b73b2d7806fda729871b51f9ae661cc36a7e7",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    },
+    {
+      "label": "literal_d62250_table",
+      "address": "00d62250",
+      "end_exclusive": "00d6225e",
+      "bytes": 14,
+      "sha256": "9aceb7fbab90518b9b92210f0d50fe65a6ad307ad4b426e78b18ca8d726cad33",
+      "matches_disk": true,
+      "matches_zero_filled_virtual_tail": false,
+      "matches_initial_pe_image": true,
+      "external_branches": []
+    }
+  ],
+  "installed_assets": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\debugshader.shfx",
+      "bytes": 806,
+      "sha256": "d45e91ef1a3f11c654b97ac3a9d293b9a24b597b68fb315d611638d3b6933476"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\common\\alphablend.shfx",
+      "bytes": 1196,
+      "sha256": "37cc55352deb1ea4b9685eb4dd3d0f89cb9958bd7a786d24bb34857ed9747f64"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\dx9_lua.inc",
+      "bytes": 3117,
+      "sha256": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f"
+    }
+  ],
+  "lua_dependency": {
+    "version": "5.1.1",
+    "source_sha256": {
+      "build/win32/_deps/lua511-src/src/lapi.c": "a9f0f87af50f18b4cf0483ded3a6bf41803032bc7ed575bda84359a46c993fe0",
+      "build/win32/_deps/lua511-src/src/lapi.h": "6688518e24ad909e5c190bc3c258157e35b30feeb2b6c189f44d949abebe487e",
+      "build/win32/_deps/lua511-src/src/lauxlib.c": "1a0c5a19655b4f7a5c760ec5481cc035a3d34a76ed5abd470f25b444d2bc13e4",
+      "build/win32/_deps/lua511-src/src/lauxlib.h": "5a56da312e412dc849fc66a867ce6925fb6ebf4c1744bb594953e0efccfafbef",
+      "build/win32/_deps/lua511-src/src/lbaselib.c": "95973fad29bb11d8588cdf883a3d1ac4b20aa39cffd55b22eee843dee6844c8c",
+      "build/win32/_deps/lua511-src/src/lcode.c": "de2220c65a8da1c411ba68620cb6204148651e5bb644e58c91be4e823fd99525",
+      "build/win32/_deps/lua511-src/src/lcode.h": "700f07ca580f05bb43b8d976214b66b65a430f97811bafa7d0e3607d2144d2bb",
+      "build/win32/_deps/lua511-src/src/ldblib.c": "71b05a330d9a36d59ce0a56339ef012e9b0bd741d21df9df50eb2e3894bd6c55",
+      "build/win32/_deps/lua511-src/src/ldebug.c": "5e4cae0e2b7fc313bd7673f01a246232e1218d225eb150422dccac094460aaa6",
+      "build/win32/_deps/lua511-src/src/ldebug.h": "5b38c315184dc618817af9c293a295a358ad3f7341e9fb4030419fe5d4ed9fab",
+      "build/win32/_deps/lua511-src/src/ldo.c": "a568a93a20ef4e5f0606f0d435f682ec12145e2cf05b07266b1e195b57684112",
+      "build/win32/_deps/lua511-src/src/ldo.h": "feb30909ce8631acd3e1602c405df7749db58d9268098f1f9ee2727fd87a59e2",
+      "build/win32/_deps/lua511-src/src/ldump.c": "070505eeeefecae657df573dc4fcfe92e1afff460294932f88a9216bbd80dbc6",
+      "build/win32/_deps/lua511-src/src/lfunc.c": "b662d0e1a606962c7ca537c6bcaddafa5ea78355b19057b80ff6a7a9f52723d4",
+      "build/win32/_deps/lua511-src/src/lfunc.h": "f88ccbf492059a7cdf631411908ae0cefa79471326e09cfa801cbc39fb236118",
+      "build/win32/_deps/lua511-src/src/lgc.c": "bf6f8e6f61c00bc172c38bd1013de03635e96756b35e6f27aa0f09f26d97922b",
+      "build/win32/_deps/lua511-src/src/lgc.h": "2dafce43793b9f5d1f1d90962cdd6566b7fda063584719fa24308da700c58a87",
+      "build/win32/_deps/lua511-src/src/linit.c": "f4250214a5a9d5c593c16b4bfdfc9591f0694d8ef9e149b80983f36e70013fcd",
+      "build/win32/_deps/lua511-src/src/liolib.c": "e172b34553ed5e06c0af949b2d3819a236f73404f368653283f4cde5f58e584b",
+      "build/win32/_deps/lua511-src/src/llex.c": "8be5ca7b195cf324d32d8eb9c726c253e50ff843143523da0da56c046ff6f868",
+      "build/win32/_deps/lua511-src/src/llex.h": "b539458f231097525e1bd99a7cb5257ae61525633d66a7820260da178cd28331",
+      "build/win32/_deps/lua511-src/src/llimits.h": "076aaabf0c79176f8d6047905dcf05bd9c2d770085f3adc591f95be294538b9d",
+      "build/win32/_deps/lua511-src/src/lmathlib.c": "2cd6c4b10b57d095aa8e9e3849fb0112dd0d935504d528e096892dffbc43c003",
+      "build/win32/_deps/lua511-src/src/lmem.c": "5ecde617f802289d895808b71faa9ea00981f931ed86fa78b993fa65d2c4936c",
+      "build/win32/_deps/lua511-src/src/lmem.h": "dff6727df44d568eb3e3bab65069841644bbc751f6c63c805a295d6f8396a624",
+      "build/win32/_deps/lua511-src/src/loadlib.c": "6af60ffd081d1146c0fbae219f2a1b3177105019515096c6d56622ce0b2afcb8",
+      "build/win32/_deps/lua511-src/src/lobject.c": "6cf53a367bc0dee08f3da62f8a4d5cfe9f9b29a35da04194f892701de7e573d0",
+      "build/win32/_deps/lua511-src/src/lobject.h": "3b6043b75be899d9b204dbdf9eb291639cb9a5062e9a1dd38b85e8fffdd54337",
+      "build/win32/_deps/lua511-src/src/lopcodes.c": "5155f19c87c6c3dfc4a82db42559c7efd130071bb21998a8eab50c1d61a8d5eb",
+      "build/win32/_deps/lua511-src/src/lopcodes.h": "b73e4b4687584047fa4963203cba39e764815ca9197e2ea7945e82a5295d12fc",
+      "build/win32/_deps/lua511-src/src/loslib.c": "a3da5b29679a5660e5abaa3c665e00c94aa1418316b0082980622c5aac5613b0",
+      "build/win32/_deps/lua511-src/src/lparser.c": "ecef694e8b37ec393903feb3327a2ed8dc9ddad3a7d253e674b6fd80b1a30377",
+      "build/win32/_deps/lua511-src/src/lparser.h": "6b98608a63940317e3c8cf293c2aab71184a0445984800fa4141b03ccd201816",
+      "build/win32/_deps/lua511-src/src/lstate.c": "19667a7e7c20d5c148c57ed668b3fcf32560911d2a9bfe0a20831c5238a7f1ba",
+      "build/win32/_deps/lua511-src/src/lstate.h": "ed9260f52d710316e9eab00bb1e271e1b06689f63cad55988a48a4361df93927",
+      "build/win32/_deps/lua511-src/src/lstring.c": "0ea54549fcde9de985e24bd70e52e6458ec0d1b02c1ca3e2a16924fbc01ddb89",
+      "build/win32/_deps/lua511-src/src/lstring.h": "7cbca1d29c81dd2609b5279804cb94850bed1e428b3918d114ec88f0509e0b74",
+      "build/win32/_deps/lua511-src/src/lstrlib.c": "d1b4d12b3f8d13d5daf3c7ec469fd19c169e8444a59e50928625a1f6f12cecda",
+      "build/win32/_deps/lua511-src/src/ltable.c": "ffbf34308d1c963821c44f85b5341a80a70e74d92d85f29503c532b8c69743b5",
+      "build/win32/_deps/lua511-src/src/ltable.h": "0ef1b0b625bf7727f30af79c4be27fd9395d77762bce7f74f93b2309f6d083c1",
+      "build/win32/_deps/lua511-src/src/ltablib.c": "c7daf4ff755c0728e8ce97677353622dc0ce32babd189ed3275e0618ba101b78",
+      "build/win32/_deps/lua511-src/src/ltm.c": "0efd7909add114f3644258112ac4acacc2b3b0ae3bbcdcf938e7bc05b19b50ad",
+      "build/win32/_deps/lua511-src/src/ltm.h": "75d8256cdf62596a1d1eeb5acf0975b74cea2f411561172bc9a428d89fef8b20",
+      "build/win32/_deps/lua511-src/src/lua.c": "6c13c0c0a37fe090ee8588ab0239ece3b67aeb3023cb4eb8727a9761fe2118d4",
+      "build/win32/_deps/lua511-src/src/lua.h": "0a69a11d3e176ceb0e0220c4cdeb1c1f3a0e466a347d813e449ff9246afba3a6",
+      "build/win32/_deps/lua511-src/src/luac.c": "b22ad97edb37c2a4b117ef81489bfc6eee15d58d4476ea149abbef7aabf8773d",
+      "build/win32/_deps/lua511-src/src/luaconf.h": "5c962567aaf250570b772a3dccbfde80e6add621ec04f429120dce83adb0a4d9",
+      "build/win32/_deps/lua511-src/src/lualib.h": "b00e231750624e31235b0b639933de85bc936a89dd780abc8f20e2725e11ddd0",
+      "build/win32/_deps/lua511-src/src/lundump.c": "c12e557353064ead5c84e962d36a64cb338e6fd7d3b537152884f035d8f9b2fe",
+      "build/win32/_deps/lua511-src/src/lundump.h": "3adfb4c5e479d95d2e391cc2aab60f5ac5c8c24d73228e4edab056246bcca5cb",
+      "build/win32/_deps/lua511-src/src/lvm.c": "03ee8d2e2a9a2eda683bdfc90cd0859acfe9eb039eba703990face2cd4168aa1",
+      "build/win32/_deps/lua511-src/src/lvm.h": "8cb5d847a005230936702b1e393385e4ee1e3b98a5396abb11722a6872bde1cd",
+      "build/win32/_deps/lua511-src/src/lzio.c": "147b5f0445e9fbdb35a3c9032322f57c8678ed06cdf8dd0d2f9b55ca9aec92b2",
+      "build/win32/_deps/lua511-src/src/lzio.h": "4de2db22bfce2762056b62e3efe75fad52a8c4fccf768fca6e0f04e341b7f7bd",
+      "build/win32/_deps/lua511-src/src/print.c": "88c7ead32349d9c5257b75bea9a9a291ba6e2487214b0c1441f15e862ef04ad3"
+    },
+    "library": "local/native-shader-sampler-reader-tested/bsp_lua511.lib",
+    "native_library_abi": false
+  },
+  "ghidra": {
+    "addresses": [
+      "00b57b50",
+      "00b41830",
+      "00b34620",
+      "00b66a60",
+      "00b662b0",
+      "00b66000",
+      "00b661b0",
+      "00b662f0",
+      "00b66420",
+      "00b67080",
+      "00b67190"
+    ],
+    "names_verified": 11,
+    "prior_comment_fields_preserved": 9,
+    "forced_exports": 11,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "flow_repairs": [
+      {
+        "repairs": [
+          {
+            "function": "00b34620",
+            "owner": "agent/orch2-20260910",
+            "when": "2026-09-11T21:17:45Z",
+            "decompile_lines_before": 28,
+            "gaps": [
+              {
+                "site": "00b3466c",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b34671",
+                "gap_end_exclusive": "00b3467a",
+                "bytes": 9,
+                "after_call": true,
+                "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b3466c",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b34671",
+                  "gap_end_exclusive": "00b3467a",
+                  "bytes": 9,
+                  "after_call": true,
+                  "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+                },
+                "clear": "Success: Cleared flow override at 00b3466c (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 9 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 31,
+            "gaps_remaining": 0
+          }
+        ]
+      }
+    ],
+    "remaining_internal_call_gaps": 0,
+    "complete_stored_body_ranges": true,
+    "unwind_verification": [
+      {
+        "function": "sampler",
+        "func_info": "00df919c",
+        "map": "00df91c0",
+        "states": 15,
+        "entries": [
+          {
+            "state": 0,
+            "previous": -1,
+            "thunk": "00cc0590",
+            "stack_offset": 52,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 1,
+            "previous": 0,
+            "thunk": "00cc0598",
+            "stack_offset": 60,
+            "cleanup": "0041dd20"
+          },
+          {
+            "state": 2,
+            "previous": -1,
+            "thunk": "00cc05a0",
+            "stack_offset": 52,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 3,
+            "previous": -1,
+            "thunk": "00cc05a8",
+            "stack_offset": 52,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 4,
+            "previous": -1,
+            "thunk": "00cc05b0",
+            "stack_offset": 52,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 5,
+            "previous": -1,
+            "thunk": "00cc05b8",
+            "stack_offset": 52,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 6,
+            "previous": 5,
+            "thunk": "00cc05c0",
+            "stack_offset": 60,
+            "cleanup": "0041dd20"
+          },
+          {
+            "state": 7,
+            "previous": -1,
+            "thunk": "00cc05c8",
+            "stack_offset": 52,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 8,
+            "previous": -1,
+            "thunk": "00cc05d0",
+            "stack_offset": 52,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 9,
+            "previous": -1,
+            "thunk": "00cc05d8",
+            "stack_offset": 52,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 10,
+            "previous": -1,
+            "thunk": "00cc05e0",
+            "stack_offset": 52,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 11,
+            "previous": -1,
+            "thunk": "00cc05e8",
+            "stack_offset": 52,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 12,
+            "previous": -1,
+            "thunk": "00cc05f0",
+            "stack_offset": 52,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 13,
+            "previous": -1,
+            "thunk": "00cc05f8",
+            "stack_offset": 52,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 14,
+            "previous": -1,
+            "thunk": "00cc0600",
+            "stack_offset": 32,
+            "cleanup": "00b67700"
+          }
+        ],
+        "verified": true
+      },
+      {
+        "function": "outer",
+        "func_info": "00df796c",
+        "map": "00df794c",
+        "states": 4,
+        "entries": [
+          {
+            "state": 0,
+            "previous": -1,
+            "thunk": "00cbf030",
+            "stack_offset": 32,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 1,
+            "previous": -1,
+            "thunk": "00cbf038",
+            "stack_offset": 72,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 2,
+            "previous": 1,
+            "thunk": "00cbf040",
+            "stack_offset": 52,
+            "cleanup": "00b67700"
+          },
+          {
+            "state": 3,
+            "previous": 2,
+            "thunk": "00cbf048",
+            "stack_offset": 92,
+            "cleanup": "00b67700"
+          }
+        ],
+        "verified": true
+      }
+    ],
+    "live_call_rows_verified": 93
+  }
 }
