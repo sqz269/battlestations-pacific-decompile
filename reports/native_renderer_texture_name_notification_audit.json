@@ -1,0 +1,1745 @@
+{
+  "schema_version": 1,
+  "packet": "native_renderer_texture_name_notification",
+  "status": "complete_actual_storage_original_key_guard_and_search_phase_EH_compared_strict_win32_checked",
+  "captured_utc": "2026-09-11T02:53:48.911291+00:00",
+  "base_commit": "dd9a8662b0cbeb84e1c250c5ed2809336e0c405d",
+  "owned_files": [
+    "include/bsp/native_renderer_texture_name_notification.hpp",
+    "src/native_renderer_texture_name_notification.cpp",
+    "docs/NATIVE_RENDERER_TEXTURE_NAME_NOTIFICATION.md",
+    "reports/native_renderer_texture_name_notification_audit.json"
+  ],
+  "owned_addresses": [
+    "00b32250"
+  ],
+  "scope": "One complete native notification wrapper composed from existing actual string/sized-pool, optional guard and texture resource-container APIs. No shared metadata or Ghidra writes.",
+  "target_verification": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "x86",
+      "timestamp": 1245831434,
+      "image_base": "00400000",
+      "entry_point": "00bfd2bd",
+      "sections": [
+        {
+          "name": ".text",
+          "rva": "00001000",
+          "virtual_size": 9306422,
+          "raw_size": 9310208,
+          "raw_offset": 4096,
+          "raw_sha256": "cb2aaf3dd3d53a675ef199343258ff981020a8ac64a90e2bceb9db1d47d4bef3"
+        },
+        {
+          "name": ".rdata",
+          "rva": "008e2000",
+          "virtual_size": 1202980,
+          "raw_size": 1204224,
+          "raw_offset": 9314304,
+          "raw_sha256": "89a0a4d440549220a314bd92f03bcb3a024f6b64017ceb41f02bfcce7cdca84f"
+        },
+        {
+          "name": ".data",
+          "rva": "00a08000",
+          "virtual_size": 2719452,
+          "raw_size": 65536,
+          "raw_offset": 10518528,
+          "raw_sha256": "aabce218df7a91423fa70e0b0408c06d7d5a6ebf69bda778a74f56de4a31365b"
+        },
+        {
+          "name": ".rsrc",
+          "rva": "00ca0000",
+          "virtual_size": 1630400,
+          "raw_size": 1634304,
+          "raw_offset": 10584064,
+          "raw_sha256": "a870847c34d68cd2c8201e038da43a67702763e057e7df4cae44aaa0f5f218dc"
+        }
+      ],
+      "imported_dlls": [
+        "fmodex.dll",
+        "DSOUND.dll",
+        "d3d9.dll",
+        "d3dx9_40.dll",
+        "binkw32.dll",
+        "USER32.dll",
+        "ole32.dll",
+        "SHELL32.dll",
+        "xlive.dll",
+        "KERNEL32.dll",
+        "ADVAPI32.dll",
+        "WS2_32.dll",
+        "POWRPROF.dll",
+        "fmod_event.dll",
+        "WINMM.dll",
+        "DINPUT8.dll",
+        "GDI32.dll",
+        "XINPUT1_3.dll"
+      ],
+      "note": "Current disk file only; identity with the saved Ghidra image is unverified."
+    },
+    "guard": "Each fresh live bytes/proto/comments read uses bsp.py ghidra project/program/language/image-base guard.",
+    "fresh_spans": 37,
+    "fresh_span_bytes": 1882,
+    "all_matches": true
+  },
+  "functions": [
+    {
+      "address": "00b32250",
+      "end_exclusive": "00b32340",
+      "length": 240,
+      "native_byte_sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+      "cpp_symbol": "notify_native_renderer_texture_name_removal_00b32250",
+      "source": "src/native_renderer_texture_name_notification.cpp",
+      "header": "include/bsp/native_renderer_texture_name_notification.hpp",
+      "native_abi": "ECX actual renderer receiver; stack original8byte native name header; RET4; no semantic EAX result.",
+      "proposed_name": "BSP_D3D9Renderer_NotifyTextureNameRemoval",
+      "name_confidence": "Descriptive hypothesis; exact original symbol unknown.",
+      "existing_ghidra_function": false,
+      "metadata_evidence": [
+        "local/notification_old_00b32250_proto.txt",
+        "local/notification_old_00b32250_comments.txt"
+      ],
+      "original_metadata": "No function/signature at00B32250; plate-comment endpoint reports no function. Preserved, not replaced.",
+      "status": "reconstructed_compiled_original_caller_and_terminal_side_effects_compared",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "context": {
+    "type": "NativeRendererTextureNameNotificationContext",
+    "borrowed_domains": [
+      "Actual constvoid*volatile publication slot00F8D394.",
+      "Actual NativeRendererSynchronizationGlobals bytes0108D6DC..0108D6E3.",
+      "Actual NativeStringStorage and the same actual00419CC0 SizedStoragePool used by nested removal.",
+      "Actual SingletonLifetimeCallbacks and borrowed immutable NativeRenderResourceAccountingTables."
+    ],
+    "receiver": "Captured incoming receiver is separate from captured global renderer used by its optional guard; removal receives receiver+1A74.",
+    "preconditions": [
+      "Existing initialized-guard domain: no enabled cleanup after skipped entry.",
+      "Existing current accounting profiles D61948/D61870/D618B0 and their exact selected slots at a match; no generic fallback.",
+      "All actual headers, pointers, allocations and callback repairs remain readable at native accesses.",
+      "Context binds to existing shared domains; no duplicate renderer/container/string pool or intrusive owner."
+    ]
+  },
+  "behavior": {
+    "order": [
+      "Entry-time raw mode check. If enabled, capture current published renderer, enter fullB33AD0 and saveAL only before any cleanup state is armed.",
+      "Capture original name; compare actual temporary/input header addresses; arm guard-only cleanup; zero temporary length/data.",
+      "Resize actual temporary from original length, reread original length, capture resulting data, and copy using current temporary length and current source data.",
+      "Arm string cleanup only after copy. Lowercase actual temporary through full4BCC00, then fullB31DC0 on captured receiver+1A74 with ORIGINAL input header.",
+      "Disarm string cleanup. Normal return uses captured temporary data and CURRENT temporary length+1 through the same actual storage/pool.",
+      "Read CURRENT mode; disarm all cleanup before normal leave. If enabled, isolatedDWORD MOV reads saved guard word including padding; captured saved renderer and ignored word reach fullB33B00."
+    ],
+    "normal_vs_unwind_string": "Normal: captured post-resize pointer/current length. Unwind: full current-header41DD20 pointer/length. No field clearing is added.",
+    "arithmetic": "MSVCWin32 DWORD address/size wrap; isolated MOV accesses preserve native current storage reads. Existing zero-count memcpy boundary is omitted after argument/current-field evaluation.",
+    "ownership": "Wrapper owns only its real temporary native string and conditional local guard; nested container routine performs its existing actual record/alias storage operations and no resource intrusive retain/release."
+  },
+  "exception_handling": {
+    "native": {
+      "handler": "00cbdcf0",
+      "funcinfo": "00df6694",
+      "funcinfo_dwords": [
+        "19930522",
+        "00000002",
+        "00df6684",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "unwind_map": "00df6684",
+      "states": [
+        {
+          "state": 1,
+          "next_state": 0,
+          "leaf": "00cbdce8",
+          "action": "Current temporary name -> full0041DD20."
+        },
+        {
+          "state": 0,
+          "next_state": -1,
+          "leaf": "00cbdce0",
+          "action": "Saved actual guard -> full00B21110."
+        }
+      ],
+      "n_try_blocks": 0,
+      "p_try_block_map": 0,
+      "native_catch_map": false
+    },
+    "source": {
+      "cleanup": "Armed NotificationCleanup destructor; explicit string_armed and armed fields preserve native state transitions without a C++ catch/rethrow.",
+      "second_exception": "unwind_notification uses __try/__except with E06D7363 filter calling std::terminate during search, before nested C++ cleanup; other SEH codes continue searching.",
+      "normal_cleanup": "String state is disarmed before normal pool return; all cleanup disarmed after current gate read and before normal leave.",
+      "compiled_evidence": "build/texture-name-notification-check/notification_final.asm",
+      "compiled_funcinfo_excerpt": "__ehfuncinfo$?notify_native_renderer_texture_name_removal_00b32250@bsp@@YAXPAXPBXAAUNativeRendererTextureNameNotificationContext@1@@Z DD 019930522H\n\tDD\t01H\n\tDD\tFLAT:__unwindtable$?notify_native_renderer_texture_name_removal_00b32250@bsp@@YAXPAXPBXAAUNativeRendererTextureNameNotificationContext@1@@Z\n\tDD\t2 DUP(00H)\n\tDD\t2 DUP(00H)\n\tDD\t00H\n\tDD\t01H\n",
+      "compiled_n_try_blocks": 0,
+      "compiled_n_unwind_states": 1,
+      "compiled_state_explanation": "One compiler cleanup action invokes the explicit native string-state selector; no catch map is introduced."
+    },
+    "regression": {
+      "concrete_risk": "Synthetic catch/rethrow changed in-flight exception count during cleanup before the outer termination-search boundary.",
+      "observed_failure": "case3 word186 native1 host0 in local/notification_synthetic_catch_regression.log",
+      "prior_source": "local/notification_synthetic_catch.cpp",
+      "final_fix": "Cleanup-only armed object and search-phase SEH termination filter.",
+      "same_focused_fixture_retained": true
+    }
+  },
+  "fixture": {
+    "path": "local/native_renderer_texture_name_notification_check.cpp",
+    "new_tracked_test": false,
+    "normal_cases": [
+      {
+        "scenario": 0,
+        "risk": "Disabled guard must not read unused invalid renderer publication; empty names allocate nothing.",
+        "checks": "No enter/leave, no string allocation, nesting17 preserved.",
+        "matched_events": 2
+      },
+      {
+        "scenario": 1,
+        "risk": "Incoming receiver differs from global guard renderer; published renderer changes after actual entry. Original key changes after outer temporary was copied/lowercased.",
+        "checks": "Receiver container record removed/accounting100->83 using changed original key; saved original guard lock left exactly once despite global publication change.",
+        "matched_events": 19
+      },
+      {
+        "scenario": 2,
+        "risk": "Normal temporary header is replaced after initial data was captured.",
+        "checks": "Captured initial allocation returned using current size8 although initial string allocation size4; replacement remains live; same real pool boundary observed.",
+        "matched_events": 15
+      },
+      {
+        "scenario": 3,
+        "risk": "First resize publishes partial header state then throws before string cleanup arming.",
+        "checks": "Guard cleanup only; replacement allocation remains live; in-flight exception count remains1 during unwind.",
+        "matched_events": 6
+      },
+      {
+        "scenario": 4,
+        "risk": "Nested removal initial copy throws after replacing outer current temporary header.",
+        "checks": "Current replacement returned at size8; captured initial allocation remains live; then guard leaves. Nested removal was still outside its own armed initial-name state.",
+        "matched_events": 9
+      },
+      {
+        "scenario": 5,
+        "risk": "Actual guard-enter API observation throws after real EnterCriticalSection, before native guard state and tracked depth increment.",
+        "checks": "No names allocated and no automatic leave; real recursion1/depth0 observed.",
+        "matched_events": 4
+      },
+      {
+        "scenario": 6,
+        "risk": "Normal leave throws after state disarm and after actual LeaveCriticalSection.",
+        "checks": "One leave only; nesting/depth/native recursion0; first exception propagates.",
+        "matched_events": 16
+      },
+      {
+        "scenario": 7,
+        "risk": "Current mode changes to0 after successful entry.",
+        "checks": "Normal name work completes; no leave; nesting/depth/native recursion1 retained until fixture-only post-observation cleanup.",
+        "matched_events": 14
+      }
+    ],
+    "normal_matched_words": 3995,
+    "normal_matched_events": 85,
+    "event_width_words": 47,
+    "terminal_cases": [
+      {
+        "scenario": 8,
+        "purpose": "second_exception_in_guard_cleanup",
+        "matched_words": 423,
+        "matched_events": 9,
+        "exit_code_original": 86,
+        "exit_code_host": 86,
+        "final_observation": {
+          "mode": 1,
+          "observed_mode": 127,
+          "nesting": 0,
+          "lock_depth": 0,
+          "native_recursion": 0,
+          "real_enters": 1,
+          "real_leaves": 1,
+          "pool_release_calls": 1,
+          "initial_temporary_alive": 1,
+          "replacement_temporary_alive": 0,
+          "outer_return_size": 8,
+          "in_flight_cpp_exceptions": 1,
+          "nested_cleanup_count": 0
+        },
+        "native_trace": "build/texture-name-notification-check/notification_terminate_native.bin",
+        "host_trace": "build/texture-name-notification-check/notification_terminate_host.bin"
+      },
+      {
+        "scenario": 9,
+        "purpose": "second_exception_in_body_during_outer_unwind",
+        "matched_words": 235,
+        "matched_events": 5,
+        "exit_code_original": 86,
+        "exit_code_host": 86,
+        "final_observation": {
+          "mode": 1,
+          "observed_mode": 127,
+          "nesting": 1,
+          "lock_depth": 1,
+          "native_recursion": 1,
+          "real_enters": 1,
+          "real_leaves": 0,
+          "pool_release_calls": 0,
+          "initial_temporary_alive": 1,
+          "replacement_temporary_alive": 1,
+          "outer_return_size": 0,
+          "in_flight_cpp_exceptions": 1,
+          "nested_cleanup_count": 0
+        },
+        "native_trace": "build/texture-name-notification-check/notification_outer_terminate_native.bin",
+        "host_trace": "build/texture-name-notification-check/notification_outer_terminate_host.bin"
+      }
+    ],
+    "terminal_matched_words": 658,
+    "terminal_side_effects_compared": true,
+    "trace_normalizations": [
+      "Actual allocation address -> ordered allocation role plus byte offset; current liveness recorded separately.",
+      "Receiver, saved global renderer, alternate renderer and real lock -> stable roles.",
+      "Original resource vtable uses relocated image; host resource holds original numeric profile and borrowed table values. No semantic scalar/counter normalization.",
+      "Raw guard padding is not compared because original leave consumes but ignores the entire saved DWORD."
+    ],
+    "original_code_executed": [
+      "Complete240-byteB32250 owner, with checked absolute relocations/handler-registration binding only.",
+      "Complete520-byteB31DC0 nested removal, with checked handler-registration binding.",
+      "CompleteB33AD0/B33B00/B21110 guard functions with actual relocated globals and observed real Win32 APIs.",
+      "Complete41DD20 header destruction and4BCC00 lowercase.",
+      "CompleteB3CE30/A82250 accounting leaves and4254B0 diagnostic body where reached.",
+      "CompleteCBDCF0/CBDC68 native handlers, original FuncInfo/unwindmaps and fullCBDCE0/CBDCE8/CBDC60 actions."
+    ],
+    "handler_registration_adapter": [
+      {
+        "owner_operand": "00b32259",
+        "original_handler": "00cbdcf0",
+        "host_binding": "notification_handler: jump only to complete relocated native handler."
+      },
+      {
+        "owner_operand": "00b31dc3",
+        "original_handler": "00cbdc68",
+        "host_binding": "removal_handler: jump only to complete relocated native handler."
+      }
+    ],
+    "handler_boundary": "Direct registration of private-heap handler addresses failed to propagate injected C++ exceptions in this host fixture. Host-image jump-only entry adapters preserve complete original handler instructions/maps/actions. Underlying platform cause is not asserted.",
+    "abi_bridges": [
+      {
+        "native": "0041dd40",
+        "implementation": "Unchanged actual resize_native_string_header_0041dd40, observed at its ABI bridge."
+      },
+      {
+        "native": "00bee780",
+        "implementation": "Existing actual normalized-path copy; same real pool."
+      },
+      {
+        "native": "00b30510/00b2f990",
+        "implementation": "Existing actual record assignment/destruction; no fake container result."
+      },
+      {
+        "native": "00419cc0/00bd1510",
+        "implementation": "Same actual SizedStoragePool/NativeStringStorage; native trailing flag asserted1."
+      },
+      {
+        "native": "00bf7680/00bf7fbf/00bf6713",
+        "implementation": "Actual CRT memcpy/_stricmp and existing actual invalid-parameter callback domain."
+      },
+      {
+        "native": "00bf6b43",
+        "implementation": "Host __CxxFrameHandler3 runtime entry, preserving actual maps/actions."
+      }
+    ],
+    "real_boundaries": [
+      "Existing actual ordinary allocation/free implementation bodies and real CRT SystemAllocator through actual SizedStoragePool.",
+      "Real Win32 Initialize/Enter/Leave/DeleteCriticalSection, with observation/fault wrappers only at Enter/Leave calls.",
+      "Existing actual string/storage/record/path implementation source linked unchanged; wrapper instrumentation forwards to those bodies."
+    ],
+    "image": "Sparse PAGE_NOACCESS reservation; only pinned spans committed; unverified gaps trap-filled; original code/EH/tables protected; all original byte and operand preimages checked.",
+    "faults": "Fixture-only allocated-header changes and C++ throws occur at explicit allocator/Win32 observation boundaries; they do not establish real game occurrence.",
+    "cleanup": "Normal residual locks/allocations released after observations; terminal process ends retain the recorded terminal state."
+  },
+  "validation": {
+    "strict_msvc_win32": true,
+    "flags": [
+      "/std:c++17",
+      "/EHsc",
+      "/fp:strict",
+      "/O2",
+      "/Oy-",
+      "/MD",
+      "/Gy",
+      "/Gw",
+      "/W4",
+      "/WX"
+    ],
+    "native_seeds_verified": true,
+    "repository_build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/notification_build_final.log",
+      "tests_passed": 2,
+      "tests_total": 2,
+      "passed": true,
+      "private_source_registration": "local/notification_sources.cmake via CMAKE_PROJECT_INCLUDE_BEFORE; no shared CMake edit."
+    },
+    "original_caller_comparison": true,
+    "secondary_and_outer_unwind_termination": true,
+    "terminal_exit_codes_verified_by_script": true,
+    "compiled_owner_no_catch_map": true,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "native_ranges": [
+    {
+      "address": "00b32250",
+      "end_exclusive": "00b32340",
+      "length": 240,
+      "role": "full_owned_notification",
+      "raw_offset": 7545424,
+      "bytes_hex": "64a1000000006aff68f0dccb00506489250000000083ec10803ddcd60801005556578be974138b0d94d3f800894c2418e84b180000884424148b74242c33ff8d44240c3bc6c744242400000000c744240c00000000897c241074288b066a01508d4c2414e887ba8eff393e8b7c241074128b4c240c8b5604515257e8b0530c0083c40c8d4c240cc644242401e81fa998ff568d8d741a0000e8d3faffff85ffc64424240074178b44240c6a0183c0015057e8ba798eff8bc8e803f20900803ddcd60801005f5ec744241cffffffff5d740e8b4424088b4c240c50e8d11700008b4c241064890d0000000083c41cc20400",
+      "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b3233d",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00cbdce0",
+      "end_exclusive": "00cbdce8",
+      "length": 8,
+      "role": "full_guard_unwind",
+      "raw_offset": 9166048,
+      "bytes_hex": "8d4dece92834e6ff",
+      "sha256": "94aaffedf9d30b7a25a8518c089e8f98efe5c632023e48ebee6a21bf9c6b0000",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00cbdce8",
+      "end_exclusive": "00cbdcf0",
+      "length": 8,
+      "role": "full_name_unwind",
+      "raw_offset": 9166056,
+      "bytes_hex": "8d4de4e9300076ff",
+      "sha256": "b4b4a541c1f8799f1fea02e157912e9c6d95de42a3790ef0aa90e30d9ffc4334",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00cbdcf0",
+      "end_exclusive": "00cbdcfa",
+      "length": 10,
+      "role": "full_notification_handler",
+      "raw_offset": 9166064,
+      "bytes_hex": "b89466df00e9498ef3ff",
+      "sha256": "d0ab3457858a17dd37731d5df0bba2885513baa9851c131ad64a7ed453c736e8",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00df6684",
+      "end_exclusive": "00df6694",
+      "length": 16,
+      "role": "notification_unwind_map",
+      "raw_offset": 10446468,
+      "bytes_hex": "ffffffffe0dccb0000000000e8dccb00",
+      "sha256": "9607ce83a62783b2cc6b8ecee5a5ea728bc7c82119387f330b7da592119ebd61",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00df6694",
+      "end_exclusive": "00df66b8",
+      "length": 36,
+      "role": "notification_funcinfo",
+      "raw_offset": 10446484,
+      "bytes_hex": "22059319020000008466df00000000000000000000000000000000000000000001000000",
+      "sha256": "ba9ebf0baaface1936a64a2882eb9abedd2fde7a8dd85b868b6d3ddbfa81a67d",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b31dc0",
+      "end_exclusive": "00b31fc8",
+      "length": 520,
+      "role": "full_nested_removal",
+      "raw_offset": 7544256,
+      "bytes_hex": "6aff6868dccb0064a100000000506489250000000083ec145355568b7424305733ff8d44241c3bc68bd9897c241c897c242074288b066a01508d4c2424e83ebf8eff393e74168b4c241c8b56048b442420515250e867580c0083c40c8d54241c8d4c2414897c242ce853c90b008b4c24183bcf74178b4424146a0183c0015051e87b7e8eff8bc8e8c4f609008b43088b6b046bc02c03c53be8894424140f84810000008d7d0c8b078b30894424108bff8d47fc3bc07405e897480c003b74241074503b377505e888480c008b46088b4c241c3bc1752f85c075088bc1f7d81bc0eb1a85c975058d4101eb118b4c24208b560c5152e806610c0083c40885c00f94c084c075753b377505e845480c008b36eb9e83c52c83c72c3b6c241475888b74243433ff8b46043bc77505b8a4d50801506814dbd000e8b5358fff8b4c242883c4083bcfc744242cffffffff74178b44241c6a0183c0015051e8a27d8eff8bc8e8ebf509008b4c24245f5e5d5b64890d0000000083c420c204008b4d288b018b500cffd22943108b450485c07505b8a4d508018b4c242085c97505b9a4d5080150516804dbd000e844358fff8b43088b4b048d50ff6bd22c03d183c40c3bea740f6bc02c8d4408d4508bcde880e5ffff8b4b088b53046bc92c8d4c11d4e8eed9ffff83c8ff0143088944242c8b44242085c00f846dffffff8b4c241c6a0183c1015150e951ffffff",
+      "sha256": "0e9390249e9e2ee85b5379f3c8f6a01e702402ad0c68fe946c3092bc86590a48",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b31f37",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00cbdc60",
+      "end_exclusive": "00cbdc68",
+      "length": 8,
+      "role": "full_removal_name_unwind",
+      "raw_offset": 9165920,
+      "bytes_hex": "8d4dece9b80076ff",
+      "sha256": "1d21bfab95584973a3b4e27c05b0d5ac7a3519cb3470841454baa1489e087c78",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00cbdc68",
+      "end_exclusive": "00cbdc72",
+      "length": 10,
+      "role": "full_removal_handler",
+      "raw_offset": 9165928,
+      "bytes_hex": "b8dc65df00e9d18ef3ff",
+      "sha256": "ace6c1159832cb501c4995cfc8bf22c87a9744b6a89ecb9c1269d058a70b61e0",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00df65d4",
+      "end_exclusive": "00df65dc",
+      "length": 8,
+      "role": "removal_unwind_map",
+      "raw_offset": 10446292,
+      "bytes_hex": "ffffffff60dccb00",
+      "sha256": "f2943c39db3ae44bdf67c2276c0664bb7153da070c8905b45c4ce67653c836fa",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00df65dc",
+      "end_exclusive": "00df6600",
+      "length": 36,
+      "role": "removal_funcinfo",
+      "raw_offset": 10446300,
+      "bytes_hex": "2205931901000000d465df00000000000000000000000000000000000000000001000000",
+      "sha256": "c04383cef37d8a5c580da11fa1a44cf25d9e56499da69605945078de47f06276",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b33ad0",
+      "end_exclusive": "00b33afe",
+      "length": 46,
+      "role": "full_actual_guard_enter",
+      "raw_offset": 7551696,
+      "bytes_hex": "8305e0d6080101803ddcd6080100750332c0c3568b710485f6740f56ff151822ce0083461801b0015ec332c05ec3",
+      "sha256": "edaa33431fdcb7fecae9ea99624c6fb06c8d15271a2d42ed7cfe2ad4f7bc8ae7",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b33ae2",
+          "operand": ""
+        },
+        {
+          "address": "00b33af9",
+          "operand": ""
+        },
+        {
+          "address": "00b33afd",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b33b00",
+      "end_exclusive": "00b33b43",
+      "length": 67,
+      "role": "full_actual_guard_leave",
+      "raw_offset": 7551744,
+      "bytes_hex": "8a15dcd60801832de0d608010184d274188b410485c07411834018ff50ff151022ce008a15dcd60801833de0d6080100750e3815ddd6080174068815ddd60801c20400",
+      "sha256": "6b55c5c3fcac00e24d4ff7316f0c22c1304ccb61ebb0850962fdf9050a41d59b",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b33b40",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b21110",
+      "end_exclusive": "00b21126",
+      "length": 22,
+      "role": "full_actual_guard_cleanup",
+      "raw_offset": 7475472,
+      "bytes_hex": "803ddcd6080100740c0fb6018b490450e8db290100c3",
+      "sha256": "1e98aeb4cc273e78f5177eaa511323db91a42de3ae1c6e67bf93799d99646e9f",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b21125",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "0041dd20",
+      "end_exclusive": "0041dd3d",
+      "length": 29,
+      "role": "full_actual_name_destroy",
+      "raw_offset": 122144,
+      "bytes_hex": "8b510485d274158b016a0183c0015052e88bbfffff8bc8e8d4377b00c3",
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "0041dd3c",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "004bcc00",
+      "end_exclusive": "004bcc33",
+      "length": 51,
+      "role": "full_actual_lowercase",
+      "raw_offset": 773120,
+      "bytes_hex": "8b510485d2742b5633f6393176238bff8a023c417c0c3c5a7f080fbec083c020eb030fbec0880283c60183c2013b3172df5ec3",
+      "sha256": "cfbd487587a7f330ae49a77ec737749f5f1c5bafbe7e33a8beeab96adb6763f8",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "004bcc32",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b3ce30",
+      "end_exclusive": "00b3ce34",
+      "length": 4,
+      "role": "full_actual_2d_accounting",
+      "raw_offset": 7589424,
+      "bytes_hex": "8b4124c3",
+      "sha256": "e27121b8816e0aef2ed29676899d26e79f66af7e5ee5aed902be7208122bb635",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b3ce33",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00a82250",
+      "end_exclusive": "00a82253",
+      "length": 3,
+      "role": "full_actual_zero_accounting",
+      "raw_offset": 6824528,
+      "bytes_hex": "33c0c3",
+      "sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00a82252",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "004254b0",
+      "end_exclusive": "004254b1",
+      "length": 1,
+      "role": "full_noop_diagnostic",
+      "raw_offset": 152752,
+      "bytes_hex": "c3",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "004254b0",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00d61948",
+      "end_exclusive": "00d61958",
+      "length": 16,
+      "role": "actual_2d_accounting_table_prefix",
+      "raw_offset": 9836872,
+      "bytes_hex": "e030bd0090f5b30090fab30030ceb300",
+      "sha256": "542b64bcdeadd2c8bd7811d0a309990b6cfc27c76c23c7444cfdc44bf01ea3a8",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d61870",
+      "end_exclusive": "00d61880",
+      "length": 16,
+      "role": "actual_cube_accounting_table_prefix",
+      "raw_offset": 9836656,
+      "bytes_hex": "e030bd0010f4b30040dfb3005022a800",
+      "sha256": "f80cd9fbde2f289c173073186af3e29dacf1726201e1c207e3f0be31c8d7ee2a",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d618b0",
+      "end_exclusive": "00d618c0",
+      "length": 16,
+      "role": "actual_volume_accounting_table_prefix",
+      "raw_offset": 9836720,
+      "bytes_hex": "e030bd0030f4b30080e0b3005022a800",
+      "sha256": "010379be0026bc595bb5b096d6e1af3da0cda3b0beea2ef604a7ee09835630cb",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d5f114",
+      "end_exclusive": "00d5f118",
+      "length": 4,
+      "role": "actual_renderer_notification_slot",
+      "raw_offset": 9826580,
+      "bytes_hex": "5022b300",
+      "sha256": "3c59227775ade8e17275d19b0f3672bf013399c24d48e3587538bdff0c2b3c6b",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0108d6dc",
+      "end_exclusive": "0108d6e4",
+      "length": 8,
+      "role": "actual_synchronization_globals",
+      "raw_offset": 4294967295,
+      "bytes_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00f8d394",
+      "end_exclusive": "00f8d398",
+      "length": 4,
+      "role": "actual_renderer_publication",
+      "raw_offset": 4294967295,
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce2218",
+      "end_exclusive": "00ce221c",
+      "length": 4,
+      "role": "actual_enter_iat",
+      "raw_offset": 9314840,
+      "bytes_hex": "b856a000",
+      "sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce2210",
+      "end_exclusive": "00ce2214",
+      "length": 4,
+      "role": "actual_leave_iat",
+      "raw_offset": 9314832,
+      "bytes_hex": "8856a000",
+      "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0041dd40",
+      "end_exclusive": "0041dde4",
+      "length": 164,
+      "role": "full_existing_resize_at_abi_bridge",
+      "raw_offset": 122176,
+      "bytes_hex": "568bf18b0e578b7c240c3bf90f848d00000085ff752c8b460485c074136a0183c1015150e857bfffff8bc8e8a0377b005fc7460400000000c706000000005ec2080053e838bfffff6a018d4f01518bc8e88b337b00807c2414008bd8741b8b063bf876078b56045052eb058b4604575053e8ca987d0083c40c8b4e0485c974158b066a0183c0015051e8f2beffff8bc8e83b377b00895e04893ec6043b005b5f5ec20800",
+      "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "0041dd7f",
+          "operand": "8"
+        },
+        {
+          "address": "0041dde1",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "00bee780",
+      "end_exclusive": "00bee7fe",
+      "length": 126,
+      "role": "full_existing_path_copy_at_abi_bridge",
+      "raw_offset": 8316800,
+      "bytes_hex": "6aff68e975cc0064a100000000506489250000000083ec08535633db8bf1578bfa3bf7895c240c89742410895c241c891e895e0474218b076a0150e880f582ff391f74138b068b4e04508b47045051e8ac8e000083c40c8bce895c241cc744240c01000000e8a6feffff8b4c24145f8bc65e5b64890d0000000083c414c3",
+      "sha256": "14a34be0c91d9f77cc09d81e87338a40c7d85390709f3c979ce5f33901c818af",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00bee7fd",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b30510",
+      "end_exclusive": "00b305b2",
+      "length": 162,
+      "role": "full_existing_record_assignment_at_abi_bridge",
+      "raw_offset": 7537936,
+      "bytes_hex": "83ec0853558b6c241456578bf93bfd74248b45006a0150e814d88eff837d000074138b0f8b55048b4704515250e83e710c0083c40c8d5d088d77083bf374338b43048b08894c24148bce8944241ce87d009aff8b56048b028b4c241c8b54241c518b4c24185253515350568bcee81e219aff8b55148957148b45188947188b4d1c894f1c8b55208957208b45248947248b4d28894f288bc75f5e5d5b83c408c20400",
+      "sha256": "f2919960bf57749fd61053158a6545c42764bf679855e3a53b6649051c768544",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00b305af",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b2f990",
+      "end_exclusive": "00b2fa07",
+      "length": 119,
+      "role": "full_existing_record_destructor_at_abi_bridge",
+      "raw_offset": 7534992,
+      "bytes_hex": "6aff6848d8cb0064a10000000050648925000000005156578bf9897c24088d77088bcec744241400000000e8200c9aff8b460450e8e36b0c00c74604000000008b470483c40485c0c7442414ffffffff74158b3f6a0183c7015750e8d0a28eff8bc8e8191b0a008b4c240c5f5e64890d0000000083c410",
+      "sha256": "040ba01df71a78406b17668255119a3c0a0f73bd32caf17bbaafaafd089dcf49",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00bf6713",
+      "end_exclusive": "00bf6723",
+      "length": 16,
+      "role": "full_existing_invalid_parameter_at_abi_bridge",
+      "raw_offset": 8349459,
+      "bytes_hex": "33c05050505050e8d0ffffff83c414c3",
+      "sha256": "cd349dae43dbf63016fe6ea9339dab15c59041e3224e48cf8a53004224b45e77",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00bf6722",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00bf7fbf",
+      "end_exclusive": "00bf800f",
+      "length": 80,
+      "role": "full_existing_crt_comparison_at_abi_bridge",
+      "raw_offset": 8355775,
+      "bytes_hex": "558bec5633f639351cde09017530397508751fe8b47b00005656565656c70016000000e808e7ffff83c414b8ffffff7feb1b39750c74dc5e5de9bafeffff56ff750cff7508e8e3feffff83c40c5e5dc3",
+      "sha256": "59368fa18343310b9ad2c79521361749d54ef8c2a78fd837a44be5ce67efaf6a",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "address": "00bf800e",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00419cc0",
+      "end_exclusive": "00419cc5",
+      "length": 5,
+      "role": "pool_getter_entry_prefix",
+      "raw_offset": 105664,
+      "bytes_hex": "64a1000000",
+      "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bd1510",
+      "end_exclusive": "00bd1515",
+      "length": 5,
+      "role": "pool_return_entry_prefix",
+      "raw_offset": 8197392,
+      "bytes_hex": "538b5c240c",
+      "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf7680",
+      "end_exclusive": "00bf7685",
+      "length": 5,
+      "role": "memcpy_entry_prefix",
+      "raw_offset": 8353408,
+      "bytes_hex": "558bec5756",
+      "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf6b43",
+      "end_exclusive": "00bf6b48",
+      "length": 5,
+      "role": "host_fh3_entry_prefix",
+      "raw_offset": 8350531,
+      "bytes_hex": "558bec83ec",
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_disk": true
+    }
+  ],
+  "guarded_relocations": [
+    {
+      "address": "00b32259",
+      "expected": "00cbdcf0",
+      "kind": "instruction_absolute_immediate"
+    },
+    {
+      "address": "00b3226a",
+      "expected": "0108d6dc",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00b32278",
+      "expected": "00f8d394",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00b3230f",
+      "expected": "0108d6dc",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00cbdcf1",
+      "expected": "00df6694",
+      "kind": "instruction_absolute_immediate"
+    },
+    {
+      "address": "00b31dc3",
+      "expected": "00cbdc68",
+      "kind": "instruction_absolute_immediate"
+    },
+    {
+      "address": "00cbdc69",
+      "expected": "00df65dc",
+      "kind": "instruction_absolute_immediate"
+    },
+    {
+      "address": "00b33ad2",
+      "expected": "0108d6e0",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00b33ad9",
+      "expected": "0108d6dc",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00b33aee",
+      "expected": "00ce2218",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00b33b02",
+      "expected": "0108d6dc",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00b33b08",
+      "expected": "0108d6e0",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00b33b1f",
+      "expected": "00ce2210",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00b33b25",
+      "expected": "0108d6dc",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00b33b2b",
+      "expected": "0108d6e0",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00b33b34",
+      "expected": "0108d6dd",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00b33b3c",
+      "expected": "0108d6dd",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00b21112",
+      "expected": "0108d6dc",
+      "kind": "instruction_absolute_memory"
+    },
+    {
+      "address": "00df6688",
+      "expected": "00cbdce0",
+      "kind": "unwind_action"
+    },
+    {
+      "address": "00df6690",
+      "expected": "00cbdce8",
+      "kind": "unwind_action"
+    },
+    {
+      "address": "00df669c",
+      "expected": "00df6684",
+      "kind": "funcinfo_unwind_map"
+    },
+    {
+      "address": "00df65d8",
+      "expected": "00cbdc60",
+      "kind": "unwind_action"
+    },
+    {
+      "address": "00df65e4",
+      "expected": "00df65d4",
+      "kind": "funcinfo_unwind_map"
+    },
+    {
+      "address": "00d61954",
+      "expected": "00b3ce30",
+      "kind": "current_accounting_table_entry"
+    },
+    {
+      "address": "00d6187c",
+      "expected": "00a82250",
+      "kind": "current_accounting_table_entry"
+    },
+    {
+      "address": "00d618bc",
+      "expected": "00a82250",
+      "kind": "current_accounting_table_entry"
+    }
+  ],
+  "integration": {
+    "primary_register_source": "src/native_renderer_texture_name_notification.cpp",
+    "primary_ghidra_work": "Define exact function00B32250..00B32340, preserve old missing metadata, apply chosen descriptive name/evidence comment, save project and refresh export.",
+    "shared_metadata_written": false,
+    "ghidra_written": false,
+    "tracked_tests_added": 0
+  },
+  "source_pins": [
+    {
+      "path": "include/bsp/native_alias_count_growth.hpp",
+      "bytes": 1379,
+      "sha256": "9b605ef2b35babd22fc061e774f398e178ae3e7bd6f5be27b764643ca17f40f3"
+    },
+    {
+      "path": "include/bsp/native_pooled_resource_path.hpp",
+      "bytes": 1432,
+      "sha256": "2b9b1dad7f2843e0ddcc4d4bf609343ddf02a1516b9c54c2028ea4e78f56bc26"
+    },
+    {
+      "path": "include/bsp/native_pooled_string_substring.hpp",
+      "bytes": 1557,
+      "sha256": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f"
+    },
+    {
+      "path": "include/bsp/native_render_alias_checked_ops.hpp",
+      "bytes": 2413,
+      "sha256": "38ae1a85fdd8de3d6c4878eb751ab7e5249434182c05e5e041d959496a0ba52c"
+    },
+    {
+      "path": "include/bsp/native_render_alias_insertion.hpp",
+      "bytes": 2053,
+      "sha256": "5947910a5a35971b87371c06d4903bc344a919d8d44c7c3e4cf511568c7667e4"
+    },
+    {
+      "path": "include/bsp/native_render_resource_alias_nodes.hpp",
+      "bytes": 1897,
+      "sha256": "ea464ed0a2b4cabb9ba018ccd172559139425473f8de9228d6923973de95fdee"
+    },
+    {
+      "path": "include/bsp/native_render_resource_container_removal.hpp",
+      "bytes": 2076,
+      "sha256": "14ca26673033211047f0796e3a387b2f8773cc99b13c886a63889839e3bf6e6c"
+    },
+    {
+      "path": "include/bsp/native_render_resource_record.hpp",
+      "bytes": 3197,
+      "sha256": "ca0f2e40518b157c076968dfc32e589fc820ba9251a69832321e0cec5b5780c4"
+    },
+    {
+      "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+      "bytes": 2877,
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+      "bytes": 1656,
+      "sha256": "ab5030ed30fe81847d6c2a9aa8686fa53ae5d6536dbc221a4f8079d40b2366c4"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 6001,
+      "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 3986,
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "bytes": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "src/native_alias_count_growth.cpp",
+      "bytes": 1729,
+      "sha256": "2bc25adb85712c0823f7f847e97788b42cc53e2510b4449e02356a4c255a596b"
+    },
+    {
+      "path": "src/native_pooled_resource_path.cpp",
+      "bytes": 4724,
+      "sha256": "dcdbbd55b83fc4cea7666498bf9d9b81bf2b6b03b50373339f9f17b2fa72dfa0"
+    },
+    {
+      "path": "src/native_pooled_string_substring.cpp",
+      "bytes": 5004,
+      "sha256": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc"
+    },
+    {
+      "path": "src/native_render_alias_checked_ops.cpp",
+      "bytes": 5090,
+      "sha256": "ea6f013416e6b639699709ce5748818b41d02628ef583720b65c1124e26de872"
+    },
+    {
+      "path": "src/native_render_alias_insertion.cpp",
+      "bytes": 4958,
+      "sha256": "22a8b0fef77493b96c22aaab0a8144d560352aa52dc6827ca5fc50f856e30771"
+    },
+    {
+      "path": "src/native_render_resource_alias_nodes.cpp",
+      "bytes": 3982,
+      "sha256": "9a35fb4fe43978a85cdf58cdf5c537d927da6092775b5c37aa6a9aef39097617"
+    },
+    {
+      "path": "src/native_render_resource_container_removal.cpp",
+      "bytes": 7488,
+      "sha256": "ac847d0fd89e4d027c8ebb4cba6a8d76410aa16072526eb4709cbae82533e842"
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "bytes": 6429,
+      "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b"
+    },
+    {
+      "path": "src/native_renderer_synchronization_actual.cpp",
+      "bytes": 3242,
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+    },
+    {
+      "path": "src/native_renderer_texture_name_notification.cpp",
+      "bytes": 5029,
+      "sha256": "22ddd8f30e7f1bb54543d68dc3617adecf2ae5d45541492691d85b1fce557fe2"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 6003,
+      "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 10921,
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "src/storage_pool.cpp",
+      "bytes": 6169,
+      "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 9658,
+      "sha256": "89c7ed6159dce4178d8bc4d9c98b08281c16d9e06258b9c5a957a413654bf22b"
+    },
+    {
+      "path": "build/texture-name-notification-check/actual_lifetime.obj",
+      "bytes": 31704,
+      "sha256": "3825a0902602c98fda1ba0d8a6e64958e27c8a10d880c917ecb795c828115b31"
+    },
+    {
+      "path": "build/texture-name-notification-check/actual_string.obj",
+      "bytes": 14575,
+      "sha256": "8a6e2df2f53c68229c9311a1d0e6ce535db9ba53485cd8d98c87a0d39b796de0"
+    },
+    {
+      "path": "build/texture-name-notification-check/actual_synchronization.obj",
+      "bytes": 2492,
+      "sha256": "7be9426607c989fde777d72350893d4340ae167c83d0c5872192ac44f889cd30"
+    },
+    {
+      "path": "build/texture-name-notification-check/build_notification.cmd",
+      "bytes": 4314,
+      "sha256": "01d55950ef91215fc93b557b7a4f76a7593ed19cac069961d796205a9765fd8b"
+    },
+    {
+      "path": "build/texture-name-notification-check/native_renderer_texture_name_notification_check.exe",
+      "bytes": 59904,
+      "sha256": "c20c2ffa2965fd9a993e8a514ac49c4c9928ed90c046be55ae47b53d23f39ee0"
+    },
+    {
+      "path": "build/texture-name-notification-check/notification_final.asm",
+      "bytes": 25720,
+      "sha256": "d2d0c96b93734d8e709d0e40e12f311dbe6dc9f6b2e5dd93b44d2b10ea93e3e9"
+    },
+    {
+      "path": "build/texture-name-notification-check/notification_final.obj",
+      "bytes": 5905,
+      "sha256": "f507d12d90e5c5813209841a16f0a7645f1588c8d03b42816d92f10d5057c3b8"
+    },
+    {
+      "path": "build/texture-name-notification-check/notification_outer_terminate_host.bin",
+      "bytes": 940,
+      "sha256": "647ea8a2015715101e6d790a11a381c63bdaea5924b829f27702e486c70380c3"
+    },
+    {
+      "path": "build/texture-name-notification-check/notification_outer_terminate_native.bin",
+      "bytes": 940,
+      "sha256": "647ea8a2015715101e6d790a11a381c63bdaea5924b829f27702e486c70380c3"
+    },
+    {
+      "path": "build/texture-name-notification-check/notification_terminate_host.bin",
+      "bytes": 1692,
+      "sha256": "9cb78375df176e4b5463bc6448ce79a636f3d4a5011a00f6f2b7385cc52db003"
+    },
+    {
+      "path": "build/texture-name-notification-check/notification_terminate_native.bin",
+      "bytes": 1692,
+      "sha256": "9cb78375df176e4b5463bc6448ce79a636f3d4a5011a00f6f2b7385cc52db003"
+    },
+    {
+      "path": "build/texture-name-notification-check/notification_trace.json",
+      "bytes": 15710,
+      "sha256": "ac6787ee08bcac8796e10a3c56152294666d47bd21bae9749372d4a7faa94c38"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 19690866,
+      "sha256": "8a30afbe462dba9e895f99dade13313e131a4e27d7af651087e424dae7526cf2"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_TEXTURE_NAME_NOTIFICATION.md",
+      "bytes": 8972,
+      "sha256": "295fbb8531a58ee1f92bd2cba9b38422930ccc9f9276597c079865be06357244"
+    },
+    {
+      "path": "include/bsp/native_alias_count_growth.hpp",
+      "bytes": 1379,
+      "sha256": "9b605ef2b35babd22fc061e774f398e178ae3e7bd6f5be27b764643ca17f40f3"
+    },
+    {
+      "path": "include/bsp/native_pooled_resource_path.hpp",
+      "bytes": 1432,
+      "sha256": "2b9b1dad7f2843e0ddcc4d4bf609343ddf02a1516b9c54c2028ea4e78f56bc26"
+    },
+    {
+      "path": "include/bsp/native_pooled_string_substring.hpp",
+      "bytes": 1557,
+      "sha256": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f"
+    },
+    {
+      "path": "include/bsp/native_render_alias_checked_ops.hpp",
+      "bytes": 2413,
+      "sha256": "38ae1a85fdd8de3d6c4878eb751ab7e5249434182c05e5e041d959496a0ba52c"
+    },
+    {
+      "path": "include/bsp/native_render_alias_insertion.hpp",
+      "bytes": 2053,
+      "sha256": "5947910a5a35971b87371c06d4903bc344a919d8d44c7c3e4cf511568c7667e4"
+    },
+    {
+      "path": "include/bsp/native_render_resource_alias_nodes.hpp",
+      "bytes": 1897,
+      "sha256": "ea464ed0a2b4cabb9ba018ccd172559139425473f8de9228d6923973de95fdee"
+    },
+    {
+      "path": "include/bsp/native_render_resource_container_removal.hpp",
+      "bytes": 2076,
+      "sha256": "14ca26673033211047f0796e3a387b2f8773cc99b13c886a63889839e3bf6e6c"
+    },
+    {
+      "path": "include/bsp/native_render_resource_record.hpp",
+      "bytes": 3197,
+      "sha256": "ca0f2e40518b157c076968dfc32e589fc820ba9251a69832321e0cec5b5780c4"
+    },
+    {
+      "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+      "bytes": 2877,
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+      "bytes": 1656,
+      "sha256": "ab5030ed30fe81847d6c2a9aa8686fa53ae5d6536dbc221a4f8079d40b2366c4"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 6001,
+      "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 3986,
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "bytes": 5571,
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "local/build_native_renderer_texture_name_notification.ps1",
+      "bytes": 1091,
+      "sha256": "d4fa6ab3c114ef2781b1139bca1baa5160d7bfac311769bd6155fc2adba9169e"
+    },
+    {
+      "path": "local/build_native_renderer_texture_name_notification_check.ps1",
+      "bytes": 4146,
+      "sha256": "c7ba4889bbd8c842b85e7919913417b122fc0e306105b7f4ca5816d3b7e908c7"
+    },
+    {
+      "path": "local/native_renderer_texture_name_notification_check.cpp",
+      "bytes": 23052,
+      "sha256": "a5b1a411080c5959c01b5d56be7dcf75ce5b0efb4b27aa3affdfa0262b7bedc2"
+    },
+    {
+      "path": "local/native_renderer_texture_name_notification_preparation.json",
+      "bytes": 22970,
+      "sha256": "1d22aba5022c5c4c1f67ae02d250d1ac8de42c1fb83110ad7dc6f4ec0cccffaa"
+    },
+    {
+      "path": "local/native_renderer_texture_name_notification_spans.hpp",
+      "bytes": 14333,
+      "sha256": "e6196b78c76c38c8ce811fb5faa5786b07bdd39995342781f104ef01f01652fd"
+    },
+    {
+      "path": "local/notification_0041dd20.asm",
+      "bytes": 294,
+      "sha256": "dedae49dda63f1b698c46a53a9b59aace0d00dbd4001d540390d36361b4de116"
+    },
+    {
+      "path": "local/notification_0041dd40.asm",
+      "bytes": 1660,
+      "sha256": "dfa4fe7f1f74c793ffd9005c37018906fd4db95c3a607e24321bf69be9f42e8d"
+    },
+    {
+      "path": "local/notification_004254b0.asm",
+      "bytes": 16,
+      "sha256": "b435ca5958259f913263c9ec22adfa7f52d58a0b1e4808beb44c2d68bc5d0bb9"
+    },
+    {
+      "path": "local/notification_004bcc00.asm",
+      "bytes": 615,
+      "sha256": "3f4fa9941f36af634f82fc394a6b4161324b0ab8f98cf4d9aba0d0369176fb27"
+    },
+    {
+      "path": "local/notification_00a82250.asm",
+      "bytes": 40,
+      "sha256": "76f8dafad686b12eccca9a17263553d3395043c3e19937f9c0fcceea1017000e"
+    },
+    {
+      "path": "local/notification_00b21110.asm",
+      "bytes": 200,
+      "sha256": "df4ca2c2f0254b53967e82fc728de0d25a91f9db218abaedacab182bf70f37a8"
+    },
+    {
+      "path": "local/notification_00b2f990.asm",
+      "bytes": 997,
+      "sha256": "e29954f66a2a1d8461719d9364206e53e5528a946050e01365ce98689d558b3e"
+    },
+    {
+      "path": "local/notification_00b30510.asm",
+      "bytes": 1964,
+      "sha256": "ce64af381a0b2379c1e068212d808adc282b6467a66c7da948b77ce9e06b9ddd"
+    },
+    {
+      "path": "local/notification_00b31dc0.asm",
+      "bytes": 5123,
+      "sha256": "8542a5d1e365362b38e2b308938d3c865972236f3ecf1f1633ff705586148777"
+    },
+    {
+      "path": "local/notification_00b32250.asm",
+      "bytes": 2033,
+      "sha256": "c5cd02f7590c5dada9c7ce746a9d611b207cd84f72767de48dd603c9b7a19abc"
+    },
+    {
+      "path": "local/notification_00b33ad0.asm",
+      "bytes": 460,
+      "sha256": "f66907fcf2f2c4d4ed53eaec9c672ff5f4346b37921e974b4dd5cc4cfa5360d0"
+    },
+    {
+      "path": "local/notification_00b33b00.asm",
+      "bytes": 537,
+      "sha256": "7ac632e15a717b94219b36b848cace0574e9dac76586796652190641b5d26a03"
+    },
+    {
+      "path": "local/notification_00b3ce30.asm",
+      "bytes": 59,
+      "sha256": "f5200d88a740c58da1a0b8042f05a1532f00b1d052a71ae91127d02636887c33"
+    },
+    {
+      "path": "local/notification_00bee780.asm",
+      "bytes": 1260,
+      "sha256": "d582ee5ae6092b33c5c03c44a440c54977b989c1ca3b16769248c6b9f6a694f8"
+    },
+    {
+      "path": "local/notification_00bf6713.asm",
+      "bytes": 190,
+      "sha256": "05f6833bb12e79ed7c4affd01386251980bbf00f157f59ddbb3f31f25f824abd"
+    },
+    {
+      "path": "local/notification_00bf7fbf.asm",
+      "bytes": 809,
+      "sha256": "0c7a4ae1ec207a4c84662cf6bf03d1b2e50ef26614e8f90bc6f2876c55e95f5e"
+    },
+    {
+      "path": "local/notification_00cbdc60.asm",
+      "bytes": 57,
+      "sha256": "e3ad552581994bbf6f56db33067504718f48171be78814d66d2798186401af9d"
+    },
+    {
+      "path": "local/notification_00cbdc68.asm",
+      "bytes": 53,
+      "sha256": "186931298754ef156a08a498808edd6fe8261de4b731028b2b51a1999491ee22"
+    },
+    {
+      "path": "local/notification_00cbdce0.asm",
+      "bytes": 57,
+      "sha256": "c614988481526dfee3b365ec6da1f9a2fb621b39fe55ebdfb100f0d6605edb81"
+    },
+    {
+      "path": "local/notification_00cbdce8.asm",
+      "bytes": 57,
+      "sha256": "eb1ab127c9546e87859815900293e74bdd14e1ff358c13e94a8ecac50565decb"
+    },
+    {
+      "path": "local/notification_00cbdcf0.asm",
+      "bytes": 53,
+      "sha256": "9a6421d04e1b0e20daa5fd76feceb6e35b23cdf1b01ce52d17be9e728c8164fa"
+    },
+    {
+      "path": "local/notification_api_observation.hpp",
+      "bytes": 279,
+      "sha256": "3c49a07500caf198968bca2e366da9099b51080c5a23402b1fabf52987e29426"
+    },
+    {
+      "path": "local/notification_build.log",
+      "bytes": 12543,
+      "sha256": "ba38c631baba94cc152fd91a70cd0cad64aac00b0192b136196359e041c17d16"
+    },
+    {
+      "path": "local/notification_build_final.log",
+      "bytes": 2075,
+      "sha256": "c0552dfbc7134fa1f7be2366d837a2654410f8198ff381011e6ba47cb937420a"
+    },
+    {
+      "path": "local/notification_fixture.log",
+      "bytes": 984,
+      "sha256": "b5d2f8632a3788ba3c28d2b8065ba666ac770984987488143786cc293bdd44ce"
+    },
+    {
+      "path": "local/notification_live_00419cc0.txt",
+      "bytes": 33,
+      "sha256": "fd2c76435acd07d36046e6fe33ecb166fe0ca45dfc1f118fc3baf073d4470ca9"
+    },
+    {
+      "path": "local/notification_live_0041dd20.txt",
+      "bytes": 142,
+      "sha256": "6067ce8f2a1ee404080bab647c771b6ee0d782dc9b8d61b710a9e04b3c4b8850"
+    },
+    {
+      "path": "local/notification_live_0041dd40.txt",
+      "bytes": 799,
+      "sha256": "35ab49464fb315caa5eeaac9ea5f17aade682fc2169ec1e656b7c378cd8ccdae"
+    },
+    {
+      "path": "local/notification_live_004254b0.txt",
+      "bytes": 17,
+      "sha256": "e6d6d0b4e488364531bd906fefa2055dd5f7e0ec3aa7682a4896ad489ba52f57"
+    },
+    {
+      "path": "local/notification_live_004bcc00.txt",
+      "bytes": 256,
+      "sha256": "de7e77a2700e82264079e2465795ff815862cfcf14b8408ddff1b65bb4e449d0"
+    },
+    {
+      "path": "local/notification_live_00a82250.txt",
+      "bytes": 25,
+      "sha256": "cc68f76d60421fc22e57efced24fd2b9a72e738144cf66ea77edd87e56561264"
+    },
+    {
+      "path": "local/notification_live_00b21110.txt",
+      "bytes": 114,
+      "sha256": "458e42c749f86a27976f1385ecd56b3a963b9e9d3ae92b0adf1ab5ad2c362296"
+    },
+    {
+      "path": "local/notification_live_00b2f990.txt",
+      "bytes": 580,
+      "sha256": "11515218aa0c921d5b727c006238dc77fc62bdd17f0b6e978c1a05535a2ce118"
+    },
+    {
+      "path": "local/notification_live_00b30510.txt",
+      "bytes": 791,
+      "sha256": "18dcf61ddc9d57b5408fa2900aa6e4c67b301e1ee0976df9dd1cc7a5003c7c29"
+    },
+    {
+      "path": "local/notification_live_00b31dc0.txt",
+      "bytes": 2509,
+      "sha256": "452f9aa854ed43d5703044db802840f5e2193cedd44d3634f614f947ece4d08b"
+    },
+    {
+      "path": "local/notification_live_00b32250.txt",
+      "bytes": 1155,
+      "sha256": "a86d387d999a58ddf27f2ecf1976e7c9c98872b03621eac74197cd562cf014e3"
+    },
+    {
+      "path": "local/notification_live_00b33ad0.txt",
+      "bytes": 223,
+      "sha256": "9af1bc8e1c27f7690f585dd19bc1c02ed006e39da8d1eaf3413fe62bb6573867"
+    },
+    {
+      "path": "local/notification_live_00b33b00.txt",
+      "bytes": 333,
+      "sha256": "dc4b3f3f5afed0330ebe8fec06b8b2257b8333c4ff01dd17f44d337b797b4394"
+    },
+    {
+      "path": "local/notification_live_00b3ce30.txt",
+      "bytes": 29,
+      "sha256": "8af9e037d40cac5acfcefbb926e4ee21ae85dfda05ef3a1d19ff20e39145beec"
+    },
+    {
+      "path": "local/notification_live_00bd1510.txt",
+      "bytes": 33,
+      "sha256": "5312bed027b75e43b736c47d8bf2b0b817d02d4af6f2afe068c7265add48f4bb"
+    },
+    {
+      "path": "local/notification_live_00bee780.txt",
+      "bytes": 608,
+      "sha256": "6d624e60172d5649936d361c2b56edd8f9d2da30f93fc5e2607253aa6cb46ae7"
+    },
+    {
+      "path": "local/notification_live_00bf6713.txt",
+      "bytes": 77,
+      "sha256": "37dc4d754a408a185694a5bc3bdc2c03ef9cd9ea91591d2db8dfd95b12a76d80"
+    },
+    {
+      "path": "local/notification_live_00bf6b43.txt",
+      "bytes": 33,
+      "sha256": "097d3d6d6e023a7f934487b934bffdc04d57b0b5811a1e9966770453ba241ca2"
+    },
+    {
+      "path": "local/notification_live_00bf7680.txt",
+      "bytes": 33,
+      "sha256": "871ebcbc3369e3a2cd4ad4e0290065cc71783c2a00162582c8e9c742e492599b"
+    },
+    {
+      "path": "local/notification_live_00bf7fbf.txt",
+      "bytes": 385,
+      "sha256": "92f8a1cf2f76d4323997c6d146cfec50dc97fe645189c9ecec64618a86493ad6"
+    },
+    {
+      "path": "local/notification_live_00cbdc60.txt",
+      "bytes": 45,
+      "sha256": "be5858d110e89c66810ea4a85ad3f70ad674882b458bbb05b9e77d7f52facdcc"
+    },
+    {
+      "path": "local/notification_live_00cbdc68.txt",
+      "bytes": 53,
+      "sha256": "b67003e4a5d12e18562f36753de1332e9b2ab9b835951fc23f344bb5c34360ad"
+    },
+    {
+      "path": "local/notification_live_00cbdce0.txt",
+      "bytes": 45,
+      "sha256": "f77d34df5a7bd88702532cd639728275c74598aeb8f1756b4d549aa1863dc975"
+    },
+    {
+      "path": "local/notification_live_00cbdce8.txt",
+      "bytes": 45,
+      "sha256": "054a01b5bb1cd88a3929b4dcf6c2c10427425c7b335311a7dc2a49f4f5127335"
+    },
+    {
+      "path": "local/notification_live_00cbdcf0.txt",
+      "bytes": 53,
+      "sha256": "be961fc16f8106ebede941563c4690ec7fb6304a2c6cad74d776adc3dfdf5a3c"
+    },
+    {
+      "path": "local/notification_live_00ce2210.txt",
+      "bytes": 29,
+      "sha256": "9c7a8c8d73114bbf9ba79c4dc3b4aa970a607e7da87395bf02fb3dbc6e1ad134"
+    },
+    {
+      "path": "local/notification_live_00ce2218.txt",
+      "bytes": 29,
+      "sha256": "ee5099081c36f9c261ece4cb33d2bd0aaf07633d77eae228411563b1be9b0bfc"
+    },
+    {
+      "path": "local/notification_live_00d5f114.txt",
+      "bytes": 29,
+      "sha256": "c1bb2104d5b9a9454a59e37612efc3764f8085f07c733387fbcbbd251281625b"
+    },
+    {
+      "path": "local/notification_live_00d61870.txt",
+      "bytes": 77,
+      "sha256": "4621576d961768748f766bbf2ebdeba699f3ed30517c7e5cd2d4605a5faa4f83"
+    },
+    {
+      "path": "local/notification_live_00d618b0.txt",
+      "bytes": 77,
+      "sha256": "64f2df0ab032ad69997abda5b9f0da518cd7db81b63e1dbf2b5949a7beb1d4fc"
+    },
+    {
+      "path": "local/notification_live_00d61948.txt",
+      "bytes": 77,
+      "sha256": "214b7cef294322f7102b6c5056fe145e8328f2d88c803cbf081074ea11396284"
+    },
+    {
+      "path": "local/notification_live_00df65d4.txt",
+      "bytes": 45,
+      "sha256": "52f52f1da63560b842884fc3876cb24c191c0e85efe73121d561b6fc8a29eea0"
+    },
+    {
+      "path": "local/notification_live_00df65dc.txt",
+      "bytes": 183,
+      "sha256": "c4dfc2eafb331e2b2e0e8cdb134b6059bbf4bb8ca1bc9b6d70724a5893a74be2"
+    },
+    {
+      "path": "local/notification_live_00df6684.txt",
+      "bytes": 77,
+      "sha256": "517970234f4cbcc77ba1e989155ceca72326bb9f641d74192bb99cb28e955ecb"
+    },
+    {
+      "path": "local/notification_live_00df6694.txt",
+      "bytes": 183,
+      "sha256": "c3ecc32823bb121644bc98f6c11a24a22ae53f07b74abba22a2127f51e202c0b"
+    },
+    {
+      "path": "local/notification_live_00f8d394.txt",
+      "bytes": 29,
+      "sha256": "185167e9b01f37c26cf222b2e65cb11322afde473342afcef500aeb7f230aafe"
+    },
+    {
+      "path": "local/notification_live_0108d6dc.txt",
+      "bytes": 45,
+      "sha256": "69b6f8d1d27fa0205876db0fa6c58fdc1d866d319555de1d664a122bd8f1ab2b"
+    },
+    {
+      "path": "local/notification_old_00b32250_comments.txt",
+      "bytes": 983,
+      "sha256": "689196575121d509fb3be189f0b992d84d438d0e200f504d79de008684962e32"
+    },
+    {
+      "path": "local/notification_old_00b32250_proto.txt",
+      "bytes": 141,
+      "sha256": "2857b3a9fb19997c23488f6c3017e4cc7d58ae50f7568c1162470ae4f5d9134b"
+    },
+    {
+      "path": "local/notification_preparation.log",
+      "bytes": 130,
+      "sha256": "12614eacfa7380a2e4a3f3277e25b7f4b7a599c7f4ea2fed70b0651058d70463"
+    },
+    {
+      "path": "local/notification_sources.cmake",
+      "bytes": 206,
+      "sha256": "0321869fda1ea289b789d67f37b8fc1f1232605de9a61dbaf230579d956a6f5e"
+    },
+    {
+      "path": "local/notification_synthetic_catch.cpp",
+      "bytes": 4238,
+      "sha256": "251e29d9c8a0fbf8ad3d4f1b7597dbe1168dd363ded2d67b1bf2341d9aee98d8"
+    },
+    {
+      "path": "local/notification_synthetic_catch_regression.log",
+      "bytes": 522,
+      "sha256": "975fc2faa2c8ffe0657508c5d9a8257c7ba38a5e5280d2d86fa1e50970c61862"
+    },
+    {
+      "path": "local/notification_verify_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/prepare_native_renderer_texture_name_notification.py",
+      "bytes": 6559,
+      "sha256": "4283a1485b3a2bf8b10e9fd30d64e8e7c07c4db0e2d7a2d201b56d976d6fd8ae"
+    },
+    {
+      "path": "local/write_native_renderer_texture_name_notification_audit.py",
+      "bytes": 19980,
+      "sha256": "fccc46b2f6096c97fa7b833e81d51e331e2e2bdc7d19c6b3b4850f16743c29e7"
+    },
+    {
+      "path": "src/native_alias_count_growth.cpp",
+      "bytes": 1729,
+      "sha256": "2bc25adb85712c0823f7f847e97788b42cc53e2510b4449e02356a4c255a596b"
+    },
+    {
+      "path": "src/native_pooled_resource_path.cpp",
+      "bytes": 4724,
+      "sha256": "dcdbbd55b83fc4cea7666498bf9d9b81bf2b6b03b50373339f9f17b2fa72dfa0"
+    },
+    {
+      "path": "src/native_pooled_string_substring.cpp",
+      "bytes": 5004,
+      "sha256": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc"
+    },
+    {
+      "path": "src/native_render_alias_checked_ops.cpp",
+      "bytes": 5090,
+      "sha256": "ea6f013416e6b639699709ce5748818b41d02628ef583720b65c1124e26de872"
+    },
+    {
+      "path": "src/native_render_alias_insertion.cpp",
+      "bytes": 4958,
+      "sha256": "22a8b0fef77493b96c22aaab0a8144d560352aa52dc6827ca5fc50f856e30771"
+    },
+    {
+      "path": "src/native_render_resource_alias_nodes.cpp",
+      "bytes": 3982,
+      "sha256": "9a35fb4fe43978a85cdf58cdf5c537d927da6092775b5c37aa6a9aef39097617"
+    },
+    {
+      "path": "src/native_render_resource_container_removal.cpp",
+      "bytes": 7488,
+      "sha256": "ac847d0fd89e4d027c8ebb4cba6a8d76410aa16072526eb4709cbae82533e842"
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "bytes": 6429,
+      "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b"
+    },
+    {
+      "path": "src/native_renderer_synchronization_actual.cpp",
+      "bytes": 3242,
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+    },
+    {
+      "path": "src/native_renderer_texture_name_notification.cpp",
+      "bytes": 5029,
+      "sha256": "22ddd8f30e7f1bb54543d68dc3617adecf2ae5d45541492691d85b1fce557fe2"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 6003,
+      "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 10921,
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "src/storage_pool.cpp",
+      "bytes": 6169,
+      "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+    }
+  ],
+  "uncertainty": [
+    "C++ interface and compiler EH layout are new; this is not a drop-in native function or binary EH compatibility proof.",
+    "Only currently supported actual storage/profile domains are implemented; arbitrary resources and skipped-entry/enabled-cleanup are outside preconditions.",
+    "Four entry-prefix spans do not claim complete allocator/CRT runtime reconstruction.",
+    "The fixture executes complete owned/nested native instructions plus explicitly declared actual C++ dependency ABI bridges, not an entirely native dependency closure.",
+    "Renderer/table/game runtime visual behavior was not exercised."
+  ]
+}
