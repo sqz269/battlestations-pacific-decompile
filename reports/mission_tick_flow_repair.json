@@ -1,0 +1,136 @@
+{
+ "repairs": [
+  {
+   "function": "00447510",
+   "owner": "main",
+   "when": "2026-09-11T20:49:55Z",
+   "decompile_lines_before": 240,
+   "gaps": [
+    {
+     "site": "0044785b",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00447860",
+     "gap_end_exclusive": "00447863",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    },
+    {
+     "site": "00447b55",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00447b5a",
+     "gap_end_exclusive": "00447b5d",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "0044785b",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00447860",
+      "gap_end_exclusive": "00447863",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 0044785b (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    },
+    {
+     "gap": {
+      "site": "00447b55",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00447b5a",
+      "gap_end_exclusive": "00447b5d",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00447b55 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 238,
+   "gaps_remaining": 0
+  },
+  {
+   "function": "004bf8e0",
+   "owner": "main",
+   "when": "2026-09-11T20:49:56Z",
+   "decompile_lines_before": 27,
+   "gaps": [
+    {
+     "site": "004bf917",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "004bf91c",
+     "gap_end_exclusive": "004bf924",
+     "bytes": 8,
+     "after_call": true,
+     "sha256": "76c966d49c6936da1f56e904a386275674ab9566a33526c720f21a91ad48de6b"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "004bf917",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "004bf91c",
+      "gap_end_exclusive": "004bf924",
+      "bytes": 8,
+      "after_call": true,
+      "sha256": "76c966d49c6936da1f56e904a386275674ab9566a33526c720f21a91ad48de6b"
+     },
+     "clear": "Success: Cleared flow override at 004bf917 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 8 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 29,
+   "gaps_remaining": 0
+  },
+  {
+   "function": "00c34f70",
+   "owner": "main",
+   "when": "2026-09-11T20:49:57Z",
+   "decompile_lines_before": 42,
+   "gaps": [
+    {
+     "site": "00c34fcf",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00c34fd4",
+     "gap_end_exclusive": "00c34fd7",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00c34fcf",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00c34fd4",
+      "gap_end_exclusive": "00c34fd7",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00c34fcf (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 41,
+   "gaps_remaining": 0
+  }
+ ]
+}

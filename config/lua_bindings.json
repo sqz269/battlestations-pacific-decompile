@@ -1,0 +1,4518 @@
+{
+  "source": "tools/lua_bindings_export.py over the installed battlestationspacific.exe",
+  "table": "00e0b7b8",
+  "sentinel_row": "00e0c938",
+  "row_bytes": 8,
+  "count": 560,
+  "registered_by": "006b8610",
+  "distinct_handlers": 557,
+  "handlers_shared_by_several_names": {
+    "00896a90": [
+      "AddAirBaseStock",
+      "AddAirBasePlanes"
+    ],
+    "008b0c10": [
+      "MissionNarrative",
+      "MissionNarrativeEnqueue"
+    ],
+    "0088e560": [
+      "SetMotionBlurParams",
+      "SetMBP"
+    ]
+  },
+  "index_stats": {
+    "indexed": 536,
+    "ledger_named": 31,
+    "reconstructed": 0,
+    "no_function": 24
+  },
+  "bindings": [
+    {
+      "name": "Log",
+      "handler": "0088bec0",
+      "row": "00e0b7b8",
+      "name_pointer": "00d11110",
+      "ghidra_function": null
+    },
+    {
+      "name": "LogToFile",
+      "handler": "0088bc00",
+      "row": "00e0b7c0",
+      "name_pointer": "00d11104",
+      "ghidra_function": "0088bc00",
+      "ghidra_name": "FUN_0088bc00"
+    },
+    {
+      "name": "DoFileOutsideMPAK",
+      "handler": "0088bd20",
+      "row": "00e0b7c8",
+      "name_pointer": "00d110f0",
+      "ghidra_function": "0088bd20",
+      "ghidra_name": "FUN_0088bd20"
+    },
+    {
+      "name": "GetProperty",
+      "handler": "0088bf80",
+      "row": "00e0b7d0",
+      "name_pointer": "00d110e4",
+      "ghidra_function": "0088bf80",
+      "ghidra_name": "FUN_0088bf80"
+    },
+    {
+      "name": "Assert",
+      "handler": "0088c3e0",
+      "row": "00e0b7d8",
+      "name_pointer": "00d110dc",
+      "ghidra_function": "0088c3e0",
+      "ghidra_name": "FUN_0088c3e0"
+    },
+    {
+      "name": "SETLOG",
+      "handler": "0088c620",
+      "row": "00e0b7e0",
+      "name_pointer": "00d110d4",
+      "ghidra_function": "0088c620",
+      "ghidra_name": "FUN_0088c620"
+    },
+    {
+      "name": "AddWatch",
+      "handler": "0088d130",
+      "row": "00e0b7e8",
+      "name_pointer": "00d110c8",
+      "ghidra_function": "0088d130",
+      "ghidra_name": "FUN_0088d130"
+    },
+    {
+      "name": "ShowHint",
+      "handler": "008d1f50",
+      "row": "00e0b7f0",
+      "name_pointer": "00d110bc",
+      "ghidra_function": "008d1f50",
+      "ghidra_name": "FUN_008d1f50"
+    },
+    {
+      "name": "ShowHintForced",
+      "handler": "008d2190",
+      "row": "00e0b7f8",
+      "name_pointer": "00d110ac",
+      "ghidra_function": "008d2190",
+      "ghidra_name": "FUN_008d2190"
+    },
+    {
+      "name": "AddStoredHint",
+      "handler": "008d24f0",
+      "row": "00e0b800",
+      "name_pointer": "00d1109c",
+      "ghidra_function": "008d24f0",
+      "ghidra_name": "FUN_008d24f0"
+    },
+    {
+      "name": "RemoveStoredHint",
+      "handler": "008d2340",
+      "row": "00e0b808",
+      "name_pointer": "00d11088",
+      "ghidra_function": "008d2340",
+      "ghidra_name": "FUN_008d2340"
+    },
+    {
+      "name": "HideHint",
+      "handler": "0088cec0",
+      "row": "00e0b810",
+      "name_pointer": "00d1107c",
+      "ghidra_function": "0088cec0",
+      "ghidra_name": "FUN_0088cec0"
+    },
+    {
+      "name": "IsHintActive",
+      "handler": "008d2850",
+      "row": "00e0b818",
+      "name_pointer": "00d1106c",
+      "ghidra_function": "008d2850",
+      "ghidra_name": "FUN_008d2850"
+    },
+    {
+      "name": "IsHintStored",
+      "handler": "008d2bb0",
+      "row": "00e0b820",
+      "name_pointer": "00d1105c",
+      "ghidra_function": "008d2bb0",
+      "ghidra_name": "FUN_008d2bb0"
+    },
+    {
+      "name": "IsHintCritical",
+      "handler": "008d26a0",
+      "row": "00e0b828",
+      "name_pointer": "00d1104c",
+      "ghidra_function": "008d26a0",
+      "ghidra_name": "FUN_008d26a0"
+    },
+    {
+      "name": "IsSMVisible",
+      "handler": "0088cd70",
+      "row": "00e0b830",
+      "name_pointer": "00d11040",
+      "ghidra_function": "0088cd70",
+      "ghidra_name": "FUN_0088cd70"
+    },
+    {
+      "name": "BannSupportmanager",
+      "handler": "0088c750",
+      "row": "00e0b838",
+      "name_pointer": "00d1102c",
+      "ghidra_function": "0088c750",
+      "ghidra_name": "FUN_0088c750"
+    },
+    {
+      "name": "PermitSupportmanager",
+      "handler": "0088c8e0",
+      "row": "00e0b840",
+      "name_pointer": "00d11014",
+      "ghidra_function": "0088c8e0",
+      "ghidra_name": "FUN_0088c8e0"
+    },
+    {
+      "name": "LogToConsole",
+      "handler": "0088d420",
+      "row": "00e0b848",
+      "name_pointer": "00d11004",
+      "ghidra_function": "0088d420",
+      "ghidra_name": "FUN_0088d420"
+    },
+    {
+      "name": "SetBPCsodaSquadMereteHack",
+      "handler": "0088d2b0",
+      "row": "00e0b850",
+      "name_pointer": "00d10fe8",
+      "ghidra_function": "0088d2b0",
+      "ghidra_name": "FUN_0088d2b0"
+    },
+    {
+      "name": "NetworkLog",
+      "handler": "0088d6e0",
+      "row": "00e0b858",
+      "name_pointer": "00d10fdc",
+      "ghidra_function": "0088d6e0",
+      "ghidra_name": "FUN_0088d6e0"
+    },
+    {
+      "name": "RemoveWatch",
+      "handler": "0088d560",
+      "row": "00e0b860",
+      "name_pointer": "00d10fd0",
+      "ghidra_function": "0088d560",
+      "ghidra_name": "FUN_0088d560"
+    },
+    {
+      "name": "random",
+      "handler": "0088c160",
+      "row": "00e0b868",
+      "name_pointer": "00d10fc8",
+      "ghidra_function": "0088c160",
+      "ghidra_name": "FUN_0088c160"
+    },
+    {
+      "name": "UnlockAllMission",
+      "handler": "0088d000",
+      "row": "00e0b870",
+      "name_pointer": "00d10fb4",
+      "ghidra_function": "0088d000",
+      "ghidra_name": "FUN_0088d000"
+    },
+    {
+      "name": "AddDamage",
+      "handler": "0088e000",
+      "row": "00e0b878",
+      "name_pointer": "00d10fa8",
+      "ghidra_function": "0088e000",
+      "ghidra_name": "FUN_0088e000"
+    },
+    {
+      "name": "SetWaterDamage",
+      "handler": "0088e790",
+      "row": "00e0b880",
+      "name_pointer": "00d10f98",
+      "ghidra_function": "0088e790",
+      "ghidra_name": "FUN_0088e790"
+    },
+    {
+      "name": "SetFireDamage",
+      "handler": "0088e320",
+      "row": "00e0b888",
+      "name_pointer": "00d10f88",
+      "ghidra_function": "0088e320",
+      "ghidra_name": "FUN_0088e320"
+    },
+    {
+      "name": "ExplodeToParts",
+      "handler": "0088e1b0",
+      "row": "00e0b890",
+      "name_pointer": "00d10f78",
+      "ghidra_function": "0088e1b0",
+      "ghidra_name": "FUN_0088e1b0"
+    },
+    {
+      "name": "GetHpPercentage",
+      "handler": "0088e9d0",
+      "row": "00e0b898",
+      "name_pointer": "00d10f68",
+      "ghidra_function": "0088e9d0",
+      "ghidra_name": "FUN_0088e9d0"
+    },
+    {
+      "name": "SetControlFactor",
+      "handler": "0088eb50",
+      "row": "00e0b8a0",
+      "name_pointer": "00d10f54",
+      "ghidra_function": "0088eb50",
+      "ghidra_name": "FUN_0088eb50"
+    },
+    {
+      "name": "GetControlFactor",
+      "handler": "0088edc0",
+      "row": "00e0b8a8",
+      "name_pointer": "00d10f40",
+      "ghidra_function": "0088edc0",
+      "ghidra_name": "FUN_0088edc0"
+    },
+    {
+      "name": "SetFailure",
+      "handler": "0088eff0",
+      "row": "00e0b8b0",
+      "name_pointer": "00d10f34",
+      "ghidra_function": "0088eff0",
+      "ghidra_name": "FUN_0088eff0"
+    },
+    {
+      "name": "GetFailure",
+      "handler": "0088f1d0",
+      "row": "00e0b8b8",
+      "name_pointer": "00d10f28",
+      "ghidra_function": "0088f1d0",
+      "ghidra_name": "FUN_0088f1d0"
+    },
+    {
+      "name": "ClearFailure",
+      "handler": "0088f3c0",
+      "row": "00e0b8c0",
+      "name_pointer": "00d10f18",
+      "ghidra_function": "0088f3c0",
+      "ghidra_name": "FUN_0088f3c0"
+    },
+    {
+      "name": "ClearAllShipFailure",
+      "handler": "0088f5a0",
+      "row": "00e0b8c8",
+      "name_pointer": "00d10f04",
+      "ghidra_function": "0088f5a0",
+      "ghidra_name": "FUN_0088f5a0"
+    },
+    {
+      "name": "SetDamagedGFXLevel",
+      "handler": "0088f710",
+      "row": "00e0b8d0",
+      "name_pointer": "00d10ef0",
+      "ghidra_function": "0088f710",
+      "ghidra_name": "FUN_0088f710"
+    },
+    {
+      "name": "ActivateSpawnpoint",
+      "handler": "0088f8b0",
+      "row": "00e0b8d8",
+      "name_pointer": "00d10edc",
+      "ghidra_function": "0088f8b0",
+      "ghidra_name": "FUN_0088f8b0"
+    },
+    {
+      "name": "DeactivateSpawnpoint",
+      "handler": "0088fab0",
+      "row": "00e0b8e0",
+      "name_pointer": "00d10ec4",
+      "ghidra_function": "0088fab0",
+      "ghidra_name": "FUN_0088fab0"
+    },
+    {
+      "name": "GetDamagedGFXLevel",
+      "handler": "0088fcc0",
+      "row": "00e0b8e8",
+      "name_pointer": "00d10eb0",
+      "ghidra_function": "0088fcc0",
+      "ghidra_name": "FUN_0088fcc0"
+    },
+    {
+      "name": "SetNumbering",
+      "handler": "0088fe30",
+      "row": "00e0b8f0",
+      "name_pointer": "00d10ea0",
+      "ghidra_function": "0088fe30",
+      "ghidra_name": "FUN_0088fe30"
+    },
+    {
+      "name": "GetWaterLoad",
+      "handler": "00891680",
+      "row": "00e0b8f8",
+      "name_pointer": "00d10e90",
+      "ghidra_function": null
+    },
+    {
+      "name": "GetLeaks",
+      "handler": "008918d0",
+      "row": "00e0b900",
+      "name_pointer": "00d10e84",
+      "ghidra_function": null
+    },
+    {
+      "name": "SetPump",
+      "handler": "00893240",
+      "row": "00e0b908",
+      "name_pointer": "00d10e7c",
+      "ghidra_function": "00893240",
+      "ghidra_name": "FUN_00893240"
+    },
+    {
+      "name": "AddWaterLoad",
+      "handler": "00893380",
+      "row": "00e0b910",
+      "name_pointer": "00d10e6c",
+      "ghidra_function": "00893380",
+      "ghidra_name": "FUN_00893380"
+    },
+    {
+      "name": "Sink",
+      "handler": "00891b20",
+      "row": "00e0b918",
+      "name_pointer": "00d10e64",
+      "ghidra_function": "00891b20",
+      "ghidra_name": "FUN_00891b20"
+    },
+    {
+      "name": "HitTarget",
+      "handler": "00892f70",
+      "row": "00e0b920",
+      "name_pointer": "00d10e58",
+      "ghidra_function": "00892f70",
+      "ghidra_name": "FUN_00892f70"
+    },
+    {
+      "name": "GetFire",
+      "handler": "008acf00",
+      "row": "00e0b928",
+      "name_pointer": "00d10e50",
+      "ghidra_function": "008acf00",
+      "ghidra_name": "FUN_008acf00"
+    },
+    {
+      "name": "AddFire",
+      "handler": "008acd10",
+      "row": "00e0b930",
+      "name_pointer": "00d10e48",
+      "ghidra_function": "008acd10",
+      "ghidra_name": "FUN_008acd10"
+    },
+    {
+      "name": "SetRepairLevel",
+      "handler": "008ad150",
+      "row": "00e0b938",
+      "name_pointer": "00d10e38",
+      "ghidra_function": "008ad150",
+      "ghidra_name": "FUN_008ad150"
+    },
+    {
+      "name": "SetRepairPriority",
+      "handler": "008ad6f0",
+      "row": "00e0b940",
+      "name_pointer": "00d10e24",
+      "ghidra_function": "008ad6f0",
+      "ghidra_name": "FUN_008ad6f0"
+    },
+    {
+      "name": "RepairEnable",
+      "handler": "008ad330",
+      "row": "00e0b948",
+      "name_pointer": "00d10e14",
+      "ghidra_function": "008ad330",
+      "ghidra_name": "FUN_008ad330"
+    },
+    {
+      "name": "FailureRepairEnable",
+      "handler": "008ad540",
+      "row": "00e0b950",
+      "name_pointer": "00d10e00",
+      "ghidra_function": "008ad540",
+      "ghidra_name": "FUN_008ad540"
+    },
+    {
+      "name": "SetRepairEffectivity",
+      "handler": "008ad8d0",
+      "row": "00e0b958",
+      "name_pointer": "00d10de8",
+      "ghidra_function": "008ad8d0",
+      "ghidra_name": "FUN_008ad8d0"
+    },
+    {
+      "name": "RepairAddTimeDelay",
+      "handler": "008ada70",
+      "row": "00e0b960",
+      "name_pointer": "00d10dd4",
+      "ghidra_function": "008ada70",
+      "ghidra_name": "FUN_008ada70"
+    },
+    {
+      "name": "GetRepairLevel",
+      "handler": "008adc40",
+      "row": "00e0b968",
+      "name_pointer": "00d10dc4",
+      "ghidra_function": "008adc40",
+      "ghidra_name": "FUN_008adc40"
+    },
+    {
+      "name": "RemoveWrecks",
+      "handler": "008970b0",
+      "row": "00e0b970",
+      "name_pointer": "00d10db4",
+      "ghidra_function": "008970b0",
+      "ghidra_name": "FUN_008970b0"
+    },
+    {
+      "name": "InferiorIsDisabled",
+      "handler": "00897e40",
+      "row": "00e0b978",
+      "name_pointer": "00d10da0",
+      "ghidra_function": "00897e40",
+      "ghidra_name": "FUN_00897e40"
+    },
+    {
+      "name": "GetGuiName",
+      "handler": "0088daa0",
+      "row": "00e0b980",
+      "name_pointer": "00d10d94",
+      "ghidra_function": "0088daa0",
+      "ghidra_name": "FUN_0088daa0"
+    },
+    {
+      "name": "GetMeasure",
+      "handler": "0088d8e0",
+      "row": "00e0b988",
+      "name_pointer": "00d10d88",
+      "ghidra_function": "0088d8e0",
+      "ghidra_name": "FUN_0088d8e0"
+    },
+    {
+      "name": "SetInvincible",
+      "handler": "00897a50",
+      "row": "00e0b990",
+      "name_pointer": "00d10d78",
+      "ghidra_function": "00897a50",
+      "ghidra_name": "FUN_00897a50"
+    },
+    {
+      "name": "IsInvincible",
+      "handler": "00897cb0",
+      "row": "00e0b998",
+      "name_pointer": "00d10d68",
+      "ghidra_function": "00897cb0",
+      "ghidra_name": "FUN_00897cb0"
+    },
+    {
+      "name": "GetFirepower",
+      "handler": "0088dc10",
+      "row": "00e0b9a0",
+      "name_pointer": "00d10d58",
+      "ghidra_function": "0088dc10",
+      "ghidra_name": "FUN_0088dc10"
+    },
+    {
+      "name": "GetAirBaseStatus",
+      "handler": "00895ba0",
+      "row": "00e0b9a8",
+      "name_pointer": "00d10d44",
+      "ghidra_function": "00895ba0",
+      "ghidra_name": "FUN_00895ba0"
+    },
+    {
+      "name": "GetAirBaseSlotStatus",
+      "handler": "00896220",
+      "row": "00e0b9b0",
+      "name_pointer": "00d10d2c",
+      "ghidra_function": "00896220",
+      "ghidra_name": "FUN_00896220"
+    },
+    {
+      "name": "IsReadyToSendPlanes",
+      "handler": "00895d20",
+      "row": "00e0b9b8",
+      "name_pointer": "00d10d18",
+      "ghidra_function": "00895d20",
+      "ghidra_name": "FUN_00895d20"
+    },
+    {
+      "name": "SetAirBaseSlot",
+      "handler": "00895ed0",
+      "row": "00e0b9c0",
+      "name_pointer": "00d10d08",
+      "ghidra_function": "00895ed0",
+      "ghidra_name": "FUN_00895ed0"
+    },
+    {
+      "name": "SetAirBaseSlotCount",
+      "handler": "008963e0",
+      "row": "00e0b9c8",
+      "name_pointer": "00d10cf4",
+      "ghidra_function": "008963e0",
+      "ghidra_name": "FUN_008963e0"
+    },
+    {
+      "name": "LaunchAirBaseSlot",
+      "handler": "00896750",
+      "row": "00e0b9d0",
+      "name_pointer": "00d10ce0",
+      "ghidra_function": "00896750",
+      "ghidra_name": "FUN_00896750",
+      "ledger_name": "BSP_LuaBinding_LaunchAirBaseSlot"
+    },
+    {
+      "name": "AddAirBaseStock",
+      "handler": "00896a90",
+      "row": "00e0b9d8",
+      "name_pointer": "00d10cd0",
+      "ghidra_function": "00896a90",
+      "ghidra_name": "FUN_00896a90"
+    },
+    {
+      "name": "SetAirBaseSlotReady",
+      "handler": "00896590",
+      "row": "00e0b9e0",
+      "name_pointer": "00d10cbc",
+      "ghidra_function": "00896590",
+      "ghidra_name": "FUN_00896590"
+    },
+    {
+      "name": "AddAirBasePlanes",
+      "handler": "00896a90",
+      "row": "00e0b9e8",
+      "name_pointer": "00d10ca8",
+      "ghidra_function": "00896a90",
+      "ghidra_name": "FUN_00896a90"
+    },
+    {
+      "name": "AddShipyardStock",
+      "handler": "00896cc0",
+      "row": "00e0b9f0",
+      "name_pointer": "00d10c94",
+      "ghidra_function": "00896cc0",
+      "ghidra_name": "FUN_00896cc0"
+    },
+    {
+      "name": "RemoveShipyardStock",
+      "handler": "00896ee0",
+      "row": "00e0b9f8",
+      "name_pointer": "00d10c80",
+      "ghidra_function": "00896ee0",
+      "ghidra_name": "FUN_00896ee0"
+    },
+    {
+      "name": "RemoveAirBasePlanes",
+      "handler": "008973c0",
+      "row": "00e0ba00",
+      "name_pointer": "00d10c6c",
+      "ghidra_function": "008973c0",
+      "ghidra_name": "FUN_008973c0"
+    },
+    {
+      "name": "RemoveAllAirBasePlanes",
+      "handler": "008975b0",
+      "row": "00e0ba08",
+      "name_pointer": "00d10c54",
+      "ghidra_function": "008975b0",
+      "ghidra_name": "FUN_008975b0"
+    },
+    {
+      "name": "SetAirBasePlaneLimit",
+      "handler": "00897720",
+      "row": "00e0ba10",
+      "name_pointer": "00d10c3c",
+      "ghidra_function": "00897720",
+      "ghidra_name": "FUN_00897720"
+    },
+    {
+      "name": "GetAirBasePlaneLimit",
+      "handler": "008978d0",
+      "row": "00e0ba18",
+      "name_pointer": "00d10c24",
+      "ghidra_function": "008978d0",
+      "ghidra_name": "FUN_008978d0"
+    },
+    {
+      "name": "IsInFormation",
+      "handler": "008996a0",
+      "row": "00e0ba20",
+      "name_pointer": "00d10c14",
+      "ghidra_function": "008996a0",
+      "ghidra_name": "FUN_008996a0"
+    },
+    {
+      "name": "IsFormationLeader",
+      "handler": "00899810",
+      "row": "00e0ba28",
+      "name_pointer": "00d10c00",
+      "ghidra_function": "00899810",
+      "ghidra_name": "FUN_00899810"
+    },
+    {
+      "name": "IsFormationFollower",
+      "handler": "00899980",
+      "row": "00e0ba30",
+      "name_pointer": "00d10bec",
+      "ghidra_function": "00899980",
+      "ghidra_name": "FUN_00899980"
+    },
+    {
+      "name": "GetFormationLeader",
+      "handler": "00899af0",
+      "row": "00e0ba38",
+      "name_pointer": "00d10bd8",
+      "ghidra_function": "00899af0",
+      "ghidra_name": "FUN_00899af0",
+      "ledger_name": "BSP_LuaBinding_GetFormationLeader"
+    },
+    {
+      "name": "JoinFormation",
+      "handler": "00899d10",
+      "row": "00e0ba40",
+      "name_pointer": "00d10bc8",
+      "ghidra_function": "00899d10",
+      "ghidra_name": "FUN_00899d10"
+    },
+    {
+      "name": "LeaveFormation",
+      "handler": "00899eb0",
+      "row": "00e0ba48",
+      "name_pointer": "00d10bb8",
+      "ghidra_function": "00899eb0",
+      "ghidra_name": "FUN_00899eb0"
+    },
+    {
+      "name": "DisbandFormation",
+      "handler": "0089a020",
+      "row": "00e0ba50",
+      "name_pointer": "00d10ba4",
+      "ghidra_function": "0089a020",
+      "ghidra_name": "FUN_0089a020"
+    },
+    {
+      "name": "FillPathPoints",
+      "handler": "0089a190",
+      "row": "00e0ba58",
+      "name_pointer": "00d10b94",
+      "ghidra_function": "0089a190",
+      "ghidra_name": "FUN_0089a190"
+    },
+    {
+      "name": "PlayBinkMovie",
+      "handler": "0089a480",
+      "row": "00e0ba60",
+      "name_pointer": "00d10b84",
+      "ghidra_function": "0089a480",
+      "ghidra_name": "BSP_LuaGame_PlayBinkMovie",
+      "ledger_name": "BSP_LuaGame_PlayBinkMovie"
+    },
+    {
+      "name": "SetThink",
+      "handler": "00897fb0",
+      "row": "00e0ba68",
+      "name_pointer": "00d10b78",
+      "ghidra_function": "00897fb0",
+      "ghidra_name": "FUN_00897fb0"
+    },
+    {
+      "name": "SetWait",
+      "handler": "00898150",
+      "row": "00e0ba70",
+      "name_pointer": "00d10b70",
+      "ghidra_function": "00898150",
+      "ghidra_name": "FUN_00898150"
+    },
+    {
+      "name": "ClearWait",
+      "handler": "00898320",
+      "row": "00e0ba78",
+      "name_pointer": "00d10b64",
+      "ghidra_function": "00898320",
+      "ghidra_name": "FUN_00898320"
+    },
+    {
+      "name": "ClearThink",
+      "handler": "00898490",
+      "row": "00e0ba80",
+      "name_pointer": "00d10b58",
+      "ghidra_function": "00898490",
+      "ghidra_name": "FUN_00898490"
+    },
+    {
+      "name": "CreateScript",
+      "handler": "00898750",
+      "row": "00e0ba88",
+      "name_pointer": "00d10b48",
+      "ghidra_function": "00898750",
+      "ghidra_name": "FUN_00898750",
+      "ledger_name": "BSP_LuaBinding_CreateScript"
+    },
+    {
+      "name": "DeleteScript",
+      "handler": "00898ac0",
+      "row": "00e0ba90",
+      "name_pointer": "00d10b38",
+      "ghidra_function": "00898ac0",
+      "ghidra_name": "FUN_00898ac0"
+    },
+    {
+      "name": "Message",
+      "handler": "00898c60",
+      "row": "00e0ba98",
+      "name_pointer": "00cfacfc",
+      "ghidra_function": "00898c60",
+      "ghidra_name": "FUN_00898c60"
+    },
+    {
+      "name": "FindEntity",
+      "handler": "00898e30",
+      "row": "00e0baa0",
+      "name_pointer": "00d10b2c",
+      "ghidra_function": "00898e30",
+      "ghidra_name": "FUN_00898e30",
+      "ledger_name": "BSP_LuaBinding_FindEntity"
+    },
+    {
+      "name": "FindEntityByID",
+      "handler": "008990b0",
+      "row": "00e0baa8",
+      "name_pointer": "00d10b1c",
+      "ghidra_function": "008990b0",
+      "ghidra_name": "FUN_008990b0",
+      "ledger_name": "BSP_LuaBinding_FindEntityByID"
+    },
+    {
+      "name": "DoVector3",
+      "handler": "00899300",
+      "row": "00e0bab0",
+      "name_pointer": "00d10b10",
+      "ghidra_function": "00899300",
+      "ghidra_name": "FUN_00899300"
+    },
+    {
+      "name": "TrulyDead",
+      "handler": "00899500",
+      "row": "00e0bab8",
+      "name_pointer": "00d10b04",
+      "ghidra_function": "00899500",
+      "ghidra_name": "FUN_00899500"
+    },
+    {
+      "name": "InitAll",
+      "handler": "00898610",
+      "row": "00e0bac0",
+      "name_pointer": "00d10afc",
+      "ghidra_function": "00898610",
+      "ghidra_name": "FUN_00898610"
+    },
+    {
+      "name": "Order",
+      "handler": "0089a660",
+      "row": "00e0bac8",
+      "name_pointer": "00d10af4",
+      "ghidra_function": "0089a660",
+      "ghidra_name": "FUN_0089a660"
+    },
+    {
+      "name": "SetRace",
+      "handler": "008a8720",
+      "row": "00e0bad0",
+      "name_pointer": "00d10aec",
+      "ghidra_function": "008a8720",
+      "ghidra_name": "FUN_008a8720"
+    },
+    {
+      "name": "SetParty",
+      "handler": "008a8930",
+      "row": "00e0bad8",
+      "name_pointer": "00d10ae0",
+      "ghidra_function": "008a8930",
+      "ghidra_name": "FUN_008a8930"
+    },
+    {
+      "name": "SetPartyID",
+      "handler": "008a8b40",
+      "row": "00e0bae0",
+      "name_pointer": "00d10ad4",
+      "ghidra_function": "008a8b40",
+      "ghidra_name": "FUN_008a8b40"
+    },
+    {
+      "name": "SetCommandBuildingOwnerPlayer",
+      "handler": "008a8d90",
+      "row": "00e0bae8",
+      "name_pointer": "00d10ab4",
+      "ghidra_function": "008a8d90",
+      "ghidra_name": "FUN_008a8d90"
+    },
+    {
+      "name": "SetGuiName",
+      "handler": "008a8f90",
+      "row": "00e0baf0",
+      "name_pointer": "00d10aa8",
+      "ghidra_function": "008a8f90",
+      "ghidra_name": "FUN_008a8f90"
+    },
+    {
+      "name": "SupportManagerEnable",
+      "handler": "0088cbb0",
+      "row": "00e0baf8",
+      "name_pointer": "00d10a90",
+      "ghidra_function": "0088cbb0",
+      "ghidra_name": "FUN_0088cbb0"
+    },
+    {
+      "name": "ShowHideSupportManager",
+      "handler": "0088ca70",
+      "row": "00e0bb00",
+      "name_pointer": "00d10a78",
+      "ghidra_function": "0088ca70",
+      "ghidra_name": "FUN_0088ca70"
+    },
+    {
+      "name": "SetPlayerControl",
+      "handler": "008a5bd0",
+      "row": "00e0bb08",
+      "name_pointer": "00d10a64",
+      "ghidra_function": "008a5bd0",
+      "ghidra_name": "FUN_008a5bd0"
+    },
+    {
+      "name": "SetCheatTurbo",
+      "handler": "008a62a0",
+      "row": "00e0bb10",
+      "name_pointer": "00d10a54",
+      "ghidra_function": "008a62a0",
+      "ghidra_name": "FUN_008a62a0"
+    },
+    {
+      "name": "EnterPlayerToRole",
+      "handler": "008a6060",
+      "row": "00e0bb18",
+      "name_pointer": "00d10a40",
+      "ghidra_function": "008a6060",
+      "ghidra_name": "FUN_008a6060"
+    },
+    {
+      "name": "IsPlayerControlled",
+      "handler": "008a5ef0",
+      "row": "00e0bb20",
+      "name_pointer": "00d10a2c",
+      "ghidra_function": "008a5ef0",
+      "ghidra_name": "FUN_008a5ef0"
+    },
+    {
+      "name": "ShipUseCatapult",
+      "handler": "00891d50",
+      "row": "00e0bb28",
+      "name_pointer": "00d10a1c",
+      "ghidra_function": "00891d50",
+      "ghidra_name": "FUN_00891d50"
+    },
+    {
+      "name": "GetLastCatapulted",
+      "handler": "00892860",
+      "row": "00e0bb30",
+      "name_pointer": "00d10a08",
+      "ghidra_function": "00892860",
+      "ghidra_name": "FUN_00892860",
+      "ledger_name": "BSP_LuaBinding_GetLastCatapulted"
+    },
+    {
+      "name": "GetNumCatapulted",
+      "handler": "00892aa0",
+      "row": "00e0bb38",
+      "name_pointer": "00d109f4",
+      "ghidra_function": "00892aa0",
+      "ghidra_name": "FUN_00892aa0"
+    },
+    {
+      "name": "GetCatapultStock",
+      "handler": "00892de0",
+      "row": "00e0bb40",
+      "name_pointer": "00d109e0",
+      "ghidra_function": "00892de0",
+      "ghidra_name": "FUN_00892de0"
+    },
+    {
+      "name": "SetCatapultStock",
+      "handler": "00892c30",
+      "row": "00e0bb48",
+      "name_pointer": "00d109cc",
+      "ghidra_function": "00892c30",
+      "ghidra_name": "FUN_00892c30"
+    },
+    {
+      "name": "GameCameraLookAtTarget",
+      "handler": "00891fb0",
+      "row": "00e0bb50",
+      "name_pointer": "00d109b4",
+      "ghidra_function": "00891fb0",
+      "ghidra_name": "FUN_00891fb0"
+    },
+    {
+      "name": "FreeCameraGetPos",
+      "handler": "00892660",
+      "row": "00e0bb58",
+      "name_pointer": "00d109a0",
+      "ghidra_function": "00892660",
+      "ghidra_name": "FUN_00892660"
+    },
+    {
+      "name": "FreeCameraSetPos",
+      "handler": "008923b0",
+      "row": "00e0bb60",
+      "name_pointer": "00d1098c",
+      "ghidra_function": "008923b0",
+      "ghidra_name": "FUN_008923b0"
+    },
+    {
+      "name": "GetSquadFlyTime",
+      "handler": "008a5d60",
+      "row": "00e0bb68",
+      "name_pointer": "00d1097c",
+      "ghidra_function": "008a5d60",
+      "ghidra_name": "FUN_008a5d60"
+    },
+    {
+      "name": "SetAirbaseSmallPlanes",
+      "handler": "008a5a20",
+      "row": "00e0bb70",
+      "name_pointer": "00d10964",
+      "ghidra_function": "008a5a20",
+      "ghidra_name": "FUN_008a5a20"
+    },
+    {
+      "name": "LaunchSquadron",
+      "handler": "0089e3c0",
+      "row": "00e0bb78",
+      "name_pointer": "00d10954",
+      "ghidra_function": "0089e3c0",
+      "ghidra_name": "FUN_0089e3c0"
+    },
+    {
+      "name": "GetPosition",
+      "handler": "008a7b00",
+      "row": "00e0bb80",
+      "name_pointer": "00d10948",
+      "ghidra_function": "008a7b00",
+      "ghidra_name": "FUN_008a7b00"
+    },
+    {
+      "name": "GetBounding",
+      "handler": "0089b4e0",
+      "row": "00e0bb88",
+      "name_pointer": "00d1093c",
+      "ghidra_function": "0089b4e0",
+      "ghidra_name": "FUN_0089b4e0"
+    },
+    {
+      "name": "GetDirection",
+      "handler": "008a7cb0",
+      "row": "00e0bb90",
+      "name_pointer": "00d1092c",
+      "ghidra_function": "008a7cb0",
+      "ghidra_name": "FUN_008a7cb0"
+    },
+    {
+      "name": "GetRotation",
+      "handler": "008a7e60",
+      "row": "00e0bb98",
+      "name_pointer": "00d10920",
+      "ghidra_function": "008a7e60",
+      "ghidra_name": "FUN_008a7e60"
+    },
+    {
+      "name": "RelativePosition",
+      "handler": "008a8070",
+      "row": "00e0bba0",
+      "name_pointer": "00d1090c",
+      "ghidra_function": "008a8070",
+      "ghidra_name": "FUN_008a8070"
+    },
+    {
+      "name": "GetRelativeSpeed",
+      "handler": "008a8280",
+      "row": "00e0bba8",
+      "name_pointer": "00d108f8",
+      "ghidra_function": "008a8280",
+      "ghidra_name": "FUN_008a8280"
+    },
+    {
+      "name": "GetETA",
+      "handler": "008a8480",
+      "row": "00e0bbb0",
+      "name_pointer": "00d108f0",
+      "ghidra_function": "008a8480",
+      "ghidra_name": "FUN_008a8480"
+    },
+    {
+      "name": "StartLanding2",
+      "handler": "0089ac30",
+      "row": "00e0bbb8",
+      "name_pointer": "00d108e0",
+      "ghidra_function": "0089ac30",
+      "ghidra_name": "FUN_0089ac30"
+    },
+    {
+      "name": "SetBeachFight",
+      "handler": "0089adb0",
+      "row": "00e0bbc0",
+      "name_pointer": "00d108d0",
+      "ghidra_function": "0089adb0",
+      "ghidra_name": "FUN_0089adb0"
+    },
+    {
+      "name": "SetCaptureValue",
+      "handler": "0089b0c0",
+      "row": "00e0bbc8",
+      "name_pointer": "00d108c0",
+      "ghidra_function": "0089b0c0",
+      "ghidra_name": "FUN_0089b0c0"
+    },
+    {
+      "name": "GetCommandBuildingLevel",
+      "handler": "0089b6d0",
+      "row": "00e0bbd0",
+      "name_pointer": "00d108a8",
+      "ghidra_function": "0089b6d0",
+      "ghidra_name": "FUN_0089b6d0"
+    },
+    {
+      "name": "SetCommandBuildingLevel",
+      "handler": "0089b260",
+      "row": "00e0bbd8",
+      "name_pointer": "00d10890",
+      "ghidra_function": "0089b260",
+      "ghidra_name": "FUN_0089b260"
+    },
+    {
+      "name": "GetCapturePercentage",
+      "handler": "0089b840",
+      "row": "00e0bbe0",
+      "name_pointer": "00d10878",
+      "ghidra_function": "0089b840",
+      "ghidra_name": "FUN_0089b840"
+    },
+    {
+      "name": "IsLandingTrafficActive",
+      "handler": "0089af40",
+      "row": "00e0bbe8",
+      "name_pointer": "00d10860",
+      "ghidra_function": "0089af40",
+      "ghidra_name": "FUN_0089af40"
+    },
+    {
+      "name": "GetFireTarget",
+      "handler": "0089c360",
+      "row": "00e0bbf0",
+      "name_pointer": "00d10850",
+      "ghidra_function": "0089c360",
+      "ghidra_name": "FUN_0089c360",
+      "ledger_name": "BSP_LuaBinding_GetFireTarget"
+    },
+    {
+      "name": "SetFireTarget",
+      "handler": "0089a8b0",
+      "row": "00e0bbf8",
+      "name_pointer": "00d10840",
+      "ghidra_function": "0089a8b0",
+      "ghidra_name": "FUN_0089a8b0"
+    },
+    {
+      "name": "ShipSetTorpedoStock",
+      "handler": "0089eee0",
+      "row": "00e0bc00",
+      "name_pointer": "00d1082c",
+      "ghidra_function": "0089eee0",
+      "ghidra_name": "FUN_0089eee0"
+    },
+    {
+      "name": "PlaneReloadBombPlatforms",
+      "handler": "0089f080",
+      "row": "00e0bc08",
+      "name_pointer": "00d10810",
+      "ghidra_function": "0089f080",
+      "ghidra_name": "FUN_0089f080"
+    },
+    {
+      "name": "PlaneChangeAmmoType",
+      "handler": "0089f1f0",
+      "row": "00e0bc10",
+      "name_pointer": "00d107fc",
+      "ghidra_function": "0089f1f0",
+      "ghidra_name": "FUN_0089f1f0"
+    },
+    {
+      "name": "NavigatorDirectMoveToRange",
+      "handler": "008a2d70",
+      "row": "00e0bc18",
+      "name_pointer": "00d107e0",
+      "ghidra_function": "008a2d70",
+      "ghidra_name": "FUN_008a2d70"
+    },
+    {
+      "name": "NavigatorMoveToRange",
+      "handler": "008a2f20",
+      "row": "00e0bc20",
+      "name_pointer": "00d107c8",
+      "ghidra_function": "008a2f20",
+      "ghidra_name": "FUN_008a2f20"
+    },
+    {
+      "name": "NavigatorMoveToPos",
+      "handler": "008a2bc0",
+      "row": "00e0bc28",
+      "name_pointer": "00d107b4",
+      "ghidra_function": "008a2bc0",
+      "ghidra_name": "FUN_008a2bc0"
+    },
+    {
+      "name": "NavigatorMoveOnPath",
+      "handler": "008a3600",
+      "row": "00e0bc30",
+      "name_pointer": "00d107a0",
+      "ghidra_function": "008a3600",
+      "ghidra_name": "FUN_008a3600"
+    },
+    {
+      "name": "NavigatorForceMoveCloseToTarget",
+      "handler": "008a3460",
+      "row": "00e0bc38",
+      "name_pointer": "00d10780",
+      "ghidra_function": "008a3460",
+      "ghidra_name": "FUN_008a3460"
+    },
+    {
+      "name": "NavigatorForceTorpedo",
+      "handler": "008a7200",
+      "row": "00e0bc40",
+      "name_pointer": "00d10768",
+      "ghidra_function": "008a7200",
+      "ghidra_name": "FUN_008a7200"
+    },
+    {
+      "name": "NavigatorStop",
+      "handler": "008a7400",
+      "row": "00e0bc48",
+      "name_pointer": "00d10758",
+      "ghidra_function": "008a7400",
+      "ghidra_name": "FUN_008a7400"
+    },
+    {
+      "name": "NavigatorCruise",
+      "handler": "008a75c0",
+      "row": "00e0bc50",
+      "name_pointer": "00d10748",
+      "ghidra_function": "008a75c0",
+      "ghidra_name": "FUN_008a75c0"
+    },
+    {
+      "name": "NavigatorSetAvoidShipCollision",
+      "handler": "008a3970",
+      "row": "00e0bc58",
+      "name_pointer": "00d10728",
+      "ghidra_function": "008a3970",
+      "ghidra_name": "FUN_008a3970"
+    },
+    {
+      "name": "NavigatorSetAvoidLandCollision",
+      "handler": "008a3b10",
+      "row": "00e0bc60",
+      "name_pointer": "00d10708",
+      "ghidra_function": "008a3b10",
+      "ghidra_name": "FUN_008a3b10"
+    },
+    {
+      "name": "NavigatorSetAvoidAllShipCollision",
+      "handler": "008d0740",
+      "row": "00e0bc68",
+      "name_pointer": "00d106e4",
+      "ghidra_function": "008d0740",
+      "ghidra_name": "FUN_008d0740"
+    },
+    {
+      "name": "NavigatorSetTorpedoEvasion",
+      "handler": "008a3cd0",
+      "row": "00e0bc70",
+      "name_pointer": "00d106c8",
+      "ghidra_function": "008a3cd0",
+      "ghidra_name": "FUN_008a3cd0"
+    },
+    {
+      "name": "NavigatorAttackMove",
+      "handler": "008a30d0",
+      "row": "00e0bc78",
+      "name_pointer": "00d106b4",
+      "ghidra_function": "008a30d0",
+      "ghidra_name": "FUN_008a30d0"
+    },
+    {
+      "name": "NavigatorAllowMaxDepth",
+      "handler": "008a32c0",
+      "row": "00e0bc80",
+      "name_pointer": "00d098d4",
+      "ghidra_function": "008a32c0",
+      "ghidra_name": "FUN_008a32c0"
+    },
+    {
+      "name": "NavigatorLandAttackerStop",
+      "handler": "008a2a50",
+      "row": "00e0bc88",
+      "name_pointer": "00d10698",
+      "ghidra_function": "008a2a50",
+      "ghidra_name": "FUN_008a2a50"
+    },
+    {
+      "name": "PilotMoveTo",
+      "handler": "008a4150",
+      "row": "00e0bc90",
+      "name_pointer": "00d1068c",
+      "ghidra_function": "008a4150",
+      "ghidra_name": "FUN_008a4150"
+    },
+    {
+      "name": "PilotMoveToRange",
+      "handler": "008a4590",
+      "row": "00e0bc98",
+      "name_pointer": "00d10678",
+      "ghidra_function": "008a4590",
+      "ghidra_name": "FUN_008a4590"
+    },
+    {
+      "name": "PilotMoveOnPath",
+      "handler": "008a3e70",
+      "row": "00e0bca0",
+      "name_pointer": "00d10668",
+      "ghidra_function": "008a3e70",
+      "ghidra_name": "FUN_008a3e70"
+    },
+    {
+      "name": "PilotRetreat",
+      "handler": "008a4300",
+      "row": "00e0bca8",
+      "name_pointer": "00d10658",
+      "ghidra_function": "008a4300",
+      "ghidra_name": "FUN_008a4300"
+    },
+    {
+      "name": "PilotLand",
+      "handler": "008a47b0",
+      "row": "00e0bcb0",
+      "name_pointer": "00d1064c",
+      "ghidra_function": "008a47b0",
+      "ghidra_name": "FUN_008a47b0"
+    },
+    {
+      "name": "PilotCloseToShip",
+      "handler": "008a4960",
+      "row": "00e0bcb8",
+      "name_pointer": "00d10638",
+      "ghidra_function": "008a4960",
+      "ghidra_name": "FUN_008a4960"
+    },
+    {
+      "name": "PilotCloseToShipDrop",
+      "handler": "008a4b10",
+      "row": "00e0bcc0",
+      "name_pointer": "00d10620",
+      "ghidra_function": "008a4b10",
+      "ghidra_name": "FUN_008a4b10"
+    },
+    {
+      "name": "PilotSetTarget",
+      "handler": "008a4c90",
+      "row": "00e0bcc8",
+      "name_pointer": "00d10610",
+      "ghidra_function": "008a4c90",
+      "ghidra_name": "FUN_008a4c90"
+    },
+    {
+      "name": "PilotBomb",
+      "handler": "008a4f00",
+      "row": "00e0bcd0",
+      "name_pointer": "00d10604",
+      "ghidra_function": "008a4f00",
+      "ghidra_name": "FUN_008a4f00"
+    },
+    {
+      "name": "PilotTorpedo",
+      "handler": "008a5310",
+      "row": "00e0bcd8",
+      "name_pointer": "00d105f4",
+      "ghidra_function": "008a5310",
+      "ghidra_name": "FUN_008a5310"
+    },
+    {
+      "name": "PilotGunFire",
+      "handler": "008a50d0",
+      "row": "00e0bce0",
+      "name_pointer": "00d105e4",
+      "ghidra_function": "008a50d0",
+      "ghidra_name": "FUN_008a50d0"
+    },
+    {
+      "name": "PilotStartAttackRun",
+      "handler": "008a5870",
+      "row": "00e0bce8",
+      "name_pointer": "00d105d0",
+      "ghidra_function": "008a5870",
+      "ghidra_name": "FUN_008a5870"
+    },
+    {
+      "name": "PilotStop",
+      "handler": "008a7780",
+      "row": "00e0bcf0",
+      "name_pointer": "00d105c4",
+      "ghidra_function": "008a7780",
+      "ghidra_name": "FUN_008a7780"
+    },
+    {
+      "name": "PilotClearOrders",
+      "handler": "008a7940",
+      "row": "00e0bcf8",
+      "name_pointer": "00d105b0",
+      "ghidra_function": "008a7940",
+      "ghidra_name": "FUN_008a7940"
+    },
+    {
+      "name": "PlaneBombFallingTime",
+      "handler": "008a54c0",
+      "row": "00e0bd00",
+      "name_pointer": "00d10598",
+      "ghidra_function": "008a54c0",
+      "ghidra_name": "FUN_008a54c0"
+    },
+    {
+      "name": "AddAnimatedPartEffect",
+      "handler": "008a5650",
+      "row": "00e0bd08",
+      "name_pointer": "00d10580",
+      "ghidra_function": "008a5650",
+      "ghidra_name": "FUN_008a5650"
+    },
+    {
+      "name": "PlaneSetYawCtrl",
+      "handler": "0089d9d0",
+      "row": "00e0bd10",
+      "name_pointer": "00d10570",
+      "ghidra_function": "0089d9d0",
+      "ghidra_name": "BSP_LuaBinding_SetPlaneYawControl",
+      "ledger_name": "BSP_LuaBinding_SetPlaneYawControl"
+    },
+    {
+      "name": "PlaneSetPitchCtrl",
+      "handler": "0089db70",
+      "row": "00e0bd18",
+      "name_pointer": "00d1055c",
+      "ghidra_function": "0089db70",
+      "ghidra_name": "BSP_LuaBinding_SetPlanePitchControl",
+      "ledger_name": "BSP_LuaBinding_SetPlanePitchControl"
+    },
+    {
+      "name": "PlaneSetRollCtrl",
+      "handler": "0089dd10",
+      "row": "00e0bd20",
+      "name_pointer": "00d10548",
+      "ghidra_function": "0089dd10",
+      "ghidra_name": "BSP_LuaBinding_SetPlaneRollControl",
+      "ledger_name": "BSP_LuaBinding_SetPlaneRollControl"
+    },
+    {
+      "name": "PlaneSetPowerCtrl",
+      "handler": "0089deb0",
+      "row": "00e0bd28",
+      "name_pointer": "00d10534",
+      "ghidra_function": "0089deb0",
+      "ghidra_name": "BSP_LuaBinding_SetPlanePowerControl",
+      "ledger_name": "BSP_LuaBinding_SetPlanePowerControl"
+    },
+    {
+      "name": "PlaneSetTargetRoll",
+      "handler": "0089d690",
+      "row": "00e0bd30",
+      "name_pointer": "00d10520",
+      "ghidra_function": "0089d690",
+      "ghidra_name": "FUN_0089d690"
+    },
+    {
+      "name": "PlaneSetTargetPitch",
+      "handler": "0089d830",
+      "row": "00e0bd38",
+      "name_pointer": "00d1050c",
+      "ghidra_function": "0089d830",
+      "ghidra_name": "FUN_0089d830"
+    },
+    {
+      "name": "PlaneSetGunfire",
+      "handler": "0089e050",
+      "row": "00e0bd40",
+      "name_pointer": "00d104fc",
+      "ghidra_function": "0089e050",
+      "ghidra_name": "FUN_0089e050"
+    },
+    {
+      "name": "GetPlaneSquadron",
+      "handler": "0089d250",
+      "row": "00e0bd48",
+      "name_pointer": "00d104e8",
+      "ghidra_function": "0089d250",
+      "ghidra_name": "FUN_0089d250",
+      "ledger_name": "BSP_LuaBinding_GetPlaneSquadron"
+    },
+    {
+      "name": "GetSquadronPlanes",
+      "handler": "0089cc50",
+      "row": "00e0bd50",
+      "name_pointer": "00d104d4",
+      "ghidra_function": "0089cc50",
+      "ghidra_name": "FUN_0089cc50"
+    },
+    {
+      "name": "GetSquadronPlane",
+      "handler": "0089cfe0",
+      "row": "00e0bd58",
+      "name_pointer": "00d104c0",
+      "ghidra_function": "0089cfe0",
+      "ghidra_name": "FUN_0089cfe0",
+      "ledger_name": "BSP_LuaBinding_GetSquadronPlane"
+    },
+    {
+      "name": "GetSquadronLanded",
+      "handler": "0089ce60",
+      "row": "00e0bd60",
+      "name_pointer": "00d104ac",
+      "ghidra_function": "0089ce60",
+      "ghidra_name": "FUN_0089ce60"
+    },
+    {
+      "name": "GetSquadronLandedBase",
+      "handler": "0089d470",
+      "row": "00e0bd68",
+      "name_pointer": "00d10494",
+      "ghidra_function": "0089d470",
+      "ghidra_name": "FUN_0089d470",
+      "ledger_name": "BSP_LuaBinding_GetSquadronLandedBase"
+    },
+    {
+      "name": "SquadronSetWandererMul",
+      "handler": "008a1b70",
+      "row": "00e0bd70",
+      "name_pointer": "00d1047c",
+      "ghidra_function": "008a1b70",
+      "ghidra_name": "FUN_008a1b70"
+    },
+    {
+      "name": "SquadronSetWandererEnabled",
+      "handler": "008a1d60",
+      "row": "00e0bd78",
+      "name_pointer": "00d10460",
+      "ghidra_function": "008a1d60",
+      "ghidra_name": "FUN_008a1d60"
+    },
+    {
+      "name": "SquadronSetHomeBase",
+      "handler": "0089e220",
+      "row": "00e0bd80",
+      "name_pointer": "00d1044c",
+      "ghidra_function": "0089e220",
+      "ghidra_name": "FUN_0089e220"
+    },
+    {
+      "name": "SquadronSetDropAllBombPercent",
+      "handler": "008a1f40",
+      "row": "00e0bd88",
+      "name_pointer": "00d1042c",
+      "ghidra_function": "008a1f40",
+      "ghidra_name": "FUN_008a1f40"
+    },
+    {
+      "name": "SquadronLandAndKill",
+      "handler": "008a20e0",
+      "row": "00e0bd90",
+      "name_pointer": "00d10418",
+      "ghidra_function": "008a20e0",
+      "ghidra_name": "FUN_008a20e0"
+    },
+    {
+      "name": "SquadronSetTravelAlt",
+      "handler": "0089f550",
+      "row": "00e0bd98",
+      "name_pointer": "00d10400",
+      "ghidra_function": "0089f550",
+      "ghidra_name": "FUN_0089f550"
+    },
+    {
+      "name": "SquadronSetAttackAlt",
+      "handler": "008a22b0",
+      "row": "00e0bda0",
+      "name_pointer": "00d103e8",
+      "ghidra_function": "008a22b0",
+      "ghidra_name": "FUN_008a22b0"
+    },
+    {
+      "name": "SquadronSetReleaseAlt",
+      "handler": "008a24e0",
+      "row": "00e0bda8",
+      "name_pointer": "00d103d0",
+      "ghidra_function": "008a24e0",
+      "ghidra_name": "FUN_008a24e0"
+    },
+    {
+      "name": "SquadronSetForceRelease",
+      "handler": "008a28b0",
+      "row": "00e0bdb0",
+      "name_pointer": "00d103b8",
+      "ghidra_function": "008a28b0",
+      "ghidra_name": "FUN_008a28b0"
+    },
+    {
+      "name": "SquadronSetTravelSpeed",
+      "handler": "008a0630",
+      "row": "00e0bdb8",
+      "name_pointer": "00d103a0",
+      "ghidra_function": "008a0630",
+      "ghidra_name": "FUN_008a0630"
+    },
+    {
+      "name": "TorpedoSetSwimDepth",
+      "handler": "008a2710",
+      "row": "00e0bdc0",
+      "name_pointer": "00d1038c",
+      "ghidra_function": "008a2710",
+      "ghidra_name": "FUN_008a2710"
+    },
+    {
+      "name": "EntityTurnToEntity",
+      "handler": "008a0a10",
+      "row": "00e0bdc8",
+      "name_pointer": "00d10378",
+      "ghidra_function": "008a0a10",
+      "ghidra_name": "FUN_008a0a10"
+    },
+    {
+      "name": "EntityTurnToPosition",
+      "handler": "008a0f10",
+      "row": "00e0bdd0",
+      "name_pointer": "00d10360",
+      "ghidra_function": "008a0f10",
+      "ghidra_name": "FUN_008a0f10"
+    },
+    {
+      "name": "SquadronRestoreTravelSpeed",
+      "handler": "008a1a00",
+      "row": "00e0bdd8",
+      "name_pointer": "00d10344",
+      "ghidra_function": "008a1a00",
+      "ghidra_name": "FUN_008a1a00"
+    },
+    {
+      "name": "SquadronSetSpeed",
+      "handler": "0089f780",
+      "row": "00e0bde0",
+      "name_pointer": "00d10330",
+      "ghidra_function": "0089f780",
+      "ghidra_name": "FUN_0089f780"
+    },
+    {
+      "name": "SquadronForceGunnerMode",
+      "handler": "0089f950",
+      "row": "00e0bde8",
+      "name_pointer": "00d10318",
+      "ghidra_function": "0089f950",
+      "ghidra_name": "FUN_0089f950"
+    },
+    {
+      "name": "SquadronEnablePlayerTakeoff",
+      "handler": "008a0360",
+      "row": "00e0bdf0",
+      "name_pointer": "00d102fc",
+      "ghidra_function": "008a0360",
+      "ghidra_name": "FUN_008a0360"
+    },
+    {
+      "name": "SquadronDisablePlayerTakeoff",
+      "handler": "008a04c0",
+      "row": "00e0bdf8",
+      "name_pointer": "00d102dc",
+      "ghidra_function": "008a04c0",
+      "ghidra_name": "FUN_008a04c0"
+    },
+    {
+      "name": "SquadronEnableTerrainAvoidance",
+      "handler": "0089fe50",
+      "row": "00e0be00",
+      "name_pointer": "00d102bc",
+      "ghidra_function": "0089fe50",
+      "ghidra_name": "FUN_0089fe50"
+    },
+    {
+      "name": "SquadronEnableVehicleAvoidance",
+      "handler": "008a0000",
+      "row": "00e0be08",
+      "name_pointer": "00d1029c",
+      "ghidra_function": "008a0000",
+      "ghidra_name": "FUN_008a0000"
+    },
+    {
+      "name": "SquadronEnableGunfireAvoidance",
+      "handler": "008a01b0",
+      "row": "00e0be10",
+      "name_pointer": "00d1027c",
+      "ghidra_function": "008a01b0",
+      "ghidra_name": "FUN_008a01b0"
+    },
+    {
+      "name": "SquadronSetBaseUnsupported",
+      "handler": "0089faf0",
+      "row": "00e0be18",
+      "name_pointer": "00d10260",
+      "ghidra_function": "0089faf0",
+      "ghidra_name": "FUN_0089faf0"
+    },
+    {
+      "name": "SquadronSetAIRetreatEnabled",
+      "handler": "0089fcb0",
+      "row": "00e0be20",
+      "name_pointer": "00d10244",
+      "ghidra_function": "0089fcb0",
+      "ghidra_name": "FUN_0089fcb0"
+    },
+    {
+      "name": "SquadronForceRelease",
+      "handler": "0089e850",
+      "row": "00e0be28",
+      "name_pointer": "00d1022c",
+      "ghidra_function": "0089e850",
+      "ghidra_name": "FUN_0089e850"
+    },
+    {
+      "name": "SquadronSetOldStyleBombing",
+      "handler": "0089ea00",
+      "row": "00e0be30",
+      "name_pointer": "00d10210",
+      "ghidra_function": "0089ea00",
+      "ghidra_name": "FUN_0089ea00"
+    },
+    {
+      "name": "PlaneForceRelease",
+      "handler": "0089eba0",
+      "row": "00e0be38",
+      "name_pointer": "00d101fc",
+      "ghidra_function": "0089eba0",
+      "ghidra_name": "FUN_0089eba0"
+    },
+    {
+      "name": "PlayerSetBomberView",
+      "handler": "008a0850",
+      "row": "00e0be40",
+      "name_pointer": "00d101e8",
+      "ghidra_function": "008a0850",
+      "ghidra_name": "FUN_008a0850"
+    },
+    {
+      "name": "SetVisibility",
+      "handler": "008a13d0",
+      "row": "00e0be48",
+      "name_pointer": "00d101d8",
+      "ghidra_function": "008a13d0",
+      "ghidra_name": "FUN_008a13d0"
+    },
+    {
+      "name": "SetShipDebugFilter",
+      "handler": "008a15d0",
+      "row": "00e0be50",
+      "name_pointer": "00d101c4",
+      "ghidra_function": "008a15d0",
+      "ghidra_name": "FUN_008a15d0"
+    },
+    {
+      "name": "SetSingleThread",
+      "handler": "008a1890",
+      "row": "00e0be58",
+      "name_pointer": "00d101b4",
+      "ghidra_function": "008a1890",
+      "ghidra_name": "FUN_008a1890"
+    },
+    {
+      "name": "AvoidZoneDebugLayer",
+      "handler": "008a1730",
+      "row": "00e0be60",
+      "name_pointer": "00d101a0",
+      "ghidra_function": "008a1730",
+      "ghidra_name": "FUN_008a1730"
+    },
+    {
+      "name": "UnitSetFireStance",
+      "handler": "008a6490",
+      "row": "00e0be68",
+      "name_pointer": "00d1018c",
+      "ghidra_function": "008a6490",
+      "ghidra_name": "FUN_008a6490"
+    },
+    {
+      "name": "UnitGetFireStance",
+      "handler": "008a6640",
+      "row": "00e0be70",
+      "name_pointer": "00d10178",
+      "ghidra_function": "008a6640",
+      "ghidra_name": "FUN_008a6640"
+    },
+    {
+      "name": "UnitFreeAttack",
+      "handler": "008a67e0",
+      "row": "00e0be78",
+      "name_pointer": "00d10168",
+      "ghidra_function": "008a67e0",
+      "ghidra_name": "FUN_008a67e0"
+    },
+    {
+      "name": "UnitFreeFire",
+      "handler": "008a6950",
+      "row": "00e0be80",
+      "name_pointer": "00d10158",
+      "ghidra_function": "008a6950",
+      "ghidra_name": "FUN_008a6950"
+    },
+    {
+      "name": "UnitHoldFire",
+      "handler": "008a6ac0",
+      "row": "00e0be88",
+      "name_pointer": "00d10148",
+      "ghidra_function": "008a6ac0",
+      "ghidra_name": "FUN_008a6ac0"
+    },
+    {
+      "name": "UnitSetPlayerCommandsEnabled",
+      "handler": "008a6c30",
+      "row": "00e0be90",
+      "name_pointer": "00d10128",
+      "ghidra_function": "008a6c30",
+      "ghidra_name": "FUN_008a6c30"
+    },
+    {
+      "name": "UnitGetAttackTarget",
+      "handler": "008a6de0",
+      "row": "00e0be98",
+      "name_pointer": "00d10114",
+      "ghidra_function": "008a6de0",
+      "ghidra_name": "FUN_008a6de0",
+      "ledger_name": "BSP_LuaBinding_UnitGetAttackTarget"
+    },
+    {
+      "name": "NavigatorEnable",
+      "handler": "008a7060",
+      "row": "00e0bea0",
+      "name_pointer": "00d10104",
+      "ghidra_function": "008a7060",
+      "ghidra_name": "FUN_008a7060"
+    },
+    {
+      "name": "ArtilleryEnable",
+      "handler": "0089c590",
+      "row": "00e0bea8",
+      "name_pointer": "00d100f4",
+      "ghidra_function": "0089c590",
+      "ghidra_name": "FUN_0089c590"
+    },
+    {
+      "name": "TorpedoEnable",
+      "handler": "0089c8f0",
+      "row": "00e0beb0",
+      "name_pointer": "00d100e4",
+      "ghidra_function": "0089c8f0",
+      "ghidra_name": "FUN_0089c8f0"
+    },
+    {
+      "name": "AAEnable",
+      "handler": "0089c740",
+      "row": "00e0beb8",
+      "name_pointer": "00d100d8",
+      "ghidra_function": "0089c740",
+      "ghidra_name": "FUN_0089c740"
+    },
+    {
+      "name": "DCEnable",
+      "handler": "0089caa0",
+      "row": "00e0bec0",
+      "name_pointer": "00d100cc",
+      "ghidra_function": "0089caa0",
+      "ghidra_name": "FUN_0089caa0"
+    },
+    {
+      "name": "SetFormationShape",
+      "handler": "0088ffd0",
+      "row": "00e0bec8",
+      "name_pointer": "00d100b8",
+      "ghidra_function": "0088ffd0",
+      "ghidra_name": "FUN_0088ffd0"
+    },
+    {
+      "name": "GetFormationShape",
+      "handler": "008901c0",
+      "row": "00e0bed0",
+      "name_pointer": "00d100a4",
+      "ghidra_function": "008901c0",
+      "ghidra_name": "FUN_008901c0"
+    },
+    {
+      "name": "SetPlaneGears",
+      "handler": "00890340",
+      "row": "00e0bed8",
+      "name_pointer": "00d10094",
+      "ghidra_function": "00890340",
+      "ghidra_name": "FUN_00890340"
+    },
+    {
+      "name": "ForcePlaneGears",
+      "handler": "00890840",
+      "row": "00e0bee0",
+      "name_pointer": "00d10084",
+      "ghidra_function": "00890840",
+      "ghidra_name": "FUN_00890840"
+    },
+    {
+      "name": "GetPlaneSurelyLanded",
+      "handler": "00890510",
+      "row": "00e0bee8",
+      "name_pointer": "00d1006c",
+      "ghidra_function": "00890510",
+      "ghidra_name": "FUN_00890510"
+    },
+    {
+      "name": "GetPlaneLandingAborted",
+      "handler": "008906a0",
+      "row": "00e0bef0",
+      "name_pointer": "00d10054",
+      "ghidra_function": "008906a0",
+      "ghidra_name": "FUN_008906a0"
+    },
+    {
+      "name": "SetShipMaxSpeed",
+      "handler": "00890a10",
+      "row": "00e0bef8",
+      "name_pointer": "00d10044",
+      "ghidra_function": "00890a10",
+      "ghidra_name": "FUN_00890a10"
+    },
+    {
+      "name": "GetShipMaxSpeed",
+      "handler": "00890bb0",
+      "row": "00e0bf00",
+      "name_pointer": "00d10034",
+      "ghidra_function": "00890bb0",
+      "ghidra_name": "FUN_00890bb0"
+    },
+    {
+      "name": "SetShipSpeed",
+      "handler": "00890d30",
+      "row": "00e0bf08",
+      "name_pointer": "00d10024",
+      "ghidra_function": "00890d30",
+      "ghidra_name": "FUN_00890d30"
+    },
+    {
+      "name": "GetShipSpeed",
+      "handler": "00890ef0",
+      "row": "00e0bf10",
+      "name_pointer": "00d10014",
+      "ghidra_function": "00890ef0",
+      "ghidra_name": "FUN_00890ef0"
+    },
+    {
+      "name": "GetDraught",
+      "handler": "008936a0",
+      "row": "00e0bf18",
+      "name_pointer": "00d10008",
+      "ghidra_function": "008936a0",
+      "ghidra_name": "FUN_008936a0"
+    },
+    {
+      "name": "EnableEngineSound",
+      "handler": "008911e0",
+      "row": "00e0bf20",
+      "name_pointer": "00d0fff4",
+      "ghidra_function": "008911e0",
+      "ghidra_name": "FUN_008911e0"
+    },
+    {
+      "name": "SetSubmarineDepthLevel",
+      "handler": "00893f40",
+      "row": "00e0bf28",
+      "name_pointer": "00d0ffdc",
+      "ghidra_function": "00893f40",
+      "ghidra_name": "FUN_00893f40"
+    },
+    {
+      "name": "GetSubmarineDepthLevel",
+      "handler": "00894100",
+      "row": "00e0bf30",
+      "name_pointer": "00d0ffc4",
+      "ghidra_function": "00894100",
+      "ghidra_name": "FUN_00894100"
+    },
+    {
+      "name": "GetSubmarineOnSurface",
+      "handler": "008942c0",
+      "row": "00e0bf38",
+      "name_pointer": "00d0ffac",
+      "ghidra_function": "008942c0",
+      "ghidra_name": "FUN_008942c0"
+    },
+    {
+      "name": "ForceSubmarinePeriscope",
+      "handler": "00893da0",
+      "row": "00e0bf40",
+      "name_pointer": "00d0ff94",
+      "ghidra_function": "00893da0",
+      "ghidra_name": "FUN_00893da0"
+    },
+    {
+      "name": "SubmarineAttack",
+      "handler": "00894440",
+      "row": "00e0bf48",
+      "name_pointer": "00d0ff84",
+      "ghidra_function": "00894440",
+      "ghidra_name": "FUN_00894440"
+    },
+    {
+      "name": "SetWeaponDirectorTargetEnable",
+      "handler": "008945f0",
+      "row": "00e0bf50",
+      "name_pointer": "00d0ff64",
+      "ghidra_function": "008945f0",
+      "ghidra_name": "FUN_008945f0"
+    },
+    {
+      "name": "IsLandscape",
+      "handler": "00894820",
+      "row": "00e0bf58",
+      "name_pointer": "00d0ff58",
+      "ghidra_function": "00894820",
+      "ghidra_name": "FUN_00894820"
+    },
+    {
+      "name": "IsShip",
+      "handler": "008949d0",
+      "row": "00e0bf60",
+      "name_pointer": "00d0ff50",
+      "ghidra_function": "008949d0",
+      "ghidra_name": "FUN_008949d0"
+    },
+    {
+      "name": "IsAreaEmpty",
+      "handler": "00894c00",
+      "row": "00e0bf68",
+      "name_pointer": "00d0ff44",
+      "ghidra_function": "00894c00",
+      "ghidra_name": "FUN_00894c00"
+    },
+    {
+      "name": "GetSubmarineAirSupply",
+      "handler": "008938e0",
+      "row": "00e0bf70",
+      "name_pointer": "00d0ff2c",
+      "ghidra_function": "008938e0",
+      "ghidra_name": "FUN_008938e0"
+    },
+    {
+      "name": "SetSubmarineAirSupply",
+      "handler": "00893a60",
+      "row": "00e0bf78",
+      "name_pointer": "00d0ff14",
+      "ghidra_function": "00893a60",
+      "ghidra_name": "FUN_00893a60"
+    },
+    {
+      "name": "SetUnlimitedAirSupply",
+      "handler": "00893c00",
+      "row": "00e0bf80",
+      "name_pointer": "00d0fefc",
+      "ghidra_function": "00893c00",
+      "ghidra_name": "FUN_00893c00"
+    },
+    {
+      "name": "SetCrewLevel",
+      "handler": "00894f20",
+      "row": "00e0bf88",
+      "name_pointer": "00d0feec",
+      "ghidra_function": "00894f20",
+      "ghidra_name": "FUN_00894f20"
+    },
+    {
+      "name": "GetCrewLevel",
+      "handler": "008950d0",
+      "row": "00e0bf90",
+      "name_pointer": "00d0fedc",
+      "ghidra_function": "008950d0",
+      "ghidra_name": "FUN_008950d0"
+    },
+    {
+      "name": "SetSkillLevel",
+      "handler": "00895250",
+      "row": "00e0bf98",
+      "name_pointer": "00d0fecc",
+      "ghidra_function": "00895250",
+      "ghidra_name": "FUN_00895250"
+    },
+    {
+      "name": "GetSkillLevel",
+      "handler": "008953f0",
+      "row": "00e0bfa0",
+      "name_pointer": "00d0febc",
+      "ghidra_function": "008953f0",
+      "ghidra_name": "FUN_008953f0"
+    },
+    {
+      "name": "LandConvoyStart",
+      "handler": "00895570",
+      "row": "00e0bfa8",
+      "name_pointer": "00d0feac",
+      "ghidra_function": "00895570",
+      "ghidra_name": "FUN_00895570"
+    },
+    {
+      "name": "LandConvoyStop",
+      "handler": "008956e0",
+      "row": "00e0bfb0",
+      "name_pointer": "00d0fe9c",
+      "ghidra_function": "008956e0",
+      "ghidra_name": "FUN_008956e0"
+    },
+    {
+      "name": "LandConvoySetSpeed",
+      "handler": "00895850",
+      "row": "00e0bfb8",
+      "name_pointer": "00d0fe88",
+      "ghidra_function": "00895850",
+      "ghidra_name": "FUN_00895850"
+    },
+    {
+      "name": "LandConvoySetPath",
+      "handler": "008959f0",
+      "row": "00e0bfc0",
+      "name_pointer": "00d0fe74",
+      "ghidra_function": "008959f0",
+      "ghidra_name": "FUN_008959f0"
+    },
+    {
+      "name": "SetAiControl",
+      "handler": "008a91b0",
+      "row": "00e0bfc8",
+      "name_pointer": "00d0fe64",
+      "ghidra_function": "008a91b0",
+      "ghidra_name": "FUN_008a91b0"
+    },
+    {
+      "name": "SpawnNew",
+      "handler": "0094c480",
+      "row": "00e0bfd0",
+      "name_pointer": "00d0fe58",
+      "ghidra_function": null
+    },
+    {
+      "name": "SpawnNewIDIsRequested",
+      "handler": "00946380",
+      "row": "00e0bfd8",
+      "name_pointer": "00d0fe40",
+      "ghidra_function": null
+    },
+    {
+      "name": "SpawnNewIDRemove",
+      "handler": "00946390",
+      "row": "00e0bfe0",
+      "name_pointer": "00d0fe2c",
+      "ghidra_function": null
+    },
+    {
+      "name": "Spawn",
+      "handler": "00944680",
+      "row": "00e0bfe8",
+      "name_pointer": "00d0fe24",
+      "ghidra_function": null
+    },
+    {
+      "name": "FindHiddenEntity",
+      "handler": "008a9e10",
+      "row": "00e0bff0",
+      "name_pointer": "00d0fe10",
+      "ghidra_function": "008a9e10",
+      "ghidra_name": "FUN_008a9e10"
+    },
+    {
+      "name": "GenerateObject",
+      "handler": "00944fd0",
+      "row": "00e0bff8",
+      "name_pointer": "00d0fe00",
+      "ghidra_function": "00944fd0",
+      "ghidra_name": "FUN_00944fd0",
+      "ledger_name": "BSP_LuaBinding_GenerateObject"
+    },
+    {
+      "name": "SpawnLight",
+      "handler": "00945450",
+      "row": "00e0c000",
+      "name_pointer": "00d0fdf4",
+      "ghidra_function": "00945450",
+      "ghidra_name": "FUN_00945450"
+    },
+    {
+      "name": "PutTo",
+      "handler": "008a9f90",
+      "row": "00e0c008",
+      "name_pointer": "00d0fdec",
+      "ghidra_function": "008a9f90",
+      "ghidra_name": "FUN_008a9f90"
+    },
+    {
+      "name": "PutFormationTo",
+      "handler": "008aa260",
+      "row": "00e0c010",
+      "name_pointer": "00d0fddc",
+      "ghidra_function": "008aa260",
+      "ghidra_name": "FUN_008aa260"
+    },
+    {
+      "name": "PutRelTo",
+      "handler": "008aa560",
+      "row": "00e0c018",
+      "name_pointer": "00d0fdd0",
+      "ghidra_function": "008aa560",
+      "ghidra_name": "FUN_008aa560"
+    },
+    {
+      "name": "SetForcedReconLevel",
+      "handler": "008aa8f0",
+      "row": "00e0c020",
+      "name_pointer": "00d0fdbc",
+      "ghidra_function": "008aa8f0",
+      "ghidra_name": "FUN_008aa8f0"
+    },
+    {
+      "name": "ClearForcedReconLevel",
+      "handler": "008aab90",
+      "row": "00e0c028",
+      "name_pointer": "00d0fda4",
+      "ghidra_function": "008aab90",
+      "ghidra_name": "FUN_008aab90"
+    },
+    {
+      "name": "ForceRecon",
+      "handler": "008aadf0",
+      "row": "00e0c030",
+      "name_pointer": "00d0fd98",
+      "ghidra_function": "008aadf0",
+      "ghidra_name": "FUN_008aadf0"
+    },
+    {
+      "name": "ForceSelectUnit",
+      "handler": "008aaf30",
+      "row": "00e0c038",
+      "name_pointer": "00d0fd88",
+      "ghidra_function": "008aaf30",
+      "ghidra_name": "FUN_008aaf30"
+    },
+    {
+      "name": "GetSelectedUnit",
+      "handler": "008ab070",
+      "row": "00e0c040",
+      "name_pointer": "00d0fd78",
+      "ghidra_function": "008ab070",
+      "ghidra_name": "FUN_008ab070",
+      "ledger_name": "BSP_LuaBinding_GetSelectedUnit"
+    },
+    {
+      "name": "SetSelectedUnit",
+      "handler": "008ab260",
+      "row": "00e0c048",
+      "name_pointer": "00d0fd68",
+      "ghidra_function": "008ab260",
+      "ghidra_name": "FUN_008ab260"
+    },
+    {
+      "name": "MultiSelectUnit",
+      "handler": "008ab3d0",
+      "row": "00e0c050",
+      "name_pointer": "00d0fd58",
+      "ghidra_function": "008ab3d0",
+      "ghidra_name": "FUN_008ab3d0"
+    },
+    {
+      "name": "IsUnitSelectable",
+      "handler": "008ab580",
+      "row": "00e0c058",
+      "name_pointer": "00d0fd44",
+      "ghidra_function": "008ab580",
+      "ghidra_name": "FUN_008ab580"
+    },
+    {
+      "name": "SetRoleAvailable",
+      "handler": "008ab850",
+      "row": "00e0c060",
+      "name_pointer": "00d0fd30",
+      "ghidra_function": "008ab850",
+      "ghidra_name": "FUN_008ab850"
+    },
+    {
+      "name": "GetRoleAvailable",
+      "handler": "008abac0",
+      "row": "00e0c068",
+      "name_pointer": "00d0fd1c",
+      "ghidra_function": "008abac0",
+      "ghidra_name": "FUN_008abac0"
+    },
+    {
+      "name": "GetPlayerIndexBySlot",
+      "handler": "008abc70",
+      "row": "00e0c070",
+      "name_pointer": "00d0fd04",
+      "ghidra_function": "008abc70",
+      "ghidra_name": "FUN_008abc70"
+    },
+    {
+      "name": "GetValidPlayerInSlot",
+      "handler": "008abdf0",
+      "row": "00e0c078",
+      "name_pointer": "00d0fcec",
+      "ghidra_function": "008abdf0",
+      "ghidra_name": "FUN_008abdf0"
+    },
+    {
+      "name": "GetRoleOwner",
+      "handler": "008abf90",
+      "row": "00e0c080",
+      "name_pointer": "00d0fcdc",
+      "ghidra_function": "008abf90",
+      "ghidra_name": "FUN_008abf90"
+    },
+    {
+      "name": "IsUnitUntouchable",
+      "handler": "008ac420",
+      "row": "00e0c088",
+      "name_pointer": "00d0fcc8",
+      "ghidra_function": "008ac420",
+      "ghidra_name": "FUN_008ac420"
+    },
+    {
+      "name": "AddUntouchableUnit",
+      "handler": "008ac140",
+      "row": "00e0c090",
+      "name_pointer": "00d0fcb4",
+      "ghidra_function": "008ac140",
+      "ghidra_name": "FUN_008ac140"
+    },
+    {
+      "name": "RemoveUntouchableUnit",
+      "handler": "008ac2b0",
+      "row": "00e0c098",
+      "name_pointer": "00d0fc9c",
+      "ghidra_function": "008ac2b0",
+      "ghidra_name": "FUN_008ac2b0"
+    },
+    {
+      "name": "Kill",
+      "handler": "008ac5c0",
+      "row": "00e0c0a0",
+      "name_pointer": "00d0fc94",
+      "ghidra_function": "008ac5c0",
+      "ghidra_name": "FUN_008ac5c0"
+    },
+    {
+      "name": "KillBullets",
+      "handler": "008ae2f0",
+      "row": "00e0c0a8",
+      "name_pointer": "00d0fc88",
+      "ghidra_function": "008ae2f0",
+      "ghidra_name": "FUN_008ae2f0"
+    },
+    {
+      "name": "SetDeadMeat",
+      "handler": "008ac7b0",
+      "row": "00e0c0b0",
+      "name_pointer": "00d0fc7c",
+      "ghidra_function": "008ac7b0",
+      "ghidra_name": "FUN_008ac7b0"
+    },
+    {
+      "name": "Save",
+      "handler": "008ac9d0",
+      "row": "00e0c0b8",
+      "name_pointer": "00ceca94",
+      "ghidra_function": "008ac9d0",
+      "ghidra_name": "FUN_008ac9d0"
+    },
+    {
+      "name": "LoadCheckpoint",
+      "handler": "008aca30",
+      "row": "00e0c0c0",
+      "name_pointer": "00d0fc6c",
+      "ghidra_function": "008aca30",
+      "ghidra_name": "FUN_008aca30"
+    },
+    {
+      "name": "SaveCheckpoint",
+      "handler": "008acb70",
+      "row": "00e0c0c8",
+      "name_pointer": "00d0fc5c",
+      "ghidra_function": "008acb70",
+      "ghidra_name": "FUN_008acb70"
+    },
+    {
+      "name": "AddMatrixInterpolator",
+      "handler": "008ade00",
+      "row": "00e0c0d0",
+      "name_pointer": "00d0fc44",
+      "ghidra_function": "008ade00",
+      "ghidra_name": "FUN_008ade00"
+    },
+    {
+      "name": "GetDifficulty",
+      "handler": "008ae030",
+      "row": "00e0c0d8",
+      "name_pointer": "00d0fc34",
+      "ghidra_function": "008ae030",
+      "ghidra_name": "FUN_008ae030"
+    },
+    {
+      "name": "KillStationaries",
+      "handler": "008ae180",
+      "row": "00e0c0e0",
+      "name_pointer": "00d0fc20",
+      "ghidra_function": "008ae180",
+      "ghidra_name": "FUN_008ae180"
+    },
+    {
+      "name": "SetCloudVisibility",
+      "handler": "008ae480",
+      "row": "00e0c0e8",
+      "name_pointer": "00d0fc0c",
+      "ghidra_function": "008ae480",
+      "ghidra_name": "FUN_008ae480"
+    },
+    {
+      "name": "GetAirbaseOrders",
+      "handler": "008ae760",
+      "row": "00e0c0f0",
+      "name_pointer": "00d0fbf8",
+      "ghidra_function": "008ae760",
+      "ghidra_name": "FUN_008ae760"
+    },
+    {
+      "name": "SetAirbaseOrders",
+      "handler": "008ae900",
+      "row": "00e0c0f8",
+      "name_pointer": "00d0fbe4",
+      "ghidra_function": "008ae900",
+      "ghidra_name": "FUN_008ae900"
+    },
+    {
+      "name": "IsLimboGuiActive",
+      "handler": "008ab6f0",
+      "row": "00e0c100",
+      "name_pointer": "00d0fbd0",
+      "ghidra_function": "008ab6f0",
+      "ghidra_name": "FUN_008ab6f0"
+    },
+    {
+      "name": "SetDeviceReloadEnabled",
+      "handler": "008c1350",
+      "row": "00e0c108",
+      "name_pointer": "00d0fbb8",
+      "ghidra_function": "008c1350",
+      "ghidra_name": "FUN_008c1350"
+    },
+    {
+      "name": "SetDeviceReloadTimeMul",
+      "handler": "008c14b0",
+      "row": "00e0c110",
+      "name_pointer": "00d0fba0",
+      "ghidra_function": "008c14b0",
+      "ghidra_name": "FUN_008c14b0"
+    },
+    {
+      "name": "SetRocketAirGroundTypeDifferent",
+      "handler": "008c1620",
+      "row": "00e0c118",
+      "name_pointer": "00d0fb80",
+      "ghidra_function": "008c1620",
+      "ghidra_name": "FUN_008c1620"
+    },
+    {
+      "name": "SetHP",
+      "handler": "008c1790",
+      "row": "00e0c120",
+      "name_pointer": "00d0fb78",
+      "ghidra_function": "008c1790",
+      "ghidra_name": "FUN_008c1790"
+    },
+    {
+      "name": "OverrideHP",
+      "handler": "008c1930",
+      "row": "00e0c128",
+      "name_pointer": "00d0fb6c",
+      "ghidra_function": "008c1930",
+      "ghidra_name": "FUN_008c1930"
+    },
+    {
+      "name": "DisplayUnitHP",
+      "handler": "008c1b10",
+      "row": "00e0c130",
+      "name_pointer": "00d0fb5c",
+      "ghidra_function": "008c1b10",
+      "ghidra_name": "FUN_008c1b10"
+    },
+    {
+      "name": "HideUnitHP",
+      "handler": "008c1f50",
+      "row": "00e0c138",
+      "name_pointer": "00d0fb50",
+      "ghidra_function": "008c1f50",
+      "ghidra_name": "FUN_008c1f50"
+    },
+    {
+      "name": "DisplayScores",
+      "handler": "008c20d0",
+      "row": "00e0c140",
+      "name_pointer": "00d0fb40",
+      "ghidra_function": "008c20d0",
+      "ghidra_name": "FUN_008c20d0"
+    },
+    {
+      "name": "HideScoreDisplay",
+      "handler": "008c24b0",
+      "row": "00e0c148",
+      "name_pointer": "00d0fb2c",
+      "ghidra_function": "008c24b0",
+      "ghidra_name": "FUN_008c24b0"
+    },
+    {
+      "name": "SetBorderZoneParty",
+      "handler": "008aeb20",
+      "row": "00e0c150",
+      "name_pointer": "00d0fb18",
+      "ghidra_function": "008aeb20",
+      "ghidra_name": "FUN_008aeb20"
+    },
+    {
+      "name": "GetClosestBorderZone",
+      "handler": "008aecd0",
+      "row": "00e0c158",
+      "name_pointer": "00d0fb00",
+      "ghidra_function": "008aecd0",
+      "ghidra_name": "FUN_008aecd0"
+    },
+    {
+      "name": "IsInBorderZone",
+      "handler": "008af020",
+      "row": "00e0c160",
+      "name_pointer": "00d0faf0",
+      "ghidra_function": "008af020",
+      "ghidra_name": "FUN_008af020"
+    },
+    {
+      "name": "GetBorderZone",
+      "handler": "008af260",
+      "row": "00e0c168",
+      "name_pointer": "00d0fae0",
+      "ghidra_function": "008af260",
+      "ghidra_name": "FUN_008af260"
+    },
+    {
+      "name": "GetBorderCross",
+      "handler": "008af700",
+      "row": "00e0c170",
+      "name_pointer": "00d0fad0",
+      "ghidra_function": "008af700",
+      "ghidra_name": "FUN_008af700"
+    },
+    {
+      "name": "EnableInput",
+      "handler": "008afbd0",
+      "row": "00e0c178",
+      "name_pointer": "00d0fac4",
+      "ghidra_function": "008afbd0",
+      "ghidra_name": "FUN_008afbd0"
+    },
+    {
+      "name": "Pause",
+      "handler": "008afd50",
+      "row": "00e0c180",
+      "name_pointer": "00d0fabc",
+      "ghidra_function": "008afd50",
+      "ghidra_name": "FUN_008afd50"
+    },
+    {
+      "name": "MissionNarrativeSize",
+      "handler": "008b0ac0",
+      "row": "00e0c188",
+      "name_pointer": "00d0faa4",
+      "ghidra_function": "008b0ac0",
+      "ghidra_name": "FUN_008b0ac0"
+    },
+    {
+      "name": "MissionNarrative",
+      "handler": "008b0c10",
+      "row": "00e0c190",
+      "name_pointer": "00d0fa90",
+      "ghidra_function": "008b0c10",
+      "ghidra_name": "FUN_008b0c10"
+    },
+    {
+      "name": "MissionNarrativeEnqueue",
+      "handler": "008b0c10",
+      "row": "00e0c198",
+      "name_pointer": "00d0fa78",
+      "ghidra_function": "008b0c10",
+      "ghidra_name": "FUN_008b0c10"
+    },
+    {
+      "name": "MissionNarrativeUrgent",
+      "handler": "008b0e10",
+      "row": "00e0c1a0",
+      "name_pointer": "00d0fa60",
+      "ghidra_function": "008b0e10",
+      "ghidra_name": "FUN_008b0e10"
+    },
+    {
+      "name": "MissionNarrativeOverride",
+      "handler": "008b1010",
+      "row": "00e0c1a8",
+      "name_pointer": "00d0fa44",
+      "ghidra_function": "008b1010",
+      "ghidra_name": "FUN_008b1010"
+    },
+    {
+      "name": "MissionNarrativeParty",
+      "handler": "008b1210",
+      "row": "00e0c1b0",
+      "name_pointer": "00d0fa2c",
+      "ghidra_function": "008b1210",
+      "ghidra_name": "FUN_008b1210"
+    },
+    {
+      "name": "MissionNarrativePlayer",
+      "handler": "008b13e0",
+      "row": "00e0c1b8",
+      "name_pointer": "00d0fa14",
+      "ghidra_function": "008b13e0",
+      "ghidra_name": "FUN_008b13e0"
+    },
+    {
+      "name": "MissionNarrativeClear",
+      "handler": "008b15b0",
+      "row": "00e0c1c0",
+      "name_pointer": "00d0f9fc",
+      "ghidra_function": "008b15b0",
+      "ghidra_name": "FUN_008b15b0"
+    },
+    {
+      "name": "Countdown",
+      "handler": "008b16e0",
+      "row": "00e0c1c8",
+      "name_pointer": "00d0f9f0",
+      "ghidra_function": "008b16e0",
+      "ghidra_name": "FUN_008b16e0"
+    },
+    {
+      "name": "CountdownCancel",
+      "handler": "008b19a0",
+      "row": "00e0c1d0",
+      "name_pointer": "00d0f9e0",
+      "ghidra_function": "008b19a0",
+      "ghidra_name": "FUN_008b19a0"
+    },
+    {
+      "name": "CountdownTimeLeft",
+      "handler": "008b1b40",
+      "row": "00e0c1d8",
+      "name_pointer": "00d0f9cc",
+      "ghidra_function": "008b1b40",
+      "ghidra_name": "FUN_008b1b40"
+    },
+    {
+      "name": "TraingingGroundEndScene",
+      "handler": "008b0470",
+      "row": "00e0c1e0",
+      "name_pointer": "00d0f9b4",
+      "ghidra_function": "008b0470",
+      "ghidra_name": "FUN_008b0470"
+    },
+    {
+      "name": "EndScene",
+      "handler": "008b01b0",
+      "row": "00e0c1e8",
+      "name_pointer": "00d0f9a8",
+      "ghidra_function": "008b01b0",
+      "ghidra_name": "FUN_008b01b0"
+    },
+    {
+      "name": "EndSCore",
+      "handler": "008affc0",
+      "row": "00e0c1f0",
+      "name_pointer": "00d0f99c",
+      "ghidra_function": "008affc0",
+      "ghidra_name": "FUN_008affc0"
+    },
+    {
+      "name": "ForceMultiScoreSend",
+      "handler": "008afec0",
+      "row": "00e0c1f8",
+      "name_pointer": "00d0f988",
+      "ghidra_function": "008afec0",
+      "ghidra_name": "FUN_008afec0"
+    },
+    {
+      "name": "StartDialog",
+      "handler": "008b0540",
+      "row": "00e0c200",
+      "name_pointer": "00d0f97c",
+      "ghidra_function": "008b0540",
+      "ghidra_name": "FUN_008b0540"
+    },
+    {
+      "name": "BreakDialog",
+      "handler": "008b07c0",
+      "row": "00e0c208",
+      "name_pointer": "00d0f970",
+      "ghidra_function": "008b07c0",
+      "ghidra_name": "FUN_008b07c0"
+    },
+    {
+      "name": "KillDialog",
+      "handler": "008b0940",
+      "row": "00e0c210",
+      "name_pointer": "00d0f964",
+      "ghidra_function": "008b0940",
+      "ghidra_name": "FUN_008b0940"
+    },
+    {
+      "name": "GetActDialogIDs",
+      "handler": "008cb730",
+      "row": "00e0c218",
+      "name_pointer": "00d0f954",
+      "ghidra_function": "008cb730",
+      "ghidra_name": "FUN_008cb730"
+    },
+    {
+      "name": "SetDayTime",
+      "handler": "008b1cc0",
+      "row": "00e0c220",
+      "name_pointer": "00d0f948",
+      "ghidra_function": "008b1cc0",
+      "ghidra_name": "FUN_008b1cc0"
+    },
+    {
+      "name": "GetDayTime",
+      "handler": "008b1ec0",
+      "row": "00e0c228",
+      "name_pointer": "00d0f93c",
+      "ghidra_function": "008b1ec0",
+      "ghidra_name": "FUN_008b1ec0"
+    },
+    {
+      "name": "SetWeather",
+      "handler": "008b21a0",
+      "row": "00e0c230",
+      "name_pointer": "00d0f930",
+      "ghidra_function": "008b21a0",
+      "ghidra_name": "FUN_008b21a0"
+    },
+    {
+      "name": "SetRainDropNumPercent",
+      "handler": "008c7f50",
+      "row": "00e0c238",
+      "name_pointer": "00d0f918",
+      "ghidra_function": "008c7f50",
+      "ghidra_name": "FUN_008c7f50"
+    },
+    {
+      "name": "SetOldCloudAlpha",
+      "handler": "008c8090",
+      "row": "00e0c240",
+      "name_pointer": "00d0f904",
+      "ghidra_function": "008c8090",
+      "ghidra_name": "FUN_008c8090"
+    },
+    {
+      "name": "SetSimplifiedReconMultiplier",
+      "handler": "008b2320",
+      "row": "00e0c248",
+      "name_pointer": "00d0f8e4",
+      "ghidra_function": "008b2320",
+      "ghidra_name": "FUN_008b2320"
+    },
+    {
+      "name": "GetSimplifiedReconMultiplier",
+      "handler": "008b24a0",
+      "row": "00e0c250",
+      "name_pointer": "00d0f8c4",
+      "ghidra_function": "008b24a0",
+      "ghidra_name": "FUN_008b24a0"
+    },
+    {
+      "name": "SetSimplifiedSonarMultiplier",
+      "handler": "008b25f0",
+      "row": "00e0c258",
+      "name_pointer": "00d0f8a4",
+      "ghidra_function": "008b25f0",
+      "ghidra_name": "FUN_008b25f0"
+    },
+    {
+      "name": "GetSimplifiedSonarMultiplier",
+      "handler": "008b2770",
+      "row": "00e0c260",
+      "name_pointer": "00d0f884",
+      "ghidra_function": "008b2770",
+      "ghidra_name": "FUN_008b2770"
+    },
+    {
+      "name": "SetSkipMovie",
+      "handler": "008b28c0",
+      "row": "00e0c268",
+      "name_pointer": "00d0f874",
+      "ghidra_function": "008b28c0",
+      "ghidra_name": "FUN_008b28c0"
+    },
+    {
+      "name": "Force3dVisibility",
+      "handler": "008b2ad0",
+      "row": "00e0c270",
+      "name_pointer": "00d0f860",
+      "ghidra_function": "008b2ad0",
+      "ghidra_name": "FUN_008b2ad0"
+    },
+    {
+      "name": "MovCam_HandMode_Targeted",
+      "handler": "008b2cc0",
+      "row": "00e0c278",
+      "name_pointer": "00d0f844",
+      "ghidra_function": "008b2cc0",
+      "ghidra_name": "FUN_008b2cc0"
+    },
+    {
+      "name": "MovCam_HandMode_Deck",
+      "handler": "008b2fe0",
+      "row": "00e0c280",
+      "name_pointer": "00d0f82c",
+      "ghidra_function": "008b2fe0",
+      "ghidra_name": "FUN_008b2fe0"
+    },
+    {
+      "name": "MovCam_HandMode_Overview",
+      "handler": "008b3270",
+      "row": "00e0c288",
+      "name_pointer": "00d0f810",
+      "ghidra_function": "008b3270",
+      "ghidra_name": "FUN_008b3270"
+    },
+    {
+      "name": "MovCam_RefPos",
+      "handler": "008b3740",
+      "row": "00e0c290",
+      "name_pointer": "00d0f800",
+      "ghidra_function": "008b3740",
+      "ghidra_name": "FUN_008b3740"
+    },
+    {
+      "name": "MovCam_RefPos_Polar",
+      "handler": "008b3c70",
+      "row": "00e0c298",
+      "name_pointer": "00d0f7ec",
+      "ghidra_function": "008b3c70",
+      "ghidra_name": "FUN_008b3c70"
+    },
+    {
+      "name": "MovCam_RefPos_Radius",
+      "handler": "008b4270",
+      "row": "00e0c2a0",
+      "name_pointer": "00d0f7d4",
+      "ghidra_function": "008b4270",
+      "ghidra_name": "FUN_008b4270"
+    },
+    {
+      "name": "MovCam_PathWalk",
+      "handler": "008b47e0",
+      "row": "00e0c2a8",
+      "name_pointer": "00d0f7c4",
+      "ghidra_function": "008b47e0",
+      "ghidra_name": "FUN_008b47e0"
+    },
+    {
+      "name": "MovCam_PathWalkPathPointPropertyPotlekokkal",
+      "handler": "008b4da0",
+      "row": "00e0c2b0",
+      "name_pointer": "00d0f798",
+      "ghidra_function": "008b4da0",
+      "ghidra_name": "FUN_008b4da0"
+    },
+    {
+      "name": "MovCam_ViktorMode",
+      "handler": "008b52f0",
+      "row": "00e0c2b8",
+      "name_pointer": "00d0f784",
+      "ghidra_function": "008b52f0",
+      "ghidra_name": "FUN_008b52f0"
+    },
+    {
+      "name": "MovCam_TompiModeWeak",
+      "handler": "008b5870",
+      "row": "00e0c2c0",
+      "name_pointer": "00d0f76c",
+      "ghidra_function": "008b5870",
+      "ghidra_name": "FUN_008b5870"
+    },
+    {
+      "name": "MovCam_TompiMode",
+      "handler": "008b5df0",
+      "row": "00e0c2c8",
+      "name_pointer": "00d0f758",
+      "ghidra_function": "008b5df0",
+      "ghidra_name": "FUN_008b5df0"
+    },
+    {
+      "name": "MovCam_SetSecondaryTarget",
+      "handler": "008b60c0",
+      "row": "00e0c2d0",
+      "name_pointer": "00d0f73c",
+      "ghidra_function": "008b60c0",
+      "ghidra_name": "FUN_008b60c0"
+    },
+    {
+      "name": "MovCam_SetZoom",
+      "handler": "008b65c0",
+      "row": "00e0c2d8",
+      "name_pointer": "00d0f72c",
+      "ghidra_function": "008b65c0",
+      "ghidra_name": "FUN_008b65c0"
+    },
+    {
+      "name": "MovCam_AddInterpolator",
+      "handler": "008b6740",
+      "row": "00e0c2e0",
+      "name_pointer": "00d0f714",
+      "ghidra_function": "008b6740",
+      "ghidra_name": "FUN_008b6740"
+    },
+    {
+      "name": "MovCam_PickSnittDeckPosition",
+      "handler": "008b6ad0",
+      "row": "00e0c2e8",
+      "name_pointer": "00d0f6f4",
+      "ghidra_function": "008b6ad0",
+      "ghidra_name": "FUN_008b6ad0"
+    },
+    {
+      "name": "MovCam_SetSpeedLimits",
+      "handler": "008b6d20",
+      "row": "00e0c2f0",
+      "name_pointer": "00d0f6dc",
+      "ghidra_function": "008b6d20",
+      "ghidra_name": "FUN_008b6d20"
+    },
+    {
+      "name": "MovCam_ResetSpeedLimits",
+      "handler": "008b6ed0",
+      "row": "00e0c2f8",
+      "name_pointer": "00d0f6c4",
+      "ghidra_function": "008b6ed0",
+      "ghidra_name": "FUN_008b6ed0"
+    },
+    {
+      "name": "MovCam_SetAccelTime",
+      "handler": "008b7010",
+      "row": "00e0c300",
+      "name_pointer": "00d0f6b0",
+      "ghidra_function": "008b7010",
+      "ghidra_name": "FUN_008b7010"
+    },
+    {
+      "name": "MovCam_ResetAccelTime",
+      "handler": "008b7180",
+      "row": "00e0c308",
+      "name_pointer": "00d0f698",
+      "ghidra_function": "008b7180",
+      "ghidra_name": "FUN_008b7180"
+    },
+    {
+      "name": "MovCam_SetDeviationFactor",
+      "handler": "008b72c0",
+      "row": "00e0c310",
+      "name_pointer": "00d0f67c",
+      "ghidra_function": "008b72c0",
+      "ghidra_name": "FUN_008b72c0"
+    },
+    {
+      "name": "MovCam_ResetDeviationFactor",
+      "handler": "008b7460",
+      "row": "00e0c318",
+      "name_pointer": "00d0f660",
+      "ghidra_function": "008b7460",
+      "ghidra_name": "FUN_008b7460"
+    },
+    {
+      "name": "MovCam_SetOverviewHeight",
+      "handler": "008b75a0",
+      "row": "00e0c320",
+      "name_pointer": "00d0f644",
+      "ghidra_function": "008b75a0",
+      "ghidra_name": "FUN_008b75a0"
+    },
+    {
+      "name": "MovCam_ResetOverviewHeight",
+      "handler": "008b7710",
+      "row": "00e0c328",
+      "name_pointer": "00d0f628",
+      "ghidra_function": "008b7710",
+      "ghidra_name": "FUN_008b7710"
+    },
+    {
+      "name": "MovCam_SetPosRotZoom",
+      "handler": "008bfa70",
+      "row": "00e0c330",
+      "name_pointer": "00d0f610",
+      "ghidra_function": "008bfa70",
+      "ghidra_name": "FUN_008bfa70"
+    },
+    {
+      "name": "MovCamNew_AddPositions",
+      "handler": "008b7850",
+      "row": "00e0c338",
+      "name_pointer": "00d0f5f8",
+      "ghidra_function": "008b7850",
+      "ghidra_name": "FUN_008b7850"
+    },
+    {
+      "name": "MovCamNew_AddPosition",
+      "handler": "008b79f0",
+      "row": "00e0c340",
+      "name_pointer": "00d0f5e0",
+      "ghidra_function": "008b79f0",
+      "ghidra_name": "FUN_008b79f0"
+    },
+    {
+      "name": "MovCamNew_SetFOV",
+      "handler": "008b7ba0",
+      "row": "00e0c348",
+      "name_pointer": "00d0f5cc",
+      "ghidra_function": "008b7ba0",
+      "ghidra_name": "FUN_008b7ba0"
+    },
+    {
+      "name": "GetCameraPosRot",
+      "handler": "008b7d30",
+      "row": "00e0c350",
+      "name_pointer": "00d0f5bc",
+      "ghidra_function": "008b7d30",
+      "ghidra_name": "FUN_008b7d30"
+    },
+    {
+      "name": "Camera_Shake",
+      "handler": "008b8040",
+      "row": "00e0c358",
+      "name_pointer": "00d0f5ac",
+      "ghidra_function": "008b8040",
+      "ghidra_name": "FUN_008b8040"
+    },
+    {
+      "name": "Camera_SetShakeMax",
+      "handler": "008b81c0",
+      "row": "00e0c360",
+      "name_pointer": "00d0f598",
+      "ghidra_function": "008b81c0",
+      "ghidra_name": "FUN_008b81c0"
+    },
+    {
+      "name": "Camera_SetShakeBase",
+      "handler": "008b8340",
+      "row": "00e0c368",
+      "name_pointer": "00d0f584",
+      "ghidra_function": "008b8340",
+      "ghidra_name": "FUN_008b8340"
+    },
+    {
+      "name": "Camera_SetShakeDecay",
+      "handler": "008b84c0",
+      "row": "00e0c370",
+      "name_pointer": "00d0f56c",
+      "ghidra_function": "008b84c0",
+      "ghidra_name": "FUN_008b84c0"
+    },
+    {
+      "name": "Scoring_SetFinalScoringFunctionName",
+      "handler": "008b8640",
+      "row": "00e0c378",
+      "name_pointer": "00d0f548",
+      "ghidra_function": "008b8640",
+      "ghidra_name": "FUN_008b8640"
+    },
+    {
+      "name": "Scoring_SetMissionCompleted",
+      "handler": "008b8ad0",
+      "row": "00e0c380",
+      "name_pointer": "00d0f52c",
+      "ghidra_function": "008b8ad0",
+      "ghidra_name": "BSP_LuaScoring_SetMissionCompleted",
+      "ledger_name": "BSP_LuaScoring_SetMissionCompleted"
+    },
+    {
+      "name": "Scoring_SetRanking",
+      "handler": "008b8ca0",
+      "row": "00e0c388",
+      "name_pointer": "00d0f518",
+      "ghidra_function": "008b8ca0",
+      "ghidra_name": "FUN_008b8ca0"
+    },
+    {
+      "name": "Scoring_RealPlayTimeRunning",
+      "handler": "008b87f0",
+      "row": "00e0c390",
+      "name_pointer": "00d0f4fc",
+      "ghidra_function": "008b87f0",
+      "ghidra_name": "FUN_008b87f0"
+    },
+    {
+      "name": "Scoring_GetRealPlayTime",
+      "handler": "008b8970",
+      "row": "00e0c398",
+      "name_pointer": "00d0f4e4",
+      "ghidra_function": "008b8970",
+      "ghidra_name": "FUN_008b8970"
+    },
+    {
+      "name": "Scoring_ForceRefreshScoringTable",
+      "handler": "008b8e60",
+      "row": "00e0c3a0",
+      "name_pointer": "00d0f4c0",
+      "ghidra_function": "008b8e60",
+      "ghidra_name": "FUN_008b8e60"
+    },
+    {
+      "name": "Scoring_GetTotalMissionScore",
+      "handler": "008b8ff0",
+      "row": "00e0c3a8",
+      "name_pointer": "00d0f4a0",
+      "ghidra_function": "008b8ff0",
+      "ghidra_name": "FUN_008b8ff0"
+    },
+    {
+      "name": "Scoring_SetMissionScore",
+      "handler": "008b9190",
+      "row": "00e0c3b0",
+      "name_pointer": "00d0f488",
+      "ghidra_function": "008b9190",
+      "ghidra_name": "FUN_008b9190"
+    },
+    {
+      "name": "Scoring_GetMissionScore",
+      "handler": "008b93c0",
+      "row": "00e0c3b8",
+      "name_pointer": "00d0f470",
+      "ghidra_function": "008b93c0",
+      "ghidra_name": "FUN_008b93c0"
+    },
+    {
+      "name": "Scoring_AddMissionScore",
+      "handler": "008b95c0",
+      "row": "00e0c3c0",
+      "name_pointer": "00d0f458",
+      "ghidra_function": "008b95c0",
+      "ghidra_name": "FUN_008b95c0"
+    },
+    {
+      "name": "Scoring_SetMissionMedal",
+      "handler": "008b97f0",
+      "row": "00e0c3c8",
+      "name_pointer": "00d0f440",
+      "ghidra_function": "008b97f0",
+      "ghidra_name": "FUN_008b97f0"
+    },
+    {
+      "name": "Scoring_SetActionScore",
+      "handler": "008b9a30",
+      "row": "00e0c3d0",
+      "name_pointer": "00d0f428",
+      "ghidra_function": "008b9a30",
+      "ghidra_name": "FUN_008b9a30"
+    },
+    {
+      "name": "Scoring_GetActionScore",
+      "handler": "008b9c90",
+      "row": "00e0c3d8",
+      "name_pointer": "00d0f410",
+      "ghidra_function": "008b9c90",
+      "ghidra_name": "FUN_008b9c90"
+    },
+    {
+      "name": "Scoring_AddActionScore",
+      "handler": "008b9e90",
+      "row": "00e0c3e0",
+      "name_pointer": "00d0f3f8",
+      "ghidra_function": "008b9e90",
+      "ghidra_name": "FUN_008b9e90"
+    },
+    {
+      "name": "Scoring_SetShipScore",
+      "handler": "008ba0f0",
+      "row": "00e0c3e8",
+      "name_pointer": "00d0f3e0",
+      "ghidra_function": "008ba0f0",
+      "ghidra_name": "FUN_008ba0f0"
+    },
+    {
+      "name": "Scoring_GetShipScore",
+      "handler": "008ba350",
+      "row": "00e0c3f0",
+      "name_pointer": "00d0f3c8",
+      "ghidra_function": "008ba350",
+      "ghidra_name": "FUN_008ba350"
+    },
+    {
+      "name": "Scoring_AddShipScore",
+      "handler": "008ba550",
+      "row": "00e0c3f8",
+      "name_pointer": "00d0f3b0",
+      "ghidra_function": "008ba550",
+      "ghidra_name": "FUN_008ba550"
+    },
+    {
+      "name": "Scoring_SetPlaneScore",
+      "handler": "008ba7b0",
+      "row": "00e0c400",
+      "name_pointer": "00d0f398",
+      "ghidra_function": "008ba7b0",
+      "ghidra_name": "FUN_008ba7b0"
+    },
+    {
+      "name": "Scoring_GetPlaneScore",
+      "handler": "008baa10",
+      "row": "00e0c408",
+      "name_pointer": "00d0f380",
+      "ghidra_function": "008baa10",
+      "ghidra_name": "FUN_008baa10"
+    },
+    {
+      "name": "Scoring_AddPlaneScore",
+      "handler": "008bac10",
+      "row": "00e0c410",
+      "name_pointer": "00d0f368",
+      "ghidra_function": "008bac10",
+      "ghidra_name": "FUN_008bac10"
+    },
+    {
+      "name": "Scoring_SetCommandScore",
+      "handler": "008bae70",
+      "row": "00e0c418",
+      "name_pointer": "00d0f350",
+      "ghidra_function": "008bae70",
+      "ghidra_name": "FUN_008bae70"
+    },
+    {
+      "name": "Scoring_GetCommandScore",
+      "handler": "008bb0d0",
+      "row": "00e0c420",
+      "name_pointer": "00d0f338",
+      "ghidra_function": "008bb0d0",
+      "ghidra_name": "FUN_008bb0d0"
+    },
+    {
+      "name": "Scoring_AddCommandScore",
+      "handler": "008bb2d0",
+      "row": "00e0c428",
+      "name_pointer": "00d0f320",
+      "ghidra_function": "008bb2d0",
+      "ghidra_name": "FUN_008bb2d0"
+    },
+    {
+      "name": "Scoring_SetActionMedal",
+      "handler": "008bb530",
+      "row": "00e0c430",
+      "name_pointer": "00d0f308",
+      "ghidra_function": "008bb530",
+      "ghidra_name": "FUN_008bb530"
+    },
+    {
+      "name": "Scoring_GrantBonus",
+      "handler": "008bb770",
+      "row": "00e0c438",
+      "name_pointer": "00d0f2f4",
+      "ghidra_function": "008bb770",
+      "ghidra_name": "FUN_008bb770"
+    },
+    {
+      "name": "Scoring_GrantUnlock",
+      "handler": "008cb920",
+      "row": "00e0c440",
+      "name_pointer": "00d0f2e0",
+      "ghidra_function": "008cb920",
+      "ghidra_name": "BSP_LuaBinding_ScoringGrantUnlock",
+      "ledger_name": "BSP_LuaBinding_ScoringGrantUnlock"
+    },
+    {
+      "name": "Scoring_IsUnlocked",
+      "handler": "008bbc40",
+      "row": "00e0c448",
+      "name_pointer": "00d0f2cc",
+      "ghidra_function": "008bbc40",
+      "ghidra_name": "BSP_LuaBinding_ScoringIsUnlocked",
+      "ledger_name": "BSP_LuaBinding_ScoringIsUnlocked"
+    },
+    {
+      "name": "Scoring_GetPlayerShotDown",
+      "handler": "008bc9b0",
+      "row": "00e0c450",
+      "name_pointer": "00d0f2b0",
+      "ghidra_function": "008bc9b0",
+      "ghidra_name": "FUN_008bc9b0"
+    },
+    {
+      "name": "ClearPlayerScore",
+      "handler": "008bc540",
+      "row": "00e0c458",
+      "name_pointer": "00d0f29c",
+      "ghidra_function": "008bc540",
+      "ghidra_name": "FUN_008bc540"
+    },
+    {
+      "name": "Scoring_ClearAllMissionsScore",
+      "handler": "008d2d60",
+      "row": "00e0c460",
+      "name_pointer": "00d0f27c",
+      "ghidra_function": "008d2d60",
+      "ghidra_name": "FUN_008d2d60"
+    },
+    {
+      "name": "SetAchievements",
+      "handler": "008bc740",
+      "row": "00e0c468",
+      "name_pointer": "00d0f26c",
+      "ghidra_function": "008bc740",
+      "ghidra_name": "FUN_008bc740"
+    },
+    {
+      "name": "Scoring_GetUnitTypeShotDown",
+      "handler": "008d0140",
+      "row": "00e0c470",
+      "name_pointer": "00d0f250",
+      "ghidra_function": "008d0140",
+      "ghidra_name": "FUN_008d0140"
+    },
+    {
+      "name": "Scoring_SetConditionMessage",
+      "handler": "008bbe00",
+      "row": "00e0c478",
+      "name_pointer": "00d0f234",
+      "ghidra_function": "008bbe00",
+      "ghidra_name": "FUN_008bbe00"
+    },
+    {
+      "name": "Scoring_SetVictoryMessage",
+      "handler": "008bc0c0",
+      "row": "00e0c480",
+      "name_pointer": "00d0f218",
+      "ghidra_function": "008bc0c0",
+      "ghidra_name": "FUN_008bc0c0"
+    },
+    {
+      "name": "Multi_GetPlayers",
+      "handler": "008bcd80",
+      "row": "00e0c488",
+      "name_pointer": "00d0f204",
+      "ghidra_function": "008bcd80",
+      "ghidra_name": "FUN_008bcd80"
+    },
+    {
+      "name": "GetPlayerDetails",
+      "handler": "008bcf10",
+      "row": "00e0c490",
+      "name_pointer": "00d0f1f0",
+      "ghidra_function": "008bcf10",
+      "ghidra_name": "FUN_008bcf10"
+    },
+    {
+      "name": "TompiAction",
+      "handler": "008c5360",
+      "row": "00e0c498",
+      "name_pointer": "00d0f1e4",
+      "ghidra_function": "008c5360",
+      "ghidra_name": "FUN_008c5360"
+    },
+    {
+      "name": "TSetCamMode",
+      "handler": "008c5490",
+      "row": "00e0c4a0",
+      "name_pointer": "00d0f1d8",
+      "ghidra_function": "008c5490",
+      "ghidra_name": "FUN_008c5490"
+    },
+    {
+      "name": "TAddCamPos",
+      "handler": "008c55c0",
+      "row": "00e0c4a8",
+      "name_pointer": "00d0f1cc",
+      "ghidra_function": "008c55c0",
+      "ghidra_name": "FUN_008c55c0"
+    },
+    {
+      "name": "TAddLookatPos",
+      "handler": "008c56f0",
+      "row": "00e0c4b0",
+      "name_pointer": "00d0f1bc",
+      "ghidra_function": "008c56f0",
+      "ghidra_name": "FUN_008c56f0"
+    },
+    {
+      "name": "ShowSafeZone",
+      "handler": "008c59d0",
+      "row": "00e0c4b8",
+      "name_pointer": "00d0f1ac",
+      "ghidra_function": "008c59d0",
+      "ghidra_name": "FUN_008c59d0"
+    },
+    {
+      "name": "Objectives_Add",
+      "handler": "008cd440",
+      "row": "00e0c4c0",
+      "name_pointer": "00d0f19c",
+      "ghidra_function": "008cd440",
+      "ghidra_name": "BSP_LuaObjectives_Add",
+      "ledger_name": "BSP_LuaObjectives_Add"
+    },
+    {
+      "name": "Objectives_Completed",
+      "handler": "008bd340",
+      "row": "00e0c4c8",
+      "name_pointer": "00d0f184",
+      "ghidra_function": "008bd340",
+      "ghidra_name": "BSP_LuaObjectives_Completed",
+      "ledger_name": "BSP_LuaObjectives_Completed"
+    },
+    {
+      "name": "Objectives_Failed",
+      "handler": "008bd900",
+      "row": "00e0c4d0",
+      "name_pointer": "00d0f170",
+      "ghidra_function": "008bd900",
+      "ghidra_name": "BSP_LuaObjectives_Failed",
+      "ledger_name": "BSP_LuaObjectives_Failed"
+    },
+    {
+      "name": "Objectives_AddUnit",
+      "handler": "008cdd60",
+      "row": "00e0c4d8",
+      "name_pointer": "00d0f15c",
+      "ghidra_function": "008cdd60",
+      "ghidra_name": "FUN_008cdd60"
+    },
+    {
+      "name": "Objectives_RemoveUnit",
+      "handler": "008ce510",
+      "row": "00e0c4e0",
+      "name_pointer": "00d0f144",
+      "ghidra_function": "008ce510",
+      "ghidra_name": "FUN_008ce510"
+    },
+    {
+      "name": "Objectives_ClientRefresh",
+      "handler": "008bdec0",
+      "row": "00e0c4e8",
+      "name_pointer": "00d0f128",
+      "ghidra_function": "008bdec0",
+      "ghidra_name": "FUN_008bdec0"
+    },
+    {
+      "name": "Hack_DisableBoatFormations",
+      "handler": "008be010",
+      "row": "00e0c4f0",
+      "name_pointer": "00d0f10c",
+      "ghidra_function": "008be010",
+      "ghidra_name": "FUN_008be010"
+    },
+    {
+      "name": "Hack_ForceColumnFormationNearIslands",
+      "handler": "008be180",
+      "row": "00e0c4f8",
+      "name_pointer": "00d0f0e4",
+      "ghidra_function": "008be180",
+      "ghidra_name": "FUN_008be180"
+    },
+    {
+      "name": "ForceFireDepthCharge",
+      "handler": "0089b9d0",
+      "row": "00e0c500",
+      "name_pointer": "00d0f0cc",
+      "ghidra_function": "0089b9d0",
+      "ghidra_name": "FUN_0089b9d0"
+    },
+    {
+      "name": "KillTorpedoesFromUnit",
+      "handler": "0089bb70",
+      "row": "00e0c508",
+      "name_pointer": "00d0f0b4",
+      "ghidra_function": "0089bb70",
+      "ghidra_name": "FUN_0089bb70"
+    },
+    {
+      "name": "ForceEquippedOrdnanceType",
+      "handler": "0089bd20",
+      "row": "00e0c510",
+      "name_pointer": "00d0f098",
+      "ghidra_function": "0089bd20",
+      "ghidra_name": "FUN_0089bd20"
+    },
+    {
+      "name": "ReplaceDeviceWithEntity",
+      "handler": "0089bef0",
+      "row": "00e0c518",
+      "name_pointer": "00d0f080",
+      "ghidra_function": "0089bef0",
+      "ghidra_name": "FUN_0089bef0"
+    },
+    {
+      "name": "ReplaceSceneBorder",
+      "handler": "0089c1b0",
+      "row": "00e0c520",
+      "name_pointer": "00d0f06c",
+      "ghidra_function": "0089c1b0",
+      "ghidra_name": "FUN_0089c1b0"
+    },
+    {
+      "name": "IsGUIActive",
+      "handler": "008ca010",
+      "row": "00e0c528",
+      "name_pointer": "00d0f060",
+      "ghidra_function": "008ca010",
+      "ghidra_name": "FUN_008ca010"
+    },
+    {
+      "name": "SetGUIHighlight",
+      "handler": "008ca1f0",
+      "row": "00e0c530",
+      "name_pointer": "00d0f050",
+      "ghidra_function": "008ca1f0",
+      "ghidra_name": "FUN_008ca1f0"
+    },
+    {
+      "name": "GetPlayerActWeapon",
+      "handler": "008be2f0",
+      "row": "00e0c538",
+      "name_pointer": "00d0f03c",
+      "ghidra_function": "008be2f0",
+      "ghidra_name": "FUN_008be2f0"
+    },
+    {
+      "name": "GunForceFire",
+      "handler": "008be440",
+      "row": "00e0c540",
+      "name_pointer": "00d0f02c",
+      "ghidra_function": "008be440",
+      "ghidra_name": "FUN_008be440"
+    },
+    {
+      "name": "GunForceFireWithAngle",
+      "handler": "008be600",
+      "row": "00e0c548",
+      "name_pointer": "00d0f014",
+      "ghidra_function": "008be600",
+      "ghidra_name": "FUN_008be600"
+    },
+    {
+      "name": "ForceEnableInput",
+      "handler": "008cbad0",
+      "row": "00e0c550",
+      "name_pointer": "00d0f000",
+      "ghidra_function": "008cbad0",
+      "ghidra_name": "FUN_008cbad0"
+    },
+    {
+      "name": "HasFired",
+      "handler": "008be7e0",
+      "row": "00e0c558",
+      "name_pointer": "00d0eff4",
+      "ghidra_function": "008be7e0",
+      "ghidra_name": "FUN_008be7e0"
+    },
+    {
+      "name": "GetPlaneEquipment",
+      "handler": "008bea50",
+      "row": "00e0c560",
+      "name_pointer": "00d0efe0",
+      "ghidra_function": "008bea50",
+      "ghidra_name": "FUN_008bea50"
+    },
+    {
+      "name": "GetPlaneIsReloading",
+      "handler": "008bebe0",
+      "row": "00e0c568",
+      "name_pointer": "00d0efcc",
+      "ghidra_function": "008bebe0",
+      "ghidra_name": "FUN_008bebe0"
+    },
+    {
+      "name": "GetPayloads",
+      "handler": "008cecc0",
+      "row": "00e0c570",
+      "name_pointer": "00d0efc0",
+      "ghidra_function": "008cecc0",
+      "ghidra_name": "FUN_008cecc0"
+    },
+    {
+      "name": "GetPayload",
+      "handler": "008cefc0",
+      "row": "00e0c578",
+      "name_pointer": "00d0efb4",
+      "ghidra_function": "008cefc0",
+      "ghidra_name": "FUN_008cefc0",
+      "ledger_name": "BSP_LuaBinding_GetPayload"
+    },
+    {
+      "name": "GetShipTorpedoes",
+      "handler": "008bed80",
+      "row": "00e0c580",
+      "name_pointer": "00d0efa0",
+      "ghidra_function": "008bed80",
+      "ghidra_name": "FUN_008bed80"
+    },
+    {
+      "name": "GetSquadTorpedoes",
+      "handler": "008bef80",
+      "row": "00e0c588",
+      "name_pointer": "00d0ef8c",
+      "ghidra_function": "008bef80",
+      "ghidra_name": "FUN_008bef80"
+    },
+    {
+      "name": "GetGuns",
+      "handler": "008cf7e0",
+      "row": "00e0c590",
+      "name_pointer": "00d0ef84",
+      "ghidra_function": "008cf7e0",
+      "ghidra_name": "FUN_008cf7e0"
+    },
+    {
+      "name": "GetGun",
+      "handler": "008cf350",
+      "row": "00e0c598",
+      "name_pointer": "00d0ef7c",
+      "ghidra_function": "008cf350",
+      "ghidra_name": "FUN_008cf350",
+      "ledger_name": "BSP_LuaBinding_GetGun"
+    },
+    {
+      "name": "GetCameraState",
+      "handler": "008bf6a0",
+      "row": "00e0c5a0",
+      "name_pointer": "00d0ef6c",
+      "ghidra_function": "008bf6a0",
+      "ghidra_name": "FUN_008bf6a0"
+    },
+    {
+      "name": "GetInputOn",
+      "handler": "008bfd50",
+      "row": "00e0c5a8",
+      "name_pointer": "00d0ef60",
+      "ghidra_function": "008bfd50",
+      "ghidra_name": "FUN_008bfd50"
+    },
+    {
+      "name": "GetMapCursorPos",
+      "handler": "008bfee0",
+      "row": "00e0c5b0",
+      "name_pointer": "00d0ef50",
+      "ghidra_function": "008bfee0",
+      "ghidra_name": "FUN_008bfee0"
+    },
+    {
+      "name": "ForceMapCursorPos",
+      "handler": "008c0070",
+      "row": "00e0c5b8",
+      "name_pointer": "00d0ef3c",
+      "ghidra_function": "008c0070",
+      "ghidra_name": "FUN_008c0070"
+    },
+    {
+      "name": "GetMapZoom",
+      "handler": "008c0260",
+      "row": "00e0c5c0",
+      "name_pointer": "00d0ef30",
+      "ghidra_function": "008c0260",
+      "ghidra_name": "FUN_008c0260"
+    },
+    {
+      "name": "GetDistFromCrosshair",
+      "handler": "008c0560",
+      "row": "00e0c5c8",
+      "name_pointer": "00d0ef18",
+      "ghidra_function": "008c0560",
+      "ghidra_name": "FUN_008c0560"
+    },
+    {
+      "name": "GetConfiguredInput",
+      "handler": "008cc030",
+      "row": "00e0c5d0",
+      "name_pointer": "00d0ef04",
+      "ghidra_function": "008cc030",
+      "ghidra_name": "FUN_008cc030"
+    },
+    {
+      "name": "MapUnitHighlight",
+      "handler": "008c27c0",
+      "row": "00e0c5d8",
+      "name_pointer": "00d0eef0",
+      "ghidra_function": "008c27c0",
+      "ghidra_name": "FUN_008c27c0"
+    },
+    {
+      "name": "MapHideNodeByName",
+      "handler": "008c03b0",
+      "row": "00e0c5e0",
+      "name_pointer": "00d0eedc",
+      "ghidra_function": "008c03b0",
+      "ghidra_name": "FUN_008c03b0"
+    },
+    {
+      "name": "HackPressInput",
+      "handler": "008d0430",
+      "row": "00e0c5e8",
+      "name_pointer": "00d0eecc",
+      "ghidra_function": "008d0430",
+      "ghidra_name": "FUN_008d0430"
+    },
+    {
+      "name": "GetDevice",
+      "handler": "008c3610",
+      "row": "00e0c5f0",
+      "name_pointer": "00d0eec0",
+      "ghidra_function": "008c3610",
+      "ghidra_name": "FUN_008c3610",
+      "ledger_name": "BSP_LuaBinding_GetDevice"
+    },
+    {
+      "name": "GetRawText",
+      "handler": "008ca450",
+      "row": "00e0c5f8",
+      "name_pointer": "00d0eeb4",
+      "ghidra_function": "008ca450",
+      "ghidra_name": "FUN_008ca450"
+    },
+    {
+      "name": "GetFormationPositions",
+      "handler": "008c3ab0",
+      "row": "00e0c600",
+      "name_pointer": "00d0ee9c",
+      "ghidra_function": "008c3ab0",
+      "ghidra_name": "FUN_008c3ab0"
+    },
+    {
+      "name": "ReloadTorpedoes",
+      "handler": "008c3ce0",
+      "row": "00e0c608",
+      "name_pointer": "00d0ee8c",
+      "ghidra_function": "008c3ce0",
+      "ghidra_name": "FUN_008c3ce0"
+    },
+    {
+      "name": "Scoring_IgnorePlayersPartyLosses",
+      "handler": "008c3ea0",
+      "row": "00e0c610",
+      "name_pointer": "00d0ee68",
+      "ghidra_function": "008c3ea0",
+      "ghidra_name": "FUN_008c3ea0"
+    },
+    {
+      "name": "Scoring_IgnoreEntityKill",
+      "handler": "008cc330",
+      "row": "00e0c618",
+      "name_pointer": "00d0ee4c",
+      "ghidra_function": "008cc330",
+      "ghidra_name": "FUN_008cc330"
+    },
+    {
+      "name": "Scoring_AddPartyLoss",
+      "handler": "008c3fe0",
+      "row": "00e0c620",
+      "name_pointer": "00d0ee34",
+      "ghidra_function": "008c3fe0",
+      "ghidra_name": "FUN_008c3fe0"
+    },
+    {
+      "name": "IsSwapSticksEnabled",
+      "handler": "008c4370",
+      "row": "00e0c628",
+      "name_pointer": "00d0ee20",
+      "ghidra_function": "008c4370",
+      "ghidra_name": "FUN_008c4370"
+    },
+    {
+      "name": "GetEntitySpeed",
+      "handler": "008c0820",
+      "row": "00e0c630",
+      "name_pointer": "00d0ee10",
+      "ghidra_function": "008c0820",
+      "ghidra_name": "FUN_008c0820"
+    },
+    {
+      "name": "SetRoleHack",
+      "handler": "008c09a0",
+      "row": "00e0c638",
+      "name_pointer": "00d0ee04",
+      "ghidra_function": "008c09a0",
+      "ghidra_name": "FUN_008c09a0"
+    },
+    {
+      "name": "SetMouseExclusiveRepairCategory",
+      "handler": "008c0b70",
+      "row": "00e0c640",
+      "name_pointer": "00d0ede4",
+      "ghidra_function": "008c0b70",
+      "ghidra_name": "FUN_008c0b70"
+    },
+    {
+      "name": "ForceArrows",
+      "handler": "008cbcb0",
+      "row": "00e0c648",
+      "name_pointer": "00d0edd8",
+      "ghidra_function": "008cbcb0",
+      "ghidra_name": "FUN_008cbcb0"
+    },
+    {
+      "name": "HackSensitiveUnit",
+      "handler": "008cbeb0",
+      "row": "00e0c650",
+      "name_pointer": "00d0edc4",
+      "ghidra_function": "008cbeb0",
+      "ghidra_name": "FUN_008cbeb0"
+    },
+    {
+      "name": "GetKamikazeByDummy",
+      "handler": "008c3880",
+      "row": "00e0c658",
+      "name_pointer": "00d0edb0",
+      "ghidra_function": "008c3880",
+      "ghidra_name": "FUN_008c3880",
+      "ledger_name": "BSP_LuaBinding_GetKamikazeByDummy"
+    },
+    {
+      "name": "EnableObjectivesToggle",
+      "handler": "008c0ca0",
+      "row": "00e0c660",
+      "name_pointer": "00d0ed98",
+      "ghidra_function": "008c0ca0",
+      "ghidra_name": "FUN_008c0ca0"
+    },
+    {
+      "name": "ActivateObjectives",
+      "handler": "008c0e10",
+      "row": "00e0c668",
+      "name_pointer": "00d0ed84",
+      "ghidra_function": "008c0e10",
+      "ghidra_name": "FUN_008c0e10"
+    },
+    {
+      "name": "FakePing",
+      "handler": "008c0f90",
+      "row": "00e0c670",
+      "name_pointer": "00d0ed78",
+      "ghidra_function": "008c0f90",
+      "ghidra_name": "FUN_008c0f90"
+    },
+    {
+      "name": "SetInputModifiers",
+      "handler": "008c1150",
+      "row": "00e0c678",
+      "name_pointer": "00d0ed64",
+      "ghidra_function": "008c1150",
+      "ghidra_name": "FUN_008c1150"
+    },
+    {
+      "name": "GetInputModifiers",
+      "handler": "008c2660",
+      "row": "00e0c680",
+      "name_pointer": "00d0ed50",
+      "ghidra_function": "008c2660",
+      "ghidra_name": "FUN_008c2660"
+    },
+    {
+      "name": "GetCameraRelPosL",
+      "handler": "008bf460",
+      "row": "00e0c688",
+      "name_pointer": "00d0ed3c",
+      "ghidra_function": "008bf460",
+      "ghidra_name": "FUN_008bf460"
+    },
+    {
+      "name": "GetCameraRelPosW",
+      "handler": "008bf230",
+      "row": "00e0c690",
+      "name_pointer": "00d0ed28",
+      "ghidra_function": "008bf230",
+      "ghidra_name": "FUN_008bf230"
+    },
+    {
+      "name": "SetCounterTimer",
+      "handler": "008c4200",
+      "row": "00e0c698",
+      "name_pointer": "00d0ed18",
+      "ghidra_function": "008c4200",
+      "ghidra_name": "FUN_008c4200"
+    },
+    {
+      "name": "Music_Control_SetLevel",
+      "handler": "008c4d10",
+      "row": "00e0c6a0",
+      "name_pointer": "00d0ed00",
+      "ghidra_function": "008c4d10",
+      "ghidra_name": "FUN_008c4d10"
+    },
+    {
+      "name": "Music_Control_Suspend",
+      "handler": "008c4ed0",
+      "row": "00e0c6a8",
+      "name_pointer": "00d0ece8",
+      "ghidra_function": "008c4ed0",
+      "ghidra_name": "FUN_008c4ed0"
+    },
+    {
+      "name": "AddLockitPathToSelection",
+      "handler": "008c5040",
+      "row": "00e0c6b0",
+      "name_pointer": "00d0eccc",
+      "ghidra_function": "008c5040",
+      "ghidra_name": "FUN_008c5040"
+    },
+    {
+      "name": "LoadSelectedPaths",
+      "handler": "008c5230",
+      "row": "00e0c6b8",
+      "name_pointer": "00d0ecb8",
+      "ghidra_function": "008c5230",
+      "ghidra_name": "FUN_008c5230"
+    },
+    {
+      "name": "Effect",
+      "handler": "008a9730",
+      "row": "00e0c6c0",
+      "name_pointer": "00d09b84",
+      "ghidra_function": "008a9730",
+      "ghidra_name": "FUN_008a9730"
+    },
+    {
+      "name": "DestroyEffect",
+      "handler": "008cb5b0",
+      "row": "00e0c6c8",
+      "name_pointer": "00d0eca8",
+      "ghidra_function": "008cb5b0",
+      "ghidra_name": "FUN_008cb5b0"
+    },
+    {
+      "name": "StopEffect",
+      "handler": "008a9ca0",
+      "row": "00e0c6d0",
+      "name_pointer": "00d0ec9c",
+      "ghidra_function": "008a9ca0",
+      "ghidra_name": "FUN_008a9ca0"
+    },
+    {
+      "name": "PrepareClass",
+      "handler": "008c8f70",
+      "row": "00e0c6d8",
+      "name_pointer": "00d0ec8c",
+      "ghidra_function": "008c8f70",
+      "ghidra_name": "FUN_008c8f70"
+    },
+    {
+      "name": "IsClassChanged",
+      "handler": "008cc4b0",
+      "row": "00e0c6e0",
+      "name_pointer": "00d0ec7c",
+      "ghidra_function": "008cc4b0",
+      "ghidra_name": "FUN_008cc4b0"
+    },
+    {
+      "name": "UnloadClass",
+      "handler": "008cc630",
+      "row": "00e0c6e8",
+      "name_pointer": "00d0ec70",
+      "ghidra_function": "008cc630",
+      "ghidra_name": "FUN_008cc630"
+    },
+    {
+      "name": "Mpak",
+      "handler": "008c5820",
+      "row": "00e0c6f0",
+      "name_pointer": "00d0ec68",
+      "ghidra_function": "008c5820",
+      "ghidra_name": "FUN_008c5820"
+    },
+    {
+      "name": "GameTime",
+      "handler": "008a9320",
+      "row": "00e0c6f8",
+      "name_pointer": "00d0ec5c",
+      "ghidra_function": "008a9320",
+      "ghidra_name": "FUN_008a9320"
+    },
+    {
+      "name": "GetPrimaryTarget",
+      "handler": "008a9460",
+      "row": "00e0c700",
+      "name_pointer": "00d0ec48",
+      "ghidra_function": "008a9460",
+      "ghidra_name": "FUN_008a9460",
+      "ledger_name": "BSP_LuaBinding_GetPrimaryTarget"
+    },
+    {
+      "name": "TempAddFloatsam",
+      "handler": "008c5b80",
+      "row": "00e0c708",
+      "name_pointer": "00d0ec38",
+      "ghidra_function": "008c5b80",
+      "ghidra_name": "FUN_008c5b80"
+    },
+    {
+      "name": "TempAddAnim",
+      "handler": "008c5cd0",
+      "row": "00e0c710",
+      "name_pointer": "00d0ec2c",
+      "ghidra_function": "008c5cd0",
+      "ghidra_name": "FUN_008c5cd0"
+    },
+    {
+      "name": "RemoveTempAddedStuff",
+      "handler": "008c5e20",
+      "row": "00e0c718",
+      "name_pointer": "00d0ec14",
+      "ghidra_function": "008c5e20",
+      "ghidra_name": "FUN_008c5e20"
+    },
+    {
+      "name": "InsertFishSchool",
+      "handler": "008c2970",
+      "row": "00e0c720",
+      "name_pointer": "00d0ec00",
+      "ghidra_function": "008c2970",
+      "ghidra_name": "FUN_008c2970"
+    },
+    {
+      "name": "WipeEntityType",
+      "handler": "008c2ac0",
+      "row": "00e0c728",
+      "name_pointer": "00d0ebf0",
+      "ghidra_function": "008c2ac0",
+      "ghidra_name": "FUN_008c2ac0"
+    },
+    {
+      "name": "GetTargetInfoTarget",
+      "handler": "008c2c50",
+      "row": "00e0c730",
+      "name_pointer": "00d0ebdc",
+      "ghidra_function": "008c2c50",
+      "ghidra_name": "FUN_008c2c50",
+      "ledger_name": "BSP_LuaBinding_GetTargetInfoTarget"
+    },
+    {
+      "name": "StartVehicleAnim",
+      "handler": "008c2e00",
+      "row": "00e0c738",
+      "name_pointer": "00d0ebc8",
+      "ghidra_function": "008c2e00",
+      "ghidra_name": "FUN_008c2e00"
+    },
+    {
+      "name": "StopVehicleAnim",
+      "handler": "008c3060",
+      "row": "00e0c740",
+      "name_pointer": "00d0ebb8",
+      "ghidra_function": "008c3060",
+      "ghidra_name": "FUN_008c3060"
+    },
+    {
+      "name": "SetVisibilityTerrainNode",
+      "handler": "008c3170",
+      "row": "00e0c748",
+      "name_pointer": "00d0eb9c",
+      "ghidra_function": "008c3170",
+      "ghidra_name": "FUN_008c3170"
+    },
+    {
+      "name": "GetVisibilityTerrainNode",
+      "handler": "008c3410",
+      "row": "00e0c750",
+      "name_pointer": "00d0eb80",
+      "ghidra_function": "008c3410",
+      "ghidra_name": "FUN_008c3410"
+    },
+    {
+      "name": "AddLineOfSightTrigger",
+      "handler": "008c9460",
+      "row": "00e0c758",
+      "name_pointer": "00d0eb68",
+      "ghidra_function": "008c9460",
+      "ghidra_name": "FUN_008c9460"
+    },
+    {
+      "name": "AddProximityTrigger",
+      "handler": "008c9730",
+      "row": "00e0c760",
+      "name_pointer": "00d0eb54",
+      "ghidra_function": "008c9730",
+      "ghidra_name": "FUN_008c9730"
+    },
+    {
+      "name": "AddSquadOrdnanceDroppedTrigger",
+      "handler": "008c9a10",
+      "row": "00e0c768",
+      "name_pointer": "00d0eb34",
+      "ghidra_function": "008c9a10",
+      "ghidra_name": "FUN_008c9a10"
+    },
+    {
+      "name": "RemoveTrigger",
+      "handler": "008c5fd0",
+      "row": "00e0c770",
+      "name_pointer": "00d0eb24",
+      "ghidra_function": "008c5fd0",
+      "ghidra_name": "FUN_008c5fd0"
+    },
+    {
+      "name": "LoadMessageMap",
+      "handler": "008c61c0",
+      "row": "00e0c778",
+      "name_pointer": "00d0eb14",
+      "ghidra_function": "008c61c0",
+      "ghidra_name": "FUN_008c61c0"
+    },
+    {
+      "name": "UnloadMessageMap",
+      "handler": "008c6490",
+      "row": "00e0c780",
+      "name_pointer": "00d0eb00",
+      "ghidra_function": "008c6490",
+      "ghidra_name": "FUN_008c6490"
+    },
+    {
+      "name": "EnableMessages",
+      "handler": "008cfe40",
+      "row": "00e0c788",
+      "name_pointer": "00d0eaf0",
+      "ghidra_function": "008cfe40",
+      "ghidra_name": "FUN_008cfe40"
+    },
+    {
+      "name": "AddListener",
+      "handler": "008c6760",
+      "row": "00e0c790",
+      "name_pointer": "00d0eae4",
+      "ghidra_function": "008c6760",
+      "ghidra_name": "FUN_008c6760"
+    },
+    {
+      "name": "RemoveListener",
+      "handler": "008c6990",
+      "row": "00e0c798",
+      "name_pointer": "00d0ead4",
+      "ghidra_function": "008c6990",
+      "ghidra_name": "FUN_008c6990"
+    },
+    {
+      "name": "IsListenerActive",
+      "handler": "008c6bb0",
+      "row": "00e0c7a0",
+      "name_pointer": "00d0eac0",
+      "ghidra_function": "008c6bb0",
+      "ghidra_name": "FUN_008c6bb0"
+    },
+    {
+      "name": "DisplayMessage",
+      "handler": "008d08b0",
+      "row": "00e0c7a8",
+      "name_pointer": "00d0eab0",
+      "ghidra_function": "008d08b0",
+      "ghidra_name": "FUN_008d08b0"
+    },
+    {
+      "name": "OverrideMessage",
+      "handler": "008d0ea0",
+      "row": "00e0c7b0",
+      "name_pointer": "00d0eaa0",
+      "ghidra_function": "008d0ea0",
+      "ghidra_name": "FUN_008d0ea0"
+    },
+    {
+      "name": "SetTipEffect",
+      "handler": "0089e670",
+      "row": "00e0c7b8",
+      "name_pointer": "00d0ea90",
+      "ghidra_function": "0089e670",
+      "ghidra_name": "FUN_0089e670"
+    },
+    {
+      "name": "IsInPosition",
+      "handler": "0089ed20",
+      "row": "00e0c7c0",
+      "name_pointer": "00d0ea80",
+      "ghidra_function": "0089ed20",
+      "ghidra_name": "FUN_0089ed20"
+    },
+    {
+      "name": "SetForceSellableUnits",
+      "handler": "00891070",
+      "row": "00e0c7c8",
+      "name_pointer": "00d0ea68",
+      "ghidra_function": "00891070",
+      "ghidra_name": "FUN_00891070"
+    },
+    {
+      "name": "CheatMaxRepair",
+      "handler": "008c6dd0",
+      "row": "00e0c7d0",
+      "name_pointer": "00d0ea58",
+      "ghidra_function": "008c6dd0",
+      "ghidra_name": "FUN_008c6dd0"
+    },
+    {
+      "name": "CheatRemoveWater",
+      "handler": "008c7010",
+      "row": "00e0c7d8",
+      "name_pointer": "00d0ea44",
+      "ghidra_function": "008c7010",
+      "ghidra_name": "FUN_008c7010"
+    },
+    {
+      "name": "SoundFade",
+      "handler": "008d16b0",
+      "row": "00e0c7e0",
+      "name_pointer": "00d0ea38",
+      "ghidra_function": "008d16b0",
+      "ghidra_name": "FUN_008d16b0"
+    },
+    {
+      "name": "Blackout",
+      "handler": "008d1340",
+      "row": "00e0c7e8",
+      "name_pointer": "00d0ea2c",
+      "ghidra_function": "008d1340",
+      "ghidra_name": "FUN_008d1340"
+    },
+    {
+      "name": "GameOver",
+      "handler": "008c74b0",
+      "row": "00e0c7f0",
+      "name_pointer": "00d0ea20",
+      "ghidra_function": "008c74b0",
+      "ghidra_name": "FUN_008c74b0"
+    },
+    {
+      "name": "MusicFade",
+      "handler": "008c7190",
+      "row": "00e0c7f8",
+      "name_pointer": "00d0ea14",
+      "ghidra_function": "008c7190",
+      "ghidra_name": "FUN_008c7190"
+    },
+    {
+      "name": "BlackBars",
+      "handler": "008c7300",
+      "row": "00e0c800",
+      "name_pointer": "00d0ea08",
+      "ghidra_function": "008c7300",
+      "ghidra_name": "FUN_008c7300"
+    },
+    {
+      "name": "Loading_Start",
+      "handler": "008cc850",
+      "row": "00e0c808",
+      "name_pointer": "00d0e9f8",
+      "ghidra_function": "008cc850",
+      "ghidra_name": "FUN_008cc850"
+    },
+    {
+      "name": "Loading_Progress",
+      "handler": "008c76c0",
+      "row": "00e0c810",
+      "name_pointer": "00d0e9e4",
+      "ghidra_function": "008c76c0",
+      "ghidra_name": "FUN_008c76c0"
+    },
+    {
+      "name": "Loading_Finish",
+      "handler": "008c77f0",
+      "row": "00e0c818",
+      "name_pointer": "00d0e9d4",
+      "ghidra_function": "008c77f0",
+      "ghidra_name": "FUN_008c77f0"
+    },
+    {
+      "name": "PerfTimingStart",
+      "handler": "008d1c50",
+      "row": "00e0c820",
+      "name_pointer": "00d0e9c4",
+      "ghidra_function": "008d1c50",
+      "ghidra_name": "FUN_008d1c50"
+    },
+    {
+      "name": "PerfTimingEnd",
+      "handler": "008d1dd0",
+      "row": "00e0c828",
+      "name_pointer": "00d0e9b4",
+      "ghidra_function": "008d1dd0",
+      "ghidra_name": "FUN_008d1dd0"
+    },
+    {
+      "name": "MemoryStatus",
+      "handler": "008c7be0",
+      "row": "00e0c830",
+      "name_pointer": "00d0e9a4",
+      "ghidra_function": "008c7be0",
+      "ghidra_name": "FUN_008c7be0"
+    },
+    {
+      "name": "StartMeasure",
+      "handler": "008c7950",
+      "row": "00e0c838",
+      "name_pointer": "00d0e994",
+      "ghidra_function": "008c7950",
+      "ghidra_name": "FUN_008c7950"
+    },
+    {
+      "name": "StopMeasure",
+      "handler": "008c7a70",
+      "row": "00e0c840",
+      "name_pointer": "00d0e988",
+      "ghidra_function": "008c7a70",
+      "ghidra_name": "FUN_008c7a70"
+    },
+    {
+      "name": "dprintf",
+      "handler": "008c7e10",
+      "row": "00e0c848",
+      "name_pointer": "00d0e980",
+      "ghidra_function": "008c7e10",
+      "ghidra_name": "FUN_008c7e10"
+    },
+    {
+      "name": "Region",
+      "handler": "008c7d20",
+      "row": "00e0c850",
+      "name_pointer": "00d0e978",
+      "ghidra_function": "008c7d20",
+      "ghidra_name": "FUN_008c7d20"
+    },
+    {
+      "name": "debugtrap",
+      "handler": "008c8390",
+      "row": "00e0c858",
+      "name_pointer": "00d0e79c",
+      "ghidra_function": "008c8390",
+      "ghidra_name": "BSP_LuaBinding_DebugTrap",
+      "ledger_name": "BSP_LuaBinding_DebugTrap"
+    },
+    {
+      "name": "class_enumeration",
+      "handler": "008c8560",
+      "row": "00e0c860",
+      "name_pointer": "00d0e964",
+      "ghidra_function": "008c8560",
+      "ghidra_name": "FUN_008c8560"
+    },
+    {
+      "name": "SetLight",
+      "handler": "008c44b0",
+      "row": "00e0c868",
+      "name_pointer": "00d0e958",
+      "ghidra_function": "008c44b0",
+      "ghidra_name": "FUN_008c44b0"
+    },
+    {
+      "name": "SetSky",
+      "handler": "008c49a0",
+      "row": "00e0c870",
+      "name_pointer": "00d0e950",
+      "ghidra_function": "008c49a0",
+      "ghidra_name": "FUN_008c49a0"
+    },
+    {
+      "name": "SetShallowWater",
+      "handler": "008c4b50",
+      "row": "00e0c878",
+      "name_pointer": "00d0e940",
+      "ghidra_function": "008c4b50",
+      "ghidra_name": "FUN_008c4b50"
+    },
+    {
+      "name": "AddPowerup",
+      "handler": "008ee410",
+      "row": "00e0c880",
+      "name_pointer": "00d0e934",
+      "ghidra_function": null
+    },
+    {
+      "name": "PreparePowerup",
+      "handler": "008ea610",
+      "row": "00e0c888",
+      "name_pointer": "00d0e924",
+      "ghidra_function": null
+    },
+    {
+      "name": "GetAvailablePowerups",
+      "handler": "008eb350",
+      "row": "00e0c890",
+      "name_pointer": "00d0e90c",
+      "ghidra_function": null
+    },
+    {
+      "name": "AICreate",
+      "handler": "00a37310",
+      "row": "00e0c898",
+      "name_pointer": "00d0e900",
+      "ghidra_function": null
+    },
+    {
+      "name": "AIEnable",
+      "handler": "00a37400",
+      "row": "00e0c8a0",
+      "name_pointer": "00d0e8f4",
+      "ghidra_function": null
+    },
+    {
+      "name": "AIEnableGrouping",
+      "handler": "00a37650",
+      "row": "00e0c8a8",
+      "name_pointer": "00d0e8e0",
+      "ghidra_function": null
+    },
+    {
+      "name": "AIMergeGroups",
+      "handler": "00a37790",
+      "row": "00e0c8b0",
+      "name_pointer": "00d0e8d0",
+      "ghidra_function": null
+    },
+    {
+      "name": "AICreateGroup",
+      "handler": "00a38a50",
+      "row": "00e0c8b8",
+      "name_pointer": "00d0e8c0",
+      "ghidra_function": null
+    },
+    {
+      "name": "AIGetGroupInfo",
+      "handler": "00a378c0",
+      "row": "00e0c8c0",
+      "name_pointer": "00d0e8b0",
+      "ghidra_function": null
+    },
+    {
+      "name": "AISetCommand",
+      "handler": "00a37a00",
+      "row": "00e0c8c8",
+      "name_pointer": "00d0e8a0",
+      "ghidra_function": null
+    },
+    {
+      "name": "AISetHintWeight",
+      "handler": "00a37b30",
+      "row": "00e0c8d0",
+      "name_pointer": "00d0e890",
+      "ghidra_function": null
+    },
+    {
+      "name": "AISetQuickSpawnTargetPos",
+      "handler": "00a38010",
+      "row": "00e0c8d8",
+      "name_pointer": "00d0e874",
+      "ghidra_function": null
+    },
+    {
+      "name": "AISetDefendResourcePercent",
+      "handler": "00a37d50",
+      "row": "00e0c8e0",
+      "name_pointer": "00d0e858",
+      "ghidra_function": null
+    },
+    {
+      "name": "AIReloadGlobals",
+      "handler": "00a38960",
+      "row": "00e0c8e8",
+      "name_pointer": "00d0e848",
+      "ghidra_function": null
+    },
+    {
+      "name": "AISetSpawnSceneUnitsWeightMul",
+      "handler": "00a37eb0",
+      "row": "00e0c8f0",
+      "name_pointer": "00d0e828",
+      "ghidra_function": null
+    },
+    {
+      "name": "AIGetTargetWeight",
+      "handler": "00a38200",
+      "row": "00e0c8f8",
+      "name_pointer": "00d0e814",
+      "ghidra_function": null
+    },
+    {
+      "name": "AISetTargetWeight",
+      "handler": "00a38430",
+      "row": "00e0c900",
+      "name_pointer": "00d0e800",
+      "ghidra_function": null
+    },
+    {
+      "name": "SetMotionBlurParams",
+      "handler": "0088e560",
+      "row": "00e0c908",
+      "name_pointer": "00d0e7ec",
+      "ghidra_function": "0088e560",
+      "ghidra_name": "FUN_0088e560"
+    },
+    {
+      "name": "SetMBP",
+      "handler": "0088e560",
+      "row": "00e0c910",
+      "name_pointer": "00d0e7e4",
+      "ghidra_function": "0088e560",
+      "ghidra_name": "FUN_0088e560"
+    },
+    {
+      "name": "SetDOF",
+      "handler": "00897210",
+      "row": "00e0c918",
+      "name_pointer": "00d0e7dc",
+      "ghidra_function": "00897210",
+      "ghidra_name": "FUN_00897210"
+    },
+    {
+      "name": "DisablePhysics",
+      "handler": "00891380",
+      "row": "00e0c920",
+      "name_pointer": "00d0e7cc",
+      "ghidra_function": "00891380",
+      "ghidra_name": "FUN_00891380"
+    },
+    {
+      "name": "BreakShip",
+      "handler": "008914f0",
+      "row": "00e0c928",
+      "name_pointer": "00d0e7c0",
+      "ghidra_function": "008914f0",
+      "ghidra_name": "FUN_008914f0"
+    },
+    {
+      "name": "TerminateExecution",
+      "handler": "008c8250",
+      "row": "00e0c930",
+      "name_pointer": "00d0e7ac",
+      "ghidra_function": "008c8250",
+      "ghidra_name": "FUN_008c8250"
+    }
+  ]
+}

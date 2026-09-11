@@ -1,0 +1,403 @@
+{
+  "packet": "orch4_sound_active_s",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00a7e630",
+      "name": "update_sound_system_base_00a7e630",
+      "proposed_name": "BSP_SoundSystem_UpdateBase",
+      "source": "src/sound_system_update.cpp",
+      "document": "docs/SOUND_SYSTEM_UPDATE.md",
+      "status": "reconstructed_build_and_focused_manager_fixture_tested",
+      "abi": "ECX=self; stack void* matrix, float velocity_x, float velocity_y, float velocity_z; RET 0x10.",
+      "meaning": "Clockglobal01090AB0 virtual14 snapshot,00530890 subtraction,x87 ratio and timestamp publication; optional alternate04; FMOD channels query before flag69 earlyout. Preserve velocity metric with 50/dt and600 double thresholds and unordered-CF acceptance; matrix copy and listener snapshots. First pass update30/transition24, increment168. EventSystem listener7C then update8 with current handles. Second pass refresh10,completion0C,nonvirtual14; retire completed or unprotected virtual with signed updates18>5, stop8(0), swap-last erase, increment164 and revisit moved slot.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7ea1f",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7ea22",
+      "byte_span": 1010,
+      "sha256": "004d795bbe7c3ce6878dc13fb3679cfd3b88343fd1f95970ea74996757b8f8ed",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack void* matrix, float velocity_x, float velocity_y, float velocity_z; RET 0x10. Clockglobal01090AB0 virtual14 snapshot,00530890 subtraction,x87 ratio and timestamp publication; optional alternate04; FMOD channels query before flag69 earlyout. Preserve velocity metric with 50/dt and600 double thresholds and unordered-CF acceptance; matrix copy and listener snapshots. First pass update30/transition24, increment168. EventSystem listener7C then update8 with current handles. Second pass refresh10,completion0C,nonvirtual14; retire completed or unprotected virtual with signed updates18>5, stop8(0), swap-last erase, increment164 and revisit moved slot. Full span SHA256 004d795bbe7c3ce6878dc13fb3679cfd3b88343fd1f95970ea74996757b8f8ed. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a87bf0",
+      "name": "update_sound_system_00a87bf0",
+      "proposed_name": "BSP_SoundSystem_Update",
+      "source": "src/sound_system_update.cpp",
+      "document": "docs/SOUND_SYSTEM_UPDATE.md",
+      "status": "reconstructed_build_and_focused_manager_fixture_tested",
+      "abi": "ECX=self; stack void* matrix, float velocity_x, float velocity_y, float velocity_z; RET 0x10.",
+      "meaning": "Real D5B44C slot4. If current listener10C differs from previous110 copy it, then baseA7E630 with matrix pointer and by-value float3, RET10.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a87c33",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a87c36",
+      "byte_span": 70,
+      "sha256": "15dfabcb3a3321c50cc70844411cacd6d10f9b2da4924fbe7150b09569d916ca",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack void* matrix, float velocity_x, float velocity_y, float velocity_z; RET 0x10. Real D5B44C slot4. If current listener10C differs from previous110 copy it, then baseA7E630 with matrix pointer and by-value float3, RET10. Full span SHA256 15dfabcb3a3321c50cc70844411cacd6d10f9b2da4924fbe7150b09569d916ca. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a7c1c0",
+      "name": "resize_sound_entries_00a7c1c0",
+      "proposed_name": "BSP_SoundEntryArray_Resize",
+      "source": "src/sound_system_update.cpp",
+      "document": "docs/SOUND_SYSTEM_UPDATE.md",
+      "status": "reconstructed_build_and_focused_manager_fixture_tested",
+      "abi": "ECX=self; stack int requested; RET 4.",
+      "meaning": "Native ECX array header. Reserve when requested>capacity, null grow, shrink count BEFORE each captured-slot release and post-callback clear, finally set requestedcount. Existing canonical vector and reference host reused.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7c23b",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7c23e",
+      "byte_span": 126,
+      "sha256": "df7b1e3942ea5f4384351e35d029eae2b028580d2c1fae02baaa4c7c7a1a562f",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack int requested; RET 4. Native ECX array header. Reserve when requested>capacity, null grow, shrink count BEFORE each captured-slot release and post-callback clear, finally set requestedcount. Existing canonical vector and reference host reused. Full span SHA256 df7b1e3942ea5f4384351e35d029eae2b028580d2c1fae02baaa4c7c7a1a562f. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a7d640",
+      "name": "pop_sound_entry_00a7d640",
+      "proposed_name": "BSP_SoundEntryArray_Pop",
+      "source": "src/sound_system_update.cpp",
+      "document": "docs/SOUND_SYSTEM_UPDATE.md",
+      "status": "reconstructed_build_and_focused_manager_fixture_tested",
+      "abi": "ECX=self; RET.",
+      "meaning": "Empty no-op; capture current last entry/slot, decrement reference and zero callback, clear captured slot, then decrement current count.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7d67d",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7d67e",
+      "byte_span": 62,
+      "sha256": "68f932fb5576c0a53a3cd36baba44a15492f384d6d61e8232d74ea5a73a99587",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; RET. Empty no-op; capture current last entry/slot, decrement reference and zero callback, clear captured slot, then decrement current count. Full span SHA256 68f932fb5576c0a53a3cd36baba44a15492f384d6d61e8232d74ea5a73a99587. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a7d680",
+      "name": "erase_sound_entry_swap_last_00a7d680",
+      "proposed_name": "BSP_SoundEntryArray_EraseSwapLast",
+      "source": "src/sound_system_update.cpp",
+      "document": "docs/SOUND_SYSTEM_UPDATE.md",
+      "status": "reconstructed_build_and_focused_manager_fixture_tested",
+      "abi": "ECX=self; stack void* iterator_pointer; RET 4.",
+      "meaning": "ECX array, stack address of iterator. If target not last and values differ, publish last in target, retain replacement, release previous. Reload CURRENT last after callback, release and clear captured last slot, then decrement current count. Iterator itself unchanged.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7d700",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7d703",
+      "byte_span": 131,
+      "sha256": "2050c0e554cf55a6951ed2aff78b22328792899f3214fc35a3e64b6ee9f7c3e5",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack void* iterator_pointer; RET 4. ECX array, stack address of iterator. If target not last and values differ, publish last in target, retain replacement, release previous. Reload CURRENT last after callback, release and clear captured last slot, then decrement current count. Iterator itself unchanged. Full span SHA256 2050c0e554cf55a6951ed2aff78b22328792899f3214fc35a3e64b6ee9f7c3e5. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a79990",
+      "name": "sound_channel_virtual_transition_00a79990",
+      "proposed_name": "BSP_SoundChannel_DidVirtualStateChange",
+      "source": "src/sound_system_update.cpp",
+      "document": "docs/SOUND_SYSTEM_UPDATE.md",
+      "status": "reconstructed_build_and_focused_manager_fixture_tested",
+      "abi": "ECX=self; AL=byte; RET.",
+      "meaning": "D5ABF8 slot24; AL=(byte58!=byte59), no isPlaying call and no field writes.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7999d",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7999e",
+      "byte_span": 14,
+      "sha256": "193f20ed5fbcffc10f32e93c224fe1222b8d3a898a5d85317e890e9d455762ae",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; AL=byte; RET. D5ABF8 slot24; AL=(byte58!=byte59), no isPlaying call and no field writes. Full span SHA256 193f20ed5fbcffc10f32e93c224fe1222b8d3a898a5d85317e890e9d455762ae. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00bee050",
+      "name": "sound_frame_clock_current_00bee050",
+      "proposed_name": "BSP_FrameClock_GetCurrent",
+      "source": "src/sound_system_update.cpp",
+      "document": "docs/SOUND_SYSTEM_UPDATE.md",
+      "status": "reconstructed_build_and_focused_manager_fixture_tested",
+      "abi": "ECX=self; EAX=result; RET.",
+      "meaning": "D68D50 slot14; return actual timer+20h current timestamp, no sampling or mutation.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00bee053",
+      "last_instruction_length": 1,
+      "end_exclusive": "00bee054",
+      "byte_span": 4,
+      "sha256": "dadecdeeff0b9454fd9dc08c558a9148187b2b1bec017fe8b92430570b86012a",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; EAX=result; RET. D68D50 slot14; return actual timer+20h current timestamp, no sampling or mutation. Full span SHA256 dadecdeeff0b9454fd9dc08c558a9148187b2b1bec017fe8b92430570b86012a. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    }
+  ],
+  "existing_bindings": [
+    {
+      "address": "00a7c080",
+      "name": "reserve_voice_sound_entries_00a7c080",
+      "proposed_name": "BSP_SoundEntryArray_Reserve",
+      "source": "src/voice_slot_start.cpp",
+      "document": "docs/SOUND_SYSTEM_UPDATE.md",
+      "status": "existing_behavior_rebound_and_installed_manager_fixture_tested",
+      "abi": "ECX=self; stack int requested; RET 4.",
+      "meaning": "Existing implementation now accepts the shared VoiceReferenceHost. Native ECX actual array header, requestedcapacity stack, RET4. Preserve retain-all-before-release-all behavior and canonical manager vector/capacity; not a second reconstruction.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7c171",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7c174",
+      "byte_span": 244,
+      "sha256": "9a9e1cfb132b7d9e6a07e3329fb11f083a494a257d003278d88af7ac35d8e8f1",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack int requested; RET 4. Existing implementation now accepts the shared VoiceReferenceHost. Native ECX actual array header, requestedcapacity stack, RET4. Preserve retain-all-before-release-all behavior and canonical manager vector/capacity; not a second reconstruction. Full span SHA256 9a9e1cfb132b7d9e6a07e3329fb11f083a494a257d003278d88af7ac35d8e8f1. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a7d5c0",
+      "name": "append_voice_sound_entry_00a7d5c0",
+      "proposed_name": "BSP_SoundEntryArray_Append",
+      "source": "src/voice_slot_start.cpp",
+      "document": "docs/SOUND_SYSTEM_UPDATE.md",
+      "status": "existing_behavior_rebound_and_installed_manager_fixture_tested",
+      "abi": "ECX=self; stack void* source_reference; RET 4.",
+      "meaning": "Existing append now accepts shared VoiceReferenceHost. Native stack argument is address of the source sound pointer, loaded after reserve; original ECX is array header, RET4. Existing C++ value projection/stable-array domain remains explicit.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7d630",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7d633",
+      "byte_span": 115,
+      "sha256": "8a2d6101acee4792dce99e7a1657ad4695f5fce172c80a23d95c4f4f0c32468e",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack void* source_reference; RET 4. Existing append now accepts shared VoiceReferenceHost. Native stack argument is address of the source sound pointer, loaded after reserve; original ECX is array header, RET4. Existing C++ value projection/stable-array domain remains explicit. Full span SHA256 8a2d6101acee4792dce99e7a1657ad4695f5fce172c80a23d95c4f4f0c32468e. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    },
+    {
+      "address": "00a7e490",
+      "name": "create_voice_sound_00a7e490",
+      "proposed_name": "BSP_SoundManager_CreateTrackedSound",
+      "source": "src/voice_slot_start.cpp",
+      "document": "docs/SOUND_SYSTEM_UPDATE.md",
+      "status": "existing_behavior_rebound_and_installed_manager_fixture_tested",
+      "abi": "ECX=self; stack void* result_reference, void* sample, int class_index, int type_index, byte flag; EAX=result; RET 0x14.",
+      "meaning": "Existing tracked creation now accepts small SoundFactoryHost and VoiceReferenceHost. Actual native stack contains hidden output reference then sample/class/type/flag, RET14,EAX outputaddress. Factory reference, manager append reference and hidden-return retain balance; concrete D5ABF8 binding is exercised through installed manager playback.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7e61e",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7e621",
+      "byte_span": 401,
+      "sha256": "795f0a89e90ba49bcbd3f9560e982d1fbe4658fbcf1506ca9aec5616abf2b061",
+      "disk_analysis_bytes_equal": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=self; stack void* result_reference, void* sample, int class_index, int type_index, byte flag; EAX=result; RET 0x14. Existing tracked creation now accepts small SoundFactoryHost and VoiceReferenceHost. Actual native stack contains hidden output reference then sample/class/type/flag, RET14,EAX outputaddress. Factory reference, manager append reference and hidden-return retain balance; concrete D5ABF8 binding is exercised through installed manager playback. Full span SHA256 795f0a89e90ba49bcbd3f9560e982d1fbe4658fbcf1506ca9aec5616abf2b061. docs/SOUND_SYSTEM_UPDATE.md. Win32, focused callback/order checks and installed FMOD manager playback passed using no-sound output. Existing projection and callback domain apply; native ABI, audible output and gameplay remain open."
+    }
+  ],
+  "no_ghidra_function": [],
+  "read_only_evidence": [
+    {
+      "address": "00d5b000",
+      "size": 20,
+      "bytes_hex": "d017a80030e6a7008e69bf0040f6a70010f7a700",
+      "sha256": "e6bd4205449a930ac30410c1a906a7ff63aee2d4c79519856424894dc0694b82",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00d5b44c",
+      "size": 20,
+      "bytes_hex": "b083a800f07ba800607ba80040f6a70010f7a700",
+      "sha256": "69eb65bf56647b4602ca35f9af1542320642d5d7753f5e58f7e7727ded2d8a8f",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00d5abf8",
+      "size": 64,
+      "bytes_hex": "e030bd00a0d5a70070a5a700b099a70060a6a70030a6a700309aa70010a7a700b0a6a7009099a700a0bea70070bea70010afa70080bea700d0bea70090bea700",
+      "sha256": "5d6514505ff7024334fac17f8afa4e9098d4abd2cfeed8e17a8894cfc73838da",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00d68d50",
+      "size": 32,
+      "bytes_hex": "10e1be00d0dbbe0030dcbe00e0dabe00c0ddbe0050e0be0060e0be0070e0be00",
+      "sha256": "d0a0d53f8bcdf02ca5634cc1e96e2b51eff1b8c9399887d63a38c7e7772ddbee",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00ce3938",
+      "size": 8,
+      "bytes_hex": "0000000000004940",
+      "sha256": "fe555d486cc8379252e92fe7c97b5e5b603a97a9f965105cfd169a1ab4327fb9",
+      "disk_analysis_equal": true,
+      "read_only": true
+    },
+    {
+      "address": "00d20198",
+      "size": 8,
+      "bytes_hex": "0000000000c08240",
+      "sha256": "fb3f2f641a2dd50aedb6a8cbb7d2cb0672c5fd42c3767b7888520385ef702c03",
+      "disk_analysis_equal": true,
+      "read_only": true
+    }
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "tests": "2/2 existing tests passed",
+    "build_log": "local/sound_active_s_build.log",
+    "fixture": "local/sound_active_fixture.cpp",
+    "fixture_sha256": "bcc90286013d4e4e0f34acf33fd411bad4d7673b97568c4b9bd0d454f962b853",
+    "fixture_log": "local/sound_active_s_fixture.log",
+    "runner": "local/run_sound_active_fixture.ps1",
+    "runner_sha256": "9dca961299cf58dde6ba048ab42c9d6763ca7970fa3e8053b5ce2ba3f56b6379",
+    "library_sha256": "0fa36480a1b857a66ca0b2eabd077a960f99e471a6681b93b3974a5dfb9f756a",
+    "code_revision": "3ed61cfcd93fa6a673c75ca76de8674912cee66f",
+    "seed_log": "local/sound_active_s_verify_seeds.log",
+    "controlled": "First-pass order; timestamp before alternate; discarded error results; unusual velocity arithmetic; snapshots despite callback mutation; current event handle reload; completion query ordering; update6 unprotected virtual retirement; swap-last revisit and current-last replacement during release; pop/resize count visibility; reference balance.",
+    "installed": {
+      "bank": "sound/splash/splash_medium.fsb",
+      "automatic_retirements": 1,
+      "virtual_transitions": 1,
+      "listener_position": [
+        10,
+        20,
+        30
+      ],
+      "listener_velocity": [
+        2,
+        3,
+        4
+      ],
+      "listener_forward": [
+        0,
+        0,
+        1
+      ],
+      "listener_up": [
+        0,
+        1,
+        0
+      ],
+      "tracked_factory_and_manager_same_reference_storage": true,
+      "manager_refresh_and_retirement": true,
+      "flag69_clock_and_query_preserved": true,
+      "all_owned_resources_released": true,
+      "device": "explicit FMOD no-sound",
+      "result": "Actual VFS/sample/FMOD channel creation through A7E490, manager update, natural completion and automatic active-entry removal passed. Independent event API queries verified listener state.",
+      "assets": [
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmodex.dll",
+          "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8",
+          "bytes": 350544
+        },
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmod_event.dll",
+          "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890",
+          "bytes": 238936
+        },
+        {
+          "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/sound/splash/splash_medium.fsb",
+          "sha256": "7ea3fec9910d5f995824aa56719d86f17058f91436d22f0122816b6eb963e068",
+          "bytes": 261216
+        }
+      ],
+      "exports": {
+        "fmodex.dll": [
+          "FMOD_System_GetChannelsPlaying"
+        ],
+        "fmod_event.dll": [
+          "_FMOD_EventSystem_Set3DListenerAttributes@24",
+          "_FMOD_EventSystem_Update@4",
+          "_FMOD_EventSystem_Get3DListenerAttributes@24"
+        ]
+      }
+    },
+    "new_permanent_tests": 0,
+    "native_differential": false,
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false,
+    "seed_functions_verified": 8,
+    "fixture_scope": "All seven new routines and three existing tracked-creation bindings executed; selected defined-input and callback branches, not exhaustive native differential coverage."
+  },
+  "ghidra": {
+    "prototypes": "reports/sound_system_update_prototypes.json",
+    "prototype_count": 10,
+    "function_definitions": "reports/sound_system_update_function_definitions.json",
+    "functions_defined": [
+      "00a87bf0",
+      "00a79990",
+      "00bee050"
+    ],
+    "flow_repairs": 0,
+    "no_return_flags_changed": false,
+    "annotations": {
+      "count": 10,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/ghidra-annotations-20260911T204615Z.json",
+      "readback": "local/sound_active_s_comments.json",
+      "exports": "local/sound_active_s_final_exports.log",
+      "all10_prototypes_verified_after_annotation": true
+    }
+  },
+  "boundaries": [
+    "Canonical projected manager/listener/entries and SoundChannelInstance; actual sample storage and existing resource/class/VFS projections retained. No native object layout/instance ABI claim.",
+    "Clock and alternate global/virtual services remain explicit; known D68D50 current getter implemented, complete application clock/alternate binding remains required.",
+    "First pass captures iterator end and listener values; existing stable structural-callback domain retained. Slot replacement, current-last reload and current count visibility implemented.",
+    "Concrete D5ABF8 active-entry/runtime lifetime; other spatial/event profiles and complete VoiceLineHost/application Phase5 composition remain open.",
+    "Actual installed FMOD execution uses no-sound output. Full native differential, audible output and gameplay remain unvalidated."
+  ],
+  "followups": [
+    {
+      "packet": "sound_spatial_event_instances",
+      "addresses": [
+        "00a7f710",
+        "00a89dc0",
+        "00a8a2e0"
+      ]
+    },
+    {
+      "packet": "sound_application_voice_composition",
+      "scope": "Phase5 sound initialization, concrete global/time services, complete voice and bank lifetime, alternate-engine update."
+    },
+    {
+      "packet": "sound_manager_teardown",
+      "scope": "Remaining manager/auxiliary owners and sound active-list teardown orchestration."
+    }
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_and_installed_manager_fixture_tested",
+    "validated_revision": "e4cbe337439ddc693a3e320c410909ecb329e54a",
+    "main_base": "d433f5dd",
+    "integration_log": "local/sound_active_s_integrate.log",
+    "build": "MSVC Win32 Release passed on merged revision",
+    "tests": "2/2 existing tests passed",
+    "helper_main_moved_after_build": false,
+    "library_sha256": "9d46e85d7fd704240cbac8da08baffaa535fbc5ebbf5078ae2baaeeca0c911b1",
+    "fixture_provenance": "Controlled and installed manager fixture ran on validation.code_revision with validation.library_sha256. The combined integration build/CTest result is separate.",
+    "saved_annotations": 10,
+    "prior_annotation_log": "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260911T204839Z.json",
+    "refreshed_exports": "local/sound_active_s_integration_exports.log",
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false
+  }
+}

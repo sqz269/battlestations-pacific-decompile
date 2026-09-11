@@ -70,18 +70,15 @@ float force_event_vector_length_0042b2f0(const std::array<float, 3>& vector) {
     return 0.0f;
 }
 
-GamepadForceEvent& construct_constant_force_event_00873450(GamepadForceEvent& event,
-    const ConstantForceEventParameters& parameters, void* subject, GamepadForceContext& context) {
-    initialize_event(event, &parameters, subject);
+std::uint32_t submit_constant_force_event_request(ConstantForceEventFields parameters,
+    GamepadForceContext& context) {
     auto* request = new (std::nothrow) ConstantGamepadForceRequest(parameters.channel_20,
         parameters.amplitude_2c, parameters.duration_24);
-    event.request_handle_1c = submit_gamepad_force_request_00a95bf0(0, request, context);
-    return event;
+    return submit_gamepad_force_request_00a95bf0(0, request, context);
 }
-GamepadForceEvent& construct_fading_force_event_00873560(GamepadForceEvent& event,
-    const FadingForceEventParameters& parameters, void* subject, GamepadForceContext& context,
+std::uint32_t submit_fading_force_event_request(FadingForceEventFields parameters,
+    void* subject, GamepadForceContext& context,
     ForceEventSpatialHost& spatial) {
-    initialize_event(event, &parameters, subject);
     float gain = 0.0f;
     if (spatial.current_target_00e188a8_1ed4()) {
         if (!subject) throw std::invalid_argument("spatial force event requires its actual subject");
@@ -102,16 +99,38 @@ GamepadForceEvent& construct_fading_force_event_00873560(GamepadForceEvent& even
     // even zero gain still multiplies the actual amplitude (including NaN/-0).
     auto* request = new (std::nothrow) FadingGamepadForceRequest(parameters.channel_20,
         scale_amplitude(parameters.amplitude_2c, gain), parameters.duration_24);
-    event.request_handle_1c = submit_gamepad_force_request_00a95bf0(0, request, context);
+    return submit_gamepad_force_request_00a95bf0(0, request, context);
+}
+std::uint32_t submit_alternating_force_event_request(AlternatingForceEventFields parameters,
+    GamepadForceContext& context) {
+    auto* request = new (std::nothrow) AlternatingGamepadForceRequest(parameters.channel_20,
+        parameters.second_first_2c != 0, parameters.first_value_30, parameters.second_value_34,
+        parameters.first_period_38, parameters.second_period_3c, parameters.duration_24);
+    if (request) request->payload_0c = parameters.second_first_2c;
+    return submit_gamepad_force_request_00a95bf0(0, request, context);
+}
+GamepadForceEvent& construct_constant_force_event_00873450(GamepadForceEvent& event,
+    const ConstantForceEventParameters& parameters, void* subject, GamepadForceContext& context) {
+    initialize_event(event, &parameters, subject);
+    event.request_handle_1c = submit_constant_force_event_request(
+        {parameters.channel_20, parameters.duration_24, parameters.amplitude_2c}, context);
+    return event;
+}
+GamepadForceEvent& construct_fading_force_event_00873560(GamepadForceEvent& event,
+    const FadingForceEventParameters& parameters, void* subject, GamepadForceContext& context,
+    ForceEventSpatialHost& spatial) {
+    initialize_event(event, &parameters, subject);
+    event.request_handle_1c = submit_fading_force_event_request({parameters.channel_20,
+        parameters.duration_24, parameters.radius_28, parameters.amplitude_2c}, subject, context, spatial);
     return event;
 }
 GamepadForceEvent& construct_alternating_force_event_00873750(GamepadForceEvent& event,
     const AlternatingForceEventParameters& parameters, void* subject, GamepadForceContext& context) {
     initialize_event(event, &parameters, subject);
-    auto* request = new (std::nothrow) AlternatingGamepadForceRequest(parameters.channel_20,
-        parameters.second_first_2c, parameters.first_value_30, parameters.second_value_34,
-        parameters.first_period_38, parameters.second_period_3c, parameters.duration_24);
-    event.request_handle_1c = submit_gamepad_force_request_00a95bf0(0, request, context);
+    event.request_handle_1c = submit_alternating_force_event_request({parameters.channel_20,
+        parameters.duration_24, reinterpret_cast<const unsigned char&>(parameters.second_first_2c),
+        parameters.first_value_30, parameters.second_value_34,
+        parameters.first_period_38, parameters.second_period_3c}, context);
     return event;
 }
 

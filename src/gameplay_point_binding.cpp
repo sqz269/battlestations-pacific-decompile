@@ -117,6 +117,23 @@ RenderCommandReference* GameplayPointRows::create_virtual_18(void* row,
     return remaining_.create_current(function, row, effect);
 }
 
+GameplayPointRumbleComponents::GameplayPointRumbleComponents(NativeGamepadForceEvents& events,
+    GameplayPointRemainingComponents& remaining) noexcept : events_(events), remaining_(remaining) {}
+std::uint8_t GameplayPointRumbleComponents::admit_current(std::uint32_t function, void* row,
+    const std::array<float, 3>& point, CameraTransform& reference) {
+    return remaining_.admit_current(function, row, point, reference);
+}
+RenderCommandReference* GameplayPointRumbleComponents::create_current(std::uint32_t function,
+    void* row, PointEffectInstanceStorage& effect) {
+    switch (function) {
+    case 0x00869010:
+    case 0x008690f0:
+    case 0x00869290:
+        return events_.create(function, row, &effect);
+    default: return remaining_.create_current(function, row, effect);
+    }
+}
+
 GameplayPointConstruction::GameplayPointConstruction(GameplayDefinitionReferences& definitions,
     GameplayPointRows& rows, PointEffectConstructorBindings& bindings)
     : definitions_(definitions), rows_(rows), bindings_(bindings) {

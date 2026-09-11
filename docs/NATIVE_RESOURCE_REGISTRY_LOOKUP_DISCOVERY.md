@@ -158,3 +158,6 @@ padding; extend B1B5F0 through B1B65E after repairing only its B1B633 free flow;
 repair B1A29C and B1B720 returning-free flow without changing their already-full
 body ranges. Preserve correct `_free` naming, old comments and neighboring
 functions. No worker changes were applied.
+
+
+Primary verified all 58 sealed worker files, 35 additional report pins and 36 freshly guarded spans (1,353 bytes). Qualified B19E90 lookup source is separate; full singleton getter/wrapper still requires complete registered tree destruction. Invalid-owner branches remain static where full current finder publishes valid owner. Immutable discovery evidence: `local/registry_lookup_discovery_primary/`. No source, original-body execution or gameplay claim is added by this review.

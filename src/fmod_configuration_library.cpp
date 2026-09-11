@@ -168,6 +168,15 @@ FmodResult FmodConfigurationLibrary::channel_set_paused(void* channel, std::uint
 FmodResult FmodConfigurationLibrary::channel_get_audibility(void* channel, float* value) {
     return impl_->call("FMOD_Channel_GetAudibility", channel, value);
 }
+FmodResult FmodConfigurationLibrary::system_get_channels_playing(void* system, std::int32_t* count) {
+    return impl_->call("FMOD_System_GetChannelsPlaying", system, count);
+}
+FmodResult FmodConfigurationLibrary::event_system_set_3d_listener_attributes(void* system, std::int32_t index,
+    const std::array<float, 3>& position, const std::array<float, 3>& velocity,
+    const std::array<float, 3>& forward, const std::array<float, 3>& up) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventSystem_Set3DListenerAttributes@24",
+        system, index, position.data(), velocity.data(), forward.data(), up.data());
+}
 FmodResult FmodConfigurationLibrary::sound_get_num_subsounds(void* sound,
     std::int32_t* count) {
     return impl_->call("FMOD_Sound_GetNumSubSounds", sound, count);
