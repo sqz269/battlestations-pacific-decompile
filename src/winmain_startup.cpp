@@ -194,9 +194,9 @@ int run_win_main(const WinMainArguments& arguments, StartupHost& host) {
             }
             // 008f82b7: release the widened path.
         }
-        if (have_game_explorer) {
-            host.game_explorer_release();
-        }
+        // 008F82BC tests the output pointer independently of HRESULT. The
+        // process host performs that null check, even when creation failed.
+        host.game_explorer_release();
     }
     host.com_uninitialize();
 

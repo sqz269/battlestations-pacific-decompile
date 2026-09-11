@@ -211,3 +211,17 @@ explicit arguments and a `StartupHost` interface; it is not a drop-in replacemen
 - The per-thread random slot is a one byte `operator new` whose value is never read. Neither
   `BSP_RandomThreads_RegisterCurrent` nor `UnregisterCurrent` takes an argument, so the
   allocation only acts as a success flag for the register/unregister pair.
+
+## Correction from docs/STARTUP_COM_BINDING.md
+
+Live assembly and SDK constants correct the COM labels in the earlier table:
+`008F81F8` pushes `8`, which is `COINIT_SPEED_OVER_MEMORY` with the default
+multithreaded model, not `COINIT_APARTMENTTHREADED`. The security call passes
+authentication level `0` (`RPC_C_AUTHN_LEVEL_DEFAULT`), not `NONE` (`1`).
+The process host now calls real Game Explorer creation/access/release and
+preserves the pointer release guard independently of creation HRESULT. The
+access BOOL is not preinitialized and its HRESULT is ignored. `BFBDBB`
+calls the full-cleanup CRT path with two zero flags, including the reverse
+on-exit table; host exit now uses `std::exit`. The isolated current-process
+COM/access query and on-exit callback checks passed. See the named correction
+document and report for exact scope and remaining ownership boundaries.

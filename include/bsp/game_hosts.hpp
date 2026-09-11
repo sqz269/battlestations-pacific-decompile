@@ -26,6 +26,8 @@
 #include <windows.h>
 #include <d3d9.h>
 
+struct IGameExplorer;
+
 #include <cstdio>
 #include <string>
 #include <vector>
@@ -345,6 +347,10 @@ private:
     GameHostLog& log_;
     HINSTANCE instance_{};
     GameExecutableOptions options_;
+
+    // 008F823D: actual CoCreateInstance output, released explicitly at 008F82CA.
+    // The denied branch calls CRT exit before this release; no destructor cleanup.
+    IGameExplorer* game_explorer_{};
 
     RandomThreads* random_threads_{};
     Win32PlatformState platform_;

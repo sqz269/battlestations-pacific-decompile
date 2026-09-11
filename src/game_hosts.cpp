@@ -7,9 +7,11 @@
 #include <stdexcept>
 
 #include <objbase.h>
+#include <gameux.h>
 #include <shlobj.h>
 
 #include <cstdarg>
+#include <cstdlib>
 #include <cstring>
 
 #include "bsp/app_bootstrap.hpp"
@@ -498,13 +500,16 @@ GameStartupHost::~GameStartupHost() {
 }
 
 long GameStartupHost::com_initialize() {
+    static_assert(COINIT_MULTITHREADED == 0 && COINIT_SPEED_OVER_MEMORY == 8);
     log_.implemented("StartupHost::com_initialize", "008f81f8");
-    return CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+    // 008F81F8 PUSH 8: multithreaded apartment (0), speed-over-memory flag (8).
+    return CoInitializeEx(nullptr, COINIT_MULTITHREADED | COINIT_SPEED_OVER_MEMORY);
 }
 
 long GameStartupHost::com_initialize_security() {
+    static_assert(RPC_C_AUTHN_LEVEL_DEFAULT == 0 && RPC_C_IMP_LEVEL_IMPERSONATE == 3);
     log_.implemented("StartupHost::com_initialize_security", "008f820a");
-    return CoInitializeSecurity(nullptr, -1, nullptr, nullptr, RPC_C_AUTHN_LEVEL_NONE,
+    return CoInitializeSecurity(nullptr, -1, nullptr, nullptr, RPC_C_AUTHN_LEVEL_DEFAULT,
         RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_NONE, nullptr);
 }
 
@@ -519,26 +524,41 @@ void GameStartupHost::current_directory(char* buffer, unsigned long capacity) {
 }
 
 bool GameStartupHost::game_explorer_create() {
-    // CoCreateInstance(CLSID_GameExplorer, ...). Registering the title with Game Explorer
-    // and its parental-controls check are deliberately skipped: the milestone must not
-    // exit the process on a machine policy it has no reason to consult.
-    log_.unimplemented("StartupHost::game_explorer_create", "008f8245");
-    return false;
+    static_assert(CLSCTX_ALL == 0x17);
+    log_.implemented("StartupHost::game_explorer_create", "008f8245");
+    game_explorer_ = nullptr; // 008F823D, before the actual COM call.
+    const HRESULT result = CoCreateInstance(__uuidof(GameExplorer), nullptr,
+        CLSCTX_ALL, __uuidof(IGameExplorer), reinterpret_cast<void**>(&game_explorer_));
+    // Native branches on signed HRESULT, not on the returned pointer.
+    return SUCCEEDED(result);
 }
 
 bool GameStartupHost::game_explorer_verify_access(const wchar_t* gdf_binary_path) {
-    log_.unimplemented("StartupHost::game_explorer_verify_access", "008f82aa");
-    static_cast<void>(gdf_binary_path);
-    return true;
+    log_.implemented("StartupHost::game_explorer_verify_access", "008f82aa");
+    // Native supplies its ordinary widened C string to the BSTR-typed method;
+    // there is no SysAllocString call or length-prefix conversion at this site.
+    // ESP+10 is not initialized before VerifyAccess. Preserve the actual API
+    // output/remainder bytes and ignore HRESULT, as the following CMP does.
+    BOOL has_access;
+    static_cast<void>(game_explorer_->VerifyAccess(
+        const_cast<wchar_t*>(gdf_binary_path), &has_access));
+    BOOL captured_access;
+    __asm {
+        mov eax, has_access
+        mov captured_access, eax
+    }
+    return captured_access != FALSE;
 }
 
 void GameStartupHost::game_explorer_release() {
-    log_.unimplemented("StartupHost::game_explorer_release", "008f82c4");
+    log_.implemented("StartupHost::game_explorer_release", "008f82c4");
+    if (game_explorer_ != nullptr) game_explorer_->Release();
+    // Original does not clear this local slot. This startup sequence runs once.
 }
 
 void GameStartupHost::exit_process(int code) {
     log_.implemented("StartupHost::exit_process", "008f82f0");
-    ExitProcess(static_cast<UINT>(code));
+    std::exit(code); // 008F82F0 calls genuine CRT exit, including atexit callbacks.
 }
 
 void GameStartupHost::random_threads_initialize() {
