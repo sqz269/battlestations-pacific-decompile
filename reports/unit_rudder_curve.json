@@ -1,0 +1,273 @@
+{
+  "packet": "orch2_unit_rudder_curve",
+  "date": "2026-09-10",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "verification": "Ghidra client.verify in each live/export batch checks project bsp, program path, language and image base.",
+  "source": "src/unit_rudder.cpp",
+  "header": "include/bsp/unit_rudder.hpp",
+  "documentation": "docs/UNIT_RUDDER_CURVE.md",
+  "functions": [
+    {
+      "address": "00419010",
+      "proposed_name": "BSP_Math_InterpolateClamped",
+      "previous_name": "FUN_00419010",
+      "cpp_function": "clamped_interpolate_00419010",
+      "status": "reconstructed_build_tested_native_curve_fixture_checked",
+      "final_instruction_address": "004190cc",
+      "final_instruction_length": 3,
+      "inclusive_end": "004190ce",
+      "has_ghidra_function": true,
+      "evidence": "Hypothesis, not a recovered symbol. Five stack floats (x0,y0,x1,y1,x), RET 14h, ST0 result. Ordered equal x endpoints return y0; otherwise x87 interpolation is float-stored at 0041905F and clamped between y endpoints. docs/UNIT_RUDDER_CURVE.md; reports/unit_rudder_curve.json."
+    },
+    {
+      "address": "00438aa0",
+      "proposed_name": "BSP_Math_AddWrappedAngle",
+      "previous_name": "FUN_00438aa0",
+      "cpp_function": "wrapped_angle_add_00438aa0",
+      "status": "reconstructed_build_tested_explicit_host_boundaries",
+      "final_instruction_address": "00438b0b",
+      "final_instruction_length": 3,
+      "inclusive_end": "00438b0d",
+      "has_ghidra_function": true,
+      "evidence": "Hypothesis, not a recovered symbol. Two stack floats, RET 8, ST0 result despite saved void signature. Add and float-store, then repeated double float-rounded 2*pi corrections with a float store every iteration, range (-pi,pi]. No finite-input guard. docs/UNIT_RUDDER_CURVE.md; reports/unit_rudder_curve.json."
+    },
+    {
+      "address": "00438b10",
+      "proposed_name": "BSP_Math_SubtractWrappedAngle",
+      "previous_name": "FUN_00438b10",
+      "cpp_function": "wrapped_angle_subtract_00438b10",
+      "status": "reconstructed_build_tested_explicit_host_boundaries",
+      "final_instruction_address": "00438b7b",
+      "final_instruction_length": 3,
+      "inclusive_end": "00438b7d",
+      "has_ghidra_function": true,
+      "evidence": "Hypothesis, not a recovered symbol. Two stack floats, RET 8, ST0 result despite saved void signature. Subtract and float-store, then repeated double float-rounded 2*pi corrections with a float store every iteration, range (-pi,pi]. No finite-input guard. docs/UNIT_RUDDER_CURVE.md; reports/unit_rudder_curve.json."
+    },
+    {
+      "address": "00811890",
+      "proposed_name": "BSP_UnitInstance_ComputeYawRateFromRudder",
+      "previous_name": "BSP_UnitInstance_ComputeYawRateFromRudder",
+      "cpp_function": "unit_yaw_rate_00811890",
+      "status": "reconstructed_build_tested_explicit_host_boundaries",
+      "final_instruction_address": "0081193c",
+      "final_instruction_length": 3,
+      "inclusive_end": "0081193e",
+      "has_ghidra_function": true,
+      "evidence": "Hypothesis, not a recovered symbol. Curve now recovered: class+538h; capture unit+9DCh before speed 0092D730 on controller+1018h; apply 0082ECB0(rudder,speed,efficiency). Load manager 00F88C30 before class; if present, conditionally obtain 008E6430(5,unit) under byte00E0C978 and manager+C4h, else factor1. Present-manager path always multiplies and float-stores; absent-manager path returns directly. Existing name retained and prior evidence preserved. docs/UNIT_RUDDER_CURVE.md; reports/unit_rudder_curve.json."
+    },
+    {
+      "address": "00811940",
+      "proposed_name": "BSP_UnitInstance_GetCurrentCommandYawRate",
+      "previous_name": "FUN_00811940",
+      "cpp_function": "unit_current_yaw_rate_00811940",
+      "status": "reconstructed_build_tested_explicit_host_boundaries",
+      "final_instruction_address": "00811959",
+      "final_instruction_length": 1,
+      "inclusive_end": "00811959",
+      "has_ghidra_function": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=unit, no stack args, RET; load unit+984h rudder, call 00811890, preserve ST0 return. Saved void return is incorrect. docs/UNIT_RUDDER_CURVE.md; reports/unit_rudder_curve.json."
+    },
+    {
+      "address": "00811960",
+      "proposed_name": "BSP_UnitHeadingCommand_SetLimitedTarget",
+      "previous_name": "FUN_00811960",
+      "cpp_function": "unit_set_heading_target_00811960",
+      "status": "reconstructed_build_tested_explicit_host_boundaries",
+      "final_instruction_address": "00811a22",
+      "final_instruction_length": 3,
+      "inclusive_end": "00811a24",
+      "has_ghidra_function": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=command object, stack desired heading float, RET4. Unit at object+50h virtual+50h supplies provisional current heading; controller+1018h speed <= -1 adds wrapped pi. Wrapped heading-desired delta clamps +/-pi/4; wrapped heading-delta stored object+44h then byte+4Ch=1. Virtual heading identity provisional. docs/UNIT_RUDDER_CURVE.md; reports/unit_rudder_curve.json."
+    },
+    {
+      "address": "00811ab0",
+      "proposed_name": "BSP_UnitInstance_RunShiftedControllerUpdate",
+      "previous_name": "FUN_00811ab0",
+      "cpp_function": "unit_shifted_update_00811ab0",
+      "status": "reconstructed_build_tested_explicit_host_boundaries",
+      "final_instruction_address": "00811b48",
+      "final_instruction_length": 3,
+      "inclusive_end": "00811b4a",
+      "has_ghidra_function": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=unit+310h, stack delta float, RET4. Scale delta by unit+340h only above1, copy matrix unit+674h to +74h via existing004134F0, call0092F930 on controller+1018h, virtual unit+D8h, then read +308h; if nonzero and < double(clock00F876A4)+2 clear float+2F8h. Field identities provisional; called subsystem bodies external. docs/UNIT_RUDDER_CURVE.md; reports/unit_rudder_curve.json."
+    },
+    {
+      "address": "0082e890",
+      "proposed_name": "BSP_ShipClass_ComputeRudderCurveDenominator",
+      "previous_name": "FUN_0082e890",
+      "cpp_function": "unit_rudder_denominator_0082e890",
+      "status": "reconstructed_build_tested_native_curve_fixture_checked",
+      "final_instruction_address": "0082e959",
+      "final_instruction_length": 3,
+      "inclusive_end": "0082e95b",
+      "has_ghidra_function": true,
+      "evidence": "Hypothesis, not a recovered symbol. One stack float magnitude, RET4, ST0 float result. Four calls00424C40 retain split at settings+44Ch. magnitude<=split selects clamped interpolation points(+444,+440)->(+44C,+448), otherwise(+44C,+448)->(+43C,+438). Getter/read order preserved, no settings ordering assumed. docs/UNIT_RUDDER_CURVE.md; reports/unit_rudder_curve.json."
+    },
+    {
+      "address": "0082ecb0",
+      "proposed_name": "BSP_ShipClass_ComputeYawRateFromRudder",
+      "previous_name": "FUN_0082ecb0",
+      "cpp_function": "unit_class_yaw_rate_0082ecb0",
+      "status": "reconstructed_build_tested_native_curve_fixture_checked",
+      "final_instruction_address": "0082ed0e",
+      "final_instruction_length": 3,
+      "inclusive_end": "0082ed10",
+      "has_ghidra_function": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=ship class, stack(rudder,forwardSpeed,turnEfficiency), RETCh, ST0 float. r=float(speed/class+500h), denom=0082E890(abs(r)), base=float(class+4F8h/denom), result=float(x87(base)*r*rudder*efficiency). Stores0082ECBE/0082ECF1/0082ED03 preserved; no zero checks or command clamp. Reuses existing ShipClassFields names MaxRotAngle/MaxSpeed. docs/UNIT_RUDDER_CURVE.md; reports/unit_rudder_curve.json."
+    }
+  ],
+  "no_ghidra_function": [],
+  "free_fallthrough_defects": [],
+  "ghidra_mutations_performed": false,
+  "annotation_status": "Ledger proposals only; primary integrator must preserve existing comments, annotate under write lock, refresh exports and save.",
+  "flow_audit": {
+    "zero_gaps": [
+      "00811ab0",
+      "0082e890",
+      "00419010",
+      "00438aa0",
+      "00438b10"
+    ],
+    "primary_zero_gaps": [
+      "0082ecb0",
+      "00811890",
+      "00811940",
+      "00811960"
+    ]
+  },
+  "build": {
+    "command": ".\\scripts\\build.ps1",
+    "target": "MSVC Win32 Release /fp:strict /W4 /WX",
+    "passed": true
+  },
+  "existing_tests": {
+    "seed_command": "python tools/ghidra_export.py verify-seeds",
+    "seed_matches": "8/8",
+    "ctest_passed": "2/2",
+    "names": [
+      "reconstructed_math",
+      "native_math_differential"
+    ]
+  },
+  "native_differential": {
+    "description": "One local composed curve check; no new repository test cases.",
+    "working_directory": "J:\\PROG\\battlestations-pacific-decompile-orch2-rudder-20260910",
+    "commands": [
+      "python local/check_rudder_bytes.py",
+      ".\\local\\run-rudder-differential.cmd"
+    ],
+    "compiler_command": "cl /nologo /std:c++17 /EHsc /MD /W4 /WX /fp:strict /Iinclude /Ilocal local\\rudder_differential.cpp build\\win32\\Release\\bsp_core.lib /Felocal\\rudder_differential.exe /Folocal\\rudder_differential.obj",
+    "passed": true,
+    "finite_case_count": 55,
+    "bitwise_equal": 55,
+    "settings_getter_calls_per_implementation": 220,
+    "stdout": "PASS: 55 composed rudder-curve fixtures bitwise equal; 220 settings getters on each implementation.",
+    "relocations": "Only relative direct calls: 0082ECB0->0082E890, 0082E890->00419010, and 0082E890->00424C40 replaced with a fixture getter. Original bodies otherwise unchanged.",
+    "settings_fixture": {
+      "0438": 4.0,
+      "043c": 1.0,
+      "0440": 2.0,
+      "0444": 0.0,
+      "0448": 0.5,
+      "044c": 0.4
+    },
+    "speed_fixtures": [
+      -63.0,
+      -31.125,
+      -12.45,
+      "-0.0",
+      0.0,
+      1e-05,
+      12.44999,
+      12.45,
+      12.45001,
+      31.125,
+      63.0
+    ],
+    "rudder_fixtures": [
+      -1.0,
+      -0.33333334,
+      0.0,
+      0.27182818,
+      1.0
+    ],
+    "class_fixture": {
+      "max_speed": 31.125,
+      "max_rot_angle": 0.1736473,
+      "turn_efficiency": 0.71357
+    },
+    "native_bytes": {
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "routines": [
+        {
+          "address": "00419010",
+          "length": 191,
+          "sha256": "abe6cc3f49beb78f1ea9564c64f26e706688fe1feaf473b51dc10daee58c0fc8",
+          "saved_ghidra_equals_disk": true
+        },
+        {
+          "address": "0082e890",
+          "length": 204,
+          "sha256": "0d65c9cf09c7cb4addf756189dfa7885264fa90d1cdd0e367b5ac76f096db64b",
+          "saved_ghidra_equals_disk": true
+        },
+        {
+          "address": "0082ecb0",
+          "length": 97,
+          "sha256": "2aa10c6fa12161c13d95295c3e9567cf1962f5dd7c9d93fc6607cdf7368af767",
+          "saved_ghidra_equals_disk": true
+        }
+      ]
+    },
+    "artifacts": {
+      "check_rudder_bytes.py": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-rudder-20260910\\local\\check_rudder_bytes.py",
+        "sha256": "741c61659a9798f3533a7c2f04781328ab8183ff42b6c7820b6afe38d827bcc6",
+        "ignored_worktree_local": true
+      },
+      "rudder_differential.cpp": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-rudder-20260910\\local\\rudder_differential.cpp",
+        "sha256": "66ba8c2e7458552efdc6c77120b2a02e5167f09a962851de3c6b50a378132c27",
+        "ignored_worktree_local": true
+      },
+      "run-rudder-differential.cmd": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-rudder-20260910\\local\\run-rudder-differential.cmd",
+        "sha256": "eb04505a4465d26afb149d5e4e06642b0c45598f027e8e54e39f7adbda1e68a9",
+        "ignored_worktree_local": true
+      },
+      "rudder_reference.hpp": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-rudder-20260910\\local\\rudder_reference.hpp",
+        "sha256": "a7dcc9d4bdee7540631a6b4afb65e7787595f6ed6f19c23b427a758468487510",
+        "ignored_worktree_local": true
+      },
+      "rudder_native_verification.json": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-rudder-20260910\\local\\rudder_native_verification.json",
+        "sha256": "c5c7509c3808004eaea2f521da6199f07f2f0f9734aee43115ba4e7eca8c59e8",
+        "ignored_worktree_local": true
+      }
+    },
+    "scope_limit": "Only 00419010/0082E890/0082ECB0 have native differential evidence; no universal FP or ABI claim."
+  },
+  "review": [
+    "Primary integrator reviewed listings and implementation call/spill order.",
+    "Independent bow_wave worker reviewed 0082ECB0,0082E890,00811AB0 without edits; no concrete source/assembly mismatches found."
+  ],
+  "external_boundaries": [
+    "00424c40 settings singleton lifetime",
+    "008e6430 gameplay scale policy",
+    "0092d730 physics getter integration, existing math reused",
+    "unit virtual +50h heading identity provisional",
+    "0092f930 controller update body",
+    "unit virtual +d8h body",
+    "00f876a4 runtime clock"
+  ],
+  "uncertainties": [
+    "Native source declarations and full native object layouts are not recovered.",
+    "Heading identity and shifted +308h/+2F8h field identities remain provisional.",
+    "NaN payloads, signaling exceptions, alternate x87 control words and zero divisors were not differentially tested.",
+    "Native unbounded angle loops can fail to progress on infinite or enormous values; this behavior is retained.",
+    "No game process, gameplay motion or binary injection was tested."
+  ],
+  "game_validated": false
+}
