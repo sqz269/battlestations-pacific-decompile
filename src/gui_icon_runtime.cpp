@@ -315,6 +315,46 @@ void GuiIconRuntime::set_size58_00ab1ef0(GuiWidgetOwner& owner, const GuiWidgetS
     // 00AB1F4E current+8C ->00AB10D0 -> current+80, supported Icon00AB3CB0.
     rebuild_00ab3cb0(self.icon.current_state);
 }
+void GuiIconRuntime::set_scale48_00ab2820(GuiWidgetOwner& owner, const GuiWidgetSize& scale) {
+    auto& self = *impl_;
+    require(&owner.layout() == &self.widget,
+        "Icon scale48 requires this runtime's same retained widget owner.");
+    // 00AB2828 ->00AA7950. Actual scalar fields, with native FLD/FSTP stores.
+    const auto* source = &scale;
+    auto* scale_x = &self.widget.transform.scale_x;
+    auto* scale_y = &self.widget.transform.scale_y;
+    __asm {
+        mov eax, source
+        mov edx, scale_x
+        fld dword ptr [eax]
+        fstp dword ptr [edx]
+        mov edx, scale_y
+        fld dword ptr [eax + 4]
+        fstp dword ptr [edx]
+    }
+    owner.recompose_00aa7220(); // No base bounds refresh.
+    // 00AB282F ->00AB2600. Retain its short-circuit reads and its selected
+    // state lookup only for the point-filter/native-size eligibility branch.
+    const bool bilinear = [&] {
+        if (!self.icon.has_texture || !self.icon.shader_name.empty()) return false;
+        if (!self.services.platform_allows_point_filter()) return true;
+        const auto& transform = self.widget.transform;
+        if (transform.rotate != 0.0f || transform.scale_x != 1.0f ||
+            transform.scale_y != 1.0f) return true;
+        const auto* state = gui_icon_state_at(self.icon, self.icon.current_state);
+        require(state != nullptr, "Icon scale48 filter query requires its current state.");
+        // 00AB24B0 captures the texture;00AB17B0 calls width before height.
+        // Keep this state record alive across those actual texture calls.
+        auto* texture = state->texture;
+        const auto width = self.texture_width(texture);
+        const auto height = self.texture_height(texture);
+        return gui_icon_state_differs_from_native_size_00ab24b0(*state, width, height);
+    }();
+    // Reload +134h after the query. This routine never writes the cache itself
+    // and has no -1 state exemption before current+8C ->00AB10D0 ->00AB3CB0.
+    if (bilinear != self.icon.cached_prefers_bilinear)
+        rebuild_00ab3cb0(self.icon.current_state);
+}
 void GuiIconRuntime::rebuild_00ab3cb0(std::int16_t index) {
     auto& self = *impl_;
     self.icon.current_state = index;

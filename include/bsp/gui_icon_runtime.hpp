@@ -94,6 +94,11 @@ public:
     // Requires this runtime's SAME retained owner, not a copied base layout.
     // The borrowed input remains live across the base recompose callback.
     void set_size58_00ab1ef0(GuiWidgetOwner&, const GuiWidgetSize&);
+    // Complete supported Icon virtual+48, native ECX=this, scale-pair pointer
+    // stack, RET4. Base scale/recompose then rebuild current geometry only if
+    // the live00AB2600 filter choice differs from the cached Icon+134h byte.
+    // GuiWidgetSize is a two-float carrier here: width=x scale, height=y scale.
+    void set_scale48_00ab2820(GuiWidgetOwner&, const GuiWidgetSize&);
     const GuiIconWidget& state() const noexcept;
 private:
     struct Impl;
