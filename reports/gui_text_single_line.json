@@ -1,0 +1,204 @@
+{
+  "packet": "orch5_text_single_line",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": "src/gui_text_single_line.cpp",
+  "documentation": "docs/GUI_TEXT_SINGLE_LINE.md",
+  "reconstructed": [
+    {
+      "address": "00ab9fd0",
+      "name": "build_gui_text_single_line_00ab9fd0",
+      "additional_entry": "resume_gui_text_single_line_after_child_00ab9fd0",
+      "coverage": "partial_projection",
+      "end": "00aba263",
+      "final_instruction": "00aba261",
+      "final_instruction_length": 3,
+      "abi": "ECX Text; two stack DWORDs unused UTF16 wrapper,actual section;RET8",
+      "local_body_coverage": "All local ordinary-path operations and post-child continuation throughRET; no source-wrapper read",
+      "pending_dependency": {
+        "call_site": "00aba1f8",
+        "function": "00ab98f0",
+        "excluded_range": "00ab9d33-00ab9fad",
+        "behavior": "Return borrowed native frame with both mappings active; resume only after actual optional Text child tail completed; no implicit unlock/bypass"
+      },
+      "domain": "Live actual owners/font association, valid nonaliasing mapped buffers, stable active source/glyph backing; no original stack/SEH or floating trap/concurrent-mutation equivalence"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00ab9fe5",
+      "native": "00b74640",
+      "function": "00ab9fd0",
+      "operation": "actual primary model geometry0;RET4; captured mesh retained as native local"
+    },
+    {
+      "address": "00ab9ff3",
+      "native": "00b73260",
+      "function": "00ab9fd0",
+      "operation": "actual mesh stream0 via canonical vertex_streams_64[0];RET4; no new getter owner"
+    },
+    {
+      "address": "00aba00e",
+      "native": "00b49980",
+      "function": "00ab9fd0",
+      "operation": "current logical vertex virtual10(length*4,0,0);RET0Ch; actual mapping implementation"
+    },
+    {
+      "address": "00aba02c",
+      "native": "00b49b60",
+      "function": "00ab9fd0",
+      "operation": "reload meshindex and currentlength after vertexLock; virtual0C(length*6,0,0);RET0Ch"
+    },
+    {
+      "address": "00aba0ca",
+      "native": "00ad4480",
+      "function": "00ab9fd0",
+      "operation": "measure pass current font association and current code unit; existing selector;RET4"
+    },
+    {
+      "address": "00aba17b",
+      "native": "00ad4480",
+      "function": "00ab9fd0",
+      "operation": "emit pass current font association/current code unit; retain same borrowed glyph across callbacks;RET4"
+    },
+    {
+      "address": "00aba196",
+      "native": "00b189f0",
+      "function": "00ab9fd0",
+      "operation": "first glyph18 to current section material slot0; actual owners publish/retain/release;RET8"
+    },
+    {
+      "address": "00aba1a8",
+      "native": "00b189f0",
+      "function": "00ab9fd0",
+      "operation": "AFTER slot0 callbacks reload same glyph1C and current sectionmaterial, bindslot1;RET8"
+    },
+    {
+      "address": "00aba1f8",
+      "native": "00ab98f0",
+      "function": "00ab9fd0",
+      "operation": "actual mappedwriter ten native slots/RET28h; optional child suspends before native postcallABA1FD"
+    },
+    {
+      "address": "00aba241",
+      "native": "00b49c70",
+      "function": "00ab9fd0",
+      "operation": "captured original index virtual10 unlockFIRST; no stack args"
+    },
+    {
+      "address": "00aba24a",
+      "native": "00b49a80",
+      "function": "00ab9fd0",
+      "operation": "captured original vertex virtual14 unlockSECOND; no stack args"
+    },
+    {
+      "address": "00aba255",
+      "native": "00b865a0",
+      "function": "00ab9fd0",
+      "operation": "actual section/layout rebuild with original captured mesh;RET4; existing real layout services required"
+    },
+    {
+      "address": "00abab78",
+      "native": "00ab9fd0",
+      "function": "00aba8d0",
+      "operation": "sole caller chooses nonwrapped: pushessection then separate transformed wrapper; firstwrapper unused by body;RET8"
+    }
+  ],
+  "state_operations": [
+    {
+      "address": "00ab9fdf",
+      "function": "00ab9fd0",
+      "operation": "canonical Text.line_count+110=0 before geometry access"
+    },
+    {
+      "address": "00aba047",
+      "function": "00ab9fd0",
+      "operation": "actual section+10=current stored length*4 after bothlocks"
+    },
+    {
+      "address": "00aba052",
+      "function": "00ab9fd0",
+      "operation": "actual section+18=current stored length*2; other rangewords unchanged"
+    },
+    {
+      "address": "00aba064",
+      "function": "00ab9fd0",
+      "operation": "canonical Text.measured_width+114=0 before measure loop"
+    },
+    {
+      "address": "00aba06c",
+      "function": "00ab9fd0",
+      "operation": "capture currentfont14 unsigned lowword; never descriptor/default height"
+    },
+    {
+      "address": "00aba09d",
+      "function": "00ab9fd0",
+      "operation": "x87 signed64FISTP withtruncation; lowDWORD retained; no finite/range checks, native maskedinvalid preserved"
+    },
+    {
+      "address": "00aba0ea",
+      "function": "00ab9fd0",
+      "operation": "unsignedglyphadvance*current Textscale+current measuredwidth -> one actual float32 store"
+    },
+    {
+      "address": "00aba148",
+      "function": "00ab9fd0",
+      "operation": "unsigned width via signedFILD/2^32float correction;subtractwidth;centermultipliesdouble0.5;floatspill"
+    },
+    {
+      "address": "00aba1b8",
+      "function": "00ab9fd0",
+      "operation": "canonical field18C=initialpen only afterfirstglyph two texturebindings; empty leavespreimage"
+    },
+    {
+      "address": "00aba1fd",
+      "function": "00ab9fd0",
+      "operation": "postwriter current selectedglyphadvance then cursor4/12/1 and nextcodeunit; current Textscale beforepen floatspill"
+    }
+  ],
+  "producer_fields": [
+    "Canonical GuiTextWidget stores sole Text string/font pointer,line_count110,measured_width114,font_scale1D8; GuiTextLifetime fields holds sole18C. Widget layout owns normalizedwidth20 and same primary model association.",
+    "NativeFontResourceOwners resolves current exactdescriptor to same live FontData allocation; DATlowwordheight and glyph advance/UV/texture slots are not copied; actualowner domain checked.",
+    "NativeMeshStorage constructorB73D70 establishes raw index60/vertex64; actual sectionB857F0 establishes range0C[4] and material20. Existing B189F0 actual setter owns texture references."
+  ],
+  "continuation": {
+    "kind": "borrowed native call-frame locals, no secondary Text/resource owner",
+    "contains": [
+      "same lifetime/services",
+      "captured mesh/section",
+      "capturedvertex/index",
+      "current indexslice",
+      "selectedglyph",
+      "active textcursor",
+      "pen/codeunit",
+      "quad/firstvertex",
+      "captured unsignedheight"
+    ],
+    "pending": "AB98F0 matched-substitution branch has already writtengeometry and blankedUV; actual Text child allocation/setup/attach/position remains required atAB9D33.",
+    "completion": "Consume frame once after actual child tail, then ABA1FD advance/nextglyph. Only final nullopt permits post-buildercolor/shadow; no automatic unlock or default child handler."
+  },
+  "provenance": [
+    "Complete body and allcalls inspected before implementation. Ghidraproto provesAB9FD0..ABA263; sole xrefABAB78 setup inspected inABA8D0.",
+    "Full EBX/EBP/ESI/EDI filter: ESI Text,EBX vertexstream,EDI mesh thenindex thenselectedglyph restoredfromESP+34 beforeunlock;EBP zero thenstoredtextcursor.",
+    "Actual logical virtual tables and physical mapping contracts inheritedfrom7ae534f3; live state read after callbacks, no cached mappingfrombeforeindexLock.",
+    "Existing vector/finite-domain scalar helpers inspected; their predicates and16384cap intentionally not imported. Exact arithmetic sequences read fromABA02E..ABA0A9,ABA0CF..ABA0EA,ABA100..ABA148,ABA1FD..ABA22C.",
+    "All consumed callee bodies/actual contracts were read; onlyAB9FD0 leased and annotated, no mapping/lifetime/material/font/sharedheader edits."
+  ],
+  "remaining_dependencies": [
+    "Actual optional Text child lifecycle tailAB9D33..AB9FAD. Pending builder/content frames must remain active until it finishes.",
+    "Real font/image loading and registration feeding NativeFontResources, actual logical resource factories, canonical Text factory/remaining virtuals and renderer draw composition.",
+    "Existing NativeMeshSectionLayoutServices must supply actual current descriptor/layout factory; no newly invented factory fallback.",
+    "Sibling font1445d2a1 and lifetime/material packets plus mapping/writer7ae534f3 must be integrated; parent owns build registration."
+  ],
+  "validation": {
+    "compile": "StrictMSVCWin32 /std:c++17 /EHsc /W4 /WX /O2 /fp:strict gui_text_single_line.cpp passed",
+    "dependency_headers": "Ignored exact font_data.hpp overlay from1445d2a1 SHA256F7A1F433FB7F0466873DA79A6DA0B45944DF5965FBE756715682265AFD257C49 plus sibling lifetime/material include paths; no sharedheader edits",
+    "call_verifier": "Stronger live verify_report_calls.py:13numericrows,0failed;9exactdirect plus4logical-map virtual resolutions separately checked against native profiles/body.",
+    "new_tests": 0,
+    "native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_evidence": "New path not registered/reachable through current ordinary Textfactory; no runtime/visual claim. Parent standardcombinedbuild pendingintegration."
+  }
+}
