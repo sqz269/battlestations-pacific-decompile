@@ -33,7 +33,8 @@
     {"site": "004e5477", "call": "006840f0", "role": "service pass, loop condition"},
     {"site": "004e5481", "call": "00e18cdc = 0", "role": "clear pump sentinel"}
   ],
-  "key_finding": "The drain loop at 004e5460 is why the main menu is visible on the frame it is entered. The shell's push and activate run inside the drain at 004e4430 earlier in the same OnMove call, after 004e53b4 has already pumped; 004e5442 services the request and 004e5469 pumps the newly published screen set in the same frame.",
+  "key_finding": "The main menu is visible on the frame it is entered, and the drain loop is not what does it. 00684600 syncs applied to pending twice before OnMove reaches 004e5442: once in BSP_MainMenu_Init at 006868bd, and again through 00684700's replay at 0068477e calling 00685820. So 006840f0 reports nothing on the entry frame and the drain loop never runs. The level-4 screen set is published by the Activate replay, not by the service pass. The menu becomes visible because the post-drain state test at 004e4d12 compares only against 1, 2 and 4, so state 5 falls through into the render tail and 004c40f0 at 004e53b4 pumps an already-published set.",
+  "superseded_key_finding": "An earlier version of this report and doc credited the drain loop at 004e5460 with making the menu visible on the entry frame. That mechanism is wrong; the conclusion that it is visible on the entry frame is unchanged. Corrected after agent/cc-exe-2c observed a 120-frame run in which the service pass was idle.",
   "004c40f0_structure": {
     "head": "arm = (00e188ae != 0 || 00e18b34 != 0) && game+719eh == 0; game+719eh = 0; 00e18b34 = 00e188ae",
     "arm_system_ui": {

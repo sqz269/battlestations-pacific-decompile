@@ -48,12 +48,24 @@ OnMove falls through to 004E53B4. Steps 4..7 repeat while the service pass repor
 | 6 | 004E5477 | 006840F0(&pending) | The service pass again; the loop ends when it reports nothing. |
 | 7 | 004E5481 | `00E18CDC = 0` | As step 3. |
 
-**The drain loop is why the main menu appears on the frame it is entered, not the frame after.**
-The shell's push (`docs/MAIN_MENU_PATH.md` step 9) and its activate run inside the drain at
-004E4430, which OnMove reaches earlier in the same call. Step 1 above has therefore already run
-before the request exists. Step 2 services it, sets its out byte, and step 5 runs 004C40F0 a second
-time over the screen set step 2 just published. Without the loop the first visible frame would be
-the next one.
+**The main menu is visible on the frame it is entered, but the drain loop is not what does it.**
+00684600 syncs the applied record to the pending one, and it runs twice before OnMove reaches step
+2. First inside the shell entry: `BSP_MainMenu_Init` 00686380 calls it at 006868BD with id 4
+`INTF_REWARDS` when 00E198B0 is 1 and id 1 `INTF_MAINMENU` otherwise, the returning-from-a-mission
+case against the cold boot. EBX holds the 1 there, assigned once at 00686622 and preserved across
+the intervening calls. Those two arms interlock with the shell: 004E4250 skips the push at
+004E4259 exactly when the applied id is already 4, so the rewards arm skips it and the cold boot
+pushes id 1. Second, whichever arm ran, 00684700's replay at 0068477E calls the manager's virtual
+`+10h`, 00685820, which calls 00684600 again.
+
+So by 004E5442 the applied and pending records match, step 2 reports nothing, and steps 4..7 never
+run on the entry frame. **The level-4 screen set is published by the Activate replay, not by the
+service pass.** What makes the menu visible is step 1: the post-drain state test at 004E4D12
+compares only against 1, 2 and 4, so state 5 falls through and the same OnMove call carries on into
+the render tail, where 004C40F0 at 004E53B4 pumps a set that is already published.
+
+The drain loop is still live code. It matters for later navigation, where a push arrives without a
+re-activation and the two records genuinely differ.
 
 ## 004C40F0 `BSP_Game_UpdateInterfaceOnly`, reconstructed
 
@@ -202,6 +214,14 @@ on every frame after.
 
 ## Corrections
 
+- **This document's own first version credited the drain loop with making the menu visible**, saying
+  step 2 services the shell's request and step 5 pumps the result. That mechanism is wrong and is
+  replaced above; the conclusion that the menu is visible on the entry frame is unchanged. The
+  superseded sentence was "The drain loop is why the main menu appears on the frame it is entered,
+  not the frame after." It was caught by `agent/cc-exe-2c`, whose 120-frame run showed the service
+  pass idle, and the cause is 00684600 syncing applied to pending inside both 00686380 and the
+  00684700 replay before 004E5442 is reached. The id polarity at 006868AD, 4 when 00E198B0 is 1 and
+  1 otherwise, was settled by the single `MOV EBX,0x1` at 00686622.
 - **`006840F0` walks four managers, not two.** The opening sentence of its ledger record, from
   packet `game_on_move_map`, reads "For each of DAT_00e198ac and DAT_00e198b4". A later append from
   packet `game_session_polls` already names all four, and `include/bsp/session_polls.hpp` models
