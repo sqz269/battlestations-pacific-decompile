@@ -55,7 +55,7 @@ CameraTransformBacking transform_backing(NativeNodeStorage& node) noexcept {
 }
 
 NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
-    std::size_t slot_bytes, const NativeString& name, SizedStoragePool& strings) {
+    std::size_t slot_bytes, const NativeString& name, NativeStringStorage& strings) {
     if (!actual_slot || slot_bytes < sizeof(NativeNodeStorage) ||
         (reinterpret_cast<std::uintptr_t>(actual_slot) % alignof(NativeNodeStorage)) != 0)
         throw std::invalid_argument("native node construction requires an aligned actual 0x174-byte prefix");
@@ -79,8 +79,7 @@ NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
     node.point_lights_164 = {nullptr, 0, 0};
     node.scene_170 = nullptr;
     try {
-        PooledStringStorage pool(strings);
-        node.name_54.copy_from_00be0a30_fragment(pool, name);
+        node.name_54.copy_from_00be0a30_fragment(strings, name);
         node.scalar_4c = one_word;
         node.scalar_ac = one_word;
         node.valid_flags_5c = 0;
@@ -103,14 +102,19 @@ NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
         while (node.point_lights_164.count > 0) --node.point_lights_164.count;
         node.point_lights_164.count = 0;
         singleton_lifetime_free(node.point_lights_164.begin);
-        if (node.name_54.data())
-            strings.release_00bd1510(node.name_54.data(), node.name_54.length() + 1u);
+        destroy_native_string_header_0041dd20(&node.name_54, strings);
         node.vtable_00 = 0x00d5c104u;
         node.vtable_00 = 0x00ceb130u;
         node.~NativeNodeStorage();
         throw;
     }
     return node;
+}
+
+NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
+    std::size_t slot_bytes, const NativeString& name, SizedStoragePool& strings) {
+    PooledStringStorage storage(strings);
+    return construct_native_node_00b6f5a0(actual_slot, slot_bytes, name, storage);
 }
 
 NativeNodeBinding::NativeNodeBinding(NativeNodeStorage& node,

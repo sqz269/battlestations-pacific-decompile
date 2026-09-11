@@ -97,3 +97,18 @@ after adding this source and the shared backing changes to the main target.
 The audit records the four shared-source hashes used by the focused check.
 Native-byte comparison does not establish full native ABI compatibility,
 gameplay or visual parity.
+
+## Correction from docs/NATIVE_NODE_POOL_COMPOSITION.md
+
+Packet `orch3_node_pool_composition_q` adds the direct `NativeStringStorage`
+interface while retaining the existing `SizedStoragePool` adapter. The actual
+native singleton/ring bridge can now supply node names and member cleanup.
+The complete native body is `[B6F5A0,B6F8CE)`, with RET4 at B6F8CB. The plain
+node pool uses 178h slots with a slab ID at +174; the earlier 1F0h extent is the
+separate directional-light allocation.
+
+The new original-byte fixture covers nonempty names across the small/large
+allocation threshold and all 178 bytes of a plain-node slot. It also covers
+the bounded 868193 point-effect allocation stage, name-header aliasing and
+reconstructed C++ construction-failure raw return. Original exception dispatch,
+terminal binding, whole effect construction and gameplay remain unvalidated.
