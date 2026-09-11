@@ -192,7 +192,7 @@ struct MissionSceneLoadHost {
     virtual void reset_shader_globals() = 0; // 00951560 on 00F89A08 and 00F89A5C
     virtual bool lua_global_exists(const char* name) = 0; // 00b65fb0 on "thisTable"
     virtual void lua_clear_global(const char* name) = 0; // 00b67580
-    virtual void lua_reset_state() = 0; // 005e2f00
+    virtual void sync_lobby_settings_from_lua() = 0; // 005e2f00 BSP_Game_SyncLobbySettingsFromLua: opens the LobbySettings global and walks the thirteen slots of 00e08908 (docs/MISSION_LUA_MACHINE.md); it resets no Lua state (2f correction 3)
     virtual void lua_declare_global(const char* name) = 0; // 00b67350 on "recon"
     virtual void resolve_named_scene_objects() = 0; // 004f2800
 

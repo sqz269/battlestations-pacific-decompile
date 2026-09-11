@@ -1787,7 +1787,7 @@ The ten steps that run:
 | `release_main_menu_manager` | 004dfd90 | 00e198ac | the global is nulled; the frame reads the same flag |
 | `release_mission_result` | 004dfe83 | — | game+7188h cleared, which is why the exit is unreachable |
 | `global_subsystems` (one inner step) | 004dc72f | 00886900 | 21 global and autoload scripts |
-| `lua_reset_state` | 004e02d0 | 005e2f00 | the `LobbySettings` table, values excepted |
+| `sync_lobby_settings_from_lua` (was `lua_reset_state`, correction 3) | 004e02d0 | 005e2f00 | the `LobbySettings` table, values excepted |
 | `input_update` | 004db9b4 | 00a92c40 | the reconstructed action records, no backend |
 | `run_mission_script` | 004e0a3f | 008860b0 | `Scripts/missions/usn/usn_2_java.lua` |
 | `lua_call_entry_point_a` | 004e0a96, 004e0c2e | 0045f520 | `luaPrecacheUnits`, `luaStageInitMulti` |

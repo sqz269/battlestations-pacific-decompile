@@ -222,7 +222,7 @@ void run_mission_scene_load(MissionSceneLoadState& state, MissionSceneLoadHost& 
     if (host.lua_global_exists("thisTable")) {
         host.lua_clear_global("thisTable");
     }
-    host.lua_reset_state();
+    host.sync_lobby_settings_from_lua();
     host.lua_declare_global("recon");
     host.resolve_named_scene_objects();
     state.hud_suppressed = false; // 004e0360
