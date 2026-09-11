@@ -1,0 +1,57 @@
+{
+  "packet": "orch3_effect_setters_n_integration",
+  "changes": [
+    {
+      "address": "0053d9c0",
+      "before": {
+        "address": "0053d9c0",
+        "function_name": "FUN_0053d9c0"
+      },
+      "after": {
+        "address": "0053d9c0",
+        "name": "BSP_PointEffect_SetWorldMatrix",
+        "evidence": "Complete0053D9C0..0053DA25, ECX effect stack matrix RET4. Actual node virtual34 first; reload parent+8C afterward; canonical source*parent inverse into temporary then x87 copy+D0, or direct source copy. Source remains live through callback alias/reentry. D62C88+34 verified B6E870, current40 dispatched through same scene binding. Docs POINT_EFFECT_MATRIX_SETTERS; old FUN_0053d9c0 preserved in report. Strict compile, fixture and2CTests passed; not ABI/game validated."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "0072aa80",
+      "before": {
+        "address": "0072aa80",
+        "function_name": "FUN_0072aa80"
+      },
+      "after": {
+        "address": "0072aa80",
+        "name": "BSP_PointEffect_SetRelativeMatrix",
+        "evidence": "Complete0072AA80..0072AB03, ECX effect stack matrix RET4. Canonical x87 source copy+D0 first, capture parent+8C, refresh bit2 world, canonical relative*parent world temporary, actual node virtual34; null parent passes actual+D0. Retains callback mutations with no final relative write. D62C88+34 verified B6E870. Docs POINT_EFFECT_MATRIX_SETTERS; old FUN_0072aa80 preserved in report. Strict compile, fixture and2CTests passed; not ABI/game validated."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b6e870",
+      "before": {
+        "address": "00b6e870",
+        "function_name": "BSP_Transform_SetWorldMatrix",
+        "comment": "[BSP reconstruction 00b6e870]\nWorld-edit typed slice src/camera_transform.cpp. 00b6e7e0 ECX/RET: root world->local x87copy; otherwise ensure parent inverse valid+5C bit8, fullmultiply world*parentinverse then copylocal. 00b6e870 ECX stackmatrix RET4: copyworld, attached+A0 virtual3C notify, derivelocal, invalidatedescendants, this virtual40, then flags5C=2. Camera virtual40=00b6dbe0 ECX/RET/taildispatch: auxiliary138 &=FFFFFFCF then attachednotification. Wrapper00b71460 ECX stackmatrix RET4: camera2F0 &=FFFFFE4B, baseworldsetter, directionrefresh00b70660. Explicit required virtual callback in new interface; camera wrapper supplies known override. Existing parent camera worldedit fixture verifies two notifications and order, local=-.75/world=-1.5/view=1.5,target=-.5, expected pixels. See reports/camera_world_edit.json. Native ownership and gameplay unported."
+      },
+      "after": {
+        "address": "00b6e870",
+        "name": "BSP_Transform_SetWorldMatrix",
+        "evidence": "World-edit typed slice src/camera_transform.cpp. 00b6e7e0 ECX/RET: root world->local x87copy; otherwise ensure parent inverse valid+5C bit8, fullmultiply world*parentinverse then copylocal. 00b6e870 ECX stackmatrix RET4: copyworld, attached+A0 virtual3C notify, derivelocal, invalidatedescendants, this virtual40, then flags5C=2. Camera virtual40=00b6dbe0 ECX/RET/taildispatch: auxiliary138 &=FFFFFFCF then attachednotification. Wrapper00b71460 ECX stackmatrix RET4: camera2F0 &=FFFFFE4B, baseworldsetter, directionrefresh00b70660. Explicit required virtual callback in new interface; camera wrapper supplies known override. Existing parent camera worldedit fixture verifies two notifications and order, local=-.75/world=-1.5/view=1.5,target=-.5, expected pixels. See reports/camera_world_edit.json. Native ownership and gameplay unported. | POINT_EFFECT_MATRIX_SETTERS adds explicit callback-context overload sharing existing canonical body; old API delegates. Actual node adapter resolves current same-scene virtual40 only after attachment callback, local derivation and descendant invalidation, before final flags=2. Live D62CBC confirms virtual34=B6E870. Nested setter/current40 replacement fixture and2CTests passed; no TLS/global callback or duplicated transform."
+      },
+      "status": "applied"
+    }
+  ],
+  "annotation_readback": "All3 names/evidence and prior comments verified in local/effect-setters-n-comments.json",
+  "exports": "All3 refreshed after annotations",
+  "source_registration": "Registered in cmake/startup.cmake; pending fields of worker report superseded",
+  "validation": {
+    "combined_build": "PASS scripts/build.ps1; local/effect-array-setters-n-build.log",
+    "existing_ctests": "2/2 pass",
+    "combined_fixture": "PASS local/effect-setters-n-combined-fixture.log; linked combined bsp_core.lib without duplicate standalone module objects"
+  },
+  "new_permanent_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "required_binding": "Actual plain-node scene attachment must bind current virtual34 to rebuilt B6E870 and current virtual40 to B6DBE0; original table integers are not called. Same binding must change with native table phase."
+}

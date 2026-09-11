@@ -1,0 +1,76 @@
+{
+  "packet": "orch3_effect_setters_n",
+  "project": "bsp",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "ghidra_access": "read_only_verified_before_each_live_query_or_export_batch",
+  "functions": [
+    {
+      "address": "0053d9c0",
+      "old_name": "FUN_0053d9c0",
+      "proposed_name": "BSP_PointEffect_SetWorldMatrix",
+      "cpp_name": "set_point_effect_world_matrix_0053d9c0",
+      "native_inclusive_end": "0053da25",
+      "native_last_instruction": "0053da23",
+      "native_instruction_count": 36,
+      "native_byte_count": 102,
+      "native_abi": "ECX effect, stack matrix pointer, RET4; return value unused",
+      "complete_body": true,
+      "order": ["capture node and virtual34", "invoke original source reference", "reload effect parent", "get actual parent inverse if nonnull", "source times inverse into separate temporary or source directly", "canonical x87 copy into actual relative+D0"],
+      "callback_alias_rule": "Input is not snapshotted; callback source mutations and replacement parent affect final relative matrix"
+    },
+    {
+      "address": "0072aa80",
+      "old_name": "FUN_0072aa80",
+      "proposed_name": "BSP_PointEffect_SetRelativeMatrix",
+      "cpp_name": "set_point_effect_relative_matrix_0072aa80",
+      "native_inclusive_end": "0072ab03",
+      "native_last_instruction": "0072ab01",
+      "native_instruction_count": 49,
+      "native_byte_count": 132,
+      "native_abi": "ECX effect, stack matrix pointer, RET4; return value unused",
+      "complete_body": true,
+      "order": ["x87 copy source to actual+D0", "capture effect parent", "conditionally refresh captured parent world bit2", "capture node dispatch table", "relative times parent-world into temporary if parent nonnull", "load captured table virtual34 and current receiver", "invoke temporary or actual+D0 for null parent"],
+      "callback_alias_rule": "Copy precedes parent refresh; no post-virtual write to relative; canonical multiply has no callbacks"
+    }
+  ],
+  "native_vtable_evidence": {
+    "table": "00d62c88",
+    "slot34_address": "00d62cbc",
+    "slot34_bytes": "70 e8 b6 00",
+    "slot34_target": "00b6e870",
+    "slot40_address": "00d62cc8",
+    "slot40_bytes": "e0 db b6 00",
+    "slot40_target": "00b6dbe0",
+    "verified": "live_read_only_ghidra_bytes"
+  },
+  "native_constants": {
+    "pointer_test_mask": "00e1767c immediate nonzero mask after NEG/SBB; simple null check, not a global read",
+    "world_valid_bit": 2,
+    "world_setter_final_flags": 2,
+    "node_world_changed_auxiliary_and": "ffffffcf"
+  },
+  "canonical_apis": ["4134F0 x87 matrix copy", "413920 full matrix multiply", "B6E0D0 inverse-world getter", "B6DB70 world refresh", "B6E870 shared body with explicit callback-context overload", "B6DBE0 existing scene world-change operation"],
+  "actual_storage": "Existing PointEffectInstanceStorage, NativeNodeBinding, CameraTransform borrowed fields and SceneNodeAttachment; no duplicate owner/count/map/transform",
+  "dispatch": "Explicit current SceneNodeAttachment.set_world_matrix; null is unbound, concrete D62C88 node requires B6E870 adapter and existing current+40 binding; table phase changes must update the same binding",
+  "uncertainty": ["Descriptive names are hypotheses", "Unknown derived virtual34 implementations remain required", "Host pointers and added callback context are new C++ interfaces, not native ABI", "Full008680B0 constructor remains required"],
+  "validation": {
+    "strict_direct_win32_compile": "passed",
+    "repository_build": "passed",
+    "ctests": {"reconstructed_math": "passed", "native_math_differential": "passed"},
+    "native_seed_match": "all existing seeds matched disk",
+    "ignored_probe": "local/point_effect_matrix_probe.cpp",
+    "ignored_probe_result": "passed actual backing, aliasing, parent refresh/reload, nested callback context, current40 replacement, missing34/40 partial-state checks",
+    "probe_link_flags": "/MANIFEST:EMBED",
+    "original_setter_bytes_executed": false,
+    "new_permanent_tests": false,
+    "source_registry_integration": "parent owns cmake/startup.cmake and must register new source"
+  },
+  "remaining_constructor_dependencies": ["Actual node allocation and stable binding with original failure/unwind", "8672A0 and8670A0 full reference-array resize/cleanup", "Current row virtual18 factories and6FBEB0/6CF070 ownership", "4D1100 and867500 real manager insertion with866440 lock and74D780 list operation", "Complete native SEH unwind and consumed template argument lifetime"],
+  "abi_compatible": false,
+  "game_validated": false,
+  "game_run": false,
+  "game_installation_changed": false,
+  "ghidra_mutations": false,
+  "evidence_document": "docs/POINT_EFFECT_MATRIX_SETTERS.md"
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/gui_icon_runtime.hpp"
 #include "bsp/gui_widget_owner.hpp"
+#include "bsp/native_material_owner.hpp"
 #include <functional>
 #include <memory>
 
@@ -34,9 +35,10 @@ struct GuiMaterialBindingServices {
     // token releases. get() must be &owner. Current unique page ownership alone
     // cannot supply this contract: a real widget/page lifetime owner is needed.
     std::function<std::shared_ptr<const void>(GuiWidgetOwner&)> retain_widget;
-    // Resolve actual section+20 to its ONE existing material projection. This
-    // is the native material owner's association, not a replacement registry.
-    std::function<MaterialCloneState&(const void* actual_material)> material;
+    // SAME canonical domain used by the model's retained resources. Color
+    // resolves section+20 to NativeMaterialReference and borrows its actual
+    // storage; no MaterialCloneState copy or separate registry is permitted.
+    NativeRenderActualOwners& actual_owners;
 };
 
 // Full00AA9F10: nearest self/parent type16; writes/borrows SAME widget+E8.
@@ -54,9 +56,16 @@ bool gui_model_has_geometry_00b74650(const NativeModelOwner&) noexcept;
 //00B72B40 ECX actual mesh ->DWORD+58, RET at00B72B43/1.
 std::uint32_t gui_mesh_element_count_00b72b40(const void* actual_mesh) noexcept;
 
+//00B179F0: ECX actual material; ignored stack slot; EAX material+38; RET4.
+// A live alias to the SAME first four lighting words. No copy or flag write.
+float* native_material_diffuse_00b179f0(NativeMaterialStorage&,
+    std::uint32_t ignored_slot) noexcept;
+
 // Actual +50 of base, Group, Icon, FrameBox and Screen. Stores SAME layout
 // color (and its existing alpha projection), then checks raw node+180 and
-// mesh+58. Only element0's SAME material diffuse quartet is written; no dirty
+// mesh+58. Resolves element0's actual section+20 through the same model owner
+// domain, verifies its canonical NativeMaterialReference/storage, then writes
+// only that SAME raw material diffuse quartet; no dirty
 // flag, child traversal, alpha multiplication or named-parameter registration.
 // Requires this runtime's canonical live model companion before any write.
 // An inherited +50 table entry alone does not validate a group-backed Screen.
@@ -68,7 +77,8 @@ void set_gui_color_00aa6870(GuiWidgetOwner&, const float (&rgba)[4],
 // Registration order is AA9F10 then B18A40(widget,1); publication passes the
 // widget's own current Color to current+50 (AA6870 for these supported types).
 // The services and their referenced actual storage must outlive callbacks and
-// every material registration. This does not create missing native resources.
+// every material registration. Registration remains semantic and requires the
+// real widget/clip lifetime; this does not complete the native GUI adapter.
 // Color publication rejects roots without a canonical model companion.
 void bind_gui_material_callbacks(GuiGeometryRuntimeServices&, GuiWidgetOwner&,
     GuiMaterialBindingServices);

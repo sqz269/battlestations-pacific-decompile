@@ -1,0 +1,77 @@
+{
+  "packet": "orch2_lease_transactions_t",
+  "date": "2026-09-11",
+  "base_commit": "56b2a02",
+  "scope": "Python coordination tooling; no native game addresses or ABI changes",
+  "files": [
+    "tools/coordination.py",
+    "tests/test_coordination_transactions.py",
+    "docs/LEASE_TRANSACTION_SAFETY.md",
+    "reports/lease_transaction_safety.json"
+  ],
+  "incident": {
+    "source": "Integrator handoff; separate repair performed before this packet",
+    "reported_malformed_suffix_bytes": 811,
+    "reported_preserved_records": 756,
+    "former_shared_temporary_file": "leases.tmp",
+    "former_read_modify_write_serialized": false,
+    "live_registry_repair_performed_by_this_packet": false
+  },
+  "implementation": {
+    "transaction_writers": ["claim", "release"],
+    "lock": "Persistent leases.lock with OS-held exclusivity around the complete read/check/modify/replace",
+    "windows_lock": "CreateFileW GENERIC_READ|GENERIC_WRITE, share mode 0, OPEN_ALWAYS, non-inheritable handle",
+    "lock_reclamation": "None; no expiry/PID reclamation or unlink on timeout",
+    "acquisition_timeout_seconds": 30,
+    "io_retry_timeout_seconds": 5,
+    "retry_interval_seconds": 0.02,
+    "retryable_windows_errors": [5, 32, 33],
+    "retryable_windows_crt_errors": ["EACCES", "EPERM"],
+    "publication": "Unique same-directory NamedTemporaryFile; flush, fsync, close, os.replace",
+    "unlocked_save": "Rejected before any write; callers must read within lease_transaction",
+    "malformed_json": "Propagates without repair or overwrite",
+    "lease_schema_and_overlap_expiry_semantics": "Preserved",
+    "ghidra_lock": "Unchanged",
+    "official_windows_reference": "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilew"
+  },
+  "validation": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.11 Anaconda, MSC v.1929 64 bit AMD64",
+    "isolation": "Fresh TemporaryDirectory; explicit BSP_COORDINATION_DIR in parent and every child",
+    "live_registry_stress": false,
+    "live_registry_operations": "Only normal own lease claims and releases",
+    "focused_test_command": "python -m unittest discover -s tests -p test_coordination_transactions.py -v",
+    "focused_tests_passed": 1,
+    "focused_elapsed_seconds": 3.164,
+    "concurrent_writers": 10,
+    "unique_worker_leases_preserved": 100,
+    "extensions_preserved": 100,
+    "release_records_preserved": 50,
+    "contested_file_winners": 1,
+    "continuous_snapshot_reader": "passed without JSON corruption",
+    "additional_checks": [
+      "Live-holder timeout does not steal lock or change registry",
+      "Terminated-holder lock released by OS",
+      "Nested transaction claim/release",
+      "Unlocked save rejected",
+      "Real Windows deny-sharing handle causes retry then successful replacement",
+      "Serialization failure leaves published bytes unchanged and cleans own temporary file",
+      "Existing malformed JSON is surfaced and preserved"
+    ],
+    "first_iteration_finding": "Concurrent pathlib.open raised PermissionError errno 13 without winerror; Windows CRT retry form added and fixture passed",
+    "existing_tests_command": "python -m unittest discover -s tests -p test_exporter.py -v",
+    "existing_tests_passed": 4,
+    "py_compile": "passed",
+    "git_diff_check": "passed",
+    "native_build_ctest": "Not rerun; no C++ changes",
+    "ghidra_access": "None",
+    "game_validation": "None"
+  },
+  "limitations": [
+    "Older worktree writers ignore leases.lock and remain unsafe until all active writer checkouts and already-imported processes are upgraded",
+    "Integration and deployment to other worktrees are not performed by this worker",
+    "POSIX flock fallback is untested here",
+    "Abrupt termination can leave an unused unique temporary file",
+    "No automatic repair of historical corruption or claim of full power-loss durability"
+  ]
+}

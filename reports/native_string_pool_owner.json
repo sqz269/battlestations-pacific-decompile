@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "packet": "orch3_native_string_pool_owner_m",
+  "date": "2026-09-11",
+  "base_revision": "1e8a256",
+  "source": "src/native_string_pool_owner.cpp",
+  "header": "include/bsp/native_string_pool_owner.hpp",
+  "documentation": "docs/NATIVE_STRING_POOL_OWNER.md",
+  "source_registration": "Pending integrator: cmake/startup.cmake leased by orch3_camera_decomposition_m; CMakeLists.txt untouched",
+  "target": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verification": "bsp.py ghidra client verifies configured project/program/language/image base before each live query"
+  },
+  "native_spans": [
+    {"address":"00419cc0","end_exclusive":"00419d80","length":192,"terminal_instruction":"00419d7f","terminal_bytes":"c3","original_abi":"No arguments; EAX actual current01090AA8; RET","cpp_symbol":"native_string_pool_get_or_create_00419cc0","old_ghidra_name":"BSP_SizedStoragePool_GetSingleton","reviewed_name":"BSP_SizedStoragePool_GetSingleton"},
+    {"address":"00bd0f50","end_exclusive":"00bd0f93","length":67,"terminal_instruction":"00bd0f92","terminal_bytes":"c3","original_abi":"ECX embedded ring; EAX same ring; RET","cpp_symbol":"construct_native_string_pool_ring_00bd0f50","old_ghidra_name":"FUN_00bd0f50","reviewed_name":"BSP_NativeStringPoolRing_Construct"},
+    {"address":"00bd1480","end_exclusive":"00bd14b2","length":50,"terminal_instruction":"00bd14b1","terminal_bytes":"c3","original_abi":"ECX raw actual8AD4A0h allocation; EAX owner; RET","cpp_symbol":"construct_native_string_pool_00bd1480","old_ghidra_name":"FUN_00bd1480","reviewed_name":"BSP_NativeStringPool_Construct"},
+    {"address":"00bd14c0","end_exclusive":"00bd150f","length":79,"terminal_instruction":"00bd150e","terminal_bytes":"c3","original_abi":"ECX actual owner; RET; no specified return","cpp_symbol":"destroy_native_string_pool_00bd14c0","old_ghidra_name":"FUN_00bd14c0","reviewed_name":"BSP_NativeStringPool_Destroy"},
+    {"address":"00bd1730","end_exclusive":"00bd174e","length":30,"terminal_instruction":"00bd174b","terminal_bytes":"c2 04 00","original_abi":"ECX actual owner; stack flags; EAX original address including after free; RET4","cpp_symbol":"delete_native_string_pool_00bd1730","old_ghidra_name":"CG_scalar_deleting_dtor_00bd1730","reviewed_name":"BSP_NativeStringPool_ScalarDeletingDestructor"}
+  ],
+  "instruction_gaps": [
+    {"address":"00bd1745","end_exclusive":"00bd1748","bytes":"83 c4 04","instruction":"ADD ESP,4","reason":"Ghidra listing omits post-free stack repair; direct bytes and following EAX=this/RET4 establish full deleting return"},
+    {"address":"00c5e121","end_exclusive":"00c5e123","bytes":"59 c3","instruction":"POP ECX; RET","reason":"State1 unwind funclet is bounded too early after _free; evidence only, not a separate reconstruction"}
+  ],
+  "missing_starts": [{"address":"00c5e123","end_exclusive":"00c5e12d","bytes":"b8 ec 41 d8 00 e9 16 8a f9 ff","decoded":"MOV EAX,00D841EC; JMP00BF6B43","role":"Getter EH handler label, not a Ghidra function start; no standalone reconstruction"}],
+  "eh": {"funcinfo":"00d841ec","unwind_map":"00d841dc","states":[{"state":0,"next":-1,"action":"00c5e110","behavior":"LEA ECX,[EBP-14h]; JMP00411EE0 releases captured section"},{"state":1,"next":0,"action":"00c5e118","behavior":"free raw allocation at EBP-18h, then state0"}],"catch_count":0},
+  "actual_storage": {"owner_bytes":9098400,"ring_bytes":2098360,"arena_offset":8,"arena_bytes":7000000,"bump_offset":"006acfc8","ring_offset":"006acfcc","critical_section_offset":"008ad484","tracked_depth_offset":"008ad49c","publication":"01090aa8","small_return_disable_gate":"01090aa4","profile_identity":"00d68200","deleting_function_identity":"00bd1730","base_profile_identity":"00ce3818"},
+  "lifetime": {"domain":"caller-supplied canonical SingletonLifetimeDomain for01090AA0","allocation":"singleton_lifetime_allocate object native_bytes=host_bytes=0x8AD4A0; canonical00BF681B new-handler loop","free":"singleton_lifetime_free canonical00BF65AC ->00BF9DC8","real_dispatch":"NativeStringPoolLifetimeBinding::callbacks composes canonical destroy_registered; D68200 identity directly invokes rebuilt00BD1730; other owners/validation require downstream callbacks","second_domain":false,"shadow_publication":false,"unregister_on_pool_destruction":false,"constructor_resets_shutdown_gate":false},
+  "mandatory_next_layer": [{"address":"00bd1120","end_exclusive":"00bd11d2","contract":"Actual owner allocation; nullable large malloc, embedded exact-size ring/arena, no bounds checks"},{"address":"00bd1510","end_exclusive":"00bd156f","contract":"Actual owner sized release; reread real01090AA4 gate, actual embedded lock/ring"},{"address":"00bd12a0","end_exclusive":"00bd1375","contract":"Actual ring collision/displacement push and live/peak accounting"}],
+  "validation": {"existing_build":"passed scripts/build.ps1; new source excluded pending registration","existing_ctests":{"reconstructed_math":"passed","native_math_differential":"passed"},"new_source_compile":"passed MSVC Win32 /W4 /WX /fp:strict /EHsc /MD","focused_fixture":"passed ignored local/native_string_pool_owner_probe.cpp; embedded preimages, metadata, exact registration/cached identity, real deleting dispatch, positive-depth drain, flags2 retention, downstream callbacks","manifest":"/link /MANIFEST:EMBED","build_log":"local/native_string_pool_owner_build.log","fixture_log":"local/native_string_pool_owner_probe.log","new_tracked_tests":false,"original_pool_machine_code_fixture":false,"abi_compatible":false,"game_validated":false},
+  "uncertainty": ["Descriptive symbols are hypotheses; original register/stack ABI comes from assembly rather than incomplete saved signatures.","Host callback binding and canonical allocator are explicit rebuilt interfaces; not original vtable/CRT/exception ABI.","No constructor-failure or registration-failure injection fixture was run.","Actual allocation/release and consumer integration remain mandatory work beyond this packet; no semantic pool or CRT fallback is presented as closure."],
+  "ghidra_comments_before": "local/native_string_pool_owner_comments_before.json",
+  "ghidra_mutations": false,
+  "consumer_edits": false,
+  "installed_game_mutations": false
+}

@@ -1,0 +1,112 @@
+{
+  "packet": "orch3_effect_teardown_o",
+  "date": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/point_effect_teardown.cpp",
+  "header": "include/bsp/point_effect_teardown.hpp",
+  "evidence": "docs/POINT_EFFECT_TEARDOWN.md",
+  "status": "complete_typed_bodies_required_actual_bindings_strict_win32_compiled_lifetime_fixture_and_two_ctests_passed",
+  "abi_compatible": false,
+  "game_validated": false,
+  "owner_relationship": {
+    "native_storage_bytes": 276,
+    "canonical_type": "PointEffectInstanceStorage",
+    "constructor_identity_store": "008680eb: D0D3EC",
+    "destructor_identity_store": "0086769f: D0D3EC",
+    "vtable_00d0d3ec": ["008683e0", "00867ce0"],
+    "virtual_00_is_separate_deferred_terminal_dispatch": true,
+    "virtual_04_is_scalar_deleting_destructor": true
+  },
+  "canonical_dependencies": [
+    "PointEffectReferenceArray and resize_point_effect_entry_array_008672a0",
+    "PointEffectInstanceStorage and PointEffectInstanceLinks parent reference projection",
+    "GeneratedModelLifetimeRuntime current exact-transform virtual18 binding",
+    "unlink_and_release_render_model_00b6dfa0",
+    "release_native_render_actual_owner with actual node storage address and zero-only NativeRenderActualOwners lookup",
+    "release_render_command_reference over existing borrowed actual counts",
+    "singleton_lifetime_free: ordinary BF6989 -> BF65AC free"
+  ],
+  "functions": [
+    {
+      "address": "008675b0",
+      "name": "destroy_point_effect_entry_array_008675b0",
+      "saved_name": "FUN_008675b0",
+      "saved_entry_comments": null,
+      "proposed_name": "BSP_PointEffectReferenceArray_Destroy_Provisional",
+      "native_abi": "ECX actual0Ch header; RET; no established EAX result",
+      "native_last_instruction": "008675c6",
+      "native_inclusive_end": "008675c6",
+      "body_complete": true,
+      "missing_saved_flow": {"start": "008675c2", "inclusive_end": "008675c6", "reason": "BF6989 incorrect no-return flow", "live_and_disk_bytes_match": true},
+      "evidence": ["8675B5 resize current header to0", "8675BA reload current backing", "8675BD ordinary free", "begin and capacity left unchanged"]
+    },
+    {
+      "address": "00867680",
+      "name": "destroy_point_effect_instance_00867680",
+      "saved_name": "FUN_00867680",
+      "saved_entry_comments": null,
+      "proposed_name": "BSP_PointEffectInstance_Destroy_Provisional",
+      "native_abi": "ECX actual114h instance; RET; no established EAX result",
+      "native_last_instruction": "0086778b",
+      "native_inclusive_end": "0086778b",
+      "body_complete": true,
+      "missing_saved_flow": {"start": "0086774c", "inclusive_end": "0086778b", "reason": "BF6989 incorrect no-return flow", "live_and_disk_bytes_match": true},
+      "evidence": ["86769F publishD0D3EC", "8676A5 capture node before8676AB F87600 decrement", "8676BA canonical B6DFA0 then8676BF reload current110", "8676CB..DB release actual current node04 and virtual00 atzero", "8676DD..FE parent8C release-clear", "867708..729 current template84 release-clear", "867733..747 auxiliary18 resize0/free", "86774F..763 entries0C resize0/free", "867775 BD30F0 base identity only"],
+      "untouched": ["F87604", "instance04", "instance88", "instance110", "array begin and capacity after free"],
+      "eh": {
+        "handler": "00c94efa",
+        "handler_inclusive_end": "00c94f03",
+        "descriptor": "00dc6d4c",
+        "map": "00dc6d70",
+        "states": [
+          {"state": 0, "next": -1, "funclet": "00c94ec0", "cleanup": "BD30F0 base"},
+          {"state": 1, "next": 0, "funclet": "00c94ec8", "cleanup": "8675B0 array0C"},
+          {"state": 2, "next": 1, "funclet": "00c94ed3", "cleanup": "8675B0 array18"},
+          {"state": 3, "next": 2, "funclet": "00c94ede", "cleanup": "41DE40 template84"},
+          {"state": 4, "next": 3, "funclet": "00c94eec", "cleanup": "605FD0 parent8C"}
+        ],
+        "no_node_retry_counter_rollback_or_physical_free": true
+      }
+    },
+    {
+      "address": "00867ce0",
+      "name": "delete_point_effect_instance_00867ce0",
+      "saved_name": "CG_scalar_deleting_dtor_00867ce0",
+      "saved_entry_comments": null,
+      "proposed_name": "BSP_PointEffectInstance_ScalarDeletingDtor_Provisional",
+      "native_abi": "ECX actual114h instance; flags stackDWORD; EAX original address including afterfree; RET4",
+      "native_last_instruction": "00867cfb",
+      "native_inclusive_end": "00867cfd",
+      "body_complete": true,
+      "missing_saved_flow": {"start": "00867cf5", "inclusive_end": "00867cf7", "reason": "BF65AC incorrect no-return flow", "live_and_disk_bytes_match": true},
+      "evidence": ["867CE3 complete direct destructor", "867CE8 low flagsbit0", "867CF0 BF65AC ordinaryfree", "867CF8 original pointer return onbothbranches"]
+    }
+  ],
+  "annotation_status": "proposed_only_integrator_handles_flow_repair_annotation_save_and_export_after_lease_handoff",
+  "validation": {
+    "strict_win32_compile": "passed",
+    "seed_verification": "python tools/ghidra_export.py verify-seeds passed",
+    "normal_build_and_ctest": "scripts/build.ps1 Release passed reconstructed_math and native_math_differential",
+    "new_source_registered_in_worker_cmake": false,
+    "fixture": "passed: injected virtual18 replacement ofcurrent110, actual zero-only ownerlookup, release-clear callbackmutation, auxiliary-before-entry, count-before-terminal, untouchedF87604/04/88/110, counterwrap, scalar flags2and1, state4 lookupfailure unwind and nofree",
+    "fixture_is_synthetic_terminal_observer_not_plain_node_disposal_proof": true,
+    "fixture_source": "local/point_effect_teardown_probe.cpp",
+    "fixture_source_sha256": "7d33bbd74585f48e830b547301a1c47bce32f7907f067ace7acaf3e544ed70a6",
+    "fixture_executable_sha256": "e36ea426bb902506d1a8927267a830f6c55a92155d9b819528f9424d0a957099",
+    "implementation_sha256": "db1b3e42f55140c21814d6819624a3e424877c3d546934b1a208b237bbfb1a08",
+    "fixture_compile": "MSVC Win32 /std:c++17 /O2 /W4 /WX /fp:strict /MD /EHsc; strict teardown and entryarray objects plus bsp_core.lib; /link /MANIFEST:EMBED",
+    "build_log": "local/point_effect_teardown_build.txt",
+    "native_differential_for_teardown_bodies": false
+  },
+  "limits": [
+    "The actual plain node requires its current real virtual18 and terminal00 binding; no complete plain-node retained companion or pool disposal is supplied",
+    "Current effect virtual00 dispatcher8683E0, deferred manager868010 and full constructor are not completed here",
+    "Canonical terminal methods are nonthrowing; arbitrary throwing original vtables are outside the typed interface",
+    "Valid actual spans and lifetimes required through callback reentry; node110 is nonnull by native precondition",
+    "Native identity integers are never called as executable pointers",
+    "No extra owner88 cleanup, F87604 rollback, node110 clear or array-pointer clear was invented",
+    "Original installation and native game entry untouched"
+  ]
+}

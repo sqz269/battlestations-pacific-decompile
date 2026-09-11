@@ -1,0 +1,236 @@
+{
+  "packet": "orch3_ready_m_owner_decomposition_followup",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "reviewed_worker_commits": {
+    "camera_decomposition": "519666d",
+    "native_pool_owner": "9b3af7f",
+    "point_effect_instance": "114a610"
+  },
+  "parent_source": "src/native_string_pool_storage.cpp",
+  "changes": [
+    {
+      "address": "00419cc0",
+      "before": {
+        "address": "00419cc0",
+        "function_name": "BSP_SizedStoragePool_GetSingleton",
+        "comment": "[BSP reconstruction 00419cc0]\nReturn cached global01090aa8 or guarded lazy allocation8AD4A0h/constructor00bd1480, then register with singleton lifetime manager. Does not consume native-string release arguments. Original ABI: No explicit arguments; EAX global01090aa8; RET. Caller-pushed release arguments remain on stack. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00419cc0] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers, assembly-verified; drops the _Provisional suffix, behaviour now established. Takes no arguments and returns the string pool pointer in EAX (RET, no stack cleanup): callers push the arguments of the FOLLOWING thiscall before calling it, which is why the decompiler shows phantom parameters at 0041dd64 and 0041ddc9. Lazy singleton behind DAT_01090aa8 under EnterCriticalSection/LeaveCriticalSection ([00ce2218]/[00ce2210]) with an SEH frame; on first use it allocates 0x8ad4a0 bytes through 00bf681b, constructs with 00bd1480 and registers teardown through 00415350/00bd0c30. Object: vtable +0, 7,000,000-byte bump arena +8, bump offset +0x6acfc8, free ring +0x6acfcc, lock +0x8ad484. 2857 callers. Evidence: docs/APP_INIT_ALLOC_STRINGS.md."
+      },
+      "after": {
+        "address": "00419cc0",
+        "name": "BSP_SizedStoragePool_GetSingleton",
+        "evidence": "Hypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers, assembly-verified; drops the _Provisional suffix, behaviour now established. Takes no arguments and returns the string pool pointer in EAX (RET, no stack cleanup): callers push the arguments of the FOLLOWING thiscall before calling it, which is why the decompiler shows phantom parameters at 0041dd64 and 0041ddc9. Lazy singleton behind DAT_01090aa8 under EnterCriticalSection/LeaveCriticalSection ([00ce2218]/[00ce2210]) with an SEH frame; on first use it allocates 0x8ad4a0 bytes through 00bf681b, constructs with 00bd1480 and registers teardown through 00415350/00bd0c30. Object: vtable +0, 7,000,000-byte bump arena +8, bump offset +0x6acfc8, free ring +0x6acfcc, lock +0x8ad484. 2857 callers. Evidence: docs/APP_INIT_ALLOC_STRINGS.md. | Complete native[00419cc0,00419d80); No arguments; EAX actual current01090AA8; RET. Actual shared01090AA8 slot and canonical SingletonLifetimeDomain; capture manager section, double check, allocate exactly8AD4A0h via00BF681B, construct, publish before second getter/register current slot; release captured lock before final publication reload. FuncInfoD841EC states1 raw free then0 unlock; registration failure retains publication. Evidence: docs/NATIVE_STRING_POOL_OWNER.md; reports/native_string_pool_owner.json. Strict MSVC Win32 standalone compile and focused host lifetime/identity fixture passed; both existing CTests passed. Descriptive hypothesis/new C++ ABI; not game validated. Ghidra read-only in worker."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "0042b260",
+      "before": {
+        "address": "0042b260",
+        "function_name": "FUN_0042b260"
+      },
+      "after": {
+        "address": "0042b260",
+        "name": "BSP_Geometry_NormalizeVectorWithFloor",
+        "evidence": "Capture Y/X/Z through x87 float stores; one squared-sum float spill; ordered <=double1e-10 or unordered selects float(double1e-5), else genuine CRT sqrt with native spills; divide captured X/Y/Z by float divisor and write in order. See docs/CAMERA_DECOMPOSITION.md. Names are hypotheses; original CRT policy and gameplay remain unvalidated."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "0042d2e0",
+      "before": {
+        "address": "0042d2e0",
+        "function_name": "FUN_0042d2e0"
+      },
+      "after": {
+        "address": "0042d2e0",
+        "name": "BSP_Matrix_ExtractNormalizedBasisAngles",
+        "evidence": "Capture upper-left3x3 before outputs; normalize each row via42B260; canonical42CF10(row2.Y), negate/float-spill and outputX; FCOS/float-spill; compare abs cosine with exact promoted-float1e-4 D7A268. Ordered above cutoff: float-spilled row0.Y/c,row1.Y/c CRT atan2 ->Z, then row2.X/c,row2.Z/c ->Y. Otherwise Z=+0 then atan2(row1.X,row0.X)->Y. Preserve X,Z,Y output order and matrix/output or output-reference aliases. See docs/CAMERA_DECOMPOSITION.md. Names are hypotheses; original CRT policy and gameplay remain unvalidated."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "006e47a0",
+      "before": {
+        "address": "006e47a0",
+        "function_name": "FUN_006e47a0"
+      },
+      "after": {
+        "address": "006e47a0",
+        "name": "BSP_Matrix_GetAngleVector",
+        "evidence": "Preserve actual matrix and output identity; pass EDX outputX plus stack outputY/outputZ to unresolved42D2E0, return same output pointer. Required host boundary; no manufactured decomposition results. See docs/CAMERA_POSITION_MODES.md. Names are hypotheses; typed API, not native ABI/gameplay proof. | Supersedes earlier mandatory host boundary: actual matrix and actual XYZ output now call canonical extract_camera_matrix_angles_0042d2e0, preserving matrix/output overlap and returning the same pointer. Kind5 camera consumer uses this canonical route. See docs/CAMERA_DECOMPOSITION.md. Names are hypotheses; original CRT policy and gameplay remain unvalidated."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "008680b0",
+      "before": {
+        "address": "008680b0",
+        "function_name": "FUN_008680b0"
+      },
+      "after": {
+        "address": "008680b0",
+        "name": "BSP_PointEffect_Construct_Provisional",
+        "evidence": "Hypothesis, not recovered symbol. Actual114h constructor; ECX fresh allocation; stack parent, consumed template,transform selector,option byte,tail word; RET14. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00bd0f50",
+      "before": {
+        "address": "00bd0f50",
+        "function_name": "FUN_00bd0f50"
+      },
+      "after": {
+        "address": "00bd0f50",
+        "name": "BSP_NativeStringPoolRing_Construct",
+        "evidence": "Complete native[00bd0f50,00bd0f93); ECX embedded ring; EAX same ring; RET. Actual embedded2004B8h ring: 150 head/tail pairs at200000/200258, strideDA7, then zero live2004B0 and peak2004B4, then tail0=7FFFF. Preserve80000 native pointer cells. This is a ring constructor, not a complete-owner base. Evidence: docs/NATIVE_STRING_POOL_OWNER.md; reports/native_string_pool_owner.json. Strict MSVC Win32 standalone compile and focused host lifetime/identity fixture passed; both existing CTests passed. Descriptive hypothesis/new C++ ABI; not game validated. Ghidra read-only in worker."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00bd1120",
+      "before": {
+        "address": "00bd1120",
+        "function_name": "BSP_SizedStoragePool_AllocateBlock",
+        "comment": "[BSP reconstruction 00bd1120]\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers, assembly-verified. __thiscall, ECX string pool (00419cc0), stack (uint size, uint unused), RET 8; the second argument is never read. size >= 0x96 goes straight to _malloc 00bf9f1a. Otherwise, under the lock at this+0x8ad484: if head[size] == (tail[size]+1) & 0x7ffff the free ring region for that size is empty and a block is carved off the bump arena at this+8, advancing the offset at this+0x6acfc8 by the EXACT byte count with no alignment and no bounds check of any kind. Otherwise the live count at ring+0x2004b0 is decremented and ring[tail[size]] is popped, tail[size] -= 1 modulo the ring. Size classes are indexed by byte size, so a block is only ever reused for a request of exactly the same size. Evidence: docs/APP_INIT_ALLOC_STRINGS.md."
+      },
+      "after": {
+        "address": "00bd1120",
+        "name": "BSP_SizedStoragePool_AllocateBlock",
+        "evidence": "Hypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers, assembly-verified. __thiscall, ECX string pool (00419cc0), stack (uint size, uint unused), RET 8; the second argument is never read. size >= 0x96 goes straight to _malloc 00bf9f1a. Otherwise, under the lock at this+0x8ad484: if head[size] == (tail[size]+1) & 0x7ffff the free ring region for that size is empty and a block is carved off the bump arena at this+8, advancing the offset at this+0x6acfc8 by the EXACT byte count with no alignment and no bounds check of any kind. Otherwise the live count at ring+0x2004b0 is decremented and ring[tail[size]] is popped, tail[size] -= 1 modulo the ring. Size classes are indexed by byte size, so a block is only ever reused for a request of exactly the same size. Evidence: docs/APP_INIT_ALLOC_STRINGS.md. | Unsigned size>=150 uses nullable current CRT malloc before any owner access. Small exact-size ring uses embedded CS8AD484/depth8AD49C. Empty returns DWORD owner+8+bump and adds size without alignment/bounds. Nonempty decrements live before tail reload/pop; decrement depth then leave captured lock. Complete actual-storage body in src/native_string_pool_storage.cpp. Original-byte differential with explicit current CRT/Windows rebindings and actual narrow/wide shared-lifetime composition passed. Typed API; no original exception ABI or gameplay claim. docs/NATIVE_STRING_POOL_STORAGE.md; reports/native_string_pool_storage.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00bd12a0",
+      "before": {
+        "address": "00bd12a0",
+        "function_name": "BSP_SizedStoragePool_ReturnSmallBlock",
+        "comment": "[BSP reconstruction 00bd12a0]\nReturn dereferenced pointer into shared circular pointer storage. Advance masked19-bit bin cursors at+200000/+200258, shift through neighboring bins modulo150 when colliding, store pointer, increment available+2004B0 and highwater+2004B4. No CRT free or object reference release. Original ABI: ECX size-bin pool subobject; stack address-of-storage-pointer and signed size-bin; RET8; EAX not specified. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00bd12a0] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers, assembly-verified; drops the _Provisional suffix. __thiscall, ECX the free-ring subobject (pool+0x6acfcc for the string pool, pool+4 for the game pool), stack (void** block, uint size_class), RET 8; the block is read through the pointer and never written back. Ring layout: 0x80000 pointer slots at +0, head[] at +0x200000, tail[] one class array later (+0x200258 for 150 classes, +0x200204 for 129), then the live count and the high-water mark. Each size class owns a contiguous circular slice laid down by the constructor as head[i] = i*stride (0xda7 string pool, 0xfe0 game pool), tail[i] = head[i]-1. Push advances the class's own tail; if that collides with the head of the next class, that class's whole region rotates forward one slot and its first element is displaced into the vacated slot, becoming the block that still needs a home, cascading until a class with slack is found or the walk wraps back to the starting class. Finally ring[tail[last]] takes the carried block, the live count rises and the high-water mark follows it. Evidence: docs/APP_INIT_ALLOC_STRINGS.md."
+      },
+      "after": {
+        "address": "00bd12a0",
+        "name": "BSP_SizedStoragePool_ReturnSmallBlock",
+        "evidence": "Hypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers, assembly-verified; drops the _Provisional suffix. __thiscall, ECX the free-ring subobject (pool+0x6acfcc for the string pool, pool+4 for the game pool), stack (void** block, uint size_class), RET 8; the block is read through the pointer and never written back. Ring layout: 0x80000 pointer slots at +0, head[] at +0x200000, tail[] one class array later (+0x200258 for 150 classes, +0x200204 for 129), then the live count and the high-water mark. Each size class owns a contiguous circular slice laid down by the constructor as head[i] = i*stride (0xda7 string pool, 0xfe0 game pool), tail[i] = head[i]-1. Push advances the class's own tail; if that collides with the head of the next class, that class's whole region rotates forward one slot and its first element is displaced into the vacated slot, becoming the block that still needs a home, cascading until a class with slack is found or the walk wraps back to the starting class. Finally ring[tail[last]] takes the carried block, the live count rises and the high-water mark follows it. Evidence: docs/APP_INIT_ALLOC_STRINGS.md. | Capture *block before writes, increment selected tail mask7FFFF. Collision shifts subsequent classes modulo150, displaces nonempty head slot, reloads head/tail before increments, stops at noncollision/original class. Final carried block to last tail; wrapping live increment then SIGNED peak compare. BD12D8 padding is unreachable after JMP, not missing flow. Complete actual-storage body in src/native_string_pool_storage.cpp. Original-byte differential with explicit current CRT/Windows rebindings and actual narrow/wide shared-lifetime composition passed. Typed API; no original exception ABI or gameplay claim. docs/NATIVE_STRING_POOL_STORAGE.md; reports/native_string_pool_storage.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00bd1480",
+      "before": {
+        "address": "00bd1480",
+        "function_name": "FUN_00bd1480"
+      },
+      "after": {
+        "address": "00bd1480",
+        "name": "BSP_NativeStringPool_Construct",
+        "evidence": "Complete native[00bd1480,00bd14b2); ECX raw actual8AD4A0h allocation; EAX owner; RET. Actual8AD4A0h owner: profileD68200, construct embedded ring6ACFCC, InitializeCriticalSection8AD484, zero depth8AD49C then bump6ACFC8. Preserve+4 and embedded7000000-byte arena+8. No gate01090AA4 reset, no vector or separate arena. Evidence: docs/NATIVE_STRING_POOL_OWNER.md; reports/native_string_pool_owner.json. Strict MSVC Win32 standalone compile and focused host lifetime/identity fixture passed; both existing CTests passed. Descriptive hypothesis/new C++ ABI; not game validated. Ghidra read-only in worker."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00bd14c0",
+      "before": {
+        "address": "00bd14c0",
+        "function_name": "FUN_00bd14c0"
+      },
+      "after": {
+        "address": "00bd14c0",
+        "name": "BSP_NativeStringPool_Destroy",
+        "evidence": "Complete native[00bd14c0,00bd150f); ECX actual owner; RET; no specified return. Write profileD68200, actual01090AA4=1; drain embedded section depth only while signed positive; DeleteCriticalSection; clear actual01090AA8 unconditionally; write baseCE3818. No singleton unregister and no owner free. Evidence: docs/NATIVE_STRING_POOL_OWNER.md; reports/native_string_pool_owner.json. Strict MSVC Win32 standalone compile and focused host lifetime/identity fixture passed; both existing CTests passed. Descriptive hypothesis/new C++ ABI; not game validated. Ghidra read-only in worker."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00bd1510",
+      "before": {
+        "address": "00bd1510",
+        "function_name": "BSP_SizedStoragePool_ReturnBlock",
+        "comment": "[BSP reconstruction 00bd1510]\nFor unsigned size>=96h callCRTfree00bf9dc8 then native ADDESP4/POPs/RET0Ch. Smaller size with global01090aa4==0 locks criticalsection+8AD484 and calls00bd12a0 on subobject+6ACFCC with(&storage,size). Global nonzero skips small-block return. Original ABI: ECX pool manager; stack(storage,size,unused DWORD); RET0Ch on both paths; third argument not read. Evidence: docs/MESH_OBJECT_LIFETIME.md; reports/mesh_object_lifetime_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation.\n\n[BSP reconstruction 00bd1510] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers, assembly-verified; drops the _Provisional suffix, behaviour now established. __thiscall, ECX string pool, stack (void* block, uint size, uint unused), RET 0xC; the third argument is never read. Sized release: size >= 0x96 goes to _free 00bf9dc8, otherwise, and only while DAT_01090aa4 is zero, the block is pushed onto the free ring for that EXACT size by 00bd12a0 (ECX = pool+0x6acfcc, args &block and size) under the lock at pool+0x8ad484. A non-zero DAT_01090aa4 drops the block instead of freeing it. The size must be the size the block was allocated with, because it selects the free list. 2851 callers. Evidence: docs/APP_INIT_ALLOC_STRINGS.md."
+      },
+      "after": {
+        "address": "00bd1510",
+        "name": "BSP_SizedStoragePool_ReturnBlock",
+        "evidence": "Hypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers, assembly-verified; drops the _Provisional suffix, behaviour now established. __thiscall, ECX string pool, stack (void* block, uint size, uint unused), RET 0xC; the third argument is never read. Sized release: size >= 0x96 goes to _free 00bf9dc8, otherwise, and only while DAT_01090aa4 is zero, the block is pushed onto the free ring for that EXACT size by 00bd12a0 (ECX = pool+0x6acfcc, args &block and size) under the lock at pool+0x8ad484. A non-zero DAT_01090aa4 drops the block instead of freeing it. The size must be the size the block was allocated with, because it selects the free list. 2851 callers. Evidence: docs/APP_INIT_ALLOC_STRINGS.md. | Unsigned size>=150 free precedes owner/gate reads. Small path reads real volatile01090AA4; nonzero skips owner. Otherwise embedded lock/depth, address of captured block passed toBD12A0, decrement depth then unlock. Complete actual-storage body in src/native_string_pool_storage.cpp. Original-byte differential with explicit current CRT/Windows rebindings and actual narrow/wide shared-lifetime composition passed. Typed API; no original exception ABI or gameplay claim. docs/NATIVE_STRING_POOL_STORAGE.md; reports/native_string_pool_storage.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00bd1730",
+      "before": {
+        "address": "00bd1730",
+        "function_name": "CG_scalar_deleting_dtor_00bd1730"
+      },
+      "after": {
+        "address": "00bd1730",
+        "name": "BSP_NativeStringPool_ScalarDeletingDestructor",
+        "evidence": "Complete native[00bd1730,00bd174e); ECX actual owner; stack flags; EAX original address including after free; RET4. Call complete destructor00BD14C0, flags&1 frees actual owner through canonical00BF65AC->00BF9DC8; always returns original address. Ghidra omits ADD ESP,4 at00BD1745 after wrongly nonreturning free; direct bytes establish full tail through174D. Real callback binding directly invokes rebuilt deleter for D68200 identity. Evidence: docs/NATIVE_STRING_POOL_OWNER.md; reports/native_string_pool_owner.json. Strict MSVC Win32 standalone compile and focused host lifetime/identity fixture passed; both existing CTests passed. Descriptive hypothesis/new C++ ABI; not game validated. Ghidra read-only in worker."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00c5e123",
+      "before": {
+        "address": "00c5e123",
+        "function_name": "FUN_00c5e123"
+      },
+      "after": {
+        "address": "00c5e123",
+        "name": "BSP_NativeStringPool_GetSingleton_ExceptionHandler",
+        "evidence": "Hypothesis, not recovered symbol. Compiler10-byte handler for00419CC0, MOV EAX,D841EC; JMP BF6B43. State1 C5E118 frees raw owner allocation before state0 captured lock cleanup C5E110. Defined from live/disk equal bytes; C5E118 decoded POP/RET tail still outside its stored body. docs/NATIVE_STRING_POOL_OWNER.md; reports/native_pool_owner_definitions_m.json; reports/native_pool_owner_flow_m.json."
+      },
+      "status": "applied"
+    }
+  ],
+  "annotation_readback": "All13 names/evidence and prior comments retained, verified local/owner-decomposition-m-comments.json",
+  "exports": "All13 plus C5E118 refreshed",
+  "flow_repair": "reports/native_pool_owner_flow_m.json: BD1745 ADD ESP,4 repaired, zero remaining gaps; C5E121 POP ECX/C5E122 RET decoded but stored C5E118 body still ends C5E120",
+  "definitions": "reports/native_pool_owner_definitions_m.json: ten-byte getter compiler EH handler C5E123",
+  "combined_validation": {
+    "strict_build": "PASS local/pool-storage-m-build.log; all new sources registered",
+    "existing_ctests": "2/2 pass",
+    "camera": "132 normalization,1080 decomposition,360 wrapper original-byte comparisons and x87 status; local/combined-decomposition-m-fixture.log",
+    "pool_owner": "actual preimages, registration and shared deleting dispatch; local/combined-owner-m-fixture.log",
+    "point_instance": "preimage/count/lifetime/reentrant-parent/cache; local/combined-instance-m-fixture.log",
+    "pool_storage": "original-byte allocation/return/ring differential and actual narrow/wide owner/domain composition; local/pool-storage-m-fixture.log",
+    "linkage": "Worker probes relinked against combined bsp_core.lib, without standalone duplicate source objects"
+  },
+  "supersedes": [
+    "Decomposition host boundary in camera_position_modes report",
+    "Source-registration pending fields in camera_decomposition/native_string_pool_owner/point_effect_instance reports",
+    "Allocation-layer prerequisite in native_string_pool_owner report and native binding boundary in native_wide_string report"
+  ],
+  "remaining": [
+    "Actual camera path sampler and whole native owner integration",
+    "Whole point-effect114h constructor including factories, manager insertion and EH",
+    "Startup actual globals/header ownership and whole application",
+    "Native exception/vtable ABI and gameplay validation"
+  ],
+  "new_permanent_tests": 0,
+  "game_validated": false,
+  "abi_compatible": false,
+  "constructor_abi_correction": {
+    "address": "008680b0",
+    "reason": "Initial parent annotation confused outer helper ABI; corrected against worker native-ABI report and actual008683D4 RET1C. Earlier changes array retained as mutation audit.",
+    "correct_abi": "ECX actual114h storage; seven stack DWORD slots: consumed template, parent, third word, matrix pointer, transform low byte, option low byte, tail word; EAX same storage; RET1C. This corrects the previous parent integration annotation that confused this constructor ABI with the outer helper.",
+    "prior_wrong_abi": "ECX fresh allocation; stack parent, consumed template,transform selector,option byte,tail word; RET14.",
+    "saved_changes": [
+      {
+        "address": "008680b0",
+        "before": {
+          "address": "008680b0",
+          "function_name": "BSP_PointEffect_Construct_Provisional",
+          "comment": "[BSP reconstruction 008680b0]\nHypothesis, not recovered symbol. Actual114h constructor; ECX fresh allocation; stack parent, consumed template,transform selector,option byte,tail word; RET14. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json."
+        },
+        "after": {
+          "address": "008680b0",
+          "name": "BSP_PointEffect_Construct_Provisional",
+          "evidence": "Hypothesis, not recovered symbol. Actual114h constructor; ECX actual114h storage; seven stack DWORD slots: consumed template, parent, third word, matrix pointer, transform low byte, option low byte, tail word; EAX same storage; RET1C. This corrects the previous parent integration annotation that confused this constructor ABI with the outer helper. Only008680D9..868192 prefix/template retain/counters,8681BE..86824C constructed-node retain/root-before-parent replacement,86826E..8682D4 world-cache/scalar stages implemented. Remaining allocation/construction, matrix setters, array/row factories, manager insertion and whole EH mandatory. NativeNodeBinding/CameraTransform identity adapters are typed interfaces, not native pointer/vtable ABI. EH mapDC6EB8 has no separate node110 cleanup or counter rollback; neither invented. docs/POINT_EFFECT_INSTANCE.md; reports/point_effect_instance.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "verification": "Corrected annotation saved/read back and export refreshed; prior comment retained as audit trail."
+  }
+}

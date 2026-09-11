@@ -1,0 +1,549 @@
+{
+  "packet": "orch2_gui_frontend_clip_s",
+  "utc": "2026-09-11T09:10:19.631374+00:00",
+  "tested_source_commit": "f9da084da9fcd674a3ec90d11f103cf423d50b9b",
+  "integrated_head_at_record": "c707d11a0ba936804759fadfca4b529655dff747",
+  "source_sha256": {
+    "include/bsp/frontend_entry.hpp": "84f42cfd9cb8b45e019b2759fae6334ba33abd6c81b33d1e4199a6117c3c3c5b",
+    "src/frontend_entry.cpp": "acf9a6f1a0b8e00a80555a54d1d789fe9bfdf0873ad28d8b552b0324abcbb6f6",
+    "include/bsp/native_render_batch_keys.hpp": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+    "src/native_render_batch_keys.cpp": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+    "include/bsp/gui_group_bounds.hpp": "807ff4b177ed5caff2f83ffe36517a022620dcd230fa50d0bb1a027b2217516b",
+    "src/gui_group_bounds.cpp": "4d0e90eb5074afae45c68d25c4f01247becb1ba2dad094b79148bd01980cf635",
+    "include/bsp/gui_clip_box.hpp": "59bd6209449492ca023206669e31ea5c2c4f21b662c65530b9a10476403457df",
+    "src/gui_clip_box.cpp": "a2ee7d4a88035ec121d2f6f618a554cdd3207b32095ea43e8857386c2ab81807",
+    "include/bsp/gui_widget_owner.hpp": "e68daa73f1c7dc4246fe51516daa66afa2a410849868990a500c14d01bfd654e",
+    "src/gui_widget_owner.cpp": "730dae3215b4c505a69111890b532187176a5d658e41858a87104c1f166e2216",
+    "include/bsp/gui_type_dispatch.hpp": "2bbca138aaa91502711c124e0bba7352517722a3ade58699dc39f021021b8c9d",
+    "src/gui_type_dispatch.cpp": "60ddbcec387d2f8dfd54b16a627c796693083ed0ba3a4857566a795f7959d7ab",
+    "include/bsp/gui_material_binding.hpp": "d5b6f2360f84a2e523a1abafde945092719a72ac405ce4aee52fb84fa7c43aa1",
+    "src/gui_material_binding.cpp": "886b66d97e4a2723abcdb3d734543919f429c2e60d5d2e39ff47ad1bae07d509",
+    "cmake/startup.cmake": "1ea5c796b42d868caf19664ba2eb1f1fc769ef27c5de40729ba3524a3bc2fbb6",
+    "CMakeLists.txt": "c18a13e3d04124c38acaac0cbe440ca5b0fc9f6c186ab418b2f2338e2b53acf2"
+  },
+  "artifacts_sha256": {
+    "local/gui-frontend-clip-final-build.log": "535a8bd0c373fd9730d2d5fd42e68a4488f8eeba953c571a28f3c26706e24dc5",
+    "local/gui-frontend-clip-workers/integration-manifest.json": "6d9983f6d35003f6202bc7880ff2567047c7cd3daa1073cb304fdae53847815a",
+    "local/gui-frontend-clip-names-before.txt": "958584ba6f6388d94f9db864bc0a0b06614168e26cd3d9ed9e729729108e802f",
+    "local/gui-frontend-clip-names-after.txt": "c7cdd2eddcecd5f103db8f5af18a49d1fa0e4955a6d66c9a6c3e7f23ae090339",
+    "local/gui-frontend-clip-comments-before.json": "9d69ff58c1f7ad9574947eeae7108d1d2ca7cd0a8d460f974924cba7061b373b",
+    "local/gui-frontend-clip-comments-after.json": "695a6937ec85c6320bb15e52177e1958fa5538ef4749aa8137368ae76cf09896",
+    "local/gui-frontend-clip-names-expected.json": "f47f4acc41643adae4aaab6fc8fccb25b5520e79ca4e3d1d5929de9b06862b86",
+    "local/gui-frontend-clip-annotations.log": "adfcb53c570de4061a469710c961ce04d220a3e9ec814b6a379431793a5f828d",
+    "local/gui-frontend-clip-export-refresh.log": "8f37c3cc2fe5915368b908f91defac07732875847f15591cb59d42fba6e6a406",
+    "local/gui-frontend-clip-annotation-verification.json": "236eeb2c93276615a2ea0b3d854b9c62a7dc88a72f98d5354634a491a2ea4cf7",
+    "local/gui_frontend_clip_annotations.py": "3ce84c345e8ecaad650aff6c7dfdf3c6e6628418dbeb3ad50c99957a3d6d350f",
+    "local/run_frontend_clip_probes.ps1": "7a595bb40101ca51bd6c61a6799b4f36781b06cbf5b40d49e5a04a8f195abacf",
+    "local/prepare_frontend_clip_validation.py": "83de305387c2b9d0c2dd22ee6e4bc08b94ddeaf82f5d714514d5c8419bfbd1c3",
+    "local/gui-frontend-clip-progress-probe.cpp": "275c46c58aafe17fbbd4750b5e6b0c1e99afd753eb3a65c3526bb6d01bdfc3c3",
+    "local/gui-frontend-clip-clip-probe.cpp": "740f007f5219e22d749ef9e4d8195fc9b8048097ace280cb83fb4310967df98c",
+    "local/own-partial-lease-repair.json": "63d8310e208cc09b29148b7a9183a8855851efe4edcfc82e2803239bb0c03681",
+    "local/gui-frontend-clip-progress.exe": "a92672c905d48629f76ef888706f12cdcc0e56a7c849abf2e88c04c29377b949",
+    "local/gui-frontend-clip-progress-compile.log": "696b3703a11098fdb90155251bb7d2b3d9466bdc4ecd8707f0ae40ef42f2e4c8",
+    "local/gui-frontend-clip-progress-result.log": "a70aff3391a20c3e7463c0f6dffb9dbd32bbd611e07cec4a7ee4e9a083e685e0",
+    "local/gui-frontend-clip-clip.exe": "fac72429a515c6ae0f58998ce605cb321bb9dad9622f4b1dee88d4f10fbc982a",
+    "local/gui-frontend-clip-clip-compile.log": "078b3ab030981573cf5abc93c7bfbf1eb9829b1c4742406cc2179b0a69e0e098",
+    "local/gui-frontend-clip-clip-result.log": "9495787047f6c97afcdf7eb404616f6d89c3809775ae561abef47d6c4cae9b2d",
+    "local/gui-frontend-clip-bounds.exe": "b934082df1dee428c2468c655c159e75ef4b98a67496dcc3d5cfd4c613fb914c",
+    "local/gui-frontend-clip-bounds-compile.log": "9f62a53a81f83cd47005d874744c4168492837f52ba79585a65df19a8cc5e4d1",
+    "local/gui-frontend-clip-bounds-result.log": "0d4d725d35ab50ffb03d1ff1096c99d32b6b107153536ee328e032537ad85e50",
+    "local/gui-frontend-clip-tested/bsp_core.lib": "569f8b6014bb54c41578790ae2c5d059a49a992377f7ca901fcee2397d96a9f2",
+    "local/gui-frontend-clip-tested/bsp_game.exe": "5a9928aa0ca68271126b3328c1b2b8e858453b3a869aed9e0eae37fb434fad79",
+    "local/gui-frontend-clip-tested/LastTest.log": "c1de11428f5dfe0ae0ae86f440688aa3b97a0c1d743e42506f7a8615cbfcaaea"
+  },
+  "frozen_build_artifacts": [
+    {
+      "original": "build/win32/Release/bsp_core.lib",
+      "preserved": "local/gui-frontend-clip-tested/bsp_core.lib",
+      "sha256": "569f8b6014bb54c41578790ae2c5d059a49a992377f7ca901fcee2397d96a9f2"
+    },
+    {
+      "original": "build/win32/Release/bsp_game.exe",
+      "preserved": "local/gui-frontend-clip-tested/bsp_game.exe",
+      "sha256": "5a9928aa0ca68271126b3328c1b2b8e858453b3a869aed9e0eae37fb434fad79"
+    },
+    {
+      "original": "build/win32/Testing/Temporary/LastTest.log",
+      "preserved": "local/gui-frontend-clip-tested/LastTest.log",
+      "sha256": "c1de11428f5dfe0ae0ae86f440688aa3b97a0c1d743e42506f7a8615cbfcaaea"
+    }
+  ],
+  "preserved_worker_artifacts": [
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\0057bec0.bin",
+      "preserved": "local/gui-frontend-clip-workers/frontend/0057bec0.bin",
+      "sha256": "b78d7f273f20d98635896fd3af767e26a2ff52e66318b2eed2119d2f153351d7"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\00bf7420.bin",
+      "preserved": "local/gui-frontend-clip-workers/frontend/00bf7420.bin",
+      "sha256": "ca03c44f225ec07ccb8fd4dbaf388d22ba816472e788e49ecdb1db7b85f11cc6"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\00bf7456.bin",
+      "preserved": "local/gui-frontend-clip-workers/frontend/00bf7456.bin",
+      "sha256": "5333b186c02836974c6f792303aeb2c00d856316b93ccbbe65f51def6ae661b4"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\bsp_index.sqlite",
+      "preserved": "local/gui-frontend-clip-workers/frontend/bsp_index.sqlite",
+      "sha256": "e9d335486d1afc09af2561f0f6d633cc733ebe5ed69b979ab5ff742efc8afdb6"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\frontend_progress_build.log",
+      "preserved": "local/gui-frontend-clip-workers/frontend/frontend_progress_build.log",
+      "sha256": "f278aad79847a66840db851de826f6d612471feb34186e88276a3c7b47587165"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\frontend_progress_byte_parity.json",
+      "preserved": "local/gui-frontend-clip-workers/frontend/frontend_progress_byte_parity.json",
+      "sha256": "026e78f60ad6267e7d6804904960e7589ab5934eecaf77dc59851e5f6cd41544"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\frontend_progress_commit.txt",
+      "preserved": "local/gui-frontend-clip-workers/frontend/frontend_progress_commit.txt",
+      "sha256": "ca92ee7c834a1796ad54dfc16cc09214eef5cdab0545d835449318d5b3da43d1"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\frontend_progress_conversion_entry.txt",
+      "preserved": "local/gui-frontend-clip-workers/frontend/frontend_progress_conversion_entry.txt",
+      "sha256": "c3a0400702f9d6c944fb5a887eb93eab7f8815cff920e4fda01e8af2d153ab78"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\frontend_progress_conversion_fallback.txt",
+      "preserved": "local/gui-frontend-clip-workers/frontend/frontend_progress_conversion_fallback.txt",
+      "sha256": "e8b2a73532090c138c38e3f7080e55239fc4b2d12859f729fce23f0e7031c5f8"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\frontend_progress_native_body.txt",
+      "preserved": "local/gui-frontend-clip-workers/frontend/frontend_progress_native_body.txt",
+      "sha256": "efd6cfe4b39233234739b266afdad08c71541e3792730be0d5ea430bc2060a70"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\frontend_progress_old_comment.json",
+      "preserved": "local/gui-frontend-clip-workers/frontend/frontend_progress_old_comment.json",
+      "sha256": "b1b453ddaf5907b233a877d7d2a0d1943c8d79c9b7247783c29e0b36251c2815"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\frontend_progress_probe.cpp",
+      "preserved": "local/gui-frontend-clip-workers/frontend/frontend_progress_probe.cpp",
+      "sha256": "3c2a21d982475bb7e1caa9b8d1cb0306f006b8efc94f1f5e05cde02ac76462da"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\frontend_progress_probe.exe",
+      "preserved": "local/gui-frontend-clip-workers/frontend/frontend_progress_probe.exe",
+      "sha256": "1773aaaca6de0f64f5621283252bd66a1c7416812182e5930af39f47e24f0120"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\frontend_progress_probe.obj",
+      "preserved": "local/gui-frontend-clip-workers/frontend/frontend_progress_probe.obj",
+      "sha256": "9c6473239cf21f4915ae8872bd589c36d32ff02b6f966d4592e2631581dc7684"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\frontend_progress_probe_build.log",
+      "preserved": "local/gui-frontend-clip-workers/frontend/frontend_progress_probe_build.log",
+      "sha256": "4ccd4d85d62b0f9e69babae5d075190574f9b472c7ced5013c96b76d3cc9d10a"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\frontend_progress_reset_old_comment.json",
+      "preserved": "local/gui-frontend-clip-workers/frontend/frontend_progress_reset_old_comment.json",
+      "sha256": "8866513130492e42f3a428213c6ad15b502898ca73375edcd7c683bb7a1b35f4"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\frontend_progress_seed_verification.json",
+      "preserved": "local/gui-frontend-clip-workers/frontend/frontend_progress_seed_verification.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\prepare_frontend_progress_probe.py",
+      "preserved": "local/gui-frontend-clip-workers/frontend/prepare_frontend_progress_probe.py",
+      "sha256": "6a50f58839ac0a56da4822c4442c772fa140a1d332ac7889a43b565018011554"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\seed_reference.hpp",
+      "preserved": "local/gui-frontend-clip-workers/frontend/seed_reference.hpp",
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "worker": "frontend-progress-20260911r",
+      "commit": "37db316e059103811ef076e94530e2e43b705c16",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-frontend-progress-20260911r\\local\\write_frontend_progress_report.py",
+      "preserved": "local/gui-frontend-clip-workers/frontend/write_frontend_progress_report.py",
+      "sha256": "1a9a9cba9b7587acf7515f2b845db4c9cd1d5d5fed80682f72dbdf6b83b072ab"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\bsp_index.sqlite",
+      "preserved": "local/gui-frontend-clip-workers/clip/bsp_index.sqlite",
+      "sha256": "090c91dbf97eaa6b9cf8208bfe2cf05c97351fb03d07d82c0ed748c5c7f39445"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_00aa6740.bytes",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_00aa6740.bytes",
+      "sha256": "30d5e1e79cdfa4fdab795d3f671120650b4a9110439282349edebdac9700dd0d"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_00aa6750.bytes",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_00aa6750.bytes",
+      "sha256": "5606144b42800e211f2c8f4d23b985d334b7a8c35a820ad33d414b64a94f1dfc"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_00ace0a0.bytes",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_00ace0a0.bytes",
+      "sha256": "f9bb06162f57bdb2d1139dbe65c573f3b369b7e411d2459af23a96ac2780e54e"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_00ace0f0.bytes",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_00ace0f0.bytes",
+      "sha256": "82cb0e9b1c66d5978103059c53f8063671c23e76cafe45088261c64d4b590155"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_00ace120.bytes",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_00ace120.bytes",
+      "sha256": "19f11c3a80c0144f60f2b421da7d0aa0c129f6d8fabae16bdc8e69ddd9eb8864"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_00ace650.bytes",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_00ace650.bytes",
+      "sha256": "28de5a89d42e3d3babb39c110c2749f829b632a29380b489818b7a851dc8045d"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_build.log",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_build.log",
+      "sha256": "811e52d624ad231e4a7f32cf558392fe1972cc169677729c4b0c2ababe0b7061"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_commit.txt",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_commit.txt",
+      "sha256": "185434b2b0443be03e9ffd57e8b484696b2003b2a11af75d3d2852de9fb4fa45"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_ledger.log",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_ledger.log",
+      "sha256": "a6ca1f4dffca33c18f06001b3e84a7d43b19dfcb61b0e6b6f8c765b836930c0e"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_probe.cmd",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_probe.cmd",
+      "sha256": "554cc2205ed0f4d5767e58eb5f4028270c76f94d2f8013c34de0014381608161"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_probe.cpp",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_probe.cpp",
+      "sha256": "df54d5d713e18e02d461697b40b0a840d817c79a9a112680710b31740b893c46"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_probe.exe",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_probe.exe",
+      "sha256": "e48f9fab0327329196bda73a61e9e59bcf0b44553b302ec7aa5ee2327fe6c13a"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_probe.obj",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_probe.obj",
+      "sha256": "23da46a75b463122320a664bd81de5eac94ff6e007f0e14a824e44441a712721"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_probe_code.hpp",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_probe_code.hpp",
+      "sha256": "3009e843d2cb343dc4527b63c2274e7d917d0e2b552d7dad4958ff37494d5e3d"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_probe_compile.log",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_probe_compile.log",
+      "sha256": "d13c9ca38f4bba6f8a6d52d7dad31f95103fe22590c74c3d687d3ca745ad4e6c"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_probe_data.py",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_probe_data.py",
+      "sha256": "09b0ada4465f22b9c91868f537b2a9edac1763dec1f931b030e6c551370e2655"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_probe_result.txt",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_probe_result.txt",
+      "sha256": "9495787047f6c97afcdf7eb404616f6d89c3809775ae561abef47d6c4cae9b2d"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_report.py",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_report.py",
+      "sha256": "9733aee15530e36d6a1c31eb2b9da63beb183b88ceb40b6753b5e2ca7652c1c5"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_seeds.json",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_table.bytes",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_table.bytes",
+      "sha256": "1185238955142eb683566710a991eba6ca2e57c1000b1cdd2a31575df211471b"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\gui_clip_box_verified.json",
+      "preserved": "local/gui-frontend-clip-workers/clip/gui_clip_box_verified.json",
+      "sha256": "3990ea689396401f59568c40fa21b896ab57d08b101c58975b242fd87e5c9fca"
+    },
+    {
+      "worker": "gui-clip-box-20260911r",
+      "commit": "59c40e6a0dcd1c3bbf805849d4f5774f29208d5e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-clip-box-20260911r\\local\\seed_reference.hpp",
+      "preserved": "local/gui-frontend-clip-workers/clip/seed_reference.hpp",
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "worker": "gui-widget-retention-20260911s",
+      "commit": "582e090d5c2e8b23a709fa27f39deacbe626f096",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-retention-20260911s\\local\\bsp_index.sqlite",
+      "preserved": "local/gui-frontend-clip-workers/retention/bsp_index.sqlite",
+      "sha256": "075a6cd7c9dc61de3d297b3c156c3e7bf5e635270152581dad7a1ec6364ba2a2"
+    },
+    {
+      "worker": "gui-widget-retention-20260911s",
+      "commit": "582e090d5c2e8b23a709fa27f39deacbe626f096",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-retention-20260911s\\local\\gui_widget_retention_00a9e130.txt",
+      "preserved": "local/gui-frontend-clip-workers/retention/gui_widget_retention_00a9e130.txt",
+      "sha256": "399c4628ab573b5114b1b59ade48b8f6587d7da704227746377393ba6aee0da3"
+    },
+    {
+      "worker": "gui-widget-retention-20260911s",
+      "commit": "582e090d5c2e8b23a709fa27f39deacbe626f096",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-retention-20260911s\\local\\gui_widget_retention_00a9e210.txt",
+      "preserved": "local/gui-frontend-clip-workers/retention/gui_widget_retention_00a9e210.txt",
+      "sha256": "5699de9deeef18d5396f57b5d468843c2f4f37d57fb28e79750a43fe896e559d"
+    },
+    {
+      "worker": "gui-widget-retention-20260911s",
+      "commit": "582e090d5c2e8b23a709fa27f39deacbe626f096",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-retention-20260911s\\local\\gui_widget_retention_00aa9390.txt",
+      "preserved": "local/gui-frontend-clip-workers/retention/gui_widget_retention_00aa9390.txt",
+      "sha256": "ae8cf3d17c3b7339afbd9221939817cb1c31ddf1de3aa13d2da95db412b309c2"
+    },
+    {
+      "worker": "gui-widget-retention-20260911s",
+      "commit": "582e090d5c2e8b23a709fa27f39deacbe626f096",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-retention-20260911s\\local\\gui_widget_retention_00aa9730.txt",
+      "preserved": "local/gui-frontend-clip-workers/retention/gui_widget_retention_00aa9730.txt",
+      "sha256": "2c985e17b961144fd7f29e622f06a2decdd4a1671221ed52ff10302f41b0ab95"
+    },
+    {
+      "worker": "gui-widget-retention-20260911s",
+      "commit": "582e090d5c2e8b23a709fa27f39deacbe626f096",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-retention-20260911s\\local\\gui_widget_retention_00aa9a90.txt",
+      "preserved": "local/gui-frontend-clip-workers/retention/gui_widget_retention_00aa9a90.txt",
+      "sha256": "f526c2a941b0c61383aeaa860904be0c7f23ef10de244b4c416059aea33a05d7"
+    },
+    {
+      "worker": "gui-widget-retention-20260911s",
+      "commit": "582e090d5c2e8b23a709fa27f39deacbe626f096",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-retention-20260911s\\local\\gui_widget_retention_00ab6100.txt",
+      "preserved": "local/gui-frontend-clip-workers/retention/gui_widget_retention_00ab6100.txt",
+      "sha256": "d902d6cda16de5735efc5644f4c69ce78b2ac379853b6997e14a18b617b1315a"
+    },
+    {
+      "worker": "gui-widget-retention-20260911s",
+      "commit": "582e090d5c2e8b23a709fa27f39deacbe626f096",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-retention-20260911s\\local\\gui_widget_retention_00ad29b0.txt",
+      "preserved": "local/gui-frontend-clip-workers/retention/gui_widget_retention_00ad29b0.txt",
+      "sha256": "499feac69655f0d56f012d2e4bebcd28570757e6d661d00812ba6182695bfb80"
+    },
+    {
+      "worker": "gui-widget-retention-20260911s",
+      "commit": "582e090d5c2e8b23a709fa27f39deacbe626f096",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-retention-20260911s\\local\\gui_widget_retention_comments.json",
+      "preserved": "local/gui-frontend-clip-workers/retention/gui_widget_retention_comments.json",
+      "sha256": "adc98dd882fd937e754990c15651eacc42cdb16c53679c61bdbfc8749ee39859"
+    },
+    {
+      "worker": "gui-widget-retention-20260911s",
+      "commit": "582e090d5c2e8b23a709fa27f39deacbe626f096",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-retention-20260911s\\local\\gui_widget_retention_commit.txt",
+      "preserved": "local/gui-frontend-clip-workers/retention/gui_widget_retention_commit.txt",
+      "sha256": "a969d145216093684bd1a6b142b1b722696265a8e8802ee546c1852e1c6b5965"
+    },
+    {
+      "worker": "gui-widget-retention-20260911s",
+      "commit": "582e090d5c2e8b23a709fa27f39deacbe626f096",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-retention-20260911s\\local\\gui_widget_retention_derived_comments.json",
+      "preserved": "local/gui-frontend-clip-workers/retention/gui_widget_retention_derived_comments.json",
+      "sha256": "5e4f5e1285574af6ada6639aaeae23fa08a44d323221967fed13260a15d91fe4"
+    },
+    {
+      "worker": "gui-widget-retention-20260911s",
+      "commit": "582e090d5c2e8b23a709fa27f39deacbe626f096",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-retention-20260911s\\local\\gui_widget_retention_profile_comments.json",
+      "preserved": "local/gui-frontend-clip-workers/retention/gui_widget_retention_profile_comments.json",
+      "sha256": "050da3320d09902dcda407e8b9dc34fa8e09d0ab6722d9b00f1f5c62b5dc461b"
+    },
+    {
+      "worker": "gui-widget-retention-20260911s",
+      "commit": "582e090d5c2e8b23a709fa27f39deacbe626f096",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-retention-20260911s\\local\\gui_widget_retention_wrapper_comments.json",
+      "preserved": "local/gui-frontend-clip-workers/retention/gui_widget_retention_wrapper_comments.json",
+      "sha256": "1eb14b59b60c76fb10f49c92a3ba62ff152ea0c393f159134c97974af1b5a10a"
+    },
+    {
+      "worker": "gui-widget-retention-20260911s",
+      "commit": "582e090d5c2e8b23a709fa27f39deacbe626f096",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-widget-retention-20260911s\\local\\write_gui_widget_retention_report.py",
+      "preserved": "local/gui-frontend-clip-workers/retention/write_gui_widget_retention_report.py",
+      "sha256": "e094f431942881ceb02b30fb2b96d1c51d9bc54cd9298bb762c390a0e82e8306"
+    },
+    {
+      "worker": "lease-transactions-20260911t",
+      "commit": "67d22e6fa839f48060c736e548567877f218d107",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-lease-transactions-20260911t\\local\\lease_transactions_commit.txt",
+      "preserved": "local/gui-frontend-clip-workers/lease-tooling/lease_transactions_commit.txt",
+      "sha256": "ba2f6d0f70678459fbc92afcc8f755462d6992e754772efc27c5fe4835118b95"
+    }
+  ],
+  "worker_commits": [
+    "37db316",
+    "59c40e6",
+    "582e090",
+    "67d22e6"
+  ],
+  "root_source_correction": "352adff",
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "original_loading_comparisons": 16,
+    "loading_default_shared_converter": true,
+    "original_clipbox_comparisons": 8,
+    "clipbox_reader_default_checked": true,
+    "original_bounds_writer_comparisons": 3,
+    "original_radius_comparisons": 8,
+    "retention_analysis_only": true,
+    "lease_transaction_regressions_passed": 1,
+    "existing_exporter_tests_passed": 4,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "addresses": [
+      "0057bec0",
+      "0057c990",
+      "00bf7420",
+      "00ace0a0",
+      "00ace0f0",
+      "00ace120",
+      "00ace650",
+      "00aa9730",
+      "00a9e130",
+      "00aa9390",
+      "00aa9a90",
+      "00a9e210",
+      "00ab6100",
+      "00ad29b0",
+      "00ab5e70",
+      "00ad2880"
+    ],
+    "names_verified": 16,
+    "prior_comment_fields_preserved": 5,
+    "forced_exports": 16,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "functions_already_defined": 16,
+    "defined_functions": [],
+    "saved": true,
+    "flow_repair_report": "reports/gui_frontend_clip_flow_repair.json",
+    "aa9730_stored_body_tail_complete": false,
+    "a9e130_remaining_call_gaps": 0
+  },
+  "lease_incident_repair": {
+    "backup": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910\\local\\leases-before-own-partial-repair-20260911T084525Z.jsonl",
+    "before_sha256": "27def1f21787fe6ed906ae826bfaa374cfa6500733a1838aca0a2f4dc932ed02",
+    "after_sha256": "56e09cc1a00c3eef85a865b752a452c3ec96177b24934b5957473f6a0c7fca61",
+    "preserved_complete_records": 756,
+    "removed_only_failed_owner": "agent/orch2-20260910:orch2_gui_frontend_clip_s",
+    "removed_tail_bytes": 811,
+    "exclusive_windows_handle": true
+  },
+  "limitations": [
+    "AA9730 continuation is decoded but stored body metadata remains clipped.",
+    "AA8710 current+24 companion integration is separate pending work.",
+    "Canonical widget identity/count, current deletion and parameter-user drain remain unresolved.",
+    "Raw material/color and geometry stream publication remain separate requirements.",
+    "Old lease writers do not participate in the new transaction lock until upgraded.",
+    "No complete GUI draw, native binary replacement or gameplay validation."
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "packet": "orch3_camera_decomposition_m",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "game_image_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "0042b260",
+      "cpp_operation": "normalize_camera_basis_0042b260",
+      "name_hypothesis": "BSP_Geometry_NormalizeVectorWithFloor",
+      "source": "src/camera_decomposition.cpp",
+      "native_abi": "ECX=writableXYZ; no stack arguments; RET",
+      "evidence": "Capture Y/X/Z through x87 float stores; one squared-sum float spill; ordered <=double1e-10 or unordered selects float(double1e-5), else genuine CRT sqrt with native spills; divide captured X/Y/Z by float divisor and write in order. See docs/CAMERA_DECOMPOSITION.md.",
+      "prior_name": "FUN_0042b260",
+      "prior_comments": {},
+      "last_instruction": "0042b2e9",
+      "last_instruction_length": 1,
+      "inclusive_end": "0042b2e9",
+      "native_length": 138,
+      "instruction_count": 47,
+      "raw_sha256": "81e17abe2c095ce33278f49e5b611f3e00e267b3874ef18339442a4f774ebd5e",
+      "live_disk_match": true,
+      "missing_start": false,
+      "flow_gaps": [],
+      "status": "reconstructed_strict_win32_compiled_and_bounded_native_fixture_tested",
+      "uncertainty": "Descriptive names are hypotheses. Native fastcall register/stack convention is retained in new typed math entries; current genuine CRT policy is not the original binary CRT policy. Unmasked traps, malformed pointers, asynchronous mutation and exhaustive floating-point cases unvalidated. Source registration and Ghidra annotation/save/export remain parent integration work. No gameplay or drop-in binary compatibility claim.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "0042d2e0",
+      "cpp_operation": "extract_camera_matrix_angles_0042d2e0",
+      "name_hypothesis": "BSP_Matrix_ExtractNormalizedBasisAngles",
+      "source": "src/camera_decomposition.cpp",
+      "native_abi": "ECX=matrix; EDX=outputX; stack outputY,outputZ; RET8",
+      "evidence": "Capture upper-left3x3 before outputs; normalize each row via42B260; canonical42CF10(row2.Y), negate/float-spill and outputX; FCOS/float-spill; compare abs cosine with exact promoted-float1e-4 D7A268. Ordered above cutoff: float-spilled row0.Y/c,row1.Y/c CRT atan2 ->Z, then row2.X/c,row2.Z/c ->Y. Otherwise Z=+0 then atan2(row1.X,row0.X)->Y. Preserve X,Z,Y output order and matrix/output or output-reference aliases. See docs/CAMERA_DECOMPOSITION.md.",
+      "prior_name": "FUN_0042d2e0",
+      "prior_comments": {},
+      "last_instruction": "0042d43d",
+      "last_instruction_length": 3,
+      "inclusive_end": "0042d43f",
+      "native_length": 352,
+      "instruction_count": 95,
+      "raw_sha256": "5bb280b61552e7135586f11f44543f80271e74e726024b8f9f5ed1ebd755aade",
+      "live_disk_match": true,
+      "missing_start": false,
+      "flow_gaps": [],
+      "status": "reconstructed_strict_win32_compiled_and_bounded_native_fixture_tested",
+      "uncertainty": "Descriptive names are hypotheses. Native fastcall register/stack convention is retained in new typed math entries; current genuine CRT policy is not the original binary CRT policy. Unmasked traps, malformed pointers, asynchronous mutation and exhaustive floating-point cases unvalidated. Source registration and Ghidra annotation/save/export remain parent integration work. No gameplay or drop-in binary compatibility claim.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "006e47a0",
+      "cpp_operation": "matrix_angles_006e47a0",
+      "name_hypothesis": "BSP_Matrix_GetAngleVector",
+      "source": "src/camera_position_modes.cpp",
+      "native_abi": "ECX=actual matrix; EDX=outputXYZ; EAX=same output; RET",
+      "evidence": "Supersedes earlier mandatory host boundary: actual matrix and actual XYZ output now call canonical extract_camera_matrix_angles_0042d2e0, preserving matrix/output overlap and returning the same pointer. Kind5 camera consumer uses this canonical route. See docs/CAMERA_DECOMPOSITION.md.",
+      "prior_name": "FUN_006e47a0",
+      "prior_comments": {},
+      "last_instruction": "006e47b5",
+      "last_instruction_length": 1,
+      "inclusive_end": "006e47b5",
+      "native_length": 22,
+      "instruction_count": 11,
+      "raw_sha256": "74114fe22d45f023072ce9f09058b6f5967dbf97cd234dde2c8f8309caf1b88a",
+      "live_disk_match": true,
+      "missing_start": false,
+      "flow_gaps": [],
+      "status": "reconstructed_strict_win32_compiled_and_bounded_native_fixture_tested",
+      "uncertainty": "Descriptive names are hypotheses. Native fastcall register/stack convention is retained in new typed math entries; current genuine CRT policy is not the original binary CRT policy. Unmasked traps, malformed pointers, asynchronous mutation and exhaustive floating-point cases unvalidated. Source registration and Ghidra annotation/save/export remain parent integration work. No gameplay or drop-in binary compatibility claim.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "prior_reconstruction_report": "reports/camera_position_modes.json"
+    }
+  ],
+  "constants": [
+    {
+      "address": "00ce3820",
+      "binary64_bits": "3ddb7cdfd9d7bdbb",
+      "value": "1e-10"
+    },
+    {
+      "address": "00ce3c70",
+      "binary64_bits": "3ee4f8b588e368f1",
+      "value": "1e-5"
+    },
+    {
+      "address": "00d7a268",
+      "binary64_bits": "3f1a36e2e0000000",
+      "value": "9.99999974737875163555145263671875e-5"
+    }
+  ],
+  "validation": {
+    "existing_release_win32_build": "passed; new source registration reserved for parent",
+    "existing_ctest": "2/2 passed",
+    "owned_translation_units": "/O2 /W4 /WX /fp:strict passed for decomposition and modified position modes",
+    "fixture": "ignored local/decomposition_fixture.cpp; manifest embedded; actual current CRT shared by isolated native bytes and reconstructed bodies",
+    "native_ranges": "complete normalization and decomposition match live Ghidra and disk; copied prior independently verified asin and wrapper; no game entry execution",
+    "differential": {
+      "x87_precision": [
+        "24-bit",
+        "53-bit",
+        "64-bit"
+      ],
+      "rounding": [
+        "nearest",
+        "down",
+        "up",
+        "toward-zero"
+      ],
+      "normalization": 132,
+      "decomposition": 1080,
+      "wrapper": 360,
+      "output_byte_equality": true,
+      "normalization_decomposition_exception_flags_and_stack_top_equal": true,
+      "wrapper_pointer_identity": true,
+      "all_passed": true
+    },
+    "cases": [
+      "normal/scaled/sheared bases",
+      "normalization floor boundary",
+      "zero and singular bases",
+      "tiny and huge components",
+      "signed zero",
+      "quiet and signaling NaNs",
+      "infinity",
+      "disjoint outputs",
+      "pairwise and complete output aliases",
+      "matrix/output overlap"
+    ]
+  },
+  "supersedes": [
+    "42D2E0 host-boundary statements in docs/CAMERA_POSITION_MODES.md and reports/camera_position_modes.json"
+  ],
+  "remaining": [
+    "real7B04C0 sampler",
+    "original CRT diagnostics/dispatch policy",
+    "native object ownership and full ABI integration",
+    "CMake registration and Ghidra annotate/save/export by parent",
+    "gameplay/render validation"
+  ]
+}

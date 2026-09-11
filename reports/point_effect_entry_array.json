@@ -1,0 +1,84 @@
+{
+  "packet": "orch3_effect_array_n",
+  "date": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/point_effect_entry_array.cpp",
+  "header": "include/bsp/point_effect_entry_array.hpp",
+  "evidence": "docs/POINT_EFFECT_ENTRY_ARRAY.md",
+  "status": "complete_typed_bodies_strict_win32_compiled_focused_lifetime_fixture_and_two_ctests_passed",
+  "native_abi": "ECX actual0Ch pointer/count/capacity header; one signed stack DWORD; RET4; no established EAX result",
+  "abi_compatible": false,
+  "game_validated": false,
+  "complete_point_effect_constructor": false,
+  "canonical_dependencies": [
+    "PointEffectReferenceArray: same header used by PointEffectInstanceStorage",
+    "singleton_lifetime_allocate: BF55BE -> BF681B CRT malloc/new-handler retry",
+    "singleton_lifetime_free: BF6989 -> BF65AC ordinary free",
+    "retain_render_command_reference: increment actual borrowed owner count",
+    "release_render_command_reference: decrement actual count, nonthrowing terminal action at zero"
+  ],
+  "functions": [
+    {
+      "address": "008670a0",
+      "name": "reserve_point_effect_entry_array_008670a0",
+      "saved_name": "FUN_008670a0",
+      "saved_entry_comments": null,
+      "proposed_name": "BSP_PointEffectReferenceArray_Reserve_Provisional",
+      "native_last_instruction": "00867191",
+      "native_inclusive_end": "00867193",
+      "body_complete": true,
+      "missing_saved_flow": {"start": "0086716f", "inclusive_end": "00867181", "reason": "BF6989 incorrect no-return flow", "live_and_disk_bytes_match": true},
+      "evidence": [
+        "8670BC..D3 signed min1 and grow-only branch",
+        "8670DB..E1 wrapping DWORD times4 allocation",
+        "867100..12E ascending null-init, publish, actual-count retain with live bounds",
+        "867130..165 ascending release, terminal callback, captured-slot clear",
+        "867167..16A reload current backing and ordinary free",
+        "86717C pointer publication before86717E capacity; count untouched"
+      ],
+      "eh": {"handler": "00c94e17", "descriptor": "00dc6c70", "map": "00dc6c68", "single_state": [-1, "00c94e00"], "funclet_callee": "00401130", "callee_body": "RET", "main_body_state": "-1 throughout", "replacement_cleanup_added": false}
+    },
+    {
+      "address": "008672a0",
+      "name": "resize_point_effect_entry_array_008672a0",
+      "saved_name": "FUN_008672a0",
+      "saved_entry_comments": null,
+      "proposed_name": "BSP_PointEffectReferenceArray_Resize_Provisional",
+      "native_last_instruction": "0086731b",
+      "native_inclusive_end": "0086731d",
+      "body_complete": true,
+      "evidence": [
+        "8672A8..AE reserve only when request exceeds live capacity",
+        "8672B3..D4 null-initialize newly exposed slots before count publication",
+        "8672E0 count decrement before slot capture",
+        "8672F3..309 release actual count then terminal then clear captured slot",
+        "86730F reload count after callback;867316 final requested-count store"
+      ]
+    }
+  ],
+  "annotation_status": "proposed_only_integrator_handles_repair_annotation_save_and_export",
+  "validation": {
+    "strict_win32_compile": "passed",
+    "normal_build_and_ctest": "scripts/build.ps1 Release passed; reconstructed_math and native_math_differential both passed after verify-seeds",
+    "new_source_registered_in_worker_cmake": false,
+    "lifetime_fixture": "passed: same-header growth, duplicate retained owners and stable actual counts, min1 clamp, real CRT bad_alloc before publication, growth null slots, descending shrink, count-before-terminal observation, nested resize and final outer-count overwrite",
+    "fixture_source": "local/point_effect_entry_array_probe.cpp",
+    "fixture_compile": "MSVC Win32 /std:c++17 /O2 /W4 /WX /fp:strict /MD /EHsc; linked strict new-source object and built bsp_core.lib; /link /MANIFEST:EMBED",
+    "fixture_source_sha256": "cb4dff90bc1f521755b8fa2485e3e3e61421c54ac6e508eeab7c50fecbccd1b8",
+    "fixture_executable_sha256": "c841ac74c3e00a4c89bac2805575c3331687e113e3d7a28468e3070586ebe5e0",
+    "implementation_sha256": "adba12414a71398d943123d15712e7e2ce5646c3b1e3128ec444504edd60f57d",
+    "build_log": "local/point_effect_entry_array_build.txt",
+    "seed_verification": "python tools/ghidra_export.py verify-seeds passed; native math seeds matched live Ghidra and disk",
+    "native_differential_for_array_bodies": false
+  },
+  "limits": [
+    "New typed ABI; companions borrow actual owner counts and terminal actions but are not native vtable overlays",
+    "Canonical terminal actions are nonthrowing; native arbitrary throwing virtual functions are outside this interface",
+    "Valid spans and lifetimes required, including captured slots through terminal reentry",
+    "Nonnegative resize domain; no added guard for native wrapped byte product or malformed header",
+    "No array destructor8675B0, entry factory, full instance constructor or manager insertion reconstructed here",
+    "Original installation and native game entry were untouched"
+  ]
+}

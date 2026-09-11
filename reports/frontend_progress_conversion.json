@@ -1,0 +1,188 @@
+{
+  "packet": "orch2_frontend_progress_r",
+  "date": "2026-09-11",
+  "base_commit": "ffec6c0",
+  "source": "src/frontend_entry.cpp",
+  "header": "include/bsp/frontend_entry.hpp",
+  "ghidra": {
+    "project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "language": "x86:LE:32:default",
+    "read_only": true,
+    "verified_before_each_query": true
+  },
+  "address": "0057bec0",
+  "inclusive_body_end": "0057bf0f",
+  "final_instruction": "0057bf0d RET4",
+  "original_abi": "stdcall one stack float, no ECX input",
+  "current_function_exists": true,
+  "listed_instructions": 26,
+  "flow_gaps": 0,
+  "free_gap_repair_required": false,
+  "old_name_record": {
+    "address": "0057bec0",
+    "name": "BSP_LoadingScreen_ReportProgress",
+    "evidence": "Hypothesis, not a recovered symbol. Packet game_frontend_shell_entry, read-only analysis. __stdcall(float progress), RET 4, no ECX; a null 00E194B4 is a no-op (0057bec9). Raises screen+30h to max(screen+30h, progress) and screen+2Ch to max(screen+2Ch, LIBCRT 00bf7420 counter); neither is ever lowered (0057bf04 JG then 0057bf06 JZ). x87 checked on disk: 0057beef FMUL qword [00CEF258] (=128.0) leaves its product in ST0 and it is never stored, because 0057bef5 is an SSE MOVSS of the unscaled maximum; ST0 is also left loaded on return. Ghidra and the raw decoder agree, so the dead multiply and x87 stack leak are in the shipped code. Sole non-trivial caller 004e4000 at 004e413a with the 0.1f at 00D7A2F0. Evidence: docs/GAME_FRONTEND_ENTRY.md."
+  },
+  "old_saved_annotations": [
+    {
+      "address": "0057bec0",
+      "annotation": {
+        "address": "0057bec0",
+        "function_name": "BSP_LoadingScreen_ReportProgress",
+        "comment": "[BSP reconstruction 0057bec0]\nHypothesis, not a recovered symbol. Packet game_frontend_shell_entry, read-only analysis. __stdcall(float progress), RET 4, no ECX; a null 00E194B4 is a no-op (0057bec9). Raises screen+30h to max(screen+30h, progress) and screen+2Ch to max(screen+2Ch, LIBCRT 00bf7420 counter); neither is ever lowered (0057bf04 JG then 0057bf06 JZ). x87 checked on disk: 0057beef FMUL qword [00CEF258] (=128.0) leaves its product in ST0 and it is never stored, because 0057bef5 is an SSE MOVSS of the unscaled maximum; ST0 is also left loaded on return. Ghidra and the raw decoder agree, so the dead multiply and x87 stack leak are in the shipped code. Sole non-trivial caller 004e4000 at 004e413a with the 0.1f at 00D7A2F0. Evidence: docs/GAME_FRONTEND_ENTRY.md."
+      }
+    },
+    {
+      "address": "0057c990",
+      "annotation": {
+        "address": "0057c990",
+        "function_name": "BSP_LoadingScreen_ResetHints",
+        "comment": "[BSP reconstruction 0057c990]\nHypothesis, not a recovered symbol. Packet loading_screen_elements, read-only analysis. __fastcall(this), RET 0. Called at 0057CE83 for every mode; it is LoadingScreenHost::prepare_extra_elements of include/bsp/frontend_entry.hpp. Clears +30h to 0.0f, +2Ch to -1 and +50h to 0.0f; sets the per-hint progress step +4Ch to 1.0f/(float)(unsigned)N over the published key vector at 00E08784..00E0878C, or to the 200.0 of 00CE4D70 when the vector is empty (0057C9C9 adds the 2^32 of 00CE3978, so the count is unsigned); rewinds the cursor 00E0877C to -1; calls 0057C360 then tail-jumps 0057C4C0 at 0057C9F1. docs/LOADING_SCREEN_ELEMENTS.md"
+      }
+    }
+  ],
+  "corrected_behavior": {
+    "old_load": "BECB FLD old+30; BECF FSTP float local",
+    "compare": "BED5 FLD incoming; BED9 FLD old; BEDD FCOMIP pops old leaving incomingST0",
+    "float_selection": "old only if strictly greater; equal or unordered selects original incoming bits",
+    "scale": "BEEF FMUL actual CEF258 double128 into live original incomingST0",
+    "store_order": "BEF5 stores float+30 BEFORE BEFA conversion",
+    "integer": "signed max of current+2C and native low EAX converted from original incoming*128",
+    "stack": "BF7420 consumesST0; no leak",
+    "not_a_clock": true
+  },
+  "scale": {
+    "address": "00cef258",
+    "hex": "0000000000006040",
+    "value": 128.0
+  },
+  "existing_conversion_service": {
+    "address": "00bf7420",
+    "actual_global": "0109eea4",
+    "nonzero": "FSTP double then CVTTSD2SI EAX",
+    "zero": "existing BF7456 x87 owner",
+    "host_contract": "LoadingProgressConvertSt0: incoming x87ST0, ECX actualglobal pointer, EAX native signed low word, noexcept; fresh global read inside service",
+    "library_implementation_added": false,
+    "integer_clock_proxy_removed": true,
+    "direct_adapter": "existing full wrapper remains private gui_group_bounds.cpp; no default or partial fallback used"
+  },
+  "cpp_api": {
+    "old": "report_loading_progress(LoadingScreen*,float,int32 tick) noexcept",
+    "new": "report_loading_progress(LoadingScreen*,float,const LoadingProgressCrtAccess&)",
+    "field_rename": "last_tick -> progress_units in LoadingScreen and LoadingHintRotation",
+    "concrete_cpp_callers_found": 0,
+    "abstract_one_float_hosts": "unchanged",
+    "missing_service_policy": "null screen bypasses service checks; nonnull missing pointers throw invalid_argument"
+  },
+  "native_callers": [
+    {
+      "address": "004e3aa0",
+      "call_sites": 12
+    },
+    {
+      "address": "004e4000",
+      "call_sites": 1
+    },
+    {
+      "address": "0051dda0",
+      "call_sites": 1
+    },
+    {
+      "address": "005caaf0",
+      "call_sites": 1
+    },
+    {
+      "address": "00686380",
+      "call_sites": 8
+    },
+    {
+      "address": "006898c0",
+      "call_sites": 2
+    }
+  ],
+  "checked_caller_spans": [
+    [
+      "004e4130",
+      "004e413e"
+    ],
+    [
+      "006866c5",
+      "006866d3"
+    ],
+    [
+      "00689914",
+      "00689928"
+    ]
+  ],
+  "related_reset": {
+    "address": "0057c990",
+    "lease_claimed": true,
+    "same_singleton": "0057CE83 loads00E194B4,0057CE89 calls0057C990",
+    "write": "0057C99F stores -1 at+2C",
+    "change": "field name only; reset/timing behavior unchanged",
+    "hint_consumer": "0057C4C0 reads float+30 travel, separate01090AB0/+20 clock and timestamp+38; no+2C read in that tick"
+  },
+  "byte_parity": [
+    {
+      "address": "0057bec0",
+      "length": 80,
+      "disk_equals_saved": true,
+      "sha256": "b78d7f273f20d98635896fd3af767e26a2ff52e66318b2eed2119d2f153351d7"
+    },
+    {
+      "address": "00bf7420",
+      "length": 28,
+      "disk_equals_saved": true,
+      "sha256": "ca03c44f225ec07ccb8fd4dbaf388d22ba816472e788e49ecdb1db7b85f11cc6"
+    },
+    {
+      "address": "00bf7456",
+      "length": 117,
+      "disk_equals_saved": true,
+      "sha256": "5333b186c02836974c6f792303aeb2c00d856316b93ccbbe65f51def6ae661b4"
+    }
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release /W4 /WX /fp:strict scripts/build.ps1 PASS",
+    "ctests": [
+      "reconstructed_math PASS",
+      "native_math_differential PASS"
+    ],
+    "verify_seeds": "8 of8 match",
+    "ignored_fixture": "local/frontend_progress_probe.cpp /MANIFEST:EMBED",
+    "native_comparisons": 16,
+    "modes": [
+      0,
+      1
+    ],
+    "cases": [
+      "decreasing input",
+      "fraction below one unit",
+      "positive to negative zero",
+      "negative to positive zero",
+      "previous quiet NaN",
+      "incoming quiet NaN",
+      "incoming signaling NaN",
+      "incoming infinity"
+    ],
+    "compared": [
+      "float raw bits",
+      "signed progress units",
+      "complete x87 status word",
+      "balanced TOP",
+      "null-screen bypass"
+    ],
+    "fixture_result": "PASS",
+    "fixture_conversion": "unchanged saved BF7420/BF7456 bytes byte-equal to installed PE, only absolute data relocation",
+    "permanent_tests_added": 0
+  },
+  "uncertainty": [
+    "New C++ service ABI, semantic screen projection only",
+    "Actual host conversion service binding remains required",
+    "Masked default FP exceptions tested; unmasked traps and concurrent global mutation not exhaustively tested",
+    "No runtime rendering, game validation or binary replacement claim"
+  ]
+}

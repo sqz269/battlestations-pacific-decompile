@@ -89,6 +89,10 @@ bool gui_model_has_geometry_00b74650(const NativeModelOwner& model) noexcept {
 std::uint32_t gui_mesh_element_count_00b72b40(const void* mesh) noexcept {
     return read_word<std::uint32_t>(mesh, 0x58);
 }
+float* native_material_diffuse_00b179f0(NativeMaterialStorage& material,
+    std::uint32_t) noexcept {
+    return material.lighting_38.data();
+}
 
 void set_gui_color_00aa6870(GuiWidgetOwner& widget, const float (&rgba)[4],
     const GuiMaterialBindingServices& services) {
@@ -99,6 +103,8 @@ void set_gui_color_00aa6870(GuiWidgetOwner& widget, const float (&rgba)[4],
         &reference->model_owner().storage.node == &node->storage &&
         reference->model_owner().phase == NativeModelOwner::Phase::live,
         "GUI color publication requires the same live canonical model; group roots are unsupported");
+    require(&reference->model_owner().environment.retained_owners == &services.actual_owners,
+        "GUI color publication requires the model's same canonical actual-owner domain");
     // Native scalar DWORD copy order also handles the common self-source call.
     copy_color_words(widget.layout().color, rgba);
     std::memcpy(&widget.layout().transform.alpha, &widget.layout().color[3], sizeof(float));
@@ -109,20 +115,23 @@ void set_gui_color_00aa6870(GuiWidgetOwner& widget, const float (&rgba)[4],
     geometry = read_word<void*>(&node->storage, 0x180);
     const void* element = gui_geometry_element_00b732c0(geometry, 0);
     require(element != nullptr, "GUI material publication needs actual geometry element0");
-    const void* raw_material = read_word<void*>(element, 0x20);
-    require(raw_material && services.material,
-        "GUI color publication needs the canonical native material owner");
-    auto& material = services.material(raw_material);
-    float* diffuse = material.lighting.diffuse_color_00b179f0(0);
+    void* const raw_material = read_word<void*>(element, 0x20);
+    require(raw_material != nullptr, "GUI color publication needs an actual section material");
+    auto& actual = services.actual_owners.resolve_actual(raw_material);
+    auto* material = dynamic_cast<NativeMaterialReference*>(&actual);
+    require(material && &material->storage() == raw_material &&
+        &actual.reference_count == &material->storage().references_04 &&
+        material->storage().vtable_00 == 0x00d5e520 && actual.reference_count.load() > 0,
+        "GUI color publication requires the same live native material storage/reference");
+    float* diffuse = native_material_diffuse_00b179f0(material->storage(), 0);
     copy_color_words(diffuse, rgba);
 }
 
 void bind_gui_material_callbacks(GuiGeometryRuntimeServices& geometry,
     GuiWidgetOwner& widget, GuiMaterialBindingServices services) {
     require_base_color_slot(widget.layout());
-    require(services.clip_box_sources &&
-        services.retain_widget && services.material,
-        "GUI material callbacks require real clip, widget lifetime and material associations");
+    require(services.clip_box_sources && services.retain_widget,
+        "GUI material callbacks require real clip and widget lifetime services");
     require(&services.widgets.owner(widget.layout()) == &widget,
         "GUI material callbacks must use the existing canonical widget owner");
     geometry.register_clip_and_owner = [&widget, services](MaterialCloneState& material) {

@@ -1,0 +1,210 @@
+{
+  "packet": "orch3_camera_path_n",
+  "dependency_packet": "orch3_camera_path_n_dependencies",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/camera_path_sampler.cpp",
+  "header": "include/bsp/camera_path_sampler.hpp",
+  "documentation": "docs/CAMERA_PATH_SAMPLER.md",
+  "status": "four_complete_bounded_bodies_standalone_win32_compile_link_and_isolated_native_fixture_passed_parent_integration_pending",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "007b04c0",
+      "length": 287,
+      "disk_offset": 3867840,
+      "sha256": "3165e23e69b81fc65d71979f7df93af4aa2024c2a2c12652987fdebb657b4f4f",
+      "ghidra_disk_equal": true,
+      "inclusive_end": "007b05de",
+      "instruction_count": 89,
+      "last_instruction": "007b05dc",
+      "last_instruction_length": 3,
+      "native_abi": "ECX actual path; stack float parameter, position pointer, optional direction pointer, flags DWORD; RET10h; no meaningful return",
+      "old_name": "FUN_007b04c0",
+      "old_prototype": "undefined FUN_007b04c0(void)",
+      "proposed_name": "BSP_CameraPath_SampleWorld",
+      "api": "sample_camera_path_world_007b04c0",
+      "evidence": "Calls complete local sampler, captures actual +14 pose and refreshes canonical +C8/+CC if dirty, homogeneous float4 transform and rounded reciprocal-W position writes; re-reads +14 for optional unnormalized direction transform.",
+      "proposed_plate_comment": "[BSP reconstruction] Calls complete local sampler, captures actual +14 pose and refreshes canonical +C8/+CC if dirty, homogeneous float4 transform and rounded reciprocal-W position writes; re-reads +14 for optional unnormalized direction transform. Original ABI: ECX actual path; stack float parameter, position pointer, optional direction pointer, flags DWORD; RET10h; no meaningful return. Complete bounded body; borrowed actual storage, new C++ interface, not native ABI or game validation. See docs/CAMERA_PATH_SAMPLER.md and reports/camera_path_sampler.json.",
+      "annotation_before": {
+        "address": "007b04c0",
+        "function_name": "FUN_007b04c0"
+      }
+    },
+    {
+      "address": "007afe80",
+      "length": 1336,
+      "disk_offset": 3866240,
+      "sha256": "d4250973d8b6d7894ada40eca7ba7cc098c5327edda731d242f42760f4b2276d",
+      "ghidra_disk_equal": true,
+      "inclusive_end": "007b03b7",
+      "instruction_count": 445,
+      "last_instruction": "007b03b5",
+      "last_instruction_length": 3,
+      "native_abi": "ECX actual path; stack float parameter, position pointer, optional direction pointer, flags DWORD; RET10h",
+      "old_name": "FUN_007afe80",
+      "old_prototype": "undefined FUN_007afe80(void)",
+      "proposed_name": "BSP_CameraPath_SampleLocalCubic",
+      "api": "sample_camera_path_local_007afe80",
+      "evidence": "Count below three calls complete linear fallback. Unordered-or-parameter<=start+duration chooses first knot. Actual adjacent vectors form duration-scaled Hermite tangents; +24 wraps neighbors, low flags byte gates first/penultimate tangents; position then derivative with exact x87 spills. 007B02D0 bytes DC C9 update ST1,ST0 despite ambiguous Ghidra FMUL ST1.",
+      "proposed_plate_comment": "[BSP reconstruction] Count below three calls complete linear fallback. Unordered-or-parameter<=start+duration chooses first knot. Actual adjacent vectors form duration-scaled Hermite tangents; +24 wraps neighbors, low flags byte gates first/penultimate tangents; position then derivative with exact x87 spills. 007B02D0 bytes DC C9 update ST1,ST0 despite ambiguous Ghidra FMUL ST1. Original ABI: ECX actual path; stack float parameter, position pointer, optional direction pointer, flags DWORD; RET10h. Complete bounded body; borrowed actual storage, new C++ interface, not native ABI or game validation. See docs/CAMERA_PATH_SAMPLER.md and reports/camera_path_sampler.json.",
+      "annotation_before": {
+        "address": "007afe80",
+        "function_name": "FUN_007afe80"
+      }
+    },
+    {
+      "address": "007afac0",
+      "length": 403,
+      "disk_offset": 3865280,
+      "sha256": "d964cf6c2f3bfe9ee09aea92f0d08dc0412dee6d2c193fb582a8ab80da623e0e",
+      "ghidra_disk_equal": true,
+      "inclusive_end": "007afc52",
+      "instruction_count": 153,
+      "last_instruction": "007afc50",
+      "last_instruction_length": 3,
+      "native_abi": "ECX actual path; stack float parameter, position pointer, optional direction pointer; RET0Ch",
+      "old_name": "FUN_007afac0",
+      "old_prototype": "undefined FUN_007afac0(void)",
+      "proposed_name": "BSP_CameraPath_SampleLocalLinear",
+      "api": "sample_camera_path_linear_007afac0",
+      "evidence": "Scans actual pointer records, normalizes parameter by current start/duration, selects following or record zero, calls complete staged vector lerp; after position writes re-reads actual current record and copies stored +0C vector. CRT range callback may return.",
+      "proposed_plate_comment": "[BSP reconstruction] Scans actual pointer records, normalizes parameter by current start/duration, selects following or record zero, calls complete staged vector lerp; after position writes re-reads actual current record and copies stored +0C vector. CRT range callback may return. Original ABI: ECX actual path; stack float parameter, position pointer, optional direction pointer; RET0Ch. Complete bounded body; borrowed actual storage, new C++ interface, not native ABI or game validation. See docs/CAMERA_PATH_SAMPLER.md and reports/camera_path_sampler.json.",
+      "annotation_before": {
+        "address": "007afac0",
+        "function_name": "FUN_007afac0"
+      }
+    },
+    {
+      "address": "007ae200",
+      "length": 123,
+      "disk_offset": 3858944,
+      "sha256": "06c5fddee5782db08ac800e127082ea843a3fb725eb39a943cbd3b5eef5194d3",
+      "ghidra_disk_equal": true,
+      "inclusive_end": "007ae27a",
+      "instruction_count": 41,
+      "last_instruction": "007ae278",
+      "last_instruction_length": 3,
+      "native_abi": "ECX destination; stack from XYZ, to XYZ, parameter as seven by-value floats; EAX destination; RET1Ch",
+      "old_name": "FUN_007ae200",
+      "old_prototype": "undefined FUN_007ae200(void)",
+      "proposed_name": "BSP_Vector3f_LerpStaged",
+      "api": "lerp_camera_path_vector_007ae200",
+      "evidence": "Three coordinates compute from + t*(to-from), with each subtraction and product rounded through binary32 stores before final x87 additions. All by-value inputs are captured before output writes.",
+      "proposed_plate_comment": "[BSP reconstruction] Three coordinates compute from + t*(to-from), with each subtraction and product rounded through binary32 stores before final x87 additions. All by-value inputs are captured before output writes. Original ABI: ECX destination; stack from XYZ, to XYZ, parameter as seven by-value floats; EAX destination; RET1Ch. Complete bounded body; borrowed actual storage, new C++ interface, not native ABI or game validation. See docs/CAMERA_PATH_SAMPLER.md and reports/camera_path_sampler.json.",
+      "annotation_before": {
+        "address": "007ae200",
+        "function_name": "FUN_007ae200"
+      }
+    }
+  ],
+  "dependency_and_constant_evidence": [
+    {
+      "address": "00b62d10",
+      "length": 184,
+      "disk_offset": 7744784,
+      "sha256": "bff9fed3d6c782b47de1bef6a6f44cdfd676bc2636fefd1f5e715b352b70cf5d",
+      "ghidra_disk_equal": true
+    },
+    {
+      "address": "0042d0d0",
+      "length": 187,
+      "disk_offset": 184528,
+      "sha256": "b15282939ead3cf84c443e3092841998741ebf62b02f712287eed22fa32f767a",
+      "ghidra_disk_equal": true
+    },
+    {
+      "address": "00d7a280",
+      "length": 8,
+      "disk_offset": 9937536,
+      "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
+      "ghidra_disk_equal": true
+    },
+    {
+      "address": "00d7a2b0",
+      "length": 8,
+      "disk_offset": 9937584,
+      "sha256": "161f4c0b1a18a0501127332c387e782b5acc10c6c7a9f7e494c1e3394c49bad5",
+      "ghidra_disk_equal": true
+    },
+    {
+      "address": "00d7a328",
+      "length": 8,
+      "disk_offset": 9937704,
+      "sha256": "400c52dd5bd0047d64c0582af027b387a7938a64283d0d4f727331140cb6462c",
+      "ghidra_disk_equal": true
+    },
+    {
+      "address": "00ce6628",
+      "length": 8,
+      "disk_offset": 9332264,
+      "sha256": "3e6357a56fbae74413051d518261f4b70e5b3758172a70e7f101e996e00a9ee0",
+      "ghidra_disk_equal": true
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "disk_offset": 9937484,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "ghidra_disk_equal": true
+    }
+  ],
+  "ghidra_mutations": "None by worker; integrator owns annotation, save and export; before values retained in each row.",
+  "reused": [
+    "refresh_pose_00414db0",
+    "PoseRefreshView and PoseRefreshResolver",
+    "transform_camera_plane_00b65ba0 using canonical00B62D10 and bit copy",
+    "transform_effect_direction_0042d0d0_no_normalize"
+  ],
+  "required_boundaries": [
+    "Pure actual path view lookup",
+    "Pure actual contiguous eight-float knot prefix lookup",
+    "Pure actual canonical pose lookup",
+    "Actual00BF6713 invalid-parameter operation with returning callbacks permitted"
+  ],
+  "verification": {
+    "direct_compile": "MSVC Win32 /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict; new source compiled and linked into ignored fixture",
+    "repository_build": "scripts/build.ps1 passed 2/2 CTest after verify-seeds; new packet CMake registration belongs to parent and was not edited",
+    "isolated_fixture": {
+      "path": "local/camera_path_probe.cpp",
+      "executable": "local/camera_path_probe.exe",
+      "preparation": "local/prepare_camera_path_probe.py",
+      "output": "9991 isolated native comparisons; 0 failures",
+      "native_execution": "Verified relocated function slices/constants only; no image load, startup code or original game process",
+      "precision_modes": [
+        24,
+        53,
+        64
+      ],
+      "covered": [
+        "1/2/3/5 records",
+        "Wrap byte0/1",
+        "Flags0/1/0x100",
+        "Finite extrapolation and equality boundaries",
+        "Quiet/signaling NaN parameter",
+        "Null direction and separate outputs",
+        "Position aliases current knot",
+        "Direction aliases position or stored record vector",
+        "Non-affine homogeneous world transform with valid pose",
+        "Returning range callback repairs begin/end and is called once"
+      ],
+      "external_hooks": [
+        "00BF6713 controlled returning callback",
+        "00414DB0 abort guard; valid-pose fixture never reaches dirty refresh"
+      ],
+      "resolved_finding": "Ambiguous native007B02D0 FMUL ST1 display decoded from DC C9 as ST1*=ST0; corrected derivative matches native."
+    },
+    "permanent_tests_added": 0,
+    "original_abi_compatible": false,
+    "game_validated": false,
+    "visual_validated": false
+  },
+  "uncertainties": [
+    "Semantic meaning/production of record stored vectors and start/duration",
+    "Authored path loading and timing producer outside packet",
+    "Dirty canonical pose refresh source-grounded but not exercised by this isolated fixture",
+    "FP exception trap timing and malformed pointer-storage fault behavior not claimed by new C++ interface",
+    "Actual identity lookups remain host bindings; no manufactured geometry or callable native registry identities"
+  ]
+}

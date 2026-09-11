@@ -5658,8 +5658,8 @@
       "id": "native_renderer_stream_frequency1",
       "packet": "native_renderer_stream_frequency1",
       "worker": "main",
-      "done": false,
-      "state": "full_source_strict_main_Win32_checked_original_main_library_fixture_pending",
+      "done": true,
+      "state": "complete_actual_storage_primary_library_real_D3D9_original_EH_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b24a40"
       ],
@@ -5670,7 +5670,8 @@
         "reports/native_renderer_stream_frequency_audit.json"
       ],
       "source_ready": true,
-      "scope": "Full actual renderer storage and optional synchronization guards. No stream/stage validation, artificial cache defaults or injected provider callbacks."
+      "scope": "Full actual renderer storage and optional synchronization guards. No stream/stage validation, artificial cache defaults or injected provider callbacks.",
+      "evidence": "reports/native_renderer_stream_frequency_audit.json"
     },
     {
       "id": "native_renderer_texture_stage_state1",
@@ -5714,8 +5715,8 @@
       "id": "native_frame_target_vector3",
       "packet": "native_frame_target_vector3",
       "worker": "frame_target_vector",
-      "done": false,
-      "state": "primary_native_contract_reviewed_independent_worker_source_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_actual_raw_storage_primary_library_original_CRT_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b1f970",
         "00b1f9f0",
@@ -5728,7 +5729,8 @@
         "reports/native_frame_target_vector_audit.json"
       ],
       "source_ready": true,
-      "scope": "Complete actual raw storage and concrete provider operations; primary owns shared integration and Ghidra repairs/annotations."
+      "scope": "Complete actual raw storage and concrete provider operations; primary owns shared integration and Ghidra repairs/annotations.",
+      "evidence": "reports/native_frame_target_vector_audit.json"
     },
     {
       "id": "native_shader_owner_texture_release2",
@@ -5901,6 +5903,44 @@
       ],
       "integration_report": "reports/global_subsystems.json",
       "discovery_evidence": "docs/GLOBAL_SUBSYSTEMS.md"
+    },
+    {
+      "id": "native_renderer_frame_targets1",
+      "packet": "native_renderer_frame_targets1",
+      "worker": "main",
+      "done": false,
+      "state": "complete_source_pending_vector_and_owner_main_integration_build_and_original_fixture",
+      "function_addresses": [
+        "00b24e70"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_frame_targets.hpp",
+        "src/native_renderer_frame_targets.cpp",
+        "docs/NATIVE_RENDERER_FRAME_TARGETS.md",
+        "reports/native_renderer_frame_targets_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [
+        "native_frame_target_vector3",
+        "native_frame_target_owner6"
+      ],
+      "discovery_evidence": "reports/native_frame_target_owner_discovery.json",
+      "scope": "Complete318byteactualretainedgroupbinding usingcurrentD5E600owner, fullsurface/cachedstate/getter/guardproviders andactualF8D398byte; originalEHcleanup."
+    },
+    {
+      "id": "native_vertex_stream_owner_discovery",
+      "packet": "native_vertex_stream_owner_discovery",
+      "worker": "main",
+      "done": false,
+      "state": "full_binding_owner_base_and_reset_native_contracts_captured_base_retained_owner_4C_unresolved",
+      "function_addresses": [],
+      "code_ownership": [
+        "docs/NATIVE_VERTEX_STREAM_OWNER_DISCOVERY.md",
+        "reports/native_vertex_stream_owner_discovery.json"
+      ],
+      "source_ready": false,
+      "evidence": "reports/native_vertex_stream_owner_discovery.json",
+      "scope": "24freshspans2159bytes; fullB24840/B23710/B4B5D0/B4BF10/B62010/B61E20/B24BF0. Trace actualbase4C retainedowner before implementation. Originalreset repeats streamzero4times."
     }
   ],
   "snapshot_after_analysis": {

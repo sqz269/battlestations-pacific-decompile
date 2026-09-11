@@ -22,5 +22,36 @@ terminates a second C++ exception during unwind and leaves other SEH handling
 to the caller.
 
 Complete source passes the strict Win32 build and both existing CTests.
-Original-code fixture checks remain pending.
+Original-code fixture verification is complete as recorded below.
 No drawing, original-caller ABI, full reset or gameplay validation is claimed.
+
+## Primary integration
+
+The primary independently verified 62 immutable worker pins, four current
+root source files and ten fresh live-Ghidra/PE spans (396 bytes), then froze
+the current strict-build main library
+`3ca9a0274a0ce0fb9c7e0855bf75c1d8d2b70e70d005c7b3da1fcdcf6404600b`
+and its two exact archive members. The unchanged fixture linked only this
+main library. All thirteen original/library pairs match: 213,696 literal
+DWORDs across 113 raw frames. Nine complete linked COFF sections, eight
+source entries (653 unique code bytes), 27 full main image stages and both
+secondary-exception processes passed independent postimage verification.
+
+Two real HAL devices and actual Windows critical sections cover current
+cache/device/table/lock/mode changes, the full native guard and FH3 cleanup,
+unarmed entry and disarmed normal-leave throws. The full 7,204-byte renderer,
+eight global bytes, both actual 28-byte critical sections, current pointers
+and all 32 actual GetStreamSourceFreq values compare literally. Raw stream
+10000000h was accepted by this runtime as wrapped stream zero. Frequency
+zero produced actual INVALIDCALL 8876086Ch and was ignored after cache
+publication. Both isolated secondary C++ cleanup exceptions completed real
+Leave then reached the terminate handler, exiting 73 with the expected state.
+Actual runtime provider module entries and native/source callsites are pinned;
+FH3 import thunks remain distinguished from runtime exports.
+
+Both existing CTests and eight fresh native seeds passed. The existing
+Ghidra name and prior comments were preserved, evidence appended and saved,
+the full reconstruction record replaced the earlier diagnostic boundary,
+and the affected export refreshed. No permanent test was added. The new
+C++ interface remains outside the original caller ABI, and these fixtures
+do not validate the full renderer, game execution or visual behavior.
