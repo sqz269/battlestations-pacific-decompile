@@ -143,3 +143,14 @@ The capability contract also remains incomplete. The native AA tail at
 described as native no-snap behavior. Recover and populate the actual capability
 table before claiming complete settings startup. These remaining owner bindings
 prevent a gameplay or complete-startup claim for this batch.
+
+## Correction from docs/SETTINGS_STARTUP_OWNER.md
+
+The settings-startup follow-up is now bound to the retained GameSettingsBlock,
+mounted language catalog and recovered capability queries, including the missing
+options write before the common tail. Independent native inspection corrects
+the earlier select-language statement:008d56c0 uses length plus case-insensitive
+comparison, first match, and index zero on failure. The0x200 tail comparison is
+against the pixel-shader version;00b295c0 produces a nonempty AA list starting
+with zero. Details and isolated write/reload plus60-frame process evidence are
+in SETTINGS_STARTUP_OWNER.md. Gameplay and full renderer ownership remain unproven.

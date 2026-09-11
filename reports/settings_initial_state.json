@@ -1,0 +1,48 @@
+{
+  "packet": "orch2_settings_initial_state",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Every bsp.py ghidra command invokes Client.verify before its read/export batch. verify-seeds checked the installed binary."
+  },
+  "addresses": ["00cd2d80", "008d7710", "008d56c0"],
+  "reconstructed_sources": ["src/settings_initial_state.cpp", "src/game_settings.cpp"],
+  "documentation": "docs/SETTINGS_INITIAL_STATE.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "native_differential_tested": false,
+  "ghidra_worker_mutations": [],
+  "parent_function_definition_audit": "reports/settings_initial_state_function_definitions.json",
+  "annotation_requests": [
+    {"address": "00cd2d80", "previous_name": "FUN_00cd2d80", "proposed_name": "BSP_GameSettings_InitializeStatic", "native_end_exclusive": "00cd2d96", "abi": "No input; no semantic result; plain RET. Six instructions,22 bytes. CRT pointer00ce3054."},
+    {"address": "008d7710", "previous_name": "FUN_008d7710", "proposed_name": "BSP_GameSettings_Construct", "native_end_exclusive": "008d78ce", "abi": "ECX=this; EAX=this; plain RET. Ghidra prototype currently omits register input."},
+    {"address": "008d56c0", "previous_name": "FUN_008d56c0", "proposed_name": "BSP_GameSettings_SelectLanguageByName", "native_end_exclusive": "008d5797", "abi": "ECX=settings; stack const char*; native void; RET4 at008d578b."}
+  ],
+  "evidence": {
+    "static_initialization": "00cd2d80 loadsECX00f88980 and calls008d7710, then registers00cdeec0 through atexit00bf6ff5.",
+    "constructor_store_ranges": ["008d772d-008d77b4", "008d77b9-008d7871", "008d787b-008d7888"],
+    "constructor_branch": "008d7897 null00f8abe8 skips. Nonnull manager must return state2 then selected-user true before008d78b5 calls008d45d0.",
+    "cold_manager": "Four zero bytes00f8abe8. Only recorded writes00a3f586 sets in00a3f530 and00a3f639 clears in00a3f5d0. Sole known construction caller00a40df0 is called0073dc7c, after settings load0073daa5. Raw operand scan00cc893b-00ce2000 has no00f8abe8 references.",
+    "selection": "0041e870 obtains input C-string length;008d570b requires equality with entry+0; zero lengths match directly;008d572a __stricmp for nonzero;008d5792 stores first matching index;008d5753 writes0 for no match or empty table.",
+    "float": {"address": "00ce7d20", "bytes_hex": "c3b8323f", "native_bits": "3f32b8c3", "native_float": 0.6981317400932312, "previous_literal": 0.698161, "previous_bits": "3f32baae"},
+    "safe_area": "008d77a7 explicitly stores byte0 at+B1.",
+    "shader_flag_width": "008d7849 stores byte1 at+8c, adjacent to independent+8d byte. Projection changed from int to uint8_t.",
+    "unprojected_stores": ["+00 vtable00d15d58", "+38 byte0", "+3c dword1", "+49/+4b/+4c bytes0", "+50 dword2", "+a4/+a8/+ac second-vector header0"],
+    "preserved": "Initializer never assigns a fresh GameSettingsBlock. Non-native options_file.language and unknown_tokens metadata remain intact. Native fields absent from the projection are documented rather than assigned invented meanings."
+  },
+  "validation": {
+    "seed_verification": "passed",
+    "win32_release_build": "passed ./scripts/build.ps1; MSVC Win32 Release; exit0",
+    "existing_ctest": "2/2 passed: reconstructed_math and native_math_differential",
+    "focused_fixture": "passed: dirty retained-state initialization, metadata retention, exact float bits, explicit profile-tail result, case-insensitive first duplicate, miss, empty table, empty name and input embedded-NUL boundary",
+    "build_log": "local/settings_initial_state_build.log",
+    "fixture_source": "local/settings_initial_state_fixture.cpp",
+    "fixture_log": "local/settings_initial_state_fixture.log"
+  },
+  "uncertainty": [
+    "Generic later construction reports the required008d45d0 profile import; the platform operation itself is not implemented by this packet.",
+    "Native allocator, vtable, second-vector element type, destructor registration and unprojected scalar meanings are outside the C++ projection.",
+    "Case folding uses host CRT _stricmp; equivalence across CRT locale settings outside installed ASCII language names is unverified.",
+    "C++ APIs and descriptive names are hypotheses, not original binary interfaces. Build/fixture checks do not establish game-runtime parity."
+  ]
+}

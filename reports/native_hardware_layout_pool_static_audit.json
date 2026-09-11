@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_hardware_layout_pool_static2",
-  "status": "complete_source_build_and_original_process_exit_fixture_tested",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
   "generated_utc": "2026-09-11T04:35:44.364022+00:00",
   "checkout_head_before_packet_commit": "3c1d701b7195ea586907e9affc857b44c59d5592",
   "project": "C:/Users/sqz269/bsp.gpr",
@@ -568,11 +568,6 @@
     "ABI_compatible": false,
     "game_validated": false
   },
-  "integration_remaining": [
-    "primary shared CMake registration",
-    "primary address/name/reconstruction ledger records",
-    "primary Ghidra create exact CD7CA0 body; rename/comment CE0D40 preserving prior plate; save and refresh exports"
-  ],
   "reproduction": [
     "python local/prepare_hardware_pool_static.py",
     "./local/build_hardware_pool_static.ps1",
@@ -914,5 +909,508 @@
         "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
       }
     ]
-  }
+  },
+  "source_pin_base_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-static-20260910",
+  "primary_integration": {
+    "verification": {
+      "matched_words": 1805,
+      "metrics": {
+        "words": 1805,
+        "events": 19,
+        "frame_words": 95,
+        "registration_status": 0,
+        "init_calls": 1,
+        "actual_exit_shutdown_calls": 1,
+        "allocations": 3,
+        "frees": 3
+      },
+      "postimages": [
+        {
+          "phase": "native",
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_postimages_native.json",
+            "bytes": 1749,
+            "sha256": "f636bd7de10e10cc50db387e5079af51652c47390feaf6e715072824575fd35b"
+          },
+          "bindings": [
+            {
+              "site": 11928784,
+              "target": 805321200
+            },
+            {
+              "site": 11928176,
+              "target": 805318912
+            },
+            {
+              "site": 12546037,
+              "target": 805338384
+            }
+          ],
+          "spans": [
+            {
+              "address": "00cd7ca0",
+              "sha256": "ff2262b893446b20632d78e6ed27a8e959b0312f7c2b7027584711e2ba9e1013",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00ce0d40",
+              "sha256": "2c3a907805cbbcb9f624f51a5683d31e93d173ae54e456b60a8a3dd9da4ad4ff",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00b604d0",
+              "sha256": "777d4f6d6d804ee2ab7df714a542152fe5531f475e6c4ed451dec4302eff2468",
+              "only_declared_changes": true,
+              "sites": [
+                "0xb604d0"
+              ]
+            },
+            {
+              "address": "00b60270",
+              "sha256": "4e429c9e59d7001a7983551140ebcfcbdddf392c37416389ad5b18edda3e4fae",
+              "only_declared_changes": true,
+              "sites": [
+                "0xb60270"
+              ]
+            },
+            {
+              "address": "00b60020",
+              "sha256": "9d35537794e565ed84ddbac10baa5313717657fd45167dcd31d9c1dafb3e7996",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00b60350",
+              "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00bf6ff5",
+              "sha256": "4499026a1e15d73f362897ed4e7895cdda876f062af03a9bc3e6e9346709fd15",
+              "only_declared_changes": true,
+              "sites": [
+                "0xbf6ff5"
+              ]
+            },
+            {
+              "address": "00ce353c",
+              "sha256": "65baa7880a8f9233df22d0b2177126340d9624a5eaf3d9543d216080f9ac5713",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00d62af0",
+              "sha256": "20f5da4a4e3a4f41a6f56035efa7b75e08e096c8c2f3d4294076e13625aae559",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00e188b4",
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "0108fe9c",
+              "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+              "only_declared_changes": true,
+              "sites": []
+            }
+          ]
+        },
+        {
+          "phase": "current",
+          "artifact": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_postimages_current.json",
+            "bytes": 1749,
+            "sha256": "f636bd7de10e10cc50db387e5079af51652c47390feaf6e715072824575fd35b"
+          },
+          "bindings": [
+            {
+              "site": 11928784,
+              "target": 805321200
+            },
+            {
+              "site": 11928176,
+              "target": 805318912
+            },
+            {
+              "site": 12546037,
+              "target": 805338384
+            }
+          ],
+          "spans": [
+            {
+              "address": "00cd7ca0",
+              "sha256": "ff2262b893446b20632d78e6ed27a8e959b0312f7c2b7027584711e2ba9e1013",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00ce0d40",
+              "sha256": "2c3a907805cbbcb9f624f51a5683d31e93d173ae54e456b60a8a3dd9da4ad4ff",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00b604d0",
+              "sha256": "777d4f6d6d804ee2ab7df714a542152fe5531f475e6c4ed451dec4302eff2468",
+              "only_declared_changes": true,
+              "sites": [
+                "0xb604d0"
+              ]
+            },
+            {
+              "address": "00b60270",
+              "sha256": "4e429c9e59d7001a7983551140ebcfcbdddf392c37416389ad5b18edda3e4fae",
+              "only_declared_changes": true,
+              "sites": [
+                "0xb60270"
+              ]
+            },
+            {
+              "address": "00b60020",
+              "sha256": "9d35537794e565ed84ddbac10baa5313717657fd45167dcd31d9c1dafb3e7996",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00b60350",
+              "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00bf6ff5",
+              "sha256": "4499026a1e15d73f362897ed4e7895cdda876f062af03a9bc3e6e9346709fd15",
+              "only_declared_changes": true,
+              "sites": [
+                "0xbf6ff5"
+              ]
+            },
+            {
+              "address": "00ce353c",
+              "sha256": "65baa7880a8f9233df22d0b2177126340d9624a5eaf3d9543d216080f9ac5713",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00d62af0",
+              "sha256": "20f5da4a4e3a4f41a6f56035efa7b75e08e096c8c2f3d4294076e13625aae559",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "00e188b4",
+              "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+              "only_declared_changes": true,
+              "sites": []
+            },
+            {
+              "address": "0108fe9c",
+              "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+              "only_declared_changes": true,
+              "sites": []
+            }
+          ]
+        }
+      ],
+      "providers": [
+        {
+          "symbol": "initialize_static_native_hardware_layout_pool_00cd7ca0",
+          "provider": "bsp_core.linked:native_hardware_layout_pool_static.obj",
+          "line": " 0001:00006350       ?initialize_static_native_hardware_layout_pool_00cd7ca0@bsp@@YAHXZ 30007350 f   bsp_core.linked:native_hardware_layout_pool_static.obj"
+        },
+        {
+          "symbol": "destroy_static_native_hardware_layout_pool_00ce0d40",
+          "provider": "bsp_core.linked:native_hardware_layout_pool_static.obj",
+          "line": " 0001:00006330       ?destroy_static_native_hardware_layout_pool_00ce0d40@bsp@@YAXXZ 30007330 f   bsp_core.linked:native_hardware_layout_pool_static.obj"
+        },
+        {
+          "symbol": "bind_static_native_hardware_layout_pool_0108fe9c",
+          "provider": "bsp_core.linked:native_hardware_layout_pool_static.obj",
+          "line": " 0001:00006300       ?bind_static_native_hardware_layout_pool_0108fe9c@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 30007300 f   bsp_core.linked:native_hardware_layout_pool_static.obj"
+        },
+        {
+          "symbol": "trim_native_hardware_layout_pool_00b60350",
+          "provider": "bsp_core.linked:native_hardware_layout_pool_trim.obj",
+          "line": " 0001:00006900       ?trim_native_hardware_layout_pool_00b60350@bsp@@YAXPAX@Z 30007900 f   bsp_core.linked:native_hardware_layout_pool_trim.obj"
+        },
+        {
+          "symbol": "pool_static_actual_initialize",
+          "provider": "actual_pool_lifetime.obj",
+          "line": " 0001:000058f0       ?pool_static_actual_initialize@bsp@@YAPAXPAXAAVAllocatorListDomain@1@@Z 300068f0 f   actual_pool_lifetime.obj"
+        },
+        {
+          "symbol": "pool_static_actual_destroy",
+          "provider": "actual_pool_lifetime.obj",
+          "line": " 0001:00005890       ?pool_static_actual_destroy@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 30006890 f   actual_pool_lifetime.obj"
+        },
+        {
+          "symbol": "pool_static_actual_allocate",
+          "provider": "actual_singleton_lifetime.obj",
+          "line": " 0001:000057d0       ?pool_static_actual_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 300067d0 f   actual_singleton_lifetime.obj"
+        },
+        {
+          "symbol": "pool_static_actual_free",
+          "provider": "actual_singleton_lifetime.obj",
+          "line": " 0001:00005830       ?pool_static_actual_free@bsp@@YAXPAX@Z 30006830 f   actual_singleton_lifetime.obj"
+        }
+      ],
+      "owned32_original_bytes_unchanged": true,
+      "preparation": {
+        "worker_base_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-static-20260910",
+        "worker_pins_verified": 66,
+        "source_pins": 14,
+        "current_source_differences": [],
+        "fresh_spans": [
+          {
+            "address": "00cd7ca0",
+            "length": 22,
+            "sha256": "ff2262b893446b20632d78e6ed27a8e959b0312f7c2b7027584711e2ba9e1013",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00ce0d40",
+            "length": 10,
+            "sha256": "2c3a907805cbbcb9f624f51a5683d31e93d173ae54e456b60a8a3dd9da4ad4ff",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b604d0",
+            "length": 211,
+            "sha256": "b379e4c880b8f7e46bef6648d7fb7b18df37332e0f64eba8226c2cc94267d86d",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b60270",
+            "length": 138,
+            "sha256": "ad81787d385ae9679a11fa63d37d70d68b4bd83f7ed13fc1cc506413bb7db2db",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b60020",
+            "length": 14,
+            "sha256": "9d35537794e565ed84ddbac10baa5313717657fd45167dcd31d9c1dafb3e7996",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00b60350",
+            "length": 160,
+            "sha256": "149d2bcf7e429c287a5eead8e7a0470569b0abf6927773f094eb481aa89dbde1",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf6ff5",
+            "length": 18,
+            "sha256": "09942fe4905f48be972c0e6824f517bcc0cde802100baff5d8a61369ddad30b6",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00ce353c",
+            "length": 4,
+            "sha256": "65baa7880a8f9233df22d0b2177126340d9624a5eaf3d9543d216080f9ac5713",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00d62af0",
+            "length": 4,
+            "sha256": "20f5da4a4e3a4f41a6f56035efa7b75e08e096c8c2f3d4294076e13625aae559",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00e188b4",
+            "length": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "0108fe9c",
+            "length": 56,
+            "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+            "live_PE_and_worker_preimage_match": true
+          }
+        ]
+      },
+      "artifact_pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\actual_pool_lifetime.obj",
+          "bytes": 4181,
+          "sha256": "306f291be79a4fb209435012e71e9f8de6e4f89cf367d9f7eff56a57ee674e18"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\actual_singleton_lifetime.obj",
+          "bytes": 32955,
+          "sha256": "27d611fe229e97302ab8403a593d58a98791670be2d2b5bac6772bfefaa1cc79"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\bsp_core.linked.lib",
+          "bytes": 25195110,
+          "sha256": "1564fab7addf0d1a321fe4b11e4a98f1c0b0ba960b6a7905c249238d6fa7f3d7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\build_pool_static.cmd",
+          "bytes": 2194,
+          "sha256": "4374b03cf5c94f1a8d715a81e942d1475db8acac6ad10bdaad4cb6f056f27d60"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\hardware_pool_static_check.exe",
+          "bytes": 49664,
+          "sha256": "fac849252320ab0e11a0220af63a995c80dcf6cf44a1347b45710d39b11f0889"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\hardware_pool_static_check.map",
+          "bytes": 100111,
+          "sha256": "cca771daacb2f8a51688ee7f02e1a57f05a53c0f3118ed6c173b7c92441d1a33"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\hardware_pool_static_check.obj",
+          "bytes": 217082,
+          "sha256": "17513aeb34f93f6550563ff9b576b463229801392a8b82c4ea9aefe0f25cc929"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_current.bin",
+          "bytes": 7220,
+          "sha256": "b835596d2e0125f1b362fbc5b7528b0b32f3b8235efd22269aa9055e9e230c7e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_current.bin.json",
+          "bytes": 141,
+          "sha256": "e6f5a274a9802bd319a8c32141d6268d1086c59836762d60c075444771edd7b7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_native.bin",
+          "bytes": 7220,
+          "sha256": "b835596d2e0125f1b362fbc5b7528b0b32f3b8235efd22269aa9055e9e230c7e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_native.bin.json",
+          "bytes": 141,
+          "sha256": "e6f5a274a9802bd319a8c32141d6268d1086c59836762d60c075444771edd7b7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_postimages_current.json",
+          "bytes": 1749,
+          "sha256": "f636bd7de10e10cc50db387e5079af51652c47390feaf6e715072824575fd35b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-pool-static-primary-check\\pool_static_postimages_native.json",
+          "bytes": 1749,
+          "sha256": "f636bd7de10e10cc50db387e5079af51652c47390feaf6e715072824575fd35b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\build_hardware_pool_static_primary_check.ps1",
+          "bytes": 2772,
+          "sha256": "24b1d2bf4dbfded65f6ad72fa17b030f261bccabb5de6fae7534f765f01fbb86"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_hardware_pool_static_primary_fixture.txt",
+          "bytes": 481,
+          "sha256": "0133330564421ad6bde602fa2acd5c96587379ab598c7877d02bec478d782c73"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_hardware_lifetime_pool_static_primary_build.txt",
+          "bytes": 1655,
+          "sha256": "04428840cd8729a8fabd1e5d31ccd08612c7e9d70bf0ed6c7a6942f3ee969117"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_hardware_layout_pool_static.cpp",
+          "bytes": 1029,
+          "sha256": "c92e65c9c11cf95c3e69d57fdd14af078bf7eb2977887c17d788c92be990c213"
+        }
+      ]
+    },
+    "strict_build_and_two_existing_tests": true,
+    "owned_source_provider": "Frozen current main bsp_core.linked.lib; worker fixture unchanged; pool static uses exact current production source only for existing observation aliases.",
+    "annotations_applied": true,
+    "ledger_registered": true,
+    "body_repairs_and_creation": [
+      {
+        "address": "00cd7ca0",
+        "end_exclusive": "00cd7cb6",
+        "length": 22,
+        "sha256": "ff2262b893446b20632d78e6ed27a8e959b0312f7c2b7027584711e2ba9e1013",
+        "missing_before": true,
+        "function_before": "No function found for 00cd7ca0",
+        "plate_before": {
+          "query_result": "No function at address; creation preserves existing code/data comments"
+        },
+        "function_after": "Function: BSP_Static_InitializeHardwareLayoutPool at 00cd7ca0\nSignature: undefined BSP_Static_InitializeHardwareLayoutPool(void)\nEntry: 00cd7ca0\nBody: 00cd7ca0 - 00cd7cb5"
+      }
+    ],
+    "definition_and_save_report": {
+      "path": "reports/native_hardware_lifetimes_defined_functions.json",
+      "bytes": 27556,
+      "sha256": "d81ba2ce1fb30fda2cecbbf5d071f8da2df86c3eeadafb8af5ff0dc66a505b0c"
+    }
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "saved_annotations": {
+    "path": "reports/native_hardware_layout_pool_static_annotations.json",
+    "bytes": 2388,
+    "sha256": "06737fcf18aa4d7485a9c2dac6595706507c8ea6e34740a1ecbc93e2a20f22f8",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00cd7ca0",
+      "path": "exports/bsp/functions/00cd7ca0/decompiled.c",
+      "bytes": 981,
+      "sha256": "a0209090829b5a08409f5aa2543789e8a5be50491d63dd88f7a9ef52f3b9fad1"
+    },
+    {
+      "address": "00ce0d40",
+      "path": "exports/bsp/functions/00ce0d40/decompiled.c",
+      "bytes": 1060,
+      "sha256": "fe1fdc845f63b0de3420d02c9c6f715f2315f29f1a039a7b0b674ae7cffd0cba"
+    }
+  ],
+  "closure_utc": "2026-09-11T04:53:11.581061+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00cd7ca0",
+      "name": "initialize_static_native_hardware_layout_pool_00cd7ca0",
+      "cpp_symbol": "initialize_static_native_hardware_layout_pool_00cd7ca0",
+      "source": "src/native_hardware_layout_pool_static.cpp",
+      "native_end_exclusive": "00cd7cb6",
+      "original_abi": "no arguments; EAX real _atexit result; RET",
+      "evidence": "reports/native_hardware_layout_pool_static_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00ce0d40",
+      "name": "destroy_static_native_hardware_layout_pool_00ce0d40",
+      "cpp_symbol": "destroy_static_native_hardware_layout_pool_00ce0d40",
+      "source": "src/native_hardware_layout_pool_static.cpp",
+      "native_end_exclusive": "00ce0d4a",
+      "original_abi": "no arguments; ECX=108FE9C; tailcall B60270",
+      "evidence": "reports/native_hardware_layout_pool_static_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_HARDWARE_LAYOUT_POOL_STATIC.md",
+    "bytes": 6548,
+    "sha256": "608cd1870e67345ca5c3d434a4aa45cd23293a7f7b780bdbcf4bd167d29f96d3"
+  },
+  "worker_integration_remaining_before_primary_closure": [
+    "primary shared CMake registration",
+    "primary address/name/reconstruction ledger records",
+    "primary Ghidra create exact CD7CA0 body; rename/comment CE0D40 preserving prior plate; save and refresh exports"
+  ],
+  "integration_remaining": []
 }

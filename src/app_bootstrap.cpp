@@ -7,11 +7,15 @@
 // while these take explicit arguments and return values.
 
 #include "bsp/app_bootstrap.hpp"
+#include "bsp/game_settings.hpp"
+#include "bsp/options_token_reader.hpp"
 
 #include <algorithm>
 #include <cctype>
 #include <cstdlib>
 #include <string>
+#include <stdexcept>
+#include <limits>
 
 namespace bsp {
 namespace {
@@ -289,119 +293,118 @@ bool options_token_is(const std::string& name, const char* literal) noexcept {
 }
 }
 
-void apply_options_token(GameSettings& settings, const std::string& name,
-    const std::string& value, const std::vector<Resolution>& resolutions,
-    std::vector<std::string>::size_type& consumed_extra,
-    const std::string* second_value)
+void apply_options_token(GameSettingsBlock& block, OptionsTokenReader& reader,
+    GameSettingsHost& host, const std::vector<Resolution>& resolutions)
 {
-    consumed_extra = 0;
+    auto& settings = block.options_file;
+    const std::string name = reader.peek().text;
+    reader.consume();
+    bool accepted{}; // Native caller ignores the typed-reader success byte.
     if (options_token_is(name, "Language")) {
-        settings.language = value;
+        select_language_by_name_008d56c0(block, host.language_catalog(), reader.read_string(accepted));
     } else if (options_token_is(name, "Fullscreen")) {
-        settings.fullscreen_1e = parse_long(value) != 0;
+        settings.fullscreen_1e = reader.read_int(accepted) != 0;
     } else if (options_token_is(name, "HiResShadow")) {
-        settings.hires_shadow_1d = parse_long(value) != 0;
+        settings.hires_shadow_1d = reader.read_int(accepted) != 0;
     } else if (options_token_is(name, "NoLOD")) {
-        settings.no_lod_1c = parse_long(value) != 0;
+        settings.no_lod_1c = reader.read_int(accepted) != 0;
     } else if (options_token_is(name, "Resolution")) {
-        settings.width_14 = static_cast<int>(parse_long(value));
-        settings.height_18 = second_value
-            ? static_cast<int>(parse_long(*second_value)) : 0;
-        consumed_extra = 1;
-        if (first_matching_resolution(resolutions, settings.width_14,
-                settings.height_18, -1) == -1) {
+        settings.width_14 = reader.read_int(accepted);
+        settings.height_18 = reader.read_int(accepted);
+        if (first_matching_resolution(resolutions, settings.width_14, settings.height_18, -1) == -1) {
             settings.width_14 = kFallbackResolution.width;
             settings.height_18 = kFallbackResolution.height;
         }
         settings.resolution_index_78 = last_matching_resolution(resolutions,
             settings.width_14, settings.height_18, settings.resolution_index_78);
     } else if (options_token_is(name, "VSync")) {
-        settings.vsync_60 = parse_long(value) != 0;
+        settings.vsync_60 = reader.read_bool(accepted);
     } else if (options_token_is(name, "ShaderModel")) {
-        settings.shader_model_88 = static_cast<int>(parse_long(value));
+        settings.shader_model_88 = reader.read_int(accepted);
     } else if (options_token_is(name, "Antialias")) {
         settings.antialias_index_5c = 0;
-        settings.antialias_58 = static_cast<int>(parse_long(value));
+        settings.antialias_58 = reader.read_int(accepted);
     } else if (options_token_is(name, "Clouds")) {
-        settings.clouds_74 = parse_long(value) != 0;
+        settings.clouds_74 = reader.read_bool(accepted);
     } else if (options_token_is(name, "Foliage")) {
-        settings.foliage_86 = parse_long(value) != 0;
+        settings.foliage_86 = reader.read_bool(accepted);
     } else if (options_token_is(name, "Shadow")) {
-        settings.shadow_84 = parse_long(value) != 0;
+        settings.shadow_84 = reader.read_bool(accepted);
         settings.shadow_85 = settings.shadow_84;
     } else if (options_token_is(name, "Reflection")) {
-        settings.reflection_6c = parse_long(value) != 0;
+        settings.reflection_6c = reader.read_bool(accepted);
     } else if (options_token_is(name, "TextureDetail")) {
-        settings.texture_detail_68 = static_cast<int>(parse_long(value));
+        settings.texture_detail_68 = reader.read_int(accepted);
     } else if (options_token_is(name, "ObjectDetail")) {
-        settings.object_detail_54 = static_cast<int>(parse_long(value));
+        settings.object_detail_54 = reader.read_int(accepted);
     } else if (options_token_is(name, "SoundEnabled")) {
-        // Recognised, its value consumed, and then discarded: the native jumps
-        // straight back to the loop head with no store (008d85d9).
+        // 008d85d9 returns to the loop immediately after consuming the KEY.
+        // Its following token is handled afresh, usually by unknown-token log.
     } else if (options_token_is(name, "Firewall")) {
-        settings.firewall_94 = parse_long(value) != 0;
+        settings.firewall_94 = reader.read_bool(accepted);
     } else {
-        // "Options: unknown token %s"
         settings.unknown_tokens.push_back(name);
+        host.log("Options: unknown token " + name);
     }
 }
 
 } // namespace
 
-GameSettings load_game_settings_008d8190(const GameSettingsHost& host)
+void load_game_settings_008d8190(GameSettingsBlock& block, GameSettingsHost& host)
 {
-    GameSettings settings;
-    const std::vector<Resolution>& resolutions = host.supported_resolutions();
+    auto& settings = block.options_file;
+    settings.unknown_tokens.clear(); // Host diagnostic metadata, no native field.
+    host.build_language_catalog_008d7bc0();
+    host.copy_supported_resolutions_008d4ea0();
+    const auto& resolutions = host.supported_resolutions();
     settings.shader_model_88 = host.max_shader_model();
+    const auto synchronize_language = [&] {
+        const auto& languages = host.language_catalog();
+        const int index = block.gameplay.language_index_04;
+        if (index < 0 || static_cast<std::size_t>(index) >= languages.size())
+            throw std::out_of_range("Settings startup has no valid native language entry");
+        settings.language = languages[static_cast<std::size_t>(index)].lanfile;
+    };
 
     const std::optional<std::string> text = host.read_options_file();
     if (!text) {
-        // fopen failed: derive everything from the desktop and the registry.
         settings.fullscreen_1e = true;
         const Resolution desktop = host.desktop_size();
         settings.width_14 = desktop.width;
         settings.height_18 = desktop.height;
-        // The original's own spelling.
-        host.log("Destop size=" + to_decimal(settings.width_14) + " "
-            + to_decimal(settings.height_18));
+        host.log("Destop size=" + to_decimal(settings.width_14) + " " + to_decimal(settings.height_18));
         settings.resolution_index_78 = first_matching_resolution(resolutions,
             settings.width_14, settings.height_18, settings.resolution_index_78);
-        if (const std::optional<std::uint32_t> lcid = host.read_registry_language_lcid()) {
-            settings.language = language_name_for_lcid_008d8190(*lcid);
-        }
-        host.apply_detected_defaults(settings);
+        if (const auto lcid = host.read_registry_language_lcid())
+            select_language_by_name_008d56c0(block, host.language_catalog(), language_name_for_lcid_008d8190(*lcid));
+        synchronize_language();
+        host.write_options_text_008d6170(block);
     } else {
-        // The whole file is read into a memory backing and walked as tokens.
-        const std::vector<std::string> tokens = split_on(*text, " \t\r\n,");
-        for (std::size_t i = 0; i + 1 < tokens.size(); i += 2) {
-            const std::string* second = i + 2 < tokens.size() ? &tokens[i + 2] : nullptr;
-            std::vector<std::string>::size_type extra = 0;
-            apply_options_token(settings, tokens[i], tokens[i + 1], resolutions,
-                extra, second);
-            i += extra;
-        }
+        OptionsTokenReader reader(*text);
+        while (!reader.at_end()) apply_options_token(block, reader, host, resolutions);
+        synchronize_language();
     }
 
-    // Tail, run on both paths.
-    if (settings.shader_model_88 < 1) {
-        settings.shader_model_88 = host.max_shader_model();
+    if (settings.shader_model_88 < 1) settings.shader_model_88 = host.max_shader_model();
+    settings.shader_model_88 = (std::min)(settings.shader_model_88, host.max_shader_model());
+    host.select_shader_model_00b200c0(settings.shader_model_88);
+    if (host.pixel_shader_version_28() < 0x200U) {
+        settings.shadow_84 = false;
+        settings.shadow_85 = false;
+        block.presentation.old_film_effect_90 = 0;
     }
-    settings.shader_model_88 = std::min(settings.shader_model_88, host.max_shader_model());
-
-    const std::vector<int>& levels = host.supported_antialias_levels();
-    if (!levels.empty()) {
-        // No break: the last matching entry wins.
-        for (std::size_t i = 0; i < levels.size(); ++i) {
-            if (levels[i] == settings.antialias_58) {
-                settings.antialias_index_5c = static_cast<int>(i);
-            }
-        }
-        if (static_cast<int>(levels.size()) <= settings.antialias_index_5c) {
-            settings.antialias_index_5c = static_cast<int>(levels.size()) - 1;
-        }
-        settings.antialias_58 = levels[static_cast<std::size_t>(settings.antialias_index_5c)];
-    }
-    return settings;
+    host.rebuild_antialias_levels_00b295c0(
+        static_cast<std::uint8_t>(block.presentation.shader_flag_8c) == 0 ? 0x15U : 0x71U);
+    host.copy_supported_antialias_008d4df0();
+    const auto& levels = host.supported_antialias_levels();
+    if (levels.size() > static_cast<std::size_t>((std::numeric_limits<int>::max)()))
+        throw std::length_error("Settings AA table exceeds native signed count");
+    for (std::size_t i = 0; i < levels.size(); ++i)
+        if (levels[i] == settings.antialias_58) settings.antialias_index_5c = static_cast<int>(i);
+    if (static_cast<int>(levels.size()) <= settings.antialias_index_5c)
+        settings.antialias_index_5c = static_cast<int>(levels.size()) - 1;
+    // Native indexes unconditionally at008d8873. Reject its invalid domain.
+    settings.antialias_58 = levels.at(static_cast<std::size_t>(settings.antialias_index_5c));
 }
 
 // ---------------------------------------------------------------------------
@@ -430,7 +433,8 @@ BootstrapState run_bootstrap_0073d410(BootstrapHost& host, bool vfs_first_time,
     state.file_access_log_created =
         state.options.file_access_log && !file_log_singleton_present;
     // 0073daa5
-    state.settings = load_game_settings_008d8190(host.game_settings());
+    load_game_settings_008d8190(host.retained_game_settings(), host.game_settings());
+    state.settings = host.retained_game_settings().options_file;
     return state;
 }
 

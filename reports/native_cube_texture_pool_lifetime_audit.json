@@ -1,0 +1,779 @@
+{
+  "schema_version": 1,
+  "packet": "native_cube_texture_pool_lifetime3",
+  "status": "complete_reconstructed_build_and_original_body_fixture_passed_pending_integrator_saved_annotations",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-pool-lifetime3-20260910",
+  "branch": "agent/native-cube-texture-pool-lifetime3-20260910",
+  "base_commit": "180749f9f2c8961cf241e7203b8274c131a6612b",
+  "owned_files": [
+    "include/bsp/native_cube_texture_pool_lifetime.hpp",
+    "src/native_cube_texture_pool_lifetime.cpp",
+    "docs/NATIVE_CUBE_TEXTURE_POOL_LIFETIME.md",
+    "reports/native_cube_texture_pool_lifetime_audit.json"
+  ],
+  "scope": "Three complete functions and four owned files only. No shared CMake, ledger, packet, Ghidra or permanent test edits.",
+  "target_verification": {
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_before_each_live_read": true,
+    "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "installed_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "seed_count": 8,
+    "all_seeds_match": true,
+    "span_count": 12,
+    "span_bytes": 577,
+    "owned_bytes": 363,
+    "all_live_PE_spans_match": true,
+    "installed_spans_rechecked_before_runtime_copy": true
+  },
+  "functions": [
+    {
+      "address": "00b3f090",
+      "end_exclusive": "00b3f163",
+      "length": 211,
+      "native_sha256": "6eb70fb8e1f244b28bf1d8525a9f0e274f7a8bdaea39f07861d5cfdbb38da0e3",
+      "old_name": "FUN_00b3f090",
+      "old_signature": "undefined FUN_00b3f090(void)",
+      "old_comments": {},
+      "proposed_name": "BSP_CubeTexturePool_Initialize",
+      "cpp_function": "initialize_native_cube_texture_pool_00b3f090",
+      "native_abi": "ECX actual writable 38h pool; EAX same pool; RET; original FH3 state2->1->0->-1.",
+      "interface": "new MSVC Win32 actual-pointer C++ API; not binary ABI replacement",
+      "evidence": "Complete211byte native body: base shared-list prepend, D61944, actual section+0C, depth/table/count/capacity0 and earliestFFFFFFFF, cap32 before new128; copy current count/current table after allocation, free current old table, publish captured replacement, return actual pool. Raw B3F149 ADD ESP,4 restores returning-free continuation. Exact FH3 CBEE7E/DF76DC map DF76C4 runs table B3D3F0(pool+28), section402F70(pool+0C), base403970(pool).",
+      "status": "reconstructed_strict_primary_library_original_body_fixture_passed",
+      "saved_ghidra_annotation": false
+    },
+    {
+      "address": "00b3e5b0",
+      "end_exclusive": "00b3e63a",
+      "length": 138,
+      "native_sha256": "9aea00ac56b7bbd0422348e26d29c7e2757a0e7ad174b7a6cbee1cc4b2e20514",
+      "old_name": "FUN_00b3e5b0",
+      "old_signature": "undefined FUN_00b3e5b0(void)",
+      "old_comments": {},
+      "proposed_name": "BSP_CubeTexturePool_Destroy",
+      "cpp_function": "destroy_native_cube_texture_pool_00b3e5b0",
+      "native_abi": "ECX actual initialized 38h pool; RET; no own EH frame.",
+      "interface": "new MSVC Win32 actual-pointer C++ API; not binary ABI replacement",
+      "evidence": "Complete138byte native body: capture count nonempty before D61944 store; free each current slab while reloading current count/table; free current table; drain signed positive recursion by decrement before LeaveCriticalSection; DeleteCriticalSection; restore D7A0C0 and unlink current shared list. Raw returning-free continuations B3E5CD..D7 and B3E5E5..E7 verified. Retains own fields; no logical owner destruction or pool-storage free.",
+      "status": "reconstructed_strict_primary_library_original_body_fixture_passed",
+      "saved_ghidra_annotation": false
+    },
+    {
+      "address": "00b3d3f0",
+      "end_exclusive": "00b3d3fe",
+      "length": 14,
+      "native_sha256": "2b161faa233a93513fab0865ad9806038a46dde8e54095d05a64670826f5b8a6",
+      "old_name": "FUN_00b3d3f0",
+      "old_signature": "undefined FUN_00b3d3f0(void)",
+      "old_comments": {},
+      "proposed_name": "BSP_CubeTexturePool_FreeTableUnwind",
+      "cpp_function": "free_native_cube_texture_pool_table_00b3d3f0",
+      "native_abi": "ECX actual table header (pool+28), not pool; RET; no semantic return claimed.",
+      "interface": "new MSVC Win32 actual-pointer C++ API; not binary ABI replacement",
+      "evidence": "Complete14byte native leaf: read first DWORD of actual table header, call BF6989 only if nonnull, clear nothing, return. Raw B3D3FC POP ECX restores omitted returning-free continuation. Reached by original CBEE73 state2 funclet.",
+      "status": "reconstructed_strict_primary_library_original_body_fixture_passed",
+      "saved_ghidra_annotation": false
+    }
+  ],
+  "actual_storage": {
+    "bytes": 56,
+    "borrowed": true,
+    "fields": {
+      "00": "native profile",
+      "04": "previous actual list element",
+      "08": "next actual list element",
+      "0c": "actual24byteWin32CRITICAL_SECTION",
+      "24": "signed recursion",
+      "28": "current actual table pointer",
+      "2c": "current unsigned slab count",
+      "30": "current unsigned capacity",
+      "34": "earliest available slab index orFFFFFFFF"
+    },
+    "profile": "00d61944",
+    "base_profile": "00d7a0c0",
+    "shared_head": "00e188b4",
+    "private_list_head": false,
+    "foreign_pool": false,
+    "static_global_included": false
+  },
+  "composition": {
+    "list": "existing AllocatorListDomain borrowing caller actual shared head",
+    "trim_binding_before_publication": true,
+    "trim_bind_api": "bind_native_cube_texture_pool_trim_00d61944(void*,AllocatorListDomain&)",
+    "trim_pair": [
+      "00d61944",
+      "00b3e690"
+    ],
+    "trim_source": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-pool-trim-20260910\\src\\native_cube_texture_pool_trim.cpp",
+    "trim_source_is_real_frozen_worker_implementation": true,
+    "allocation": "singleton_lifetime_allocate({pointer_slots,128,128}): real host malloc/_callnewh/retry/bad_alloc",
+    "free": "singleton_lifetime_free: real host CRT free",
+    "section": "actual Win32 InitializeCriticalSection, LeaveCriticalSection, DeleteCriticalSection at pool+0C",
+    "base_unlink": "existing unlink_base_element_00403970 on actual current shared list",
+    "section_unwind": "local raw helper reproducing proven402F70 semantics; not a separately counted function",
+    "retained_caller_ownership": [
+      "actual raw pool storage",
+      "host virtual binding"
+    ],
+    "placeholder_callbacks": false
+  },
+  "unwind": {
+    "handler": "00cbee7e",
+    "funcinfo": "00df76dc",
+    "map": "00df76c4",
+    "state_chain": [
+      2,
+      1,
+      0,
+      -1
+    ],
+    "actions": [
+      {
+        "state": 2,
+        "funclet": "00cbee73",
+        "callee": "00b3d3f0",
+        "receiver": "captured pool+28"
+      },
+      {
+        "state": 1,
+        "funclet": "00cbee68",
+        "callee": "00402f70",
+        "receiver": "captured pool+0C"
+      },
+      {
+        "state": 0,
+        "funclet": "00cbee60",
+        "callee": "00403970",
+        "receiver": "captured actual pool"
+      }
+    ],
+    "state0_section_initialization_failure": "unlink only; not artificially injected or runtime-claimed",
+    "source_mechanism": "MSVC __try/__finally reached-state cleanup without catch/rethrow",
+    "null_and_populated_table_failure_compared": true
+  },
+  "validation": {
+    "repository_build_command": "./scripts/build.ps1",
+    "repository_build_passed": true,
+    "local_source_registration": "local/cube_lifetime_register.cmake through CMAKE_PROJECT_INCLUDE_BEFORE",
+    "primary_library": "build/win32/Release/bsp_core.lib",
+    "owned_source_in_primary_library": true,
+    "configuration": "MSVC Win32 Release",
+    "compiler_flags": [
+      "/std:c++17",
+      "/EHsc",
+      "/fp:strict",
+      "/O2",
+      "/MD",
+      "/W4",
+      "/WX"
+    ],
+    "existing_tests": [
+      {
+        "name": "reconstructed_math",
+        "passed": true
+      },
+      {
+        "name": "native_math_differential",
+        "passed": true
+      }
+    ],
+    "fixture_command": "./local/build_cube_lifetime_check.ps1",
+    "fixture_strict_compile_passed": true,
+    "fixture_owned_body_replacements": false,
+    "fixture_source_free_table_leaf_may_inline": true,
+    "primary_and_dependency_map_providers": [
+      "0001:000054a0       ?bind_native_cube_texture_pool_trim_00d61944@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 300064a0 f   actual_cube_trim.obj",
+      "0001:000054e0       ?trim_native_cube_texture_pool_00b3e690@bsp@@YAXPAX@Z 300064e0 f   actual_cube_trim.obj",
+      "0001:00005eb0       ?prepend_base_element@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@@Z 30006eb0 f   bsp_core:allocator_list.obj",
+      "0001:00005ee0       ?trim_all_004b46b0@AllocatorListDomain@bsp@@QAEXXZ 30006ee0 f   bsp_core:allocator_list.obj",
+      "0001:00005fa0       ?unlink_base_element_00403970@AllocatorListDomain@bsp@@QAEXAAUAllocatorListElement@2@@Z 30006fa0 f   bsp_core:allocator_list.obj",
+      "0001:00005fe0       ?destroy_native_cube_texture_pool_00b3e5b0@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 30006fe0 f   bsp_core:native_cube_texture_pool_lifetime.obj",
+      "0001:00006090       ?initialize_native_cube_texture_pool_00b3f090@bsp@@YAPAXPAXAAVAllocatorListDomain@1@@Z 30007090 f   bsp_core:native_cube_texture_pool_lifetime.obj",
+      "0001:00006220       ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 30007220 f   bsp_core:singleton_lifetime.obj",
+      "0001:00006280       ?singleton_lifetime_free@bsp@@YAXPAX@Z 30007280 f   bsp_core:singleton_lifetime.obj",
+      "0001:0000713e       ___CxxFrameHandler3        3000813e f   vcruntime:VCRUNTIME140.dll",
+      "0002:00000138       __imp____CxxFrameHandler3  30009138     vcruntime:VCRUNTIME140.dll",
+      "0002:00001e48       __sehtable$?initialize_native_cube_texture_pool_00b3f090@bsp@@YAPAXPAXAAVAllocatorListDomain@1@@Z 3000ae48     bsp_core:native_cube_texture_pool_lifetime.obj"
+    ],
+    "postimage_audit": {
+      "all_12_postimages_match_declared_edits": true,
+      "owned_bodies_not_replaced": true,
+      "ordinary_relocations": 16,
+      "dependency_jump_adapters": 4,
+      "actual_import_bindings": 3,
+      "matched_trace_words": 62337,
+      "trace_lengths": [
+        37352,
+        24615,
+        370
+      ],
+      "spans": [
+        {
+          "address": "00b3f090",
+          "length": 211,
+          "kind": "owned",
+          "postimage_sha256": "7f6407fac2a74c22990ef92a02404817434ead3623f8f779adfbf9e313783f1f",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00b3f093",
+              "kind": "relocation",
+              "before": "00cbee7e",
+              "after": "30004350"
+            },
+            {
+              "address": "00b3f0b6",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015888b4"
+            },
+            {
+              "address": "00b3f0be",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015888b4"
+            },
+            {
+              "address": "00b3f0d0",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015888b4"
+            },
+            {
+              "address": "00b3f0e4",
+              "kind": "relocation",
+              "before": "00ce220c",
+              "after": "0145220c"
+            }
+          ]
+        },
+        {
+          "address": "00b3e5b0",
+          "length": 138,
+          "kind": "owned",
+          "postimage_sha256": "37ade1b1f15a8417ea91759dbf7df8bbcf07471138cc23c12efdf8be6950b227",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00b3e5f4",
+              "kind": "relocation",
+              "before": "00ce2210",
+              "after": "01452210"
+            },
+            {
+              "address": "00b3e609",
+              "kind": "relocation",
+              "before": "00ce2214",
+              "after": "01452214"
+            },
+            {
+              "address": "00b3e626",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015888b4"
+            }
+          ]
+        },
+        {
+          "address": "00b3d3f0",
+          "length": 14,
+          "kind": "owned",
+          "postimage_sha256": "2b161faa233a93513fab0865ad9806038a46dde8e54095d05a64670826f5b8a6",
+          "all_edits_declared": true,
+          "edits": []
+        },
+        {
+          "address": "00cbee60",
+          "length": 40,
+          "kind": "eh_code",
+          "postimage_sha256": "0c403cdc5644c9b59c664b761fe4d6caa7ebbb77b76252a964b8b0682413e17a",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00cbee7f",
+              "kind": "relocation",
+              "before": "00df76dc",
+              "after": "015676dc"
+            }
+          ]
+        },
+        {
+          "address": "00df76c4",
+          "length": 60,
+          "kind": "eh_data",
+          "postimage_sha256": "abc7c345c9794bcfabd2a4b826d9e82ce8738c8beaa95622051157baa4e837ca",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00df76c8",
+              "kind": "relocation",
+              "before": "00cbee60",
+              "after": "0142ee60"
+            },
+            {
+              "address": "00df76d0",
+              "kind": "relocation",
+              "before": "00cbee68",
+              "after": "0142ee68"
+            },
+            {
+              "address": "00df76d8",
+              "kind": "relocation",
+              "before": "00cbee73",
+              "after": "0142ee73"
+            },
+            {
+              "address": "00df76e4",
+              "kind": "relocation",
+              "before": "00df76c4",
+              "after": "015676c4"
+            }
+          ]
+        },
+        {
+          "address": "00402f70",
+          "length": 39,
+          "kind": "shared",
+          "postimage_sha256": "6ae4c631420c18cf5b63e8d75b90d156bd0c023d6e2dbbc2b5e4bb3cf63d9702",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00402f7c",
+              "kind": "relocation",
+              "before": "00ce2210",
+              "after": "01452210"
+            },
+            {
+              "address": "00402f91",
+              "kind": "relocation",
+              "before": "00ce2214",
+              "after": "01452214"
+            }
+          ]
+        },
+        {
+          "address": "00403970",
+          "length": 43,
+          "kind": "shared",
+          "postimage_sha256": "2a8675c583591156b89e89ca1cd3295fb33e7ea5b2c59ac6bb32f4b66602f08e",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00403989",
+              "kind": "relocation",
+              "before": "00e188b4",
+              "after": "015888b4"
+            }
+          ]
+        },
+        {
+          "address": "00bf55be",
+          "length": 5,
+          "kind": "boundary",
+          "postimage_sha256": "5529146096ec4faf903c624c49409da75920845b9e7e3b9fbad5630b9104e3ce",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00bf55be",
+              "kind": "dependency_jump",
+              "target": "allocation_boundary"
+            }
+          ]
+        },
+        {
+          "address": "00bf65ac",
+          "length": 5,
+          "kind": "boundary",
+          "postimage_sha256": "443e5f65dd12d34fc40770f3f6cac85937bdba95fe7a7ed39f4404853bf73f7b",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00bf65ac",
+              "kind": "dependency_jump",
+              "target": "free_boundary"
+            }
+          ]
+        },
+        {
+          "address": "00bf6989",
+          "length": 5,
+          "kind": "boundary",
+          "postimage_sha256": "0d63957b5a79a97d8b1a6866c720dfb2bcbdcd546026f70131a8767eaa34bd2a",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00bf6989",
+              "kind": "dependency_jump",
+              "target": "free_boundary"
+            }
+          ]
+        },
+        {
+          "address": "00bf6b43",
+          "length": 5,
+          "kind": "boundary",
+          "postimage_sha256": "7789edd79be40787ef6ae997cf6b9eeecf1e3a7fa94e49eb465280620b7a28c7",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00bf6b43",
+              "kind": "dependency_jump",
+              "target": "cxx_bridge"
+            }
+          ]
+        },
+        {
+          "address": "00ce220c",
+          "length": 12,
+          "kind": "iat",
+          "postimage_sha256": "a6a1b1a43c88e815cf94fb0987f74e829061ca4869429d65136e0f1d96b46aa4",
+          "all_edits_declared": true,
+          "edits": [
+            {
+              "address": "00ce220c",
+              "kind": "actual_import_binding",
+              "target": "observed_initialize"
+            },
+            {
+              "address": "00ce2210",
+              "kind": "actual_import_binding",
+              "target": "observed_leave"
+            },
+            {
+              "address": "00ce2214",
+              "kind": "actual_import_binding",
+              "target": "observed_delete"
+            }
+          ]
+        }
+      ]
+    },
+    "actual_host_import_observers": [
+      "malloc",
+      "free",
+      "InitializeCriticalSection",
+      "LeaveCriticalSection",
+      "DeleteCriticalSection"
+    ],
+    "allocation_failure": "one targeted malloc128 failure per run then actual _set_new_handler/_callnewh; retry or return0 causing real bad_alloc",
+    "handler_setup": {
+      "genuine_slab_bytes": 1732,
+      "free_count_offset": "6c0",
+      "free_counts": [
+        32,
+        31,
+        30
+      ],
+      "current_table_bytes": 28,
+      "current_table_capacity": 7,
+      "current_count_before_trim": 3,
+      "current_count_after_trim": 2,
+      "actual_recursive_entries": 2,
+      "real_cube_trim_binding": true,
+      "shared_neighbor_actual_cube_pool": true
+    },
+    "cases": [
+      {
+        "case": 0,
+        "name": "retry_with_current_table",
+        "native_and_source_events": 36,
+        "matched_dwords": 37352,
+        "frees_per_side": 5,
+        "leaves_per_side": 2,
+        "section_deletes_per_side": 1,
+        "outcome": "captured replacement receives current two slab pointers; capacity7 preserved; destructor frees both slabs and replacement"
+      },
+      {
+        "case": 1,
+        "name": "fail_with_current_table",
+        "native_and_source_events": 27,
+        "matched_dwords": 24615,
+        "frees_per_side": 2,
+        "leaves_per_side": 2,
+        "section_deletes_per_side": 1,
+        "native_FH3_searches": 1,
+        "native_FH3_unwinds": 1,
+        "outcome": "real bad_alloc; original FH3 frees current nonnull table, drains section, unlinks; surviving slabs fixture-cleaned outside comparison"
+      },
+      {
+        "case": 2,
+        "name": "fail_empty_table",
+        "native_and_source_events": 10,
+        "matched_dwords": 370,
+        "frees_per_side": 0,
+        "leaves_per_side": 0,
+        "section_deletes_per_side": 1,
+        "native_FH3_searches": 1,
+        "native_FH3_unwinds": 1,
+        "outcome": "real bad_alloc; null-table leaf, section delete and base unlink"
+      }
+    ],
+    "total_matched_dwords": 62337,
+    "all_traces_equal": true,
+    "normalization": "actual pool/neighbor/table/allocation identities; initialized CS debug/semaphore pointer identities reduced to null/non-null; all other DWORDs retained",
+    "untouched_allocation_bytes_preserved": true,
+    "actual_source_and_reference_services": true,
+    "independent_native_trim_closure_claim": false,
+    "game_validated": false,
+    "original_binary_ABI_compatible": false
+  },
+  "native_byte_spans": [
+    {
+      "address": "00b3f090",
+      "length": 211,
+      "kind": "owned",
+      "disk_offset": 7598224,
+      "sha256": "6eb70fb8e1f244b28bf1d8525a9f0e274f7a8bdaea39f07861d5cfdbb38da0e3",
+      "hex": "6aff687eeecb0064a10000000050648925000000005153568bf133dbc706c0a0d700895e04a1b488e100894608a1b488e1003bc3578974240c74038970048935b488e1008d7e0c57895c241cc7064419d600ff150c22ce00895f18895e28895e2c895e30b820000000c74634ffffffff394630c64424180273456880000000894630e8a7640b008bf883c40433c0395e2c76198bcf3bcb74088b56288b1482891183c00183c1043b462c72e98b46283bc3740950e840780b0083c404897e288b4c24105f8bc65e5b64890d0000000083c410c3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b3e5b0",
+      "length": 138,
+      "kind": "owned",
+      "disk_offset": 7595440,
+      "sha256": "9aea00ac56b7bbd0422348e26d29c7e2757a0e7ad174b7a6cbee1cc4b2e20514",
+      "hex": "56578bf933f639772cc7074419d60076178b47288b0cb051e8df7f0b0083c60183c4043b772c72e98b472885c0740950e8a4830b0083c404837f24008d770c7e15538b1d1022ce00834618ff56ffd3837e18007ff35b56ff151422ce008b470485c0c707c0a0d70074088b5708895008eb088b4708a3b488e1008b470885c074068b4f048948045f5ec3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00b3d3f0",
+      "length": 14,
+      "kind": "owned",
+      "disk_offset": 7590896,
+      "sha256": "2b161faa233a93513fab0865ad9806038a46dde8e54095d05a64670826f5b8a6",
+      "hex": "8b0185c0740750e88d950b0059c3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00cbee60",
+      "length": 40,
+      "kind": "eh_code",
+      "disk_offset": 9170528,
+      "sha256": "198c54ac1ecb9adb8a6d66c9e61359ebe3dd4f86868b392be00501bfcf4cc0a3",
+      "hex": "8b4df0e9084b74ff8b4df083c10ce9fd4074ff8b4df083c128e972e5e7ffb8dc76df00e9bb7cf3ff",
+      "live_PE_match": true
+    },
+    {
+      "address": "00df76c4",
+      "length": 60,
+      "kind": "eh_data",
+      "disk_offset": 10450628,
+      "sha256": "0938d32cb65f8dba3439cf33fb74ae09c8d05fa8782f84e1d29d18d86ef8f002",
+      "hex": "ffffffff60eecb000000000068eecb000100000073eecb002205931903000000c476df00000000000000000000000000000000000000000001000000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00402f70",
+      "length": 39,
+      "kind": "shared",
+      "disk_offset": 12144,
+      "sha256": "527b8ab9b85be34143cd7955ecbdb09fb6374ac3dcbe1151467f3d70763a9421",
+      "hex": "568bf1837e18007e15578b3d1022ce00834618ff56ffd7837e18007ff35f56ff151422ce005ec3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00403970",
+      "length": 43,
+      "kind": "shared",
+      "disk_offset": 14704,
+      "sha256": "345cdc2510fbc26e08c619b7cab1418026ba7701aed5fad4b9f16bb34f65d18f",
+      "hex": "8b410485c0c701c0a0d70074088b5108895008eb088b4108a3b488e1008b410885c074068b4904894804c3",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf55be",
+      "length": 5,
+      "kind": "boundary",
+      "disk_offset": 8345022,
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "hex": "e958120000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf65ac",
+      "length": 5,
+      "kind": "boundary",
+      "disk_offset": 8349100,
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "hex": "e917380000",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf6989",
+      "length": 5,
+      "kind": "boundary",
+      "disk_offset": 8350089,
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "hex": "e91efcffff",
+      "live_PE_match": true
+    },
+    {
+      "address": "00bf6b43",
+      "length": 5,
+      "kind": "boundary",
+      "disk_offset": 8350531,
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "hex": "558bec83ec",
+      "live_PE_match": true
+    },
+    {
+      "address": "00ce220c",
+      "length": 12,
+      "kind": "iat",
+      "disk_offset": 9314828,
+      "sha256": "0f8ae4c205c3c2d5b650b9aa4303048fb6e4fbc16e8be72c1d9d7ac15a5f0551",
+      "hex": "6c56a0008856a000a056a000",
+      "live_PE_match": true
+    }
+  ],
+  "ordinary_relocations": [
+    {
+      "address": "00b3f093",
+      "expected": "00cbee7e",
+      "kind": "owned"
+    },
+    {
+      "address": "00b3f0b6",
+      "expected": "00e188b4",
+      "kind": "owned"
+    },
+    {
+      "address": "00b3f0be",
+      "expected": "00e188b4",
+      "kind": "owned"
+    },
+    {
+      "address": "00b3f0d0",
+      "expected": "00e188b4",
+      "kind": "owned"
+    },
+    {
+      "address": "00b3f0e4",
+      "expected": "00ce220c",
+      "kind": "owned"
+    },
+    {
+      "address": "00b3e5f4",
+      "expected": "00ce2210",
+      "kind": "owned"
+    },
+    {
+      "address": "00b3e609",
+      "expected": "00ce2214",
+      "kind": "owned"
+    },
+    {
+      "address": "00b3e626",
+      "expected": "00e188b4",
+      "kind": "owned"
+    },
+    {
+      "address": "00cbee7f",
+      "expected": "00df76dc",
+      "kind": "eh_code"
+    },
+    {
+      "address": "00df76c8",
+      "expected": "00cbee60",
+      "kind": "eh_data"
+    },
+    {
+      "address": "00df76d0",
+      "expected": "00cbee68",
+      "kind": "eh_data"
+    },
+    {
+      "address": "00df76d8",
+      "expected": "00cbee73",
+      "kind": "eh_data"
+    },
+    {
+      "address": "00df76e4",
+      "expected": "00df76c4",
+      "kind": "eh_data"
+    },
+    {
+      "address": "00402f7c",
+      "expected": "00ce2210",
+      "kind": "shared"
+    },
+    {
+      "address": "00402f91",
+      "expected": "00ce2214",
+      "kind": "shared"
+    },
+    {
+      "address": "00403989",
+      "expected": "00e188b4",
+      "kind": "shared"
+    }
+  ],
+  "annotation_proposals": [
+    {
+      "address": "00b3f090",
+      "old_name": "FUN_00b3f090",
+      "new_name": "BSP_CubeTexturePool_Initialize",
+      "old_comments": {},
+      "evidence_comment": "Complete211byte native body: base shared-list prepend, D61944, actual section+0C, depth/table/count/capacity0 and earliestFFFFFFFF, cap32 before new128; copy current count/current table after allocation, free current old table, publish captured replacement, return actual pool. Raw B3F149 ADD ESP,4 restores returning-free continuation. Exact FH3 CBEE7E/DF76DC map DF76C4 runs table B3D3F0(pool+28), section402F70(pool+0C), base403970(pool). New C++ interface in native_cube_texture_pool_lifetime.cpp; strict Win32 primary-library/native-body fixture passed. Descriptive name hypothesis; not binary ABI or game validation."
+    },
+    {
+      "address": "00b3e5b0",
+      "old_name": "FUN_00b3e5b0",
+      "new_name": "BSP_CubeTexturePool_Destroy",
+      "old_comments": {},
+      "evidence_comment": "Complete138byte native body: capture count nonempty before D61944 store; free each current slab while reloading current count/table; free current table; drain signed positive recursion by decrement before LeaveCriticalSection; DeleteCriticalSection; restore D7A0C0 and unlink current shared list. Raw returning-free continuations B3E5CD..D7 and B3E5E5..E7 verified. Retains own fields; no logical owner destruction or pool-storage free. New C++ interface in native_cube_texture_pool_lifetime.cpp; strict Win32 primary-library/native-body fixture passed. Descriptive name hypothesis; not binary ABI or game validation."
+    },
+    {
+      "address": "00b3d3f0",
+      "old_name": "FUN_00b3d3f0",
+      "new_name": "BSP_CubeTexturePool_FreeTableUnwind",
+      "old_comments": {},
+      "evidence_comment": "Complete14byte native leaf: read first DWORD of actual table header, call BF6989 only if nonnull, clear nothing, return. Raw B3D3FC POP ECX restores omitted returning-free continuation. Reached by original CBEE73 state2 funclet. New C++ interface in native_cube_texture_pool_lifetime.cpp; strict Win32 primary-library/native-body fixture passed. Descriptive name hypothesis; not binary ABI or game validation."
+    }
+  ],
+  "remaining_integrator_work": [
+    "review and register owned source in shared build metadata",
+    "add saved evidence annotations and address/name/function ledgers under root ownership",
+    "compose separate cube allocation, trim and static startup packets as appropriate"
+  ],
+  "limitations": [
+    "No original CRT heap or process-wide initializer reconstruction.",
+    "No independent native closure for shared host allocation/free/Win32 boundaries or cube trim in this packet.",
+    "State0 InitializeCriticalSection failure source-derived only.",
+    "No arbitrary concurrent asynchronous mutation guarantee.",
+    "No game or render validation; new C++ API is not a drop-in ABI."
+  ],
+  "artifact_sha256": {
+    "include/bsp/native_cube_texture_pool_lifetime.hpp": "2b31eb5b7bcda28ee9011731d7bd4f6eee6b99243279f61360d8bcb88e7e88af",
+    "src/native_cube_texture_pool_lifetime.cpp": "f88ccffb8c4fad9a701b0a2bfb943bc339db8d959320311411d36e739921abc8",
+    "docs/NATIVE_CUBE_TEXTURE_POOL_LIFETIME.md": "07a4f5a0fefab2a11d778b8302ea3ac77203fbbc1c9eb5298009e1cb0dae2683",
+    "local/prepare_cube_lifetime_checks.py": "1a4798009fd62628ee3bd3fb987d81516871561e1c8cdba6bac68eec09d64851",
+    "local/audit_cube_lifetime.py": "d265f2da0d8dff336e03fa0747e1c2235fd4f22a5a6f10a3b9ef5c185f5907ec",
+    "local/cube_lifetime_check.cpp": "724c967da5aecd4358e2c3cd131f07a3fe180d1b738df2dc3e5d7bcd6b3603ac",
+    "local/cube_lifetime_spans.hpp": "7dda300d012202487444990bef67f70b924f9c0b7b991241259ee0dd66700b4b",
+    "local/cube_lifetime_verified.json": "5f5125cbc37d9c362f6535b266cd4b00838b2ff69f0b43d292875a089ac0f66b",
+    "local/build_lifetime_repository.ps1": "c8ba8912d940a9924be87c753727a0931eeb47ce8a933ad185370c02390e00fe",
+    "local/cube_lifetime_register.cmake": "2c3fcc49d708aa19358a7bd870ffcaa39ae969eeae6aec0538405548d23f449a",
+    "local/build_cube_lifetime_check.ps1": "0b638364ee1aba8907db421be40eb0a49e2577a8b29ca7f087bb20c23b97c35e",
+    "local/verify_lifetime_postimages.py": "cd9aacd10f6efcaab62cfa06829eafd96635ae0a06c931274a7d1425ed333e07",
+    "local/cube_lifetime_full_build.log": "60151c4ab9151bf46304001fac188d163e9d597b52e38e053b78bf79dadcbbc3",
+    "local/cube_lifetime_verify_seeds.json": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+    "local/cube_lifetime_comparison.log": "e3b157cdcc8a8577c0fd8e3e44f19545eeb675758eb86677e922d2cdcf112c35",
+    "local/cube_lifetime_postimages.json": "cd4a7610de36d187a5fc80e1d0c4d4d63e815716bbed20d58993cebe07ae4971",
+    "local/cube_lifetime_postimage_audit.json": "d4b6c17bbe0147fbbc3133275005747be6529b980281e4dc94c059b2235b526f",
+    "local/cube_lifetime_raw_traces.json": "5b81ba852a72e6349fadbb065957a57fbf453f21d8615b04eca4edc34bfd98a8",
+    "build/cube_lifetime-check/cube_lifetime_check.exe": "3b0cbd84e004a82d4b62ec3f70a33600a7e6a66c220b8eb32fe99953994adb83",
+    "build/cube_lifetime-check/cube_lifetime_check.map": "db66a76d9c31f9a8ad4ec94b964c596ed77c65928866cd09cea3e7a67619eba3",
+    "build/win32/Release/bsp_core.lib": "cec40b16dcfd0bb644c65aa1d0e8ff5fa84cdfa0fe925d675063c4fec55a2682",
+    "include/bsp/allocator_list.hpp": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+    "src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "external_dependency_sha256": {
+    "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-pool-trim-20260910\\include\\bsp\\native_cube_texture_pool_trim.hpp": "f1d33446e5f4658bb224fd263c298267dbbfc66868acd5ad881d32aa5433d16a",
+    "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-pool-trim-20260910\\src\\native_cube_texture_pool_trim.cpp": "9e2a1ad2fa45bb8e0302a99d90f005e9682bf766e7c7a4f7cc70fe9aa932b11f"
+  }
+}

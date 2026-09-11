@@ -31,6 +31,8 @@
 #include <vector>
 
 #include "bsp/app_bootstrap.hpp"
+#include "bsp/game_settings.hpp"
+#include "bsp/profile_manager.hpp"
 #include "bsp/app_frame.hpp"
 #include "bsp/frame_clock.hpp"
 #include "bsp/platform_loop.hpp"
@@ -47,6 +49,7 @@ namespace bsp::game {
 // Milestone 2a, defined in bsp/game_hosts_vfs.hpp. Held by pointer so the milestone-1 header
 // stays independent of the VFS types.
 class GameVfsHost;
+class GameSettingsBinding;
 
 // One host method, or one initialize phase, observed during a run.
 struct GameHostMethodRecord {
@@ -100,6 +103,8 @@ struct GameExecutableOptions {
     // --game-root <path>: SetCurrentDirectoryA before Init runs, so the phase-2 mount system
     // path stays the GetCurrentDirectoryA call at 0073d697 rather than an injected path.
     std::string game_root;
+    // Explicit CSIDL_PERSONAL substitute for isolated settings runs.
+    std::string settings_personal_root;
     // --vfs-probe <virtual path>, repeatable: resolve and read one path after phase 2 and
     // print its byte count.
     std::vector<std::string> vfs_probes;
@@ -269,8 +274,7 @@ struct GameRunSummary {
 // application_initialize (0073d410) and application_shutdown (00737f30).
 class GameStartupHost final : public StartupHost {
 public:
-    GameStartupHost(GameHostLog& log, HINSTANCE instance, const GameExecutableOptions& options)
-        : log_(log), instance_(instance), options_(options) {}
+    GameStartupHost(GameHostLog& log, HINSTANCE instance, const GameExecutableOptions& options);
     ~GameStartupHost() override;
 
     long com_initialize() override;
@@ -304,7 +308,9 @@ public:
     // Milestone 2a: the phase-2 provider manager, alive for the whole run, and the settings
     // phase 5 loaded. Null and default respectively when initialize did not reach them.
     GameVfsHost* vfs() const noexcept { return vfs_; }
-    const GameSettings& settings() const noexcept { return settings_; }
+    const GameSettings& settings() const noexcept { return settings_.options_file; }
+    const GameSettingsBlock& settings_block() const noexcept { return settings_; }
+    GameSettingsBinding* settings_binding() const noexcept { return settings_host_; }
 
 private:
     void run_initialize_phases();
@@ -326,7 +332,10 @@ private:
     GameFrameHost* frame_host_{};
     GameLoopCallbacks* loop_callbacks_{};
     GameVfsHost* vfs_{};
-    GameSettings settings_;
+    GameSettingsBlock settings_;
+    ProfileHintsOwner profile_hints_;
+    std::vector<std::string> content_suffixes_;
+    GameSettingsBinding* settings_host_{};
     std::string window_class_name_;
     GameRunSummary summary_;
     bool constructed_{};

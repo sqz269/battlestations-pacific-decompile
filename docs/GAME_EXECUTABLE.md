@@ -403,3 +403,17 @@ scan, so the MPKG path through the same callbacks is still unexercised here.
 5. **Not this packet's to fix.** `apply_options_token` in `src/app_bootstrap.cpp` compares
    option token names case-sensitively where the original compares them case-insensitively;
    see the phase-5 section above.
+
+## Correction from docs/SETTINGS_STARTUP_OWNER.md
+
+Settings startup now retains the initialized complete projected settings object,
+loads its language catalog through the mounted VFS, queries the recovered D3D9
+resolution/shader/AA operations and writes missing options at the native call
+site. The old apply_detected_defaults no-op and token-recapitalization workaround
+are removed. --settings-personal-root supplies an isolated personal directory
+for both startup language lookup and settings read/write, resolved before the
+game-root working-directory change. A640x480 windowed run presented60 frames,
+resolved3/3 VFS probes and exited0; the original executable and live options
+kept their hashes and timestamps. The milestone remains a clear/present process;
+input, GUI and gameplay owners still require integration. Shared native renderer
+API ownership and the full capability record remain outside this settings batch.
