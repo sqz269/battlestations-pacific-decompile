@@ -32,6 +32,7 @@
 #include "bsp/scene_unit_creators.hpp"
 #include "bsp/unit_controller.hpp"
 #include "bsp/unit_motion.hpp"
+#include "bsp/unit_state_message.hpp"
 #include "bsp/input_settings.hpp"
 #include "bsp/loading_screen_elements.hpp"
 #include "bsp/main_menu_screen.hpp"
@@ -1730,6 +1731,31 @@ int main() {
                   && record.completion_time_10 == 42.0f,
             "a unit death at exactly the 1.0f grace boundary is not reported, and the "
             "completion timestamp is stamped only on the first completion");
+    }
+
+    {
+        // docs/UNIT_STATE_MESSAGE.md. The packet's conclusion rests on one
+        // interaction: a MT_SHIP_SYNC back-fill (00812FA0) writes ring slots only,
+        // and unit+980h/+984h move solely through the rate-limited step inside
+        // 00813020. A client (session mode 2) must also keep the four-tick lag the
+        // constructor seeds, and the confirmed triple must advance only once an
+        // authoritative slot sits under the read cursor.
+        bsp::UnitOrderRing ring{};
+        bsp::construct_unit_order_ring_00812d40(ring);
+        bsp::backfill_unit_order_ring_00812fa0(ring, 1.0f, -0.5f, 3, 4);
+        const bool untouched_by_backfill
+            = ring.current_param_a == 0.0f && ring.current_param_b == 0.0f
+            && ring.read_cursor == 0 && ring.write_cursor == 4 && !ring.slot[0].predicted
+            && !ring.slot[4].predicted && ring.slot[5].predicted;
+        // Slew 8.0f over a 0.05f tick is 0.4f, under the 1.0f target, so the tick
+        // steps rather than snapping, and the client lag stays at four slots.
+        bsp::tick_unit_order_ring_00813020(ring, 0.05f, bsp::kUnitOrderRingClientSessionMode);
+        check(untouched_by_backfill && ring.current_param_a == 0.4f
+                  && ring.current_param_b == -0.1f && ring.read_cursor == 1
+                  && ring.write_cursor == 5 && ring.slot[5].predicted
+                  && ring.confirmed_param_a == 0.4f && ring.confirmed_kind == 3,
+            "a ship-sync back-fill leaves unit+980h/+984h alone and the ring tick steps "
+            "them toward the clamped slot while holding the client lag");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
