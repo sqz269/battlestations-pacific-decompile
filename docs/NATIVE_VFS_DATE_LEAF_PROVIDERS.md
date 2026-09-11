@@ -23,8 +23,8 @@ The comparator is reusable by the physical date reader. Existing typed
 | 00BBB640..00BBB656 | 23 | ECX unused; hidden output/name-unused stack; RET8; EAX output |
 
 The six complete bodies total 421 bytes. Fresh guarded Ghidra reads match
-the installed executable. BBB640 has no current Ghidra function record;
-its full 23 bytes were recovered without creating or annotating a function.
+the installed executable. At worker handoff BBB640 had no Ghidra function record; its full 23 bytes
+were recovered before the primary defined and annotated the function.
 Names are descriptive hypotheses. These C++ interfaces do not reproduce
 the original binary calling convention or normalize incidental upper EAX
 bits when the native result is only AL.
@@ -129,3 +129,29 @@ the focused valid-storage probe does not claim to exercise those checks.
 No committed test suite, Ghidra mutation, source-name ledger change or
 shared CMake change is part of this worker commit. Original ABI compatibility
 and gameplay remain unvalidated.
+
+
+## Primary main-library validation
+
+All six functions are registered in the main build. The strict MSVC Win32
+build and both existing CTests passed, and eight fresh native seeds matched.
+The primary verified all 16 worker pins and nine unchanged current files,
+then refreshed 12 guarded live/PE spans totaling 1,011 bytes.
+
+The unchanged fixture passed all 42 original/main pairs, comparing 43,008
+full same-address arena bytes and return values. It linked the frozen actual
+main library `74d8f91d3e4c526a60efb9d61d45f5b2b9d46803b411766b6c9688d1d36c9895`;
+the exact archive object matches every worker code/directive section and
+relocation. All six complete COFF symbols, 707 bytes and six relocations,
+were independently checked against linked bytes. No source provider was
+recompiled in the fixture. This probe does not record runtime code postimages
+or compare the full native register/SEH ABI; invalid-parameter calls and
+original CRT locale semantics remain outside its dynamic evidence.
+
+BBB640 was defined from its complete reviewed bytes. The two unnamed
+FileStore lookup functions and MSAR leaf received descriptive names; existing
+names and comments were preserved. Reviewed evidence was appended and saved,
+and all six exports and complete function records were refreshed.
+The read-only bundle at `local/vfs_leaves_primary/` has manifest SHA256
+`a017521181e7bcc5ed5867436aed43b115c4b1e69aafa7f18c94216636730cd0`.
+Mount traversal, the physical provider and game validation remain separate.

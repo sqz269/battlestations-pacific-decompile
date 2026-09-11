@@ -1,6 +1,6 @@
 {
   "packet": "native_vfs_date_leaf_providers",
-  "status": "complete_actual_storage_source_original_body_comparison_and_strict_Win32_checked",
+  "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
   "utc": "2026-09-11T16:58:32.424575+00:00",
   "base_commit": "4aa18451",
   "upstream_discovery_commit": "9d7ad167",
@@ -442,8 +442,8 @@
         "native_math_differential"
       ]
     },
-    "shared_CMake_changed": false,
-    "registration_pending_primary": true
+    "shared_CMake_changed": true,
+    "registration_pending_primary": false
   },
   "integration_handoff": {
     "source_registration": "Add src/native_vfs_date_leaf_providers.cpp to shared source registration after primary review; local hook is ignored",
@@ -456,12 +456,204 @@
     "name_and_function_metadata": "Primary to coordinate; BBB640 currently has no function record; existing443D00 typed comparator/source remains separately scoped",
     "standalone_raw_inputs": "Caller provides actual valid Win32 backing storage; no reconstructed FileStore ownership prerequisite for these readers"
   },
-  "annotations_applied": false,
+  "annotations_applied": true,
   "Ghidra_mutations": false,
-  "ledger_registered": false,
+  "ledger_registered": true,
   "reconstructed": true,
   "build_tested": true,
   "original_body_fixture": true,
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "worker_evidence_root": "J:/PROG/battlestations-pacific-decompile-vfs-date-leaf-providers",
+  "primary_integration": {
+    "worker_evidence_root": "J:/PROG/battlestations-pacific-decompile-vfs-date-leaf-providers",
+    "main_evidence_root": "J:\\PROG\\battlestations-pacific-decompile\\local\\vfs_leaves_primary",
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vfs_leaves_primary\\sealed.json",
+      "bytes": 131691,
+      "sha256": "a017521181e7bcc5ed5867436aed43b115c4b1e69aafa7f18c94216636730cd0"
+    },
+    "preparation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vfs_leaves_primary\\preparation.json",
+      "bytes": 6954,
+      "sha256": "9b3ec223ee0154fa8e295f39e3481cc49f2408499c2113d4055f9e93488894f0"
+    },
+    "main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vfs_leaves_primary\\bsp_core.lib",
+      "bytes": 36000728,
+      "sha256": "74d8f91d3e4c526a60efb9d61d45f5b2b9d46803b411766b6c9688d1d36c9895"
+    },
+    "fixture_source_unchanged": true,
+    "strict_main_build_passed": true,
+    "existing_CTests_passed": 2,
+    "verified_native_seeds": 8,
+    "permanent_tests_added": false,
+    "source_recompiled_in_fixture": false,
+    "audit": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vfs_leaves_primary\\verified.json",
+      "bytes": 5491,
+      "sha256": "5e82cf9f8d273d7ddf72e2e4ddf5df861aa149375011d01978cb711ec672b09e"
+    },
+    "worker_pins_verified": 16,
+    "unchanged_current_files": 9,
+    "fresh_guarded_spans": 12,
+    "fresh_guarded_bytes": 1011,
+    "paired_cases": 42,
+    "matched_arena_bytes": 43008,
+    "complete_COFF_symbols": 6,
+    "complete_COFF_bytes": 707,
+    "all_relocations": 6,
+    "exact_actual_main_archive_objects": 1,
+    "original_bytes": 421,
+    "invalid_parameter_sites_dynamically_covered": false,
+    "runtime_code_postimages": false,
+    "defined_function": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_vfs_date_leaf_defined_functions.json",
+      "bytes": 1063,
+      "sha256": "d20da0c7fec339a7dc09825bdd2389fb5be57b0b1c67ded96ac4f9d8c1cca0dc"
+    },
+    "limits": [
+      "Original CRT is replaced at its external entry with shared current host _stricmp; original locale implementation is not proven equivalent.",
+      "No native full-register/SEH ABI comparison or runtime code postimages; unchanged fixture checks complete same-address arenas and return values.",
+      "Invalid-parameter continuation is source/assembly reviewed only. No VFS mount traversal, physical-reader integration, or gameplay claim."
+    ]
+  },
+  "integration": "Main source registration, strict build, independent original-body/full actual main-library replay and saved Ghidra/ledger closure complete.",
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_vfs_date_leaf_providers_annotations.json",
+    "bytes": 11171,
+    "sha256": "9a59477ed4b15af5f69e11a99694207d3e0e70b88f669a9c9ae2da5722699612",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00443d00",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00443d00\\decompiled.c",
+      "bytes": 3279,
+      "sha256": "03af93e176fa09b50b42822d53120e87801076623a5b9d3d6d5521282bda3ae7"
+    },
+    {
+      "address": "00be54d0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00be54d0\\decompiled.c",
+      "bytes": 2069,
+      "sha256": "a70384a34a61ed65dcba157e2a86a119b9f265197f584fe91fd8f04a0026986b"
+    },
+    {
+      "address": "00be5a50",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00be5a50\\decompiled.c",
+      "bytes": 1965,
+      "sha256": "d47ae27dd1810617f38b99fa721885258ef32030a250a09c663e4cf3c2f7af08"
+    },
+    {
+      "address": "00be5c80",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00be5c80\\decompiled.c",
+      "bytes": 2266,
+      "sha256": "59b12061c6bfb8268ce82e7677bbc7655cb4511de6505b1aa1767dd79710cfe3"
+    },
+    {
+      "address": "00bb9d50",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bb9d50\\decompiled.c",
+      "bytes": 1523,
+      "sha256": "2d1c3cafcb9771ed6c2f9f8fffaec72370a1392487d03771891968a2647b1a84"
+    },
+    {
+      "address": "00bbb640",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bbb640\\decompiled.c",
+      "bytes": 1397,
+      "sha256": "0a1d1eb109551d2b61f9859302642c1471b3eb38108a8ef68e14e857344236ac"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_VFS_DATE_LEAF_PROVIDERS.md",
+    "bytes": 9132,
+    "sha256": "62faca2dfa3db4cf7d458aa3dc9166eb8699eb342966d033f63a9f8479230981"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00443d00",
+      "cpp_symbol": "bsp::less_native_string_headers_00443d00",
+      "name": "less_native_string_headers_00443d00",
+      "source": "src/native_vfs_date_leaf_providers.cpp",
+      "native_end_exclusive": "00443d51",
+      "original_abi": "Two actual-header pointers stack; RET8; AL boolean, upper EAX incidental",
+      "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "evidence": "reports/native_vfs_date_leaf_providers_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00be54d0",
+      "cpp_symbol": "bsp::lower_bound_native_file_store_name_00be54d0",
+      "name": "lower_bound_native_file_store_name_00be54d0",
+      "source": "src/native_vfs_date_leaf_providers.cpp",
+      "native_end_exclusive": "00be5523",
+      "original_abi": "ECX actual tree; name stack; RET4; EAX selected node",
+      "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "evidence": "reports/native_vfs_date_leaf_providers_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00be5a50",
+      "cpp_symbol": "bsp::find_native_file_store_name_00be5a50",
+      "name": "find_native_file_store_name_00be5a50",
+      "source": "src/native_vfs_date_leaf_providers.cpp",
+      "native_end_exclusive": "00be5ab6",
+      "original_abi": "ECX actual tree; hidden iterator-output/name stack; RET8; EAX output",
+      "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "evidence": "reports/native_vfs_date_leaf_providers_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00be5c80",
+      "cpp_symbol": "bsp::query_native_file_store_date_00be5c80",
+      "name": "query_native_file_store_date_00be5c80",
+      "source": "src/native_vfs_date_leaf_providers.cpp",
+      "native_end_exclusive": "00be5ced",
+      "original_abi": "ECX actual FileStore; hidden date-output/name stack; RET8; EAX output",
+      "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "evidence": "reports/native_vfs_date_leaf_providers_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bb9d50",
+      "cpp_symbol": "bsp::query_native_mpkg_file_date_00bb9d50",
+      "name": "query_native_mpkg_file_date_00bb9d50",
+      "source": "src/native_vfs_date_leaf_providers.cpp",
+      "native_end_exclusive": "00bb9d67",
+      "original_abi": "ECX unused; hidden date-output/name-unused stack; RET8; EAX output",
+      "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "evidence": "reports/native_vfs_date_leaf_providers_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00bbb640",
+      "cpp_symbol": "bsp::query_native_msar_file_date_00bbb640",
+      "name": "query_native_msar_file_date_00bbb640",
+      "source": "src/native_vfs_date_leaf_providers.cpp",
+      "native_end_exclusive": "00bbb657",
+      "original_abi": "ECX unused; hidden date-output/name-unused stack; RET8; EAX output",
+      "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "evidence": "reports/native_vfs_date_leaf_providers_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "closure_utc": "2026-09-11T17:12:29.653129+00:00"
 }

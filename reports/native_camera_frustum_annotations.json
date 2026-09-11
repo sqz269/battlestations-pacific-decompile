@@ -1,0 +1,47 @@
+[
+  {
+    "address": "00b650b0",
+    "before": {
+      "address": "00b650b0",
+      "function_name": "BSP_Plane_Normalize",
+      "comment": "[BSP reconstruction 00b650b0]\n[BSP reconstruction] Get normal3f length00419440, store float, use stored1/length only if greater than zero, otherwise positive zero (including unordered); x87 multiply all4 coefficients by stored reciprocal. Original ABI: ECX plane; EAX plane; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b650b0",
+      "evidence": "Complete87-byte B650B0 normalizer: full shared length and binary32 spill; native FCOMI/JBE positive ordered reciprocal else+0; allfour x87 coefficient multiplies/stores retained. Primary reviewed full source/fixture and independently replayed unchanged original-owned-body/full actual main-library composition: 16 pairs,32768 full arena bytes,208 original instruction mappings,16 complete COFF symbols3340 bytes62 relocations from3 exact main archive objects,17 code postimage stages. Verified205 worker artifacts+4 modules,10 current files,25 fresh guarded spans2737 bytes and8 seeds; strict main Win32 build/two existing CTests pass. Normalizer/extractor use immutable actual109DD78/D7A208 context and full existing419440/CRT length with fixed actual C27489, actual E16BD0/errno runtime binding; no FSQRT-only or arbitrary handler fallback. Real unchangedC27489 hardware observations show type7 errno33,six extraction type8 calls,and current global bypass; unmasked precision faults beforeC27489, assignment SNaN aftertwo stores. Both original and compiled owned paths share rebuilt CRT, not original-CRT differential proof; Win32 RaiseException branch not entered. New EDX context/explicit C++ interface, original hierarchy/cache-getters/renderer parent not claimed. No game validation. reports/native_camera_frustum_audit.json",
+      "old_name": "BSP_Plane_Normalize",
+      "name": "BSP_Plane_Normalize"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b653f0",
+    "before": {
+      "address": "00b653f0",
+      "function_name": "BSP_Frustum_ExtractAndNormalize",
+      "comment": "[BSP reconstruction 00b653f0]\n[BSP reconstruction] Extract columns3+0,3-0,3-1,3+1,2*2,3-2; each float stored, D negated with SSE negative-zero subtraction, normalize each plane through00b650b0. Original ABI: ECX destination six planes; stack matrix; EAX destination; RET4. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b653f0",
+      "evidence": "Complete360-byte B653F0 frustum extraction: six packedfloat4 coefficient writes with forward alias reads, original ordered SUBSS D negation, six full normalizations. Compiled389 bytes differs only29 integer/context plumbing bytes; all original instructions mapped. Primary reviewed full source/fixture and independently replayed unchanged original-owned-body/full actual main-library composition: 16 pairs,32768 full arena bytes,208 original instruction mappings,16 complete COFF symbols3340 bytes62 relocations from3 exact main archive objects,17 code postimage stages. Verified205 worker artifacts+4 modules,10 current files,25 fresh guarded spans2737 bytes and8 seeds; strict main Win32 build/two existing CTests pass. Normalizer/extractor use immutable actual109DD78/D7A208 context and full existing419440/CRT length with fixed actual C27489, actual E16BD0/errno runtime binding; no FSQRT-only or arbitrary handler fallback. Real unchangedC27489 hardware observations show type7 errno33,six extraction type8 calls,and current global bypass; unmasked precision faults beforeC27489, assignment SNaN aftertwo stores. Both original and compiled owned paths share rebuilt CRT, not original-CRT differential proof; Win32 RaiseException branch not entered. New EDX context/explicit C++ interface, original hierarchy/cache-getters/renderer parent not claimed. No game validation. reports/native_camera_frustum_audit.json",
+      "old_name": "BSP_Frustum_ExtractAndNormalize",
+      "name": "BSP_Frustum_ExtractAndNormalize"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b658e0",
+    "before": {
+      "address": "00b658e0",
+      "function_name": "BSP_PlaneSet_AssignSixFrustumPlanes",
+      "comment": "[BSP reconstruction 00b658e0]\n[BSP reconstruction] Copy six coefficient float4s into20-byte records via FLD/FSTP and assign each record supplied DWORD flags. Does not change count. Original ABI: ECX plane set; stack six-plane pointer, DWORD flags; RET8; count unchanged. See docs/CAMERA_FRAME_STATE.md. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b658e0] update\nNative [00b658e0,00b6598b); ECX plane set; stack six-plane source, flags; RET8. Full171-byte body; six forward x87 coefficient copies and flags; count untouched. Public existing helper used by camera plane constructor and getter. Component: reports/native_camera_owner_audit.json. Integration: docs/NATIVE_CAMERA_OWNER.md; reports/native_camera_owner_audit.json. Descriptive names are hypotheses; typed C++ interface, no drop-in ABI or game validation claim."
+    },
+    "after": {
+      "address": "00b658e0",
+      "evidence": "Complete171-byte B658E0 six-plane assignment: flags captured afterfirstFLD beforefirstFSTP,24 ordered coefficient x87 pairs and6 fullDWORD flag stores. Count+140 and rows6..15 untouched; fulloriginal COFF identity. Primary reviewed full source/fixture and independently replayed unchanged original-owned-body/full actual main-library composition: 16 pairs,32768 full arena bytes,208 original instruction mappings,16 complete COFF symbols3340 bytes62 relocations from3 exact main archive objects,17 code postimage stages. Verified205 worker artifacts+4 modules,10 current files,25 fresh guarded spans2737 bytes and8 seeds; strict main Win32 build/two existing CTests pass. Normalizer/extractor use immutable actual109DD78/D7A208 context and full existing419440/CRT length with fixed actual C27489, actual E16BD0/errno runtime binding; no FSQRT-only or arbitrary handler fallback. Real unchangedC27489 hardware observations show type7 errno33,six extraction type8 calls,and current global bypass; unmasked precision faults beforeC27489, assignment SNaN aftertwo stores. Both original and compiled owned paths share rebuilt CRT, not original-CRT differential proof; Win32 RaiseException branch not entered. New EDX context/explicit C++ interface, original hierarchy/cache-getters/renderer parent not claimed. No game validation. reports/native_camera_frustum_audit.json",
+      "old_name": "BSP_PlaneSet_AssignSixFrustumPlanes",
+      "name": "BSP_PlaneSet_AssignSixFrustumPlanes"
+    },
+    "status": "applied"
+  }
+]
