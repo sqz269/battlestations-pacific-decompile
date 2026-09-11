@@ -3921,8 +3921,8 @@
       "id": "native_cube_texture_pool_allocate5",
       "packet": "native_cube_texture_pool_allocate5",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_source_and_native_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b3d2a0",
         "00b3f170",
@@ -3947,14 +3947,15 @@
         "lifetime3 establishes actual initialized pool.",
         "trim1 genuine binding is needed before publication if real new-handler traverses shared list."
       ],
-      "active_lease_packet_id": "native_cube_texture_pool_allocate4"
+      "active_lease_packet_id": "native_cube_texture_pool_allocate4",
+      "evidence": "reports/native_cube_texture_pool_allocate_audit.json"
     },
     {
       "id": "native_cube_texture_pool_trim1",
       "packet": "native_cube_texture_pool_trim1",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_source_and_native_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b3e690"
       ],
@@ -3971,14 +3972,15 @@
       ],
       "source_ready": true,
       "composition_dependencies": [],
-      "active_lease_packet_id": "native_cube_texture_pool_trim1"
+      "active_lease_packet_id": "native_cube_texture_pool_trim1",
+      "evidence": "reports/native_cube_texture_pool_trim_audit.json"
     },
     {
       "id": "native_cube_texture_pool_lifetime3",
       "packet": "native_cube_texture_pool_lifetime3",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_source_and_native_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b3f090",
         "00b3e5b0",
@@ -4002,7 +4004,8 @@
       "composition_dependencies": [
         "native_cube_texture_pool_trim1 genuine binding before publication"
       ],
-      "active_lease_packet_id": "native_cube_texture_pool_lifetime3"
+      "active_lease_packet_id": "native_cube_texture_pool_lifetime3",
+      "evidence": "reports/native_cube_texture_pool_lifetime_audit.json"
     },
     {
       "id": "native_cube_texture_pool_static2",

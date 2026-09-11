@@ -1,0 +1,44 @@
+[
+  {
+    "address": "00b3f090",
+    "before": {
+      "address": "00b3f090",
+      "function_name": "FUN_00b3f090"
+    },
+    "after": {
+      "address": "00b3f090",
+      "old_name": "FUN_00b3f090",
+      "name": "BSP_CubeTexturePool_Initialize",
+      "evidence": "Complete actual38h pool initializer. Publish real shared base element, install D61944, actual section and depth/table/count/capacity0/earliest-1, arm state2. Capacity32 before actual allocation128; copy current count/table after new-handler processing, free current old table, publish captured replacement only. Genuine trim binding required before publication. Original CBEE7E/DF76DC FH3 and DF76C4 map clean table then section then base; source finally preserves unwind without catch/rethrow. 62,337 matching DWORDs;12 fresh live/PE and runtime spans with only16 relocations/four service bridges/three actual Win32 imports;363 owned bytes not replaced. Actual CRT retry/trim/current-table copy, populated and empty original FH3 search/unwind, and actual section depth2 drain. Original ABI: ECX actual writable 38h pool; EAX same pool; RET; original FH3 state2->1->0->-1. Complete src/native_cube_texture_pool_lifetime.cpp; reports/native_cube_texture_pool_lifetime_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3e5b0",
+    "before": {
+      "address": "00b3e5b0",
+      "function_name": "FUN_00b3e5b0"
+    },
+    "after": {
+      "address": "00b3e5b0",
+      "old_name": "FUN_00b3e5b0",
+      "name": "BSP_CubeTexturePool_Destroy",
+      "evidence": "Complete destruction. Capture nonempty before profile store, free each current slab while rereading count/table, free current table, drain positive signed recursion before each actual Leave then Delete section and unlink current shared base. Preserve remaining fields; no logical slot owner destruction or raw pool storage free. All returning-free continuations restored. 62,337 matching DWORDs;12 fresh live/PE and runtime spans with only16 relocations/four service bridges/three actual Win32 imports;363 owned bytes not replaced. Actual CRT retry/trim/current-table copy, populated and empty original FH3 search/unwind, and actual section depth2 drain. Original ABI: ECX actual initialized 38h pool; RET; no own EH frame. Complete src/native_cube_texture_pool_lifetime.cpp; reports/native_cube_texture_pool_lifetime_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3d3f0",
+    "before": {
+      "address": "00b3d3f0",
+      "function_name": "FUN_00b3d3f0"
+    },
+    "after": {
+      "address": "00b3d3f0",
+      "old_name": "FUN_00b3d3f0",
+      "name": "BSP_CubeTexturePool_FreeTableUnwind",
+      "evidence": "Complete table-header free leaf; ECX pool+28, not pool. Read current first pointer, actual shared free if nonnull, clear nothing. Full returning-free POP ECX/RET restored. Source emitted in frozen library and inlined at compared lifetime sites; original FH3 executes complete native leaf. 62,337 matching DWORDs;12 fresh live/PE and runtime spans with only16 relocations/four service bridges/three actual Win32 imports;363 owned bytes not replaced. Actual CRT retry/trim/current-table copy, populated and empty original FH3 search/unwind, and actual section depth2 drain. Original ABI: ECX actual table header (pool+28), not pool; RET; no semantic return claimed. Complete src/native_cube_texture_pool_lifetime.cpp; reports/native_cube_texture_pool_lifetime_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  }
+]
