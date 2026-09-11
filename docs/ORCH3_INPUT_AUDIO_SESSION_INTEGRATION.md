@@ -30,3 +30,18 @@ and transport calls stay explicit host dependencies. See
 Exact build, focused-check and annotation outcomes are tracked in
 `reports/orch3_input_audio_session_integration.json`. None of these new C++
 interfaces establishes original ABI compatibility or original-game validation.
+
+The combined source at `1995097d880cf632b6eefb7b3bd0381a6c2d73d1` passed
+MSVC Win32 Release and both existing CTests, including the new mission-volume
+regression case. The existing native math check reported 456 comparisons with
+zero failures. The separate input classifier experiment matched 25,088 native
+states; the sound floating-point/mask probe passed. Session routes and input
+rebinding have assembly/code review and build coverage, without native runtime
+comparison. Independent worker reviews found no code defects in the sound and
+input/mission integrations; the review's prompt-suppression wording was corrected.
+
+All 24 reviewed Ghidra names and evidence comments were saved and read back,
+with earlier comments retained. All 24 affected exports were refreshed. The
+three worker branches were merged and their worktrees retired; probe sources,
+byte verification and logs are retained under this integration worktree's
+ignored `local/` directory. No original game files were changed.
