@@ -1052,5 +1052,23 @@
         "00a89be0"
       ]
     }
-  ]
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_and_installed_event_manager_fixture_tested",
+    "validated_revision": "1d587a00a02863da4e22f87c32816b2d6de627e3",
+    "main_base": "606726c2",
+    "integration_log": "local/sound_event_u_integrate.log",
+    "build": "MSVC Win32 Release passed on merged revision",
+    "tests": "2/2 existing tests passed",
+    "helper_main_moved_after_build": false,
+    "build_log": "local/sound_event_u_integrate.log",
+    "library_sha256": "55b2966c1b84aa052bd342e0a727366216e96d1228cc6629e4defb00ca09a5bc",
+    "fixture_provenance": "Focused routing and installed bank and event manager fixture ran on validation.code_revision with validation.library_sha256. Combined build/CTest is recorded separately.",
+    "saved_annotations": 20,
+    "prior_annotation_log": "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260911T214926Z.json",
+    "refreshed_exports": "local/sound_event_u_integration_exports.log",
+    "native_abi": false,
+    "game_validated": false,
+    "audible_playback": false
+  }
 }

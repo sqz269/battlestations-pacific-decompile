@@ -114,6 +114,15 @@ std::uint8_t native_lua_boolean_or_00b662f0(const NativeLuaObjectStorage& object
     return lua_toboolean(object.owner_00->state_04,object.index_08)!=0?1:0;
 }
 bool native_lua_is_unbound_00b66420(const NativeLuaObjectStorage& object) noexcept {return object.kind_04==0;}
+std::int32_t native_lua_integer_or_00b66380(const NativeLuaObjectStorage& object,std::int32_t fallback,const bool& mode){
+    return native_lua_is_number_00b66050(object)?native_lua_integer_00b66290(object,mode):fallback;
+}
+NativeString* native_lua_string_or_00b685c0(const NativeLuaObjectStorage& object,void* fresh,const char* fallback,NativeStringStorage& strings){
+    const char* text=fallback;
+    if(object.kind_04==2 && lua_type(object.owner_00->state_04,object.index_08)==LUA_TSTRING)
+        text=native_lua_string_00b662b0(object);
+    auto* output=::new(fresh) NativeString;output->assign_0041e870(strings,text);return output;
+}
 namespace {
 void publish_iteration_object(NativeLuaObjectStorage& table,NativeLuaObjectStorage& object,int index){
     auto* const owner=table.owner_00;

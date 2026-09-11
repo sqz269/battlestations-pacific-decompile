@@ -206,3 +206,6 @@ gather and helper sequences, exact table/store derivation, both EH chains, and
 no build, runtime, display, device, gamma, gameplay, Ghidra or shared metadata
 changes. The result is a bounded source-readiness proposal, not a completed raw
 gather or lifetime proof for unrelated renderer resources.
+
+
+Primary review verified all 107 sealed worker files, 30 additional report pins, 30 freshly guarded spans (6,705 bytes), and 26 current main source/header inputs. The final source proposals, unused-EDX interface and both returning-free tail gaps were reviewed. Immutable evidence is in `local/renderer_capabilities_storage_discovery_primary/`. Primitive and nested source implementations remain separate work; this review adds no runtime or game claim.

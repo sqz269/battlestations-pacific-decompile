@@ -972,5 +972,165 @@
     "Full original memcpy and generic strstr/_strchr source/exception/fault semantics remain outside this pass.",
     "No gamma/device-recreation closure, unrelated renderer resource lifetime, gameplay or native drop-in claim.",
     "Saved-analysis missing publication tails require primary repair after review; fresh raw full bodies are authoritative."
-  ]
+  ],
+  "primary_review": {
+    "passed": true,
+    "worker_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-capabilities-storage-discovery\\local\\renderer_capabilities_storage_discovery\\sealed.json",
+      "bytes": 18531,
+      "sha256": "8c4c6ffbfe961eaeee0250c2a8c3a663107310e7bf468841b861ea15e558617c"
+    },
+    "worker_sealed_pins_verified": 107,
+    "additional_report_pins_verified": 30,
+    "fresh_guarded_spans": 30,
+    "fresh_guarded_bytes": 6705,
+    "current_main_source_header_pins": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\app_bootstrap.hpp",
+        "bytes": 13989,
+        "sha256": "1e57895243715aab107367bd7b8fd93099a3d2caee43161917719d38bfc2a3e0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\camera_projection.hpp",
+        "bytes": 2413,
+        "sha256": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\camera_transform.hpp",
+        "bytes": 7028,
+        "sha256": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\d3d9_startup.hpp",
+        "bytes": 1362,
+        "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\frame_clock.hpp",
+        "bytes": 2475,
+        "sha256": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\frontend_screen_animation.hpp",
+        "bytes": 14105,
+        "sha256": "5bf3429e1c6032def440ccebd3d804fd087896401ec16bf94b456b1dc73865e0"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\game_entry.hpp",
+        "bytes": 5510,
+        "sha256": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\gui_layout_loader.hpp",
+        "bytes": 20811,
+        "sha256": "3ede9dc470a4d5a3285d1578483428b548025b0b2eba9ab6ecc79967b242d8b1"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\gui_lua_reader.hpp",
+        "bytes": 23275,
+        "sha256": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\gui_widget.hpp",
+        "bytes": 13391,
+        "sha256": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_string.hpp",
+        "bytes": 6719,
+        "sha256": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_string_pool_owner.hpp",
+        "bytes": 5399,
+        "sha256": "c434ef6a756fe1df206dddcdef70d4444159e4e5e756ec5bb43fc9b20a7f35bc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_string_pool_storage.hpp",
+        "bytes": 2488,
+        "sha256": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\object_handle_resolvers.hpp",
+        "bytes": 3175,
+        "sha256": "46459014e65cbf8c64cab2cc9414032c410967553d5d353764089a1adb2c91c8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\render_tail.hpp",
+        "bytes": 15566,
+        "sha256": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\renderer_capabilities.hpp",
+        "bytes": 3396,
+        "sha256": "bf8a2533b35ffa45f8d6d36aa446549765786f8902eb0413b882d44ff5503863"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\settings_capabilities.hpp",
+        "bytes": 4349,
+        "sha256": "57348eb3ff1545b939a45c01274b8733efd23d21f772a4474d98182055d1355d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\storage_pool.hpp",
+        "bytes": 5571,
+        "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\system_time_constants.hpp",
+        "bytes": 4800,
+        "sha256": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_string.cpp",
+        "bytes": 6430,
+        "sha256": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_string_pool_owner.cpp",
+        "bytes": 6295,
+        "sha256": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_string_pool_storage.cpp",
+        "bytes": 4579,
+        "sha256": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\renderer_capabilities.cpp",
+        "bytes": 8436,
+        "sha256": "0d244716448101d023d79861fd155cf1a859fefe926db69022c95e16f29088da"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\settings_capabilities.cpp",
+        "bytes": 5183,
+        "sha256": "2f5f680f37c6be5785cf6093acaa4c7d2d39ea01beba3d7fd4cf676736d0464d"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      }
+    ],
+    "current_main_source_drift": [],
+    "complete_source_proposals_reviewed": true,
+    "source_added": false,
+    "original_runtime_executed": false,
+    "game_validated": false,
+    "remaining_boundary": "Primitive reserves assigned separately. Four nested array bodies and explicit valid-buffer host CRT or full native CRT bindings remain before raw B2C8E0. Original free-call tails need separate saved-analysis repairs; no global free no-return change.",
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_capabilities_storage_discovery_primary\\sealed.json",
+      "bytes": 8617,
+      "sha256": "c094d086f304a2f1ed7912cd306cc18ac2b9d2605069062c3768f9a884686e35"
+    }
+  },
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_CAPABILITIES_STORAGE_DISCOVERY.md",
+    "bytes": 14109,
+    "sha256": "a09f144e4ba247cdf8d0753d21d9fb3a2e50470992833926f485a2902f0fd24f"
+  }
 }
