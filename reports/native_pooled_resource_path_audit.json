@@ -924,5 +924,1607 @@
       "sha256": "3f4fa9941f36af634f82fc394a6b4161324b0ab8f98cf4d9aba0d0369176fb27",
       "bytes": 615
     }
-  ]
+  ],
+  "primary_integration": {
+    "status": "integrated_complete_actual_header_original_caller_fixture_and_strict_win32_build_checked",
+    "worker_commit": "df4335fc135d764650e88896da66c0eca98db39d",
+    "new_complete_functions": 1,
+    "upgraded_complete_functions": 1,
+    "records": [
+      {
+        "kind": "function",
+        "address": "00bee690",
+        "name": "normalize_native_resource_path_header_00bee690",
+        "cpp_symbol": "normalize_native_resource_path_header_00bee690",
+        "source": "src/native_pooled_resource_path.cpp",
+        "native_end_exclusive": "00bee780",
+        "original_abi": "ECX actual header, plain RET; EAX incidental from helper/copy/pool return, not a stable result pointer",
+        "evidence": "reports/native_pooled_resource_path_audit.json",
+        "status": "complete_actual_header_original_caller_fixture_and_strict_win32_build_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [
+          {
+            "address": "00bee690",
+            "name": "normalize_resource_path",
+            "source": "src/resource_path.cpp",
+            "status": "assembly_backed_port_installed_resource_resolution_checked",
+            "abi_compatible": false,
+            "kind": "function"
+          }
+        ],
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00bee780",
+        "name": "copy_construct_native_resource_path_header_00bee780",
+        "cpp_symbol": "copy_construct_native_resource_path_header_00bee780",
+        "source": "src/native_pooled_resource_path.cpp",
+        "native_end_exclusive": "00bee7fe",
+        "original_abi": "ECX output, EDX source, EAX output explicitly restored at 00bee7ef, plain RET",
+        "evidence": "reports/native_pooled_resource_path_audit.json",
+        "status": "complete_actual_header_original_caller_fixture_and_strict_win32_build_checked",
+        "native_differential_fixture": true,
+        "previous_interfaces": [],
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "verified_evidence": {
+      "spans": [
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00b1ebe0",
+          "length": 187,
+          "sha256": "aa2a17d103218ae405a460a0276bb0769f8711b21ce29e47cddfa4f35387b3dd",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00b1d950",
+          "length": 369,
+          "sha256": "f8344c0414061b024861c969979e423f999eff4d35e6b3ca0dbd1b283771625f",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00cbca60",
+          "length": 18,
+          "sha256": "0a5651fe44357902add16e60eff5d91c44f8cd89bceedccf1b61250585c1947a",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00df4ee8",
+          "length": 44,
+          "sha256": "5f62317833fdfe6441afbb58536077edaace9ebf6e749addd742195c582e9ff7",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00b13030",
+          "length": 57,
+          "sha256": "2f49afcb4c57b6cdde832faabafa48619d1a802f87a466b7bc0e6d0b092e9090",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00b13510",
+          "length": 165,
+          "sha256": "a05fe8017c36100e82cf5c93e42058337cfe2465f180a4df4263c8db1a0288ba",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00cbc270",
+          "length": 18,
+          "sha256": "7a94fc19c949b9d8cc6c9b55f3278e9ed60c4050cec06973c68a6e54cf047368",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00df4358",
+          "length": 44,
+          "sha256": "00728bc109a9585cec7f4214e05ebbf2708260646a3bab1f68b959c5232fd2f4",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "0041dd20",
+          "length": 29,
+          "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "0041dd40",
+          "length": 164,
+          "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "0041e870",
+          "length": 83,
+          "sha256": "f32abf313aaccbee4a0686891e75d082fd051777ac277f8f6d68ff90750826c7",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00ce9a38",
+          "length": 2,
+          "sha256": "a6083775b471cc24c0a1fd922bf996fcffad2259b6796da72a38837b4a530027",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00b20240",
+          "length": 27,
+          "sha256": "d2dd10ffb518501973d2bcf287eb18d1bf888ae5bf69c0bdb852d99c0b8f82a0",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00b1fe20",
+          "length": 11,
+          "sha256": "fc66797b0caf47ea47d00b192bcdf5c7fb0768188f4a024777d52ba88b23aae1",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00b20210",
+          "length": 3,
+          "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00b51b20",
+          "length": 4,
+          "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00b55550",
+          "length": 70,
+          "sha256": "d545ef37f3bf96408435ceea2340a0344515d64cf444a2d3a35e947fab42e0fd",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00b51df0",
+          "length": 284,
+          "sha256": "84a50d1875727f15b19baf912841cf44d95f05478c9edb0d49b4ba8ac7b0c0b2",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00b1bf70",
+          "length": 18,
+          "sha256": "e7e02ce675d5d6606f1282bdeae9c7b8161022789ca7d9052614d413fff6a113",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00d5e5e0",
+          "length": 4,
+          "sha256": "d8aed37d54611a4abe5c94c6016d5887b7d33957902c193c1a787f56a7180ea8",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00d5e5c4",
+          "length": 8,
+          "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00d5e5ac",
+          "length": 16,
+          "sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00d62064",
+          "length": 16,
+          "sha256": "fd21f7b19ea8f13dd27af4a091df38081898f90eacbd9259f5a3b34cedb64822",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00d5f0b0",
+          "length": 4,
+          "sha256": "ba002daa0565819022d79a028250e4323e968aa5424bd38f8a75f1d474571244",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00d5f0d4",
+          "length": 4,
+          "sha256": "c0bf51fe1d811d1f9b351b9fba458a42c50e494424ab8fbdc82d75de771f0247",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00d5f140",
+          "length": 4,
+          "sha256": "2c3c2fb780030a8f21e0d33270ccda46e9bff87f5272a62dab47aab4f47e1da9",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00d5f148",
+          "length": 8,
+          "sha256": "18089314bb2b10c46febecf5f37751362b4724dd91625097ef9697159905e852",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00d5f1bc",
+          "length": 4,
+          "sha256": "265f95ec80277ef281e49901c3476ffde1d75d08d309512a2e1792d5dd4b8847",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00d61a14",
+          "length": 4,
+          "sha256": "307b09a6c1e48adf50c06c93677e203fd8fe6a2e4b095b21e97314c2b171c98d",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00ce7550",
+          "length": 16,
+          "sha256": "f4aa8c6bc6e9bcfad9b8639832e76e0a3a4cb2f29d72dd0c977780d2930487d6",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_render_queue_execution_next",
+          "address": "00d5e160",
+          "length": 4,
+          "sha256": "e7d6d1986e421f13415a2d46a278cdb507889b3a53ee52ca1e19db31e5219af0",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b28a90",
+          "length": 44,
+          "sha256": "295132c7f5e464cfa3673c050b0229712fab41ab2aac6072ba900b145de21eee",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b26920",
+          "length": 225,
+          "sha256": "f6f3aadab945ae713471ed201a53a458ba12dce2ba792baa953a42fe26a206ed",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b241c0",
+          "length": 664,
+          "sha256": "7e2cd8817943cddb628ec0e38b6e5747cf5f238f2556f06844f5c950d8e92f65",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b33bf0",
+          "length": 14,
+          "sha256": "3383a671e842a4d9fe0fee023ab6e111c4a2f1e5ef84c8dc428e21eb7396f3d5",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b33aa0",
+          "length": 17,
+          "sha256": "2c324d785cfc8b5528228be3c3646b4bb1f85dcdd0d89846c502c0dddf03f4e1",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b33ad0",
+          "length": 46,
+          "sha256": "edaa33431fdcb7fecae9ea99624c6fb06c8d15271a2d42ed7cfe2ad4f7bc8ae7",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b33b00",
+          "length": 67,
+          "sha256": "6b55c5c3fcac00e24d4ff7316f0c22c1304ccb61ebb0850962fdf9050a41d59b",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b21110",
+          "length": 22,
+          "sha256": "1e98aeb4cc273e78f5177eaa511323db91a42de3ae1c6e67bf93799d99646e9f",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b24710",
+          "length": 297,
+          "sha256": "5b7d11da7271ab9a3001020ff3491f614735371dc6b6aac8f273ee19cab23a48",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b24840",
+          "length": 504,
+          "sha256": "4ad1011fcd017a2680c9d11335211300b8a2053aaa30ae00a6c1d30e2df80451",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b24b00",
+          "length": 236,
+          "sha256": "bf824859fcd01fd2cf56c451217ebb156f75e7dfe705b7b1af66bf2403d4a3ba",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b23d80",
+          "length": 207,
+          "sha256": "804abb888e6d511df739c72320e39600dbc5ae0d076ea3e3b83e6266722616fa",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b23710",
+          "length": 59,
+          "sha256": "2e77ba6c60539766c2d8e8bedbc7c2eb2be64e3dc3b59b958ec6274373ae7004",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00bd17c0",
+          "length": 13,
+          "sha256": "4b8cb4b463c489df9e6015d67036d194a55191289c04371b07c214a3b698cdd1",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00bd1910",
+          "length": 11,
+          "sha256": "713a6c344649e088a3c3a258794467aba35ec6700f5755985fdb7949a671609c",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00bd1960",
+          "length": 11,
+          "sha256": "698b08ac1699b2e3452c9b95fd8ced5a41bb72edab9fd1c7eb47f001faad32b8",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00bd1970",
+          "length": 55,
+          "sha256": "208785e93ae3ac9f07070f7acbebce4c8e84fed6c7799f6b174d33a3886e0bd7",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00bd19b0",
+          "length": 47,
+          "sha256": "28bf0f4a0c4d233f6fe31067375e5f8ee8cc1b7d9b8ec50aa346cf8624d22bb9",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b33da0",
+          "length": 111,
+          "sha256": "078c7e8b53c377ad39280b155415522ff1ae12636b82e03904ba9e83f2b38432",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b33b50",
+          "length": 98,
+          "sha256": "3d7498deae37a0bc9cc66e51f05bf74244e57cfe8a063451e633478105c20945",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b33bc0",
+          "length": 38,
+          "sha256": "3d2fbd16c67edd92a62d088da197dfa792da77fede6bcda3bdc7c747949eedd5",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b33c20",
+          "length": 352,
+          "sha256": "c92b627c84c0567ac3a36be1f0bb79c514ffdbcc532dca1059288d9d602bfcb3",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b29430",
+          "length": 390,
+          "sha256": "fe9164653864ee488b4d25a64acda9b9337f599cf82ed5bad640ac87041fa1ed",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b262c0",
+          "length": 468,
+          "sha256": "b267293435d48a5841ad373e91ab258f36260557523c1afd72031fd06673b83a",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b2d8e0",
+          "length": 749,
+          "sha256": "a1d5427e2a7c23cfd1b66bbdf7f0620da2ec877b1934dad51ab57bc292dcaee1",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b32920",
+          "length": 1107,
+          "sha256": "9bad38ad1e35090dda7452c7eb687e07219cad92238d98ae83a59ce57a8501b0",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b27e80",
+          "length": 145,
+          "sha256": "09c400d6253ced162529fd73fbb30872abc3c13cc7fdd32bc651ae9cc9800c3f",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b659d0",
+          "length": 165,
+          "sha256": "ceb95d5a12137cd77b33e4c94874af527b83547531a6c716dba0367d8919c983",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00b20220",
+          "length": 17,
+          "sha256": "b7eff1078d433b851b415e6b098240fb45d978ce3a36a7ea2920dc65c88fafa7",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00cbcf18",
+          "length": 10,
+          "sha256": "2c993d65c5e6fb999f8f111ca082efa08d33856fb4d4738d9242a2421634c40b",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00cbcf10",
+          "length": 8,
+          "sha256": "72b5693d78778b7ed1bea2dc27c8f8d9c571984bca7ee69a8993b36785772964",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00cbcff8",
+          "length": 10,
+          "sha256": "f67c82fee9d01bef845286915a0816442af2c9b4322bf2703c669b334c3f412e",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00cbcff0",
+          "length": 8,
+          "sha256": "375278bf7717cebbc4bef89f0e6e85c6a8473007004a456c0e3d2a2c53869f7a",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00cbd018",
+          "length": 10,
+          "sha256": "430d32fb267d25af7f684d74a93a5ae7e438098355b18d859fec31c0f79038d2",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00cbd010",
+          "length": 8,
+          "sha256": "11a75cc0c29e1dcbaacf75947aab6613a6ded2db24efac5c6820eca896a0a611",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00cbd058",
+          "length": 10,
+          "sha256": "d778fb032cbb0c39ea6082c439b17f216323bf5a3fff7ee4690479a97de2832e",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00cbd050",
+          "length": 8,
+          "sha256": "137e3b8f03f0f8fceaa9f34230b50aec3cf356928e498594c1ae5f47352c5bee",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00cbd168",
+          "length": 10,
+          "sha256": "14b51e95b6c3aebc702c2a4a74dbaf0aa6538466eb8c11cfa43c0d8bdf5182ca",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00cbd160",
+          "length": 8,
+          "sha256": "1b4087df67bb076a47da88ad0dcd5fd195c19e76932390410577e862b90a6d10",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00d5f1c4",
+          "length": 4,
+          "sha256": "c018f7f618d97d16b07374ee7f02172035955efed5b845d8c202fbdf6384e90e",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00d5f1d8",
+          "length": 12,
+          "sha256": "d1d488699a057e9905ed7ccb8dab9df561ea84f6ec6fd631ca531ff8b86d2320",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00d6821c",
+          "length": 16,
+          "sha256": "961065846b722b86f72bfe064bfcd47827f3cd7348a5c679e35ef20a8c1275a7",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00d68208",
+          "length": 4,
+          "sha256": "1a37b11bfbc61d3c2092aee43cab4e5f55b9c290a6ea9005abee8601b7be1021",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00d5f1f0",
+          "length": 4,
+          "sha256": "0724379198bac20a6b02805b37fee0058497026590b42f9ae0f155a12f8d5eda",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00ce47a0",
+          "length": 8,
+          "sha256": "139107fd63d004e94cb64abb75361dd8490810c6709a9311896ca17496f5ecde",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00ce3978",
+          "length": 4,
+          "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00d7a208",
+          "length": 4,
+          "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00d7a24c",
+          "length": 4,
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00df5534",
+          "length": 36,
+          "sha256": "7e7e30cf5ba630242740411c6e919203f8e465b22b65b135865ecf05490a394d",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00df552c",
+          "length": 8,
+          "sha256": "46041b3560a8718caf4f0b58f6b16dfc505e5a8a1d2728c6f83ee781f011d6e6",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00df5668",
+          "length": 36,
+          "sha256": "36227e906116725c983a2c4cb2dbe6bd618098a874bc87ae63dc30b8f594eecb",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00df5660",
+          "length": 8,
+          "sha256": "3dd574087c96dac3e18e02d8073df4a4638eeb679d37b17796652cdfa9a8fdb2",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00df5694",
+          "length": 36,
+          "sha256": "1f0900ca1d87e9549edfd0d705825af2cedd26f8c589d086ad7ac226ed8c31df",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00df568c",
+          "length": 8,
+          "sha256": "b2e530332f54a055e380719f21563a9be630f1880707e720e1ffc42dd07a79f5",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00df56ec",
+          "length": 36,
+          "sha256": "ea725ee788c1e4d0d190607cfa7a81ff22b40f13940dc05558580715d48d750f",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00df56e4",
+          "length": 8,
+          "sha256": "56458c3cf349a6cf98144331decd4e395a8b8c62f7b7c96056a752a99fdd9c08",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00df5874",
+          "length": 36,
+          "sha256": "8fd526c190eac7e0a7f9631c3aae32f7023158c0afd522dac461b60830109dae",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_renderer_stop_pipeline_next",
+          "address": "00df586c",
+          "length": 8,
+          "sha256": "daede5d4163ed0ad58bc67ccb9f61c17c1173eab98d0bcae3742d0aeaf7d187f",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00bee690",
+          "length": 240,
+          "sha256": "bf5742cb10c93610823cc99f29b9f29e5a46a15120cc27035826d0b264604ab5",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00bee780",
+          "length": 126,
+          "sha256": "14a34be0c91d9f77cc09d81e87338a40c7d85390709f3c979ce5f33901c818af",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00cc75b0",
+          "length": 8,
+          "sha256": "8ede3f76d45eb9e188e22315f03e81cbe21ee521572dc06770c3c359c4c1d0ca",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00cc75d0",
+          "length": 25,
+          "sha256": "78558825f570da28eedce86b13671286ad447263b878cc90ff67dbc558243fdc",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00cc75b8",
+          "length": 10,
+          "sha256": "a6233e9453ff0c423d6bc91fa18221f8c8416ccfd75885eb13421fd2c0da6931",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00cc75e9",
+          "length": 10,
+          "sha256": "817ca3a73555c91cc228e4ca7cde199192f242950b29d7dc51d5498b1bbb2b40",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00e02160",
+          "length": 8,
+          "sha256": "fa059b5bd643bef71e0e080bf88e1f05974f53b1d72f0b3377d5ec53bf13bbef",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00e02168",
+          "length": 36,
+          "sha256": "a29c96a19faf037ca8ee0f4025d03acd5a7d3eb134018cf87914bfb6845bddf0",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00e0218c",
+          "length": 8,
+          "sha256": "69e64b80ebfc1015ac7a626a42b6b3a53c648ec0fcb60ba2394c4a98723a1f3a",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00e02194",
+          "length": 36,
+          "sha256": "36f5ced54807e65d738f28183c321a76fc2f40a6ba1ddbe7683c2768870ccef2",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00426060",
+          "length": 66,
+          "sha256": "53d4b41063ce1429d94987c7b752a4f343cca774b21593a10fee3b95e6aa8bb6",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00469840",
+          "length": 272,
+          "sha256": "3d195be7698a4a68e668efb2b4de53eb59f861783950be94acddd6ca3a9cd09f",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "0041dd40",
+          "length": 164,
+          "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "0041dd20",
+          "length": 29,
+          "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "004bcc00",
+          "length": 51,
+          "sha256": "cfbd487587a7f330ae49a77ec737749f5f1c5bafbe7e33a8beeab96adb6763f8",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00419cc0",
+          "length": 5,
+          "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00bd1510",
+          "length": 5,
+          "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00bf7680",
+          "length": 5,
+          "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+          "live_matches_installed": true
+        },
+        {
+          "packet": "native_pooled_resource_path",
+          "address": "00bf6b43",
+          "length": 5,
+          "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+          "live_matches_installed": true
+        }
+      ],
+      "archived_artifacts": [
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "include/bsp/native_pooled_resource_path.hpp",
+          "sha256": "2b9b1dad7f2843e0ddcc4d4bf609343ddf02a1516b9c54c2028ea4e78f56bc26",
+          "bytes": 1432
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "src/native_pooled_resource_path.cpp",
+          "sha256": "dcdbbd55b83fc4cea7666498bf9d9b81bf2b6b03b50373339f9f17b2fa72dfa0",
+          "bytes": 4724
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "docs/NATIVE_POOLED_RESOURCE_PATH.md",
+          "sha256": "59d331736b891adc4df40df24034080f80c83c8d4aaf9df5f1eee4b06e766279",
+          "bytes": 9201
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "include/bsp/native_string.hpp",
+          "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0",
+          "bytes": 6001
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "src/native_string.cpp",
+          "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+          "bytes": 6003
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "include/bsp/native_pooled_string_substring.hpp",
+          "sha256": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f",
+          "bytes": 1557
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "src/native_pooled_string_substring.cpp",
+          "sha256": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc",
+          "bytes": 5004
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "include/bsp/resource_path.hpp",
+          "sha256": "535071af4ef7ade72b4ab405398060b307c69795a76a43b2c342ecaabf8cc3f4",
+          "bytes": 1396
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "src/resource_path.cpp",
+          "sha256": "325e8753947ae02d371d4189340b709369da68f7c8340203854584f9712001e6",
+          "bytes": 3684
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "reports/native_pooled_string_substring_audit.json",
+          "sha256": "bd4dca5e630c5c9da624819a72e67b9f1ee9251df229e4be5ff4fb9c131690a9",
+          "bytes": 27436
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/prepare_native_pooled_resource_path.py",
+          "sha256": "e84b9c2756dee074883d1bdb1b3d24e936a020bf02dc64e61207f1df71ce8908",
+          "bytes": 4877
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/native_pooled_resource_path_preparation.json",
+          "sha256": "a32b90be675ccf7a1f42771429c8728cc8b7b51efa1ef7b71df40e3cab73c357",
+          "bytes": 11118
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/native_pooled_resource_path_spans.hpp",
+          "sha256": "a43ff9c95b2342ff4db7b9d241a6d0636b2bc58f93263ec62f128f29edc8abb9",
+          "bytes": 7932
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/native_pooled_resource_path_check.cpp",
+          "sha256": "a32886ea2d39400d494e70a45df842e8cc5b56d7c3904292e707783e70ea42e5",
+          "bytes": 16772
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/build_native_pooled_resource_path_check.ps1",
+          "sha256": "d68c54da2df77b745547544bcfc13b9e01e7c3a6ce4ad88f7b57c3664a5527ca",
+          "bytes": 2068
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/build_native_pooled_resource_path.ps1",
+          "sha256": "b18b5beea29f6de3ac4291e4e4d9da1a8ec842f04cf92570aeafdd2acf671a09",
+          "bytes": 1041
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_sources.cmake",
+          "sha256": "570ec72c91233cbc51e4a86331a69ff562c13a276c61628d30e1c920ab0c644c",
+          "bytes": 269
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_build_initial.log",
+          "sha256": "431a6823343a6fa8c886b1cf673c286dd2b7c701fd91955d91b65ee90d7b6a56",
+          "bytes": 10665
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_build_final.log",
+          "sha256": "7b360120782603f979ef0ca614136181ca16d212b42ac4234b3b5ca1a5963e1c",
+          "bytes": 2028
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_fixture.log",
+          "sha256": "1836233d413300abc62c7129dfc3a0db4531d659de1221196cf635ca676b296b",
+          "bytes": 400
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_seed_byte_comparison.json",
+          "sha256": "32f6c78b0dd1b73bb1023c82831731b40e88e5e57d023bffda0b872c8cf2d298",
+          "bytes": 3288
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "build/pooled-resource-path-check/native_pooled_resource_path_trace.json",
+          "sha256": "bf9dfc4ff68ee575b4ea819ed70859d22eecfaec6e042d993282cbe628cef0ff",
+          "bytes": 30021
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "build/pooled-resource-path-check/native_pooled_resource_path_check.exe",
+          "sha256": "2e3e6193167382aead34e723c30566db07e3d62a4daa39a44c48da5cac5c7c81",
+          "bytes": 42496
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "build/win32/Release/bsp_core.lib",
+          "sha256": "66a32389d3f1ea1f26915b976b5312b094171edad18ee752508b0922a26c942a",
+          "bytes": 17612476
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00bee690.txt",
+          "sha256": "7d8cc1c8a200c8948e4ba6b327315024269e9e423699ce21265feb7107b5669d",
+          "bytes": 1155
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00bee780.txt",
+          "sha256": "6d624e60172d5649936d361c2b56edd8f9d2da30f93fc5e2607253aa6cb46ae7",
+          "bytes": 608
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00cc75b0.txt",
+          "sha256": "b552b7cee8d6dc04f2ddebbe45762b720a4a3f0fa849138532b6ecc5b73cfb7f",
+          "bytes": 45
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00cc75d0.txt",
+          "sha256": "9295b7c311ac6f583e11cc704a7c040cf538918214049e9342685cc735b36c90",
+          "bytes": 126
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00cc75b8.txt",
+          "sha256": "a1840eb20be3d84068e94e429500a65820463e114c55e7acfade292f4a64bc6a",
+          "bytes": 53
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00cc75e9.txt",
+          "sha256": "4db352c17346422b0b44790dbc7b00d59195607a65e10f98fb150d0dbb3ab568",
+          "bytes": 53
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00e02160.txt",
+          "sha256": "191236733d9c81375f9b89a46815faba2b3a76ec93a54642d37925e1a33c66a6",
+          "bytes": 45
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00e02168.txt",
+          "sha256": "d347059a430258654a98c30b490c9e9e5cc00f3b2fea17779ca5bf12c6538f9c",
+          "bytes": 183
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00e0218c.txt",
+          "sha256": "26e9c2cff8f21869b898bbc8beaa0dd15a0fbc2e19d66e1298408830884550f1",
+          "bytes": 45
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00e02194.txt",
+          "sha256": "6965fb707cc3833d00e63de7d97f591db1ab5e42323843aa3bc62ec186bb986d",
+          "bytes": 183
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00426060.txt",
+          "sha256": "b86a6f9cfebb3c5dddd2bdb917eb00f577178a8691e57521fa8c280075867660",
+          "bytes": 329
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00469840.txt",
+          "sha256": "c3c005579f489a2c0dc36c672c5775cffff7c9b8b00a43ff67cce116e7636954",
+          "bytes": 1309
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_0041dd40.txt",
+          "sha256": "35ab49464fb315caa5eeaac9ea5f17aade682fc2169ec1e656b7c378cd8ccdae",
+          "bytes": 799
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_0041dd20.txt",
+          "sha256": "6067ce8f2a1ee404080bab647c771b6ee0d782dc9b8d61b710a9e04b3c4b8850",
+          "bytes": 142
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_004bcc00.txt",
+          "sha256": "de7e77a2700e82264079e2465795ff815862cfcf14b8408ddff1b65bb4e449d0",
+          "bytes": 256
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00419cc0.txt",
+          "sha256": "fd2c76435acd07d36046e6fe33ecb166fe0ca45dfc1f118fc3baf073d4470ca9",
+          "bytes": 33
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00bd1510.txt",
+          "sha256": "5312bed027b75e43b736c47d8bf2b0b817d02d4af6f2afe068c7265add48f4bb",
+          "bytes": 33
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00bf7680.txt",
+          "sha256": "871ebcbc3369e3a2cd4ad4e0290065cc71783c2a00162582c8e9c742e492599b",
+          "bytes": 33
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_live_00bf6b43.txt",
+          "sha256": "097d3d6d6e023a7f934487b934bffdc04d57b0b5811a1e9966770453ba241ca2",
+          "bytes": 33
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_old_00bee690_proto.txt",
+          "sha256": "d0ad9e27e592ea14b948393b16555796267de901527becd801b7087436ffbacc",
+          "bytes": 2210
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_old_00bee690_comments.json",
+          "sha256": "d7b65f337421693f72e625e8644f9c19b365eb17cf603dd7dff74f47db78bcb4",
+          "bytes": 470
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_old_00bee780_proto.txt",
+          "sha256": "97991670ab81041ad652c2eac54008067a675157e086e72b1a585d8a1ebd4e1b",
+          "bytes": 960
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_old_00bee780_comments.json",
+          "sha256": "6f3cc1146592eca8fac0e3d8638ba7818a581c028e577a220b852d5161c58beb",
+          "bytes": 127
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_00bee690.asm",
+          "sha256": "e88bb0aad835c40f27a3a4dd3e4c5fc21a4691f1f8fc6e8e17e32f318f8061e5",
+          "bytes": 2352
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_00bee780.asm",
+          "sha256": "d582ee5ae6092b33c5c03c44a440c54977b989c1ca3b16769248c6b9f6a694f8",
+          "bytes": 1260
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_00cc75b0.asm",
+          "sha256": "916fa0d21b6135dc0cbc347b1b140d499d2b92b4c7738fc3df4e387bf1ec4378",
+          "bytes": 57
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_00cc75d0.asm",
+          "sha256": "8459584c471884f386469257d15adb7edb7bf9b886c27205494a8c715274d8a5",
+          "bytes": 221
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_00cc75b8.asm",
+          "sha256": "9c64afe8ebd03e173c27510e5230f5e393d413c917e8e0d3687a873deeeb8798",
+          "bytes": 53
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_00cc75e9.asm",
+          "sha256": "95b52b908cfefadc7313fad79881ef87274fad186ff9d8e62b1a6f4f21edd84d",
+          "bytes": 53
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_00426060.asm",
+          "sha256": "9923e09067cca24d5008ba3c9e8c5917867927b6e2508cbbceff06266da7929e",
+          "bytes": 685
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_00469840.asm",
+          "sha256": "36c1f221431cd77a2e5f35065931586acd37136a87f8e8d70753a61c17291f01",
+          "bytes": 2584
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_0041dd40.asm",
+          "sha256": "dfa4fe7f1f74c793ffd9005c37018906fd4db95c3a607e24321bf69be9f42e8d",
+          "bytes": 1660
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_0041dd20.asm",
+          "sha256": "dedae49dda63f1b698c46a53a9b59aace0d00dbd4001d540390d36361b4de116",
+          "bytes": 294
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-pooled-resource-path-20260910",
+          "path": "local/resource_path_004bcc00.asm",
+          "sha256": "3f4fa9941f36af634f82fc394a6b4161324b0ab8f98cf4d9aba0d0369176fb27",
+          "bytes": 615
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-stop-pipeline-next-20260910",
+          "path": "local/audit_native_renderer_stop_pipeline.py",
+          "bytes": 4957,
+          "sha256": "c584a2d85ee96f979aa96201a4798ea3dff13295348c3761e037d059c6fea8a4"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-stop-pipeline-next-20260910",
+          "path": "local/native_renderer_stop_pipeline_verified.json",
+          "bytes": 58468,
+          "sha256": "621be7507874e87137799dafe6749b8caee497e21d31311dedf5fd17aa192403"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-stop-pipeline-next-20260910",
+          "path": "local/native_renderer_stop_pipeline_prototypes.txt",
+          "bytes": 3053,
+          "sha256": "eaed484614df94d9c9d336b1fd20ede93047581a8efb24fd148ec84f13136b3a"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-stop-pipeline-next-20260910",
+          "path": "local/native_renderer_stop_pipeline_annotations.json",
+          "bytes": 15356,
+          "sha256": "00de1d81c95829df7a2fdf75455e5d1145cdc0261e010a189360726e46615a5f"
+        },
+        {
+          "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-stop-pipeline-next-20260910",
+          "path": "docs/NATIVE_RENDERER_STOP_PIPELINE_NEXT.md",
+          "bytes": 15402,
+          "sha256": "0d6e52883a3c122d74df4478bb35ea9ea2b7b8dd4106b153700bd13543307679"
+        }
+      ],
+      "pinned_sources": [
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "include/bsp/native_render_context.hpp",
+          "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "src/native_render_context.cpp",
+          "sha256": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "include/bsp/native_render_command_owner.hpp",
+          "sha256": "075aeabef5f471eb0ef50de21045a91ed8c7c7c0834dd729115ea4bbe64dba93"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "src/native_render_command_owner.cpp",
+          "sha256": "160f1102b71bc4977eb85a8bc38aaddb4c9a0ce04271d99457c2552d69608767"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "include/bsp/native_render_batch_lifetime.hpp",
+          "sha256": "112f1204c6f7b8633dee691a09c967c2002a1d3cdf6b64e37d42e2b3ef74dead"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "include/bsp/native_render_queue_access.hpp",
+          "sha256": "16fe7dbc5c783b733902b421a5f07b703c2192f47417100ec15f674e250fdadb"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "src/native_render_queue_access.cpp",
+          "sha256": "373b3206776e8e0c201a96c37a9c3f7e8d6009570227f7efcf32e0e960b86722"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "include/bsp/native_render_queue_rows.hpp",
+          "sha256": "46ef7ebe73c1360fb37c6a4781b4c14285bca36802202598bd2c32842c76871a"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "src/native_render_queue_rows.cpp",
+          "sha256": "dd493cb7d82a3e8c450e171e759e1e5144f5efcc5bfd5eec8cd2d8e8dce39714"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "include/bsp/native_render_preparation_job_owner.hpp",
+          "sha256": "fce48f95671b87933f49d5045b56a2e55d1c3de0b9c6282132971239676fcb46"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "src/native_render_preparation_job_owner.cpp",
+          "sha256": "b726ef28a77f8c5fd58231e17bfb556cdc06ab1da6a2106c7c9b0150d1d5ad02"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "include/bsp/render_command_execution.hpp",
+          "sha256": "8fff16c9fa9fa22e086f82db7b79d9e4dcf82e394610cad5c2b976ef7e62d08d"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "src/render_command_execution.cpp",
+          "sha256": "d3aae1244dd10e984a983caf07d5ef7650f3e82b299818097cc0a5bfb823a8d5"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "include/bsp/native_camera_owner.hpp",
+          "sha256": "636430a3d2ab6a143095f7fdb861ca3196b6ac5bdbfc679a12a612c335c9d5ee"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "include/bsp/camera_frame_state.hpp",
+          "sha256": "3908727ef594797d30acfba72d87366683c61d7768e7cf3038f5a0164f7428df"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "src/camera_frame_state.cpp",
+          "sha256": "e05983d2625a6276f15b4fc8b84c8b6c1c81e864a95909bde50b0d8610dc811e"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "include/bsp/system_constant_builder.hpp",
+          "sha256": "1bd5d6d3a10b53d4765ba95500a64c617527adea79079243685583cf6d581474"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "src/system_constant_builder.cpp",
+          "sha256": "8e9abc434d042ad941532219ebfaa305af5d68d71ccfd91b10fe2865ca407563"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "include/bsp/material_entry_dispatch.hpp",
+          "sha256": "8bf3e1e3d799c65e2153f4b9f768a4c260f8ba1ce46b3da7076370fd5e3d4769"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "include/bsp/native_renderer_parameters.hpp",
+          "sha256": "e611c56944aced8136d129fd00c0ff2689a424bb36ec29dc66ab5c97f1ba0605"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "docs/NATIVE_RENDER_COMMAND_EXECUTION_NEXT.md",
+          "sha256": "8219bdaf2e33fb6e0cbbc2f640e0066b45ebef71f5833060ece3603c5657ad1e"
+        },
+        {
+          "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+          "path": "reports/native_render_command_execution_next.json",
+          "sha256": "de872d322d082b0a2bc79f8905d4c568bf27129ba9fc29e8cf659901a05d0b87"
+        },
+        {
+          "commit": "e36e0faf24d97b338754291b1c5675a5435973f4",
+          "path": "include/bsp/native_render_batch_keys.hpp",
+          "sha256": "41a5e8c480a784a70ca0827e2ce32415deb1d12765a85a48f88b2028f7fc9e3b"
+        },
+        {
+          "commit": "e36e0faf24d97b338754291b1c5675a5435973f4",
+          "path": "src/native_render_batch_keys.cpp",
+          "sha256": "fa6a16afd510a1a0b7bc24bb928b5b908268266ef7a2603112aef0a56e9152c0"
+        },
+        {
+          "commit": "e36e0faf24d97b338754291b1c5675a5435973f4",
+          "path": "include/bsp/native_render_pointer_slot_sort.hpp",
+          "sha256": "b30833f4b97a03977e242292c9f477829152fef3046a2920ce52544272c73634"
+        },
+        {
+          "commit": "e36e0faf24d97b338754291b1c5675a5435973f4",
+          "path": "src/native_render_pointer_slot_sort.cpp",
+          "sha256": "dbe0c05bc0dcc529a2244fd1dbaba9d557606502260d65b2cb085cd238158aac"
+        },
+        {
+          "commit": "3ef5439fc51f1305ccdbbe6d5b50be11bccd8756",
+          "path": "include/bsp/native_string.hpp",
+          "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0"
+        },
+        {
+          "commit": "3ef5439fc51f1305ccdbbe6d5b50be11bccd8756",
+          "path": "src/native_string.cpp",
+          "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+        },
+        {
+          "path": "include/bsp/d3d9_states.hpp",
+          "bytes": 15076,
+          "sha256": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "060a4c7348c7e4713a0605f3e44eda08c21dcfdf"
+        },
+        {
+          "path": "src/d3d9_states.cpp",
+          "bytes": 19554,
+          "sha256": "0482129429656ed126106ffed85c1a504b0f2bc6dcccc2d2afc54706cce02e9f",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "47bb639b4fd947ebcbf70da10af55f017f44e107"
+        },
+        {
+          "path": "include/bsp/native_render_context.hpp",
+          "bytes": 4898,
+          "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "6d2065e5274d28ad48bbc9cd5f95e303a7c20e3b"
+        },
+        {
+          "path": "src/native_render_context.cpp",
+          "bytes": 3884,
+          "sha256": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "ca2e79a20b60caa2fedfe48a035500fef999f443"
+        },
+        {
+          "path": "include/bsp/render_command_queue.hpp",
+          "bytes": 10656,
+          "sha256": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "4f0f5ca5a87b59f7d05349a36619a4459e874e8d"
+        },
+        {
+          "path": "include/bsp/native_surface_owner.hpp",
+          "bytes": 4221,
+          "sha256": "947feec7e98a6b1fa04502588e262e7812df34247eeddbb7b25554b3d3564e38",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "f9b6670c5ffef27071c2cd8542cf73a64e89b356"
+        },
+        {
+          "path": "src/native_surface_owner.cpp",
+          "bytes": 8402,
+          "sha256": "3ac9f459ba8a99ea72cd5c3d655fa8e93f247667026772e4a58131903b7707fd",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "ba5eee3bc9fa48149bcade9a796a87b01151292a"
+        },
+        {
+          "path": "include/bsp/native_renderer_parameters.hpp",
+          "bytes": 2411,
+          "sha256": "e611c56944aced8136d129fd00c0ff2689a424bb36ec29dc66ab5c97f1ba0605",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "690a3025392f7e1b2256f0f0ba88b894eb7884e1"
+        },
+        {
+          "path": "src/native_renderer_parameters.cpp",
+          "bytes": 1873,
+          "sha256": "7f5a2439342111b7a1f03d6992e88893c704497638f17f74e858e7fd91ba72c3",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "6c728e1a61a6bb8acbdf0032669502700319fee6"
+        },
+        {
+          "path": "include/bsp/win32_event.hpp",
+          "bytes": 630,
+          "sha256": "3f09d1ef7c28426b3578781e81f8c4b78be33ac3dae6f97bb9889ce583f62a9c",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "5cd4b9f8e379cb211b27336cb7c0150446ff1391"
+        },
+        {
+          "path": "src/win32_event.cpp",
+          "bytes": 443,
+          "sha256": "97d724bdb0613c26f1fc1886e9f39a499bc4c2b582f90392191d5abd0550bf23",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "1ba939683cd685a9da77ad84643a5211214e5440"
+        },
+        {
+          "path": "include/bsp/random_threads.hpp",
+          "bytes": 1446,
+          "sha256": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "72b34c51801ffceaefff525a4eddbe152c3ee1e2"
+        },
+        {
+          "path": "src/random_threads.cpp",
+          "bytes": 2902,
+          "sha256": "3e9c3253132b3c94ab9a81262406d6871e4388101d4adbd6aebc1ca4b9995e3d",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "ca7e21798b12559d3824ae3139fbc01efda081c6"
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "bytes": 3986,
+          "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "79c1199f6b4feaf6f348b172b5cf06ff613c69eb"
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "bytes": 10921,
+          "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "bf759470d79be2b5d23d896172ca67bc261f703b"
+        },
+        {
+          "path": "include/bsp/camera_plane_initialization.hpp",
+          "bytes": 776,
+          "sha256": "0785c22154db5d197ce3102d849ad1301700f851892ddab1cc06f3677172a3d3",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "b3c283e8136207c17cbfd8d3f1e360d7de525281"
+        },
+        {
+          "path": "src/camera_plane_initialization.cpp",
+          "bytes": 2829,
+          "sha256": "29eaa8553756eab5debd5a7a33cdd6684468455e4d474a2a9a7f8b4a5b999982",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "7f1d838e39de59b19b077a536bd747286c82e9fe"
+        },
+        {
+          "path": "include/bsp/camera_frame_state.hpp",
+          "bytes": 8365,
+          "sha256": "3908727ef594797d30acfba72d87366683c61d7768e7cf3038f5a0164f7428df",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "3d4a75b59ad27f562d03c2dddba125a32261e62a"
+        },
+        {
+          "path": "src/camera_frame_state.cpp",
+          "bytes": 51422,
+          "sha256": "e05983d2625a6276f15b4fc8b84c8b6c1c81e864a95909bde50b0d8610dc811e",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "f009c36b5a97e6900b88c4341b114225e33dfcab"
+        },
+        {
+          "path": "include/bsp/d3d9_resources.hpp",
+          "bytes": 3382,
+          "sha256": "5703cd93356283a5032d4a075ced05542ce5505cbe9c87ec44ed722a9b3dd176",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "6fe767e483692b331da049ce81d407ff680df4cb"
+        },
+        {
+          "path": "src/d3d9_resources.cpp",
+          "bytes": 5796,
+          "sha256": "f99bedc31baf65009085e09f7e98932fc278fa19b7bc951d16a246a148d65f2a",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "837d94ee90b2819836387e267e96460bdabfac0d"
+        },
+        {
+          "path": "include/bsp/d3d9_query.hpp",
+          "bytes": 2960,
+          "sha256": "eed94276982e03c602fb1fda17559e3d26426350ef587637b9525c03a5f44d44",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "c10b03cf4416fd7e94585b726e7f4e9d711aa4de"
+        },
+        {
+          "path": "src/d3d9_query.cpp",
+          "bytes": 3163,
+          "sha256": "a7a4ca80d084acb3241ff9229d258dcd1b0085503db452af3798e055a1813b58",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "933b68ba53b70cb677e07cfe719996b11630c6a1"
+        },
+        {
+          "path": "CMakeLists.txt",
+          "bytes": 8897,
+          "sha256": "c3c1f280aadf830c2f015f6f2ebdea63a2fd11e8c38d77c63ad29ced2aaa14be",
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "git_blob": "a5e62244620a48dac7d05223e55166062a8b8e35"
+        },
+        {
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "path": "docs/NATIVE_RENDER_QUEUE_OWNER_NEXT.md",
+          "bytes": 14942,
+          "sha256": "8016dcaac4ef95fc4e05913e88bca761d1d273d49d5f4e2bb3dc53d80371717f"
+        },
+        {
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "path": "reports/native_render_queue_owner_next.json",
+          "bytes": 48257,
+          "sha256": "f1aaedfaa310f2cc9568108f31c3980c1aa975f7ea5716f404e5030f59df1c98"
+        },
+        {
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "path": "docs/RENDER_WORKER.md",
+          "bytes": 5567,
+          "sha256": "c9c9a66df8d7a6b3c14c5c638c6e8ff0defb94be154416b70df48e951414def0"
+        },
+        {
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "path": "reports/worker_event_evidence.json",
+          "bytes": 9024,
+          "sha256": "c1d212fe8003b115a7d85b10de5c560a88ed13537d63c42953a8fbab340c8199"
+        },
+        {
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "path": "docs/GAMMA_CAPABILITIES.md",
+          "bytes": 7289,
+          "sha256": "7188ddf9a3cbede68ab6448006bd4d3df21da8bf43b26469d1522b253b36dff3"
+        },
+        {
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "path": "docs/SURFACE_RESET_TRAVERSAL.md",
+          "bytes": 9711,
+          "sha256": "e91c7f32d767db782718d6666a3f59c715f9771a74742eab74594f447a26dac8"
+        },
+        {
+          "commit": "76040d02e30767ed336d7fb2295756ef7e095e27",
+          "path": "reports/camera_plane_initialization_audit.json",
+          "bytes": 22275,
+          "sha256": "78b3c92cf5dfd0140055a4c282c1df7f68368c7050b537b17f41e40c0535e2cf"
+        }
+      ],
+      "primary_path_source_unchanged": true
+    },
+    "primary_artifacts": [
+      {
+        "path": "include/bsp/native_pooled_resource_path.hpp",
+        "sha256": "2b9b1dad7f2843e0ddcc4d4bf609343ddf02a1516b9c54c2028ea4e78f56bc26"
+      },
+      {
+        "path": "src/native_pooled_resource_path.cpp",
+        "sha256": "dcdbbd55b83fc4cea7666498bf9d9b81bf2b6b03b50373339f9f17b2fa72dfa0"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+      },
+      {
+        "path": "src/native_pooled_string_substring.cpp",
+        "sha256": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc"
+      },
+      {
+        "path": "local/native_pooled_resource_path_primary_fixture.txt",
+        "sha256": "7ab103e044354179a76d11f25b7fd590f4d123568c992c284aff0a37d759747a"
+      },
+      {
+        "path": "local/build_native_pooled_resource_path_check.ps1",
+        "sha256": "33d1044ed9e0e6ec39b2a4fa2de13290d27019b3709a9ebe6f638d0135b370d9"
+      },
+      {
+        "path": "build/pooled-resource-path-check/native_pooled_resource_path_trace.json",
+        "sha256": "bf9dfc4ff68ee575b4ea819ed70859d22eecfaec6e042d993282cbe628cef0ff"
+      }
+    ],
+    "primary_library_path_owners": true,
+    "actual_dependency_instrumentation_retained": true,
+    "native_getter_throw_is_separate_not_host_parity": true,
+    "build": {
+      "passed": true,
+      "tests": 2,
+      "path": "reports/native_pooled_resource_path_primary_build.txt",
+      "sha256": "4e8edfb97f6e281784c118f7673f0364cfd29853be14c061dcc84b86afdde278"
+    },
+    "annotations_applied": true,
+    "new_tracked_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "saved_annotations": {
+      "path": "reports/native_pooled_resource_path_annotations.json",
+      "sha256": "5a09f4d8a3fbdf9af325f2f5fe8321ee3fc909810e329373fe2d1c39a7bbce1c",
+      "old_values_preserved": true,
+      "project_saved": true
+    },
+    "refreshed_exports": [
+      {
+        "address": "00bee690",
+        "path": "exports/bsp/functions/00bee690/decompiled.c",
+        "sha256": "3df11063898e0ccf93f2f326a2ee872311fd04fb5e0c48c39c7c5acbd7146f82"
+      },
+      {
+        "address": "00bee780",
+        "path": "exports/bsp/functions/00bee780/decompiled.c",
+        "sha256": "fbb379169827405dc6bf6c33abfd4681a4f1c9f5d759c7b9e9cb9cd28a7b40f4"
+      }
+    ],
+    "closure_utc": "2026-09-11T00:14:17.521908+00:00"
+  }
 }

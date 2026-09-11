@@ -2856,5 +2856,20 @@
     "Minimum touched extents are not complete object-size claims.",
     "Current saved-program bytes are not a live game-memory capture.",
     "Queue execution B1EBE0/B1D950 and pooled strings remained assigned to other workers."
-  ]
+  ],
+  "primary_review": {
+    "status": "reviewed_complete_native_spans_and_pinned_source_contracts",
+    "worker_commit": "6ed505b55f5df34c312632b3ff58f5cb8cfc2ffe",
+    "verified_spans": 58,
+    "verified_bytes": 6549,
+    "evidence": "reports/native_pooled_resource_path_audit.json",
+    "validation_record": "primary_integration.verified_evidence",
+    "frontier": {
+      "actual_synchronization_implementation_active": true,
+      "actual_event_owner_implementation_active": true,
+      "cache_terminal_profiles_unresolved": true,
+      "full_pipeline_and_worker_complete": false
+    },
+    "utc": "2026-09-11T00:14:17.521908+00:00"
+  }
 }

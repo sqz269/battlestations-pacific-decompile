@@ -857,5 +857,19 @@
       "path": "src/native_string.cpp",
       "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
     }
-  ]
+  ],
+  "primary_review": {
+    "status": "reviewed_complete_native_spans_and_pinned_source_contracts",
+    "worker_commit": "4b51af45dcc71b97fb39cb27d76ebfa43e7a3066",
+    "verified_spans": 31,
+    "verified_bytes": 1689,
+    "evidence": "reports/native_pooled_resource_path_audit.json",
+    "validation_record": "primary_integration.verified_evidence",
+    "frontier": {
+      "actual_state_leaves_complete": "dee1fea",
+      "diagnostic_labels_implementation_active": true,
+      "queue_and_command_execution_complete": false
+    },
+    "utc": "2026-09-11T00:14:17.521908+00:00"
+  }
 }

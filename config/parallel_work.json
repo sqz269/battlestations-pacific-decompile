@@ -2985,8 +2985,8 @@
     {
       "id": "native_pooled_resource_path",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "implementing_actual_header_normalize_and_copy_normalize",
+      "done": true,
+      "state": "integrated_complete_actual_header_original_caller_fixture_and_strict_win32_build_checked",
       "function_addresses": [
         "00bee690",
         "00bee780"
@@ -2997,13 +2997,15 @@
         "docs/NATIVE_POOLED_RESOURCE_PATH.md",
         "reports/native_pooled_resource_path_audit.json"
       ],
-      "packet": "native_pooled_resource_path"
+      "packet": "native_pooled_resource_path",
+      "evidence": "reports/native_pooled_resource_path_audit.json",
+      "worker_commit": "df4335fc135d764650e88896da66c0eca98db39d"
     },
     {
       "id": "native_render_queue_execution_next",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "read_only_actual_queue_and_command_execution_dependency_discovery",
+      "done": true,
+      "state": "reviewed_complete_native_spans_and_pinned_source_contracts",
       "function_addresses": [
         "00b1ebe0",
         "00b1d950"
@@ -3012,13 +3014,15 @@
         "docs/NATIVE_RENDER_QUEUE_EXECUTION_NEXT.md",
         "reports/native_render_queue_execution_next.json"
       ],
-      "packet": "native_render_queue_execution_next"
+      "packet": "native_render_queue_execution_next",
+      "evidence": "reports/native_render_queue_execution_next.json",
+      "worker_commit": "4b51af45dcc71b97fb39cb27d76ebfa43e7a3066"
     },
     {
       "id": "native_renderer_stop_pipeline_next",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "read_only_actual_renderer_stop_pipeline_cache_and_guard_dependency_discovery",
+      "done": true,
+      "state": "reviewed_complete_native_spans_and_pinned_source_contracts",
       "function_addresses": [
         "00b28a90",
         "00b26920",
@@ -3029,7 +3033,9 @@
         "docs/NATIVE_RENDERER_STOP_PIPELINE_NEXT.md",
         "reports/native_renderer_stop_pipeline_next.json"
       ],
-      "packet": "native_renderer_stop_pipeline_next"
+      "packet": "native_renderer_stop_pipeline_next",
+      "evidence": "reports/native_renderer_stop_pipeline_next.json",
+      "worker_commit": "6ed505b55f5df34c312632b3ff58f5cb8cfc2ffe"
     },
     {
       "id": "native_render_state_leaves",
@@ -3049,6 +3055,83 @@
         "src/native_render_state_leaves.cpp",
         "docs/NATIVE_RENDER_STATE_LEAVES.md",
         "reports/native_render_state_leaves_audit.json"
+      ]
+    },
+    {
+      "id": "native_render_diagnostic_labels",
+      "packet": "native_render_diagnostic_labels",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "implementing_actual_service_label_setter_and_global_reset",
+      "function_addresses": [
+        "00b13030",
+        "00b13510"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_diagnostic_labels.hpp",
+        "src/native_render_diagnostic_labels.cpp",
+        "docs/NATIVE_RENDER_DIAGNOSTIC_LABELS.md",
+        "reports/native_render_diagnostic_labels_audit.json"
+      ]
+    },
+    {
+      "id": "native_renderer_synchronization_actual",
+      "packet": "native_renderer_synchronization_actual",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "implementing_actual_globals_lock_and_guard_cleanup",
+      "function_addresses": [
+        "00b33aa0",
+        "00b33ad0",
+        "00b33b00",
+        "00b21110",
+        "00b20220"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_synchronization_actual.hpp",
+        "src/native_renderer_synchronization_actual.cpp",
+        "docs/NATIVE_RENDERER_SYNCHRONIZATION_ACTUAL.md",
+        "reports/native_renderer_synchronization_actual_audit.json"
+      ]
+    },
+    {
+      "id": "native_render_resource_record_construction",
+      "packet": "native_render_resource_record_construction",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "implementing_actual_sentinel_list_and_record_copy_construction_with_EH",
+      "function_addresses": [
+        "004c3020",
+        "004d48a0",
+        "00b2fc60",
+        "004d0a10",
+        "004d490c"
+      ],
+      "code_ownership": [
+        "include/bsp/native_render_resource_record_construction.hpp",
+        "src/native_render_resource_record_construction.cpp",
+        "docs/NATIVE_RENDER_RESOURCE_RECORD_CONSTRUCTION.md",
+        "reports/native_render_resource_record_construction_audit.json"
+      ]
+    },
+    {
+      "id": "native_event_owner",
+      "packet": "native_event_owner",
+      "worker": "main",
+      "done": false,
+      "state": "implementing_actual_eight_byte_event_owner_and_Win32_leaves",
+      "function_addresses": [
+        "00bd1970",
+        "00bd19b0",
+        "00bd1910",
+        "00bd17c0",
+        "00bd1960"
+      ],
+      "code_ownership": [
+        "include/bsp/native_event_owner.hpp",
+        "src/native_event_owner.cpp",
+        "docs/NATIVE_EVENT_OWNER.md",
+        "reports/native_event_owner_audit.json"
       ]
     }
   ],
@@ -3972,53 +4055,92 @@
     {
       "packet": "native_pooled_resource_path",
       "worker": "material_effect_plane",
-      "state": "implementing_actual_header_normalize_and_copy_normalize",
-      "validation": null
+      "state": "integrated_complete_actual_header_original_caller_fixture_and_strict_win32_build_checked",
+      "validation": "reports/native_pooled_resource_path_audit.json"
     },
     {
       "packet": "native_render_queue_execution_next",
       "worker": "system_fog_owner_discovery",
-      "state": "read_only_actual_queue_and_command_execution_dependency_discovery",
-      "validation": null
+      "state": "reviewed_complete_native_spans_and_pinned_source_contracts",
+      "validation": "reports/native_render_queue_execution_next.json"
     },
     {
       "packet": "native_renderer_stop_pipeline_next",
       "worker": "particle_clock_lifetime",
-      "state": "read_only_actual_renderer_stop_pipeline_cache_and_guard_dependency_discovery",
-      "validation": null
+      "state": "reviewed_complete_native_spans_and_pinned_source_contracts",
+      "validation": "reports/native_renderer_stop_pipeline_next.json"
     },
     {
       "packet": "native_render_state_leaves",
       "worker": "main",
       "state": "four_complete_actual_hardware_leaves_byte_identical_and_strict_win32_build_checked",
       "validation": "reports/native_render_state_leaves_audit.json"
+    },
+    {
+      "packet": "native_render_diagnostic_labels",
+      "worker": "system_fog_owner_discovery",
+      "state": "implementing_actual_service_label_setter_and_global_reset",
+      "validation": null
+    },
+    {
+      "packet": "native_renderer_synchronization_actual",
+      "worker": "particle_clock_lifetime",
+      "state": "implementing_actual_globals_lock_and_guard_cleanup",
+      "validation": null
+    },
+    {
+      "packet": "native_render_resource_record_construction",
+      "worker": "material_effect_plane",
+      "state": "implementing_actual_sentinel_list_and_record_copy_construction_with_EH",
+      "validation": null
+    },
+    {
+      "packet": "native_event_owner",
+      "worker": "main",
+      "state": "implementing_actual_eight_byte_event_owner_and_Win32_leaves",
+      "validation": null
     }
   ],
   "next_dispatch": [
     {
-      "packet": "native_pooled_resource_path",
-      "worker": "material_effect_plane",
-      "function_addresses": [
-        "00bee690",
-        "00bee780"
-      ]
-    },
-    {
-      "packet": "native_render_queue_execution_next",
+      "packet": "native_render_diagnostic_labels",
       "worker": "system_fog_owner_discovery",
       "function_addresses": [
-        "00b1ebe0",
-        "00b1d950"
+        "00b13030",
+        "00b13510"
       ]
     },
     {
-      "packet": "native_renderer_stop_pipeline_next",
+      "packet": "native_renderer_synchronization_actual",
       "worker": "particle_clock_lifetime",
       "function_addresses": [
-        "00b28a90",
-        "00b26920",
-        "00b241c0",
-        "00b33bf0"
+        "00b33aa0",
+        "00b33ad0",
+        "00b33b00",
+        "00b21110",
+        "00b20220"
+      ]
+    },
+    {
+      "packet": "native_render_resource_record_construction",
+      "worker": "material_effect_plane",
+      "function_addresses": [
+        "004c3020",
+        "004d48a0",
+        "00b2fc60",
+        "004d0a10",
+        "004d490c"
+      ]
+    },
+    {
+      "packet": "native_event_owner",
+      "worker": "main",
+      "function_addresses": [
+        "00bd1970",
+        "00bd19b0",
+        "00bd1910",
+        "00bd17c0",
+        "00bd1960"
       ]
     }
   ],
