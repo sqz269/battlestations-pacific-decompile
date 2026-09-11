@@ -4,22 +4,25 @@
 #include "bsp/global_script_folders.hpp"
 #include "bsp/marker_classes.hpp"
 #include "bsp/panel_owner.hpp"
+#include "bsp/powerup_config.hpp"
 #include "bsp/race_config.hpp"
 #include "bsp/recon_values.hpp"
 #include "bsp/robot_config.hpp"
+#include "bsp/traffic_config.hpp"
+#include "bsp/warning_owner.hpp"
 #include "bsp/weather_config.hpp"
 
 namespace bsp {
 
 // Borrow the actual publication slots of one game. Opaque owners and the
-// effect vector stay in their native layouts; panel/weather use the canonical
-// C++ projections. This is not a replacement for the native game object ABI.
+// effect vector stay in their native layouts; the five configuration owners
+// use canonical C++ projections. This is not the native game object ABI.
 struct GlobalSubsystemState {
     void*& mission_lua_1a08;
-    void*& traffic_21d0;
+    TrafficConfig*& traffic_21d0;
     VoicePanelState*& panel_21e4;
-    void*& powerup_00f88c30;
-    void*& warnings_21e0;
+    PowerupConfigOwner*& powerup_00f88c30;
+    WarningOwner*& warnings_21e0;
     WeatherConfig*& weather_21c4;
     void* effects_vector_718c;
 };
@@ -48,14 +51,6 @@ struct GlobalSubsystemHost {
     // Dispatch its CURRENT virtual slot+0 with ECX=object and no stack args.
     virtual void effect_zero_references(void* object) = 0;
 
-    // Supplied storage is the actual native-size allocation. Return the native
-    // constructor's EAX; loaders receive it even if it is null.
-    virtual void* construct_traffic_004a43c0(void*) = 0;
-    virtual void load_traffic_0049d690(void*) = 0;
-    virtual void* construct_powerup_008edc60(void*) = 0;
-    virtual void initialize_powerup_008ecec0(void*) = 0;
-    virtual void* construct_warnings_0098a020(void*) = 0;
-    virtual void initialize_warnings_009870a0(void*) = 0;
 };
 
 struct GlobalSubsystemContext {
@@ -75,6 +70,12 @@ struct GlobalSubsystemContext {
     // Resolves current embedded game+1A0C independently of mission+1A08.
     MarkerClassContext& marker_classes;
     ReconValuesContext& recon_values;
+    const TrafficConfigAllocationWords& traffic_allocation;
+    TrafficConfigContext& traffic;
+    const PowerupOwnerAllocationWords& powerup_allocation;
+    PowerupConfigContext& powerup;
+    const WarningOwnerAllocationWords& warning_allocation;
+    WarningOwnerContext& warnings;
 };
 
 // Complete normal-flow004DC6A0, ECX=game, RET at004DC93F. Allocation and

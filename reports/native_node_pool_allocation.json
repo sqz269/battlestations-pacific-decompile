@@ -1,0 +1,116 @@
+{
+  "packet": "orch3_node_pool_allocation_o_recovery",
+  "source": "src/native_node_pool_allocation.cpp",
+  "header": "include/bsp/native_node_pool_allocation.hpp",
+  "documentation": "docs/NATIVE_NODE_POOL_ALLOCATION.md",
+  "recovery": "Adopted stopped worker uncommitted header/source. Fixed parameter named offset colliding with MSVC assembler keyword, reviewed all5 assembly bodies and completed original-byte fixture/build/evidence.",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "native_spans": [
+    {
+      "address": "00b6dd10",
+      "end_exclusive": "00b6dd53",
+      "length": 67,
+      "sha256": "63d340c79da68945b0cacf2111566420c3604c20641e015613ea98371a563b75",
+      "live_disk_equal": true,
+      "reviewed_name": "BSP_NativeNodePoolSlab_Construct",
+      "cpp_symbol": "initialize_native_node_pool_slab_00b6dd10",
+      "original_abi": "ECX actual2F44h slab; stack slab index; EAX slab; RET4"
+    },
+    {
+      "address": "00b6eb00",
+      "end_exclusive": "00b6ec3c",
+      "length": 316,
+      "sha256": "ae619831d3e014969f7ac6091e534b4c8e74f4ff49a672e073ee025e91d1efa1",
+      "live_disk_equal": true,
+      "reviewed_name": "BSP_NativeNodePool_AllocateRawSlot",
+      "cpp_symbol": "allocate_native_node_pool_slot_00b6eb00",
+      "original_abi": "ECX actual initialized38h owner; EAX raw178h slot; RET"
+    },
+    {
+      "address": "00b6ed70",
+      "end_exclusive": "00b6ed7a",
+      "length": 10,
+      "sha256": "2c5ae3bfd95395885396ad6bec14101263355aed97793d564b3bbedc036c00c8",
+      "live_disk_equal": true,
+      "reviewed_name": "BSP_NativeNode_AllocateRawSlot",
+      "cpp_symbol": "allocate_native_node_00b6ed70",
+      "original_abi": "Incoming ECX ignored; MOV ECX,0108FF58; tailJMP B6EB00; EAX raw slot"
+    },
+    {
+      "address": "00b6e490",
+      "end_exclusive": "00b6e4fc",
+      "length": 108,
+      "sha256": "296d11172ef3d143bd60b2b24ebc22fe1a2827e5f012392429efdc8c67b6dba0",
+      "live_disk_equal": true,
+      "reviewed_name": "BSP_NativeNodePool_ReturnRawSlot",
+      "cpp_symbol": "return_native_node_pool_slot_00b6e490",
+      "original_abi": "ECX actual initialized38h owner; stack raw slot; RET4"
+    },
+    {
+      "address": "00b6e670",
+      "end_exclusive": "00b6e67c",
+      "length": 12,
+      "sha256": "c374f716bf880b7975b61e19d460f1ce99f84dfc6962c039c5deba0a8cdd2765",
+      "live_disk_equal": true,
+      "reviewed_name": "BSP_NativeNode_ReturnRawSlot",
+      "cpp_symbol": "return_native_node_00b6e670",
+      "original_abi": "ECX raw slot; select0108FF58; CALL B6E490; RET"
+    }
+  ],
+  "physical_storage": {
+    "owner_bytes": "0x38",
+    "actual_global": "0108ff58",
+    "critical_section": "0x0c",
+    "depth": "0x24",
+    "table": "0x28",
+    "count": "0x2c",
+    "capacity": "0x30",
+    "earliest": "0x34",
+    "slab_bytes": "0x2f44",
+    "slot_count": 32,
+    "slot_bytes": "0x178",
+    "payload_bytes": "0x174",
+    "free_indices": "0x2f00",
+    "free_count_word": "0x2f40"
+  },
+  "flow": "reports/native_node_pool_flow_o.json: returning-free ADD ESP4 restored; zero remaining call gaps. B6EBF9 seven-byte alignment after JMP left untouched.",
+  "validation": {
+    "strict_build": "PASS scripts/build.ps1; local/effect-node-o-build.log",
+    "existing_ctests": "2/2 pass",
+    "fixture": "PASS local/node-pool-o-fixture.log; source local/node_pool_probe_o.cpp",
+    "original_byte_span_verification": "local/node-pool-byte-evidence-o.json",
+    "fixture_cases": [
+      "complete slab initialization byte equality and preserved payload/padding",
+      "1057allocations with tablecapacity32to66",
+      "earliest scan skips31full slabs",
+      "lower-earliest and LIFO reuse",
+      "ignored incoming wrapper ECX",
+      "both raw return entries",
+      "nested OS lock and tracked depth"
+    ],
+    "rebindings": [
+      "B6EB2B canonical object allocate",
+      "B6EB3D copied B6DD10",
+      "B6EB5F canonical pointer-table allocate",
+      "B6EB91 canonical ordinary free",
+      "B6EB0C/B6E49C EnterCriticalSection import cells",
+      "B6EC1D/B6EC31/B6E4F1 LeaveCriticalSection import cells",
+      "B6ED71/B6E672 actual fixture pool immediates",
+      "B6ED75/B6E676 copied raw allocate/return"
+    ],
+    "allocation_failure_executed": false,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false,
+    "permanent_tests_added": 0
+  },
+  "remaining": [
+    "Actual B6E980 pool owner construction/B6E3D0 destruction; worker CD7D10/CE0E20 static-chain observations require live revalidation before implementation",
+    "Actual B6F5A0 physical174h node construction and retained terminal/scene binding",
+    "No fake or zeroed production pool fallback",
+    "Native CRT/SEH policy and malformed-memory fault behavior",
+    "Full point-effect constructor and gameplay"
+  ],
+  "ghidra_annotation_verification": "All5 names saved/read back with prior comments preserved; reports/effect_o_integration.json includes complete mutation audit; all5 exports refreshed."
+}
