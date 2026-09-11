@@ -298,3 +298,14 @@ the later meaning of manager `+6Ch` still needs its own consumer evidence.
 The entry latches and external call order are unchanged. Combined validation
 is recorded in `reports/orch3_input_audio_session_integration.json`; these
 host interfaces are not native ABI replacements or game-validated execution.
+
+## Correction from docs/SESSION_TEARDOWN_LATCHES.md
+
+`0076d0f0` supplies a concrete writer of `game+624h`: the nonzero byte payload
+of message type `13h` selects value 2, returns without showing the closed-game
+prompt, and preserves `+1EE4h`. The zero-payload branch shows the prompt and then
+raises that latch. Broadcast `007728b0` likewise only raises it for a zero
+payload. `007727a0` and `00772990` raise it after the end-scene routes, including
+normal end of scene; the legacy C++ name `session_dropped` does not imply every
+write denotes a transport failure. The raw meaning of `game+624h` beyond its
+observed writes and branch uses still needs evidence.

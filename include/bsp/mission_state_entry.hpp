@@ -92,9 +92,10 @@ struct MissionOneShots {
     // 004e4717 to choose the front-end shell over the multiplayer menu, after
     // game+1FE4h itself has been torn down.
     bool session_was_networked{false};
-    // +1EE4h. Raised by the network session teardown paths 0076d0e0, 007727a0,
-    // 007728b0 and 00772990; the drain reads it at 004e4932 and pushes the
-    // multiplayer menu notice interface 4.
+    // +1EE4h. Session end notification, including normal EndScene. 0076d0e0
+    // and 007728b0 raise it only for a zero message payload; 007727a0 and
+    // 00772990 raise it unconditionally. Legacy name retained. The drain
+    // reads it at 004e4932 and pushes multiplayer notice interface 4.
     bool session_dropped{false};
     // +1EE5h. Raised by 004d87b0 with the ingame.multi_notenoughplayer
     // warning, cleared by the session restart paths 0076fad0 and 00772610,
