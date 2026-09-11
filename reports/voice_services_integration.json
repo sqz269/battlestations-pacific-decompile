@@ -43,12 +43,39 @@
     "native_audio": false,
     "subtitle_visual": false,
     "gameplay": false,
-    "native_abi": false
+    "native_abi": false,
+    "tested_commit": "19b98928c2bf628bad5602d682961327f4906537",
+    "post_main_merge_build": "Win32 Release, both CTests passed",
+    "integration_log": "local/voice_services_integrate.log"
   },
   "ghidra": {
     "flow_repair": "reports/voice_services_flow_repair.json",
     "gap": "00a7c14f..00a7c161",
-    "annotation": "pending final scoped annotation/readback"
+    "annotation": "16 scoped names/comments applied, project saved, readback verified",
+    "prior_annotations_preserved": true,
+    "annotation_log": "local/voice_services_annotations.json",
+    "source_annotation_log": "J:/PROG/battlestations-pacific-decompile/local/ghidra-annotations-20260911T054111Z.json",
+    "readback": "local/voice_services_comments.json",
+    "addresses": [
+      "005b9050",
+      "00702cc0",
+      "005b82c0",
+      "005b7fc0",
+      "00a7b0a0",
+      "00a7e490",
+      "00a798c0",
+      "0054d4c0",
+      "00a7d5c0",
+      "00a7c080",
+      "005b8c30",
+      "00449af0",
+      "005b8510",
+      "005b91e0",
+      "005babb0",
+      "005b9760"
+    ],
+    "exports_refreshed": 16,
+    "missing_function_starts": 0
   },
   "next_candidates": {
     "line_owner_update": "005bc640",

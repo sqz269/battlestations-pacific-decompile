@@ -108,6 +108,46 @@ bool read_descriptor(lua_State* state, FontDescriptor& output, std::string& erro
 }
 }
 
+bool visit_font_descriptors_lua(lua_State* state, const FontDescriptorVisitor& visitor,
+    std::string& error) {
+    error.clear();
+    if (!state || !visitor) {
+        error = "Font descriptor conversion requires a live state and visitor.";
+        return false;
+    }
+    struct RestoreStack {
+        lua_State* state;
+        int top;
+        ~RestoreStack() { lua_settop(state, top); }
+    } restore{state, lua_gettop(state)};
+    if (!ordinary_table(state, LUA_GLOBALSINDEX)) {
+        error = "Font script global environment must be an ordinary table.";
+        return false;
+    }
+    field(state, LUA_GLOBALSINDEX, "Fonts");
+    const int fonts = lua_gettop(state);
+    if (!ordinary_table(state, fonts)) {
+        error = "Descriptor did not produce an ordinary Fonts table.";
+        return false;
+    }
+    lua_pushnil(state);
+    while (lua_next(state, fonts)) {
+        FontDescriptor font;
+        // Coerce a copy: changing lua_next's numeric key would corrupt iteration.
+        lua_pushvalue(state, -2);
+        const bool named = required_string(state, -1, font.name);
+        lua_pop(state, 1);
+        if (!named) {
+            error = "Font names require string or numeric table keys.";
+            return false;
+        }
+        if (!read_descriptor(state, font, error) || !visitor(std::move(font), error))
+            return false;
+        lua_pop(state, 1);
+    }
+    return true;
+}
+
 bool load_font_registry_lua(const FontScriptResolver& resolver,
     const std::string& descriptor, bool x360comp,
     const std::optional<std::string>& region, FontRegistry& output,
@@ -135,32 +175,12 @@ bool load_font_registry_lua(const FontScriptResolver& resolver,
         error = context.error;
         return false;
     }
-    if (!ordinary_table(state, LUA_GLOBALSINDEX)) {
-        error = "Font script global environment must be an ordinary table.";
-        return false;
-    }
-    field(state, LUA_GLOBALSINDEX, "Fonts");
-    const int fonts = lua_gettop(state);
-    if (!ordinary_table(state, fonts)) {
-        error = "Descriptor did not produce an ordinary Fonts table.";
-        return false;
-    }
     FontRegistry loaded = output;
-    lua_pushnil(state);
-    while (lua_next(state, fonts)) {
-        FontDescriptor font;
-        // Convert a copy so number-to-string coercion does not corrupt lua_next's key.
-        lua_pushvalue(state, -2);
-        const bool named = required_string(state, -1, font.name);
-        lua_pop(state, 1);
-        if (!named) {
-            error = "Font names require string or numeric table keys.";
-            return false;
-        }
-        if (!read_descriptor(state, font, error)) return false;
-        loaded.fonts.push_back(std::move(font));
-        lua_pop(state, 1);
-    }
+    if (!visit_font_descriptors_lua(state,
+        [&](FontDescriptor&& font, std::string&) {
+            loaded.fonts.push_back(std::move(font));
+            return true;
+        }, error)) return false;
     loaded.executed_paths.insert(loaded.executed_paths.end(),
         context.paths.begin(), context.paths.end());
     output = std::move(loaded);

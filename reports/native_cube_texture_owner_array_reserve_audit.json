@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_cube_texture_owner_array_reserve1",
-  "status": "complete_actual_header_implementation_strict_Win32_build_and_full_original_instruction_fixture_passed",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
   "generated_utc": "2026-09-11T05:26:28.249628+00:00",
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910",
   "branch": "agent/native-cube-texture-owner-array-reserve-20260910",
@@ -317,7 +317,8 @@
       "MOV [ESI+8],EDI",
       "POP EBX"
     ],
-    "current_saved_listing_missing": true
+    "current_saved_listing_missing": false,
+    "restored_and_saved": true
   },
   "allocation_contract": {
     "native_allocate_entry": "00bf55be",
@@ -1102,5 +1103,744 @@
     "No cube factory/device recreation completion or game validation follows from this helper."
   ],
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "primary_integration": {
+    "verification": {
+      "matched_words": 426,
+      "records": [
+        {
+          "tag": "10000000",
+          "phase": 1,
+          "table_identity": 1,
+          "count": 3,
+          "capacity": 3,
+          "allocation_calls": 0,
+          "free_calls": 0,
+          "old_live": true,
+          "old_table_words": [
+            285212672,
+            285212673,
+            285212674
+          ],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": []
+        },
+        {
+          "tag": "a0000000",
+          "phase": 1,
+          "table_identity": 1,
+          "count": 3,
+          "capacity": 3,
+          "allocation_calls": 0,
+          "free_calls": 0,
+          "old_live": true,
+          "old_table_words": [
+            285212672,
+            285212673,
+            285212674
+          ],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": [],
+          "requested_bytes": 24
+        },
+        {
+          "tag": "a1000000",
+          "phase": 1,
+          "table_identity": 1,
+          "count": 3,
+          "capacity": 3,
+          "allocation_calls": 1,
+          "free_calls": 0,
+          "old_live": true,
+          "old_table_words": [
+            285212672,
+            285212673,
+            285212674
+          ],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": [
+            2812782503,
+            2812782503,
+            2812782503,
+            2812782503,
+            2812782503,
+            2812782503
+          ]
+        },
+        {
+          "tag": "f0000000",
+          "phase": 1,
+          "table_identity": 1,
+          "count": 3,
+          "capacity": 3,
+          "allocation_calls": 1,
+          "free_calls": 0,
+          "old_live": true,
+          "old_table_words": [
+            285212672,
+            285212673,
+            285212674
+          ],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": [
+            285212672,
+            285212673,
+            285212674,
+            2812782503,
+            2812782503,
+            2812782503
+          ],
+          "freed_pointer_identity": 1
+        },
+        {
+          "tag": "f1000000",
+          "phase": 1,
+          "table_identity": 1,
+          "count": 3,
+          "capacity": 3,
+          "allocation_calls": 1,
+          "free_calls": 1,
+          "old_live": false,
+          "old_table_words": [],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": [
+            285212672,
+            285212673,
+            285212674,
+            2812782503,
+            2812782503,
+            2812782503
+          ]
+        },
+        {
+          "tag": "20000000",
+          "phase": 1,
+          "table_identity": 3,
+          "count": 3,
+          "capacity": 6,
+          "allocation_calls": 1,
+          "free_calls": 1,
+          "old_live": false,
+          "old_table_words": [],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": [
+            285212672,
+            285212673,
+            285212674,
+            2812782503,
+            2812782503,
+            2812782503
+          ]
+        },
+        {
+          "tag": "10000000",
+          "phase": 2,
+          "table_identity": 1,
+          "count": 3,
+          "capacity": 3,
+          "allocation_calls": 0,
+          "free_calls": 0,
+          "old_live": true,
+          "old_table_words": [
+            285212672,
+            285212673,
+            285212674
+          ],
+          "alternate_live": true,
+          "alternate_table_words": [
+            570425344,
+            570425345,
+            570425346
+          ],
+          "replacement_words": []
+        },
+        {
+          "tag": "a0000000",
+          "phase": 2,
+          "table_identity": 1,
+          "count": 3,
+          "capacity": 3,
+          "allocation_calls": 0,
+          "free_calls": 0,
+          "old_live": true,
+          "old_table_words": [
+            285212672,
+            285212673,
+            285212674
+          ],
+          "alternate_live": true,
+          "alternate_table_words": [
+            570425344,
+            570425345,
+            570425346
+          ],
+          "replacement_words": [],
+          "requested_bytes": 24
+        },
+        {
+          "tag": "a1000000",
+          "phase": 2,
+          "table_identity": 2,
+          "count": 2,
+          "capacity": 41,
+          "allocation_calls": 1,
+          "free_calls": 0,
+          "old_live": true,
+          "old_table_words": [
+            285212672,
+            285212673,
+            285212674
+          ],
+          "alternate_live": true,
+          "alternate_table_words": [
+            570425344,
+            570425345,
+            570425346
+          ],
+          "replacement_words": [
+            2812782503,
+            2812782503,
+            2812782503,
+            2812782503,
+            2812782503,
+            2812782503
+          ]
+        },
+        {
+          "tag": "f0000000",
+          "phase": 2,
+          "table_identity": 2,
+          "count": 2,
+          "capacity": 41,
+          "allocation_calls": 1,
+          "free_calls": 0,
+          "old_live": true,
+          "old_table_words": [
+            285212672,
+            285212673,
+            285212674
+          ],
+          "alternate_live": true,
+          "alternate_table_words": [
+            570425344,
+            570425345,
+            570425346
+          ],
+          "replacement_words": [
+            570425344,
+            570425345,
+            2812782503,
+            2812782503,
+            2812782503,
+            2812782503
+          ],
+          "freed_pointer_identity": 2
+        },
+        {
+          "tag": "f1000000",
+          "phase": 2,
+          "table_identity": 1,
+          "count": 4,
+          "capacity": 17,
+          "allocation_calls": 1,
+          "free_calls": 1,
+          "old_live": true,
+          "old_table_words": [
+            285212672,
+            285212673,
+            285212674
+          ],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": [
+            570425344,
+            570425345,
+            2812782503,
+            2812782503,
+            2812782503,
+            2812782503
+          ]
+        },
+        {
+          "tag": "20000000",
+          "phase": 2,
+          "table_identity": 3,
+          "count": 4,
+          "capacity": 6,
+          "allocation_calls": 1,
+          "free_calls": 1,
+          "old_live": true,
+          "old_table_words": [
+            285212672,
+            285212673,
+            285212674
+          ],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": [
+            570425344,
+            570425345,
+            2812782503,
+            2812782503,
+            2812782503,
+            2812782503
+          ]
+        },
+        {
+          "tag": "10000000",
+          "phase": 3,
+          "table_identity": 1,
+          "count": 4294967295,
+          "capacity": 4294967295,
+          "allocation_calls": 0,
+          "free_calls": 0,
+          "old_live": true,
+          "old_table_words": [
+            285212672,
+            285212673,
+            285212674
+          ],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": []
+        },
+        {
+          "tag": "a0000000",
+          "phase": 3,
+          "table_identity": 1,
+          "count": 4294967295,
+          "capacity": 4294967295,
+          "allocation_calls": 0,
+          "free_calls": 0,
+          "old_live": true,
+          "old_table_words": [
+            285212672,
+            285212673,
+            285212674
+          ],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": [],
+          "requested_bytes": 4
+        },
+        {
+          "tag": "a1000000",
+          "phase": 3,
+          "table_identity": 1,
+          "count": 4294967295,
+          "capacity": 4294967295,
+          "allocation_calls": 1,
+          "free_calls": 0,
+          "old_live": true,
+          "old_table_words": [
+            285212672,
+            285212673,
+            285212674
+          ],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": [
+            2812782503
+          ]
+        },
+        {
+          "tag": "f0000000",
+          "phase": 3,
+          "table_identity": 1,
+          "count": 4294967295,
+          "capacity": 4294967295,
+          "allocation_calls": 1,
+          "free_calls": 0,
+          "old_live": true,
+          "old_table_words": [
+            285212672,
+            285212673,
+            285212674
+          ],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": [
+            2812782503
+          ],
+          "freed_pointer_identity": 1
+        },
+        {
+          "tag": "f1000000",
+          "phase": 3,
+          "table_identity": 1,
+          "count": 4294967295,
+          "capacity": 4294967295,
+          "allocation_calls": 1,
+          "free_calls": 1,
+          "old_live": false,
+          "old_table_words": [],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": [
+            2812782503
+          ]
+        },
+        {
+          "tag": "20000000",
+          "phase": 3,
+          "table_identity": 3,
+          "count": 4294967295,
+          "capacity": 1,
+          "allocation_calls": 1,
+          "free_calls": 1,
+          "old_live": false,
+          "old_table_words": [],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": [
+            2812782503
+          ]
+        },
+        {
+          "tag": "10000000",
+          "phase": 4,
+          "table_identity": 3735928559,
+          "count": 2147483647,
+          "capacity": 10,
+          "allocation_calls": 0,
+          "free_calls": 0,
+          "old_live": false,
+          "old_table_words": [],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": []
+        },
+        {
+          "tag": "20000000",
+          "phase": 4,
+          "table_identity": 3735928559,
+          "count": 2147483647,
+          "capacity": 10,
+          "allocation_calls": 0,
+          "free_calls": 0,
+          "old_live": false,
+          "old_table_words": [],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": []
+        },
+        {
+          "tag": "10000000",
+          "phase": 5,
+          "table_identity": 0,
+          "count": 0,
+          "capacity": 0,
+          "allocation_calls": 0,
+          "free_calls": 0,
+          "old_live": false,
+          "old_table_words": [],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": []
+        },
+        {
+          "tag": "a0000000",
+          "phase": 5,
+          "table_identity": 0,
+          "count": 0,
+          "capacity": 0,
+          "allocation_calls": 0,
+          "free_calls": 0,
+          "old_live": false,
+          "old_table_words": [],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": [],
+          "requested_bytes": 0
+        },
+        {
+          "tag": "a1000000",
+          "phase": 5,
+          "table_identity": 0,
+          "count": 0,
+          "capacity": 0,
+          "allocation_calls": 1,
+          "free_calls": 0,
+          "old_live": false,
+          "old_table_words": [],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": []
+        },
+        {
+          "tag": "f0000000",
+          "phase": 5,
+          "table_identity": 0,
+          "count": 0,
+          "capacity": 0,
+          "allocation_calls": 1,
+          "free_calls": 0,
+          "old_live": false,
+          "old_table_words": [],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": [],
+          "freed_pointer_identity": 0
+        },
+        {
+          "tag": "f1000000",
+          "phase": 5,
+          "table_identity": 0,
+          "count": 0,
+          "capacity": 0,
+          "allocation_calls": 1,
+          "free_calls": 1,
+          "old_live": false,
+          "old_table_words": [],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": []
+        },
+        {
+          "tag": "20000000",
+          "phase": 5,
+          "table_identity": 3,
+          "count": 0,
+          "capacity": 1073741824,
+          "allocation_calls": 1,
+          "free_calls": 1,
+          "old_live": false,
+          "old_table_words": [],
+          "alternate_live": false,
+          "alternate_table_words": [],
+          "replacement_words": []
+        }
+      ],
+      "postimages": [
+        {
+          "address": 7561200,
+          "length": 95,
+          "offset": 3366896,
+          "hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e8a9f54b008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e848094c0083c404891e897e085b5f5ec20400",
+          "sha256": "9b09d6402eefec772d18c71e9abf5feda1c7ffd1d231a3ce57c7140171282699",
+          "fresh_live_Ghidra_matches_installed_PE": true,
+          "postimage_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e8a9f54b008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e848094c0083c404891e897e085b5f5ec20400",
+          "postimage_sha256": "9b09d6402eefec772d18c71e9abf5feda1c7ffd1d231a3ce57c7140171282699",
+          "only_declared_changes": true
+        },
+        {
+          "address": 12539326,
+          "length": 5,
+          "offset": 8345022,
+          "hex": "e958120000",
+          "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+          "fresh_live_Ghidra_matches_installed_PE": true,
+          "postimage_hex": "e93dceb92e",
+          "postimage_sha256": "43acc86a54ed8d96629347a48603149d9c4a0b9101952e44a175184017a8a420",
+          "only_declared_changes": true
+        },
+        {
+          "address": 12544393,
+          "length": 5,
+          "offset": 8350089,
+          "hex": "e91efcffff",
+          "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+          "fresh_live_Ghidra_matches_installed_PE": true,
+          "postimage_hex": "e962c5b92e",
+          "postimage_sha256": "80a2ea3e83c32bc7458b9c47ca1537c3aa60569714da19f1252fa863f2ace03a",
+          "only_declared_changes": true
+        }
+      ],
+      "providers": [
+        {
+          "symbol": "reserve_native_cube_texture_owner_array_00735ff0",
+          "provider": "bsp_core.linked:native_cube_texture_owner_array_reserve.obj",
+          "exact_map_line": " 0001:00003990       ?reserve_native_cube_texture_owner_array_00735ff0@bsp@@YAXPAXH@Z 30004990 f   bsp_core.linked:native_cube_texture_owner_array_reserve.obj"
+        },
+        {
+          "symbol": "singleton_lifetime_allocate",
+          "provider": "bsp_core.linked:singleton_lifetime.obj",
+          "exact_map_line": " 0001:00003a40       ?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z 30004a40 f   bsp_core.linked:singleton_lifetime.obj"
+        },
+        {
+          "symbol": "singleton_lifetime_free",
+          "provider": "bsp_core.linked:singleton_lifetime.obj",
+          "exact_map_line": " 0001:00003aa0       ?singleton_lifetime_free@bsp@@YAXPAX@Z 30004aa0 f   bsp_core.linked:singleton_lifetime.obj"
+        }
+      ],
+      "CRT_modules": [
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+          "bytes": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "service": "malloc",
+          "reported_x86_module_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+          "physical_x86_PE014c_verified": true
+        },
+        {
+          "path": "C:\\WINDOWS\\SysWOW64\\ucrtbase.dll",
+          "bytes": 1114240,
+          "sha256": "60c5a497b52de80a3a0677564270dbea7e486086637debd567b4dffb28584c1b",
+          "service": "free",
+          "reported_x86_module_path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+          "physical_x86_PE014c_verified": true
+        }
+      ],
+      "preparation": {
+        "worker_base_path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-array-reserve-20260910",
+        "worker_pins_verified": 28,
+        "fresh_spans": [
+          {
+            "address": "00735ff0",
+            "length": 95,
+            "sha256": "9b09d6402eefec772d18c71e9abf5feda1c7ffd1d231a3ce57c7140171282699",
+            "fresh_live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf55be",
+            "length": 5,
+            "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+            "fresh_live_PE_and_worker_preimage_match": true
+          },
+          {
+            "address": "00bf6989",
+            "length": 5,
+            "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+            "fresh_live_PE_and_worker_preimage_match": true
+          }
+        ]
+      },
+      "artifact_pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-owner-array-primary-check\\array_reserve_diff.exe",
+          "bytes": 34816,
+          "sha256": "41e06415628d68b4c88bc88f62c949eba7ce1aabc8ea2736fc2a9dccf78d4972"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-owner-array-primary-check\\array_reserve_diff.map",
+          "bytes": 69487,
+          "sha256": "345716e1fa68a33a3f37db896cc6d0218ed13b7ebd8d25426d36de76e9069ce4"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-owner-array-primary-check\\bridge_targets.txt",
+          "bytes": 40,
+          "sha256": "4b487316faf723ebbafa91248c6977acf2814ecfeac455118f5dfef6d2c6ec06"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-owner-array-primary-check\\bsp_core.linked.lib",
+          "bytes": 26195118,
+          "sha256": "e9c69bcef040ab9090081dfb0c72d3c4587f086476c31e872470c84bd7377934"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-owner-array-primary-check\\build_trim.cmd",
+          "bytes": 897,
+          "sha256": "3bce7bba863fa199d24e471185d9d4d1b6439cfffa9eb09e459c2c4b5d940273"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-owner-array-primary-check\\fixture.obj",
+          "bytes": 142518,
+          "sha256": "725935945411dbe20dda7063f89448f894e79d359fb91eb8c559c27dd1e6f1bb"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-owner-array-primary-check\\free_module.txt",
+          "bytes": 34,
+          "sha256": "8a8c1ee835e2f588d813f9f07c7db10632aa3eb096e5801bd7d3d81dd1e1711f"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-owner-array-primary-check\\host_trace.bin",
+          "bytes": 1704,
+          "sha256": "2b251409af24a6b35290af6ce15a245ea3d2ee8cbe82cfb8a425da454d20c92b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-owner-array-primary-check\\malloc_module.txt",
+          "bytes": 34,
+          "sha256": "8a8c1ee835e2f588d813f9f07c7db10632aa3eb096e5801bd7d3d81dd1e1711f"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-owner-array-primary-check\\native_trace.bin",
+          "bytes": 1704,
+          "sha256": "2b251409af24a6b35290af6ce15a245ea3d2ee8cbe82cfb8a425da454d20c92b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-owner-array-primary-check\\patched_spans.txt",
+          "bytes": 253,
+          "sha256": "6fff2e40e5f28cd2730df7214fb5d5bca70d779fe1cc3f1fc7db55b4318c5f66"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-owner-array-primary-check\\primary_verified.json",
+          "bytes": 14869,
+          "sha256": "0aa8a0c41cae5039e8e375ecc34c741f371697d8aa3189ddb4f4b860799b9864"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-owner-array-primary-check\\verify_primary.py",
+          "bytes": 4591,
+          "sha256": "9ec15fb12a903f2db3af7aab6c83b72a63484ddb46db26b81641b000ae00ce1f"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\build_cube_owner_array_primary_check.ps1",
+          "bytes": 1509,
+          "sha256": "6cc70d66a6297bcd295d40acaea1c4d6391f606e1ae461655612c9de5bace326"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_cube_owner_array_primary_fixture.txt",
+          "bytes": 188,
+          "sha256": "1df93f625f4fc6c4d80b6f2f1c0018bfea55b89db77ad3510be8d99c1d6dd132"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_cube_texture_owner_array_primary_build.txt",
+          "bytes": 1660,
+          "sha256": "a6078985d481261bfa0d1dc19dc193933fb0f041c72aa3d17a53e8b87a730419"
+        }
+      ]
+    },
+    "strict_build_and_two_existing_tests": true,
+    "annotations_applied": true,
+    "ledger_registered": true,
+    "definition_and_save_report": {
+      "path": "reports/native_cube_owner_array_defined_function.json",
+      "bytes": 5655,
+      "sha256": "1250096b7e62efe9dffa4895950a405f041ca1ebc9190fa8943e865e15239219"
+    }
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "saved_annotations": {
+    "path": "reports/native_cube_base_array_annotations.json",
+    "bytes": 5606,
+    "sha256": "b6adb5164497085a303b79209b803b92cc9364ed25e6b7a9459a1f942ade1f1b",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00735ff0",
+      "path": "exports/bsp/functions/00735ff0/decompiled.c",
+      "bytes": 2357,
+      "sha256": "3331699aea042b2c8165d8a3df5006d2eeaa06bfed25da89ade0f0f258509524"
+    }
+  ],
+  "closure_utc": "2026-09-11T05:43:38.988510+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00735ff0",
+      "name": "reserve_native_cube_texture_owner_array_00735ff0",
+      "cpp_symbol": "reserve_native_cube_texture_owner_array_00735ff0",
+      "source": "src/native_cube_texture_owner_array_reserve.cpp",
+      "native_end_exclusive": "0073604f",
+      "original_abi": "ECX actual12-byte table/count/capacity header; stack signed requested capacity; RET4; no semantic result",
+      "evidence": "reports/native_cube_texture_owner_array_reserve_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_CUBE_TEXTURE_OWNER_ARRAY_RESERVE.md",
+    "bytes": 7091,
+    "sha256": "a2f98b9d363871b160e458deefa0132a6da73ebbf0fa6dbc4bb9c6b162db3cf5"
+  }
 }

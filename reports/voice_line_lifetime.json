@@ -1,0 +1,68 @@
+{
+  "packet": "orch4_voice_line_lifetime_c",
+  "state": "full_recovered_sequences_with_canonical_allocator_GUI_serializer_boundaries",
+  "functions": [
+    {
+      "address": "005b9160",
+      "proposed_name": "BSP_VoiceLine_Destroy",
+      "name_status": "hypothesis_not_recovered_symbol",
+      "implementation": "destroy_voice_line_005b9160",
+      "native_abi": "ECX=line; RET",
+      "last_instruction": "005b91da",
+      "last_instruction_length": 1,
+      "inclusive_last_byte": "005b91da",
+      "byte_length": 123,
+      "instructions_including_verified_gap": 41
+    },
+    {
+      "address": "005b9b80",
+      "proposed_name": "CG_scalar_deleting_dtor_005b9b80",
+      "name_status": "existing_correct_compiler_identity_preserved",
+      "implementation": "scalar_delete_voice_line_005b9b80",
+      "native_abi": "ECX=line; flags on stack; RET4; EAX=original pointer even after free",
+      "last_instruction": "005b9b9b",
+      "last_instruction_length": 3,
+      "inclusive_last_byte": "005b9b9d",
+      "byte_length": 30,
+      "instructions_including_verified_gap": 11
+    },
+    {
+      "address": "005baf30",
+      "proposed_name": "BSP_VoiceLine_ConstructFromArchive",
+      "name_status": "hypothesis_not_recovered_symbol",
+      "implementation": "deserialize_voice_line_005baf30",
+      "native_abi": "ECX=fresh38h line; reader pointer stack; RET4; EAX=this",
+      "last_instruction": "005bb01c",
+      "last_instruction_length": 3,
+      "inclusive_last_byte": "005bb01e",
+      "byte_length": 239,
+      "instructions": 77
+    }
+  ],
+  "sources": ["include/bsp/voice_line_lifetime.hpp", "src/voice_line_lifetime.cpp"],
+  "documentation": "docs/VOICE_LINE_LIFETIME.md",
+  "initial_flow_gaps": [
+    {"address": "005b91be", "bytes": "83c404", "instruction": "ADD ESP,4", "length": 3},
+    {"address": "005b9b95", "bytes": "83c404", "instruction": "ADD ESP,4", "length": 3}
+  ],
+  "ghidra_mutations": false,
+  "ghidra_repair_owner": "parent_integrator",
+  "missing_game_function_starts": [],
+  "canonical_bindings": ["VoiceLine", "VoiceClips", "GuiWidgetTransform", "GuiLuaReader", "GuiLuaHandleResolver", "NativeString", "display_voice_subtitles_005b8510"],
+  "remaining_calls": ["widget_vslot04_deleting_destructor", "current_manager_accessor", "matching_projected_line_allocation_release"],
+  "validation": {
+    "build": "Release MSVC Win32 scripts/build.ps1 passed",
+    "existing_checks": "reconstructed_math CTest 1/1 passed; does not cover new lifetime sequence",
+    "ignored_lifetime_fixture": "local/voice_line_lifetime_fixture.cpp compiled with /W4 /WX and passed: callback mutation, current manager dirty timing, throwing callback clip cleanup, scalar delete flags2/3 and null-widget branch",
+    "archive_constructor_fixture": false,
+    "new_repository_tests": 0,
+    "native_differential": false,
+    "game_visual": false
+  },
+  "limits": [
+    "Typed projections and C++ cleanup are not original binary layouts, calling conventions or native SEH.",
+    "Preserved shortcut fallback is this reconstruction's stack field-pair address, not an original-image address.",
+    "Follow-up confirms native00BD63E5..00BD63EE scans to NUL; existing live String conversion is faithful here and evaluated conversion is corrected by the reader packet.",
+    "Reader follow-up forwards the actual borrowed GuiLuaRef through resolve_by_live_table; actual game Handle resolver behavior remains required and archive construction remains without fixture validation."
+  ]
+}

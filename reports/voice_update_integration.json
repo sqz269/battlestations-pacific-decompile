@@ -1,0 +1,93 @@
+{
+  "packet": "orch4_voice_update_integration",
+  "date_utc": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "worker_commits": {
+    "scheduled": "66c85082ccf42b95618e554b59a4be01f8c9fd4c",
+    "lifetime": "5f988b2",
+    "manager": "94ebe6e7434ceebef3f7dc199963ff1fc4e337a9",
+    "reader": "2414fdbd656ce99e389015586f53f6ca9de5a3a1"
+  },
+  "implemented_new_functions": 13,
+  "corrected_existing": [
+    "005b71d0",
+    "00bd63b0"
+  ],
+  "required_panel_services": [
+    "004527f0",
+    "0044ec00"
+  ],
+  "review": [
+    "Two independent complete-listing reviews of005BBF10/005B6710.",
+    "Pending record and attached list count field identities replace provisional flag names.",
+    "Canonical line destructor direct binding; real virtual dispatch for other vtables.",
+    "Native String NUL-scan verified; real Lua table identity must reach resolver."
+  ],
+  "flow_repairs": [
+    "reports/voice_update_lifetime_flow_repair.json",
+    "reports/voice_update_manager_flow_repair.json"
+  ],
+  "retired_tags": "reports/voice_inventory_tag_retirement.json",
+  "validation": {
+    "win32_build": "passed initial integrated build",
+    "ctest": "reconstructed_math and native_math_differential passed2/2",
+    "final_build": "MSVC Win32 Release passed; reconstructed_math and native_math_differential2/2 passed",
+    "manager_fixture": "local/voice_update_manager_fixture.log passed: canonical concrete and noncanonical virtual destruction, vector release and cleanup ordering",
+    "scheduled_fixture": "local/voice_update_scheduled_fixture.log passed against integrated library",
+    "lifetime_fixture": "local/voice_update_lifetime_fixture.log passed: callback mutation/exception cleanup and scalar flags",
+    "sequence_fixture": "local/voice_update_sequence_fixture.log passed: quiet-NaN terminal timers and current panel identity after log callback",
+    "reader_fixture": "local/voice_update_reader_fixture.log passed: real Lua5.1.1 two table identities, normal token release and both String NUL paths",
+    "new_permanent_tests": 0,
+    "gameplay": false,
+    "audio": false,
+    "rendered_ui": false,
+    "native_abi": false,
+    "tested_commit": "6f8c72631f694612dcad14dbb8144c88b683a5f2",
+    "library_sha256": "32edb8093003d575fc7ad18fc06835d00b580bed79782294e784729937df7602",
+    "final_build_log": "local/voice_update_final_build.log"
+  },
+  "ghidra": {
+    "annotation": "15 reviewed names/evidence applied and saved to existing BSP project; prior comments preserved and read back",
+    "addresses": [
+      "005b6710",
+      "005b71d0",
+      "005b7290",
+      "005b9160",
+      "005b9300",
+      "005b93d0",
+      "005b9420",
+      "005b9b80",
+      "005baf30",
+      "005bbf10",
+      "005bc640",
+      "00701870",
+      "00702130",
+      "007026f0",
+      "00bd63b0"
+    ],
+    "prior_state_logs": [
+      "local/ghidra-annotations-20260911T061751Z.json",
+      "local/ghidra-annotations-20260911T061954Z.json"
+    ],
+    "readback": "local/voice_update_comments.json",
+    "refreshed_exports": "local/voice_update_exports.log",
+    "flow_repairs": "5 false _free callsite overrides repaired; correct _free identity retained"
+  },
+  "next_candidates": [
+    "004527f0 panel state machine",
+    "0044ec00 signed-key palette map insertion",
+    "006952a0/00695870 actual attached observer lifetime",
+    "game Lua Handle resolver00BD64E0 callback0109CED8"
+  ],
+  "integration": {
+    "helper_log": "local/voice_update_integrate.log",
+    "build_and_existing_tests": "passed2/2",
+    "tested_commit": "4ad531926ec558269d6129e14d8f07c8f322ec2d",
+    "merged_to_main": "d219a422e80f8ffa7c960cc109dbc3233e123f3a",
+    "post_build_merge": "main advanced during build; merged afterward without claiming a second build at that revision",
+    "annotation_log": "../battlestations-pacific-decompile/local/ghidra-annotations-20260911T062227Z.json",
+    "snapshot_internal_functions": 62600,
+    "push": "performed after this report commit"
+  }
+}

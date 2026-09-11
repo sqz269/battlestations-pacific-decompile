@@ -4214,8 +4214,8 @@
       "id": "native_cube_texture_base2",
       "packet": "native_cube_texture_base2",
       "worker": "main",
-      "done": false,
-      "state": "primary_source_build_tested_independent_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b34020",
         "00b34090"
@@ -4253,14 +4253,15 @@
         ],
         "API_status": "Frozen byprimary; actualnative_cube_texture_base.hpp/.cpp presentinprimaryworkspace with compilation/fixturepending. Owner3mustcomposeexactsource."
       },
-      "source_ready": true
+      "source_ready": true,
+      "evidence": "reports/native_cube_texture_base_audit.json"
     },
     {
       "id": "native_cube_texture_owner3",
       "packet": "native_cube_texture_owner3",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_source_and_original_fixture_in_progress_composing_actual_base",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b3d650",
         "00b3ead0",
@@ -4285,7 +4286,7 @@
           "00b3f410"
         ],
         "bytes": 313,
-        "ready": false,
+        "ready": true,
         "ready_when": "native_cube_texture_base2 integrated; existing canonicalpool return provider now completeonmain",
         "dependencies": [
           "native_cube_texture_base2",
@@ -4302,14 +4303,15 @@
         ],
         "integration": "primary owns CMake, Ghidra annotation/export and sharedledgers; no overlap with active cube pool lifetime/trim/static packets"
       },
-      "source_ready": false
+      "source_ready": true,
+      "evidence": "reports/native_cube_texture_owner_audit.json"
     },
     {
       "id": "native_cube_texture_owner_array_reserve1",
       "packet": "native_cube_texture_owner_array_reserve1",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_source_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00735ff0"
       ],
@@ -4339,14 +4341,15 @@
         ],
         "minimum_evidence": "Full untouched95-byte original body versus real primary-library source; current-count/table observations across actual allocation/free, exact publication order; existing strict Win32 build/CTests. No new tracked test suite."
       },
-      "source_ready": true
+      "source_ready": true,
+      "evidence": "reports/native_cube_texture_owner_array_reserve_audit.json"
     },
     {
       "id": "native_cube_texture_factory1",
       "packet": "native_cube_texture_factory1",
       "worker": null,
       "done": false,
-      "state": "blocked_on_actual_native_owner_array_reserve_and_device_recreation",
+      "state": "blocked_on_complete_actual_device_recreation",
       "function_addresses": [
         "00b2a380",
         "00cbd380",
@@ -4382,8 +4385,6 @@
           "reports/native_cube_texture_factory_audit.json"
         ],
         "blocked_by": [
-          "Native cube resource base/owner implementations from sibling discovery",
-          "native_cube_texture_owner_array_reserve1",
           "Complete actual-storage B29670 device recreation and its open dependencies"
         ],
         "required_contract": "Actual renderer/global/pool providers; exact original HRESULT equality retry, COM invocation, registration and FH3 cleanup order. No empty or semantic substitute recreation/owner/registry callback."
@@ -4423,8 +4424,8 @@
     {
       "id": "native_shader_device_reset5",
       "packet": "native_shader_device_reset5",
-      "done": false,
-      "state": "worker_source_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "worker": "particle_clock_lifetime",
       "function_addresses": [
         "00b1fef0",
@@ -4445,13 +4446,14 @@
         "Existing actual singleton allocation/free services",
         "Borrowed real current renderer-global slot, actual renderer and COM ABI storage"
       ],
-      "discovery_evidence": "reports/native_renderer_recreate_device_next.json"
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+      "evidence": "reports/native_shader_device_reset_audit.json"
     },
     {
       "id": "native_hardware_layout_device_release1",
       "packet": "native_hardware_layout_device_release1",
-      "done": false,
-      "state": "ready_bounded_implementation",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "worker": null,
       "function_addresses": [
         "00b600b0"
@@ -4467,7 +4469,8 @@
       "dependencies": [
         "Actual writable hardware layout owner with COM pointer+40 and real COM ABI"
       ],
-      "discovery_evidence": "reports/native_renderer_recreate_device_next.json"
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+      "evidence": "reports/native_hardware_layout_device_release_audit.json"
     },
     {
       "id": "native_renderer_recreate_device_actual1",
@@ -4494,6 +4497,360 @@
         "Actual XLive thunk/provider integration and CRT returning invalid-parameter contract"
       ],
       "discovery_evidence": "reports/native_renderer_recreate_device_next.json"
+    },
+    {
+      "id": "orch4_scheduled_voice_c",
+      "packet": "orch4_scheduled_voice_c",
+      "worker": "agent/orch4-scheduled-voice-20260910c",
+      "done": true,
+      "state": "integrated_reviewed_build_tested_with_bounded_service_fixtures",
+      "function_addresses": [
+        "005b9300",
+        "005b93d0",
+        "005b9420"
+      ],
+      "code_ownership": [
+        "include/bsp/scheduled_voice.hpp",
+        "src/scheduled_voice.cpp",
+        "docs/SCHEDULED_VOICE.md"
+      ],
+      "scope": "Borrowed record admission, pending poll and timed-row startup.",
+      "integration_report": "reports/voice_update_integration.json",
+      "prerequisite_packets": [
+        "orch4_voice_slot_start_b",
+        "orch4_voice_subtitles_b",
+        "orch4_voice_line_advance"
+      ],
+      "discovery_evidence": "docs/VOICE_UPDATE_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_voice_line_lifetime_c",
+      "packet": "orch4_voice_line_lifetime_c",
+      "worker": "agent/orch4-line-lifetime-20260910c",
+      "done": true,
+      "state": "integrated_reviewed_build_tested_with_bounded_service_fixtures",
+      "function_addresses": [
+        "005b9160",
+        "005b9b80",
+        "005baf30"
+      ],
+      "code_ownership": [
+        "include/bsp/voice_line_lifetime.hpp",
+        "src/voice_line_lifetime.cpp",
+        "docs/VOICE_LINE_LIFETIME.md"
+      ],
+      "scope": "Line destruction, scalar delete and serialized subtitle construction.",
+      "integration_report": "reports/voice_update_integration.json",
+      "prerequisite_packets": [
+        "orch4_voice_slot_start_b",
+        "orch4_voice_subtitles_b",
+        "orch4_voice_line_advance"
+      ],
+      "discovery_evidence": "docs/VOICE_UPDATE_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_voice_manager_update_c",
+      "packet": "orch4_voice_manager_update_c",
+      "worker": "agent/orch4-voice-update-20260910c",
+      "done": true,
+      "state": "integrated_reviewed_build_tested_with_bounded_service_fixtures",
+      "function_addresses": [
+        "005bc640",
+        "005b7290",
+        "00702130",
+        "007026f0",
+        "00701870"
+      ],
+      "code_ownership": [
+        "include/bsp/voice_manager_update.hpp",
+        "src/voice_manager_update.cpp",
+        "docs/VOICE_MANAGER_UPDATE.md"
+      ],
+      "scope": "Line expiry/relayout and attached slot lifecycle, volume and spatial attenuation.",
+      "integration_report": "reports/voice_update_integration.json",
+      "prerequisite_packets": [
+        "orch4_voice_slot_start_b",
+        "orch4_voice_subtitles_b",
+        "orch4_voice_line_advance"
+      ],
+      "discovery_evidence": "docs/VOICE_UPDATE_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_voice_sequence_update_c",
+      "packet": "orch4_voice_sequence_update_c",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_tested_with_bounded_service_fixtures",
+      "function_addresses": [
+        "005bbf10",
+        "005b6710"
+      ],
+      "code_ownership": [
+        "include/bsp/voice_sequence_update.hpp",
+        "src/voice_sequence_update.cpp",
+        "docs/VOICE_UPDATE_INTEGRATION.md"
+      ],
+      "scope": "Timed key/fade/tail update and complete panel text/layout helper.",
+      "integration_report": "reports/voice_update_integration.json",
+      "prerequisite_packets": [
+        "orch4_voice_slot_start_b",
+        "orch4_voice_subtitles_b",
+        "orch4_voice_line_advance"
+      ],
+      "discovery_evidence": "docs/VOICE_UPDATE_INTEGRATION.md"
+    },
+    {
+      "id": "orch4_gui_lua_reader_identity_c",
+      "packet": "orch4_gui_lua_reader_identity_c",
+      "worker": "agent/orch4-gui-reader-20260910c",
+      "done": true,
+      "state": "integrated_reviewed_build_tested_with_bounded_service_fixtures",
+      "function_addresses": [
+        "00bd63b0"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_lua_reader.hpp",
+        "src/gui_lua_reader.cpp",
+        "docs/GUI_LUA_READER_IDENTITY.md"
+      ],
+      "scope": "Live table Handle identity forwarding and evaluated String NUL-scan correction.",
+      "integration_report": "reports/voice_update_integration.json",
+      "prerequisite_packets": [
+        "orch4_voice_slot_start_b",
+        "orch4_voice_subtitles_b",
+        "orch4_voice_line_advance"
+      ],
+      "discovery_evidence": "docs/VOICE_UPDATE_INTEGRATION.md"
+    },
+    {
+      "id": "native_dynamic_buffer_device_release1",
+      "packet": "native_dynamic_buffer_device_release1",
+      "worker": "system_fog_owner_discovery",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "function_addresses": [
+        "00b237d0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_dynamic_buffer_device_release.hpp",
+        "src/native_dynamic_buffer_device_release.cpp",
+        "docs/NATIVE_DYNAMIC_BUFFER_DEVICE_RELEASE.md",
+        "reports/native_dynamic_buffer_device_release_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+      "scope": "Full243byte B237D0 actual current renderer/wrapper/COM release with genuine optional guard providers and original FH3 cleanup. Preserve existing typed d3d9_states projection; no synthetic COM providers.",
+      "evidence": "reports/native_dynamic_buffer_device_release_audit.json"
+    },
+    {
+      "id": "native_buffer_device_reset_next",
+      "packet": "native_buffer_device_reset_next",
+      "worker": "material_effect_plane",
+      "done": true,
+      "state": "bounded_read_only_native_dependency_discovery_complete",
+      "function_addresses": [
+        "00b49d00",
+        "00b49f80",
+        "00b49dc0",
+        "00b4a040",
+        "00b23270",
+        "00b23180"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_BUFFER_DEVICE_RESET_NEXT.md",
+        "reports/native_buffer_device_reset_next.json"
+      ],
+      "source_ready": false,
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+      "scope": "Read-only full native save/restore/release contracts and named-but-incomplete actual physical wrapper/flags/diagnostic dependencies; explicit disjoint ready packets. No semantic substitutes for open native providers.",
+      "evidence": "reports/native_buffer_device_reset_next.json"
+    },
+    {
+      "id": "native_resource_creation_flags1",
+      "packet": "native_resource_creation_flags1",
+      "worker": "particle_clock_lifetime",
+      "done": true,
+      "state": "complete_native_raw_outputs_primary_library_original_fixture_and_strict_Win32_checked",
+      "function_addresses": [
+        "00b20a80"
+      ],
+      "code_ownership": [
+        "include/bsp/native_resource_creation_flags.hpp",
+        "src/native_resource_creation_flags.cpp",
+        "docs/NATIVE_RESOURCE_CREATION_FLAGS.md",
+        "reports/native_resource_creation_flags_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_buffer_device_reset_next.json",
+      "scope": "Full245byte raw register-ABI flags helper. Preserve early optional pool output and final usage output, including unsupported nibble leaves pool untouched and raw overlap semantics. No actual renderer or semantic fallback needed.",
+      "evidence": "reports/native_resource_creation_flags_audit.json"
+    },
+    {
+      "id": "native_physical_buffer_access6",
+      "packet": "native_physical_buffer_access6",
+      "worker": "material_effect_plane",
+      "done": true,
+      "state": "complete_native_bodies_primary_library_byte_identical_original_fixture_and_strict_Win32_checked",
+      "function_addresses": [
+        "00b23270",
+        "00b23180",
+        "00b4b800",
+        "00b4b9b0",
+        "00b4b820",
+        "00b4b9d0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_physical_buffer_access.hpp",
+        "src/native_physical_buffer_access.cpp",
+        "docs/NATIVE_PHYSICAL_BUFFER_ACCESS.md",
+        "reports/native_physical_buffer_access_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_buffer_device_reset_next.json",
+      "scope": "Full160bytes: two actual COM releases, two raw capacity getters, two current COM unlock/current depth decrement leaves. No own cleanup, semantic buffer adapter or extra lifecycle actions.",
+      "evidence": "reports/native_physical_buffer_access_audit.json"
+    },
+    {
+      "id": "native_diagnostic_sink_lifetime3",
+      "packet": "native_diagnostic_sink_lifetime3",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_source_and_original_fixture_in_progress",
+      "function_addresses": [
+        "004c14c0",
+        "004bbca0",
+        "00411ee0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_diagnostic_sink_lifetime.hpp",
+        "src/native_diagnostic_sink_lifetime.cpp",
+        "docs/NATIVE_DIAGNOSTIC_SINK_LIFETIME.md",
+        "reports/native_diagnostic_sink_lifetime_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_buffer_device_reset_next.json",
+      "scope": "236 native bytes plus original FH3 records. Four-byte owner; raw8-byte guard points to actual lifetime section.native_section (counter physically+18). Real lifetime/CRT/Win32 providers already available; no GUI semantic singleton or invented registration callbacks."
+    },
+    {
+      "id": "native_physical_buffer_lock2",
+      "packet": "native_physical_buffer_lock2",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "worker_assembly_source_and_fixture_preparation_pending_actual_diagnostic_provider",
+      "function_addresses": [
+        "00b4b850",
+        "00b4ba00"
+      ],
+      "code_ownership": [
+        "include/bsp/native_physical_buffer_lock.hpp",
+        "src/native_physical_buffer_lock.cpp",
+        "docs/NATIVE_PHYSICAL_BUFFER_LOCK.md",
+        "reports/native_physical_buffer_lock_audit.json"
+      ],
+      "source_ready": false,
+      "prerequisite_packets": [
+        "native_diagnostic_sink_lifetime3"
+      ],
+      "discovery_evidence": "reports/native_buffer_device_reset_next.json",
+      "scope": "344 native bytes. Context borrows actual diagnostic publication/lifetime and actual F8D4B8 sentinel address. Required side effects include null, diagnostics, wrapped signed capacity check, caller-output aliasing, current metadata after COM callback."
+    },
+    {
+      "id": "native_logical_buffer_device_save2",
+      "packet": "native_logical_buffer_device_save2",
+      "worker": null,
+      "done": false,
+      "state": "blocked_on_named_actual_storage_dependencies",
+      "function_addresses": [
+        "00b49d00",
+        "00b49f80"
+      ],
+      "code_ownership": [
+        "include/bsp/native_logical_buffer_device_save.hpp",
+        "src/native_logical_buffer_device_save.cpp",
+        "docs/NATIVE_LOGICAL_BUFFER_DEVICE_SAVE.md",
+        "reports/native_logical_buffer_device_save_audit.json"
+      ],
+      "source_ready": false,
+      "prerequisite_packets": [
+        "native_physical_buffer_access6",
+        "native_physical_buffer_lock2"
+      ],
+      "discovery_evidence": "reports/native_buffer_device_reset_next.json",
+      "scope": "380 native bytes; existing complete actual B4B840/B4B9F0 COM getters. Bind concrete callable engine table routes, actual CRT-backed shadow allocation/copy, never semantic D3D9BufferBinding or arbitrary callbacks."
+    },
+    {
+      "id": "native_logical_buffer_device_restore2",
+      "packet": "native_logical_buffer_device_restore2",
+      "worker": null,
+      "done": false,
+      "state": "blocked_on_named_actual_storage_dependencies",
+      "function_addresses": [
+        "00b49dc0",
+        "00b4a040"
+      ],
+      "code_ownership": [
+        "include/bsp/native_logical_buffer_device_restore.hpp",
+        "src/native_logical_buffer_device_restore.cpp",
+        "docs/NATIVE_LOGICAL_BUFFER_DEVICE_RESTORE.md",
+        "reports/native_logical_buffer_device_restore_audit.json"
+      ],
+      "source_ready": false,
+      "prerequisite_packets": [
+        "native_physical_buffer_access6",
+        "native_physical_buffer_lock2",
+        "native_shader_device_reset5",
+        "native_resource_creation_flags1"
+      ],
+      "discovery_evidence": "reports/native_buffer_device_reset_next.json",
+      "scope": "754 native bytes including24 bytes of returning-free gaps. Existing actual Attach/string/resource-support/lifetime providers required in context. Current actual renderer publication, COM endpoints, allocation and callable engine tables; explicit unsupported-pool stack-state domain remains a complete-entry requirement."
+    },
+    {
+      "id": "native_renderer_reset_routes_next",
+      "packet": "native_renderer_reset_routes_next",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_bounded_native_dependency_discovery_in_progress",
+      "function_addresses": [
+        "00b24bf0",
+        "00b262c0",
+        "00b23b10"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_RENDERER_RESET_ROUTES_NEXT.md",
+        "reports/native_renderer_reset_routes_next.json"
+      ],
+      "source_ready": false,
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+      "scope": "Read-only full native renderer reset unbind/release/restore contracts and direct/indirect actual providers; explicit ready implementation packets."
+    },
+    {
+      "id": "native_occlusion_query_device_reset2",
+      "packet": "native_occlusion_query_device_reset2",
+      "worker": "main",
+      "done": false,
+      "state": "primary_source_and_original_fixture_in_progress",
+      "function_addresses": [
+        "00b5fe20",
+        "00b5fe60"
+      ],
+      "code_ownership": [
+        "include/bsp/native_occlusion_query_device_reset.hpp",
+        "src/native_occlusion_query_device_reset.cpp",
+        "docs/NATIVE_OCCLUSION_QUERY_DEVICE_RESET.md",
+        "reports/native_occlusion_query_device_reset_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [
+        "native_shader_device_reset5"
+      ],
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+      "scope": "Complete60bytes: raw owner+10 query release and current renderer global/device getter CreateQuery9 directly into actual owner+10, without added guards or previous cleanup."
     }
   ],
   "snapshot_after_analysis": {

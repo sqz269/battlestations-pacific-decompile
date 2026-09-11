@@ -1,0 +1,16 @@
+[
+  {
+    "address": "00b600b0",
+    "before": {
+      "address": "00b600b0",
+      "function_name": "FUN_00b600b0"
+    },
+    "after": {
+      "address": "00b600b0",
+      "old_name": "FUN_00b600b0",
+      "name": "BSP_HardwareLayout_ReleaseDeviceDeclaration",
+      "evidence": "Complete52byte actual hardware-layout device declaration release. Capture initialowner+40. Ifnonnull, actualcurrenttable+4 AddRef then reload SAMEcaptured declarationtable+8 Release. Independently reload CURRENTowner+40; ifnonnull call itscurrenttable+8 Release then clearowner+40 only afterreturn. Currentnull skipsfinalcall ANDclear; referencecounts ignored. Noowner/profile/CPUdescriptor/tree/poolmutation, noownEH/catch/noexcept. Original ABI ECXactualowner/RET/no semanticresult. Complete src/native_hardware_layout_device_release.cpp; reports/native_hardware_layout_device_release_audit.json. Primary checked37workerpins/currentownedsource/freshlivePE52bytes then unchanged originalbody versus actual frozen mainlibrary:759DWORDs/3036bytes,5realD3D9COMcalls,6observedstores includingexactlyoneactualproductionclear. Capturedtable/currentpointer changes, initialnull andcurrentnull gatedpaths verified by actualcall/storePCs;allotherownerbytesincludingpooltoken+44preserved. Both52byteruntimepostimages unchanged withzero instructionpatches/operandrelocations.30actualWindowsmoduleentry16bytepostimages verified against32bitdiskwithloaderrelocationsonly; original-side factoryWindowsapphelp compatibilityshimexplicitlyrecorded, everydeclarationcreation/reference methodisd3d9.dll. RealHALobjects/actualreferencecounts, nofakeCOMprovider/ownedTUrecompile. StrictMSVCWin32build/twoexistingCTests/eightseeds passed. Descriptivenamehypothesis;newsourceinterface, notnativebinaryreplacement/fullreset/render/gamevalidation."
+    },
+    "status": "applied"
+  }
+]

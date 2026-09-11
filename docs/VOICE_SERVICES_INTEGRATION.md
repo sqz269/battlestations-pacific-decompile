@@ -83,5 +83,9 @@ The locked Ghidra flow repair cleared the false no-return override at
 `00A7C14A`, disassembled the 19-byte gap `00A7C14F..00A7C161`, and saved the
 existing project. The repaired function has no remaining call gaps.
 
-Integration validation and saved Ghidra annotation results are recorded in
-`reports/voice_services_integration.json` when this batch is finalized.
+Sixteen new or updated scoped names/comments were applied under the Ghidra
+write lock, saved, read back and verified against their evidence. Existing
+comments were preserved and all sixteen exports refreshed. The build against
+concurrent main changes passed at commit `19b9892`; subsequent report changes
+do not change code. Exact validation and annotation records are in
+`reports/voice_services_integration.json`.

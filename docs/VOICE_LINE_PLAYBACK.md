@@ -169,3 +169,12 @@ former explicit manager argument was removed from the C++ projection. The
 start callee consumes its retained bank argument, so no additional caller-side
 release guard surrounds it. Build and service-fixture validation passed;
 native audio, rendered subtitles and gameplay remain unvalidated.
+
+## Follow-up owner-state correction
+
+`VOICE_UPDATE_INTEGRATION.md` establishes native manager `+74` as a borrowed
+pending voice-record pointer, and `+6C` as the attached-entry list count.
+The canonical fields are now `pending_record_74` and `attached_count_6c`.
+The earlier generic disabled/blocker labels are superseded; the readiness
+branches still test nonnull and nonzero respectively. The linked record,
+sentinel queue and timed-row identities are preserved by aliases to real state.

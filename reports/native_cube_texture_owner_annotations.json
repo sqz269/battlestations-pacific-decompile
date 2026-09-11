@@ -1,0 +1,44 @@
+[
+  {
+    "address": "00b3d650",
+    "before": {
+      "address": "00b3d650",
+      "function_name": "FUN_00b3d650"
+    },
+    "after": {
+      "address": "00b3d650",
+      "old_name": "FUN_00b3d650",
+      "name": "BSP_CubeTexture_ConstructUnnamed",
+      "evidence": "Complete122byte actual unnamed cube owner constructor. Full B34020 actualsharedserial/base; owner+2C=0 and profileD61870. Arm cleanup only after base. Capture input COM for both queries; current table+44 GetLevelDesc(0), HRESULT ignored/uninitialized descriptor. Publish Width+24 before current input table+34 GetLevelCount; reread late descriptor Format into+18, then returned mips+14. NoAddRef; +28/slabindex+30 untouched. Thrown query invokes only B34090/B33F50 current-name/base cleanup; retains consumed serial, reached metadata, COM and allocatedrawslot. Original ABI: ECXactualowner; stackIDirect3DCubeTexture9*,flags; EAXowner; RET8. Complete src/native_cube_texture_owner.cpp; reports/native_cube_texture_owner_audit.json. Primary independently checked99 workerpins/22currentsources/40freshlivePEspans1727bytes, then compared actual frozen mainlibrary:6943DWORDs/131events across5states,440runtimepostimages and14actualprovider mapchecks. Seven explicit dependency/FH3 entry bridges plus real atomic IAT; onlytwo4byte owner EHregistration operand relocations enter jump-onlyhosttrampolines to untouchedoriginalCBED68/CBEDC8 handlers. Remaining305ownerbytes and full FH3maps/handlers unchanged. Real OSlock imports observed and forwarded; deterministic COM ABI fixture is not GPU validation. Constructor/dtor cleanup maps have1state/0catches; second-cleanup-throw search termination retained frommap/sharedpattern, not artificial failure test. Strict Win32 build/twoexistingCTests passed. Descriptive name is hypothesis; new source ABI, not native binary replacement/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3ead0",
+    "before": {
+      "address": "00b3ead0",
+      "function_name": "FUN_00b3ead0"
+    },
+    "after": {
+      "address": "00b3ead0",
+      "old_name": "FUN_00b3ead0",
+      "name": "BSP_CubeTexture_Destroy",
+      "evidence": "Complete159byte actual cube destructor. InstallD61870, capture source+2C then arm basecleanup; real atomic decrement source+4, current virtual-zero/deleting dispatch through admitted actual backing/stream providers; clear+2C only after return. Capture current actual F8D394 renderer and its table, formowner+8 viaB33E40, then capturedtable+6C notificationB32250. Reload currentCOM+10, Release through itscurrenttable+8 and clear only afterreturn. Disarm cleanup before B33F50. No genericregistry removal, 2Dsupport diagnostic, surfacecache or trackingcounter actions. Throws preserve unfinished clears and run only current-name/base cleanup, never retry source/COM release. Original ABI: ECXactualowner; no stackarguments; RET; nosemanticreturn. Complete src/native_cube_texture_owner.cpp; reports/native_cube_texture_owner_audit.json. Primary independently checked99 workerpins/22currentsources/40freshlivePEspans1727bytes, then compared actual frozen mainlibrary:6943DWORDs/131events across5states,440runtimepostimages and14actualprovider mapchecks. Seven explicit dependency/FH3 entry bridges plus real atomic IAT; onlytwo4byte owner EHregistration operand relocations enter jump-onlyhosttrampolines to untouchedoriginalCBED68/CBEDC8 handlers. Remaining305ownerbytes and full FH3maps/handlers unchanged. Real OSlock imports observed and forwarded; deterministic COM ABI fixture is not GPU validation. Constructor/dtor cleanup maps have1state/0catches; second-cleanup-throw search termination retained frommap/sharedpattern, not artificial failure test. Strict Win32 build/twoexistingCTests passed. Descriptive name is hypothesis; new source ABI, not native binary replacement/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3f410",
+    "before": {
+      "address": "00b3f410",
+      "function_name": "FUN_00b3f410"
+    },
+    "after": {
+      "address": "00b3f410",
+      "old_name": "FUN_00b3f410",
+      "name": "BSP_CubeTexture_DeleteScalar",
+      "evidence": "Complete32byte scalar cube deletion. FullB3EAD0 then onlyflagsbit0 returns actualowner to actualcanonical108DB70 cube pool throughB3D940; EAXsameaddress mayalreadybereusable. No generic registry removal; any destructor exception prevents poolreturn; other flags ignored. Original ABI: ECXactualowner; stackflags; EAXoriginaladdress; RET4. Complete src/native_cube_texture_owner.cpp; reports/native_cube_texture_owner_audit.json. Primary independently checked99 workerpins/22currentsources/40freshlivePEspans1727bytes, then compared actual frozen mainlibrary:6943DWORDs/131events across5states,440runtimepostimages and14actualprovider mapchecks. Seven explicit dependency/FH3 entry bridges plus real atomic IAT; onlytwo4byte owner EHregistration operand relocations enter jump-onlyhosttrampolines to untouchedoriginalCBED68/CBEDC8 handlers. Remaining305ownerbytes and full FH3maps/handlers unchanged. Real OSlock imports observed and forwarded; deterministic COM ABI fixture is not GPU validation. Constructor/dtor cleanup maps have1state/0catches; second-cleanup-throw search termination retained frommap/sharedpattern, not artificial failure test. Strict Win32 build/twoexistingCTests passed. Descriptive name is hypothesis; new source ABI, not native binary replacement/game validation."
+    },
+    "status": "applied"
+  }
+]

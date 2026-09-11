@@ -88,7 +88,7 @@ std::string gui_page_script_path_00ac5600(std::string_view script_name);
 // The two script names 00AC6600 loads, in order: the shared library first, then
 // the page itself. The global table it then reads is kGuiScreenTableName.
 inline constexpr std::string_view kGuiCommonScriptName = "_Common";   // 00D5CB64
-inline constexpr std::string_view kGuiScreenTableName = "GuiScreen";  // 00D5CB20
+inline constexpr std::string_view kGuiScreenTableName = "GuiScreen";  // 00D5CB24
 
 // ---------------------------------------------------------------------------
 // The value model the visitor passes
@@ -137,11 +137,10 @@ private:
     std::shared_ptr<const GuiTable> table_;
 };
 
-// An evaluated Lua table. `named` keeps insertion order because the native
-// visitor's key enumeration (vtable +18h) hands 00AAA710 an ordered array and
-// the widget list it builds is walked in that order afterwards; a real Lua
-// table has no such order, so the order here is the script's, which is a
-// deliberate simplification. `array` holds the integer-keyed entries, which
+// An evaluated Lua table. `named` keeps the supplied enumeration order: the
+// real Lua snapshot supplies lua_next order; the static parser supplies source
+// order. Lua does not promise a stable order across states. `array` holds the
+// positive integer-keyed entries, which
 // 00AAA710 skips: only entries whose tag is 0 become children.
 struct GuiTable {
     std::vector<std::pair<std::string, GuiValue>> named;
@@ -210,6 +209,7 @@ struct GuiLayoutPage {
     std::int32_t reference_count{1};
     bool model_backed{false};  // the "<name>.mmod" branch was taken
     bool script_evaluated{false};
+    std::uint8_t screen_flag{}; // 00AC66EE, low byte of00AA5840's second arg
     std::unique_ptr<GuiLayoutWidget> root{};
 
     // The evaluated table, held so every widget's `source` stays valid. The
@@ -279,6 +279,12 @@ struct GuiLayoutHost {
     // model null but does not stop the load.
     virtual bool instantiate_page_model(const std::string& path) = 0;
 
+    // The root uses00AA5840's model resource node or plain188h object, bound
+    // through00AA6720, not the184h child-node constructor. The host retains
+    // the actual selected model; these arguments describe its selection.
+    virtual std::uint32_t create_page_root_node(const std::string& name,
+        bool model_backed, std::uint8_t screen_flag) = 0;
+
     // 00AC6600's script half: run interface/_Common.lua, then
     // interface/<page>.lua, then read the global table "GuiScreen". Null means
     // the script did not produce one, which the native build treats as an empty
@@ -288,8 +294,8 @@ struct GuiLayoutHost {
 
     // 00AAAD8E..00AAADB1: 00B74EB0 allocates 184h bytes and 00B75030 builds the
     // widget's scene node from the key. The native code then clears the low two
-    // bits of node +138h. Returning 0 means the allocation failed, which makes
-    // 00AAA710 skip the child entirely.
+    // bits of node +138h. Null still reaches the parenting call and hooks;
+    // it does not skip the child (00AAADC4..00AAAE63).
     virtual std::uint32_t create_widget_node(const std::string& key) = 0;
 
     // 00AAAE24: 00B6E680, child node +4Ch under parent node +4Ch.
@@ -298,19 +304,30 @@ struct GuiLayoutHost {
     // 00AA8750, through the wide-screen fixup 00AAA710 performs inline.
     virtual bool widescreen_enabled() = 0;
 
-    // The child's own vtable +74h and +78h, called either side of the descend.
-    // They have no recovered behaviour, so they default to nothing.
-    virtual void on_widget_constructed(GuiLayoutWidget&) {}
-    virtual void on_widget_loaded(GuiLayoutWidget&) {}
+    // The child's own vtable +74h and +78h, either side of the descend.
+    // Required: callers must dispatch the actual type, not silently omit them.
+    virtual void on_widget_constructed(GuiLayoutWidget&) = 0;
+    virtual void on_widget_loaded(GuiLayoutWidget&) = 0;
+    // Projection boundary for derived virtual+18 properties (Font, States,
+    // geOrder, etc.). Base fields are already bound; descendants follow.
+    // This is not a recovered uniform ordering of all derived readers.
+    virtual void on_widget_properties_bound(GuiLayoutWidget&, const GuiTable&) = 0;
+    //00AC6825: propagate node root-list=null through00B6D890, then retire the
+    // temporary Lua reader/owner. This is not node-parent=null.
+    virtual void on_page_loaded(GuiLayoutPage&) = 0;
+    // Host unwind boundary, required for every free-loader caller. Retire the
+    // temporary reader/owner after any model/node/property/registration error.
+    virtual void on_page_load_failed() noexcept = 0;
 };
 
 // 00AAA710's second half: the visitor's key enumeration (vtable +18h) followed
 // by the child loop. Every string key whose suffix names a type becomes a child
-// of `widget`: the type's constructor runs (00AA6560), a scene node is created
-// and parented, the child is appended to the parent's list and its parent
-// pointer set, then the visitor descends (vtable +4h), the child's own property
+// of `widget`: native00AA6560 chooses the class (projected here as a type tag),
+// a scene node is created, the child is appended to the parent's list and its
+// parent pointer set, then its node is parented and+74h runs. The visitor
+// descends (vtable +4h), the child's own property
 // enumerator runs (its vtable +18h, which reaches this function again) and the
-// visitor ascends (vtable +8h). Integer-keyed entries are skipped.
+// visitor ascends (vtable +8h), then+78h runs. Integer keys are skipped.
 void build_widget_children_00aaa710(
     const GuiTable& table, GuiLayoutWidget& widget, GuiLayoutHost& host);
 

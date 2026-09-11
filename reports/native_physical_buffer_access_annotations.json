@@ -1,0 +1,90 @@
+[
+  {
+    "address": "00b23270",
+    "before": {
+      "address": "00b23270",
+      "function_name": "FUN_00b23270"
+    },
+    "after": {
+      "address": "00b23270",
+      "old_name": "FUN_00b23270",
+      "name": "BSP_PhysicalVertexBuffer_ReleaseForReset",
+      "evidence": "Complete 52-byte actual physical-buffer entry: Capture COM+28, current-table AddRef then captured-object current-table Release; reload current COM+28 for final current-table Release; clear+28 only after return; no retries/cleanup if a call throws. Original ECX actual2Ch owner, no stack arguments, plain RET; capacities return raw DWORD, other operations have no semantic result. No own FH3. Independent naked MSVC Win32 __fastcall implementation in src/native_physical_buffer_access.cpp, no source aliases; capacities noexcept only. reports/native_physical_buffer_access_audit.json. Primary verified39 worker artifacts/two SDK pins/current owned source and six fresh live-PE spans160bytes, then linked unchanged fixture against frozen actual main bsp_core library. All six independent COFF sections have zero relocations and exactly match complete original bytes; all six linked and runtime entry bodies remain byte-identical after14 paired cases/1600 literal DWORDs/64 events. Normal entry frames preserve EBX/ESI/EDI/EBP/ESP; four throwing callback cases per implementation retain actual current field effects. Fixture endpoints are deterministic x86 stdcall COM vtables, not actual D3D9 GPU methods; no original code patch/bridge/relocation or owned TU recompilation. Strict Win32 build/two existing CTests/eight seeds passed. Descriptive name hypothesis. Complete machine-entry identity is not full game/renderer ABI or device/reset/render validation. Existing semantic projections and other physical buffer operations remain separate."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b23180",
+    "before": {
+      "address": "00b23180",
+      "function_name": "FUN_00b23180"
+    },
+    "after": {
+      "address": "00b23180",
+      "old_name": "FUN_00b23180",
+      "name": "BSP_PhysicalIndexBuffer_ReleaseForReset",
+      "evidence": "Complete 52-byte actual physical-buffer entry: Capture COM+28, current-table AddRef then captured-object current-table Release; reload current COM+28 for final current-table Release; clear+28 only after return; no retries/cleanup if a call throws. Original ECX actual2Ch owner, no stack arguments, plain RET; capacities return raw DWORD, other operations have no semantic result. No own FH3. Independent naked MSVC Win32 __fastcall implementation in src/native_physical_buffer_access.cpp, no source aliases; capacities noexcept only. reports/native_physical_buffer_access_audit.json. Primary verified39 worker artifacts/two SDK pins/current owned source and six fresh live-PE spans160bytes, then linked unchanged fixture against frozen actual main bsp_core library. All six independent COFF sections have zero relocations and exactly match complete original bytes; all six linked and runtime entry bodies remain byte-identical after14 paired cases/1600 literal DWORDs/64 events. Normal entry frames preserve EBX/ESI/EDI/EBP/ESP; four throwing callback cases per implementation retain actual current field effects. Fixture endpoints are deterministic x86 stdcall COM vtables, not actual D3D9 GPU methods; no original code patch/bridge/relocation or owned TU recompilation. Strict Win32 build/two existing CTests/eight seeds passed. Descriptive name hypothesis. Complete machine-entry identity is not full game/renderer ABI or device/reset/render validation. Existing semantic projections and other physical buffer operations remain separate."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4b800",
+    "before": {
+      "address": "00b4b800",
+      "function_name": "BSP_PhysicalIndexBuffer_GetCapacity",
+      "comment": "[BSP reconstruction 00b4b800]\nPhysical index vtable+18h; MOV EAX,[ECX+18h]; RET. Returns byte capacity without mutation."
+    },
+    "after": {
+      "address": "00b4b800",
+      "old_name": "BSP_PhysicalIndexBuffer_GetCapacity",
+      "name": "BSP_PhysicalIndexBuffer_GetCapacity",
+      "evidence": "Complete 4-byte actual physical-buffer entry: Exact raw DWORD+18 without mutation. Original ECX actual2Ch owner, no stack arguments, plain RET; capacities return raw DWORD, other operations have no semantic result. No own FH3. Independent naked MSVC Win32 __fastcall implementation in src/native_physical_buffer_access.cpp, no source aliases; capacities noexcept only. reports/native_physical_buffer_access_audit.json. Primary verified39 worker artifacts/two SDK pins/current owned source and six fresh live-PE spans160bytes, then linked unchanged fixture against frozen actual main bsp_core library. All six independent COFF sections have zero relocations and exactly match complete original bytes; all six linked and runtime entry bodies remain byte-identical after14 paired cases/1600 literal DWORDs/64 events. Normal entry frames preserve EBX/ESI/EDI/EBP/ESP; four throwing callback cases per implementation retain actual current field effects. Fixture endpoints are deterministic x86 stdcall COM vtables, not actual D3D9 GPU methods; no original code patch/bridge/relocation or owned TU recompilation. Strict Win32 build/two existing CTests/eight seeds passed. Descriptive name hypothesis. Complete machine-entry identity is not full game/renderer ABI or device/reset/render validation. Existing semantic projections and other physical buffer operations remain separate."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4b9b0",
+    "before": {
+      "address": "00b4b9b0",
+      "function_name": "BSP_PhysicalVertexBuffer_GetCapacity",
+      "comment": "[BSP reconstruction 00b4b9b0]\nPhysical vertex vtable+18h; MOV EAX,[ECX+18h]; RET. Returns byte capacity without mutation."
+    },
+    "after": {
+      "address": "00b4b9b0",
+      "old_name": "BSP_PhysicalVertexBuffer_GetCapacity",
+      "name": "BSP_PhysicalVertexBuffer_GetCapacity",
+      "evidence": "Complete 4-byte actual physical-buffer entry: Exact raw DWORD+18 without mutation. Original ECX actual2Ch owner, no stack arguments, plain RET; capacities return raw DWORD, other operations have no semantic result. No own FH3. Independent naked MSVC Win32 __fastcall implementation in src/native_physical_buffer_access.cpp, no source aliases; capacities noexcept only. reports/native_physical_buffer_access_audit.json. Primary verified39 worker artifacts/two SDK pins/current owned source and six fresh live-PE spans160bytes, then linked unchanged fixture against frozen actual main bsp_core library. All six independent COFF sections have zero relocations and exactly match complete original bytes; all six linked and runtime entry bodies remain byte-identical after14 paired cases/1600 literal DWORDs/64 events. Normal entry frames preserve EBX/ESI/EDI/EBP/ESP; four throwing callback cases per implementation retain actual current field effects. Fixture endpoints are deterministic x86 stdcall COM vtables, not actual D3D9 GPU methods; no original code patch/bridge/relocation or owned TU recompilation. Strict Win32 build/two existing CTests/eight seeds passed. Descriptive name hypothesis. Complete machine-entry identity is not full game/renderer ABI or device/reset/render validation. Existing semantic projections and other physical buffer operations remain separate."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4b820",
+    "before": {
+      "address": "00b4b820",
+      "function_name": "BSP_D3D9IndexBuffer_Unlock",
+      "comment": "[BSP reconstruction 00b4b820]\nIf COM pointer+28h nonnull, calls virtual30h Unlock and decrements depth+20h even on failure. Null pointer leaves depth unchanged."
+    },
+    "after": {
+      "address": "00b4b820",
+      "old_name": "BSP_D3D9IndexBuffer_Unlock",
+      "name": "BSP_D3D9IndexBuffer_Unlock",
+      "evidence": "Complete 24-byte actual physical-buffer entry: Capture current COM+28; null leaves current depth intact; current COM table stdcall+30 then wrapped --current_depth+20 even failed HRESULT; throwing COM prevents decrement. Original ECX actual2Ch owner, no stack arguments, plain RET; capacities return raw DWORD, other operations have no semantic result. No own FH3. Independent naked MSVC Win32 __fastcall implementation in src/native_physical_buffer_access.cpp, no source aliases; capacities noexcept only. reports/native_physical_buffer_access_audit.json. Primary verified39 worker artifacts/two SDK pins/current owned source and six fresh live-PE spans160bytes, then linked unchanged fixture against frozen actual main bsp_core library. All six independent COFF sections have zero relocations and exactly match complete original bytes; all six linked and runtime entry bodies remain byte-identical after14 paired cases/1600 literal DWORDs/64 events. Normal entry frames preserve EBX/ESI/EDI/EBP/ESP; four throwing callback cases per implementation retain actual current field effects. Fixture endpoints are deterministic x86 stdcall COM vtables, not actual D3D9 GPU methods; no original code patch/bridge/relocation or owned TU recompilation. Strict Win32 build/two existing CTests/eight seeds passed. Descriptive name hypothesis. Complete machine-entry identity is not full game/renderer ABI or device/reset/render validation. Existing semantic projections and other physical buffer operations remain separate."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4b9d0",
+    "before": {
+      "address": "00b4b9d0",
+      "function_name": "BSP_D3D9VertexBuffer_Unlock",
+      "comment": "[BSP reconstruction 00b4b9d0]\nIf COM pointer+28h nonnull, calls virtual30h Unlock and decrements depth+20h even on failure. Null pointer leaves depth unchanged."
+    },
+    "after": {
+      "address": "00b4b9d0",
+      "old_name": "BSP_D3D9VertexBuffer_Unlock",
+      "name": "BSP_D3D9VertexBuffer_Unlock",
+      "evidence": "Complete 24-byte actual physical-buffer entry: Capture current COM+28; null leaves current depth intact; current COM table stdcall+30 then wrapped --current_depth+20 even failed HRESULT; throwing COM prevents decrement. Original ECX actual2Ch owner, no stack arguments, plain RET; capacities return raw DWORD, other operations have no semantic result. No own FH3. Independent naked MSVC Win32 __fastcall implementation in src/native_physical_buffer_access.cpp, no source aliases; capacities noexcept only. reports/native_physical_buffer_access_audit.json. Primary verified39 worker artifacts/two SDK pins/current owned source and six fresh live-PE spans160bytes, then linked unchanged fixture against frozen actual main bsp_core library. All six independent COFF sections have zero relocations and exactly match complete original bytes; all six linked and runtime entry bodies remain byte-identical after14 paired cases/1600 literal DWORDs/64 events. Normal entry frames preserve EBX/ESI/EDI/EBP/ESP; four throwing callback cases per implementation retain actual current field effects. Fixture endpoints are deterministic x86 stdcall COM vtables, not actual D3D9 GPU methods; no original code patch/bridge/relocation or owned TU recompilation. Strict Win32 build/two existing CTests/eight seeds passed. Descriptive name hypothesis. Complete machine-entry identity is not full game/renderer ABI or device/reset/render validation. Existing semantic projections and other physical buffer operations remain separate."
+    },
+    "status": "applied"
+  }
+]

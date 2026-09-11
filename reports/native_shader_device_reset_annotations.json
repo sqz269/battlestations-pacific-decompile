@@ -1,0 +1,73 @@
+[
+  {
+    "address": "00b1fef0",
+    "before": {
+      "address": "00b1fef0",
+      "function_name": "BSP_D3D9Renderer_GetDevice",
+      "comment": "[BSP reconstruction 00b1fef0]\nBSP reconstruction hypothesis: Return renderer+1A10h; getter itself does not AddRef. ABI: ECX renderer; no stack arguments; EAX borrowed D3D device; plainRET. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX renderer; no stack arguments; EAX borrowed D3D device; plainRET. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b1fef0",
+      "old_name": "BSP_D3D9Renderer_GetDevice",
+      "name": "BSP_D3D9Renderer_GetDevice",
+      "evidence": "Complete7byte actualrenderer borroweddevice getter. Read actualrenderer+1A10 and returnpointer withoutAddRef/nullrepair. Restore providers call this actualnativeentry aftertheircurrentglobal/gates. Existingcorrectdescriptivename preserved; prior semantic/mesh boundarycomments retained. Original ABI: ECX actual renderer, EAX borrowed device, RET. Complete src/native_shader_device_reset.cpp; reports/native_shader_device_reset_audit.json. Primarychecked38workerpins/current4sources/installedSDKand7freshlivePEspans363bytes thencomparedactualfrozenmainlibrary:5925DWORDs/23700bytes,104snapshots169records. RealD3D9HALdevices2perside,actualD3DCompilepixel/vertexshaders,actualGetFunction/Create/refcallswithforwardingobservers; each4malloc128/128/144/144,6nonnullfree,4AddRef/8Release/8GetFunction/6Createincludingtwoactual8876086Cfailures. GatednativePAGE_NOACCESS/sourceglobalnullpaths touch noexternalservices. Onlytwo4byteglobaloperandrelocations in353ownedbytes;2externalCRTentrybridges;genuinegetter/relativecallspreserved,all7postimages/7primaryproviders/6actualWin32modulepinsverified. Perturbationsareexplicitobservereffects;nofakeCOMprovider/ownedsourceobserverrecompile. StrictWin32build/twoexistingtests/eightseedsPASS. NewC++interfaces/descriptivenamehypotheses,notoriginalbinaryABI/fullreset/render/gamevalidation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b5e750",
+    "before": {
+      "address": "00b5e750",
+      "function_name": "FUN_00b5e750"
+    },
+    "after": {
+      "address": "00b5e750",
+      "old_name": "FUN_00b5e750",
+      "name": "BSP_PixelShader_SaveBytecodeAndRelease",
+      "evidence": "Complete105byte pixel shader bytecode save/release. NativePUSHECX initializes sizeDWORD withownerpointerbits. CaptureCOM+8; nullskipsall. ActualcapturedAddRef/Release pair rereadsitscurrenttable. Reloadcurrentowner+8 GetFunction(NULL,&size); exactsize actualBF55BE allocation. CaptureCURRENTshader afterallocation BEFOREpublishingallocatedbufferat+0C; samecapturedshader GetFunction(buffer,&size). ReloadcurrentCOM+8, ifnonnull Release thenzero+8 onlyafterreturn. Oldbytecode notfreed; noHRESULTgate/ownEH/rollback. Keepcurrentbufferfieldchanges and captured/currentshader ordering. Original ABI: ECX actual shader owner, RET; no semantic result; reached COM calls use real Win32 stdcall ABI. Complete src/native_shader_device_reset.cpp; reports/native_shader_device_reset_audit.json. Primarychecked38workerpins/current4sources/installedSDKand7freshlivePEspans363bytes thencomparedactualfrozenmainlibrary:5925DWORDs/23700bytes,104snapshots169records. RealD3D9HALdevices2perside,actualD3DCompilepixel/vertexshaders,actualGetFunction/Create/refcallswithforwardingobservers; each4malloc128/128/144/144,6nonnullfree,4AddRef/8Release/8GetFunction/6Createincludingtwoactual8876086Cfailures. GatednativePAGE_NOACCESS/sourceglobalnullpaths touch noexternalservices. Onlytwo4byteglobaloperandrelocations in353ownedbytes;2externalCRTentrybridges;genuinegetter/relativecallspreserved,all7postimages/7primaryproviders/6actualWin32modulepinsverified. Perturbationsareexplicitobservereffects;nofakeCOMprovider/ownedsourceobserverrecompile. StrictWin32build/twoexistingtests/eightseedsPASS. NewC++interfaces/descriptivenamehypotheses,notoriginalbinaryABI/fullreset/render/gamevalidation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b5e810",
+    "before": {
+      "address": "00b5e810",
+      "function_name": "FUN_00b5e810"
+    },
+    "after": {
+      "address": "00b5e810",
+      "old_name": "FUN_00b5e810",
+      "name": "BSP_VertexShader_SaveBytecodeAndRelease",
+      "evidence": "Complete105byte vertex shader bytecode save/release. NativePUSHECX initializes sizeDWORD withownerpointerbits. CaptureCOM+8; nullskipsall. ActualcapturedAddRef/Release pair rereadsitscurrenttable. Reloadcurrentowner+8 GetFunction(NULL,&size); exactsize actualBF55BE allocation. CaptureCURRENTshader afterallocation BEFOREpublishingallocatedbufferat+0C; samecapturedshader GetFunction(buffer,&size). ReloadcurrentCOM+8, ifnonnull Release thenzero+8 onlyafterreturn. Oldbytecode notfreed; noHRESULTgate/ownEH/rollback. Keepcurrentbufferfieldchanges and captured/currentshader ordering. Original ABI: ECX actual shader owner, RET; no semantic result; reached COM calls use real Win32 stdcall ABI. Complete src/native_shader_device_reset.cpp; reports/native_shader_device_reset_audit.json. Primarychecked38workerpins/current4sources/installedSDKand7freshlivePEspans363bytes thencomparedactualfrozenmainlibrary:5925DWORDs/23700bytes,104snapshots169records. RealD3D9HALdevices2perside,actualD3DCompilepixel/vertexshaders,actualGetFunction/Create/refcallswithforwardingobservers; each4malloc128/128/144/144,6nonnullfree,4AddRef/8Release/8GetFunction/6Createincludingtwoactual8876086Cfailures. GatednativePAGE_NOACCESS/sourceglobalnullpaths touch noexternalservices. Onlytwo4byteglobaloperandrelocations in353ownedbytes;2externalCRTentrybridges;genuinegetter/relativecallspreserved,all7postimages/7primaryproviders/6actualWin32modulepinsverified. Perturbationsareexplicitobservereffects;nofakeCOMprovider/ownedsourceobserverrecompile. StrictWin32build/twoexistingtests/eightseedsPASS. NewC++interfaces/descriptivenamehypotheses,notoriginalbinaryABI/fullreset/render/gamevalidation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b5e890",
+    "before": {
+      "address": "00b5e890",
+      "function_name": "FUN_00b5e890"
+    },
+    "after": {
+      "address": "00b5e890",
+      "old_name": "FUN_00b5e890",
+      "name": "BSP_PixelShader_RestoreDeviceObject",
+      "evidence": "Complete68byte pixel shader restore. ActualownerCOM+8 nonnullorbytecode+0Cnull returnsbeforeglobalaccess. ThenreadactualF8D394 storage, callactualB1FEF0; reloadbytecode, actualdevice CreatePixelShader+1A8 withactualowner+8output. IgnoreHRESULT, freeCURRENTbytecode+0C viaBF6989, thenzero+0C afterreturn. Full10byte returning-free stackadjust/clear continuation restoredand saved. Failurestillfree/clear; nooutputrepair/ownercreation/retry/ownEH. Original ABI: ECX actual shader owner, RET; no semantic result; reached COM calls use real Win32 stdcall ABI. Complete src/native_shader_device_reset.cpp; reports/native_shader_device_reset_audit.json. Primarychecked38workerpins/current4sources/installedSDKand7freshlivePEspans363bytes thencomparedactualfrozenmainlibrary:5925DWORDs/23700bytes,104snapshots169records. RealD3D9HALdevices2perside,actualD3DCompilepixel/vertexshaders,actualGetFunction/Create/refcallswithforwardingobservers; each4malloc128/128/144/144,6nonnullfree,4AddRef/8Release/8GetFunction/6Createincludingtwoactual8876086Cfailures. GatednativePAGE_NOACCESS/sourceglobalnullpaths touch noexternalservices. Onlytwo4byteglobaloperandrelocations in353ownedbytes;2externalCRTentrybridges;genuinegetter/relativecallspreserved,all7postimages/7primaryproviders/6actualWin32modulepinsverified. Perturbationsareexplicitobservereffects;nofakeCOMprovider/ownedsourceobserverrecompile. StrictWin32build/twoexistingtests/eightseedsPASS. NewC++interfaces/descriptivenamehypotheses,notoriginalbinaryABI/fullreset/render/gamevalidation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b5e8e0",
+    "before": {
+      "address": "00b5e8e0",
+      "function_name": "FUN_00b5e8e0"
+    },
+    "after": {
+      "address": "00b5e8e0",
+      "old_name": "FUN_00b5e8e0",
+      "name": "BSP_VertexShader_RestoreDeviceObject",
+      "evidence": "Complete68byte vertex shader restore. ActualownerCOM+8 nonnullorbytecode+0Cnull returnsbeforeglobalaccess. ThenreadactualF8D394 storage, callactualB1FEF0; reloadbytecode, actualdevice CreateVertexShader+16C withactualowner+8output. IgnoreHRESULT, freeCURRENTbytecode+0C viaBF6989, thenzero+0C afterreturn. Full10byte returning-free stackadjust/clear continuation restoredand saved. Failurestillfree/clear; nooutputrepair/ownercreation/retry/ownEH. Original ABI: ECX actual shader owner, RET; no semantic result; reached COM calls use real Win32 stdcall ABI. Complete src/native_shader_device_reset.cpp; reports/native_shader_device_reset_audit.json. Primarychecked38workerpins/current4sources/installedSDKand7freshlivePEspans363bytes thencomparedactualfrozenmainlibrary:5925DWORDs/23700bytes,104snapshots169records. RealD3D9HALdevices2perside,actualD3DCompilepixel/vertexshaders,actualGetFunction/Create/refcallswithforwardingobservers; each4malloc128/128/144/144,6nonnullfree,4AddRef/8Release/8GetFunction/6Createincludingtwoactual8876086Cfailures. GatednativePAGE_NOACCESS/sourceglobalnullpaths touch noexternalservices. Onlytwo4byteglobaloperandrelocations in353ownedbytes;2externalCRTentrybridges;genuinegetter/relativecallspreserved,all7postimages/7primaryproviders/6actualWin32modulepinsverified. Perturbationsareexplicitobservereffects;nofakeCOMprovider/ownedsourceobserverrecompile. StrictWin32build/twoexistingtests/eightseedsPASS. NewC++interfaces/descriptivenamehypotheses,notoriginalbinaryABI/fullreset/render/gamevalidation."
+    },
+    "status": "applied"
+  }
+]

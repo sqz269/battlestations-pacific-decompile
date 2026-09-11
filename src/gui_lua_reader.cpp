@@ -152,9 +152,9 @@ bool gui_lua_store_value_00bd63b0(const GuiValue& value, const GuiLuaVariant& fi
     void* const dest = field.value.pointer;
     switch (static_cast<GuiLuaFieldType>(field.tag)) {
         case GuiLuaFieldType::String: {
-            // 00BD63D4. The native code resizes the NativeString to the length
-            // lua_tolstring reported and memcpys; a null pointer resizes it to
-            // zero, which is how a non-string clears the field.
+            // 00BD63D7 obtains a char*, then 00BD63E5..00BD63EE explicitly
+            // scans to its first NUL. It does not use Lua's string length.
+            // A null conversion resizes the native destination to zero.
             if (dest == nullptr) {
                 return false;
             }
@@ -162,7 +162,7 @@ bool gui_lua_store_value_00bd63b0(const GuiValue& value, const GuiLuaVariant& fi
             if (!lua_tostring_view(value, text)) {
                 text.clear();
             }
-            *static_cast<std::string*>(dest) = text;
+            static_cast<std::string*>(dest)->assign(text.c_str());
             return true;
         }
         case GuiLuaFieldType::Int: {
@@ -447,7 +447,8 @@ bool gui_lua_store_ref_00bd63b0(GuiLuaHost& host, const GuiLuaRef& object,
                 return true;
             }
             if (host.type_of(object) == GuiLuaType::Table) {
-                *static_cast<std::int32_t*>(dest) = resolver->resolve_by_table(nullptr);
+                *static_cast<std::int32_t*>(dest) =
+                    resolver->resolve_by_live_table(host, object);
                 return true;
             }
             return false;

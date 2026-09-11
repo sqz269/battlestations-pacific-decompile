@@ -69,12 +69,12 @@ std::int32_t poll_voice_slot_007027b0(VoicePlaybackSlot& slot, VoiceSlotHost& ho
 bool voice_can_play_005b71d0(VoicePlaybackManager& manager, const VoiceClips& clips,
     const VoicePanelState& panels, VoiceSlotHost& host)
 {
-    if (panels.field_34 || panels.field_24 || manager.disabled_74) return false;
+    if (panels.field_34 || panels.field_24 || manager.pending_record_74) return false;
     // Count is reread each iteration just as 005B5DF0 is called in the native.
     for (std::size_t index = 0; index < clips.size(); ++index) {
         if (poll_voice_slot_007027b0(manager.slot_08, host) != 0) return false;
     }
-    return manager.blocked_6c == 0;
+    return manager.attached_count_6c == 0;
 }
 
 std::uint32_t classify_voice_speaker_005bbc10(void* speaker, VoiceLineHost& host)

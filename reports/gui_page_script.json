@@ -1,0 +1,83 @@
+{
+  "packet": "orch2_gui_page_lua_j",
+  "status": "reconstructed_build_tested_installed_script_fixture_tested",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "no_ghidra_function": [],
+  "evidence_document": "docs/GUI_PAGE_SCRIPT.md",
+  "addresses": [
+    {
+      "entry": "00ac6600",
+      "last_instruction_inclusive": "00ac6876",
+      "abi": "ECX=screen; stack name*, model*, byte flag; RET0C",
+      "source": "src/gui_page_script.cpp",
+      "scope": "private Lua owner, script execution and retained data projection"
+    },
+    {
+      "entry": "00aa5840",
+      "last_instruction_inclusive": "00aa59a9",
+      "abi": "ECX=manager; stack name*, int screen_flag, byte add_reference; RET0C",
+      "source": "src/gui_layout_loader.cpp",
+      "scope": "root-node contract, flag preservation and page completion boundary"
+    },
+    {
+      "entry": "00aaa710",
+      "last_instruction_inclusive": "00aaaecc",
+      "abi": "ECX=widget; stack visitor*; RET4",
+      "source": "src/gui_layout_loader.cpp",
+      "scope": "Lua value conversion and required widget callback order"
+    }
+  ],
+  "apis": [
+    "VfsGuiPageScripts::begin_00ac6600",
+    "VfsGuiPageScripts::evaluate_00ac6600",
+    "GuiPageLuaEvaluation",
+    "GuiPageScriptLayoutHost",
+    "GuiLua51Host::snapshot_table"
+  ],
+  "validation": {
+    "msvc_win32_release": "passed",
+    "verify_seeds": "8 of 8 matched installed binary",
+    "ctests": {"passed": 2, "failed": 0},
+    "installed_game": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "physical_vfs_used": true,
+    "installed_interface_files": 97,
+    "installed_common_libraries": 1,
+    "installed_page_scripts_executed": 96,
+    "retained_page_tables": 95,
+    "expected_script_failures": [
+      {"path": "interface/_debugtexts.lua", "cause": "malformed shipped Lua; ignored luaL_loadbuffer status then call of compile-error string", "error": "attempt to call a string value"}
+    ],
+    "focused_fixture": "override/private-state/shared-table/lifetime/coercion/cache/fatal/metatable/missing/free-loader-unwind-retry PASS",
+    "fixture_source": "local/gui_page_probe.cpp (ignored)",
+    "fixture_manifest": "embedded",
+    "new_permanent_tests": 0,
+    "game_validated": false,
+    "render_validated": false,
+    "native_abi_compatible": false
+  },
+  "sha256": {
+    "interface/_common.lua": "2ea7c477dfea27f7a33666bf464a0bded586fb05fa01316dccad35e87f9cf17a",
+    "interface/_debugtexts.lua": "2add0bfebd5be44c99f263a3877e1f565f1cab5744557c9b65be684fca2d890c",
+    "local/gui_page_probe.cpp": "bc5f1ff38bfa99df6a0649bcd9e5f69b55b26c19f3a8050b0927b170be486445"
+  },
+  "required_runtime_contracts": [
+    "actual page model or plain188h object and root binding00aa6720",
+    "actual widget class factory00aa6560, child node00b75030 and parent00b6e680",
+    "per-class virtual74, virtual18 property readers and virtual78",
+    "final root-list-null propagation00b6d890"
+  ],
+  "available_reconstruction_dependencies": [
+    "gui_widget_scene: binding/visibility and base virtual78 at00aa7170",
+    "native_node_destruction: propagate_native_node_root_00b6d890",
+    "gui_text and gui_icon: per-class properties"
+  ],
+  "limitations": [
+    "GuiPageScriptLayoutHost remains abstract until real scene and widget contracts are supplied",
+    "Snapshot rejects functions, cycles, metatables and unsupported keys; not a full Lua object serializer",
+    "Native Lua failure terminates; protected host boundary throws C++ instead",
+    "Generic class-property callback ordering is a projection boundary, not proof of every derived virtual18",
+    "Game application hosts and original installation were not changed"
+  ]
+}

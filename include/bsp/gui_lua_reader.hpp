@@ -157,15 +157,22 @@ GuiLuaVariant gui_lua_field(GuiLuaFieldType type, void* dest) noexcept;
 // takes the object itself, and is reached only when the object is a table
 // (00B661B0 tests lua_type against 5). Both are installed by 00BD4FC0 and
 // neither target was followed, so a caller that has no resolver gets a false
-// back and the destination is left alone, which is what a null pointer would do.
+// back and the destination is left alone. That host boundary does not imply
+// that the original indirect-call targets may be null.
 // A value that is neither an integral number nor a table writes nothing.
+struct GuiLuaHost;
+struct GuiLuaRef;
 struct GuiLuaHandleResolver {
     virtual ~GuiLuaHandleResolver() = default;
     virtual std::int32_t resolve_by_number(std::int32_t id) = 0;  // 0109CED4
-    // 0109CED8. Null when the caller came through the reader, which holds a
-    // live object rather than an evaluated table; the native argument is the
-    // object itself and its consumer was not followed either way.
+    // Evaluated-value projection of 0109CED8. The parser's concrete table is
+    // preserved; the live reader uses the distinct method below.
     virtual std::int32_t resolve_by_table(const GuiTable* table) = 0;
+    // 00BD64E0..00BD64E9 passes the actual looked-up LuaObject to 0109CED8.
+    // This token belongs to the supplied host and is borrowed for this call;
+    // do not release it or retain it past the caller's normal reader leave.
+    // Pass by value so host operations cannot invalidate the token reference.
+    virtual std::int32_t resolve_by_live_table(GuiLuaHost& host, GuiLuaRef object) = 0;
 };
 
 // ---------------------------------------------------------------------------

@@ -54,6 +54,7 @@ class GameVfsHost;
 class GameSettingsBinding;
 class GameScriptHost;
 class GameLocaleHost;
+class GameFontHost;
 
 // One host method, or one initialize phase, observed during a run.
 struct GameHostMethodRecord {
@@ -285,6 +286,9 @@ struct GameRunSummary {
     bool renderer_api_shared{};
     std::size_t locale_keys{};
     std::size_t locale_files{};
+    std::size_t fonts_loaded{};
+    std::size_t font_resource_opens{};
+    std::size_t fingerprint_defined_bytes{};
 };
 
 // StartupHost for 008f81f0 plus everything the milestone runs inside
@@ -330,6 +334,7 @@ public:
     GameSettingsBinding* settings_binding() const noexcept { return settings_host_; }
     GameScriptHost* script_host() const noexcept { return scripts_; }
     GameLocaleHost* locale_host() const noexcept { return locale_; }
+    GameFontHost* font_host() const noexcept { return fonts_; }
     NativeRendererParametersOwner* renderer_parameters() const noexcept { return renderer_parameters_; }
 
 private:
@@ -359,6 +364,7 @@ private:
     GameSettingsBinding* settings_host_{};
     GameScriptHost* scripts_{};
     GameLocaleHost* locale_{};
+    GameFontHost* fonts_{};
     IDirect3D9* renderer_api_{};
     NativeRendererParametersOwner* renderer_parameters_{};
     SettingsRendererCapabilities renderer_capabilities_;

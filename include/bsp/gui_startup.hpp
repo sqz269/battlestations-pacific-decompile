@@ -30,12 +30,12 @@ inline constexpr std::string_view kFontDescriptorPath = "Fonts/Fonts.lua";
 // 00aa5e20 BSP_GuiManager_LoadResources
 // ---------------------------------------------------------------------------
 
-// Which native call built the entry. The manager is the ECX of every Group
+// Which native call obtains the entry. The manager is the ECX of every Group
 // call; a Child's ECX is the group that precedes it, not the manager.
 enum class GuiResourceKind : std::uint8_t {
     Texture, // renderer *(00f8d394) virtual +0x64
-    Group,   // 00aa5840(&name, 1, 0), ECX = manager
-    Child,   // 00aa7e00(&name, 1), ECX = the enclosing group
+    Group,   // 00aa5840(&name, 1, 0), load/find a registry-owned page
+    Child,   // 00aa7e00(&name, 1), FIND existing direct node-bearing child
 };
 
 // One step of the fixed resource list. Offsets are into the 0x88-byte manager;
@@ -51,7 +51,7 @@ struct GuiManagerResource {
     bool visibility;      // its argument
     // MousePtrFE_Icon is the one entry whose +0x34 call the native code issues
     // after the next entry's, at 00aa60a3 rather than between the two
-    // creations. The two objects are distinct, so the deferral is preserved
+    // lookups. The two objects are distinct, so the deferral is preserved
     // here for order fidelity rather than for any observed dependency.
     bool visibility_deferred;
 };
@@ -196,9 +196,13 @@ struct GuiStartupHost {
     virtual void* gui_manager() = 0;
 
     // The steps of 00aa5e20, in list order. `parent` is null for a Texture or a
-    // Group and is the most recent Group's result for a Child. The return value
-    // is stored at the entry's offsets; a Texture entry that the VFS rejects
-    // must return null and nothing is stored.
+    // Group and is the most recent Group's result for a Child. Despite this
+    // legacy method's name, Child must find an existing direct node-bearing
+    // child; it creates nothing. Pages and children are required. Transparent
+    // loading replaces/releases the previous retained reference in the host,
+    // even when the new texture is null. A null whiteGui means VFS rejection
+    // here; this legacy boundary cannot distinguish an accepted null renderer
+    // result. GuiResourceOwner exposes both operations and the full semantics.
     virtual void* create_gui_resource(void* manager, void* parent,
         const GuiManagerResource& entry) = 0;
 
@@ -216,7 +220,7 @@ struct GuiStartupResult {
     std::string language_font_path;
     bool font_descriptors_loaded{false};
     void* gui_manager{nullptr};
-    std::size_t resources_created{0}; // entries whose factory returned non-null
+    std::size_t resources_created{0}; // legacy name: acquired/found non-null entries
     std::size_t stores{0};            // including the second MousePtrFE_Icon store
 };
 

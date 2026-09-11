@@ -1,0 +1,85 @@
+{
+  "packet": "orch4_scheduled_voice_c",
+  "date_utc": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "document": "docs/SCHEDULED_VOICE.md",
+  "source": "src/scheduled_voice.cpp",
+  "header": "include/bsp/scheduled_voice.hpp",
+  "types_header": "include/bsp/scheduled_voice_types.hpp",
+  "routines": [
+    {
+      "address": "005b9300",
+      "proposed_name": "BSP_VoiceManager_StartScheduledRecord",
+      "cpp_name": "start_scheduled_voice_record_005b9300",
+      "abi": "ECX=manager; borrowed record pointer stack; RET4",
+      "final_instruction": "005b93ca",
+      "final_instruction_length": 3,
+      "listed_instructions": 65,
+      "finding": "Signed sound ID gate calls recovered005B9050 with same record identity, resource index0/null bank/current70. After callbacks resolve current84 row in94, write current70 to row30 and nonempty timed keys to active20/record24/index28/clock2C; empty keys preserve24/28/2C.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "005b93d0",
+      "proposed_name": "BSP_VoiceManager_AdmitScheduledRecord",
+      "cpp_name": "admit_scheduled_voice_record_005b93d0",
+      "abi": "ECX=manager; borrowed record pointer stack; RET4",
+      "final_instruction": "005b9419",
+      "final_instruction_length": 3,
+      "listed_instructions": 34,
+      "finding": "Nonnegative sound ID polls exactly slot0, stores manager70=0/-1; busy stores borrowed record pointer to manager74. Negative ID directly starts without changing70 or clearing74.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    },
+    {
+      "address": "005b9420",
+      "proposed_name": "BSP_VoiceManager_PollScheduledPlayback",
+      "cpp_name": "poll_scheduled_voice_005b9420",
+      "abi": "ECX=manager; no stack args; RET; bool result in AL only",
+      "final_instruction": "005b9489",
+      "final_instruction_length": 1,
+      "listed_instructions": 42,
+      "finding": "Pending branch polls slot0, reloads74 after callbacks, starts current record and clears74 after start callbacks; always returns true. No pending polls captured nonnegative70 slot, clears70=-1 only if finished, returns busy status.",
+      "status": "reconstructed_bounded_host_projection_build_tested"
+    }
+  ],
+  "integration": "Parent replaces disabled_74 with borrowed pending_record_74 and binds ScheduledVoiceBindings directly to manager70/74/84/94; timed-key projection resolves exact canonical VoiceClipRecord identity. Shared voice_playback header/source untouched by this worker.",
+  "provenance": [
+    "004483F0 loads lookup owner[00E188A8]+21DC;00705E00 existing branch returns inline map value node+14.",
+    "0044841B..29 loads voice manager[00E198C4]+A4 and passes unchanged record to005B94D0;005B953E passes it to005B93D0.",
+    "005B9300 builds Clip12{CF0DD0, same borrowed record,0}; no record retain/release exists at these boundaries."
+  ],
+  "flow_gaps": [],
+  "missing_functions": [],
+  "proposed_tag_changes": [
+    {
+      "address": "005b9300",
+      "retire": "stl_probable",
+      "reason": "Game voice startup and scheduling orchestration, not an STL instantiation; existing CRT helper keeps its library name."
+    }
+  ],
+  "unresolved": [
+    "Record lookup/map owner construction/destruction and record lifetime through pending/active row use.",
+    "Unreconstructed005B94D0 caller and parent-owned005BBF10 timed-key/GUI sequence integration;005B94D0 inspected for evidence only.",
+    "Invalid native row range invokes00BF6713 and may continue if handler returns; standard at() throws instead.",
+    "Native audio/FMOD/alternate queue, actual resource factories and nonzero slot address mapping remain required existing services."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Win32 Release passed",
+    "existing_tests": "reconstructed_math passed 1/1",
+    "build_log": "local/scheduled-voice-build.log",
+    "focused_probe": "PASS: busy admission defers; retry reloads callback-replaced pending identity/current selected row; writes record/index before clock; clears callback-created pending after start; true for pending branch then false next call; negative-ID/empty-key path preserves pending, index and stale metadata. Audio startup remains covered only by prior slot packet, not this probe.",
+    "probe_source": "local/scheduled-voice-probe.cpp",
+    "probe_recipe": "./local/run-scheduled-voice-probe.ps1",
+    "probe_log": "local/scheduled-voice-probe.log",
+    "permanent_tests_added": false,
+    "native_differential_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "tool_queries": {
+    "successful_live_ghidra_wrapper_invocations": 15,
+    "targets_including_multi_export": 17,
+    "raw_disk_decodes": 0
+  }
+}
