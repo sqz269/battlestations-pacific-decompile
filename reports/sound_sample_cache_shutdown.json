@@ -11,36 +11,147 @@
     "ghidra_mutations": false
   },
   "routines": [
-    {"address": "00a886c0", "name": "destroy_sound_sample_cache_00a886c0", "coverage": "complete_game_specific_normal_and_eh_ownership", "native_abi": "ECX=this; RET; actual inclusive end 00a88749", "previous_name": "FUN_00a886c0", "previous_comment": null, "proposed_name": "BSP_SoundSampleCache_Destroy"},
-    {"address": "00a88750", "name": "scalar_delete_sound_sample_cache_00a88750", "coverage": "complete_scalar_wrapper_control_flow", "native_abi": "ECX=this; flags DWORD on stack; EAX=original this; RET4", "previous_name": "CG_scalar_deleting_dtor_00a88750", "previous_comment": null, "proposed_name": "BSP_SoundSampleCache_ScalarDeletingDestructor"}
+    {
+      "address": "00a886c0",
+      "name": "destroy_sound_sample_cache_00a886c0",
+      "coverage": "complete_game_specific_normal_and_eh_ownership",
+      "native_abi": "ECX=this; RET; actual inclusive end 00a88749",
+      "previous_name": "FUN_00a886c0",
+      "previous_comment": null,
+      "proposed_name": "BSP_SoundSampleCache_Destroy"
+    },
+    {
+      "address": "00a88750",
+      "name": "scalar_delete_sound_sample_cache_00a88750",
+      "coverage": "complete_scalar_wrapper_control_flow",
+      "native_abi": "ECX=this; flags DWORD on stack; EAX=original this; RET4",
+      "previous_name": "CG_scalar_deleting_dtor_00a88750",
+      "previous_comment": null,
+      "proposed_name": "BSP_SoundSampleCache_ScalarDeletingDestructor"
+    }
   ],
   "host_steps": [
-    {"address": "00a886ee", "native": "00a82c00", "function": "00a886c0", "contract": "existing clear_sound_sample_cache_00a82c00"},
-    {"address": "00a8870b", "native": "00a88490", "function": "00a886c0", "contract": "whole-range native STL destruction projected with reverse-inorder pooled-key cleanup"},
-    {"address": "00a88714", "native": "00bf65ac", "function": "00a886c0", "contract": "tree-head storage free, host unique_ptr reset"},
-    {"address": "00a88753", "native": "00a886c0", "function": "00a88750", "contract": "derived destructor before deletion flag"},
-    {"address": "00a88760", "native": "00bf65ac", "function": "00a88750", "contract": "conditional owner storage free, host delete matches factory new"},
-    {"address": "00a885f6", "native": "00a88490", "function": "00a885e0", "contract": "EH remaining keys and node storage"},
-    {"address": "00a885ff", "native": "00bf65ac", "function": "00a885e0", "contract": "EH head free"},
-    {"address": "00a884da", "native": "00a88400", "function": "00a88490", "contract": "right-root-left native key destruction; no weak sample release"}
+    {
+      "address": "00a886ee",
+      "native": "00a82c00",
+      "function": "00a886c0",
+      "contract": "existing clear_sound_sample_cache_00a82c00"
+    },
+    {
+      "address": "00a8870b",
+      "native": "00a88490",
+      "function": "00a886c0",
+      "contract": "whole-range native STL destruction projected with reverse-inorder pooled-key cleanup"
+    },
+    {
+      "address": "00a88714",
+      "native": "00bf65ac",
+      "function": "00a886c0",
+      "contract": "tree-head storage free, host unique_ptr reset"
+    },
+    {
+      "address": "00a88753",
+      "native": "00a886c0",
+      "function": "00a88750",
+      "contract": "derived destructor before deletion flag"
+    },
+    {
+      "address": "00a88760",
+      "native": "00bf65ac",
+      "function": "00a88750",
+      "contract": "conditional owner storage free, host delete matches factory new"
+    },
+    {
+      "address": "00a885f6",
+      "native": "00a88490",
+      "function": "00a885e0",
+      "contract": "EH remaining keys and node storage"
+    },
+    {
+      "address": "00a885ff",
+      "native": "00bf65ac",
+      "function": "00a885e0",
+      "contract": "EH head free"
+    },
+    {
+      "address": "00a884da",
+      "native": "00a88400",
+      "function": "00a88490",
+      "contract": "right-root-left native key destruction; no weak sample release"
+    }
   ],
   "truncated_tail_steps": [
-    {"tail_site": "00a88734", "callee": "00a88180", "containing_function": "no_ghidra_function", "control_flow_owner": "00a886c0", "contract": "existing unregister_sound_auxiliary_tree_owner_00a88180", "evidence": "disk/live A88719..A88749, ECX=EDI, state=-1 before call"}
+    {
+      "tail_site": "00a88734",
+      "callee": "00a88180",
+      "containing_function": "no_ghidra_function",
+      "control_flow_owner": "00a886c0",
+      "contract": "existing unregister_sound_auxiliary_tree_owner_00a88180",
+      "evidence": "disk/live A88719..A88749, ECX=EDI, state=-1 before call"
+    }
   ],
   "eh_transfers": [
-    {"tail_site": "00cb628e", "callee": "00a885e0", "containing_function": "00cb6288", "state": 1, "next_state": 0, "contract": "destroy owner+4 tree"},
-    {"tail_site": "00cb6283", "callee": "00a88180", "containing_function": "00cb6280", "state": 0, "next_state": -1, "contract": "unregister singleton base"}
+    {
+      "tail_site": "00cb628e",
+      "callee": "00a885e0",
+      "containing_function": "00cb6288",
+      "state": 1,
+      "next_state": 0,
+      "contract": "destroy owner+4 tree"
+    },
+    {
+      "tail_site": "00cb6283",
+      "callee": "00a88180",
+      "containing_function": "00cb6280",
+      "state": 0,
+      "next_state": -1,
+      "contract": "unregister singleton base"
+    }
   ],
   "corrections": [
-    {"was": "A886C0 saved body stops after _free at A88718", "is": "normal flow continues to A88749 with head/count-zero and A88180", "evidence": "A88719..A88749 disk/live bytes"},
-    {"was": "A88750 decompile may imply extraout_EAX after free", "is": "both branches return captured original this", "evidence": "A88765..67 ADD ESP,4; A88768 MOV EAX,ESI; A8876B RET4"},
-    {"was": "A88400 export omits left-node loop", "is": "right subtree then current key/node then left subtree", "evidence": "A88421 reads left into ESI; raw A88441..A8844B balances free and loops to A88411"},
-    {"was": "A885E0 stored body ends at A88603", "is": "tree cleanup continues through A88613, clearing head/count", "evidence": "A88604..A88613 disk/live bytes"}
+    {
+      "was": "A886C0 saved body stops after _free at A88718",
+      "is": "normal flow continues to A88749 with head/count-zero and A88180",
+      "evidence": "A88719..A88749 disk/live bytes"
+    },
+    {
+      "was": "A88750 decompile may imply extraout_EAX after free",
+      "is": "both branches return captured original this",
+      "evidence": "A88765..67 ADD ESP,4; A88768 MOV EAX,ESI; A8876B RET4"
+    },
+    {
+      "was": "A88400 export omits left-node loop",
+      "is": "right subtree then current key/node then left subtree",
+      "evidence": "A88421 reads left into ESI; raw A88441..A8844B balances free and loops to A88411"
+    },
+    {
+      "was": "A885E0 stored body ends at A88603",
+      "is": "tree cleanup continues through A88613, clearing head/count",
+      "evidence": "A88604..A88613 disk/live bytes"
+    }
   ],
   "byte_parity": [
-    {"start": "00a886c0", "end": "00a8876c", "length": 173, "matches_disk": true, "sha256": "bbda2a7256f1fd4f4a8118280d82da9442d81c6cbd484015962c9402035e41c2"},
-    {"start": "00dec42c", "end": "00dec463", "length": 56, "matches_disk": true, "sha256": "e6963f06ec5d7e4176a995a7a85c60f1de05c6668ae89b2e578d5ce8bef5e7dc"},
-    {"start": "00cb6280", "end": "00cb629c", "length": 29, "matches_disk": true, "sha256": "923832327b70e6947a7211ea6949720e44f053b1a22ffa0ece67dc6dc27719a7"}
+    {
+      "start": "00a886c0",
+      "end": "00a8876c",
+      "length": 173,
+      "matches_disk": true,
+      "sha256": "bbda2a7256f1fd4f4a8118280d82da9442d81c6cbd484015962c9402035e41c2"
+    },
+    {
+      "start": "00dec42c",
+      "end": "00dec463",
+      "length": 56,
+      "matches_disk": true,
+      "sha256": "e6963f06ec5d7e4176a995a7a85c60f1de05c6668ae89b2e578d5ce8bef5e7dc"
+    },
+    {
+      "start": "00cb6280",
+      "end": "00cb629c",
+      "length": 29,
+      "matches_disk": true,
+      "sha256": "923832327b70e6947a7211ea6949720e44f053b1a22ffa0ece67dc6dc27719a7"
+    }
   ],
   "validation": {
     "build": "scripts/build.ps1 Release MSVC Win32 passed; source registered by one cmake/startup.cmake append",
@@ -61,5 +172,13 @@
     "Reverse inorder key release is preserved, but extraction topology and allocator observability are host contracts.",
     "Native invalid iterators, corrupt input, structured exceptions and double exceptions are outside this interface.",
     "No FMOD or in-game shutdown validation."
-  ]
+  ],
+  "primary_integration": {
+    "owner": "agent/orch4-20260910",
+    "report": "reports/sound_shutdown.json",
+    "combined_build": "2/2 existing tests passed",
+    "installed_fmod_shutdown": true,
+    "original_worker_validation_preserved": true,
+    "game_validated": false
+  }
 }

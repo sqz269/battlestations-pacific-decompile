@@ -144,3 +144,8 @@ A7F710 bank/event factory. Event slot14 and slot24 are native constant false;
 ended refresh uses FMOD state bit8. The existing protected/unprotected retirement
 policy is preserved, and a protected installed event reaches natural completion.
 Application globals, VFS sound directories and full game validation remain open.
+
+
+## Correction from docs/SOUND_SHUTDOWN.md
+
+A7C1C0 now restarts the captured pointer object lifetime immediately after vector pop_back, before invoking the release callback. Native A7C200 lowers count without destroying slot storage, and A7C229 clears that live slot after release. The local manager fixture now reads the removed slot during its callback. A7E240 shutdown invokes current manager slot4 twice, each with fresh identity matrix and zero velocity; both derive timing from the clock.

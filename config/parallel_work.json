@@ -7520,6 +7520,57 @@
         "reports/native_crt_sse2_pow_support_discovery.json"
       ],
       "evidence": "reports/native_crt_sse2_pow_support_discovery.json"
+    },
+    {
+      "id": "orch4_sound_shutdown_w",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "reconstructed_build_and_installed_shutdown_fixture_tested_pending_integration",
+      "function_addresses": [
+        "00a883b0",
+        "00a882c0",
+        "00a817d0",
+        "00a816b0",
+        "00a7b9c0",
+        "00a7e240",
+        "00a85ae0",
+        "00a7d380",
+        "00a7bce0",
+        "00a7bd50",
+        "00a7f9f0",
+        "00a7f050",
+        "00a7d750",
+        "00a7d910",
+        "00a7fe00",
+        "00a7f560",
+        "00a7aaf0",
+        "00a7bfe0",
+        "00a7c6c0",
+        "00a7a980",
+        "00a7f240",
+        "00a7fcc0",
+        "00a886c0",
+        "00a88750",
+        "00a7c1c0"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_shutdown.hpp",
+        "src/sound_shutdown.cpp",
+        "include/bsp/sound_system_owner.hpp",
+        "include/bsp/fmod_configuration_library.hpp",
+        "src/fmod_configuration_library.cpp",
+        "src/sound_system_update.cpp",
+        "include/bsp/sound_listener.hpp",
+        "src/sound_listener.cpp",
+        "include/bsp/sound_configuration.hpp",
+        "src/sound_configuration.cpp",
+        "include/bsp/sound_configuration_shutdown.hpp",
+        "src/sound_configuration_shutdown.cpp",
+        "include/bsp/sound_sample_cache_shutdown.hpp",
+        "src/sound_sample_cache_shutdown.cpp"
+      ],
+      "integration_report": "reports/sound_shutdown.json",
+      "discovery_evidence": "docs/SOUND_SHUTDOWN.md"
     }
   ],
   "snapshot_after_analysis": {

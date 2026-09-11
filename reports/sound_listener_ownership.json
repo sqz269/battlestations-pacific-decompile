@@ -359,5 +359,13 @@
     "No foreign descriptor vtables or reentrant structural table mutations",
     "No gameplay validation"
   ],
-  "evidence": "docs/SOUND_LISTENER_OWNERSHIP.md"
+  "evidence": "docs/SOUND_LISTENER_OWNERSHIP.md",
+  "primary_integration": {
+    "owner": "agent/orch4-20260910",
+    "report": "reports/sound_shutdown.json",
+    "combined_build": "2/2 existing tests passed",
+    "installed_fmod_shutdown": true,
+    "original_worker_validation_preserved": true,
+    "game_validated": false
+  }
 }
