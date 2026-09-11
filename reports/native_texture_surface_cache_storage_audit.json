@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_texture_surface_cache_storage",
-  "status": "three_functions_reconstructed_five_original_byte_comparisons_passed",
+  "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-texture-surface-cache-storage-20260910b",
   "branch": "agent/native-texture-surface-cache-storage-20260910b",
   "base_commit": "2c23bb8",
@@ -526,5 +526,439 @@
       "bytes": 620,
       "sha256": "de6223ffddd92c49a6c9253befa77a73145f2bc1d8860c58aef912abd90fb289"
     }
-  ]
+  ],
+  "native_differential_fixture": true,
+  "primary_integration": {
+    "new_complete_functions": 3,
+    "upgraded_complete_functions": 0,
+    "records": [
+      {
+        "kind": "function",
+        "address": "00b3d9b0",
+        "name": "reserve_native_texture_surface_cache_00b3d9b0",
+        "cpp_symbol": "reserve_native_texture_surface_cache_00b3d9b0",
+        "source": "src/native_texture_surface_cache_storage.cpp",
+        "native_end_exclusive": "00b3da18",
+        "original_abi": "ECX actual12-byte header; signed requested capacity stack DWORD; RET4; EAX unspecified.",
+        "evidence": "reports/native_texture_surface_cache_storage_audit.json",
+        "status": "complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b3da20",
+        "name": "resize_native_texture_surface_cache_00b3da20",
+        "cpp_symbol": "resize_native_texture_surface_cache_00b3da20",
+        "source": "src/native_texture_surface_cache_storage.cpp",
+        "native_end_exclusive": "00b3da70",
+        "original_abi": "ECX actual12-byte header; signed requested count stack DWORD; RET4; EAX unspecified.",
+        "evidence": "reports/native_texture_surface_cache_storage_audit.json",
+        "status": "complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b3ec40",
+        "name": "destroy_native_texture_surface_cache_00b3ec40",
+        "cpp_symbol": "destroy_native_texture_surface_cache_00b3ec40",
+        "source": "src/native_texture_surface_cache_storage.cpp",
+        "native_end_exclusive": "00b3ec57",
+        "original_abi": "ECX actual12-byte header; RET; EAX unspecified.",
+        "evidence": "reports/native_texture_surface_cache_storage_audit.json",
+        "status": "complete_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "verified_evidence": {
+      "worker_pins_verified": 35,
+      "live_PE_spans": 8,
+      "live_PE_bytes": 232,
+      "owned_native_bytes": 207,
+      "primary_postimages_verified": 8,
+      "only_external_entry_patches": 2,
+      "primary_providers": [
+        {
+          "address": "00b3d9b0",
+          "map_line": "0001:000041e0       ?reserve_native_texture_surface_cache_00b3d9b0@bsp@@YAXAAUNativeTextureSurfaceCacheStorage@1@H@Z 300051e0 f   bsp_core:native_texture_surface_cache_storage.obj"
+        },
+        {
+          "address": "00b3da20",
+          "map_line": "0001:00004310       ?resize_native_texture_surface_cache_00b3da20@bsp@@YAXAAUNativeTextureSurfaceCacheStorage@1@H@Z 30005310 f   bsp_core:native_texture_surface_cache_storage.obj"
+        },
+        {
+          "address": "00b3ec40",
+          "map_line": "0001:00003fe0       ?destroy_native_texture_surface_cache_00b3ec40@bsp@@YAXAAUNativeTextureSurfaceCacheStorage@1@@Z 30004fe0 f   bsp_core:native_texture_surface_cache_storage.obj"
+        }
+      ],
+      "cases": 5,
+      "matching_words": 1271,
+      "primary_artifacts": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\build_native_cache3_primary_check.ps1",
+          "sha256": "22506b12cfbebf64c3446ef6fd4816c43c8cf0d5be33a5c5e0b19fc13b96dc3c"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_cache3_primary_fixture.txt",
+          "sha256": "f7bf1b7ee15749fda3ac07760066b42448c1a9bebeebb3f42ce12788f06799ae"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cache3_primary_comparison.log",
+          "sha256": "e24ff82f88a8a1d23b6e2c472a20dfd35c26d097a6fe4c074ea3baa46b95bc9e"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cache3_postimages.json",
+          "sha256": "8e6d5dd639186bcd3c356733705eec534ae51c6dabe30670bb4c3b9f44ffaadf"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\cache3_raw_traces.json",
+          "sha256": "90fffc7840d866ec2eb0b9a4865975a3b332abf253d0a04d49b21909583b4cba"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cache3-primary-check\\actual_lifetime.obj",
+          "sha256": "3afe5a23b7cd9c6ef9128849cbc2e0973ebabcb0f5623dfbf6ab38cfe62e028d"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cache3-primary-check\\cache3_check.exe",
+          "sha256": "b063e8827ca178f2c21e9c412812cb4bff7189b3d717bb32a970248ea54c9c45"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cache3-primary-check\\cache3_check.map",
+          "sha256": "2ce61fd492654541b2fda982007bbf56ed3bc4492f734ba0b8d3f3eaa9165b2d"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\cache3-primary-check\\cache3_check.obj",
+          "sha256": "9bf82da0db4867fd88acd6e286904cd375d272499ac2433e0800d7a28a92cfde"
+        }
+      ],
+      "primary_library": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "sha256": "78525039f8c44266897dceb5bc4013f4f546e8267f7b32562976d5b158e2501c"
+      },
+      "source_pins": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_texture_surface_cache_storage.cpp",
+          "sha256": "6606f2524de218ba6cd7c28f7cf969fcb50ea532aaccb09c5ce4b408d7392e0b"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_texture_surface_cache_storage.hpp",
+          "sha256": "990878139211164b8259ca4ab2b2f6a36d0261051b3be232134f0e43f538363b"
+        }
+      ],
+      "build": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_texture_cache_primary_build.txt",
+        "sha256": "19348d63278723bec131bd16f7b9e6028140909c4292d7db2858e63d3b9fced0",
+        "tests": 2,
+        "passed": true
+      }
+    },
+    "definition_repair": {
+      "target": {
+        "project": "bsp",
+        "program": "battlestationspacific.exe",
+        "program_path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": "00400000",
+        "ghidra_url": "http://127.0.0.1:8089",
+        "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "coordination_dir": "C:/Users/sqz269/.bsp"
+      },
+      "functions": [
+        {
+          "address": "00b3d9b0",
+          "end_exclusive": "00b3da18",
+          "length": 104,
+          "sha256": "92facc9e38eb8568e3b224ac63db8a5807b5b3783165c7f63a5a7d79884efa31",
+          "function_before": "Function: FUN_00b3d9b0 at 00b3d9b0\nSignature: undefined FUN_00b3d9b0(void)\nEntry: 00b3d9b0\nBody: 00b3d9b0 - 00b3da17",
+          "documentation_before": {
+            "hash": "50c48bba291247878059564b6a19943ae85a4b98907fe91ee106c2971314b61c",
+            "source_program": "battlestationspacific.exe",
+            "source_address": "00b3d9b0",
+            "function_name": "FUN_00b3d9b0",
+            "return_type": "undefined",
+            "calling_convention": "unknown",
+            "parameters": [],
+            "local_variables": [
+              {
+                "name": "iVar3",
+                "type": "int",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "iVar1",
+                "type": "int",
+                "storage": "(unique, 0x17200, 4)"
+              },
+              {
+                "name": "puVar2",
+                "type": "undefined4 *",
+                "storage": "(register, 0x4, 4)"
+              }
+            ],
+            "comments": [],
+            "labels": [
+              {
+                "relative_offset": 18,
+                "name": "LAB_00b3d9c2"
+              },
+              {
+                "relative_offset": 52,
+                "name": "LAB_00b3d9e4"
+              },
+              {
+                "relative_offset": 70,
+                "name": "LAB_00b3d9f6"
+              },
+              {
+                "relative_offset": 82,
+                "name": "LAB_00b3da02"
+              },
+              {
+                "relative_offset": 99,
+                "name": "LAB_00b3da13"
+              }
+            ],
+            "completeness_score": 50.0
+          },
+          "returning_free_call_sites": [
+            "00b3da05"
+          ],
+          "function_after": "Function: FUN_00b3d9b0 at 00b3d9b0\nSignature: undefined FUN_00b3d9b0(void)\nEntry: 00b3d9b0\nBody: 00b3d9b0 - 00b3da17",
+          "documentation_after": {
+            "hash": "768c6091a53fb8049120b7df7dbc41619e031aea1dc5bed13aef1ae7c1696860",
+            "source_program": "battlestationspacific.exe",
+            "source_address": "00b3d9b0",
+            "function_name": "FUN_00b3d9b0",
+            "return_type": "undefined",
+            "calling_convention": "unknown",
+            "parameters": [],
+            "local_variables": [
+              {
+                "name": "puVar4",
+                "type": "undefined4 *",
+                "storage": "(register, 0x4, 4)"
+              },
+              {
+                "name": "puVar2",
+                "type": "undefined4 *",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "iVar3",
+                "type": "int",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "iVar1",
+                "type": "int",
+                "storage": "(unique, 0x17200, 4)"
+              }
+            ],
+            "comments": [],
+            "labels": [
+              {
+                "relative_offset": 18,
+                "name": "LAB_00b3d9c2"
+              },
+              {
+                "relative_offset": 52,
+                "name": "LAB_00b3d9e4"
+              },
+              {
+                "relative_offset": 70,
+                "name": "LAB_00b3d9f6"
+              },
+              {
+                "relative_offset": 82,
+                "name": "LAB_00b3da02"
+              },
+              {
+                "relative_offset": 99,
+                "name": "LAB_00b3da13"
+              }
+            ],
+            "completeness_score": 50.0
+          }
+        },
+        {
+          "address": "00b3ec40",
+          "end_exclusive": "00b3ec57",
+          "length": 23,
+          "sha256": "62ba36371e894b0f54ea6fdc32d42537c4ce98188f13c622c11211c4a297ae3e",
+          "function_before": "Function: FUN_00b3ec40 at 00b3ec40\nSignature: undefined FUN_00b3ec40(void)\nEntry: 00b3ec40\nBody: 00b3ec40 - 00b3ec51",
+          "documentation_before": {
+            "hash": "d66c02ce3fbd5d6282313791cafe80a48a09dbbf66dd755d1c4bfd4b2d26e375",
+            "source_program": "battlestationspacific.exe",
+            "source_address": "00b3ec40",
+            "function_name": "FUN_00b3ec40",
+            "return_type": "undefined",
+            "calling_convention": "unknown",
+            "parameters": [],
+            "local_variables": [],
+            "comments": [],
+            "labels": [],
+            "completeness_score": 50.0
+          },
+          "returning_free_call_sites": [
+            "00b3ec4d"
+          ],
+          "function_after": "Function: FUN_00b3ec40 at 00b3ec40\nSignature: undefined FUN_00b3ec40(void)\nEntry: 00b3ec40\nBody: 00b3ec40 - 00b3ec56",
+          "documentation_after": {
+            "hash": "83d4e6d066dec83d15aa991f19c19b24ace7a1100be9ab352be37961410bbd74",
+            "source_program": "battlestationspacific.exe",
+            "source_address": "00b3ec40",
+            "function_name": "FUN_00b3ec40",
+            "return_type": "undefined",
+            "calling_convention": "unknown",
+            "parameters": [],
+            "local_variables": [],
+            "comments": [],
+            "labels": [],
+            "completeness_score": 50.0
+          }
+        }
+      ],
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b3da0a",
+            "end_address": "00b3da18"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b3da0a",
+            "end_address": "00b3da17",
+            "bytes_disassembled": 14,
+            "message": "Successfully disassembled 14 byte(s)"
+          }
+        },
+        {
+          "endpoint": "clear_instruction_flow_override",
+          "body": {
+            "address": "00b3da05"
+          },
+          "result": {
+            "status": "success",
+            "message": "Success: Cleared flow override at 00b3da05 (was: CALL_RETURN, now: NONE)"
+          }
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b3d9b0"
+          },
+          "result": {
+            "success": true,
+            "address": "00b3d9b0",
+            "deleted_function": "FUN_00b3d9b0",
+            "body_size": 95,
+            "message": "Function 'FUN_00b3d9b0' deleted at 00b3d9b0"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b3d9b0",
+            "name": "FUN_00b3d9b0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b3d9b0",
+            "function_name": "FUN_00b3d9b0",
+            "entry_point": "00b3d9b0",
+            "body_size": 104,
+            "message": "Function created successfully at 00b3d9b0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b3ec52",
+            "end_address": "00b3ec57"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b3ec52",
+            "end_address": "00b3ec56",
+            "bytes_disassembled": 5,
+            "message": "Successfully disassembled 5 byte(s)"
+          }
+        },
+        {
+          "endpoint": "clear_instruction_flow_override",
+          "body": {
+            "address": "00b3ec4d"
+          },
+          "result": {
+            "status": "success",
+            "message": "Success: Cleared flow override at 00b3ec4d (was: CALL_RETURN, now: NONE)"
+          }
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b3ec40"
+          },
+          "result": {
+            "success": true,
+            "address": "00b3ec40",
+            "deleted_function": "FUN_00b3ec40",
+            "body_size": 18,
+            "message": "Function 'FUN_00b3ec40' deleted at 00b3ec40"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b3ec40",
+            "name": "FUN_00b3ec40",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b3ec40",
+            "function_name": "FUN_00b3ec40",
+            "entry_point": "00b3ec40",
+            "body_size": 23,
+            "message": "Function created successfully at 00b3ec40"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ],
+      "status": "Texture surface cache returning-free continuations restored with comments preserved; project saved"
+    },
+    "annotations_applied": true,
+    "abi_compatible": false,
+    "game_validated": false,
+    "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+    "annotation_journal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\ghidra-annotations-20260911T031912Z.json",
+      "sha256": "ef90d13d707cb9becacaf02e927cc6e07fd0e00bb933097b3ce443f7087753fb"
+    },
+    "saved_project": true,
+    "exports_force_refreshed": true
+  }
 }

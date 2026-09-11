@@ -77,6 +77,7 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_retained_memory_owners.cpp
   src/native_renderer_texture_name_notification.cpp
   src/native_logical_texture_named_base.cpp
+  src/native_texture_surface_cache_storage.cpp
   src/native_vertex_declaration_owner.cpp
   src/native_render_buffer_unregistration.cpp
   src/native_render_cache_construction.cpp

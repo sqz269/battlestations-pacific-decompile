@@ -3588,8 +3588,8 @@
       "id": "native_texture_surface_cache_storage",
       "packet": "native_texture_surface_cache_storage",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_implementing_actual_surface_cache_storage",
+      "done": true,
+      "state": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
       "function_addresses": [
         "00b3d9b0",
         "00b3da20",
@@ -3609,14 +3609,15 @@
         "Actual 12-byte header at texture+40: data, signed count, signed capacity; eight-byte raw records.",
         "DWORD address/multiplication wrap, signed comparisons, current count reloads and sequential raw field stores.",
         "No implicit surface references, owner destructors, copied vector or EH cleanup."
-      ]
+      ],
+      "evidence": "reports/native_texture_surface_cache_storage_audit.json"
     },
     {
       "id": "native_texture_2d_owner",
       "packet": "native_texture_2d_owner",
       "worker": "material_effect_plane",
       "done": false,
-      "state": "implementing_complete_actual_owner_waiting_cache_integration",
+      "state": "implementing_complete_actual_owner_all_four_direct_dependencies_integrated",
       "function_addresses": [
         "00b3f930",
         "00b3f2e0",
@@ -4744,13 +4745,15 @@
     {
       "packet": "native_texture_surface_cache_storage",
       "worker": "particle_clock_lifetime",
-      "state": "worker_implementing_actual_surface_cache_storage",
-      "validation": null
+      "state": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+      "validation": null,
+      "done": true,
+      "evidence": "reports/native_texture_surface_cache_storage_audit.json"
     },
     {
       "packet": "native_texture_2d_owner",
       "worker": "material_effect_plane",
-      "state": "implementing_complete_actual_owner_waiting_cache_integration",
+      "state": "implementing_complete_actual_owner_all_four_direct_dependencies_integrated",
       "validation": null
     },
     {
@@ -4761,16 +4764,6 @@
     }
   ],
   "next_dispatch": [
-    {
-      "packet": "native_texture_surface_cache_storage",
-      "worker": "particle_clock_lifetime",
-      "function_addresses": [
-        "00b3d9b0",
-        "00b3da20",
-        "00b3ec40"
-      ],
-      "state": "worker_implementing_actual_surface_cache_storage"
-    },
     {
       "packet": "native_texture_2d_owner",
       "worker": "material_effect_plane",

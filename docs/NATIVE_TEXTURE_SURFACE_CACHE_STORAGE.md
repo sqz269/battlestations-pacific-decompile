@@ -118,3 +118,15 @@ proof, arbitrary invalid-header support, or an invented allocator-null-success
 path. Data pointers are normalized by actual allocation identity; freed payload
 snapshots are retained before the real free and never reread afterward. This is
 build and original-byte fixture evidence, not in-game or rendering validation.
+
+## Primary integration
+
+The three complete entries are registered in the primary library. The original
+fixture was linked to its actual three entry providers and again matches all
+1,271 words across five cases. All eight loaded native postimages match the
+original bytes plus exactly two declared allocator/free entry bridges.
+The combined strict Win32 build and both existing CTest checks passed.
+Ghidra now includes the reserve post-free stores and complete destructor return
+tail; existing comments were preserved. The audit pins the primary library,
+map, unchanged fixture, raw traces and permitted postimages. No broader runtime
+or ABI claim follows from the signed/wrapped arithmetic boundary cases.
