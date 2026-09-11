@@ -1,0 +1,404 @@
+{
+  "packet": "native_renderer_surface_save_publish_discovery",
+  "status": "complete_read_only_discovery_source3_approved_not_implemented",
+  "base_commit": "f99fc4863108c0b6e98b7b7648964692f14e145d",
+  "capture": {
+    "utc": "2026-09-11T19:52:27.496941+00:00",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Every bsp.py query verifies existing project/program/language/base. All fresh spans compared to original PE; no game or Ghidra mutation.",
+    "spans": [
+      {
+        "address": "00b5e490",
+        "length": 107,
+        "role": "full_candidate_publisher",
+        "bytes_hex": "5356578bf18b7e4857ff151822ce00834718018b46408b5c24108d7cc6143bfb74248b0b6a01518bcfe882f88bff833b0074138b178b43048b4f04525051e8ad91090083c40c8b464083c00199b905000000f7f98956408b7648834618ff56ff151022ce005f5e5bc20400",
+        "sha256": "696ca0b584ba542d67a9ab0ae534aae4929553954077d1ceb7e07ac2e346cfd8",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 42
+      },
+      {
+        "address": "00b23c50",
+        "length": 235,
+        "role": "full_candidate_capture",
+        "bytes_hex": "83ec28538b5c2430833b00568bf10f84cf0000008b86101a0000578dbe2c1d0000508bcfe807a703008b168986241d00008b82280100006a008bceffd08b482c8b96241d00006a006a016a006a00516a006a0052e82ba310008b86241d00008b088d54241452508b4130ffd08b86241d00008b086a006a008d54241452508b4134ffd08b5424300faf54242c8b44241033c985d27623eb088da42400000000908108000000ff8b5424300faf54242c83c10183c0043bca72e78b86241d00008b088b513850ffd28bb6241d00008b068b50308d4c24145156ffd2538bcfe85ea703005f5e5b83c428c20400",
+        "sha256": "c532ae2ac6fbef2763aa0ff5fdc839dfa74be328a00e0da1ea82e27532eef6af",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 82
+      },
+      {
+        "address": "00b24dc0",
+        "length": 9,
+        "role": "full_missing_selector_provider",
+        "bytes_hex": "8b817c190000c20400",
+        "sha256": "fd304c17c1dab4c4742f8adef94d329505ac9617a3824852114cd29f764dc442",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 2
+      },
+      {
+        "address": "00b5e380",
+        "length": 270,
+        "role": "full_ready_acquire_provider",
+        "bytes_hex": "83ec28568bf1837e50005775206a006a00566830e2b5006a006a00ff153822ce006a0050894650ff15a022ce008b7e48538b1d1822ce005557ffd3834718018b46408b2d1022ce00894424108b4648834018ff50ffd58b7e4857ffd3834718018b46488b7e3c834018ff50ffd58b44241083c00199b905000000f7f93bd78954241475256a0aff153022ce008b7e4857ffd3834718018b46488b7e3c834018ff50ffd5397c241474db8b542410833c96008d34965d5b754c8b7c24348b078b50488d4c2408516a006a006a0057c744241c00000000ffd28b4424088b088d54241052508b4130ffd08b54242c8b4424288b0f8b89900000006a00566a026a15525057ffd18b065f5e83c428c20400",
+        "sha256": "be368df0cce14f573e5851b45cc02b2e09ac8a3c3fb52f96b6ea63b88ae6e66e",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 102
+      },
+      {
+        "address": "0041dd40",
+        "length": 164,
+        "role": "full_ready_actual_header_resize_provider",
+        "bytes_hex": "568bf18b0e578b7c240c3bf90f848d00000085ff752c8b460485c074136a0183c1015150e857bfffff8bc8e8a0377b005fc7460400000000c706000000005ec2080053e838bfffff6a018d4f01518bc8e88b337b00807c2414008bd8741b8b063bf876078b56045052eb058b4604575053e8ca987d0083c40c8b4e0485c974158b066a0183c0015051e8f2beffff8bc8e83b377b00895e04893ec6043b005b5f5ec20800",
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 65
+      },
+      {
+        "address": "00bf7680",
+        "length": 869,
+        "role": "original_CRT_copy_body_with_jump_tables_evidence",
+        "bytes_hex": "558bec57568b750c8b4d108b7d088bc18bd103c63bfe76083bf80f82a401000081f900010000721f833da4ee0901007416575683e70f83e60f3bfe5e5f75085e5f5de964510100f7c7030000007515c1e90283e20383f908722af3a5ff2495f477bf00908bc7ba0300000083e904720c83e00303c8ff24850877bf00ff248d0478bf0090ff248d8877bf00901877bf004477bf006877bf0023d18a0688078a46018847018a4602c1e90288470283c60383c70383f90872ccf3a5ff2495f477bf008d490023d18a0688078a4601c1e90288470183c60283c70283f90872a6f3a5ff2495f477bf009023d18a06880783c601c1e90283c70183f9087288f3a5ff2495f477bf008d4900eb77bf00d877bf00d077bf00c877bf00c077bf00b877bf00b077bf00a877bf008b448ee489448fe48b448ee889448fe88b448eec89448fec8b448ef089448ff08b448ef489448ff48b448ef889448ff88b448efc89448ffc8d048d0000000003f003f8ff2495f477bf008bff0478bf000c78bf001878bf002c78bf008b45085e5fc9c3908a0688078b45085e5fc9c3908a0688078a46018847018b45085e5fc9c38d49008a0688078a46018847018a46028847028b45085e5fc9c3908d7431fc8d7c39fcf7c7030000007524c1e90283e20383f908720dfdf3a5fcff24959079bf008bfff7d9ff248d4079bf008d49008bc7ba0300000083f904720c83e0032bc8ff24859478bf00ff248d9079bf0090a478bf00c878bf00f078bf008a460323d188470383ee01c1e90283ef0183f90872b2fdf3a5fcff24959079bf008d49008a460323d18847038a4602c1e90288470283ee0283ef0283f9087288fdf3a5fcff24959079bf00908a460323d18847038a46028847028a4601c1e90288470183ee0383ef0383f9080f8256fffffffdf3a5fcff24959079bf008d49004479bf004c79bf005479bf005c79bf006479bf006c79bf007479bf008779bf008b448e1c89448f1c8b448e1889448f188b448e1489448f148b448e1089448f108b448e0c89448f0c8b448e0889448f088b448e0489448f048d048d0000000003f003f8ff24959079bf008bffa079bf00a879bf00b879bf00cc79bf008b45085e5fc9c3908a46038847038b45085e5fc9c38d49008a46038847038a46028847028b45085e5fc9c3908a46038847038a46028847028a46018847018b45085e5fc9c3",
+        "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 0
+      },
+      {
+        "address": "00bf7680",
+        "length": 71,
+        "role": "CRT_overlap_and_speed_dispatch_code",
+        "bytes_hex": "558bec57568b750c8b4d108b7d088bc18bd103c63bfe76083bf80f82a401000081f900010000721f833da4ee0901007416575683e70f83e60f3bfe5e5f75085e5f5de964510100",
+        "sha256": "3aabb3f2d4419784516e2ce81e5f54f579e75ce6ce6aa94f422cddf4dc85c9ed",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 30
+      },
+      {
+        "address": "00bf7844",
+        "length": 40,
+        "role": "CRT_backward_overlap_copy_code",
+        "bytes_hex": "8d7431fc8d7c39fcf7c7030000007524c1e90283e20383f908720dfdf3a5fcff24959079bf008bff",
+        "sha256": "98c322047aa85b2a1c4f76b290e6bec7fb1f8823598f8b95d4d563d27315ee6e",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 13
+      },
+      {
+        "address": "00bf76c7",
+        "length": 68,
+        "role": "CRT_zero_length_dispatch_code",
+        "bytes_hex": "f7c7030000007515c1e90283e20383f908722af3a5ff2495f477bf00908bc7ba0300000083e904720c83e00303c8ff24850877bf00ff248d0478bf0090ff248d8877bf00",
+        "sha256": "2aef85f77f60489e5f22fc34c789932fea0957a535b0a068dbec3156c44b29f8",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 19
+      },
+      {
+        "address": "00bf77eb",
+        "length": 7,
+        "role": "CRT_zero_aligned_tail_dispatch",
+        "bytes_hex": "ff2495f477bf00",
+        "sha256": "de504a578c86d559a3ec71e49e325d4beff26effee1499e922199d00bd85b80d",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 1
+      },
+      {
+        "address": "00bf7804",
+        "length": 7,
+        "role": "CRT_zero_return_without_data_access",
+        "bytes_hex": "8b45085e5fc9c3",
+        "sha256": "42af23f2392dc1efe1fd06612d07b84d932d0880aee40478b800b90322e3b5d0",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 5
+      },
+      {
+        "address": "00bf7788",
+        "length": 4,
+        "role": "CRT_zero_aligned_jump_slot",
+        "bytes_hex": "eb77bf00",
+        "sha256": "ae4f5d0253ae63204b125e24e4b4af89e373a6a9c25cdc48a4ebebc8b9a0bbba",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 0
+      },
+      {
+        "address": "00bf77f4",
+        "length": 4,
+        "role": "CRT_zero_tail_jump_slot",
+        "bytes_hex": "0478bf00",
+        "sha256": "7010fee917359b580d3da71f48a66896ecedb460204394adf16d8a26a2af1fd7",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 0
+      },
+      {
+        "address": "00c2dfd4",
+        "length": 6,
+        "role": "D3DXLoadSurfaceFromSurface_forwarder",
+        "bytes_hex": "ff250c24ce00",
+        "sha256": "8925a07f04dc7bbbfb483d5fe7389a41300b54b56a91b588cbeaab6bdbb4b2db",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 1
+      },
+      {
+        "address": "00d5f0a8",
+        "length": 300,
+        "role": "full_required_borrowed_renderer_profile_window",
+        "bytes_hex": "f039b300b0aeb2003014b20000b2b200b0f4b200a0f4b2005084b2006084b20010feb100207cb200f07cb20020feb10060ffb100a064b200e017b3001029b30010f7b200c0f4b200b018b30030feb10040feb1007085b20050feb100c087b200b088b200b019b300c01ab3005022b300b015b200403db200c015b200e014b200101fb200d015b20070a0b20080a3b200a0a5b200a0a9b200704eb200c001b200a085b2007067b200d0feb1007084b2008084b200d090b20070b2b2003092b200c08ab200008db2007092b200606cb200106ab2003093b2004074b2008077b200203fb200f04fb200103ab300c0ffb1006019b200e0feb100c01eb20010ffb10020ffb10050ffb10040ffb100d001b200503cb2001002b2004017b200908ab200d04db200204eb200c04db200",
+        "sha256": "b615f0d9c3faf0dd7342951080f03c7bd4aac43fe807a85509146152e1cebb87",
+        "fresh_live_PE_match": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "decoded_instructions": 0
+      },
+      {
+        "address": "00d5f1b8",
+        "length": 4,
+        "role": "renderer_profile110_capture_selector",
+        "bytes_hex": "503cb200",
+        "sha256": "d137b3d3b988ce3495113aedb93f4c8e60797a7f78d0127c5f5b7e46bdead058",
+        "fresh_live_PE_match": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "decoded_instructions": 0
+      },
+      {
+        "address": "00d5f1d0",
+        "length": 4,
+        "role": "renderer_profile128_surface_getter_selector",
+        "bytes_hex": "c04db200",
+        "sha256": "06ae502302e437395a6075f3c6b3c0984a02f64cf7aeb2dc0341db49bca8cee7",
+        "fresh_live_PE_match": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "decoded_instructions": 0
+      },
+      {
+        "address": "00b3243b",
+        "length": 6,
+        "role": "actual_renderer_profile_install",
+        "bytes_hex": "c706a8f0d500",
+        "sha256": "859e8754914ed32a28ceebba7105bd95ad98896e90a766a4f67fb8867a47ab6f",
+        "fresh_live_PE_match": true,
+        "section": ".text",
+        "section_characteristics": "60000020",
+        "decoded_instructions": 1
+      },
+      {
+        "address": "00ce240c",
+        "length": 4,
+        "role": "D3DXLoad_import_slot",
+        "bytes_hex": "0872a000",
+        "sha256": "2808ac520886fba902c783b9440eba5f8221b6582f617de33483c061d6e64590",
+        "fresh_live_PE_match": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "decoded_instructions": 0
+      },
+      {
+        "address": "00ce2218",
+        "length": 4,
+        "role": "EnterCS_import_slot",
+        "bytes_hex": "b856a000",
+        "sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+        "fresh_live_PE_match": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "decoded_instructions": 0
+      },
+      {
+        "address": "00ce2210",
+        "length": 4,
+        "role": "LeaveCS_import_slot",
+        "bytes_hex": "8856a000",
+        "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+        "fresh_live_PE_match": true,
+        "section": ".rdata",
+        "section_characteristics": "40000040",
+        "decoded_instructions": 0
+      }
+    ],
+    "imports": [
+      {
+        "iat": "00ce240c",
+        "dll": "d3dx9_40.dll",
+        "name": "D3DXLoadSurfaceFromSurface",
+        "ordinal": null
+      },
+      {
+        "iat": "00ce2210",
+        "dll": "KERNEL32.dll",
+        "name": "LeaveCriticalSection",
+        "ordinal": null
+      },
+      {
+        "iat": "00ce2218",
+        "dll": "KERNEL32.dll",
+        "name": "EnterCriticalSection",
+        "ordinal": null
+      }
+    ],
+    "installed_D3DX_provider": {
+      "path": "C:\\Windows\\SysWOW64\\D3DX9_40.dll",
+      "sha256": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b",
+      "machine": "014c",
+      "timestamp": 1223433584,
+      "image_size": 4497408,
+      "export": {
+        "name": "D3DXLoadSurfaceFromSurface",
+        "ordinal": 191,
+        "rva": "0028c044",
+        "forwarder": null
+      },
+      "scope": "Read-only actual installed module export evidence; DLL not loaded by discovery"
+    }
+  },
+  "counts": {
+    "fresh_spans": 21,
+    "captured_bytes": 2187,
+    "unique_bytes": 1978,
+    "decoded_code_instructions": 363,
+    "proposed_owned_bytes": 351
+  },
+  "full_entries": [
+    {
+      "address": "00b5e490",
+      "length": 107,
+      "role": "full_candidate_publisher",
+      "bytes_hex": "5356578bf18b7e4857ff151822ce00834718018b46408b5c24108d7cc6143bfb74248b0b6a01518bcfe882f88bff833b0074138b178b43048b4f04525051e8ad91090083c40c8b464083c00199b905000000f7f98956408b7648834618ff56ff151022ce005f5e5bc20400",
+      "sha256": "696ca0b584ba542d67a9ab0ae534aae4929553954077d1ceb7e07ac2e346cfd8",
+      "fresh_live_PE_match": true,
+      "section": ".text",
+      "section_characteristics": "60000020",
+      "decoded_instructions": 42
+    },
+    {
+      "address": "00b23c50",
+      "length": 235,
+      "role": "full_candidate_capture",
+      "bytes_hex": "83ec28538b5c2430833b00568bf10f84cf0000008b86101a0000578dbe2c1d0000508bcfe807a703008b168986241d00008b82280100006a008bceffd08b482c8b96241d00006a006a016a006a00516a006a0052e82ba310008b86241d00008b088d54241452508b4130ffd08b86241d00008b086a006a008d54241452508b4134ffd08b5424300faf54242c8b44241033c985d27623eb088da42400000000908108000000ff8b5424300faf54242c83c10183c0043bca72e78b86241d00008b088b513850ffd28bb6241d00008b068b50308d4c24145156ffd2538bcfe85ea703005f5e5b83c428c20400",
+      "sha256": "c532ae2ac6fbef2763aa0ff5fdc839dfa74be328a00e0da1ea82e27532eef6af",
+      "fresh_live_PE_match": true,
+      "section": ".text",
+      "section_characteristics": "60000020",
+      "decoded_instructions": 82
+    },
+    {
+      "address": "00b24dc0",
+      "length": 9,
+      "role": "full_missing_selector_provider",
+      "bytes_hex": "8b817c190000c20400",
+      "sha256": "fd304c17c1dab4c4742f8adef94d329505ac9617a3824852114cd29f764dc442",
+      "fresh_live_PE_match": true,
+      "section": ".text",
+      "section_characteristics": "60000020",
+      "decoded_instructions": 2
+    }
+  ],
+  "original_abi": {
+    "00b5e490": "ECX raw worker owner, stack source eight-byte header, RET4; no semantic return; no EH registration/cleanup.",
+    "00b23c50": "ECX raw renderer, stack source header, RET4; no semantic return; no EH registration/cleanup.",
+    "00b24dc0": "ECX raw renderer, ignored stack scalar, EAX current DWORD renderer+197C, RET4."
+  },
+  "publisher_schedule": [
+    "Capture and enter owner+48 lock; increment captured lock+18.",
+    "Read current producer+40 after entry and capture destination header owner+14+8*index.",
+    "Exact header identity skips resize/copy; otherwise capture source length and invoke full41DD40 preserve=true.",
+    "Reread source length; if nonzero read CURRENT destination length, CURRENT source data, CURRENT destination data in that order and call BF7680.",
+    "Reload current producer, wrapped DWORD +1 then CDQ/IDIV5 signed remainder; publish producer.",
+    "Reload current owner+48; decrement its depth then actual LeaveCriticalSection."
+  ],
+  "publisher_failure_boundary": "No exception cleanup. A resize/copy failure can retain entered lock/depth and already-published pool/header changes. Destination header remains captured even if current producer changes.",
+  "capture_schedule": [
+    "Read source length before any renderer/context memory read; zero returns.",
+    "Capture current device1A10 and embedded worker address1D2C; call fullB5E380.",
+    "Capture current renderer profile token; publish acquired result1D24; only then read reached profile+128.",
+    "Call fullB24DC0 with ignored scalar0; read returned wrapper+2C before current renderer1D24; concrete D3DXLoadSurfaceFromSurface(dst,0,0,src,0,0,1,0).",
+    "Reload current surface for GetDesc, again for LockRect; capture locked pBits once.",
+    "OR FF000000 into contiguous DWORDs, ignore Pitch; reload low DWORD Height*Width after EVERY store; unsigned index compare. Initial TEST/JBE skips only zero.",
+    "Reload current surface for UnlockRect; reload current surface again for extra GetDesc; call full publisher with captured source-header pointer."
+  ],
+  "stack_layout": {
+    "base": "S = ESP after SUB28 and three saved registers EBX/ESI/EDI",
+    "descriptor": "S+14, Width S+2C, Height S+30",
+    "locked_rect": "S+C (Pitch), S+10 (pBits); LEA occurs after two argument pushes",
+    "initialization": "Original stack outputs uninitialized before actual COM writes; no HRESULT/null repair."
+  },
+  "profile_contract": {
+    "actual_token": "00d5f0a8",
+    "install_span": "00b3243b[6]",
+    "minimum_required_bytes": 300,
+    "complete_borrowed_window": "[00d5f0a8,00d5f1d4), 0x12C bytes; complete required window, not a claim about full vtable allocation extent",
+    "reached_slot": "offset128 at00d5f1d0 contains00b24dc0; read after1D24 publication using profile captured before publication",
+    "caller_slot": "offset110 at00d5f1b8 contains00b23c50",
+    "other_profiles": "Outside fixed source context domain; no foreign selector callback or guessed mapping"
+  },
+  "provider_map": {
+    "B5E380": "Complete native_renderer_surface_save_worker source f99fc486; real CreateThread/queue/COM providers, fixed application save binding required for launch.",
+    "41DD40": "Complete actual raw header resize in native_string; ActualNativeStringPoolStorage borrows owning canonical pool publication, gate and allocator/lifetime. No fake NativeStringStorage implementation in source context.",
+    "BF7680": "Full869-byte body captured, contains inline jump tables and external SIMD C0C82B branch controlled by current0109EEA4. Proposed host valid-range memmove copy only, not generic CRT reconstruction.",
+    "C2DFD4": "Full6-byte import forwarder to CE240C, named d3dx9_40.dll D3DXLoadSurfaceFromSurface. Concrete caller-owned HMODULE import object proposed.",
+    "COM": "Actual IDirect3DSurface9 GetDesc+30, LockRect+34, UnlockRect+38; current real objects/tables at each original load.",
+    "locks": "Actual EnterCriticalSection/LeaveCriticalSection imports, raw1C lock/depth."
+  },
+  "copy_boundary": {
+    "overlap": "BF7680 branches backward when destination lies inside source range; memmove required for persistent destination header.",
+    "zero": "Original calls even for zero destination count after nonzero source gate; original zero paths reach BF7804 without source/destination data access. Host may omit that zero copy.",
+    "domain": "Valid nonwrapping readable/writable ranges. No original CRT ISA, mutable speed global, exact partial-fault, incidental-register or allocation policy claim. Fresh-allocation record/list copies have a different overlap domain."
+  },
+  "source_proposal": {
+    "packet": "native_renderer_surface_save_publish3",
+    "addresses": [
+      "00b5e490",
+      "00b23c50",
+      "00b24dc0"
+    ],
+    "files": [
+      "include/bsp/native_renderer_surface_save_publish.hpp",
+      "src/native_renderer_surface_save_publish.cpp",
+      "docs/NATIVE_RENDERER_SURFACE_SAVE_PUBLISH.md",
+      "reports/native_renderer_surface_save_publish_audit.json"
+    ],
+    "context": "New fixed EDX context borrows ActualNativeStringPoolStorage, concrete NativeD3dx9SurfaceLoadImport and complete required12C-byte actual renderer profile window. Capture/publisher retain original stack source argument/RET4. Raw getter has reservedEDX and ignored stack scalar.",
+    "import": "Resolve exact D3DXLoadSurfaceFromSurface from caller-owned actual d3dx9_40 HMODULE; no LoadLibrary, version fallback, arbitrary function-pointer setter, owner-tail fields, or argument envelope.",
+    "readiness": "Approved by primary. All concrete native dependencies ready; external D3DX/Win32/COM and explicit existing memmove boundary remain declared.",
+    "validation": "Full original/compiled instruction/relocation evidence, strict existing build/twoCTests/eightseeds; at most one meaningful nonempty focused actual-library fixture. No original-runtime claim from reconstructed saves."
+  },
+  "limitations": [
+    "Discovery only; no source, build, fixture, original-runtime, native SEH ABI or gameplay claim.",
+    "No inferred backbuffer/surface release, null/HRESULT recovery, extra synchronization, queue policy or owner lifetime.",
+    "Borrowed profile window does not infer complete renderer profile allocation extent or semantic ownership of renderer197C."
+  ]
+}
