@@ -1,0 +1,58 @@
+[
+  {
+    "address": "00b5ff50",
+    "before": {
+      "address": "00b5ff50",
+      "function_name": "FUN_00b5ff50"
+    },
+    "after": {
+      "address": "00b5ff50",
+      "old_name": "FUN_00b5ff50",
+      "name": "BSP_HardwareVertexLayoutPool_InitializeSlab",
+      "evidence": "Write WORDcount32 at+940; each WORDfreeindex31..0 at+900 then DWORDslabindex at slot+44, advancing2/48h. Preserve all44h payloads and final two padding bytes. None; fixed nonthrowing storage writes. Original ABI: ECX actual944h slab; stack slab index; EAX same slab; RET4. Complete src/native_hardware_layout_pool_allocate.cpp; reports/native_hardware_layout_pool_allocate_audit.json. Four actual primary-library providers; eight full live/PE spans 618 bytes and verified loaded postimages, 13 absolute relocations, only BF681B/BF6989 allocator/free bridges plus real Win32 imports. Full slab bytes/growth/scan/wrappers/WORD-depth alias/real malloc failure compare. Real second thread confirms lock remains held after failure. Preserved B60646 free continuation; no invented unlock or startup closure. Strict Win32 and two existing CTests; no native ABI/game proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b605b0",
+    "before": {
+      "address": "00b605b0",
+      "function_name": "FUN_00b605b0"
+    },
+    "after": {
+      "address": "00b605b0",
+      "old_name": "FUN_00b605b0",
+      "name": "BSP_HardwareVertexLayoutPool_AllocateSlot",
+      "evidence": "Real lock then currentdepth++; if exhausted publish nextslabindex before slab allocation, reread index after allocator; currentcapacity/count growth comparison; publish wrapped2C+2 capacity before table allocation; forward current-count/current-table copies; captured old free before new-table publication; publish new slab then increment currentcount. Decrement and reread WORDfreecount, select rawslot, scan later slabs as necessary, currentdepth-- then real unlock. None. No automatic unlock, rollback, or unpublished-slab free on allocator/new-handler failure. Original ABI: ECX actual initialized38h pool; EAX raw48h slot; RET. Complete src/native_hardware_layout_pool_allocate.cpp; reports/native_hardware_layout_pool_allocate_audit.json. Four actual primary-library providers; eight full live/PE spans 618 bytes and verified loaded postimages, 13 absolute relocations, only BF681B/BF6989 allocator/free bridges plus real Win32 imports. Full slab bytes/growth/scan/wrappers/WORD-depth alias/real malloc failure compare. Real second thread confirms lock remains held after failure. Preserved B60646 free continuation; no invented unlock or startup closure. Strict Win32 and two existing CTests; no native ABI/game proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b606f0",
+    "before": {
+      "address": "00b606f0",
+      "function_name": "CG_static_dtor_stub_00b606f0"
+    },
+    "after": {
+      "address": "00b606f0",
+      "old_name": "CG_static_dtor_stub_00b606f0",
+      "name": "BSP_HardwareVertexLayout_AllocatePooledStorage",
+      "evidence": "Select actual initialized hardware pool and call complete allocation. New interface receives borrowed actualpool instead of ignored size. None; tail target's failure effects preserved. Original ABI: Incoming ECX size ignored; ECX=0108FE9C; tail JMP00b605b0; EAX rawslot; RET. Complete src/native_hardware_layout_pool_allocate.cpp; reports/native_hardware_layout_pool_allocate_audit.json. Four actual primary-library providers; eight full live/PE spans 618 bytes and verified loaded postimages, 13 absolute relocations, only BF681B/BF6989 allocator/free bridges plus real Win32 imports. Full slab bytes/growth/scan/wrappers/WORD-depth alias/real malloc failure compare. Real second thread confirms lock remains held after failure. Preserved B60646 free continuation; no invented unlock or startup closure. Strict Win32 and two existing CTests; no native ABI/game proof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b60260",
+    "before": {
+      "address": "00b60260",
+      "function_name": "FUN_00b60260"
+    },
+    "after": {
+      "address": "00b60260",
+      "old_name": "FUN_00b60260",
+      "name": "BSP_HardwareVertexLayout_ReturnUnconstructedSlot",
+      "evidence": "Compose existing completeB60110 against actual initialized pool. No owner destruction or virtual dispatch. None. Original ABI: ECX rawslot; push ECX; ECX=0108FE9C; CALL00b60110; RET; no semantic return. Complete src/native_hardware_layout_pool_allocate.cpp; reports/native_hardware_layout_pool_allocate_audit.json. Four actual primary-library providers; eight full live/PE spans 618 bytes and verified loaded postimages, 13 absolute relocations, only BF681B/BF6989 allocator/free bridges plus real Win32 imports. Full slab bytes/growth/scan/wrappers/WORD-depth alias/real malloc failure compare. Real second thread confirms lock remains held after failure. Preserved B60646 free continuation; no invented unlock or startup closure. Strict Win32 and two existing CTests; no native ABI/game proof."
+    },
+    "status": "applied"
+  }
+]

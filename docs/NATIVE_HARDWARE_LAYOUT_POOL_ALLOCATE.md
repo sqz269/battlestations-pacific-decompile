@@ -101,9 +101,14 @@ fixture process exit, matching the native failure path. They are not evidence
 of successful cleanup.
 
 The new source passes separate Release Win32 `/O2 /W4 /WX /fp:strict`
-compilation and links against the current primary library. `scripts/build.ps1`
-and both configured existing CTests passed. No tracked tests or shared CMake,
-ledger, tag, or Ghidra changes belong to this packet. Audit data and source
-pins are in `reports/native_hardware_layout_pool_allocate_audit.json`.
+compilation. Primary integration registered it in `bsp_core` and reran the
+unchanged fixture with all four providers from the actual primary library;
+the slab/growth/alias/lock/failure results and eight loaded postimages passed.
+The exact linked library is archived. `scripts/build.ps1` and both existing
+CTests passed. All four names/evidence comments are saved in Ghidra, and the
+free continuation at `B60646` is restored with prior comments preserved.
+No tracked tests were added. Audit data, explicit CRT boundaries, saved
+annotations, refreshed exports and source pins are in
+`reports/native_hardware_layout_pool_allocate_audit.json`.
 This proves the stated storage behavior within the borrowed input domain;
 it does not establish original CRT ABI compatibility or game execution.

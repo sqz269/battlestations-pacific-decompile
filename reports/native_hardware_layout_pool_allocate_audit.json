@@ -1,6 +1,6 @@
 {
   "packet": "native_hardware_layout_pool_allocate",
-  "status": "complete_actual_storage_strict_win32_and_focused_original_instruction_fixture_checked_pending_primary_integration",
+  "status": "complete_actual_initialized_pool_primary_library_original_fixture_and_strict_Win32_checked",
   "base_commit": "e52cf13",
   "source": "src/native_hardware_layout_pool_allocate.cpp",
   "header": "include/bsp/native_hardware_layout_pool_allocate.hpp",
@@ -412,5 +412,644 @@
   "ghidra_mutated": false,
   "abi_compatible": false,
   "game_validated": false,
-  "audit_time_utc": "2026-09-11T03:45:02.193070+00:00"
+  "audit_time_utc": "2026-09-11T03:45:02.193070+00:00",
+  "primary_integration": {
+    "verified_evidence": {
+      "preverification": {
+        "worker_commit": "f26797e",
+        "worker_path": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-pool-allocate-20260910",
+        "verified_source_pins": 6,
+        "verified_artifact_pins": 12,
+        "verified_live_PE_spans": 8,
+        "verified_live_PE_bytes": 618,
+        "primary_pool_and_slot_return_source_matches": true,
+        "allocator_free_functions_exactly_unchanged": true,
+        "shared_source_difference": "9cfe1ab adds lifetime-manager ordering and repairs checked insertion captures outside the allocate/free functions used by this packet. Primary fixture links actual current library.",
+        "current_allocator_source_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      "postimages_verified": [
+        {
+          "address": "00b5ff50",
+          "length": 64,
+          "postimage_sha256": "d4b33d29826c32ced3f1974e6f5b013d41e1c7fe309e2f2c1494c4739078263d"
+        },
+        {
+          "address": "00b605b0",
+          "length": 316,
+          "postimage_sha256": "fe523bfe2f77a5909791d16c32692fa9e7e36f46c7576ae276ca0be23ce5ae98"
+        },
+        {
+          "address": "00b606f0",
+          "length": 10,
+          "postimage_sha256": "3ea6e5a19c894e740f85c6a8e60fe228e30ad557414ea0104ebe4041db9b7e95"
+        },
+        {
+          "address": "00b60260",
+          "length": 12,
+          "postimage_sha256": "72e78847a3bc4b706c3b1f9789695bd37dffaeb36ebeb9cdf6214c071ced68c4"
+        },
+        {
+          "address": "00b60110",
+          "length": 101,
+          "postimage_sha256": "4838e87d8b2bec19dd5b20a1f234f85310b68ce7743d006dd111aa3d64a4fa0a"
+        },
+        {
+          "address": "00bf681b",
+          "length": 105,
+          "postimage_sha256": "0c8a4ccb1632bb90abfa10dc39c03d3164bd92fe1a8a1e92c598440ffe71a701"
+        },
+        {
+          "address": "00bf55be",
+          "length": 5,
+          "postimage_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406"
+        },
+        {
+          "address": "00bf6989",
+          "length": 5,
+          "postimage_sha256": "38fb0736a419f404b92074cd9e95d3b3efc44dc1fef01369088615a87e337aec"
+        }
+      ],
+      "absolute_relocations": [
+        {
+          "address": "00b605bc",
+          "original": "00ce2218"
+        },
+        {
+          "address": "00b606cd",
+          "original": "00ce2210"
+        },
+        {
+          "address": "00b606e1",
+          "original": "00ce2210"
+        },
+        {
+          "address": "00b606f1",
+          "original": "0108fe9c"
+        },
+        {
+          "address": "00b60262",
+          "original": "0108fe9c"
+        },
+        {
+          "address": "00b6011b",
+          "original": "00ce2218"
+        },
+        {
+          "address": "00b6016b",
+          "original": "00ce2210"
+        },
+        {
+          "address": "00bf6841",
+          "original": "0109dd74"
+        },
+        {
+          "address": "00bf6847",
+          "original": "0109dd68"
+        },
+        {
+          "address": "00bf684f",
+          "original": "0109dd74"
+        },
+        {
+          "address": "00bf685c",
+          "original": "00ce1122"
+        },
+        {
+          "address": "00bf6870",
+          "original": "00e03cc0"
+        },
+        {
+          "address": "00bf687b",
+          "original": "00d6923c"
+        }
+      ],
+      "external_allocator_free_bridges": {
+        "00bf681b": "300026f0",
+        "00bf6989": "30002980"
+      },
+      "owned_entry_patches": 0,
+      "providers": [
+        {
+          "address": "00b5ff50",
+          "map_line": "0001:00003b80       ?initialize_native_hardware_layout_slab_00b5ff50@bsp@@YAPAXPAXI@Z 30004b80 f   bsp_core:native_hardware_layout_pool_allocate.obj"
+        },
+        {
+          "address": "00b605b0",
+          "map_line": "0001:00003770       ?allocate_native_hardware_layout_slot_00b605b0@bsp@@YAPAXPAX@Z 30004770 f   bsp_core:native_hardware_layout_pool_allocate.obj"
+        },
+        {
+          "address": "00b606f0",
+          "map_line": "0001:00003760       ?allocate_native_hardware_layout_00b606f0@bsp@@YAPAXPAX@Z 30004760 f   bsp_core:native_hardware_layout_pool_allocate.obj"
+        },
+        {
+          "address": "00b60260",
+          "map_line": "0001:00003c00       ?return_native_hardware_layout_00b60260@bsp@@YAXPAX0@Z 30004c00 f   bsp_core:native_hardware_layout_pool_allocate.obj"
+        }
+      ],
+      "results": {
+        "slab_full_byte_differential": true,
+        "normal_growth_scan_wrappers": true,
+        "alias_word_count_depth": true,
+        "real_crt_new_handler_failure": true,
+        "lock_retained_on_failure": true,
+        "new_handler_observed": [
+          4294967288,
+          1,
+          536870910,
+          1073741822,
+          536870910,
+          1
+        ],
+        "production_allocator": "existing singleton_lifetime_allocate/free",
+        "original_instruction_service_bridges": [
+          "BF681B allocation service",
+          "BF6989 free service",
+          "real Win32 imports"
+        ],
+        "fixture_note": "Each forced table-allocation failure intentionally retains one unpublished native slab until process exit. No implementation allocation callback or lock substitute."
+      },
+      "primary_artifact_pins": [
+        {
+          "path": "local/prepare_hardware_pool_primary.py",
+          "sha256": "68edeabdf57f34d438b783cb94c796582cd920295985bd043650a4653ecfc777",
+          "bytes": 2501
+        },
+        {
+          "path": "local/build_hardware_pool_primary_check.ps1",
+          "sha256": "409bc730121c8fe7db85b18c625f9cf4e096b93c544dcbe743c53456f15d3e63",
+          "bytes": 1702
+        },
+        {
+          "path": "local/native_hardware_pool_primary_fixture.txt",
+          "sha256": "5ea23ec37cfa25719a8e83c8574b44b7b4d74b8cbe1c80c857a1155cdc61b65b",
+          "bytes": 180
+        },
+        {
+          "path": "local/native_hardware_pool_primary_build.txt",
+          "sha256": "5a62a1f8db29dff5f83f3ad3295735a8d7fc9556115e08df7e89a3c153ca6d32",
+          "bytes": 1719
+        },
+        {
+          "path": "local/hardware_pool_primary/patched_spans.txt",
+          "sha256": "717fb3fa104fe69bea279cd088723653f45ead51e10bd39665dab7f00cd880ab",
+          "bytes": 1345
+        },
+        {
+          "path": "local/hardware_pool_primary/host_bridges.txt",
+          "sha256": "ad706e00b09f6dd9d3c3f6805c4e38f1eea5d9454392b2120b0376cfc3cf2a87",
+          "bytes": 50
+        },
+        {
+          "path": "local/hardware_pool_primary/result.json",
+          "sha256": "7048b91f952573956813bb8a4c252245f55ac70bba01214f7584dcaf2907e617",
+          "bytes": 650
+        },
+        {
+          "path": "build/hardware-pool-primary-check/hardware_pool_check.exe",
+          "sha256": "150f66dc6180fbce37ddd6d484571fa3c95b5df0a0d631eb41d4cb26bda0fd89",
+          "bytes": 37376
+        },
+        {
+          "path": "build/hardware-pool-primary-check/hardware_pool_check.map",
+          "sha256": "40d2949005c0804b8831334edd4f89fc144d44648cfa51093c04122b699819e9",
+          "bytes": 70753
+        },
+        {
+          "path": "build/hardware-pool-primary-check/fixture.obj",
+          "sha256": "e604189d050e10d267f9df70a717ae565d1c410066fffd26f803e83c76bf5269",
+          "bytes": 169945
+        },
+        {
+          "path": "build/hardware-pool-primary-check/bsp_core.linked.lib",
+          "sha256": "65dccbacf247b5d06f4cfde05d894275b6cdd7750feeca342c94ad3ecf87ed70",
+          "bytes": 23415368
+        },
+        {
+          "path": "src/native_hardware_layout_pool_allocate.cpp",
+          "sha256": "4481c2b2b1d2295a57f6788ba49183bf3c5110c82b9842fade07571a680ed46c",
+          "bytes": 5730
+        },
+        {
+          "path": "include/bsp/native_hardware_layout_pool_allocate.hpp",
+          "sha256": "1d30076416bdeb623a689e8b75c39b3977f5a413497db17fb4f41dcb5bf941bb",
+          "bytes": 1558
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+          "bytes": 13257
+        }
+      ],
+      "immutable_linked_library": {
+        "path": "build/hardware-pool-primary-check/bsp_core.linked.lib",
+        "sha256": "65dccbacf247b5d06f4cfde05d894275b6cdd7750feeca342c94ad3ecf87ed70",
+        "bytes": 23415368
+      },
+      "existing_CTests_passed": 2,
+      "new_tracked_tests": 0
+    },
+    "records": [
+      {
+        "kind": "function",
+        "address": "00b5ff50",
+        "name": "initialize_native_hardware_layout_slab_00b5ff50",
+        "cpp_symbol": "initialize_native_hardware_layout_slab_00b5ff50",
+        "source": "src/native_hardware_layout_pool_allocate.cpp",
+        "native_end_exclusive": "00b5ff90",
+        "original_abi": "ECX actual944h slab; stack slab index; EAX same slab; RET4.",
+        "evidence": "reports/native_hardware_layout_pool_allocate_audit.json",
+        "status": "complete_actual_initialized_pool_primary_library_original_fixture_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b605b0",
+        "name": "allocate_native_hardware_layout_slot_00b605b0",
+        "cpp_symbol": "allocate_native_hardware_layout_slot_00b605b0",
+        "source": "src/native_hardware_layout_pool_allocate.cpp",
+        "native_end_exclusive": "00b606ec",
+        "original_abi": "ECX actual initialized38h pool; EAX raw48h slot; RET.",
+        "evidence": "reports/native_hardware_layout_pool_allocate_audit.json",
+        "status": "complete_actual_initialized_pool_primary_library_original_fixture_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b606f0",
+        "name": "allocate_native_hardware_layout_00b606f0",
+        "cpp_symbol": "allocate_native_hardware_layout_00b606f0",
+        "source": "src/native_hardware_layout_pool_allocate.cpp",
+        "native_end_exclusive": "00b606fa",
+        "original_abi": "Incoming ECX size ignored; ECX=0108FE9C; tail JMP00b605b0; EAX rawslot; RET.",
+        "evidence": "reports/native_hardware_layout_pool_allocate_audit.json",
+        "status": "complete_actual_initialized_pool_primary_library_original_fixture_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b60260",
+        "name": "return_native_hardware_layout_00b60260",
+        "cpp_symbol": "return_native_hardware_layout_00b60260",
+        "source": "src/native_hardware_layout_pool_allocate.cpp",
+        "native_end_exclusive": "00b6026c",
+        "original_abi": "ECX rawslot; push ECX; ECX=0108FE9C; CALL00b60110; RET; no semantic return.",
+        "evidence": "reports/native_hardware_layout_pool_allocate_audit.json",
+        "status": "complete_actual_initialized_pool_primary_library_original_fixture_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "new_complete_functions": 4,
+    "annotations_applied": true,
+    "definition_repair": {
+      "target": {
+        "project": "bsp",
+        "program": "battlestationspacific.exe",
+        "program_path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": "00400000",
+        "ghidra_url": "http://127.0.0.1:8089",
+        "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "coordination_dir": "C:/Users/sqz269/.bsp"
+      },
+      "functions": [
+        {
+          "address": "00b605b0",
+          "end_exclusive": "00b606ec",
+          "length": 316,
+          "sha256": "236366956c29917f848b8e4c684067e2060f2c950ac52cfcd30e0c0e382555ad",
+          "function_before": "Function: FUN_00b605b0 at 00b605b0\nSignature: undefined FUN_00b605b0(void)\nEntry: 00b605b0\nBody: 00b605b0 - 00b606eb",
+          "documentation_before": {
+            "hash": "c4fc8a3f392323b4e7261f9bd83ef55183ba0b43c017938437601e7b9a22727b",
+            "source_program": "battlestationspacific.exe",
+            "source_address": "00b605b0",
+            "function_name": "FUN_00b605b0",
+            "return_type": "undefined",
+            "calling_convention": "unknown",
+            "parameters": [],
+            "local_variables": [
+              {
+                "name": "extraout_EAX",
+                "type": "int",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "puVar6",
+                "type": "undefined4 *",
+                "storage": "(register, 0x4, 4)"
+              },
+              {
+                "name": "puVar4",
+                "type": "undefined4 *",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "uVar5",
+                "type": "uint",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "iVar2",
+                "type": "int",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "uVar3",
+                "type": "undefined4",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "lpCriticalSection",
+                "type": "LPCRITICAL_SECTION",
+                "storage": "(unique, 0x6600, 4)"
+              },
+              {
+                "name": "iVar1",
+                "type": "int",
+                "storage": "(unique, 0x17200, 4)"
+              },
+              {
+                "name": "piVar7",
+                "type": "int *",
+                "storage": "(register, 0x4, 4)"
+              }
+            ],
+            "comments": [],
+            "labels": [
+              {
+                "relative_offset": 70,
+                "name": "LAB_00b605f6"
+              },
+              {
+                "relative_offset": 72,
+                "name": "LAB_00b605f8"
+              },
+              {
+                "relative_offset": 114,
+                "name": "LAB_00b60622"
+              },
+              {
+                "relative_offset": 126,
+                "name": "LAB_00b6062e"
+              },
+              {
+                "relative_offset": 137,
+                "name": "LAB_00b60639"
+              },
+              {
+                "relative_offset": 153,
+                "name": "LAB_00b60649"
+              },
+              {
+                "relative_offset": 156,
+                "name": "LAB_00b6064c"
+              },
+              {
+                "relative_offset": 171,
+                "name": "LAB_00b6065b"
+              },
+              {
+                "relative_offset": 178,
+                "name": "LAB_00b60662"
+              },
+              {
+                "relative_offset": 256,
+                "name": "LAB_00b606b0"
+              },
+              {
+                "relative_offset": 296,
+                "name": "LAB_00b606d8"
+              },
+              {
+                "relative_offset": 299,
+                "name": "LAB_00b606db"
+              }
+            ],
+            "completeness_score": 50.0
+          },
+          "returning_free_call_sites": [
+            "00b60641"
+          ],
+          "function_after": "Function: FUN_00b605b0 at 00b605b0\nSignature: undefined FUN_00b605b0(void)\nEntry: 00b605b0\nBody: 00b605b0 - 00b606eb",
+          "documentation_after": {
+            "hash": "8d16a24fba81d10fd90b565e5cc8318b35801287b33712650b300c2897ff3840",
+            "source_program": "battlestationspacific.exe",
+            "source_address": "00b605b0",
+            "function_name": "FUN_00b605b0",
+            "return_type": "undefined",
+            "calling_convention": "unknown",
+            "parameters": [],
+            "local_variables": [
+              {
+                "name": "uVar3",
+                "type": "undefined4",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "iVar2",
+                "type": "int",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "iVar1",
+                "type": "int",
+                "storage": "(unique, 0x17200, 4)"
+              },
+              {
+                "name": "lpCriticalSection",
+                "type": "LPCRITICAL_SECTION",
+                "storage": "(unique, 0x6600, 4)"
+              },
+              {
+                "name": "piVar7",
+                "type": "int *",
+                "storage": "(register, 0x4, 4)"
+              },
+              {
+                "name": "puVar6",
+                "type": "undefined4 *",
+                "storage": "(register, 0x4, 4)"
+              },
+              {
+                "name": "uVar5",
+                "type": "uint",
+                "storage": "(register, 0x0, 4)"
+              },
+              {
+                "name": "puVar4",
+                "type": "undefined4 *",
+                "storage": "(register, 0x0, 4)"
+              }
+            ],
+            "comments": [],
+            "labels": [
+              {
+                "relative_offset": 70,
+                "name": "LAB_00b605f6"
+              },
+              {
+                "relative_offset": 72,
+                "name": "LAB_00b605f8"
+              },
+              {
+                "relative_offset": 114,
+                "name": "LAB_00b60622"
+              },
+              {
+                "relative_offset": 126,
+                "name": "LAB_00b6062e"
+              },
+              {
+                "relative_offset": 137,
+                "name": "LAB_00b60639"
+              },
+              {
+                "relative_offset": 153,
+                "name": "LAB_00b60649"
+              },
+              {
+                "relative_offset": 156,
+                "name": "LAB_00b6064c"
+              },
+              {
+                "relative_offset": 171,
+                "name": "LAB_00b6065b"
+              },
+              {
+                "relative_offset": 178,
+                "name": "LAB_00b60662"
+              },
+              {
+                "relative_offset": 256,
+                "name": "LAB_00b606b0"
+              },
+              {
+                "relative_offset": 296,
+                "name": "LAB_00b606d8"
+              },
+              {
+                "relative_offset": 299,
+                "name": "LAB_00b606db"
+              }
+            ],
+            "completeness_score": 50.0
+          }
+        }
+      ],
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b60646",
+            "end_address": "00b606ec"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b60646",
+            "end_address": "00b606eb",
+            "bytes_disassembled": 166,
+            "message": "Successfully disassembled 166 byte(s)"
+          }
+        },
+        {
+          "endpoint": "clear_instruction_flow_override",
+          "body": {
+            "address": "00b60641"
+          },
+          "result": {
+            "status": "success",
+            "message": "Success: Cleared flow override at 00b60641 (was: CALL_RETURN, now: NONE)"
+          }
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b605b0"
+          },
+          "result": {
+            "success": true,
+            "address": "00b605b0",
+            "deleted_function": "FUN_00b605b0",
+            "body_size": 304,
+            "message": "Function 'FUN_00b605b0' deleted at 00b605b0"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b605b0",
+            "name": "FUN_00b605b0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b605b0",
+            "function_name": "FUN_00b605b0",
+            "entry_point": "00b605b0",
+            "body_size": 307,
+            "message": "Function created successfully at 00b605b0"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ],
+      "status": "Native hardware pool allocation definition saved; existing code and comments preserved"
+    },
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "source_pin_base_path": "J:/PROG/battlestations-pacific-decompile-native-hardware-layout-pool-allocate-20260910",
+  "annotations_applied": true,
+  "saved_annotations": {
+    "path": "reports/native_hardware_layout_pool_allocate_annotations.json",
+    "sha256": "ad6cca552e8a85c7e339f0a063d3c28ae8022beaa05790dd3656ae00b59ee21c",
+    "project_saved": true,
+    "prior_names_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b5ff50",
+      "path": "exports/bsp/functions/00b5ff50/decompiled.c",
+      "sha256": "f9612e5cffbc49ab3839f6b273c7d55c46bbdf445a8a351706b53965f7216618"
+    },
+    {
+      "address": "00b605b0",
+      "path": "exports/bsp/functions/00b605b0/decompiled.c",
+      "sha256": "eb579b1cb234bd78bdd3bd64adc9ed4a4787afb7500d39a5aee73bc9dc997106"
+    },
+    {
+      "address": "00b606f0",
+      "path": "exports/bsp/functions/00b606f0/decompiled.c",
+      "sha256": "8609f87fc439f8519c020b21e340cc14b7fb515b78acf1e1aede9cca5fb99fc7"
+    },
+    {
+      "address": "00b60260",
+      "path": "exports/bsp/functions/00b60260/decompiled.c",
+      "sha256": "8ddc42164b25b5731047df3432ba74dd2fc4c1019a1d5775343b9a47d8b04cd5"
+    }
+  ],
+  "closure_utc": "2026-09-11T03:54:41.242558+00:00",
+  "ledger_registered": true
 }

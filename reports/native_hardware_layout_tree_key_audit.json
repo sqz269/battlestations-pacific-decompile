@@ -1,6 +1,6 @@
 {
   "packet": "native_hardware_layout_tree_key",
-  "status": "complete_actual_storage_unpatched_original_fixture_and_strict_Win32_checked_pending_annotations",
+  "status": "complete_actual_storage_unpatched_original_fixture_and_strict_Win32_checked",
   "target": {
     "project": "bsp",
     "program": "battlestationspacific.exe",
@@ -268,7 +268,42 @@
   },
   "new_complete_functions": 5,
   "upgraded_complete_functions": 0,
-  "annotations_applied": false,
+  "annotations_applied": true,
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "reports/native_hardware_layout_tree_key_annotations.json",
+    "sha256": "2875d298f31805098e6c4e87d243050311d13b03a846706f3f9ebcb05b31eaf9",
+    "project_saved": true,
+    "prior_names_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b20bf0",
+      "path": "exports/bsp/functions/00b20bf0/decompiled.c",
+      "sha256": "f24ae440915a48f23cc938fd25d727fec38795262d51d04a8df442916ffe456a"
+    },
+    {
+      "address": "00b23020",
+      "path": "exports/bsp/functions/00b23020/decompiled.c",
+      "sha256": "10135671e3c9d8ab7f3f545fb6a65a5d11c8b15196d76774025231b5bff40b14"
+    },
+    {
+      "address": "00b28220",
+      "path": "exports/bsp/functions/00b28220/decompiled.c",
+      "sha256": "4221298a48af2123412e143ba40b6145d60919e862d855330b0fecdd921c0d19"
+    },
+    {
+      "address": "00b282b0",
+      "path": "exports/bsp/functions/00b282b0/decompiled.c",
+      "sha256": "ff24e371b39b1203bba1f21bd00b17cccecb776b5644347a0eafb9c258c569c9"
+    },
+    {
+      "address": "00b25ef0",
+      "path": "exports/bsp/functions/00b25ef0/decompiled.c",
+      "sha256": "2c6347afc88ce889909acc11228a47c5a9a88f9897a4d658d1b34732a6467590"
+    }
+  ],
+  "closure_utc": "2026-09-11T03:54:41.242558+00:00",
+  "ledger_registered": true
 }

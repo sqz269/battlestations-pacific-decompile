@@ -3663,8 +3663,8 @@
       "id": "native_hardware_layout_fields",
       "packet": "native_hardware_layout_fields",
       "worker": "main",
-      "done": false,
-      "state": "primary_library_proved_pending_saved_Ghidra_definition_and_annotations",
+      "done": true,
+      "state": "complete_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b47640",
         "00b48c00",
@@ -3679,14 +3679,15 @@
       ],
       "prerequisite_packets": [],
       "scope": "Actual owner/record fields, intrusive current-profile retain/release and state guards. Reuse B483F0/B48950/BD30F0 and actual CPU declaration deletion context. Keep existing host shared_ptr interfaces separate.",
-      "discovery_evidence": "reports/native_hardware_layout_construction_next.json"
+      "discovery_evidence": "reports/native_hardware_layout_construction_next.json",
+      "evidence": "reports/native_hardware_layout_fields_audit.json"
     },
     {
       "id": "native_hardware_layout_pool_allocate",
       "packet": "native_hardware_layout_pool_allocate",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_implementing_initialized_actual_pool_allocation",
+      "done": true,
+      "state": "complete_actual_initialized_pool_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b5ff50",
         "00b605b0",
@@ -3701,14 +3702,15 @@
       ],
       "prerequisite_packets": [],
       "scope": "Full initialized-pool raw allocation, slab initialization, global allocation and raw-return wrappers. Reuse existing allocator/free service domain and B60110; no payload clears, fabricated globals, or exception unlock guard.",
-      "discovery_evidence": "reports/native_hardware_layout_construction_next.json"
+      "discovery_evidence": "reports/native_hardware_layout_construction_next.json",
+      "evidence": "reports/native_hardware_layout_pool_allocate_audit.json"
     },
     {
       "id": "native_hardware_layout_tree_key",
       "packet": "native_hardware_layout_tree_key",
       "worker": "main",
-      "done": false,
-      "state": "primary_library_proved_pending_saved_Ghidra_annotations",
+      "done": true,
+      "state": "complete_actual_storage_unpatched_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b20bf0",
         "00b23020",
@@ -3724,7 +3726,8 @@
       ],
       "prerequisite_packets": [],
       "scope": "Raw key comparator, lower_bound, checked find and forward key/value copies. Borrow actual tree and existing invalid-parameter service. Preserve current source-count reloads and unused key words.",
-      "discovery_evidence": "reports/native_hardware_layout_construction_next.json"
+      "discovery_evidence": "reports/native_hardware_layout_construction_next.json",
+      "evidence": "reports/native_hardware_layout_tree_key_audit.json"
     },
     {
       "id": "native_hardware_layout_construct",
@@ -4906,19 +4909,19 @@
     {
       "packet": "native_hardware_layout_fields",
       "worker": "main",
-      "state": "primary_library_proved_pending_saved_Ghidra_definition_and_annotations",
+      "state": "complete_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "validation": "reports/native_hardware_layout_fields_audit.json"
     },
     {
       "packet": "native_hardware_layout_pool_allocate",
       "worker": "system_fog_owner_discovery",
-      "state": "worker_implementing_initialized_actual_pool_allocation",
+      "state": "complete_actual_initialized_pool_primary_library_original_fixture_and_strict_Win32_checked",
       "validation": "reports/native_hardware_layout_pool_allocate_audit.json"
     },
     {
       "packet": "native_hardware_layout_tree_key",
       "worker": "main",
-      "state": "primary_library_proved_pending_saved_Ghidra_annotations",
+      "state": "complete_actual_storage_unpatched_original_fixture_and_strict_Win32_checked",
       "validation": "reports/native_hardware_layout_tree_key_audit.json"
     },
     {

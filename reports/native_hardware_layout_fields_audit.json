@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_hardware_layout_fields",
-  "status": "primary_library_relinked_original_fixture_passed_pending_saved_definitions_and_annotations",
+  "status": "complete_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910",
   "branch": "agent/native-hardware-layout-fields-20260910",
   "base_commit": "1db46e7",
@@ -1410,7 +1410,7 @@
       "strict_build_CTests_passed": 2,
       "new_tracked_tests": 0
     },
-    "annotations_applied": false,
+    "annotations_applied": true,
     "ledger_upgrades": 2,
     "new_functions": 2,
     "abi_compatible": false,
@@ -1492,6 +1492,111 @@
           }
         ]
       }
-    ]
-  }
+    ],
+    "definition": {
+      "target": {
+        "project": "bsp",
+        "program": "battlestationspacific.exe",
+        "program_path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": "00400000",
+        "ghidra_url": "http://127.0.0.1:8089",
+        "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "coordination_dir": "C:/Users/sqz269/.bsp"
+      },
+      "functions": [
+        {
+          "address": "00b47640",
+          "end_exclusive": "00b47657",
+          "length": 23,
+          "sha256": "e2f5e92ee09c46a5c284f5452ec3569ccd92dc2db6793a1acc555c442f3dea49",
+          "missing_before": true,
+          "function_before": "No function found for 00b47640",
+          "plate_before": {
+            "query_result": "No function at address; creation preserves existing code/data comments"
+          },
+          "function_after": "Function: BSP_HardwareLayoutRecord_Initialize at 00b47640\nSignature: undefined BSP_HardwareLayoutRecord_Initialize(void)\nEntry: 00b47640\nBody: 00b47640 - 00b47656"
+        }
+      ],
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b47640",
+            "end_address": "00b47657"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b47640",
+            "end_address": "00b47656",
+            "bytes_disassembled": 23,
+            "message": "Successfully disassembled 23 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b47640",
+            "name": "BSP_HardwareLayoutRecord_Initialize",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b47640",
+            "function_name": "BSP_HardwareLayoutRecord_Initialize",
+            "entry_point": "00b47640",
+            "body_size": 23,
+            "message": "Function created successfully at 00b47640",
+            "warnings": [
+              "Function name 'BSP_HardwareLayoutRecord_Initialize' \u2014 main part 'HardwareLayoutRecord_Initialize' is not PascalCase. Expected: HardwarelayoutrecordInitialize",
+              "Function name 'BSP_HardwareLayoutRecord_Initialize' \u2014 main part 'HardwareLayoutRecord_Initialize' contains underscores. Use PascalCase after the module prefix.",
+              "Function name 'BSP_HardwareLayoutRecord_Initialize' does not start with a recognized verb. First word 'Hardware' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+            ]
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ],
+      "status": "Native hardware record definition saved; existing code and comments preserved"
+    }
+  },
+  "annotations_applied": true,
+  "saved_annotations": {
+    "path": "reports/native_hardware_layout_fields_annotations.json",
+    "sha256": "560e332dce9e14cf0b185860ec544f5d7b5d8863a952151ae507d572529f5bfc",
+    "project_saved": true,
+    "prior_names_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b47640",
+      "path": "exports/bsp/functions/00b47640/decompiled.c",
+      "sha256": "9322a93a7ceee4a9a37c9227b891ff5ec4545eaf65706f6beef155442132d0a7"
+    },
+    {
+      "address": "00b48c00",
+      "path": "exports/bsp/functions/00b48c00/decompiled.c",
+      "sha256": "f00ca31a2f459b7b2041b189687bb3a9a65c1f856b61079121e6b8a6b138d02c"
+    },
+    {
+      "address": "00b48a00",
+      "path": "exports/bsp/functions/00b48a00/decompiled.c",
+      "sha256": "e853c36db54f31c3cf29db04e02a7df1c50c4da3aa271d519449875c74e1af13"
+    },
+    {
+      "address": "00b47d60",
+      "path": "exports/bsp/functions/00b47d60/decompiled.c",
+      "sha256": "adc25ab4bab3ccacd8fb0d63412be83413a33f02f6c987af00841ddd02d9b84f"
+    }
+  ],
+  "closure_utc": "2026-09-11T03:54:41.242558+00:00",
+  "ledger_registered": true
 }
