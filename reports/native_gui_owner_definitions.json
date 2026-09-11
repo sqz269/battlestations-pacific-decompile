@@ -318,6 +318,63 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd7e40",
+    "end_address": "00cd7e56"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd7e40",
+    "end_address": "00cd7e55",
+    "bytes_disassembled": 22,
+    "message": "Successfully disassembled 22 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd7e40",
+    "disassemble_first": false,
+    "name": "BSP_MeshObjectPool_InitializeStatic"
+   },
+   "result": {
+    "success": true,
+    "address": "00cd7e40",
+    "function_name": "BSP_MeshObjectPool_InitializeStatic",
+    "entry_point": "00cd7e40",
+    "body_size": 22,
+    "message": "Function created successfully at 00cd7e40",
+    "warnings": [
+     "Function name 'BSP_MeshObjectPool_InitializeStatic' \u2014 main part 'MeshObjectPool_InitializeStatic' is not PascalCase. Expected: MeshobjectpoolInitializestatic",
+     "Function name 'BSP_MeshObjectPool_InitializeStatic' \u2014 main part 'MeshObjectPool_InitializeStatic' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MeshObjectPool_InitializeStatic' does not start with a recognized verb. First word 'Mesh' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00cd7e40",
+   "end": "00cd7e56",
+   "name": "BSP_MeshObjectPool_InitializeStatic",
+   "after": "Function: BSP_MeshObjectPool_InitializeStatic at 00cd7e40\nSignature: undefined BSP_MeshObjectPool_InitializeStatic(void)\nEntry: 00cd7e40\nBody: 00cd7e40 - 00cd7e55"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }
