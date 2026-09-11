@@ -97,6 +97,14 @@ void NativeFrameJobExecution::require_worker_virtual_0c(const NativeFrameJobPool
     if (!table || table[3] != 0x00be2ea0u)
         throw std::invalid_argument("Missing current native frame job worker binding");
 }
+bool NativeFrameJobExecution::is_dispatching_current_10(const NativeFrameJobPoolStorage& pool) const {
+    const auto identity = pool.native_vtable_00;
+    const auto* table = identity == 0x00d68650u ? base_table_
+        : identity == 0x00ce7554u ? frame_table_ : nullptr;
+    if (!table || table[4] != 0x004bfab0u)
+        throw std::invalid_argument("Missing current native frame job dispatch-state binding");
+    return frame_job_dispatch_active_004bfab0(pool);
+}
 
 void frame_job_optional_callback_004bfaa0(std::uint32_t) noexcept {}
 bool frame_job_dispatch_active_004bfab0(const NativeFrameJobPoolStorage& pool) noexcept {

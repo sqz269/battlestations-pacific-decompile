@@ -59,6 +59,7 @@ public:
     void reset(NativeEventOwnerStorage*);
     void delete_event(NativeEventOwnerStorage*);
     void require_dispatch_virtual_08(const NativeFrameJobPoolStorage&) const;
+    bool is_dispatching_current_10(const NativeFrameJobPoolStorage&) const;
     void require_worker_virtual_0c(const NativeFrameJobPoolStorage&) const;
     RandomThreads& random_threads() noexcept { return random_; }
 private:
