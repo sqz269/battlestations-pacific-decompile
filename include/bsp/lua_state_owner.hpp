@@ -7,6 +7,7 @@ namespace bsp {
 
 // Explicit inputs to the recovered bootstrap. The byte string is the contents
 // cached by 00884770/00b68340, not the path or a substitute fundamentals script.
+// A successful empty file is valid; the supplying VFS/cache rejects missing reads.
 // DoFile must implement 00b69e00's script-with-overrides contract on this state.
 // It returns zero on success and may use lua_error; it must not throw C++.
 struct LuaStateOwnerEnvironment {

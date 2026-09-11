@@ -70,8 +70,9 @@ VFS singleton `0109ceec`, vtable `+4`, mode 2; `+18h` checks the stream.
 On success, `+30h` gets the size, allocation is stored at `+4`, and `+24h`
 reads the bytes. The stream reference is decremented and released at zero.
 The read-result/actual-byte-count output is not checked here. The failure
-branch does not establish valid byte/size members, so the projection requires
-nonempty supplied bytes rather than inventing a fallback script.
+branch does not establish valid byte/size members. The VFS cache projection rejects
+missing or incomplete reads. A successfully opened zero-length file is valid:
+there is no nonzero-size gate before allocation/read or `luaL_loadbuffer`.
 
 Thus the bytes are cached VFS content, not an embedded executable resource.
 Owner open uses the cache, while the cache's first creation does read VFS.

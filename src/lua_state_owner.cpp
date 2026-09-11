@@ -35,8 +35,6 @@ void platform_chunk(lua_State* state, const char* text) {
 
 PcStorageLuaOwner::PcStorageLuaOwner(LuaStateOwnerEnvironment environment)
     : environment_(std::move(environment)) {
-    if (environment_.fundamentals.empty())
-        throw std::invalid_argument("Lua owner requires cached fundamentals.lua bytes");
     if (!environment_.do_file)
         throw std::invalid_argument("Lua owner requires the native DoFile host contract");
 }
