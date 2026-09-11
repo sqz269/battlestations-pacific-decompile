@@ -26,7 +26,7 @@ import ghidra.program.model.listing.Function;
 import ghidra.program.model.listing.Instruction;
 import ghidra.program.model.listing.InstructionIterator;
 import ghidra.program.model.listing.Listing;
-import ghidra.program.model.symbol.FlowOverride;
+import ghidra.program.model.listing.FlowOverride;
 
 public class RepairListingDefects extends GhidraScript {
 
