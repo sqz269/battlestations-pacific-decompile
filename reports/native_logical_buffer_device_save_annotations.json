@@ -1,0 +1,30 @@
+[
+  {
+    "address": "00b49d00",
+    "before": {
+      "address": "00b49d00",
+      "function_name": "FUN_00b49d00"
+    },
+    "after": {
+      "address": "00b49d00",
+      "old_name": "FUN_00b49d00",
+      "name": "BSP_LogicalVertexBuffer_SaveForDeviceReset",
+      "evidence": "Complete190-byte logical vertex buffer device Save in src/native_logical_buffer_device_save.cpp. Dynamic flag/null physical/null current COM guards. Capture COM/table AddRef then captured-table Release, separately observe capacity for actual CRT new[], Lock and memcpy. Load current physical BEFORE shadow publication; capture table AFTER publication; capacity2 callback then fresh physical with captured Lock token. Full Lock arguments(capacity2,0,1,&zero_base,1). Third capacity after actual Lock; current shadow destination; current Unlock; current entry-specific direct physical ReleaseForReset. Old shadow is not freed, no rollback/cleanup, preserve real callback writes/exceptions. Four immutable native token profiles D61E10/D61E34/D61E58/D61E7C bind actual complete compiled providers; numeric original tokens are not called by host. Original ECX owner/plain RET/no stackargs, new explicit actual EDX context, not drop-in caller ABI. Primary verified77 worker pins/12 current files/19 fresh live-PE spans2015bytes; strict main build/two CTests/eight fresh seeds. Actual main-library replay18paired cases/47122literalDWORDs/256events;54 full main-COFF/linked functions and2516 whole code/profile runtime postimages. Original380ownedbytes execute unchanged with four external helper bridges to actual compiled release/allocation/memcpy providers. Real HAL D3D9 and CRT including actual FFFFFFFF allocation failure/newhandler/badalloc, zero allocation/Lock/copy, callback capacity32/16/8 and current-owner/shadow swaps. All reached driver HRESULTs S_OK; no full reset/render/gameplay proof. reports/native_logical_buffer_device_save_audit.json. Descriptive name hypothesis."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b49f80",
+    "before": {
+      "address": "00b49f80",
+      "function_name": "FUN_00b49f80"
+    },
+    "after": {
+      "address": "00b49f80",
+      "old_name": "FUN_00b49f80",
+      "name": "BSP_LogicalIndexBuffer_SaveForDeviceReset",
+      "evidence": "Complete190-byte logical index buffer device Save in src/native_logical_buffer_device_save.cpp. Dynamic flag/null physical/null current COM guards. Capture COM/table AddRef then captured-table Release, separately observe capacity for actual CRT new[], Lock and memcpy. Load current physical BEFORE shadow publication; capture table AFTER publication; capacity2 callback then fresh physical with captured Lock token. Full Lock arguments(capacity2,0,1,&zero_base,1). Third capacity after actual Lock; current shadow destination; current Unlock; current entry-specific direct physical ReleaseForReset. Old shadow is not freed, no rollback/cleanup, preserve real callback writes/exceptions. Four immutable native token profiles D61E10/D61E34/D61E58/D61E7C bind actual complete compiled providers; numeric original tokens are not called by host. Original ECX owner/plain RET/no stackargs, new explicit actual EDX context, not drop-in caller ABI. Primary verified77 worker pins/12 current files/19 fresh live-PE spans2015bytes; strict main build/two CTests/eight fresh seeds. Actual main-library replay18paired cases/47122literalDWORDs/256events;54 full main-COFF/linked functions and2516 whole code/profile runtime postimages. Original380ownedbytes execute unchanged with four external helper bridges to actual compiled release/allocation/memcpy providers. Real HAL D3D9 and CRT including actual FFFFFFFF allocation failure/newhandler/badalloc, zero allocation/Lock/copy, callback capacity32/16/8 and current-owner/shadow swaps. All reached driver HRESULTs S_OK; no full reset/render/gameplay proof. reports/native_logical_buffer_device_save_audit.json. Descriptive name hypothesis."
+    },
+    "status": "applied"
+  }
+]

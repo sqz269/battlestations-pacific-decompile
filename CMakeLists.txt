@@ -96,6 +96,7 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_resource_creation_flags.cpp
   src/native_physical_buffer_access.cpp
   src/native_physical_buffer_lock.cpp
+  src/native_logical_buffer_device_save.cpp
   src/native_renderer_vertex_layout_binding.cpp
   src/native_renderer_index_binding.cpp
   src/native_texture_device_reset.cpp

@@ -161,3 +161,20 @@ success, full restore/reset integration, gameplay compatibility or visual parity
 The original CRT/helper machine bodies are verified references; runtime calls
 use their established compiled providers. The evidence report is
 `reports/native_logical_buffer_device_save_audit.json`.
+
+## Primary integration
+
+The primary registered this source in CMake and passed the strict Win32 build,
+both existing CTests and eight freshly verified native seeds. It independently
+verified 77 worker artifact pins, 12 current source/provider files and 19 fresh
+live-Ghidra/installed-PE spans (2,015 bytes). The immutable actual main library
+`adb3e13067c2322933df7555f35d01702530ea5a3dae8ae77b875b99e15eacca`
+passed all 18 original/library pairs: 47,122 literal DWORDs and 256 event frames.
+All 54 complete linked COFF functions and 2,516 complete runtime code/profile
+postimages were checked. Real D3D9 and CRT providers cover normal copies, actual
+allocation failure, zero sizes, callback mutation and post-provider exceptions.
+All reached actual driver calls returned S_OK. The 380 owned native bytes are
+unchanged; four external helper bridges bind the actual compiled providers.
+Both descriptive Ghidra names and appended evidence are saved, exports forcibly
+refreshed and full reconstruction records registered. No permanent tests were
+added. Original-caller ABI, complete device reset and gameplay remain unclaimed.
