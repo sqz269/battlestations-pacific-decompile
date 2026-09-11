@@ -1,0 +1,138 @@
+{
+  "packet": "orch3_xlive_signin_e",
+  "source": "src/xlive_signin.cpp",
+  "header": "include/bsp/xlive_signin.hpp",
+  "documentation": "docs/XLIVE_SIGNIN.md",
+  "status": "reconstructed_build_and_host_fixture_tested",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_worker_mutations": false,
+  "functions": [
+    {
+      "address": "00a3ebd0",
+      "entrypoint": "refresh_cached_local_user_00a3ebd0",
+      "reviewed_name": "BSP_XLiveManager_RefreshCachedLocalUser_Provisional",
+      "previous_name": "FUN_00a3ebd0",
+      "native_abi": "ECX=manager; forced byte stack; RET4",
+      "last_instruction": "00a3ed04",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a3ed06",
+      "end_exclusive": "00a3ed07",
+      "evidence": "Always state/name/XUID user0 queries, then optional nonforced signout return. State2 checks FEh privilege and clears link failure in states0/1. Presence/case-sensitive name change restarts state0; nonzero state uses callback20 ECX0 before committing all128 name bytes, XUID and privilege. Name error defines only byte0; unknown tail remains explicit."
+    },
+    {
+      "address": "00a3f3e0",
+      "entrypoint": "poll_signin_debounce_00a3f3e0",
+      "reviewed_name": "BSP_XLiveManager_PollSigninDebounce_Provisional",
+      "previous_name": "FUN_00a3f3e0",
+      "native_abi": "ECX=manager; no stack args; RET",
+      "last_instruction": "00a3f436",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a3f436",
+      "end_exclusive": "00a3f437",
+      "evidence": "Pending guard; sample clock then subtract live saved timestamp. x87 ratio spilled to float and strict ordered greater-than-one comparison. Clear pending before forced refresh. Saved frequency-low at+10 aliases OnlineSystemState.field_10."
+    },
+    {
+      "address": "00a3f440",
+      "entrypoint": "refresh_signin_00a3f440",
+      "reviewed_name": "BSP_XLiveManager_ToggleSigninDebounce_Provisional",
+      "previous_name": "FUN_00a3f440",
+      "native_abi": "ECX=manager; no stack args; RET",
+      "last_instruction": "00a3f494",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a3f494",
+      "end_exclusive": "00a3f495",
+      "evidence": "Pending: forced refresh then clear flag. Otherwise nonforced refresh, set flag, sample clock and copy16byte timestamp through canonical field10 overlay. Callback/SDK exceptions preserve exact completed flag changes."
+    },
+    {
+      "address": "00a3e600",
+      "entrypoint": "profile_setting_changed_00a3e600",
+      "reviewed_name": "BSP_XLiveManager_RefreshProfileName_Provisional",
+      "previous_name": "FUN_00a3e600",
+      "native_abi": "ECX=manager; mask byte stack; RET4",
+      "last_instruction": "00a3e687",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a3e689",
+      "end_exclusive": "00a3e68a",
+      "evidence": "Mask bit0 only; successful name query and case-sensitive difference copy all128 bytes, then current signin11C==0 permits callback18 with ECX0/no stack args. Error does not update cache."
+    },
+    {
+      "address": "00a3e6a0",
+      "entrypoint": "restart_signin_00a3e6a0",
+      "reviewed_name": "BSP_XLiveManager_RestartSignin_Provisional",
+      "previous_name": "FUN_00a3e6a0",
+      "native_abi": "ECX=manager; no stack args; RET",
+      "last_instruction": "00a3e6f4",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a3e6f4",
+      "end_exclusive": "00a3e6f5",
+      "evidence": "Clear3BC only when120 and3BC; clear119/11A/2F/2D/2E/120/31, state11C=1, slot124=-1, field3B8=1, profileChanged2C=true. Bind canonical online/notification/pump state."
+    }
+  ],
+  "ghidra_missing_starts": [],
+  "ghidra_flow_repairs": [],
+  "canonical_aliases": {
+    "debounce_timestamp_08": "ticks08 + OnlineSystemState.field_10 frequency low + storage.frequency_high14",
+    "indexed_dword_8c": "OnlineSystemState.connected_flag then the actual128 cached username bytes; uint32 offset wrap; unknown/range failures explicit",
+    "pump_flags": "signin_flag_120 and signin_flag_3bc are references to XLiveSystemPumpState",
+    "name_definedness": "128 byte values plus128 validity bits; native Name error explicitly overwrites only byte0; full128 copied at commit"
+  },
+  "required_services": [
+    "XUserGetSigninState(0)",
+    "XUserGetName(0,buffer,128) with explicit written-byte mask",
+    "XUserGetXUID(0)",
+    "XUserCheckPrivilege(0,FEh,&BOOL)",
+    "current clock virtual+20",
+    "invoke_state_callback selected callback18/20, ECX0, no stack args"
+  ],
+  "validation": {
+    "win32_release_build": {
+      "passed": true,
+      "command": "./scripts/build.ps1",
+      "log": "local/xlive-signin-build.log"
+    },
+    "ctest": {
+      "passed": 2,
+      "total": 2,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "verify_seeds": {
+      "passed": true,
+      "matches": 8,
+      "total": 8,
+      "artifact": "local/xlive-signin-seeds.json"
+    },
+    "focused_fixture": {
+      "passed": true,
+      "source": "local/xlive_signin_fixture.cpp",
+      "command": "./local/run_xlive_signin_fixture.cmd",
+      "log": "local/xlive-signin-fixture.log",
+      "checks": [
+        "nonforced signout query-before-return",
+        "failed-name unknown tail",
+        "canonical restart writes",
+        "callback20 precommit and callback18 postcommit state",
+        "indexed read overlaps username",
+        "uint32 index wrap",
+        "timestamp frequency shares field10",
+        "strict one-second threshold",
+        "poll clears flag before forced refresh",
+        "toggle clears flag after forced refresh"
+      ],
+      "live_xlive_calls": false
+    },
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "uncertainty": [
+    "Names are descriptive hypotheses, not recovered symbols.",
+    "Caller supplies new scalar storage preimages; no manager constructor is reconstructed.",
+    "Undefined name padding is carried as unknown; comparisons/packed reads requiring it raise explicit errors.",
+    "SDK success must define XUID output; name adapter marks only definitely written bytes.",
+    "Outside cached state/name region indexed DWORD reads are unsupported.",
+    "Native physical ABI, arbitrary SEH behavior and live profile/sign-in integration remain unvalidated."
+  ]
+}

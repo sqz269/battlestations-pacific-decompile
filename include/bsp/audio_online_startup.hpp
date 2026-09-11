@@ -315,6 +315,7 @@ struct OnlineSystemState {
     std::int32_t subsystem_3ac_result = 0;
     bool winsock_started = false;   // XWSAStartup returned version 2.2
     std::uint16_t system_link_port = 0u;
+    // +10 overlaps the low word of the debounce timestamp frequency (+8..+17).
     std::uint32_t field_10 = 0u;    // +0x10, set to 1 by the constructor
     std::uint32_t connected_flag = 0u;   // +0x8c
     std::uint32_t state = 0u;       // +0x3b0, logged as "ChangeState To %d"
@@ -325,8 +326,8 @@ struct OnlineSystemState {
     bool signin_flag_119 = false;   // +0x119
     bool signin_flag_11a = false;   // +0x11a
     bool flag_3bd = false;          // +0x3bd, gate on the sign-in reset
-    // Vector at +0x364 / +0x368 that 00a40020 empties by moving its end back to
-    // its begin.  Element type is unknown; the stride is four bytes.
+    // Achievement-ID vector, begin/end +364/+368, cleared by 00A40020.
+    // 00A3FA70 builds {user,id} SDK batches from these DWORD IDs.
     std::vector<std::uint32_t> pending_notifications;
 };
 

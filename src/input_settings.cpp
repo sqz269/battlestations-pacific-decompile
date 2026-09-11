@@ -1,6 +1,7 @@
 #include "bsp/input_settings.hpp"
 
 #include <cstddef>
+#include <stdexcept>
 
 extern "C" {
 #include <lua.h>
@@ -411,6 +412,13 @@ bool load_controller_input_names(lua_State* state, InputSettings& out, std::stri
 InputDevice* InputDeviceTable::slot(int device_class, int index) const {
     if (device_class < 0 || device_class >= input_device_class_count) return nullptr;
     if (index < 0 || index >= input_device_slot_count) return nullptr;
+    return slots_[device_class][index];
+}
+
+InputDevice*& InputDeviceTable::slot_reference(int device_class, int index) {
+    if (device_class < 0 || device_class >= input_device_class_count ||
+        index < 0 || index >= input_device_slot_count)
+        throw std::out_of_range("input device slot outside the native 3x8 table");
     return slots_[device_class][index];
 }
 

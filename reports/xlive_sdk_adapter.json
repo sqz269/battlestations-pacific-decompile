@@ -1,0 +1,355 @@
+{
+  "packet": "orch3_xlive_sdk_adapter_e",
+  "implementation": "src/xlive_sdk_adapter.cpp",
+  "game_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "name": "XStorageBuildServerPath",
+      "ordinal": 5344,
+      "thunk": "00a4d578",
+      "iat": "00ce26cc",
+      "original_thunk_bytes": "ff25cc26ce00",
+      "stack_bytes": 28
+    },
+    {
+      "name": "XStorageDownloadToMemory",
+      "ordinal": 5345,
+      "thunk": "00a4d584",
+      "iat": "00ce26d4",
+      "original_thunk_bytes": "ff25d426ce00",
+      "stack_bytes": 28
+    },
+    {
+      "name": "XStorageUploadFromMemory",
+      "ordinal": 5305,
+      "thunk": "00a4d590",
+      "iat": "00ce26dc",
+      "original_thunk_bytes": "ff25dc26ce00",
+      "stack_bytes": 20
+    },
+    {
+      "name": "XStorageDownloadToMemoryGetProgress",
+      "ordinal": 5307,
+      "thunk": "00a4d57e",
+      "iat": "00ce26d0",
+      "original_thunk_bytes": "ff25d026ce00",
+      "stack_bytes": 16
+    },
+    {
+      "name": "XStorageUploadFromMemoryGetProgress",
+      "ordinal": 5304,
+      "thunk": "00a4d58a",
+      "iat": "00ce26d8",
+      "original_thunk_bytes": "ff25d826ce00",
+      "stack_bytes": 16
+    },
+    {
+      "name": "XGetOverlappedResult",
+      "ordinal": 1083,
+      "thunk": "00a4d42e",
+      "iat": "00ce2670",
+      "original_thunk_bytes": "ff257026ce00",
+      "stack_bytes": 12
+    },
+    {
+      "name": "XGetOverlappedExtendedError",
+      "ordinal": 1082,
+      "thunk": "00a4d422",
+      "iat": "00ce2678",
+      "original_thunk_bytes": "ff257826ce00",
+      "stack_bytes": 4
+    },
+    {
+      "name": "XUserWriteAchievements",
+      "ordinal": 5278,
+      "thunk": "00a4d596",
+      "iat": "00ce26e0",
+      "original_thunk_bytes": "ff25e026ce00",
+      "stack_bytes": 12
+    },
+    {
+      "name": "XShowMessageBoxUI",
+      "ordinal": 5266,
+      "thunk": "00a4d5c0",
+      "iat": "00ce26fc",
+      "original_thunk_bytes": "ff25fc26ce00",
+      "stack_bytes": 36
+    },
+    {
+      "name": "XShowSigninUI",
+      "ordinal": 5260,
+      "thunk": "00a4d5ba",
+      "iat": "00ce26f8",
+      "original_thunk_bytes": "ff25f826ce00",
+      "stack_bytes": 8
+    },
+    {
+      "name": "XUserGetSigninInfo",
+      "ordinal": 5267,
+      "thunk": "00a4d560",
+      "iat": "00ce26bc",
+      "original_thunk_bytes": "ff25bc26ce00",
+      "stack_bytes": 12
+    },
+    {
+      "name": "XUserGetSigninState",
+      "ordinal": 5262,
+      "thunk": "00a4d572",
+      "iat": "00ce26c8",
+      "original_thunk_bytes": "ff25c826ce00",
+      "stack_bytes": 4
+    },
+    {
+      "name": "XUserGetName",
+      "ordinal": 5263,
+      "thunk": "00a4d566",
+      "iat": "00ce26c0",
+      "original_thunk_bytes": "ff25c026ce00",
+      "stack_bytes": 12
+    },
+    {
+      "name": "XUserGetXUID",
+      "ordinal": 5261,
+      "thunk": "00a4d56c",
+      "iat": "00ce26c4",
+      "original_thunk_bytes": "ff25c426ce00",
+      "stack_bytes": 8
+    },
+    {
+      "name": "XUserCheckPrivilege",
+      "ordinal": 5265,
+      "thunk": "00a4d482",
+      "iat": "00ce2638",
+      "original_thunk_bytes": "ff253826ce00",
+      "stack_bytes": 12
+    }
+  ],
+  "libraries": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/xlive.dll",
+      "bytes": 3833856,
+      "sha256": "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2",
+      "exports": [
+        {
+          "ordinal": 5344,
+          "expected_name": "XStorageBuildServerPath",
+          "rva": "00152209",
+          "name": "XStorageBuildServerPath"
+        },
+        {
+          "ordinal": 5345,
+          "expected_name": "XStorageDownloadToMemory",
+          "rva": "0015255b",
+          "name": "XStorageDownloadToMemory"
+        },
+        {
+          "ordinal": 5305,
+          "expected_name": "XStorageUploadFromMemory",
+          "rva": "001516a1",
+          "name": "XStorageUploadFromMemory"
+        },
+        {
+          "ordinal": 5307,
+          "expected_name": "XStorageDownloadToMemoryGetProgress",
+          "rva": "0015c781",
+          "name": "XStorageDownloadToMemoryGetProgress"
+        },
+        {
+          "ordinal": 5304,
+          "expected_name": "XStorageUploadFromMemoryGetProgress",
+          "rva": "00159bc6",
+          "name": "XStorageUploadFromMemoryGetProgress"
+        },
+        {
+          "ordinal": 1083,
+          "expected_name": "XGetOverlappedResult",
+          "rva": "0015b089",
+          "name": "XGetOverlappedResult"
+        },
+        {
+          "ordinal": 1082,
+          "expected_name": "XGetOverlappedExtendedError",
+          "rva": "00158032",
+          "name": "XGetOverlappedExtendedError"
+        },
+        {
+          "ordinal": 5278,
+          "expected_name": "XUserWriteAchievements",
+          "rva": "0015c6b9",
+          "name": "XUserWriteAchievements"
+        },
+        {
+          "ordinal": 5266,
+          "expected_name": "XShowMessageBoxUI",
+          "rva": "00153875",
+          "name": "XShowMessageBoxUI"
+        },
+        {
+          "ordinal": 5260,
+          "expected_name": "XShowSigninUI",
+          "rva": "0014e7f3",
+          "name": "XShowSigninUI"
+        },
+        {
+          "ordinal": 5267,
+          "expected_name": "XUserGetSigninInfo",
+          "rva": "0014f149",
+          "name": "XUserGetSigninInfo"
+        },
+        {
+          "ordinal": 5262,
+          "expected_name": "XUserGetSigninState",
+          "rva": "0015660b",
+          "name": "XUserGetSigninState"
+        },
+        {
+          "ordinal": 5263,
+          "expected_name": "XUserGetName",
+          "rva": "00152f83",
+          "name": "XUserGetName"
+        },
+        {
+          "ordinal": 5261,
+          "expected_name": "XUserGetXUID",
+          "rva": "00159207",
+          "name": "XUserGetXUID"
+        },
+        {
+          "ordinal": 5265,
+          "expected_name": "XUserCheckPrivilege",
+          "rva": "00152a38",
+          "name": "XUserCheckPrivilege"
+        }
+      ]
+    },
+    {
+      "path": "C:/Windows/SysWOW64/xlive.dll",
+      "bytes": 14303392,
+      "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+      "exports": [
+        {
+          "ordinal": 5344,
+          "expected_name": "XStorageBuildServerPath",
+          "rva": "00092281",
+          "name": null
+        },
+        {
+          "ordinal": 5345,
+          "expected_name": "XStorageDownloadToMemory",
+          "rva": "000900ff",
+          "name": null
+        },
+        {
+          "ordinal": 5305,
+          "expected_name": "XStorageUploadFromMemory",
+          "rva": "000905a9",
+          "name": null
+        },
+        {
+          "ordinal": 5307,
+          "expected_name": "XStorageDownloadToMemoryGetProgress",
+          "rva": "0009225a",
+          "name": null
+        },
+        {
+          "ordinal": 5304,
+          "expected_name": "XStorageUploadFromMemoryGetProgress",
+          "rva": "0009225a",
+          "name": null
+        },
+        {
+          "ordinal": 1083,
+          "expected_name": "XGetOverlappedResult",
+          "rva": "000b8f5a",
+          "name": null
+        },
+        {
+          "ordinal": 1082,
+          "expected_name": "XGetOverlappedExtendedError",
+          "rva": "000b8f32",
+          "name": null
+        },
+        {
+          "ordinal": 5278,
+          "expected_name": "XUserWriteAchievements",
+          "rva": "0008e1cd",
+          "name": null
+        },
+        {
+          "ordinal": 5266,
+          "expected_name": "XShowMessageBoxUI",
+          "rva": "0008dc30",
+          "name": null
+        },
+        {
+          "ordinal": 5260,
+          "expected_name": "XShowSigninUI",
+          "rva": "0008d67d",
+          "name": null
+        },
+        {
+          "ordinal": 5267,
+          "expected_name": "XUserGetSigninInfo",
+          "rva": "0008f07b",
+          "name": null
+        },
+        {
+          "ordinal": 5262,
+          "expected_name": "XUserGetSigninState",
+          "rva": "0008e832",
+          "name": null
+        },
+        {
+          "ordinal": 5263,
+          "expected_name": "XUserGetName",
+          "rva": "0008e7f5",
+          "name": null
+        },
+        {
+          "ordinal": 5261,
+          "expected_name": "XUserGetXUID",
+          "rva": "0008e7af",
+          "name": null
+        },
+        {
+          "ordinal": 5265,
+          "expected_name": "XUserCheckPrivilege",
+          "rva": "0008e95d",
+          "name": null
+        }
+      ]
+    }
+  ],
+  "signin_info_size_evidence": [
+    {
+      "rva": "0026bd68",
+      "bytes": "6a288b45088b0c854c854d10516a288b551052"
+    },
+    {
+      "rva": "0026bd7b",
+      "bytes": "e8e015000083c4108b450c83e00274208b45088b0c"
+    }
+  ],
+  "ownership": "Borrowed module_handle from caller-owned XLiveLibrary; no DLL load/unload or initialization in adapter.",
+  "native_abi": "Win32 stdcall; all return values retain uint32 bits; each argument occupies four bytes; XGetOverlappedResult wait is explicitly int32 BOOL.",
+  "output_contracts": [
+    "Direct canonical overlap/path/buffer/result/achievement/choice pointers; no temporary copy of pending SDK state.",
+    "XUserGetName: all defined flags cleared first; only success bytes through NUL become defined; failure leaves all unknown and preserves status.",
+    "XUserGetSigninInfo: 0x28-byte output, only byte8 read after success; caller flags unchanged on failure.",
+    "XUID and privilege directly forwarded; native callers own failure overwrite semantics."
+  ],
+  "checks": {
+    "export_inspection": "All15 game thunks map to expected original import ordinals; all15 present in both installed PE export tables.",
+    "original_stack_evidence": "Pump body assembly and A3EBD0 SDK pushes; see XLIVE_SYSTEM_PUMP and XLIVE_SIGNIN reports.",
+    "build": "scripts/build.ps1 Win32 Release passed under /W4 /WX /fp:strict",
+    "runtime": "not attempted; no DLL loaded by this worker",
+    "ctest": "reconstructed_math and native_math_differential passed (2/2)",
+    "ghidra_import_thunks": "Verified bsp.py live byte queries: A4D560 length102, A4D422 length18, A4D482 length6; original JMP[IAT] operands match installed game PE imports."
+  },
+  "limitations": [
+    "Adapter leaves game/clock/drain/localization/callback methods abstract.",
+    "Progress outputs are unconsumed storage; numeric semantics/null-only output types not established.",
+    "Native DLL runtime not validated; parent reports existing Microsoft loader error182 and installed shim C0000005.",
+    "Not a new recovered game function; no Ghidra names/annotations or address ledger ownership."
+  ]
+}

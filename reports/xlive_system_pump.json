@@ -1,0 +1,185 @@
+{
+  "packet": "orch3_xlive_pump_e",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_writes": false,
+  "function_start_repairs_needed": [],
+  "functions": [
+    {
+      "address": "00a409f0",
+      "inclusive_end": "00a40acf",
+      "byte_length": 224,
+      "name": "pump_xlive_system_00a409f0",
+      "name_hypothesis": "BSP_XLiveSystem_Pump",
+      "native_abi": "ECX manager; RET",
+      "evidence": "Ordered notification/UI/storage/achievement calls; two clock samples; x87 float timestamp then extended subtraction against double 2.0; shared first-call/last-time globals; callback ECX=0.",
+      "matches_installed_executable": true,
+      "byte_sha256": "da0b7bb8db11c9b511ad82497dd71b80661504deb1189dcafde962c08c9da445",
+      "complete_control_flow": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Typed host projection; required DLL/localization/notification and cached-byte bindings. No native allocator failure/invalid-pointer emulation."
+    },
+    {
+      "address": "00a40510",
+      "inclusive_end": "00a4099f",
+      "byte_length": 1168,
+      "name": "pump_online_signin_ui_00a40510",
+      "name_hypothesis": "BSP_XLiveSystem_PumpSigninUi",
+      "native_abi": "ECX manager; RET",
+      "evidence": "Six-case +3B0 UI state machine; four localization keys; full seven-DWORD +3C0 reset; existing reset A40020; +119/+11C and +3BD gates.",
+      "matches_installed_executable": true,
+      "byte_sha256": "c41cdd67d0674b0c458abc96b5c3904a05e4b6c31799c8efcf7d956a93a76281",
+      "complete_control_flow": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Typed host projection; required DLL/localization/notification and cached-byte bindings. No native allocator failure/invalid-pointer emulation."
+    },
+    {
+      "address": "00a3ed60",
+      "inclusive_end": "00a3ef1d",
+      "byte_length": 446,
+      "name": "download_online_storage_00a3ed60",
+      "name_hypothesis": "BSP_XLiveSystem_DownloadStorage",
+      "native_abi": "ECX manager; RET",
+      "evidence": "Indexed cached DWORD guard; 256-byte buffer; five-word overlap/results reset; download submission/progress/completion; exact nine-byte payload check and 8015C004 error state.",
+      "matches_installed_executable": true,
+      "byte_sha256": "b69bb3287c286a3bfdf52b9cd59c194d48c102defc6f29d0d34b80af17e569a4",
+      "complete_control_flow": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Typed host projection; required DLL/localization/notification and cached-byte bindings. No native allocator failure/invalid-pointer emulation."
+    },
+    {
+      "address": "00a3ef20",
+      "inclusive_end": "00a3f0fe",
+      "byte_length": 479,
+      "name": "upload_online_storage_00a3ef20",
+      "name_hypothesis": "BSP_XLiveSystem_UploadStorage",
+      "native_abi": "ECX manager; RET",
+      "evidence": "Indexed cached DWORD guard; nine-byte two-DWORD/zero payload; five-word overlap reset; upload submission/progress/completion states 6/7/8/9.",
+      "matches_installed_executable": true,
+      "byte_sha256": "fc5ef8fdcc55f8429db0d1550b20de0edc31a9d7c5b29ecb2fbe5d209bddbde2",
+      "complete_control_flow": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Typed host projection; required DLL/localization/notification and cached-byte bindings. No native allocator failure/invalid-pointer emulation."
+    },
+    {
+      "address": "00a3fa70",
+      "inclusive_end": "00a3fd1f",
+      "byte_length": 688,
+      "name": "pump_online_achievements_00a3fa70",
+      "name_hypothesis": "BSP_XLiveSystem_PumpAchievements",
+      "native_abi": "ECX manager; force byte in DWORD stack argument; RET4",
+      "evidence": "Achievement {user,id} snapshot; force replacement; pending extended-error query; completed batch removes one first matching current-queue ID per pair; buffer/count/result teardown.",
+      "matches_installed_executable": true,
+      "byte_sha256": "8a2107c9bab7455bed8fffda8ea34b71d60c64cb74385b34f635ecb0092beedd",
+      "complete_control_flow": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Typed host projection; required DLL/localization/notification and cached-byte bindings. No native allocator failure/invalid-pointer emulation."
+    },
+    {
+      "address": "00a3e700",
+      "inclusive_end": "00a3e71b",
+      "byte_length": 28,
+      "name": "reset_online_ui_slots_00a3e700",
+      "name_hypothesis": "BSP_XLiveSystem_ResetUiSlots",
+      "native_abi": "ECX manager; RET",
+      "evidence": "Five instructions set manager+3B0 to zero and +3B4/+3B8 to one.",
+      "matches_installed_executable": true,
+      "byte_sha256": "27a9db06512e977570704bb80ebc333b8deb078c214d3b81cc29592edb393a2a",
+      "complete_control_flow": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Typed host projection; required DLL/localization/notification and cached-byte bindings. No native allocator failure/invalid-pointer emulation."
+    },
+    {
+      "address": "00a3ed10",
+      "inclusive_end": "00a3ed59",
+      "byte_length": 74,
+      "name": "build_online_storage_path_00a3ed10",
+      "name_hypothesis": "BSP_XLiveSystem_BuildStoragePath",
+      "native_abi": "ECX manager; RET",
+      "evidence": "Indexed cached DWORD gate; seven native arguments XStorageBuildServerPath(user,3,null,0,DropRates,path,&size=200h); only success sets +12C=1.",
+      "matches_installed_executable": true,
+      "byte_sha256": "0b821090fe438a3a8b3c8772345b22fe22039cf273b46d9fa6bd4c5a5a654118",
+      "complete_control_flow": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "uncertainty": "Typed host projection; required DLL/localization/notification and cached-byte bindings. No native allocator failure/invalid-pointer emulation."
+    }
+  ],
+  "flow_gaps": [
+    {
+      "start": "00a3edaf",
+      "inclusive_end": "00a3edbb",
+      "last_instruction": "00a3edb2",
+      "last_length": 10,
+      "bytes": "83c404c7864c01000000000000",
+      "effect": "ADD ESP,4; MOV [ESI+14C],0"
+    },
+    {
+      "start": "00a3ef7a",
+      "inclusive_end": "00a3ef86",
+      "last_instruction": "00a3ef7d",
+      "last_length": 10,
+      "bytes": "83c404c7864c01000000000000",
+      "effect": "ADD ESP,4; MOV [ESI+14C],0"
+    },
+    {
+      "start": "00a3faff",
+      "inclusive_end": "00a3fb07",
+      "last_instruction": "00a3fb02",
+      "last_length": 6,
+      "bytes": "83c404899da0030000",
+      "effect": "ADD ESP,4; MOV [EBP+3A0],EBX (zero)"
+    },
+    {
+      "start": "00a3fce7",
+      "inclusive_end": "00a3fcef",
+      "last_instruction": "00a3fcea",
+      "last_length": 6,
+      "bytes": "83c404899da0030000",
+      "effect": "ADD ESP,4; MOV [EBP+3A0],EBX (zero)"
+    }
+  ],
+  "constants": {
+    "00e0e3ec": "01: process-wide first-call byte",
+    "00d7a308": "0000000000000040: double 2.0, not float",
+    "00d23f8c": "UTF16 DropRates",
+    "00d24260..00d242e8": "Four localization keys checked against raw bytes"
+  },
+  "canonical_bindings": [
+    "OnlineSystemState state+3B0 and achievement ID queue+360",
+    "PlatformManagerFlags profile_changed+2C, system_ui_visible+3E8, profile_overlapped_3c0",
+    "XLiveOverlapped seven DWORDs; first five reset at +130/+384",
+    "Existing reset_online_signin_state A40020 and timestamp_seconds_x87",
+    "A3EBD0 read-only evidence: +8C cached user0 state, +90 username[128], +110 XUID"
+  ],
+  "checks": {
+    "verify_seeds": "8/8 existing native seeds match saved analysis and installed executable",
+    "build": "scripts/build.ps1 Win32 Release passed",
+    "ctest": "reconstructed_math and native_math_differential passed (2/2)",
+    "focused_fixture": "local/xlive_pump_fixture.cpp compiled and passed via local/build_xlive_fixture.cmd",
+    "fixture_covers": [
+      "five/seven-word overlap reset",
+      "storage submission/progress/completion",
+      "duplicate achievement snapshot and queue growth",
+      "shared UI pending status and offline progression",
+      "strict 2.0 heartbeat threshold and gated time update",
+      "two samples and phase reload"
+    ],
+    "actual_dll_runtime": "not performed by this worker"
+  },
+  "limitations": [
+    "Progress output is unconsumed four-byte storage; numeric type/meaning and null-only output types unproven.",
+    "Host must supply actual cached indexed DWORD loads; nonzero indices overlap username bytes.",
+    "State constructor defaults and async cancellation/destruction are outside scope.",
+    "Names are hypotheses; known CRT/SDK names retained; no Ghidra writes.",
+    "Complete control flow under explicit host operations is not a complete SDK or native manager ABI."
+  ]
+}

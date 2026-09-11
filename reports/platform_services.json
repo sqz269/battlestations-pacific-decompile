@@ -1,0 +1,102 @@
+{
+  "packet": "orch3_platform_runtime_e",
+  "branch": "agent/orch3-20260910",
+  "documentation": "docs/PLATFORM_SERVICES.md",
+  "reconstructed_normal_functions": 29,
+  "addresses": [
+    "004ba6d0",
+    "00becb20",
+    "00bece70",
+    "00beca40",
+    "00a9a140",
+    "00a90ee0",
+    "00a91620",
+    "00a92840",
+    "00bebf30",
+    "00bec230",
+    "00a983c0",
+    "00a918a0",
+    "00a97390",
+    "00a90490",
+    "00a93eb0",
+    "00a9a390",
+    "00a409f0",
+    "00a40510",
+    "00a3ed10",
+    "00a3ed60",
+    "00a3ef20",
+    "00a3fa70",
+    "00a3e700",
+    "00a3ebd0",
+    "00a3f3e0",
+    "00a3f440",
+    "00a3e600",
+    "00a3e6a0",
+    "00a40110"
+  ],
+  "source": [
+    "src/platform_services.cpp",
+    "src/xlive_manager_runtime.cpp"
+  ],
+  "worker_commits": {
+    "cursor": "1966fa9",
+    "input": "edc75e8",
+    "pump": "c79e548",
+    "signin": "11e3ef7",
+    "sdk": "ae4f13c"
+  },
+  "verification": {
+    "win32_release_build": true,
+    "existing_ctests_passed": 2,
+    "native_seeds_matched": 8,
+    "concrete_host_compile_and_link": true,
+    "focused_fixture_packets": [
+      "cursor transitions",
+      "reentrant mouse reset",
+      "notification protocol",
+      "XLive pump state/timing",
+      "signin cache/timing"
+    ],
+    "independent_reviews": [
+      "notification dispatch against native listing",
+      "shared-state and runtime forwarding composition"
+    ],
+    "review_followup": "PlatformServices now privately supplies reset backend reads from the same input_ reference used by lookup/tick",
+    "build_log": "local/platform-services-final-build.log",
+    "link_probe_log": "local/platform-services-link-probe.log",
+    "preserved_fixture_evidence": "local/platform-services-evidence/manifest.json",
+    "actual_xlive_runtime": false,
+    "live_cursor_or_hardware": false,
+    "gameplay": false
+  },
+  "ghidra": {
+    "functions_defined": 4,
+    "false_noreturn_call_gaps_repaired": 5,
+    "reviewed_functions_annotated": 29,
+    "readback_matches": 29,
+    "exports_refreshed": 29,
+    "callee_noreturn_flags_changed": false,
+    "records": [
+      "reports/orch3_input_function_definitions.json",
+      "reports/orch3_input_flow_repairs.json",
+      "reports/orch3_xlive_flow_repairs.json",
+      "reports/orch3_input_classification.json",
+      "reports/orch3_platform_annotations.json"
+    ]
+  },
+  "library_boundary": {
+    "original_ordinals_forwarded": 20,
+    "game_imports_verified": true,
+    "installed_export_tables_verified": true,
+    "reimplementation": false
+  },
+  "runtime_limitations": [
+    "Microsoft XLive LoadLibraryEx failed with182; msidcrl40 ordinal43 absent",
+    "Hash-identical installed replacement copied to local exitsC0000005 duringload; cause unresolved",
+    "Executable-host files leased to another orchestrator were not edited; new composition not yet invoked by bsp_game",
+    "Manager construction and pending-SDK cancellation/lifetime remain required",
+    "Actual DirectInput enumeration, lazy action manager and joystick implementations remain required",
+    "Game callbacks, localization and updater helper implementations remain required",
+    "Typed C++ API is not the original ABI; native undefined-output paths have explicit guards"
+  ]
+}
