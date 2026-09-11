@@ -1,0 +1,363 @@
+{
+  "packet": "orch4_listener_w",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "verification": "bsp.py ghidra commands call Client.verify before each live batch"
+  },
+  "files": [
+    "include/bsp/sound_listener.hpp",
+    "src/sound_listener.cpp",
+    "include/bsp/sound_configuration.hpp",
+    "src/sound_configuration.cpp",
+    "cmake/startup.cmake"
+  ],
+  "routines": [
+    {
+      "address": "00a7d380",
+      "name": "BSP_SoundListener_ConstructCopy",
+      "old_name": "FUN_00a7d380",
+      "projection": "construct_sound_listener_copy_00a7d380",
+      "native_abi": "ECX=10h destination; source record pointer on stack; RET4; EAX=this",
+      "inclusive_end": "00a7d40e",
+      "coverage": "complete",
+      "scope": "Normal behavior including described disk-backed tails; excludes native SEH/allocator failure/foreign-vtable behavior.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a7bce0",
+      "name": "BSP_SoundListener_Destroy",
+      "old_name": "FUN_00a7bce0",
+      "projection": "destroy_sound_listener_00a7bce0",
+      "native_abi": "ECX=record; RET",
+      "inclusive_end": "00a7bd46",
+      "coverage": "complete",
+      "scope": "Normal behavior including described disk-backed tails; excludes native SEH/allocator failure/foreign-vtable behavior.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a7bd50",
+      "name": "BSP_SoundListener_ScalarDeletingDestructor",
+      "old_name": "CG_scalar_deleting_dtor_00a7bd50",
+      "projection": "delete_sound_listener_00a7bd50",
+      "native_abi": "ECX=record; flags on stack; RET4; EAX=input address",
+      "inclusive_end": "00a7bd6d",
+      "coverage": "complete",
+      "scope": "Normal behavior including described disk-backed tails; excludes native SEH/allocator failure/foreign-vtable behavior.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a7f9f0",
+      "name": "BSP_SoundListenerTable_AppendCopy",
+      "old_name": "BSP_SoundListenerTable_AppendCopy",
+      "projection": "append_sound_listener_00a7f9f0",
+      "native_abi": "ECX=manager+A4; source record pointer on stack; RET4",
+      "inclusive_end": "00a7fac1",
+      "coverage": "complete",
+      "scope": "Normal behavior including described disk-backed tails; excludes native SEH/allocator failure/foreign-vtable behavior.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a7f050",
+      "name": "BSP_SoundListenerTable_AppendRetained",
+      "old_name": "FUN_00a7f050",
+      "projection": "SoundListenerTable::append_00a7f050",
+      "native_abi": "ECX=pointer-array header; pointer-reference on stack; RET4",
+      "inclusive_end": "00a7f0c2",
+      "coverage": "complete",
+      "scope": "Normal behavior including described disk-backed tails; excludes native SEH/allocator failure/foreign-vtable behavior.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a7d750",
+      "name": "BSP_SoundListenerTable_Reserve",
+      "old_name": "FUN_00a7d750",
+      "projection": "SoundListenerTable::reserve_00a7d750",
+      "native_abi": "ECX=pointer-array header; signed capacity on stack; RET4",
+      "inclusive_end": "00a7d843",
+      "coverage": "complete",
+      "scope": "Normal behavior including described disk-backed tails; excludes native SEH/allocator failure/foreign-vtable behavior.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a7d910",
+      "name": "BSP_SoundListenerTable_Resize",
+      "old_name": "FUN_00a7d910",
+      "projection": "resize_sound_listener_table_00a7d910",
+      "native_abi": "ECX=pointer-array header; signed count on stack; RET4",
+      "inclusive_end": "00a7d98d",
+      "coverage": "complete",
+      "scope": "Normal behavior including described disk-backed tails; excludes native SEH/allocator failure/foreign-vtable behavior.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a7fe00",
+      "name": "BSP_SoundListenerOwner_Destroy",
+      "old_name": "FUN_00a7fe00",
+      "projection": "destroy_sound_listener_owner_00a7fe00",
+      "native_abi": "ECX=manager+A4; RET",
+      "inclusive_end": "00a7fe5c",
+      "coverage": "complete",
+      "scope": "Normal behavior including described disk-backed tails; excludes native SEH/allocator failure/foreign-vtable behavior.",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a7d3dc",
+      "native": "0041dd40",
+      "function": "00a7d380",
+      "contract": "NativeString resize(length,true), existing helper"
+    },
+    {
+      "address": "00a7d3f1",
+      "native": "00bf7680",
+      "function": "00a7d380",
+      "contract": "CRT copy, ADD ESP,0Ch"
+    },
+    {
+      "address": "00a7bd1c",
+      "native": "00419cc0",
+      "function": "00a7bce0",
+      "contract": "Get pool singleton without consuming pushed release args"
+    },
+    {
+      "address": "00a7bd23",
+      "native": "00bd1510",
+      "function": "00a7bce0",
+      "contract": "Return nonnull string block(length+1,1), RET0Ch"
+    },
+    {
+      "address": "00a7bd32",
+      "native": "00bd30f0",
+      "function": "00a7bce0",
+      "contract": "Base vtable store after string release"
+    },
+    {
+      "address": "00a7bd53",
+      "native": "00a7bce0",
+      "function": "00a7bd50",
+      "contract": "Destroy listener"
+    },
+    {
+      "address": "00a7bd60",
+      "native": "00bf65ac",
+      "function": "00a7bd50",
+      "contract": "Free only flags bit0; ADD ESP4 raw gap"
+    },
+    {
+      "address": "00a7d791",
+      "native": "00bf55be",
+      "function": "00a7d750",
+      "contract": "Allocate requested*4 pointer bytes, ADD ESP4"
+    },
+    {
+      "address": "00a7d7cb",
+      "native": "00ce221c:IAT:InterlockedIncrement",
+      "function": "00a7d750",
+      "contract": "Retain copied descriptor"
+    },
+    {
+      "address": "00a7d7f7",
+      "native": "00ce2220:IAT:InterlockedDecrement",
+      "function": "00a7d750",
+      "contract": "Release old slot"
+    },
+    {
+      "address": "00a7d807",
+      "native": "00bd30e0",
+      "function": "00a7d750",
+      "contract": "Virtual slot0 resolved by D5ABB0; reaches scalar destructor flags1"
+    },
+    {
+      "address": "00a7d81a",
+      "native": "00bf6989",
+      "function": "00a7d750",
+      "contract": "Free old array, ADD ESP4 raw gap"
+    },
+    {
+      "address": "00a7d91e",
+      "native": "00a7d750",
+      "function": "00a7d910",
+      "contract": "Reserve when requested count exceeds capacity"
+    },
+    {
+      "address": "00a7d967",
+      "native": "00ce2220:IAT:InterlockedDecrement",
+      "function": "00a7d910",
+      "contract": "Release after decrementing count"
+    },
+    {
+      "address": "00a7d977",
+      "native": "00bd30e0",
+      "function": "00a7d910",
+      "contract": "Virtual slot0 at zero refs; clear captured slot afterwards"
+    },
+    {
+      "address": "00a7f080",
+      "native": "00a7d750",
+      "function": "00a7f050",
+      "contract": "Reserve max(2*capacity,1) at count==capacity"
+    },
+    {
+      "address": "00a7f0a7",
+      "native": "00ce221c:IAT:InterlockedIncrement",
+      "function": "00a7f050",
+      "contract": "Retain after slot store before count increment"
+    },
+    {
+      "address": "00a7fa3c",
+      "native": "00bf7fbf",
+      "function": "00a7f9f0",
+      "contract": "Compare equal-length nonempty names, ignore return, ADD ESP8"
+    },
+    {
+      "address": "00a7fa4d",
+      "native": "00bf681b",
+      "function": "00a7f9f0",
+      "contract": "Allocate10h record, ADD ESP4"
+    },
+    {
+      "address": "00a7fa68",
+      "native": "00a7d380",
+      "function": "00a7f9f0",
+      "contract": "Copy construct"
+    },
+    {
+      "address": "00a7fa86",
+      "native": "00a7f050",
+      "function": "00a7f9f0",
+      "contract": "Append retained pointer"
+    },
+    {
+      "address": "00a7fa9b",
+      "native": "00ce2220:IAT:InterlockedDecrement",
+      "function": "00a7f9f0",
+      "contract": "Release initial temporary ref"
+    },
+    {
+      "address": "00a7faab",
+      "native": "00bd30e0",
+      "function": "00a7f9f0",
+      "contract": "Virtual slot0 on final temporary release"
+    },
+    {
+      "address": "00a7fe2d",
+      "native": "00a7d910",
+      "function": "00a7fe00",
+      "contract": "Resize0"
+    },
+    {
+      "address": "00a7fe35",
+      "native": "00bf6989",
+      "function": "00a7fe00",
+      "contract": "Free pointer storage without clearing fields"
+    }
+  ],
+  "disk_tail_calls": [
+    {
+      "call_site": "00a7fe47",
+      "native": "00bd30f0",
+      "containing_function": null,
+      "no_ghidra_function": true,
+      "associated_function_hypothesis": "00a7fe00",
+      "contract": "Base vtable CEB130 after table free",
+      "evidence": "bsp.py disasm-raw00A7FE3A and live bytes match; proto00A7FE47 returns no function"
+    }
+  ],
+  "repair_requests": [
+    {
+      "function": "00a7d750",
+      "start": "00a7d81f",
+      "inclusive_end": "00a7d831",
+      "no_ghidra_function": true,
+      "contract": "Install new pointer and requested capacity after _free, preserve count"
+    },
+    {
+      "function": "00a7bd50",
+      "start": "00a7bd65",
+      "inclusive_end": "00a7bd67",
+      "no_ghidra_function": true,
+      "contract": "ADD ESP,4 after _free"
+    },
+    {
+      "function": "00a7fe00",
+      "start": "00a7fe3a",
+      "inclusive_end": "00a7fe5c",
+      "no_ghidra_function": true,
+      "contract": "ADD ESP4; base destructor; restore SEH; RET"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "configuration.listeners_ac is vector<string>, append stored only copied text",
+      "is": "Real allocated 10h listeners with atomic refcounts, NativeString, and raw allocated pointer table",
+      "evidence": "A7D380 stores layout; A7FA4D allocates10h; A7F0A7 retains; A7FA9B drops temporary; D5ABB0 slots BD30E0/A7BD50"
+    },
+    {
+      "was": "Old A7D750 export stops after _free",
+      "is": "Gap A7D81F..31 installs pointer and capacity before shared epilogue",
+      "evidence": "Live bytes agree with disk disasm; stores A7D82C/A7D82E"
+    },
+    {
+      "was": "Old A7FE00 export stops after _free",
+      "is": "A7FE47 calls base destructor; RET A7FE5C; dead pointer/capacity remain",
+      "evidence": "Live bytes match raw disk A7FE3A..5C; proto reports no Ghidra function at tail call"
+    }
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "target": "MSVC Win32 Release /W4 /WX",
+      "result": "passed",
+      "log": "local/sound_listener_build.log"
+    },
+    "existing_tests": {
+      "result": "1/1 passed",
+      "name": "reconstructed_math",
+      "native_math_differential_enabled": false
+    },
+    "focused_local_probe": {
+      "result": "passed",
+      "source": "local/listener_probe.cpp",
+      "log": "local/listener_probe.log",
+      "build": "cl /std:c++17 /EHsc /W4 /WX with actual sound_listener.cpp, native_string.cpp, storage_pool.cpp; /link /MANIFEST:EMBED",
+      "checks": [
+        "duplicate identity",
+        "real string allocations",
+        "external reference survival",
+        "refcounts across relocation",
+        "same-slot append alias becomes null",
+        "count decrement before release callback",
+        "captured slot stays live through callback",
+        "reverse release order",
+        "dead data pointer/capacity/selected ordinal",
+        "self-copy loses previous buffer without release",
+        "scalar flags preserve dead fields",
+        "automatic destruction after explicit teardown does not double free"
+      ]
+    },
+    "call_verifier": "passed: 20 address rows checked, 0 failures; IAT and virtual dispatch separately evidenced, raw-tail call kept separate",
+    "ghidra_mutations": false,
+    "game_validated": false
+  },
+  "boundaries": [
+    "Actual 10h record header with vtable address tokens; new C++ interfaces not original ABI",
+    "Table storage/allocator/liveness are host projection bookkeeping",
+    "Selected pointer remains existing ordinal projection, not a retained ref",
+    "Explicit bound NativeStringStorage must match each operation and outlive retained refs",
+    "No native allocation-failure/new-handler or SEH equivalence",
+    "No foreign descriptor vtables or reentrant structural table mutations",
+    "No gameplay validation"
+  ],
+  "evidence": "docs/SOUND_LISTENER_OWNERSHIP.md"
+}
