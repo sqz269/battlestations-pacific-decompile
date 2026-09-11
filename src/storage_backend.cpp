@@ -100,6 +100,18 @@ bool PcStorageBackend::storage_query_1c(std::string_view name, std::uint32_t kin
     // 00beb1e0 short circuits before indexing the kind table.
     return file_exists(name, "valid") && file_exists(name, kind_name(kind));
 }
+void PcStorageBackend::reset_storage_operation_00bd3450() noexcept {
+    ready_21_ = true; // PC virtual+08 is literal true00beaa70.
+    operation_.state_08 = error_20_ ? 1 : 0;
+    // No operation-code, error or prompt clearing occurs in this routine.
+}
+void PcStorageBackend::immediate_read_00bd4380(std::string_view name, std::uint32_t kind) {
+    read_name_24_.assign(name);
+    read_kind_2c_ = kind;
+    read_archive_00bd3ec0();
+    operation_.state_08 = error_20_ ? 1 : 0;
+    // The immediate path has no marker write, prompt or operation-code reset.
+}
 void PcStorageBackend::request_read_00bd3d70(std::string_view name, std::uint32_t kind) {
     read_name_24_.assign(name);
     read_kind_2c_ = kind;

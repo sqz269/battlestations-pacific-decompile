@@ -1,0 +1,39 @@
+{
+  "packet": "orch2_profile_read_integration",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "008d6dc0",
+      "end_exclusive": "008d76b7",
+      "sha256": "c418755796604de594ff858cb80f3e7506d5610a02fdbc9958407eeeff90ec4e",
+      "source": "src/settings_archive_reader.cpp",
+      "cpp_symbol": "read_settings_archive_008d6dc0",
+      "evidence": "Defaults, compatibility publication, keyboard read/apply, optional ClanText string, numeric downloaded-content list and shader-model<0x200 shadow/film reset. ECX=settings, reader stack pointer, RET4."
+    },
+    {
+      "address": "00bd3450",
+      "end_exclusive": "00bd346a",
+      "sha256": "3a3ab9e7290d12bd2acf023ca07713ff06db6739fdc7bcdebaba83a42c9b47da",
+      "source": "src/storage_backend.cpp",
+      "cpp_symbol": "PcStorageBackend::reset_storage_operation_00bd3450",
+      "evidence": "ECX=manager RET. PC slot+8 returns true, sets available+21 and state+8 from existing error+20; preserves operation code and prompts."
+    },
+    {
+      "address": "00bd4380",
+      "end_exclusive": "00bd43d3",
+      "sha256": "5657de1cd6f07659ee7457cdcfa7231348df9b31d756c29378608042aa5ce56c",
+      "source": "src/storage_backend.cpp",
+      "cpp_symbol": "PcStorageBackend::immediate_read_00bd4380",
+      "evidence": "ECX=manager, native string pointer and DWORD kind, RET8. Copies read name/kind, calls00bd3ec0, sets state+8 from error; no marker stamping, prompt or operation-code reset."
+    }
+  ],
+  "writer_correction": "008d64a0",
+  "reader_lifetime": "00441a20 / 00b67980 / 00b66de0",
+  "validation": {
+    "combined": "pending"
+  },
+  "annotations": "pending",
+  "abi_compatible": false,
+  "game_validated": false
+}

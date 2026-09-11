@@ -1016,6 +1016,10 @@ int main() {
             {
                 keys.emplace_back(key);
             }
+            void write_field(const bsp::GuiLuaVariant& key, const bsp::SettingsValue& value) override
+            {
+                if (key.tag == 0) write_field(key.value.text, value);
+            }
             void write_keyboard_setup() override {}
         } recorder;
         bsp::write_settings_008d64a0(settings, recorder);

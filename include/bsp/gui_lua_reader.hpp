@@ -32,7 +32,7 @@ namespace bsp {
 // ---------------------------------------------------------------------------
 
 // The bit each entry of the library table at 00D62BB8 answers to, in table
-// order. 00B6A020 walks that table and, for every set bit, runs the standard
+// order. 00B6A020 always opens base, then for every other set bit runs the standard
 // Lua 5.1.1 open sequence: lua_pushcclosure(L, opener, 0) (00A67B20),
 // lua_pushstring(L, name) (00A67A50), lua_call(L, 1, 0) (00A68090).
 enum class GuiLuaLibrary : std::uint32_t {

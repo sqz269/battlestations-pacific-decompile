@@ -89,7 +89,7 @@ bool store_float_run(const GuiValue& value, void* dest, std::size_t count) noexc
 std::vector<std::string_view> gui_lua_libraries_00b6a020(std::uint32_t mask) {
     std::vector<std::string_view> opened;
     for (std::uint32_t i = 0; i < 8; ++i) {
-        if ((mask & (1u << i)) != 0) {
+        if (i == 0 || (mask & (1u << i)) != 0) {
             opened.push_back(kLibraryNames[i]);
         }
     }

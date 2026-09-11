@@ -9,14 +9,25 @@ extern "C" {
 
 namespace bsp {
 struct GuiLua51Host::Impl {
-    lua_State* state{luaL_newstate()};
+    lua_State* state;
+    bool owns_state;
     std::uint32_t serial{};
     std::unordered_map<std::uint32_t, int> refs;
     // The recovered reader releases each returned key before requesting next.
     // A separate registry reference preserves each table's iteration cursor.
     std::unordered_map<std::uint32_t, int> cursors;
-    Impl() { if (!state) throw std::bad_alloc(); }
-    ~Impl() { lua_close(state); }
+    Impl() : state(luaL_newstate()), owns_state(true) {
+        if (!state) throw std::bad_alloc();
+    }
+    explicit Impl(lua_State& borrowed) : state(&borrowed), owns_state(false) {}
+    ~Impl() { if (owns_state) lua_close(state); }
+    GuiLuaRef globals() {
+        if (serial == std::numeric_limits<std::uint32_t>::max())
+            throw std::overflow_error("Lua host handle space exhausted");
+        const auto id = ++serial;
+        refs.emplace(id, LUA_GLOBALSINDEX);
+        return {id};
+    }
     GuiLuaRef capture() {
         if (serial == std::numeric_limits<std::uint32_t>::max())
             throw std::overflow_error("Lua host handle space exhausted");
@@ -29,6 +40,7 @@ struct GuiLua51Host::Impl {
     void push(const GuiLuaRef& object) {
         const auto found = refs.find(object.id);
         if (found == refs.end() || found->second == LUA_REFNIL) lua_pushnil(state);
+        else if (found->second == LUA_GLOBALSINDEX) lua_pushvalue(state, LUA_GLOBALSINDEX);
         else lua_rawgeti(state, LUA_REGISTRYINDEX, found->second);
     }
     void end_cursor(std::uint32_t id) {
@@ -48,6 +60,7 @@ struct StackTop {
 };
 }
 GuiLua51Host::GuiLua51Host() : impl_(std::make_unique<Impl>()) {}
+GuiLua51Host::GuiLua51Host(lua_State& borrowed) : impl_(std::make_unique<Impl>(borrowed)) {}
 GuiLua51Host::~GuiLua51Host() = default;
 bool GuiLua51Host::execute_archive(std::string_view text, std::string& error) {
     auto* state = impl_->state;
@@ -63,8 +76,7 @@ bool GuiLua51Host::execute_archive(std::string_view text, std::string& error) {
     return true;
 }
 GuiLuaRef GuiLua51Host::globals() {
-    lua_pushvalue(impl_->state, LUA_GLOBALSINDEX);
-    return impl_->capture();
+    return impl_->globals();
 }
 GuiLuaRef GuiLua51Host::get_by_name(const GuiLuaRef& table, const char* key) {
     auto* state = impl_->state;
@@ -143,7 +155,9 @@ void GuiLua51Host::release(const GuiLuaRef& object) {
     impl_->end_cursor(object.id);
     const auto found = impl_->refs.find(object.id);
     if (found == impl_->refs.end()) return;
-    luaL_unref(impl_->state, LUA_REGISTRYINDEX, found->second);
+    // Native00b66de6 returns immediately for an untracked global. In particular
+    // do not touch an already closed borrowed Lua state when retiring that root.
+    if (found->second >= 0) luaL_unref(impl_->state, LUA_REGISTRYINDEX, found->second);
     impl_->refs.erase(found);
 }
 } // namespace bsp

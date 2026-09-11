@@ -2,6 +2,7 @@
 
 #include "bsp/gui_lua_reader.hpp"
 #include <memory>
+struct lua_State;
 #include <string_view>
 
 namespace bsp {
@@ -9,9 +10,12 @@ namespace bsp {
 // Concrete host for the recovered reader, linked to the repository's Lua 5.1.1.
 // Registry references are host handles, not the original 14h LuaObject ABI.
 // A reader takes ownership of its root handle; destroy readers before this host.
+// Globals use the untracked pseudo-index, as native00b67980 does. A balanced
+// reader holding only globals may be destroyed after its borrowed Lua closes.
 class GuiLua51Host final : public GuiLuaHost {
 public:
     GuiLua51Host();
+    explicit GuiLua51Host(lua_State& borrowed_state);
     ~GuiLua51Host() override;
     GuiLua51Host(const GuiLua51Host&) = delete;
     GuiLua51Host& operator=(const GuiLua51Host&) = delete;
