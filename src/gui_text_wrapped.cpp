@@ -305,9 +305,9 @@ std::optional<GuiTextWrappedContinuation> finalize(GuiTextWrappedContinuation fr
     frame.section->range_words_0c[3] = static_cast<std::uint32_t>(quads) * 2u;
     for (; frame.position_index < frame.section->range_words_0c[1]; ++frame.position_index) {
         float position[3];
-        if (!read_gui_text_float3_position_004768d0_fragment(
-                frame.vertex_stream, frame.position_index, position)) {
-            frame.pending = GuiTextWrappedPending::decoded_position;
+        if (!read_native_vertex_position_004768d0(frame.vertex_stream,
+                frame.position_index, position, frame.services->half_import)) {
+            frame.pending = GuiTextWrappedPending::undefined_position_format;
             return frame;
         }
         position[1] = add(position[1], frame.vertical_offset);

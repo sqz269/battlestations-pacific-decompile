@@ -1,6 +1,6 @@
 {
-  "packet": "orch5_gui_text_wrapped",
-  "status": "partial_projection_actual_owners_ordinary_path_strict_compiled",
+  "packet": "orch5_wrapped_position_integration",
+  "status": "partial_projection_actual_owners_all_initialized_position_formats_strict_compiled",
   "ghidra_project": "C:/Users/sqz269/bsp.gpr",
   "ghidra_program": "/battlestationspacific.exe",
   "ghidra_mutations": false,
@@ -12,7 +12,7 @@
       "last_instruction": "00aba8c4",
       "last_instruction_length": 3,
       "end_inclusive": "00aba8c6",
-      "coverage": "partial projection: ordinary path through both unlocks; child callee AB9D33..AB9FAD, packed getter path and out-of-domain uninitialized horizontal alignment remain pending; typed string assignment excludes native pool/SEH equivalence",
+      "coverage": "partial projection: all initialized getter formats through both unlocks; child callee AB9D33..AB9FAD, undefined position formats and out-of-domain uninitialized horizontal alignment remain pending; typed string assignment excludes native pool/SEH equivalence",
       "source": "src/gui_text_wrapped.cpp"
     },
     {
@@ -105,7 +105,7 @@
       "function": "00aba270",
       "address": "00aba868",
       "native": "004768d0",
-      "binding": "actual stream float3 getter partial; currentvertexindex and localout; RET8; nonzero+50 suspendsbeforeoutput"
+      "binding": "actual complete initialized-format position reader with borrowed d3dx9_40 import invoked only by type16; current vertex index and local output; RET8; undefined types preserve pending mappings"
     },
     {
       "function": "00aba270",
@@ -120,20 +120,6 @@
       "native": "00b49a80",
       "dispatch": "current vertex virtual14",
       "binding": "actual vertex unlock second; no stackargs; RET"
-    }
-  ],
-  "excluded_getter_calls": [
-    {
-      "function": "004768d0",
-      "address": "004769aa",
-      "native": "00475f80",
-      "binding": "excluded packed decode branch; no new method name or reconstruction"
-    },
-    {
-      "function": "004768d0",
-      "address": "00476ac1",
-      "native": "00a4c2ae",
-      "binding": "excluded D3DXFloat16To32Array library conversion; library name preserved"
     }
   ],
   "all_callers": [
@@ -309,18 +295,29 @@
       "was": "Caller pendingframe might imply childtail can execute from arguments alone",
       "is": "Only callerlocals are retained; AB98F0 internalcallee frame and actualchildlifetime are stillrequired before invokingresume",
       "evidence": "existingwriter returnsneeds_child atAB9D33 withoutcalleecontinuation object"
+    },
+    {
+      "was": "Wrapped final position loop stopped on every nonzero stream50",
+      "is": "Uses complete initialized-format native getter while preserving direct float3 output stores and unlock order",
+      "evidence": "ABA868 call now bound to native_vertex_position_read.cpp; native ABA86D..8BB stores/order unchanged"
+    },
+    {
+      "was": "A decoded-position pending result might imply a legitimate decoder retry",
+      "is": "Only undefined native formats remain pending, with no resume entry; published metrics/ranges are not repeated",
+      "evidence": "Native unsupported type branch enters uninitialized scratch at476AC6; child resume rejects undefined_position_format"
     }
   ],
   "lifetime_contract": {
     "borrowed": "same lifetime, mutableglyphrecords, terminatedstring backing, primarymesh/section, vertex/indexstream, actualowners/services; no copyofobservableText or resources",
     "continuation": "callerframe only; mappings remainactive; consumeonce; no destructorunlock; enclosingcontent frame stayslive",
     "child_gap": "AB98F0 internalnative locals must be established by futureactual childtail implementation, not recomputed aftermutablecallbacks",
-    "decoded_position_gap": "nonzero stream50 retainsframe atfirstpendingvertex with finalranges/metrics alreadypublished; noresumeforpackeddecoderprovided"
+    "undefined_position_format": "All initialized formats execute synchronously. Undefined native scratch formats retain mappings/current index after metric/range publication; no position resume entry or repeated finalization is provided. Child resume rejects this reason.",
+    "actual_half_import": "Borrowed NativeD3dx9Float16Import and actual module remain live; only native type16 performs the conversion. No implicit DLL load or alternate converter."
   },
   "numeric_limits": "Native x87/SSE conversions and spills, DWORD counters/addressarithmetic,low16 finalranges retained; noinvalidpointer/faultemulation orunmaskedtrap-timing equivalence; validnativebacktracking region and nonrelocatingnull-free UTF16 assumed",
   "validation": {
-    "strict_compile": "PASS MSVC Win32 W4 WX O2 MD fp:strict with current parent/sibling canonicalheaders",
-    "report_call_verifier": "PASS: 36 numeric call rows, 0 failures; 32 direct verified, 4 virtual mapping calls explicitly unresolved by checker",
+    "strict_compile": "PASS both gui_text_wrapped.cpp and native_vertex_position_read.cpp, MSVC Win32 W4 WX O2 MD fp:strict, current canonical owner headers",
+    "report_call_verifier": "PASS:36 numeric call rows,0 failures;32 direct verified and4 virtual mapping calls explicitly unresolved by checker",
     "new_tests": 0,
     "new_test_targets": 0,
     "native_differential": false,
@@ -334,5 +331,19 @@
     "MSVC inline assembler treats offset as reserved; localrenamed result_offset then strictcompilepassed",
     "Ghidra remainedreadonly; both routinesalreadyhave exactsavedbodies; no raw no_ghidra_function rowsrequired",
     "ledger add-fragment --json requires literal JSON rather than a file path; retried with file content successfully"
+  ],
+  "consumed_getter_calls": [
+    {
+      "function": "004768d0",
+      "address": "004769aa",
+      "native": "00475f80",
+      "binding": "Consumed complete native_vertex_position_read.cpp dependency; body/report owned by native getter packet"
+    },
+    {
+      "function": "004768d0",
+      "address": "00476ac1",
+      "native": "00a4c2ae",
+      "binding": "Consumed complete native_vertex_position_read.cpp dependency; body/report owned by native getter packet"
+    }
   ]
 }

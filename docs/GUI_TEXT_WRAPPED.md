@@ -6,7 +6,7 @@ Ghidra remained read-only in `C:/Users/sqz269/bsp.gpr`, program
 
 | Routine | Original ABI and exact body | Coverage |
 | --- | --- | --- |
-| `build_gui_text_wrapped_00aba270` | ECX Text; UTF16 wrapper and actual draw section on stack; `RET 8` at `00ABA8C4`, length 3, inclusive end `00ABA8C6` | partial projection: ordinary path through both unlocks; optional child callee `00AB9D33..00AB9FAD`, packed getter branch and uninitialized out-of-domain horizontal alignment remain pending; native string pool/SEH ABI excluded |
+| `build_gui_text_wrapped_00aba270` | ECX Text; UTF16 wrapper and actual draw section on stack; `RET 8` at `00ABA8C4`, length 3, inclusive end `00ABA8C6` | partial projection: all initialized position formats through both unlocks; optional child callee `00AB9D33..00AB9FAD`, undefined position formats and uninitialized out-of-domain horizontal alignment remain pending; native string pool/SEH ABI excluded |
 | `read_gui_text_float3_position_004768d0_fragment` | ECX logical vertex stream; out float3 and index on stack, native EAX returns out pointer; `RET 8` at `00476B3E`, length 3, inclusive end `00476B40` | partial: `004768D0..004768DF` and `00476B18..00476B40`; excludes packed/scale-bias path `004768E0..00476B17` |
 
 The builder operates on the SAME `GuiTextLifetime`, retained widget primary
@@ -14,7 +14,9 @@ model, canonical font association, actual mesh section, logical streams and
 material resource domain. There is no second Text state, placement vector,
 texture wrapper, synthesized scene node or fallback renderer. Required services
 are the already existing concrete font/mapping/owner domains, plus existing
-Text-child clear lifecycle calls and the live vertical-scale global.
+Text-child clear lifecycle calls, the live vertical-scale global and a borrowed
+actual `NativeD3dx9Float16Import`. Only getter type16 invokes that library import;
+the supplied d3dx9_40 module stays loaded while its binding and calls are active.
 
 The caller's source is a reference to its actual transformed `std::u16string`.
 Child clear `00AB80C0` runs first. Current signed16 font height is then captured,
@@ -69,20 +71,29 @@ The final raw extent spills before it is written to live Text `+178`. Division
 by double720 remains extended through the single live vertical-scale sample;
 normalized height spills before subtracting it from current widget height
 times that same scale. Center halves the result; bottom retains it; other
-vertical modes keep zero. Each final vertex is read through the verified
-float3 getter and written back with current stride/position offset/mapped
-pointer using DWORD address arithmetic. Index Unlock precedes vertex Unlock.
+vertical modes keep zero. Each final vertex is read through the complete
+initialized-format getter and written back as native float3 with current
+stride/position offset/mapped pointer using DWORD address arithmetic. This
+final store is still direct float3 even when the input used a packed format.
+Index Unlock precedes vertex Unlock.
 Wrapped has no final `00B865A0` call; that is a single-line builder operation.
 
-`004768D0` checks logical stream `+50`. Zero reads three floats with individual
-x87 load/store pairs, preserving rounding/NaN handling of those instructions.
-The producer `00B61E20` sets `+50=0` at `00B61E6B` from EBX zeroed at
-`00B61E55`. Text's generated simplecolor path uses the existing `00B4BC00`
-constructor without replacing that field. Other resource producers can attach
-packed decode records; nonzero suspends before that getter's position read or
-output write. Its excluded branch calls `00475F80` and library
-`D3DXFloat16To32Array`, then applies the stream's scale/bias record. Those
-branches and a resume entry for them are not implemented here.
+The builder now calls `read_native_vertex_position_004768d0` from the concrete
+[position reader](NATIVE_VERTEX_POSITION_READ.md). It supports null `+50` and
+all initialized nonzero-metadata types2/3/5/7/8/10/12/13/16, including the
+actual packed9-bit and D3DX half-conversion cases. The getter reloads current
+`+18/+50` after decoding before applying scale/bias. The older zero-metadata
+helper in this file remains an unused compatibility API; it no longer limits
+the wrapped builder.
+
+Only undefined nonzero-metadata formats now return
+`undefined_position_format`. Native reaches uninitialized scratch for those
+values, so there is no native-defined decoder continuation to resume. The
+frame retains both mappings and current index without output stores at that
+index. Raw height, offset and final section ranges have already been
+published. No resume entry retries this state or reruns those effects; the
+child-only resume explicitly rejects it. Unsupported data is never treated
+as completed geometry and does not silently unlock the streams.
 
 The optional result is a borrowed native CALLER frame, retaining the selected
 glyph, current UTF16 cursor, pen/line endpoints, counters, bounds, saved height,
