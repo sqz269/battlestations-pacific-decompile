@@ -152,3 +152,13 @@ are never substituted with successful fake lifetime operations. No permanent
 test was added. Ignored fixture/scripts/native spans/logs remain under `local/`;
 their hashes and commands are in the report. These are new C++ interfaces,
 not binary replacements or a completed native material rendering path.
+
+## Integration update from docs/GUI_NATIVE_MATERIAL_INTEGRATION.md
+
+Both required material/parameter pool services now have concrete actual-storage
+implementations in native_material_pools. The integrated fixture covers material
+final-zero dispatch with real NativeString destruction and both pool returns.
+GUI AA6870 color publication resolves the same native material companion through
+the model's owner domain and writes actual+38 directly. These additions do not
+create a semantic MaterialCloneState projection: parameter registration, effect
+acquisition and widget/page lifetime remain separate required integrations.
