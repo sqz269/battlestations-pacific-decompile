@@ -1,0 +1,445 @@
+{
+  "packet": "orch5_text_factory_pool",
+  "status": "pool_owner_and_raw_allocation_complete_canonical_text_factory_still_missing",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": "src/gui_text_factory.cpp",
+  "header": "include/bsp/gui_text_factory.hpp",
+  "documentation": "docs/GUI_TEXT_FACTORY.md",
+  "functions": [
+    {
+      "address": "00ab6f60",
+      "name": "BSP_GuiTextPoolSlab_Construct",
+      "cpp_symbol": "initialize_gui_text_pool_slab_00ab6f60",
+      "original_abi": "ECX slab; stack slab index; EAX same slab; RET4",
+      "coverage": "complete valid-storage pool behavior in existing host allocation domain; no native CRT/EH ABI claim",
+      "last_instruction": "00ab6fa0",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ab6fa2",
+      "source": "src/gui_text_factory.cpp"
+    },
+    {
+      "address": "00ab70c0",
+      "name": "BSP_GuiTextPool_FreeTable",
+      "cpp_symbol": "free_gui_text_pool_table_00ab70c0",
+      "original_abi": "ECX table header address; RET",
+      "coverage": "complete valid-storage pool behavior in existing host allocation domain; no native CRT/EH ABI claim",
+      "last_instruction": "00ab70cd",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ab70cd",
+      "source": "src/gui_text_factory.cpp"
+    },
+    {
+      "address": "00ab7420",
+      "name": "BSP_GuiTextPool_Destroy",
+      "cpp_symbol": "NativeGuiTextPool::destroy_00ab7420",
+      "original_abi": "ECX pool; RET",
+      "coverage": "complete valid-storage pool behavior in existing host allocation domain; no native CRT/EH ABI claim",
+      "last_instruction": "00ab74a9",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ab74a9",
+      "source": "src/gui_text_factory.cpp"
+    },
+    {
+      "address": "00ab7500",
+      "name": "BSP_GuiTextPool_TrimEmptySlabs",
+      "cpp_symbol": "NativeGuiTextPool::trim_empty_slabs_00ab7500",
+      "original_abi": "ECX pool; RET; no internal lock",
+      "coverage": "complete valid-storage pool behavior in existing host allocation domain; no native CRT/EH ABI claim",
+      "last_instruction": "00ab759f",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ab759f",
+      "source": "src/gui_text_factory.cpp"
+    },
+    {
+      "address": "00ab75a0",
+      "name": "BSP_GuiTextPool_ReturnSlot",
+      "cpp_symbol": "NativeGuiTextPool::return_raw_slot_00ab75a0",
+      "original_abi": "ECX pool; stack slot; RET4",
+      "coverage": "complete valid-storage pool behavior in existing host allocation domain; no native CRT/EH ABI claim",
+      "last_instruction": "00ab7609",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ab760b",
+      "source": "src/gui_text_factory.cpp"
+    },
+    {
+      "address": "00ab76f0",
+      "name": "BSP_GuiText_ReturnFailedRawSlot",
+      "cpp_symbol": "return_gui_text_failed_slot_00ab76f0",
+      "original_abi": "ECX raw slot; select F8BDF0; pool RET4; wrapper RET",
+      "coverage": "complete valid-storage pool behavior in existing host allocation domain; no native CRT/EH ABI claim",
+      "last_instruction": "00ab76fb",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ab76fb",
+      "source": "src/gui_text_factory.cpp"
+    },
+    {
+      "address": "00ab77c0",
+      "name": "BSP_GuiTextPool_Construct",
+      "cpp_symbol": "NativeGuiTextPool::initialize_00ab77c0",
+      "original_abi": "ECX pool; EAX same pool; RET",
+      "coverage": "complete valid-storage pool behavior in existing host allocation domain; no native CRT/EH ABI claim",
+      "last_instruction": "00ab7892",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ab7892",
+      "source": "src/gui_text_factory.cpp"
+    },
+    {
+      "address": "00ab78a0",
+      "name": "BSP_GuiTextPool_AllocateRawSlot",
+      "cpp_symbol": "NativeGuiTextPool::allocate_raw_slot_00ab78a0",
+      "original_abi": "ECX pool; EAX raw slot; RET",
+      "coverage": "complete valid-storage pool behavior in existing host allocation domain; no native CRT/EH ABI claim",
+      "last_instruction": "00ab79db",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ab79db",
+      "source": "src/gui_text_factory.cpp"
+    },
+    {
+      "address": "00ab79e0",
+      "name": "BSP_GuiText_AllocateRawSlot",
+      "cpp_symbol": "allocate_gui_text_raw_slot_00ab79e0",
+      "original_abi": "Incoming ECX ignored; replace with F8BDF0; tail JMP AB78A0",
+      "coverage": "complete valid-storage pool behavior in existing host allocation domain; no native CRT/EH ABI claim",
+      "last_instruction": "00ab79e5",
+      "last_instruction_length": 5,
+      "end_inclusive": "00ab79e9",
+      "source": "src/gui_text_factory.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00ab70c0",
+      "address": "00ab70c7",
+      "native": "00bf6989",
+      "binding": "nonnull current table; cdecl one pointer; POP ECX atAB70CC"
+    },
+    {
+      "function": "00ab7420",
+      "address": "00ab7438",
+      "native": "00bf65ac",
+      "binding": "each live table slab; cdecl pointer; ADD ESP4 atAB7440"
+    },
+    {
+      "function": "00ab7420",
+      "address": "00ab7450",
+      "native": "00bf6989",
+      "binding": "nonnull current table; cdecl pointer; ADD ESP4 atAB7455"
+    },
+    {
+      "function": "00ab7420",
+      "address": "00ab746d",
+      "native": "LeaveCriticalSection via IAT CE2210",
+      "binding": "EBX loaded atAB7462; one current pool+0C pointer; WINAPI RET4"
+    },
+    {
+      "function": "00ab7420",
+      "address": "00ab7477",
+      "native": "DeleteCriticalSection via IAT CE2214",
+      "binding": "current pool+0C; WINAPI one argument RET4"
+    },
+    {
+      "function": "00ab7500",
+      "address": "00ab7521",
+      "native": "00bf65ac",
+      "binding": "free empty slab; cdecl pointer; ADD ESP4 atAB7539 after table replacement/count decrement"
+    },
+    {
+      "function": "00ab75a0",
+      "address": "00ab75aa",
+      "native": "EnterCriticalSection via IAT CE2218",
+      "binding": "EDI=original pool+0C; WINAPI one argument RET4"
+    },
+    {
+      "function": "00ab75a0",
+      "address": "00ab75ff",
+      "native": "LeaveCriticalSection via IAT CE2210",
+      "binding": "same captured EDI; WINAPI one argument RET4"
+    },
+    {
+      "function": "00ab76f0",
+      "address": "00ab76f6",
+      "native": "00ab75a0",
+      "binding": "PUSH original ECX slot; set ECX F8BDF0; callee RET4"
+    },
+    {
+      "function": "00ab77c0",
+      "address": "00ab7812",
+      "native": "InitializeCriticalSection via IAT CE220C",
+      "binding": "EDI=pool+0C, original ESI pool; WINAPI one argument RET4"
+    },
+    {
+      "function": "00ab77c0",
+      "address": "00ab7842",
+      "native": "00bf55be",
+      "binding": "capacity32 published before array allocation80h; ADD ESP4 AB7849"
+    },
+    {
+      "function": "00ab77c0",
+      "address": "00ab7874",
+      "native": "00bf6989",
+      "binding": "current old table, if nonnull after allocation; ADD ESP4 AB7879"
+    },
+    {
+      "function": "00ab78a0",
+      "address": "00ab78aa",
+      "native": "EnterCriticalSection via IAT CE2218",
+      "binding": "EBX=original ESI pool+0C; WINAPI one argument RET4"
+    },
+    {
+      "function": "00ab78a0",
+      "address": "00ab78cb",
+      "native": "00bf681b",
+      "binding": "raw7E84h slab after first-free publication; ADD ESP4 AB78D0"
+    },
+    {
+      "function": "00ab78a0",
+      "address": "00ab78dd",
+      "native": "00ab6f60",
+      "binding": "ECX raw slab; stack CURRENT pool+34 index after allocation; RET4"
+    },
+    {
+      "function": "00ab78a0",
+      "address": "00ab78ff",
+      "native": "00bf55be",
+      "binding": "new DWORD capacity2*old+2 already published; stack4*capacity; ADD ESP4 AB7908"
+    },
+    {
+      "function": "00ab78a0",
+      "address": "00ab7931",
+      "native": "00bf6989",
+      "binding": "current old table after allocation/copy; ADD ESP4 AB7936"
+    },
+    {
+      "function": "00ab78a0",
+      "address": "00ab79bb",
+      "native": "LeaveCriticalSection via IAT CE2210",
+      "binding": "exhausted later-slab scan; same EBX CS; WINAPI RET4"
+    },
+    {
+      "function": "00ab78a0",
+      "address": "00ab79cf",
+      "native": "LeaveCriticalSection via IAT CE2210",
+      "binding": "remaining free slots or found next; same EBX CS; WINAPI RET4"
+    }
+  ],
+  "consumed_factory_calls": [
+    {
+      "function": "00aa1380",
+      "address": "00aa139e",
+      "native": "00ab79e0",
+      "binding": "incoming ECX1F4 ignored by wrapper; preserved ESI source selects default/copy constructor"
+    },
+    {
+      "function": "00aa1380",
+      "address": "00aa13ba",
+      "native": "00abb2c0",
+      "binding": "nonnull original source ESI; ECX raw allocated slot; stack source; copy-constructor path remains external"
+    },
+    {
+      "function": "00aa1380",
+      "address": "00aa13dd",
+      "native": "00ab9650",
+      "binding": "null original source; ECX nonnull raw slot; no stack arguments"
+    },
+    {
+      "function": "00ab98f0",
+      "address": "00ab9d38",
+      "native": "00ab78a0",
+      "binding": "ECX F8BDF0; no stack arguments; child path bypasses AA6640 and virtual74"
+    },
+    {
+      "function": "00ab98f0",
+      "address": "00ab9d4f",
+      "native": "00ab9650",
+      "binding": "ECX nonnull raw slot; no stack arguments; initial primary null"
+    },
+    {
+      "function": "00ab98f0",
+      "address": "00ab9d70",
+      "native": "005dad40",
+      "binding": "ECX parent+194; stack pointer to same child local; publish before clone"
+    },
+    {
+      "function": "00ab98f0",
+      "address": "00ab9d87",
+      "native": "00b752b0",
+      "binding": "indirect current model virtual10; current parent+1B0 primary model; flags26h,parent0; target consumed from existing actual model profile"
+    },
+    {
+      "function": "00ab98f0",
+      "address": "00ab9d8c",
+      "native": "00aa6720",
+      "binding": "ECX same child; stack captured clone; RET4"
+    },
+    {
+      "function": "00ab98f0",
+      "address": "00ab9d93",
+      "native": "00ab8530",
+      "binding": "ECX same child after model binding; no stack arguments"
+    },
+    {
+      "function": "00ab8ee0",
+      "address": "00ab8ef5",
+      "native": "00ab75a0",
+      "binding": "only flags&1 after AB8250; ECX F8BDF0; original object slot stack; RET4"
+    },
+    {
+      "function": "00aa6640",
+      "address": "00aa66a1",
+      "native": "00ab7700",
+      "binding": "indirect current74 for Text profile D5C6C8; ordinary fresh-model route, not child clone route"
+    },
+    {
+      "function": "00aa7170",
+      "address": "00aa717a",
+      "native": "00ab87d0",
+      "binding": "indirect current60 for Text profile; stack false; RET4; then tailAA70E0"
+    }
+  ],
+  "tail_transfers": {
+    "verification": "Read as exact JMP instructions; separate from verify_report_calls.py's numeric CALL-only contract.",
+    "rows": [
+      {
+        "function": "00ab79e0",
+        "site": "00ab79e5",
+        "target": "00ab78a0",
+        "arguments": "overwrite incoming ECX with F8BDF0"
+      },
+      {
+        "function": "00cb6e00",
+        "site": "00cb6e03",
+        "target": "00ab76f0",
+        "arguments": "ECX=[EBP-10], failed source-copy construction slot"
+      },
+      {
+        "function": "00cb6e08",
+        "site": "00cb6e0b",
+        "target": "00ab76f0",
+        "arguments": "ECX=[EBP-10], failed default construction slot"
+      },
+      {
+        "function": "00cb80b0",
+        "site": "00cb80b3",
+        "target": "00ab76f0",
+        "arguments": "ECX=[EBP+20], failed glyph-child constructor slot"
+      },
+      {
+        "function": "00cb7e53",
+        "site": "00cb7e59",
+        "target": "00ab70c0",
+        "arguments": "ECX=[EBP-10]+28, pool table header unwind"
+      },
+      {
+        "function": "00ce0a80",
+        "site": "00ce0a85",
+        "target": "00ab7420",
+        "arguments": "ECX F8BDF0"
+      },
+      {
+        "function": "00cb7e40",
+        "site": "00cb7e43",
+        "target": "00403970",
+        "arguments": "ECX=[EBP-10], allocator-list base unwind"
+      },
+      {
+        "function": "00cb7e48",
+        "site": "00cb7e4e",
+        "target": "00402f70",
+        "arguments": "ECX=[EBP-10]+0C, real CS unwind"
+      }
+    ]
+  },
+  "raw_static_context": {
+    "coverage": "external startup only; not reconstructed or registered; no Ghidra function at inspection",
+    "no_ghidra_function": true,
+    "start": "00cd71f0",
+    "end_inclusive": "00cd7205",
+    "last_instruction": "00cd7205",
+    "last_instruction_length": 1,
+    "call_site": "00cd71f5",
+    "callee": "00ab77c0",
+    "arguments": "ECX F8BDF0; no stack arguments",
+    "registration_site": "00cd71ff",
+    "registration_callee": "00bf6ff5",
+    "registration_argument": "00ce0a80; POP ECX atCD7204",
+    "bytes": "b9 f0 bd f8 00 e8 c6 05 de ff 68 80 0a ce 00 e8 f1 fd f1 ff 59 c3",
+    "mechanical_status": "external raw startup not covered by CALL-only verifier until parent defines its reviewed body"
+  },
+  "static_destructor_context": {
+    "function": "00ce0a80",
+    "coverage": "analyzed-only external static destructor; no startup registration installed",
+    "original_abi": "no stack arguments; ECX replaced with F8BDF0; tail JMP AB7420",
+    "last_instruction": "00ce0a85",
+    "last_instruction_length": 5,
+    "end_inclusive": "00ce0a89"
+  },
+  "producers": {
+    "pool": "AB77C0 writes0C CS,+24 depth,+28 table,+2C count,+30 capacity,+34 earliest; allocator element shared with AllocatorListDomain",
+    "slab": "AB6F60:7E84 bytes,64 slots,1F8 stride,1F4 payload,hidden DWORD1F4,WORD stack7E00,count7E80,padding7E82..83 untouched",
+    "trim_profile": "D5C5D8 containsAB7500; real host binding invokes that reconstruction",
+    "eh_map": "DEEC44: -1/CB7E40,0/CB7E48,1/CB7E53; constructor C++ finally reproduces table->CS->unlink effects"
+  },
+  "corrections": [
+    {
+      "was": "AB78A0 or AB79E0 may denote a constructed Text factory",
+      "is": "Both return raw pool storage; callers separately invoke AB9650 or ABB2C0",
+      "evidence": "AB78A0 full body; AA139E/13BA/13DD; AB9D38/9D4F"
+    },
+    {
+      "was": "Saved free annotations end reachable pool control flow",
+      "is": "Returning free continuations exist in original bytes",
+      "evidence": "AB70CC POP ECX; AB743D..47; AB7455..57; AB7526..5F; AB7879..7B; AB7936..38"
+    },
+    {
+      "was": "Ordinary AA6640 fresh scene/current74 can create the optional child",
+      "is": "Child constructs primary-null Text, publishes child pointer, clones template model, binds clone, then invokes AB8530; no74/78 here",
+      "evidence": "AB9D33..9D93 versus AA665D..66A1"
+    }
+  ],
+  "ownership_contract": {
+    "pool_storage": "one supplied NativeGuiTextPoolStorage; no duplicated table/free stack",
+    "allocator": "existing singleton_lifetime_allocate/free domain for new reconstructed-process storage only; never original CRT allocations",
+    "critical_section": "real Win32 CS+0C with live signed depth+24",
+    "allocation_failure": "AB78A0 retains lock/depth/all earlier publications; no automatic unlock/rollback",
+    "construction_failure": "AB77C0 table then CS then allocator-list cleanup effects; not original EH ABI",
+    "payload_lifetime": "raw return does not destroy payload; pool destroy does not destroy live Text payloads; typed C++ wrapper cannot be cast or implicitly associated",
+    "cpp_destructor": "host dispatch unbinding only; explicit pool destruction required before storage/companion/domain lifetimes end"
+  },
+  "remaining": [
+    "Canonical Text type implementation and owner registration; current construct_child rejects Text",
+    "Same GuiLayoutWidget/GuiWidgetOwner/GuiTextLifetime allocation transport, including constructor failure and published-vector ownership phase",
+    "Required properties18 continuation completion, size/current4C/64 and full current70 behavior; new properties reader can suspend, so loaded78/factory completion must wait",
+    "Actual template model cloneB752B0->B6F150 and source geometry current10 composition",
+    "Full retained child-callee continuation and recursive Text content behavior",
+    "Native copy construction ABB2C0 composition",
+    "Explicit same Text pool static startup/atexit registration; no default/global surrogate provided",
+    "Native CRT heap/EH binary ABI and arbitrary malformed-memory fault equivalence"
+  ],
+  "verification": {
+    "strict_msvc_win32": "PASS /std:c++17 /W4 /WX /O2 /MD /fp:strict; local/gui_text_factory.obj",
+    "focused_probe": "PASS local/gui_text_pool_probe.cpp/exe; real pool,list,CS,shared CRT;65allocations,moved slab ID repair,payload preservation,LIFO reuse,explicit teardown",
+    "probe_link": "parent build/win32/Release/bsp_core.lib + new gui_text_factory.obj; /MANIFEST:EMBED",
+    "permanent_tests_added": 0,
+    "allocation_failure_executed": false,
+    "native_byte_differential": false,
+    "combined_build": "parent integration responsibility",
+    "game_reachable": false,
+    "game_validated": false,
+    "abi_compatible": false,
+    "call_verifier": "PASS strong parent verifier:23 numeric rows,0 failures;20 direct CALLs and3 separately reported resolved indirect calls;8 named imports,8 JMP transfers and raw static context reviewed separately"
+  },
+  "checklist": {
+    "callee_before_contract": "all claimed bodies and consumed constructor/74/78/60 callees inspected before descriptions",
+    "boundary_before_attribution": "nine Ghidra exact bodies; raw startup explicitly separated; tail transfers distinguished",
+    "all_call_sites": "all xrefs for9claimed routines inspected; two allocation routes,two return routes,three failure unwind sites,trimdata profile,static owner routes",
+    "field_producers": "AB77C0+AB6F60+AB7500",
+    "partial_projection": "full pool supported-domain implementation; whole Text factory explicitly missing",
+    "runtime_evidence": "actual host owner probe only; no executable factory route",
+    "cleanup_counts": "every direct step carries RET/ADD ESP/POP cleanup; WINAPI one pointer callee cleanup",
+    "register_provenance": "whole allocation/return/ctor/trim/dtor bodies; ESI pool,EBX/EDI CS; child originalEDI parent retained; wrapperECX overwritten",
+    "annotated_leases": "nine implemented pool routines plus two analyzed external static entries; existing called contracts unchanged",
+    "report_rows": "numeric CALL rows verified separately from explicit JMPs and raw static context"
+  }
+}
