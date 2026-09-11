@@ -1,0 +1,59 @@
+{
+  "packet": "orch3_hud_squad_pose_k",
+  "source": "src/hud_updates.cpp",
+  "header": "include/bsp/hud_updates.hpp",
+  "address": "006435d0",
+  "scope": "00643781..00643880 squad fragment and original radius helper arithmetic",
+  "original_abi": "parent thiscall(this,float),RET4; squad fragment captures memberESI, controlledEDI; x87 differences and comparison",
+  "original_sequence": [
+    "test controlledE188D8 nonnull",
+    "capture actual listhead [[E188A8+19CC]+16C]",
+    "read node+8 member; check actual memberC8 and refresh414DB0",
+    "reload E188D8; check actual controlledC8 and refresh414DB0",
+    "read both worldFC/100/104, x87 subtract and float-store inXYZorder",
+    "read signed member7C4 radius, native x87 squared comparison",
+    "add/note marker only if strict ordered inside",
+    "read current node+4 after callbacks and repeat"
+  ],
+  "fixes": [
+    "actual controlled identity per member instead of cached self-marker identity",
+    "borrow actual PoseRefreshView fields and call recovered refresh",
+    "live linked-list traversal instead of count/index snapshot",
+    "preserve original x87 spill and comparison sequence"
+  ],
+  "new_complete_native_bodies": 0,
+  "radius_reference": {
+    "address": "0064380d",
+    "bytes": 70,
+    "last_instruction": "00643851 FSTP ST0 length2",
+    "sha256": "2f74169f6cd61d3193f3a5c84a68ec160ed31af45676630857713438b6918bef",
+    "disk_live_fixture_match": true,
+    "observer_suffix": "SETA AL;RET, no original instructions/operands relocated"
+  },
+  "validation": {
+    "build": "./scripts/build.ps1",
+    "build_log": "local/hud-squad-pose-k-build.log",
+    "target": "MSVC Win32 Release /W4 /WX",
+    "build_passed": true,
+    "existing_ctests_passed": 2,
+    "fixture": "local/hud_squad_pose_fixture.cpp",
+    "fixture_command": "cmd /c local\\run_hud_squad_pose_fixture.cmd",
+    "fixture_log": "local/hud-squad-pose-k-fixture.log",
+    "fixture_passed": true,
+    "host_case": "different self/control identities; callback changes controlled owner and next link; canonical dirty poses, skipped member unrefreshed",
+    "native_radius_comparisons": 18,
+    "x87_control_words": [
+      "007f",
+      "027f",
+      "037f"
+    ],
+    "new_permanent_tests": 0
+  },
+  "limits": [
+    "required host lookups bind actual existing owners/nodes; full GUI host remains external",
+    "current node lifetime, valid required identities and lists remain owner obligations",
+    "other HUD/minimap/sweep behavior is outside this correction",
+    "native ABI, unmasked FP traps, asynchronous mutation and gameplay unvalidated"
+  ],
+  "game_validated": false
+}

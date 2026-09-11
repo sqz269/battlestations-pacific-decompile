@@ -220,13 +220,52 @@ HudMarkerClipRect hud_marker_clip_rect(float gui_width, float gui_height) noexce
     return rect;
 }
 
-bool hud_marker_within_radius(float dx, float dy, float dz, int radius) noexcept {
+bool hud_marker_within_radius(float delta_x, float delta_y, float delta_z, int radius) noexcept {
     // 00643817..00643853. FILD converts the radius from the integer at +7C4h,
     // the sum is built as (dx*dx + dy*dy) + dz*dz and the comparison is
     // radius*radius against the squared distance with JBE skipping.
-    const float r = static_cast<float>(radius);
-    const float squared = (dx * dx + dy * dy) + dz * dz;
-    return (r * r) > squared;
+    float rounded;
+    std::uint8_t inside;
+    __asm {
+        fild radius
+        fstp rounded
+        fld delta_x
+        fld delta_y
+        fld delta_z
+        fld rounded
+        fld st(2)
+        fmulp st(3),st(0)
+        fld st(3)
+        fmulp st(4),st(0)
+        fxch st(2)
+        faddp st(3),st(0)
+        fmul st(0),st(0)
+        faddp st(2),st(0)
+        fxch st(1)
+        fstp rounded
+        fld rounded
+        fld st(1)
+        fmulp st(2),st(0)
+        fxch st(1)
+        fstp rounded
+        fld rounded
+        fcomip st(0),st(1)
+        fstp st(0)
+        seta inside
+    }
+    return inside != 0;
+}
+
+namespace {
+float marker_axis_difference(float controlled, float member) noexcept {
+    float result;
+    __asm {
+        fld controlled
+        fsub member
+        fstp result
+    }
+    return result;
+}
 }
 
 bool hud_markers_screen_update(HudMarkersUpdateState& state,
@@ -275,21 +314,20 @@ bool hud_markers_screen_update(HudMarkersUpdateState& state,
 
     // 00643781..00643880, the squad members within their own radius.
     if (host.controlled_unit_present()) {
-        float sx = 0.0f;
-        float sy = 0.0f;
-        float sz = 0.0f;
-        host.refresh_unit_pose(state.self_marker_unit);
-        host.unit_position(state.self_marker_unit, sx, sy, sz);
-        const std::size_t members = host.squad_member_count();
-        for (std::size_t i = 0; i < members; ++i) {
-            const std::uint32_t mate = host.squad_member(i);
-            host.refresh_unit_pose(mate);
-            float mx = 0.0f;
-            float my = 0.0f;
-            float mz = 0.0f;
-            host.unit_position(mate, mx, my, mz);
-            if (hud_marker_within_radius(sx - mx, sy - my, sz - mz,
-                                         host.squad_marker_radius(mate))) {
+        for (const void* node = host.squad_first_node(); node;
+             node = host.squad_next_node(node)) {
+            const std::uint32_t mate = host.squad_node_unit(node);
+            auto& member_pose = host.unit_pose(mate);
+            if (member_pose.world_valid_c8 == 0) refresh_pose_00414db0(member_pose);
+            const auto controlled = host.controlled_unit();
+            auto& controlled_pose = host.unit_pose(controlled);
+            if (controlled_pose.world_valid_c8 == 0) refresh_pose_00414db0(controlled_pose);
+            // Both poses are refreshed before the native x/y/z reads. Keep
+            // references across refresh, including an exact shared-pose alias.
+            const float dx = marker_axis_difference(controlled_pose.world_cc[12], member_pose.world_cc[12]);
+            const float dy = marker_axis_difference(controlled_pose.world_cc[13], member_pose.world_cc[13]);
+            const float dz = marker_axis_difference(controlled_pose.world_cc[14], member_pose.world_cc[14]);
+            if (hud_marker_within_radius(dx, dy, dz, host.squad_marker_radius(mate))) {
                 host.add_marker(mate, 0, 0, kHudMarkerKindSelf);
                 host.note_marker(mate);
             }
