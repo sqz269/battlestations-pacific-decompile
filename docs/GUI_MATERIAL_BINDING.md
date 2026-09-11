@@ -138,3 +138,13 @@ The earlier B8DB80 shorthand in the model/group discussion was incorrect.
 The verified plain Screen path calls B8F450 atAA58FF, B8F5E0 atAA5914, then
 AC6600 atAA5944. B8F5E0 is the actual named cGroup constructor. The storage
 class distinction and canonical model guard are unchanged by this correction.
+
+## Retention correction from docs/GUI_WIDGET_RETENTION.md
+
+The earlier reference to A9E130 as the base scalar deleting caller was wrong.
+The base wrapper is AA9A90, which calls AA9730 before returning storage through
+AA75F0/F8BC94. A9E130 is the D5BBF8 derived destructor; A9E210 is its wrapper.
+Manager and parent direct deleting+04 paths do not wait on widget+04. The host's
+independent page/widget count projections and unique layout ownership require
+a coordinated native identity/deletion/lifetime change. An isolated owning token
+cannot establish the required borrowed parameter lifetime.
