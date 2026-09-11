@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/physical_pending_reads.hpp"
+#include <array>
 #include <cstdint>
 #include <functional>
 #include <memory>
@@ -52,6 +53,9 @@ struct VfsMount {
     // Host shutdown contract only: stop accepting work, then explicitly pump
     // until drained. This is not a recovered native provider virtual slot.
     std::function<bool(DWORD&)> stop_pending_submissions;
+    // Provider +20h: year, month, day, seconds since midnight, milliseconds.
+    // An all-zero value lets traversal continue to the next matching mount.
+    std::function<std::array<std::uint32_t, 5>(const std::string&)> file_date;
 };
 struct VfsMountContext {
     // Supplied native iteration order; vfs_mount_registration builds this view.
