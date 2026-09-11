@@ -166,3 +166,33 @@ closes the actual BDD340 date route within the declared visitor/provider domains
 it does not close unrelated BDD0A0 callers, mount registration, stream ownership,
 or the downstream renderer reload callbacks. ABI compatibility and game
 validation remain false.
+
+
+## Primary main-library integration
+
+All six qualified entries are registered in main. Strict MSVC Win32 compilation,
+both existing CTests and eight fresh native seeds passed. The primary checked
+34 worker pins, twenty literal current files and 33 fresh guarded spans totaling
+4,101 bytes. Three main objects matched every worker code/directive section
+and relocation; object debug metadata and anonymous namespace hashes differ.
+
+The unchanged probe linked actual main library
+`90f6e12be9a855a4abcd0f5f7c04ba8518868fee030f3660bc25a25c10a9a265`.
+Eleven original route comparisons again passed, covering thirteen unchanged
+original bodies, all 22,528 arena bytes and 100,082,092 pool-prefix bytes across
+the pairs, plus output pointers and returning CRT counts. Real fixed UTC file,
+separate current physical manager, post-MPKG head repair and stop/reset checks
+passed. The temporary file was removed.
+
+Nine exact main archive members and 255 complete COFF sections were verified,
+22,431 bytes and 922 relocations. Four separate owned entries are retained;
+BD97E0 and BD9E80 are inlined into the retained traversal. Their full source
+object is frozen, but separate linked entries are not claimed. No runtime code
+postimages or additional throwing/native-SEH comparisons were introduced.
+
+The read-only primary bundle is `local/vfs_date_route_primary/`, seal
+`fe1e7be74acd0fa95d551c51ee4f9c456764b8b1f583f66de16bc22c67be027a`.
+Existing saved names/comments were preserved. The reset and mount successor
+received descriptive names, reviewed evidence was appended and saved, all six
+exports refreshed and qualified complete source records registered. Other
+visitor/provider domains and the limitations above remain outside this packet.
