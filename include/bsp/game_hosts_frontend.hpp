@@ -37,6 +37,8 @@ namespace bsp {
 // stays independent of the GUI layout types.
 struct GuiLayoutPage;
 struct GuiLayoutWidget;
+// bsp/locale_tables.hpp, milestone 2d: the tables the Text widgets resolve through.
+class LocaleTables;
 }  // namespace bsp
 
 namespace bsp::game {
@@ -92,6 +94,10 @@ struct GameWidgetRecord {
     // screen, so its visibility is the byte 004f83b0 published rather than the
     // bridge's substitute rule.
     bool screen_owned{false};
+    // Milestone 2d, Text widgets only: what the reconstructed text path produced.
+    // `text` is the resolved string, ASCII-folded for the report.
+    std::string text;
+    std::size_t text_glyphs{0};
 };
 
 // What the milestone-2b phase produced, for the run summary and the report.
@@ -117,6 +123,13 @@ struct GameFrontendSummary {
     std::size_t screen_owned_pages{0};
     std::size_t visibility_pushes{0};
     std::size_t bridge_rebuilds{0};
+    // Milestone 2d: the text half. `text_quads` counts glyph quads in the current
+    // quad list, so it moves with visibility exactly as `bridge_quads` does.
+    bool text_bridge_open{false};
+    std::size_t text_widgets{0};
+    std::size_t text_runs{0};
+    std::size_t text_glyphs{0};
+    std::size_t text_quads{0};
 };
 
 // Phase 7 of 0073d410 plus the title pages, owned for the whole run.
@@ -148,6 +161,12 @@ public:
     void load_title_pages(const std::vector<std::string>& names);
     // Opens the sprite bridge against the back buffer size. Safe to call once.
     void open_sprite_bridge(unsigned back_buffer_width, unsigned back_buffer_height);
+    // Milestone 2d. Gives the bridge the locale tables phase 6 loaded, which is the
+    // last thing the Text path needs: after this every visible Text widget resolves
+    // its string, lays it out and emits glyph quads. Without it Text widgets keep
+    // milestone 2c's behaviour and draw nothing. Safe to call once, after the GUI
+    // startup phase and before the first frame.
+    void open_text_bridge(LocaleTables& locale);
     // Draws the loaded widget trees. Call between BeginScene and EndScene.
     void draw_bridge(IDirect3DDevice9& device);
 

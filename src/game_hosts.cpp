@@ -249,6 +249,16 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 return false;
             }
             screenshot_path.resize(length);
+        } else if (std::strcmp(argument, "--screenshot-frame") == 0) {
+            if (index + 1 >= argc) {
+                error = "--screenshot-frame needs a frame number";
+                return false;
+            }
+            screenshot_frame = std::strtol(argv[++index], nullptr, 10);
+            if (screenshot_frame < 0) {
+                error = "--screenshot-frame needs a non-negative frame number";
+                return false;
+            }
         } else if (std::strcmp(argument, "--hardware-probe-commit") == 0) {
             hardware_probe_commit = true;
         } else {
@@ -559,7 +569,12 @@ void GameLoopCallbacks::frame() {
     // names, or the frame on which the close request was observed.
     const bool last_frame = frame_limit_ >= 0
         && frames_ + 1 >= static_cast<unsigned long long>(frame_limit_);
-    if (capture_ && !capture_requested_ && (last_frame || frame_host_.global_exit())) {
+    // --screenshot-frame N names a frame instead, so a run can photograph the title
+    // page before the injected press-start as well as the menu after it.
+    const bool wanted_frame = screenshot_frame_ >= 0
+        ? frames_ == static_cast<unsigned long long>(screenshot_frame_)
+        : (last_frame || frame_host_.global_exit());
+    if (capture_ && !capture_requested_ && wanted_frame) {
         capture_requested_ = true;
         device_.request_capture(capture_);
     }
@@ -1073,6 +1088,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // draw path; see include/bsp/game_hosts_frontend.hpp.
     if (summary_.device_created) {
         frontend_->open_sprite_bridge(summary_.back_buffer_width, summary_.back_buffer_height);
+        // Milestone 2d: the text half. The locale tables phase 6 loaded are the last
+        // input the reconstructed Text path needs, so every visible Text widget now
+        // resolves its string id, lays it out and emits glyph quads.
+        frontend_->open_text_bridge(locale_->tables());
         GameFrontendHost* frontend_host = frontend_;
         device_->set_overlay([frontend_host](IDirect3DDevice9& device) {
             frontend_host->draw_bridge(device);
@@ -1088,6 +1107,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     summary_.pak_lock = vfs_->pak_lock_published();
     summary_.press_start_frame = options_.press_start_frame;
     summary_.screenshot_path = options_.screenshot_path;
+    summary_.screenshot_frame = options_.screenshot_frame;
 
     loop_.frames_enabled = platform_.frames_enabled;
     frame_host_ = new GameFrameHost(log_, clock_, platform_, loop_, game_state_, profiler_,
@@ -1102,7 +1122,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         };
     }
     loop_callbacks_ = new GameLoopCallbacks(log_, frame_state_, frame_color_, *frame_host_,
-        *device_, loop_, options_.frame_limit, std::move(capture));
+        *device_, loop_, options_.frame_limit, std::move(capture),
+        options_.screenshot_frame);
 }
 
 void GameStartupHost::platform_run_loop_dispatch() {
@@ -1168,6 +1189,11 @@ void GameStartupHost::application_shutdown() {
         summary_.gui_widgets = frontend.widgets;
         summary_.gui_widgets_with_texture = frontend.widgets_with_texture;
         summary_.screen_owned_pages = frontend.screen_owned_pages;
+        summary_.text_bridge_open = frontend.text_bridge_open;
+        summary_.text_widgets = frontend.text_widgets;
+        summary_.text_runs = frontend.text_runs;
+        summary_.text_glyphs = frontend.text_glyphs;
+        summary_.text_quads = frontend.text_quads;
     }
     // The menu host holds the front-end host by reference, so it goes first.
     delete menu_;
