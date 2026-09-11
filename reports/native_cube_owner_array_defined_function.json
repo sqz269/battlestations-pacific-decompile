@@ -1,0 +1,193 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00735ff0",
+      "end_exclusive": "0073604f",
+      "length": 95,
+      "sha256": "9b09d6402eefec772d18c71e9abf5feda1c7ffd1d231a3ce57c7140171282699",
+      "function_before": "Function: FUN_00735ff0 at 00735ff0\nSignature: undefined FUN_00735ff0(void)\nEntry: 00735ff0\nBody: 00735ff0 - 0073604e",
+      "documentation_before": {
+        "hash": "247933803670655498059e9bf3a9da1926ded142b2f2d9e622726e958e75ae0e",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00735ff0",
+        "function_name": "FUN_00735ff0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x4, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 18,
+            "name": "LAB_00736002"
+          },
+          {
+            "relative_offset": 51,
+            "name": "LAB_00736023"
+          },
+          {
+            "relative_offset": 62,
+            "name": "LAB_0073602e"
+          },
+          {
+            "relative_offset": 73,
+            "name": "LAB_00736039"
+          },
+          {
+            "relative_offset": 90,
+            "name": "LAB_0073604a"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "returning_free_call_sites": [
+        "0073603c"
+      ],
+      "function_after": "Function: FUN_00735ff0 at 00735ff0\nSignature: undefined FUN_00735ff0(void)\nEntry: 00735ff0\nBody: 00735ff0 - 0073604e",
+      "documentation_after": {
+        "hash": "26d706b48f01cb34bbd3495ed2d2013918305e09018d1ce6901d0b2117e03509",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "00735ff0",
+        "function_name": "FUN_00735ff0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puVar3",
+            "type": "undefined4 *",
+            "storage": "(register, 0x4, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(register, 0x0, 4)"
+          },
+          {
+            "name": "puVar1",
+            "type": "undefined4 *",
+            "storage": "(register, 0x0, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 18,
+            "name": "LAB_00736002"
+          },
+          {
+            "relative_offset": 51,
+            "name": "LAB_00736023"
+          },
+          {
+            "relative_offset": 62,
+            "name": "LAB_0073602e"
+          },
+          {
+            "relative_offset": 73,
+            "name": "LAB_00736039"
+          },
+          {
+            "relative_offset": 90,
+            "name": "LAB_0073604a"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00736041",
+        "end_address": "0073604f"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00736041",
+        "end_address": "0073604e",
+        "bytes_disassembled": 14,
+        "message": "Successfully disassembled 14 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "0073603c"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 0073603c (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "00735ff0"
+      },
+      "result": {
+        "success": true,
+        "address": "00735ff0",
+        "deleted_function": "FUN_00735ff0",
+        "body_size": 86,
+        "message": "Function 'FUN_00735ff0' deleted at 00735ff0"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00735ff0",
+        "name": "FUN_00735ff0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00735ff0",
+        "function_name": "FUN_00735ff0",
+        "entry_point": "00735ff0",
+        "body_size": 95,
+        "message": "Function created successfully at 00735ff0"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Pointer-array reserve returning-free continuation restored and saved; existing code and comments preserved"
+}

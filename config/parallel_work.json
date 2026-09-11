@@ -4214,8 +4214,8 @@
       "id": "native_cube_texture_base2",
       "packet": "native_cube_texture_base2",
       "worker": "main",
-      "done": false,
-      "state": "primary_source_build_tested_independent_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b34020",
         "00b34090"
@@ -4253,7 +4253,8 @@
         ],
         "API_status": "Frozen byprimary; actualnative_cube_texture_base.hpp/.cpp presentinprimaryworkspace with compilation/fixturepending. Owner3mustcomposeexactsource."
       },
-      "source_ready": true
+      "source_ready": true,
+      "evidence": "reports/native_cube_texture_base_audit.json"
     },
     {
       "id": "native_cube_texture_owner3",
@@ -4285,7 +4286,7 @@
           "00b3f410"
         ],
         "bytes": 313,
-        "ready": false,
+        "ready": true,
         "ready_when": "native_cube_texture_base2 integrated; existing canonicalpool return provider now completeonmain",
         "dependencies": [
           "native_cube_texture_base2",
@@ -4308,8 +4309,8 @@
       "id": "native_cube_texture_owner_array_reserve1",
       "packet": "native_cube_texture_owner_array_reserve1",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_source_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00735ff0"
       ],
@@ -4339,14 +4340,15 @@
         ],
         "minimum_evidence": "Full untouched95-byte original body versus real primary-library source; current-count/table observations across actual allocation/free, exact publication order; existing strict Win32 build/CTests. No new tracked test suite."
       },
-      "source_ready": true
+      "source_ready": true,
+      "evidence": "reports/native_cube_texture_owner_array_reserve_audit.json"
     },
     {
       "id": "native_cube_texture_factory1",
       "packet": "native_cube_texture_factory1",
       "worker": null,
       "done": false,
-      "state": "blocked_on_actual_native_owner_array_reserve_and_device_recreation",
+      "state": "blocked_on_actual_cube_owner_and_complete_device_recreation",
       "function_addresses": [
         "00b2a380",
         "00cbd380",
@@ -4382,8 +4384,7 @@
           "reports/native_cube_texture_factory_audit.json"
         ],
         "blocked_by": [
-          "Native cube resource base/owner implementations from sibling discovery",
-          "native_cube_texture_owner_array_reserve1",
+          "Complete native cube resource owner integration",
           "Complete actual-storage B29670 device recreation and its open dependencies"
         ],
         "required_contract": "Actual renderer/global/pool providers; exact original HRESULT equality retry, COM invocation, registration and FH3 cleanup order. No empty or semantic substitute recreation/owner/registry callback."

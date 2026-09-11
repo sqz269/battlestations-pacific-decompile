@@ -32,12 +32,18 @@ Fresh guarded live/PE evidence and all direct dependency boundaries are in
 `reports/native_cube_texture_owner_next.json`. Both complete entries and their
 76 instruction bytes were independently checked by the primary. The existing
 `B34020` numeric serial fragment remains a fragment; the full constructor is
-recorded separately only after its independent fixture and annotation closure.
+now recorded separately after its independent fixture and annotation closure.
 
 The strict integrated MSVC Win32 build and both existing CTests passed.
 The current library is frozen at
 `build/cube-base-primary-check/bsp_core.linked.lib`, SHA256
 `e868288d29c1a2d75b09e520ea75648a792c9976d74b7b5307a381563e11ee6c`.
-Independent original-body verification is in progress. The original ABI,
+Independent verification passed with 1,152 matching DWORDs and 35 observed
+owner stores, including equal-value writes, across three constructor serial
+bindings and real pooled current-name destruction. The primary rechecked all
+49 source/artifact pins, three fresh live/PE spans, 18 runtime postimages and
+actual linker providers. See `NATIVE_CUBE_TEXTURE_BASE_FIXTURE.md`. Both complete
+entries now have saved Ghidra evidence, refreshed exports and separate full
+reconstruction records. The earlier numeric metadata fragment is retained. The original ABI,
 malformed unbacked storage, full native string-pool ABI, GPU behavior, and
 gameplay have not been validated by this packet.
