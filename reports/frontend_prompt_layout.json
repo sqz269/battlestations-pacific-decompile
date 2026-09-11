@@ -1,0 +1,82 @@
+{
+  "packet": "orch2_prompt_layout",
+  "project": "bsp",
+  "program": "/battlestationspacific.exe",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_mutated": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "functions": [
+    {
+      "address": "00531380",
+      "native_abi": "ECX screen, RET",
+      "old_name": "FUN_00531380",
+      "proposed_name": "BSP_MenuPromptScreen_Enter",
+      "cpp_symbol": "bsp::enter_prompt_screen_00531380",
+      "status": "reconstructed_build_tested_host_projection_with_actual_button_fields",
+      "length": 1906,
+      "saved_bytes_match_disk": true,
+      "sha256": "09a841a066c8b6d70da46d5b9afa62d74e26f47164e7f07ac759273e885a819f"
+    },
+    {
+      "address": "00532110",
+      "native_abi": "ECX screen, stack widget, RET4",
+      "old_name": "FUN_00532110",
+      "proposed_name": "BSP_MenuPromptScreen_PrepareButton",
+      "cpp_symbol": "bsp::prepare_prompt_button_00532110",
+      "status": "reconstructed_build_tested_host_vector_projection",
+      "length": 128,
+      "saved_bytes_match_disk": true,
+      "sha256": "fee5f5e242d5921b381d5bd32e2e47c61683b9f83edeba20bcf4de35112f9b44"
+    }
+  ],
+  "fragments": [
+    {
+      "address": "00530a60",
+      "last_address": "00530c17",
+      "containing_function": "00532360",
+      "native_abi": "ECX screen, RET; main refresh body tail-jumps here",
+      "cpp_symbol": "bsp::layout_prompt_buttons_00530a60",
+      "status": "reconstructed_build_and_focused_fixture_tested",
+      "length": 440,
+      "saved_bytes_match_disk": true,
+      "sha256": "7a6c44155714e79cfa1b5d1b11e9394e179bf5a75bb544462ca4c7e38a0779ec",
+      "ghidra_action": "Preserve shared-tail function metadata; do not create or split a function"
+    }
+  ],
+  "constants": {
+    "00cec380_double": 960.0,
+    "00d7a258_double": 0.0,
+    "00ced318_float_bits": "3c360b61",
+    "00d7a24c_float": 1.0,
+    "callback_utf16": ["00a2", "00a3", "00a7"]
+  },
+  "validation": {
+    "verify_seeds": "passed",
+    "msvc_win32_release": "passed",
+    "existing_ctests": {"passed": 2, "failed": 0},
+    "focused_layout_fixture": "passed: negative gap; callback width and enabled flag rereads",
+    "entry_or_prepare_fixture": "not run",
+    "native_prompt_differential": "not run",
+    "permanent_tests_added": 0
+  },
+  "artifacts": [
+    "local/prompt-layout-byte-verification.json",
+    "local/prompt-layout-disk-assembly.txt",
+    "local/prompt-layout-native-bytes.txt",
+    "local/prompt-enter-native-bytes.txt",
+    "local/prompt-prepare-native-bytes.txt",
+    "local/prompt-layout-verify-seeds.log",
+    "local/prompt-layout-build.log",
+    "local/prompt-layout-fixture.cpp",
+    "local/prompt-layout-fixture-build.log",
+    "local/prompt-layout-fixture.log"
+  ],
+  "host_limits": [
+    "Screen and scratch vector remain host projections; actual GUI button writes require valid native objects",
+    "FindChild, GUI virtuals, callback binding, SetLocalX and screen callbacks remain required concrete services",
+    "Constant callback text is supplied directly; its native temporary allocations and exception unwinding are not reproduced",
+    "Float spill points preserved; non-default x87 precision and rounding modes not reproduced",
+    "Adapter integration into existing controller belongs to the primary integrator"
+  ]
+}
