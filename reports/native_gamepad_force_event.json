@@ -1,0 +1,813 @@
+{
+  "packet": "orch3_gamepad_event_owners_ad",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "reconstructed_native_event_storage_build_original_byte_fixture_and_full_point_chain_passed",
+  "source": [
+    "src/native_gamepad_force_event.cpp",
+    "src/gamepad_force_events.cpp",
+    "src/gameplay_point_binding.cpp"
+  ],
+  "functions": [
+    {
+      "name": "constant",
+      "address": "00873450",
+      "end_exclusive": "0087350a",
+      "length": 186,
+      "sha256": "6ff82dec979bcb737d37319a4d060d68d2a6be8166b07547604ef3a25688482f",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "008734b2",
+          "target": "0xbf681b",
+          "mnemonic": "call"
+        },
+        {
+          "address": "008734ed",
+          "target": "0xa95bf0",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "00873507",
+          "bytes": "c20800",
+          "operands": "8"
+        }
+      ],
+      "ghidra_name": "BSP_ConstantForceEvent_Construct",
+      "cpp_symbol": "construct_native_constant_force_event_00873450",
+      "original_abi": "thiscall ECX=actual20h event; stack actual definition,subject; EAX=this; RET8",
+      "source": "src/native_gamepad_force_event.cpp"
+    },
+    {
+      "name": "fading",
+      "address": "00873560",
+      "end_exclusive": "008736fe",
+      "length": 414,
+      "sha256": "4ef46e1631c872c4be9bf9b941c695b4254d760b56053114865bfad88a4d3a0c",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "008735ed",
+          "target": "0xb6db70",
+          "mnemonic": "call"
+        },
+        {
+          "address": "00873633",
+          "target": "0x414db0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "00873666",
+          "target": "0x42b2f0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "00873696",
+          "target": "0xbf681b",
+          "mnemonic": "call"
+        },
+        {
+          "address": "008736e1",
+          "target": "0xa95bf0",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "008736fb",
+          "bytes": "c20800",
+          "operands": "8"
+        }
+      ],
+      "ghidra_name": "BSP_FadingForceEvent_Construct",
+      "cpp_symbol": "construct_native_fading_force_event_00873560",
+      "original_abi": "thiscall ECX=actual20h event; stack actual definition,subject; EAX=this; RET8",
+      "source": "src/native_gamepad_force_event.cpp"
+    },
+    {
+      "name": "alternating",
+      "address": "00873750",
+      "end_exclusive": "00873836",
+      "length": 230,
+      "sha256": "20710e10a6fdd9728bb53d1ebb5f529386997a18409676df6c9e54c690417488",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "008737b2",
+          "target": "0xbf681b",
+          "mnemonic": "call"
+        },
+        {
+          "address": "00873819",
+          "target": "0xa95bf0",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "00873833",
+          "bytes": "c20800",
+          "operands": "8"
+        }
+      ],
+      "ghidra_name": "BSP_AlternatingForceEvent_Construct",
+      "cpp_symbol": "construct_native_alternating_force_event_00873750",
+      "original_abi": "thiscall ECX=actual20h event; stack actual definition,subject; EAX=this; RET8",
+      "source": "src/native_gamepad_force_event.cpp"
+    },
+    {
+      "name": "create_constant",
+      "address": "00869010",
+      "end_exclusive": "00869076",
+      "length": 102,
+      "sha256": "f0fef7bb51c77296c12dee76f1fcb348b95110c3ac78887469c58403ba19cfa4",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0086902b",
+          "target": "0xbf681b",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0086904b",
+          "target": "0x873450",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "0086905f",
+          "bytes": "c20400",
+          "operands": "4"
+        },
+        {
+          "address": "00869073",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "ghidra_name": "BSP_ConstantForceEventDefinition_Create",
+      "cpp_symbol": "create_native_constant_force_event_00869010",
+      "original_abi": "thiscall ECX=raw component definition; stack actual subject; EAX=20h event or null; RET4",
+      "source": "src/native_gamepad_force_event.cpp"
+    },
+    {
+      "name": "create_fading",
+      "address": "008690f0",
+      "end_exclusive": "00869156",
+      "length": 102,
+      "sha256": "bc65a9c033d610c679fd8e6fe8b0793f1053735ef8b7ce7b0073a432a2d7b2ca",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0086910b",
+          "target": "0xbf681b",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0086912b",
+          "target": "0x873560",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "0086913f",
+          "bytes": "c20400",
+          "operands": "4"
+        },
+        {
+          "address": "00869153",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "ghidra_name": "BSP_FadingForceEventDefinition_Create",
+      "cpp_symbol": "create_native_fading_force_event_008690f0",
+      "original_abi": "thiscall ECX=raw component definition; stack actual subject; EAX=20h event or null; RET4",
+      "source": "src/native_gamepad_force_event.cpp"
+    },
+    {
+      "name": "create_alternating",
+      "address": "00869290",
+      "end_exclusive": "008692f6",
+      "length": 102,
+      "sha256": "b949196bb6d51c68967e17bd825c184213369c29ddeeeb1244d581aea740cef5",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "008692ab",
+          "target": "0xbf681b",
+          "mnemonic": "call"
+        },
+        {
+          "address": "008692cb",
+          "target": "0x873750",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "008692df",
+          "bytes": "c20400",
+          "operands": "4"
+        },
+        {
+          "address": "008692f3",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "ghidra_name": "BSP_AlternatingForceEventDefinition_Create",
+      "cpp_symbol": "create_native_alternating_force_event_00869290",
+      "original_abi": "thiscall ECX=raw component definition; stack actual subject; EAX=20h event or null; RET4",
+      "source": "src/native_gamepad_force_event.cpp"
+    },
+    {
+      "name": "delete_constant",
+      "address": "00873530",
+      "end_exclusive": "0087355b",
+      "length": 43,
+      "sha256": "b1fd14850aef6cd0dbd1070e7c9017d5dc04be9ec99feb5e6c43bd9fb96f07dd",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00873540",
+          "target": "0xbd30f0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0087354d",
+          "target": "0xbf65ac",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "00873558",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "ghidra_name": "CG_scalar_deleting_dtor_00873530",
+      "cpp_symbol": "delete_native_force_event",
+      "original_abi": "thiscall ECX=actual20h event; stack flags low byte bit0; EAX=this even after free; RET4",
+      "source": "src/native_gamepad_force_event.cpp"
+    },
+    {
+      "name": "delete_fading",
+      "address": "00873720",
+      "end_exclusive": "0087374b",
+      "length": 43,
+      "sha256": "4674b24a5de74579432a12b7e558d69d48d747dc11d73b5ee78b7a23bd3d8d4f",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00873730",
+          "target": "0xbd30f0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0087373d",
+          "target": "0xbf65ac",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "00873748",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "ghidra_name": "CG_scalar_deleting_dtor_00873720",
+      "cpp_symbol": "delete_native_force_event",
+      "original_abi": "thiscall ECX=actual20h event; stack flags low byte bit0; EAX=this even after free; RET4",
+      "source": "src/native_gamepad_force_event.cpp"
+    },
+    {
+      "name": "delete_alternating",
+      "address": "00873860",
+      "end_exclusive": "0087388b",
+      "length": 43,
+      "sha256": "6447110071a54a41b71dcb0bdd4ed506e4e17a4b237e3783687ab1a943e98c11",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00873870",
+          "target": "0xbd30f0",
+          "mnemonic": "call"
+        },
+        {
+          "address": "0087387d",
+          "target": "0xbf65ac",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "00873888",
+          "bytes": "c20400",
+          "operands": "4"
+        }
+      ],
+      "ghidra_name": "CG_scalar_deleting_dtor_00873860",
+      "cpp_symbol": "delete_native_force_event",
+      "original_abi": "thiscall ECX=actual20h event; stack flags low byte bit0; EAX=this even after free; RET4",
+      "source": "src/native_gamepad_force_event.cpp"
+    },
+    {
+      "name": "complete",
+      "address": "00872180",
+      "end_exclusive": "00872194",
+      "length": 20,
+      "sha256": "224ae3f7c8fa1b7f05470e691f6a0b9137e51773df0190bda359c29dad436dce",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00872186",
+          "target": "0xa957d0",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "00872193",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ],
+      "ghidra_name": "BSP_ForceEvent_IsRequestComplete",
+      "cpp_symbol": "native_force_event_complete_00872180",
+      "original_abi": "ECX=event; EAX=normalized handle-is-zero boolean after A957D0; RET",
+      "source": "src/native_gamepad_force_event.cpp"
+    },
+    {
+      "name": "cancel",
+      "address": "00872160",
+      "end_exclusive": "00872178",
+      "length": 24,
+      "sha256": "9bc8b205601a019b90869df838ccc04e79aee42fb550c89838ed155f9fe5a1d5",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "0087216a",
+          "target": "0xa957f0",
+          "mnemonic": "call"
+        }
+      ],
+      "returns": [
+        {
+          "address": "00872177",
+          "bytes": "c3",
+          "operands": ""
+        }
+      ],
+      "ghidra_name": "BSP_ForceEvent_CancelRequest",
+      "cpp_symbol": "cancel_native_force_event_00872160",
+      "original_abi": "ECX=event; RET; no meaningful return; clear actual handle after optional A957F0",
+      "source": "src/native_gamepad_force_event.cpp"
+    },
+    {
+      "name": "noop",
+      "address": "00872150",
+      "end_exclusive": "00872153",
+      "length": 3,
+      "sha256": "1d10894625976bca9d8906f3ecf1e766b94e9219ec3bf1c30e02feea5e18e45a",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": [
+        {
+          "address": "00872150",
+          "bytes": "c20800",
+          "operands": "8"
+        }
+      ],
+      "ghidra_name": "BSP_ForceEvent_CallbackNoop",
+      "cpp_symbol": "native_force_event_callback_noop_00872150",
+      "original_abi": "ECX=event; two unused stack slots; RET8; return registers untouched",
+      "source": "src/native_gamepad_force_event.cpp"
+    },
+    {
+      "name": "base",
+      "address": "00872c90",
+      "end_exclusive": "00872ca2",
+      "length": 18,
+      "sha256": "c8e9a7f73f632ccfebd6d4beaa48394224edf846a9b790e2c582a60d106628cb",
+      "live_disk_equal": true,
+      "calls": [
+        {
+          "address": "00872c9d",
+          "target": "0xbd30f0",
+          "mnemonic": "jmp"
+        }
+      ],
+      "returns": [],
+      "ghidra_name": "BSP_ForceEvent_DestroyBase",
+      "cpp_symbol": "destroy_native_force_event_base_00872c90",
+      "original_abi": "ECX=event; write primary/secondary tables; JMP BD30F0; no ECX adjustment or meaningful return",
+      "source": "src/native_gamepad_force_event.cpp"
+    }
+  ],
+  "native_call_sites": [
+    {
+      "address": "008734b2",
+      "native": "00bf681b",
+      "function": "00873450"
+    },
+    {
+      "address": "008734ed",
+      "native": "00a95bf0",
+      "function": "00873450"
+    },
+    {
+      "address": "008735ed",
+      "native": "00b6db70",
+      "function": "00873560"
+    },
+    {
+      "address": "00873633",
+      "native": "00414db0",
+      "function": "00873560"
+    },
+    {
+      "address": "00873666",
+      "native": "0042b2f0",
+      "function": "00873560"
+    },
+    {
+      "address": "00873696",
+      "native": "00bf681b",
+      "function": "00873560"
+    },
+    {
+      "address": "008736e1",
+      "native": "00a95bf0",
+      "function": "00873560"
+    },
+    {
+      "address": "008737b2",
+      "native": "00bf681b",
+      "function": "00873750"
+    },
+    {
+      "address": "00873819",
+      "native": "00a95bf0",
+      "function": "00873750"
+    },
+    {
+      "address": "0086902b",
+      "native": "00bf681b",
+      "function": "00869010"
+    },
+    {
+      "address": "0086904b",
+      "native": "00873450",
+      "function": "00869010"
+    },
+    {
+      "address": "0086910b",
+      "native": "00bf681b",
+      "function": "008690f0"
+    },
+    {
+      "address": "0086912b",
+      "native": "00873560",
+      "function": "008690f0"
+    },
+    {
+      "address": "008692ab",
+      "native": "00bf681b",
+      "function": "00869290"
+    },
+    {
+      "address": "008692cb",
+      "native": "00873750",
+      "function": "00869290"
+    },
+    {
+      "address": "00873540",
+      "native": "00bd30f0",
+      "function": "00873530"
+    },
+    {
+      "address": "0087354d",
+      "native": "00bf65ac",
+      "function": "00873530"
+    },
+    {
+      "address": "00873730",
+      "native": "00bd30f0",
+      "function": "00873720"
+    },
+    {
+      "address": "0087373d",
+      "native": "00bf65ac",
+      "function": "00873720"
+    },
+    {
+      "address": "00873870",
+      "native": "00bd30f0",
+      "function": "00873860"
+    },
+    {
+      "address": "0087387d",
+      "native": "00bf65ac",
+      "function": "00873860"
+    },
+    {
+      "address": "00872186",
+      "native": "00a957d0",
+      "function": "00872180"
+    },
+    {
+      "address": "0087216a",
+      "native": "00a957f0",
+      "function": "00872160"
+    }
+  ],
+  "no_ghidra_function": [],
+  "native_data": [
+    {
+      "name": "tables",
+      "address": "00d0dcc0",
+      "end_exclusive": "00d0dd74",
+      "length": 180,
+      "sha256": "44528da92f96147dbd4bdeb9dd10cf7095f60d14d0d6f808225d77869a6252c4",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": []
+    },
+    {
+      "name": "component_tables",
+      "address": "00d0d76c",
+      "end_exclusive": "00d0d7cc",
+      "length": 96,
+      "sha256": "125703450aa64a521c5fb55a471b0d8b996a5666f8d187a8557d03940fe859ae",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": []
+    },
+    {
+      "name": "map",
+      "address": "00dc8238",
+      "end_exclusive": "00dc82bc",
+      "length": 132,
+      "sha256": "b6319753e5950805faf6816bcafea9de11c87543a6ab4d84478aed0be69d8379",
+      "live_disk_equal": true,
+      "calls": [],
+      "returns": []
+    }
+  ],
+  "exception_evidence": {
+    "constructor_funcinfo": [
+      "00dc8240",
+      "00dc826c",
+      "00dc8298"
+    ],
+    "maps": [
+      "00dc8238",
+      "00dc8264",
+      "00dc8290"
+    ],
+    "funclets": [
+      "00c961f0",
+      "00c96210",
+      "00c96230"
+    ],
+    "saved_owner": [
+      "EBP-10",
+      "EBP-28",
+      "EBP-10"
+    ],
+    "cleanup": "00872c90 -> 00bd30f0, no cancellation",
+    "factory_funclets": [
+      "00c95260",
+      "00c952a0",
+      "00c95300"
+    ],
+    "factory_cleanup": "free saved EBP-10 after constructor cleanup",
+    "original_exception_dispatch_executed": false
+  },
+  "corrections": [
+    "Native event layout/04 canonical ownership replaces the prior semantic-only event boundary. Prior typed interfaces remain available.",
+    "Live primary table noop872150 is+28 and cancel872160 is+30; prior packet labels+2C/+34 were wrong.",
+    "872C90 writes primary and secondary tables then jumps BD30F0; prior automatic adjustor-thunk label was incorrect."
+  ],
+  "validation": {
+    "build": "local/gamepad-event-ad-build.log: strict Win32 and both existing CTests passed",
+    "native_probe": "local/gamepad-event-probe-ad.log: complete original three constructors/factories/scalars, completion/cancel/noop/base, ESP balance and full20h owner/padding comparison passed",
+    "full_point_chain": "local/gamepad-point-chain-ad.log: existing AB full application fixture extended with three real rumble components; actual count1 per result, correct borrowed owners, fading0.6, all event companions retired and all3 independent requests survive point teardown; existing reentry/failure paths pass",
+    "existing_force_regression": "local/gamepad-force-events-ad-regression.log: existing typed force/event/spatial fixture recompiled and passed",
+    "probe_sources": [
+      "local/gamepad_event_probe_ad_tail.cpp",
+      "local/generate_gamepad_event_probe_ad.py",
+      "local/generate_gamepad_point_chain_ad.py",
+      "local/extract_gamepad_event_ad.py"
+    ],
+    "limits": "New C++ dispatch and typed request interfaces; actual event bytes/count verified, but original request layouts/inner allocator, vtable and SEH ABI and hardware/gameplay not validated. Native fading original-byte probe uses absent-target branch; actual full-chain C++ distance path exercised. See report fixture limits.",
+    "original_fading_distance_branch_executed_in_this_probe": false,
+    "original_exception_dispatch_executed": false,
+    "physical_rumble_or_gameplay_tested": false,
+    "call_verification": "23 native call rows checked, zero failures; local/gamepad-event-ad-call-verification.log"
+  },
+  "ownership": "One actual20h allocation and one atomic04 event count. HOST companions borrow it without initializing or retaining it; host allocation prepared before original factory. Current native table words select terminal/control behavior. Borrowed definition/subject never retained or released; terminal scalar does not cancel requests.",
+  "remaining": [
+    "Remaining component factories and actual component terminal ownership domain.",
+    "Event update/cancellation caller composition.",
+    "Native request object/allocator/vtable/SEH parity and game/hardware validation."
+  ],
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260911T210215Z.json",
+    "readback": "local/gamepad-event-ad-comments.json",
+    "project_saved": true,
+    "all13_names_and_evidence_verified": true,
+    "prior_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00869010",
+        "before": {
+          "address": "00869010",
+          "function_name": "BSP_ConstantForceEventDefinition_Create",
+          "comment": "[BSP reconstruction 00869010]\nPacket orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. 20h outer allocation, then 873450 with definition and subject; null outer allocation returns null. Final instruction 00869073 length 3; inclusive end 00869075. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+        },
+        "after": {
+          "address": "00869010",
+          "name": "BSP_ConstantForceEventDefinition_Create",
+          "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. 20h outer allocation, then 873450 with definition and subject; null outer allocation returns null. Final instruction 00869073 length 3; inclusive end 00869075. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained. | Packet orch3_gamepad_event_owners_ad: actual20h owner, sole atomic+04, borrowed subject10/definition14, padding0D..0F and handle1C untouched until submit returns; canonical current-table terminal without cancellation, separate complete+08/noop+28/cancel+30. Constructors restore base via872C90 on unwind before factory free. Live PE bytes and full point-chain fixture verified. docs/NATIVE_GAMEPAD_FORCE_EVENT.md; reports/native_gamepad_force_event.json. Descriptive name is a hypothesis, not a recovered symbol. Complete original range 00869010..00869075 (102 bytes)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "008690f0",
+        "before": {
+          "address": "008690f0",
+          "function_name": "BSP_FadingForceEventDefinition_Create",
+          "comment": "[BSP reconstruction 008690f0]\nPacket orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. 20h outer allocation, then 873560 with definition and subject; null outer allocation returns null. Final instruction 00869153 length 3; inclusive end 00869155. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+        },
+        "after": {
+          "address": "008690f0",
+          "name": "BSP_FadingForceEventDefinition_Create",
+          "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. 20h outer allocation, then 873560 with definition and subject; null outer allocation returns null. Final instruction 00869153 length 3; inclusive end 00869155. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained. | Packet orch3_gamepad_event_owners_ad: actual20h owner, sole atomic+04, borrowed subject10/definition14, padding0D..0F and handle1C untouched until submit returns; canonical current-table terminal without cancellation, separate complete+08/noop+28/cancel+30. Constructors restore base via872C90 on unwind before factory free. Live PE bytes and full point-chain fixture verified. docs/NATIVE_GAMEPAD_FORCE_EVENT.md; reports/native_gamepad_force_event.json. Descriptive name is a hypothesis, not a recovered symbol. Complete original range 008690f0..00869155 (102 bytes)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00869290",
+        "before": {
+          "address": "00869290",
+          "function_name": "BSP_AlternatingForceEventDefinition_Create",
+          "comment": "[BSP reconstruction 00869290]\nPacket orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. 20h outer allocation, then 873750 with definition and subject; null outer allocation returns null. Final instruction 008692f3 length 3; inclusive end 008692f5. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+        },
+        "after": {
+          "address": "00869290",
+          "name": "BSP_AlternatingForceEventDefinition_Create",
+          "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. 20h outer allocation, then 873750 with definition and subject; null outer allocation returns null. Final instruction 008692f3 length 3; inclusive end 008692f5. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained. | Packet orch3_gamepad_event_owners_ad: actual20h owner, sole atomic+04, borrowed subject10/definition14, padding0D..0F and handle1C untouched until submit returns; canonical current-table terminal without cancellation, separate complete+08/noop+28/cancel+30. Constructors restore base via872C90 on unwind before factory free. Live PE bytes and full point-chain fixture verified. docs/NATIVE_GAMEPAD_FORCE_EVENT.md; reports/native_gamepad_force_event.json. Descriptive name is a hypothesis, not a recovered symbol. Complete original range 00869290..008692f5 (102 bytes)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00872150",
+        "before": {
+          "address": "00872150",
+          "function_name": "BSP_ForceEvent_CallbackNoop",
+          "comment": "[BSP reconstruction 00872150]\nPacket orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Original bytes C20800, genuine no-op at common event vtable2C; no current Ghidra function definition. Final instruction 00872150 length 3; inclusive end 00872152. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+        },
+        "after": {
+          "address": "00872150",
+          "name": "BSP_ForceEvent_CallbackNoop",
+          "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Original bytes C20800, genuine no-op at common event vtable2C; no current Ghidra function definition. Final instruction 00872150 length 3; inclusive end 00872152. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained. | Packet orch3_gamepad_event_owners_ad: actual20h owner, sole atomic+04, borrowed subject10/definition14, padding0D..0F and handle1C untouched until submit returns; canonical current-table terminal without cancellation, separate complete+08/noop+28/cancel+30. Constructors restore base via872C90 on unwind before factory free. Live PE bytes and full point-chain fixture verified. docs/NATIVE_GAMEPAD_FORCE_EVENT.md; reports/native_gamepad_force_event.json. Descriptive name is a hypothesis, not a recovered symbol. Complete original range 00872150..00872152 (3 bytes)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00872160",
+        "before": {
+          "address": "00872160",
+          "function_name": "BSP_ForceEvent_CancelRequest",
+          "comment": "[BSP reconstruction 00872160]\nPacket orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Common vtable34; if handle1C nonzero callA957F0, then write handle zero after call. Final instruction 00872177 length 1; inclusive end 00872177. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+        },
+        "after": {
+          "address": "00872160",
+          "name": "BSP_ForceEvent_CancelRequest",
+          "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Common vtable34; if handle1C nonzero callA957F0, then write handle zero after call. Final instruction 00872177 length 1; inclusive end 00872177. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained. | Packet orch3_gamepad_event_owners_ad: actual20h owner, sole atomic+04, borrowed subject10/definition14, padding0D..0F and handle1C untouched until submit returns; canonical current-table terminal without cancellation, separate complete+08/noop+28/cancel+30. Constructors restore base via872C90 on unwind before factory free. Live PE bytes and full point-chain fixture verified. docs/NATIVE_GAMEPAD_FORCE_EVENT.md; reports/native_gamepad_force_event.json. Descriptive name is a hypothesis, not a recovered symbol. Complete original range 00872160..00872177 (24 bytes)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00872180",
+        "before": {
+          "address": "00872180",
+          "function_name": "BSP_ForceEvent_IsRequestComplete",
+          "comment": "[BSP reconstruction 00872180]\nPacket orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Common vtable8; address event1C toA957D0, compare actual resulting handle zero; no current Ghidra function definition. Final instruction 00872193 length 1; inclusive end 00872193. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+        },
+        "after": {
+          "address": "00872180",
+          "name": "BSP_ForceEvent_IsRequestComplete",
+          "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Common vtable8; address event1C toA957D0, compare actual resulting handle zero; no current Ghidra function definition. Final instruction 00872193 length 1; inclusive end 00872193. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained. | Packet orch3_gamepad_event_owners_ad: actual20h owner, sole atomic+04, borrowed subject10/definition14, padding0D..0F and handle1C untouched until submit returns; canonical current-table terminal without cancellation, separate complete+08/noop+28/cancel+30. Constructors restore base via872C90 on unwind before factory free. Live PE bytes and full point-chain fixture verified. docs/NATIVE_GAMEPAD_FORCE_EVENT.md; reports/native_gamepad_force_event.json. Descriptive name is a hypothesis, not a recovered symbol. Complete original range 00872180..00872193 (20 bytes)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00872c90",
+        "before": {
+          "address": "00872c90",
+          "function_name": "CG_adjustor_thunk_00872c90"
+        },
+        "after": {
+          "address": "00872c90",
+          "name": "BSP_ForceEvent_DestroyBase",
+          "evidence": "Packet orch3_gamepad_event_owners_ad: actual20h owner, sole atomic+04, borrowed subject10/definition14, padding0D..0F and handle1C untouched until submit returns; canonical current-table terminal without cancellation, separate complete+08/noop+28/cancel+30. Constructors restore base via872C90 on unwind before factory free. Live PE bytes and full point-chain fixture verified. docs/NATIVE_GAMEPAD_FORCE_EVENT.md; reports/native_gamepad_force_event.json. Descriptive name is a hypothesis, not a recovered symbol. Complete original range 00872c90..00872ca1 (18 bytes)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00873450",
+        "before": {
+          "address": "00873450",
+          "function_name": "BSP_ConstantForceEvent_Construct",
+          "comment": "[BSP reconstruction 00873450]\nPacket orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. D0DCD0/D0DCCC event; 14h D0DB78 kind0 request, definition channel20 duration24 amplitude2C; submit ECX0 EDXrequest at8734ED; returned ID stored1C. Final instruction 00873507 length 3; inclusive end 00873509. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+        },
+        "after": {
+          "address": "00873450",
+          "name": "BSP_ConstantForceEvent_Construct",
+          "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. D0DCD0/D0DCCC event; 14h D0DB78 kind0 request, definition channel20 duration24 amplitude2C; submit ECX0 EDXrequest at8734ED; returned ID stored1C. Final instruction 00873507 length 3; inclusive end 00873509. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained. | Packet orch3_gamepad_event_owners_ad: actual20h owner, sole atomic+04, borrowed subject10/definition14, padding0D..0F and handle1C untouched until submit returns; canonical current-table terminal without cancellation, separate complete+08/noop+28/cancel+30. Constructors restore base via872C90 on unwind before factory free. Live PE bytes and full point-chain fixture verified. docs/NATIVE_GAMEPAD_FORCE_EVENT.md; reports/native_gamepad_force_event.json. Descriptive name is a hypothesis, not a recovered symbol. Complete original range 00873450..00873509 (186 bytes). | Packet orch3_gamepad_event_owners_ad: actual20h owner, sole atomic+04, borrowed subject10/definition14, padding0D..0F and handle1C untouched until submit returns; canonical current-table terminal without cancellation, separate complete+08/noop+28/cancel+30. Constructors restore base via872C90 on unwind before factory free. Live PE bytes and full point-chain fixture verified. docs/NATIVE_GAMEPAD_FORCE_EVENT.md; reports/native_gamepad_force_event.json. Descriptive name is a hypothesis, not a recovered symbol. Complete original range 00873450..00873509 (186 bytes)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00873530",
+        "before": {
+          "address": "00873530",
+          "function_name": "CG_scalar_deleting_dtor_00873530",
+          "comment": "[BSP reconstruction 00873530]\nPacket orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Restore D0C88C/D0C888, BD30F0 base dtor, free only bit0; no request cancel; raw PE fills ADD ESP4 at873552. Final instruction 00873558 length 3; inclusive end 0087355a. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+        },
+        "after": {
+          "address": "00873530",
+          "name": "CG_scalar_deleting_dtor_00873530",
+          "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Restore D0C88C/D0C888, BD30F0 base dtor, free only bit0; no request cancel; raw PE fills ADD ESP4 at873552. Final instruction 00873558 length 3; inclusive end 0087355a. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained. | Packet orch3_gamepad_event_owners_ad: actual20h owner, sole atomic+04, borrowed subject10/definition14, padding0D..0F and handle1C untouched until submit returns; canonical current-table terminal without cancellation, separate complete+08/noop+28/cancel+30. Constructors restore base via872C90 on unwind before factory free. Live PE bytes and full point-chain fixture verified. docs/NATIVE_GAMEPAD_FORCE_EVENT.md; reports/native_gamepad_force_event.json. Descriptive name is a hypothesis, not a recovered symbol. Complete original range 00873530..0087355a (43 bytes)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00873560",
+        "before": {
+          "address": "00873560",
+          "function_name": "BSP_FadingForceEvent_Construct",
+          "comment": "[BSP reconstruction 00873560]\nPacket orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. D0DD08/D0DD04 event; check currentgame1ED4, actual subject110 camera transform, B6DB70 refresh, reload game, distinct targetpose414DB0 refresh, float deltas/42B2F0 length, lower-only gain clamp; 18h D0DB8C kind1 request; submit ECX0 EDXrequest at8736E1. Final instruction 008736fb length 3; inclusive end 008736fd. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained.\n\n[BSP reconstruction 00873560] update\nPacket orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. D0DD08/D0DD04 event; check currentgame1ED4, actual subject110 camera transform, B6DB70 refresh, reload game, distinct targetpose414DB0 refresh, float deltas/42B2F0 length, lower-only gain clamp; 18h D0DB8C kind1 request; submit ECX0 EDXrequest at8736E1. Final instruction 008736fb length 3; inclusive end 008736fd. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained. | Packet orch3_force_spatial_i closes spatial refresh composition: ForceEventSpatialRuntime borrows actual current-target/subject-transform lookups and existing PoseRefreshResolver; validates SAME byteC8 and worldCC field addresses before actual414DB0 refresh; no copied parent hierarchy or cached game/target. Target flag is byte-exact uint8_t&. Native8735FA current-game reload and873633 captured-target refresh verified read-only. Strict Win32/2CTests and existing event fixture with actual recursive pose refresh passed. docs/FORCE_EVENT_SPATIAL.md; reports/force_event_spatial.json. Composition only, no additional reconstructed body count."
+        },
+        "after": {
+          "address": "00873560",
+          "name": "BSP_FadingForceEvent_Construct",
+          "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. D0DD08/D0DD04 event; check currentgame1ED4, actual subject110 camera transform, B6DB70 refresh, reload game, distinct targetpose414DB0 refresh, float deltas/42B2F0 length, lower-only gain clamp; 18h D0DB8C kind1 request; submit ECX0 EDXrequest at8736E1. Final instruction 008736fb length 3; inclusive end 008736fd. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained. | Packet orch3_force_spatial_i closes spatial refresh composition: ForceEventSpatialRuntime borrows actual current-target/subject-transform lookups and existing PoseRefreshResolver; validates SAME byteC8 and worldCC field addresses before actual414DB0 refresh; no copied parent hierarchy or cached game/target. Target flag is byte-exact uint8_t&. Native8735FA current-game reload and873633 captured-target refresh verified read-only. Strict Win32/2CTests and existing event fixture with actual recursive pose refresh passed. docs/FORCE_EVENT_SPATIAL.md; reports/force_event_spatial.json. Composition only, no additional reconstructed body count. | Packet orch3_gamepad_event_owners_ad: actual20h owner, sole atomic+04, borrowed subject10/definition14, padding0D..0F and handle1C untouched until submit returns; canonical current-table terminal without cancellation, separate complete+08/noop+28/cancel+30. Constructors restore base via872C90 on unwind before factory free. Live PE bytes and full point-chain fixture verified. docs/NATIVE_GAMEPAD_FORCE_EVENT.md; reports/native_gamepad_force_event.json. Descriptive name is a hypothesis, not a recovered symbol. Complete original range 00873560..008736fd (414 bytes)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00873720",
+        "before": {
+          "address": "00873720",
+          "function_name": "CG_scalar_deleting_dtor_00873720",
+          "comment": "[BSP reconstruction 00873720]\nPacket orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Restore D0C88C/D0C888, BD30F0 base dtor, free only bit0; no request cancel; raw PE fills ADD ESP4 at873742. Final instruction 00873748 length 3; inclusive end 0087374a. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+        },
+        "after": {
+          "address": "00873720",
+          "name": "CG_scalar_deleting_dtor_00873720",
+          "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Restore D0C88C/D0C888, BD30F0 base dtor, free only bit0; no request cancel; raw PE fills ADD ESP4 at873742. Final instruction 00873748 length 3; inclusive end 0087374a. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained. | Packet orch3_gamepad_event_owners_ad: actual20h owner, sole atomic+04, borrowed subject10/definition14, padding0D..0F and handle1C untouched until submit returns; canonical current-table terminal without cancellation, separate complete+08/noop+28/cancel+30. Constructors restore base via872C90 on unwind before factory free. Live PE bytes and full point-chain fixture verified. docs/NATIVE_GAMEPAD_FORCE_EVENT.md; reports/native_gamepad_force_event.json. Descriptive name is a hypothesis, not a recovered symbol. Complete original range 00873720..0087374a (43 bytes)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00873750",
+        "before": {
+          "address": "00873750",
+          "function_name": "BSP_AlternatingForceEvent_Construct",
+          "comment": "[BSP reconstruction 00873750]\nPacket orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. D0DD40/D0DD3C event; 28h D0DBA0 kind2 request; definition channel20 duration24 selector2C values30/34 periods38/3C; submit ECX0 EDXrequest at873819. Final instruction 00873833 length 3; inclusive end 00873835. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+        },
+        "after": {
+          "address": "00873750",
+          "name": "BSP_AlternatingForceEvent_Construct",
+          "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. D0DD40/D0DD3C event; 28h D0DBA0 kind2 request; definition channel20 duration24 selector2C values30/34 periods38/3C; submit ECX0 EDXrequest at873819. Final instruction 00873833 length 3; inclusive end 00873835. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained. | Packet orch3_gamepad_event_owners_ad: actual20h owner, sole atomic+04, borrowed subject10/definition14, padding0D..0F and handle1C untouched until submit returns; canonical current-table terminal without cancellation, separate complete+08/noop+28/cancel+30. Constructors restore base via872C90 on unwind before factory free. Live PE bytes and full point-chain fixture verified. docs/NATIVE_GAMEPAD_FORCE_EVENT.md; reports/native_gamepad_force_event.json. Descriptive name is a hypothesis, not a recovered symbol. Complete original range 00873750..00873835 (230 bytes)."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00873860",
+        "before": {
+          "address": "00873860",
+          "function_name": "CG_scalar_deleting_dtor_00873860",
+          "comment": "[BSP reconstruction 00873860]\nPacket orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Restore D0C88C/D0C888, BD30F0 base dtor, free only bit0; no request cancel; raw PE fills ADD ESP4 at873882. Final instruction 00873888 length 3; inclusive end 0087388a. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained."
+        },
+        "after": {
+          "address": "00873860",
+          "name": "CG_scalar_deleting_dtor_00873860",
+          "evidence": "Packet orch3_gamepad_force_events_g; read-only bsp.gpr /battlestationspacific.exe. Restore D0C88C/D0C888, BD30F0 base dtor, free only bit0; no request cancel; raw PE fills ADD ESP4 at873882. Final instruction 00873888 length 3; inclusive end 0087388a. docs/GAMEPAD_FORCE_EVENTS.md; reports/gamepad_force_events.json. Descriptive names are hypotheses; correct compiler-generated wrapper labels retained. | Packet orch3_gamepad_event_owners_ad: actual20h owner, sole atomic+04, borrowed subject10/definition14, padding0D..0F and handle1C untouched until submit returns; canonical current-table terminal without cancellation, separate complete+08/noop+28/cancel+30. Constructors restore base via872C90 on unwind before factory free. Live PE bytes and full point-chain fixture verified. docs/NATIVE_GAMEPAD_FORCE_EVENT.md; reports/native_gamepad_force_event.json. Descriptive name is a hypothesis, not a recovered symbol. Complete original range 00873860..0087388a (43 bytes)."
+        },
+        "status": "applied"
+      }
+    ]
+  }
+}

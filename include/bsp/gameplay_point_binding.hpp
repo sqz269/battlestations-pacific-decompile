@@ -4,6 +4,7 @@
 #include "bsp/gameplay_point_effect.hpp"
 #include "bsp/point_effect_constructor.hpp"
 #include "bsp/point_effect_owner.hpp"
+#include "bsp/native_gamepad_force_event.hpp"
 
 #include <functional>
 #include <memory>
@@ -70,6 +71,18 @@ public:
         const std::array<float, 3>&, CameraTransform&) = 0;
     virtual RenderCommandReference* create_current(std::uint32_t native_function,
         void* actual_row, PointEffectInstanceStorage&) = 0;
+};
+// Compose the three established rumble factories with other actual component
+// implementations. Unknown functions still require the remaining dispatch.
+class GameplayPointRumbleComponents final : public GameplayPointRemainingComponents {
+public:
+    GameplayPointRumbleComponents(NativeGamepadForceEvents&, GameplayPointRemainingComponents&) noexcept;
+    std::uint8_t admit_current(std::uint32_t, void*, const std::array<float, 3>&,
+        CameraTransform&) override;
+    RenderCommandReference* create_current(std::uint32_t, void*, PointEffectInstanceStorage&) override;
+private:
+    NativeGamepadForceEvents& events_;
+    GameplayPointRemainingComponents& remaining_;
 };
 using GameplayPointReferenceLookup = std::function<CameraTransform&()>;
 
