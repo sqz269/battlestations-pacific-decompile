@@ -62,5 +62,39 @@ All fixture floating exceptions are masked. Unmasked exception dispatch and
 access-fault behavior are not runtime-tested. Private callee stack scratch,
 instruction/data pointers, inactive registers and XMM4..7 are not compared.
 No permanent tests, original caller ABI integration or gameplay are claimed.
-Main build registration, integration and saved-analysis annotations remain
-the integrator's separate work.
+Main build registration, integration and saved-analysis annotations are
+complete, as recorded below.
+
+
+## Primary main-library validation
+
+Both functions are registered in main. The strict Win32 build and both
+existing CTests passed, and eight fresh seeds matched. The primary verified
+38 immutable worker pins, both literal source/header files and four fresh
+guarded spans totaling 207 bytes.
+
+The unchanged fixture linked frozen actual main library
+`c529434d93418ef4083e1e89d3e914e7fe1ec97eab5e19aa0bd43111eab01d68`.
+Its exact archive object preserves all worker code/directive sections and
+raw relocations; two anonymous-namespace symbol scopes and debug metadata
+differences are recorded. No provider was recompiled in the fixture.
+All five pairs and 1,045 observable bytes passed, with 171 complete COFF
+sections, three library sections and eleven immutable code/constant stages.
+The raw-result projection, complete original instruction mapping and read-only
+constant checks also passed.
+
+The primary bundle is read-only under `local/camera_projection_primary/`,
+with manifest SHA256
+`841de92d4c1e7f2ae0c47b6ead9bd0afa83f3321307fce298729034b5d491ade`.
+The tangent received a descriptive Ghidra name; existing names/comments were
+preserved, reviewed evidence was appended and saved, and both exports and
+complete function records were refreshed. Runtime and caller limits above remain.
+
+
+A supplemental static audit includes map symbols marked with both `f` and
+`i`. It expands the complete COFF-to-linked check from 171 to 255 sections;
+all three library sections and all previously checked bytes are unchanged.
+The same immutable executable, fixture results and original seal are retained.
+No new test or runtime execution was needed. The supplement is read-only at
+`local/camera_projection_coff_supplement/`, manifest SHA256
+`7bd34343bb6cb59e8f9befd6387a167da881a9c16a66ea6d188c3474b660f741`.

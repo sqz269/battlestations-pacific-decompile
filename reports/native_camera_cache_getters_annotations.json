@@ -1,0 +1,82 @@
+[
+  {
+    "address": "00b6fcb0",
+    "before": {
+      "address": "00b6fcb0",
+      "function_name": "BSP_Camera_GetViewMatrix",
+      "comment": "[BSP reconstruction 00b6fcb0]\nTyped camera world/view cache slice in src/camera_transform.cpp. World00b6db70: ECX/RET, parent+30 world-valid+5C bit2, recurse missing parent then affine local+B0 * parentWorld+F0; no parent x87copy local->world; setsbit2. View00b6fcb0: ECX/RET/EAX+60, validbit8; ensureworld, disjoint inverse temp then x87copy. Combined00b70490: ECX/RET/EAX+220, projection flags+2F0 bit10; view*projection then x87copy/setbit10. Affine00b6d4d0 ECXdst EDXleft stackright RET4, EAXright; unsafe output alias, forceslastcolumn0001. Copy004134f0 ECXdst stacksrc RET4/EAXdst,16sequentialx87pairs. Existing two-node parent camera draw passes; affine16words match isolatednativefixture. See reports/camera_transform.json. Constructor/lifetime/dirty propagation and native object ABI remain unported."
+    },
+    "after": {
+      "address": "00b6fcb0",
+      "evidence": "Complete 58-byte view getter. Low flags+5C bit8 hit skips world work; bit2 dirty invokes full raw world including recursive nonnull parents, scaled affine inverse to temporary, full ordered copy+60, then OR current flags8. Primary strict main Win32/two existing CTests and8 seeds passed. Verified100 worker pins and36 current provider files (33literal,3onlyCRLF/LF);19fresh original spans5308bytes. Actual main library11exact objects and145complete mapped COFF sections (77library), all relocations and56actual runtime import providers verified. Unchanged original/full-main composition passes4paired scenarios16paired calls133072literal observable bytes,9immutable original/source code+constant postimages. Cold recursive parent chain, hits with invalid unused parent/context, mixed dirty flags and actual invalid-parent read AV0x5D agree, retaining frustum bit4. Full matrix/world/frustum original closure executes; only original vector length edge uses actual full library length/CRT fixed-context ABI bridge, no arithmetic substitution. Fault floating/register context, unmasked FP, asynchronous mutation, original caller ABI and gameplay unclaimed. Current companion hierarchy remains incompatible pending canonical raw migration. reports/native_camera_cache_getters_audit.json",
+      "old_name": "BSP_Camera_GetViewMatrix",
+      "name": "BSP_Camera_GetViewMatrix",
+      "saved_body_end": "00b6fce9"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b6fcf0",
+    "before": {
+      "address": "00b6fcf0",
+      "function_name": "BSP_Camera_GetProjectionMatrix",
+      "comment": "[BSP reconstruction 00b6fcf0]\nCamera projection slice, typed port src/camera_projection.cpp. Builder00b642f0: ECX destination, fov/aspect/near/far stack, RET10h; FSINCOS tangent00412e20 float32 spill, reciprocal scale spill, far/(far-near) ratio spill, positivezero fill. Scalar setters ECX camera/stack float/RET4: AND flags+2F0 withFFFFFF41 then store +1C4/+1C8/+1D4/+1D8. Explicit setter00b6fd60 copies into+1E0 and+2A0, flags=(flags&FFFFFF4B)|8. Getter00b6fcf0 ECX/RET/EAX cache+2A0, refresh if bit8 clear; x87 argument/copy spills retained. New C++ ownership/ABI; original ctor not recovered. Existing perspective draw/cache fixture passes, no native FP differential claim. See reports/camera_projection.json and docs/CAMERA_PROJECTION_EVIDENCE.md.\n\n[BSP reconstruction 00b6fcf0] update\nNative [00b6fcf0,00b6fd60); ECX camera; EAX actual camera+2A0; RET. CameraProjection and CameraState now bind actual fields and existing transform/projection views. Getter uses four separate pointers for native1D8/1D4/1C8/1C4 in far/near/aspect/FOV x87 spill order; unrelated1CC/1D0 not read. Native4-rounding-mode fixture matched12 full756-byte states, x87 status/control and actual cache address. Default diagnostic and copy/move/write-through host semantics checked. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim."
+    },
+    "after": {
+      "address": "00b6fcf0",
+      "evidence": "Complete 112-byte projection getter. Flags+2F0 bit8; ordered far/near/aspect/fov FLD/FSTP into temporary callee argument slots, never the camera owner scalar fields. Full native projection/tangent, full copies into+1E0 then+2A0, current flags OR8. Added EDX points to temporary arguments and caller ADD ESP10 replaces child RET10 cleanup. Primary strict main Win32/two existing CTests and8 seeds passed. Verified100 worker pins and36 current provider files (33literal,3onlyCRLF/LF);19fresh original spans5308bytes. Actual main library11exact objects and145complete mapped COFF sections (77library), all relocations and56actual runtime import providers verified. Unchanged original/full-main composition passes4paired scenarios16paired calls133072literal observable bytes,9immutable original/source code+constant postimages. Cold recursive parent chain, hits with invalid unused parent/context, mixed dirty flags and actual invalid-parent read AV0x5D agree, retaining frustum bit4. Full matrix/world/frustum original closure executes; only original vector length edge uses actual full library length/CRT fixed-context ABI bridge, no arithmetic substitution. Fault floating/register context, unmasked FP, asynchronous mutation, original caller ABI and gameplay unclaimed. Current companion hierarchy remains incompatible pending canonical raw migration. reports/native_camera_cache_getters_audit.json",
+      "old_name": "BSP_Camera_GetProjectionMatrix",
+      "name": "BSP_Camera_GetProjectionMatrix",
+      "saved_body_end": "00b6fd5f"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b70490",
+    "before": {
+      "address": "00b70490",
+      "function_name": "BSP_Camera_GetViewProjectionMatrix",
+      "comment": "[BSP reconstruction 00b70490]\nTyped camera world/view cache slice in src/camera_transform.cpp. World00b6db70: ECX/RET, parent+30 world-valid+5C bit2, recurse missing parent then affine local+B0 * parentWorld+F0; no parent x87copy local->world; setsbit2. View00b6fcb0: ECX/RET/EAX+60, validbit8; ensureworld, disjoint inverse temp then x87copy. Combined00b70490: ECX/RET/EAX+220, projection flags+2F0 bit10; view*projection then x87copy/setbit10. Affine00b6d4d0 ECXdst EDXleft stackright RET4, EAXright; unsafe output alias, forceslastcolumn0001. Copy004134f0 ECXdst stacksrc RET4/EAXdst,16sequentialx87pairs. Existing two-node parent camera draw passes; affine16words match isolatednativefixture. See reports/camera_transform.json. Constructor/lifetime/dirty propagation and native object ABI remain unported."
+    },
+    "after": {
+      "address": "00b70490",
+      "evidence": "Complete 116-byte VP getter. Flags+2F0 bit10; complete inlined view/world path, projection getter, full general multiply into temporary and copy+220, then OR current flags10. Primary strict main Win32/two existing CTests and8 seeds passed. Verified100 worker pins and36 current provider files (33literal,3onlyCRLF/LF);19fresh original spans5308bytes. Actual main library11exact objects and145complete mapped COFF sections (77library), all relocations and56actual runtime import providers verified. Unchanged original/full-main composition passes4paired scenarios16paired calls133072literal observable bytes,9immutable original/source code+constant postimages. Cold recursive parent chain, hits with invalid unused parent/context, mixed dirty flags and actual invalid-parent read AV0x5D agree, retaining frustum bit4. Full matrix/world/frustum original closure executes; only original vector length edge uses actual full library length/CRT fixed-context ABI bridge, no arithmetic substitution. Fault floating/register context, unmasked FP, asynchronous mutation, original caller ABI and gameplay unclaimed. Current companion hierarchy remains incompatible pending canonical raw migration. reports/native_camera_cache_getters_audit.json",
+      "old_name": "BSP_Camera_GetViewProjectionMatrix",
+      "name": "BSP_Camera_GetViewProjectionMatrix",
+      "saved_body_end": "00b70503"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b70510",
+    "before": {
+      "address": "00b70510",
+      "function_name": "BSP_Camera_GetInverseViewProjection",
+      "comment": "[BSP reconstruction 00b70510]\n[BSP reconstruction] Projection flag20 gates general inverse of current VP, x87 matrix copy to+260, then set flag20. Returns cached matrix. Original ABI: ECX camera; EAX matrix pointer; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b70510",
+      "evidence": "Complete 61-byte inverse VP getter. Flags+2F0 bit20; full VP and general inverse into temporary, full copy+260, then OR current flags20. Primary strict main Win32/two existing CTests and8 seeds passed. Verified100 worker pins and36 current provider files (33literal,3onlyCRLF/LF);19fresh original spans5308bytes. Actual main library11exact objects and145complete mapped COFF sections (77library), all relocations and56actual runtime import providers verified. Unchanged original/full-main composition passes4paired scenarios16paired calls133072literal observable bytes,9immutable original/source code+constant postimages. Cold recursive parent chain, hits with invalid unused parent/context, mixed dirty flags and actual invalid-parent read AV0x5D agree, retaining frustum bit4. Full matrix/world/frustum original closure executes; only original vector length edge uses actual full library length/CRT fixed-context ABI bridge, no arithmetic substitution. Fault floating/register context, unmasked FP, asynchronous mutation, original caller ABI and gameplay unclaimed. Current companion hierarchy remains incompatible pending canonical raw migration. reports/native_camera_cache_getters_audit.json",
+      "old_name": "BSP_Camera_GetInverseViewProjection",
+      "name": "BSP_Camera_GetInverseViewProjection",
+      "saved_body_end": "00b7054c"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b70710",
+    "before": {
+      "address": "00b70710",
+      "function_name": "BSP_Camera_GetFrustum",
+      "comment": "[BSP reconstruction 00b70710]\n[BSP reconstruction] If flag4 missing, publish flag4 before currentVP getter, extract six planes, assign with flags7. Neither this function nor six-plane assignment changes plane count. Original ABI: ECX camera; EAX plane-set pointer; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b70710",
+      "evidence": "Complete 69-byte frustum getter. Read current flags+2F0, publish bit4 BEFORE full VP/extraction; preserve publication on failure. Added saved EDX fixed context outside original local frame, cache hit never dereferences it. Assign6 planes with flags7 to+2F4, leave remaining planes/count+434 untouched. Primary strict main Win32/two existing CTests and8 seeds passed. Verified100 worker pins and36 current provider files (33literal,3onlyCRLF/LF);19fresh original spans5308bytes. Actual main library11exact objects and145complete mapped COFF sections (77library), all relocations and56actual runtime import providers verified. Unchanged original/full-main composition passes4paired scenarios16paired calls133072literal observable bytes,9immutable original/source code+constant postimages. Cold recursive parent chain, hits with invalid unused parent/context, mixed dirty flags and actual invalid-parent read AV0x5D agree, retaining frustum bit4. Full matrix/world/frustum original closure executes; only original vector length edge uses actual full library length/CRT fixed-context ABI bridge, no arithmetic substitution. Fault floating/register context, unmasked FP, asynchronous mutation, original caller ABI and gameplay unclaimed. Current companion hierarchy remains incompatible pending canonical raw migration. reports/native_camera_cache_getters_audit.json",
+      "old_name": "BSP_Camera_GetFrustum",
+      "name": "BSP_Camera_GetFrustum",
+      "saved_body_end": "00b70754"
+    },
+    "status": "applied"
+  }
+]

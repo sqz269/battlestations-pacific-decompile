@@ -1,0 +1,415 @@
+{
+  "packet": "orch3_effect_deletion_queue_u",
+  "sources": [
+    "src/effect_deletion_queue.cpp"
+  ],
+  "headers": [
+    "include/bsp/effect_deletion_queue.hpp"
+  ],
+  "documentation": "docs/EFFECT_DELETION_QUEUE.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "native_spans": [
+    {
+      "address": "00866040",
+      "end_exclusive": "00866051",
+      "length": 17,
+      "sha256": "21a5be734f9dc626834a9ce2008ddb17cbf089dee5a8b7ad69a8ede22ecef12f",
+      "live_disk_equal": true,
+      "rebound_operands": {
+        "00f87654": [
+          2
+        ]
+      }
+    },
+    {
+      "address": "008662b0",
+      "end_exclusive": "008662f5",
+      "length": 69,
+      "sha256": "240cafe509796d72db874ef063daf740db1c9ecf0f19701be2474fd3cffba9c2",
+      "live_disk_equal": true,
+      "rebound_operands": {}
+    },
+    {
+      "address": "00866500",
+      "end_exclusive": "008665bd",
+      "length": 189,
+      "sha256": "0bed5de379ea7a8a5c1b1dd302f4465259bed2e06d4a67dd38de92d62da7e454",
+      "live_disk_equal": true,
+      "rebound_operands": {
+        "00f87654": [
+          22,
+          83,
+          130,
+          141,
+          169
+        ],
+        "00ce2218": [
+          65
+        ],
+        "00ce2210": [
+          164
+        ]
+      }
+    },
+    {
+      "address": "00866790",
+      "end_exclusive": "008667c7",
+      "length": 55,
+      "sha256": "4c92d856511ef5b3b16cb9a2ea23216728bc95a1c87b3b80e024826f9edd8063",
+      "live_disk_equal": true,
+      "rebound_operands": {
+        "00f87654": [
+          24
+        ]
+      }
+    },
+    {
+      "address": "008665f0",
+      "end_exclusive": "00866623",
+      "length": 51,
+      "sha256": "994114c3aa18969d9f6fcb73411652e2b921292038922e72ea8f7d641ef504f3",
+      "live_disk_equal": true,
+      "rebound_operands": {}
+    },
+    {
+      "address": "008675e0",
+      "end_exclusive": "00867673",
+      "length": 147,
+      "sha256": "857627f7c124471ac22403de6f91c8c44688fd2746156ae7773fb1b4e8bc5133",
+      "live_disk_equal": true,
+      "rebound_operands": {}
+    },
+    {
+      "address": "00868010",
+      "end_exclusive": "008680a7",
+      "length": 151,
+      "sha256": "e507a6fc2b1fbf758d17ed5ed632c1e39568da5d77f8132b81e3cd695e136d9a",
+      "live_disk_equal": true,
+      "rebound_operands": {
+        "00ce2218": [
+          55
+        ],
+        "00ce2210": [
+          128
+        ]
+      }
+    },
+    {
+      "address": "008671a0",
+      "end_exclusive": "0086720d",
+      "length": 109,
+      "sha256": "93824f551861b738c46c14a8b06e22b2478aa25ac4e550af4ab65e8ff50547d5",
+      "live_disk_equal": true,
+      "rebound_operands": {}
+    },
+    {
+      "address": "00c94ce8",
+      "end_exclusive": "00c94cf2",
+      "length": 10,
+      "sha256": "9d7a245321d859c9e906ae174b46b1d5d0c63c71a8bbdf2239a8832acdcacef6",
+      "live_disk_equal": true,
+      "rebound_operands": {}
+    },
+    {
+      "address": "00c94d33",
+      "end_exclusive": "00c94d3d",
+      "length": 10,
+      "sha256": "fe407ee9d9f98b6ad05daf869cf45b8270fd188badf5129f3ec1be9669a7f87e",
+      "live_disk_equal": true,
+      "rebound_operands": {}
+    },
+    {
+      "address": "00c94ea8",
+      "end_exclusive": "00c94eb2",
+      "length": 10,
+      "sha256": "7f98113763c449f83a7d76ddec372ace7e0f51bda9489e42ff8ccaede87b6fd2",
+      "live_disk_equal": true,
+      "rebound_operands": {}
+    },
+    {
+      "address": "00c94fb8",
+      "end_exclusive": "00c94fc2",
+      "length": 10,
+      "sha256": "0880d83320e5e7785157224d1ed10e5584aca77ca143d73948bd4812c42b0667",
+      "live_disk_equal": true,
+      "rebound_operands": {}
+    }
+  ],
+  "reconstructed": [
+    {
+      "address": "00866040",
+      "cpp_symbol": "unwind_effect_deletion_lock_base_00866040",
+      "end_exclusive": "00866051",
+      "original_abi": "ECX owner; RET",
+      "behavior": "Clear actualF87654 unconditionally, restoreCE3818, preserve+04."
+    },
+    {
+      "address": "008662b0",
+      "cpp_symbol": "construct_effect_deletion_lock_008662b0",
+      "end_exclusive": "008662f5",
+      "original_abi": "ECX actual8h owner; EAX same; RET",
+      "behavior": "PublishD0D3D0, create canonicalBD1860 section and publish+04. Failed creation runs866040 base unwind."
+    },
+    {
+      "address": "00866500",
+      "cpp_symbol": "effect_deletion_lock_singleton_00866500",
+      "end_exclusive": "008665bd",
+      "original_abi": "No inputs; EAX published actualF87654 owner; RET",
+      "behavior": "Separate actual8h deletion lock; captured lifetime section/recheck/alloc8/construct/publish/getmanageragain/reloadglobal/register/unlock/reloadreturn. Raw constructor failure frees before unlock; no registration-failure rollback."
+    },
+    {
+      "address": "00866790",
+      "cpp_symbol": "delete_effect_deletion_lock_00866790",
+      "end_exclusive": "008667c7",
+      "original_abi": "ECX owner; stackflags; EAX originaladdress; RET4",
+      "behavior": "Preserve correct compiler name. D0D3D0, canonical41CC80 section cleanup, clearF87654/baseCE3818; flags&1 frees. No unregister. Restored8667BE free continuation, full body includesRET4."
+    },
+    {
+      "address": "008665f0",
+      "cpp_symbol": "create_effect_deletion_node_008665f0",
+      "end_exclusive": "00866623",
+      "original_abi": "Stack next/previous/sourcecell; EAX node; RET0C; ECX unused",
+      "behavior": "Allocate0Ch, independent raw/raw+4/raw+8 tests; write links before loading sourcecell payload; no retain."
+    },
+    {
+      "address": "008675e0",
+      "cpp_symbol": "grow_effect_deletion_list_count_008675e0",
+      "end_exclusive": "00867673",
+      "original_abi": "ECX actual0Ch list; stackincrement; RET4",
+      "behavior": "Correct heuristicSTL_xlen_throw: normal path writes capturedcount+increment. Unsigned3FFFFFFF-count predicate/wrap. Error builds16-char list<T> too long via408720/411700/D69260, completed-message unwind4072D0; reuses existing owning NativeAliasListLengthError host transport, no native exception ABI."
+    },
+    {
+      "address": "00868010",
+      "cpp_symbol": "enqueue_effect_deletion_00868010",
+      "end_exclusive": "008680a7",
+      "original_abi": "ECX actual28h live manager; stackraw effect; RET4",
+      "behavior": "Canonical866500/F87654 captured lock even null; capturehead/previous, allocnode, growcount, splice capturedhead/currentnewnodeprevious. State0 unlock only; no unlinked-node rollback on count overflow and no payload retain/release."
+    },
+    {
+      "address": "008671a0",
+      "cpp_symbol": "flush_effect_deletions_008671a0",
+      "end_exclusive": "0086720d",
+      "original_abi": "ECX actual28h live manager; RET",
+      "behavior": "No internal lock. Current count loop; capturedfront/currentvirtual04(1), clear capturedpayload after callback; reloadhead/front, returningBF6713 continuation compares capturedfront with currenthead, unlink/free and decrement currentcount. Required actual scalar dispatch; no virtual0/refcount substitute."
+    }
+  ],
+  "ownership": "Actual28h live manager/0Ch pending list and nodes, raw unretained payloads. Separate actual8h F87654 owner/real Win32 section via existing shared-domain access. Required current virtual04 scalar binding; no owner registry or success fallback.",
+  "flow_repair": "reports/effect_deletion_queue_flow_u.json",
+  "handler_definitions": "reports/effect_deletion_queue_definitions_u.json",
+  "validation": {
+    "strict_build": "PASS scripts/build.ps1; local/effect-deletion-queue-u-build.log",
+    "existing_ctests": "2/2 pass",
+    "fixture": "PASS local/effect-deletion-queue-u-fixture.log",
+    "fixture_source": "local/effect_queue_probe_u.cpp",
+    "native_cases": [
+      "Eight complete original bodies, including lazy getter registration/shutdown with actual publication",
+      "Separate real lock lifetime, fast path, nested depth, scalar flags2/1, base preimage",
+      "Raw/null enqueue without count changes in payload owners",
+      "Normal scalar flush and callback changes front/count while overwriting capturedslot; different node unlinked without scalar dispatch",
+      "Returning invalid handler repairs front while captured sentinel remains selected for payload read",
+      "Unsigned count boundary, already-corrupt count and DWORD wrap"
+    ],
+    "rebindings": [
+      "Native allocator/free -> canonical bridges; imports -> real Win32 Enter/Leave",
+      "Original ctor/getter/node/grow/enqueue internal calls -> copied original bodies",
+      "Lifetime/owned-section bridges expose actual native addresses, same domain/actual registered owner",
+      "F87654 operands -> fixture publication cell",
+      "Instrumented currentvirtual04 scalar callbacks checkflags/count, free actualownedpayload, retain dead fixture wrappers for observation"
+    ],
+    "cpp_failure_cases": [
+      "Node allocation failure unlocks without effect release",
+      "Count overflow creates owning legacy length error and leaves allocated node unlinked; fixture manually frees after verification",
+      "Lock constructor creation failure clears global/base, frees raw owner at lifetime depth1, then unlocks to0; no registration"
+    ],
+    "production_module_fixture_symbol_rebinding": "Allocation/free only; successful calls delegate canonical allocator, one bad_alloc. No production seam.",
+    "original_exception_dispatch_executed": false,
+    "permanent_tests_added": 0,
+    "game_executed": false,
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "remaining": [
+    "Whole actual28h live manager getter/destructor/scalar composition",
+    "Actual effect currentvirtual04 dispatch and frame-job-policy virtual0 composition",
+    "Whole point-effect constructor and originalEH/gameplay"
+  ],
+  "fixture_artifact_sha256": {
+    "local/effect_queue_probe_u.cpp": "1344e978b18532f2b2f9b5bfd5d23385e253c3b0ab2b06124bd3552590a725e7",
+    "local/run_effect_queue_probe_u.cmd": "32102c155691f14ff1bff3bf23bcb3ee80a6d418171f49a34c2d73d5834880cb",
+    "local/effect_queue_native_bytes_u.hpp": "a0afd04c0e325a71168fbab7cd41d8bb5e106da965549884d41052a44685d700",
+    "local/effect-queue-byte-evidence-u.json": "409dbca5a900f4ce3ba49795f04f4b0c87f0ef73907eb0fd65bb0a7c3f18b771"
+  },
+  "ghidra_annotation_audit": [
+    {
+      "address": "00866040",
+      "before": {
+        "address": "00866040",
+        "function_name": "FUN_00866040"
+      },
+      "after": {
+        "address": "00866040",
+        "name": "BSP_EffectDeletionLock_UnwindBase",
+        "evidence": "Hypothesis, not a recovered symbol. Clear actualF87654 unconditionally, restoreCE3818, preserve+04. Strict Win32/eight-body original normal-path fixture and focused C++ failures passed. docs/EFFECT_DELETION_QUEUE.md; reports/effect_deletion_queue.json. New C++ ABI; originalEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "008662b0",
+      "before": {
+        "address": "008662b0",
+        "function_name": "FUN_008662b0"
+      },
+      "after": {
+        "address": "008662b0",
+        "name": "BSP_EffectDeletionLock_Construct",
+        "evidence": "Hypothesis, not a recovered symbol. PublishD0D3D0, create canonicalBD1860 section and publish+04. Failed creation runs866040 base unwind. Strict Win32/eight-body original normal-path fixture and focused C++ failures passed. docs/EFFECT_DELETION_QUEUE.md; reports/effect_deletion_queue.json. New C++ ABI; originalEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00866500",
+      "before": {
+        "address": "00866500",
+        "function_name": "FUN_00866500"
+      },
+      "after": {
+        "address": "00866500",
+        "name": "BSP_EffectDeletionLock_GetSingleton",
+        "evidence": "Hypothesis, not a recovered symbol. Separate actual8h deletion lock; captured lifetime section/recheck/alloc8/construct/publish/getmanageragain/reloadglobal/register/unlock/reloadreturn. Raw constructor failure frees before unlock; no registration-failure rollback. Strict Win32/eight-body original normal-path fixture and focused C++ failures passed. docs/EFFECT_DELETION_QUEUE.md; reports/effect_deletion_queue.json. New C++ ABI; originalEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "008665f0",
+      "before": {
+        "address": "008665f0",
+        "function_name": "FUN_008665f0"
+      },
+      "after": {
+        "address": "008665f0",
+        "name": "BSP_EffectDeletionList_CreateNode",
+        "evidence": "Hypothesis, not a recovered symbol. Allocate0Ch, independent raw/raw+4/raw+8 tests; write links before loading sourcecell payload; no retain. Strict Win32/eight-body original normal-path fixture and focused C++ failures passed. docs/EFFECT_DELETION_QUEUE.md; reports/effect_deletion_queue.json. New C++ ABI; originalEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00866790",
+      "before": {
+        "address": "00866790",
+        "function_name": "CG_scalar_deleting_dtor_00866790"
+      },
+      "after": {
+        "address": "00866790",
+        "name": "CG_scalar_deleting_dtor_00866790",
+        "evidence": "Packet orch3_effect_deletion_queue_u. Preserve correct compiler name. D0D3D0, canonical41CC80 section cleanup, clearF87654/baseCE3818; flags&1 frees. No unregister. Restored8667BE free continuation, full body includesRET4. Strict Win32/eight-body original normal-path fixture and focused C++ failures passed. docs/EFFECT_DELETION_QUEUE.md; reports/effect_deletion_queue.json. New C++ ABI; originalEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "008671a0",
+      "before": {
+        "address": "008671a0",
+        "function_name": "BSP_EffectManager_FlushPendingDeletes",
+        "comment": "[BSP reconstruction 008671a0]\nHypothesis, not a recovered symbol. __thiscall on the effect-manager singleton, no stack arguments; phase 4 of 00867EE0. Drains the std::list at +08h with size at +0Ch: per node it calls the stored object's virtual +04h with argument 1 (the MSVC scalar deleting destructor), clears the slot, unlinks the node and frees it. Tagged stl_probable in the existing ledger. docs/GAME_WORLD_OCEAN.md."
+      },
+      "after": {
+        "address": "008671a0",
+        "name": "BSP_EffectManager_FlushPendingDeletes",
+        "evidence": "Hypothesis, not a recovered symbol. __thiscall on the effect-manager singleton, no stack arguments; phase 4 of 00867EE0. Drains the std::list at +08h with size at +0Ch: per node it calls the stored object's virtual +04h with argument 1 (the MSVC scalar deleting destructor), clears the slot, unlinks the node and frees it. Tagged stl_probable in the existing ledger. docs/GAME_WORLD_OCEAN.md. | Packet orch3_effect_deletion_queue_u. No internal lock. Current count loop; capturedfront/currentvirtual04(1), clear capturedpayload after callback; reloadhead/front, returningBF6713 continuation compares capturedfront with currenthead, unlink/free and decrement currentcount. Required actual scalar dispatch; no virtual0/refcount substitute. Strict Win32/eight-body original normal-path fixture and focused C++ failures passed. docs/EFFECT_DELETION_QUEUE.md; reports/effect_deletion_queue.json. New C++ ABI; originalEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "008675e0",
+      "before": {
+        "address": "008675e0",
+        "function_name": "STL_xlen_throw_008675e0"
+      },
+      "after": {
+        "address": "008675e0",
+        "name": "BSP_EffectDeletionList_GrowCount",
+        "evidence": "Hypothesis, not a recovered symbol. Correct heuristicSTL_xlen_throw: normal path writes capturedcount+increment. Unsigned3FFFFFFF-count predicate/wrap. Error builds16-char list<T> too long via408720/411700/D69260, completed-message unwind4072D0; reuses existing owning NativeAliasListLengthError host transport, no native exception ABI. Strict Win32/eight-body original normal-path fixture and focused C++ failures passed. docs/EFFECT_DELETION_QUEUE.md; reports/effect_deletion_queue.json. New C++ ABI; originalEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00868010",
+      "before": {
+        "address": "00868010",
+        "function_name": "FUN_00868010"
+      },
+      "after": {
+        "address": "00868010",
+        "name": "BSP_LiveEffectManager_EnqueueDeletion",
+        "evidence": "Hypothesis, not a recovered symbol. Canonical866500/F87654 captured lock even null; capturehead/previous, allocnode, growcount, splice capturedhead/currentnewnodeprevious. State0 unlock only; no unlinked-node rollback on count overflow and no payload retain/release. Strict Win32/eight-body original normal-path fixture and focused C++ failures passed. docs/EFFECT_DELETION_QUEUE.md; reports/effect_deletion_queue.json. New C++ ABI; originalEH/gameplay unvalidated."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00c94ce8",
+      "before": {
+        "address": "00c94ce8",
+        "function_name": "FUN_00c94ce8"
+      },
+      "after": {
+        "address": "00c94ce8",
+        "name": "EH_EffectDeletionLock_Construct",
+        "evidence": "Descriptive ten-byte compiler handler. DC6AE8/mapDC6AE0 state0->-1 C94CE0 savedowner/866040 baseclear. Verified live/disk, defined and saved. docs/EFFECT_DELETION_QUEUE.md; reports/effect_deletion_queue.json. Original exception dispatcher not executed."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00c94d33",
+      "before": {
+        "address": "00c94d33",
+        "function_name": "FUN_00c94d33"
+      },
+      "after": {
+        "address": "00c94d33",
+        "name": "EH_EffectDeletionLock_GetSingleton",
+        "evidence": "Descriptive ten-byte compiler handler. DC6B50/mapDC6B40 state1->0 C94D28 savedraw/free; state0->-1 C94D20/411EE0 capturedlock. Verified live/disk, defined and saved. docs/EFFECT_DELETION_QUEUE.md; reports/effect_deletion_queue.json. Original exception dispatcher not executed."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00c94ea8",
+      "before": {
+        "address": "00c94ea8",
+        "function_name": "FUN_00c94ea8"
+      },
+      "after": {
+        "address": "00c94ea8",
+        "name": "EH_EffectDeletionList_GrowCount",
+        "evidence": "Descriptive ten-byte compiler handler. DC6D28/mapDC6D20 state0->-1 C94EA0/4072D0 completed message cleanup. Verified live/disk, defined and saved. docs/EFFECT_DELETION_QUEUE.md; reports/effect_deletion_queue.json. Original exception dispatcher not executed."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    },
+    {
+      "address": "00c94fb8",
+      "before": {
+        "address": "00c94fb8",
+        "function_name": "FUN_00c94fb8"
+      },
+      "after": {
+        "address": "00c94fb8",
+        "name": "EH_LiveEffectManager_EnqueueDeletion",
+        "evidence": "Descriptive ten-byte compiler handler. DC6E70/mapDC6E68 state0->-1 C94FB0/411EE0 captured lock only; no node cleanup. Verified live/disk, defined and saved. docs/EFFECT_DELETION_QUEUE.md; reports/effect_deletion_queue.json. Original exception dispatcher not executed."
+      },
+      "status": "applied",
+      "readback_name_evidence_and_prior_comment_verified": true
+    }
+  ],
+  "ghidra_annotation_verification": "All12 names/evidence saved and read back, prior comments preserved;12 affected exports refreshed."
+}

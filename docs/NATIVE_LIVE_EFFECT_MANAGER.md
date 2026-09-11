@@ -14,10 +14,15 @@ Existing `BSP_EffectManager_Construct` is retained with appended evidence.
 
 The manager is published at `00F8765C`. Its +00 native identity is `00CE789C`;
 +04 is an untouched allocator word. The list's sentinel is at +08 and its count
-at +0C. Two actual owning-pointer array headers occupy +10 and +1C. This owner
+at +0C. Two actual pointer-array headers occupy +10 and +1C. This owner
 is distinct from the 8h insertion-lock owner at F87650 and the 10h effect-definition
 owner at F87664. The header reuses the physical pointer-array storage established
 in `docs/LIVE_EFFECT_INSERTION.md`; no replacement list or duplicate count exists.
+
+Subsequent complete destructor evidence in `docs/LIVE_EFFECT_MANAGER_LIFETIME.md`
+corrects the earlier ownership interpretation: +10 releases its contained owners,
+whereas +1C only frees/clears backing during destruction, preserving count/capacity.
+The constructor's zero stores alone did not establish identical ownership policies.
 
 Each 0Ch list node contains next, previous and raw payload pointers. Sentinel
 creation allocates 0Ch through the canonical allocator, writes the two self links,
@@ -79,7 +84,8 @@ base identity, cleared global and untouched remaining preimage. Production has
 no added allocation seam. Original EH handler immediates are unchanged and
 original exception dispatch was not executed.
 
-Lazy singleton registration, whole-manager destructor/scalar deletion, pending
-enqueue/flush dispatch and integration with whole point-effect construction
-remain separate work. These new C++ interfaces are not binary replacements;
-there is no gameplay validation from this packet.
+Subsequent `docs/EFFECT_DELETION_QUEUE.md` and
+`docs/LIVE_EFFECT_MANAGER_LIFETIME.md` cover queue operations and complete manager
+registration/destructor/scalar composition. Concrete effect virtual dispatch and
+whole point-effect construction remain separate work. These new C++ interfaces
+are not binary replacements; there is no gameplay validation from this packet.

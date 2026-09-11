@@ -1,0 +1,57 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "date": "2026-09-11T17:21:31Z",
+  "probe": {
+    "actions": [
+      {
+        "endpoint": "run_script_inline",
+        "body": {
+          "code": "import ghidra.app.script.GhidraScript;\npublic class BspBodyScriptProbe extends GhidraScript {\n public void run() throws Exception {\n  println(\"BSP_BODY_PROBE \" + currentProgram.getDomainFile().getPathname());\n }\n}\n"
+        }
+      }
+    ],
+    "error": "run_script_inline {'code': 'import ghidra.app.script.GhidraScript;\\npublic class BspBodyScriptProbe extends GhidraScript {\\n public void run() throws Exception {\\n  println(\"BSP_BODY_PROBE \" + currentProgram.getDomainFile().getPathname());\\n }\\n}\\n'}: {'error': 'Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process.'}"
+  },
+  "script_executed": false,
+  "body_mutations": 0,
+  "server_configuration_changed": false,
+  "functions": [
+    {
+      "address": "0086fe20",
+      "first_missing_body_byte": "0086fe98",
+      "verified_end_exclusive": "0086febf",
+      "current_body": "Function: BSP_GameplayEffectManager_Destroy at 0086fe20\nSignature: undefined BSP_GameplayEffectManager_Destroy(void)\nEntry: 0086fe20\nBody: 0086fe20 - 0086fe97",
+      "sha256": "fa962eb975732d1484060de458c0398a64ed0e018cebccc5b42cece7742160eb",
+      "disk_live_bytes_equal": true,
+      "stored_body_tail_complete": false
+    },
+    {
+      "address": "00cdeb00",
+      "first_missing_body_byte": "00cdeb2c",
+      "verified_end_exclusive": "00cdeb40",
+      "current_body": "Function: BSP_GameplayEffectNameIndex_AtExit at 00cdeb00\nSignature: undefined BSP_GameplayEffectNameIndex_AtExit(void)\nEntry: 00cdeb00\nBody: 00cdeb00 - 00cdeb2b",
+      "sha256": "1b652392b521ec00347621b4e428be603a3ac4f28de9adfe7fe3753c2ddb397b",
+      "disk_live_bytes_equal": true,
+      "stored_body_tail_complete": false
+    },
+    {
+      "address": "00870d00",
+      "first_missing_body_byte": "00870d9f",
+      "verified_end_exclusive": "00870dc2",
+      "current_body": "Function: BSP_GameplayEffectDefinition_Destroy at 00870d00\nSignature: undefined BSP_GameplayEffectDefinition_Destroy(void)\nEntry: 00870d00\nBody: 00870d00 - 00870d9e",
+      "sha256": "25d9e543e999103e6e37facda0ca227e96420b6cc32830355cbe44f045e5fb2f",
+      "disk_live_bytes_equal": true,
+      "stored_body_tail_complete": false
+    },
+    {
+      "address": "0086e8a0",
+      "first_missing_body_byte": "0086eb11",
+      "verified_end_exclusive": "0086eb47",
+      "current_body": "Function: STL_IntPointerTree18_EraseIterator at 0086e8a0\nSignature: undefined STL_IntPointerTree18_EraseIterator(void)\nEntry: 0086e8a0\nBody: 0086e8a0 - 0086eb10",
+      "sha256": "ed4d9a7c7ec077879ae85ef8e663f97d7e0eb8b81622fd0dd330f79f344bab2b",
+      "disk_live_bytes_equal": true,
+      "stored_body_tail_complete": false
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "packet": "native_camera_projection2",
-  "status": "complete_raw_source_worker_build_and_focused_fixture_passed",
+  "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
   "functions": [
     {
       "address": "00b642f0",
@@ -58,7 +58,7 @@
     "sealed_artifacts": 38
   },
   "limitations": [
-    "Complete worker strict library and original-body fixture; main integration build is separate.",
+    "Primary actual main strict build and independent unchanged original-body fixture replay passed; see primary_integration.",
     "New builder borrows writable CALLEE scalar argument copies, never camera-owner fields. Future getter argument preparation is a separate operation.",
     "Original adapter only supplies an actual temporary argument stack and restores its caller stack. It does not replace any original arithmetic, helper, scalar load or store. No original caller ABI integration or gameplay claim.",
     "All floating exceptions are masked. Zero denominators, signalingNaN and FSINCOS out-of-range status/TOP drift are observed; no unmasked exception dispatch or access-fault behavior is claimed.",
@@ -196,5 +196,128 @@
       "runtime_PAGE_READONLY_checked": true
     }
   ],
-  "integration_boundary": "Main CMake registration, integration build, ledgers and saved-analysis annotations are separate integrator work."
+  "integration_boundary": "Main CMake registration, integration build, ledgers and saved-analysis annotations are separate integrator work.",
+  "primary_integration": {
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_projection_primary\\sealed.json",
+      "bytes": 10117,
+      "sha256": "841de92d4c1e7f2ae0c47b6ead9bd0afa83f3321307fce298729034b5d491ade"
+    },
+    "preparation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_projection_primary\\camera_projection_primary_preparation.json",
+      "bytes": 3795,
+      "sha256": "77f383a199778d599349db28868b9a845d705fb51aa4e40410d2964e6de95c69"
+    },
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_projection_primary\\verified.json",
+      "bytes": 199945,
+      "sha256": "36fe607ec0cb18816c5d50d2c592b55d18f4edac48d46896880272e07e97a424"
+    },
+    "main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_projection_primary\\frozen\\bsp_core.lib",
+      "bytes": 36016384,
+      "sha256": "c529434d93418ef4083e1e89d3e914e7fe1ec97eab5e19aa0bd43111eab01d68"
+    },
+    "verified_worker_pins": 38,
+    "current_source_header_files": 2,
+    "source_header_literal_match": true,
+    "unchanged_fixture": true,
+    "original_bytes": 195,
+    "fresh_guarded_spans": 4,
+    "fresh_guarded_bytes": 207,
+    "paired_cases": 5,
+    "observable_bytes": 1045,
+    "complete_COFF_sections": 255,
+    "library_COFF_sections": 3,
+    "exact_main_archive_members": 1,
+    "postimage_stages": 11,
+    "original_tangent_bytes_equal": 19,
+    "main_member_all_worker_code_and_raw_relocations_equal": true,
+    "anonymous_namespace_and_debug_metadata_differences_recorded": true,
+    "original_runtime_fixture": true,
+    "strict_main_build_passed": true,
+    "existing_CTests": 2,
+    "native_seeds": 8,
+    "permanent_tests": false,
+    "unmasked_exception_fixture": false,
+    "game_validated": false,
+    "initial_checked_COFF_sections": 171,
+    "inline_map_flag_supplement": {
+      "verification": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_projection_coff_supplement\\verified.json",
+        "bytes": 263944,
+        "sha256": "59a54777d0df4b83d9ca407f5a6e7bf86c1ad48cbd2b722566bf0b65abf600a5"
+      },
+      "seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_projection_coff_supplement\\sealed.json",
+        "bytes": 1131,
+        "sha256": "7bd34343bb6cb59e8f9befd6387a167da881a9c16a66ea6d188c3474b660f741"
+      },
+      "original_fixture_and_seal_unchanged": true
+    }
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "main_registered": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_camera_projection_annotations.json",
+    "bytes": 4199,
+    "sha256": "6fc9a6ae0866dec2cae56c5d58ee8ffd2122ebe9073b5d39be8a392196dd38aa",
+    "project_saved": true,
+    "prior_names_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b642f0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b642f0\\decompiled.c",
+      "bytes": 3116,
+      "sha256": "ca2da3d0970a3072c53c27e0a7344a951b7f1ce9f57191a525a6f5a24973cfd6"
+    },
+    {
+      "address": "00412e20",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00412e20\\decompiled.c",
+      "bytes": 1616,
+      "sha256": "a73238fcd8909594d50c99517a9ee69f8eb55e9ce67dffd8d4cea95bc1d7f5b3"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CAMERA_PROJECTION.md",
+    "bytes": 5918,
+    "sha256": "e2ccc0194b9dccf90007f1ddfbccf91454306fd71c685414a08455322e5ebc91"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b642f0",
+      "name": "build_native_camera_projection_00b642f0",
+      "cpp_symbol": "bsp::build_native_camera_projection_00b642f0",
+      "source": "src/native_camera_projection.cpp",
+      "native_end_exclusive": "00b643a0",
+      "original_abi": "ECX destination; four stack floats fov/aspect/near/far; EAX destination; RET10h",
+      "host_abi_boundary": "fastcall ECX raw destination, EDX writable callee argument slots; EAX destination; RET",
+      "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "evidence": "reports/native_camera_projection_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00412e20",
+      "name": "native_projection_tangent_00412e20",
+      "cpp_symbol": "bsp::native_projection_tangent_00412e20",
+      "source": "src/native_camera_projection.cpp",
+      "native_end_exclusive": "00412e33",
+      "original_abi": "stack float argument; ST0 result after float spill/reload; RET4",
+      "host_abi_boundary": "Raw uint32 stack argument carrying float bits; native ST0/RET4 sequence.",
+      "status": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "evidence": "reports/native_camera_projection_audit.json",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "closure_utc": "2026-09-11T17:20:09.804437+00:00"
 }

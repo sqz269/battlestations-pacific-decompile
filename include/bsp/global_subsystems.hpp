@@ -2,6 +2,7 @@
 
 #include "bsp/dialog_config.hpp"
 #include "bsp/global_config.hpp"
+#include "bsp/gameplay_effect_acquisition.hpp"
 #include "bsp/global_script_folders.hpp"
 #include "bsp/marker_classes.hpp"
 #include "bsp/panel_owner.hpp"
@@ -41,8 +42,6 @@ struct GlobalSubsystemHost {
     virtual void run_string_006b8ad0(void* lua_instance, const char*,
         int capture_results, int capture_error, int result_mode) = 0;
 
-    // out aliases the actual local pointer. The returned native EAX is &out.
-    virtual void acquire_effect_00871ba0(void*& out, const NativeString*, int flag) = 0;
     // Preserve native refcounted pointer-vector copy/checked-growth semantics.
     virtual void append_effect_004d9c00(void* vector, void* const* source) = 0;
     // Called only after a real InterlockedDecrement at object+4 reaches zero.
@@ -75,6 +74,7 @@ struct GlobalSubsystemContext {
     const WarningOwnerAllocationWords& warning_allocation;
     WarningOwnerContext& warnings;
     GlobalConfigContext& global_config;
+    GameplayEffectAcquisitionContext& effect_acquisition;
 };
 
 // Complete normal-flow004DC6A0, ECX=game, RET at004DC93F. Allocation and

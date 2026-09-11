@@ -6210,6 +6210,32 @@
       "evidence": "reports/native_camera_plane_transform_audit.json"
     },
     {
+      "id": "orch4_effect_acquisition_m",
+      "packet": "orch4_effect_acquisition_m",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_fixtures_tested",
+      "function_addresses": [
+        "008700e0",
+        "00871b50",
+        "00871ba0",
+        "0086f930",
+        "00869990",
+        "0086ebe0",
+        "0086ab70",
+        "004dc6a0"
+      ],
+      "code_ownership": [
+        "include/bsp/gameplay_effect_acquisition.hpp",
+        "src/gameplay_effect_acquisition.cpp",
+        "include/bsp/global_subsystems.hpp",
+        "src/global_subsystems.cpp"
+      ],
+      "integration_report": "reports/gameplay_effect_acquisition.json",
+      "discovery_evidence": "docs/GAMEPLAY_EFFECT_ACQUISITION.md",
+      "validated_revision": "b215cf2db625c75d2ac940ba5efd0228d04df3fe"
+    },
+    {
       "id": "native_camera_frustum3",
       "packet": "native_camera_frustum3",
       "worker": "main",
@@ -6255,6 +6281,185 @@
       "prerequisite_packets": [],
       "scope": "Complete native FileStore date/find/lower_bound, actual-header comparator and MPKG/MSAR zero leaves.",
       "evidence": "reports/native_vfs_date_leaf_providers_audit.json"
+    },
+    {
+      "id": "native_camera_projection2",
+      "packet": "native_camera_projection2",
+      "worker": "main",
+      "done": true,
+      "state": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "source_ready": true,
+      "function_addresses": [
+        "00412e20",
+        "00b642f0"
+      ],
+      "code_ownership": [
+        "src/native_camera_projection.cpp",
+        "include/bsp/native_camera_projection.hpp",
+        "docs/NATIVE_CAMERA_PROJECTION.md",
+        "reports/native_camera_projection_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Full raw perspective/tangent with callee-slot and readonly-constant contract.",
+      "evidence": "reports/native_camera_projection_audit.json"
+    },
+    {
+      "id": "native_camera_matrix_math3",
+      "packet": "native_camera_matrix_math3",
+      "worker": "main",
+      "done": true,
+      "state": "complete_actual_raw_source_primary_main_Win32_full_original_COFF_byte_proof_checked",
+      "source_ready": true,
+      "function_addresses": [
+        "00413920",
+        "00b63b30",
+        "00b6d4d0"
+      ],
+      "code_ownership": [
+        "src/native_camera_matrix_math.cpp",
+        "include/bsp/native_camera_matrix_math.hpp",
+        "docs/NATIVE_CAMERA_MATRIX_MATH.md",
+        "reports/native_camera_matrix_math_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Full raw scaled affine inverse, matrix multiply and affine composition with complete original/main-object byte proof.",
+      "evidence": "reports/native_camera_matrix_math_audit.json"
+    },
+    {
+      "id": "orch4_effect_components_n",
+      "packet": "orch4_effect_components_n",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_native_constructor_and_lua_fixture_tested",
+      "function_addresses": [
+        "0086bc80",
+        "0086b8b0",
+        "0086bcc0",
+        "0086bd30",
+        "0086bd70",
+        "0086fec0",
+        "0086bdc0",
+        "0086cf90",
+        "0086cfe0",
+        "0086d030",
+        "0086be00",
+        "0086be40",
+        "00870400",
+        "00868bf0",
+        "008700e0"
+      ],
+      "code_ownership": [
+        "include/bsp/gameplay_effect_components.hpp",
+        "src/gameplay_effect_components.cpp",
+        "include/bsp/gameplay_effect_acquisition.hpp",
+        "src/gameplay_effect_acquisition.cpp"
+      ],
+      "integration_report": "reports/gameplay_effect_components.json",
+      "discovery_evidence": "docs/GAMEPLAY_EFFECT_COMPONENTS.md",
+      "validated_revision": "2117180469fe7af530ecea42de9d5c85f29d81b4"
+    },
+    {
+      "id": "native_camera_world1",
+      "packet": "native_camera_world1",
+      "worker": "main",
+      "done": true,
+      "state": "complete_raw_world_primary_main_Win32_full_COFF_provider_proof_companion_integration_pending",
+      "source_ready": true,
+      "function_addresses": [
+        "00b6db70"
+      ],
+      "code_ownership": [
+        "src/native_camera_world.cpp",
+        "include/bsp/native_camera_world.hpp",
+        "docs/NATIVE_CAMERA_WORLD.md",
+        "reports/native_camera_world_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Raw world refresh over actual parent addresses; companion owner integration remains pending.",
+      "evidence": "reports/native_camera_world_audit.json"
+    },
+    {
+      "id": "native_physical_file_date",
+      "packet": "native_physical_file_date",
+      "worker": "main",
+      "done": true,
+      "state": "complete_established_physical_profile_primary_main_build_and_scoped_native_actual_pool_fixture_checked",
+      "source_ready": true,
+      "function_addresses": [
+        "0041e350",
+        "0041e870",
+        "00425f40",
+        "004261a0",
+        "00435c40",
+        "00449af0",
+        "00467cf0",
+        "00bd92c0",
+        "00bd9860",
+        "00bda260",
+        "00bf36d0",
+        "00bf3970",
+        "00bf39c0",
+        "00bf3a80",
+        "00bf3f70"
+      ],
+      "code_ownership": [
+        "src/native_physical_file_date.cpp",
+        "include/bsp/native_physical_file_date.hpp",
+        "docs/NATIVE_PHYSICAL_FILE_DATE.md",
+        "reports/native_physical_file_date_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Complete physical profile date/path/index readers and raw string adapters; only established current virtual slots.",
+      "evidence": "reports/native_physical_file_date_audit.json"
+    },
+    {
+      "id": "native_camera_cache_getters5",
+      "packet": "native_camera_cache_getters5",
+      "worker": "main",
+      "done": true,
+      "state": "complete_raw_getters_primary_main_Win32_full_provider_composition_and_COFF_verified",
+      "source_ready": true,
+      "function_addresses": [
+        "00b6fcb0",
+        "00b6fcf0",
+        "00b70490",
+        "00b70510",
+        "00b70710"
+      ],
+      "code_ownership": [
+        "src/native_camera_cache_getters.cpp",
+        "include/bsp/native_camera_cache_getters.hpp",
+        "docs/NATIVE_CAMERA_CACHE_GETTERS.md",
+        "reports/native_camera_cache_getters_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Complete raw camera getters through original provider closure, current semantic hierarchy integration pending.",
+      "evidence": "reports/native_camera_cache_getters_audit.json"
+    },
+    {
+      "id": "native_vfs_date_route",
+      "packet": "native_vfs_date_route",
+      "worker": "main",
+      "done": true,
+      "state": "complete_qualified_actual_date_route_primary_main_Win32_native_composition_and_COFF_verified",
+      "source_ready": true,
+      "function_addresses": [
+        "00bd90b0",
+        "00bd97e0",
+        "00bd9e80",
+        "00bd9f00",
+        "00bdd0a0",
+        "00bdd340"
+      ],
+      "code_ownership": [
+        "src/native_vfs_date_route.cpp",
+        "include/bsp/native_vfs_date_route.hpp",
+        "docs/NATIVE_VFS_DATE_ROUTE.md",
+        "reports/native_vfs_date_route_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Actual D683B0 date route over current mount storage and established current provider selectors.",
+      "evidence": "reports/native_vfs_date_route_audit.json"
     }
   ],
   "snapshot_after_analysis": {
