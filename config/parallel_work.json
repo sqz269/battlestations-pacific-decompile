@@ -6798,7 +6798,7 @@
       "packet": "orch4_sound_sample_q",
       "worker": "agent/orch4-20260910",
       "done": true,
-      "state": "reconstructed_build_controlled_and_installed_sound_fixture_tested_pending_integration",
+      "state": "integrated_reviewed_build_controlled_and_installed_sound_fixture_tested",
       "function_addresses": [
         "00a84d70",
         "00a83850",
@@ -6828,7 +6828,8 @@
         "src/fmod_configuration_library.cpp"
       ],
       "integration_report": "reports/sound_sample.json",
-      "discovery_evidence": "docs/SOUND_SAMPLE.md"
+      "discovery_evidence": "docs/SOUND_SAMPLE.md",
+      "validated_revision": "517e934b5fbb578ae45ccc7394445e72f8e0bf5d"
     },
     {
       "id": "native_renderer_reset_readiness4",
