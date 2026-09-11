@@ -84,3 +84,6 @@ d3dx9_40 module, resolves that exact name, and has no DLL fallback or callable
 setter. Existing application save binding must be installed through every
 thread return. Context, native caller ABI and original SEH boundaries remain
 explicit. Original image/project state and prior seals were not changed.
+
+
+Primary verified all 64 sealed worker pins, 0 additional report pins, and freshly reread all 21 guarded spans (2,187 bytes). Review confirms the 300-byte borrowed profile window and overlapping-copy contract. The three-entry source packet is approved separately; this discovery executes no source or original body. Immutable evidence: `local/renderer_surface_save_publish_discovery_primary/`.

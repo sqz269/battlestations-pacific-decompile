@@ -400,5 +400,34 @@
     "Discovery only; no source, build, fixture, original-runtime, native SEH ABI or gameplay claim.",
     "No inferred backbuffer/surface release, null/HRESULT recovery, extra synchronization, queue policy or owner lifetime.",
     "Borrowed profile window does not infer complete renderer profile allocation extent or semantic ownership of renderer197C."
-  ]
+  ],
+  "primary_review": {
+    "passed": true,
+    "worker_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-renderer-surface-save-publish-discovery\\local\\renderer_surface_save_publish_discovery\\sealed.json",
+      "bytes": 13388,
+      "sha256": "1c56ba7baca68723f54cb438a8dff0c38f074f71d0840dbbc91e6ebd5fffe94e"
+    },
+    "worker_sealed_pins_verified": 64,
+    "additional_report_pins_verified": 0,
+    "fresh_guarded_spans": 21,
+    "fresh_guarded_bytes": 2187,
+    "current_main_dependency_drift": [],
+    "source_proposal_reviewed": true,
+    "source_added": false,
+    "original_runtime_executed": false,
+    "game_validated": false,
+    "reviewed_copy_domain": "memmove for valid nonwrapping overlapping ranges; omit zero-byte host copy; no generic CRT SIMD reconstruction",
+    "reviewed_profile_window": "actual borrowed D5F0A8..D5F1D4 (300 bytes), current reached +128 selector; not full native vtable extent",
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\renderer_surface_save_publish_discovery_primary\\sealed.json",
+      "bytes": 6300,
+      "sha256": "0a14010fcef43cd96244925f5e41bce4bc0a24739b5a52e8a24bb3a05d2f8091"
+    }
+  },
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_SURFACE_SAVE_PUBLISH_DISCOVERY.md",
+    "bytes": 5568,
+    "sha256": "85368d2da09f37281533bf7331b1e7cbeb5778b7b0f2b1e58aaf5f6b6e2c0f7f"
+  }
 }

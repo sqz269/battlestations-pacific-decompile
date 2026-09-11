@@ -1108,5 +1108,47 @@
       "length": 14574,
       "sha256": "c9c2611db1b647fb5faec8fbd48383307fe3f517f0ad2978acfcafd64828cd17"
     }
-  ]
+  ],
+  "primary_review": {
+    "passed": true,
+    "worker_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_resource_init_discovery\\local\\resource_init\\sealed.json",
+      "bytes": 5916,
+      "sha256": "f220199931f55e9866b2eaf9a41e2d22fc778d88df9c4b1444ee28a5922c0b97"
+    },
+    "worker_sealed_pins_verified": 30,
+    "additional_report_pins_verified": 51,
+    "fresh_guarded_spans": 34,
+    "fresh_guarded_bytes": 1872,
+    "current_main_dependency_drift": [],
+    "source_proposal_reviewed": true,
+    "source_added": false,
+    "original_runtime_executed": false,
+    "game_validated": false,
+    "main_physical_pool_dependency_now_complete": "b392be9b; native_physical_pool_acquire.cpp; full 4 entries build and focused original/source fixture proof. Discovery base remains historical.",
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\resource_init_discovery_primary\\sealed.json",
+      "bytes": 9057,
+      "sha256": "57745a48a0bb5d229b55d5a0709b35b49c1262503717070869dac0e2b02bec6e"
+    },
+    "current_main_completed_dependencies": [
+      {
+        "source": "src/native_dynamic_buffer_device_release.cpp",
+        "sha256": "fa5831aba9f17409663e65536fd01f4199d86ef1f45d118b5f3e08534e438b3e"
+      },
+      {
+        "source": "src/native_renderer_resource_restore.cpp",
+        "sha256": "8b839e1a8cf857cb22b9bfac88a5653fdc902a65b102dead5619cb063bfb20a7"
+      },
+      {
+        "source": "src/native_physical_pool_acquire.cpp",
+        "sha256": "8ca64c66151e93f425419fb83e432490c2fadcec5624956c74fe0582f94c6dfc"
+      }
+    ]
+  },
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_RESOURCE_INIT_DISCOVERY.md",
+    "bytes": 15513,
+    "sha256": "06f5a8a5bb4493084be4427e3775ff1dab097977dacc5c27252d1e454ee8f69f"
+  }
 }

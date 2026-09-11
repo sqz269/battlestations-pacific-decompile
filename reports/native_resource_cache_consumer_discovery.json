@@ -2056,5 +2056,33 @@
     "reason": "Read-only discovery; predecessor build/fixture results remain separately pinned historical evidence."
   },
   "abi_compatible": false,
-  "game_validated": false
+  "game_validated": false,
+  "primary_review": {
+    "passed": true,
+    "worker_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-cache-consumer\\local\\resource_cache_consumer_handoff\\manifest.json",
+      "bytes": 7506,
+      "sha256": "e2371d2e5ad1458198856c79ef48ffd1c9a401368249cad221f40b972abb0a6d"
+    },
+    "worker_sealed_pins_verified": 42,
+    "additional_report_pins_verified": 69,
+    "fresh_guarded_spans": 55,
+    "fresh_guarded_bytes": 5163,
+    "current_main_dependency_drift": [],
+    "source_proposal_reviewed": true,
+    "source_added": false,
+    "original_runtime_executed": false,
+    "game_validated": false,
+    "BSS_limit": "Three spans compare PE virtual zero initialization, not running application globals.",
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\resource_cache_consumer_discovery_primary\\sealed.json",
+      "bytes": 14748,
+      "sha256": "aa5ad676314fec1e641323f72e48df1a3a4a56f9ced385ed8b6df6e1cc439903"
+    }
+  },
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RESOURCE_CACHE_CONSUMER_DISCOVERY.md",
+    "bytes": 12670,
+    "sha256": "c5b24cb07917249f0e3b4565a9dd3f0e8909a62dfdea7ef3cc2b84cf84354d0c"
+  }
 }
