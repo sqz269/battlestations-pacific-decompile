@@ -3372,8 +3372,8 @@
       "id": "native_hardware_layout_tree_next",
       "packet": "native_hardware_layout_tree_next",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "discovering_actual_checked_tree_complete_erase_and_notification_dependencies",
+      "done": true,
+      "state": "integrated_reviewed_native_dependency_discovery",
       "function_addresses": [
         "00b2f4c0",
         "00b2ef00",
@@ -3382,14 +3382,15 @@
       "code_ownership": [
         "docs/NATIVE_HARDWARE_LAYOUT_TREE_NEXT.md",
         "reports/native_hardware_layout_tree_next.json"
-      ]
+      ],
+      "evidence": "reports/native_hardware_layout_tree_next.json"
     },
     {
       "id": "native_logical_vertex_owner_next",
       "packet": "native_logical_vertex_owner_next",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "discovering_actual_logical_vertex_retained_owner_profiles_and_lifetime_dependencies",
+      "done": true,
+      "state": "integrated_reviewed_native_dependency_discovery",
       "function_addresses": [
         "00b4b5d0",
         "00b4bf10",
@@ -3399,7 +3400,8 @@
       "code_ownership": [
         "docs/NATIVE_LOGICAL_VERTEX_OWNER_NEXT.md",
         "reports/native_logical_vertex_owner_next.json"
-      ]
+      ],
+      "evidence": "reports/native_logical_vertex_owner_next.json"
     },
     {
       "id": "native_tree_out_of_range_exception",
@@ -3419,6 +3421,66 @@
       ],
       "evidence": "reports/native_tree_out_of_range_exception_audit.json",
       "native_differential_fixture": false
+    },
+    {
+      "id": "native_hardware_layout_tree",
+      "packet": "native_hardware_layout_tree",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "implementing_actual_checked_tree_and_owning_out_of_range_throw",
+      "function_addresses": [
+        "00b2f4c0",
+        "00b2ef00",
+        "00b20dc0",
+        "00b20860",
+        "00b20880",
+        "00b20910",
+        "00b22bd0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_hardware_layout_tree.hpp",
+        "src/native_hardware_layout_tree.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_TREE.md",
+        "reports/native_hardware_layout_tree_audit.json"
+      ]
+    },
+    {
+      "id": "native_hardware_layout_owner",
+      "packet": "native_hardware_layout_owner",
+      "worker": "main",
+      "done": false,
+      "state": "recovering_actual_hardware_layout_lifetime_with_frozen_tree_dependency",
+      "function_addresses": [
+        "00b60700",
+        "00b60770",
+        "00b48960",
+        "00b60110",
+        "00b483f0",
+        "00b48950"
+      ],
+      "code_ownership": [
+        "include/bsp/native_hardware_layout_owner.hpp",
+        "src/native_hardware_layout_owner.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_OWNER.md",
+        "reports/native_hardware_layout_owner_audit.json"
+      ]
+    },
+    {
+      "id": "native_texture_2d_owner_next",
+      "packet": "native_texture_2d_owner_next",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "discovering_actual_texture_2d_retained_stream_notification_and_surface_record_lifetimes",
+      "function_addresses": [
+        "00b3f930",
+        "00b3f2e0",
+        "00b3f590",
+        "00b32250"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_TEXTURE_2D_OWNER_NEXT.md",
+        "reports/native_texture_2d_owner_next.json"
+      ]
     }
   ],
   "snapshot_after_analysis": {
@@ -4449,20 +4511,38 @@
     {
       "packet": "native_hardware_layout_tree_next",
       "worker": "system_fog_owner_discovery",
-      "state": "discovering_actual_checked_tree_complete_erase_and_notification_dependencies",
-      "validation": null
+      "state": "integrated_reviewed_native_dependency_discovery",
+      "validation": "reports/native_hardware_layout_tree_next.json"
     },
     {
       "packet": "native_logical_vertex_owner_next",
       "worker": "material_effect_plane",
-      "state": "discovering_actual_logical_vertex_retained_owner_profiles_and_lifetime_dependencies",
-      "validation": null
+      "state": "integrated_reviewed_native_dependency_discovery",
+      "validation": "reports/native_logical_vertex_owner_next.json"
     },
     {
       "packet": "native_tree_out_of_range_exception",
       "worker": "main",
       "state": "integrated_complete_actual_storage_thin_composition_source_bytes_and_build_checked",
       "validation": "reports/native_tree_out_of_range_exception_audit.json"
+    },
+    {
+      "packet": "native_hardware_layout_tree",
+      "worker": "system_fog_owner_discovery",
+      "state": "implementing_actual_checked_tree_and_owning_out_of_range_throw",
+      "validation": null
+    },
+    {
+      "packet": "native_hardware_layout_owner",
+      "worker": "main",
+      "state": "recovering_actual_hardware_layout_lifetime_with_frozen_tree_dependency",
+      "validation": null
+    },
+    {
+      "packet": "native_texture_2d_owner_next",
+      "worker": "material_effect_plane",
+      "state": "discovering_actual_texture_2d_retained_stream_notification_and_surface_record_lifetimes",
+      "validation": null
     }
   ],
   "next_dispatch": [
@@ -4476,22 +4556,38 @@
       ]
     },
     {
-      "packet": "native_hardware_layout_tree_next",
+      "packet": "native_hardware_layout_tree",
       "worker": "system_fog_owner_discovery",
       "function_addresses": [
         "00b2f4c0",
         "00b2ef00",
-        "00b20dc0"
+        "00b20dc0",
+        "00b20860",
+        "00b20880",
+        "00b20910",
+        "00b22bd0"
       ]
     },
     {
-      "packet": "native_logical_vertex_owner_next",
+      "packet": "native_hardware_layout_owner",
+      "worker": "main",
+      "function_addresses": [
+        "00b60700",
+        "00b60770",
+        "00b48960",
+        "00b60110",
+        "00b483f0",
+        "00b48950"
+      ]
+    },
+    {
+      "packet": "native_texture_2d_owner_next",
       "worker": "material_effect_plane",
       "function_addresses": [
-        "00b4b5d0",
-        "00b4bf10",
-        "00b49570",
-        "00b62010"
+        "00b3f930",
+        "00b3f2e0",
+        "00b3f590",
+        "00b32250"
       ]
     }
   ],
