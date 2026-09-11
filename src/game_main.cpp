@@ -86,8 +86,12 @@ void report_summary(bsp::game::GameHostLog& log, const bsp::game::GameRunSummary
         summary.main_menu_manager_active ? 1 : 0, summary.published_screen_id,
         summary.path_step.empty() ? "PressStartPoll" : summary.path_step.c_str(),
         summary.final_game_state);
+    log.notef("summary text bridge=%d widgets=%zu runs=%zu glyphs=%zu quads=%zu",
+        summary.text_bridge_open ? 1 : 0, summary.text_widgets, summary.text_runs,
+        summary.text_glyphs, summary.text_quads);
     if (!summary.screenshot_path.empty()) {
-        log.notef("summary screenshot=%d path=%s", summary.screenshot_written ? 1 : 0,
+        log.notef("summary screenshot=%d frame=%ld path=%s",
+            summary.screenshot_written ? 1 : 0, summary.screenshot_frame,
             summary.screenshot_path.c_str());
     }
     log.notef("host methods %zu concrete, %zu unimplemented",
@@ -111,7 +115,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "bsp_game: %s\n", error.c_str());
         std::fprintf(stderr, "usage: bsp_game.exe [--frames N] [--log <path>]"
             " [--game-root <dir>] [--settings-personal-root <dir>] [--vfs-probe <virtual path>]"
-            " [--press-start-frame N] [--screenshot <path>] [--hardware-probe-commit]\n");
+            " [--press-start-frame N] [--screenshot <path>] [--screenshot-frame N]"
+            " [--hardware-probe-commit]\n");
         return 2;
     }
 
@@ -120,8 +125,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "bsp_game: cannot write log %s\n", options.log_path.c_str());
         return 2;
     }
-    log.notef("bsp_game milestone 2c, frames=%ld press_start_frame=%ld log=%s",
-        options.frame_limit, options.press_start_frame,
+    log.notef("bsp_game milestone 2d, frames=%ld press_start_frame=%ld screenshot_frame=%ld "
+        "log=%s", options.frame_limit, options.press_start_frame, options.screenshot_frame,
         options.log_path.empty() ? "(stdout only)" : options.log_path.c_str());
 
     // The phase-2 mounts use GetCurrentDirectoryA at 0073d697, so pointing the run at an

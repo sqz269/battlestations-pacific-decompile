@@ -109,14 +109,20 @@ do not reproduce the original MSVC exception ABI. Native SEH/invalid-memory
 behavior and arbitrary external mutation outside the established returning
 boundaries remain outside the source interface.
 
-The primary should register the new source in shared CMake and add two source
-records, retaining the older typed4D45A0 record in `particle_clock_lifetime.cpp`.
-Prior `particle_clock_lifetime_audit.json` already records a correct120-byte
-normal-flow span at `primary_integration.normal_flow_range_evidence[6]`.
-Fresh saved Ghidra4D45A0 still ends at004D45D8 after the returning free at45D4.
-Its actual tail begins45D9 with `c7460400000000` (clear sentinel), captures name
-data at45E0, disarms state at45E8, returns the name at4602, and reaches
-`83c410 c3` at4614..4617. Preserve existing names/comments and correct library
-annotations; repair only that call site's saved flow/extent through4617 after
-review. The copy's saved complete extent is4D6F70..4D7011. No Ghidra, shared
-metadata, existing source, or previous report was changed by this worker.
+## Primary integration
+
+The unchanged source is registered in main CMake with two distinct raw records;
+the older typed particle destructor record remains. Main strict Win32, both
+existing CTests and eight fresh seeds passed. Primary checked 65 worker pins,
+29 current files, 18 fresh spans (1,133 bytes) and 13 exact main archive objects
+with all reviewed code/data/relocation contents. The unchanged fixture linked
+only the frozen actual main library and reproduced all 170 trace words. Full
+original copy/destruction and the C66220 copy action executed; C65FD0 remains
+static evidence. The immutable bundle is `local/resource_record_copy_primary/`.
+
+Primary removed only the returning-free CALL_RETURN override at4D45D4 and
+restored the complete saved destructor through4D4617. It preserved prior names
+and comments in the journal, applied descriptive string-alias-record names,
+saved four annotations including both EH actions, and refreshed the exports.
+No global library no-return metadata was changed. The source exception and
+original-helper/runtime/gameplay limits above still apply.

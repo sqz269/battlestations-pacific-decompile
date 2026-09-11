@@ -1,0 +1,65 @@
+[
+  {
+    "address": "00b1fd90",
+    "before": {
+      "address": "00b1fd90",
+      "function_name": "BSP_D3D9Renderer_RestoreDynamicBuffers",
+      "comment": "[BSP reconstruction 00b1fd90]\nIf dynamic-ready+1d8ch false and device-lost+1d8ah false, sets ready then invokes vertex/index wrapper virtual20h recreation with renderer device+1a10h. Full renderer orchestration not ported.\n\n[BSP reconstruction 00b1fd90] update\nIf dynamic-ready+1d8ch false and device-lost+1d8ah false, sets ready then invokes vertex/index wrapper virtual20h recreation with renderer device+1a10h. Full renderer orchestration not ported. Typedstableowner/device implementation now composes verified vtable+20 targets00b492b0/00b49180. Ready0andlost0 gate, ready1 beforevertex, indexstillattemptedafterfailure, no rollback; typedHRESULTfirstfailure orS_FALSEskip is newinterface. Realdevice resetreadiness and unchanged cursors checked."
+    },
+    "after": {
+      "address": "00b1fd90",
+      "old_name": "BSP_D3D9Renderer_RestoreDynamicBuffers",
+      "name": "BSP_D3D9Renderer_RestoreDynamicBuffers",
+      "saved_body_end": "00b1fdd5",
+      "evidence": "Full70-byte original parent reconstructed for proved pooled profilesD61E58/D61E7C; explicit immutable8-byte EDX context borrows nineDWORDprofiles. NativeB2B067..B2B11A producer and fullB4BB60/B4BBB0 constructors establish actual2Ch wrappers1978/1974; privateD61E10/D61E34 remain outside this source domain. Ready1D8C/lost1D8A fast returns skip context; capture firstwrapper/currentdevice thenready=1 beforeprofile20call; afterreturn currentsecondwrapper/profile/currentdevice/selector in native order. No fixedtypeperslot, guard, gate recheck or rollback. Compiled144-byte parent wholeCOFF/linked/runtime verified, not original byte-identical. Primary actual main strictWin32/twoCTests/eightseeds;80workerartifact+4ownedpins,16freshspans1218bytes. Unchangedfixture4original/full-library pairs224152bytes58rawstates,80realCOMcalls, actualinvalidpool8876086C/nulloutput and oldbindingrelease, actualcalleeoutputwordmutationsafterAddRef/oldRelease,28terminalzeroReleases. Originalparent invokes full originalchildren via literalpooledprofiles; source invokes fullbuiltproviders; rawpooledconstructors/resetcleanup sameactualmainlib. Fourexactarchiveobjects328wholeCOFFsections1633relocs184functions,22runtime spansnineunchangedpostimages. ExistingdesktopHWND/twoHALdevices,noUIcreation/focus/presentation. DeviceRelease slot2 uses actualMicrosoftsignedapphelp wrapper in thisprimaryprocess; all provideridentity/hash/relocatedbytesverified, actualbufferCreate/AddRef/Release remainsD3D9. No wholewrapperallocation/lifetime, arbitraryvirtualprofiles/SEH/fullreset/gameplay proof. ExistingsemanticAPIs unchanged. reports/native_renderer_reset_readiness_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b20c50",
+    "before": {
+      "address": "00b20c50",
+      "function_name": "FUN_00b20c50"
+    },
+    "after": {
+      "address": "00b20c50",
+      "old_name": "FUN_00b20c50",
+      "name": "BSP_Platform_IsActiveAndFocused",
+      "saved_body_end": "00b20c6e",
+      "evidence": "Full31-byte raw active-platform focus predicate: nonzero byte41 calls realGetFocus throughoriginalCE2310, then compares currentHWND30; fullEAX1equalelse0, ECXplatform/RET. OnlyIAToperand relocated; noOSreplacement orUIaction. Primary actual main strictWin32/twoCTests/eightseeds;80workerartifact+4ownedpins,16freshspans1218bytes. Unchangedfixture4original/full-library pairs224152bytes58rawstates,80realCOMcalls, actualinvalidpool8876086C/nulloutput and oldbindingrelease, actualcalleeoutputwordmutationsafterAddRef/oldRelease,28terminalzeroReleases. Originalparent invokes full originalchildren via literalpooledprofiles; source invokes fullbuiltproviders; rawpooledconstructors/resetcleanup sameactualmainlib. Fourexactarchiveobjects328wholeCOFFsections1633relocs184functions,22runtime spansnineunchangedpostimages. ExistingdesktopHWND/twoHALdevices,noUIcreation/focus/presentation. DeviceRelease slot2 uses actualMicrosoftsignedapphelp wrapper in thisprimaryprocess; all provideridentity/hash/relocatedbytesverified, actualbufferCreate/AddRef/Release remainsD3D9. No wholewrapperallocation/lifetime, arbitraryvirtualprofiles/SEH/fullreset/gameplay proof. ExistingsemanticAPIs unchanged. reports/native_renderer_reset_readiness_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b49180",
+    "before": {
+      "address": "00b49180",
+      "function_name": "BSP_D3D9IndexBuffer_Recreate",
+      "comment": "[BSP reconstruction 00b49180]\nSame metadata decoding and COM replacement sequence as vertex 00b492b0, but CreateIndexBuffer with INDEX16. New interface returns HRESULT and preserves old binding on failure; original ignores failures."
+    },
+    "after": {
+      "address": "00b49180",
+      "old_name": "BSP_D3D9IndexBuffer_Recreate",
+      "name": "BSP_D3D9IndexBuffer_Recreate",
+      "saved_body_end": "00b49293",
+      "evidence": "Full276-byte physical index recreation plus16-byte pooltableB49294. Nakedfastcall ECXwrapper, unusedEDX, actualstackeddeviceargument ISCreateBuffer outputword, not zero-initialized. Currentflags14/pool/usage/capacity18, actualCOM6C format65 nullsharedhandle. Invalidpoolnibble>3 usescurrentdevicepointerbits. IgnoreHRESULT, publishnew28beforeAddRef thencurrentcalleeslotreload, capturedoldRelease thenreload, finaltemporaryRelease; equalpointerstilltemporaryRelease. Fulloriginalinstructions exceptsingleDIR32tableoperand. Primary actual main strictWin32/twoCTests/eightseeds;80workerartifact+4ownedpins,16freshspans1218bytes. Unchangedfixture4original/full-library pairs224152bytes58rawstates,80realCOMcalls, actualinvalidpool8876086C/nulloutput and oldbindingrelease, actualcalleeoutputwordmutationsafterAddRef/oldRelease,28terminalzeroReleases. Originalparent invokes full originalchildren via literalpooledprofiles; source invokes fullbuiltproviders; rawpooledconstructors/resetcleanup sameactualmainlib. Fourexactarchiveobjects328wholeCOFFsections1633relocs184functions,22runtime spansnineunchangedpostimages. ExistingdesktopHWND/twoHALdevices,noUIcreation/focus/presentation. DeviceRelease slot2 uses actualMicrosoftsignedapphelp wrapper in thisprimaryprocess; all provideridentity/hash/relocatedbytesverified, actualbufferCreate/AddRef/Release remainsD3D9. No wholewrapperallocation/lifetime, arbitraryvirtualprofiles/SEH/fullreset/gameplay proof. ExistingsemanticAPIs unchanged. reports/native_renderer_reset_readiness_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b492b0",
+    "before": {
+      "address": "00b492b0",
+      "function_name": "BSP_D3D9VertexBuffer_Recreate",
+      "comment": "[BSP reconstruction 00b492b0]\nthiscall RET4. Decodes wrapper flags+14h into pool and usage; pool0 implies WRITEONLY, dynamic nibble1000h adds DYNAMIC. Creates capacity+18h FVF0 buffer, retains new before releasing old +28h, drops temporary reference. Invalid pool nibble>3 uses device pointer as pool in native assembly; new interface rejects it."
+    },
+    "after": {
+      "address": "00b492b0",
+      "old_name": "BSP_D3D9VertexBuffer_Recreate",
+      "name": "BSP_D3D9VertexBuffer_Recreate",
+      "saved_body_end": "00b493c3",
+      "evidence": "Full276-byte physical vertex recreation plus16-byte pooltableB493C4. Sameactualcallee-device/outputword, flags14/capacity18/pool/usage/currentCOM28replacement schedule as fullindex sibling; actualCOM68 FVF0 nullsharedhandle. Invalidpoolpointerbitsfallthrough, nozero init/HRESULTbranch/extraexceptioncleanup. Whole original instructions exceptsingleDIR32tableoperand. Primary actual main strictWin32/twoCTests/eightseeds;80workerartifact+4ownedpins,16freshspans1218bytes. Unchangedfixture4original/full-library pairs224152bytes58rawstates,80realCOMcalls, actualinvalidpool8876086C/nulloutput and oldbindingrelease, actualcalleeoutputwordmutationsafterAddRef/oldRelease,28terminalzeroReleases. Originalparent invokes full originalchildren via literalpooledprofiles; source invokes fullbuiltproviders; rawpooledconstructors/resetcleanup sameactualmainlib. Fourexactarchiveobjects328wholeCOFFsections1633relocs184functions,22runtime spansnineunchangedpostimages. ExistingdesktopHWND/twoHALdevices,noUIcreation/focus/presentation. DeviceRelease slot2 uses actualMicrosoftsignedapphelp wrapper in thisprimaryprocess; all provideridentity/hash/relocatedbytesverified, actualbufferCreate/AddRef/Release remainsD3D9. No wholewrapperallocation/lifetime, arbitraryvirtualprofiles/SEH/fullreset/gameplay proof. ExistingsemanticAPIs unchanged. reports/native_renderer_reset_readiness_audit.json"
+    },
+    "status": "applied"
+  }
+]

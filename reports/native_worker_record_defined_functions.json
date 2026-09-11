@@ -1,0 +1,230 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "004d45a0",
+      "end_exclusive": "004d4618",
+      "length": 120,
+      "sha256": "1d548f139c5b4533bd2bc5dfe69092afc226c1b043a672fd7b0617f471458660",
+      "function_before": "Function: BSP_ParticleRecord_Destroy at 004d45a0\nSignature: undefined BSP_ParticleRecord_Destroy(void)\nEntry: 004d45a0\nBody: 004d45a0 - 004d45d8",
+      "documentation_before": {
+        "hash": "e7ee210a823d45272169766627b38c5bd26eb52919c37f9dbac6b6953b0ca7c5",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004d45a0",
+        "function_name": "BSP_ParticleRecord_Destroy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 004d45a0]\nReconstructed particle lifetime scope: typed normal-flow body. Original ABI: ECX record; RET0. Concrete shared manager/allocator/Win32 lock and actual owned2C records; pooled record/node strings; InterlockedDecrement sink+4 with required actual no-argument virtual0 on zero. Unconditional same singleton slot clear; no invented manager unregister. Allocation preserves raw+18 bytes. Evidence docs/PARTICLE_CLOCK_LIFETIME.md; reports/particle_clock_lifetime_audit.json. Lifecycle fixture checked; no native SEH-table or nonempty concrete sink class claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "local_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [],
+        "completeness_score": 100.0
+      },
+      "returning_free_call_sites": [
+        "004d45d4"
+      ],
+      "function_after": "Function: BSP_ParticleRecord_Destroy at 004d45a0\nSignature: undefined BSP_ParticleRecord_Destroy(void)\nEntry: 004d45a0\nBody: 004d45a0 - 004d4617",
+      "documentation_after": {
+        "hash": "25ae8600c3a4543eb822942164b75c6787e9ba35ee2e1bca99960335897f168f",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004d45a0",
+        "function_name": "BSP_ParticleRecord_Destroy",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "plate_comment": "[BSP reconstruction 004d45a0]\nReconstructed particle lifetime scope: typed normal-flow body. Original ABI: ECX record; RET0. Concrete shared manager/allocator/Win32 lock and actual owned2C records; pooled record/node strings; InterlockedDecrement sink+4 with required actual no-argument virtual0 on zero. Unconditional same singleton slot clear; no invented manager unregister. Allocation preserves raw+18 bytes. Evidence docs/PARTICLE_CLOCK_LIFETIME.md; reports/particle_clock_lifetime_audit.json. Lifecycle fixture checked; no native SEH-table or nonempty concrete sink class claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation.",
+        "parameters": [],
+        "local_variables": [
+          {
+            "name": "iVar1",
+            "type": "int",
+            "storage": "(register, 0x1c, 4)"
+          },
+          {
+            "name": "iVar2",
+            "type": "int",
+            "storage": "(stack, 0xffffffffffffffdc, 4)"
+          },
+          {
+            "name": "uVar3",
+            "type": "undefined4",
+            "storage": "(stack, 0xffffffffffffffe4, 4)"
+          },
+          {
+            "name": "pvStack_c",
+            "type": "void *",
+            "storage": "(stack, 0xfffffffffffffff4, 4)"
+          },
+          {
+            "name": "puStack_8",
+            "type": "undefined1 *",
+            "storage": "(stack, 0xfffffffffffffff8, 4)"
+          },
+          {
+            "name": "uStack_4",
+            "type": "undefined4",
+            "storage": "(stack, 0xfffffffffffffffc, 4)"
+          }
+        ],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 103,
+            "name": "LAB_004d4607"
+          }
+        ],
+        "completeness_score": 100.0
+      }
+    },
+    {
+      "address": "00415270",
+      "end_exclusive": "00415280",
+      "length": 16,
+      "sha256": "9d20fb9737545d0eeb198c79dc5d325beabd6d570a4058d3f1e7f4a887df0403",
+      "missing_before": true,
+      "function_before": "No function found for 00415270",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_NativeStringHeader_InitializeEmpty at 00415270\nSignature: undefined BSP_NativeStringHeader_InitializeEmpty(void)\nEntry: 00415270\nBody: 00415270 - 0041527f"
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "004d45d9",
+        "end_address": "004d4618"
+      },
+      "result": {
+        "success": true,
+        "start_address": "004d45d9",
+        "end_address": "004d4617",
+        "bytes_disassembled": 63,
+        "message": "Successfully disassembled 63 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "004d45d4"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 004d45d4 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "004d45a0"
+      },
+      "result": {
+        "success": true,
+        "address": "004d45a0",
+        "deleted_function": "BSP_ParticleRecord_Destroy",
+        "body_size": 57,
+        "message": "Function 'BSP_ParticleRecord_Destroy' deleted at 004d45a0"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "004d45a0",
+        "name": "BSP_ParticleRecord_Destroy",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "004d45a0",
+        "function_name": "BSP_ParticleRecord_Destroy",
+        "entry_point": "004d45a0",
+        "body_size": 120,
+        "message": "Function created successfully at 004d45a0",
+        "warnings": [
+          "Function name 'BSP_ParticleRecord_Destroy' \u2014 main part 'ParticleRecord_Destroy' is not PascalCase. Expected: ParticlerecordDestroy",
+          "Function name 'BSP_ParticleRecord_Destroy' \u2014 main part 'ParticleRecord_Destroy' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_ParticleRecord_Destroy' does not start with a recognized verb. First word 'Particle' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00415270",
+        "end_address": "00415280"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00415270",
+        "end_address": "0041527f",
+        "bytes_disassembled": 16,
+        "message": "Successfully disassembled 16 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00415270",
+        "name": "BSP_NativeStringHeader_InitializeEmpty",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00415270",
+        "function_name": "BSP_NativeStringHeader_InitializeEmpty",
+        "entry_point": "00415270",
+        "body_size": 16,
+        "message": "Function created successfully at 00415270",
+        "warnings": [
+          "Function name 'BSP_NativeStringHeader_InitializeEmpty' \u2014 main part 'NativeStringHeader_InitializeEmpty' is not PascalCase. Expected: NativestringheaderInitializeempty",
+          "Function name 'BSP_NativeStringHeader_InitializeEmpty' \u2014 main part 'NativeStringHeader_InitializeEmpty' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_NativeStringHeader_InitializeEmpty' does not start with a recognized verb. First word 'Native' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Complete4D45A0 returning-free tail restored and complete415270 defined; original comments preserved and project saved"
+}

@@ -1179,5 +1179,157 @@
       "bytes": 13401,
       "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
     }
-  ]
+  ],
+  "primary_integration": {
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\reset_readiness_primary\\sealed.json",
+      "bytes": 25625,
+      "sha256": "02d1588b5b71886f51fbc52485e018cb939ca4fc66d7c3f2ad8639c41419af0e"
+    },
+    "preparation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\reset_readiness_primary\\preparation.json",
+      "bytes": 60871,
+      "sha256": "9ff04b9810b6e3c4b7bb2e5c611ee6be534dc480ef26f4953b426c95d5293315"
+    },
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\reset_readiness_primary\\local\\reset_readiness\\verified.json",
+      "bytes": 1959446,
+      "sha256": "696580c12561447d7078c0a07b2500197aa6bd6f9150472a1a1e499a94e954ec"
+    },
+    "main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\reset_readiness_primary\\build\\win32\\Release\\bsp_core.lib",
+      "bytes": 36889600,
+      "sha256": "0603b678a2026473d4b1eb13b368553454d6b0485658c058605ad781d42d4776"
+    },
+    "worker_sealed_artifacts": 80,
+    "worker_owned_files": 4,
+    "current_files": 18,
+    "fresh_guarded_spans": 16,
+    "fresh_guarded_bytes": 1218,
+    "owned_original_code_bytes": 653,
+    "original_source_pairs": 4,
+    "compared_bytes": 224152,
+    "real_COM_calls": 80,
+    "terminal_zero_releases": 28,
+    "raw_state_captures": 58,
+    "complete_COFF_sections": 328,
+    "all_relocations": 1633,
+    "mapped_functions": 184,
+    "exact_archive_objects": 4,
+    "runtime_spans": 22,
+    "runtime_postimage_phases": 9,
+    "strict_main_build": true,
+    "existing_CTests": 2,
+    "native_seeds": 8,
+    "source_only_change": "Removed two trailing spaces after naked RET; all compiled code/relocations agree.",
+    "fixture_source_unchanged": true,
+    "verifier_adjustment": "Admit actual signed apphelp.dll device Release only at two recorded slot2 positions; Create and actual buffer AddRef/Release still require d3d9.dll. Existing provider identity/hash/relocated-byte checks preserved.",
+    "compatibility_module_signature": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\reset_readiness_primary\\apphelp_signature.json",
+      "bytes": 114,
+      "sha256": "747dcadc5dcb2152c7aea27b33eae6b7d2253a983a9befe31b7f84f0a7df9fb6"
+    },
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "status": "complete_raw_reset_readiness_main_Win32_original_full_provider_COM_and_COFF_verified",
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_renderer_reset_readiness_annotations.json",
+    "bytes": 8767,
+    "sha256": "d4ec10b934aaa9622165f640e4ce5a2c416aae15d3c50e783b04519eeede9aa6"
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b1fd90",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b1fd90\\decompiled.c",
+      "bytes": 2954,
+      "sha256": "6bff819126b13027e6867101d9c0aede140aa686bcc22640fb58ddcd08ff0004"
+    },
+    {
+      "address": "00b20c50",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b20c50\\decompiled.c",
+      "bytes": 1568,
+      "sha256": "d968ab07369108e8718c4fb8adbe4bc56115c70a4387b371e38be61a16c113db"
+    },
+    {
+      "address": "00b49180",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b49180\\decompiled.c",
+      "bytes": 3328,
+      "sha256": "df55334d20b2b61eb650bcf6c13f602a0de7ff1b834b682c0cd9d7a0a3d3466b"
+    },
+    {
+      "address": "00b492b0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b492b0\\decompiled.c",
+      "bytes": 3269,
+      "sha256": "2b431d64b49af47c603ecc66d6945361a151804dad1b8fb1aabc79c22feb3d2f"
+    }
+  ],
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b1fd90",
+      "name": "restore_native_renderer_dynamic_buffers_00b1fd90",
+      "cpp_symbol": "restore_native_renderer_dynamic_buffers_00b1fd90",
+      "source": "src/native_renderer_reset_readiness.cpp",
+      "native_end_exclusive": "00b1fdd6",
+      "original_abi": "ECX raw renderer; RET; no semantic result; new EDX immutable pooled-profile context",
+      "status": "complete_raw_reset_readiness_main_Win32_original_full_provider_COM_and_COFF_verified",
+      "evidence": "reports/native_renderer_reset_readiness_audit.json",
+      "native_differential_fixture": true,
+      "source_profile_domain": "pooledD61E58/D61E7C only",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b20c50",
+      "name": "native_platform_has_focus_00b20c50",
+      "cpp_symbol": "native_platform_has_focus_00b20c50",
+      "source": "src/native_renderer_reset_readiness.cpp",
+      "native_end_exclusive": "00b20c6f",
+      "original_abi": "ECX raw platform; EAX0/1; RET",
+      "status": "complete_raw_reset_readiness_main_Win32_original_full_provider_COM_and_COFF_verified",
+      "evidence": "reports/native_renderer_reset_readiness_audit.json",
+      "native_differential_fixture": true,
+      "source_profile_domain": "raw platform or physical wrapper with real callable COM",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b49180",
+      "name": "recreate_native_physical_index_buffer_00b49180",
+      "cpp_symbol": "recreate_native_physical_index_buffer_00b49180",
+      "source": "src/native_renderer_reset_readiness.cpp",
+      "native_end_exclusive": "00b49294",
+      "original_abi": "ECX raw wrapper; stacked device/output cell; RET4; new unused EDX",
+      "status": "complete_raw_reset_readiness_main_Win32_original_full_provider_COM_and_COFF_verified",
+      "evidence": "reports/native_renderer_reset_readiness_audit.json",
+      "native_differential_fixture": true,
+      "source_profile_domain": "raw platform or physical wrapper with real callable COM",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b492b0",
+      "name": "recreate_native_physical_vertex_buffer_00b492b0",
+      "cpp_symbol": "recreate_native_physical_vertex_buffer_00b492b0",
+      "source": "src/native_renderer_reset_readiness.cpp",
+      "native_end_exclusive": "00b493c4",
+      "original_abi": "ECX raw wrapper; stacked device/output cell; RET4; new unused EDX",
+      "status": "complete_raw_reset_readiness_main_Win32_original_full_provider_COM_and_COFF_verified",
+      "evidence": "reports/native_renderer_reset_readiness_audit.json",
+      "native_differential_fixture": true,
+      "source_profile_domain": "raw platform or physical wrapper with real callable COM",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "annotations_applied": true,
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_RESET_READINESS.md",
+    "bytes": 11404,
+    "sha256": "d6610b93d4e47502df94fd74f263f27e600606a3b12237ae771e728f4b8cd747"
+  }
 }

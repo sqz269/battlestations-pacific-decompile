@@ -1,7 +1,7 @@
-# bsp_game.exe, milestones 1, 2a and 2b
+# bsp_game.exe, milestones 1 through 2d
 
-Milestone 2b is the current state of the executable, and its section near the end of this
-file corrects the two earlier ones. Milestone 1 is the spine it was all built on.
+Milestone 2d is the current state of the executable, and its section corrects the earlier
+ones. Milestone 1 is the spine it was all built on.
 
 Addresses added by milestone 2a: 0073d604-0073d899 (the phase-2 VFS block of Init), 00beda60
 (provider manager), 004fc150 / 00736a90 / 00736b60 (the three provider factory singletons),
@@ -1048,6 +1048,266 @@ about binary compatibility with the original executable.
    (00b8a910, 00b8a990), the two bodies behind the singletons phase 2 and phase 6 now
    register.
 7. **The title music 005884a0's FMOD side** and the 0x54 stream object 00a877d0 builds.
+
+## Milestone 2d: text on screen
+
+Addresses: 00abb630 (the Text property reader), 00ab8c30 (font by name through the
+registry lookup 00ac3570), 00abaed0 (set localised source), 00a9fad0 / 00a9f4b0 (the
+localisation resolver), 004c5e60 (the non-localised widening), 00aba8d0 (the geometry
+update that chooses a builder and uppercases the text), 00a9ec30 with 00a9eba0 and
+00c0391c (that uppercase pass), 00ab9fd0 / 00aba270 / 00aba860 (the two layout builders
+and the wrapped vertical offset), 00ab98f0 with 00ad4480 (the glyph quad writer and glyph
+selection), 00ab6b50 (the colour re-apply), 00e12fd4 (the vertical scale), 00ab3310 (the
+Icon reader, now recorded at its own site), and 00aa6720 / 00b6d890 / 00b74eb0 / 00b75030
+/ 00aaa710 / 00ad08e0 / 00ab8400 / 00ab8530 / 00ab8ce0 / 00b692c0 for the corrections and
+the new records. Packet `cc_exe_2d`, owner `agent/cc-exe-2d`. Sources:
+`src/game_hosts_text.cpp`, `include/bsp/game_hosts_text.hpp`, plus edits to
+`src/game_hosts_frontend.cpp`, `src/game_hosts.cpp`, `src/game_main.cpp` and their
+headers. Report: `reports/game_executable_milestone_2d.json`. Ghidra was read-only.
+
+Milestone 2c left every Text widget resolving its font and its string id and drawing
+nothing. This milestone runs the rest of that path over the reconstructions that were
+already on main, and the two title strings are readable in a `--screenshot` capture.
+
+### The path one Text widget takes
+
+`GameTextHost` implements `bsp::GuiTextHost`, so the order is 00abb630's order rather
+than one the process invents. Per widget:
+
+| Step | Native site | What the run does |
+| --- | --- | --- |
+| property read | 00abb630 | `bind_gui_text_properties_00abb630` over the evaluated page table |
+| font | 00ab8c30 | `find_font_00ac3570` on the live registry the phase-7 startup filled |
+| set source | 00abaed0 | the authored `DefaultText`, always with the localise flag 00abbd90 pushes |
+| resolve | 00a9fad0 / 00a9f4b0 | `LocaleTextResolver` over the loaded `englishauthentic` table |
+| uppercase | 00a9ec30 / 00a9eba0 | run when the font descriptor is `uppercase_only`, which Viper19 is |
+| builder choice | 00aba8d0 | +FCh defaults to 1, so both widgets take the wrapped builder |
+| layout | 00aba270 | `build_font_wrapped_00aba270_fragment` |
+| quads | 00ab98f0 / 00ad4480 | one `write_font_quad_00ab98f0_fragment` per placement |
+| vertical offset | 00aba860 | added to each normalised y after the quad write |
+| colour | 00ab6b50 | the widget's +50h, re-read live on every bridge rebuild |
+
+What the 120 frame run laid out:
+
+| Page | Widget | Font | Source | Glyphs | Container | Measured |
+| --- | --- | --- | --- | --- | --- | --- |
+| `FE_initial` | `press_start_Text` | Viper19 | `LOG INTO ALTERBSP THEN PRESS ENTER TO CONTINUE` | 46 | 499 | 461.0 |
+| `FE_frame_title` | `title_Text` | Viper19 | `MAIN MENU` | 9 | 768 | 101.0 |
+
+Neither id is in the installed table, so 00a9f4b0's documented fallback ran and appended
+the stripped key widened byte by byte. That is not a failure of the lookup: this
+installation's `fe_initial.lua` authors an English literal where the stock page authors
+`FE_xbox.init_start`, and `fe_frame_title.lua` authors `MAIN MENU` directly. The
+container width 499 for a `Size.x` of 0.520833 is the native truncation, not an error:
+0.520833f times 960 is 499.99968.
+
+`FE_main`'s two Text widgets, `SubtitlesNormal_Text` and `SubtitlesWideScreen_Text`,
+author no `DefaultText`. The native widget has no text either, so they are counted and
+skipped rather than reported as a miss. The main menu's own labels are not layout text at
+all: 00584AE0 builds them in code through 00AAB4C0, which is still milestone 2c's
+follow-up 1.
+
+### Three values this milestone supplies
+
+- The vertical scale the quad writer and the wrapped builder multiply every y by is the
+  mutable global 00e12fd4, which the image initialises to 0.75. Nothing in the
+  reconstructed startup writes it, so a cold process keeps that value; a running game may
+  not. The run reports the number it used.
+- The text context's normalised space is placed at the widget's resolved position with
+  its own pivot subtracted, the same corner the bridge already draws an Icon from. The
+  native places it through the widget's scene node transform, which this process does not
+  build. **This is a bridge decision, not recovered behaviour.**
+- The glyph quads are drawn by the sprite bridge with fixed-function state, one textured
+  triangle pair per glyph over the font's own glyph sheet, modulated against the widget
+  colour. The native binds `guifontbilinear.shfx` through 00ab8ce0 and submits the shared
+  vertex and index objects 00ab8400 creates and 00ab8530 sections; all three are
+  unimplemented records. `src/d3d9_font_probe.cpp` already draws one glyph through the
+  real shader (docs/FONT_MATERIAL_DRAW.md); binding that path to the run is the GUI layer
+  draw packet, not this one.
+
+### What it looks like on screen
+
+Before the injected press, the title page now reads
+`LOG INTO ALTERBSP THEN PRESS ENTER TO CONTINUE`, centred low over the Pacific theatre
+map in Viper19, at the prompt's pulsing alpha. The winged title plate reads `MAIN MENU`
+in the authored gold. After the press the press-start page is gone and `MAIN MENU` stays
+in the plate over the menu background. Both captures come from the client area of a
+running window and are written to the ignored `local/title.png` and `local/run.png`.
+
+`drawn: yes`. 55 glyph quads while the title is up, 9 once the main menu is, on top of the
+6 and 5 icon quads milestone 2c reported. The plate reading `MAIN MENU` during the title
+phase is not a claim about the game: no front-end screen owns `FE_frame_title`, so its
+visibility is still the bridge's substitute rule, which is milestone 2b's unchanged caveat
+about the two 00518250 frame layouts. This supersedes milestone 2c's "the now empty title
+plate".
+
+### The new switch
+
+`--screenshot <path>` captured the last frame of a `--frames N` run, or the frame a close
+request was seen. `--screenshot-frame N` names a frame instead, so one run photographs the
+title before the injected press-start and another the menu after it. A negative value, and
+the absence of the switch, keep the old rule.
+
+### Host methods
+
+`bsp_game.exe --frames 120 --press-start-frame 30 --log local/game_run.log --screenshot
+local/run.png --game-root "<install>"`, exit 0: **154 concrete, 80 unimplemented, 234
+distinct methods**. Milestone 2c's run on the same tree reported 145 and 76 over 221. A
+run closed with `CloseMainWindow` reports 155 concrete, because it also reaches
+`CloseRequestPolicy::front_end_branch`. A title-only run (`--frames 40`, no press) reports
+129 concrete and 49 unimplemented and draws all 55 glyph quads.
+
+The methods this packet introduced:
+
+| Host method | Native call site | Status | Calls |
+| --- | --- | --- | --- |
+| `GuiText::read_properties` | `00abb630` | concrete | 2 |
+| `GuiText::find_font` | `00ab8c30` | concrete | 2 |
+| `GuiText::resolve_localised` | `00a9fad0` | concrete | 2 |
+| `GuiText::uppercase_text` | `00a9ec30` | concrete | 2 |
+| `GuiText::build_wrapped` | `00aba270` | concrete | 2 |
+| `GuiText::apply_color` | `00ab6b50` | concrete | 2 |
+| `GuiText::write_glyph_quad` | `00ab98f0` | concrete | 2 |
+| `LocaleText::crt_uppercase` | `00c0391c` | concrete | 55 |
+| `GuiIcon::read_properties` | `00ab3310` | concrete | 18 |
+| `GuiText::create_glyph_buffers` | `00ab8400` | **unimplemented** | 2 |
+| `GuiText::ensure_draw_sections` | `00ab8530` | **unimplemented** | 2 |
+| `GuiFrameBox::read_properties` | `00ad08e0` | **unimplemented** | 5 |
+| `GuiLayoutHost::allocate_model_slot` | `00b74eb0` | **unimplemented** | 28 |
+
+Four more exist and were not reached, because the paths that call them are not taken:
+`GuiText::widen_source` (004c5e60) needs a Text whose source is not localised, and the
+native call site pushes the literal 1 for every authored `DefaultText`;
+`GuiText::build_single_line` (00ab9fd0) needs an authored `Multiline` of false, and the
+constructor default is true; `GuiText::font_shader` (00ab8ce0) needs a font name that
+changes after the first resolve; and `LocaleText::lua_context_value` (00b692c0) needs a
+`#...#` marker, which no shipped title or menu string carries. That last one is the
+unimplemented policy rather than a guess: the native resolver reaches its Lua owner
+through the global at 00e1ae90 and its virtual +14h, and this process builds no such
+owner.
+
+Two records were renamed rather than added, for the reasons in the corrections below:
+`GuiLayoutHost::create_page_root_node` (00aa6720) is now
+`GuiLayoutHost::bind_page_root_scene_node`, and `GuiLayoutHost::clear_page_root_list`
+(00b6d890) is now `GuiLayoutHost::propagate_root_registration`.
+
+### Corrections
+
+1. **00aa6720 is not a page-root factory.** It is `BSP_GuiWidget_SetSceneNode`: four
+   instructions that store a node at widget+4Ch and, when it is non-null, clear the low
+   two bits of node+138h. What builds a plain page root is 00aa5840's own branch, the
+   18Ch `cGroup` of 00b8f5e0 that
+   `GuiNativeScene::create_plain_page_root_00aa5840_fragment` reconstructs; the setter
+   receives the result. Milestone 2b's host table used the wrong verb for this address.
+2. **00b6d890 is not a list clear.** It is `BSP_Node_PropagateRootRegistration`, the
+   complete recursive pass that registers or unregisters a subtree against a requested
+   scene root through 00b721f0 and 00b72220. 00ac6825 calls it with the page's own root.
+3. **The per-widget scene node is a pair of calls.** 00aa6640
+   `BSP_GuiWidget_CreateWithSceneNode` takes a canonical 188h slot out of the model pool
+   at 01090054 with 00b74eb0 and constructs the 184h generated model in it with 00b75030.
+   Milestone 2b recorded only the second, so the run under-reported the allocation. Both
+   are recorded now, 28 calls each.
+4. **The single `derived_property_reader [00aaa710]` record said less than it could.**
+   00aaa710 is the base half of the reflection pair; its caller is the leaf class's own
+   reader, and three of the four types the title and menu pages use have a reconstruction.
+   The table now names 00ab3310 for an `Icon` (which was already running, inside the
+   bridge's own widget walk, just not recorded at its call site), 00abb630 for a `Text`
+   and 00ad08e0 for a `FrameBox`, and keeps 00aaa710 only for the types with none.
+5. **Milestone 2b's follow-up 3 is done for the title and menu pages, and its stated
+   blocker was wrong.** That item said the missing piece was "the same device binding as
+   item 1", the GUI layer draw. It was not: the reconstructed layout and quad writer emit
+   normalised GUI coordinates, so the existing sprite bridge draws them with no new device
+   work. What the GUI layer draw is still needed for is the font material and the shared
+   glyph buffers, which is why 00ab8ce0, 00ab8400 and 00ab8530 remain records.
+6. **Milestone 2c's "the now empty title plate" is superseded.** The plate reads
+   `MAIN MENU` in both phases.
+
+### What stays unimplemented, and why
+
+- **00ab8ce0, 00ab8400, 00ab8530**, the font material and the shared glyph vertex and
+  index objects. Both need a renderer material owner and a device-backed buffer factory.
+- **00ad08e0**, the FrameBox reader. It is reconstructed, but it takes
+  `GuiFrameBoxTextureServices`, the native renderer's texture acquire and release pair,
+  and this process owns no such reference.
+- **The scene graph**, 00aa6720, 00b74eb0, 00b75030, 00b6e680, 00b6d890 and the two widget
+  vtable hooks, 96 calls in a 120 frame run. Every one has a reconstruction with an
+  integrated-storage status, but none is a free function: they compose into
+  `GuiWidgetOwnerRuntime` over a `NativeModelEnvironment` and a `NativeGroupEnvironment`,
+  which need real slab pools and the image's own constants at 00d7a24c and 00ce4970.
+  Nothing in the repository builds that composition yet, so it is a packet rather than a
+  wiring change. This is the correction to this packet's own brief: the trio is
+  reconstructed, and it is still not something the executable can call today.
+- **The VFS content-suffix list at manager +48h/+4Ch.** No routine in the ledger is named
+  as its writer, and no query found one. Populating it would be an invention, so it stays
+  the empty list milestone 2b reported and `allbutingame.ats` still does not resolve to
+  its DXT variant.
+- **`FrontEndScreen::enter` / `exit` / `update`** (004f75a0, 004f75b0, 004f75c0). The base
+  bodies really are a single RET, but these records stand for the leaf class's override,
+  and none of the seven main-menu classes is reconstructed.
+- **`ApplicationFrameHost::tick_vfs_providers`** (00bdb0b0): the ledger names a fragment
+  in `src/vfs_pending.cpp`, and no such symbol exists in the tree.
+  **`update_loading_queue`** (004fde20): the singleton accessor is named, the object it
+  constructs is not reconstructed.
+
+### Code with no Ghidra function
+
+| Start | End (inclusive) | Note |
+| --- | --- | --- |
+| — | — | none |
+
+Every address this packet touched already has a Ghidra function. One name was added,
+00a9ec30 `BSP_TextContext_UppercaseUtf16InPlace`, which Ghidra carried as `FUN_00a9ec30`;
+run-time evidence was appended to 00ab98f0, 00aba270, 00abb630, 00a9fad0, 00aa6720,
+00b6d890, 00b74eb0 and 00ab8c30.
+
+### Validation
+
+`scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing
+ctest case `reconstructed_math` passes, 1 of 1. No test cases were added.
+
+```
+text bridge open: 6 fonts, 6856 locale keys, vertical_scale=0.7500 (00e12fd4)
+  text press_start_Text  font=Viper19 wrapped id=LOG INTO ALTERBSP THEN PRESS ENTER TO
+        CONTINUE (no table entry) glyphs=46 lines=1 container=499 width=461.0 upper=1
+  text title_Text        font=Viper19 wrapped id=MAIN MENU (no table entry) glyphs=9
+        lines=1 container=768 width=101.0 upper=1 color=(0.98,0.86,0.60,1.00)
+sprite bridge quads=61 (text_glyph_quads=55) textures=13/14 atlas_items=678 rebuild=1
+sprite bridge quads=14 (text_glyph_quads=9)  textures=13/14 atlas_items=678 rebuild=32
+summary text bridge=1 widgets=4 runs=2 glyphs=55 quads=9
+summary screenshot=1 frame=-1 path=local\run.png
+host methods 154 concrete, 80 unimplemented
+```
+
+`--vfs-probe` still works both ways: `fonts/fonts.lua` exits 0 and `does/not/exist.lua`
+exits 3. The close path was validated by sending WM_CLOSE to a running process with
+`--press-start-frame 30` and no frame limit: it presented 36289 frames, reached the main
+menu, recorded `CloseRequestPolicy::front_end_branch [004ca2f0]` once, wrote its
+screenshot and exited 0.
+
+This is a runtime-validated process, not a game-validated one. It proves the reconstructed
+localisation, font layout and glyph geometry produce readable text out of real installed
+data, drawn at the position the recovered layout computes. It proves nothing about the
+native GUI draw, about the font shader, or about binary compatibility with the original
+executable.
+
+### Follow-up packets
+
+1. **The GUI layer draw**, still milestone 2b's follow-up 1. Deleting the sprite bridge
+   now also means binding 00ab8400, 00ab8530 and 00ab8ce0 to a device and a material
+   owner; `src/d3d9_font_probe.cpp` already proves the shader half against one glyph.
+2. **The scene graph composition.** A `GuiWidgetOwnerRuntime` with a
+   `NativeModelEnvironment` and a `NativeGroupEnvironment` the executable can own would
+   make six records concrete at once.
+3. **The FrameBox reader** 00ad08e0 over a `GuiFrameBoxTextureServices` the executable can
+   supply, which is the same texture-ownership question as the renderer texture entry
+   point.
+4. **The VFS content-suffix list writer**: identify what fills manager +48h/+4Ch.
+5. **The Text widget's shadow half.** 00ab72d0's presets are read and stored, and both
+   title widgets author `DefaultShadow`, but nothing draws the second, offset glyph run:
+   the native shares one geometry pair between the main and shadow sections at 00aba8d0,
+   which is the buffer factory this packet records as unimplemented.
+6. **The seven main-menu screen classes**, still milestone 2c's follow-up 1. No amount of
+   text drawing puts the menu's own items on screen, because 00584AE0 builds them in code.
 
 ## Next milestones
 
