@@ -1,0 +1,1811 @@
+{
+  "packet": "native_physical_buffer_owner",
+  "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+  "source": "src/native_physical_buffer_owner.cpp",
+  "header": "include/bsp/native_physical_buffer_owner.hpp",
+  "documentation": "docs/NATIVE_PHYSICAL_BUFFER_OWNER.md",
+  "scope": "Actual physical index and vertex owners, raw pointer arrays, diagnostic record cleanup and distinct heap/pool deleting slots",
+  "functions": [
+    {
+      "address": "00b4bb60",
+      "end_exclusive": "00b4bb93",
+      "length": 51,
+      "sha256": "0ed7446da98417a78c6a1a6569cb25d2961384e409acde3f10c8ae87f398eea6",
+      "proposed_name": "BSP_D3D9IndexBuffer_Construct",
+      "old_name": "BSP_D3D9IndexBuffer_Construct",
+      "cpp_symbol": "construct_native_physical_index_buffer_00b4bb60",
+      "original_abi": "ECX actual2Ch owner; EAX same owner; RET",
+      "behavior": "Write baseCEB130, count1, zeros08..20 then28 then24, pooledD61E58 profile. Slab metadata outside owner untouched."
+    },
+    {
+      "address": "00b4bbb0",
+      "end_exclusive": "00b4bbe3",
+      "length": 51,
+      "sha256": "6f7b1aaecd09d284753b0c39e5dfcdd72387d9834b87f6392a3458f59e078f21",
+      "proposed_name": "BSP_D3D9VertexBuffer_Construct",
+      "old_name": "BSP_D3D9VertexBuffer_Construct",
+      "cpp_symbol": "construct_native_physical_vertex_buffer_00b4bbb0",
+      "original_abi": "ECX actual2Ch owner; EAX same owner; RET",
+      "behavior": "Write baseCEB130, count1, zeros08..20 then28 then24, pooledD61E7C profile. Slab metadata outside owner untouched."
+    },
+    {
+      "address": "00b4c250",
+      "end_exclusive": "00b4c36a",
+      "length": 282,
+      "sha256": "e93b2019eac98896b4a38ba0ae0f0b55924e59fd47cf3262ee54a8f9341efd4e",
+      "proposed_name": "BSP_D3D9IndexBuffer_Attach",
+      "old_name": "BSP_D3D9IndexBuffer_Attach",
+      "cpp_symbol": "attach_native_physical_index_buffer_00b4c250",
+      "original_abi": "ECX owner; stack COM/flags/capacity; RET Ch; no stable result",
+      "behavior": "Flags14/capacity18 before captured COM28 comparison. Publish new before AddRef-new/Release-captured-old. Preserve both native diagnostic string copies and actual support call; original EH states-1/0/1 and current versus captured cleanup reads."
+    },
+    {
+      "address": "00b4c370",
+      "end_exclusive": "00b4c48a",
+      "length": 282,
+      "sha256": "98fae14d6c49618ca13da379fbc6d713d24fc59c0af72e7dafad38468aaf1386",
+      "proposed_name": "BSP_D3D9VertexBuffer_Attach",
+      "old_name": "BSP_D3D9VertexBuffer_Attach",
+      "cpp_symbol": "attach_native_physical_vertex_buffer_00b4c370",
+      "original_abi": "ECX owner; stack COM/flags/capacity; RET Ch; no stable result",
+      "behavior": "Flags14/capacity18 before captured COM28 comparison. Publish new before AddRef-new/Release-captured-old. Preserve both native diagnostic string copies and actual support call; original EH states-1/0/1 and current versus captured cleanup reads."
+    },
+    {
+      "address": "00b4b900",
+      "end_exclusive": "00b4b965",
+      "length": 101,
+      "sha256": "d9166dc56c4c0d173f5d89b5f8228763758dca47491fca7ca901687a9d03d24b",
+      "proposed_name": "BSP_D3D9IndexBuffer_Destruct",
+      "old_name": "BSP_D3D9IndexBuffer_Destruct",
+      "cpp_symbol": "destroy_native_physical_index_buffer_00b4b900",
+      "original_abi": "ECX owner; RET",
+      "behavior": "Install privateD61E10 even on pooled owner, actual support before CURRENT COM28 load, Release captured current receiver through CURRENT table+08, zero28 after return, full base cleanup on normal and EH paths. Unwind-only base cleanup terminates on a second C++ exception; normal base destruction remains throwable, matching the native MSVC frame-unwind filter."
+    },
+    {
+      "address": "00b4bab0",
+      "end_exclusive": "00b4bb15",
+      "length": 101,
+      "sha256": "e3aebe04caf0b2d01f67cc2e3ed6f294b4cc54f25263b30e75ab9e48a193c9e8",
+      "proposed_name": "BSP_D3D9VertexBuffer_Destruct",
+      "old_name": "BSP_D3D9VertexBuffer_Destruct",
+      "cpp_symbol": "destroy_native_physical_vertex_buffer_00b4bab0",
+      "original_abi": "ECX owner; RET",
+      "behavior": "Install privateD61E34 even on pooled owner, actual support before CURRENT COM28 load, Release captured current receiver through CURRENT table+08, zero28 after return, full base cleanup on normal and EH paths. Unwind-only base cleanup terminates on a second C++ exception; normal base destruction remains throwable, matching the native MSVC frame-unwind filter."
+    },
+    {
+      "address": "00b4b490",
+      "end_exclusive": "00b4b4ed",
+      "length": 93,
+      "sha256": "e640df383f33d16c4333a286dc618e7e326bd2d3cb046554a091cb74891ba289",
+      "proposed_name": "BSP_NativePhysicalIndexBuffer_DestroyBase",
+      "old_name": "FUN_00b4b490",
+      "cpp_symbol": "destroy_native_physical_index_buffer_base_00b4b490",
+      "original_abi": "ECX owner; RET",
+      "behavior": "Resize actual08 raw pointer array to0, free CURRENT data, baseCEB130 profile on normal/EH. Preserve stale array pointer/capacity after free."
+    },
+    {
+      "address": "00b4b530",
+      "end_exclusive": "00b4b58d",
+      "length": 93,
+      "sha256": "84519b4915844578353dfc7bf828f05efad218302b6df3889aa40ad8ed0d142c",
+      "proposed_name": "BSP_NativePhysicalVertexBuffer_DestroyBase",
+      "old_name": "FUN_00b4b530",
+      "cpp_symbol": "destroy_native_physical_vertex_buffer_base_00b4b530",
+      "original_abi": "ECX owner; RET",
+      "behavior": "Resize actual08 raw pointer array to0, free CURRENT data, baseCEB130 profile on normal/EH. Preserve stale array pointer/capacity after free."
+    },
+    {
+      "address": "00b4bb20",
+      "end_exclusive": "00b4bb3e",
+      "length": 30,
+      "sha256": "b99e5bbcbad203b73e8eb68293df45a64788339c7568a2f9de485c4e1af78738",
+      "proposed_name": "BSP_NativePrivateIndexBuffer_ScalarDelete",
+      "old_name": "CG_scalar_deleting_dtor_00b4bb20",
+      "cpp_symbol": "delete_native_private_index_buffer_00b4bb20",
+      "original_abi": "ECX owner; stack flags; EAX original address; RET4",
+      "behavior": "Complete index destruction then flags bit0 host scalar free; returns original possibly dangling address."
+    },
+    {
+      "address": "00b4bb40",
+      "end_exclusive": "00b4bb5e",
+      "length": 30,
+      "sha256": "4e0e0192b112951173fed940db4c95f480fb235c073701cb10c5b69f187352f5",
+      "proposed_name": "BSP_NativePrivateVertexBuffer_ScalarDelete",
+      "old_name": "CG_scalar_deleting_dtor_00b4bb40",
+      "cpp_symbol": "delete_native_private_vertex_buffer_00b4bb40",
+      "original_abi": "ECX owner; stack flags; EAX original address; RET4",
+      "behavior": "Complete vertex destruction then flags bit0 host scalar free; returns original possibly dangling address."
+    },
+    {
+      "address": "00b4c210",
+      "end_exclusive": "00b4c230",
+      "length": 32,
+      "sha256": "37176fde63a704cb7e285c9fba9cf5d740bc3e837dbc597450f7eac52872d2ef",
+      "proposed_name": "BSP_NativePooledIndexBuffer_ScalarDelete",
+      "old_name": "FUN_00b4c210",
+      "cpp_symbol": "delete_native_pooled_index_buffer_00b4c210",
+      "original_abi": "ECX owner; stack flags; EAX original address; RET4",
+      "behavior": "Complete index destruction then flags bit0 actual108FDA8 pool B49500 return; returns original reusable address."
+    },
+    {
+      "address": "00b4c230",
+      "end_exclusive": "00b4c250",
+      "length": 32,
+      "sha256": "384ffcbeb3481ebeff81d21f03b1d7a76c407e41a546e526024ddbee835e8c3a",
+      "proposed_name": "BSP_NativePooledVertexBuffer_ScalarDelete",
+      "old_name": "FUN_00b4c230",
+      "cpp_symbol": "delete_native_pooled_vertex_buffer_00b4c230",
+      "original_abi": "ECX owner; stack flags; EAX original address; RET4",
+      "behavior": "Complete vertex destruction then flags bit0 actual108FDE0 pool B49500 return; returns original reusable address."
+    },
+    {
+      "address": "00b49500",
+      "end_exclusive": "00b49565",
+      "length": 101,
+      "sha256": "49e910a019a8873138f78caaffae5010f99a792e1c8efa598097f95deabd0947",
+      "proposed_name": "BSP_NativePhysicalBufferPool_ReturnSlot",
+      "old_name": "FUN_00b49500",
+      "cpp_symbol": "return_native_physical_buffer_slot_00b49500",
+      "original_abi": "ECX actual pool; stack raw30h slot; RET4",
+      "behavior": "Real initialized Win32 section+0C; enter before depth24 increment; capturedslot2C slab index, CURRENT slab array28, signed wrapped delta/48 truncation, lowWORDfree index at600+oldcount*2, CURRENTWORDcount640 increment, unsigned earliest34, depth decrement before Leave. No new EH guard."
+    },
+    {
+      "address": "00b496a0",
+      "end_exclusive": "00b496ff",
+      "length": 95,
+      "sha256": "c079093c827b41f1430a6de6eb1ffd146fe6a52242cf6e68487b09237acf3165",
+      "proposed_name": "BSP_NativePhysicalBufferPointerArray_Reserve",
+      "old_name": "FUN_00b496a0",
+      "cpp_symbol": "reserve_native_physical_buffer_pointer_array_00b496a0",
+      "original_abi": "ECX actual0Ch header; stack requested capacity DWORD; RET4",
+      "behavior": "Signed clamp/min1 and capacity comparison; wrapped DWORD4*request allocation. CURRENT data/count per copy, skip wrappednull destinations, free CURRENT old data BEFORE publishing captured replacement and requested capacity. No count restoration."
+    },
+    {
+      "address": "00b49700",
+      "end_exclusive": "00b49750",
+      "length": 80,
+      "sha256": "15de752aef3aad37775487213e3ecfa8464a719ec5107c7c7d19ac6fccb0ff56",
+      "proposed_name": "BSP_NativePhysicalBufferPointerArray_Resize",
+      "old_name": "FUN_00b49700",
+      "cpp_symbol": "resize_native_physical_buffer_pointer_array_00b49700",
+      "original_abi": "ECX actual0Ch header; stack requested count DWORD; RET4",
+      "behavior": "Signed capreserve, captured count AFTERreserve, CURRENT data each defaultzero, CURRENT count decrement per shrink, final raw request store."
+    },
+    {
+      "address": "00b3f4c0",
+      "end_exclusive": "00b3f4de",
+      "length": 30,
+      "sha256": "5b51ca9686f1c6eeade950ec88fb066664b6be37f22c586fbd5a55aebfa9e43a",
+      "proposed_name": "BSP_NativeBufferDiagnosticRecord_Destroy",
+      "old_name": "FUN_00b3f4c0",
+      "cpp_symbol": "destroy_native_buffer_diagnostic_record_00b3f4c0",
+      "original_abi": "ECX actual0Ch record; RET",
+      "behavior": "Read CURRENT data+08 first, then nonnull CURRENTlength+04 plus1 sizedrelease; leave borrowedCOM+00 and stale name header untouched."
+    }
+  ],
+  "evidence": {
+    "spans": [
+      {
+        "address": "00b4bb60",
+        "end_exclusive": "00b4bb93",
+        "length": 51,
+        "kind": "code",
+        "disk_offset": 7650144,
+        "sha256": "0ed7446da98417a78c6a1a6569cb25d2961384e409acde3f10c8ae87f398eea6",
+        "hex": "8bc133c9c70030b1ce00c740040100000089480889480c89481089481489481889481c894820894828894824c700581ed600c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4bbb0",
+        "end_exclusive": "00b4bbe3",
+        "length": 51,
+        "kind": "code",
+        "disk_offset": 7650224,
+        "sha256": "6f7b1aaecd09d284753b0c39e5dfcdd72387d9834b87f6392a3458f59e078f21",
+        "hex": "8bc133c9c70030b1ce00c740040100000089480889480c89481089481489481889481c894820894828894824c7007c1ed600c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4c250",
+        "end_exclusive": "00b4c36a",
+        "length": 282,
+        "kind": "code",
+        "disk_offset": 7651920,
+        "sha256": "e93b2019eac98896b4a38ba0ae0f0b55924e59fd47cf3262ee54a8f9341efd4e",
+        "hex": "6aff64a10000000068f0f9cb00508b4424146489250000000083ec145355568bf18b4c24388946148b44243057894e188b7e2833db3bf8741b3bc389462874088b10508b4204ffd03bfb74088b0f8b510857ffd26a016a168d4c2418895c2418895c241ce8871a8dff8b6c24143beb8b7c241074128d47015068a01ed60055e8acb30a0083c40c8b4e286a01894c241c578d4c2424895c2434895c2424895c2428e84a1a8dff3bfb8b742420740f8b54241c525556e876b30a0083c40cc644242c01e81924ffff3bf3885c242c74178b44241c6a0183c0015056e891d98cff8bc8e8da5108003bebc744242cffffffff74136a0183c7015755e872d98cff8bc8e8bb5108008b4c24245f5e5d5b64890d0000000083c420c20c00",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4c370",
+        "end_exclusive": "00b4c48a",
+        "length": 282,
+        "kind": "code",
+        "disk_offset": 7652208,
+        "sha256": "98fae14d6c49618ca13da379fbc6d713d24fc59c0af72e7dafad38468aaf1386",
+        "hex": "6aff64a1000000006810facb00508b4424146489250000000083ec145355568bf18b4c24388946148b44243057894e188b7e2833db3bf8741b3bc389462874088b10508b4204ffd03bfb74088b0f8b510857ffd26a016a168d4c2418895c2418895c241ce867198dff8b6c24143beb8b7c241074128d47015068a01ed60055e88cb20a0083c40c8b4e286a01894c241c578d4c2424895c2434895c2424895c2428e82a198dff3bfb8b742420740f8b54241c525556e856b20a0083c40cc644242c01e8f922ffff3bf3885c242c74178b44241c6a0183c0015056e871d88cff8bc8e8ba5008003bebc744242cffffffff74136a0183c7015755e852d88cff8bc8e89b5008008b4c24245f5e5d5b64890d0000000083c420c20c00",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4b900",
+        "end_exclusive": "00b4b965",
+        "length": 101,
+        "kind": "code",
+        "disk_offset": 7649536,
+        "sha256": "d9166dc56c4c0d173f5d89b5f8228763758dca47491fca7ca901687a9d03d24b",
+        "hex": "6aff6868f9cb0064a100000000506489250000000051568bf189742404c706101ed600c744241000000000e8002effff8b462885c0740f8b088b510850ffd2c74628000000008bcec7442410ffffffffe83bfbffff8b4c24085e64890d0000000083c410c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4bab0",
+        "end_exclusive": "00b4bb15",
+        "length": 101,
+        "kind": "code",
+        "disk_offset": 7649968,
+        "sha256": "e3aebe04caf0b2d01f67cc2e3ed6f294b4cc54f25263b30e75ab9e48a193c9e8",
+        "hex": "6aff6888f9cb0064a100000000506489250000000051568bf189742404c706341ed600c744241000000000e8502cffff8b462885c0740f8b088b510850ffd2c74628000000008bcec7442410ffffffffe82bfaffff8b4c24085e64890d0000000083c410c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4b490",
+        "end_exclusive": "00b4b4ed",
+        "length": 93,
+        "kind": "code",
+        "disk_offset": 7648400,
+        "sha256": "e640df383f33d16c4333a286dc618e7e326bd2d3cb046554a091cb74891ba289",
+        "hex": "6aff68e8f8cb0064a100000000506489250000000051568bf157897424088d7e086a008bcfc744241800000000e83ee2ffff8b3f57e8bfb40a0083c4048bcec7442414ffffffffe8147c08008b4c240c5f5e64890d0000000083c410c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4b530",
+        "end_exclusive": "00b4b58d",
+        "length": 93,
+        "kind": "code",
+        "disk_offset": 7648560,
+        "sha256": "84519b4915844578353dfc7bf828f05efad218302b6df3889aa40ad8ed0d142c",
+        "hex": "6aff6808f9cb0064a100000000506489250000000051568bf157897424088d7e086a008bcfc744241800000000e89ee1ffff8b3f57e81fb40a0083c4048bcec7442414ffffffffe8747b08008b4c240c5f5e64890d0000000083c410c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4bb20",
+        "end_exclusive": "00b4bb3e",
+        "length": 30,
+        "kind": "code",
+        "disk_offset": 7650080,
+        "sha256": "b99e5bbcbad203b73e8eb68293df45a64788339c7568a2f9de485c4e1af78738",
+        "hex": "568bf1e8d8fdfffff644240801740956e877aa0a0083c4048bc65ec20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4bb40",
+        "end_exclusive": "00b4bb5e",
+        "length": 30,
+        "kind": "code",
+        "disk_offset": 7650112,
+        "sha256": "4e0e0192b112951173fed940db4c95f480fb235c073701cb10c5b69f187352f5",
+        "hex": "568bf1e868fffffff644240801740956e857aa0a0083c4048bc65ec20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4c210",
+        "end_exclusive": "00b4c230",
+        "length": 32,
+        "kind": "code",
+        "disk_offset": 7651856,
+        "sha256": "37176fde63a704cb7e285c9fba9cf5d740bc3e837dbc597450f7eac52872d2ef",
+        "hex": "568bf1e8e8f6fffff644240801740b56b9a8fd0801e8d6d2ffff8bc65ec20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b4c230",
+        "end_exclusive": "00b4c250",
+        "length": 32,
+        "kind": "code",
+        "disk_offset": 7651888,
+        "sha256": "384ffcbeb3481ebeff81d21f03b1d7a76c407e41a546e526024ddbee835e8c3a",
+        "hex": "568bf1e878f8fffff644240801740b56b9e0fd0801e8b6d2ffff8bc65ec20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b49500",
+        "end_exclusive": "00b49565",
+        "length": 101,
+        "kind": "code",
+        "disk_offset": 7640320,
+        "sha256": "49e910a019a8873138f78caaffae5010f99a792e1c8efa598097f95deabd0947",
+        "hex": "5356578bf18d7e0c57ff151822ce00834718018b4424108b582c8b4e288b0c992bc18bd0b8abaaaa2af7eac1fa038bc2c1e81f03c20fb79140060000668984510006000066838140060000013b5e347303895e34834718ff57ff151022ce005f5e5bc20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b496a0",
+        "end_exclusive": "00b496ff",
+        "length": 95,
+        "kind": "code",
+        "disk_offset": 7640736,
+        "sha256": "c079093c827b41f1430a6de6eb1ffd146fe6a52242cf6e68487b09237acf3165",
+        "hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e8f9be0a008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e898d20a0083c404891e897e085b5f5ec20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b49700",
+        "end_exclusive": "00b49750",
+        "length": 80,
+        "kind": "code",
+        "disk_offset": 7640832,
+        "sha256": "15de752aef3aad37775487213e3ecfa8464a719ec5107c7c7d19ac6fccb0ff56",
+        "hex": "56578b7c240c8bf13b7e087e0657e88dffffff8b46043bc77d1c8d9b000000008b0e8d0c8185c97406c7010000000083c0013bc77cea3b7e047d0d83c8ff8bff0146043b7e047cf8897e045f5ec20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b3f4c0",
+        "end_exclusive": "00b3f4de",
+        "length": 30,
+        "kind": "code",
+        "disk_offset": 7599296,
+        "sha256": "5b51ca9686f1c6eeade950ec88fb066664b6be37f22c586fbd5a55aebfa9e43a",
+        "hex": "8b510885d274168b41046a0183c0015052e8eaa78dff8bc8e833200900c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "0041dd20",
+        "end_exclusive": "0041dd3d",
+        "length": 29,
+        "kind": "code",
+        "disk_offset": 122144,
+        "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+        "hex": "8b510485d274158b016a0183c0015052e88bbfffff8bc8e8d4377b00c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00bd30f0",
+        "end_exclusive": "00bd30f7",
+        "length": 7,
+        "kind": "code",
+        "disk_offset": 8204528,
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "hex": "c70130b1ce00c3",
+        "live_PE_match": true
+      },
+      {
+        "address": "00bf55be",
+        "end_exclusive": "00bf55c3",
+        "length": 5,
+        "kind": "code",
+        "disk_offset": 8345022,
+        "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+        "hex": "e958120000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00bf6989",
+        "end_exclusive": "00bf698e",
+        "length": 5,
+        "kind": "code",
+        "disk_offset": 8350089,
+        "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+        "hex": "e91efcffff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00bf681b",
+        "end_exclusive": "00bf6820",
+        "length": 5,
+        "kind": "code",
+        "disk_offset": 8349723,
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+        "hex": "558bec83ec",
+        "live_PE_match": true
+      },
+      {
+        "address": "00bf65ac",
+        "end_exclusive": "00bf65b1",
+        "length": 5,
+        "kind": "code",
+        "disk_offset": 8349100,
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "hex": "e917380000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00b3e730",
+        "end_exclusive": "00b3e735",
+        "length": 5,
+        "kind": "code",
+        "disk_offset": 7595824,
+        "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+        "hex": "64a1000000",
+        "live_PE_match": true
+      },
+      {
+        "address": "0041dd40",
+        "end_exclusive": "0041dd45",
+        "length": 5,
+        "kind": "code",
+        "disk_offset": 122176,
+        "sha256": "85779ed6f2d1233c2b1416dc74b68dcafca23831882064b416b41c4c6b72ba35",
+        "hex": "568bf18b0e",
+        "live_PE_match": true
+      },
+      {
+        "address": "00419cc0",
+        "end_exclusive": "00419cc5",
+        "length": 5,
+        "kind": "code",
+        "disk_offset": 105664,
+        "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+        "hex": "64a1000000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00bd1510",
+        "end_exclusive": "00bd1515",
+        "length": 5,
+        "kind": "code",
+        "disk_offset": 8197392,
+        "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247",
+        "hex": "538b5c240c",
+        "live_PE_match": true
+      },
+      {
+        "address": "00bf7680",
+        "end_exclusive": "00bf7685",
+        "length": 5,
+        "kind": "code",
+        "disk_offset": 8353408,
+        "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+        "hex": "558bec5756",
+        "live_PE_match": true
+      },
+      {
+        "address": "00bf6b43",
+        "end_exclusive": "00bf6b48",
+        "length": 5,
+        "kind": "code",
+        "disk_offset": 8350531,
+        "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+        "hex": "558bec83ec",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cbf8e0",
+        "end_exclusive": "00cbf8f2",
+        "length": 18,
+        "kind": "code",
+        "disk_offset": 9173216,
+        "sha256": "e90f294366bd20133a2a81451ae40d98bbc171a160abeb401740d956059ac9e6",
+        "hex": "8b4df0e90838f1ffb87c83df00e95172f3ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cbf900",
+        "end_exclusive": "00cbf912",
+        "length": 18,
+        "kind": "code",
+        "disk_offset": 9173248,
+        "sha256": "5aa9ef4aec395aafa51a8f921cbcd7b5ea09cf1429cfc7362f3f215bd94fd6da",
+        "hex": "8b4df0e9e837f1ffb8a883df00e93172f3ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cbf960",
+        "end_exclusive": "00cbf972",
+        "length": 18,
+        "kind": "code",
+        "disk_offset": 9173344,
+        "sha256": "fbdff7b306e636cc5a903b985ef3ee99249250bcf0d3e6a69a6fc83e0423c1ef",
+        "hex": "8b4df0e928bbe8ffb83c84df00e9d171f3ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cbf980",
+        "end_exclusive": "00cbf992",
+        "length": 18,
+        "kind": "code",
+        "disk_offset": 9173376,
+        "sha256": "d10620a9b966e2ff27a3ee5d2662aa7a4092686cc23dbee41e2321a16b3acde8",
+        "hex": "8b4df0e9a8bbe8ffb86884df00e9b171f3ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cbf9e0",
+        "end_exclusive": "00cbf9fa",
+        "length": 26,
+        "kind": "code",
+        "disk_offset": 9173472,
+        "sha256": "b9fa4eae5b2f622f2aff2a104eecfc1a2855c52688d112f90182777555f80867",
+        "hex": "8d4de0e938e375ff8d4de8e9d0fae7ffb80485df00e94971f3ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00cbfa00",
+        "end_exclusive": "00cbfa1a",
+        "length": 26,
+        "kind": "code",
+        "disk_offset": 9173504,
+        "sha256": "6e6fa40efa77d892544190752e20c19a2097ece9b1ae37ccf53130ab0c3982df",
+        "hex": "8d4de0e918e375ff8d4de8e9b0fae7ffb83885df00e92971f3ff",
+        "live_PE_match": true
+      },
+      {
+        "address": "00df8374",
+        "end_exclusive": "00df83a0",
+        "length": 44,
+        "kind": "data",
+        "disk_offset": 10453876,
+        "sha256": "2c07fc2c1df84cdbbb7edaba4f0eb14ddc998b9363172add2537392b1e87ff95",
+        "hex": "ffffffffe0f8cb0022059319010000007483df00000000000000000000000000000000000000000001000000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00df83a0",
+        "end_exclusive": "00df83cc",
+        "length": 44,
+        "kind": "data",
+        "disk_offset": 10453920,
+        "sha256": "0809752daf56c2362d22cdd451552175f7a213a3132319c7c1369936ab9bade2",
+        "hex": "ffffffff00f9cb002205931901000000a083df00000000000000000000000000000000000000000001000000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00df8434",
+        "end_exclusive": "00df8460",
+        "length": 44,
+        "kind": "data",
+        "disk_offset": 10454068,
+        "sha256": "71e1fb31480f55c4a0801559b8261598ab5790debb817f2f36e2221b29d36821",
+        "hex": "ffffffff60f9cb0022059319010000003484df00000000000000000000000000000000000000000001000000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00df8460",
+        "end_exclusive": "00df848c",
+        "length": 44,
+        "kind": "data",
+        "disk_offset": 10454112,
+        "sha256": "a41130a703987dc1f37a16b0740f63a100760deb8c5f19d723dd0ce67d1431ae",
+        "hex": "ffffffff80f9cb0022059319010000006084df00000000000000000000000000000000000000000001000000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00df84f4",
+        "end_exclusive": "00df8528",
+        "length": 52,
+        "kind": "data",
+        "disk_offset": 10454260,
+        "sha256": "dd5c4c81251a681bceafe69d82cff795a3a8a8f9fc7938eabc4e091d4216b63d",
+        "hex": "ffffffffe0f9cb0000000000e8f9cb002205931902000000f484df00000000000000000000000000000000000000000001000000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00df8528",
+        "end_exclusive": "00df855c",
+        "length": 52,
+        "kind": "data",
+        "disk_offset": 10454312,
+        "sha256": "7a428f314e77c0485c67222b507b8a4d2901b02b11f6bb8b8857766901855e7f",
+        "hex": "ffffffff00facb000000000008facb0022059319020000002885df00000000000000000000000000000000000000000001000000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d61ea0",
+        "end_exclusive": "00d61eb7",
+        "length": 23,
+        "kind": "data",
+        "disk_offset": 9838240,
+        "sha256": "92a498c565f3d5e2ec21e0567214405bba2060de39a23b03c264ddff1eee2420",
+        "hex": "566572746578206f7220496e6465782042756666657200",
+        "live_PE_match": true
+      },
+      {
+        "address": "00ce2218",
+        "end_exclusive": "00ce221c",
+        "length": 4,
+        "kind": "data",
+        "disk_offset": 9314840,
+        "sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+        "hex": "b856a000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00ce2210",
+        "end_exclusive": "00ce2214",
+        "length": 4,
+        "kind": "data",
+        "disk_offset": 9314832,
+        "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+        "hex": "8856a000",
+        "live_PE_match": true
+      }
+    ],
+    "relocations": [
+      {
+        "address": 11846233,
+        "expected": 13367792
+      },
+      {
+        "address": 11846346,
+        "expected": 14032544
+      },
+      {
+        "address": 11846521,
+        "expected": 13367824
+      },
+      {
+        "address": 11846634,
+        "expected": 14032544
+      },
+      {
+        "address": 11843843,
+        "expected": 13367656
+      },
+      {
+        "address": 11844275,
+        "expected": 13367688
+      },
+      {
+        "address": 11842707,
+        "expected": 13367528
+      },
+      {
+        "address": 11842867,
+        "expected": 13367560
+      },
+      {
+        "address": 11846177,
+        "expected": 17366440
+      },
+      {
+        "address": 11846209,
+        "expected": 17366496
+      },
+      {
+        "address": 11834635,
+        "expected": 13509144
+      },
+      {
+        "address": 11834715,
+        "expected": 13509136
+      },
+      {
+        "address": 13367529,
+        "expected": 14648188
+      },
+      {
+        "address": 13367561,
+        "expected": 14648232
+      },
+      {
+        "address": 13367657,
+        "expected": 14648380
+      },
+      {
+        "address": 13367689,
+        "expected": 14648424
+      },
+      {
+        "address": 13367793,
+        "expected": 14648580
+      },
+      {
+        "address": 13367825,
+        "expected": 14648632
+      },
+      {
+        "address": 14648184,
+        "expected": 13367520
+      },
+      {
+        "address": 14648196,
+        "expected": 14648180
+      },
+      {
+        "address": 14648228,
+        "expected": 13367552
+      },
+      {
+        "address": 14648240,
+        "expected": 14648224
+      },
+      {
+        "address": 14648376,
+        "expected": 13367648
+      },
+      {
+        "address": 14648388,
+        "expected": 14648372
+      },
+      {
+        "address": 14648420,
+        "expected": 13367680
+      },
+      {
+        "address": 14648432,
+        "expected": 14648416
+      },
+      {
+        "address": 14648568,
+        "expected": 13367776
+      },
+      {
+        "address": 14648576,
+        "expected": 13367784
+      },
+      {
+        "address": 14648588,
+        "expected": 14648564
+      },
+      {
+        "address": 14648620,
+        "expected": 13367808
+      },
+      {
+        "address": 14648628,
+        "expected": 13367816
+      },
+      {
+        "address": 14648640,
+        "expected": 14648616
+      }
+    ],
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe"
+  },
+  "dependencies": {
+    "source_contracts": [
+      "native_string",
+      "native_resource_support",
+      "singleton_lifetime",
+      "NativeStringStorage"
+    ],
+    "actual_globals": [
+      "0108fedc",
+      "01090aa0",
+      "0108fda8",
+      "0108fde0"
+    ],
+    "actual_pool_precondition": "Initialized Win32 critical section and exact slab ownership; no pool initialization implemented"
+  },
+  "defined_functions": {
+    "path": "reports/native_physical_buffer_defined_functions.json",
+    "sha256": "985e6e2e5cd915af443ca3440dc9c63b09d146e9d65997d8a3bd84c762898b5f",
+    "project_saved": true
+  },
+  "limits": [
+    "New C++ services, numeric native profiles are not callable host vtables.",
+    "No complete logical buffer lifetime or creation/retry implementation.",
+    "NativeStringStorage release is nonthrowing and allocation must not return null; zero-byte memcpy omitted as in existing actual-header helpers.",
+    "COM ABI fixture objects do not prove a real driver or runtime render path."
+  ],
+  "new_tracked_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "primary_integration": {
+    "status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+    "new_complete_functions": 16,
+    "verified_evidence": {
+      "worker_proof_path": "J:\\PROG\\battlestations-pacific-decompile-native-physical-buffer-fixture-20260910\\local\\native_physical_buffer_fixture_proof.json",
+      "worker_proof_sha256": "c2d7a566b8c5ffcd4389994c9f0e882d5315d55d5c8b90a33f696da123faaf1a",
+      "proof": {
+        "spans": [
+          {
+            "address": "00b4bb60",
+            "end_exclusive": "00b4bb93",
+            "length": 51,
+            "kind": "code",
+            "disk_offset": 7650144,
+            "sha256": "0ed7446da98417a78c6a1a6569cb25d2961384e409acde3f10c8ae87f398eea6",
+            "hex": "8bc133c9c70030b1ce00c740040100000089480889480c89481089481489481889481c894820894828894824c700581ed600c3",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b4bbb0",
+            "end_exclusive": "00b4bbe3",
+            "length": 51,
+            "kind": "code",
+            "disk_offset": 7650224,
+            "sha256": "6f7b1aaecd09d284753b0c39e5dfcdd72387d9834b87f6392a3458f59e078f21",
+            "hex": "8bc133c9c70030b1ce00c740040100000089480889480c89481089481489481889481c894820894828894824c7007c1ed600c3",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b4c250",
+            "end_exclusive": "00b4c36a",
+            "length": 282,
+            "kind": "code",
+            "disk_offset": 7651920,
+            "sha256": "e93b2019eac98896b4a38ba0ae0f0b55924e59fd47cf3262ee54a8f9341efd4e",
+            "hex": "6aff64a10000000068f0f9cb00508b4424146489250000000083ec145355568bf18b4c24388946148b44243057894e188b7e2833db3bf8741b3bc389462874088b10508b4204ffd03bfb74088b0f8b510857ffd26a016a168d4c2418895c2418895c241ce8871a8dff8b6c24143beb8b7c241074128d47015068a01ed60055e8acb30a0083c40c8b4e286a01894c241c578d4c2424895c2434895c2424895c2428e84a1a8dff3bfb8b742420740f8b54241c525556e876b30a0083c40cc644242c01e81924ffff3bf3885c242c74178b44241c6a0183c0015056e891d98cff8bc8e8da5108003bebc744242cffffffff74136a0183c7015755e872d98cff8bc8e8bb5108008b4c24245f5e5d5b64890d0000000083c420c20c00",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b4c370",
+            "end_exclusive": "00b4c48a",
+            "length": 282,
+            "kind": "code",
+            "disk_offset": 7652208,
+            "sha256": "98fae14d6c49618ca13da379fbc6d713d24fc59c0af72e7dafad38468aaf1386",
+            "hex": "6aff64a1000000006810facb00508b4424146489250000000083ec145355568bf18b4c24388946148b44243057894e188b7e2833db3bf8741b3bc389462874088b10508b4204ffd03bfb74088b0f8b510857ffd26a016a168d4c2418895c2418895c241ce867198dff8b6c24143beb8b7c241074128d47015068a01ed60055e88cb20a0083c40c8b4e286a01894c241c578d4c2424895c2434895c2424895c2428e82a198dff3bfb8b742420740f8b54241c525556e856b20a0083c40cc644242c01e8f922ffff3bf3885c242c74178b44241c6a0183c0015056e871d88cff8bc8e8ba5008003bebc744242cffffffff74136a0183c7015755e852d88cff8bc8e89b5008008b4c24245f5e5d5b64890d0000000083c420c20c00",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b4b900",
+            "end_exclusive": "00b4b965",
+            "length": 101,
+            "kind": "code",
+            "disk_offset": 7649536,
+            "sha256": "d9166dc56c4c0d173f5d89b5f8228763758dca47491fca7ca901687a9d03d24b",
+            "hex": "6aff6868f9cb0064a100000000506489250000000051568bf189742404c706101ed600c744241000000000e8002effff8b462885c0740f8b088b510850ffd2c74628000000008bcec7442410ffffffffe83bfbffff8b4c24085e64890d0000000083c410c3",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b4bab0",
+            "end_exclusive": "00b4bb15",
+            "length": 101,
+            "kind": "code",
+            "disk_offset": 7649968,
+            "sha256": "e3aebe04caf0b2d01f67cc2e3ed6f294b4cc54f25263b30e75ab9e48a193c9e8",
+            "hex": "6aff6888f9cb0064a100000000506489250000000051568bf189742404c706341ed600c744241000000000e8502cffff8b462885c0740f8b088b510850ffd2c74628000000008bcec7442410ffffffffe82bfaffff8b4c24085e64890d0000000083c410c3",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b4b490",
+            "end_exclusive": "00b4b4ed",
+            "length": 93,
+            "kind": "code",
+            "disk_offset": 7648400,
+            "sha256": "e640df383f33d16c4333a286dc618e7e326bd2d3cb046554a091cb74891ba289",
+            "hex": "6aff68e8f8cb0064a100000000506489250000000051568bf157897424088d7e086a008bcfc744241800000000e83ee2ffff8b3f57e8bfb40a0083c4048bcec7442414ffffffffe8147c08008b4c240c5f5e64890d0000000083c410c3",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b4b530",
+            "end_exclusive": "00b4b58d",
+            "length": 93,
+            "kind": "code",
+            "disk_offset": 7648560,
+            "sha256": "84519b4915844578353dfc7bf828f05efad218302b6df3889aa40ad8ed0d142c",
+            "hex": "6aff6808f9cb0064a100000000506489250000000051568bf157897424088d7e086a008bcfc744241800000000e89ee1ffff8b3f57e81fb40a0083c4048bcec7442414ffffffffe8747b08008b4c240c5f5e64890d0000000083c410c3",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b4bb20",
+            "end_exclusive": "00b4bb3e",
+            "length": 30,
+            "kind": "code",
+            "disk_offset": 7650080,
+            "sha256": "b99e5bbcbad203b73e8eb68293df45a64788339c7568a2f9de485c4e1af78738",
+            "hex": "568bf1e8d8fdfffff644240801740956e877aa0a0083c4048bc65ec20400",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b4bb40",
+            "end_exclusive": "00b4bb5e",
+            "length": 30,
+            "kind": "code",
+            "disk_offset": 7650112,
+            "sha256": "4e0e0192b112951173fed940db4c95f480fb235c073701cb10c5b69f187352f5",
+            "hex": "568bf1e868fffffff644240801740956e857aa0a0083c4048bc65ec20400",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b4c210",
+            "end_exclusive": "00b4c230",
+            "length": 32,
+            "kind": "code",
+            "disk_offset": 7651856,
+            "sha256": "37176fde63a704cb7e285c9fba9cf5d740bc3e837dbc597450f7eac52872d2ef",
+            "hex": "568bf1e8e8f6fffff644240801740b56b9a8fd0801e8d6d2ffff8bc65ec20400",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b4c230",
+            "end_exclusive": "00b4c250",
+            "length": 32,
+            "kind": "code",
+            "disk_offset": 7651888,
+            "sha256": "384ffcbeb3481ebeff81d21f03b1d7a76c407e41a546e526024ddbee835e8c3a",
+            "hex": "568bf1e878f8fffff644240801740b56b9e0fd0801e8b6d2ffff8bc65ec20400",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b49500",
+            "end_exclusive": "00b49565",
+            "length": 101,
+            "kind": "code",
+            "disk_offset": 7640320,
+            "sha256": "49e910a019a8873138f78caaffae5010f99a792e1c8efa598097f95deabd0947",
+            "hex": "5356578bf18d7e0c57ff151822ce00834718018b4424108b582c8b4e288b0c992bc18bd0b8abaaaa2af7eac1fa038bc2c1e81f03c20fb79140060000668984510006000066838140060000013b5e347303895e34834718ff57ff151022ce005f5e5bc20400",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b496a0",
+            "end_exclusive": "00b496ff",
+            "length": 95,
+            "kind": "code",
+            "disk_offset": 7640736,
+            "sha256": "c079093c827b41f1430a6de6eb1ffd146fe6a52242cf6e68487b09237acf3165",
+            "hex": "56578b7c240c83ff018bf17d05bf01000000397e087d438d04bd000000005350e8f9be0a008bd833c083c4043946047e188bcb85c974078b168b1482891183c00183c1043b46047cea8b0650e898d20a0083c404891e897e085b5f5ec20400",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b49700",
+            "end_exclusive": "00b49750",
+            "length": 80,
+            "kind": "code",
+            "disk_offset": 7640832,
+            "sha256": "15de752aef3aad37775487213e3ecfa8464a719ec5107c7c7d19ac6fccb0ff56",
+            "hex": "56578b7c240c8bf13b7e087e0657e88dffffff8b46043bc77d1c8d9b000000008b0e8d0c8185c97406c7010000000083c0013bc77cea3b7e047d0d83c8ff8bff0146043b7e047cf8897e045f5ec20400",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b3f4c0",
+            "end_exclusive": "00b3f4de",
+            "length": 30,
+            "kind": "code",
+            "disk_offset": 7599296,
+            "sha256": "5b51ca9686f1c6eeade950ec88fb066664b6be37f22c586fbd5a55aebfa9e43a",
+            "hex": "8b510885d274168b41046a0183c0015052e8eaa78dff8bc8e833200900c3",
+            "live_PE_match": true
+          },
+          {
+            "address": "0041dd20",
+            "end_exclusive": "0041dd3d",
+            "length": 29,
+            "kind": "code",
+            "disk_offset": 122144,
+            "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+            "hex": "8b510485d274158b016a0183c0015052e88bbfffff8bc8e8d4377b00c3",
+            "live_PE_match": true
+          },
+          {
+            "address": "00bd30f0",
+            "end_exclusive": "00bd30f7",
+            "length": 7,
+            "kind": "code",
+            "disk_offset": 8204528,
+            "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+            "hex": "c70130b1ce00c3",
+            "live_PE_match": true
+          },
+          {
+            "address": "00bf55be",
+            "end_exclusive": "00bf55c3",
+            "length": 5,
+            "kind": "code",
+            "disk_offset": 8345022,
+            "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+            "hex": "e958120000",
+            "live_PE_match": true
+          },
+          {
+            "address": "00bf6989",
+            "end_exclusive": "00bf698e",
+            "length": 5,
+            "kind": "code",
+            "disk_offset": 8350089,
+            "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+            "hex": "e91efcffff",
+            "live_PE_match": true
+          },
+          {
+            "address": "00bf681b",
+            "end_exclusive": "00bf6820",
+            "length": 5,
+            "kind": "code",
+            "disk_offset": 8349723,
+            "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+            "hex": "558bec83ec",
+            "live_PE_match": true
+          },
+          {
+            "address": "00bf65ac",
+            "end_exclusive": "00bf65b1",
+            "length": 5,
+            "kind": "code",
+            "disk_offset": 8349100,
+            "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+            "hex": "e917380000",
+            "live_PE_match": true
+          },
+          {
+            "address": "00b3e730",
+            "end_exclusive": "00b3e735",
+            "length": 5,
+            "kind": "code",
+            "disk_offset": 7595824,
+            "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+            "hex": "64a1000000",
+            "live_PE_match": true
+          },
+          {
+            "address": "0041dd40",
+            "end_exclusive": "0041dd45",
+            "length": 5,
+            "kind": "code",
+            "disk_offset": 122176,
+            "sha256": "85779ed6f2d1233c2b1416dc74b68dcafca23831882064b416b41c4c6b72ba35",
+            "hex": "568bf18b0e",
+            "live_PE_match": true
+          },
+          {
+            "address": "00419cc0",
+            "end_exclusive": "00419cc5",
+            "length": 5,
+            "kind": "code",
+            "disk_offset": 105664,
+            "sha256": "fa86ee16e5f194735b150fd2d88bb6db898b8e7ec6996963b14ab227a6b2ac11",
+            "hex": "64a1000000",
+            "live_PE_match": true
+          },
+          {
+            "address": "00bd1510",
+            "end_exclusive": "00bd1515",
+            "length": 5,
+            "kind": "code",
+            "disk_offset": 8197392,
+            "sha256": "03b8aafca04ddc3f074c25425a1100334f82c3aad049d1f1bb01dcac140d9247",
+            "hex": "538b5c240c",
+            "live_PE_match": true
+          },
+          {
+            "address": "00bf7680",
+            "end_exclusive": "00bf7685",
+            "length": 5,
+            "kind": "code",
+            "disk_offset": 8353408,
+            "sha256": "946939166d6c15419fa026d9cb557ddfa19a91dd3afbacd76f67349420e96885",
+            "hex": "558bec5756",
+            "live_PE_match": true
+          },
+          {
+            "address": "00bf6b43",
+            "end_exclusive": "00bf6b48",
+            "length": 5,
+            "kind": "code",
+            "disk_offset": 8350531,
+            "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+            "hex": "558bec83ec",
+            "live_PE_match": true
+          },
+          {
+            "address": "00cbf8e0",
+            "end_exclusive": "00cbf8f2",
+            "length": 18,
+            "kind": "code",
+            "disk_offset": 9173216,
+            "sha256": "e90f294366bd20133a2a81451ae40d98bbc171a160abeb401740d956059ac9e6",
+            "hex": "8b4df0e90838f1ffb87c83df00e95172f3ff",
+            "live_PE_match": true
+          },
+          {
+            "address": "00cbf900",
+            "end_exclusive": "00cbf912",
+            "length": 18,
+            "kind": "code",
+            "disk_offset": 9173248,
+            "sha256": "5aa9ef4aec395aafa51a8f921cbcd7b5ea09cf1429cfc7362f3f215bd94fd6da",
+            "hex": "8b4df0e9e837f1ffb8a883df00e93172f3ff",
+            "live_PE_match": true
+          },
+          {
+            "address": "00cbf960",
+            "end_exclusive": "00cbf972",
+            "length": 18,
+            "kind": "code",
+            "disk_offset": 9173344,
+            "sha256": "fbdff7b306e636cc5a903b985ef3ee99249250bcf0d3e6a69a6fc83e0423c1ef",
+            "hex": "8b4df0e928bbe8ffb83c84df00e9d171f3ff",
+            "live_PE_match": true
+          },
+          {
+            "address": "00cbf980",
+            "end_exclusive": "00cbf992",
+            "length": 18,
+            "kind": "code",
+            "disk_offset": 9173376,
+            "sha256": "d10620a9b966e2ff27a3ee5d2662aa7a4092686cc23dbee41e2321a16b3acde8",
+            "hex": "8b4df0e9a8bbe8ffb86884df00e9b171f3ff",
+            "live_PE_match": true
+          },
+          {
+            "address": "00cbf9e0",
+            "end_exclusive": "00cbf9fa",
+            "length": 26,
+            "kind": "code",
+            "disk_offset": 9173472,
+            "sha256": "b9fa4eae5b2f622f2aff2a104eecfc1a2855c52688d112f90182777555f80867",
+            "hex": "8d4de0e938e375ff8d4de8e9d0fae7ffb80485df00e94971f3ff",
+            "live_PE_match": true
+          },
+          {
+            "address": "00cbfa00",
+            "end_exclusive": "00cbfa1a",
+            "length": 26,
+            "kind": "code",
+            "disk_offset": 9173504,
+            "sha256": "6e6fa40efa77d892544190752e20c19a2097ece9b1ae37ccf53130ab0c3982df",
+            "hex": "8d4de0e918e375ff8d4de8e9b0fae7ffb83885df00e92971f3ff",
+            "live_PE_match": true
+          },
+          {
+            "address": "00df8374",
+            "end_exclusive": "00df83a0",
+            "length": 44,
+            "kind": "data",
+            "disk_offset": 10453876,
+            "sha256": "2c07fc2c1df84cdbbb7edaba4f0eb14ddc998b9363172add2537392b1e87ff95",
+            "hex": "ffffffffe0f8cb0022059319010000007483df00000000000000000000000000000000000000000001000000",
+            "live_PE_match": true
+          },
+          {
+            "address": "00df83a0",
+            "end_exclusive": "00df83cc",
+            "length": 44,
+            "kind": "data",
+            "disk_offset": 10453920,
+            "sha256": "0809752daf56c2362d22cdd451552175f7a213a3132319c7c1369936ab9bade2",
+            "hex": "ffffffff00f9cb002205931901000000a083df00000000000000000000000000000000000000000001000000",
+            "live_PE_match": true
+          },
+          {
+            "address": "00df8434",
+            "end_exclusive": "00df8460",
+            "length": 44,
+            "kind": "data",
+            "disk_offset": 10454068,
+            "sha256": "71e1fb31480f55c4a0801559b8261598ab5790debb817f2f36e2221b29d36821",
+            "hex": "ffffffff60f9cb0022059319010000003484df00000000000000000000000000000000000000000001000000",
+            "live_PE_match": true
+          },
+          {
+            "address": "00df8460",
+            "end_exclusive": "00df848c",
+            "length": 44,
+            "kind": "data",
+            "disk_offset": 10454112,
+            "sha256": "a41130a703987dc1f37a16b0740f63a100760deb8c5f19d723dd0ce67d1431ae",
+            "hex": "ffffffff80f9cb0022059319010000006084df00000000000000000000000000000000000000000001000000",
+            "live_PE_match": true
+          },
+          {
+            "address": "00df84f4",
+            "end_exclusive": "00df8528",
+            "length": 52,
+            "kind": "data",
+            "disk_offset": 10454260,
+            "sha256": "dd5c4c81251a681bceafe69d82cff795a3a8a8f9fc7938eabc4e091d4216b63d",
+            "hex": "ffffffffe0f9cb0000000000e8f9cb002205931902000000f484df00000000000000000000000000000000000000000001000000",
+            "live_PE_match": true
+          },
+          {
+            "address": "00df8528",
+            "end_exclusive": "00df855c",
+            "length": 52,
+            "kind": "data",
+            "disk_offset": 10454312,
+            "sha256": "7a428f314e77c0485c67222b507b8a4d2901b02b11f6bb8b8857766901855e7f",
+            "hex": "ffffffff00facb000000000008facb0022059319020000002885df00000000000000000000000000000000000000000001000000",
+            "live_PE_match": true
+          },
+          {
+            "address": "00d61ea0",
+            "end_exclusive": "00d61eb7",
+            "length": 23,
+            "kind": "data",
+            "disk_offset": 9838240,
+            "sha256": "92a498c565f3d5e2ec21e0567214405bba2060de39a23b03c264ddff1eee2420",
+            "hex": "566572746578206f7220496e6465782042756666657200",
+            "live_PE_match": true
+          },
+          {
+            "address": "00ce2218",
+            "end_exclusive": "00ce221c",
+            "length": 4,
+            "kind": "data",
+            "disk_offset": 9314840,
+            "sha256": "f03bc111c216b8f67ab58aa8c77f775b1f4b8a20478a48d4be563ff51efa186b",
+            "hex": "b856a000",
+            "live_PE_match": true
+          },
+          {
+            "address": "00ce2210",
+            "end_exclusive": "00ce2214",
+            "length": 4,
+            "kind": "data",
+            "disk_offset": 9314832,
+            "sha256": "185a5fca4ac0e7e71b064b7142a7c3e9aff75525c45428d05f8a277255e4f88b",
+            "hex": "8856a000",
+            "live_PE_match": true
+          }
+        ],
+        "relocations": [
+          {
+            "address": 11846233,
+            "expected": 13367792
+          },
+          {
+            "address": 11846346,
+            "expected": 14032544
+          },
+          {
+            "address": 11846521,
+            "expected": 13367824
+          },
+          {
+            "address": 11846634,
+            "expected": 14032544
+          },
+          {
+            "address": 11843843,
+            "expected": 13367656
+          },
+          {
+            "address": 11844275,
+            "expected": 13367688
+          },
+          {
+            "address": 11842707,
+            "expected": 13367528
+          },
+          {
+            "address": 11842867,
+            "expected": 13367560
+          },
+          {
+            "address": 11846177,
+            "expected": 17366440
+          },
+          {
+            "address": 11846209,
+            "expected": 17366496
+          },
+          {
+            "address": 11834635,
+            "expected": 13509144
+          },
+          {
+            "address": 11834715,
+            "expected": 13509136
+          },
+          {
+            "address": 13367529,
+            "expected": 14648188
+          },
+          {
+            "address": 13367561,
+            "expected": 14648232
+          },
+          {
+            "address": 13367657,
+            "expected": 14648380
+          },
+          {
+            "address": 13367689,
+            "expected": 14648424
+          },
+          {
+            "address": 13367793,
+            "expected": 14648580
+          },
+          {
+            "address": 13367825,
+            "expected": 14648632
+          },
+          {
+            "address": 14648184,
+            "expected": 13367520
+          },
+          {
+            "address": 14648196,
+            "expected": 14648180
+          },
+          {
+            "address": 14648228,
+            "expected": 13367552
+          },
+          {
+            "address": 14648240,
+            "expected": 14648224
+          },
+          {
+            "address": 14648376,
+            "expected": 13367648
+          },
+          {
+            "address": 14648388,
+            "expected": 14648372
+          },
+          {
+            "address": 14648420,
+            "expected": 13367680
+          },
+          {
+            "address": 14648432,
+            "expected": 14648416
+          },
+          {
+            "address": 14648568,
+            "expected": 13367776
+          },
+          {
+            "address": 14648576,
+            "expected": 13367784
+          },
+          {
+            "address": 14648588,
+            "expected": 14648564
+          },
+          {
+            "address": 14648620,
+            "expected": 13367808
+          },
+          {
+            "address": 14648628,
+            "expected": 13367816
+          },
+          {
+            "address": 14648640,
+            "expected": 14648616
+          }
+        ],
+        "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "project": "C:/Users/sqz269/bsp.gpr",
+        "program": "/battlestationspacific.exe",
+        "source_sha256": {
+          "include/bsp/native_physical_buffer_owner.hpp": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45",
+          "src/native_physical_buffer_owner.cpp": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d",
+          "src/singleton_lifetime.cpp": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+          "src/native_string.cpp": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+          "src/native_resource_support.cpp": "a9653ec192cd9bca4c736a70a65176c635146284e81b8ab914fa4a30aa17f5f8"
+        },
+        "executed_primary_functions": [
+          {
+            "address": "00b4bb60",
+            "function": "construct_native_physical_index_buffer_00b4bb60",
+            "link_map": "0001:00007b90       ?construct_native_physical_index_buffer_00b4bb60@bsp@@YAPAXPAX@Z 30008b90 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b4bbb0",
+            "function": "construct_native_physical_vertex_buffer_00b4bbb0",
+            "link_map": "0001:00007bb0       ?construct_native_physical_vertex_buffer_00b4bbb0@bsp@@YAPAXPAX@Z 30008bb0 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b4c250",
+            "function": "attach_native_physical_index_buffer_00b4c250",
+            "link_map": "0001:00007b10       ?attach_native_physical_index_buffer_00b4c250@bsp@@YAXPAXPAUIDirect3DIndexBuffer9@@IIAAUNativePhysicalBufferOwnerContext@1@@Z 30008b10 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b4c370",
+            "function": "attach_native_physical_vertex_buffer_00b4c370",
+            "link_map": "0001:00007b20       ?attach_native_physical_vertex_buffer_00b4c370@bsp@@YAXPAXPAUIDirect3DVertexBuffer9@@IIAAUNativePhysicalBufferOwnerContext@1@@Z 30008b20 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b3f4c0",
+            "function": "destroy_native_buffer_diagnostic_record_00b3f4c0",
+            "link_map": "0001:00007e70       ?destroy_native_buffer_diagnostic_record_00b3f4c0@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 30008e70 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b4b490",
+            "function": "destroy_native_physical_index_buffer_base_00b4b490",
+            "link_map": "0001:00007ec0       ?destroy_native_physical_index_buffer_base_00b4b490@bsp@@YAXPAX@Z 30008ec0 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b4b530",
+            "function": "destroy_native_physical_vertex_buffer_base_00b4b530",
+            "link_map": "0001:00007ef0       ?destroy_native_physical_vertex_buffer_base_00b4b530@bsp@@YAXPAX@Z 30008ef0 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b4b900",
+            "function": "destroy_native_physical_index_buffer_00b4b900",
+            "link_map": "0001:00007ea0       ?destroy_native_physical_index_buffer_00b4b900@bsp@@YAXPAXAAUNativePhysicalBufferOwnerContext@1@@Z 30008ea0 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b4bab0",
+            "function": "destroy_native_physical_vertex_buffer_00b4bab0",
+            "link_map": "0001:00007ed0       ?destroy_native_physical_vertex_buffer_00b4bab0@bsp@@YAXPAXAAUNativePhysicalBufferOwnerContext@1@@Z 30008ed0 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b4bb20",
+            "function": "delete_native_private_index_buffer_00b4bb20",
+            "link_map": "0001:00007c50       ?delete_native_private_index_buffer_00b4bb20@bsp@@YAPAXPAXIAAUNativePhysicalBufferOwnerContext@1@@Z 30008c50 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b4bb40",
+            "function": "delete_native_private_vertex_buffer_00b4bb40",
+            "link_map": "0001:00007c80       ?delete_native_private_vertex_buffer_00b4bb40@bsp@@YAPAXPAXIAAUNativePhysicalBufferOwnerContext@1@@Z 30008c80 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b4c210",
+            "function": "delete_native_pooled_index_buffer_00b4c210",
+            "link_map": "0001:00007bd0       ?delete_native_pooled_index_buffer_00b4c210@bsp@@YAPAXPAXIAAUNativePhysicalBufferOwnerContext@1@@Z 30008bd0 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b4c230",
+            "function": "delete_native_pooled_vertex_buffer_00b4c230",
+            "link_map": "0001:00007c10       ?delete_native_pooled_vertex_buffer_00b4c230@bsp@@YAPAXPAXIAAUNativePhysicalBufferOwnerContext@1@@Z 30008c10 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b49500",
+            "function": "return_native_physical_buffer_slot_00b49500",
+            "link_map": "0001:00008060       ?return_native_physical_buffer_slot_00b49500@bsp@@YAXPAX0@Z 30009060 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b496a0",
+            "function": "reserve_native_physical_buffer_pointer_array_00b496a0",
+            "link_map": "0001:00007f00       ?reserve_native_physical_buffer_pointer_array_00b496a0@bsp@@YAXPAXI@Z 30008f00 f   main_bsp_core:native_physical_buffer_owner.obj"
+          },
+          {
+            "address": "00b49700",
+            "function": "resize_native_physical_buffer_pointer_array_00b49700",
+            "link_map": "0001:00007f90       ?resize_native_physical_buffer_pointer_array_00b49700@bsp@@YAXPAXI@Z 30008f90 f   main_bsp_core:native_physical_buffer_owner.obj"
+          }
+        ],
+        "executed_primary_native_bytes": 1484,
+        "verified_span_count": 43,
+        "verified_total_bytes": 2005,
+        "verified_relocation_count": 32,
+        "completed_utc": "2026-09-11T01:29:12.982865+00:00",
+        "status": "strict_win32_build_and_one_private_native_vs_actual_production_library_composition_fixture_passed",
+        "comparisons": 30,
+        "matching_trace_dwords": 14520,
+        "isolated_double_fault_regression": {
+          "case_count": 1,
+          "execution": "Separate native/source child-process routes of the same fixture, with a set_terminate handler that exits91 only after exactly two observed allocations.",
+          "trigger": "Index derived destructor support getter throws during actual8-byte support allocation; original/native base cleanup then throws during actual4-byte reserve allocation caused by signed negative capacity.",
+          "original_native_result": "terminate; controlled exit91",
+          "before_fix_production_result": "replacement FixtureThrow phase10 escaped; controlled exit92",
+          "after_fix_production_result": "terminate; controlled exit91",
+          "before_fix_source_sha256": "d0d667c746c78b74b63582e5ac6d1da95743e02da8d4fffa98f7a128cb6420eb",
+          "before_fix_library_sha256": "91a4b0af33e2f0eb37af8d6f0107e7381cb5f2e5b8b08e8ec22ae6247d6b3d55",
+          "fixed_source_sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d",
+          "fix": "Dedicated unwind_destroy_base(void*) noexcept is used only by the derived destructor catch. Normal base destruction remains throwable.",
+          "runtime_evidence": [
+            "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/ehhelpers.cpp:135-144: __FrameUnwindFilter terminates for EH_EXCEPTION_NUMBER.",
+            "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/crt/src/vcruntime/frame.cpp:1235: unwind action invocation uses __FrameUnwindFilter."
+          ]
+        },
+        "production_library": {
+          "copied_from": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+          "fixture_copy": "local/main_bsp_core.lib",
+          "sha256": "6dcaa62226066f8a10e3df372afebcf667ee727007bea98a902c392ff22e4df6",
+          "current_main_library_sha256": "6dcaa62226066f8a10e3df372afebcf667ee727007bea98a902c392ff22e4df6",
+          "definition_evidence": "All 16 main implementations link from main_bsp_core:native_physical_buffer_owner.obj. The private copied physical C++ file is source-pinning evidence and is not compiled into the fixture."
+        },
+        "composition_helpers": [
+          {
+            "original_entry": "00bf681b",
+            "fixture_entry": "allocation_boundary",
+            "production_entry": "singleton_lifetime_allocate",
+            "forwarded_unchanged_body": "fixture_actual_lifetime_allocate from src/singleton_lifetime.cpp",
+            "observation": "Real allocator; records raw size, supports explicit failure injection or actual-header mutations around the allocation."
+          },
+          {
+            "original_entry": "00bf65ac",
+            "fixture_entry": "free_boundary",
+            "production_entry": "singleton_lifetime_free",
+            "forwarded_unchanged_body": "fixture_actual_lifetime_free from src/singleton_lifetime.cpp",
+            "observation": "Real free, followed by controlled current-header changes for post-free publication proof."
+          },
+          {
+            "original_entry": "0041dd40",
+            "fixture_entry": "string_resize_boundary",
+            "production_entry": "resize_native_string_header_0041dd40",
+            "forwarded_unchanged_body": "fixture_actual_string_resize from src/native_string.cpp",
+            "observation": "Same actual header and NativeStringStorage; records headers and one fixture-only post-helper throw."
+          },
+          {
+            "original_entry": "00b3e730",
+            "fixture_entry": "support_boundary",
+            "production_entry": "resource_support_singleton_00b3e730",
+            "forwarded_unchanged_body": "fixture_actual_resource_support from src/native_resource_support.cpp",
+            "observation": "Same actual 0108FEDC slot and SingletonLifetimeDomain; current-COM/header mutations and actual support allocation failure route."
+          },
+          {
+            "original_entry": "00419cc0 + 00bd1510",
+            "fixture_entry": "string_storage_boundary + string_release_boundary",
+            "forwarded_unchanged_body": "Same NativeStringStorage object supplied to production context",
+            "observation": "Assert native one-element release and pass captured pointer/current size to real CRT-backed storage."
+          },
+          {
+            "original_entry": "00bf7680",
+            "fixture_entry": "copy_boundary",
+            "forwarded_unchanged_body": "std::memcpy for nonzero bytes; zero-byte no-op",
+            "observation": "No copy mutation or synthetic data."
+          }
+        ],
+        "complete_native_dependency_bodies_retained": [
+          "0041dd20:29 bytes",
+          "00bd30f0:7 bytes",
+          "00bf55be:5-byte allocator jump",
+          "00bf6989:5-byte free jump"
+        ],
+        "registered_EH_bridges": [
+          {
+            "parent": "00b4b490",
+            "push_immediate": "00b4b493",
+            "original_handler": "00cbf8e8",
+            "FuncInfo": "00df837c",
+            "host_handler": "base_index_handler"
+          },
+          {
+            "parent": "00b4b530",
+            "push_immediate": "00b4b533",
+            "original_handler": "00cbf908",
+            "FuncInfo": "00df83a8",
+            "host_handler": "base_vertex_handler"
+          },
+          {
+            "parent": "00b4b900",
+            "push_immediate": "00b4b903",
+            "original_handler": "00cbf968",
+            "FuncInfo": "00df843c",
+            "host_handler": "index_handler"
+          },
+          {
+            "parent": "00b4bab0",
+            "push_immediate": "00b4bab3",
+            "original_handler": "00cbf988",
+            "FuncInfo": "00df8468",
+            "host_handler": "vertex_handler"
+          },
+          {
+            "parent": "00b4c250",
+            "push_immediate": "00b4c259",
+            "original_handler": "00cbf9f0",
+            "FuncInfo": "00df8504",
+            "host_handler": "attach_index_handler"
+          },
+          {
+            "parent": "00b4c370",
+            "push_immediate": "00b4c379",
+            "original_handler": "00cbfa10",
+            "FuncInfo": "00df8538",
+            "host_handler": "attach_vertex_handler"
+          }
+        ],
+        "EH_boundary": "Six host-image registered MOV EAX, relocated original FuncInfo; JMP actual __CxxFrameHandler3 entries. Original FuncInfo, maps and unwind instructions remain relocated original bytes. Original handler entry bodies are verified but replaced at registration.",
+        "original_unwind_actions_exercised": [
+          "00cbf8e0",
+          "00cbf900",
+          "00cbf960",
+          "00cbf980",
+          "00cbf9e0",
+          "00cbfa00",
+          "00cbfa08"
+        ],
+        "original_unwind_action_verified_not_exercised": [
+          "00cbf9e8 (index attach state1 record cleanup; vertex analogue and complete B3F4C0 exercised)"
+        ],
+        "case_names": [
+          "index constructor",
+          "vertex constructor",
+          "index captured COM publication",
+          "vertex captured COM publication",
+          "same COM still creates diagnostics",
+          "null COM releases old owner",
+          "AddRef throw precedes diagnostic states",
+          "old Release throw precedes diagnostic states",
+          "initial string allocation throw",
+          "state0 current temporary cleanup",
+          "state0 partial second resize has no record cleanup",
+          "state1 current diagnostic and temporary cleanup",
+          "normal cleanup captured buffers and current record size",
+          "index support-mutated current COM destruction",
+          "vertex support-mutated current COM destruction",
+          "index support throw invokes base unwind",
+          "vertex support throw invokes base unwind",
+          "current COM Release throw invokes base unwind",
+          "index base allocation throw installs final profile",
+          "vertex base allocation throw installs final profile",
+          "private index scalar free",
+          "private vertex scalar free",
+          "private high flag without scalar free",
+          "pooled index returns exact index slab",
+          "pooled vertex returns exact vertex slab",
+          "pooled high flag without slot return",
+          "pooled support throw skips slot return",
+          "signed raw array and post-free publication",
+          "raw reserve wrapped zero byte allocation",
+          "diagnostic record current header destructor"
+        ],
+        "coverage": [
+          "Both constructors initialize pooled numeric profiles, count1 and all recovered owner fields.",
+          "Both attach bodies publish flags/capacity/new COM before captured AddRef and old Release; current COM may change during calls and diagnostics capture the current field.",
+          "Same COM skips reference operations; null replacement releases old COM while still constructing diagnostics.",
+          "AddRef/Release throw before diagnostic state activation; first string allocation throw; state0 current temporary cleanup; partial second resize without record cleanup; state1 current record/temporary cleanup after actual support allocation failure.",
+          "Normal diagnostic cleanup retains captured buffer pointers, uses current record length, and uses captured first length.",
+          "Both derived destructors reload support-mutated COM and clear current field after captured Release; support or COM Release failure destroys the base array without falsely clearing current COM.",
+          "Both base destructor EH actions install base profile after signed-negative-capacity reserve allocation failure.",
+          "All four deleting functions execute against real heap storage or the exact two initialized actual pool objects; bit-zero-clear paths retain storage, and support failure skips pooled return.",
+          "Native slot return uses real Win32 critical sections, wrapping tracked depth, 30h stride, slab index at slot+2C, WORD free stack, and unsigned lowest-slab update; inactive pools and other slab bytes remain unchanged.",
+          "Raw array sequence covers signed minimum/capacity/count comparisons, current-header reload after allocation, post-free pointer/capacity publication, current-count zero fill, signed negative shrink, and 40000000h requested capacity wrapping to a real zero-byte allocation.",
+          "Standalone original diagnostic-record destructor releases current name while preserving borrowed COM and header bytes.",
+          "One isolated double-fault regression confirms original terminate versus pre-fix replacement exception, then confirms corrected production terminate while the 30-comparison sequence still passes."
+        ],
+        "limits": [
+          "COM AddRef/Release receivers are explicit fixture-only IUnknown ABI observation objects. No real D3D9 driver/buffer or game validation.",
+          "Exception injections and field mutations are fixture-only observations; no claim that real COM APIs normally throw C++ exceptions.",
+          "Private initialized actual pool storage does not implement or validate full application pool initialization.",
+          "Native functions are invoked with their original x86 conventions by fixture thunks; production public interfaces remain new C++ APIs, not drop-in ABI replacements.",
+          "No production changes, new tracked tests, shared metadata edits, or worker commit."
+        ],
+        "build_command": "./local/build_native_physical_buffer_check.ps1",
+        "strict_flags": "/std:c++17 /EHsc /fp:strict /O2 /Oy- /MD /Gy /Gw /W4 /WX; link /BASE:0x30000000 /DYNAMICBASE:NO /FIXED /SAFESEH:NO /MAP",
+        "artifact_sha256": {
+          "local/native_physical_buffer_check.cpp": "6fa8debab7977d032df51771fc0968022003dce0afe48dd236f7f8c3cba48c02",
+          "local/build_native_physical_buffer_check.ps1": "397aa99a413421920925723dd6b562796d0e68d60468c7f817311a6f0ef0d3b3",
+          "local/native_physical_buffer_spans.hpp": "3956c563d9d06cf4948787c57f1cbc5d47da97f66cf6a0156c2df01c07e4919c",
+          "local/native_physical_buffer_verified.json": "4d0a06d24da68d5d700b01f657e21e377f8be6844543aa8bf2d8a13559ce6c72",
+          "local/native_physical_buffer_build.log": "a990c22db0179de726780ff046c5ead558906f71a2a093b12364ef00bb4d7c53",
+          "local/native_physical_buffer_seeds.json": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+          "build/physical-buffer-check/native_physical_buffer_check.exe": "49efaebbf67df564ed87b8734d15b31c6a55df4e305766d9f1890767f7628de8",
+          "build/physical-buffer-check/native_physical_buffer_check.map": "ff0e76f58f7c66d932b951a0f1b648f6bd768d1e521b75549b0a2936c1f3b904",
+          "local/native_physical_double_fault_original.log": "5f85d67732f28a1f4b6b2daf2abe37d6e94d9ed3a7f28c40c2668e3b9031bd94",
+          "local/native_physical_double_fault_before_fix.log": "3435fadee616cfc424c61c950a41bcf8424c79cbff2b760c30d5f155feb9cc37",
+          "local/native_physical_double_fault_native_final.log": "5f85d67732f28a1f4b6b2daf2abe37d6e94d9ed3a7f28c40c2668e3b9031bd94",
+          "local/native_physical_double_fault_source_final.log": "5f85d67732f28a1f4b6b2daf2abe37d6e94d9ed3a7f28c40c2668e3b9031bd94",
+          "local/native_physical_buffer_check_before_fix.exe": "f9183e8b85c0d342d805d3605a19a4ab84504742bf8470aa1204451c2eb4594a",
+          "local/native_physical_buffer_owner_before_double_fault.cpp": "d0d667c746c78b74b63582e5ac6d1da95743e02da8d4fffa98f7a128cb6420eb",
+          "local/native_physical_buffer_proof_before_double_fault.json": "e07fb50382fd732f668d6d6a72d340bf907fd788a47933908fe510961fc6c79f"
+        },
+        "compiled_machine": "014c MSVC Win32 x86"
+      },
+      "worker_source_and_primary_library_identical": true,
+      "worker_artifacts_verified": true,
+      "primary_execution": [
+        {
+          "case": "sequence",
+          "exit_code": 0,
+          "expected_exit_code": 0,
+          "path": "local\\native_physical_buffer_primary_sequence.txt",
+          "sha256": "54e5f09477a804639e876d8e2fbfdc3ee744cf92cf0b016fd27f1a874138cfb5"
+        },
+        {
+          "case": "native_double_fault",
+          "exit_code": 91,
+          "expected_exit_code": 91,
+          "path": "local\\native_physical_buffer_primary_native_double_fault.txt",
+          "sha256": "5f85d67732f28a1f4b6b2daf2abe37d6e94d9ed3a7f28c40c2668e3b9031bd94"
+        },
+        {
+          "case": "source_double_fault",
+          "exit_code": 91,
+          "expected_exit_code": 91,
+          "path": "local\\native_physical_buffer_primary_source_double_fault.txt",
+          "sha256": "5f85d67732f28a1f4b6b2daf2abe37d6e94d9ed3a7f28c40c2668e3b9031bd94"
+        }
+      ],
+      "actual_COM_driver": false,
+      "actual_Win32_locks": true
+    },
+    "primary_artifacts": [
+      {
+        "path": "include/bsp/native_physical_buffer_owner.hpp",
+        "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45"
+      },
+      {
+        "path": "src/native_physical_buffer_owner.cpp",
+        "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d"
+      },
+      {
+        "path": "local/native_physical_buffer_primary_sequence.txt",
+        "sha256": "54e5f09477a804639e876d8e2fbfdc3ee744cf92cf0b016fd27f1a874138cfb5"
+      },
+      {
+        "path": "local/native_physical_buffer_primary_native_double_fault.txt",
+        "sha256": "5f85d67732f28a1f4b6b2daf2abe37d6e94d9ed3a7f28c40c2668e3b9031bd94"
+      },
+      {
+        "path": "local/native_physical_buffer_primary_source_double_fault.txt",
+        "sha256": "5f85d67732f28a1f4b6b2daf2abe37d6e94d9ed3a7f28c40c2668e3b9031bd94"
+      }
+    ],
+    "build": {
+      "path": "reports/native_physical_buffer_primary_build.txt",
+      "sha256": "2c5c4d3d8363e44197277a7404c30e90bf9ac2c028b87bc294cd4b8b20993f29",
+      "tests": 2,
+      "passed": true
+    },
+    "annotations_applied": true,
+    "new_tracked_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "saved_annotations": {
+      "path": "reports/native_physical_buffer_annotations.json",
+      "sha256": "71690c8c8bf4663b109c20da8dc2a7d89b9728ffa5c3ea5f33c61e1181d78300",
+      "old_names_comments_preserved": true,
+      "project_saved": true
+    },
+    "refreshed_exports": [
+      {
+        "address": "00b4bb60",
+        "path": "exports/bsp/functions/00b4bb60/decompiled.c",
+        "sha256": "3b22c08ebd2ba002a4f23043d685412c017c76da73d405a8b060aea32b1f74ed"
+      },
+      {
+        "address": "00b4bbb0",
+        "path": "exports/bsp/functions/00b4bbb0/decompiled.c",
+        "sha256": "0d4a1e1b1c0d45924ffa7bdfb2668eeccca66378f25e8ef0e28218c0a269eeb6"
+      },
+      {
+        "address": "00b4c250",
+        "path": "exports/bsp/functions/00b4c250/decompiled.c",
+        "sha256": "e28aa4da31f83e200a1039419c449f4de409194daa742ac000ccd136e70a74b9"
+      },
+      {
+        "address": "00b4c370",
+        "path": "exports/bsp/functions/00b4c370/decompiled.c",
+        "sha256": "6326cc58763901c802799c45f070a2dd0512167041b62c3c53fe6b32162ce0b0"
+      },
+      {
+        "address": "00b4b900",
+        "path": "exports/bsp/functions/00b4b900/decompiled.c",
+        "sha256": "3fc36eff6b4a592fa31ccd77f6fcb241edcd53d91b685bd4cf347baed87b4884"
+      },
+      {
+        "address": "00b4bab0",
+        "path": "exports/bsp/functions/00b4bab0/decompiled.c",
+        "sha256": "9db620c616d3cf512fd94e156206f7c793eb256ad5501cce3ee662a854d6f45c"
+      },
+      {
+        "address": "00b4b490",
+        "path": "exports/bsp/functions/00b4b490/decompiled.c",
+        "sha256": "99b5ab48a1c74ed19c51b93e41fcf38ed32aabe7f14d444aae88f36784af8e53"
+      },
+      {
+        "address": "00b4b530",
+        "path": "exports/bsp/functions/00b4b530/decompiled.c",
+        "sha256": "2d93384ec2ca0c091948c9dff8678fd818a9806700292ee94e176ad2d78ad1eb"
+      },
+      {
+        "address": "00b4bb20",
+        "path": "exports/bsp/functions/00b4bb20/decompiled.c",
+        "sha256": "01d0626e183958399cb1485b35b87f38ce152ec42c4c95897e93e95ee20073cd"
+      },
+      {
+        "address": "00b4bb40",
+        "path": "exports/bsp/functions/00b4bb40/decompiled.c",
+        "sha256": "43a8aff8ff935ff308a733f7d602021eceadf97e1d69ba240b8be5334ceecd8e"
+      },
+      {
+        "address": "00b4c210",
+        "path": "exports/bsp/functions/00b4c210/decompiled.c",
+        "sha256": "9ecf4cc2d88c7097da4ee532e4a88bbdebb4de278c960ddd72dafc58ba85d533"
+      },
+      {
+        "address": "00b4c230",
+        "path": "exports/bsp/functions/00b4c230/decompiled.c",
+        "sha256": "b4b182035b25e4b3b82d68a44f815a3f3ec6c889425a52362c08b42b6b640a4b"
+      },
+      {
+        "address": "00b49500",
+        "path": "exports/bsp/functions/00b49500/decompiled.c",
+        "sha256": "183d3738806eedc1493a853a4e1d5859d4ad1ab454cbe9204832a51e1c9a3704"
+      },
+      {
+        "address": "00b496a0",
+        "path": "exports/bsp/functions/00b496a0/decompiled.c",
+        "sha256": "68bd9111eb2535587493e0117c09d9cb8f7013e301f78c77a3e6d81016d351b9"
+      },
+      {
+        "address": "00b49700",
+        "path": "exports/bsp/functions/00b49700/decompiled.c",
+        "sha256": "4290d65b0e900b1982a33a17be7451f9996c43b3fc5766651966ca6bc314dafa"
+      },
+      {
+        "address": "00b3f4c0",
+        "path": "exports/bsp/functions/00b3f4c0/decompiled.c",
+        "sha256": "0c34feadb1e4df2ccb2f0e7fcb6d676e3a9ddc3da29f37ac4b66f6fe82c8cf04"
+      }
+    ],
+    "common_final_build": {
+      "path": "reports/native_buffer_declaration_unregistration_primary_build.txt",
+      "sha256": "34d81066f5fb30d54a7859ee18251ab44430c72e4cd11ef06bc5c03bba055b18",
+      "tests": 2,
+      "passed": true
+    },
+    "closure_utc": "2026-09-11T01:43:04.644846+00:00"
+  }
+}

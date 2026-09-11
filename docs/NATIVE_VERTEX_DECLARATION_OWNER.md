@@ -114,10 +114,13 @@ production continues to use the repository's existing allocation domain.
 `/SAFESEH:NO` applies only to this private mapped-code executable.
 
 The eight existing native seed comparisons, registered Win32 build and both
-existing CTests passed. Registration of the new source in the normal CMake
-target belongs to the primary; the private check compiled it independently.
-No tracked test, shared metadata or Ghidra mutation was added. Reproduce in the
-worker checkout:
+existing CTests passed. The source is now registered in the main CMake target.
+Primary integration repeated the same 43,032-word comparison against the main
+library after verifying the 26 native spans, source pins and 13 artifacts.
+Eight standalone definitions are identified in the link map; the initializer
+is inlined into the constructor. Its standalone return value is source-reviewed
+rather than independently compared. No tracked tests were added. The original
+private comparison can be reproduced in the worker checkout:
 
 ```powershell
 python local/prepare_native_vertex_declaration_owner.py
@@ -126,9 +129,10 @@ python tools/ghidra_export.py verify-seeds
 ./scripts/build.ps1
 ```
 
-Primary annotation work must create `B47910..B4791C`, extend the complete
-`B48AD0` and `B48B70` bodies to the exclusive ends above, and decode the
-returning-free gap `B47AAF..B47AB8`. Preserve old annotations and refresh exports.
+Primary integration created `B47910..B4791C`, extended the complete `B48AD0`
+and `B48B70` bodies to the exclusive ends above, and decoded the returning-free
+gap `B47AAF..B47AB8`. Prior comments were preserved, all nine functions were
+annotated and saved, and their exports were refreshed.
 This proof covers the stated raw-storage and C++ exception contracts. It does
 not establish full pool initialization, original CRT-runtime identity, concurrent
 mutation behavior, hardware-fault unwinding, secondary-exception termination at

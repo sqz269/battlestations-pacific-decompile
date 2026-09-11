@@ -130,8 +130,14 @@ running `scripts/build.ps1`; seed verification and both existing math checks
 pass. The exact commands, output pins, and artifacts are in
 `reports/native_render_buffer_unregistration_audit.json`.
 
-No tracked tests, shared CMake, Ghidra annotations, exports, or ledger shards
-are changed by this worker. The integrator owns registration and saved
-annotation updates. This establishes reconstructed and fixture-tested
+Primary integration registered the source and repeated the same comparison
+against all nine definitions from the main library, verified in its link map.
+All 15 native spans, 71 private artifacts and current source pins were checked.
+The two zero-filled global spans describe the PE initial image. Both original
+guard bodies still execute; unchanged reconstructed guard source retains the
+explicit Win32 API observations. The combined build and both existing CTests
+pass. All nine annotations were saved with old comments preserved and exports
+refreshed; two earlier semantic ledger entries remain in the new entries as
+previous interfaces. No tracked tests were added. This establishes reconstructed and fixture-tested
 behavior through the stated actual-storage interfaces, not a drop-in ABI
 replacement, complete logical/physical lifetime, or game validation.
