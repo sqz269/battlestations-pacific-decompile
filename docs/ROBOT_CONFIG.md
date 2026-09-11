@@ -188,3 +188,13 @@ fault behavior, checked-iterator invalid-parameter handling and Lua
 panic/longjmp transport are not claimed equivalent. Lua/VFS/CRT implementations
 are reused with their existing documented limits. No game execution or native
 differential validator run was performed.
+
+## Parent integration correction
+
+The parent defined all nine missing validator starts from matching live/disk bytes,
+repaired all21 reported cleanup call gaps, preserved existing compiler-generated
+names/comments, saved the project, read back40 reviewed annotations and refreshed
+all40 exports. Zero reported call gaps remain. Native ABI and gameplay remain
+unvalidated.
+See `parent_ghidra` in `reports/robot_config.json`; pending worker notes above
+describe the earlier read-only snapshot.

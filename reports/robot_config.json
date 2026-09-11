@@ -1514,5 +1514,19 @@
     "actual CRT mode alias required and must remain alive during calls; parent binds0109EEA4",
     "temporary Lua owner distinct from current-game embedded Lua+1A0C and mission host+1A08; loader takes environment/script services directly",
     "no native tree implementation, CRT string/allocator kernel or Lua library code ported; canonical repository implementations reused"
-  ]
+  ],
+  "parent_ghidra": {
+    "count": 40,
+    "saved": true,
+    "readback_verified": true,
+    "prior_comments_preserved": true,
+    "before_log": "local/ghidra-annotations-20260911T085601Z.json",
+    "readback": "local/robot_config_comments.json",
+    "exports": "local/robot_config_exports.log",
+    "function_definitions": 9,
+    "definition_report": "reports/robot_config_function_definitions.json",
+    "flow_report": "reports/robot_config_flow.json",
+    "fixed_call_gaps": 21,
+    "remaining_call_gaps": 0
+  }
 }

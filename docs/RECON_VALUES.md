@@ -109,3 +109,13 @@ Native Lua allocator/GC scheduling, failure/panic transport and binary layout
 parity are not established by stock Lua source reuse. No game execution has
 been validated, and unrelated consumers or setters of recon values are outside
 this packet. There are no unreconstructed whole-routine callbacks in this path.
+
+## Parent integration correction
+
+The parent saved and read back six reconstruction annotations plus two stock Lua
+identities, preserving prior comments and the existing lua_rawset__prov name.
+lua_checkstack is now named from the verified stock implementation. All eight
+exports were refreshed. Independent parent listing review found no must-fix
+within the documented domain; native ABI and gameplay remain unvalidated.
+See `parent_ghidra` in `reports/recon_values.json`; pending worker notes above
+describe the earlier read-only snapshot.
