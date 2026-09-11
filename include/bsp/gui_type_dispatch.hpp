@@ -60,7 +60,8 @@ private:
 };
 class GuiFrameBoxTypeImplementation final : public GuiGroupTypeImplementation {
 public:
-    GuiFrameBoxTypeImplementation(GuiWidgetOwner&, GuiFrameBoxRuntimeServices);
+    GuiFrameBoxTypeImplementation(GuiWidgetOwner&, GuiFrameBoxRuntimeServices,
+        const bool& crt_sse2_conversion);
     void constructed74(GuiWidgetOwner&) override;
     void properties_bound(GuiWidgetOwner&, const GuiTable&) override;
     void loaded78(GuiWidgetOwner&) override;
@@ -68,10 +69,12 @@ public:
 private:
     GuiFrameBoxWidget state_;
     GuiFrameBoxRuntimeServices services_;
+    const bool& crt_sse2_conversion_;
 };
 class GuiScreenLayerImplementation final : public GuiGroupTypeImplementation {
 public:
-    GuiScreenLayerImplementation(GuiWidgetOwner&, std::uint8_t, GuiScreenLayerServices);
+    GuiScreenLayerImplementation(GuiWidgetOwner&, std::uint8_t, GuiScreenLayerServices,
+        const bool& crt_sse2_conversion);
     void before_properties(GuiWidgetOwner&, const GuiTable&) override;
     void loaded78(GuiWidgetOwner&) override;
     bool is_visible38(GuiWidgetOwner&) override;
@@ -81,9 +84,13 @@ public:
 private:
     GuiScreenLayerState state_;
     GuiScreenLayerServices services_;
+    const bool& crt_sse2_conversion_;
     bool retired_{};
 };
 struct GuiTypeDispatchServices {
+    // Required live0109EEA4 decision, shared with the page/reader context.
+    // This alias must outlive the factory and every type it creates.
+    const bool& crt_sse2_conversion;
     // Resource callbacks must resolve the SAME owner's model/geometry identity.
     // The factory itself binds proven base loaded/position/recompose callbacks.
     std::function<GuiIconRuntimeServices(GuiWidgetOwner&)> icon;

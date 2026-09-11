@@ -77,21 +77,25 @@ void GuiIconTypeImplementation::visibility_changed3c(GuiWidgetOwner&, bool visib
 }
 
 GuiFrameBoxTypeImplementation::GuiFrameBoxTypeImplementation(GuiWidgetOwner& owner,
-    GuiFrameBoxRuntimeServices services) : services_(bind_framebox_base(owner, std::move(services))) {
+    GuiFrameBoxRuntimeServices services, const bool& crt_sse2_conversion)
+    : services_(bind_framebox_base(owner, std::move(services))),
+      crt_sse2_conversion_(crt_sse2_conversion) {
     require(owner.layout().type == GuiWidgetType::FrameBox, "FrameBox adapter requires type18");
 }
 void GuiFrameBoxTypeImplementation::constructed74(GuiWidgetOwner& owner) {
     gui_framebox_constructed74_00acf8f0(owner.layout(), services_);
 }
 void GuiFrameBoxTypeImplementation::properties_bound(GuiWidgetOwner& owner, const GuiTable& table) {
-    gui_framebox_read_properties_00ad08e0(state_, owner.layout().transform, table, services_.textures);
+    gui_framebox_read_properties_00ad08e0(state_, owner.layout().transform, table,
+        services_.textures, crt_sse2_conversion_);
 }
 void GuiFrameBoxTypeImplementation::loaded78(GuiWidgetOwner& owner) {
     gui_framebox_loaded78_00aceb50(state_, owner.layout(), owner.extra_fields().overbright_94, services_);
 }
 
 GuiScreenLayerImplementation::GuiScreenLayerImplementation(GuiWidgetOwner& owner,
-    std::uint8_t screen_flag, GuiScreenLayerServices services) : services_(std::move(services)) {
+    std::uint8_t screen_flag, GuiScreenLayerServices services, const bool& crt_sse2_conversion)
+    : services_(std::move(services)), crt_sse2_conversion_(crt_sse2_conversion) {
     require(owner.layout().type == GuiWidgetType::Screen, "cGuiLayer adapter requires type1");
     require(services_.acquire_camera_store78_00ac59a0 && services_.bind_node_to_scene_00b6d890 &&
         services_.visibility_hook_installed_00f8bf4c && services_.visibility_hook_00f8bf4c &&
@@ -106,11 +110,13 @@ void GuiScreenLayerImplementation::before_properties(GuiWidgetOwner& owner, cons
     state_.key_108.render_order = kGuiLayerRenderOrderDefault;
     if (const auto* value = table.find("Priority"))
         gui_lua_store_value_00bd63b0(*value,
-            gui_lua_field(GuiLuaFieldType::Int, &state_.key_108.priority), nullptr);
+            gui_lua_field(GuiLuaFieldType::Int, &state_.key_108.priority), nullptr,
+            crt_sse2_conversion_);
     state_.applied_priority_fc = state_.key_108.priority;
     if (const auto* value = table.find("RenderOrder"))
         gui_lua_store_value_00bd63b0(*value,
-            gui_lua_field(GuiLuaFieldType::Float, &state_.key_108.render_order), nullptr);
+            gui_lua_field(GuiLuaFieldType::Float, &state_.key_108.render_order), nullptr,
+            crt_sse2_conversion_);
     //00AC4C9E calls78, then scene bind and position zero, then00AAA710.
     loaded78(owner);
     auto* node = owner.node_binding();
@@ -163,14 +169,16 @@ struct GuiTypeDispatchFactory::Shared {
             return std::make_unique<GuiIconTypeImplementation>(owner, services.icon(owner));
         case GuiWidgetType::FrameBox:
             require(services.framebox, "FrameBox type factory has no actual resource services");
-            return std::make_unique<GuiFrameBoxTypeImplementation>(owner, services.framebox(owner));
+            return std::make_unique<GuiFrameBoxTypeImplementation>(owner, services.framebox(owner),
+                services.crt_sse2_conversion);
         case GuiWidgetType::Screen: {
             const auto input = script_pages.find(&owner.layout());
             require(input != script_pages.end(), "cGuiLayer requires explicit per-page constructor input");
             const auto flag = input->second;
             script_pages.erase(input); // consume before service callbacks/reentrancy
             require(services.screen, "cGuiLayer type factory has no actual scene services");
-            return std::make_unique<GuiScreenLayerImplementation>(owner, flag, services.screen(owner));
+            return std::make_unique<GuiScreenLayerImplementation>(owner, flag, services.screen(owner),
+                services.crt_sse2_conversion);
         }
         default:
             throw std::invalid_argument("GUI type factory supports only Screen1, Group2, Icon6 and FrameBox18");
