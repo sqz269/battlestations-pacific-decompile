@@ -1,0 +1,76 @@
+{
+ "repairs": [
+  {
+   "function": "00885fb0",
+   "owner": "main",
+   "when": "2026-09-11T20:15:24Z",
+   "decompile_lines_before": 69,
+   "gaps": [
+    {
+     "site": "00886084",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00886089",
+     "gap_end_exclusive": "0088608d",
+     "bytes": 4,
+     "after_call": true,
+     "sha256": "de0c98c695685f577486ff81fa8a58b240eb5455d667140b85797e1c4d76fd31"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00886084",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00886089",
+      "gap_end_exclusive": "0088608d",
+      "bytes": 4,
+      "after_call": true,
+      "sha256": "de0c98c695685f577486ff81fa8a58b240eb5455d667140b85797e1c4d76fd31"
+     },
+     "clear": "Success: Cleared flow override at 00886084 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 4 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 68,
+   "gaps_remaining": 0
+  },
+  {
+   "function": "00887e50",
+   "owner": "main",
+   "when": "2026-09-11T20:15:25Z",
+   "decompile_lines_before": 185,
+   "gaps": [
+    {
+     "site": "008880d3",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "008880d8",
+     "gap_end_exclusive": "008880db",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "008880d3",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "008880d8",
+      "gap_end_exclusive": "008880db",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 008880d3 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 184,
+   "gaps_remaining": 0
+  }
+ ]
+}
