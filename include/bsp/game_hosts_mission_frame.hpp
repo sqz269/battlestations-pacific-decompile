@@ -28,12 +28,15 @@
 #include <string>
 #include <vector>
 
+#include "bsp/game_hosts_scene_contents.hpp"
+
 namespace bsp::game {
 
 class GameHostLog;
 class GameVfsHost;
 class GameMissionLuaHost;
 class GameFrameProfiler;
+class GameHudHost;
 
 // What the walk of the load inventory did. `concrete` counts the steps a
 // reconstruction performed in process; `records` counts the steps that took the
@@ -94,7 +97,7 @@ struct GameMissionFrameRunSummary {
 class GameMissionFrameHost {
 public:
     GameMissionFrameHost(GameHostLog& log, GameVfsHost& vfs, GameMissionLuaHost& lua,
-        GameFrameProfiler* profiler, std::string language);
+        GameFrameProfiler* profiler, std::string language, GameHudHost* hud = nullptr);
     ~GameMissionFrameHost();
     GameMissionFrameHost(const GameMissionFrameHost&) = delete;
     GameMissionFrameHost& operator=(const GameMissionFrameHost&) = delete;
@@ -135,6 +138,9 @@ public:
     const GameMissionLoadRunSummary& load_summary() const noexcept;
     const GameMissionEntrySummary& entry_summary() const noexcept;
     const GameMissionFrameRunSummary& frame_summary() const noexcept;
+    // Milestone 2h: what the two scene-file passes of 004d4df0 did. Null when
+    // the load has not reached that row.
+    const GameSceneContentsSummary* scene_contents_summary() const noexcept;
 
     struct Impl;
 

@@ -23,9 +23,11 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_fixed_step.hpp"
+#include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
+#include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/award_trackers.hpp"
 #include "bsp/game_dynamics_list.hpp"
@@ -136,6 +138,12 @@ struct GameMissionFrameHost::Impl {
     // of state 0Dh. Both are constructed in the body above.
     std::unique_ptr<GameFixedStepHost> fixed_step;
     std::unique_ptr<GameMissionResultHost> result;
+    // Milestone 2h: 004d4df0, the scene contents pass. Built on the load walk's
+    // own row, because the "2_" file block it opens belongs to that step.
+    std::unique_ptr<GameSceneContentsHost> scene_contents;
+    // Milestone 2h: the in-mission HUD, owned by GameMenuHost because its
+    // screens register into that object's copy of the registry at 00e18b60.
+    GameHudHost* hud{nullptr};
     long complete_frame{-1};                  // --mission-complete-frame N
     bool complete_injected{false};
     unsigned long long exit_frames{0};        // frames run after state 0Dh ended
@@ -745,12 +753,19 @@ public:
         owner_.record("MissionFrame::update_in_game_interface", 0x0068c1f0u);
     }
     void update_interface_only_004c40f0() override {
-        // 004c40f0's own reconstruction needs the front-end screen registry the
-        // load released at 00e198ac. With no manager it would have nothing to
-        // pump, so the call is recorded rather than run over an empty registry
-        // that would make the pump look like it did something.
+        // Milestone 2h: the registry is no longer empty. The load's HUD step
+        // registered the 42 in-mission screens into it, so this call services
+        // the interface request Init pushed (006840f0 then 00684600 into the
+        // manager's own 0068aca0) and then runs the pump 004f8830, which is
+        // what enters the level-1 screens and commits their pages' visibility.
         ++owner_.frames.interface_updates;
-        owner_.record("MissionFrame::update_interface_only", 0x004c40f0u);
+        if (owner_.hud == nullptr) {
+            owner_.record("MissionFrame::update_interface_only", 0x004c40f0u);
+            return;
+        }
+        owner_.hud->apply_pending_interface_0068aca0();
+        owner_.hud->update_interface_only_004c40f0(owner_.frame_state.raw_delta);
+        owner_.done("MissionFrame::update_interface_only", 0x004c40f0u);
     }
 
     // --- the seven hint passes -------------------------------------------
@@ -946,8 +961,11 @@ private:
 // ---------------------------------------------------------------------------
 
 GameMissionFrameHost::GameMissionFrameHost(GameHostLog& log, GameVfsHost& vfs,
-    GameMissionLuaHost& lua, GameFrameProfiler* profiler, std::string language)
-    : impl_(std::make_unique<Impl>(log, vfs, lua, profiler, std::move(language))) {}
+    GameMissionLuaHost& lua, GameFrameProfiler* profiler, std::string language,
+    GameHudHost* hud)
+    : impl_(std::make_unique<Impl>(log, vfs, lua, profiler, std::move(language))) {
+    impl_->hud = hud;
+}
 
 GameMissionFrameHost::~GameMissionFrameHost() = default;
 
@@ -959,6 +977,11 @@ const GameMissionEntrySummary& GameMissionFrameHost::entry_summary() const noexc
 }
 const GameMissionFrameRunSummary& GameMissionFrameHost::frame_summary() const noexcept {
     return impl_->frames;
+}
+
+const GameSceneContentsSummary* GameMissionFrameHost::scene_contents_summary()
+    const noexcept {
+    return impl_->scene_contents ? &impl_->scene_contents->summary() : nullptr;
 }
 
 void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path,
@@ -1049,12 +1072,56 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
         }
         if (method == "release_main_menu_manager") {
             host.main_menu_manager_released = true;
+            // Milestone 2h: 004dfd96 calls the manager's vtable slot 0, which is
+            // the deleting destructor 00687300; the destroy body 00686c90 runs
+            // BSP_FrontEndManager_Deactivate 00683aa0, and that routine's tail
+            // publishes the empty level-4 sets. Milestone 2f nulled the global
+            // and stopped there, which is why the front-end pages stayed on
+            // screen through the whole mission.
+            if (host.hud != nullptr) host.hud->release_main_menu_manager_00686c90();
             host.done(label, step.address);
             ++host.load.concrete;
             continue;
         }
         if (method == "release_mission_result") {
             host.control.mission_result = bsp::MissionResult{};
+            host.done(label, step.address);
+            ++host.load.concrete;
+            continue;
+        }
+        if (method == "create_hud_manager") {
+            // 004e0452 / 004e046c / 0068cc70. The manager and its Init are not
+            // reconstructed and stay records; what the HUD host runs is the part
+            // of Init that goes through recovered code, the 42 screen
+            // registrations, their pages and the INTF_SCENE3D request.
+            if (host.hud != nullptr) {
+                host.hud->build_manager_0068a990();
+                ++host.load.concrete;
+            } else {
+                host.record(label, step.address);
+                ++host.load.records;
+            }
+            continue;
+        }
+        if (method == "load_scene_contents") {
+            // 004d4df0 at 004e03e5. Milestone 2f recorded this step; it now runs
+            // the reconstruction of the routine, which runs both scene-file
+            // passes over the selected mission's .scn. Every host method inside
+            // it that needs the renderer, the scene graph, the world, the
+            // terrain or sound keeps the unimplemented policy with its own
+            // address, so this step being concrete is not a claim about those.
+            if (!host.scene_contents) {
+                host.scene_contents = std::make_unique<GameSceneContentsHost>(host.log,
+                    host.vfs);
+            }
+            // game+614h and game+61Ch are the two fields 004bca50 reads as the
+            // raw game mode and its forced flag; MissionSceneLoadState names the
+            // same pair script_slot / script_slot_forced, because 004e087b picks
+            // the mission script slot out of the same field.
+            host.scene_contents->run_load_scene_contents_004d4df0(scene_path,
+                host.scene_state.scene_override, host.scene_state.script_slot,
+                host.scene_state.script_slot_forced,
+                host.scene_state.session_mode != 0);
             host.done(label, step.address);
             ++host.load.concrete;
             continue;
@@ -1345,6 +1412,27 @@ void GameMissionFrameHost::report(long requested_frames) {
     }
     host.fixed_step->report();
     host.result->report();
+    host.lua.report_core_bindings();
+    if (host.scene_contents) {
+        // Milestone 2h. The scene contents pass created unit records, and the
+        // frame's unit passes ticked none of them. That is not an empty scene:
+        // every container those passes walk hangs off the world object
+        // construct_world 004de610 would build, and that step is still a load
+        // record, so the entity manager reference at game+21A0h is null and the
+        // fixed step's world gate at 00875e69 is closed.
+        const GameSceneContentsSummary& scene = host.scene_contents->summary();
+        host.log.notef("summary mission scene contents mode=%d entities=%zu generated=%zu "
+            "rejected=%zu created=%zu registration_bodies=%zu party_class_marks=%zu "
+            "property_groups=%zu enum_tables=%zu", scene.effective_game_mode,
+            scene.instantiate_entities, scene.generated, scene.rejected, scene.created,
+            scene.registration_bodies, scene.party_class_marks, scene.property_groups,
+            scene.enum_tables);
+        host.log.notef("summary mission unit passes: %zu unit record(s) exist and every unit "
+            "pass of the frame and of the fixed step ticked 0 of them, because "
+            "construct_world 004de610 is a load record: the entity manager at game+21A0h "
+            "is null and the fixed step's world gate 00875e69 reads a world that does not "
+            "exist", scene.created);
+    }
     host.log.notef("summary mission fixed steps=%llu at %.3f s each (00875bb0's own clock "
         "at 00f876a4/00f876ac)", host.fixed_steps,
         static_cast<double>(bsp::kFixedSimulationStepFloat));

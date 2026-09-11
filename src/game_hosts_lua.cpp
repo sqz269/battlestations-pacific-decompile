@@ -15,6 +15,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
+#include "bsp/lua_binding_core.hpp"
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/mission_lua_machine.hpp"
 #include "bsp/mission_scene_load.hpp"
@@ -36,6 +37,7 @@ extern "C" {
 
 #include <algorithm>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <functional>
 
@@ -57,6 +59,215 @@ GameMissionLuaHost* host_from_upvalue(lua_State* state) {
     return static_cast<GameMissionLuaHost*>(lua_touserdata(state, lua_upvalueindex(1)));
 }
 
+// ---------------------------------------------------------------------------
+// Milestone 2g: the ten rows of docs/LUA_BINDING_CORE.md
+//
+// The reconstruction reads its arguments and pushes its results through two
+// interfaces, so the executable supplies them over the live lua_State it
+// already owns. Index 0 is the first argument, which bsp::mission_binding_
+// argument_slot turns into the lua_CFunction stack slot.
+// ---------------------------------------------------------------------------
+
+class CoreArgumentReader final : public bsp::LuaBindingArgumentReader {
+public:
+    explicit CoreArgumentReader(lua_State* state) : state_(state) {}
+    int count() override { return lua_gettop(state_); }  // 00b663f0
+    int get_integer(int index) override {
+        // 00b66290 narrows with the CRT __ftol, which truncates toward zero.
+        return static_cast<int>(lua_tointeger(state_, slot(index)));
+    }
+    double get_number(int index) override {
+        return static_cast<double>(lua_tonumber(state_, slot(index)));
+    }
+    bool get_boolean(int index) override { return lua_toboolean(state_, slot(index)) != 0; }
+    std::string get_string(int index) override {
+        const char* text = lua_tolstring(state_, slot(index), nullptr);
+        return text != nullptr ? std::string(text) : std::string();
+    }
+    bool is_string(int index) override { return lua_isstring(state_, slot(index)) != 0; }
+    bool is_nil(int index) override { return lua_isnil(state_, slot(index)) != 0; }
+    bool is_entity_table(int index) override { return entity_at(index) != nullptr; }
+    void* entity_at(int index) override {
+        // 00888aa0's rule: the entity is the light userdata the table carries in
+        // `Ptr`. No table in this process carries one, because nothing creates
+        // an entity, so every entity argument answers null. That is the state of
+        // the process, not a substitution.
+        const int at = slot(index);
+        if (lua_istable(state_, at) == 0) return nullptr;
+        lua_getfield(state_, at, bsp::kEntitySelfFieldPtr);
+        void* pointer = lua_islightuserdata(state_, -1) ? lua_touserdata(state_, -1) : nullptr;
+        lua_pop(state_, 1);
+        return pointer;
+    }
+
+private:
+    static int slot(int index) { return bsp::mission_binding_argument_slot(index); }
+    lua_State* state_;
+};
+
+class CoreResultWriter final : public bsp::LuaBindingResultWriter {
+public:
+    explicit CoreResultWriter(lua_State* state) : state_(state) {}
+    void push_number(int value) override {  // 00b664b0
+        lua_pushnumber(state_, static_cast<lua_Number>(value));
+    }
+    void push_boolean(bool value) override { lua_pushboolean(state_, value ? 1 : 0); }
+    void push_nil() override { lua_pushnil(state_); }
+
+private:
+    lua_State* state_;
+};
+
+// One native step of the ten, as a record or as a value this process owns.
+class CoreBindingHost final : public bsp::LuaBindingCoreHost {
+public:
+    CoreBindingHost(GameMissionLuaHost& owner, lua_State* state)
+        : owner_(owner), state_(state) {}
+
+    int game_non_campaign_flag() override {
+        return owner_.core_binding_state().non_campaign_flag;
+    }
+    int game_effective_difficulty() override {
+        return owner_.core_binding_state().effective_difficulty;
+    }
+
+    void log_prepare_class(int class_id) override {
+        static_cast<void>(class_id);
+        record("LuaCore::log_prepare_class", "008c9099");
+    }
+
+    bool resolve_global_integer(const std::string& dotted_path, int& value) override {
+        // 00b68d70 over the globals object. The datatable scripts the load ran
+        // built the VehicleClass table on this very state, so the walk has the
+        // same answer here as in the game. The rule is a string lookup first and
+        // then a base-10 _atol retry, taken only when the conversion is non-zero
+        // or the segment is the single character '0'; without it
+        // VehicleClass.5 never resolves, because the table builds its rows under
+        // integer keys (docs/LUA_BINDING_CORE.md).
+        ++owner_.core_binding_state().prepare_class_lookups;
+        value = 0;
+        std::size_t begin = 0;
+        lua_pushvalue(state_, LUA_GLOBALSINDEX);
+        bool reached = true;
+        while (begin < dotted_path.size()) {
+            std::size_t end = begin;
+            while (end < dotted_path.size() && dotted_path[end] != '.') ++end;
+            if (end == begin || lua_istable(state_, -1) == 0) {
+                reached = false;
+                break;
+            }
+            lua_pushlstring(state_, dotted_path.data() + begin, end - begin);
+            lua_gettable(state_, -2);
+            if (lua_isnil(state_, -1) != 0) {
+                const std::string segment = dotted_path.substr(begin, end - begin);
+                const long parsed = std::strtol(segment.c_str(), nullptr, 10);
+                const bool numeric = parsed != 0 || segment == "0";
+                if (!numeric) {
+                    reached = false;
+                    break;
+                }
+                lua_pop(state_, 1);
+                lua_pushnumber(state_, static_cast<lua_Number>(parsed));
+                lua_gettable(state_, -2);
+            }
+            lua_remove(state_, -2);
+            begin = end < dotted_path.size() ? end + 1 : end;
+        }
+        const bool ok = reached && lua_isnumber(state_, -1) != 0;
+        if (ok) {
+            value = static_cast<int>(lua_tointeger(state_, -1));
+            ++owner_.core_binding_state().prepare_class_resolved;
+        }
+        lua_pop(state_, 1);
+        done("LuaCore::resolve_global_integer", "008c91ba");
+        return ok;
+    }
+
+    void vehicle_class_mark_party_required(int class_id, int party) override {
+        static_cast<void>(class_id);
+        static_cast<void>(party);
+        record("LuaCore::vehicle_class_mark_party_required", "008c9297");
+    }
+    void vehicle_class_get_or_create(int class_id, bool read_race) override {
+        static_cast<void>(class_id);
+        static_cast<void>(read_race);
+        record("LuaCore::vehicle_class_get_or_create", "008c92be");
+    }
+    void music_director_set_level(int level) override {
+        static_cast<void>(level);
+        record("LuaCore::music_director_set_level", "008c4e1d");
+    }
+    void session_send_music_level(int level) override {
+        static_cast<void>(level);
+        record("LuaCore::session_send_music_level", "008c4e74");
+    }
+    bool entity_vcall_5c(void* entity, int selector) override {
+        static_cast<void>(entity);
+        static_cast<void>(selector);
+        record("LuaCore::entity_vcall_5c", "008a8a83");
+        return false;
+    }
+    void entity_vcall_2c(void* entity, int party, std::uint32_t entity_field_58) override {
+        static_cast<void>(entity);
+        static_cast<void>(party);
+        static_cast<void>(entity_field_58);
+        record("LuaCore::entity_vcall_2c", "008a8ae3");
+    }
+    void session_route_party_message(void* entity, int party) override {
+        static_cast<void>(entity);
+        static_cast<void>(party);
+        record("LuaCore::session_route_party_message", "008a8ac4");
+    }
+    void scoring_set_real_play_time_running(bool running) override {
+        // scoring+14A4h, a field of the object this process owns.
+        owner_.core_binding_state().real_play_time_running = running;
+        done("LuaCore::scoring_set_real_play_time_running", "008b8901");
+    }
+    void scoring_set_final_scoring_function_name(const std::string& name) override {
+        owner_.core_binding_state().final_scoring_function = name;  // scoring+147Ch
+        done("LuaCore::scoring_set_final_scoring_function_name", "008b8766");
+    }
+    void message_map_load(const std::string& name, int index) override {
+        static_cast<void>(index);
+        owner_.note_core_message_map(name);
+        record("LuaCore::message_map_load", "008c6308");
+    }
+    void call_0088b6d0_0076a9f0_00765590(const std::string& name, int index) override {
+        static_cast<void>(name);
+        static_cast<void>(index);
+        record("LuaCore::message_map_session_path", "008c63c3");
+    }
+    void entity_set_think_script_name(void* entity, const std::string& name) override {
+        static_cast<void>(entity);
+        owner_.note_core_think_name(name);
+        record("LuaCore::entity_set_think_script_name", "008980e8");
+    }
+    void set_entity_message_suppression(void* entity, bool suppressed) override {
+        static_cast<void>(entity);
+        static_cast<void>(suppressed);
+        record("LuaCore::set_entity_message_suppression", "008cffe4");
+    }
+    void set_global_message_suppression(bool suppressed) override {
+        // *(00F8A0C4)+D0h, the byte 008d0000 stores.
+        owner_.core_binding_state().global_messages_suppressed = suppressed;
+        done("LuaCore::set_global_message_suppression", "008d0000");
+    }
+    void message_system_drain_queue() override {
+        record("LuaCore::message_system_drain_queue", "008d000a");
+    }
+
+private:
+    void record(const char* method, const char* address) {
+        owner_.host_log().unimplemented(method, address);
+    }
+    void done(const char* method, const char* address) {
+        owner_.host_log().implemented(method, address);
+    }
+
+    GameMissionLuaHost& owner_;
+    lua_State* state_;
+};
+
 // One body for all 560 rows of 00e0b7b8. 006b8610 uses nup = 0 because every
 // native row is a distinct function; the executable needs identity at call
 // time, so it carries the host pointer and the row index as upvalues. The
@@ -67,6 +278,12 @@ int binding_trampoline(lua_State* state) {
     const int row = static_cast<int>(lua_tointeger(state, lua_upvalueindex(2)));
     const int argc = lua_gettop(state);
     if (host == nullptr) return 0;
+    // Milestone 2g: the ten rows packet cc_lua_core reconstructed run their own
+    // routine instead of the record. A row that is not one of the ten answers
+    // -1 and falls through to the policy below, which is still the rule for the
+    // other 550.
+    const int produced = host->run_core_binding(static_cast<std::size_t>(row), state);
+    if (produced >= 0) return produced;
     host->note_native_call(static_cast<std::size_t>(row), argc);
     // The nineteen entity-returning rows of the table end in one recovered tail
     // (docs/LUA_BINDING_ENTITY.md): they push thisTable[key] for the entity they
@@ -155,7 +372,113 @@ void GameMissionLuaHost::note_error(const std::string& message) {
     }
 }
 
+void GameMissionLuaHost::set_game_fields(int non_campaign_flag,
+    int effective_difficulty) noexcept {
+    core_.non_campaign_flag = non_campaign_flag;
+    core_.effective_difficulty = effective_difficulty;
+}
+
+GameMissionCoreBindings& GameMissionLuaHost::core_binding_state() noexcept { return core_; }
+
+const GameMissionCoreBindings& GameMissionLuaHost::core_bindings() const noexcept {
+    return core_;
+}
+
+GameHostLog& GameMissionLuaHost::host_log() noexcept { return log_; }
+
+void GameMissionLuaHost::note_core_message_map(const std::string& name) {
+    if (std::find(core_message_maps_.begin(), core_message_maps_.end(), name)
+        == core_message_maps_.end()) {
+        core_message_maps_.push_back(name);
+    }
+    core_.message_maps = core_message_maps_.size();
+}
+
+void GameMissionLuaHost::note_core_think_name(const std::string& name) {
+    if (std::find(core_think_names_.begin(), core_think_names_.end(), name)
+        == core_think_names_.end()) {
+        core_think_names_.push_back(name);
+    }
+    core_.think_names = core_think_names_.size();
+}
+
+int GameMissionLuaHost::run_core_binding(std::size_t row, lua_State* state) {
+    if (state == nullptr || row >= bsp::mission_lua_binding_count()) return -1;
+    const bsp::MissionLuaBinding& binding = bsp::mission_lua_bindings()[row];
+    const int argc = ::lua_gettop(state);
+    CoreArgumentReader args(state);
+    CoreResultWriter results(state);
+    CoreBindingHost host(*this, state);
+
+    int produced = -1;
+    switch (binding.address) {
+    case 0x0088c620u:  // SETLOG: 25 instructions that touch no game state
+        produced = bsp::lua_binding_setlog();
+        break;
+    case 0x008ae030u:  // GetDifficulty
+        produced = bsp::lua_binding_get_difficulty(results, host);
+        core_.difficulty_asked = true;
+        core_.difficulty_reported = bsp::lua_binding_difficulty_value(
+            core_.non_campaign_flag, core_.effective_difficulty);
+        break;
+    case 0x008c8f70u:  // PrepareClass
+        produced = bsp::lua_binding_prepare_class(args, host);
+        break;
+    case 0x008c4d10u:  // Music_Control_SetLevel
+        produced = bsp::lua_binding_music_control_set_level(args, host);
+        break;
+    case 0x008a8930u:  // SetParty
+        ++core_.party_calls;
+        if (args.entity_at(0) == nullptr) ++core_.entity_arguments_missing;
+        produced = bsp::lua_binding_set_party(args, results, host);
+        break;
+    case 0x008b87f0u:  // Scoring_RealPlayTimeRunning
+        produced = bsp::lua_binding_scoring_real_play_time_running(args, results, host);
+        break;
+    case 0x008b8640u:  // Scoring_SetFinalScoringFunctionName
+        produced = bsp::lua_binding_scoring_set_final_scoring_function_name(args, host);
+        break;
+    case 0x008c61c0u:  // LoadMessageMap
+        produced = bsp::lua_binding_load_message_map(args, host);
+        break;
+    case 0x00897fb0u:  // SetThink
+        if (args.entity_at(0) == nullptr) ++core_.entity_arguments_missing;
+        produced = bsp::lua_binding_set_think(args, host);
+        break;
+    case 0x008cfe40u:  // EnableMessages
+        produced = bsp::lua_binding_enable_messages(args, host);
+        break;
+    default:
+        return -1;
+    }
+    ++core_.calls;
+    note_native_call(row, argc, true);
+    return produced;
+}
+
+void GameMissionLuaHost::report_core_bindings() {
+    if (core_.calls == 0) {
+        log_.notef("mission lua core bindings: none of the ten reconstructed rows was called");
+        return;
+    }
+    log_.notef("mission lua core bindings: %llu calls through src/lua_binding_core.cpp; "
+        "GetDifficulty answered %d (game+1FE4h=%d game+6ACh=%d)%s", core_.calls,
+        core_.difficulty_reported, core_.non_campaign_flag, core_.effective_difficulty,
+        core_.difficulty_asked ? "" : " (not asked)");
+    log_.notef("  PrepareClass resolved %llu of %llu VehicleClass.<id>.Race paths on the live "
+        "datatable globals", core_.prepare_class_resolved, core_.prepare_class_lookups);
+    log_.notef("  scoring real_play_time_running=%d final_function=\"%s\" message_maps=%zu "
+        "think_names=%zu set_party=%zu entity_arguments_missing=%zu global_messages_suppressed=%d",
+        core_.real_play_time_running ? 1 : 0, core_.final_scoring_function.c_str(),
+        core_.message_maps, core_.think_names, core_.party_calls,
+        core_.entity_arguments_missing, core_.global_messages_suppressed ? 1 : 0);
+}
+
 void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count) {
+    note_native_call(row, argument_count, false);
+}
+
+void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count, bool concrete) {
     const bsp::MissionLuaBinding* rows = bsp::mission_lua_bindings();
     if (row >= bsp::mission_lua_binding_count()) return;
     const bsp::MissionLuaBinding& binding = rows[row];
@@ -170,16 +493,22 @@ void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count) {
         record.last_argument_count = argument_count;
         summary_.natives.push_back(record);
         // A binding the scripts reached is one native body this process does
-        // not have. The record carries the row's own address, so the report
-        // names the routine rather than the table.
+        // not have, unless it is one of the ten rows milestone 2g routes
+        // through src/lua_binding_core.cpp. The record carries the row's own
+        // address, so the report names the routine rather than the table.
         char address[16];
         std::snprintf(address, sizeof(address), "%08lx",
             static_cast<unsigned long>(binding.address));
         char method[96];
         std::snprintf(method, sizeof(method), "MissionLuaNative::%s", binding.name);
-        log_.unimplemented(method, address);
-        log_.notef("  native %-28s argc=%d phase=%s", binding.name, argument_count,
-            phase_.empty() ? "(none)" : phase_.c_str());
+        if (concrete) {
+            log_.implemented(method, address);
+        } else {
+            log_.unimplemented(method, address);
+        }
+        log_.notef("  native %-28s argc=%d phase=%s %s", binding.name, argument_count,
+            phase_.empty() ? "(none)" : phase_.c_str(),
+            concrete ? "[reconstructed]" : "");
         return;
     }
     GameMissionNativeCall& record = summary_.natives[found->second];
@@ -189,7 +518,11 @@ void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count) {
     std::snprintf(address, sizeof(address), "%08lx", static_cast<unsigned long>(binding.address));
     char method[96];
     std::snprintf(method, sizeof(method), "MissionLuaNative::%s", binding.name);
-    log_.unimplemented(method, address);
+    if (concrete) {
+        log_.implemented(method, address);
+    } else {
+        log_.unimplemented(method, address);
+    }
 }
 
 int GameMissionLuaHost::run_dofile(const std::string& path) {

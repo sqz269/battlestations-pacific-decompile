@@ -61,6 +61,26 @@ struct GameMissionEntryPointRun {
     std::string error;     // recovered with errfunc 0; the native discards it
 };
 
+// Milestone 2g: what the ten rows of docs/LUA_BINDING_CORE.md did when the
+// installed scripts called them. Every field is a value this process owns; the
+// two game fields are what the load computed, not constants.
+struct GameMissionCoreBindings {
+    unsigned long long calls{0};             // calls that ran a reconstruction
+    unsigned long long prepare_class_lookups{0};   // VehicleClass.<id>.Race paths
+    unsigned long long prepare_class_resolved{0};  // paths that found a number
+    int non_campaign_flag{0};                // game+1FE4h
+    int effective_difficulty{0};             // game+6ACh
+    int difficulty_reported{0};              // what GetDifficulty pushed
+    bool difficulty_asked{false};
+    bool real_play_time_running{false};      // scoring+14A4h
+    std::string final_scoring_function;      // scoring+147Ch
+    bool global_messages_suppressed{false};  // *(00F8A0C4)+D0h
+    std::size_t message_maps{0};             // distinct names LoadMessageMap took
+    std::size_t think_names{0};              // distinct names SetThink took
+    std::size_t party_calls{0};              // SetParty
+    std::size_t entity_arguments_missing{0}; // SetParty / SetThink with no entity
+};
+
 struct GameMissionLuaSummary {
     bool machine_started{false};
     bool self_table_created{false};    // thisTable, 004e0305
@@ -149,8 +169,25 @@ public:
     bool on_frame_job_thread() override;
     void queue_named_call_for_main_thread(const std::string& name) override;
 
+    // --- milestone 2g, the ten core bindings ------------------------------
+    // game+1FE4h and game+6ACh, the two fields three of the ten read. The load
+    // supplies them; before it does they are zero, which is the cold value.
+    void set_game_fields(int non_campaign_flag, int effective_difficulty) noexcept;
+    // Runs the reconstruction for one of the ten rows of
+    // docs/LUA_BINDING_CORE.md and returns its result count, or -1 when the row
+    // is not one of them. Called by the binding trampoline.
+    int run_core_binding(std::size_t row, lua_State* state);
+    void report_core_bindings();
+    const GameMissionCoreBindings& core_bindings() const noexcept;
+    // For the host adapter that implements bsp::LuaBindingCoreHost.
+    GameMissionCoreBindings& core_binding_state() noexcept;
+    GameHostLog& host_log() noexcept;
+    void note_core_message_map(const std::string& name);
+    void note_core_think_name(const std::string& name);
+
     // Called by the binding trampolines; public so the C callbacks can reach it.
     void note_native_call(std::size_t row, int argument_count);
+    void note_native_call(std::size_t row, int argument_count, bool concrete);
     void note_entity_return();
     int run_dofile(const std::string& path);
     void note_error(const std::string& message);
@@ -176,6 +213,9 @@ private:
     int reentrancy_depth_{0};   // 00f87900
     std::map<std::string, std::size_t> native_index_;
     GameMissionLuaSummary summary_;
+    GameMissionCoreBindings core_{};
+    std::vector<std::string> core_message_maps_;
+    std::vector<std::string> core_think_names_;
 };
 
 }  // namespace bsp::game

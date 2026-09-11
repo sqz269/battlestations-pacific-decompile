@@ -1,6 +1,6 @@
-# bsp_game.exe, milestones 1 through 2g
+# bsp_game.exe, milestones 1 through 2h
 
-Milestone 2g is the current state of the executable, and its section corrects the earlier
+Milestone 2h is the current state of the executable, and its section corrects the earlier
 ones. Milestone 1 is the spine it was all built on.
 
 Addresses added by milestone 2a: 0073d604-0073d899 (the phase-2 VFS block of Init), 00beda60
@@ -2431,6 +2431,403 @@ no job was ever queued, and no movie was played.
 8. **The `EndScene` binding 008b01b0** and its menu prompt arm (correction 9), which is the
    other way a mission ends and the reason `Scoring_SetMissionCompleted` has to run first.
 
+
+## Milestone 2h: the mission's entities, and the HUD pages on screen
+
+Addresses: 004d4df0 with its call site 004e03e5 and the two scene-file passes at 004d54de and
+004d5530; 0046cf40's per-pass split 004d433-0046d5de, with 0046d426 / 0046c550, 0046d448 /
+008f2260, 0046d51a / 0095c640, 0046d531 / 0046bf70, 0046d540 (descriptor[2]), 0046d5a4
+(descriptor[1]), 0046d5b2 / 00bf681b and 0046d5cd / 00922e20; 004f0520 with 004f0531, 004f053d
+/ 00964790, 004f054b, 004f054f / 004c1130, 004f0584, 004f058e / 004f03c0 and 004f05b6 /
+0041dd40; 004e96d0 through the thunk 004e98e0; 0046f160 and 0046f350 (the scene-database
+constructor, which is what fills the always-generate set at +164h, with the inserts at 0046f2fa
+and 0046f30f); 008f67b0 `CPropTreeLibrary::Load` with 008f6fc0 and 008f7100 (the property-group
+and enum library); 0068a990 / 0068cc70 with the request push at 0068d73a / 004cc460; 0068aca0,
+004f8530, 004d8a50 and 004f7620 (the level-1 set and its recompute); 00687300 / 00686c90 /
+00683aa0 with 00686db9 / 004f83b0 and 00686e2e (the main-menu manager's destruction). Packet
+`cc_exe_2h`, owner `agent/cc-exe-2h`. Sources: `src/game_hosts_scene_contents.cpp`,
+`include/bsp/game_hosts_scene_contents.hpp`, `src/game_hosts_hud.cpp`,
+`include/bsp/game_hosts_hud.hpp`, plus edits to `src/game_hosts_mission_frame.cpp`,
+`src/game_hosts_mission.cpp`, `src/game_hosts_menu.cpp`, `src/game_hosts.cpp`,
+`src/game_main.cpp` and their headers. Report:
+`reports/game_executable_milestone_2h.json`. Ghidra was read-only for this packet.
+
+Milestone 2g ran a mission with no world: the load recorded `load_scene_contents`, so no entity
+of the selected mission was ever created, and the picture on screen was still the front end's.
+This milestone runs both scene-file passes over the selected mission's `.scn`, creates the
+units the instantiate pass reaches, brings up the in-mission HUD screens and puts their pages on
+screen.
+
+### The new switch
+
+`--screenshot-mission-frame N` captures the application frame on which in-mission frame N of
+004e4a40 ran, so a capture can be aimed at the HUD without counting application frames from the
+injected press. It takes precedence over `--screenshot-frame`. Every earlier switch is
+unchanged, and a run without `--menu-select` is still byte-for-byte the milestone 2d run.
+
+### 1. The property-group and enum library, and why it decides everything else
+
+The first pass at this packet created **nothing**. The gate 0046C550 resolves a single-player
+mission through its mode-8 arm at 0046CC5B, which reads `GenerateInGame` out of the entity's
+property bag and rejects the entity when the byte at +0Ch is clear; every `DestroyerGen` in
+`usn_2_java.scn` authors an empty `"MultiType" { }` and no `GenerateInGame` at all. The mission
+script settles that this cannot be the game's behaviour: `Scripts/missions/usn/usn_2_java.lua`
+calls `FindEntity("DeRuyter")`, it does not create the ship.
+
+What was missing is the schema. 0046CF40 builds an entity's bag in two steps: step 6 merges
+each name of the `properties ( ... )` list into it through 008F54F0, and step 7 parses the
+authored body into the same bag through 008F5A00. The groups come from a library the shipped
+game carries and nothing in the repository read:
+
+| Fact | Evidence |
+| --- | --- |
+| the loader is `CPropTreeLibrary::Load` | the literal at 00D1653C, pushed at 008F6812 as its scope marker |
+| it tokenizes with the scene tokenizer | 838h allocation at 008F68A2, 008D9CF0 at 008F68DA, delimiters `;{}=:()` at 00D16534 |
+| it parses a body with the scene property parser | 008F5A00 at 008F6AD7, and 00469B60 at 008F6A7F to intern the name |
+| its two top-level keywords are `properties` and `enum` | the only other literals its body carries |
+| its caller loads `.enums` then `.props` | 008F7106 and 008F711B push 00D1655C and 00D16554 into 008F6FC0 |
+| the folder is enumerated through the VFS | 00886280 at 008F701B |
+
+On this installation that is 15 files under `universe/library`: 22 property groups, 33 enum
+tables and 1522 symbols. `properties MultiEntity` in `global.enums` declares
+`GenerateInGame = B true` and `GenerateInEngineMovie = B true`, and
+`properties GameUnit (MultiEntity)` inherits it, so every `GameUnit` entity defaults to
+generating. `properties Ship(Common)` and `properties Command` supply the rest.
+
+**008F67B0 is not reconstructed and the executable's reader is not a reconstruction of it.**
+The VFS enumeration, the tokenizer and the property-block parser are all recovered code; what
+the executable adds is the top-level `properties`/`enum` dispatch and the merge, and it is
+labelled as a stand-in in the source with the host record `SceneContents::property_library_load
+[008f67b0]`. It is here because without the schema the gate's answer is wrong for 94% of every
+`.scn` in the game.
+
+The same library also settles the `Type` values. `enum ShipClasses` is in `global.enums`, so
+`Type = E ShipClasses : DeRuyter` resolves to 20 and `Party = E Party : Allied` to 0. The run
+resolves all 32 units, which is the Java Sea order of battle:
+
+| Type | Id | Party | Count |
+| --- | --- | --- | --- |
+| `Kagero` | 276 | Japanese (1) | 6 |
+| `Shiratsuyu` | 289 | Japanese (1) | 6 |
+| `PACK3_Icarus` | 265 | Allied (0) | 5 |
+| `Clemson` | 25 | Allied (0) | 4 |
+| `DeRuyter` | 20 | Allied (0) | 2 |
+| `Fubuki` | 73 | Japanese (1) | 2 |
+| `Kuma` | 70 | Japanese (1) | 2 |
+| `Myoko` | 293 | Japanese (1) | 2 |
+| `Northampton` | 19 | Allied (0) | 1 |
+| `PACK3_Fiji` | 263 | Allied (0) | 1 |
+| `York` | 21 | Allied (0) | 1 |
+
+### 2. The scene contents pass, 004D4DF0
+
+`GameSceneContentsHost` implements `bsp::SceneContentsHost`, so the order is
+`bsp::load_scene_contents_004d4df0`'s rather than one the process invents, and each of the two
+`read_scene_file` steps runs `bsp::run_scene_file_reader_0046df00` with the pass flags its call
+site pushes. Both passes visit all 34 entities of the 48680-byte file.
+
+The **always-generate set** the gate searches at 0046C741 was `docs/SCENE_ENTITY_FACTORY.md`'s
+first uncertainty ("nothing was found that inserts into it"). It is filled by the scene-database
+constructor: 0046F350 allocates 170h bytes, 0046F160 constructs the object stored at 00E18680,
+and inside it 0046F23F builds the set at this+164h and 0046F2FA and 0046F30F insert **47h
+(`Path`) and 3Dh (`Cloud`)** through 0046AC50. The sibling set at this+158h is filled in the
+same block with 44h, 5Eh, 1Dh, 47h and 3Dh. Neither of this mission's two classes is exempt, so
+every gate answer here comes from the mode arm or from the missing-`MultiType` branch.
+
+What the two passes did:
+
+| Class | Id | Seen | Generated | Registration bodies | Created | Creator |
+| --- | --- | --- | --- | --- | --- | --- |
+| `DestroyerGen` | 07h | 32 | 32 | 32 | **32** | 004F0520, concrete |
+| `NavPoint` | 41h | 2 | 2 | 0 | 0 | 004E99B0, record |
+
+The two `NavPoint`s generate through the gate's missing-`MultiType` branch at 0046C5A6, which
+also appends a deferred entity record (0046C450, a record here); their creator is one of the
+twelve fixed-size classes and has no reconstruction. The 32 ships run the whole of 004F0520:
+the `Type` lookup, the descriptor resolve, the instance, the placement decision, the placement,
+the name and the `Command` property, which all 32 author as `Cruise`. On the registration pass
+each one runs 0095C640, 0046BF70 and `bsp::register_scene_unit_004e96d0`, which marks its
+vehicle class as required for its party; the run produces **32 party-class marks**.
+
+### 3. The in-mission HUD
+
+The manager's construction is a record, as the packet brief requires: 004E0452 allocates 108h
+bytes, 004E046C runs 0068A990 and 0068CC70 is its Init, and none of the three is reconstructed
+(they belong to packet `cc_hud_updates`). What the executable runs is the part of Init that goes
+through recovered code. For each of the 42 rows of `bsp::kInGameHudScreens` it builds its own
+registry record, registers it with 004F71D0 into the **same 95-slot registry at 00E18B60 the
+front-end screens use**, and loads the pages and binds the widget names
+`bsp::kHudScreenLayouts` gives it: **42 of 42 screens, 52 page loads over 47 distinct pages,
+204 of 373 named widgets bound**. The 169 that miss are nested deeper than one level, which
+00AA7E00 cannot reach on its own; that is the same limit `docs/MAIN_MENU_MISSION_DETAIL.md`'s
+correction 4 records for 005861B0.
+
+Init's last act is `004CC460(20h, 0)` at 0068D73A, which pushes **INTF_SCENE3D with a null
+payload**. The executable applies exactly that id rather than choosing one: 006840F0 services
+the request, 00684600 hands it to the manager's own virtual +10h, and
+`bsp::apply_in_game_interface_0068aca0` takes the 20h arm. With no payload the arm is not a unit
+classifier at all, it is the one path that publishes, and in a single-player session it
+publishes:
+
+| Level-1 screens | 29h, 49h, 44h, 35h |
+| --- | --- |
+| Level-1 input contexts | 4, 11h, 12h, 0Ch, 0Bh |
+| Pages those screens hold | `GUI_powerups`, `GUI_unit`, `GUI_selector` (slot 44h), `GUI_minimap` (slot 35h) |
+
+29h and 49h load no page. The level-1 publish runs `bsp::set_front_end_screen_set_level` at
+level 1, which runs the recompute 004F7620 over the same stack the managers publish level 4
+into, so the pump 004F8830 enters those four screens and 004F83B0 commits their pages'
+visibility. The pump itself now runs in the mission: milestone 2f recorded
+`update_interface_only [004c40f0]` because the registry had nothing in it, and it is concrete
+here.
+
+**The front-end pages come down through recovered code.** Milestone 2f said "a mission is
+running behind an unchanged picture" because the load released the main-menu manager as a
+record. It is not a record: 004DFDA6 calls the manager's vtable slot 0, which the vtable at
+00CF774C gives as 00687300, the deleting destructor. That calls `BSP_MainMenu_Destroy`
+00686C90, which collects the seven screens it owns, runs each active one's exit virtual, clears
++4h and +5h and commits through **004F83B0 at 00686DB9**, destroys each one, and then calls
+`BSP_FrontEndManager_Deactivate` 00683AA0 at 00686E2E, whose tail publishes the empty level-4
+screen set and the empty level-4 input contexts. In the run the sprite bridge drops from 705
+quads to 13 on that frame.
+
+### What it looks like on screen
+
+Everything before the mission is unchanged: the title page of milestone 2d, then the main menu,
+then the mission-detail page with the Pacific world map and the briefing text. When the load
+releases the main-menu manager that page disappears, and what is left is the front-end frame
+(the flag, the two rails and the winged `MAIN MENU` plate, which belong to the 0x164 layout-set
+singleton rather than to a registry screen, so milestone 2b's caveat about those two pages is
+unchanged) and, over it, the HUD.
+
+The HUD is the four level-1 pages, laid out where their own `.lua` puts them: the minimap
+cluster in the top right (`minimap_islandmap_Icon` at 0.867, 0.165 with its compass, its glass
+and the capture icons), the powerup and unit templates in the middle left, and two text runs
+that resolve for real, `Medal_Text` = "Fighter Ace" in Arial15 and `WeaponInfo_Text` =
+`ingame.selector_atrillery` = "Artillery" in Arial16. **The large `Error` image is the page's
+own authored texture**: `minimap_islandmap_Icon` names `error.tga` with the material
+`minimap_terrain.mshd`, and the running game replaces it with the mission's island map; nothing
+in this process does. The templates are drawn in place because the HUD root's update 00649860,
+which clones them per unit, is analysed and not reconstructed.
+
+`drawn: yes`. 70 quads on the captured mission frame, 29 of them glyphs, against 13 with the
+HUD not yet up. The capture is written to the ignored `local/run_2h.png` and is not committed.
+
+### The unit passes still tick nothing, and why
+
+This is the one number the milestone does not improve. 32 unit records exist and **every unit
+pass of the frame and of the fixed step ticked 0 of them**. That is not an empty scene: every
+container those passes walk hangs off the world object `construct_world` 004DE610 would build
+at game+19CCh, and that step is still a load record. So the entity manager reference at
+game+21A0h is null, 00481640's gate at world+4ACh is closed and the fixed step's gate at
+00875E69 reads a world that does not exist, which is why rows 9 to 13 of the fan-out are still
+skipped exactly as milestone 2g reported. `construct_world` is now the single step between this
+executable and a ticking simulation.
+
+### Host methods
+
+`bsp_game.exe --frames 400 --press-start-frame 30 --menu-select USN02 --mission-frames 120
+--mission-complete-frame 90 --screenshot local/run_2h.png --screenshot-mission-frame 60 --log
+local/game_run_2h.log --game-root "<install>"`, exit 0: **286 concrete, 307 unimplemented**.
+Milestone 2g's run on its own tree reported 252 and 252; on this tree, before this packet, the
+same command reported 275 and 288. A `--mission-frames 60` run with no
+`--mission-complete-frame` reports 279 and 289, and a run closed with `CloseMainWindow` reports
+280 and 289.
+
+The methods this packet introduced, grouped. Everything not marked concrete is the
+unimplemented policy with its native call site on the record; the full per-step table with the
+call site and callee of every row is `reports/game_executable_milestone_2h.json`.
+
+| Host method | Native call site | Status | Calls |
+| --- | --- | --- | --- |
+| `MissionLoad::load_scene_contents` | `004d4df0` | concrete | 1 |
+| `SceneContents::property_library_load` | `008f67b0` | **unimplemented** | 1 |
+| `SceneContents::read_scene_file` | `008d9cf0` | concrete | 2 |
+| `SceneContents::read_scene_file_registration` | `0046df00` | concrete | 1 |
+| `SceneContents::read_scene_file_instantiate` | `0046df00` | concrete | 1 |
+| `SceneContents::generation_gate` | `0046c550` | concrete | 68 |
+| `SceneContents::registration_type_lookup` | `008f2260` | concrete | 34 |
+| `SceneContents::register_vehicle_class_preload` | `0095c640` | **unimplemented** | 32 |
+| `SceneContents::register_multiplayer_stock` | `0046bf70` | **unimplemented** | 32 |
+| `SceneContents::register_scene_unit` | `004e96d0` | concrete | 32 |
+| `SceneContents::launch_class_from_lua` | `00b68d70` | **unimplemented** | 32 |
+| `SceneContents::create_scene_unit` | `004f0520` | concrete | 32 |
+| `SceneContents::class_creator` | `004e99b0` | **unimplemented** | 2 |
+| `SceneContents::property_bag_holder` | `00922e20` | **unimplemented** | 32 |
+| `SceneGate::append_deferred_entity_record` | `0046c450` | **unimplemented** | 4 |
+| `SceneUnit::vehicle_class_descriptor` | `00964790` | **unimplemented** | 32 |
+| `SceneUnit::create_instance_from_descriptor` | `006fe590` | **unimplemented** | 32 |
+| `SceneUnit::placement_deferred` | `004c1130` | **unimplemented** | 32 |
+| `SceneUnit::world_parent_node` | `004de610` | **unimplemented** | 32 |
+| `SceneUnit::place_instance` | `00928860` | **unimplemented** | 32 |
+| `SceneUnit::set_instance_name` | `0041dd40` | concrete | 32 |
+| `SceneUnit::queue_entity_command` | `00469610` | **unimplemented** | 32 |
+| `InGameInterface::construct_manager` | `0068a990` | **unimplemented** | 1 |
+| `InGameInterface::manager_init` | `0068cc70` | **unimplemented** | 1 |
+| `InGameInterface::create_screen` | `00bf681b` | **unimplemented** | 42 |
+| `InGameInterface::screen_register` | `004f71d0` | concrete | 42 |
+| `InGameInterface::screen_find_child` | `00aa7e00` | concrete | 204 |
+| `InGameInterface::push_interface_request` | `004cc460` | **unimplemented** | 1 |
+| `InGameInterface::apply_pending_interface` | `0068aca0` | concrete | 1 |
+| `InGameInterface::apply_base_request` | `00684600` | **unimplemented** | 1 |
+| `InGameInterface::hud_root_set_interface` | `00646040` | **unimplemented** | 1 |
+| `InGameInterface::collapse_overlays` | `0068ab80` | **unimplemented** | 1 |
+| `InGameInterface::set_level1_screen_set` | `004f8530` | concrete | 1 |
+| `InGameInterface::set_level1_input_contexts` | `004d8a50` | concrete | 1 |
+| `MainMenuManager::deleting_destructor` | `00687300` | **unimplemented** | 1 |
+| `MainMenuManager::destroy` | `00686c90` | concrete | 1 |
+| `MainMenuManager::commit_screen_visibility` | `00686db9` | concrete | 7 |
+| `MainMenuScreen::deleting_destructor` | `00686e14` | **unimplemented** | 7 |
+| `FrontEndManager::deactivate` | `00683aa0` | concrete | 1 |
+| `MissionFrame::update_interface_only` | `004c40f0` | concrete | 90 |
+
+`SceneUnit::hierarchy_deferral` (004F03C0) exists and was not reached: 004C1130's answer is the
+record's false, so all 32 units take the placement branch.
+`SceneGate::resolve_parent_pose` (0046C6B7) and `SceneGate::mode_area` were not reached either:
+the reader composes the parent frame itself and passes a null parent identity, and single
+player never reaches a mode with a play-area test.
+
+### Corrections
+
+1. **`include/bsp/scene_entity_factory.hpp` has the registration filter inverted.** Its comment
+   reads "on the registration pass the reader keeps only entities whose class id is one of these
+   six". The six ids are the ones that **skip** the registration body. 0046D453 branches on
+   whether the bag carries `Type`: with `Type` present and a class id that is none of 47h, 19h,
+   1Bh, 1Ch, 34h or 4Dh, the main body at 0046D50B runs 0095C640, 0046BF70 and descriptor[2];
+   a match on any of the six, and the `Type`-absent path at 0046D547, both fall into the tail at
+   0046D54B, which runs 0046BF70 and descriptor[2] only for 4Dh and 44h. `DestroyerGen` is 07h
+   and takes the main body, which is what `docs/SCENE_UNIT_CREATORS.md`'s registration table
+   already said; the two documents disagreed and the listing settles it. The fix belongs in that
+   header, which this packet does not own.
+2. **`docs/SCENE_ENTITY_FACTORY.md`'s first uncertainty is closed.** The set at scene database
+   +164h is filled by the constructor 0046F160 with 47h and 3Dh; see section 2.
+3. **`docs/SCENE_UNIT_CREATORS.md`'s "the enum symbol tables are not in any shipped data file"
+   is wrong.** They are `universe/library/global.enums` and the six `enum` blocks in the
+   `.props` files, loaded by 008F67B0.
+4. **`include/bsp/scene_unit_creators.hpp`'s `kVehicleClassIndexTableEntries` is twice the real
+   size.** It reads 0x1000 from `(4010h - 10h) / 4`; `include/bsp/vehicle_class.hpp` has the
+   same singleton with a forward map of 800h entries at +10h and an inverse map of 800h at
+   +2010h, which is what fills that span. The two headers disagree about one field.
+5. **Milestone 2f's "a mission is running behind an unchanged picture" is superseded.** The
+   release of the main-menu manager is a full destructor chain that takes the front-end pages
+   down; see section 3.
+6. **`include/bsp/mission_scene_load.hpp`'s `script_slot` and `script_slot_forced` are the game
+   mode.** They are game+614h and game+61Ch, the two fields 004BCA50 reads; the mission script
+   slot and the scene generation mode are the same pair, which is why a single-player load
+   resolves both to 8.
+7. **`bsp::SceneFileReaderHost::instantiate_entity` cannot express a nested entity's gate
+   inputs.** 0046CF40 passes the entity's own `localframe` as argument 4 and the parent's world
+   frame inline as arguments 7..22, and 0046C550 uses them differently; the host receives only
+   the product. Every entity of this mission is top level, so the run is unaffected, and the
+   executable reports the nested count.
+
+### What this milestone supplies rather than recovers
+
+- **The property-group and enum library reader.** Section 1. Its VFS enumeration, tokenizer and
+  property-block parser are recovered; the `properties`/`enum` dispatch and the merge are not.
+- **The unit instance.** `create_instance_from_descriptor` hands the creator the executable's
+  own entity record so the rest of 004F0520 runs; the native 1188h allocation behind the
+  descriptor's vtable +28h is recorded at 006FE590 and nothing claims its layout. This is the
+  substitution milestone 2c makes for the seven main-menu screen classes.
+- **The 42 HUD screens** are the executable's own registry records built from the recovered slot
+  and page tables, for the same reason.
+- **The vehicle-class registry's forward index map** is filled with the identity, which is the
+  state 00592640 and 00506550 leave (both reset all 800h pairs and rewrite one, and 00592640 is
+  the footer command this run already takes). Without it 0095BA60 finds no class index.
+- **The three mission-detail page roots** are hidden when the manager is destroyed, because the
+  executable holds them directly rather than through the main-menu screen's +24h collector.
+
+### Code with no Ghidra function
+
+| Start | End (inclusive) | Note |
+| --- | --- | --- |
+| 004e98e0 | 004e98e0 | `JMP 004e96d0`, the registration creator of `DestroyerGen`, `SubmarineGen`, `LandingShipGen` and `TBoatGen`, already recorded by `docs/SCENE_UNIT_CREATORS.md` and still undefined |
+
+Every other address this packet touched has a Ghidra function. Three names were added, 008F67B0
+`CPropTreeLibrary_Load` (the one name here that is not a hypothesis: the class and method name
+are ASCII in the image at 00D1653C), 0046F160 `BSP_SceneDatabase_Construct` and 0046F350
+`BSP_SceneDatabase_CreateSingleton`; run-time evidence was appended to 004D4DF0, 0046CF40,
+0046C550, 004F0520, 004E96D0, 0068ACA0, 004F8530 and 00686C90. 0068CC70 was read and cited but
+not annotated: it is leased to `agent/cc-hud-updates` for packet `cc_hud_updates`.
+
+### Validation
+
+`scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest
+case `reconstructed_math` passes, 1 of 1. No test cases were added.
+`python tools/verify_report_calls.py reports/game_executable_milestone_2h.json` checks 46 call
+rows and reports 0 failures; five rows are reported as indirect because the native call goes
+through a register.
+
+```
+property library: 15 file(s) under universe/library, 22 property group(s), 33 enum table(s),
+        1522 symbol(s) (008f67b0 CPropTreeLibrary::Load is not reconstructed; this is the
+        executable's own reader over the recovered tokenizer and 008f5a00)
+Loading scene universe/Scenes/missions/USN/usn_2_java.scn
+scene contents pass 2 Registration: 34 entities visited, 0 groups, uniqueID=1
+scene contents pass 3 Instantiate: 34 entities visited, 0 groups, uniqueID=1
+  scene type DestroyerGen ShipClasses:DeRuyter=20 party=Allied(0) x2
+  scene type DestroyerGen ShipClasses:Kagero=276 party=Japanese(1) x6
+  scene class DestroyerGen  id=07 seen=32 generated=32 rejected=0 created=32
+        registration_bodies=32 concrete 004f0520
+  scene class NavPoint      id=41 seen=2  generated=2  rejected=0 created=0
+        registration_bodies=0  record 004e99b0
+in-mission HUD manager: 42 of 42 screens registered, 52 of 52 pages loaded, 204 of 373 named
+        widgets bound; INTF_SCENE3D (20h) pushed by Init at 0068d73a
+the main-menu manager was destroyed: 00687300 -> 00686c90 -> 00683aa0, whose tail publishes the
+        empty level-4 screen set (004f8710) and the empty level-4 input contexts (004d8c00), so
+        the front-end pages come down
+in-mission level-1 set for INTF_SCENE3D (null payload, single player): screens 29h 49h 44h 35h
+        | contexts 04h 11h 12h 0Ch 0Bh | pages GUI_powerups GUI_unit GUI_selector GUI_minimap
+sprite bridge quads=13 (text_glyph_quads=9)  textures=13/14 atlas_items=678 rebuild=34
+sprite bridge quads=70 (text_glyph_quads=29) textures=14/15 atlas_items=678 rebuild=35
+summary mission scene contents mode=8 entities=34 generated=34 rejected=0 created=32
+        registration_bodies=32 party_class_marks=32 property_groups=22 enum_tables=33
+summary mission unit passes: 32 unit record(s) exist and every unit pass of the frame and of
+        the fixed step ticked 0 of them, because construct_world 004de610 is a load record
+summary mission exit reachable=1: the mission ended through 004d7970: request 10h, the
+        teardown arm 004e458a, state 11h and request 04h
+host methods 286 concrete, 307 unimplemented
+```
+
+Every earlier switch was rechecked on the same binary. A 120 frame run with
+`--press-start-frame 30` and no `--menu-select` exits 0 and reports 154 concrete and 80
+unimplemented, a 40 frame title-only run reports 129 and 49, `--vfs-probe fonts/fonts.lua`
+exits 0 and `--vfs-probe does/not/exist.lua` exits 3: all four match milestone 2d exactly. A
+`--mission-frames 60` run with no `--mission-complete-frame` still ends on the frame count with
+`summary mission exit reachable=0`. The 2000 frame run exits 0 and runs 19 fixed steps with the
+same fan-out disposition milestone 2g recorded; the step count is driven by wall-clock time, so
+it moves with the work per frame and 2g's own long run reported 18. The close path was
+validated by sending WM_CLOSE to a running process with `--press-start-frame 30 --menu-select
+USN02 --mission-frames 60`: it presented 28391 frames, ran all 60 mission frames, recorded
+`CloseRequestPolicy::front_end_branch [004ca2f0]` once and exited 0.
+
+This is a runtime-validated process, not a game-validated one. It proves that the recovered
+scene-file passes, generation gate, registration body and unit creator create the selected
+mission's units out of real installed data with their real classes and parties, and that the
+recovered interface dispatch puts the in-mission HUD's own pages on screen. It proves nothing
+about the simulation: no created unit is ticked by anything, no HUD widget is updated, and the
+world object every one of those passes needs does not exist.
+
+### Follow-up packets
+
+1. **`construct_world` 004DE610**, the world object at game+19CCh with its +4ACh byte and the
+   entity manager at game+21A0h. It is now the single step between this executable and a
+   ticking simulation: 32 unit records exist and nothing walks them.
+2. **`prop_tree_library`**: 008F67B0, 008F6FC0 and 008F7100 in full, including the group
+   inheritance the parenthesised name declares, the merge rule of 008F54F0's third argument and
+   where the loaded library is published so 008F2260 resolves against it. That would delete this
+   milestone's own reader.
+3. **`scene_unit_class_factory`**: 00964790 and the unit instance its descriptor's vtable +28h
+   allocates (006FE590 for `MDestroyer`). It is the boundary between a created entity record and
+   a real unit.
+4. **`scene_fixed_entity_classes`**: 004E99B0 and the other eleven fixed-size creators, which is
+   what the two `NavPoint`s need.
+5. **The HUD root update 00649860**, which clones the `GUI_powerups` and `GUI_unit` templates
+   per unit. Until it runs the templates are drawn where the page authored them.
+6. **The three central screens' update virtuals**, 00649860, 006435D0 and 005C0F20, which are
+   analysed and not reconstructed; nothing on the HUD moves without them.
+7. **The three header fixes in corrections 1, 4 and 6**, all one-line changes in files this
+   packet does not own.
 
 ## Next milestones
 
