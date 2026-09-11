@@ -5658,8 +5658,8 @@
       "id": "native_renderer_stream_frequency1",
       "packet": "native_renderer_stream_frequency1",
       "worker": "main",
-      "done": false,
-      "state": "full_source_strict_main_Win32_checked_original_main_library_fixture_pending",
+      "done": true,
+      "state": "complete_actual_storage_primary_library_real_D3D9_original_EH_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b24a40"
       ],
@@ -5670,7 +5670,8 @@
         "reports/native_renderer_stream_frequency_audit.json"
       ],
       "source_ready": true,
-      "scope": "Full actual renderer storage and optional synchronization guards. No stream/stage validation, artificial cache defaults or injected provider callbacks."
+      "scope": "Full actual renderer storage and optional synchronization guards. No stream/stage validation, artificial cache defaults or injected provider callbacks.",
+      "evidence": "reports/native_renderer_stream_frequency_audit.json"
     },
     {
       "id": "native_renderer_texture_stage_state1",

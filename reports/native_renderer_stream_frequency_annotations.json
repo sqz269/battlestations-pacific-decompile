@@ -1,0 +1,17 @@
+[
+  {
+    "address": "00b24a40",
+    "before": {
+      "address": "00b24a40",
+      "function_name": "BSP_D3D9Renderer_SetStreamFrequencyCached",
+      "comment": "[BSP reconstruction 00b24a40]\nthiscall RET 8h. Compares stream cache DWORD this+1780h+16*stream, updates on change, calls device virtual 198h SetStreamSourceFreq(stream,value), with optional renderer guard."
+    },
+    "after": {
+      "address": "00b24a40",
+      "old_name": "BSP_D3D9Renderer_SetStreamFrequencyCached",
+      "name": "BSP_D3D9Renderer_SetStreamFrequencyCached",
+      "evidence": "Complete183byte renderer stream-frequency setter in src/native_renderer_stream_frequency.cpp. Optional actual B33AD0 entry; cacheDWORD at renderer+(stream+178h)*16 wrapping readB24A8E BEFORE cleanupArmB24A90. Hit skipsCOM. Changed cache publishes BEFORE currentdevice1A10/currenttable198 SetStreamSourceFreq(rawstream,value); HRESULT ignored, NOcounter. Currentmode read before normal cleanup disarm then actualB33B00 with savedrenderer. FullB21110/FH3 unwind, unarmedEnter/disarmedLeave exceptions, skippedentryguarduninitialized; secondary C++cleanup exception terminates. Primary62immutableworkerpins/fourcurrentrootfiles/10freshlive-PEspans396bytes plus eightfreshseeds. Strictmainbuild/twoCTests. Solefrozenactualmainlibrary/twoexactarchiveobjects; ninecompleteCOFFsections with exact symbol relocations, eightlinkedentries653uniquecodebytes.13original/librarypairs213696literalDWORDs/113rawframes;27maincode/profilepostimage stages,17fullspans each. ActualtwoHALdevices/whole7204renderer/eightglobals/bothactual28bytecriticalsections/currentpointers/all32GetStreamSourceFreqvalues. Cache/currentdevice/table/lock/modecallbacks and fullnativeEH. Stream10000000 actualruntimeacceptedwrap0; frequency0 actualINVALIDCALL8876086C ignoredaftercachepublication. TwoisolatedsecondaryC++exceptionprocesses realLeave completed then stdterminate ExitProcess73; final rawstate verified. ActualOS/D3D9/FH3moduleentries/callsites pinned, FH3thunks separatefromactualexport. Newcdecl explicitactualsynchronizationcontext differsfromoriginal ECXrenderer/twostackDWORDs/RET8. No fullrenderer/gameplay/visualororiginalcallerABIclaim. reports/native_renderer_stream_frequency_audit.json. Existing descriptive name retained."
+    },
+    "status": "applied"
+  }
+]
