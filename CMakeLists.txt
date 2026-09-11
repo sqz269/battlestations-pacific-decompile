@@ -115,6 +115,10 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_renderer_clip_planes.cpp
   src/native_renderer_indexed_draw.cpp
   src/native_plane_set.cpp
+  src/native_camera_matrix_copy.cpp
+  src/native_camera_general_inverse.cpp
+  src/native_ambient_color.cpp
+  src/native_camera_plane_transform.cpp
   src/native_renderer_texture_stage_state.cpp
   src/native_occlusion_query_device_reset.cpp
   src/native_diagnostic_sink_lifetime.cpp

@@ -1,0 +1,366 @@
+{
+  "packet": "native_camera_general_inverse1",
+  "status": "complete_raw_entry_strict_main_Win32_and_full_original_COFF_constant_relocation_identity_checked",
+  "address": "00b632d0",
+  "source": "src/native_camera_general_inverse.cpp",
+  "cpp_symbol": "bsp::invert_native_camera_matrix_00b632d0",
+  "original_abi": "ECX destination, EDX source, EAX destination, plain RET",
+  "native_end_exclusive": "00b63b28",
+  "raw_interface": "MSVC Win32 fastcall raw void* destination,const void* source; two relocated immutable original constant words",
+  "verification": {
+    "utc": "2026-09-11T16:47:29.528641+00:00",
+    "capture": {
+      "utc": "2026-09-11T16:44:53.539484+00:00",
+      "target": {
+        "project": "bsp",
+        "program": "battlestationspacific.exe",
+        "program_path": "/battlestationspacific.exe",
+        "language": "x86:LE:32:default",
+        "image_base": "00400000",
+        "ghidra_url": "http://127.0.0.1:8089",
+        "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+        "project_file": "C:/Users/sqz269/bsp.gpr",
+        "coordination_dir": "C:/Users/sqz269/.bsp"
+      },
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "prototype": "00b632d0 BSP_Matrix4f_InvertGeneral  undefined BSP_Matrix4f_InvertGeneral(void)  body 00b632d0 - 00b63b27\n",
+      "spans": [
+        {
+          "address": "00b632d0",
+          "length": 2136,
+          "role": "complete_general_inverse",
+          "bytes_hex": "81ecb00000000f57c0538bd955f30f100d4ca2d70056f30f102d08a2d7008bf28d5424508bc28944244cb82c0000002bc3898424980000008d4424542bc3898424b80000008d4424582bc38984249400000057b8fcffffff2bc3b9100000008d7c2454f3a5898424b400000033ff8bea2bebb8040000008bf28d4b042bc6f30f110bf30f1101f30f114308f30f11430cf30f114310f30f114b14f30f114318f30f11431cf30f114320f30f114324f30f114b28f30f11432cf30f114330f30f114334f30f114338f30f114b3c897c2420897c241c89542424c744244c0300000089ac2494000000898424ac000000eb048b7c2420837c244c048d770189b424a40000000f8cd70100008b84249c0000008b6c241c8b9424b400000003c1894424488b8424ac00000003c58b6c244803d1034424208d4404548d448464894424108b442410f30f1048f00f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876058bfe8d55e08b442410f30f10080f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876068d7e018d55f08b442410f30f1048100f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876058d7e028bd58b442410f30f1048200f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876068d7e038d5510834424104083c54083c60483fd300f8c6bfeffff8bac24940000008b54242483fe040f8da20000008bef8bc6c1e504c1e004894424108b4424208d04b08d44845489442424eb088da42400000000908b442424f30f10080f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c5f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876068b6c24108bfe8344241010834424241083c601837c2410407c8c8bac2494000000d9028bb424bc000000c1e704837c2420008bc7f30f104c0454d95c0454f30f10540458d90429d95c0458f30f105c045cf30f10640460d9040ed95c045c8bbc2498000000d9040fd95c0460f30f11240fd941fcf30f1064180cf30f111429f30f10541804f30f110af30f100c18d91c18d901f30f111c0ef30f105c18088d7c1804897c24488d7c1808897c24248d7c180c8b442448d9188b442424d94104d9188b442450d94108d91ff30f1149fcd900f30f1111d95c2448f30f115904f30f116108d941fcd94424488bbc2498000000d9c0defad9c9d959fcd901d8f1d919d94104d8f1d95904d94108d8f1d95908d902d8f1d91ad90429d8f1d91c29d9040ed8f1d91c0ed83c0fd91c0f0f84cd0000008b44241cf30f104c04540f2ec89ff6c444f30f118c24b00000000f8bad000000d98424b0000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d903d8642438d91bd94304d864243cd95b04d94308d8642440d95b08d9430cd8642444d95b0cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9442454d8642428d95c2454d9442458d864242cd95c2458d944245cd8642430d95c245cd9442460d8642434d95c2460837c2420010f84cf0000008b44241cf30f104c04640f2ec89ff6c444f30f118c24a80000000f8baf000000d98424a8000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d94310d8642438d95b10d94314d864243cd95b14d94318d8642440d95b18d9431cd8642444d95b1cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9442464d8642428d95c2464d9442468d864242cd95c2468d944246cd8642430d95c246cd9442470d8642434d95c2470837c2420020f84d50000008b44241cf30f104c04740f2ec89ff6c444f30f118c24b80000000f8bb5000000d98424b8000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d94320d8642438d95b20d94324d864243cd95b24d94328d8642440d95b28d9432cd8642444d95b2cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9442474d8642428d95c2474d9442478d864242cd95c2478d944247cd8642430d95c247cd9842480000000d8642434d99c2480000000837c2420030f84ea0000008b44241cf30f108c04840000000f2ec89ff6c444f30f118c24a00000000f8bc7000000d98424a0000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d94330d8642438d95b30d94334d864243cd95b34d94338d8642440d95b38d9433cd8642444d95b3cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9842484000000d8642428d99c2484000000d9842488000000d864242cd99c2488000000d984248c000000d8642430d99c248c000000d9842490000000d8642434d99c24900000008b8424a400000083442450148344241c04894424208b44244c83e80183c21083c11083f8ff8944244c895424240f8fa5f8ffff5f5e5d8bc35b81c4b0000000c3",
+          "sha256": "f1a374834a148171e1aa76817a43669359640372ed6a44394a9ab1428b37a6f7",
+          "fresh_guarded_live_PE_equal": true,
+          "original_section": ".text",
+          "section_characteristics": "60000020",
+          "original_not_writable": true
+        },
+        {
+          "address": "00d7a208",
+          "length": 4,
+          "role": "immutable_negative_zero",
+          "bytes_hex": "00000080",
+          "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+          "fresh_guarded_live_PE_equal": true,
+          "original_section": ".rdata",
+          "section_characteristics": "40000040",
+          "original_not_writable": true
+        },
+        {
+          "address": "00d7a24c",
+          "length": 4,
+          "role": "immutable_positive_one",
+          "bytes_hex": "0000803f",
+          "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+          "fresh_guarded_live_PE_equal": true,
+          "original_section": ".rdata",
+          "section_characteristics": "40000040",
+          "original_not_writable": true
+        }
+      ],
+      "total_bytes": 2144,
+      "promoted_private_kernel": {
+        "source": "src/camera_frame_state.cpp",
+        "sha256": "e05983d2625a6276f15b4fc8b84c8b6c1c81e864a95909bde50b0d8610dc811e",
+        "source_first_line": 121,
+        "source_last_line": 733,
+        "changes": "Exported descriptive function name and raw void pointers; two pinned immutable constant names; restore complete eight unreachable alignment bytes at B635D8..B635DF (private kernel used a three-byte LEA). Every executable operation and label otherwise unchanged.",
+        "constant_references": 2
+      },
+      "native_differential_fixture": false
+    },
+    "verified_seeds": [
+      {
+        "address": "00401170",
+        "length": 28,
+        "matches_disk": true,
+        "ghidra_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400",
+        "disk_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400"
+      },
+      {
+        "address": "00401c20",
+        "length": 47,
+        "matches_disk": true,
+        "ghidra_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3",
+        "disk_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3"
+      },
+      {
+        "address": "00401cb0",
+        "length": 25,
+        "matches_disk": true,
+        "ghidra_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3",
+        "disk_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3"
+      },
+      {
+        "address": "00401cd0",
+        "length": 29,
+        "matches_disk": true,
+        "ghidra_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800",
+        "disk_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800"
+      },
+      {
+        "address": "00401cf0",
+        "length": 25,
+        "matches_disk": true,
+        "ghidra_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3",
+        "disk_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3"
+      },
+      {
+        "address": "00bf0cf0",
+        "length": 46,
+        "matches_disk": true,
+        "ghidra_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400",
+        "disk_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400"
+      },
+      {
+        "address": "00bf0d20",
+        "length": 207,
+        "matches_disk": true,
+        "ghidra_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3",
+        "disk_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3"
+      },
+      {
+        "address": "00ba2c20",
+        "length": 94,
+        "matches_disk": true,
+        "ghidra_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3",
+        "disk_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3"
+      }
+    ],
+    "strict_main_build": {
+      "passed": true,
+      "CTests_passed": 2,
+      "permanent_tests_added": false
+    },
+    "complete_COFF_original_identity": {
+      "symbol": {
+        "name": "?invert_native_camera_matrix_00b632d0@bsp@@YIPAXPAXPBX@Z",
+        "value": 0,
+        "section": 4,
+        "type": 32
+      },
+      "section": {
+        "index": 4,
+        "size": 2136,
+        "raw": 463,
+        "reloc": 2599,
+        "count": 2,
+        "name": ".text$mn"
+      },
+      "bytes": 2136,
+      "COFF_bytes_hex": "81ecb00000000f57c0538bd955f30f100d0000000056f30f102d000000008bf28d5424508bc28944244cb82c0000002bc3898424980000008d4424542bc3898424b80000008d4424582bc38984249400000057b8fcffffff2bc3b9100000008d7c2454f3a5898424b400000033ff8bea2bebb8040000008bf28d4b042bc6f30f110bf30f1101f30f114308f30f11430cf30f114310f30f114b14f30f114318f30f11431cf30f114320f30f114324f30f114b28f30f11432cf30f114330f30f114334f30f114338f30f114b3c897c2420897c241c89542424c744244c0300000089ac2494000000898424ac000000eb048b7c2420837c244c048d770189b424a40000000f8cd70100008b84249c0000008b6c241c8b9424b400000003c1894424488b8424ac00000003c58b6c244803d1034424208d4404548d448464894424108b442410f30f1048f00f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876058bfe8d55e08b442410f30f10080f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876068d7e018d55f08b442410f30f1048100f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876058d7e028bd58b442410f30f1048200f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876068d7e038d5510834424104083c54083c60483fd300f8c6bfeffff8bac24940000008b54242483fe040f8da20000008bef8bc6c1e504c1e004894424108b4424208d04b08d44845489442424eb088da42400000000908b442424f30f10080f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c5f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876068b6c24108bfe8344241010834424241083c601837c2410407c8c8bac2494000000d9028bb424bc000000c1e704837c2420008bc7f30f104c0454d95c0454f30f10540458d90429d95c0458f30f105c045cf30f10640460d9040ed95c045c8bbc2498000000d9040fd95c0460f30f11240fd941fcf30f1064180cf30f111429f30f10541804f30f110af30f100c18d91c18d901f30f111c0ef30f105c18088d7c1804897c24488d7c1808897c24248d7c180c8b442448d9188b442424d94104d9188b442450d94108d91ff30f1149fcd900f30f1111d95c2448f30f115904f30f116108d941fcd94424488bbc2498000000d9c0defad9c9d959fcd901d8f1d919d94104d8f1d95904d94108d8f1d95908d902d8f1d91ad90429d8f1d91c29d9040ed8f1d91c0ed83c0fd91c0f0f84cd0000008b44241cf30f104c04540f2ec89ff6c444f30f118c24b00000000f8bad000000d98424b0000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d903d8642438d91bd94304d864243cd95b04d94308d8642440d95b08d9430cd8642444d95b0cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9442454d8642428d95c2454d9442458d864242cd95c2458d944245cd8642430d95c245cd9442460d8642434d95c2460837c2420010f84cf0000008b44241cf30f104c04640f2ec89ff6c444f30f118c24a80000000f8baf000000d98424a8000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d94310d8642438d95b10d94314d864243cd95b14d94318d8642440d95b18d9431cd8642444d95b1cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9442464d8642428d95c2464d9442468d864242cd95c2468d944246cd8642430d95c246cd9442470d8642434d95c2470837c2420020f84d50000008b44241cf30f104c04740f2ec89ff6c444f30f118c24b80000000f8bb5000000d98424b8000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d94320d8642438d95b20d94324d864243cd95b24d94328d8642440d95b28d9432cd8642444d95b2cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9442474d8642428d95c2474d9442478d864242cd95c2478d944247cd8642430d95c247cd9842480000000d8642434d99c2480000000837c2420030f84ea0000008b44241cf30f108c04840000000f2ec89ff6c444f30f118c24a00000000f8bc7000000d98424a0000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d94330d8642438d95b30d94334d864243cd95b34d94338d8642440d95b38d9433cd8642444d95b3cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9842484000000d8642428d99c2484000000d9842488000000d864242cd99c2488000000d984248c000000d8642430d99c248c000000d9842490000000d8642434d99c24900000008b8424a400000083442450148344241c04894424208b44244c83e80183c21083c11083f8ff8944244c895424240f8fa5f8ffff5f5e5d8bc35b81c4b0000000c3",
+      "mapped_original_bytes_hex": "81ecb00000000f57c0538bd955f30f100d4ca2d70056f30f102d08a2d7008bf28d5424508bc28944244cb82c0000002bc3898424980000008d4424542bc3898424b80000008d4424582bc38984249400000057b8fcffffff2bc3b9100000008d7c2454f3a5898424b400000033ff8bea2bebb8040000008bf28d4b042bc6f30f110bf30f1101f30f114308f30f11430cf30f114310f30f114b14f30f114318f30f11431cf30f114320f30f114324f30f114b28f30f11432cf30f114330f30f114334f30f114338f30f114b3c897c2420897c241c89542424c744244c0300000089ac2494000000898424ac000000eb048b7c2420837c244c048d770189b424a40000000f8cd70100008b84249c0000008b6c241c8b9424b400000003c1894424488b8424ac00000003c58b6c244803d1034424208d4404548d448464894424108b442410f30f1048f00f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876058bfe8d55e08b442410f30f10080f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876068d7e018d55f08b442410f30f1048100f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876058d7e028bd58b442410f30f1048200f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c2f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876068d7e038d5510834424104083c54083c60483fd300f8c6bfeffff8bac24940000008b54242483fe040f8da20000008bef8bc6c1e504c1e004894424108b4424208d04b08d44845489442424eb088da42400000000908b442424f30f10080f2fc87608f30f114c2414eb0d0f28d5f30f5cd1f30f115424148b44241c03c5f30f104c04540f2fc88d4404547608f30f114c2418eb0d0f28d5f30f5cd1f30f11542418d9442418d9442414dff1ddd876068b6c24108bfe8344241010834424241083c601837c2410407c8c8bac2494000000d9028bb424bc000000c1e704837c2420008bc7f30f104c0454d95c0454f30f10540458d90429d95c0458f30f105c045cf30f10640460d9040ed95c045c8bbc2498000000d9040fd95c0460f30f11240fd941fcf30f1064180cf30f111429f30f10541804f30f110af30f100c18d91c18d901f30f111c0ef30f105c18088d7c1804897c24488d7c1808897c24248d7c180c8b442448d9188b442424d94104d9188b442450d94108d91ff30f1149fcd900f30f1111d95c2448f30f115904f30f116108d941fcd94424488bbc2498000000d9c0defad9c9d959fcd901d8f1d919d94104d8f1d95904d94108d8f1d95908d902d8f1d91ad90429d8f1d91c29d9040ed8f1d91c0ed83c0fd91c0f0f84cd0000008b44241cf30f104c04540f2ec89ff6c444f30f118c24b00000000f8bad000000d98424b0000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d903d8642438d91bd94304d864243cd95b04d94308d8642440d95b08d9430cd8642444d95b0cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9442454d8642428d95c2454d9442458d864242cd95c2458d944245cd8642430d95c245cd9442460d8642434d95c2460837c2420010f84cf0000008b44241cf30f104c04640f2ec89ff6c444f30f118c24a80000000f8baf000000d98424a8000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d94310d8642438d95b10d94314d864243cd95b14d94318d8642440d95b18d9431cd8642444d95b1cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9442464d8642428d95c2464d9442468d864242cd95c2468d944246cd8642430d95c246cd9442470d8642434d95c2470837c2420020f84d50000008b44241cf30f104c04740f2ec89ff6c444f30f118c24b80000000f8bb5000000d98424b8000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d94320d8642438d95b20d94324d864243cd95b24d94328d8642440d95b28d9432cd8642444d95b2cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9442474d8642428d95c2474d9442478d864242cd95c2478d944247cd8642430d95c247cd9842480000000d8642434d99c2480000000837c2420030f84ea0000008b44241cf30f108c04840000000f2ec89ff6c444f30f118c24a00000000f8bc7000000d98424a0000000d95c2410d941fcd9442410d9c0decad9c9d95c2438d901d8c9d95c243cd94104d8c9d95c2440d94108d8c9d95c2444d94330d8642438d95b30d94334d864243cd95b34d94338d8642440d95b38d9433cd8642444d95b3cd902d8c9d95c2428d9c0d80c29d95c242cd9040ed8c9d95c2430d80c0fd95c2434d9842484000000d8642428d99c2484000000d9842488000000d864242cd99c2488000000d984248c000000d8642430d99c248c000000d9842490000000d8642434d99c24900000008b8424a400000083442450148344241c04894424208b44244c83e80183c21083c11083f8ff8944244c895424240f8fa5f8ffff5f5e5d8bc35b81c4b0000000c3",
+      "sha256_original": "f1a374834a148171e1aa76817a43669359640372ed6a44394a9ab1428b37a6f7",
+      "relocations": [
+        {
+          "offset": 17,
+          "type": 6,
+          "symbol": {
+            "name": "?camera_inverse_positive_one_d7a24c@?A0xbf5d844e@bsp@@3IB",
+            "value": 4,
+            "section": 3,
+            "type": 0
+          },
+          "source_section": {
+            "index": 3,
+            "size": 8,
+            "raw": 455,
+            "reloc": 0,
+            "count": 0,
+            "name": ".rdata"
+          },
+          "original_address": "00d7a24c",
+          "literal_constant_bytes": "0000803f",
+          "only_address_relocated": true
+        },
+        {
+          "offset": 26,
+          "type": 6,
+          "symbol": {
+            "name": "?camera_inverse_negative_zero_d7a208@?A0xbf5d844e@bsp@@3IB",
+            "value": 0,
+            "section": 3,
+            "type": 0
+          },
+          "source_section": {
+            "index": 3,
+            "size": 8,
+            "raw": 455,
+            "reloc": 0,
+            "count": 0,
+            "name": ".rdata"
+          },
+          "original_address": "00d7a208",
+          "literal_constant_bytes": "00000080",
+          "only_address_relocated": true
+        }
+      ],
+      "every_original_instruction_identical_after_two_immutable_constant_address_relocations": true,
+      "unreachable_original_alignment_bytes": "8da4240000000090"
+    },
+    "exact_archive_member": {
+      "name": "bsp_core.dir\\Release\\native_camera_general_inverse.obj",
+      "offset": 29078302,
+      "bytes": 3107,
+      "sha256": "293e0855322bfea71e2140a364f6054fa63911a4144fb8f165d54a504e9edd54"
+    },
+    "artifacts": [
+      {
+        "path": "local/camera_general_inverse/frozen/bsp_core.lib",
+        "bytes": 35931588,
+        "sha256": "348707f9e0d0ebd36608df65194c67df071da59b351cc9197f2dc42509ddb362"
+      },
+      {
+        "path": "local/camera_general_inverse/frozen/native_camera_general_inverse.obj",
+        "bytes": 3107,
+        "sha256": "293e0855322bfea71e2140a364f6054fa63911a4144fb8f165d54a504e9edd54"
+      },
+      {
+        "path": "local/camera_general_inverse/frozen/native_camera_general_inverse.cpp",
+        "bytes": 27329,
+        "sha256": "e8b1c1d58b6c982620d88eff58f9e5589d16635aaf54dcd5b0f574e7069cddec"
+      },
+      {
+        "path": "local/camera_general_inverse/frozen/native_camera_general_inverse.hpp",
+        "bytes": 601,
+        "sha256": "881e986c24035f048b678517d9af812fc490e370d5e23af1e3b1ec77a08242f2"
+      },
+      {
+        "path": "local/camera_general_inverse/frozen/strict_build.log",
+        "bytes": 1823,
+        "sha256": "713200e644c8868d2c5d800d724a058db000ea8e6d2350514541bad6b06b2363"
+      },
+      {
+        "path": "local/camera_general_inverse/frozen/CL.command.1.tlog",
+        "bytes": 733466,
+        "sha256": "7b1ba96114ca8411bab70973117f0eb6793daa5c6316a552ed284d344eb2b6f4"
+      },
+      {
+        "path": "local/camera_general_inverse/coff_provenance.py",
+        "bytes": 2331,
+        "sha256": "0bd0b9f6bccb10ce34acdf32ca949ef94cff8a451eefc65ef0fb0601c090d59f"
+      }
+    ],
+    "original_body_fixture": false,
+    "linked_runtime_fixture": false,
+    "ABI_integration": false,
+    "game_validated": false,
+    "limitations": [
+      "Complete raw entry instructions and constants are verified in actual main archive; the function was not independently run or forced into a separate linked executable.",
+      "Existing CTests passed but do not constitute a new raw general-inverse runtime fixture.",
+      "Immutable original constants belong to the recorded executable; altered constant data and general camera hierarchy integration are outside this proof."
+    ],
+    "seal": {
+      "path": "local/camera_general_inverse/sealed.json",
+      "bytes": 2591,
+      "sha256": "c51839ddb3407c0b40f8f8a1715db1ac048030767cfe6eaae59d161641105d94",
+      "artifacts": [
+        {
+          "path": "local/camera_general_inverse/capture.json",
+          "bytes": 6767,
+          "sha256": "98020bc9b45a487efe5d7bb5e6017b379096d7c3662cf5918f306e08a8f245be"
+        },
+        {
+          "path": "local/camera_general_inverse/coff_provenance.py",
+          "bytes": 2331,
+          "sha256": "0bd0b9f6bccb10ce34acdf32ca949ef94cff8a451eefc65ef0fb0601c090d59f"
+        },
+        {
+          "path": "local/camera_general_inverse/live_00b632d0.txt",
+          "bytes": 10286,
+          "sha256": "b878ff45b1923416ebad286f5adf0d780a1a37b92cec81f0ed206bdc077ed562"
+        },
+        {
+          "path": "local/camera_general_inverse/live_00d7a208.txt",
+          "bytes": 29,
+          "sha256": "ba68cff97bdc11933009685d62b197e076c39e448f996361833d006885827a9d"
+        },
+        {
+          "path": "local/camera_general_inverse/live_00d7a24c.txt",
+          "bytes": 29,
+          "sha256": "fd6f7a7d3874dfe569d075d61e99337d9cca002b06a4ebed7f03e974e26bdabc"
+        },
+        {
+          "path": "local/camera_general_inverse/verified.json",
+          "bytes": 22850,
+          "sha256": "00983d6b0628d45a56acfa17a463f29ecae19884db9fca49543b988eec3eb5d4"
+        },
+        {
+          "path": "local/camera_general_inverse/verify_seeds.json",
+          "bytes": 3034,
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        },
+        {
+          "path": "local/camera_general_inverse/frozen/bsp_core.lib",
+          "bytes": 35931588,
+          "sha256": "348707f9e0d0ebd36608df65194c67df071da59b351cc9197f2dc42509ddb362"
+        },
+        {
+          "path": "local/camera_general_inverse/frozen/CL.command.1.tlog",
+          "bytes": 733466,
+          "sha256": "7b1ba96114ca8411bab70973117f0eb6793daa5c6316a552ed284d344eb2b6f4"
+        },
+        {
+          "path": "local/camera_general_inverse/frozen/native_camera_general_inverse.cpp",
+          "bytes": 27329,
+          "sha256": "e8b1c1d58b6c982620d88eff58f9e5589d16635aaf54dcd5b0f574e7069cddec"
+        },
+        {
+          "path": "local/camera_general_inverse/frozen/native_camera_general_inverse.hpp",
+          "bytes": 601,
+          "sha256": "881e986c24035f048b678517d9af812fc490e370d5e23af1e3b1ec77a08242f2"
+        },
+        {
+          "path": "local/camera_general_inverse/frozen/native_camera_general_inverse.obj",
+          "bytes": 3107,
+          "sha256": "293e0855322bfea71e2140a364f6054fa63911a4144fb8f165d54a504e9edd54"
+        },
+        {
+          "path": "local/camera_general_inverse/frozen/strict_build.log",
+          "bytes": 1823,
+          "sha256": "713200e644c8868d2c5d800d724a058db000ea8e6d2350514541bad6b06b2363"
+        }
+      ]
+    }
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "reports/native_camera_general_inverse_annotations.json",
+    "bytes": 2198,
+    "sha256": "1dafb5f88400b30ece779b5d485d0e14ce4f6491231777f8d12b10d823f7708d",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_export": {
+    "path": "exports/bsp/functions/00b632d0/decompiled.c",
+    "bytes": 10844,
+    "sha256": "23ad1f8de03eac54b980955057994b70774fd39db6e462bf09d91c259e519bf3"
+  },
+  "current_document": {
+    "path": "docs/NATIVE_CAMERA_GENERAL_INVERSE.md",
+    "bytes": 2368,
+    "sha256": "0938bc579a6594461a00380490d28501ae85a7bafe5e8b47c13064bf6090b2af"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b632d0",
+      "name": "invert_native_camera_matrix_00b632d0",
+      "cpp_symbol": "bsp::invert_native_camera_matrix_00b632d0",
+      "source": "src/native_camera_general_inverse.cpp",
+      "native_end_exclusive": "00b63b28",
+      "original_abi": "ECX destination, EDX source, EAX destination, plain RET",
+      "host_abi_boundary": "MSVC Win32 fastcall raw void* destination,const void* source; two relocated immutable original constant words",
+      "evidence": "reports/native_camera_general_inverse_audit.json",
+      "status": "complete_raw_entry_strict_main_Win32_and_full_original_COFF_constant_relocation_identity_checked",
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ]
+}

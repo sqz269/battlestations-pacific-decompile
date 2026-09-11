@@ -292,5 +292,19 @@
       ],
       "end_exclusive": "00cdeb40"
     }
-  ]
+  ],
+  "combined_integration": {
+    "status": "integrated_reviewed_build_and_focused_fixture_tested",
+    "validated_revision": "14916ec1347481ec28e5d493b34cfcd275b0d7dc",
+    "main_base": "776b2b2e",
+    "log": "local/effect_name_index_k_integrate.log",
+    "build": "MSVC Win32 Release passed",
+    "tests": "Existing2/2 passed",
+    "library_sha256": "64adb6aead64d251c1ed9a1c4455f56b37725e075f2ad61fb8ff5e5e381cf68d",
+    "fixture_provenance": "The focused real-atexit fixture ran on source e09957b5 and its validation.library_sha256; combined CTest build is recorded separately.",
+    "ghidra_integration_saved_names": 10,
+    "prior_annotation_log": "../battlestations-pacific-decompile/local/ghidra-annotations-20260911T163846Z.json",
+    "native_abi": false,
+    "game_validated": false
+  }
 }

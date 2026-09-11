@@ -1,0 +1,45 @@
+{
+  "address": "00869a20",
+  "reason": "Listing consumes ECX as a mutable owner/node iterator pointer. The void(void) prototype hid the successor update in0086E8A0 and caused false unreachable two-child transplant blocks.",
+  "model": "One explicit pointer with __fastcall gives ECX and no stack input. This records verified register storage; the original C++ source convention is not recoverable from this one-register shape.",
+  "proposed": {
+    "prototype": "void __fastcall STL_IntPointerTree18_IncrementCheckedIterator(void *iterator)",
+    "calling_convention": "__fastcall"
+  },
+  "before": "Function: STL_IntPointerTree18_IncrementCheckedIterator at 00869a20\nSignature: undefined STL_IntPointerTree18_IncrementCheckedIterator(void)\nEntry: 00869a20\nBody: 00869a20 - 00869a82",
+  "first_response_error": "The JSON-only response reader could not parse a plain-text response; immediate live readback remained unchanged.",
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00869a20",
+        "prototype": "void STL_IntPointerTree18_IncrementCheckedIterator(void *iterator);",
+        "calling_convention": "__fastcall"
+      }
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00869a20",
+        "prototype": "void __fastcall STL_IntPointerTree18_IncrementCheckedIterator(void *iterator)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00869a20 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "after": "Function: STL_IntPointerTree18_IncrementCheckedIterator at 00869a20\nSignature: void __fastcall STL_IntPointerTree18_IncrementCheckedIterator(void * iterator)\nEntry: 00869a20\nBody: 00869a20 - 00869a82",
+  "rejected_semicolon": "Endpoint rejected the previous signature: Unexpected trailing text at end of function: ;. Live signature remained unchanged.",
+  "apply": "Successfully set prototype for function at 00869a20 with __fastcall calling convention",
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  },
+  "readback_verified": true,
+  "caller_false_unreachable_warnings_after": 0
+}
