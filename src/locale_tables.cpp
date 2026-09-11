@@ -1,4 +1,5 @@
 #include "bsp/locale_tables.hpp"
+#include "bsp/language_catalog.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -62,39 +63,8 @@ std::string decimal(std::size_t value) {
 }  // namespace
 
 LanguageEntry parse_language_descriptor_008d7bc0(const std::string& text) {
-    LanguageEntry entry;
-    std::size_t position = 0;
-    const auto next_token = [&text, &position](std::string& token) {
-        while (position < text.size() &&
-               static_cast<unsigned char>(text[position]) <= ' ') {
-            ++position;
-        }
-        const std::size_t start = position;
-        while (position < text.size() &&
-               static_cast<unsigned char>(text[position]) > ' ') {
-            ++position;
-        }
-        token.assign(text, start, position - start);
-        return !token.empty();
-    };
-
-    std::string key;
-    std::string value;
-    while (next_token(key)) {
-        if (!next_token(value)) {
-            break;  // a trailing key with no value contributes nothing
-        }
-        if (equal_case_insensitive(key, "lanfile")) {
-            entry.lanfile = value;
-        } else if (equal_case_insensitive(key, "lockit_id")) {
-            entry.lockit_id = value;
-        } else if (equal_case_insensitive(key, "voice_dir")) {
-            entry.voice_dir = value;
-        } else if (equal_case_insensitive(key, "fontpath")) {
-            entry.font_path = value;
-        }
-    }
-    return entry;
+    return parse_native_language_descriptor_008d7bc0(
+        std::vector<std::uint8_t>(text.begin(), text.end()));
 }
 
 const std::string& language_name_008d4870(const std::vector<LanguageEntry>& table,

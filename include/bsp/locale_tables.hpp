@@ -24,10 +24,9 @@ struct LanguageEntry {
     std::string font_path;  // entry +0x18/+0x1c, returned by 008d4890
 };
 
-// Whitespace-separated "<key> <value>" descriptor read by 008d7bc0. Only the
-// four recognised keys are stored; every other token pair is ignored, matching
-// the native chain of case-insensitive comparisons that falls through. Never
-// fails: a truncated trailing key simply contributes nothing.
+// Native cached-token descriptor scanner: quotes, comments, exact whitespace
+// and separators. Unknown keys would stall native code and throw in the host.
+// A missing trailing value stores empty text. See language_catalog.hpp.
 LanguageEntry parse_language_descriptor_008d7bc0(const std::string& text);
 
 // 008d4870: __thiscall, ECX = the settings object, no stack arguments, RET.

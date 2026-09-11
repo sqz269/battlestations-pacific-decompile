@@ -1,5 +1,6 @@
 #include "bsp/language_catalog.hpp"
 #include "bsp/native_text_tokens.hpp"
+#include <cstring>
 #include <stdexcept>
 
 namespace bsp {
