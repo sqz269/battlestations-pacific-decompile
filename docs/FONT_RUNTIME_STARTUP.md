@@ -75,3 +75,19 @@ tail is disassembled through RET00ac37c0, but the stored function body still end
 at00ac379a. Its supported script-based extension is disabled by the current
 bridge configuration. No function was deleted/recreated; the byte-verified tail
 and this remaining analysis limit are recorded in the flow-repair report.
+
+
+## Integrated validation
+
+Win32 Release and both existing math CTests pass. The rebuilt executable ran
+60 frames at640x480 and exited0 with six fonts,12 actual retained font textures,
+19 VFS resource opens including the fingerprint payload, and240 defined payload
+bytes. A separate forced-unwind probe verifies that every font texture uses the
+application renderer API and that all12 image owners and the window are released.
+The original installed executable and personal options retain their hashes,
+sizes and modification times. GUI render and gameplay remain unvalidated.
+
+Sixteen reviewed names/comments were saved and verified,11 prior comment fields
+preserved, and16 exports refreshed. Twenty-four worker artifacts were preserved
+with hashes. The report identifies the tested source commit and29 selected source
+hashes, separately from18 artifact hashes and the runtime executable hash.
