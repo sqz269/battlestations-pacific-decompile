@@ -123,9 +123,18 @@ NativeString& NativeString::assign_0041e870(NativeStringStorage& storage, const 
 }
 
 void NativeString::copy_from_00be0a30_fragment(NativeStringStorage& storage, const NativeString& source) {
-    if (this == &source) return; // 00be0a6c compares the two addresses.
-    resize_0041dd40(storage, source.length_, true);
-    if (source.length_ != 0) std::memcpy(data_, source.data_, length_);
+    copy_native_string_header_00be0a30_fragment(this, storage, &source);
+}
+void copy_native_string_header_00be0a30_fragment(void* destination,
+    NativeStringStorage& storage, const void* source) {
+    if (destination == source) return; //00BE0A6C
+    resize_native_string_header_0041dd40(destination, storage,
+        read_header<std::uint32_t>(source, 0), true);
+    if (read_header<std::uint32_t>(source, 0) != 0) {
+        const auto length = read_header<std::uint32_t>(destination, 0);
+        if (length) std::memcpy(read_header<void*>(destination, 4),
+            read_header<const void*>(source, 4), length);
+    }
 }
 
 void NativeString::release_to(NativeStringStorage& storage) noexcept {

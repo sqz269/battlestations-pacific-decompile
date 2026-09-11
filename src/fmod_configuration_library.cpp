@@ -122,6 +122,52 @@ FmodResult FmodConfigurationLibrary::sound_get_length(void* sound,
     std::uint32_t* length, std::uint32_t unit) {
     return impl_->call("FMOD_Sound_GetLength", sound, length, unit);
 }
+FmodResult FmodConfigurationLibrary::system_play_sound(void* system, std::int32_t index,
+    void* sound, bool paused, void** channel) {
+    return impl_->call("FMOD_System_PlaySound", system, index, sound, static_cast<std::int32_t>(paused), channel);
+}
+FmodResult FmodConfigurationLibrary::channel_set_loop_count(void* channel, std::int32_t count) {
+    return impl_->call("FMOD_Channel_SetLoopCount", channel, count);
+}
+FmodResult FmodConfigurationLibrary::channel_set_loop_points(void* channel, std::uint32_t start,
+    std::uint32_t start_unit, std::uint32_t end, std::uint32_t end_unit) {
+    return impl_->call("FMOD_Channel_SetLoopPoints", channel, start, start_unit, end, end_unit);
+}
+FmodResult FmodConfigurationLibrary::channel_set_speaker_mix(void* channel, const std::array<float, 8>& mix) {
+    return impl_->call("FMOD_Channel_SetSpeakerMix", channel, mix[0], mix[1], mix[2], mix[3], mix[4], mix[5], mix[6], mix[7]);
+}
+FmodResult FmodConfigurationLibrary::channel_stop(void* channel) {
+    return impl_->call("FMOD_Channel_Stop", channel);
+}
+FmodResult FmodConfigurationLibrary::channel_is_virtual(void* channel, std::optional<bool>& value) {
+    // The C++ imports use bool*. The installed C API uses a four-byte FMOD_BOOL.
+    // Preserve an unwritten native output instead of inventing false on error.
+    std::int32_t native = value ? static_cast<std::int32_t>(*value) : -1;
+    const auto result = impl_->call("FMOD_Channel_IsVirtual", channel, &native);
+    if (native != -1) value = native != 0;
+    return result;
+}
+FmodResult FmodConfigurationLibrary::channel_is_playing(void* channel, bool* value) {
+    std::int32_t native = static_cast<std::int32_t>(*value);
+    const auto result = impl_->call("FMOD_Channel_IsPlaying", channel, &native);
+    *value = native != 0;
+    return result;
+}
+FmodResult FmodConfigurationLibrary::channel_set_frequency(void* channel, float value) {
+    return impl_->call("FMOD_Channel_SetFrequency", channel, value);
+}
+FmodResult FmodConfigurationLibrary::channel_set_volume(void* channel, float value) {
+    return impl_->call("FMOD_Channel_SetVolume", channel, value);
+}
+FmodResult FmodConfigurationLibrary::channel_set_3d_pan_level(void* channel, float value) {
+    return impl_->call("FMOD_Channel_Set3DPanLevel", channel, value);
+}
+FmodResult FmodConfigurationLibrary::channel_set_paused(void* channel, std::uint8_t value) {
+    return impl_->call("FMOD_Channel_SetPaused", channel, static_cast<std::int32_t>(value));
+}
+FmodResult FmodConfigurationLibrary::channel_get_audibility(void* channel, float* value) {
+    return impl_->call("FMOD_Channel_GetAudibility", channel, value);
+}
 FmodResult FmodConfigurationLibrary::sound_get_num_subsounds(void* sound,
     std::int32_t* count) {
     return impl_->call("FMOD_Sound_GetNumSubSounds", sound, count);
@@ -157,6 +203,37 @@ FmodResult FmodConfigurationLibrary::event_system_load(void* system, const char*
     void* load_info, void** project) {
     return impl_->call_from(impl_->event_library(), "_FMOD_EventSystem_Load@16", system,
         path, load_info, project);
+}
+FmodResult FmodConfigurationLibrary::event_project_get_group(void* project, const char* name,
+    std::int32_t cache_events, void** group) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventProject_GetGroup@16", project, name, cache_events, group);
+}
+FmodResult FmodConfigurationLibrary::event_group_get_group(void* parent, const char* name,
+    std::int32_t cache_events, void** group) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventGroup_GetGroup@16", parent, name, cache_events, group);
+}
+FmodResult FmodConfigurationLibrary::event_group_load_event_data(void* group,
+    std::uint32_t resources, std::uint32_t mode) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventGroup_LoadEventData@12", group, resources, mode);
+}
+FmodResult FmodConfigurationLibrary::event_group_free_event_data(void* group, void* event, std::int32_t wait) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventGroup_FreeEventData@12", group, event, wait);
+}
+FmodResult FmodConfigurationLibrary::event_system_get_event(void* system, const char* name,
+    std::uint32_t mode, void** event) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventSystem_GetEvent@16", system, name, mode, event);
+}
+FmodResult FmodConfigurationLibrary::event_get_num_parameters(void* event, std::int32_t* count) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_Event_GetNumParameters@8", event, count);
+}
+FmodResult FmodConfigurationLibrary::event_get_parameter_by_index(void* event, std::int32_t index, void** parameter) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_Event_GetParameterByIndex@12", event, index, parameter);
+}
+FmodResult FmodConfigurationLibrary::event_parameter_get_range(void* parameter, float* minimum, float* maximum) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventParameter_GetRange@12", parameter, minimum, maximum);
+}
+FmodResult FmodConfigurationLibrary::event_parameter_get_info(void* parameter, std::int32_t* index, char** name) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventParameter_GetInfo@12", parameter, index, name);
 }
 FmodResult FmodConfigurationLibrary::system_get_num_drivers(void* system,
     std::int32_t* count) {

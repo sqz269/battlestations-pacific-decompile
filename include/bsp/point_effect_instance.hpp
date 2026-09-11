@@ -92,6 +92,8 @@ public:
 // retain, registration, template release, or successful-node cleanup occurs here.
 NativeNodeStorage* construct_point_effect_node_00868193(void* actual_pool_0108ff58,
     const NativeString& actual_captured_template_name_1c, NativeStringStorage& strings);
+NativeNodeStorage* construct_point_effect_node_00868193(void* actual_pool_0108ff58,
+    const void* actual_captured_template_name_1c, NativeStringStorage& strings);
 
 // ONLY 008681BE..0086824C. Caller supplies the actual node AFTER successful
 // B6ED70 allocation and B6F5A0 construction, with stable canonical scene bindings.

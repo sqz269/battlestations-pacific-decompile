@@ -668,7 +668,7 @@
    "PeriodicEffect",
    "FreeCamPos"
   ],
-  "delta_vs_scene_file_reader_report": "2183 above its per-class totals (133655 total, 131481 across classes); this scan also counts entity headers inside the regions its recovering parser bailed out of in the nine non-conforming files. The entity-header totals agree to within nine."
+  "delta_vs_scene_file_reader_report": "Resolved by packet cc_scene_records: this lexical scan (133664) is right and the reader report's 133655 was low by nine. 008f5a00 reads a fixed number of value tokens per type letter and then runs 008d9930 ExpectToken(\";\"), which peeks and consumes only on a match; the reconstruction scanned to the next \";\" and swallowed a closing brace after each \";\"-less property. With src/scene_file.cpp corrected, bsp_mission_scene_probe.exe --sweep reproduces this table row for row, MultiType column included, with a zero delta in all 259 files."
  },
  "no_ghidra_function": [],
  "ghidra_flow_gaps": [],

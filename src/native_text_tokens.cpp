@@ -1,6 +1,8 @@
 #include "bsp/native_text_tokens.hpp"
 #include <stdexcept>
 #include <utility>
+#include <cstdio>
+#include <cstring>
 
 namespace bsp {
 NativeTextTokens::NativeTextTokens(std::vector<std::uint8_t> bytes,
@@ -111,5 +113,32 @@ const std::string& NativeTextTokens::read_string_00bef020(bool& success) {
     skip_whitespace_00beedb0();
     success = false;
     return peek_00bee8e0();
+}
+// Preserve the original CRT conversion contract, including numeric prefixes.
+#pragma warning(push)
+#pragma warning(disable: 4996)
+std::int32_t NativeTextTokens::read_integer_00bef100(bool& success) {
+    int value;
+    success = std::sscanf(peek_00bee8e0().c_str(), "%d", &value) == 1;
+    if (success) { accept_00bee800(); return value; }
+    skip_whitespace_00beedb0();
+    success = false;
+    return 0;
+}
+float NativeTextTokens::read_float_00bef170(bool& success) {
+    float value;
+    success = std::sscanf(peek_00bee8e0().c_str(), "%f", &value) == 1;
+    if (success) { accept_00bee800(); return value; }
+    skip_whitespace_00beedb0();
+    success = false;
+    return 0.0f; // Native FLDZ on failure; success FLD reads a rounded float.
+}
+#pragma warning(pop)
+bool NativeTextTokens::accept_keyword_008d4390(const char* keyword) {
+    const char* token = peek_00bee8e0().c_str();
+    // 00438E10's null-safe compare; tokens always supply a nonnull C string.
+    if (!keyword || _stricmp(token, keyword) != 0) return false;
+    accept_00bee800();
+    return true;
 }
 }

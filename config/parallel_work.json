@@ -6794,6 +6794,44 @@
       "evidence": "reports/native_resource_alias_pool_integration_audit.json"
     },
     {
+      "id": "orch4_sound_sample_q",
+      "packet": "orch4_sound_sample_q",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_controlled_and_installed_sound_fixture_tested",
+      "function_addresses": [
+        "00a84d70",
+        "00a83850",
+        "00a828b0",
+        "00a82c60",
+        "00a82e80",
+        "00a82b70",
+        "0093f6e0",
+        "0093f950",
+        "00a7a9e0",
+        "00a7b3d0",
+        "00bef100",
+        "00bef170",
+        "008d4390",
+        "008d5b20",
+        "00bef220",
+        "00426520"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_sample.hpp",
+        "src/sound_sample.cpp",
+        "include/bsp/sound_sample_runtime.hpp",
+        "src/sound_sample_runtime.cpp",
+        "include/bsp/native_text_tokens.hpp",
+        "src/native_text_tokens.cpp",
+        "include/bsp/fmod_configuration_library.hpp",
+        "src/fmod_configuration_library.cpp"
+      ],
+      "integration_report": "reports/sound_sample.json",
+      "discovery_evidence": "docs/SOUND_SAMPLE.md",
+      "validated_revision": "517e934b5fbb578ae45ccc7394445e72f8e0bf5d"
+    },
+    {
       "id": "native_renderer_reset_readiness4",
       "packet": "native_renderer_reset_readiness4",
       "state": "complete_raw_reset_readiness_main_Win32_original_full_provider_COM_and_COFF_verified",
@@ -6917,6 +6955,63 @@
         "reports/native_renderer_surface_save_worker_audit.json"
       ],
       "evidence": "reports/native_renderer_surface_save_worker_audit.json"
+    },
+    {
+      "id": "orch4_sound_instance_r",
+      "packet": "orch4_sound_instance_r",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "reconstructed_build_and_installed_channel_fixture_tested_pending_integration",
+      "function_addresses": [
+        "00a81860",
+        "00a81870",
+        "00a818c0",
+        "00a818e0",
+        "00a79880",
+        "00a7c480",
+        "00a7bd90",
+        "00a7c5d0",
+        "00a7f640",
+        "00a7bf40",
+        "00a7d5a0",
+        "00a7a2e0",
+        "00a7aaa0",
+        "00a7a4c0",
+        "00a7a570",
+        "00a7a630",
+        "00a7a660",
+        "00a799b0",
+        "00a7af10"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_instance.hpp",
+        "src/sound_instance.cpp",
+        "include/bsp/fmod_configuration_library.hpp",
+        "src/fmod_configuration_library.cpp"
+      ],
+      "integration_report": "reports/sound_instance.json",
+      "discovery_evidence": "docs/SOUND_INSTANCE.md"
+    },
+    {
+      "id": "native_physical_pool_acquire4",
+      "packet": "native_physical_pool_acquire4",
+      "state": "four_complete_raw_pool_entries_main_Win32_original_pool_trace_and_full_COFF_verified",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b4ac60",
+        "00b48df0",
+        "00b4b350",
+        "00b4b360"
+      ],
+      "code_ownership": [
+        "src/native_physical_pool_acquire.cpp",
+        "include/bsp/native_physical_pool_acquire.hpp",
+        "docs/NATIVE_PHYSICAL_POOL_ACQUIRE.md",
+        "reports/native_physical_pool_acquire_audit.json"
+      ],
+      "evidence": "reports/native_physical_pool_acquire_audit.json"
     }
   ],
   "snapshot_after_analysis": {

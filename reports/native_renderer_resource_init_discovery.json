@@ -1,0 +1,1154 @@
+{
+  "schema": "bsp.native_renderer_resource_init_discovery.v1",
+  "created_utc": "2026-09-11T19:51:11.901556+00:00",
+  "status": "read_only_discovery_parent_not_source_ready_next_dependency_proposed",
+  "base_commit": "f09656f98570a03fd0c515faed10fb8b92dee14c",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-native_renderer_resource_init_discovery",
+  "ownership": {
+    "addresses": [
+      "00b2aeb0"
+    ],
+    "files": [
+      "docs/NATIVE_RENDERER_RESOURCE_INIT_DISCOVERY.md",
+      "reports/native_renderer_resource_init_discovery.json"
+    ],
+    "other_addresses_read_only": true
+  },
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "original_body": {
+    "address": "00b2aeb0",
+    "end_exclusive": "00b2b1f2",
+    "length": 834,
+    "abi": "ECX actual renderer; ten DWORD callee slots; RET28h; no recovered HRESULT; incidental EAX after reset",
+    "arguments": [
+      {
+        "entry_esp_offset": "04",
+        "meaning": "HWND"
+      },
+      {
+        "entry_esp_offset": "08",
+        "meaning": "fullscreen low byte"
+      },
+      {
+        "entry_esp_offset": "0c",
+        "meaning": "width unsigned32"
+      },
+      {
+        "entry_esp_offset": "10",
+        "meaning": "height unsigned32"
+      },
+      {
+        "entry_esp_offset": "14",
+        "meaning": "back-buffer format"
+      },
+      {
+        "entry_esp_offset": "18",
+        "meaning": "back-buffer count"
+      },
+      {
+        "entry_esp_offset": "1c",
+        "meaning": "multisample type"
+      },
+      {
+        "entry_esp_offset": "20",
+        "meaning": "depth format"
+      },
+      {
+        "entry_esp_offset": "24",
+        "meaning": "presentation sync low bit"
+      },
+      {
+        "entry_esp_offset": "28",
+        "meaning": "fullscreen refresh rate"
+      }
+    ],
+    "current_argument_correction": "B2B02C ESP+174h = entryESP+1Ch = multisample type; not depth format",
+    "state98_or_logical_retained_4c_claim": false,
+    "existing_fragments": [
+      "src/d3d9_startup.cpp:d3d9_create_device_prefix_00b2aeb0",
+      "src/d3d9_resources.cpp:create_dynamic_buffers_00b2aeb0"
+    ],
+    "native_EH": {
+      "handler": "00cbd436",
+      "function_info": "00df5c8c",
+      "unwind_map": "00df5c7c",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "funclet": "00cbd420",
+          "current_spill": "EBP-144h",
+          "target": "00b49950",
+          "domain": "actual vertex pool 108FDE0"
+        },
+        {
+          "state": 1,
+          "previous": -1,
+          "funclet": "00cbd42b",
+          "current_spill": "EBP-144h",
+          "target": "00b49940",
+          "domain": "actual index pool 108FDA8"
+        }
+      ],
+      "scope": "conditional constructors only; no COM output cleanup or field rollback"
+    }
+  },
+  "dependencies": [
+    {
+      "address": "00b24460",
+      "status": "complete_raw",
+      "source": "src/native_renderer_cached_states.cpp",
+      "contract": "Actual synchronization globals; full current state/COM ordering."
+    },
+    {
+      "address": "00b26170",
+      "status": "complete_raw",
+      "source": "src/native_renderer_cached_states.cpp",
+      "contract": "Complete default-state sequence and child guards."
+    },
+    {
+      "address": "00b24a40",
+      "status": "complete_raw",
+      "source": "src/native_renderer_stream_frequency.cpp",
+      "contract": "Actual stream-frequency guard and current device."
+    },
+    {
+      "address": "00b4bbb0",
+      "status": "complete_raw",
+      "source": "src/native_physical_buffer_owner.cpp",
+      "contract": "Actual 2Ch pooled vertex owner; D61E7C."
+    },
+    {
+      "address": "00b4bb60",
+      "status": "complete_raw",
+      "source": "src/native_physical_buffer_owner.cpp",
+      "contract": "Actual 2Ch pooled index owner; D61E58."
+    },
+    {
+      "address": "00b4c370",
+      "status": "complete_raw_profile_qualified",
+      "source": "src/native_physical_buffer_owner.cpp",
+      "contract": "Current pooled vertex profile +14 Attach; actual physical-owner context."
+    },
+    {
+      "address": "00b4c250",
+      "status": "complete_raw_profile_qualified",
+      "source": "src/native_physical_buffer_owner.cpp",
+      "contract": "Current pooled index profile +14 Attach; actual physical-owner context."
+    },
+    {
+      "address": "00b4b360",
+      "status": "incomplete_raw_at_base_primary_investigating",
+      "source": null,
+      "contract": "10-byte MOV ECX,108FDE0/JMP B4AC60; allocation not a destructor or arbitrary allocator."
+    },
+    {
+      "address": "00b4b350",
+      "status": "incomplete_raw_at_base_primary_investigating",
+      "source": null,
+      "contract": "10-byte MOV ECX,108FDA8/JMP B4AC60."
+    },
+    {
+      "address": "00b4ac60",
+      "status": "incomplete_raw_at_base_primary_investigating",
+      "source": null,
+      "contract": "316-byte actual CS/pool/CRT allocator; returning-free hidden tail; B48DF0 slab ctor also prerequisite."
+    },
+    {
+      "address": "00b49950",
+      "status": "whole_thunk_composable",
+      "source": "src/native_physical_buffer_owner.cpp",
+      "contract": "12-byte vertex pool return thunk, full B49500 provider."
+    },
+    {
+      "address": "00b49940",
+      "status": "whole_thunk_composable",
+      "source": "src/native_physical_buffer_owner.cpp",
+      "contract": "12-byte index pool return thunk, full B49500 provider."
+    },
+    {
+      "address": "00b238d0",
+      "status": "ready_proposal_only",
+      "source": null,
+      "contract": "562-byte full capture; existing d3d9_states fragment is not raw; next packet proposed."
+    },
+    {
+      "address": "00b21960",
+      "status": "incomplete_raw",
+      "source": null,
+      "contract": "Concrete renderer D5F0A8 +F0; prior gamma evidence full474; guard/device/x87 pow need full closure."
+    },
+    {
+      "address": "00b2abd0",
+      "status": "incomplete_raw",
+      "source": null,
+      "contract": "589-byte full reset parent and current named incomplete resource/device dependencies."
+    },
+    {
+      "address": "00bf79f0",
+      "status": "needs_explicit_concrete_CRT_contract",
+      "source": null,
+      "contract": "Original 56-byte memset operation; prefix identity only captured here."
+    }
+  ],
+  "next_packet": {
+    "address": "00b238d0",
+    "end_exclusive": "00b23b02",
+    "length": 562,
+    "status": "ready_bounded_source_proposal_pending_primary_review",
+    "files": [
+      "include/bsp/native_renderer_default_surfaces.hpp",
+      "src/native_renderer_default_surfaces.cpp",
+      "docs/NATIVE_RENDERER_DEFAULT_SURFACES.md",
+      "reports/native_renderer_default_surfaces_audit.json"
+    ],
+    "api": "void __fastcall capture_native_renderer_default_surfaces_00b238d0(void* actual_renderer, const NativeRendererDefaultSurfacesContext* context)",
+    "original_abi": "ECX actual renderer; RET; no outer guard, no recovered HRESULT",
+    "new_interface_limit": "EDX fixed borrowed context, 12bytes on Win32; not original ABI or native SEH claim",
+    "context": [
+      "NativeSurfaceOwnerContext&",
+      "NativeRendererSynchronizationGlobals&",
+      "const uint32_t (&original_surface_profile_00d619a0)[2]"
+    ],
+    "canonical_pool_binding": "Existing bind_static_d3d9_surface_pool_0108db00 must point at surface_owner.actual_surface_pool_0108db00; no independent fallback owner",
+    "active_profile_domain": {
+      "identity": "00d619a0",
+      "slot0": "00bd30e0",
+      "slot4": "00b3f5b0",
+      "restriction": "Only where final-zero terminal is reached; current profile/slot0 followed by fresh profile/slot4. Other profiles outside proposed source domain."
+    },
+    "providers": [
+      {
+        "address": "00b3f2a0",
+        "source": "src/d3d9_surface_pool.cpp",
+        "api": "allocate_d3d9_surface_slot_00b3f2a0",
+        "contract": "Explicitly bound actual canonical pool 108DB00; same pool as owner context; complete underlying B3ED40."
+      },
+      {
+        "address": "00b3f630",
+        "source": "src/native_surface_owner.cpp",
+        "api": "construct_native_surface_00b3f630",
+        "contract": "Actual34h owner within38h pool slot, full concrete context, flags0/kind0 for both captures."
+      },
+      {
+        "address": "00bd30e0",
+        "source": "proposed fixed dispatch adapter to existing scalar provider",
+        "api": null,
+        "contract": "Complete14 bytes captured: read fresh profile+4 and invoke flag1; do not claim standalone reconstructed library function."
+      },
+      {
+        "address": "00b3f5b0",
+        "source": "src/native_surface_owner.cpp",
+        "api": "delete_native_surface_00b3f5b0",
+        "contract": "Complete owner destructor and canonical pool return, only after normal destructor completion."
+      },
+      {
+        "address": "00b3dcc0",
+        "source": "src/d3d9_surface_pool.cpp",
+        "api": "return_d3d9_surface_slot_00b3dcc0",
+        "contract": "Constructor-only outer unwind returns current raw spill through actual bound canonical pool."
+      },
+      {
+        "address": "00b21690",
+        "source": "src/native_renderer_surface_bindings.cpp",
+        "api": "bind_native_renderer_depth_surface_00b21690",
+        "contract": "Final current+198C argument; full actual guard/current device/counter behavior."
+      }
+    ],
+    "field_contracts": {
+      "197c": "current default color wrapper, published before incoming increment",
+      "198c": "current default depth wrapper, final reloaded binder argument",
+      "1a10": "current actual device, reloaded after captured AddRef/Release pairs"
+    },
+    "constructor_arguments": {
+      "color": {
+        "flags": 0,
+        "kind": 0
+      },
+      "depth": {
+        "flags": 0,
+        "kind": 0
+      }
+    },
+    "native_EH": {
+      "handler": "00cbcf00",
+      "function_info": "00df5508",
+      "unwind_map": "00df54f8",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "funclet": "00cbcef0",
+          "current_spill": "EBP-30h",
+          "target": "00b3dcc0"
+        },
+        {
+          "state": 1,
+          "previous": -1,
+          "funclet": "00cbcef8",
+          "current_spill": "EBP-30h",
+          "target": "00b3dcc0"
+        }
+      ],
+      "scope": "constructor only; same raw allocation spill; disarmed before intrusive publication/release; no outer COM output cleanup"
+    },
+    "ordering_risks": [
+      "Captured device AddRef then captured device current-vtable Release; then current renderer device reload",
+      "GetRT0 output AddRef/Release then current-output GetDesc before allocation",
+      "Publish new wrapper before incoming increment, retain before old decrement, then unconditional temporary decrement",
+      "Color output pair then reloaded unconditional Release; depth output unconditional Release then reloaded pair",
+      "Both constructor kinds zero including depth",
+      "Reload current+198C after all output COM calls before full depth binder",
+      "Null Create/Get/allocate outputs retain native faults; no new HRESULT policy"
+    ],
+    "proposed_proof": "One focused actual canonical pool/registry/support/lifetime plus full-library and real COM composition for current-field mutation, nonempty final zero, asymmetric release order and constructor-only unwind; declare all ABI bridges"
+  },
+  "live_evidence": {
+    "span_count": 34,
+    "total_bytes": 1872,
+    "all_equal": true,
+    "guard": "Each tools/bsp.py ghidra bytes query invokes client()->Client.verify() before read; full guarded logs retained",
+    "spans": [
+      {
+        "address": "00b2aeb0",
+        "length": 834,
+        "role": "full_owned_discovery_parent",
+        "bytes_hex": "6aff64a1000000006836d4cb00506489250000000081ec3c010000535556578bf16a388dbe281a00006a0057e80fcb0c008b8424780100008b94247c0100008996341a00008b9424680100008986301a00008b8424800100008b8c24740100008996441a00008bac247001000033d28986381a00008b84248401000083c40c85c00f95c28986501a00008b842480010000bb010000008986581a00008b8690190000892f89964c1a00008b94247c010000c1e21ff7d281e20000008089965c1a00008d54241c5253898e2c1a0000c7863c1a000000000000899e401a0000899e481a0000c786541a00000200000089ae201a0000898e241a00008b086a00508b4138ffd0f74424380000010074130fb78c24e000000081f9010100008d4b3f7305b9200000008b86901900008b108b52408dae101a0000555783c904518b8c246801000051536a0050ffd233c038842460010000c6868a1d0000000f94c0889e8b1d00008986481a0000ff153c22ce0053a3c8d40801ff157c23ce0083bc2474010000008bce740353eb026a0068a1000000e81994ffff8bcee88288ffff8bcee81bb1ffff33ff53578bcee8e099ffff03fb83ff047cf0b92c000000e8ef0202008944241433ff3bc789bc245401000074098bc8e8270b0200eb0233c0578d54241c5257578986741900008b45006808020000897c242c8b086800000001508b4168c7842470010000ffffffffffd08b8e741900008b118b4424188b52146800000001680010000050ffd28b4424188b088b510850ffd2b92c000000e85f020200894424143bc7899c245401000074098bc8e8590a0200eb0233c0578d54241452576a658986781900008b45006808020000897c24248b086800001000508b416cc7842470010000ffffffffffd08b8e781900008b118b4424108b52146800001000680010000050ffd28b4424108b088b510850ffd2db8424640100008b84246401000085c0889e8c1d00007d06d8057839ce008b8c2468010000db84246801000085c97d06d8057839ce00def9dd055057cf00d9c9dff1ddd876048bc3eb0233c08b16d9ee51d91c248886141a00008b82f00000008bceffd08bce881db8d40801e8f9f9ffff8b8c244c0100005f5e5d5b64890d0000000081c448010000c22800",
+        "sha256": "656d7fc3fed03e6cae9b92c3fd866aa362d6dc022c573f25e9260121408bd134",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00b238d0",
+        "length": 562,
+        "role": "full_proposed_default_surface_dependency",
+        "bytes_hex": "64a1000000006aff6800cfcb00506489250000000083ec2c538bd9568bb3101a000085f674108b068b480456ffd18b168b420856ffd08b83101a00008d54240852c744240c000000008b086a00508b8198000000ffd08b44240885c08bf074148b088b510450ffd28b068b480856ffd18b4424088b108b52308d4c24145150ffd2b934000000e845b901008944241085c0c744243c0000000074148b4c24086a006a00518bc8e8b5bc01008bf0eb0233f6578bbb7c1900003bfec7442440ffffffff742e85f689b37c190000740a8d560452ff151c22ce0085ff74168d470450ff152022ce0085c075088b178b028bcfffd08d4e0451ff152022ce0085c075088b168b028bceffd08b44240c85c08bf074148b088b510450ffd28b068b480856ffd18b44240c8b10508b4208ffd08bb3101a000085f674108b0e8b510456ffd28b068b480856ffd18b83101a00008d4c2410c7442410000000008b108b92a00000005150ffd2b934000000e860b801008944241485c0c74424400100000074148b4c24106a006a00518bc8e8d0bb01008bf0eb0233f68bbb8c1900003bfec7442440ffffffff742e85f689b38c190000740a8d560452ff151c22ce0085ff74168d470450ff152022ce0085c075088b178b028bcfffd08d4e0451ff152022ce0085c05f75088b168b028bceffd08b44240c8b088b510850ffd28b44240c85c08bf074108b088b510450ffd28b068b480856ffd18b938c190000528bcbe89fdbffff8b4c24345e5b64890d0000000083c438c3",
+        "sha256": "837027c1f54987ea218ea59e550dfeb48b2d410074c9a36d1c5749a30a75b990",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00b4b350",
+        "length": 10,
+        "role": "index_pool_allocate_thunk",
+        "bytes_hex": "b9a8fd0801e906f9ffff",
+        "sha256": "434748d6f1316646c8a08481832ca4579cc79e14e8401bf7b38c9011823b0764",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00b4b360",
+        "length": 10,
+        "role": "vertex_pool_allocate_thunk",
+        "bytes_hex": "b9e0fd0801e9f6f8ffff",
+        "sha256": "2ddf4343520337333d1dc4069a4ae4b212c0e2946d38b750a9e7da13cd3d2141",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00b49940",
+        "length": 12,
+        "role": "index_pool_return_thunk",
+        "bytes_hex": "51b9a8fd0801e8b5fbffffc3",
+        "sha256": "e93306da701cf35d58299198381fc79885166d796cbf1920b6ffdf3b163a772f",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00b49950",
+        "length": 12,
+        "role": "vertex_pool_return_thunk",
+        "bytes_hex": "51b9e0fd0801e8a5fbffffc3",
+        "sha256": "40051f6de73ef414f8ee75b9eab4e4e66d4e34c9578711077aaf99b066eeccf1",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00b4ac60",
+        "length": 16,
+        "role": "missing_pool_allocator_identity_prefix",
+        "bytes_hex": "5355568bf1578d5e0c53ff151822ce00",
+        "sha256": "2feeae865e73cb106c996fd087b9ee483b1cde0e90cc57667f222dff6a6a8b63",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00b48df0",
+        "length": 16,
+        "role": "missing_slab_constructor_identity_prefix",
+        "bytes_hex": "538b5c2408568bc15766c78040060000",
+        "sha256": "00017ae038e6d9dc6d55171657538b282a59f8b688c9eced2bb3d24181d71860",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00b2abd0",
+        "length": 16,
+        "role": "missing_reset_parent_identity_prefix",
+        "bytes_hex": "64a1000000006aff6808d4cb00506489",
+        "sha256": "0f896de076a19e939307df64adfab053606aee521b863beba078d99fdf7e3cfd",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00b21960",
+        "length": 16,
+        "role": "missing_gamma_method_identity_prefix",
+        "bytes_hex": "64a1000000006aff68dbcdcb00506489",
+        "sha256": "0a667660985ead744bc4097adcc7467e4edb321d714802b9d6abac5bd5720568",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00bf79f0",
+        "length": 16,
+        "role": "original_memset_identity_prefix",
+        "bytes_hex": "8b54240c8b4c240485d2746933c08a44",
+        "sha256": "28bef8d4591d0bc32d05d1413b4efd50313890922daf7a89c5d027525ec62b96",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00d5f0ac",
+        "length": 4,
+        "role": "renderer_slot04_init",
+        "bytes_hex": "b0aeb200",
+        "sha256": "f5229f46c30e27d49115d2401b4d1c3735bba9a40481996653328504eb69dce6",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00d5f198",
+        "length": 4,
+        "role": "renderer_slotF0_gamma",
+        "bytes_hex": "6019b200",
+        "sha256": "eebaec6ba405711c2d19b0a7ed19e7fcf434d931c53dc153ad657746028054a3",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00d61e58",
+        "length": 72,
+        "role": "pooled_physical_profiles_with_Attach_slots",
+        "bytes_hex": "e030bd0010c2b40050b8b40020b8b40080b4b40050c2b40000b8b40040b8b4008091b400e030bd0030c2b40000bab400d0b9b40020b5b40070c3b400b0b9b400f0b9b400b092b400",
+        "sha256": "496bb4716129d9af787f4f79f3cd5d75f5cb1efb3e41c50e155b0cde01f1bdf0",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00cbd420",
+        "length": 22,
+        "role": "init_two_constructor_unwind_funclets",
+        "bytes_hex": "8b8dbcfeffffe925c5e8ff8b8dbcfeffffe90ac5e8ff",
+        "sha256": "6edffab15a63dd5ef5df83a3e51c9d6b695149d7a55baec882f4cfe167275f8e",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00cbd436",
+        "length": 10,
+        "role": "init_FH3_handler",
+        "bytes_hex": "b88c5cdf00e90397f3ff",
+        "sha256": "f73e242aec07d015c4745803fd801688fdfe674c767c098e8362e6856c7f9b36",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00df5c8c",
+        "length": 36,
+        "role": "init_FH3_function_info",
+        "bytes_hex": "22059319020000007c5cdf00000000000000000000000000000000000000000001000000",
+        "sha256": "02d8265cdcfd536ee2861798027b9bc187c1c0af17c3ede25a3b5ae6cfbaec82",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00df5c7c",
+        "length": 16,
+        "role": "init_unwind_map",
+        "bytes_hex": "ffffffff20d4cb00ffffffff2bd4cb00",
+        "sha256": "02be56d953d053f8cf07023a9c95826a660e3a0208901fb897adb577530d1475",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00ce3978",
+        "length": 4,
+        "role": "unsigned_integer_to_x87_correction",
+        "bytes_hex": "0000804f",
+        "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00cf5750",
+        "length": 8,
+        "role": "aspect_ratio_threshold",
+        "bytes_hex": "000000605555f53f",
+        "sha256": "a07746c196bc8a6e12e36432458eac0bd2ab52e23da1a4d3f1140146c4026825",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "0108d4c8",
+        "length": 4,
+        "role": "render_thread_global_initial_data",
+        "bytes_hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "0108d4b8",
+        "length": 2,
+        "role": "pending_reset_globals_initial_data",
+        "bytes_hex": "0000",
+        "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00ce223c",
+        "length": 4,
+        "role": "GetCurrentThreadId_IAT",
+        "bytes_hex": "6c57a000",
+        "sha256": "8313ff565762f8dc934724835bd0b2eeac44ebbb4d9c215e603f8f177c4645fb",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00ce237c",
+        "length": 4,
+        "role": "timeBeginPeriod_IAT",
+        "bytes_hex": "d471a000",
+        "sha256": "c19d62eda30cb8885dcbb20e8a26810e0d96272cbfe1fec4ef15a0d1bfbb599b",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00ce221c",
+        "length": 8,
+        "role": "interlocked_increment_decrement_IAT",
+        "bytes_hex": "d056a000e856a000",
+        "sha256": "09187bdb757191189ccc4a5ac7c2ef0cdefd40f24673be20f5effccda6731258",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00cbcf00",
+        "length": 10,
+        "role": "surface_capture_FH3_handler",
+        "bytes_hex": "b80855df00e9399cf3ff",
+        "sha256": "9d2e89437649834d88d396be78c883340c4d56e5eb402a4d95db18948e2e7022",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00df5508",
+        "length": 36,
+        "role": "surface_capture_FH3_info",
+        "bytes_hex": "2205931902000000f854df00000000000000000000000000000000000000000001000000",
+        "sha256": "344610adc544d7112a9500c2704010cdc50bad4c9b131694c4b2234d6d01a5e4",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00df54f8",
+        "length": 16,
+        "role": "surface_capture_unwind_map",
+        "bytes_hex": "fffffffff0cecb00fffffffff8cecb00",
+        "sha256": "aa5cbfe35ac51c459c53d74ee3d3e986ea2f6021cda410f118d47fbd2e28c84e",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00cbcef0",
+        "length": 16,
+        "role": "surface_capture_two_unwind_funclets",
+        "bytes_hex": "8b4dd0e9c80de8ff8b4dd0e9c00de8ff",
+        "sha256": "1386123c6fc350be4b8e3d84a6f93575ee5678faf95d604cd4f1d6fb4adaf811",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00d619a0",
+        "length": 8,
+        "role": "actual_surface_owner_two_slot_profile",
+        "bytes_hex": "e030bd00b0f5b300",
+        "sha256": "f1ea2292b0c84c8590d34d6b31259ffc91038b22763e5d7a6e8997112db89f46",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00b3f2a0",
+        "length": 10,
+        "role": "completed_canonical_surface_allocate_thunk",
+        "bytes_hex": "b900db0801e996faffff",
+        "sha256": "05d840519b2b51aa7a10ce3948c060c5eba2f01fd09ee92dafe2b8bc16b93ff8",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00b3dcc0",
+        "length": 12,
+        "role": "completed_canonical_surface_return_thunk",
+        "bytes_hex": "51b900db0801e895fbffffc3",
+        "sha256": "067d0d53497f03c8ac81b7821de785f2be1c0cd477d718092b4ab77c19b2c113",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00bd30e0",
+        "length": 14,
+        "role": "surface_virtual0_to_current_slot4",
+        "bytes_hex": "85c974098b018b50046a01ffd2c3",
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "fresh_guarded_live_equals_installed_PE": true
+      },
+      {
+        "address": "00b3f5b0",
+        "length": 32,
+        "role": "completed_surface_scalar_delete",
+        "bytes_hex": "568bf1e828fffffff644240801740b56b900db0801e896e2ffff8bc65ec20400",
+        "sha256": "3a970588c8a7be01b82e0400585f1b864d92d2ca2bed1208b99c2951b3b0a782",
+        "fresh_guarded_live_equals_installed_PE": true
+      }
+    ]
+  },
+  "full_body_calls": {
+    "00b2aeb0": [
+      {
+        "site": "00b2aedc",
+        "operand": "0xbf79f0"
+      },
+      {
+        "site": "00b2afb2",
+        "operand": "eax"
+      },
+      {
+        "site": "00b2aff9",
+        "operand": "edx"
+      },
+      {
+        "site": "00b2b01a",
+        "operand": "dword ptr [0xce223c]"
+      },
+      {
+        "site": "00b2b026",
+        "operand": "dword ptr [0xce237c]"
+      },
+      {
+        "site": "00b2b042",
+        "operand": "0xb24460"
+      },
+      {
+        "site": "00b2b049",
+        "operand": "0xb238d0"
+      },
+      {
+        "site": "00b2b050",
+        "operand": "0xb26170"
+      },
+      {
+        "site": "00b2b05b",
+        "operand": "0xb24a40"
+      },
+      {
+        "site": "00b2b06c",
+        "operand": "0xb4b360"
+      },
+      {
+        "site": "00b2b084",
+        "operand": "0xb4bbb0"
+      },
+      {
+        "site": "00b2b0bd",
+        "operand": "eax"
+      },
+      {
+        "site": "00b2b0d9",
+        "operand": "edx"
+      },
+      {
+        "site": "00b2b0e5",
+        "operand": "edx"
+      },
+      {
+        "site": "00b2b0ec",
+        "operand": "0xb4b350"
+      },
+      {
+        "site": "00b2b102",
+        "operand": "0xb4bb60"
+      },
+      {
+        "site": "00b2b13c",
+        "operand": "eax"
+      },
+      {
+        "site": "00b2b158",
+        "operand": "edx"
+      },
+      {
+        "site": "00b2b164",
+        "operand": "edx"
+      },
+      {
+        "site": "00b2b1c8",
+        "operand": "eax"
+      },
+      {
+        "site": "00b2b1d2",
+        "operand": "0xb2abd0"
+      }
+    ],
+    "00b238d0": [
+      {
+        "site": "00b238fc",
+        "operand": "ecx"
+      },
+      {
+        "site": "00b23904",
+        "operand": "eax"
+      },
+      {
+        "site": "00b23924",
+        "operand": "eax"
+      },
+      {
+        "site": "00b23936",
+        "operand": "edx"
+      },
+      {
+        "site": "00b2393e",
+        "operand": "ecx"
+      },
+      {
+        "site": "00b2394f",
+        "operand": "edx"
+      },
+      {
+        "site": "00b23956",
+        "operand": "0xb3f2a0"
+      },
+      {
+        "site": "00b23976",
+        "operand": "0xb3f630"
+      },
+      {
+        "site": "00b239a2",
+        "operand": "dword ptr [0xce221c]"
+      },
+      {
+        "site": "00b239b0",
+        "operand": "dword ptr [0xce2220]"
+      },
+      {
+        "site": "00b239c0",
+        "operand": "eax"
+      },
+      {
+        "site": "00b239c6",
+        "operand": "dword ptr [0xce2220]"
+      },
+      {
+        "site": "00b239d6",
+        "operand": "eax"
+      },
+      {
+        "site": "00b239e8",
+        "operand": "edx"
+      },
+      {
+        "site": "00b239f0",
+        "operand": "ecx"
+      },
+      {
+        "site": "00b239fc",
+        "operand": "eax"
+      },
+      {
+        "site": "00b23a0e",
+        "operand": "edx"
+      },
+      {
+        "site": "00b23a16",
+        "operand": "ecx"
+      },
+      {
+        "site": "00b23a34",
+        "operand": "edx"
+      },
+      {
+        "site": "00b23a3b",
+        "operand": "0xb3f2a0"
+      },
+      {
+        "site": "00b23a5b",
+        "operand": "0xb3f630"
+      },
+      {
+        "site": "00b23a86",
+        "operand": "dword ptr [0xce221c]"
+      },
+      {
+        "site": "00b23a94",
+        "operand": "dword ptr [0xce2220]"
+      },
+      {
+        "site": "00b23aa4",
+        "operand": "eax"
+      },
+      {
+        "site": "00b23aaa",
+        "operand": "dword ptr [0xce2220]"
+      },
+      {
+        "site": "00b23abb",
+        "operand": "eax"
+      },
+      {
+        "site": "00b23ac7",
+        "operand": "edx"
+      },
+      {
+        "site": "00b23ad9",
+        "operand": "edx"
+      },
+      {
+        "site": "00b23ae1",
+        "operand": "ecx"
+      },
+      {
+        "site": "00b23aec",
+        "operand": "0xb21690"
+      }
+    ]
+  },
+  "imports": [
+    {
+      "address": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedIncrement"
+    },
+    {
+      "address": "00ce2220",
+      "dll": "KERNEL32.dll",
+      "name": "InterlockedDecrement"
+    },
+    {
+      "address": "00ce223c",
+      "dll": "KERNEL32.dll",
+      "name": "GetCurrentThreadId"
+    },
+    {
+      "address": "00ce237c",
+      "dll": "WINMM.dll",
+      "name": "timeBeginPeriod"
+    }
+  ],
+  "constants": {
+    "00ce3978": 4294967296.0,
+    "00cf5750": 1.3333333730697632
+  },
+  "source_contract_pins": [
+    {
+      "repository_path": "src/d3d9_startup.cpp",
+      "sha256": "59363f8139e450a298564a1be6ad3a89b3609645090741b3ddfce4295c1377ed",
+      "frozen_path": "local/resource_init/source_snapshot/src/d3d9_startup.cpp"
+    },
+    {
+      "repository_path": "include/bsp/d3d9_startup.hpp",
+      "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843",
+      "frozen_path": "local/resource_init/source_snapshot/include/bsp/d3d9_startup.hpp"
+    },
+    {
+      "repository_path": "src/d3d9_resources.cpp",
+      "sha256": "f99bedc31baf65009085e09f7e98932fc278fa19b7bc951d16a246a148d65f2a",
+      "frozen_path": "local/resource_init/source_snapshot/src/d3d9_resources.cpp"
+    },
+    {
+      "repository_path": "src/d3d9_states.cpp",
+      "sha256": "0482129429656ed126106ffed85c1a504b0f2bc6dcccc2d2afc54706cce02e9f",
+      "frozen_path": "local/resource_init/source_snapshot/src/d3d9_states.cpp"
+    },
+    {
+      "repository_path": "src/native_renderer_cached_states.cpp",
+      "sha256": "1f59014cce73ade28bda43c65e222711a15ccef8bb6e666473fff728d10b98c4",
+      "frozen_path": "local/resource_init/source_snapshot/src/native_renderer_cached_states.cpp"
+    },
+    {
+      "repository_path": "include/bsp/native_renderer_cached_states.hpp",
+      "sha256": "0110b089dcfaabadee32b902a486cec6e4640849c502fa164190bd04c42b2295",
+      "frozen_path": "local/resource_init/source_snapshot/include/bsp/native_renderer_cached_states.hpp"
+    },
+    {
+      "repository_path": "src/native_renderer_stream_frequency.cpp",
+      "sha256": "612ab6d4b44f7da5e924cb3c581f15b8a846f132c30bb124087966df6a80750d",
+      "frozen_path": "local/resource_init/source_snapshot/src/native_renderer_stream_frequency.cpp"
+    },
+    {
+      "repository_path": "include/bsp/native_renderer_stream_frequency.hpp",
+      "sha256": "81c6ab366cde5f04b48776a58b04bd85a614eb13a4bb146d699a680ae0530a8e",
+      "frozen_path": "local/resource_init/source_snapshot/include/bsp/native_renderer_stream_frequency.hpp"
+    },
+    {
+      "repository_path": "src/native_physical_buffer_owner.cpp",
+      "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d",
+      "frozen_path": "local/resource_init/source_snapshot/src/native_physical_buffer_owner.cpp"
+    },
+    {
+      "repository_path": "include/bsp/native_physical_buffer_owner.hpp",
+      "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45",
+      "frozen_path": "local/resource_init/source_snapshot/include/bsp/native_physical_buffer_owner.hpp"
+    },
+    {
+      "repository_path": "src/native_renderer_reset_readiness.cpp",
+      "sha256": "d155d185bcd1583e17bcd101d9adc77b9cef6431b4e5d46b0737eb12a52bbc50",
+      "frozen_path": "local/resource_init/source_snapshot/src/native_renderer_reset_readiness.cpp"
+    },
+    {
+      "repository_path": "include/bsp/native_renderer_reset_readiness.hpp",
+      "sha256": "5cb42380989032741ff8835d3d37cef4ac57b32fa2595a107a77ffea43dadb19",
+      "frozen_path": "local/resource_init/source_snapshot/include/bsp/native_renderer_reset_readiness.hpp"
+    },
+    {
+      "repository_path": "src/d3d9_surface_pool.cpp",
+      "sha256": "ee5cb3d2efe3619bf9c5d0aa58488c97fbe967ae2d93f635a1f085b5e6926ce3",
+      "frozen_path": "local/resource_init/source_snapshot/src/d3d9_surface_pool.cpp"
+    },
+    {
+      "repository_path": "include/bsp/d3d9_surface_pool.hpp",
+      "sha256": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467",
+      "frozen_path": "local/resource_init/source_snapshot/include/bsp/d3d9_surface_pool.hpp"
+    },
+    {
+      "repository_path": "src/native_surface_owner.cpp",
+      "sha256": "3ac9f459ba8a99ea72cd5c3d655fa8e93f247667026772e4a58131903b7707fd",
+      "frozen_path": "local/resource_init/source_snapshot/src/native_surface_owner.cpp"
+    },
+    {
+      "repository_path": "include/bsp/native_surface_owner.hpp",
+      "sha256": "947feec7e98a6b1fa04502588e262e7812df34247eeddbb7b25554b3d3564e38",
+      "frozen_path": "local/resource_init/source_snapshot/include/bsp/native_surface_owner.hpp"
+    },
+    {
+      "repository_path": "src/native_renderer_surface_bindings.cpp",
+      "sha256": "af57c4b07b98c0e71f5f2fb56f73faa654da5f4034913d6d4a589b7441f2fc67",
+      "frozen_path": "local/resource_init/source_snapshot/src/native_renderer_surface_bindings.cpp"
+    },
+    {
+      "repository_path": "include/bsp/native_renderer_surface_bindings.hpp",
+      "sha256": "6963f44b7983db3b0d85a0cb3e6c716d9a1d082269c1e401281e88afd035fc27",
+      "frozen_path": "local/resource_init/source_snapshot/include/bsp/native_renderer_surface_bindings.hpp"
+    },
+    {
+      "repository_path": "docs/GAMMA_RAMP.md",
+      "sha256": "4260373fb81d4ff3e7a3d6940736c6d173fb1ea0309cc24fa5f071ce12722a5f",
+      "frozen_path": "local/resource_init/source_snapshot/docs/GAMMA_RAMP.md"
+    },
+    {
+      "repository_path": "config/target.json",
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2",
+      "frozen_path": "local/resource_init/source_snapshot/config/target.json"
+    },
+    {
+      "repository_path": "tools/bsp.py",
+      "sha256": "143d14f929678d3bd3b8e84a65861246b59405600b0ac1bde3a0e35542c36975",
+      "frozen_path": "local/resource_init/source_snapshot/tools/bsp.py"
+    },
+    {
+      "repository_path": "tools/ghidra_export.py",
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee",
+      "frozen_path": "local/resource_init/source_snapshot/tools/ghidra_export.py"
+    }
+  ],
+  "validation": {
+    "source_changed": false,
+    "ghidra_changed": false,
+    "metadata_changed": false,
+    "installed_game_changed": false,
+    "build_run": false,
+    "tests_run": false,
+    "original_runtime_run": false,
+    "COFF_proof": false,
+    "linked_runtime_proof": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "Read-only source-readiness evidence, not implementation acceptance",
+    "Incomplete dependency identity prefixes do not prove their complete bodies",
+    "Completed existing provider source contracts are pinned; their historical runtime evidence was not rerun",
+    "Gamma and reset parents remain incomplete; primary separately investigates actual physical pool allocator",
+    "No claim about logical stream retained+4C type/terminal or whole renderer compatibility",
+    "No focus change, window creation, device creation, gamma/display or timer operation was performed"
+  ],
+  "artifact_pins": [
+    {
+      "path": "local/resource_init/capture.py",
+      "length": 3821,
+      "sha256": "501fb87128fb026289b274f4579e785889849cfe8ecb518b1a6889c3111ae2dd"
+    },
+    {
+      "path": "local/resource_init/seal.py",
+      "length": 11880,
+      "sha256": "f952bdfc9bb147e7ea0e58b150c622ebec94fb4151b0055da5790f44a3e1318b"
+    },
+    {
+      "path": "local/resource_init/pins.json",
+      "length": 36222,
+      "sha256": "c729c94a87b4a12d0de0569c6d9d6031bb07738aa88b8a071c7acca108fd5d02"
+    },
+    {
+      "path": "local/resource_init/guarded_capture.log",
+      "length": 12141,
+      "sha256": "e28c65dd00f0520535696534f338976fb2f4b0f87ffe160371b485df4f0ede93"
+    },
+    {
+      "path": "local/resource_init/00b2aeb0_assembly.txt",
+      "length": 6826,
+      "sha256": "7fa28c72b4fd6efde7911f0be687ae8a8b00aaad7b3eed922438c2f74b03efea"
+    },
+    {
+      "path": "local/resource_init/00b238d0_assembly.txt",
+      "length": 5832,
+      "sha256": "4ff3bdb64f5f59a82b176f67074d6c72c2b2db2576afc6044cb8c1b682111e3a"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/src/d3d9_startup.cpp",
+      "length": 2646,
+      "sha256": "59363f8139e450a298564a1be6ad3a89b3609645090741b3ddfce4295c1377ed"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/include/bsp/d3d9_startup.hpp",
+      "length": 1362,
+      "sha256": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/src/d3d9_resources.cpp",
+      "length": 5796,
+      "sha256": "f99bedc31baf65009085e09f7e98932fc278fa19b7bc951d16a246a148d65f2a"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/src/d3d9_states.cpp",
+      "length": 19554,
+      "sha256": "0482129429656ed126106ffed85c1a504b0f2bc6dcccc2d2afc54706cce02e9f"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/src/native_renderer_cached_states.cpp",
+      "length": 5702,
+      "sha256": "1f59014cce73ade28bda43c65e222711a15ccef8bb6e666473fff728d10b98c4"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/include/bsp/native_renderer_cached_states.hpp",
+      "length": 2075,
+      "sha256": "0110b089dcfaabadee32b902a486cec6e4640849c502fa164190bd04c42b2295"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/src/native_renderer_stream_frequency.cpp",
+      "length": 2830,
+      "sha256": "612ab6d4b44f7da5e924cb3c581f15b8a846f132c30bb124087966df6a80750d"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/include/bsp/native_renderer_stream_frequency.hpp",
+      "length": 536,
+      "sha256": "81c6ab366cde5f04b48776a58b04bd85a614eb13a4bb146d699a680ae0530a8e"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/src/native_physical_buffer_owner.cpp",
+      "length": 10263,
+      "sha256": "58990828f8fed7e38a4f58ca07ff58a844ba4e65d3d1ffe42da4edd38587f59d"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/include/bsp/native_physical_buffer_owner.hpp",
+      "length": 4090,
+      "sha256": "6aad296c974287291b404f5ab422146128fe9e0d17c249416b49be54953aaf45"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/src/native_renderer_reset_readiness.cpp",
+      "length": 11569,
+      "sha256": "d155d185bcd1583e17bcd101d9adc77b9cef6431b4e5d46b0737eb12a52bbc50"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/include/bsp/native_renderer_reset_readiness.hpp",
+      "length": 3402,
+      "sha256": "5cb42380989032741ff8835d3d37cef4ac57b32fa2595a107a77ffea43dadb19"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/src/d3d9_surface_pool.cpp",
+      "length": 11194,
+      "sha256": "ee5cb3d2efe3619bf9c5d0aa58488c97fbe967ae2d93f635a1f085b5e6926ce3"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/include/bsp/d3d9_surface_pool.hpp",
+      "length": 3168,
+      "sha256": "58e4dd6d58a99d6b5cbc1685de6e83fc65512c94b02778a4f8e2b883da068467"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/src/native_surface_owner.cpp",
+      "length": 8402,
+      "sha256": "3ac9f459ba8a99ea72cd5c3d655fa8e93f247667026772e4a58131903b7707fd"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/include/bsp/native_surface_owner.hpp",
+      "length": 4221,
+      "sha256": "947feec7e98a6b1fa04502588e262e7812df34247eeddbb7b25554b3d3564e38"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/src/native_renderer_surface_bindings.cpp",
+      "length": 4717,
+      "sha256": "af57c4b07b98c0e71f5f2fb56f73faa654da5f4034913d6d4a589b7441f2fc67"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/include/bsp/native_renderer_surface_bindings.hpp",
+      "length": 1570,
+      "sha256": "6963f44b7983db3b0d85a0cb3e6c716d9a1d082269c1e401281e88afd035fc27"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/docs/GAMMA_RAMP.md",
+      "length": 8441,
+      "sha256": "4260373fb81d4ff3e7a3d6940736c6d173fb1ea0309cc24fa5f071ce12722a5f"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/config/target.json",
+      "length": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/tools/bsp.py",
+      "length": 55782,
+      "sha256": "143d14f929678d3bd3b8e84a65861246b59405600b0ac1bde3a0e35542c36975"
+    },
+    {
+      "path": "local/resource_init/source_snapshot/tools/ghidra_export.py",
+      "length": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    },
+    {
+      "path": "docs/NATIVE_RENDERER_RESOURCE_INIT_DISCOVERY.md",
+      "length": 14574,
+      "sha256": "c9c2611db1b647fb5faec8fbd48383307fe3f517f0ad2978acfcafd64828cd17"
+    }
+  ],
+  "primary_review": {
+    "passed": true,
+    "worker_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native_renderer_resource_init_discovery\\local\\resource_init\\sealed.json",
+      "bytes": 5916,
+      "sha256": "f220199931f55e9866b2eaf9a41e2d22fc778d88df9c4b1444ee28a5922c0b97"
+    },
+    "worker_sealed_pins_verified": 30,
+    "additional_report_pins_verified": 51,
+    "fresh_guarded_spans": 34,
+    "fresh_guarded_bytes": 1872,
+    "current_main_dependency_drift": [],
+    "source_proposal_reviewed": true,
+    "source_added": false,
+    "original_runtime_executed": false,
+    "game_validated": false,
+    "main_physical_pool_dependency_now_complete": "b392be9b; native_physical_pool_acquire.cpp; full 4 entries build and focused original/source fixture proof. Discovery base remains historical.",
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\resource_init_discovery_primary\\sealed.json",
+      "bytes": 9057,
+      "sha256": "57745a48a0bb5d229b55d5a0709b35b49c1262503717070869dac0e2b02bec6e"
+    },
+    "current_main_completed_dependencies": [
+      {
+        "source": "src/native_dynamic_buffer_device_release.cpp",
+        "sha256": "fa5831aba9f17409663e65536fd01f4199d86ef1f45d118b5f3e08534e438b3e"
+      },
+      {
+        "source": "src/native_renderer_resource_restore.cpp",
+        "sha256": "8b839e1a8cf857cb22b9bfac88a5653fdc902a65b102dead5619cb063bfb20a7"
+      },
+      {
+        "source": "src/native_physical_pool_acquire.cpp",
+        "sha256": "8ca64c66151e93f425419fb83e432490c2fadcec5624956c74fe0582f94c6dfc"
+      }
+    ]
+  },
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RENDERER_RESOURCE_INIT_DISCOVERY.md",
+    "bytes": 15513,
+    "sha256": "06f5a8a5bb4493084be4427e3775ff1dab097977dacc5c27252d1e454ee8f69f"
+  }
+}

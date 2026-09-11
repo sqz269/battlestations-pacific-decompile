@@ -20,6 +20,7 @@ struct NativeMaterialPoolStorage {
 };
 using NativeMaterialParameterPoolStorage = NativeMaterialPoolStorage;
 using NativeMaterialPassPoolStorage = NativeMaterialPoolStorage;
+using NativeShaderStateListPoolStorage = NativeMaterialPoolStorage;
 
 // Host companions do not construct/destroy native storage implicitly. Initialize
 // once before use; explicitly destroy only after all payload owners are gone.
@@ -149,5 +150,39 @@ void* allocate_static_native_material_pass_slot_00b41820(); // no args, EAX slot
 void return_static_native_material_pass_slot_00b41040(void*); // original ECX slot, RET
 int initialize_static_native_material_pass_pool_00cd7bc0(); // actual init then CRT atexit result
 void destroy_static_native_material_pass_pool_00ce0cd0() noexcept; // actual fixed-global shutdown
+
+// Actual0108FEE4 shader state-list pool, distinct from every material pool.
+// Each10h slot holds a0Ch array header and its DWORD slab index at+0C.
+class NativeShaderStateListPool final {
+public:
+    static constexpr std::uint32_t native_global=0x0108fee4;
+    static constexpr std::uint32_t native_vtable=0x00d62b9c;
+    static constexpr std::uint32_t native_virtual0=0x00b62590;
+    static constexpr std::size_t object_bytes=12,slot_bytes=16,slot_slab_index_offset=12;
+    static constexpr std::size_t slab_bytes=0x244,free_indices_offset=0x200,free_count_offset=0x240;
+    static constexpr std::uint32_t slots_per_slab=32;
+    NativeShaderStateListPool(AllocatorListDomain&,NativeShaderStateListPoolStorage&);
+    NativeShaderStateListPool(const NativeShaderStateListPool&)=delete;
+    NativeShaderStateListPool& operator=(const NativeShaderStateListPool&)=delete;
+    void initialize_00b623d0();
+    void* allocate_slot_00b62630();
+    void return_slot_00b62280(void*) noexcept;
+    void trim_empty_slabs_00b62590();
+    void destroy_00b62500();
+    NativeShaderStateListPoolStorage& storage() noexcept{return storage_;}
+    const NativeShaderStateListPoolStorage& storage() const noexcept{return storage_;}
+private:
+    AllocatorListDomain& allocator_list_;
+    NativeShaderStateListPoolStorage& storage_;
+    static void invoke_trim(void*);
+};
+void* initialize_native_shader_state_list_slab_00b620f0(void*,std::uint32_t index) noexcept;
+void destroy_native_shader_state_list_pool_table_00b621b0(void* actual_header) noexcept;
+// Same explicit fixed-global/real-CRT-atexit contract as the pass pool above.
+void bind_static_native_shader_state_list_pool_0108fee4(NativeShaderStateListPool&) noexcept;
+void* allocate_static_native_shader_state_list_slot_00b62760();
+void return_static_native_shader_state_list_slot_00b623c0(void*);
+int initialize_static_native_shader_state_list_pool_00cd7cc0();
+void destroy_static_native_shader_state_list_pool_00ce0d50() noexcept;
 
 } // namespace bsp
