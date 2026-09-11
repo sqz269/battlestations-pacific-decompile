@@ -327,3 +327,22 @@ routine degrades gracefully.
 ### Correction from docs/GAME_FRONTEND_ENTRY.md
 
 `00a7a460` only samples FMOD memory statistics into discarded locals; it is renamed `BSP_SoundSystem_SampleFmodMemoryStats` (formerly `BSP_SoundSystem_ReportFmodMemoryFailure`).
+
+## Correction from docs/COMPLETE_SOUND_STARTUP.md (2026-09-10)
+
+The normal constructor sequence is now assembled in `sound_startup.cpp`: base
+construction, enabled flag, auxiliary singleton construction, lifetime ordering,
+time-word snapshot, FMOD initialization, resource-owner construction and Lua
+configuration. `00bd0d70` removes the first matching registered pointer and
+reinserts it after another existing pointer. It is a destruction-order change,
+not a registration call. Both constructors have already registered their owners.
+
+The former `start_audio` entry covered only the library stage. A separate
+`initialize_sound_library_00a8881e_fragment` now preserves initialized base fields,
+including the speaker layout when FMOD returns raw/unhandled mode. The installed
+library adapter supplies actual C exports from FMOD Ex/Event4.18.04 and callable
+reconstructed file hooks; original image addresses remain provenance only.
+Native three-word constructor stack cleanup is RET0C; the last two words are not
+read. Asset loading through00a84740, original object/exception ABI and complete
+teardown still have explicit boundaries. See the new report for scoped runtime
+proof rather than treating a successful FMOD stage as a runnable game.

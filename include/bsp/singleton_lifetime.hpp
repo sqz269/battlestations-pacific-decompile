@@ -52,6 +52,10 @@ public:
     void unlock() override;
     void register_object(void* object) override; // 00BD0C30, null ignored after validation
     void unregister_object(void* object);       // 00BCFCA0, zero first match, keep hole
+    // 00BD0D70, thiscall(manager, object, after), RET8. Remove the first object
+    // match, then insert it after the first remaining after match. Both searches
+    // must succeed; native validation may return and does not add recovery.
+    void move_object_after_00bd0d70(void* object, void* after);
     void append_pointer_00bd0bc0(void* const* value);
     std::uint32_t count_00bcf910() const noexcept;
     std::uint32_t capacity() const noexcept;
@@ -64,6 +68,7 @@ private:
     void destroy_00bd0400();
     void destroy_owned_section_0041cc80() noexcept;
     void invalid_parameter();
+    void insert_pointer_at_checked_00bd08d0(void** position, void* const* value);
 
     SingletonLifetimeCallbacks callbacks_;
     SingletonPointerSlots slots_{};

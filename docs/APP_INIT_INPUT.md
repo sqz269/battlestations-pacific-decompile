@@ -308,3 +308,22 @@ is game-validated.
 - `*(DAT_00f8bbf4 + 0xd8) = &DAT_004b4630` between the constructor and the reset is unexplained.
 - Whether `Sensitivities[s][2]` is an index, a scale or a mode is not established; only its width
   and its placement are.
+
+## Correction from docs/INPUT_DEVICE_STATE.md (2026-09-10)
+
+The keyboard and mouse query/update methods are now reconstructed, including
+actual calls to the borrowed ANSI DirectInput device. Their GetDeviceState
+failure behavior differs: the keyboard ignores HRESULT and normalizes whatever
+bytes were written, while the mouse records validity but still accumulates its
+sample after a successful Poll. Both preserve the native history-update order.
+
+The mouse constructor's `GetSystemMetrics(0x17)` is `SM_SWAPBUTTON`, not
+`SM_MOUSEWHEELPRESENT`. Byte +235 swaps button codes 0 and 1. Axis values use the
+live scale at 00e12fb0 divided by 100; Y inversion and wheel negation occur in
+different arithmetic domains. 6272 native query comparisons cover the resulting
+float and byte behavior. The base +14 reset at 00a93e80 is an actual bare RET.
+
+`KeyboardMouseBindingPollHost` connects these queries to full binding polling.
+It requires reconstructed keyboard/mouse devices and an actual CRT square-root
+service. Device creation/data format/COM ownership, joystick and XInput queries,
+and hardware/gameplay verification remain separate dependencies.

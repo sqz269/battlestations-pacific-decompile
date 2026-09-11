@@ -187,6 +187,12 @@ void start_audio(FmodStartupHost& host, bool sound_disabled, SoundSystemState& s
     // negation of what the caller computed at 0073daee.
     state.sound_enabled = !sound_disabled;
     state.field_174 = 0u;
+    initialize_sound_library_00a8881e_fragment(host, state);
+}
+
+void initialize_sound_library_00a8881e_fragment(FmodStartupHost& host,
+    SoundSystemState& state)
+{
 
     // 00a8881e, FMOD_EventSystem_Create into +0x48.
     check_fmod(host, host.event_system_create(&state.event_system), state);
@@ -254,7 +260,8 @@ void start_audio(FmodStartupHost& host, bool sound_disabled, SoundSystemState& s
     check_fmod(host, host.system_get_output(state.system, &state.queried_output), state);
     check_fmod(host, host.system_get_speaker_mode(state.system, &state.queried_speaker_mode), state);
 
-    state.speaker_layout = speaker_layout_from_mode(state.queried_speaker_mode);
+    const auto layout = speaker_layout_from_mode(state.queried_speaker_mode);
+    if (layout != SoundSpeakerLayout::unset) state.speaker_layout = layout;
 
     // 00a88a63 allocates a 0x18 byte object into +0x54 and 00a88a8e calls the
     // Lua-driven second stage 00a7ff80, which is where the master channel group

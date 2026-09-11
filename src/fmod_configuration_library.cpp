@@ -5,29 +5,51 @@
 #include <windows.h>
 
 #include <cstring>
+#include <filesystem>
 #include <stdexcept>
 
 namespace bsp {
 
 struct FmodConfigurationLibrary::Impl {
     HMODULE module{};
+    HMODULE event_module{};
+    std::wstring event_path;
+    SoundFileCallbackBundle file_callbacks;
     std::vector<FmodConfigurationCall> results;
 
-    explicit Impl(const std::wstring& path) {
+    Impl(const std::wstring& path, const std::wstring& event_dll,
+        SoundFileCallbackBundle callbacks) : event_path(event_dll), file_callbacks(callbacks) {
         static_assert(sizeof(void*) == 4, "The installed FMOD ABI is Win32.");
         module = LoadLibraryExW(path.c_str(), nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
         if (!module) throw std::runtime_error("Cannot load FMOD DLL: Win32 error " +
             std::to_string(GetLastError()));
     }
-    ~Impl() { if (module) FreeLibrary(module); }
+    ~Impl() {
+        if (event_module) FreeLibrary(event_module);
+        if (module) FreeLibrary(module);
+    }
+
+    HMODULE event_library() {
+        if (!event_module) {
+            event_module = LoadLibraryExW(event_path.c_str(), nullptr,
+                LOAD_WITH_ALTERED_SEARCH_PATH);
+            if (!event_module) throw std::runtime_error("Cannot load FMOD Event DLL: Win32 error " +
+                std::to_string(GetLastError()));
+        }
+        return event_module;
+    }
 
     template<class... Args>
     FmodResult call(const char* name, Args... args) {
+        return call_from(module, name, args...);
+    }
+    template<class... Args>
+    FmodResult call_from(HMODULE library, const char* name, Args... args) {
         // The installed DLL exports undecorated aliases for its stdcall C API.
         // Original game call-site stack cleanup establishes this ABI;
         // no native image addresses are called here.
         using Function = std::uint32_t (__stdcall*)(Args...);
-        const FARPROC address = GetProcAddress(module, name);
+        const FARPROC address = GetProcAddress(library, name);
         if (!address) throw std::runtime_error(std::string("Missing FMOD export: ") + name);
         Function function;
         static_assert(sizeof(function) == sizeof(address));
@@ -39,7 +61,11 @@ struct FmodConfigurationLibrary::Impl {
 };
 
 FmodConfigurationLibrary::FmodConfigurationLibrary(const std::wstring& path)
-    : impl_(std::make_unique<Impl>(path)) {}
+    : FmodConfigurationLibrary(path,
+        (std::filesystem::path(path).parent_path() / L"fmod_event.dll").wstring()) {}
+FmodConfigurationLibrary::FmodConfigurationLibrary(const std::wstring& path,
+    const std::wstring& event_path, SoundFileCallbackBundle callbacks)
+    : impl_(std::make_unique<Impl>(path, event_path, callbacks)) {}
 FmodConfigurationLibrary::~FmodConfigurationLibrary() = default;
 
 FmodResult FmodConfigurationLibrary::create_system(void** system) {
@@ -60,6 +86,77 @@ FmodResult FmodConfigurationLibrary::update_system(void* system) {
 }
 FmodResult FmodConfigurationLibrary::release_system(void* system) {
     return impl_->call("FMOD_System_Release", system);
+}
+FmodResult FmodConfigurationLibrary::event_system_create(void** event) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventSystem_Create@4", event);
+}
+FmodResult FmodConfigurationLibrary::event_system_get_system_object(void* event, void** system) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventSystem_GetSystemObject@8", event, system);
+}
+FmodResult FmodConfigurationLibrary::event_system_init(void* event,
+    const FmodEventSystemInitArgs& args) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventSystem_Init@20", event,
+        args.max_channels, args.init_flags, args.extra_driver_data, args.event_init_flags);
+}
+FmodResult FmodConfigurationLibrary::release_event_system(void* event) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventSystem_Release@4", event);
+}
+FmodResult FmodConfigurationLibrary::update_event_system(void* event) {
+    return impl_->call_from(impl_->event_library(), "_FMOD_EventSystem_Update@4", event);
+}
+FmodResult FmodConfigurationLibrary::create_stream(void* system, const char* path,
+    std::uint32_t mode, void* extra_info, void** sound) {
+    return impl_->call("FMOD_System_CreateStream", system, path, mode, extra_info, sound);
+}
+FmodResult FmodConfigurationLibrary::release_sound(void* sound) {
+    return impl_->call("FMOD_Sound_Release", sound);
+}
+FmodResult FmodConfigurationLibrary::system_get_num_drivers(void* system,
+    std::int32_t* count) {
+    return impl_->call("FMOD_System_GetNumDrivers", system, count);
+}
+FmodResult FmodConfigurationLibrary::system_get_driver_caps(void* system,
+    std::int32_t index, FmodDriverCaps* caps) {
+    return impl_->call("FMOD_System_GetDriverCaps", system, index, &caps->caps,
+        &caps->min_frequency, &caps->max_frequency, &caps->control_panel_speaker_mode);
+}
+FmodResult FmodConfigurationLibrary::system_set_speaker_mode(void* system,
+    FmodSpeakerMode mode) {
+    return impl_->call("FMOD_System_SetSpeakerMode", system, static_cast<std::uint32_t>(mode));
+}
+FmodResult FmodConfigurationLibrary::system_set_output(void* system, FmodOutputType type) {
+    return set_output(system, type);
+}
+FmodResult FmodConfigurationLibrary::system_set_file_system(void* system,
+    const FmodFileSystemHooks& hooks) {
+    const auto native = sound_system_file_system_hooks();
+    if (hooks.user_open != native.user_open || hooks.user_close != native.user_close ||
+        hooks.user_read != native.user_read || hooks.user_seek != native.user_seek)
+        throw std::invalid_argument("Unsupported FMOD callback provenance");
+    // Integer image addresses identify the recovered callback set only. The DLL
+    // receives callable reconstructed entry points with their original stack ABI.
+    const auto& callbacks = impl_->file_callbacks;
+    return impl_->call("FMOD_System_SetFileSystem", system, callbacks.open,
+        callbacks.close, callbacks.read, callbacks.seek, hooks.block_align);
+}
+FmodResult FmodConfigurationLibrary::system_set_3d_settings(void* system,
+    const Fmod3DSettings& settings) {
+    return impl_->call("FMOD_System_Set3DSettings", system, settings.doppler_scale,
+        settings.distance_factor, settings.rolloff_scale);
+}
+FmodResult FmodConfigurationLibrary::system_get_driver(void* system, std::int32_t* driver) {
+    return impl_->call("FMOD_System_GetDriver", system, driver);
+}
+FmodResult FmodConfigurationLibrary::system_get_output(void* system, FmodOutputType* output) {
+    return impl_->call("FMOD_System_GetOutput", system, output);
+}
+FmodResult FmodConfigurationLibrary::system_get_speaker_mode(void* system,
+    FmodSpeakerMode* mode) {
+    return impl_->call("FMOD_System_GetSpeakerMode", system, mode);
+}
+void FmodConfigurationLibrary::on_out_of_sound_memory(const char*) {
+    std::int32_t current{}, maximum{};
+    memory_get_stats(&current, &maximum);
 }
 FmodResult FmodConfigurationLibrary::get_master_channel_group(void* system, void** group) {
     return impl_->call("FMOD_System_GetMasterChannelGroup", system, group);

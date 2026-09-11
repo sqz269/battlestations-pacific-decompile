@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/sound_configuration.hpp"
+#include "bsp/sound_file_callbacks.hpp"
 
 #include <memory>
 #include <string>
@@ -18,9 +19,12 @@ struct FmodConfigurationCall {
 // original game's object ABI. See docs/INSTALLED_SOUND_CONFIGURATION.md.
 // The caller must serialize access. Release every system before destroying the library;
 // opaque FMOD objects must come from this same loaded library instance.
-class FmodConfigurationLibrary final : public SoundConfigurationFmodHost {
+class FmodConfigurationLibrary final : public SoundConfigurationFmodHost,
+    public FmodStartupHost {
 public:
     explicit FmodConfigurationLibrary(const std::wstring& dll_path);
+    FmodConfigurationLibrary(const std::wstring& dll_path,
+        const std::wstring& event_dll_path, SoundFileCallbackBundle callbacks = {});
     ~FmodConfigurationLibrary() override;
     FmodConfigurationLibrary(const FmodConfigurationLibrary&) = delete;
     FmodConfigurationLibrary& operator=(const FmodConfigurationLibrary&) = delete;
@@ -34,6 +38,25 @@ public:
         std::uint32_t flags, void* driver_data);
     FmodResult update_system(void* system);
     FmodResult release_system(void* system);
+    FmodResult release_event_system(void* event_system);
+    FmodResult update_event_system(void* event_system);
+    FmodResult create_stream(void* system, const char* path, std::uint32_t mode,
+        void* extra_info, void** sound);
+    FmodResult release_sound(void* sound);
+
+    FmodResult event_system_create(void**) override;
+    FmodResult event_system_get_system_object(void*, void**) override;
+    FmodResult event_system_init(void*, const FmodEventSystemInitArgs&) override;
+    FmodResult system_get_num_drivers(void*, std::int32_t*) override;
+    FmodResult system_get_driver_caps(void*, std::int32_t, FmodDriverCaps*) override;
+    FmodResult system_set_speaker_mode(void*, FmodSpeakerMode) override;
+    FmodResult system_set_output(void*, FmodOutputType) override;
+    FmodResult system_set_file_system(void*, const FmodFileSystemHooks&) override;
+    FmodResult system_set_3d_settings(void*, const Fmod3DSettings&) override;
+    FmodResult system_get_driver(void*, std::int32_t*) override;
+    FmodResult system_get_output(void*, FmodOutputType*) override;
+    FmodResult system_get_speaker_mode(void*, FmodSpeakerMode*) override;
+    void on_out_of_sound_memory(const char*) override;
 
     FmodResult get_master_channel_group(void*, void**) override;
     FmodResult get_advanced_settings(void*, SoundFmodAdvancedSettings&) override;

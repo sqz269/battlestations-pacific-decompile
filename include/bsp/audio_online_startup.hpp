@@ -175,11 +175,17 @@ constexpr float kSoundSystemRolloffScale = 1.0f;           // 00a8897b FLD1
 FmodFileSystemHooks sound_system_file_system_hooks();
 Fmod3DSettings sound_system_3d_settings();
 
-// The whole of 00a88770 except the two sub-object allocations, which allocate and
-// construct types outside this packet.  sound_disabled is the byte argument the
+// Legacy library-stage entry with fresh projected fields. Full owner construction,
+// lifetime ordering and Lua configuration are provided by sound_startup.hpp.
+// sound_disabled is the byte argument the
 // caller computes at 0073daee as (DAT_00f889a4 == 0); the routine stores its
 // negation into +0x70.
 void start_audio(FmodStartupHost& host, bool sound_disabled, SoundSystemState& state);
+
+// 00A8881E..00A88A63 library stage, with base/derived fields already initialized.
+// Preserves fields not written by these instructions, including the raw/default
+// speaker layout when getSpeakerMode returns an unhandled mode.
+void initialize_sound_library_00a8881e_fragment(FmodStartupHost&, SoundSystemState&);
 
 // ---------------------------------------------------------------------------
 // 00a79230 and 00a87060 - streamed dialog definition table

@@ -1,0 +1,92 @@
+{
+  "packet": "orch3_complete_sound_startup",
+  "addresses": ["00a88770", "00bd0d70", "00a7a460"],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "documentation": "docs/COMPLETE_SOUND_STARTUP.md",
+  "implementation": [
+    "src/sound_startup.cpp",
+    "src/audio_online_startup.cpp",
+    "src/singleton_lifetime.cpp",
+    "src/fmod_configuration_library.cpp"
+  ],
+  "scope": "Recovered normal sound constructor sequencing over canonical owners and required clock, resource-loader and Lua-owner contracts. Actual installed FMOD Event/System interface and callable file callbacks. No fallback game services.",
+  "worker_commits": {
+    "keyboard_mouse_state": "55a056c",
+    "file_callbacks": "805f37e",
+    "sound_owners": "33aace0e8c9e9968dcaa6cc458713357e2045dd5",
+    "sound_owner_review_fixes": "74d19704f2f71f797760bdbbd785eb6215c931b9"
+  },
+  "validation": {
+    "win32_release_build": "passed",
+    "existing_ctests": {"passed": 2, "failed": 0},
+    "build_log": "local/complete-sound-startup-final-build.log",
+    "singleton_order_fixture": "Middle, end and after-hole movement passed; registration count and capacity retained.",
+    "device_native_query_comparisons": 6272,
+    "device_hardware_poll_exercised": false,
+    "file_callbacks": "Native read and seek bodies executed against real memory and physical stream adapters; focused open/close ownership fixture passed.",
+    "owner_fixture": "Canonical defaults, lifetime registration, resource load options and failed-loader cleanup passed.",
+    "worker_evidence_copies": "local/startup-evidence/{device,files,owners}",
+    "review": "Independent worker reviews checked singleton insertion captures, sound startup call order, canonical field ownership and constructor unwind. Corrections integrated before final build."
+  },
+  "installed_runtime_probe": {
+    "source": "local/sound_event_file_probe.cpp",
+    "command": "local/run_sound_event_file_probe.cmd",
+    "log": "local/sound-event-file-probe.log",
+    "result": "local/sound_event_file_probe.json",
+    "fmod_version_hex": "0x41804",
+    "output": "FMOD_OUTPUTTYPE_NOSOUND",
+    "library_calls": 117,
+    "library_errors": 0,
+    "opens": 1,
+    "closes": 1,
+    "reads": 12,
+    "seeks": 13,
+    "bytes_read": 17570,
+    "configured_groups": 12,
+    "configured_sound_types": 25,
+    "fixture_bytes": 44144,
+    "fixture": "Local 22050 Hz mono 16-bit PCM WAV; existing PhysicalFile reads through reconstructed callbacks.",
+    "lua": "Actual Lua 5.1.1 executes installed soundsetup.lua; recovered already-loaded configuration fragment applies it to FMOD.",
+    "lifetime": "Release stream, then EventSystem, then restore callback file context.",
+    "installation_written": false,
+    "full_constructor_executed": false,
+    "audible_playback": false
+  },
+  "installed_artifacts": [
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmodex.dll",
+      "bytes": 350544,
+      "sha256": "31E7451AEF6115B0AEC353E4E508FF9F0FC14EA3A8957E5DDB805EDE911700E8"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmod_event.dll",
+      "bytes": 238936,
+      "sha256": "4B6AE7BA8D3DA780C23ABB5E72A65EA50E5348A60A1B4AEF43196E09AE771890"
+    },
+    {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/sound/soundsetup.lua",
+      "bytes": 6559,
+      "sha256": "17A237A56369D11AF275533F0E7A1E3B0D0C68FF817A1AA1F4FD365660390D65"
+    }
+  ],
+  "analysis_repairs": {
+    "defined_function_entries": 16,
+    "reports": [
+      "reports/orch3_startup_function_definitions.json",
+      "reports/orch3_device_reset_definition.json",
+      "reports/orch3_sound_owner_flow_repair.json",
+      "reports/orch3_sound_owner_body_extension.json"
+    ],
+    "resource_constructor_tail": "Cleared false CALL_RETURN at 00a85a2d and decoded 24-byte epilogue. Decompilation reaches return; saved function body still ends at 00a85a31. Attempted body extension made no mutation because the bridge disables arbitrary Java scripts. Full metadata repair is not claimed."
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "remaining": [
+    "Actual resource cache loader 00a84740 and its resolution, creation and cloning callees.",
+    "Required failed resource owner cleanup 00a85500 and complete manager teardown.",
+    "Native VFS resolution and unprotected Lua owner loading.",
+    "Enabled hardware-audio branch, hardware input, audible playback and gameplay.",
+    "Original native object layouts and exception ABI are not supplied by typed projections."
+  ]
+}

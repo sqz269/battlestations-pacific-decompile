@@ -142,18 +142,22 @@ void ConcreteSingletonLifetimeManager::append_pointer_00bd0bc0(void* const* valu
         return;
     }
     void** const position = slots_.end;
-    if (address(position) < address(slots_.begin)) {
-        invalid_parameter();
-    }
+    if (address(position) < address(slots_.begin)) invalid_parameter();
+    insert_pointer_at_checked_00bd08d0(position, value);
+}
 
+void ConcreteSingletonLifetimeManager::insert_pointer_at_checked_00bd08d0(
+    void** position, void* const* value) {
     // 00BD08D0 captures the iterator's offset before insertion. Its owner is
     // this same container, so its distinct foreign-owner branch is unreachable.
     std::uint32_t index = 0;
-    if (slots_.begin && count_00bcf910() != 0) {
-        if (address(slots_.end) < address(slots_.begin)) {
+    void** const index_begin = slots_.begin; // EDI retained across callback
+    void** const index_end = slots_.end;
+    if (index_begin && distance(index_begin, index_end) != 0) {
+        if (address(index_end) < address(index_begin)) {
             invalid_parameter();
         }
-        index = distance(slots_.begin, position);
+        index = distance(index_begin, position);
     }
     // 00BD0700 captures the pointed-to object before moving/freeing any slots.
     void* const captured = *value;
@@ -179,20 +183,62 @@ void ConcreteSingletonLifetimeManager::append_pointer_00bd0bc0(void* const* valu
         slots_.capacity_end = offset(replacement, grown);
         slots_.end = offset(replacement, retained_count + 1U);
     } else {
-        // Only a returning validation callback which changes the storage can
-        // make the slow append reach an insertion with spare capacity.
+        // Insertion within retained storage; memmove_s supports overlap.
         copy_slots(offset(position, 1), position, slots_.end);
         slots_.end = offset(slots_.end, 1);
         *position = captured;
     }
-    if (address(slots_.end) < address(slots_.begin)) {
+    void** const returned_begin = slots_.begin; // 00BD0925, before callback
+    if (address(slots_.end) < address(returned_begin)) {
         invalid_parameter();
     }
-    void** const returned_iterator = offset(slots_.begin, index);
+    void** const returned_iterator = offset(returned_begin, index);
     if (address(returned_iterator) > address(slots_.end) ||
         address(returned_iterator) < address(slots_.begin)) {
         invalid_parameter();
     }
+}
+
+void ConcreteSingletonLifetimeManager::move_object_after_00bd0d70(
+    void* object, void* after) {
+    // The typed manager cannot be null or own a foreign checked iterator. The
+    // remaining native bounds checks continue if invalid_parameter returns.
+    auto find_first = [&](void* value) {
+        void** cursor = slots_.begin;
+        if (address(cursor) > address(slots_.end)) invalid_parameter();
+        for (;;) {
+            void** const end = slots_.end;
+            if (address(slots_.begin) > address(end)) invalid_parameter();
+            if (cursor == end) break;
+            if (address(cursor) >= address(slots_.end)) invalid_parameter();
+            if (*cursor == value) break;
+            if (address(cursor) >= address(slots_.end)) invalid_parameter();
+            cursor = offset(cursor, 1);
+        }
+        return cursor;
+    };
+    void** const position = find_first(object);
+    if (address(position) >= address(slots_.end)) invalid_parameter();
+    void* const captured = *position;
+    void** const following = offset(position, 1);
+    const auto remaining = static_cast<std::int32_t>(distance(following, slots_.end));
+    if (remaining > 0) copy_slots(position, following, slots_.end);
+    slots_.end = offset(slots_.end, 0xffffffffU); // native ADD end,-4
+    if (address(slots_.end) < address(slots_.begin)) invalid_parameter();
+
+    void** const anchor = find_first(after);
+    void** const captured_end = slots_.end; // 00BD0E75 stores end before bounds checks
+    if (address(captured_end) < address(slots_.begin)) invalid_parameter();
+    void** const insertion = offset(anchor, 1);
+    if (address(insertion) > address(slots_.end) ||
+        address(insertion) < address(slots_.begin)) invalid_parameter();
+    if (insertion == captured_end) {
+        append_pointer_00bd0bc0(&captured);
+        return;
+    }
+    if (address(insertion) > address(slots_.end) ||
+        address(insertion) < address(slots_.begin)) invalid_parameter();
+    insert_pointer_at_checked_00bd08d0(insertion, &captured);
 }
 
 void ConcreteSingletonLifetimeManager::unregister_object(void* object) {
