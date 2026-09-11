@@ -15,6 +15,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
+#include "bsp/mission_lua_bindings.hpp"
 #include "bsp/mission_lua_machine.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/native_string.hpp"
@@ -65,7 +66,22 @@ int binding_trampoline(lua_State* state) {
     GameMissionLuaHost* host = host_from_upvalue(state);
     const int row = static_cast<int>(lua_tointeger(state, lua_upvalueindex(2)));
     const int argc = lua_gettop(state);
-    if (host != nullptr) host->note_native_call(static_cast<std::size_t>(row), argc);
+    if (host == nullptr) return 0;
+    host->note_native_call(static_cast<std::size_t>(row), argc);
+    // The nineteen entity-returning rows of the table end in one recovered tail
+    // (docs/LUA_BINDING_ENTITY.md): they push thisTable[key] for the entity they
+    // resolved, or, at 0089903C, nil when the lookup produced nothing. This
+    // process resolves no entity, so every one of them takes the nil arm, which
+    // is a recovered result rather than a substitute: a binding that returns one
+    // value is different from one that returns none, and the shipped scripts
+    // assign from these.
+    const bsp::MissionLuaBinding& binding =
+        bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
+    if (bsp::mission_binding_returns_entity(binding.name)) {
+        host->note_entity_return();
+        lua_pushnil(state);
+        return 1;
+    }
     return 0;
 }
 
@@ -113,6 +129,24 @@ bool GameMissionLuaHost::started() const noexcept { return state_ != nullptr; }
 const GameMissionLuaSummary& GameMissionLuaHost::summary() const noexcept { return summary_; }
 
 void GameMissionLuaHost::set_phase(std::string phase) { phase_ = std::move(phase); }
+
+void GameMissionLuaHost::note_entity_return() { ++summary_.entity_returns; }
+
+void GameMissionLuaHost::create_self_table_004e0305() {
+    if (state_ == nullptr) return;
+    // 004e0305 runs 00b67350 on "recon" (set-nil) on the same pass that creates
+    // the self table. The table itself is empty here: 00928a00 fills one slot
+    // per entity, and this process creates no entity.
+    lua_createtable(state_, 0, 0);
+    lua_setfield(state_, LUA_GLOBALSINDEX, bsp::kMissionSelfTableGlobal);
+    lua_pushnil(state_);
+    lua_setfield(state_, LUA_GLOBALSINDEX, bsp::kMissionReconGlobal);
+    summary_.self_table_created = true;
+    log_.implemented("MissionLua::create_self_table", "004e0305");
+    log_.notef("self table \"%s\" created empty and \"%s\" cleared; 00928a00 adds one slot "
+        "per entity and this process creates none", bsp::kMissionSelfTableGlobal,
+        bsp::kMissionReconGlobal);
+}
 
 void GameMissionLuaHost::note_error(const std::string& message) {
     if (summary_.first_error.empty() && !message.empty()) {

@@ -63,6 +63,8 @@ struct GameMissionEntryPointRun {
 
 struct GameMissionLuaSummary {
     bool machine_started{false};
+    bool self_table_created{false};    // thisTable, 004e0305
+    std::size_t entity_returns{0};     // entity-returning bindings that pushed nil
     std::size_t libraries_opened{0};
     std::size_t bindings_registered{0};
     bool platform_chunk_ran{false};
@@ -100,6 +102,9 @@ public:
     std::size_t run_global_script_folders_00886900();
     // 005e2f00 at 004e02d0.
     void publish_lobby_settings_005e2f00();
+    // 004e0305: the load creates the `thisTable` self table and clears `recon`
+    // on the same pass. docs/MISSION_LUA_SELF_TABLE.md.
+    void create_self_table_004e0305();
     // 008860b0: "Scripts/missions/" + name + ".lua" through 00885fb0 with the
     // content variants enabled.
     bool run_mission_script_008860b0(const std::string& script_name);
@@ -146,6 +151,7 @@ public:
 
     // Called by the binding trampolines; public so the C callbacks can reach it.
     void note_native_call(std::size_t row, int argument_count);
+    void note_entity_return();
     int run_dofile(const std::string& path);
     void note_error(const std::string& message);
     void set_phase(std::string phase);

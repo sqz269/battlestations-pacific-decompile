@@ -24,8 +24,8 @@
   "run": {
     "exit_code": 0,
     "frames_presented": 300,
-    "host_methods_concrete": 241,
-    "host_methods_unimplemented": 241,
+    "host_methods_concrete": 246,
+    "host_methods_unimplemented": 243,
     "mission_load_finished": true,
     "mission_load_walk_steps": 47,
     "mission_load_concrete": 10,
@@ -55,7 +55,11 @@
     "mission_frames_paused": 0,
     "units_ticked": 0,
     "mission_events_applied": 0,
-    "mission_exit_reachable": false
+    "mission_exit_reachable": false,
+    "self_table_created": true,
+    "fixed_steps_60_frame_run": 0,
+    "fixed_steps_2000_frame_run": 19,
+    "fixed_step_seconds": 0.05
   },
   "machine_steps": [
     {
@@ -162,6 +166,20 @@
       "owner": "session",
       "native": "004c1130",
       "note": "no frame job pool, so no named call is ever queued for the main thread"
+    },
+    {
+      "method": "MissionLua::create_self_table",
+      "address": "004e0305",
+      "status": "concrete",
+      "owner": "lua",
+      "note": "the load creates the thisTable self table and clears the recon global on the same pass (docs/MISSION_LUA_SELF_TABLE.md); the table is empty here because 00928a00 adds one slot per entity and this process creates none"
+    },
+    {
+      "method": "MissionLua::entity_return_tail",
+      "native": "0089903c",
+      "status": "concrete",
+      "owner": "lua",
+      "note": "the nineteen entity-returning rows of 00e0b7b8 take the recovered nil arm at 0089903c and return one value, because no entity resolves in this process (docs/LUA_BINDING_ENTITY.md, bsp::mission_binding_returns_entity)"
     }
   ],
   "load_steps": [
@@ -599,10 +617,10 @@
       "method": "MissionFrame::update_in_mission_subsystems_004c40a0",
       "address": "004e5133",
       "owner": "unit",
-      "status": "unimplemented",
-      "reconstruction": "",
+      "status": "concrete",
+      "reconstruction": "bsp::run_in_mission_subsystem_tick_004c40a0",
       "containing_function": "004e4a40",
-      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
+      "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs; reconstructed by packet cc_mission_tick, merged during this turn",
       "native": "004c40a0"
     },
     {
@@ -1084,6 +1102,41 @@
       "containing_function": "004e4a40",
       "note": "call site inside BSP_Game_OnMove 004e4a40, whose stored Ghidra body is eight bytes (docs/GHIDRA_LISTING_DEFECTS.md); verify_report_calls.py reports it as \"in no Ghidra function\" until RepairListingDefects.java runs",
       "native": "00757ce0"
+    },
+    {
+      "method": "InMissionTick::fixed_step_driver",
+      "address": "004c40ad",
+      "native": "00875bb0",
+      "status": "concrete",
+      "owner": "unit",
+      "containing_function": "004c40a0",
+      "note": "call 1 of 004c40a0; the four-test gate opens on the slot the load claimed and the ready word the entry wrote, and the clock ran 0 fixed steps in the 60 frame run and 19 in a 2000 frame run"
+    },
+    {
+      "method": "InMissionTick::unit_lists_guard",
+      "address": "004c40b4",
+      "native": "004c3cb0",
+      "status": "concrete",
+      "owner": "unit",
+      "containing_function": "004c40a0",
+      "note": "call 2; the guard and its latch at game+193Ch run, the eight list heads are the world's and are recorded at 004bfdf0"
+    },
+    {
+      "method": "InMissionTick::update_world_entities",
+      "native": "00904bf0",
+      "status": "unimplemented",
+      "owner": "unit",
+      "containing_function": "004c40a0",
+      "note": "call 3, an indirect dispatch through [game+19CCh]->vtable[0Ch]"
+    },
+    {
+      "method": "InMissionTick::update_game_dynamics",
+      "address": "004c40dd",
+      "native": "00447b80",
+      "status": "concrete",
+      "owner": "unit",
+      "containing_function": "004c40a0",
+      "note": "call 4; the dynamics list is empty, so the pass returns zeros"
     }
   ],
   "corrections": [
@@ -1110,6 +1163,12 @@
       "was": "Scripts/missions/usn_2_java.lua, derived from the scene stem alone",
       "is": "Scripts/missions/usn/usn_2_java.lua. Scripts/missions/ holds no loose .lua, so the name must carry a subdirectory; the executable derives it from the scene file's parent directory and confirms it against the mounted tree.",
       "evidence": "docs/MISSION_LUA_MACHINE.md gap 2; local/game_run.log \"mission script name derived from the scene path\""
+    },
+    {
+      "target": "this packet's own first pass",
+      "was": "MissionFrame step 9 (004e5133 -> 004c40a0) recorded as unimplemented because packet cc_mission_tick had not merged",
+      "is": "cc_mission_tick merged during this turn; step 9 now runs bsp::run_in_mission_subsystem_tick_004c40a0 in process, and with it the fixed-step driver 00875bb0 and the dynamics frame pass 00447b80",
+      "evidence": "local/game_long.log: \"summary mission fixed steps=19 at 0.050 s each\""
     }
   ],
   "no_ghidra_function": [],

@@ -26,7 +26,9 @@
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/award_trackers.hpp"
+#include "bsp/game_dynamics_list.hpp"
 #include "bsp/game_frame_control.hpp"
+#include "bsp/in_mission_subsystem_tick.hpp"
 #include "bsp/game_settings.hpp"
 #include "bsp/input_tick.hpp"
 #include "bsp/mission_load_path.hpp"
@@ -109,6 +111,12 @@ struct GameMissionFrameHost::Impl {
     std::int32_t published_mission_id{0};     // [00f8a2fc]+48h
     float world_clock{0.0f};                  // 00f876a4
     bool device_edge_injected{false};         // the executable's own injection
+    // Packet cc_mission_tick's reconstruction of the four-call opener of every
+    // simulated frame, and the dynamics list behind its fourth call.
+    bsp::FixedStepClock fixed_clock{};        // 00f876a1..00f876b8
+    bsp::GameDynamicsState dynamics{};        // game+30h
+    bool unit_lists_built{false};             // game+193Ch
+    unsigned long long fixed_steps{0};
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -243,6 +251,133 @@ public:
         // is ever pressed here.
         static_cast<void>(action);
         return false;
+    }
+
+private:
+    GameMissionFrameHost::Impl& owner_;
+};
+
+// ---------------------------------------------------------------------------
+// bsp::FixedStepHost and bsp::GameDynamicsFrameHost, behind calls 1 and 4 of
+// the in-mission subsystem tick. Every list they walk is empty here.
+// ---------------------------------------------------------------------------
+
+class FixedStepBinding final : public bsp::FixedStepHost {
+public:
+    explicit FixedStepBinding(GameMissionFrameHost::Impl& owner) : owner_(owner) {}
+    void advance_step_countdown_008079b0(float) override {
+        owner_.record("FixedStep::advance_countdown", 0x008079b0u);
+    }
+    void run_step_job_waves(std::uint8_t) override {
+        owner_.record("FixedStep::run_job_waves", 0x00875cc0u);
+    }
+    void run_step_subsystems(float, bool) override {
+        owner_.record("FixedStep::run_subsystems", 0x00875e0cu);
+    }
+    void run_interpolation_wave_00875670(float, std::uint8_t) override {
+        owner_.record("FixedStep::interpolation_wave", 0x00875670u);
+    }
+
+private:
+    GameMissionFrameHost::Impl& owner_;
+};
+
+class DynamicsFrameBinding final : public bsp::GameDynamicsFrameHost {
+public:
+    explicit DynamicsFrameBinding(GameMissionFrameHost::Impl& owner) : owner_(owner) {}
+    void select_visible_model_group_00710bb0(std::uint32_t, std::size_t) override {
+        owner_.record("Dynamics::select_model_group", 0x00710bb0u);
+    }
+    std::size_t model_group_count(std::uint32_t) override { return 0; }
+    bsp::DynamicsTransform34 interpolated_body_transform_00c43ea0(
+        std::uint32_t, float) override {
+        owner_.record("Dynamics::interpolated_transform", 0x00c43ea0u);
+        return {};
+    }
+    void refresh_node_world_matrix_00b6db70(std::uint32_t) override {
+        owner_.record("Dynamics::refresh_node_matrix", 0x00b6db70u);
+    }
+    void node_world_matrix_column_y(std::uint32_t, float out[4]) override {
+        for (int i = 0; i < 4; ++i) out[i] = 0.0f;
+    }
+    bsp::DynamicsVec3 body_linear_velocity_00c31f40(std::uint32_t) override {
+        owner_.record("Dynamics::body_velocity", 0x00c31f40u);
+        return {};
+    }
+    bsp::DynamicsSplashSettings splash_settings_00424c40() override {
+        owner_.record("Dynamics::splash_settings", 0x00424c40u);
+        return {};
+    }
+    void spawn_water_entry_effect(int, const bsp::DynamicsVec3&) override {
+        owner_.record("Dynamics::spawn_water_entry_effect", 0x008685e0u);
+    }
+    void set_node_world_transform_vtable34(
+        std::uint32_t, const bsp::DynamicsTransform34&) override {
+        owner_.record("Dynamics::set_node_transform", 0x00448130u);
+    }
+    void unlink_and_release_node_00b6dfa0(std::uint32_t) override {
+        owner_.record("Dynamics::release_node", 0x00b6dfa0u);
+    }
+    void queue_body_release_00c34f70(std::uint32_t) override {
+        owner_.record("Dynamics::queue_body_release", 0x00c34f70u);
+    }
+    void set_node_visibility_00b6da70(std::uint32_t, float) override {
+        owner_.record("Dynamics::set_node_visibility", 0x00b6da70u);
+    }
+
+private:
+    GameMissionFrameHost::Impl& owner_;
+};
+
+// ---------------------------------------------------------------------------
+// bsp::InMissionTickHost, step 9 of the frame (004e5133 -> 004c40a0)
+// ---------------------------------------------------------------------------
+
+class InMissionTickBinding final : public bsp::InMissionTickHost {
+public:
+    explicit InMissionTickBinding(GameMissionFrameHost::Impl& owner) : owner_(owner) {}
+
+    void step_fixed_simulation_00875bb0(float scaled_delta) override {
+        // The four-test gate at 00875bb1..00875c02. The load's own
+        // 004bb160/004bb440 step claimed slot 0 and the entry's 004da71e wrote
+        // its +10h ready word, so the gate opens on the values this process
+        // actually holds rather than on invented ones.
+        bsp::FixedStepGate gate{};
+        gate.game_present = true;
+        gate.local_player_slot_present = owner_.slots[0].in_use;
+        gate.slot_ready_10h = static_cast<std::int16_t>(bsp::kLocalSlotReadyValue);
+        gate.view_mode_1fe4 = owner_.scene_state.session_mode;
+        gate.session_count_9c = 0;
+        FixedStepBinding host(owner_);
+        const std::uint32_t steps = bsp::run_fixed_step_driver_00875bb0(
+            owner_.fixed_clock, gate, scaled_delta, false, 0, host);
+        owner_.fixed_steps += steps;
+        owner_.done("InMissionTick::fixed_step_driver", 0x00875bb0u);
+    }
+
+    void build_local_player_unit_lists_004c3cb0() override {
+        bsp::UnitListsGate gate{};
+        gate.already_built = owner_.unit_lists_built;
+        gate.slot_index = 0;
+        const bool ran = bsp::local_player_unit_lists_run_004c3cb0(gate);
+        owner_.unit_lists_built = gate.already_built;
+        owner_.done("InMissionTick::unit_lists_guard", 0x004c3cb0u);
+        // The guard is the whole of this routine that is a rule; the eight list
+        // heads it fills are the world's.
+        if (ran) owner_.record("InMissionTick::build_unit_lists", 0x004bfdf0u);
+    }
+
+    void update_world_entities_00904bf0(float) override {
+        owner_.record("InMissionTick::update_world_entities", 0x00904bf0u);
+    }
+
+    void update_game_dynamics_00447b80(float scaled_delta) override {
+        DynamicsFrameBinding host(owner_);
+        const float alpha = bsp::dynamics_interpolation_alpha(
+            owner_.fixed_clock.interpolation_left, bsp::kFixedSimulationStepFloat);
+        static_cast<void>(bsp::tick_game_dynamics_frame_00447b80(
+            owner_.dynamics, scaled_delta, alpha, host));
+        owner_.done("InMissionTick::update_game_dynamics", 0x00447b80u);
     }
 
 private:
@@ -521,9 +656,11 @@ public:
         owner_.record("MissionFrame::register_block_label", 0x0041e870u);
     }
     void update_in_mission_subsystems_004c40a0() override {
-        // The fixed four-call opener of every simulated frame. Packet
-        // cc_mission_tick owns it; it had not merged when this ran.
-        owner_.record("MissionFrame::update_in_mission_subsystems", 0x004c40a0u);
+        // The fixed four-call opener of every simulated frame, reconstructed by
+        // packet cc_mission_tick and merged during this packet's turn.
+        InMissionTickBinding tick(owner_);
+        bsp::run_in_mission_subsystem_tick_004c40a0(owner_.frame_state.scaled_delta, tick);
+        owner_.done("MissionFrame::update_in_mission_subsystems", 0x004c40a0u);
     }
     void begin_engine_movie_004cce50() override {
         owner_.record("MissionFrame::begin_engine_movie", 0x004cce50u);
@@ -870,6 +1007,11 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
         }
         if (method == "lua_reset_state") {
             host.lua.publish_lobby_settings_005e2f00();
+            // 004e0305 is the next thing the same pass does: it creates the
+            // `thisTable` self table and clears `recon`
+            // (docs/MISSION_LUA_SELF_TABLE.md). The inventory has no row of its
+            // own for it, so it runs here, where the listing runs it.
+            host.lua.create_self_table_004e0305();
             ++host.load.concrete;
             continue;
         }
@@ -1045,6 +1187,9 @@ void GameMissionFrameHost::report(long requested_frames) {
         ? "004d7ea0 enqueued the debrief request 0Fh"
         : "no mission-result object at game+7188h, so 004d7ea0 never enqueues 0Fh "
           "and the debrief path of 004d7970 is unreachable in this process";
+    host.log.notef("summary mission fixed steps=%llu at %.3f s each (00875bb0's own clock "
+        "at 00f876a4/00f876ac)", host.fixed_steps,
+        static_cast<double>(bsp::kFixedSimulationStepFloat));
     host.log.notef("summary mission frames requested=%ld ran=%llu simulated=%llu paused=%llu "
         "units=%llu events=%llu script_calls=%llu interface_updates=%llu",
         host.frames.requested, host.frames.frames, host.frames.simulated,

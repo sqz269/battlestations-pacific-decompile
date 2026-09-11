@@ -1737,7 +1737,9 @@ content variants and the mission chunk), 004e0a96 and 004e0c2e / 0045f520 and 00
 004e0356 / 004f2800, 004e03e5 / 004d4df0, 004e046c / 0068a990, 004e04df / 004c9680,
 004e04e7 / 004c1ac0, 004e06bc / 00aa0d30, 004e0700 / 00aa06d0, 004e085f / 0077f5e0,
 004e08e4 / 004d30f0, 004e0a9b / 0095ca70, 004e0ae8 / 006b8ad0, 004e124e / 007065e0,
-004e185c / 0057c250, 004e1873 / 004c9ca0; the state 0Ch handler 004db920 with 004db95d /
+004e185c / 0057c250, 004e1873 / 004c9ca0, 004e0305 (the `thisTable` self table); the four
+calls of the in-mission subsystem tick 004c40ad / 00875bb0, 004c40b4 / 004c3cb0, 00904bf0 and
+004c40dd / 00447b80; the state 0Ch handler 004db920 with 004db95d /
 00a91020 and 004db9b4 / 00a92c40; the entry 004da6c0 with 004da6df / 00447060, 004da71e,
 004da734 / 00a7a440, 004da746 / 004c9ca0, 004da755 / 004d87b0 and 004da769 / 004cd0f0; and
 the 57 call sites of the in-mission branch of 004e4a40 that `bsp::mission_frame_step()`
@@ -1817,6 +1819,7 @@ What one run performs, in that order:
 | global folders | 00886900 | **21 scripts**, no chunk error |
 | `LobbySettings` | 005e2f00 | table created with its 13 fields |
 | mission chunk | 008860b0 | 1 chunk, no content variant, loaded and ran |
+| self table | 004e0305 | `thisTable` created empty, `recon` cleared |
 | entry points | 0045f520, 0045f440 | 3 dispatched, all status 0 |
 
 The bindings are real Lua globals whose bodies are host records: a script that calls one gets
@@ -1831,6 +1834,15 @@ goes on the record. `luaStageInit` reached three of them, and only three:
 
 `luaEngineMovieInit` was not called: 004e0a50 reads the raw script slot and only slot 9 takes
 that arm, and this mission resolves to slot 8.
+
+Packet `cc_mission_natives` merged during this packet's turn, and two of its findings are in
+the run. The load creates the `thisTable` self table at 004e0305 and clears `recon` on the
+same pass; the table is empty here because 00928a00 fills one slot per entity and this process
+creates none. And the nineteen entity-returning rows of the table take their recovered tail:
+`bsp::mission_binding_returns_entity` selects them, and each one pushes the nil of 0089903C,
+the arm the native takes when the `thisTable` lookup produced nothing, and returns one value.
+That matters to a script, because a binding that returns one value is not the same as one that
+returns none. `CreateScript`, which this mission's stage init calls, is one of the nineteen.
 
 **The mission script name is the executable's derivation, not the record's field.** 008860b0
 takes the name from the scene record's script table at +928h, which the header pass does not
@@ -1860,13 +1872,25 @@ report `simulated=1`.
 ### 4. The frames
 
 `bsp::run_mission_frame` executes the in-mission branch in native order with the recovered
-guards. Of its 57 steps **27 run a reconstruction in process and 30 are records**. The
+guards. Of its 57 steps **28 run a reconstruction in process and 29 are records**. The
 concrete ones are the mission-start counters (004b6260, 004bcaa0), the warning director
 (00987590), the input effect sets (004e4e6c), the action deadlines (004d8cd0), the four
-profiler brackets, the pause-gate decision (004e5153), two of the seven hint passes, the bot
-scheduler, the markers, the entity manager, the decals, the power-ups, the activation flush,
-the mission-completion poll (004d7ea0), the particle clock, the GUI visibility decision, the
-menu request service (006840f0) and the sound request queue (00941140).
+profiler brackets, the pause-gate decision (004e5153), the in-mission subsystem tick
+(004c40a0), two of the seven hint passes, the bot scheduler, the markers, the entity manager,
+the decals, the power-ups, the activation flush, the mission-completion poll (004d7ea0), the
+particle clock, the GUI visibility decision, the menu request service (006840f0) and the sound
+request queue (00941140).
+
+Step 9, 004c40a0, is concrete because packet `cc_mission_tick` merged during this packet's
+turn. Two of its four calls run a reconstruction: the fixed-step driver 00875bb0 and the
+dynamics frame pass 00447b80. **The driver's four-test gate opens on values this process
+actually holds** rather than on invented ones: the load's own 004bb160 / 004bb440 step claimed
+slot 0 and the entry's 004da71e wrote its +10h ready word, which is exactly what
+00875bb1..00875c02 tests. The clock then behaves as the rule says it should. A 60 frame run
+accumulates less than one 0.05 second step and runs **0** of them, and a 2000 frame run runs
+**19**, which is 0.95 seconds of simulated time; the job waves and the sixteen per-step
+subsystem calls behind each step are records. Call 2's guard and its latch at game+193Ch run
+and fire once, and calls 3 and 4's own containers are empty.
 
 **The frame runs with no world.** Every container those routines walk is empty, so each one
 runs to its own end over nothing. That is a real run of the recovered routine and it is not a
@@ -1900,9 +1924,10 @@ needs the renderer owner, which is follow-up 3.
 
 `bsp_game.exe --frames 300 --press-start-frame 30 --menu-select USN02 --mission-frames 60
 --log local/game_run.log --screenshot local/run.png --game-root "<install>"`, exit 0:
-**241 concrete, 241 unimplemented**. Milestone 2e's run on its own tree reported 193 and 176.
-A run closed with `CloseMainWindow` instead of a frame limit reports 242 concrete, because it
-also reaches `CloseRequestPolicy::front_end_branch` (004ca2f0).
+**246 concrete, 243 unimplemented**. Milestone 2e's run on its own tree reported 193 and 176.
+A run closed with `CloseMainWindow` instead of a frame limit reports 247 concrete, because it
+also reaches `CloseRequestPolicy::front_end_branch` (004ca2f0); a 2000 frame run reports 246
+and 246, because it reaches three more of the fixed-step driver's records.
 
 The full per-step table, with the call site and callee of every row, is
 `reports/game_executable_milestone_2f.json` (`machine_steps`, `load_steps`, `entry_steps`,
@@ -1910,10 +1935,11 @@ The full per-step table, with the call site and callee of every row, is
 
 | Group | Steps | Concrete | Records |
 | --- | --- | --- | --- |
-| The Lua machine | 15 | 12 | 3 |
+| The Lua machine | 17 | 14 | 3 |
 | The load walk | 47 rows of the inventory | 10 | 32 (5 arms not taken) |
 | State 0Ch and the entry | 11 | 6 | 5 |
-| The in-mission frame | 57 | 27 | 30 |
+| The in-mission frame | 57 | 28 | 29 |
+| The subsystem tick inside step 9 | 4 | 3 | 1 |
 
 Three of the load's records are worth naming because they are the boundary the next packets
 have to cross: `global_subsystems` (004dc6a0, world), `reset_render_scene` (00874640,
@@ -1939,7 +1965,13 @@ entities would appear.
    mistake rule 1 of `docs/WORKER_VERIFICATION_CHECKLIST.md` names, and
    `docs/MISSION_LUA_MACHINE.md` already recovered the body. The rename belongs in
    `include/bsp/mission_scene_load.hpp`, which this packet does not own.
-4. **Milestone 2e's mission script path was the bare form.** Its report derived
+4. **This packet's own first pass recorded step 9 as unimplemented.** Packet
+   `cc_mission_tick` merged during the turn and the step now runs
+   `bsp::run_in_mission_subsystem_tick_004c40a0` in process, together with the fixed-step
+   driver 00875bb0 and the dynamics frame pass 00447b80. The same merge brought
+   `cc_mission_natives`, which is where the `thisTable` self table and the entity-returning
+   tail come from.
+5. **Milestone 2e's mission script path was the bare form.** Its report derived
    `Scripts/missions/usn_2_java.lua` from the scene stem, and no installed script occupies a
    path directly under `Scripts/missions/`. The executable now derives
    `Scripts/missions/usn/usn_2_java.lua` and confirms it against the mounted tree; the scene
@@ -1973,14 +2005,14 @@ Every address this packet touched already has a Ghidra function and a reviewed l
 No name was added; run-time evidence was appended to 004dfb70, 004db920, 004da6c0, 00884be0,
 00886900, 005e2f00 and 008860b0.
 
-`python tools/verify_report_calls.py reports/game_executable_milestone_2f.json` checks 93 call
+`python tools/verify_report_calls.py reports/game_executable_milestone_2f.json` checks 96 call
 rows and reports **51 failures, all of one kind**: every call site of the in-mission frame
 lies inside `BSP_Game_OnMove` 004e4a40, whose stored Ghidra body is the eight bytes
 004e4a40-004e4a47. That is the first row of `docs/GHIDRA_LISTING_DEFECTS.md`, which says the
 verifier reports call sites inside that routine as "in no Ghidra function" until
 `tools/ghidra_scripts/RepairListingDefects.java` runs. The addresses themselves come from
 `bsp::mission_frame_step()`, which read them from the disk bytes 004e4a40-004e5535. The other
-42 rows, the machine, the load and the entry, all pass.
+45 rows, the machine, the load, the entry and the three call sites inside 004c40a0, all pass.
 
 ### Validation
 
@@ -2007,6 +2039,8 @@ mission load finished: 47 steps, 10 concrete, 32 records, 5 arms not taken; game
   numbered VFS blocks: 1_usn_2 3_usn_2 4_usn_2 5_usn_2 6_usn_2
 device-wait edge injected: the state 0Ch arm waits on 00a91020, which needs an input backend
         this process does not build
+self table "thisTable" created empty and "recon" cleared; 00928a00 adds one slot per entity
+        and this process creates none
 mission state entry: state=0x0D entered=1 dynamics_released=0 interface=tear down (0)
         cinematic_cleared=1 one_shots{aborted=0 end_latch=0 networked=0 dropped=0
         not_enough_players=0}
@@ -2015,12 +2049,17 @@ mission state entry: state=0x0D entered=1 dynamics_released=0 interface=tear dow
 summary mission load finished=1 concrete=10 records=32 state=0x0D entered=1
         script=Scripts/missions/usn/usn_2_java.lua
 summary mission lua bindings=560 natives=3 calls=3
+summary mission fixed steps=0 at 0.050 s each (00875bb0's own clock at 00f876a4/00f876ac)
 summary mission frames requested=60 ran=60 simulated=60 paused=0 units=0 events=0
         script_calls=3 interface_updates=60
 summary mission exit reachable=0: no mission-result object at game+7188h, so 004d7ea0 never
         enqueues 0Fh and the debrief path of 004d7970 is unreachable in this process
-host methods 241 concrete, 241 unimplemented
+host methods 246 concrete, 243 unimplemented
 ```
+
+The same binary with `--frames 3000 --mission-frames 2000` exits 0 and reports
+`summary mission fixed steps=19 at 0.050 s each`, with the job waves and the per-step
+subsystem block recorded 19 times each.
 
 Every earlier switch was rechecked on the same binary. A 120 frame run with
 `--press-start-frame 30` and no `--menu-select` exits 0 and reports 154 concrete and 80
@@ -2028,7 +2067,7 @@ unimplemented, a 40 frame title-only run reports 129 and 49, `--vfs-probe fonts/
 exits 0 and `--vfs-probe does/not/exist.lua` exits 3. All four match milestone 2d exactly.
 The close path was validated by sending WM_CLOSE to a running process with
 `--press-start-frame 30 --menu-select USN02 --mission-frames 60` and no frame limit: it
-presented 46777 frames, ran all 60 mission frames, recorded
+presented 37507 frames, ran all 60 mission frames, recorded
 `CloseRequestPolicy::front_end_branch [004ca2f0]` once and exited 0.
 
 This is a runtime-validated process, not a game-validated one. It proves that the recovered
@@ -2051,16 +2090,16 @@ mission, and every subsystem the frame ticked was empty.
 3. **The mission render block**, 004ca440 and 004ca1f0, which is `mission_frame_render_entry`
    in `docs/MISSION_STATE_FRAME.md`'s follow-up table. Without it a running mission cannot
    change what is on screen.
-4. **`in_mission_subsystem_tick`**, 004c40a0, the fixed four-call opener of every simulated
-   frame. Packet `cc_mission_tick` owns it; it had not merged when this ran, so step 9 of
-   every frame is a record.
+4. **The fixed step's own body**, 00875cc0's three job waves and the sixteen per-step calls
+   at 00875e0c. The driver and its clock now run; what each step would do is still a record,
+   and it is where the simulation's own work lives.
 5. **A mission-result object at game+7188h**, so the exit path `docs/MISSION_RESULT_DECISION.md`
    reconstructs becomes reachable and a headless run can finish a mission rather than stop at
    a frame count.
-6. **The entity-returning Lua bindings**, packet `cc_mission_natives`. Three bindings were
-   reached by this mission's stage init and all three are records; a binding that has to
-   return a real game object is what `docs/MISSION_LUA_MACHINE.md`'s six failing probe
-   scripts need.
+6. **Entity-returning bindings that return a real entity.** The nineteen rows now take their
+   recovered nil tail, which is correct for a process with no entity; filling `thisTable`
+   needs 00928a00 and therefore the scene contents of follow-up 2. That is what
+   `docs/MISSION_LUA_MACHINE.md`'s six failing probe scripts are waiting for.
 7. **The two header fixes in corrections 2 and 3**, both one-line changes in files this packet
    does not own.
 
