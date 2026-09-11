@@ -1,7 +1,7 @@
 {
   "schema": "bsp.native_crt_sse2_pow_support_discovery.v1",
   "packet": "native_crt_sse2_pow_support_discovery",
-  "status": "read_only_discovery_for_primary_review",
+  "status": "primary_reviewed_read_only_SSE2_pow_support_contracts_and_ready_prerequisites",
   "owned_addresses": [
     "00c19260",
     "00c19279",
@@ -3764,5 +3764,120 @@
     "manifest_self_hash": "Reported externally in commit handoff, avoiding self-referential report hashes.",
     "contents": "Owned doc/report, all finite capture/static analysis scripts and artifacts, copied pinned source/tool/config inputs. Readonly after primary review."
   },
-  "preserved_previous_packet": "native_resource_registry_destroy2 commit eb458071; predecessor seals untouched"
+  "preserved_previous_packet": "native_resource_registry_destroy2 commit eb458071; predecessor seals untouched",
+  "primary_review": {
+    "passed": true,
+    "worker_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-sse2-pow-support-discovery\\local\\sse2_pow_support_handoff\\manifest.json",
+      "bytes": 18308,
+      "sha256": "7d7b6b2093aaf5f0bf46ed00532dda421952b43df75e9921e440ad0a26346b21"
+    },
+    "worker_pins_verified": 105,
+    "worker_input_pins_verified": 13,
+    "current_input_checks": [
+      {
+        "path": "src/legacy_crt_math.cpp",
+        "worker_sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+        "current_sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "include/bsp/legacy_crt_math.hpp",
+        "worker_sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+        "current_sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39",
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "include/bsp/system_camera_axes.hpp",
+        "worker_sha256": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594",
+        "current_sha256": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594",
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "worker_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "current_sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "worker_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "current_sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "src/native_crt_x87_error_dispatch.cpp",
+        "worker_sha256": "a800a9c61a9d652e765bea27e4cd9b0c8790b2afcdb60ad4ec1703a9e50aeb4a",
+        "current_sha256": "a800a9c61a9d652e765bea27e4cd9b0c8790b2afcdb60ad4ec1703a9e50aeb4a",
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "include/bsp/native_crt_x87_error_dispatch.hpp",
+        "worker_sha256": "62f1ccc668389168fe0d54f48bb7b3b25fca8ef9a8d6b337958b13e8a3dca438",
+        "current_sha256": "62f1ccc668389168fe0d54f48bb7b3b25fca8ef9a8d6b337958b13e8a3dca438",
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "reports/legacy_crt_math_audit.json",
+        "worker_sha256": "e5172c26e634b5138da1815242caed1a02bdb6f5115ff59eb6b991ba7a061b19",
+        "current_sha256": "e5172c26e634b5138da1815242caed1a02bdb6f5115ff59eb6b991ba7a061b19",
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "reports/native_crt_x87_error_dispatch_audit.json",
+        "worker_sha256": "9119b8f6cc4934dfaf31ce89c008f1b79a0b1715e32740dad52fc25053add9b1",
+        "current_sha256": "08f4aec7b899c555d801fe9fc098e6af713b52baeb61812df1052ec93324cf71",
+        "LF_normalized_equal": false
+      },
+      {
+        "path": "tools/bsp.py",
+        "worker_sha256": "dbaf1d47cd88a74e7c21e49f0db1724715a72a783ca883d60d768ce7a5f941e1",
+        "current_sha256": "bac030ca00d080b57cfea12d722307a2eb74127a7c36eeb7dc65d4f342c92bbe",
+        "LF_normalized_equal": false
+      },
+      {
+        "path": "tools/ghidra_export.py",
+        "worker_sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee",
+        "current_sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee",
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "tools/workspace.py",
+        "worker_sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140",
+        "current_sha256": "611a2f0613f2172438bc5cf87161bae9566b31abcfcc334e54af9aba10df8140",
+        "LF_normalized_equal": true
+      },
+      {
+        "path": "config/target.json",
+        "worker_sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2",
+        "current_sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2",
+        "LF_normalized_equal": true
+      }
+    ],
+    "fresh_disk_backed_spans": 51,
+    "fresh_disk_backed_bytes": 19539,
+    "separate_virtual_zero_spans": 5,
+    "separate_virtual_zero_bytes": 32,
+    "installed_PE": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "full_primary_contract_review": true,
+    "source_reconstructed": false,
+    "build_performed": false,
+    "native_runtime_performed": false,
+    "ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\sse2_pow_support_primary\\sealed.json",
+      "bytes": 13583,
+      "sha256": "f8a95dd92dd524ec30a9e74cc5a1f757bcbdf9d5bb2939159fd4accba0082658"
+    }
+  },
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_SSE2_POW_SUPPORT_DISCOVERY.md",
+    "bytes": 21709,
+    "sha256": "f5b42d011edb6685c539b8623df3de2cfd0b1b267d10dc89fddaf9eb3208fca8"
+  }
 }

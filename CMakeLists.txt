@@ -154,6 +154,7 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_resource_registry_tree_leaves.cpp
   src/native_resource_registry_erase.cpp
   src/native_resource_registry_destroy.cpp
+  src/native_resource_registry_scalar_delete.cpp
   src/native_renderer_capability_array_reserves.cpp
   src/native_renderer_capability_nested_arrays.cpp
   src/native_renderer_material_state_binding.cpp

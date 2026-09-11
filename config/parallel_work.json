@@ -7483,6 +7483,43 @@
         "include/bsp/native_renderer_capability_nested_arrays.hpp"
       ],
       "evidence": "reports/native_renderer_capability_nested_arrays_audit.json"
+    },
+    {
+      "id": "native_resource_registry_scalar_delete2",
+      "packet": "native_resource_registry_scalar_delete2",
+      "state": "two_complete_raw_scalar_delete_entries_main_archive_checked_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b1b660",
+        "00b1b710"
+      ],
+      "code_ownership": [
+        "src/native_resource_registry_scalar_delete.cpp",
+        "include/bsp/native_resource_registry_scalar_delete.hpp",
+        "docs/NATIVE_RESOURCE_REGISTRY_SCALAR_DELETE.md",
+        "reports/native_resource_registry_scalar_delete_audit.json"
+      ],
+      "evidence": "reports/native_resource_registry_scalar_delete_audit.json"
+    },
+    {
+      "id": "native_crt_sse2_pow_support_discovery",
+      "packet": "native_crt_sse2_pow_support_discovery",
+      "state": "primary_reviewed_read_only_SSE2_pow_support_contracts_and_ready_prerequisites",
+      "done": true,
+      "source_ready": false,
+      "worker": "main",
+      "function_addresses": [
+        "00c19260",
+        "00c19279",
+        "00c0f0e4"
+      ],
+      "code_ownership": [
+        "docs/NATIVE_CRT_SSE2_POW_SUPPORT_DISCOVERY.md",
+        "reports/native_crt_sse2_pow_support_discovery.json"
+      ],
+      "evidence": "reports/native_crt_sse2_pow_support_discovery.json"
     }
   ],
   "snapshot_after_analysis": {

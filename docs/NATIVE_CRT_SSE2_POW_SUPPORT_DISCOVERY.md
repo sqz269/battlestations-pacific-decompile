@@ -107,3 +107,8 @@ The established returning invalid-parameter boundary is available through `Singl
 4. **SSE2 wrapper/core: 2,897 bytes at `C19260/C19279`.** Depends on step 3 and exact 14,616-byte data footprint. Preserve the concrete SSE2/x87 instruction algorithm, lanes, current controls/status, stack shape and selector schedule. This proposal establishes evidence and a bounded implementation target, not current source completeness or host-pow equivalence. The parent owns integration with `BFEB10` dispatch.
 
 Current source/header pins are unchanged relative to observed main `d5e85f879f50b12050f8fea15ac434a615a294a5` after CRLF normalization; `reports/native_crt_x87_error_dispatch_audit.json` has a separately recorded main-version drift. Both blob identities are retained. Existing names are preserved, including correct CRT names; there are no annotation requests needed to fix the verified extents. All reconstruction/build/fixture/ABI/game-validation flags for this discovery remain false.
+
+
+## Primary review
+
+Primary verified all 105 immutable worker pins, 13 original input pins and current source/header parity, then reread all 51 disk-backed spans (19,539 bytes) and five separate virtual-zero regions (32 bytes) through guarded BSP queries. The installed PE and each raw/virtual section extent agree. The existing error-dispatch audit drift is recorded separately from unchanged source inputs. Full native contracts, finite table bounds and prerequisite sequence are reviewed. No source, annotation, build or runtime validation is claimed by this discovery. Primary evidence: `local/sse2_pow_support_primary/`.
