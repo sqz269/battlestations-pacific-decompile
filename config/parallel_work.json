@@ -5540,6 +5540,45 @@
       "done": true,
       "state": "complete_actual_storage_primary_library_original_code_fixture_and_strict_Win32_checked",
       "evidence": "reports/native_frame_target_getters_audit.json"
+    },
+    {
+      "id": "native_frame_target_vector3",
+      "packet": "native_frame_target_vector3",
+      "worker": "frame_target_vector",
+      "done": false,
+      "state": "primary_native_contract_reviewed_independent_worker_source_and_original_fixture_in_progress",
+      "function_addresses": [
+        "00b1f970",
+        "00b1f9f0",
+        "00b1fb90"
+      ],
+      "code_ownership": [
+        "include/bsp/native_frame_target_vector.hpp",
+        "src/native_frame_target_vector.cpp",
+        "docs/NATIVE_FRAME_TARGET_VECTOR.md",
+        "reports/native_frame_target_vector_audit.json"
+      ],
+      "source_ready": true,
+      "scope": "Complete actual raw storage and concrete provider operations; primary owns shared integration and Ghidra repairs/annotations."
+    },
+    {
+      "id": "native_shader_owner_texture_release2",
+      "packet": "native_shader_owner_texture_release2",
+      "worker": "shader_owner_reset_discovery",
+      "done": false,
+      "state": "primary_native_contract_reviewed_independent_worker_source_and_original_fixture_in_progress",
+      "function_addresses": [
+        "00b188a0",
+        "00b24e20"
+      ],
+      "code_ownership": [
+        "include/bsp/native_shader_owner_texture_release.hpp",
+        "src/native_shader_owner_texture_release.cpp",
+        "docs/NATIVE_SHADER_OWNER_TEXTURE_RELEASE.md",
+        "reports/native_shader_owner_texture_release.json"
+      ],
+      "source_ready": true,
+      "scope": "Complete actual raw storage and concrete provider operations; primary owns shared integration and Ghidra repairs/annotations."
     }
   ],
   "snapshot_after_analysis": {
