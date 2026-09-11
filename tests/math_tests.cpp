@@ -55,6 +55,7 @@
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/plane_class_fields.hpp"
 #include "bsp/vehicle_class_fields.hpp"
+#include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/scene_property_bag.hpp"
 #include <algorithm>
 #include <cmath>
@@ -1845,6 +1846,42 @@ int main() {
                          bsp::ScenePropertyType::IntArray, 8) == 32,
             "an installed `IA` property line decodes its leading token as the element "
             "count and yields eight values");
+    }
+
+    {
+        // The installed Submarine row VehicleClass[8], comment "I400", is the one
+        // shipped submarine with no PeriscopeDepth key, so it is the row that
+        // exercises the alias branch 00854332 guards: with +810h left at the
+        // -1.0f default, the reader goes on to ask for SwimDepth1, which no
+        // shipped row provides either, and the slot keeps -1.0f. The row does
+        // provide UpSpeed and DownSpeed (1.1) and provides none of UpDownAccel,
+        // UpDownRotation or UpDownStopTime, which therefore take their literals.
+        bsp::VehicleClassLuaValue absent{};
+        bsp::VehicleClassLuaValue up_speed{};
+        up_speed.kind = bsp::VehicleClassValueKind::Number;
+        up_speed.number = 1.1;
+
+        const float periscope_depth = bsp::vehicle_class_number_or_00b66330(
+            absent, bsp::ShipLeafDefaults::kAbsentDepth);
+        const bool alias_taken = bsp::submarine_reads_swim_depth1(periscope_depth);
+        const float after_alias = alias_taken
+            ? bsp::vehicle_class_number_or_00b66330(absent,
+                                                    bsp::ShipLeafDefaults::kAbsentDepth)
+            : periscope_depth;
+
+        const bsp::ShipLeafFieldSpec* swim1 = bsp::ship_leaf_find_field(
+            bsp::ShipLeafClass::Submarine, "SwimDepth1");
+        const bsp::ShipLeafFieldSpec* depth = bsp::ship_leaf_find_field(
+            bsp::ShipLeafClass::Submarine, "PeriscopeDepth");
+        check(alias_taken && after_alias == bsp::ShipLeafDefaults::kAbsentDepth
+                  && swim1 != nullptr && depth != nullptr
+                  && swim1->offset == depth->offset
+                  && bsp::vehicle_class_number_or_00b66330(up_speed, 0.0F) > 1.0F
+                  && bsp::vehicle_class_number_or_00b66330(
+                         absent, bsp::ShipLeafDefaults::kUpDownRotation)
+                         == bsp::ShipLeafDefaults::kUpDownRotation,
+            "the installed I400 submarine row leaves +810h at -1.0f through the "
+            "SwimDepth1 alias branch and takes the literal UpDownRotation default");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
