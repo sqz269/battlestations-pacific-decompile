@@ -159,5 +159,15 @@ This is source/build/fixture evidence, not native binary compatibility, full
 factory, loaded-file, GPU, visual or game validation. `B2A380` remains a
 separate factory packet. Loaded-file cube `B3CED0 -> B34280` and whole
 `B2C2D0`, other virtual methods, pool startup orchestration and reset behavior
-are not completed by these three owner entries. No Ghidra, shared ledger,
-CMake, installed game or permanent test target is modified by this worker.
+are not completed by these three owner entries. The installed game and
+permanent test targets are untouched.
+
+The primary integrated permanent CMake registration and reran the unchanged
+fixture against its frozen main library, SHA-256
+`350b9bb962bdd5963eb9f0eea1e879d5984c824eaab0024313e7ff68dcb1db7f`.
+It independently rechecked 99 worker artifacts, 22 current source files, all
+40 fresh live/PE spans, 440 runtime postimages, both EH trampolines and
+14 actual library providers. The full 6,943-DWORD / 131-event comparison and
+both existing CTests passed. All three complete reconstruction records and
+names are now registered; prior Ghidra names/comments were preserved, the
+project saved and affected exports refreshed.
