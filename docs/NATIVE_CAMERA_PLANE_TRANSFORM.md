@@ -51,5 +51,32 @@ offset changes with the new argument layout. Full COFF sections and relocations,
 one exact archive object and 13 unchanged original/source code stages were
 verified. See the audit report for the sealed artifact path and hashes.
 
-Main integration/build remains separate. No permanent tests, original caller
-ABI or gameplay result are claimed.
+Both functions are integrated into main. The strict Win32 main build and
+both existing CTests passed, followed by independent original-body replay
+against the actual main library. No permanent tests, original caller ABI
+or gameplay result are claimed.
+
+
+## Primary validation
+
+The primary reviewed both sources and the focused fixture, verified all
+35 immutable worker pins and both current source/header files, then froze
+the actual main library
+`fb144c4f4e87afe14d9c7c783716b54976544b2426d775f61bd86dc3bf94d9ed`.
+The exact main archive member matches all worker code/directive sections
+and relocations; debug/checksum metadata differences are recorded. The
+fixture does not recompile the provider.
+
+Fresh guarded live/installed-PE checks cover all 313 original bytes, and
+eight native seeds matched. The unchanged six-case replay passed with
+1,906 compared observable bytes and all 12 raw results independently
+projected. The proof includes 169 complete linked COFF sections and
+13 complete original/linked text postimage stages. Both original bodies
+and their relative child call execute without code edits, operand
+relocations or provider bridges.
+
+The existing Ghidra names and prior comments were preserved, reviewed
+evidence was appended and saved, and both exports and complete function
+records were refreshed. The tracked report pins the read-only primary
+bundle under `local/camera_plane_primary/`. Runtime limits listed above
+remain unchanged.

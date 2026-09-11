@@ -6161,6 +6161,27 @@
       "prerequisite_packets": [],
       "scope": "Complete raw floatRGBA-toARGB conversion/current CRT selector and actual ambient owner+8 address getter.",
       "evidence": "reports/native_ambient_color_audit.json"
+    },
+    {
+      "id": "native_camera_plane_transform2",
+      "packet": "native_camera_plane_transform2",
+      "worker": "main",
+      "done": true,
+      "state": "complete_actual_raw_source_primary_main_Win32_and_original_body_fixture_checked",
+      "source_ready": true,
+      "function_addresses": [
+        "00b62d10",
+        "00b65ba0"
+      ],
+      "code_ownership": [
+        "src/native_camera_plane_transform.cpp",
+        "include/bsp/native_camera_plane_transform.hpp",
+        "docs/NATIVE_CAMERA_PLANE_TRANSFORM.md",
+        "reports/native_camera_plane_transform_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Complete raw vector4 transform and plane wrapper with original x87/MOVSS schedules and distinct child result.",
+      "evidence": "reports/native_camera_plane_transform_audit.json"
     }
   ],
   "snapshot_after_analysis": {
