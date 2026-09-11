@@ -1,0 +1,374 @@
+{
+  "reason": "Assembly proves ECX component/LuaObject inputs, stack Lua row/flags or output+fallback, EAX pointer returns for scalar deletion and Lua helpers.",
+  "convention_boundary": "Explicit fastcall storage model uses unused_edx only to keep real arguments on the stack. This does not assert recovered source calling convention.",
+  "entries": [
+    {
+      "address": "00868de0",
+      "name": "BSP_EffectShake_ReadLua",
+      "proposed": "void __fastcall BSP_EffectShake_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+      "before": "Function: FUN_00868de0 at 00868de0\nSignature: undefined FUN_00868de0(void)\nEntry: 00868de0\nBody: 00868de0 - 00868eb4",
+      "apply": "Successfully set prototype for function at 00868de0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectShake_ReadLua at 00868de0\nSignature: void __fastcall BSP_EffectShake_ReadLua(void * component, uint unused_edx, void * lua_definition)\nEntry: 00868de0\nBody: 00868de0 - 00868eb4",
+      "readback_verified": true
+    },
+    {
+      "address": "00868ec0",
+      "name": "BSP_EffectRumble_ReadLuaBase",
+      "proposed": "void __fastcall BSP_EffectRumble_ReadLuaBase(void *component, unsigned int unused_edx, void *lua_definition)",
+      "before": "Function: FUN_00868ec0 at 00868ec0\nSignature: undefined FUN_00868ec0(void)\nEntry: 00868ec0\nBody: 00868ec0 - 00868f94",
+      "apply": "Successfully set prototype for function at 00868ec0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectRumble_ReadLuaBase at 00868ec0\nSignature: void __fastcall BSP_EffectRumble_ReadLuaBase(void * component, uint unused_edx, void * lua_definition)\nEntry: 00868ec0\nBody: 00868ec0 - 00868f94",
+      "readback_verified": true
+    },
+    {
+      "address": "00868fa0",
+      "name": "BSP_EffectConstRumble_ReadLua",
+      "proposed": "void __fastcall BSP_EffectConstRumble_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+      "before": "Function: FUN_00868fa0 at 00868fa0\nSignature: undefined FUN_00868fa0(void)\nEntry: 00868fa0\nBody: 00868fa0 - 0086900c",
+      "apply": "Successfully set prototype for function at 00868fa0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectConstRumble_ReadLua at 00868fa0\nSignature: void __fastcall BSP_EffectConstRumble_ReadLua(void * component, uint unused_edx, void * lua_definition)\nEntry: 00868fa0\nBody: 00868fa0 - 0086900c",
+      "readback_verified": true
+    },
+    {
+      "address": "00869080",
+      "name": "BSP_EffectSlopeRumble_ReadLua",
+      "proposed": "void __fastcall BSP_EffectSlopeRumble_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+      "before": "Function: FUN_00869080 at 00869080\nSignature: undefined FUN_00869080(void)\nEntry: 00869080\nBody: 00869080 - 008690ec",
+      "apply": "Successfully set prototype for function at 00869080 with __fastcall calling convention",
+      "after": "Function: BSP_EffectSlopeRumble_ReadLua at 00869080\nSignature: void __fastcall BSP_EffectSlopeRumble_ReadLua(void * component, uint unused_edx, void * lua_definition)\nEntry: 00869080\nBody: 00869080 - 008690ec",
+      "readback_verified": true
+    },
+    {
+      "address": "00869160",
+      "name": "BSP_EffectSquareRumble_ReadLua",
+      "proposed": "void __fastcall BSP_EffectSquareRumble_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+      "before": "Function: FUN_00869160 at 00869160\nSignature: undefined FUN_00869160(void)\nEntry: 00869160\nBody: 00869160 - 0086928d",
+      "apply": "Successfully set prototype for function at 00869160 with __fastcall calling convention",
+      "after": "Function: BSP_EffectSquareRumble_ReadLua at 00869160\nSignature: void __fastcall BSP_EffectSquareRumble_ReadLua(void * component, uint unused_edx, void * lua_definition)\nEntry: 00869160\nBody: 00869160 - 0086928d",
+      "readback_verified": true
+    },
+    {
+      "address": "008694c0",
+      "name": "BSP_EffectSplash_ReadLua",
+      "proposed": "void __fastcall BSP_EffectSplash_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+      "before": "Function: FUN_008694c0 at 008694c0\nSignature: undefined FUN_008694c0(void)\nEntry: 008694c0\nBody: 008694c0 - 008695aa",
+      "apply": "Successfully set prototype for function at 008694c0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectSplash_ReadLua at 008694c0\nSignature: void __fastcall BSP_EffectSplash_ReadLua(void * component, uint unused_edx, void * lua_definition)\nEntry: 008694c0\nBody: 008694c0 - 008695aa",
+      "readback_verified": true
+    },
+    {
+      "address": "00869fd0",
+      "name": "BSP_EffectLight_ReadLua",
+      "proposed": "void __fastcall BSP_EffectLight_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+      "before": "Function: FUN_00869fd0 at 00869fd0\nSignature: undefined FUN_00869fd0(void)\nEntry: 00869fd0\nBody: 00869fd0 - 0086a17e",
+      "apply": "Successfully set prototype for function at 00869fd0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectLight_ReadLua at 00869fd0\nSignature: void __fastcall BSP_EffectLight_ReadLua(void * component, uint unused_edx, void * lua_definition)\nEntry: 00869fd0\nBody: 00869fd0 - 0086a17e",
+      "readback_verified": true
+    },
+    {
+      "address": "0086b2b0",
+      "name": "BSP_EffectWaterdrops_ReadLua",
+      "proposed": "void __fastcall BSP_EffectWaterdrops_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+      "before": "Function: FUN_0086b2b0 at 0086b2b0\nSignature: undefined FUN_0086b2b0(void)\nEntry: 0086b2b0\nBody: 0086b2b0 - 0086b628",
+      "apply": "Successfully set prototype for function at 0086b2b0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectWaterdrops_ReadLua at 0086b2b0\nSignature: void __fastcall BSP_EffectWaterdrops_ReadLua(void * component, uint unused_edx, void * lua_definition)\nEntry: 0086b2b0\nBody: 0086b2b0 - 0086b628",
+      "readback_verified": true
+    },
+    {
+      "address": "0086b7e0",
+      "name": "BSP_EffectComponent_Destruct",
+      "proposed": "void __fastcall BSP_EffectComponent_Destruct(void *component)",
+      "before": "Function: FUN_0086b7e0 at 0086b7e0\nSignature: undefined FUN_0086b7e0(void)\nEntry: 0086b7e0\nBody: 0086b7e0 - 0086b846",
+      "apply": "Successfully set prototype for function at 0086b7e0 with __fastcall calling convention",
+      "after": "Function: BSP_EffectComponent_Destruct at 0086b7e0\nSignature: void __fastcall BSP_EffectComponent_Destruct(void * component)\nEntry: 0086b7e0\nBody: 0086b7e0 - 0086b846",
+      "readback_verified": true
+    },
+    {
+      "address": "0086cd40",
+      "name": "BSP_EffectWaterdrops_Destruct",
+      "proposed": "void __fastcall BSP_EffectWaterdrops_Destruct(void *component)",
+      "before": "Function: FUN_0086cd40 at 0086cd40\nSignature: undefined FUN_0086cd40(void)\nEntry: 0086cd40\nBody: 0086cd40 - 0086cdaf",
+      "apply": "Successfully set prototype for function at 0086cd40 with __fastcall calling convention",
+      "after": "Function: BSP_EffectWaterdrops_Destruct at 0086cd40\nSignature: void __fastcall BSP_EffectWaterdrops_Destruct(void * component)\nEntry: 0086cd40\nBody: 0086cd40 - 0086cdaf",
+      "readback_verified": true
+    },
+    {
+      "address": "0086d0a0",
+      "name": "CG_scalar_deleting_dtor_0086d0a0",
+      "proposed": "void * __fastcall CG_scalar_deleting_dtor_0086d0a0(void *component, unsigned int unused_edx, unsigned int flags)",
+      "before": "Function: CG_scalar_deleting_dtor_0086d0a0 at 0086d0a0\nSignature: undefined CG_scalar_deleting_dtor_0086d0a0(void)\nEntry: 0086d0a0\nBody: 0086d0a0 - 0086d0bd",
+      "apply": "Successfully set prototype for function at 0086d0a0 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_0086d0a0 at 0086d0a0\nSignature: void * __fastcall CG_scalar_deleting_dtor_0086d0a0(void * component, uint unused_edx, uint flags)\nEntry: 0086d0a0\nBody: 0086d0a0 - 0086d0bd",
+      "readback_verified": true
+    },
+    {
+      "address": "0086d0c0",
+      "name": "CG_scalar_deleting_dtor_0086d0c0",
+      "proposed": "void * __fastcall CG_scalar_deleting_dtor_0086d0c0(void *component, unsigned int unused_edx, unsigned int flags)",
+      "before": "Function: CG_scalar_deleting_dtor_0086d0c0 at 0086d0c0\nSignature: undefined CG_scalar_deleting_dtor_0086d0c0(void)\nEntry: 0086d0c0\nBody: 0086d0c0 - 0086d0dd",
+      "apply": "Successfully set prototype for function at 0086d0c0 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_0086d0c0 at 0086d0c0\nSignature: void * __fastcall CG_scalar_deleting_dtor_0086d0c0(void * component, uint unused_edx, uint flags)\nEntry: 0086d0c0\nBody: 0086d0c0 - 0086d0dd",
+      "readback_verified": true
+    },
+    {
+      "address": "0086d0e0",
+      "name": "CG_scalar_deleting_dtor_0086d0e0",
+      "proposed": "void * __fastcall CG_scalar_deleting_dtor_0086d0e0(void *component, unsigned int unused_edx, unsigned int flags)",
+      "before": "Function: CG_scalar_deleting_dtor_0086d0e0 at 0086d0e0\nSignature: undefined CG_scalar_deleting_dtor_0086d0e0(void)\nEntry: 0086d0e0\nBody: 0086d0e0 - 0086d0fd",
+      "apply": "Successfully set prototype for function at 0086d0e0 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_0086d0e0 at 0086d0e0\nSignature: void * __fastcall CG_scalar_deleting_dtor_0086d0e0(void * component, uint unused_edx, uint flags)\nEntry: 0086d0e0\nBody: 0086d0e0 - 0086d0fd",
+      "readback_verified": true
+    },
+    {
+      "address": "0086d100",
+      "name": "CG_scalar_deleting_dtor_0086d100",
+      "proposed": "void * __fastcall CG_scalar_deleting_dtor_0086d100(void *component, unsigned int unused_edx, unsigned int flags)",
+      "before": "Function: CG_scalar_deleting_dtor_0086d100 at 0086d100\nSignature: undefined CG_scalar_deleting_dtor_0086d100(void)\nEntry: 0086d100\nBody: 0086d100 - 0086d11d",
+      "apply": "Successfully set prototype for function at 0086d100 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_0086d100 at 0086d100\nSignature: void * __fastcall CG_scalar_deleting_dtor_0086d100(void * component, uint unused_edx, uint flags)\nEntry: 0086d100\nBody: 0086d100 - 0086d11d",
+      "readback_verified": true
+    },
+    {
+      "address": "0086d120",
+      "name": "CG_scalar_deleting_dtor_0086d120",
+      "proposed": "void * __fastcall CG_scalar_deleting_dtor_0086d120(void *component, unsigned int unused_edx, unsigned int flags)",
+      "before": "Function: CG_scalar_deleting_dtor_0086d120 at 0086d120\nSignature: undefined CG_scalar_deleting_dtor_0086d120(void)\nEntry: 0086d120\nBody: 0086d120 - 0086d13d",
+      "apply": "Successfully set prototype for function at 0086d120 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_0086d120 at 0086d120\nSignature: void * __fastcall CG_scalar_deleting_dtor_0086d120(void * component, uint unused_edx, uint flags)\nEntry: 0086d120\nBody: 0086d120 - 0086d13d",
+      "readback_verified": true
+    },
+    {
+      "address": "0086d140",
+      "name": "CG_scalar_deleting_dtor_0086d140",
+      "proposed": "void * __fastcall CG_scalar_deleting_dtor_0086d140(void *component, unsigned int unused_edx, unsigned int flags)",
+      "before": "Function: CG_scalar_deleting_dtor_0086d140 at 0086d140\nSignature: undefined CG_scalar_deleting_dtor_0086d140(void)\nEntry: 0086d140\nBody: 0086d140 - 0086d15d",
+      "apply": "Successfully set prototype for function at 0086d140 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_0086d140 at 0086d140\nSignature: void * __fastcall CG_scalar_deleting_dtor_0086d140(void * component, uint unused_edx, uint flags)\nEntry: 0086d140\nBody: 0086d140 - 0086d15d",
+      "readback_verified": true
+    },
+    {
+      "address": "0086d160",
+      "name": "CG_scalar_deleting_dtor_0086d160",
+      "proposed": "void * __fastcall CG_scalar_deleting_dtor_0086d160(void *component, unsigned int unused_edx, unsigned int flags)",
+      "before": "Function: CG_scalar_deleting_dtor_0086d160 at 0086d160\nSignature: undefined CG_scalar_deleting_dtor_0086d160(void)\nEntry: 0086d160\nBody: 0086d160 - 0086d17d",
+      "apply": "Successfully set prototype for function at 0086d160 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_0086d160 at 0086d160\nSignature: void * __fastcall CG_scalar_deleting_dtor_0086d160(void * component, uint unused_edx, uint flags)\nEntry: 0086d160\nBody: 0086d160 - 0086d17d",
+      "readback_verified": true
+    },
+    {
+      "address": "00b67d40",
+      "name": "BSP_LuaObject_GetVector4OrDefault",
+      "proposed": "void * __fastcall BSP_LuaObject_GetVector4OrDefault(void *reference, unsigned int unused_edx, void *out, void *fallback)",
+      "before": "Function: FUN_00b67d40 at 00b67d40\nSignature: undefined FUN_00b67d40(void)\nEntry: 00b67d40\nBody: 00b67d40 - 00b67f05",
+      "after": "Function: BSP_LuaObject_GetVector4OrDefault at 00b67d40\nSignature: void * __fastcall BSP_LuaObject_GetVector4OrDefault(void * reference, uint unused_edx, void * out, void * fallback)\nEntry: 00b67d40\nBody: 00b67d40 - 00b67f05",
+      "rejected_prototypes": [
+        {
+          "proposed": "void * __fastcall BSP_LuaObject_GetVector4OrDefault(void *reference, unsigned int unused_edx, void *out, const void *fallback)",
+          "reason": "Bridge datatype resolver rejected const void *; use void * storage and document read-only intent."
+        }
+      ],
+      "apply": "Successfully set prototype for function at 00b67d40 with __fastcall calling convention",
+      "readback_verified": true
+    },
+    {
+      "address": "00b685c0",
+      "name": "BSP_LuaObject_ConstructStringOrDefault",
+      "proposed": "void * __fastcall BSP_LuaObject_ConstructStringOrDefault(void *reference, unsigned int unused_edx, void *out, void *fallback)",
+      "before": "Function: FUN_00b685c0 at 00b685c0\nSignature: undefined FUN_00b685c0(void)\nEntry: 00b685c0\nBody: 00b685c0 - 00b68622",
+      "apply": "Successfully set prototype for function at 00b685c0 with __fastcall calling convention",
+      "after": "Function: BSP_LuaObject_ConstructStringOrDefault at 00b685c0\nSignature: void * __fastcall BSP_LuaObject_ConstructStringOrDefault(void * reference, uint unused_edx, void * out, void * fallback)\nEntry: 00b685c0\nBody: 00b685c0 - 00b68622",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00868de0",
+        "prototype": "void __fastcall BSP_EffectShake_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00868de0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00868ec0",
+        "prototype": "void __fastcall BSP_EffectRumble_ReadLuaBase(void *component, unsigned int unused_edx, void *lua_definition)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00868ec0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00868fa0",
+        "prototype": "void __fastcall BSP_EffectConstRumble_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00868fa0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00869080",
+        "prototype": "void __fastcall BSP_EffectSlopeRumble_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00869080 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00869160",
+        "prototype": "void __fastcall BSP_EffectSquareRumble_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00869160 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "008694c0",
+        "prototype": "void __fastcall BSP_EffectSplash_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 008694c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00869fd0",
+        "prototype": "void __fastcall BSP_EffectLight_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00869fd0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086b2b0",
+        "prototype": "void __fastcall BSP_EffectWaterdrops_ReadLua(void *component, unsigned int unused_edx, void *lua_definition)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086b2b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086b7e0",
+        "prototype": "void __fastcall BSP_EffectComponent_Destruct(void *component)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086b7e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086cd40",
+        "prototype": "void __fastcall BSP_EffectWaterdrops_Destruct(void *component)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086cd40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086d0a0",
+        "prototype": "void * __fastcall CG_scalar_deleting_dtor_0086d0a0(void *component, unsigned int unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086d0a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086d0c0",
+        "prototype": "void * __fastcall CG_scalar_deleting_dtor_0086d0c0(void *component, unsigned int unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086d0c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086d0e0",
+        "prototype": "void * __fastcall CG_scalar_deleting_dtor_0086d0e0(void *component, unsigned int unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086d0e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086d100",
+        "prototype": "void * __fastcall CG_scalar_deleting_dtor_0086d100(void *component, unsigned int unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086d100 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086d120",
+        "prototype": "void * __fastcall CG_scalar_deleting_dtor_0086d120(void *component, unsigned int unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086d120 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086d140",
+        "prototype": "void * __fastcall CG_scalar_deleting_dtor_0086d140(void *component, unsigned int unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086d140 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0086d160",
+        "prototype": "void * __fastcall CG_scalar_deleting_dtor_0086d160(void *component, unsigned int unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0086d160 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b67d40",
+        "prototype": "void * __fastcall BSP_LuaObject_GetVector4OrDefault(void *reference, unsigned int unused_edx, void *out, const void *fallback)",
+        "calling_convention": "__fastcall"
+      }
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b67d40",
+        "prototype": "void * __fastcall BSP_LuaObject_GetVector4OrDefault(void *reference, unsigned int unused_edx, void *out, void *fallback)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b67d40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00b685c0",
+        "prototype": "void * __fastcall BSP_LuaObject_ConstructStringOrDefault(void *reference, unsigned int unused_edx, void *out, void *fallback)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00b685c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

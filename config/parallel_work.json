@@ -6460,6 +6460,43 @@
       "prerequisite_packets": [],
       "scope": "Actual D683B0 date route over current mount storage and established current provider selectors.",
       "evidence": "reports/native_vfs_date_route_audit.json"
+    },
+    {
+      "id": "orch4_effect_scalar_components_o",
+      "packet": "orch4_effect_scalar_components_o",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "reconstructed_build_lua_fixture_tested_pending_integration",
+      "function_addresses": [
+        "00868de0",
+        "00868ec0",
+        "00868fa0",
+        "00869080",
+        "00869160",
+        "008694c0",
+        "00869fd0",
+        "0086b2b0",
+        "0086b7e0",
+        "0086cd40",
+        "0086d0a0",
+        "0086d0c0",
+        "0086d0e0",
+        "0086d100",
+        "0086d120",
+        "0086d140",
+        "0086d160",
+        "00b67d40",
+        "00b685c0",
+        "008700e0"
+      ],
+      "code_ownership": [
+        "include/bsp/gameplay_effect_scalar_components.hpp",
+        "src/gameplay_effect_scalar_components.cpp",
+        "include/bsp/gameplay_effect_acquisition.hpp",
+        "src/gameplay_effect_acquisition.cpp"
+      ],
+      "integration_report": "reports/gameplay_effect_scalar_components.json",
+      "discovery_evidence": "docs/GAMEPLAY_EFFECT_SCALAR_COMPONENTS.md"
     }
   ],
   "snapshot_after_analysis": {
