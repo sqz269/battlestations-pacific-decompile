@@ -6,6 +6,7 @@ spot relative to the merge base (independent test cases added before the same cl
 Usage as CLI: python tools/merge_resolve.py <worktree>  -> resolves and stages what it can, reports the rest.
 """
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -53,6 +54,15 @@ def resolve(worktree, path):
         for l in ours.splitlines() + theirs.splitlines():
             if l.startswith('cmake_language(') and l not in regs:
                 regs.append(l)
+        # a target defined on both sides (add_executable/add_library with the same name) keeps the
+        # incoming definition only: two definitions make CMake refuse the configure
+        defined = {}
+        for l in regs:
+            m = re.search(r'CALL add_(?:executable|library) (\S+)', l)
+            if m:
+                defined[m.group(1)] = l  # theirs comes last in the concatenation, so it wins
+        regs = [l for l in regs if not re.search(r'CALL add_(?:executable|library) (\S+)', l)
+                or defined[re.search(r'CALL add_(?:executable|library) (\S+)', l).group(1)] == l]
         (worktree / path).write_text('\n'.join(header + sorted(regs)) + '\n', encoding='utf-8', newline='\n')
         return 'registry union'
     if path.startswith('config/names/') and path.endswith('.jsonl'):

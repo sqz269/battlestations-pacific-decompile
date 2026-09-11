@@ -84,7 +84,7 @@ is audited, but no invented constructor callback failure is injected or
 claimed as source-equivalent execution. Access violations/asynchronous faults
 and fault recovery are outside the source contract.
 
-## Validation and remaining integration
+## Validation and primary integration
 
 The ignored focused fixture rechecks 23 complete byte spans against live
 Ghidra in `C:/Users/sqz269/bsp.gpr`, program `/battlestationspacific.exe`, and
@@ -118,11 +118,13 @@ The new source and fixture compile with MSVC Win32 `/W4 /WX /O2 /Oy- /EHsc
 /fp:strict`. Link-map checks establish production providers for all four
 entries, `B483F0`, `B48CA0`, and shared free. `scripts/build.ps1` passed after
 all eight native seed checks; both existing CTests passed. No permanent tests
-were added. The worker did not edit shared CMake or metadata: the integrator
-must register `src/native_hardware_layout_fields.cpp` in `bsp_core`, introduce
-the missing `B47640` Ghidra function over its proven 23-byte leaf, and upgrade
-the native B48A00/B47D60 ledgers without treating prior shared-pointer source
-as an actual native ownership contract. The worker did not mutate Ghidra.
+were added. Primary integration registered the source in `bsp_core` and reran
+the unchanged fixture against all four providers from that library: all 6,540
+DWORDs and both exit91 terminal states matched. The linked library is archived
+with its hash. Ghidra now contains the exact 23-byte `B47640` leaf and all four
+saved names/evidence comments. B48A00/B47D60 ledger upgrades retain the prior
+shared-pointer interfaces separately. Refreshed exports and old annotations
+are recorded in the audit; the primary strict build and both CTests pass.
 
 The detailed report is `reports/native_hardware_layout_fields_audit.json`.
 This is reconstructed, strict-compiled and fixture-tested behavior on bounded

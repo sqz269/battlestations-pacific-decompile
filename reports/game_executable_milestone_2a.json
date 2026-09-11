@@ -1,0 +1,753 @@
+{
+  "packet": "game_executable_milestone_2a",
+  "owner": "agent/cc-game-vfs",
+  "milestone": "2a",
+  "addresses": {
+    "phase2_block": "0073d604..0073d899",
+    "provider_manager": "00beda60",
+    "mount_system_path": "00be1890",
+    "package_scan": "0073cb10",
+    "startup_package_scans": [
+      "0073d881",
+      "0073d888"
+    ],
+    "search_paths": "00738360",
+    "factory_tail": "0073d94f..0073d98d",
+    "phase6_parsers": "0073db41..0073db69",
+    "settings_load": "008d8190",
+    "options_path": "008d5150",
+    "window_creation": "00becee0",
+    "device_creation": "00b2aeb0"
+  },
+  "sources": [
+    "src/game_main.cpp",
+    "src/game_hosts.cpp",
+    "src/game_hosts_vfs.cpp",
+    "include/bsp/game_hosts.hpp",
+    "include/bsp/game_hosts_vfs.hpp",
+    "cmake/startup.cmake"
+  ],
+  "run": {
+    "command": "bsp_game.exe --frames 60 --log local/game_run.log --game-root \"<install>\"",
+    "game_root": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+    "mount_system_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\",
+    "window_created": true,
+    "device_created": true,
+    "device_hr": "0x00000000",
+    "back_buffer": [
+      2560,
+      1440
+    ],
+    "frames_presented": 60,
+    "loop_finished": true,
+    "exit_code": 0,
+    "window": {
+      "width": 2560,
+      "height": 1440,
+      "x": 0,
+      "y": 0,
+      "color_depth": 32
+    },
+    "device": {
+      "hr": "0x00000000",
+      "behavior_flags": "0x44",
+      "back_buffer": [
+        2560,
+        1440
+      ],
+      "windowed": true,
+      "back_buffer_format": 21,
+      "auto_depth_stencil_format": 75,
+      "presentation_interval": "0x80000000"
+    }
+  },
+  "vfs": {
+    "ready": true,
+    "mounts_created": 3,
+    "mounts_requested": 3,
+    "package_entries": 0,
+    "package_mounts": 0,
+    "cached_load": false,
+    "mounts": [
+      {
+        "system_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\",
+        "virtual_path": ".",
+        "priority": 0,
+        "ownership": 1,
+        "device_id": -1,
+        "status": "created"
+      },
+      {
+        "system_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\",
+        "virtual_path": "persistent_data",
+        "priority": 99,
+        "ownership": 1,
+        "device_id": -1,
+        "status": "created"
+      },
+      {
+        "system_path": "filestore",
+        "virtual_path": ".",
+        "priority": 300,
+        "ownership": 0,
+        "device_id": -1,
+        "status": "created"
+      }
+    ],
+    "package_scans": [
+      {
+        "pass": 1,
+        "enumerated": true,
+        "entries": 0,
+        "complete": true
+      },
+      {
+        "pass": 2,
+        "enumerated": true,
+        "entries": 0,
+        "complete": true
+      }
+    ],
+    "mpkg_archives_installed": 0,
+    "probes": [
+      {
+        "requested": "interface/_common.lua",
+        "resolved": true,
+        "resolved_as": "interface/_common.lua",
+        "opened": true,
+        "bytes": 8499
+      },
+      {
+        "requested": "lockit/englishauthentic.lng",
+        "resolved": true,
+        "resolved_as": "lockit/englishauthentic.lng",
+        "opened": true,
+        "bytes": 80
+      },
+      {
+        "requested": "effects/a_fiji_terr_atl.dds",
+        "resolved": true,
+        "resolved_as": "effects/a_fiji_terr_atl.dds",
+        "opened": true,
+        "bytes": 2796336
+      }
+    ]
+  },
+  "settings": {
+    "options_file_present": true,
+    "options_path": "C:\\Users\\sqz269\\Documents\\Battlestations-Pacific\\options.txt",
+    "language": "englishauthentic",
+    "width": 2560,
+    "height": 1440,
+    "resolution_index": 0,
+    "fullscreen": false,
+    "vsync": true,
+    "antialias": 0,
+    "shader_model": 2,
+    "recased_tokens": [
+      "Vsync -> VSync"
+    ],
+    "unknown_tokens": [
+      "HardwareReported"
+    ],
+    "adapter_resolutions": 26,
+    "max_pixel_shader_model": 3
+  },
+  "hosts": {
+    "concrete": 54,
+    "unimplemented": 31,
+    "distinct": 85,
+    "records": [
+      {
+        "method": "StartupHost::com_initialize",
+        "native_address": "008f81f8",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::com_initialize_security",
+        "native_address": "008f820a",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::game_explorer_create",
+        "native_address": "008f8245",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::com_uninitialize",
+        "native_address": "008f82cc",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::random_threads_initialize",
+        "native_address": "00bd2e20",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::allocate_thread_slot",
+        "native_address": "00bf681b",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::random_threads_register_current",
+        "native_address": "00bd2fe0",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::create_single_instance_mutex",
+        "native_address": "008f8301",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::set_thread_affinity_to_first_processor",
+        "native_address": "008f83fc",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::publish_game_resource_factory",
+        "native_address": "008f840b",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::application_construct",
+        "native_address": "00737970",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::application_initialize",
+        "native_address": "0073d410",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Phase 0 capture_module_directory",
+        "native_address": "00439040",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Phase 0 construct_allocation_stats",
+        "native_address": "00be2900",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Phase 0 construct_frame_clock_singleton",
+        "native_address": "00bedfb0",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Phase 0 install_object_handle_resolvers",
+        "native_address": "006ad0d0",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Phase 2 probe_hardware",
+        "native_address": "0073c3b0",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "Phase 2 construct_provider_manager",
+        "native_address": "00beda60",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Phase 2 install_manager_handlers",
+        "native_address": "0073d642",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Phase 2 file_store_factory",
+        "native_address": "004fc150",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Phase 2 register_provider_factory",
+        "native_address": "00be0660",
+        "implemented": true,
+        "calls": 2
+      },
+      {
+        "method": "Phase 2 mpkg_factory",
+        "native_address": "00736a90",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Phase 2 current_directory",
+        "native_address": "0073d697",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Phase 2 mount_system_path",
+        "native_address": "00be1890",
+        "implemented": true,
+        "calls": 3
+      },
+      {
+        "method": "Phase 2 mount_packages",
+        "native_address": "0073cb10",
+        "implemented": true,
+        "calls": 2
+      },
+      {
+        "method": "Phase 2 register_resource_search_paths",
+        "native_address": "00738360",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Phase 1 parse_command_line",
+        "native_address": "0073ce20",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Factory tail mpak_factory",
+        "native_address": "00736b60",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "Factory tail register_provider_factory",
+        "native_address": "00be0660",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "Factory tail pak_archive_registry",
+        "native_address": "00736c30",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "Factory tail set_manager_pak_registry",
+        "native_address": "00bd9230",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "Factory tail set_manager_cached_load",
+        "native_address": "00bd9f90",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Factory tail create_pak_registry_lock",
+        "native_address": "00bb40b0",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "Phase 6 resource_manager",
+        "native_address": "004c1400",
+        "implemented": false,
+        "calls": 2
+      },
+      {
+        "method": "Phase 6 animation_channels_parser",
+        "native_address": "00736dd0",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "Phase 6 register_type_parser",
+        "native_address": "00b80a50",
+        "implemented": false,
+        "calls": 2
+      },
+      {
+        "method": "Phase 6 bone_parser",
+        "native_address": "00736ea0",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "Phase 3 construct_win32_platform",
+        "native_address": "00becda0",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "SaveStorageHost::special_folder_path",
+        "native_address": "00beb2f3",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "SaveStorageHost::create_directory",
+        "native_address": "00beb35e",
+        "implemented": true,
+        "calls": 2
+      },
+      {
+        "method": "Phase 3 initialize_save_storage",
+        "native_address": "00beb2c0",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Phase 5 load_game_settings",
+        "native_address": "008d8190",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "PlatformWindowHost::load_arrow_cursor",
+        "native_address": "00becf0f",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "PlatformWindowHost::register_class",
+        "native_address": "00becf80",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "PlatformWindowHost::adjust_window_rect",
+        "native_address": "00becfd6",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "PlatformWindowHost::create_window",
+        "native_address": "00bed01d",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "PlatformWindowHost::set_window_long",
+        "native_address": "00bed0a4",
+        "implemented": true,
+        "calls": 2
+      },
+      {
+        "method": "PlatformWindowHost::set_window_pos",
+        "native_address": "00bed0c9",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "PlatformWindowHost::desktop_client_rect",
+        "native_address": "00bed0f3",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "PlatformWindowHost::window_color_depth",
+        "native_address": "00bed16b",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "PlatformWindowHost::show_window",
+        "native_address": "00bed19c",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Phase 3 configure_platform_window",
+        "native_address": "00becee0",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "RendererHost::direct3d_create",
+        "native_address": "00b32410",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "RendererHost::create_device",
+        "native_address": "00b2aeb0",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "Phase 4 renderer_resources",
+        "native_address": "00b14a10",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "Phase 5 input_settings",
+        "native_address": "005547d0",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "Phase 5 sound_system_initialize",
+        "native_address": "00a88770",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "Phase 6 locale_tables",
+        "native_address": "00aa09d0",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "Phase 7 gui_startup",
+        "native_address": "00aa06d0",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "Phase 8 world_effects_startup",
+        "native_address": "00af0b10",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "Phase 9 game_entry",
+        "native_address": "00740840",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::platform_run_loop_dispatch",
+        "native_address": "00bec1a0",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "PlatformLoopCallbacks::pretranslate",
+        "native_address": "00bec20a",
+        "implemented": false,
+        "calls": 8
+      },
+      {
+        "method": "ApplicationFrameHost::profiler_set_frame_slot_color",
+        "native_address": "004c1dd0",
+        "implemented": false,
+        "calls": 60
+      },
+      {
+        "method": "ApplicationFrameHost::profiler_begin_frame_slot",
+        "native_address": "00be3640",
+        "implemented": false,
+        "calls": 60
+      },
+      {
+        "method": "ApplicationFrameHost::game_state",
+        "native_address": "00e188a8+5d4",
+        "implemented": false,
+        "calls": 120
+      },
+      {
+        "method": "ApplicationFrameHost::input_action_pressed",
+        "native_address": "004c43c0",
+        "implemented": false,
+        "calls": 60
+      },
+      {
+        "method": "ApplicationFrameHost::advance_frame_clock",
+        "native_address": "00bedc30",
+        "implemented": true,
+        "calls": 60
+      },
+      {
+        "method": "ApplicationFrameHost::frame_interval",
+        "native_address": "00bee070",
+        "implemented": true,
+        "calls": 60
+      },
+      {
+        "method": "ApplicationFrameHost::game_on_move",
+        "native_address": "004e4a40",
+        "implemented": false,
+        "calls": 60
+      },
+      {
+        "method": "ApplicationFrameHost::exit_requested",
+        "native_address": "00e1ae75",
+        "implemented": true,
+        "calls": 60
+      },
+      {
+        "method": "ApplicationFrameHost::tick_vfs_providers",
+        "native_address": "00bdb0b0",
+        "implemented": false,
+        "calls": 60
+      },
+      {
+        "method": "ApplicationFrameHost::update_loading_queue",
+        "native_address": "004fde20",
+        "implemented": false,
+        "calls": 60
+      },
+      {
+        "method": "ApplicationFrameHost::profiler_end_frame_slot",
+        "native_address": "00be3660",
+        "implemented": false,
+        "calls": 60
+      },
+      {
+        "method": "ApplicationFrameHost::profiler_end_frame",
+        "native_address": "00be34d0",
+        "implemented": false,
+        "calls": 60
+      },
+      {
+        "method": "RendererHost::clear_and_present",
+        "native_address": "milestone",
+        "implemented": true,
+        "calls": 60
+      },
+      {
+        "method": "ApplicationFrameHost::request_loop_exit",
+        "native_address": "0109cf04+181",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::application_shutdown",
+        "native_address": "00737f30",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "ApplicationShutdownHost::singleton_teardown",
+        "native_address": "00737f80",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::application_destruct",
+        "native_address": "008f8444",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::destroy_singleton_lifetime_manager",
+        "native_address": "008f8449",
+        "implemented": false,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::close_mutex",
+        "native_address": "008f846e",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::random_threads_unregister_current",
+        "native_address": "00bd3050",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::release_thread_slot",
+        "native_address": "00bf65ac",
+        "implemented": true,
+        "calls": 1
+      },
+      {
+        "method": "StartupHost::random_threads_shutdown",
+        "native_address": "00bd30d0",
+        "implemented": true,
+        "calls": 1
+      }
+    ]
+  },
+  "contract": {
+    "phase2_concrete": [
+      "00beda60 provider manager over bsp::VfsProviderManager / bsp::VfsProviderFactories",
+      "0073d697 GetCurrentDirectoryA system-path buffer",
+      "00be1890 three startup mounts with kVfsStartupMounts priorities and ownership bytes",
+      "0073cb10 two package scans through scan_packages_0073cb10_fragment",
+      "00738360 resource search-path registration",
+      "00bd9f90 cachedload flag carried and reported"
+    ],
+    "phase2_unimplemented": [
+      "0073c3b0 hardware probe",
+      "00736b60 mpak factory and its 00be0660 registration",
+      "00736c30 pak registry, 00bd9230 manager store, 00bb40b0 lock",
+      "004c1400 resource manager, 00736dd0 and 00736ea0 parsers through 00b80a50"
+    ],
+    "phase5": {
+      "loader": "load_game_settings_008d8190 over a concrete GameSettingsHost",
+      "options_file_read_through": "bsp::PhysicalFile, no write path is used",
+      "applied_to_window_creation_00becee0": {
+        "arg3_fullscreen": "settings +1e",
+        "arg4_vsync": "settings +60 (not a colour-depth selector)",
+        "arg7_width": "settings +14",
+        "arg8_height": "settings +18",
+        "arg9_antialias": "settings +58"
+      },
+      "device_creation_00b2aeb0": "vsync and antialias reach the renderer init request but d3d9_create_device_prefix_00b2aeb0 models neither PresentationInterval nor MultiSampleType, so they stop there"
+    },
+    "cli": {
+      "--game-root": "SetCurrentDirectoryA before Init so 0073d697 stays the recovered call",
+      "--vfs-probe": "repeatable; resolve through 00bdf4c0 and open through 00bdf310; a probe that reads nothing makes the process exit 3"
+    }
+  },
+  "ordering_corrections_to_milestone_1": [
+    "0073c3b0 is called at 0073d610, inside the phase-2 first-time gate, not before it",
+    "0073ce20 is parsed at 0073d94a, after the whole phase-2 block, so cachedload cannot influence a phase-2 mount",
+    "the factory tail 0073d94f-0073d98d and phase 6 0073db41-0073db69 follow that parse"
+  ],
+  "milestone_additions": [
+    {
+      "what": "supported resolution table DAT_00f8895c",
+      "substitute": "IDirect3D9::EnumAdapterModes on D3DFMT_X8R8G8B8, distinct sizes",
+      "why": "assigned at 008d81bf from renderer+1Ch (TRIV_body_00b1fff0); the renderer resource phase 00b14a10 that fills it is unimplemented, and an empty table would make 008d8190 reject every parsed resolution and fall back to 640x480",
+      "recovered": false
+    },
+    {
+      "what": "shader-model ceiling TRIV_body_00b200b0",
+      "substitute": "D3DSHADER_VERSION_MAJOR of D3DCAPS9::PixelShaderVersion",
+      "why": "same unreconstructed renderer source",
+      "recovered": false
+    },
+    {
+      "what": "antialias level table DAT_00f88968",
+      "substitute": "left empty, the no-snapping branch of the loader tail",
+      "why": "an invented list would silently move the sample count; empty preserves the file's Antialias value",
+      "recovered": false
+    }
+  ],
+  "defects_found": [
+    {
+      "where": "src/app_bootstrap.cpp apply_options_token",
+      "owner": "another packet; not changed here",
+      "finding": "008d8190 compares option token names through FUN_00467cc0, which calls BSP_CString_CompareInsensitive, so the comparison is case-insensitive. The reconstruction uses ==. The game's own writer 008d6170 emits 'Vsync ' while the reader literal at 00d15ef4 is 'VSync', so a file the game wrote does not round-trip.",
+      "workaround": "GameSettingsBinding canonicalizes recognized token spellings before handing the text to the loader and logs each recase; the validation run recased exactly one token."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release Win32, /W4 /WX /fp:strict, no warnings",
+    "tests": "ctest reconstructed_math 1/1 passed; no test cases added",
+    "frames_run_exit_code": 0,
+    "vfs_probe_present": {
+      "path": "fonts/fonts.lua",
+      "bytes": 1115,
+      "exit_code": 0
+    },
+    "vfs_probe_absent": {
+      "path": "does/not/exist.lua",
+      "exit_code": 3
+    },
+    "scope": "runtime-validated, not game-validated; no .mpkg archive was mounted because the installation used has loose data, so the MPKG path stays unexercised here"
+  }
+}

@@ -274,3 +274,7 @@ anything first.
 ## Correction from docs/UNIT_INSTANCE_UPDATE.md
 
 Unit instances do not go through `00481640`: it dispatches `00487270`, a `std::list` walk calling vtable slot 4, and in a unit vtable that slot is `0042b970`, a this-returning accessor with `RET 0`, so no unit is on that list. Units are updated by `BSP_Game_UpdateInMissionSubsystems` (`004c40a0`) through `world->vtable[0Ch]` = `00904bf0` `BSP_World_UpdateEntities`, which walks the world node's child chain from `[world+4]` through `entity+38h`, gates on the byte at `entity+5Ch`, and calls `vtable[0DCh](scaledDelta)`; for `MDestroyer` (vtable `00cfc3d0`) that slot is the vehicle base update `008255b0`.
+
+## Correction from docs/MISSION_EVENTS_UPDATE.md
+
+The object the world tick runs at `game+21E0h` through `00987590` is the WarningManager, the in-mission warning and radio-chatter director (class name from its own literals), not an objective or win/lose director; mission completion and failure are decided elsewhere (segments 61 and 62, proposed as a follow-up). In the event record, `event+10h` receives the clock (a start time) and the virtual at `+1Ch` supplies the duration, the reverse of the reading above; the inequality is numerically identical, so `src/world_entities.cpp` still computes the right result.

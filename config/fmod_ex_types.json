@@ -1,0 +1,3300 @@
+{
+ "sdk": {
+  "product": "FMOD Ex Programmers API",
+  "version": "4.24.16",
+  "fmod_version": {
+   "fmod.h": "0x00042416",
+   "fmod_event.h": "0x00042416"
+  },
+  "source": "archive.org item fmodapi44452nacl.tar, file fmodapi42416win32-installer.exe"
+ },
+ "game": {
+  "dll_version": "4.18.4",
+  "note": "fmodex.dll and fmod_event.dll version resources; the runtime reports 0x41804"
+ },
+ "evidence": {
+  "result_table": {
+   "jump_sites": [
+    "00a79f59",
+    "00a81d79",
+    "00a85d29",
+    "00a87d19",
+    "00a88c59",
+    "00a89f09"
+   ],
+   "table": "00a7a17c",
+   "cases": 89,
+   "unmatched": [],
+   "prefix_matched": [
+    [
+     62,
+     "FMOD_ERR_OUTPUT_NOHARDWARE",
+     "FMOD_HARDWARE was specified but the sound card does not have the resources nescessary to play it. "
+    ],
+    [
+     85,
+     "FMOD_ERR_EVENT_MAXSTREAMS",
+     "Event failed because 'Max streams' was hit when FMOD_INIT_FAIL_ON_MAXSTREAMS was specified. "
+    ]
+   ],
+   "sdk_codes_absent_in_game": [
+    "FMOD_ERR_INVALID_POSITION",
+    "FMOD_ERR_PRELOADED",
+    "FMOD_ERR_EVENT_NEEDSSIMPLE",
+    "FMOD_ERR_EVENT_GUIDCONFLICT",
+    "FMOD_ERR_EVENT_ALREADY_LOADED",
+    "FMOD_ERR_MUSIC_UNINITIALIZED"
+   ]
+  },
+  "struct_sizes": {
+   "FMOD_ADVANCEDSETTINGS": "game zeroes a 44h block and stores cbsize=44h (docs/SOUND_CONFIGURATION.md step 4)",
+   "FMOD_CREATESOUNDEXINFO": "game memsets 6Ch and stores cbsize=6Ch before System::createSound in FUN_00a823f0",
+   "FMOD_EVENT_INFO": "SDK 4.24.16 size; revision history records no member change after 4.13.00 (provisional for 4.18)"
+  }
+ },
+ "enums": {
+  "FMOD_RESULT": [
+   [
+    "FMOD_OK",
+    0
+   ],
+   [
+    "FMOD_ERR_ALREADYLOCKED",
+    1
+   ],
+   [
+    "FMOD_ERR_BADCOMMAND",
+    2
+   ],
+   [
+    "FMOD_ERR_CDDA_DRIVERS",
+    3
+   ],
+   [
+    "FMOD_ERR_CDDA_INIT",
+    4
+   ],
+   [
+    "FMOD_ERR_CDDA_INVALID_DEVICE",
+    5
+   ],
+   [
+    "FMOD_ERR_CDDA_NOAUDIO",
+    6
+   ],
+   [
+    "FMOD_ERR_CDDA_NODEVICES",
+    7
+   ],
+   [
+    "FMOD_ERR_CDDA_NODISC",
+    8
+   ],
+   [
+    "FMOD_ERR_CDDA_READ",
+    9
+   ],
+   [
+    "FMOD_ERR_CHANNEL_ALLOC",
+    10
+   ],
+   [
+    "FMOD_ERR_CHANNEL_STOLEN",
+    11
+   ],
+   [
+    "FMOD_ERR_COM",
+    12
+   ],
+   [
+    "FMOD_ERR_DMA",
+    13
+   ],
+   [
+    "FMOD_ERR_DSP_CONNECTION",
+    14
+   ],
+   [
+    "FMOD_ERR_DSP_FORMAT",
+    15
+   ],
+   [
+    "FMOD_ERR_DSP_NOTFOUND",
+    16
+   ],
+   [
+    "FMOD_ERR_DSP_RUNNING",
+    17
+   ],
+   [
+    "FMOD_ERR_DSP_TOOMANYCONNECTIONS",
+    18
+   ],
+   [
+    "FMOD_ERR_FILE_BAD",
+    19
+   ],
+   [
+    "FMOD_ERR_FILE_COULDNOTSEEK",
+    20
+   ],
+   [
+    "FMOD_ERR_FILE_DISKEJECTED",
+    21
+   ],
+   [
+    "FMOD_ERR_FILE_EOF",
+    22
+   ],
+   [
+    "FMOD_ERR_FILE_NOTFOUND",
+    23
+   ],
+   [
+    "FMOD_ERR_FILE_UNWANTED",
+    24
+   ],
+   [
+    "FMOD_ERR_FORMAT",
+    25
+   ],
+   [
+    "FMOD_ERR_HTTP",
+    26
+   ],
+   [
+    "FMOD_ERR_HTTP_ACCESS",
+    27
+   ],
+   [
+    "FMOD_ERR_HTTP_PROXY_AUTH",
+    28
+   ],
+   [
+    "FMOD_ERR_HTTP_SERVER_ERROR",
+    29
+   ],
+   [
+    "FMOD_ERR_HTTP_TIMEOUT",
+    30
+   ],
+   [
+    "FMOD_ERR_INITIALIZATION",
+    31
+   ],
+   [
+    "FMOD_ERR_INITIALIZED",
+    32
+   ],
+   [
+    "FMOD_ERR_INTERNAL",
+    33
+   ],
+   [
+    "FMOD_ERR_INVALID_ADDRESS",
+    34
+   ],
+   [
+    "FMOD_ERR_INVALID_FLOAT",
+    35
+   ],
+   [
+    "FMOD_ERR_INVALID_HANDLE",
+    36
+   ],
+   [
+    "FMOD_ERR_INVALID_PARAM",
+    37
+   ],
+   [
+    "FMOD_ERR_INVALID_SPEAKER",
+    38
+   ],
+   [
+    "FMOD_ERR_INVALID_SYNCPOINT",
+    39
+   ],
+   [
+    "FMOD_ERR_INVALID_VECTOR",
+    40
+   ],
+   [
+    "FMOD_ERR_IRX",
+    41
+   ],
+   [
+    "FMOD_ERR_MAXAUDIBLE",
+    42
+   ],
+   [
+    "FMOD_ERR_MEMORY",
+    43
+   ],
+   [
+    "FMOD_ERR_MEMORY_CANTPOINT",
+    44
+   ],
+   [
+    "FMOD_ERR_MEMORY_IOP",
+    45
+   ],
+   [
+    "FMOD_ERR_MEMORY_SRAM",
+    46
+   ],
+   [
+    "FMOD_ERR_NEEDS2D",
+    47
+   ],
+   [
+    "FMOD_ERR_NEEDS3D",
+    48
+   ],
+   [
+    "FMOD_ERR_NEEDSHARDWARE",
+    49
+   ],
+   [
+    "FMOD_ERR_NEEDSSOFTWARE",
+    50
+   ],
+   [
+    "FMOD_ERR_NET_CONNECT",
+    51
+   ],
+   [
+    "FMOD_ERR_NET_SOCKET_ERROR",
+    52
+   ],
+   [
+    "FMOD_ERR_NET_URL",
+    53
+   ],
+   [
+    "FMOD_ERR_NET_WOULD_BLOCK",
+    54
+   ],
+   [
+    "FMOD_ERR_NOTREADY",
+    55
+   ],
+   [
+    "FMOD_ERR_OUTPUT_ALLOCATED",
+    56
+   ],
+   [
+    "FMOD_ERR_OUTPUT_CREATEBUFFER",
+    57
+   ],
+   [
+    "FMOD_ERR_OUTPUT_DRIVERCALL",
+    58
+   ],
+   [
+    "FMOD_ERR_OUTPUT_ENUMERATION",
+    59
+   ],
+   [
+    "FMOD_ERR_OUTPUT_FORMAT",
+    60
+   ],
+   [
+    "FMOD_ERR_OUTPUT_INIT",
+    61
+   ],
+   [
+    "FMOD_ERR_OUTPUT_NOHARDWARE",
+    62
+   ],
+   [
+    "FMOD_ERR_OUTPUT_NOSOFTWARE",
+    63
+   ],
+   [
+    "FMOD_ERR_PAN",
+    64
+   ],
+   [
+    "FMOD_ERR_PLUGIN",
+    65
+   ],
+   [
+    "FMOD_ERR_PLUGIN_INSTANCES",
+    66
+   ],
+   [
+    "FMOD_ERR_PLUGIN_MISSING",
+    67
+   ],
+   [
+    "FMOD_ERR_PLUGIN_RESOURCE",
+    68
+   ],
+   [
+    "FMOD_ERR_RECORD",
+    69
+   ],
+   [
+    "FMOD_ERR_REVERB_INSTANCE",
+    70
+   ],
+   [
+    "FMOD_ERR_SUBSOUND_ALLOCATED",
+    71
+   ],
+   [
+    "FMOD_ERR_SUBSOUND_CANTMOVE",
+    72
+   ],
+   [
+    "FMOD_ERR_SUBSOUND_MODE",
+    73
+   ],
+   [
+    "FMOD_ERR_SUBSOUNDS",
+    74
+   ],
+   [
+    "FMOD_ERR_TAGNOTFOUND",
+    75
+   ],
+   [
+    "FMOD_ERR_TOOMANYCHANNELS",
+    76
+   ],
+   [
+    "FMOD_ERR_UNIMPLEMENTED",
+    77
+   ],
+   [
+    "FMOD_ERR_UNINITIALIZED",
+    78
+   ],
+   [
+    "FMOD_ERR_UNSUPPORTED",
+    79
+   ],
+   [
+    "FMOD_ERR_UPDATE",
+    80
+   ],
+   [
+    "FMOD_ERR_VERSION",
+    81
+   ],
+   [
+    "FMOD_ERR_EVENT_FAILED",
+    82
+   ],
+   [
+    "FMOD_ERR_EVENT_INFOONLY",
+    83
+   ],
+   [
+    "FMOD_ERR_EVENT_INTERNAL",
+    84
+   ],
+   [
+    "FMOD_ERR_EVENT_MAXSTREAMS",
+    85
+   ],
+   [
+    "FMOD_ERR_EVENT_MISMATCH",
+    86
+   ],
+   [
+    "FMOD_ERR_EVENT_NAMECONFLICT",
+    87
+   ],
+   [
+    "FMOD_ERR_EVENT_NOTFOUND",
+    88
+   ],
+   [
+    "FMOD_RESULT_FORCEINT",
+    65536
+   ]
+  ],
+  "FMOD_OUTPUTTYPE": [
+   [
+    "FMOD_OUTPUTTYPE_AUTODETECT",
+    0
+   ],
+   [
+    "FMOD_OUTPUTTYPE_UNKNOWN",
+    1
+   ],
+   [
+    "FMOD_OUTPUTTYPE_NOSOUND",
+    2
+   ],
+   [
+    "FMOD_OUTPUTTYPE_WAVWRITER",
+    3
+   ],
+   [
+    "FMOD_OUTPUTTYPE_NOSOUND_NRT",
+    4
+   ],
+   [
+    "FMOD_OUTPUTTYPE_WAVWRITER_NRT",
+    5
+   ],
+   [
+    "FMOD_OUTPUTTYPE_DSOUND",
+    6
+   ],
+   [
+    "FMOD_OUTPUTTYPE_WINMM",
+    7
+   ],
+   [
+    "FMOD_OUTPUTTYPE_OPENAL",
+    8
+   ],
+   [
+    "FMOD_OUTPUTTYPE_WASAPI",
+    9
+   ],
+   [
+    "FMOD_OUTPUTTYPE_ASIO",
+    10
+   ],
+   [
+    "FMOD_OUTPUTTYPE_OSS",
+    11
+   ],
+   [
+    "FMOD_OUTPUTTYPE_ALSA",
+    12
+   ],
+   [
+    "FMOD_OUTPUTTYPE_ESD",
+    13
+   ],
+   [
+    "FMOD_OUTPUTTYPE_SOUNDMANAGER",
+    14
+   ],
+   [
+    "FMOD_OUTPUTTYPE_COREAUDIO",
+    15
+   ],
+   [
+    "FMOD_OUTPUTTYPE_XBOX",
+    16
+   ],
+   [
+    "FMOD_OUTPUTTYPE_PS2",
+    17
+   ],
+   [
+    "FMOD_OUTPUTTYPE_PS3",
+    18
+   ],
+   [
+    "FMOD_OUTPUTTYPE_GC",
+    19
+   ],
+   [
+    "FMOD_OUTPUTTYPE_XBOX360",
+    20
+   ],
+   [
+    "FMOD_OUTPUTTYPE_PSP",
+    21
+   ],
+   [
+    "FMOD_OUTPUTTYPE_WII",
+    22
+   ],
+   [
+    "FMOD_OUTPUTTYPE_MAX",
+    23
+   ],
+   [
+    "FMOD_OUTPUTTYPE_FORCEINT",
+    65536
+   ]
+  ],
+  "FMOD_SPEAKERMODE": [
+   [
+    "FMOD_SPEAKERMODE_RAW",
+    0
+   ],
+   [
+    "FMOD_SPEAKERMODE_MONO",
+    1
+   ],
+   [
+    "FMOD_SPEAKERMODE_STEREO",
+    2
+   ],
+   [
+    "FMOD_SPEAKERMODE_QUAD",
+    3
+   ],
+   [
+    "FMOD_SPEAKERMODE_SURROUND",
+    4
+   ],
+   [
+    "FMOD_SPEAKERMODE_5POINT1",
+    5
+   ],
+   [
+    "FMOD_SPEAKERMODE_7POINT1",
+    6
+   ],
+   [
+    "FMOD_SPEAKERMODE_PROLOGIC",
+    7
+   ],
+   [
+    "FMOD_SPEAKERMODE_MAX",
+    8
+   ],
+   [
+    "FMOD_SPEAKERMODE_FORCEINT",
+    65536
+   ]
+  ],
+  "FMOD_SPEAKER": [
+   [
+    "FMOD_SPEAKER_FRONT_LEFT",
+    0
+   ],
+   [
+    "FMOD_SPEAKER_FRONT_RIGHT",
+    1
+   ],
+   [
+    "FMOD_SPEAKER_FRONT_CENTER",
+    2
+   ],
+   [
+    "FMOD_SPEAKER_LOW_FREQUENCY",
+    3
+   ],
+   [
+    "FMOD_SPEAKER_BACK_LEFT",
+    4
+   ],
+   [
+    "FMOD_SPEAKER_BACK_RIGHT",
+    5
+   ],
+   [
+    "FMOD_SPEAKER_SIDE_LEFT",
+    6
+   ],
+   [
+    "FMOD_SPEAKER_SIDE_RIGHT",
+    7
+   ],
+   [
+    "FMOD_SPEAKER_MAX",
+    8
+   ],
+   [
+    "FMOD_SPEAKER_MONO",
+    0
+   ],
+   [
+    "FMOD_SPEAKER_NULL",
+    8
+   ],
+   [
+    "FMOD_SPEAKER_SBL",
+    6
+   ],
+   [
+    "FMOD_SPEAKER_SBR",
+    7
+   ],
+   [
+    "FMOD_SPEAKER_FORCEINT",
+    65536
+   ]
+  ],
+  "FMOD_SOUND_TYPE": [
+   [
+    "FMOD_SOUND_TYPE_UNKNOWN",
+    0
+   ],
+   [
+    "FMOD_SOUND_TYPE_AAC",
+    1
+   ],
+   [
+    "FMOD_SOUND_TYPE_AIFF",
+    2
+   ],
+   [
+    "FMOD_SOUND_TYPE_ASF",
+    3
+   ],
+   [
+    "FMOD_SOUND_TYPE_AT3",
+    4
+   ],
+   [
+    "FMOD_SOUND_TYPE_CDDA",
+    5
+   ],
+   [
+    "FMOD_SOUND_TYPE_DLS",
+    6
+   ],
+   [
+    "FMOD_SOUND_TYPE_FLAC",
+    7
+   ],
+   [
+    "FMOD_SOUND_TYPE_FSB",
+    8
+   ],
+   [
+    "FMOD_SOUND_TYPE_GCADPCM",
+    9
+   ],
+   [
+    "FMOD_SOUND_TYPE_IT",
+    10
+   ],
+   [
+    "FMOD_SOUND_TYPE_MIDI",
+    11
+   ],
+   [
+    "FMOD_SOUND_TYPE_MOD",
+    12
+   ],
+   [
+    "FMOD_SOUND_TYPE_MPEG",
+    13
+   ],
+   [
+    "FMOD_SOUND_TYPE_OGGVORBIS",
+    14
+   ],
+   [
+    "FMOD_SOUND_TYPE_PLAYLIST",
+    15
+   ],
+   [
+    "FMOD_SOUND_TYPE_RAW",
+    16
+   ],
+   [
+    "FMOD_SOUND_TYPE_S3M",
+    17
+   ],
+   [
+    "FMOD_SOUND_TYPE_SF2",
+    18
+   ],
+   [
+    "FMOD_SOUND_TYPE_USER",
+    19
+   ],
+   [
+    "FMOD_SOUND_TYPE_WAV",
+    20
+   ],
+   [
+    "FMOD_SOUND_TYPE_XM",
+    21
+   ],
+   [
+    "FMOD_SOUND_TYPE_XMA",
+    22
+   ],
+   [
+    "FMOD_SOUND_TYPE_VAG",
+    23
+   ],
+   [
+    "FMOD_SOUND_TYPE_MAX",
+    24
+   ],
+   [
+    "FMOD_SOUND_TYPE_FORCEINT",
+    65536
+   ]
+  ],
+  "FMOD_SOUND_FORMAT": [
+   [
+    "FMOD_SOUND_FORMAT_NONE",
+    0
+   ],
+   [
+    "FMOD_SOUND_FORMAT_PCM8",
+    1
+   ],
+   [
+    "FMOD_SOUND_FORMAT_PCM16",
+    2
+   ],
+   [
+    "FMOD_SOUND_FORMAT_PCM24",
+    3
+   ],
+   [
+    "FMOD_SOUND_FORMAT_PCM32",
+    4
+   ],
+   [
+    "FMOD_SOUND_FORMAT_PCMFLOAT",
+    5
+   ],
+   [
+    "FMOD_SOUND_FORMAT_GCADPCM",
+    6
+   ],
+   [
+    "FMOD_SOUND_FORMAT_IMAADPCM",
+    7
+   ],
+   [
+    "FMOD_SOUND_FORMAT_VAG",
+    8
+   ],
+   [
+    "FMOD_SOUND_FORMAT_XMA",
+    9
+   ],
+   [
+    "FMOD_SOUND_FORMAT_MPEG",
+    10
+   ],
+   [
+    "FMOD_SOUND_FORMAT_MAX",
+    11
+   ],
+   [
+    "FMOD_SOUND_FORMAT_FORCEINT",
+    65536
+   ]
+  ],
+  "FMOD_OPENSTATE": [
+   [
+    "FMOD_OPENSTATE_READY",
+    0
+   ],
+   [
+    "FMOD_OPENSTATE_LOADING",
+    1
+   ],
+   [
+    "FMOD_OPENSTATE_ERROR",
+    2
+   ],
+   [
+    "FMOD_OPENSTATE_CONNECTING",
+    3
+   ],
+   [
+    "FMOD_OPENSTATE_BUFFERING",
+    4
+   ],
+   [
+    "FMOD_OPENSTATE_SEEKING",
+    5
+   ],
+   [
+    "FMOD_OPENSTATE_STREAMING",
+    6
+   ],
+   [
+    "FMOD_OPENSTATE_SETPOSITION",
+    7
+   ],
+   [
+    "FMOD_OPENSTATE_MAX",
+    8
+   ],
+   [
+    "FMOD_OPENSTATE_FORCEINT",
+    65536
+   ]
+  ],
+  "FMOD_CHANNELINDEX": [
+   [
+    "FMOD_CHANNEL_FREE",
+    -1
+   ],
+   [
+    "FMOD_CHANNEL_REUSE",
+    -2
+   ]
+  ],
+  "FMOD_EVENT_PITCHUNITS": [
+   [
+    "FMOD_EVENT_PITCHUNITS_RAW",
+    0
+   ],
+   [
+    "FMOD_EVENT_PITCHUNITS_OCTAVES",
+    1
+   ],
+   [
+    "FMOD_EVENT_PITCHUNITS_SEMITONES",
+    2
+   ],
+   [
+    "FMOD_EVENT_PITCHUNITS_TONES",
+    3
+   ]
+  ],
+  "FMOD_SPEAKERMAPTYPE": [
+   [
+    "FMOD_SPEAKERMAPTYPE_DEFAULT",
+    0
+   ],
+   [
+    "FMOD_SPEAKERMAPTYPE_ALLMONO",
+    1
+   ],
+   [
+    "FMOD_SPEAKERMAPTYPE_ALLSTEREO",
+    2
+   ],
+   [
+    "FMOD_SPEAKERMAPTYPE_51_PROTOOLS",
+    3
+   ]
+  ]
+ },
+ "flags": {
+  "FMOD_MODE": [
+   [
+    "FMOD_DEFAULT",
+    0
+   ],
+   [
+    "FMOD_LOOP_OFF",
+    1
+   ],
+   [
+    "FMOD_LOOP_NORMAL",
+    2
+   ],
+   [
+    "FMOD_LOOP_BIDI",
+    4
+   ],
+   [
+    "FMOD_2D",
+    8
+   ],
+   [
+    "FMOD_3D",
+    16
+   ],
+   [
+    "FMOD_HARDWARE",
+    32
+   ],
+   [
+    "FMOD_SOFTWARE",
+    64
+   ],
+   [
+    "FMOD_CREATESTREAM",
+    128
+   ],
+   [
+    "FMOD_CREATESAMPLE",
+    256
+   ],
+   [
+    "FMOD_CREATECOMPRESSEDSAMPLE",
+    512
+   ],
+   [
+    "FMOD_OPENUSER",
+    1024
+   ],
+   [
+    "FMOD_OPENMEMORY",
+    2048
+   ],
+   [
+    "FMOD_OPENMEMORY_POINT",
+    268435456
+   ],
+   [
+    "FMOD_OPENRAW",
+    4096
+   ],
+   [
+    "FMOD_OPENONLY",
+    8192
+   ],
+   [
+    "FMOD_ACCURATETIME",
+    16384
+   ],
+   [
+    "FMOD_MPEGSEARCH",
+    32768
+   ],
+   [
+    "FMOD_NONBLOCKING",
+    65536
+   ],
+   [
+    "FMOD_UNIQUE",
+    131072
+   ],
+   [
+    "FMOD_3D_HEADRELATIVE",
+    262144
+   ],
+   [
+    "FMOD_3D_WORLDRELATIVE",
+    524288
+   ],
+   [
+    "FMOD_3D_LOGROLLOFF",
+    1048576
+   ],
+   [
+    "FMOD_3D_LINEARROLLOFF",
+    2097152
+   ],
+   [
+    "FMOD_3D_CUSTOMROLLOFF",
+    67108864
+   ],
+   [
+    "FMOD_3D_IGNOREGEOMETRY",
+    1073741824
+   ],
+   [
+    "FMOD_CDDA_FORCEASPI",
+    4194304
+   ],
+   [
+    "FMOD_CDDA_JITTERCORRECT",
+    8388608
+   ],
+   [
+    "FMOD_UNICODE",
+    16777216
+   ],
+   [
+    "FMOD_IGNORETAGS",
+    33554432
+   ],
+   [
+    "FMOD_LOWMEM",
+    134217728
+   ],
+   [
+    "FMOD_LOADSECONDARYRAM",
+    536870912
+   ],
+   [
+    "FMOD_VIRTUAL_PLAYFROMSTART",
+    2147483648
+   ]
+  ],
+  "FMOD_INITFLAGS": [
+   [
+    "FMOD_INIT_NORMAL",
+    0
+   ],
+   [
+    "FMOD_INIT_STREAM_FROM_UPDATE",
+    1
+   ],
+   [
+    "FMOD_INIT_3D_RIGHTHANDED",
+    2
+   ],
+   [
+    "FMOD_INIT_SOFTWARE_DISABLE",
+    4
+   ],
+   [
+    "FMOD_INIT_SOFTWARE_OCCLUSION",
+    8
+   ],
+   [
+    "FMOD_INIT_SOFTWARE_HRTF",
+    16
+   ],
+   [
+    "FMOD_INIT_ENABLE_PROFILE",
+    32
+   ],
+   [
+    "FMOD_INIT_VOL0_BECOMES_VIRTUAL",
+    128
+   ],
+   [
+    "FMOD_INIT_WASAPI_EXCLUSIVE",
+    256
+   ],
+   [
+    "FMOD_INIT_DSOUND_HRTFNONE",
+    512
+   ],
+   [
+    "FMOD_INIT_DSOUND_HRTFLIGHT",
+    1024
+   ],
+   [
+    "FMOD_INIT_DSOUND_HRTFFULL",
+    2048
+   ],
+   [
+    "FMOD_INIT_PS2_DISABLECORE0REVERB",
+    65536
+   ],
+   [
+    "FMOD_INIT_PS2_DISABLECORE1REVERB",
+    131072
+   ],
+   [
+    "FMOD_INIT_PS2_DONTUSESCRATCHPAD",
+    262144
+   ],
+   [
+    "FMOD_INIT_PS2_SWAPDMACHANNELS",
+    524288
+   ],
+   [
+    "FMOD_INIT_PS3_PREFERDTS",
+    8388608
+   ],
+   [
+    "FMOD_INIT_PS3_FORCE2CHLPCM",
+    16777216
+   ],
+   [
+    "FMOD_INIT_XBOX_REMOVEHEADROOM",
+    1048576
+   ],
+   [
+    "FMOD_INIT_SYSTEM_MUSICMUTENOTPAUSE",
+    2097152
+   ],
+   [
+    "FMOD_INIT_SYNCMIXERWITHUPDATE",
+    4194304
+   ],
+   [
+    "FMOD_INIT_NEURALTHX",
+    33554432
+   ],
+   [
+    "FMOD_INIT_GEOMETRY_USECLOSEST",
+    67108864
+   ]
+  ],
+  "FMOD_TIMEUNIT": [
+   [
+    "FMOD_TIMEUNIT_MS",
+    1
+   ],
+   [
+    "FMOD_TIMEUNIT_PCM",
+    2
+   ],
+   [
+    "FMOD_TIMEUNIT_PCMBYTES",
+    4
+   ],
+   [
+    "FMOD_TIMEUNIT_RAWBYTES",
+    8
+   ],
+   [
+    "FMOD_TIMEUNIT_MODORDER",
+    256
+   ],
+   [
+    "FMOD_TIMEUNIT_MODROW",
+    512
+   ],
+   [
+    "FMOD_TIMEUNIT_MODPATTERN",
+    1024
+   ],
+   [
+    "FMOD_TIMEUNIT_SENTENCE_MS",
+    65536
+   ],
+   [
+    "FMOD_TIMEUNIT_SENTENCE_PCM",
+    131072
+   ],
+   [
+    "FMOD_TIMEUNIT_SENTENCE_PCMBYTES",
+    262144
+   ],
+   [
+    "FMOD_TIMEUNIT_SENTENCE",
+    524288
+   ],
+   [
+    "FMOD_TIMEUNIT_SENTENCE_SUBSOUND",
+    1048576
+   ],
+   [
+    "FMOD_TIMEUNIT_BUFFERED",
+    268435456
+   ]
+  ],
+  "FMOD_CAPS": [
+   [
+    "FMOD_CAPS_NONE",
+    0
+   ],
+   [
+    "FMOD_CAPS_HARDWARE",
+    1
+   ],
+   [
+    "FMOD_CAPS_HARDWARE_EMULATED",
+    2
+   ],
+   [
+    "FMOD_CAPS_OUTPUT_MULTICHANNEL",
+    4
+   ],
+   [
+    "FMOD_CAPS_OUTPUT_FORMAT_PCM8",
+    8
+   ],
+   [
+    "FMOD_CAPS_OUTPUT_FORMAT_PCM16",
+    16
+   ],
+   [
+    "FMOD_CAPS_OUTPUT_FORMAT_PCM24",
+    32
+   ],
+   [
+    "FMOD_CAPS_OUTPUT_FORMAT_PCM32",
+    64
+   ],
+   [
+    "FMOD_CAPS_OUTPUT_FORMAT_PCMFLOAT",
+    128
+   ],
+   [
+    "FMOD_CAPS_REVERB_EAX2",
+    256
+   ],
+   [
+    "FMOD_CAPS_REVERB_EAX3",
+    512
+   ],
+   [
+    "FMOD_CAPS_REVERB_EAX4",
+    1024
+   ],
+   [
+    "FMOD_CAPS_REVERB_EAX5",
+    2048
+   ],
+   [
+    "FMOD_CAPS_REVERB_I3DL2",
+    4096
+   ],
+   [
+    "FMOD_CAPS_REVERB_LIMITED",
+    8192
+   ]
+  ],
+  "FMOD_EVENT_MODE": [
+   [
+    "FMOD_EVENT_DEFAULT",
+    0
+   ],
+   [
+    "FMOD_EVENT_NONBLOCKING",
+    1
+   ],
+   [
+    "FMOD_EVENT_ERROR_ON_DISKACCESS",
+    2
+   ],
+   [
+    "FMOD_EVENT_INFOONLY",
+    4
+   ],
+   [
+    "FMOD_EVENT_USERDSP",
+    8
+   ]
+  ],
+  "FMOD_EVENT_STATE": [
+   [
+    "FMOD_EVENT_STATE_READY",
+    1
+   ],
+   [
+    "FMOD_EVENT_STATE_LOADING",
+    2
+   ],
+   [
+    "FMOD_EVENT_STATE_ERROR",
+    4
+   ],
+   [
+    "FMOD_EVENT_STATE_PLAYING",
+    8
+   ],
+   [
+    "FMOD_EVENT_STATE_CHANNELSACTIVE",
+    16
+   ],
+   [
+    "FMOD_EVENT_STATE_INFOONLY",
+    32
+   ],
+   [
+    "FMOD_EVENT_STATE_STARVING",
+    64
+   ]
+  ],
+  "FMOD_EVENT_INITFLAGS": [
+   [
+    "FMOD_EVENT_INIT_NORMAL",
+    0
+   ],
+   [
+    "FMOD_EVENT_INIT_USER_ASSETMANAGER",
+    1
+   ],
+   [
+    "FMOD_EVENT_INIT_FAIL_ON_MAXSTREAMS",
+    2
+   ],
+   [
+    "FMOD_EVENT_INIT_DONTUSENAMES",
+    4
+   ],
+   [
+    "FMOD_EVENT_INIT_UPPERCASE_FILENAMES",
+    8
+   ],
+   [
+    "FMOD_EVENT_INIT_SEARCH_PLUGINS",
+    16
+   ],
+   [
+    "FMOD_EVENT_INIT_USE_GUIDS",
+    32
+   ],
+   [
+    "FMOD_EVENT_INIT_RESETPARAMSTOMINIMUM",
+    256
+   ]
+  ]
+ },
+ "structs": {
+  "FMOD_VECTOR": [
+   [
+    "x",
+    "float"
+   ],
+   [
+    "y",
+    "float"
+   ],
+   [
+    "z",
+    "float"
+   ]
+  ],
+  "FMOD_ADVANCEDSETTINGS": [
+   [
+    "cbsize",
+    "int"
+   ],
+   [
+    "maxMPEGcodecs",
+    "int"
+   ],
+   [
+    "maxADPCMcodecs",
+    "int"
+   ],
+   [
+    "maxXMAcodecs",
+    "int"
+   ],
+   [
+    "maxPCMcodecs",
+    "int"
+   ],
+   [
+    "ASIONumChannels",
+    "int"
+   ],
+   [
+    "ASIOChannelList",
+    "char * *"
+   ],
+   [
+    "ASIOSpeakerList",
+    "FMOD_SPEAKER *"
+   ],
+   [
+    "max3DReverbDSPs",
+    "int"
+   ],
+   [
+    "HRTFMinAngle",
+    "float"
+   ],
+   [
+    "HRTFMaxAngle",
+    "float"
+   ],
+   [
+    "HRTFFreq",
+    "float"
+   ],
+   [
+    "vol0virtualvol",
+    "float"
+   ],
+   [
+    "eventqueuesize",
+    "int"
+   ],
+   [
+    "defaultDecodeBufferSize",
+    "uint"
+   ],
+   [
+    "debugLogFilename",
+    "char *"
+   ],
+   [
+    "profileport",
+    "ushort"
+   ]
+  ],
+  "FMOD_CREATESOUNDEXINFO": [
+   [
+    "cbsize",
+    "int"
+   ],
+   [
+    "length",
+    "uint"
+   ],
+   [
+    "fileoffset",
+    "uint"
+   ],
+   [
+    "numchannels",
+    "int"
+   ],
+   [
+    "defaultfrequency",
+    "int"
+   ],
+   [
+    "format",
+    "FMOD_SOUND_FORMAT"
+   ],
+   [
+    "decodebuffersize",
+    "uint"
+   ],
+   [
+    "initialsubsound",
+    "int"
+   ],
+   [
+    "numsubsounds",
+    "int"
+   ],
+   [
+    "inclusionlist",
+    "int *"
+   ],
+   [
+    "inclusionlistnum",
+    "int"
+   ],
+   [
+    "pcmreadcallback",
+    "FMOD_SOUND_PCMREADCALLBACK"
+   ],
+   [
+    "pcmsetposcallback",
+    "FMOD_SOUND_PCMSETPOSCALLBACK"
+   ],
+   [
+    "nonblockcallback",
+    "FMOD_SOUND_NONBLOCKCALLBACK"
+   ],
+   [
+    "dlsname",
+    "char *"
+   ],
+   [
+    "encryptionkey",
+    "char *"
+   ],
+   [
+    "maxpolyphony",
+    "int"
+   ],
+   [
+    "userdata",
+    "void *"
+   ],
+   [
+    "suggestedsoundtype",
+    "FMOD_SOUND_TYPE"
+   ],
+   [
+    "useropen",
+    "FMOD_FILE_OPENCALLBACK"
+   ],
+   [
+    "userclose",
+    "FMOD_FILE_CLOSECALLBACK"
+   ],
+   [
+    "userread",
+    "FMOD_FILE_READCALLBACK"
+   ],
+   [
+    "userseek",
+    "FMOD_FILE_SEEKCALLBACK"
+   ],
+   [
+    "speakermap",
+    "FMOD_SPEAKERMAPTYPE"
+   ],
+   [
+    "initialsoundgroup",
+    "SoundGroup *"
+   ],
+   [
+    "initialseekposition",
+    "uint"
+   ],
+   [
+    "initialseekpostype",
+    "FMOD_TIMEUNIT"
+   ]
+  ],
+  "FMOD_EVENT_INFO": [
+   [
+    "memoryused",
+    "int"
+   ],
+   [
+    "positionms",
+    "int"
+   ],
+   [
+    "lengthms",
+    "int"
+   ],
+   [
+    "channelsplaying",
+    "int"
+   ],
+   [
+    "instancesactive",
+    "int"
+   ],
+   [
+    "maxwavebanks",
+    "int"
+   ],
+   [
+    "wavebankinfo",
+    "void *"
+   ],
+   [
+    "projectid",
+    "uint"
+   ],
+   [
+    "systemid",
+    "uint"
+   ],
+   [
+    "audibility",
+    "float"
+   ],
+   [
+    "numinstances",
+    "int"
+   ],
+   [
+    "instances",
+    "Event * *"
+   ],
+   [
+    "guid",
+    "void *"
+   ]
+  ]
+ },
+ "callbacks": {
+  "FMOD_FILE_OPENCALLBACK": {
+   "return": "FMOD_RESULT",
+   "params": [
+    [
+     "char *",
+     "name"
+    ],
+    [
+     "int",
+     "unicode"
+    ],
+    [
+     "uint *",
+     "filesize"
+    ],
+    [
+     "void * *",
+     "handle"
+    ],
+    [
+     "void * *",
+     "userdata"
+    ]
+   ]
+  },
+  "FMOD_FILE_CLOSECALLBACK": {
+   "return": "FMOD_RESULT",
+   "params": [
+    [
+     "void *",
+     "handle"
+    ],
+    [
+     "void *",
+     "userdata"
+    ]
+   ]
+  },
+  "FMOD_FILE_READCALLBACK": {
+   "return": "FMOD_RESULT",
+   "params": [
+    [
+     "void *",
+     "handle"
+    ],
+    [
+     "void *",
+     "buffer"
+    ],
+    [
+     "uint",
+     "sizebytes"
+    ],
+    [
+     "uint *",
+     "bytesread"
+    ],
+    [
+     "void *",
+     "userdata"
+    ]
+   ]
+  },
+  "FMOD_FILE_SEEKCALLBACK": {
+   "return": "FMOD_RESULT",
+   "params": [
+    [
+     "void *",
+     "handle"
+    ],
+    [
+     "uint",
+     "pos"
+    ],
+    [
+     "void *",
+     "userdata"
+    ]
+   ]
+  },
+  "FMOD_SOUND_PCMREADCALLBACK": {
+   "return": "FMOD_RESULT",
+   "params": [
+    [
+     "Sound *",
+     "sound"
+    ],
+    [
+     "void *",
+     "data"
+    ],
+    [
+     "uint",
+     "datalen"
+    ]
+   ]
+  },
+  "FMOD_SOUND_PCMSETPOSCALLBACK": {
+   "return": "FMOD_RESULT",
+   "params": [
+    [
+     "Sound *",
+     "sound"
+    ],
+    [
+     "int",
+     "subsound"
+    ],
+    [
+     "uint",
+     "position"
+    ],
+    [
+     "FMOD_TIMEUNIT",
+     "postype"
+    ]
+   ]
+  },
+  "FMOD_SOUND_NONBLOCKCALLBACK": {
+   "return": "FMOD_RESULT",
+   "params": [
+    [
+     "Sound *",
+     "sound"
+    ],
+    [
+     "FMOD_RESULT",
+     "result"
+    ]
+   ]
+  }
+ },
+ "classes": [
+  "Channel",
+  "ChannelGroup",
+  "DSP",
+  "DSPConnection",
+  "Event",
+  "EventCategory",
+  "EventGroup",
+  "EventParameter",
+  "EventProject",
+  "EventReverb",
+  "EventSystem",
+  "Geometry",
+  "MusicPrompt",
+  "MusicSystem",
+  "Reverb",
+  "Sound",
+  "SoundGroup",
+  "System"
+ ],
+ "methods": {
+  "System": {
+   "getCPUUsage": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getCPUUsage (float *dsp, float *stream, float *update, float *total)",
+    "params": [
+     [
+      "float *",
+      "dsp"
+     ],
+     [
+      "float *",
+      "stream"
+     ],
+     [
+      "float *",
+      "update"
+     ],
+     [
+      "float *",
+      "total"
+     ]
+    ]
+   },
+   "getChannelsPlaying": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getChannelsPlaying (int *channels)",
+    "params": [
+     [
+      "int *",
+      "channels"
+     ]
+    ]
+   },
+   "close": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API close ()",
+    "params": []
+   },
+   "playSound": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API playSound (FMOD_CHANNELINDEX channelid, Sound *sound, bool paused, Channel **channel)",
+    "params": [
+     [
+      "FMOD_CHANNELINDEX",
+      "channelid"
+     ],
+     [
+      "Sound *",
+      "sound"
+     ],
+     [
+      "bool",
+      "paused"
+     ],
+     [
+      "Channel * *",
+      "channel"
+     ]
+    ]
+   },
+   "createDSPByType": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API createDSPByType (FMOD_DSP_TYPE type, DSP **dsp)",
+    "params": [
+     [
+      "FMOD_DSP_TYPE",
+      "type"
+     ],
+     [
+      "DSP * *",
+      "dsp"
+     ]
+    ]
+   },
+   "createChannelGroup": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API createChannelGroup (const char *name, ChannelGroup **channelgroup)",
+    "params": [
+     [
+      "char *",
+      "name"
+     ],
+     [
+      "ChannelGroup * *",
+      "channelgroup"
+     ]
+    ]
+   },
+   "addDSP": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API addDSP (DSP *dsp, DSPConnection **connection)",
+    "params": [
+     [
+      "DSP *",
+      "dsp"
+     ],
+     [
+      "DSPConnection * *",
+      "connection"
+     ]
+    ]
+   },
+   "setAdvancedSettings": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setAdvancedSettings (FMOD_ADVANCEDSETTINGS *settings)",
+    "params": [
+     [
+      "FMOD_ADVANCEDSETTINGS *",
+      "settings"
+     ]
+    ]
+   },
+   "getAdvancedSettings": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getAdvancedSettings (FMOD_ADVANCEDSETTINGS *settings)",
+    "params": [
+     [
+      "FMOD_ADVANCEDSETTINGS *",
+      "settings"
+     ]
+    ]
+   },
+   "getMasterChannelGroup": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getMasterChannelGroup (ChannelGroup **channelgroup)",
+    "params": [
+     [
+      "ChannelGroup * *",
+      "channelgroup"
+     ]
+    ]
+   },
+   "createSound": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API createSound (const char *name_or_data, FMOD_MODE mode, FMOD_CREATESOUNDEXINFO *exinfo, Sound **sound)",
+    "params": [
+     [
+      "char *",
+      "name_or_data"
+     ],
+     [
+      "FMOD_MODE",
+      "mode"
+     ],
+     [
+      "FMOD_CREATESOUNDEXINFO *",
+      "exinfo"
+     ],
+     [
+      "Sound * *",
+      "sound"
+     ]
+    ]
+   },
+   "createStream": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API createStream (const char *name_or_data, FMOD_MODE mode, FMOD_CREATESOUNDEXINFO *exinfo, Sound **sound)",
+    "params": [
+     [
+      "char *",
+      "name_or_data"
+     ],
+     [
+      "FMOD_MODE",
+      "mode"
+     ],
+     [
+      "FMOD_CREATESOUNDEXINFO *",
+      "exinfo"
+     ],
+     [
+      "Sound * *",
+      "sound"
+     ]
+    ]
+   },
+   "getSpeakerMode": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getSpeakerMode (FMOD_SPEAKERMODE *speakermode)",
+    "params": [
+     [
+      "FMOD_SPEAKERMODE *",
+      "speakermode"
+     ]
+    ]
+   },
+   "getOutput": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getOutput (FMOD_OUTPUTTYPE *output)",
+    "params": [
+     [
+      "FMOD_OUTPUTTYPE *",
+      "output"
+     ]
+    ]
+   },
+   "getDriver": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getDriver (int *driver)",
+    "params": [
+     [
+      "int *",
+      "driver"
+     ]
+    ]
+   },
+   "set3DSettings": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API set3DSettings (float dopplerscale, float distancefactor, float rolloffscale)",
+    "params": [
+     [
+      "float",
+      "dopplerscale"
+     ],
+     [
+      "float",
+      "distancefactor"
+     ],
+     [
+      "float",
+      "rolloffscale"
+     ]
+    ]
+   },
+   "setFileSystem": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setFileSystem (FMOD_FILE_OPENCALLBACK useropen, FMOD_FILE_CLOSECALLBACK userclose, FMOD_FILE_READCALLBACK userread, FMOD_FILE_SEEKCALLBACK userseek, int blockalign)",
+    "params": [
+     [
+      "FMOD_FILE_OPENCALLBACK",
+      "useropen"
+     ],
+     [
+      "FMOD_FILE_CLOSECALLBACK",
+      "userclose"
+     ],
+     [
+      "FMOD_FILE_READCALLBACK",
+      "userread"
+     ],
+     [
+      "FMOD_FILE_SEEKCALLBACK",
+      "userseek"
+     ],
+     [
+      "int",
+      "blockalign"
+     ]
+    ]
+   },
+   "setOutput": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setOutput (FMOD_OUTPUTTYPE output)",
+    "params": [
+     [
+      "FMOD_OUTPUTTYPE",
+      "output"
+     ]
+    ]
+   },
+   "setSpeakerMode": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setSpeakerMode (FMOD_SPEAKERMODE speakermode)",
+    "params": [
+     [
+      "FMOD_SPEAKERMODE",
+      "speakermode"
+     ]
+    ]
+   },
+   "getDriverCaps": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getDriverCaps (int id, FMOD_CAPS *caps, int *minfrequency, int *maxfrequency, FMOD_SPEAKERMODE *controlpanelspeakermode)",
+    "params": [
+     [
+      "int",
+      "id"
+     ],
+     [
+      "FMOD_CAPS *",
+      "caps"
+     ],
+     [
+      "int *",
+      "minfrequency"
+     ],
+     [
+      "int *",
+      "maxfrequency"
+     ],
+     [
+      "FMOD_SPEAKERMODE *",
+      "controlpanelspeakermode"
+     ]
+    ]
+   },
+   "getNumDrivers": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getNumDrivers (int *numdrivers)",
+    "params": [
+     [
+      "int *",
+      "numdrivers"
+     ]
+    ]
+   }
+  },
+  "Channel": {
+   "isPlaying": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API isPlaying (bool *isplaying)",
+    "params": [
+     [
+      "bool *",
+      "isplaying"
+     ]
+    ]
+   },
+   "setSpeakerMix": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setSpeakerMix (float frontleft, float frontright, float center, float lfe, float backleft, float backright, float sideleft, float sideright)",
+    "params": [
+     [
+      "float",
+      "frontleft"
+     ],
+     [
+      "float",
+      "frontright"
+     ],
+     [
+      "float",
+      "center"
+     ],
+     [
+      "float",
+      "lfe"
+     ],
+     [
+      "float",
+      "backleft"
+     ],
+     [
+      "float",
+      "backright"
+     ],
+     [
+      "float",
+      "sideleft"
+     ],
+     [
+      "float",
+      "sideright"
+     ]
+    ]
+   },
+   "setLoopCount": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setLoopCount (int loopcount)",
+    "params": [
+     [
+      "int",
+      "loopcount"
+     ]
+    ]
+   },
+   "setLoopPoints": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setLoopPoints (unsigned int loopstart, FMOD_TIMEUNIT loopstarttype, unsigned int loopend, FMOD_TIMEUNIT loopendtype)",
+    "params": [
+     [
+      "uint",
+      "loopstart"
+     ],
+     [
+      "FMOD_TIMEUNIT",
+      "loopstarttype"
+     ],
+     [
+      "uint",
+      "loopend"
+     ],
+     [
+      "FMOD_TIMEUNIT",
+      "loopendtype"
+     ]
+    ]
+   },
+   "stop": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API stop ()",
+    "params": []
+   },
+   "isVirtual": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API isVirtual (bool *isvirtual)",
+    "params": [
+     [
+      "bool *",
+      "isvirtual"
+     ]
+    ]
+   },
+   "getPosition": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getPosition (unsigned int *position, FMOD_TIMEUNIT postype)",
+    "params": [
+     [
+      "uint *",
+      "position"
+     ],
+     [
+      "FMOD_TIMEUNIT",
+      "postype"
+     ]
+    ]
+   },
+   "getAudibility": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getAudibility (float *audibility)",
+    "params": [
+     [
+      "float *",
+      "audibility"
+     ]
+    ]
+   },
+   "setPaused": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setPaused (bool paused)",
+    "params": [
+     [
+      "bool",
+      "paused"
+     ]
+    ]
+   },
+   "set3DPanLevel": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API set3DPanLevel (float level)",
+    "params": [
+     [
+      "float",
+      "level"
+     ]
+    ]
+   },
+   "setVolume": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setVolume (float volume)",
+    "params": [
+     [
+      "float",
+      "volume"
+     ]
+    ]
+   },
+   "setFrequency": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setFrequency (float frequency)",
+    "params": [
+     [
+      "float",
+      "frequency"
+     ]
+    ]
+   },
+   "setSpeakerLevels": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setSpeakerLevels (FMOD_SPEAKER speaker, float *levels, int numlevels)",
+    "params": [
+     [
+      "FMOD_SPEAKER",
+      "speaker"
+     ],
+     [
+      "float *",
+      "levels"
+     ],
+     [
+      "int",
+      "numlevels"
+     ]
+    ]
+   },
+   "setPosition": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setPosition (unsigned int position, FMOD_TIMEUNIT postype)",
+    "params": [
+     [
+      "uint",
+      "position"
+     ],
+     [
+      "FMOD_TIMEUNIT",
+      "postype"
+     ]
+    ]
+   },
+   "setPriority": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setPriority (int priority)",
+    "params": [
+     [
+      "int",
+      "priority"
+     ]
+    ]
+   },
+   "set3DAttributes": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API set3DAttributes (const FMOD_VECTOR *pos, const FMOD_VECTOR *vel)",
+    "params": [
+     [
+      "FMOD_VECTOR *",
+      "pos"
+     ],
+     [
+      "FMOD_VECTOR *",
+      "vel"
+     ]
+    ]
+   },
+   "setChannelGroup": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setChannelGroup (ChannelGroup *channelgroup)",
+    "params": [
+     [
+      "ChannelGroup *",
+      "channelgroup"
+     ]
+    ]
+   },
+   "setMode": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setMode (FMOD_MODE mode)",
+    "params": [
+     [
+      "FMOD_MODE",
+      "mode"
+     ]
+    ]
+   },
+   "getMode": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getMode (FMOD_MODE *mode)",
+    "params": [
+     [
+      "FMOD_MODE *",
+      "mode"
+     ]
+    ]
+   },
+   "set3DMinMaxDistance": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API set3DMinMaxDistance (float mindistance, float maxdistance)",
+    "params": [
+     [
+      "float",
+      "mindistance"
+     ],
+     [
+      "float",
+      "maxdistance"
+     ]
+    ]
+   }
+  },
+  "ChannelGroup": {
+   "release": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API release ()",
+    "params": []
+   },
+   "addDSP": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API addDSP (DSP *dsp, DSPConnection **connection)",
+    "params": [
+     [
+      "DSP *",
+      "dsp"
+     ],
+     [
+      "DSPConnection * *",
+      "connection"
+     ]
+    ]
+   },
+   "setPitch": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setPitch (float pitch)",
+    "params": [
+     [
+      "float",
+      "pitch"
+     ]
+    ]
+   },
+   "setVolume": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setVolume (float volume)",
+    "params": [
+     [
+      "float",
+      "volume"
+     ]
+    ]
+   },
+   "getChannel": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getChannel (int index, Channel **channel)",
+    "params": [
+     [
+      "int",
+      "index"
+     ],
+     [
+      "Channel * *",
+      "channel"
+     ]
+    ]
+   },
+   "getNumChannels": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getNumChannels (int *numchannels)",
+    "params": [
+     [
+      "int *",
+      "numchannels"
+     ]
+    ]
+   },
+   "getGroup": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getGroup (int index, ChannelGroup **group)",
+    "params": [
+     [
+      "int",
+      "index"
+     ],
+     [
+      "ChannelGroup * *",
+      "group"
+     ]
+    ]
+   },
+   "getNumGroups": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getNumGroups (int *numgroups)",
+    "params": [
+     [
+      "int *",
+      "numgroups"
+     ]
+    ]
+   },
+   "addGroup": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API addGroup (ChannelGroup *group)",
+    "params": [
+     [
+      "ChannelGroup *",
+      "group"
+     ]
+    ]
+   }
+  },
+  "DSP": {
+   "release": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API release ()",
+    "params": []
+   },
+   "remove": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API remove ()",
+    "params": []
+   },
+   "setParameter": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setParameter (int index, float value)",
+    "params": [
+     [
+      "int",
+      "index"
+     ],
+     [
+      "float",
+      "value"
+     ]
+    ]
+   }
+  },
+  "Sound": {
+   "setMode": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setMode (FMOD_MODE mode)",
+    "params": [
+     [
+      "FMOD_MODE",
+      "mode"
+     ]
+    ]
+   },
+   "setLoopPoints": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setLoopPoints (unsigned int loopstart, FMOD_TIMEUNIT loopstarttype, unsigned int loopend, FMOD_TIMEUNIT loopendtype)",
+    "params": [
+     [
+      "uint",
+      "loopstart"
+     ],
+     [
+      "FMOD_TIMEUNIT",
+      "loopstarttype"
+     ],
+     [
+      "uint",
+      "loopend"
+     ],
+     [
+      "FMOD_TIMEUNIT",
+      "loopendtype"
+     ]
+    ]
+   },
+   "setVariations": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setVariations (float frequencyvar, float volumevar, float panvar)",
+    "params": [
+     [
+      "float",
+      "frequencyvar"
+     ],
+     [
+      "float",
+      "volumevar"
+     ],
+     [
+      "float",
+      "panvar"
+     ]
+    ]
+   },
+   "set3DMinMaxDistance": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API set3DMinMaxDistance (float min, float max)",
+    "params": [
+     [
+      "float",
+      "min"
+     ],
+     [
+      "float",
+      "max"
+     ]
+    ]
+   },
+   "getDefaults": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getDefaults (float *frequency, float *volume, float *pan, int *priority)",
+    "params": [
+     [
+      "float *",
+      "frequency"
+     ],
+     [
+      "float *",
+      "volume"
+     ],
+     [
+      "float *",
+      "pan"
+     ],
+     [
+      "int *",
+      "priority"
+     ]
+    ]
+   },
+   "getMode": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getMode (FMOD_MODE *mode)",
+    "params": [
+     [
+      "FMOD_MODE *",
+      "mode"
+     ]
+    ]
+   },
+   "getSubSound": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getSubSound (int index, Sound **subsound)",
+    "params": [
+     [
+      "int",
+      "index"
+     ],
+     [
+      "Sound * *",
+      "subsound"
+     ]
+    ]
+   },
+   "getNumSubSounds": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getNumSubSounds (int *numsubsounds)",
+    "params": [
+     [
+      "int *",
+      "numsubsounds"
+     ]
+    ]
+   },
+   "getLength": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getLength (unsigned int *length, FMOD_TIMEUNIT lengthtype)",
+    "params": [
+     [
+      "uint *",
+      "length"
+     ],
+     [
+      "FMOD_TIMEUNIT",
+      "lengthtype"
+     ]
+    ]
+   },
+   "release": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API release ()",
+    "params": []
+   },
+   "getOpenState": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getOpenState (FMOD_OPENSTATE *openstate, unsigned int *percentbuffered, bool *starving)",
+    "params": [
+     [
+      "FMOD_OPENSTATE *",
+      "openstate"
+     ],
+     [
+      "uint *",
+      "percentbuffered"
+     ],
+     [
+      "bool *",
+      "starving"
+     ]
+    ]
+   },
+   "getFormat": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getFormat (FMOD_SOUND_TYPE *type, FMOD_SOUND_FORMAT *format, int *channels, int *bits)",
+    "params": [
+     [
+      "FMOD_SOUND_TYPE *",
+      "type"
+     ],
+     [
+      "FMOD_SOUND_FORMAT *",
+      "format"
+     ],
+     [
+      "int *",
+      "channels"
+     ],
+     [
+      "int *",
+      "bits"
+     ]
+    ]
+   }
+  },
+  "Event": {
+   "getInfo": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getInfo (int *index, char **name, FMOD_EVENT_INFO *info)",
+    "params": [
+     [
+      "int *",
+      "index"
+     ],
+     [
+      "char * *",
+      "name"
+     ],
+     [
+      "FMOD_EVENT_INFO *",
+      "info"
+     ]
+    ]
+   },
+   "getParameterByIndex": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getParameterByIndex (int index, EventParameter **parameter)",
+    "params": [
+     [
+      "int",
+      "index"
+     ],
+     [
+      "EventParameter * *",
+      "parameter"
+     ]
+    ]
+   },
+   "getNumParameters": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getNumParameters (int *numparameters)",
+    "params": [
+     [
+      "int *",
+      "numparameters"
+     ]
+    ]
+   },
+   "stop": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API stop (bool immediate = false)",
+    "params": [
+     [
+      "bool",
+      "immediate"
+     ]
+    ]
+   },
+   "getParameter": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getParameter (const char *name, EventParameter **parameter)",
+    "params": [
+     [
+      "char *",
+      "name"
+     ],
+     [
+      "EventParameter * *",
+      "parameter"
+     ]
+    ]
+   },
+   "setPaused": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setPaused (bool paused)",
+    "params": [
+     [
+      "bool",
+      "paused"
+     ]
+    ]
+   },
+   "getState": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getState (FMOD_EVENT_STATE *state)",
+    "params": [
+     [
+      "FMOD_EVENT_STATE *",
+      "state"
+     ]
+    ]
+   },
+   "start": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API start ()",
+    "params": []
+   },
+   "setVolume": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setVolume (float volume)",
+    "params": [
+     [
+      "float",
+      "volume"
+     ]
+    ]
+   },
+   "setPitch": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setPitch (float pitch, FMOD_EVENT_PITCHUNITS units = FMOD_EVENT_PITCHUNITS_RAW)",
+    "params": [
+     [
+      "float",
+      "pitch"
+     ],
+     [
+      "FMOD_EVENT_PITCHUNITS",
+      "units"
+     ]
+    ]
+   },
+   "set3DAttributes": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API set3DAttributes (const FMOD_VECTOR *position, const FMOD_VECTOR *velocity, const FMOD_VECTOR *orientation = 0)",
+    "params": [
+     [
+      "FMOD_VECTOR *",
+      "position"
+     ],
+     [
+      "FMOD_VECTOR *",
+      "velocity"
+     ],
+     [
+      "FMOD_VECTOR *",
+      "orientation"
+     ]
+    ]
+   },
+   "getChannelGroup": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getChannelGroup (ChannelGroup **channelgroup)",
+    "params": [
+     [
+      "ChannelGroup * *",
+      "channelgroup"
+     ]
+    ]
+   }
+  },
+  "EventParameter": {
+   "getInfo": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getInfo (int *index, char **name)",
+    "params": [
+     [
+      "int *",
+      "index"
+     ],
+     [
+      "char * *",
+      "name"
+     ]
+    ]
+   },
+   "getRange": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API getRange (float *rangemin, float *rangemax)",
+    "params": [
+     [
+      "float *",
+      "rangemin"
+     ],
+     [
+      "float *",
+      "rangemax"
+     ]
+    ]
+   },
+   "keyOff": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API keyOff ()",
+    "params": []
+   },
+   "setValue": {
+    "return": "FMOD_RESULT",
+    "raw": "FMOD_RESULT F_API setValue (float value)",
+    "params": [
+     [
+      "float",
+      "value"
+     ]
+    ]
+   }
+  }
+ },
+ "c_functions": {
+  "FMOD_Memory_GetStats": {
+   "return": "FMOD_RESULT",
+   "raw": "FMOD_RESULT F_API FMOD_Memory_GetStats (int *currentalloced, int *maxalloced);",
+   "params": [
+    [
+     "int *",
+     "currentalloced"
+    ],
+    [
+     "int *",
+     "maxalloced"
+    ]
+   ]
+  },
+  "FMOD_EventSystem_Create": {
+   "return": "FMOD_RESULT",
+   "raw": "FMOD_RESULT F_API FMOD_EventSystem_Create(FMOD_EVENTSYSTEM **eventsystem);",
+   "params": [
+    [
+     "EventSystem * *",
+     "eventsystem"
+    ]
+   ]
+  }
+ },
+ "imports": {
+  "00a4c290": {
+   "dll": "fmodex.dll",
+   "mangled": "?getCPUUsage@System@FMOD@@QAG?AW4FMOD_RESULT@@PAM000@Z",
+   "class": "System",
+   "method": "getCPUUsage"
+  },
+  "00a4c296": {
+   "dll": "fmodex.dll",
+   "mangled": "?getChannelsPlaying@System@FMOD@@QAG?AW4FMOD_RESULT@@PAH@Z",
+   "class": "System",
+   "method": "getChannelsPlaying"
+  },
+  "00c2dde2": {
+   "dll": "fmodex.dll",
+   "mangled": "?close@System@FMOD@@QAG?AW4FMOD_RESULT@@XZ",
+   "class": "System",
+   "method": "close"
+  },
+  "00c2dde8": {
+   "dll": "fmodex.dll",
+   "mangled": "?isPlaying@Channel@FMOD@@QAG?AW4FMOD_RESULT@@PA_N@Z",
+   "class": "Channel",
+   "method": "isPlaying"
+  },
+  "00c2ddee": {
+   "dll": "fmodex.dll",
+   "mangled": "FMOD_Memory_GetStats",
+   "class": null,
+   "method": "FMOD_Memory_GetStats"
+  },
+  "00c2ddf4": {
+   "dll": "fmodex.dll",
+   "mangled": "?setSpeakerMix@Channel@FMOD@@QAG?AW4FMOD_RESULT@@MMMMMMMM@Z",
+   "class": "Channel",
+   "method": "setSpeakerMix"
+  },
+  "00c2ddfa": {
+   "dll": "fmodex.dll",
+   "mangled": "?setLoopCount@Channel@FMOD@@QAG?AW4FMOD_RESULT@@H@Z",
+   "class": "Channel",
+   "method": "setLoopCount"
+  },
+  "00c2de00": {
+   "dll": "fmodex.dll",
+   "mangled": "?playSound@System@FMOD@@QAG?AW4FMOD_RESULT@@W4FMOD_CHANNELINDEX@@PAVSound@2@_NPAPAVChannel@2@@Z",
+   "class": "System",
+   "method": "playSound"
+  },
+  "00c2de06": {
+   "dll": "fmodex.dll",
+   "mangled": "?setLoopPoints@Channel@FMOD@@QAG?AW4FMOD_RESULT@@IIII@Z",
+   "class": "Channel",
+   "method": "setLoopPoints"
+  },
+  "00c2de0c": {
+   "dll": "fmodex.dll",
+   "mangled": "?stop@Channel@FMOD@@QAG?AW4FMOD_RESULT@@XZ",
+   "class": "Channel",
+   "method": "stop"
+  },
+  "00c2de12": {
+   "dll": "fmodex.dll",
+   "mangled": "?isVirtual@Channel@FMOD@@QAG?AW4FMOD_RESULT@@PA_N@Z",
+   "class": "Channel",
+   "method": "isVirtual"
+  },
+  "00c2de18": {
+   "dll": "fmodex.dll",
+   "mangled": "?getPosition@Channel@FMOD@@QAG?AW4FMOD_RESULT@@PAII@Z",
+   "class": "Channel",
+   "method": "getPosition"
+  },
+  "00c2de1e": {
+   "dll": "fmodex.dll",
+   "mangled": "?getAudibility@Channel@FMOD@@QAG?AW4FMOD_RESULT@@PAM@Z",
+   "class": "Channel",
+   "method": "getAudibility"
+  },
+  "00c2de24": {
+   "dll": "fmodex.dll",
+   "mangled": "?release@ChannelGroup@FMOD@@QAG?AW4FMOD_RESULT@@XZ",
+   "class": "ChannelGroup",
+   "method": "release"
+  },
+  "00c2de2a": {
+   "dll": "fmodex.dll",
+   "mangled": "?release@DSP@FMOD@@QAG?AW4FMOD_RESULT@@XZ",
+   "class": "DSP",
+   "method": "release"
+  },
+  "00c2de30": {
+   "dll": "fmodex.dll",
+   "mangled": "?remove@DSP@FMOD@@QAG?AW4FMOD_RESULT@@XZ",
+   "class": "DSP",
+   "method": "remove"
+  },
+  "00c2de36": {
+   "dll": "fmodex.dll",
+   "mangled": "?setPaused@Channel@FMOD@@QAG?AW4FMOD_RESULT@@_N@Z",
+   "class": "Channel",
+   "method": "setPaused"
+  },
+  "00c2de3c": {
+   "dll": "fmodex.dll",
+   "mangled": "?set3DPanLevel@Channel@FMOD@@QAG?AW4FMOD_RESULT@@M@Z",
+   "class": "Channel",
+   "method": "set3DPanLevel"
+  },
+  "00c2de42": {
+   "dll": "fmodex.dll",
+   "mangled": "?setVolume@Channel@FMOD@@QAG?AW4FMOD_RESULT@@M@Z",
+   "class": "Channel",
+   "method": "setVolume"
+  },
+  "00c2de48": {
+   "dll": "fmodex.dll",
+   "mangled": "?setFrequency@Channel@FMOD@@QAG?AW4FMOD_RESULT@@M@Z",
+   "class": "Channel",
+   "method": "setFrequency"
+  },
+  "00c2de4e": {
+   "dll": "fmodex.dll",
+   "mangled": "?setParameter@DSP@FMOD@@QAG?AW4FMOD_RESULT@@HM@Z",
+   "class": "DSP",
+   "method": "setParameter"
+  },
+  "00c2de54": {
+   "dll": "fmodex.dll",
+   "mangled": "?createDSPByType@System@FMOD@@QAG?AW4FMOD_RESULT@@W4FMOD_DSP_TYPE@@PAPAVDSP@2@@Z",
+   "class": "System",
+   "method": "createDSPByType"
+  },
+  "00c2de5a": {
+   "dll": "fmodex.dll",
+   "mangled": "?addDSP@ChannelGroup@FMOD@@QAG?AW4FMOD_RESULT@@PAVDSP@2@PAPAVDSPConnection@2@@Z",
+   "class": "ChannelGroup",
+   "method": "addDSP"
+  },
+  "00c2de60": {
+   "dll": "fmodex.dll",
+   "mangled": "?setPitch@ChannelGroup@FMOD@@QAG?AW4FMOD_RESULT@@M@Z",
+   "class": "ChannelGroup",
+   "method": "setPitch"
+  },
+  "00c2de66": {
+   "dll": "fmodex.dll",
+   "mangled": "?setVolume@ChannelGroup@FMOD@@QAG?AW4FMOD_RESULT@@M@Z",
+   "class": "ChannelGroup",
+   "method": "setVolume"
+  },
+  "00c2de6c": {
+   "dll": "fmodex.dll",
+   "mangled": "?createChannelGroup@System@FMOD@@QAG?AW4FMOD_RESULT@@PBDPAPAVChannelGroup@2@@Z",
+   "class": "System",
+   "method": "createChannelGroup"
+  },
+  "00c2de72": {
+   "dll": "fmodex.dll",
+   "mangled": "?addDSP@System@FMOD@@QAG?AW4FMOD_RESULT@@PAVDSP@2@PAPAVDSPConnection@2@@Z",
+   "class": "System",
+   "method": "addDSP"
+  },
+  "00c2de78": {
+   "dll": "fmodex.dll",
+   "mangled": "?setAdvancedSettings@System@FMOD@@QAG?AW4FMOD_RESULT@@PAUFMOD_ADVANCEDSETTINGS@@@Z",
+   "class": "System",
+   "method": "setAdvancedSettings"
+  },
+  "00c2de7e": {
+   "dll": "fmodex.dll",
+   "mangled": "?getAdvancedSettings@System@FMOD@@QAG?AW4FMOD_RESULT@@PAUFMOD_ADVANCEDSETTINGS@@@Z",
+   "class": "System",
+   "method": "getAdvancedSettings"
+  },
+  "00c2de84": {
+   "dll": "fmodex.dll",
+   "mangled": "?getMasterChannelGroup@System@FMOD@@QAG?AW4FMOD_RESULT@@PAPAVChannelGroup@2@@Z",
+   "class": "System",
+   "method": "getMasterChannelGroup"
+  },
+  "00c2de8a": {
+   "dll": "fmodex.dll",
+   "mangled": "?setMode@Sound@FMOD@@QAG?AW4FMOD_RESULT@@I@Z",
+   "class": "Sound",
+   "method": "setMode"
+  },
+  "00c2de90": {
+   "dll": "fmodex.dll",
+   "mangled": "?setLoopPoints@Sound@FMOD@@QAG?AW4FMOD_RESULT@@IIII@Z",
+   "class": "Sound",
+   "method": "setLoopPoints"
+  },
+  "00c2de96": {
+   "dll": "fmodex.dll",
+   "mangled": "?setVariations@Sound@FMOD@@QAG?AW4FMOD_RESULT@@MMM@Z",
+   "class": "Sound",
+   "method": "setVariations"
+  },
+  "00c2de9c": {
+   "dll": "fmodex.dll",
+   "mangled": "?set3DMinMaxDistance@Sound@FMOD@@QAG?AW4FMOD_RESULT@@MM@Z",
+   "class": "Sound",
+   "method": "set3DMinMaxDistance"
+  },
+  "00c2dea2": {
+   "dll": "fmodex.dll",
+   "mangled": "?getDefaults@Sound@FMOD@@QAG?AW4FMOD_RESULT@@PAM00PAH@Z",
+   "class": "Sound",
+   "method": "getDefaults"
+  },
+  "00c2dea8": {
+   "dll": "fmodex.dll",
+   "mangled": "?getMode@Sound@FMOD@@QAG?AW4FMOD_RESULT@@PAI@Z",
+   "class": "Sound",
+   "method": "getMode"
+  },
+  "00c2deae": {
+   "dll": "fmodex.dll",
+   "mangled": "?getSubSound@Sound@FMOD@@QAG?AW4FMOD_RESULT@@HPAPAV12@@Z",
+   "class": "Sound",
+   "method": "getSubSound"
+  },
+  "00c2deb4": {
+   "dll": "fmodex.dll",
+   "mangled": "?getNumSubSounds@Sound@FMOD@@QAG?AW4FMOD_RESULT@@PAH@Z",
+   "class": "Sound",
+   "method": "getNumSubSounds"
+  },
+  "00c2deba": {
+   "dll": "fmodex.dll",
+   "mangled": "?getLength@Sound@FMOD@@QAG?AW4FMOD_RESULT@@PAII@Z",
+   "class": "Sound",
+   "method": "getLength"
+  },
+  "00c2dec0": {
+   "dll": "fmodex.dll",
+   "mangled": "?createSound@System@FMOD@@QAG?AW4FMOD_RESULT@@PBDIPAUFMOD_CREATESOUNDEXINFO@@PAPAVSound@2@@Z",
+   "class": "System",
+   "method": "createSound"
+  },
+  "00c2dec6": {
+   "dll": "fmodex.dll",
+   "mangled": "?release@Sound@FMOD@@QAG?AW4FMOD_RESULT@@XZ",
+   "class": "Sound",
+   "method": "release"
+  },
+  "00c2decc": {
+   "dll": "fmodex.dll",
+   "mangled": "?setSpeakerLevels@Channel@FMOD@@QAG?AW4FMOD_RESULT@@W4FMOD_SPEAKER@@PAMH@Z",
+   "class": "Channel",
+   "method": "setSpeakerLevels"
+  },
+  "00c2ded2": {
+   "dll": "fmodex.dll",
+   "mangled": "?createStream@System@FMOD@@QAG?AW4FMOD_RESULT@@PBDIPAUFMOD_CREATESOUNDEXINFO@@PAPAVSound@2@@Z",
+   "class": "System",
+   "method": "createStream"
+  },
+  "00c2ded8": {
+   "dll": "fmodex.dll",
+   "mangled": "?getOpenState@Sound@FMOD@@QAG?AW4FMOD_RESULT@@PAW4FMOD_OPENSTATE@@PAIPA_N@Z",
+   "class": "Sound",
+   "method": "getOpenState"
+  },
+  "00c2dede": {
+   "dll": "fmodex.dll",
+   "mangled": "?setPosition@Channel@FMOD@@QAG?AW4FMOD_RESULT@@II@Z",
+   "class": "Channel",
+   "method": "setPosition"
+  },
+  "00c2dee4": {
+   "dll": "fmodex.dll",
+   "mangled": "?getFormat@Sound@FMOD@@QAG?AW4FMOD_RESULT@@PAW4FMOD_SOUND_TYPE@@PAW4FMOD_SOUND_FORMAT@@PAH2@Z",
+   "class": "Sound",
+   "method": "getFormat"
+  },
+  "00c2deea": {
+   "dll": "fmodex.dll",
+   "mangled": "?setPriority@Channel@FMOD@@QAG?AW4FMOD_RESULT@@H@Z",
+   "class": "Channel",
+   "method": "setPriority"
+  },
+  "00c2def0": {
+   "dll": "fmodex.dll",
+   "mangled": "?getSpeakerMode@System@FMOD@@QAG?AW4FMOD_RESULT@@PAW4FMOD_SPEAKERMODE@@@Z",
+   "class": "System",
+   "method": "getSpeakerMode"
+  },
+  "00c2def6": {
+   "dll": "fmodex.dll",
+   "mangled": "?getOutput@System@FMOD@@QAG?AW4FMOD_RESULT@@PAW4FMOD_OUTPUTTYPE@@@Z",
+   "class": "System",
+   "method": "getOutput"
+  },
+  "00c2defc": {
+   "dll": "fmodex.dll",
+   "mangled": "?getDriver@System@FMOD@@QAG?AW4FMOD_RESULT@@PAH@Z",
+   "class": "System",
+   "method": "getDriver"
+  },
+  "00c2df02": {
+   "dll": "fmodex.dll",
+   "mangled": "?set3DSettings@System@FMOD@@QAG?AW4FMOD_RESULT@@MMM@Z",
+   "class": "System",
+   "method": "set3DSettings"
+  },
+  "00c2df08": {
+   "dll": "fmodex.dll",
+   "mangled": "?setFileSystem@System@FMOD@@QAG?AW4FMOD_RESULT@@P6G?AW43@PBDHPAIPAPAX2@ZP6G?AW43@PAX4@ZP6G?AW43@44I14@ZP6G?AW43@4I4@ZH@Z",
+   "class": "System",
+   "method": "setFileSystem"
+  },
+  "00c2df0e": {
+   "dll": "fmodex.dll",
+   "mangled": "?setOutput@System@FMOD@@QAG?AW4FMOD_RESULT@@W4FMOD_OUTPUTTYPE@@@Z",
+   "class": "System",
+   "method": "setOutput"
+  },
+  "00c2df14": {
+   "dll": "fmodex.dll",
+   "mangled": "?setSpeakerMode@System@FMOD@@QAG?AW4FMOD_RESULT@@W4FMOD_SPEAKERMODE@@@Z",
+   "class": "System",
+   "method": "setSpeakerMode"
+  },
+  "00c2df1a": {
+   "dll": "fmodex.dll",
+   "mangled": "?getDriverCaps@System@FMOD@@QAG?AW4FMOD_RESULT@@HPAIPAH1PAW4FMOD_SPEAKERMODE@@@Z",
+   "class": "System",
+   "method": "getDriverCaps"
+  },
+  "00c2df20": {
+   "dll": "fmodex.dll",
+   "mangled": "?getNumDrivers@System@FMOD@@QAG?AW4FMOD_RESULT@@PAH@Z",
+   "class": "System",
+   "method": "getNumDrivers"
+  },
+  "00c2df26": {
+   "dll": "fmodex.dll",
+   "mangled": "?getChannel@ChannelGroup@FMOD@@QAG?AW4FMOD_RESULT@@HPAPAVChannel@2@@Z",
+   "class": "ChannelGroup",
+   "method": "getChannel"
+  },
+  "00c2df2c": {
+   "dll": "fmodex.dll",
+   "mangled": "?getNumChannels@ChannelGroup@FMOD@@QAG?AW4FMOD_RESULT@@PAH@Z",
+   "class": "ChannelGroup",
+   "method": "getNumChannels"
+  },
+  "00c2df32": {
+   "dll": "fmodex.dll",
+   "mangled": "?getGroup@ChannelGroup@FMOD@@QAG?AW4FMOD_RESULT@@HPAPAV12@@Z",
+   "class": "ChannelGroup",
+   "method": "getGroup"
+  },
+  "00c2df38": {
+   "dll": "fmodex.dll",
+   "mangled": "?getNumGroups@ChannelGroup@FMOD@@QAG?AW4FMOD_RESULT@@PAH@Z",
+   "class": "ChannelGroup",
+   "method": "getNumGroups"
+  },
+  "00c2df3e": {
+   "dll": "fmodex.dll",
+   "mangled": "?addGroup@ChannelGroup@FMOD@@QAG?AW4FMOD_RESULT@@PAV12@@Z",
+   "class": "ChannelGroup",
+   "method": "addGroup"
+  },
+  "00c2df44": {
+   "dll": "fmodex.dll",
+   "mangled": "?set3DAttributes@Channel@FMOD@@QAG?AW4FMOD_RESULT@@PBUFMOD_VECTOR@@0@Z",
+   "class": "Channel",
+   "method": "set3DAttributes"
+  },
+  "00c2df4a": {
+   "dll": "fmodex.dll",
+   "mangled": "?setChannelGroup@Channel@FMOD@@QAG?AW4FMOD_RESULT@@PAVChannelGroup@2@@Z",
+   "class": "Channel",
+   "method": "setChannelGroup"
+  },
+  "00c2df50": {
+   "dll": "fmodex.dll",
+   "mangled": "?setMode@Channel@FMOD@@QAG?AW4FMOD_RESULT@@I@Z",
+   "class": "Channel",
+   "method": "setMode"
+  },
+  "00c2df56": {
+   "dll": "fmodex.dll",
+   "mangled": "?getMode@Channel@FMOD@@QAG?AW4FMOD_RESULT@@PAI@Z",
+   "class": "Channel",
+   "method": "getMode"
+  },
+  "00c2df5c": {
+   "dll": "fmodex.dll",
+   "mangled": "?set3DMinMaxDistance@Channel@FMOD@@QAG?AW4FMOD_RESULT@@MM@Z",
+   "class": "Channel",
+   "method": "set3DMinMaxDistance"
+  },
+  "00c2df62": {
+   "dll": "fmod_event.dll",
+   "mangled": "?getInfo@Event@FMOD@@QAG?AW4FMOD_RESULT@@PAHPAPADPAUFMOD_EVENT_INFO@@@Z",
+   "class": "Event",
+   "method": "getInfo"
+  },
+  "00c2df68": {
+   "dll": "fmod_event.dll",
+   "mangled": "?getInfo@EventParameter@FMOD@@QAG?AW4FMOD_RESULT@@PAHPAPAD@Z",
+   "class": "EventParameter",
+   "method": "getInfo"
+  },
+  "00c2df6e": {
+   "dll": "fmod_event.dll",
+   "mangled": "?getRange@EventParameter@FMOD@@QAG?AW4FMOD_RESULT@@PAM0@Z",
+   "class": "EventParameter",
+   "method": "getRange"
+  },
+  "00c2df74": {
+   "dll": "fmod_event.dll",
+   "mangled": "?getParameterByIndex@Event@FMOD@@QAG?AW4FMOD_RESULT@@HPAPAVEventParameter@2@@Z",
+   "class": "Event",
+   "method": "getParameterByIndex"
+  },
+  "00c2df7a": {
+   "dll": "fmod_event.dll",
+   "mangled": "?getNumParameters@Event@FMOD@@QAG?AW4FMOD_RESULT@@PAH@Z",
+   "class": "Event",
+   "method": "getNumParameters"
+  },
+  "00c2df80": {
+   "dll": "fmod_event.dll",
+   "mangled": "_FMOD_EventSystem_Create@4",
+   "class": null,
+   "method": "FMOD_EventSystem_Create"
+  },
+  "00c2df86": {
+   "dll": "fmod_event.dll",
+   "mangled": "?stop@Event@FMOD@@QAG?AW4FMOD_RESULT@@_N@Z",
+   "class": "Event",
+   "method": "stop"
+  },
+  "00c2df8c": {
+   "dll": "fmod_event.dll",
+   "mangled": "?keyOff@EventParameter@FMOD@@QAG?AW4FMOD_RESULT@@XZ",
+   "class": "EventParameter",
+   "method": "keyOff"
+  },
+  "00c2df92": {
+   "dll": "fmod_event.dll",
+   "mangled": "?getParameter@Event@FMOD@@QAG?AW4FMOD_RESULT@@PBDPAPAVEventParameter@2@@Z",
+   "class": "Event",
+   "method": "getParameter"
+  },
+  "00c2df98": {
+   "dll": "fmod_event.dll",
+   "mangled": "?setPaused@Event@FMOD@@QAG?AW4FMOD_RESULT@@_N@Z",
+   "class": "Event",
+   "method": "setPaused"
+  },
+  "00c2df9e": {
+   "dll": "fmod_event.dll",
+   "mangled": "?getState@Event@FMOD@@QAG?AW4FMOD_RESULT@@PAI@Z",
+   "class": "Event",
+   "method": "getState"
+  },
+  "00c2dfa4": {
+   "dll": "fmod_event.dll",
+   "mangled": "?start@Event@FMOD@@QAG?AW4FMOD_RESULT@@XZ",
+   "class": "Event",
+   "method": "start"
+  },
+  "00c2dfaa": {
+   "dll": "fmod_event.dll",
+   "mangled": "?setValue@EventParameter@FMOD@@QAG?AW4FMOD_RESULT@@M@Z",
+   "class": "EventParameter",
+   "method": "setValue"
+  },
+  "00c2dfb0": {
+   "dll": "fmod_event.dll",
+   "mangled": "?setVolume@Event@FMOD@@QAG?AW4FMOD_RESULT@@M@Z",
+   "class": "Event",
+   "method": "setVolume"
+  },
+  "00c2dfb6": {
+   "dll": "fmod_event.dll",
+   "mangled": "?setPitch@Event@FMOD@@QAG?AW4FMOD_RESULT@@MW4FMOD_EVENT_PITCHUNITS@@@Z",
+   "class": "Event",
+   "method": "setPitch"
+  },
+  "00c2dfbc": {
+   "dll": "fmod_event.dll",
+   "mangled": "?set3DAttributes@Event@FMOD@@QAG?AW4FMOD_RESULT@@PBUFMOD_VECTOR@@00@Z",
+   "class": "Event",
+   "method": "set3DAttributes"
+  },
+  "00c2dfc2": {
+   "dll": "fmod_event.dll",
+   "mangled": "?getChannelGroup@Event@FMOD@@QAG?AW4FMOD_RESULT@@PAPAVChannelGroup@2@@Z",
+   "class": "Event",
+   "method": "getChannelGroup"
+  }
+ },
+ "unmapped_types": [
+  "FMOD_EVENT_WAVEBANKINFO",
+  "FMOD_GUID"
+ ]
+}

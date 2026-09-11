@@ -85,3 +85,9 @@ unwind. Complete resource/manager teardown, original object/exception ABI,
 audible playback, the enabled hardware-audio startup branch and gameplay remain
 unvalidated. Next asset work follows 00a84740 through 00a82ea0 resolution,
 00a835b0 creation and 00a854c0 cloning, with 00a85500/00a84c90 cleanup.
+
+Integration build at `3d04e83` also compiled the concurrently added `bsp_game`
+target and passed both CTests. Main integration `c33924f` adds only coordination
+documentation after that build. All 31 reviewed names and evidence comments were
+saved and read back, preserving previous comments; affected exports refreshed.
+This does not establish that the game executable runs through sound startup.

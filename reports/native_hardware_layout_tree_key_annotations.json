@@ -1,0 +1,72 @@
+[
+  {
+    "address": "00b20bf0",
+    "before": {
+      "address": "00b20bf0",
+      "function_name": "FUN_00b20bf0"
+    },
+    "after": {
+      "address": "00b20bf0",
+      "old_name": "FUN_00b20bf0",
+      "name": "BSP_HardwareLayoutKey_Less",
+      "evidence": "Capture right then left signedcounts once; descending counts then ascending unsigned pointerDWORDs. Equal nonpositive counts skip keywords. OriginalABI: ECX left key; stack right key; RET4; AL boolean. Complete reports/native_hardware_layout_tree_key_audit.json / src/native_hardware_layout_tree_key.cpp.5unpatched fullnativebodies359bytes,5postimages,5actualprimarylibraryproviders;3pairedphases862DWORDs. StrictMSVCWin32+2existingCTest; validstorageonly/noGPU/nativeABI/gameproof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b23020",
+    "before": {
+      "address": "00b23020",
+      "function_name": "FUN_00b23020"
+    },
+    "after": {
+      "address": "00b23020",
+      "old_name": "FUN_00b23020",
+      "name": "BSP_HardwareLayoutTree_LowerBound",
+      "evidence": "Borrow head/root and actual links/sentinel; comparator executes on node+0C; no validation/allocation. OriginalABI: ECX actual tree; stack key; RET4; EAX selected node. Complete reports/native_hardware_layout_tree_key_audit.json / src/native_hardware_layout_tree_key.cpp.5unpatched fullnativebodies359bytes,5postimages,5actualprimarylibraryproviders;3pairedphases862DWORDs. StrictMSVCWin32+2existingCTest; validstorageonly/noGPU/nativeABI/gameproof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b28220",
+    "before": {
+      "address": "00b28220",
+      "function_name": "FUN_00b28220"
+    },
+    "after": {
+      "address": "00b28220",
+      "old_name": "FUN_00b28220",
+      "name": "BSP_HardwareLayoutTree_Find",
+      "evidence": "Lower_bound before nullownerhandler; capture currenthead then reverse comparison; outputOWNERbeforeNODE. Nullowner already faults inside lower_bound on ordinaryWin32storage; handleredge unexercised. OriginalABI: ECX actual tree; stack output/key; RET8; EAX output. Complete reports/native_hardware_layout_tree_key_audit.json / src/native_hardware_layout_tree_key.cpp.5unpatched fullnativebodies359bytes,5postimages,5actualprimarylibraryproviders;3pairedphases862DWORDs. StrictMSVCWin32+2existingCTest; validstorageonly/noGPU/nativeABI/gameproof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b282b0",
+    "before": {
+      "address": "00b282b0",
+      "function_name": "FUN_00b282b0"
+    },
+    "after": {
+      "address": "00b282b0",
+      "old_name": "FUN_00b282b0",
+      "name": "BSP_HardwareLayoutPair_Construct",
+      "evidence": "ForwardDWORDcopy rereads sourcecount after every store; publishes currentcount before value-address load. Aliases observable; unusedkeyslots unchanged. OriginalABI: ECX destination pair; stack key/value-address; RET8; EAX destination. Complete reports/native_hardware_layout_tree_key_audit.json / src/native_hardware_layout_tree_key.cpp.5unpatched fullnativebodies359bytes,5postimages,5actualprimarylibraryproviders;3pairedphases862DWORDs. StrictMSVCWin32+2existingCTest; validstorageonly/noGPU/nativeABI/gameproof."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b25ef0",
+    "before": {
+      "address": "00b25ef0",
+      "function_name": "FUN_00b25ef0"
+    },
+    "after": {
+      "address": "00b25ef0",
+      "old_name": "FUN_00b25ef0",
+      "name": "BSP_HardwareLayoutPair_Copy",
+      "evidence": "ForwardDWORDcopy rereads sourcecount after every store; publishes currentcount then reads sourcevalue+14. Aliases observable; unusedkeyslots unchanged. OriginalABI: ECX destination pair; stack source pair; RET4; EAX destination. Complete reports/native_hardware_layout_tree_key_audit.json / src/native_hardware_layout_tree_key.cpp.5unpatched fullnativebodies359bytes,5postimages,5actualprimarylibraryproviders;3pairedphases862DWORDs. StrictMSVCWin32+2existingCTest; validstorageonly/noGPU/nativeABI/gameproof."
+    },
+    "status": "applied"
+  }
+]
