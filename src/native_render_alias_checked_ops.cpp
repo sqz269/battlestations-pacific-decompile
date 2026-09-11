@@ -1,4 +1,5 @@
 #include "bsp/native_render_alias_checked_ops.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native render alias checked operations require MSVC Win32 pointer widths.
@@ -19,6 +20,14 @@ static_assert(offsetof(NativeRenderResourceRecord, sentinel_0c) == 0x0c);
 static_assert(offsetof(NativeRenderResourceRecord, alias_count_10) == 0x10);
 
 namespace {
+void release_alias_string(SizedStoragePool& pool, char* data, std::uint32_t size) {
+    pool.release_00bd1510(data, size);
+}
+void release_alias_string(ActualNativeStringPoolStorage& strings, char* data,
+    std::uint32_t size) noexcept {
+    strings.release(data, size); // Repeats current 419CC0 -> BD1510 for this return.
+}
+
 // Access the actual list fields through their native addresses. Volatile
 // preserves the instruction-ordered loads/stores, including overlapping
 // native storage and changes made by a returning validation/allocation call.
@@ -78,9 +87,10 @@ volatile NativeRenderAliasIterator* native_render_alias_iterator_next_004b9ff0(
     return &iterator;
 }
 
-volatile NativeRenderAliasIterator* erase_native_render_alias_node_004d0990(
+template<class Pool>
+static volatile NativeRenderAliasIterator* erase_alias_node_with_pool(
     void* actual_destination_owner, volatile NativeRenderAliasIterator& output,
-    NativeRenderAliasIterator input_by_value, SizedStoragePool& actual_string_pool,
+    NativeRenderAliasIterator& input_by_value, Pool& actual_string_pool,
     const SingletonLifetimeCallbacks& callbacks) {
     void* const input_owner = input_by_value.owner_00;
     auto* const input_node = input_by_value.node_04;
@@ -106,7 +116,7 @@ volatile NativeRenderAliasIterator* erase_native_render_alias_node_004d0990(
         auto* const data = node->string_data_0c;
         if (data) {
             const auto release_size = node->string_length_08 + 1u;
-            actual_string_pool.release_00bd1510(data, release_size);
+            release_alias_string(actual_string_pool, data, release_size);
         }
         singleton_lifetime_free(input_node);
         // 004D09F1..004D09F8 is hidden by the false _free no-return annotation.
@@ -116,6 +126,20 @@ volatile NativeRenderAliasIterator* erase_native_render_alias_node_004d0990(
     output.node_04 = captured_next;
     output.owner_00 = input_owner;
     return &output;
+}
+
+volatile NativeRenderAliasIterator* erase_native_render_alias_node_004d0990(
+    void* actual_destination_owner, volatile NativeRenderAliasIterator& output,
+    NativeRenderAliasIterator input_by_value, SizedStoragePool& actual_string_pool,
+    const SingletonLifetimeCallbacks& callbacks) {
+    return erase_alias_node_with_pool(actual_destination_owner, output, input_by_value, actual_string_pool, callbacks);
+}
+
+volatile NativeRenderAliasIterator* erase_native_render_alias_node_004d0990(
+    void* actual_destination_owner, volatile NativeRenderAliasIterator& output,
+    NativeRenderAliasIterator input_by_value, ActualNativeStringPoolStorage& actual_string_pool,
+    const SingletonLifetimeCallbacks& callbacks) {
+    return erase_alias_node_with_pool(actual_destination_owner, output, input_by_value, actual_string_pool, callbacks);
 }
 
 }
