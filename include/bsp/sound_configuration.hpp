@@ -3,6 +3,7 @@
 #include "bsp/audio_online_startup.hpp"
 #include "bsp/gui_lua_reader.hpp"
 #include "bsp/sound_manager_levels.hpp"
+#include "bsp/sound_listener.hpp"
 
 #include <array>
 #include <cstdint>
@@ -52,10 +53,12 @@ struct SoundConfiguredType {
 };
 
 struct SoundConfigurationState {
+    explicit SoundConfigurationState(NativeStringStorage& listener_strings = crt_string_storage())
+        : listeners_ac(listener_strings) {}
     SoundConfigurationScalars scalars;
     std::vector<SoundConfiguredType> types_38;
     std::int32_t type_capacity_40{};
-    std::vector<std::string> listeners_ac; // manager+A4, array header +08
+    SoundListenerTable listeners_ac; // manager+A4, array header +08; owns real refs
     std::int32_t listener_capacity_b4{};
     // The native selected pointer at +104 is projected as a stable ordinal.
     // -1 represents null. The native +108 ordinal survives an unsuccessful select.
