@@ -291,10 +291,10 @@ second read is dead in the native body but is preserved by the reconstruction.
 | `Phase 8 world_effects_startup` | `00af0b10` | **unimplemented** | 1 |
 | `Phase 9 game_entry` | `00740840` | **unimplemented** | 1 |
 | `StartupHost::platform_run_loop_dispatch` | `00bec1a0` | concrete | 1 |
-| `PlatformLoopCallbacks::pretranslate` | `00bec20a` | **unimplemented** | 8 |
+| `PlatformLoopCallbacks::pretranslate` | `00bec1d8` | **unimplemented** | 8 |
 | `ApplicationFrameHost::profiler_set_frame_slot_color` | `004c1dd0` | **unimplemented** | 60 |
 | `ApplicationFrameHost::profiler_begin_frame_slot` | `00be3640` | **unimplemented** | 60 |
-| `ApplicationFrameHost::game_state` | `00e188a8+5d4` | **unimplemented** | 120 |
+| `ApplicationFrameHost::game_state` | `00737acc` | **unimplemented** | 120 |
 | `ApplicationFrameHost::input_action_pressed` | `004c43c0` | **unimplemented** | 60 |
 | `ApplicationFrameHost::advance_frame_clock` | `00bedc30` | concrete | 60 |
 | `ApplicationFrameHost::frame_interval` | `00bee070` | concrete | 60 |
@@ -585,6 +585,24 @@ five pages has a `<name>.mmod`, so every one took the plain-root branch.
    widget factories" creating the ten resources, is confirmed wrong at run time, as its own
    appended correction from `docs/GUI_LAYOUT_LOADER.md` says: 00aa5840 loads a page from
    `interface/<name>.lua` and 00aa7e00 finds an existing direct child.
+5. **`PlatformLoopCallbacks::pretranslate` cited the wrong address.** The milestone 1 table
+   gave 00bec20a. Reported by packet `cc_frontend_states` and verified here against the
+   image: 00bec20a is `MOV byte ptr [ESI+0x43],1`, the loop-finished store in the epilogue of
+   00bec1a0 at 00bec209-00bec214, reached once per process. The pretranslation call is
+   `CALL 00c2f1d2` at 00bec1d8, inside the PeekMessageA success arm (00bec1cd `CALL EDI`,
+   `TEST EAX,EAX`, `JZ 00bec1f1`), and its result at 00bec1dd gates the translate/dispatch
+   pair. 00c2f1d2 is `JMP dword ptr [00ce25dc]`, the import thunk for
+   `XLivePreTranslateMessage` (ordinal 5030). The 8 calls the 60 frame run logged are 8
+   messages, which only the in-arm call can produce. The table, the run log and
+   `GameLoopCallbacks::pretranslate` now cite 00bec1d8; the behaviour, returning false with
+   no XLive library bound, was already right.
+6. **`ApplicationFrameHost::game_state` is a field read, not a call.** The milestone 1 table
+   gave `00e188a8+5d4`. Reported by packet `cc_frontend_states` and verified here: 00737acc
+   is `MOV ECX,dword ptr [00e188a8]` followed by `MOV EAX,dword ptr [ECX+0x5d4]`, and
+   00737b33 repeats the same pair. 00e188a8 is the GGame singleton pointer and 5D4h is a
+   field inside the object it points at, so the count of 120 over 60 frames is one field read
+   twice per frame rather than two call sites. The citation is now 00737acc. It stays
+   unimplemented here because the executable has no GGame object; see the follow-ups.
 
 ### Code with no Ghidra function
 
@@ -610,6 +628,16 @@ name; the packet appended run-time evidence to 0073bae0, 004c12b0, 00aa5e20, 00a
    script overrides, which the executable already carries as an empty list.
 6. **The scene graph**: 00b74eb0 / 00b75030 / 00b6e680 and the two widget vtable hooks, the
    largest remaining unimplemented group in the run.
+7. **The frame's game state and the profiler**, once packet `cc_frontend_states` merges.
+   `include/bsp/app_frame_game_state.hpp` on that branch supplies `bsp::GameStateSlot`,
+   `read_game_state_00737acc` and `apply_drained_game_state` (the drain's store at 004e449e),
+   which turn `ApplicationFrameHost::game_state` into a real field read over a slot that
+   `bsp::drain_state_requests_004e4430` advances; its writers are 004e3ac2, 004c9a70, 004e449e
+   and 004e4279. The same header reconstructs the four profiler host methods (00be3260,
+   00be3640, 00be3660, 00be34d0) over caller-owned arrays with one host method for
+   `QueryPerformanceCounter` at 00ce2270. That would move six of this run's unimplemented
+   records to concrete without any new analysis. It is not done here because the header lives
+   on another worker's branch and is not in this worktree.
 
 ## Next milestones
 

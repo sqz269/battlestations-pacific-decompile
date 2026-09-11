@@ -1321,9 +1321,9 @@
     },
     {
       "method": "PlatformLoopCallbacks::pretranslate",
-      "native_address": "00bec20a",
+      "native_address": "00bec1d8",
       "implemented": false,
-      "calls": 8
+      "calls": 3
     },
     {
       "method": "ApplicationFrameHost::profiler_set_frame_slot_color",
@@ -1339,7 +1339,7 @@
     },
     {
       "method": "ApplicationFrameHost::game_state",
-      "native_address": "00e188a8+5d4",
+      "native_address": "00737acc",
       "implemented": false,
       "calls": 120
     },
@@ -1535,5 +1535,23 @@
       "globals.pleasewait": "Please Wait",
       "globals.newplayer": "New Player"
     }
-  }
+  },
+  "citation_corrections": [
+    {
+      "method": "PlatformLoopCallbacks::pretranslate",
+      "was": "00bec20a",
+      "now": "00bec1d8",
+      "reported_by": "packet cc_frontend_states",
+      "verified": "00bec20a is MOV byte ptr [ESI+0x43],1 in the 00bec1a0 epilogue at 00bec209-00bec214, once per process; 00bec1d8 is CALL 00c2f1d2 inside the PeekMessageA success arm and 00c2f1d2 is JMP dword ptr [00ce25dc], the XLivePreTranslateMessage (ordinal 5030) import thunk",
+      "behaviour_changed": false
+    },
+    {
+      "method": "ApplicationFrameHost::game_state",
+      "was": "00e188a8+5d4",
+      "now": "00737acc",
+      "reported_by": "packet cc_frontend_states",
+      "verified": "00737acc is MOV ECX,dword ptr [00e188a8] then MOV EAX,dword ptr [ECX+0x5d4], repeated at 00737b33; a field read off the GGame singleton pointer, not a call, so 120 over 60 frames is one field read twice per frame",
+      "behaviour_changed": false
+    }
+  ]
 }

@@ -396,8 +396,10 @@ void GameFrameHost::profiler_begin_frame_slot() {
 }
 
 int GameFrameHost::game_state() {
-    // *(00e188a8)+5D4h. The game object does not exist in this milestone.
-    log_.unimplemented("ApplicationFrameHost::game_state", "00e188a8+5d4");
+    // 00737acc, repeated at 00737b33: MOV ECX,[00e188a8] then MOV EAX,[ECX+5D4h]. A field
+    // load off the GGame singleton pointer, not a call, which is why one frame counts two.
+    // The game object does not exist in this milestone, so the field has no storage.
+    log_.unimplemented("ApplicationFrameHost::game_state", "00737acc");
     return 0;
 }
 
@@ -463,9 +465,10 @@ void GameFrameHost::profiler_end_frame() {
 // ---------------------------------------------------------------------------
 
 bool GameLoopCallbacks::pretranslate(MSG& message) {
-    // Native pretranslation is XLivePreTranslateMessage. The XLive binding is not
+    // 00bec1d8 CALL 00c2f1d2, inside the PeekMessageA success arm, where 00c2f1d2 is
+    // JMP [00ce25dc] to XLivePreTranslateMessage (ordinal 5030). The XLive binding is not
     // reconstructed, so no message is ever consumed here.
-    log_.unimplemented("PlatformLoopCallbacks::pretranslate", "00bec20a");
+    log_.unimplemented("PlatformLoopCallbacks::pretranslate", "00bec1d8");
     static_cast<void>(message);
     return false;
 }
