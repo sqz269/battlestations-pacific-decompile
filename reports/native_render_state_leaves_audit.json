@@ -1,0 +1,220 @@
+{
+  "scope": "Four complete actual renderer/batch state hardware leaves; no full renderer owner or queue executor",
+  "source_base": "3c62b2261e42b11f5bbd8e66a7481ae684d5a549",
+  "project": "bsp",
+  "program": "battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "interfaces": [
+    {
+      "kind": "function",
+      "address": "00b20240",
+      "name": "native_render_can_execute_command_00b20240",
+      "cpp_symbol": "native_render_can_execute_command_00b20240",
+      "source": "src/native_render_state_leaves.cpp",
+      "native_end_exclusive": "00b2025b",
+      "original_abi": "ECX actual renderer; EAX exact 0 or 1; RET",
+      "evidence": "reports/native_render_state_leaves_audit.json",
+      "status": "complete_actual_storage_hardware_leaf_byte_identical_and_strict_win32_build_checked",
+      "native_instruction_bytes_identical": true,
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b1fe20",
+      "name": "native_render_is_frame_active_00b1fe20",
+      "cpp_symbol": "native_render_is_frame_active_00b1fe20",
+      "source": "src/native_render_state_leaves.cpp",
+      "native_end_exclusive": "00b1fe2b",
+      "original_abi": "ECX actual renderer; AL only predicate; upper24 EAX unchanged; RET",
+      "evidence": "reports/native_render_state_leaves_audit.json",
+      "status": "complete_actual_storage_hardware_leaf_byte_identical_and_strict_win32_build_checked",
+      "native_instruction_bytes_identical": true,
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b20210",
+      "name": "native_render_command_hook_no_op_00b20210",
+      "cpp_symbol": "native_render_command_hook_no_op_00b20210",
+      "source": "src/native_render_state_leaves.cpp",
+      "native_end_exclusive": "00b20213",
+      "original_abi": "ECX ignored; one ignored stack DWORD; RET4",
+      "evidence": "reports/native_render_state_leaves_audit.json",
+      "status": "complete_actual_storage_hardware_leaf_byte_identical_and_strict_win32_build_checked",
+      "native_instruction_bytes_identical": true,
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b51b20",
+      "name": "native_render_batch_count_00b51b20",
+      "cpp_symbol": "native_render_batch_count_00b51b20",
+      "source": "src/native_render_state_leaves.cpp",
+      "native_end_exclusive": "00b51b24",
+      "original_abi": "ECX actual batch; raw DWORD+10 returned in EAX; RET",
+      "evidence": "reports/native_render_state_leaves_audit.json",
+      "status": "complete_actual_storage_hardware_leaf_byte_identical_and_strict_win32_build_checked",
+      "native_instruction_bytes_identical": true,
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "spans": [
+    {
+      "address": "00b20240",
+      "length": 27,
+      "end_exclusive": "00b2025b",
+      "hex": "83b9901d000000750f80b98a1d0000007506b801000000c333c0c3",
+      "sha256": "d2dd10ffb518501973d2bcf287eb18d1bf888ae5bf69c0bdb852d99c0b8f82a0",
+      "live_matches_installed": true,
+      "primary_object_bytes_identical": true,
+      "object_file_offset": 539,
+      "object_relocations": 0
+    },
+    {
+      "address": "00b1fe20",
+      "length": 11,
+      "end_exclusive": "00b1fe2b",
+      "hex": "83b998190000000f95c0c3",
+      "sha256": "fc66797b0caf47ea47d00b192bcdf5c7fb0768188f4a024777d52ba88b23aae1",
+      "live_matches_installed": true,
+      "primary_object_bytes_identical": true,
+      "object_file_offset": 569,
+      "object_relocations": 0
+    },
+    {
+      "address": "00b20210",
+      "length": 3,
+      "end_exclusive": "00b20213",
+      "hex": "c20400",
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "live_matches_installed": true,
+      "primary_object_bytes_identical": true,
+      "object_file_offset": 566,
+      "object_relocations": 0
+    },
+    {
+      "address": "00b51b20",
+      "length": 4,
+      "end_exclusive": "00b51b24",
+      "hex": "8b4110c3",
+      "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+      "live_matches_installed": true,
+      "primary_object_bytes_identical": true,
+      "object_file_offset": 535,
+      "object_relocations": 0
+    }
+  ],
+  "minimum_touched_extents": {
+    "00b20240": "renderer1D94h; byte1D8A read only after inhibit DWORD zero",
+    "00b1fe20": "renderer199Ch",
+    "00b20210": "no object storage touched; one stack DWORD consumed",
+    "00b51b20": "actual batch14h; known complete storage18h"
+  },
+  "primary_object": {
+    "path": "build/win32/bsp_core.dir/Release/native_render_state_leaves.obj",
+    "sha256": "562c2b386edcd93313f90ee0ce1ffbb2ea78f512ea5411d7dd0a6dfb4f87f6a0",
+    "all45_original_bytes_identical": true,
+    "relocations": 0
+  },
+  "artifacts": [
+    {
+      "path": "include/bsp/native_render_state_leaves.hpp",
+      "sha256": "3447bde59fbbce71705e3889d4151656779d77ce10a2a1c53135f1845bca0709"
+    },
+    {
+      "path": "src/native_render_state_leaves.cpp",
+      "sha256": "479c72864f7e09f26711013a4e3ee65164d90e78c5be5e352190ec7d559e1260"
+    },
+    {
+      "path": "reports/native_render_state_leaves_build.txt",
+      "sha256": "05d1d46dbc2321f31c1a5c9109a8cef323e61a0535e1b0ada1daf7276f41e339"
+    }
+  ],
+  "build": {
+    "passed": true,
+    "tests": 2,
+    "path": "reports/native_render_state_leaves_build.txt"
+  },
+  "new_tracked_tests": 0,
+  "new_private_runtime_fixture": false,
+  "prior_annotations": [
+    {
+      "address": "00b20240",
+      "annotation": {
+        "address": "00b20240",
+        "function_name": "BSP_D3D9Renderer_CanExecuteCommand",
+        "comment": "[BSP reconstruction 00b20240]\nReturns1 exactly when DWORD renderer+1D90 inhibit is0 and byte+1D8A device_lost is0, otherwise0. No writes or optional lock. Original ABI: ECX renderer; EAX boolean; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: ECX renderer; EAX boolean; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b1fe20",
+      "annotation": {
+        "address": "00b1fe20",
+        "function_name": "BSP_D3D9Renderer_IsFrameActive",
+        "comment": "[BSP reconstruction 00b1fe20]\nRenderer primary vtable+2Ch; boolean AL=(DWORD+1998h !=0). Gates batch execution and causes EndFrame Present path to proceed only after activefield cleared. Recovered missing11-byte function.\n\n[BSP reconstruction 00b1fe20] update\nReturns whether DWORD renderer+1998 is nonzero. Shared actual state is read independently at command and batch gates. Original ABI: ECX renderer; AL boolean; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: ECX renderer; AL boolean; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b20210",
+      "annotation": {
+        "address": "00b20210",
+        "function_name": "BSP_D3D9Renderer_CommandHookNoOp",
+        "comment": "[BSP reconstruction 00b20210]\nEntire concrete vtable+114 body is RET4. Command execution passes address command+1C; this renderer override does nothing. No interpretation of the ignored argument is required. Original ABI: ECX renderer; one ignored stack DWORD; RET4. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Typed ownership/API, not native object ABI or gameplay validation. Original ABI: ECX renderer; one ignored stack DWORD; RET4. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b51b20",
+      "annotation": {
+        "address": "00b51b20",
+        "function_name": "TRIV_body_00b51b20"
+      }
+    }
+  ],
+  "annotations_applied": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "limitations": [
+    "Raw borrowed actual storage only; no allocation, full renderer constructor or table installation.",
+    "Machine bytes and narrow entry register/stack behavior match; C++ declarations do not install binary replacements.",
+    "Prior semantic fragments remain available and are not promoted to whole renderer or queue implementations.",
+    "No original runtime or gameplay execution was performed by this packet."
+  ],
+  "annotations": {
+    "path": "reports/native_render_state_leaves_annotations.json",
+    "sha256": "2edda57502904e7041d4c78e5bcd4bafcfb363612d94b5e79e01bdb0b469151b",
+    "old_values_preserved": true,
+    "project_saved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b20240",
+      "path": "exports/bsp/functions/00b20240/decompiled.c",
+      "sha256": "8f427c948dbe612a074d2f37ec456e3c07101cd67f6754f6c50fcbed5d57616c"
+    },
+    {
+      "address": "00b1fe20",
+      "path": "exports/bsp/functions/00b1fe20/decompiled.c",
+      "sha256": "de9043a0dc82fbee3a3ac321ca424390091f2cf4f4f0a163e9b8661ec76c6e74"
+    },
+    {
+      "address": "00b20210",
+      "path": "exports/bsp/functions/00b20210/decompiled.c",
+      "sha256": "d80053e1da913e5ca2686571478927d8a9ec601d68ec70c55cbf1d63fe5f123a"
+    },
+    {
+      "address": "00b51b20",
+      "path": "exports/bsp/functions/00b51b20/decompiled.c",
+      "sha256": "c22f2701ea9b5b8bd36a2d1b834121810075bc9c0c3dceb45bf26d50e15fce1b"
+    }
+  ],
+  "closure_utc": "2026-09-11T00:08:47.760357+00:00"
+}

@@ -1,0 +1,861 @@
+{
+  "packet": "native_render_queue_execution_next",
+  "status": "read_only_discovery_complete",
+  "document": "docs/NATIVE_RENDER_QUEUE_EXECUTION_NEXT.md",
+  "base_commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+  "reviewed_main_commit": "e36e0faf24d97b338754291b1c5675a5435973f4",
+  "dependency_commits": {
+    "actual_pooled_string_cleanup": "3ef5439fc51f1305ccdbbe6d5b50be11bccd8756",
+    "raw_batch_keys": "76040d02e30767ed336d7fb2295756ef7e095e27",
+    "raw_pointer_slot_sort": "e0ad74624b08c1b24bb8b403a4e0d48dd2a73d54"
+  },
+  "requested_functions": [
+    {
+      "address": "00b1ebe0",
+      "name": "BSP_RenderCommandQueue_Execute",
+      "original_abi": "ECX actual34h queue, no stack parameters, RET",
+      "native_execution_ready": false,
+      "reason": "Current context and command lifetime helpers exist; concrete command virtual0 execution remains incomplete.",
+      "body_begin": "00b1ebe0",
+      "body_end_exclusive": "00b1ec9b",
+      "unwind": "No queue-level EH registration or cleanup action. Execution failure skips later release, destruction and final resize."
+    },
+    {
+      "address": "00b1d950",
+      "name": "BSP_RenderCommand_ExecuteBatches",
+      "original_abi": "ECX actual44h command, no stack parameters, RET; no native error-return contract",
+      "native_execution_ready": false,
+      "reason": "Actual renderer/targets/camera/system/material/scheduler execution and complete queue-backed preparation remain incomplete.",
+      "body_begin": "00b1d950",
+      "body_end_exclusive": "00b1dac1",
+      "alignment_gap": {
+        "begin": "00b1da6d",
+        "end_exclusive": "00b1da70",
+        "classification": "unreachable alignment after JMP"
+      },
+      "unwind": {
+        "arm_at": "00b1d9d6",
+        "normal_disarm_at": "00b1daa2",
+        "handler": "00cbca68",
+        "eh_info": "00df4ef0",
+        "unwind_map": "00df4ee8",
+        "action": "00cbca60",
+        "action_target": "00b13510",
+        "not_covered": [
+          "readiness",
+          "target binding",
+          "camera execution",
+          "system upload",
+          "initial label copy"
+        ],
+        "reset_exception": "Normal reset follows disarm and is not retried by this guard"
+      }
+    }
+  ],
+  "queue_layout": {
+    "14": "actual command pointer array",
+    "18": "signed live command count",
+    "20": "live control word",
+    "30": "current actual context pointer"
+  },
+  "queue_order": [
+    "Initialize index0; compare signed current count. Empty/negative count leaves current30 untouched.",
+    "Reload command14[index]; capture command28 incoming context and current queue30 old.",
+    "If different, publish incoming30 before actual atomic increment incoming04 and decrement captured old04.",
+    "Null identities skip their count operation. Same identity skips publication and both operations.",
+    "Old reaches zero: current old virtual0 terminal. Afterwards reload command list/cell/table for execute virtual0.",
+    "After execution capture CURRENT queue30. Nonnull: decrement, current terminal if zero, then clear30 after callback.",
+    "Null current30 skips release and clear. Clear after terminal overwrites any callback replacement.",
+    "Reload control20. Zero: reload current indexed command; nonnull ordinary B1DDD0 then BF65AC free, without prior cell clearing.",
+    "Increment index, reload signed count. Final current control0 invokes B1CC80 on queue14 with0, retaining capacity.",
+    "Any exception stops at its actual point; no queue RAII cleanup or unconditional noexcept policy is native."
+  ],
+  "command_order": [
+    "Current F8D394 readiness B20240 false returns before command EH arm.",
+    "Capture context28, current renderer/table98 and camera=context08 before binding context14 target.",
+    "Retain captured camera identity for command; no extra reference is acquired.",
+    "B71360 captured camera; then reload scene04 into ECX and captured camera into EDX for B46A70.",
+    "Reload optional F8D39C, then B13030(command14). No reset guard covers these phases.",
+    "Capture current renderer/table114; arm state0 immediately before metadata(command1C) call.",
+    "Current renderer/table2C AL gates active work; sync108D6DC==0 plus both signed B51B20 counts>50 selects jobs.",
+    "For each job store current batch08 mode before scheduler4C1130; reload batch cell after getter.",
+    "Capture scheduler base+4 before B0FFB0; after job getter read captured base current table4 and enqueue actual primary job/batch.",
+    "After both enqueues get scheduler again, then base current table8 wait mode1.",
+    "Serial: each current batch/table0C receives index; no mode08 store.",
+    "Each current batch/table08 executes index and originally captured camera.",
+    "Disarm then B13510 reset, also when inactive. Armed EH invokes same reset; earlier phases and postdisarm reset have no guard."
+  ],
+  "ready_packets": [
+    {
+      "id": "native_render_diagnostic_labels",
+      "status": "ready_full_functions",
+      "addresses": [
+        "00b13030",
+        "00b13510"
+      ],
+      "suggested_files": [
+        "include/bsp/native_render_diagnostic_labels.hpp",
+        "src/native_render_diagnostic_labels.cpp"
+      ],
+      "dependencies": [
+        "NativeStringStorage",
+        "actual resize_native_string_header_0041dd40",
+        "NativeString::assign_0041e870 fresh actual8h constructor",
+        "destroy_native_string_header_0041dd20 at3ef5439",
+        "actual borrowed F8D39C slot and service+684 header"
+      ],
+      "full_service_owner_required": false,
+      "setter": {
+        "address": "00b13030",
+        "bytes": 57,
+        "original_abi": "ECX actual service, stack actual source8h header, RET4",
+        "order": [
+          "Capture source header and destination service+684; identical headers return.",
+          "Read source length, actual-resize destination with preserve=true.",
+          "Reread source length for nonzero gate.",
+          "Read current destination length, source data and destination data; memcpy destination-length bytes, no terminator copy."
+        ],
+        "unwind": "No local cleanup guard"
+      },
+      "reset": {
+        "address": "00b13510",
+        "bytes": 165,
+        "original_abi": "No inputs, ECX unused, RET",
+        "literal": {
+          "address": "00ce9a38",
+          "hex": "5800",
+          "text": "X"
+        },
+        "order": [
+          "Initial current F8D39C null returns.",
+          "Construct fresh temporary actual8h string from literal X before guard.",
+          "Reload global F8D39C after constructor; capture temporary data and length.",
+          "Form destination+684 and compare with temporary header; arm0 atB1355C.",
+          "Unless identical, resize destination from CAPTURED temporary length.",
+          "CAPTURED nonzero length gates memcpy of current destination length from CAPTURED temporary data.",
+          "Test CAPTURED temporary data, disarm atB13586, then release CAPTURED buffer with CAPTURED length+1 DWORD wrap.",
+          "Do not clear temporary header or add second null-global check."
+        ],
+        "unwind": {
+          "handler": "00cbc278",
+          "eh_info": "00df4360",
+          "unwind_map": "00df4358",
+          "from_state": 0,
+          "to_state": -1,
+          "action": "00cbc270",
+          "action_target": "0041dd20",
+          "cleanup": "LEA ECX,[EBP-14]; JMP41DD20 uses CURRENT temporary header fields, unlike captured normal cleanup.",
+          "constructor_covered": false,
+          "normal_cleanup_after_disarm": true,
+          "action_bytes": "8d4dece9a81a76ff"
+        }
+      },
+      "exclusions": [
+        "full diagnostic service lifetime",
+        "B16F80 statistics",
+        "system-time owner",
+        "generic successful provider",
+        "invented null or retry policy"
+      ],
+      "validation_plan": "Reuse existing pooled-string and build checks; only a focused concrete capture/reread/unwind case if necessary."
+    },
+    {
+      "id": "native_render_execution_state",
+      "status": "ready_full_functions",
+      "addresses": [
+        "00b20240",
+        "00b1fe20",
+        "00b20210",
+        "00b51b20"
+      ],
+      "suggested_files": [
+        "include/bsp/native_render_execution_state.hpp",
+        "src/native_render_execution_state.cpp"
+      ],
+      "dependencies": [
+        "raw borrowed renderer storage covering exact touched offsets",
+        "actual NativeRenderBatchStorage"
+      ],
+      "full_renderer_owner_required": false,
+      "functions": [
+        {
+          "address": "00b20240",
+          "bytes": 27,
+          "original_abi": "ECX renderer, EAX exactly0/1, RET",
+          "behavior": "Read DWORD1D90 first; nonzero skips BYTE1D8A and returns0. Otherwise lost byte zero returns1, nonzero0."
+        },
+        {
+          "address": "00b1fe20",
+          "bytes": 11,
+          "original_abi": "ECX renderer, SETNZ AL only, RET",
+          "behavior": "Compare DWORD1998 with zero; preserve unadvertised upper EAX. New bool API is not full register ABI."
+        },
+        {
+          "address": "00b20210",
+          "bytes": 3,
+          "original_abi": "RET4; incoming renderer/metadata ignored",
+          "behavior": "No memory or EAX writes. Concrete native no-op, not a stub."
+        },
+        {
+          "address": "00b51b20",
+          "bytes": 4,
+          "original_abi": "ECX batch, EAX actual DWORD10, RET",
+          "behavior": "Caller uses signed count; no conversion to vector size or clamp.",
+          "prior_name": "TRIV_body_00b51b20",
+          "suggested_name": "BSP_RenderBatch_GetEntryCount"
+        }
+      ],
+      "validation_plan": "Build and focused byte/source inspection; no broad new test suite."
+    }
+  ],
+  "dependency_frontiers": [
+    {
+      "id": "actual_lifetimes",
+      "status": "implemented",
+      "present": "Actual context/batch/group/command storage and lifetimes, canonical shared atomic zero-terminal lookup, ordinary B1DDD0.",
+      "remaining": "Same owner associations do not supply command virtual0 implementation."
+    },
+    {
+      "id": "queue_access_rows",
+      "status": "implemented_parts_actual_singleton_open",
+      "present": "Actual B1CB30, append/base cleanup, row reserve/resize/destruction.",
+      "remaining": "4C11F0/B1F280 singleton and control-dependent renderer stop remain open."
+    },
+    {
+      "id": "batch_preparation",
+      "addresses": [
+        "00b51df0",
+        "004c11f0",
+        "00b1cb30",
+        "00b1dce0"
+      ],
+      "status": "raw_key_and_sort_committed_full_getter_backed_orchestration_open",
+      "present": "76040d0 actual key loop, BF7456, B51AB0; e0ad746 actual B1DCE0 and ten comparator/helper bodies; config accessor exists.",
+      "remaining": "Actual queue singleton acquisition/current config identity and complete native orchestration."
+    },
+    {
+      "id": "preparation_job",
+      "addresses": [
+        "00b0ffb0",
+        "00b1bf70"
+      ],
+      "status": "actual_lifetime_present_execution_depends_on_preparation",
+      "remaining": "B1BF70 stack batch -> current table/mode08 -> same stack argument -> tailcall virtual0C; no host-vector substitution."
+    },
+    {
+      "id": "batch_execute",
+      "addresses": [
+        "00b55550"
+      ],
+      "status": "host_fragment_only",
+      "exact_body": "Reload actual renderer/table2C gate; clear actual108FBF4; loop signed live count/list; entry04->section20->material7C->effect.virtual14; reload list/count after each effect call.",
+      "remaining": "Concrete actual effect dispatch and live global/renderer binding."
+    },
+    {
+      "id": "material_pipeline",
+      "addresses": [
+        "00b45360",
+        "00b44750",
+        "00b43410",
+        "00b42350",
+        "00b16f80"
+      ],
+      "status": "typed_orchestration_and_typed_constant_builder_present",
+      "remaining": "Actual effect/program/override owners and callbacks, mode/model/geometry/texture/plane/statistics operations; required MaterialEntryOperations is not their implementation."
+    },
+    {
+      "id": "camera_execution",
+      "addresses": [
+        "00b71360",
+        "00b285a0",
+        "00b26770",
+        "00b21430"
+      ],
+      "status": "actual_camera_owner_and_typed_camera_path_present",
+      "remaining": "Native current-global renderer reload separately before prepareA0/viewportA4/Clear08; typed helper captures one cache. Actual fields/counters/planes and x87 clear depth ordering."
+    },
+    {
+      "id": "system_execution",
+      "addresses": [
+        "00b46a70"
+      ],
+      "status": "full_typed_body_present",
+      "remaining": "Same actual scene outer1C, service/clocks,77-register preimage, renderer shader-block ownership/reloads and native callbacks."
+    },
+    {
+      "id": "renderer_targets",
+      "addresses": [
+        "00b24e70"
+      ],
+      "status": "typed_COM_and_actual_parameter_region_only",
+      "remaining": "Actual renderer/table/device/counters/default surfaces; actual target refs04,colors08..14,depth18,sRGB3C,renderer slot and application policy/replacement ordering."
+    },
+    {
+      "id": "scheduler",
+      "addresses": [
+        "004c1130",
+        "00be3020",
+        "00be3150",
+        "00be2fa0",
+        "00be2ea0",
+        "00be2ba0"
+      ],
+      "status": "native_owner_and_execution_incomplete",
+      "remaining": "Actual138A8h owner/base04, work count atomics, events/thread owners/registration, execution draining and wait visibility. Job singleton lifetime is independent."
+    }
+  ],
+  "profiles": {
+    "00d5e5e0_command": {
+      "00": "00b1d950"
+    },
+    "00d5e5c4_context": {
+      "00": "00bd30e0",
+      "04": "00b1d570"
+    },
+    "00d5e5ac_pooled_batch": {
+      "00": "00b55680",
+      "04": "00b1c630",
+      "08": "00b55550",
+      "0c": "00b51df0"
+    },
+    "00d62064_base_batch": {
+      "00": "00bd30e0",
+      "04": "00b51dd0",
+      "08": "00bf698e purecall",
+      "0c": "00b51df0"
+    },
+    "00d5f0a8_renderer": {
+      "08": "00b21430",
+      "2c": "00b1fe20",
+      "98": "00b24e70",
+      "a0": "00b285a0",
+      "a4": "00b26770",
+      "114": "00b20210"
+    },
+    "00d61a00_effect": {
+      "14": "00b45360"
+    },
+    "00ce7550_scheduler_primary": {
+      "00": "004bfb30"
+    },
+    "00ce7554_scheduler_base": {
+      "00": "004bfac0",
+      "04": "00be3020",
+      "08": "00be3150"
+    },
+    "00d5e160_job_primary": {
+      "00": "00b1bf70"
+    },
+    "interpretation": "Observed concrete addresses, not callable host tables or authorization for fallback profiles."
+  },
+  "preserved_prior_metadata": [
+    {
+      "address": "00b1ebe0",
+      "annotation": {
+        "address": "00b1ebe0",
+        "function_name": "BSP_RenderCommandQueue_Execute",
+        "comment": "[BSP reconstruction 00b1ebe0]\nQueue list+14h/count+18h; for each command retain context+28h into current+30h, invoke command virtual+0, release current context. If control+20h==0, invoke destructor00b1ddd0/free each command then resize array to0; nonzero retains list. Raw bytes00b1ec78 show stack cleanup and continuation afterfree, contradicting truncated pseudocode return. No full command-type reconstruction yet.\n\n[BSP reconstruction 00b1ebe0] update\n[BSP reconstruction] Reread list+14/count+18 around callbacks; publish current+30 before retaining incoming command+28 and releasing old. Reread command for virtual0; release CURRENT+30 after execute then clear after callback. Reread control+20: zero destroys/frees current indexed command; reload count; final zero mode resizes list to0 retaining capacity. Original ABI: ECX queue; no stack arguments; RET. Evidence: docs/RENDER_COMMAND_QUEUE.md; reports/render_command_queue_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b1d950",
+      "annotation": {
+        "address": "00b1d950",
+        "function_name": "BSP_RenderCommand_ExecuteBatches",
+        "comment": "[BSP reconstruction 00b1d950]\nVtable00d5e5e0+0, recovered missing function. Gate00b20240 requires inhibit0/notlost; set context state; gate renderer+2Ch activeframe. Two batch pointers+C/+10h prepared serially unless optional syncdisabled and bothcounts>50, then jobservice dispatch. Executes both via virtual+8h with index/context. Full state/job/material dependencies unported.\n\n[BSP reconstruction 00b1d950] update\nRead inhibit/lost; capture context+8 camera before target bind; prepare camera00b71360 and scene/systemprefix00b46a70; copy optional diagnostic label, concrete renderer+114 RET4 no-op, then gate activeframe. Both counts>50 with synchronization disabled select actual two preparation jobs and wait1; otherwise prepare index0/1 serially. Execute both batches in order. Scope exit reloads optional diagnostics and resets to literal X, not empty. Typed orchestration requires actual camera/system/material/job operations; no default no-ops or full-game claim. Original ABI: ECX command; no stack arguments; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: ECX command; no stack arguments; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b13030",
+      "annotation": {
+        "address": "00b13030",
+        "function_name": "BSP_RenderDiagnostics_SetCommandLabel_Provisional",
+        "comment": "[BSP reconstruction 00b13030]\nIf source view differs from owner+684, resize destination to source length then memcpy nonempty payload using resulting destination length. Native pooled string ABI separate from typed diagnostic value storage. Original ABI: ECX diagnostics owner; stack native string view; RET4. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: ECX diagnostics owner; stack native string view; RET4. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b13510",
+      "annotation": {
+        "address": "00b13510",
+        "function_name": "BSP_RenderDiagnostics_ResetCommandLabel_Provisional",
+        "comment": "[BSP reconstruction 00b13510]\nReload optional global00F8D39C; if present construct native temporary from literal00CE9A38 bytes58 00 (X), copy to owner+684, then return temporary length+1 bytes to size-class pool. Exit value is X, NOT empty string. Native allocator and SEH ABI unported. Original ABI: No meaningful ECX input; no stack arguments; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: No meaningful ECX input; no stack arguments; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b20240",
+      "annotation": {
+        "address": "00b20240",
+        "function_name": "BSP_D3D9Renderer_CanExecuteCommand",
+        "comment": "[BSP reconstruction 00b20240]\nReturns1 exactly when DWORD renderer+1D90 inhibit is0 and byte+1D8A device_lost is0, otherwise0. No writes or optional lock. Original ABI: ECX renderer; EAX boolean; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: ECX renderer; EAX boolean; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b1fe20",
+      "annotation": {
+        "address": "00b1fe20",
+        "function_name": "BSP_D3D9Renderer_IsFrameActive",
+        "comment": "[BSP reconstruction 00b1fe20]\nRenderer primary vtable+2Ch; boolean AL=(DWORD+1998h !=0). Gates batch execution and causes EndFrame Present path to proceed only after activefield cleared. Recovered missing11-byte function.\n\n[BSP reconstruction 00b1fe20] update\nReturns whether DWORD renderer+1998 is nonzero. Shared actual state is read independently at command and batch gates. Original ABI: ECX renderer; AL boolean; RET. Evidence docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed interfaces are not original ABI or gameplay validation. Original ABI: ECX renderer; AL boolean; RET. Evidence: docs/RENDER_COMMAND_EXECUTION.md; reports/render_command_execution_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b20210",
+      "annotation": {
+        "address": "00b20210",
+        "function_name": "BSP_D3D9Renderer_CommandHookNoOp",
+        "comment": "[BSP reconstruction 00b20210]\nEntire concrete vtable+114 body is RET4. Command execution passes address command+1C; this renderer override does nothing. No interpretation of the ignored argument is required. Original ABI: ECX renderer; one ignored stack DWORD; RET4. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Typed ownership/API, not native object ABI or gameplay validation. Original ABI: ECX renderer; one ignored stack DWORD; RET4. Evidence: docs/D3D9_FRAME_TARGETS.md; reports/d3d9_frame_targets_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+      }
+    },
+    {
+      "address": "00b51b20",
+      "annotation": {
+        "address": "00b51b20",
+        "function_name": "TRIV_body_00b51b20"
+      }
+    }
+  ],
+  "prior_discovery": {
+    "document": "docs/NATIVE_RENDER_COMMAND_EXECUTION_NEXT.md",
+    "report": "reports/native_render_command_execution_next.json",
+    "pinned_at": "4f0bc070d4d2835668a342dce437937e339b313d",
+    "original_base": "588fc1c",
+    "original_reviewed_main": "c9f8b9d5d33d41c3c46a4a219418fcc94f55df10",
+    "use": "Deeper target/camera/system/material/scheduler native evidence; current source boundary rechecked, obsolete job/queue/key/sort status superseded here."
+  },
+  "validation": {
+    "cpp_changes": false,
+    "cmake_changes": false,
+    "metadata_changes": false,
+    "ghidra_mutations": false,
+    "tests_added": false,
+    "build_run": false,
+    "fixture_tested": false,
+    "abi_compatible_replacement": false,
+    "game_validated": false,
+    "report_json_parsed": true,
+    "diff_whitespace_checked": true,
+    "live_range_count": 31,
+    "live_bytes_compared": 1689
+  },
+  "evidence": {
+    "verified_utc": "2026-09-10T23:57:31.855733+00:00",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_bytes": 12223752,
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_project": "bsp",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "guard": "Each CLI byte read invokes Client.verify before reading; all compared ranges equal installed PE.",
+    "ranges": [
+      {
+        "address": "00b1ebe0",
+        "end_exclusive": "00b1ec9b",
+        "bytes": 187,
+        "sha256": "aa2a17d103218ae405a460a0276bb0769f8711b21ce29e47cddfa4f35387b3dd",
+        "installed_disk_equal": true,
+        "purpose": "complete queue execute body"
+      },
+      {
+        "address": "00b1d950",
+        "end_exclusive": "00b1dac1",
+        "bytes": 369,
+        "sha256": "f8344c0414061b024861c969979e423f999eff4d35e6b3ca0dbd1b283771625f",
+        "installed_disk_equal": true,
+        "purpose": "complete command execute body including unreachable alignment"
+      },
+      {
+        "address": "00cbca60",
+        "end_exclusive": "00cbca72",
+        "bytes": 18,
+        "sha256": "0a5651fe44357902add16e60eff5d91c44f8cd89bceedccf1b61250585c1947a",
+        "installed_disk_equal": true,
+        "purpose": "command unwind action and EH handler",
+        "hex": "8d4debe9a86ae5ffb8f04edf00e9d1a0f3ff"
+      },
+      {
+        "address": "00df4ee8",
+        "end_exclusive": "00df4f14",
+        "bytes": 44,
+        "sha256": "5f62317833fdfe6441afbb58536077edaace9ebf6e749addd742195c582e9ff7",
+        "installed_disk_equal": true,
+        "purpose": "command unwind map and EH info"
+      },
+      {
+        "address": "00b13030",
+        "end_exclusive": "00b13069",
+        "bytes": 57,
+        "sha256": "2f49afcb4c57b6cdde832faabafa48619d1a802f87a466b7bc0e6d0b092e9090",
+        "installed_disk_equal": true,
+        "purpose": "complete diagnostic label setter"
+      },
+      {
+        "address": "00b13510",
+        "end_exclusive": "00b135b5",
+        "bytes": 165,
+        "sha256": "a05fe8017c36100e82cf5c93e42058337cfe2465f180a4df4263c8db1a0288ba",
+        "installed_disk_equal": true,
+        "purpose": "complete diagnostic label reset"
+      },
+      {
+        "address": "00cbc270",
+        "end_exclusive": "00cbc282",
+        "bytes": 18,
+        "sha256": "7a94fc19c949b9d8cc6c9b55f3278e9ed60c4050cec06973c68a6e54cf047368",
+        "installed_disk_equal": true,
+        "purpose": "diagnostic reset unwind action and EH handler",
+        "hex": "8d4dece9a81a76ffb86043df00e9c1a8f3ff"
+      },
+      {
+        "address": "00df4358",
+        "end_exclusive": "00df4384",
+        "bytes": 44,
+        "sha256": "00728bc109a9585cec7f4214e05ebbf2708260646a3bab1f68b959c5232fd2f4",
+        "installed_disk_equal": true,
+        "purpose": "diagnostic reset unwind map and EH info"
+      },
+      {
+        "address": "0041dd20",
+        "end_exclusive": "0041dd3d",
+        "bytes": 29,
+        "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+        "installed_disk_equal": true,
+        "purpose": "actual pooled-string destructor dependency"
+      },
+      {
+        "address": "0041dd40",
+        "end_exclusive": "0041dde4",
+        "bytes": 164,
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+        "installed_disk_equal": true,
+        "purpose": "actual pooled-string resize dependency"
+      },
+      {
+        "address": "0041e870",
+        "end_exclusive": "0041e8c3",
+        "bytes": 83,
+        "sha256": "f32abf313aaccbee4a0686891e75d082fd051777ac277f8f6d68ff90750826c7",
+        "installed_disk_equal": true,
+        "purpose": "pooled-string C-string constructor dependency"
+      },
+      {
+        "address": "00ce9a38",
+        "end_exclusive": "00ce9a3a",
+        "bytes": 2,
+        "sha256": "a6083775b471cc24c0a1fd922bf996fcffad2259b6796da72a38837b4a530027",
+        "installed_disk_equal": true,
+        "purpose": "literal X with terminator",
+        "hex": "5800"
+      },
+      {
+        "address": "00b20240",
+        "end_exclusive": "00b2025b",
+        "bytes": 27,
+        "sha256": "d2dd10ffb518501973d2bcf287eb18d1bf888ae5bf69c0bdb852d99c0b8f82a0",
+        "installed_disk_equal": true,
+        "purpose": "complete raw renderer readiness gate"
+      },
+      {
+        "address": "00b1fe20",
+        "end_exclusive": "00b1fe2b",
+        "bytes": 11,
+        "sha256": "fc66797b0caf47ea47d00b192bcdf5c7fb0768188f4a024777d52ba88b23aae1",
+        "installed_disk_equal": true,
+        "purpose": "complete raw renderer active-frame gate",
+        "hex": "83b998190000000f95c0c3"
+      },
+      {
+        "address": "00b20210",
+        "end_exclusive": "00b20213",
+        "bytes": 3,
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+        "installed_disk_equal": true,
+        "purpose": "complete renderer metadata no-op",
+        "hex": "c20400"
+      },
+      {
+        "address": "00b51b20",
+        "end_exclusive": "00b51b24",
+        "bytes": 4,
+        "sha256": "74032ad0e931f3c4730df99da43479f9f5315cc898c7c8614278631cb2c16a62",
+        "installed_disk_equal": true,
+        "purpose": "complete signed batch count leaf",
+        "hex": "8b4110c3"
+      },
+      {
+        "address": "00b55550",
+        "end_exclusive": "00b55596",
+        "bytes": 70,
+        "sha256": "d545ef37f3bf96408435ceea2340a0344515d64cf444a2d3a35e947fab42e0fd",
+        "installed_disk_equal": true,
+        "purpose": "complete actual batch execution body"
+      },
+      {
+        "address": "00b51df0",
+        "end_exclusive": "00b51f0c",
+        "bytes": 284,
+        "sha256": "84a50d1875727f15b19baf912841cf44d95f05478c9edb0d49b4ba8ac7b0c0b2",
+        "installed_disk_equal": true,
+        "purpose": "complete actual batch preparation body"
+      },
+      {
+        "address": "00b1bf70",
+        "end_exclusive": "00b1bf82",
+        "bytes": 18,
+        "sha256": "e7e02ce675d5d6606f1282bdeae9c7b8161022789ca7d9052614d413fff6a113",
+        "installed_disk_equal": true,
+        "purpose": "complete preparation-job execute tailcall",
+        "hex": "8b4c24048b018b51088b400c89542404ffe0"
+      },
+      {
+        "address": "00d5e5e0",
+        "end_exclusive": "00d5e5e4",
+        "bytes": 4,
+        "sha256": "d8aed37d54611a4abe5c94c6016d5887b7d33957902c193c1a787f56a7180ea8",
+        "installed_disk_equal": true,
+        "purpose": "command slot0 execute profile",
+        "hex": "50d9b100"
+      },
+      {
+        "address": "00d5e5c4",
+        "end_exclusive": "00d5e5cc",
+        "bytes": 8,
+        "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+        "installed_disk_equal": true,
+        "purpose": "concrete context terminal and scalar-delete profile",
+        "hex": "e030bd0070d5b100"
+      },
+      {
+        "address": "00d5e5ac",
+        "end_exclusive": "00d5e5bc",
+        "bytes": 16,
+        "sha256": "9c2ccfe40604062125fec5fdef0e43142b1ed2d15a5f6dcc1ba679f9a5f45819",
+        "installed_disk_equal": true,
+        "purpose": "concrete pooled batch table",
+        "hex": "8056b50030c6b1005055b500f01db500"
+      },
+      {
+        "address": "00d62064",
+        "end_exclusive": "00d62074",
+        "bytes": 16,
+        "sha256": "fd21f7b19ea8f13dd27af4a091df38081898f90eacbd9259f5a3b34cedb64822",
+        "installed_disk_equal": true,
+        "purpose": "construction base batch table",
+        "hex": "e030bd00d01db5008e69bf00f01db500"
+      },
+      {
+        "address": "00d5f0b0",
+        "end_exclusive": "00d5f0b4",
+        "bytes": 4,
+        "sha256": "ba002daa0565819022d79a028250e4323e968aa5424bd38f8a75f1d474571244",
+        "installed_disk_equal": true,
+        "purpose": "renderer slot08 clear",
+        "hex": "3014b200"
+      },
+      {
+        "address": "00d5f0d4",
+        "end_exclusive": "00d5f0d8",
+        "bytes": 4,
+        "sha256": "c0bf51fe1d811d1f9b351b9fba458a42c50e494424ab8fbdc82d75de771f0247",
+        "installed_disk_equal": true,
+        "purpose": "renderer slot2C active gate",
+        "hex": "20feb100"
+      },
+      {
+        "address": "00d5f140",
+        "end_exclusive": "00d5f144",
+        "bytes": 4,
+        "sha256": "2c3c2fb780030a8f21e0d33270ccda46e9bff87f5272a62dab47aab4f47e1da9",
+        "installed_disk_equal": true,
+        "purpose": "renderer slot98 target bind",
+        "hex": "704eb200"
+      },
+      {
+        "address": "00d5f148",
+        "end_exclusive": "00d5f150",
+        "bytes": 8,
+        "sha256": "18089314bb2b10c46febecf5f37751362b4724dd91625097ef9697159905e852",
+        "installed_disk_equal": true,
+        "purpose": "renderer slotsA0 prepare camera and A4 viewport",
+        "hex": "a085b2007067b200"
+      },
+      {
+        "address": "00d5f1bc",
+        "end_exclusive": "00d5f1c0",
+        "bytes": 4,
+        "sha256": "265f95ec80277ef281e49901c3476ffde1d75d08d309512a2e1792d5dd4b8847",
+        "installed_disk_equal": true,
+        "purpose": "renderer slot114 metadata",
+        "hex": "1002b200"
+      },
+      {
+        "address": "00d61a14",
+        "end_exclusive": "00d61a18",
+        "bytes": 4,
+        "sha256": "307b09a6c1e48adf50c06c93677e203fd8fe6a2e4b095b21e97314c2b171c98d",
+        "installed_disk_equal": true,
+        "purpose": "effect slot14 dispatch",
+        "hex": "6053b400"
+      },
+      {
+        "address": "00ce7550",
+        "end_exclusive": "00ce7560",
+        "bytes": 16,
+        "sha256": "f4aa8c6bc6e9bcfad9b8639832e76e0a3a4cb2f29d72dd0c977780d2930487d6",
+        "installed_disk_equal": true,
+        "purpose": "scheduler primary and base virtual deletion enqueue wait",
+        "hex": "30fb4b00c0fa4b002030be005031be00"
+      },
+      {
+        "address": "00d5e160",
+        "end_exclusive": "00d5e164",
+        "bytes": 4,
+        "sha256": "e7d6d1986e421f13415a2d46a278cdb507889b3a53ee52ca1e19db31e5219af0",
+        "installed_disk_equal": true,
+        "purpose": "preparation-job primary execute table",
+        "hex": "70bfb100"
+      }
+    ]
+  },
+  "source_contract_hashes": [
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "src/native_render_context.cpp",
+      "sha256": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "include/bsp/native_render_command_owner.hpp",
+      "sha256": "075aeabef5f471eb0ef50de21045a91ed8c7c7c0834dd729115ea4bbe64dba93"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "src/native_render_command_owner.cpp",
+      "sha256": "160f1102b71bc4977eb85a8bc38aaddb4c9a0ce04271d99457c2552d69608767"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "include/bsp/native_render_batch_lifetime.hpp",
+      "sha256": "112f1204c6f7b8633dee691a09c967c2002a1d3cdf6b64e37d42e2b3ef74dead"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "include/bsp/native_render_queue_access.hpp",
+      "sha256": "16fe7dbc5c783b733902b421a5f07b703c2192f47417100ec15f674e250fdadb"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "src/native_render_queue_access.cpp",
+      "sha256": "373b3206776e8e0c201a96c37a9c3f7e8d6009570227f7efcf32e0e960b86722"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "include/bsp/native_render_queue_rows.hpp",
+      "sha256": "46ef7ebe73c1360fb37c6a4781b4c14285bca36802202598bd2c32842c76871a"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "src/native_render_queue_rows.cpp",
+      "sha256": "dd493cb7d82a3e8c450e171e759e1e5144f5efcc5bfd5eec8cd2d8e8dce39714"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "include/bsp/native_render_preparation_job_owner.hpp",
+      "sha256": "fce48f95671b87933f49d5045b56a2e55d1c3de0b9c6282132971239676fcb46"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "src/native_render_preparation_job_owner.cpp",
+      "sha256": "b726ef28a77f8c5fd58231e17bfb556cdc06ab1da6a2106c7c9b0150d1d5ad02"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "include/bsp/render_command_execution.hpp",
+      "sha256": "8fff16c9fa9fa22e086f82db7b79d9e4dcf82e394610cad5c2b976ef7e62d08d"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "src/render_command_execution.cpp",
+      "sha256": "d3aae1244dd10e984a983caf07d5ef7650f3e82b299818097cc0a5bfb823a8d5"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "include/bsp/native_camera_owner.hpp",
+      "sha256": "636430a3d2ab6a143095f7fdb861ca3196b6ac5bdbfc679a12a612c335c9d5ee"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "include/bsp/camera_frame_state.hpp",
+      "sha256": "3908727ef594797d30acfba72d87366683c61d7768e7cf3038f5a0164f7428df"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "src/camera_frame_state.cpp",
+      "sha256": "e05983d2625a6276f15b4fc8b84c8b6c1c81e864a95909bde50b0d8610dc811e"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "include/bsp/system_constant_builder.hpp",
+      "sha256": "1bd5d6d3a10b53d4765ba95500a64c617527adea79079243685583cf6d581474"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "src/system_constant_builder.cpp",
+      "sha256": "8e9abc434d042ad941532219ebfaa305af5d68d71ccfd91b10fe2865ca407563"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "include/bsp/material_entry_dispatch.hpp",
+      "sha256": "8bf3e1e3d799c65e2153f4b9f768a4c260f8ba1ce46b3da7076370fd5e3d4769"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "include/bsp/native_renderer_parameters.hpp",
+      "sha256": "e611c56944aced8136d129fd00c0ff2689a424bb36ec29dc66ab5c97f1ba0605"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "docs/NATIVE_RENDER_COMMAND_EXECUTION_NEXT.md",
+      "sha256": "8219bdaf2e33fb6e0cbbc2f640e0066b45ebef71f5833060ece3603c5657ad1e"
+    },
+    {
+      "commit": "4f0bc070d4d2835668a342dce437937e339b313d",
+      "path": "reports/native_render_command_execution_next.json",
+      "sha256": "de872d322d082b0a2bc79f8905d4c568bf27129ba9fc29e8cf659901a05d0b87"
+    },
+    {
+      "commit": "e36e0faf24d97b338754291b1c5675a5435973f4",
+      "path": "include/bsp/native_render_batch_keys.hpp",
+      "sha256": "41a5e8c480a784a70ca0827e2ce32415deb1d12765a85a48f88b2028f7fc9e3b"
+    },
+    {
+      "commit": "e36e0faf24d97b338754291b1c5675a5435973f4",
+      "path": "src/native_render_batch_keys.cpp",
+      "sha256": "fa6a16afd510a1a0b7bc24bb928b5b908268266ef7a2603112aef0a56e9152c0"
+    },
+    {
+      "commit": "e36e0faf24d97b338754291b1c5675a5435973f4",
+      "path": "include/bsp/native_render_pointer_slot_sort.hpp",
+      "sha256": "b30833f4b97a03977e242292c9f477829152fef3046a2920ce52544272c73634"
+    },
+    {
+      "commit": "e36e0faf24d97b338754291b1c5675a5435973f4",
+      "path": "src/native_render_pointer_slot_sort.cpp",
+      "sha256": "dbe0c05bc0dcc529a2244fd1dbaba9d557606502260d65b2cb085cd238158aac"
+    },
+    {
+      "commit": "3ef5439fc51f1305ccdbbe6d5b50be11bccd8756",
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0"
+    },
+    {
+      "commit": "3ef5439fc51f1305ccdbbe6d5b50be11bccd8756",
+      "path": "src/native_string.cpp",
+      "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+    }
+  ]
+}
