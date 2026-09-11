@@ -5486,11 +5486,180 @@
       "scope": "Full749nativebytes:actualcachedrender/sampler setters andordereddefaultinitializer, fullactualsynchronization; independent ofunknownlogicalowner lifetimes."
     },
     {
+      "id": "orch4_global_script_folders_g",
+      "packet": "orch4_global_script_folders_g",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00886370",
+        "00886900"
+      ],
+      "code_ownership": [
+        "include/bsp/global_script_folders.hpp",
+        "src/global_script_folders.cpp",
+        "docs/GLOBAL_SCRIPT_FOLDERS.md",
+        "reports/global_script_folders.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/GLOBAL_SCRIPT_FOLDERS.md"
+    },
+    {
+      "id": "orch4_race_config_g",
+      "packet": "orch4_race_config_g",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00800160",
+        "00800090",
+        "007ffec0",
+        "007ff9d0",
+        "007ffc00",
+        "007ff9f0",
+        "007ffb10"
+      ],
+      "code_ownership": [
+        "include/bsp/race_config.hpp",
+        "src/race_config.cpp",
+        "docs/RACE_CONFIG.md",
+        "reports/race_config.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/RACE_CONFIG.md"
+    },
+    {
+      "id": "orch4_marker_classes_g",
+      "packet": "orch4_marker_classes_g",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "006dbeb0",
+        "006d8fc0",
+        "006dbc10",
+        "006d8bc0",
+        "006d90e0",
+        "006d8460",
+        "006db2f0",
+        "007188a0",
+        "006da6b0"
+      ],
+      "code_ownership": [
+        "include/bsp/marker_classes.hpp",
+        "src/marker_classes.cpp",
+        "docs/MARKER_CLASSES.md",
+        "reports/marker_classes.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/MARKER_CLASSES.md"
+    },
+    {
+      "id": "orch4_robot_config_g",
+      "packet": "orch4_robot_config_g",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00901610",
+        "009013d0",
+        "00900af0",
+        "00900bb0",
+        "009dbfe0",
+        "008fc6d0",
+        "008fc930",
+        "008fca10",
+        "008fcca0",
+        "008fcd60",
+        "008fcea0",
+        "009973b0",
+        "009999f0",
+        "008fcf30",
+        "008fd230",
+        "008fd370",
+        "008fd580",
+        "008fd640",
+        "008fd7d0",
+        "008fd880",
+        "008fda60",
+        "009d53b0",
+        "009d56a0",
+        "008fc5a0",
+        "008fe4a0",
+        "008fe4e0",
+        "008fe520",
+        "008fe460",
+        "008fe560",
+        "008fe5a0",
+        "008fe5e0",
+        "008fe620",
+        "009dfc70",
+        "00901210",
+        "00900a30",
+        "008fe420",
+        "00438f80",
+        "00438fe0",
+        "00439000",
+        "0043a610"
+      ],
+      "code_ownership": [
+        "include/bsp/robot_config.hpp",
+        "src/robot_config.cpp",
+        "docs/ROBOT_CONFIG.md",
+        "reports/robot_config.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/ROBOT_CONFIG.md"
+    },
+    {
+      "id": "orch4_recon_values_g",
+      "packet": "orch4_recon_values_g",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00803a40",
+        "006b8190",
+        "006b8210",
+        "00803750",
+        "008037d0",
+        "008039e0",
+        "00a672f0",
+        "00a67ea0"
+      ],
+      "code_ownership": [
+        "include/bsp/recon_values.hpp",
+        "src/recon_values.cpp",
+        "docs/RECON_VALUES.md",
+        "reports/recon_values.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/RECON_VALUES.md"
+    },
+    {
+      "id": "orch4_global_config_integration_g",
+      "packet": "orch4_global_config_integration_g",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "004dc6a0"
+      ],
+      "code_ownership": [
+        "include/bsp/global_subsystems.hpp",
+        "src/global_subsystems.cpp",
+        "docs/GLOBAL_SUBSYSTEMS.md",
+        "reports/global_subsystems.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/GLOBAL_SUBSYSTEMS.md"
+    },
+    {
       "id": "native_renderer_stream_frequency1",
       "packet": "native_renderer_stream_frequency1",
       "worker": "main",
-      "done": false,
-      "state": "full_source_strict_main_Win32_checked_original_main_library_fixture_pending",
+      "done": true,
+      "state": "complete_actual_storage_primary_library_real_D3D9_original_EH_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b24a40"
       ],
@@ -5501,14 +5670,15 @@
         "reports/native_renderer_stream_frequency_audit.json"
       ],
       "source_ready": true,
-      "scope": "Full actual renderer storage and optional synchronization guards. No stream/stage validation, artificial cache defaults or injected provider callbacks."
+      "scope": "Full actual renderer storage and optional synchronization guards. No stream/stage validation, artificial cache defaults or injected provider callbacks.",
+      "evidence": "reports/native_renderer_stream_frequency_audit.json"
     },
     {
       "id": "native_renderer_texture_stage_state1",
       "packet": "native_renderer_texture_stage_state1",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "complete_actual_storage_source_build_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_actual_storage_primary_library_real_D3D9_original_EH_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b24510"
       ],
@@ -5519,7 +5689,8 @@
         "reports/native_renderer_texture_stage_state_audit.json"
       ],
       "source_ready": true,
-      "scope": "Full actual renderer storage and optional synchronization guards. No stream/stage validation, artificial cache defaults or injected provider callbacks."
+      "scope": "Full actual renderer storage and optional synchronization guards. No stream/stage validation, artificial cache defaults or injected provider callbacks.",
+      "evidence": "reports/native_renderer_texture_stage_state_audit.json"
     },
     {
       "id": "native_frame_target_getters3",
@@ -5539,6 +5710,72 @@
       "done": true,
       "state": "complete_actual_storage_primary_library_original_code_fixture_and_strict_Win32_checked",
       "evidence": "reports/native_frame_target_getters_audit.json"
+    },
+    {
+      "id": "native_frame_target_vector3",
+      "packet": "native_frame_target_vector3",
+      "worker": "frame_target_vector",
+      "done": false,
+      "state": "primary_native_contract_reviewed_independent_worker_source_and_original_fixture_in_progress",
+      "function_addresses": [
+        "00b1f970",
+        "00b1f9f0",
+        "00b1fb90"
+      ],
+      "code_ownership": [
+        "include/bsp/native_frame_target_vector.hpp",
+        "src/native_frame_target_vector.cpp",
+        "docs/NATIVE_FRAME_TARGET_VECTOR.md",
+        "reports/native_frame_target_vector_audit.json"
+      ],
+      "source_ready": true,
+      "scope": "Complete actual raw storage and concrete provider operations; primary owns shared integration and Ghidra repairs/annotations."
+    },
+    {
+      "id": "native_shader_owner_texture_release2",
+      "packet": "native_shader_owner_texture_release2",
+      "worker": "shader_owner_reset_discovery",
+      "done": false,
+      "state": "primary_native_contract_reviewed_independent_worker_source_and_original_fixture_in_progress",
+      "function_addresses": [
+        "00b188a0",
+        "00b24e20"
+      ],
+      "code_ownership": [
+        "include/bsp/native_shader_owner_texture_release.hpp",
+        "src/native_shader_owner_texture_release.cpp",
+        "docs/NATIVE_SHADER_OWNER_TEXTURE_RELEASE.md",
+        "reports/native_shader_owner_texture_release.json"
+      ],
+      "source_ready": true,
+      "scope": "Complete actual raw storage and concrete provider operations; primary owns shared integration and Ghidra repairs/annotations."
+    },
+    {
+      "id": "native_frame_target_owner6",
+      "packet": "native_frame_target_owner6",
+      "worker": "frame_target_owner_discovery",
+      "done": false,
+      "state": "primary_native_lifetime_contract_reviewed_worker_source_in_progress_vector_prerequisite_pending",
+      "function_addresses": [
+        "00b1fbb0",
+        "00b1fc00",
+        "00b1fcf0",
+        "00b1fab0",
+        "00b1fb00",
+        "00b1f700"
+      ],
+      "code_ownership": [
+        "include/bsp/native_frame_target_owner.hpp",
+        "src/native_frame_target_owner.cpp",
+        "docs/NATIVE_FRAME_TARGET_OWNER.md",
+        "reports/native_frame_target_owner_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [
+        "native_frame_target_vector3"
+      ],
+      "discovery_evidence": "reports/native_frame_target_owner_discovery.json",
+      "scope": "Completeactual0x40group constructor/destructor/scalar/depthcolorassignments/sRGBbyte with D5E600two-slotprofile, current D619A0surfaceowners/realCOMandCRT, state-specificnativeEH. Vector must integratefirst."
     }
   ],
   "snapshot_after_analysis": {

@@ -7,9 +7,9 @@
       "address": "004dc6a0",
       "name": "construct_global_subsystems_004dc6a0",
       "source": "src/global_subsystems.cpp",
-      "status": "reconstructed_normal_flow_combined_build_and_focused_fixture_tested",
+      "status": "reconstructed_configuration_integration_build_and_real_lua_fixture_tested",
       "abi": "ECX=game; no stack arguments; RET004DC93F",
-      "evidence": "Hypothesis, not a recovered symbol. Complete normal-flow004DC6A0 through RET004DC93F; ECX=game. Pooled Game_Global/FileBlock lifetime, ordered individual initialization services, live singleton count/validation reloads and actual effect refcount cleanup, then native-size allocation/publication/loading of traffic,panel,powerup,warnings,weather. Direct canonical panel/dialog and weather owner/load calls. Other callees remain required services, not stubs. src/global_subsystems.cpp; docs/GLOBAL_SUBSYSTEMS.md. New C++ interface, no native SEH/ABI/gameplay claim.",
+      "evidence": "Hypothesis, not a recovered symbol. Complete normal-flow004DC6A0 through RET004DC93F, ECX=game. Configuration integration replaces00886900,00800160,00901610,00803A40,006DBEB0 callbacks with recovered direct bodies and canonical live contexts. Global folders retain captured mission services; marker borrows current embedded game+1A0C; recon uses current mission host/instance mutable state slot. Race/robot/marker registries preserve publication and native pointer ownership; panel/dialog and weather remain direct. Existing FileBlock, effect/config singleton, traffic/powerup/warning operations remain required services. src/global_subsystems.cpp; docs/GLOBAL_SUBSYSTEMS.md and linked configuration reports. New C++ interfaces, native SEH/STL/ABI/gameplay not established.",
       "document": "docs/GLOBAL_SUBSYSTEMS.md",
       "last_instruction": "004dc93f",
       "last_instruction_length": 1,
@@ -42,16 +42,16 @@
     "00452660",
     "0044fa30",
     "00445b10",
-    "00444d20"
-  ],
-  "required_services": [
-    "00be0a30",
-    "00bdcb30",
+    "00444d20",
     "00886900",
     "00800160",
     "00901610",
     "00803a40",
-    "006dbeb0",
+    "006dbeb0"
+  ],
+  "required_services": [
+    "00be0a30",
+    "00bdcb30",
     "006b8ad0",
     "00432650",
     "00871ba0",
@@ -134,5 +134,90 @@
       "doc_addresses": 10911
     },
     "game_validated": false
+  },
+  "configuration_integration_g": {
+    "status": "integrated_reviewed_build_and_focused_fixture_tested",
+    "direct_loaders": [
+      "00886900",
+      "00800160",
+      "00901610",
+      "00803a40",
+      "006dbeb0"
+    ],
+    "mission_binding": "GlobalSubsystemHost::mission_lua_services_1a08(captured_owner)",
+    "marker_binding": "MarkerClassHost current embedded game+1A0C",
+    "recon_binding": "ReconValuesHost current mission instance mutable lua_State* slot",
+    "reports": [
+      "reports/global_script_folders.json",
+      "reports/race_config.json",
+      "reports/robot_config.json",
+      "reports/recon_values.json",
+      "reports/marker_classes.json"
+    ],
+    "native_abi": false,
+    "game_validated": false,
+    "annotations": {
+      "count": 1,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "local/ghidra-annotations-20260911T084919Z.json",
+      "readback": "local/global_config_comments.json",
+      "exports": "local/global_config_exports.log"
+    },
+    "total_saved_readback_annotations": 74,
+    "validation": {
+      "build": "MSVC Win32 Release passed",
+      "existing_tests": "reconstructed_math/native_math_differential2/2 passed",
+      "build_log": "local/global_config_g_build.log",
+      "fixture_count": 6,
+      "fixture_logs": [
+        "local/global_config_g_fixture_pass.log",
+        "local/global_config_g_folders_fixture.log",
+        "local/global_config_g_race_fixture.log",
+        "local/global_config_g_marker_fixture.log",
+        "local/global_config_g_robot_fixture.log",
+        "local/global_config_g_recon_fixture.log"
+      ],
+      "library_sha256": "616d7230842fcc8c847d575a8860d639c1cc34f32b756287d8e705768789cf83",
+      "code_revision": "958ea08cc49292289937716edb194e79e569776b",
+      "game_validated": false,
+      "native_abi": false,
+      "fixture_corrections": [
+        "Test-only helper renamed to avoid MSVC extern/static unexpected name warning.",
+        "Startup fixture now supplies middleware=73 required by reused robot fixture data; no production change from these fixture failures."
+      ]
+    },
+    "worker_commits": {
+      "race": "a169aba",
+      "marker": "f239a8c9dd7da5371af8bddc4f4f54d7e2de613d",
+      "robot": "070d271bca69c168081ec39fb586c2c3274993e5",
+      "recon": "75e43433bf7aa4d01323f1040b8b3e5aee7b9c34"
+    },
+    "ghidra_repairs": {
+      "new_function_definitions": 9,
+      "race_marker_call_gaps": 4,
+      "robot_call_gaps": 21,
+      "script_folder_tail": "Decoded/saved90 bytes and cleared false return; stored00886370 body still ends00886793, documented limitation retained."
+    },
+    "independent_integration_review": "Race/traffic worker independently checked complete004DC6A0 and all five new calls, alias/capture distinctions and preserved effect/publication order; no concrete mismatch. No game-validation claim.",
+    "final_integration": {
+      "tested_revision": "eb86365727631c936b74f0e498a2c353a207b794",
+      "main_after_integration": "eb86365727631c936b74f0e498a2c353a207b794",
+      "main_base": "d2ff40bdc94edd0d6686a50d75614a7f7c934111",
+      "build": "MSVC Win32 Release passed",
+      "existing_tests": "reconstructed_math/native_math_differential2/2 passed",
+      "log": "local/config_g_integrate.log",
+      "library_sha256": "11b8c815298aee7131a149271f4cb537fb3da905ce76f09fa8f80033ff045c00",
+      "fixture_scope": "Six fixtures passed against the same pre-main-merge library at validation.code_revision958ea08; final integration includes independent main changes and has separate successful build/tests.",
+      "mechanical_merges": [
+        "config/names/008f0000.jsonl address union",
+        "config/reconstruction/008f0000.jsonl independent insertions",
+        "config/parallel_work.json independent insertions"
+      ],
+      "ghidra_reapplied_saved_annotations": 74,
+      "ghidra_before_log": "../battlestations-pacific-decompile/local/ghidra-annotations-20260911T090315Z.json",
+      "game_validated": false
+    }
   }
 }

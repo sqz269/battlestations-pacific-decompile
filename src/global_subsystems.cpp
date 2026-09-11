@@ -66,12 +66,15 @@ void construct_global_subsystems_004dc6a0(GlobalSubsystemState game,
     } // temporary name is released before the first script call
     FileBlockCleanup block_cleanup{host, file_block};
 
-    host.load_global_scripts_00886900(game.mission_lua_1a08);
-    host.load_races_00800160();
-    host.load_robots_00901610();
+    load_global_script_folders_00886900(
+        host.mission_lua_services_1a08(game.mission_lua_1a08), context.global_script_folders);
+    load_race_config_00800160(context.races_00f87464,
+        context.lua_environment, context.scripts, context.race_config);
+    (void)load_robot_config_00901610(context.robots_00f89994, context.robot_aliases,
+        context.lua_environment, context.scripts, context.robot_config);
     // 006F7B50 is one RET, verified from the listing.
-    host.install_recon_values_00803a40();
-    host.load_marker_classes_006dbeb0();
+    install_recon_values_00803a40(context.recon_values);
+    load_marker_classes_006dbeb0(context.marker_classes);
     void* const lua = read<void*>(game.mission_lua_1a08, 4);
     if (lua) host.run_string_006b8ad0(lua, "collectgarbage(\"collect\")", 0, 0, 2);
 

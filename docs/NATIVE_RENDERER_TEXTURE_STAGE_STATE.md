@@ -120,3 +120,22 @@ mode enabling after an uninitialized guard was skipped, asynchronous SEH or
 secondary-exception termination subprocesses, exhaustive state/stage/value
 combinations, a failed real HRESULT, concurrent mutation between pure reads,
 complete renderer integration, gameplay and visual validation.
+
+## Primary integration
+
+The primary registered this source in CMake and passed the strict Win32 build,
+both existing CTests and eight fresh native seeds. It independently verified
+49 worker artifact pins, five current source/provider files and twelve fresh
+live-Ghidra/PE spans (508 bytes). The actual main library
+`3ca9a0274a0ce0fb9c7e0855bf75c1d8d2b70e70d005c7b3da1fcdcf6404600b`
+and two exact archive objects passed the unchanged fixture: fourteen pairs,
+226,438 literal DWORDs and 124 frames match. Fourteen complete COFF/linked
+functions and all 783 whole runtime code/map/import postimages are verified.
+The full native guards and FH3 handler/funclet/maps execute with declared
+bindings. Actual FH3 export/import agreement and its six-byte thunk/four-byte
+cell are pinned alongside real HAL/OS callback and exception behavior.
+All real HRESULTs were S_OK, including stages 40000000h and 8; failed returning
+HRESULT behavior remains instruction-audited. The existing descriptive name
+and appended evidence are saved in Ghidra with prior comments preserved; the
+full ledger record and forced export are registered. No permanent tests,
+original-caller ABI, full renderer, gameplay or visual claims were added.

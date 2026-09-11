@@ -1,0 +1,230 @@
+{
+  "packet": "orch4_marker_classes_g",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra": "http://127.0.0.1:8089"
+  },
+  "functions": [
+    {
+      "address": "006dbeb0",
+      "name": "BSP_MarkerClasses_LoadGlobals",
+      "source": "src/marker_classes.cpp",
+      "header": "include/bsp/marker_classes.hpp",
+      "document": "docs/MARKER_CLASSES.md",
+      "original_abi": "No native arguments; RET",
+      "last_instruction": "006dc19d",
+      "last_instruction_length": 1,
+      "end_inclusive": "006dc19d",
+      "evidence": "Complete207 instructions.006DBED1/EDF resolve current[00E188A8]+1A0C embedded Lua owner; MarkerClasses captured once. Entry key/name then Mesh, Anim00B66290, Synchronized00B66250.006DBFF9/FFF capture mesh data/length before Lua ref release. 20h allocation and006D8FC0 before registry006DBC10;006DC0E3 overwrites raw pointer without release. Captured mesh cleanup then current name cleanup; final value,key,table release.",
+      "uncertainty": "Borrowed actual Lua5.1 state through existing registry-reference adapter; no open/close/script execution here. Native tracked stack/GC and numeric-key cursor coercion are outside this adapter. Standard-map projection with exact comparator and owned pooled keys; native node/debug iterator layout, invalid iterator checks, max size/exception ABI, insertion-time map mutation and freed-link topology are not reproduced. count_08 is separate from std::map::size during teardown.",
+      "status": "reconstructed"
+    },
+    {
+      "address": "006d8fc0",
+      "name": "BSP_MarkerClass_Construct",
+      "source": "src/marker_classes.cpp",
+      "header": "include/bsp/marker_classes.hpp",
+      "document": "docs/MARKER_CLASSES.md",
+      "original_abi": "ECX=fresh20h descriptor; name*,mesh*,Anim,sync-byte stack; EAX=this; RET10",
+      "last_instruction": "006d90dc",
+      "last_instruction_length": 3,
+      "end_inclusive": "006d90de",
+      "evidence": "Complete91 instructions. Vtable00CF8F78; independent NativeString copies+4/+C; Anim+18 and sync lowbyte+1C. Null mesh pointer selects verified empty literal00E19980. New resource-name temporary calls concrete007188A0; returned intrusive resource stored+14 BEFORE temporary cleanup.",
+      "uncertainty": "Win32 descriptor size/offsets statically checked; native vtable word is identity, not executable host ABI. Resource manager/factory primitives remain required. Native SEH/exception transport and padding values are not reconstructed.",
+      "status": "reconstructed"
+    },
+    {
+      "address": "006dbc10",
+      "name": "BSP_MarkerClassRegistry_LookupOrInsert",
+      "source": "src/marker_classes.cpp",
+      "header": "include/bsp/marker_classes.hpp",
+      "document": "docs/MARKER_CLASSES.md",
+      "original_abi": "ECX=registry; name* stack; EAX=pointer cell node+14; RET4",
+      "last_instruction": "006dbcfb",
+      "last_instruction_length": 3,
+      "end_inclusive": "006dbcfd",
+      "evidence": "Complete86 instructions;006D8460 lower_bound; exact00443D00 comparator; missing mapped word0 at006DBC8E/90. Pair key and node006D94B0 independently copied; pair data captured006DBC76, length reloaded006DBCBC. Existing key/pointer-cell identity retained, prior descriptor neither read nor released.",
+      "uncertainty": "Standard-map projection with exact comparator and owned pooled keys; native node/debug iterator layout, invalid iterator checks, max size/exception ABI, insertion-time map mutation and freed-link topology are not reproduced. count_08 is separate from std::map::size during teardown.",
+      "status": "reconstructed_projection"
+    },
+    {
+      "address": "006d8bc0",
+      "name": "BSP_MarkerClass_Destroy",
+      "source": "src/marker_classes.cpp",
+      "header": "include/bsp/marker_classes.hpp",
+      "document": "docs/MARKER_CLASSES.md",
+      "original_abi": "ECX=descriptor; RET",
+      "last_instruction": "006d8c67",
+      "last_instruction_length": 1,
+      "end_inclusive": "006d8c67",
+      "evidence": "Complete55 instructions: vtable restore, capture resource14, real InterlockedDecrement+4; current virtual0 only on zero. Resource null store006D8C09 follows callback; then mesh and name pooled release, string headers untouched.",
+      "uncertainty": "Resource-zero service must implement real current virtual dispatch with no stack args. Reentrant nulling preserved; native SEH/ABI and alternate descriptor vtables are outside the typed interface.",
+      "status": "reconstructed"
+    },
+    {
+      "address": "006d90e0",
+      "name": "CG_scalar_deleting_dtor_006d90e0",
+      "source": "src/marker_classes.cpp",
+      "header": "include/bsp/marker_classes.hpp",
+      "document": "docs/MARKER_CLASSES.md",
+      "original_abi": "ECX=descriptor; flags stack; EAX=original pointer; RET4",
+      "last_instruction": "006d90fb",
+      "last_instruction_length": 3,
+      "end_inclusive": "006d90fd",
+      "evidence": "006D8BC0 call then flagbit0 test, optional concrete free, original pointer return. Raw decode confirms missing006D90F5 ADD ESP4.",
+      "uncertainty": "Correct compiler-generated name retained. Host deletion requires allocation through existing concrete transport; returned freed pointer is not dereferenceable. Stored listing has one pending3-byte flow gap.",
+      "status": "reconstructed"
+    },
+    {
+      "address": "006d8460",
+      "name": "BSP_MarkerClassRegistry_LowerBound",
+      "source": "src/marker_classes.cpp",
+      "header": "include/bsp/marker_classes.hpp",
+      "document": "docs/MARKER_CLASSES.md",
+      "original_abi": "ECX=registry; name* stack; EAX=node; RET4",
+      "last_instruction": "006d84b0",
+      "last_instruction_length": 3,
+      "end_inclusive": "006d84b2",
+      "evidence": "Complete36 instructions; length-zero gates and actual CRT stricmp at006D8490; key<name walks right, otherwise captures node and walks left.",
+      "uncertainty": "Standard-map projection with exact comparator and owned pooled keys; native node/debug iterator layout, invalid iterator checks, max size/exception ABI, insertion-time map mutation and freed-link topology are not reproduced. count_08 is separate from std::map::size during teardown.",
+      "status": "reconstructed_projection"
+    },
+    {
+      "address": "006db2f0",
+      "name": "BSP_MarkerClasses_Clear",
+      "source": "src/marker_classes.cpp",
+      "header": "include/bsp/marker_classes.hpp",
+      "document": "docs/MARKER_CLASSES.md",
+      "original_abi": "No native arguments; fixed registry00E19974; RET",
+      "last_instruction": "006db3a2",
+      "last_instruction_length": 1,
+      "end_inclusive": "006db3a2",
+      "evidence": "Complete54 instructions; ascending iterator traversal, descriptor deleting-vslot0(1), captured mapped cell null006DB34D after callback. Then006DA6B0 full-root reverse key destruction, self-head reset, count0 at006DB388.",
+      "uncertainty": "Standard-map projection with exact comparator and owned pooled keys; native node/debug iterator layout, invalid iterator checks, max size/exception ABI, insertion-time map mutation and freed-link topology are not reproduced. count_08 is separate from std::map::size during teardown. Typed entries must be the concrete20h descriptor; arbitrary subclasses/vtable replacements are not represented. Overwritten descriptors are not retained by the native registry and cannot be recovered by clear.",
+      "status": "reconstructed_projection"
+    },
+    {
+      "address": "007188a0",
+      "name": "BSP_Resource_LoadWithGameFactory",
+      "source": "src/marker_classes.cpp",
+      "header": "include/bsp/marker_classes.hpp",
+      "document": "docs/MARKER_CLASSES.md",
+      "original_abi": "ECX=mutable resource-name NativeString; EAX=resource; RET",
+      "last_instruction": "007188bb",
+      "last_instruction_length": 1,
+      "end_inclusive": "007188bb",
+      "evidence": "Complete13 instructions: capture name, get007175D0 factory and retain result, get004C1400 manager, call00B80720(name,factory). Incoming EAX is not an input. Existing correct descriptive name retained.",
+      "uncertainty": "Factory/manager resolution and load/cache remain individual required resource services; no whole-loader stub or invented resource result.",
+      "status": "reconstructed"
+    }
+  ],
+  "fragments": [
+    {
+      "address": "006da6b0",
+      "name": "MarkerClassRegistry_FullRootKeyDestruction",
+      "source": "src/marker_classes.cpp",
+      "header": "include/bsp/marker_classes.hpp",
+      "document": "docs/MARKER_CLASSES.md",
+      "original_abi": "ECX=registry; subtree root stack; RET4",
+      "last_instruction": "006da6ff",
+      "last_instruction_length": 3,
+      "end_inclusive": "006da701",
+      "evidence": "Stored30 instructions plus11 raw-decoded bytes006DA6F1..FB: recurse right, capture left, release NativeString key, free node, iterate left. Implemented for006DB2F0 full-root cleanup through standard-map reverse traversal.",
+      "uncertainty": "Standard-map projection with exact comparator and owned pooled keys; native node/debug iterator layout, invalid iterator checks, max size/exception ABI, insertion-time map mutation and freed-link topology are not reproduced. count_08 is separate from std::map::size during teardown. Arbitrary native subtree-pointer interface is not reconstructed; stored call gap pending.",
+      "status": "fragment"
+    }
+  ],
+  "integration": {
+    "api": "load_marker_classes_006dbeb0(MarkerClassContext&)",
+    "context": [
+      "MarkerClassHost&",
+      "MarkerClassRegistry& registry_00e19974",
+      "NativeStringStorage&",
+      "const bool& crt_sse2_conversion"
+    ],
+    "required_lua_getter": "current_game_lua_1a0c() -> lua_State&; current embedded game+1A0C, not mission pointer+1A08",
+    "required_resource_services": [
+      "current_game_resource_factory_007175d0",
+      "current_resource_manager_004c1400",
+      "load_and_cache_resource_00b80720",
+      "resource_zero_references"
+    ],
+    "parent_pending": "Replace GlobalSubsystemHost whole marker callback with required context getter and direct loader call.",
+    "ownership": "Registry duplicate overwrites raw pointer without releasing old descriptor. Clear deletes only currently visible pointers; displaced owners require external retained identity for explicit disposal."
+  },
+  "library_dependencies_inspected": [
+    "006db530",
+    "006daf00",
+    "006da710",
+    "006da460",
+    "006d94b0"
+  ],
+  "reused_implementations": [
+    "00426060",
+    "0041dd40",
+    "0041dd20",
+    "00443d00",
+    "00b66290",
+    "GuiLua51Host",
+    "singleton_lifetime_allocate",
+    "singleton_lifetime_free"
+  ],
+  "analysis_changes": {
+    "ghidra_mutations": false,
+    "ledger_mutations": false,
+    "missing_function_starts": [],
+    "pending_flow_repairs": [
+      {
+        "function": "006d90e0",
+        "call_site": "006d90f0",
+        "start": "006d90f5",
+        "end_inclusive": "006d90f7",
+        "bytes": 3,
+        "decoded": "ADD ESP,4",
+        "last_instruction": "006d90fb",
+        "last_instruction_length": 3,
+        "end_inclusive_function": "006d90fd"
+      },
+      {
+        "function": "006da6b0",
+        "call_site": "006da6ec",
+        "start": "006da6f1",
+        "end_inclusive": "006da6fb",
+        "bytes": 11,
+        "decoded": "ADD ESP,4; CMP byte[ESI+19],0; MOV EDI,ESI; JE006DA6C1",
+        "last_instruction": "006da6ff",
+        "last_instruction_length": 3,
+        "end_inclusive_function": "006da701"
+      }
+    ],
+    "other_owned_call_gaps": [],
+    "registry_owner": "Root central annotation/name/reconstruction integration; correct compiler/library names preserved"
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 MSVC Win32 Release passed; local/marker-classes-build.log",
+    "existing_tests": "configured reconstructed_math1/1 passed; native differential test not configured in worker",
+    "focused_fixture": "PASS with two actual Lua states: borrowed-current owner/no file reads/no close, float32 Anim and boolean truthiness, captured factory before manager getter, publication after resource load, case-insensitive key/cell identity, raw duplicate overwrite, callback-sensitive resource and cell nulling, balanced pooled/resource cleanup including explicitly retained displaced pointer",
+    "fixture_source": "local/marker-classes-probe.cpp",
+    "fixture_log": "local/marker-classes-probe.log",
+    "fixture_recipe": "./local/run-marker-classes-probe.ps1 -SourceRoot <checkout> [-CoreLibrary <lib>] [-LuaLibrary <lib>]",
+    "fixture_compiler": "/W4 /WX; real bsp_lua511.lib",
+    "initial_fixture_failure": "Required Lua DoFile environment missing; corrected fixture using existing LuaScriptRuntime over empty VFS. No source behavior change.",
+    "library_sha256": "B261BC8C8673DAD9C5C36EF22DDC705462235ECDC911086E40211029DEB14F65",
+    "native_abi_tested": false,
+    "game_validated": false
+  },
+  "parent_ghidra": {
+    "verified_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "saved": true,
+    "annotations_readback_verified": true,
+    "prior_comments_preserved": true,
+    "batch_count": 23,
+    "before_log": "local/ghidra-annotations-20260911T084036Z.json",
+    "readback": "local/race_marker_comments.json",
+    "exports": "local/race_marker_exports.log",
+    "flow_report": "reports/marker_classes_flow.json",
+    "remaining_call_gaps": 0
+  }
+}
