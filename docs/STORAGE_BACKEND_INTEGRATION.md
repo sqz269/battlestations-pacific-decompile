@@ -42,3 +42,8 @@ paths. Recompression still matched both original native save files exactly.
 The fixture Lua owner is controlled test infrastructure; the native game Lua
 bootstrap remains required. Thirteen worker artifacts are preserved under
 `local/worker-validation/storage-20260910d/`.
+
+After incorporating the other orchestrator's latest renderer code, `e946697`
+passed the build, both CTests, all three fixtures and both native-file equality
+checks again. All42 reviewed names and comments were saved and read back in
+the existing Ghidra project; their exports were forcibly refreshed.
