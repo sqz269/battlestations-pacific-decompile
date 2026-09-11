@@ -32,7 +32,7 @@ import workspace  # noqa: E402
 ROOT = ledger.ROOT
 DB = ROOT / 'local/bsp_index.sqlite'
 EXPORTS = workspace.exports_dir()  # main checkout's exports/bsp, shared by every worktree
-ADDR = re.compile(r'\b(00[4-9a-c][0-9a-f]{5})\b')
+ADDR = re.compile(r'\b(00[4-9a-c][0-9a-f]{5})\b', re.IGNORECASE)  # docs spell addresses in either case
 
 SCHEMA = """
 CREATE TABLE meta(key TEXT PRIMARY KEY, value TEXT);
@@ -209,7 +209,7 @@ def build_index(args):
         rel = doc.relative_to(ROOT).as_posix()
         db.execute('INSERT INTO docs VALUES (?,?)', (rel, title))
         db.executemany('INSERT INTO doc_addresses VALUES (?,?)',
-                       [(rel, int(a, 16)) for a in sorted(set(ADDR.findall(text)))])
+                       [(rel, int(a, 16)) for a in sorted({m.lower() for m in ADDR.findall(text)})])
     db.execute('INSERT INTO meta VALUES (?,?)', ('built_utc', datetime.now(timezone.utc).isoformat()))
     db.execute('INSERT INTO meta VALUES (?,?)', ('functions_sha256', hashlib.sha256(functions_path.read_bytes()).hexdigest()))
     db.execute('INSERT INTO meta VALUES (?,?)', ('inputs_sha256', inputs_digest()))
