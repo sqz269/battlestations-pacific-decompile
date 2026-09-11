@@ -195,6 +195,56 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a9ac00",
+    "end_address": "00a9ac01"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a9ac00",
+    "end_address": "00a9ac00",
+    "bytes_disassembled": 1,
+    "message": "Successfully disassembled 1 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a9ac00",
+    "disassemble_first": false,
+    "name": "BSP_GuiWidget_BasePostConstructReturn"
+   },
+   "result": {
+    "success": true,
+    "address": "00a9ac00",
+    "function_name": "BSP_GuiWidget_BasePostConstructReturn",
+    "entry_point": "00a9ac00",
+    "body_size": 1,
+    "message": "Function created successfully at 00a9ac00",
+    "warnings": [
+     "Function name 'BSP_GuiWidget_BasePostConstructReturn' \u2014 main part 'GuiWidget_BasePostConstructReturn' is not PascalCase. Expected: GuiwidgetBasepostconstructreturn",
+     "Function name 'BSP_GuiWidget_BasePostConstructReturn' \u2014 main part 'GuiWidget_BasePostConstructReturn' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiWidget_BasePostConstructReturn' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a9ac00",
+   "end": "00a9ac01",
+   "name": "BSP_GuiWidget_BasePostConstructReturn",
+   "after": "Function: BSP_GuiWidget_BasePostConstructReturn at 00a9ac00\nSignature: undefined BSP_GuiWidget_BasePostConstructReturn(void)\nEntry: 00a9ac00\nBody: 00a9ac00 - 00a9ac00"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }
