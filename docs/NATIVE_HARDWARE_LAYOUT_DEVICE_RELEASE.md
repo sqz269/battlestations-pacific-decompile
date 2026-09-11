@@ -105,8 +105,21 @@ runtime after observation, with zero final counts checked.
 
 The audit pins current source, integrated library, native bytes, compiler/map,
 runtime module entries, raw and decoded traces, and the successful build log.
-No permanent test suite or target was added. Ghidra annotation and shared
-metadata integration remain with the primary agent.
+No permanent test suite or target was added. The primary integrated CMake
+registration and repeated both real D3D9 runs against its frozen main library,
+SHA-256 `73e9e8ce26ca2b6e1bcb2334bf422285239ebe889cefc4f2ba5d3c911e7a22af`.
+It rechecked all 37 worker pins, current source, fresh original52 bytes, actual
+call/store PCs, both complete code postimages and 30 runtime module entries.
+The same759 DWORD comparison and both existing CTests passed. Saved Ghidra
+annotations preserve the prior name/comments, and the complete reconstruction
+record and refreshed export are registered.
+
+In the primary native-side run, Windows resolved Direct3DCreate9 through its
+32-bit apphelp.dll compatibility shim. That actual16-byte entry and PE identity
+matched the installed DLL with normal loader relocations only. The host-side
+factory and every tested declaration creation/AddRef/Release method in both
+runs resolved to actual d3d9.dll. This factory-only distinction is recorded
+in the primary audit; the method provenance checks remain unchanged.
 
 This establishes the complete function's source behavior and a bounded native
 instruction comparison with real D3D9 objects. It does not establish full device

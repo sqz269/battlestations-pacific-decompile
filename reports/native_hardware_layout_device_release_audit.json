@@ -4,7 +4,7 @@
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-device-release-20260910",
   "branch": "agent/native-hardware-layout-device-release-20260910",
   "base_commit": "7681fd4a6e5222965a9404d3f4cd2941fc628d01",
-  "status": "complete_function_reconstructed_build_tested_and_original52_byte_fixture_tested_with_real_D3D9",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
   "owned_addresses": [
     "00b600b0"
   ],
@@ -845,12 +845,13 @@
     "actual_COM_final_fixture_release_counts_zero": true
   },
   "integration": {
-    "shared_startup_registration_by_primary_required": true,
+    "shared_startup_registration_by_primary_required": false,
     "local_build_registration": "local/hardware_release_registration.cmake via CMAKE_PROJECT_INCLUDE_BEFORE",
     "shared_build_files_edited": false,
     "ghidra_mutation_by_worker": false,
     "ledger_mutation_by_worker": false,
-    "permanent_test_target_added": false
+    "permanent_test_target_added": false,
+    "permanent_CMake_source_registration_by_primary": true
   },
   "limits": [
     "Device-resource release only; no whole hardware-owner destructor or renderer recreation closure.",
@@ -1044,5 +1045,973 @@
       "bytes": 4772,
       "sha256": "b94bac30dcec50550bd7ef573b91ba15524bac5d3a4c747e0e7c3829a6b8e6c5"
     }
-  ]
+  ],
+  "primary_integration": {
+    "verification": {
+      "passed": true,
+      "source_pins": [
+        {
+          "path": "include/bsp/native_hardware_layout_device_release.hpp",
+          "bytes": 754,
+          "sha256": "5c6d878016589af41526421e52b8eeaa01c58c781c0835a547ed55f01cce684c"
+        },
+        {
+          "path": "src/native_hardware_layout_device_release.cpp",
+          "bytes": 1499,
+          "sha256": "434478666ac6eadbfdfcaf98e8ab6309c13b3c180a74aae6f77fb8633ed0a255"
+        }
+      ],
+      "integrated_library": {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+        "snapshot": "local/hardware_release_primary/bsp_core.lib",
+        "bytes": 27000538,
+        "sha256": "73e9e8ce26ca2b6e1bcb2334bf422285239ebe889cefc4f2ba5d3c911e7a22af"
+      },
+      "strict_build_and_two_existing_CTests_passed": true,
+      "existing_seed_count": 8,
+      "complete_postimages": [
+        {
+          "mode": "native",
+          "complete52_bytes_unchanged": true,
+          "patches": [],
+          "sha256": "2decac8ce357ed05b6fd65ff309d2b1f7d8e75bea7dbc5bf6c5104c15124de26"
+        },
+        {
+          "mode": "host",
+          "complete52_bytes_unchanged": true,
+          "patches": [],
+          "sha256": "2decac8ce357ed05b6fd65ff309d2b1f7d8e75bea7dbc5bf6c5104c15124de26"
+        }
+      ],
+      "provider": {
+        "symbol": "?release_native_hardware_layout_device_resource_00b600b0@bsp@@YAXPAX@Z",
+        "address": 4219536,
+        "provider": "bsp_core:native_hardware_layout_device_release.obj",
+        "compiled_bytes": 184,
+        "compiled_sha256": "c23cffef8067e739a1a97ae5584531c001fe1f33f5fece0cfda18acf58831f45",
+        "instructions": [
+          "00406290: push ebp",
+          "00406291: mov ebp, esp",
+          "00406293: sub esp, 0x10",
+          "00406296: push esi",
+          "00406297: mov eax, dword ptr [ebp + 8]",
+          "0040629a: mov edx, 0x40",
+          "0040629f: mov eax, dword ptr [eax + edx]",
+          "004062a2: mov dword ptr [ebp - 8], eax",
+          "004062a5: mov esi, dword ptr [ebp - 8]",
+          "004062a8: mov dword ptr [ebp - 4], esi",
+          "004062ab: test esi, esi",
+          "004062ad: je 0x4062fb",
+          "004062af: mov eax, dword ptr [ebp - 4]",
+          "004062b2: mov edx, 0",
+          "004062b7: mov eax, dword ptr [eax + edx]",
+          "004062ba: mov dword ptr [ebp - 0xc], eax",
+          "004062bd: mov eax, dword ptr [ebp - 0xc]",
+          "004062c0: mov dword ptr [ebp - 0xc], eax",
+          "004062c3: mov eax, dword ptr [ebp - 0xc]",
+          "004062c6: mov edx, 4",
+          "004062cb: mov eax, dword ptr [eax + edx]",
+          "004062ce: mov dword ptr [ebp - 0x10], eax",
+          "004062d1: push esi",
+          "004062d2: call dword ptr [ebp - 0x10]",
+          "004062d5: mov eax, dword ptr [ebp - 4]",
+          "004062d8: mov edx, 0",
+          "004062dd: mov eax, dword ptr [eax + edx]",
+          "004062e0: mov dword ptr [ebp - 0x10], eax",
+          "004062e3: mov eax, dword ptr [ebp - 0x10]",
+          "004062e6: mov dword ptr [ebp - 0x10], eax",
+          "004062e9: mov eax, dword ptr [ebp - 0x10]",
+          "004062ec: mov edx, 8",
+          "004062f1: mov eax, dword ptr [eax + edx]",
+          "004062f4: mov dword ptr [ebp - 0xc], eax",
+          "004062f7: push esi",
+          "004062f8: call dword ptr [ebp - 0xc]",
+          "004062fb: mov eax, dword ptr [ebp + 8]",
+          "004062fe: mov edx, 0x40",
+          "00406303: mov eax, dword ptr [eax + edx]",
+          "00406306: mov dword ptr [ebp - 0x10], eax",
+          "00406309: mov ecx, dword ptr [ebp - 0x10]",
+          "0040630c: mov dword ptr [ebp - 0xc], ecx",
+          "0040630f: pop esi",
+          "00406310: test ecx, ecx",
+          "00406312: je 0x406344",
+          "00406314: mov eax, dword ptr [ebp - 0xc]",
+          "00406317: mov edx, 0",
+          "0040631c: mov eax, dword ptr [eax + edx]",
+          "0040631f: mov dword ptr [ebp - 8], eax",
+          "00406322: mov eax, dword ptr [ebp - 8]",
+          "00406325: mov dword ptr [ebp - 0xc], eax",
+          "00406328: mov eax, dword ptr [ebp - 0xc]",
+          "0040632b: mov edx, 8",
+          "00406330: mov eax, dword ptr [eax + edx]",
+          "00406333: mov dword ptr [ebp - 8], eax",
+          "00406336: push ecx",
+          "00406337: call dword ptr [ebp - 8]",
+          "0040633a: mov eax, dword ptr [ebp + 8]",
+          "0040633d: mov dword ptr [eax + 0x40], 0",
+          "00406344: mov esp, ebp",
+          "00406346: pop ebp",
+          "00406347: ret "
+        ]
+      },
+      "actual_D3D9_module_entries": [
+        {
+          "mode": "native",
+          "label": "fixture_image",
+          "reported_module": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-release-primary\\hardware_release_fixture.exe",
+          "resolved_32bit_module": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-release-primary\\hardware_release_fixture.exe",
+          "module_sha256": "1a3a34870fd41ec508e6bcafee7a7770b3b9afebc90428150d7dcf428c29fdac",
+          "module_bytes": 44544,
+          "method_RVA": "00003df0",
+          "live_entry16_hex": "558bec8b4d08ff15f8c2ea005dc3cccc",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [
+            {
+              "offset": 8,
+              "original": "0040c2f8",
+              "actual": "00eac2f8"
+            }
+          ],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1789105853,
+          "actual_image_size": 57344,
+          "actual_checksum": 0
+        },
+        {
+          "mode": "native",
+          "label": "Direct3DCreate9",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\apphelp.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\apphelp.dll",
+          "module_sha256": "a8109618c3bf3623be23e8e18f1e7184538600c953169297fd0009ed77564c6e",
+          "module_bytes": 710832,
+          "method_RVA": "00080da0",
+          "live_entry16_hex": "8bff558bec51a190c3ca6056ff75088b",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [
+            {
+              "offset": 7,
+              "original": "1008c390",
+              "actual": "60cac390"
+            }
+          ],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 217203299,
+          "actual_image_size": 716800,
+          "actual_checksum": 775390
+        },
+        {
+          "mode": "native",
+          "label": "CreateVertexDeclaration",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "0005dee0",
+          "live_entry16_hex": "6a14b8efdd4060e8d56b02008b75088b",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [
+            {
+              "offset": 3,
+              "original": "1008ddef",
+              "actual": "6040ddef"
+            }
+          ],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "native",
+          "label": "declaration_1_AddRef",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "00122490",
+          "live_entry16_hex": "8bff558bec8b4d088d4904e8bad5f5ff",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "native",
+          "label": "declaration_1_Release",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "0007eb90",
+          "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "native",
+          "label": "declaration_2_AddRef",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "00122490",
+          "live_entry16_hex": "8bff558bec8b4d088d4904e8bad5f5ff",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "native",
+          "label": "declaration_2_Release",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "0007eb90",
+          "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "native",
+          "label": "declaration_3_AddRef",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "00122490",
+          "live_entry16_hex": "8bff558bec8b4d088d4904e8bad5f5ff",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "native",
+          "label": "declaration_3_Release",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "0007eb90",
+          "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "native",
+          "label": "declaration_1_AddRef",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "00122490",
+          "live_entry16_hex": "8bff558bec8b4d088d4904e8bad5f5ff",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "native",
+          "label": "declaration_1_Release",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "0007eb90",
+          "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "native",
+          "label": "declaration_2_AddRef",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "00122490",
+          "live_entry16_hex": "8bff558bec8b4d088d4904e8bad5f5ff",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "native",
+          "label": "declaration_2_Release",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "0007eb90",
+          "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "native",
+          "label": "declaration_3_AddRef",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "00122490",
+          "live_entry16_hex": "8bff558bec8b4d088d4904e8bad5f5ff",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "native",
+          "label": "declaration_3_Release",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "0007eb90",
+          "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "host",
+          "label": "fixture_image",
+          "reported_module": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-release-primary\\hardware_release_fixture.exe",
+          "resolved_32bit_module": "J:\\PROG\\battlestations-pacific-decompile\\build\\hardware-release-primary\\hardware_release_fixture.exe",
+          "module_sha256": "1a3a34870fd41ec508e6bcafee7a7770b3b9afebc90428150d7dcf428c29fdac",
+          "module_bytes": 44544,
+          "method_RVA": "00003df0",
+          "live_entry16_hex": "558bec8b4d08ff15f8c2ea005dc3cccc",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [
+            {
+              "offset": 8,
+              "original": "0040c2f8",
+              "actual": "00eac2f8"
+            }
+          ],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1789105853,
+          "actual_image_size": 57344,
+          "actual_checksum": 0
+        },
+        {
+          "mode": "host",
+          "label": "Direct3DCreate9",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "000816b0",
+          "live_entry16_hex": "8bff558bec518b4d0833c050508945fc",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "host",
+          "label": "CreateVertexDeclaration",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "0005dee0",
+          "live_entry16_hex": "6a14b8efdd4060e8d56b02008b75088b",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [
+            {
+              "offset": 3,
+              "original": "1008ddef",
+              "actual": "6040ddef"
+            }
+          ],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "host",
+          "label": "declaration_1_AddRef",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "00122490",
+          "live_entry16_hex": "8bff558bec8b4d088d4904e8bad5f5ff",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "host",
+          "label": "declaration_1_Release",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "0007eb90",
+          "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "host",
+          "label": "declaration_2_AddRef",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "00122490",
+          "live_entry16_hex": "8bff558bec8b4d088d4904e8bad5f5ff",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "host",
+          "label": "declaration_2_Release",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "0007eb90",
+          "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "host",
+          "label": "declaration_3_AddRef",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "00122490",
+          "live_entry16_hex": "8bff558bec8b4d088d4904e8bad5f5ff",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "host",
+          "label": "declaration_3_Release",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "0007eb90",
+          "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "host",
+          "label": "declaration_1_AddRef",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "00122490",
+          "live_entry16_hex": "8bff558bec8b4d088d4904e8bad5f5ff",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "host",
+          "label": "declaration_1_Release",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "0007eb90",
+          "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "host",
+          "label": "declaration_2_AddRef",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "00122490",
+          "live_entry16_hex": "8bff558bec8b4d088d4904e8bad5f5ff",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "host",
+          "label": "declaration_2_Release",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "0007eb90",
+          "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "host",
+          "label": "declaration_3_AddRef",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "00122490",
+          "live_entry16_hex": "8bff558bec8b4d088d4904e8bad5f5ff",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        },
+        {
+          "mode": "host",
+          "label": "declaration_3_Release",
+          "reported_module": "C:\\WINDOWS\\SYSTEM32\\d3d9.dll",
+          "resolved_32bit_module": "C:\\WINDOWS\\SysWOW64\\d3d9.dll",
+          "module_sha256": "f4757445d75d619bc5695294ee5ca6bfa0ad8763c6604a8e884739f605a6df28",
+          "module_bytes": 1528480,
+          "method_RVA": "0007eb90",
+          "live_entry16_hex": "8bff558bec5151568b7508576a018b4e",
+          "live_entry16_matches_disk_with_only_loader_relocations": true,
+          "loader_relocations": [],
+          "actual_machine": "014c",
+          "actual_PE_timestamp": 1987618885,
+          "actual_image_size": 1548288,
+          "actual_checksum": 1572350
+        }
+      ],
+      "actual_COM_calls": [
+        {
+          "mode": "native",
+          "scenario": 1,
+          "kind": 1,
+          "object": 1,
+          "pc": 11927747,
+          "table_index": 0,
+          "result": 3,
+          "actual_call_PC_verified": true
+        },
+        {
+          "mode": "native",
+          "scenario": 1,
+          "kind": 2,
+          "object": 1,
+          "pc": 11927755,
+          "table_index": 1,
+          "result": 2,
+          "actual_call_PC_verified": true
+        },
+        {
+          "mode": "native",
+          "scenario": 1,
+          "kind": 3,
+          "object": 3,
+          "pc": 11927770,
+          "table_index": 0,
+          "result": 1,
+          "actual_call_PC_verified": true
+        },
+        {
+          "mode": "native",
+          "scenario": 2,
+          "kind": 1,
+          "object": 1,
+          "pc": 11927747,
+          "table_index": 0,
+          "result": 3,
+          "actual_call_PC_verified": true
+        },
+        {
+          "mode": "native",
+          "scenario": 2,
+          "kind": 2,
+          "object": 1,
+          "pc": 11927755,
+          "table_index": 1,
+          "result": 2,
+          "actual_call_PC_verified": true
+        },
+        {
+          "mode": "host",
+          "scenario": 1,
+          "kind": 1,
+          "object": 1,
+          "pc": 15360725,
+          "table_index": 0,
+          "result": 3,
+          "actual_call_PC_verified": true
+        },
+        {
+          "mode": "host",
+          "scenario": 1,
+          "kind": 2,
+          "object": 1,
+          "pc": 15360763,
+          "table_index": 1,
+          "result": 2,
+          "actual_call_PC_verified": true
+        },
+        {
+          "mode": "host",
+          "scenario": 1,
+          "kind": 3,
+          "object": 3,
+          "pc": 15360826,
+          "table_index": 0,
+          "result": 1,
+          "actual_call_PC_verified": true
+        },
+        {
+          "mode": "host",
+          "scenario": 2,
+          "kind": 1,
+          "object": 1,
+          "pc": 15360725,
+          "table_index": 0,
+          "result": 3,
+          "actual_call_PC_verified": true
+        },
+        {
+          "mode": "host",
+          "scenario": 2,
+          "kind": 2,
+          "object": 1,
+          "pc": 15360763,
+          "table_index": 1,
+          "result": 2,
+          "actual_call_PC_verified": true
+        }
+      ],
+      "actual_owned_clear_PC_verified": true,
+      "initial_null_and_current_null_issue_no_production_store": true,
+      "trace": {
+        "words": 759,
+        "bytes": 3036,
+        "matched": true,
+        "sha256": "10397a3a2a07171cf31b11a11f8be2c0d9f4fa0e76ac9257086318c6b8358214",
+        "decoded_events": 33,
+        "normalization": "actual_owner40_declaration_pointer_identity_only; raw_PC_provenance_checked_separately"
+      },
+      "runtime": {
+        "device_type": 1,
+        "adapter": "adapter NVIDIA GeForce RTX 5090",
+        "processes": 2,
+        "successful": true
+      },
+      "primary_preparation": {
+        "worker": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-device-release-20260910",
+        "worker_artifacts_verified": 37,
+        "current_source_files_verified": 2,
+        "fresh_live_PE_span": {
+          "address": "00b600b0",
+          "end_exclusive": "00b600e4",
+          "length": 52,
+          "offset": 7733424,
+          "hex": "568bf1578b7e4085ff74108b078b480457ffd18b178b420857ffd08b464085c0740f8b088b510850ffd2c74640000000005f5ec3",
+          "sha256": "2decac8ce357ed05b6fd65ff309d2b1f7d8e75bea7dbc5bf6c5104c15124de26",
+          "live_PE_match": true,
+          "instructions": [
+            "00b600b0: push esi",
+            "00b600b1: mov esi, ecx",
+            "00b600b3: push edi",
+            "00b600b4: mov edi, dword ptr [esi + 0x40]",
+            "00b600b7: test edi, edi",
+            "00b600b9: je 0xb600cb",
+            "00b600bb: mov eax, dword ptr [edi]",
+            "00b600bd: mov ecx, dword ptr [eax + 4]",
+            "00b600c0: push edi",
+            "00b600c1: call ecx",
+            "00b600c3: mov edx, dword ptr [edi]",
+            "00b600c5: mov eax, dword ptr [edx + 8]",
+            "00b600c8: push edi",
+            "00b600c9: call eax",
+            "00b600cb: mov eax, dword ptr [esi + 0x40]",
+            "00b600ce: test eax, eax",
+            "00b600d0: je 0xb600e1",
+            "00b600d2: mov ecx, dword ptr [eax]",
+            "00b600d4: mov edx, dword ptr [ecx + 8]",
+            "00b600d7: push eax",
+            "00b600d8: call edx",
+            "00b600da: mov dword ptr [esi + 0x40], 0",
+            "00b600e1: pop edi",
+            "00b600e2: pop esi",
+            "00b600e3: ret "
+          ]
+        },
+        "actual_primary_library": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\hardware_release_primary\\bsp_core.lib",
+          "bytes": 27000538,
+          "sha256": "73e9e8ce26ca2b6e1bcb2334bf422285239ebe889cefc4f2ba5d3c911e7a22af"
+        }
+      },
+      "factory_compatibility_shim": "Native-side Direct3DCreate9 resolves to actual Win32 Windows apphelp.dll entry, whose PE identity and16bytes match current disk with loader relocations only; host-side factory is d3d9.dll. CreateVertexDeclaration and every AddRef/Release entry in both runs are actual d3d9.dll. No fixture or production provider substitutes factory or methods.",
+      "primary_artifact_pins": [
+        {
+          "path": "local/hardware_release_primary/bsp_core.lib",
+          "bytes": 27000538,
+          "sha256": "73e9e8ce26ca2b6e1bcb2334bf422285239ebe889cefc4f2ba5d3c911e7a22af"
+        },
+        {
+          "path": "build/hardware-release-primary/hardware_release_fixture.exe",
+          "bytes": 44544,
+          "sha256": "1a3a34870fd41ec508e6bcafee7a7770b3b9afebc90428150d7dcf428c29fdac"
+        },
+        {
+          "path": "build/hardware-release-primary/hardware_release_fixture.map",
+          "bytes": 77920,
+          "sha256": "5d46ed28024119ecd233c7c05b2d921059e2e13e9c72bd043f9b630bd24f722a"
+        },
+        {
+          "path": "build/hardware-release-primary/fixture.obj",
+          "bytes": 194941,
+          "sha256": "a740e6771fb383546a430ce0f0a06b936f33544342eaaf040b813041727d1363"
+        },
+        {
+          "path": "build/hardware-release-primary/build.cmd",
+          "bytes": 732,
+          "sha256": "ccab7604a8a0f6b6bf246ee17b1391d5395f33a6e39319ad37d5d5530e28a93d"
+        },
+        {
+          "path": "local/prepare_hardware_release_primary.py",
+          "bytes": 3104,
+          "sha256": "611fc2bbe1c5077f2b31ae2837bd89db31c68e698949e3c03d576439cde94250"
+        },
+        {
+          "path": "local/build_hardware_release_primary.ps1",
+          "bytes": 1418,
+          "sha256": "5906449252317940a7e1305c3d2ee0f6b0f83376154796b1a2fea4b444cbf386"
+        },
+        {
+          "path": "local/run_hardware_release_primary.py",
+          "bytes": 917,
+          "sha256": "f693177080589c91aa0de2a4e2cbc16d77d3eaa916779b68d4f3c7b82950a8e9"
+        },
+        {
+          "path": "local/verify_hardware_release_primary.py",
+          "bytes": 10016,
+          "sha256": "310a0051e29e8629e2dfa6544fec63f23cce02014ce4f86abeb0ce76d82b5f64"
+        },
+        {
+          "path": "local/native_hardware_layout_device_release_primary_build.txt",
+          "bytes": 1658,
+          "sha256": "cf344980d5a996553fb8bf186417954bee96b68677ba83e7334c2bfc15e47e22"
+        },
+        {
+          "path": "local/hardware_release_primary_fixture_build.txt",
+          "bytes": 13,
+          "sha256": "debb4918fafcb38564e4e6272af8699b8e610ff4e67dd3d845ddf5e3508244c6"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\host\\calls.json",
+          "bytes": 383,
+          "sha256": "a3e38371785dd1601164a38c98669f9fd897af77653ca428405d63728b0ca6c4"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\host\\modules.txt",
+          "bytes": 2112,
+          "sha256": "0f52114a806461e8aaa70ba6ac5007dd1679747da65c405fc97e81a66e76f373"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\host\\postimage.bin",
+          "bytes": 52,
+          "sha256": "2decac8ce357ed05b6fd65ff309d2b1f7d8e75bea7dbc5bf6c5104c15124de26"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\host\\result.json",
+          "bytes": 148,
+          "sha256": "3f3c44ebf712823a635badee93507a9e107953f809b8d7177b505a12beda8673"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\host\\run.log",
+          "bytes": 77,
+          "sha256": "95dd5b608fd0d9227e15e20b7d08149f059bcdf1d330fc1ebf0ee550f18694f8"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\host\\runtime.txt",
+          "bytes": 68,
+          "sha256": "9c3e05aad0054f7d6ae3f7782d332ec6c5865d22772841fe9756bcc26f896166"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\host\\trace.bin",
+          "bytes": 3036,
+          "sha256": "10397a3a2a07171cf31b11a11f8be2c0d9f4fa0e76ac9257086318c6b8358214"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\host\\writes.json",
+          "bytes": 387,
+          "sha256": "828af4340ad65c696561ab76c298567ea96013a4e5cf22a1a75c0f4eb5620a32"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\native\\calls.json",
+          "bytes": 383,
+          "sha256": "4773fdbfd914277d341b35a052d5a8da87cb6af911d2127faae63f9dd9f84eba"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\native\\modules.txt",
+          "bytes": 2112,
+          "sha256": "ca159441c8e530a5fa7df4dc221de81886ff3f166f82800ce90ea9dedd9650f7"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\native\\postimage.bin",
+          "bytes": 52,
+          "sha256": "2decac8ce357ed05b6fd65ff309d2b1f7d8e75bea7dbc5bf6c5104c15124de26"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\native\\result.json",
+          "bytes": 147,
+          "sha256": "7e92d2cfaddd4e8a7d6685ecb6a89219a783236a5c094daaea425c8fb1733da5"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\native\\run.log",
+          "bytes": 79,
+          "sha256": "517262cab09c384fe3285f089beafcffc1a3f06ac4fc497ad2aeaf2e99f2894d"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\native\\runtime.txt",
+          "bytes": 68,
+          "sha256": "9c3e05aad0054f7d6ae3f7782d332ec6c5865d22772841fe9756bcc26f896166"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\native\\trace.bin",
+          "bytes": 3036,
+          "sha256": "10397a3a2a07171cf31b11a11f8be2c0d9f4fa0e76ac9257086318c6b8358214"
+        },
+        {
+          "path": "local\\hardware_release_primary\\runs\\native\\writes.json",
+          "bytes": 387,
+          "sha256": "6a28cb40092dc281c8d56bb114571833fe6018823272d6b1ae18690d233b6cba"
+        }
+      ]
+    },
+    "annotations_applied": true,
+    "ledger_registered": true
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "reports/native_hardware_layout_device_release_annotations.json",
+    "bytes": 1859,
+    "sha256": "c17df3c641a5e7c20031590e618a36c6e1c8514ec82bebe27056880cc86333e3",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b600b0",
+      "path": "exports/bsp/functions/00b600b0/decompiled.c",
+      "bytes": 2034,
+      "sha256": "13e4cd8a181ff83c2b09857cfc332a5e5b9ae90931599c6c32239cdca612b6f0"
+    }
+  ],
+  "closure_utc": "2026-09-11T05:53:45.232430+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b600b0",
+      "name": "release_native_hardware_layout_device_resource_00b600b0",
+      "cpp_symbol": "release_native_hardware_layout_device_resource_00b600b0",
+      "source": "src/native_hardware_layout_device_release.cpp",
+      "native_end_exclusive": "00b600e4",
+      "original_abi": "ECX actual hardware layout owner; RET; no exposed semantic result",
+      "evidence": "reports/native_hardware_layout_device_release_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_HARDWARE_LAYOUT_DEVICE_RELEASE.md",
+    "bytes": 8335,
+    "sha256": "093c5d839acf08343eef515ebf0e62eb3a2f2bee1c538b40efd61f398a37c6c2"
+  }
 }

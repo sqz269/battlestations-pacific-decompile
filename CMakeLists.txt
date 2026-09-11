@@ -90,6 +90,7 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_cube_texture_base.cpp
   src/native_cube_texture_owner_array_reserve.cpp
   src/native_cube_texture_owner.cpp
+  src/native_hardware_layout_device_release.cpp
   src/native_hardware_layout_owner.cpp
   src/native_logical_index_owner.cpp
   src/native_retained_memory_owners.cpp
