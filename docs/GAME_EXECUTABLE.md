@@ -502,8 +502,18 @@ its own and are not claims about the game:
   reconstructed startup never populates that list, so `allbutingame.ats` does not resolve and
   the variants are enumerated instead.
 - It draws a widget whose page authored no `Visible` key. The projected default at +E4h is
-  false and the value a running game would see comes from the screen activate 004f83b0,
-  which is the front-end owner's. A widget the page authored as hidden, or one 00aa5e20's
+  false; in a running game the value is pushed by 004f83b0, which reads the owning screen's
+  active byte (+5h, `MOVZX EDX,[EBX+5h]` at 004F8434) and forwards it into every non-null
+  child its +24h collector reports through the child's vtable +34h, one level deep (whether
+  it recurses depends on each handler); the pump's exit pass clears the byte at 004F88B3 and
+  calls the same routine at 004F88B7, so it publishes current visibility rather than showing
+  (docs/FRONTEND_STATE_MACHINE.md, docs/MAIN_MENU_PATH.md). The title handover 0068d8d0
+  leaves the press-start screen at +5h = 1 with 004f83b0 already called, so FE_initial's
+  widgets receive true once; FE_frame and FE_frame_title come from the 0x164 layout-set
+  singleton at 004c1ac0 rather than a registry screen, so "always visible" for those two is
+  unverified. In this process no front-end screen owns the five directly loaded pages, so
+  the screen-level term has no input and the bridge's rule stands in for it. A widget the
+  page authored as hidden, or one 00aa5e20's
   virtual +34h calls hid, stays hidden, and so does its subtree: that is why the cursors and
   the highlight boxes do not appear.
 - It orders quads back to front by the authored Z alone. The native render order
