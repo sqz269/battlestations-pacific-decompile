@@ -43,8 +43,8 @@
   ],
   "status": "reconstructed_build_fixture_and_startup_process_tested_annotations_saved",
   "validation": {
-    "tested_base_commit": "db73bd50456970631dc018673080b8650fca388b",
-    "working_source_correction": "Registry query now uses the native1024-byte buffer; shader getter comment clarified before final build",
+    "tested_base_commit": "38b3143e232a1dd4b4ef3b8c720deab338555a09",
+    "working_source_correction": "Retained-owner corrections committed in7374ec3; revalidated after merging main2644f51 including its hardware-pool static source registration",
     "win32_release_build": "passed: local/settings-owner-final-build.log",
     "existing_ctest": {
       "passed": 2,
@@ -94,9 +94,9 @@
       "manifest": "local/settings-owner-worker-artifacts.json"
     },
     "startup_process": {
-      "pid": 71384,
+      "pid": 80788,
       "exit_code": 0,
-      "executable_sha256": "C41AAC6152A049270A50FEB772F7F284FEBFC6E3257CB7DC6F6BE7572CB85127",
+      "executable_sha256": "C18E5476D32327036F335D3D6FD5D86C9D9C708099F9CD0F32F1B2ACBFFE993E",
       "original_files_unchanged": true,
       "original_file_count": 2,
       "isolated_settings_root": "local/settings-owner-personal-h1",
@@ -113,7 +113,7 @@
       "unimplemented_host_methods": 31,
       "render_scope": "Existing milestone clear/present only; gameplay not validated"
     },
-    "bsp_core_sha256": "72dfe9ce0f1481463f4afd4d6bab0b602364d56e4870d0052c65fd5abadbb264",
+    "bsp_core_sha256": "3b9620fb75418e04407c89818c4b6e149d0e73224de11dbbf973197494ecf498",
     "permanent_tests_added": 0
   },
   "annotations": {
@@ -190,13 +190,13 @@
     "cmake/startup.cmake": "ffebbbfbd82ac6b816e041d4f20aa4a2d3cbf3487f8f5e413ec46cee8b117abc"
   },
   "artifact_sha256": {
-    "local/settings-owner-final-build.log": "b9f51cdaa701aa45a0622522b70c583f7a1ee29c6b5e1ab0a4c6a2f961621535",
-    "local/settings-owner-final-fixture.log": "14ab04aa110abd290f075cf7871142c2d118c443908b13b8c613ecebd75149ab",
+    "local/settings-owner-final-build.log": "f5cc7bafe9c0c2a4e06f3362c1ef8d4dffa8bdabe1d269afedd4b1ada8156045",
+    "local/settings-owner-final-fixture.log": "15daae795753fc42fb1251922a1a55bbee93817e8f6575559cd3d83d13a11a99",
     "local/settings_owner_fixture.cpp": "54edeb97efe1cb344afefdc74900910a534c0c3a755a4d59b8ea172ac7ed55e8",
     "local/run_settings_owner_fixture.ps1": "fd7c623b6dd040fae961abbda8884cca038495984bda3d6f22f374344de76d63",
     "local/run_settings_owner_game.ps1": "34b47393bb0102ffef16d4c3b0bfba206cb671b5732a862310351920580a3214",
     "local/settings-owner-runtime.log": "d759efa4db854285cbd00df4729dfa00d4e3e3057f5958c91eb2d9b25c9f5e4a",
-    "local/settings-owner-runtime-result.json": "312c90bdfd9c5b141685e394dd2a72b8118339999d6d8c8d5d2f6b989a3c32f0",
+    "local/settings-owner-runtime-result.json": "7f169193dffc4b348e9f8d4a2413da744af93256fefe2906d7ecdfcea3ca7699",
     "local/settings-owner-original-files-before.json": "55ce2f91e55f2cf96a8063388d79258b34401fd39b6c3c9cd3948f4b3cb94cf1",
     "local/settings-owner-worker-artifacts.json": "9d12a9713fa7d793135a0fff4f36736b7b3bee493e443bb03bcc50efc52ba88c",
     "local/settings-owner-token-worker-result.log": "34c66f67afe505239bb902c42de192c4f4e4bd9675e70c6b9de378314d39067d",
