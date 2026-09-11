@@ -41,7 +41,7 @@
     }
   ],
   "new_interface": "First four fastcall entries retain ECX/EAX/RET locations. B70710 additionally takes EDX fixed NativeCameraFrustumContext; one saved context word outside original local frame.",
-  "raw_parent_contract": "Actual 32-bit raw parent address at+30; reached nodes have flags+5C/local+B0/world+F0. NativeCameraOwner companion words are not compatible.",
+  "raw_parent_contract": "Canonical parent+30/first-child+34/next-sibling+3C/previous-sibling+40 are actual 32-bit node addresses. Bound CameraTransformLink accesses those same words and resolves current companions through the existing SceneAttachmentRuntime binding vector; no second graph or temporary pointer swizzle. NativeNodeBinding supplies immutable raw identity; bound semantic walks require live same-runtime bindings. Preconstruction does not touch raw fields. Exact companion identity retirement touches no backing; old or rejected identities cannot retire an address replacement. Link get still requires live readable backing and the runtime outlives its companions. All four source links and destination domains are validated before host CameraTransform/CameraState assignment stores; these host copy/move APIs may throw. Native semantic noexcept algorithms keep their valid-input contract.",
   "projection_argument_contract": "Ordered x87 far+1D8,near+1D4,aspect+1C8,fov+1C4 loads/stores into local CALLEE scalar argument copies; EDX supplies those slots to the full raw builder and explicit ADD ESP10 replaces original RET10 cleanup. Camera fields are not the builder writable arguments.",
   "frustum_publish_contract": "Load current DWORD flags+2F0, OR bit4, store before full VP and extraction. No rollback. Six records+2F4..+36B assigned flags7; records6..15/count+434 untouched.",
   "base_commit": "d6c8371070f618ed37e9437c587e8a9a2e9052d8",
@@ -355,16 +355,6 @@
     }
   ],
   "source_header_closure_files": 36,
-  "limitations": [
-    "Complete worker library; main integration/build and original caller ABI remain separate.",
-    "All five original getters and full original math/world/frustum bodies execute. Original normalize calls a pure ABI bridge to the actual full library vector-length provider with fixed CRT context; no arithmetic or exception result is replaced.",
-    "Raw node parents are actual fixed arena addresses. Existing semantic NativeCameraOwner companion words are incompatible and are not passed here.",
-    "Four paired scenarios cover cold recursive hierarchy/frustum/inverse VP with subsequent hits, every cache hit with invalid unused parent/context, mixed world/projection-valid flags, and real invalid-parent access fault after early frustum-bit publication.",
-    "Full 8192-byte raw hierarchy/camera arenas, fault access/address and dispatch/matherr/errno are compared without pointer normalization. Successful returns also compare raw result pointers, nonvolatile registers and selected FXSAVE state. Fault records do not claim captured floating/register exception-context parity. Private stack scratch, return addresses, instruction/data pointers, inactive x87 state and XMM4..7 are not compared. All return/fault frames are retained raw.",
-    "Floating exceptions are masked; no unmasked hardware FP or asynchronous mutation coverage. No broader singular/NaN getter suite or gameplay claim.",
-    "Whole loaded source text/rdata and all original code/constants are pinned at nine stages. Every linked bsp_core member is frozen byte-exact with source/header closure and complete linked COFF section/relocation checks."
-  ],
-  "integration_boundary": "Main CMake registration/build, ledgers and saved Ghidra annotation/export refresh remain integrator work. No shared files or saved analysis changed by this worker.",
   "primary_integration": {
     "seal": {
       "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_cache_getters_primary\\sealed.json",
@@ -409,7 +399,8 @@
     "immutable_runtime_postimage_phases": 9,
     "actual_import_targets": 56,
     "original_caller_ABI": false,
-    "current_companion_camera_compatible": false
+    "pre_migration_current_companion_camera_compatible": false,
+    "historical_before_canonical_hierarchy_migration": true
   },
   "annotations_applied": true,
   "ledger_registered": true,
@@ -427,38 +418,38 @@
     {
       "address": "00b6fcb0",
       "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b6fcb0\\decompiled.c",
-      "bytes": 2619,
-      "sha256": "cee7a79c8f554790407eaa8984df2dc42bb29cc2f6743de34b3b17c85359f262"
+      "bytes": 4683,
+      "sha256": "ab10b97174fcde26f0d3e0de7b93c1f5bc84c9f1725d5549d014090f38b97128"
     },
     {
       "address": "00b6fcf0",
       "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b6fcf0\\decompiled.c",
-      "bytes": 3566,
-      "sha256": "28710087f58ad5340048b8ef8dafe1af99b54060d524bd6b0b1f0302515adf2a"
+      "bytes": 5630,
+      "sha256": "0c272c5529fe05688d5d7e61b23fe39d137ef18dba7e527059b11c4d823eeaac"
     },
     {
       "address": "00b70490",
       "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b70490\\decompiled.c",
-      "bytes": 2880,
-      "sha256": "47fbaffe69a98d38559553ad63eefd4e393347900b5424784df16defdf6569fb"
+      "bytes": 4944,
+      "sha256": "c274547975bdbd3d56b3fe74f45fabb0b4bcfc38fc3b60fc872fedc83cdcecfd"
     },
     {
       "address": "00b70510",
       "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b70510\\decompiled.c",
-      "bytes": 2122,
-      "sha256": "75fef48fbdccd4debd6e3d57254713a245e0ea2351aaca4b7f7552d4d45cd944"
+      "bytes": 4186,
+      "sha256": "b1339d93748c5104139f6e15b5964e29d9582e8043a3988c2e7c34c85ce87725"
     },
     {
       "address": "00b70710",
       "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b70710\\decompiled.c",
-      "bytes": 2379,
-      "sha256": "bb9c5d991954fa297b1c8baccca0bce12b7337fe7e84a7055fd854816b4d50ec"
+      "bytes": 4443,
+      "sha256": "39a46a9923c59c42a0dc9244ce1654d84ff88c3a1218f41b7e761a27dca0e5a3"
     }
   ],
   "current_document": {
     "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CAMERA_CACHE_GETTERS.md",
-    "bytes": 6695,
-    "sha256": "416807f53c9275e810f8ae8076299b518426cf24a8abeba07fcb66f53ecb5503"
+    "bytes": 6856,
+    "sha256": "acd9d295422893ea96dc56cd197d95a8df3eb03f1747156bcb9f05a5612eb217"
   },
   "registered_reconstruction_records": [
     {
@@ -473,7 +464,10 @@
       "evidence": "reports/native_camera_cache_getters_audit.json",
       "native_composition_fixture": true,
       "abi_compatible": false,
-      "game_validated": false
+      "game_validated": false,
+      "canonical_raw_hierarchy_integrated": true,
+      "hierarchy_integration_evidence": "reports/native_node_raw_hierarchy_audit.json",
+      "full_camera_owner_constructor_destructor_replay": false
     },
     {
       "kind": "function",
@@ -487,7 +481,10 @@
       "evidence": "reports/native_camera_cache_getters_audit.json",
       "native_composition_fixture": true,
       "abi_compatible": false,
-      "game_validated": false
+      "game_validated": false,
+      "canonical_raw_hierarchy_integrated": true,
+      "hierarchy_integration_evidence": "reports/native_node_raw_hierarchy_audit.json",
+      "full_camera_owner_constructor_destructor_replay": false
     },
     {
       "kind": "function",
@@ -501,7 +498,10 @@
       "evidence": "reports/native_camera_cache_getters_audit.json",
       "native_composition_fixture": true,
       "abi_compatible": false,
-      "game_validated": false
+      "game_validated": false,
+      "canonical_raw_hierarchy_integrated": true,
+      "hierarchy_integration_evidence": "reports/native_node_raw_hierarchy_audit.json",
+      "full_camera_owner_constructor_destructor_replay": false
     },
     {
       "kind": "function",
@@ -515,7 +515,10 @@
       "evidence": "reports/native_camera_cache_getters_audit.json",
       "native_composition_fixture": true,
       "abi_compatible": false,
-      "game_validated": false
+      "game_validated": false,
+      "canonical_raw_hierarchy_integrated": true,
+      "hierarchy_integration_evidence": "reports/native_node_raw_hierarchy_audit.json",
+      "full_camera_owner_constructor_destructor_replay": false
     },
     {
       "kind": "function",
@@ -529,8 +532,122 @@
       "evidence": "reports/native_camera_cache_getters_audit.json",
       "native_composition_fixture": true,
       "abi_compatible": false,
-      "game_validated": false
+      "game_validated": false,
+      "canonical_raw_hierarchy_integrated": true,
+      "hierarchy_integration_evidence": "reports/native_node_raw_hierarchy_audit.json",
+      "full_camera_owner_constructor_destructor_replay": false
     }
   ],
-  "closure_utc": "2026-09-11T17:50:00.961101+00:00"
+  "closure_utc": "2026-09-11T17:50:00.961101+00:00",
+  "worker_handoff_raw_parent_contract": "Actual 32-bit raw parent address at+30; reached nodes have flags+5C/local+B0/world+F0. NativeCameraOwner companion words are not compatible.",
+  "worker_handoff_integration_boundary": "Main CMake registration/build, ledgers and saved Ghidra annotation/export refresh remain integrator work. No shared files or saved analysis changed by this worker.",
+  "integration_boundary": "Main build, saved annotations and canonical hierarchy integration closed in separately pinned primary records. Complete camera owner ABI/lifetime replay remains unverified.",
+  "worker_handoff_limitations": [
+    "Complete worker library; main integration/build and original caller ABI remain separate.",
+    "All five original getters and full original math/world/frustum bodies execute. Original normalize calls a pure ABI bridge to the actual full library vector-length provider with fixed CRT context; no arithmetic or exception result is replaced.",
+    "Raw node parents are actual fixed arena addresses. Existing semantic NativeCameraOwner companion words are incompatible and are not passed here.",
+    "Four paired scenarios cover cold recursive hierarchy/frustum/inverse VP with subsequent hits, every cache hit with invalid unused parent/context, mixed world/projection-valid flags, and real invalid-parent access fault after early frustum-bit publication.",
+    "Full 8192-byte raw hierarchy/camera arenas, fault access/address and dispatch/matherr/errno are compared without pointer normalization. Successful returns also compare raw result pointers, nonvolatile registers and selected FXSAVE state. Fault records do not claim captured floating/register exception-context parity. Private stack scratch, return addresses, instruction/data pointers, inactive x87 state and XMM4..7 are not compared. All return/fault frames are retained raw.",
+    "Floating exceptions are masked; no unmasked hardware FP or asynchronous mutation coverage. No broader singular/NaN getter suite or gameplay claim.",
+    "Whole loaded source text/rdata and all original code/constants are pinned at nine stages. Every linked bsp_core member is frozen byte-exact with source/header closure and complete linked COFF section/relocation checks."
+  ],
+  "limitations": [
+    "The original worker proof and its arena assumptions remain historical snapshots; consult primary_integration and current_hierarchy_integration for current integration evidence.",
+    "Full camera owner constructor/destructor, root-list and unrelated owner object ABI, original caller ABI, asynchronous mutation, unmasked FP and gameplay are unverified."
+  ],
+  "current_hierarchy_integration": {
+    "report": "reports/native_node_raw_hierarchy_audit.json",
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\node_raw_hierarchy_primary\\sealed.json",
+      "bytes": 37967,
+      "sha256": "c1181d47889f5c6656230ab392f467ea9b5db496dd6881c83fb1bb54e01c0c16"
+    },
+    "canonical_four_raw_words": true,
+    "fixture": "one unchanged primary host sequence;50assertions;6literal snapshots6696bytes",
+    "native_camera_owner_uses_existing_binding": true,
+    "full_camera_owner_constructor_destructor_replay": false,
+    "full_object_ABI": false
+  },
+  "hierarchy_saved_annotations": [
+    {
+      "address": "00b6fcb0",
+      "before": {
+        "address": "00b6fcb0",
+        "function_name": "BSP_Camera_GetViewMatrix",
+        "comment": "[BSP reconstruction 00b6fcb0]\nTyped camera world/view cache slice in src/camera_transform.cpp. World00b6db70: ECX/RET, parent+30 world-valid+5C bit2, recurse missing parent then affine local+B0 * parentWorld+F0; no parent x87copy local->world; setsbit2. View00b6fcb0: ECX/RET/EAX+60, validbit8; ensureworld, disjoint inverse temp then x87copy. Combined00b70490: ECX/RET/EAX+220, projection flags+2F0 bit10; view*projection then x87copy/setbit10. Affine00b6d4d0 ECXdst EDXleft stackright RET4, EAXright; unsafe output alias, forceslastcolumn0001. Copy004134f0 ECXdst stacksrc RET4/EAXdst,16sequentialx87pairs. Existing two-node parent camera draw passes; affine16words match isolatednativefixture. See reports/camera_transform.json. Constructor/lifetime/dirty propagation and native object ABI remain unported.\n\n[BSP reconstruction 00b6fcb0] update\nComplete 58-byte view getter. Low flags+5C bit8 hit skips world work; bit2 dirty invokes full raw world including recursive nonnull parents, scaled affine inverse to temporary, full ordered copy+60, then OR current flags8. Primary strict main Win32/two existing CTests and8 seeds passed. Verified100 worker pins and36 current provider files (33literal,3onlyCRLF/LF);19fresh original spans5308bytes. Actual main library11exact objects and145complete mapped COFF sections (77library), all relocations and56actual runtime import providers verified. Unchanged original/full-main composition passes4paired scenarios16paired calls133072literal observable bytes,9immutable original/source code+constant postimages. Cold recursive parent chain, hits with invalid unused parent/context, mixed dirty flags and actual invalid-parent read AV0x5D agree, retaining frustum bit4. Full matrix/world/frustum original closure executes; only original vector length edge uses actual full library length/CRT fixed-context ABI bridge, no arithmetic substitution. Fault floating/register context, unmasked FP, asynchronous mutation, original caller ABI and gameplay unclaimed. Current companion hierarchy remains incompatible pending canonical raw migration. reports/native_camera_cache_getters_audit.json"
+      },
+      "after": {
+        "address": "00b6fcb0",
+        "evidence": "Host representation integration evidence, zero additional native bodies. Canonical parent+30/first-child+34/next-sibling+3C/previous-sibling+40 are actual 32-bit node addresses. Bound CameraTransformLink accesses those same words and resolves current companions through the existing SceneAttachmentRuntime binding vector; no second graph or temporary pointer swizzle. NativeNodeBinding supplies immutable raw identity; bound semantic walks require live same-runtime bindings. Preconstruction does not touch raw fields. Exact companion identity retirement touches no backing; old or rejected identities cannot retire an address replacement. Link get still requires live readable backing and the runtime outlives its companions. All four source links and destination domains are validated before host CameraTransform/CameraState assignment stores; these host copy/move APIs may throw. Native semantic noexcept algorithms keep their valid-input contract. Primary main strict Win32/two existing CTests/eight seeds pass. Verified143 worker pins and92 current source/header files (84literal,8onlyCRLF/LF),24 complete actual main objects. Unchanged coherent sequence passes50assertions with6literal raw snapshots6696bytes: construction, preconstruction binding, nonnull reparent, reentrant prepend/current sibling reload, full raw frustum/inverseVP/cold parent, invalid late host link preserving destination, protected-dead-backing retirement and address reuse. All403complete linked COFF sections (280library),24exact archive members and two41731-byte whole runtime code postimages verified. Private RTTI and anonymous namespace/lambda scope names differ between worktrees; current linked sections checked exactly. Camera tail is explicit fixture input; full camera owner ctor/dtor, other owner/root-list ABI, original-body differential for host adapter, asynchronous mutation, unmasked FP and gameplay are unclaimed. reports/native_node_raw_hierarchy_audit.json",
+        "old_name": "BSP_Camera_GetViewMatrix",
+        "name": "BSP_Camera_GetViewMatrix",
+        "saved_body_end": "00b6fce9"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b6fcf0",
+      "before": {
+        "address": "00b6fcf0",
+        "function_name": "BSP_Camera_GetProjectionMatrix",
+        "comment": "[BSP reconstruction 00b6fcf0]\nCamera projection slice, typed port src/camera_projection.cpp. Builder00b642f0: ECX destination, fov/aspect/near/far stack, RET10h; FSINCOS tangent00412e20 float32 spill, reciprocal scale spill, far/(far-near) ratio spill, positivezero fill. Scalar setters ECX camera/stack float/RET4: AND flags+2F0 withFFFFFF41 then store +1C4/+1C8/+1D4/+1D8. Explicit setter00b6fd60 copies into+1E0 and+2A0, flags=(flags&FFFFFF4B)|8. Getter00b6fcf0 ECX/RET/EAX cache+2A0, refresh if bit8 clear; x87 argument/copy spills retained. New C++ ownership/ABI; original ctor not recovered. Existing perspective draw/cache fixture passes, no native FP differential claim. See reports/camera_projection.json and docs/CAMERA_PROJECTION_EVIDENCE.md.\n\n[BSP reconstruction 00b6fcf0] update\nNative [00b6fcf0,00b6fd60); ECX camera; EAX actual camera+2A0; RET. CameraProjection and CameraState now bind actual fields and existing transform/projection views. Getter uses four separate pointers for native1D8/1D4/1C8/1C4 in far/near/aspect/FOV x87 spill order; unrelated1CC/1D0 not read. Native4-rounding-mode fixture matched12 full756-byte states, x87 status/control and actual cache address. Default diagnostic and copy/move/write-through host semantics checked. Integration: docs/NATIVE_VIEWPORT_SHADOW_INTEGRATION.md; docs/CAMERA_FRAME_OWNER_BACKING.md; reports/native_viewport_shadow_integration_audit.json. Descriptive names are hypotheses; no binary ABI or game validation claim.\n\n[BSP reconstruction 00b6fcf0] update\nComplete 112-byte projection getter. Flags+2F0 bit8; ordered far/near/aspect/fov FLD/FSTP into temporary callee argument slots, never the camera owner scalar fields. Full native projection/tangent, full copies into+1E0 then+2A0, current flags OR8. Added EDX points to temporary arguments and caller ADD ESP10 replaces child RET10 cleanup. Primary strict main Win32/two existing CTests and8 seeds passed. Verified100 worker pins and36 current provider files (33literal,3onlyCRLF/LF);19fresh original spans5308bytes. Actual main library11exact objects and145complete mapped COFF sections (77library), all relocations and56actual runtime import providers verified. Unchanged original/full-main composition passes4paired scenarios16paired calls133072literal observable bytes,9immutable original/source code+constant postimages. Cold recursive parent chain, hits with invalid unused parent/context, mixed dirty flags and actual invalid-parent read AV0x5D agree, retaining frustum bit4. Full matrix/world/frustum original closure executes; only original vector length edge uses actual full library length/CRT fixed-context ABI bridge, no arithmetic substitution. Fault floating/register context, unmasked FP, asynchronous mutation, original caller ABI and gameplay unclaimed. Current companion hierarchy remains incompatible pending canonical raw migration. reports/native_camera_cache_getters_audit.json"
+      },
+      "after": {
+        "address": "00b6fcf0",
+        "evidence": "Host representation integration evidence, zero additional native bodies. Canonical parent+30/first-child+34/next-sibling+3C/previous-sibling+40 are actual 32-bit node addresses. Bound CameraTransformLink accesses those same words and resolves current companions through the existing SceneAttachmentRuntime binding vector; no second graph or temporary pointer swizzle. NativeNodeBinding supplies immutable raw identity; bound semantic walks require live same-runtime bindings. Preconstruction does not touch raw fields. Exact companion identity retirement touches no backing; old or rejected identities cannot retire an address replacement. Link get still requires live readable backing and the runtime outlives its companions. All four source links and destination domains are validated before host CameraTransform/CameraState assignment stores; these host copy/move APIs may throw. Native semantic noexcept algorithms keep their valid-input contract. Primary main strict Win32/two existing CTests/eight seeds pass. Verified143 worker pins and92 current source/header files (84literal,8onlyCRLF/LF),24 complete actual main objects. Unchanged coherent sequence passes50assertions with6literal raw snapshots6696bytes: construction, preconstruction binding, nonnull reparent, reentrant prepend/current sibling reload, full raw frustum/inverseVP/cold parent, invalid late host link preserving destination, protected-dead-backing retirement and address reuse. All403complete linked COFF sections (280library),24exact archive members and two41731-byte whole runtime code postimages verified. Private RTTI and anonymous namespace/lambda scope names differ between worktrees; current linked sections checked exactly. Camera tail is explicit fixture input; full camera owner ctor/dtor, other owner/root-list ABI, original-body differential for host adapter, asynchronous mutation, unmasked FP and gameplay are unclaimed. reports/native_node_raw_hierarchy_audit.json",
+        "old_name": "BSP_Camera_GetProjectionMatrix",
+        "name": "BSP_Camera_GetProjectionMatrix",
+        "saved_body_end": "00b6fd5f"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b70490",
+      "before": {
+        "address": "00b70490",
+        "function_name": "BSP_Camera_GetViewProjectionMatrix",
+        "comment": "[BSP reconstruction 00b70490]\nTyped camera world/view cache slice in src/camera_transform.cpp. World00b6db70: ECX/RET, parent+30 world-valid+5C bit2, recurse missing parent then affine local+B0 * parentWorld+F0; no parent x87copy local->world; setsbit2. View00b6fcb0: ECX/RET/EAX+60, validbit8; ensureworld, disjoint inverse temp then x87copy. Combined00b70490: ECX/RET/EAX+220, projection flags+2F0 bit10; view*projection then x87copy/setbit10. Affine00b6d4d0 ECXdst EDXleft stackright RET4, EAXright; unsafe output alias, forceslastcolumn0001. Copy004134f0 ECXdst stacksrc RET4/EAXdst,16sequentialx87pairs. Existing two-node parent camera draw passes; affine16words match isolatednativefixture. See reports/camera_transform.json. Constructor/lifetime/dirty propagation and native object ABI remain unported.\n\n[BSP reconstruction 00b70490] update\nComplete 116-byte VP getter. Flags+2F0 bit10; complete inlined view/world path, projection getter, full general multiply into temporary and copy+220, then OR current flags10. Primary strict main Win32/two existing CTests and8 seeds passed. Verified100 worker pins and36 current provider files (33literal,3onlyCRLF/LF);19fresh original spans5308bytes. Actual main library11exact objects and145complete mapped COFF sections (77library), all relocations and56actual runtime import providers verified. Unchanged original/full-main composition passes4paired scenarios16paired calls133072literal observable bytes,9immutable original/source code+constant postimages. Cold recursive parent chain, hits with invalid unused parent/context, mixed dirty flags and actual invalid-parent read AV0x5D agree, retaining frustum bit4. Full matrix/world/frustum original closure executes; only original vector length edge uses actual full library length/CRT fixed-context ABI bridge, no arithmetic substitution. Fault floating/register context, unmasked FP, asynchronous mutation, original caller ABI and gameplay unclaimed. Current companion hierarchy remains incompatible pending canonical raw migration. reports/native_camera_cache_getters_audit.json"
+      },
+      "after": {
+        "address": "00b70490",
+        "evidence": "Host representation integration evidence, zero additional native bodies. Canonical parent+30/first-child+34/next-sibling+3C/previous-sibling+40 are actual 32-bit node addresses. Bound CameraTransformLink accesses those same words and resolves current companions through the existing SceneAttachmentRuntime binding vector; no second graph or temporary pointer swizzle. NativeNodeBinding supplies immutable raw identity; bound semantic walks require live same-runtime bindings. Preconstruction does not touch raw fields. Exact companion identity retirement touches no backing; old or rejected identities cannot retire an address replacement. Link get still requires live readable backing and the runtime outlives its companions. All four source links and destination domains are validated before host CameraTransform/CameraState assignment stores; these host copy/move APIs may throw. Native semantic noexcept algorithms keep their valid-input contract. Primary main strict Win32/two existing CTests/eight seeds pass. Verified143 worker pins and92 current source/header files (84literal,8onlyCRLF/LF),24 complete actual main objects. Unchanged coherent sequence passes50assertions with6literal raw snapshots6696bytes: construction, preconstruction binding, nonnull reparent, reentrant prepend/current sibling reload, full raw frustum/inverseVP/cold parent, invalid late host link preserving destination, protected-dead-backing retirement and address reuse. All403complete linked COFF sections (280library),24exact archive members and two41731-byte whole runtime code postimages verified. Private RTTI and anonymous namespace/lambda scope names differ between worktrees; current linked sections checked exactly. Camera tail is explicit fixture input; full camera owner ctor/dtor, other owner/root-list ABI, original-body differential for host adapter, asynchronous mutation, unmasked FP and gameplay are unclaimed. reports/native_node_raw_hierarchy_audit.json",
+        "old_name": "BSP_Camera_GetViewProjectionMatrix",
+        "name": "BSP_Camera_GetViewProjectionMatrix",
+        "saved_body_end": "00b70503"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b70510",
+      "before": {
+        "address": "00b70510",
+        "function_name": "BSP_Camera_GetInverseViewProjection",
+        "comment": "[BSP reconstruction 00b70510]\n[BSP reconstruction] Projection flag20 gates general inverse of current VP, x87 matrix copy to+260, then set flag20. Returns cached matrix. Original ABI: ECX camera; EAX matrix pointer; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b70510] update\nComplete 61-byte inverse VP getter. Flags+2F0 bit20; full VP and general inverse into temporary, full copy+260, then OR current flags20. Primary strict main Win32/two existing CTests and8 seeds passed. Verified100 worker pins and36 current provider files (33literal,3onlyCRLF/LF);19fresh original spans5308bytes. Actual main library11exact objects and145complete mapped COFF sections (77library), all relocations and56actual runtime import providers verified. Unchanged original/full-main composition passes4paired scenarios16paired calls133072literal observable bytes,9immutable original/source code+constant postimages. Cold recursive parent chain, hits with invalid unused parent/context, mixed dirty flags and actual invalid-parent read AV0x5D agree, retaining frustum bit4. Full matrix/world/frustum original closure executes; only original vector length edge uses actual full library length/CRT fixed-context ABI bridge, no arithmetic substitution. Fault floating/register context, unmasked FP, asynchronous mutation, original caller ABI and gameplay unclaimed. Current companion hierarchy remains incompatible pending canonical raw migration. reports/native_camera_cache_getters_audit.json"
+      },
+      "after": {
+        "address": "00b70510",
+        "evidence": "Host representation integration evidence, zero additional native bodies. Canonical parent+30/first-child+34/next-sibling+3C/previous-sibling+40 are actual 32-bit node addresses. Bound CameraTransformLink accesses those same words and resolves current companions through the existing SceneAttachmentRuntime binding vector; no second graph or temporary pointer swizzle. NativeNodeBinding supplies immutable raw identity; bound semantic walks require live same-runtime bindings. Preconstruction does not touch raw fields. Exact companion identity retirement touches no backing; old or rejected identities cannot retire an address replacement. Link get still requires live readable backing and the runtime outlives its companions. All four source links and destination domains are validated before host CameraTransform/CameraState assignment stores; these host copy/move APIs may throw. Native semantic noexcept algorithms keep their valid-input contract. Primary main strict Win32/two existing CTests/eight seeds pass. Verified143 worker pins and92 current source/header files (84literal,8onlyCRLF/LF),24 complete actual main objects. Unchanged coherent sequence passes50assertions with6literal raw snapshots6696bytes: construction, preconstruction binding, nonnull reparent, reentrant prepend/current sibling reload, full raw frustum/inverseVP/cold parent, invalid late host link preserving destination, protected-dead-backing retirement and address reuse. All403complete linked COFF sections (280library),24exact archive members and two41731-byte whole runtime code postimages verified. Private RTTI and anonymous namespace/lambda scope names differ between worktrees; current linked sections checked exactly. Camera tail is explicit fixture input; full camera owner ctor/dtor, other owner/root-list ABI, original-body differential for host adapter, asynchronous mutation, unmasked FP and gameplay are unclaimed. reports/native_node_raw_hierarchy_audit.json",
+        "old_name": "BSP_Camera_GetInverseViewProjection",
+        "name": "BSP_Camera_GetInverseViewProjection",
+        "saved_body_end": "00b7054c"
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b70710",
+      "before": {
+        "address": "00b70710",
+        "function_name": "BSP_Camera_GetFrustum",
+        "comment": "[BSP reconstruction 00b70710]\n[BSP reconstruction] If flag4 missing, publish flag4 before currentVP getter, extract six planes, assign with flags7. Neither this function nor six-plane assignment changes plane count. Original ABI: ECX camera; EAX plane-set pointer; RET. See docs/CAMERA_FRAME_STATE.md; typed interface, not native layout/ABI. Evidence: docs/CAMERA_FRAME_STATE.md; reports/camera_frame_state_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b70710] update\nComplete 69-byte frustum getter. Read current flags+2F0, publish bit4 BEFORE full VP/extraction; preserve publication on failure. Added saved EDX fixed context outside original local frame, cache hit never dereferences it. Assign6 planes with flags7 to+2F4, leave remaining planes/count+434 untouched. Primary strict main Win32/two existing CTests and8 seeds passed. Verified100 worker pins and36 current provider files (33literal,3onlyCRLF/LF);19fresh original spans5308bytes. Actual main library11exact objects and145complete mapped COFF sections (77library), all relocations and56actual runtime import providers verified. Unchanged original/full-main composition passes4paired scenarios16paired calls133072literal observable bytes,9immutable original/source code+constant postimages. Cold recursive parent chain, hits with invalid unused parent/context, mixed dirty flags and actual invalid-parent read AV0x5D agree, retaining frustum bit4. Full matrix/world/frustum original closure executes; only original vector length edge uses actual full library length/CRT fixed-context ABI bridge, no arithmetic substitution. Fault floating/register context, unmasked FP, asynchronous mutation, original caller ABI and gameplay unclaimed. Current companion hierarchy remains incompatible pending canonical raw migration. reports/native_camera_cache_getters_audit.json"
+      },
+      "after": {
+        "address": "00b70710",
+        "evidence": "Host representation integration evidence, zero additional native bodies. Canonical parent+30/first-child+34/next-sibling+3C/previous-sibling+40 are actual 32-bit node addresses. Bound CameraTransformLink accesses those same words and resolves current companions through the existing SceneAttachmentRuntime binding vector; no second graph or temporary pointer swizzle. NativeNodeBinding supplies immutable raw identity; bound semantic walks require live same-runtime bindings. Preconstruction does not touch raw fields. Exact companion identity retirement touches no backing; old or rejected identities cannot retire an address replacement. Link get still requires live readable backing and the runtime outlives its companions. All four source links and destination domains are validated before host CameraTransform/CameraState assignment stores; these host copy/move APIs may throw. Native semantic noexcept algorithms keep their valid-input contract. Primary main strict Win32/two existing CTests/eight seeds pass. Verified143 worker pins and92 current source/header files (84literal,8onlyCRLF/LF),24 complete actual main objects. Unchanged coherent sequence passes50assertions with6literal raw snapshots6696bytes: construction, preconstruction binding, nonnull reparent, reentrant prepend/current sibling reload, full raw frustum/inverseVP/cold parent, invalid late host link preserving destination, protected-dead-backing retirement and address reuse. All403complete linked COFF sections (280library),24exact archive members and two41731-byte whole runtime code postimages verified. Private RTTI and anonymous namespace/lambda scope names differ between worktrees; current linked sections checked exactly. Camera tail is explicit fixture input; full camera owner ctor/dtor, other owner/root-list ABI, original-body differential for host adapter, asynchronous mutation, unmasked FP and gameplay are unclaimed. reports/native_node_raw_hierarchy_audit.json",
+        "old_name": "BSP_Camera_GetFrustum",
+        "name": "BSP_Camera_GetFrustum",
+        "saved_body_end": "00b70754"
+      },
+      "status": "applied"
+    }
+  ]
 }

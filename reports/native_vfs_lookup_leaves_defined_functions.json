@@ -1,0 +1,174 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "00be5c40",
+      "end_exclusive": "00be5c7e",
+      "length": 62,
+      "sha256": "093d3e0f968a131278efc87d2375f2b2d908501cec5e8e4f7e5de2390d98f854",
+      "missing_before": true,
+      "function_before": "No function found for 00be5c40",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_FileStore_ContainsName at 00be5c40\nSignature: undefined BSP_FileStore_ContainsName(void)\nEntry: 00be5c40\nBody: 00be5c40 - 00be5c7d"
+    },
+    {
+      "address": "00be6040",
+      "end_exclusive": "00be6090",
+      "length": 80,
+      "sha256": "fb0712839a5c3bae45e4e885dd8f018fef901af30e6931524c44914913152005",
+      "missing_before": true,
+      "function_before": "No function found for 00be6040",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_FileStore_CopyName at 00be6040\nSignature: undefined BSP_FileStore_CopyName(void)\nEntry: 00be6040\nBody: 00be6040 - 00be608f"
+    },
+    {
+      "address": "00bba710",
+      "end_exclusive": "00bba727",
+      "length": 23,
+      "sha256": "760f8926696e972c01e7ba775379a4947c0b67d05968165185972ecb0257437e",
+      "missing_before": true,
+      "function_before": "No function found for 00bba710",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_MSARFile_ContainsFile at 00bba710\nSignature: undefined BSP_MSARFile_ContainsFile(void)\nEntry: 00bba710\nBody: 00bba710 - 00bba726"
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00be5c40",
+        "end_address": "00be5c7e"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00be5c40",
+        "end_address": "00be5c7d",
+        "bytes_disassembled": 62,
+        "message": "Successfully disassembled 62 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00be5c40",
+        "name": "BSP_FileStore_ContainsName",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00be5c40",
+        "function_name": "BSP_FileStore_ContainsName",
+        "entry_point": "00be5c40",
+        "body_size": 62,
+        "message": "Function created successfully at 00be5c40",
+        "warnings": [
+          "Function name 'BSP_FileStore_ContainsName' \u2014 main part 'FileStore_ContainsName' is not PascalCase. Expected: FilestoreContainsname",
+          "Function name 'BSP_FileStore_ContainsName' \u2014 main part 'FileStore_ContainsName' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_FileStore_ContainsName' does not start with a recognized verb. First word 'File' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00be6040",
+        "end_address": "00be6090"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00be6040",
+        "end_address": "00be608f",
+        "bytes_disassembled": 80,
+        "message": "Successfully disassembled 80 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00be6040",
+        "name": "BSP_FileStore_CopyName",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00be6040",
+        "function_name": "BSP_FileStore_CopyName",
+        "entry_point": "00be6040",
+        "body_size": 80,
+        "message": "Function created successfully at 00be6040",
+        "warnings": [
+          "Function name 'BSP_FileStore_CopyName' \u2014 main part 'FileStore_CopyName' is not PascalCase. Expected: FilestoreCopyname",
+          "Function name 'BSP_FileStore_CopyName' \u2014 main part 'FileStore_CopyName' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_FileStore_CopyName' does not start with a recognized verb. First word 'File' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00bba710",
+        "end_address": "00bba727"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00bba710",
+        "end_address": "00bba726",
+        "bytes_disassembled": 23,
+        "message": "Successfully disassembled 23 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00bba710",
+        "name": "BSP_MSARFile_ContainsFile",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00bba710",
+        "function_name": "BSP_MSARFile_ContainsFile",
+        "entry_point": "00bba710",
+        "body_size": 23,
+        "message": "Function created successfully at 00bba710",
+        "warnings": [
+          "Function name 'BSP_MSARFile_ContainsFile' \u2014 main part 'MSARFile_ContainsFile' is not PascalCase. Expected: MsarfileContainsfile",
+          "Function name 'BSP_MSARFile_ContainsFile' \u2014 main part 'MSARFile_ContainsFile' contains underscores. Use PascalCase after the module prefix."
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Three complete VFS lookup leaves defined with comments preserved; project saved"
+}

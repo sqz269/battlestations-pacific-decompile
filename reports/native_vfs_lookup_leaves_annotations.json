@@ -1,0 +1,126 @@
+[
+  {
+    "address": "00be5c00",
+    "before": {
+      "address": "00be5c00",
+      "function_name": "BSP_FileStore_ContainsFile",
+      "comment": "[BSP reconstruction 00be5c00]\nECX store; name stack RET4 ALbool. Primarytree+14 via00be5a50; emptygates then_stricmpkeyequivalence, no lengthtie-break, no normalizationonlookup. Full62-bytebody verified."
+    },
+    "after": {
+      "address": "00be5c00",
+      "evidence": "Complete62-byte FileStore contains: actual tree/head+18, full raw tree/comparator, current result/head/returning CRT validation; AL equality result. Primary strict main Win32/two existing CTests/eight seeds pass. Verified47workerpins and22fresh spans3117bytes. Unchanged50original/main comparisons (42lookups,8copies) execute11unchanged original bodies871bytes including8owned605bytes,102400same-address arena bytes plus72786976actual pool-prefix bytes for8copy pairs. Mixed case/miss, zero-length unusabledata, zero/negative counts, vector truncation, duplicate-first, high-bit recorded lengths, selfcopy clearing and abandoned invalid prior output covered. Actual string resize/pool/CRT edges are shared full rebuilt providers through ABI bridges, not original provider internals. Sevenexact archive objects203full linkedCOFFsections14619bytes626relocations verified; all8owned separate entries retained. No runtime code postimages, concurrent metadata mutation, throwing nativeSEH, original pool runtime, archive population or game claim. reports/native_vfs_lookup_leaves_audit.json",
+      "old_name": "BSP_FileStore_ContainsFile",
+      "name": "BSP_FileStore_ContainsFile",
+      "saved_body_end": "00be5c3d"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00be5c40",
+    "before": {
+      "address": "00be5c40",
+      "function_name": "BSP_FileStore_ContainsName"
+    },
+    "after": {
+      "address": "00be5c40",
+      "evidence": "Complete62-byte FileStore+18 name-probe slot: contains semantics over same actual tree, never name replacement. Primary strict main Win32/two existing CTests/eight seeds pass. Verified47workerpins and22fresh spans3117bytes. Unchanged50original/main comparisons (42lookups,8copies) execute11unchanged original bodies871bytes including8owned605bytes,102400same-address arena bytes plus72786976actual pool-prefix bytes for8copy pairs. Mixed case/miss, zero-length unusabledata, zero/negative counts, vector truncation, duplicate-first, high-bit recorded lengths, selfcopy clearing and abandoned invalid prior output covered. Actual string resize/pool/CRT edges are shared full rebuilt providers through ABI bridges, not original provider internals. Sevenexact archive objects203full linkedCOFFsections14619bytes626relocations verified; all8owned separate entries retained. No runtime code postimages, concurrent metadata mutation, throwing nativeSEH, original pool runtime, archive population or game claim. reports/native_vfs_lookup_leaves_audit.json",
+      "old_name": "BSP_FileStore_ContainsName",
+      "name": "BSP_FileStore_ContainsName",
+      "saved_body_end": "00be5c7d"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00be6040",
+    "before": {
+      "address": "00be6040",
+      "function_name": "BSP_FileStore_CopyName"
+    },
+    "after": {
+      "address": "00be6040",
+      "evidence": "Complete80-byte FileStore name copy: output header cleared before self-identity check, no cleanup of previous output; full actual-pool426060 assignment from raw input and current data length, EAX output/RET8, ECXunused. Primary strict main Win32/two existing CTests/eight seeds pass. Verified47workerpins and22fresh spans3117bytes. Unchanged50original/main comparisons (42lookups,8copies) execute11unchanged original bodies871bytes including8owned605bytes,102400same-address arena bytes plus72786976actual pool-prefix bytes for8copy pairs. Mixed case/miss, zero-length unusabledata, zero/negative counts, vector truncation, duplicate-first, high-bit recorded lengths, selfcopy clearing and abandoned invalid prior output covered. Actual string resize/pool/CRT edges are shared full rebuilt providers through ABI bridges, not original provider internals. Sevenexact archive objects203full linkedCOFFsections14619bytes626relocations verified; all8owned separate entries retained. No runtime code postimages, concurrent metadata mutation, throwing nativeSEH, original pool runtime, archive population or game claim. reports/native_vfs_lookup_leaves_audit.json",
+      "old_name": "BSP_FileStore_CopyName",
+      "name": "BSP_FileStore_CopyName",
+      "saved_body_end": "00be608f"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bb5540",
+    "before": {
+      "address": "00bb5540",
+      "function_name": "FUN_00bb5540",
+      "comment": "[BSP reconstruction 00bb5540]\nIncoming ECX unused; stack output_string,input_string; EAX output; RET8 Direct native string copy, no path transformation. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+    },
+    "after": {
+      "address": "00bb5540",
+      "evidence": "Complete80-byte package name copy with same ordered clear/self-identity/no-previous-cleanup behavior and actual owning pool. Primary strict main Win32/two existing CTests/eight seeds pass. Verified47workerpins and22fresh spans3117bytes. Unchanged50original/main comparisons (42lookups,8copies) execute11unchanged original bodies871bytes including8owned605bytes,102400same-address arena bytes plus72786976actual pool-prefix bytes for8copy pairs. Mixed case/miss, zero-length unusabledata, zero/negative counts, vector truncation, duplicate-first, high-bit recorded lengths, selfcopy clearing and abandoned invalid prior output covered. Actual string resize/pool/CRT edges are shared full rebuilt providers through ABI bridges, not original provider internals. Sevenexact archive objects203full linkedCOFFsections14619bytes626relocations verified; all8owned separate entries retained. No runtime code postimages, concurrent metadata mutation, throwing nativeSEH, original pool runtime, archive population or game claim. reports/native_vfs_lookup_leaves_audit.json",
+      "old_name": "FUN_00bb5540",
+      "name": "BSP_PackageFile_CopyName",
+      "saved_body_end": "00bb558f"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bb8e00",
+    "before": {
+      "address": "00bb8e00",
+      "function_name": "BSP_MPKG_EntryExists",
+      "comment": "[BSP reconstruction 00bb8e00]\nECX state; stack name; RET4; AL bool. Same ordered equal-length case-insensitive lookup as named open. Complete raw body verified against PE; docs/MPKG_ENTRY_LOADING.md. Bounded archive parser/materializer implemented in src/mpkg_archive.cpp; one synthetic archive exercises three source routes. Native container, allocator and live large-reader ABI are not reconstructed."
+    },
+    "after": {
+      "address": "00bb8e00",
+      "evidence": "Complete108-byte MPKG archive-state membership: current+28base/+2Csignedcount of24hrows, case-insensitive raw header order, signednegativecount skips query, first duplicate wins. Primary strict main Win32/two existing CTests/eight seeds pass. Verified47workerpins and22fresh spans3117bytes. Unchanged50original/main comparisons (42lookups,8copies) execute11unchanged original bodies871bytes including8owned605bytes,102400same-address arena bytes plus72786976actual pool-prefix bytes for8copy pairs. Mixed case/miss, zero-length unusabledata, zero/negative counts, vector truncation, duplicate-first, high-bit recorded lengths, selfcopy clearing and abandoned invalid prior output covered. Actual string resize/pool/CRT edges are shared full rebuilt providers through ABI bridges, not original provider internals. Sevenexact archive objects203full linkedCOFFsections14619bytes626relocations verified; all8owned separate entries retained. No runtime code postimages, concurrent metadata mutation, throwing nativeSEH, original pool runtime, archive population or game claim. reports/native_vfs_lookup_leaves_audit.json",
+      "old_name": "BSP_MPKG_EntryExists",
+      "name": "BSP_MPKG_EntryExists",
+      "saved_body_end": "00bb8e6b"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bb8e80",
+    "before": {
+      "address": "00bb8e80",
+      "function_name": "BSP_MpkgProvider_ContainsEntry",
+      "comment": "[BSP reconstruction 00bb8e80]\nECX provider; stack name; AL bool; inherited RET4 Replace ECX with provider+14, JMP00bb8e00. Read-only contract; no new host implementation or runtime equivalence. reports/mpkg_mount_integration_audit.json"
+    },
+    "after": {
+      "address": "00bb8e80",
+      "evidence": "Complete8-byte MPKG provider wrapper: actual provider+14 is a POINTER to34harchive state, tail-dispatch full BB8E00. Primary strict main Win32/two existing CTests/eight seeds pass. Verified47workerpins and22fresh spans3117bytes. Unchanged50original/main comparisons (42lookups,8copies) execute11unchanged original bodies871bytes including8owned605bytes,102400same-address arena bytes plus72786976actual pool-prefix bytes for8copy pairs. Mixed case/miss, zero-length unusabledata, zero/negative counts, vector truncation, duplicate-first, high-bit recorded lengths, selfcopy clearing and abandoned invalid prior output covered. Actual string resize/pool/CRT edges are shared full rebuilt providers through ABI bridges, not original provider internals. Sevenexact archive objects203full linkedCOFFsections14619bytes626relocations verified; all8owned separate entries retained. No runtime code postimages, concurrent metadata mutation, throwing nativeSEH, original pool runtime, archive population or game claim. reports/native_vfs_lookup_leaves_audit.json",
+      "old_name": "BSP_MpkgProvider_ContainsEntry",
+      "name": "BSP_MpkgProvider_ContainsEntry",
+      "saved_body_end": "00bb8e87"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bba650",
+    "before": {
+      "address": "00bba650",
+      "function_name": "FUN_00bba650"
+    },
+    "after": {
+      "address": "00bba650",
+      "evidence": "Complete182-byte MSAR find index: INLINE vector begin+1C/end+20 of18hrows, signedDWORDdifference/24 and current count/bounds checks, returning CRT continuation, full current raw-header order; EAXindex orFFFFFFFF. Primary strict main Win32/two existing CTests/eight seeds pass. Verified47workerpins and22fresh spans3117bytes. Unchanged50original/main comparisons (42lookups,8copies) execute11unchanged original bodies871bytes including8owned605bytes,102400same-address arena bytes plus72786976actual pool-prefix bytes for8copy pairs. Mixed case/miss, zero-length unusabledata, zero/negative counts, vector truncation, duplicate-first, high-bit recorded lengths, selfcopy clearing and abandoned invalid prior output covered. Actual string resize/pool/CRT edges are shared full rebuilt providers through ABI bridges, not original provider internals. Sevenexact archive objects203full linkedCOFFsections14619bytes626relocations verified; all8owned separate entries retained. No runtime code postimages, concurrent metadata mutation, throwing nativeSEH, original pool runtime, archive population or game claim. reports/native_vfs_lookup_leaves_audit.json",
+      "old_name": "FUN_00bba650",
+      "name": "BSP_MSARFile_FindFileIndex",
+      "saved_body_end": "00bba705"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bba710",
+    "before": {
+      "address": "00bba710",
+      "function_name": "BSP_MSARFile_ContainsFile"
+    },
+    "after": {
+      "address": "00bba710",
+      "evidence": "Complete23-byte MSAR contains: full BBA650 then AL nonnegative-result Boolean. Primary strict main Win32/two existing CTests/eight seeds pass. Verified47workerpins and22fresh spans3117bytes. Unchanged50original/main comparisons (42lookups,8copies) execute11unchanged original bodies871bytes including8owned605bytes,102400same-address arena bytes plus72786976actual pool-prefix bytes for8copy pairs. Mixed case/miss, zero-length unusabledata, zero/negative counts, vector truncation, duplicate-first, high-bit recorded lengths, selfcopy clearing and abandoned invalid prior output covered. Actual string resize/pool/CRT edges are shared full rebuilt providers through ABI bridges, not original provider internals. Sevenexact archive objects203full linkedCOFFsections14619bytes626relocations verified; all8owned separate entries retained. No runtime code postimages, concurrent metadata mutation, throwing nativeSEH, original pool runtime, archive population or game claim. reports/native_vfs_lookup_leaves_audit.json",
+      "old_name": "BSP_MSARFile_ContainsFile",
+      "name": "BSP_MSARFile_ContainsFile",
+      "saved_body_end": "00bba726"
+    },
+    "status": "applied"
+  }
+]

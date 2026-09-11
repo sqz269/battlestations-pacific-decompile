@@ -11,10 +11,10 @@ namespace bsp {
 // the void API does not present either as a semantic getter result.
 void __fastcall refresh_native_camera_world_00b6db70(void* actual_node);
 
-// NativeNodeStorage/NativeCameraOwner currently store CameraTransform companion
-// pointers in their hierarchy words. They are NOT valid raw parent chains for
-// this interface, even though matrix/flag offsets match. Do not reinterpret
-// those companions, temporarily swizzle the shared words, or claim null-parent
-// cases establish general compatibility. The packet documents the migration
-// boundary. No new context, callback, node overlay or hierarchy adapter exists.
+// NativeNodeStorage now holds canonical raw hierarchy words, also used by the
+// NativeCameraOwner prefix. Pass that actual storage address; CameraTransform
+// and owning C++ companions are different objects. Bound semantic consumers
+// resolve the same words through their live scene-runtime bindings. See
+// docs/NATIVE_NODE_RAW_HIERARCHY.md for lifetime and representation limits;
+// root-list heads and unrelated owner fields are not promoted to native ABI.
 } // namespace bsp

@@ -4,8 +4,8 @@ The complete `00B6DB70..00B6DBC0` body (80 bytes, end excluded) is exposed as
 `void __fastcall refresh_native_camera_world_00b6db70(void* actual_node)`.
 ECX is an actual original-layout node; there are no stack arguments and no
 context or callback parameter. It uses the complete raw matrix copy at
-`004134F0` and affine composition at `00B6D4D0`. Existing semantic APIs and
-companion-backed camera owners are unchanged.
+`004134F0` and affine composition at `00B6D4D0`. The canonical hierarchy integration described below supplies the raw parent
+words through the existing node binding; semantic matrix APIs remain separate.
 
 | Native offset | Required contents |
 |---|---|
@@ -36,57 +36,30 @@ The raw world body has no unresolved helper: direct recursion, raw copy and raw
 composition are complete. Its callers must still supply an actual raw parent
 chain. A matching set of scalar offsets alone is insufficient for that contract.
 
-The existing representation boundary is concrete:
+The canonical hierarchy migration is now integrated. `NativeNodeStorage`
+stores actual node addresses at +30/+34/+3C/+40. `CameraTransformLink` reads
+and writes those same DWORDs and resolves current companions through the
+existing `SceneAttachmentRuntime` binding vector. Its immutable raw identity
+comes from `NativeNodeBinding`; there is one graph and no temporary swizzling.
+`NativeCameraOwner` uses this binding path. The raw entry takes the actual
+prefix address, not the address of the C++ owner or transform companion.
 
-- `NativeNodeStorage` is the actual 174h prefix used in pool slots, but its +30,
-  +34, +3C and +40 fields are `CameraTransform*` companion pointers.
-  `CameraTransformBacking` and `CameraTransform` hold references to those same
-  pointer fields. `NativeNodeBinding::transform_backing` binds them directly.
-- `NativeCameraOwner` contains a `NativeNodeBinding` and exposes a
-  `NativeNodeStorage&` prefix. Its companion is not an original node address.
-  The current owning class must not be passed to the raw entry or cast into a
-  raw parent chain merely because its matrix and flag members occupy the right
-  offsets. A root with a zero parent does not establish general compatibility.
-- Original constructor stores `B6F5E8..B6F5F6` zero +30/+34/+38/+3C/+40; later
-  `B6F683` selects local B0, `B6F696` clears flags, and `B6F70E` selects world F0.
-  Current construction mirrors those initial values, which do not reveal the
-  nonnull representation mismatch.
-- Original `B6E01D` stores the actual parent ECX-derived address into child+30
-  before root/scene calls. Its later stores publish actual child/sibling
-  addresses. Current `prepend_native_node_child_00b6e010` instead assigns
-  `child.parent = &parent` where parent is a companion. `B6D940` similarly
-  proves raw-address unlink stores. The current implementations preserve their
-  semantic callback order but do not make their published words raw addresses.
+All traversed semantic nodes require stable live same-runtime bindings.
+Preconstruction registration touches no backing words. Exact companion
+retirement does not inspect dead backing, and stale identities cannot retire
+a replacement at a reused address. Link reads still require live backing;
+the runtime must outlive its companions. Host copy/move assignment validates
+all four source links and destination domains before publishing any fields.
 
-A bounded integration plan, **not implemented in this packet**, is to make the
-existing prefix hierarchy words canonical raw addresses and adapt companion
-access at the representation boundary. Keep the same physical prefix, flag and
-matrix storage; introduce no second parent graph or duplicate owner. Replace
-the four `CameraTransform*&` link references with explicit accessors/proxies that
-load/store the actual raw word and resolve companions through a stable identity
-association when a semantic consumer needs one. A companion-to-raw conversion
-uses its bound storage address, never the companion address.
+The primary host sequence covers nonnull reparent, reentrant prepend, current
+sibling reload, full raw frustum/inverse VP, assignment failure without partial
+publication, protected backing retirement and address reuse. See
+`NATIVE_NODE_RAW_HIERARCHY.md` for the verified canonical integration. Camera
+tail fields were explicit fixture inputs; full camera owner constructor and
+destructor replay, unrelated owner fields and original object ABI remain open.
 
-The existing `SceneNodeAttachment::pointer_key` already records the actual slot
-identity. `SceneAttachmentRuntime` currently exposes `resolve(CameraTransform&)`
-and a light-key resolver; it does **not** expose a general raw-node-key resolver.
-Adding and reviewing that reverse lookup, including bind, unbind and
-`forget_destroyed_binding` lifetime behavior, is a named missing prerequisite.
-It must use the existing binding's lifetime and identity, with no invented
-allocator, ownership reference or caller-selected world callback.
-
-The corresponding writers and traversal consumers must switch together before
-mixed hierarchies can use the raw getter. The concrete initial review set is
-construction/backing in `native_node_construction`, prepend/reparent
-`B6E010/B6E680` in `native_node_parenting`, unlink `B6D940`, descendant invalidation
-`B6DA30`, root propagation `B6D890`, and the existing destruction/scene child
-walks. These implementations are present under companion contracts; their raw
-hierarchy integration is named but incomplete. Preserve parent publication
-before callbacks, current child/sibling reloads after callbacks, detach order,
-and stable binding retirement. Do not temporarily swizzle shared +30 words to
-call this routine: recursion, reentry and exceptions would observe a mixed
-representation. Keep current semantic callers on their existing path until
-the canonical-word/accessor migration and nonnull reparent/detach checks close.
+The following original-body evidence predates that host migration and retains
+its narrower historical scope.
 
 Fresh evidence consists of nine guarded live-Ghidra/installed-PE spans totaling
 772 bytes: the complete world body, both complete matrix providers, their one
@@ -103,7 +76,7 @@ actual library members are extracted and frozen with the archive and objects
 under ignored `local/camera_world/frozen`. The audit report pins the source,
 provider and boundary files, compiler command, binary evidence and build logs.
 
-No new test or runtime fixture is added: complete instruction-byte equivalence
+In the original world-body packet no new test or runtime fixture was added: complete instruction-byte equivalence
 and the complete provider proof establish the raw recursion and alias order.
 The existing tests do not validate this new raw entry against a nonnull current
 companion-backed owner. No original/linked/runtime execution, complete hierarchy
@@ -126,7 +99,8 @@ and three exact archive members were frozen. Complete original/main COFF
 verification covers the 80-byte world routine and both matrix providers,
 522 bytes and 181 instructions, after only three direct-call operands and
 one equal read-only constant operand. No new runtime or linked fixture is
-claimed here. The companion hierarchy migration remains pending.
+claimed here. The subsequent canonical hierarchy migration and host runtime checks are
+recorded in `NATIVE_NODE_RAW_HIERARCHY.md`; this original body proof is unchanged.
 
 The read-only bundle is `local/camera_world_primary/`, manifest SHA256
 `0f27423f70503ae4f803ff3c10da72b0e9100aa834824aa9751b9ec63292fea7`.
