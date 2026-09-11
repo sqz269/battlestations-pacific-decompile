@@ -21,19 +21,24 @@ struct NativeLuaFundamentalsContext {
     void* const volatile& manager_0109ceec;
 };
 
-// Full normal/EH control flow B68340..B68458: ECX raw allocation, EAX owner,
-// RET. Native string length18h, mode2; unchecked stream, slot18 gate, slot30
+// B68340..B68458 normal flow and EH transitions within the returning-cleanup
+// host domain: ECX raw allocation, EAX owner, RET. Native string length18h,
+// mode2; unchecked stream, slot18 gate, slot30
 // lowDWORD size, exact byte allocation, slot24 read (result/count ignored).
 // Closed stream retains data/size preimage AND stream reference. Success
 // decrements actual refs04 and invokes current slot00 at zero. No terminator.
 // On unwind only constructed path and singleton base are destroyed; neither
 // stream nor byte allocation is released. Original FH3 ABI is not supplied.
+// NativeStringStorage::release is noexcept. ActualNativeStringPoolStorage
+// covers only a returning pool getter during release; failure while lazily
+// recreating that pool terminates and is excluded from EH coverage here.
 NativeLuaFundamentalsOwner* construct_native_lua_fundamentals_00b68340(
     void* actual_allocation, NativeLuaFundamentalsContext&);
 
 // Full00884770..0088482C: captured shared lock, double check, raw0Ch allocation,
 // publication before second manager lookup/registration, final post-unlock
 // reload. Unwind frees only still-unpublished raw construction storage.
+// Constructor cleanup inherits the returning-getter domain described above.
 NativeLuaFundamentalsOwner* get_native_lua_fundamentals_00884770(
     NativeLuaFundamentalsContext&);
 // Direct adapter for NativeLuaBootstrapInputs::get_fundamentals_00884770.

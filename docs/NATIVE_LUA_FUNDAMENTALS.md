@@ -9,14 +9,24 @@ earlier `std::string` projection; it is not used by this implementation.
 
 | Routine | Native ABI and disk extent | Coverage |
 | --- | --- | --- |
-| `00884770` | No arguments; EAX owner; RET; `00884770..0088482C` | complete |
-| `00B68340` | ECX raw owner; EAX same owner; RET; `00B68340..00B68458` | complete |
+| `00884770` | No arguments; EAX owner; RET; `00884770..0088482C` | complete within constructor cleanup domain below |
+| `00B68340` | ECX raw owner; EAX same owner; RET; `00B68340..00B68458` | complete within returning-cleanup host domain |
 | `00B667D0` | ECX owner; RET; `00B667D0..00B667E0` | complete |
 | `00B66B80` | ECX owner, stack flags; EAX original owner; RET4; `00B66B80..00B66BC5` | complete disk body; two stored-listing gaps |
 
 These are readable C++ interfaces with explicit external context. Complete
-coverage describes the four bodies and their inspected cleanup transitions;
-it does not supply original FH3 exception identity or a binary replacement.
+coverage describes the four bodies and their inspected cleanup transitions
+within the supplied host service domains. It does not supply original FH3
+exception identity or a binary replacement.
+
+Constructor cleanup requires a returning pool getter. As specified in
+`include/bsp/native_string_pool_storage.hpp`, `NativeStringStorage::release`
+is `noexcept`, and `ActualNativeStringPoolStorage` calls the canonical pool
+getter even during release. A C++ failure while lazily recreating that pool
+terminates through this existing interface; this constructor and its singleton
+getter do not reproduce native unwinding for that failure. That case is
+excluded from their EH coverage. The fixture's rebuilt read exception uses
+a returning cleanup getter and does not validate pool recreation failure.
 
 ## Construction and source contract
 

@@ -6,24 +6,26 @@
       "name": "BSP_LuaFundamentals_GetSingleton",
       "cpp": "get_native_lua_fundamentals_00884770",
       "source": "src/native_lua_fundamentals.cpp",
-      "coverage": "complete",
+      "coverage": "complete_within_returning_cleanup_host_domain",
       "original_abi": "No arguments, EAX owner, RET",
       "disk_end_inclusive": "0088482c",
       "disk_end_exclusive": "0088482d",
       "stored_listing_complete": true,
-      "evidence": "Captured shared section, double check, exact0Ch raw allocation/constructor, publish then second manager lookup/register, final reload after unlock. State1 constructor failure frees raw owner; state0 unlock only. Original instruction fixture uses real domain."
+      "evidence": "Captured shared section, double check, exact0Ch raw allocation/constructor, publish then second manager lookup/register, final reload after unlock. State1 constructor failure frees raw owner; state0 unlock only. Original instruction fixture uses real domain.",
+      "coverage_domain": "NativeStringStorage::release is noexcept. ActualNativeStringPoolStorage covers a returning pool getter during cleanup; C++ failure while lazily recreating the pool terminates and is excluded from native EH equivalence. See include/bsp/native_string_pool_storage.hpp."
     },
     {
       "address": "00b68340",
       "name": "BSP_LuaFundamentals_Construct",
       "cpp": "construct_native_lua_fundamentals_00b68340",
       "source": "src/native_lua_fundamentals.cpp",
-      "coverage": "complete",
+      "coverage": "complete_within_returning_cleanup_host_domain",
       "original_abi": "ECX actual raw owner, EAX same owner, RET",
       "disk_end_inclusive": "00b68458",
       "disk_end_exclusive": "00b68459",
       "stored_listing_complete": true,
-      "evidence": "Producer writes D62C18/data04/lowDWORD size08. Native path length18h mode2. Closed gate leaves payload preimage and stream ref. Success allocates exact low length includingzero, ignores read result/count, actual ref decrement then current slot00. Two-state unwind releases path/base only; byte allocation/stream retained."
+      "evidence": "Producer writes D62C18/data04/lowDWORD size08. Native path length18h mode2. Closed gate leaves payload preimage and stream ref. Success allocates exact low length includingzero, ignores read result/count, actual ref decrement then current slot00. Two-state unwind releases path/base only; byte allocation/stream retained.",
+      "coverage_domain": "NativeStringStorage::release is noexcept. ActualNativeStringPoolStorage covers a returning pool getter during cleanup; C++ failure while lazily recreating the pool terminates and is excluded from native EH equivalence. See include/bsp/native_string_pool_storage.hpp."
     },
     {
       "address": "00b667d0",
@@ -416,18 +418,21 @@
     "shared_domain_shutdowns": 3,
     "rebuilt_read_exception": true,
     "original_fh3_throwing_paths_executed": false,
-    "verify_report_calls": "17 direct rows checked, 0 failures; 8 indirect slot/import boundaries"
+    "verify_report_calls": "17 direct rows checked, 0 failures; 8 indirect slot/import boundaries",
+    "pool_recreation_failure_during_cleanup_exercised": false,
+    "rebuilt_read_exception_cleanup_getter_returned": true
   },
   "external_contracts": [
     "Actual callable VFS0109CEEC manager and returned stream ownership/slot implementations",
     "Existing host CRT allocation/new-handler and OS critical-section boundaries",
-    "Original FH3 exception identity and ABI"
+    "Original FH3 exception identity and ABI",
+    "NativeStringStorage::release is noexcept. ActualNativeStringPoolStorage covers a returning pool getter during cleanup; C++ failure while lazily recreating the pool terminates and is excluded from native EH equivalence. See include/bsp/native_string_pool_storage.hpp."
   ],
   "scope": "Four actual bodies, no consumer/game wiring, no installed fundamentals script fixture or game validation, no permanent tests. Worker Ghidra read-only; names staged for integrator.",
   "artifact_hashes": {
     "src/native_lua_fundamentals.cpp": "96e51e8efb3d2686f04551c2c3096038be47ab78a1cb31d83e70118b0e1d201f",
-    "include/bsp/native_lua_fundamentals.hpp": "2147bfd0c1641b9a105c6d9d9abb16450d45a339c4b20ce7ca1842e9b08a5576",
-    "docs/NATIVE_LUA_FUNDAMENTALS.md": "6d8099a1900a424c72efeeeb98abee2b7031ce4282bbd17ae627f36e4160c7bd",
+    "include/bsp/native_lua_fundamentals.hpp": "5332b4330d67a8858c9102462159c099c1b02403083c71dff3aa539e8238d56b",
+    "docs/NATIVE_LUA_FUNDAMENTALS.md": "8936266f141f7e6dae18dc67336217ace7a2d663326f39e9744b7f95b5dbc795",
     "include/bsp/native_lua_bootstrap.hpp": "b9c5bad802213d87665c1c4f82320184ef8970902dcd9dd7b22b40ce4493a45c",
     "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
     "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
