@@ -1,0 +1,86 @@
+{
+  "packet": "orch3_sound_configuration",
+  "analysis_date": "2026-09-10",
+  "provenance": {
+    "agent": "Codex",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_worker_access": "read_only_verified_repository_bridge",
+    "names": "hypotheses_not_recovered_symbols"
+  },
+  "source": "src/sound_configuration.cpp",
+  "header": "include/bsp/sound_configuration.hpp",
+  "documentation": "docs/SOUND_CONFIGURATION.md",
+  "native_functions": [
+    {"address": "00a7ff80", "end_inclusive": "00a8145b", "last_instruction": "00a8145b", "last_instruction_length": 1, "native_abi": "__thiscall(manager), RET, no stack arguments", "name": "initialize_sound_configuration_00a7ff80", "scope": "complete_initialization_behavior_projection"},
+    {"address": "00a7de10", "end_inclusive": "00a7e0c3", "last_instruction": "00a7e0c1", "last_instruction_length": 3, "native_abi": "__thiscall(manager, record*, NativeString*, LuaObject*), RET0C", "name": "configure_channel_group_00a7de10", "scope": "group_creation_property_and_dsp_policy"},
+    {"address": "00a7e0d0", "end_inclusive": "00a7e239", "last_instruction": "00a7e237", "last_instruction_length": 3, "native_abi": "__thiscall(manager, LuaObject*), RET4", "name": "configure_system_dsps_00a7e0d0", "scope": "system_dsp_iteration_and_attachment_policy"},
+    {"address": "00a7c740", "end_inclusive": "00a7d116", "last_instruction": "00a7d114", "last_instruction_length": 3, "native_abi": "__thiscall(manager, LuaObject*), RET4, DSP pointer EAX", "name": "create_configured_sound_dsp_00a7c740", "scope": "all_five_supported_dsp_configuration_policies"},
+    {"address": "00a7f9f0", "end_inclusive": "00a7fac1", "last_instruction": "00a7fabf", "last_instruction_length": 3, "native_abi": "__thiscall(manager+A4, listener-record*), RET4", "name": "append_sound_listener_00a7f9f0", "scope": "duplicate_comparison_and_append_behavior_projection"},
+    {"address": "00a7ae00", "end_inclusive": "00a7ae7a", "last_instruction": "00a7ae78", "last_instruction_length": 3, "native_abi": "__thiscall(manager+A4, const char*), RET4", "name": "find_sound_listener_00a7ae00", "scope": "first_case_insensitive_match_or_zero"},
+    {"address": "00a7ae80", "end_inclusive": "00a7af09", "last_instruction": "00a7af07", "last_instruction_length": 3, "native_abi": "__thiscall(manager+A4, const char*), RET4", "name": "select_sound_listener_00a7ae80", "scope": "selected_pointer_and_ordinal_policy"},
+    {"address": "00a7b120", "end_inclusive": "00a7b18d", "last_instruction": "00a7b18b", "last_instruction_length": 3, "native_abi": "__thiscall(manager, NativeString*), RET4", "name": "find_sound_channel_group_00a7b120", "scope": "length_and_case_insensitive_lookup_or_null"}
+  ],
+  "fragments": [
+    {"owner": "00a81480", "start": "00a814a4", "end_inclusive": "00a81554", "name": "SoundConfigurationScalars", "scope": "13_constructor_default_stores_only"},
+    {"owner": "00a7ff80", "start": "00a800d3", "end_inclusive": "00a813f8", "name": "apply_sound_configuration_lua_00a7ff80_fragment", "scope": "loaded_lua_entry_reusing_same_policy"}
+  ],
+  "flow_evidence": {
+    "repairs_by_integrator": ["00a81361 returning _free call", "00a813a2 returning _free call", "00a7f160 returning _free tail"],
+    "main_export_decompile_lines_after_repair": 810,
+    "sound_types_loop_back": "00a813f3 -> 00a80ff4",
+    "padding_checked": {"00a810c8": "8da4240000000090", "00a811dd": "8d4900"},
+    "native_changes": "Ghidra flow/disassembly analysis only, no executable changes"
+  },
+  "script": {
+    "path": "sound/soundsetup.lua",
+    "lua_library_mask": 1,
+    "load_argument": 0,
+    "loader_result_checked": false,
+    "collection_order": ["Channelgroups", "Listeners", "Categories", "SoundTypes"],
+    "iteration_order": "Lua next order, preserved without sorting",
+    "numeric_policy": "Lua NUMBER only; strings and other types keep current scalar or documented default"
+  },
+  "scalar_defaults": [
+    {"key": "PlayerSoundBoost", "offset": "04", "value": 1, "constant_address": "00d7a24c", "bits": "3f800000"},
+    {"key": "HRTFMinAngle", "offset": "08", "value": 180, "constant_address": "00d049fc", "bits": "43340000"},
+    {"key": "HRTFMaxAngle", "offset": "0c", "value": 360, "constant_address": "00d7a360", "bits": "43b40000"},
+    {"key": "HRTFFreq", "offset": "10", "value": 5000, "constant_address": "00d1af84", "bits": "459c4000"},
+    {"key": "DopplerConstant", "offset": "14", "value": 2000, "constant_address": "00cffd60", "bits": "44fa0000"},
+    {"key": "DopplerMin", "offset": "18", "value": 0.5, "constant_address": "00ce3800", "bits": "3f000000"},
+    {"key": "DopplerMax", "offset": "1c", "value": 2, "constant_address": "00ce3958", "bits": "40000000"},
+    {"key": "SoundDistance1", "offset": "20", "value": 800, "constant_address": "00ce3950", "bits": "44480000"},
+    {"key": "SoundDistance2", "offset": "24", "value": 1200, "constant_address": "00cfd714", "bits": "44960000"},
+    {"key": "SoundDistance3", "offset": "28", "value": 1800, "constant_address": "00d5b018", "bits": "44e10000"},
+    {"key": "SoundDistance4", "offset": "2c", "value": 2200, "constant_address": "00d5b014", "bits": "45098000"},
+    {"key": "PassDistance", "offset": "30", "value": 200, "constant_address": "00ce386c", "bits": "43480000"},
+    {"key": "PassTime", "offset": "34", "value": 3, "constant_address": "00ce3854", "bits": "40400000"}
+  ],
+  "advanced_settings": {"size": 68, "hrtf_offsets": [36, 40, 44], "evidence": "00a80790..00a8082a", "other_words": "preserved_from_getAdvancedSettings"},
+  "dsp_policies": [
+    {"name": "Lowpass", "fmod_type": 3, "parameters": [["Cutoff", 5000], ["Resonance", 1]]},
+    {"name": "LowpassSimple", "fmod_type": 19, "parameters": [["Cutoff", 5000]]},
+    {"name": "Distortion", "fmod_type": 8, "parameters": [["Level", 0.5]]},
+    {"name": "Compressor", "fmod_type": 17, "parameters": [["Threshold", 0], ["Attack", 50], ["Release", 50], ["Gain", 0]]},
+    {"name": "SFXReverb", "fmod_type": 18, "parameters": [["DryLevel", 0], ["Room", 0], ["RoomHF", 0], ["RoomRolloff", 10], ["DecayTime", 1], ["DecayHFRatio", 0.5], ["ReflectionsLevel", 10000], ["ReflectionsDelay", 0.02], ["ReverbLevel", 0], ["ReverbDelay", 0.04], ["Diffusion", 100], ["Density", 100], ["HFReference", 5000], ["RoomLF", 0], ["LFReference", 250]]}
+  ],
+  "external_contracts": ["FMOD imported calls", "Lua owner and VFS script loading", "existing GuiLuaHost/Lua 5.1.1", "CRT case-insensitive compare", "existing NativeString storage", "existing SoundClassOwnership"],
+  "analyzed_not_reconstructed": ["00a7f160 group record reserve", "00a7f050 listener pointer append", "00a7d380 listener name copy", "00a7fb50 type record copy", "00a7baa0 route vector copy", "00b68630 discarded diagnostic string conversion", "remaining 00a81480 constructor"],
+  "limitations": [
+    "New C++ interfaces; not ABI-compatible or binary replacements",
+    "Native temporary diagnostics and allocator traffic omitted",
+    "Native group/type/listener ownership projected as standard C++ storage",
+    "FMOD handles remain library/sound-system owned; teardown is outside this initializer",
+    "Malformed non-string-convertible required names, invalid negative counts and allocation failures are outside equivalence",
+    "Selected pointer projected as ordinal; native previous-listener uninitialized value is not reproduced"
+  ],
+  "validation": {
+    "verify_seeds": {"command": "python tools/ghidra_export.py verify-seeds", "ranges": 8, "all_match": true},
+    "win32_release_build": {"status": "passed", "command": "scripts/build.ps1 -Configuration Release", "log": "local/sound_configuration_build.log", "source_registration": "ignored local/sound_configuration_sources.cmake via CMAKE_PROJECT_TOP_LEVEL_INCLUDES; shared registry leased to another harness", "class_dependency_commit": "6abc982"},
+    "existing_ctests": {"status": "passed", "tests": ["reconstructed_math", "native_math_differential"], "scope": "existing math validation, not native audio differential"},
+    "focused_local_fixture": {"status": "passed", "source": "local/sound_configuration_probe.cpp", "executable": "build/win32/Release/bsp_sound_configuration_probe.exe", "lua": "actual repository Lua 5.1.1 via GuiLua51Host", "fmod": "recording host, not real FMOD", "checks": ["both outer sound types processed after repaired tail", "duplicate listener still appended and first-match selection", "numeric strings preserve defaults", "advanced-settings words and unknown fields preserved", "FMOD memory error with nonnull DSP continues parameter setup", "non-memory group creation error does not abort", "category final table reference count is one", "case-sensitive System key and missing listener/group routes"], "assertions": "enabled in Release with /UNDEBUG; expected D9025 override diagnostic"},
+    "installed_data_and_fmod": "integrator_validation_pending",
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}
