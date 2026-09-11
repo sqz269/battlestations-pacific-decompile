@@ -1,0 +1,4963 @@
+{
+  "schema_version": 1,
+  "packet": "native_texture_2d_owner_next",
+  "status": "discovery_complete_four_independent_dependency_packets_ready_full_owner_conditional",
+  "captured_utc": "2026-09-11T02:14:18.126775+00:00",
+  "base_commit": "c77199e1ecd399bb3f9ea77f115e6c5e22f00713",
+  "owned_files": [
+    "docs/NATIVE_TEXTURE_2D_OWNER_NEXT.md",
+    "reports/native_texture_2d_owner_next.json"
+  ],
+  "owned_addresses": [
+    "00b3f930",
+    "00b3f2e0",
+    "00b3f590",
+    "00b32250"
+  ],
+  "scope": "Full owned three-entry loaded2D native texture constructor/destructor/deleter plus actual renderer+6C notification. Existing owner domains freshly correlated. No implementation or mutation; propose concrete disjoint next packets.",
+  "target_verification": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "disk_binary": {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "machine": "x86",
+      "timestamp": 1245831434,
+      "image_base": "00400000",
+      "entry_point": "00bfd2bd",
+      "sections": [
+        {
+          "name": ".text",
+          "rva": "00001000",
+          "virtual_size": 9306422,
+          "raw_size": 9310208,
+          "raw_offset": 4096,
+          "raw_sha256": "cb2aaf3dd3d53a675ef199343258ff981020a8ac64a90e2bceb9db1d47d4bef3"
+        },
+        {
+          "name": ".rdata",
+          "rva": "008e2000",
+          "virtual_size": 1202980,
+          "raw_size": 1204224,
+          "raw_offset": 9314304,
+          "raw_sha256": "89a0a4d440549220a314bd92f03bcb3a024f6b64017ceb41f02bfcce7cdca84f"
+        },
+        {
+          "name": ".data",
+          "rva": "00a08000",
+          "virtual_size": 2719452,
+          "raw_size": 65536,
+          "raw_offset": 10518528,
+          "raw_sha256": "aabce218df7a91423fa70e0b0408c06d7d5a6ebf69bda778a74f56de4a31365b"
+        },
+        {
+          "name": ".rsrc",
+          "rva": "00ca0000",
+          "virtual_size": 1630400,
+          "raw_size": 1634304,
+          "raw_offset": 10584064,
+          "raw_sha256": "a870847c34d68cd2c8201e038da43a67702763e057e7df4cae44aaa0f5f218dc"
+        }
+      ],
+      "imported_dlls": [
+        "fmodex.dll",
+        "DSOUND.dll",
+        "d3d9.dll",
+        "d3dx9_40.dll",
+        "binkw32.dll",
+        "USER32.dll",
+        "ole32.dll",
+        "SHELL32.dll",
+        "xlive.dll",
+        "KERNEL32.dll",
+        "ADVAPI32.dll",
+        "WS2_32.dll",
+        "POWRPROF.dll",
+        "fmod_event.dll",
+        "WINMM.dll",
+        "DINPUT8.dll",
+        "GDI32.dll",
+        "XINPUT1_3.dll"
+      ],
+      "note": "Current disk file only; identity with the saved Ghidra image is unverified."
+    },
+    "guard": "Every live bytes/proto/comments query uses bsp.py ghidra project/program/language/image-base guard.",
+    "all_span_matches": true,
+    "span_count": 76,
+    "same_turn_reuse": "A repeated preparation pass reused exact byte-equal captures made by guarded queries in this same worktree/turn; corrected 0041DD20 extent was reread at exact29bytes.",
+    "metadata_gap": "00B32250 proto reports no function and plate-comment request returns No function at address. This expected absence is saved; raw240byte body/table/EH remain independently verified."
+  },
+  "functions": [
+    {
+      "address": "00b3f930",
+      "end_exclusive": "00b3fa81",
+      "length": 337,
+      "native_byte_sha256": "c879d9f611054c5f3f805b7fece0f6cee524d84818e1edd87e773d5f10a72117",
+      "native_abi": "ECX raw50h owner; stack name/COM/savedWidth/savedHeight/flags; EAX owner; RET14h.",
+      "behavior": "Complete loaded constructor; adopts COM, actual native pooled name/base/shared serial, current owner GetLevelCount, captured input pairs/descriptor, cache/source zeroing, diagnostic cleanup, original input tracking flags.",
+      "status": "read_only_discovery_complete_no_cpp_change",
+      "original_metadata_files": [
+        "local/texture_owner_old_00b3f930_proto.txt",
+        "local/texture_owner_old_00b3f930_comments.txt"
+      ],
+      "annotation_mutation": false,
+      "proposed_name": "BSP_D3D9Texture_ConstructFromLoaded2D",
+      "preserve_existing_name": true
+    },
+    {
+      "address": "00b3f2e0",
+      "end_exclusive": "00b3f40e",
+      "length": 302,
+      "native_byte_sha256": "2f88788d59d33ebd6a3d1d0c09c597df7ecf7398a8d9dd928cb921d9a35825b1",
+      "native_abi": "ECX actual owner; RET; EAX not semantically stable.",
+      "behavior": "Complete302byte source -> captured renderer name notification -> fresh renderer unregister -> captured COM pair/support/fresh final COM -> current cache loop -> tracking -> cache free -> base chain.",
+      "status": "read_only_discovery_complete_no_cpp_change",
+      "original_metadata_files": [
+        "local/texture_owner_old_00b3f2e0_proto.txt",
+        "local/texture_owner_old_00b3f2e0_comments.txt"
+      ],
+      "annotation_mutation": false,
+      "proposed_name": "BSP_D3D9Texture_Destroy",
+      "preserve_existing_name": true
+    },
+    {
+      "address": "00b3f590",
+      "end_exclusive": "00b3f5b0",
+      "length": 32,
+      "native_byte_sha256": "2e62a897b6bb3512a36acb99d45b672123c7501e32931239889c03f032db8465",
+      "native_abi": "ECX actual owner; stack flags lowbyte bit0; EAX original address; RET4.",
+      "behavior": "Complete destructor then optional return to canonical0108DB38 via fullB3D8D0; no ordinary owner free or return after destruction throws.",
+      "status": "read_only_discovery_complete_no_cpp_change",
+      "original_metadata_files": [
+        "local/texture_owner_old_00b3f590_proto.txt",
+        "local/texture_owner_old_00b3f590_comments.txt"
+      ],
+      "annotation_mutation": false,
+      "proposed_name": "BSP_D3D9Texture2D_ScalarDeletingDestructor",
+      "preserve_existing_name": false
+    },
+    {
+      "address": "00b32250",
+      "end_exclusive": "00b32340",
+      "length": 240,
+      "native_byte_sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+      "native_abi": "ECX actual renderer, stack original native name header, RET4; EAX unspecified. Full240 bytes. Guard entry before state0; current temporary cleanup only state1; original input key passed to B31DC0.",
+      "behavior": "Complete240byte currently undefined Ghidra function, independently ready through existing actual string/guard/container dependencies.",
+      "status": "read_only_discovery_complete_no_cpp_change",
+      "original_metadata_files": [
+        "local/texture_owner_old_00b32250_proto.txt",
+        "local/texture_owner_old_00b32250_comments.txt"
+      ],
+      "annotation_mutation": false,
+      "proposed_name": "BSP_D3D9Renderer_NotifyTextureNameRemoval",
+      "existing_ghidra_function": false,
+      "create_function_required_later": true
+    }
+  ],
+  "ready_packets": [
+    {
+      "id": "native_renderer_texture_name_notification",
+      "ready": true,
+      "ready_meaning": "Complete static contract and concrete existing dependencies; no implementation or fixture in this discovery.",
+      "addresses": [
+        {
+          "address": "00b32250",
+          "end_exclusive": "00b32340",
+          "length": 240,
+          "native_byte_sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "renderer_name_notification"
+        }
+      ],
+      "files": [
+        "include/bsp/native_renderer_texture_name_notification.hpp",
+        "src/native_renderer_texture_name_notification.cpp",
+        "docs/NATIVE_RENDERER_TEXTURE_NAME_NOTIFICATION.md",
+        "reports/native_renderer_texture_name_notification_audit.json"
+      ],
+      "prerequisites": [
+        "Integrated native_renderer_synchronization_actual.hpp/.cpp, with actual global and guard storage.",
+        "Integrated actual native_string.hpp/.cpp resize/lowercase/header destruction and actual shared SizedStoragePool.",
+        "Integrated native_render_resource_container_removal.hpp/.cpp, actual SingletonLifetimeCallbacks and borrowed NativeRenderResourceAccountingTables."
+      ],
+      "admitted_domain": [
+        "ECX receiver remains the captured actual renderer; optional guard captures current global renderer separately.",
+        "Current mode governs normal leave and unwind; skipped entry followed by enabled cleanup remains outside initialized-guard admitted domain.",
+        "Only native container match-time profiles D61948/D61870/D618B0 and their currently verified accounting entries; no generic virtual fallback."
+      ]
+    },
+    {
+      "id": "native_retained_memory_owners",
+      "ready": true,
+      "ready_meaning": "Complete static contract and concrete existing dependencies; no implementation or fixture in this discovery.",
+      "addresses": [
+        {
+          "address": "008d43c0",
+          "end_exclusive": "008d4437",
+          "length": 119,
+          "native_byte_sha256": "76e462d92e841f92697d60c23f8a0dcf2a9f9a098bd5fd5fb9901a19bc69115a",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "memory_backing_constructor"
+        },
+        {
+          "address": "008d4440",
+          "end_exclusive": "008d446d",
+          "length": 45,
+          "native_byte_sha256": "edfc585bda1bfe5d4415baf6799ec9c0281d4ff897f50ad48fd77fce2e23cf68",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "memory_backing_destructor"
+        },
+        {
+          "address": "008d4470",
+          "end_exclusive": "008d44b2",
+          "length": 66,
+          "native_byte_sha256": "6f300372d3019149192f16df5af69c965b98ebb5efbe2dfd80868afdfc68b70a",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "memory_backing_scalar_delete"
+        },
+        {
+          "address": "00bef6d0",
+          "end_exclusive": "00bef74c",
+          "length": 124,
+          "native_byte_sha256": "f62bfa31edee50d201af2c0e89c98e96db82cd967e805f8ab9841dd9bfe53595",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "memory_stream_from_backing"
+        },
+        {
+          "address": "00bef9c0",
+          "end_exclusive": "00befa36",
+          "length": 118,
+          "native_byte_sha256": "0e4fabcd08941fce4451eb93b3bbda3644238984e0d2a3b5048ca7bb0e7ff9ec",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "memory_stream_destructor"
+        },
+        {
+          "address": "00bb8f90",
+          "end_exclusive": "00bb8fae",
+          "length": 30,
+          "native_byte_sha256": "a88682c86cbbdd6d0c0c2bdf811ab62d50d05d2504bfa098ea7615c160e23438",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "memory_stream_scalar_delete"
+        },
+        {
+          "address": "00b23640",
+          "end_exclusive": "00b2367b",
+          "length": 59,
+          "native_byte_sha256": "2e77ba6c60539766c2d8e8bedbc7c2eb2be64e3dc3b59b958ec6274373ae7004",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "intrusive_source_assignment"
+        }
+      ],
+      "files": [
+        "include/bsp/native_retained_memory_owners.hpp",
+        "src/native_retained_memory_owners.cpp",
+        "docs/NATIVE_RETAINED_MEMORY_OWNERS.md",
+        "reports/native_retained_memory_owners_audit.json"
+      ],
+      "prerequisites": [
+        "Existing real ordinary/array allocation and free boundaries; actual 0109DB98/0109DB9C counter storage.",
+        "Full original BD30E0 current-zero/current-deleting dispatcher, seven-byte BD30F0 base action and full stream-unwind base BB86E0 are pinned in this audit.",
+        "Use actual Win32 InterlockedIncrement/Decrement, actual object storage and supported borrowed current table views."
+      ],
+      "admitted_domain": [
+        "Backing terminal current profile D15AD8, zero entry BD30E0 and deleting entry 8D4470.",
+        "Stream terminal current profile D642C0, zero entry BD30E0 and deleting entry BB8F90.",
+        "No shared_ptr owner, alternate count, generic terminal callback, arbitrary backing profile inference or null-allocation repair."
+      ]
+    },
+    {
+      "id": "native_logical_texture_named_base",
+      "ready": true,
+      "ready_meaning": "Complete static contract and concrete existing dependencies; no implementation or fixture in this discovery.",
+      "addresses": [
+        {
+          "address": "00b34120",
+          "end_exclusive": "00b341d0",
+          "length": 176,
+          "native_byte_sha256": "f3b97f2a613525516f03bab034eea71a1a147b425ce2cf2025379ce635b3fedb",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "logical_texture_named_base"
+        },
+        {
+          "address": "00b34230",
+          "end_exclusive": "00b34255",
+          "length": 37,
+          "native_byte_sha256": "b630c402e9071de1d618e13f31e7b63ea9676407bcda6d8b8a88574c039f6568",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "logical_texture_named_profile"
+        },
+        {
+          "address": "00b33f50",
+          "end_exclusive": "00b33fb7",
+          "length": 103,
+          "native_byte_sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "logical_texture_base_destroy"
+        },
+        {
+          "address": "00b34010",
+          "end_exclusive": "00b34015",
+          "length": 5,
+          "native_byte_sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "logical_texture_base_unwind_thunk"
+        },
+        {
+          "address": "00b33e40",
+          "end_exclusive": "00b33e44",
+          "length": 4,
+          "native_byte_sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "logical_texture_name_address"
+        },
+        {
+          "address": "00b3f4c0",
+          "end_exclusive": "00b3f4de",
+          "length": 30,
+          "native_byte_sha256": "5b51ca9686f1c6eeade950ec88fb066664b6be37f22c586fbd5a55aebfa9e43a",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "borrowed_com_diagnostic_string_destroy"
+        }
+      ],
+      "files": [
+        "include/bsp/native_logical_texture_named_base.hpp",
+        "src/native_logical_texture_named_base.cpp",
+        "docs/NATIVE_LOGICAL_TEXTURE_NAMED_BASE.md",
+        "reports/native_logical_texture_named_base_audit.json"
+      ],
+      "prerequisites": [
+        "Integrated actual NativeStringStorage/resize/header destruction and actual SizedStoragePool.",
+        "Borrow actual shared texture serial DWORD 0108D6E8.",
+        "Full BD30F0 base action and A81880 unwind thunk are pinned."
+      ],
+      "admitted_domain": [
+        "Actual owner/name headers, real string allocations and native source/header aliases remain observable.",
+        "Diagnostic record +0 is borrowed COM and +4/+8 is the name; no COM retain/release belongs in its cleanup."
+      ]
+    },
+    {
+      "id": "native_texture_surface_cache_storage",
+      "ready": true,
+      "ready_meaning": "Complete static contract and concrete existing dependencies; no implementation or fixture in this discovery.",
+      "addresses": [
+        {
+          "address": "00b3d9b0",
+          "end_exclusive": "00b3da18",
+          "length": 104,
+          "native_byte_sha256": "92facc9e38eb8568e3b224ac63db8a5807b5b3783165c7f63a5a7d79884efa31",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "surface_cache_reserve"
+        },
+        {
+          "address": "00b3da20",
+          "end_exclusive": "00b3da70",
+          "length": 80,
+          "native_byte_sha256": "c347b107b539bf8dc1702cb2c4f6fec4bb922e9a6f014ec30d5c2df672c00237",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "surface_cache_resize"
+        },
+        {
+          "address": "00b3ec40",
+          "end_exclusive": "00b3ec57",
+          "length": 23,
+          "native_byte_sha256": "62ba36371e894b0f54ea6fdc32d42537c4ce98188f13c622c11211c4a297ae3e",
+          "native_abi": "See entry_contracts below and native assembly.",
+          "behavior": "surface_cache_destroy"
+        }
+      ],
+      "files": [
+        "include/bsp/native_texture_surface_cache_storage.hpp",
+        "src/native_texture_surface_cache_storage.cpp",
+        "docs/NATIVE_TEXTURE_SURFACE_CACHE_STORAGE.md",
+        "reports/native_texture_surface_cache_storage_audit.json"
+      ],
+      "prerequisites": [
+        "Real BF55BE array-allocation and BF6989 free boundary, using actual Win32 raw array/header storage."
+      ],
+      "admitted_domain": [
+        "Actual 12-byte header at texture+40: data, signed count, signed capacity; eight-byte raw records.",
+        "DWORD address/multiplication wrap, signed comparisons, current count reloads and sequential raw field stores.",
+        "No implicit surface references, owner destructors, copied vector or EH cleanup."
+      ]
+    }
+  ],
+  "entry_contracts": {
+    "00b32250": "ECX actual renderer, stack original native name header, RET4; EAX unspecified. Full240 bytes. Guard entry before state0; current temporary cleanup only state1; original input key passed to B31DC0.",
+    "008d43c0": "ECX raw10h backing, stack signed request, EAX owner, RET4. Base/count/profile, signed length and array allocation, then actual object/byte counters; base-only EH.",
+    "008d4440": "ECX backing, tail JMP BD30F0/plain RET through base, EAX unspecified. Captured data free then current counters and current stored length; fields preserved.",
+    "008d4470": "ECX backing, stack flags lowbyte bit0, EAX original address, RET4. Destructor inlined; only then optional ordinary backing-object free.",
+    "00bef6d0": "ECX actual backing, no stack args, EAX newly allocated14h wrapper, RET. No EH registration or safe null-allocation return.",
+    "00bef9c0": "ECX stream owner, RET, EAX unspecified. Current-profile backing zero/delete then clear+08 after return, stream/base cleanup. Preserve end/cursor.",
+    "00bb8f90": "ECX wrapper, stack flags lowbyte bit0, EAX original address, RET4. FullBEF9C0 then optional ordinary wrapper free; no free after throw.",
+    "00b23640": "ECX actual destination pointer slot, EDX actual source pointer slot, EAX destination, RET. Capture new+old once; identity skip; publish+retain new before captured-old decrement/current zero.",
+    "00b34120": "ECX actual owner, stack actual name header/COM/flags, EAX owner, RET0C. Count1, current string copy then raw COM/flags/shared serial. No COM AddRef.",
+    "00b34230": "ECX actual owner, same3stack words, EAX owner, RET0C. FullB34120 then profileD5F228.",
+    "00b33f50": "ECX actual owner, RET, EAX unspecified. ProfileD5F1F4; return captured name buffer using captured current length+1; header preserved; base afterward and in unwind.",
+    "00b34010": "ECX actual owner; full5byte JMP B33F50.",
+    "00b33e40": "ECX actual owner; EAX owner+8; RET; full4bytes, no callback.",
+    "00b3f4c0": "ECX diagnostic record: accessed0Ch prefix with borrowed COM+0 ignored and name+4/+8; RET; full30bytes. Return captured current string preserving fields. No assertion about a larger record extent.",
+    "00b3d9b0": "ECX actual12byte cache header, stack signed requested capacity, RET4, EAX unspecified. Clamp signed request>=1, grow only if signed current capacity smaller, allocate wrapped request*8, current-field copy/free/publish.",
+    "00b3da20": "ECX header, stack signed requested count, RET4, EAX unspecified. Reserve if needed, current-data zero loop, repeated current-count shrink, final count store.",
+    "00b3ec40": "ECX header, RET, EAX unspecified. Fullresize(0) then free current data, retain stale data/capacity.",
+    "00bef600": "Evidence-only full11byte view: ECX wrapper, EDX:EAX sign extension of wrapped(end-current_backing.data), RET. Optional future view, not among seven owned retained-memory entries.",
+    "00bef610": "Evidence-only full7byte view: ECX wrapper, EAX current_backing.data, RET. Optional future view, not among seven owned retained-memory entries."
+  },
+  "owner_contract": {
+    "actual_object_bytes": 80,
+    "pool_slot_bytes": 84,
+    "preserved_pool_id_offset": 80,
+    "profile": "00d61948",
+    "fields": [
+      {
+        "offset": "04",
+        "meaning": "actual intrusive count"
+      },
+      {
+        "offset": "08",
+        "meaning": "native name length"
+      },
+      {
+        "offset": "0c",
+        "meaning": "native name data"
+      },
+      {
+        "offset": "10",
+        "meaning": "owned COM texture"
+      },
+      {
+        "offset": "14",
+        "meaning": "actual GetLevelCount"
+      },
+      {
+        "offset": "18",
+        "meaning": "actual descriptor format"
+      },
+      {
+        "offset": "1c",
+        "meaning": "flags"
+      },
+      {
+        "offset": "20",
+        "meaning": "shared serial"
+      },
+      {
+        "offset": "24",
+        "meaning": "initialzero then loader source size"
+      },
+      {
+        "offset": "28",
+        "meaning": "actual width"
+      },
+      {
+        "offset": "2c",
+        "meaning": "actual height"
+      },
+      {
+        "offset": "30",
+        "meaning": "initialzero"
+      },
+      {
+        "offset": "34",
+        "meaning": "saved width"
+      },
+      {
+        "offset": "38",
+        "meaning": "saved height"
+      },
+      {
+        "offset": "3c",
+        "meaning": "initialzero then requested mips"
+      },
+      {
+        "offset": "40",
+        "meaning": "cache data"
+      },
+      {
+        "offset": "44",
+        "meaning": "signed cache count"
+      },
+      {
+        "offset": "48",
+        "meaning": "signed cache capacity"
+      },
+      {
+        "offset": "4c",
+        "meaning": "retained source wrapper"
+      }
+    ],
+    "constructor_order": [
+      "FullB34230->B34120 native name/count/COM/flags/serial; no AddRef.",
+      "InstallD61948; zero24/3C/cache/source; armstate1 before currentownerCOM GetLevelCount.",
+      "Current owner COM supplies GetLevelCount; captured input COM supplies both diagnostic pairs and GetLevelDesc(0), each call reads its current table.",
+      "Ignore descriptor HRESULT/uninitialized output preimage; store actual metadata separately from saved dimensions.",
+      "Diagnostic record stores borrowed COM and pooled name; state2 only after copy; actual support getter. Normal release captured pointer/current length, unwind current record fields.",
+      "Test originalstackflags bit10 and updateactual0108DAF8. No source retain or renderer registration."
+    ],
+    "destructor_order": [
+      "ProfileD61948; capture source4C; actual atomic decrement; current table0 onlyatzero; clear4C after return.",
+      "Capture renderer and slotaddress(table+6C), getownername via B33E40, then loadthatcapturedslot entry and call withcapturedrenderer. Fresh globalrenderer for B27D40/B25580 borrowed array removal.",
+      "CaptureCOM10 for AddRef/Release pair; actualresource support; reloadCOM10 for finalRelease andclearafterreturn.",
+      "Current signed count bound; current data each iteration; captured surface and slotaddress; actual decrement/currentzero; clearcapturedslot afterreturn.",
+      "Current flags tracking decrement; disarmcacheEH; resize0/free currentdata; disarmbaseEH; fullB33F50 normaltail. Stale data/capacity/name retained."
+    ],
+    "deleting_wrapper": "Run completeB3F2E0 first; originalflags lowbyte bit0 alone returns via actualB3D8D0/0108DB38. EAXoriginaladdress, no cleanup afterthrow."
+  },
+  "notification_contract": {
+    "receiver_profile": "Known primary profile00D5F0A8; virtual+6C storage00D5F114 contains00B32250.",
+    "receiver_vs_guard": "Capture incomingECX receiver separately from conditional entry-time currentglobalrenderer saved forguard.",
+    "argument": "Original native name header is passed to fullB31DC0 on receiver+1A74 even after allocating/copying/lowercasing a temporary.",
+    "temporary": "EDI captures data after resize. Normal return uses capturedEDI and currenttemplength; unwind uses currentheader41DD20. Zero source/alias fastpaths still retain actual header behavior.",
+    "state_order": [
+      "Entrytime modecheck, currentglobal capture, fullenter, saveAL; no armedEH duringenter.",
+      "State0 armed before tempheader initialization/copy.",
+      "State1 armed only aftercopy, beforelowercase/container.",
+      "State0 before normaltempreturn; currentmodechecked thenstate-1 before normalleave."
+    ],
+    "guard": "Normal leave uses capturedsavedrenderer/currentmode and ignoredsavedDWORD. Unwind callsB21110 onactualguard/currentmode. Do not initialize skippedentry or recaptureglobalrenderer."
+  },
+  "source_contract": {
+    "producer_evidence": [
+      "FullBEF750 callsBEF6D0 onbothnonnull branches; loadedcallerB2C39F capturesnewwrapper thenB2C624 usesB23640 andlaterB2C833 dropslocal.",
+      "Fresh backing branch uses8D43C0/D15AD8; shared backing branch borrows source+8 without profile validation, so generalized backingdomain is notproved."
+    ],
+    "wrapper": {
+      "profile": "00d642c0",
+      "bytes": 20,
+      "count": 4,
+      "backing": 8,
+      "end": 12,
+      "cursor": 16,
+      "zero_chain": [
+        "00bd30e0",
+        "current +4 entry00bb8f90",
+        "full00bef9c0",
+        "optionalordinarywrapperfree"
+      ],
+      "constructor": "Ordinaryalloc14h; count1/profileD642C0/zero8,C,10; read/release oldcurrent8 ifnonnull; publishcapturedinputbacking then actualincrement; readcapturedbackingdata/length forcursor/end. No EH/nullreturnrepair.",
+      "destructor": "Capturecurrentbacking;actualdecrement;currentzeroatzero;clear8afterreturn;streambaseD5C104thenCEB130. End/cursor/countpreserved."
+    },
+    "backing": {
+      "profile": "00d15ad8",
+      "bytes": 16,
+      "count": 4,
+      "data": 8,
+      "signed_length": 12,
+      "zero_chain": [
+        "00bd30e0",
+        "current +4 entry008d4470",
+        "inlinedfullbackingdestruction",
+        "optionalordinarybackingfree"
+      ],
+      "constructor": "Signedpositive storedrequest/arrayallocrequest; nonpositive stored0/arrayalloc1; publishdata; actualobjectcounter++ thenactualbytecounter+=originalsignedrequest withDWORDwrap.",
+      "destructor": "Capturedata beforeprofilewrite; ordinaryfree data; decrementCURRENTobjectcounter; readCURRENTstoredlength afterfree; subtractfromCURRENTbytecounter; base. No data/lengthclear. Scalarwrapperinlinesbody.",
+      "actual_counters": [
+        "0109db98",
+        "0109db9c"
+      ]
+    },
+    "assignment": "Capture newandold once; identityskip; publishnew+retainbeforeoldactualdecrement/currentzero. No rollback or finalfieldclear.",
+    "limitations": [
+      "Only explicitly admitted current native profile/slot mappings; no generic callback terminal substitution.",
+      "MemoryStream semantic shared_ptr ownership is not actual storage or counter/allocator evidence.",
+      "BEF750 generic source typequery/read/seek implementation excluded; rawbody is producer evidence only."
+    ]
+  },
+  "cache_contract": {
+    "header_bytes": 12,
+    "record_bytes": 8,
+    "record_fields": [
+      "mip DWORD",
+      "actualNativeSurfaceOwnerStorage pointer"
+    ],
+    "helpers": "Three rawstorage helpers own no surface refs and register no EH. Preserve exact signed comparisons, wrapped addresses, currentfield reloads and stale data/capacity.",
+    "surface_producer": "FullB3FD80 invokes actualB3F630 on canonical surfacepool allocation; successful tableD619A0 terminal mapsBD30E0/currentB3F5B0/fullB3F4E0/actualsurfacepool. This supports a concrete admitted cacheowner domain.",
+    "getter_boundaries": [
+      "NativeECX texture, stackmip andunusedword, RET8. Capture initialdata/count forsearch.",
+      "Hit: actualincrement ofstoredsurface+4 BEFOREnonnulltest. Nullstoredpointer is not a safe cachemiss.",
+      "Miss: GetSurfaceLevel output overwritesoriginalmipstackword, HRESULTignored; actualsurfaceconstructor withcurrentflags andlowkindbit8; dropgetterCOM.",
+      "Ifcurrentflagsbit0clear retainagain thenreserveifcount==capacity, appendcapturedmip/surface usingcurrentdata/count. No independentcacheowner.",
+      "ConstructorEH returnsrawsurfacepoolslot only, no COMRelease. DisarmedbeforegetterRelease; reservefailureaftercacheretain has no slotunwind."
+    ]
+  },
+  "exception_handling": {
+    "maps": [
+      {
+        "owner": "texture_dtor",
+        "handler": "00cbeea3",
+        "funcinfo": "00df7710",
+        "unwind_map": "00df7700",
+        "funcinfo_dwords": [
+          "19930522",
+          "00000002",
+          "00df7700",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbee90"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbee98"
+          }
+        ],
+        "no_catch_map": true,
+        "native_exception_execution": false
+      },
+      {
+        "owner": "texture_named_ctor",
+        "handler": "00cbef6b",
+        "funcinfo": "00df783c",
+        "unwind_map": "00df7824",
+        "funcinfo_dwords": [
+          "19930522",
+          "00000003",
+          "00df7824",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbef50"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbef58"
+          },
+          {
+            "state": 2,
+            "next_state": 1,
+            "leaf": "00cbef63"
+          }
+        ],
+        "no_catch_map": true,
+        "native_exception_execution": false
+      },
+      {
+        "owner": "texture_surface_getter",
+        "handler": "00cbefa8",
+        "funcinfo": "00df7894",
+        "unwind_map": "00df788c",
+        "funcinfo_dwords": [
+          "19930522",
+          "00000001",
+          "00df788c",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbefa0"
+          }
+        ],
+        "no_catch_map": true,
+        "native_exception_execution": false
+      },
+      {
+        "owner": "logical_base_dtor",
+        "handler": "00cbe098",
+        "funcinfo": "00df690c",
+        "unwind_map": "00df6904",
+        "funcinfo_dwords": [
+          "19930522",
+          "00000001",
+          "00df6904",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbe090"
+          }
+        ],
+        "no_catch_map": true,
+        "native_exception_execution": false
+      },
+      {
+        "owner": "logical_base_named_ctor",
+        "handler": "00cbe0c3",
+        "funcinfo": "00df6940",
+        "unwind_map": "00df6930",
+        "funcinfo_dwords": [
+          "19930522",
+          "00000002",
+          "00df6930",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbe0b0"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbe0b8"
+          }
+        ],
+        "no_catch_map": true,
+        "native_exception_execution": false
+      },
+      {
+        "owner": "renderer_name_notification",
+        "handler": "00cbdcf0",
+        "funcinfo": "00df6694",
+        "unwind_map": "00df6684",
+        "funcinfo_dwords": [
+          "19930522",
+          "00000002",
+          "00df6684",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cbdce0"
+          },
+          {
+            "state": 1,
+            "next_state": 0,
+            "leaf": "00cbdce8"
+          }
+        ],
+        "no_catch_map": true,
+        "native_exception_execution": false
+      },
+      {
+        "owner": "memory_backing_ctor",
+        "handler": "00ca2ef8",
+        "funcinfo": "00dd5090",
+        "unwind_map": "00dd5088",
+        "funcinfo_dwords": [
+          "19930522",
+          "00000001",
+          "00dd5088",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00ca2ef0"
+          }
+        ],
+        "no_catch_map": true,
+        "native_exception_execution": false
+      },
+      {
+        "owner": "memory_stream_dtor",
+        "handler": "00cc76b8",
+        "funcinfo": "00e022ac",
+        "unwind_map": "00e022a4",
+        "funcinfo_dwords": [
+          "19930522",
+          "00000001",
+          "00e022a4",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000000",
+          "00000001"
+        ],
+        "states": [
+          {
+            "state": 0,
+            "next_state": -1,
+            "leaf": "00cc76b0"
+          }
+        ],
+        "no_catch_map": true,
+        "native_exception_execution": false
+      }
+    ],
+    "entry_state_annotations": {
+      "00b3f930": [
+        "00b3f974 state0",
+        "00b3f98d state1",
+        "00b3fa32 state2",
+        "00b3fa3e state1 beforediagnosticfree"
+      ],
+      "00b3f2e0": [
+        "00b3f30d state1",
+        "00b3f3d7 state0 beforecacheresize",
+        "00b3f3ee state-1 beforebase"
+      ],
+      "00b32250": [
+        "00b32295 state0 afterenter",
+        "00b322d7 state1 aftercopy",
+        "00b322ef state0 beforenormaltempfree",
+        "00b32316 state-1 beforenormalleave"
+      ]
+    },
+    "excluded_cleanup": [
+      "No resumed source/COM/surface release ontextureunwind.",
+      "No texturepoolreturn ifdestructor throws.",
+      "No invented laterstatecleanup ifearliercopy/enter throws.",
+      "No suppression/replacement ofsecondexception nativeFH3 behavior."
+    ],
+    "native_exception_execution": false
+  },
+  "conditional_owner_packet": {
+    "id": "native_texture_2d_owner",
+    "ready_now": false,
+    "addresses": [
+      "00b3f930",
+      "00b3f2e0",
+      "00b3f590"
+    ],
+    "files": [
+      "include/bsp/native_texture_2d_owner.hpp",
+      "src/native_texture_2d_owner.cpp",
+      "docs/NATIVE_TEXTURE_2D_OWNER.md",
+      "reports/native_texture_2d_owner_audit.json"
+    ],
+    "required_new_packets": [
+      "native_renderer_texture_name_notification",
+      "native_retained_memory_owners",
+      "native_logical_texture_named_base",
+      "native_texture_surface_cache_storage"
+    ],
+    "existing_domains": [
+      "Actual shared rendererpublication/synchronization and supported currentreceiver+6C profile.",
+      "NativeSurfaceOwnerStorage/context, canonicalD3D9Texture2DPool, NativeResourceSupportStorage actualsingleton/lifetime.",
+      "ActualNativeStringStorage/SizedStoragePool, sharedtextureconstructionserial0108D6E8 andtracking0108DAF8.",
+      "Current borrowed actualstream/backing/surface tables with exactzero/deleting slots."
+    ],
+    "later_getter_packet": {
+      "address": "00b3fd80",
+      "end_exclusive": "00b3fe88",
+      "requires": "Cache storage packet plus existing native surface owner/pool.",
+      "excluded_from_owner_three_entry_scope": true
+    },
+    "acceptance": "Freeze actual API/allocation/current-table domains, then one focused private original-caller fixture executing complete original owner/dependency instructions; strict MSVCWin32 build and existing appropriate checks. Native ABI/EH compatibility/GPU/game execution remain distinct."
+  },
+  "existing_dependency_audits": [
+    {
+      "module": "native_render_resource_container_removal",
+      "header": "include/bsp/native_render_resource_container_removal.hpp",
+      "source": "src/native_render_resource_container_removal.cpp",
+      "audit": "reports/native_render_resource_container_removal_audit.json",
+      "recorded_status": "integrated_actual_alias_removal_three_texture_profiles_original_caller_and_primary_build_checked",
+      "prior_validation_not_rerun": true,
+      "validation_details": "Read the linked, hashed audit for its original build, fixture and boundary evidence; none rerun for this discovery.",
+      "current_cpp_registered_in_cmake": true
+    },
+    {
+      "module": "native_render_buffer_unregistration",
+      "header": "include/bsp/native_render_buffer_unregistration.hpp",
+      "source": "src/native_render_buffer_unregistration.cpp",
+      "audit": "reports/native_render_buffer_unregistration_audit.json",
+      "recorded_status": "integrated_actual_storage_primary_library_original_caller_and_strict_Win32_checked",
+      "prior_validation_not_rerun": true,
+      "validation_details": "Read the linked, hashed audit for its original build, fixture and boundary evidence; none rerun for this discovery.",
+      "current_cpp_registered_in_cmake": true
+    },
+    {
+      "module": "native_surface_owner",
+      "header": "include/bsp/native_surface_owner.hpp",
+      "source": "src/native_surface_owner.cpp",
+      "audit": "reports/native_surface_owner_audit.json",
+      "recorded_status": "Reconstructed, strict Win32 compiled, focused native differential case and baseline repository test passed; primary integration pending.",
+      "prior_validation_not_rerun": true,
+      "validation_details": "Read the linked, hashed audit for its original build, fixture and boundary evidence; none rerun for this discovery.",
+      "current_cpp_registered_in_cmake": true
+    },
+    {
+      "module": "native_resource_support",
+      "header": "include/bsp/native_resource_support.hpp",
+      "source": "src/native_resource_support.cpp",
+      "audit": "reports/native_resource_support_audit.json",
+      "recorded_status": "three concrete functions reconstructed; strict Win32 fixture passed; primary integration pending",
+      "prior_validation_not_rerun": true,
+      "validation_details": "Read the linked, hashed audit for its original build, fixture and boundary evidence; none rerun for this discovery.",
+      "current_cpp_registered_in_cmake": true
+    },
+    {
+      "module": "d3d9_texture2d_pool",
+      "header": "include/bsp/d3d9_texture2d_pool.hpp",
+      "source": "src/d3d9_texture2d_pool.cpp",
+      "audit": "reports/d3d9_texture2d_pool_audit.json",
+      "recorded_status": "reconstructed, strict Win32 native fixture and repository build passed; primary CMake/Ghidra/ledger integration pending",
+      "prior_validation_not_rerun": true,
+      "validation_details": "Read the linked, hashed audit for its original build, fixture and boundary evidence; none rerun for this discovery.",
+      "current_cpp_registered_in_cmake": true
+    }
+  ],
+  "profiles": [
+    {
+      "address": "00d61948",
+      "prefix_bytes": 88,
+      "meaning": "2D texture profile prefix; no assertion of entire-vtable boundary",
+      "slots": [
+        {
+          "offset": "00",
+          "target": "00bd30e0"
+        },
+        {
+          "offset": "04",
+          "target": "00b3f590"
+        },
+        {
+          "offset": "08",
+          "target": "00b3fa90"
+        },
+        {
+          "offset": "0c",
+          "target": "00b3ce30"
+        },
+        {
+          "offset": "10",
+          "target": "00b3ce40"
+        },
+        {
+          "offset": "14",
+          "target": "00b33e80"
+        },
+        {
+          "offset": "18",
+          "target": "00b33e90"
+        },
+        {
+          "offset": "1c",
+          "target": "00b3cea0"
+        },
+        {
+          "offset": "20",
+          "target": "00b3dd30"
+        },
+        {
+          "offset": "24",
+          "target": "00b3dd90"
+        },
+        {
+          "offset": "28",
+          "target": "00b3d7b0"
+        },
+        {
+          "offset": "2c",
+          "target": "00b3e190"
+        },
+        {
+          "offset": "30",
+          "target": "00b3fd80"
+        },
+        {
+          "offset": "34",
+          "target": "00b3d590"
+        },
+        {
+          "offset": "38",
+          "target": "00b3d5c0"
+        },
+        {
+          "offset": "3c",
+          "target": "00b3ce50"
+        },
+        {
+          "offset": "40",
+          "target": "00b3ce60"
+        },
+        {
+          "offset": "44",
+          "target": "00b3ce90"
+        },
+        {
+          "offset": "48",
+          "target": "00b3ce70"
+        },
+        {
+          "offset": "4c",
+          "target": "00b3ce80"
+        },
+        {
+          "offset": "50",
+          "target": "00b3df10"
+        },
+        {
+          "offset": "54",
+          "target": "00b3d640"
+        }
+      ]
+    },
+    {
+      "address": "00d619a0",
+      "prefix_bytes": 68,
+      "meaning": "actual surface owner prefix",
+      "slots": [
+        {
+          "offset": "00",
+          "target": "00bd30e0"
+        },
+        {
+          "offset": "04",
+          "target": "00b3f5b0"
+        },
+        {
+          "offset": "08",
+          "target": "00befaf0"
+        },
+        {
+          "offset": "0c",
+          "target": "00a82250"
+        },
+        {
+          "offset": "10",
+          "target": "00b3ccf0"
+        },
+        {
+          "offset": "14",
+          "target": "00b3cc80"
+        },
+        {
+          "offset": "18",
+          "target": "00b3cd00"
+        },
+        {
+          "offset": "1c",
+          "target": "00b3cd10"
+        },
+        {
+          "offset": "20",
+          "target": "00b3cd20"
+        },
+        {
+          "offset": "24",
+          "target": "00b3cd30"
+        },
+        {
+          "offset": "28",
+          "target": "00b3d500"
+        },
+        {
+          "offset": "2c",
+          "target": "00b3cd40"
+        },
+        {
+          "offset": "30",
+          "target": "00b3cd60"
+        },
+        {
+          "offset": "34",
+          "target": "00b3dd00"
+        },
+        {
+          "offset": "38",
+          "target": "00b3cd70"
+        },
+        {
+          "offset": "3c",
+          "target": "00b3d510"
+        },
+        {
+          "offset": "40",
+          "target": "00b3d550"
+        }
+      ]
+    },
+    {
+      "address": "00d642c0",
+      "prefix_bytes": 52,
+      "meaning": "memory stream profile prefix",
+      "slots": [
+        {
+          "offset": "00",
+          "target": "00bd30e0"
+        },
+        {
+          "offset": "04",
+          "target": "00bb8f90"
+        },
+        {
+          "offset": "08",
+          "target": "00bef4a0"
+        },
+        {
+          "offset": "0c",
+          "target": "00bb8f60"
+        },
+        {
+          "offset": "10",
+          "target": "006f9d20"
+        },
+        {
+          "offset": "14",
+          "target": "00bef4b0"
+        },
+        {
+          "offset": "18",
+          "target": "00bef4c0"
+        },
+        {
+          "offset": "1c",
+          "target": "00bef540"
+        },
+        {
+          "offset": "20",
+          "target": "00bef580"
+        },
+        {
+          "offset": "24",
+          "target": "00bef590"
+        },
+        {
+          "offset": "28",
+          "target": "00bef5f0"
+        },
+        {
+          "offset": "2c",
+          "target": "00be41a0"
+        },
+        {
+          "offset": "30",
+          "target": "00bef600"
+        }
+      ]
+    },
+    {
+      "address": "00d15ad8",
+      "prefix_bytes": 8,
+      "meaning": "backing terminal profile prefix",
+      "slots": [
+        {
+          "offset": "00",
+          "target": "00bd30e0"
+        },
+        {
+          "offset": "04",
+          "target": "008d4470"
+        }
+      ]
+    }
+  ],
+  "native_ranges": [
+    {
+      "address": "00b3f930",
+      "end_exclusive": "00b3fa81",
+      "length": 337,
+      "kind": "function",
+      "role": "texture_named_constructor",
+      "raw_offset": 7600432,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "6aff686befcb0064a100000000506489250000000083ec308b442450538b5c24445556578b7c245450578bf1538974241ce8ca48ffff33edc7064819d600896e24896e3c896c2448896e40896e44896e488b4610896e4c8b088b513450c644244c01ffd23bfd8946148b44246089461c74108b0f8b510457ffd28b078b480857ffd18b178b4a448d442420505557ffd18b5424388b44243c89562889462c8b0f8b510457ffd28b078b480857ffd18b5424588b44245c8b4c2420895634897c241433ff8d5424183bd3894638896e30894e18896c2418897c241c74268b036a01508bcae828e38dff392b8b7c241c74128b4424188b4b04505157e8517c0b0083c40cc644244802e8f4ecffff3bfdc64424480174178b5424186a0183c2015257e86ba28dff8bc8e8b41a0900f6442460108bc674078305f8da0801018b4c24405f5e5d5b64890d0000000083c43cc21400",
+      "sha256": "c879d9f611054c5f3f805b7fece0f6cee524d84818e1edd87e773d5f10a72117",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b3fa7e",
+          "operand": "0x14"
+        }
+      ]
+    },
+    {
+      "address": "00b3f2e0",
+      "end_exclusive": "00b3f40e",
+      "length": 302,
+      "kind": "function",
+      "role": "texture_destructor",
+      "raw_offset": 7598816,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "6aff68a3eecb0064a1000000005064892500000000515355568bf15789742410c7064819d6008b7e4c33ed3bfdc744241c0100000074198d470450ff152022ce0085c075088b178b028bcfffd0896e4c8b1d94d3f8008b3b8bce83c76ce8fe4affff8b17508bcbffd28b0d94d3f80056e8eb89feff8b7e103bfd74108b078b480457ffd18b178b420857ffd0e8bff3ffff8b46103bc5740b8b088b510850ffd2896e10396e447e3beb068d9b000000008b46408b7ce80485ff8d5ce804741c8d4f0451ff152022ce0085c075088b178b028bcfffd0c7030000000083c5013b6e447ccdf6461c107407832df8da0801018d7e406a008bcfc644242000e83fe6ffff8b3f57e8a0750b0083c4048bcec744241cffffffffe8554bffff8b4c24145f5e5d5b64890d0000000083c410c3",
+      "sha256": "2f88788d59d33ebd6a3d1d0c09c597df7ecf7398a8d9dd928cb921d9a35825b1",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b3f40d",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b3f590",
+      "end_exclusive": "00b3f5b0",
+      "length": 32,
+      "kind": "function",
+      "role": "texture_scalar_delete",
+      "raw_offset": 7599504,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "568bf1e848fdfffff644240801740b56b938db0801e826e3ffff8bc65ec20400",
+      "sha256": "2e62a897b6bb3512a36acb99d45b672123c7501e32931239889c03f032db8465",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b3f5ad",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b3fd80",
+      "end_exclusive": "00b3fe88",
+      "length": 264,
+      "kind": "function",
+      "role": "texture_cached_surface_getter",
+      "raw_offset": 7601536,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "6aff68a8efcb0064a100000000506489250000000051538b5c2418558b2d1c22ce00568bf18b4e4433c085c9577e278b7e408bd7391a740c83c00183c2083bc17cf2eb128b7cc7048d470450ffd585ff0f859b0000008b46108b088d5424245253508b4148ffd0b900db0801e84fefffff8944241033ff3bc7897c241c741e8b561c8bcac1e90881e101ffffff51528b54242c528bc8e815f8ffff8bf88b4424248b088b510850c7442420ffffffffffd2f6461c01753a8d470450ffd58b464883c640394604751403c083f8017f05b801000000508bcee854dbffff8b4e048b168d04ca85c074058918897804834604018b4c24148bc75f5e5d5b64890d0000000083c410c20800",
+      "sha256": "f8ea1ddd7076aaef1f1567bb1cb1672d01bfa01f25894d8869d09e8939a7c67d",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b3fe85",
+          "operand": "8"
+        }
+      ]
+    },
+    {
+      "address": "00b3d8d0",
+      "end_exclusive": "00b3d935",
+      "length": 101,
+      "kind": "function",
+      "role": "texture_pool_return",
+      "raw_offset": 7592144,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "5356578bf18d7e0c57ff151822ce00834718018b4424108b58508b4e288b0c992bc18bd0b8310cc330f7eac1fa048bc2c1e81f03c20fb791c00a000066898451800a0000668381c00a0000013b5e347303895e34834718ff57ff151022ce005f5e5bc20400",
+      "sha256": "f947e9c3ecf86f4ad2f891e87f705f8533873fac9a7eef2580fa318d478ca899",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b3d932",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b3d9b0",
+      "end_exclusive": "00b3da18",
+      "length": 104,
+      "kind": "function",
+      "role": "surface_cache_reserve",
+      "raw_offset": 7592368,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "56578b7c240c83ff018bf17d05bf01000000397e087d4c8d04fd000000005350e8e97b0b008bd833c083c4043946047e218bcb5585c9740e8b168b2cc289298b54c20489510483c00183c1083b46047ce35d8b0650e87f8f0b0083c404891e897e085b5f5ec20400",
+      "sha256": "92facc9e38eb8568e3b224ac63db8a5807b5b3783165c7f63a5a7d79884efa31",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b3da15",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b3da20",
+      "end_exclusive": "00b3da70",
+      "length": 80,
+      "kind": "function",
+      "role": "surface_cache_resize",
+      "raw_offset": 7592480,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "56578b7c240c8bf13b7e087e0657e87dffffff8b4e043bcf7d1d8d9b000000008b068d04c885c0740733d2891089500483c1013bcf7ce93b7e047d0c83c8ff900146043b7e047cf8897e045f5ec20400",
+      "sha256": "c347b107b539bf8dc1702cb2c4f6fec4bb922e9a6f014ec30d5c2df672c00237",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b3da6d",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b3ec40",
+      "end_exclusive": "00b3ec57",
+      "length": 23,
+      "kind": "function",
+      "role": "surface_cache_destroy",
+      "raw_offset": 7597120,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "566a008bf1e8d6edffff8b0650e8377d0b0083c4045ec3",
+      "sha256": "62ba36371e894b0f54ea6fdc32d42537c4ce98188f13c622c11211c4a297ae3e",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b3ec56",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b34120",
+      "end_exclusive": "00b341d0",
+      "length": 176,
+      "kind": "function",
+      "role": "logical_texture_named_base",
+      "raw_offset": 7553312,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "6aff68c3e0cb0064a10000000050648925000000005155568bf1c70630b1ce00578974240cc74604010000008d7e08c706f4f1d500c744241800000000c70700000000c74704000000008b6c24203bfdc64424180174268b45006a01508bcfe8bc9b8eff837d000074138b0f8b55048b4704515250e8e6340c0083c40c8b4c24248b542428894e108b4c241089561ca1e8d608018946208305e8d60801015f8bc65e5d64890d0000000083c410c20c00",
+      "sha256": "f3b97f2a613525516f03bab034eea71a1a147b425ce2cf2025379ce635b3fedb",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b341cd",
+          "operand": "0xc"
+        }
+      ]
+    },
+    {
+      "address": "00b34230",
+      "end_exclusive": "00b34255",
+      "length": 37,
+      "kind": "function",
+      "role": "logical_texture_named_profile",
+      "raw_offset": 7553584,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b44240c8b542404568bf18b4c240c5051528bcee8d7feffffc70628f2d5008bc65ec20c00",
+      "sha256": "b630c402e9071de1d618e13f31e7b63ea9676407bcda6d8b8a88574c039f6568",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b34252",
+          "operand": "0xc"
+        }
+      ]
+    },
+    {
+      "address": "00b33f50",
+      "end_exclusive": "00b33fb7",
+      "length": 103,
+      "kind": "function",
+      "role": "logical_texture_base_destroy",
+      "raw_offset": 7552848,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "6aff6898e0cb0064a100000000506489250000000051568bf189742404c706f4f1d5008b460c85c0c74424100000000074168b4e086a0183c1015150e82f5d8eff8bc8e878d509008bcec7442410ffffffffe849f109008b4c24085e64890d0000000083c410c3",
+      "sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b33fb6",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b34010",
+      "end_exclusive": "00b34015",
+      "length": 5,
+      "kind": "function",
+      "role": "logical_texture_base_unwind_thunk",
+      "raw_offset": 7553040,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "e93bffffff",
+      "sha256": "0873af1117bd7228ee29e0b904b306310d0b12e225a6dd1bb9836b1a2e9ddb6c",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00b27d40",
+      "end_exclusive": "00b27d53",
+      "length": 19,
+      "kind": "function",
+      "role": "renderer_unregister_texture",
+      "raw_offset": 7503168,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8d4424045081c1001b0000e830d8ffffc20400",
+      "sha256": "e0a5fa450768b0e65e2f94ab32e7a6fd515f0af30096ff84b182466181465fd3",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b27d50",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b25580",
+      "end_exclusive": "00b255e7",
+      "length": 103,
+      "kind": "function",
+      "role": "renderer_texture_array_remove",
+      "raw_offset": 7492992,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b11538b5904568bc2578d349883cfff3bc67345558b6c24148b6d008d6424003928741683c0043bc672f55d33c083ffff5f5e0f95c05bc204002bc2c1f8028bf883ffff74128d43ff3bf874078b449afc8904ba834104ff5d33c083ffff5f5e0f95c05bc20400",
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b255b7",
+          "operand": "4"
+        },
+        {
+          "site": "00b255e4",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b32250",
+      "end_exclusive": "00b32340",
+      "length": 240,
+      "kind": "function",
+      "role": "renderer_name_notification",
+      "raw_offset": 7545424,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "64a1000000006aff68f0dccb00506489250000000083ec10803ddcd60801005556578be974138b0d94d3f800894c2418e84b180000884424148b74242c33ff8d44240c3bc6c744242400000000c744240c00000000897c241074288b066a01508d4c2414e887ba8eff393e8b7c241074128b4c240c8b5604515257e8b0530c0083c40c8d4c240cc644242401e81fa998ff568d8d741a0000e8d3faffff85ffc64424240074178b44240c6a0183c0015057e8ba798eff8bc8e803f20900803ddcd60801005f5ec744241cffffffff5d740e8b4424088b4c240c50e8d11700008b4c241064890d0000000083c41cc20400",
+      "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b3233d",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b31dc0",
+      "end_exclusive": "00b31fc8",
+      "length": 520,
+      "kind": "function",
+      "role": "renderer_name_container_remove",
+      "raw_offset": 7544256,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "6aff6868dccb0064a100000000506489250000000083ec145355568b7424305733ff8d44241c3bc68bd9897c241c897c242074288b066a01508d4c2424e83ebf8eff393e74168b4c241c8b56048b442420515250e867580c0083c40c8d54241c8d4c2414897c242ce853c90b008b4c24183bcf74178b4424146a0183c0015051e87b7e8eff8bc8e8c4f609008b43088b6b046bc02c03c53be8894424140f84810000008d7d0c8b078b30894424108bff8d47fc3bc07405e897480c003b74241074503b377505e888480c008b46088b4c241c3bc1752f85c075088bc1f7d81bc0eb1a85c975058d4101eb118b4c24208b560c5152e806610c0083c40885c00f94c084c075753b377505e845480c008b36eb9e83c52c83c72c3b6c241475888b74243433ff8b46043bc77505b8a4d50801506814dbd000e8b5358fff8b4c242883c4083bcfc744242cffffffff74178b44241c6a0183c0015051e8a27d8eff8bc8e8ebf509008b4c24245f5e5d5b64890d0000000083c420c204008b4d288b018b500cffd22943108b450485c07505b8a4d508018b4c242085c97505b9a4d5080150516804dbd000e844358fff8b43088b4b048d50ff6bd22c03d183c40c3bea740f6bc02c8d4408d4508bcde880e5ffff8b4b088b53046bc92c8d4c11d4e8eed9ffff83c8ff0143088944242c8b44242085c00f846dffffff8b4c241c6a0183c1015150e951ffffff",
+      "sha256": "0e9390249e9e2ee85b5379f3c8f6a01e702402ad0c68fe946c3092bc86590a48",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b31f37",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b33e40",
+      "end_exclusive": "00b33e44",
+      "length": 4,
+      "kind": "function",
+      "role": "logical_texture_name_address",
+      "raw_offset": 7552576,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8d4108c3",
+      "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b33e43",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b23640",
+      "end_exclusive": "00b2367b",
+      "length": 59,
+      "kind": "function",
+      "role": "intrusive_source_assignment",
+      "raw_offset": 7484992,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b02568bf1578b3e3bf8742a85c08906740a83c00450ff151c22ce0085ff74168d470450ff152022ce0085c075088b178b028bcfffd05f8bc65ec3",
+      "sha256": "2e77ba6c60539766c2d8e8bedbc7c2eb2be64e3dc3b59b958ec6274373ae7004",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b2367a",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "008d43c0",
+      "end_exclusive": "008d4437",
+      "length": 119,
+      "kind": "function",
+      "role": "memory_backing_constructor",
+      "raw_offset": 5063616,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "6aff68f82eca0064a100000000506489250000000051568bf1c70630b1ce005789742408c74604010000008b7c241c33c03bf889442414c706d85ad1007e06897e0c57eb0589460c6a01e8af1132008b4c2410894608830598db09010183c404013d9cdb09015f8bc65e64890d0000000083c410c20400",
+      "sha256": "76e462d92e841f92697d60c23f8a0dcf2a9f9a098bd5fd5fb9901a19bc69115a",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "008d4434",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "008d4440",
+      "end_exclusive": "008d446d",
+      "length": 45,
+      "kind": "function",
+      "role": "memory_backing_destructor",
+      "raw_offset": 5063744,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "568bf18b460850c706d85ad100e85a213200832d98db0901018b4e0c83c404290d9cdb09018bce5ee983ec2f00",
+      "sha256": "edfc585bda1bfe5d4415baf6799ec9c0281d4ff897f50ad48fd77fce2e23cf68",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "008d4470",
+      "end_exclusive": "008d44b2",
+      "length": 66,
+      "kind": "function",
+      "role": "memory_backing_scalar_delete",
+      "raw_offset": 5063792,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "568bf18b460850c706d85ad100e82a213200832d98db0901018b4e0c290d9cdb090183c4048bcee854ec2f00f644240801740956e80321320083c4048bc65ec20400",
+      "sha256": "6f300372d3019149192f16df5af69c965b98ebb5efbe2dfd80868afdfc68b70a",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "008d44af",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00bef6d0",
+      "end_exclusive": "00bef74c",
+      "length": 124,
+      "kind": "function",
+      "role": "memory_stream_from_backing",
+      "raw_offset": 8320720,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "535556576a148bd9e83e71000033ed83c4043bc57420c70030b1ce00c7400401000000c700c042d60089680889680c8968108bf0eb0233f68b7e083bfd74198d470450ff152022ce0085c075088b178b028bcfffd0896e088bcb83c10451895e08ff151c22ce008b43088946108b530c03d05f89560c8bc65e5d5bc3",
+      "sha256": "f62bfa31edee50d201af2c0e89c98e96db82cd967e805f8ab9841dd9bfe53595",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00bef74b",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00bef9c0",
+      "end_exclusive": "00befa36",
+      "length": 118,
+      "kind": "function",
+      "role": "memory_stream_destructor",
+      "raw_offset": 8321472,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "6aff68b876cc0064a100000000506489250000000051568bf15789742408c706c042d6008b7e0885ffc744241400000000741d8d470450ff152022ce0085c075088b178b028bcfffd0c74608000000008bcec7442414ffffffffc70604c1d500e8cb36feff8b4c240c5f5e64890d0000000083c410c3",
+      "sha256": "0e4fabcd08941fce4451eb93b3bbda3644238984e0d2a3b5048ca7bb0e7ff9ec",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00befa35",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00bb8f90",
+      "end_exclusive": "00bb8fae",
+      "length": 30,
+      "kind": "function",
+      "role": "memory_stream_scalar_delete",
+      "raw_offset": 8097680,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "568bf1e8286a0300f644240801740956e807d6030083c4048bc65ec20400",
+      "sha256": "a88682c86cbbdd6d0c0c2bdf811ab62d50d05d2504bfa098ea7615c160e23438",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00bb8fab",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00bef600",
+      "end_exclusive": "00bef60b",
+      "length": 11,
+      "kind": "function",
+      "role": "memory_stream_size",
+      "raw_offset": 8320512,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b51088b410c2b420899c3",
+      "sha256": "3868b670bd048da71266ed078741a94b1706b40c90a35cdc4a51c6ecad47cd36",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00bef60a",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00bef610",
+      "end_exclusive": "00bef617",
+      "length": 7,
+      "kind": "function",
+      "role": "memory_stream_data",
+      "raw_offset": 8320528,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b41088b4008c3",
+      "sha256": "92c5e2972d2442d6d750d027a5da0e7ee862ca52fef58c2af20331258d8191ef",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00bef616",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b2c5d4",
+      "end_exclusive": "00b2c648",
+      "length": 116,
+      "kind": "fragment",
+      "role": "loaded_factory_construct_retain_source",
+      "raw_offset": 7521748,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "837c241400746db950000000e8cb2c01008944242485c0c644246c0274248b5424288b4c242c6a00528b54241c518b8c248000000052518bc8e81e3301008be8eb0233ed8d4d4c8d542420c644246c01e81770ffff8b44247885c0897d3c74048bcdffd08b168b42308bce896c241cffd0894524",
+      "sha256": "fc851918d85d5c2f980f9b13c101ce7a88136ab2aa7f12a6ceec6794316f31af",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00b2c833",
+      "end_exclusive": "00b2c849",
+      "length": 22,
+      "kind": "fragment",
+      "role": "loaded_factory_drop_local_source",
+      "raw_offset": 7522355,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8d460450ff152022ce0085c075088b168b028bceffd0",
+      "sha256": "10312f9984217d46d6cdbbe4370ba98f9ee51db6d951e78d621af7bb4b985189",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00cbee90",
+      "end_exclusive": "00cbeead",
+      "length": 29,
+      "kind": "eh_code",
+      "role": "texture_dtor_eh",
+      "raw_offset": 9170576,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b4df0e97851e7ff8b4df083c140e99dfde7ffb81077df00e9967cf3ff",
+      "sha256": "d533879bf906081369aba6642c341cb976c59fe8cd8ebbe9f3f3f1fa664ca42a",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00df7700",
+      "end_exclusive": "00df7734",
+      "length": 52,
+      "kind": "data",
+      "role": "texture_dtor_map_funcinfo",
+      "raw_offset": 10450688,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "ffffffff90eecb000000000098eecb0022059319020000000077df00000000000000000000000000000000000000000001000000",
+      "sha256": "971eb51c77805422107654e4724a48da48bbdd975c91303561e367b0dfb3fc1f",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cbef50",
+      "end_exclusive": "00cbef75",
+      "length": 37,
+      "kind": "eh_code",
+      "role": "texture_named_ctor_eh",
+      "raw_offset": 9170768,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b4dc4e9b850e7ff8b4dc483c140e9ddfce7ff8d4dc8e95505e8ffb83c78df00e9ce7bf3ff",
+      "sha256": "30499fe6e681d177ce74c941d568895fef21a28413b2a26ea0400baf34ccf590",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00df7824",
+      "end_exclusive": "00df7860",
+      "length": 60,
+      "kind": "data",
+      "role": "texture_named_ctor_map_funcinfo",
+      "raw_offset": 10450980,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "ffffffff50efcb000000000058efcb000100000063efcb0022059319030000002478df00000000000000000000000000000000000000000001000000",
+      "sha256": "f4a8a1f2d88cdfd300b6d2317bf8550baea310d670f71d1169d3e2b606e9fbc0",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cbefa0",
+      "end_exclusive": "00cbefb2",
+      "length": 18,
+      "kind": "eh_code",
+      "role": "texture_surface_getter_eh",
+      "raw_offset": 9170848,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b4df0e918ede7ffb89478df00e9917bf3ff",
+      "sha256": "a29536078f63ba79ed7c32c3bb0ec4647fac18efa6ea3065de292ae9b6c10d0f",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00df788c",
+      "end_exclusive": "00df78b8",
+      "length": 44,
+      "kind": "data",
+      "role": "texture_surface_getter_map_funcinfo",
+      "raw_offset": 10451084,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "ffffffffa0efcb0022059319010000008c78df00000000000000000000000000000000000000000001000000",
+      "sha256": "90b7856e2be94ca0c87f61e754f06a522a81ff908342dcbb76fa9c53cc194ed8",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cbe090",
+      "end_exclusive": "00cbe0a2",
+      "length": 18,
+      "kind": "eh_code",
+      "role": "logical_base_dtor_eh",
+      "raw_offset": 9166992,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b4df0e9e837dcffb80c69df00e9a18af3ff",
+      "sha256": "e107ee11d6639e27a5050d830aeb75cd72bbfdb3001fd5926a61251a89e048e3",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00df6904",
+      "end_exclusive": "00df6930",
+      "length": 44,
+      "kind": "data",
+      "role": "logical_base_dtor_map_funcinfo",
+      "raw_offset": 10447108,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "ffffffff90e0cb0022059319010000000469df00000000000000000000000000000000000000000001000000",
+      "sha256": "c161c0855c648dac82623f971b99297f9414552497d59e06a3457f04365c430a",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cbe0b0",
+      "end_exclusive": "00cbe0cd",
+      "length": 29,
+      "kind": "eh_code",
+      "role": "logical_base_named_ctor_eh",
+      "raw_offset": 9167024,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b4df0e9c837dcff8b4df083c108e95dfc75ffb84069df00e9768af3ff",
+      "sha256": "fe885481ffb1a1b48822cbf9e8dda2040cb3b83e29da2124a75a6710b3f07d4a",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00df6930",
+      "end_exclusive": "00df6964",
+      "length": 52,
+      "kind": "data",
+      "role": "logical_base_named_ctor_map_funcinfo",
+      "raw_offset": 10447152,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "ffffffffb0e0cb0000000000b8e0cb0022059319020000003069df00000000000000000000000000000000000000000001000000",
+      "sha256": "c6aadcbc89e62cc2a114743bd6fcbacb8099e0203b5b1261142e6520eac40029",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cbdce0",
+      "end_exclusive": "00cbdcfa",
+      "length": 26,
+      "kind": "eh_code",
+      "role": "renderer_name_notification_eh",
+      "raw_offset": 9166048,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8d4dece92834e6ff8d4de4e9300076ffb89466df00e9498ef3ff",
+      "sha256": "d06b30caa74fb6ab6b9eeecc2bb00dbf6b548b4314f6a21ab29b52640302fdf6",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00df6684",
+      "end_exclusive": "00df66b8",
+      "length": 52,
+      "kind": "data",
+      "role": "renderer_name_notification_map_funcinfo",
+      "raw_offset": 10446468,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "ffffffffe0dccb0000000000e8dccb0022059319020000008466df00000000000000000000000000000000000000000001000000",
+      "sha256": "ed6141b2ac4f80f7eeedbda84c26f7e61ceef42cbb3a5306f4843ad547d05532",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ca2ef0",
+      "end_exclusive": "00ca2f02",
+      "length": 18,
+      "kind": "eh_code",
+      "role": "memory_backing_ctor_eh",
+      "raw_offset": 9055984,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b4df0e9f801f3ffb89050dd00e9413cf5ff",
+      "sha256": "5728f31f843e493e0295f4bf9dac707492897aec4399e92733e43935a24ca6b0",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00dd5088",
+      "end_exclusive": "00dd50b4",
+      "length": 44,
+      "kind": "data",
+      "role": "memory_backing_ctor_map_funcinfo",
+      "raw_offset": 10309768,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "fffffffff02eca0022059319010000008850dd00000000000000000000000000000000000000000001000000",
+      "sha256": "1c573614f9d385c5b6a9c1cdd0e49878d76ec0ee76e78b17337a8ee14af2cb71",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00cc76b0",
+      "end_exclusive": "00cc76c2",
+      "length": 18,
+      "kind": "eh_code",
+      "role": "memory_stream_dtor_eh",
+      "raw_offset": 9205424,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b4df0e92810efffb8ac22e000e981f4f2ff",
+      "sha256": "a0c8a21d89fd9e761768ecf14ea99540909751a2c025335297d8066a86a06a77",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00e022a4",
+      "end_exclusive": "00e022d0",
+      "length": 44,
+      "kind": "data",
+      "role": "memory_stream_dtor_map_funcinfo",
+      "raw_offset": 10494628,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "ffffffffb076cc002205931901000000a422e000000000000000000000000000000000000000000001000000",
+      "sha256": "78bc2f0dbae8578795945560f2720e3b6b578159a4a86a7dc4238f0a5f41b757",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d61948",
+      "end_exclusive": "00d619a0",
+      "length": 88,
+      "kind": "data",
+      "role": "texture_profile_22_entries",
+      "raw_offset": 9836872,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "e030bd0090f5b30090fab30030ceb30040ceb300803eb300903eb300a0ceb30030ddb30090ddb300b0d7b30090e1b30080fdb30090d5b300c0d5b30050ceb30060ceb30090ceb30070ceb30080ceb30010dfb30040d6b300",
+      "sha256": "f4f5e3a0c2aafc4c8e739574e0af37088088ce96c1b15ea8a5776c8d12ab4cad",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0108daf8",
+      "end_exclusive": "0108dafc",
+      "length": 4,
+      "kind": "data",
+      "role": "texture_tracking_counter",
+      "raw_offset": null,
+      "pe_mapping": "PE virtual zero-filled tail",
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0108d6e8",
+      "end_exclusive": "0108d6ec",
+      "length": 4,
+      "kind": "data",
+      "role": "actual_shared_texture_serial",
+      "raw_offset": null,
+      "pe_mapping": "PE virtual zero-filled tail",
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0108d6dc",
+      "end_exclusive": "0108d6dd",
+      "length": 1,
+      "kind": "data",
+      "role": "renderer_optional_guard_gate",
+      "raw_offset": null,
+      "pe_mapping": "PE virtual zero-filled tail",
+      "bytes_hex": "00",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00f8d394",
+      "end_exclusive": "00f8d398",
+      "length": 4,
+      "kind": "data",
+      "role": "actual_renderer_publication",
+      "raw_offset": null,
+      "pe_mapping": "PE virtual zero-filled tail",
+      "bytes_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d5f228",
+      "end_exclusive": "00d5f22c",
+      "length": 4,
+      "kind": "data",
+      "role": "logical_texture_2d_base_profile",
+      "raw_offset": 9826856,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "e030bd00",
+      "sha256": "5ae14f1d954ba6d85032fec8151028e2e54e9acedebfc25118d430414c9a0ad3",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d5f1f4",
+      "end_exclusive": "00d5f1f8",
+      "length": 4,
+      "kind": "data",
+      "role": "logical_texture_common_base_profile",
+      "raw_offset": 9826804,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "e030bd00",
+      "sha256": "5ae14f1d954ba6d85032fec8151028e2e54e9acedebfc25118d430414c9a0ad3",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d5f114",
+      "end_exclusive": "00d5f118",
+      "length": 4,
+      "kind": "data",
+      "role": "renderer_virtual_6c_target",
+      "raw_offset": 9826580,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "5022b300",
+      "sha256": "3c59227775ade8e17275d19b0f3672bf013399c24d48e3587538bdff0c2b3c6b",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d642c0",
+      "end_exclusive": "00d642f4",
+      "length": 52,
+      "kind": "data",
+      "role": "memory_stream_profile_13_entries",
+      "raw_offset": 9847488,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "e030bd00908fbb00a0f4be00608fbb00209d6f00b0f4be00c0f4be0040f5be0080f5be0090f5be00f0f5be00a041be0000f6be00",
+      "sha256": "2b1932e6aa0f9ed1ee97f2a8450cf5e9afebc6ba651116eea1b2245e1ef6e566",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d15ad8",
+      "end_exclusive": "00d15ae0",
+      "length": 8,
+      "kind": "data",
+      "role": "memory_backing_profile",
+      "raw_offset": 9525976,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "e030bd0070448d00",
+      "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00d5c104",
+      "end_exclusive": "00d5c108",
+      "length": 4,
+      "kind": "data",
+      "role": "stream_base_profile",
+      "raw_offset": 9814276,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "e030bd00",
+      "sha256": "5ae14f1d954ba6d85032fec8151028e2e54e9acedebfc25118d430414c9a0ad3",
+      "live_matches_disk": true
+    },
+    {
+      "address": "0109db98",
+      "end_exclusive": "0109dba0",
+      "length": 8,
+      "kind": "data",
+      "role": "memory_backing_count_and_bytes",
+      "raw_offset": null,
+      "pe_mapping": "PE virtual zero-filled tail",
+      "bytes_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00ce221c",
+      "end_exclusive": "00ce2224",
+      "length": 8,
+      "kind": "data",
+      "role": "actual_interlocked_imports",
+      "raw_offset": 9314844,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "d056a000e856a000",
+      "sha256": "09187bdb757191189ccc4a5ac7c2ef0cdefd40f24673be20f5effccda6731258",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bef750",
+      "end_exclusive": "00bef840",
+      "length": 240,
+      "kind": "function",
+      "role": "full_conversion_producer_evidence_only",
+      "raw_offset": 8320848,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "64a1000000006aff685b76cc00506489250000000083ec08568bf185f6751233c05e8b4c240864890d0000000083c414c38b0da0db09018b068b500c518bceffd284c074188b4e08e833ffffff5e8b4c240864890d0000000083c414c38b068b501c53576a006a006a008bceffd28b068b50308bceffd26a108bd889542414e84770000083c4048944240c85c0c744241c00000000740c538bc8e8d14bceff8bf8eb0233ff8b4f088b068b50246a0053518bcec7442428ffffffffffd28bcfe8bcfeffff8bf08d470450ff152022ce0085c075088b178b028bcfffd08b4c24145f5b8bc65e64890d0000000083c414c3",
+      "sha256": "696afedd7e769bad800086544926b2ea51da1cf17ed5606fc16497b8a90b80e5",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00bef780",
+          "operand": ""
+        },
+        {
+          "site": "00bef7ac",
+          "operand": ""
+        },
+        {
+          "site": "00bef83f",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b2c39e",
+      "end_exclusive": "00b2c3cc",
+      "length": 46,
+      "kind": "fragment",
+      "role": "loaded_factory_conversion_and_capture",
+      "raw_offset": 7521182,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "56e8ac330c008bf08d47045089742424ff152022ce0085c075088b178b028bcfffd08b0d94d3f800895c24148b06",
+      "sha256": "7187f79b8b9d5fb58a27f5a3ab73c1af18cebfda7974902fbad3f2c2522371f1",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00bb86e0",
+      "end_exclusive": "00bb86eb",
+      "length": 11,
+      "kind": "function",
+      "role": "stream_unwind_base",
+      "raw_offset": 8095456,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "c70104c1d500e905aa0100",
+      "sha256": "d9ef5a05ac2b30551b9b3d76dbdad36b0b47b260cae31ffac740dde9fc5f3c54",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00a81880",
+      "end_exclusive": "00a81885",
+      "length": 5,
+      "kind": "function",
+      "role": "logical_unwind_refcounted_base",
+      "raw_offset": 6822016,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "e96b181500",
+      "sha256": "a4e4c3c625027b1accb522e14a55b64e3dbb509273a0c42f7a9264ba7f30b7f3",
+      "live_matches_disk": true,
+      "returns": []
+    },
+    {
+      "address": "00bd30e0",
+      "end_exclusive": "00bd30ee",
+      "length": 14,
+      "kind": "function",
+      "role": "current_virtual_zero_to_deleting_dispatch",
+      "raw_offset": 8204512,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "85c974098b018b50046a01ffd2c3",
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00bd30ed",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "length": 7,
+      "kind": "function",
+      "role": "refcounted_base",
+      "raw_offset": 8204528,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "c70130b1ce00c3",
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00bd30f6",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b33ad0",
+      "end_exclusive": "00b33afe",
+      "length": 46,
+      "kind": "function",
+      "role": "existing_optional_enter",
+      "raw_offset": 7551696,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8305e0d6080101803ddcd6080100750332c0c3568b710485f6740f56ff151822ce0083461801b0015ec332c05ec3",
+      "sha256": "edaa33431fdcb7fecae9ea99624c6fb06c8d15271a2d42ed7cfe2ad4f7bc8ae7",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b33ae2",
+          "operand": ""
+        },
+        {
+          "site": "00b33af9",
+          "operand": ""
+        },
+        {
+          "site": "00b33afd",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b33b00",
+      "end_exclusive": "00b33b43",
+      "length": 67,
+      "kind": "function",
+      "role": "existing_optional_leave",
+      "raw_offset": 7551744,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8a15dcd60801832de0d608010184d274188b410485c07411834018ff50ff151022ce008a15dcd60801833de0d6080100750e3815ddd6080174068815ddd60801c20400",
+      "sha256": "6b55c5c3fcac00e24d4ff7316f0c22c1304ccb61ebb0850962fdf9050a41d59b",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b33b40",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b21110",
+      "end_exclusive": "00b21126",
+      "length": 22,
+      "kind": "function",
+      "role": "existing_guard_unwind",
+      "raw_offset": 7475472,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "803ddcd6080100740c0fb6018b490450e8db290100c3",
+      "sha256": "1e98aeb4cc273e78f5177eaa511323db91a42de3ae1c6e67bf93799d99646e9f",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b21125",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "004bcc00",
+      "end_exclusive": "004bcc33",
+      "length": 51,
+      "kind": "function",
+      "role": "existing_actual_string_lowercase",
+      "raw_offset": 773120,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b510485d2742b5633f6393176238bff8a023c417c0c3c5a7f080fbec083c020eb030fbec0880283c60183c2013b3172df5ec3",
+      "sha256": "cfbd487587a7f330ae49a77ec737749f5f1c5bafbe7e33a8beeab96adb6763f8",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "004bcc32",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "0041dd20",
+      "end_exclusive": "0041dd3d",
+      "length": 29,
+      "kind": "function",
+      "role": "existing_actual_string_destroy",
+      "raw_offset": 122144,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b510485d274158b016a0183c0015052e88bbfffff8bc8e8d4377b00c3",
+      "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "0041dd3c",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b3f4c0",
+      "end_exclusive": "00b3f4de",
+      "length": 30,
+      "kind": "function",
+      "role": "borrowed_com_diagnostic_string_destroy",
+      "raw_offset": 7599296,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "8b510885d274168b41046a0183c0015052e8eaa78dff8bc8e833200900c3",
+      "sha256": "5b51ca9686f1c6eeade950ec88fb066664b6be37f22c586fbd5a55aebfa9e43a",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b3f4dd",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00d619a0",
+      "end_exclusive": "00d619e4",
+      "length": 68,
+      "kind": "data",
+      "role": "actual_surface_profile_prefix",
+      "raw_offset": 9836960,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "e030bd00b0f5b300f0fabe005022a800f0ccb30080ccb30000cdb30010cdb30020cdb30030cdb30000d5b30040cdb30060cdb30000ddb30070cdb30010d5b30050d5b300",
+      "sha256": "2cba1e5d818cce8ebfb970f1fa638da2f61c2dba957fe54eac4f8efe8e6b2ff1",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b3f4e0",
+      "end_exclusive": "00b3f588",
+      "length": 168,
+      "kind": "function",
+      "role": "existing_actual_surface_destructor",
+      "raw_offset": 7599328,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "6aff68e3eecb0064a100000000506489250000000051568bf189742404c706a019d6008b0d94d3f80056c744241401000000e84988feffe814f2ffff8b462c85c0740f8b088b510850ffd2c7462c000000008b4628a8107507a9000100007407832dfcda0801018b461485c0c64424100074168b4e106a0183c1015150e85ea78dff8bc8e8a71f09008bcec7442410ffffffffe8783b09008b4c24085e64890d0000000083c410c3",
+      "sha256": "94c7941ad588fe299ed80887bbe63e585e649e0098aa291c1d98894fa43dce28",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b3f587",
+          "operand": ""
+        }
+      ]
+    },
+    {
+      "address": "00b3f5b0",
+      "end_exclusive": "00b3f5d0",
+      "length": 32,
+      "kind": "function",
+      "role": "existing_actual_surface_deleting_wrapper",
+      "raw_offset": 7599536,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "568bf1e828fffffff644240801740b56b900db0801e896e2ffff8bc65ec20400",
+      "sha256": "3a970588c8a7be01b82e0400585f1b864d92d2ca2bed1208b99c2951b3b0a782",
+      "live_matches_disk": true,
+      "returns": [
+        {
+          "site": "00b3f5cd",
+          "operand": "4"
+        }
+      ]
+    },
+    {
+      "address": "00bf65ac",
+      "end_exclusive": "00bf65b1",
+      "length": 5,
+      "kind": "hook_prefix",
+      "role": "ordinary_and_array_storage_free_entry_only",
+      "raw_offset": 8349100,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "e917380000",
+      "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf6989",
+      "end_exclusive": "00bf698e",
+      "length": 5,
+      "kind": "hook_prefix",
+      "role": "cache_array_free_entry_only",
+      "raw_offset": 8350089,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "e91efcffff",
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf55be",
+      "end_exclusive": "00bf55c3",
+      "length": 5,
+      "kind": "hook_prefix",
+      "role": "array_allocation_entry_only",
+      "raw_offset": 8345022,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "e958120000",
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf681b",
+      "end_exclusive": "00bf6820",
+      "length": 5,
+      "kind": "hook_prefix",
+      "role": "ordinary_allocation_entry_only",
+      "raw_offset": 8349723,
+      "pe_mapping": "file-backed",
+      "bytes_hex": "558bec83ec",
+      "sha256": "86409b3251fbc5c93f09de47c576b7424a0ab1c94abb933b4947a436199b163d",
+      "live_matches_disk": true
+    }
+  ],
+  "targeted_field_accesses": [
+    {
+      "function": "00b3f930",
+      "site": "00b3f94d",
+      "instruction": "mov ebx, dword ptr [esp + 0x44]"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f96e",
+      "instruction": "mov dword ptr [esi + 0x24], ebp"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f974",
+      "instruction": "mov dword ptr [esp + 0x48], ebp"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f978",
+      "instruction": "mov dword ptr [esi + 0x40], ebp"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f97b",
+      "instruction": "mov dword ptr [esi + 0x44], ebp"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f97e",
+      "instruction": "mov dword ptr [esi + 0x48], ebp"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f981",
+      "instruction": "mov eax, dword ptr [esi + 0x10]"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f984",
+      "instruction": "mov dword ptr [esi + 0x4c], ebp"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f98d",
+      "instruction": "mov byte ptr [esp + 0x4c], 1"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f9a4",
+      "instruction": "mov edx, dword ptr [ecx + 4]"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f9ac",
+      "instruction": "mov ecx, dword ptr [eax + 8]"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f9b4",
+      "instruction": "mov ecx, dword ptr [edx + 0x44]"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f9d0",
+      "instruction": "mov edx, dword ptr [ecx + 4]"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f9d8",
+      "instruction": "mov ecx, dword ptr [eax + 8]"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3fa24",
+      "instruction": "mov ecx, dword ptr [ebx + 4]"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3fa32",
+      "instruction": "mov byte ptr [esp + 0x48], 2"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3fa3e",
+      "instruction": "mov byte ptr [esp + 0x48], 1"
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3fa6c",
+      "instruction": "mov ecx, dword ptr [esp + 0x40]"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f2fc",
+      "instruction": "mov dword ptr [esp + 0x10], esi"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f306",
+      "instruction": "mov edi, dword ptr [esi + 0x4c]"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f317",
+      "instruction": "lea eax, [edi + 4]"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f32d",
+      "instruction": "mov dword ptr [esi + 0x4c], ebp"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f355",
+      "instruction": "mov edi, dword ptr [esi + 0x10]"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f35e",
+      "instruction": "mov ecx, dword ptr [eax + 4]"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f366",
+      "instruction": "mov eax, dword ptr [edx + 8]"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f371",
+      "instruction": "mov eax, dword ptr [esi + 0x10]"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f37a",
+      "instruction": "mov edx, dword ptr [ecx + 8]"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f380",
+      "instruction": "mov dword ptr [esi + 0x10], ebp"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f383",
+      "instruction": "cmp dword ptr [esi + 0x44], ebp"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f390",
+      "instruction": "mov eax, dword ptr [esi + 0x40]"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f393",
+      "instruction": "mov edi, dword ptr [eax + ebp*8 + 4]"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f399",
+      "instruction": "lea ebx, [eax + ebp*8 + 4]"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f39f",
+      "instruction": "lea ecx, [edi + 4]"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f3be",
+      "instruction": "cmp ebp, dword ptr [esi + 0x44]"
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f3d0",
+      "instruction": "lea edi, [esi + 0x40]"
+    },
+    {
+      "function": "00b3f590",
+      "site": "00b3f598",
+      "instruction": "test byte ptr [esp + 8], 1"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fda5",
+      "instruction": "mov ecx, dword ptr [esi + 0x44]"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fdaf",
+      "instruction": "mov edi, dword ptr [esi + 0x40]"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fdc4",
+      "instruction": "mov edi, dword ptr [edi + eax*8 + 4]"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fdc8",
+      "instruction": "lea eax, [edi + 4]"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fdd6",
+      "instruction": "mov eax, dword ptr [esi + 0x10]"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fddb",
+      "instruction": "lea edx, [esp + 0x24]"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fde2",
+      "instruction": "mov eax, dword ptr [ecx + 0x48]"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fdf1",
+      "instruction": "mov dword ptr [esp + 0x10], eax"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fe1d",
+      "instruction": "mov eax, dword ptr [esp + 0x24]"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fe23",
+      "instruction": "mov edx, dword ptr [ecx + 8]"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fe37",
+      "instruction": "lea eax, [edi + 4]"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fe3d",
+      "instruction": "mov eax, dword ptr [esi + 0x48]"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fe43",
+      "instruction": "cmp dword ptr [esi + 4], eax"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fe5c",
+      "instruction": "mov ecx, dword ptr [esi + 4]"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fe6a",
+      "instruction": "mov dword ptr [eax + 4], edi"
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fe6d",
+      "instruction": "add dword ptr [esi + 4], 1"
+    },
+    {
+      "function": "00b3d8d0",
+      "site": "00b3d8d5",
+      "instruction": "lea edi, [esi + 0xc]"
+    },
+    {
+      "function": "00b3d8d0",
+      "site": "00b3d8e3",
+      "instruction": "mov eax, dword ptr [esp + 0x10]"
+    },
+    {
+      "function": "00b3d9b0",
+      "site": "00b3d9b2",
+      "instruction": "mov edi, dword ptr [esp + 0xc]"
+    },
+    {
+      "function": "00b3d9b0",
+      "site": "00b3d9c2",
+      "instruction": "cmp dword ptr [esi + 8], edi"
+    },
+    {
+      "function": "00b3d9b0",
+      "site": "00b3d9dc",
+      "instruction": "cmp dword ptr [esi + 4], eax"
+    },
+    {
+      "function": "00b3d9b0",
+      "site": "00b3d9ef",
+      "instruction": "mov edx, dword ptr [edx + eax*8 + 4]"
+    },
+    {
+      "function": "00b3d9b0",
+      "site": "00b3d9f3",
+      "instruction": "mov dword ptr [ecx + 4], edx"
+    },
+    {
+      "function": "00b3d9b0",
+      "site": "00b3d9fc",
+      "instruction": "cmp eax, dword ptr [esi + 4]"
+    },
+    {
+      "function": "00b3d9b0",
+      "site": "00b3da0f",
+      "instruction": "mov dword ptr [esi + 8], edi"
+    },
+    {
+      "function": "00b3da20",
+      "site": "00b3da22",
+      "instruction": "mov edi, dword ptr [esp + 0xc]"
+    },
+    {
+      "function": "00b3da20",
+      "site": "00b3da28",
+      "instruction": "cmp edi, dword ptr [esi + 8]"
+    },
+    {
+      "function": "00b3da20",
+      "site": "00b3da33",
+      "instruction": "mov ecx, dword ptr [esi + 4]"
+    },
+    {
+      "function": "00b3da20",
+      "site": "00b3da4d",
+      "instruction": "mov dword ptr [eax + 4], edx"
+    },
+    {
+      "function": "00b3da20",
+      "site": "00b3da57",
+      "instruction": "cmp edi, dword ptr [esi + 4]"
+    },
+    {
+      "function": "00b3da20",
+      "site": "00b3da60",
+      "instruction": "add dword ptr [esi + 4], eax"
+    },
+    {
+      "function": "00b3da20",
+      "site": "00b3da63",
+      "instruction": "cmp edi, dword ptr [esi + 4]"
+    },
+    {
+      "function": "00b3da20",
+      "site": "00b3da68",
+      "instruction": "mov dword ptr [esi + 4], edi"
+    },
+    {
+      "function": "00b34120",
+      "site": "00b34141",
+      "instruction": "mov dword ptr [esp + 0xc], esi"
+    },
+    {
+      "function": "00b34120",
+      "site": "00b34145",
+      "instruction": "mov dword ptr [esi + 4], 1"
+    },
+    {
+      "function": "00b34120",
+      "site": "00b3414c",
+      "instruction": "lea edi, [esi + 8]"
+    },
+    {
+      "function": "00b34120",
+      "site": "00b34163",
+      "instruction": "mov dword ptr [edi + 4], 0"
+    },
+    {
+      "function": "00b34120",
+      "site": "00b3418c",
+      "instruction": "mov edx, dword ptr [ebp + 4]"
+    },
+    {
+      "function": "00b34120",
+      "site": "00b3418f",
+      "instruction": "mov eax, dword ptr [edi + 4]"
+    },
+    {
+      "function": "00b34120",
+      "site": "00b3419d",
+      "instruction": "mov ecx, dword ptr [esp + 0x24]"
+    },
+    {
+      "function": "00b34120",
+      "site": "00b341a5",
+      "instruction": "mov dword ptr [esi + 0x10], ecx"
+    },
+    {
+      "function": "00b34120",
+      "site": "00b341a8",
+      "instruction": "mov ecx, dword ptr [esp + 0x10]"
+    },
+    {
+      "function": "00b34230",
+      "site": "00b34230",
+      "instruction": "mov eax, dword ptr [esp + 0xc]"
+    },
+    {
+      "function": "00b34230",
+      "site": "00b34234",
+      "instruction": "mov edx, dword ptr [esp + 4]"
+    },
+    {
+      "function": "00b34230",
+      "site": "00b3423b",
+      "instruction": "mov ecx, dword ptr [esp + 0xc]"
+    },
+    {
+      "function": "00b33f50",
+      "site": "00b33f69",
+      "instruction": "mov dword ptr [esp + 4], esi"
+    },
+    {
+      "function": "00b33f50",
+      "site": "00b33f73",
+      "instruction": "mov eax, dword ptr [esi + 0xc]"
+    },
+    {
+      "function": "00b33f50",
+      "site": "00b33f78",
+      "instruction": "mov dword ptr [esp + 0x10], 0"
+    },
+    {
+      "function": "00b33f50",
+      "site": "00b33f82",
+      "instruction": "mov ecx, dword ptr [esi + 8]"
+    },
+    {
+      "function": "00b33f50",
+      "site": "00b33f9a",
+      "instruction": "mov dword ptr [esp + 0x10], 0xffffffff"
+    },
+    {
+      "function": "00b33f50",
+      "site": "00b33fa7",
+      "instruction": "mov ecx, dword ptr [esp + 8]"
+    },
+    {
+      "function": "00b27d40",
+      "site": "00b27d40",
+      "instruction": "lea eax, [esp + 4]"
+    },
+    {
+      "function": "00b25580",
+      "site": "00b25583",
+      "instruction": "mov ebx, dword ptr [ecx + 4]"
+    },
+    {
+      "function": "00b25580",
+      "site": "00b255d4",
+      "instruction": "add dword ptr [ecx + 4], -1"
+    },
+    {
+      "function": "00b32250",
+      "site": "00b3228f",
+      "instruction": "lea eax, [esp + 0xc]"
+    },
+    {
+      "function": "00b32250",
+      "site": "00b32295",
+      "instruction": "mov dword ptr [esp + 0x24], 0"
+    },
+    {
+      "function": "00b32250",
+      "site": "00b3229d",
+      "instruction": "mov dword ptr [esp + 0xc], 0"
+    },
+    {
+      "function": "00b32250",
+      "site": "00b322a5",
+      "instruction": "mov dword ptr [esp + 0x10], edi"
+    },
+    {
+      "function": "00b32250",
+      "site": "00b322bb",
+      "instruction": "mov edi, dword ptr [esp + 0x10]"
+    },
+    {
+      "function": "00b32250",
+      "site": "00b322c1",
+      "instruction": "mov ecx, dword ptr [esp + 0xc]"
+    },
+    {
+      "function": "00b32250",
+      "site": "00b322c5",
+      "instruction": "mov edx, dword ptr [esi + 4]"
+    },
+    {
+      "function": "00b32250",
+      "site": "00b322d3",
+      "instruction": "lea ecx, [esp + 0xc]"
+    },
+    {
+      "function": "00b32250",
+      "site": "00b322d7",
+      "instruction": "mov byte ptr [esp + 0x24], 1"
+    },
+    {
+      "function": "00b32250",
+      "site": "00b322ef",
+      "instruction": "mov byte ptr [esp + 0x24], 0"
+    },
+    {
+      "function": "00b32250",
+      "site": "00b322f6",
+      "instruction": "mov eax, dword ptr [esp + 0xc]"
+    },
+    {
+      "function": "00b32250",
+      "site": "00b32321",
+      "instruction": "mov eax, dword ptr [esp + 8]"
+    },
+    {
+      "function": "00b32250",
+      "site": "00b32325",
+      "instruction": "mov ecx, dword ptr [esp + 0xc]"
+    },
+    {
+      "function": "00b32250",
+      "site": "00b3232f",
+      "instruction": "mov ecx, dword ptr [esp + 0x10]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31df9",
+      "instruction": "lea ecx, [esp + 0x24]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31e0a",
+      "instruction": "mov edx, dword ptr [esi + 4]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31e4c",
+      "instruction": "mov eax, dword ptr [ebx + 8]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31e4f",
+      "instruction": "mov ebp, dword ptr [ebx + 4]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31e63",
+      "instruction": "lea edi, [ebp + 0xc]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31e6a",
+      "instruction": "mov dword ptr [esp + 0x10], eax"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31e7c",
+      "instruction": "cmp esi, dword ptr [esp + 0x10]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31e8b",
+      "instruction": "mov eax, dword ptr [esi + 8]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31eaf",
+      "instruction": "mov edx, dword ptr [esi + 0xc]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31ee4",
+      "instruction": "mov eax, dword ptr [esi + 4]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31f25",
+      "instruction": "mov ecx, dword ptr [esp + 0x24]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31f3f",
+      "instruction": "mov edx, dword ptr [eax + 0xc]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31f44",
+      "instruction": "sub dword ptr [ebx + 0x10], eax"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31f47",
+      "instruction": "mov eax, dword ptr [ebp + 4]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31f6c",
+      "instruction": "mov eax, dword ptr [ebx + 8]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31f6f",
+      "instruction": "mov ecx, dword ptr [ebx + 4]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31f90",
+      "instruction": "mov ecx, dword ptr [ebx + 8]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31f93",
+      "instruction": "mov edx, dword ptr [ebx + 4]"
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31fa5",
+      "instruction": "add dword ptr [ebx + 8], eax"
+    },
+    {
+      "function": "00b33e40",
+      "site": "00b33e40",
+      "instruction": "lea eax, [ecx + 8]"
+    },
+    {
+      "function": "00b23640",
+      "site": "00b23660",
+      "instruction": "lea eax, [edi + 4]"
+    },
+    {
+      "function": "008d43c0",
+      "site": "008d43e0",
+      "instruction": "mov dword ptr [esp + 8], esi"
+    },
+    {
+      "function": "008d43c0",
+      "site": "008d43e4",
+      "instruction": "mov dword ptr [esi + 4], 1"
+    },
+    {
+      "function": "008d43c0",
+      "site": "008d43ff",
+      "instruction": "mov dword ptr [esi + 0xc], edi"
+    },
+    {
+      "function": "008d43c0",
+      "site": "008d4405",
+      "instruction": "mov dword ptr [esi + 0xc], eax"
+    },
+    {
+      "function": "008d43c0",
+      "site": "008d440f",
+      "instruction": "mov ecx, dword ptr [esp + 0x10]"
+    },
+    {
+      "function": "008d43c0",
+      "site": "008d4413",
+      "instruction": "mov dword ptr [esi + 8], eax"
+    },
+    {
+      "function": "008d4440",
+      "site": "008d4443",
+      "instruction": "mov eax, dword ptr [esi + 8]"
+    },
+    {
+      "function": "008d4440",
+      "site": "008d4459",
+      "instruction": "mov ecx, dword ptr [esi + 0xc]"
+    },
+    {
+      "function": "008d4470",
+      "site": "008d4473",
+      "instruction": "mov eax, dword ptr [esi + 8]"
+    },
+    {
+      "function": "008d4470",
+      "site": "008d4489",
+      "instruction": "mov ecx, dword ptr [esi + 0xc]"
+    },
+    {
+      "function": "008d4470",
+      "site": "008d449c",
+      "instruction": "test byte ptr [esp + 8], 1"
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef6ec",
+      "instruction": "mov dword ptr [eax + 4], 1"
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef6f9",
+      "instruction": "mov dword ptr [eax + 8], ebp"
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef6fc",
+      "instruction": "mov dword ptr [eax + 0xc], ebp"
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef6ff",
+      "instruction": "mov dword ptr [eax + 0x10], ebp"
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef708",
+      "instruction": "mov edi, dword ptr [esi + 8]"
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef70f",
+      "instruction": "lea eax, [edi + 4]"
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef725",
+      "instruction": "mov dword ptr [esi + 8], ebp"
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef72e",
+      "instruction": "mov dword ptr [esi + 8], ebx"
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef737",
+      "instruction": "mov eax, dword ptr [ebx + 8]"
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef73a",
+      "instruction": "mov dword ptr [esi + 0x10], eax"
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef73d",
+      "instruction": "mov edx, dword ptr [ebx + 0xc]"
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef743",
+      "instruction": "mov dword ptr [esi + 0xc], edx"
+    },
+    {
+      "function": "00bef9c0",
+      "site": "00bef9da",
+      "instruction": "mov dword ptr [esp + 8], esi"
+    },
+    {
+      "function": "00bef9c0",
+      "site": "00bef9e4",
+      "instruction": "mov edi, dword ptr [esi + 8]"
+    },
+    {
+      "function": "00bef9c0",
+      "site": "00bef9f3",
+      "instruction": "lea eax, [edi + 4]"
+    },
+    {
+      "function": "00bef9c0",
+      "site": "00befa09",
+      "instruction": "mov dword ptr [esi + 8], 0"
+    },
+    {
+      "function": "00bef9c0",
+      "site": "00befa25",
+      "instruction": "mov ecx, dword ptr [esp + 0xc]"
+    },
+    {
+      "function": "00bb8f90",
+      "site": "00bb8f98",
+      "instruction": "test byte ptr [esp + 8], 1"
+    },
+    {
+      "function": "00bef600",
+      "site": "00bef600",
+      "instruction": "mov edx, dword ptr [ecx + 8]"
+    },
+    {
+      "function": "00bef600",
+      "site": "00bef603",
+      "instruction": "mov eax, dword ptr [ecx + 0xc]"
+    },
+    {
+      "function": "00bef600",
+      "site": "00bef606",
+      "instruction": "sub eax, dword ptr [edx + 8]"
+    },
+    {
+      "function": "00bef610",
+      "site": "00bef610",
+      "instruction": "mov eax, dword ptr [ecx + 8]"
+    },
+    {
+      "function": "00bef610",
+      "site": "00bef613",
+      "instruction": "mov eax, dword ptr [eax + 8]"
+    },
+    {
+      "function": "00b2c5d4",
+      "site": "00b2c5e5",
+      "instruction": "mov dword ptr [esp + 0x24], eax"
+    },
+    {
+      "function": "00b2c5d4",
+      "site": "00b2c5eb",
+      "instruction": "mov byte ptr [esp + 0x6c], 2"
+    },
+    {
+      "function": "00b2c5d4",
+      "site": "00b2c618",
+      "instruction": "lea ecx, [ebp + 0x4c]"
+    },
+    {
+      "function": "00b2c5d4",
+      "site": "00b2c61f",
+      "instruction": "mov byte ptr [esp + 0x6c], 1"
+    },
+    {
+      "function": "00b2c5d4",
+      "site": "00b2c645",
+      "instruction": "mov dword ptr [ebp + 0x24], eax"
+    },
+    {
+      "function": "00b2c833",
+      "site": "00b2c833",
+      "instruction": "lea eax, [esi + 4]"
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef772",
+      "instruction": "mov ecx, dword ptr [esp + 8]"
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef789",
+      "instruction": "mov edx, dword ptr [eax + 0xc]"
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef795",
+      "instruction": "mov ecx, dword ptr [esi + 8]"
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef79e",
+      "instruction": "mov ecx, dword ptr [esp + 8]"
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef7d7",
+      "instruction": "mov dword ptr [esp + 0xc], eax"
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef7f5",
+      "instruction": "mov ecx, dword ptr [edi + 8]"
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef7fa",
+      "instruction": "mov edx, dword ptr [eax + 0x24]"
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef816",
+      "instruction": "lea eax, [edi + 4]"
+    },
+    {
+      "function": "00b2c39e",
+      "site": "00b2c3a6",
+      "instruction": "lea eax, [edi + 4]"
+    },
+    {
+      "function": "00b2c39e",
+      "site": "00b2c3aa",
+      "instruction": "mov dword ptr [esp + 0x24], esi"
+    },
+    {
+      "function": "00bd30e0",
+      "site": "00bd30e6",
+      "instruction": "mov edx, dword ptr [eax + 4]"
+    },
+    {
+      "function": "00b33ad0",
+      "site": "00b33ae4",
+      "instruction": "mov esi, dword ptr [ecx + 4]"
+    },
+    {
+      "function": "00b33b00",
+      "site": "00b33b11",
+      "instruction": "mov eax, dword ptr [ecx + 4]"
+    },
+    {
+      "function": "00b21110",
+      "site": "00b2111c",
+      "instruction": "mov ecx, dword ptr [ecx + 4]"
+    },
+    {
+      "function": "004bcc00",
+      "site": "004bcc00",
+      "instruction": "mov edx, dword ptr [ecx + 4]"
+    },
+    {
+      "function": "0041dd20",
+      "site": "0041dd20",
+      "instruction": "mov edx, dword ptr [ecx + 4]"
+    },
+    {
+      "function": "00b3f4c0",
+      "site": "00b3f4c0",
+      "instruction": "mov edx, dword ptr [ecx + 8]"
+    },
+    {
+      "function": "00b3f4c0",
+      "site": "00b3f4c7",
+      "instruction": "mov eax, dword ptr [ecx + 4]"
+    },
+    {
+      "function": "00b3f4e0",
+      "site": "00b3f4f9",
+      "instruction": "mov dword ptr [esp + 4], esi"
+    },
+    {
+      "function": "00b3f4e0",
+      "site": "00b3f525",
+      "instruction": "mov edx, dword ptr [ecx + 8]"
+    },
+    {
+      "function": "00b3f4e0",
+      "site": "00b3f54c",
+      "instruction": "mov byte ptr [esp + 0x10], 0"
+    },
+    {
+      "function": "00b3f4e0",
+      "site": "00b3f553",
+      "instruction": "mov ecx, dword ptr [esi + 0x10]"
+    },
+    {
+      "function": "00b3f4e0",
+      "site": "00b3f56b",
+      "instruction": "mov dword ptr [esp + 0x10], 0xffffffff"
+    },
+    {
+      "function": "00b3f4e0",
+      "site": "00b3f578",
+      "instruction": "mov ecx, dword ptr [esp + 8]"
+    },
+    {
+      "function": "00b3f5b0",
+      "site": "00b3f5b8",
+      "instruction": "test byte ptr [esp + 8], 1"
+    }
+  ],
+  "direct_and_indirect_transfers": [
+    {
+      "function": "00b3f930",
+      "site": "00b3f961",
+      "instruction": "call 0xb34230",
+      "direct": true
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f992",
+      "instruction": "call edx",
+      "direct": false
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f9a8",
+      "instruction": "call edx",
+      "direct": false
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f9b0",
+      "instruction": "call ecx",
+      "direct": false
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f9be",
+      "instruction": "call ecx",
+      "direct": false
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f9d4",
+      "instruction": "call edx",
+      "direct": false
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3f9dc",
+      "instruction": "call ecx",
+      "direct": false
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3fa13",
+      "instruction": "call 0x41dd40",
+      "direct": true
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3fa2a",
+      "instruction": "call 0xbf7680",
+      "direct": true
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3fa37",
+      "instruction": "call 0xb3e730",
+      "direct": true
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3fa50",
+      "instruction": "call 0x419cc0",
+      "direct": true
+    },
+    {
+      "function": "00b3f930",
+      "site": "00b3fa57",
+      "instruction": "call 0xbd1510",
+      "direct": true
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f31b",
+      "instruction": "call dword ptr [0xce2220]",
+      "direct": false
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f32b",
+      "instruction": "call eax",
+      "direct": false
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f33d",
+      "instruction": "call 0xb33e40",
+      "direct": true
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f347",
+      "instruction": "call edx",
+      "direct": false
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f350",
+      "instruction": "call 0xb27d40",
+      "direct": true
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f362",
+      "instruction": "call ecx",
+      "direct": false
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f36a",
+      "instruction": "call eax",
+      "direct": false
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f36c",
+      "instruction": "call 0xb3e730",
+      "direct": true
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f37e",
+      "instruction": "call edx",
+      "direct": false
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f388",
+      "instruction": "jmp 0xb3f390",
+      "direct": true
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f3a3",
+      "instruction": "call dword ptr [0xce2220]",
+      "direct": false
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f3b3",
+      "instruction": "call eax",
+      "direct": false
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f3dc",
+      "instruction": "call 0xb3da20",
+      "direct": true
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f3e4",
+      "instruction": "call 0xbf6989",
+      "direct": true
+    },
+    {
+      "function": "00b3f2e0",
+      "site": "00b3f3f6",
+      "instruction": "call 0xb33f50",
+      "direct": true
+    },
+    {
+      "function": "00b3f590",
+      "site": "00b3f593",
+      "instruction": "call 0xb3f2e0",
+      "direct": true
+    },
+    {
+      "function": "00b3f590",
+      "site": "00b3f5a5",
+      "instruction": "call 0xb3d8d0",
+      "direct": true
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fdc2",
+      "instruction": "jmp 0xb3fdd6",
+      "direct": true
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fdcc",
+      "instruction": "call ebp",
+      "direct": false
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fde5",
+      "instruction": "call eax",
+      "direct": false
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fdec",
+      "instruction": "call 0xb3ed40",
+      "direct": true
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fe16",
+      "instruction": "call 0xb3f630",
+      "direct": true
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fe2f",
+      "instruction": "call edx",
+      "direct": false
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fe3b",
+      "instruction": "call ebp",
+      "direct": false
+    },
+    {
+      "function": "00b3fd80",
+      "site": "00b3fe57",
+      "instruction": "call 0xb3d9b0",
+      "direct": true
+    },
+    {
+      "function": "00b3d8d0",
+      "site": "00b3d8d9",
+      "instruction": "call dword ptr [0xce2218]",
+      "direct": false
+    },
+    {
+      "function": "00b3d8d0",
+      "site": "00b3d929",
+      "instruction": "call dword ptr [0xce2210]",
+      "direct": false
+    },
+    {
+      "function": "00b3d9b0",
+      "site": "00b3d9d0",
+      "instruction": "call 0xbf55be",
+      "direct": true
+    },
+    {
+      "function": "00b3d9b0",
+      "site": "00b3da05",
+      "instruction": "call 0xbf6989",
+      "direct": true
+    },
+    {
+      "function": "00b3da20",
+      "site": "00b3da2e",
+      "instruction": "call 0xb3d9b0",
+      "direct": true
+    },
+    {
+      "function": "00b3ec40",
+      "site": "00b3ec45",
+      "instruction": "call 0xb3da20",
+      "direct": true
+    },
+    {
+      "function": "00b3ec40",
+      "site": "00b3ec4d",
+      "instruction": "call 0xbf6989",
+      "direct": true
+    },
+    {
+      "function": "00b34120",
+      "site": "00b3417f",
+      "instruction": "call 0x41dd40",
+      "direct": true
+    },
+    {
+      "function": "00b34120",
+      "site": "00b34195",
+      "instruction": "call 0xbf7680",
+      "direct": true
+    },
+    {
+      "function": "00b34230",
+      "site": "00b34244",
+      "instruction": "call 0xb34120",
+      "direct": true
+    },
+    {
+      "function": "00b33f50",
+      "site": "00b33f8c",
+      "instruction": "call 0x419cc0",
+      "direct": true
+    },
+    {
+      "function": "00b33f50",
+      "site": "00b33f93",
+      "instruction": "call 0xbd1510",
+      "direct": true
+    },
+    {
+      "function": "00b33f50",
+      "site": "00b33fa2",
+      "instruction": "call 0xbd30f0",
+      "direct": true
+    },
+    {
+      "function": "00b34010",
+      "site": "00b34010",
+      "instruction": "jmp 0xb33f50",
+      "direct": true
+    },
+    {
+      "function": "00b27d40",
+      "site": "00b27d4b",
+      "instruction": "call 0xb25580",
+      "direct": true
+    },
+    {
+      "function": "00b32250",
+      "site": "00b32280",
+      "instruction": "call 0xb33ad0",
+      "direct": true
+    },
+    {
+      "function": "00b32250",
+      "site": "00b322b4",
+      "instruction": "call 0x41dd40",
+      "direct": true
+    },
+    {
+      "function": "00b32250",
+      "site": "00b322cb",
+      "instruction": "call 0xbf7680",
+      "direct": true
+    },
+    {
+      "function": "00b32250",
+      "site": "00b322dc",
+      "instruction": "call 0x4bcc00",
+      "direct": true
+    },
+    {
+      "function": "00b32250",
+      "site": "00b322e8",
+      "instruction": "call 0xb31dc0",
+      "direct": true
+    },
+    {
+      "function": "00b32250",
+      "site": "00b32301",
+      "instruction": "call 0x419cc0",
+      "direct": true
+    },
+    {
+      "function": "00b32250",
+      "site": "00b32308",
+      "instruction": "call 0xbd1510",
+      "direct": true
+    },
+    {
+      "function": "00b32250",
+      "site": "00b3232a",
+      "instruction": "call 0xb33b00",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31dfd",
+      "instruction": "call 0x41dd40",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31e14",
+      "instruction": "call 0xbf7680",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31e28",
+      "instruction": "call 0xbee780",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31e40",
+      "instruction": "call 0x419cc0",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31e47",
+      "instruction": "call 0xbd1510",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31e77",
+      "instruction": "call 0xbf6713",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31e86",
+      "instruction": "call 0xbf6713",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31ea0",
+      "instruction": "jmp 0xb31ebc",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31ea9",
+      "instruction": "jmp 0xb31ebc",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31eb4",
+      "instruction": "call 0xbf7fbf",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31ec9",
+      "instruction": "call 0xbf6713",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31ed0",
+      "instruction": "jmp 0xb31e70",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31ef6",
+      "instruction": "call 0x4254b0",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31f19",
+      "instruction": "call 0x419cc0",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31f20",
+      "instruction": "call 0xbd1510",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31f42",
+      "instruction": "call edx",
+      "direct": false
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31f67",
+      "instruction": "call 0x4254b0",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31f8b",
+      "instruction": "call 0xb30510",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31f9d",
+      "instruction": "call 0xb2f990",
+      "direct": true
+    },
+    {
+      "function": "00b31dc0",
+      "site": "00b31fc3",
+      "instruction": "jmp 0xb31f19",
+      "direct": true
+    },
+    {
+      "function": "00b23640",
+      "site": "00b23656",
+      "instruction": "call dword ptr [0xce221c]",
+      "direct": false
+    },
+    {
+      "function": "00b23640",
+      "site": "00b23664",
+      "instruction": "call dword ptr [0xce2220]",
+      "direct": false
+    },
+    {
+      "function": "00b23640",
+      "site": "00b23674",
+      "instruction": "call eax",
+      "direct": false
+    },
+    {
+      "function": "008d43c0",
+      "site": "008d4403",
+      "instruction": "jmp 0x8d440a",
+      "direct": true
+    },
+    {
+      "function": "008d43c0",
+      "site": "008d440a",
+      "instruction": "call 0xbf55be",
+      "direct": true
+    },
+    {
+      "function": "008d4440",
+      "site": "008d444d",
+      "instruction": "call 0xbf65ac",
+      "direct": true
+    },
+    {
+      "function": "008d4440",
+      "site": "008d4468",
+      "instruction": "jmp 0xbd30f0",
+      "direct": true
+    },
+    {
+      "function": "008d4470",
+      "site": "008d447d",
+      "instruction": "call 0xbf65ac",
+      "direct": true
+    },
+    {
+      "function": "008d4470",
+      "site": "008d4497",
+      "instruction": "call 0xbd30f0",
+      "direct": true
+    },
+    {
+      "function": "008d4470",
+      "site": "008d44a4",
+      "instruction": "call 0xbf65ac",
+      "direct": true
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef6d8",
+      "instruction": "call 0xbf681b",
+      "direct": true
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef704",
+      "instruction": "jmp 0xbef708",
+      "direct": true
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef713",
+      "instruction": "call dword ptr [0xce2220]",
+      "direct": false
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef723",
+      "instruction": "call eax",
+      "direct": false
+    },
+    {
+      "function": "00bef6d0",
+      "site": "00bef731",
+      "instruction": "call dword ptr [0xce221c]",
+      "direct": false
+    },
+    {
+      "function": "00bef9c0",
+      "site": "00bef9f7",
+      "instruction": "call dword ptr [0xce2220]",
+      "direct": false
+    },
+    {
+      "function": "00bef9c0",
+      "site": "00befa07",
+      "instruction": "call eax",
+      "direct": false
+    },
+    {
+      "function": "00bef9c0",
+      "site": "00befa20",
+      "instruction": "call 0xbd30f0",
+      "direct": true
+    },
+    {
+      "function": "00bb8f90",
+      "site": "00bb8f93",
+      "instruction": "call 0xbef9c0",
+      "direct": true
+    },
+    {
+      "function": "00bb8f90",
+      "site": "00bb8fa0",
+      "instruction": "call 0xbf65ac",
+      "direct": true
+    },
+    {
+      "function": "00b2c5d4",
+      "site": "00b2c5e0",
+      "instruction": "call 0xb3f2b0",
+      "direct": true
+    },
+    {
+      "function": "00b2c5d4",
+      "site": "00b2c60d",
+      "instruction": "call 0xb3f930",
+      "direct": true
+    },
+    {
+      "function": "00b2c5d4",
+      "site": "00b2c614",
+      "instruction": "jmp 0xb2c618",
+      "direct": true
+    },
+    {
+      "function": "00b2c5d4",
+      "site": "00b2c624",
+      "instruction": "call 0xb23640",
+      "direct": true
+    },
+    {
+      "function": "00b2c5d4",
+      "site": "00b2c636",
+      "instruction": "call eax",
+      "direct": false
+    },
+    {
+      "function": "00b2c5d4",
+      "site": "00b2c643",
+      "instruction": "call eax",
+      "direct": false
+    },
+    {
+      "function": "00b2c833",
+      "site": "00b2c837",
+      "instruction": "call dword ptr [0xce2220]",
+      "direct": false
+    },
+    {
+      "function": "00b2c833",
+      "site": "00b2c847",
+      "instruction": "call eax",
+      "direct": false
+    },
+    {
+      "function": "00cbee90",
+      "site": "00cbee93",
+      "instruction": "jmp 0xb34010",
+      "direct": true
+    },
+    {
+      "function": "00cbee90",
+      "site": "00cbee9e",
+      "instruction": "jmp 0xb3ec40",
+      "direct": true
+    },
+    {
+      "function": "00cbee90",
+      "site": "00cbeea8",
+      "instruction": "jmp 0xbf6b43",
+      "direct": true
+    },
+    {
+      "function": "00cbef50",
+      "site": "00cbef53",
+      "instruction": "jmp 0xb34010",
+      "direct": true
+    },
+    {
+      "function": "00cbef50",
+      "site": "00cbef5e",
+      "instruction": "jmp 0xb3ec40",
+      "direct": true
+    },
+    {
+      "function": "00cbef50",
+      "site": "00cbef66",
+      "instruction": "jmp 0xb3f4c0",
+      "direct": true
+    },
+    {
+      "function": "00cbef50",
+      "site": "00cbef70",
+      "instruction": "jmp 0xbf6b43",
+      "direct": true
+    },
+    {
+      "function": "00cbefa0",
+      "site": "00cbefa3",
+      "instruction": "jmp 0xb3dcc0",
+      "direct": true
+    },
+    {
+      "function": "00cbefa0",
+      "site": "00cbefad",
+      "instruction": "jmp 0xbf6b43",
+      "direct": true
+    },
+    {
+      "function": "00cbe090",
+      "site": "00cbe093",
+      "instruction": "jmp 0xa81880",
+      "direct": true
+    },
+    {
+      "function": "00cbe090",
+      "site": "00cbe09d",
+      "instruction": "jmp 0xbf6b43",
+      "direct": true
+    },
+    {
+      "function": "00cbe0b0",
+      "site": "00cbe0b3",
+      "instruction": "jmp 0xa81880",
+      "direct": true
+    },
+    {
+      "function": "00cbe0b0",
+      "site": "00cbe0be",
+      "instruction": "jmp 0x41dd20",
+      "direct": true
+    },
+    {
+      "function": "00cbe0b0",
+      "site": "00cbe0c8",
+      "instruction": "jmp 0xbf6b43",
+      "direct": true
+    },
+    {
+      "function": "00cbdce0",
+      "site": "00cbdce3",
+      "instruction": "jmp 0xb21110",
+      "direct": true
+    },
+    {
+      "function": "00cbdce0",
+      "site": "00cbdceb",
+      "instruction": "jmp 0x41dd20",
+      "direct": true
+    },
+    {
+      "function": "00cbdce0",
+      "site": "00cbdcf5",
+      "instruction": "jmp 0xbf6b43",
+      "direct": true
+    },
+    {
+      "function": "00ca2ef0",
+      "site": "00ca2ef3",
+      "instruction": "jmp 0xbd30f0",
+      "direct": true
+    },
+    {
+      "function": "00ca2ef0",
+      "site": "00ca2efd",
+      "instruction": "jmp 0xbf6b43",
+      "direct": true
+    },
+    {
+      "function": "00cc76b0",
+      "site": "00cc76b3",
+      "instruction": "jmp 0xbb86e0",
+      "direct": true
+    },
+    {
+      "function": "00cc76b0",
+      "site": "00cc76bd",
+      "instruction": "jmp 0xbf6b43",
+      "direct": true
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef78f",
+      "instruction": "call edx",
+      "direct": false
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef798",
+      "instruction": "call 0xbef6d0",
+      "direct": true
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef7bc",
+      "instruction": "call edx",
+      "direct": false
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef7c5",
+      "instruction": "call edx",
+      "direct": false
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef7cf",
+      "instruction": "call 0xbf681b",
+      "direct": true
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef7ea",
+      "instruction": "call 0x8d43c0",
+      "direct": true
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef7f1",
+      "instruction": "jmp 0xbef7f5",
+      "direct": true
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef80b",
+      "instruction": "call edx",
+      "direct": false
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef80f",
+      "instruction": "call 0xbef6d0",
+      "direct": true
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef81a",
+      "instruction": "call dword ptr [0xce2220]",
+      "direct": false
+    },
+    {
+      "function": "00bef750",
+      "site": "00bef82a",
+      "instruction": "call eax",
+      "direct": false
+    },
+    {
+      "function": "00b2c39e",
+      "site": "00b2c39f",
+      "instruction": "call 0xbef750",
+      "direct": true
+    },
+    {
+      "function": "00b2c39e",
+      "site": "00b2c3ae",
+      "instruction": "call dword ptr [0xce2220]",
+      "direct": false
+    },
+    {
+      "function": "00b2c39e",
+      "site": "00b2c3be",
+      "instruction": "call eax",
+      "direct": false
+    },
+    {
+      "function": "00bb86e0",
+      "site": "00bb86e6",
+      "instruction": "jmp 0xbd30f0",
+      "direct": true
+    },
+    {
+      "function": "00a81880",
+      "site": "00a81880",
+      "instruction": "jmp 0xbd30f0",
+      "direct": true
+    },
+    {
+      "function": "00bd30e0",
+      "site": "00bd30eb",
+      "instruction": "call edx",
+      "direct": false
+    },
+    {
+      "function": "00b33ad0",
+      "site": "00b33aec",
+      "instruction": "call dword ptr [0xce2218]",
+      "direct": false
+    },
+    {
+      "function": "00b33b00",
+      "site": "00b33b1d",
+      "instruction": "call dword ptr [0xce2210]",
+      "direct": false
+    },
+    {
+      "function": "00b21110",
+      "site": "00b21120",
+      "instruction": "call 0xb33b00",
+      "direct": true
+    },
+    {
+      "function": "004bcc00",
+      "site": "004bcc20",
+      "instruction": "jmp 0x4bcc25",
+      "direct": true
+    },
+    {
+      "function": "0041dd20",
+      "site": "0041dd30",
+      "instruction": "call 0x419cc0",
+      "direct": true
+    },
+    {
+      "function": "0041dd20",
+      "site": "0041dd37",
+      "instruction": "call 0xbd1510",
+      "direct": true
+    },
+    {
+      "function": "00b3f4c0",
+      "site": "00b3f4d1",
+      "instruction": "call 0x419cc0",
+      "direct": true
+    },
+    {
+      "function": "00b3f4c0",
+      "site": "00b3f4d8",
+      "instruction": "call 0xbd1510",
+      "direct": true
+    },
+    {
+      "function": "00b3f4e0",
+      "site": "00b3f512",
+      "instruction": "call 0xb27d60",
+      "direct": true
+    },
+    {
+      "function": "00b3f4e0",
+      "site": "00b3f517",
+      "instruction": "call 0xb3e730",
+      "direct": true
+    },
+    {
+      "function": "00b3f4e0",
+      "site": "00b3f529",
+      "instruction": "call edx",
+      "direct": false
+    },
+    {
+      "function": "00b3f4e0",
+      "site": "00b3f55d",
+      "instruction": "call 0x419cc0",
+      "direct": true
+    },
+    {
+      "function": "00b3f4e0",
+      "site": "00b3f564",
+      "instruction": "call 0xbd1510",
+      "direct": true
+    },
+    {
+      "function": "00b3f4e0",
+      "site": "00b3f573",
+      "instruction": "call 0xbd30f0",
+      "direct": true
+    },
+    {
+      "function": "00b3f5b0",
+      "site": "00b3f5b3",
+      "instruction": "call 0xb3f4e0",
+      "direct": true
+    },
+    {
+      "function": "00b3f5b0",
+      "site": "00b3f5c5",
+      "instruction": "call 0xb3d860",
+      "direct": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "89c7ed6159dce4178d8bc4d9c98b08281c16d9e06258b9c5a957a413654bf22b"
+    },
+    {
+      "path": "config/target.json",
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "docs/NATIVE_TEXTURE_2D_OWNER_NEXT.md",
+      "sha256": "335979954187e19367c3c99d54494922058a84e69d80b3bb439101e9ce9ca1b3"
+    },
+    {
+      "path": "include/bsp/d3d9_texture2d_pool.hpp",
+      "sha256": "7d583076d37c842891946514ecdd69eb9a0d331d488e2753588e225f542b75f3"
+    },
+    {
+      "path": "include/bsp/memory_stream.hpp",
+      "sha256": "0dd992d602060f5b5a38e2f6138070ed0eb24558862583ca03b2e7e2e804c269"
+    },
+    {
+      "path": "include/bsp/native_render_buffer_unregistration.hpp",
+      "sha256": "d81e02e8c18fd08e35e34878719b1db509c94ae5075a77251bdb5709616628b9"
+    },
+    {
+      "path": "include/bsp/native_render_resource_container_removal.hpp",
+      "sha256": "14ca26673033211047f0796e3a387b2f8773cc99b13c886a63889839e3bf6e6c"
+    },
+    {
+      "path": "include/bsp/native_render_resource_record.hpp",
+      "sha256": "ca0f2e40518b157c076968dfc32e589fc820ba9251a69832321e0cec5b5780c4"
+    },
+    {
+      "path": "include/bsp/native_renderer_synchronization_actual.hpp",
+      "sha256": "143554f622e256fc6188ae68b4e5530855b5e7dc3631a728739dc728398f3ea0"
+    },
+    {
+      "path": "include/bsp/native_resource_support.hpp",
+      "sha256": "b928a49e036406439aac20313bacaf53783897354caad01074762b5ecfab39cf"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "sha256": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0"
+    },
+    {
+      "path": "include/bsp/native_surface_owner.hpp",
+      "sha256": "947feec7e98a6b1fa04502588e262e7812df34247eeddbb7b25554b3d3564e38"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878"
+    },
+    {
+      "path": "include/bsp/storage_pool.hpp",
+      "sha256": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33"
+    },
+    {
+      "path": "local/native_texture_2d_owner_next_preparation.json",
+      "sha256": "780f0e9666e3ebc2ba4f831e34fa741610aaa17ce84a4bb8004615cf7e0974b0"
+    },
+    {
+      "path": "local/prepare_native_texture_2d_owner_next.py",
+      "sha256": "43ac72b81ba28de74cfa0a6921df203fc3d8d6772baa7b7640414eda3ec49fd4"
+    },
+    {
+      "path": "local/texture_owner_0041dd20.asm",
+      "sha256": "dedae49dda63f1b698c46a53a9b59aace0d00dbd4001d540390d36361b4de116"
+    },
+    {
+      "path": "local/texture_owner_004bcc00.asm",
+      "sha256": "3f4fa9941f36af634f82fc394a6b4161324b0ab8f98cf4d9aba0d0369176fb27"
+    },
+    {
+      "path": "local/texture_owner_008d43c0.asm",
+      "sha256": "b827c3db6177de741de8e62e0ff42568ee25d29b9398a9535197fed842cba7ea"
+    },
+    {
+      "path": "local/texture_owner_008d4440.asm",
+      "sha256": "b80b45446503ce7eb23c782465de0a6ddeb145614749c5a49db1979898bfda8d"
+    },
+    {
+      "path": "local/texture_owner_008d4470.asm",
+      "sha256": "12c6e62c68e592b668c65751d174978600a8fd057ab0f1470b1a67bb10c8096d"
+    },
+    {
+      "path": "local/texture_owner_00a81880.asm",
+      "sha256": "5caf1b1f21c657742d14f1c8257b9b7e397e7217dca42fb49720c00c9a2c0784"
+    },
+    {
+      "path": "local/texture_owner_00b21110.asm",
+      "sha256": "df4ca2c2f0254b53967e82fc728de0d25a91f9db218abaedacab182bf70f37a8"
+    },
+    {
+      "path": "local/texture_owner_00b23640.asm",
+      "sha256": "d17a94b26cc2f568a33e3cd523d40053d648d01ab343eaa5e2afd2b915e460c1"
+    },
+    {
+      "path": "local/texture_owner_00b25580.asm",
+      "sha256": "f4e9e331d64d96e903b1ead279df9fe905e4b5b0a11f7550ba946afe414afdf9"
+    },
+    {
+      "path": "local/texture_owner_00b27d40.asm",
+      "sha256": "e41f4f5e8f412717391cfd16ceeb246edd2b26953eaf69a0b26530e697d8ca7d"
+    },
+    {
+      "path": "local/texture_owner_00b2c39e.asm",
+      "sha256": "b8f38c54b16bf03e89fc5ddb0de3bc6bea58bee47ce2ac4a03201db1c3364f20"
+    },
+    {
+      "path": "local/texture_owner_00b2c5d4.asm",
+      "sha256": "c2d3c4e8b128536608751bc99c623a92a737ee498b9ab06281fd4667f0949a79"
+    },
+    {
+      "path": "local/texture_owner_00b2c833.asm",
+      "sha256": "7fb17e886d845e80728738cbe76b4439af6f746367f4665acaa27db7fea2069e"
+    },
+    {
+      "path": "local/texture_owner_00b31dc0.asm",
+      "sha256": "8542a5d1e365362b38e2b308938d3c865972236f3ecf1f1633ff705586148777"
+    },
+    {
+      "path": "local/texture_owner_00b32250.asm",
+      "sha256": "c5cd02f7590c5dada9c7ce746a9d611b207cd84f72767de48dd603c9b7a19abc"
+    },
+    {
+      "path": "local/texture_owner_00b33ad0.asm",
+      "sha256": "f66907fcf2f2c4d4ed53eaec9c672ff5f4346b37921e974b4dd5cc4cfa5360d0"
+    },
+    {
+      "path": "local/texture_owner_00b33b00.asm",
+      "sha256": "7ac632e15a717b94219b36b848cace0574e9dac76586796652190641b5d26a03"
+    },
+    {
+      "path": "local/texture_owner_00b33e40.asm",
+      "sha256": "ec755db46e83ebe6027d05c13bba24ecf2a6eec57029140931c1dded13fbc00c"
+    },
+    {
+      "path": "local/texture_owner_00b33f50.asm",
+      "sha256": "8882bef44d7c7071f26f023cb16f147e636d38727e76dc2b342458a3cb53e075"
+    },
+    {
+      "path": "local/texture_owner_00b34010.asm",
+      "sha256": "638cf2a951ef790cfb20865b6c2c8c2d4fc07a49c816cd6cb94733ef70a9f0cf"
+    },
+    {
+      "path": "local/texture_owner_00b34120.asm",
+      "sha256": "c4f675b2b4b358102c0820ec2cefe8f34d88520d3798e9d24999e24df942c8c6"
+    },
+    {
+      "path": "local/texture_owner_00b34230.asm",
+      "sha256": "f3ba2c76c3b667b5dee57cfac45b3af852fd386e94e6cc0b105a34c5ec6599f3"
+    },
+    {
+      "path": "local/texture_owner_00b3d8d0.asm",
+      "sha256": "7a59a8314c9b90df5fa3b89f2848846e05999d50e04789b344bed1efa1397321"
+    },
+    {
+      "path": "local/texture_owner_00b3d9b0.asm",
+      "sha256": "b2648e5e7903a10ae8cc5362f01b3843d270ea5dafe5bdfb0ef1b7f205a87d81"
+    },
+    {
+      "path": "local/texture_owner_00b3da20.asm",
+      "sha256": "7e04d7bbb9d3e6a52d8392b055205740beab9754db8bcd934fe7558979d9f1be"
+    },
+    {
+      "path": "local/texture_owner_00b3ec40.asm",
+      "sha256": "7016a8fca37e34a5526252ab417ed6a4a5a64b6c37d935a1530e83b169ffb932"
+    },
+    {
+      "path": "local/texture_owner_00b3f2e0.asm",
+      "sha256": "35e04117ede90371cffa2458e17591f87cad05f72dd66378e83bc5e6c181f830"
+    },
+    {
+      "path": "local/texture_owner_00b3f4c0.asm",
+      "sha256": "d4ac02bedfe4aded4533f7a381d3de3ffda594c5315ba6e1148b7d21e81a6cd6"
+    },
+    {
+      "path": "local/texture_owner_00b3f4e0.asm",
+      "sha256": "80738cb0f7ddc86e1d48da12c9da6ec58c5404faff451f3226270cd6b414e44c"
+    },
+    {
+      "path": "local/texture_owner_00b3f590.asm",
+      "sha256": "7188c8d62bba2b09e514302b75316e0e5025a1022e55680a9542a250fa5a464b"
+    },
+    {
+      "path": "local/texture_owner_00b3f5b0.asm",
+      "sha256": "d032c081e8d1d4928334b494b2e1b4195e2a029b9b646b26300a47802ffd87df"
+    },
+    {
+      "path": "local/texture_owner_00b3f930.asm",
+      "sha256": "0b5946f2275e223027985e078d124b12299aeaa836bc7c46bfed7de07a88a2cd"
+    },
+    {
+      "path": "local/texture_owner_00b3fd80.asm",
+      "sha256": "e022cb4164a8186711028310e12cf045cb16c14e39133829593bbed323116b09"
+    },
+    {
+      "path": "local/texture_owner_00bb86e0.asm",
+      "sha256": "b8705a7bf22df6b03b18be0ad18299faf1749ca715f83066a345a9c21231b91b"
+    },
+    {
+      "path": "local/texture_owner_00bb8f90.asm",
+      "sha256": "042693e8f326ca336fd96291cbe4504535114a3fec516b3319af42f3ccd327a9"
+    },
+    {
+      "path": "local/texture_owner_00bd30e0.asm",
+      "sha256": "e8504eef6c70dd71a2fec00cfdef0fb09e8feb58e53c6783d39bef54966cb685"
+    },
+    {
+      "path": "local/texture_owner_00bd30f0.asm",
+      "sha256": "d3270b08bcbe6b797b85847eec41a47757903644ba88ad43948ac1765be48f63"
+    },
+    {
+      "path": "local/texture_owner_00bef600.asm",
+      "sha256": "8706a69c8ddd072bf53b84642dcec34e5190f9cbfa65ba8aa1b192ba1e9d5a27"
+    },
+    {
+      "path": "local/texture_owner_00bef610.asm",
+      "sha256": "b248bdbee371bfa3af975d53787438b7242e279123badbf17a4285a5f1f27e19"
+    },
+    {
+      "path": "local/texture_owner_00bef6d0.asm",
+      "sha256": "241716c7b48c156e90fe947054acd4fb7384ee2b7ca87c73b6d2008ae6de0e8e"
+    },
+    {
+      "path": "local/texture_owner_00bef750.asm",
+      "sha256": "27f8911789ab0782fcaecefc04624f7966790b1993a5e80fda49602116d8f221"
+    },
+    {
+      "path": "local/texture_owner_00bef9c0.asm",
+      "sha256": "c4e3d1ef6891beb11fd38f5d98b189c75e53d637d2152c1ae29beb0566e577bc"
+    },
+    {
+      "path": "local/texture_owner_00ca2ef0.asm",
+      "sha256": "b1ea8c5c5029d50734bf8ccce92d7d3eb7a5a1169b097ba327accae590e81728"
+    },
+    {
+      "path": "local/texture_owner_00cbdce0.asm",
+      "sha256": "3b1e318a8a6a93a73f60e6a79e241dda247eedd00416854f618dd1ea56aadb5b"
+    },
+    {
+      "path": "local/texture_owner_00cbe090.asm",
+      "sha256": "7c224d20a1b0548b2d6b20891ed600a215a048a0593d49b21394d49c1e3fd886"
+    },
+    {
+      "path": "local/texture_owner_00cbe0b0.asm",
+      "sha256": "b6828e29f2339201f39e0437b815f549936f0ae27dc4c14cb29e85aad177694d"
+    },
+    {
+      "path": "local/texture_owner_00cbee90.asm",
+      "sha256": "68fbdc91f451ef47add3a86392fc4256397d81859606b3dbb0719f0624cf04ed"
+    },
+    {
+      "path": "local/texture_owner_00cbef50.asm",
+      "sha256": "797439812dac0d39b7f3cc3cfbfc7e032a01735fe2d082b2a3a44c49b4e40a99"
+    },
+    {
+      "path": "local/texture_owner_00cbefa0.asm",
+      "sha256": "b6db3879f5b2c187b974cc2d7163901ceaadd7132adf24e781280cb4f530c425"
+    },
+    {
+      "path": "local/texture_owner_00cc76b0.asm",
+      "sha256": "6b0a621bdc4dfd189c8a64099aa119dde09b28085a0c05236e8ecb0a35873302"
+    },
+    {
+      "path": "local/texture_owner_live_0041dd20.txt",
+      "sha256": "6067ce8f2a1ee404080bab647c771b6ee0d782dc9b8d61b710a9e04b3c4b8850"
+    },
+    {
+      "path": "local/texture_owner_live_004bcc00.txt",
+      "sha256": "de7e77a2700e82264079e2465795ff815862cfcf14b8408ddff1b65bb4e449d0"
+    },
+    {
+      "path": "local/texture_owner_live_008d43c0.txt",
+      "sha256": "5b26d82a9678a202de98eef24a1576298c435e79f8ecc3fd8ba0c24c16553a3e"
+    },
+    {
+      "path": "local/texture_owner_live_008d4440.txt",
+      "sha256": "68ce99b2cd386e4115fc955e04a759dcdc79efd843a6bbd423fe26e3351b4f45"
+    },
+    {
+      "path": "local/texture_owner_live_008d4470.txt",
+      "sha256": "d1c7473e4284e9f115a8b0dbe85098b63ef7a60255e7b0db3e5b903a4308cbe7"
+    },
+    {
+      "path": "local/texture_owner_live_00a81880.txt",
+      "sha256": "81e826a154b1c218aecbe146373d2ac7a22371a689ad6a588ef4ac2bbf00f94d"
+    },
+    {
+      "path": "local/texture_owner_live_00b21110.txt",
+      "sha256": "458e42c749f86a27976f1385ecd56b3a963b9e9d3ae92b0adf1ab5ad2c362296"
+    },
+    {
+      "path": "local/texture_owner_live_00b23640.txt",
+      "sha256": "02ccf8c983059e5865d2231b1cf645a9ea00e124d84570d99abcd5f5b9b24445"
+    },
+    {
+      "path": "local/texture_owner_live_00b25580.txt",
+      "sha256": "d52f55688df4f209d2e5c5e011209455190f17f9daede6d0212f6371b296374d"
+    },
+    {
+      "path": "local/texture_owner_live_00b27d40.txt",
+      "sha256": "42aa399aa9af456ff8b4854984bf5edfa1d9b825b1bd9f6d67bd2b59dc9376f0"
+    },
+    {
+      "path": "local/texture_owner_live_00b2c39e.txt",
+      "sha256": "ad3e72822d97619a11cdda3ee9b2eb744a9a99e25d21df750383bdbad9fcb58b"
+    },
+    {
+      "path": "local/texture_owner_live_00b2c5d4.txt",
+      "sha256": "4dcdd7d6575ede18ce7ed33e32255bd7de1f1ab0c467b5bd854bcece2825a67e"
+    },
+    {
+      "path": "local/texture_owner_live_00b2c833.txt",
+      "sha256": "2109e1f10a4c32a0ac3260936f6f91487dfa4fddfc4b2f3de5f7bccce79ad492"
+    },
+    {
+      "path": "local/texture_owner_live_00b31dc0.txt",
+      "sha256": "452f9aa854ed43d5703044db802840f5e2193cedd44d3634f614f947ece4d08b"
+    },
+    {
+      "path": "local/texture_owner_live_00b32250.txt",
+      "sha256": "a86d387d999a58ddf27f2ecf1976e7c9c98872b03621eac74197cd562cf014e3"
+    },
+    {
+      "path": "local/texture_owner_live_00b33ad0.txt",
+      "sha256": "9af1bc8e1c27f7690f585dd19bc1c02ed006e39da8d1eaf3413fe62bb6573867"
+    },
+    {
+      "path": "local/texture_owner_live_00b33b00.txt",
+      "sha256": "dc4b3f3f5afed0330ebe8fec06b8b2257b8333c4ff01dd17f44d337b797b4394"
+    },
+    {
+      "path": "local/texture_owner_live_00b33e40.txt",
+      "sha256": "ae97951fab00a63b6ffa0c43898d1cce28bbd04b9438674b8b7e1f49fbefb310"
+    },
+    {
+      "path": "local/texture_owner_live_00b33f50.txt",
+      "sha256": "e51a76027058d7412616a42a2a8a312d2c147f9ccc6c8fa7188e53cdb97e6df3"
+    },
+    {
+      "path": "local/texture_owner_live_00b34010.txt",
+      "sha256": "a0c57daff5c808b13e03f0a8d43772e7f7d9b3ffca0f2c97eaaa12d2ce27997c"
+    },
+    {
+      "path": "local/texture_owner_live_00b34120.txt",
+      "sha256": "a3c58ba8d263c7b04d3397d204617b9a8c4fdb265c0663d96eb23c41140a6e9d"
+    },
+    {
+      "path": "local/texture_owner_live_00b34230.txt",
+      "sha256": "1145af413ecc728096d2dde7a9e756d86ffc89f40262fdb129a00de14e9608a0"
+    },
+    {
+      "path": "local/texture_owner_live_00b3d8d0.txt",
+      "sha256": "d8f15e70939133bf7cc92272f46c854082d4af4099f21b538b16968d99ba0f52"
+    },
+    {
+      "path": "local/texture_owner_live_00b3d9b0.txt",
+      "sha256": "a0717306ad76d197bb67862b59f7bd0f6c91903d3fa44e7dfa7f83b00211b646"
+    },
+    {
+      "path": "local/texture_owner_live_00b3da20.txt",
+      "sha256": "c98323a31df51aa23b0fe570ff2a3ad927a58ef28d9b3abf77cffad80c22a704"
+    },
+    {
+      "path": "local/texture_owner_live_00b3ec40.txt",
+      "sha256": "656ad8f486adb11e62f8da02f8ff59847d34f201ae414565964ece6ff106d51f"
+    },
+    {
+      "path": "local/texture_owner_live_00b3f2e0.txt",
+      "sha256": "3ab33e644d0483ec9cddd5c3898a69f6d77c8beffd3d32b8f809bd64f94395a1"
+    },
+    {
+      "path": "local/texture_owner_live_00b3f4c0.txt",
+      "sha256": "ce83ae1ff22600baf6f0640382aa6c642db23b60e1cd276cc2427f8dcf687ee8"
+    },
+    {
+      "path": "local/texture_owner_live_00b3f4e0.txt",
+      "sha256": "4ed6fd69d32fd03b9397e3f8f8f4c0e4c1c9e15aa09925ebe940b3e23e8728df"
+    },
+    {
+      "path": "local/texture_owner_live_00b3f590.txt",
+      "sha256": "d3779d3a900cb9615f92478d568e49e3ef6d116a19bdb739b55322e9ee80403e"
+    },
+    {
+      "path": "local/texture_owner_live_00b3f5b0.txt",
+      "sha256": "d56a97df4455391919ad9326a36c8d9434ae4a6acd26e7252e6fa0a55c60c15b"
+    },
+    {
+      "path": "local/texture_owner_live_00b3f930.txt",
+      "sha256": "3bf8fa012445025f1118be6bdd4be4c5632ea4d044438f90010939ac7a0179b9"
+    },
+    {
+      "path": "local/texture_owner_live_00b3fd80.txt",
+      "sha256": "c97b1c8ca7443e3e33a0c91da1a42b533e9b5bafcf76435e29e5d4c59a2cfe18"
+    },
+    {
+      "path": "local/texture_owner_live_00bb86e0.txt",
+      "sha256": "e8b6c43a2cb68a0e19c9671ecf4e2428bf573cfea930e56731515f963d1b2952"
+    },
+    {
+      "path": "local/texture_owner_live_00bb8f90.txt",
+      "sha256": "efb28ac260cafb35527c4c2428b74b678fbb426bf289a977efc6117a06603880"
+    },
+    {
+      "path": "local/texture_owner_live_00bd30e0.txt",
+      "sha256": "1d70d9d639234f376753c69e736b613bbef917a14ca52c5d82dc737141237953"
+    },
+    {
+      "path": "local/texture_owner_live_00bd30f0.txt",
+      "sha256": "d149296eaa70886958deab82ed0f56710a49d0fd05255bf152da01b4bb23c889"
+    },
+    {
+      "path": "local/texture_owner_live_00bef600.txt",
+      "sha256": "337e562ba9b20792003ac1105771624427e5bcbb5bae9ae4e4cdb14dd5bc6468"
+    },
+    {
+      "path": "local/texture_owner_live_00bef610.txt",
+      "sha256": "e6b032db3f52ba73323aea9edda0f23af6b202c8afd3a8926f19395c83c39b2f"
+    },
+    {
+      "path": "local/texture_owner_live_00bef6d0.txt",
+      "sha256": "6fcfb71417eef27d51ce955b5d4040f170b8785c38973360133d48323dcd61e9"
+    },
+    {
+      "path": "local/texture_owner_live_00bef750.txt",
+      "sha256": "92248b3a78a1897f038cf172e7859bd693f4b73ba6c9d0d6df9a8780f1320230"
+    },
+    {
+      "path": "local/texture_owner_live_00bef9c0.txt",
+      "sha256": "af45a5d4a883475b10f67580400c219d047f697e36c228fedb1aea4e0fa86ad8"
+    },
+    {
+      "path": "local/texture_owner_live_00bf55be.txt",
+      "sha256": "12e4584cbf26902371286877778079ed8854f2533126f9311a49939026c63245"
+    },
+    {
+      "path": "local/texture_owner_live_00bf65ac.txt",
+      "sha256": "3644837c583910bd51d56c2737cdd2ffffa8fbc16c782ca4280e7a7d67977017"
+    },
+    {
+      "path": "local/texture_owner_live_00bf681b.txt",
+      "sha256": "ca146872dceb616cb7924a2000172ff109813339785fb9d31c52103c2b471c79"
+    },
+    {
+      "path": "local/texture_owner_live_00bf6989.txt",
+      "sha256": "b138fb7180fd8addcf3fbbf119e0507cbf06e17cc05937cd4e52998f3fb0b5f0"
+    },
+    {
+      "path": "local/texture_owner_live_00ca2ef0.txt",
+      "sha256": "ce7b715b5fa0b0b73043934341066ab8d5e0d2737f430c2fcd2a71664c5667a5"
+    },
+    {
+      "path": "local/texture_owner_live_00cbdce0.txt",
+      "sha256": "16387ecfdbae00df52ba094830ec3ba9a5cbe0e22a67f86ca83f933074f309b8"
+    },
+    {
+      "path": "local/texture_owner_live_00cbe090.txt",
+      "sha256": "cdb2d8f54fd899bc68927325cc9aee669a3f99d5148285e633fa52e454d62204"
+    },
+    {
+      "path": "local/texture_owner_live_00cbe0b0.txt",
+      "sha256": "9af3b1c7b676b40ae66934ff1fddebbf39085f6087592bccb72d073d93febff4"
+    },
+    {
+      "path": "local/texture_owner_live_00cbee90.txt",
+      "sha256": "c0131d01ce8984e667c8d5931a3db7351c26f9b990e7aa4cb1ec9346d7e15140"
+    },
+    {
+      "path": "local/texture_owner_live_00cbef50.txt",
+      "sha256": "cf56cb89eb8be1a5386e1805ac9b0a2c791532732100393fb243201951b66858"
+    },
+    {
+      "path": "local/texture_owner_live_00cbefa0.txt",
+      "sha256": "1f7ba2db8222f55e940cefdea118bf7b439127aa6e5021baff902f1f60b04d46"
+    },
+    {
+      "path": "local/texture_owner_live_00cc76b0.txt",
+      "sha256": "530df93b93eb5c19b606c2a66e240ab966ade2022ec2e56fc5c8eef240f8c074"
+    },
+    {
+      "path": "local/texture_owner_live_00ce221c.txt",
+      "sha256": "e4a85a1941ae5383d66311ac37b194b6add5de3630c37fedd001c752258529ce"
+    },
+    {
+      "path": "local/texture_owner_live_00d15ad8.txt",
+      "sha256": "1865440048b5a66da33c48daaa1266a965a51d1715cb8470f204890857835be9"
+    },
+    {
+      "path": "local/texture_owner_live_00d5c104.txt",
+      "sha256": "3502ebf8a51b9820fc05d811174ae71bfc59bee66683ba2f4114fea2a9bf0f0f"
+    },
+    {
+      "path": "local/texture_owner_live_00d5f114.txt",
+      "sha256": "c1bb2104d5b9a9454a59e37612efc3764f8085f07c733387fbcbbd251281625b"
+    },
+    {
+      "path": "local/texture_owner_live_00d5f1f4.txt",
+      "sha256": "04cd23047293cc034b26961b38b2f3bd568baafbec55e47ffefb0d3b19efd17c"
+    },
+    {
+      "path": "local/texture_owner_live_00d5f228.txt",
+      "sha256": "89744710bcd7aa2eafde2908b98e4d175dfb70a529fa9167af02633dd1a3972f"
+    },
+    {
+      "path": "local/texture_owner_live_00d61948.txt",
+      "sha256": "5d4b835b931e0cc68206f8272e645b3563be5a2a4849a8ba3b9b22ae477ca307"
+    },
+    {
+      "path": "local/texture_owner_live_00d619a0.txt",
+      "sha256": "0899a6e402c90a71d3fbb37f44406ffaaaaf610a3c3a43cfd22445cfc8f1b8f6"
+    },
+    {
+      "path": "local/texture_owner_live_00d642c0.txt",
+      "sha256": "3ca84efb8b07fdba9e48cb90cb09d012756831461328ab0b7bb348153bedc04c"
+    },
+    {
+      "path": "local/texture_owner_live_00dd5088.txt",
+      "sha256": "570b4906ad32eb50daeb97691e61cf485d664fe3576cc886d8039828013eb66a"
+    },
+    {
+      "path": "local/texture_owner_live_00df6684.txt",
+      "sha256": "ce17e48a985af362ac99596e2b6cb03850e7ba89e33e3f39ee033cd3acad184f"
+    },
+    {
+      "path": "local/texture_owner_live_00df6904.txt",
+      "sha256": "5c09b98683b4a60831d49a3ed6a2ce75ff0c3d29b7a9628edf6a074ef86caf23"
+    },
+    {
+      "path": "local/texture_owner_live_00df6930.txt",
+      "sha256": "da61d650136307c70385dac49e7f12b917cf5e29e2a78debebe70847da8b889c"
+    },
+    {
+      "path": "local/texture_owner_live_00df7700.txt",
+      "sha256": "358b2d8b425c106c0bc7f497c3f75dcfb31370baab28e88b5e251b7fa9067eba"
+    },
+    {
+      "path": "local/texture_owner_live_00df7824.txt",
+      "sha256": "9a64abb7483900f5328fefc4d8cd302997b38c9fcd100110d61cbd86fe0665eb"
+    },
+    {
+      "path": "local/texture_owner_live_00df788c.txt",
+      "sha256": "39a4ea1b7676e6b68115061e9df8419340ad44f07e16e93126996d506f800ab5"
+    },
+    {
+      "path": "local/texture_owner_live_00e022a4.txt",
+      "sha256": "715634a8cc533d3a33e2f927fa4fd8d5fa06d9db67edca5a6ea650c06e1dfd51"
+    },
+    {
+      "path": "local/texture_owner_live_00f8d394.txt",
+      "sha256": "185167e9b01f37c26cf222b2e65cb11322afde473342afcef500aeb7f230aafe"
+    },
+    {
+      "path": "local/texture_owner_live_0108d6dc.txt",
+      "sha256": "6785b084638f3ae7e311ea7438a41a121f165919ff736015879acc07ea3835fb"
+    },
+    {
+      "path": "local/texture_owner_live_0108d6e8.txt",
+      "sha256": "57c88e288bad9a1eb080fd78c653413cb7fb0a17d36ce0d2f7dea2a0aafb828d"
+    },
+    {
+      "path": "local/texture_owner_live_0108daf8.txt",
+      "sha256": "214ba6473321b47a58a824ba07153e0fce2bd32841661e624fe2b3610aadb6b6"
+    },
+    {
+      "path": "local/texture_owner_live_0109db98.txt",
+      "sha256": "e5aa2ee468dc663e74295ccf1284ae25e5287240c38ddafaa26937d1f0374a2c"
+    },
+    {
+      "path": "local/texture_owner_old_00b32250_comments.txt",
+      "sha256": "f20ea0220895237778ac924cb88ff1bf1881a6b0df58acc15caed4fc791ab3b4"
+    },
+    {
+      "path": "local/texture_owner_old_00b32250_proto.txt",
+      "sha256": "2857b3a9fb19997c23488f6c3017e4cc7d58ae50f7568c1162470ae4f5d9134b"
+    },
+    {
+      "path": "local/texture_owner_old_00b3f2e0_comments.txt",
+      "sha256": "614df6f2d1c24a8b589cbb612f9d8ec02b4f19aeae4cb0ab639739b4333d71b2"
+    },
+    {
+      "path": "local/texture_owner_old_00b3f2e0_proto.txt",
+      "sha256": "2cc8bbdf9d891b2561ae714b9915e16757d58f321620832240393acf8ea2fdbc"
+    },
+    {
+      "path": "local/texture_owner_old_00b3f590_comments.txt",
+      "sha256": "022c962682b817748e33e84290f6d831574233340490667c2e53166cc46e3a5e"
+    },
+    {
+      "path": "local/texture_owner_old_00b3f590_proto.txt",
+      "sha256": "4445b353ca60bbc72ae5eb23e24f5df1d7aa93d529dea40b4b5de3deace18f92"
+    },
+    {
+      "path": "local/texture_owner_old_00b3f930_comments.txt",
+      "sha256": "f66d880d1cf9c12571e615d628318f6171e1d1950a613ecd90bf8b804aaf55a8"
+    },
+    {
+      "path": "local/texture_owner_old_00b3f930_proto.txt",
+      "sha256": "490bff03155a1b181040206ff8c039fcd1d66aaa7cd327a1fc6df4915bdfa434"
+    },
+    {
+      "path": "local/texture_owner_preparation.log",
+      "sha256": "126c36616312c771bab732e41bdad6e28134013aeb75c64dced13918577beee1"
+    },
+    {
+      "path": "local/write_native_texture_2d_owner_next.py",
+      "sha256": "bdb3301f1bb520418df44e5536df8d1208fe4298f61cdecd33d539c385e44c0f"
+    },
+    {
+      "path": "reports/d3d9_texture2d_pool_audit.json",
+      "sha256": "296beb4a362af0a1384b8c7cd352607bc2767fa414a9958ce48292650b55674e"
+    },
+    {
+      "path": "reports/native_render_buffer_unregistration_audit.json",
+      "sha256": "6049a19618100e5796f82116ab70f82bfb9cbe24c2725a87677ab0dd2bcc1332"
+    },
+    {
+      "path": "reports/native_render_resource_container_removal_audit.json",
+      "sha256": "db8e9d9d1b373f7d43d7e294d1ca5083f8ba901e9f782e09305a58096c4b5088"
+    },
+    {
+      "path": "reports/native_resource_support_audit.json",
+      "sha256": "25b412bf1545c8e7945f2264c90e8615ff05e6e0efb968bd33228413ce3e9ee6"
+    },
+    {
+      "path": "reports/native_surface_owner_audit.json",
+      "sha256": "3b33292617bc8660c4f7d070936f60a2f8266dcc066d50943d98d6cf1d907928"
+    },
+    {
+      "path": "reports/native_texture2d_owner_next.json",
+      "sha256": "51cc7523e8b62be09ca52c8efa9905d98a61db67052f0782b8c08286d55d0fe9"
+    },
+    {
+      "path": "src/d3d9_texture2d_pool.cpp",
+      "sha256": "0eaa4ccc136a1fab35203170966e5ae8e2292c63e7cf12872e39e5fca16431cb"
+    },
+    {
+      "path": "src/memory_stream.cpp",
+      "sha256": "c59ba8d4d42d4447d816a6a66a47294fe6fde5fca95c853284c76557f0156348"
+    },
+    {
+      "path": "src/native_render_buffer_unregistration.cpp",
+      "sha256": "094d74b949d82182ef0f58761cfcd38520b83b65615456f3aa37521d0b9d2aea"
+    },
+    {
+      "path": "src/native_render_resource_container_removal.cpp",
+      "sha256": "ac847d0fd89e4d027c8ebb4cba6a8d76410aa16072526eb4709cbae82533e842"
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b"
+    },
+    {
+      "path": "src/native_renderer_synchronization_actual.cpp",
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+    },
+    {
+      "path": "src/native_resource_support.cpp",
+      "sha256": "a9653ec192cd9bca4c736a70a65176c635146284e81b8ab914fa4a30aa17f5f8"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+    },
+    {
+      "path": "src/native_surface_owner.cpp",
+      "sha256": "3ac9f459ba8a99ea72cd5c3d655fa8e93f247667026772e4a58131903b7707fd"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8"
+    },
+    {
+      "path": "src/storage_pool.cpp",
+      "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+    }
+  ],
+  "validation": {
+    "fresh_guarded_pe_matches": true,
+    "complete_capstone_decode": true,
+    "full_exception_maps_decoded": 8,
+    "profile_entries_asserted": true,
+    "cpp_changes": false,
+    "new_tests": false,
+    "build_run": false,
+    "fixture_run": false,
+    "ghidra_mutation": false,
+    "ledger_mutation": false,
+    "shared_metadata_mutation": false,
+    "game_validated": false,
+    "binary_drop_in_compatible": false
+  },
+  "uncertainty": [
+    "Descriptive proposed names are hypotheses; existing correct names are preserved.",
+    "Function addresses and all extents come from complete nativeinstruction spans; four allocator/free entryprefixes deliberately do not claim those full routines.",
+    "Profile prefixes do not establish entiretable boundaries or arbitrary alias/type/lifetime proof.",
+    "Dependency implementation audit validation is recorded prior evidence, not rerun in this readonlypacket.",
+    "The earlier logicalvertex +4C unresolvedproducer investigation is unrelated and was not resumed."
+  ]
+}
