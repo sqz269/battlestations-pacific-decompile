@@ -33,33 +33,40 @@ struct AudioSettings;
 // ---------------------------------------------------------------------------
 
 // operator new size at 004e1f30 and 004e213d: 0x109c bytes. The fields the load
-// path reads live at +0h..+8FFh (the side blocks), +90Ch (the scene path),
+// path reads live at +4h..+903h (the side blocks), +90Ch (the scene path),
 // +928h (the script table), +980h, +988h, +914h and +1098h. The last field is
 // four bytes at +1098h, which is exactly 0x109c, so the record has no tail
 // beyond the mission id.
 inline constexpr std::size_t kSceneRecordSize = 0x109c;
 
-// The side-block array at record+0h. 004c6890 walks it with stride 0x120 for
-// record+988h entries and copies two dwords out of each one. 8 * 0x120 = 0x900,
-// and the scene path at +90Ch starts 0xc bytes later, so the array is capped at
-// eight entries by the record layout as well as by the slot array.
+// The side-block array at record+4h: 004da2d7 stores the vtable 00ce7950 at
+// record+0h and 004da2ca..004da2dd builds the array at record+4h. 004c6890
+// walks it with stride 0x120 for record+988h entries and copies two dwords out
+// of each one. 8 * 0x120 = 0x900, so the array ends at +904h.
+// record+988h is the `MaxPlayerNum` property, not a count the reader derives;
+// see docs/SCENE_RECORD_SIDE_BLOCKS.md and bsp/scene_record_side_blocks.hpp for
+// the full 0x120 layout and the rule that fills it.
 inline constexpr std::size_t kSceneRecordSideBlockStride = 0x120;
 inline constexpr std::size_t kSceneRecordSideBlockCount = 8;
 // Offsets inside one side block that 004c6890 reads (004c6a4e, 004c6a5b).
-inline constexpr std::size_t kSceneSideBlockSelectorOffset = 0x4; // -> slot +28h
-inline constexpr std::size_t kSceneSideBlockSecondaryOffset = 0x8; // -> slot +24h
+// Corrected by packet cc_scene_records: these were recorded as 0x4 and 0x8,
+// four too high, because the array base was taken to be record+0h.
+inline constexpr std::size_t kSceneSideBlockSelectorOffset = 0x0; // Party, -> slot +28h
+inline constexpr std::size_t kSceneSideBlockSecondaryOffset = 0x4; // Race, -> slot +24h
 
 // record+914h. 004e1d70 sets it from the VFS provider table at 0109ceec,
 // virtual +8h, with the scene path; the reuse arm runs the header pass of the
 // .scn reader only when it is set. The create arm does not test it.
 inline constexpr std::size_t kSceneRecordFileExistsOffset = 0x914;
 
-// The two dwords out of one side block, as data. Neither is interpreted here:
-// the selector is the value that reaches mission_side_suffix through the
-// participant record, and the meaning of the second dword is not established.
+// The two dwords out of one side block, as data. Packet cc_scene_records
+// identified them: `selector` is the block's +0h dword, the `Party` enum
+// ordinal that reaches mission_side_suffix through the participant record, and
+// `secondary` is +4h, the `Race` ordinal. The field names are kept so callers
+// do not change; the offsets in the comments were four too high.
 struct SceneRecordSideBlock {
-    std::int32_t selector{0};  // +4h
-    std::int32_t secondary{0}; // +8h
+    std::int32_t selector{0};  // +0h, Party
+    std::int32_t secondary{0}; // +4h, Race
 };
 
 // The parts of the 0x109c record this path reads. The full record is filled by

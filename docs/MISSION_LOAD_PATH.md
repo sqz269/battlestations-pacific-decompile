@@ -92,12 +92,13 @@ the two passes inside `004D4DF0`.
 
 | Offset | Use |
 | --- | --- |
-| `+0h` | side-block array, stride `0x120`, count at `+988h`, capped at 8 by the layout (8 × 0x120 = 0x900, and `+90Ch` follows) |
+| `+0h` | vtable `00CE7950` (`004DA2D7`) |
+| `+4h` | side-block array, stride `0x120`, count at `+988h`, 8 entries ending at `+904h`. See **Corrections** below and `docs/SCENE_RECORD_SIDE_BLOCKS.md` |
 | `+90Ch/+910h` | the scene path |
 | `+914h` | byte, VFS presence; written only by the reuse arm |
 | `+928h` | script-name table, stride 8 |
 | `+980h/+984h` | comma-separated localisation table names |
-| `+988h` | side-block count |
+| `+988h` | the `MaxPlayerNum` property, which is the count `004C6890` copies |
 | `+1098h` | mission id |
 
 ## `004C6890` and the eight slot records
@@ -196,10 +197,10 @@ Across all 259 installed `.scn` files the probe exits 0 on every file:
 | Measure | Value |
 | --- | --- |
 | files | 259 |
-| entities | 133655 |
+| entities | 133664 (was 133655; see **Corrections**) |
 | distinct class tokens | 22 of the 26 registered classes |
 | tokens the class table does not cover | 0 |
-| files with a recovered error | 9 (21 errors) |
+| files with a recovered error | 10, 47 errors (was 9 and 21; see **Corrections**) |
 | files with no entities | 1 (`chg/usn_finale.scn`, header + traffic + groups only) |
 
 The recovered errors are authoring slips the native reader is built to survive. The one at
@@ -209,12 +210,27 @@ does. Zero unregistered tokens matters because `0046CF40` dereferences the class
 `node+8` with no null check — an unknown token would fault the native reader, so a shipped file
 producing one would mean the 26-row table is wrong.
 
-`docs/SCENE_ENTITY_FACTORY.md` quotes 133664 entities over the same 259 files; this sweep counts
-133655. The nine-entity difference is not explained here and both counts are recorded as they were
-measured.
+`docs/SCENE_ENTITY_FACTORY.md` quotes 133664 entities over the same 259 files; this sweep used to
+count 133655. Packet `cc_scene_records` traced the nine to the reconstruction's property value scan
+and corrected `src/scene_file.cpp`; the two counts now agree file by file. See
+`docs/SCENE_FILE_READER.md` "Corrections". The probe grew a `--sweep` mode that runs the comparison
+over every installed `.scn` and names any header the grammar fails to build.
 
 ## Corrections
 
+- **This doc put the side-block array at `record+0h` (packet `cc_scene_records`).** `004DA2D7`
+  stores the vtable `00CE7950` there; the array starts at `record+4h`. Every block-relative offset
+  below is four too high as a result: what this doc calls side block `+4h` is block `+0h` (the
+  `Party` ordinal, which is what reaches the side selector) and `+8h` is block `+4h` (`Race`).
+  Corrected in the record table above, in `include/bsp/mission_load_path.hpp` and in
+  `docs/SCENE_RECORD_SIDE_BLOCKS.md`; the slot-record table further down still shows the shifted
+  names in its "`004C6890` writes" column, read it against the corrected mapping.
+- **`record+988h` is not a side-block count.** It is the `MaxPlayerNum` property of the header's
+  `properties` bag, defaulting to 8 at `004F2145`. `004C6890` copies that many blocks, without a
+  `min(count, 8)`.
+- **"Who fills the side blocks" is answered.** Not the reader's grammar: `00469BF0`'s `properties`
+  branch runs the applier `004F1D70`, which runs `004E82F0` eight times over the bag's `MultiPlay`
+  sub-block. See `docs/SCENE_RECORD_SIDE_BLOCKS.md`.
 - **`docs/MISSION_SCENE_LOAD.md`: the two script-slot rules are not the same.** The doc says
   `004C6890` "picks the script slot with the same 8-or-9 rule `004DFB70` uses". They differ on slot
   9. `004C6958` tests `slot == 9` and **jumps to the store**, keeping it; `004E0896` tests the same
@@ -238,11 +254,11 @@ measured.
 | Packet | Addresses | Files | Contract |
 | --- | --- | --- | --- |
 | `mission_tree_host_fix` | 005c5600 004e2770 | include/bsp/mission_tree_screens.hpp, src/mission_tree_screens.cpp | Retype `set_pending_scene`'s second parameter as the override name; the header is owned elsewhere |
-| `scene_record_storage` | 004e1d70 00419cc0 0041dd40 | docs/SCENE_RECORD_STORAGE.md | The sized-storage-pool string plumbing `004E1D70` uses for `record+90Ch/910h`, which this packet modelled as `std::string` |
+| `scene_record_storage` | 004e1d70 00419cc0 0041dd40 | docs/SCENE_RECORD_STORAGE.md | **Done**, `docs/SCENE_RECORD_STORAGE.md`. The `std::string` model reproduces every value; its three representation boundaries are recorded there |
 | `mission_briefing_start` | 0051dce0 004cc460 005c57d0 00626930 | docs/MISSION_BRIEFING_START.md | The briefing arm of `005C5600` and what starts the mission from the briefing screen |
-| `scene_record_side_blocks` | 004e1d70 0046df00 | docs/SCENE_RECORD_SIDE_BLOCKS.md | What fills the `0x120` side blocks at `record+0h` and the count at `+988h`; the `.scn` reader is the only candidate producer and this packet did not find the write |
+| `scene_record_side_blocks` | 004e1d70 0046df00 | docs/SCENE_RECORD_SIDE_BLOCKS.md | **Done**, `docs/SCENE_RECORD_SIDE_BLOCKS.md`. The writer is `004E82F0` through the property applier `004F1D70`; the blocks are the `MultiPlay.PlayerN` slot definitions and `+988h` is `MaxPlayerNum` |
 | `leaderboard_publish` | 004c6890 00f8a2fc | docs/LEADERBOARD_PUBLISH.md | The `00F8A2FC` vtable `+178h`/`+17Ch` pair `004C6890` runs in session mode 1 |
-| `scene_class_count_delta` | 0046cf40 | - | The nine-entity difference between this sweep (133655) and `docs/SCENE_ENTITY_FACTORY.md` (133664) |
+| `scene_class_count_delta` | 0046cf40 | src/scene_file.cpp | **Done**. 133664 is right: the reconstruction's property value scan ran to the next `;` and swallowed closing braces after the nine `;`-less properties in `scene175.scn` and `scene907.scn`. See `docs/SCENE_FILE_READER.md` "Corrections" |
 
 ## no_ghidra_function
 
@@ -253,14 +269,14 @@ none — every address in the Addresses line resolves to an existing Ghidra func
 - **The third argument of `004E1D70` (`-1`).** Never read by the body. It is either dead in this
   build or consumed through a path the decompiler and the stack-slot scan both missed. The
   reconstruction names it `unused` and passes it through.
-- **Side-block contents.** `004C6890` copies two dwords out of each `0x120` block and nothing
-  reads them further in this path; the meaning of the `+8h` dword is not established. The `+4h`
-  dword is the value that becomes the side selector, but only because `004BB440` forwards it and
-  `004DFB70` tests it for zero — the reconstruction models it as an opaque selector, matching the
-  existing `MissionSceneLoadState::side_selector`.
-- **Who fills the side blocks.** The header pass is the only thing that touches the record between
-  `operator new` and `004C6890`, so the `.scn` reader must write them, but no write to
-  `record+0h..8FFh` was found in the reader's own reconstruction. Listed as a follow-up.
+- **Side-block contents.** ~~The meaning of the `+8h` dword is not established.~~ Resolved by
+  packet `cc_scene_records`: with the array base corrected to `record+4h`, the two dwords are the
+  block's `+0h` `Party` ordinal (the side selector) and its `+4h` `Race` ordinal, both authored in
+  the `.scn` header's `MultiPlay.PlayerN` sub-block. `docs/SCENE_RECORD_SIDE_BLOCKS.md`.
+- **Who fills the side blocks.** ~~No write to the block range was found in the reader's own
+  reconstruction.~~ Resolved by packet `cc_scene_records`: the write is not in the grammar but in
+  the property applier `004F1D70` that `00469BF0` runs for the header's `properties` block, which
+  calls `004E82F0` once per slot. `docs/SCENE_RECORD_SIDE_BLOCKS.md`.
 - **`004C6890` reads some fields through the global `[00E188A8]` and others through its `this`
   pointer** (`004C6933` versus `004C696D`). They are the same object in every observed call, and
   the reconstruction assumes so.
