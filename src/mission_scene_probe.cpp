@@ -22,9 +22,12 @@
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
+#include "bsp/scene_record_side_blocks.hpp"
 
 #include <algorithm>
+#include <cctype>
 #include <cstddef>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -69,10 +72,261 @@ void tally(const std::vector<bsp::SceneEntity>& entities,
     }
 }
 
+// ---------------------------------------------------------------------------
+// --sweep: every installed .scn, parsed and counted
+// ---------------------------------------------------------------------------
+
+// The lexical rule docs/SCENE_ENTITY_FACTORY.md counted with: a quoted name,
+// then `( <Class> )`. It is deliberately not the grammar: it also matches
+// entity headers inside regions the recovering parser skipped, which is the
+// whole point of running both counts side by side.
+struct LexicalHeader {
+    std::string name;
+    std::string class_name;
+    std::size_t line{0};
+    std::size_t depth{0};  // brace nesting the header sits at, quotes excluded
+};
+
+std::vector<LexicalHeader> lexical_entity_headers(const std::string& text)
+{
+    std::vector<LexicalHeader> found;
+    std::size_t i = 0;
+    std::size_t line = 1;
+    std::size_t depth = 0;
+    while (i < text.size()) {
+        if (text[i] == '\n') {
+            ++line;
+            ++i;
+            continue;
+        }
+        if (text[i] == '{') {
+            ++depth;
+            ++i;
+            continue;
+        }
+        if (text[i] == '}') {
+            if (depth != 0) {
+                --depth;
+            }
+            ++i;
+            continue;
+        }
+        if (text[i] != '"') {
+            ++i;
+            continue;
+        }
+        const std::size_t close = text.find('"', i + 1);
+        if (close == std::string::npos) {
+            break;
+        }
+        const std::string name = text.substr(i + 1, close - i - 1);
+        std::size_t j = close + 1;
+        while (j < text.size() && std::isspace(static_cast<unsigned char>(text[j])) != 0) {
+            ++j;
+        }
+        if (j < text.size() && text[j] == '(') {
+            ++j;
+            while (j < text.size() && std::isspace(static_cast<unsigned char>(text[j])) != 0) {
+                ++j;
+            }
+            const std::size_t name_start = j;
+            while (j < text.size()
+                && (std::isalnum(static_cast<unsigned char>(text[j])) != 0 || text[j] == '_')) {
+                ++j;
+            }
+            const std::string class_name = text.substr(name_start, j - name_start);
+            while (j < text.size() && std::isspace(static_cast<unsigned char>(text[j])) != 0) {
+                ++j;
+            }
+            if (!class_name.empty() && j < text.size() && text[j] == ')') {
+                LexicalHeader header;
+                header.name = name;
+                header.class_name = class_name;
+                header.line = line;
+                header.depth = depth;
+                found.push_back(header);
+            }
+        }
+        for (std::size_t k = i; k < close; ++k) {
+            if (text[k] == '\n') {
+                ++line;
+            }
+        }
+        i = close + 1;
+    }
+    return found;
+}
+
+void collect_entity_keys(const std::vector<bsp::SceneEntity>& entities,
+    std::map<std::string, std::size_t>& out)
+{
+    for (const bsp::SceneEntity& entity : entities) {
+        ++out[entity.class_name + "\x1f" + entity.name];
+        collect_entity_keys(entity.children, out);
+    }
+}
+
+std::size_t count_entities(const std::vector<bsp::SceneEntity>& entities)
+{
+    std::size_t total = entities.size();
+    for (const bsp::SceneEntity& entity : entities) {
+        total += count_entities(entity.children);
+    }
+    return total;
+}
+
+struct SweepTotals {
+    std::size_t files{0};
+    std::size_t parsed_entities{0};
+    std::size_t lexical_entities{0};
+    std::size_t files_with_errors{0};
+    std::size_t recovered_errors{0};
+    std::size_t files_with_multiplay{0};
+    std::size_t authored_units{0};
+    std::size_t authored_pools{0};
+};
+
+int run_sweep(const std::string& root)
+{
+    namespace fs = std::filesystem;
+    std::error_code ec;
+    if (!fs::is_directory(root, ec)) {
+        std::cout << "game root not found: " << root << '\n';
+        return 2;
+    }
+
+    SweepTotals totals;
+    std::map<std::string, ClassTally> classes;
+    std::map<std::int32_t, std::size_t> max_player_num;
+    std::vector<std::string> mismatches;
+    std::vector<std::string> files;
+
+    for (fs::recursive_directory_iterator it(root, fs::directory_options::skip_permission_denied, ec),
+         end;
+         it != end; it.increment(ec)) {
+        if (ec) {
+            break;
+        }
+        if (!it->is_regular_file(ec)) {
+            continue;
+        }
+        std::string ext = it->path().extension().string();
+        for (char& c : ext) {
+            c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+        }
+        if (ext == ".scn") {
+            files.push_back(it->path().string());
+        }
+    }
+    std::sort(files.begin(), files.end());
+
+    for (const std::string& path : files) {
+        std::ifstream input(path, std::ios::binary);
+        if (!input) {
+            std::cout << "unreadable: " << path << '\n';
+            return 2;
+        }
+        std::ostringstream buffer;
+        buffer << input.rdbuf();
+        const std::string text = buffer.str();
+
+        const bsp::SceneDocument document = bsp::parse_scene_document(text);
+        std::size_t depth = 0;
+        tally(document.entities, classes, depth, 1);
+        const std::size_t parsed = count_entities(document.entities);
+        const std::vector<LexicalHeader> headers = lexical_entity_headers(text);
+        const std::size_t lexical = headers.size();
+
+        ++totals.files;
+        totals.parsed_entities += parsed;
+        totals.lexical_entities += lexical;
+        if (!document.errors.empty()) {
+            ++totals.files_with_errors;
+            totals.recovered_errors += document.errors.size();
+        }
+        if (parsed != lexical) {
+            std::ostringstream row;
+            row << path << " parsed=" << parsed << " lexical=" << lexical << " delta="
+                << (static_cast<long long>(lexical) - static_cast<long long>(parsed))
+                << " recovered-errors=" << document.errors.size();
+            if (!document.errors.empty()) {
+                row << " first=\"" << document.errors.front() << "\"";
+            }
+            // Which authored headers the grammar did not turn into entities.
+            std::map<std::string, std::size_t> built;
+            collect_entity_keys(document.entities, built);
+            for (const LexicalHeader& header : headers) {
+                const std::string key = header.class_name + "\x1f" + header.name;
+                auto it = built.find(key);
+                if (it != built.end() && it->second != 0) {
+                    --it->second;
+                    continue;
+                }
+                row << "\n      line " << header.line << " depth " << header.depth << ": \""
+                    << header.name << "\" (" << header.class_name << ")";
+            }
+            mismatches.push_back(row.str());
+        }
+
+        if (document.has_header && document.header.has_properties) {
+            const bsp::SceneRecordSlotTable slots
+                = bsp::read_scene_record_slot_table_004f1d70(document.header.properties);
+            ++max_player_num[slots.max_player_num];
+            if (slots.multiplay_block_present) {
+                ++totals.files_with_multiplay;
+                for (const bsp::SceneSlotBlock& block : slots.blocks) {
+                    for (const bsp::SceneSlotUnit& unit : block.units) {
+                        if (unit.present) {
+                            ++totals.authored_units;
+                        }
+                        for (const bsp::SceneSlotPoolEntry& pool : unit.pools) {
+                            if (pool.present) {
+                                ++totals.authored_pools;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    std::size_t class_total = 0;
+    std::cout << "entities per class across " << totals.files << " files:\n";
+    for (const auto& row : classes) {
+        class_total += row.second.total;
+        std::cout << "  " << row.first << " x" << row.second.total
+                  << " multitype=" << row.second.with_multitype << '\n';
+    }
+    std::cout << "parsed entities=" << totals.parsed_entities
+              << " (across classes " << class_total << ", distinct " << classes.size() << ")\n";
+    std::cout << "lexical entity headers=" << totals.lexical_entities << " delta="
+              << (static_cast<long long>(totals.lexical_entities)
+                     - static_cast<long long>(totals.parsed_entities))
+              << '\n';
+    std::cout << "files with recovered errors=" << totals.files_with_errors << " (errors "
+              << totals.recovered_errors << ") files where the two counts differ="
+              << mismatches.size() << '\n';
+    for (const std::string& row : mismatches) {
+        std::cout << "  " << row << '\n';
+    }
+    std::cout << "record+988h MaxPlayerNum:";
+    for (const auto& row : max_player_num) {
+        std::cout << " " << row.first << "x" << row.second;
+    }
+    std::cout << "\nfiles with a MultiPlay block=" << totals.files_with_multiplay
+              << " authored UnitN entries=" << totals.authored_units
+              << " authored PoolN entries=" << totals.authored_pools << '\n';
+    return 0;
+}
+
 } // namespace
 
 int main(int argc, char** argv)
 {
+    if (argc > 1 && std::string(argv[1]) == "--sweep") {
+        return run_sweep(argc > 2 ? argv[2] : kDefaultGameRoot);
+    }
+
     const std::string root = argc > 1 ? argv[1] : kDefaultGameRoot;
     const std::string scene_path = argc > 2 ? argv[2] : kDefaultScenePath;
     const std::string disk_path = root + "/" + scene_path;

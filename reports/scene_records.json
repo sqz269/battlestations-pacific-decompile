@@ -1,0 +1,173 @@
+{
+  "packet": "cc_scene_records",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc-scene-records",
+  "branch": "agent/cc-scene-records",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only"
+  },
+  "docs": [
+    "docs/SCENE_RECORD_SIDE_BLOCKS.md",
+    "docs/SCENE_RECORD_STORAGE.md"
+  ],
+  "scene_record_side_blocks": {
+    "question": "What fills the 0x120 side blocks and the count at record+988h; docs/MISSION_LOAD_PATH.md found no write in the .scn reader's reconstruction.",
+    "answer": "The writer is not in the reader's grammar. 00469bf0's `properties` branch parses a 0x114 property bag with 008f5a00, publishes it as SceneRootProps and runs the applier 004f1d70, which at 004f21b4..004f21e3 calls 004e82f0 eight times with ECX = slot index and EDX = the bag's MultiPlay sub-block. The blocks are the multiplayer player-slot definitions authored in the scene file.",
+    "record_constructor": {
+      "address": "004da2a0",
+      "abi": "__thiscall(SceneRecord*), returns this",
+      "vtable": "00ce7950 at record+0h (004da2d7)",
+      "side_block_array": {
+        "base": "0x4",
+        "stride": "0x120",
+        "count": 8,
+        "element_ctor": "004c9800",
+        "element_dtor": "004c9820",
+        "site": "004da2bc..004da2dd, eh vector constructor iterator 00bf7cd1"
+      },
+      "script_string_array": {
+        "base": "0x928",
+        "stride": 8,
+        "count": 11,
+        "element_ctor": "00415270",
+        "element_dtor": "0041dd20",
+        "site": "004da30c..004da326"
+      },
+      "zeroed": ["0x90c", "0x910", "0x918", "0x91c", "0x920", "0x924", "0x980", "0x984"],
+      "not_initialised": ["0x914", "0x988", "0x98c"],
+      "subobjects": [{"offset": "0x990", "ctor": "004cb420"}, {"offset": "0xc78", "ctor": "004c26b0"}]
+    },
+    "side_block_layout": {
+      "size": "0x120",
+      "fields": [
+        {"offset": "0x0", "size": 4, "key": "Party", "literal": "00ce5804", "note": "enum ordinal; copied to slot record +28h by 004c6890"},
+        {"offset": "0x4", "size": 4, "key": "Race", "literal": "00ce8ee0", "note": "enum ordinal; copied to slot record +24h"},
+        {"offset": "0x8", "size": "0x38", "count": 5, "key": "Unit0..Unit4", "literal": "00ce8ed8 (UnitN)", "note": "element ctor 004c6750 zeroes only the two string pairs"}
+      ]
+    },
+    "unit_element_layout": {
+      "size": "0x38",
+      "fields": [
+        {"offset": "0x0", "size": 8, "key": "Name", "literal": "00ce8ed0", "type": "native {length, pointer}"},
+        {"offset": "0x8", "size": 4, "key": "Icon", "literal": "00ce8ec8", "default": -1, "site": "004e8384, written before the UnitN test"},
+        {"offset": "0xc", "size": 4, "key": "ClassId", "literal": "00ce6920"},
+        {"offset": "0x10", "size": 8, "key": "ClassName", "literal": "00ce6930", "type": "native {length, pointer}"},
+        {"offset": "0x18", "size": 8, "count": 4, "key": "Pool0..Pool3", "literal": "00ce8ec0 (PoolN)", "members": {"0x0": "Icon (00ce8ec8), -1 when absent", "0x4": "Num (00ce8b94), left untouched when absent"}}
+      ]
+    },
+    "count_field": {
+      "offset": "0x988",
+      "key": "MaxPlayerNum",
+      "default": 8,
+      "site": "004f2145",
+      "consumers": ["004c6890", "004c3840", "004bb160", "004d87b0"],
+      "hazard": "004c6890's copy loop runs record+988h times, not min(count, 8); the bounds test at 004c6ad1 only gates the tail clear, so a value above 8 writes past the eight 0x118 slot records at game+1008h."
+    },
+    "case_insensitivity": "008f2260 looks keys up through 0043b8b0, which compares with __stricmp. The applier passes \"MultiPlay\" and every shipped .scn spells the block \"Multiplay\"; a case-sensitive compare would leave every side block unwritten.",
+    "installed_evidence": {
+      "files": 259,
+      "files_with_multiplay_block": 259,
+      "max_player_num": {"8": 258, "4": 1},
+      "authored_unit_entries": 16,
+      "authored_pool_entries": 0,
+      "unit_files": ["universe/scenes/missions/multi/scene6.scn", "universe/scenes/missions/multi/scene901.scn"],
+      "reproduce": "bsp_mission_scene_probe.exe --sweep"
+    }
+  },
+  "scene_record_storage": {
+    "native_string": {
+      "layout": {"0x0": "uint length, excluding the terminator", "0x4": "char* data, or null"},
+      "no_capacity_field": true,
+      "no_small_buffer": true,
+      "block_size": "length + 1",
+      "resize": {"address": "0041dd40", "abi": "__thiscall(header; uint length, char preserve), RET 8"}
+    },
+    "pool": {
+      "singleton": {"address": "00419cc0", "abi": "no arguments, returns the pool in EAX, no stack cleanup; callers push the arguments of the following thiscall first"},
+      "allocate": {"address": "00bd1120", "abi": "__thiscall(pool; uint size, uint unused), RET 8"},
+      "release": {"address": "00bd1510", "abi": "__thiscall(pool; void* block, uint size, uint unused), RET 0xc", "note": "sized release; the caller must pass the size the block was allocated with, always length + 1 here"}
+    },
+    "record_string_pairs": {
+      "0x90c": "scene path, written by 004e1d70",
+      "0x918": "FileSystemLua, written by 004f1d70",
+      "0x920": "Title, written by 004f1d70",
+      "0x928": "eleven script names, written by 004f1d70",
+      "0x980": "LocKitPaths, written by 004f1d70"
+    },
+    "model_verdict": "src/mission_load_path.cpp's std::string model reproduces every value this path reads or compares, including the duplicate test, because 004e1f0x substitutes the zeroed global 00e18b1c for a null data pointer and that compares like \"\". Not corrected.",
+    "model_boundaries": [
+      "The empty string has a null data pointer, not a pointer to \"\". Every native reader in this path guards with `if (data != 0)` or substitutes 00e18b1c.",
+      "0041dd4a returns immediately when the requested length equals the stored length, even when data is null, so buffer identity and allocation counts are not equivalent to std::string.",
+      "There is no capacity, so every length change reallocates; reserve and the growth factor have no counterpart."
+    ]
+  },
+  "scene_class_count_delta": {
+    "question": "The nine-entity difference between the mission-load sweep (133655) and docs/SCENE_ENTITY_FACTORY.md (133664).",
+    "verdict": "133664 is right. The cause is a reader rule difference in the reconstruction, not nested blocks and not a doc error.",
+    "native_rule": "008f5a00 reads a fixed number of value tokens for the type letter it dispatched on and then runs 008d9930 ExpectToken(\";\"), which peeks and consumes only on a match. A property authored without its terminator costs one reported error and consumes nothing further.",
+    "reconstruction_bug": "src/scene_file.cpp parse_property_body scanned values `while (!cur.at(\";\"))`, so a `;`-less property swallowed the closing brace of the block it was in and every later block nested one level too deep.",
+    "trigger": "Runs of four `\"PlaneStock n\" { Count = ... ; Type = E PlaneClasses : X }` sub-blocks whose Type line has no `;`. The last of each run swallows the sub-block's own `}`; four runs per file put the parser four levels deep at end of input, which is exactly the four `expected }, got \"traffic\"` errors each file reported.",
+    "lost_headers": [
+      {"file": "universe/scenes/missions/multi/scene175.scn", "line": 1223, "name": "Secondary Airfield Spawnpoint", "class": "NavPoint"},
+      {"file": "universe/scenes/missions/multi/scene175.scn", "line": 1422, "name": "Main Airfield Spawnpoint", "class": "NavPoint"},
+      {"file": "universe/scenes/missions/multi/scene175.scn", "line": 26884, "name": "SpawnPoint Zuikaku", "class": "SpawnPoint"},
+      {"file": "universe/scenes/missions/multi/scene175.scn", "line": 27114, "name": "LookTo", "class": "NavPoint"},
+      {"file": "universe/scenes/missions/multi/scene175.scn", "line": 27536, "name": "Lexington Spawnpoint", "class": "NavPoint"},
+      {"file": "universe/scenes/missions/multi/scene907.scn", "line": 28981, "name": "SpawnPoint Akagi", "class": "SpawnPoint"},
+      {"file": "universe/scenes/missions/multi/scene907.scn", "line": 29282, "name": "SpawnPoint Kaga", "class": "SpawnPoint"},
+      {"file": "universe/scenes/missions/multi/scene907.scn", "line": 29583, "name": "SpawnPoint Soryu", "class": "SpawnPoint"},
+      {"file": "universe/scenes/missions/multi/scene907.scn", "line": 29884, "name": "SpawnPoint Hiryu", "class": "SpawnPoint"}
+    ],
+    "after_fix": {
+      "parsed_entities": 133664,
+      "lexical_entity_headers": 133664,
+      "files_where_counts_differ": 0,
+      "files_with_recovered_errors": 10,
+      "recovered_errors": 47,
+      "per_class_table": "identical to docs/SCENE_ENTITY_FACTORY.md row for row, MultiType column included"
+    },
+    "docs_corrected": [
+      "docs/SCENE_FILE_READER.md (Corrections)",
+      "docs/SCENE_ENTITY_FACTORY.md",
+      "docs/MISSION_LOAD_PATH.md",
+      "reports/scene_file_reader.json",
+      "reports/mission_load_path.json",
+      "reports/scene_entity_factory.json"
+    ]
+  },
+  "names": [
+    {"address": "004da2a0", "name": "BSP_SceneRecord_Construct", "replaced": "CG_array_ctor_helper_004da2a0"},
+    {"address": "004f1d70", "name": "BSP_SceneRecord_ApplyHeaderProperties", "replaced": null},
+    {"address": "004e82f0", "name": "BSP_SceneRecord_ReadPlayerSlot", "replaced": null},
+    {"address": "004c9800", "name": "BSP_SceneRecordPlayerSlot_Construct", "replaced": null},
+    {"address": "004c9820", "name": "BSP_SceneRecordPlayerSlot_Destroy", "replaced": null},
+    {"address": "004c6750", "name": "BSP_SceneRecordSlotUnit_Construct", "replaced": null},
+    {"address": "008f5a00", "name": "BSP_ScenePropertyBag_Parse", "replaced": null}
+  ],
+  "no_ghidra_function": [
+    {"start": "004c6750", "end_inclusive": "004c675f", "name": "BSP_SceneRecordSlotUnit_Construct"},
+    {"start": "004c9800", "end_inclusive": "004c981d", "name": "BSP_SceneRecordPlayerSlot_Construct"},
+    {"start": "004c9820", "end_inclusive": "004c9832", "name": "BSP_SceneRecordPlayerSlot_Destroy"}
+  ],
+  "reconstruction": {
+    "header": "include/bsp/scene_record_side_blocks.hpp",
+    "source": "src/scene_record_side_blocks.cpp",
+    "probe": "src/mission_scene_probe.cpp --sweep",
+    "status": "reconstructed_build_tested; exercised against all 259 installed .scn files; no host needed because 004e82f0 calls nothing but the key lookup and the string resize",
+    "not": "not ABI-compatible, not game-validated"
+  },
+  "uncertainties": [
+    "The dword an `E` property resolves to. The file authors `Party = E Party : Allied`; the record holds the ordinal the enum table assigns, and that table was not decoded. The reconstruction carries the authored {type, symbol} pair.",
+    "`Icon` at unit +8h and the first dword of each pool entry share the literal 00ce8ec8; nothing in this packet reads either back, so the role is the authored key's name only.",
+    "Uninitialised reads: block+0h/+4h for a slot with no PlayerN group, and every pool Num dword, are read from memory nothing wrote. Whether a consumer ever reaches them was not established.",
+    "record+98Ch, CompetitiveModeParty, is written by the same applier from a presence-tested key; no reader was traced."
+  ],
+  "follow_up_packets": [
+    {"packet": "scene_enum_ordinals", "addresses": ["008f2260", "0043b8b0", "008f3710"], "files": ["docs/SCENE_ENUM_ORDINALS.md"], "contract": "How an `E` property's type:symbol pair becomes the dword at property node +0Ch, which is what Party and Race store"},
+    {"packet": "scene_record_script_table", "addresses": ["004f1d70", "004dfb70"], "files": ["docs/SCENE_RECORD_SCRIPT_TABLE.md"], "contract": "The eleven native strings at record+928h: which StageScript* key lands in which slot, and the 8-or-9 rule that picks one"},
+    {"packet": "scene_record_tail", "addresses": ["004da2a0", "004cb420", "004c26b0"], "files": ["docs/SCENE_RECORD_TAIL.md"], "contract": "The record above +990h: the sub-object at +990h, the intrusive list at +0c78h and the fog/camera fields docs/WORLD_CONSTRUCT.md already reads"},
+    {"packet": "multiplayer_slot_overrun", "addresses": ["004c6890", "004c3840", "004bb160"], "files": [], "contract": "Whether anything clamps MaxPlayerNum before 004c6890 runs, or whether a hand-authored value above 8 really writes past game+18c0h"},
+    {"packet": "native_string_abi_layer", "addresses": ["0041dd40", "0041e870", "004261a0"], "files": ["include/bsp/native_string.hpp"], "contract": "A header-layout-compatible string type reproducing the null-for-empty and no-capacity rules"}
+  ]
+}

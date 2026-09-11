@@ -14,6 +14,9 @@ public:
     const std::string& peek_00bee8e0();
     void accept_00bee800();
     const std::string& read_string_00bef020(bool& success);
+    std::int32_t read_integer_00bef100(bool& success);
+    float read_float_00bef170(bool& success);
+    bool accept_keyword_008d4390(const char* keyword);
     void skip_whitespace_00beedb0();
     bool quoted() const noexcept { return quoted_; }
     bool eof_at_token_start() const noexcept { return eof_at_token_start_; }

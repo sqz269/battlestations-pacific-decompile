@@ -115,14 +115,21 @@ claimed. Existing string-release `noexcept` and zero-byte memcpy boundaries
 remain as documented in the predecessor packet.
 
 The audit pins14 fresh guarded spans/789 bytes, including332 owned main bytes
-and51 bytes in the two evidence-only EH actions. The original installation and
-saved project are preserved. The primary should register the new source in
-shared CMake and add the two source/name/ABI records. 4DA180's saved body already
-has the full address range, but current disassembly/decompilation omits the
-post-free instructions at4DA240..4DA249 because BF6989 is treated as not
-returning. Full original bytes are `83c4045f892e895e085d`: ADD ESP,4; POP EDI;
-store new base; store capacity; POP EBP. Repair only the call-site flow at
-4DA23B and refresh those instructions; retain correct library names, global
-free metadata, and existing comments. B1A3C0's saved complete span needs no
-extent change. Existing source, CMake, shared ledgers, reports and Ghidra
-metadata were not edited by this worker.
+and51 bytes in the two evidence-only EH actions.
+
+## Primary integration
+
+Main now registers the unchanged source and both raw functions. The main strict
+Win32 build, both existing CTests and eight fresh seeds passed. Primary verified
+69 worker pins, 31 current files and all fourteen fresh spans, 789 bytes.
+Fourteen exact main archive objects retain all reviewed code/data/relocations.
+The unchanged fixture linked only that frozen library and reproduced all172
+trace words, including post-free current-count mutation and native orphan
+preservation. The successful nonempty old-destructor loop and CBC640 exception
+remain static proof. Immutable bundle: `local/resource_record_vector_primary/`.
+
+Only the returning-free callsite4DA23B flow was repaired; the saved full extent
+was unchanged. The hidden4DA240..249 stores are decoded again. Original names
+and comments are retained in the journal, four annotations are saved and
+exports refreshed. No global free annotation was changed. Cache/resource
+ownership and gameplay validation remain separate.

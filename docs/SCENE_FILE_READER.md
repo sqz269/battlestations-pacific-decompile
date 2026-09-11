@@ -424,6 +424,59 @@ Every routine named here has a Ghidra function; the `no_ghidra_function` list in
 | `scene_traffic_block` | 009514b0 0095ca10 0095c640 00925f20 | docs/SCENE_TRAFFIC_BLOCK.md | The `traffic` body, and why pass 2 stops at it |
 | `scene_deferred_refs` | 0046aab0 00925a90 00414db0 | docs/SCENE_DEFERRED_REFS.md | `this+150h`, the `00E19A70` name list, and how `R`/`RPath`/`RFort` values resolve to objects |
 
+## Corrections
+
+### The installed-file entity total was low by nine (packet `cc_scene_records`)
+
+The "Validation against the installed game" section above reports **133655** entities and the
+per-class counts that go with it. Both are wrong. The correct total is **133664**, which is what
+`docs/SCENE_ENTITY_FACTORY.md`'s lexical scan reported and what the C++ reconstruction now produces,
+per class, exactly.
+
+The cause is a reader rule difference, not nested blocks and not a doc slip. `008F5A00` reads a
+**fixed** number of value tokens for the type letter it dispatched on and then runs
+`008D9930 ExpectToken(";")`, which peeks and consumes only on a match: a property authored without
+its terminator costs one reported error and consumes nothing further. Both the C++ reconstruction
+and `local/scn_ref.py` instead scanned values until the next `;`. When a property has no `;` the
+scan runs on and swallows the closing brace of the block it is in, and every later block nests one
+level too deep.
+
+Nine installed properties are authored without a terminator in a position where the next `;` is past
+a closing brace:
+
+| File | Lost headers |
+| --- | --- |
+| `missions/multi/scene175.scn` | `"Secondary Airfield Spawnpoint"` (NavPoint, line 1223), `"Main Airfield Spawnpoint"` (NavPoint, 1422), `"SpawnPoint Zuikaku"` (SpawnPoint, 26884), `"LookTo"` (NavPoint, 27114), `"Lexington Spawnpoint"` (NavPoint, 27536) |
+| `missions/multi/scene907.scn` | `"SpawnPoint Akagi"` (28981), `"SpawnPoint Kaga"` (29282), `"SpawnPoint Soryu"` (29583), `"SpawnPoint Hiryu"` (29884), all SpawnPoint |
+
+The trigger in both files is a run of four `"PlaneStock n" { Count = … ; Type = E PlaneClasses : X }`
+sub-blocks whose `Type` line has no `;`; the last of each run swallows the sub-block's own `}`, and
+four such runs per file put the parser four levels deep at end of input. That is exactly the four
+`expected }, got "traffic"` errors each file reported.
+
+`src/scene_file.cpp` now stops the value scan at `{` and `}` as well as at `;` — no value of any
+letter contains a brace — which stands in for the native's per-letter fixed read. After the fix the
+sweep over all 259 files gives 133664 parsed entities, a per-class table identical to
+`docs/SCENE_ENTITY_FACTORY.md`, and a zero delta against the lexical count in every file. The
+recovered errors rise from 21 over 9 files to 47 over 10, because the missing terminators that used
+to be swallowed are now reported, which is what `008D9930` does with them.
+
+Corrected numbers, replacing the table and the class list above:
+
+| Measure | Was | Is |
+| --- | --- | --- |
+| entities parsed (including nested) | 133655 | 133664 |
+| files needing the native recovery rules | 9 | 10 |
+| recovered errors | 21 | 47 |
+| files parsed with no recovered error | 250 | 249 |
+| `LandFort` / `Path` / `DestroyerGen` | 71388 / 24886 / 9634 | 72612 / 25292 / 9778 |
+| `NavPoint` / `SpawnPoint` / `MotherShipGen` | 3457 / 1654 / 1059 | 3515 / 1704 / 1089 |
+
+The full corrected per-class table is the one in `docs/SCENE_ENTITY_FACTORY.md`, which the sweep now
+reproduces row for row including the `MultiType` column. `reports/scene_file_reader.json` carries
+the same correction under `installed_game_validation.correction`. Reproduce with
+`bsp_mission_scene_probe.exe --sweep`.
+
 ## Corrections from docs/SCENE_ENTITY_FACTORY.md
 
 `0046c550` constructs nothing: it is the per-entity generation predicate (`__thiscall` on the scene database, `RET 5Ch`, 23 stack dwords), and `00468660` maps a class id to its class name, not to a factory. The real class table is `004f2800` (formerly named `BSP_Scene_ResolveNamedObjects`), which registers 26 classes through `004ee250` as 12-byte descriptors (class id, instantiate-pass creator, registration-pass creator) into the scene database hash map at +34h. The seven unidentified ids resolve to Landscape (44h), Path (47h), LandFort (1Bh), CommandBuilding (1Ch), WaterMine (34h) and SpawnPoint (4Dh); 19h is not a registered id, so the comparison at `0046d492` can never match. Wreck, CameraPath, PeriodicEffect and FreeCamPos are registered but never authored in the 259 installed files.

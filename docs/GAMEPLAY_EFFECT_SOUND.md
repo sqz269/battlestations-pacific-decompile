@@ -96,3 +96,12 @@ required bindings. The fixture supplies controlled7Ch samples; metadata,
 VFS/FMOD loading, native Sound differential, ABI/SEH, playback and gameplay
 remain unvalidated. Continue with that constructor, its sample destructor,
 and the five remaining component families under fresh leases.
+
+## Correction from docs/SOUND_SAMPLE.md
+
+The sample-construction service now has a concrete `SoundSampleRuntime`
+implementation, with actual sample storage, settings, event parameters,
+cache removal and final release. Installed FSB/FEV checks passed through the
+existing VFS/resource/FMOD runtime. This adds a production composition for the
+earlier Sound loader; it does not convert the earlier controlled fixture into
+gameplay or audible-playback evidence.

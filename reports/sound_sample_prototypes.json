@@ -1,0 +1,332 @@
+{
+  "reason": "Restore real ECX/stack inputs, mutable outputs and x87 float return. Fastcall unused_edx models analysis storage, not recovered source syntax.",
+  "entries": [
+    {
+      "address": "00a84d70",
+      "name": "BSP_SoundSample_Construct",
+      "proposed": "void* __fastcall BSP_SoundSample_Construct(void* self, void* unused_edx, void* name)",
+      "before": "Function: FUN_00a84d70 at 00a84d70\nSignature: undefined FUN_00a84d70(void)\nEntry: 00a84d70\nBody: 00a84d70 - 00a85432",
+      "apply": "Successfully set prototype for function at 00a84d70 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSample_Construct at 00a84d70\nSignature: void * __fastcall BSP_SoundSample_Construct(void * self, void * unused_edx, void * name)\nEntry: 00a84d70\nBody: 00a84d70 - 00a85432",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSample_Construct at 00a84d70\nSignature: void * __fastcall BSP_SoundSample_Construct(void * self, void * unused_edx, void * name)\nEntry: 00a84d70\nBody: 00a84d70 - 00a85432",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a83850",
+      "name": "BSP_SoundSample_LoadEventGroup",
+      "proposed": "void __fastcall BSP_SoundSample_LoadEventGroup(void* self)",
+      "before": "Function: FUN_00a83850 at 00a83850\nSignature: undefined FUN_00a83850(void)\nEntry: 00a83850\nBody: 00a83850 - 00a839ab",
+      "apply": "Successfully set prototype for function at 00a83850 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSample_LoadEventGroup at 00a83850\nSignature: void __fastcall BSP_SoundSample_LoadEventGroup(void * self)\nEntry: 00a83850\nBody: 00a83850 - 00a839ab",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSample_LoadEventGroup at 00a83850\nSignature: void __fastcall BSP_SoundSample_LoadEventGroup(void * self)\nEntry: 00a83850\nBody: 00a83850 - 00a839ab",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a828b0",
+      "name": "BSP_SoundSample_ReadEventParameters",
+      "proposed": "void __fastcall BSP_SoundSample_ReadEventParameters(void* self)",
+      "before": "Function: FUN_00a828b0 at 00a828b0\nSignature: undefined FUN_00a828b0(void)\nEntry: 00a828b0\nBody: 00a828b0 - 00a829d9",
+      "apply": "Successfully set prototype for function at 00a828b0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSample_ReadEventParameters at 00a828b0\nSignature: void __fastcall BSP_SoundSample_ReadEventParameters(void * self)\nEntry: 00a828b0\nBody: 00a828b0 - 00a829d9",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSample_ReadEventParameters at 00a828b0\nSignature: void __fastcall BSP_SoundSample_ReadEventParameters(void * self)\nEntry: 00a828b0\nBody: 00a828b0 - 00a829d9",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a82c60",
+      "name": "BSP_SoundSample_Destruct",
+      "proposed": "void __fastcall BSP_SoundSample_Destruct(void* self)",
+      "before": "Function: FUN_00a82c60 at 00a82c60\nSignature: undefined FUN_00a82c60(void)\nEntry: 00a82c60\nBody: 00a82c60 - 00a82d71",
+      "apply": "Successfully set prototype for function at 00a82c60 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSample_Destruct at 00a82c60\nSignature: void __fastcall BSP_SoundSample_Destruct(void * self)\nEntry: 00a82c60\nBody: 00a82c60 - 00a82d71",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSample_Destruct at 00a82c60\nSignature: void __fastcall BSP_SoundSample_Destruct(void * self)\nEntry: 00a82c60\nBody: 00a82c60 - 00a82d71",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a82e80",
+      "name": "CG_scalar_deleting_dtor_00a82e80",
+      "proposed": "void* __fastcall CG_scalar_deleting_dtor_00a82e80(void* self, void* unused_edx, unsigned int flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a82e80 at 00a82e80\nSignature: undefined CG_scalar_deleting_dtor_00a82e80(void)\nEntry: 00a82e80\nBody: 00a82e80 - 00a82e9d",
+      "apply": "Successfully set prototype for function at 00a82e80 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a82e80 at 00a82e80\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a82e80(void * self, void * unused_edx, uint flags)\nEntry: 00a82e80\nBody: 00a82e80 - 00a82e9d",
+      "readback_verified": true,
+      "after_annotation": "Function: CG_scalar_deleting_dtor_00a82e80 at 00a82e80\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a82e80(void * self, void * unused_edx, uint flags)\nEntry: 00a82e80\nBody: 00a82e80 - 00a82e9d",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a82b70",
+      "name": "BSP_SoundSampleCache_RemoveByPointer",
+      "proposed": "void __fastcall BSP_SoundSampleCache_RemoveByPointer(void* self, void* unused_edx, void* sample)",
+      "before": "Function: FUN_00a82b70 at 00a82b70\nSignature: undefined FUN_00a82b70(void)\nEntry: 00a82b70\nBody: 00a82b70 - 00a82bf4",
+      "apply": "Successfully set prototype for function at 00a82b70 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSampleCache_RemoveByPointer at 00a82b70\nSignature: void __fastcall BSP_SoundSampleCache_RemoveByPointer(void * self, void * unused_edx, void * sample)\nEntry: 00a82b70\nBody: 00a82b70 - 00a82bf4",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSampleCache_RemoveByPointer at 00a82b70\nSignature: void __fastcall BSP_SoundSampleCache_RemoveByPointer(void * self, void * unused_edx, void * sample)\nEntry: 00a82b70\nBody: 00a82b70 - 00a82bf4",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "0093f6e0",
+      "name": "BSP_SoundSampleParameters_Reserve",
+      "proposed": "void __fastcall BSP_SoundSampleParameters_Reserve(void* self, void* unused_edx, int requested)",
+      "before": "Function: FUN_0093f6e0 at 0093f6e0\nSignature: undefined FUN_0093f6e0(void)\nEntry: 0093f6e0\nBody: 0093f6e0 - 0093f75f",
+      "apply": "Successfully set prototype for function at 0093f6e0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSampleParameters_Reserve at 0093f6e0\nSignature: void __fastcall BSP_SoundSampleParameters_Reserve(void * self, void * unused_edx, int requested)\nEntry: 0093f6e0\nBody: 0093f6e0 - 0093f75f",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSampleParameters_Reserve at 0093f6e0\nSignature: void __fastcall BSP_SoundSampleParameters_Reserve(void * self, void * unused_edx, int requested)\nEntry: 0093f6e0\nBody: 0093f6e0 - 0093f75f",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "0093f950",
+      "name": "BSP_SoundSampleParameters_Resize",
+      "proposed": "void __fastcall BSP_SoundSampleParameters_Resize(void* self, void* unused_edx, int requested)",
+      "before": "Function: FUN_0093f950 at 0093f950\nSignature: undefined FUN_0093f950(void)\nEntry: 0093f950\nBody: 0093f950 - 0093fa6f",
+      "apply": "Successfully set prototype for function at 0093f950 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSampleParameters_Resize at 0093f950\nSignature: void __fastcall BSP_SoundSampleParameters_Resize(void * self, void * unused_edx, int requested)\nEntry: 0093f950\nBody: 0093f950 - 0093fa6f",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSampleParameters_Resize at 0093f950\nSignature: void __fastcall BSP_SoundSampleParameters_Resize(void * self, void * unused_edx, int requested)\nEntry: 0093f950\nBody: 0093f950 - 0093fa6f",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7a9e0",
+      "name": "BSP_SoundSamplePointers_Reserve",
+      "proposed": "void __fastcall BSP_SoundSamplePointers_Reserve(void* self, void* unused_edx, int requested)",
+      "before": "Function: FUN_00a7a9e0 at 00a7a9e0\nSignature: undefined FUN_00a7a9e0(void)\nEntry: 00a7a9e0\nBody: 00a7a9e0 - 00a7aa3e",
+      "apply": "Successfully set prototype for function at 00a7a9e0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSamplePointers_Reserve at 00a7a9e0\nSignature: void __fastcall BSP_SoundSamplePointers_Reserve(void * self, void * unused_edx, int requested)\nEntry: 00a7a9e0\nBody: 00a7a9e0 - 00a7aa3e",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSamplePointers_Reserve at 00a7a9e0\nSignature: void __fastcall BSP_SoundSamplePointers_Reserve(void * self, void * unused_edx, int requested)\nEntry: 00a7a9e0\nBody: 00a7a9e0 - 00a7aa3e",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00a7b3d0",
+      "name": "BSP_SoundSamplePointers_Resize",
+      "proposed": "void __fastcall BSP_SoundSamplePointers_Resize(void* self, void* unused_edx, int requested)",
+      "before": "Function: FUN_00a7b3d0 at 00a7b3d0\nSignature: undefined FUN_00a7b3d0(void)\nEntry: 00a7b3d0\nBody: 00a7b3d0 - 00a7b41f",
+      "apply": "Successfully set prototype for function at 00a7b3d0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundSamplePointers_Resize at 00a7b3d0\nSignature: void __fastcall BSP_SoundSamplePointers_Resize(void * self, void * unused_edx, int requested)\nEntry: 00a7b3d0\nBody: 00a7b3d0 - 00a7b41f",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_SoundSamplePointers_Resize at 00a7b3d0\nSignature: void __fastcall BSP_SoundSamplePointers_Resize(void * self, void * unused_edx, int requested)\nEntry: 00a7b3d0\nBody: 00a7b3d0 - 00a7b41f",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00bef100",
+      "name": "BSP_TextScanner_ReadInteger",
+      "proposed": "int __fastcall BSP_TextScanner_ReadInteger(void* self, void* unused_edx, void* success)",
+      "before": "Function: FUN_00bef100 at 00bef100\nSignature: undefined FUN_00bef100(void)\nEntry: 00bef100\nBody: 00bef100 - 00bef165",
+      "apply": "Successfully set prototype for function at 00bef100 with __fastcall calling convention",
+      "after": "Function: BSP_TextScanner_ReadInteger at 00bef100\nSignature: int __fastcall BSP_TextScanner_ReadInteger(void * self, void * unused_edx, void * success)\nEntry: 00bef100\nBody: 00bef100 - 00bef165",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_TextScanner_ReadInteger at 00bef100\nSignature: int __fastcall BSP_TextScanner_ReadInteger(void * self, void * unused_edx, void * success)\nEntry: 00bef100\nBody: 00bef100 - 00bef165",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00bef170",
+      "name": "BSP_TextScanner_ReadFloat",
+      "proposed": "float __fastcall BSP_TextScanner_ReadFloat(void* self, void* unused_edx, void* success)",
+      "before": "Function: FUN_00bef170 at 00bef170\nSignature: undefined FUN_00bef170(void)\nEntry: 00bef170\nBody: 00bef170 - 00bef1d5",
+      "apply": "Successfully set prototype for function at 00bef170 with __fastcall calling convention",
+      "after": "Function: BSP_TextScanner_ReadFloat at 00bef170\nSignature: float __fastcall BSP_TextScanner_ReadFloat(void * self, void * unused_edx, void * success)\nEntry: 00bef170\nBody: 00bef170 - 00bef1d5",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_TextScanner_ReadFloat at 00bef170\nSignature: float __fastcall BSP_TextScanner_ReadFloat(void * self, void * unused_edx, void * success)\nEntry: 00bef170\nBody: 00bef170 - 00bef1d5",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "008d4390",
+      "name": "BSP_TextScanner_AcceptKeyword",
+      "proposed": "byte __fastcall BSP_TextScanner_AcceptKeyword(void* self, void* unused_edx, char* keyword)",
+      "before": "Function: FUN_008d4390 at 008d4390\nSignature: undefined FUN_008d4390(void)\nEntry: 008d4390\nBody: 008d4390 - 008d43b9",
+      "apply": "Successfully set prototype for function at 008d4390 with __fastcall calling convention",
+      "after": "Function: BSP_TextScanner_AcceptKeyword at 008d4390\nSignature: byte __fastcall BSP_TextScanner_AcceptKeyword(void * self, void * unused_edx, char * keyword)\nEntry: 008d4390\nBody: 008d4390 - 008d43b9",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_TextScanner_AcceptKeyword at 008d4390\nSignature: byte __fastcall BSP_TextScanner_AcceptKeyword(void * self, void * unused_edx, char * keyword)\nEntry: 008d4390\nBody: 008d4390 - 008d43b9",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "008d5b20",
+      "name": "BSP_TextScanner_UnknownTokenNoop",
+      "proposed": "void __cdecl BSP_TextScanner_UnknownTokenNoop(void)",
+      "before": "Function: FUN_008d5b20 at 008d5b20\nSignature: undefined FUN_008d5b20(void)\nEntry: 008d5b20\nBody: 008d5b20 - 008d5b42",
+      "apply": "Successfully set prototype for function at 008d5b20 with __cdecl calling convention",
+      "after": "Function: BSP_TextScanner_UnknownTokenNoop at 008d5b20\nSignature: void __cdecl BSP_TextScanner_UnknownTokenNoop(void)\nEntry: 008d5b20\nBody: 008d5b20 - 008d5b42",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_TextScanner_UnknownTokenNoop at 008d5b20\nSignature: void __cdecl BSP_TextScanner_UnknownTokenNoop(void)\nEntry: 008d5b20\nBody: 008d5b20 - 008d5b42",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00bef220",
+      "name": "BSP_TextScanner_Destruct",
+      "proposed": "void __fastcall BSP_TextScanner_Destruct(void* self)",
+      "before": "Function: FUN_00bef220 at 00bef220\nSignature: undefined FUN_00bef220(void)\nEntry: 00bef220\nBody: 00bef220 - 00bef2d0",
+      "apply": "Successfully set prototype for function at 00bef220 with __fastcall calling convention",
+      "after": "Function: BSP_TextScanner_Destruct at 00bef220\nSignature: void __fastcall BSP_TextScanner_Destruct(void * self)\nEntry: 00bef220\nBody: 00bef220 - 00bef2d0",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_TextScanner_Destruct at 00bef220\nSignature: void __fastcall BSP_TextScanner_Destruct(void * self)\nEntry: 00bef220\nBody: 00bef220 - 00bef2d0",
+      "verified_after_annotation": true
+    },
+    {
+      "address": "00426520",
+      "name": "BSP_NativeStringVector_Reserve",
+      "proposed": "void __fastcall BSP_NativeStringVector_Reserve(void* self, void* unused_edx, int requested)",
+      "before": "Function: FUN_00426520 at 00426520\nSignature: undefined FUN_00426520(void)\nEntry: 00426520\nBody: 00426520 - 00426641",
+      "apply": "Successfully set prototype for function at 00426520 with __fastcall calling convention",
+      "after": "Function: BSP_NativeStringVector_Reserve at 00426520\nSignature: void __fastcall BSP_NativeStringVector_Reserve(void * self, void * unused_edx, int requested)\nEntry: 00426520\nBody: 00426520 - 00426641",
+      "readback_verified": true,
+      "after_annotation": "Function: BSP_NativeStringVector_Reserve at 00426520\nSignature: void __fastcall BSP_NativeStringVector_Reserve(void * self, void * unused_edx, int requested)\nEntry: 00426520\nBody: 00426520 - 00426641",
+      "verified_after_annotation": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a84d70",
+        "prototype": "void* __fastcall BSP_SoundSample_Construct(void* self, void* unused_edx, void* name)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a84d70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a83850",
+        "prototype": "void __fastcall BSP_SoundSample_LoadEventGroup(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a83850 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a828b0",
+        "prototype": "void __fastcall BSP_SoundSample_ReadEventParameters(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a828b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a82c60",
+        "prototype": "void __fastcall BSP_SoundSample_Destruct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a82c60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a82e80",
+        "prototype": "void* __fastcall CG_scalar_deleting_dtor_00a82e80(void* self, void* unused_edx, unsigned int flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a82e80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a82b70",
+        "prototype": "void __fastcall BSP_SoundSampleCache_RemoveByPointer(void* self, void* unused_edx, void* sample)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a82b70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0093f6e0",
+        "prototype": "void __fastcall BSP_SoundSampleParameters_Reserve(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0093f6e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0093f950",
+        "prototype": "void __fastcall BSP_SoundSampleParameters_Resize(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0093f950 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7a9e0",
+        "prototype": "void __fastcall BSP_SoundSamplePointers_Reserve(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7a9e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a7b3d0",
+        "prototype": "void __fastcall BSP_SoundSamplePointers_Resize(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a7b3d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bef100",
+        "prototype": "int __fastcall BSP_TextScanner_ReadInteger(void* self, void* unused_edx, void* success)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bef100 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bef170",
+        "prototype": "float __fastcall BSP_TextScanner_ReadFloat(void* self, void* unused_edx, void* success)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bef170 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "008d4390",
+        "prototype": "byte __fastcall BSP_TextScanner_AcceptKeyword(void* self, void* unused_edx, char* keyword)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 008d4390 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "008d5b20",
+        "prototype": "void __cdecl BSP_TextScanner_UnknownTokenNoop(void)",
+        "calling_convention": "__cdecl"
+      },
+      "result": "Successfully set prototype for function at 008d5b20 with __cdecl calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bef220",
+        "prototype": "void __fastcall BSP_TextScanner_Destruct(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bef220 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00426520",
+        "prototype": "void __fastcall BSP_NativeStringVector_Reserve(void* self, void* unused_edx, int requested)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00426520 with __fastcall calling convention"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}
