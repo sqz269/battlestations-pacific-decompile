@@ -1,0 +1,18 @@
+[
+  {
+    "address": "00b6db70",
+    "before": {
+      "address": "00b6db70",
+      "function_name": "BSP_Transform_RefreshWorldMatrix",
+      "comment": "[BSP reconstruction 00b6db70]\nTyped camera world/view cache slice in src/camera_transform.cpp. World00b6db70: ECX/RET, parent+30 world-valid+5C bit2, recurse missing parent then affine local+B0 * parentWorld+F0; no parent x87copy local->world; setsbit2. View00b6fcb0: ECX/RET/EAX+60, validbit8; ensureworld, disjoint inverse temp then x87copy. Combined00b70490: ECX/RET/EAX+220, projection flags+2F0 bit10; view*projection then x87copy/setbit10. Affine00b6d4d0 ECXdst EDXleft stackright RET4, EAXright; unsafe output alias, forceslastcolumn0001. Copy004134f0 ECXdst stacksrc RET4/EAXdst,16sequentialx87pairs. Existing two-node parent camera draw passes; affine16words match isolatednativefixture. See reports/camera_transform.json. Constructor/lifetime/dirty propagation and native object ABI remain unported."
+    },
+    "after": {
+      "address": "00b6db70",
+      "evidence": "Complete 80-byte B6DB70 raw world refresh in src/native_camera_world.cpp. Capture actual parent+30 once; test parent low flags byte+5C bit2, recurse if missing, then use captured parent+F0 for full affine composition of own local+B0 into own world+F0. Null parent uses full raw x87 copy. OR current own flags DWORD with2 only after provider returns. No own-cache early return, cycle repair, pointer swizzle or snapshot. Public void fastcall retains original ECX/RET and incidental EAX in machine code. Primary verified48 worker artifacts plus compiler and20 current files (19 literal,one only CRLF/LF), nine fresh guarded spans772 bytes and8 seeds. Strict main Win32/two existing CTests passed. Full actual main COFF body80 plus copy103/affine339 providers equals522 original bytes/181 instructions after only3 direct calls and1 equal read-only constant relocation;3 exact archive members frozen. Original/new-entry runtime, linked/runtime byte fixture and gameplay are not claimed. Current NativeNodeStorage/NativeCameraOwner hierarchy fields contain companion pointers and remain incompatible; documented canonical raw-word/accessor/reverse-identity migration is pending. reports/native_camera_world_audit.json",
+      "old_name": "BSP_Transform_RefreshWorldMatrix",
+      "name": "BSP_Transform_RefreshWorldMatrix",
+      "saved_body_end": "00b6dbbf"
+    },
+    "status": "applied"
+  }
+]

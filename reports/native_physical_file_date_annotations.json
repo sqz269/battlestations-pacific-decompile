@@ -1,0 +1,250 @@
+[
+  {
+    "address": "00bf3a80",
+    "before": {
+      "address": "00bf3a80",
+      "function_name": "BSP_PhysicalDirectory_GetFileDate",
+      "comment": "[BSP reconstruction 00bf3a80]\nHypothesis, not a recovered symbol. Read global VFS+78 date-disabled flag; zero if set. Copy name, invoke existing existence/path replacement+18, query actual last-write file attributes and UTC SYSTEMTIME. Output year/month/day/seconds/milliseconds. OS attributes miss gives zero. Failed time conversion is explicit host rejection of native unspecified words. Saved Ghidra body split from existingBF3ACC continuation; full raw path inspected. docs/SOUND_RESOURCE_RUNTIME.md."
+    },
+    "after": {
+      "address": "00bf3a80",
+      "evidence": "Full399-byte physical date body, including saved BF3ACC continuation. Read actual current109CEEC manager+78; disabled gives descending zeros without provider/name reads. Enabled path copies name before cleanup ownership, selects current provider+18, ignores replacement AL, uses real GetFileAttributesExA/FileTimeToSystemTime and ignores conversion BOOL. Only SYSTEMTIME seconds/milliseconds initialized; other conversion-failure words unspecified. Publish output ascending, capture copied data after output+C before output+10, then release using current length+1. Established D69168 physical profile only: reached current slots+10 BF3F70,+18 BF39C0,+1C BF3970. Unknown selector raises a documented SOURCE boundary, not recovered native behavior. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "BSP_PhysicalDirectory_GetFileDate",
+      "name": "BSP_PhysicalDirectory_GetFileDate",
+      "saved_body_end": "00bf3acb"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bf39c0",
+    "before": {
+      "address": "00bf39c0",
+      "function_name": "FUN_00bf39c0"
+    },
+    "after": {
+      "address": "00bf39c0",
+      "evidence": "Full188-byte replacement body. Read current provider+10 existence; false leaves name unchanged. On true read current+1C builder, assign from returned pointer and destroy hidden temporary. No cleanup before builder returns. Established D69168 physical profile only: reached current slots+10 BF3F70,+18 BF39C0,+1C BF3970. Unknown selector raises a documented SOURCE boundary, not recovered native behavior. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "FUN_00bf39c0",
+      "name": "BSP_PhysicalDirectory_ReplacePathIfExists",
+      "saved_body_end": "00bf3a7b"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bf3970",
+    "before": {
+      "address": "00bf3970",
+      "function_name": "BSP_PhysicalDirectory_BuildPath",
+      "comment": "[BSP reconstruction 00bf3970]\nECX provider; output/suffix stack RET8 EAX output. Concatenates unchanged root+8 and suffix004261a0; converts slash to backslash only starting at original root length. No inserted separator or dot-segment canonicalization. docs/PHYSICAL_DIRECTORY.md."
+    },
+    "after": {
+      "address": "00bf3970",
+      "evidence": "Full65-byte path builder. Concatenate actual root+8 and suffix without inserting separator, reread root length, convert slash only in suffix region with current output length/data rereads. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "BSP_PhysicalDirectory_BuildPath",
+      "name": "BSP_PhysicalDirectory_BuildPath",
+      "saved_body_end": "00bf39b0"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bf3f70",
+    "before": {
+      "address": "00bf3f70",
+      "function_name": "BSP_PhysicalDirectory_Exists",
+      "comment": "[BSP reconstruction 00bf3f70]\nECX provider; suffix stack RET4 AL bool. Empty false; equal-length _stricmp last-success+20 returns true without OS query. Flag+28 nonzero accepts nonempty, nonzero index count+34 uses separate tree. Supported flagfalse/indexempty path builds physical path and GetFileAttributesA!=FFFFFFFF (directories accepted); success caches suffix, failure clears. Typed fragment excludes indexed/accept-all modes.\n\n[BSP reconstruction 00bf3f70] update\nECX provider; suffix stack RET4 AL bool. Emptyfalse, equal-length _stricmp lastsuccess+20 true; flag+28 nonzero accepts anynonempty suffix withoutOScall/cacheupdate. Emptyindexcount+34 ordinarypath GetFileAttributesA!=FFFFFFFF accepts directories, cachesontrue/clearsonfalse. Physicalfactory selects flag1 forvirtualpersistent_data. Typedbothflagmodes, indexedmode omitted; docs/PROVIDER_FACTORY_STARTUP.md."
+    },
+    "after": {
+      "address": "00bf3f70",
+      "evidence": "Full586-byte physical existence body. Empty/cache/accept-all ordering; build actual path then reread accept/count. Empty index uses real attributes and cache update. Nonempty index derives basename, consumes actual raw tree and duplicate-name iteration, no OS query or cache write. Established D69168 physical profile only: reached current slots+10 BF3F70,+18 BF39C0,+1C BF3970. Unknown selector raises a documented SOURCE boundary, not recovered native behavior. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "BSP_PhysicalDirectory_Exists",
+      "name": "BSP_PhysicalDirectory_Exists",
+      "saved_body_end": "00bf41b9"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bf36d0",
+    "before": {
+      "address": "00bf36d0",
+      "function_name": "FUN_00bf36d0"
+    },
+    "after": {
+      "address": "00bf36d0",
+      "evidence": "Full102-byte actual physical-index find. Lower_bound before null-owner validation, current head comparison and fallback reread, captured owner/node before output publication. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "FUN_00bf36d0",
+      "name": "BSP_PhysicalDirectory_FindIndexedName",
+      "saved_body_end": "00bf3735"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bda260",
+    "before": {
+      "address": "00bda260",
+      "function_name": "FUN_00bda260"
+    },
+    "after": {
+      "address": "00bda260",
+      "evidence": "Full83-byte actual physical-index lower_bound. Current head/root, node nil byte+1D, key+C/+10 and current left/right links; shared raw443D00 comparator. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "FUN_00bda260",
+      "name": "BSP_PhysicalDirectory_LowerBoundIndexedName",
+      "saved_body_end": "00bda2b2"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bd9860",
+    "before": {
+      "address": "00bd9860",
+      "function_name": "FUN_00bd9860"
+    },
+    "after": {
+      "address": "00bd9860",
+      "evidence": "Full99-byte actual physical-index iterator successor. Preserve each parent-climb node store. Nil node invokes returning CRT as tail-return; other owner checks continue after return. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "FUN_00bd9860",
+      "name": "BSP_PhysicalDirectory_AdvanceIndexIterator",
+      "saved_body_end": "00bd98c2"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bd92c0",
+    "before": {
+      "address": "00bd92c0",
+      "function_name": "STL_inst_00bd92c0"
+    },
+    "after": {
+      "address": "00bd92c0",
+      "evidence": "Full41-byte physical-index iterator equality. Validate owner identities through returning CRT boundary before comparing current node words; retain existing STL instantiation name. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "STL_inst_00bd92c0",
+      "name": "STL_inst_00bd92c0",
+      "saved_body_end": "00bd92e8"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00435c40",
+    "before": {
+      "address": "00435c40",
+      "function_name": "BSP_NativeString_EqualsInsensitive",
+      "comment": "[BSP reconstruction 00435c40]\nHypothesis, not a recovered symbol. __thiscall bool over two native strings: length equality first, then the null-size special cases, then __stricmp on the data. 00aa09d0 uses it at 00aa0a03 to skip the reload when the requested language equals the stored one. Evidence: docs/APP_INIT_LOCALE.md; reports/app_init_locale.json."
+    },
+    "after": {
+      "address": "00435c40",
+      "evidence": "Full89-byte raw-header equality. Recorded lengths must match; zero lengths equal, nonempty equal lengths use current host_stricmp. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "BSP_NativeString_EqualsInsensitive",
+      "name": "BSP_NativeString_EqualsInsensitive",
+      "saved_body_end": "00435c98"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00449af0",
+    "before": {
+      "address": "00449af0",
+      "function_name": "BSP_NativeString_NotEqualCaseInsensitive",
+      "comment": "[BSP reconstruction 00449af0]\nProvisional descriptive wrapper name, not recovered symbol or CRT port. Complete bool/AL __thiscall(left NativeString,right NativeString), RET4; body00449af0-00449b3c. If left length0 return right length!=0; if right length0 return true; otherwise call existing CRT __stricmp00bf7fbf and return nonzero. Stored lengths need not match. Analyzed only; voice fade005b8cad uses fixed-empty RHS, so its caller specializes to left.length()!=0 without CRT call. Existing __stricmp name retained; docs/VOICE_FADE_UPDATE.md. Ghidra read-only.\n\n[BSP reconstruction 00449af0] update\nProvisional descriptive wrapper name, not recovered symbol or CRT port. Complete bool/AL __thiscall(left NativeString,right NativeString), RET4; body00449af0-00449b3c. If left length0 return right length!=0; if right length0 return true; otherwise call existing CRT __stricmp00bf7fbf and return nonzero. Stored lengths need not match. Analyzed only; voice fade005b8cad uses fixed-empty RHS, so its caller specializes to left.length()!=0 without CRT call. Existing __stricmp name retained; docs/VOICE_FADE_UPDATE.md. Ghidra read-only. | Complete stored-length-zero gates followed by host CRT _stricmp !=0. Existing descriptive name retained; no comparator stub or CRT port. Complete capped assembly inspected; see reports/panel_sequence.json."
+    },
+    "after": {
+      "address": "00449af0",
+      "evidence": "Full77-byte raw-header inequality. Gate zero lengths then compare current nonempty C strings; no nonzero stored-length tie-break. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "BSP_NativeString_NotEqualCaseInsensitive",
+      "name": "BSP_NativeString_NotEqualCaseInsensitive",
+      "saved_body_end": "00449b3c"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00467cf0",
+    "before": {
+      "address": "00467cf0",
+      "function_name": "FUN_00467cf0"
+    },
+    "after": {
+      "address": "00467cf0",
+      "evidence": "Full95-byte raw-header reverse search. Unsigned limit minimum, wrapping subtraction, signed-positive position loop; position zero is never tested. Current headers reread before CRT strncmp. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "FUN_00467cf0",
+      "name": "BSP_NativeString_ReverseFindHeader",
+      "saved_body_end": "00467d4e"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004261a0",
+    "before": {
+      "address": "004261a0",
+      "function_name": "BSP_NativeString_Concat",
+      "comment": "[BSP reconstruction 004261a0]\nHypothesis, not a recovered symbol. thiscall(lhs, dst, rhs) with lhs in ECX and dst then rhs pushed right to left (008f7e84..008f7e9a), returns dst, SEH frame at 00c5e849. Clears dst, copies lhs into it via BSP_NativeString_Resize(len,preserve=1) unless dst aliases lhs, then appends rhs. Builds the options.txt directory path in BSP_Startup_ResolveLanguage. docs/WINMAIN_STARTUP.md\n\n[BSP reconstruction 004261a0] update\nHypothesis, not a recovered symbol. thiscall(lhs, dst, rhs) with lhs in ECX and dst then rhs pushed right to left (008f7e84..008f7e9a), returns dst, SEH frame at 00c5e849. Clears dst, copies lhs into it via BSP_NativeString_Resize(len,preserve=1) unless dst aliases lhs, then appends rhs. Builds the options.txt directory path in BSP_Startup_ResolveLanguage. docs/WINMAIN_STARTUP.md | Descriptive role hypothesis; ECX=left string; destination*, right* stack; EAX=destination; RET8. Preserves existing correct name. Clears destination even on alias, copies current left through resize, captures append count and old length before resize, reloads data pointers. C++ failure cleanup disarms outer ownership; native SEH not claimed. See docs/MESSAGE_RECORD_RESOLVER.md and reports/message_record_resolver.json. Names are not recovered symbols; new C++ interface, not native ABI."
+    },
+    "after": {
+      "address": "004261a0",
+      "evidence": "Full166-byte raw-header concatenation. Clear output even on identity; complete initial copy before arming cleanup, then append captured length with native wrapping and current data addresses. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "BSP_NativeString_Concat",
+      "name": "BSP_NativeString_Concat",
+      "saved_body_end": "00426245"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00425f40",
+    "before": {
+      "address": "00425f40",
+      "function_name": "FUN_00425f40"
+    },
+    "after": {
+      "address": "00425f40",
+      "evidence": "Full53-byte raw-header assignment. Preserve identity; otherwise resize with preservation, reread source length and copy current destination count. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "FUN_00425f40",
+      "name": "BSP_NativeString_AssignHeader",
+      "saved_body_end": "00425f74"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0041e350",
+    "before": {
+      "address": "0041e350",
+      "function_name": "BSP_NativeString_AssignCString",
+      "comment": "[BSP reconstruction 0041e350]\nHypothesis, not a recovered symbol. thiscall(this, const char*), returns this. Null source assigns length 0. Calls BSP_NativeString_Resize(len, preserve=0) then copies exactly length bytes, so unlike the construct-from-C-string helper 0041e870 it does not copy the terminator. Assignment used for the resolved language name at 008f808b and 008f8175. docs/WINMAIN_STARTUP.md\n\n[BSP reconstruction 0041e350] update\nHypothesis, not a recovered symbol. thiscall(this, const char*), returns this. Null source assigns length 0. Calls BSP_NativeString_Resize(len, preserve=0) then copies exactly length bytes, so unlike the construct-from-C-string helper 0041e870 it does not copy the terminator. Assignment used for the resolved language name at 008f808b and 008f8175. docs/WINMAIN_STARTUP.md | Hypothesis, not recovered symbol. ECX destination8h; nullable C-string pointer stack; RET4; EAX destination. Null source length0; resize without preservation; copy current header length if data nonnull, without copying terminator. Equal-length resize remains a no-op. docs/XLIVE_UPDATES.md; reports/xlive_updates.json."
+    },
+    "after": {
+      "address": "0041e350",
+      "evidence": "Full69-byte nullable C-string assignment. Inline byte scan, resize preserve=false, copy current length when destination data exists. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "BSP_NativeString_AssignCString",
+      "name": "BSP_NativeString_AssignCString",
+      "saved_body_end": "0041e394"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0041e870",
+    "before": {
+      "address": "0041e870",
+      "function_name": "BSP_NativeString_Assign",
+      "comment": "[BSP reconstruction 0041e870]\nHypothesis, not a recovered symbol. Direct callee of BSP_Application_Initialize (0073d410); analysis-only packet app_initialize_map, no reconstruction. 1230 callers; body is BSP_NativeString_Resize followed by _memcpy. Used throughout BSP_Application_Initialize to build the mount roots and the datatable paths immediately before each consuming call. Evidence: docs/APP_INITIALIZE_MAP.md; reports/app_initialize_map.json.\n\n[BSP reconstruction 0041e870] update\nHypothesis, not a recovered symbol. Packet app_init_alloc_string_helpers, assembly-verified. __thiscall, ECX 8-byte string, stack (const char* text), RET 4, returns this in EAX. This is a CONSTRUCTOR body, not an assignment: 0041e87a zeroes length and data before doing anything, so calling it on a live string abandons that buffer. strlen inline, then BSP_NativeString_Resize(len, preserve=1), then, only if data is non-null, memcpy of len+1 bytes, which rewrites the terminator Resize already placed. An empty text leaves data null because Resize(0) from length 0 is a no-op. 1230 callers. The name is kept for continuity with docs/APP_INITIALIZE_MAP.md; BSP_NativeString_ConstructFromCString would describe it better. Evidence: docs/APP_INIT_ALLOC_STRINGS.md."
+    },
+    "after": {
+      "address": "0041e870",
+      "evidence": "Full83-byte C-string construction. Clear header before nonnull scan; resize preserve=true; copy current length+1 without releasing abandoned pre-constructor buffer. Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "BSP_NativeString_Assign",
+      "name": "BSP_NativeString_Assign",
+      "saved_body_end": "0041e8c2"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bf3acc",
+    "before": {
+      "address": "00bf3acc",
+      "function_name": "FUN_00bf3acc"
+    },
+    "after": {
+      "address": "00bf3acc",
+      "evidence": "Enabled continuation of the complete BF3A80 physical date body, reached by JZ atBF3AA5 after shared SEH prologue. This is not an independent callable function. Preserve the existing saved function split and prior analysis; complete source and399-byte original evidence are under BF3A80.  Primary verified28 worker pins and16 literal current source/header/doc files,29 fresh guarded original spans3104 bytes and8 seeds. Strict main Win32/two existing CTests passed. Unchanged actual main-library fixture passes18 original comparisons over8 bodies667 bytes (7 owned nonallocating helpers plus shared443D00), full18432 same-address arena bytes and returns, including returning CRT continuation. Thirteen additional actual owning-pool/Win32/index checks pass;8 allocating/physical owned bodies are not original differential-tested. Exact main library7 archive objects and225 complete linked COFF sections18170 bytes797 relocations verified, including all f/i map flags. Thirteen owned separate entries retained; CString adapters are inlined into retained sections and their full object is frozen. Original external CRT entries use current host CRT; no original locale/nativeSEH, forced time-conversion failure, runtime code postimages, index population, arbitrary provider profile or gameplay claim. reports/native_physical_file_date_audit.json",
+      "old_name": "FUN_00bf3acc",
+      "name": "BSP_PhysicalDirectory_GetFileDate_EnabledContinuation",
+      "saved_body_end": "00bf3c0e"
+    },
+    "status": "applied"
+  }
+]

@@ -41,8 +41,9 @@ incidental high EAX bits on Boolean returns are not a C++ contract.
 | 41E870 | 83 | ECX destination; stack nonnull C string; EAX destination; RET4 |
 
 These fifteen complete spans total **2,195 bytes**. BF3A80 crosses the saved
-BF3ACC function split. BF39C0 still has no saved function record; its full body
-ends at BF3A7B, including RET4. No function was created or annotated here.
+BF3ACC function split. At worker handoff BF39C0 had no saved function record; its full body ends
+at BF3A7B, including RET4. The primary subsequently defined it and annotated
+all entries; BF3A80/BF3ACC remain two saved records for one complete body.
 
 ## Storage and dependency contract
 
@@ -173,3 +174,34 @@ metadata. The upstream BDD340/BD9E80 actual visitor and manager traversal remain
 separate integration work. These physical functions do not claim additional
 provider profiles, general VFS closure, index construction or MSAR startup
 reachability.
+
+
+## Primary main-library validation
+
+All fifteen source entries are registered in main for the qualified domains
+above. Strict Win32 compilation and both existing CTests passed, and eight
+fresh native seeds matched. The primary verified all 28 worker pins and
+sixteen literal current source/header/doc files. Twenty-nine guarded spans
+again matched 3,104 bytes, including all 2,195 owned original bytes.
+
+The unchanged probe linked frozen actual main library
+`6eb2fce9d811380365d3031d51de8b82a0f98bcf7a997c3695c7c231295d9d7a`.
+Its eighteen original comparisons passed, covering seven owned helpers and
+shared443D00, with 18,432 same-address arena bytes plus returns. Thirteen
+actual pool/Win32/index checks also passed. The fixture file was removed.
+
+Seven exact archive members and 225 complete COFF sections were checked
+against linked bytes: 18,170 bytes and 797 relocations. The map parser
+accounts for both f/i flags, including inline symbols. Thirteen separate
+owned entries are retained; the two CString entries are inlined into retained
+code, and the full actual object is frozen. Eight allocating/physical owned
+bodies remain outside original-body differential coverage. No forced time
+conversion failure, native SEH or runtime code postimages are claimed.
+
+The read-only bundle is `local/physical_date_primary/`, manifest SHA256
+`86b87677943c913d5b2022152a50838f593dfd3b7acef4dc52c424d7438dd334`.
+BF39C0 was defined from its complete bytes. The existing BF3A80/BF3ACC split
+was preserved, with the latter named as an enabled continuation rather than
+a separate callable routine. Existing library/descriptive names and comments
+were preserved; reviewed evidence was appended and saved, all affected
+exports refreshed, and complete source records registered.

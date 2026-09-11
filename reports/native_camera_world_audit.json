@@ -1,6 +1,6 @@
 {
   "packet": "native_camera_world1",
-  "status": "complete_raw_body_and_full_COFF_provider_proof_strict_build_existing_tests_passed_companion_integration_explicitly_pending",
+  "status": "complete_raw_world_primary_main_Win32_full_COFF_provider_proof_companion_integration_pending",
   "utc": "2026-09-11T17:22:58.627178+00:00",
   "base_commit": "04fd928ecdd23f4387ccc57c7e70063dd0cdf59e",
   "dependency_cherry_pick": "04fd928e: exact matrix3 source397c86d7 because initial main95e9396b lacked it",
@@ -884,5 +884,92 @@
       "bytes": 6498,
       "sha256": "1e335b70d73e508c6038c58b3dee1b26845afbe82697b05b9a0a759c1ae68854"
     }
-  ]
+  ],
+  "primary_integration": {
+    "seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_world_primary\\sealed.json",
+      "bytes": 10248,
+      "sha256": "0f27423f70503ae4f803ff3c10da72b0e9100aa834824aa9751b9ec63292fea7"
+    },
+    "preparation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_world_primary\\preparation.json",
+      "bytes": 11596,
+      "sha256": "cb4df1b6069329a98545d93c497106efb99502a9e908ce601cf6dca44eb55c79"
+    },
+    "main_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_world_primary\\local\\camera_world\\frozen\\bsp_core.lib",
+      "bytes": 36157974,
+      "sha256": "6eb2fce9d811380365d3031d51de8b82a0f98bcf7a997c3695c7c231295d9d7a"
+    },
+    "strict_main_build_passed": true,
+    "existing_CTests": 2,
+    "native_seeds": 8,
+    "permanent_tests": false,
+    "game_validated": false,
+    "verification": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\camera_world_primary\\local\\camera_world\\object_proof.json",
+      "bytes": 16465,
+      "sha256": "2fa2066d9055a28b6d2f6db653817420d173e1dc596202a75370e0c0cc03dcd4"
+    },
+    "worker_artifacts_verified": 48,
+    "compiler_pin_verified": true,
+    "current_files": 20,
+    "literal_current_files": 19,
+    "CRLF_LF_only_current_files": 1,
+    "fresh_guarded_spans": 9,
+    "fresh_guarded_bytes": 772,
+    "owned_bytes": 80,
+    "complete_provider_bytes": 442,
+    "instructions": 181,
+    "only_direct_call_relocations": 3,
+    "only_constant_relocation": 1,
+    "exact_main_archive_members": 3,
+    "original_runtime_fixture": false,
+    "new_entry_runtime_fixture": false,
+    "linked_runtime_fixture": false,
+    "current_companion_camera_compatible": false
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "main_registered": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_camera_world_annotations.json",
+    "bytes": 2446,
+    "sha256": "99fba138bf82253fe5720a970d5dbaedc03ae809b31faaf161af90f516abfffd",
+    "project_saved": true,
+    "prior_names_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b6db70",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b6db70\\decompiled.c",
+      "bytes": 2614,
+      "sha256": "47dc7faef597a6e5b87cb3220e0a1fb879cecabb99fa1316f82834ec8488b27f"
+    }
+  ],
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CAMERA_WORLD.md",
+    "bytes": 8479,
+    "sha256": "ba6ba1703761189433b33735f507d13ee6fcbecbf0b4474c12d6b4db85c77ee9"
+  },
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b6db70",
+      "name": "refresh_native_camera_world_00b6db70",
+      "cpp_symbol": "bsp::refresh_native_camera_world_00b6db70",
+      "source": "src/native_camera_world.cpp",
+      "native_end_exclusive": "00b6dbc0",
+      "original_abi": "ECX actual raw node; no stack args; RET; incidental EAX captured parent+F0 or self+F0",
+      "status": "complete_raw_world_primary_main_Win32_full_COFF_provider_proof_companion_integration_pending",
+      "evidence": "reports/native_camera_world_audit.json",
+      "whole_original_COFF_provider_proof": true,
+      "native_differential_fixture": false,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "closure_utc": "2026-09-11T17:39:32.695827+00:00"
 }
