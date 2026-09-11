@@ -4,8 +4,10 @@
 #include "bsp/native_string.hpp"
 
 #include <array>
+#include <atomic>
 #include <cstddef>
 #include <cstdint>
+#include <new>
 
 namespace bsp {
 // Actual24h storage: vtable0, intrusive refs4, component pointer8, signed
@@ -13,8 +15,16 @@ namespace bsp {
 // No parallel vector or implicit string/reference ownership is maintained.
 struct alignas(4) GameplayEffectDefinition {
     std::array<std::byte, 0x24> native;
+    // The native constructor starts this actual atomic object at its original
+    // refs=1 write. Binding a companion only borrows it; never resets/retains.
+    // Requires construct_gameplay_effect_definition_00870256_fragment first.
+    std::atomic<std::int32_t>& references_04() noexcept {
+        return *std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(native.data() + 4));
+    }
 };
 static_assert(sizeof(GameplayEffectDefinition) == 0x24);
+static_assert(sizeof(std::atomic<std::int32_t>) == 4);
+static_assert(std::atomic<std::int32_t>::is_always_lock_free);
 struct GameplayEffectComponentLifetime {
     virtual ~GameplayEffectComponentLifetime() = default;
     // Called only after real InterlockedDecrement(actual component+4)==0.

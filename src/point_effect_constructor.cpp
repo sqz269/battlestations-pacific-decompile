@@ -36,6 +36,14 @@ NativePointEffectReference& construct_point_effect_instance_008680b0(void* raw,
     std::uint32_t third_word, const CameraMatrix& matrix,
     std::uint8_t transform_byte, std::uint8_t option_byte, std::uint32_t tail_word,
     const NativeString& name, PointEffectConstructorBindings& bindings) {
+    return construct_point_effect_instance_008680b0(raw, consumed_template, parent,
+        third_word, matrix, transform_byte, option_byte, tail_word, &name, bindings);
+}
+NativePointEffectReference& construct_point_effect_instance_008680b0(void* raw,
+    RenderCommandReference* consumed_template, CameraTransform* parent,
+    std::uint32_t third_word, const CameraMatrix& matrix,
+    std::uint8_t transform_byte, std::uint8_t option_byte, std::uint32_t tail_word,
+    const void* name, PointEffectConstructorBindings& bindings) {
     PointEffectTemplateArgument argument(consumed_template);
     try {
         auto& effect = initialize_point_effect_instance_008680d9(raw, argument,

@@ -66,6 +66,13 @@ void lowercase_native_string_header_004bcc00(void* actual_header) noexcept;
 void resize_native_string_header_0041dd40(void* actual_header,
     NativeStringStorage& storage, std::uint32_t length, bool preserve);
 
+// Existing BE0A30 copy fragment against actual8h headers, without starting a
+// NativeString object or copying a source header. Self-copy returns; otherwise
+// resize from source length, then reload source length/data and destination
+// length/data AFTER allocation callbacks. A zero-byte memcpy is omitted.
+void copy_native_string_header_00be0a30_fragment(void* actual_destination,
+    NativeStringStorage&, const void* actual_source);
+
 // Exact layout of the native eight-byte string. This host wrapper has no
 // implicit destructor cleanup. Its owner calls release_to, resize(0), or the
 // actual-header destruction body before discarding owned storage.

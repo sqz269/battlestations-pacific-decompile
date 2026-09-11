@@ -6991,6 +6991,27 @@
       ],
       "integration_report": "reports/sound_instance.json",
       "discovery_evidence": "docs/SOUND_INSTANCE.md"
+    },
+    {
+      "id": "native_physical_pool_acquire4",
+      "packet": "native_physical_pool_acquire4",
+      "state": "four_complete_raw_pool_entries_main_Win32_original_pool_trace_and_full_COFF_verified",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b4ac60",
+        "00b48df0",
+        "00b4b350",
+        "00b4b360"
+      ],
+      "code_ownership": [
+        "src/native_physical_pool_acquire.cpp",
+        "include/bsp/native_physical_pool_acquire.hpp",
+        "docs/NATIVE_PHYSICAL_POOL_ACQUIRE.md",
+        "reports/native_physical_pool_acquire_audit.json"
+      ],
+      "evidence": "reports/native_physical_pool_acquire_audit.json"
     }
   ],
   "snapshot_after_analysis": {

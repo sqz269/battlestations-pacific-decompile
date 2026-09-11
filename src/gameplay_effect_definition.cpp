@@ -47,9 +47,14 @@ GameplayEffectDefinition& construct_gameplay_effect_definition_00870256_fragment
     GameplayEffectDefinition& owner) noexcept {
     auto* data = owner.native.data();
     write<std::uint32_t>(data, 0, 0x00ceb130);
-    write<std::int32_t>(data, 4, 1);
+    // Start the actual count's C++ lifetime at the native's one refs=1 store.
+    // All existing raw Interlocked paths address this SAME four-byte word.
+    ::new (static_cast<void*>(data + 4)) std::atomic<std::int32_t>(1);
     write<std::uint32_t>(data, 0, 0x00d0da58);
-    for (const auto offset : {8u, 0xcu, 0x10u, 0x1cu, 0x20u})
+    ::new (static_cast<void*>(data + 8)) void**(nullptr);
+    ::new (static_cast<void*>(data + 0xc)) std::int32_t(0);
+    ::new (static_cast<void*>(data + 0x10)) std::int32_t(0);
+    for (const auto offset : {0x1cu, 0x20u})
         write<std::uint32_t>(data, offset, 0);
     return owner;
 }
