@@ -57,6 +57,10 @@ CameraTransformBacking transform_backing(NativeNodeStorage& node) noexcept {
 
 NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
     std::size_t slot_bytes, const NativeString& name, NativeStringStorage& strings) {
+    return construct_native_node_00b6f5a0(actual_slot, slot_bytes, &name, strings);
+}
+NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
+    std::size_t slot_bytes, const void* name, NativeStringStorage& strings) {
     if (!actual_slot || slot_bytes < sizeof(NativeNodeStorage) ||
         (reinterpret_cast<std::uintptr_t>(actual_slot) % alignof(NativeNodeStorage)) != 0)
         throw std::invalid_argument("native node construction requires an aligned actual 0x174-byte prefix");
@@ -80,7 +84,7 @@ NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
     node.point_lights_164 = {nullptr, 0, 0};
     node.scene_170 = nullptr;
     try {
-        node.name_54.copy_from_00be0a30_fragment(strings, name);
+        copy_native_string_header_00be0a30_fragment(&node.name_54, strings, name);
         node.scalar_4c = one_word;
         node.scalar_ac = one_word;
         node.valid_flags_5c = 0;

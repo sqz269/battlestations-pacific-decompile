@@ -79,6 +79,10 @@ PointEffectInstanceStorage& initialize_point_effect_instance_008680d9(
 
 NativeNodeStorage* construct_point_effect_node_00868193(void* pool,
     const NativeString& name, NativeStringStorage& strings) {
+    return construct_point_effect_node_00868193(pool, &name, strings);
+}
+NativeNodeStorage* construct_point_effect_node_00868193(void* pool,
+    const void* name, NativeStringStorage& strings) {
     void* const slot = allocate_native_node_00b6ed70(pool);
     if (!slot) return nullptr;
     try {

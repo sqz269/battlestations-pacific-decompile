@@ -66,6 +66,14 @@ NativePointEffectReference& construct_point_effect_instance_008680b0(void* raw11
     std::uint8_t transform_byte, std::uint8_t option_byte, std::uint32_t tail_word,
     const NativeString& captured_template_name_1c, PointEffectConstructorBindings&);
 
+// Same complete body, borrowing the original actual8h name header directly.
+// Neither this overload nor its node stage starts/resets a source string object.
+NativePointEffectReference& construct_point_effect_instance_008680b0(void* raw114h,
+    RenderCommandReference* consumed_template, CameraTransform* parent,
+    std::uint32_t third_word, const CameraMatrix& original_matrix,
+    std::uint8_t transform_byte, std::uint8_t option_byte, std::uint32_t tail_word,
+    const void* actual_captured_template_name_1c, PointEffectConstructorBindings&);
+
 // New C++ ABI/host associations. If callbacks invalidate storage still needed
 // by native cleanup, that native precondition violation is not made safe here.
 // Native EH, complete application row factories and gameplay remain unvalidated.
