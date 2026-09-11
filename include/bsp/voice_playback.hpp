@@ -10,16 +10,19 @@
 namespace bsp {
 
 // Typed projections, not native binary layouts. Clip12 is {vtable, record*,
-// opaque word}; record begins {NativeString, signed sound id}. Records are
-// borrowed. The clip word is copied unchanged, including on positional calls.
+// resource index}; record begins {NativeString, signed sound id}. Records and
+// resource array references are borrowed. Native lifetime stays with the owner.
 struct VoiceClipRecord {
     NativeString text_00;
     std::int32_t sound_id_08{};
+    std::uint8_t alternate_14{};
+    NativeString alternate_name_18;
+    std::vector<void*> resources_20; // resource wrappers, not SoundOwnedResource
 };
 struct VoiceClip {
     std::uint32_t native_vtable_00{0x00cf0dd0};
     const VoiceClipRecord* record_04{};
-    std::uint32_t word_08{};
+    std::uint32_t word_08{}; // index into record+20 on the ordinary branch
 };
 using VoiceClips = std::vector<VoiceClip>;
 
@@ -28,6 +31,7 @@ struct VoicePlaybackSlot {
     std::int32_t state_00{};
     void* sound_04{}; // intrusive reference; virtual +8 stop, +C completion
     void* auxiliary_08{}; // intrusive reference; virtual +8(0), then reset
+    NativeString alternate_name_0c; // owned; explicit 005B7FC0 teardown
     float started_at_14{};
 };
 
@@ -77,6 +81,7 @@ struct VoicePlaybackManager {
     NativeString fade_callback_e0;
 };
 struct VoicePanelState { std::uint32_t field_34{}, field_24{}; };
+struct VoiceSlotStartContext;
 
 // Required game services at the named native callsites. They must implement
 // the stated effects; no fallback, fake FMOD or implicit success exists here.
@@ -95,6 +100,7 @@ public:
     virtual std::uint32_t invalid_target_00e188d8() = 0;
     virtual bool target_valid_00645160(std::uint32_t target, bool flag) = 0;
     virtual void display_text_005b8510(VoiceLine&, const NativeString&) = 0;
+    virtual VoiceSlotStartContext& slot_start_context() = 0;
     // Bank is borrowed for this host invocation. The wrapper retains/releases
     // the native by-value argument around it. Slot -1 is passed unchanged.
     virtual void start_clip_005b9050(VoicePlaybackManager&, std::int32_t slot,
