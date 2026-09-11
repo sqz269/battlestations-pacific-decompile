@@ -762,5 +762,524 @@
     "path": "local/pointer_support_handoff",
     "manifest": "local/pointer_support_handoff/manifest.json",
     "manifest_self_hash": "External final handoff; not recursively embedded."
+  },
+  "primary_review": {
+    "utc": "2026-09-11T23:52:10.304113+00:00",
+    "passed": true,
+    "worker_commit": "0882ea2baa5b7896af5ecfd8f01e8647f165f6e6",
+    "cherry_pick": "3e9d0219",
+    "preparation": {
+      "worker_seal": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\local\\pointer_support_handoff\\manifest.json",
+        "bytes": 12159,
+        "sha256": "0248c0cf12bb2a92841520399fa4060dd40d9a8b64047afb8cf4bfda05f263f5"
+      },
+      "worker_pins_verified": 66,
+      "input_artifact_pins_verified": 35,
+      "current_source_header_inputs": [
+        {
+          "path": "src/native_crt_pointer_decode_support.cpp",
+          "worker": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\src\\native_crt_pointer_decode_support.cpp",
+            "bytes": 4315,
+            "sha256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37"
+          },
+          "current": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\native_crt_pointer_decode_support.cpp",
+            "bytes": 4315,
+            "sha256": "ac0eab56cd6a829cecb42157b0b3ff83124725fa0bead4aac2c29bc334fc9f37"
+          },
+          "LF_normalized_equal": true
+        },
+        {
+          "path": "include/bsp/native_crt_pointer_decode_support.hpp",
+          "worker": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\include\\bsp\\native_crt_pointer_decode_support.hpp",
+            "bytes": 2673,
+            "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722"
+          },
+          "current": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\native_crt_pointer_decode_support.hpp",
+            "bytes": 2673,
+            "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722"
+          },
+          "LF_normalized_equal": true
+        },
+        {
+          "path": "include/bsp/legacy_crt_math.hpp",
+          "worker": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\include\\bsp\\legacy_crt_math.hpp",
+            "bytes": 1108,
+            "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39"
+          },
+          "current": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\legacy_crt_math.hpp",
+            "bytes": 1108,
+            "sha256": "52f6b22f16ee3fda8d8ee6d8a14e3bbabcf24e72393418579fab6204523efe39"
+          },
+          "LF_normalized_equal": true
+        },
+        {
+          "path": "include/bsp/singleton_lifetime.hpp",
+          "worker": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\include\\bsp\\singleton_lifetime.hpp",
+            "bytes": 4372,
+            "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+          },
+          "current": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\singleton_lifetime.hpp",
+            "bytes": 4372,
+            "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+          },
+          "LF_normalized_equal": true
+        },
+        {
+          "path": "include/bsp/system_camera_axes.hpp",
+          "worker": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\include\\bsp\\system_camera_axes.hpp",
+            "bytes": 3143,
+            "sha256": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594"
+          },
+          "current": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\include\\bsp\\system_camera_axes.hpp",
+            "bytes": 3143,
+            "sha256": "1dec465a388fb93eefdd89558774db4097f4b397b9ce5b49674b0b0e6fbed594"
+          },
+          "LF_normalized_equal": true
+        },
+        {
+          "path": "src/legacy_crt_math.cpp",
+          "worker": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\src\\legacy_crt_math.cpp",
+            "bytes": 11469,
+            "sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce"
+          },
+          "current": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\legacy_crt_math.cpp",
+            "bytes": 11469,
+            "sha256": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce"
+          },
+          "LF_normalized_equal": true
+        },
+        {
+          "path": "src/singleton_lifetime.cpp",
+          "worker": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile-native-crt-pointer-decode-support3\\src\\singleton_lifetime.cpp",
+            "bytes": 13257,
+            "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+          },
+          "current": {
+            "path": "J:\\PROG\\battlestations-pacific-decompile\\src\\singleton_lifetime.cpp",
+            "bytes": 13257,
+            "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+          },
+          "LF_normalized_equal": true
+        }
+      ],
+      "fresh_disk_spans": 6,
+      "fresh_disk_bytes": 367,
+      "separate_virtual_spans": 2,
+      "separate_virtual_bytes": 8,
+      "full_primary_source_native_and_proof_review": true,
+      "main_build_pending": false,
+      "main_library": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pointer_support_build_frozen\\bsp_core.lib",
+        "bytes": 41631884,
+        "sha256": "1236e69abd41bb262459541b615bcaad738f7be795ffd4249ad6018520d4fd98"
+      },
+      "main_build_manifest": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pointer_support_build_frozen\\manifest.json",
+        "bytes": 12841,
+        "sha256": "ac9490eebd9dad26ae2f5c0e59f9020be31a56a60ad21ff500896482c88fb96d"
+      },
+      "reviewed_build_input_drift": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pointer_support_build_frozen\\reviewed_drift\\startup_change.json",
+        "bytes": 2121,
+        "sha256": "948d90fae1584a985c287b82c63133dc98a7f1fc315a175dfec07dc266485188"
+      }
+    },
+    "archive_proof": {
+      "archive": "build\\win32\\Release\\bsp_core.lib",
+      "archive_sha256": "1236e69abd41bb262459541b615bcaad738f7be795ffd4249ad6018520d4fd98",
+      "object_count": 1,
+      "all_code_sections": 6,
+      "all_code_bytes": 513,
+      "all_code_relocations": 5,
+      "objects": [
+        {
+          "object": "native_crt_pointer_decode_support.obj",
+          "path": "build\\win32\\bsp_core.dir\\Release\\native_crt_pointer_decode_support.obj",
+          "length": 3702,
+          "sha256": "1d1eaf224eebfd5bc6cb82f1977e12f8adb9f466d225cc54b661d9817741c771",
+          "sections": [
+            {
+              "index": 7,
+              "names": [
+                "??_H@YGXPAXIIP6EPAX0@Z@Z"
+              ],
+              "bytes": 38,
+              "sha256": "5d5ca69c6d6d3098b8363a8af646dbc82f870d51ce6628d3ed6d19261c4fc147",
+              "bytes_hex": "558bec568b751085f67416538b5d14578b7d088bcfffd3037d0c83ee0175f45f5b5e5dc21000",
+              "relocations": []
+            },
+            {
+              "index": 8,
+              "names": [
+                "?get_native_crt_winmajor_00bfbb61@bsp@@YAHPAIABUNativeCrtPointerDecodeSupportContext@1@@Z"
+              ],
+              "bytes": 68,
+              "sha256": "2e72b6652d8459283c6801db9caa8f9a8aac51afdfc09d419082f5a57303041f",
+              "bytes_hex": "558bec8b4d08568b750c85c974138b06833800740c8b46045e8b00890133c05dc38b46088b4004ffd0c700160000008b460cff308b4008ffd083c404b8160000005e5dc3",
+              "relocations": []
+            },
+            {
+              "index": 9,
+              "names": [
+                "?image_dword@?A0x60f55e52@bsp@@YAII@Z"
+              ],
+              "bytes": 19,
+              "sha256": "ebb1379c4c99656ff4f2ea0b7b26654019551284302a201fafd511c6c0eddfb5",
+              "bytes_hex": "558bec518b45088b008945fc8b45fc8be55dc3",
+              "relocations": []
+            },
+            {
+              "index": 10,
+              "names": [
+                "?image_word@?A0x60f55e52@bsp@@YAGI@Z"
+              ],
+              "bytes": 22,
+              "sha256": "d5597c3ae033701b79e90ac0b171c35a8c8fa95f20f7a471c2bac9b7e57d7b7a",
+              "bytes_hex": "558bec518b4508668b00668945fc668b45fc8be55dc3",
+              "relocations": []
+            },
+            {
+              "index": 11,
+              "names": [
+                "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+              ],
+              "bytes": 230,
+              "sha256": "9985be6fbd2b08c808c2436a9ef3f3ea498574c559f58ad8c56b5ef7473014ad",
+              "bytes_hex": "558bec83ec10568b75088b0683380074078b46048b00eb1d8b46088b4004ffd0c700160000008b460cff308b4008ffd083c40433c083f8057e0ab8010000005e8be55dc353576a00ff15000000008bd08d4a3c894df88b45f88b008945f48b4df403ca8d5906895dfc8b45fc668b00668945f88d41148945f08b45f0668b00668945fc0fb775fc33ff83c61803f166397df87446566800000000e80000000083c40885c0742b895df08b45f0668b00668945f80fb745f84783c6283bf8731b566800000000e80000000083c40885c075d55f5b33c05e8be55dc35f5bb8010000005e8be55dc3",
+              "relocations": [
+                {
+                  "offset": 74,
+                  "target": "__imp__GetModuleHandleA@4",
+                  "type": 6
+                },
+                {
+                  "offset": 150,
+                  "target": "?mixcrt_name@?A0x60f55e52@bsp@@3QBDB",
+                  "type": 6
+                },
+                {
+                  "offset": 155,
+                  "target": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+                  "type": 20
+                },
+                {
+                  "offset": 193,
+                  "target": "?mixcrt_name@?A0x60f55e52@bsp@@3QBDB",
+                  "type": 6
+                },
+                {
+                  "offset": 198,
+                  "target": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+                  "type": 20
+                }
+              ]
+            },
+            {
+              "index": 12,
+              "names": [
+                "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z"
+              ],
+              "bytes": 136,
+              "sha256": "b88e392a72effabe7a1bc73017ee600186707911d4eda5691e692edb744e0c9c",
+              "bytes_hex": "8b5424048b4c2408f7c203000000753c8b023a01752e0ac074263a610175250ae4741dc1e8103a410275190ac074113a6103751083c10483c2040ae475d28bff33c0c3901bc0d1e083c001c3f7c20100000074188a0283c2013a0175e783c1010ac074dcf7c20200000074a4668b0283c2023a0175ce0ac074c63a610175c50ae474bd83c102eb88",
+              "relocations": []
+            }
+          ],
+          "archive_match": {
+            "member": "bsp_core.dir\\Release\\native_crt_pointer_decode_support.obj",
+            "offset": 34442796,
+            "length": 3702
+          }
+        }
+      ],
+      "linked_code": [
+        {
+          "object": "native_crt_pointer_decode_support.obj",
+          "section": 8,
+          "address": "00401010",
+          "names": [
+            "?get_native_crt_winmajor_00bfbb61@bsp@@YAHPAIABUNativeCrtPointerDecodeSupportContext@1@@Z"
+          ],
+          "bytes": 68,
+          "sha256": "2e72b6652d8459283c6801db9caa8f9a8aac51afdfc09d419082f5a57303041f",
+          "bytes_hex": "558bec8b4d08568b750c85c974138b06833800740c8b46045e8b00890133c05dc38b46088b4004ffd0c700160000008b460cff308b4008ffd083c404b8160000005e5dc3",
+          "COFF_nonrelocated_bytes_match": true
+        },
+        {
+          "object": "native_crt_pointer_decode_support.obj",
+          "section": 11,
+          "address": "00401060",
+          "names": [
+            "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+          ],
+          "bytes": 230,
+          "sha256": "94cf7c0487a1d010a0201fcbc2bfa8c3d9d1b6ba974cf1d813ff1dccddd6bc36",
+          "bytes_hex": "558bec83ec10568b75088b0683380074078b46048b00eb1d8b46088b4004ffd0c700160000008b460cff308b4008ffd083c40433c083f8057e0ab8010000005e8be55dc353576a00ff15002040008bd08d4a3c894df88b45f88b008945f48b4df403ca8d5906895dfc8b45fc668b00668945f88d41148945f08b45f0668b00668945fc0fb775fc33ff83c61803f166397df874465668e0204000e85100000083c40885c0742b895df08b45f0668b00668945f80fb745f84783c6283bf8731b5668e0204000e82600000083c40885c075d55f5b33c05e8be55dc35f5bb8010000005e8be55dc3",
+          "COFF_nonrelocated_bytes_match": true
+        },
+        {
+          "object": "native_crt_pointer_decode_support.obj",
+          "section": 12,
+          "address": "00401150",
+          "names": [
+            "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z"
+          ],
+          "bytes": 136,
+          "sha256": "b88e392a72effabe7a1bc73017ee600186707911d4eda5691e692edb744e0c9c",
+          "bytes_hex": "8b5424048b4c2408f7c203000000753c8b023a01752e0ac074263a610175250ae4741dc1e8103a410275190ac074113a6103751083c10483c2040ae475d28bff33c0c3901bc0d1e083c001c3f7c20100000074188a0283c2013a0175e783c1010ac074dcf7c20200000074a4668b0283c2023a0175ce0ac074c63a610175c50ae474bd83c102eb88",
+          "COFF_nonrelocated_bytes_match": true
+        }
+      ],
+      "linked_code_sections": 3,
+      "linked_code_bytes": 434,
+      "selected_map_symbols": [
+        {
+          "symbol": "?get_native_crt_winmajor_00bfbb61@bsp@@YAHPAIABUNativeCrtPointerDecodeSupportContext@1@@Z",
+          "address": 4198416,
+          "object": "native_crt_pointer_decode_support.obj"
+        },
+        {
+          "symbol": "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z",
+          "address": 4198496,
+          "object": "native_crt_pointer_decode_support.obj"
+        },
+        {
+          "symbol": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+          "address": 4198736,
+          "object": "native_crt_pointer_decode_support.obj"
+        }
+      ],
+      "all_three_owned_entries_linked": true,
+      "static_link_manifest_embedded": true,
+      "link_artifact_executed": false
+    },
+    "binding_proof": {
+      "static_link_executed": false,
+      "original_strcmp_bytes": 136,
+      "linked_strcmp_bytes": 136,
+      "exact_original_strcmp_bytes": true,
+      "strcmp_byte_differences": [],
+      "bindings": [
+        {
+          "entry": [
+            "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+          ],
+          "offset": 74,
+          "COFF_target": "__imp__GetModuleHandleA@4",
+          "type": 6,
+          "linked_target": "00402000",
+          "resolved_import": {
+            "dll": "KERNEL32.dll",
+            "name": "GetModuleHandleA"
+          },
+          "verified_classification": "actual_GetModuleHandleA_import"
+        },
+        {
+          "entry": [
+            "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+          ],
+          "offset": 150,
+          "COFF_target": "?mixcrt_name@?A0x60f55e52@bsp@@3QBDB",
+          "type": 6,
+          "linked_target": "004020e0",
+          "exact_mixcrt_literal": {
+            "bytes_hex": "2e6d697863727400",
+            "aligned8": true,
+            "section": ".rdata",
+            "flags": "40000040"
+          },
+          "verified_classification": "exact_aligned8_mixcrt_literal"
+        },
+        {
+          "entry": [
+            "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+          ],
+          "offset": 155,
+          "COFF_target": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+          "type": 20,
+          "linked_target": "00401150",
+          "resolved_current_library_symbols": [
+            "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z"
+          ],
+          "exact_current_comparator_CALL_confirmed": true,
+          "verified_classification": "CALL_exact_current_library_comparator"
+        },
+        {
+          "entry": [
+            "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+          ],
+          "offset": 193,
+          "COFF_target": "?mixcrt_name@?A0x60f55e52@bsp@@3QBDB",
+          "type": 6,
+          "linked_target": "004020e0",
+          "exact_mixcrt_literal": {
+            "bytes_hex": "2e6d697863727400",
+            "aligned8": true,
+            "section": ".rdata",
+            "flags": "40000040"
+          },
+          "verified_classification": "exact_aligned8_mixcrt_literal"
+        },
+        {
+          "entry": [
+            "?native_crt_pointer_decode_module_gate_00c04efb@bsp@@YAHABUNativeCrtPointerDecodeSupportContext@1@@Z"
+          ],
+          "offset": 198,
+          "COFF_target": "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z",
+          "type": 20,
+          "linked_target": "00401150",
+          "resolved_current_library_symbols": [
+            "?native_crt_strcmp_00c05920@bsp@@YAHPBD0@Z"
+          ],
+          "exact_current_comparator_CALL_confirmed": true,
+          "verified_classification": "CALL_exact_current_library_comparator"
+        }
+      ],
+      "GetModuleHandleA_import_confirmed": true,
+      "aligned8_exact_literal_confirmed": true,
+      "all_five_relocations_classified": true,
+      "both_CALLs_target_exact_current_comparator": true,
+      "linked_PE_sha256": "5d53adbb4fa54438a1791ee58fcbfab6ccc265c72f03b3fa24f21d79839880e4",
+      "qualified_limits": "Static compiled binding evidence, not runtime calls/fault/handler mutation coverage. All archive code sections retained separately; relocation targets resolved here only where listed."
+    },
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pointer_support_build_frozen\\manifest.json",
+      "bytes": 12841,
+      "sha256": "ac9490eebd9dad26ae2f5c0e59f9020be31a56a60ad21ff500896482c88fb96d"
+    },
+    "reviewed_build_registration_drift": {
+      "path": "cmake/startup.cmake",
+      "before_sha256": "867414060481f6ade9a0a2a533884155bf9f74b4f7fab540d219ae97ee9ad3c3",
+      "after_sha256": "784ebead0b73d3f92d83cf1a4c25876b1de13eaf7cc477794874e2bbd60aaefa",
+      "only_added_bsp_core_sources": [
+        "src/controlled_unit.cpp",
+        "src/native_lua_fundamentals.cpp",
+        "src/native_lua_script_overrides.cpp",
+        "src/native_memory_stream.cpp",
+        "src/native_vfs_open_route.cpp",
+        "src/ship_motion.cpp",
+        "src/sound_configuration_shutdown.cpp",
+        "src/sound_listener.cpp",
+        "src/sound_sample_cache_shutdown.cpp",
+        "src/sound_shutdown.cpp"
+      ],
+      "additional_unrelated_probe_statements": [
+        "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL add_executable bsp_ship_motion_probe src/ship_motion_probe.cpp)",
+        "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_compile_options bsp_ship_motion_probe PRIVATE /W4 /WX /fp:strict)",
+        "cmake_language(DEFER DIRECTORY \"${CMAKE_SOURCE_DIR}\" CALL target_link_libraries bsp_ship_motion_probe PRIVATE bsp_core)"
+      ],
+      "other_nonblank_lines_equal": true,
+      "existing_target_source_multiset_preserved": true,
+      "generated_project_addition_membership": {
+        "src/controlled_unit.cpp": false,
+        "src/native_lua_fundamentals.cpp": false,
+        "src/native_lua_script_overrides.cpp": false,
+        "src/native_memory_stream.cpp": false,
+        "src/native_vfs_open_route.cpp": false,
+        "src/ship_motion.cpp": false,
+        "src/sound_configuration_shutdown.cpp": false,
+        "src/sound_listener.cpp": false,
+        "src/sound_sample_cache_shutdown.cpp": false,
+        "src/sound_shutdown.cpp": false
+      },
+      "qualification": "Other owned harnesses added unrelated bsp_core CPP registrations and a separate ship-motion probe, and reordered existing declarations; blank-line changes have no CMake effect. Every other25 prebuild input remains byte-identical. Actual generated project/compiler records and selected archive membership establish the exact built pointer-support source; no claim that all26 inputs remained unchanged or every later addition was built."
+    },
+    "qualification": "25 source/header/build inputs remained unchanged. Concurrent startup.cmake changes were explicitly audited as added unrelated source/probe registration and reordered declarations. Frozen before/after files and actual generated project/compiler records pin this build; later additions are not claimed built. Initial freeze refusal and premature link attempt did not execute code; immutable library replay subsequently passed.",
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_crt_pointer_decode_support_annotations.json",
+      "bytes": 3275,
+      "sha256": "ed898e1739acea846de1405d1a9895b58f3881d3570c23228d27e4a35fe7c1e1"
+    },
+    "registered_reconstruction_records": [
+      {
+        "kind": "function",
+        "address": "00c04efb",
+        "name": "native_crt_pointer_decode_module_gate_00c04efb",
+        "cpp_symbol": "bsp::native_crt_pointer_decode_module_gate_00c04efb",
+        "source": "src/native_crt_pointer_decode_support.cpp",
+        "native_end_exclusive": "00c04f67",
+        "status": "complete_source_primary_archive_and_link_checked",
+        "evidence": "reports/native_crt_pointer_decode_support_audit.json",
+        "original_abi": "No arguments, EAX0or1, plain RET; nonvolatile registers preserved.",
+        "source_abi": "Explicit context reference argument; C++ frame and incidental volatile registers/EFLAGS/fault sites qualified.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00bfbb61",
+        "name": "get_native_crt_winmajor_00bfbb61",
+        "cpp_symbol": "bsp::get_native_crt_winmajor_00bfbb61",
+        "source": "src/native_crt_pointer_decode_support.cpp",
+        "native_end_exclusive": "00bfbb9d",
+        "status": "complete_source_primary_archive_and_link_checked",
+        "evidence": "reports/native_crt_pointer_decode_support_audit.json",
+        "original_abi": "cdecl DWORD* output; EAX0or22; plain RET; captures output before checks.",
+        "source_abi": "Additional context reference; actual five-zero BF66EF operation via existing returning service, not literal native outgoing stack.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00c05920",
+        "name": "native_crt_strcmp_00c05920",
+        "cpp_symbol": "bsp::native_crt_strcmp_00c05920",
+        "source": "src/native_crt_pointer_decode_support.cpp",
+        "native_end_exclusive": "00c059a8",
+        "status": "complete_source_primary_archive_and_link_checked",
+        "evidence": "reports/native_crt_pointer_decode_support_audit.json",
+        "original_abi": "cdecl two readable raw byte pointers; EAX -1/0/+1, EFLAGS/EAX/ECX/EDX effects, EBX/ESI/EDI/EBP preserved, plain RET.",
+        "source_abi": "Naked MSVC Win32 function; linked136 bytes exactly original, no relocations or host semantic comparator.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00c04efb",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c04efb\\decompiled.c",
+        "bytes": 1742,
+        "sha256": "632a4a90468690c73eef8167fc763f89dddc52392ac3d2d6068d5dc1da880a70"
+      },
+      {
+        "address": "00bfbb61",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bfbb61\\decompiled.c",
+        "bytes": 1180,
+        "sha256": "e8d81570ec777011938a6552d44bfa36301df288ec9d1edc89e795ae45011a9c"
+      },
+      {
+        "address": "00c05920",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c05920\\decompiled.c",
+        "bytes": 2379,
+        "sha256": "d4bfc760c21db1548285acae01f6b9c32086bc235ce80a21941eed8a75256284"
+      }
+    ],
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_POINTER_DECODE_SUPPORT.md",
+      "bytes": 8996,
+      "sha256": "f9401a6cc9b21bb4fa2e27cb68a79b2bab5a20abfd80de2e1ee4fc624b667a8f"
+    },
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\pointer_support_primary\\sealed.json",
+      "bytes": 19340,
+      "sha256": "c81446befbf3b1ee8dd7881169f40fa0a81620dc381d77c45f8ccee8bd72da22"
+    }
   }
 }
