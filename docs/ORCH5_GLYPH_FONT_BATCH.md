@@ -9,6 +9,10 @@ integrates them in the separate `agent/orch5-20260911` worktree. Three sources
 are registered in the normal Win32 build: `native_logical_buffer_mapping.cpp`,
 `gui_text_geometry.cpp` and `native_font_resources.cpp`.
 
+Integrated into `main` at `606726c2`. The combined build and both existing
+tests pass after merging current main. Its seven annotation applications
+already match the primary's saved names/comments and recorded prior values.
+
 Mapping uses the existing physical buffer and renderer synchronization domains.
 It preserves wrapped DWORD arithmetic, callback-time reloads, output offsets,
 vertex mapping publication/clear and captured guard ownership. The four known
