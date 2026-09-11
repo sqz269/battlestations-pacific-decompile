@@ -276,8 +276,11 @@ struct GuiLuaHost {
 bool gui_lua_is_nil_00b65fb0(GuiLuaHost& host, const GuiLuaRef& object);
 bool gui_lua_is_string_00b660a0(GuiLuaHost& host, const GuiLuaRef& object);
 bool gui_lua_is_number_00b66050(GuiLuaHost& host, const GuiLuaRef& object);
-// 00B66A60: a number whose value is integral. lua_type first, then lua_tonumber
-// and a comparison against its own truncation.
+// 00B66A60: lua_type == number, then x87 float32 spill, CVTTSS2SI and an
+// ordered comparison of the float with that signed int32. A double rounded
+// to an integral float qualifies; NaN and values outside int32 do not.
+// Win32 preserves the native x87/SSE instruction and caller FP environment.
+bool gui_lua_is_integer_number_00b66a60(double number) noexcept;
 bool gui_lua_is_integer_00b66a60(GuiLuaHost& host, const GuiLuaRef& object);
 
 // 00BD63B0 as the reader actually reaches it: the same rules against a live

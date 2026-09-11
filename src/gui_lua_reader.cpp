@@ -197,7 +197,7 @@ bool gui_lua_store_value_00bd63b0(const GuiValue& value, const GuiLuaVariant& fi
             }
             if (value.kind() == GuiValue::Kind::Number) {
                 const double number = value.number();
-                if (number == std::floor(number)) {
+                if (gui_lua_is_integer_number_00b66a60(number)) {
                     *static_cast<std::int32_t*>(dest) =
                         resolver->resolve_by_number(narrow_to_int(number));
                     return true;
@@ -335,12 +335,40 @@ bool gui_lua_is_number_00b66050(GuiLuaHost& host, const GuiLuaRef& object) {
     return host.type_of(object) == GuiLuaType::Number;
 }
 
-bool gui_lua_is_integer_00b66a60(GuiLuaHost& host, const GuiLuaRef& object) {
-    if (host.type_of(object) != GuiLuaType::Number) {
+bool gui_lua_is_integer_number_00b66a60(double number) noexcept {
+#if defined(_MSC_VER) && defined(_M_IX86)
+    float narrowed;
+    std::int32_t integer;
+    unsigned char result;
+    __asm {
+        fld qword ptr [number]
+        fstp dword ptr [narrowed]
+        fld dword ptr [narrowed]
+        cvttss2si eax, dword ptr [narrowed]
+        mov dword ptr [integer], eax
+        fild dword ptr [integer]
+        fxch st(1)
+        fucomip st(0), st(1)
+        fstp st(0)
+        lahf
+        test ah, 44h
+        setnp byte ptr [result]
+    }
+    return result != 0;
+#else
+    // Numerical projection only; native FP flags/traps require the Win32 path.
+    const float narrowed = static_cast<float>(number);
+    if (!(narrowed >= -2147483648.0f && narrowed < 2147483648.0f)) {
         return false;
     }
-    const double number = host.to_number(object);
-    return number == std::floor(number);
+    const auto integer = static_cast<std::int32_t>(narrowed);
+    return static_cast<double>(narrowed) == static_cast<double>(integer);
+#endif
+}
+
+bool gui_lua_is_integer_00b66a60(GuiLuaHost& host, const GuiLuaRef& object) {
+    return host.type_of(object) == GuiLuaType::Number &&
+        gui_lua_is_integer_number_00b66a60(host.to_number(object));
 }
 
 namespace {

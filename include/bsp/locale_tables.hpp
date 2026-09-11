@@ -6,7 +6,6 @@
 // docs/APP_INIT_LOCALE.md for the evidence behind each claim.
 #include <cstddef>
 #include <cstdint>
-#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
@@ -25,10 +24,9 @@ struct LanguageEntry {
     std::string font_path;  // entry +0x18/+0x1c, returned by 008d4890
 };
 
-// Whitespace-separated "<key> <value>" descriptor read by 008d7bc0. Only the
-// four recognised keys are stored; every other token pair is ignored, matching
-// the native chain of case-insensitive comparisons that falls through. Never
-// fails: a truncated trailing key simply contributes nothing.
+// Native cached-token descriptor scanner: quotes, comments, exact whitespace
+// and separators. Unknown keys would stall native code and throw in the host.
+// A missing trailing value stores empty text. See language_catalog.hpp.
 LanguageEntry parse_language_descriptor_008d7bc0(const std::string& text);
 
 // 008d4870: __thiscall, ECX = the settings object, no stack arguments, RET.
@@ -60,15 +58,17 @@ inline constexpr std::size_t kLockitValueBufferBytes = 19994;  // auStack_4e2a
 //   record := category ' ' name ' ' utf16le-text 00 0A 00 0D
 // The two tokens are raw bytes up to the first space; the text is 16-bit
 // units terminated by the unit pair 0x0A00, 0x0D00 (bytes 00 0A 00 0D).
-// Trailing bytes that do not form a complete record are reported as an error
-// and leave `output` holding the records parsed so far, because the native
-// loop only stops on the stream position check.
+// EOF while scanning the first token silently drops that final token, matching
+// the position check at 00aa02cb..00aa02ee. An incomplete second token or value
+// is rejected rather than reproducing the native unchecked read loop. Complete
+// preceding records remain in output. Native C strings stop at embedded NULs.
 bool parse_lockit_table_00aa0020(const std::vector<std::uint8_t>& bytes,
     std::vector<LocaleRecord>& output, std::string& error);
 
-// Record scanner of 00aa0020, phase two: the ".lanx" sidecar, a flat array of
-// 16-bit pairs appended to the two vectors at manager +0x4020 and +0x4030.
-// A trailing partial pair is an error. The shipped sidecar is zero bytes.
+// Record scanner of 00aa0020, phase two: discard an initial two-byte field,
+// then append 16-bit pairs to vectors at manager +0x4020 and +0x4030. Empty
+// files are accepted (as shipped). Partial fields/pairs are host errors; pairs
+// preceding a malformed tail remain appended. The prefix meaning is unknown.
 bool parse_lockit_index_00aa0020(const std::vector<std::uint8_t>& bytes,
     std::vector<std::uint16_t>& first, std::vector<std::uint16_t>& second,
     std::string& error);
@@ -76,20 +76,35 @@ bool parse_lockit_index_00aa0020(const std::vector<std::uint8_t>& bytes,
 // "lockit/" (00d5bcd0) + language + ".lan" (00d5bcc8), built by both loaders.
 std::string lockit_table_path_00aa09d0(const std::string& language);
 
+// Required native VFS boundaries. Overrides are existing ordered suffix paths,
+// not mount duplicates. A resolve probe may mutate its own name copy; the
+// loader discards that resolved name and opens the original numbered spelling.
+// Reads use mode 2. False means provider miss; callers report an error instead
+// of dereferencing a missing native stream. Opened-but-invalid streams must
+// throw or otherwise report failure, never fall back to another provider.
+struct LocaleTableSource {
+    virtual ~LocaleTableSource() = default;
+    virtual std::vector<std::string> override_paths_00bdef90(
+        const std::string& name) = 0;
+    virtual bool read_file(const std::string& name, std::uint32_t mode,
+        std::vector<std::uint8_t>& bytes) = 0;
+    virtual bool resolves_existing_name_00bdf4c0(const std::string& name) = 0;
+};
+
+// Represents GetOrCreate GUI manager (004c12b0) followed by 00aa4650. This is
+// required after a changed language with registered table names and a completed
+// load; the LocaleTables projection does not own the GUI tree or its lifetime.
+struct LocaleGuiRefreshHost {
+    virtual ~LocaleGuiRefreshHost() = default;
+    virtual void refresh_locale_00aa4650() = 0;
+};
+
 // The chained hash map at manager +0x14: 0x1000 bucket heads, the live count
 // at +0x4000 and 0x1c-byte nodes whose links are +0x10 (prev) and +0x14 (next).
 // Insertion (00a9fc30) pushes at the head and returns an existing node when the
 // key already matches, so a repeated key overwrites the earlier text.
 class LocaleTables {
 public:
-    // Injected file access. Returns false when the name does not resolve; the
-    // native side asks BSP_VFS_ResolveExistingName (00bdf4c0) first and then
-    // opens through the mount manager, which merges every mount that holds the
-    // name. Supply the repo's VFS or physical-file bindings here; this module
-    // deliberately owns no file code of its own.
-    using FileReader = std::function<bool(const std::string& name,
-        std::vector<std::uint8_t>& bytes)>;
-
     static constexpr std::size_t kBucketCount = 0x1000;
     static constexpr std::size_t kMaxNumberedSuffix = 99;  // native loop i < 99
 
@@ -112,15 +127,14 @@ public:
     // name is a no-op and reports `changed = false`. Otherwise the name is
     // stored, the map cleared, and - only when at least one table name has
     // been registered and the map is empty - the .lan files are loaded.
-    // The native tail refreshes the GUI (004c12b0, 00aa4650); that is not
-    // reproduced here.
-    bool set_language_00aa09d0(const FileReader& reader, const std::string& language,
-        bool& changed, std::string& error);
+    // The required GUI host executes the native refresh tail after loading.
+    bool set_language_00aa09d0(LocaleTableSource& source, LocaleGuiRefreshHost& gui,
+        const std::string& language, bool& changed, std::string& error);
 
     // 00aa06d0: __thiscall, ECX = manager, one char stack argument, RET 4.
     // Loads when the map is empty or `force` is set, using the language name
-    // already stored. No GUI refresh and no registered-table gate.
-    bool reload_00aa06d0(const FileReader& reader, bool force, std::string& error);
+    // already stored. No map clear, GUI refresh or registered-table gate.
+    bool reload_00aa06d0(LocaleTableSource& source, bool force, std::string& error);
 
     // 00a9ec70: hash, then walk the chain comparing length and _stricmp.
     // Returns nullptr on a miss. The pointer is invalidated by any mutation.
@@ -133,7 +147,8 @@ public:
 
     const std::string& language() const noexcept { return language_; }
     std::size_t size() const noexcept { return count_; }
-    // Files actually read by the last load, in native probe order.
+    // Table files successfully opened by the last load, including a malformed
+    // table. Sidecar/probe names are excluded. Variant paths precede each base.
     const std::vector<std::string>& loaded_files() const noexcept { return loaded_files_; }
     const std::vector<std::uint16_t>& sidecar_first() const noexcept { return sidecar_first_; }
     const std::vector<std::uint16_t>& sidecar_second() const noexcept { return sidecar_second_; }
@@ -144,8 +159,9 @@ private:
         std::u16string text;
         Node* next = nullptr;
     };
-    bool load_current_language(const FileReader& reader, std::string& error);
-    bool load_one_file(const FileReader& reader, const std::string& name, std::string& error);
+    bool load_current_language(LocaleTableSource& source, std::string& error);
+    bool load_one_file(LocaleTableSource& source, const std::string& name,
+        bool skip_sidecar, std::string& error);
     void insert_00a9fc30(std::string key, std::u16string text);
 
     std::vector<std::unique_ptr<Node>> storage_;

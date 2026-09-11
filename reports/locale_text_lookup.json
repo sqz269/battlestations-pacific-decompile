@@ -1,0 +1,138 @@
+{
+  "packet": "orch2_locale_text_lookup",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "names_are_hypotheses": true,
+  "sources": [
+    "src/locale_text_lookup.cpp",
+    "src/locale_lua_context.cpp",
+    "src/gui_lua_reader.cpp"
+  ],
+  "documentation": "docs/LOCALE_TEXT_LOOKUP.md",
+  "entries": [
+    {
+      "address": "00a9fad0",
+      "name": "BSP_Localization_ResolveKeyList",
+      "cpp_symbol": "LocaleTextResolver::append_key_list_00a9fad0",
+      "source": "src/locale_text_lookup.cpp",
+      "kind": "function",
+      "end": "00a9fc22",
+      "abi": "ECX manager; stack output WideString*, const NativeString* keys; RET8",
+      "evidence": "00a9faf0 empty return;00a9fb16/00a9fba6 strcspn pipe;00a9fb54 calls each piece;00a9fbe2 always calls final piece. Appends without clearing output; now reconstructs resolver calls as well as split."
+    },
+    {
+      "address": "00a9f4b0",
+      "name": "BSP_Localization_ResolveKey",
+      "cpp_symbol": "LocaleTextResolver::append_key_00a9f4b0",
+      "source": "src/locale_text_lookup.cpp",
+      "kind": "function",
+      "end": "00a9facf",
+      "abi": "ECX manager; stack output WideString*, const NativeString* key; RET8",
+      "evidence": "00a9f4e8 captures prior output length;00a9f4f3..00a9f52f optional caret then dot;00a9f599..00a9f5d0 missing key widens stripped key, correcting prior empty-fallback interpretation. Paired # markers: empty newline, colon hash, other Lua path recursively resolved;00a9f973 resumes after replacement;00a9fa5e uppercases appended range. Host guards malformed strings and unmatched-marker nontermination."
+    },
+    {
+      "address": "00a9eba0",
+      "name": "BSP_Localization_UppercaseCodeUnit",
+      "cpp_symbol": "locale_uppercase_00a9eba0",
+      "source": "src/locale_text_lookup.cpp",
+      "kind": "function",
+      "end": "00a9ec2c",
+      "abi": "ECX manager; stack wint_t; RET4; AX code unit",
+      "evidence": "00a9ebb0..00a9ebee first-match scan of manager+4024/+4028;00a9ebf0..00a9ec13 same-index manager+4034/+4038 mapping with range-error call;00a9ec1d towupper fallback. Duplicates use first match; sidecar miss alone reaches CRT."
+    },
+    {
+      "address": "00b68d70",
+      "name": "BSP_LuaObject_ResolveDotPath",
+      "cpp_symbol": "lookup_path_00b68d70",
+      "source": "src/locale_lua_context.cpp",
+      "kind": "fragment",
+      "end": "00b69121",
+      "abi": "ECX root LuaObject; stack out LuaObject*, path NativeString*, bool* valid; RET0Ch",
+      "evidence": "00b68f25 empty segment invalid;00b68f30 checks current table;00b68f66 string key first;00b68fa0 atol->strtol10;00b68fc9 numeric fallback only nonzero or exact zero spelling;00b690c1 repeats remaining path. Globals-root projection uses actual Lua gettable; trailing dot accepted. Kind1 numeric fallback offsets0/2 globals/registry,1 outer active environment; other native stack/upvalue offsets remain unbound."
+    },
+    {
+      "address": "00b692c0",
+      "name": "BSP_LuaObject_GetPathAsString",
+      "cpp_symbol": "LocaleLuaContext::context_string_00b692c0",
+      "source": "src/locale_lua_context.cpp",
+      "kind": "fragment",
+      "end": "00b69363",
+      "abi": "ECX root LuaObject; stack output NativeString*, path NativeString*; RET8",
+      "evidence": "00b692f0 resolve path,00b692f5 status gate,00b6930d stringify final object,00b69327 invalid literal. Live globals-root Lua5.1.1 adapter borrows selected owner and restores stack; pcall replaces native panic on metamethod failure."
+    },
+    {
+      "address": "00b69130",
+      "name": "BSP_LuaObject_ToDisplayString",
+      "cpp_symbol": "locale_lua_value_string_00b69130",
+      "source": "src/locale_lua_context.cpp",
+      "kind": "function",
+      "end": "00b692b5",
+      "abi": "ECX LuaObject; stack output NativeString*; RET4",
+      "evidence": "00b69148 lua_type nil;bool literals;00b691ab integer predicate;00b691c1 float spill then int32 decimal;00b691f9 float spill and0043bdf0 sprintf percent-f;strings use strlen;table/function fixed names;light userdata ptr;fallback00b68550 type name. Actual Lua values, no tostring metamethod. Current Win32 CRT formatting bound, historical VS2005 edge formatting not verified."
+    },
+    {
+      "address": "00b68550",
+      "name": "BSP_LuaObject_GetTypeName",
+      "cpp_symbol": "locale_lua_value_string_00b69130 (type-name fallback)",
+      "source": "src/locale_lua_context.cpp",
+      "kind": "fragment",
+      "end": "00b685ba",
+      "abi": "ECX LuaObject; stack output NativeString*; RET4",
+      "evidence": "00b68556 unbound kind0 yields type-1;00b68579 tracked kind2 uses lua_type;00b685a5 other pseudo-objects yield table type5;all dispatch00b68460. Live stack projection implements type branch, without native tracked object representation."
+    },
+    {
+      "address": "00b68460",
+      "name": "BSP_LuaType_ToName",
+      "cpp_symbol": "locale_lua_type_name_00b68460",
+      "source": "src/locale_lua_context.cpp",
+      "kind": "function",
+      "end": "00b68524",
+      "abi": "ECX output NativeString*, EDX signed type; RET",
+      "evidence": "00b68461 type+1 unsigned switch bound9;fixed names none,nil,boolean,lightuserdata,number,string,table,function,userdata,thread;default unknown. Retains exact literals and switch domain."
+    },
+    {
+      "address": "00b66a60",
+      "name": "BSP_LuaObject_IsInteger",
+      "cpp_symbol": "gui_lua_is_integer_number_00b66a60 / gui_lua_is_integer_00b66a60",
+      "source": "src/gui_lua_reader.cpp",
+      "kind": "function",
+      "end": "00b66ac3",
+      "abi": "ECX LuaObject; RET; bool AL",
+      "evidence": "Corrected earlier double-integral interpretation:00b66a94 FSTPfloat,00b66a9c CVTTSS2SI,00b66aa6 FILD,00b66aac FUCOMIP,00b66ab0 LAHF/TEST44/JP. Requires ordered equality between float32 value and signed int32 result. Shared Win32 helper retains instruction sequence and caller x87/SSE settings; host and materialized reader paths delegate. Default-rounding1.0000000001 qualifies;2^31,NaN,infinity do not."
+    }
+  ],
+  "ghidra_annotations": "pending integrator locked annotation/save/forced refresh",
+  "validation": {
+    "verify_seeds": "8of8 match installed binary",
+    "build": "MSVC Win32 Release scripts/build.ps1 pass",
+    "existing_tests": "2of2 pass",
+    "fixture": "pass real Lua5.1.1 and synthetic lan/lanx via LocaleTables; recursive markers,prefixes,sidecar-first mapping,byte conversion,live path/type/metamethods,registry/environment pseudoindices,error stack restoration,float32/int32 predicate,caller x87 upward rounding",
+    "fixture_source": "local/locale_text_lookup_fixture.cpp",
+    "fixture_runner": "local/run_locale_text_lookup_fixture.ps1",
+    "fixture_log": "local/locale_text_lookup_fixture.log",
+    "build_log": "local/locale_text_lookup_verified_build.log",
+    "native_differential_for_packet": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "boundaries": [
+    "Required caller selection of current Lua owner/state, borrowed lifetime",
+    "Lua globals-root path adapter; numeric root offsets other than0/1/2 require native stack/upvalue object layout",
+    "Current Win32 CRT percent-f/towupper binding; VS2005 edge formatting/case tables not proven exact",
+    "Host guards embedded terminators,INT32_MAX size,low-byte early termination,unmatched-marker infinite expansion",
+    "Cyclic recursive substitutions have native lack of cycle limit",
+    "Lua metatable lookup error uses protected host exception boundary instead of native panic",
+    "Locale file/provider loading belongs to sibling packet"
+  ],
+  "evidence": {
+    "comments_before": "local/locale_text_lookup_comments_before.txt",
+    "exports": "shared exports/bsp/functions, nine addresses",
+    "alignment_gaps": {
+      "00a9f4b0": [
+        "00a9f61b..00a9f620",
+        "00a9fa6a..00a9fa70"
+      ]
+    },
+    "callable_gaps": 0
+  }
+}
