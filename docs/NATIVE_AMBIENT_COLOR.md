@@ -49,5 +49,31 @@ and inactive register contents are preserved as evidence without an equality
 claim. No unmasked floating exception dispatch was tested. See the audit report
 for the isolated sealed artifact path and hashes.
 
-Main integration/build remains separate. No permanent tests, owner lifecycle,
-gameplay or native caller ABI are claimed.
+The source is integrated into main. Its strict Win32 build and both existing
+CTests passed, followed by independent primary original-body replay against
+the actual main library. No permanent tests, owner lifecycle, gameplay or
+native caller ABI are claimed.
+
+
+## Primary validation
+
+The primary reviewed the source and fixture and verified 51 immutable worker
+pins plus 14 literal current source/header matches. Both actual archive
+objects were extracted from the frozen main library
+`348707f9e0d0ebd36608df65194c67df071da59b351cc9197f2dc42509ddb362`.
+Their code/directive sections and relocations match the worker objects;
+compiler debug/checksum metadata and anonymous-namespace scope hashes are
+recorded separately. The fixture never recompiles either provider.
+
+Six fresh guarded Ghidra/installed-PE spans cover 320 bytes, and all eight
+native seed ranges matched. The unchanged eight-case probe passed again:
+978 compared observable bytes, 16 preserved raw results, 171 complete linked
+COFF sections and 17 complete code postimage stages. An independent parser
+reproduced every compared byte from the raw results. The original converter,
+getter and full original dispatch/fallback execute without provider bridges;
+only the scale and mode data operands relocate in the private original image.
+
+The existing Ghidra names and prior comments were preserved, reviewed
+evidence was appended and saved, and both exports and complete function
+records were refreshed. The tracked audit pins the read-only primary bundle
+at `local/ambient_primary/`. Runtime limits listed above remain unchanged.
