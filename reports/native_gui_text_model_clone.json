@@ -1,0 +1,556 @@
+{
+  "packet": "orch5_gui_text_model_clone",
+  "status": "partial_projection_actual_base_and_post_geometry_fragments_strict_win32_compiled",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": "src/native_gui_text_model_clone.cpp",
+  "header": "include/bsp/native_gui_text_model_clone.hpp",
+  "documentation": "docs/NATIVE_GUI_TEXT_MODEL_CLONE.md",
+  "functions": [
+    {
+      "address": "00b752b0",
+      "name": "BSP_Model_CloneCurrent10",
+      "original_abi": "ECX source; stack flags,parent; EAX clone; RET8",
+      "last_instruction": "00b753ef",
+      "last_instruction_length": 3,
+      "end_inclusive": "00b753f1",
+      "coverage": "partial: B75331..B753F1 association and final tail; allocation/current geometry clone B752B0..B75330 external"
+    },
+    {
+      "address": "00b6f150",
+      "name": "BSP_Node_CopyCloneBaseState",
+      "original_abi": "ECX source; stack destination,flags,parent; RET0C",
+      "last_instruction": "00b6f309",
+      "last_instruction_length": 3,
+      "end_inclusive": "00b6f30b",
+      "coverage": "partial: complete no-positive-light branch for flags26,parent0; light append, child clone and nonnull parent paths external"
+    },
+    {
+      "address": "00b742a0",
+      "name": "BSP_Mesh_CloneCurrent10",
+      "original_abi": "ECX source; stack flags,ignored second DWORD; EAX selected mesh; RET8",
+      "last_instruction": "00b742f7",
+      "last_instruction_length": 3,
+      "end_inclusive": "00b742f9",
+      "coverage": "analyzed-only flags2 ownership branch; no implementation"
+    },
+    {
+      "address": "00b73f50",
+      "name": "BSP_Mesh_CopyCloneState",
+      "original_abi": "ECX source; stack destination,flags; RET8",
+      "last_instruction": "00b7426e",
+      "last_instruction_length": 3,
+      "end_inclusive": "00b74270",
+      "coverage": "analyzed outer flow/Text flags26 route only; copy callees and actual new-owner registration external"
+    },
+    {
+      "address": "00b7be40",
+      "name": "BSP_PointLight_AppendRawNodeBacklink",
+      "original_abi": "ECX actual light; stack raw node; RET4",
+      "last_instruction": "00b7be80",
+      "last_instruction_length": 3,
+      "end_inclusive": "00b7be82",
+      "coverage": "analyzed-only actual reverse array producer; existing semantic vector cannot substitute"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b752b0",
+      "address": "00b752d1",
+      "native": "00b74d00",
+      "binding": "ECX actual01090054 pool; no stack arguments; RET",
+      "coverage": "external canonical allocation transport"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b752ea",
+      "native": "00b6d800",
+      "binding": "ECX source; EAX exact source+54 header; RET",
+      "coverage": "external construction prefix"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b752f2",
+      "native": "00b75030",
+      "binding": "ECX raw new slot; stack current source name header; RET4",
+      "coverage": "existing concrete constructor, registry transport external"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b75312",
+      "native": "00b6f150",
+      "binding": "ECX source; stack destination,original flags,parent; RET0C",
+      "coverage": "implemented no-positive-light flags26,parent0 fragment only"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b7532f",
+      "native": "00b742a0",
+      "binding": "current geometry virtual10 for actual GUI mesh D62D60; flags,0; RET8",
+      "coverage": "external deep mesh/section/material clone"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b7534e",
+      "native": "00b75170",
+      "binding": "ECX destination; unused0,acquired raw geometry,late source178,late source17C; RET10h",
+      "coverage": "implemented association fragment"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b75357",
+      "native": "InterlockedDecrement via EBP/IAT CE2220",
+      "binding": "captured acquired geometry+4; WINAPI RET4",
+      "coverage": "consumed or implemented as explicitly scoped"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b75363",
+      "native": "acquired geometry+vtable00",
+      "binding": "zero creator count; current virtual0; no stack arguments",
+      "coverage": "consumed or implemented as explicitly scoped"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b75383",
+      "native": "InterlockedIncrement via IAT CE221C",
+      "binding": "captured incoming174+4 after publication; WINAPI RET4",
+      "coverage": "consumed or implemented as explicitly scoped"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b75391",
+      "native": "InterlockedDecrement via EBP/IAT CE2220",
+      "binding": "captured old174+4; WINAPI RET4",
+      "coverage": "consumed or implemented as explicitly scoped"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b7539d",
+      "native": "captured old174+vtable00",
+      "binding": "zero old count; current virtual0; no stack arguments",
+      "coverage": "consumed or implemented as explicitly scoped"
+    },
+    {
+      "function": "00b6f150",
+      "address": "00b6f194",
+      "native": "00b6e500",
+      "binding": "ECX destination+164 header; stack signed max(2*capacity,1); RET4",
+      "coverage": "unimplemented positive-light path"
+    },
+    {
+      "function": "00b6f150",
+      "address": "00b6f1b0",
+      "native": "00b7be40",
+      "binding": "ECX captured source light, preserved/reloaded around reserve; stack destination raw node; RET4",
+      "coverage": "unimplemented actual light reverse array"
+    },
+    {
+      "function": "00b6f150",
+      "address": "00b6f1e2",
+      "native": "00b6ed80",
+      "binding": "destination current50 for Model; current source170,true; RET8",
+      "coverage": "implemented real existing scene dispatch"
+    },
+    {
+      "function": "00b6f150",
+      "address": "00b6f202",
+      "native": "InterlockedIncrement via IAT CE221C",
+      "binding": "first assignment incoming130 after publication; RET4",
+      "coverage": "implemented retained assignment"
+    },
+    {
+      "function": "00b6f150",
+      "address": "00b6f210",
+      "native": "InterlockedDecrement via IAT CE2220",
+      "binding": "first assignment captured old130; RET4",
+      "coverage": "implemented retained assignment"
+    },
+    {
+      "function": "00b6f150",
+      "address": "00b6f221",
+      "native": "captured old130+vtable00",
+      "binding": "first assignment zero count; no stack arguments",
+      "coverage": "implemented retained assignment"
+    },
+    {
+      "function": "00b6f150",
+      "address": "00b6f23d",
+      "native": "current source child+vtable10",
+      "binding": "flags,destination parent; loop reloads current child+3C after callback; RET8",
+      "coverage": "skipped by Text flags20"
+    },
+    {
+      "function": "00b6f150",
+      "address": "00b6f28e",
+      "native": "InterlockedIncrement via IAT CE221C",
+      "binding": "second assignment incoming130; RET4",
+      "coverage": "implemented retained assignment"
+    },
+    {
+      "function": "00b6f150",
+      "address": "00b6f29c",
+      "native": "InterlockedDecrement via IAT CE2220",
+      "binding": "second assignment captured old130; RET4",
+      "coverage": "implemented retained assignment"
+    },
+    {
+      "function": "00b6f150",
+      "address": "00b6f2ad",
+      "native": "captured old130+vtable00",
+      "binding": "second assignment zero count; no stack arguments",
+      "coverage": "implemented retained assignment"
+    },
+    {
+      "function": "00b6f150",
+      "address": "00b6f24d",
+      "native": "00b6e680",
+      "binding": "ECX destination; original parent arg; RET4",
+      "coverage": "implemented exact parent-null route only"
+    },
+    {
+      "function": "00b6f150",
+      "address": "00b6f25b",
+      "native": "00b6d890",
+      "binding": "ECX destination; late current source+A4; RET4",
+      "coverage": "implemented actual root propagation"
+    },
+    {
+      "function": "00b6f150",
+      "address": "00b6f26e",
+      "native": "00b6db10",
+      "binding": "destination current38 for Model; stack exact current source+B0 matrix address; RET4",
+      "coverage": "implemented using same transform and actual notification route"
+    },
+    {
+      "function": "00b7be40",
+      "address": "00b7be64",
+      "native": "0059e5e0",
+      "binding": "ECX light+1E0 header; signed capacity max(2*old,1); RET4",
+      "coverage": "analyzed producer only"
+    },
+    {
+      "function": "00b742a0",
+      "address": "00b742b3",
+      "native": "00b73a10",
+      "binding": "ECX actual0108FFF8 mesh pool; no stack arguments",
+      "coverage": "analyzed allocation branch"
+    },
+    {
+      "function": "00b742a0",
+      "address": "00b742be",
+      "native": "00b73d70",
+      "binding": "ECX nonnull actual new mesh slot; RET",
+      "coverage": "existing concrete constructor"
+    },
+    {
+      "function": "00b742a0",
+      "address": "00b742c9",
+      "native": "00b73f50",
+      "binding": "ECX source; stack nonnull destination,flags; RET8",
+      "coverage": "external copy"
+    },
+    {
+      "function": "00b742a0",
+      "address": "00b742dc",
+      "native": "00b73f50",
+      "binding": "ECX source; stack null destination,flags; RET8",
+      "coverage": "native null allocation branch is not replaced with success"
+    },
+    {
+      "function": "00b742a0",
+      "address": "00b742ed",
+      "native": "InterlockedIncrement via IAT CE221C",
+      "binding": "flags2 clear only; source+4; RET4",
+      "coverage": "not the Text26 route"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b73f7f",
+      "native": "00b72bd0",
+      "binding": "ECX destination+10; stack source+10; contract of leaf not reconstructed here",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b73f94",
+      "native": "00b729a0",
+      "binding": "ECX source index stream; flags8 branch outside26 route; leaf contract unread",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b73f9e",
+      "native": "00b73b70",
+      "binding": "ECX destination; acquired index stream; RET4; flags8 branch",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b7400f",
+      "native": "00b72a70",
+      "binding": "ECX source vertex stream; flags10 branch outside26 route; leaf contract unread",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b7401c",
+      "native": "00b73bb0",
+      "binding": "ECX destination; stream index,acquired vertex; RET8; flags10 branch",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b74082",
+      "native": "00b85ee0",
+      "binding": "incoming ECX60h ignored by actual section pool wrapper; no stack arguments",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b74098",
+      "native": "00b85ef0",
+      "binding": "ECX raw new section; stack captured source section; RET4; copy constructor body inspected",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b740b6",
+      "native": "00b18780",
+      "binding": "incoming ECX110h ignored by actual material pool wrapper; no stack arguments",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b740ce",
+      "native": "00b18b60",
+      "binding": "ECX raw new material; stack copied section current20 material; RET4; existing actual clone body",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b740db",
+      "native": "00b73bb0",
+      "binding": "ECX destination; stream index,shared current source vertex; RET8; native flags10-clear branch",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b740f2",
+      "native": "00b864c0",
+      "binding": "ECX copied section; acquired cloned material; RET4",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b74124",
+      "native": "00b72e10",
+      "binding": "ECX destination+54 header; max(2*capacity,4); RET4",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b7421d",
+      "native": "00427110",
+      "binding": "ECX destination+B0 string vector; stack0; RET4",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b7422b",
+      "native": "00426520",
+      "binding": "ECX destination+B0 string vector; current source+B4 count loaded toEDX then pushed atB74228; reserve producer remains external",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b7424c",
+      "native": "004cdc20",
+      "binding": "ECX destination+B0 string vector; stack current source8h string header; leaf not reconstructed here",
+      "coverage": "analyzed external mesh-copy dependency"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b73fca",
+      "native": "InterlockedIncrement via IAT CE221C",
+      "binding": "shared incoming index owner+4 after publication",
+      "coverage": "analyzed external mesh-copy operation; interlocked WINAPI RET4, virtual0 RET0"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b73fd8",
+      "native": "InterlockedDecrement via IAT CE2220",
+      "binding": "captured old or cloned index owner+4",
+      "coverage": "analyzed external mesh-copy operation; interlocked WINAPI RET4, virtual0 RET0"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b73fe8",
+      "native": "captured index owner+vtable00",
+      "binding": "zero reference callback",
+      "coverage": "analyzed external mesh-copy operation; interlocked WINAPI RET4, virtual0 RET0"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b74025",
+      "native": "InterlockedDecrement via IAT CE2220",
+      "binding": "acquired vertex clone creator+4",
+      "coverage": "analyzed external mesh-copy operation; interlocked WINAPI RET4, virtual0 RET0"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b74036",
+      "native": "captured vertex clone+vtable00",
+      "binding": "zero reference callback",
+      "coverage": "analyzed external mesh-copy operation; interlocked WINAPI RET4, virtual0 RET0"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b740fb",
+      "native": "InterlockedDecrement via IAT CE2220",
+      "binding": "acquired material clone creator+4",
+      "coverage": "analyzed external mesh-copy operation; interlocked WINAPI RET4, virtual0 RET0"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b7410b",
+      "native": "captured material clone+vtable00",
+      "binding": "zero reference callback",
+      "coverage": "analyzed external mesh-copy operation; interlocked WINAPI RET4, virtual0 RET0"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b74140",
+      "native": "InterlockedIncrement via IAT CE221C",
+      "binding": "new section+4 after pointer append/count increment",
+      "coverage": "analyzed external mesh-copy operation; interlocked WINAPI RET4, virtual0 RET0"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b74147",
+      "native": "InterlockedDecrement via IAT CE2220",
+      "binding": "new section creator+4",
+      "coverage": "analyzed external mesh-copy operation; interlocked WINAPI RET4, virtual0 RET0"
+    },
+    {
+      "function": "00b73f50",
+      "address": "00b74157",
+      "native": "captured section+vtable00",
+      "binding": "zero reference callback",
+      "coverage": "analyzed external mesh-copy operation; interlocked WINAPI RET4, virtual0 RET0"
+    }
+  ],
+  "all_callers": [
+    {
+      "function": "00ab98f0",
+      "address": "00ab9d87",
+      "native": "00b752b0",
+      "binding": "indirect actual Model current10; source=current template+4C; flags26,parent0"
+    },
+    {
+      "function": "00b6f8f0",
+      "address": "00b6f944",
+      "native": "00b6f150",
+      "binding": "ECX original EDI source; newly constructed ESI dest; incoming flags,parent"
+    },
+    {
+      "function": "00b8f6f0",
+      "address": "00b8f7ed",
+      "native": "00b6f150",
+      "binding": "ECX original EDI source; new ESI dest; incoming flags,parent"
+    },
+    {
+      "function": "00b912e0",
+      "address": "00b91358",
+      "native": "00b6f150",
+      "binding": "ECX original ESI source; new EBX dest; incoming flags,parent; PUSH EBP before3 arguments is saved local, RET0C"
+    },
+    {
+      "function": "00b91c40",
+      "address": "00b91cae",
+      "native": "00b6f150",
+      "binding": "ECX original EDI source; new ESI dest; incoming flags,parent"
+    },
+    {
+      "function": "00b6eed0",
+      "address": "00b6ef13",
+      "native": "00b7be40",
+      "binding": "ECX captured light retained across reserve; stack EDI raw node; RET4"
+    }
+  ],
+  "tail_transfers": [
+    {
+      "function": "00cc1c70",
+      "site": "00cc1c73",
+      "target": "00b748c0",
+      "instruction": "JMP",
+      "binding": "constructor-only EH cleanup; ECX saved raw allocation [EBP-10]; separate CALL-only verifier limitation"
+    }
+  ],
+  "native_profiles": {
+    "model": "D62DE8+10=B752B0,+38=B6DB10,+50=B6ED80",
+    "gui_mesh": "B73D70 produces D62D60; D62D60+10=B742A0",
+    "point_light": "actual light1E0/1E4/1E8 reverse array; current semantic vector is not physical owner"
+  },
+  "corrections": [
+    {
+      "was": "B6F150 two arguments and unaff_retaddr interpreted as flags",
+      "is": "ECX source; THREE stack arguments destination,flags,parent; RET0C",
+      "evidence": "B6F153 destination; B6F223 flags; B6F246 parent; B6F309 cleanup; all5callers"
+    },
+    {
+      "was": "flags26 allows sharing a geometry pointer as completed Model clone",
+      "is": "flags2 requires distinct mesh; flags8/10 clear share streams; flags&6 requires cloned section materials",
+      "evidence": "B742A5..C9; B73F88; B74005; B7405D..62; B740B6/CE"
+    },
+    {
+      "was": "material clone algorithm absent because older MaterialCloneState is semantic",
+      "is": "clone_native_material_00b18b60 already exists for actual storage; owner registration/creator transport and mesh copy composition remain",
+      "evidence": "current include/bsp/native_material_owner.hpp:66; GuiNativeGeometryOwners creates material for effect only"
+    },
+    {
+      "was": "retained130 second assignment can be eliminated",
+      "is": "source/destination130 reload after parenting/root/local-matrix callbacks must occur again",
+      "evidence": "B6F1E4..221 versus B6F270..2AD"
+    }
+  ],
+  "coverage_contract": {
+    "base": "Text flags26,parent0; positive source light count returns boundary before effects; otherwise all selected base side effects",
+    "association": "entry only after actual current geometry10 returned acquired canonical mesh; source17C then178 late x87 read; setter then creator release",
+    "tail": "entry only after complete geometry branch; incoming174 publish/retain/release then ten sequential x87 pairs",
+    "lifetime": "borrowed distinct live same-environment canonical Models; existing node retained130 and render retained174 bindings; no new tree, reference count or copied snapshot",
+    "failure": "no allocation rollback or implicit destructor; post-callback exceptions retain partial state and are not resumable; owner transport remains external"
+  },
+  "remaining": [
+    "B752B0 allocation/source-name construction with canonical GuiWidgetOwnerRuntime.models_ adoption; private current create_model creates a fresh named model, not this clone",
+    "Actual B742A0/B73F50 mesh clone composition, actual B85EF0 copied-section construction and cloned material creator/registration transport",
+    "Existing clone_native_material_00b18b60 is available and should be reused, not reimplemented",
+    "LOD/weight-name copy composition; optional flags8/10 stream clones outsideText26 scope",
+    "Actual source node/light pointer arrays and light reverse1E0 owner for positive light counts",
+    "Generic flags without20 child recursion and nonnull-parent base clone paths",
+    "Native allocation failure/EH ABI and arbitrary malformed-memory behavior; full Text child caller continuation"
+  ],
+  "verification": {
+    "strict_msvc_win32": "PASS /std:c++17 /W4 /WX /O2 /MD /fp:strict; parent current headers first; local/native_gui_text_model_clone.obj",
+    "call_verifier": "PASS strong parent verifier:38 numeric rows,0 failures;34 direct calls and4 separately reported resolved indirect calls; remaining named indirect calls and one JMP inspected separately",
+    "permanent_tests_added": 0,
+    "runtime_probe_added": false,
+    "game_reachable": false,
+    "game_validated": false,
+    "abi_compatible": false,
+    "combined_build": "parent responsibility"
+  },
+  "checklist": {
+    "callee_before_contract": "B752B0/B6F150/B742A0/B73F50/B7BE40 bodies read; consumed scene/matrix/section/material bodies read; unrelated unimplemented copy leaves explicitly unread",
+    "bounds": "five actual full Ghidra bounds; RET8/RET0C/RET4 exact; no raw new functions",
+    "all_sites": "five base-copy directcallers, both mesh-copy branches, both light-backlink callers; vtable producers inspected",
+    "field_producers": "existing native Node/Model/Mesh constructors and section/material copy owners; positive-light physical array has no substitute",
+    "partial": "header/doc/report/ledger explicitly partial; no completed-clone entry",
+    "runtime": "not reachable through actual factory; strict compile only",
+    "cleanup": "RET0C base,RET8 Model/mesh,RET4 reverse append; each native row carries callsite",
+    "register_provenance": "full B752B0 ESI source/EDI dest/EBX original flags; full B6F150 EDI source/ESI dest/EBX flags then parent; extra saved EBP inB912E0 distinguished",
+    "leases": "two partial routines plus three analyzed helper bodies; model/render owner files read-only",
+    "report": "exact numeric CALL rows plus explicit indirect/JMP rows"
+  }
+}
