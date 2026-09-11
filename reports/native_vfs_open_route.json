@@ -1,0 +1,571 @@
+{
+  "packet": "native_vfs_open_route",
+  "status": "complete_qualified_actual_consumer_Win32_build_and_original_instruction_composition_checked",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "names_are_hypotheses": true,
+  "spans": [
+    {
+      "address": "00bdf310",
+      "end_exclusive": "00bdf4b5",
+      "length": 421,
+      "sha256": "e354c379eeae3b582f71333f00c627d34b1d19e8c2c835c861922bda2cd7e748",
+      "matches_disk": true,
+      "bytes_hex": "6aff68b065cc0064a100000000506489250000000083ec1853558b6c243033db568d44240c3bc5578bf1895c2410895c2414742a8b45006a01508d4c2418e8ede983ff395d0074168b4c24108b55048b442414515250e81583010083c40c8d4c2410895c2430e815f300008d4c2410518bcee8f9d6ffff8b7c243cc74424188c83d600895c241c897c24208d542418528d442414508bcec644243801e8efdcffff83e7018b44241c89442438744a3bc375748b4c24143bcbc74424188083d600c7442430ffffffff74178b4424106a0183c0015051e8d6a883ff8bc8e81f21ffff5f5e5d33c05b8b4c241864890d0000000083c424c208003bc3752a8b6d043beb7505bdf0ce090155680485d600e88d6084ff8b0decce09018b919000000083c408ffd2eb373bfb751a8b4c2424518b0decce0901508d54241852e870f5ffff3bfb740683462401eb138b4c2438834628018b018b502c53ffd201462c8b4c24143bcbc74424188083d600c7442430ffffffff74178b4424106a0183c0015051e82ba883ff8bc8e87420ffff8b4c24288b4424385f5e5d5b64890d0000000083c424c20800",
+      "stored_body": "00bdf310 BSP_VFS_OpenResource  undefined BSP_VFS_OpenResource(void)  body 00bdf310 - 00bdf4b4"
+    },
+    {
+      "address": "00bda690",
+      "end_exclusive": "00bda6f0",
+      "length": 96,
+      "sha256": "f61f3853c5e54193f80f903c6bfde68962fb3e01bd3dd58ff805a6b3553a48df",
+      "matches_disk": true,
+      "bytes_hex": "a1ecce090180782000538b5c240c56578b7c24108bf17426807f0c007420f6460801751a8b430485c07505b8f0ce09015068bc83d600e8e5ad84ff83c4088b4f088b46088b118b52085053ffd285c089460474068a470c88460c5f5e5bc20800",
+      "stored_body": "00bda690 BSP_VFS_OpenMountCallback  undefined BSP_VFS_OpenMountCallback(void)  body 00bda690 - 00bda6ef"
+    },
+    {
+      "address": "00bdca80",
+      "end_exclusive": "00bdcb30",
+      "length": 176,
+      "sha256": "b17b2add65fc080e3025053f6a123dc95780d323019ee943409c061979d3caad",
+      "matches_disk": true,
+      "bytes_hex": "53568bf133db399e980000000f8e9900000055578b7c241433ed8d9b000000008b86940000008b14288b0f03c53bd1752e85d27508f7d91bc98bc1eb1985c975058d4101eb108b4f048b50045152e8ecb4010083c40885c00f94c084c0751583c30183c5103b9e980000007cb35f5d5e5bc204008b8694000000c1e3048d7403083bfe74248b0e6a01518bcfe82f1284ff833e0074138b178b46048b4f04525051e85aab010083c40c5f5d5e5bc20400",
+      "stored_body": "00bdca80 BSP_VFS_ApplyFirstAlias  undefined BSP_VFS_ApplyFirstAlias(void)  body 00bdca80 - 00bdcb2f"
+    },
+    {
+      "address": "00bdd0a0",
+      "end_exclusive": "00bdd340",
+      "length": 672,
+      "sha256": "6688eee94e647c22020b87083766a158686a073c47ff9d89162e5440bd5d3397",
+      "matches_disk": true,
+      "bytes_hex": "558bec83e4f86aff68e962cc0064a100000000506489250000000083ec3853568b750833db57895c24108d4424183bc68bf9c74718ffffffff895c2418895c241c74288b066a01508d4c2420e84f0c84ff391e74168b4c24188b56048b44241c515250e878a5010083c40c8b47408d4f3c8b38895c244c8bd9894c2414897c242c895c242885db8b710474043bd97405e8de9501003bfe0f84c801000085db7505e8cd9501003b7b047505e8c39501008b471083c71085c0743839442418762e506a008d4c2438518d4c2424e8cfc688ff834c241001578bc8e8c28a85ff84c0740c8b078b54241c803c022f740432dbeb02b301f64424100174248b4c243483642410fe85c974178b4424306a0183c0015051e808cb83ff8bc8e85143ffff84db0f84ed0000008b0785c0742568ffffff7f83c001508d442440508d4c2424e85cc688ff8bf0834c241002c644244c01eb048d74241833db8d4c24203bce895c2420895c242474248b066a0150e82e0b84ff391e74168b5424208b46048b4c2424525051e857a4010083c40cf644241002c744244c0300000074248b4c243c83642410fd3bcb74178b4424386a0183c0015051e868ca83ff8bc8e8b142ffff8b54242c8b4424283b50047505e8a29401008b750c8b168b52048d44242050578bceffd28b068b50088bceffd284c08b4c2424c644244c0075353bcb74178b4424206a0183c0015051e813ca83ff8bc8e85c42ffff8d4c2428e823c5ffff8b7c242c8b4c24148b5c2428e957feffff3bcb74178b4424206a0183c0015051e8dec983ff8bc8e82742ffff8b44241c3bc3c744244cffffffff74338b4c24186a0183c10151eb1a8b44241c85c0c744244cffffffff74178b5424186a0183c2015250e89bc983ff8bc8e8e441ffff8b4c24445f5e64890d000000005b8be55dc20800",
+      "stored_body": "00bdd0a0 BSP_VFS_VisitMatchingMounts  undefined BSP_VFS_VisitMatchingMounts(void)  body 00bdd0a0 - 00bdd33f"
+    },
+    {
+      "address": "00bd9040",
+      "end_exclusive": "00bd9049",
+      "length": 9,
+      "sha256": "f862b03f571a3d453c5ef9b7e990a48ac6059bd0f34bac7da7740d0d8fc81cd9",
+      "matches_disk": true,
+      "bytes_hex": "33c03941040f95c0c3",
+      "stored_body": "00bd9040 ?  ?  body ?"
+    },
+    {
+      "address": "00bd97e0",
+      "end_exclusive": "00bd9843",
+      "length": 99,
+      "sha256": "038e8ecbedd6a49934410cbc5130f110d1ce98c4b8b7e8ad4830cbbc6aee1c9e",
+      "matches_disk": true,
+      "bytes_hex": "568bf1833e007505e826cf01008b46048078210074065ee917cf01008b480880792100751a8b0180782100750d8d49008bc88b018078210074f6894e045ec38b40048078210075168b4e043b4808750e8946048bd08b42048078210074ea8946045ec3",
+      "stored_body": "00bd97e0 BSP_VFS_AdvanceMountIterator  undefined BSP_VFS_AdvanceMountIterator(void)  body 00bd97e0 - 00bd9842"
+    },
+    {
+      "address": "00435c40",
+      "end_exclusive": "00435c99",
+      "length": 89,
+      "sha256": "cd558dc4dd6db3ac479faa61b7e9618e5fa496d7102fb1efcce661bc38e84d8d",
+      "matches_disk": true,
+      "bytes_hex": "8b11568b7424088b063bd0740632c05ec2040085d2750ff7d81bc085c00f94c28ac25ec2040085c07512b80100000033d285c00f94c28ac25ec204008b46048b49045051e836237c0083c40833d285c00f94c28ac25ec20400",
+      "stored_body": "00435c40 BSP_NativeString_EqualsInsensitive  undefined BSP_NativeString_EqualsInsensitive(void)  body 00435c40 - 00435c98"
+    },
+    {
+      "address": "004254b0",
+      "end_exclusive": "004254b1",
+      "length": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "matches_disk": true,
+      "bytes_hex": "c3",
+      "stored_body": "004254b0 TRIV_body_004254b0  undefined TRIV_body_004254b0(void)  body 004254b0 - 004254b0"
+    }
+  ],
+  "coverage_boundary": "Complete consumers with required callable original-ABI provider/stream/failure tables and explicit BDE9C0 service; provider/stream/logger owners are unimplemented dependencies, not substituted callbacks.",
+  "source": "src/native_vfs_open_route.cpp",
+  "header": "include/bsp/native_vfs_open_route.hpp",
+  "documentation": "docs/NATIVE_VFS_OPEN_ROUTE.md",
+  "functions": [
+    {
+      "address": "00bdf310",
+      "name": "open_native_vfs_resource_00bdf310",
+      "cpp_symbol": "bsp::open_native_vfs_resource_00bdf310",
+      "source": "src/native_vfs_open_route.cpp",
+      "native_end_exclusive": "00bdf4b5",
+      "original_abi": "ECX captured manager; stacked name/full flags; RET8; EAX stream",
+      "coverage": "complete consumer with explicit external original-ABI services",
+      "status": "complete_qualified_actual_consumer_Win32_build_and_original_instruction_composition_checked",
+      "evidence": "reports/native_vfs_open_route.json",
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bda690",
+      "name": "open_native_vfs_mount_00bda690",
+      "cpp_symbol": "bsp::open_native_vfs_mount_00bda690",
+      "source": "src/native_vfs_open_route.cpp",
+      "native_end_exclusive": "00bda6f0",
+      "original_abi": "ECX visitor; stacked mount payload/name; RET8; return unspecified",
+      "coverage": "complete provider-call consumer",
+      "status": "complete_qualified_actual_consumer_Win32_build_and_original_instruction_composition_checked",
+      "evidence": "reports/native_vfs_open_route.json",
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bdca80",
+      "name": "apply_native_vfs_first_alias_00bdca80",
+      "cpp_symbol": "bsp::apply_native_vfs_first_alias_00bdca80",
+      "source": "src/native_vfs_open_route.cpp",
+      "native_end_exclusive": "00bdcb30",
+      "original_abi": "ECX manager; stacked mutable name; RET4",
+      "coverage": "complete actual alias consumer",
+      "status": "complete_qualified_actual_consumer_Win32_build_and_original_instruction_composition_checked",
+      "evidence": "reports/native_vfs_open_route.json",
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bd9040",
+      "name": "has_native_vfs_open_stream_00bd9040",
+      "cpp_symbol": "bsp::has_native_vfs_open_stream_00bd9040",
+      "source": "src/native_vfs_open_route.cpp",
+      "native_end_exclusive": "00bd9049",
+      "original_abi": "ECX visitor; RET; EAX0/1 from full stream DWORD+4",
+      "coverage": "complete raw nine-byte leaf; saved function definition pending integration",
+      "status": "complete_qualified_actual_consumer_Win32_build_and_original_instruction_composition_checked",
+      "evidence": "reports/native_vfs_open_route.json",
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bdd0a0",
+      "name": "visit_native_vfs_open_mounts_00bdd0a0",
+      "cpp_symbol": "bsp::visit_native_vfs_open_mounts_00bdd0a0",
+      "source": "src/native_vfs_open_route.cpp",
+      "native_end_exclusive": "00bdd340",
+      "original_abi": "ECX manager; stacked name/visitor; RET8",
+      "coverage": "complete traversal qualified for D6838C and BDA690/BD9040 current slots",
+      "status": "complete_qualified_actual_consumer_Win32_build_and_original_instruction_composition_checked",
+      "evidence": "reports/native_vfs_open_route.json",
+      "native_composition_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "qualified_visitor_identities": [
+        "00d6838c"
+      ]
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bdf34e",
+      "native": "0041dd40",
+      "function": "00bdf310"
+    },
+    {
+      "address": "00bdf366",
+      "native": "00bf7680",
+      "function": "00bdf310"
+    },
+    {
+      "address": "00bdf376",
+      "native": "00bee690",
+      "function": "00bdf310"
+    },
+    {
+      "address": "00bdf382",
+      "native": "00bdca80",
+      "function": "00bdf310"
+    },
+    {
+      "address": "00bdf3ac",
+      "native": "00bdd0a0",
+      "function": "00bdf310"
+    },
+    {
+      "address": "00bdf3e5",
+      "native": "00419cc0",
+      "function": "00bdf310"
+    },
+    {
+      "address": "00bdf3ec",
+      "native": "00bd1510",
+      "function": "00bdf310"
+    },
+    {
+      "address": "00bdf41e",
+      "native": "004254b0",
+      "function": "00bdf310"
+    },
+    {
+      "address": "00bdf432",
+      "native": "published_manager+field90",
+      "function": "00bdf310"
+    },
+    {
+      "address": "00bdf44b",
+      "native": "00bde9c0",
+      "function": "00bdf310"
+    },
+    {
+      "address": "00bdf468",
+      "native": "returned_stream+vtable2c",
+      "function": "00bdf310"
+    },
+    {
+      "address": "00bdf490",
+      "native": "00419cc0",
+      "function": "00bdf310"
+    },
+    {
+      "address": "00bdf497",
+      "native": "00bd1510",
+      "function": "00bdf310"
+    },
+    {
+      "address": "00bda6c6",
+      "native": "004254b0",
+      "function": "00bda690"
+    },
+    {
+      "address": "00bda6db",
+      "native": "provider+vtable08",
+      "function": "00bda690"
+    },
+    {
+      "address": "00bdcace",
+      "native": "00bf7fbf",
+      "function": "00bdca80"
+    },
+    {
+      "address": "00bdcb0c",
+      "native": "0041dd40",
+      "function": "00bdca80"
+    },
+    {
+      "address": "00bdcb21",
+      "native": "00bf7680",
+      "function": "00bdca80"
+    },
+    {
+      "address": "00bdd0ec",
+      "native": "0041dd40",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd103",
+      "native": "00bf7680",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd130",
+      "native": "00bf6713",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd141",
+      "native": "00bf6713",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd14b",
+      "native": "00bf6713",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd16c",
+      "native": "00469840",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd179",
+      "native": "00435c40",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd1b3",
+      "native": "00419cc0",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd1ba",
+      "native": "00bd1510",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd1df",
+      "native": "00469840",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd20d",
+      "native": "0041dd40",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd224",
+      "native": "00bf7680",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd253",
+      "native": "00419cc0",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd25a",
+      "native": "00bd1510",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd26c",
+      "native": "00bf6713",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd281",
+      "native": "visitor+vtable04",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd28a",
+      "native": "visitor+vtable08",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd2a8",
+      "native": "00419cc0",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd2af",
+      "native": "00bd1510",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd2b8",
+      "native": "00bd97e0",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd2dd",
+      "native": "00419cc0",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd2e4",
+      "native": "00bd1510",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd320",
+      "native": "00419cc0",
+      "function": "00bdd0a0"
+    },
+    {
+      "address": "00bdd327",
+      "native": "00bd1510",
+      "function": "00bdd0a0"
+    }
+  ],
+  "indirect_contracts": [
+    {
+      "address": "00bda6db",
+      "native": "provider+vtable08",
+      "contract": "ECX actual provider; full flags/name stacked; EAX raw stream; RET8; selected current callable slot"
+    },
+    {
+      "address": "00bdf432",
+      "native": "published_manager+field90",
+      "contract": "ECX current published manager; no stacked args; callable field, not vtable; target body external"
+    },
+    {
+      "address": "00bdf468",
+      "native": "returned_stream+vtable2c",
+      "contract": "ECX captured returned stream; DWORD0 stacked; EAX consumed; current callable slot reloaded after log/counter; owner body external"
+    }
+  ],
+  "storage_producers": [
+    {
+      "address": "00bdf38b",
+      "writes": "D6838C visitor identity; subsequent stores initialize stream+4 and full flags+8"
+    },
+    {
+      "address": "00be1dc0",
+      "writes": "initial manager bytes/counters/mount sentinel; clears field90 and alias header94/98/9C"
+    },
+    {
+      "address": "00bdec70",
+      "writes": "16-byte alias-array records initialized as four zero words; count at header+4"
+    },
+    {
+      "address": "00bdb850",
+      "writes": "destruction consumes record second string then first string"
+    }
+  ],
+  "all_callsites_review": {
+    "00bdca80": "only direct xref BDF382; body inspected",
+    "00bde9c0": "only caller BDF310, site BDF44B; body inspected; stream argument unused",
+    "00bdf310": "data xrefs D685B8 and D68D08; both manager virtual04 identities; flag ABI is full DWORD",
+    "00bda690": "stored Ghidra xrefs absent; verified D6838C table+04 target; BDD281 current visit slot",
+    "00bd9040": "stored function/xrefs absent; verified D6838C table+08 target; BDD28A current stop slot"
+  },
+  "unresolved_packets": [
+    {
+      "packet": "actual_physical_open_owner",
+      "entry": "00bf4ba0",
+      "dependencies": [
+        "00bf42a0",
+        "00bf3770",
+        "00bf5590",
+        "00bf52a0"
+      ],
+      "boundary": "actual pool/open stream validity/lifetime"
+    },
+    {
+      "packet": "actual_file_store_open_owner",
+      "entry": "00be5fa0",
+      "dependencies": [
+        "00be5e90",
+        "00bef750"
+      ],
+      "boundary": "actual tree lookup and returned stream owner conversion"
+    },
+    {
+      "packet": "actual_mpkg_open_owner",
+      "entry": "00bb8e70",
+      "dependencies": [
+        "00bb8d60",
+        "00bb8be0"
+      ],
+      "boundary": "actual archive state/entry stream owners"
+    },
+    {
+      "packet": "actual_msar_open_contract",
+      "entry": "00bba7c0",
+      "boundary": "table D643C4+08 verified; callee unread here; no semantic contract assigned"
+    },
+    {
+      "packet": "actual_open_log_owner",
+      "entry": "00bde9c0",
+      "dependencies": [
+        "00426500",
+        "00bd1a60",
+        "00bd1a20",
+        "00425f80"
+      ],
+      "boundary": "current global0109CEE8 logger and builder ownership"
+    }
+  ],
+  "pending_ghidra_definition": {
+    "address": "00bd9040",
+    "end_exclusive": "00bd9049",
+    "bytes_hex": "33c03941040f95c0c3",
+    "reason": "Worker Ghidra policy is read-only; integrator defines under lock before annotating."
+  },
+  "validation": {
+    "build": "./scripts/build.ps1: MSVC Win32 Release passed",
+    "ctest": "1/1 reconstructed_math passed; checkout did not enable seed-based native CTests",
+    "report_calls": "PASS: 37 direct call rows checked, 0 failed; 8 marked indirect rows explicitly not checked",
+    "native_fixture": "local/vfs_open_probe.exe",
+    "native_compositions": 8,
+    "original_spans": 8,
+    "original_bytes": 1563,
+    "comparison": "Full 2048-byte arena + actual pool prefix + result + callable-service events, each of eight cases; null and 00000100h stop getter",
+    "covers": [
+      "first alias only",
+      "no normalization after replacement",
+      "null silent and nonsilent branches",
+      "flags2/3/32h/F3h",
+      "mount failure then retry",
+      "prefix rejection",
+      "published manager reread vs captured counter manager",
+      "log before counter before current stream slot",
+      "DWORD wrap",
+      "returned stream unmodified"
+    ],
+    "instrumented_services": [
+      "provider virtual08",
+      "BDE9C0 log",
+      "stream virtual2C",
+      "manager field90 failure"
+    ],
+    "not_validated": [
+      "actual provider owners and I/O",
+      "actual logger implementation",
+      "original native FH3/SEH exceptions",
+      "game runtime",
+      "binary ABI compatibility"
+    ],
+    "fixture_result": "PASS: 8 original/actual open compositions and 2 full-pointer getter comparisons"
+  },
+  "artifacts": [
+    {
+      "path": "src/native_vfs_open_route.cpp",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch2-vfs-open-am",
+      "bytes": 11542,
+      "sha256": "874e05a5cee86f8d95e20c603cdbbd62df723cc31ee50421243867c1c2fbbc05",
+      "ignored": false
+    },
+    {
+      "path": "include/bsp/native_vfs_open_route.hpp",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch2-vfs-open-am",
+      "bytes": 2742,
+      "sha256": "ae5f6c0f48a3b98f49a6945f6d628ebfff874a705bb694924d434e3031de5713",
+      "ignored": false
+    },
+    {
+      "path": "docs/NATIVE_VFS_OPEN_ROUTE.md",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch2-vfs-open-am",
+      "bytes": 8668,
+      "sha256": "a4e0f0a108df0716a915be77961016fda89cdf8721b50de41d6a2eb8712fe328",
+      "ignored": false
+    },
+    {
+      "path": "local/vfs_open_probe.cpp",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch2-vfs-open-am",
+      "bytes": 10204,
+      "sha256": "606b08ef8eae1f0fe0b6c115746810a91b6530fadbaf84c7c3177ac40f0482ae",
+      "ignored": true
+    },
+    {
+      "path": "local/vfs_open_original_bytes.hpp",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch2-vfs-open-am",
+      "bytes": 8492,
+      "sha256": "5a07d1f17863a0147624cd3997968e7f6118027fa42521ef40de75abd7130047",
+      "ignored": true
+    },
+    {
+      "path": "local/build_vfs_open_probe.cmd",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch2-vfs-open-am",
+      "bytes": 433,
+      "sha256": "943949a5e3d5bdcc6d9d74cce64d95362f94f44b14c7a8c034820654ed14959a",
+      "ignored": true
+    },
+    {
+      "path": "local/vfs_open_probe.exe",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch2-vfs-open-am",
+      "bytes": 27136,
+      "sha256": "9046a09b2f7b796800afacd15ad01380624b1713a85544d441b885e64b06c348",
+      "ignored": true
+    },
+    {
+      "path": "local/native-vfs-open-build.log",
+      "worktree": "J:/PROG/battlestations-pacific-decompile-orch2-vfs-open-am",
+      "bytes": 24590,
+      "sha256": "7c436303713abfa564247d16a6cf3005fbf9f09f578a8b06ff02a59be6914e1c",
+      "ignored": true
+    }
+  ]
+}
