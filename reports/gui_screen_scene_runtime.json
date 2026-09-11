@@ -1,0 +1,73 @@
+{
+  "packet": "orch2_gui_screen_scene_o",
+  "date": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00ac59a0",
+      "native_end_exclusive": "00ac5f5b",
+      "bytes": 1467,
+      "sha256": "32e2d414fd096ed6ee22575e69c6c19500e4fb417b810df55445ffee352b9d3b",
+      "matches_installed_binary": true,
+      "original_abi": "ECX layer; no consumed EDX argument; void; RET",
+      "cpp_symbol": "GuiScreenSceneRuntime::Shared::Layer::acquire",
+      "old_ghidra_name": "BSP_GuiLayer_AcquireCameraStore",
+      "old_ghidra_comment": "[BSP reconstruction 00ac59a0]\nHypothesis, not a recovered symbol. Packet gui_render_order, read-only analysis. __fastcall(ECX = layer), RET, no return value. Looks up a camera store matching the descriptor at layer+108h through 00AA3280 and, when found and layer+120h is set, reuses its scene at +1Ch with an InterlockedIncrement on the scene refcount. Otherwise creates the scene, a camera named GuiCam_ plus the layer name at layer+100h, a GuiLights set and a GuiDirectionalLight, and registers a new store through 00AA5070. Applies the scene flags as layer+108h OR 6, and re-registers the page through BSP_GuiManager_RegisterPageByPriority when the applied Priority at +0FCh differs from the authored copy at +118h. Sole caller 00AC6040.",
+      "annotation_applied": false
+    },
+    {
+      "address": "00ac5480",
+      "native_end_exclusive": "00ac5555",
+      "bytes": 213,
+      "sha256": "2cb0bad65eab265c6073b983ed4dd6ddbae9b949fa33981a8d9721a5515eb7f4",
+      "matches_installed_binary": true,
+      "original_abi": "ECX layer; no consumed EDX argument; void; RET",
+      "cpp_symbol": "GuiScreenSceneRuntime::Shared::Layer::release",
+      "old_ghidra_name": "BSP_GuiLayer_Destruct",
+      "old_ghidra_comment": "[BSP reconstruction 00ac5480]\nHypothesis, not a recovered symbol. Packet gui_layer_manager, read-only analysis. __fastcall(ECX = layer), RET 0, sole caller 00AA38F0. Re-stamps vtable 00D5BE38, then branches on the ownership byte at +0F4h: 0 releases the borrowed scene at +0ECh with an InterlockedDecrement on scene+4h and the scene's own vtable slot 0 at zero; non-zero calls BSP_GuiManager_RemoveCameraStore (00AA4B30) with the store at +0F0h and then 00B72250 for the scene. Returns the name buffer at +104h to the sized storage pool with size *(+100h)+1, then chains to the widget destructor 00AA9730. Nothing here removes the layer from the page vector at manager+14h.",
+      "annotation_applied": false
+    }
+  ],
+  "names_are_hypotheses": true,
+  "ghidra_read_only": true,
+  "status": "successful_call_composition_build_tested_required_native_services",
+  "composition": [
+    "same GuiWidgetOwner and GuiScreenLayerState",
+    "same ordered GuiCameraStoreMap",
+    "actual NativeCameraReference, NativeGuiSceneOwner, viewport, fog, GuiLights and ambient owners",
+    "borrowed canonical owner associations only; no duplicated native counts, fields or hierarchy"
+  ],
+  "corrections": [
+    "Shared-store reuse returns before owned setup, flags, priority and bounds.",
+    "AC5EA0 and AC5EC6 resolve store+18 camera; flags|6 writes camera+188, clear color writes+190.",
+    "BF7420 consumes ST0 and truncates to EAX; it is not a clock.",
+    "AA31F0 calls current20 atAA326A before deleting04(1) atAA3276; AC5480 must not add a node release."
+  ],
+  "remaining_services": [
+    "Actual weak-base00925490/00925540 provider",
+    "Concrete directional allocation/reference/terminal owner provider",
+    "Actual cGroup root bounds00B8E6C0 writer and CRT sqrt/spill/int conversion",
+    "Actual AA52A0 manager registration and optional F8BF4C hook bindings",
+    "Existing camera/scene environment prerequisites"
+  ],
+  "uncertainty": [
+    "New semantic C++ ABI; NativeString temporaries adapt std::string state.",
+    "Not binary SEH equivalent; published or unattached allocation obligations are not generally rolled back.",
+    "Pre-publication host recovery never frees a pre-existing found store.",
+    "Native repeated acquire overwrites prior pointers without releasing old references.",
+    "Creator retirement removes borrowed store while shared scene may remain alive."
+  ],
+  "validation": {
+    "native_seed_bytes": "8 of 8 match installed image",
+    "flow": "00AC59A0 379 instructions zero gaps;00AC5480 59 instructions zero gaps",
+    "build": "MSVC Win32 Release /W4 /WX passed",
+    "existing_ctests": "reconstructed_math and native_math_differential passed",
+    "new_screen_fixture_executed": false,
+    "native_screen_differential": false,
+    "abi_compatible": false,
+    "renderer_validated": false,
+    "game_validated": false
+  }
+}
