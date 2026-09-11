@@ -1,0 +1,160 @@
+{
+  "packet": "native_ambient_color2",
+  "status": "complete_actual_raw_source_worker_Win32_build_CTests_and_original_body_fixture_passed_pending_main_integration",
+  "functions": [
+    {
+      "address": "004fb850",
+      "end_exclusive": "004fb8ef",
+      "bytes": 159,
+      "symbol": "bsp::convert_native_float_rgba_to_argb_004fb850",
+      "original_abi": "ECX destination; stack sourcefloat4; EAX destination; RET4",
+      "new_abi": "fastcall ECX destination, EDX source; stack actual scale pointer and mutable mode pointer; EAX destination; RET8"
+    },
+    {
+      "address": "00b84c60",
+      "end_exclusive": "00b84c64",
+      "bytes": 4,
+      "symbol": "bsp::native_ambient_color_address_00b84c60",
+      "original_abi": "ECX owner; EAX owner+8; RET; no dereference"
+    }
+  ],
+  "source": "src/native_ambient_color.cpp",
+  "owned_original_bytes": 163,
+  "dependencies": [
+    "complete native_crt_truncate_st0_00bf7420",
+    "complete native_x87_truncate_st0_00bf7456"
+  ],
+  "borrowed_storage": [
+    "actual CE4B48 double scale, loaded once after first source FLD",
+    "actual mutable0109EEA4 DWORD, read separately by each full conversion provider"
+  ],
+  "behavior": [
+    "original x87 operation order and retained scale",
+    "signed low-EAX clamp to0..255",
+    "R,G,B,A stores to bytes2,1,0,3",
+    "ordered aliasing and partial writes",
+    "borrowed ambient payload address only"
+  ],
+  "validation": {
+    "strict_Win32_build": "PASS: original scripts/build.ps1, worker local extra CMake hook, no shared CMake edits",
+    "existing_CTests": "PASS reconstructed_math and native_math_differential",
+    "original_seed_verification": "8 existing seeds matched live saved bsp Ghidra and installed PE",
+    "build_log": "J:\\PROG\\battlestations-pacific-decompile-native-ambient-color\\local\\ambient_color_fixture\\build.log",
+    "original_body_fixture": {
+      "paired_scenarios": 8,
+      "observable_bytes": 978,
+      "full_raw_results": 16,
+      "full_raw_result_bytes_each": 624,
+      "whole_code_postimage_phases": 17,
+      "full_COFF_sections": 171,
+      "library_COFF_sections": 4,
+      "exact_library_objects": 2,
+      "worker_library_sha256": "11d02e94687c1bca309135e0ba2aee0268f2d99c84752a57d8c12edfeaffe787",
+      "sealed_manifest": "J:\\PROG\\battlestations-pacific-decompile-native-ambient-color\\local\\ambient_color_fixture\\sealed.json",
+      "sealed_manifest_sha256": "35fdf5ecd85ea67f25992159b0e24f724f534edb09a4bb82f89385c6ab121ad2",
+      "result": "PASS, no source discrepancy",
+      "boundary": "Full worker library; main integration/build not yet performed"
+    }
+  },
+  "limitations": [
+    "descriptive names are hypotheses",
+    "explicit-context converter uses a new calling interface",
+    "no added lifetime operations or validation",
+    "no gameplay claim",
+    "Worker strict full library plus original-body fixture; main integration build is separate.",
+    "Converter uses a new explicit-pointer fastcall interface, no native caller ABI or gameplay claim.",
+    "Only masked floating exceptions tested; one source read access fault verifies partial writes and retained ST0. No claim for unmasked hardware exception dispatch.",
+    "Comparable state is full64byte arena,16byte scale/mode neighborhoods, result/exception/address, x87 CW/SW/abridged tag,MXCSR/mask and live80bit x87 values. Full raw Result including512byte FXSAVE is preserved in raw_results.bin. Instruction/data pointers, inactive x87 registers, unrelated XMM registers and fault PC are not compared.",
+    "No borrowed-owner lifecycle, mode normalization, fixed global or fake converter callbacks were introduced."
+  ],
+  "native_evidence": {
+    "utc": "2026-09-11T16:32:49.739421+00:00",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "guard": "Each bsp.py ghidra bytes batch verifies saved bsp project, /battlestationspacific.exe, language and base.",
+    "spans": [
+      {
+        "address": "004fb850",
+        "length": 159,
+        "role": "full_converter",
+        "bytes_hex": "56578b7c240cd9078bf1dd05484bce00dcc9d9c9e8b7bb6f0085c07d0433c0eb0c3dff0000007e05b8ff000000884602d94704d8c9e896bb6f0085c07d0433c0eb0c3dff0000007e05b8ff000000884601d94708d8c9e875bb6f0085c07d0433c0eb0c3dff0000007e05b8ff0000008806d84f0ce857bb6f0085c07d0c33c08846035f8bc65ec204003dff0000007e05b8ff0000008846035f8bc65ec20400",
+        "sha256": "1de65b996e750df4ce8b0a1a9d3589e699a1818f6e01790a2ac2957e5f2ca4c5",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00b84c60",
+        "length": 4,
+        "role": "full_getter",
+        "bytes_hex": "8d4108c3",
+        "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00bf7420",
+        "length": 28,
+        "role": "full_CRT_dispatch_entry",
+        "bytes_hex": "833da4ee090100742d558bec83ec0883e4f8dd1c24f20f2c0424c9c3",
+        "sha256": "ca03c44f225ec07ccb8fd4dbaf388d22ba816472e788e49ecdb1db7b85f11cc6",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00bf7456",
+        "length": 117,
+        "role": "full_x87_truncation",
+        "bytes_hex": "558bec83ec2083e4f0d9c0d9542418df7c2410df6c24108b5424188b44241085c0743cdee985d2791ed91c248b0c2481f10000008081c1ffffff7f83d0008b54241483d200eb2cd91c248b0c2481c1ffffff7f83d8008b54241483da00eb148b542414f7c2ffffff7f75b8d95c2418d95c2418c9c3",
+        "sha256": "5333b186c02836974c6f792303aeb2c00d856316b93ccbbe65f51def6ae661b4",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "00ce4b48",
+        "length": 8,
+        "role": "actual_scale",
+        "bytes_hex": "0000000000e06f40",
+        "sha256": "729bef532e854760af95391c84e7ba32d372f3384227e6d952a809b8b7f35eb5",
+        "fresh_live_PE_match": true
+      },
+      {
+        "address": "0109eea4",
+        "length": 4,
+        "role": "actual_mutable_mode",
+        "bytes_hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "fresh_live_PE_match": true
+      }
+    ]
+  },
+  "fixture_meanings": [
+    "finite clamps with full x87 provider",
+    "finite clamps with mode7 SSE provider",
+    "ordered overlap changes later source load",
+    "red store aliases mutable mode and switches following conversions to SSE",
+    "red store aliases scale exponent while retained x87 scale survives",
+    "masked signalingNaN/infinities/large lowEAX through x87 path",
+    "same exceptional values through mode7 SSE path",
+    "blue source access fault preserves prior red/green bytes and retained ST0 scale"
+  ],
+  "reconstruction_evidence": {
+    "getter_bytes": "8d4108c3",
+    "initial_x87": "D9 07, DD 05 CE4B48, DC C9, D9 C9; source changes only scale-address operand to explicit borrowed pointer",
+    "writes_in_order": [
+      "R -> byte2",
+      "G -> byte1",
+      "B -> byte0",
+      "A -> byte3"
+    ],
+    "runtime_dispatch": "BF7420..BF743C reads current0109EEA4; zero directly reaches BF7456..BF74CB; adjacent BF743C entry is not the called path",
+    "source_provider": "src/native_render_batch_keys.cpp full existing ST0 providers; exact117-byte BF7456 and exact4-byte getter proven"
+  },
+  "base_commit": "34dc60a32cbd7cc188c3d4fdac7f9557cc13d5ee",
+  "integration": "Primary must add src/native_ambient_color.cpp to the shared source registry and handle Ghidra/name/reconstruction metadata."
+}
