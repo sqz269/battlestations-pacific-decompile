@@ -1,0 +1,266 @@
+{
+  "packet": "cc_mission_tick",
+  "owner": "agent/cc-mission-tick",
+  "date": "2026-09-11",
+  "kind": "analysis+reconstruction",
+  "docs": ["docs/IN_MISSION_SUBSYSTEM_TICK.md", "docs/GAME_DYNAMICS_LIST.md"],
+  "anchor": "004c40a0",
+  "ghidra": "read-only; nothing was written back",
+  "headline": "Opens step 9 of docs/MISSION_STATE_FRAME.md. 004c40a0 is four calls with no test: the fixed-step simulation driver 00875bb0, the once-per-scene-load unit-list build 004c3cb0, the world entity tick 00904bf0 through the world vtable, and the dynamics list frame pass 00447b80. The game+30h dynamics list is floating debris: its 20h record is {scene node, lifetime, spec float, rigid body, anchor vec3, buoyancy divisor} as its producer 00447510 writes it, 004462d0 integrates buoyancy once per fixed step from inside 00875bb0, and 00447b80 places each node from the body transform interpolated by 00f876ac / 0.05, spawns a water-entry effect, fades over the last five seconds and swap-erases the record on expiry or below -50 depth.",
+  "abi": {
+    "004c40a0": {
+      "convention": "__thiscall void(GGame*)",
+      "ecx": "game object",
+      "stack_args": 0,
+      "ret": "RET 0 at 004c40e3",
+      "body": "004c40a0-004c40e3",
+      "note": "reads only game+21F0h; reloads it before each of the three calls that take it"
+    },
+    "00875bb0": {
+      "convention": "__thiscall void(ignored, float)",
+      "ecx": "passed as game at 004c40ad, discarded at 00875bb1 (MOV ECX,[00E188A8])",
+      "stack_args": 1,
+      "ret": "RET 4 at 0087601c and 00875ffd",
+      "body": "00875bb0-0087601e"
+    },
+    "004c3cb0": {
+      "convention": "__thiscall void(GGame*)",
+      "ecx": "game object",
+      "stack_args": 0,
+      "ret": "RET 0 at 004c409d",
+      "body": "004c3cb0-004c409d"
+    },
+    "00447b80": {
+      "convention": "__thiscall void(list, float)",
+      "ecx": "[game+30h]",
+      "stack_args": 1,
+      "ret": "RET 4 at 0044831a",
+      "body": "00447b80-0044831c",
+      "seh": "handler 00c5fefb, not modelled"
+    },
+    "004462d0": {
+      "convention": "__thiscall void(list, float step)",
+      "ecx": "[00E188A8]+30h, set at 00875e21",
+      "stack_args": 1,
+      "ret": "RET 4 at 00446525",
+      "body": "004462d0-00446525"
+    },
+    "00447510": {
+      "convention": "__thiscall void(list, const Spec*, bool)",
+      "ecx": "[00E188A8]+30h at every call site",
+      "stack_args": 2,
+      "ret": "RET 8 at 00447b71",
+      "body": "00447510-00447b73"
+    },
+    "00445db0": {
+      "convention": "__thiscall int(list)",
+      "ecx": "the list",
+      "stack_args": 0,
+      "ret": "RET 0 at 00445dc2",
+      "body": "00445db0-00445dc2"
+    },
+    "00710bb0": {
+      "convention": "__thiscall void(owner, uint group)",
+      "ecx": "the record owner",
+      "stack_args": 1,
+      "ret": "RET 4",
+      "body": "00710bb0-00710e00"
+    },
+    "00c34f70": {
+      "convention": "__thiscall void(owner, dword)",
+      "ecx": "[00E188A8]+18h",
+      "stack_args": 1,
+      "ret": "RET 4 at 00c34fff",
+      "body": "00c34f70-00c35001",
+      "note": "a growable dword array push_back, not a vtable"
+    },
+    "00c43ea0": {
+      "convention": "__thiscall void(body, float* out12, float t)",
+      "ecx": "the rigid body",
+      "stack_args": 2,
+      "ret": "RET 8 at 00c43ff9",
+      "body": "00c43ea0-00c43ffb"
+    },
+    "00c33650": {
+      "convention": "__thiscall void(const float* m34, float* out44)",
+      "ecx": "the 3x4",
+      "stack_args": 1,
+      "ret": "RET 4 at 00c336b9",
+      "body": "00c33650-00c336bb"
+    }
+  },
+  "host_steps": [
+    {"host_method": "step_fixed_simulation_00875bb0", "address": "004c40ad", "native": "00875bb0",
+      "function": "004c40a0", "owner": "unit", "reconstruction_on_main": "bsp::run_fixed_step_driver_00875bb0"},
+    {"host_method": "build_local_player_unit_lists_004c3cb0", "address": "004c40b4", "native": "004c3cb0",
+      "function": "004c40a0", "owner": "hud", "reconstruction_on_main": "bsp::local_player_unit_lists_run_004c3cb0"},
+    {"host_method": "update_world_entities_00904bf0", "address": "004c40ce", "native": "00904bf0",
+      "function": "004c40a0", "owner": "unit", "indirect": "[game+19CCh]->vtable[0Ch], the slot read from the image at 00CE7790",
+      "reconstruction_on_main": "docs/GAME_WORLD_ENTITIES.md"},
+    {"host_method": "update_game_dynamics_00447b80", "address": "004c40dd", "native": "00447b80",
+      "function": "004c40a0", "owner": "unit", "reconstruction_on_main": "bsp::tick_game_dynamics_frame_00447b80"}
+  ],
+  "fixed_step_calls": [
+    {"host_method": "advance_step_countdown_008079b0", "address": "00875ca5", "native": "008079b0", "function": "00875bb0", "owner": "pure", "contract": "unread"},
+    {"host_method": "run_step_job_waves", "address": "00875cd5", "native": "004c1130", "function": "00875bb0", "owner": "unit", "contract": "the frame job pool singleton"},
+    {"host_method": "run_step_job_waves", "address": "00875cdd", "native": "008755a0", "function": "00875bb0", "owner": "unit", "contract": "unread (wave 1 job factory)"},
+    {"host_method": "run_step_job_waves", "address": "00875d4d", "native": "00875750", "function": "00875bb0", "owner": "unit", "contract": "unread (wave 2 job factory)"},
+    {"host_method": "run_step_job_waves", "address": "00875dbd", "native": "008754d0", "function": "00875bb0", "owner": "unit", "contract": "unread (wave 3 job factory)"},
+    {"host_method": "run_step_subsystems", "address": "00875e0c", "native": "00c5c540", "function": "00875bb0", "owner": "unit", "contract": "unread"},
+    {"host_method": "run_step_subsystems", "address": "00875e24", "native": "004462d0", "function": "00875bb0", "owner": "unit", "contract": "the dynamics list buoyancy step", "reconstruction_on_main": "bsp::apply_dynamics_buoyancy_004462d0"},
+    {"host_method": "run_step_subsystems", "address": "00875e33", "native": "0042e630", "function": "00875bb0", "owner": "unit", "contract": "unread"},
+    {"host_method": "run_step_subsystems", "address": "00875e3a", "native": "0098bdb0", "function": "00875bb0", "owner": "unit", "contract": "unread"},
+    {"host_method": "run_step_subsystems", "address": "00875e3f", "native": "00874de0", "function": "00875bb0", "owner": "unit", "contract": "unread"},
+    {"host_method": "run_step_subsystems", "address": "00875e44", "native": "00926700", "function": "00875bb0", "owner": "unit", "contract": "unread"},
+    {"host_method": "run_step_subsystems", "address": "00875e55", "native": "00888230", "function": "00875bb0", "owner": "unit", "contract": "unread"},
+    {"host_method": "run_step_subsystems", "address": "00875e64", "native": "00929460", "function": "00875bb0", "owner": "unit", "contract": "unread"},
+    {"host_method": "run_step_subsystems", "address": "00875e91", "native": "00778450", "function": "00875bb0", "owner": "session", "contract": "unread, gated on [[game+19CCh]+4ACh]"},
+    {"host_method": "run_step_subsystems", "address": "00875e96", "native": "0077ec20", "function": "00875bb0", "owner": "session", "contract": "unread, gated"},
+    {"host_method": "run_step_subsystems", "address": "00875e9b", "native": "00874c90", "function": "00875bb0", "owner": "unit", "contract": "unread, gated"},
+    {"host_method": "run_step_subsystems", "address": "00875ea2", "native": "00925f20", "function": "00875bb0", "owner": "unit", "contract": "unread, gated"},
+    {"host_method": "run_step_subsystems", "address": "00875ebf", "native": "0076ffc0", "function": "00875bb0", "owner": "render", "contract": "unread, gated"},
+    {"host_method": "run_step_subsystems", "address": "00875ec4", "native": "00926700", "function": "00875bb0", "owner": "unit", "contract": "unread (second call)"},
+    {"host_method": "run_step_subsystems", "address": "00875ec9", "native": "009273a0", "function": "00875bb0", "owner": "unit", "contract": "unread"},
+    {"host_method": "run_step_subsystems", "address": "00875eda", "native": "00903610", "function": "00875bb0", "owner": "unit", "contract": "unread"},
+    {"host_method": "run_interpolation_wave_00875670", "address": "00875f43", "native": "00875670", "function": "00875bb0", "owner": "unit", "contract": "unread (interpolation job factory)"},
+    {"host_method": "fixed_step_tail", "address": "00875ff7", "native": "00a317f0", "function": "00875bb0", "owner": "session", "contract": "unread"}
+  ],
+  "unit_list_calls": [
+    {"host_method": "clear_unit_list_heads_004bfdf0", "address": "004c3ce3", "native": "004bfdf0", "function": "004c3cb0", "owner": "hud", "contract": "pops one node off each of the eight {count, head, tail} heads at game+1964h..+19B8h through 004bf8e0"},
+    {"host_method": "append_unit_to_list_00484540", "address": "004c3d45", "native": "00484540", "function": "004c3cb0", "owner": "hud", "contract": "doubly linked push_back, 0Ch node {prev, next, value}"},
+    {"host_method": "append_unit_to_list_00484540", "address": "004c3d51", "native": "00484540", "function": "004c3cb0", "owner": "hud"},
+    {"host_method": "append_unit_to_list_00484540", "address": "004c3ea0", "native": "00484540", "function": "004c3cb0", "owner": "hud"},
+    {"host_method": "append_unit_to_list_00484540", "address": "004c403c", "native": "00484540", "function": "004c3cb0", "owner": "hud"},
+    {"host_method": "merge_unit_lists_004c2be0", "address": "004c405b", "native": "004c2be0", "function": "004c3cb0", "owner": "hud", "contract": "appends every value of one list to another"},
+    {"host_method": "merge_unit_lists_004c2be0", "address": "004c4069", "native": "004c2be0", "function": "004c3cb0", "owner": "hud"},
+    {"host_method": "unit_kind_predicate_008ddf90", "address": "004c3e90", "native": "008ddf90", "function": "004c3cb0", "owner": "unit", "contract": "unread"}
+  ],
+  "dynamics_frame_steps": [
+    {"host_method": "dynamics_pending_count_00445db0", "address": "00447ba3", "native": "00445db0", "function": "00447b80", "owner": "pure", "reconstruction_on_main": "bsp::dynamics_pending_count_00445db0"},
+    {"host_method": "dynamics_pending_count_00445db0", "address": "00447ce9", "native": "00445db0", "function": "00447b80", "owner": "pure"},
+    {"host_method": "select_visible_model_group_00710bb0", "address": "00447c6d", "native": "00710bb0", "function": "00447b80", "owner": "render", "contract": "shows one model group and parks the others 100000 units up"},
+    {"host_method": "interpolated_body_transform_00c43ea0", "address": "00447da7", "native": "00c43ea0", "function": "00447b80", "owner": "unit", "contract": "twelve-float lerp between [body+4]+84h and body+8h"},
+    {"host_method": "interpolated_body_transform_00c43ea0", "address": "00447db5", "native": "00c33650", "function": "00447b80", "owner": "unit", "contract": "expand the 3x4 into a 4x4"},
+    {"host_method": "refresh_node_world_matrix_00b6db70", "address": "00447ede", "native": "00b6db70", "function": "00447b80", "owner": "render"},
+    {"host_method": "refresh_node_world_matrix_00b6db70", "address": "00447f0b", "native": "00b6db70", "function": "00447b80", "owner": "render"},
+    {"host_method": "body_linear_velocity_00c31f40", "address": "00447ffe", "native": "00c31f40", "function": "00447b80", "owner": "unit", "contract": "the linear velocity, docs/UNIT_CONTROLLER_UPDATE.md"},
+    {"host_method": "splash_settings_00424c40", "address": "00448003", "native": "00424c40", "function": "00447b80", "owner": "session", "contract": "the tuning singleton; +20h/+24h thresholds, +28h/+2Ch effect ids"},
+    {"host_method": "spawn_water_entry_effect", "address": "00448046", "native": "00870cd0", "function": "00447b80", "owner": "sound", "contract": "acquire the refcounted effect handle for the id in EDX"},
+    {"host_method": "spawn_water_entry_effect", "address": "0044809a", "native": "008685e0", "function": "00447b80", "owner": "sound", "contract": "unread; ECX is a stack record, EDX is [00E188A8]+19ECh"},
+    {"host_method": "set_node_world_transform_vtable34", "address": "00448130", "native": "00448130+vtable34", "function": "00447b80", "owner": "render", "contract": "node->vtable[34h](matrix4x4), indirect"},
+    {"host_method": "set_node_visibility_00b6da70", "address": "0044823d", "native": "00b6da70", "function": "00447b80", "owner": "render", "contract": "node+ACh = lifetime / 5.0, no recursion"},
+    {"host_method": "unlink_and_release_node_00b6dfa0", "address": "0044826b", "native": "00b6dfa0", "function": "00447b80", "owner": "render"},
+    {"host_method": "queue_body_release_00c34f70", "address": "00448279", "native": "00c34f70", "function": "00447b80", "owner": "unit", "contract": "push the body onto [00E188A8]+18h's deferred release array"}
+  ],
+  "dynamics_producer": [
+    {"host_method": "dynamics_push_record_00447480", "address": "00447b40", "native": "00447480", "function": "00447510", "owner": "pure", "contract": "std::vector<Record20h>::push_back, ECX = list+10h"},
+    {"host_method": "spawn_dynamics_record_00447510", "address": "007caec7", "native": "00447510", "function": "007caad0", "owner": "unit"},
+    {"host_method": "spawn_dynamics_record_00447510", "address": "00934fd1", "native": "00447510", "function": "00934150", "owner": "unit"},
+    {"host_method": "spawn_dynamics_record_00447510", "address": "00935c13", "native": "00447510", "function": "00935540", "owner": "unit", "contract": "reached from BSP_UnitInstance_Update 008255b0 through 00935540"}
+  ],
+  "dynamics_record_layout": {
+    "stride": "0x20",
+    "producer": "00447510 at 00447ade..00447b40",
+    "fields": [
+      {"offset": "0x00", "type": "node*", "written_at": "00447ae6", "from": "spec+00h"},
+      {"offset": "0x04", "type": "float lifetime", "written_at": "00447adc", "from": "spec+04h"},
+      {"offset": "0x08", "type": "float", "written_at": "00447b14", "from": "spec+30h", "note": "no reader found in 00447b80, 004462d0 or 00447060"},
+      {"offset": "0x0c", "type": "body*", "written_at": "00447b29", "from": "the body created at 00447812"},
+      {"offset": "0x10", "type": "float anchor.x", "written_at": "00447b0d", "from": "spec+24h"},
+      {"offset": "0x14", "type": "float anchor.y", "written_at": "00447aff", "from": "spec+28h"},
+      {"offset": "0x18", "type": "float anchor.z", "written_at": "00447b30", "from": "spec+2Ch"},
+      {"offset": "0x1c", "type": "float buoyancy divisor", "written_at": "00447b37", "from": "spec+54h"}
+    ]
+  },
+  "constants": {
+    "00d7a270": "double 0.05, the fixed step",
+    "00d0de84": "float 0.05f, the per-step argument and the interpolation divisor",
+    "00ce3850": "float 5.0f, the fade window",
+    "00d7a370": "double 5.0, the fade divisor",
+    "00ce4938": "double -50.0, the kill depth",
+    "00ce380c": "float 1.5f, the expiring buoyancy divisor",
+    "00d7a24c": "float 1.0f",
+    "00ce3dc0": "double 10.0, the buoyancy gravity",
+    "00d7a280": "double 0.5, the box half extent",
+    "00d7a208": "float -0.0f, the abs idiom",
+    "00e0819c": "float 1.0f, the damping scale",
+    "00cf81f0": "double 100000.0, the model group park offset"
+  },
+  "coverage": [
+    {"routine": "004c40a0", "coverage": "complete"},
+    {"routine": "00875bb0", "coverage": "partial: the gate, clocks, step count and buffer flip are rules; 00875cc0-00875dfc, 00875e0c-00875edf and 00875f32-00875fcc are host methods, not reconstructed"},
+    {"routine": "004c3cb0", "coverage": "partial: the guard and latch are reconstructed; 004c3d5b-004c404b, the per-kind classification, is documented only"},
+    {"routine": "00904bf0", "coverage": "referenced from docs/GAME_WORLD_ENTITIES.md, not re-read"},
+    {"routine": "00447b80", "coverage": "complete for both loops; the effect handle ref-counting at 00448046-00448103 is one host call"},
+    {"routine": "004462d0", "coverage": "partial: the loop and the submersion rule are reconstructed; the seven physics-block callees are contract unread"},
+    {"routine": "00447510", "coverage": "partial: only the record store at 00447ade-00447b40 was read; the body construction is documented by callee address"},
+    {"routine": "00445db0", "coverage": "complete"},
+    {"routine": "00710bb0", "coverage": "complete for the two group arms; 00b6e0a0 (the position getter) was not read"},
+    {"routine": "00c34f70", "coverage": "complete"},
+    {"routine": "00c43ea0", "coverage": "complete"},
+    {"routine": "00c33650", "coverage": "complete"}
+  ],
+  "corrections": [
+    {"what": "00c34f70",
+      "was": "the vtable 00c34f70 (docs/MISSION_STATE_FRAME.md follow-up row for game_dynamics_list)",
+      "is": "a function: __thiscall void(owner, dword) RET 4, a growable dword array push_back on owner+438h/+43Ch/+440h",
+      "evidence": "00c34f70-00c35001; growth 2*cap+2 at 00c34f81, operator new 00bf55be, _free 00bf6989"},
+    {"what": "00875bb0 this",
+      "was": "00875bb0 with ECX = game (the 004c40a0 ledger evidence, describing the site)",
+      "is": "the site passes it, the callee discards it at 00875bb1 and reloads [00E188A8]",
+      "evidence": "00875bb1 MOV ECX,dword ptr [0x00e188a8]"},
+    {"what": "004c3cb0 cadence",
+      "was": "implied per-frame by its position in the tick",
+      "is": "once per mission scene load; the latch game+193Ch is cleared only by 004dfb70",
+      "evidence": "004c3cdc sets it; byte-pattern search for C6 /r 3C 19 00 00 finds 004e0360 and 004e05a2, both inside 004dfb70, plus 004c3c98 in 004c3c90 which has no callers"},
+    {"what": "the per-frame integration of game+30h",
+      "was": "docs/MISSION_STATE_FRAME.md follow-up: the per-frame integration 00447060",
+      "is": "00447b80 once per display frame and 004462d0 once per fixed step; 00447060 is the release",
+      "evidence": "00447060's callers are 004da6c0 and 004da780 only; 00875e21 sets ECX = [00E188A8]+30h for 004462d0"},
+    {"what": "record+0Ch",
+      "was": "an opaque handle (include/bsp/mission_state_frame.hpp kDynamicsRecordHandleOffset, record_handles)",
+      "is": "the rigid body created by 00447510, whose transform, velocity, box and damping both integrators use",
+      "evidence": "00447812 operator new then 00447b29 stores it into the record; 00447d57 reloads it for 00c43ea0"},
+    {"what": "the 8h pending range",
+      "was": "opaque, copied wholesale by the erase (include/bsp/mission_state_frame.hpp)",
+      "is": "{owner, float seconds}: a deferred switch to the owner's last model group",
+      "evidence": "00447bcb decrements +4h by the delta; 00447c1a..00447c6d computes count-1 and calls 00710bb0"}
+  ],
+  "names_added": [
+    {"address": "00875bb0", "name": "BSP_Game_RunFixedSimulationSteps"},
+    {"address": "004c3cb0", "name": "BSP_Game_BuildLocalPlayerUnitLists"},
+    {"address": "00447b80", "name": "BSP_GameDynamicsList_UpdateFrame"},
+    {"address": "004462d0", "name": "BSP_GameDynamicsList_ApplyBuoyancyStep"},
+    {"address": "00447510", "name": "BSP_GameDynamicsList_Add"},
+    {"address": "00445db0", "name": "BSP_GameDynamicsList_PendingCount"},
+    {"address": "00710bb0", "name": "BSP_ModelGroups_SelectVisibleGroup"}
+  ],
+  "reconstructions": [
+    {"address": "004c40a0", "symbol": "bsp::run_in_mission_subsystem_tick_004c40a0", "kind": "function"},
+    {"address": "00875bb0", "symbol": "bsp::run_fixed_step_driver_00875bb0", "kind": "function"},
+    {"address": "00875bb0", "symbol": "bsp::advance_fixed_step_clock_00875bb0", "kind": "fragment"},
+    {"address": "004c3cb0", "symbol": "bsp::local_player_unit_lists_run_004c3cb0", "kind": "fragment"},
+    {"address": "00447b80", "symbol": "bsp::tick_game_dynamics_frame_00447b80", "kind": "function"},
+    {"address": "004462d0", "symbol": "bsp::apply_dynamics_buoyancy_004462d0", "kind": "function"},
+    {"address": "00445db0", "symbol": "bsp::dynamics_pending_count_00445db0", "kind": "function"},
+    {"address": "00c43ea0", "symbol": "bsp::interpolate_body_transform_00c43ea0", "kind": "function"}
+  ],
+  "deviations": [
+    "dynamics_submersion_fraction returns 0 for a zero-height box; the native code would divide by zero. No record produced by 00447510 has a zero box.",
+    "apply_dynamics_buoyancy_004462d0 returns 0 force when the buoyancy divisor is zero; the native divide would fault. The producer writes the divisor from spec+54h and no zero was observed.",
+    "tick_game_dynamics_frame_00447b80 keeps the 3x4 transform where the native code expands it to a 4x4 through 00c33650; the extra column is the constant {0,0,0,1} and carries no information.",
+    "The two identical refresh_node_world_matrix_00b6db70 calls are kept because the listing makes both (00447ede, 00447f0b); the node+5Ch bit-1 test that guards each is the host's."
+  ],
+  "no_ghidra_function": [],
+  "files": [
+    "docs/IN_MISSION_SUBSYSTEM_TICK.md",
+    "docs/GAME_DYNAMICS_LIST.md",
+    "include/bsp/in_mission_subsystem_tick.hpp",
+    "src/in_mission_subsystem_tick.cpp",
+    "include/bsp/game_dynamics_list.hpp",
+    "src/game_dynamics_list.cpp",
+    "reports/mission_tick.json",
+    "cmake/startup.cmake"
+  ],
+  "validation": "MSVC Win32 /W4 /WX build through scripts/build.ps1; the existing reconstructed_math test passes (1/1). No new test was added: the new rules are straight arithmetic over documented constants and no concrete regression risk was identified. Nothing here is ABI-compatible or game-validated; the executable was not run, so no run-time evidence backs any frame-timing claim in these documents."
+}
