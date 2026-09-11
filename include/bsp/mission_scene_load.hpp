@@ -15,6 +15,7 @@
 // loading screen is animated by the render worker that begin_loading_screen
 // starts, and the caller blocks until end_loading_screen at 004e185c.
 namespace bsp {
+struct GlobalSubsystemInvocation;
 
 // Values of game+5D4h that reach 004dfb70. The drain writes the dequeued request
 // into game+5D4h before dispatch, so the handler reads its own request there.
@@ -180,7 +181,8 @@ struct MissionSceneLoadHost {
     virtual void release_mission_result() = 0; // game+7188h
 
     // Phase 1, inside the "1_" block.
-    virtual void construct_global_subsystems() = 0; // 004dc6a0, the "Game_Global" block
+    // Supply current owners/services; the caller runs004DC6A0 directly.
+    virtual GlobalSubsystemInvocation global_subsystems() = 0;
     virtual void reset_render_scene() = 0; // 00874640(0)
     virtual void reset_effect_atlas() = 0; // 006ad600, ECX = game+21D8h
     // 0046df00, ECX = [00E18680]. Three passes run per load; this one is

@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/unit_timer_pose.hpp"
 #include <cstddef>
 #include <cstdint>
 
@@ -168,7 +169,7 @@ inline constexpr std::size_t kUnitDamageRecordStride = 0x010;     // 009566B4, S
 // One 16-byte record of the descriptor's damage table.
 struct UnitDamageRecord {
     float health_threshold{0.0f}; // +0h, 0095674C
-    int announce_id{-1};          // +4h, gate for the vtable +34h call at 009567FA
+    int announce_id{-1};          // +4h, gate for the vtable +34h call at 0095685C
     int anchor_index{-1};         // +8h, index into the +28h float3 array
     bool has_effect{false};       // +0Ch, the ref-counted effect template
 };
@@ -198,7 +199,6 @@ struct UnitTimerState {
     float fade{0.0f};             // +2F4h
     float fade_target{0.0f};      // +2F8h
     bool local_intensity_override{false}; // +2F0h
-    bool pose_valid{false};       // +0C8h
     bool animation_gate{false};   // +70Ch
     bool animation_extra{false};  // +714h
     bool has_scene_node{false};   // +4A4h
@@ -212,14 +212,18 @@ struct UnitTimerHost {
     virtual std::size_t descriptor_anchor_count() = 0;
     // 00923BE0 on the instance.
     virtual float health() = 0;
-    // 0042D7E0 then 00414D10: the descriptor anchor point through the instance matrix.
-    virtual void transform_damage_anchor(std::size_t anchor_index) = 0;
-    // 00414DB0, the lazy pose refresh taken when the anchor index is out of range.
-    virtual void refresh_pose_00414db0() = 0;
-    // The instance vtable +34h then 0049C940, behind announce_id >= 0.
-    virtual void announce_damage_record(std::size_t index) = 0;
-    // 00440490 / 008689C0 / 004845D0 / 00440A30: attach the record's effect template.
-    virtual void spawn_damage_effect(std::size_t index) = 0;
+    // Borrow the actual descriptor +28h array entry, selected before pose refresh.
+    // Required identity lookup, with no point copy, transform, allocation, fallback,
+    // or owner mutation. Storage must survive the subsequent pose refresh.
+    virtual const std::array<float, 3>& descriptor_anchor(std::size_t anchor_index) = 0;
+    // The instance vtable +34h then 0049C940, behind announce_id >= 0. XYZ is the
+    // captured stack point at 0095686B..00956870; native owner services remain bound.
+    virtual void announce_damage_record(std::size_t index,
+        const std::array<float, 3>& world_point) = 0;
+    // 00440490 / 008689C0 / 004845D0 / 00440A30: actual effect ownership boundary.
+    // Pass the same captured XYZ to 008689C0 with the native transform flag zero.
+    virtual void spawn_damage_effect(std::size_t index,
+        const std::array<float, 3>& world_point) = 0;
     // 00956818..00956880: the animation owner chain behind the +70Ch byte.
     virtual bool animation_target_ready() = 0;
     virtual void animation_pre_step_00b78670() = 0;
@@ -233,9 +237,12 @@ struct UnitTimerHost {
     virtual void set_visibility_factor(float value) = 0;
 };
 
-// 00956600, __thiscall(this, float), RET 4.
-void unit_update_timers_00956600(UnitTimerState& state, UnitTimerHost& host,
-                                 float scaled_delta);
+// 00956600, __thiscall(this, float), RET 4. New C++ interface. actual_pose must
+// borrow this same unit's +3C/+74/+C8/+CC/+10C fields; it must not be a pose copy.
+// Only its anchor/fallback point branch is closed here; other timers retain the
+// existing scalar projection and required host services. docs/UNIT_TIMER_POSE.md.
+void unit_update_timers_00956600(UnitTimerState& state, PoseRefreshView& actual_pose,
+    UnitTimerHost& host, float scaled_delta);
 
 // ---------------------------------------------------------------------------
 // 00834E90, the propeller and steering-node update.

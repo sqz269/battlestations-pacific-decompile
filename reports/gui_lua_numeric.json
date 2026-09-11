@@ -1,0 +1,21 @@
+{
+  "packet": "orch4_lua_reader_numeric_f",
+  "date": "2026-09-11",
+  "target": {"project": "C:/Users/sqz269/bsp.gpr", "program": "/battlestationspacific.exe", "ghidra_mutations": false},
+  "status": "numeric_reader_paths_corrected_win32_build_and_real_lua_fixture_tested",
+  "whole_reader_complete": false,
+  "functions": [
+    {"address": "00bd63b0", "native_abi": "fastcall ECX=LuaObject EDX=field pair; RET", "final_instruction": "00bd6826", "final_instruction_length": 1, "inclusive_end": "00bd6826", "byte_span": 1143, "listed_instructions": 319, "listing_gaps": 0, "scope": "Int and numeric Handle conversion corrected; whole aggregate/exception implementation remains a projection"},
+    {"address": "00bd5790", "native_abi": "fastcall ECX=out EDX=parent, stack key kind/value; RET8", "final_instruction": "00bd5859", "final_instruction_length": 3, "inclusive_end": "00bd585b", "byte_span": 204, "listed_instructions": 62, "listing_gaps": 0, "scope": "FloatIndex CVTTSS2SI conversion and existing reader lookup binding"},
+    {"address": "00bd5f50", "native_abi": "thiscall reader, stack key array; RET4", "final_instruction": "00bd60fb", "final_instruction_length": 3, "inclusive_end": "00bd60fd", "byte_span": 430, "listed_instructions": 120, "listing_gaps": 0, "scope": "numeric key predicate/accessor sequence corrected; registry cursor and count cap remain projections"},
+    {"address": "00b66a60", "native_abi": "thiscall LuaObject; bool AL; RET", "final_instruction": "00b66ac2", "final_instruction_length": 1, "inclusive_end": "00b66ac2", "byte_span": 99, "listed_instructions": 41, "listing_gaps": 0, "scope": "existing Win32 float32/CVTTSS2SI/ordered compare verified unchanged"},
+    {"address": "00b66290", "native_abi": "thiscall LuaObject; EAX integer; tail JMP00BF7420", "scope": "shared numeric tail; live mode read after float32 spill/reload; existing CRT kernel reused"},
+    {"address": "00b66270", "native_abi": "thiscall LuaObject; ST0 number; RET", "scope": "shared explicit x87 float32 spill"}
+  ],
+  "native_calls": {"Int": "00bd6432 -> 00b66290", "Handle": "00bd649e -> 00b66a60, then 00bd64a9 -> 00b66290, then 00bd64b3 -> [0109ced4]", "key_enumeration": "00bd6037 predicate, 00bd6044 integer accessor, otherwise 00bd6067 float accessor", "FloatIndex": "00bd5816 CVTTSS2SI, 00bd5824 integer lookup"},
+  "required_binding": "const bool& alias of live0109EEA4 decision; never defaulted; outlives readers/services",
+  "adapted_callers": ["PcProfileIoContext and ReaderFrame", "GuiLayoutHost and base/page properties", "GuiIconRuntimeServices and authored page parser", "evaluated FrameBox parser", "load_gui_screen_table_00ac6600", "one existing math check argument only"],
+  "validation": {"build": "scripts/build.ps1 MSVC Win32 Release passed", "ctest": "reconstructed_math 1/1 passed", "fixture": "local/gui_lua_numeric_check.cpp with local/run_gui_lua_numeric_check.cmd passed /W4 /WX /fp:strict against real Lua5.1.1", "fixture_optional_argument": "checkout whose include and build/win32/Release libraries should be used", "native_differential": false, "game_runtime": false, "unmasked_fp_traps": false},
+  "limits": ["new C++ reference/host interfaces are not native LuaObject ABI", "evaluated string parsing retains strtod prefix behavior", "materialized aggregates and callback ordering remain prior projection", "native stack tracking versus registry cursors remains prior projection", "250-key host guard versus unchecked native array writes remains prior projection", "exception cleanup and Lua longjmp transport are not closed"],
+  "ghidra_pending": {"flow_repairs": [], "missing_function_starts": [], "annotations": "parent can append corrected numeric evidence to existing names/comments; retain CRT library identities"}
+}

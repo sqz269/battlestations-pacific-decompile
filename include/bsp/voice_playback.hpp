@@ -4,6 +4,7 @@
 #include "bsp/scheduled_voice_types.hpp"
 #include "bsp/panel_sequence_types.hpp"
 #include "bsp/panel_publication_types.hpp"
+#include "bsp/panel_owner_types.hpp"
 
 #include <array>
 #include <cstdint>
@@ -110,6 +111,9 @@ struct VoicePlaybackManager {
     NativeString fade_callback_e0;
 };
 struct VoicePanelState {
+    // Initialized by the owner allocation preparation/construction bodies.
+    // Its palette header is real Win32 storage and must keep a stable address.
+    PanelOwnerNativeStorage owner_native;
     PanelCharacterMap characters_04;
     void* palette_10{}; // actual initialized Win32 palette tree; owner-managed
     PanelSequenceQueue queued_1c;

@@ -1,0 +1,50 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "reason": "004442A0 is the full string-to-float map link/rebalance body; its length-error branch does not justify the old whole-function STL_xlen_throw identity.",
+  "evidence": [
+    "docs/WEATHER_CONFIG.md"
+  ],
+  "entries": [
+    {
+      "address": "004442a0",
+      "prior_ledger": {
+        "address": "004442a0",
+        "name": "STL_xlen_throw_004442a0",
+        "category": "stl_throw_site",
+        "confidence": "high",
+        "action": "rename",
+        "create": false,
+        "source": "reports/library_inventory/templates_and_generated.json",
+        "evidence_id": "e0030"
+      },
+      "prior_bookmarks": {
+        "success": true,
+        "bookmarks": [
+          {
+            "address": "004442a0",
+            "category": "Inventory: stl_throw_site",
+            "comment": "STL_xlen_throw_004442a0 [high] pushes one of the six Dinkumware STL throw strings (precision ~1.0)",
+            "type": "Note"
+          }
+        ],
+        "count": 1
+      },
+      "delete_result": {
+        "success": true,
+        "deleted": 1,
+        "address": "004442a0"
+      },
+      "readback": {
+        "success": true,
+        "bookmarks": [],
+        "count": 0
+      }
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

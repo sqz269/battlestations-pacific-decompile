@@ -5217,6 +5217,104 @@
       "evidence": "reports/native_logical_vertex_terminal_next.json"
     },
     {
+      "id": "orch4_global_subsystems_f",
+      "packet": "orch4_global_subsystems_f",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "004dc6a0"
+      ],
+      "code_ownership": [
+        "include/bsp/global_subsystems.hpp",
+        "src/global_subsystems.cpp",
+        "docs/GLOBAL_SUBSYSTEMS.md",
+        "reports/global_subsystems.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/GLOBAL_SUBSYSTEMS.md"
+    },
+    {
+      "id": "orch4_panel_owner_f",
+      "packet": "orch4_panel_owner_f",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00452660",
+        "00452720",
+        "00452040",
+        "0044ab50",
+        "0044ac90",
+        "004517e0",
+        "0044e150",
+        "0044f0a0",
+        "004512e0",
+        "0044e4f0",
+        "0044ab00",
+        "0044ac00"
+      ],
+      "code_ownership": [
+        "include/bsp/panel_owner.hpp",
+        "src/panel_owner.cpp",
+        "docs/PANEL_OWNER.md",
+        "reports/panel_owner.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/GLOBAL_SUBSYSTEMS.md"
+    },
+    {
+      "id": "orch4_weather_config_f",
+      "packet": "orch4_weather_config_f",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00445b10",
+        "00444d20",
+        "00443d60",
+        "00444be0",
+        "00443e20",
+        "00444910",
+        "00444150",
+        "004441e0",
+        "004442a0"
+      ],
+      "code_ownership": [
+        "include/bsp/weather_config.hpp",
+        "src/weather_config.cpp",
+        "docs/WEATHER_CONFIG.md",
+        "reports/weather_config.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/GLOBAL_SUBSYSTEMS.md"
+    },
+    {
+      "id": "orch4_lua_reader_numeric_f",
+      "packet": "orch4_lua_reader_numeric_f",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_focused_fixture_tested",
+      "function_addresses": [
+        "00bd63b0",
+        "00bd5790",
+        "00bd5f50",
+        "00b66a60",
+        "00b66290",
+        "00b66270"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_lua_reader.hpp",
+        "src/gui_lua_reader.cpp",
+        "include/bsp/lua_numeric.hpp",
+        "src/lua_numeric.cpp",
+        "docs/GUI_LUA_NUMERIC.md",
+        "reports/gui_lua_numeric.json"
+      ],
+      "integration_report": "reports/global_subsystems.json",
+      "discovery_evidence": "docs/GLOBAL_SUBSYSTEMS.md"
+    },
+    {
       "id": "orch2_native_gui_owners_l",
       "packet": "orch2_native_gui_owners_l",
       "worker": "agent/orch2-20260910",
@@ -5362,6 +5460,27 @@
       "source_ready": true,
       "evidence": "reports/native_logical_vertex_pool_return_audit.json",
       "scope": "Full105-byte raw pool slot return; actualpool/OSstorage; signed quotient andWORDalias count verified; independent of unresolvednon-null4C terminal."
+    },
+    {
+      "id": "native_renderer_cached_states3",
+      "packet": "native_renderer_cached_states3",
+      "worker": "main",
+      "done": false,
+      "state": "full_source_strict_Win32_checked_worker_original_fixture_pending",
+      "function_addresses": [
+        "00b24460",
+        "00b24610",
+        "00b26170"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_cached_states.hpp",
+        "src/native_renderer_cached_states.cpp",
+        "docs/NATIVE_RENDERER_CACHED_STATES.md",
+        "reports/native_renderer_cached_states_audit.json"
+      ],
+      "source_ready": true,
+      "evidence": "reports/native_renderer_cached_states_audit.json",
+      "scope": "Full749nativebytes:actualcachedrender/sampler setters andordereddefaultinitializer, fullactualsynchronization; independent ofunknownlogicalowner lifetimes."
     }
   ],
   "snapshot_after_analysis": {

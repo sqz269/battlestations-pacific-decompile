@@ -1,0 +1,70 @@
+{
+  "packet": "orch3_unit_wake_pose_k",
+  "date": "2026-09-11",
+  "address": "008255b0",
+  "name": "BSP_UnitInstance_Update",
+  "fragment": "unit_wake_and_prop_wash_canonical_pose_reads",
+  "ranges": ["00825a64-00825af0", "00825bdd-00825bf5"],
+  "status": "bounded_reconstructed_build_and_fixture_tested",
+  "source": "src/unit_instance.cpp",
+  "header": "include/bsp/unit_instance.hpp",
+  "document": "docs/UNIT_WAKE_POSE.md",
+  "original_abi": {
+    "calling_convention": "__thiscall",
+    "this": "ECX copied to ESI at 008255cb; every pose refresh call uses ECX=ESI",
+    "stack_arguments": ["float scaled_delta"],
+    "return": "RET 4 at 00825dd2",
+    "native_layout_reconstructed": false,
+    "drop_in_binary_replacement": false
+  },
+  "binding": {
+    "required": "UnitInstanceState::pose references the existing PoseRefreshView for the same native unit owner",
+    "parent": "+3c",
+    "local_matrix": "+74",
+    "world_valid_byte": "+c8",
+    "world_matrix": "+cc",
+    "base": "+100 = world_cc[13]",
+    "lateral": "+f0 = world_cc[9]",
+    "derived_valid_byte": "+10c",
+    "removed": ["copied bool pose_valid", "copied float pose_base", "copied float pose_lateral", "UnitInstanceHost::refresh_pose_00414db0"],
+    "refresh": "bsp::refresh_pose_00414db0(PoseRefreshView&)",
+    "default_pose": false,
+    "external_consumers_requiring_migration_found": false
+  },
+  "wake_order": [
+    {"check": "00825a64", "before_refresh": "descriptor+A0 read; double half scaling; float store", "refresh_call": "00825a85"},
+    {"check": "00825a8a", "before_refresh": "world[9] read; half-width multiply; float left-offset store", "refresh_call": "00825aa8"},
+    {"check": "00825aad", "before_refresh": "world[13] read; left-offset add; float left-point store", "refresh_call": "00825ac6"},
+    {"check": "00825acb", "before_refresh": "world[9] reread; half-width multiply; float right-offset store", "refresh_call": "00825ae1"},
+    {"read": "00825ae6", "arithmetic": "world[13] reread; right-offset subtract; float right-point store at 00825af0"}
+  ],
+  "prop_wash_order": {"check": "00825bdd", "refresh_call": "00825be8", "world13_read": "00825bf5"},
+  "evidence": {
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "ghidra_program": "/battlestationspacific.exe",
+    "verification": "python tools/bsp.py ghidra count before each analysis batch",
+    "live_count_final": 63100,
+    "snapshot_count": 63097,
+    "exported_assembly": "exports/bsp/functions/008255b0/assembly.txt",
+    "live_read": "python tools/bsp.py ghidra disasm 008255B0 --start 00825A64 --lines 46",
+    "live_matches_exported_wake_branch": true,
+    "ghidra_mutations": false,
+    "names_are_hypotheses": true
+  },
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "build": "passed MSVC Win32 Release /W4 /WX /fp:strict",
+    "build_log": "local/unit_wake_pose_build.log",
+    "existing_ctests": {"reconstructed_math": "passed", "native_math_differential": "passed"},
+    "existing_ctests_scope": "regression checks; not native differential coverage for this fragment",
+    "focused_fixture": "local/unit_wake_pose_probe.cpp",
+    "fixture_command": "cmd.exe /c local\\run_unit_wake_pose_probe.cmd",
+    "fixture_compile": "cl /std:c++17 /EHsc /MD /O2 /W4 /WX /fp:strict; built bsp_core.lib; /link /MANIFEST:EMBED",
+    "fixture_log": "local/unit_wake_pose_probe.log",
+    "fixture_result": "passed dirty parent/child wake points (-8,-12), wake invalidation before prop-wash (-20), C8=0x80 matrix/derived-byte preservation, no default state, no scene-node owner substitution",
+    "four_individual_accesses_instrumented": false,
+    "native_differential_for_fragment": false,
+    "runtime_game_validation": false
+  },
+  "remaining_boundaries": ["controller and effect hosts", "scene-node matrix host", "complete native unit layout and original ABI", "all x87 control-word, exception and exceptional-value behavior", "gameplay and visual validation"]
+}

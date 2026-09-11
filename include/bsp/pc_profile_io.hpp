@@ -22,6 +22,7 @@ struct PcProfileIoContext {
     MissionProgressOwner& scores;
     InputSettings& input;
     ProfileArchiveHost& archive;
+    const bool& crt_sse2_conversion; // live0109EEA4 alias; outlives the readers
 };
 struct PcProfileIoServices {
     PcProfileGameHost& game;

@@ -1,4 +1,5 @@
 #include "bsp/mission_scene_load.hpp"
+#include "bsp/global_subsystems.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -203,7 +204,8 @@ void run_mission_scene_load(MissionSceneLoadState& state, MissionSceneLoadHost& 
     host.leave_file_block();
 
     host.release_mission_result(); // 004dfe83
-    host.construct_global_subsystems(); // 004dfebb
+    auto global = host.global_subsystems();
+    construct_global_subsystems_004dc6a0(global.state, global.host, global.context); // 004dfebb
 
     const std::string short_name = derive_scene_short_name(state.scene_path);
 

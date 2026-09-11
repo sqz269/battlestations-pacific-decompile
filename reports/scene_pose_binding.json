@@ -1,0 +1,131 @@
+{
+  "packet": "orch3_scene_null_parent_geometry_k",
+  "source": "src/scene_pose_binding.cpp",
+  "header": "include/bsp/scene_pose_binding.hpp",
+  "consumer_files": [
+    "include/bsp/scene_entity_factory.hpp",
+    "src/scene_entity_factory.cpp"
+  ],
+  "coverage": "two bounded geometry fragments integrated into existing generation-gate projection; no whole function closure",
+  "new_whole_function_count": 0,
+  "fragment": {
+    "address": "0046c6b7",
+    "end": "0046c6e2",
+    "length": 44,
+    "instruction_count": 10,
+    "name": "add_scene_parent_world_offset_0046c6b7",
+    "original_abi": "interior of0046C550; EBP=captured nonnull argument3 parent, floatX/Z at ESP+1C/+24; no standalone calling convention/RET",
+    "enclosing_abi": "thiscall ECX=scene database,23 stackDWORDs,RET5C",
+    "final_instruction": "0046c6df",
+    "final_length": 4,
+    "continuation": "JMP0046C70F at0046C6E3 length2, outside covered44-byte fragment",
+    "sequence": [
+      "actual parentC8 zero check",
+      "same captured ECX parent to414DB0 if dirty",
+      "FLD parentFC then FADD localX and FSTP floatX",
+      "only afterward FLD parent104 then FADD localZ and FSTP floatZ"
+    ]
+  },
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read_only_target_verified_bsp_disassembly_and_bytes",
+    "ghidra_mutations": 0,
+    "missing_instructions_or_flow_gaps": [],
+    "name_status": "descriptive C++ fragment name is a hypothesis; no interior Ghidra function definition created"
+  },
+  "interface_changes": {
+    "inputs": "SceneEntityGateInputs.parent_identity replaces bool has_parent with actual nullable borrowed argument3",
+    "capture": "gate captures parentidentity once for the call; later host changes to input projection do not replace the native by-value argument",
+    "resolver": "explicit PoseRefreshResolver& parameter added to scene_entity_generation_gate_0046c550",
+    "naming": "parent_name now receives the SAME captured actual identity; naming behavior/ownership remain required service",
+    "tracked_caller_updates": "declaration, definition and two local build_record calls only; no other tracked callers/implementers found",
+    "removed_callbacks": [
+      "SceneEntityGateHost.parent_world_offset",
+      "SceneEntityGateHost.compose_world_frame"
+    ],
+    "frames": "both inputs now const CameraMatrix*, required; absent bindings throw invalid_argument before any game host/resolver call",
+    "frame_capture": "capture local pointer once, copy parent matrix64 bytes at entry into by-value argument snapshot; defer reads of full live local matrix until used",
+    "deferred_frame_copies": "same captured local pointer and parent argument snapshot; no reload of caller-mutated projection"
+  },
+  "canonical_binding": {
+    "pose": "resolver returns existing PoseRefreshView for captured parent identity",
+    "identity_resolutions": 1,
+    "refresh": "test actual world_valid_c8, call refresh_pose_00414db0 if zero, use same world_cc afterward",
+    "coordinates": "world_cc[12] and[14] at nativeFC/104 read after refresh",
+    "extra_flags_matrices_or_parent_graph": false,
+    "retention_or_deletion": false,
+    "pointer_reload_after_refresh": false,
+    "fp": "explicit native x87 load/add/store order and float spills; no source translation fallback or SIMD replacement"
+  },
+  "remaining_boundaries": [
+    "Actual parent/resolver/view/field lifetime and pure identity lookup are owner obligations.",
+    "No-MultiType early deferred path still does no pose refresh.",
+    "Game-mode/property services, parent name, deferred-record ownership and multiplayer stock registration remain explicit.",
+    "OutputX/Z must represent distinct local floats outside pose/matrix/hierarchy storage.",
+    "Null helper identity is a typed precondition exception; native surrounding branch bypasses helper on null.",
+    "No whole0046C550 completion, native object/allocator/SEH ABI, arbitrary overlap or exhaustive FPU equivalence claim.",
+    "The two frame bindings must refer to actual canonical CameraMatrix objects; local lifetime spans all host calls, parent bytes are snapshotted at gate entry.",
+    "Missing typed frame binding is rejected; native null local faults and native inline parent matrix is always physically present. No identity/zero fallback.",
+    "Source matrices may be the same object; product storage is distinct. Arbitrary partial overlap/concurrent source mutation/native stack aliasing remain outside typed contract."
+  ],
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release /W4 /WX",
+    "build_passed": true,
+    "build_log": "local/scene-null-parent-build.log",
+    "existing_ctests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "fixture": "extended existing ignored local/pose_refresh_fixture.cpp",
+    "fixture_command": "cmd /c local\\run_pose_refresh_fixture.cmd",
+    "fixture_log": "local/scene-null-parent-fixture.log",
+    "fixture_passed": true,
+    "scene_cases": [
+      "actual recursive parent fields plus localX/Z select expected area",
+      "null-parent actual noncommuting local*parent product selects X14/Z37 area without resolving a pose",
+      "missing local or parent binding rejected before resolver or game-mode service",
+      "deferred naming keeps captured parent identity across input mutation",
+      "deferred frame copies retain captured local pointer and copied parent argument after source/input mutation",
+      "no-MultiType path skips pose refresh"
+    ],
+    "scope": "composed scene checks plus prior native pose-control fixture; canonical multiply tested by existing tests; no full native gate differential or exhaustive new float/alias sweep",
+    "hardware_or_game_calls": false
+  },
+  "packets": [
+    "orch3_scene_parent_pose_k",
+    "orch3_scene_null_parent_geometry_k"
+  ],
+  "null_parent_fragment": {
+    "address": "0046c6e5",
+    "end": "0046c70e",
+    "length": 42,
+    "instruction_count": 10,
+    "name": "compose_scene_null_parent_offset_0046c6e5",
+    "original_abi": "interior of0046C550; EDI=captured argument4 local matrix, right inline at stable ESP+90, destination scratch ESP+28; no independent RET",
+    "final_instruction": "0046c709",
+    "final_length": 6,
+    "continuation": "0046c70f common branch continuation",
+    "call_abi": "00413920 ECX=left, stack destination/right, EAX=destination,RET8",
+    "order": [
+      "push inline right matrix address",
+      "push distinct product destination",
+      "ECX=captured live local matrix",
+      "multiply local*parent",
+      "MOVSS product12 to X",
+      "MOVSS product14 to Z"
+    ],
+    "bytes": "8d842490000000508d4c242c518bcfe82772fafff30f104030f30f1144241cf30f104038f30f11442424"
+  },
+  "stack_evidence": {
+    "enclosing_prologue": "3 SEH pushes+58h locals+4 saved-register pushes =74h; return at S+74,local pointer argument4 at S+84,inline matrix args7..22 at S+90..CC",
+    "local_capture": "0046C573 EDI=argument4;0046C57A/587 read indices12/14 before property call0046C59D, no null check",
+    "caller_0046cf40": [
+      "0046D3E2 SUB ESP,40;D3E5 destinationEDI=ESP;D3E9 ECX=16;D3F5 REP MOVSD;callD426",
+      "0046D611 SUB ESP,40;D614 destinationEDI=ESP;D616 ECX=16;D622 REP MOVSD;callD655"
+    ],
+    "multiply_entry": "00413923 right at ESP+48 and0041392A destination at ESP+44 after40h allocation;00413C87 RET8",
+    "caller_scope": "read-only stack evidence from one original caller with two call sites; no caller implementation or full raw argument ABI claim"
+  }
+}

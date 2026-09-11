@@ -1,4 +1,6 @@
 #pragma once
+#include "bsp/pose_refresh.hpp"
+
 #include <cstddef>
 #include <cstdint>
 #include <vector>
@@ -152,13 +154,15 @@ struct UnitAnchorPoint {
 bool unit_anchors_snap_to_surface_00825946(float bow_y) noexcept;
 float unit_anchor_surface_height_00825977(float sampled_ocean_height) noexcept;
 
-// 00825A6B..00825AF0: the two wake test points of step 8.
+// 00825A64..00825AF0: four interleaved validity checks/refreshes and the two
+// wake test points of step 8. The pose belongs to the native unit (ECX/ESI),
+// not its +4A4h scene node. Width is borrowed so its read follows the first check.
 struct UnitWakeSpan {
     float left{0.0f};
     float right{0.0f};
 };
-UnitWakeSpan unit_wake_span_00825a6b(float pose_base, float pose_lateral,
-                                     float descriptor_half_width) noexcept;
+UnitWakeSpan unit_wake_span_00825a6b(PoseRefreshView& unit_pose,
+                                   const float& descriptor_width);
 bool unit_wake_spawns_00825b19(const UnitWakeSpan& span) noexcept;
 
 // 0082583E: the argument 00815AA0 receives is a 0/1 scalar, not the delta.
@@ -181,12 +185,13 @@ struct UnitAttachSlot {
 inline constexpr std::size_t kUnitAttachSlotCount = 5; // 00825C39
 
 struct UnitInstanceState {
+    // Required canonical field projection for this same native unit owner:
+    // parent +3Ch, local +74h, valid +C8h, world +CCh, derived-valid +10Ch.
+    // No copied pose values or default pose; the binding must outlive the state.
+    PoseRefreshView& pose;
     int class_id{kUnitDestroyerClassId}; // +0C4h
     bool active{true};                   // +05Ch, the world tick gate
     bool simulate{true};                 // +05Dh
-    bool pose_valid{false};              // +0C8h
-    float pose_base{0.0f};               // +100h
-    float pose_lateral{0.0f};            // +0F0h
     bool intensity_override{false};      // +2F0h
     float intensity_scale{1.0f};         // +2F4h
     float intensity_product{0.0f};       // +10A4h
@@ -252,8 +257,6 @@ struct UnitInstanceHost {
     virtual bool global_intensity_override() = 0;
     // 008227E0 on the smoothing state at +10A0h.
     virtual void smooth_intensity_008227e0(float scaled_delta) = 0;
-    // 00414DB0, the lazy pose refresh behind the +0C8h byte, step 8.
-    virtual void refresh_pose_00414db0() = 0;
     // 00424C40()+680h, the settings byte that enables the wake spawn.
     virtual bool wake_enabled() = 0;
     // 00C31F90 / 00C32000 / 00C33650 / 00C31FC0 then 00935540, step 8.
@@ -272,7 +275,8 @@ struct UnitInstanceHost {
 };
 
 // 008255B0, __thiscall(this, float), RET 4. Runs the twelve steps of
-// docs/UNIT_INSTANCE_UPDATE.md in the native order.
+// docs/UNIT_INSTANCE_UPDATE.md in the native order. The state is a new C++
+// interface, not an original-layout object or drop-in ABI replacement.
 void update_unit_instance_008255b0(UnitInstanceState& unit, const UnitClassBlock& class_block,
                                    UnitInstanceHost& host, float scaled_delta);
 

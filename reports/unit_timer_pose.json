@@ -1,0 +1,47 @@
+{
+  "packet": "orch3_unit_timer_pose_k",
+  "date": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "scope": "Complete 0042D7E0/00414D10 wrappers and 00956600 anchor/fallback point capture through required downstream host boundaries",
+  "source": "src/unit_motion.cpp",
+  "headers": ["include/bsp/unit_timer_pose.hpp", "include/bsp/unit_motion.hpp"],
+  "evidence": "docs/UNIT_TIMER_POSE.md",
+  "functions": [
+    {"address":"0042d7e0","name":"pose_world_matrix_0042d7e0","native_abi":"ECX actual pose owner; no stack args; EAX owner+CC; RET","bytes":25,"instructions":8,"native_last_instruction":"0042d7f8","native_last_instruction_length":1,"native_inclusive_end":"0042d7f8","reused":"refresh_pose_00414db0"},
+    {"address":"00414d10","name":"transform_point_staged_00414d10","native_abi":"ECX output XYZ; EDX input XYZ; stack matrix; EAX output; RET4","bytes":64,"instructions":19,"native_last_instruction":"00414d4d","native_last_instruction_length":3,"native_inclusive_end":"00414d4f","reused":"transform_point_004142e0 from camera_affine"}
+  ],
+  "fragment": {
+    "address":"00956600",
+    "point_range":"009567a3..0095682d",
+    "announcement_point_use":"0095686b..00956870 -> 0049c940 -> 0049c000 copies XYZ",
+    "effect_point_use":"009568ad..009568d5 -> 008689c0 copies XYZ into F87640/44/48 with transform flag zero",
+    "binding":"Required actual unit PoseRefreshView&; no owned pose_valid flag; borrowed descriptor anchor lookup before refresh, source read during transform after refresh, then one captured XYZ passed to both consumers"
+  },
+  "required_boundaries": [
+    "Actual descriptor anchor storage, count, records and record reload semantics",
+    "Canonical actual-unit pose field and parent identity/lifetime bindings",
+    "Instance vtable+34 output and E188A8+21D0 manager ownership",
+    "Effect template, scene owner, allocation and reference-count lifetime chain at 00440490/008689C0/004845D0/00440A30",
+    "Existing scalar and host projections for unrelated timed updates"
+  ],
+  "verification": {
+    "build_command":"./scripts/build.ps1",
+    "build_log":"local/unit_timer_pose_build.log",
+    "build_result":"PASS MSVC Win32 /W4 /WX",
+    "existing_ctests":{"reconstructed_math":"PASS","native_math_differential":"PASS"},
+    "focused_fixture_source":"local/unit_timer_pose_fixture.cpp",
+    "focused_fixture_source_sha256":"EAD403B8794D5BA8F01CF0A238543F5A3A5621EFD442A443CF504E52EA86D471",
+    "focused_fixture_command":"cmd /c local\\run_unit_timer_pose_fixture.cmd",
+    "focused_fixture_log":"local/unit_timer_pose_fixture.log",
+    "focused_fixture_result":"PASS borrowed dirty/clean point flow, lookup order, stable consumer snapshot, matrix identity, input/output and matrix/output alias",
+    "fixture_location":"Ignored local/ in J:/PROG/battlestations-pacific-decompile-orch3-xlive-owner-20260910f; no new permanent test",
+    "new_branch_native_differential_tested":false
+  },
+  "new_math":false,
+  "ghidra_mutated":false,
+  "abi_compatible":false,
+  "game_validated":false,
+  "whole_00956600_closed":false,
+  "uncertainty":"Descriptive names remain hypotheses; explicit required service/ownership boundaries are not reconstructed here. Typed borrowed interfaces do not recover original object layout or constructor."
+}

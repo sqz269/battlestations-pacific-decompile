@@ -48,7 +48,8 @@ std::int16_t gui_framebox_add_state_00ad2b30(GuiFrameBoxWidget&,
 // base properties/children. Both interfaces consume evaluated Lua values.
 // States enumeration stops at the first nil positive index; it appends.
 void gui_framebox_read_properties_00ad08e0(GuiFrameBoxWidget&,
-    const GuiWidgetTransform&, const GuiTable&, const GuiFrameBoxTextureServices&);
+    const GuiWidgetTransform&, const GuiTable&, const GuiFrameBoxTextureServices&,
+    const bool& crt_sse2_conversion);
 void gui_framebox_read_properties_00ad08e0(GuiFrameBoxWidget&,
     const GuiWidgetTransform&, GuiLuaReader&, const GuiFrameBoxTextureServices&);
 

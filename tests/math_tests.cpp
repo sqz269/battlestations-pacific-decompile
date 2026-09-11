@@ -1302,8 +1302,9 @@ int main() {
             bsp::gui_lua_field(bsp::GuiLuaFieldType::ParsedFloat, &defaulted);
         bsp::GuiLuaVariant fallback;
         fallback.value.number = 2.5f;
+        const bool crt_sse2_conversion = true;
         check(bsp::gui_lua_store_value_00bd63b0(bsp::GuiValue(std::string("1.5")),
-                                                parsed_value_field, nullptr)
+                                                parsed_value_field, nullptr, crt_sse2_conversion)
                   && parsed_value == 1.5f,
             "field type 0Ah parses the script's string");
         check(bsp::gui_lua_store_default_00bd61c0(defaulted_field, fallback)

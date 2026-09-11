@@ -7,7 +7,8 @@ namespace bsp {
 struct PcProfileIoHost::ReaderFrame {
     GuiLua51Host lua;
     GuiLuaReader reader;
-    explicit ReaderFrame(lua_State* state) : lua(require(state)), reader(lua, lua.globals()) {}
+    ReaderFrame(lua_State* state, const bool& crt_sse2_conversion)
+        : lua(require(state)), reader(lua, lua.globals(), crt_sse2_conversion) {}
     static lua_State& require(lua_State* state) {
         if (!state) throw std::logic_error("Native archive reader requires an open Lua owner");
         return *state;
@@ -48,7 +49,8 @@ void PcProfileIoHost::run_storage_operation_006adb50(ProfileCompletion completio
 }
 int PcProfileIoHost::storage_state_08() { return backend_.operation().state_08; }
 void PcProfileIoHost::begin_profile_reader_004425c0() {
-    profile_readers_.push_back(std::make_unique<ReaderFrame>(backend_.storage_lua_38()));
+    profile_readers_.push_back(std::make_unique<ReaderFrame>(backend_.storage_lua_38(),
+        context_.crt_sse2_conversion));
 }
 void PcProfileIoHost::deserialize_profile_007fdf00(ProfileResetState& profile) {
     read_profile_archive_007fdf00(profile, profile_readers_.back()->reader, context_.archive);
@@ -76,7 +78,8 @@ bool PcProfileIoHost::profile_has_save_name_007f8ca0() { return !context_.profil
 std::string PcProfileIoHost::copy_profile_save_name_00425f40() { return context_.profile.save_name_34; }
 void PcProfileIoHost::immediate_read_00bd4380(std::string_view name, bool kind) { backend_.immediate_read_00bd4380(name, kind ? 1u : 0u); }
 void PcProfileIoHost::begin_settings_reader_004425c0() {
-    settings_readers_.push_back(std::make_unique<ReaderFrame>(backend_.storage_lua_38()));
+    settings_readers_.push_back(std::make_unique<ReaderFrame>(backend_.storage_lua_38(),
+        context_.crt_sse2_conversion));
 }
 void PcProfileIoHost::deserialize_settings_008d6dc0(GameSettingsBlock& settings) {
     read_settings_archive_008d6dc0(settings, settings_readers_.back()->reader,

@@ -1,4 +1,5 @@
 #include "bsp/gui_lua_reader.hpp"
+#include "bsp/lua_numeric.hpp"
 
 #include <cmath>
 #include <cstdio>
@@ -47,17 +48,8 @@ double lua_tonumber_value(const GuiValue& value) noexcept {
     return 0.0;
 }
 
-// __ftol, which the integer accessor 00B66290 applies to lua_tonumber's result:
-// truncation toward zero.
-std::int32_t narrow_to_int(double number) noexcept {
-    if (!(number > -2147483649.0 && number < 2147483648.0)) {
-        return 0;
-    }
-    return static_cast<std::int32_t>(number);
-}
-
 float narrow_to_float(double number) noexcept {
-    return static_cast<float>(number);
+    return lua_number_float32_00b66270(number);
 }
 
 // One element of an array-like table. 00BD63B0 reads t[1]..t[n] through
@@ -148,7 +140,7 @@ std::size_t gui_lua_field_arity(GuiLuaFieldType type) noexcept {
 // ---------------------------------------------------------------------------
 
 bool gui_lua_store_value_00bd63b0(const GuiValue& value, const GuiLuaVariant& field,
-                                  GuiLuaHandleResolver* resolver) noexcept {
+    GuiLuaHandleResolver* resolver, const bool& crt_sse2_conversion) noexcept {
     void* const dest = field.value.pointer;
     switch (static_cast<GuiLuaFieldType>(field.tag)) {
         case GuiLuaFieldType::String: {
@@ -169,7 +161,8 @@ bool gui_lua_store_value_00bd63b0(const GuiValue& value, const GuiLuaVariant& fi
             if (dest == nullptr) {
                 return false;
             }
-            *static_cast<std::int32_t*>(dest) = narrow_to_int(lua_tonumber_value(value));
+            *static_cast<std::int32_t*>(dest) =
+                lua_number_integer_00b66290(lua_tonumber_value(value), crt_sse2_conversion);
             return true;
         }
         case GuiLuaFieldType::Float: {
@@ -199,7 +192,8 @@ bool gui_lua_store_value_00bd63b0(const GuiValue& value, const GuiLuaVariant& fi
                 const double number = value.number();
                 if (gui_lua_is_integer_number_00b66a60(number)) {
                     *static_cast<std::int32_t*>(dest) =
-                        resolver->resolve_by_number(narrow_to_int(number));
+                        resolver->resolve_by_number(
+                            lua_number_integer_00b66290(number, crt_sse2_conversion));
                     return true;
                 }
                 return false;
@@ -373,21 +367,11 @@ bool gui_lua_is_integer_00b66a60(GuiLuaHost& host, const GuiLuaRef& object) {
 
 namespace {
 
-// lua_tonumber against a live object: a number, or a string the lexer can
-// convert. The host's to_number reports the library's own result.
-double ref_number(GuiLuaHost& host, const GuiLuaRef& object) {
-    const GuiLuaType type = host.type_of(object);
-    if (type == GuiLuaType::Number || type == GuiLuaType::String) {
-        return host.to_number(object);
-    }
-    return 0.0;
-}
-
 // t[index] as a float, released afterwards. A missing index is nil and
 // lua_tonumber turns it into zero, exactly as the materialised form does.
 float ref_element(GuiLuaHost& host, const GuiLuaRef& table, std::int32_t index) {
     const GuiLuaRef element = host.get_by_index(table, index);
-    const float number = narrow_to_float(ref_number(host, element));
+    const float number = lua_object_number_00b66270(host, element);
     host.release(element);
     return number;
 }
@@ -408,7 +392,8 @@ bool ref_float_run(GuiLuaHost& host, const GuiLuaRef& object, void* dest,
 
 bool gui_lua_store_ref_00bd63b0(GuiLuaHost& host, const GuiLuaRef& object,
                                 const GuiLuaVariant& field,
-                                GuiLuaHandleResolver* resolver) {
+                                GuiLuaHandleResolver* resolver,
+                                const bool& crt_sse2_conversion) {
     void* const dest = field.value.pointer;
     switch (static_cast<GuiLuaFieldType>(field.tag)) {
         case GuiLuaFieldType::String: {
@@ -423,13 +408,14 @@ bool gui_lua_store_ref_00bd63b0(GuiLuaHost& host, const GuiLuaRef& object,
             if (dest == nullptr) {
                 return false;
             }
-            *static_cast<std::int32_t*>(dest) = narrow_to_int(ref_number(host, object));
+            *static_cast<std::int32_t*>(dest) =
+                lua_object_integer_00b66290(host, object, crt_sse2_conversion);
             return true;
         case GuiLuaFieldType::Float:
             if (dest == nullptr) {
                 return false;
             }
-            *static_cast<float*>(dest) = narrow_to_float(ref_number(host, object));
+            *static_cast<float*>(dest) = lua_object_number_00b66270(host, object);
             return true;
         case GuiLuaFieldType::Bool:
             if (dest == nullptr) {
@@ -443,7 +429,8 @@ bool gui_lua_store_ref_00bd63b0(GuiLuaHost& host, const GuiLuaRef& object,
             }
             if (gui_lua_is_integer_00b66a60(host, object)) {
                 *static_cast<std::int32_t*>(dest) =
-                    resolver->resolve_by_number(narrow_to_int(host.to_number(object)));
+                    resolver->resolve_by_number(
+                        lua_object_integer_00b66290(host, object, crt_sse2_conversion));
                 return true;
             }
             if (host.type_of(object) == GuiLuaType::Table) {
@@ -493,7 +480,9 @@ bool gui_lua_store_ref_00bd63b0(GuiLuaHost& host, const GuiLuaRef& object,
 // The reader
 // ---------------------------------------------------------------------------
 
-GuiLuaReader::GuiLuaReader(GuiLuaHost& host, const GuiLuaRef& root) : host_(&host) {
+GuiLuaReader::GuiLuaReader(GuiLuaHost& host, const GuiLuaRef& root,
+    const bool& crt_sse2_conversion)
+    : host_(&host), crt_sse2_conversion_(crt_sse2_conversion) {
     // 004425C0: the vector starts empty and the root is pushed into it, so the
     // seed is element zero and every Enter grows the path by one.
     stack_.push_back(root);
@@ -521,7 +510,7 @@ void GuiLuaReader::enter_00bd8e20(const GuiLuaVariant& key) {
             stack_.push_back(host_->get_by_index(table, key.value.integer));
             return;
         case GuiLuaKeyKind::FloatIndex:
-            stack_.push_back(host_->get_by_index(table, narrow_to_int(key.value.number)));
+            stack_.push_back(host_->get_by_index(table, lua_float_index_00bd5790(key.value.number)));
             return;
         default:
             // 00BD5790 leaves the object default constructed and 00BD8E20
@@ -556,7 +545,7 @@ bool GuiLuaReader::read_00bd6830(const GuiLuaVariant& key, const GuiLuaVariant& 
     }
     enter_00bd8e20(key);
     const bool stored =
-        gui_lua_store_ref_00bd63b0(*host_, stack_.back(), field, resolver);
+        gui_lua_store_ref_00bd63b0(*host_, stack_.back(), field, resolver, crt_sse2_conversion_);
     leave_00bd7a20();
     return stored;
 }
@@ -573,7 +562,8 @@ bool GuiLuaReader::read_or_default_00bd68d0(const GuiLuaVariant& key,
     if (gui_lua_is_nil_00b65fb0(*host_, stack_.back())) {
         stored = gui_lua_store_default_00bd61c0(field, fallback);
     } else {
-        stored = gui_lua_store_ref_00bd63b0(*host_, stack_.back(), field, resolver);
+        stored = gui_lua_store_ref_00bd63b0(*host_, stack_.back(), field, resolver,
+            crt_sse2_conversion_);
     }
     leave_00bd7a20();
     return stored;
@@ -600,11 +590,12 @@ std::size_t GuiLuaReader::enumerate_keys_00bd5f50(GuiLuaKeyArray& array) {
                 ++written;
             } else if (gui_lua_is_integer_00b66a60(*host_, key)) {
                 array.keys[written] =
-                    gui_lua_key_by_index(narrow_to_int(host_->to_number(key)));
+                    gui_lua_key_by_index(lua_object_integer_00b66290(
+                        *host_, key, crt_sse2_conversion_));
                 ++written;
             } else if (gui_lua_is_number_00b66050(*host_, key)) {
                 array.keys[written] =
-                    gui_lua_key_by_float(narrow_to_float(host_->to_number(key)));
+                    gui_lua_key_by_float(lua_object_number_00b66270(*host_, key));
                 ++written;
             }
         }
@@ -685,7 +676,7 @@ GuiScreenScriptRun run_gui_screen_scripts_00ac6600(GuiLuaScriptHost& host,
 bool load_gui_screen_table_00ac6600(GuiLuaScriptHost& scripts, GuiLuaHost& lua,
                                     const std::string& page_name,
                                     void (*visit)(GuiLuaReader&, void*),
-                                    void* context) {
+                                    void* context, const bool& crt_sse2_conversion) {
     const GuiScreenScriptRun run = run_gui_screen_scripts_00ac6600(scripts, page_name);
     if (run.fatal) {
         // The native build does not reach here: the raise inside the
@@ -695,7 +686,7 @@ bool load_gui_screen_table_00ac6600(GuiLuaScriptHost& scripts, GuiLuaHost& lua,
 
     // 00AC67DA globals, 00AC67DF the reader over them, 00AC6804 the descend
     // into "GuiScreen", 00AC6812 the widget walk, 00AC681F the ascend.
-    GuiLuaReader reader(lua, lua.globals());
+    GuiLuaReader reader(lua, lua.globals(), crt_sse2_conversion);
     reader.enter_00bd8e20(gui_lua_key_by_name(kGuiScreenTableName.data()));
     if (visit != nullptr) {
         visit(reader, context);

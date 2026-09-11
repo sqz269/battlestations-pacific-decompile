@@ -9,10 +9,11 @@ namespace {
 template<class T> void required(const T& service, const char* name) {
     if (!service) throw std::logic_error(name);
 }
-void read_value(const GuiTable& table,const char* name,GuiLuaFieldType type,void* out) {
+void read_value(const GuiTable& table,const char* name,GuiLuaFieldType type,void* out,
+    const bool& crt_sse2_conversion) {
     const auto* value=table.find(name);
     if (value && value->kind()!=GuiValue::Kind::Nil)
-        gui_lua_store_value_00bd63b0(*value,gui_lua_field(type,out),nullptr);
+        gui_lua_store_value_00bd63b0(*value,gui_lua_field(type,out),nullptr,crt_sse2_conversion);
 }
 float rounded(double value) noexcept { return static_cast<float>(value); }
 float sub2(float value,float first,float second) noexcept {
@@ -131,14 +132,14 @@ std::int16_t gui_framebox_add_state_00ad2b30(GuiFrameBoxWidget& frame,
 
 void gui_framebox_read_properties_00ad08e0(GuiFrameBoxWidget& frame,
     const GuiWidgetTransform& widget,const GuiTable& table,
-    const GuiFrameBoxTextureServices& services) {
+    const GuiFrameBoxTextureServices& services,const bool& crt_sse2_conversion) {
     frame.has_texture=true; frame.shader_name.clear();
     frame.frame_sizes_x={kGuiFrameBoxDefaultX,kGuiFrameBoxDefaultX};
     frame.frame_sizes_y={kGuiFrameBoxDefaultY,kGuiFrameBoxDefaultY};
-    read_value(table,"HasTexture",GuiLuaFieldType::Bool,&frame.has_texture);
-    read_value(table,"ShaderName",GuiLuaFieldType::String,&frame.shader_name);
-    read_value(table,"FrameSizesX",GuiLuaFieldType::Vec2,frame.frame_sizes_x.data());
-    read_value(table,"FrameSizesY",GuiLuaFieldType::Vec2,frame.frame_sizes_y.data());
+    read_value(table,"HasTexture",GuiLuaFieldType::Bool,&frame.has_texture,crt_sse2_conversion);
+    read_value(table,"ShaderName",GuiLuaFieldType::String,&frame.shader_name,crt_sse2_conversion);
+    read_value(table,"FrameSizesX",GuiLuaFieldType::Vec2,frame.frame_sizes_x.data(),crt_sse2_conversion);
+    read_value(table,"FrameSizesY",GuiLuaFieldType::Vec2,frame.frame_sizes_y.data(),crt_sse2_conversion);
     const auto* states_value=table.find("States");
     if (!states_value || states_value->kind()==GuiValue::Kind::Nil) return;
     const auto* states=states_value->table();
@@ -150,9 +151,9 @@ void gui_framebox_read_properties_00ad08e0(GuiFrameBoxWidget& frame,
         std::string texture;
         std::array<float,2> size{widget.size.width,widget.size.height};
         std::array<float,2> pivot{widget.pivot_x,widget.pivot_y};
-        read_value(*state,"Texture",GuiLuaFieldType::String,&texture);
-        read_value(*state,"Size",GuiLuaFieldType::Vec2,size.data());
-        read_value(*state,"Pivot",GuiLuaFieldType::Vec2,pivot.data());
+        read_value(*state,"Texture",GuiLuaFieldType::String,&texture,crt_sse2_conversion);
+        read_value(*state,"Size",GuiLuaFieldType::Vec2,size.data(),crt_sse2_conversion);
+        read_value(*state,"Pivot",GuiLuaFieldType::Vec2,pivot.data(),crt_sse2_conversion);
         const GuiWidgetSize extent{size[0],size[1]};
         gui_framebox_add_state_00ad2b30(frame,widget,texture,pivot.data(),&extent,services);
     }

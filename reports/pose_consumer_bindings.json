@@ -1,0 +1,101 @@
+{
+  "packet":"orch3_pose_consumer_audit_j",
+  "base_commit":"2dcee1664904119c34b373188601a6dda2559108",
+  "scope":"five existing reconstructed consumers; read-only source/native audit",
+  "new_reconstructed_bodies":0,
+  "consumers":[
+    {
+      "address":"008255b0","name":"unit instance wake/prop-wash update",
+      "source_refs":["include/bsp/unit_instance.hpp:183","include/bsp/unit_instance.hpp:255","src/unit_instance.cpp:174"],
+      "native_owner":"actual this/ESI unit, pose parent3C/local74/C8/worldCC/10C/derived110",
+      "current_projection":"owned bool pose_valid and float pose_base/pose_lateral; host has no explicit unit identity",
+      "consumed_fields":{"pose_base":"100=world[13]","pose_lateral":"F0=world[9]","valid":"C8"},
+      "binding_status":"requires actual field-reference/owner migration before direct refresh; callback alone leaves projections stale",
+      "ordering":"native825A64..825AEC interleaves four validity tests/refreshes and actual reads; current source groups checks before projected reads",
+      "missing_dependencies":"actual unit owner/view and native point-read schedule; unrelated controller/effect and separate scene-node services remain",
+      "new_math_needed":false
+    },
+    {
+      "address":"00956600","name":"timed unit damage/anchor update",
+      "source_refs":["include/bsp/unit_motion.hpp:193","include/bsp/unit_motion.hpp:218","src/unit_motion.cpp:211"],
+      "native_owner":"actual this/ESI unit, same canonical pose fields",
+      "current_projection":"owned bool UnitTimerState.pose_valid; void anchor-transform and refresh callbacks omit explicit point result",
+      "native_evidence":"9567F0..95681B fallback refresh followed by worldFC/100/104 snapshot into stack locals",
+      "binding_status":"requires live byte binding and explicit captured-position flow; direct refresh naming does not close subsequent effects",
+      "missing_small_wrappers":[
+        {"address":"0042d7e0","meaning":"checkC8, refresh414DB0, returnowner+CC","length":25,"final_instruction":"0042d7f8","final_length":1,"lease":"unleased"},
+        {"address":"00414d10","meaning":"ECXoutput3, EDXinput3, stackmatrix; existing4142E0 through disjoint3-float scratch then copy","length":64,"final_instruction":"00414d4d","final_length":3,"lease":"unleased"}
+      ],
+      "remaining_boundaries":"descriptor anchors, captured point use by announcements/effects, effect ownership and unrelated timed updates"
+    },
+    {
+      "address":"0046c550","name":"scene parent-position generation gate",
+      "source_refs":["include/bsp/scene_entity_factory.hpp:173","include/bsp/scene_entity_factory.hpp:196","src/scene_entity_factory.cpp:235"],
+      "native_owner":"captured nullable stack argument3 parent in EBP, not current global owner",
+      "native_evidence":"46C6B7..DF testsC8, refreshes414DB0 and x87-adds parentFC/104 to localX/Z; null parent instead full413920 at46C6F4",
+      "current_projection":"SceneEntityGateInputs.has_parent loses identity; parent_world_offset callback supplies unresolved geometry",
+      "binding_status":"smallest unblocked ready migration: restore actual parent identity and use existing PoseRefreshResolver plus real refresh/field adds",
+      "remaining_boundaries":"parent naming and deferred-record ownership, game-mode/property services; no claim of whole generation/placement runtime closure",
+      "correction":"0046C550 is generation predicate, not native unit placement constructor",
+      "tracked_caller_search":"declaration/implementation only; no other tracked use of entry or inputs found"
+    },
+    {
+      "address":"006435d0","name":"HUD squad markers",
+      "source_refs":["include/bsp/hud_updates.hpp:239","include/bsp/hud_updates.hpp:281","src/hud_updates.cpp:277"],
+      "native_owner":"each squad node+8 payload, then freshly loaded controlled unitE188D8 per member",
+      "current_projection":"DWORD unit identities, no pose fields; current source snapshots self_marker_unit position before loop",
+      "native_evidence":"6437B4..D8 refreshes mate first then reloads/refreshes actual controlled owner per member; 6436B7 stores927880 result into self marker",
+      "identity_evidence":"927880 follows vslot114 then returned object's vslot18 or returns null; not proven same identity as controlled owner",
+      "binding_status":"requires consumer identity/order repair before canonical pose adapter is sufficient",
+      "ready_repair":"current-controlled lookup after each mate refresh, resolve both actual poses and preserve read order",
+      "remaining_boundaries":"squad/GUI/marker ownership, separate radius x87 parity; minimap not audited as a sixth consumer"
+    },
+    {
+      "address":"005bbdc0","name":"positional voice admission",
+      "source_refs":["include/bsp/voice_playback.hpp:123","include/bsp/voice_playback.hpp:150","src/voice_playback.cpp:164"],
+      "native_owner":"entity pointer is explicit argument; camera transform loaded from actual currentgame+19FC",
+      "native_fields":"camera flags5C bit2/worldF0/position120,124,128; separate entityC8/worldCC/positionFC,100,104",
+      "native_evidence":"5BBDEB..5BBE00 camera lookup/refresh;5BBE29..5BBE3D actual entity check/refresh;5BBE88 canonical42B2F0",
+      "current_projection":"host returns temporaryfloat3 position snapshots, no persistent copied pose/flag; distance callback returnsdouble",
+      "binding_status":"spatial math and identities sufficient for small concrete adapter; shared header lease currently prevents unsynchronized edit",
+      "precision_correction":"42B2F0 returns a float-spilled ST0 value, so widening its result to double is exact; this alone does not prove remaining x87 attenuation expressions",
+      "remaining_boundaries":"actual current-camera lookup, PoseRefreshResolver and existing line/audio/subtitle ownership services"
+    }
+  ],
+  "field_corrections":[
+    "Entitypose world startsCC; positionFC/100/104 equals worldindices12/13/14.",
+    "EntityF0 is worldindex9 used by wake geometry; it is not the pose matrix base or a translation component.",
+    "UnitInstance kUnitOffParentNode30 is not the pose-parent3C; distinct relationship identity is not inferred from its label.",
+    "CameraTransform parent30/validflags5C/localB0/worldF0/position120..128 is a different representation.",
+    "Existing derived cache is SAME pose10C byte and output110; no audited selected consumer currently requires an additional derived cache."
+  ],
+  "recommended_packet":{
+    "name":"scene_parent_pose_binding",
+    "addresses":["0046c550"],
+    "existing_files":["include/bsp/scene_entity_factory.hpp","src/scene_entity_factory.cpp"],
+    "new_files":["include/bsp/scene_pose_binding.hpp","src/scene_pose_binding.cpp","docs/SCENE_POSE_BINDING.md","reports/scene_pose_binding.json"],
+    "changes":"Preserve actual nullable parent identity instead of Boolean-only inputs, bind existing PoseRefreshResolver, replace parent_world_offset callback with recovered refresh and x87 field addition.",
+    "canonical_dependencies":["refresh_pose_00414db0","multiply_camera_matrices_00413920 for already-existing null-parent branch"],
+    "acceptance":"pose branch uses actual same fields with no duplicate flags/hierarchy and no remaining arbitrary geometry callback; whole generation gate remains bounded by unrelated services",
+    "lease_at_audit":"all listed addresses and files unleased; recheck before claim"
+  },
+  "lease_snapshot":{
+    "time_utc":"2026-09-11T07:37:09Z",
+    "all_five_consumer_addresses":"unleased",
+    "existing_consumer_files_except_voice_header":"unleased",
+    "voice_header":{"path":"include/bsp/voice_playback.hpp","holder":"agent/orch4-20260910:orch4_dialog_owner_e","until_utc":"2026-09-11T15:16"},
+    "voice_source":"unleased",
+    "proposed_voice_spatial_files":"include/bsp/voice_spatial.hpp,src/voice_spatial.cpp,docs/VOICE_SPATIAL.md,reports/voice_spatial.json all unleased",
+    "candidate_dependency_addresses_414DB0_B6DB70_42B2F0_413920":"existing canonical operations, no reimplementation proposed",
+    "warning":"snapshot only; leases may change"
+  },
+  "validation":{
+    "source_reads":"capped rg and named slices only",
+    "ghidra":"read-only target-verified bsp.gpr /battlestationspacific.exe wrappers and originalPE decoding",
+    "discarded_decode":"initial raw956793 began inside instruction; leading output discarded and relevant fallback reread from valid9567F0",
+    "consumer_source_or_metadata_edits":false,
+    "ghidra_mutations":0,
+    "build_tests_or_game_runs":false,
+    "reason":"two evidence documents only; no implementation change"
+  }
+}
