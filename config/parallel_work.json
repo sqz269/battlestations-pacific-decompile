@@ -4568,8 +4568,8 @@
       "id": "native_physical_buffer_access6",
       "packet": "native_physical_buffer_access6",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "worker_source_and_original_fixture_in_progress",
+      "done": true,
+      "state": "complete_native_bodies_primary_library_byte_identical_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b23270",
         "00b23180",
@@ -4587,7 +4587,8 @@
       "source_ready": true,
       "prerequisite_packets": [],
       "discovery_evidence": "reports/native_buffer_device_reset_next.json",
-      "scope": "Full160bytes: two actual COM releases, two raw capacity getters, two current COM unlock/current depth decrement leaves. No own cleanup, semantic buffer adapter or extra lifecycle actions."
+      "scope": "Full160bytes: two actual COM releases, two raw capacity getters, two current COM unlock/current depth decrement leaves. No own cleanup, semantic buffer adapter or extra lifecycle actions.",
+      "evidence": "reports/native_physical_buffer_access_audit.json"
     },
     {
       "id": "native_diagnostic_sink_lifetime3",
@@ -4703,6 +4704,29 @@
       "prerequisite_packets": [],
       "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
       "scope": "Read-only full native renderer reset unbind/release/restore contracts and direct/indirect actual providers; explicit ready implementation packets."
+    },
+    {
+      "id": "native_occlusion_query_device_reset2",
+      "packet": "native_occlusion_query_device_reset2",
+      "worker": "main",
+      "done": false,
+      "state": "primary_source_and_original_fixture_in_progress",
+      "function_addresses": [
+        "00b5fe20",
+        "00b5fe60"
+      ],
+      "code_ownership": [
+        "include/bsp/native_occlusion_query_device_reset.hpp",
+        "src/native_occlusion_query_device_reset.cpp",
+        "docs/NATIVE_OCCLUSION_QUERY_DEVICE_RESET.md",
+        "reports/native_occlusion_query_device_reset_audit.json"
+      ],
+      "source_ready": true,
+      "prerequisite_packets": [
+        "native_shader_device_reset5"
+      ],
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+      "scope": "Complete60bytes: raw owner+10 query release and current renderer global/device getter CreateQuery9 directly into actual owner+10, without added guards or previous cleanup."
     }
   ],
   "snapshot_after_analysis": {

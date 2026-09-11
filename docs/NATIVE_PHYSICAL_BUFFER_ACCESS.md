@@ -97,3 +97,17 @@ behavior. It does not establish full subsystem replacement, successful D3D9
 device reset, GPU behavior, game compatibility or visual parity. Physical Lock,
 Attach, COM getters, owner lifetime and logical save/restore remain separate
 providers; existing semantic `D3D9BufferBinding` code is unchanged.
+
+## Primary integration
+
+The primary registered the source in CMake, completed the strict Win32 build
+and passed both existing CTests. It independently verified 39 worker artifacts,
+two SDK pins, current source and six fresh live-Ghidra/PE spans (160 bytes).
+The unchanged fixture linked the completed main library, SHA-256
+`7fd95f1a1148ec3d57f8ad48eca5fef33b8ba1f56fc30e63264ea2b5b0ed7030`. All six independent
+COFF, linked and runtime bodies exactly match the complete native bytes, with
+zero code changes, bridges or relocations. The same 14 paired scenarios,
+1,600 literal DWORDs and 64 event frames agree. The fixture uses deterministic
+stdcall COM endpoints; this remains distinct from real D3D9 validation.
+Saved Ghidra annotations preserve previous names/comments; all six complete
+records and refreshed exports are registered. No permanent tests were added.
