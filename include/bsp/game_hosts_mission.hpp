@@ -158,6 +158,10 @@ struct GameMissionSummary {
     unsigned long long lua_native_calls{0};
     std::string lua_script_path;
     std::string mission_exit_note;
+    // Milestone 2g: the exit path out of game state 0Dh.
+    unsigned long long mission_exit_frames{0};
+    bool mission_exit_completed{false};
+    bool mission_complete_injected{false};
     GameMissionStep step{GameMissionStep::Idle};
 };
 
@@ -173,7 +177,7 @@ public:
     GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& scripts,
         GameFrontendHost& frontend, LocaleTables& locale, std::string requested_mission_id,
         long mission_frames = 0, GameFrameProfiler* profiler = nullptr,
-        std::string language = {});
+        std::string language = {}, long mission_complete_frame = -1);
     ~GameMissionHost();
     GameMissionHost(const GameMissionHost&) = delete;
     GameMissionHost& operator=(const GameMissionHost&) = delete;

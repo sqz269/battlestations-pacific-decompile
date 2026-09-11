@@ -1,0 +1,88 @@
+{
+ "events": [
+  {
+   "recreate": "00aa9730",
+   "previous": "Function: BSP_GuiWidget_DestroyBase at 00aa9730\nSignature: undefined BSP_GuiWidget_DestroyBase(void)\nEntry: 00aa9730\nBody: 00aa9730 - 00aa9950",
+   "plate": "[BSP reconstruction 00aa9730]\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md.\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. Base widget destructor sets base tableD5C130, calls AA8320, then deletes child widgets through current04(1). Native manager AA31F0 already calls20 before derived deletion. Saved body tail remains separately audited; no full raw-widget destructor reconstruction claim. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json.\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. Base widget destructor sets base tableD5C130, calls AA8320, then deletes child widgets through current04(1). Native manager AA31F0 already calls20 before derived deletion. Saved body tail remains separately audited; no full raw-widget destructor reconstruction claim. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json. | Analysis-only retention audit2026-09-11; name hypothesis, not recovered symbol. Actual table00d5c130 virtual04=00aa9a90 calls destructor00aa9730 then iff flags&1 returns through00aa75f0 at pool00f8bc94. Direct managerAA31F0 and parentAA9730 deleting04 bypass widget reference count; no shared_ptr deferral justified. Base realRETAA99B8 beyond saved free truncation. A9E130 is derived destructor, not deleting wrapper. docs/GUI_WIDGET_RETENTION.md; reports/gui_widget_retention.json preserves old names/comments and byte parity. Ghidra read-only; no C++ implementation, runtime or ABI claim."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00aa9730"
+   },
+   "result": {
+    "success": true,
+    "address": "00aa9730",
+    "deleted_function": "BSP_GuiWidget_DestroyBase",
+    "body_size": 520,
+    "message": "Function 'BSP_GuiWidget_DestroyBase' deleted at 00aa9730"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00aa9730",
+    "end_address": "00aa99b9"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00aa9730",
+    "end_address": "00aa99b8",
+    "bytes_disassembled": 649,
+    "message": "Successfully disassembled 649 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00aa9730",
+    "disassemble_first": false,
+    "name": "BSP_GuiWidget_DestroyBase"
+   },
+   "result": {
+    "success": true,
+    "address": "00aa9730",
+    "function_name": "BSP_GuiWidget_DestroyBase",
+    "entry_point": "00aa9730",
+    "body_size": 643,
+    "message": "Function created successfully at 00aa9730",
+    "warnings": [
+     "Function name 'BSP_GuiWidget_DestroyBase' \u2014 main part 'GuiWidget_DestroyBase' is not PascalCase. Expected: GuiwidgetDestroybase",
+     "Function name 'BSP_GuiWidget_DestroyBase' \u2014 main part 'GuiWidget_DestroyBase' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiWidget_DestroyBase' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00aa9730",
+    "comment": "[BSP reconstruction 00aa9730]\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md.\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. Base widget destructor sets base tableD5C130, calls AA8320, then deletes child widgets through current04(1). Native manager AA31F0 already calls20 before derived deletion. Saved body tail remains separately audited; no full raw-widget destructor reconstruction claim. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json.\n\n[BSP reconstruction 00aa9730] update\nECX base context; no stack args; actual RET00aa99b8. Base teardown detaches and forwards main drawable+4C to00b6dfa0, clears field. Saved body ends00aa9950 after false noreturn_free; verified continuation through real RET includes list/base cleanup. Preserve global library identities and no-return annotations in this read-only packet. Read-only contract; no new host implementation or runtime equivalence. reports/font_context_ownership_audit.json | Scene half, from packet gui_widget_scene_visibility: 00AA9752 restores vtable 00d5c130 and 00AA9760 calls 00AA8320, which releases the scene node of this widget and of every descendant and clears each +4Ch. The block at 00AA97AC..00AA97D2 that re-tests [ESI+4Ch] and would call 00B6E680, 00B6D890 and 00B6D940 is therefore unreachable; it reads as an inlined base-class body the compiler could not prove dead. Name deliberately left as FUN_ per the existing record. Evidence in docs/GUI_WIDGET_SCENE_VISIBILITY.md. | Hypothesis, not a recovered symbol. Base widget destructor sets base tableD5C130, calls AA8320, then deletes child widgets through current04(1). Native manager AA31F0 already calls20 before derived deletion. Saved body tail remains separately audited; no full raw-widget destructor reconstruction claim. docs/GUI_NATIVE_SCENE.md; reports/gui_native_scene.json. | Analysis-only retention audit2026-09-11; name hypothesis, not recovered symbol. Actual table00d5c130 virtual04=00aa9a90 calls destructor00aa9730 then iff flags&1 returns through00aa75f0 at pool00f8bc94. Direct managerAA31F0 and parentAA9730 deleting04 bypass widget reference count; no shared_ptr deferral justified. Base realRETAA99B8 beyond saved free truncation. A9E130 is derived destructor, not deleting wrapper. docs/GUI_WIDGET_RETENTION.md; reports/gui_widget_retention.json preserves old names/comments and byte parity. Ghidra read-only; no C++ implementation, runtime or ABI claim."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00aa9730",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00aa9730",
+   "end": "00aa99b9",
+   "name": "BSP_GuiWidget_DestroyBase",
+   "after": "Function: BSP_GuiWidget_DestroyBase at 00aa9730\nSignature: undefined BSP_GuiWidget_DestroyBase(void)\nEntry: 00aa9730\nBody: 00aa9730 - 00aa99b8"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

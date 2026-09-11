@@ -1,0 +1,349 @@
+{
+  "packet": "orch5_wrapped_position_integration",
+  "status": "partial_projection_actual_owners_all_initialized_position_formats_strict_compiled",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "00aba270",
+      "name": "build_gui_text_wrapped_00aba270",
+      "original_abi": "ECX Text; UTF16 wrapper and section stack; RET8",
+      "last_instruction": "00aba8c4",
+      "last_instruction_length": 3,
+      "end_inclusive": "00aba8c6",
+      "coverage": "partial projection: all initialized getter formats through both unlocks; child callee AB9D33..AB9FAD, undefined position formats and out-of-domain uninitialized horizontal alignment remain pending; typed string assignment excludes native pool/SEH equivalence",
+      "source": "src/gui_text_wrapped.cpp"
+    },
+    {
+      "address": "004768d0",
+      "name": "read_gui_text_float3_position_004768d0_fragment",
+      "original_abi": "ECX logical vertex stream; out float3 and index stack; EAX out pointer; RET8",
+      "last_instruction": "00476b3e",
+      "last_instruction_length": 3,
+      "end_inclusive": "00476b40",
+      "coverage": "partial: 4768D0..68DF plus476B18..6B40; excludes4768E0..6B17 packed decode/scale-bias",
+      "source": "src/gui_text_wrapped.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00aba270",
+      "address": "00aba279",
+      "native": "00ab80c0",
+      "binding": "actual existing child clear with SAME live vector/widget/parenting/child lifecycle; no args; calleeRET"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba2ab",
+      "native": "004c53e0",
+      "binding": "typed UTF16 assignment projection only; native newlength/preserve1,RET8, null-free valid strings; nativepool/SEH excluded"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba2d6",
+      "native": "00b74640",
+      "binding": "same primary native model+180, unused stack0; RET4"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba2e1",
+      "native": "00b73260",
+      "binding": "same mesh+64 stream0, unchecked accessor; RET4"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba302",
+      "native": "00b49980",
+      "dispatch": "current vertex virtual10",
+      "binding": "actual logical mapping, currentlength*4,offset0,readonly0; RET0C"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba328",
+      "native": "00b49b60",
+      "dispatch": "current index virtual0C",
+      "binding": "reload meshindex and currentlength*6 after vertex callback; offset0,readonly0; RET0C"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba3a1",
+      "native": "00ad4480",
+      "binding": "space glyph from captured current font beforewidth conversion; codepoint20; RET4"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba460",
+      "native": "00ad4480",
+      "binding": "CURRENT font and scanned current codeunit each iteration; RET4"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba67a",
+      "native": "00ad4480",
+      "binding": "CURRENT font/emitted codeunit each iteration; retained returned glyph acrossmaterialcallbacks; RET4"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba695",
+      "native": "00b189f0",
+      "binding": "CURRENT sectionmaterial slot0 with selectedglyphgfx18; RET8"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba6a7",
+      "native": "00b189f0",
+      "binding": "reload CURRENT material and retainedglyphalpha1C afterslot0callback; slot1; RET8"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba730",
+      "native": "00ab98f0",
+      "binding": "actual mappedglyphwriter; tenstackslots RET28; args2/5/6 alias one stable float3 in callerframe, distinctfrompenlocals; optionalchildcallee frame is separate remaining prerequisite"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba868",
+      "native": "004768d0",
+      "binding": "actual complete initialized-format position reader with borrowed d3dx9_40 import invoked only by type16; current vertex index and local output; RET8; undefined types preserve pending mappings"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba8b2",
+      "native": "00b49c70",
+      "dispatch": "current index virtual10",
+      "binding": "actual index unlock first; no stackargs; RET"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba8bb",
+      "native": "00b49a80",
+      "dispatch": "current vertex virtual14",
+      "binding": "actual vertex unlock second; no stackargs; RET"
+    }
+  ],
+  "all_callers": [
+    {
+      "function": "00aba8d0",
+      "address": "00abab6a",
+      "native": "00aba270",
+      "arguments": "EDIsection pushAB60; sourcewrapper pushAB67; ECXText=ESIatAB68;calleeRET8"
+    },
+    {
+      "function": "00477710",
+      "address": "00478382",
+      "native": "004768d0",
+      "arguments": "ESIstream, stacklocalindex pushed834B, outlocal pushed8361; RET8"
+    },
+    {
+      "function": "00711510",
+      "address": "0071171c",
+      "native": "004768d0",
+      "arguments": "EBXstream, EDIindex, outlocal; RET8"
+    },
+    {
+      "function": "0073f6e0",
+      "address": "0073f800",
+      "native": "004768d0",
+      "arguments": "current ESI+60 stream, first triangle low16index, outlocal; RET8"
+    },
+    {
+      "function": "0073f6e0",
+      "address": "0073f80e",
+      "native": "004768d0",
+      "arguments": "current ESI+60 stream, EBP triangle index, outlocal; RET8"
+    },
+    {
+      "function": "0073f6e0",
+      "address": "0073f81c",
+      "native": "004768d0",
+      "arguments": "current ESI+60 stream, EBX triangle index, outlocal; RET8"
+    },
+    {
+      "function": "00aba270",
+      "address": "00aba868",
+      "native": "004768d0",
+      "arguments": "captured ESIstream, EDI sequentialindex, outlocal; RET8"
+    },
+    {
+      "function": "00ac0970",
+      "address": "00ac0a03",
+      "native": "004768d0",
+      "arguments": "ESIstream,index1,outlocal; RET8"
+    },
+    {
+      "function": "00ac0970",
+      "address": "00ac0a21",
+      "native": "004768d0",
+      "arguments": "ESIstream,index1,outlocal; RET8"
+    },
+    {
+      "function": "00ac0970",
+      "address": "00ac0a58",
+      "native": "004768d0",
+      "arguments": "ESIstream,index3 pushed0A35,outlocal; RET8"
+    },
+    {
+      "function": "00ac0970",
+      "address": "00ac0aad",
+      "native": "004768d0",
+      "arguments": "ESIstream,index2,outlocal; RET8"
+    },
+    {
+      "function": "00ac0970",
+      "address": "00ac0ad0",
+      "native": "004768d0",
+      "arguments": "ESIstream,index2,outlocal; RET8"
+    },
+    {
+      "function": "00ac0970",
+      "address": "00ac0b14",
+      "native": "004768d0",
+      "arguments": "ESIstream,index3 pushed0AF9,outlocal; RET8"
+    },
+    {
+      "function": "00ae41c0",
+      "address": "00ae42bf",
+      "native": "004768d0",
+      "arguments": "EBPstream, EBX plus currentEDI+C index, outlocal; RET8"
+    },
+    {
+      "function": "00b87e80",
+      "address": "00b880d7",
+      "native": "004768d0",
+      "arguments": "EDIstream,EBXindex,outlocal; RET8"
+    },
+    {
+      "function": "00ba0c00",
+      "address": "00ba0f28",
+      "native": "004768d0",
+      "arguments": "ESIstream,EDIindex,outlocal; RET8"
+    },
+    {
+      "function": "00baf8a0",
+      "address": "00baf8f2",
+      "native": "004768d0",
+      "arguments": "EDIstream,first low16 triangle index,outlocal; RET8"
+    },
+    {
+      "function": "00baf8a0",
+      "address": "00baf909",
+      "native": "004768d0",
+      "arguments": "EDIstream,second low16 triangle index,outlocal; RET8"
+    },
+    {
+      "function": "00baf8a0",
+      "address": "00baf920",
+      "native": "004768d0",
+      "arguments": "EDIstream,third low16 triangle index,outlocal; RET8"
+    }
+  ],
+  "producer_fields": [
+    {
+      "address": "00b61e6b",
+      "field": "logical vertex+50",
+      "evidence": "EBX zeroed atB61E55; generated Text simplecolor B4BC00 constructor leaveszero; parsedresource streams may later bindactualdecodedata"
+    },
+    {
+      "address": "00b61ea3",
+      "field": "logical vertex+0C",
+      "evidence": "stride from actual declaration+CC; offsets from same existing constructorusage lookups; no secondlayoutdeclared"
+    },
+    {
+      "address": "00ad4f4a",
+      "field": "font+14",
+      "evidence": "existing canonical FontData.scaled_height producer lowword; signedaccessor read atABA284 afterclear"
+    },
+    {
+      "address": "00ad5004",
+      "field": "glyph+18/+1C",
+      "evidence": "same canonicalglyph actualresource identities AD5004/5007; retained by nativefontowner and material slots"
+    },
+    {
+      "address": "00aba6b7",
+      "field": "Text+18C",
+      "evidence": "first emittedpen afterboth materialbindings"
+    },
+    {
+      "address": "00aba795",
+      "field": "Text+114",
+      "evidence": "larger emittedunscaledlinewidth only; initialresetbelongscontentcaller"
+    },
+    {
+      "address": "00aba7fe",
+      "field": "Text+178",
+      "evidence": "spilled rawmax-minusminheight before720normalization"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Existing scalar wrappedfragment takes copied font/scalars and finite/capacity guards",
+      "is": "Actual adapter reads SAME current font/scale/material state and writes mappedowners; no added finite/count/justify-one-space guards",
+      "evidence": "ABA356/459/673 currentfont,ABA465/74F currentscale,ABA583 nativeFIDIV includingzero"
+    },
+    {
+      "was": "First glyph textures could be cached before callbacks",
+      "is": "Current sectionmaterial and retainedglyphalpha reload afterslot0release callbacks",
+      "evidence": "ABA688..6A7"
+    },
+    {
+      "was": "Wrapped completion might be treated like singleline sectionlayout rebuild",
+      "is": "Wrapped finalizes positions then indexunlock thenvertexunlock with noB865A0",
+      "evidence": "ABA843..8C6"
+    },
+    {
+      "was": "Caller pendingframe might imply childtail can execute from arguments alone",
+      "is": "Only callerlocals are retained; AB98F0 internalcallee frame and actualchildlifetime are stillrequired before invokingresume",
+      "evidence": "existingwriter returnsneeds_child atAB9D33 withoutcalleecontinuation object"
+    },
+    {
+      "was": "Wrapped final position loop stopped on every nonzero stream50",
+      "is": "Uses complete initialized-format native getter while preserving direct float3 output stores and unlock order",
+      "evidence": "ABA868 call now bound to native_vertex_position_read.cpp; native ABA86D..8BB stores/order unchanged"
+    },
+    {
+      "was": "A decoded-position pending result might imply a legitimate decoder retry",
+      "is": "Only undefined native formats remain pending, with no resume entry; published metrics/ranges are not repeated",
+      "evidence": "Native unsupported type branch enters uninitialized scratch at476AC6; child resume rejects undefined_position_format"
+    }
+  ],
+  "lifetime_contract": {
+    "borrowed": "same lifetime, mutableglyphrecords, terminatedstring backing, primarymesh/section, vertex/indexstream, actualowners/services; no copyofobservableText or resources",
+    "continuation": "callerframe only; mappings remainactive; consumeonce; no destructorunlock; enclosingcontent frame stayslive",
+    "child_gap": "AB98F0 internalnative locals must be established by futureactual childtail implementation, not recomputed aftermutablecallbacks",
+    "undefined_position_format": "All initialized formats execute synchronously. Undefined native scratch formats retain mappings/current index after metric/range publication; no position resume entry or repeated finalization is provided. Child resume rejects this reason.",
+    "actual_half_import": "Borrowed NativeD3dx9Float16Import and actual module remain live; only native type16 performs the conversion. No implicit DLL load or alternate converter."
+  },
+  "numeric_limits": "Native x87/SSE conversions and spills, DWORD counters/addressarithmetic,low16 finalranges retained; noinvalidpointer/faultemulation orunmaskedtrap-timing equivalence; validnativebacktracking region and nonrelocatingnull-free UTF16 assumed",
+  "validation": {
+    "strict_compile": "PASS both gui_text_wrapped.cpp and native_vertex_position_read.cpp, MSVC Win32 W4 WX O2 MD fp:strict, current canonical owner headers",
+    "report_call_verifier": "PASS:36 numeric call rows,0 failures;32 direct verified and4 virtual mapping calls explicitly unresolved by checker",
+    "new_tests": 0,
+    "new_test_targets": 0,
+    "native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_reachable": false,
+    "runtime_limit": "Actual Text factory/virtualoperations/resourceproducer and optionalchild lifecycle remainexternal; no newlyreachable executablepath isclaimed",
+    "combined_build": "parent integration"
+  },
+  "tool_issues": [
+    "MSVC inline assembler treats offset as reserved; localrenamed result_offset then strictcompilepassed",
+    "Ghidra remainedreadonly; both routinesalreadyhave exactsavedbodies; no raw no_ghidra_function rowsrequired",
+    "ledger add-fragment --json requires literal JSON rather than a file path; retried with file content successfully"
+  ],
+  "consumed_getter_calls": [
+    {
+      "function": "004768d0",
+      "address": "004769aa",
+      "native": "00475f80",
+      "binding": "Consumed complete native_vertex_position_read.cpp dependency; body/report owned by native getter packet"
+    },
+    {
+      "function": "004768d0",
+      "address": "00476ac1",
+      "native": "00a4c2ae",
+      "binding": "Consumed complete native_vertex_position_read.cpp dependency; body/report owned by native getter packet"
+    }
+  ]
+}

@@ -21,6 +21,8 @@ GuiTextLifetime::GuiTextLifetime(GuiWidgetOwner& widget, GuiTextBufferServices& 
     GuiTextGlyphChildCalls& children, const GuiTextConstructorConstants& constants)
     : widget_(widget), buffers_(buffers), child_calls_(children) {
     require_owner();
+    if (widget_.text_lifetime_)
+        throw std::logic_error("widget already has its canonical Text companion");
     // AA9390 has already initialized the one base owner. These two legacy
     // reader projections do not create another base/layout or scene node.
     text_.size = widget.layout().transform.size;
@@ -52,18 +54,35 @@ GuiTextLifetime::GuiTextLifetime(GuiWidgetOwner& widget, GuiTextBufferServices& 
     text_.state_colors.focus = {one, one, one, one};
     text_.state_colors.selected = {one, one, one, one};
     text_.state_colors.disabled = {0.0f, 0.0f, 0.0f, constants.disabled_alpha_00ce3800};
+    // All derived defaults exist before AB8530 can call back into this owner.
+    // The companion may be queried here, but scalar deletion rejects construction.
+    widget_.text_lifetime_ = this;
     try {
         ensure_gui_text_draw_sections_00ab8530(widget_, text_, shadow_188_, buffers_);
     } catch (...) {
         // C++ failed-construction cleanup only, not native SEH equivalence.
-        release_shadow_00ab73b0();
+        try {
+            release_shadow_00ab73b0();
+        } catch (...) {
+            widget_.text_lifetime_ = nullptr;
+            throw;
+        }
+        widget_.text_lifetime_ = nullptr;
         throw;
     }
     phase_ = Phase::live;
 }
 
 GuiTextLifetime::~GuiTextLifetime() noexcept {
+    // Explicit scalar completion already removed the borrowed association and
+    // may have erased the owner record; an externally embedded companion must
+    // not dereference that dead owner during its later C++ member destruction.
+    if (scalar_phase_ == GuiTextScalarDeletionPhase::complete) return;
+    // An incomplete scalar deletion must keep the owner/companion alive.
+    // Destruction here would lose an unimplemented native continuation.
+    if (scalar_phase_ != GuiTextScalarDeletionPhase::not_started) std::terminate();
     destroy_derived_00ab8250_fragment();
+    if (widget_.text_lifetime_ == this) widget_.text_lifetime_ = nullptr;
 }
 
 GuiTextContentBinding GuiTextLifetime::content_binding() noexcept {

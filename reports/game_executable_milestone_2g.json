@@ -1,0 +1,532 @@
+{
+  "packet": "cc_exe_2g",
+  "owner": "agent/cc-exe-2g",
+  "milestone": "bsp_game.exe milestone 2g",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only for this packet",
+  "title": "The fixed step's fan-out and job waves, and the mission-result exit out of game state 0Dh",
+  "sources": [
+    "src/game_hosts_fixed_step.cpp",
+    "include/bsp/game_hosts_fixed_step.hpp",
+    "src/game_hosts_mission_result.cpp",
+    "include/bsp/game_hosts_mission_result.hpp",
+    "src/game_hosts_mission_frame.cpp",
+    "include/bsp/game_hosts_mission_frame.hpp",
+    "src/game_hosts_mission.cpp",
+    "src/game_hosts_menu.cpp",
+    "src/game_hosts.cpp",
+    "src/game_main.cpp",
+    "docs/GAME_EXECUTABLE.md"
+  ],
+  "command": "bsp_game.exe --frames 400 --press-start-frame 30 --menu-select USN02 --mission-frames 120 --mission-complete-frame 90 --log local/game_run_2g.log --game-root \"I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\"",
+  "run": {
+    "exit_code": 0,
+    "host_methods_concrete": 252,
+    "host_methods_unimplemented": 252,
+    "mission_frames_run": 90,
+    "exit_frames": 2,
+    "exit_completed": true,
+    "fixed_steps": 0,
+    "long_run": {
+      "command": "bsp_game.exe --frames 3000 --press-start-frame 30 --menu-select USN02 --mission-frames 2000 --mission-complete-frame 1990",
+      "exit_code": 0,
+      "fixed_steps": 18,
+      "fanout_sites_run": 198,
+      "fanout_sites_skipped_by_world_gate": 90,
+      "interpolation_wave_groups": 9950,
+      "tail_gate_closed": 1990,
+      "host_methods_concrete": 254,
+      "host_methods_unimplemented": 261
+    }
+  },
+  "fanout_steps": [
+    {
+      "row": 1,
+      "method": "FixedStepFanout::simulate_physics_world",
+      "address": "00875e0c",
+      "native": "00c5c540",
+      "owner": "physics",
+      "status": "unimplemented",
+      "note": "the mitengine Dynamics world at [game+18h] and its own substep loop"
+    },
+    {
+      "row": 2,
+      "method": "FixedStepFanout::apply_dynamics_buoyancy",
+      "address": "00875e24",
+      "native": "004462d0",
+      "owner": "unit",
+      "status": "concrete",
+      "reconstruction": "bsp::apply_dynamics_buoyancy_004462d0",
+      "note": "the only row of the sixteen with a reconstruction on main; the list is the frame's own bsp::GameDynamicsState and is empty here, so the walk processes no record"
+    },
+    {
+      "row": 3,
+      "method": "FixedStepFanout::refresh_moved_spatial_nodes",
+      "address": "00875e33",
+      "native": "0042e630",
+      "owner": "registry",
+      "status": "unimplemented",
+      "note": "the getter half of one statement: __cdecl, RET, no arguments"
+    },
+    {
+      "row": 4,
+      "method": "FixedStepFanout::refresh_moved_spatial_nodes",
+      "address": "00875e3a",
+      "native": "0098bdb0",
+      "owner": "registry",
+      "status": "unimplemented",
+      "note": "consumes the float pushed at 00875e2f"
+    },
+    {
+      "row": 5,
+      "method": "FixedStepFanout::run_step_callbacks",
+      "address": "00875e3f",
+      "native": "00874de0",
+      "owner": "engine",
+      "status": "unimplemented"
+    },
+    {
+      "row": 6,
+      "method": "FixedStepFanout::drain_deferred_entity_events",
+      "address": "00875e44",
+      "native": "00926700",
+      "owner": "entity",
+      "status": "unimplemented",
+      "note": "rows 6 and 14 are the same callee; the record carries the first site and the call count says it ran twice per step"
+    },
+    {
+      "row": 7,
+      "method": "FixedStepFanout::drain_queued_lua_calls",
+      "address": "00875e55",
+      "native": "00888230",
+      "owner": "script",
+      "status": "unimplemented",
+      "note": "ECX = [game+1A08h], the mission Lua host this process owns; the cross-thread call list it drains has no reconstruction"
+    },
+    {
+      "row": 8,
+      "method": "FixedStepFanout::run_due_entity_think",
+      "address": "00875e64",
+      "native": "00929460",
+      "owner": "script",
+      "status": "unimplemented"
+    },
+    {
+      "row": 9,
+      "method": "FixedStepFanout::pump_session",
+      "address": "00875e91",
+      "native": "00778450",
+      "owner": "session",
+      "status": "skipped",
+      "note": "behind the world gate 00875e69..00875e7f, which is closed: no world object, so [[game+19CCh]+4ACh] is zero"
+    },
+    {
+      "row": 10,
+      "method": "FixedStepFanout::apply_pending_entity_creates",
+      "address": "00875e96",
+      "native": "0077ec20",
+      "owner": "session",
+      "status": "skipped",
+      "note": "world gate closed"
+    },
+    {
+      "row": 11,
+      "method": "FixedStepFanout::flush_tick_registrations",
+      "address": "00875e9b",
+      "native": "00874c90",
+      "owner": "engine",
+      "status": "skipped",
+      "note": "world gate closed; this is the splice that would make a constructed job-wave element visible to the next step's waves"
+    },
+    {
+      "row": 12,
+      "method": "FixedStepFanout::init_pending_entities",
+      "address": "00875ea2",
+      "native": "00925f20",
+      "owner": "entity",
+      "status": "skipped",
+      "note": "world gate closed"
+    },
+    {
+      "row": 13,
+      "method": "FixedStepFanout::flush_outbound_session",
+      "address": "00875ebf",
+      "native": "0076ffc0",
+      "owner": "session",
+      "status": "skipped",
+      "note": "world gate closed"
+    },
+    {
+      "row": 14,
+      "method": "FixedStepFanout::drain_deferred_entity_events",
+      "address": "00875ec4",
+      "native": "00926700",
+      "owner": "entity",
+      "status": "unimplemented"
+    },
+    {
+      "row": 15,
+      "method": "FixedStepFanout::flush_pending_entity_queues",
+      "address": "00875ec9",
+      "native": "009273a0",
+      "owner": "entity",
+      "status": "unimplemented"
+    },
+    {
+      "row": 16,
+      "method": "FixedStepFanout::release_expired_world_objects",
+      "address": "00875eda",
+      "native": "00903610",
+      "owner": "world",
+      "status": "unimplemented"
+    }
+  ],
+  "job_wave_steps": [
+    {
+      "method": "FixedStep::run_job_waves",
+      "site": "00875cc0",
+      "callee": "",
+      "status": "concrete",
+      "reconstruction": "bsp::run_fixed_step_job_waves",
+      "note": "waves 1..3 over the five 68h groups at 00f876c0, 15 group visits per fixed step; every group is empty in this process"
+    },
+    {
+      "method": "FixedStep::interpolation_wave",
+      "site": "00875f43",
+      "callee": "",
+      "status": "concrete",
+      "reconstruction": "bsp::run_fixed_step_job_wave(kInterpolation)",
+      "note": "once per frame when the delta and the leftover are both positive; 9950 group visits in the long run"
+    },
+    {
+      "method": "FixedStepJobs::queue_job",
+      "site": "00875ceb",
+      "callee": "00be3020",
+      "status": "not reached",
+      "note": "004c1130 then [[pool+4h]+4h]; no element was ever admitted, because the groups are empty"
+    },
+    {
+      "method": "FixedStepJobs::dispatch_group",
+      "site": "00875cf8",
+      "callee": "00be3150",
+      "status": "not reached",
+      "note": "one dispatch per group with at least one queued element"
+    },
+    {
+      "method": "FixedStepJobs::wave1_job",
+      "site": "008750a0",
+      "callee": "",
+      "status": "not reached"
+    },
+    {
+      "method": "FixedStepJobs::wave2_job",
+      "site": "00875b90",
+      "callee": "",
+      "status": "not reached"
+    },
+    {
+      "method": "FixedStepJobs::wave3_job",
+      "site": "00874fe0",
+      "callee": "",
+      "status": "not reached"
+    },
+    {
+      "method": "FixedStepJobs::interpolation_job",
+      "site": "00875160",
+      "callee": "",
+      "status": "not reached"
+    },
+    {
+      "method": "FixedStepFanout::tail_hook",
+      "site": "00875ff7",
+      "callee": "00a317f0",
+      "status": "not reached",
+      "note": "the four-test gate 00875fd1..00875ff5 was closed on all 1990 evaluations of the long run: 00f8ab04 has no writer here and the in-mission interface manager 00e198c4 is the front-end owner's"
+    }
+  ],
+  "exit_steps": [
+    {
+      "method": "MissionEndMovie::lua_binding_play_bink_movie",
+      "address": "0089a5e6",
+      "native": "0089a390",
+      "owner": "script",
+      "status": "unimplemented",
+      "note": "the binding registered at 00e0ba60 as {\"PlayBinkMovie\", 0089a480}; --mission-complete-frame supplies the two arguments a mission script would, which is the executable's own injection"
+    },
+    {
+      "method": "MissionEndMovie::set_end_of_mission_movie",
+      "address": "0089a40e",
+      "native": "004cd390",
+      "owner": "game",
+      "status": "concrete",
+      "reconstruction": "bsp::set_end_of_mission_movie_004cd390",
+      "note": "the 24h result object at game+7188h, name \"movies/\" + the script's name, +21h = the debrief byte, +8h = -200.0f from 00ce77e4"
+    },
+    {
+      "method": "MissionEndMovie::end_scene_from_movie_path",
+      "address": "0089a469",
+      "native": "004d7970",
+      "owner": "game",
+      "status": "concrete",
+      "note": "0089a45c TEST BL,BL: with the debrief byte set, 0089a390 calls GGame::EndScene itself before returning, which is why the poll never sees an empty request queue on that frame"
+    },
+    {
+      "method": "MissionEndScene::debrief_bringup",
+      "address": "004d79b7",
+      "native": "00920a20",
+      "owner": "frontend",
+      "status": "unimplemented",
+      "note": "ECX = [game+21A0h], the scoring manager, not the game object"
+    },
+    {
+      "method": "MissionEndScene::commit_mission_record",
+      "address": "004d79eb",
+      "native": "009205e0",
+      "owner": "profile",
+      "status": "concrete",
+      "reconstruction": "bsp::commit_mission_record_009205e0",
+      "note": "commits [game+21A0h]+4h+slot*284h into the MissionProgress at game+6B4h under the key at game+2198h; the record is the zeroed one the load produced, because no script called Scoring_SetMissionCompleted"
+    },
+    {
+      "method": "MissionEndScene::adjust_start_counters",
+      "address": "004d7a0f",
+      "native": "004bcaa0",
+      "owner": "session",
+      "status": "not reached",
+      "note": "single player: game+1FE4h is 0, so the multiplayer arm is not taken"
+    },
+    {
+      "method": "MissionEndScene::flush_storage",
+      "address": "004d7a23",
+      "native": "007fa1b0",
+      "owner": "profile",
+      "status": "not reached",
+      "note": "the aborted arm"
+    },
+    {
+      "method": "MissionEndScene::reset_player_records",
+      "address": "004d7a37",
+      "native": "00916980",
+      "owner": "profile",
+      "status": "not reached",
+      "note": "the aborted arm"
+    },
+    {
+      "method": "MissionEndScene::record_metrics",
+      "address": "004d7a42",
+      "native": "007556a0",
+      "owner": "telemetry",
+      "status": "unimplemented"
+    },
+    {
+      "method": "MissionEndScene::broadcast_end_scene",
+      "address": "004d7a78",
+      "native": "007727a0",
+      "owner": "session",
+      "status": "not reached",
+      "note": "mode 1 only"
+    },
+    {
+      "method": "MissionEndScene::send_secondary_message",
+      "address": "004d7acc",
+      "native": "00770af0",
+      "owner": "session",
+      "status": "not reached",
+      "note": "mode 2 aborted only"
+    },
+    {
+      "method": "MissionEndScene::enqueue_teardown_request",
+      "address": "004d7aec",
+      "native": "004d3ed0",
+      "owner": "game",
+      "status": "concrete",
+      "reconstruction": "bsp::enqueue_state_request_004d3ed0",
+      "note": "request 10h, enqueued because game+5D4h was 0Dh"
+    },
+    {
+      "method": "MissionFrame::check_mission_completion",
+      "address": "004e5389",
+      "native": "004d7ea0",
+      "owner": "game",
+      "status": "concrete",
+      "reconstruction": "bsp::check_mission_completion_004d7ea0",
+      "note": "ran on all 90 in-mission frames; it read game+7188h on 89 of them and returned on its first test on the frame the synchronous EndScene had already queued request 10h"
+    },
+    {
+      "method": "MissionCompletion::play_end_movie",
+      "address": "004d7f32",
+      "native": "004f8a20",
+      "owner": "frontend",
+      "status": "not reached",
+      "note": "the poll's own movie call, with result+8h as the widget's local Z"
+    },
+    {
+      "method": "MissionCompletion::set_movie_completion",
+      "address": "004d7f42",
+      "native": "004f8970",
+      "owner": "frontend",
+      "status": "not reached",
+      "note": "registers 004f89d0, whose 004c7ed0 is the only writer that clears the drain suspension the poll's 0Fh would latch"
+    },
+    {
+      "method": "MissionCompletion::close_result_gui",
+      "address": "004d7f72",
+      "native": "004cd610",
+      "owner": "frontend",
+      "status": "not reached"
+    },
+    {
+      "method": "GameFrame::drain_state_requests",
+      "address": "004e4d0d",
+      "native": "004e4430",
+      "owner": "game",
+      "status": "concrete",
+      "reconstruction": "bsp::drain_state_requests_004e4430",
+      "note": "the drain OnMove runs first, gated at 004e4d02 on game+5ECh; milestone 2f never ran it because nothing could enqueue"
+    },
+    {
+      "method": "Drain::post_drain",
+      "address": "004e4a2e",
+      "native": "00a95960",
+      "owner": "audio",
+      "status": "unimplemented",
+      "note": "the drain tail, once per frame"
+    },
+    {
+      "method": "MissionTeardown::tear_down_mission",
+      "address": "004e4710",
+      "native": "004da780",
+      "owner": "world",
+      "status": "unimplemented",
+      "note": "the first call of the request 10h arm 004e458a"
+    },
+    {
+      "method": "MissionTeardown::play_end_movie",
+      "address": "004e474a",
+      "native": "004f8a20",
+      "owner": "frontend",
+      "status": "unimplemented",
+      "note": "the arm's own movie call, local Z 1000.0f from 00ce3804"
+    },
+    {
+      "method": "MissionTeardown::set_movie_completion",
+      "address": "004e4763",
+      "native": "004f8970",
+      "owner": "frontend",
+      "status": "unimplemented",
+      "note": "registers 004f89d0"
+    },
+    {
+      "method": "MissionTeardown::close_result_gui",
+      "address": "004e476c",
+      "native": "004cd610",
+      "owner": "frontend",
+      "status": "unimplemented"
+    },
+    {
+      "method": "MissionTeardown::release_result",
+      "address": "004e4773",
+      "native": "004cc510",
+      "owner": "game",
+      "status": "concrete",
+      "note": "ECX = &game+7188h; the arm releases the result object it just played"
+    },
+    {
+      "method": "MissionTeardown::request_front_end",
+      "address": "004e47a7",
+      "native": "004d3ed0",
+      "owner": "game",
+      "status": "not reached",
+      "note": "the no-result branch at 004e478b; this run had a result object, so the arm took the 004e4778 branch instead"
+    },
+    {
+      "method": "MissionEndWait::request_front_end",
+      "address": "004e5087",
+      "native": "004d3ed0",
+      "owner": "game",
+      "status": "concrete",
+      "reconstruction": "bsp::update_mission_end_wait",
+      "note": "the state 11h arm: game+7184h is clear, so 004e506b lowers the suspension the teardown arm raised and this enqueues request 04h"
+    },
+    {
+      "method": "Drain::request_04_front_end_shell",
+      "address": "004e44fa",
+      "native": "004e4000",
+      "owner": "frontend",
+      "status": "unimplemented",
+      "note": "the front-end shell entry, which after a mission is the debrief front end; 004e4000 is reconstructed and milestone 2c runs it from the main-menu path over the menu host's screens, which this host does not own"
+    }
+  ],
+  "corrections": [
+    {
+      "target": "docs/MISSION_RESULT_DECISION.md, the chain table",
+      "was": "script raises the end movie 0089a480 -> 0089a390 -> 004cd390; OnMove polls 004d7ea0 and enqueues state request 0Fh; the drain dispatches 0Fh to 004d7970",
+      "is": "0089a390 calls 004d7970 itself at 0089a469 whenever the script's goToDebrief byte is set, so a PlayBinkMovie(name, true) issued in game state 0Dh reaches EndScene synchronously and EndScene enqueues 10h at 004d7aec. The poll's own 0Fh arm is then unreachable, because 004d7ea0's first test (004d7ea4) requires an empty request queue and 10h is already in it",
+      "evidence": "the decompiled body of 0089a390 (BSP_NativeString_Resize(7,1), concat, CALL 004cd390 at 0089a40e, then TEST BL,BL at 0089a45c and CALL 004d7970 at 0089a469); run log local/game_run_2g.log, where MissionFrame::check_mission_completion ran 90 times and MissionCompletion::mission_result was read 89 times, the missing one being the frame the injection ran on"
+    },
+    {
+      "target": "docs/GAME_FRAME_CONTROL.md, \"the full lifecycle of the drain suspension is not closed\"",
+      "was": "game+5ECh is cleared by 004c7ed0 and written by 004ddb90; neither was analyzed; only the state 11h arm was shown to clear it",
+      "is": "both sites that latch game+5ECh also register the routine that clears it: 004d7f42 (the poll) and 004e4763 (the teardown arm) call 004f8970 with 004f89d0, and 004f89d0 calls 004c7ed0, whose 004c7efe clears game+5ECh and whose 004c7ed7 clears game+7184h. The state 11h arm at 004e506b is the second clear and it only fires while game+7184h is clear, so a movie in flight holds the suspension until its completion runs",
+      "evidence": "disassembly of 004f89d0 (004f89eb CALL 004c7ed0), of 004c7ed0 (004c7ed7 and 004c7efe) and of 004e504b..004e5087"
+    },
+    {
+      "target": "docs/MISSION_RESULT_DECISION.md uncertainty \"004cd390's +8h float comes from 00ce77e4; the constant's value was not read\", and bsp::MissionResult::score in include/bsp/game_frame_control.hpp",
+      "was": "result+8h is called `score` and is handed to the result GUI",
+      "is": "00ce77e4 holds 00 00 48 C3 = -200.0f and 004d7f1d loads it as the third stack argument of 004f8a20, which bsp/movie_player.hpp recovers as the movie widget's local Z. The drain's teardown arm loads 1000.0f from 00ce3804 for the same argument at 004e4732. The field is a GUI depth, not a score; the rename belongs in bsp/game_frame_control.hpp, which this packet does not own",
+      "evidence": "python tools/bsp.py ghidra bytes 00ce77e4 and 00ce3804; the listings at 004d7f1d..004d7f32 and 004e4732..004e474a; play_movie_004f8a20's parameter list"
+    },
+    {
+      "target": "docs/GAME_FRAME_CONTROL.md, the request 10h row",
+      "was": "the teardown arm 004e458a: leaves state 11h at 004e4778, enqueues 04h at 004e47a7 when the queue is empty",
+      "is": "the two are alternative branches, not a sequence. 004e4722 tests game+7188h: with a result object the arm plays it (004e474a), registers the completion (004e4763), closes the result GUI (004e476c), releases the result (004e4773), writes state 11h (004e4778), raises the drain suspension (004e4782) and jumps over the enqueue at 004e4789; with no result object it falls to 004e478b and enqueues 04h only when the queue is empty. The arm also tests game+1EE3h at 004e4715 first and takes the 004e48d7 sub-path when it is set",
+      "evidence": "python tools/bsp.py ghidra disasm 004e4430 --start 004e470e, and the run log lines from `mission teardown` to `mission end wait`"
+    },
+    {
+      "target": "include/bsp/game_frame_control.hpp, GameFrameControlHost::post_drain_00a95960",
+      "was": "// 004e4a24",
+      "is": "004e4a24 is the FLD of the scaled delta; the CALL 00a95960 is at 004e4a2e",
+      "evidence": "python tools/bsp.py ghidra disasm 004e4430 --start 004e4a12, and xrefs 00a95960"
+    },
+    {
+      "target": "docs/GAME_EXECUTABLE.md milestone 2f, \"summary mission exit reachable=0\"",
+      "was": "no mission-result object at game+7188h, so 004d7ea0 never enqueues 0Fh and the debrief path of 004d7970 is unreachable in this process",
+      "is": "the producer, not the poll, is what was missing. --mission-complete-frame N makes the call the script's binding makes and the run leaves state 0Dh through 004d7970, request 10h, the teardown arm, state 11h and request 04h, exiting 0 on the front-end request instead of on the frame count",
+      "evidence": "local/game_run_2g.log, `summary mission exit frames=2 injected=1 completed=1 state=0x04`"
+    },
+    {
+      "target": "docs/GHIDRA_LISTING_DEFECTS.md, the 004e4a40 row",
+      "was": "BSP_Game_OnMove has an 8-byte body, so tools/verify_report_calls.py reports call sites inside it as \"in no Ghidra function\"",
+      "is": "the stored body is now 004e4a40-004e5537, so the defect no longer affects this report; the repair script has run since milestone 2f",
+      "evidence": "python tools/bsp.py ghidra proto 004e4a40 --brief"
+    },
+    {
+      "target": "docs/MISSION_RESULT_DECISION.md, \"the script says PlayBinkMovie(name, goToDebrief)\"",
+      "was": "the binding takes the movie name and the debrief flag as its two arguments",
+      "is": "0089a480 zeroes the byte at 0089a5a2 (XOR BL,BL), reads the Lua argument count at 0089a5a4 and takes a boolean only when there are three or more (CMP EAX,3 at 0089a5a9), from argument index 2 at 0089a5ae; MOV DL,BL at 0089a5e0 hands it to 0089a390. The flag is the third argument and defaults to false, which is why a one-argument mid-mission movie never ends a mission",
+      "evidence": "the listing of 0089a480 at 0089a5a2..0089a5e6, and the installed Scripts/global/commandhelpers.lua, which calls PlayBinkMovie(Mission.MissionComplParams.Movie, \"\", true) in luaMissionCompleted_ComplMovie, the same three-argument form with MissionFailParams in luaMissionFailed_FailMovie, and PlayBinkMovie(\"campaigns/BSM/m0102.bik\") for a mid-mission clip"
+    },
+    {
+      "target": "docs/MISSION_RESULT_DECISION.md, the producers of 004d7970",
+      "was": "004d7970 <- 004e4430 (request 0Fh), 004d87b0, 004db190, 006890b0, 00772990, 0088b1b0, 0089a390, 008b01b0, 008b0470 (a caller list with no contract)",
+      "is": "008b01b0 is the Lua binding `EndScene`, and it is the arm a mission with no completion movie takes (luaDelay(EndScene, 12) in luaMissionCompleted_ComplText). Its body reads the commit slot's record at [game+21A0h] + 4 + [[game+21A0h]+1424h]*284h and, when that record's +0h is clear in a single-player session, raises a menu prompt through BSP_MenuPromptScreen_Raise and returns without calling 004d7970; only a completed record or a multiplayer session reaches BSP_Game_EndScene. A script must score the mission before ending it this way",
+      "evidence": "python tools/bsp.py ghidra decompile 008b01b0; src/mission_lua_host.cpp binding row {\"EndScene\", 0x008B01B0}; Scripts/global/commandhelpers.lua lines 10090-10112"
+    }
+  ],
+  "executable_decisions": [
+    "--mission-complete-frame N makes the call a mission script's PlayBinkMovie(name, true) makes, because no script on this installation reaches it in a headless run with no enemy contact. The movie name is the scene's own short name; everything after the call is recovered behaviour.",
+    "The end movie is never played: 004f8a20 needs the GUI movie widget, which is the front-end owner's. Both call sites are records, and game+7184h is therefore never raised, which is why the state 11h arm lowers the suspension on the same frame.",
+    "The scoring record the commit writes is the zeroed one the load produced. Scoring_SetMissionCompleted 008b8ad0 is the script's and this mission's stage init never reaches it.",
+    "The drain's request 04h is recorded rather than dispatched into another owner's shell, and the run then requests the application loop exit through the same byte --frames uses.",
+    "The fixed step's tail hook 00875fd1 is run by the executable at the driver's own tail position, because bsp::run_fixed_step_driver_00875bb0 stops after the interpolation wave and carries no host method for it."
+  ],
+  "no_ghidra_function": [],
+  "known_defects": [],
+  "producer_evidence": {
+    "installed_script": "Scripts/global/commandhelpers.lua, one of the 21 global scripts the load runs",
+    "mission_complete": "luaMissionCompleted_ComplText picks luaDelay(EndScene, 12) when Mission.MissionComplParams.Movie is nil and luaDelay(luaMissionCompleted_ComplMovie, 12) otherwise; the latter calls PlayBinkMovie(Mission.MissionComplParams.Movie, \"\", true)",
+    "mission_failed": "luaMissionFailed_FailMovie calls PlayBinkMovie(Mission.MissionFailParams.Movie, \"\", true)",
+    "note": "the injection --mission-complete-frame makes is the same native call as the movie arm: a name and a set debrief byte into 0089a390"
+  }
+}

@@ -141,7 +141,8 @@ public:
     GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameStateSlot& state,
         long press_start_frame, GameVfsHost& vfs, GameScriptHost& scripts,
         LocaleTables& locale, std::string menu_select, long mission_frames = 0,
-        GameFrameProfiler* profiler = nullptr, std::string language = {});
+        GameFrameProfiler* profiler = nullptr, std::string language = {},
+        long mission_complete_frame = -1);
     ~GameMenuHost();
     GameMenuHost(const GameMenuHost&) = delete;
     GameMenuHost& operator=(const GameMenuHost&) = delete;
@@ -158,6 +159,8 @@ public:
     const GameMenuSummary& summary() const noexcept;
     // Milestone 2e. Null when --menu-select named nothing.
     GameMissionHost* mission() const noexcept;
+    // Milestone 2g: true once the mission's exit path reached request 04h.
+    bool mission_exit_finished() const noexcept;
 
     struct Impl;
 
