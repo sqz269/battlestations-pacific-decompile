@@ -1,0 +1,195 @@
+{
+  "packet": "native_tree_out_of_range_exception",
+  "status": "integrated_complete_actual_storage_thin_composition_source_bytes_and_build_checked",
+  "source": "src/native_tree_out_of_range_exception.cpp",
+  "header": "include/bsp/native_tree_out_of_range_exception.hpp",
+  "documentation": "docs/NATIVE_TREE_OUT_OF_RANGE_EXCEPTION.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00441760",
+      "end_exclusive": "00441779",
+      "cpp_symbol": "copy_native_tree_out_of_range_00441760",
+      "proposed_name": "BSP_NativeLegacyOutOfRange_Copy",
+      "original_abi": "ECX destination actual28h owner; stack source owner; EAX destination; RET4",
+      "behavior": "Call full existing4118D0 logic-error copy first; only on success write nativeD6926C out_of_range profile and return originaldestination. No additional localEH or cleanup on failure.",
+      "source": "src/native_tree_out_of_range_exception.cpp",
+      "header": "include/bsp/native_tree_out_of_range_exception.hpp"
+    },
+    {
+      "address": "004412b0",
+      "end_exclusive": "004412e2",
+      "cpp_symbol": "destroy_native_tree_out_of_range_004412b0",
+      "proposed_name": "BSP_NativeLegacyOutOfRange_Destroy",
+      "original_abi": "ECX actual28h owner; RET throughBF6454tail; no stable result",
+      "behavior": "Same complete operation as existing411780: publishD69248, unsignedmembercapacity>=16 freesCURRENTdata+10; preserve returning-free ADDESP4 at4412C8; reset cap24=15,len20=0,firstbyte10=0; tailcurrentbaseBF6454. Do not freeowner or clearstale basefields.",
+      "source": "src/native_tree_out_of_range_exception.cpp",
+      "header": "include/bsp/native_tree_out_of_range_exception.hpp"
+    }
+  ],
+  "evidence": {
+    "spans": [
+      {
+        "address": "00441760",
+        "end_exclusive": "00441779",
+        "length": 25,
+        "role": "complete_copy",
+        "sha256": "4997d9d8cc48eb929543cab80ecad0bea3af1cf704c924bdce7ca4b66a79416b",
+        "hex": "8b44240456508bf1e86301fdffc7066c92d6008bc65ec20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "004412b0",
+        "end_exclusive": "004412e2",
+        "length": 50,
+        "role": "complete_cleanup",
+        "sha256": "30c07905d69847441e015c6caed7aee9e82ecd157565da1ab6f4e50abdd35162",
+        "hex": "568bf1c7064892d600837e2410720c8b461050e8e4527b0083c40433c0c746240f0000008946208846108bce5ee972517b00",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d863a8",
+        "end_exclusive": "00d863b8",
+        "length": 16,
+        "role": "ThrowInfo",
+        "sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814",
+        "hex": "00000000b012440000000000e463d800",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d863e4",
+        "end_exclusive": "00d863f4",
+        "length": 16,
+        "role": "CatchableTypeArray",
+        "sha256": "ce36cf5003f6c6d94772206183c377abcd104fc63b285da06b0b8aa354073017",
+        "hex": "03000000f463d8000040d8007c3ce000",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d863f4",
+        "end_exclusive": "00d86410",
+        "length": 28,
+        "role": "out_of_range_CatchableType",
+        "sha256": "e1aebe4960e79465b8a8c1d8c2a99283f539f102dbadd4d46767c6dcf00d888f",
+        "hex": "000000007c81e00000000000ffffffff000000002800000060174400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00d6926c",
+        "end_exclusive": "00d69278",
+        "length": 12,
+        "role": "out_of_range_profile",
+        "sha256": "c8b8f7f1bb4bd8949dfba3d9a58752997663ccffcece920e61f36292e45931f6",
+        "hex": "f01244005015410073747269",
+        "live_PE_match": true
+      },
+      {
+        "address": "004118d0",
+        "end_exclusive": "00411935",
+        "length": 101,
+        "role": "existing_complete_logic_error_copy",
+        "sha256": "08a27c57c04b2fdaf63b16babfebf630e2de798310fe895ace5a9894370f5f9a",
+        "hex": "6aff6858e0c50064a10000000050648925000000005156578b7c241c8bf1578974240ce8ae4a7e0033d26aff8d4e0cc7064892d6008d470c52c741180f0000008951145089542420885104e80068ffff8b4c240c5f8bc65e64890d0000000083c410c20400",
+        "live_PE_match": true
+      },
+      {
+        "address": "00411780",
+        "end_exclusive": "004117b3",
+        "length": 51,
+        "role": "existing_complete_logic_error_cleanup",
+        "sha256": "ac83b60dc64267ef3997a64246c7e411e1de6d859061a5af1e67a13699a9d58b",
+        "hex": "568bf1c7064892d600837e2410720c8b461050e8144e7e0083c40433c0c746240f0000008946208846108bce5ee9a24c7e00cc",
+        "live_PE_match": true
+      }
+    ],
+    "owned_functions": 2,
+    "owned_native_bytes": 75,
+    "verified_spans": 8,
+    "verified_bytes": 299
+  },
+  "existing_dependencies": [
+    {
+      "path": "include/bsp/native_legacy_exception_owner.hpp",
+      "sha256": "98da5a8c50222979739c330b503cc03f2b43e03df5cf15a795f30ed2df3ed727"
+    },
+    {
+      "path": "src/native_legacy_exception_owner.cpp",
+      "sha256": "1738ea975779ec203f1ff639ea7407754462b174b783141ffb523174d6e34452"
+    },
+    {
+      "path": "include/bsp/native_legacy_sbo_string.hpp",
+      "sha256": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422"
+    },
+    {
+      "path": "src/native_legacy_sbo_string.cpp",
+      "sha256": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c"
+    }
+  ],
+  "build": {
+    "path": "reports/native_tree_out_of_range_build.txt",
+    "sha256": "33ccc353ed8da0eecce75eab87c59b227f3657a3c319f3647085ab4937aa888d",
+    "passed": true,
+    "tests": 2
+  },
+  "native_differential_fixture": false,
+  "validation_limits": [
+    "Exact thin composition of current complete existing copy/cleanup bodies; independent original-caller comparison of these two new entry interfaces has not run.",
+    "Future checked-tree caller fixture can exercise owning out_of_range transport.",
+    "Numeric native vtables and metadata do not establish host exception ABI compatibility."
+  ],
+  "new_tracked_tests": 0,
+  "abi_compatible": false,
+  "game_validated": false,
+  "primary_integration": {
+    "status": "integrated_complete_actual_storage_thin_composition_source_bytes_and_build_checked",
+    "new_complete_functions": 2,
+    "primary_artifacts": [
+      {
+        "path": "src/native_tree_out_of_range_exception.cpp",
+        "sha256": "5d95dbe3af41c5338706f0c77928cefc9cc13ee5e8ec0cd606fc0cd85a846844"
+      },
+      {
+        "path": "include/bsp/native_tree_out_of_range_exception.hpp",
+        "sha256": "a35ad6906acf09d0814c5142856fe4c0adf91b86f3a8373eb8d26fb3adf11fcf"
+      },
+      {
+        "path": "docs/NATIVE_TREE_OUT_OF_RANGE_EXCEPTION.md",
+        "sha256": "419deb3ffa197490e9935cb40802a79583380377427748bb04303969fa0546ee"
+      },
+      {
+        "path": "reports/native_tree_out_of_range_build.txt",
+        "sha256": "33ccc353ed8da0eecce75eab87c59b227f3657a3c319f3647085ab4937aa888d"
+      }
+    ],
+    "annotations_applied": true,
+    "saved_annotations": {
+      "path": "reports/native_tree_exception_annotations.json",
+      "sha256": "5892c9367272e32eb7c82c29d67eb0fe684b64a0f563cb3577f146acd4c84841",
+      "old_names_comments_preserved": true,
+      "project_saved": true
+    },
+    "refreshed_exports": [
+      {
+        "address": "00441760",
+        "path": "exports/bsp/functions/00441760/decompiled.c",
+        "sha256": "e879ef636a4d1655249473453c07e21f3b4c68823df220838326146cfbc0ee0e"
+      },
+      {
+        "address": "004412b0",
+        "path": "exports/bsp/functions/004412b0/decompiled.c",
+        "sha256": "47c60345d76942ee89a09ee3541c85a5e35796ec09469bb94f633ccb3308524a"
+      }
+    ],
+    "defined_and_repaired_functions": {
+      "path": "reports/native_tree_exception_defined_functions.json",
+      "sha256": "2fe705ac6e6da1d278a6072c97b2d3589037aac6e423924fe322d2b8fc62b2ea",
+      "project_saved": true
+    },
+    "native_differential_fixture": false,
+    "closure_utc": "2026-09-11T01:49:32.778582+00:00",
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}

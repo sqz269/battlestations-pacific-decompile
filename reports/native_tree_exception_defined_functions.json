@@ -1,0 +1,181 @@
+{
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "functions": [
+    {
+      "address": "004412b0",
+      "end_exclusive": "004412e2",
+      "length": 50,
+      "sha256": "30c07905d69847441e015c6caed7aee9e82ecd157565da1ab6f4e50abdd35162",
+      "function_before": "Function: FUN_004412b0 at 004412b0\nSignature: undefined FUN_004412b0(void)\nEntry: 004412b0\nBody: 004412b0 - 004412e1",
+      "documentation_before": {
+        "hash": "7aface223db34a4febba9a5f5c7123798feff8e34c44e3a52af59d0e81744080",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004412b0",
+        "function_name": "FUN_004412b0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 27,
+            "name": "LAB_004412cb"
+          }
+        ],
+        "completeness_score": 50.0
+      },
+      "returning_free_call_sites": [
+        "004412c3"
+      ],
+      "function_after": "Function: FUN_004412b0 at 004412b0\nSignature: undefined FUN_004412b0(void)\nEntry: 004412b0\nBody: 004412b0 - 004412e1",
+      "documentation_after": {
+        "hash": "014e7799cfa7b2408ea6a59a9a7846b9a8f28883d62dcc4049ce9cd27a5ca2ba",
+        "source_program": "battlestationspacific.exe",
+        "source_address": "004412b0",
+        "function_name": "FUN_004412b0",
+        "return_type": "undefined",
+        "calling_convention": "unknown",
+        "parameters": [],
+        "local_variables": [],
+        "comments": [],
+        "labels": [
+          {
+            "relative_offset": 27,
+            "name": "LAB_004412cb"
+          }
+        ],
+        "completeness_score": 50.0
+      }
+    },
+    {
+      "address": "00441760",
+      "end_exclusive": "00441779",
+      "length": 25,
+      "sha256": "4997d9d8cc48eb929543cab80ecad0bea3af1cf704c924bdce7ca4b66a79416b",
+      "missing_before": true,
+      "function_before": "No function found for 00441760",
+      "plate_before": {
+        "query_result": "No function at address; creation preserves existing code/data comments"
+      },
+      "function_after": "Function: BSP_NativeLegacyOutOfRange_Copy at 00441760\nSignature: undefined BSP_NativeLegacyOutOfRange_Copy(void)\nEntry: 00441760\nBody: 00441760 - 00441778"
+    }
+  ],
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "004412c8",
+        "end_address": "004412e2"
+      },
+      "result": {
+        "success": true,
+        "start_address": "004412c8",
+        "end_address": "004412e1",
+        "bytes_disassembled": 26,
+        "message": "Successfully disassembled 26 byte(s)"
+      }
+    },
+    {
+      "endpoint": "clear_instruction_flow_override",
+      "body": {
+        "address": "004412c3"
+      },
+      "result": {
+        "status": "success",
+        "message": "Success: Cleared flow override at 004412c3 (was: CALL_RETURN, now: NONE)"
+      }
+    },
+    {
+      "endpoint": "delete_function",
+      "body": {
+        "address": "004412b0"
+      },
+      "result": {
+        "success": true,
+        "address": "004412b0",
+        "deleted_function": "FUN_004412b0",
+        "body_size": 47,
+        "message": "Function 'FUN_004412b0' deleted at 004412b0"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "004412b0",
+        "name": "FUN_004412b0",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "004412b0",
+        "function_name": "FUN_004412b0",
+        "entry_point": "004412b0",
+        "body_size": 50,
+        "message": "Function created successfully at 004412b0"
+      }
+    },
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "00441760",
+        "end_address": "00441779"
+      },
+      "result": {
+        "success": true,
+        "start_address": "00441760",
+        "end_address": "00441778",
+        "bytes_disassembled": 25,
+        "message": "Successfully disassembled 25 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "00441760",
+        "name": "BSP_NativeLegacyOutOfRange_Copy",
+        "disassemble_first": false
+      },
+      "result": {
+        "success": true,
+        "address": "00441760",
+        "function_name": "BSP_NativeLegacyOutOfRange_Copy",
+        "entry_point": "00441760",
+        "body_size": 25,
+        "message": "Function created successfully at 00441760",
+        "warnings": [
+          "Function name 'BSP_NativeLegacyOutOfRange_Copy' \u2014 main part 'NativeLegacyOutOfRange_Copy' is not PascalCase. Expected: NativelegacyoutofrangeCopy",
+          "Function name 'BSP_NativeLegacyOutOfRange_Copy' \u2014 main part 'NativeLegacyOutOfRange_Copy' contains underscores. Use PascalCase after the module prefix.",
+          "Function name 'BSP_NativeLegacyOutOfRange_Copy' does not start with a recognized verb. First word 'Native' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+        ]
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ],
+  "status": "Out-of-range exception returning-free continuations restored with comments preserved; project saved"
+}

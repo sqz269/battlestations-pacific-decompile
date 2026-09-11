@@ -1,0 +1,30 @@
+[
+  {
+    "address": "00441760",
+    "before": {
+      "address": "00441760",
+      "function_name": "BSP_NativeLegacyOutOfRange_Copy"
+    },
+    "after": {
+      "address": "00441760",
+      "old_name": "BSP_NativeLegacyOutOfRange_Copy",
+      "name": "BSP_NativeLegacyOutOfRange_Copy",
+      "evidence": "Call full existing4118D0 logic-error copy first; only on success write nativeD6926C out_of_range profile and return originaldestination. No additional localEH or cleanup on failure. Original ABI: ECX destination actual28h owner; stack source owner; EAX destination; RET4. Evidence reports/native_tree_out_of_range_exception_audit.json; complete two entry functions75nativebytes,8livePEspans299bytes. ThrowInfoD863A8 cleanup4412B0; CatchableTypeD863F4 copy441760. Existing actual legacy exception copy/cleanup composition, strictWin32+2CTest; no independent nativecallerfixture of this pair yet. New C++ services, no native exceptionABI/game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004412b0",
+    "before": {
+      "address": "004412b0",
+      "function_name": "FUN_004412b0"
+    },
+    "after": {
+      "address": "004412b0",
+      "old_name": "FUN_004412b0",
+      "name": "BSP_NativeLegacyOutOfRange_Destroy",
+      "evidence": "Same complete operation as existing411780: publishD69248, unsignedmembercapacity>=16 freesCURRENTdata+10; preserve returning-free ADDESP4 at4412C8; reset cap24=15,len20=0,firstbyte10=0; tailcurrentbaseBF6454. Do not freeowner or clearstale basefields. Original ABI: ECX actual28h owner; RET throughBF6454tail; no stable result. Evidence reports/native_tree_out_of_range_exception_audit.json; complete two entry functions75nativebytes,8livePEspans299bytes. ThrowInfoD863A8 cleanup4412B0; CatchableTypeD863F4 copy441760. Existing actual legacy exception copy/cleanup composition, strictWin32+2CTest; no independent nativecallerfixture of this pair yet. New C++ services, no native exceptionABI/game validation."
+    },
+    "status": "applied"
+  }
+]
