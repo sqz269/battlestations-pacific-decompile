@@ -38,7 +38,7 @@ struct SceneToken {
 };
 
 // Scanner of 008d8a70. One-token lookahead cache (field +0x805), "//" to end of
-// line and "/* */" block comments, '"' delimited strings with no escape
+// line and "/* */" block comments at token boundaries, '"' strings with no escape
 // processing, single-character delimiter tokens, and a line counter (+0x81c).
 // The native buffers the whole file in memory first (008d9cf0 reads the VFS
 // stream into +0x82c with size +0x830), so this takes the text directly.
@@ -51,6 +51,11 @@ public:
     SceneToken next();
     bool at_end() { return peek().is_end(); }
     int line() const noexcept { return line_; }
+
+    // 008d8f70: retain the cached token, skip only following whitespace, and
+    // report whether the byte source is exhausted. Options typed readers use
+    // this result as their separate native +80Ah end flag.
+    bool recover_after_failed_read();
 
 private:
     SceneToken scan();
