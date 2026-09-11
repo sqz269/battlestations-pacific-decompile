@@ -106,7 +106,7 @@ void request_profile_read_007ff100(
     if (host.storage_query_1c(profile.save_name_34, true)) {
         io.completion = std::move(completion);
         host.request_read_00bd3d70(profile.save_name_34, true);
-        host.register_task_006adb50(ProfileIoTask::ReadCompleted);
+        host.run_storage_operation_006adb50(ProfileIoTask::ReadCompleted);
         return;
     }
     reset_profile_007fdb20(profile, settings, host);
@@ -152,7 +152,7 @@ void request_profile_write_007fa710(
     io.completion = std::move(completion);
     if (should_queue) {
         host.request_write_00bd3dc0(profile.save_name_34);
-        host.register_task_006adb50(ProfileIoTask::WriteCompleted);
+        host.run_storage_operation_006adb50(ProfileIoTask::WriteCompleted);
     }
 }
 

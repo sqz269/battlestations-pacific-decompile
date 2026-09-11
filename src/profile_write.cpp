@@ -33,7 +33,7 @@ void complete_profile_storage_write_007fa670(ProfileResetState& profile,
         } retire{host, writer};
         write_settings_008d64a0(settings, writer);
     }
-    host.register_task_006adb50(ProfileIoTask::SettingsWriteCompleted);
+    host.run_storage_operation_006adb50(ProfileIoTask::SettingsWriteCompleted);
 }
 
 void complete_profile_settings_write_007fa220(ProfileResetState& profile,
@@ -53,7 +53,7 @@ void complete_profile_settings_write_007fa220(ProfileResetState& profile,
         } retire{host, writer};
         write_profile_archive_007f9540(profile, writer, host.archive_services());
     }
-    host.register_task_006adb50(ProfileIoTask::ProfileWriteCompleted);
+    host.run_storage_operation_006adb50(ProfileIoTask::ProfileWriteCompleted);
 }
 
 void complete_profile_archive_write_007f9500(ProfileResetState& profile,

@@ -16,6 +16,7 @@ using ProfileArchiveReader = GuiLuaReader;
 struct ProfileArchiveWriter {
     virtual ~ProfileArchiveWriter() = default;
     virtual void begin_section(const char* name) = 0;
+    virtual void begin_section(const GuiLuaVariant& key) = 0;
     virtual void end_section() = 0;
     virtual void write_field(const GuiLuaVariant& key, const SettingsValue& value) = 0;
 };

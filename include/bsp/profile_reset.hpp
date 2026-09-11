@@ -101,7 +101,8 @@ struct ProfileIoHost : ProfileResetHost {
     virtual bool storage_query_1c(std::string_view name, bool flag) = 0;
     virtual void request_read_00bd3d70(std::string_view name, bool flag) = 0;
     virtual void request_write_00bd3dc0(std::string_view name) = 0;
-    virtual void register_task_006adb50(ProfileIoTask task) = 0;
+    // May invoke the task before returning; interactive prompts retain it.
+    virtual void run_storage_operation_006adb50(ProfileIoTask task) = 0;
     virtual int storage_state_08() = 0;
 
     // 007fefe0's successful arm. Reader/archive, serializer, native buffer
@@ -121,7 +122,7 @@ struct ProfileIoHost : ProfileResetHost {
 
 // 007ff100: __thiscall(profile, NativeString* name, void (*callback)()), RET 8.
 // False query result resets immediately and invokes the argument callback;
-// true stores it globally, starts the read, and schedules 007fefe0.
+// true stores it globally, starts the read, and drives storage through 007fefe0.
 void request_profile_read_007ff100(
     ProfileResetState& profile, GameSettingsBlock& settings, ProfileIoState& io,
     ProfileIoHost& host, std::string_view name, ProfileCompletion completion);

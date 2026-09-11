@@ -80,8 +80,9 @@ The decompiler incorrectly labels the callback as `unaff_retaddr`; assembly
 loads the second real stack argument from `[ESP+18h]` after four register pushes.
 It assigns profile+34h, then calls storage virtual +1Ch with `(name, 1)`:
 
-- True: replace `00F87458`, call `00bd3d70(name,1)`, register `007fefe0` through
-  `006adb50` (function address in ECX), return.
+- True: replace `00F87458`, call `00bd3d70(name,1)`, drive storage with `007fefe0` through
+  `006adb50` (function address in ECX). The callback can run before this returns;
+  an interactive prompt retains it. See `STORAGE_OPERATION_CONTINUATIONS.md`.
 - False: reset the profile and invoke the argument callback if non-null. It
   does not clear or replace the global callback slot on this immediate arm.
 
@@ -102,9 +103,9 @@ It compares the **old** profile+34h and supplied name via `00449af0`, unless
 forced. That helper first distinguishes zero/nonzero header lengths at
 `00449af0..00449b1e`, then calls `__stricmp` at `00449b29`, stopping at embedded
 NUL bytes in both nonempty strings. It always assigns the name and `00F87458`, even when
-unchanged. Only force/name difference calls `00bd3dc0(name)` and schedules
-`007fa670`. That callback and the later `007fa220` write backend are not
-reconstructed here. No default completion is fabricated for the unchanged arm.
+unchanged. Only force/name difference calls `00bd3dc0(name)` and drives storage with
+`007fa670`. That callback and `007fa220` are reconstructed in `profile_write.cpp`;
+the text writer and storage driver are bound in `profile_persistence.cpp`. No default completion is fabricated for the unchanged arm.
 
 The earlier press-start public hook labels invert the two routes:
 `0067ce4c` calls `007ff100` (read/restore), while `0067cea4` calls `007fa710`

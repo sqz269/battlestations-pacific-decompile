@@ -1,0 +1,34 @@
+{
+  "packet": "orch2_profile_persistence_integration",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "base": "032f6ff",
+  "primary_addresses": [
+    "007ff100",
+    "007fa710",
+    "007fa670",
+    "007fa220"
+  ],
+  "worker_commits": {
+    "writer": "c17c646",
+    "storage": "c9cf2d0",
+    "mission": "pending"
+  },
+  "validation": {
+    "gui_lua_runtime": "Win32 Release and2existingCTests passed",
+    "independent_runtime_and_composition_review": "no blocker under documented lifetime requirements",
+    "combined_build": "pending",
+    "real_lua_roundtrip": "pending"
+  },
+  "annotations": "pending",
+  "abi_compatible": false,
+  "game_validated": false,
+  "container_compatible": false,
+  "remaining_boundaries": [
+    "compressed storage container",
+    "storage virtual44 implementation",
+    "keyboard serialization service",
+    "hints and profile manager effects",
+    "complete Win32 application binding"
+  ]
+}
