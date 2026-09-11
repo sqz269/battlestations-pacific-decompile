@@ -1,0 +1,856 @@
+{
+  "packet": "cc2_unit_instance_layout",
+  "worktree": "agent/cc2-unit-instance-layout",
+  "ghidra": "read-only",
+  "names_are_hypotheses": true,
+  "doc": "docs/UNIT_INSTANCE_LAYOUT.md",
+  "subject": "The 0x1188-byte unit instance a vehicle-class descriptor's vtable slot +28h allocates, its six-level constructor chain, and the placement path 00928860/009258F0/006FE620.",
+  "headline": {
+    "was": "006FE460 BSP_UnitInstance_Construct is the instance constructor; it sets the vtable 00CFC3D0 (docs/SCENE_UNIT_CREATORS.md).",
+    "is": "006FE460 is the most derived of six constructors. It writes eight vtable pointers and the dword 7 at +C4h and nothing else; 0081ED40, 0095CC90, 0087B670, 0077EED0, 00928630 and 00925CE0 write every other field, and the deepest is a scene-graph node.",
+    "evidence": "006fe460 body 006FE460..006FE4C2 is 98 bytes: CALL 0081ED40, eight MOV [ESI+off],imm and MOV [ESI+C4h],7. Each level of the chain writes its own depth to +C4h (0, 1, 2, 4, 5, 6, 7)."
+  },
+  "corrections": [
+    {
+      "doc": "docs/SCENE_UNIT_CREATORS.md",
+      "was": "006FE620 pushes the instance onto five intrusive lists of the parent node, at parent +30h, +48h, +54h, +60h and +6Ch.",
+      "is": "Six lists. 00928560, which 006FE620 calls first at 006FE623, pushes onto the list at parent+24h through the same 00484540.",
+      "evidence": "00928560 body 00928560..0092856C: PUSH ECX / MOV ECX,[ECX+30h] / ADD ECX,24h / CALL 00484540 / RET."
+    },
+    {
+      "doc": "docs/SCENE_UNIT_CREATORS.md",
+      "was": "006FE620 is exported but has no known caller.",
+      "is": "It is 00CFC3D0+130h and is reached only through the indirect call at 009288F1 inside 00928860. No direct call site exists in the image.",
+      "evidence": "dword at 00CFC500 (= 00CFC3D0+130h) is 006FE620; 009288F1 CALL EAX with EAX = [[ESI]+130h]."
+    },
+    {
+      "doc": "docs/FIXED_STEP_JOB_WAVES.md",
+      "was": "Eight call sites of 00875890 pass group 0 and one passes 3.",
+      "is": "Site 0087B6A9 constructs the node at instance+310h with group 0, and 0081ED40 then overwrites the group index at +324h (node +14h) with 1 before the object is finished. The effective group for a unit instance is 1.",
+      "evidence": "0087B69B PUSH EDI(0) / LEA EBX,[ESI+310h]; 0081ED40 decompile param_1[0xc9] = 1, byte offset 0x324 = 310h + 14h. 0095CC90 writes 0 to the same field earlier."
+    }
+  ],
+  "calls": [
+    {
+      "routine": "006fe590",
+      "step": "operator new(1188h)",
+      "address": "006fe5af",
+      "native": "00bf55be",
+      "this": "-",
+      "args": "1188h (cdecl, ADD ESP,10h at 006fe5c3)",
+      "ret": "instance or 0",
+      "gate": "none"
+    },
+    {
+      "routine": "006fe590",
+      "step": "memset 0",
+      "address": "006fe5be",
+      "native": "00bf79f0",
+      "this": "-",
+      "args": "block, 0, 1188h",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "006fe590",
+      "step": "constructor chain",
+      "address": "006fe5dd",
+      "native": "006fe460",
+      "this": "instance",
+      "args": "flag from [ESP+1Ch]",
+      "ret": "instance",
+      "gate": "allocation non-null (006fe5cc)"
+    },
+    {
+      "routine": "006fe590",
+      "step": "owning class reference",
+      "address": "006fe5f3",
+      "native": "009553d0",
+      "this": "instance (0 when the allocation failed)",
+      "args": "descriptor (EDI, saved from ECX at 006fe5ad)",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "006fe460",
+      "step": "vehicle base",
+      "address": "006fe468",
+      "native": "0081ed40",
+      "this": "instance",
+      "args": "flag",
+      "ret": "instance",
+      "gate": "none"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "level 4",
+      "address": "0081ed6a",
+      "native": "0095cc90",
+      "this": "instance",
+      "args": "flag, 0",
+      "ret": "instance",
+      "gate": "none"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "sub-object at +72Ch",
+      "address": "0081ed7b",
+      "native": "00809270",
+      "this": "instance+72Ch",
+      "args": "-",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "order ring at +838h",
+      "address": "0081ee95",
+      "native": "00812d40",
+      "this": "instance+838h",
+      "args": "-",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "sub-object at +A20h",
+      "address": "0081ef47",
+      "native": "0093bcc0",
+      "this": "instance+A20h",
+      "args": "-",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "sub-object at +BD0h",
+      "address": "0081f03d",
+      "native": "00815600",
+      "this": "instance+BD0h",
+      "args": "-",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "sub-object at +10D4h",
+      "address": "0081f15f",
+      "native": "0074e7b0",
+      "this": "instance+10D4h",
+      "args": "-",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "0081ed40",
+      "step": "side block stored at +73Ch",
+      "address": "0081f200",
+      "native": "00bf681b",
+      "this": "-",
+      "args": "2Ch",
+      "ret": "block or 0",
+      "gate": "none"
+    },
+    {
+      "routine": "0095cc90",
+      "step": "level 3",
+      "address": "0095ccb3",
+      "native": "0087b670",
+      "this": "instance",
+      "args": "flag",
+      "ret": "instance",
+      "gate": "none"
+    },
+    {
+      "routine": "0087b670",
+      "step": "level 2",
+      "address": "0087b694",
+      "native": "0077eed0",
+      "this": "instance",
+      "args": "flag",
+      "ret": "instance",
+      "gate": "none"
+    },
+    {
+      "routine": "0087b670",
+      "step": "fixed-step tick node at +310h",
+      "address": "0087b6a9",
+      "native": "00875890",
+      "this": "instance+310h (LEA EBX,[ESI+310h] at 0087b69c)",
+      "args": "payload = instance, group = 0",
+      "ret": "node",
+      "gate": "none"
+    },
+    {
+      "routine": "0077eed0",
+      "step": "level 1",
+      "address": "0077eef9",
+      "native": "00928630",
+      "this": "instance",
+      "args": "1, flag",
+      "ret": "instance",
+      "gate": "none"
+    },
+    {
+      "routine": "0077eed0",
+      "step": "conditional init",
+      "address": "0077f072",
+      "native": "0077eb50",
+      "this": "-",
+      "args": "0",
+      "ret": "-",
+      "gate": "[00E188A8]+1FE4h == 2 and 00E0AF20 == 0"
+    },
+    {
+      "routine": "00928630",
+      "step": "level 0",
+      "address": "00928651",
+      "native": "00925ce0",
+      "this": "instance",
+      "args": "-",
+      "ret": "instance",
+      "gate": "none"
+    },
+    {
+      "routine": "00928630",
+      "step": "registry singleton",
+      "address": "00928695",
+      "native": "00928240",
+      "this": "-",
+      "args": "-",
+      "ret": "registry; +4h is the CRITICAL_SECTION",
+      "gate": "none"
+    },
+    {
+      "routine": "00928630",
+      "step": "u16 entity id -> +174h",
+      "address": "009286e4",
+      "native": "009517c0",
+      "this": "00F89A08 (the 1 arm) or 00F89A5C",
+      "args": "flag, instance",
+      "ret": "u16 stored by MOV word [ESI+174h],AX at 009286ed",
+      "gate": "byte argument at [ESP+28h] non-zero; 0077EED0 passes 1"
+    },
+    {
+      "routine": "00928630",
+      "step": "post-registration hook",
+      "address": "00928760",
+      "native": "00926be0",
+      "this": "not resolved",
+      "args": "-",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "00925ce0",
+      "step": "weak owner at +24h",
+      "address": "00925d34",
+      "native": "00925490",
+      "this": "instance+24h (LEA EDI,[ESI+24h] at 00925d2a)",
+      "args": "-",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "00925ce0",
+      "step": "identity matrix to +74h",
+      "address": "00925dca",
+      "native": "004134f0",
+      "this": "instance+74h (LEA EBP,[ESI+74h] at 00925d5b, the only write to EBP in the body)",
+      "args": "stack identity at [ESP+14h]",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "00925ce0",
+      "step": "identity matrix to +74h again",
+      "address": "00925ea0",
+      "native": "004134f0",
+      "this": "instance+74h (same EBP)",
+      "args": "stack identity at [ESP+14h]",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "00925ce0",
+      "step": "name string reset",
+      "address": "00925ea9",
+      "native": "0041dd40",
+      "this": "instance+154h (LEA EDI,[ESI+154h] at 00925dcf)",
+      "args": "0, 0",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "00928860",
+      "step": "registry singleton",
+      "address": "0092887c",
+      "native": "00928240",
+      "this": "-",
+      "args": "-",
+      "ret": "registry",
+      "gate": "none"
+    },
+    {
+      "routine": "00928860",
+      "step": "scene-graph attach",
+      "address": "009288d6",
+      "native": "009258f0",
+      "this": "instance",
+      "args": "hierarchyParent [ESP+28h], worldNode [ESP+2Ch] (EBP), matrix [ESP+30h]",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "009258f0",
+      "step": "deferred flush",
+      "address": "009259b6",
+      "native": "009245a0",
+      "this": "instance",
+      "args": "[+B8h], [+B4h], both cleared first",
+      "ret": "-",
+      "gate": "either field non-zero"
+    },
+    {
+      "routine": "009258f0",
+      "step": "local frame copy",
+      "address": "009259c4",
+      "native": "004134f0",
+      "this": "instance+74h",
+      "args": "the matrix argument [ESP+14h]",
+      "ret": "-",
+      "gate": "byte at +BCh was zero on entry"
+    },
+    {
+      "routine": "009258f0",
+      "step": "child notification",
+      "address": "009259e2",
+      "native": "0042ed50",
+      "this": "each child from [+48h] through +44h",
+      "args": "-",
+      "ret": "-",
+      "gate": "child list non-empty"
+    },
+    {
+      "routine": "006fe620",
+      "step": "parent list +24h",
+      "address": "006fe623",
+      "native": "00928560",
+      "this": "instance",
+      "args": "-",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "00928560",
+      "step": "push onto parent+24h",
+      "address": "00928567",
+      "native": "00484540",
+      "this": "[instance+30h]+24h",
+      "args": "instance",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "006fe620",
+      "step": "push onto parent+30h",
+      "address": "006fe62f",
+      "native": "00484540",
+      "this": "[instance+30h]+30h",
+      "args": "instance",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "006fe620",
+      "step": "push onto parent+48h",
+      "address": "006fe63b",
+      "native": "00484540",
+      "this": "[instance+30h]+48h",
+      "args": "instance",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "006fe620",
+      "step": "push onto parent+54h",
+      "address": "006fe647",
+      "native": "00484540",
+      "this": "[instance+30h]+54h",
+      "args": "instance",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "006fe620",
+      "step": "push onto parent+60h",
+      "address": "006fe653",
+      "native": "00484540",
+      "this": "[instance+30h]+60h",
+      "args": "instance",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "006fe620",
+      "step": "push onto parent+6Ch",
+      "address": "006fe65f",
+      "native": "00484540",
+      "this": "[instance+30h]+6Ch",
+      "args": "instance",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "006fe670",
+      "step": "detach helper",
+      "address": "006fe673",
+      "native": "006dffc0",
+      "this": "instance",
+      "args": "-",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "006fe670",
+      "step": "remove from parent+6Ch",
+      "address": "006fe694",
+      "native": "004837d0",
+      "this": "[instance+30h]+6Ch",
+      "args": "the matching node",
+      "ret": "-",
+      "gate": "a node whose +8h equals the instance was found"
+    },
+    {
+      "routine": "006dffc0",
+      "step": "remove from parent+30h and +48h",
+      "address": "006dffc3",
+      "native": "006d3620",
+      "this": "instance",
+      "args": "-",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "006dffc0",
+      "step": "remove from parent+54h",
+      "address": "006dffe4",
+      "native": "004837d0",
+      "this": "[instance+30h]+54h",
+      "args": "the matching node",
+      "ret": "-",
+      "gate": "node found"
+    },
+    {
+      "routine": "006dffc0",
+      "step": "remove from parent+60h",
+      "address": "006e0005",
+      "native": "004837d0",
+      "this": "[instance+30h]+60h",
+      "args": "the matching node",
+      "ret": "-",
+      "gate": "node found"
+    },
+    {
+      "routine": "006d3620",
+      "step": "remove from parent+24h",
+      "address": "006d3623",
+      "native": "00928570",
+      "this": "instance",
+      "args": "-",
+      "ret": "-",
+      "gate": "none"
+    },
+    {
+      "routine": "006d3620",
+      "step": "remove from parent+30h",
+      "address": "006d3644",
+      "native": "004837d0",
+      "this": "[instance+30h]+30h",
+      "args": "the matching node",
+      "ret": "-",
+      "gate": "node found"
+    },
+    {
+      "routine": "006d3620",
+      "step": "remove from parent+48h",
+      "address": "006d3665",
+      "native": "004837d0",
+      "this": "[instance+30h]+48h",
+      "args": "the matching node",
+      "ret": "-",
+      "gate": "node found"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "site": "009553ed",
+      "through": "[00CE221C]",
+      "meaning": "addref on descriptor+4h"
+    },
+    {
+      "site": "009553fb",
+      "through": "[00CE2220]",
+      "meaning": "release on old descriptor+4h; zero return runs vtable[0] with no stack argument"
+    },
+    {
+      "site": "009286ae",
+      "through": "[00CE2218]",
+      "meaning": "EnterCriticalSection, then [cs+18h] += 1"
+    },
+    {
+      "site": "00928774",
+      "through": "[00CE2210]",
+      "meaning": "LeaveCriticalSection"
+    },
+    {
+      "site": "00928895",
+      "through": "[00CE2218]",
+      "meaning": "EnterCriticalSection in 00928860"
+    },
+    {
+      "site": "009288fc",
+      "through": "[00CE2210]",
+      "meaning": "LeaveCriticalSection in 00928860"
+    },
+    {
+      "site": "009286f4",
+      "through": "instance vtable[148h]",
+      "meaning": "0077F360(1FFh, 9); no Ghidra function, not read"
+    },
+    {
+      "site": "009288c7",
+      "through": "instance vtable[134h]",
+      "meaning": "006FE670 BSP_UnitInstance_DetachFromWorldLists"
+    },
+    {
+      "site": "009288f1",
+      "through": "instance vtable[130h]",
+      "meaning": "006FE620, the six-list registration"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0077f360",
+      "inclusive_end": "0077f360",
+      "enclosing_candidate": "0077f2d0",
+      "state": "not read; only its address as 00CFC3D0+148h is recorded"
+    }
+  ],
+  "routines": [
+    {
+      "address": "006fe590",
+      "name": "BSP_VehicleClassDestroyer_CreateInstance",
+      "abi": "__thiscall(descriptor, int flag), RET 4",
+      "body": "006fe590-006fe612",
+      "coverage": "complete"
+    },
+    {
+      "address": "006fe460",
+      "name": "BSP_UnitInstance_Construct",
+      "abi": "__thiscall(this, int flag), RET 4",
+      "body": "006fe460-006fe4c2",
+      "coverage": "complete"
+    },
+    {
+      "address": "0081ed40",
+      "name": "BSP_UnitVehicleBase_Construct",
+      "abi": "__thiscall(this, int flag), RET 4",
+      "body": "0081ed40-0081f354",
+      "coverage": "partial: every scalar field write transcribed; the eight sub-object constructors and their interiors not read"
+    },
+    {
+      "address": "0095cc90",
+      "name": "BSP_UnitGameObject_Construct",
+      "abi": "__thiscall(this, int flag, void* vehicleClass), RET 8",
+      "body": "0095cc90-0095cf7e",
+      "coverage": "partial: field writes complete, the two array element constructors not read"
+    },
+    {
+      "address": "0087b670",
+      "name": "BSP_UnitTickableEntity_Construct",
+      "abi": "__thiscall(this, int flag), RET 4",
+      "body": "0087b670-0087b743",
+      "coverage": "complete"
+    },
+    {
+      "address": "0077eed0",
+      "name": "BSP_UnitOwnerEntity_Construct",
+      "abi": "__thiscall(this, int flag), RET 4",
+      "body": "0077eed0-0077f08d",
+      "coverage": "partial: field writes complete, the callees are contracts"
+    },
+    {
+      "address": "00928630",
+      "name": "BSP_GameEntity_Construct",
+      "abi": "__thiscall(this, int registrySelect, int flag), RET 8",
+      "body": "00928630-0092878f",
+      "coverage": "partial: field writes complete, vtable[148h] not read"
+    },
+    {
+      "address": "00925ce0",
+      "name": "BSP_SceneNode_Construct",
+      "abi": "__fastcall(this), RET",
+      "body": "00925ce0-00925ef3",
+      "coverage": "partial: field writes complete, the four callees are contracts"
+    },
+    {
+      "address": "009553d0",
+      "name": "BSP_Unit_SetVehicleClass",
+      "abi": "__thiscall(instance, descriptor), RET 4",
+      "body": "009553d0-0095540e",
+      "coverage": "complete"
+    },
+    {
+      "address": "006dfe40",
+      "name": "thunk_FUN_00928860",
+      "abi": "JMP 00928860, five bytes",
+      "body": "006dfe40-006dfe44",
+      "coverage": "complete"
+    },
+    {
+      "address": "00928860",
+      "name": "BSP_GameEntity_PlaceInWorld",
+      "abi": "__thiscall(instance, hierarchyParent, worldNode, matrix), RET 0Ch",
+      "body": "00928860-00928914",
+      "coverage": "complete"
+    },
+    {
+      "address": "009258f0",
+      "name": "BSP_SceneNode_AttachToParents",
+      "abi": "__thiscall(instance, hierarchyParent, worldNode, matrix), RET 0Ch",
+      "body": "009258f0-009259fa",
+      "coverage": "complete"
+    },
+    {
+      "address": "006fe620",
+      "name": "BSP_UnitInstance_RegisterInWorldLists",
+      "abi": "__fastcall(instance), RET",
+      "body": "006fe620-006fe665",
+      "coverage": "complete"
+    },
+    {
+      "address": "00928560",
+      "name": "BSP_GameEntity_RegisterInParentEntityList",
+      "abi": "__fastcall(instance), RET",
+      "body": "00928560-0092856c",
+      "coverage": "complete"
+    },
+    {
+      "address": "006fe670",
+      "name": "BSP_UnitInstance_DetachFromWorldLists",
+      "abi": "__fastcall(instance), RET",
+      "body": "006fe670-006fe69a",
+      "coverage": "complete"
+    },
+    {
+      "address": "008531a0",
+      "name": "BSP_VehicleClassSubmarine_CreateInstance",
+      "abi": "__thiscall(descriptor, int flag), RET 4",
+      "body": "008531a0-00853222",
+      "coverage": "complete"
+    },
+    {
+      "address": "006eb290",
+      "name": "BSP_VehicleClassCargo_CreateInstance",
+      "abi": "__thiscall(descriptor, int flag), RET 4",
+      "body": "006eb290-006eb312",
+      "coverage": "complete"
+    },
+    {
+      "address": "00749150",
+      "name": "BSP_VehicleClassDummyTarget_CreateInstance",
+      "abi": "__thiscall(descriptor, int flag), RET 4",
+      "body": "00749150-00749154",
+      "coverage": "complete: XOR EAX,EAX ; RET 4, never allocates"
+    },
+    {
+      "address": "006dffc0",
+      "name": "BSP_UnitInstance_DetachFromMidWorldLists",
+      "abi": "__fastcall(instance), RET",
+      "body": "006dffc0-006e000b",
+      "coverage": "complete"
+    },
+    {
+      "address": "006d3620",
+      "name": "BSP_UnitInstance_DetachFromEarlyWorldLists",
+      "abi": "__fastcall(instance), RET",
+      "body": "006d3620-006d366b",
+      "coverage": "complete"
+    }
+  ],
+  "layout": {
+    "size": "0x1188",
+    "vtable": "00cfc3d0",
+    "established": [
+      {
+        "offset": "+0h,+10h,+24h,+170h,+1E4h,+310h,+38Ch,+72Ch",
+        "field": "the eight vptrs, rewritten by every level",
+        "writer": "006fe46d..006fe4a9"
+      },
+      {
+        "offset": "+30h",
+        "field": "world node (parent)",
+        "writer": "00925906"
+      },
+      {
+        "offset": "+34h/+38h",
+        "field": "world chain prev/next",
+        "writer": "0092591e/00925929"
+      },
+      {
+        "offset": "+3Ch",
+        "field": "hierarchy parent",
+        "writer": "00925935"
+      },
+      {
+        "offset": "+40h/+44h",
+        "field": "hierarchy prev/next",
+        "writer": "00925948/0092594e"
+      },
+      {
+        "offset": "+48h/+4Ch/+50h",
+        "field": "own child list head/tail/count",
+        "writer": "00925ce0 zeroes; 009258f0 fills for children"
+      },
+      {
+        "offset": "+54h",
+        "field": "dword 2",
+        "writer": "00925ce0"
+      },
+      {
+        "offset": "+58h",
+        "field": "dword FFFFFFFFh",
+        "writer": "00925ce0"
+      },
+      {
+        "offset": "+5Ch..+62h",
+        "field": "seven gate bytes, all zero at construction (+5Ch is the live gate 00904BF0 reads)",
+        "writer": "00925ce0"
+      },
+      {
+        "offset": "+74h",
+        "field": "16-float local frame",
+        "writer": "00925dca and 00925ea0 identity, 009259c4 the creator's matrix"
+      },
+      {
+        "offset": "+B4h/+B8h",
+        "field": "deferred pair flushed on attach",
+        "writer": "009259aa/009259b0 clear them"
+      },
+      {
+        "offset": "+BCh",
+        "field": "attached-once gate",
+        "writer": "009259ee sets, 009258f6 reads"
+      },
+      {
+        "offset": "+C0h",
+        "field": "property-bag reference holder",
+        "writer": "0046db9b/0046dbe0, docs/SCENE_ENTITY_CREATE.md"
+      },
+      {
+        "offset": "+C4h",
+        "field": "class id, 7 for MDestroyer",
+        "writer": "one per level, last 006fe4b3"
+      },
+      {
+        "offset": "+C8h/+10Ch",
+        "field": "bytes cleared on attach",
+        "writer": "009259ce/009259d4"
+      },
+      {
+        "offset": "+154h..+160h",
+        "field": "name string object (length, buffer, two more dwords)",
+        "writer": "00925dd5, 0041dd40"
+      },
+      {
+        "offset": "+174h",
+        "field": "u16 entity id, the Lua self key and the message sender id",
+        "writer": "009286ed"
+      },
+      {
+        "offset": "+180h",
+        "field": "role slot, 9",
+        "writer": "00928707"
+      },
+      {
+        "offset": "+1ACh..+1CCh",
+        "field": "nine dwords of 8",
+        "writer": "00928630"
+      },
+      {
+        "offset": "+310h",
+        "field": "fixed-step tick node (group at +324h = 1, payload at +338h = the instance)",
+        "writer": "0087b6a9, then 0081ed40 for the group"
+      },
+      {
+        "offset": "+354h",
+        "field": "non-owning class back-pointer",
+        "writer": "006fe5fc"
+      },
+      {
+        "offset": "+538h",
+        "field": "owning class reference, refcounted",
+        "writer": "0095cc90 clears it, 009553d0 sets it"
+      },
+      {
+        "offset": "+838h",
+        "field": "order ring (docs/UNIT_STATE_MESSAGE.md ring+154h = unit+98Ch confirms the base)",
+        "writer": "0081ee95"
+      },
+      {
+        "offset": "+109Ch",
+        "field": "round-robin slot 0..11 from the global 00F87151",
+        "writer": "0081f1a8"
+      }
+    ]
+  },
+  "class_creators": {
+    "read_in_full": [
+      "006fe590",
+      "008531a0",
+      "006eb290",
+      "00749150"
+    ],
+    "entry_only": [
+      "006fb430",
+      "0074be00",
+      "006dfef0",
+      "00857e20",
+      "00758d30",
+      "008091d0",
+      "0084ca50",
+      "0074e540",
+      "007ddae0",
+      "007d7850",
+      "006d3110",
+      "00848380",
+      "0074df10",
+      "00747000",
+      "006f5c10"
+    ],
+    "tail_read": [
+      "00956390"
+    ],
+    "not_read": [
+      "009564e0",
+      "00956240"
+    ],
+    "note": "All 22 descriptor vtables were read at +28h. 19 creators call 009553D0 out of line, 3 inline it, 1 is a null stub. 00701170 calls 009553D0 and allocates 740h but matches none of the 22 slots; its class is an open question."
+  },
+  "open_questions": [
+    "0077F360 (vtable[148h], called with 1FFh and 9) has no Ghidra function and was not read.",
+    "00925CE0 writes the identity matrix to +74h twice with the same ECX; EBP is loaded once at 00925d5b and never rewritten, so the second copy is redundant or a folded member initialisation.",
+    "+60h still has no producer; the constructor only zeroes it (docs/LUA_BINDING_ENTITY_LOOKUP.md recorded the same gap).",
+    "00701170's owning class.",
+    "00928570, the parent+24h remover reached from 006D3620, was not read; nothing read clears the +BCh attach gate."
+  ],
+  "run_time_evidence": "none: no path read here is reached by bsp_game.exe, which does not load a mission scene.",
+  "build": "scripts/build.ps1, Win32, warnings as errors",
+  "files": [
+    "docs/UNIT_INSTANCE_LAYOUT.md",
+    "include/bsp/unit_instance_layout.hpp",
+    "src/unit_instance_layout.cpp",
+    "reports/unit_instance_layout.json"
+  ]
+}
