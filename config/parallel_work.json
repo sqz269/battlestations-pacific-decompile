@@ -6955,6 +6955,42 @@
         "reports/native_renderer_surface_save_worker_audit.json"
       ],
       "evidence": "reports/native_renderer_surface_save_worker_audit.json"
+    },
+    {
+      "id": "orch4_sound_instance_r",
+      "packet": "orch4_sound_instance_r",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "reconstructed_build_and_installed_channel_fixture_tested_pending_integration",
+      "function_addresses": [
+        "00a81860",
+        "00a81870",
+        "00a818c0",
+        "00a818e0",
+        "00a79880",
+        "00a7c480",
+        "00a7bd90",
+        "00a7c5d0",
+        "00a7f640",
+        "00a7bf40",
+        "00a7d5a0",
+        "00a7a2e0",
+        "00a7aaa0",
+        "00a7a4c0",
+        "00a7a570",
+        "00a7a630",
+        "00a7a660",
+        "00a799b0",
+        "00a7af10"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_instance.hpp",
+        "src/sound_instance.cpp",
+        "include/bsp/fmod_configuration_library.hpp",
+        "src/fmod_configuration_library.cpp"
+      ],
+      "integration_report": "reports/sound_instance.json",
+      "discovery_evidence": "docs/SOUND_INSTANCE.md"
     }
   ],
   "snapshot_after_analysis": {

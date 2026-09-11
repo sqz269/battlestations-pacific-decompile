@@ -140,3 +140,12 @@ Win32 Release and both existing tests passed. Exact source, artifact and fixture
 hashes are in the report. Follow-ups include effect playback/update ownership,
 remaining effect families, complete auxiliary-owner teardown and application
 composition. The continuing runnable-game objective remains open.
+
+## Follow-up from docs/SOUND_INSTANCE.md
+
+The non-spatial manager factory and FMOD channel lifecycle now consume these
+actual samples. Installed-bank channel creation, pause, natural completion,
+deferred/immediate stop and retained sample cleanup are runtime-tested with
+FMOD's no-sound output. See `docs/SOUND_INSTANCE.md` and
+`reports/sound_instance.json`; audible output, spatial/event instances and
+application-wide voice/effect composition remain open.

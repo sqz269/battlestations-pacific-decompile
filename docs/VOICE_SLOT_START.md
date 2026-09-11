@@ -130,3 +130,13 @@ game playback, native differential behavior, alternate-engine queue consumption,
 and actual virtual factory/FMOD execution are not validated. Intrusive lifetime,
 mission clock, polling, warning flag side effects, factories, nonzero native slot
 mapping and alternate playback are mandatory host services with no fallback.
+
+## Follow-up from docs/SOUND_INSTANCE.md
+
+Sample option getter A81860 and manager slot0C factory A7F640 are now concrete.
+The factory returns the base D5ABF8 FMOD channel only when sample78 resource10
+exists. The projected instance inherits the canonical `SoundLevelEntry` and
+`VoiceSoundStartFields`, so manager dirtiness and voice delay share the fields
+read by channel updates. Native instance+4 lifetime callbacks still require an
+application binding for this C++ projection; slot10 spatial/event factories and
+full voice playback composition remain open. See `reports/sound_instance.json`.
