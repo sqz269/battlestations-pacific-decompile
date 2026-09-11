@@ -1,0 +1,75 @@
+{
+  "packet": "orch4_effects_close_w",
+  "source": "src/sound_configuration_shutdown.cpp",
+  "header": "include/bsp/sound_configuration_shutdown.hpp",
+  "document": "docs/SOUND_CONFIGURATION_SHUTDOWN.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "name_is_hypothesis": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "00a7f560", "name": "shutdown_sound_configuration_effects_00a7f560", "proposed_name": "BSP_SoundConfigurationEffects_Shutdown", "coverage": "complete", "abi": "ECX manager; no stack arguments; RET", "last_instruction": "00a7f63d", "last_instruction_length": 1, "end_inclusive": "00a7f63d", "meaning": "Drain configured groups with live count rereads, then release extra DSP/group handles in native order; only +144/+148 are cleared."},
+    {"address": "00a7aaf0", "name": "release_sound_configured_group_effects_00a7aaf0", "proposed_name": "BSP_SoundConfiguredGroup_ReleaseEffects", "coverage": "complete", "abi": "ECX 18h group record; no stack arguments; RET", "last_instruction": "00a7ab84", "last_instruction_length": 1, "end_inclusive": "00a7ab84", "meaning": "Remove and release current last DSP, reread handles/counts around callbacks, diagnose result2Bh, then release channel group even when null."},
+    {"address": "00a7bfe0", "name": "destroy_sound_configured_group_storage_00a7bfe0", "proposed_name": "BSP_SoundConfiguredGroup_DestroyStorage", "coverage": "complete ordinary storage-destruction policy; allocator and SEH projection", "abi": "ECX 18h group record; no stack arguments; RET", "last_instruction": "00a7c051", "last_instruction_length": 1, "end_inclusive": "00a7c051", "stored_body_end": "00a7c019", "meaning": "Zero inner DSP count, free its backing array, then return nonnull native name storage; no FMOD release."},
+    {"address": "00a7c6c0", "name": "destroy_sound_configured_type_storage_00a7c6c0", "proposed_name": "BSP_SoundConfiguredType_DestroyStorage", "coverage": "complete ordinary storage-destruction policy; allocator and SEH projection", "abi": "ECX 14h type record; no stack arguments; RET", "last_instruction": "00a7c731", "last_instruction_length": 1, "end_inclusive": "00a7c731", "stored_body_end": "00a7c6f9", "meaning": "Zero inner route count, free its backing array, then return nonnull native name storage; no FMOD release."},
+    {"address": "00a7a980", "name": "shrink_sound_system_dsps_00a7a980_fragment", "proposed_name": "BSP_SoundSystemDsps_Resize_Provisional", "coverage": "partial_projection", "abi": "ECX 0Ch array header; signed stack count; RET4", "last_instruction": "00a7a9cd", "last_instruction_length": 3, "end_inclusive": "00a7a9cf", "covered_range": "00a7a9b6..00a7a9cf", "excluded_range": "00a7a98d..00a7a9b5", "unreconstructed_growth_callee": "00a7a8b0", "meaning": "Shrink/equal branch only; reduce pointer count without releasing pointees or outer backing."},
+    {"address": "00a7f240", "name": "shrink_sound_configured_groups_00a7f240_fragment", "proposed_name": "BSP_SoundConfiguredGroups_Resize_Provisional", "coverage": "partial_projection", "abi": "ECX 0Ch array header; signed stack count; RET4", "last_instruction": "00a7f2b5", "last_instruction_length": 3, "end_inclusive": "00a7f2b7", "covered_range": "00a7f28f..00a7f2b7", "excluded_range": "00a7f24e..00a7f28e", "unreconstructed_growth_callee": "00a7f160", "meaning": "Shrink/equal branch only; decrement count before destroying each removed group storage, no FMOD releases."},
+    {"address": "00a7fcc0", "name": "shrink_sound_configured_types_00a7fcc0_fragment", "proposed_name": "BSP_SoundConfiguredTypes_Resize_Provisional", "coverage": "partial_projection", "abi": "ECX 0Ch array header; signed stack count; RET4", "last_instruction": "00a7fd2e", "last_instruction_length": 3, "end_inclusive": "00a7fd30", "covered_range": "00a7fd04..00a7fd30", "excluded_range": "00a7fcce..00a7fd03", "unreconstructed_growth_callee": "00a7fbd0", "meaning": "Shrink/equal branch only; decrement count before destroying each removed type storage, no FMOD releases."}
+  ],
+  "host_steps": [
+    {"address": "00a7ab0f", "native": "00c2de30", "function": "00a7aaf0", "host": "dsp_remove"},
+    {"address": "00a7ab23", "native": "00c2ddee", "function": "00a7aaf0", "host": "memory_get_stats", "guard": "remove result == 0x2b"},
+    {"address": "00a7ab37", "native": "00c2de2a", "function": "00a7aaf0", "host": "dsp_release"},
+    {"address": "00a7ab4b", "native": "00c2ddee", "function": "00a7aaf0", "host": "memory_get_stats", "guard": "release result == 0x2b"},
+    {"address": "00a7ab67", "native": "00c2de24", "function": "00a7aaf0", "host": "channel_group_release"},
+    {"address": "00a7ab7c", "native": "00c2ddee", "function": "00a7aaf0", "host": "memory_get_stats", "guard": "group release result == 0x2b"},
+    {"address": "00a7f5bf", "native": "00c2de30", "function": "00a7f560", "host": "dsp_remove", "field": "+14c"},
+    {"address": "00a7f5cb", "native": "00c2de2a", "function": "00a7f560", "host": "dsp_release", "field": "+14c reread"},
+    {"address": "00a7f5db", "native": "00c2de24", "function": "00a7f560", "host": "channel_group_release", "field": "+144 then clear"},
+    {"address": "00a7f5f5", "native": "00c2de24", "function": "00a7f560", "host": "channel_group_release", "field": "+148 then clear"},
+    {"address": "00a7f60f", "native": "00c2de30", "function": "00a7f560", "host": "dsp_remove", "field": "+150"},
+    {"address": "00a7f61b", "native": "00c2de2a", "function": "00a7f560", "host": "dsp_release", "field": "+150 reread"},
+    {"address": "00a7f62b", "native": "00c2de30", "function": "00a7f560", "host": "dsp_remove", "field": "+154"},
+    {"address": "00a7f637", "native": "00c2de2a", "function": "00a7f560", "host": "dsp_release", "field": "+154 reread"}
+  ],
+  "internal_steps": [
+    {"address": "00a7f583", "native": "00a7aaf0", "function": "00a7f560", "meaning": "release current last group effects"},
+    {"address": "00a7f59f", "native": "00a7bfe0", "function": "00a7f560", "meaning": "destroy current last group storage before count decrement"},
+    {"address": "00a7c00d", "native": "00a7a930", "function": "00a7bfe0", "meaning": "resize group DSP pointer array to zero"},
+    {"address": "00a7c015", "native": "00bf6989", "function": "00a7bfe0", "meaning": "CRT free group DSP array backing"},
+    {"address": "00a7c6ed", "native": "00a7b3d0", "function": "00a7c6c0", "meaning": "resize type route array to zero"},
+    {"address": "00a7c6f5", "native": "00bf6989", "function": "00a7c6c0", "meaning": "CRT free type route array backing"},
+    {"address": "00a7f2a5", "native": "00a7bfe0", "function": "00a7f240", "meaning": "destroy group storage after count decrement"},
+    {"address": "00a7fd1e", "native": "00a7c6c0", "function": "00a7fcc0", "meaning": "destroy type storage after count decrement"}
+  ],
+  "outside_stored_body_calls": [
+    {"tail_site": "00a7c035", "callee": "00419cc0", "continuation_of": "00a7bfe0", "containment": "no_ghidra_function", "meaning": "get native string storage pool; no arguments", "reason": "stored body ends 00a7c019 at spurious no-return free; disk tail through 00a7c051 RET length1"},
+    {"tail_site": "00a7c03c", "callee": "00bd1510", "continuation_of": "00a7bfe0", "containment": "no_ghidra_function", "meaning": "return nonnull name pointer with length+1 and flag1; RET0Ch", "reason": "stored body ends 00a7c019 at spurious no-return free; disk tail through 00a7c051 RET length1"},
+    {"tail_site": "00a7c715", "callee": "00419cc0", "continuation_of": "00a7c6c0", "containment": "no_ghidra_function", "meaning": "get native string storage pool; no arguments", "reason": "stored body ends 00a7c6f9 at spurious no-return free; disk tail through 00a7c731 RET length1"},
+    {"tail_site": "00a7c71c", "callee": "00bd1510", "continuation_of": "00a7c6c0", "containment": "no_ghidra_function", "meaning": "return nonnull name pointer with length+1 and flag1; RET0Ch", "reason": "stored body ends 00a7c6f9 at spurious no-return free; disk tail through 00a7c731 RET length1"}
+  ],
+  "corrections": [
+    {"was": "Saved group/type destructor pseudocode returns immediately after _free.", "is": "Both continue by conditionally returning native name storage and restoring SEH before RET.", "evidence": "Disk 00a7c01a..00a7c051 and 00a7c6fa..00a7c731; live tail-site queries find no stored containing function."},
+    {"was": "Ghidra emits fastcall signatures or empty prototypes for ECX-only destructors/release methods.", "is": "Native call sites supply only ECX=this and callees use RET with no stack arguments; EDX is not an independent input.", "evidence": "00a7f560 and 00a7aaf0 full listings; 00a7bfe0/00a7c6c0 listings and disk tails."}
+  ],
+  "validation": {
+    "msvc_win32_build_and_existing_ctest": "passed; Release Win32 build, 1/1 reconstructed_math CTest",
+    "build_log": "local/orch4-effects-close-build.log",
+    "focused_projection_probe": "passed",
+    "probe_log": "local/effects_shutdown_probe.log",
+    "probe_manifest": "/link /MANIFEST:EMBED",
+    "probe_coverage": "Reverse release trace; mutated handles/count; 2Bh diagnostic filtering; ignored extra-handle errors; preserved fields; storage-only shrink and surviving prefix/capacities.",
+    "report_calls": "passed; 22 stored-body call rows checked, 0 failed; 4 outside-body disk-tail calls listed separately",
+    "native_differential": false,
+    "installed_fmod": false,
+    "game_validated": false
+  },
+  "remaining": [
+    "No reserve/growth reconstruction for the three explicitly partial resize helpers.",
+    "Native pooled-string allocator traffic, dead object headers, SEH and binary layout remain outside the C++ ownership projection.",
+    "Primary integrator owns sound owner orchestration and installed FMOD adapter wiring.",
+    "No Ghidra mutations were performed by this worker; names/comments and omitted-tail repair are integration work.",
+    "No audible-output or game-validation claim."
+  ]
+}
