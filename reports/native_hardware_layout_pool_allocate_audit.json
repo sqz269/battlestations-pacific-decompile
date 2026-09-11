@@ -1,0 +1,416 @@
+{
+  "packet": "native_hardware_layout_pool_allocate",
+  "status": "complete_actual_storage_strict_win32_and_focused_original_instruction_fixture_checked_pending_primary_integration",
+  "base_commit": "e52cf13",
+  "source": "src/native_hardware_layout_pool_allocate.cpp",
+  "header": "include/bsp/native_hardware_layout_pool_allocate.hpp",
+  "documentation": "docs/NATIVE_HARDWARE_LAYOUT_POOL_ALLOCATE.md",
+  "names_are_hypotheses": true,
+  "functions": [
+    {
+      "address": "00b5ff50",
+      "end_exclusive": "00b5ff90",
+      "old_name": "FUN_00b5ff50",
+      "proposed_name": "BSP_HardwareVertexLayoutPool_InitializeSlab",
+      "cpp_function": "initialize_native_hardware_layout_slab_00b5ff50",
+      "original_abi": "ECX actual944h slab; stack slab index; EAX same slab; RET4.",
+      "contract": "Write WORDcount32 at+940; each WORDfreeindex31..0 at+900 then DWORDslabindex at slot+44, advancing2/48h. Preserve all44h payloads and final two padding bytes.",
+      "exception_map": "None; fixed nonthrowing storage writes.",
+      "coverage": "complete actual storage"
+    },
+    {
+      "address": "00b605b0",
+      "end_exclusive": "00b606ec",
+      "old_name": "FUN_00b605b0",
+      "proposed_name": "BSP_HardwareVertexLayoutPool_AllocateSlot",
+      "cpp_function": "allocate_native_hardware_layout_slot_00b605b0",
+      "original_abi": "ECX actual initialized38h pool; EAX raw48h slot; RET.",
+      "contract": "Real lock then currentdepth++; if exhausted publish nextslabindex before slab allocation, reread index after allocator; currentcapacity/count growth comparison; publish wrapped2C+2 capacity before table allocation; forward current-count/current-table copies; captured old free before new-table publication; publish new slab then increment currentcount. Decrement and reread WORDfreecount, select rawslot, scan later slabs as necessary, currentdepth-- then real unlock.",
+      "exception_map": "None. No automatic unlock, rollback, or unpublished-slab free on allocator/new-handler failure.",
+      "decompiler_correction": "00b60646 ADD ESP,4 survives after00bf6989;00b60649 table publication is reachable. Alignment gap00b606a7..00b606af is included in full bytes.",
+      "coverage": "complete actual storage with existing host CRT allocation boundary"
+    },
+    {
+      "address": "00b606f0",
+      "end_exclusive": "00b606fa",
+      "old_name": "CG_static_dtor_stub_00b606f0",
+      "proposed_name": "BSP_HardwareVertexLayout_AllocatePooledStorage",
+      "cpp_function": "allocate_native_hardware_layout_00b606f0",
+      "original_abi": "Incoming ECX size ignored; ECX=0108FE9C; tail JMP00b605b0; EAX rawslot; RET.",
+      "contract": "Select actual initialized hardware pool and call complete allocation. New interface receives borrowed actualpool instead of ignored size.",
+      "exception_map": "None; tail target's failure effects preserved.",
+      "coverage": "complete canonical-pool wrapper with explicit actual-global binding"
+    },
+    {
+      "address": "00b60260",
+      "end_exclusive": "00b6026c",
+      "old_name": "FUN_00b60260",
+      "proposed_name": "BSP_HardwareVertexLayout_ReturnUnconstructedSlot",
+      "cpp_function": "return_native_hardware_layout_00b60260",
+      "original_abi": "ECX rawslot; push ECX; ECX=0108FE9C; CALL00b60110; RET; no semantic return.",
+      "contract": "Compose existing completeB60110 against actual initialized pool. No owner destruction or virtual dispatch.",
+      "exception_map": "None.",
+      "coverage": "complete wrapper composing existing actual-storage dependency"
+    }
+  ],
+  "input_domain": {
+    "pool": "Borrow actual initialized0108FE9C38h object and its real Win32 CRITICAL_SECTION+0C; preserve native addresses/pointer words.",
+    "pool_fields": {
+      "depth": "24",
+      "slab_table": "28",
+      "slab_count": "2c",
+      "slab_capacity": "30",
+      "earliest_free_slab": "34"
+    },
+    "slab": "944h bytes,32slots48h, free indices32WORDs+900, WORDcount+940, two padding bytes+942.",
+    "slot": "44h owner payload untouched by allocation/slab initialization; trailing DWORDslabindex at+44.",
+    "allocation": "Actual shared singleton_lifetime_allocate/free service; equal native/host byte sizes and DWORD wrapping in Win32. No independent heap, callback, or replacement pool.",
+    "aliases": "Accessible caller-provided byte views may overlap. Native DWORD/WORD reads, writes, address wrap, capture points and current reloads are preserved; no validation/clamping is added.",
+    "global_initialization": "Caller provides already initialized native pool. CD7CA0/B604D0/global allocator list startup and shutdown are not reconstructed here."
+  },
+  "allocator_boundary": {
+    "original_entries": [
+      "00bf681b",
+      "00bf55be",
+      "00bf6989"
+    ],
+    "production_service": [
+      "bsp::singleton_lifetime_allocate",
+      "bsp::singleton_lifetime_free"
+    ],
+    "production_source": "src/singleton_lifetime.cpp",
+    "native_behavior_checked": "BF55BE jumps toBF681B. BF681B attempts mallocBF9F1A, calls__callnewhC055B1 onfailure, retries ifnonzero, otherwise constructs/copies originalbad_alloc and throws. BF6989 jumps toBF65AC free.",
+    "host_boundary": "Service uses std::malloc/_callnewh/std::bad_alloc/std::free. Original game's allocator globals/new-handler identity/exception object and CRT ABI are not replaced.",
+    "failure_state": "Allocation has no EH frame. After table-allocation failure, heldlock, depth increment, earliestindex, growncapacity, oldtable, and unpublishedslab remain. No catch/RAII rollback is introduced."
+  },
+  "existing_dependencies": [
+    {
+      "address": "00b60110",
+      "cpp_function": "return_native_hardware_layout_slot_00b60110",
+      "source": "src/native_hardware_layout_owner.cpp",
+      "use": "B60260 delegates complete actual-slot return; not counted as a new function."
+    },
+    {
+      "address": "00bf681b",
+      "cpp_function": "singleton_lifetime_allocate",
+      "source": "src/singleton_lifetime.cpp",
+      "use": "Existing explicit host allocation service boundary."
+    },
+    {
+      "address": "00bf6989",
+      "cpp_function": "singleton_lifetime_free",
+      "source": "src/singleton_lifetime.cpp",
+      "use": "Existing explicit host free service boundary."
+    }
+  ],
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_span_checks": [
+    {
+      "address": "00b5ff50",
+      "end_exclusive": "00b5ff90",
+      "length": 64,
+      "sha256": "d4b33d29826c32ced3f1974e6f5b013d41e1c7fe309e2f2c1494c4739078263d",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b605b0",
+      "end_exclusive": "00b606ec",
+      "length": 316,
+      "sha256": "236366956c29917f848b8e4c684067e2060f2c950ac52cfcd30e0c0e382555ad",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b606f0",
+      "end_exclusive": "00b606fa",
+      "length": 10,
+      "sha256": "01d5c56c95933e7bf15d963f6fc527438e550deff92f55b9117a7245386aa797",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b60260",
+      "end_exclusive": "00b6026c",
+      "length": 12,
+      "sha256": "30c6d752df15f16d223d0e3229bcb75553de93b63b7ba3b904a15650bc9092ab",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00b60110",
+      "end_exclusive": "00b60175",
+      "length": 101,
+      "sha256": "85a15cb16f32836623bb5dcd33e6a0390351b75da87df1a3a7748652361d3b62",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf681b",
+      "end_exclusive": "00bf6884",
+      "length": 105,
+      "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf55be",
+      "end_exclusive": "00bf55c3",
+      "length": 5,
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_matches_disk": true
+    },
+    {
+      "address": "00bf6989",
+      "end_exclusive": "00bf698e",
+      "length": 5,
+      "sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+      "live_matches_disk": true
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "include/bsp/native_hardware_layout_pool_allocate.hpp",
+      "sha256": "1d30076416bdeb623a689e8b75c39b3977f5a413497db17fb4f41dcb5bf941bb",
+      "bytes": 1558
+    },
+    {
+      "path": "src/native_hardware_layout_pool_allocate.cpp",
+      "sha256": "4481c2b2b1d2295a57f6788ba49183bf3c5110c82b9842fade07571a680ed46c",
+      "bytes": 5730
+    },
+    {
+      "path": "docs/NATIVE_HARDWARE_LAYOUT_POOL_ALLOCATE.md",
+      "sha256": "723ecbbb63330e6fbb7b7e73473e82da6a07cac5317c9537ffb6dc3b67176ba5",
+      "bytes": 6391
+    },
+    {
+      "path": "src/native_hardware_layout_owner.cpp",
+      "sha256": "de90f39f9b5f1f4a3ab9dc5f16293edf857f7f3174e9e0b927524ffbf94d8b51",
+      "bytes": 8337
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "sha256": "96150264f7cfb02f6a6aa389276e28910169d8fab40d749a9cd40660fffb04e8",
+      "bytes": 10921
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "sha256": "031483764a872c2f1fbf9f5c431ba95ba7eeee8d5114359c97f925d377e63878",
+      "bytes": 3986
+    }
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "configuration": "Release MSVC Win32",
+    "status": "passed",
+    "configured_existing_ctests": 2,
+    "existing_ctests_passed": 2,
+    "log": "local/pool_allocate_build.log",
+    "scope": "Existing checked-in project. New source is separately compiled and linked by the focused fixture because shared CMake is primary-owned."
+  },
+  "focused_fixture": {
+    "path": "local/pool_allocate_diff",
+    "status": "passed",
+    "one_local_fixture_only": true,
+    "strict_options": [
+      "MSVC Win32",
+      "/O2",
+      "/Oy-",
+      "/W4",
+      "/WX",
+      "/fp:strict",
+      "/EHsc"
+    ],
+    "owned_source_compiled_and_linked": true,
+    "actual_primary_library_link": "build/win32/Release/bsp_core.lib",
+    "complete_original_entries_executed": [
+      "00b5ff50",
+      "00b605b0",
+      "00b606f0",
+      "00b60260",
+      "00b60110"
+    ],
+    "explicit_original_component_bridges": [
+      "00bf681b -> existing production allocation service",
+      "00bf6989 -> existing production free service",
+      "00ce2218/00ce2210 -> real Win32 Enter/LeaveCriticalSection"
+    ],
+    "checks": [
+      "Complete944h slab byte differential from identical nonzero payload/padding preimage and original EAX result.",
+      "Table growth including oldtable free and later replacement publication; first slot metadata; allocation and raw-return wrappers.",
+      "Remaining zero scans a later nonempty slab and separately reaches exhausted-table marker.",
+      "Free-count WORD aliases pool depth DWORD; current WORD decrement/current DWORD depth update match original instructions.",
+      "Real malloc(FFFFFFF8h) failure calls actual host CRT new handler. Handler observes depth1/count1FFFFFFE/capacity3FFFFFFE/earliest1FFFFFFE after publications.",
+      "A second thread fails TryEnterCriticalSection both inside the new handler and after bad_alloc reaches caller; original and reconstructed state agree."
+    ],
+    "intentional_failure_residue": "Each forced table allocation failure leaves one unpublished944h slab until fixture process exit, matching native no-cleanup behavior.",
+    "production_callback_substitute_added": false,
+    "results": {
+      "slab_full_byte_differential": true,
+      "normal_growth_scan_wrappers": true,
+      "alias_word_count_depth": true,
+      "real_crt_new_handler_failure": true,
+      "lock_retained_on_failure": true,
+      "new_handler_observed": [
+        4294967288,
+        1,
+        536870910,
+        1073741822,
+        536870910,
+        1
+      ],
+      "production_allocator": "existing singleton_lifetime_allocate/free",
+      "original_instruction_service_bridges": [
+        "BF681B allocation service",
+        "BF6989 free service",
+        "real Win32 imports"
+      ],
+      "fixture_note": "Each forced table-allocation failure intentionally retains one unpublished native slab until process exit. No implementation allocation callback or lock substitute."
+    },
+    "original_patch_audit": {
+      "status": "passed",
+      "absolute_image_operand_count": 13,
+      "image_base": "00ba0000",
+      "owned_body_entry_bridges": 0,
+      "checked_complete_spans": [
+        {
+          "address": "00b5ff50",
+          "length": 64,
+          "original_sha256": "d4b33d29826c32ced3f1974e6f5b013d41e1c7fe309e2f2c1494c4739078263d",
+          "executed_sha256": "d4b33d29826c32ced3f1974e6f5b013d41e1c7fe309e2f2c1494c4739078263d",
+          "only_documented_relocations_or_service_entry_bridge": true
+        },
+        {
+          "address": "00b605b0",
+          "length": 316,
+          "original_sha256": "236366956c29917f848b8e4c684067e2060f2c950ac52cfcd30e0c0e382555ad",
+          "executed_sha256": "f727b437697a817a18e6c00f328b0a83c66abe2db90148693a2ec4653c896815",
+          "only_documented_relocations_or_service_entry_bridge": true
+        },
+        {
+          "address": "00b606f0",
+          "length": 10,
+          "original_sha256": "01d5c56c95933e7bf15d963f6fc527438e550deff92f55b9117a7245386aa797",
+          "executed_sha256": "3b8c5ee43d30e00158894b6bd0c7dc1283cfe9be93ab76a89a4385f46ecd501d",
+          "only_documented_relocations_or_service_entry_bridge": true
+        },
+        {
+          "address": "00b60260",
+          "length": 12,
+          "original_sha256": "30c6d752df15f16d223d0e3229bcb75553de93b63b7ba3b904a15650bc9092ab",
+          "executed_sha256": "aae81893594658291635c49c3d6d76f688d7c44460b87ba735b545c8bd92d034",
+          "only_documented_relocations_or_service_entry_bridge": true
+        },
+        {
+          "address": "00b60110",
+          "length": 101,
+          "original_sha256": "85a15cb16f32836623bb5dcd33e6a0390351b75da87df1a3a7748652361d3b62",
+          "executed_sha256": "8061ff47c1f17bda2c36ca4c6988791386ec6cfdcb2c1f0ddcbd247655b84e41",
+          "only_documented_relocations_or_service_entry_bridge": true
+        },
+        {
+          "address": "00bf681b",
+          "length": 105,
+          "original_sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+          "executed_sha256": "5c65cb8ac17d193837ec39d829c2c845ee470cdefa07351b4f50b3b9421a31ba",
+          "only_documented_relocations_or_service_entry_bridge": true
+        },
+        {
+          "address": "00bf55be",
+          "length": 5,
+          "original_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+          "executed_sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+          "only_documented_relocations_or_service_entry_bridge": true
+        },
+        {
+          "address": "00bf6989",
+          "length": 5,
+          "original_sha256": "4d311098ca9ce6d6a11d6bd70234374b80fb61e695812ad0801ce7176cbfa9f9",
+          "executed_sha256": "157550c6273aa282c34536a5a67b66ce3bbc48779e4996b45ce81da185cb52df",
+          "only_documented_relocations_or_service_entry_bridge": true
+        }
+      ]
+    },
+    "artifact_pins": [
+      {
+        "path": "local/pool_allocate_diff/fixture.cpp",
+        "sha256": "dc098866c1611c6f77d9730d13d75af87947825adc18efd071c1a1e1d820324a",
+        "bytes": 12711
+      },
+      {
+        "path": "local/pool_allocate_diff/reference.hpp",
+        "sha256": "02e271a553f9ebd9088528f65029af44fe66800659aee969cf17ff435dffb85e",
+        "bytes": 2066
+      },
+      {
+        "path": "local/pool_allocate_diff/CMakeLists.txt",
+        "sha256": "3feadc407936cf2fd152c3e1f2bd11c3f2492880ec149b600d7822963a784ee4",
+        "bytes": 875
+      },
+      {
+        "path": "local/pool_allocate_diff/build/Release/pool_allocate_diff.exe",
+        "sha256": "30b97e5b2da3cee9b57fd4423f9840238ed29014b10d30cc013f55130f46b0f7",
+        "bytes": 37888
+      },
+      {
+        "path": "local/pool_allocate_diff/result.json",
+        "sha256": "7048b91f952573956813bb8a4c252245f55ac70bba01214f7584dcaf2907e617",
+        "bytes": 650
+      },
+      {
+        "path": "local/pool_allocate_diff/byte_evidence.json",
+        "sha256": "8644da28ca1faac869d092585c1bc38a1d04090d82e8bdcefdd74ffaa9d829cc",
+        "bytes": 4910
+      },
+      {
+        "path": "local/pool_allocate_diff/patched_spans.txt",
+        "sha256": "cf31f25af2dc9d8b73b300a49d3ab0abee3f0d9090fa12a1ee7181e2d47ebdbe",
+        "bytes": 1345
+      },
+      {
+        "path": "local/pool_allocate_diff/host_bridges.txt",
+        "sha256": "ad706e00b09f6dd9d3c3f6805c4e38f1eea5d9454392b2120b0376cfc3cf2a87",
+        "bytes": 50
+      },
+      {
+        "path": "local/pool_allocate_diff/build.log",
+        "sha256": "05e0fd31342f8ea89b1e042a68e1f5d039a6858ec7241d20ba163e8237f1eeb7",
+        "bytes": 898
+      },
+      {
+        "path": "local/pool_allocate_diff/run.log",
+        "sha256": "4436eda944df179540035bafde2f7c02f7e17e0e8f5396ab37f5ba071373adf0",
+        "bytes": 167
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "sha256": "18658fd05ed9ded3594aa83534fb21b351d66ab2a68e57f22606b443b558eee7",
+        "bytes": 22182814
+      },
+      {
+        "path": "local/pool_allocate_build.log",
+        "sha256": "0405ba8c50f7b99b72aa43cc1d8ac5ee399052a005cd8cdd19b9e6dea6aeb326",
+        "bytes": 3162
+      }
+    ]
+  },
+  "validation_limits": [
+    "New C++ APIs require MSVC Win32 and borrow initialized actual storage; they are not original calling-convention replacements.",
+    "Production allocator/free remain the existing explicit host CRT service boundary.",
+    "Fixture executes original pool bodies with that same service boundary and real OS locks; it does not execute the original game CRT exception ABI.",
+    "No pool global startup, allocator-list registration, hardware-layout constructor, or game execution is claimed."
+  ],
+  "new_tracked_tests": 0,
+  "shared_cmake_changed": false,
+  "shared_metadata_changed": false,
+  "ghidra_mutated": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "audit_time_utc": "2026-09-11T03:45:02.193070+00:00"
+}
