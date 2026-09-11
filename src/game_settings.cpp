@@ -253,8 +253,7 @@ bool select_language_by_name_008d56c0(
 
 void write_settings_008d64a0(const GameSettingsBlock& settings, SettingsWriter& writer)
 {
-    // 008d64a9 runs the hardware derivation 008d6170 first; that body is not
-    // recovered and belongs to the host, so nothing stands in for it here.
+    writer.write_options_text_008d6170(); //008d64a9; before the first archive call
     writer.begin_section(kSettingsSectionName); // 008d64c4
     for (const SettingsKey& key : settings_persistence_keys_008d64a0()) {
         const SettingsValue value = read_field(settings, key.offset);

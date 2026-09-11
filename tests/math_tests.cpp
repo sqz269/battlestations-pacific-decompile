@@ -966,7 +966,15 @@ int main() {
         bsp::reset_control_defaults_008d4820(settings, false, false);
         struct Recorder : bsp::SettingsWriter {
             std::vector<std::string> keys;
-            void begin_section(const char*) override {}
+            bool text_written{false};
+            bool first_section_after_text{false};
+            bool saw_section{false};
+            void write_options_text_008d6170() override { text_written = true; }
+            void begin_section(const char*) override
+            {
+                if (!saw_section) first_section_after_text = text_written;
+                saw_section = true;
+            }
             void end_section() override {}
             void write_field(const char* key, const bsp::SettingsValue&) override
             {
@@ -975,6 +983,8 @@ int main() {
             void write_keyboard_setup() override {}
         } recorder;
         bsp::write_settings_008d64a0(settings, recorder);
+        check(recorder.first_section_after_text,
+            "options text persistence precedes archive settings sections");
         const auto has = [&recorder](const char* key) {
             return std::find(recorder.keys.begin(), recorder.keys.end(), std::string(key))
                 != recorder.keys.end();

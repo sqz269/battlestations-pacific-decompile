@@ -181,6 +181,8 @@ bool select_language_by_name_008d56c0(
 class SettingsWriter {
 public:
     virtual ~SettingsWriter() = default;
+    // Required first call008d64a9: persist options.txt before archive fields.
+    virtual void write_options_text_008d6170() = 0;
     virtual void begin_section(const char* name) = 0;   // virtual +4h
     virtual void end_section() = 0;                     // virtual +8h
     virtual void write_field(const char* key, const SettingsValue& value) = 0; // virtual +0Ch
@@ -189,8 +191,8 @@ public:
     virtual void write_keyboard_setup() = 0;
 };
 
-// 008d64a0, __thiscall(SettingsWriter* writer), RET 4. Calls the hardware
-// derivation 008d6170 first, opens the Options section, emits the scalar rows
+// 008d64a0, __thiscall(SettingsWriter* writer), RET 4. Writes the options text
+// file through008d6170 first, opens the Options section, emits the scalar rows
 // that differ from their defaults, delegates keyboardSetup, then emits the
 // downloaded-content list as index rows and closes both sections.
 void write_settings_008d64a0(const GameSettingsBlock& settings, SettingsWriter& writer);

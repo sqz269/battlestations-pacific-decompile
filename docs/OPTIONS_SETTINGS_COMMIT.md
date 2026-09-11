@@ -78,10 +78,12 @@ of them into the input layer as a group.
 
 `docs/APP_INIT_BOOTSTRAP.md` covers 008D8190 and its token table. Two additions:
 
-- The path builder 008D5150 has exactly two callers, 008D8190 and the hardware derivation
-  008D6170. **Nothing in the binary opens the options file for writing except the hardware
-  probe's regeneration path** (`FUN_0098F430("options.txt")` on IDYES). So the options file is an
-  input to the game and an output of the launcher-style probe, never of the options menu.
+- Correction from the 2026-09-10 assembly audit:008D6170 writes the options file. It is
+  called by both008D8190 and008D64A0; the latter invokes it before any archive virtual.
+  Its fopen("wt"), fwrite and fclose are at008D6424/008D6448/008D644E. The earlier
+  hardware-derivation description and input-only conclusion were incorrect. This side
+  effect is now required by the writer and concretely implemented; see
+  `docs/SETTINGS_TEXT_PERSISTENCE.md`.
 - The token list is one entry short. The installed file carries `HardwareReported`, and
   008D64A0 emits that key from +95h. The loader's else-chain was read at 008D846B-008D85FF; the
   `HardwareReported` arm was not located there, so whether the loader also parses it is open.

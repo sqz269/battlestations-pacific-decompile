@@ -91,6 +91,8 @@ struct ProfileIoState {
 enum class ProfileIoTask : std::uint32_t {
     ReadCompleted = 0x007fefe0,
     WriteCompleted = 0x007fa670,
+    SettingsWriteCompleted = 0x007fa220,
+    ProfileWriteCompleted = 0x007f9500,
 };
 
 struct ProfileIoHost : ProfileResetHost {
