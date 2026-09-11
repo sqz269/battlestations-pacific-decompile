@@ -1271,5 +1271,45 @@
     "base": "49b628a2 as requested",
     "current_main_differences": "native_string.cpp/hpp add actual BE0A30 copy fragment; complete41DD40/443D00 and selected eight-leaf source unchanged. BE0A30 is not reached by proposed B19E90. Both source versions and finite diffs are pinned.",
     "no_source_merge_or_change_performed": true
+  },
+  "primary_review": {
+    "passed": true,
+    "worker_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-native-resource-registry-lookup\\local\\resource_registry_lookup_handoff\\manifest.json",
+      "bytes": 14967,
+      "sha256": "4fdab0a66b06164241209668ba6ebcd91957194145b6e93d41b6a03331eefeca"
+    },
+    "worker_sealed_pins_verified": 58,
+    "additional_report_pins_verified": 35,
+    "fresh_guarded_spans": 36,
+    "fresh_guarded_bytes": 1353,
+    "current_main_dependency_drift": [
+      {
+        "path": "src/native_string.cpp",
+        "worker": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+        "current": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "worker": "439462dce0051fad41b7ced38dc017a1bc03e0e8512497ff2f196f4f418abfaa",
+        "current": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72"
+      }
+    ],
+    "source_proposal_reviewed": true,
+    "source_added": false,
+    "original_runtime_executed": false,
+    "game_validated": false,
+    "remaining_blockers": "Qualified B19E90 lookup source is separate; full singleton getter/wrapper still requires complete registered tree destruction. Invalid-owner branches remain static where full current finder publishes valid owner.",
+    "source_drift_review": "Separate main111d55be actual BE0A30 adapter reviewed in closed default/cache/publish batch; selected41DD40/443D00 original provider paths unchanged; changed methods not reached by qualified lookup. Full string object equivalence is not asserted.",
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\registry_lookup_discovery_primary\\sealed.json",
+      "bytes": 9620,
+      "sha256": "67a5297e9d227b92fa15dea445ddea51385c94dd87688986655f3afa4a78673b"
+    }
+  },
+  "current_document": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RESOURCE_REGISTRY_LOOKUP_DISCOVERY.md",
+    "bytes": 10288,
+    "sha256": "673a24df20db7e8b4a99740e6d4e29f1534f18b8e9fe96239e8dd830317e871d"
   }
 }
