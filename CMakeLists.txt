@@ -10,6 +10,7 @@ add_library(bsp_core STATIC src/math.cpp src/render_sort.cpp src/random.cpp src/
 target_include_directories(bsp_core PUBLIC include)
 target_sources(bsp_core PRIVATE src/shader_reflection.cpp)
 target_sources(bsp_core PRIVATE src/material_samplers.cpp)
+target_sources(bsp_core PRIVATE src/native_material_pass_states.cpp)
 target_sources(bsp_core PRIVATE src/material_shadow_samplers.cpp)
 target_sources(bsp_core PRIVATE src/material_lighting.cpp)
 target_sources(bsp_core PRIVATE src/resource_path.cpp)
