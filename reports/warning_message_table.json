@@ -1,0 +1,100 @@
+{
+  "packet": "orch4_warning_message_table",
+  "program": "C:/Users/sqz269/bsp.gpr:/battlestationspacific.exe",
+  "source": "src/warning_messages.cpp",
+  "header": "include/bsp/warning_messages.hpp",
+  "documentation": "docs/WARNING_MESSAGE_TABLE.md",
+  "status": "bounded_reconstruction_build_and_installed_data_fixture_tested",
+  "abi_compatible": false,
+  "game_validated": false,
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "009870a0",
+      "old_name": "BSP_WarningManager_Init",
+      "name": "BSP_WarningManager_Init",
+      "abi": "ECX=manager; no stack args; RET",
+      "status": "analyzed_with_table_loading_fragment_reconstructed",
+      "cpp": "load_warning_tables_009870a0",
+      "fragment_start": "009871bb",
+      "fragment_end_exclusive": "00987307",
+      "evidence": "009871F3 and 00987244 use escapecharacters receiver; 0098728D uses Warnings receiver; 00987231/0098727A call section loader; 00987302 calls message loader with empty prefix. Full Init lifetime, singleton, effects, hook and manager reset side effects remain external."
+    },
+    {
+      "address": "0097f570",
+      "old_name": "FUN_0097f570",
+      "name": "BSP_WarningManager_LoadMessageTree",
+      "abi": "ECX=manager; stack=(message map*, LuaObject*, NativeString* prefix); RET 0xC",
+      "status": "bounded_reconstructed_build_and_installed_data_fixture_tested",
+      "cpp": "load_warning_message_tree_0097f570",
+      "evidence": "0097F5E7 tests value table; 0097F657 concatenates prefix+key; 0097F670 recurses; scalar value from 0097F6AB appended at 0097F6FF; nonempty vector replaces destination[prefix] through 008EC460/00506C80 at 0097F76C/0097F773."
+    },
+    {
+      "address": "00979990",
+      "old_name": "FUN_00979990",
+      "name": "BSP_WarningManager_LoadEscapeSection",
+      "abi": "ECX=manager; stack=(escape section*, LuaObject*); RET 8",
+      "status": "bounded_reconstructed_build_and_installed_data_fixture_tested",
+      "cpp": "load_warning_escape_table_00979990",
+      "evidence": "00979A06 converts top-level key; 00979A5E..00979A8C appends manager+114h, 00979A91..00979AAB appends section+0; 00979AC4 calls 00979730 with that key as prefix."
+    },
+    {
+      "address": "00979730",
+      "old_name": "FUN_00979730",
+      "name": "BSP_WarningManager_LoadEscapeTree",
+      "abi": "ECX=manager; stack=(escape section*, LuaObject*, NativeString* prefix); RET 0xC",
+      "status": "bounded_reconstructed_build_and_installed_data_fixture_tested",
+      "cpp": "load_warning_escape_tree_00979730",
+      "evidence": "009797FB concatenates key; 0097983B recurses on table values; 00979854 adds 8 to section destination, 0097985B indexes string map; 00979860 checks null string and 00979881..00979902 assigns replacement."
+    },
+    {
+      "address": "0096dbb0",
+      "old_name": "STL_inst_0096dbb0",
+      "name": "BSP_WarningManager_IsMessageIdKnown",
+      "abi": "ECX=manager; stack=(NativeString* id); bool in AL; RET 4",
+      "status": "semantic_reconstructed_build_and_installed_data_fixture_tested",
+      "cpp": "warning_message_id_known_0096dbb0",
+      "evidence": "0096DBB8 loads manager+10Ch sentinel; 0096DBC0 forms manager+108h map; 0096DBCE calls 008E65E0; 0096DBE6/0096DBEB compare found node with sentinel. Wrapper is manager-specific despite existing generic STL tag."
+    }
+  ],
+  "corrections_to_mission_events_update": [
+    "Warnings.escapecharacters.entity and Warnings.escapecharacters.playerunit_section are nested; Warnings.messages is direct.",
+    "Manager+11Ch/+130h are 0x14-byte sections: NativeString prefixes at +0 and case-insensitive NativeString-to-NativeString map at +8.",
+    "Manager+114h NativeString accumulates both sections' top-level keys.",
+    "Message map at +108h maps NativeString ids to vectors of NativeString alternatives, with no WarningRecord lifetime or priority fields.",
+    "Init's six removed pseudocode blocks are conditional NativeString copy/release paths, not six SEH funclet tails.",
+    "Effect names at 00D1B900 and 00D1B8EC are EnvironmentUSHorn (+190h) and EnvironmentAirRaid (+194h)."
+  ],
+  "no_ghidra_function": [],
+  "flow_gaps": [
+    {"function": "0097f570", "call": "0097f7bd", "callee": "00bf65ac", "start": "0097f7c2", "inclusive_end": "0097f7c4", "byte_length": 3, "instructions": "0097f7c2 add esp,4", "last_instruction": "0097f7d3", "last_instruction_length": 3, "end_exclusive": "0097f7d6"},
+    {"function": "008ec460", "external_library_contract": true, "call": "008ec515", "callee": "00bf65ac", "start": "008ec51a", "inclusive_end": "008ec51c", "byte_length": 3, "instructions": "008ec51a add esp,4; continues to checked iterator and node+14h return"},
+    {"function": "00973f20", "external_init_contract": true, "call": "00973f53", "callee": "00bf65ac", "start": "00973f58", "inclusive_end": "00973f61", "byte_length": 10, "instructions": "add esp,4; cmp esi,[ebx+4]; mov eax,esi; jne 00973f50"}
+  ],
+  "external_contracts": [
+    {"addresses": ["00b67080", "00b67190", "00b662b0", "00b67800"], "implementation": "existing GuiLuaHost and stock-Lua-5.1.1 GuiLua51Host"},
+    {"addresses": ["00443d00", "008e65e0", "008ec460", "0049c9c0", "00450540", "00506c80"], "implementation": "existing NativeStringCaseInsensitiveLess plus standard C++ maps/vectors; no original STL port"},
+    {"addresses": ["00973f20", "00871ba0", "00b66bd0", "00b6a020", "00b69d40", "00b669a0"], "implementation": "full Init dependencies left external; table fragment starts after script loading and manager setup"}
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1, MSVC Win32 Release, passed",
+    "existing_tests": "ctest reconstructed_math: 1/1 passed; no shared test edits",
+    "fixture": "one ignored local/warning_messages_smoke.cpp, linked bsp_core.lib and bsp_lua511.lib; passed",
+    "installed_data": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/warnings.lua",
+    "installed_data_sha256": "822a84fd16b6c6f8677892feb7ffe70792d1c12f82aac8ef2a75460cae279ff3",
+    "message_ids": 122,
+    "entity_replacements": 36,
+    "playerunit_section_replacements": 5,
+    "observed_combined_prefixes": "@~%",
+    "checks": ["case-insensitive lookup", "delimiter-free path concatenation", "installed mixed scalar/table group", "scalar alternative order", "empty replacement", "empty and container-only message groups omitted", "reload appends prefix strings", "reload replaces vector and retains unrelated preexisting map entries"],
+    "native_differential_test": false,
+    "gameplay_test": false
+  },
+  "limits": [
+    "New C++ interfaces; not binary ABI replacements.",
+    "The 009870a0 implementation is a table-loading fragment, not full Init.",
+    "Acyclic valid tables; string path keys; native unchecked-null string preconditions become explicit host invalid_argument errors.",
+    "Numeric scalar-list keys are ignored; numeric path-key mutation behavior is not claimed through the existing registry cursor adapter.",
+    "No new non-ASCII locale comparator parity, runtime warning substitution, voice selection or game validation."
+  ]
+}
