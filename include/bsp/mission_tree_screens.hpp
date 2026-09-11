@@ -274,8 +274,13 @@ struct MissionLaunchHost {
     virtual void set_current_mission_key(std::string_view key) = 0;
     virtual void set_mission_key_mirror(std::string_view key) = 0;
     // 004E2770, ECX = game: clears game+5FCh and the string at +600h, then
-    // 004E1D70(scene, 0, FFFFFFFFh, flags) and 004C6890(0).
-    virtual void set_pending_scene(std::string_view scene, int flags) = 0;
+    // 004E1D70(scene, 0, -1, weather_override) and 004C6890(0). The second
+    // stack argument is the weather-descriptor override name forwarded to
+    // 0046DF00 argument 5, not a flag word; 005C5682 pushes null for it, so a
+    // campaign mission lets the .scn reader pick its own descriptor. Corrected
+    // from `int flags` per docs/MISSION_LOAD_PATH.md.
+    virtual void set_pending_scene(
+        std::string_view scene, std::string_view weather_override) = 0;
     // 0057D060 -> BSP_LoadingScreen_PublishConfig (0057CFF0).
     virtual void publish_loading_config(const std::vector<std::string>& text,
         std::string_view title, bool second_side_enabled) = 0;
