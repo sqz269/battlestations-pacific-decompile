@@ -1,0 +1,50 @@
+{
+  "packet": "orch5_section_copy",
+  "source": "src/native_mesh_section.cpp",
+  "header": "include/bsp/native_mesh_section.hpp",
+  "documentation": "docs/NATIVE_MESH_SECTION.md",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "ghidra_mutations": false,
+    "verification": "bsp.py ghidra wrappers verify the configured project and program before every live query. All481 constructor bytes match the installed PE."
+  },
+  "functions": [
+    {
+      "address": "00b85ef0",
+      "last_instruction": "00b860ce",
+      "last_length": 3,
+      "last_text": "ret 4",
+      "end_exclusive": "00b860d1",
+      "length": 481,
+      "sha256": "e0d06aaa9e48922a22124b8dc987b9f4c141d95ba8296f393a7677bfbb50f6f9",
+      "name_hypothesis": "BSP_DrawSection_CopyConstruct",
+      "ghidra_name_observed": "FUN_00b85ef0",
+      "ghidra_comments_observed": null,
+      "original_abi": "ECX actual fresh60h destination; one stack source pointer; EAX same destination; RET4",
+      "callers": ["00b725a0", "00b73f50"],
+      "call_site_evidence": "B725BE calls B85EE0 with requested60h; nonnull path pushes source, puts allocation in ECX, calls B85EF0 at B725D6. Null path returns null.",
+      "behavior": "Initialize actual reference-count1, copy scalar state, retain material/+38/active streams/layout/+5C in order, copy +54 without retain. Five x87 float transfers at B85FBF..B85FDA; live signed count reload B86043. Preserve inactive slots/padding/pool metadata.",
+      "unwind_evidence": "CC24B8 loads FuncInfo DFB8C0; one-state unwind map DFB8B8 is {-1,CC24B0}; CC24B0 loads destination and tailcalls BD30F0. Base-only cleanup, no derived resource rollback.",
+      "uncertainty": "Descriptive names are hypotheses. +34's semantic meaning and +54's payload meaning remain uninterpreted. Original x86 ABI wrappers and game execution are not supplied."
+    }
+  ],
+  "caller_steps": [
+    {"address": "00b725d6", "native": "00b85ef0", "function": "00b725a0", "evidence": "push source, ECX actual nonnull copied allocation"},
+    {"address": "00b74098", "native": "00b85ef0", "function": "00b73f50", "evidence": "flags26 mesh path pushes captured current source section"}
+  ],
+  "validation": {
+    "seed_bytes": "python tools/ghidra_export.py verify-seeds: eight seed windows match installed PE",
+    "strict_compile": "MSVC Win32 /std:c++17 /EHsc /W4 /WX /O2 /MD passed for changed source and focused probe",
+    "full_build": "scripts/build.ps1 passed Release Win32 build and both existing CTest cases (reconstructed_math, native_math_differential)",
+    "differential_probe": "PASS: installed B85EF0 vs reconstructed copy: all100 bytes, retained counts, x87 status, then host destruction balances all references.",
+    "probe_detail": "One case contains all five resource kinds, two references to the same selected stream, poisoned inactive/padding/pool bytes, signaling NaNs, negative zero, infinity and denormal. Original bytes use private relocated CE4970 and InterlockedIncrement/Decrement IAT cells; no original exception occurs or game callback runs.",
+    "probe_output": "native x87=80010 host x87=80010; copied sNaN=7fc00001/ffc00021; import relocations=1/5/4.",
+    "probe_manifest": "/link /MANIFEST:EMBED",
+    "probe_artifacts": "ignored local/section_copy_probe.cpp, local/section_copy_probe.ps1, local/section_copy_extract.py; no new permanent test suite",
+    "game_validated": false,
+    "original_abi_compatible": false
+  }
+}

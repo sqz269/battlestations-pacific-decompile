@@ -1,4 +1,6 @@
 #include "bsp/native_gui_text_model_clone.hpp"
+#include "bsp/gui_widget_owner.hpp"
+#include "bsp/gui_native_geometry.hpp"
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
@@ -147,5 +149,39 @@ void finish_native_gui_text_model_clone_00b752b0_fragment(
     }
     for (std::uint32_t byte_offset = 8; byte_offset <= 0x2c; byte_offset += 4)
         copy_x87_word(&source.storage.node, &destination.storage.node, byte_offset);
+}
+
+NativeGuiTextModelBaseCopyResult clone_native_gui_text_model_00b752b0(
+    NativeModelOwner& source, GuiWidgetOwnerRuntime& widgets, GuiNativeGeometryOwners& geometry,
+    NativeMaterialDestructionAccess& material_access,
+    const volatile std::uint32_t* material_profile,
+    const volatile std::uint32_t* mesh_profile,
+    NativeGuiTextModelCloneAcquired& acquired) {
+    if (acquired.model || acquired.mesh.mesh || acquired.mesh.section || acquired.mesh.material)
+        throw std::invalid_argument("Model clone requires empty creator-reference publications");
+    if (&widgets.environment().models != &source.environment ||
+        &geometry.actual_owners() != &source.environment.retained_owners ||
+        &material_access.retained_owners != &geometry.actual_owners())
+        throw std::logic_error("Text Model clone requires the same canonical native owner domains");
+    require_model_slot(source, 0x10, 0x00b752b0u);
+    acquired.model = &widgets.create_model_clone_destination_00b752b0_fragment(source);
+    auto& destination = acquired.model->model_owner();
+    const auto base = copy_native_gui_text_model_base_00b6f150_fragment(source, destination);
+    if (base != NativeGuiTextModelBaseCopyResult::copied) return base;
+    // Reload source180 AFTER all base-copy callbacks. The current mesh clone
+    // owns its own source reloads; model scalars are read only after it returns.
+    void* const current = source.storage.model.geometry_180;
+    if (current) {
+        auto* const mesh = dynamic_cast<NativeMeshReference*>(
+            &geometry.actual_owners().resolve_actual(current));
+        if (!mesh || &mesh->storage() != current)
+            throw std::logic_error("Text Model current geometry has no matching actual mesh owner");
+        geometry.clone_mesh_for_text_00b742a0(
+            mesh->storage(), mesh_profile, material_access, material_profile, acquired.mesh);
+        associate_native_gui_text_model_clone_geometry_00b752b0_fragment(
+            source, destination, acquired.mesh.mesh);
+    }
+    finish_native_gui_text_model_clone_00b752b0_fragment(source, destination);
+    return NativeGuiTextModelBaseCopyResult::copied;
 }
 } // namespace bsp

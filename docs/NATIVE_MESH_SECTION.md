@@ -46,6 +46,51 @@ instance-generator attachment, not an index assignment. This refines the
 earlier wording in `MESH_SUBSET_LOD_FIELDS.md`. Likewise section+50 is the
 layout; +54 must not be turned into an invented declaration/index owner.
 
+## Actual section copy
+
+`copy_construct_native_mesh_section_00b85ef0` now reconstructs the actual
+`B85EF0..B860D0` copy constructor. Its original ABI is ECX destination,
+one source pointer on the stack, EAX destination, `RET4`. `B725A0` allocates
+a canonical section slot and calls it at `B725D6`; `B73F50` also uses it
+for copied draw sections. The copy caller must register its returned actual
+storage with the existing canonical `NativeMeshSectionReference` before
+publishing it to a mesh. The constructor creates no second owner domain.
+
+The copy constructor publishes CEB130 and reference-count1 **before** reading
+CE4970, then publishes D63194 and initializes its owned fields to null.
+This ordering differs from `B857F0`. It copies the indexed byte first, then
+the primitive, four range words and instance count, then retains the current
+material. It copies +24,+28,+2C,+30,+34 through five separate x87 `FLD/FSTP`
+pairs: treating these as raw DWORD moves would lose signaling-NaN and status
+behavior. The interpretation of +34 remains uncertain despite that transfer.
+
+Next it retains the source's +38 identity, appends and retains each active
+stream while reloading the signed source count, retains +50, copies the raw
++54 word without ownership, then retains +5C. Destination and current source
+identities are read in the native order for each retained assignment; the
+source object is not snapshotted. Unused +3C..48 cells, +59..5B padding and
+the separate pool metadata at +60 remain untouched. Successful construction
+starts with reference-count1; its creator is transported through the existing
+geometry owner domain, then released after mesh publication.
+
+The native constructor's only EH state maps through DFB8B8 to CC24B0, which
+tailcalls base destructor BD30F0. Thus C++ unwind restores only CEB130;
+it does not roll back already retained resources. The reconstruction follows
+that boundary. Fresh distinct raw storage, valid live owner identities,
+0<=stream-count<=4, nonnull active streams and masked x87 exceptions are the
+supported domain. After a completed constructor, later registration failure
+may use the normal section destructor; constructor failure itself must not
+invent a completed derived lifetime.
+
+All481 original bytes match the installed PE and live Ghidra. One isolated
+MSVC Win32 differential fixture executed those bytes with only the CE4970
+data operand and InterlockedIncrement/Decrement IAT operands relocated.
+All100 slot bytes, retained counts including a repeated stream, x87 status
+and signaling-NaN quieting matched. The existing section destructor restored
+all resource counts. The fixture is evidence for this bounded constructor,
+not game validation, a renderer test, or drop-in calling-convention support.
+Exact hashes and review evidence are in `reports/native_mesh_section_copy.json`.
+
 ## Canonical pool
 
 The concrete section pool shares the existing `AllocatorListDomain` and

@@ -1,0 +1,125 @@
+{
+  "packet": "orch5_text_runtime_factory",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mutated": false
+  },
+  "source": "src/gui_text_runtime_factory.cpp",
+  "routines": [
+    {
+      "address": "00aa1380",
+      "name": "GuiTextRuntimeFactory::make_type",
+      "end_inclusive": "00aa1403",
+      "last_instruction_length": 1,
+      "native_abi": "ECX source Text or null; no stack args; EAX new Text or null; RET",
+      "coverage": "partial_new_cpp_allocation_transport",
+      "scope": "Default-source branch composed with one opaque raw pool allocation and canonical owner/lifetime. Copy ABB2C0 remains external. New factory is entered after existing base fields were initialized; native allocation order, null-allocation behavior, raw object layout and SEH are not claimed.",
+      "unread_ranges": []
+    },
+    {
+      "address": "00ab9650",
+      "name": "GuiTextRuntimeImplementation::GuiTextRuntimeImplementation",
+      "end_inclusive": "00ab98ee",
+      "last_instruction_length": 1,
+      "native_abi": "ECX Text; no stack args; EAX same Text; RET",
+      "coverage": "existing_supported_constructor_composed",
+      "scope": "Existing base owner and GuiTextLifetime defaults/publication/AB8530 while primary null; no raw Text-to-C++ cast, native vtable layout or SEH claim.",
+      "unread_ranges": []
+    },
+    {
+      "address": "00ab6ad0",
+      "name": "GuiTextRuntimeImplementation::set_alpha4c_00ab6ad0",
+      "end_inclusive": "00ab6b45",
+      "last_instruction_length": 3,
+      "native_abi": "ECX Text; float alpha stack; RET4 at AB6B43",
+      "coverage": "complete_supported_domain",
+      "scope": "Actual main/base alpha only then live shadow actual diffuse alpha, x87 incoming spill and shadow product spill. Same actual model/mesh/section/material domains; canonical live Text and initialized resource storage.",
+      "unread_ranges": []
+    },
+    {
+      "address": "00ab6d70",
+      "name": "GuiTextRuntimeImplementation::align_bounds64_00ab6d70",
+      "end_inclusive": "00ab6eda",
+      "last_instruction_length": 3,
+      "native_abi": "ECX Text; left/top/right/bottom float pointers stack; RET10h at AB6ED8",
+      "coverage": "complete_supported_domain",
+      "scope": "Full x87 horizontal and vertical writes, original endpoint restore on byte1F0 zero, exact horizontal/top/bottom versus vertical/center predicates, float32 spills, same actual font metric and borrowed constants. Initial half always explicitly FLD then host80-bit spill; right and bottom capture load order preserved. Valid live float references and verified finite native constants with ordinary masked x87 operations; transient x87 stack/unmasked fault and packed native ABI excluded.",
+      "unread_ranges": []
+    },
+    {
+      "address": "00ab6bd0",
+      "name": "normalized_height",
+      "end_inclusive": "00ab6c27",
+      "last_instruction_length": 1,
+      "native_abi": "ECX Text; no stack args; float32 spill reloaded into ST0; RET",
+      "coverage": "complete_supported_domain",
+      "scope": "Multiline current field178 / live double720, otherwise actual font current signed lowword height /720 or integer zero for null font. Same font resource association, no snapshot/default metric.",
+      "unread_ranges": []
+    }
+  ],
+  "current_text_table": {
+    "address": "00d5c6c8",
+    "read_through": "00d5c74b",
+    "entries": {
+      "18": "00abb630", "20": "00aa8320", "34": "00aa8530",
+      "38": "00a9e0d0", "3c": "00a9e100", "4c": "00ab6ad0",
+      "50": "00ab6b50", "58": "00abbf30", "60": "00ab87d0",
+      "64": "00ab6d70", "70": "00ab7a40", "74": "00ab7700",
+      "78": "00ab6aa0", "80": "00ab7200"
+    }
+  },
+  "host_steps": [
+    {"address":"00aa139e","native":"00ab79e0","function":"00aa1380","contract":"Incoming ECX1F4 ignored by raw canonical Text pool wrapper; source remains ESI."},
+    {"address":"00aa13ba","native":"00abb2c0","function":"00aa1380","contract":"Non-null source copy constructor, explicitly outside this default-only composition."},
+    {"address":"00aa13dd","native":"00ab9650","function":"00aa1380","contract":"Source-null branch constructs at the raw allocation; new C++ storage association is separate."},
+    {"address":"00ab9671","native":"00aa9390","function":"00ab9650","contract":"Existing canonical base owner, literal type3. New allocation transport is called after base-field initialization, not native allocation ABI."},
+    {"address":"00ab98d8","native":"00ab8530","function":"00ab9650","contract":"Same lifetime publication and primary-null actual draw-section initialization."},
+    {"address":"00ab6adb","native":"00aa6980","function":"00ab6ad0","contract":"Alpha-only canonical color+5C and actual main diffuse alpha; incoming argument x87-spilled first."},
+    {"address":"00ab6aea","native":"00b74650","function":"00ab6ad0","contract":"Current live shadow actual model geometry gate."},
+    {"address":"00ab6afb","native":"00b74640","function":"00ab6ad0","contract":"Current shadow mesh lookup with ignored0."},
+    {"address":"00ab6b02","native":"00b72b40","function":"00ab6ad0","contract":"Actual mesh section-count gate."},
+    {"address":"00ab6b15","native":"00b74640","function":"00ab6ad0","contract":"Reload current shadow geometry before element0."},
+    {"address":"00ab6b1c","native":"00b732c0","function":"00ab6ad0","contract":"Actual element0, then material+20."},
+    {"address":"00ab6b36","native":"00b179f0","function":"00ab6ad0","contract":"Actual material diffuse+38; write product at returned+0C."},
+    {"address":"00ab6e4a","native":"00ab6bd0","function":"00ab6d70","contract":"Horizontal Align0 chooses top path; add current top then store bottom."},
+    {"address":"00ab6e76","native":"00ab6bd0","function":"00ab6d70","contract":"Nonzero horizontal and VerticalAlign1: captured vertical midpoint, height half spill, top/bottom stores."},
+    {"address":"00ab6eb2","native":"00ab6bd0","function":"00ab6d70","contract":"Noncenter VerticalAlign and horizontal Align2: capture bottom before helper, subtract normalized height into top."}
+  ],
+  "allocation_transport": {
+    "raw_slot_is_cpp_object": false,
+    "same_canonical_owner_runtime": true,
+    "scalar_flags1": "Return raw slot after typed implementation/lifetime completion.",
+    "scalar_flags0": "Retain raw allocation after typed owner completion; explicit release_completed_storage while wrapper still exists.",
+    "page_retirement": "Existing page owner route, guarded empty native timed-entry header. Does not claim complete generic AA9730 timed-entry destruction.",
+    "scalar_pending_guard": "Host-only before_scalar_deletion4 preflight requires idle before native phase/flag stores or any effects.",
+    "special_child": "construct_unbound_glyph_child returns one unique layout handle, companion constructed and primary null. No glyph-vector append, model clone/bind,74 or child-tail completion."
+  },
+  "pending_contract": {
+    "properties": "Retain full GuiTextPropertiesContinuation, throw GuiTextRuntimePending and block loaded78/teardown.",
+    "submission": "Retain full GuiTextSubmitContinuation/content/builder; expose borrowed pending_content and resume only after exact child tail completed.",
+    "clip70": "Retain exact parent before-child70 frame, invoke actual child current70, advance only after return or explicit post-child completion.",
+    "loader": "Existing void page loader has no outer retained continuation. Pending properties require retained page/layout/loader ownership or actual synchronous nested dependency completion."
+  },
+  "verification": {
+    "strict_msvc_win32_compile": "passed",
+    "flags": "/std:c++17 /W4 /WX /EHsc /permissive- /O2 /MD /fp:strict",
+    "owner_header_overlay": "J:/PROG/battlestations-pacific-decompile-orch5-20260911/include/bsp/gui_widget_owner.hpp",
+    "owner_header_sha256": "F6DA5E513D44D7A639155B619A3CE628E5EF9873C1EA6DCBDEC0F0226F87DD98",
+    "existing_checkout_build": "scripts/build.ps1 passed; reconstructed_math 1/1; new source strict compiled separately pending integrator CMake registration",
+    "bounds_generated_assembly": "Inspected MSVC /FAs exact selected listing: initial FLD/80-bit spill before endpoints, all arithmetic spills, right and bottom capture order and final horizontal restore.",
+    "cmake_registration": "integrator-owned",
+    "tests_added": false,
+    "native_differential": false,
+    "game_validated": false,
+    "visual_validated": false
+  },
+  "remaining_boundaries": [
+    "Original native raw Text layout, vtable/SEH, null-allocation and allocation callback ordering.",
+    "Nonnull-source Text copy construction ABB2C0.",
+    "Real AB98F0 special child-tail composition and source-model clone dependency are separate peer work, not substituted by this factory.",
+    "Outer loader retention for any still-pending property content.",
+    "Non-Text child current70 implementation where generic dispatch is still unsupported.",
+    "Nonempty native timed-entry header during page or scalar teardown."
+  ]
+}

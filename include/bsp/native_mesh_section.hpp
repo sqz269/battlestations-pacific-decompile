@@ -78,6 +78,19 @@ NativeMeshSectionStorage* construct_native_mesh_section_00b857f0(
 NativeMeshSectionStorage* create_native_mesh_section_00533fa0(
     NativeMeshSectionPool&, const volatile std::uint32_t& bounds_w_00ce4970);
 
+// ECX fresh destination, stack source, EAX destination, RET4. Copies the
+// actual section while retaining its material, next section, active streams,
+// layout and generator binding in the SAME owner domain. Five float words at
+// +24..34 pass through x87; +54 copies without retain; unused streams, +59..5B
+// and pool+60 remain untouched. Source cells/count are read in native order.
+// The caller allocates the raw slot and registers the one canonical companion.
+// On constructor unwind only the base profile is restored, as in CC24B0;
+// retained resources are not rolled back. Fresh distinct storage, valid owner
+// identities and masked x87 exceptions form the supported construction domain.
+NativeMeshSectionStorage* copy_construct_native_mesh_section_00b85ef0(
+    void*, const NativeMeshSectionStorage&, NativeRenderActualOwners&,
+    const volatile std::uint32_t& bounds_w_00ce4970);
+
 // ECX section, pointer on stack, RET4; stream setter has index+pointer, RET8.
 // Equal identity skips. Publish then retain incoming actual+04, release old.
 // Stream replacement requires an already initialized selected slot; it neither
@@ -156,5 +169,5 @@ private:
 // index; nonnull appended/selected stream. Real pool/new-handler/list lifetimes,
 // current material/layout/stream owners and callbacks are caller dependencies.
 // Native material/effect construction, generator attachment B85610/B451D0,
-// complete section copy/assignment, renderer submission and game ABI external.
+// section assignment, renderer submission and game ABI external.
 } // namespace bsp

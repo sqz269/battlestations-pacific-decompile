@@ -59,6 +59,10 @@ void clear_gui_text_glyph_children_00ab80c0(GuiTextContentBinding&,
     GuiWidgetOwnerRuntime&, NativeNodeParentingRuntime&, GuiTextGlyphChildCalls&);
 
 struct GuiTextContentCalls : GuiTextGlyphChildCalls {
+    // Host service identity, not a native call. A locale adapter returns the
+    // actual deletion transport retained by Text lifetimes and wrapped layout;
+    // a combined implementation can retain the original default identity.
+    virtual GuiTextGlyphChildCalls& glyph_child_calls() noexcept { return *this; }
     // Locale-changed arm of __wcsicmp00C03A39: __wcsicmp_l00C0392A with
     // null locale (current native CRT locale), two valid terminated strings.
     virtual int compare_current_locale_00c0392a(const char16_t*, const char16_t*) = 0;
