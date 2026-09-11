@@ -33,3 +33,12 @@ Validation, worker commits, saved Ghidra annotations and outstanding boundaries
 are recorded in `reports/storage_backend_integration.json`. Host compositions
 are not native ABI replacements. Game rebuild and gameplay validation remain
 incomplete.
+
+Combined code `3c40f08` passed the Win32 build and both existing CTests. The
+three worker fixtures were recompiled against that combined library and passed:
+keyboard serialization through Lua, profile-manager import through the storage
+driver, and actual isolated PC save/read/delete operations including error
+paths. Recompression still matched both original native save files exactly.
+The fixture Lua owner is controlled test infrastructure; the native game Lua
+bootstrap remains required. Thirteen worker artifacts are preserved under
+`local/worker-validation/storage-20260910d/`.
