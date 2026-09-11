@@ -1,0 +1,930 @@
+{
+  "packet": "orch2_native_material_integration_u",
+  "utc": "2026-09-11T15:27:46.025808+00:00",
+  "tested_source_commit": "b527f87ceb673df5c76f0b35be13468241512c83",
+  "source_sha256": {
+    "include/bsp/native_material_owner.hpp": "c437e235286c65977cbd479e7d5edd294eed8bfae4a205e95a1f403f8715d29a",
+    "src/native_material_owner.cpp": "02f3e9824a802424fbb1b3a6e34b0b0fc05df6b01b7500e3c58bc76b6240acdb",
+    "include/bsp/native_material_pools.hpp": "b9dddb2733adbc41b1ef16682348685a10bc1e92d12e3949560ee6bfe4378c07",
+    "src/native_material_pools.cpp": "a29f17400b108e43935179f73ef4661069aabc3a37b536b0a5a5ef7fecdb166c",
+    "include/bsp/gui_material_binding.hpp": "7b1d95bb8fb35737034981875c957e6708fd233a3a7a376f3ee8a91062f2dc55",
+    "src/gui_material_binding.cpp": "60267ec08a7108403de7d185086ee0cd992c63dfa63ba6ab4eb5b81dc87b0189",
+    "include/bsp/gui_native_geometry.hpp": "9063b23b29cdc36867350b3762c000d5db9b8fa60e7213fefa0d05fc56895645",
+    "src/gui_native_geometry.cpp": "ac7c4770b506fcf8e90a4c63d295113f1012b65be5aa11d20a8a75ec55b93de4",
+    "include/bsp/native_render_context.hpp": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+    "src/native_render_context.cpp": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+    "include/bsp/native_string.hpp": "ebbb891dd5cf71cbaa7ad674893839da28205682463dc6b756dd8b6c14c26ee0",
+    "src/native_string.cpp": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e",
+    "include/bsp/allocator_list.hpp": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+    "src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+    "cmake/startup.cmake": "c97c9dd0171211fdbdd0e4bcd27a86d6d9085869a81285f6d1d815cacdbd7995",
+    "CMakeLists.txt": "d52624200130f959412a8caab161f3a8f290814750602e4167a1b29b53a147e3"
+  },
+  "artifacts_sha256": {
+    "local/gui-native-material-build.log": "eb55ebb1ea91f5272653b4dd4ec6a9dabb7d5f8ac3ad330a3158ed37f7cbfefd",
+    "local/gui-native-material-seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+    "local/gui-native-material-workers/manifest.json": "a0f3c298b04deba3e3296b5015351061cb800a431c5388ba01a004bc5318cec9",
+    "local/gui-native-material-names-before.txt": "13ab93fc054922565dfb468d11c0b35cb4b84447008c0904d0577b4353bd03a8",
+    "local/gui-native-material-names-after.txt": "bdc89865a908b5f3c4ae91802b3035ec50b77af750e5757a1517a78956557703",
+    "local/gui-native-material-comments-before.json": "2d17aea6bc493b2b43cb4ce76b9166e00ff38f1b2e235ff6085412951c87aa4f",
+    "local/gui-native-material-comments-after.json": "0c5421d6cf16dbcf2f8850c1df4799ec7d1e737dd220d0ef2d01fe18b6c2c730",
+    "local/gui-native-material-names-expected.json": "689bccd07cc24769c23e05dc4b1f632748fb6a3846d2fc542b22fed7303c9cc8",
+    "local/gui-native-material-annotations.log": "bfce8210aa67e8fbc232b8d34b1d0b1f817856525e9d069686662ede2284f67f",
+    "local/gui-native-material-export-refresh.log": "5f9b2ba4a6b212f35c32174e4c812d7ec83e9d27008042e091596cec5d367fe9",
+    "local/gui-native-material-annotation-verification.json": "39cc12a539aa9f33d66d7f0ac40f2ea048a013f927782f01b5289af5b4db49b3",
+    "local/gui_native_material_annotations.py": "72a66d3c081a5da7e704325d4235e118264b78d1f639142a82691f06a5c472c8",
+    "local/run_gui_native_material_probes.ps1": "5bcfc007112697b2974cc00c09d897ed652f3b40bbce139d073ed87880812135",
+    "local/prepare_gui_native_material_validation.py": "122b1e08dcf53cfc3978451e409811f04150d6346f5561faae0e9984630584f7",
+    "local/gui-native-material-flow-repair.log": "1f67f73b88c9c55814b248de91f536803d1cd3025a82de4224658efc80649c95",
+    "local/gui-frontend-clip-retirement.json": "45a0db86e73dac87eb8da83a7f743588ce5c5989989915398bc4f92a06ac6cc5",
+    "local/gui-native-material-owner.exe": "fe8b679c7f897c4e5fef3f5f8c4924abea5065a41b44db2e957f35101ad72434",
+    "local/gui-native-material-owner-probe.cpp": "1d384f9bd93152398f1234bc4060e157886882a7fedd42fc053ceb457152c61c",
+    "local/gui-native-material-owner-compile.log": "ebc3a77112eeafad3c41aaa9d6ced3ee4d7b361ff85f481630d455d39a8771db",
+    "local/gui-native-material-owner-result.log": "fc04b5d9b2125cd2ad093e618a8c40290d3470b3773213e1c3f172a9ac22fa70",
+    "local/gui-native-material-pools.exe": "1734c4d6a0c87cff3ca76be3b59bceda384e70c0b06928e58bdc83baf217a769",
+    "local/gui-native-material-pools-probe.cpp": "e90343aef339cc6c83b7173b3488649f1d4b812bfdc164c28ad3db613449b627",
+    "local/gui-native-material-pools-compile.log": "4b2134dfd3b0d55e62893ddbf3dcafc34e81f7f8023f3ba9a4cb68c5c24e0fe7",
+    "local/gui-native-material-pools-result.log": "b593235b1dba2a8c667b4497b4aa74ec20b8754b1d27c07722ce4e151110505e",
+    "local/gui-native-material-color.exe": "67b92adba6a1337a6176c42cf2346b27520a437f90872fe323e3682cda13f603",
+    "local/gui-native-material-color-probe.cpp": "c45e6a2beb76cd378b68202dd9715b40b95406c7c869ae4cc17e24bc07ba4c0f",
+    "local/gui-native-material-color-compile.log": "200154e5a6841dde9bcf5c71834a3ccb32c5d44b45b43f296e3f96a79064e37b",
+    "local/gui-native-material-color-result.log": "317307f471f3a598ac092da002f002cf014220b1c0214b94fcc35eb3a047a9f0",
+    "local/gui-native-material-tested/bsp_core.lib": "d674a2900950a86a356d809dbb498bf2e4a43e6cb34f43ac25e5ae9c998872c2",
+    "local/gui-native-material-tested/bsp_game.exe": "94ac09fae95ef3da03a3a482a69d06ea21cf04717a6a7d2c4a7d8a7fa0b9a50a",
+    "local/gui-native-material-tested/LastTest.log": "4a349b873ba24084987c41cbe8658f593dd530036513fe8155b87da2c4d4bce2"
+  },
+  "frozen_build_artifacts": [
+    {
+      "original": "build/win32/Release/bsp_core.lib",
+      "preserved": "local/gui-native-material-tested/bsp_core.lib",
+      "sha256": "d674a2900950a86a356d809dbb498bf2e4a43e6cb34f43ac25e5ae9c998872c2"
+    },
+    {
+      "original": "build/win32/Release/bsp_game.exe",
+      "preserved": "local/gui-native-material-tested/bsp_game.exe",
+      "sha256": "94ac09fae95ef3da03a3a482a69d06ea21cf04717a6a7d2c4a7d8a7fa0b9a50a"
+    },
+    {
+      "original": "build/win32/Testing/Temporary/LastTest.log",
+      "preserved": "local/gui-native-material-tested/LastTest.log",
+      "sha256": "4a349b873ba24084987c41cbe8658f593dd530036513fe8155b87da2c4d4bce2"
+    }
+  ],
+  "preserved_worker_artifacts": [
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\bsp_index.sqlite",
+      "preserved": "local/gui-native-material-workers/owner/bsp_index.sqlite",
+      "sha256": "f35fc1ee5e04ebf4c2e454170e9588db1a5f46c3d1eb8cc7291981104fef8389"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\build_native_material_owner_probe.ps1",
+      "preserved": "local/gui-native-material-workers/owner/build_native_material_owner_probe.ps1",
+      "sha256": "df0e7efa5b83a5b75cabb0f863ae09a1ec11661ed810e93295ec372fdeea437f"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_allocate_pool.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_allocate_pool.bin",
+      "sha256": "1b3fa81e4fbc4112806299e451d1a176d696b0a412c1c712c14243414fcc4962"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_allocation_thunk.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_allocation_thunk.bin",
+      "sha256": "6459a4d2e2cc6e8744a033c2554a9afef6d416b378c608bac8878e094eaa2551"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_base.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_base.bin",
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_clone.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_clone.bin",
+      "sha256": "06200809c976f2b86146280c20861c7c649bc19c3ddfa3458bfbe9ad1beb568e"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_clone_funclet.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_clone_funclet.bin",
+      "sha256": "9e9f4e3e1998dc0ae7b2b931b2430f2b495fc0c35645589d8032ebb3740838db"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_clone_unwind.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_clone_unwind.bin",
+      "sha256": "8189f03c891aa18ecc2a59b4d2a8a0a6c1ba94e7ee954dd1af1a92c11638b2a1"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_construction_failure.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_construction_failure.bin",
+      "sha256": "686db0361567b1a42c9101fe5c3046d3f10bd55837527815470268d51fd64b99"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_context_table.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_context_table.bin",
+      "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_delete.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_delete.bin",
+      "sha256": "57d8c31a156857143b210298ef9a70f96a781c5fc12c9ed8c7d781302f6c1d0c"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_destroy.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_destroy.bin",
+      "sha256": "5ffc9b44d9a547e9484c37ab60e0349586390ed516661381a5f2c00493a916bb"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_destroy_funclet.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_destroy_funclet.bin",
+      "sha256": "e0ba94eef44ab0c76eda5334dddf94d387985a365bee511a7e909847bff7abc0"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_destroy_unwind.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_destroy_unwind.bin",
+      "sha256": "9fca13d78e2b3311c95fdb59051619c6bdf88610282accaa416ad1a78948f2d0"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_factory.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_factory.bin",
+      "sha256": "485746aee0fc77c096eb1bd8c5b080ebd831ad1a0b964bb2989cabf5b67bdc03"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_factory_funclet.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_factory_funclet.bin",
+      "sha256": "4813db59c9909e5d8b91af6109dc14988ef9f115674fa02f84c3fc1faafca6d7"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_factory_unwind.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_factory_unwind.bin",
+      "sha256": "ccffd62c69acbfb03916261c9779da19b1b4b7a80816cfaba28a05456ed9334a"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_initialize_slab.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_initialize_slab.bin",
+      "sha256": "9f424bd9f6b95fe61e30ece1e4eb74b27b778fbb1bc6063aa08173473a4f08f9"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_lighting.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_lighting.bin",
+      "sha256": "b0f05cff30ab3322bf80279bab569619cb517b886cb6e8ad136cd39f98509a72"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_one.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_one.bin",
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_ordinary.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_ordinary.bin",
+      "sha256": "6768407d2713726def1fc414fc244ec076fa5369c1289686bed59a2821b722b0"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_ordinary_funclet.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_ordinary_funclet.bin",
+      "sha256": "3eebfc410dbec2343837e6db9864af5021575a2a866660166a79bc06dbee1105"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_ordinary_unwind.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_ordinary_unwind.bin",
+      "sha256": "93fea79125a3b30ebd8cd58859146066f70d3580280492547dc5ea654692e57b"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_owner_build.log",
+      "preserved": "local/gui-native-material-workers/owner/native_material_owner_build.log",
+      "sha256": "c9fff5108be110366af279ab1f9ce09feb54678b5f3612d3b8294b4b580c6cd8"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_owner_build_final.log",
+      "preserved": "local/gui-native-material-workers/owner/native_material_owner_build_final.log",
+      "sha256": "3619adbe2e4f3ded6772d3f715e0352a274cbc088a348b124e22447b607cd06a"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_owner_commit.txt",
+      "preserved": "local/gui-native-material-workers/owner/native_material_owner_commit.txt",
+      "sha256": "d295c626c507531ad222aa033ca24d27a60c762956f2b2897402fe52ec2b57ef"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_owner_evidence.json",
+      "preserved": "local/gui-native-material-workers/owner/native_material_owner_evidence.json",
+      "sha256": "3c4f6f643cfdaa1af948a27721554ab94ea1f87cb8e2bed0de3877f6839615f3"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_owner_ledger.log",
+      "preserved": "local/gui-native-material-workers/owner/native_material_owner_ledger.log",
+      "sha256": "e12dcc97bcbd1d562ed76d7c03f9ec54b41056f82e4ab8715bb32e10c4db3785"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_owner_prepare.log",
+      "preserved": "local/gui-native-material-workers/owner/native_material_owner_prepare.log",
+      "sha256": "bf30f4286b5d003ac8e847cb454c45b7dee3bf1419d6723f014ac47e9db96980"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_owner_probe.cpp",
+      "preserved": "local/gui-native-material-workers/owner/native_material_owner_probe.cpp",
+      "sha256": "06f1f81c776a393846089f09202c9990152f474835d6066a997ee860fd827144"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_owner_probe.exe",
+      "preserved": "local/gui-native-material-workers/owner/native_material_owner_probe.exe",
+      "sha256": "de378cced07be95b3ccba50cac0b39288f00da43d2976c9d3d0503d098385e65"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_owner_probe.log",
+      "preserved": "local/gui-native-material-workers/owner/native_material_owner_probe.log",
+      "sha256": "77491ceb8f06837fb6fcac20110c0ab2fdfc45c1db60ad6c0c14fe166b30c817"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_owner_probe.obj",
+      "preserved": "local/gui-native-material-workers/owner/native_material_owner_probe.obj",
+      "sha256": "60130c213ec5f306e825437e8f5da9300f79f57d9bbe0edb8924c6b7dcdb7f64"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_owner_probe_driver.cmd",
+      "preserved": "local/gui-native-material-workers/owner/native_material_owner_probe_driver.cmd",
+      "sha256": "fe7df1c804f218fa86c5c04eae94deff17f48e08b4eb0bcfbb585b4f15786fe4"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_owner_report_checked.json",
+      "preserved": "local/gui-native-material-workers/owner/native_material_owner_report_checked.json",
+      "sha256": "5c6dc7774a101a18adb6e4a32e89a3192da2e3e225b5c777277240d036968328"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_owner_seeds.json",
+      "preserved": "local/gui-native-material-workers/owner/native_material_owner_seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_return_pool.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_return_pool.bin",
+      "sha256": "ee0ff10c52413465f0a83a963e4e3d09af31bb5760cf361d656bc7ca2388da47"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_table.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_table.bin",
+      "sha256": "ec587f40209b2c26a75177bbea577637cfdf4e8b825200c7a68c46940cdebf1d"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\native_material_ten.bin",
+      "preserved": "local/gui-native-material-workers/owner/native_material_ten.bin",
+      "sha256": "80c8a717ccd70c8809eb78e6a9591c003e11c721fe0ccaf62fd592abda1a5593"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\prepare_native_material_owner.py",
+      "preserved": "local/gui-native-material-workers/owner/prepare_native_material_owner.py",
+      "sha256": "a3f3890e53fff35d6c373897193a0e59e102598d32cb65a0360c0a356cab9ac5"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\record_native_material_owner.py",
+      "preserved": "local/gui-native-material-workers/owner/record_native_material_owner.py",
+      "sha256": "00d66df490fac82cbaebd0f88a6cd28d888eef7720f700c6088c8c6ed393a58d"
+    },
+    {
+      "worker": "native-material-owner-20260911s",
+      "commit": "32dda18bf839db4b73dd651dcd58eac95ed4658e",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-owner-20260911s\\local\\seed_reference.hpp",
+      "preserved": "local/gui-native-material-workers/owner/seed_reference.hpp",
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\bsp_index.sqlite",
+      "preserved": "local/gui-native-material-workers/pools/bsp_index.sqlite",
+      "sha256": "1e5480a1a458562671653079ee4a96807fc8439da7a7385b266125d6d4ff73d1"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\build_native_material_pools_probe.ps1",
+      "preserved": "local/gui-native-material-workers/pools/build_native_material_pools_probe.ps1",
+      "sha256": "44bbb64727f6d18ea6cbbd30038b95b3dbf2a379ebcda5e0473571c34c433d48"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\capture_native_material_pools.py",
+      "preserved": "local/gui-native-material-workers/pools/capture_native_material_pools.py",
+      "sha256": "f6b95a456e41e2a6b1c2a9eefc1e1e9b0cde3e1acaccaeb1575c3a77f5c13650"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\material_destructor_listing.txt",
+      "preserved": "local/gui-native-material-workers/pools/material_destructor_listing.txt",
+      "sha256": "9f79e2fd5ecb54ad25d3eb85250cae21cf93d399d40770945081dddfba1a92c1"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00b17440.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00b17440.bin",
+      "sha256": "9f424bd9f6b95fe61e30ece1e4eb74b27b778fbb1bc6063aa08173473a4f08f9"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00b17510.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00b17510.bin",
+      "sha256": "4cb8c344e80ca65475e9d09c41e5b7749000c81728bc68fe9bbb264506f09912"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00b17630.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00b17630.bin",
+      "sha256": "07057bdf7b6c46bce7f92d0e2f7ee5cca38bfb6a51735a80fa7ed73ef5970198"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00b17670.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00b17670.bin",
+      "sha256": "03858a796a7a5c69b231db7d80145af8890ff034b279378ac3ee9e97dc8091f2"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00b17a80.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00b17a80.bin",
+      "sha256": "ee0ff10c52413465f0a83a963e4e3d09af31bb5760cf361d656bc7ca2388da47"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00b17fa0.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00b17fa0.bin",
+      "sha256": "8bb319b64e7800e771e4ad1e9479f58ba5bcb604a0ce14c1bdb8c90fa9de140a"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00b180d0.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00b180d0.bin",
+      "sha256": "ba69b9d033b39514fdbc3638053bbe92f09e188c786e97d671cb69e688da03d1"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00b18160.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00b18160.bin",
+      "sha256": "794b1c23cfeca7cd633a8332abfe125a4511f9af970f53c79ddefd1d851d76b8"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00b18200.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00b18200.bin",
+      "sha256": "1b3fa81e4fbc4112806299e451d1a176d696b0a412c1c712c14243414fcc4962"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00b18340.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00b18340.bin",
+      "sha256": "450022fb29cd66982a74bf51048bdf810ce52ad6fee241b98796c3e38ad26ba5"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00b18470.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00b18470.bin",
+      "sha256": "2a64e77252208ba7c8e1b1b73e0cdf14ac3c073192fd282079b3ab2cc02a2bfb"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00b18500.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00b18500.bin",
+      "sha256": "1bce71bf04b8631474f8bfc23a43726084d1317f70840afd55204c28b27c172e"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00b185a0.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00b185a0.bin",
+      "sha256": "6be2a69b256217a2fa96b16229495ad2a3dddf4a00de758c3460fc18c7b316fc"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00b193fa.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00b193fa.bin",
+      "sha256": "4b3d448fca3d0ed45f954e4a34e3fe5fcae72426006c16daa843a19bba88d98e"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00cbc4d0.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00cbc4d0.bin",
+      "sha256": "690af9fb61253ede2494508a741a7e1dc077ba3361ffd397375b87d7d13b1cfb"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00d5e518.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00d5e518.bin",
+      "sha256": "dafc97e4d34fd2926c962cad5c502215f49238a17626eaef665d2a76b5e8afba"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_00df4738.bin",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_00df4738.bin",
+      "sha256": "3be02ec48ae69af9ac80eabc91adf39866776469a7585ec7b2ebfcd19b300801"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pool_byte_parity.json",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pool_byte_parity.json",
+      "sha256": "26617fad8fa9d2552940ffb8364554054cf0582c2bc59b8f54602c27ec742ee2"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pools_build.log",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pools_build.log",
+      "sha256": "285acee5a0c79860c4de64717f57ff12850cec55c8c996688ba536ec52c66831"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pools_commit.txt",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pools_commit.txt",
+      "sha256": "d0ddd807d03613de7723980e0529e66cd3792a0e98a40295237fe9ad233d9d98"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pools_old_comments.json",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pools_old_comments.json",
+      "sha256": "d3934deb76d6e9dd8c48ccd6b5de46ee30791b8c59272c84cfadf0571814b9a4"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pools_probe.cpp",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pools_probe.cpp",
+      "sha256": "626966adde1de3f94b020848f6cbb51a190c03fb68e2fc8139add831c8fe59fc"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pools_probe.exe",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pools_probe.exe",
+      "sha256": "cc761d8408b22de3b3bffb33ee57bc44c2d4a31a7af715a7f3e46eba647d2570"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pools_probe.log",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pools_probe.log",
+      "sha256": "64ed056082f7f62a009597cb594ff6a7b1d97eb5daed528881f63a5b4dbd08f6"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pools_probe.obj",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pools_probe.obj",
+      "sha256": "fda8d4bc95b4bb39b99274b4e762a69c719d6618a6554c6353d71f4daa9ef84f"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pools_probe_driver.cmd",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pools_probe_driver.cmd",
+      "sha256": "640514a366c24b89c80bee182499f776f02eb49ad20d94901b78650c2a61479a"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\native_material_pools_records.json",
+      "preserved": "local/gui-native-material-workers/pools/native_material_pools_records.json",
+      "sha256": "580d4e662df267d8997d488d92c8cbd2585f6359cd551ab9088f0b550433cf45"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\record_native_material_pools.py",
+      "preserved": "local/gui-native-material-workers/pools/record_native_material_pools.py",
+      "sha256": "ae9983e4629ddb2d072a8d4f2d607c1de3326e472db9d7814f2acef255191207"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\seed_reference.hpp",
+      "preserved": "local/gui-native-material-workers/pools/seed_reference.hpp",
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    },
+    {
+      "worker": "native-material-pools-20260911t",
+      "commit": "2295ce28df428796d18c5801e37bffce780e641c",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-native-material-pools-20260911t\\local\\write_native_material_pools_report.py",
+      "preserved": "local/gui-native-material-workers/pools/write_native_material_pools_report.py",
+      "sha256": "daa009a5700ca3bf82ecc4e28593a8cda253b2563cfce845227cd613236aacc9"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\bsp_index.sqlite",
+      "preserved": "local/gui-native-material-workers/color/bsp_index.sqlite",
+      "sha256": "e622b461be7a7c4a219ae6b26cbea871c4ca17901800b105aacc324924ac7ae7"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\build_gui_raw_material_color_probe.ps1",
+      "preserved": "local/gui-native-material-workers/color/build_gui_raw_material_color_probe.ps1",
+      "sha256": "c0fe7e8176902324be59cc25198c3209c0df3b8d6beb64803039a1c6152ab8c5"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_color.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_color.bin",
+      "sha256": "23665e8cb7052229f2e0a69de2b88d95c637bca88f1609b834faa3258d9dacd5"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_count.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_count.bin",
+      "sha256": "d4d3079e1e2bc80c23488a3e2c1e4850449f45e35fbe39efe7e920ba8e97f0f8"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_diffuse.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_diffuse.bin",
+      "sha256": "18126bf420a5b30e2a575d82cb5f7e00eaa3a07965af17c68b8d59713f47b4e3"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_element.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_element.bin",
+      "sha256": "8dcf736751986acd75e000be99dc03d547d44ca694c404cd7e0d82d5302d3e00"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_geometry.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_geometry.bin",
+      "sha256": "b7ff20e1db5330d3267e90ab2878843cad302c39fc4734af86a8a8bf08b133f2"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_has_geometry.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_has_geometry.bin",
+      "sha256": "d1a5253084bebbfd6425b839fabf5086a1f78f173723121f249d5ace727b64bc"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_material_table.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_material_table.bin",
+      "sha256": "ec587f40209b2c26a75177bbea577637cfdf4e8b825200c7a68c46940cdebf1d"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_maximum.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_maximum.bin",
+      "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_mesh_table.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_mesh_table.bin",
+      "sha256": "688e02fc0f53defa3864cd479930562f606e2c41753a04e16dc10a133a98d745"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_minimum.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_minimum.bin",
+      "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_model_table.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_model_table.bin",
+      "sha256": "ece91d2dedd6ea5409f0b8066798defc6c40999d2034d4a38dce0c67951851ed"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_native_values.hpp",
+      "preserved": "local/gui-native-material-workers/color/gui_color_native_values.hpp",
+      "sha256": "85874103ff82b21d86d7445f7a39db8a1d5043955c31787f9f848931642e05f0"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_negative_zero.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_negative_zero.bin",
+      "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_node_table.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_node_table.bin",
+      "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_one.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_one.bin",
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_section_table.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_section_table.bin",
+      "sha256": "a8b374e12296ca89e49db6719e48333bf1ec30ca60b6910c2da6f9fabb2124da"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_color_unchanged.bin",
+      "preserved": "local/gui-native-material-workers/color/gui_color_unchanged.bin",
+      "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_raw_material_color_build.log",
+      "preserved": "local/gui-native-material-workers/color/gui_raw_material_color_build.log",
+      "sha256": "f78a7fc17d26c3723090df7e6ff255dad756b079ebe02316e7e37a3c2d5ca280"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_raw_material_color_build_final.log",
+      "preserved": "local/gui-native-material-workers/color/gui_raw_material_color_build_final.log",
+      "sha256": "a1a9dcb616b84d0cdd303f84c5b7ac46ba537fae5d83dd471f231d2cc5d08242"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_raw_material_color_commit.txt",
+      "preserved": "local/gui-native-material-workers/color/gui_raw_material_color_commit.txt",
+      "sha256": "bbbef1017397f516d0acda575258ec398bef1066da40e97c64b43561645200b2"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_raw_material_color_evidence.json",
+      "preserved": "local/gui-native-material-workers/color/gui_raw_material_color_evidence.json",
+      "sha256": "c404af4b2baa23304343cb0cea60d69318be9724c526213db349fe8bfa11a8fe"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_raw_material_color_prepare.log",
+      "preserved": "local/gui-native-material-workers/color/gui_raw_material_color_prepare.log",
+      "sha256": "303b534d44d370338fb98ab9f2d9b47ef1be8ad63e30a1f087cfccd1a49c2939"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_raw_material_color_probe.cpp",
+      "preserved": "local/gui-native-material-workers/color/gui_raw_material_color_probe.cpp",
+      "sha256": "6d178a030c5fdbca29920cee91e4f11453c5cbf3c84e777dd628130f78d021dd"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_raw_material_color_probe.exe",
+      "preserved": "local/gui-native-material-workers/color/gui_raw_material_color_probe.exe",
+      "sha256": "f4bb3c52b0b382ddcbdfa37df6046d8d2ccc739b1ec709179f71cc25a7ef0d8f"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_raw_material_color_probe.log",
+      "preserved": "local/gui-native-material-workers/color/gui_raw_material_color_probe.log",
+      "sha256": "57fb395a071a8e154cdff2ce3159cc2c4902cab6f84fe2eb6613014622dcb7af"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_raw_material_color_probe.obj",
+      "preserved": "local/gui-native-material-workers/color/gui_raw_material_color_probe.obj",
+      "sha256": "498467c05d01f62503356eadc9f438c77f395e026d5c284347ce14772ebd8828"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_raw_material_color_probe_driver.cmd",
+      "preserved": "local/gui-native-material-workers/color/gui_raw_material_color_probe_driver.cmd",
+      "sha256": "8e0b7e60d4790815ae7934a495250f7cec1349683eef179a3df968d556d77eff"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_raw_material_color_record.log",
+      "preserved": "local/gui-native-material-workers/color/gui_raw_material_color_record.log",
+      "sha256": "3ce1ee2e778c27f3cfd8751ec04ff7a9ec56acf292751fe373ed03ded2f53909"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\gui_raw_material_color_seeds.json",
+      "preserved": "local/gui-native-material-workers/color/gui_raw_material_color_seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\prepare_gui_raw_material_color.py",
+      "preserved": "local/gui-native-material-workers/color/prepare_gui_raw_material_color.py",
+      "sha256": "ab64740a54412ce33ae01fb3a2dac36161732809f33fbd9300929c538372c1e5"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\record_gui_raw_material_color.py",
+      "preserved": "local/gui-native-material-workers/color/record_gui_raw_material_color.py",
+      "sha256": "095791de6e1f12324bde8b9b17bca30f9b6a4a86f7ed2e1f8c58206f591c7086"
+    },
+    {
+      "worker": "gui-raw-material-color-20260911t",
+      "commit": "8faec8c8cb360c09b7c37bbef9fbb6dec6042a25",
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch2-gui-raw-material-color-20260911t\\local\\seed_reference.hpp",
+      "preserved": "local/gui-native-material-workers/color/seed_reference.hpp",
+      "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+    }
+  ],
+  "worker_commits": [
+    "32dda18",
+    "2295ce2",
+    "8faec8c"
+  ],
+  "integrated_commits": [
+    "f2c6f6b",
+    "3afe9a4",
+    "b527f87"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "seeds_verified": 8,
+    "focused_ignored_probes_passed": [
+      "owner",
+      "pools",
+      "color"
+    ],
+    "original_full_material_comparisons": 4,
+    "material_bytes_per_comparison": 276,
+    "pool_growth_slabs_each": 33,
+    "original_color_comparisons": 4,
+    "raw_color_material_owner_domain_is_same_as_model": true,
+    "color_reference_counts": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "color_lighting_flag_preserved": 129,
+    "actual_final_zero_chain": true,
+    "protective_retains": false,
+    "original_pool_instruction_execution": false,
+    "allocation_failure_unwind_tested": false,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "addresses": [
+      "00b18900",
+      "00b18b60",
+      "00b192f0",
+      "00b194b0",
+      "00b18780",
+      "00b17440",
+      "00b17510",
+      "00b17630",
+      "00b17670",
+      "00b17a80",
+      "00b17fa0",
+      "00b180d0",
+      "00b18160",
+      "00b18200",
+      "00b18340",
+      "00b18470",
+      "00b18500",
+      "00b185a0",
+      "00aa6870",
+      "00b179f0"
+    ],
+    "names_verified": 20,
+    "prior_comment_fields_preserved": 4,
+    "forced_exports": 20,
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "functions_already_defined": 20,
+    "defined_functions": [],
+    "saved": true,
+    "flow_repair_report": "reports/gui_native_material_flow_repair.json",
+    "repaired_functions": 9,
+    "repaired_free_continuations": 11,
+    "remaining_call_gaps_in_repaired_functions": 0,
+    "embedded_parameter_return": "00b193fa..00b19463 remains part of00b192f0",
+    "deferred_factory_names": [
+      "00535320",
+      "00b17d70"
+    ]
+  },
+  "limitations": [
+    "Parameter registration still uses the semantic table; no actual parameter projection claimed.",
+    "Widget/page/ancestor borrowed-source lifetime and canonical widget identity remain unresolved.",
+    "Factory current-effect acquisition and static pool routing are separate work.",
+    "No nonnull effect/texture, full draw, original pool execution, binary replacement or gameplay validation."
+  ]
+}

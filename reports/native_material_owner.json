@@ -1,0 +1,422 @@
+{
+  "packet": "orch2_native_material_owner_s",
+  "date": "2026-09-11",
+  "base": "e1f50c3",
+  "status": "bounded_actual_storage_and_generic_source_lifetime_fixture_tested",
+  "documentation": "docs/NATIVE_MATERIAL_OWNER.md",
+  "source": "src/native_material_owner.cpp",
+  "header": "include/bsp/native_material_owner.hpp",
+  "ghidra_access": "READ ONLY through bsp.py ghidra; existing bsp.gpr/program verified per batch",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "spans": [
+    {
+      "label": "ordinary",
+      "address": "00b18900",
+      "end_exclusive": "00b189e5",
+      "bytes": 229,
+      "sha256": "6768407d2713726def1fc414fc244ec076fa5369c1289686bed59a2821b722b0",
+      "matches_installed": true
+    },
+    {
+      "label": "clone",
+      "address": "00b18b60",
+      "end_exclusive": "00b18cf1",
+      "bytes": 401,
+      "sha256": "06200809c976f2b86146280c20861c7c649bc19c3ddfa3458bfbe9ad1beb568e",
+      "matches_installed": true
+    },
+    {
+      "label": "allocation_thunk",
+      "address": "00b18780",
+      "end_exclusive": "00b1878a",
+      "bytes": 10,
+      "sha256": "6459a4d2e2cc6e8744a033c2554a9afef6d416b378c608bac8878e094eaa2551",
+      "matches_installed": true
+    },
+    {
+      "label": "factory",
+      "address": "00535320",
+      "end_exclusive": "0053539c",
+      "bytes": 124,
+      "sha256": "485746aee0fc77c096eb1bd8c5b080ebd831ad1a0b964bb2989cabf5b67bdc03",
+      "matches_installed": true
+    },
+    {
+      "label": "destroy",
+      "address": "00b192f0",
+      "end_exclusive": "00b194a1",
+      "bytes": 433,
+      "sha256": "5ffc9b44d9a547e9484c37ab60e0349586390ed516661381a5f2c00493a916bb",
+      "matches_installed": true
+    },
+    {
+      "label": "delete",
+      "address": "00b194b0",
+      "end_exclusive": "00b194d0",
+      "bytes": 32,
+      "sha256": "57d8c31a156857143b210298ef9a70f96a781c5fc12c9ed8c7d781302f6c1d0c",
+      "matches_installed": true
+    },
+    {
+      "label": "allocate_pool",
+      "address": "00b18200",
+      "end_exclusive": "00b1833c",
+      "bytes": 316,
+      "sha256": "1b3fa81e4fbc4112806299e451d1a176d696b0a412c1c712c14243414fcc4962",
+      "matches_installed": true
+    },
+    {
+      "label": "initialize_slab",
+      "address": "00b17440",
+      "end_exclusive": "00b17483",
+      "bytes": 67,
+      "sha256": "9f424bd9f6b95fe61e30ece1e4eb74b27b778fbb1bc6063aa08173473a4f08f9",
+      "matches_installed": true
+    },
+    {
+      "label": "return_pool",
+      "address": "00b17a80",
+      "end_exclusive": "00b17ae8",
+      "bytes": 104,
+      "sha256": "ee0ff10c52413465f0a83a963e4e3d09af31bb5760cf361d656bc7ca2388da47",
+      "matches_installed": true
+    },
+    {
+      "label": "construction_failure",
+      "address": "00b17d70",
+      "end_exclusive": "00b17d7c",
+      "bytes": 12,
+      "sha256": "686db0361567b1a42c9101fe5c3046d3f10bd55837527815470268d51fd64b99",
+      "matches_installed": true
+    },
+    {
+      "label": "lighting",
+      "address": "00b17840",
+      "end_exclusive": "00b17928",
+      "bytes": 232,
+      "sha256": "b0f05cff30ab3322bf80279bab569619cb517b886cb6e8ad136cd39f98509a72",
+      "matches_installed": true
+    },
+    {
+      "label": "base",
+      "address": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "bytes": 7,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "matches_installed": true
+    },
+    {
+      "label": "table",
+      "address": "00d5e520",
+      "end_exclusive": "00d5e528",
+      "bytes": 8,
+      "sha256": "ec587f40209b2c26a75177bbea577637cfdf4e8b825200c7a68c46940cdebf1d",
+      "matches_installed": true
+    },
+    {
+      "label": "one",
+      "address": "00d7a24c",
+      "end_exclusive": "00d7a250",
+      "bytes": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "matches_installed": true
+    },
+    {
+      "label": "ten",
+      "address": "00ce38b8",
+      "end_exclusive": "00ce38bc",
+      "bytes": 4,
+      "sha256": "80c8a717ccd70c8809eb78e6a9591c003e11c721fe0ccaf62fd592abda1a5593",
+      "matches_installed": true
+    },
+    {
+      "label": "context_table",
+      "address": "00d5e5c4",
+      "end_exclusive": "00d5e5cc",
+      "bytes": 8,
+      "sha256": "0eeeccf08ee7e596f5b8059481d2d0b0e1cbca1fd5e1e608da5371288438511f",
+      "matches_installed": true
+    },
+    {
+      "label": "ordinary_unwind",
+      "address": "00df47b0",
+      "end_exclusive": "00df47b8",
+      "bytes": 8,
+      "sha256": "93fea79125a3b30ebd8cd58859146066f70d3580280492547dc5ea654692e57b",
+      "matches_installed": true
+    },
+    {
+      "label": "clone_unwind",
+      "address": "00df47dc",
+      "end_exclusive": "00df47e4",
+      "bytes": 8,
+      "sha256": "8189f03c891aa18ecc2a59b4d2a8a0a6c1ba94e7ee954dd1af1a92c11638b2a1",
+      "matches_installed": true
+    },
+    {
+      "label": "destroy_unwind",
+      "address": "00df48bc",
+      "end_exclusive": "00df48c4",
+      "bytes": 8,
+      "sha256": "9fca13d78e2b3311c95fdb59051619c6bdf88610282accaa416ad1a78948f2d0",
+      "matches_installed": true
+    },
+    {
+      "label": "factory_unwind",
+      "address": "00d95d3c",
+      "end_exclusive": "00d95d44",
+      "bytes": 8,
+      "sha256": "ccffd62c69acbfb03916261c9779da19b1b4b7a80816cfaba28a05456ed9334a",
+      "matches_installed": true
+    },
+    {
+      "label": "ordinary_funclet",
+      "address": "00cbc530",
+      "end_exclusive": "00cbc538",
+      "bytes": 8,
+      "sha256": "3eebfc410dbec2343837e6db9864af5021575a2a866660166a79bc06dbee1105",
+      "matches_installed": true
+    },
+    {
+      "label": "clone_funclet",
+      "address": "00cbc550",
+      "end_exclusive": "00cbc558",
+      "bytes": 8,
+      "sha256": "9e9f4e3e1998dc0ae7b2b931b2430f2b495fc0c35645589d8032ebb3740838db",
+      "matches_installed": true
+    },
+    {
+      "label": "destroy_funclet",
+      "address": "00cbc600",
+      "end_exclusive": "00cbc608",
+      "bytes": 8,
+      "sha256": "e0ba94eef44ab0c76eda5334dddf94d387985a365bee511a7e909847bff7abc0",
+      "matches_installed": true
+    },
+    {
+      "label": "factory_funclet",
+      "address": "00c6c240",
+      "end_exclusive": "00c6c248",
+      "bytes": 8,
+      "sha256": "4813db59c9909e5d8b91af6109dc14988ef9f115674fa02f84c3fc1faafca6d7",
+      "matches_installed": true
+    }
+  ],
+  "old_annotations": [
+    {
+      "address": "00b18900",
+      "annotation": {
+        "address": "00b18900",
+        "function_name": "BSP_Material_ConstructWithEffect",
+        "comment": "[BSP reconstruction 00b18900]\nMaterial wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported.\n\n[BSP reconstruction 00b18900] update\nMaterial wrapper vtable00d5e520. Retains renderer-loaded effect pointer+7Ch, marks effect+B4h byte1, initializes other fields via00b17840. Native allocator/destructor ABI unported. Constructor zeroes exactly nine texture pointers+10..+30 and signed16count+34; typed MaterialTextureSlots capacity9 now established from full229 bytes, not D3D sampler limits.\n\n[BSP reconstruction 00b18900] update\nLighting-only host fragment: initialize embedded68-byte record at material+38h through00b17840, then initialize byte+10Ch to0. Complete PE body also zeroes textures/other fields, installs vtables and retains effect; those ownership operations are not reconstructed by MaterialLighting. Original ABI: ECX material; stack effect pointer; EAX material; RET4; x86 SEH. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b18900] update\nOrdinary material constructor explicitly sets word104 and word108 toFFFFFFFF, after zero100 and before flag10C/10D zero. Installed source material now supplies these values; clone copies them. Full ordinary native object/vtable/cache ABI remains separate. Evidence: docs/INSTANCE_INTEGRATION.md; reports/instance_integration_annotations.json. Original library ABI unchanged; no game validation."
+      }
+    },
+    {
+      "address": "00b18b60",
+      "annotation": {
+        "address": "00b18b60",
+        "function_name": "BSP_Material_CloneConstruct",
+        "comment": "[BSP reconstruction 00b18b60]\nBSP reconstruction hypothesis: Clone-construct110h material. ECX fresh destination, stack source, EAX destination, RET4. Copy DWORD08, pointer0C and exact byte10D; retain0C only when10D nonzero and pointer nonnull. Copy all counted texture slots including nulls with high-water count; force10C=1 and copy17DWORD lighting38..78; retain effect7C, copy104/108, reset100=0. Typed semantic clone reuses MaterialTextureSlots,MaterialLighting,EffectOwner; malformed counts, native caches/destructor/ABI remain separate. Evidence: docs/GENERATED_MATERIAL_CLONE.md; reports/generated_material_clone_audit.json. No gameplay validation. Original ABI: ECX fresh110h-byte destination; stack source material; EAX destination; RET4. Evidence: docs/GENERATED_MATERIAL_CLONE.md; reports/generated_material_clone_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\n\n[BSP reconstruction 00b18b60] update\nBSP reconstruction hypothesis: Clone-construct110h material. ECX fresh destination, stack source, EAX destination, RET4. Copy DWORD08, pointer0C and exact byte10D; retain0C only when10D nonzero and pointer nonnull. Copy all counted texture slots including nulls with high-water count; force10C=1 and copy17DWORD lighting38..78; retain effect7C, copy104/108, reset100=0. Typed semantic clone reuses MaterialTextureSlots,MaterialLighting,EffectOwner; malformed counts, native caches/destructor/ABI remain separate. Evidence: docs/GENERATED_MATERIAL_CLONE.md; reports/generated_material_clone_audit.json. No gameplay validation. Original ABI: ECX fresh110h-byte destination; stack source material; EAX destination; RET4. Evidence: docs/GENERATED_MATERIAL_CLONE.md; reports/generated_material_clone_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation. | Host clone now owns actual MaterialParameterBindings. Native+80..FC records/count100 remain empty after clone while inherited retained shader/metadata allow fresh registration. Effect/shared shader selectors are shared; source registrations are not copied. Native allocator/intrusive ABI remains separate. Evidence: docs/MATERIAL_CONSTANT_BUILDER.md; reports/material_constant_builder_audit.json. Descriptive names are hypotheses; typed host interfaces are not native ABI or gameplay validation."
+      }
+    },
+    {
+      "address": "00b18780",
+      "annotation": {
+        "address": "00b18780",
+        "function_name": "CG_static_dtor_stub_00b18780"
+      }
+    },
+    {
+      "address": "00535320",
+      "annotation": {
+        "address": "00535320",
+        "function_name": "BSP_Material_CreateForEffectName",
+        "comment": "[BSP reconstruction 00535320]\nGlobal manager+0x48 resolves effect; allocate0x110 via00b18780;00b18900 constructor; release temporary effect. Original ABI: ECX native counted effect-name string; EAX material; plain RET. Evidence: docs/MESH_SUBSET_LOD_FIELDS.md; reports/mesh_subset_lod_fields_audit.json. Descriptive symbol is a hypothesis. Host projection is not native ABI or gameplay validation."
+      }
+    },
+    {
+      "address": "00b192f0",
+      "annotation": {
+        "address": "00b192f0",
+        "function_name": "FUN_00b192f0"
+      }
+    },
+    {
+      "address": "00b194b0",
+      "annotation": {
+        "address": "00b194b0",
+        "function_name": "FUN_00b194b0"
+      }
+    },
+    {
+      "address": "00b18200",
+      "annotation": {
+        "address": "00b18200",
+        "function_name": "FUN_00b18200"
+      }
+    },
+    {
+      "address": "00b17440",
+      "annotation": {
+        "address": "00b17440",
+        "function_name": "FUN_00b17440"
+      }
+    },
+    {
+      "address": "00b17a80",
+      "annotation": {
+        "address": "00b17a80",
+        "function_name": "FUN_00b17a80"
+      }
+    },
+    {
+      "address": "00b17d70",
+      "annotation": {
+        "address": "00b17d70",
+        "function_name": "FUN_00b17d70"
+      }
+    }
+  ],
+  "native_abi": {
+    "00b18900": "ECX fresh material; stack effect; EAX same material; RET4",
+    "00b18b60": "ECX fresh destination; stack distinct source; EAX destination; RET4",
+    "00b192f0": "ECX material; RET",
+    "00b194b0": "ECX material; stack flags; EAX original address; RET4"
+  },
+  "actual_layout": {
+    "object_bytes": 272,
+    "pool_slot_bytes": 276,
+    "reference_offset": 4,
+    "textures": 9,
+    "parameters": 32,
+    "texture_count_offset": 52,
+    "lighting_offset": 56,
+    "effect_offset": 124,
+    "parameter_table_offset": 128,
+    "parameter_count_offset": 256,
+    "lighting_flag_offset": 268,
+    "source_retention_byte_offset": 269,
+    "pool_index_offset": 272
+  },
+  "required_services": [
+    "NativeMaterialSlotPool over actual00F8D3AC",
+    "NativeMaterialParameterSlots over actual00F8D3E4",
+    "same NativeRenderActualOwners for effect/textures/source owner terminal dispatch",
+    "actual NativeStringStorage for parameter names",
+    "canonical texture/effect/parameter and MaterialCloneState shared-storage projections",
+    "actual renderer current48 effect factory for00535320",
+    "separate coherent retained widget/layout lifetime for GUI material callbacks"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 2,
+    "seed_spans": 8,
+    "permanent_tests_added": 0,
+    "ignored_fixtures": 1,
+    "native_full_storage_comparisons": 4,
+    "compared_bytes_per_state": 276,
+    "fixture_exit_code": 0,
+    "source_actual_reference_sequence": [
+      2,
+      3,
+      4,
+      3,
+      2,
+      1,
+      0
+    ],
+    "generic_source": "real NativeRenderContextReference and actual destructor/free",
+    "final_source_zero_resolutions": 1,
+    "material_source_pointer_present_during_terminal_callback": true,
+    "raw_material_final_zero_tested": false,
+    "material_pool_tested": false,
+    "parameter_pool_tested": false
+  },
+  "boundaries": [
+    "scratch material storage; no material pool allocated or returned",
+    "null effects and textures; all-null texture high-water count9",
+    "empty actual parameter table count; no parameter destruction pool invocation",
+    "controlled valid source images with exact byte81h and two genuine owned generic source references",
+    "original routine calls relocated to captured original lighting/base code and real kernel32 atomic imports",
+    "original EH handlers retained as dormant addresses; failure/unmasked exception paths not exercised",
+    "no second authoritative MaterialCloneState; no shader/effect fabrication",
+    "new C++ interface, not native ABI or game/render validation"
+  ],
+  "pool_allocation_listing_correction": {
+    "address": "00b18296",
+    "bytes": "83 c4 04",
+    "meaning": "ADD ESP,4 after returning _free; continue at00B18299"
+  },
+  "artifacts": [
+    {
+      "path": "include/bsp/native_material_owner.hpp",
+      "bytes": 5444,
+      "sha256": "c437e235286c65977cbd479e7d5edd294eed8bfae4a205e95a1f403f8715d29a"
+    },
+    {
+      "path": "src/native_material_owner.cpp",
+      "bytes": 9056,
+      "sha256": "02f3e9824a802424fbb1b3a6e34b0b0fc05df6b01b7500e3c58bc76b6240acdb"
+    },
+    {
+      "path": "local/native_material_owner_probe.cpp",
+      "bytes": 8719,
+      "sha256": "06f1f81c776a393846089f09202c9990152f474835d6066a997ee860fd827144"
+    },
+    {
+      "path": "local/native_material_owner_probe.exe",
+      "bytes": 38400,
+      "sha256": "de378cced07be95b3ccba50cac0b39288f00da43d2976c9d3d0503d098385e65"
+    },
+    {
+      "path": "local/build_native_material_owner_probe.ps1",
+      "bytes": 1344,
+      "sha256": "df0e7efa5b83a5b75cabb0f863ae09a1ec11661ed810e93295ec372fdeea437f"
+    },
+    {
+      "path": "local/native_material_owner_probe.log",
+      "bytes": 394,
+      "sha256": "77491ceb8f06837fb6fcac20110c0ab2fdfc45c1db60ad6c0c14fe166b30c817"
+    },
+    {
+      "path": "local/prepare_native_material_owner.py",
+      "bytes": 2327,
+      "sha256": "a3f3890e53fff35d6c373897193a0e59e102598d32cb65a0360c0a356cab9ac5"
+    },
+    {
+      "path": "local/native_material_owner_evidence.json",
+      "bytes": 12523,
+      "sha256": "3c4f6f643cfdaa1af948a27721554ab94ea1f87cb8e2bed0de3877f6839615f3"
+    },
+    {
+      "path": "local/native_material_owner_prepare.log",
+      "bytes": 44,
+      "sha256": "bf30f4286b5d003ac8e847cb454c45b7dee3bf1419d6723f014ac47e9db96980"
+    },
+    {
+      "path": "local/native_material_owner_build.log",
+      "bytes": 17837,
+      "sha256": "c9fff5108be110366af279ab1f9ce09feb54678b5f3612d3b8294b4b580c6cd8"
+    },
+    {
+      "path": "local/native_material_owner_build_final.log",
+      "bytes": 3267,
+      "sha256": "3619adbe2e4f3ded6772d3f715e0352a274cbc088a348b124e22447b607cd06a"
+    },
+    {
+      "path": "local/native_material_owner_seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    }
+  ]
+}

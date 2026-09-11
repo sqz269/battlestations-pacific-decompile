@@ -1,0 +1,552 @@
+{
+  "packet": "orch2_native_material_pools_t",
+  "date": "2026-09-11",
+  "base_commit": "dcaddf7",
+  "dependencies": [
+    {
+      "original": "32dda18",
+      "local": "5fc4583",
+      "purpose": "actual material owner interfaces/storage/final-zero dispatch"
+    },
+    {
+      "original": "352adff",
+      "local": "2ece610",
+      "purpose": "inherited ClipBox 3-versus-4 argument build repair"
+    },
+    {
+      "original": "67d22e6",
+      "purpose": "shared lease mutation serialization",
+      "local": "2b1a4e8"
+    }
+  ],
+  "status": "concrete_actual_storage_reconstructed_strict_win32_build_and_focused_host_fixture_checked",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "read_only": true,
+    "verified_before_each_live_query": true,
+    "annotations_applied": false
+  },
+  "old_name_records": [],
+  "old_saved_annotations": [
+    {
+      "address": "00b17440",
+      "annotation": {
+        "address": "00b17440",
+        "function_name": "FUN_00b17440"
+      }
+    },
+    {
+      "address": "00b17510",
+      "annotation": {
+        "address": "00b17510",
+        "function_name": "FUN_00b17510"
+      }
+    },
+    {
+      "address": "00b17630",
+      "annotation": {
+        "address": "00b17630",
+        "function_name": "FUN_00b17630"
+      }
+    },
+    {
+      "address": "00b17670",
+      "annotation": {
+        "address": "00b17670",
+        "function_name": "FUN_00b17670"
+      }
+    },
+    {
+      "address": "00b17a80",
+      "annotation": {
+        "address": "00b17a80",
+        "function_name": "FUN_00b17a80"
+      }
+    },
+    {
+      "address": "00b17fa0",
+      "annotation": {
+        "address": "00b17fa0",
+        "function_name": "FUN_00b17fa0"
+      }
+    },
+    {
+      "address": "00b180d0",
+      "annotation": {
+        "address": "00b180d0",
+        "function_name": "FUN_00b180d0"
+      }
+    },
+    {
+      "address": "00b18160",
+      "annotation": {
+        "address": "00b18160",
+        "function_name": "FUN_00b18160"
+      }
+    },
+    {
+      "address": "00b18200",
+      "annotation": {
+        "address": "00b18200",
+        "function_name": "FUN_00b18200"
+      }
+    },
+    {
+      "address": "00b18340",
+      "annotation": {
+        "address": "00b18340",
+        "function_name": "FUN_00b18340"
+      }
+    },
+    {
+      "address": "00b18470",
+      "annotation": {
+        "address": "00b18470",
+        "function_name": "FUN_00b18470"
+      }
+    },
+    {
+      "address": "00b18500",
+      "annotation": {
+        "address": "00b18500",
+        "function_name": "FUN_00b18500"
+      }
+    },
+    {
+      "address": "00b185a0",
+      "annotation": {
+        "address": "00b185a0",
+        "function_name": "FUN_00b185a0"
+      }
+    },
+    {
+      "address": "00b193fa",
+      "annotation": {
+        "address": "00b192f0",
+        "function_name": "FUN_00b192f0"
+      }
+    }
+  ],
+  "names_status": "repository-only descriptive hypotheses; saved names/comments unchanged",
+  "claimed_addresses": [
+    "00b17440",
+    "00b17510",
+    "00b17630",
+    "00b17670",
+    "00b17a80",
+    "00b17fa0",
+    "00b180d0",
+    "00b18160",
+    "00b18200",
+    "00b18340",
+    "00b18470",
+    "00b18500",
+    "00b185a0",
+    "00b193fa"
+  ],
+  "standalone_functions": 13,
+  "fragment": {
+    "start": "00b193fa",
+    "end_exclusive": "00b19464",
+    "parent": "00b192f0",
+    "parent_ledger_unchanged": true,
+    "abi": "ESI actual parameter, EBP=1 fromB193CD; fixed F8D3E4 globals; no independent RET",
+    "load_under_lock": "slot+84 loaded B1940B after EnterCriticalSection B193FF",
+    "caller_already_released_name": "B193F5 invokes BD1510 before fragment"
+  },
+  "material_pool": {
+    "global": "00f8d3ac",
+    "vtable": "00d5e518",
+    "virtual0": "00b18160",
+    "slots": 64,
+    "object_bytes": 272,
+    "stride": 276,
+    "slot_slab_index": 272,
+    "slab_bytes": 17796,
+    "free_stack": 17664,
+    "free_count": 17792
+  },
+  "parameter_pool": {
+    "global": "00f8d3e4",
+    "vtable": "00d5e51c",
+    "virtual0": "00b18500",
+    "slots": 128,
+    "object_bytes": 132,
+    "stride": 136,
+    "slot_slab_index": 132,
+    "slab_bytes": 17668,
+    "free_stack": 17408,
+    "free_count": 17664
+  },
+  "shared_layout": {
+    "size": 56,
+    "allocator_element": 0,
+    "critical_section": 12,
+    "recursion": 36,
+    "table": 40,
+    "count": 44,
+    "capacity": 48,
+    "first_free": 52,
+    "initial_capacity": 32,
+    "growth": "capacity*2+2",
+    "no_free": "ffffffff"
+  },
+  "canonical_ownership": [
+    "caller supplies same actual global storage per pool",
+    "single shared AllocatorListDomain and E188B4 head",
+    "single Windows critical section and actual recursion word per pool",
+    "slab metadata is sole free-slot authority",
+    "existing BF681B/BF55BE singleton_lifetime allocator reused",
+    "material actual+04 remains solely in NativeMaterialStorage; pool adds no count"
+  ],
+  "constructor_unwind": {
+    "material_map": "00df4738",
+    "parameter_map": "00df4774",
+    "states": [
+      "base list unlink",
+      "section recursion drain/delete",
+      "table pointer free"
+    ],
+    "material_leaves": [
+      "00cbc4d0",
+      "00cbc4d8",
+      "00cbc4e3"
+    ],
+    "parameter_leaves": [
+      "00cbc500",
+      "00cbc508",
+      "00cbc513"
+    ],
+    "missing_function_entries": [
+      "00cbc4ee",
+      "00cbc51e"
+    ],
+    "raw_bytes_verified": true
+  },
+  "allocation_failure": "no allocation unwind/rollback/unlock; retain native early first_free/capacity publications",
+  "trim": "no lock; free empty slab, move last pointer, decrement count, rewrite EVERY moved slot ID, retry same entry, rescan first_free; no payload copy or capacity shrink",
+  "destruction": "free all slabs then table; drain positive actual recursion; DeleteCriticalSection; base table and actual-list unlink; no payload destruction or clearing stale table fields",
+  "functions": [
+    {
+      "address": "00b17440",
+      "repository_name": "BSP_NativeMaterialPool_InitializeSlab",
+      "cpp_symbol": "initialize_slab<NativeMaterialPool>",
+      "original_abi": "ECX raw slab; stack DWORD slab index; EAX same slab; RET4.",
+      "end_exclusive": "00b17483"
+    },
+    {
+      "address": "00b17510",
+      "repository_name": "BSP_NativeMaterialParameterPool_InitializeSlab",
+      "cpp_symbol": "initialize_slab<NativeMaterialParameterPool>",
+      "original_abi": "ECX raw slab; stack DWORD slab index; EAX same slab; RET4.",
+      "end_exclusive": "00b17556"
+    },
+    {
+      "address": "00b17630",
+      "repository_name": "BSP_NativeMaterialPool_FreeTable",
+      "cpp_symbol": "free_table",
+      "original_abi": "ECX points at pool+28 table field; RET. Does not clear fields.",
+      "end_exclusive": "00b1763e"
+    },
+    {
+      "address": "00b17670",
+      "repository_name": "BSP_NativeMaterialParameterPool_FreeTable",
+      "cpp_symbol": "free_table",
+      "original_abi": "ECX points at pool+28 table field; RET. Does not clear fields.",
+      "end_exclusive": "00b1767e"
+    },
+    {
+      "address": "00b17a80",
+      "repository_name": "BSP_NativeMaterialPool_ReturnSlot",
+      "cpp_symbol": "NativeMaterialPool::return_slot_00b17a80",
+      "original_abi": "ECX pool; stack actual 114h slot; RET4.",
+      "end_exclusive": "00b17ae8"
+    },
+    {
+      "address": "00b17fa0",
+      "repository_name": "BSP_NativeMaterialPool_Construct",
+      "cpp_symbol": "NativeMaterialPool::initialize_00b17fa0",
+      "original_abi": "ECX actual 38h pool; EAX same pool; RET.",
+      "end_exclusive": "00b18073"
+    },
+    {
+      "address": "00b180d0",
+      "repository_name": "BSP_NativeMaterialPool_Destroy",
+      "cpp_symbol": "NativeMaterialPool::destroy_00b180d0",
+      "original_abi": "ECX actual pool; RET.",
+      "end_exclusive": "00b1815a"
+    },
+    {
+      "address": "00b18160",
+      "repository_name": "BSP_NativeMaterialPool_TrimEmptySlabs",
+      "cpp_symbol": "NativeMaterialPool::trim_empty_slabs_00b18160",
+      "original_abi": "ECX actual pool; RET; no lock entry.",
+      "end_exclusive": "00b18200"
+    },
+    {
+      "address": "00b18200",
+      "repository_name": "BSP_NativeMaterialPool_AllocateSlot",
+      "cpp_symbol": "NativeMaterialPool::allocate_00b18200",
+      "original_abi": "ECX actual pool; EAX actual 114h slot; RET.",
+      "end_exclusive": "00b1833c"
+    },
+    {
+      "address": "00b18340",
+      "repository_name": "BSP_NativeMaterialParameterPool_Construct",
+      "cpp_symbol": "NativeMaterialParameterPool::initialize_00b18340",
+      "original_abi": "ECX actual 38h pool; EAX same pool; RET.",
+      "end_exclusive": "00b18413"
+    },
+    {
+      "address": "00b18470",
+      "repository_name": "BSP_NativeMaterialParameterPool_Destroy",
+      "cpp_symbol": "NativeMaterialParameterPool::destroy_00b18470",
+      "original_abi": "ECX actual pool; RET.",
+      "end_exclusive": "00b184fa"
+    },
+    {
+      "address": "00b18500",
+      "repository_name": "BSP_NativeMaterialParameterPool_TrimEmptySlabs",
+      "cpp_symbol": "NativeMaterialParameterPool::trim_empty_slabs_00b18500",
+      "original_abi": "ECX actual pool; RET; no lock entry.",
+      "end_exclusive": "00b185a0"
+    },
+    {
+      "address": "00b185a0",
+      "repository_name": "BSP_NativeMaterialParameterPool_AllocateSlot",
+      "cpp_symbol": "NativeMaterialParameterPool::allocate_slot_00b185a0",
+      "original_abi": "ECX actual pool; EAX actual 88h slot; RET.",
+      "end_exclusive": "00b186dc"
+    }
+  ],
+  "saved_listing_gaps": [
+    {
+      "start": "00b1763c",
+      "end_exclusive": "00b1763d",
+      "meaning": "POP ECX after free"
+    },
+    {
+      "start": "00b1767c",
+      "end_exclusive": "00b1767d",
+      "meaning": "POP ECX after free"
+    },
+    {
+      "start": "00b18059",
+      "end_exclusive": "00b1805c",
+      "meaning": "ADD ESP,4 after free"
+    },
+    {
+      "start": "00b180ed",
+      "end_exclusive": "00b180f8",
+      "meaning": "slab loop increment/stack restore/live count and branch"
+    },
+    {
+      "start": "00b18105",
+      "end_exclusive": "00b18108",
+      "meaning": "ADD ESP,4 after free"
+    },
+    {
+      "start": "00b1816d",
+      "end_exclusive": "00b18170",
+      "meaning": "unreachable alignment"
+    },
+    {
+      "start": "00b18186",
+      "end_exclusive": "00b181c0",
+      "meaning": "slab compaction/all slot ID rewrite/retry"
+    },
+    {
+      "start": "00b18296",
+      "end_exclusive": "00b18299",
+      "meaning": "ADD ESP,4 after free"
+    },
+    {
+      "start": "00b182f9",
+      "end_exclusive": "00b18300",
+      "meaning": "unreachable alignment"
+    },
+    {
+      "start": "00b183f9",
+      "end_exclusive": "00b183fc",
+      "meaning": "ADD ESP,4 after free"
+    },
+    {
+      "start": "00b1848d",
+      "end_exclusive": "00b18498",
+      "meaning": "slab loop increment/stack restore/live count and branch"
+    },
+    {
+      "start": "00b184a5",
+      "end_exclusive": "00b184a8",
+      "meaning": "ADD ESP,4 after free"
+    },
+    {
+      "start": "00b1850d",
+      "end_exclusive": "00b18510",
+      "meaning": "unreachable alignment"
+    },
+    {
+      "start": "00b18527",
+      "end_exclusive": "00b18561",
+      "meaning": "slab compaction/all slot ID rewrite/retry"
+    },
+    {
+      "start": "00b18699",
+      "end_exclusive": "00b186a0",
+      "meaning": "unreachable alignment"
+    }
+  ],
+  "byte_parity": [
+    {
+      "address": "00b17440",
+      "end_exclusive": "00b17483",
+      "bytes": 67,
+      "saved_equals_disk": true,
+      "sha256": "9f424bd9f6b95fe61e30ece1e4eb74b27b778fbb1bc6063aa08173473a4f08f9"
+    },
+    {
+      "address": "00b17510",
+      "end_exclusive": "00b17556",
+      "bytes": 70,
+      "saved_equals_disk": true,
+      "sha256": "4cb8c344e80ca65475e9d09c41e5b7749000c81728bc68fe9bbb264506f09912"
+    },
+    {
+      "address": "00b17630",
+      "end_exclusive": "00b1763e",
+      "bytes": 14,
+      "saved_equals_disk": true,
+      "sha256": "07057bdf7b6c46bce7f92d0e2f7ee5cca38bfb6a51735a80fa7ed73ef5970198"
+    },
+    {
+      "address": "00b17670",
+      "end_exclusive": "00b1767e",
+      "bytes": 14,
+      "saved_equals_disk": true,
+      "sha256": "03858a796a7a5c69b231db7d80145af8890ff034b279378ac3ee9e97dc8091f2"
+    },
+    {
+      "address": "00b17a80",
+      "end_exclusive": "00b17ae8",
+      "bytes": 104,
+      "saved_equals_disk": true,
+      "sha256": "ee0ff10c52413465f0a83a963e4e3d09af31bb5760cf361d656bc7ca2388da47"
+    },
+    {
+      "address": "00b17fa0",
+      "end_exclusive": "00b18073",
+      "bytes": 211,
+      "saved_equals_disk": true,
+      "sha256": "8bb319b64e7800e771e4ad1e9479f58ba5bcb604a0ce14c1bdb8c90fa9de140a"
+    },
+    {
+      "address": "00b180d0",
+      "end_exclusive": "00b1815a",
+      "bytes": 138,
+      "saved_equals_disk": true,
+      "sha256": "ba69b9d033b39514fdbc3638053bbe92f09e188c786e97d671cb69e688da03d1"
+    },
+    {
+      "address": "00b18160",
+      "end_exclusive": "00b18200",
+      "bytes": 160,
+      "saved_equals_disk": true,
+      "sha256": "794b1c23cfeca7cd633a8332abfe125a4511f9af970f53c79ddefd1d851d76b8"
+    },
+    {
+      "address": "00b18200",
+      "end_exclusive": "00b1833c",
+      "bytes": 316,
+      "saved_equals_disk": true,
+      "sha256": "1b3fa81e4fbc4112806299e451d1a176d696b0a412c1c712c14243414fcc4962"
+    },
+    {
+      "address": "00b18340",
+      "end_exclusive": "00b18413",
+      "bytes": 211,
+      "saved_equals_disk": true,
+      "sha256": "450022fb29cd66982a74bf51048bdf810ce52ad6fee241b98796c3e38ad26ba5"
+    },
+    {
+      "address": "00b18470",
+      "end_exclusive": "00b184fa",
+      "bytes": 138,
+      "saved_equals_disk": true,
+      "sha256": "2a64e77252208ba7c8e1b1b73e0cdf14ac3c073192fd282079b3ab2cc02a2bfb"
+    },
+    {
+      "address": "00b18500",
+      "end_exclusive": "00b185a0",
+      "bytes": 160,
+      "saved_equals_disk": true,
+      "sha256": "1bce71bf04b8631474f8bfc23a43726084d1317f70840afd55204c28b27c172e"
+    },
+    {
+      "address": "00b185a0",
+      "end_exclusive": "00b186dc",
+      "bytes": 316,
+      "saved_equals_disk": true,
+      "sha256": "6be2a69b256217a2fa96b16229495ad2a3dddf4a00de758c3460fc18c7b316fc"
+    },
+    {
+      "address": "00b193fa",
+      "end_exclusive": "00b19464",
+      "bytes": 106,
+      "saved_equals_disk": true,
+      "sha256": "4b3d448fca3d0ed45f954e4a34e3fe5fcae72426006c16daa843a19bba88d98e"
+    },
+    {
+      "address": "00cbc4d0",
+      "end_exclusive": "00cbc528",
+      "bytes": 88,
+      "saved_equals_disk": true,
+      "sha256": "690af9fb61253ede2494508a741a7e1dc077ba3361ffd397375b87d7d13b1cfb"
+    },
+    {
+      "address": "00df4738",
+      "end_exclusive": "00df47ac",
+      "bytes": 116,
+      "saved_equals_disk": true,
+      "sha256": "3be02ec48ae69af9ac80eabc91adf39866776469a7585ec7b2ebfcd19b300801"
+    },
+    {
+      "address": "00d5e518",
+      "end_exclusive": "00d5e528",
+      "bytes": 16,
+      "saved_equals_disk": true,
+      "sha256": "dafc97e4d34fd2926c962cad5c502215f49238a17626eaef665d2a76b5e8afba"
+    }
+  ],
+  "validation": {
+    "compiler": "MSVC Win32 Release /W4 /WX",
+    "build_script": "scripts/build.ps1",
+    "ctests_passed": 2,
+    "verify_seeds_passed": 8,
+    "focused_fixture": "ignored local/native_material_pools_probe.cpp",
+    "fixture_checks": [
+      "both pools 33-slab table growth32->66",
+      "shared allocator-list trim dispatch",
+      "compaction rewrites all moved slot IDs with stable payload/address",
+      "return LIFO and table retention after all slabs trim",
+      "parameter return blocked by actual critical section before ID read",
+      "actual material+04 retain/release/final-zero dispatch",
+      "real parameter NativeString destruction and pool returns",
+      "explicit pool destruction and list unlink"
+    ],
+    "fixture_original_native_code_executed": false,
+    "new_permanent_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "build_log": "ignored local/native_material_pools_build.log",
+    "fixture_log": "ignored local/native_material_pools_probe.log",
+    "fixture_passed": true
+  },
+  "remaining_contracts": [
+    "static startup/atexit routing to these exact caller-supplied global storages",
+    "parameter payload initialization by actual binder",
+    "MaterialCloneState/stream/layout projection still not provided",
+    "GUI widget parameter-source lifetime/drain remains required",
+    "allocation failure and native exception differential not fixture tested"
+  ]
+}

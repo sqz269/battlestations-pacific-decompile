@@ -1,0 +1,368 @@
+{
+  "packet": "orch2_gui_raw_material_color_t",
+  "date": "2026-09-11",
+  "base": "f9da084da9fcd674a3ec90d11f103cf423d50b9b",
+  "tested_dependency_head": "ec5ee2543b1f5f6177621ffb6010374216d6f16a",
+  "status": "actual_color_storage_reconstructed_build_and_original_byte_fixture_tested",
+  "documentation": "docs/GUI_RAW_MATERIAL_COLOR.md",
+  "source": "src/gui_material_binding.cpp",
+  "header": "include/bsp/gui_material_binding.hpp",
+  "ghidra_access": "READ ONLY through bsp.py ghidra; existing bsp.gpr/program verified per batch",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "spans": [
+    {
+      "label": "color",
+      "address": "00aa6870",
+      "end_exclusive": "00aa68ea",
+      "bytes": 122,
+      "sha256": "23665e8cb7052229f2e0a69de2b88d95c637bca88f1609b834faa3258d9dacd5",
+      "matches_installed": true
+    },
+    {
+      "label": "diffuse",
+      "address": "00b179f0",
+      "end_exclusive": "00b179f6",
+      "bytes": 6,
+      "sha256": "18126bf420a5b30e2a575d82cb5f7e00eaa3a07965af17c68b8d59713f47b4e3",
+      "matches_installed": true
+    },
+    {
+      "label": "has_geometry",
+      "address": "00b74650",
+      "end_exclusive": "00b7465c",
+      "bytes": 12,
+      "sha256": "d1a5253084bebbfd6425b839fabf5086a1f78f173723121f249d5ace727b64bc",
+      "matches_installed": true
+    },
+    {
+      "label": "geometry",
+      "address": "00b74640",
+      "end_exclusive": "00b74649",
+      "bytes": 9,
+      "sha256": "b7ff20e1db5330d3267e90ab2878843cad302c39fc4734af86a8a8bf08b133f2",
+      "matches_installed": true
+    },
+    {
+      "label": "count",
+      "address": "00b72b40",
+      "end_exclusive": "00b72b44",
+      "bytes": 4,
+      "sha256": "d4d3079e1e2bc80c23488a3e2c1e4850449f45e35fbe39efe7e920ba8e97f0f8",
+      "matches_installed": true
+    },
+    {
+      "label": "element",
+      "address": "00b732c0",
+      "end_exclusive": "00b732cd",
+      "bytes": 13,
+      "sha256": "8dcf736751986acd75e000be99dc03d547d44ca694c404cd7e0d82d5302d3e00",
+      "matches_installed": true
+    },
+    {
+      "label": "model_table",
+      "address": "00d62de8",
+      "end_exclusive": "00d62e44",
+      "bytes": 92,
+      "sha256": "ece91d2dedd6ea5409f0b8066798defc6c40999d2034d4a38dce0c67951851ed",
+      "matches_installed": true
+    },
+    {
+      "label": "node_table",
+      "address": "00d62c88",
+      "end_exclusive": "00d62ce0",
+      "bytes": 88,
+      "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9",
+      "matches_installed": true
+    },
+    {
+      "label": "mesh_table",
+      "address": "00d62d60",
+      "end_exclusive": "00d62d68",
+      "bytes": 8,
+      "sha256": "688e02fc0f53defa3864cd479930562f606e2c41753a04e16dc10a133a98d745",
+      "matches_installed": true
+    },
+    {
+      "label": "section_table",
+      "address": "00d63194",
+      "end_exclusive": "00d6319c",
+      "bytes": 8,
+      "sha256": "a8b374e12296ca89e49db6719e48333bf1ec30ca60b6910c2da6f9fabb2124da",
+      "matches_installed": true
+    },
+    {
+      "label": "material_table",
+      "address": "00d5e520",
+      "end_exclusive": "00d5e528",
+      "bytes": 8,
+      "sha256": "ec587f40209b2c26a75177bbea577637cfdf4e8b825200c7a68c46940cdebf1d",
+      "matches_installed": true
+    },
+    {
+      "label": "minimum",
+      "address": "00ce4adc",
+      "end_exclusive": "00ce4ae0",
+      "bytes": 4,
+      "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da",
+      "matches_installed": true
+    },
+    {
+      "label": "maximum",
+      "address": "00ce4970",
+      "end_exclusive": "00ce4974",
+      "bytes": 4,
+      "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1",
+      "matches_installed": true
+    },
+    {
+      "label": "one",
+      "address": "00d7a24c",
+      "end_exclusive": "00d7a250",
+      "bytes": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "matches_installed": true
+    },
+    {
+      "label": "negative_zero",
+      "address": "00d7a208",
+      "end_exclusive": "00d7a20c",
+      "bytes": 4,
+      "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+      "matches_installed": true
+    },
+    {
+      "label": "unchanged",
+      "address": "00d7a260",
+      "end_exclusive": "00d7a264",
+      "bytes": 4,
+      "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+      "matches_installed": true
+    }
+  ],
+  "old_annotations": [
+    {
+      "address": "00aa6870",
+      "annotation": {
+        "address": "00aa6870",
+        "function_name": "BSP_GuiWidget_SetColor",
+        "comment": "[BSP reconstruction 00aa6870]\nCurrent+50 in base00D5C130, Group00D5CB80, Icon00D5C4C0, FrameBox00D5D130 and Screen00D5BE38. Copies widget RGBA then if native node+180 and mesh+58 nonzero writes only element0 material diffuse; no dirty flag or recursion. ABI: ECX widget; stack RGBA source pointer; RET4. Final instruction00aa68e7 length3; full saved span matches installed PE. docs/GUI_MATERIAL_BINDING.md; reports/gui_material_binding.json. New C++ semantic interface; required canonical lifetime/material owner remains external; no runtime/game validation.\n\n[BSP reconstruction 00aa6870] update\nCurrent+50 in base00D5C130, Group00D5CB80, Icon00D5C4C0, FrameBox00D5D130 and Screen00D5BE38. Copies widget RGBA then if native node+180 and mesh+58 nonzero writes only element0 material diffuse; no dirty flag or recursion. ABI: ECX widget; stack RGBA source pointer; RET4. Final instruction00aa68e7 length3; full saved span matches installed PE. docs/GUI_MATERIAL_BINDING.md; reports/gui_material_binding.json. New C++ semantic interface; required canonical lifetime/material owner remains external; no runtime/game validation. | Integrated host precondition: color publication requires the SAME canonical live NativeModelReference before any write; raw B74650 adapter accepts NativeModelOwner. AA5840 plain-page roots may be cGroup whose +180 is an integer child-array capacity, not model geometry. Inherited AA6870 slot does not establish group-root call safety. Actual model-backed child succeeds and populated group root is rejected before color/geometry access in the focused ignored fixture; no native class guard or arbitrary Screen-color call is inferred. docs/GUI_GEOMETRY_MATERIAL_INTEGRATION.md; docs/GUI_MATERIAL_BINDING.md."
+      }
+    },
+    {
+      "address": "00b179f0",
+      "annotation": {
+        "address": "00b179f0",
+        "function_name": "BSP_Material_GetDiffuseColor",
+        "comment": "[BSP reconstruction 00b179f0]\nECX material, unused stack index RET4; EAX material+38. Font shadow update writes context+168..174 here;00b42350 copies four words into system cMatDiffColor semantic47 for each present stage. docs/FONT_CONTEXT_MATERIAL_BINDINGS.md; reports/font_context_material_bindings_audit.json.\n\n[BSP reconstruction 00b179f0] update\nReturn a live pointer alias to first four record floats (diffuse color). No copy, slot selection, or dirty-flag write. Existing cMatDiffColor consumer audit identifies quartet. Original ABI: ECX material; stack ignored slot; EAX material+38h; RET4. Evidence: docs/MATERIAL_LIGHTING.md; reports/material_lighting_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+      }
+    }
+  ],
+  "owned_addresses": [
+    "00aa6870",
+    "00b179f0"
+  ],
+  "original_abi": {
+    "00aa6870": "ECX widget; stack source RGBA pointer; RET4 at00AA68E7",
+    "00b179f0": "ECX material; ignored stack slot; EAX raw+38; RET4 at00B179F3"
+  },
+  "fixture": {
+    "original_color_complete_bytes": 122,
+    "original_leaf_callees": 5,
+    "original_comparison_cases": 4,
+    "comparisons": [
+      "external raw words including signaling NaN payload/negative zero/subnormal",
+      "widget self source",
+      "one lighting word ahead",
+      "material+34 forward overlap propagates first word"
+    ],
+    "same_raw_model_mesh_section_material": true,
+    "complete_material_bytes_compared": 272,
+    "actual_owner_counts_during_publication": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "added_protective_references": 0,
+    "lighting_flag_before_after": "81",
+    "early_returns": [
+      "model has no geometry",
+      "mesh has no sections"
+    ],
+    "wrong_domain_rejected_before_color_write": true,
+    "material_final_zero_deaths": 1,
+    "final_registered_owners": 0,
+    "final_slab_counts": {
+      "model": 0,
+      "mesh": 0,
+      "section": 0,
+      "material": 0,
+      "parameter": 0
+    },
+    "controlled_boundaries": [
+      "native receiver has only the required widget storage fields and actual model pointer",
+      "canonical owner domain registers and resolves the existing companions",
+      "unused parenting/nonwidget-descendant methods throw",
+      "null effect and empty parameters use valid constructor inputs",
+      "comparison-only raw material snapshot restore occurs between original and host calls"
+    ]
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctest_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "seeds_verified": 8,
+    "focused_ignored_fixture": true,
+    "abi_compatible": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "Raw widget ABI and arbitrary group-root publication are not established.",
+    "Registration callback remains semantic MaterialCloneState with required widget/page/clip lifetime coordination.",
+    "No actual shader/effect/stream/layout/parameter registration or renderer draw was synthesized or validated."
+  ],
+  "artifacts": [
+    {
+      "path": "local/gui_raw_material_color_probe.cpp",
+      "bytes": 12709,
+      "sha256": "6d178a030c5fdbca29920cee91e4f11453c5cbf3c84e777dd628130f78d021dd"
+    },
+    {
+      "path": "local/build_gui_raw_material_color_probe.ps1",
+      "bytes": 1353,
+      "sha256": "c0fe7e8176902324be59cc25198c3209c0df3b8d6beb64803039a1c6152ab8c5"
+    },
+    {
+      "path": "local/gui_raw_material_color_probe.log",
+      "bytes": 639,
+      "sha256": "57fb395a071a8e154cdff2ce3159cc2c4902cab6f84fe2eb6613014622dcb7af"
+    },
+    {
+      "path": "local/gui_raw_material_color_probe.exe",
+      "bytes": 107520,
+      "sha256": "f4bb3c52b0b382ddcbdfa37df6046d8d2ccc739b1ec709179f71cc25a7ef0d8f"
+    },
+    {
+      "path": "local/prepare_gui_raw_material_color.py",
+      "bytes": 2444,
+      "sha256": "ab64740a54412ce33ae01fb3a2dac36161732809f33fbd9300929c538372c1e5"
+    },
+    {
+      "path": "local/gui_color_native_values.hpp",
+      "bytes": 1168,
+      "sha256": "85874103ff82b21d86d7445f7a39db8a1d5043955c31787f9f848931642e05f0"
+    },
+    {
+      "path": "local/gui_raw_material_color_evidence.json",
+      "bytes": 7338,
+      "sha256": "c404af4b2baa23304343cb0cea60d69318be9724c526213db349fe8bfa11a8fe"
+    },
+    {
+      "path": "local/gui_raw_material_color_prepare.log",
+      "bytes": 44,
+      "sha256": "303b534d44d370338fb98ab9f2d9b47ef1be8ad63e30a1f087cfccd1a49c2939"
+    },
+    {
+      "path": "local/gui_raw_material_color_seeds.json",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/gui_raw_material_color_build_final.log",
+      "bytes": 3313,
+      "sha256": "a1a9dcb616b84d0cdd303f84c5b7ac46ba537fae5d83dd471f231d2cc5d08242"
+    },
+    {
+      "path": "local/gui_color_color.bin",
+      "bytes": 122,
+      "sha256": "23665e8cb7052229f2e0a69de2b88d95c637bca88f1609b834faa3258d9dacd5"
+    },
+    {
+      "path": "local/gui_color_count.bin",
+      "bytes": 4,
+      "sha256": "d4d3079e1e2bc80c23488a3e2c1e4850449f45e35fbe39efe7e920ba8e97f0f8"
+    },
+    {
+      "path": "local/gui_color_diffuse.bin",
+      "bytes": 6,
+      "sha256": "18126bf420a5b30e2a575d82cb5f7e00eaa3a07965af17c68b8d59713f47b4e3"
+    },
+    {
+      "path": "local/gui_color_element.bin",
+      "bytes": 13,
+      "sha256": "8dcf736751986acd75e000be99dc03d547d44ca694c404cd7e0d82d5302d3e00"
+    },
+    {
+      "path": "local/gui_color_geometry.bin",
+      "bytes": 9,
+      "sha256": "b7ff20e1db5330d3267e90ab2878843cad302c39fc4734af86a8a8bf08b133f2"
+    },
+    {
+      "path": "local/gui_color_has_geometry.bin",
+      "bytes": 12,
+      "sha256": "d1a5253084bebbfd6425b839fabf5086a1f78f173723121f249d5ace727b64bc"
+    },
+    {
+      "path": "local/gui_color_material_table.bin",
+      "bytes": 8,
+      "sha256": "ec587f40209b2c26a75177bbea577637cfdf4e8b825200c7a68c46940cdebf1d"
+    },
+    {
+      "path": "local/gui_color_maximum.bin",
+      "bytes": 4,
+      "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1"
+    },
+    {
+      "path": "local/gui_color_mesh_table.bin",
+      "bytes": 8,
+      "sha256": "688e02fc0f53defa3864cd479930562f606e2c41753a04e16dc10a133a98d745"
+    },
+    {
+      "path": "local/gui_color_minimum.bin",
+      "bytes": 4,
+      "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da"
+    },
+    {
+      "path": "local/gui_color_model_table.bin",
+      "bytes": 92,
+      "sha256": "ece91d2dedd6ea5409f0b8066798defc6c40999d2034d4a38dce0c67951851ed"
+    },
+    {
+      "path": "local/gui_color_negative_zero.bin",
+      "bytes": 4,
+      "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6"
+    },
+    {
+      "path": "local/gui_color_node_table.bin",
+      "bytes": 88,
+      "sha256": "abf911873a8d5a0f1016b627e3be77a3aa83dc97542846f011e901aefaf1c0a9"
+    },
+    {
+      "path": "local/gui_color_one.bin",
+      "bytes": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+    },
+    {
+      "path": "local/gui_color_section_table.bin",
+      "bytes": 8,
+      "sha256": "a8b374e12296ca89e49db6719e48333bf1ec30ca60b6910c2da6f9fabb2124da"
+    },
+    {
+      "path": "local/gui_color_unchanged.bin",
+      "bytes": 4,
+      "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b"
+    }
+  ]
+}
