@@ -138,7 +138,12 @@ bool parse_lockit_table_00aa0020(const std::vector<std::uint8_t>& bytes,
     std::string name;
     while (position < size) {
         const std::size_t record_start = position;
-        if (!read_token(category) || !read_token(name)) {
+        // Native checks EOF immediately after each first-token byte read,
+        // before checking whether that byte was a space.
+        if (!read_token(category) || position == size) {
+            return true;
+        }
+        if (!read_token(name)) {
             error = "truncated record header at offset " + decimal(record_start);
             return false;
         }
@@ -176,6 +181,10 @@ bool parse_lockit_table_00aa0020(const std::vector<std::uint8_t>& bytes,
             return false;
         }
 
+        const auto category_nul = category.find('\0');
+        if (category_nul != std::string::npos) category.resize(category_nul);
+        const auto name_nul = name.find('\0');
+        if (name_nul != std::string::npos) name.resize(name_nul);
         LocaleRecord record;
         record.key.reserve(category.size() + 1 + name.size());
         record.key = category;
@@ -183,6 +192,7 @@ bool parse_lockit_table_00aa0020(const std::vector<std::uint8_t>& bytes,
         record.key += name;
         record.text.reserve((text_end - text_start) / 2);
         for (std::size_t at = text_start; at + 1 < text_end; at += 2) {
+            if (bytes[at] == 0 && bytes[at + 1] == 0) break;
             record.text.push_back(static_cast<char16_t>(
                 bytes[at] | (static_cast<std::uint16_t>(bytes[at + 1]) << 8)));
         }
@@ -195,15 +205,20 @@ bool parse_lockit_index_00aa0020(const std::vector<std::uint8_t>& bytes,
     std::vector<std::uint16_t>& first, std::vector<std::uint16_t>& second,
     std::string& error) {
     error.clear();
-    if (bytes.size() % 4 != 0) {
-        error = "sidecar length is not a whole number of 16-bit pairs";
+    if (bytes.empty()) return true;
+    if (bytes.size() < 2) {
+        error = "sidecar has a partial two-byte prefix";
         return false;
     }
-    for (std::size_t at = 0; at + 3 < bytes.size(); at += 4) {
+    for (std::size_t at = 2; at + 3 < bytes.size(); at += 4) {
         first.push_back(static_cast<std::uint16_t>(
             bytes[at] | (static_cast<std::uint16_t>(bytes[at + 1]) << 8)));
         second.push_back(static_cast<std::uint16_t>(
             bytes[at + 2] | (static_cast<std::uint16_t>(bytes[at + 3]) << 8)));
+    }
+    if ((bytes.size() - 2) % 4 != 0) {
+        error = "sidecar ends with a partial 16-bit pair";
+        return false;
     }
     return true;
 }
@@ -279,61 +294,70 @@ std::vector<std::string> LocaleTables::split_lookup_key_00a9fad0(const std::stri
     return parts;
 }
 
-bool LocaleTables::load_one_file(const FileReader& reader, const std::string& name,
-    std::string& error) {
-    std::vector<std::uint8_t> bytes;
-    if (!reader(name, bytes)) {
-        return false;
-    }
-    std::vector<LocaleRecord> records;
-    if (!parse_lockit_table_00aa0020(bytes, records, error)) {
-        error = name + ": " + error;
-        return false;
-    }
-    for (LocaleRecord& record : records) {
-        insert_00a9fc30(std::move(record.key), std::move(record.text));
-    }
-    loaded_files_.push_back(name);
-
-    // Phase two of 00aa0020: the same name with "x" appended.
-    std::vector<std::uint8_t> sidecar;
-    if (reader(name + "x", sidecar)) {
-        sidecar_first_.clear();
-        sidecar_second_.clear();
-        std::string sidecar_error;
-        if (!parse_lockit_index_00aa0020(sidecar, sidecar_first_, sidecar_second_,
-                sidecar_error)) {
-            error = name + "x: " + sidecar_error;
+bool LocaleTables::load_one_file(LocaleTableSource& source, const std::string& name,
+    bool skip_sidecar, std::string& error) {
+    auto files = source.override_paths_00bdef90(name);
+    // 00aa0077 appends suffix variants; 00aa0088 appends the original last.
+    files.push_back(name);
+    for (const auto& file : files) {
+        std::vector<std::uint8_t> bytes;
+        if (!source.read_file(file, 2, bytes)) {
+            error = file + ": locale table stream did not open";
             return false;
         }
+        loaded_files_.push_back(file);
+        std::vector<LocaleRecord> records;
+        const bool parsed = parse_lockit_table_00aa0020(bytes, records, error);
+        // Native inserts at every completed record, before later malformed
+        // input can fail. Do not make the whole file a transaction.
+        for (LocaleRecord& record : records) {
+            insert_00a9fc30(std::move(record.key), std::move(record.text));
+        }
+        if (!parsed) {
+            error = file + ": " + error;
+            return false;
+        }
+    }
+    if (skip_sidecar) return true;
+
+    // One sidecar for the original unnumbered name, after all variants/base.
+    // 00aa0379..0410 clears both vectors before the unconditional open.
+    sidecar_first_.clear();
+    sidecar_second_.clear();
+    std::vector<std::uint8_t> sidecar;
+    if (!source.read_file(name + "x", 2, sidecar)) {
+        error = name + "x: locale sidecar stream did not open";
+        return false;
+    }
+    if (!parse_lockit_index_00aa0020(sidecar, sidecar_first_, sidecar_second_, error)) {
+        error = name + "x: " + error;
+        return false;
     }
     return true;
 }
 
-bool LocaleTables::load_current_language(const FileReader& reader, std::string& error) {
+bool LocaleTables::load_current_language(LocaleTableSource& source, std::string& error) {
     error.clear();
     loaded_files_.clear();
     const std::string base = lockit_table_path_00aa09d0(language_);
-    // A missing base file is not an error natively: 00aa0020 iterates an empty
-    // mount list and returns. A malformed one sets `error`.
-    if (!load_one_file(reader, base, error) && !error.empty()) {
+    if (!load_one_file(source, base, false, error)) {
         return false;
     }
     for (std::size_t index = 0; index < kMaxNumberedSuffix; ++index) {
         const std::string numbered = base + decimal(index);
-        std::vector<std::uint8_t> probe;
-        if (!reader(numbered, probe)) {
+        if (!source.resolves_existing_name_00bdf4c0(numbered)) {
             break;  // the native loop breaks on the first name that does not resolve
         }
-        if (!load_one_file(reader, numbered, error) && !error.empty()) {
+        if (!load_one_file(source, numbered, true, error)) {
             return false;
         }
     }
     return true;
 }
 
-bool LocaleTables::set_language_00aa09d0(const FileReader& reader,
-    const std::string& language, bool& changed, std::string& error) {
+bool LocaleTables::set_language_00aa09d0(LocaleTableSource& source,
+    LocaleGuiRefreshHost& gui, const std::string& language, bool& changed,
+    std::string& error) {
     error.clear();
     changed = false;
     if (equal_case_insensitive(language_, language)) {
@@ -345,16 +369,18 @@ bool LocaleTables::set_language_00aa09d0(const FileReader& reader,
     if (tables_.empty()) {
         return true;  // the native gate on the registered-name vector
     }
-    return load_current_language(reader, error);
+    if (!load_current_language(source, error)) return false;
+    gui.refresh_locale_00aa4650();
+    return true;
 }
 
-bool LocaleTables::reload_00aa06d0(const FileReader& reader, bool force,
+bool LocaleTables::reload_00aa06d0(LocaleTableSource& source, bool force,
     std::string& error) {
     error.clear();
     if (count_ != 0 && !force) {
         return true;
     }
-    return load_current_language(reader, error);
+    return load_current_language(source, error);
 }
 
 }  // namespace bsp

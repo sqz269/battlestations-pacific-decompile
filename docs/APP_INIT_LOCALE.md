@@ -94,7 +94,8 @@ installed tree has none.
 2. Copy the argument into `+0x4018`.
 3. `0073c240` on `manager+0x14` clears the map.
 4. Load only when the vector at `+8`/`+0xc` is non-empty *and* the count at `+0x4014` is 0.
-5. Refresh the GUI through `004c12b0` and `00aa4650`. Not reconstructed.
+5. Refresh the GUI through `004c12b0` and `00aa4650` when names are registered.
+   The current loader requires a GUI host for this tail; tree refresh is outside this module.
 
 `00aa06d0` is `__thiscall`, `ECX` = the manager, one `char` stack argument, `RET 4`. It
 loads when the count at `+0x4014` is zero or the flag is set, uses the name already stored
@@ -118,8 +119,10 @@ reads the vector's contents, only whether it is empty.
 ## The .lan record format
 
 `00aa0020` takes the manager in `ECX` plus an 8-byte native string by value and two ints on
-the stack, collects every mount holding the name through `00bdef90`, and parses each
-stream. The state machine at `local_4f80` gives the grammar:
+the stack, collects existing suffix variants through `00bdef90`, appends the original
+name last, and parses each selected stream. This is not a merge of all mounts holding
+one name. The 2026-09-10 assembly audit in [LOCALE_FILE_LOADING.md](LOCALE_FILE_LOADING.md)
+corrects the earlier reader contract. The state machine at `local_4f80` gives the grammar:
 
 ```
 record := category ' ' name ' ' utf16le-text 00 0A 00 0D
@@ -140,10 +143,13 @@ matches, so a repeated key overwrites the earlier text: last record wins.
 ### The .lanx sidecar
 
 When the second int argument is zero, `00aa0020` clears both `uint16` vectors, opens the
-same name with `x` appended (`00ceb488`) and reads 16-bit pairs until end of stream,
+same original name with `x` appended (`00ceb488`), discards an initial two-byte field
+at `00aa04d8`, and reads 16-bit pairs until end of stream,
 appending the first of each pair to the vector at `+0x4020` and the second to `+0x4030`.
 The installed `englishauthentic.lanx` is zero bytes, so the vectors stay empty and the
-purpose of the pairs was not established.
+purpose of the prefix and pairs was not established. Numbered files pass a nonzero
+second argument and do not open or clear sidecars. Both vectors are cleared before
+the mandatory base sidecar open, including when that open fails.
 
 ## The map
 
@@ -198,10 +204,13 @@ rejects it. Treat it as an unshipped artifact of a different writer, not as coun
 ## What was reconstructed
 
 `include/bsp/locale_tables.hpp` and `src/locale_tables.cpp` provide `bsp::LocaleTables`
-with an injected `FileReader`; the module owns no file code, matching the repo rule that
+with required `LocaleTableSource` and `LocaleGuiRefreshHost` services; the module owns no
+file code, matching the repo rule that
 the mounted-stream and physical-file layers already exist. The port keeps the native
 bucket count, hash, chain order, overwrite-on-duplicate rule, numbered-probe order and
-sidecar handling.
+sidecar handling. The GUI tail is now a required host call. See
+[LOCALE_FILE_LOADING.md](LOCALE_FILE_LOADING.md) for the corrected order, failure and
+partial-mutation contracts and current validation.
 
 Two deliberate deviations, both because the native code is unguarded: records whose key
 would exceed 152 bytes or whose text would exceed 19994 bytes are rejected with an error
@@ -214,9 +223,9 @@ instead of overflowing a stack frame.
 | 008d4870 | BSP_GameSettings_GetLanguageName | reconstructed, build-tested, installed-file-checked |
 | 008d4890 | BSP_GameSettings_GetLanguageFontPath | reconstructed, build-tested |
 | 008d7bc0 | BSP_GameSettings_BuildLanguageTable | analyzed; descriptor parse reconstructed and installed-file-checked; the enumeration and the five skip tests at 00553c80 are not reconstructed |
-| 00aa09d0 | BSP_Localization_LoadTable | reconstructed, build-tested, installed-file-checked; GUI refresh tail excluded |
+| 00aa09d0 | BSP_Localization_LoadTable | reconstructed, build-tested, installed-file-checked; required GUI refresh host |
 | 00aa06d0 | BSP_Localization_ReloadTables | reconstructed, build-tested, installed-file-checked |
-| 00aa0020 | BSP_Localization_ParseTableFile | reconstructed, build-tested, installed-file-checked; mount collection left to the injected reader |
+| 00aa0020 | BSP_Localization_ParseTableFile | reconstructed, build-tested, installed-file-checked; ordered suffix variants then original, mandatory VFS reader |
 | 00aa0d30 | BSP_Localization_RegisterTableName | reconstructed, build-tested |
 | 00a9fc30 | BSP_StringMap_InsertOrGet | reconstructed, build-tested, installed-file-checked |
 | 00a9ec70 | BSP_StringMap_Find | reconstructed, build-tested, installed-file-checked |

@@ -1,0 +1,53 @@
+{
+ "repairs": [
+  {
+   "function": "00aa0020",
+   "owner": "agent/orch2-locale-file-loading-20260910g",
+   "when": "2026-09-11T03:48:11Z",
+   "decompile_lines_before": 326,
+   "gaps": [
+    {
+     "site": "00aa0626",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00aa062b",
+     "gap_end_exclusive": "00aa0679",
+     "bytes": 78,
+     "after_call": true,
+     "sha256": "7b5e6071538d76223b213ee8405bb1fb764c3dc15f4a9610a459e1de8808b4f7"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00aa0626",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00aa062b",
+      "gap_end_exclusive": "00aa0679",
+      "bytes": 78,
+      "after_call": true,
+      "sha256": "7b5e6071538d76223b213ee8405bb1fb764c3dc15f4a9610a459e1de8808b4f7"
+     },
+     "clear": "Success: Cleared flow override at 00aa0626 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 78 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00aa0626",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00aa0626 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00aa0679",
+   "explicit_body_sha256": "0a8d7971527bdb5c81493ac0f0192ea275358b7c307d8094220040dbfaf43c90",
+   "body_before": "Function: BSP_Localization_ParseTableFile at 00aa0020\nSignature: undefined BSP_Localization_ParseTableFile(void)\nEntry: 00aa0020\nBody: 00aa0020 - 00aa062a",
+   "decompile_lines_after": 333,
+   "gaps_remaining": 1,
+   "body_after": "Function: BSP_Localization_ParseTableFile at 00aa0020\nSignature: undefined BSP_Localization_ParseTableFile(void)\nEntry: 00aa0020\nBody: 00aa0020 - 00aa062a",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}
