@@ -115,12 +115,18 @@ existing list neighbor. The populated failing constructor leaves its surviving
 slab allocated, as the native unwind frees the table only; fixture cleanup
 reclaims it after observation ends.
 
-All eight seeds match. `scripts/build.ps1` passes with the lifetime source
-included in the primary `bsp_core` library through an ignored local CMake
-include; generated Release options are `/W4 /WX /fp:strict`. Both existing
-CTests pass. No permanent test or shared build/ledger/packet file was changed.
-Static registration is a separate dependent packet. Ghidra annotations and
-saved-export refresh remain with the integrator, including the proven normal
+All eight seeds match. The worker built the lifetime source through an ignored
+CMake include; primary integration now registers it in shared `bsp_core`.
+The strict primary build and both existing CTests pass. The unchanged fixture
+was rerun against a frozen current primary library containing the actual pool,
+trim, allocator-list and shared CRT service implementations. It again matches
+all 52,094 DWORDs, including actual original FH3 search and unwind for both
+failure cases. All 12 fresh live/PE spans and loaded postimages were checked;
+the 10 worker artifact pins and current dependency sources match. The table
+free leaf is emitted in the library and inlined at the compared host call
+sites; its unused separate linked entry is discarded. No permanent test was
+added. Ghidra annotations and refreshed exports include the restored normal
 continuations after free sites `B60584`, `B60288`, `B602A0`, and `B60027`.
+Static registration is a separate dependent packet.
 Actual Win32 section-initialization fault injection, original CRT binary ABI,
 global startup integration and game execution are not validated here.

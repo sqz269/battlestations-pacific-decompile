@@ -1,0 +1,44 @@
+[
+  {
+    "address": "00b604d0",
+    "before": {
+      "address": "00b604d0",
+      "function_name": "FUN_00b604d0"
+    },
+    "after": {
+      "address": "00b604d0",
+      "old_name": "FUN_00b604d0",
+      "name": "BSP_HardwareVertexLayoutPool_Initialize",
+      "evidence": "Complete actual 38h pool constructor. Publish base element to the real shared list, install D62AF0 and initialize actual Win32 section, write fields, then arm state2. Capacity32 publication precedes real allocation128; copy current count/table after actual new-handler processing, free current old table, publish captured replacement only. Genuine trim binding must precede publication. Original FH3 DFA040/DFA058/CC12DE cleanup table then section then base; source finally preserves unwind without a C++ catch. 52,094 matched DWORDs,12 fresh live/PE spans and all postimages; real new-handler retry/trim plus populated and empty bad_alloc FH3 search/unwind. Original ABI: ECX actual 38h pool; EAX same pool; RET; FH3 state2->1->0 cleanup. Complete src/native_hardware_layout_pool_lifetime.cpp; reports/native_hardware_layout_pool_lifetime_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b60270",
+    "before": {
+      "address": "00b60270",
+      "function_name": "FUN_00b60270"
+    },
+    "after": {
+      "address": "00b60270",
+      "old_name": "FUN_00b60270",
+      "name": "BSP_HardwareVertexLayoutPool_Destroy",
+      "evidence": "Complete pool destruction. Capture nonempty count before installing derived profile, reload current table/slab/count around each actual free, free current table, drain positive signed recursion before each real Leave and Delete the actual section, then current shared-list base unlink. No owner destruction, raw pool free, field clearing, or foreign pool object. 52,094 matched DWORDs,12 fresh live/PE spans and all postimages; real new-handler retry/trim plus populated and empty bad_alloc FH3 search/unwind. Original ABI: ECX actual initialized pool; RET; no own EH frame. Complete src/native_hardware_layout_pool_lifetime.cpp; reports/native_hardware_layout_pool_lifetime_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b60020",
+    "before": {
+      "address": "00b60020",
+      "function_name": "FUN_00b60020"
+    },
+    "after": {
+      "address": "00b60020",
+      "old_name": "FUN_00b60020",
+      "name": "BSP_HardwareVertexLayoutPool_FreeTableUnwind",
+      "evidence": "Complete table-header leaf, ECX pool+28 not pool. Capture first pointer, actual shared free only when nonnull, clear nothing. Source leaf is emitted in the frozen library and inlined at compared initialization/destruction sites; original FH3 runs the complete native body. 52,094 matched DWORDs,12 fresh live/PE spans and all postimages; real new-handler retry/trim plus populated and empty bad_alloc FH3 search/unwind. Original ABI: ECX actual table header (pool+28), not pool; RET; first DWORD only; no clears. Complete src/native_hardware_layout_pool_lifetime.cpp; reports/native_hardware_layout_pool_lifetime_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  }
+]

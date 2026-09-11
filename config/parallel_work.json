@@ -3808,8 +3808,8 @@
       "id": "native_hardware_layout_pool_lifetime3",
       "packet": "native_hardware_layout_pool_lifetime3",
       "worker": "particle_clock_lifetime",
-      "done": false,
-      "state": "worker_implementing_actual_pool_lifetime_with_required_trim_binding",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b604d0",
         "00b60270",
@@ -3823,7 +3823,8 @@
       ],
       "prerequisite_packets": [],
       "scope": "Genuine trim binding is required before actual node publication. Source implementation may proceed independently; verified initialization composition requires trim1.",
-      "discovery_evidence": "reports/native_hardware_layout_global_startup_next.json"
+      "discovery_evidence": "reports/native_hardware_layout_global_startup_next.json",
+      "evidence": "reports/native_hardware_layout_pool_lifetime_audit.json"
     },
     {
       "id": "native_hardware_layout_pool_trim1",
@@ -3849,8 +3850,8 @@
       "id": "native_hardware_layout_pool_static2",
       "packet": "native_hardware_layout_pool_static2",
       "worker": "material_effect_plane",
-      "done": false,
-      "state": "assigned_after_factory_waiting_for_actual_lifetime_and_trim_composition",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00cd7ca0",
         "00ce0d40"
@@ -3866,14 +3867,15 @@
         "native_hardware_layout_pool_trim1"
       ],
       "scope": "One canonical actual 108FE9C-equivalent storage and shared list domain; real host atexit with actual destructor callback.",
-      "discovery_evidence": "reports/native_hardware_layout_global_startup_next.json"
+      "discovery_evidence": "reports/native_hardware_layout_global_startup_next.json",
+      "evidence": "reports/native_hardware_layout_pool_static_audit.json"
     },
     {
       "id": "native_hardware_layout_tree_lifetime3",
       "packet": "native_hardware_layout_tree_lifetime3",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "assigned_after_pool_trim",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00b25dc0",
         "00b230b0",
@@ -3889,14 +3891,15 @@
         "native_hardware_layout_tree"
       ],
       "discovery_evidence": "reports/native_hardware_layout_tree_global_next.json",
-      "scope": "Actual canonical tree storage lifetime; preserve native read/store/validation order and actual allocator/iterator/CRT boundaries."
+      "scope": "Actual canonical tree storage lifetime; preserve native read/store/validation order and actual allocator/iterator/CRT boundaries.",
+      "evidence": "reports/native_hardware_layout_tree_lifetime_audit.json"
     },
     {
       "id": "native_hardware_layout_tree_static2",
       "packet": "native_hardware_layout_tree_static2",
       "worker": "main",
-      "done": false,
-      "state": "waiting_for_actual_tree_lifetime_dependency",
+      "done": true,
+      "state": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
       "function_addresses": [
         "00cd7960",
         "00ce0c50"
@@ -3911,7 +3914,126 @@
         "native_hardware_layout_tree_lifetime3"
       ],
       "discovery_evidence": "reports/native_hardware_layout_tree_global_next.json",
-      "scope": "Actual canonical tree storage lifetime; preserve native read/store/validation order and actual allocator/iterator/CRT boundaries."
+      "scope": "Actual canonical tree storage lifetime; preserve native read/store/validation order and actual allocator/iterator/CRT boundaries.",
+      "evidence": "reports/native_hardware_layout_tree_static_audit.json"
+    },
+    {
+      "id": "native_cube_texture_pool_allocate5",
+      "packet": "native_cube_texture_pool_allocate5",
+      "worker": "material_effect_plane",
+      "done": false,
+      "state": "worker_source_and_native_fixture_in_progress",
+      "function_addresses": [
+        "00b3d2a0",
+        "00b3f170",
+        "00b3d940",
+        "00b3f2c0",
+        "00b3dce0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_cube_texture_pool_allocate.hpp",
+        "src/native_cube_texture_pool_allocate.cpp",
+        "docs/NATIVE_CUBE_TEXTURE_POOL_ALLOCATE.md",
+        "reports/native_cube_texture_pool_allocate_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_texture_pool_global_startup_next.json",
+      "scope": [
+        "Actual initialized38h pool and actual valid reached slab/table extents.",
+        "Existing real CRT allocation/free and actual Enter/LeaveCriticalSection."
+      ],
+      "source_ready": true,
+      "composition_dependencies": [
+        "lifetime3 establishes actual initialized pool.",
+        "trim1 genuine binding is needed before publication if real new-handler traverses shared list."
+      ],
+      "active_lease_packet_id": "native_cube_texture_pool_allocate4"
+    },
+    {
+      "id": "native_cube_texture_pool_trim1",
+      "packet": "native_cube_texture_pool_trim1",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_source_and_native_fixture_in_progress",
+      "function_addresses": [
+        "00b3e690"
+      ],
+      "code_ownership": [
+        "include/bsp/native_cube_texture_pool_trim.hpp",
+        "src/native_cube_texture_pool_trim.cpp",
+        "docs/NATIVE_CUBE_TEXTURE_POOL_TRIM.md",
+        "reports/native_cube_texture_pool_trim_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "discovery_evidence": "reports/native_texture_pool_global_startup_next.json",
+      "scope": [
+        "Actual valid pool/slabs/table and existing real free service."
+      ],
+      "source_ready": true,
+      "composition_dependencies": [],
+      "active_lease_packet_id": "native_cube_texture_pool_trim1"
+    },
+    {
+      "id": "native_cube_texture_pool_lifetime3",
+      "packet": "native_cube_texture_pool_lifetime3",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_source_and_native_fixture_in_progress",
+      "function_addresses": [
+        "00b3f090",
+        "00b3e5b0",
+        "00b3d3f0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_cube_texture_pool_lifetime.hpp",
+        "src/native_cube_texture_pool_lifetime.cpp",
+        "docs/NATIVE_CUBE_TEXTURE_POOL_LIFETIME.md",
+        "reports/native_cube_texture_pool_lifetime_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_cube_texture_pool_trim1"
+      ],
+      "discovery_evidence": "reports/native_texture_pool_global_startup_next.json",
+      "scope": [
+        "Actual pool storage and shared AllocatorListDomain borrowing real head.",
+        "Actual CRT malloc/new-handler/free and real Win32 section initialization/destruction."
+      ],
+      "source_ready": true,
+      "composition_dependencies": [
+        "native_cube_texture_pool_trim1 genuine binding before publication"
+      ],
+      "active_lease_packet_id": "native_cube_texture_pool_lifetime3"
+    },
+    {
+      "id": "native_cube_texture_pool_static2",
+      "packet": "native_cube_texture_pool_static2",
+      "worker": "main",
+      "done": false,
+      "state": "primary_waiting_for_actual_lifetime_and_trim_dependencies",
+      "function_addresses": [
+        "00cd7b80",
+        "00ce0cb0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_cube_texture_pool_static.hpp",
+        "src/native_cube_texture_pool_static.cpp",
+        "docs/NATIVE_CUBE_TEXTURE_POOL_STATIC.md",
+        "reports/native_cube_texture_pool_static_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_cube_texture_pool_lifetime3",
+        "native_cube_texture_pool_trim1"
+      ],
+      "discovery_evidence": "reports/native_texture_pool_global_startup_next.json",
+      "scope": [
+        "One canonical actual0108DB70-equivalent storage/list binding and actual std::atexit registration."
+      ],
+      "source_ready": false,
+      "composition_dependencies": [
+        "native_cube_texture_pool_lifetime3",
+        "native_cube_texture_pool_trim1"
+      ],
+      "active_lease_packet_id": "native_cube_texture_pool_static2"
     }
   ],
   "snapshot_after_analysis": {

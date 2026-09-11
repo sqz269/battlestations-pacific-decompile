@@ -20,14 +20,15 @@ is retained, but the established shared allocator cannot return null
 successfully; mandatory later writes require backed storage. No constructor
 callback, rollback policy or substitute allocator was introduced.
 
-B230B0 contains an 11-byte continuation at B230D4..B230DE that the current
-Ghidra listing omits after the call to returning free. Those bytes clean the
+B230B0 contains an 11-byte continuation at B230D4..B230DE that the initial
+Ghidra listing omitted after the call to returning free. Those bytes clean the
 stack, test the captured left child's sentinel, select that child and loop.
 The full 53-byte body matches fresh live Ghidra bytes and the installed PE.
 The implementation reloads the current left link after right recursion, then
 captures it before freeing the original current node. It leaves sentinels,
 tree headers and borrowed values alone. The primary integrator owns the
-Ghidra flow repair, evidence comments, naming, ledger entries and export refresh.
+Ghidra flow repair, evidence comments, naming, ledger entries and export refresh;
+these are now applied and saved with the complete function body.
 
 B2F3A0 preserves checked-iterator identity and instruction order. It captures
 the current minimum before first-owner validation, reads the first node after
@@ -68,7 +69,11 @@ Source and public contracts are in
 source/object/library pins, postimages, provider map lines, fixture artifacts
 and behavior evidence are in
 `reports/native_hardware_layout_tree_lifetime_audit.json`. Shared CMake and
-metadata integration remain the primary agent's responsibility. Global tree
+metadata integration were completed by the primary agent. The unchanged fixture
+was rerun against a frozen current primary library containing all three owned
+routines and the actual tree/allocation/exception dependencies. All 35 worker
+pins, 48 fresh live/PE spans and complete runtime postimages were independently
+checked. The rerun again matches 13,747 DWORDs and all 14 output stores. Global tree
 initialization/shutdown and hardware-layout value ownership are separate
 packets; malformed graphs, concurrent mutation and game execution remain
 unvalidated.

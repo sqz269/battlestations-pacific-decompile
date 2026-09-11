@@ -1,0 +1,44 @@
+[
+  {
+    "address": "00b25dc0",
+    "before": {
+      "address": "00b25dc0",
+      "function_name": "FUN_00b25dc0"
+    },
+    "after": {
+      "address": "00b25dc0",
+      "old_name": "FUN_00b25dc0",
+      "name": "BSP_HardwareLayoutTree_AllocateSentinel",
+      "evidence": "Complete raw 28h sentinel allocator. Actual shared CRT allocation; preserve individual computed-address tests for three zero link stores, then black1 and nonsentinel0 bytes. Key/value/padding remain untouched. Successful null allocation is not supported by the established allocator. Caller sets sentinel1. 13,747 matched DWORDs,43 frees,nine handler calls and14 output stores;48 fresh live/PE spans and all postimages,309 owned native bytes unchanged. Original ABI: ECX unused; no stack arguments; EAX actual allocation; RET. Complete src/native_hardware_layout_tree_lifetime.cpp; reports/native_hardware_layout_tree_lifetime_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b230b0",
+    "before": {
+      "address": "00b230b0",
+      "function_name": "FUN_00b230b0"
+    },
+    "after": {
+      "address": "00b230b0",
+      "old_name": "FUN_00b230b0",
+      "name": "BSP_HardwareLayoutTree_DestroySubtree",
+      "evidence": "Complete right-subtree recursion, current left capture after recursive return, actual node free, then traversal of captured left. Preserve sentinel/header and borrowed values. Restored returning-free continuation B230D4..B230DE; no COM/value release. 13,747 matched DWORDs,43 frees,nine handler calls and14 output stores;48 fresh live/PE spans and all postimages,309 owned native bytes unchanged. Original ABI: ECX actual tree carried through recursion; stack node; RET4; EAX unspecified. Complete src/native_hardware_layout_tree_lifetime.cpp; reports/native_hardware_layout_tree_lifetime_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b2f3a0",
+    "before": {
+      "address": "00b2f3a0",
+      "function_name": "FUN_00b2f3a0"
+    },
+    "after": {
+      "address": "00b2f3a0",
+      "old_name": "FUN_00b2f3a0",
+      "name": "BSP_HardwareLayoutTree_EraseRange",
+      "evidence": "Complete checked range erase with input iterator values. Capture minimum before first-owner validation and head before last-owner validation. Full range destroys current root and reloads head at native reset points, captures result node before output. Partial path validates owner equality before every equality test, increments actual local first then erases captured old pair and reloads first. Output OWNER then NODE preserves header aliases; handlers may return or throw. 13,747 matched DWORDs,43 frees,nine handler calls and14 output stores;48 fresh live/PE spans and all postimages,309 owned native bytes unchanged. Original ABI: ECX actual tree; stack output, first owner/node, last owner/node; EAX output; RET14h. Complete src/native_hardware_layout_tree_lifetime.cpp; reports/native_hardware_layout_tree_lifetime_audit.json. Strict MSVC Win32 build and two existing tests passed. New C++ interfaces; no original ABI, full startup, GPU or game validation."
+    },
+    "status": "applied"
+  }
+]
