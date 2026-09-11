@@ -1,4 +1,5 @@
 #include "bsp/gui_widget.hpp"
+#include <stdexcept>
 
 namespace bsp {
 namespace {
@@ -10,6 +11,43 @@ namespace {
 float pivot_term(float size_lane, float pivot_lane) noexcept
 {
     return size_lane * pivot_lane;
+}
+
+void store_widescreen_local_x(GuiWidgetTransform& widget,
+    GuiWideScreenAlign align, bool widescreen) noexcept
+{
+    //00AA8761..00AA877F: the native operation uses x87 even for a plain
+    //authored-value copy. Preserve the FLD/FSTP treatment of signaling NaNs.
+    const float* authored = &widget.authored_x;
+    float* destination = &widget.position.x;
+    // Actual00D5C118 bits3FC2222240000000 are exactly this promoted float.
+    const double shift = static_cast<double>(kGuiWideScreenShift);
+    if (align == GuiWideScreenAlign::None || !widescreen) {
+        __asm {
+            mov ecx, authored
+            mov edx, destination
+            fld dword ptr [ecx]
+            fstp dword ptr [edx]
+        }
+    } else if (align == GuiWideScreenAlign::ShiftNegativeX) {
+        __asm {
+            mov ecx, authored
+            mov edx, destination
+            fld dword ptr [ecx]
+            fsub qword ptr shift
+            fstp dword ptr [edx]
+        }
+    } else if (align == GuiWideScreenAlign::ShiftPositiveX) {
+        __asm {
+            mov ecx, authored
+            mov edx, destination
+            fld dword ptr [ecx]
+            fadd qword ptr shift
+            fstp dword ptr [edx]
+        }
+    }
+    //00AA876F: invalid nonzero alignment with widescreen enabled does not
+    //load either float and does not store position.x at all.
 }
 
 } // namespace
@@ -185,13 +223,14 @@ void apply_widescreen_layout(
     // 00AA8714..00AA8744: the children are walked first, in list order, and the
     // loop is bounded by the stored count rather than by the sentinel.
     for (GuiWidgetTransform* child : widget.children) {
-        if (child != nullptr) {
-            apply_widescreen_layout(*child, host);
-        }
+        if (child == nullptr)
+            throw std::invalid_argument("GUI layout requires non-null child payloads");
+        apply_widescreen_layout(*child, host);
     }
 
-    widget.position.x = widescreen_local_x(widget.authored_x,
-        widget.widescreen_align, host.widescreen_enabled(), widget.position.x);
+    const auto align = widget.widescreen_align; //00AA8746, before platform read
+    const bool widescreen = align != GuiWideScreenAlign::None && host.widescreen_enabled();
+    store_widescreen_local_x(widget, align, widescreen);
 
     // 00AA8782: the +DCh listener. That pointer is not modelled in the layout
     // projection, so the null gate at 00AA8788 lives on the host side.

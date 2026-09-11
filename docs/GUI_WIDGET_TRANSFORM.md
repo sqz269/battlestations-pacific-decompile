@@ -330,3 +330,15 @@ projection with a `std::vector` where the original has an intrusive list.
 - Virtual +60h is not visibility: its base writes the byte at widget+85h that one control class reads, so `00aa7170` clears that byte and republishes the bounds.
 - The authored `Visible` property is the byte at widget+E4h; effective visibility is the float at node+ACh, written by `BSP_GuiWidget_SetVisible` after the ancestor walk and the propagation walk, with widget+75h deciding whether a descendant takes the requested value. Draw skips on the node factor; hit tests skip on virtual +38h plus the +77h and +78h bytes.
 - The vtable +20h walk is teardown (children first, kind-of test, unlink, release), and `00aab4c0` is a subtree clone because `00aa6560` is a type-tag factory switch.
+
+## Correction from docs/GUI_LAYOUT_FINISHED.md
+
+The earlier decimal value for D5C118 was wrong. Its captured bits
+3FC2222240000000 decode to exactly0.1416666805744171142578125, promoted float
+3E111112. The former literal encoded3E1110E8 despite its correct bit comment.
+AA8710 also skips the platform read entirely for alignment zero and skips the
+position store for invalid nonzero alignment with widescreen enabled. Valid
+stores retain native x87 FLD/FSTP behavior. The corrected header/helper passes
+80 original-instruction comparisons using the independently captured constant.
+The new live companion adapter supplies the supported final+24 profile operation;
+it does not establish a native widget vtable, teardown-phase dispatch or lifetime.
