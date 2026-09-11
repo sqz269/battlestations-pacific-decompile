@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "packet": "native_hardware_layout_fields",
-  "status": "four_functions_reconstructed_original_byte_fixture_passed",
+  "status": "primary_library_relinked_original_fixture_passed_pending_saved_definitions_and_annotations",
   "worktree": "J:\\PROG\\battlestations-pacific-decompile-native-hardware-layout-fields-20260910",
   "branch": "agent/native-hardware-layout-fields-20260910",
   "base_commit": "1db46e7",
@@ -1138,5 +1138,360 @@
       "bytes": 22176288,
       "sha256": "fe4e6fbc7ad6be2d92d3fb780cf4cda2fe4d20084717040489b85c43f40830e9"
     }
-  ]
+  ],
+  "primary_integration": {
+    "verified_evidence": {
+      "worker_preverification": {
+        "worker_commit": "206fba3",
+        "verified_pins": 31,
+        "verified_spans": 23,
+        "verified_bytes": 1147,
+        "exact_primary_source_matches": true
+      },
+      "postimages_verified": 23,
+      "declared_patches": [
+        {
+          "address": "00b48c03",
+          "kind": "registered_constructor_handler",
+          "replacement_hex": "90470030"
+        },
+        {
+          "address": "00b48c2c",
+          "kind": "relocated_original",
+          "replacement_hex": "f0832a01"
+        },
+        {
+          "address": "00b48c31",
+          "kind": "relocated_original",
+          "replacement_hex": "40762a01"
+        },
+        {
+          "address": "00b48a03",
+          "kind": "registered_append_handler",
+          "replacement_hex": "80470030"
+        },
+        {
+          "address": "00b48a46",
+          "kind": "relocated_original",
+          "replacement_hex": "1c224401"
+        },
+        {
+          "address": "00b48a6d",
+          "kind": "relocated_original",
+          "replacement_hex": "1c224401"
+        },
+        {
+          "address": "00b48a7b",
+          "kind": "relocated_original",
+          "replacement_hex": "20224401"
+        },
+        {
+          "address": "00b48aac",
+          "kind": "relocated_original",
+          "replacement_hex": "20224401"
+        },
+        {
+          "address": "00b48400",
+          "kind": "relocated_original",
+          "replacement_hex": "20224401"
+        },
+        {
+          "address": "00bf7cd4",
+          "kind": "relocated_original",
+          "replacement_hex": "502d5601"
+        },
+        {
+          "address": "00bf7c13",
+          "kind": "relocated_original",
+          "replacement_hex": "102d5601"
+        },
+        {
+          "address": "00bf7c71",
+          "kind": "relocated_original",
+          "replacement_hex": "302d5601"
+        },
+        {
+          "address": "00c07c01",
+          "kind": "seh4_handler",
+          "replacement_hex": "a0470030"
+        },
+        {
+          "address": "00c07c1e",
+          "kind": "security_cookie",
+          "replacement_hex": "00d00030"
+        },
+        {
+          "address": "00cbf6f9",
+          "kind": "relocated_original",
+          "replacement_hex": "f8805501"
+        },
+        {
+          "address": "00cbf779",
+          "kind": "relocated_original",
+          "replacement_hex": "94815501"
+        },
+        {
+          "address": "00df80f4",
+          "kind": "relocated_original",
+          "replacement_hex": "f0f64101"
+        },
+        {
+          "address": "00df8100",
+          "kind": "relocated_original",
+          "replacement_hex": "f0805501"
+        },
+        {
+          "address": "00df8190",
+          "kind": "relocated_original",
+          "replacement_hex": "70f74101"
+        },
+        {
+          "address": "00df819c",
+          "kind": "relocated_original",
+          "replacement_hex": "8c815501"
+        },
+        {
+          "address": "00e02d24",
+          "kind": "relocated_original",
+          "replacement_hex": "337c3501"
+        },
+        {
+          "address": "00e02d28",
+          "kind": "relocated_original",
+          "replacement_hex": "5c7c3501"
+        },
+        {
+          "address": "00e02d48",
+          "kind": "relocated_original",
+          "replacement_hex": "b97c3501"
+        },
+        {
+          "address": "00e02d68",
+          "kind": "relocated_original",
+          "replacement_hex": "1e7d3501"
+        },
+        {
+          "address": "00d61d1c",
+          "kind": "relocated_original",
+          "replacement_hex": "e0303301"
+        },
+        {
+          "address": "00d61d20",
+          "kind": "relocated_original",
+          "replacement_hex": "a08c2a01"
+        },
+        {
+          "address": "00b48ca0",
+          "kind": "declaration",
+          "replacement_hex": "e92b9fd52e"
+        },
+        {
+          "address": "00bf6b43",
+          "kind": "cxx",
+          "replacement_hex": "e968c0ca2e"
+        },
+        {
+          "address": "00c07a75",
+          "kind": "terminate",
+          "replacement_hex": "e906c7c92e"
+        },
+        {
+          "address": "00ce221c",
+          "kind": "increment",
+          "replacement_hex": "b0340030"
+        },
+        {
+          "address": "00ce2220",
+          "kind": "decrement",
+          "replacement_hex": "402c0030"
+        }
+      ],
+      "primary_library_providers": [
+        {
+          "address": "00b47640",
+          "map_line": "0001:00005730       ?initialize_native_hardware_layout_record_00b47640@bsp@@YAPAXPAX@Z 30006730 f   bsp_core:native_hardware_layout_fields.obj"
+        },
+        {
+          "address": "00b48c00",
+          "map_line": "0001:00005680       ?initialize_native_hardware_layout_base_00b48c00@bsp@@YAPAXPAX@Z 30006680 f   bsp_core:native_hardware_layout_fields.obj"
+        },
+        {
+          "address": "00b48a00",
+          "map_line": "0001:00005480       ?append_native_hardware_layout_stream_00b48a00@bsp@@YAXPAX0AAUNativeHardwareLayoutOwnerContext@1@@Z 30006480 f   bsp_core:native_hardware_layout_fields.obj"
+        },
+        {
+          "address": "00b47d60",
+          "map_line": "0001:00005770       ?recompute_native_hardware_layout_stride_00b47d60@bsp@@YAXPAX@Z 30006770 f   bsp_core:native_hardware_layout_fields.obj"
+        }
+      ],
+      "paired_cases": 7,
+      "matching_DWORDs": 6540,
+      "native_append_FH3_search": 1,
+      "native_append_FH3_unwind": 1,
+      "second_failure_children_exit": 91,
+      "second_failure_terminal": "TERMINAL: count=1 target=11 metadata=57600/57856 refs=0/0 profiles=00ceb130/00ceb130 enters=2 leaves=0 uncaught=1",
+      "actual_linked_library_archive": {
+        "path": "build/hardware-fields-primary-check/bsp_core.linked.lib",
+        "sha256": "36ff09a4db75b7f08eac7c75c4ea89f9c7276bc38158ce2ba09ad901cd022505",
+        "bytes": 22181012
+      },
+      "primary_pins": [
+        {
+          "path": "local/build_hardware_fields_primary_check.ps1",
+          "sha256": "731ffaf022b50e7e14a527b21c83ffbd476a8ec05b5780322285517108cc29bc",
+          "bytes": 2951
+        },
+        {
+          "path": "local/native_hardware_fields_primary_fixture.txt",
+          "sha256": "dce395bc568c5a668aaa9a284e9ddf085180662404b8ddd283cbb1f9718b5084",
+          "bytes": 856
+        },
+        {
+          "path": "local/hardware_fields_comparison.log",
+          "sha256": "97cdebc04f7795dafd64f5ee9575fdb5a4c77e3a5506df3e07663f7b358d7ac2",
+          "bytes": 384
+        },
+        {
+          "path": "local/hardware_fields_double_native.log",
+          "sha256": "7d52e56407c6637e814ed7bf6a47f71a9861b80705c6e7494d4552aff78e9817",
+          "bytes": 190
+        },
+        {
+          "path": "local/hardware_fields_double_source.log",
+          "sha256": "1d48de6408d50b8047dc90aecf786c5c0953d8eb5a32f59041a30e725634dd41",
+          "bytes": 190
+        },
+        {
+          "path": "local/hardware_fields_postimages.json",
+          "sha256": "353d5ef82c7b49ed1d82c923d489258d80c8f15cabdfdc17c5a94834625a1846",
+          "bytes": 3284
+        },
+        {
+          "path": "local/hardware_fields_raw_traces.json",
+          "sha256": "bc311a945139d2961d424dfb9f5e45c83c4cc84417ebed8ce8b597383d73556f",
+          "bytes": 38718
+        },
+        {
+          "path": "local/native_hardware_fields_primary_build.txt",
+          "sha256": "27af95596fc088680abbd31baf169f200593500824d7d7397f5d1a31f8b6a907",
+          "bytes": 1787
+        },
+        {
+          "path": "build/hardware-fields-primary-check/hardware_fields_check.exe",
+          "sha256": "42079dea1453fe1bd07361eb441e7196dd7f0eedccdc4a69d59054db1bcc8d4b",
+          "bytes": 48640
+        },
+        {
+          "path": "build/hardware-fields-primary-check/hardware_fields_check.map",
+          "sha256": "46c65ba14652afca4da1d79f6abae2fbdc55f22bcc36824c9734de52f766d344",
+          "bytes": 97289
+        },
+        {
+          "path": "build/hardware-fields-primary-check/hardware_fields_check.obj",
+          "sha256": "1570666b1e9603f83a69b476cdbf086c78ca21f00e836de46864250635dae14c",
+          "bytes": 196536
+        },
+        {
+          "path": "build/hardware-fields-primary-check/bsp_core.linked.lib",
+          "sha256": "36ff09a4db75b7f08eac7c75c4ea89f9c7276bc38158ce2ba09ad901cd022505",
+          "bytes": 22181012
+        },
+        {
+          "path": "include/bsp/native_hardware_layout_fields.hpp",
+          "sha256": "11a8ce32277f04e322d95d12e5b047dfd783be33d47769136b7a339635534472",
+          "bytes": 1855
+        },
+        {
+          "path": "src/native_hardware_layout_fields.cpp",
+          "sha256": "3c2542faa86ed60c2d0ec84f313cd7680ae079afddc77598eab9c99a7d02bdbc",
+          "bytes": 4823
+        }
+      ],
+      "strict_build_CTests_passed": 2,
+      "new_tracked_tests": 0
+    },
+    "annotations_applied": false,
+    "ledger_upgrades": 2,
+    "new_functions": 2,
+    "abi_compatible": false,
+    "game_validated": false,
+    "records": [
+      {
+        "kind": "function",
+        "address": "00b47640",
+        "name": "initialize_native_hardware_layout_record_00b47640",
+        "cpp_symbol": "initialize_native_hardware_layout_record_00b47640",
+        "source": "src/native_hardware_layout_fields.cpp",
+        "native_end_exclusive": "00b47657",
+        "original_abi": "ECX actual 0Ch record; EAX same address; RET.",
+        "evidence": "reports/native_hardware_layout_fields_audit.json",
+        "status": "complete_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b48c00",
+        "name": "initialize_native_hardware_layout_base_00b48c00",
+        "cpp_symbol": "initialize_native_hardware_layout_base_00b48c00",
+        "source": "src/native_hardware_layout_fields.cpp",
+        "native_end_exclusive": "00b48c71",
+        "original_abi": "ECX actual 44h owner; EAX same address; RET.",
+        "evidence": "reports/native_hardware_layout_fields_audit.json",
+        "status": "complete_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b48a00",
+        "name": "append_native_hardware_layout_stream_00b48a00",
+        "cpp_symbol": "append_native_hardware_layout_stream_00b48a00",
+        "source": "src/native_hardware_layout_fields.cpp",
+        "native_end_exclusive": "00b48acf",
+        "original_abi": "ECX actual owner; stack actual declaration; RET4; EAX unspecified.",
+        "evidence": "reports/native_hardware_layout_fields_audit.json",
+        "status": "complete_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false,
+        "previous_interfaces": [
+          {
+            "address": "00b48a00",
+            "name": "BSP_VertexLayout_AppendStream",
+            "source": "src/d3d9_vertex_layout.cpp",
+            "status": "hardware_declaration_and_pixel_readback_checked",
+            "abi_compatible": false,
+            "kind": "function"
+          }
+        ]
+      },
+      {
+        "kind": "function",
+        "address": "00b47d60",
+        "name": "recompute_native_hardware_layout_stride_00b47d60",
+        "cpp_symbol": "recompute_native_hardware_layout_stride_00b47d60",
+        "source": "src/native_hardware_layout_fields.cpp",
+        "native_end_exclusive": "00b47d88",
+        "original_abi": "ECX actual owner; RET; EAX unspecified.",
+        "evidence": "reports/native_hardware_layout_fields_audit.json",
+        "status": "complete_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+        "native_differential_fixture": true,
+        "abi_compatible": false,
+        "game_validated": false,
+        "previous_interfaces": [
+          {
+            "address": "00b47d60",
+            "name": "BSP_VertexLayout_RecomputeStride",
+            "source": "src/d3d9_vertex_layout.cpp",
+            "status": "hardware_declaration_and_pixel_readback_checked",
+            "abi_compatible": false,
+            "kind": "function"
+          }
+        ]
+      }
+    ]
+  }
 }

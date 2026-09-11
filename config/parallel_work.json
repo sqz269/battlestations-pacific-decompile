@@ -3647,14 +3647,155 @@
       "id": "native_hardware_layout_construction_next",
       "packet": "native_hardware_layout_construction_next",
       "worker": "system_fog_owner_discovery",
-      "done": false,
-      "state": "worker_discovering_complete_constructor_factory_and_minimum_dependencies",
+      "done": true,
+      "state": "primary_verified_40_live_PE_spans_3854bytes_and8source_pins",
       "function_addresses": [],
       "code_ownership": [
         "docs/NATIVE_HARDWARE_LAYOUT_CONSTRUCTION_NEXT.md",
         "reports/native_hardware_layout_construction_next.json"
       ],
-      "scope": "Read-only nativeD62AF4/D61D10 construction/factory/pool/tree dependency closure afterteardownproofs; identify readyexact-address packets. No productionorGhidrawrites."
+      "scope": "Read-only nativeD62AF4/D61D10 construction/factory/pool/tree dependency closure afterteardownproofs; identify readyexact-address packets. No productionorGhidrawrites.",
+      "worker_commit": "6156d80",
+      "integrated_commit": "bcfd749",
+      "evidence": "reports/native_hardware_layout_construction_next.json"
+    },
+    {
+      "id": "native_hardware_layout_fields",
+      "packet": "native_hardware_layout_fields",
+      "worker": "main",
+      "done": false,
+      "state": "primary_library_proved_pending_saved_Ghidra_definition_and_annotations",
+      "function_addresses": [
+        "00b47640",
+        "00b48c00",
+        "00b48a00",
+        "00b47d60"
+      ],
+      "code_ownership": [
+        "include/bsp/native_hardware_layout_fields.hpp",
+        "src/native_hardware_layout_fields.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_FIELDS.md",
+        "reports/native_hardware_layout_fields_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Actual owner/record fields, intrusive current-profile retain/release and state guards. Reuse B483F0/B48950/BD30F0 and actual CPU declaration deletion context. Keep existing host shared_ptr interfaces separate.",
+      "discovery_evidence": "reports/native_hardware_layout_construction_next.json"
+    },
+    {
+      "id": "native_hardware_layout_pool_allocate",
+      "packet": "native_hardware_layout_pool_allocate",
+      "worker": "system_fog_owner_discovery",
+      "done": false,
+      "state": "worker_implementing_initialized_actual_pool_allocation",
+      "function_addresses": [
+        "00b5ff50",
+        "00b605b0",
+        "00b606f0",
+        "00b60260"
+      ],
+      "code_ownership": [
+        "include/bsp/native_hardware_layout_pool_allocate.hpp",
+        "src/native_hardware_layout_pool_allocate.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_POOL_ALLOCATE.md",
+        "reports/native_hardware_layout_pool_allocate_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Full initialized-pool raw allocation, slab initialization, global allocation and raw-return wrappers. Reuse existing allocator/free service domain and B60110; no payload clears, fabricated globals, or exception unlock guard.",
+      "discovery_evidence": "reports/native_hardware_layout_construction_next.json"
+    },
+    {
+      "id": "native_hardware_layout_tree_key",
+      "packet": "native_hardware_layout_tree_key",
+      "worker": "main",
+      "done": false,
+      "state": "primary_library_proved_pending_saved_Ghidra_annotations",
+      "function_addresses": [
+        "00b20bf0",
+        "00b23020",
+        "00b28220",
+        "00b282b0",
+        "00b25ef0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_hardware_layout_tree_key.hpp",
+        "src/native_hardware_layout_tree_key.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_TREE_KEY.md",
+        "reports/native_hardware_layout_tree_key_audit.json"
+      ],
+      "prerequisite_packets": [],
+      "scope": "Raw key comparator, lower_bound, checked find and forward key/value copies. Borrow actual tree and existing invalid-parameter service. Preserve current source-count reloads and unused key words.",
+      "discovery_evidence": "reports/native_hardware_layout_construction_next.json"
+    },
+    {
+      "id": "native_hardware_layout_construct",
+      "packet": "native_hardware_layout_construct",
+      "worker": "particle_clock_lifetime",
+      "done": false,
+      "state": "worker_implementing_full_constructor_and_fixed_scratch_conversion",
+      "function_addresses": [
+        "00b60790",
+        "00b60cb0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_hardware_layout_construct.hpp",
+        "src/native_hardware_layout_construct.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_CONSTRUCT.md",
+        "reports/native_hardware_layout_construct_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_hardware_layout_fields"
+      ],
+      "scope": "Complete conversion and derived constructor including actual native header strings, diagnostic record, B3E730, current renderer/device/table reads, fixed frame scratch behavior, and B48960 constructor cleanup. Requires existing initialized owner-teardown domain and NativeStringStorage; no callback replacement or forced runtime field values.",
+      "discovery_evidence": "reports/native_hardware_layout_construction_next.json"
+    },
+    {
+      "id": "native_hardware_layout_tree_insert",
+      "packet": "native_hardware_layout_tree_insert",
+      "worker": "main",
+      "done": false,
+      "state": "implementing_actual_node_insert_and_owning_length_error",
+      "function_addresses": [
+        "00b20d30",
+        "00b28370",
+        "00b29cd0",
+        "00b2f1b0",
+        "00b2f540"
+      ],
+      "code_ownership": [
+        "include/bsp/native_hardware_layout_tree_insert.hpp",
+        "src/native_hardware_layout_tree_insert.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_TREE_INSERT.md",
+        "reports/native_hardware_layout_tree_insert_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_hardware_layout_tree_key"
+      ],
+      "scope": "Checked decrement, actual28h node initialization/allocation, link/rebalance and insert. Reuse B20910/B22BD0 and native legacy SBO/logic-error owners; preserve D69260/D83F98 length-error storage/cleanup in owned files rather than an invented throw callback.",
+      "discovery_evidence": "reports/native_hardware_layout_construction_next.json"
+    },
+    {
+      "id": "native_hardware_layout_factory",
+      "packet": "native_hardware_layout_factory",
+      "worker": "unassigned",
+      "done": false,
+      "state": "waiting_on_complete_constructor_pool_and_tree_insert",
+      "function_addresses": [
+        "00b2f710"
+      ],
+      "code_ownership": [
+        "include/bsp/native_hardware_layout_factory.hpp",
+        "src/native_hardware_layout_factory.cpp",
+        "docs/NATIVE_HARDWARE_LAYOUT_FACTORY.md",
+        "reports/native_hardware_layout_factory_audit.json"
+      ],
+      "prerequisite_packets": [
+        "native_hardware_layout_pool_allocate",
+        "native_hardware_layout_construct",
+        "native_hardware_layout_tree_key",
+        "native_hardware_layout_tree_insert"
+      ],
+      "scope": "Actual108D530 lookup/retain/allocate/construct/insert route. Create exact missing Ghidra function under lease/lock; retain raw allocation only during construction; no later failure guard or cache AddRef absent from native assembly.",
+      "discovery_evidence": "reports/native_hardware_layout_construction_next.json"
     }
   ],
   "snapshot_after_analysis": {
@@ -4759,8 +4900,44 @@
     {
       "packet": "native_hardware_layout_construction_next",
       "worker": "system_fog_owner_discovery",
-      "state": "worker_discovering_complete_constructor_factory_and_minimum_dependencies",
-      "validation": null
+      "state": "primary_reviewed_discovery_complete",
+      "validation": "reports/native_hardware_layout_construction_next.json"
+    },
+    {
+      "packet": "native_hardware_layout_fields",
+      "worker": "main",
+      "state": "primary_library_proved_pending_saved_Ghidra_definition_and_annotations",
+      "validation": "reports/native_hardware_layout_fields_audit.json"
+    },
+    {
+      "packet": "native_hardware_layout_pool_allocate",
+      "worker": "system_fog_owner_discovery",
+      "state": "worker_implementing_initialized_actual_pool_allocation",
+      "validation": "reports/native_hardware_layout_pool_allocate_audit.json"
+    },
+    {
+      "packet": "native_hardware_layout_tree_key",
+      "worker": "main",
+      "state": "primary_library_proved_pending_saved_Ghidra_annotations",
+      "validation": "reports/native_hardware_layout_tree_key_audit.json"
+    },
+    {
+      "packet": "native_hardware_layout_construct",
+      "worker": "particle_clock_lifetime",
+      "state": "worker_implementing_full_constructor_and_fixed_scratch_conversion",
+      "validation": "reports/native_hardware_layout_construct_audit.json"
+    },
+    {
+      "packet": "native_hardware_layout_tree_insert",
+      "worker": "main",
+      "state": "implementing_actual_node_insert_and_owning_length_error",
+      "validation": "reports/native_hardware_layout_tree_insert_audit.json"
+    },
+    {
+      "packet": "native_hardware_layout_factory",
+      "worker": "unassigned",
+      "state": "waiting_on_complete_constructor_pool_and_tree_insert",
+      "validation": "reports/native_hardware_layout_factory_audit.json"
     }
   ],
   "next_dispatch": [
@@ -4773,12 +4950,6 @@
         "00b3f2e0",
         "00b3f590"
       ]
-    },
-    {
-      "packet": "native_hardware_layout_construction_next",
-      "worker": "system_fog_owner_discovery",
-      "state": "worker_discovering_complete_constructor_factory_and_minimum_dependencies",
-      "function_addresses": []
     }
   ],
   "current_partition": {
