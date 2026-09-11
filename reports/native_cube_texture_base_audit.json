@@ -1,0 +1,773 @@
+{
+  "schema_version": 1,
+  "packet": "native_cube_texture_base2",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+  "functions": [
+    {
+      "address": "00b34020",
+      "end_exclusive": "00b34067",
+      "length": 71,
+      "cpp_function": "construct_native_logical_texture_unnamed_base_00b34020",
+      "native_abi": "ECX actual owner; stack borrowed COM/flags; EAX same owner; RET8",
+      "proposed_name": "BSP_LogicalTextureBase_ConstructUnnamed_D5F280"
+    },
+    {
+      "address": "00b34090",
+      "end_exclusive": "00b34095",
+      "length": 5,
+      "cpp_function": "unwind_native_logical_texture_unnamed_base_00b34090",
+      "native_abi": "ECX actual owner; full JMP B33F50; RET",
+      "proposed_name": "BSP_LogicalTextureBase_UnwindD5F280"
+    }
+  ],
+  "source": "src/native_cube_texture_base.cpp",
+  "header": "include/bsp/native_cube_texture_base.hpp",
+  "native_spans": [
+    {
+      "address": "00b34020",
+      "length": 71,
+      "role": "complete_constructor",
+      "offset": 7553056,
+      "hex": "8bc1c70030b1ce0033c9c700f4f1d500ba0100000089500489480889480c8948148b4c24048948108b4c240889481c8b0de8d608018948200115e8d60801c70080f2d500c20800",
+      "sha256": "031c57cc4c03752af663783dc02c23e84c16332d4ae2a5fe33dacad7bf02bf69",
+      "live_PE_match": true,
+      "instructions": [
+        "00b34020: mov eax, ecx",
+        "00b34022: mov dword ptr [eax], 0xceb130",
+        "00b34028: xor ecx, ecx",
+        "00b3402a: mov dword ptr [eax], 0xd5f1f4",
+        "00b34030: mov edx, 1",
+        "00b34035: mov dword ptr [eax + 4], edx",
+        "00b34038: mov dword ptr [eax + 8], ecx",
+        "00b3403b: mov dword ptr [eax + 0xc], ecx",
+        "00b3403e: mov dword ptr [eax + 0x14], ecx",
+        "00b34041: mov ecx, dword ptr [esp + 4]",
+        "00b34045: mov dword ptr [eax + 0x10], ecx",
+        "00b34048: mov ecx, dword ptr [esp + 8]",
+        "00b3404c: mov dword ptr [eax + 0x1c], ecx",
+        "00b3404f: mov ecx, dword ptr [0x108d6e8]",
+        "00b34055: mov dword ptr [eax + 0x20], ecx",
+        "00b34058: add dword ptr [0x108d6e8], edx",
+        "00b3405e: mov dword ptr [eax], 0xd5f280",
+        "00b34064: ret 8"
+      ]
+    },
+    {
+      "address": "00b34090",
+      "length": 5,
+      "role": "complete_unwind_entry",
+      "offset": 7553168,
+      "hex": "e9bbfeffff",
+      "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c",
+      "live_PE_match": true,
+      "instructions": [
+        "00b34090: jmp 0xb33f50"
+      ]
+    },
+    {
+      "address": "00b33f50",
+      "length": 5,
+      "role": "genuine_named_base_provider_bridge",
+      "offset": 7552848,
+      "hex": "6aff6898e0",
+      "sha256": "e9b44cda5264cb84391699c999afcf2aa08b3c0e78be81a8a501b408d8622051",
+      "live_PE_match": true
+    }
+  ],
+  "primary_integration": {
+    "verification": {
+      "worker_base_path": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-base-fixture-20260910",
+      "worker_pins_verified": 49,
+      "fresh_spans": [
+        {
+          "address": "00b34020",
+          "length": 71,
+          "sha256": "031c57cc4c03752af663783dc02c23e84c16332d4ae2a5fe33dacad7bf02bf69",
+          "fresh_live_PE_and_worker_preimage_match": true
+        },
+        {
+          "address": "00b34090",
+          "length": 5,
+          "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c",
+          "fresh_live_PE_and_worker_preimage_match": true
+        },
+        {
+          "address": "00b33f50",
+          "length": 5,
+          "sha256": "e9b44cda5264cb84391699c999afcf2aa08b3c0e78be81a8a501b408d8622051",
+          "fresh_live_PE_and_worker_preimage_match": true
+        }
+      ],
+      "matched_words": 1152,
+      "observed_stores": 35,
+      "verification": {
+        "passed": true,
+        "postimage_checks": [
+          {
+            "mode": "native",
+            "scenario": 0,
+            "address": "00b34020",
+            "complete_postimage_verified": true,
+            "patches": [
+              {
+                "offset": 49,
+                "bytes": 4,
+                "role": "same_actual_backed_serial_operand"
+              },
+              {
+                "offset": 58,
+                "bytes": 4,
+                "role": "same_actual_backed_serial_operand"
+              }
+            ],
+            "sha256": "cedf807e422c0207425a04ea0004424a77c3c08f82b16b36b6691c8aacb1f728"
+          },
+          {
+            "mode": "native",
+            "scenario": 0,
+            "address": "00b34090",
+            "complete_postimage_verified": true,
+            "patches": [],
+            "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c"
+          },
+          {
+            "mode": "native",
+            "scenario": 0,
+            "address": "00b33f50",
+            "complete_postimage_verified": true,
+            "patches": [
+              {
+                "offset": 0,
+                "bytes": 5,
+                "role": "explicit_genuine_primary_B33F50_ABI_bridge"
+              }
+            ],
+            "sha256": "42c7b655bf976523d27025af2b63728acbbdd6510f36fbb3f28de026a68432a9"
+          },
+          {
+            "mode": "native",
+            "scenario": 1,
+            "address": "00b34020",
+            "complete_postimage_verified": true,
+            "patches": [
+              {
+                "offset": 49,
+                "bytes": 4,
+                "role": "same_actual_backed_serial_operand"
+              },
+              {
+                "offset": 58,
+                "bytes": 4,
+                "role": "same_actual_backed_serial_operand"
+              }
+            ],
+            "sha256": "91d3ec0a1a855c4729c75957efd5bb1240d61e26c4918827fcb57d9e3dd26d38"
+          },
+          {
+            "mode": "native",
+            "scenario": 1,
+            "address": "00b34090",
+            "complete_postimage_verified": true,
+            "patches": [],
+            "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c"
+          },
+          {
+            "mode": "native",
+            "scenario": 1,
+            "address": "00b33f50",
+            "complete_postimage_verified": true,
+            "patches": [
+              {
+                "offset": 0,
+                "bytes": 5,
+                "role": "explicit_genuine_primary_B33F50_ABI_bridge"
+              }
+            ],
+            "sha256": "42c7b655bf976523d27025af2b63728acbbdd6510f36fbb3f28de026a68432a9"
+          },
+          {
+            "mode": "native",
+            "scenario": 2,
+            "address": "00b34020",
+            "complete_postimage_verified": true,
+            "patches": [
+              {
+                "offset": 49,
+                "bytes": 4,
+                "role": "same_actual_backed_serial_operand"
+              },
+              {
+                "offset": 58,
+                "bytes": 4,
+                "role": "same_actual_backed_serial_operand"
+              }
+            ],
+            "sha256": "692dc92cf8a770f3aee74aafcf58c4c8ff3d6f78eda1d99c4133be6f9fd7e0ab"
+          },
+          {
+            "mode": "native",
+            "scenario": 2,
+            "address": "00b34090",
+            "complete_postimage_verified": true,
+            "patches": [],
+            "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c"
+          },
+          {
+            "mode": "native",
+            "scenario": 2,
+            "address": "00b33f50",
+            "complete_postimage_verified": true,
+            "patches": [
+              {
+                "offset": 0,
+                "bytes": 5,
+                "role": "explicit_genuine_primary_B33F50_ABI_bridge"
+              }
+            ],
+            "sha256": "42c7b655bf976523d27025af2b63728acbbdd6510f36fbb3f28de026a68432a9"
+          },
+          {
+            "mode": "host",
+            "scenario": 0,
+            "address": "00b34020",
+            "complete_postimage_verified": true,
+            "patches": [
+              {
+                "offset": 49,
+                "bytes": 4,
+                "role": "same_actual_backed_serial_operand"
+              },
+              {
+                "offset": 58,
+                "bytes": 4,
+                "role": "same_actual_backed_serial_operand"
+              }
+            ],
+            "sha256": "6de3e8c6e10642705fe0c8a2092c81eb88ea255d12a84ed895289eb0b566f5b1"
+          },
+          {
+            "mode": "host",
+            "scenario": 0,
+            "address": "00b34090",
+            "complete_postimage_verified": true,
+            "patches": [],
+            "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c"
+          },
+          {
+            "mode": "host",
+            "scenario": 0,
+            "address": "00b33f50",
+            "complete_postimage_verified": true,
+            "patches": [
+              {
+                "offset": 0,
+                "bytes": 5,
+                "role": "explicit_genuine_primary_B33F50_ABI_bridge"
+              }
+            ],
+            "sha256": "99854f874e793862166772a05c8954287851b408313976e485977619e1a3dd56"
+          },
+          {
+            "mode": "host",
+            "scenario": 1,
+            "address": "00b34020",
+            "complete_postimage_verified": true,
+            "patches": [
+              {
+                "offset": 49,
+                "bytes": 4,
+                "role": "same_actual_backed_serial_operand"
+              },
+              {
+                "offset": 58,
+                "bytes": 4,
+                "role": "same_actual_backed_serial_operand"
+              }
+            ],
+            "sha256": "b7885ef6a91ed36f5ca4b20092f00c6b631eac934302e3ec41b07357c72636eb"
+          },
+          {
+            "mode": "host",
+            "scenario": 1,
+            "address": "00b34090",
+            "complete_postimage_verified": true,
+            "patches": [],
+            "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c"
+          },
+          {
+            "mode": "host",
+            "scenario": 1,
+            "address": "00b33f50",
+            "complete_postimage_verified": true,
+            "patches": [
+              {
+                "offset": 0,
+                "bytes": 5,
+                "role": "explicit_genuine_primary_B33F50_ABI_bridge"
+              }
+            ],
+            "sha256": "99854f874e793862166772a05c8954287851b408313976e485977619e1a3dd56"
+          },
+          {
+            "mode": "host",
+            "scenario": 2,
+            "address": "00b34020",
+            "complete_postimage_verified": true,
+            "patches": [
+              {
+                "offset": 49,
+                "bytes": 4,
+                "role": "same_actual_backed_serial_operand"
+              },
+              {
+                "offset": 58,
+                "bytes": 4,
+                "role": "same_actual_backed_serial_operand"
+              }
+            ],
+            "sha256": "bf14ec079a8d9c7df3387f6cf3922a47b746b0b7c05501d1e25fdbcc22983b0d"
+          },
+          {
+            "mode": "host",
+            "scenario": 2,
+            "address": "00b34090",
+            "complete_postimage_verified": true,
+            "patches": [],
+            "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c"
+          },
+          {
+            "mode": "host",
+            "scenario": 2,
+            "address": "00b33f50",
+            "complete_postimage_verified": true,
+            "patches": [
+              {
+                "offset": 0,
+                "bytes": 5,
+                "role": "explicit_genuine_primary_B33F50_ABI_bridge"
+              }
+            ],
+            "sha256": "99854f874e793862166772a05c8954287851b408313976e485977619e1a3dd56"
+          }
+        ],
+        "providers": [
+          {
+            "symbol": "?construct_native_logical_texture_unnamed_base_00b34020@bsp@@YAPAXPAX0IAAI@Z",
+            "address": 805331264,
+            "provider": "bsp_core.linked:native_cube_texture_base.obj"
+          },
+          {
+            "symbol": "?unwind_native_logical_texture_unnamed_base_00b34090@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+            "address": 805331488,
+            "provider": "bsp_core.linked:native_cube_texture_base.obj"
+          },
+          {
+            "symbol": "?destroy_native_logical_texture_named_base_00b33f50@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+            "address": 805331504,
+            "provider": "bsp_core.linked:native_logical_texture_named_base.obj"
+          },
+          {
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+            "address": 805331216,
+            "provider": "bsp_core.linked:native_string.obj"
+          },
+          {
+            "symbol": "?allocate@PooledStringStorage@bsp@@UAEPADI@Z",
+            "address": 805331200,
+            "provider": "bsp_core.linked:native_string.obj"
+          },
+          {
+            "symbol": "?release@PooledStringStorage@bsp@@UAEXPADI@Z",
+            "address": 805331248,
+            "provider": "bsp_core.linked:native_string.obj"
+          },
+          {
+            "symbol": "?allocate_00bd1120@SizedStoragePool@bsp@@QAEPAXI@Z",
+            "address": 805330144,
+            "provider": "bsp_core.linked:storage_pool.obj"
+          },
+          {
+            "symbol": "?release_00bd1510@SizedStoragePool@bsp@@QAEXPAXI@Z",
+            "address": 805330832,
+            "provider": "bsp_core.linked:storage_pool.obj"
+          },
+          {
+            "symbol": "?string_pool_config_00419cc0@bsp@@YA?AUSizedStoragePoolConfig@1@XZ",
+            "address": 805331152,
+            "provider": "bsp_core.linked:storage_pool.obj"
+          },
+          {
+            "symbol": "??0SizedStoragePool@bsp@@QAE@ABUSizedStoragePoolConfig@1@AAVSystemAllocator@1@@Z",
+            "address": 805329296,
+            "provider": "bsp_core.linked:storage_pool.obj"
+          },
+          {
+            "symbol": "?crt_system_allocator@bsp@@YAAAVSystemAllocator@1@XZ",
+            "address": 805330736,
+            "provider": "bsp_core.linked:storage_pool.obj"
+          }
+        ],
+        "compiled_provider_bodies": [
+          {
+            "symbol": "?construct_native_logical_texture_unnamed_base_00b34020@bsp@@YAPAXPAX0IAAI@Z",
+            "address": 805331264,
+            "provider": "bsp_core.linked:native_cube_texture_base.obj",
+            "bytes": 224,
+            "sha256": "f9a7be133dfe07d7ff7683059791143eb4f44cd6b8081cbd364ebdec13964b7f",
+            "instructions": [
+              "30006140: push ebp",
+              "30006141: mov ebp, esp",
+              "30006143: push ecx",
+              "30006144: mov eax, dword ptr [ebp + 8]",
+              "30006147: mov edx, 0",
+              "3000614c: mov ecx, 0xceb130",
+              "30006151: mov dword ptr [eax + edx], ecx",
+              "30006154: mov eax, dword ptr [ebp + 8]",
+              "30006157: mov edx, 0",
+              "3000615c: mov ecx, 0xd5f1f4",
+              "30006161: mov dword ptr [eax + edx], ecx",
+              "30006164: mov eax, dword ptr [ebp + 8]",
+              "30006167: mov edx, 4",
+              "3000616c: mov ecx, 1",
+              "30006171: mov dword ptr [eax + edx], ecx",
+              "30006174: mov eax, dword ptr [ebp + 8]",
+              "30006177: mov edx, 8",
+              "3000617c: mov ecx, 0",
+              "30006181: mov dword ptr [eax + edx], ecx",
+              "30006184: mov eax, dword ptr [ebp + 8]",
+              "30006187: mov edx, 0xc",
+              "3000618c: mov ecx, 0",
+              "30006191: mov dword ptr [eax + edx], ecx",
+              "30006194: mov eax, dword ptr [ebp + 8]",
+              "30006197: mov edx, 0x14",
+              "3000619c: mov ecx, 0",
+              "300061a1: mov dword ptr [eax + edx], ecx",
+              "300061a4: mov eax, dword ptr [ebp + 8]",
+              "300061a7: mov edx, 0x10",
+              "300061ac: mov ecx, dword ptr [ebp + 0xc]",
+              "300061af: mov dword ptr [eax + edx], ecx",
+              "300061b2: mov eax, dword ptr [ebp + 8]",
+              "300061b5: mov edx, 0x1c",
+              "300061ba: mov ecx, dword ptr [ebp + 0x10]",
+              "300061bd: mov dword ptr [eax + edx], ecx",
+              "300061c0: mov eax, dword ptr [ebp + 0x14]",
+              "300061c3: mov edx, 0",
+              "300061c8: mov eax, dword ptr [eax + edx]",
+              "300061cb: mov dword ptr [ebp - 4], eax",
+              "300061ce: mov eax, dword ptr [ebp - 4]",
+              "300061d1: mov dword ptr [ebp - 4], eax",
+              "300061d4: mov eax, dword ptr [ebp + 8]",
+              "300061d7: mov edx, 0x20",
+              "300061dc: mov ecx, dword ptr [ebp - 4]",
+              "300061df: mov dword ptr [eax + edx], ecx",
+              "300061e2: mov eax, dword ptr [ebp + 0x14]",
+              "300061e5: mov edx, 0",
+              "300061ea: mov eax, dword ptr [eax + edx]",
+              "300061ed: mov dword ptr [ebp - 4], eax",
+              "300061f0: inc dword ptr [ebp - 4]",
+              "300061f3: mov eax, dword ptr [ebp + 0x14]",
+              "300061f6: mov edx, 0",
+              "300061fb: mov ecx, dword ptr [ebp - 4]",
+              "300061fe: mov dword ptr [eax + edx], ecx",
+              "30006201: mov eax, dword ptr [ebp + 8]",
+              "30006204: mov edx, 0",
+              "30006209: mov ecx, 0xd5f280",
+              "3000620e: mov dword ptr [eax + edx], ecx",
+              "30006211: mov eax, dword ptr [ebp + 8]",
+              "30006214: mov esp, ebp",
+              "30006216: pop ebp",
+              "30006217: ret ",
+              "30006218: int3 ",
+              "30006219: int3 ",
+              "3000621a: int3 ",
+              "3000621b: int3 ",
+              "3000621c: int3 ",
+              "3000621d: int3 ",
+              "3000621e: int3 ",
+              "3000621f: int3 "
+            ]
+          },
+          {
+            "symbol": "?unwind_native_logical_texture_unnamed_base_00b34090@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+            "address": 805331488,
+            "provider": "bsp_core.linked:native_cube_texture_base.obj",
+            "bytes": 16,
+            "sha256": "44ee56a41dc861ee5c1505f5066a58a216b3c0e1ac6cd3f7b154f2e3924e3a20",
+            "instructions": [
+              "30006220: jmp 0x30006230",
+              "30006225: int3 ",
+              "30006226: int3 ",
+              "30006227: int3 ",
+              "30006228: int3 ",
+              "30006229: int3 ",
+              "3000622a: int3 ",
+              "3000622b: int3 ",
+              "3000622c: int3 ",
+              "3000622d: int3 ",
+              "3000622e: int3 ",
+              "3000622f: int3 "
+            ]
+          },
+          {
+            "symbol": "?destroy_native_logical_texture_named_base_00b33f50@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+            "address": 805331504,
+            "provider": "bsp_core.linked:native_logical_texture_named_base.obj",
+            "bytes": 37,
+            "sha256": "7caa783b2bd65c1649353afbf8fce6703c2459c01f343cd8c1f1848e4dcda5e5",
+            "instructions": [
+              "30006230: push ebp",
+              "30006231: mov ebp, esp",
+              "30006233: push esi",
+              "30006234: mov esi, dword ptr [ebp + 8]",
+              "30006237: push dword ptr [ebp + 0xc]",
+              "3000623a: lea eax, [esi + 8]",
+              "3000623d: mov dword ptr [esi], 0xd5f1f4",
+              "30006243: push eax",
+              "30006244: call 0x30006110",
+              "30006249: add esp, 8",
+              "3000624c: mov dword ptr [esi], 0xceb130",
+              "30006252: pop esi",
+              "30006253: pop ebp",
+              "30006254: ret "
+            ]
+          },
+          {
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+            "address": 805331216,
+            "provider": "bsp_core.linked:native_string.obj",
+            "bytes": 32,
+            "sha256": "5705d49f6f1c093297c7c90ca540867b6f2fe53d3e150699d600154aad6d756b",
+            "instructions": [
+              "30006110: push ebp",
+              "30006111: mov ebp, esp",
+              "30006113: mov eax, dword ptr [ebp + 8]",
+              "30006116: mov ecx, dword ptr [eax + 4]",
+              "30006119: test ecx, ecx",
+              "3000611b: je 0x3000612a",
+              "3000611d: mov eax, dword ptr [eax]",
+              "3000611f: inc eax",
+              "30006120: push eax",
+              "30006121: push ecx",
+              "30006122: mov ecx, dword ptr [ebp + 0xc]",
+              "30006125: mov eax, dword ptr [ecx]",
+              "30006127: call dword ptr [eax + 8]",
+              "3000612a: pop ebp",
+              "3000612b: ret ",
+              "3000612c: int3 ",
+              "3000612d: int3 ",
+              "3000612e: int3 ",
+              "3000612f: int3 "
+            ]
+          },
+          {
+            "symbol": "?allocate@PooledStringStorage@bsp@@UAEPADI@Z",
+            "address": 805331200,
+            "provider": "bsp_core.linked:native_string.obj",
+            "bytes": 16,
+            "sha256": "c1cc2a1af77d242da3dd398a54b8e9298258afd7a7a3225449a8bdc0f51d9bc3",
+            "instructions": [
+              "30006100: push ebp",
+              "30006101: mov ebp, esp",
+              "30006103: mov ecx, dword ptr [ecx + 4]",
+              "30006106: pop ebp",
+              "30006107: jmp 0x30005ce0",
+              "3000610c: int3 ",
+              "3000610d: int3 ",
+              "3000610e: int3 ",
+              "3000610f: int3 "
+            ]
+          },
+          {
+            "symbol": "?release@PooledStringStorage@bsp@@UAEXPADI@Z",
+            "address": 805331248,
+            "provider": "bsp_core.linked:native_string.obj",
+            "bytes": 16,
+            "sha256": "92b2945837c47375980c4563cab6e51b91ced33ed6aa19768d4e03447fce6f57",
+            "instructions": [
+              "30006130: push ebp",
+              "30006131: mov ebp, esp",
+              "30006133: mov ecx, dword ptr [ecx + 4]",
+              "30006136: pop ebp",
+              "30006137: jmp 0x30005f90",
+              "3000613c: int3 ",
+              "3000613d: int3 ",
+              "3000613e: int3 ",
+              "3000613f: int3 "
+            ]
+          },
+          {
+            "symbol": "?named_base_bridge@@YIXPAX0@Z",
+            "address": 805320864,
+            "provider": "fixture.obj",
+            "bytes": 32,
+            "sha256": "364cc1d44c6a256ab139c992909c97b7d6b2a32a220f142a9f94663fd1a22e38",
+            "instructions": [
+              "300038a0: push dword ptr [0x3000c42c]",
+              "300038a6: inc dword ptr [0x3000c430]",
+              "300038ac: push ecx",
+              "300038ad: call 0x30006230",
+              "300038b2: add esp, 8",
+              "300038b5: ret ",
+              "300038b6: int3 ",
+              "300038b7: int3 ",
+              "300038b8: int3 ",
+              "300038b9: int3 ",
+              "300038ba: int3 ",
+              "300038bb: int3 ",
+              "300038bc: int3 ",
+              "300038bd: int3 ",
+              "300038be: int3 ",
+              "300038bf: int3 "
+            ]
+          }
+        ],
+        "actual_pooled_string_vtable": {
+          "address": "30008374",
+          "words": [
+            "30002ac0",
+            "30006100",
+            "30006130"
+          ],
+          "actual_library_allocate_release": true
+        },
+        "store_checks": [
+          {
+            "mode": "native",
+            "scenario": 0,
+            "constructor_store_count": 11,
+            "actual_instruction_PC_verified": true
+          },
+          {
+            "mode": "native",
+            "scenario": 1,
+            "constructor_store_count": 11,
+            "actual_instruction_PC_verified": true
+          },
+          {
+            "mode": "native",
+            "scenario": 2,
+            "constructor_store_count": 11,
+            "actual_instruction_PC_verified": true
+          },
+          {
+            "mode": "host",
+            "scenario": 0,
+            "constructor_store_count": 11,
+            "actual_instruction_PC_verified": true
+          },
+          {
+            "mode": "host",
+            "scenario": 1,
+            "constructor_store_count": 11,
+            "actual_instruction_PC_verified": true
+          },
+          {
+            "mode": "host",
+            "scenario": 2,
+            "constructor_store_count": 11,
+            "actual_instruction_PC_verified": true
+          }
+        ],
+        "trace": {
+          "words": 1152,
+          "bytes": 4608,
+          "observed_stores": 35,
+          "sha256": "48e5826d9974dc4777f07a9b9834dfba2c65999100fcbee26aacb08f11a9a455",
+          "matched": true,
+          "decoded_events": 79
+        },
+        "source_pins_reverified_current": true,
+        "primary_library_reverified_current": true,
+        "installed_PE_reverified_current": true,
+        "all_eight_seeds_matched": true
+      },
+      "actual_primary_library": {
+        "source": "J:\\PROG\\battlestations-pacific-decompile\\build\\cube-base-primary-check\\bsp_core.linked.lib",
+        "snapshot": "local\\cube_base_fixture\\bsp_core.linked.lib",
+        "bytes": 26192886,
+        "sha256": "e868288d29c1a2d75b09e520ea75648a792c9976d74b7b5307a381563e11ee6c"
+      },
+      "fixture_report": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_cube_texture_base_fixture.json",
+        "bytes": 35128,
+        "sha256": "00118bd9199d49c5180c3c920efe25f58ff0f558152e3523bdad758c4947140a"
+      },
+      "rechecker": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\recheck_cube_base_fixture.py",
+        "bytes": 8886,
+        "sha256": "71437ab9299cbd88d5f201b144b483f2505aa4d1c7006187b4c871f44a68f33d"
+      }
+    },
+    "strict_build_and_two_existing_tests": true,
+    "annotations_applied": true,
+    "ledger_registered": true
+  },
+  "limitations": [
+    "B33F50 original body and original native string-pool instructions remain explicit dependency boundaries; both comparison modes use the genuine existing compiled C++ providers.",
+    "Three standalone-backed serial bindings test current source contract; no original global-address integration claim.",
+    "No independent original exception-dispatch test or arbitrary throwing NativeStringStorage provider claim.",
+    "No original binary replacement ABI, game validation or visual/render proof."
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "saved_annotations": {
+    "path": "reports/native_cube_base_array_annotations.json",
+    "bytes": 5606,
+    "sha256": "b6adb5164497085a303b79209b803b92cc9364ed25e6b7a9459a1f942ade1f1b",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b34020",
+      "path": "exports/bsp/functions/00b34020/decompiled.c",
+      "bytes": 2644,
+      "sha256": "b42535be542cd2d6234adb465dbb42c2359dde1cccf56c0d904367c99b578fc7"
+    },
+    {
+      "address": "00b34090",
+      "path": "exports/bsp/functions/00b34090/decompiled.c",
+      "bytes": 1664,
+      "sha256": "0e22a4d285bf4d1780dab49aa423e50bb6316a32dd90a82295bd8bccf4ae4cd7"
+    }
+  ],
+  "closure_utc": "2026-09-11T05:43:38.983260+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b34020",
+      "name": "construct_native_logical_texture_unnamed_base_00b34020",
+      "cpp_symbol": "construct_native_logical_texture_unnamed_base_00b34020",
+      "source": "src/native_cube_texture_base.cpp",
+      "native_end_exclusive": "00b34067",
+      "original_abi": "ECX actual owner; stack borrowed COM/flags; EAX same owner; RET8",
+      "evidence": "reports/native_cube_texture_base_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b34090",
+      "name": "unwind_native_logical_texture_unnamed_base_00b34090",
+      "cpp_symbol": "unwind_native_logical_texture_unnamed_base_00b34090",
+      "source": "src/native_cube_texture_base.cpp",
+      "native_end_exclusive": "00b34095",
+      "original_abi": "ECX actual owner; full JMP B33F50; RET",
+      "evidence": "reports/native_cube_texture_base_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_CUBE_TEXTURE_BASE.md",
+    "bytes": 3111,
+    "sha256": "570d6189f24285efb732a07e96e788ff7c4e73cace96279b8852040e5d0c080b"
+  }
+}

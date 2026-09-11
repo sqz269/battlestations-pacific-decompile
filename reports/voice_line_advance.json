@@ -1,0 +1,17 @@
+{
+  "address": "005b91e0",
+  "proposed_name": "BSP_VoiceLine_AdvancePlayback",
+  "old_name": "FUN_005b91e0",
+  "name_status": "provisional_hypothesis",
+  "abi": "ECX=line; RET; AL=bool",
+  "last_instruction": "005b92f3",
+  "last_instruction_length": 1,
+  "instructions": 98,
+  "flow_gaps": 0,
+  "implementation": "src/voice_line_advance.cpp",
+  "evidence": "Provisional descriptive name, not recovered symbol. Complete ECX=line,RET,AL bool; 005B91E0..005B92F3,98 instructions/0 gaps. -1 slot exits false; reload global voice manager, poll computed slot; busy returns true. Increment unsigned clip index with wrap, skip negative record+8 IDs; exhausted writes slot=-1 and returns false. Otherwise reload slot/global manager and invoke005B9050 with copied Clip12 and NULL bank; return true regardless of new slot state. Independent assembly review and integrated MSVC Win32 build passed. src/voice_line_advance.cpp; docs/VOICE_LINE_ADVANCE.md. Typed valid-vector/initialized-index projection; not native ABI/game validated.",
+  "validation": "integrated build and independent complete-assembly review",
+  "native_differential": false,
+  "game_validated": false,
+  "annotation": "applied_saved_readback_verified"
+}

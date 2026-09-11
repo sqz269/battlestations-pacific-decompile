@@ -33,8 +33,8 @@ with a bulk memory copy.
 
 After copying, capture the **current** table and call actual
 `singleton_lifetime_free`, corresponding to `BF6989 -> BF65AC`. The full
-returning-free continuation at `736041..736049` is nine bytes absent from the
-current Ghidra listing. It restores the caller stack, publishes replacement
+returning-free continuation at `736041..736049` is nine bytes that were absent from the
+original Ghidra listing and are now restored in the saved function. It restores the caller stack, publishes replacement
 table first, publishes requested capacity second, and restores EBX before
 the common epilogue. Current count remains untouched, including changes at
 an allocation/free boundary. There is no FH3 frame, owner release, count
@@ -103,6 +103,11 @@ fixture links that exact library. No tracked tests were added. The audit pins
 the source, library, object, executable, map, native spans, complete traces
 and evidence scripts.
 
-Permanent CMake registration, address/name and reconstruction ledgers, packet
-metadata, Ghidra returning-free repair at `73603C` and refreshed exports remain
-integrator-owned. No original ABI compatibility or game validation is claimed.
+The primary integrated permanent CMake registration, reran the same fixture
+against the frozen primary library, and independently verified 426 DWORDs,
+26 snapshots, all runtime postimages, real providers and actual CRT modules.
+Its immutable library SHA-256 is
+`e9c69bcef040ab9090081dfb0c72d3c4587f086476c31e872470c84bd7377934`.
+The primary also checked 28 worker artifact/source pins and three fresh live/PE
+spans. The returning-free continuation is restored, the complete name and
+reconstruction records are registered, Ghidra is saved and the export refreshed. No original ABI compatibility or game validation is claimed.

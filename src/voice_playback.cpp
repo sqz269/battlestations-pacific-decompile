@@ -1,5 +1,8 @@
 #include "bsp/voice_playback.hpp"
 #include "bsp/mission_events.hpp"
+#include "bsp/voice_fade_update.hpp"
+#include "bsp/voice_slot_start.hpp"
+#include "bsp/voice_subtitles.hpp"
 
 #include <cstring>
 
@@ -99,7 +102,7 @@ void append_voice_line_005b7790(VoiceLineQueue& queue, VoiceLine* line, VoiceLin
     ++queue.count_00;
 }
 
-VoiceLine& construct_voice_line_005babb0(VoiceLine& line, VoicePlaybackManager& manager,
+VoiceLine& construct_voice_line_005babb0(VoiceLine& line,
     const VoiceClips& clips, std::uint32_t target, void* bank, VoiceLineHost& host,
     NativeStringStorage& strings)
 {
@@ -117,7 +120,8 @@ VoiceLine& construct_voice_line_005babb0(VoiceLine& line, VoicePlaybackManager& 
         joined.append(record.text_00.data(), record.text_00.length());
         if (record.sound_id_08 >= 0) has_sound = true;
     }
-    if (joined.text.length()) host.display_text_005b8510(line, joined.text);
+    if (joined.text.length())
+        display_voice_subtitles_005b8510(line, joined.text, host.subtitle_context(), strings);
     else {
         line.layout_20 = {};
         line.widget_14 = nullptr;
@@ -127,10 +131,14 @@ VoiceLine& construct_voice_line_005babb0(VoiceLine& line, VoicePlaybackManager& 
         while (clips[index].record_04->sound_id_08 < 0) ++index;
         line.clip_index_1c = index;
         const VoiceClip selected{0x00cf0dd0, clips[index].record_04, clips[index].word_08};
-        line.slot_index_18 = poll_voice_slot_007027b0(manager.slot_08, host) == 0 ? 0 : -1;
+        auto& poll_manager = host.current_voice_manager_00e198c4_a4(); // 005BAE1C..21
+        line.slot_index_18 = poll_voice_slot_007027b0(poll_manager.slot_08, host) == 0 ? 0 : -1;
         if (bank) host.retain_reference(bank);
-        ConsumedReference playback_argument(bank, host);
-        host.start_clip_005b9050(manager, line.slot_index_18, selected, bank);
+        // 005B9050 consumes this retained by-value argument itself.
+        const auto selected_slot = line.slot_index_18;
+        auto& start_manager = host.current_voice_manager_00e198c4_a4(); // 005BAE85..8B
+        start_voice_clip_005b9050(start_manager, selected_slot, selected, bank,
+            host, host.slot_start_context());
     } else {
         line.slot_index_18 = -1; // +1C remains untouched on this branch
     }
@@ -147,7 +155,7 @@ VoiceLine* play_voice_line_005bbc10(VoicePlaybackManager& manager, const VoiceCl
     if (line) {
         void* bank = speaker ? manager.speaker_table_a0[category] : nullptr;
         if (bank) host.retain_reference(bank);
-        construct_voice_line_005babb0(*line, manager, clips, target, bank, host, strings);
+        construct_voice_line_005babb0(*line, clips, target, bank, host, strings);
     }
     append_voice_line_005b7790(manager.lines_54, line, host);
     return line;
@@ -182,7 +190,7 @@ void begin_voice_sound_fade_005b9760(VoicePlaybackManager& manager, float target
     const float divisor = duration > static_cast<double>(minimum) ? duration : minimum;
     manager.fade_rate_dc = static_cast<float>(1.0 / static_cast<double>(divisor));
     manager.fade_callback_e0.copy_from_00be0a30_fragment(strings, callback);
-    host.update_fade_005b8c30(manager, minimum);
+    update_voice_sound_fade_005b8c30(manager, minimum, host.fade_bindings());
 }
 
 } // namespace bsp

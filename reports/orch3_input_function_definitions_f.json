@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a982b0",
+    "end_address": "00a982c2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a982b0",
+    "end_address": "00a982c1",
+    "bytes_disassembled": 18,
+    "message": "Successfully disassembled 18 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a982b0",
+    "disassemble_first": false,
+    "name": "BSP_InputDeviceManager_EnumDevicesCallbackA"
+   },
+   "result": {
+    "success": true,
+    "address": "00a982b0",
+    "function_name": "BSP_InputDeviceManager_EnumDevicesCallbackA",
+    "entry_point": "00a982b0",
+    "body_size": 18,
+    "message": "Function created successfully at 00a982b0",
+    "warnings": [
+     "Function name 'BSP_InputDeviceManager_EnumDevicesCallbackA' \u2014 main part 'InputDeviceManager_EnumDevicesCallbackA' is not PascalCase. Expected: InputdevicemanagerEnumdevicescallbacka",
+     "Function name 'BSP_InputDeviceManager_EnumDevicesCallbackA' \u2014 main part 'InputDeviceManager_EnumDevicesCallbackA' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_InputDeviceManager_EnumDevicesCallbackA' does not start with a recognized verb. First word 'Input' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a982b0",
+   "end": "00a982c2",
+   "name": "BSP_InputDeviceManager_EnumDevicesCallbackA",
+   "after": "Function: BSP_InputDeviceManager_EnumDevicesCallbackA at 00a982b0\nSignature: undefined BSP_InputDeviceManager_EnumDevicesCallbackA(void)\nEntry: 00a982b0\nBody: 00a982b0 - 00a982c1"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

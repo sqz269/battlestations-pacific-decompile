@@ -1,0 +1,45 @@
+[
+  {
+    "address": "00b34020",
+    "before": {
+      "address": "00b34020",
+      "function_name": "BSP_LogicalTextureBase_ConstructUnnamed_D5F280",
+      "comment": "[BSP reconstruction 00b34020]\nInitializes unnamed refcounted base fields, copies old shared global 0108d6e8 to object+20 at00b34055, increments at00b34058, then installs vtable00d5f280. Counter is shared with00b34120 and other unnamed variants; numeric step uses same typed producer. Vtable suffix describes evidence; original subtype symbol is unknown. Evidence docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed numeric metadata fragments only, not complete constructors, original ABI or game validation. Original ABI: ECX object; two stack values; RET8; EAX object. Evidence: docs/MATERIAL_SORT_METADATA.md; reports/material_sort_metadata_audit.json. Descriptive names are hypotheses; typed C++ interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b34020",
+      "old_name": "BSP_LogicalTextureBase_ConstructUnnamed_D5F280",
+      "name": "BSP_LogicalTextureBase_ConstructUnnamed_D5F280",
+      "evidence": "Full71byte actual unnamed logical texture base constructor. Ordered raw stores: CEB130 then D5F1F4 profiles; count+4=1; name+8/+C=0 and +14=0; borrowed COM+10; flags+1C; current actual shared108D6E8 serial to owner+20; reread actual serial and increment with DWORD wrap; final D5F280. +18 and >=24 untouched. No COM/name retention or release, no calls/EH. Backed alias and partial unaligned serial storage behavior follows Win32 raw instructions. Independent genuine frozen primary library versus original body:1152 DWORDs and35 observed stores including same-value writes;3 serial bindings and real pooled current-name destruction. Only two explicit serial operand relocations in constructor; native cleanup JMP unchanged. Raw write PCs verified within actual primary function; no owned recompile or aliases. Original ABI: ECX actual owner; stack borrowed COM/flags; EAX same owner; RET8. Complete src/native_cube_texture_base.cpp; reports/native_cube_texture_base_audit.json. Strict MSVC Win32 build and two existing tests passed. Descriptive names are hypotheses; new C++ interfaces are not original binary replacement ABI. GPU, game CRT startup and gameplay not validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b34090",
+    "before": {
+      "address": "00b34090",
+      "function_name": "FUN_00b34090"
+    },
+    "after": {
+      "address": "00b34090",
+      "old_name": "FUN_00b34090",
+      "name": "BSP_LogicalTextureBase_UnwindD5F280",
+      "evidence": "Complete5byte unnamed-base cleanup entry tail-jumps B33F50 with actual owner/current name. No preliminary D5F280 store. Source composes genuine existing NativeStringStorage/PooledStringStorage and named-base destructor; original B33F50 is explicit shared-provider boundary. Independent original native JMP versus frozen actual primary library included in1152DWORD/35store fixture, real14byte name release and same-pointer reuse; abandoned7byte old name is not released. Constructor3cases and all18 runtime postimages checked; no separate native string-pool ABI or throwing-provider claim. Original ABI: ECX actual owner; full JMP B33F50; RET. Complete src/native_cube_texture_base.cpp; reports/native_cube_texture_base_audit.json. Strict MSVC Win32 build and two existing tests passed. Descriptive names are hypotheses; new C++ interfaces are not original binary replacement ABI. GPU, game CRT startup and gameplay not validated."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00735ff0",
+    "before": {
+      "address": "00735ff0",
+      "function_name": "FUN_00735ff0"
+    },
+    "after": {
+      "address": "00735ff0",
+      "old_name": "FUN_00735ff0",
+      "name": "BSP_PointerArray_ReserveCurrentStorage",
+      "evidence": "Complete95byte pointer-array reserve on actual12byte header table/count/capacity +0/+4/+8. Clamp signed requested capacity to1; signed current capacity gate precedes table/count access. Exact DWORDwrapped request*4 actual BF55BE allocation. Reread current signed count and current source table on reached copy iterations; preserve destination-null gate and wrapped index/cursor. After copying, actual BF6989 frees CURRENT table, then publish captured replacement and requested capacity; preserve current count even at free-boundary mutation. Full9byte736041..736049 returning-free continuation restored after clearing suspect call flow override. No own EH/rollback, overflow repair, or owner retain/release. Actual frozen primary library versus all95 unpatched native bytes:426DWORDs/26snapshots,4actual malloc requests24/24/4/0,4free calls3nonnull. Includes deliberate service-boundary current-header mutations, signed negatives, invalid-unused-table capacity skip and wrapped malloc0. Three runtime spans and three real providers checked; only two external CRT entry bridges. Allocation failure uses existing shared contract and is not separately executed in this fixture. Original ABI: ECX actual12-byte table/count/capacity header; stack signed requested capacity; RET4; no semantic result. Complete src/native_cube_texture_owner_array_reserve.cpp; reports/native_cube_texture_owner_array_reserve_audit.json. Strict MSVC Win32 build and two existing tests passed. Descriptive names are hypotheses; new C++ interfaces are not original binary replacement ABI. GPU, game CRT startup and gameplay not validated."
+    },
+    "status": "applied"
+  }
+]

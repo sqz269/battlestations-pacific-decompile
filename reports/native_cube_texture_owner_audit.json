@@ -1,0 +1,2361 @@
+{
+  "schema_version": 1,
+  "packet": "native_cube_texture_owner3",
+  "generated_utc": "2026-09-11T05:41:16.527398+00:00",
+  "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+  "base_commit": "052dce6dabbd00acaf81a6b8d2891184a70b9962",
+  "owned_addresses": [
+    "00b3d650",
+    "00b3ead0",
+    "00b3f410"
+  ],
+  "owned_files": [
+    "include/bsp/native_cube_texture_owner.hpp",
+    "src/native_cube_texture_owner.cpp",
+    "docs/NATIVE_CUBE_TEXTURE_OWNER.md",
+    "reports/native_cube_texture_owner_audit.json"
+  ],
+  "functions": [
+    {
+      "address": "00b3d650",
+      "end_exclusive": "00b3d6ca",
+      "bytes": 122,
+      "suggested_ghidra_name": "BSP_CubeTexture_ConstructUnnamed",
+      "cpp_symbol": "construct_native_cube_texture_00b3d650",
+      "original_ABI": "ECXactualowner; stackIDirect3DCubeTexture9*,flags; EAXowner; RET8",
+      "behavior": "Actual unnamedbase; retained+2Czero/profileD61870; currentinputGetLevelDesc(0) ignoringHRESULT; Width+24 before currentinputGetLevelCount; lateFormat+18 then mips+14. NoAddRef; cleanup-onlybase unwind.",
+      "source": "src/native_cube_texture_owner.cpp",
+      "header": "include/bsp/native_cube_texture_owner.hpp",
+      "status": "complete_actual_storage_frozen_library_original_caller_fixture_and_strict_Win32_checked",
+      "source_line": 96,
+      "map_line": "0001:00007a70       ?construct_native_cube_texture_00b3d650@bsp@@YAPAXPAXPAUIDirect3DCubeTexture9@@IAAUNativeCubeTextureOwnerContext@1@@Z 30008a70 f   bsp_core.linked:native_cube_texture_owner.obj"
+    },
+    {
+      "address": "00b3ead0",
+      "end_exclusive": "00b3eb6f",
+      "bytes": 159,
+      "suggested_ghidra_name": "BSP_CubeTexture_Destroy",
+      "cpp_symbol": "destroy_native_cube_texture_00b3ead0",
+      "original_ABI": "ECXactualowner; no stackarguments; RET; nosemanticreturn",
+      "behavior": "Current retained source decrement/zero dispatch then clear; capturedrenderer/currenttable6C notification; freshlyreadCOMRelease then clear; disarm and actualname/basecleanup. No genericregistryremoval or2Dextraactions.",
+      "source": "src/native_cube_texture_owner.cpp",
+      "header": "include/bsp/native_cube_texture_owner.hpp",
+      "status": "complete_actual_storage_frozen_library_original_caller_fixture_and_strict_Win32_checked",
+      "source_line": 116,
+      "map_line": "0001:00007d60       ?destroy_native_cube_texture_00b3ead0@bsp@@YAXPAXAAUNativeCubeTextureOwnerContext@1@@Z 30008d60 f   bsp_core.linked:native_cube_texture_owner.obj"
+    },
+    {
+      "address": "00b3f410",
+      "end_exclusive": "00b3f430",
+      "bytes": 32,
+      "suggested_ghidra_name": "BSP_CubeTexture_DeleteScalar",
+      "cpp_symbol": "delete_native_cube_texture_00b3f410",
+      "original_ABI": "ECXactualowner; stackflags; EAXoriginaladdress; RET4",
+      "behavior": "Complete cube destruction; onlyflagsbit0 returns slot viaB3D940actualcanonical108DB70; throwingdestructorpreventsreturn.",
+      "source": "src/native_cube_texture_owner.cpp",
+      "header": "include/bsp/native_cube_texture_owner.hpp",
+      "status": "complete_actual_storage_frozen_library_original_caller_fixture_and_strict_Win32_checked",
+      "source_line": 142,
+      "map_line": "0001:00007ba0       ?delete_native_cube_texture_00b3f410@bsp@@YAPAXPAXIAAUNativeCubeTextureOwnerContext@1@@Z 30008ba0 f   bsp_core.linked:native_cube_texture_owner.obj"
+    }
+  ],
+  "actual_context": {
+    "type": "NativeCubeTextureOwnerContext",
+    "fields": [
+      "NativeRendererTextureNameNotificationContext& renderer_notification",
+      "NativeRetainedMemoryOwnerContext& retained_memory",
+      "void* actual_cube_pool_0108db70",
+      "uint32_t& actual_shared_serial_0108d6e8",
+      "const volatile uint32_t* actual_renderer_profile_00d5f0a8"
+    ],
+    "owner_bytes": 48,
+    "slot_bytes": 52,
+    "untouched_owner_offset": "28",
+    "preserved_pool_slab_index": "30",
+    "provider_tables": [
+      "D5F0A8/+6C=B32250",
+      "D15AD8/slot0=BD30E0,slot4=8D4470",
+      "D642C0/slot0=BD30E0,slot4=BB8F90"
+    ],
+    "storage_preconditions": "Actual reached rawowner/COM/name/context/profile/poolstorage valid at each nativeaccess. Actual string pool shared with notification. Actual canonicalpool initialized with genuine trim binding before publication. Unwritten failedHRESULT descriptorbytes have no establisheddeterministicvalue."
+  },
+  "base2_dependency": {
+    "source": "native_cube_texture_base.hpp/.cpp",
+    "source_copy_matches_current_primary": true,
+    "frozen_apis": [
+      "construct_native_logical_texture_unnamed_base_00b34020",
+      "unwind_native_logical_texture_unnamed_base_00b34090"
+    ],
+    "independent_fixture_report": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_cube_texture_base_fixture.json",
+    "independent_fixture_sha256": "00118bd9199d49c5180c3c920efe25f58ff0f558152e3523bdad758c4947140a",
+    "independent_fixture_status": "complete_native_owned_constructor_and_forwarding_entry_compared_against_frozen_primary_library",
+    "independent_fixture_commit": "132b78f",
+    "separate_evidence": "Primary fixture1152DWORDs/35actualstores; this ownerfixture composes actualbaseprovider on both paths and does not substitute for that independent base comparison."
+  },
+  "fresh_original_evidence": {
+    "utc": "2026-09-11T05:24:46.074960+00:00",
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b34020",
+        "end_exclusive": "00b34067",
+        "length": 71,
+        "offset": 7553056,
+        "role": "candidate_unnamed_base",
+        "bytes_hex": "8bc1c70030b1ce0033c9c700f4f1d500ba0100000089500489480889480c8948148b4c24048948108b4c240889481c8b0de8d608018948200115e8d60801c70080f2d500c20800",
+        "sha256": "031c57cc4c03752af663783dc02c23e84c16332d4ae2a5fe33dacad7bf02bf69",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b34090",
+        "end_exclusive": "00b34095",
+        "length": 5,
+        "offset": 7553168,
+        "role": "candidate_unnamed_base_unwind_forwarder",
+        "bytes_hex": "e9bbfeffff",
+        "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b3d650",
+        "end_exclusive": "00b3d6ca",
+        "length": 122,
+        "offset": 7591504,
+        "role": "candidate_cube_constructor",
+        "bytes_hex": "6aff6868edcb0064a100000000506489250000000083ec248b44243856578b7c243c508bf15789742410e8a169ffff33c08d54240c5289462cc7067018d6008b0f508944243c8b414457ffd08b4c2424894e248b178b423457ffd08b4c240c894e188b4c242c8946145f8bc65e64890d0000000083c430c20800",
+        "sha256": "86a572fb445ae113c3b466cb6c74eec7a6b04fec9d4240b1cb05dc8ec6f55ec2",
+        "live_matches_disk": true,
+        "assembly": [
+          "00b3d650: push -1",
+          "00b3d652: push 0xcbed68",
+          "00b3d657: mov eax, dword ptr fs:[0]",
+          "00b3d65d: push eax",
+          "00b3d65e: mov dword ptr fs:[0], esp",
+          "00b3d665: sub esp, 0x24",
+          "00b3d668: mov eax, dword ptr [esp + 0x38]",
+          "00b3d66c: push esi",
+          "00b3d66d: push edi",
+          "00b3d66e: mov edi, dword ptr [esp + 0x3c]",
+          "00b3d672: push eax",
+          "00b3d673: mov esi, ecx",
+          "00b3d675: push edi",
+          "00b3d676: mov dword ptr [esp + 0x10], esi",
+          "00b3d67a: call 0xb34020",
+          "00b3d67f: xor eax, eax",
+          "00b3d681: lea edx, [esp + 0xc]",
+          "00b3d685: push edx",
+          "00b3d686: mov dword ptr [esi + 0x2c], eax",
+          "00b3d689: mov dword ptr [esi], 0xd61870",
+          "00b3d68f: mov ecx, dword ptr [edi]",
+          "00b3d691: push eax",
+          "00b3d692: mov dword ptr [esp + 0x3c], eax",
+          "00b3d696: mov eax, dword ptr [ecx + 0x44]",
+          "00b3d699: push edi",
+          "00b3d69a: call eax",
+          "00b3d69c: mov ecx, dword ptr [esp + 0x24]",
+          "00b3d6a0: mov dword ptr [esi + 0x24], ecx",
+          "00b3d6a3: mov edx, dword ptr [edi]",
+          "00b3d6a5: mov eax, dword ptr [edx + 0x34]",
+          "00b3d6a8: push edi",
+          "00b3d6a9: call eax",
+          "00b3d6ab: mov ecx, dword ptr [esp + 0xc]",
+          "00b3d6af: mov dword ptr [esi + 0x18], ecx",
+          "00b3d6b2: mov ecx, dword ptr [esp + 0x2c]",
+          "00b3d6b6: mov dword ptr [esi + 0x14], eax",
+          "00b3d6b9: pop edi",
+          "00b3d6ba: mov eax, esi",
+          "00b3d6bc: pop esi",
+          "00b3d6bd: mov dword ptr fs:[0], ecx",
+          "00b3d6c4: add esp, 0x30",
+          "00b3d6c7: ret 8"
+        ]
+      },
+      {
+        "address": "00b3ead0",
+        "end_exclusive": "00b3eb6f",
+        "length": 159,
+        "offset": 7596752,
+        "role": "candidate_cube_destructor",
+        "bytes_hex": "6aff68c8edcb0064a100000000506489250000000051568bf15789742408c7067018d6008b7e2c85ffc744241400000000741d8d470450ff152022ce0085c075088b178b028bcfffd0c7462c000000008b3d94d3f800538b1f8bcee81053ffff8b536c508bcfffd28b461085c05b740f8b088b510850ffd2c74610000000008bcec7442414ffffffffe8f253ffff8b4c240c5f5e64890d0000000083c410c3",
+        "sha256": "7a83246a860603f4ec73a4d467f5fa725b4e2edf02e13b131a60cc0ac81f084d",
+        "live_matches_disk": true,
+        "assembly": [
+          "00b3ead0: push -1",
+          "00b3ead2: push 0xcbedc8",
+          "00b3ead7: mov eax, dword ptr fs:[0]",
+          "00b3eadd: push eax",
+          "00b3eade: mov dword ptr fs:[0], esp",
+          "00b3eae5: push ecx",
+          "00b3eae6: push esi",
+          "00b3eae7: mov esi, ecx",
+          "00b3eae9: push edi",
+          "00b3eaea: mov dword ptr [esp + 8], esi",
+          "00b3eaee: mov dword ptr [esi], 0xd61870",
+          "00b3eaf4: mov edi, dword ptr [esi + 0x2c]",
+          "00b3eaf7: test edi, edi",
+          "00b3eaf9: mov dword ptr [esp + 0x14], 0",
+          "00b3eb01: je 0xb3eb20",
+          "00b3eb03: lea eax, [edi + 4]",
+          "00b3eb06: push eax",
+          "00b3eb07: call dword ptr [0xce2220]",
+          "00b3eb0d: test eax, eax",
+          "00b3eb0f: jne 0xb3eb19",
+          "00b3eb11: mov edx, dword ptr [edi]",
+          "00b3eb13: mov eax, dword ptr [edx]",
+          "00b3eb15: mov ecx, edi",
+          "00b3eb17: call eax",
+          "00b3eb19: mov dword ptr [esi + 0x2c], 0",
+          "00b3eb20: mov edi, dword ptr [0xf8d394]",
+          "00b3eb26: push ebx",
+          "00b3eb27: mov ebx, dword ptr [edi]",
+          "00b3eb29: mov ecx, esi",
+          "00b3eb2b: call 0xb33e40",
+          "00b3eb30: mov edx, dword ptr [ebx + 0x6c]",
+          "00b3eb33: push eax",
+          "00b3eb34: mov ecx, edi",
+          "00b3eb36: call edx",
+          "00b3eb38: mov eax, dword ptr [esi + 0x10]",
+          "00b3eb3b: test eax, eax",
+          "00b3eb3d: pop ebx",
+          "00b3eb3e: je 0xb3eb4f",
+          "00b3eb40: mov ecx, dword ptr [eax]",
+          "00b3eb42: mov edx, dword ptr [ecx + 8]",
+          "00b3eb45: push eax",
+          "00b3eb46: call edx",
+          "00b3eb48: mov dword ptr [esi + 0x10], 0",
+          "00b3eb4f: mov ecx, esi",
+          "00b3eb51: mov dword ptr [esp + 0x14], 0xffffffff",
+          "00b3eb59: call 0xb33f50",
+          "00b3eb5e: mov ecx, dword ptr [esp + 0xc]",
+          "00b3eb62: pop edi",
+          "00b3eb63: pop esi",
+          "00b3eb64: mov dword ptr fs:[0], ecx",
+          "00b3eb6b: add esp, 0x10",
+          "00b3eb6e: ret "
+        ]
+      },
+      {
+        "address": "00b3f410",
+        "end_exclusive": "00b3f430",
+        "length": 32,
+        "offset": 7599120,
+        "role": "candidate_cube_scalar_delete",
+        "bytes_hex": "568bf1e8b8f6fffff644240801740b56b970db0801e816e5ffff8bc65ec20400",
+        "sha256": "854a0644361726fda417159185e8440fbc537700d7d1f5315545503e6bb3816b",
+        "live_matches_disk": true,
+        "assembly": [
+          "00b3f410: push esi",
+          "00b3f411: mov esi, ecx",
+          "00b3f413: call 0xb3ead0",
+          "00b3f418: test byte ptr [esp + 8], 1",
+          "00b3f41d: je 0xb3f42a",
+          "00b3f41f: push esi",
+          "00b3f420: mov ecx, 0x108db70",
+          "00b3f425: call 0xb3d940",
+          "00b3f42a: mov eax, esi",
+          "00b3f42c: pop esi",
+          "00b3f42d: ret 4"
+        ]
+      },
+      {
+        "address": "00cbed60",
+        "end_exclusive": "00cbed68",
+        "length": 8,
+        "offset": 9170272,
+        "role": "constructor_unwind_thunk",
+        "bytes_hex": "8b4dd0e92853e7ff",
+        "sha256": "e73976e6d636435748331b6f9f91da836239930f8641821edad2bf3b8130e7ae",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00cbed68",
+        "end_exclusive": "00cbed72",
+        "length": 10,
+        "offset": 9170280,
+        "role": "constructor_FH3_handler",
+        "bytes_hex": "b87075df00e9d17df3ff",
+        "sha256": "8f1a31cad3bd36a12b956244e83b20b0025f307adf558d6ec5a5b123dd0b23e6",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00df7568",
+        "end_exclusive": "00df7594",
+        "length": 44,
+        "offset": 10450280,
+        "role": "constructor_unwind_map_and_FuncInfo",
+        "bytes_hex": "ffffffff60edcb0022059319010000006875df00000000000000000000000000000000000000000001000000",
+        "sha256": "6a7bda0010ac383d6307b2aebc1570ffe29db0adc651ebfb7ba79c9c86848cd1",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00cbedc0",
+        "end_exclusive": "00cbedc8",
+        "length": 8,
+        "offset": 9170368,
+        "role": "destructor_unwind_thunk",
+        "bytes_hex": "8b4df0e9c852e7ff",
+        "sha256": "bb747887ed0805efb714c8ac460e35fe3f6ddddcf63b5855d021fec63ad49651",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00cbedc8",
+        "end_exclusive": "00cbedd2",
+        "length": 10,
+        "offset": 9170376,
+        "role": "destructor_FH3_handler",
+        "bytes_hex": "b8fc75df00e9717df3ff",
+        "sha256": "a27c914e3ed25c15374777f16b45984ee386a0bb51bebd4c1760100adc6948e6",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00df75f4",
+        "end_exclusive": "00df7620",
+        "length": 44,
+        "offset": 10450420,
+        "role": "destructor_unwind_map_and_FuncInfo",
+        "bytes_hex": "ffffffffc0edcb002205931901000000f475df00000000000000000000000000000000000000000001000000",
+        "sha256": "a0bf6cf5814a864ac72c142de638090df25ff07ca14d7974b9f77f55fe0b2b8b",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b33e40",
+        "end_exclusive": "00b33e44",
+        "length": 4,
+        "offset": 7552576,
+        "role": "complete_name_address_dependency",
+        "bytes_hex": "8d4108c3",
+        "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b33f50",
+        "end_exclusive": "00b33fb7",
+        "length": 103,
+        "offset": 7552848,
+        "role": "complete_named_base_destroy_dependency",
+        "bytes_hex": "6aff6898e0cb0064a100000000506489250000000051568bf189742404c706f4f1d5008b460c85c0c74424100000000074168b4e086a0183c1015150e82f5d8eff8bc8e878d509008bcec7442410ffffffffe849f109008b4c24085e64890d0000000083c410c3",
+        "sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00cbe090",
+        "end_exclusive": "00cbe0a2",
+        "length": 18,
+        "offset": 9166992,
+        "role": "base_unwind_thunk_and_FH3_handler",
+        "bytes_hex": "8b4df0e9e837dcffb80c69df00e9a18af3ff",
+        "sha256": "e107ee11d6639e27a5050d830aeb75cd72bbfdb3001fd5926a61251a89e048e3",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00df6904",
+        "end_exclusive": "00df6930",
+        "length": 44,
+        "offset": 10447108,
+        "role": "base_unwind_map_and_FuncInfo",
+        "bytes_hex": "ffffffff90e0cb0022059319010000000469df00000000000000000000000000000000000000000001000000",
+        "sha256": "c161c0855c648dac82623f971b99297f9414552497d59e06a3457f04365c430a",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00a81880",
+        "end_exclusive": "00a81885",
+        "length": 5,
+        "offset": 6822016,
+        "role": "base_unwind_JMP_dependency",
+        "bytes_hex": "e96b181500",
+        "sha256": "a4e4c3c625027b1accb522e14a55b64e3dbb509273a0c42f7a9264ba7f30b7f3",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bd30f0",
+        "end_exclusive": "00bd30f7",
+        "length": 7,
+        "offset": 8204528,
+        "role": "reference_base_action",
+        "bytes_hex": "c70130b1ce00c3",
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bd30e0",
+        "end_exclusive": "00bd30ee",
+        "length": 14,
+        "offset": 8204512,
+        "role": "zero_reference_deleting_dispatch",
+        "bytes_hex": "85c974098b018b50046a01ffd2c3",
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b32250",
+        "end_exclusive": "00b32340",
+        "length": 240,
+        "offset": 7545424,
+        "role": "complete_renderer_notification_dependency",
+        "bytes_hex": "64a1000000006aff68f0dccb00506489250000000083ec10803ddcd60801005556578be974138b0d94d3f800894c2418e84b180000884424148b74242c33ff8d44240c3bc6c744242400000000c744240c00000000897c241074288b066a01508d4c2414e887ba8eff393e8b7c241074128b4c240c8b5604515257e8b0530c0083c40c8d4c240cc644242401e81fa998ff568d8d741a0000e8d3faffff85ffc64424240074178b44240c6a0183c0015057e8ba798eff8bc8e803f20900803ddcd60801005f5ec744241cffffffff5d740e8b4424088b4c240c50e8d11700008b4c241064890d0000000083c41cc20400",
+        "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+        "live_matches_disk": true
+      },
+      {
+        "address": "008d4440",
+        "end_exclusive": "008d446d",
+        "length": 45,
+        "offset": 5063744,
+        "role": "backing_destroy_full_returning_free_tail",
+        "bytes_hex": "568bf18b460850c706d85ad100e85a213200832d98db0901018b4e0c83c404290d9cdb09018bce5ee983ec2f00",
+        "sha256": "edfc585bda1bfe5d4415baf6799ec9c0281d4ff897f50ad48fd77fce2e23cf68",
+        "live_matches_disk": true
+      },
+      {
+        "address": "008d4470",
+        "end_exclusive": "008d44b2",
+        "length": 66,
+        "offset": 5063792,
+        "role": "backing_delete_full_returning_free_tails",
+        "bytes_hex": "568bf18b460850c706d85ad100e82a213200832d98db0901018b4e0c290d9cdb090183c4048bcee854ec2f00f644240801740956e80321320083c4048bc65ec20400",
+        "sha256": "6f300372d3019149192f16df5af69c965b98ebb5efbe2dfd80868afdfc68b70a",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bef9c0",
+        "end_exclusive": "00befa36",
+        "length": 118,
+        "offset": 8321472,
+        "role": "stream_destroy_dependency",
+        "bytes_hex": "6aff68b876cc0064a100000000506489250000000051568bf15789742408c706c042d6008b7e0885ffc744241400000000741d8d470450ff152022ce0085c075088b178b028bcfffd0c74608000000008bcec7442414ffffffffc70604c1d500e8cb36feff8b4c240c5f5e64890d0000000083c410c3",
+        "sha256": "0e4fabcd08941fce4451eb93b3bbda3644238984e0d2a3b5048ca7bb0e7ff9ec",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bb8f90",
+        "end_exclusive": "00bb8fae",
+        "length": 30,
+        "offset": 8097680,
+        "role": "stream_delete_full_returning_free_tail",
+        "bytes_hex": "568bf1e8286a0300f644240801740956e807d6030083c4048bc65ec20400",
+        "sha256": "a88682c86cbbdd6d0c0c2bdf811ab62d50d05d2504bfa098ea7615c160e23438",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bf65ac",
+        "end_exclusive": "00bf65b1",
+        "length": 5,
+        "offset": 8349100,
+        "role": "actual_CRT_free_JMP_entry",
+        "bytes_hex": "e917380000",
+        "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00bf6b43",
+        "end_exclusive": "00bf6b79",
+        "length": 54,
+        "offset": 8350531,
+        "role": "actual_FH3_entry",
+        "bytes_hex": "558bec83ec08535657fc8945fc33c0505050ff75fcff7514ff7510ff750cff7508e8280e010083c4208945f85f5e5b8b45f88be55dc3",
+        "sha256": "0b6262330c802ad46bf5e3c675db66ed6c02d01f93c6da7e63bcc3cbe6de56f2",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b3d940",
+        "end_exclusive": "00b3d9a5",
+        "length": 101,
+        "offset": 7592256,
+        "role": "actual_cube_slot_return_dependency",
+        "bytes_hex": "5356578bf18d7e0c57ff151822ce00834718018b4424108b58308b4e288b0c992bc18bd0b84fecc44ef7eac1fa048bc2c1e81f03c20fb791c00600006689845180060000668381c0060000013b5e347303895e34834718ff57ff151022ce005f5e5bc20400",
+        "sha256": "f893e0af8d343031471f8ccdaf44ec63b38d9546f8bfea58d98c9ea784f1cec9",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00b3dce0",
+        "end_exclusive": "00b3dcec",
+        "length": 12,
+        "offset": 7593184,
+        "role": "actual_cube_raw_return_adapter",
+        "bytes_hex": "51b970db0801e855fcffffc3",
+        "sha256": "e2a284d6109c41c72ea4a8e0c93ca02dad353d71e2fefe3129e6d69da338736d",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d61870",
+        "end_exclusive": "00d618b0",
+        "length": 64,
+        "offset": 9836656,
+        "role": "cube_profile_table_16_slots",
+        "bytes_hex": "e030bd0010f4b30040dfb3005022a80060cfb300803eb300903eb30090cfb300103fb300203fb300c0d7b300f0e1b30050e0b30090feb30070cfb30080cfb300",
+        "sha256": "9551267b5b784c47a650abf5e1c854b0c6d7d1298b2ec570b4662e8c76605a10",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d5f280",
+        "end_exclusive": "00d5f2c0",
+        "length": 64,
+        "offset": 9826944,
+        "role": "base_profile_table_16_slots",
+        "bytes_hex": "e030bd006042b300f0fabe005022a8008e69bf00803eb300903eb3008e69bf00103fb300203fb300303fb300403fb3007040b3008040b3008e69bf008e69bf00",
+        "sha256": "26ee395f7010c8558fa93180fa2657fa1be2394e869ff9892098452380805dc4",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d5f114",
+        "end_exclusive": "00d5f118",
+        "length": 4,
+        "offset": 9826580,
+        "role": "renderer_D5F0A8_slot6C",
+        "bytes_hex": "5022b300",
+        "sha256": "3c59227775ade8e17275d19b0f3672bf013399c24d48e3587538bdff0c2b3c6b",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d15ad8",
+        "end_exclusive": "00d15ae0",
+        "length": 8,
+        "offset": 9525976,
+        "role": "backing_reference_dispatch_slots",
+        "bytes_hex": "e030bd0070448d00",
+        "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d642c0",
+        "end_exclusive": "00d642c8",
+        "length": 8,
+        "offset": 9847488,
+        "role": "stream_reference_dispatch_slots",
+        "bytes_hex": "e030bd00908fbb00",
+        "sha256": "2755848844406d8a6a0e5301377e32c2f3d1aa1b7a87abcb9856164311e22ec8",
+        "live_matches_disk": true
+      },
+      {
+        "address": "0108d6e8",
+        "end_exclusive": "0108d6ec",
+        "length": 4,
+        "offset": 4294967295,
+        "role": "shared_serial_loader_preimage",
+        "bytes_hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00f8d394",
+        "end_exclusive": "00f8d398",
+        "length": 4,
+        "offset": 4294967295,
+        "role": "renderer_publication_loader_preimage",
+        "bytes_hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "live_matches_disk": true
+      },
+      {
+        "address": "0108db70",
+        "end_exclusive": "0108dba8",
+        "length": 56,
+        "offset": 4294967295,
+        "role": "canonical_cube_pool_loader_preimage",
+        "bytes_hex": "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00ce2220",
+        "end_exclusive": "00ce2224",
+        "length": 4,
+        "offset": 9314848,
+        "role": "InterlockedDecrement_IAT_prebinding_word",
+        "bytes_hex": "e856a000",
+        "sha256": "7b0eb414e1b371565f2f2124fd69640423931b95c9d87c8c704b3d83b1390d14",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00d5f0a8",
+        "end_exclusive": "00d5f118",
+        "length": 112,
+        "offset": 9826472,
+        "role": "actual_renderer_profile",
+        "bytes_hex": "f039b300b0aeb2003014b20000b2b200b0f4b200a0f4b2005084b2006084b20010feb100207cb200f07cb20020feb10060ffb100a064b200e017b3001029b30010f7b200c0f4b200b018b30030feb10040feb1007085b20050feb100c087b200b088b200b019b300c01ab3005022b300",
+        "sha256": "052f09bea75b9e3fa49fe469b27c5f02422844ef1d01f72047499833fa5cb1f9",
+        "live_matches_disk": true
+      },
+      {
+        "address": "0108d6dc",
+        "end_exclusive": "0108d6e4",
+        "length": 8,
+        "offset": 4294967295,
+        "role": "actual_synchronization_globals",
+        "bytes_hex": "0000000000000000",
+        "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+        "live_matches_disk": true
+      },
+      {
+        "address": "0109db98",
+        "end_exclusive": "0109dba0",
+        "length": 8,
+        "offset": 4294967295,
+        "role": "actual_retained_memory_counters",
+        "bytes_hex": "0000000000000000",
+        "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00e188b4",
+        "end_exclusive": "00e188b8",
+        "length": 4,
+        "offset": 4294967295,
+        "role": "actual_allocator_list_head",
+        "bytes_hex": "00000000",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "live_matches_disk": true
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "local/cube_owner_live_00b34020.txt",
+        "sha256": "0fe89f1fbc889f3208b3a8469abdaba16a5b866aa0a21b8fc19673c9bd605e09"
+      },
+      {
+        "path": "local/cube_owner_live_00b34090.txt",
+        "sha256": "3013121b10a5917f87ef5f7579acc1635523fb94f6b699f727afa440dd64c93a"
+      },
+      {
+        "path": "local/cube_owner_live_00b3d650.txt",
+        "sha256": "78fc1379b627090ab0f7e1340250ac64c92251eda02f768676375a06c4098508"
+      },
+      {
+        "path": "local/cube_owner_live_00b3ead0.txt",
+        "sha256": "eebf8c1aa83af82c1ae14baaa5844c93d0179ecfc5caf6ec6c3e1d3dbcfb5617"
+      },
+      {
+        "path": "local/cube_owner_live_00b3f410.txt",
+        "sha256": "1d6ae898b422aa29e276ec0bd0c88ec84927e985f78e510da286fd21a56fd493"
+      },
+      {
+        "path": "local/cube_owner_live_00cbed60.txt",
+        "sha256": "44db4b204a881e8b72a550b7fa6b81005cbaf80154d649f58d09caf08d8a21b3"
+      },
+      {
+        "path": "local/cube_owner_live_00cbed68.txt",
+        "sha256": "6eba8fa93dab1dd0c3470835b7a5a49e3aa74a17d22975fbdf4f47c7d32ca57f"
+      },
+      {
+        "path": "local/cube_owner_live_00df7568.txt",
+        "sha256": "5b66c51837da2b77436d0badb1e860ab27d46480bc4e8befb0269638bc632a29"
+      },
+      {
+        "path": "local/cube_owner_live_00cbedc0.txt",
+        "sha256": "d90b07d6404643e0bc4d8d7ff01438988b74de0747e59495694cb7ed2a3c7d21"
+      },
+      {
+        "path": "local/cube_owner_live_00cbedc8.txt",
+        "sha256": "58d815f914ebf69a46c9da1dcb3613e6d1580dbbc3084dd1c87400e7700baf39"
+      },
+      {
+        "path": "local/cube_owner_live_00df75f4.txt",
+        "sha256": "d69698ccb366c1aa347b7dc0c613027e3e1043918c3b21107ba1747f4a68f78d"
+      },
+      {
+        "path": "local/cube_owner_live_00b33e40.txt",
+        "sha256": "69941d66f2a21c6b83a298a618b79feda44a1eee35a7d42bf6781c3d4dd8a73e"
+      },
+      {
+        "path": "local/cube_owner_live_00b33f50.txt",
+        "sha256": "23d4447d420934d3ecc774b50433b61e006cf4bb45902869aad3868ec8215791"
+      },
+      {
+        "path": "local/cube_owner_live_00cbe090.txt",
+        "sha256": "62c4181ec17b615417f32bdbb335e3d508a51c5a356477b2c3024e3aa00effc0"
+      },
+      {
+        "path": "local/cube_owner_live_00df6904.txt",
+        "sha256": "22236303da3826ca1bdc1cdea230d55cbbd8ed91763cb540e0519a35df69dc42"
+      },
+      {
+        "path": "local/cube_owner_live_00a81880.txt",
+        "sha256": "6199b8c08c07312a09bebf277ca96c6375607289d52d16b1529398f0e0d93a94"
+      },
+      {
+        "path": "local/cube_owner_live_00bd30f0.txt",
+        "sha256": "6d4fea5ad462e63418de401a96dbc198bda2fcc5360151283d74204fa50615de"
+      },
+      {
+        "path": "local/cube_owner_live_00bd30e0.txt",
+        "sha256": "ec3aac86bbc27a605e99a56425c37373af1323cb70bcfca407f1d17afa1ebbce"
+      },
+      {
+        "path": "local/cube_owner_live_00b32250.txt",
+        "sha256": "c80b3240db298a0ffe46ae4c074a3b30300cc450a188a34b2ecfd34321de2332"
+      },
+      {
+        "path": "local/cube_owner_live_008d4440.txt",
+        "sha256": "fd4f64b0a2c7002f01b5966ba8e14d09cd9e7285915395c9b63b94e5f18ac45a"
+      },
+      {
+        "path": "local/cube_owner_live_008d4470.txt",
+        "sha256": "d67ae1c89eead2119b8c19b7ec7734bd3c0d4596f6147863f50a8ff434b3c3a6"
+      },
+      {
+        "path": "local/cube_owner_live_00bef9c0.txt",
+        "sha256": "60fd4b4a8729542f15d55adfea0cfd84c47fd5a9a0f3f043240d493a4294c48d"
+      },
+      {
+        "path": "local/cube_owner_live_00bb8f90.txt",
+        "sha256": "b637b39f4502a46f74fe357d11e12c475ca2ec0711dd9a257ef64742d90ab3ee"
+      },
+      {
+        "path": "local/cube_owner_live_00bf65ac.txt",
+        "sha256": "9e76e3d908a16c7f4e76267eb94a6a6e45f3e8b95138946c3ee8fec466d3c0cc"
+      },
+      {
+        "path": "local/cube_owner_live_00bf6b43.txt",
+        "sha256": "119943d4e8bb4b2a17099ba0e3eccaff56da5d4f8abc43d87955bf886f7dd098"
+      },
+      {
+        "path": "local/cube_owner_live_00b3d940.txt",
+        "sha256": "b42e7a5259afc1432e7c815fcaad1d1231a6b54c1925cdf836bd31dd7e377c21"
+      },
+      {
+        "path": "local/cube_owner_live_00b3dce0.txt",
+        "sha256": "bdf0b71103b759ad6fae8685bda7e9fb63b30c2ef28f06700a08f3059ae6a9f2"
+      },
+      {
+        "path": "local/cube_owner_live_00d61870.txt",
+        "sha256": "8b1278e8ddd113fa2cd068be17ad1cc60eda9502c626cb1d4897cf86627ecd3f"
+      },
+      {
+        "path": "local/cube_owner_live_00d5f280.txt",
+        "sha256": "f5d16d023fa1a31083a0098c4fc015b7c96461b86d0461f41a95b08949a1cd63"
+      },
+      {
+        "path": "local/cube_owner_live_00d5f114.txt",
+        "sha256": "66d7f17d9d4958390d1a97d5b6c85a3fac4ef3ba9416fc92b7c44fa7bf3d3f72"
+      },
+      {
+        "path": "local/cube_owner_live_00d15ad8.txt",
+        "sha256": "535336399cfbedb13525861ed7345108f39376ada102ac88a64e1f5893835eaf"
+      },
+      {
+        "path": "local/cube_owner_live_00d642c0.txt",
+        "sha256": "5b03ef0b871460337e276042fb2f16ff3969345b603ce20b4cf8f9339ea02717"
+      },
+      {
+        "path": "local/cube_owner_live_0108d6e8.txt",
+        "sha256": "109388422d08fc05c8b656c416daae152dc6d704111b3d3a5cff6838ae24b611"
+      },
+      {
+        "path": "local/cube_owner_live_00f8d394.txt",
+        "sha256": "d5a345538d91b963bd354a9b5158cb0ceb0081d1b26a5dd45ae178bb8b46b1a8"
+      },
+      {
+        "path": "local/cube_owner_live_0108db70.txt",
+        "sha256": "54897fc948c22806efd7614aed2acfe0f6341fff95a5458b5bf21169eccc72cd"
+      },
+      {
+        "path": "local/cube_owner_live_00ce2220.txt",
+        "sha256": "102b23f97d815a25c26cb3db60e373da13c5fc4b1251514ab112975d2a379ee5"
+      },
+      {
+        "path": "local/cube_owner_live_00d5f0a8.txt",
+        "sha256": "5b5d0f69f48ffdea2b09e3ecc75e29fb4816a74dde239558d7ea2727edd374a2"
+      },
+      {
+        "path": "local/cube_owner_live_0108d6dc.txt",
+        "sha256": "6c442fc7322dc3bdded43a2319c91a79ff9a440c024b52a78be5dd853c536ad0"
+      },
+      {
+        "path": "local/cube_owner_live_0109db98.txt",
+        "sha256": "f7807ca1b91d6875889e580867e5b5d62a5c880e9b4094b6fce052b9036a3b5c"
+      },
+      {
+        "path": "local/cube_owner_live_00e188b4.txt",
+        "sha256": "b6a0ea05b124ce9f81be40cd559af332afab28962f00529aab5af90eb43157b7"
+      },
+      {
+        "path": "local/cube_owner_old_00b3d650_proto.txt",
+        "sha256": "374dee934460687c108e592419b9ffb1249d0f7022c7d548799b551b765c1d32"
+      },
+      {
+        "path": "local/cube_owner_old_00b3d650_comments.txt",
+        "sha256": "272826c2fc5a2c8583e5da7f24a8d983f43b659a84007449766689d5c98537e4"
+      },
+      {
+        "path": "local/cube_owner_old_00b3ead0_proto.txt",
+        "sha256": "c2591fcbc01ef4c5c42a5370398c453aab9e292c22d031f00fc27c8950a2d459"
+      },
+      {
+        "path": "local/cube_owner_old_00b3ead0_comments.txt",
+        "sha256": "06537dfa4d4c172529f2716c09705f99baff572f7e0a4718f4beca1a03310c6a"
+      },
+      {
+        "path": "local/cube_owner_old_00b3f410_proto.txt",
+        "sha256": "7999d48dc7c7c1c6189d1080c760645e29c7848aad1957a90f5f0a64fb575dbd"
+      },
+      {
+        "path": "local/cube_owner_old_00b3f410_comments.txt",
+        "sha256": "f9e4fd1c37ecdf3773891009ea3d758274243a7fe3285dbcb5d02126803a7235"
+      }
+    ],
+    "guard": "All freshlivebytes/proto/comments use bsp.py ghidra ->client.verify project/program/language/imagebase."
+  },
+  "native_FH3": [
+    {
+      "owner": "00b3d650",
+      "handler": "00cbed68",
+      "FuncInfo": "00df7570",
+      "map": "00df7568",
+      "unwind_thunk": "00cbed60",
+      "saved_owner": "[EBP-30h]",
+      "state0_to_minus1": "B34090 -> B33F50",
+      "catch_entries": 0
+    },
+    {
+      "owner": "00b3ead0",
+      "handler": "00cbedc8",
+      "FuncInfo": "00df75fc",
+      "map": "00df75f4",
+      "unwind_thunk": "00cbedc0",
+      "saved_owner": "[EBP-10h]",
+      "state0_to_minus1": "B34090 -> B33F50",
+      "catch_entries": 0
+    }
+  ],
+  "build": {
+    "compiler": "MSVC19.51.36244.0",
+    "platform": "Win32",
+    "strict_flags": [
+      "/W4",
+      "/WX",
+      "/fp:strict"
+    ],
+    "script": "scripts/build.ps1",
+    "private_source_registration": "local/cube_owner_sources.cmake; ownedsource plus unchanged actualprimarybase copied to ignoredpath, no trackedCMakeedits",
+    "CTest": [
+      "reconstructed_math PASS",
+      "native_math_differential PASS"
+    ],
+    "native_seeds": [
+      {
+        "address": "00401170",
+        "length": 28,
+        "matches_disk": true,
+        "ghidra_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400",
+        "disk_hex": "558bec83e4f883ec08d94508d9e1d95c2404d94424048be55dc20400"
+      },
+      {
+        "address": "00401c20",
+        "length": 47,
+        "matches_disk": true,
+        "ghidra_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3",
+        "disk_hex": "dd4110dc4a08dd4210dc4908dee9dd18dd4210dc09dd4110dc0adee9dd5808dd4108dc0add01dc4a08dee9dd5810c3"
+      },
+      {
+        "address": "00401cb0",
+        "length": 25,
+        "matches_disk": true,
+        "ghidra_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3",
+        "disk_hex": "dd02dc21dd18dd4208dc6108dd5808dd4210dc6110dd5810c3"
+      },
+      {
+        "address": "00401cd0",
+        "length": 29,
+        "matches_disk": true,
+        "ghidra_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800",
+        "disk_hex": "dd00dd442404dcc9d9c9dd18dd4008d8c9dd5808dc4810dd5810c20800"
+      },
+      {
+        "address": "00401cf0",
+        "length": 25,
+        "matches_disk": true,
+        "ghidra_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3",
+        "disk_hex": "dd4008dd00dd4010d9c1decad9c2decbd9c9dec2dcc8dec1c3"
+      },
+      {
+        "address": "00bf0cf0",
+        "length": 46,
+        "matches_disk": true,
+        "ghidra_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400",
+        "disk_hex": "8b44240483c801894104c701010000008b118d04918b1069d2cd0d010089500483010181397002000072e5c20400"
+      },
+      {
+        "address": "00bf0d20",
+        "length": 207,
+        "matches_disk": true,
+        "ghidra_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3",
+        "disk_hex": "83ec0856c744240400000000c7442408dfb00899c7010000000057eb038d49008b118b449108334491048bbc913806000025ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fae300000072c881fa6f02000073368b449108334491048bbc9178fcffff25ffffff7f334491048bf083e601337cb408d1e833f8897c91048301018b1181fa6f02000072ca8b41043381c00900005f25ffffff7f3381c0090000c701000000008bd083e2018b549404339134060000d1e833d08991c00900005e83c408c3"
+      },
+      {
+        "address": "00ba2c20",
+        "length": 94,
+        "matches_disk": true,
+        "ghidra_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3",
+        "disk_hex": "568bf180bec509000000741180bec409000000750833c0c70003000000813e700200007205e8d6e004008b068b4c860483c00189068bc1c1e80b33c88bd181e2ad583affc1e20733ca8bc1258cdfffffc1e00f33c88bc1c1e81233c15ec3"
+      }
+    ],
+    "frozen_library": "build/cube-owner-check/bsp_core.linked.lib",
+    "frozen_library_sha256": "0b69bd7277ead690769fc1ebe53074a459ad0272715e89e26b15c813fb3994f8",
+    "matches_built_library": true,
+    "owned_translation_units_recompiled_for_observation": false,
+    "map_provenance": [
+      {
+        "symbol": "construct_native_cube_texture_00b3d650",
+        "map_line": "0001:00007a70       ?construct_native_cube_texture_00b3d650@bsp@@YAPAXPAXPAUIDirect3DCubeTexture9@@IAAUNativeCubeTextureOwnerContext@1@@Z 30008a70 f   bsp_core.linked:native_cube_texture_owner.obj"
+      },
+      {
+        "symbol": "destroy_native_cube_texture_00b3ead0",
+        "map_line": "0001:00007d60       ?destroy_native_cube_texture_00b3ead0@bsp@@YAXPAXAAUNativeCubeTextureOwnerContext@1@@Z 30008d60 f   bsp_core.linked:native_cube_texture_owner.obj"
+      },
+      {
+        "symbol": "delete_native_cube_texture_00b3f410",
+        "map_line": "0001:00007ba0       ?delete_native_cube_texture_00b3f410@bsp@@YAPAXPAXIAAUNativeCubeTextureOwnerContext@1@@Z 30008ba0 f   bsp_core.linked:native_cube_texture_owner.obj"
+      },
+      {
+        "symbol": "construct_native_logical_texture_unnamed_base_00b34020",
+        "map_line": "0001:00008900       ?construct_native_logical_texture_unnamed_base_00b34020@bsp@@YAPAXPAX0IAAI@Z 30009900 f   bsp_core.linked:native_cube_texture_base.obj"
+      },
+      {
+        "symbol": "unwind_native_logical_texture_unnamed_base_00b34090",
+        "map_line": "0001:000089e0       ?unwind_native_logical_texture_unnamed_base_00b34090@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 300099e0 f   bsp_core.linked:native_cube_texture_base.obj"
+      },
+      {
+        "symbol": "destroy_native_logical_texture_named_base_00b33f50",
+        "map_line": "0001:00009ad0       ?destroy_native_logical_texture_named_base_00b33f50@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 3000aad0 f   bsp_core.linked:native_logical_texture_named_base.obj"
+      },
+      {
+        "symbol": "native_logical_texture_name_address_00b33e40",
+        "map_line": "0001:00009b00       ?native_logical_texture_name_address_00b33e40@bsp@@YAPAXPAX@Z 3000ab00 f   bsp_core.linked:native_logical_texture_named_base.obj"
+      },
+      {
+        "symbol": "notify_native_renderer_texture_name_removal_00b32250",
+        "map_line": "0001:00007230       ?notify_native_renderer_texture_name_removal_00b32250@bsp@@YAXPAXPBXAAUNativeRendererTextureNameNotificationContext@1@@Z 30008230 f   bsp_core.linked:native_renderer_texture_name_notification.obj"
+      },
+      {
+        "symbol": "delete_native_memory_backing_008d4470",
+        "map_line": "0001:00007750       ?delete_native_memory_backing_008d4470@bsp@@YAPAXPAXIAAUNativeRetainedMemoryOwnerContext@1@@Z 30008750 f   bsp_core.linked:native_retained_memory_owners.obj"
+      },
+      {
+        "symbol": "delete_native_memory_stream_00bb8f90",
+        "map_line": "0001:000077e0       ?delete_native_memory_stream_00bb8f90@bsp@@YAPAXPAXIAAUNativeRetainedMemoryOwnerContext@1@@Z 300087e0 f   bsp_core.linked:native_retained_memory_owners.obj"
+      },
+      {
+        "symbol": "return_native_cube_texture_slot_00b3d940",
+        "map_line": "0001:00008e00       ?return_native_cube_texture_slot_00b3d940@bsp@@YAXPAX0@Z 30009e00 f   bsp_core.linked:native_cube_texture_pool_allocate.obj"
+      },
+      {
+        "symbol": "initialize_native_cube_texture_pool_00b3f090",
+        "map_line": "0001:00009880       ?initialize_native_cube_texture_pool_00b3f090@bsp@@YAPAXPAXAAVAllocatorListDomain@1@@Z 3000a880 f   bsp_core.linked:native_cube_texture_pool_lifetime.obj"
+      },
+      {
+        "symbol": "destroy_native_cube_texture_pool_00b3e5b0",
+        "map_line": "0001:000097d0       ?destroy_native_cube_texture_pool_00b3e5b0@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 3000a7d0 f   bsp_core.linked:native_cube_texture_pool_lifetime.obj"
+      },
+      {
+        "symbol": "bind_native_cube_texture_pool_trim_00d61944",
+        "map_line": "0001:000099f0       ?bind_native_cube_texture_pool_trim_00d61944@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 3000a9f0 f   bsp_core.linked:native_cube_texture_pool_trim.obj"
+      }
+    ]
+  },
+  "fixture": {
+    "source": "local/cube_owner_check.cpp",
+    "build_script": "local/build_cube_owner_check.ps1",
+    "states": [
+      {
+        "id": 0,
+        "words": 1802,
+        "events": 34,
+        "meaning": "odddelete; currentCOMtable/receiver andlateFormattiming; actualstream/backingzero/destruction, capturedrendererrealaliasremoval andfreshCOMrelease; rawslotreuse"
+      },
+      {
+        "id": 1,
+        "words": 1484,
+        "events": 28,
+        "meaning": "evendelete; retainedbackingcount2->1withoutterminal, nullCOM; rawslotretained"
+      },
+      {
+        "id": 2,
+        "words": 583,
+        "events": 11,
+        "meaning": "constructorGetLevelCountthrows afterserial/Width; actualcurrentname/baseunwind, noCOMrelease, no subsequentFormat/mipstores, rawslotretained"
+      },
+      {
+        "id": 3,
+        "words": 1696,
+        "events": 32,
+        "meaning": "deletingdestructorCOMRelease throws afterretainedsource/name notification; noCOMclear/retry, actualbaseunwind, rawslotretained"
+      },
+      {
+        "id": 4,
+        "words": 1378,
+        "events": 26,
+        "meaning": "directdestructorentry; nullsource/nullCOM, optionalguarddisabled, actualalias/namecleanup, rawslotretained"
+      }
+    ],
+    "trace": {
+      "scenarios": 5,
+      "matched_words": 6943,
+      "events": 131,
+      "frame_words": 53
+    },
+    "trace_sha256": "fb720271472ba2564f806c8b134045c394eb2696df134cb25f4cc47b42d4052c",
+    "binary_traces_equal": true,
+    "frame_fields": [
+      "event",
+      "argument",
+      "pointer_role",
+      "scenario",
+      "phase",
+      "uncaught_exceptions",
+      "serial",
+      "memory_object_count",
+      "memory_requested_bytes",
+      "allocations",
+      "frees",
+      "renderer_role",
+      "renderer_enters",
+      "renderer_leaves",
+      "cube_enters",
+      "cube_leaves",
+      "synchronization_nesting",
+      "tracked_lock_depth",
+      "OS_recursion",
+      "COM_A_refs",
+      "COM_A_adds",
+      "COM_A_releases",
+      "COM_B_refs",
+      "COM_B_adds",
+      "COM_B_releases",
+      "COM_C_refs",
+      "COM_C_adds",
+      "COM_C_releases",
+      "renderer_A_named_count",
+      "renderer_B_named_count",
+      "renderer_A_accounting",
+      "record_sentinel_role",
+      "record_alias_count",
+      "live_backing_refs_or_FFFFFFFF",
+      "caught",
+      "owner_00",
+      "owner_04",
+      "owner_08",
+      "owner_0c",
+      "owner_10",
+      "owner_14",
+      "owner_18",
+      "owner_1c",
+      "owner_20",
+      "owner_24",
+      "owner_28",
+      "owner_2c",
+      "owner_30",
+      "cube_depth",
+      "cube_slab_count",
+      "cube_capacity",
+      "cube_earliest",
+      "cube_first_freecount"
+    ],
+    "actual_storage": "Real CRT allocations via unchanged singleton_lifetime alias; real SizedStoragePool/PooledStringStorage with compactfixturegeometry selecting CRT path; actualcanonical rawpool/lifetime/trim/domain; actualretained backing/stream counts and storage; actualrenderer aliasrecord and nodestorage.",
+    "COM_boundary": "Deterministic stdcall IDirect3DCubeTexture9 ABI endpoints including explicitreceiver, currentvtable mutation, descoutputs, ignoredHRESULT andC++throws. NotactualD3Ddevice/GPU.",
+    "OS_boundary": "Real InterlockedDecrement; actual host Enter/LeaveCriticalSection imports observed through forwardingIAT wrappers. No ownedsource observerrecompilation.",
+    "original_mapping": "Own CREATE_SUSPENDED|CREATE_NO_WINDOW child reserves [00400000,010A0000) beforeloader; sparsepinnedpages copiedread-onlyfrominstalledPE. Originalcode/EH/tablepages execute/read.",
+    "declared_bindings": {
+      "jumps": [
+        {
+          "address": 11747360,
+          "target": 805321872
+        },
+        {
+          "address": 11747152,
+          "target": 805321920
+        },
+        {
+          "address": 11739728,
+          "target": 805326448
+        },
+        {
+          "address": 12291984,
+          "target": 805334768
+        },
+        {
+          "address": 9258096,
+          "target": 805321840
+        },
+        {
+          "address": 11786560,
+          "target": 805330304
+        },
+        {
+          "address": 12544835,
+          "target": 805360070
+        }
+      ],
+      "IAT": {
+        "address": 13509152,
+        "target": 805322192
+      },
+      "owner_operand_relocations": [
+        {
+          "address": 11785811,
+          "original": 13364584,
+          "target": 805322176
+        },
+        {
+          "address": 11791059,
+          "original": 13364680,
+          "target": 805322240
+        }
+      ]
+    },
+    "host_imports": {
+      "bindings": [
+        {
+          "name": "LeaveCriticalSection",
+          "site": 805363748,
+          "original": 2006725728,
+          "postimage": 805326608
+        },
+        {
+          "name": "EnterCriticalSection",
+          "site": 805363752,
+          "original": 2006729696,
+          "postimage": 805326480
+        }
+      ]
+    },
+    "host_handler_trampolines": [
+      {
+        "native_registration_operand": "00b3d653",
+        "host_trampoline": "30003dc0",
+        "bytes_hex": "ff2500300130",
+        "disassembly": "jmp dword ptr [0x30013000]",
+        "host_pointer_cell": "30013000",
+        "unchanged_original_handler": "00cbed68"
+      },
+      {
+        "native_registration_operand": "00b3ead3",
+        "host_trampoline": "30003e00",
+        "bytes_hex": "ff2504300130",
+        "disassembly": "jmp dword ptr [0x30013004]",
+        "host_pointer_cell": "30013004",
+        "unchanged_original_handler": "00cbedc8"
+      }
+    ],
+    "original_owner_bytes": 313,
+    "unchanged_owner_bytes": 305,
+    "relocated_owner_registration_bytes": 8,
+    "handler_admission_evidence": "First fixture with zeroowneroperandrelocations passednormalstates0/1 (3286DWORDs) then exitedE06D7363 atfirstthrowingstate. OnlytwoEHregistrationoperands were thenrelocatedto verifiedhostEXE jump-onlytrampolines into unchangedoriginalhandlers. Productioncode/library unchanged.",
+    "runtime_postimages": {
+      "count": 440,
+      "stages": 11,
+      "spans_per_stage": 40,
+      "verified_declared_patch_ranges": 10,
+      "all_immutable_or_initial_postimages_verified": true,
+      "dynamic_global_span_addresses": [
+        "00e188b4",
+        "00f8d394",
+        "0108d6dc",
+        "0108d6e8",
+        "0108db70",
+        "0109db98"
+      ],
+      "source_file": "build/cube-owner-check/cube_owner_runtime_postimages.jsonl"
+    }
+  },
+  "limitations": {
+    "new_cpp_interfaces_not_native_ABI": true,
+    "source_and_strict_build": true,
+    "fixture_comparison": true,
+    "game_execution": false,
+    "GPU_or_visual": false,
+    "full_native_stringpool_image": false,
+    "arbitrary_original_profile_dispatch": false,
+    "secondary_cleanup_throw_test_added": false,
+    "secondary_cleanup_behavior": "NativeFH3 cleanup-onlymap plus existingSEHsearch-timeterminationpattern; actualsharedstringrelease isnoexcept, no fabricatedthrowing-free provider introduced.",
+    "excluded_addresses": [
+      "00b2a380",
+      "00b2c2d0",
+      "00b3ced0",
+      "00b34280"
+    ],
+    "excluded_work": [
+      "othercubevirtualmethods/reset",
+      "fullfactorypublication/retry",
+      "loadedfile/VFSroute",
+      "poolstartuporchestration",
+      "installedgamechanges",
+      "Ghidramutations",
+      "sharedledgers",
+      "trackedCMakechanges",
+      "permanenttesttargets"
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "local/cube_owner_live_00b34020.txt",
+      "bytes": 344,
+      "sha256": "0fe89f1fbc889f3208b3a8469abdaba16a5b866aa0a21b8fc19673c9bd605e09"
+    },
+    {
+      "path": "local/cube_owner_live_00b34090.txt",
+      "bytes": 32,
+      "sha256": "3013121b10a5917f87ef5f7579acc1635523fb94f6b699f727afa440dd64c93a"
+    },
+    {
+      "path": "local/cube_owner_live_00b3d650.txt",
+      "bytes": 584,
+      "sha256": "78fc1379b627090ab0f7e1340250ac64c92251eda02f768676375a06c4098508"
+    },
+    {
+      "path": "local/cube_owner_live_00b3ead0.txt",
+      "bytes": 756,
+      "sha256": "eebf8c1aa83af82c1ae14baaa5844c93d0179ecfc5caf6ec6c3e1d3dbcfb5617"
+    },
+    {
+      "path": "local/cube_owner_live_00b3f410.txt",
+      "bytes": 152,
+      "sha256": "1d6ae898b422aa29e276ec0bd0c88ec84927e985f78e510da286fd21a56fd493"
+    },
+    {
+      "path": "local/cube_owner_live_00cbed60.txt",
+      "bytes": 44,
+      "sha256": "44db4b204a881e8b72a550b7fa6b81005cbaf80154d649f58d09caf08d8a21b3"
+    },
+    {
+      "path": "local/cube_owner_live_00cbed68.txt",
+      "bytes": 52,
+      "sha256": "6eba8fa93dab1dd0c3470835b7a5a49e3aa74a17d22975fbdf4f47c7d32ca57f"
+    },
+    {
+      "path": "local/cube_owner_live_00df7568.txt",
+      "bytes": 212,
+      "sha256": "5b66c51837da2b77436d0badb1e860ab27d46480bc4e8befb0269638bc632a29"
+    },
+    {
+      "path": "local/cube_owner_live_00cbedc0.txt",
+      "bytes": 44,
+      "sha256": "d90b07d6404643e0bc4d8d7ff01438988b74de0747e59495694cb7ed2a3c7d21"
+    },
+    {
+      "path": "local/cube_owner_live_00cbedc8.txt",
+      "bytes": 52,
+      "sha256": "58d815f914ebf69a46c9da1dcb3613e6d1580dbbc3084dd1c87400e7700baf39"
+    },
+    {
+      "path": "local/cube_owner_live_00df75f4.txt",
+      "bytes": 212,
+      "sha256": "d69698ccb366c1aa347b7dc0c613027e3e1043918c3b21107ba1747f4a68f78d"
+    },
+    {
+      "path": "local/cube_owner_live_00b33e40.txt",
+      "bytes": 28,
+      "sha256": "69941d66f2a21c6b83a298a618b79feda44a1eee35a7d42bf6781c3d4dd8a73e"
+    },
+    {
+      "path": "local/cube_owner_live_00b33f50.txt",
+      "bytes": 496,
+      "sha256": "23d4447d420934d3ecc774b50433b61e006cf4bb45902869aad3868ec8215791"
+    },
+    {
+      "path": "local/cube_owner_live_00cbe090.txt",
+      "bytes": 96,
+      "sha256": "62c4181ec17b615417f32bdbb335e3d508a51c5a356477b2c3024e3aa00effc0"
+    },
+    {
+      "path": "local/cube_owner_live_00df6904.txt",
+      "bytes": 212,
+      "sha256": "22236303da3826ca1bdc1cdea230d55cbbd8ed91763cb540e0519a35df69dc42"
+    },
+    {
+      "path": "local/cube_owner_live_00a81880.txt",
+      "bytes": 32,
+      "sha256": "6199b8c08c07312a09bebf277ca96c6375607289d52d16b1529398f0e0d93a94"
+    },
+    {
+      "path": "local/cube_owner_live_00bd30f0.txt",
+      "bytes": 40,
+      "sha256": "6d4fea5ad462e63418de401a96dbc198bda2fcc5360151283d74204fa50615de"
+    },
+    {
+      "path": "local/cube_owner_live_00bd30e0.txt",
+      "bytes": 68,
+      "sha256": "ec3aac86bbc27a605e99a56425c37373af1323cb70bcfca407f1d17afa1ebbce"
+    },
+    {
+      "path": "local/cube_owner_live_00b32250.txt",
+      "bytes": 1140,
+      "sha256": "c80b3240db298a0ffe46ae4c074a3b30300cc450a188a34b2ecfd34321de2332"
+    },
+    {
+      "path": "local/cube_owner_live_008d4440.txt",
+      "bytes": 216,
+      "sha256": "fd4f64b0a2c7002f01b5966ba8e14d09cd9e7285915395c9b63b94e5f18ac45a"
+    },
+    {
+      "path": "local/cube_owner_live_008d4470.txt",
+      "bytes": 324,
+      "sha256": "d67ae1c89eead2119b8c19b7ec7734bd3c0d4596f6147863f50a8ff434b3c3a6"
+    },
+    {
+      "path": "local/cube_owner_live_00bef9c0.txt",
+      "bytes": 568,
+      "sha256": "60fd4b4a8729542f15d55adfea0cfd84c47fd5a9a0f3f043240d493a4294c48d"
+    },
+    {
+      "path": "local/cube_owner_live_00bb8f90.txt",
+      "bytes": 144,
+      "sha256": "b637b39f4502a46f74fe357d11e12c475ca2ec0711dd9a257ef64742d90ab3ee"
+    },
+    {
+      "path": "local/cube_owner_live_00bf65ac.txt",
+      "bytes": 32,
+      "sha256": "9e76e3d908a16c7f4e76267eb94a6a6e45f3e8b95138946c3ee8fec466d3c0cc"
+    },
+    {
+      "path": "local/cube_owner_live_00bf6b43.txt",
+      "bytes": 264,
+      "sha256": "119943d4e8bb4b2a17099ba0e3eccaff56da5d4f8abc43d87955bf886f7dd098"
+    },
+    {
+      "path": "local/cube_owner_live_00b3d940.txt",
+      "bytes": 488,
+      "sha256": "b42e7a5259afc1432e7c815fcaad1d1231a6b54c1925cdf836bd31dd7e377c21"
+    },
+    {
+      "path": "local/cube_owner_live_00b3dce0.txt",
+      "bytes": 60,
+      "sha256": "bdf0b71103b759ad6fae8685bda7e9fb63b30c2ef28f06700a08f3059ae6a9f2"
+    },
+    {
+      "path": "local/cube_owner_live_00d61870.txt",
+      "bytes": 304,
+      "sha256": "8b1278e8ddd113fa2cd068be17ad1cc60eda9502c626cb1d4897cf86627ecd3f"
+    },
+    {
+      "path": "local/cube_owner_live_00d5f280.txt",
+      "bytes": 304,
+      "sha256": "f5d16d023fa1a31083a0098c4fc015b7c96461b86d0461f41a95b08949a1cd63"
+    },
+    {
+      "path": "local/cube_owner_live_00d5f114.txt",
+      "bytes": 28,
+      "sha256": "66d7f17d9d4958390d1a97d5b6c85a3fac4ef3ba9416fc92b7c44fa7bf3d3f72"
+    },
+    {
+      "path": "local/cube_owner_live_00d15ad8.txt",
+      "bytes": 44,
+      "sha256": "535336399cfbedb13525861ed7345108f39376ada102ac88a64e1f5893835eaf"
+    },
+    {
+      "path": "local/cube_owner_live_00d642c0.txt",
+      "bytes": 44,
+      "sha256": "5b03ef0b871460337e276042fb2f16ff3969345b603ce20b4cf8f9339ea02717"
+    },
+    {
+      "path": "local/cube_owner_live_0108d6e8.txt",
+      "bytes": 28,
+      "sha256": "109388422d08fc05c8b656c416daae152dc6d704111b3d3a5cff6838ae24b611"
+    },
+    {
+      "path": "local/cube_owner_live_00f8d394.txt",
+      "bytes": 28,
+      "sha256": "d5a345538d91b963bd354a9b5158cb0ceb0081d1b26a5dd45ae178bb8b46b1a8"
+    },
+    {
+      "path": "local/cube_owner_live_0108db70.txt",
+      "bytes": 272,
+      "sha256": "54897fc948c22806efd7614aed2acfe0f6341fff95a5458b5bf21169eccc72cd"
+    },
+    {
+      "path": "local/cube_owner_live_00ce2220.txt",
+      "bytes": 28,
+      "sha256": "102b23f97d815a25c26cb3db60e373da13c5fc4b1251514ab112975d2a379ee5"
+    },
+    {
+      "path": "local/cube_owner_live_00d5f0a8.txt",
+      "bytes": 532,
+      "sha256": "5b5d0f69f48ffdea2b09e3ecc75e29fb4816a74dde239558d7ea2727edd374a2"
+    },
+    {
+      "path": "local/cube_owner_live_0108d6dc.txt",
+      "bytes": 44,
+      "sha256": "6c442fc7322dc3bdded43a2319c91a79ff9a440c024b52a78be5dd853c536ad0"
+    },
+    {
+      "path": "local/cube_owner_live_0109db98.txt",
+      "bytes": 44,
+      "sha256": "f7807ca1b91d6875889e580867e5b5d62a5c880e9b4094b6fce052b9036a3b5c"
+    },
+    {
+      "path": "local/cube_owner_live_00e188b4.txt",
+      "bytes": 28,
+      "sha256": "b6a0ea05b124ce9f81be40cd559af332afab28962f00529aab5af90eb43157b7"
+    },
+    {
+      "path": "local/cube_owner_old_00b3d650_proto.txt",
+      "bytes": 682,
+      "sha256": "374dee934460687c108e592419b9ffb1249d0f7022c7d548799b551b765c1d32"
+    },
+    {
+      "path": "local/cube_owner_old_00b3d650_comments.txt",
+      "bytes": 118,
+      "sha256": "272826c2fc5a2c8583e5da7f24a8d983f43b659a84007449766689d5c98537e4"
+    },
+    {
+      "path": "local/cube_owner_old_00b3ead0_proto.txt",
+      "bytes": 1123,
+      "sha256": "c2591fcbc01ef4c5c42a5370398c453aab9e292c22d031f00fc27c8950a2d459"
+    },
+    {
+      "path": "local/cube_owner_old_00b3ead0_comments.txt",
+      "bytes": 118,
+      "sha256": "06537dfa4d4c172529f2716c09705f99baff572f7e0a4718f4beca1a03310c6a"
+    },
+    {
+      "path": "local/cube_owner_old_00b3f410_proto.txt",
+      "bytes": 811,
+      "sha256": "7999d48dc7c7c1c6189d1080c760645e29c7848aad1957a90f5f0a64fb575dbd"
+    },
+    {
+      "path": "local/cube_owner_old_00b3f410_comments.txt",
+      "bytes": 118,
+      "sha256": "f9e4fd1c37ecdf3773891009ea3d758274243a7fe3285dbcb5d02126803a7235"
+    },
+    {
+      "path": "include/bsp/native_cube_texture_owner.hpp",
+      "bytes": 2750,
+      "sha256": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645"
+    },
+    {
+      "path": "src/native_cube_texture_owner.cpp",
+      "bytes": 6420,
+      "sha256": "ede6de9f1b41f358ee94e661d395696845eab91556e640e9ea36073bd45d2d0e"
+    },
+    {
+      "path": "docs/NATIVE_CUBE_TEXTURE_OWNER.md",
+      "bytes": 9936,
+      "sha256": "b6884f57c5ef9a19d9f1df300603400310dfdd213c451dbdfe42fdd040af4a7b"
+    },
+    {
+      "path": "local/actual_base/include/bsp/native_cube_texture_base.hpp",
+      "bytes": 1382,
+      "sha256": "7921a650a9f36fad82374068da2ad8c7e348f319f97228c44de1dab5f13804fb"
+    },
+    {
+      "path": "local/actual_base/native_cube_texture_base.cpp",
+      "bytes": 1518,
+      "sha256": "9b0f4adc8b12a058b0e539eacf6fd8d0d8e6ff436596d9757e31412d6add87dc"
+    },
+    {
+      "path": "src/native_logical_texture_named_base.cpp",
+      "bytes": 4363,
+      "sha256": "41912c8e24f8c3b94c4496a2b649a7125ba7b86778802ea1ad24ff89858cb594"
+    },
+    {
+      "path": "include/bsp/native_logical_texture_named_base.hpp",
+      "bytes": 2598,
+      "sha256": "de213f329e9a52e20b0a9a667f054aced827763c711841979810a21ecf748bb5"
+    },
+    {
+      "path": "src/native_retained_memory_owners.cpp",
+      "bytes": 6850,
+      "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93"
+    },
+    {
+      "path": "include/bsp/native_retained_memory_owners.hpp",
+      "bytes": 3829,
+      "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+    },
+    {
+      "path": "src/native_renderer_texture_name_notification.cpp",
+      "bytes": 5111,
+      "sha256": "c51a113e506f498f8b8507e1aaf62b66aae5ddd6df46ce9353a0b2183d029aab"
+    },
+    {
+      "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+      "bytes": 1656,
+      "sha256": "ab5030ed30fe81847d6c2a9aa8686fa53ae5d6536dbc221a4f8079d40b2366c4"
+    },
+    {
+      "path": "src/native_renderer_synchronization_actual.cpp",
+      "bytes": 3242,
+      "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+    },
+    {
+      "path": "src/native_render_resource_container_removal.cpp",
+      "bytes": 7488,
+      "sha256": "ac847d0fd89e4d027c8ebb4cba6a8d76410aa16072526eb4709cbae82533e842"
+    },
+    {
+      "path": "src/native_render_resource_record.cpp",
+      "bytes": 6429,
+      "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 6003,
+      "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+    },
+    {
+      "path": "src/storage_pool.cpp",
+      "bytes": 6169,
+      "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+    },
+    {
+      "path": "src/native_cube_texture_pool_allocate.cpp",
+      "bytes": 6526,
+      "sha256": "8c59a908593c2f2eb4c26182ebff757907f49a91e6d59337ed9e263f39d393f7"
+    },
+    {
+      "path": "src/native_cube_texture_pool_lifetime.cpp",
+      "bytes": 3912,
+      "sha256": "f88ccffb8c4fad9a701b0a2bfb943bc339db8d959320311411d36e739921abc8"
+    },
+    {
+      "path": "src/native_cube_texture_pool_trim.cpp",
+      "bytes": 2622,
+      "sha256": "9e2a1ad2fa45bb8e0302a99d90f005e9682bf766e7c7a4f7cc70fe9aa932b11f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    },
+    {
+      "path": "include/bsp/native_cube_texture_pool_allocate.hpp",
+      "bytes": 2175,
+      "sha256": "20916e98d5097ba8f413a67cf603dc7089f69849f09b9db5f8ab11a408957ec8"
+    },
+    {
+      "path": "include/bsp/native_cube_texture_pool_lifetime.hpp",
+      "bytes": 1218,
+      "sha256": "2b31eb5b7bcda28ee9011731d7bd4f6eee6b99243279f61360d8bcb88e7e88af"
+    },
+    {
+      "path": "include/bsp/native_cube_texture_pool_trim.hpp",
+      "bytes": 896,
+      "sha256": "f1d33446e5f4658bb224fd263c298267dbbfc66868acd5ad881d32aa5433d16a"
+    },
+    {
+      "path": "local/prepare_cube_owner.py",
+      "bytes": 3870,
+      "sha256": "4f84c2119b14c54df1c99cfea790003f19fb8ce56b2dcd78b118fc509b949565"
+    },
+    {
+      "path": "local/cube_owner_preparation.json",
+      "bytes": 27575,
+      "sha256": "d673f923e52be1d0fd1c325d9655c60db569516abb106c5a68fd4216de3933e6"
+    },
+    {
+      "path": "local/cube_owner_spans.hpp",
+      "bytes": 12697,
+      "sha256": "0f31be4a2381750e5a918e55f9d4f3926772a240118b4a1ea6268e52ec6c7092"
+    },
+    {
+      "path": "local/cube_owner_check.cpp",
+      "bytes": 29050,
+      "sha256": "5bc28dfc9b94bf4126d25ce64fa0d5cfd001cfd9669f4cb42a170e5767ceaff7"
+    },
+    {
+      "path": "local/cube_owner_sources.cmake",
+      "bytes": 493,
+      "sha256": "c5ff18fdeb98178353f716899c14771d2d51e59193afbe3210d16027efeace58"
+    },
+    {
+      "path": "local/build_cube_owner.ps1",
+      "bytes": 1632,
+      "sha256": "4b88e28fe05592a6a5e6ef1f6bf8a8fe54da2926e602fed98fe65aa6627705da"
+    },
+    {
+      "path": "local/build_cube_owner_check.ps1",
+      "bytes": 2039,
+      "sha256": "aa573e2bae9bfedde8c75f9bf5aaef199bfb14cbfd4a5ae6964b9932c1a3fab2"
+    },
+    {
+      "path": "local/write_cube_owner_audit.py",
+      "bytes": 17115,
+      "sha256": "f2c7fe0fa60650655839cc6c9e718da30c5933c621ee4ca48772e9d922253e88"
+    },
+    {
+      "path": "local/cube_owner_build_initial.log",
+      "bytes": 14786,
+      "sha256": "7e6415cc4e43e9efacfd8c2275ebfa41a09e018eaa71ce5f55f703526d6b8d5a"
+    },
+    {
+      "path": "local/cube_owner_build_final.log",
+      "bytes": 2138,
+      "sha256": "cc6b77d9335d9500b97312e3d5efb1e830cf2a49aed3864988b4cd0bc053c183"
+    },
+    {
+      "path": "local/cube_owner_verify_seeds.log",
+      "bytes": 3034,
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/cube_owner_fixture_initial.log",
+      "bytes": 100,
+      "sha256": "24b0284f88d27845f21153f925cb4e5595f3da4e3f20b1360769369ca60b140f"
+    },
+    {
+      "path": "local/cube_owner_fixture_final.log",
+      "bytes": 263,
+      "sha256": "1000dfbd20468abc0d8808a37a84f0f4bf5c60b271d1c4e25e596cc03c659bf8"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 26215240,
+      "sha256": "0b69bd7277ead690769fc1ebe53074a459ad0272715e89e26b15c813fb3994f8"
+    },
+    {
+      "path": "build/cube-owner-check/bsp_core.linked.lib",
+      "bytes": 26215240,
+      "sha256": "0b69bd7277ead690769fc1ebe53074a459ad0272715e89e26b15c813fb3994f8"
+    },
+    {
+      "path": "build/cube-owner-check/actual_singleton_lifetime.obj",
+      "bytes": 32973,
+      "sha256": "dd53a550ccf3bfe7cc8896b2544e39567cbbbcf7c479f58ac89697f3aae08045"
+    },
+    {
+      "path": "build/cube-owner-check/cube_owner_check.exe",
+      "bytes": 76288,
+      "sha256": "413b793dd2191ae4bdf4e41faabe417afe96112116676b08fc404f96dadca6d9"
+    },
+    {
+      "path": "build/cube-owner-check/cube_owner_check.obj",
+      "bytes": 291530,
+      "sha256": "33f43d183fddfee49a42303b22b4c918d925a74e253abb521f6972b0d115b227"
+    },
+    {
+      "path": "build/cube-owner-check/cube_owner_check.map",
+      "bytes": 149811,
+      "sha256": "641ee866db40ffc4bc358c4152af3ada1f48f5574bbb81a22e33a5b81076d9ba"
+    },
+    {
+      "path": "build/cube-owner-check/build_cube_owner.cmd",
+      "bytes": 1411,
+      "sha256": "028ca0358af43921bc89e4beb9dff1bd0c5e88780e51a9033b12d7ac6144abd8"
+    },
+    {
+      "path": "build/cube-owner-check/cube_owner_bindings.json",
+      "bytes": 488,
+      "sha256": "80f81bee425299b2a032668454289a8776893a14da718d1a9cceaf48cfe89e72"
+    },
+    {
+      "path": "build/cube-owner-check/cube_owner_host_imports.json",
+      "bytes": 202,
+      "sha256": "d5994e349a77f1a3e6381b9ae5d241144455987facbcf1889f0a2b4203e4417a"
+    },
+    {
+      "path": "build/cube-owner-check/cube_owner_runtime_postimages.jsonl",
+      "bytes": 61233,
+      "sha256": "2a692c1c0f2f407a4aec805db49050315530c25a0bddb5847bc99e618b5c0d3b"
+    },
+    {
+      "path": "build/cube-owner-check/cube_owner_original.bin",
+      "bytes": 27772,
+      "sha256": "fb720271472ba2564f806c8b134045c394eb2696df134cb25f4cc47b42d4052c"
+    },
+    {
+      "path": "build/cube-owner-check/cube_owner_source.bin",
+      "bytes": 27772,
+      "sha256": "fb720271472ba2564f806c8b134045c394eb2696df134cb25f4cc47b42d4052c"
+    },
+    {
+      "path": "build/cube-owner-check/cube_owner_trace.json",
+      "bytes": 68,
+      "sha256": "d21e3ca4f21cacf593aa69c078ff2956444e0c98c622291f5c0af588b4211789"
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 405,
+      "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 10644,
+      "sha256": "ae298f43e00f01d2e2058c2e2c0b4aeabfb559c7a13a07a7a85870cef6f24542"
+    },
+    {
+      "path": "tools/bsp.py",
+      "bytes": 55606,
+      "sha256": "61af8bf3c2ff60acb6af58494c9d287b8fc6613ecd8cd5de3c0cee668c787486"
+    },
+    {
+      "path": "tools/ghidra_export.py",
+      "bytes": 13401,
+      "sha256": "f94c057376298ef4e97fd9f5f98eec20a5fcdad886a777373977a90a09179eee"
+    }
+  ],
+  "primary_integration": {
+    "verification": {
+      "matched_words": 6943,
+      "events": 131,
+      "scenarios": 5,
+      "frame_words": 53,
+      "trace_sha256": "fb720271472ba2564f806c8b134045c394eb2696df134cb25f4cc47b42d4052c",
+      "runtime_postimage_count": 440,
+      "provider_map": [
+        {
+          "symbol": "construct_native_cube_texture_00b3d650",
+          "map_line": "0001:00007a70       ?construct_native_cube_texture_00b3d650@bsp@@YAPAXPAXPAUIDirect3DCubeTexture9@@IAAUNativeCubeTextureOwnerContext@1@@Z 30008a70 f   bsp_core.linked:native_cube_texture_owner.obj"
+        },
+        {
+          "symbol": "destroy_native_cube_texture_00b3ead0",
+          "map_line": "0001:00007d60       ?destroy_native_cube_texture_00b3ead0@bsp@@YAXPAXAAUNativeCubeTextureOwnerContext@1@@Z 30008d60 f   bsp_core.linked:native_cube_texture_owner.obj"
+        },
+        {
+          "symbol": "delete_native_cube_texture_00b3f410",
+          "map_line": "0001:00007ba0       ?delete_native_cube_texture_00b3f410@bsp@@YAPAXPAXIAAUNativeCubeTextureOwnerContext@1@@Z 30008ba0 f   bsp_core.linked:native_cube_texture_owner.obj"
+        },
+        {
+          "symbol": "construct_native_logical_texture_unnamed_base_00b34020",
+          "map_line": "0001:00008900       ?construct_native_logical_texture_unnamed_base_00b34020@bsp@@YAPAXPAX0IAAI@Z 30009900 f   bsp_core.linked:native_cube_texture_base.obj"
+        },
+        {
+          "symbol": "unwind_native_logical_texture_unnamed_base_00b34090",
+          "map_line": "0001:000089e0       ?unwind_native_logical_texture_unnamed_base_00b34090@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 300099e0 f   bsp_core.linked:native_cube_texture_base.obj"
+        },
+        {
+          "symbol": "destroy_native_logical_texture_named_base_00b33f50",
+          "map_line": "0001:00009ad0       ?destroy_native_logical_texture_named_base_00b33f50@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 3000aad0 f   bsp_core.linked:native_logical_texture_named_base.obj"
+        },
+        {
+          "symbol": "native_logical_texture_name_address_00b33e40",
+          "map_line": "0001:00009b00       ?native_logical_texture_name_address_00b33e40@bsp@@YAPAXPAX@Z 3000ab00 f   bsp_core.linked:native_logical_texture_named_base.obj"
+        },
+        {
+          "symbol": "notify_native_renderer_texture_name_removal_00b32250",
+          "map_line": "0001:00007230       ?notify_native_renderer_texture_name_removal_00b32250@bsp@@YAXPAXPBXAAUNativeRendererTextureNameNotificationContext@1@@Z 30008230 f   bsp_core.linked:native_renderer_texture_name_notification.obj"
+        },
+        {
+          "symbol": "delete_native_memory_backing_008d4470",
+          "map_line": "0001:00007750       ?delete_native_memory_backing_008d4470@bsp@@YAPAXPAXIAAUNativeRetainedMemoryOwnerContext@1@@Z 30008750 f   bsp_core.linked:native_retained_memory_owners.obj"
+        },
+        {
+          "symbol": "delete_native_memory_stream_00bb8f90",
+          "map_line": "0001:000077e0       ?delete_native_memory_stream_00bb8f90@bsp@@YAPAXPAXIAAUNativeRetainedMemoryOwnerContext@1@@Z 300087e0 f   bsp_core.linked:native_retained_memory_owners.obj"
+        },
+        {
+          "symbol": "return_native_cube_texture_slot_00b3d940",
+          "map_line": "0001:00008e00       ?return_native_cube_texture_slot_00b3d940@bsp@@YAXPAX0@Z 30009e00 f   bsp_core.linked:native_cube_texture_pool_allocate.obj"
+        },
+        {
+          "symbol": "initialize_native_cube_texture_pool_00b3f090",
+          "map_line": "0001:00009880       ?initialize_native_cube_texture_pool_00b3f090@bsp@@YAPAXPAXAAVAllocatorListDomain@1@@Z 3000a880 f   bsp_core.linked:native_cube_texture_pool_lifetime.obj"
+        },
+        {
+          "symbol": "destroy_native_cube_texture_pool_00b3e5b0",
+          "map_line": "0001:000097d0       ?destroy_native_cube_texture_pool_00b3e5b0@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 3000a7d0 f   bsp_core.linked:native_cube_texture_pool_lifetime.obj"
+        },
+        {
+          "symbol": "bind_native_cube_texture_pool_trim_00d61944",
+          "map_line": "0001:000099f0       ?bind_native_cube_texture_pool_trim_00d61944@bsp@@YAXPAXAAVAllocatorListDomain@1@@Z 3000a9f0 f   bsp_core.linked:native_cube_texture_pool_trim.obj"
+        }
+      ],
+      "host_handler_trampolines": [
+        {
+          "native_registration_operand": "00b3d653",
+          "host_trampoline": "30003dc0",
+          "bytes_hex": "ff2500300130",
+          "disassembly": "jmp dword ptr [0x30013000]",
+          "host_pointer_cell": "30013000",
+          "unchanged_original_handler": "00cbed68"
+        },
+        {
+          "native_registration_operand": "00b3ead3",
+          "host_trampoline": "30003e00",
+          "bytes_hex": "ff2504300130",
+          "disassembly": "jmp dword ptr [0x30013004]",
+          "host_pointer_cell": "30013004",
+          "unchanged_original_handler": "00cbedc8"
+        }
+      ],
+      "bindings": {
+        "jumps": [
+          {
+            "address": 11747360,
+            "target": 805321872
+          },
+          {
+            "address": 11747152,
+            "target": 805321920
+          },
+          {
+            "address": 11739728,
+            "target": 805326448
+          },
+          {
+            "address": 12291984,
+            "target": 805334768
+          },
+          {
+            "address": 9258096,
+            "target": 805321840
+          },
+          {
+            "address": 11786560,
+            "target": 805330304
+          },
+          {
+            "address": 12544835,
+            "target": 805360070
+          }
+        ],
+        "IAT": {
+          "address": 13509152,
+          "target": 805322192
+        },
+        "owner_operand_relocations": [
+          {
+            "address": 11785811,
+            "original": 13364584,
+            "target": 805322176
+          },
+          {
+            "address": 11791059,
+            "original": 13364680,
+            "target": 805322240
+          }
+        ]
+      },
+      "host_imports": {
+        "bindings": [
+          {
+            "name": "LeaveCriticalSection",
+            "site": 805363748,
+            "original": 2006725728,
+            "postimage": 805326608
+          },
+          {
+            "name": "EnterCriticalSection",
+            "site": 805363752,
+            "original": 2006729696,
+            "postimage": 805326480
+          }
+        ]
+      },
+      "preparation": {
+        "worker": "J:\\PROG\\battlestations-pacific-decompile-native-cube-texture-owner-20260910",
+        "worker_artifact_pins": 99,
+        "current_primary_source_pins": [
+          {
+            "path": "include/bsp/native_cube_texture_owner.hpp",
+            "sha256": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645"
+          },
+          {
+            "path": "src/native_cube_texture_owner.cpp",
+            "sha256": "ede6de9f1b41f358ee94e661d395696845eab91556e640e9ea36073bd45d2d0e"
+          },
+          {
+            "path": "include/bsp/native_cube_texture_base.hpp",
+            "sha256": "7921a650a9f36fad82374068da2ad8c7e348f319f97228c44de1dab5f13804fb"
+          },
+          {
+            "path": "src/native_cube_texture_base.cpp",
+            "sha256": "9b0f4adc8b12a058b0e539eacf6fd8d0d8e6ff436596d9757e31412d6add87dc"
+          },
+          {
+            "path": "src/native_logical_texture_named_base.cpp",
+            "sha256": "41912c8e24f8c3b94c4496a2b649a7125ba7b86778802ea1ad24ff89858cb594"
+          },
+          {
+            "path": "include/bsp/native_logical_texture_named_base.hpp",
+            "sha256": "de213f329e9a52e20b0a9a667f054aced827763c711841979810a21ecf748bb5"
+          },
+          {
+            "path": "src/native_retained_memory_owners.cpp",
+            "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93"
+          },
+          {
+            "path": "include/bsp/native_retained_memory_owners.hpp",
+            "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c"
+          },
+          {
+            "path": "src/native_renderer_texture_name_notification.cpp",
+            "sha256": "c51a113e506f498f8b8507e1aaf62b66aae5ddd6df46ce9353a0b2183d029aab"
+          },
+          {
+            "path": "include/bsp/native_renderer_texture_name_notification.hpp",
+            "sha256": "ab5030ed30fe81847d6c2a9aa8686fa53ae5d6536dbc221a4f8079d40b2366c4"
+          },
+          {
+            "path": "src/native_renderer_synchronization_actual.cpp",
+            "sha256": "753796c97dea61b0a5e4b9c4034aae48198782033d0a3272b22c11ccfaca2e7a"
+          },
+          {
+            "path": "src/native_render_resource_container_removal.cpp",
+            "sha256": "ac847d0fd89e4d027c8ebb4cba6a8d76410aa16072526eb4709cbae82533e842"
+          },
+          {
+            "path": "src/native_render_resource_record.cpp",
+            "sha256": "28588ddc0f3eeff872da838afba5a9c07ee8a904bb41dc8ce67e98d114d66f6b"
+          },
+          {
+            "path": "src/native_string.cpp",
+            "sha256": "f7b893f4cf38cef01fba5ce2b85cd971fe315598cd0ec028ef156c946cdc009e"
+          },
+          {
+            "path": "src/storage_pool.cpp",
+            "sha256": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8"
+          },
+          {
+            "path": "src/native_cube_texture_pool_allocate.cpp",
+            "sha256": "8c59a908593c2f2eb4c26182ebff757907f49a91e6d59337ed9e263f39d393f7"
+          },
+          {
+            "path": "src/native_cube_texture_pool_lifetime.cpp",
+            "sha256": "f88ccffb8c4fad9a701b0a2bfb943bc339db8d959320311411d36e739921abc8"
+          },
+          {
+            "path": "src/native_cube_texture_pool_trim.cpp",
+            "sha256": "9e2a1ad2fa45bb8e0302a99d90f005e9682bf766e7c7a4f7cc70fe9aa932b11f"
+          },
+          {
+            "path": "src/singleton_lifetime.cpp",
+            "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+          },
+          {
+            "path": "include/bsp/native_cube_texture_pool_allocate.hpp",
+            "sha256": "20916e98d5097ba8f413a67cf603dc7089f69849f09b9db5f8ab11a408957ec8"
+          },
+          {
+            "path": "include/bsp/native_cube_texture_pool_lifetime.hpp",
+            "sha256": "2b31eb5b7bcda28ee9011731d7bd4f6eee6b99243279f61360d8bcb88e7e88af"
+          },
+          {
+            "path": "include/bsp/native_cube_texture_pool_trim.hpp",
+            "sha256": "f1d33446e5f4658bb224fd263c298267dbbfc66868acd5ad881d32aa5433d16a"
+          }
+        ],
+        "fresh_spans": [
+          {
+            "address": "00b34020",
+            "length": 71,
+            "sha256": "031c57cc4c03752af663783dc02c23e84c16332d4ae2a5fe33dacad7bf02bf69",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b34090",
+            "length": 5,
+            "sha256": "f956583c6bc79c8e6434e28e371f3a542520230fbc9a59bed019fc7e77f1c63c",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b3d650",
+            "length": 122,
+            "sha256": "86a572fb445ae113c3b466cb6c74eec7a6b04fec9d4240b1cb05dc8ec6f55ec2",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b3ead0",
+            "length": 159,
+            "sha256": "7a83246a860603f4ec73a4d467f5fa725b4e2edf02e13b131a60cc0ac81f084d",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b3f410",
+            "length": 32,
+            "sha256": "854a0644361726fda417159185e8440fbc537700d7d1f5315545503e6bb3816b",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00cbed60",
+            "length": 8,
+            "sha256": "e73976e6d636435748331b6f9f91da836239930f8641821edad2bf3b8130e7ae",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00cbed68",
+            "length": 10,
+            "sha256": "8f1a31cad3bd36a12b956244e83b20b0025f307adf558d6ec5a5b123dd0b23e6",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00df7568",
+            "length": 44,
+            "sha256": "6a7bda0010ac383d6307b2aebc1570ffe29db0adc651ebfb7ba79c9c86848cd1",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00cbedc0",
+            "length": 8,
+            "sha256": "bb747887ed0805efb714c8ac460e35fe3f6ddddcf63b5855d021fec63ad49651",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00cbedc8",
+            "length": 10,
+            "sha256": "a27c914e3ed25c15374777f16b45984ee386a0bb51bebd4c1760100adc6948e6",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00df75f4",
+            "length": 44,
+            "sha256": "a0bf6cf5814a864ac72c142de638090df25ff07ca14d7974b9f77f55fe0b2b8b",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b33e40",
+            "length": 4,
+            "sha256": "840cd7c1c41b518c1fe191951395dcac56c16a63d65f97ad855355ba794b2ca7",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b33f50",
+            "length": 103,
+            "sha256": "a5ac47e5d6ae299531005299b9847741b9cf47a26850561e7a1090bcf10826cb",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00cbe090",
+            "length": 18,
+            "sha256": "e107ee11d6639e27a5050d830aeb75cd72bbfdb3001fd5926a61251a89e048e3",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00df6904",
+            "length": 44,
+            "sha256": "c161c0855c648dac82623f971b99297f9414552497d59e06a3457f04365c430a",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00a81880",
+            "length": 5,
+            "sha256": "a4e4c3c625027b1accb522e14a55b64e3dbb509273a0c42f7a9264ba7f30b7f3",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00bd30f0",
+            "length": 7,
+            "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00bd30e0",
+            "length": 14,
+            "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b32250",
+            "length": 240,
+            "sha256": "1de7d9212b5a12d5d30d303d9181f23a156cab6112b43a57badea1deccf8b7d1",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "008d4440",
+            "length": 45,
+            "sha256": "edfc585bda1bfe5d4415baf6799ec9c0281d4ff897f50ad48fd77fce2e23cf68",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "008d4470",
+            "length": 66,
+            "sha256": "6f300372d3019149192f16df5af69c965b98ebb5efbe2dfd80868afdfc68b70a",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00bef9c0",
+            "length": 118,
+            "sha256": "0e4fabcd08941fce4451eb93b3bbda3644238984e0d2a3b5048ca7bb0e7ff9ec",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00bb8f90",
+            "length": 30,
+            "sha256": "a88682c86cbbdd6d0c0c2bdf811ab62d50d05d2504bfa098ea7615c160e23438",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00bf65ac",
+            "length": 5,
+            "sha256": "901f036d0ec6475be7f50c9243861104afeab65061759b3109d41419c26ae979",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00bf6b43",
+            "length": 54,
+            "sha256": "0b6262330c802ad46bf5e3c675db66ed6c02d01f93c6da7e63bcc3cbe6de56f2",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b3d940",
+            "length": 101,
+            "sha256": "f893e0af8d343031471f8ccdaf44ec63b38d9546f8bfea58d98c9ea784f1cec9",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00b3dce0",
+            "length": 12,
+            "sha256": "e2a284d6109c41c72ea4a8e0c93ca02dad353d71e2fefe3129e6d69da338736d",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00d61870",
+            "length": 64,
+            "sha256": "9551267b5b784c47a650abf5e1c854b0c6d7d1298b2ec570b4662e8c76605a10",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00d5f280",
+            "length": 64,
+            "sha256": "26ee395f7010c8558fa93180fa2657fa1be2394e869ff9892098452380805dc4",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00d5f114",
+            "length": 4,
+            "sha256": "3c59227775ade8e17275d19b0f3672bf013399c24d48e3587538bdff0c2b3c6b",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00d15ad8",
+            "length": 8,
+            "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00d642c0",
+            "length": 8,
+            "sha256": "2755848844406d8a6a0e5301377e32c2f3d1aa1b7a87abcb9856164311e22ec8",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "0108d6e8",
+            "length": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00f8d394",
+            "length": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "0108db70",
+            "length": 56,
+            "sha256": "d4817aa5497628e7c77e6b606107042bbba3130888c5f47a375e6179be789fbb",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00ce2220",
+            "length": 4,
+            "sha256": "7b0eb414e1b371565f2f2124fd69640423931b95c9d87c8c704b3d83b1390d14",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00d5f0a8",
+            "length": 112,
+            "sha256": "052f09bea75b9e3fa49fe469b27c5f02422844ef1d01f72047499833fa5cb1f9",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "0108d6dc",
+            "length": 8,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "0109db98",
+            "length": 8,
+            "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+            "fresh_live_PE_and_worker_match": true
+          },
+          {
+            "address": "00e188b4",
+            "length": 4,
+            "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+            "fresh_live_PE_and_worker_match": true
+          }
+        ],
+        "worker_audit_sha256": "3452aa1774ab53a49ca490a2f3f2c0bb41ba8b26321adb50985cd4595cc09044"
+      },
+      "actual_primary_library": {
+        "path": "build/cube-owner-primary-check/bsp_core.linked.lib",
+        "bytes": 26998646,
+        "sha256": "350b9bb962bdd5963eb9f0eea1e879d5984c824eaab0024313e7ff68dcb1db7f"
+      },
+      "artifact_pins": [
+        {
+          "path": "build/cube-owner-primary-check/bsp_core.linked.lib",
+          "bytes": 26998646,
+          "sha256": "350b9bb962bdd5963eb9f0eea1e879d5984c824eaab0024313e7ff68dcb1db7f"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_check.exe",
+          "bytes": 76288,
+          "sha256": "df7522438604ea9f272de5ac973cb77b635e6827e608ba1bff255e3787b78ea6"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_check.map",
+          "bytes": 149811,
+          "sha256": "d66abc08281a801168e37232cf2e128a242d48de73c88dcd248bc493189103a0"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_original.bin",
+          "bytes": 27772,
+          "sha256": "fb720271472ba2564f806c8b134045c394eb2696df134cb25f4cc47b42d4052c"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_source.bin",
+          "bytes": 27772,
+          "sha256": "fb720271472ba2564f806c8b134045c394eb2696df134cb25f4cc47b42d4052c"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_trace.json",
+          "bytes": 68,
+          "sha256": "d21e3ca4f21cacf593aa69c078ff2956444e0c98c622291f5c0af588b4211789"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_runtime_postimages.jsonl",
+          "bytes": 61233,
+          "sha256": "5e46e8d341699e3b344a140c897d4f463d34259b85f7a6ee673e9249577f2f4e"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_bindings.json",
+          "bytes": 488,
+          "sha256": "80f81bee425299b2a032668454289a8776893a14da718d1a9cceaf48cfe89e72"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_host_imports.json",
+          "bytes": 202,
+          "sha256": "d5994e349a77f1a3e6381b9ae5d241144455987facbcf1889f0a2b4203e4417a"
+        },
+        {
+          "path": "build/cube-owner-primary-check/actual_singleton_lifetime.obj",
+          "bytes": 32945,
+          "sha256": "11ef63835bbecf3ac02bbbba856817416d8fd16ccf780a22a1b532445f392d70"
+        },
+        {
+          "path": "build/cube-owner-primary-check/cube_owner_check.obj",
+          "bytes": 291506,
+          "sha256": "9a76c88fcf99857b0d66bad7e0d4d8b62cc6e989fec0775fd216958bd1b5b3a1"
+        },
+        {
+          "path": "build/cube-owner-primary-check/build_cube_owner.cmd",
+          "bytes": 1182,
+          "sha256": "f7f573de54b09b36d06bb72a9b0cd4dcf4f137c8421d2246a82386bb984dddf1"
+        },
+        {
+          "path": "local/prepare_cube_owner_primary.py",
+          "bytes": 3916,
+          "sha256": "74601e3ecfe1e3cc7ce60b671cfa2aaa1ce6691284e39f953312d260e97fe4de"
+        },
+        {
+          "path": "local/build_cube_owner_primary_check.ps1",
+          "bytes": 2089,
+          "sha256": "9ff13d06bace1b88d726023ec347e36de9e36c02b0b2c1f6b61f30215a086e19"
+        },
+        {
+          "path": "local/verify_cube_owner_primary_run.py",
+          "bytes": 6863,
+          "sha256": "6198f204433e9bf6966704ea475e3a95a707ffd456db4390f1ca1ba24482d091"
+        },
+        {
+          "path": "local/native_cube_texture_owner_primary_build.txt",
+          "bytes": 2912,
+          "sha256": "ec8c03da4e3feabff0e4c37edf7cfa27e6f48507f7228c2b65633de6f0eb10b6"
+        },
+        {
+          "path": "local/native_cube_texture_owner_primary_fixture.txt",
+          "bytes": 263,
+          "sha256": "1000dfbd20468abc0d8808a37a84f0f4bf5c60b271d1c4e25e596cc03c659bf8"
+        }
+      ]
+    },
+    "strict_build_and_two_existing_tests": true,
+    "annotations_applied": true,
+    "ledger_registered": true
+  },
+  "annotations_applied": true,
+  "ledger_registered": true,
+  "native_differential_fixture": true,
+  "abi_compatible": false,
+  "game_validated": false,
+  "saved_annotations": {
+    "path": "reports/native_cube_texture_owner_annotations.json",
+    "bytes": 5526,
+    "sha256": "7c6b48979159b90b6853995a5e707b0df0b4255e28a4ac9c010661364fdfeb88",
+    "project_saved": true,
+    "prior_names_and_comments_preserved": true
+  },
+  "refreshed_exports": [
+    {
+      "address": "00b3d650",
+      "path": "exports/bsp/functions/00b3d650/decompiled.c",
+      "bytes": 2501,
+      "sha256": "6d622b377863a66bacd5fb9d90021b2d2ab57ac8e53b2991ab020bc60d4dc375"
+    },
+    {
+      "address": "00b3ead0",
+      "path": "exports/bsp/functions/00b3ead0/decompiled.c",
+      "bytes": 2744,
+      "sha256": "c20a8400b55869467c5a00e9481f6a2972b0c84eb1cef9cd977d3b1b6cf28b8c"
+    },
+    {
+      "address": "00b3f410",
+      "path": "exports/bsp/functions/00b3f410/decompiled.c",
+      "bytes": 1586,
+      "sha256": "9b7c862a4fd23c33b764879b3268a96def7fbfc5b1b7ebcb91b59c3703fb89c4"
+    }
+  ],
+  "closure_utc": "2026-09-11T05:49:34.627144+00:00",
+  "registered_reconstruction_records": [
+    {
+      "kind": "function",
+      "address": "00b3d650",
+      "name": "construct_native_cube_texture_00b3d650",
+      "cpp_symbol": "construct_native_cube_texture_00b3d650",
+      "source": "src/native_cube_texture_owner.cpp",
+      "native_end_exclusive": "00b3d6ca",
+      "original_abi": "ECXactualowner; stackIDirect3DCubeTexture9*,flags; EAXowner; RET8",
+      "evidence": "reports/native_cube_texture_owner_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b3ead0",
+      "name": "destroy_native_cube_texture_00b3ead0",
+      "cpp_symbol": "destroy_native_cube_texture_00b3ead0",
+      "source": "src/native_cube_texture_owner.cpp",
+      "native_end_exclusive": "00b3eb6f",
+      "original_abi": "ECXactualowner; no stackarguments; RET; nosemanticreturn",
+      "evidence": "reports/native_cube_texture_owner_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "kind": "function",
+      "address": "00b3f410",
+      "name": "delete_native_cube_texture_00b3f410",
+      "cpp_symbol": "delete_native_cube_texture_00b3f410",
+      "source": "src/native_cube_texture_owner.cpp",
+      "native_end_exclusive": "00b3f430",
+      "original_abi": "ECXactualowner; stackflags; EAXoriginaladdress; RET4",
+      "evidence": "reports/native_cube_texture_owner_audit.json",
+      "status": "complete_native_actual_storage_primary_library_original_fixture_and_strict_Win32_checked",
+      "native_differential_fixture": true,
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "current_document": {
+    "path": "docs/NATIVE_CUBE_TEXTURE_OWNER.md",
+    "bytes": 10684,
+    "sha256": "74d28a40ae9e137fe0078e03583b1fc689aed8dcb75356bdeb40c547ddd3d98c"
+  }
+}

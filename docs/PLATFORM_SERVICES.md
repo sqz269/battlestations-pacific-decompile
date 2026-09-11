@@ -65,3 +65,35 @@ enumeration and lazy input ownership; and supply real game localization,
 callbacks and update-path helpers. Application-frame dependencies and its
 previously documented unwind boundary also remain. No runnable-game or gameplay
 completion is claimed.
+
+## Correction and extension from the owner, enumeration and update packets
+
+The following supersedes the earlier remaining-work and failed-loader status.
+`docs/XLIVE_MANAGER_OWNER.md` recovers nine complete owner/lifetime/wrapper bodies.
+Publication and registration precede derived initialization; the initial real
+reset/pump runs before +12C/+14C are zeroed. Native listener/SDK/achievement-batch
+teardown omissions are preserved. The owner-binding `PlatformServices`
+constructor now derives every online lookup from the single published
+`XLiveManagerOwner*` slot, so publication cannot diverge from the pump context.
+
+`docs/INPUT_ENUMERATION.md` supplies five enumeration/constructor bodies over the
+same canonical slots, persistent GUID ordering and actual keyboard/mouse COM
+setup. SDK keyboard/mouse formats match all native object entries. The joystick
+implementation, actual lazy input ownership and external COM lifetimes remain
+required. These tests did not enumerate or change live input devices.
+
+`docs/XLIVE_UPDATES.md` supplies five normal bodies and a separately labeled
+wide-value conversion projection. `RecoveredXLiveGameServices` composes these
+helpers with the existing `LocaleTextResolver`; `XLiveLibrary` forwards actual
+ordinal5022 for update information. No updater was launched and the registry
+adapter was not called during verification.
+
+`docs/XLIVE_PRIVATE_RUNTIME.md` establishes successful actual Microsoft DLL
+loading and ordinal5030 message dispatch using an explicit private dependency.
+The repository adapter passed that same probe. XLive initialization, IPC,
+renderer, accounts, asynchronous shutdown and gameplay remain unverified.
+The combined Win32 build, both existing CTests, and concrete-service link probe
+passed. Ghidra gained the missing enumeration callback and six false-no-return
+continuations; 20 selected names/evidence comments were saved and 21 affected
+exports refreshed. This extension does not wire the separately owned executable
+host or establish a runnable game rebuild.

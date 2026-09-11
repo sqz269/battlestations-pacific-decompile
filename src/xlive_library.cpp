@@ -6,11 +6,26 @@
 
 namespace bsp {
 struct XLiveLibrary::Impl {
+    struct Dependency {
+        HMODULE module{};
+        explicit Dependency(const std::wstring& path) {
+            if (!std::filesystem::path(path).is_absolute())
+                throw std::invalid_argument("XLive dependency path must be absolute");
+            module = LoadLibraryExW(path.c_str(), nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
+            if (!module) throw std::runtime_error("Cannot load XLive dependency: Win32 error " +
+                std::to_string(GetLastError()));
+        }
+        ~Dependency() { if (module) FreeLibrary(module); }
+    };
+    std::vector<std::unique_ptr<Dependency>> dependencies;
     HMODULE module{};
-    explicit Impl(const std::wstring& path) {
+    Impl(const std::wstring& path, const std::vector<std::wstring>& dependency_paths) {
         static_assert(sizeof(void*) == 4, "The original XLive ABI is Win32.");
         if (!std::filesystem::path(path).is_absolute())
             throw std::invalid_argument("XLive DLL path must be absolute");
+        dependencies.reserve(dependency_paths.size());
+        for (const auto& dependency : dependency_paths)
+            dependencies.push_back(std::make_unique<Dependency>(dependency));
         module = LoadLibraryExW(path.c_str(), nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
         if (!module) throw std::runtime_error("Cannot load XLive DLL: Win32 error " +
             std::to_string(GetLastError()));
@@ -31,7 +46,10 @@ struct XLiveLibrary::Impl {
 };
 
 XLiveLibrary::XLiveLibrary(const std::wstring& path)
-    : impl_(std::make_unique<Impl>(path)) {}
+    : XLiveLibrary(path, {}) {}
+XLiveLibrary::XLiveLibrary(const std::wstring& path,
+    const std::vector<std::wstring>& dependencies)
+    : impl_(std::make_unique<Impl>(path, dependencies)) {}
 XLiveLibrary::~XLiveLibrary() = default;
 void* XLiveLibrary::module_handle() const noexcept { return impl_->module; }
 bool XLiveLibrary::pretranslate(MSG& message) {
@@ -53,5 +71,8 @@ XLiveAcceptedInvite XLiveLibrary::invite_get_accepted_info(std::uint32_t user) {
 }
 std::int32_t XLiveLibrary::update_system(const wchar_t* path) {
     return impl_->call<std::int32_t>(5024, path);
+}
+std::int32_t XLiveLibrary::x_live_get_update_information(XLiveUpdateInformation& info) {
+    return impl_->call<std::int32_t>(5022, &info);
 }
 } // namespace bsp
