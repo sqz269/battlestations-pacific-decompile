@@ -1,0 +1,38 @@
+{
+  "packet": "orch3_pipe_services_h",
+  "source": "src/xlive_pipe_services.cpp",
+  "scope": "complete concrete XLiveIpcPipeHost composition; no new native function count",
+  "evidence": [
+    "docs/XLIVE_IPC.md",
+    "docs/XLIVE_PIPE_TRANSPORT.md",
+    "docs/XLIVE_PIPE_IO.md",
+    "docs/XLIVE_PIPE_PROTOCOL.md",
+    "docs/XLIVE_PIPE_FRAMING.md"
+  ],
+  "canonical_checks": [
+    "same global critical section",
+    "same encoded key",
+    "same checked tables",
+    "actual byte-count pointer passed to Win32 completion"
+  ],
+  "remaining": [
+    "original heap and stack preimage bindings",
+    "complete executable startup wiring",
+    "live asynchronous and gameplay validation"
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "validation": {
+    "build": "./scripts/build.ps1",
+    "build_log": "local/pipe-composition-h-build.log",
+    "target": "MSVC Win32 Release /W4 /WX",
+    "build_passed": true,
+    "existing_ctests_passed": 2,
+    "fixture": "local/pipe_composition_h_fixture.cpp",
+    "fixture_command": "cmd /c local\\run_pipe_composition_h_fixture.cmd",
+    "fixture_log": "local/pipe-composition-h-fixture.log",
+    "fixture_exit_code": 0,
+    "live_endpoints_or_workers": false,
+    "scope": "complete concrete host with actual initialized globals/tables; recording I/O verifies exact output pointer, prior value, and failed API write on both completion paths; canonical key mismatch rejected"
+  }
+}

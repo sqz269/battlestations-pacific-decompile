@@ -1,0 +1,37 @@
+{
+  "packet": "orch3_pipe_bootstrap_h",
+  "source": "src/xlive_pipe_bootstrap.cpp",
+  "scope": "original-image data ownership and genuine CRT registration composition; no new native function count",
+  "evidence": [
+    "docs/XLIVE_PIPE_PROTOCOL.md",
+    "docs/XLIVE_PIPE_GLOBALS.md"
+  ],
+  "data": {
+    "tables_va": "00d25d9c",
+    "tables_bytes": 200980,
+    "fixed_va": "00e12ac8",
+    "fixed_bytes": 568,
+    "verification": "existing checked views enforce both SHA-256 digests"
+  },
+  "registration": "real std::atexit, six concrete recovered callbacks, one retained canonical owner, real status returned",
+  "remaining": [
+    "original protocol/framing heap and stack preimages",
+    "unrelated CRT initializer order",
+    "complete executable startup and gameplay validation"
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "validation": {
+    "build": "./scripts/build.ps1",
+    "build_log": "local/pipe-composition-h-build.log",
+    "target": "MSVC Win32 Release /W4 /WX",
+    "build_passed": true,
+    "existing_ctests_passed": 2,
+    "fixture": "local/pipe_composition_h_fixture.cpp",
+    "fixture_command": "cmd /c local\\run_pipe_composition_h_fixture.cmd",
+    "fixture_log": "local/pipe-composition-h-fixture.log",
+    "fixture_exit_code": 0,
+    "live_endpoints_or_workers": false,
+    "scope": "real installed-image reads and both exact SHA checks; relative path rejected; actual Win32 lock factory; real std::atexit registration, five wrappers containing real Win32 sections record reverse cleanup order; owner retained until final verification callback"
+  }
+}
