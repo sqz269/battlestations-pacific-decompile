@@ -1,0 +1,128 @@
+[
+  {
+    "address": "00b48af0",
+    "before": {
+      "address": "00b48af0",
+      "function_name": "CG_array_ctor_helper_00b48af0"
+    },
+    "after": {
+      "address": "00b48af0",
+      "old_name": "CG_array_ctor_helper_00b48af0",
+      "name": "BSP_VertexDeclaration_Construct",
+      "evidence": "Install base then derived profile; references1/scalar0; main and15 usage headers zero; stride0 last. Constructor iterator and main/base C++ unwind. Original ABI: ECX actual D0h owner; EAX original address; RET. Complete actual-storage C++ interface in src/native_vertex_declaration_owner.cpp; evidence reports/native_vertex_declaration_owner_audit.json. Primary-library ONE original-caller fixture43032words/6checkpoints with original BF7C10/BF7C6E/BF7CD1 and original SEH4/FH3 maps/actions, actual host CRT handler boundaries and real Win32 lock; signed/wrapped20-byte allocation and negative raw type indexing preserved. Unwind-only cleanup terminates on a second C++ exception. Actual type-size table and initialized D4-slot pool borrowed. StrictWin32+2existingCTests pass. New C++ service interface, no drop-in binary ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b47910",
+    "before": {
+      "address": "00b47910",
+      "function_name": "BSP_VertexElementArray_Initialize"
+    },
+    "after": {
+      "address": "00b47910",
+      "old_name": "BSP_VertexElementArray_Initialize",
+      "name": "BSP_VertexElementArray_Initialize",
+      "evidence": "Write data/count/capacity0 in order. Original ABI: ECX actual0Ch header; EAX same header; RET. Complete actual-storage C++ interface in src/native_vertex_declaration_owner.cpp; evidence reports/native_vertex_declaration_owner_audit.json. Primary-library ONE original-caller fixture43032words/6checkpoints with original BF7C10/BF7C6E/BF7CD1 and original SEH4/FH3 maps/actions, actual host CRT handler boundaries and real Win32 lock; signed/wrapped20-byte allocation and negative raw type indexing preserved. Unwind-only cleanup terminates on a second C++ exception. Actual type-size table and initialized D4-slot pool borrowed. StrictWin32+2existingCTests pass. New C++ service interface, no drop-in binary ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b488e0",
+    "before": {
+      "address": "00b488e0",
+      "function_name": "FUN_00b488e0"
+    },
+    "after": {
+      "address": "00b488e0",
+      "old_name": "FUN_00b488e0",
+      "name": "BSP_VertexDeclaration_Clear",
+      "evidence": "Resize main then15 usage headers to0; zero stride; read current main count and unchecked native type-size table, with live count and captured record cursor. Original ABI: ECX actual owner; RET. Complete actual-storage C++ interface in src/native_vertex_declaration_owner.cpp; evidence reports/native_vertex_declaration_owner_audit.json. Primary-library ONE original-caller fixture43032words/6checkpoints with original BF7C10/BF7C6E/BF7CD1 and original SEH4/FH3 maps/actions, actual host CRT handler boundaries and real Win32 lock; signed/wrapped20-byte allocation and negative raw type indexing preserved. Unwind-only cleanup terminates on a second C++ exception. Actual type-size table and initialized D4-slot pool borrowed. StrictWin32+2existingCTests pass. New C++ service interface, no drop-in binary ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b48ad0",
+    "before": {
+      "address": "00b48ad0",
+      "function_name": "FUN_00b48ad0"
+    },
+    "after": {
+      "address": "00b48ad0",
+      "old_name": "FUN_00b48ad0",
+      "name": "BSP_VertexElementArray_Destroy",
+      "evidence": "Resize0 then free current data even if null. Preserve dangling pointer/capacity and return through full native continuation. Original ABI: ECX actual header; RET. Complete actual-storage C++ interface in src/native_vertex_declaration_owner.cpp; evidence reports/native_vertex_declaration_owner_audit.json. Primary-library ONE original-caller fixture43032words/6checkpoints with original BF7C10/BF7C6E/BF7CD1 and original SEH4/FH3 maps/actions, actual host CRT handler boundaries and real Win32 lock; signed/wrapped20-byte allocation and negative raw type indexing preserved. Unwind-only cleanup terminates on a second C++ exception. Actual type-size table and initialized D4-slot pool borrowed. StrictWin32+2existingCTests pass. New C++ service interface, no drop-in binary ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b480f0",
+    "before": {
+      "address": "00b480f0",
+      "function_name": "FUN_00b480f0"
+    },
+    "after": {
+      "address": "00b480f0",
+      "old_name": "FUN_00b480f0",
+      "name": "BSP_VertexElementArray_Resize",
+      "evidence": "Signed comparisons and wrapped20-byte arithmetic; captured growth distance; reload data and write defaults +4=11h,+8=0,+C=Eh,+0=FFFFFFFF,+10=FFFFFFFF; decrement shrinking actual count; final requested count. Original ABI: ECX actual header; signed stack count; RET4. Complete actual-storage C++ interface in src/native_vertex_declaration_owner.cpp; evidence reports/native_vertex_declaration_owner_audit.json. Primary-library ONE original-caller fixture43032words/6checkpoints with original BF7C10/BF7C6E/BF7CD1 and original SEH4/FH3 maps/actions, actual host CRT handler boundaries and real Win32 lock; signed/wrapped20-byte allocation and negative raw type indexing preserved. Unwind-only cleanup terminates on a second C++ exception. Actual type-size table and initialized D4-slot pool borrowed. StrictWin32+2existingCTests pass. New C++ service interface, no drop-in binary ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b47a30",
+    "before": {
+      "address": "00b47a30",
+      "function_name": "FUN_00b47a30"
+    },
+    "after": {
+      "address": "00b47a30",
+      "old_name": "FUN_00b47a30",
+      "name": "BSP_VertexElementArray_Reserve",
+      "evidence": "Clamp request to1/grow only; live raw five-word copies; computed null destination skip; unconditional current old-data free followed by captured replacement/capacity publication; no count store or rollback. Original ABI: ECX actual header; signed stack capacity; RET4. Complete actual-storage C++ interface in src/native_vertex_declaration_owner.cpp; evidence reports/native_vertex_declaration_owner_audit.json. Primary-library ONE original-caller fixture43032words/6checkpoints with original BF7C10/BF7C6E/BF7CD1 and original SEH4/FH3 maps/actions, actual host CRT handler boundaries and real Win32 lock; signed/wrapped20-byte allocation and negative raw type indexing preserved. Unwind-only cleanup terminates on a second C++ exception. Actual type-size table and initialized D4-slot pool borrowed. StrictWin32+2existingCTests pass. New C++ service interface, no drop-in binary ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b48b70",
+    "before": {
+      "address": "00b48b70",
+      "function_name": "CG_vector_deleting_dtor_00b48b70"
+    },
+    "after": {
+      "address": "00b48b70",
+      "old_name": "CG_vector_deleting_dtor_00b48b70",
+      "name": "BSP_VertexDeclaration_Destroy",
+      "evidence": "Install derived profile; clear; reverse15 usage destruction; main destruction; base profile restore. EH states2/1/0 and failed-element-skipping iterator unwind preserved. Original ABI: ECX actual owner; RET. Complete actual-storage C++ interface in src/native_vertex_declaration_owner.cpp; evidence reports/native_vertex_declaration_owner_audit.json. Primary-library ONE original-caller fixture43032words/6checkpoints with original BF7C10/BF7C6E/BF7CD1 and original SEH4/FH3 maps/actions, actual host CRT handler boundaries and real Win32 lock; signed/wrapped20-byte allocation and negative raw type indexing preserved. Unwind-only cleanup terminates on a second C++ exception. Actual type-size table and initialized D4-slot pool borrowed. StrictWin32+2existingCTests pass. New C++ service interface, no drop-in binary ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b48ca0",
+    "before": {
+      "address": "00b48ca0",
+      "function_name": "FUN_00b48ca0"
+    },
+    "after": {
+      "address": "00b48ca0",
+      "old_name": "FUN_00b48ca0",
+      "name": "BSP_VertexDeclaration_DeletingDestructor",
+      "evidence": "Destroy first; flags bit0 returns the raw slot to borrowed canonical108FD38 only after success. Original ABI: ECX actual owner; stack flags; EAX original address; RET4. Complete actual-storage C++ interface in src/native_vertex_declaration_owner.cpp; evidence reports/native_vertex_declaration_owner_audit.json. Primary-library ONE original-caller fixture43032words/6checkpoints with original BF7C10/BF7C6E/BF7CD1 and original SEH4/FH3 maps/actions, actual host CRT handler boundaries and real Win32 lock; signed/wrapped20-byte allocation and negative raw type indexing preserved. Unwind-only cleanup terminates on a second C++ exception. Actual type-size table and initialized D4-slot pool borrowed. StrictWin32+2existingCTests pass. New C++ service interface, no drop-in binary ABI or game validation."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b47950",
+    "before": {
+      "address": "00b47950",
+      "function_name": "FUN_00b47950"
+    },
+    "after": {
+      "address": "00b47950",
+      "old_name": "FUN_00b47950",
+      "name": "BSP_VertexDeclarationPool_ReturnRawSlot",
+      "evidence": "Real Win32 critical section; current slot+D0 slab index; wrapped signed offset/D4 narrowed toWORD; append at1A80; reload/increment1AC0 count; unsigned first-free update; balanced native recursion/leave. Original ABI: ECX actual initialized pool; stack slot; RET4. Complete actual-storage C++ interface in src/native_vertex_declaration_owner.cpp; evidence reports/native_vertex_declaration_owner_audit.json. Primary-library ONE original-caller fixture43032words/6checkpoints with original BF7C10/BF7C6E/BF7CD1 and original SEH4/FH3 maps/actions, actual host CRT handler boundaries and real Win32 lock; signed/wrapped20-byte allocation and negative raw type indexing preserved. Unwind-only cleanup terminates on a second C++ exception. Actual type-size table and initialized D4-slot pool borrowed. StrictWin32+2existingCTests pass. New C++ service interface, no drop-in binary ABI or game validation."
+    },
+    "status": "applied"
+  }
+]

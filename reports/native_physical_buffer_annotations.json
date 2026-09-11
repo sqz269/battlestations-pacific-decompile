@@ -1,0 +1,232 @@
+[
+  {
+    "address": "00b4bb60",
+    "before": {
+      "address": "00b4bb60",
+      "function_name": "BSP_D3D9IndexBuffer_Construct",
+      "comment": "[BSP reconstruction 00b4bb60]\n2ch wrapper initialized with intrusive count1, remaining fields zero, final vtable 00d61e58. Used before CreateIndexBuffer in renderer initialization."
+    },
+    "after": {
+      "address": "00b4bb60",
+      "old_name": "BSP_D3D9IndexBuffer_Construct",
+      "name": "BSP_D3D9IndexBuffer_Construct",
+      "evidence": "Write baseCEB130, count1, zeros08..20 then28 then24, pooledD61E58 profile. Slab metadata outside owner untouched. Original ABI: ECX actual2Ch owner; EAX same owner; RET. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4bbb0",
+    "before": {
+      "address": "00b4bbb0",
+      "function_name": "BSP_D3D9VertexBuffer_Construct",
+      "comment": "[BSP reconstruction 00b4bbb0]\n2ch wrapper initialized with intrusive count1, remaining fields zero, final vtable 00d61e7c. Used before CreateVertexBuffer in renderer initialization."
+    },
+    "after": {
+      "address": "00b4bbb0",
+      "old_name": "BSP_D3D9VertexBuffer_Construct",
+      "name": "BSP_D3D9VertexBuffer_Construct",
+      "evidence": "Write baseCEB130, count1, zeros08..20 then28 then24, pooledD61E7C profile. Slab metadata outside owner untouched. Original ABI: ECX actual2Ch owner; EAX same owner; RET. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4c250",
+    "before": {
+      "address": "00b4c250",
+      "function_name": "BSP_D3D9IndexBuffer_Attach",
+      "comment": "[BSP reconstruction 00b4c250]\nthiscall RET Ch. Stores metadata arguments at +14h/+18h; replaces +28h COM pointer by AddRef new before Release old when distinct; also constructs diagnostic strings and calls singleton 00b3e730. Engine registry integration not ported.\n\n[BSP reconstruction 00b4c250] update\nBSP reconstruction hypothesis: Store original flags+14h and byte capacity+18h; replace COM+28h when distinct, AddRef new before Release old. Remaining diagnostic strings/singleton calls omitted by host adapter. ABI: ECX physical wrapper; stack COM buffer,flags,capacity; RETCh; no stable result. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX physical wrapper; stack COM buffer,flags,capacity; RETCh; no stable result. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b4c250",
+      "old_name": "BSP_D3D9IndexBuffer_Attach",
+      "name": "BSP_D3D9IndexBuffer_Attach",
+      "evidence": "Flags14/capacity18 before captured COM28 comparison. Publish new before AddRef-new/Release-captured-old. Preserve both native diagnostic string copies and actual support call; original EH states-1/0/1 and current versus captured cleanup reads. Original ABI: ECX owner; stack COM/flags/capacity; RET Ch; no stable result. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4c370",
+    "before": {
+      "address": "00b4c370",
+      "function_name": "BSP_D3D9VertexBuffer_Attach",
+      "comment": "[BSP reconstruction 00b4c370]\nthiscall RET Ch. Stores metadata arguments at +14h/+18h; replaces +28h COM pointer by AddRef new before Release old when distinct; also constructs diagnostic strings and calls singleton 00b3e730. Engine registry integration not ported.\n\n[BSP reconstruction 00b4c370] update\nBSP reconstruction hypothesis: Store original flags+14h and byte capacity+18h; replace COM+28h when distinct, AddRef new before Release old. Remaining diagnostic strings/singleton calls omitted by host adapter. ABI: ECX physical wrapper; stack COM buffer,flags,capacity; RETCh; no stable result. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. The host mesh GPU adapter is a bounded success-path projection, not native ABI or game validation. Original ABI: ECX physical wrapper; stack COM buffer,flags,capacity; RETCh; no stable result. Evidence: docs/MESH_REGISTERED_BUFFER_BACKING.md; reports/mesh_registered_buffer_backing_audit.json. Descriptive symbol is a hypothesis. Host interfaces are not native ABI or game validation."
+    },
+    "after": {
+      "address": "00b4c370",
+      "old_name": "BSP_D3D9VertexBuffer_Attach",
+      "name": "BSP_D3D9VertexBuffer_Attach",
+      "evidence": "Flags14/capacity18 before captured COM28 comparison. Publish new before AddRef-new/Release-captured-old. Preserve both native diagnostic string copies and actual support call; original EH states-1/0/1 and current versus captured cleanup reads. Original ABI: ECX owner; stack COM/flags/capacity; RET Ch; no stable result. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4b900",
+    "before": {
+      "address": "00b4b900",
+      "function_name": "BSP_D3D9IndexBuffer_Destruct",
+      "comment": "[BSP reconstruction 00b4b900]\nCalls singleton 00b3e730, releases and clears COM buffer +28h, then base destructor 00b4b490. Full registry/base cleanup not ported."
+    },
+    "after": {
+      "address": "00b4b900",
+      "old_name": "BSP_D3D9IndexBuffer_Destruct",
+      "name": "BSP_D3D9IndexBuffer_Destruct",
+      "evidence": "Install privateD61E10 even on pooled owner, actual support before CURRENT COM28 load, Release captured current receiver through CURRENT table+08, zero28 after return, full base cleanup on normal and EH paths. Original ABI: ECX owner; RET. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface. Unwind-only base cleanup terminates on a second C++ exception; normal base destruction remains throwable, matching the native MSVC frame-unwind filter."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4bab0",
+    "before": {
+      "address": "00b4bab0",
+      "function_name": "BSP_D3D9VertexBuffer_Destruct",
+      "comment": "[BSP reconstruction 00b4bab0]\nCalls singleton 00b3e730, releases and clears COM buffer +28h, then base destructor 00b4b530. Full registry/base cleanup not ported."
+    },
+    "after": {
+      "address": "00b4bab0",
+      "old_name": "BSP_D3D9VertexBuffer_Destruct",
+      "name": "BSP_D3D9VertexBuffer_Destruct",
+      "evidence": "Install privateD61E34 even on pooled owner, actual support before CURRENT COM28 load, Release captured current receiver through CURRENT table+08, zero28 after return, full base cleanup on normal and EH paths. Original ABI: ECX owner; RET. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface. Unwind-only base cleanup terminates on a second C++ exception; normal base destruction remains throwable, matching the native MSVC frame-unwind filter."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4b490",
+    "before": {
+      "address": "00b4b490",
+      "function_name": "FUN_00b4b490"
+    },
+    "after": {
+      "address": "00b4b490",
+      "old_name": "FUN_00b4b490",
+      "name": "BSP_NativePhysicalIndexBuffer_DestroyBase",
+      "evidence": "Resize actual08 raw pointer array to0, free CURRENT data, baseCEB130 profile on normal/EH. Preserve stale array pointer/capacity after free. Original ABI: ECX owner; RET. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4b530",
+    "before": {
+      "address": "00b4b530",
+      "function_name": "FUN_00b4b530"
+    },
+    "after": {
+      "address": "00b4b530",
+      "old_name": "FUN_00b4b530",
+      "name": "BSP_NativePhysicalVertexBuffer_DestroyBase",
+      "evidence": "Resize actual08 raw pointer array to0, free CURRENT data, baseCEB130 profile on normal/EH. Preserve stale array pointer/capacity after free. Original ABI: ECX owner; RET. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4bb20",
+    "before": {
+      "address": "00b4bb20",
+      "function_name": "CG_scalar_deleting_dtor_00b4bb20"
+    },
+    "after": {
+      "address": "00b4bb20",
+      "old_name": "CG_scalar_deleting_dtor_00b4bb20",
+      "name": "BSP_NativePrivateIndexBuffer_ScalarDelete",
+      "evidence": "Complete index destruction then flags bit0 host scalar free; returns original possibly dangling address. Original ABI: ECX owner; stack flags; EAX original address; RET4. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4bb40",
+    "before": {
+      "address": "00b4bb40",
+      "function_name": "CG_scalar_deleting_dtor_00b4bb40"
+    },
+    "after": {
+      "address": "00b4bb40",
+      "old_name": "CG_scalar_deleting_dtor_00b4bb40",
+      "name": "BSP_NativePrivateVertexBuffer_ScalarDelete",
+      "evidence": "Complete vertex destruction then flags bit0 host scalar free; returns original possibly dangling address. Original ABI: ECX owner; stack flags; EAX original address; RET4. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4c210",
+    "before": {
+      "address": "00b4c210",
+      "function_name": "FUN_00b4c210"
+    },
+    "after": {
+      "address": "00b4c210",
+      "old_name": "FUN_00b4c210",
+      "name": "BSP_NativePooledIndexBuffer_ScalarDelete",
+      "evidence": "Complete index destruction then flags bit0 actual108FDA8 pool B49500 return; returns original reusable address. Original ABI: ECX owner; stack flags; EAX original address; RET4. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b4c230",
+    "before": {
+      "address": "00b4c230",
+      "function_name": "FUN_00b4c230"
+    },
+    "after": {
+      "address": "00b4c230",
+      "old_name": "FUN_00b4c230",
+      "name": "BSP_NativePooledVertexBuffer_ScalarDelete",
+      "evidence": "Complete vertex destruction then flags bit0 actual108FDE0 pool B49500 return; returns original reusable address. Original ABI: ECX owner; stack flags; EAX original address; RET4. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b49500",
+    "before": {
+      "address": "00b49500",
+      "function_name": "FUN_00b49500"
+    },
+    "after": {
+      "address": "00b49500",
+      "old_name": "FUN_00b49500",
+      "name": "BSP_NativePhysicalBufferPool_ReturnSlot",
+      "evidence": "Real initialized Win32 section+0C; enter before depth24 increment; capturedslot2C slab index, CURRENT slab array28, signed wrapped delta/48 truncation, lowWORDfree index at600+oldcount*2, CURRENTWORDcount640 increment, unsigned earliest34, depth decrement before Leave. No new EH guard. Original ABI: ECX actual pool; stack raw30h slot; RET4. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b496a0",
+    "before": {
+      "address": "00b496a0",
+      "function_name": "FUN_00b496a0"
+    },
+    "after": {
+      "address": "00b496a0",
+      "old_name": "FUN_00b496a0",
+      "name": "BSP_NativePhysicalBufferPointerArray_Reserve",
+      "evidence": "Signed clamp/min1 and capacity comparison; wrapped DWORD4*request allocation. CURRENT data/count per copy, skip wrappednull destinations, free CURRENT old data BEFORE publishing captured replacement and requested capacity. No count restoration. Original ABI: ECX actual0Ch header; stack requested capacity DWORD; RET4. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b49700",
+    "before": {
+      "address": "00b49700",
+      "function_name": "FUN_00b49700"
+    },
+    "after": {
+      "address": "00b49700",
+      "old_name": "FUN_00b49700",
+      "name": "BSP_NativePhysicalBufferPointerArray_Resize",
+      "evidence": "Signed capreserve, captured count AFTERreserve, CURRENT data each defaultzero, CURRENT count decrement per shrink, final raw request store. Original ABI: ECX actual0Ch header; stack requested count DWORD; RET4. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface."
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00b3f4c0",
+    "before": {
+      "address": "00b3f4c0",
+      "function_name": "FUN_00b3f4c0"
+    },
+    "after": {
+      "address": "00b3f4c0",
+      "old_name": "FUN_00b3f4c0",
+      "name": "BSP_NativeBufferDiagnosticRecord_Destroy",
+      "evidence": "Read CURRENT data+08 first, then nonnull CURRENTlength+04 plus1 sizedrelease; leave borrowedCOM+00 and stale name header untouched. Original ABI: ECX actual0Ch record; RET. Complete actual storage implementation in src/native_physical_buffer_owner.cpp; evidence reports/native_physical_buffer_owner_audit.json and docs/NATIVE_PHYSICAL_BUFFER_OWNER.md. All16 bodies1484bytes verified plus original6EH maps/actions; real Win32 lock and explicit COM ABI fixture domain. Existing NativeStringStorage allocation/sized-release limits remain. Host interface is not a drop-in ABI or game validation. Earlier semantic diagnostics omissions are closed only by this new actual-owner interface."
+    },
+    "status": "applied"
+  }
+]
