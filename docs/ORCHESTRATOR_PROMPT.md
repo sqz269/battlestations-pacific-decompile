@@ -28,8 +28,14 @@ the newest docs (`git log --since=... --name-only -- docs`, then `rg -n -A 6 "fo
 the matching reports/<x>.json), and from docs/PARALLEL_WORK.md; check each packet's addresses with
 `lease check` before dispatching. Run up to three workers at a time in their own worktrees.
 
-Worker brief (one packet each, ~150 tool calls): the packet name, its addresses, its owned files
-(docs/<NAME>.md, reports/<name>.json, include/bsp/<module>.hpp, src/<module>.cpp), the docs to read
+Worker brief (one packet each, ~150 tool calls): the packet name, its addresses, its owned files,
+the ten rules of docs/WORKER_VERIFICATION_CHECKLIST.md (callee body before a host-method name,
+Ghidra body range before attributing a call site, every call site before a contract, the producer
+before a record layout, partial coverage labelled, run-time evidence when the executable reaches
+the path, argument counts from the stack cleanup, register provenance by filtering the listing,
+lease only what you annotate, `address`/`native` rows in the report) and the command that checks
+the mechanical ones before the commit (`python tools/verify_report_calls.py reports/<name>.json`);
+then (docs/<NAME>.md, reports/<name>.json, include/bsp/<module>.hpp, src/<module>.cpp), the docs to read
 with capped `rg -n -C` reads, and these standing rules: work only inside the worktree on branch
 agent/<name>; claim the lease first (`python tools/bsp.py lease claim --packet <id> --addresses ...
 --files ... --ttl 6`), extend it for direct callees, treat refused addresses as external; Ghidra is

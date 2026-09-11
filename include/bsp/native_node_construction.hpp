@@ -69,6 +69,10 @@ struct NativeNodeStorage {
 // The caller owns physical storage, including returning it after an exception.
 NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
     std::size_t slot_bytes, const NativeString& name, NativeStringStorage& strings);
+// Same body for a borrowed actual8h header, e.g. gameplay definition+1C.
+// Preserve its address and post-allocation reloads; no temporary name owner.
+NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
+    std::size_t slot_bytes, const void* actual_name_header, NativeStringStorage& strings);
 
 // Existing callers using the semantic SizedStoragePool retain their adapter;
 // both overloads execute the same constructor body and member cleanup.
