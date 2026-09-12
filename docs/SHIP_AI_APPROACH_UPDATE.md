@@ -427,3 +427,17 @@ asks the ship class to rate a bearing through `0095EB40` (unread). The accept/re
 at `009E7822`, not `009E78CC`, and three field meanings this doc had seen from one side are
 corrected in that doc's Corrections table; the two accessors `009E5E70` / `009E5E80` read the
 commanded heading and throttle.
+
+## Correction from docs/SHIP_AI_NAV_CIRCLE_TANGENT.md
+
+`009D68B7` compares only the byte of the side argument, then `009D68C7 SETZ`
+selects the second tangent when that byte is zero. Testing the whole C++
+integer differs for values such as 256. In the random fallback, `009D6A16`
+and `009D6A1E` store the radius/sine and radius/cosine products to float
+slots before `009D6A24` and `009D6A2E` add the center coordinates. Those
+intermediate float stores are part of the recovered evaluation order.
+
+The concrete circle-intersection contracts and the native scratch-buffer
+uncertainty on intersection paths that write no outputs are recorded in
+`docs/SHIP_AI_NAV_CIRCLE_TANGENT.md`; an explicit C++ seed is not evidence
+that the original routine initialized that stack slot.
