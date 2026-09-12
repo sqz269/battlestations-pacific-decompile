@@ -3129,5 +3129,43 @@
     "local\\unit_kind_fixture.exe > local\\unit_kind_factory.tsv",
     "python local/classify_unit_kind.py",
     "python tools/verify_report_calls.py reports/game_unit_kind_binding.json"
-  ]
+  ],
+  "integrator_runtime": {
+    "date": "2026-09-12",
+    "build_base_commit": "12d8cf47",
+    "root_world_storage_changes": "Present in compiled core but not bound into the mission.",
+    "command_record": "local/orch6_unit_kind_f.json",
+    "log": "local/orch6_unit_kind_f.log",
+    "preserved_executable": "local/orch6_unit_kind_12d8cf47.exe",
+    "executable_sha256": "2994093238ef05789425ee37280035555b81ce5e95dd9aab564ce3158d98924c",
+    "duration_seconds": 11.18688178062439,
+    "exit_code": 0,
+    "installed_data": "Read-only USN01/Marshall; installed FMOD; isolated genuine XLive/MSIDCRL DLL pair.",
+    "observed": {
+      "created_units_with_VehicleClass": 77,
+      "ship_navigation_controllers": 14,
+      "mission_frames_requested": 120,
+      "mission_frames_ran": 120,
+      "mission_frames_simulated": 120,
+      "pre_step_calls": 3374,
+      "planner_radius_09c8_calls": 4,
+      "fmod_errors_after_shutdown": 0,
+      "initial_controlled_unit": "Airfield2, native class69; IsKindOf(15)=false and IsKindOf(24)=false"
+    },
+    "limitations": "This reaches corrected public predicates and retains listener/publication boundaries. No native listener handle, rendering parity, full world-constructor binding, collision stepping or gameplay fidelity claimed.",
+    "source_sha256": {
+      "src/game_hosts_units.cpp": "116a7ed79637de8b48607ad090549d5e176c3793fcb2f2e24ec14bb240ada723",
+      "include/bsp/game_hosts_units.hpp": "cb359dc71c78b8e39bf5e37ed84de9f49476d215e4177a584c71634d830dd452",
+      "src/unit_kind_query.cpp": "235beae3267d6a79aa2409453ac4042287426e7987768d5a2660d7c3cb503498",
+      "include/bsp/unit_kind_query.hpp": "e25daedfd0b6af8627426c4b3f0f3bd43f0e8e5ce147230f662ec76859f39b9c",
+      "src/game_hosts_ship_ai.cpp": "0d5825986f7b88cf05ccdc46388a77db406820bcda8bc9444900ed9624be1b5a"
+    },
+    "artifact_sha256": {
+      "local/orch6_unit_kind_f.log": "6cd3957d2ee2a56cfbdb31786b590251a46627fc3a1b2dfb0c6f0f6f5340aa35",
+      "local/orch6_unit_kind_f.json": "17651b13a4869951670f873d9e8382db2a60ac18fb4095d4109e24ffdf774d67",
+      "local/unit_kind_fixture.cpp": "15944ac72cd1921d7fe1fe6679c0320ce117c05f6ae3cacca83d1e68e8c62fc4",
+      "local/unit_kind_factory.tsv": "8e118acd4ffea4e431ab8e49ad74cfb2456fd3933f5d6f31687d2282eff58794",
+      "local/unit_kind_classification.json": "e6bdf6d3550bb2b0e57921cf549c17b20a0c2d4973748abbdeb0d6bd4cb158bb"
+    }
+  }
 }

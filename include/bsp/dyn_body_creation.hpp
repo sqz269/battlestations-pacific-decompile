@@ -49,6 +49,10 @@ void dyn_sap_manager_construct_00c36f10(void* manager, const void* complete_vtab
 // from 00C41AD0; not a world constructor. Does not initialize world settings,
 // scene, collision dispatch or thread tasks. Fresh, uninitialized pools only.
 void dyn_world_body_pool_fragment_00c41ad0(void* world, const AvoidZoneDynHullMemory&);
+// Exact late allocation/link and C0h clear at00C41FA4..00C420C1. The actual
+// world motion pool must already exist. Kept separate so the complete world
+// constructor can retain its intervening scene/task initialization order.
+void dyn_world_allocate_shared_motion_00c41fa4(void* world, const AvoidZoneDynHullMemory&);
 
 void dyn_convex_pool_construct_00407c70(DynConvexShapePoolStorage&,
     void*& allocator_registry_head, const void* allocator_vtable,

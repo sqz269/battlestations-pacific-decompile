@@ -77,6 +77,15 @@ adapter is also unchanged.
 
 ## Verification and limits
 
+The integrator subsequently ran this binding against installed USN01/Marshall
+data for 120 mission frames. All 77 units carried loaded class rows; 14 ship
+navigation controllers were created, and pre-step ran 3,374 times. The initial
+controlled Airfield2 correctly reported class 69 and rejected plane/squadron
+queries. The run exited 0 with zero FMOD errors after shutdown. The exact
+executable, source hashes and log are recorded in the report's
+`integrator_runtime` block. Listener/publication adapters remain unresolved;
+this is runtime reachability evidence, not rendering or gameplay parity.
+
 `reports/game_unit_kind_binding.json` records the exact 77 previously registered
 USN01/Marshall units, their numeric Type ids, loaded Lua type strings, native
 predicate addresses, and before/after accepted sets. The ignored fixture joins
