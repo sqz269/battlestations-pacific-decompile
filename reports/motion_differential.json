@@ -1,0 +1,301 @@
+{
+  "packet": "cc_motion_trace",
+  "owner": "agent/cc-motion-trace",
+  "date": "2026-09-11",
+  "doc": "docs/MOTION_DIFFERENTIAL.md",
+  "tool": "tools/motion_trace_compare.py",
+  "question": "Is the reconstructed ship motion the game's motion?",
+  "answered": false,
+  "answer_note": "The game was never run. No number in this report came from the running game. The divergence found below is between two reconstruction harnesses, tie-broken by the game's authored Lua data rather than by its runtime behaviour.",
+  "ghidra": {
+    "program": "/battlestationspacific.exe",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "read_only": true,
+    "saved": false,
+    "protocol_deviation": {
+      "tool": "mcp__ghidra__disassemble_bytes",
+      "range": "00826866..0082692F",
+      "reported": "202 bytes disassembled",
+      "assessment": "range already inside 00825F20's existing function body; listing read back afterwards matches docs/SHIP_MOTION.md's keel-point arithmetic instruction for instruction, so no listing change resulted. Program not saved.",
+      "mitigation": "all later listing reads went through the read-only bsp.py ghidra disasm"
+    }
+  },
+  "game_installation": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "read": true,
+    "written": false,
+    "launched": false
+  },
+  "live_trace": {
+    "feasible_now": false,
+    "attempts": [
+      {
+        "tool": "mcp__ghidra__debugger_status",
+        "result": "error",
+        "text": "Debugger server not running at http://127.0.0.1:8099. Start it with: python -m debugger"
+      },
+      {
+        "tool": "mcp__ghidra__debugger_launch_offers",
+        "result": "error",
+        "text": "Debugger not active and GhidraMCP could not auto-start a Debugger tool. Open the Debugger tool or enable Window > Debugger in CodeBrowser, then attach to your target process."
+      },
+      {
+        "tool": "mcp__ghidra__debugger_attach",
+        "target": "battlestationspacific.exe",
+        "result": "error",
+        "text": "Debugger server not running at http://127.0.0.1:8099."
+      },
+      {
+        "tool": "mcp__ghidra__debugger_set_breakpoint",
+        "address": "0x00825F20",
+        "result": "error",
+        "text": "Debugger server not running at http://127.0.0.1:8099."
+      },
+      {
+        "tool": "mcp__ghidra__debugger_launch",
+        "mode": "dry_run",
+        "result": "error",
+        "text": "Debugger launch failed using 'dbgeng extra options': The back-end exited (code=9009) before receiving a connection. Check Ghidra's launcher terminal and debugger backend setup.",
+        "note": "9009 is the Windows command-not-found exit code; the Trace RMI launcher back-end is not installed"
+      }
+    ],
+    "backend_provisioned": {
+      "what": "pybag==2.2.16 and comtypes==1.4.16 in a throwaway virtualenv under the session scratchpad",
+      "reason": "J:/tools/ghidra-mcp/requirements-debugger.txt lists them; neither was installed in any interpreter on the machine",
+      "server_start": "python -m debugger, cwd J:/tools/ghidra-mcp",
+      "server_log": [
+        "[debugger.engine] INFO: dbgeng COM initialized on worker thread",
+        "[debugger.server] INFO: Debugger server starting on 127.0.0.1:8099"
+      ],
+      "status_after": {"state": "detached", "module_count": 0, "breakpoint_count": 0},
+      "attach_path_available": true,
+      "note": "a bare 'import pybag' in that venv still fails with FileNotFoundError for C:/Program Files (x86)/Windows Kits/10/Debuggers/x64/dbgeng.dll (only dbgcore, dbghelp, srcsrv and symsrv are installed there); the server nevertheless initializes dbgeng through the system copy"
+    },
+    "blockers": [
+      {
+        "blocker": "no launch offer exists",
+        "detail": "debugger_launch_offers does not use the 8099 server; it needs Ghidra's own Debugger tool and Trace RMI launcher in the GUI, whose back-end exits 9009. The packet's instruction was to launch the game only if a launch offer exists, so the game was not launched.",
+        "decisive": false
+      },
+      {
+        "blocker": "the mission cannot be reached",
+        "detail": "Recording the controlled unit in USN02 needs the game driven from the main menu through the campaign screen, the mission list and the briefing. This session has no desktop input and no screen capture; the available computer-use tools are scoped to a browser. The scenario is out of reach for any unattended agent.",
+        "decisive": true,
+        "what_would_unblock": "a person at the keyboard to reach the mission and pause, or a scripted input path into the menus. After that every capture step is an MCP call."
+      },
+      {
+        "blocker": "running the game writes into the installation",
+        "detail": "battlestationspacific.exe rewrites bsp_debug.log and xlive_debug.log in its own directory, which this packet is required to leave untouched.",
+        "decisive": false
+      }
+    ],
+    "prerequisites_observed": {
+      "steam_running": true,
+      "xlive": "xlive.dll present and is an emulator; xlive_debug.log from the 2026-05-09 run shows XLiveInitializeEx and CreateLocalUser with no Games for Windows Live prompt",
+      "prior_successful_run": "2026-05-09, per bsp_debug.log and xlive_debug.log"
+    }
+  },
+  "harness_differential": {
+    "note": "Not a game differential. Two reconstruction harnesses running the same motion code.",
+    "class": {
+      "index": 20,
+      "name": "DeRuyter class 1935",
+      "type": "Cruiser",
+      "max_speed": 16.4622,
+      "max_accel": 3.0,
+      "retardation": 2.0,
+      "max_rot_angle": 0.122173
+    },
+    "step_seconds": 0.05,
+    "straight_line": {
+      "inputs": {"throttle": 1.0, "rudder": 0.0, "seconds": 6.0},
+      "peak_speed_delta_mps": 0.0002,
+      "peak_heading_delta_deg": 0.0,
+      "peak_position_delta_m": 0.01,
+      "verdict": "agree to the logs' own rounding; covers the throttle gate, the 0092D300 acceleration selection, the target-speed product and the integration"
+    },
+    "turning": {
+      "inputs": {"throttle": 1.0, "rudder": 1.0, "seconds": 18.0},
+      "bsp_game_steady_yaw": -0.12217,
+      "probe_steady_yaw": -0.06109,
+      "ratio": 2.0,
+      "first_heading_divergence_past_2deg_s": 4.0,
+      "first_position_divergence_past_5m_s": 9.0,
+      "final_heading_delta_deg": -50.201,
+      "final_position_delta_m": 87.498,
+      "final_speed_delta_mps": -0.5355,
+      "rows": [
+        {"t": 2.0, "bsp_game_yaw": -0.04232, "probe_yaw": -0.03582, "heading_delta_deg": 0.06, "position_delta_m": 0.0},
+        {"t": 4.0, "bsp_game_yaw": -0.08732, "probe_yaw": -0.05103, "heading_delta_deg": -2.533, "position_delta_m": 0.032},
+        {"t": 6.0, "bsp_game_yaw": -0.12217, "probe_yaw": -0.06109, "heading_delta_deg": -8.325, "position_delta_m": 0.671},
+        {"t": 9.0, "bsp_game_yaw": -0.12217, "probe_yaw": -0.06109, "heading_delta_deg": -18.825, "position_delta_m": 5.085},
+        {"t": 12.0, "bsp_game_yaw": -0.12217, "probe_yaw": -0.06109, "heading_delta_deg": -29.325, "position_delta_m": 18.247},
+        {"t": 15.0, "bsp_game_yaw": -0.12217, "probe_yaw": -0.06109, "heading_delta_deg": -39.825, "position_delta_m": 44.571},
+        {"t": 18.0, "bsp_game_yaw": -0.11912, "probe_yaw": -0.06109, "heading_delta_deg": -50.201, "position_delta_m": 87.498}
+      ]
+    },
+    "cause": {
+      "which_is_right": "the probe",
+      "why": "0082ECB0 divides MaxRotAngle by the curve 0082E890 interpolates from the gameplay settings singleton [00F8753C] at +438h..+44Ch. The knots are authored in <install>/scripts/datatables/shipglobals.lua under ShipGlobals[\"Navigator\"][\"TurnMultipliers\"], lines 340-342, and give 2.0 at full throttle. The probe reads them; bsp_game.exe still forces all three to 1.",
+      "knots": [
+        {"key": "TurnMultiplierMinSpeed", "speed": 0.0, "denominator": 0.4, "fields": ["+444h", "+440h"]},
+        {"key": "TurnMultiplierMedSpeed", "speed": 0.5, "denominator": 1.5, "fields": ["+44Ch", "+448h"]},
+        {"key": "TurnMultiplierMaxSpeed", "speed": 1.0, "denominator": 2.0, "fields": ["+43Ch", "+438h"]}
+      ],
+      "consequence": "every milestone-2i heading and turning path is out by the denominator, measured as exactly 2.0 at full throttle; straight-line distances are unaffected"
+    }
+  },
+  "sampling_plan": {
+    "breakpoint": {
+      "address": "0x00825F20",
+      "module": "battlestationspacific.exe",
+      "unit_base": "ECX - 310h",
+      "unit_base_evidence": ["00825F2A MOV EDI,ECX", "00825F32 LEA ESI,[EDI-310h]"],
+      "frame_delta": "[ESP+4] as a float at entry, before the first instruction SUB ESP,0B0h runs",
+      "fires": "once per ship per fixed step, for all 32 units; filter on the controlled unit's base pointer"
+    },
+    "unit_fields": [
+      {"what": "pose block", "offset": "+0CCh", "evidence": "008268F2 LEA EBP,[ESI+0CCh]"},
+      {"what": "pose row 0, lateral", "offset": "+0CCh..+0D4h", "evidence": "row stride 10h"},
+      {"what": "pose row 1, up", "offset": "+0DCh..+0E4h", "evidence": "the keel point's down term"},
+      {"what": "pose row 2, forward", "offset": "+0ECh..+0F4h", "evidence": "0082687C FMUL [EBP+20h], 00826883 FLD [EBP+24h], 0082688C FMUL [EBP+28h]"},
+      {"what": "translation x", "offset": "+0FCh", "evidence": "00826897 FADD [ESI+0FCh]"},
+      {"what": "translation y", "offset": "+100h", "evidence": "008268A1 FLD [ESI+100h]"},
+      {"what": "translation z", "offset": "+104h", "evidence": "008268AF FLD [ESI+104h]"},
+      {"what": "pose-valid byte", "offset": "+0C8h", "evidence": "00826900 MOV byte ptr [ESI+0C8h],1"},
+      {"what": "out-of-action byte", "offset": "+5Dh", "evidence": "008269F4"},
+      {"what": "per-unit time scale", "offset": "+340h", "evidence": "00826126"},
+      {"what": "class descriptor pointer", "offset": "+538h", "evidence": "00826A8A MOV EBP,[EDI+228h], EDI = unit+310h"},
+      {"what": "order ring base", "offset": "+838h", "evidence": "docs/UNIT_STATE_MESSAGE.md"},
+      {"what": "ordered throttle", "offset": "+980h (ring+148h)", "evidence": "0080D9E8, 00826708"},
+      {"what": "ordered rudder", "offset": "+984h (ring+14Ch)", "evidence": "0080DA3A, 0082674C"},
+      {"what": "order kind byte", "offset": "+988h (ring+150h)", "evidence": "00826A82 MOV AL,[EDI+678h]"},
+      {"what": "max speed", "offset": "+9C0h", "evidence": "00826A3A FLD [ESI+9C0h]"},
+      {"what": "engine value", "offset": "+9D8h", "evidence": "the engine gate 00826754"},
+      {"what": "rudder jam", "offset": "+9E4h", "evidence": "00826B2E"},
+      {"what": "engine jam", "offset": "+9E5h", "evidence": "the engine gate 00826754"},
+      {"what": "boost timer", "offset": "+1188h", "evidence": "00826A98"},
+      {"what": "boost kind", "offset": "+118Ch", "evidence": "00826A90"},
+      {"what": "force controller pointer", "offset": "+1018h", "evidence": "00826A40 MOV ECX,[EDI+0D08h], EDI = unit+310h"}
+    ],
+    "controller_fields": [
+      {"what": "unit back-pointer", "offset": "controller+1Ch"},
+      {"what": "rigid body", "offset": "controller+2Ch"},
+      {"what": "smoothed rudder", "offset": "controller+80h"}
+    ],
+    "rigid_body_fields": [
+      {"what": "linear velocity", "offset": "body+00h"},
+      {"what": "angular velocity", "offset": "body+0Ch"},
+      {"what": "maximum linear speed", "offset": "body+18h"}
+    ],
+    "derived": {
+      "forward_speed": "linear velocity projected on pose row 2",
+      "yaw_rate": "the angular velocity's row-1 component, which is what 0092E8C0 slews",
+      "heading": "atan2(fwd_x, fwd_z), derived by the tool and not captured"
+    },
+    "one_shot_reads": [
+      {
+        "what": "turn-multiplier knots as loaded",
+        "address": "[00F8753C] + 438h .. + 44Ch",
+        "size": "six floats",
+        "needs_mission": false,
+        "why": "confirms the section 2 tie-break against the live process rather than against the Lua source"
+      },
+      {
+        "what": "x87 control word",
+        "where": "at the 00825F20 breakpoint",
+        "needs_mission": false,
+        "why": "docs/SHIP_MOTION.md's first open question: D3DCREATE_FPU_PRESERVE would leave it at 64-bit, the reconstruction assumes the MSVC default of 53-bit"
+      }
+    ],
+    "trace_csv_columns": ["t", "dt", "pos_x", "pos_y", "pos_z", "fwd_x", "fwd_y", "fwd_z", "fwd_speed", "throttle", "rudder", "yaw_rate"],
+    "rows_for_20s": 400,
+    "compare_command": "python tools/motion_trace_compare.py --trace local/motion_trace.csv --probe local/probe_class20.txt --align-origin --json reports/motion_trace_result.json",
+    "compare_warning": "do not pass --apply-curve to a current probe build; it exists for probe output captured before the authored knots landed and would double-count the denominator"
+  },
+  "tool_validation": [
+    {
+      "case": "null differential, the probe's own trajectory fed back as a trace",
+      "samples": 41,
+      "seconds": 20.0,
+      "peak_speed_delta_mps": 0.0,
+      "peak_heading_delta_deg": 0.0,
+      "peak_position_delta_m": 0.0,
+      "verdict": "parsing, interpolation and heading wrap introduce no error"
+    },
+    {
+      "case": "probe vs bsp_game.exe, rudder 0",
+      "samples": 13,
+      "seconds": 6.0,
+      "peak_speed_delta_mps": 0.0002,
+      "peak_heading_delta_deg": 0.0,
+      "peak_position_delta_m": 0.01
+    },
+    {
+      "case": "probe vs bsp_game.exe, rudder 1",
+      "samples": 37,
+      "seconds": 18.0,
+      "peak_speed_delta_mps": 0.5355,
+      "peak_heading_delta_deg": 50.201,
+      "peak_position_delta_m": 87.498,
+      "peak_yaw_rate_delta": 0.06108
+    }
+  ],
+  "corrections": [
+    {
+      "target": "this packet's own protocol",
+      "correction": "one mutating Ghidra call was made in error: disassemble_bytes over 00826866..0082692F, 202 bytes. The range is already inside 00825F20's function body and the listing read back afterwards is unchanged; the program was not saved."
+    },
+    {
+      "target": "docs/SHIP_MOTION.md, 'The probe'",
+      "correction": "the probe no longer forces the rudder-curve knots to 1.0 and no longer uses a stand-in integrator; its header prints the shipglobals.lua knots and 'integration 00C41550 + 00C5B1B0, the game's own routines'. Only the ocean sampler and the gameplay scale remain stand-ins. Its uncertainty 3 likewise says 0082ECB0's settings block remains unrecovered; docs/UNIT_RUDDER_CURVE.md recovered it, on the settings singleton rather than on the unit."
+    },
+    {
+      "target": "docs/SHIP_MOTION.md, unit+9C0h",
+      "correction": "annotated 'one store'; 00826A3A is FLD float ptr [ESI+9C0h], a load. unit+9C0h holds the unit's maximum speed and is the multiplicand. The product is stored to the stack at 00826A4F."
+    },
+    {
+      "target": "docs/GAME_EXECUTABLE.md, milestone 2i",
+      "correction": "its stand-in note that the +438h..+44Ch knots 'were never recovered, so the three denominator knots are forced to 1 (the same stand-in src/ship_motion_probe.cpp uses)' is wrong in both halves. Every milestone-2i heading and turning path is out by the denominator, exactly 2.0 at full throttle. Its reported 0.06109 rad/s at rudder 0.5 reaches the right number for the wrong reason: MaxRotAngle * 0.5 with the knots forced to 1, where the shipped curve gives MaxRotAngle * 0.5 / 2.0 = 0.03054."
+    },
+    {
+      "target": "src/ship_motion_probe.cpp summary lines",
+      "correction": "the 'expected yaw rate with the shipped curve' line omits the rudder factor: at --rudder 0.5 it prints 0.06109 rad/s against a measured 0.03054 and concludes 'heading turns at the curve's rate: no'. The measurement is right and the expectation is wrong. No C++ was changed in this packet."
+    }
+  ],
+  "follow_up_packets": [
+    {
+      "packet": "game_harness_rudder_curve",
+      "addresses_files": ["src/game_hosts_units.cpp yaw_rate_target", "0082ECB0", "0082E890"],
+      "why": "give bsp_game.exe the authored knots the probe already reads, then re-run milestone 2i. The one follow-up that changes shipped numbers."
+    },
+    {
+      "packet": "motion_live_trace",
+      "addresses_files": ["00825F20", "[00F8753C]+438h..+44Ch"],
+      "why": "the live run of the sampling plan, once a person can drive the menus to USN02. The two one-shot reads need only a main menu."
+    },
+    {
+      "packet": "cruise_command_object",
+      "addresses_files": ["00469610", "0046AAB0", "unit+838h ring"],
+      "why": "what the authored Cruise order writes into the ring. The live capture records it as a side effect; milestone 2i lists it as open, and the probe cannot reproduce the mission's ships without it."
+    },
+    {
+      "packet": "unit_pose_refresh",
+      "addresses_files": ["00414DB0", "00825A64", "unit+0CCh..+100h"],
+      "why": "already proposed by docs/UNIT_INSTANCE_UPDATE.md. This packet pinned the translation at +0FCh/+100h/+104h and the three basis rows from the keel-point arithmetic."
+    },
+    {
+      "packet": "x87_control_word",
+      "addresses_files": ["00825F20 entry", "D3D9 device creation"],
+      "why": "whether the shipped executable runs the x87 unit at 53-bit or 64-bit precision. docs/SHIP_MOTION.md calls this its first open question."
+    }
+  ],
+  "no_ghidra_function": "none",
+  "uncertainties": [
+    "The packet's question is unanswered: no number here was taken from the running game. The harness divergence is tie-broken by the game's authored Lua, not by its runtime behaviour.",
+    "Whether the game applies the turn curve to the ordered throttle or to the achieved speed ratio. 0082ECB0 takes forwardSpeed / MaxSpeed; the Hungarian comment on the Lua knots says 'gazkar allasa', the throttle setting. The two agree in steady state and differ during the acceleration ramp, which is where the harnesses separate before t = 6 s.",
+    "The handedness of the body basis, unchanged from docs/SHIP_MOTION.md.",
+    "The x87 control word the shipped executable runs with, unchanged.",
+    "--align-origin assumes the capture and the probe start from rest on the same heading. A capture from a ship already under way needs its initial velocity fed to the probe, which the probe has no option for."
+  ]
+}
