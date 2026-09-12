@@ -50,9 +50,10 @@ uninitialized-stack failure behavior remains outside the demonstrated domain.
 
 ## Remaining application work
 
-The native OnInitOnce requested-count/accepted-ID producer A917E0, action/frame
-processing, actual online-owner construction and listener implementation are
-separate required boundaries. The real settings commit must bind the live rumble
+The native OnInitOnce requested-count/accepted-ID producer A917E0 is now bound
+by the startup fragment documented in GAME_INPUT_STARTUP_SETTINGS.md. Action/frame
+processing, actual online-owner construction and listener implementation remain
+required boundaries. The real settings commit must bind the live rumble
 word; mouse scale/invert producers are not established merely by initializing their
 image words. Source construction and cleanup do not establish interactive input,
 hardware effects, native ABI compatibility or a runnable game rebuild. Validation

@@ -26,6 +26,9 @@ struct GameInputRuntimeBindings {
     const volatile float& loading_step_00d7a2f0;
     NativeInputShowCursorCall const& show_cursor;
     GameRawInputDeviceLookup lookup_device_004ba6d0;
+    // Same mutable source word borrowed by devices.xinput_tables, never a
+    // separate settings snapshot. The setter also updates active devices.
+    volatile bool& rumble_enabled_00e12f2c;
 };
 
 class GameInputRuntime final {
@@ -39,6 +42,10 @@ public:
     NativeInputDeviceRuntime& devices() noexcept;
     // Native allocation/constructor, publication reload/callback write/reset.
     void startup();
+    // Three OnInitOnce calls at4DD6B4/C5/D6, with a publication reload for
+    // each class. Caller supplies the original first-time initialization stage.
+    void initialize_classes_004dd6a8();
+    void set_rumble_enabled_00a94c50(bool enabled);
     void update_cursor(bool loading);
     void update_backend(float seconds);
     void* action_owner();

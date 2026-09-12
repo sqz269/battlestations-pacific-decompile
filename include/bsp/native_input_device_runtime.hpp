@@ -77,6 +77,7 @@ public:
     const ClockTimestamp& call_clock_01090ab0_vslot14() override;
     HWND call_00bec230() override;
     void set_force_vslot38(void*, std::uint32_t channel, float value) override;
+    void set_force_vslot38(void*, std::uint32_t captured_profile, std::uint32_t channel, float value);
     float device_value_vslot24(void*, std::uint32_t code) override;
 
     // Remaining finite virtual surfaces for the raw backend/frame consumers.
@@ -84,6 +85,7 @@ public:
     bool poll_device_vslot10(void*, float seconds);
     void set_relative_vslot18(void*, std::uint32_t code, std::uint32_t raw_value);
     std::uint8_t relative_vslot1c(void*, std::uint32_t code);
+    std::uint8_t relative_vslot1c(void*, std::uint32_t captured_profile, std::uint32_t code);
     std::uint8_t buttons_active_vslot2c(void*);
     std::int32_t select_control_vslot30(void*);
     std::int32_t identifier_vslot34(void*);
