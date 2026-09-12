@@ -30,10 +30,14 @@ inline constexpr std::size_t kRepairTaskOffPriority = 0x24;         // all five 
 inline constexpr std::size_t kRepairTaskOffEffectivity = 0x28;      // 008ADA11 writes
 inline constexpr std::size_t kRepairTaskOffFireDamageRate = 0x2C;   // 0093C120 reads
 inline constexpr std::size_t kRepairTaskOffWaterDamageRate = 0x30;  // 0093C210 reads
-inline constexpr std::size_t kRepairTaskOffFireSeconds = 0x34;      // 0093C120 writes
-inline constexpr std::size_t kRepairTaskOffWaterSeconds = 0x38;     // 0093C210 writes
-inline constexpr std::size_t kRepairTaskOffWaterExpiredSlot = 0x3C; // 0093C210 clears
-inline constexpr std::size_t kRepairTaskOffFireExpiredSlot = 0x40;  // 0093C120 clears
+// docs/UNIT_MESSAGE_ARMS.md (packet cc2_unit_message_arms): the fire/water labels of the six
+// repair constants below were on the wrong offsets; fire is task+38h / expired +3Ch / divisor
+// settings+3CCh (ticked by 0093C210), water is task+34h / expired +40h / divisor settings+3C8h
+// (ticked by 0093C120). Values swapped in place; the routine citations were already right.
+inline constexpr std::size_t kRepairTaskOffFireSeconds = 0x38;      // 0093C210 writes
+inline constexpr std::size_t kRepairTaskOffWaterSeconds = 0x34;     // 0093C120 writes
+inline constexpr std::size_t kRepairTaskOffWaterExpiredSlot = 0x40; // 0093C120 clears
+inline constexpr std::size_t kRepairTaskOffFireExpiredSlot = 0x3C;  // 0093C210 clears
 inline constexpr std::size_t kRepairTaskOffReported = 0x44;         // 0093CADC sets
 inline constexpr std::size_t kRepairTaskOffHullRepairEnabled = 0x45;// 0093C770 reads
 inline constexpr std::size_t kRepairTaskOffFailureRepairEnabled = 0x46; // 00939FE0
@@ -59,8 +63,8 @@ inline constexpr std::size_t kUnitPartsDisplacementOffset = 0x84;
 // ---------------------------------------------------------------------------
 inline constexpr std::size_t kSettingsOffHullRepairScale = 0x3B4;      // 0093C770
 inline constexpr std::size_t kSettingsOffSubObjectRepairScale = 0x3B8; // 0093C860
-inline constexpr std::size_t kSettingsOffFirePriorityDivisor = 0x3C8;  // 0093C120
-inline constexpr std::size_t kSettingsOffWaterPriorityDivisor = 0x3CC; // 0093C210
+inline constexpr std::size_t kSettingsOffFirePriorityDivisor = 0x3CC;  // 0093C210
+inline constexpr std::size_t kSettingsOffWaterPriorityDivisor = 0x3C8; // 0093C120
 inline constexpr std::size_t kSettingsOffFailurePriorityRate = 0x3D0;  // 0093C520
 inline constexpr std::size_t kSettingsOffHullPriorityRate = 0x3D4;     // 0093C770
 inline constexpr std::size_t kSettingsOffSubObjectPriorityRate = 0x3D8;// 0093C860
