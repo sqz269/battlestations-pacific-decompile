@@ -399,3 +399,12 @@ the device at `unit+DECh` and the spawn behind `dev->+11h`; `ctl->+370h`'s produ
 * Why both release rules decrement `approach->+2Ch` while the manual passthrough at `009A67B0`
   decrements `task->+424h`; the two counters are different fields.
 * What `approach->+5Ch` and `+60h` are per tick, which is what turns `009A3FA0` into a metre range.
+
+## Correction from docs/PLANE_FLIGHT.md (packet cc2_plane_flight)
+
+- **Was:** the host table gives 009FBA50 the receiver "approach"
+  **Is:** the receiver of 009FBA50, 009FB800 and 009F9E40 is state+4h, the state's owner-approach slot; each routine dereferences it once to reach the approach
+  **Evidence:** 009C18C9 MOV EDI,ECX (the state's this); 009C19A8 LEA ESI,[EDI+4], the only ESI write before the call; 009C1AFF MOV ECX,ESI one instruction before 009C1B17 CALL 009FBA50. Inside, 009FBA88 MOV ECX,[ESI], 009FB833 MOV EAX,[ESI] and 009F9E44 MOV EAX,[EDI] each load the approach from the first dword.
+- **Was:** the 009FBA50 argument list reads "009FBA50(alt, +38h, ., throttle)" with +38h taken as an approach field
+  **Is:** +38h is the state object's own +38h (bot_task_state_off::kMoveToMode), read as a float
+  **Evidence:** 009C1B09 FLD float ptr [EDI+38h], with EDI still holding the state's this from 009C18C9; EDI is not rewritten until 009C1B3D, after the call.

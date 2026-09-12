@@ -317,3 +317,9 @@ squadron's one slot, for the unit's `+0Ch` and level-4 `+8h`, and for the entity
 | `007F3BA0` | `007F3D30` | `00D08784` points here; `RET 4` at `007F3D21` and the `JMP 0x7F3C60` tail ends at `007F3D30`, `INT3` from `007F3D31` |
 | `00929CB0` | `00929D61` | `00D194C8` points here; `RET 4` at `00929D5F`, `INT3` from `00929D62` |
 | `0092B350` | `0092B91E` | `00D194CC` points here; `RET 4` at `0092B91C` |
+
+## Correction from docs/PLANE_FLIGHT.md (packet cc2_plane_flight)
+
+- **Was:** "finally, while that byte is set, unit->vtable[+1D8h](step)"
+  **Is:** the slot runs only when unit+520h is clear
+  **Evidence:** 00953D7D CMP byte ptr [ESI+210h],0 then 00953D84 JNZ 0x00953D9A, which jumps past the 00953D98 CALL EDX; ESI is the node at unit+310h, so [ESI+210h] is unit+520h.
