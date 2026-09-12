@@ -1,0 +1,1630 @@
+{
+  "packet": "orch6_layer_selection_f",
+  "source": "src/ship_ai_layer_selection.cpp",
+  "header": "include/bsp/ship_ai_layer_selection.hpp",
+  "doc": "docs/SHIP_AI_LAYER_SELECTION.md",
+  "status": "complete_normal_flow_borrowed_services_build_and_original_byte_fixture_tested",
+  "routines": [
+    {
+      "entry": "009eca20",
+      "inclusive_body": [
+        "009eca20",
+        "009ed3d9"
+      ],
+      "name": "ship_ai_select_navigation_layer_009eca20",
+      "native_abi": "ECX=nav, one float stack argument; RET4 at009ED3D7",
+      "coverage": "complete",
+      "scope": "Complete normal control/store/call schedule through actual borrowed services"
+    },
+    {
+      "entry": "006dfd80",
+      "inclusive_body": [
+        "006dfd80",
+        "006dfd8c"
+      ],
+      "name": "ship_ai_unit_navigation_layer_006dfd80",
+      "native_abi": "ECX=unit, EAX dword, RET1byte at006DFD8C",
+      "coverage": "complete",
+      "scope": "Complete class560 getter; typed existing ShipLeafTuning array"
+    },
+    {
+      "entry": "00852fd0",
+      "inclusive_body": [
+        "00852fd0",
+        "00852fe3"
+      ],
+      "name": "ship_ai_submarine_navigation_layer_00852fd0",
+      "native_abi": "ECX=submarine, EAX dword, RET1byte at00852FE3",
+      "coverage": "complete",
+      "scope": "Complete class560+4*unit1268 getter on native-valid index0..3"
+    },
+    {
+      "entry": "00412170",
+      "inclusive_body": [
+        "00412170",
+        "0041217f"
+      ],
+      "name": "avoid_zone_first_layer_00412170",
+      "native_abi": "ECX=manager, EAX signed key, RET",
+      "coverage": "complete",
+      "scope": "Complete first key, empty0"
+    },
+    {
+      "entry": "00412180",
+      "inclusive_body": [
+        "00412180",
+        "00412191"
+      ],
+      "name": "avoid_zone_last_layer_00412180",
+      "native_abi": "ECX=manager, EAX signed key, RET",
+      "coverage": "complete",
+      "scope": "Complete last key, empty0"
+    },
+    {
+      "entry": "004121b0",
+      "inclusive_body": [
+        "004121b0",
+        "004121e7"
+      ],
+      "name": "avoid_zone_next_layer_004121b0",
+      "native_abi": "ECX=manager, signed stack key, EAX signed result, RET4",
+      "coverage": "complete",
+      "scope": "Complete first strictly greater or last, empty0"
+    },
+    {
+      "entry": "00417d60",
+      "inclusive_body": [
+        "00417d60",
+        "00417daa"
+      ],
+      "name": "avoid_zone_previous_layer_00417d60",
+      "native_abi": "ECX=manager, signed stack key, EAX signed result, RET4",
+      "coverage": "complete",
+      "scope": "Complete last strictly lower or first, empty0"
+    },
+    {
+      "entry": "004121a0",
+      "inclusive_body": [
+        "004121a0",
+        "004121a2"
+      ],
+      "name": "avoid_zone_layer_noop_004121a0",
+      "native_abi": "Exactly RET4, ignores receiver and stack word",
+      "coverage": "complete",
+      "scope": "Complete genuine no-op; no invented selection or mutation"
+    },
+    {
+      "entry": "00417b10",
+      "inclusive_body": [
+        "00417b10",
+        "00417bf9"
+      ],
+      "name": "avoid_zone_group_offset_00417b10",
+      "native_abi": "ECX=group, out/point/push/low-byte containment; EAX=out, RET10h at00417BF7",
+      "coverage": "complete",
+      "scope": "Complete ordered group walk through existing00416B50/00416F30 composition"
+    }
+  ],
+  "entry_call": {
+    "address": "009f51c6",
+    "native": "009eca20",
+    "function": "009f50e0",
+    "registers": "EDI=brain+60 from009F5150; MOV ECX,EDI009F51C1; float seconds pushed via FSTP[ESP]009F51C3; callee RET4"
+  },
+  "calls": [
+    {
+      "address": "009eca3c",
+      "native": "00778890",
+      "function": "009eca20"
+    },
+    {
+      "address": "009eca51",
+      "native": "0070e450",
+      "function": "009eca20"
+    },
+    {
+      "address": "009eca66",
+      "native": "unit+vtable214",
+      "function": "009eca20",
+      "resolved_targets": [
+        "006dfd80",
+        "00852fd0"
+      ]
+    },
+    {
+      "address": "009eca7b",
+      "native": "unit+vtable5c",
+      "function": "009eca20"
+    },
+    {
+      "address": "009eca8f",
+      "native": "unit+vtable10c",
+      "function": "009eca20",
+      "landing_ship_target": "0042bb40"
+    },
+    {
+      "address": "009ecab9",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecac0",
+      "native": "00412170",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecac7",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecace",
+      "native": "00412180",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecb47",
+      "native": "00424c40",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecb4e",
+      "native": "00424c40",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecb6e",
+      "native": "00bd2f10",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecb8b",
+      "native": "0092d730",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecba2",
+      "native": "0080fc30",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecbeb",
+      "native": "00419010",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecc24",
+      "native": "0092d730",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecc6d",
+      "native": "00419010",
+      "function": "009eca20"
+    },
+    {
+      "address": "009eccbf",
+      "native": "00419010",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecd76",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecd7d",
+      "native": "00412170",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecd84",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecd8b",
+      "native": "00412180",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecdaa",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecdb8",
+      "native": "004120d0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecdc4",
+      "native": "004178f0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecdd2",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecde0",
+      "native": "00417d60",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecdf5",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecdfd",
+      "native": "004120d0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ece09",
+      "native": "004178f0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ece31",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ece3f",
+      "native": "004121b0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ece4e",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ece56",
+      "native": "004120d0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ece62",
+      "native": "004178f0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecec5",
+      "native": "00424c40",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ececc",
+      "native": "00424c40",
+      "function": "009eca20"
+    },
+    {
+      "address": "009eceec",
+      "native": "00bd2f10",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecf79",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecf87",
+      "native": "004120d0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecf93",
+      "native": "004178f0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecfa0",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecfae",
+      "native": "00417d60",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecfc1",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecfcf",
+      "native": "004120d0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ecfdb",
+      "native": "004178f0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed01a",
+      "native": "00424c40",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed029",
+      "native": "00424c40",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed04f",
+      "native": "00bd2f10",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed06d",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed07b",
+      "native": "004121a0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed0ed",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed0fb",
+      "native": "004121a0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed105",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed113",
+      "native": "004121a0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed118",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed126",
+      "native": "004120d0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed13f",
+      "native": "00417b10",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed190",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed19e",
+      "native": "00417d60",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed1b5",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed1c3",
+      "native": "004121a0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed1c8",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed1d6",
+      "native": "004120d0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed1ef",
+      "native": "00417b10",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed250",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed25e",
+      "native": "004121b0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed265",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed26d",
+      "native": "004120d0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed275",
+      "native": "004178f0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed29d",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed2a5",
+      "native": "004120d0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed2be",
+      "native": "00417b10",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed2dc",
+      "native": "00414c60",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed37a",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed388",
+      "native": "004120d0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed39a",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed3a5",
+      "native": "004121b0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed3be",
+      "native": "004218e0",
+      "function": "009eca20"
+    },
+    {
+      "address": "009ed3cc",
+      "native": "004121a0",
+      "function": "009eca20"
+    },
+    {
+      "address": "00417b88",
+      "native": "00416b50",
+      "function": "00417b10"
+    },
+    {
+      "address": "00417baa",
+      "native": "00416f30",
+      "function": "00417b10"
+    },
+    {
+      "address": "009f51c6",
+      "native": "009eca20",
+      "function": "009f50e0"
+    },
+    {
+      "address": "009dfcf3",
+      "native": "009dbdf0",
+      "function": "009dfcb0"
+    }
+  ],
+  "other_offset_callers": [
+    {
+      "address": "00417e81",
+      "native": "00417b10",
+      "function": "00417e60",
+      "preceding_instructions": [
+        {
+          "at": "00417e60",
+          "instruction": "FLD float ptr [ESP + 0xc]"
+        },
+        {
+          "at": "00417e64",
+          "instruction": "MOV EAX,dword ptr [ESP + 0x8]"
+        },
+        {
+          "at": "00417e68",
+          "instruction": "MOV EDX,dword ptr [ESP + 0x10]"
+        },
+        {
+          "at": "00417e6c",
+          "instruction": "PUSH ESI"
+        },
+        {
+          "at": "00417e6d",
+          "instruction": "MOV ESI,dword ptr [ESP + 0x8]"
+        },
+        {
+          "at": "00417e71",
+          "instruction": "PUSH 0x1"
+        },
+        {
+          "at": "00417e73",
+          "instruction": "PUSH ECX"
+        },
+        {
+          "at": "00417e74",
+          "instruction": "FSTP float ptr [ESP]"
+        },
+        {
+          "at": "00417e77",
+          "instruction": "PUSH EAX"
+        },
+        {
+          "at": "00417e78",
+          "instruction": "PUSH ESI"
+        },
+        {
+          "at": "00417e79",
+          "instruction": "PUSH EDX"
+        },
+        {
+          "at": "00417e7a",
+          "instruction": "CALL 0x00412120"
+        },
+        {
+          "at": "00417e7f",
+          "instruction": "MOV ECX,EAX"
+        }
+      ],
+      "following_instructions": [
+        {
+          "at": "00417e86",
+          "instruction": "MOV EAX,ESI"
+        },
+        {
+          "at": "00417e88",
+          "instruction": "POP ESI"
+        }
+      ]
+    },
+    {
+      "address": "009df432",
+      "native": "00417b10",
+      "function": "009df2d0",
+      "preceding_instructions": [
+        {
+          "at": "009df3f9",
+          "instruction": "FLD float ptr [ESP + 0x4c]"
+        },
+        {
+          "at": "009df3fd",
+          "instruction": "FSTP float ptr [ESP]"
+        },
+        {
+          "at": "009df400",
+          "instruction": "CALL 0x009dacd0"
+        },
+        {
+          "at": "009df405",
+          "instruction": "MOV ECX,dword ptr [ESI + 0x4]"
+        },
+        {
+          "at": "009df408",
+          "instruction": "FSTP float ptr [ESP + 0x10]"
+        },
+        {
+          "at": "009df40c",
+          "instruction": "MOV ECX,dword ptr [ECX + 0xaa8]"
+        },
+        {
+          "at": "009df412",
+          "instruction": "MOV EDX,dword ptr [ECX]"
+        },
+        {
+          "at": "009df414",
+          "instruction": "MOV EAX,dword ptr [EDX + 0x218]"
+        },
+        {
+          "at": "009df41a",
+          "instruction": "CALL EAX"
+        },
+        {
+          "at": "009df41c",
+          "instruction": "FLD float ptr [0x00ce3930]"
+        },
+        {
+          "at": "009df422",
+          "instruction": "PUSH 0x1"
+        },
+        {
+          "at": "009df424",
+          "instruction": "PUSH ECX"
+        },
+        {
+          "at": "009df425",
+          "instruction": "FSTP float ptr [ESP]"
+        },
+        {
+          "at": "009df428",
+          "instruction": "PUSH EDI"
+        },
+        {
+          "at": "009df429",
+          "instruction": "LEA ECX,[ESP + 0x34]"
+        },
+        {
+          "at": "009df42d",
+          "instruction": "MOV EBX,EAX"
+        },
+        {
+          "at": "009df42f",
+          "instruction": "PUSH ECX"
+        },
+        {
+          "at": "009df430",
+          "instruction": "MOV ECX,EBX"
+        }
+      ],
+      "following_instructions": [
+        {
+          "at": "009df437",
+          "instruction": "FLD float ptr [EAX]"
+        },
+        {
+          "at": "009df439",
+          "instruction": "FSTP float ptr [EDI]"
+        }
+      ]
+    },
+    {
+      "address": "009df4c5",
+      "native": "00417b10",
+      "function": "009df2d0",
+      "preceding_instructions": [
+        {
+          "at": "009df48a",
+          "instruction": "FSUB float ptr [ESP + 0x28]"
+        },
+        {
+          "at": "009df48e",
+          "instruction": "FSTP float ptr [ESP + 0x14]"
+        },
+        {
+          "at": "009df492",
+          "instruction": "FLD float ptr [EDI + 0x4]"
+        },
+        {
+          "at": "009df495",
+          "instruction": "FSUB float ptr [ESP + 0x2c]"
+        },
+        {
+          "at": "009df499",
+          "instruction": "FSTP float ptr [ESP + 0x18]"
+        },
+        {
+          "at": "009df49d",
+          "instruction": "PUSH 0x1"
+        },
+        {
+          "at": "009df49f",
+          "instruction": "FLD float ptr [ESP + 0x18]"
+        },
+        {
+          "at": "009df4a3",
+          "instruction": "PUSH ECX"
+        },
+        {
+          "at": "009df4a4",
+          "instruction": "FSTP float ptr [ESP + 0x28]"
+        },
+        {
+          "at": "009df4a8",
+          "instruction": "LEA EAX,[ESP + 0x28]"
+        },
+        {
+          "at": "009df4ac",
+          "instruction": "FLD float ptr [ESP + 0x20]"
+        },
+        {
+          "at": "009df4b0",
+          "instruction": "LEA ECX,[ESP + 0x1c]"
+        },
+        {
+          "at": "009df4b4",
+          "instruction": "FSTP float ptr [ESP + 0x2c]"
+        },
+        {
+          "at": "009df4b8",
+          "instruction": "FLD float ptr [0x00ce3930]"
+        },
+        {
+          "at": "009df4be",
+          "instruction": "FSTP float ptr [ESP]"
+        },
+        {
+          "at": "009df4c1",
+          "instruction": "PUSH EAX"
+        },
+        {
+          "at": "009df4c2",
+          "instruction": "PUSH ECX"
+        },
+        {
+          "at": "009df4c3",
+          "instruction": "MOV ECX,EBX"
+        }
+      ],
+      "following_instructions": [
+        {
+          "at": "009df4ca",
+          "instruction": "FLD float ptr [EAX]"
+        },
+        {
+          "at": "009df4cc",
+          "instruction": "FSTP float ptr [ESP + 0x28]"
+        }
+      ]
+    },
+    {
+      "address": "009e1e83",
+      "native": "00417b10",
+      "function": "009e1950",
+      "preceding_instructions": [
+        {
+          "at": "009e1e47",
+          "instruction": "POP EBP"
+        },
+        {
+          "at": "009e1e48",
+          "instruction": "MOVSS dword ptr [EDX + 0xaf0],XMM1"
+        },
+        {
+          "at": "009e1e50",
+          "instruction": "POP EBX"
+        },
+        {
+          "at": "009e1e51",
+          "instruction": "ADD ESP,0x24"
+        },
+        {
+          "at": "009e1e54",
+          "instruction": "RET 0x4"
+        },
+        {
+          "at": "009e1e57",
+          "instruction": "MOV EAX,dword ptr [ESI + 0x4]"
+        },
+        {
+          "at": "009e1e5a",
+          "instruction": "MOV ECX,dword ptr [EAX + 0xaa8]"
+        },
+        {
+          "at": "009e1e60",
+          "instruction": "MOV ECX,dword ptr [ECX + 0x538]"
+        },
+        {
+          "at": "009e1e66",
+          "instruction": "CALL 0x0082adc0"
+        },
+        {
+          "at": "009e1e6b",
+          "instruction": "FLD float ptr [0x00ce38b8]"
+        },
+        {
+          "at": "009e1e71",
+          "instruction": "PUSH 0x1"
+        },
+        {
+          "at": "009e1e73",
+          "instruction": "PUSH ECX"
+        },
+        {
+          "at": "009e1e74",
+          "instruction": "FSTP float ptr [ESP]"
+        },
+        {
+          "at": "009e1e77",
+          "instruction": "LEA EDX,[ESP + 0x2c]"
+        },
+        {
+          "at": "009e1e7b",
+          "instruction": "PUSH EDX"
+        },
+        {
+          "at": "009e1e7c",
+          "instruction": "LEA ECX,[ESP + 0x24]"
+        },
+        {
+          "at": "009e1e80",
+          "instruction": "PUSH ECX"
+        },
+        {
+          "at": "009e1e81",
+          "instruction": "MOV ECX,EAX"
+        }
+      ],
+      "following_instructions": [
+        {
+          "at": "009e1e88",
+          "instruction": "MOVSS XMM0,dword ptr [EAX]"
+        },
+        {
+          "at": "009e1e8c",
+          "instruction": "MOV EDX,dword ptr [ESI + 0x4]"
+        }
+      ]
+    },
+    {
+      "address": "009e673e",
+      "native": "00417b10",
+      "function": "009e6640",
+      "preceding_instructions": [
+        {
+          "at": "009e66f8",
+          "instruction": "CMP byte ptr [EDI + 0xc8],0x0"
+        },
+        {
+          "at": "009e66ff",
+          "instruction": "MOV EBP,EAX"
+        },
+        {
+          "at": "009e6701",
+          "instruction": "JNZ 0x009e670a"
+        },
+        {
+          "at": "009e6703",
+          "instruction": "MOV ECX,EDI"
+        },
+        {
+          "at": "009e6705",
+          "instruction": "CALL 0x00414db0"
+        },
+        {
+          "at": "009e670a",
+          "instruction": "FLD float ptr [0x00ce3854]"
+        },
+        {
+          "at": "009e6710",
+          "instruction": "MOVSS XMM0,dword ptr [EDI + 0x104]"
+        },
+        {
+          "at": "009e6718",
+          "instruction": "MOVSS XMM1,dword ptr [EDI + 0xfc]"
+        },
+        {
+          "at": "009e6720",
+          "instruction": "PUSH 0x1"
+        },
+        {
+          "at": "009e6722",
+          "instruction": "PUSH ECX"
+        },
+        {
+          "at": "009e6723",
+          "instruction": "FSTP float ptr [ESP]"
+        },
+        {
+          "at": "009e6726",
+          "instruction": "LEA EAX,[ESP + 0x1c]"
+        },
+        {
+          "at": "009e672a",
+          "instruction": "PUSH EAX"
+        },
+        {
+          "at": "009e672b",
+          "instruction": "LEA ECX,[ESP + 0x30]"
+        },
+        {
+          "at": "009e672f",
+          "instruction": "PUSH ECX"
+        },
+        {
+          "at": "009e6730",
+          "instruction": "MOV ECX,EBP"
+        },
+        {
+          "at": "009e6732",
+          "instruction": "MOVSS dword ptr [ESP + 0x24],XMM1"
+        },
+        {
+          "at": "009e6738",
+          "instruction": "MOVSS dword ptr [ESP + 0x28],XMM0"
+        }
+      ],
+      "following_instructions": [
+        {
+          "at": "009e6743",
+          "instruction": "FLD float ptr [ESI + 0x8]"
+        },
+        {
+          "at": "009e6746",
+          "instruction": "MOVSS XMM0,dword ptr [EAX]"
+        }
+      ]
+    },
+    {
+      "address": "009f1e94",
+      "native": "00417b10",
+      "function": "009f1bc0",
+      "preceding_instructions": [
+        {
+          "at": "009f1e55",
+          "instruction": "MOV EBX,dword ptr [EDX + 0x570]"
+        },
+        {
+          "at": "009f1e5b",
+          "instruction": "MOV EDX,dword ptr [EAX + 0x2c]"
+        },
+        {
+          "at": "009f1e5e",
+          "instruction": "CALL EDX"
+        },
+        {
+          "at": "009f1e60",
+          "instruction": "CMP EAX,EBX"
+        },
+        {
+          "at": "009f1e62",
+          "instruction": "MOV EAX,dword ptr [EBP]"
+        },
+        {
+          "at": "009f1e65",
+          "instruction": "JGE 0x009f1f10"
+        },
+        {
+          "at": "009f1e6b",
+          "instruction": "MOV ECX,dword ptr [EAX + 0xaa8]"
+        },
+        {
+          "at": "009f1e71",
+          "instruction": "MOV ECX,dword ptr [ECX + 0x538]"
+        },
+        {
+          "at": "009f1e77",
+          "instruction": "CALL 0x0082adc0"
+        },
+        {
+          "at": "009f1e7c",
+          "instruction": "FLD float ptr [0x00ce89cc]"
+        },
+        {
+          "at": "009f1e82",
+          "instruction": "PUSH 0x1"
+        },
+        {
+          "at": "009f1e84",
+          "instruction": "PUSH ECX"
+        },
+        {
+          "at": "009f1e85",
+          "instruction": "FSTP float ptr [ESP]"
+        },
+        {
+          "at": "009f1e88",
+          "instruction": "LEA EDX,[ESP + 0x78]"
+        },
+        {
+          "at": "009f1e8c",
+          "instruction": "PUSH EDX"
+        },
+        {
+          "at": "009f1e8d",
+          "instruction": "LEA ECX,[ESP + 0x58]"
+        },
+        {
+          "at": "009f1e91",
+          "instruction": "PUSH ECX"
+        },
+        {
+          "at": "009f1e92",
+          "instruction": "MOV ECX,EAX"
+        }
+      ],
+      "following_instructions": [
+        {
+          "at": "009f1e99",
+          "instruction": "MOVSS XMM0,dword ptr [EAX]"
+        },
+        {
+          "at": "009f1e9d",
+          "instruction": "MOVSS XMM1,dword ptr [EAX + 0x4]"
+        }
+      ]
+    },
+    {
+      "address": "00a020f0",
+      "native": "00417b10",
+      "function": "00a02020",
+      "preceding_instructions": [
+        {
+          "at": "00a020b3",
+          "instruction": "TEST AL,AL"
+        },
+        {
+          "at": "00a020b5",
+          "instruction": "JZ 0x00a0211c"
+        },
+        {
+          "at": "00a020b7",
+          "instruction": "MOV ECX,dword ptr [ESI + 0x538]"
+        },
+        {
+          "at": "00a020bd",
+          "instruction": "PUSH EBX"
+        },
+        {
+          "at": "00a020be",
+          "instruction": "CALL 0x0082ada0"
+        },
+        {
+          "at": "00a020c3",
+          "instruction": "FLD float ptr [0x00ce38c8]"
+        },
+        {
+          "at": "00a020c9",
+          "instruction": "MOVSS XMM0,dword ptr [EDI]"
+        },
+        {
+          "at": "00a020cd",
+          "instruction": "PUSH 0x1"
+        },
+        {
+          "at": "00a020cf",
+          "instruction": "PUSH ECX"
+        },
+        {
+          "at": "00a020d0",
+          "instruction": "FSTP float ptr [ESP]"
+        },
+        {
+          "at": "00a020d3",
+          "instruction": "LEA ECX,[ESP + 0x14]"
+        },
+        {
+          "at": "00a020d7",
+          "instruction": "PUSH ECX"
+        },
+        {
+          "at": "00a020d8",
+          "instruction": "LEA EDX,[ESP + 0x20]"
+        },
+        {
+          "at": "00a020dc",
+          "instruction": "MOVSS dword ptr [ESP + 0x18],XMM0"
+        },
+        {
+          "at": "00a020e2",
+          "instruction": "MOVSS XMM0,dword ptr [EDI + 0x8]"
+        },
+        {
+          "at": "00a020e7",
+          "instruction": "PUSH EDX"
+        },
+        {
+          "at": "00a020e8",
+          "instruction": "MOV ECX,EAX"
+        },
+        {
+          "at": "00a020ea",
+          "instruction": "MOVSS dword ptr [ESP + 0x20],XMM0"
+        }
+      ],
+      "following_instructions": [
+        {
+          "at": "00a020f5",
+          "instruction": "MOVSS XMM0,dword ptr [EAX]"
+        },
+        {
+          "at": "00a020f9",
+          "instruction": "MOVSS XMM1,dword ptr [EAX + 0x4]"
+        }
+      ]
+    }
+  ],
+  "virtual214_slots": [
+    {
+      "slot": "00d0988c",
+      "target": "006dfd80"
+    },
+    {
+      "slot": "00cfc5e4",
+      "target": "006dfd80"
+    },
+    {
+      "slot": "00d0c194",
+      "target": "00852fd0"
+    },
+    {
+      "slot": "00d01844",
+      "target": "006dfd80"
+    },
+    {
+      "slot": "00cfb94c",
+      "target": "006dfd80"
+    },
+    {
+      "slot": "00cfa98c",
+      "target": "006dfd80"
+    },
+    {
+      "slot": "00cffc44",
+      "target": "006dfd80"
+    },
+    {
+      "slot": "00cf92c4",
+      "target": "006dfd80"
+    },
+    {
+      "slot": "00d0c85c",
+      "target": "006dfd80"
+    }
+  ],
+  "api": {
+    "entry": "ship_ai_select_navigation_layer_009eca20(ShipAiLayerSelectionView,float seconds,ShipAiLayerSelectionHost&)",
+    "borrowed_mutable_offsets": [
+      "148",
+      "14c",
+      "150",
+      "154",
+      "158",
+      "15c",
+      "160",
+      "164",
+      "16c",
+      "170",
+      "308",
+      "30c",
+      "310",
+      "314",
+      "31c",
+      "320"
+    ],
+    "borrowed_inputs": [
+      "existing ShipAiHullGeometry174..188",
+      "existing ShipAiSteeringMode1C4",
+      "actual goal1DC/1E0",
+      "lookahead318",
+      "pre-step reference3C4",
+      "escape limit3C8"
+    ],
+    "external_services": [
+      "actual owner presence",
+      "leader00778890 and actual formation0070E450",
+      "actual virtual214/5C(C)/10C dispatch",
+      "class560 floor",
+      "actual ordered AvoidZoneTable at each004218E0",
+      "matching existing AvoidZoneClearanceGroupView adapter",
+      "six borrowed actual settings1F4..208 fields",
+      "registered RNG00BD2F10 stream1",
+      "body-axis speed0092D730",
+      "reference speed0080FC30",
+      "actual00414C60 vector length and CRT binding"
+    ],
+    "settings_lifetime": "First view retained across next00424C40; first lookup reads upper endpoint only after second lookup on ship/goal reseeds. Travel captures lower204 before second lookup.",
+    "key_order": "Every live key is loaded after its004218E0 callback; explicit helpers avoid unspecified C++ argument evaluation order.",
+    "groups": "Actual order is preserved; no invented empty groups, sorting, next-key clamp, RNG state, or fallback depth."
+  },
+  "producers": [
+    {
+      "field": "class560..56C",
+      "source": "existing ShipLeafTuning.array; kShipLeafTuningSources plus kSubmarineTuningArraySources",
+      "meaning": "navigation layers; surface second Lua element replicated four times; Submarine entries2..5"
+    },
+    {
+      "field": "class570/nav168",
+      "source": "existing ShipLeafTuning.scalar and009E0270",
+      "meaning": "different physical-depth scalar; never substituted for navigation array"
+    },
+    {
+      "field": "308",
+      "sites": [
+        "009eca6e",
+        "009ecae7"
+      ],
+      "source": "actual virtual214 or group0070E450; signed manager first/last clamp"
+    },
+    {
+      "field": "30c",
+      "sites": [
+        "009ed067",
+        "009ed0e7",
+        "009ed1a9",
+        "009ed3b8"
+      ],
+      "source": "stateful position/goal/boundary layer selection"
+    },
+    {
+      "field": "308/30C/310/314 initial",
+      "source": "009E43A4 nav+1C4 ->009DFCD4+60 ->009DFCF3 calls009DBDF0 at nav+224",
+      "stores": {
+        "009dbe50": "308=0 (+E4)",
+        "009dbe4a": "30C=0 (+E8)",
+        "009dbe56": "310=0 (+EC)",
+        "009dbe28": "314=0 (+F0)"
+      }
+    },
+    {
+      "field": "31C/320 initial",
+      "source": "009DBE76/+F8 and009DBE6E/+FC from00D217E8",
+      "bits": "4e6e6b28",
+      "value": 1000000000.0
+    },
+    {
+      "field": "31C/320 non-navigation reset",
+      "source": "009ECEB2/009ECEAA from00CE4970",
+      "bits": "501502f9",
+      "value": 10000000000.0
+    },
+    {
+      "field": "148 initial",
+      "source": "009E4669 negative RNG draw;009E4644 ECX=0 ->009E465F00BD2F10",
+      "note": "Constructor stream0 differs from all three selection reseeds stream1; runtime RNG producer is external"
+    },
+    {
+      "field": "160/164/170 initial",
+      "source": "009E43AA false,009E43B0 zero,009E4391 zero"
+    },
+    {
+      "field": "314 shared",
+      "source": "existing009DE050 goal setter crossing_314; bind canonical storage"
+    },
+    {
+      "field": "150/154",
+      "source": "009ED30A/312 or009ED33E/348; consumed only under produced escaping160 gate",
+      "note": "No unconditional direction initialization is invented"
+    }
+  ],
+  "arithmetic": {
+    "constants": {
+      "00d7a2f0": "cdcccc3d =0.1f",
+      "00ce3958": "00000040 =2.0f",
+      "00ce3d30": "9a99193f =0.6f",
+      "00ce3800": "0000003f =0.5f",
+      "00ce380c": "0000c03f =1.5f",
+      "00ce7804": "cdcccc3e =0.4f",
+      "00ce3854": "00004040 =3.0f"
+    },
+    "spills": "x87 add/subtract/multiply/divide and squared sum end at native float32 stores; no FMA; ratio magnitude is bitmask after spill; radius-square double loop storage extends an already float32 value",
+    "comparisons": "Native x87 carry/above predicates preserve unordered branches; timer314/170 use actual COMISS predicates; no finite-value repair",
+    "callee_results": "RNG00BD2EC2/EC6 and reference0080FC83/86 spill/reload float before returning ST0.00419010 already float-spills/clamps its result.0092D730 and00414C60 outputs are caller-spilled.",
+    "schedule_details": [
+      "Timers148/170/314 stored in that order",
+      "Position upward loop initial308 bound is not retested",
+      "Goal changed flag compared before class16C floor",
+      "Travel refresh requires timer170<0 ordered unless a changed layer forces it",
+      "All five004121A0 calls remain genuine no-ops after singleton calls"
+    ]
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "worker_mode": "read-only verified wrappers",
+    "getter_definitions": "integrator defined/saved/exported exact13/20byte getters under write lock after worker temporarily released only those entries; worker then reclaimed them",
+    "no_ghidra_function": [
+      {
+        "entry": "0042bb40",
+        "inclusive_end": "0042bb42",
+        "end_exclusive": "0042bb43",
+        "last_instruction": "RET at0042BB42",
+        "last_instruction_length": 1,
+        "bytes": "32c0c3",
+        "role": "read-only unleased LandingShip virtual10C target; explicit host dispatch, no worker definition or annotation"
+      }
+    ]
+  },
+  "flow_checks": [
+    {
+      "entry": "009eca20",
+      "result": "009eca20: 641 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps"
+    },
+    {
+      "entry": "006dfd80",
+      "result": "006dfd80: 3 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps"
+    },
+    {
+      "entry": "00852fd0",
+      "result": "00852fd0: 4 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps"
+    },
+    {
+      "entry": "00412170",
+      "result": "00412170: 7 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps"
+    },
+    {
+      "entry": "00412180",
+      "result": "00412180: 8 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps"
+    },
+    {
+      "entry": "004121b0",
+      "result": "004121b0: 25 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps"
+    },
+    {
+      "entry": "00417d60",
+      "result": "00417d60: 31 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps"
+    },
+    {
+      "entry": "004121a0",
+      "result": "004121a0: 1 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps"
+    },
+    {
+      "entry": "00417b10",
+      "result": "00417b10: 86 listed instructions, 0 gap(s)\nreport only; add --apply to clear the call-site overrides and disassemble the gaps"
+    }
+  ],
+  "flow_gaps": [],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release passed",
+    "ctest": "2/2 reconstructed_math and native_math_differential passed after verify-seeds",
+    "original_byte_cases": 3072,
+    "helper_cases": 68,
+    "failures": 0,
+    "x87_control_words": [
+      "027f",
+      "037f",
+      "067f",
+      "0a7f",
+      "0e7f",
+      "007f"
+    ],
+    "mxcsr": "1f80 in main fixture cases",
+    "observed_external_callback_sites": 40,
+    "expected_external_callback_sites": 40,
+    "observed_sites": [
+      "009eca3c",
+      "009eca51",
+      "009ecab9",
+      "009ecac7",
+      "009ecb47",
+      "009ecb4e",
+      "009ecb6e",
+      "009ecb8b",
+      "009ecba2",
+      "009ecc24",
+      "009ecd76",
+      "009ecd84",
+      "009ecdaa",
+      "009ecdd2",
+      "009ecdf5",
+      "009ece31",
+      "009ece4e",
+      "009ecec5",
+      "009ececc",
+      "009eceec",
+      "009ecf79",
+      "009ecfa0",
+      "009ecfc1",
+      "009ed01a",
+      "009ed029",
+      "009ed04f",
+      "009ed06d",
+      "009ed0ed",
+      "009ed105",
+      "009ed118",
+      "009ed190",
+      "009ed1b5",
+      "009ed1c8",
+      "009ed250",
+      "009ed265",
+      "009ed29d",
+      "009ed2dc",
+      "009ed37a",
+      "009ed39a",
+      "009ed3be"
+    ],
+    "comparison": "all16 mutable field words at each host callback plus final state; native calls preserve original instruction bytes/control flow and use explicit external fixture inputs",
+    "boundary_cases": "signed/empty manager first/last/next/previous; ordered two-zone offset; output alias; containment bytes0/1/80; push3/-1/0; NaN timer/speed routes; forced goal downward walk and nonexact requested-key ceiling",
+    "native_body_scope": [
+      {
+        "start": "009eca20",
+        "inclusive_end": "009ed3d9",
+        "sha256": "d7412e9143049746ffd06d55f2f18dbf122829215f09a6d20b3a4a0ac8823e1d",
+        "bytes": 2490
+      },
+      {
+        "start": "00412170",
+        "inclusive_end": "0041217f",
+        "sha256": "8a2c115961c9f92c6800c6cb1a9f7c7b4fc27730c7e4e43348e804dd3ce7887e",
+        "bytes": 16
+      },
+      {
+        "start": "00412180",
+        "inclusive_end": "00412191",
+        "sha256": "df3bced9ddacd3851d44e16693f234b4f8c0921288b95ab4ff2809b3f2293fb1",
+        "bytes": 18
+      },
+      {
+        "start": "004121b0",
+        "inclusive_end": "004121e7",
+        "sha256": "71b9d68c2756c1a6566a08795537d35c2bb0bc32af0d8cc1c2b3a73c13a59291",
+        "bytes": 56
+      },
+      {
+        "start": "00417d60",
+        "inclusive_end": "00417daa",
+        "sha256": "f21c1ae24c0a3b724ec9424bb603558bc7ae2f626c3cc43547bb084960c8ddbc",
+        "bytes": 75
+      },
+      {
+        "start": "004121a0",
+        "inclusive_end": "004121a2",
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+        "bytes": 3
+      },
+      {
+        "start": "00417b10",
+        "inclusive_end": "00417bf9",
+        "sha256": "e462ebd847c7905c54e2b03d18ea315c46aea8af38c58a8f3d599809dfb9b17f",
+        "bytes": 234
+      },
+      {
+        "start": "004178f0",
+        "inclusive_end": "0041793b",
+        "sha256": "ee9fbb026e3038f931feca6a97b961c305782512876946a108ff9a670e0a60af",
+        "bytes": 76
+      },
+      {
+        "start": "004120d0",
+        "inclusive_end": "00412111",
+        "sha256": "e7bfe94286f9b95d8acf01ace7114597ebda41abd3936b28a91397fdf299011f",
+        "bytes": 66
+      },
+      {
+        "start": "00419010",
+        "inclusive_end": "004190ce",
+        "sha256": "abe6cc3f49beb78f1ea9564c64f26e706688fe1feaf473b51dc10daee58c0fc8",
+        "bytes": 191
+      },
+      {
+        "start": "006dfd80",
+        "inclusive_end": "006dfd8c",
+        "sha256": "61cfe4e2813fb4186543ad4c146f49fcad47b4c353d986f8ef713d9d1c796cf6",
+        "bytes": 13
+      },
+      {
+        "start": "00852fd0",
+        "inclusive_end": "00852fe3",
+        "sha256": "6c3997db21968286420549feb730f6e954c2734d67188c1c759ecedf3cff9513",
+        "bytes": 20
+      }
+    ],
+    "external_fixture_boundaries": [
+      "leader and group aggregate answers",
+      "owner kind/10C dispatch",
+      "manager/settings pointers",
+      "deterministic float RNG boundary result with stream/endpoints checked",
+      "body/reference speeds",
+      "vector length via existing current-CRT helper",
+      "contains00416B50 and closest00416F30 via reconstructed primitives"
+    ],
+    "image_mapping": "Original file read only; mapped into probe-owned memory; PE has no relocation directory, so13 Capstone-decoded absolute memory operands are adjusted in the executed12 bodies; relative branches/calls remain original; ten external dependency function entries redirected only in probe memory",
+    "tracked_tests_added": 0,
+    "report_calls": "89 direct call rows checked, 0 failed; 3 explicit virtual call rows not checked; local/ship_ai_layer_report_calls.log"
+  },
+  "corrections": [
+    {
+      "was": "PathPick feeds previous plan.zone_layer and0 owner_radius as if these established nav30C",
+      "is": "009ECA20 is the stateful30C producer; owner9C8 fourth planner argument is unused by009E3780",
+      "evidence": "009ECA20 full listing;009ED50A..009ED523 and other request sites"
+    },
+    {
+      "was": "class570/nav168 might directly supply the requested navigation layer",
+      "is": "virtual214 reads class560 array, depth-indexed for submarine",
+      "evidence": "nine live slot bytes and exact006DFD80/00852FD0 bodies"
+    },
+    {
+      "was": "NavCtor runtime comment says timer148 has no traced reader",
+      "is": "009ECAED/009ECB09/009ECB3B consume it and control ship-position refresh",
+      "evidence": "complete009ECA20 listing"
+    }
+  ],
+  "limits": [
+    "Runtime binding remains root-owned and pending actual startup RandomThreads access across external leases.",
+    "The formation0070E450 and RNG00BD2F10 implementations are externally owned and are not duplicated.",
+    "C++ view rejects missing group/native-invalid dereference, mismatched storage, invalid submarine array index and undefined no-offset-candidate cases; no invented repair.",
+    "Valid ordered manager storage and progress of the final upward walk are preconditions; no arbitrary loop cap.",
+    "Native EH/invalid-object access/unmasked hardware-fault sequencing and concurrent storage mutation are not claimed.",
+    "The fixture validates this control/geometry-wrapper composition; its explicit external boundary inputs are not full engine/group/RNG/CRT or gameplay validation."
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "absolute_memory_operand_relocations": [
+      "005ecbd0",
+      "005ecbda",
+      "005ecbe4",
+      "005ecc4e",
+      "005ecc58",
+      "005ecc66",
+      "005eccaa",
+      "005eccb8",
+      "005ecea0",
+      "005ed12d",
+      "005ed1dd",
+      "005ed2ac",
+      "005ed2f9"
+    ]
+  },
+  "local_artifacts": [
+    {
+      "path": "local/ship_ai_layer_probe.cpp",
+      "sha256": "56ce05412c6239eba7d8c9b8816104a0e73f7243fe6772dd72653b4c6f558edc"
+    },
+    {
+      "path": "local/build_ship_ai_layer_probe.py",
+      "sha256": "9c4e79be577f712e93de3e32e8cd77df113888f4a88c65cab568eb850bbf874e"
+    },
+    {
+      "path": "local/build_ship_ai_layer_probe.cmd",
+      "sha256": "67e44a260e1ff652ac8bbf30d8ed99f2297c17a4f079097a95659c4b00dc56dc"
+    },
+    {
+      "path": "local/ship_ai_layer_relocations.py",
+      "sha256": "35c6c0b6d76639d261e9eb720ab1b1a345a9993f47b6d59072e18d06e1fe345f"
+    },
+    {
+      "path": "local/ship_ai_layer_relocations.inc",
+      "sha256": "2061ee1409a72e5ae1cfa9bd4d4ba421378d49a77f001c3376041df99b4d3273"
+    },
+    {
+      "path": "local/ship_ai_layer_original_bytes.json",
+      "sha256": "3810f515a78bf6273a073227cc728e1faa1f9c4b56dc87162f0211dc8b39cafa"
+    },
+    {
+      "path": "local/ship_ai_layer_probe.log",
+      "sha256": "0b94e24f4172fd11f50be388afb4ef729a5ed5f2169e6e60b523ca1e700c612d"
+    },
+    {
+      "path": "local/ship_ai_layer_probe_compile.log",
+      "sha256": "b6049d73c9a49ee28236c95bd7261fc064f6756f3fe5c8b7b0022c308263b474"
+    },
+    {
+      "path": "local/ship_ai_layer_build.log",
+      "sha256": "c43d413043b7c6bd42dae5bf5ee59f03dfa22d18d93da0f637b1ca5ab7bd9ec1"
+    },
+    {
+      "path": "local/ship_ai_layer_verify_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/layer_listing.txt",
+      "sha256": "9ecd905b3d5365828a7ad33e2e8ce5e85565ac8862b65341c50b71bcd8743e29"
+    },
+    {
+      "path": "local/layer_call_evidence.json",
+      "sha256": "763579c442b05a3fe624833db52ab159b488b7745f4ccf4af68335e39998a2af"
+    },
+    {
+      "path": "local/ship_ai_layer_report_calls.log",
+      "sha256": "7fce1d21cc40190683cc47b67f4700efc7526915112ec3e1806c0bc9624ae2e1"
+    },
+    {
+      "path": "local/collect_layer_evidence.py",
+      "sha256": "cabaa354249be4664e390408df67b8be7e5545ba39743188a300ec332bce39f9"
+    }
+  ],
+  "compiled_source_sha256": "a4f83c8ab3eec1efde6f9bc6a3c2175072d98497b2894bc513ba24977473a070",
+  "compiled_header_sha256": "a7d64754f3479eded43f3bc01fd497d222c5e7977db1233342ee83b4d0be3a7e"
+}

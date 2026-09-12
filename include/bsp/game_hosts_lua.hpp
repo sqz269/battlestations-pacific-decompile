@@ -23,6 +23,7 @@
 // Evidence: docs/MISSION_LUA_MACHINE.md, docs/MISSION_LUA_HOST.md,
 // docs/GAME_EXECUTABLE.md.
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <map>
@@ -34,6 +35,7 @@
 #include "bsp/mission_lua_host.hpp"
 #include "bsp/ship_ai_obstacle_tables.hpp"
 #include "bsp/unit_rudder_curve.hpp"
+#include "bsp/vehicle_class_lua_load.hpp"
 
 struct lua_State;
 
@@ -110,6 +112,25 @@ struct GameShipDepthInput {
 // Lua stack and leaves output unchanged on failure; does not execute scripts.
 bool read_ship_depth_input_lua(lua_State&, int type_id, std::int32_t session_mode,
     const bool& crt_sse2_conversion, GameShipDepthInput&, std::string& error);
+
+// Selected class+560h..56Ch and +570h, using the existing native leaf source
+// table. Partial settings projection: no whole singleton or descriptor is made.
+// Surface leaves replicate Lua element2; Submarine retains elements2..5.
+struct GameShipNavigationInput {
+    ShipLeafTuning tuning;
+    std::uint32_t settings_block_offset; // 80h for session zero, F0h otherwise
+    const char* class_key;
+};
+
+bool read_ship_navigation_input_lua(lua_State&, int type_id, std::int32_t session_mode,
+    const bool& crt_sse2_conversion, GameShipNavigationInput&, std::string& error);
+
+// Settings+1F4h..208h: moveMin, moveMax, shipMin, shipMax, travelMin, travelMax.
+// Bare native Number conversion; no fallback or bounds adjustment. Both new
+// borrowed readers restore the stack and preserve output on protected errors.
+// They read the current interpreter without running scripts.
+bool read_ship_layer_timing_input_lua(lua_State&, std::array<float, 6>&,
+    std::string& error);
 
 // One of the four names 004dfb70 invokes.
 struct GameMissionEntryPointRun {
@@ -229,6 +250,12 @@ public:
     // mode; an unbound class scalar must not be replaced with a fabricated zero.
     bool read_ship_depth_input(int type_id, std::int32_t session_mode,
         GameShipDepthInput& out, std::string& error);
+
+    // Full selected ShipLeafTuning, sharing the scalar reader's Type/variant
+    // mapping and protected parser. docs/GAME_SHIP_LAYER_INPUT.md.
+    bool read_ship_navigation_input(int type_id, std::int32_t session_mode,
+        GameShipNavigationInput& out, std::string& error);
+    bool read_ship_layer_timing_input(std::array<float, 6>& out, std::string& error);
 
     // Milestone 2k. The two reads 0087d7b0 makes into the global config object
     // 00432650 hands out: `Globals["Minimap"]["MinimapRange"]` into +6Ch and
