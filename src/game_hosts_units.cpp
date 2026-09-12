@@ -1229,10 +1229,15 @@ float GameUnitsHost::unit_ring_current_rudder(std::size_t index) const {
     return host.slots[index]->ring.current_param_b;
 }
 
-float GameUnitsHost::unit_yaw_authority_stand_in_04f8(std::size_t index) const {
+float GameUnitsHost::unit_yaw_authority_0524(std::size_t index, bool& derived) const {
+    derived = false;
     const Impl& host = *impl_;
     if (index >= host.slots.size()) return 0.0f;
-    return host.slots[index]->row.max_rot_angle;
+    const bsp::ShipClassFields& fields = host.slots[index]->fields;
+    const bsp::ShipClassAiDerivedMotion out = bsp::ship_class_ai_derived_motion_00828f20(
+        fields.max_rot_angle, fields.max_rot_angle_change_ratio, fields.max_speed);
+    derived = out.derived;
+    return out.yaw_authority_0524;
 }
 
 bool GameUnitsHost::enable_ai_drive(const std::string& unit_name, float throttle,
@@ -1247,6 +1252,25 @@ bool GameUnitsHost::enable_ai_drive(const std::string& unit_name, float throttle
     host.log.notef("--ai-drive \"%s\" names no created instance; nothing was driven",
         unit_name.c_str());
     return false;
+}
+
+bool GameUnitsHost::unit_pose_valid_00c8(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return false;
+    return host.slots[index]->world_valid != 0;
+}
+
+void GameUnitsHost::unit_position_00fc(std::size_t index, float& x, float& y,
+    float& z) const {
+    x = 0.0f;
+    y = 0.0f;
+    z = 0.0f;
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return;
+    const bsp::ShipMotionState& motion = host.slots[index]->motion;
+    x = motion.position[0];
+    y = motion.position[1];
+    z = motion.position[2];
 }
 
 std::size_t GameUnitsHost::count() const noexcept { return impl_->slots.size(); }

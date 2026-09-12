@@ -4996,22 +4996,29 @@ flip 009f4081 / 009f409e / 00438aa0 / 00d7a264, the heading error 009f40bb / 004
 unprojected spans 009f40ca..009f44e3 and 009f4502..009f4b98, the rudder-law gate 009f44e4 with
 009f44f7 / 009da250 / 009f44fc and the second store 009f4694 / 009f46a0, and the hop
 009f4b99..009f4d04 with 009f4bb9 / 00d7a270, 009f4bc6, 009f4bd4 / 0092d730, 009f4c12 / 00ce3d78,
-009f4ce8 / 0080e190 and 009f4cfb / 0080e170; 009da262..009da280 with class+524h and 009da2d1 /
-009da2d7; and 00826121 / 00813020, which this executable has run since milestone 2i. Packet
-`cc_exe_2o`, owner `agent/cc-exe-2o`. Sources: `src/game_hosts_ship_ai.cpp`,
-`include/bsp/game_hosts_ship_ai.hpp`, plus edits to `src/game_hosts_units.cpp`,
-`src/game_hosts.cpp`, `src/game_hosts_mission.cpp`, `src/game_hosts_mission_frame.cpp`,
-`src/game_main.cpp`, their headers and `tools/verify_report_calls.py`. Report:
-`reports/game_executable_milestone_2o.json`. Ghidra was read-only for this packet; two existing
-names had run-time evidence appended.
+009f4ce8 / 0080e190 and 009f4cfb / 0080e170; 009da262..009da280 with 00828f20 and 009da2d1 /
+009da2d7; the state steps 009e14c0, 009e5770 and 009e8820 with the selector 009e86f0, the goal
+setter 009de050, the path reset 009da4e0 and the heading hold 009e00a0, and their call sites
+009e14d7, 009e14ec, 009e14f3 / 0071c4f0, 009e1518, 009e1534, 009e153c / 009e0040, 009e579a,
+009e57aa, 009e57d0, 009e57ed / 0071bff0, 009e57f4 / 007adc60, 009e580f, 009e5821, 009e5831,
+009e5847 / 00521ea0, 009e58b9, 009e8828, 009e883f, 009e8852, 009e88d8 and 009e88f0; and
+00826121 / 00813020, which this executable has run since milestone 2i. Packet `cc_exe_2o`, owner
+`agent/cc-exe-2o`. Sources: `src/game_hosts_ship_ai.cpp`, `include/bsp/game_hosts_ship_ai.hpp`,
+plus edits to `src/game_hosts_units.cpp`, `src/game_hosts.cpp`, `src/game_hosts_mission.cpp`,
+`src/game_hosts_mission_frame.cpp`, `src/game_main.cpp`, their headers and
+`tools/verify_report_calls.py`. Report: `reports/game_executable_milestone_2o.json`. Ghidra was
+read-only for this packet; two existing names had run-time evidence appended.
 
 Milestone 2n ran the ship AI controller over 32 ships, put six Japanese destroyers into the
 `attackmove` their own script asked for, and left every one of them motionless with the last
-chain slot unwired and a published order slot nobody read. This milestone wires that slot. The
-chain from a state's desired throttle to a hull that moves is now closed end to end through the
-game's own routines, and one ship, driven by a labelled diagnostic stand-in for the state step it
-does not have, sails 417.54 units and turns onto the same profile the ship-motion probe produces
-for its class.
+chain slot unwired and a published order slot nobody read. This milestone wires that slot, and
+then runs the real state steps over it: packets `ship_ai_state_steps` and
+`ship_ai_class_field_0524` landed on main during this packet's turn and were merged in before
+validation. The chain from a state's decision to a hull that moves is now closed end to end
+through the game's own routines, four of the nine state leaves run their own bodies, the steering
+law runs 6370 times on the ships that ask for a heading, and one ship, driven by a labelled
+diagnostic stand-in for the desired throttle no navigation state produces, sails 417.54 units and
+turns onto the same profile the ship-motion probe produces for its class.
 
 ### 1. Chain slot 16, and why its record costs nothing
 
@@ -5054,7 +5061,7 @@ unconditional and `009F4D04` is the single `RET`. That is what makes one host me
 unprojected spans honest rather than convenient: they can change `blk+1D0h` and `blk+1D4h` before
 the hop reads them, but they cannot stop the hop from running.
 
-### 3. The rudder law has a gate, and this mission never opens it
+### 3. The rudder law has a gate, and which states open it
 
 `docs/SHIP_AI_THROTTLE_TO_RING.md` says `009DA250` is the only writer of `blk+1D4h` inside
 `009F3F80` and that both stores take its result. True, and incomplete: **neither store is
@@ -5066,14 +5073,59 @@ unconditional.**
 009f44ed FLD [ESP+20h] ; 009f44f7 CALL 009da250 ; 009f44fc FSTP [ESI+1D4h]
 ```
 
-The second store at `009F46A0` sits inside the obstacle-table arm, which this packet records.
-`009DFFB0` sets `blk+1C4h` to `Rudder`, and every state this mission reaches leaves it there, so
-the executable called `009DA250` **0 times in 15680 steps** in both validation runs and the rudder
-that reached the ring is the one the state asked for. `009DA250` therefore still has no run-time
-evidence from `bsp_game.exe`; the probe's `--moveto` run remains the only run-time evidence for
-the steering law, and `class+524h` remains unreached.
+The second store at `009F46A0` sits inside the obstacle-table arm, which this packet records. So
+the law runs only for a state that leaves `blk+1C4h` at something other than `Rudder`, and which
+states those are is now measured rather than guessed: **6370 of 15680 steps**, which is thirteen
+ships every step. The twelve `stop` ships get `Heading` from `009E0040`, and `Kortenaer` gets
+`Navigate` from `009DE050`. The thirteen `cruise` ships and the six `attackmove` ships stay at
+`Rudder` and never reach it.
 
-### 4. The ring closes, and the base run still does not move
+The one stand-in that was on this path is gone. `009DA268` loads the divisor from
+`[[blk+3FCh]+538h]+524h`, and packet `ship_ai_class_field_0524` found the producer: `00828F20`
+derives it as `0.5 * MaxRotAngle / MaxRotAngleChangeRatio`, both keys already read out of the
+installed `VehicleClass` row here. All 6370 calls take the derived value, and `00828F20`'s own
+positivity gate passed on every one.
+
+### 4. Four of the nine state steps now run their own bodies
+
+Packet `ship_ai_state_steps` projected `009DE050`, `009DA4E0`, `009DFF40`, `009E00A0`, the `stop`
+step `009E14C0`, the `movetopos` step `009E5770` and the `attackmove` step `009E8820` with its
+sub-state selector `009E86F0`. The executable runs all of them, and the run shows what each state
+can and cannot decide:
+
+| state | ships | step | what it produces | does it set a desired throttle |
+| --- | --- | --- | --- | --- |
+| `cruise` | 13 | `009E1170` | the three setters, from the latched autopilot triple | yes, and it is 0 for every ship of this mission |
+| `stop` | 12 | `009E14C0` | `blk+1D0h = 0`, `009E0040` with the ship's own heading, and the avoidance trio at `blk+3ECh` / `+3F0h` / `+3F4h` | yes, and zero is the answer: it is an all-stop |
+| `movetopos` | 1 | `009E5770` | a navigation goal through `009DE050`, which forces `Navigate` | no |
+| `attackmove` | 6 | `009E8820` | a sub-state selection through `009E86F0` | no |
+
+**This is the finding the milestone turns on.** `docs/SHIP_AI_STATE_STEPS.md` states it as a
+reading and the run confirms it as behaviour: a navigation state's whole job is to hand `009DE050`
+two floats, and the steering that follows belongs to `009ED6B0`'s navigation arm
+`009EDA26..009EF228`, which this executable records. So a navigation state running is not the same
+thing as a navigation state producing a desired value, and the run counts both:
+
+```
+summary mission ship ai state steps real=4803 goal_sets=98 goal_replans=0 units_with_goal=1
+        substate_steps=588 navigate_mode_steps=486
+```
+
+`4803` state-step bodies against milestone 2n's 2940, and `245` records against 2108 - the 245 are
+the controlled `DeRuyter`'s own player arm at `009E11E8`, which milestone 2n already recorded
+there. `98` goal sets is `Kortenaer`'s `movetopos` step on each of its 98 re-plan ticks, `588` is
+the six `attackmove` ships' sub-state steps at the vtable slot none of the five leaves has a body
+for, and `486` is the number of steps `Kortenaer` spent in `Navigate` mode.
+
+Two things a `movetopos` ship needs are still records, and they are why the goal is `(0,0)`.
+`brain+0B2Ch` / `+0B34h`, the AI's goal vector, has no recovered writer anywhere - milestone 2n's
+follow-up 5 is exactly this pair - so `009E57D0` reads the zeroes the block carries. And
+`009E5847`'s resolve of `director+58h` into an entity is recorded, so the target arm of
+`009E5837..009E58DE` short-circuits on the null at `009E584E` and the step never finishes its
+command. `attackmove` ends its frame at `009E88F0`, the sub-state vtable `+0Ch`: none of
+`009F3240`, `009E23B0`, `009E26C0`, `009F3670` or `007B3DD0` has a reconstruction.
+
+### 5. The ring closes, and the base run still does not move
 
 `0080E190` writes the slewed rudder at `unit + ([unit+97Ch]<<5) + 83Ch` and `0080E170` the
 throttle at `+838h`. `00813020` then steps the live pair at `ring+148h` / `+14Ch` toward the read
@@ -5082,31 +5134,34 @@ N is the motion's input on step N+1. **No wiring was needed for the tick**: `008
 call site, `00826121` inside `00825F20`, and `src/game_hosts_units.cpp` has run it there once per
 unit per fixed step since milestone 2i. This packet's brief expected otherwise.
 
-On the milestone's own command line every ship still holds station, and now for **one** reason
-rather than milestone 2n's two:
+On the milestone's own command line every ship still holds station, and the reason is now named
+per state rather than as a single gap:
 
 ```
-summary mission ship ai ring hops=15680 gated_3f5=0 writes=15680 rudder_law=0
+summary mission ship ai ring hops=15680 gated_3f5=0 writes=15680 rudder_law=6370
         deadbands=15680 live_pair_changes=0 driven=0
 summary mission world units=32 ... controlled=DeRuyter moved=0.00 total_path=0.00
 ```
 
-Eight of the nine state steps have no body, so `blk+1D0h` stays 0, the `009F4BC6` deadband fires
-on every step, and the hop faithfully carries 0 into the ring. The chain is closed and empty.
-The publish `009F4D10` and the promotion `00825F2C` still run 15680 times each and are still read
-by nothing, and that is no longer on the path to this unit's motion: the published 84-byte slot is
+Every desired throttle in the mission is zero, so the `009F4BC6` deadband fires on every step and
+the hop faithfully carries zero into the ring. For the 25 `cruise` and `stop` ships that is the
+recovered answer: nothing ordered them to move. For the seven `movetopos` and `attackmove` ships
+it is a boundary, because their states decide a goal or a sub-state and never a throttle. The
+publish `009F4D10` and the promotion `00825F2C` still run 15680 times each and are still read by
+nothing, and that is no longer on the path to this unit's motion: the published 84-byte slot is
 for *other* units, as `docs/UNIT_AI_ORDER_SLOT_READER.md` established.
 
-### 5. `--ai-drive`, and a ship that moves
+### 6. `--ai-drive`, and a ship that moves
 
-Packet `ship_ai_state_steps` had not landed on `origin/main` when this packet validated, so the
-milestone adds `--ai-drive <unit>=<throttle>,<rudder>`. It is **a labelled diagnostic stand-in and
-nothing else**: on each re-plan tick whose state step is one of the eight records, the executable
-calls the two recovered setters `009DBF90` and `009DFFB0` on that unit's own control block with
-the switch's pair in place of the state's decision. It engages on `--order-frame`, beside the
-order that chose the state. Everything after those two calls is the game's own recovered path:
-their clamps, `009DFFB0`'s own mode switch, `009ED6B0`, `009F4D10`, the `009F50C6` tail into
-`009F3F80`, the hop, `0080E170` / `0080E190`, `00813020` and `00825F20`.
+The milestone keeps `--ai-drive <unit>=<throttle>,<rudder>`, and section 4 says which states still
+need it: `movetopos` and `attackmove`, whose steps produce no desired throttle at all. It is **a
+labelled diagnostic stand-in and nothing else**: on each re-plan tick of the named unit the
+executable calls the two recovered setters `009DBF90` and `009DFFB0` on that unit's own control
+block, after whatever its state step did, with the switch's pair in place of a desired value the
+state never forms. It engages on `--order-frame`, beside the order that chose the state.
+Everything after those two calls is the game's own recovered path: their clamps, `009DFFB0`'s own
+mode switch, `009ED6B0`, `009F4D10`, the `009F50C6` tail into `009F3F80`, the hop, `0080E170` /
+`0080E190`, `00813020` and `00825F20`.
 
 With `--order moveto:Java --order-unit Kortenaer --ai-drive Kortenaer=1,0.5`:
 
@@ -5114,6 +5169,7 @@ With `--order moveto:Java --order-unit Kortenaer --ai-drive Kortenaer=1,0.5`:
 | --- | --- |
 | ring hops / writes | 15680 / 15680 |
 | `009F4BC6` deadbands | 15194, down from 15680 |
+| rudder-law calls | 5884, down from 6370 |
 | live-pair changes | 14 |
 | ships that moved | 1 of 32 |
 | `Kortenaer` straight-line distance | 417.54 |
@@ -5122,13 +5178,16 @@ With `--order moveto:Java --order-unit Kortenaer --ai-drive Kortenaer=1,0.5`:
 | final forward speed, yaw rate | 18.2399, -0.034906 rad/s |
 | ring slot / live pair at the end | 1.0000, 0.5000 / 1.0000, 0.5000 |
 
-The 14 live-pair changes are the whole transient: the hop slews the slot by at most `dt * 1.5`
-(`00CE3D78`), so from the order at in-mission frame 5 the slot reads 0.075, 0.150, 0.225 and on,
-one `1.5 * 0.05` step per frame; the rudder saturates at 0.5 on step 12 and the throttle at 1.0 on
-step 19. The ring's own slew limits, 8.0 and 2.0 per second, are both faster than that, so the
-live pair equals the slot from the next step on and stops changing once the slot saturates.
+The rudder-law count falls because `009DFFB0` sets `blk+1C4h` to `Rudder`, which closes the
+`009F44E4` gate for the driven ship: a state that commands a rudder keeps the rudder it asked for,
+which is the recovered rule and not a side effect of the switch. The 14 live-pair changes are the
+whole transient: the hop slews the slot by at most `dt * 1.5` (`00CE3D78`), so from the order at
+in-mission frame 5 the slot reads 0.075, 0.150, 0.225 and on, one `1.5 * 0.05` step per frame; the
+rudder saturates at 0.5 on step 12 and the throttle at 1.0 on step 19. The ring's own slew limits,
+8.0 and 2.0 per second, are both faster than that, so the live pair equals the slot from the next
+step on and stops changing once the slot saturates.
 
-### 6. The same class gives the same profile
+### 7. The same class gives the same profile
 
 `Kortenaer` is `ShipClasses:PACK3_Icarus=265`, which is `VehicleClass[265] Tribal class 1941`.
 Against `bsp_ship_motion_probe.exe --class 265 --steps 490 --dt 0.05 --throttle 1 --rudder 0.5`,
@@ -5154,25 +5213,29 @@ Removing the 0.30 s the executable spends before its first non-zero live pair,
 `tools/motion_trace_compare.py` reports **no channel left its tolerance over the compared span**,
 with peaks of 0.3938 m/s, 0.1998 deg, 2.2397 m and 0.00212 rad/s. Run as-is, without that shift,
 it reports peaks of 0.6750, 0.4007, 4.5044 and 0.00433, final deltas of 0.0002, 0.4002 and 4.5042,
-and a first divergence in speed at t = 0.20 s.
+and a first divergence in speed at t = 0.20 s. Wiring the real state steps changed none of these
+numbers: the driven ship's trajectory file is byte-identical to the one the first pass wrote,
+because the drive overrides after the state step and `movetopos` writes no desired value of its
+own.
 
 ### Host methods
 
 `bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500
 --mission-frame-seconds 0.05 --mission-complete-frame 490 --order moveto:Java --order-unit
 Kortenaer --order-frame 5 --trajectory-csv local/traj_2o_base.csv --log local/run_2o_base.log
---game-root "<install>"`, exit 0: **474 concrete, 434 unimplemented**, and **476 / 434** with
+--game-root "<install>"`, exit 0: **495 concrete, 443 unimplemented**, and **497 / 442** with
 `--ai-drive Kortenaer=1,0.5`. The baseline is not milestone 2n's published 464 / 428: main moved
 between the two turns. Measured on this branch's own base commit 45e24d04, with this packet's
 changes stashed and the tree rebuilt, the same command line reports **465 concrete, 432
-unimplemented**, so the packet's own move is **+9 concrete and +2 unimplemented**, or +11 / +2 with
-the diagnostic switch engaged.
+unimplemented**. The packet's move splits cleanly, because the two branches it merged changed no
+host binding at all: the ring hop of sections 1 to 3 was **+9 concrete and +2 unimplemented**, and
+the state steps of section 4 a further **+21 concrete and +9 unimplemented**.
 
 The per-step table with the call site and callee of every row is
-`reports/game_executable_milestone_2o.json` (`ring_hop_steps`, `ai_drive_steps`, `routines`,
-`measurements`, `probe_comparison`, `corrections`, `read_for_this_packet`, `still_unimplemented`).
-In call order, with `009F50E0` as the containing function for the first row and `009F3F80` for the
-rest except the last two:
+`reports/game_executable_milestone_2o.json` (`ring_hop_steps`, `state_step_steps`,
+`ai_drive_steps`, `routines`, `measurements`, `probe_comparison`, `corrections`,
+`read_for_this_packet`, `still_unimplemented`). The ring hop, in call order, with `009F50E0` as the
+containing function for the first row and `009F3F80` for the rest except the last two:
 
 | Step | Call site | Callee | Disposition |
 | --- | --- | --- | --- |
@@ -5185,27 +5248,47 @@ rest except the last two:
 | the astern heading flip | 009f409e | 00438aa0 | concrete, not reached |
 | the heading error | 009f40bb | 00438b10 | concrete |
 | the two unprojected spans | 009f40ca | - | record |
-| class+524h, the yaw authority | 009da268 | - | record, not reached |
-| the rudder law | 009f44f7 | 009da250 | concrete, not reached |
-| the law's own speed read | 009da2d7 | 0092d730 | concrete, not reached |
+| class+524h, derived | 009da268 | 00828f20 | concrete, 6370 calls |
+| the rudder law | 009f44f7 | 009da250 | concrete, 6370 calls |
+| the law's own speed read | 009da2d7 | 0092d730 | concrete |
 | the hop | 009f4b99 | - | concrete |
 | the hop's deadband speed read | 009f4bd4 | 0092d730 | concrete |
 | the ring rudder setter | 009f4ce8 | 0080e190 | concrete |
 | the ring throttle setter | 009f4cfb | 0080e170 | concrete |
 | the ring tick, since milestone 2i | 00826121 | 00813020 | concrete |
 
+The state steps, with `009F50E0` as the containing function for the dispatch and each step's own
+body for the rest:
+
+| Step | Call site | Callee | Disposition |
+| --- | --- | --- | --- |
+| the state's vtable +0Ch | 009f5186 | - | indirect |
+| `stop` | - | 009e14c0 | concrete |
+| the world-bounds test | 009e14f3 | 0071c4f0 | record, no world object here |
+| `stop`'s desired heading | 009e153c | 009e0040 | concrete |
+| `movetopos` | - | 009e5770 | concrete |
+| the AI goal vector brain+0B2Ch | 009e57d0 | - | record, no producer anywhere |
+| the director command slot | 009e57ed | 0071bff0 | concrete |
+| the final-leg test | 009e57f4 | 007adc60 | concrete, the absent-list arm |
+| the navigation goal | 009e580f | 009de050 | concrete, 98 calls |
+| the arrival test | 009e5821 | vtable +2Ch | indirect, contract unread |
+| the command target resolve | 009e5847 | 00521ea0 | record |
+| `attackmove` | - | 009e8820 | concrete |
+| the sub-state selector | 009e88d8 | 009e86f0 | concrete |
+| the sub-state's own step | 009e88f0 | vtable +0Ch | indirect, 588 records |
+
 `ShipAiDrive::set_desired_throttle` (`009DBF90`) and `ShipAiDrive::set_desired_steering`
 (`009DFFB0`) carry no call site, because no native site calls them here: the state's own vtable
-`+0Ch` at `009F5186` is what would, and the switch stands in for it.
+`+0Ch` at `009F5186` is what would, and the switch stands in for the desired value it does not
+produce.
 
 ### Corrections
 
 1. **Milestone 2n's "the promoted slot has no reader" is no longer one of the reasons the ships
    do not move.** It is still true of the 84-byte slot and it is not on the path to a unit's own
    motion. The hop at the tail of `009F3F80` writes the unit's own order ring, `00813020` steps
-   the live pair and `00825F20` reads it. The base run's one remaining reason is that eight of the
-   nine state steps have no body. Evidence: `009f50c6`, `009f4ce8`, `009f4cfb`, and the drive
-   run's 417.54 units of travel through the same code path.
+   the live pair and `00825F20` reads it. Evidence: `009f50c6`, `009f4ce8`, `009f4cfb`, and the
+   drive run's 417.54 units of travel through the same code path.
 2. **This packet's brief asked for `00813020` to be run where the game does if the executable did
    not already. It already did.** `00813020` has one call site, `00826121` in `00825F20`, and
    `ShipMotionBinding::tick_order_ring` has run it there since milestone 2i. No wiring was added.
@@ -5215,15 +5298,24 @@ rest except the last two:
    still name it.
 4. **The same doc's "009DA250 is the only writer of blk+1D4h inside 009F3F80: both stores take its
    result" needs its gates.** `009F44E4` / `009F44EB` skips the first store whenever the steering
-   mode is `Rudder`, and the second is inside the obstacle arm. Section 3: the law ran 0 times in
-   15680 steps.
-5. **`tools/motion_trace_compare.py` can no longer read the probe's stdout.** Its `_PROBE_ROW`
+   mode is `Rudder`, and the second is inside the obstacle arm.
+5. **This milestone's own first pass said the gate never opens on this mission, and that was an
+   artefact of the eight unwired state steps.** With `ship_ai_state_steps` merged, `009E14C0`'s
+   `009E0040` call and `009DE050`'s forced `Navigate` open it on thirteen ships, and `009DA250`
+   runs 6370 times in 15680 steps instead of 0. The first pass's statement that "`009DA250` still
+   has no run-time evidence from `bsp_game.exe`" is superseded: it now has 6370 calls.
+6. **The `class+524h` stand-in is gone.** The first pass divided the heading error by `MaxRotAngle`
+   and recorded it. `00828F20` is the producer, found by packet `ship_ai_class_field_0524`, and it
+   derives `class+524h` as `0.5 * MaxRotAngle / MaxRotAngleChangeRatio`. Both keys are already read
+   out of the installed `VehicleClass` row, so all 6370 calls take the derived value and the
+   routine's positivity gate passed on every one.
+7. **`tools/motion_trace_compare.py` can no longer read the probe's stdout.** Its `_PROBE_ROW`
    regex expects the step number and eight numeric columns; the probe prints nine, because a `y`
    column was added when the Dyn integrator landed, so every row fails to match and the tool exits
-   with `no probe trajectory rows matched`. The comparison in section 6 was run after dropping that
+   with `no probe trajectory rows matched`. The comparison in section 7 was run after dropping that
    column into a copy; the tool itself was not edited, because it belongs to no packet this worker
    leased. It is follow-up 5 below.
-6. **`tools/verify_report_calls.py` rejected a correct row because a recovered name contains the
+8. **`tools/verify_report_calls.py` rejected a correct row because a recovered name contains the
    word "error".** Its live lookup tested `'error' not in text.lower()` against the whole bridge
    reply, so `Function: BSP_ShipAi_RudderFromHeadingError at 009da250 ... Body: 009da250 -
    009da3a4` was read as a failure and the script reported `callee 009da250 is not a Ghidra
@@ -5240,16 +5332,18 @@ rest except the last two:
 Every address this milestone touched lies in a Ghidra function whose body range the bridge
 reports: `009F50E0-009F5253`, `009F4DA0-009F50D2`, `009F3F80-009F4D06`, `009DA250-009DA3A4`,
 `0080E170-0080E18A`, `0080E190-0080E1AA`, `00813020-008131D5`, `0092D730-0092D76E`,
-`00438AA0-00438B0D` and `00438B10-00438B7D`. No name was added; run-time evidence was appended to
-`009f3f80` and `009f4da0`.
+`00438AA0-00438B0D` and `00438B10-00438B7D`. The state-step boundaries this milestone consumes
+(`009E8820` among them) were defined by the integrator in commit 347471cd for packet
+`ship_ai_state_steps`, whose own doc carries their table. No name was added; run-time evidence was
+appended to `009f3f80` and `009f4da0`.
 
 ### Validation
 
 `scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest case
 `reconstructed_math` passes, 1 of 1. No test cases were added.
-`python tools/verify_report_calls.py reports/game_executable_milestone_2o.json` checks 11 call
-rows and reports 0 failures; one row is reported as indirect because the heading getter goes
-through a vtable slot.
+`python tools/verify_report_calls.py reports/game_executable_milestone_2o.json` checks 25 call
+rows and reports 0 failures; the vtable dispatches and `0096515D`'s computed call are reported as
+indirect.
 
 ```
 bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500
@@ -5258,73 +5352,84 @@ bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-f
   --log local/run_2o_base.log --game-root "<install>"
 
 summary mission ship ai units=32 ai_owned=31 steps=15680 gated=0 replans=5048
-        state_steps{concrete=2940 records=2108} publishes=15680 promotions=15680
+        state_steps{concrete=4803 records=245} publishes=15680 promotions=15680
 summary mission ship ai states cruise=13 stop=12 attackmove=6 movetopos=1 other=0
-summary mission ship ai ring hops=15680 gated_3f5=0 writes=15680 rudder_law=0
+summary mission ship ai state steps real=4803 goal_sets=98 goal_replans=0 units_with_goal=1
+        substate_steps=588 navigate_mode_steps=486
+summary mission ship ai ring hops=15680 gated_3f5=0 writes=15680 rudder_law=6370
         deadbands=15680 live_pair_changes=0 driven=0
 summary mission world units=32 walked=15680 updated=15680 motion_ticks=15680 simulated=24.50 s
         controlled=DeRuyter moved=0.00 total_path=0.00
-host methods 474 concrete, 434 unimplemented
+host methods 495 concrete, 443 unimplemented
+  ship ai step 10  Yamakaze   state=stop       mode=heading dir=stopped throttle=0.000
+        rudder=0.000 heading=-1.5708 target=-1.5708
+  ship ai step 10  Haguro     state=attackmove mode=rudder  dir=stopped throttle=0.000
+        rudder=0.000 heading= 0.0000 target= 3.1416
 ```
 
 and, with `--ai-drive "Kortenaer=1,0.5"`:
 
 ```
---ai-drive "Kortenaer" = throttle 1.000, rudder 0.500: a LABELLED DIAGNOSTIC STAND-IN for the
-        state step ...
   unit                 state      hops  writes deadband slot_thr slot_rud live_thr live_rud livechg
   Kortenaer            movetopos   490     490        4   1.0000   0.5000   1.0000   0.5000      14
   Haguro               attackmove  490     490      490   0.0000   0.0000   0.0000   0.0000       0
-summary mission ship ai ring hops=15680 gated_3f5=0 writes=15680 rudder_law=0
+summary mission ship ai ring hops=15680 gated_3f5=0 writes=15680 rudder_law=5884
         deadbands=15194 live_pair_changes=14 driven=1
   Kortenaer   PACK3_Icarus  0  7  1.000  0.500 moveto  -  -32.1  -2083.7  417.54  1
 summary mission world units=32 walked=15680 updated=15680 motion_ticks=15680 simulated=24.50 s
         controlled=DeRuyter moved=0.00 total_path=417.76
-host methods 476 concrete, 434 unimplemented
+host methods 497 concrete, 442 unimplemented
 ```
 
 Every earlier switch was rechecked on this binary. The acceptance form `--order-frame 1 --order
 throttle=1,rudder=1` reproduces milestone 2j's published numbers exactly, `heading -41.252617,
-fwd 16.429752, yaw -0.061087` at t = 14 s, so wiring slot 16 changed no trajectory the player
-drives: the hop writes the same slot the standing order refills after it, and the standing order
-wins. A 120 frame run with `--press-start-frame 30` and no `--menu-select` exits 0 and reports 155
-concrete and 79 unimplemented, a 40 frame title-only run reports 130 and 48, `--vfs-probe
-fonts/fonts.lua` exits 0 and `--vfs-probe does/not/exist.lua` exits 3: all four match milestone 2n
-exactly. A `--mission-frames 60` run with no `--mission-complete-frame` still ends on the frame
-count with `summary mission exit reachable=0`.
+fwd 16.429752, yaw -0.061087` at t = 14 s, so neither slot 16 nor the state steps changed a
+trajectory the player drives: the hop writes the same slot the standing order refills after it,
+and the standing order wins. A 120 frame run with `--press-start-frame 30` and no `--menu-select`
+exits 0 and reports 155 concrete and 79 unimplemented, a 40 frame title-only run reports 130 and
+48, `--vfs-probe fonts/fonts.lua` exits 0 and `--vfs-probe does/not/exist.lua` exits 3: all four
+match milestone 2n exactly. A `--mission-frames 60` run with no `--mission-complete-frame` still
+ends on the frame count with `summary mission exit reachable=0`.
 
 This remains a runtime-validated process, not a game-validated one. What it proves that milestone
-2n did not is that the recovered chain from a ship AI state's desired throttle and rudder to a
-moving hull is closed: chain slot 16 runs, `009F4DA0`'s tail enters `009F3F80` on every step,
-`009F3F80`'s hop writes the unit's own order ring write slot through the two recovered setters,
-`00813020` steps the live pair toward it and `00825F20` turns it into motion, and a ship driven
-through that chain follows the same speed and turn profile as the reconstructed probe for the same
-class, to 0.0002 m/s and 0.0000 rad/s once the transient is over. What it does not prove is what
-any state would ask for: eight of the nine state steps still have no body, the value that moved
-this ship came from a diagnostic switch, the two spans of `009F3F80` that would reshape the
-desired pair are records, and the steering law `009DA250` was not reached once.
+2n did not is that the recovered chain from a ship AI state's decision to a moving hull is closed:
+chain slot 16 runs, `009F4DA0`'s tail enters `009F3F80` on every step, `009F3F80`'s hop writes the
+unit's own order ring write slot through the two recovered setters, `00813020` steps the live pair
+toward it and `00825F20` turns it into motion; four of the nine state leaves run their own bodies
+over that chain, the steering law and the class field behind it run for thirteen ships, and a ship
+driven through the chain follows the same speed and turn profile as the reconstructed probe for the
+same class, to 0.0002 m/s and 0.0000 rad/s once the transient is over. What it does not prove is
+what a navigation state would ask for. `movetopos` and `attackmove` decide a goal and a sub-state
+and never a throttle, the goal itself is a record because `brain+0B2Ch` has no writer, the
+navigation arm that would turn a goal into a desired value is unprojected, the five `attackmove`
+sub-state steps have no body, and the two spans of `009F3F80` that would reshape the desired pair
+are records. The value that moved this ship still came from a diagnostic switch.
 
 ### Follow-up packets
 
-1. **`ship_ai_state_steps`**, branch `agent/cc-ship-ai-state-steps`: `009E14C0` `stop`, `009E1610`
-   `follow`, `009E1950` `land`, `009E5770` `movetopos`, `009E59C0` `moveonpath`, `009E8820`
-   `attackmove` and `009E2020` `kamikaze_attack`. It is now the **only** thing between this
-   mission's 32 ships and motion, and when it lands `--ai-drive` should be retired rather than
-   kept.
-2. **`ship_ai_obstacle_tables`**: `009F40CA..009F44E3` and `009F4502..009F4B98`, the two
+1. **`ship_ai_navigation_arm`**, `009ED6B0` `009EDA26..009EF228` with `blk+3D0h` and `blk+3E0h`.
+   It is now the **first** thing between a navigation state's goal and a moving ship: `009DE050`
+   forces `Navigate` and this span is what is supposed to turn the goal into a desired throttle
+   and rudder. `src/ship_ai_navigation_arm.cpp` already projects `009EE671..009EEAA2` for the
+   probe; the executable needs the rest and a producer for `blk+3D0h`.
+2. **`ship_ai_goal_vector`**: `brain+0B2Ch`, `brain+0B34h`, `brain+0B38h`. Unchanged from milestone
+   2n follow-up 5 and now measurable: `movetopos` sets a goal 98 times a run and every one of them
+   is `(0,0)` because nothing writes the pair.
+3. **`ship_ai_attackmove_substates`**: `009F3240`, `009E23B0`, `009E26C0`, `009F3670` and
+   `007B3DD0`, the five leaves `009E8450` builds. Six ships of this mission end every frame at
+   `009E88F0` with none of them reconstructed.
+4. **`ship_ai_obstacle_tables`**: `009F40CA..009F44E3` and `009F4502..009F4B98`, the two
    `2Ch`-stride tables at `blk+81Ch` / `blk+848h`, `009D6B40`, `009D8B90` and `009EC7C0`. Until
    they are projected the executable carries the state's desired pair through `009F3F80`
    unchanged, which is this milestone's own boundary.
-3. **`ship_ai_throttle_ceiling`**: `009F4DA0`'s body, `brain+34Ch`, `brain+350h`, `009EC7C0` and
-   the tuning block at `00424C40`. It does not gate the tail call, so it costs nothing yet.
-4. **`ship_ai_class_field_0524`**: `class+524h`, `00831840`, `0082B170`. Unreached here because
-   the `009F44E4` gate never opened; the first state that sets a heading or a navigation mode will
-   reach it, and every AI turn rate is a scaled guess until it is named.
 5. **`motion_trace_compare_columns`**: `tools/motion_trace_compare.py`'s `_PROBE_ROW`, and the
-   probe's own table header. Correction 5; the tool cannot read the probe it was written for.
-6. **`director_new_target_gate`**, **the recon party list** and **the gun side of
+   probe's own table header. Correction 7; the tool cannot read the probe it was written for.
+6. **`ship_ai_throttle_ceiling`**: `009F4DA0`'s body, `brain+34Ch`, `brain+350h`, `009EC7C0` and
+   the tuning block at `00424C40`. It does not gate the tail call, so it costs nothing yet.
+7. **`director_new_target_gate`**, **the recon party list** and **the gun side of
    `docs/BOT_FIRE_TARGET.md`**, all unchanged from milestone 2n.
-7. **`construct_world` 004de610**, unchanged from milestones 2h through 2n.
+8. **`construct_world` 004de610**, unchanged from milestones 2h through 2n, and now also what
+   `009E14C0`'s world-bounds test at `0071C4F0` needs.
 
 ## Next milestones
 

@@ -252,15 +252,26 @@ public:
     // 00825f20 reads. Only the run's own counting uses these.
     float unit_ring_current_throttle(std::size_t index) const;
     float unit_ring_current_rudder(std::size_t index) const;
-    // The divisor 009da268 loads from [[blk+3fch]+538h]+524h. 00831840 does not
-    // write class+524h, so it has no recovered Lua key; this is the same
-    // stand-in the probe uses, `MaxRotAngle` at class+4f8h, and it is labelled
-    // as one everywhere it is reported.
-    float unit_yaw_authority_stand_in_04f8(std::size_t index) const;
+    // The divisor 009da268 loads from [[blk+3fch]+538h]+524h. Packet
+    // ship_ai_class_field_0524 found its producer: 00828f20 derives it as
+    // 0.5 * MaxRotAngle (class+4f8h) / MaxRotAngleChangeRatio (class+4fch), and
+    // both keys are already read out of the installed `VehicleClass` row here.
+    // `derived` is 00828f20's own gate: false means one of the two keys was not
+    // strictly positive and the field was never written.
+    float unit_yaw_authority_0524(std::size_t index, bool& derived) const;
     // --ai-drive <name>=<throttle>,<rudder>: the diagnostic stand-in for the
-    // eight state steps that have no body. Returns false when no created
-    // instance carries the name.
+    // state steps that produce no desired throttle. Returns false when no
+    // created instance carries the name.
     bool enable_ai_drive(const std::string& unit_name, float throttle, float rudder);
+
+    // ---- milestone 2o, second pass: what a state step reads off a unit -----
+    // unit+0C8h, the pose-valid byte 009e14d7 and 009e579a test before they ask
+    // for a refresh through 00414db0. Milestone 2h leaves it set.
+    bool unit_pose_valid_00c8(std::size_t index) const;
+    // unit+0FCh, the world translation of the pose. 009e14ec passes &unit+0FCh
+    // to the world-bounds test, so the y at +100h is part of it; 009e57aa and
+    // 009e57c2 read the x and z alone.
+    void unit_position_00fc(std::size_t index, float& x, float& y, float& z) const;
 
     std::size_t count() const noexcept;
     bool unit_active(std::size_t index) const noexcept;
