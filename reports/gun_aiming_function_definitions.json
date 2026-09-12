@@ -1,0 +1,125 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0085a830",
+    "end_address": "0085a8a2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0085a830",
+    "end_address": "0085a8a1",
+    "bytes_disassembled": 114,
+    "message": "Successfully disassembled 114 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0085a830",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "0085a830",
+    "function_name": "FUN_0085a830",
+    "entry_point": "0085a830",
+    "body_size": 114,
+    "message": "Function created successfully at 0085a830"
+   }
+  },
+  {
+   "defined": "0085a830",
+   "end": "0085a8a2",
+   "name": null,
+   "after": "Function: FUN_0085a830 at 0085a830\nSignature: undefined FUN_0085a830(void)\nEntry: 0085a830\nBody: 0085a830 - 0085a8a1"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0085a270",
+    "end_address": "0085a3c8"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0085a270",
+    "end_address": "0085a3c7",
+    "bytes_disassembled": 344,
+    "message": "Successfully disassembled 344 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0085a270",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "0085a270",
+    "function_name": "FUN_0085a270",
+    "entry_point": "0085a270",
+    "body_size": 344,
+    "message": "Function created successfully at 0085a270"
+   }
+  },
+  {
+   "defined": "0085a270",
+   "end": "0085a3c8",
+   "name": null,
+   "after": "Function: FUN_0085a270 at 0085a270\nSignature: undefined FUN_0085a270(void)\nEntry: 0085a270\nBody: 0085a270 - 0085a3c7"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0084c7e0",
+    "end_address": "0084c7fe"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0084c7e0",
+    "end_address": "0084c7fd",
+    "bytes_disassembled": 30,
+    "message": "Successfully disassembled 30 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0084c7e0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "0084c7e0",
+    "function_name": "FUN_0084c7e0",
+    "entry_point": "0084c7e0",
+    "body_size": 30,
+    "message": "Function created successfully at 0084c7e0"
+   }
+  },
+  {
+   "defined": "0084c7e0",
+   "end": "0084c7fe",
+   "name": null,
+   "after": "Function: FUN_0084c7e0 at 0084c7e0\nSignature: undefined FUN_0084c7e0(void)\nEntry: 0084c7e0\nBody: 0084c7e0 - 0084c7fd"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
