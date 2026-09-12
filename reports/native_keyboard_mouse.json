@@ -316,7 +316,7 @@
       "address": "00a9a453",
       "native": "captured_device_vtable+34",
       "caller": "00a9a3e0",
-      "contract": "reloaded current device this, HWND,6; ignored HRESULT",
+      "contract": "After BEC230, reload member30C receiver A9A44C, then load captured table slot34 A9A44E; stdcall(this,HWND,6); ignored HRESULT.",
       "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
     },
     {
@@ -400,7 +400,7 @@
       "address": "00a9a1c0",
       "native": "captured_device_vtable+34",
       "caller": "00a9a180",
-      "contract": "reloaded device this, HWND,5; ignored result; configured=1",
+      "contract": "Preserved opposite order: captured table slot34 A9A1B5 before member20C receiver A9A1B9; stdcall(this,HWND,5); ignored HRESULT.",
       "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
     },
     {
@@ -442,7 +442,7 @@
       "address": "00a9a167",
       "native": "captured_device_vtable+34",
       "caller": "00a9a140",
-      "contract": "reloaded current device this, HWND,flags; ignored result",
+      "contract": "After BEC230, reload member20C receiver A9A15C, then load captured table slot34 A9A163; stdcall(this,HWND,flags); ignored HRESULT.",
       "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
     }
   ],
@@ -506,6 +506,11 @@
       "was": "Raw scalar source used operator delete and required operator-new-compatible storage while actual enumeration allocates through singleton_lifetime_allocate.",
       "is": "Both scalar bodies use singleton_lifetime_free; source contract and focused real SDK fixture use the same shared allocation domain as A98030.",
       "evidence": "A9806D/A980AD BF681B allocation; A9A486/A9A3A6 BF65AC frees; src/singleton_lifetime.cpp51..66 wrappers."
+    },
+    {
+      "was": "Shared helper always loaded captured slot34 before reloading the COM receiver after BEC230.",
+      "is": "Explicit caller-specific order: receiver then slot for A9A140 and keyboard constructor; slot then receiver retained for mouse polling.",
+      "evidence": "A9A15C < A9A163; A9A44C < A9A44E; A9A1B5 < A9A1B9. Live bsp.gpr /battlestationspacific.exe verified via read-only bsp.py ghidra; actual helper call sites checked."
     }
   ],
   "ownership": {
@@ -546,5 +551,88 @@
     "call_audit_log": "local/native_keyboard_mouse_ad_calls.log",
     "initial_build": "Initial configure preceded shared-root header integration and failed missing include; preserved local/native_keyboard_mouse_ad_build_initial.log; final reconfigure/build passed.",
     "allocator_integration": "Final rebuild/probe repeated with singleton_lifetime_allocate/free for all three raw fixture allocations; original pre-correction logs retained."
+  },
+  "cooperative_load_order_af": {
+    "packet": "orch4_mouse_cooperative_order_af",
+    "baseline_commit": "f106cbc9c1a2dc548a744e50e35434e968734e1b",
+    "owned_native_addresses": [
+      "00a9a140",
+      "00a9a3e0"
+    ],
+    "shared_source_helper": "cooperate in src/native_keyboard_mouse.cpp",
+    "was": "Shared helper always loaded captured slot34 before reloading the COM receiver after BEC230.",
+    "is": "Explicit caller-specific order: receiver then slot for A9A140 and keyboard constructor; slot then receiver retained for mouse polling.",
+    "scope": "No native ABI, public source API, device ownership, COM call count or application wiring changes.",
+    "verified_callers": [
+      {
+        "caller": "00a9a140",
+        "body": "00a9a140..00a9a174",
+        "table_capture": "00a9a14e",
+        "window_call": "00a9a157",
+        "receiver_reload": "00a9a15c",
+        "slot_load": "00a9a163",
+        "address": "00a9a167",
+        "native": "captured_device_vtable+34",
+        "flags": "arbitrary supplied DWORD; sole direct BECB20 caller supplies6",
+        "order": "window -> receiver -> slot -> stdcall(this,HWND,flags); ignored HRESULT -> byte234=1; RET4"
+      },
+      {
+        "caller": "00a9a3e0",
+        "body": "00a9a3e0..00a9a46a",
+        "table_capture": "00a9a443",
+        "window_call": "00a9a447",
+        "receiver_reload": "00a9a44c",
+        "slot_load": "00a9a44e",
+        "address": "00a9a453",
+        "native": "captured_device_vtable+34",
+        "flags": 6,
+        "order": "window -> receiver -> slot -> stdcall(this,HWND,6); ignored HRESULT; constructor RET4"
+      },
+      {
+        "caller": "00a9a180",
+        "body": "00a9a180..00a9a287",
+        "table_capture": "00a9a1ac",
+        "window_call": "00a9a1b0",
+        "slot_load": "00a9a1b5",
+        "receiver_reload": "00a9a1b9",
+        "address": "00a9a1c0",
+        "native": "captured_device_vtable+34",
+        "flags": 5,
+        "order": "window -> slot -> receiver -> stdcall(this,HWND,5); ignored HRESULT -> byte234=1; poll RET4"
+      },
+      {
+        "caller": "00a9a290",
+        "body": "00a9a290..00a9a37e",
+        "cooperative_call": false,
+        "evidence": "SetDataFormat atA9A32A, byte234 zero atA9A32E; no source cooperate call or native SetCooperativeLevel call in constructor."
+      }
+    ],
+    "external_dependencies": "Existing current source platform publication/BEC230 and real SDK COM references; native vtable captured before window getter is retained. No new required service.",
+    "validation": {
+      "status": "passed",
+      "game_or_device_calls": false,
+      "new_tests_or_probes": false,
+      "build": "scripts/build.ps1 Release Win32 /W4 /WX, MSBUILDDISABLENODEREUSE=1; both existing CTests passed",
+      "seeds": "8/8 analysis and installed bytes equal",
+      "call_audit": "21 direct/tail rows checked,0 failures; caller-specific indirect slots manually assembly audited",
+      "artifacts": [
+        {
+          "path": "build\\win32\\Release\\bsp_core.lib",
+          "sha256": "f77247332a3322b986cefd09c38397193dd755ae4d00c1440e48aec2a4a26bac"
+        },
+        {
+          "path": "local\\mouse_cooperative_order_af_build.log",
+          "sha256": "447b006d6c0e603b8051e2580ace049bc3797f5ffccfd545e809a23351079010"
+        },
+        {
+          "path": "local\\mouse_cooperative_order_af_calls.log",
+          "sha256": "49184551819e592bdfb7901696999225b036c8f6c16bd2ea09dcfe8986879551"
+        },
+        {
+          "path": "local\\mouse_cooperative_order_af_seeds.json",
+          "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+        }
+      ]
+    }
   }
 }
