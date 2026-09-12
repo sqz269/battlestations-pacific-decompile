@@ -51,6 +51,13 @@ struct GameMissionNativeCall {
     std::uint32_t address{0};
     unsigned long long calls{0};
     int last_argument_count{0};
+    // Milestone 2l: the created instances this binding was called on, by the
+    // `ID` field of the entity table in its first argument. It is how the run
+    // answers how many of the mission's ships its own script addresses, and it
+    // is read off the call rather than chosen: every binding whose argument 1
+    // is an entity table contributes, and no list of "order" bindings is
+    // hand-picked.
+    std::vector<int> entity_subjects;
 };
 
 // Milestone 2i. One row of the installed `VehicleClass` global, read out of the
@@ -101,6 +108,13 @@ struct GameMissionLuaSummary {
     std::size_t dofile_calls{0};
     std::vector<std::string> dofile_paths;
     std::vector<GameMissionEntryPointRun> entry_points;
+    // Milestone 2l: the names the mission script handed `CreateScript`, and
+    // what running each one did. usn_2_java.lua's `luaStageInit` creates one,
+    // `luaInit`, and that function is where the mission issues its own orders.
+    std::vector<std::string> created_scripts;
+    std::vector<GameMissionEntryPointRun> created_script_runs;
+    std::size_t self_table_entities{0};   // thisTable slots 00928a00 would build
+    unsigned long long entity_resolves{0};  // 0089903c's resolved arm
     unsigned long long native_calls{0};
     std::vector<GameMissionNativeCall> natives; // distinct, in first-call order
     std::string first_error;
@@ -201,8 +215,57 @@ public:
     bool on_frame_job_thread() override;
     void queue_named_call_for_main_thread(const std::string& name) override;
 
+    // Milestone 2l: the per-entity Lua tables 00928a00 builds. One slot of
+    // `thisTable` per created scene instance, keyed by the decimal of the u16
+    // at entity+174h, carrying the `ID`, `Dead` and `Ptr` fields that routine
+    // seeds (docs/MISSION_LUA_SELF_TABLE.md). 00928a00 itself and its caller
+    // 0077e830 are records: what the executable supplies is the slot, so the
+    // entity-returning bindings can take the arm at 0089903c that pushes
+    // thisTable[key] instead of the nil arm. Returns how many slots it made.
+    // `class_index` is the `Type = E ShipClasses : <symbol>` id the enum
+    // library resolved, which is the row index of the installed `VehicleClass`
+    // global. docs/MISSION_LUA_SELF_TABLE.md records that `Class` is added to
+    // the slot later by a per-kind setter through 00b675d0 and not by 00928a00;
+    // that the value is the `VehicleClass` row is established by the shipped
+    // scripts, which read `.Class.Type` against the literal set the rows' own
+    // `Type` keys carry ("Cruiser", "Destroyer", "Fighter", ...) and also read
+    // `.Class.Length`, `.Class.Name`, `.Class.Height` and `.Class.Width`, all
+    // top-level keys of the same rows. The setter itself stays a record.
+    struct SceneEntity {
+        std::string name;
+        int id{0};
+        int class_index{-1};
+    };
+    std::size_t attach_scene_entities_00928a00(const std::vector<SceneEntity>& entities);
+
+    // Milestone 2l: the script objects the mission's own stage init created.
+    // The `CreateScript` binding body 00898750 is a record, so the trampoline
+    // keeps the name it was handed and nothing else. Running each one is the
+    // executable's stand-in for the script manager: 00898750 registers the
+    // object and the fixed step's script rows 00888230 (00875e55) and 00929460
+    // (00875e64) are what would call it, and none of the three is
+    // reconstructed. Each named global is called once with one fresh table,
+    // which is the `this` a script function takes. Returns how many ran.
+    std::size_t run_created_scripts();
+
     // Called by the binding trampolines; public so the C callbacks can reach it.
     void note_native_call(std::size_t row, int argument_count);
+    void note_created_script(std::string name);
+    void note_binding_subject(std::size_t row, int entity_id);
+    // A failed named call is replayed once with errfunc 0 purely to recover the
+    // message for the log. That replay is the executable's, not the game's, so
+    // its binding calls are not counted twice.
+    void set_error_replay(bool active) noexcept;
+    bool error_replay() const noexcept;
+    // One line per binding the scripts called on an entity table, and the count
+    // of distinct created instances the mission's own script addressed.
+    void report_entity_subjects();
+    // The resolved arm of the entity tail, for `FindEntity` only: 00925a90's
+    // own lookup is a record, so the executable walks the instances the
+    // instantiate pass created and, on a hit, pushes that entity's thisTable
+    // slot. Every other entity-returning row resolves its subject from game
+    // state this process does not own and keeps the recovered nil arm.
+    bool push_resolved_entity(lua_State* state, const char* binding_name, int argument_count);
     void note_entity_return();
     int run_dofile(const std::string& path);
     void note_error(const std::string& message);
@@ -227,6 +290,10 @@ private:
     int call_stack_marker_{0};  // game+1A18h
     int reentrancy_depth_{0};   // 00f87900
     std::map<std::string, std::size_t> native_index_;
+    // Milestone 2l: the created instances by name, with the id their thisTable
+    // slot is keyed by. This is the executable's stand-in for 00925a90.
+    std::map<std::string, int> scene_entity_ids_;
+    bool error_replay_{false};
     GameMissionLuaSummary summary_;
 };
 

@@ -146,7 +146,8 @@ public:
         GameFrameProfiler* profiler = nullptr, std::string language = {},
         long mission_complete_frame = -1, long order_frame = -1,
         float order_throttle = 0.0f, float order_rudder = 0.0f,
-        float mission_frame_seconds = 0.0f, std::string trajectory_csv = {});
+        float mission_frame_seconds = 0.0f, std::string trajectory_csv = {},
+        std::string order_command = {}, std::string order_command_target = {});
     ~GameMenuHost();
     GameMenuHost(const GameMenuHost&) = delete;
     GameMenuHost& operator=(const GameMenuHost&) = delete;

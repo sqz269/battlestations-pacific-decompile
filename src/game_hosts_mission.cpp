@@ -319,6 +319,10 @@ struct GameMissionHost::Impl {
     float order_throttle{0.0f};
     float order_rudder{0.0f};
     float mission_frame_seconds{0.0f};
+    // Milestone 2l: --order may name one of the 26 command classes instead of a
+    // throttle/rudder pair, with an optional target entity.
+    std::string order_command;
+    std::string order_command_target;
     // Milestone 2j, --trajectory-csv <path>.
     std::string trajectory_csv;
     GameFrameProfiler* profiler{nullptr};
@@ -1282,7 +1286,8 @@ GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptH
     GameFrontendHost& frontend, LocaleTables& locale, std::string requested_mission_id,
     long mission_frames, GameFrameProfiler* profiler, std::string language,
     long mission_complete_frame, GameHudHost* hud, long order_frame, float order_throttle,
-    float order_rudder, float mission_frame_seconds, std::string trajectory_csv)
+    float order_rudder, float mission_frame_seconds, std::string trajectory_csv,
+    std::string order_command, std::string order_command_target)
     : impl_(std::make_unique<Impl>(log, vfs, scripts, frontend, locale,
           std::move(requested_mission_id), mission_frames, profiler,
           std::move(language))) {
@@ -1298,6 +1303,9 @@ GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptH
     impl_->mission_frame_seconds = mission_frame_seconds;
     // Milestone 2j, --trajectory-csv.
     impl_->trajectory_csv = std::move(trajectory_csv);
+    // Milestone 2l, --order <command>[:<entity>].
+    impl_->order_command = std::move(order_command);
+    impl_->order_command_target = std::move(order_command_target);
 }
 
 GameMissionHost::~GameMissionHost() = default;
@@ -1598,6 +1606,8 @@ void GameMissionHost::Impl::finish_scene_load() {
     frame_host->set_mission_complete_frame(mission_complete_frame);
     // Milestone 2i: the player order and the deterministic frame delta.
     frame_host->set_player_order(order_frame, order_throttle, order_rudder);
+    // Milestone 2l: --order <command>[:<entity>] takes the same frame.
+    frame_host->set_player_command(order_command, order_command_target);
     frame_host->set_mission_frame_seconds(mission_frame_seconds);
     // Milestone 2j: where the per-step per-unit trace is written.
     frame_host->set_trajectory_csv(trajectory_csv);

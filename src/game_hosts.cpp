@@ -10,6 +10,7 @@
 #include <gameux.h>
 #include <shlobj.h>
 
+#include <cfloat>
 #include <cstdarg>
 #include <cstdlib>
 #include <cstring>
@@ -95,6 +96,26 @@ LRESULT CALLBACK game_window_procedure(HWND window, UINT message, WPARAM wparam,
 // ---------------------------------------------------------------------------
 // GameHostLog
 // ---------------------------------------------------------------------------
+
+// Milestone 2l. The three values _MCW_PC can hold, named. docs/X87_CONTROL_WORD.md
+// reads the CRT's own setter at 00c0683c asking for _PC_53 under this mask and
+// the two CreateDevice sites at 00b2aff9 / 00b298ee passing behaviour flags
+// without D3DCREATE_FPU_PRESERVE.
+unsigned long x87_precision_field() noexcept {
+    unsigned int current = 0;
+    if (_controlfp_s(&current, 0, 0) != 0) return 0xffffffffu;
+    return static_cast<unsigned long>(current) & static_cast<unsigned long>(_MCW_PC);
+}
+
+const char* x87_precision_name(unsigned long precision_field) noexcept {
+    switch (precision_field) {
+        case static_cast<unsigned long>(_PC_24): return "24-bit (single)";
+        case static_cast<unsigned long>(_PC_53): return "53-bit (double)";
+        case 0u: return "64-bit (extended)";
+        default: break;
+    }
+    return "unknown";
+}
 
 GameHostLog::~GameHostLog() { close(); }
 
@@ -302,11 +323,40 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
         } else if (std::strcmp(argument, "--order") == 0) {
             // Milestone 2i: throttle=<f>,rudder=<f>, the two parameters
             // 00816a40 publishes into the controlled unit's order ring.
+            // Milestone 2l: or the name of one of the 26 command classes, with
+            // an optional `:<entity>` target, issued through the same recovered
+            // path the authored scene command takes.
             if (index + 1 >= argc) {
-                error = "--order needs throttle=<f>,rudder=<f>";
+                error = "--order needs throttle=<f>,rudder=<f> or a command name";
                 return false;
             }
             const std::string text = argv[++index];
+            if (text.find("throttle=") == std::string::npos
+                && text.find("rudder=") == std::string::npos) {
+                if (text.find('=') != std::string::npos) {
+                    // `moveto=x,z` and every other parameterised form. 0046aab0
+                    // builds only two descriptors, a named target or the
+                    // owner's own world position, and 00816e30's arms for the
+                    // commands that take a position (00816f7c..00817330) are
+                    // not projected, so there is nothing here to carry an
+                    // authored coordinate through.
+                    error = "--order <command>=<args> is not supported: 0046aab0 builds "
+                        "only a named-target or owner-position descriptor and 00816e30's "
+                        "arm for such a command is not projected. Use --order <command> "
+                        "or --order <command>:<entity>";
+                    return false;
+                }
+                const std::size_t colon = text.find(':');
+                order_command = text.substr(0, colon);
+                if (colon != std::string::npos) {
+                    order_command_target = text.substr(colon + 1);
+                }
+                if (order_command.empty()) {
+                    error = "--order needs a command name";
+                    return false;
+                }
+                continue;
+            }
             std::size_t begin = 0;
             bool seen = false;
             while (begin <= text.size()) {
@@ -1211,7 +1261,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         *vfs_, *scripts_, locale_->tables(), options_.menu_select, options_.mission_frames,
         profiler_, summary_.language, options_.mission_complete_frame, options_.order_frame,
         options_.order_throttle, options_.order_rudder, options_.mission_frame_seconds,
-        options_.trajectory_csv);
+        options_.trajectory_csv, options_.order_command, options_.order_command_target);
     menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();
     summary_.gui_pages_loaded = frontend.pages_loaded;

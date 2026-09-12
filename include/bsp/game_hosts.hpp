@@ -75,6 +75,16 @@ struct GameHostMethodRecord {
     bool implemented{};          // false marks the unimplemented-host policy
 };
 
+// Milestone 2l: the x87 precision field as `_controlfp(0, 0) & _MCW_PC` reports
+// it, named. docs/X87_CONTROL_WORD.md establishes statically that the CRT
+// startup asks for 53 bits and that the Direct3D 9 device is created without
+// D3DCREATE_FPU_PRESERVE, so d3d9.dll is expected to drop the field to 24; the
+// executable reads it once before Direct3D exists and once at the first fixed
+// simulation step so the claim rests on an observation rather than on the API's
+// documentation. Neither read changes any arithmetic.
+unsigned long x87_precision_field() noexcept;
+const char* x87_precision_name(unsigned long precision_field) noexcept;
+
 // The run log. Every host method the process reaches is recorded once with a call count,
 // so a finished run states exactly which parts of the spine are concrete and which are
 // standing in. Writes to a file when one is requested and always mirrors to stdout.
@@ -162,6 +172,15 @@ struct GameExecutableOptions {
     long order_frame{-1};
     float order_throttle{0.0f};
     float order_rudder{0.0f};
+    // Milestone 2l: --order may also name a command class instead of a pair.
+    // `order_command` is the token 0046aab0 resolves against the 26-row registry
+    // and `order_command_target` the `CommandTarget` name, which for the
+    // position form `moveto=x,z` stays empty and the position is carried here.
+    std::string order_command;
+    std::string order_command_target;
+    bool order_command_position{false};
+    float order_command_x{0.0f};
+    float order_command_z{0.0f};
     // --mission-frame-seconds S, milestone 2i: run each in-mission frame with a
     // fixed delta instead of the wall clock, so a headless run accumulates
     // simulated time deterministically and the fixed-step driver's own clock
