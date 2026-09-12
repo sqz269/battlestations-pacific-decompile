@@ -1,0 +1,305 @@
+{
+  "packet": "cc2_scene_record_map",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc2-scene-record-map",
+  "branch": "agent/cc2-scene-record-map",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "access": "read-only: no renames, comments, prototypes, function creation or saves"
+  },
+  "names_are_hypotheses": true,
+  "doc": "docs/SCENE_RECORD_MAP.md",
+  "subject": "The map at SceneDatabase+18h: its key type and comparison, its node layout, the 5Ch record it holds, the scene-reader branch that fills it, and the four native routines that read it.",
+
+  "conclusion": "SceneDatabase+18h is std::map<NativeString, SceneHiddenEntityRecord*, LessCaseInsensitive>, the scene database's index of entities the scene file authored with the Hidden property set. Those entities are parsed but not instantiated; the record keeps everything needed to instantiate one later by name. The Lua binding name FindHiddenEntity is recovered, not a hypothesis: the string at 00D0FE10 is paired with 008A9E10 in the binding table at 00E0BFF0.",
+
+  "routines": [
+    {
+      "address": "00468cd0",
+      "name": "STL_MapNativeStringPtr_Find",
+      "name_status": "library instantiation",
+      "abi": "__thiscall(map*), RET 8; arg1 = hidden return pointer for the iterator, arg2 = const NativeString*",
+      "body": "00468cd0 - 00468d35",
+      "returns": "iterator {container, node} by value through arg1; EAX = arg1",
+      "coverage": "complete",
+      "behaviour": "lower_bound at 00468CDD, end check against _Myhead at 00468CF1, then the trailing comp(key, node->key) at 00468D01 that turns a lower bound into a find."
+    },
+    {
+      "address": "00468140",
+      "name": "STL_MapNativeStringPtr_LowerBound",
+      "name_status": "library instantiation",
+      "abi": "__thiscall(map*), RET 4; arg1 = const NativeString*",
+      "body": "00468140 - 00468190",
+      "returns": "_Nodeptr in EAX, _Myhead when every key sorts before the argument",
+      "coverage": "complete",
+      "behaviour": "root = _Myhead->_Parent; while !node->_Isnil: comp(node->key, k) inlined against __stricmp, right on true, otherwise remember and go left."
+    },
+    {
+      "address": "0046b340",
+      "name": "STL_MapNativeStringPtr_Insert",
+      "name_status": "library instantiation",
+      "abi": "__thiscall(map*), RET 8; arg1 = hidden return pointer for pair<iterator,bool>, arg2 = const value_type*",
+      "body": "0046b340 - 0046b453",
+      "returns": "{container, node, bool} 12 bytes",
+      "coverage": "complete for both outcomes",
+      "behaviour": "Descent with comp(newKey, node->key) inlined; 0046AD70 (_Insert) on the two insert arms, 004678F0 (--iterator) before the duplicate test at 0046B3FF. A duplicate writes bool = 0 at 0046B447 and inserts nothing."
+    },
+    {
+      "address": "00469fc0",
+      "name": "STL_PairNativeStringPtr_Construct",
+      "name_status": "library instantiation",
+      "abi": "__fastcall(pair* this, void* mapped), RET 8; the NativeString key is passed by value on the stack at entry+4h",
+      "body": "00469fc0 - 0046a05e",
+      "coverage": "complete",
+      "behaviour": "Deep-copies the key with 0041DD40 + memcpy, stores the mapped pointer at +8h, then releases the caller's by-value key buffer to the sized storage pool at 0046A03E/0046A045. It consumes its argument."
+    },
+    {
+      "address": "00469a20",
+      "name": "STL_PairNativeStringPtr_CopyConstruct",
+      "name_status": "library instantiation",
+      "abi": "__thiscall(pair*), RET 4; arg1 = const pair*",
+      "body": "00469a20 - 00469a65",
+      "coverage": "complete",
+      "behaviour": "Key deep copy, then [this+8] = [src+8]. Proves the value_type is 12 bytes with the mapped pointer at +8h."
+    },
+    {
+      "address": "004691b0",
+      "name": "BSP_SceneDatabase_FindHiddenEntityRecord",
+      "name_status": "hypothesis",
+      "abi": "__thiscall(SceneDatabase*), RET 4; arg1 = const char*",
+      "body": "004691b0 - 0046923d",
+      "returns": "the record pointer at node+14h, or 0 when the node is _Myhead",
+      "coverage": "complete",
+      "callers": "00944680 BSP_LuaBinding_Spawn only, at 0094477D"
+    },
+    {
+      "address": "00469480",
+      "name": "BSP_SceneDatabase_HasHiddenEntityRecord",
+      "name_status": "hypothesis",
+      "abi": "__thiscall(SceneDatabase*), RET 4; arg1 = const char*; result in AL",
+      "body": "00469480 - 004694ed",
+      "returns": "AL = (it.node != _Myhead), SETNZ at 004694BE against the _Myhead cached at 00469496",
+      "coverage": "complete",
+      "callers": "008a9e10 BSP_LuaBinding_FindHiddenEntity only"
+    },
+    {
+      "address": "0046dc10",
+      "name": "BSP_SceneDatabase_CreateHiddenEntityAt",
+      "name_status": "hypothesis",
+      "abi": "__thiscall(SceneDatabase*), RET 10h; a1 const char* name, a2 void* second, a3 const float pos[3], a4 float heading",
+      "body": "0046dc10 - 0046defe",
+      "returns": "Entity*, or 0 when the name is absent or 0046C550 refuses",
+      "coverage": "partial: the lookup, the class resolution, the placement override, the heading gate, the creator call and the bag wrap were read; the SEH unwind funclets were not",
+      "differences_from_0046d930": [
+        "0046DD54..0046DD7E replaces frame elements 12, 13, 14 (+30h, +34h, +38h) with the caller's three floats, keeping the authored basis",
+        "0046DD9F rebuilds the 3x3 part from Euler (0, heading, 0) when heading < 2*pi; the double at 00CE3828 is 0x401921FB60000000, (float)6.2831855 widened",
+        "no property-bag override arm: record+4 goes straight into 00922E20 at 0046DEC1"
+      ]
+    },
+    {
+      "address": "004693c0",
+      "name": "BSP_SceneHiddenEntityRecord_Construct",
+      "name_status": "hypothesis",
+      "abi": "__thiscall(record*), RET 18h; a1 PropertyBag*, a2 const char* className, a3 const char* name, a4 int party, a5 const float frame[16], a6 const NativeString* parentName",
+      "body": "004693c0 - 00469471",
+      "coverage": "complete"
+    },
+    {
+      "address": "00469300",
+      "name": "BSP_SceneHiddenEntityRecord_Destruct",
+      "name_status": "hypothesis",
+      "abi": "__thiscall(record*)",
+      "body": "00469300 - 0046939f",
+      "coverage": "complete through the +58h release at 00469362; the pool call itself is a contract",
+      "behaviour": "Deletes the property bag through its own vtable at 00469337 (arg 1, the deleting form), frees +8h and +0Ch with the CRT free at 00BF6989, releases the +58h buffer to the pool."
+    },
+    {
+      "address": "004693a0",
+      "name": "BSP_SceneHiddenEntityRecord_DeletingDestructor",
+      "name_status": "hypothesis",
+      "abi": "__thiscall(record*), RET 4; arg1 = flags",
+      "body": "004693a0 - 004693bb",
+      "coverage": "complete",
+      "behaviour": "The only slot of the vftable at 00CE5640. Calls 00469300, then operator delete at 004693B0 when bit 0 of the flag is set."
+    },
+    {
+      "address": "008a9e10",
+      "name": "BSP_LuaBinding_FindHiddenEntity",
+      "name_status": "Lua name recovered from the binding table; the C++ spelling is a hypothesis",
+      "abi": "__fastcall(lua_State*)",
+      "body": "008a9e10 - 008a9f88",
+      "coverage": "partial: the argument read and the 00469480 call; the Lua frame plumbing was not read",
+      "evidence": "00E0BFF0 pairs the name string 00D0FE10 \"FindHiddenEntity\" with 008A9E10. The neighbouring rows are 00E0BFE8 -> 00944680 and 00E0BFF8 -> 00944FD0 \"GenerateObject\" (00D0FE00)."
+    },
+    {
+      "address": "0046cf40",
+      "name": "BSP_SceneFile_ReadEntityBlock",
+      "name_status": "existing ledger name, not changed",
+      "abi": "__thiscall(SceneFileReader*), RET 58h",
+      "body": "0046cf40 - 0046d927",
+      "coverage": "partial: only the hidden-record branch 0046D5E4..0046D7E9 and the gates that reach it",
+      "role": "the sole producer of records for the map"
+    }
+  ],
+
+  "key_and_comparison": {
+    "key_type": "NativeString {uint32 length at +0h, char* data at +4h}",
+    "comparator": "00443d00 BSP_NativeString_LessCaseInsensitive (existing ledger name)",
+    "case_sensitive": false,
+    "evidence": "00443D3D calls 00BF7FBF __stricmp on the two data pointers and takes the sign; 00468170 and 0046B386 inline the same call. The empty-key branches at 00443D0D and 00443D24 avoid dereferencing a null data pointer, so a default-constructed key compares equal to \"\".",
+    "value_type": "12 bytes: key at +0h/+4h, mapped record pointer at +8h (00469A5B)"
+  },
+
+  "map_layout": {
+    "base": "SceneDatabase+18h",
+    "fields": [
+      { "offset": "+0h", "field": "_Myproxy", "note": "never read on any path here" },
+      { "offset": "+4h", "field": "_Myhead", "evidence": "00468CF1, 00469496 ([this+1Ch]), 0046B34D" },
+      { "offset": "+8h", "field": "_Mysize", "note": "not read here" }
+    ],
+    "node": [
+      { "offset": "+0h", "field": "_Left", "evidence": "0046B39B, 00468183" },
+      { "offset": "+4h", "field": "_Parent", "evidence": "00468145" },
+      { "offset": "+8h", "field": "_Right", "evidence": "0046B39F, 0046817C" },
+      { "offset": "+0Ch", "field": "key.length", "evidence": "00468155, 0046B371" },
+      { "offset": "+10h", "field": "key.data", "evidence": "0046816B, 0046B37E" },
+      { "offset": "+14h", "field": "mapped record pointer", "evidence": "00469233, 0046D9D9" },
+      { "offset": "+19h", "field": "_Isnil", "evidence": "00468148, 0046B353" }
+    ],
+    "iterator": "{container, node}, 8 bytes, written at 00468D2A/00468D2C",
+    "insert_result": "{container, node, bool}, 12 bytes; bool at +8h set to 1 at 0046B3DE/0046B42C and 0 at 0046B447"
+  },
+
+  "record_layout": {
+    "size": "0x5C",
+    "allocated_at": "0046d68c operator new(5Ch)",
+    "vftable": "00CE5640, one slot holding 004693A0",
+    "fields": [
+      { "offset": "+0h", "field": "void** vftable", "writer": "004693DE", "readers": "none; the destructor rewrites it at 0046931E" },
+      { "offset": "+4h", "field": "PropertyBag* properties (owned)", "writer": "00469405 from ctor a1", "readers": "0046DB57, 0046DBCC, 0046DEC1, a5 of 0046C550; deleted at 00469337" },
+      { "offset": "+8h", "field": "char* name (owned, strdup)", "writer": "00469411 from 00438E40(a3)", "readers": "none; freed at 00469344" },
+      { "offset": "+0Ch", "field": "char* className (owned, strdup)", "writer": "00469428 from 00438E40(a2)", "readers": "0046D9DC, 0046DCB6; freed at 00469357" },
+      { "offset": "+10h", "field": "int party", "writer": "00469421 from ctor a4", "readers": "none found in this packet" },
+      { "offset": "+14h..+53h", "field": "float frame[16]", "writer": "0046942B BSP_Matrix_Copy4x4X87 from ctor a5", "readers": "a4 of 0046C550, a4 of the class creator at 0046DB4B and 0046DE9A" },
+      { "offset": "+54h/+58h", "field": "NativeString parentName", "writer": "004693E8 zero, then 0046943F and 00469454 from ctor a6", "readers": "0046DA2D/0046DA3D, 0046DD09/0046DD19" }
+    ],
+    "key_identity": "The map key and record+8h come from the same 256-byte stack buffer at entry-10Ch of 0046CF40: the record constructor takes it as a3 at 0046D6D8 and 0041E870 assigns the key from it at 0046D71B. The same address is 0046C550's entityName argument at 0046D63C."
+  },
+
+  "producer": {
+    "function": "0046cf40",
+    "branch": "0046D5E4 .. 0046D7E9",
+    "pass": "the instantiate pass only: the registration argument at entry+58h must be zero (0046D679)",
+    "gates": [
+      { "order": 1, "site": "0046d5f4", "condition": "the Hidden property (00CE5708) byte at +0Ch is non-zero, read at 0046D5EB" },
+      { "order": 2, "site": "0046d5fa", "condition": "argument a6 at entry+54h is non-zero; the top-level caller 0046EB0F pushes 1 at 0046EA5E" },
+      { "order": 3, "site": "0046d65a", "condition": "0046C550 returns true; called at 0046D655 with a23 = 1 (0046D60F), unlike every other site" },
+      { "order": 4, "site": "0046d679", "condition": "the registration argument at entry+58h is zero" }
+    ],
+    "frame_anchor": "PUSH -1; PUSH handler; PUSH EAX; SUB ESP,190h; PUSH EBX; PUSH EBP; PUSH ESI; PUSH EDI puts ESP at entry-1ACh, so [ESP+200h] is entry+54h and [ESP+204h] is entry+58h, the last argument of a RET 58h routine.",
+    "duplicates": "rejected by 0046B340 (bool = 0 at 0046B447); the caller ignores the bool, so a duplicate name leaks its record"
+  },
+
+  "host_steps": [
+    { "step": 1, "address": "0046d5eb", "native": "008f2260", "function": "0046cf40", "name": "read_property", "role": "read Hidden (00CE5708) out of the bag just parsed", "ecx": "the property bag", "args": ["00ce5708"], "ret": "value byte at [EAX+0Ch]" },
+    { "step": 2, "address": "0046d655", "native": "0046c550", "function": "0046cf40", "name": "should_generate", "role": "the per-entity generation predicate, with a23 = 1", "ecx": "the scene database", "args": ["className", "the name buffer at entry-10Ch", "a2", "&frame", "the bag", "...", "1"], "ret": "RET 5Ch, AL" },
+    { "step": 3, "address": "0046d674", "native": "008f2260", "function": "0046cf40", "name": "read_property", "role": "read Party (00CE5804)", "ecx": "the property bag", "args": ["00ce5804"], "ret": "value dword at [EAX+0Ch], taken at 0046D681" },
+    { "step": 4, "address": "0046d68c", "native": "00bf681b", "function": "0046cf40", "name": "allocate_record", "role": "operator new(5Ch); a null result skips the construction at 0046D6A4", "args": ["0x5c"], "ret": "__cdecl" },
+    { "step": 5, "address": "0046d6c4", "native": "0041e870", "function": "0046cf40", "name": "assign_native_string", "role": "build the parent-name NativeString from the parent accessor's result, or 00CE3A0C when the parent is null", "ecx": "&parentName temp", "args": ["const char*"], "ret": "RET 4" },
+    { "step": 6, "address": "0046d6f4", "native": "004693c0", "function": "0046cf40", "name": "construct_record", "role": "fill the 5Ch record", "ecx": "the new block", "args": ["bag", "className", "the name buffer at entry-10Ch", "party", "&frame at entry-164h", "&parentName"], "ret": "RET 18h, EAX = the record" },
+    { "step": 7, "address": "0046d71b", "native": "0041e870", "function": "0046cf40", "name": "assign_native_string", "role": "build the map key from the same name buffer", "ecx": "the 8-byte slot reserved by SUB ESP,8 at 0046D6FF", "args": ["the name buffer at entry-10Ch"], "ret": "RET 4" },
+    { "step": 8, "address": "0046d729", "native": "00469fc0", "function": "0046cf40", "name": "make_entry", "role": "pair(key by value, record); consumes the key temp", "ecx": "the pair", "args": ["EDX = the record", "the key, two dwords by value"], "ret": "RET 8" },
+    { "step": 9, "address": "0046d73e", "native": "00469a20", "function": "0046cf40", "name": "copy_entry", "role": "the copy the insert actually takes", "ecx": "the second pair", "args": ["the first pair"], "ret": "RET 4" },
+    { "step": 10, "address": "0046d75f", "native": "0046b340", "function": "0046cf40", "name": "insert_entry", "role": "std::map::insert on SceneDatabase+18h", "ecx": "the scene database +18h, formed at 0046D750 and 0046D754", "args": ["&out pair<iterator,bool>", "the pair copy"], "ret": "RET 8" },
+    { "step": 11, "address": "0046d77f", "native": "00419cc0", "function": "0046cf40", "name": "release_temp_key", "role": "pool singleton for the pair copy's key", "args": ["data", "length+1", "1"], "ret": "__cdecl, args left for the next call" },
+    { "step": 12, "address": "0046d786", "native": "00bd1510", "function": "0046cf40", "name": "release_temp_key", "role": "return the block", "ecx": "the pool", "args": ["consumes step 11's three arguments"], "ret": "" },
+    { "step": 13, "address": "0046d7ac", "native": "00419cc0", "function": "0046cf40", "name": "release_temp_key", "role": "the first pair's key", "args": ["data", "length+1", "1"], "ret": "__cdecl" },
+    { "step": 14, "address": "0046d7b3", "native": "00bd1510", "function": "0046cf40", "name": "release_temp_key", "role": "return the block", "ecx": "the pool", "args": [], "ret": "" },
+    { "step": 15, "address": "0046d7dd", "native": "00419cc0", "function": "0046cf40", "name": "release_temp_key", "role": "the parent-name temp, gated on a flag byte at 0046D7B8", "args": ["data", "length+1", "1"], "ret": "__cdecl" },
+    { "step": 16, "address": "0046d7e4", "native": "00bd1510", "function": "0046cf40", "name": "release_temp_key", "role": "return the block", "ecx": "the pool", "args": [], "ret": "" },
+
+    { "step": 20, "address": "004691c0", "native": "0041e870", "function": "004691b0", "name": "assign_native_string", "role": "temporary key from the caller's C string", "ecx": "&key at entry-10h", "args": ["name"], "ret": "RET 4" },
+    { "step": 21, "address": "004691d4", "native": "00468cd0", "function": "004691b0", "name": "map_find", "role": "the find itself", "ecx": "this+18h", "args": ["&it at entry-8", "&key"], "ret": "RET 8; it = {container, node}" },
+    { "step": 22, "address": "004691ec", "native": "00419cc0", "function": "004691b0", "name": "release_temp_key", "role": "pool singleton", "args": ["key.data", "key.length+1", "1"], "ret": "__cdecl; gate key.data != 0 at 004691DF" },
+    { "step": 23, "address": "004691f3", "native": "00bd1510", "function": "004691b0", "name": "release_temp_key", "role": "return the block", "ecx": "the pool", "args": [], "ret": "" },
+
+    { "step": 30, "address": "00469491", "native": "0041e870", "function": "00469480", "name": "assign_native_string", "role": "temporary key", "ecx": "&key at entry-10h", "args": ["name"], "ret": "RET 4" },
+    { "step": 31, "address": "004694a8", "native": "00468cd0", "function": "00469480", "name": "map_find", "role": "the find, used only for its end test", "ecx": "this+18h", "args": ["&it", "&key"], "ret": "RET 8, EAX = &it" },
+    { "step": 32, "address": "004694d7", "native": "00419cc0", "function": "00469480", "name": "release_temp_key", "role": "pool singleton", "args": ["key.data", "key.length+1", "1"], "ret": "__cdecl; gate key.data != 0 at 004694CA" },
+    { "step": 33, "address": "004694de", "native": "00bd1510", "function": "00469480", "name": "release_temp_key", "role": "return the block", "ecx": "the pool", "args": [], "ret": "" },
+
+    { "step": 40, "address": "0046dc41", "native": "0041e870", "function": "0046dc10", "name": "assign_native_string", "role": "temporary key from a1", "ecx": "&key", "args": ["name"], "ret": "RET 4" },
+    { "step": 41, "address": "0046dc55", "native": "00468cd0", "function": "0046dc10", "name": "map_find", "role": "the find", "ecx": "EBP+18h, EBP = this", "args": ["&it", "&key"], "ret": "RET 8" },
+    { "step": 42, "address": "0046dc6d", "native": "00419cc0", "function": "0046dc10", "name": "release_temp_key", "role": "pool singleton", "args": ["key.data", "key.length+1", "1"], "ret": "__cdecl" },
+    { "step": 43, "address": "0046dc74", "native": "00bd1510", "function": "0046dc10", "name": "release_temp_key", "role": "return the block", "ecx": "the pool", "args": [], "ret": "" },
+    { "step": 44, "address": "0046dcba", "native": "0041e870", "function": "0046dc10", "name": "assign_native_string", "role": "class-map key from record+0Ch", "ecx": "&key2", "args": ["record+0Ch"], "ret": "RET 4" },
+    { "step": 45, "address": "0046dcd7", "native": "00468fb0", "function": "0046dc10", "name": "find_class_row", "role": "the class map at SceneDatabase+34h; classRow = *(ret+8) at 0046DCDC", "ecx": "this+34h", "args": ["&key2", "&out"], "ret": "RET 8" },
+    { "step": 46, "address": "0046dcfd", "native": "00419cc0", "function": "0046dc10", "name": "release_temp_key", "role": "pool singleton for key2", "args": ["key2.data", "key2.length+1", "1"], "ret": "__cdecl" },
+    { "step": 47, "address": "0046dd04", "native": "00bd1510", "function": "0046dc10", "name": "release_temp_key", "role": "return the block", "ecx": "the pool", "args": [], "ret": "" },
+    { "step": 48, "address": "0046dd31", "native": "00925a90", "function": "0046dc10", "name": "find_parent_entity", "role": "resolve record+58h against the entity registry", "ecx": "*(*(00E188A8)+19CCh)", "args": ["record+58h or 00E18560"], "ret": "RET 4; gate record+54h != 0 at 0046DD0D" },
+    { "step": 49, "address": "0046dd9f", "native": "00467050", "function": "0046dc10", "name": "set_frame_rotation", "role": "rebuild the 3x3 part from Euler (0, heading, 0)", "ecx": "the working frame", "args": ["0.0f", "heading", "0.0f"], "ret": "__cdecl-style three floats; gate heading < 2*pi at 0046DD87" },
+    { "step": 50, "address": "0046de6b", "native": "00468660", "function": "0046dc10", "name": "class_id_to_name", "role": "class id to class name", "ecx": "*(00E18680)", "args": ["*classRow"], "ret": "RET 4" },
+    { "step": 51, "address": "0046de75", "native": "0046c550", "function": "0046dc10", "name": "should_generate", "role": "the generation gate; AL == 0 returns 0", "ecx": "this", "args": ["the 23-dword block"], "ret": "RET 5Ch" },
+    { "step": 52, "address": "0046de9a", "native": "*(classRow+4)", "function": "0046dc10", "name": "create_instance", "role": "indirect call through the class descriptor's instantiate-pass creator; CALL EAX, two bytes, so the return address is 0046DE9C", "ecx": "*classRow", "args": ["EDX = a2", "parent", "&frame", "record+4", "0"], "ret": "the entity in EAX", "indirect": true },
+    { "step": 53, "address": "0046dea0", "native": "00bf681b", "function": "0046dc10", "name": "alloc_bag_ref", "role": "operator new(0Ch)", "args": ["0x0c"], "ret": "__cdecl" },
+    { "step": 54, "address": "0046dec1", "native": "00922e20", "function": "0046dc10", "name": "construct_bag_ref", "role": "wrap record+4 in the 0Ch holder; no clone or merge on this path", "ecx": "the 0Ch block", "args": ["record+4"], "ret": "RET 4; gate the allocation at 0046DEAE" },
+    { "step": 55, "address": "0046dedd", "native": "00925f20", "function": "0046dc10", "name": "init_all_entities", "role": "the same tail as 0046D930", "ecx": "CL = 0", "args": [], "ret": "" }
+  ],
+
+  "lookup_paths": [
+    { "entry": "GenerateObject 00944FD0 -> 004C6BA0 -> 0046D930", "container": "SceneDatabase+18h", "key": "NativeString from the Lua string, case-insensitive", "result": "a new entity, or 0" },
+    { "entry": "GenerateObject with a placement -> 004C6BE0 -> 0046DC10", "container": "SceneDatabase+18h", "key": "same", "result": "a new entity at the caller's position and heading" },
+    { "entry": "Spawn 00944680 -> 004691B0 at 0094477D", "container": "SceneDatabase+18h", "key": "same; 00F89B40 (the empty string) when the Lua argument is absent", "result": "the record pointer, stored at [ESP+58h] in the spawn request" },
+    { "entry": "FindHiddenEntity 008A9E10 -> 00469480", "container": "SceneDatabase+18h", "key": "same", "result": "a boolean pushed back to Lua" },
+    { "entry": "the deferred command queue 0046AAB0", "container": "NOT this map: the entity registry at [[00E188A8]+19CCh] through 00925A90 at 0046AB48", "key": "the queued target name", "result": "a live entity; see docs/SCENE_DEFERRED_REFS.md" }
+  ],
+
+  "corrections": [
+    {
+      "target": "docs/SCENE_ENTITY_CREATE.md, the record table under \"The record in the map at SceneDatabase+18h\" (owned by another packet; not edited)",
+      "was": "+8h / +0Ch is one NativeString className, length at +8h (marked provisional, not read there).",
+      "is": "+8h and +0Ch are two independent owned char* fields. +8h is the entity name, +0Ch the class name; there is no length field for either.",
+      "evidence": "004693C0 writes [record+8] = 00438E40(a3) at 00469411 and [record+0Ch] = 00438E40(a2) at 00469428, from two different constructor arguments. 00438E40 BSP_NativeString_Duplicate is strdup in ECX. The destructor 00469300 frees both separately with the CRT free at 00469344 and 00469357, which a NativeString buffer would never be (those go back to the sized storage pool)."
+    },
+    {
+      "target": "docs/SCENE_ENTITY_CREATE.md, same table, the +14h..+53h row's field name (not edited)",
+      "was": "float localFrame[16].",
+      "is": "The frame the reader hands 0046C550 as a4 at 0046D62D, which is the entity's own frame with the parent's world frame travelling separately as the by-value argument. Naming it local is right; the note worth adding is that both creators pass identity for the parent frame, so a nested hidden entity would be instantiated at its parent-relative pose.",
+      "evidence": "0046D62D LEA EDX,[ESP+94h] with ESP = entry-1F8h resolves to entry-164h, the same address 004693C0 receives as a5 at 0046D6D2 (LEA EDX,[ESP+4Ch] with ESP = entry-1B0h). The composition calls 00413920 at 0046D852 and 0046D875 build the child's argument, not this one."
+    },
+    {
+      "target": "docs/SCENE_FILE_READER.md, the Hidden row of the property table (owned by another packet; not edited)",
+      "was": "when set (and this+4h non-zero) the normal instantiation is skipped and the hidden branch runs instead",
+      "is": "the second operand is argument a6 at entry+54h, not this+4h; and there is a fourth gate, the registration argument at entry+58h, which must be zero",
+      "evidence": "0046D5FA reads [ESP+200h] and 0046D679 reads [ESP+204h]; the prologue PUSH -1 / PUSH handler / PUSH EAX / SUB ESP,190h / PUSH EBX / PUSH EBP / PUSH ESI / PUSH EDI puts ESP at entry-1ACh, so those are entry+54h and entry+58h. RET 58h makes entry+58h the last argument. The same anchor gives arg1 at 0046CF5D."
+    },
+    {
+      "target": "include/bsp/scene_entity_create.hpp, SceneCreateRequest::class_key (leased elsewhere; not edited)",
+      "was": "class_key, described as keying the record map",
+      "is": "it is the authored entity name; the map is keyed by entity name, not by class",
+      "evidence": "The key and record+8h come from the same buffer (see record_layout.key_identity), and record+0Ch (the class name) is what the class map at +34h is keyed by. docs/LUA_BINDING_GENERATE_OBJECT.md line 67 already calls argument 0 the authored object's name."
+    }
+  ],
+
+  "no_ghidra_function": [],
+
+  "uncertainties": [
+    "The indirect call at 0046D66B (EAX = *(local+8), the local at entry-188h, ECX = the property bag, result discarded) sits between the generation gate and the Party read and was not identified.",
+    "Whether nested hidden entities are recorded: the recursive call at 0046D8A9 passes a local at entry-188h as a6 rather than the caller's a6, so gate 2 for a child is not established. The shipped .scn files were not scanned for a nested Hidden entity.",
+    "record+10h (party) has no reader among the routines in this packet.",
+    "No run-time evidence: nothing here was confirmed against a run log of bsp_game.exe."
+  ],
+
+  "follow_up_packets": [
+    { "id": "scene_hidden_record_party_consumer", "addresses": ["004693c0", "0046d674"], "question": "Who reads record+10h. The party value is written by the reader and never read by either creator." },
+    { "id": "scene_hidden_record_nested", "addresses": ["0046d8a9", "0046cf40"], "question": "The a6 local at entry-188h of the recursion, and whether nested Hidden entities reach the map." }
+  ],
+
+  "reconstruction": {
+    "header": "include/bsp/scene_record_map.hpp",
+    "source": "src/scene_record_map.cpp",
+    "shape": "the record as a documented struct with offset constants, the key comparison and the map lookup as pure rules over an injected view, and the inserter and the two wrappers as sequences over an injected host with one virtual method per native call site",
+    "not_ported": ["the red-black tree itself", "the CRT string and pool helpers", "0046C550", "the class creators", "the Lua frame plumbing"],
+    "status": "reconstructed, build-tested; not ABI-compatible and not game-validated"
+  }
+}
