@@ -1,0 +1,185 @@
+{
+  "packet": "cc_cruise_speed_setting",
+  "owner": "agent/cc-scene-spawn-speed",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only: no renames, comments, prototypes, function creation or saves",
+  "question": "Why the mission's scene-authored `Cruise` ships stand still, and what the real game gives them.",
+  "answer": "The scene record carries the speed. Every unit entity that authors `Command = E CommandType : Cruise` in usn_2_java.scn also authors `StartSpeed = F 12.0000 ;`. The game-unit init slot 0A0h (00822C20, called from 00926110 in BSP_SEntity_InitAll) reads that key out of the entity's property bag and seeds two things before any command is latched: the order ring's live throttle at ring+148h (unit+980h) with StartSpeed / 0080FC30(unit), and the hull body's axial velocity with 0080FC30(unit) times that ratio. When the queued `Cruise` later becomes the unit's current command, 00835E17 latches that non-zero ring throttle as `cruiseThrust`, and because the seed never touches the ring's rudder the latch also keeps the entity's spawned heading. A ship whose ring is still zero at the latch is a ship whose init never ran the StartSpeed arm.",
+
+  "host_steps": [
+    {
+      "step": "call the unit's init slot",
+      "address": "00926110",
+      "native": "00d09718+vtablea0",
+      "function": "00925f20",
+      "this": "the entity at [node+8h]",
+      "args": "none",
+      "gate": "the entity is on the pending-init list BSP_SEntity_InitAll walks",
+      "note": "indirect through vtable slot 0A0h; the base body for a game unit is 00822C20"
+    },
+    {
+      "step": "find ShipYardLaunch",
+      "address": "00823576",
+      "native": "008f2260",
+      "function": "00822c20",
+      "this": "[[unit+0C0h]+8h], the entity's scene property bag",
+      "args": "\"ShipYardLaunch\" (00D0659C)",
+      "gate": "[unit+0C0h]+4h == 1 (0082353D)",
+      "host_method": "find_shipyard_launch_00823576"
+    },
+    {
+      "step": "find StartSpeed",
+      "address": "00823590",
+      "native": "008f2260",
+      "function": "00822c20",
+      "this": "[[unit+0C0h]+8h], the entity's scene property bag",
+      "args": "\"StartSpeed\" (00CFCCFC)",
+      "gate": "same arm",
+      "host_method": "find_start_speed_00823590"
+    },
+    {
+      "step": "reference speed, first call",
+      "address": "008235ba",
+      "native": "0080fc30",
+      "function": "00822c20",
+      "this": "the unit",
+      "args": "none",
+      "gate": "the StartSpeed record was found (00823597)",
+      "host_method": "unit_reference_speed_0080fc30"
+    },
+    {
+      "step": "seed the order ring's live throttle",
+      "address": "008235d5",
+      "native": "0080d9b0",
+      "function": "00822c20",
+      "this": "unit+838h, the order ring",
+      "args": "float32(StartSpeed / reference speed)",
+      "gate": "same",
+      "host_method": "set_order_ring_throttle_0080d9b0"
+    },
+    {
+      "step": "reference speed, second call",
+      "address": "008235dc",
+      "native": "0080fc30",
+      "function": "00822c20",
+      "this": "the unit",
+      "args": "none",
+      "gate": "same",
+      "host_method": "unit_reference_speed_0080fc30"
+    },
+    {
+      "step": "seed the hull body's axial velocity",
+      "address": "008235f7",
+      "native": "0092d770",
+      "function": "00822c20",
+      "this": "[unit+1018h], the unit motion controller",
+      "args": "float32(reference speed * the ratio above)",
+      "gate": "same",
+      "host_method": "set_controller_axial_speed_0092d770"
+    }
+  ],
+
+  "coverage": [
+    {
+      "routine": "scene_unit_start_speed_seed_arm",
+      "cpp": "bsp::run_start_speed_arm_0082356c",
+      "native": "0082356C..008235FB",
+      "coverage": "complete"
+    },
+    {
+      "routine": "scene_start_speed_value_00823599",
+      "cpp": "bsp::scene_start_speed_value_00823599",
+      "native": "00823599..008235AA",
+      "coverage": "complete"
+    },
+    {
+      "routine": "scene_start_speed_seed_008235b0",
+      "cpp": "bsp::scene_start_speed_seed_008235b0",
+      "native": "008235B0..008235F7",
+      "coverage": "complete"
+    },
+    {
+      "routine": "scene_cruise_ship_speed",
+      "cpp": "bsp::scene_cruise_ship_speed",
+      "native": "none",
+      "coverage": "composition: not a native routine. Chains 008235B0 (the seed), 00835E17 (the latch, src/cruise_command.cpp) and 009E1265 (the AI step, src/cruise_command.cpp) in the order the game runs them."
+    },
+    {
+      "routine": "00822C20 as a whole",
+      "native": "00822C20..00824B57",
+      "coverage": "partial: 0082352B..008235FB read here. The prologue 00822C20..00822CD0 and the modifier-group reset 00823704..00823742 are docs/UNIT_FORCE_COMMANDS.md's; the kind-2 arm 00823548..00823567, the CamoColor block 008235FC..008236FC and everything from 00823742 to 00824B57 are unread."
+    },
+    {
+      "routine": "00925F20 BSP_SEntity_InitAll",
+      "native": "00925F20..0092638A",
+      "coverage": "partial: only the slot call 00926105..00926112 is read here. The list walk, the gates above 009260A0 and the second loop from 00926120 are not."
+    },
+    {
+      "routine": "0080FC30, 0080D9B0, 0092D770",
+      "native": "-",
+      "coverage": "not redone: existing reconstructions bsp::unit_reference_speed_0080fc30, bsp::set_unit_order_ring_param_a_0080d9b0 and bsp::unit_set_axial_speed_0092d770. Referenced, not reimplemented."
+    }
+  ],
+
+  "corrections": [
+    {
+      "was": "docs/SCENE_ENTITY_CREATE.md line 144 and include/bsp/scene_entity_create.hpp line 37: the 12-byte holder at entity+0C0h is `{vtable +0, refs +4, bag +8}`.",
+      "is": "+4h is a kind tag, not a reference count. 00922E20 (vtable 00D03D94) stores the literal 1 next to a cloned scene property bag; 00774DC0 (vtable 00D03754) stores the literal 2 next to a different payload. 00823537..00823542 dispatches on exactly 1 and 2 and reads +8h as a property bag only for 1; the kind-2 payload is read at +0C4h, +011Ch and +0128h, past the 114h-byte end of a property bag.",
+      "evidence": "00922E32/00922E35; 00774DE4/00774DEF; 00823537..00823567; kScenePropertyBagSize = 0x114 in include/bsp/scene_property_bag.hpp",
+      "action": "not applied here: docs/SCENE_ENTITY_CREATE.md and its header are another packet's files. Listed as a follow-up."
+    },
+    {
+      "was": "docs/CRUISE_COMMAND.md: \"Nothing in the command, the message or the scene record carries a speed or a heading.\"",
+      "is": "True of the command and the message, wrong about the scene record. The record carries both, on the unit entity rather than in the `Command` sub-block: `StartSpeed` becomes the ring throttle the latch reads, and the entity's `localframe` orientation becomes the heading the latch keeps because the seed leaves the ring's rudder at zero.",
+      "evidence": "usn_2_java.scn lines 1052..1373 (14 `Cruise` units, each with `StartSpeed = F 12.0000 ;` and a `localframe`); 00823582..008235F7; 00835AE0",
+      "action": "recorded here; docs/CRUISE_COMMAND.md is the parent packet's file and is not edited."
+    },
+    {
+      "was": "docs/CRUISE_COMMAND.md: \"The producer of +24h is contract: unread ... no Lua binding string names it.\"",
+      "is": "Already corrected by packet cc_commanded_speed: the producers are luaMW_SetShipSpeed (00890D30) and luaMW_NavigatorMoveOnPath (008A3600), and +28h is the mission clock, not a boolean enable. This packet adds only that no scene property feeds the pair: 00822C20's property arm writes the ring and the hull body, never *(unit+73Ch)+24h/+28h.",
+      "evidence": "docs/UNIT_COMMANDED_SPEED.md; 0082352B..008235FB carries no store to [unit+73Ch]",
+      "action": "no edit needed"
+    },
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2n: \"Nineteen of the 32 authored None\" and \"The thirteen ships that author Cruise\".",
+      "is": "The shipped usn_2_java.scn has 32 unit entities, of which 14 fill their `Command` sub-block with `Command = E CommandType : Cruise` and `CommandTarget = R \"\"`, and 18 leave the sub-block empty. There is no `None` token in the file at all; 004E6B30 queues nothing for an empty sub-block. The executable's counts are off by one in each direction.",
+      "evidence": "usn_2_java.scn: 32 `\"Command\" {` blocks, 14 `Command = ` lines all reading Cruise, 14 `CommandTarget = R` lines, 32 `entity ... (DestroyerGen)` plus 2 NavPoint",
+      "action": "not applied: docs/GAME_EXECUTABLE.md is owned by agent/cc-exe-2p. Listed as a follow-up."
+    }
+  ],
+
+  "scene_evidence": {
+    "file": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/scenes/missions/USN/usn_2_java.scn",
+    "mission_script": "scripts/missions/usn/usn_2_java.lua",
+    "mission_script_speed_calls": "none: the 975-line script contains no occurrence of `speed`, `cruise` or `throttle` in any case, which is what docs/GAME_EXECUTABLE.md milestone 2n already reported for SetShipSpeed and NavigatorMoveOnPath",
+    "unit_entities": 32,
+    "cruise_units": 14,
+    "start_speed_values": "14 x `StartSpeed = F 12.0000 ;`, one on each Cruise unit",
+    "start_speed_across_shipped_scenes": "207 .scn files author the key; the commonest values are 7.71667 (434), 5.0 (126), 6.1733/6.17333 (154) and 6.5 (33) m/s"
+  },
+
+  "worked_example": {
+    "unit": "HNLMS DeRuyter, class DeRuyter, VehicleClass[20], MaxSpeed 16.4622 m/s at class+500h",
+    "authored_start_speed_m_s": 12.0,
+    "reference_speed_m_s": 16.4622,
+    "ring_throttle": 0.7289426326751709,
+    "axial_speed_m_s": 12.0,
+    "latched": "is_heading = true (the ring's rudder is 0), steer_or_heading = the spawn heading, thrust = 0.72894263",
+    "ordered": "throttle 0.72894263, mode Heading",
+    "note": "The executable's stand-in for these ships is a zero ring, which latches thrust 0 and holds them stopped."
+  },
+
+  "native_unverified": [
+    {
+      "address": "00926110",
+      "native": "00d09718+vtablea0",
+      "reason": "indirect call through vtable slot 0A0h; tools/verify_report_calls.py reports vtable rows as indirect and skips them. The slot's occupants were read out of .rdata: 00CF9150, 00CFA818, 00CFB7D8, 00CFC470 and 00D09718 all hold 00822C20 at +0A0h, and 00CFFAD0, 00D016D0, 00D0C020 and 00D0C6E8 hold the four overrides at the same offset."
+    }
+  ],
+
+  "no_ghidra_function": "none: every address this packet names lies inside an existing Ghidra function.",
+
+  "build": "scripts/build.ps1, Win32 /W4 /WX: bsp_core.dir/Release/cruise_speed_setting.obj built, bsp_math_tests passed (1/1)."
+}

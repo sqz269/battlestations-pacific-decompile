@@ -1,4 +1,5 @@
 #include "bsp/air_operations.hpp"
+#include "bsp/cruise_speed_setting.hpp"
 #include "bsp/director_update_arms.hpp"
 #include "bsp/plane_squadron.hpp"
 #include "bsp/app_bootstrap.hpp"
@@ -2811,6 +2812,38 @@ int main() {
             bsp::torpedo_intercept_time_008fb8d0(shooter, target, 20.0f, still);
         check(parked.root_count >= 1 && std::fabs(parked.first - 50.0f) < 1e-3f,
             "008FB8D0 is exact against a stationary target: 1000 / 20");
+    }
+
+    {
+        // Packet cc_cruise_speed_setting. usn_2_java.scn authors
+        // `StartSpeed = F 12.0000 ;` on all fourteen of its `Cruise` units; the
+        // DeRuyter class MaxSpeed is 16.4622 m/s with the gameplay scale at 1.0.
+        // The risk this pins is 008235E1: the value 0092D770 receives is the
+        // reference speed multiplied back by the float32 ratio, not the authored
+        // speed passed straight through, and the two differ in the last bits.
+        bsp::SceneStartSpeedProperty record{};
+        record.present = true;
+        record.type = bsp::ScenePropertyType::Float;
+        record.value_float = 12.0f;
+
+        bsp::UnitOrderRing ring{};
+        const bsp::CruiseSpeedSettingOutcome cruise_seed =
+            bsp::scene_cruise_ship_speed(record, ring, 16.4622f, 1.25f, 0.0f);
+
+        check(std::fabs(cruise_seed.seed.ring_throttle - 0.7289426f) < 1e-6f,
+            "008235BF seeds ring +148h with 12.0 / 16.4622, not with 12.0");
+        // A reference speed that makes the round trip lossy, so the check tells
+        // the native's shape apart from passing the authored speed through. The
+        // authored 7.71667 m/s is the commonest StartSpeed in the shipped scenes.
+        const bsp::SceneStartSpeedSeed lossy =
+            bsp::scene_start_speed_seed_008235b0(7.71667f, 15.0f, 15.0f);
+        check(lossy.axial_speed != 7.71667f && std::fabs(lossy.axial_speed - 7.71667f) < 1e-5f,
+            "008235E1 hands 0092D770 the reference speed times the ratio, not the authored speed");
+        check(cruise_seed.latched.is_heading && std::fabs(cruise_seed.latched.steer_or_heading - 1.25f) < 1e-6f,
+            "00835AE0 keeps the spawn heading: the seed never touches the ring's rudder");
+        check(std::fabs(cruise_seed.ordered.throttle - cruise_seed.seed.ring_throttle) < 1e-6f &&
+              cruise_seed.ordered.mode == bsp::CruiseSteerMode::Heading,
+            "009E1265 orders the seeded throttle, so a scene `Cruise` ship makes way");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
