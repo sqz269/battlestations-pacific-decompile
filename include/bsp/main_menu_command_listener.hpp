@@ -7,21 +7,6 @@
 namespace bsp {
 class GuiListboxRuntime;
 
-// Borrowed view of the SAME screen-owned list nodes, not a replacement vector.
-// 59041B..59045B constructs lists+280/+298/+2A4 using 582280's self-linked
-// 0Ch sentinel. Node next/previous/payload are +0/+4/+8; list head/count +4/+8.
-// Payloads must resolve to canonical GUI layouts. This C++ pointer transport
-// does not permit treating native100h widget bytes as a GuiLayoutWidget.
-struct MainMenuCommandWidgetListNode {
-    MainMenuCommandWidgetListNode* next;
-    MainMenuCommandWidgetListNode* previous;
-    GuiLayoutWidget* widget;
-};
-struct MainMenuCommandWidgetListView {
-    MainMenuCommandWidgetListNode* const volatile& head_04;
-    const volatile std::uint32_t& count_08;
-};
-
 // The stack temporary produced by 7FC490 -> 437490: three words followed by
 // one owned8h native string. This is a returned value, not another profile.
 // No inferred defaults: the actual copy-producing service writes every field.
@@ -64,7 +49,7 @@ struct MainMenuCommandServices {
     virtual void call_00584f50() = 0;
     virtual void call_0058c010() = 0;
     virtual void call_005922f0() = 0;
-    virtual void call_00594bf0() = 0; // body only partly read; addressed boundary
+    virtual void call_00594bf0() = 0; // complete caller in main_menu_objective_rows
     virtual void call_00599340() = 0;
     virtual void call_005885d0() = 0;
     virtual void call_005886c0() = 0;
@@ -85,9 +70,9 @@ struct MainMenuCommandListenerBindings {
     const volatile float& zoom_out_00ce69cc;
     const volatile float& zoom_in_00ce54a0;
     const volatile float& scroll_step_00cec178;
-    MainMenuCommandWidgetListView widgets_280;
-    MainMenuCommandWidgetListView widgets_298;
-    MainMenuCommandWidgetListView widgets_2a4;
+    MainMenuCommandWidgetListView widgets_280{widget.layout.descriptions_280.command_view()};
+    MainMenuCommandWidgetListView widgets_298{widget.layout.descriptions_298.command_view()};
+    MainMenuCommandWidgetListView widgets_2a4{widget.layout.descriptions_2a4.command_view()};
 };
 
 // Complete normal5993A0..599D57 caller control flow, with required addressed

@@ -114,7 +114,8 @@ read_mission_map_sizes_005c6dbe(MissionTreeLuaView& view) {
 // 005C6A70, one 434h mission record
 // ---------------------------------------------------------------------------
 
-void read_mission_record_005c6a70(MissionTreeLuaView& view, MissionRecordData& out) {
+static void read_mission_record_impl(MissionTreeLuaView& view, MissionRecordData& out,
+                                     const MissionPictureTextureServices* pictures) {
     out.screen.name = view.read_string("id", "");
     out.screen.title = view.read_string("name", "");
     out.extra.content_id = view.read_string("contentID", "");
@@ -142,11 +143,21 @@ void read_mission_record_005c6a70(MissionTreeLuaView& view, MissionRecordData& o
     // reaches 00AA2660, whose result is the texture at +0A0h and whose atlas
     // rectangle is +0A4h. An empty string releases the old texture and leaves
     // the field null.
-    out.extra.picture = view.read_string("picture", "");
+    const std::string picture_name = view.read_string("picture", "");
+    out.extra.picture = picture_name;
 
     out.extra.map_sizes = view.has_name("MultiPlayMapSizes")
                               ? read_mission_map_sizes_005c6dbe(view)
                               : default_mission_map_sizes();
+
+    // The actual resolution is AFTER the map-size branches (005C75A2).
+    // Metadata parsing explicitly leaves this publication unresolved.
+    if (pictures) {
+        if (!out.picture) out.picture.emplace(pictures->actual_owners);
+        out.picture->read_005c6a70(picture_name, *pictures);
+    } else {
+        out.picture.reset();
+    }
 
     // 005C7641: the default pair is (Int, 3), the same value
     // kMissionDifficultyFromPlayer names on the consuming side.
@@ -195,11 +206,22 @@ void read_mission_record_005c6a70(MissionTreeLuaView& view, MissionRecordData& o
     view.leave();
 }
 
+void read_mission_record_005c6a70(MissionTreeLuaView& view, MissionRecordData& out,
+                                const MissionPictureTextureServices& pictures) {
+    validate_mission_picture_services(pictures);
+    read_mission_record_impl(view, out, &pictures);
+}
+
+void read_mission_record_metadata(MissionTreeLuaView& view, MissionRecordData& out) {
+    read_mission_record_impl(view, out, nullptr);
+}
+
 // ---------------------------------------------------------------------------
 // 005C9F70, one 34h group entry
 // ---------------------------------------------------------------------------
 
-void read_mission_group_005c9f70(MissionTreeLuaView& view, MissionGroupData& out) {
+static void read_mission_group_impl(MissionTreeLuaView& view, MissionGroupData& out,
+                                    const MissionPictureTextureServices* pictures) {
     out.extra.group_name = view.read_string("groupName", "");
     out.extra.help_line = view.read_string("helpLine", "");
     out.extra.grat_msg = view.read_string("gratMsg", "");
@@ -217,10 +239,20 @@ void read_mission_group_005c9f70(MissionTreeLuaView& view, MissionGroupData& out
     for (std::int32_t index = 1; view.has_index(index); ++index) {
         view.enter_by_index(index);
         out.missions.emplace_back();
-        read_mission_record_005c6a70(view, out.missions.back());
+        read_mission_record_impl(view, out.missions.back(), pictures);
         view.leave();
     }
     view.leave();
+}
+
+void read_mission_group_005c9f70(MissionTreeLuaView& view, MissionGroupData& out,
+                               const MissionPictureTextureServices& pictures) {
+    validate_mission_picture_services(pictures);
+    read_mission_group_impl(view, out, &pictures);
+}
+
+void read_mission_group_metadata(MissionTreeLuaView& view, MissionGroupData& out) {
+    read_mission_group_impl(view, out, nullptr);
 }
 
 // ---------------------------------------------------------------------------
@@ -248,7 +280,8 @@ MissionTreeIndex find_mission_by_id_005c3470(const std::vector<MissionGroupData>
     return found;
 }
 
-MissionTreeTables load_mission_tree_005caaf0(MissionTreeScriptHost& host) {
+static MissionTreeTables load_mission_tree_impl(MissionTreeScriptHost& host,
+                                               const MissionPictureTextureServices* pictures) {
     MissionTreeTables tables{};
 
     host.open_state(kMissionTreeLuaLibraryMask);
@@ -261,7 +294,7 @@ MissionTreeTables load_mission_tree_005caaf0(MissionTreeScriptHost& host) {
     for (std::int32_t index = 1; view.has_index(index); ++index) {
         tables.groups.emplace_back();
         view.enter_by_index(index);
-        read_mission_group_005c9f70(view, tables.groups.back());
+        read_mission_group_impl(view, tables.groups.back(), pictures);
         view.leave();
         host.report_progress(mission_tree_load_progress(index));
     }
@@ -272,7 +305,7 @@ MissionTreeTables load_mission_tree_005caaf0(MissionTreeScriptHost& host) {
     for (std::int32_t index = 1; view.has_index(index); ++index) {
         tables.multi.emplace_back();
         view.enter_by_index(index);
-        read_mission_record_005c6a70(view, tables.multi.back());
+        read_mission_record_impl(view, tables.multi.back(), pictures);
         view.leave();
     }
     view.leave();
@@ -287,6 +320,16 @@ MissionTreeTables load_mission_tree_005caaf0(MissionTreeScriptHost& host) {
 
     host.close_state();
     return tables;
+}
+
+MissionTreeTables load_mission_tree_005caaf0(MissionTreeScriptHost& host,
+                                           const MissionPictureTextureServices& pictures) {
+    validate_mission_picture_services(pictures);
+    return load_mission_tree_impl(host, &pictures);
+}
+
+MissionTreeTables load_mission_tree_metadata(MissionTreeScriptHost& host) {
+    return load_mission_tree_impl(host, nullptr);
 }
 
 }  // namespace bsp

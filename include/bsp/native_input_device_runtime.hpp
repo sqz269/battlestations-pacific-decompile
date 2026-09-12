@@ -87,6 +87,8 @@ public:
     std::uint8_t buttons_active_vslot2c(void*);
     std::int32_t select_control_vslot30(void*);
     std::int32_t identifier_vslot34(void*);
+    std::int32_t identifier_vslot34(void*, std::uint32_t captured_profile);
+    void set_mouse_cooperative_level_00a9a140(void*, std::uint32_t flags);
     // Only the mouse has this signature at38. Keyboard has no slot38; gamepad
     // families use force output there. Signature/profile mismatches are errors.
     float mouse_double_click_vslot38(void*);

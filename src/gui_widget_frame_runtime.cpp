@@ -127,8 +127,8 @@ double elapsed_difference(const float& now, float first) noexcept {
     }
     return result;
 }
-bool threshold_exceeds_elapsed(const MouseInputDevice& mouse, double elapsed) noexcept {
-    const float* threshold = &mouse.double_click_seconds;
+bool threshold_exceeds_elapsed(const GuiInputDeviceRef& mouse, double elapsed) {
+    const float* threshold = mouse.mouse_double_click_storage();
     unsigned char result;
     // A9A380's ST0 result, then AA8A38's FLD/FXCH/FCOMIP/JBE.
     __asm {
@@ -142,8 +142,8 @@ bool threshold_exceeds_elapsed(const MouseInputDevice& mouse, double elapsed) no
     }
     return result != 0;
 }
-bool elapsed_exceeds_threshold(const MouseInputDevice& mouse, double elapsed) noexcept {
-    const float* threshold = &mouse.double_click_seconds;
+bool elapsed_exceeds_threshold(const GuiInputDeviceRef& mouse, double elapsed) {
+    const float* threshold = mouse.mouse_double_click_storage();
     unsigned char result;
     // The second native call compares in the opposite order at AA8A9B.
     __asm {
@@ -211,8 +211,9 @@ bool GuiWidgetFrameRuntime::operation_active(const GuiWidgetOwner& owner) const 
     return false;
 }
 void GuiWidgetFrameRuntime::bind_listbox_frames(const GuiListboxFrameServices& services) {
-    require(!active_ && !listbox_frames_ && &services.base_frames == this,
-        "Listbox frame binding requires its idle same frame runtime");
+    require(!active_ && !listbox_frames_ && &services.base_frames == this &&
+        services.input_groups_00f8bbf4.same_publication(services_.input_groups_00f8bbf4),
+        "Listbox frame binding requires its idle same runtime and input publication");
     listbox_frames_ = &services;
 }
 void GuiWidgetFrameRuntime::unbind_listbox_frames(const GuiListboxFrameServices& services) {
@@ -287,30 +288,27 @@ void GuiWidgetFrameRuntime::listener_tail(GuiWidgetOwner& widget) {
     if (inside != fields.byte_d4) listener(widget).call_current18(widget, inside);
     fields.byte_d4 = inside; // BL survives the callback, then overwrites current+D4.
 
-    const auto* groups = services_.input_groups_00f8bbf4;
-    require(groups && groups->size() > 1, "GUI listener tail requires its actual input backend");
-    const auto& devices = (*groups)[1];
-    if (devices.empty() || !devices.front()) return;
-    auto* mouse = dynamic_cast<MouseInputDevice*>(devices.front());
-    require(mouse != nullptr, "GUI listener tail requires the actual mouse profile");
+    const auto mouse = services_.input_groups_00f8bbf4.device(1);
+    if (!mouse) return;
+    mouse.require_mouse();
     // ESI keeps this same device even if a listener callback switches backend.
     if (!fields.byte_79) {
-        if (!mouse->current_down[0] && mouse->previous_down[0])
+        if (!mouse.mouse_current_down(0) && mouse.mouse_previous_down(0))
             listener(widget).call_current0c(widget);
-        if (!mouse->current_down[1] && mouse->previous_down[1])
+        if (!mouse.mouse_current_down(1) && mouse.mouse_previous_down(1))
             listener(widget).call_current10(widget);
         return;
     }
     auto& first = fields.fields_7c_80[0];
     if (!fields.byte_d4) { first = 0.0f; return; }
     const float captured_first = first;
-    if (mouse->current_down[0] && !mouse->previous_down[0]) {
+    if (mouse.mouse_current_down(0) && !mouse.mouse_previous_down(0)) {
         if (ordered_equal(captured_first, services_.zero_00d7a218)) {
             copy_float(first, fields.fields_7c_80[1]);
             listener(widget).call_current04(widget);
         } else {
             const double elapsed = elapsed_difference(fields.fields_7c_80[1], captured_first);
-            if (threshold_exceeds_elapsed(*mouse, elapsed)) {
+            if (threshold_exceeds_elapsed(mouse, elapsed)) {
                 first = 0.0f;
                 listener(widget).call_current14(widget);
             }
@@ -319,7 +317,7 @@ void GuiWidgetFrameRuntime::listener_tail(GuiWidgetOwner& widget) {
     }
     if (!ordered_equal(captured_first, services_.zero_00d7a218)) {
         const double elapsed = elapsed_difference(fields.fields_7c_80[1], captured_first);
-        if (elapsed_exceeds_threshold(*mouse, elapsed)) first = 0.0f;
+        if (elapsed_exceeds_threshold(mouse, elapsed)) first = 0.0f;
     }
 }
 void GuiWidgetFrameRuntime::update40(GuiWidgetOwner& widget, float seconds) {

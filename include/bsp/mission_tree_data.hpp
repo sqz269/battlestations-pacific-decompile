@@ -23,6 +23,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -30,6 +31,7 @@
 
 #include "bsp/gui_lua_reader.hpp"
 #include "bsp/mission_tree_screens.hpp"
+#include "bsp/mission_picture_owner.hpp"
 
 namespace bsp {
 
@@ -263,7 +265,7 @@ struct MissionRecordExtra {
     std::array<float, 3> position{};          // +06Ch Pos, default {0,0,0}
     std::vector<std::int32_t> naval_academy;  // +088h navalacademy
     std::string description;                  // +098h description
-    std::string picture;                      // consumed into +0A0h / +0A4h
+    std::string picture;                      // authored name, not the texture
     bool side_mission{false};                 // +360h sideMission, default false
     // +364h..+423h, in kMissionMultiplayerModes order.
     std::array<MissionMapCorners, kMissionMultiplayerModeCount> map_sizes{};
@@ -280,6 +282,9 @@ struct MissionRecordData {
     // fields of those same blocks, paired by side index. Value ownership
     // keeps record/vector copy and move operations independent of aliases.
     std::array<MissionSideBlockExtra, kMissionSideBlockCount> side_extras{};
+    // Disengaged only on the explicitly partial metadata path. An engaged
+    // native picture may hold null after an empty name or null load result.
+    std::optional<MissionPictureOwner> picture;
 };
 
 // The 24h of a 34h group entry that precedes its mission vector.
@@ -350,8 +355,15 @@ void read_mission_side_block_005c5da0(MissionTreeLuaView& view, MissionSideBlock
 // passes its canonical screen.sides element and matching side_extras element.
 void read_mission_side_block_005c5da0(MissionTreeLuaView& view,
                                     MissionSideBlock& screen, MissionSideBlockExtra& extra);
-void read_mission_record_005c6a70(MissionTreeLuaView& view, MissionRecordData& out);
-void read_mission_group_005c9f70(MissionTreeLuaView& view, MissionGroupData& out);
+void read_mission_record_005c6a70(MissionTreeLuaView& view, MissionRecordData& out,
+                                const MissionPictureTextureServices&);
+void read_mission_group_005c9f70(MissionTreeLuaView& view, MissionGroupData& out,
+                               const MissionPictureTextureServices&);
+
+// Authored Lua metadata only: no claim that +A0/+A4 were produced. Resets
+// any previous picture owner at the picture branch, leaving it disengaged.
+void read_mission_record_metadata(MissionTreeLuaView&, MissionRecordData&);
+void read_mission_group_metadata(MissionTreeLuaView&, MissionGroupData&);
 
 // 005C6DBE's two arms. A missing MultiPlayMapSizes gives every mode the
 // +/-15000 box; a present one gives every missing corner the origin instead.
@@ -396,7 +408,9 @@ struct MissionTreeScriptHost {
 // 005CAAF0's body after BSP_FrontEndScreen_Register. The selection tail is
 // 005C3470 followed by the negative-index clamp, which is why an unknown id
 // falls back to the first mission of the first group.
-MissionTreeTables load_mission_tree_005caaf0(MissionTreeScriptHost& host);
+MissionTreeTables load_mission_tree_005caaf0(MissionTreeScriptHost& host,
+                                           const MissionPictureTextureServices&);
+MissionTreeTables load_mission_tree_metadata(MissionTreeScriptHost& host);
 
 // 005C3470: walk every group and every mission and compare the record's id
 // case-insensitively. The default is {FFFFFFFFh, 0}.

@@ -1,0 +1,853 @@
+{
+  "packet": "orch5_menu_activation",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mode": "read_only_verified_wrappers"
+  },
+  "source": "src/main_menu_activation_runtime.cpp",
+  "header": "include/bsp/main_menu_activation_runtime.hpp",
+  "documentation": "docs/MAIN_MENU_ACTIVATION_RUNTIME.md",
+  "routines": [
+    {
+      "address": "00598b60",
+      "end_inclusive": "00599331",
+      "length": 2002,
+      "name": "main_menu_listbox_current04_00598b60",
+      "abi": "ECX=screen+8, selected-row and Listbox stack operands unread, RET8",
+      "coverage": "complete normal caller with required dependencies"
+    },
+    {
+      "address": "00585810",
+      "end_inclusive": "00585b3d",
+      "length": 814,
+      "name": "main_menu_account_gate_00585810",
+      "abi": "CL=check multiplayer privilege, RET, AL",
+      "coverage": "complete normal caller with required dependencies"
+    },
+    {
+      "address": "00585b40",
+      "end_inclusive": "00585c47",
+      "length": 264,
+      "name": "main_menu_connection_gate_00585b40",
+      "abi": "incoming registers unread, RET, AL",
+      "coverage": "complete normal caller with required dependencies"
+    },
+    {
+      "address": "005e6f70",
+      "end_inclusive": "005e6faa",
+      "length": 59,
+      "name": "main_menu_session_request_005e6f70",
+      "abi": "incoming ECX unread, RET, AL",
+      "coverage": "complete normal caller with required dependencies"
+    }
+  ],
+  "activation_flow": {
+    "instructions": 608,
+    "gaps": 0
+  },
+  "host_steps": [
+    {
+      "address": "00598b91",
+      "native": "00588a80",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00598bda",
+      "native": "00a9c990",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00598bec",
+      "native": "005922f0",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00598c11",
+      "native": "00a9c990",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00598c43",
+      "native": "00a9c990",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00598c57",
+      "native": "00597870",
+      "function": "00598b60",
+      "contract": "Required same-screen mission-list builder, page stack operand retained; RET4."
+    },
+    {
+      "address": "00598c7a",
+      "native": "00597870",
+      "function": "00598b60",
+      "contract": "Required same-screen mission-list builder, page stack operand retained; RET4."
+    },
+    {
+      "address": "00598c9e",
+      "native": "00597870",
+      "function": "00598b60",
+      "contract": "Required same-screen mission-list builder, page stack operand retained; RET4."
+    },
+    {
+      "address": "00598cc1",
+      "native": "00597870",
+      "function": "00598b60",
+      "contract": "Required same-screen mission-list builder, page stack operand retained; RET4."
+    },
+    {
+      "address": "00598ce5",
+      "native": "00597870",
+      "function": "00598b60",
+      "contract": "Required same-screen mission-list builder, page stack operand retained; RET4."
+    },
+    {
+      "address": "00598d10",
+      "native": "005e6f70",
+      "function": "00598b60",
+      "contract": "Reconstructed session/state-request helper."
+    },
+    {
+      "address": "00598d35",
+      "native": "00a9c990",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00598d4d",
+      "native": "005e74b0",
+      "function": "00598b60",
+      "contract": "Required actual session/profile setup; full body inspected, player-list producer unresolved."
+    },
+    {
+      "address": "00598d6f",
+      "native": "00585b40",
+      "function": "00598b60",
+      "contract": "Reconstructed connection gate."
+    },
+    {
+      "address": "00598d7e",
+      "native": "00585810",
+      "function": "00598b60",
+      "contract": "Reconstructed account gate; CL differs between this callers two sites."
+    },
+    {
+      "address": "00598d94",
+      "native": "005e76d0",
+      "function": "00598b60",
+      "contract": "Required actual session/profile setup; full body inspected, player-list producer unresolved."
+    },
+    {
+      "address": "00598dbd",
+      "native": "00a9c990",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00598dd6",
+      "native": "004cc460",
+      "function": "00598b60",
+      "contract": "Existing current manager interface request; retain current owner reload after payload callbacks."
+    },
+    {
+      "address": "00598e37",
+      "native": "004cc460",
+      "function": "00598b60",
+      "contract": "Existing current manager interface request; retain current owner reload after payload callbacks."
+    },
+    {
+      "address": "00598e7a",
+      "native": "004cc460",
+      "function": "00598b60",
+      "contract": "Existing current manager interface request; retain current owner reload after payload callbacks."
+    },
+    {
+      "address": "00598eba",
+      "native": "004cc460",
+      "function": "00598b60",
+      "contract": "Existing current manager interface request; retain current owner reload after payload callbacks."
+    },
+    {
+      "address": "00598ef6",
+      "native": "00585b40",
+      "function": "00598b60",
+      "contract": "Reconstructed connection gate."
+    },
+    {
+      "address": "00598f05",
+      "native": "00585810",
+      "function": "00598b60",
+      "contract": "Reconstructed account gate; CL differs between this callers two sites."
+    },
+    {
+      "address": "00598f1c",
+      "native": "004cc460",
+      "function": "00598b60",
+      "contract": "Existing current manager interface request; retain current owner reload after payload callbacks."
+    },
+    {
+      "address": "00598f45",
+      "native": "004cc460",
+      "function": "00598b60",
+      "contract": "Existing current manager interface request; retain current owner reload after payload callbacks."
+    },
+    {
+      "address": "00598f6a",
+      "native": "005886c0",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00598f8a",
+      "native": "00a9c990",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00598fca",
+      "native": "005806a0",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00598fd2",
+      "native": "007f8d60",
+      "function": "00598b60",
+      "contract": "Existing same actual captured profile and fresh selected mission."
+    },
+    {
+      "address": "00598fed",
+      "native": "005806a0",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00598ffa",
+      "native": "007fc490",
+      "function": "00598b60",
+      "contract": "Existing actual profile copy producer into native14h checkpoint value."
+    },
+    {
+      "address": "00599011",
+      "native": "005806a0",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00599019",
+      "native": "007fc370",
+      "function": "00598b60",
+      "contract": "Existing actual captured profile availability predicate."
+    },
+    {
+      "address": "00599039",
+      "native": "00584750",
+      "function": "00598b60",
+      "contract": "Existing actual unlock provider; Boolean first argument and temporary class retained."
+    },
+    {
+      "address": "0059904f",
+      "native": "0041e870",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00599062",
+      "native": "0041e870",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "0059907c",
+      "native": "0041e870",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00599086",
+      "native": "00425d10",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005990b0",
+      "native": "00531b00",
+      "function": "00598b60",
+      "contract": "Reuse actual prompt/string owner; preserve all RET2C arguments and ownership."
+    },
+    {
+      "address": "005990be",
+      "native": "0041dd20",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005990cb",
+      "native": "0041dd20",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005990d5",
+      "native": "0041e870",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005990e8",
+      "native": "0041e870",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00599102",
+      "native": "0041e870",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "0059911a",
+      "native": "0043c130",
+      "function": "00598b60",
+      "contract": "Inline full normal prefix native-string construction/concat/destruction using existing bodies."
+    },
+    {
+      "address": "00599130",
+      "native": "004261a0",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "0059913c",
+      "native": "00425d10",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00599162",
+      "native": "00531b00",
+      "function": "00598b60",
+      "contract": "Reuse actual prompt/string owner; preserve all RET2C arguments and ownership."
+    },
+    {
+      "address": "00599170",
+      "native": "0041dd20",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "0059917e",
+      "native": "0041dd20",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "0059918c",
+      "native": "0041dd20",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00599199",
+      "native": "0041dd20",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005991ac",
+      "native": "0041e870",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005991bf",
+      "native": "0041e870",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005991d9",
+      "native": "0041e870",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005991f1",
+      "native": "0043c130",
+      "function": "00598b60",
+      "contract": "Inline full normal prefix native-string construction/concat/destruction using existing bodies."
+    },
+    {
+      "address": "00599207",
+      "native": "004261a0",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00599213",
+      "native": "00425d10",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00599239",
+      "native": "00531b00",
+      "function": "00598b60",
+      "contract": "Reuse actual prompt/string owner; preserve all RET2C arguments and ownership."
+    },
+    {
+      "address": "00599256",
+      "native": "00419cc0",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "0059925d",
+      "native": "00bd1510",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "0059927a",
+      "native": "00419cc0",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00599281",
+      "native": "00bd1510",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "0059929e",
+      "native": "00419cc0",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005992a5",
+      "native": "00bd1510",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005992c1",
+      "native": "00419cc0",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005992c8",
+      "native": "00bd1510",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005992cd",
+      "native": "00425d10",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005992d4",
+      "native": "00530c20",
+      "function": "00598b60",
+      "contract": "Focus last after fresh prompt getter on all campaign prompt arms."
+    },
+    {
+      "address": "005992f4",
+      "native": "00419cc0",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005992fb",
+      "native": "00bd1510",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00599318",
+      "native": "0058c010",
+      "function": "00598b60",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585838",
+      "native": "00a3e520",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "0058584d",
+      "native": "00a3e510",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "0058585c",
+      "native": "00a3ead0",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585878",
+      "native": "004bb600",
+      "function": "00585810",
+      "contract": "Required actual multiplayer privilege predicate; full body and tail target inspected."
+    },
+    {
+      "address": "0058588e",
+      "native": "0041e870",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005858a4",
+      "native": "0041e870",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005858be",
+      "native": "0041e870",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005858c8",
+      "native": "00425d10",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005858ee",
+      "native": "00531b00",
+      "function": "00585810",
+      "contract": "Reuse actual prompt/string owner; preserve all RET2C arguments and ownership."
+    },
+    {
+      "address": "0058590b",
+      "native": "00419cc0",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585912",
+      "native": "00bd1510",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585950",
+      "native": "0041e870",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585966",
+      "native": "0041e870",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585981",
+      "native": "0041e870",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "0058598b",
+      "native": "00425d10",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005859b0",
+      "native": "00531b00",
+      "function": "00585810",
+      "contract": "Reuse actual prompt/string owner; preserve all RET2C arguments and ownership."
+    },
+    {
+      "address": "005859cd",
+      "native": "00419cc0",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005859d4",
+      "native": "00bd1510",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005859f6",
+      "native": "00a3e510",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585a08",
+      "native": "0041e870",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585a1e",
+      "native": "0041e870",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585a39",
+      "native": "0041e870",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585a43",
+      "native": "00425d10",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585a68",
+      "native": "00531b00",
+      "function": "00585810",
+      "contract": "Reuse actual prompt/string owner; preserve all RET2C arguments and ownership."
+    },
+    {
+      "address": "00585a7b",
+      "native": "0041e870",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585a91",
+      "native": "0041e870",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585aac",
+      "native": "0041e870",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585ab6",
+      "native": "00425d10",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585adb",
+      "native": "00531b00",
+      "function": "00585810",
+      "contract": "Reuse actual prompt/string owner; preserve all RET2C arguments and ownership."
+    },
+    {
+      "address": "00585af8",
+      "native": "00419cc0",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585aff",
+      "native": "00bd1510",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585b1f",
+      "native": "00419cc0",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585b26",
+      "native": "00bd1510",
+      "function": "00585810",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585b63",
+      "native": "00f8a2fc+vtable14",
+      "function": "00585b40",
+      "contract": "Required actual current session slot; target unresolved, no success/no-op default."
+    },
+    {
+      "address": "00585b76",
+      "native": "0041e870",
+      "function": "00585b40",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585b8c",
+      "native": "0041e870",
+      "function": "00585b40",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585ba6",
+      "native": "0041e870",
+      "function": "00585b40",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585bb0",
+      "native": "00425d10",
+      "function": "00585b40",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585bd6",
+      "native": "00531b00",
+      "function": "00585b40",
+      "contract": "Reuse actual prompt/string owner; preserve all RET2C arguments and ownership."
+    },
+    {
+      "address": "00585bf3",
+      "native": "00419cc0",
+      "function": "00585b40",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585bfa",
+      "native": "00bd1510",
+      "function": "00585b40",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585c1a",
+      "native": "00419cc0",
+      "function": "00585b40",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "00585c21",
+      "native": "00bd1510",
+      "function": "00585b40",
+      "contract": "Reuse existing actual provider/body; see documentation."
+    },
+    {
+      "address": "005e6f80",
+      "native": "00f8a2fc+vtable1a0",
+      "function": "005e6f70",
+      "contract": "Required actual current session slot; target unresolved, no success/no-op default."
+    },
+    {
+      "address": "005e6f96",
+      "native": "004d7920",
+      "function": "005e6f70",
+      "contract": "Reuse existing4D3ED0 on fresh actual game+5D8 deque per call."
+    },
+    {
+      "address": "005e6fa3",
+      "native": "004d7920",
+      "function": "005e6f70",
+      "contract": "Reuse existing4D3ED0 on fresh actual game+5D8 deque per call."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Unary screen-base HandleBack interpretation",
+      "is": "CEFC48+04 activation listener, ECX=screen+8, two unread stack arguments, RET8",
+      "evidence": [
+        "59032D constructor vtable install",
+        "598B8A captures ECX",
+        "598B8E subtracts8",
+        "59932F RET8",
+        "complete608-instruction listing has no stack-argument loads"
+      ]
+    },
+    {
+      "was": "param+55C described as screen55C/DLC",
+      "is": "screen564 is existing us_campaign field; screen565 is separate DLC flag",
+      "evidence": [
+        "598FB3 EDI+55C with EDI=screen+8",
+        "598FBF subtract8 before screen methods"
+      ]
+    },
+    {
+      "was": "Checkpoint available activation could share command listeners focus-first branch",
+      "is": "All three activation prompts focus LAST via530C20",
+      "evidence": [
+        "5990D0 and59919E jump5992CD",
+        "5992CD fresh425D10",
+        "5992D4 call530C20"
+      ]
+    },
+    {
+      "was": "Earlier commentary stops at598FA0",
+      "is": "Full checkpoint branch and tail through599331 reconstructed",
+      "evidence": [
+        "608 instructions",
+        "0 flow gaps",
+        "all direct CALL rows recorded"
+      ]
+    }
+  ],
+  "required_unreconstructed_dependencies": [
+    {
+      "callee": "00597870",
+      "coverage": "partial body read, existing page-builder evidence; full builder not reconstructed"
+    },
+    {
+      "callee": "005e74b0",
+      "coverage": "complete body read, implementation requires native session/player-list producer"
+    },
+    {
+      "callee": "005e76d0",
+      "coverage": "complete body read, implementation requires native session/player-list producer"
+    },
+    {
+      "callee": "004bb600",
+      "coverage": "complete body read, required same actual account privilege provider"
+    },
+    {
+      "callee": "00f8a2fc+vtable14",
+      "coverage": "calling ABI inspected, target unresolved"
+    },
+    {
+      "callee": "00f8a2fc+vtable1a0",
+      "coverage": "calling ABI inspected, target unresolved"
+    },
+    {
+      "callee": "existing MainMenuCommandServices",
+      "coverage": "reuse actual profile/checkpoint/unlock/prompt/page providers and preserve their documented gaps"
+    }
+  ],
+  "same_storage": [
+    "command.widget screen/layout/owners and current1B8",
+    "command selectedE194DC/E08878",
+    "selection globalE194C8/E194CC aliases",
+    "actual globalE194D0/E194D4",
+    "tactical managerE198AC current screens[6] with identity check",
+    "actual sign-inF8ABE8 OnlineSignInState",
+    "actual gameE188A8 session selector218C and existing state deque5D8"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release Win32 passed; MSVC19.51 v145, /W4 /WX /fp:strict",
+    "call_verification": "verify_report_calls.py:116 direct call rows checked,0 failed;2 unresolved session indirect rows explicitly skipped",
+    "new_permanent_tests": 0,
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "runtime_reachability": "not wired into executable menu host in this packet",
+    "ghidra_mutations": 0,
+    "existing_tests": "1 passed, 0 failed; no new permanent tests",
+    "cache_overrides": "Ignored worker CMakeCache reuses verified existing parent lua511/zlib121/dxsdk source trees only"
+  },
+  "uncertainty": [
+    "Native SEH/debug traps/allocation-failure unwinding excluded.",
+    "Native object/vtable/record layouts are not a binary replacement.",
+    "Required services must bind current actual owners, preserve lifetimes, and provide no synthetic successful defaults."
+  ]
+}

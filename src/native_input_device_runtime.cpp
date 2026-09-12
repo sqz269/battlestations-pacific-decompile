@@ -212,10 +212,17 @@ std::int32_t NativeInputDeviceRuntime::select_control_vslot30(void* d) {
     }
 }
 std::int32_t NativeInputDeviceRuntime::identifier_vslot34(void* d) {
-    const auto p = profile(d);
+    return identifier_vslot34(d, profile(d));
+}
+std::int32_t NativeInputDeviceRuntime::identifier_vslot34(void* d, std::uint32_t p) {
     if (p == xinput) return native_xinput_identifier_00a9a5f0(d);
     if (admitted(p)) return input_device_identifier_zero_00a93eb0();
     unbound();
+}
+void NativeInputDeviceRuntime::set_mouse_cooperative_level_00a9a140(void* d,
+    std::uint32_t flags) {
+    if (profile(d) != mouse) unbound();
+    set_native_mouse_cooperative_level_00a9a140(d, flags, keyboard_mouse_);
 }
 float NativeInputDeviceRuntime::mouse_double_click_vslot38(void* d) {
     if (profile(d) != mouse) unbound();

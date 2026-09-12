@@ -1,0 +1,3215 @@
+{
+  "packet": "orch6_ship_layer_inputs_f",
+  "date": "2026-09-12",
+  "status": "partial_settings_projection_build_and_source_excerpt_fixture_checked",
+  "source": "src/game_hosts_lua.cpp",
+  "header": "include/bsp/game_hosts_lua.hpp",
+  "doc": "docs/GAME_SHIP_LAYER_INPUT.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "project_verification": "All live analysis used bsp.py wrappers with verified project/program; no Ghidra mutation",
+  "api": {
+    "navigation": "GameMissionLuaHost::read_ship_navigation_input(type_id,session_mode,GameShipNavigationInput&,error)",
+    "borrowed_navigation": "read_ship_navigation_input_lua(lua_State&,type_id,session_mode,const bool& crt_sse2_conversion,out,error)",
+    "navigation_output": "ShipLeafTuning tuning (array4,scalar,array_source,scalar_source),settings_block_offset,class_key",
+    "timings": "GameMissionLuaHost::read_ship_layer_timing_input(std::array<float,6>&,error)",
+    "borrowed_timings": "read_ship_layer_timing_input_lua(lua_State&,std::array<float,6>&,error)",
+    "timing_order": [
+      "moveMin",
+      "moveMax",
+      "shipMin",
+      "shipMax",
+      "travelMin",
+      "travelMax"
+    ],
+    "scalar_api": "GameShipDepthInput/read_ship_depth_input and borrowed scalar reader unchanged publicly; same protected parser with read_array=false",
+    "failure": "false with error; output preserved and caller stack restored; missing live state rejected by member wrappers"
+  },
+  "coverage": [
+    {
+      "address": "0083b5e0",
+      "body": "0083b5e0..00842951",
+      "coverage": "partial: selected full class tuning and six timing values only",
+      "reviewed_spans": [
+        "0083bfd8..0083c26e",
+        "00841b7b..008425dd"
+      ],
+      "outside_projection": [
+        "0083b5e0..0083bfd7",
+        "0083c26f..00841b7a",
+        "008425de..00842951",
+        "all unselected class keys and unselected session table"
+      ],
+      "original_abi": "ECX=settings receiver, no stack arguments, plainRET",
+      "abi_compatible": false
+    },
+    {
+      "address": "00837de0",
+      "body": "00837de0..00837dfa",
+      "coverage": "complete selector reused",
+      "original_abi": "ECX=settings, EDX unused, no stack arguments, EAX pointer, plainRET",
+      "direct_calls": 0
+    },
+    {
+      "address": "006fe6a0",
+      "body": "006fe6a0..006fe6ec",
+      "coverage": "complete listing rechecked; existing surface leaf copy reused"
+    },
+    {
+      "address": "00854230",
+      "coverage": "partial: existing Submarine copy tail008545bc..00854628 rechecked; other blocks remain external"
+    }
+  ],
+  "producers": {
+    "type_mapping": "Existing vehicle_class_kind_row -> kShipLeafClasses; existing exact Boolean-or-false variant selection for Cruiser/LandingShip",
+    "key_mapping": "One shared depth_key map selected by existing kShipLeafTuningSources scalar_source",
+    "surface": "One Lua element2 Integer conversion replicated into four uint32 array entries",
+    "submarine": "Existing kSubmarineTuningArraySources60/64/68/6C with scalar source5C -> Lua indices2/3/4/5 and scalar index1",
+    "array_index_formula": "1+(source_offset-scalar_source)/4",
+    "selector": "game+1FE4 zero selects80h/Single; every nonzero selectsF0h/Multi",
+    "timing_mapping": "Existing ship_ai_settings_keys rows1F4..208; key/index/getter reused, installed_value and loader_default never used as inputs"
+  },
+  "numerical_contract": {
+    "integer": "native_lua_integer_00b66290: lua_tonumber -> float32 spill/reload -> selected CRT conversion; preserve signed bits in uint32",
+    "number": "native_lua_number_00b66270: lua_tonumber -> float32 spill/reload; bare Number, no fallback",
+    "final_nil_or_nonnumeric": "native tonumber zero behavior retained",
+    "adjustments": "No ratio/default, timing sorting, clamping, or fabricated singleton"
+  },
+  "protection": {
+    "c_frame": "Only trivially destructible locals and NativeLuaObjectStorage in protected callbacks; context static_asserts",
+    "live_slots": "At most6 for tuning and5 for timing, each1reference, within existing50/5 owner capacities",
+    "errors": "lua_pcall contains metamethod/lookup errors; wrapper restores saved top and publishes result only after success",
+    "exact_depth_behavior": "Scalar reader does not index any array element; error strings and output metadata preserved",
+    "scope": "Caller-supplied existing interpreter; production readers never run scripts"
+  },
+  "register_provenance": {
+    "ESI": "Filtered whole0083B5E0 listing: MOV ESI,ECX at0083B604 is only assignment before POP ESI at0084294B",
+    "EDI": "Depth loop explicitly resets EDI to ESI+80 at00841B81 or ESI+F0 at00841B8E",
+    "EBP": "Depth loop reset0 at00841B7B, increment008425D2, compare1 at008425D5, backedge008425D8"
+  },
+  "native_calls": [
+    {
+      "address": "00424bfc",
+      "native": "0083b5e0",
+      "function": "00424a10",
+      "purpose": "settings construction; ECX=ESI set at 00424BF5",
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "00424df6",
+      "native": "00837de0",
+      "function": "00424d00",
+      "register_evidence": [
+        [
+          "00424df0",
+          "MOV ECX,EAX"
+        ],
+        [
+          "00424df2",
+          "MOV dword ptr [ESP + 0x38],ESI"
+        ]
+      ],
+      "result_reads": [
+        [
+          "00424dfb",
+          "LEA ECX,[ESP + 0x18]"
+        ],
+        [
+          "00424dff",
+          "MOV EBP,EAX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "006e0156",
+      "native": "00837de0",
+      "function": "006e00f0",
+      "register_evidence": [
+        [
+          "006e014f",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006e0154",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006e015b",
+          "MOV EAX,dword ptr [EAX + 0x2c]"
+        ],
+        [
+          "006e015e",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "006e017d",
+      "native": "00837de0",
+      "function": "006e00f0",
+      "register_evidence": [
+        [
+          "006e0176",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006e017b",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006e0182",
+          "MOV ECX,dword ptr [EAX + 0x28]"
+        ],
+        [
+          "006e0185",
+          "MOV dword ptr [ESI + 0x570],ECX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "006eb4cd",
+      "native": "00837de0",
+      "function": "006eb4a0",
+      "register_evidence": [
+        [
+          "006eb4c6",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006eb4cb",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006eb4d2",
+          "MOV EAX,dword ptr [EAX + 0x34]"
+        ],
+        [
+          "006eb4d5",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "006eb4f4",
+      "native": "00837de0",
+      "function": "006eb4a0",
+      "register_evidence": [
+        [
+          "006eb4ed",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006eb4f2",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006eb4f9",
+          "MOV EAX,dword ptr [EAX + 0x30]"
+        ],
+        [
+          "006eb4fc",
+          "PUSH 0xcfa9d0"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "006fb582",
+      "native": "00b67800",
+      "function": "006fb550",
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "006fb593",
+      "native": "00b662f0",
+      "function": "006fb550",
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "006fb5bf",
+      "native": "00837de0",
+      "function": "006fb550",
+      "register_evidence": [
+        [
+          "006fb5b8",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006fb5bd",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006fb5c4",
+          "MOV EAX,dword ptr [EAX + 0x44]"
+        ],
+        [
+          "006fb5c7",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "006fb5e6",
+      "native": "00837de0",
+      "function": "006fb550",
+      "register_evidence": [
+        [
+          "006fb5df",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006fb5e4",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006fb5eb",
+          "MOV ECX,dword ptr [EAX + 0x40]"
+        ],
+        [
+          "006fb5ee",
+          "POP EDI"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "006fb60e",
+      "native": "00837de0",
+      "function": "006fb550",
+      "register_evidence": [
+        [
+          "006fb607",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006fb60c",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006fb613",
+          "MOV EAX,dword ptr [EAX + 0x3c]"
+        ],
+        [
+          "006fb616",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "006fb635",
+      "native": "00837de0",
+      "function": "006fb550",
+      "register_evidence": [
+        [
+          "006fb62e",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006fb633",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006fb63a",
+          "MOV EDX,dword ptr [EAX + 0x38]"
+        ],
+        [
+          "006fb63d",
+          "MOV ECX,dword ptr [ESP + 0x1c]"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "006fe6b4",
+      "native": "00837de0",
+      "function": "006fe6a0",
+      "register_evidence": [
+        [
+          "006fe6ad",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006fe6b2",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006fe6b9",
+          "MOV EAX,dword ptr [EAX + 0xc]"
+        ],
+        [
+          "006fe6bc",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "006fe6db",
+      "native": "00837de0",
+      "function": "006fe6a0",
+      "register_evidence": [
+        [
+          "006fe6d4",
+          "CALL 0x00424c40"
+        ],
+        [
+          "006fe6d9",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "006fe6e0",
+          "MOV ECX,dword ptr [EAX + 0x8]"
+        ],
+        [
+          "006fe6e3",
+          "MOV dword ptr [ESI + 0x570],ECX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "0074c66a",
+      "native": "00b67800",
+      "function": "0074c630",
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "0074c67b",
+      "native": "00b662f0",
+      "function": "0074c630",
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "0074ca6e",
+      "native": "00837de0",
+      "function": "0074c630",
+      "register_evidence": [
+        [
+          "0074ca67",
+          "CALL 0x00424c40"
+        ],
+        [
+          "0074ca6c",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "0074ca73",
+          "MOV EAX,dword ptr [EAX + 0x24]"
+        ],
+        [
+          "0074ca76",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "0074ca95",
+      "native": "00837de0",
+      "function": "0074c630",
+      "register_evidence": [
+        [
+          "0074ca8e",
+          "CALL 0x00424c40"
+        ],
+        [
+          "0074ca93",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "0074ca9a",
+          "MOV EAX,dword ptr [EAX + 0x20]"
+        ],
+        [
+          "0074ca9d",
+          "MOV dword ptr [ESI + 0x570],EAX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "0074caac",
+      "native": "00837de0",
+      "function": "0074c630",
+      "register_evidence": [
+        [
+          "0074caa5",
+          "CALL 0x00424c40"
+        ],
+        [
+          "0074caaa",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "0074cab1",
+          "MOV EAX,dword ptr [EAX + 0x1c]"
+        ],
+        [
+          "0074cab4",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "0074cad3",
+      "native": "00837de0",
+      "function": "0074c630",
+      "register_evidence": [
+        [
+          "0074cacc",
+          "CALL 0x00424c40"
+        ],
+        [
+          "0074cad1",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "0074cad8",
+          "MOV ECX,dword ptr [EAX + 0x18]"
+        ],
+        [
+          "0074cadb",
+          "MOV dword ptr [ESI + 0x570],ECX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "0075983c",
+      "native": "00837de0",
+      "function": "00759590",
+      "register_evidence": [
+        [
+          "00759835",
+          "CALL 0x00424c40"
+        ],
+        [
+          "0075983a",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "00759841",
+          "MOV EAX,dword ptr [EAX + 0x4]"
+        ],
+        [
+          "00759844",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "00759863",
+      "native": "00837de0",
+      "function": "00759590",
+      "register_evidence": [
+        [
+          "0075985c",
+          "CALL 0x00424c40"
+        ],
+        [
+          "00759861",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "00759868",
+          "MOV EAX,dword ptr [EAX]"
+        ],
+        [
+          "0075986a",
+          "LEA ECX,[ESP + 0x4c]"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "0083bfec",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c00a",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c023",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c032",
+      "native": "00b66270",
+      "function": "0083b5e0",
+      "role": "bare Number, float32 spill/reload, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c04c",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c05d",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c073",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c08c",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c09b",
+      "native": "00b66270",
+      "function": "0083b5e0",
+      "role": "bare Number, float32 spill/reload, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c0b5",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c0c6",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c0dc",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c0f5",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c104",
+      "native": "00b66270",
+      "function": "0083b5e0",
+      "role": "bare Number, float32 spill/reload, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c11e",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c12f",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c145",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c15e",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c16d",
+      "native": "00b66270",
+      "function": "0083b5e0",
+      "role": "bare Number, float32 spill/reload, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c187",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c198",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c1ae",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c1c7",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c1d6",
+      "native": "00b66270",
+      "function": "0083b5e0",
+      "role": "bare Number, float32 spill/reload, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c1f0",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c201",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c217",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c230",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c23f",
+      "native": "00b66270",
+      "function": "0083b5e0",
+      "role": "bare Number, float32 spill/reload, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c259",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0083c26a",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "timings",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841ba6",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841bc0",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841bd6",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841be5",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841bf9",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841c09",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841c1c",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841c32",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841c41",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841c55",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841c65",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841c78",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841c8e",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841c9d",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841cb0",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841cc0",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841cd3",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841ce9",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841cf8",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841d0c",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841d1c",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841d2f",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841d45",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841d54",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841d68",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841d78",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841d8b",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841da1",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841db0",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841dc4",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841dd4",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841de7",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841dfd",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841e0c",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841e20",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841e30",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841e43",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841e59",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841e68",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841e7c",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841e8c",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841e9f",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841eb5",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841ec4",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841ed8",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841ee8",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841efb",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841f11",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841f20",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841f34",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841f44",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841f57",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841f6d",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841f7c",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841f90",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841fa0",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841fb3",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841fc9",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841fd8",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841fec",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00841ffc",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0084200f",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842025",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842034",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842048",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842058",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0084206b",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842081",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842090",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008420a4",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008420b4",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008420c7",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008420dd",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008420ec",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842100",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842110",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842123",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842139",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842148",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0084215c",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0084216c",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0084217f",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842195",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008421a4",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008421b8",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008421c8",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008421db",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008421f1",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842200",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842214",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842224",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842237",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0084224d",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0084225c",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842270",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842280",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842293",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008422a9",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008422b8",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008422cc",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008422dc",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008422ef",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842305",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842314",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842328",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842338",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0084234b",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842361",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842370",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842384",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842394",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008423a7",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008423bd",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008423cc",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008423e0",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008423f0",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842403",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842419",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842428",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0084243c",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0084244c",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0084245f",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842475",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842484",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842498",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008424a8",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008424bb",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008424d1",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008424e0",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008424f4",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842504",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842517",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0084252d",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "0084253c",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842550",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842560",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842573",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "role": "native Lua named lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842589",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "role": "native Lua indexed lookup, RET8",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "00842598",
+      "native": "00b66290",
+      "function": "0083b5e0",
+      "role": "bare Integer, float32 spill before selected CRT conversion",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008425ac",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008425bc",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008425cd",
+      "native": "00b67700",
+      "function": "0083b5e0",
+      "role": "native tracked object release, RET",
+      "region": "depth_tables",
+      "scope": "native producer evidence; runtime reads selected values only"
+    },
+    {
+      "address": "008545c3",
+      "native": "00837de0",
+      "function": "00854230",
+      "register_evidence": [
+        [
+          "008545bc",
+          "CALL 0x00424c40"
+        ],
+        [
+          "008545c1",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "008545c8",
+          "MOV ECX,dword ptr [EAX + 0x60]"
+        ],
+        [
+          "008545cb",
+          "MOV dword ptr [ESI + 0x560],ECX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "008545d8",
+      "native": "00837de0",
+      "function": "00854230",
+      "register_evidence": [
+        [
+          "008545d1",
+          "CALL 0x00424c40"
+        ],
+        [
+          "008545d6",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "008545dd",
+          "MOV EDX,dword ptr [EAX + 0x64]"
+        ],
+        [
+          "008545e0",
+          "MOV dword ptr [ESI + 0x564],EDX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "008545ed",
+      "native": "00837de0",
+      "function": "00854230",
+      "register_evidence": [
+        [
+          "008545e6",
+          "CALL 0x00424c40"
+        ],
+        [
+          "008545eb",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "008545f2",
+          "MOV EAX,dword ptr [EAX + 0x68]"
+        ],
+        [
+          "008545f5",
+          "MOV dword ptr [ESI + 0x568],EAX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "00854602",
+      "native": "00837de0",
+      "function": "00854230",
+      "register_evidence": [
+        [
+          "008545fb",
+          "CALL 0x00424c40"
+        ],
+        [
+          "00854600",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "00854607",
+          "MOV ECX,dword ptr [EAX + 0x6c]"
+        ],
+        [
+          "0085460a",
+          "MOV dword ptr [ESI + 0x56c],ECX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "00854617",
+      "native": "00837de0",
+      "function": "00854230",
+      "register_evidence": [
+        [
+          "00854610",
+          "CALL 0x00424c40"
+        ],
+        [
+          "00854615",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "0085461c",
+          "MOV EDX,dword ptr [EAX + 0x5c]"
+        ],
+        [
+          "0085461f",
+          "LEA ECX,[ESP + 0xc]"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "00858030",
+      "native": "00837de0",
+      "function": "00857f40",
+      "register_evidence": [
+        [
+          "00858029",
+          "CALL 0x00424c40"
+        ],
+        [
+          "0085802e",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "00858035",
+          "MOV EAX,dword ptr [EAX + 0x14]"
+        ],
+        [
+          "00858038",
+          "MOV dword ptr [ESI + 0x56c],EAX"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "00858057",
+      "native": "00837de0",
+      "function": "00857f40",
+      "register_evidence": [
+        [
+          "00858050",
+          "CALL 0x00424c40"
+        ],
+        [
+          "00858055",
+          "MOV ECX,EAX"
+        ]
+      ],
+      "result_reads": [
+        [
+          "0085805c",
+          "MOV EAX,dword ptr [EAX + 0x10]"
+        ],
+        [
+          "0085805f",
+          "MOV ECX,dword ptr [ESP + 0x30]"
+        ]
+      ],
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "00960354",
+      "native": "00b67800",
+      "function": "00960230",
+      "purpose": "coordinated Width projection; annotation owned by hull-extents worker",
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "00960363",
+      "native": "00b66270",
+      "function": "00960230",
+      "purpose": "bare Width GetNumber; float32 result stored to class+A4 at 00960368",
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "0096037a",
+      "native": "00b67700",
+      "function": "00960230",
+      "purpose": "Width object destruction",
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "00b6629b",
+      "native": "00a67770",
+      "function": "00b66290",
+      "purpose": "GetInteger tonumber before float32 spill at 00B662A0",
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    },
+    {
+      "address": "00b662a9",
+      "native": "00bf7420",
+      "function": "00b66290",
+      "kind": "tail_jump",
+      "purpose": "GetInteger CRT conversion after float32 reload and stack restore",
+      "scope": "existing scalar/variant/selector contract reused from game_ship_depth_input.json"
+    }
+  ],
+  "native_stores": [
+    {
+      "address": "0083c037",
+      "instruction": "FSTP float ptr [ESI + 0x1f4] ",
+      "region": "timings"
+    },
+    {
+      "address": "0083c0a0",
+      "instruction": "FSTP float ptr [ESI + 0x1f8] ",
+      "region": "timings"
+    },
+    {
+      "address": "0083c109",
+      "instruction": "FSTP float ptr [ESI + 0x1fc] ",
+      "region": "timings"
+    },
+    {
+      "address": "0083c172",
+      "instruction": "FSTP float ptr [ESI + 0x200] ",
+      "region": "timings"
+    },
+    {
+      "address": "0083c1db",
+      "instruction": "FSTP float ptr [ESI + 0x204] ",
+      "region": "timings"
+    },
+    {
+      "address": "0083c244",
+      "instruction": "FSTP float ptr [ESI + 0x208] ",
+      "region": "timings"
+    },
+    {
+      "address": "00841bee",
+      "instruction": "MOV dword ptr [EDI + 0x28],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00841c4a",
+      "instruction": "MOV dword ptr [EDI + 0x2c],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00841ca6",
+      "instruction": "MOV dword ptr [EDI],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00841d01",
+      "instruction": "MOV dword ptr [EDI + 0x4],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00841d5d",
+      "instruction": "MOV dword ptr [EDI + 0x8],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00841db9",
+      "instruction": "MOV dword ptr [EDI + 0xc],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00841e11",
+      "instruction": "MOV dword ptr [EDI + 0x10],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00841e71",
+      "instruction": "MOV dword ptr [EDI + 0x14],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00841ecd",
+      "instruction": "MOV dword ptr [EDI + 0x18],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00841f29",
+      "instruction": "MOV dword ptr [EDI + 0x1c],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00841f85",
+      "instruction": "MOV dword ptr [EDI + 0x20],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00841fe1",
+      "instruction": "MOV dword ptr [EDI + 0x24],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "0084203d",
+      "instruction": "MOV dword ptr [EDI + 0x30],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00842095",
+      "instruction": "MOV dword ptr [EDI + 0x34],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "008420f5",
+      "instruction": "MOV dword ptr [EDI + 0x38],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00842151",
+      "instruction": "MOV dword ptr [EDI + 0x3c],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "008421ad",
+      "instruction": "MOV dword ptr [EDI + 0x40],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00842209",
+      "instruction": "MOV dword ptr [EDI + 0x44],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00842265",
+      "instruction": "MOV dword ptr [EDI + 0x48],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "008422c1",
+      "instruction": "MOV dword ptr [EDI + 0x4c],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00842319",
+      "instruction": "MOV dword ptr [EDI + 0x50],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00842379",
+      "instruction": "MOV dword ptr [EDI + 0x54],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "008423d5",
+      "instruction": "MOV dword ptr [EDI + 0x58],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00842431",
+      "instruction": "MOV dword ptr [EDI + 0x5c],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "0084248d",
+      "instruction": "MOV dword ptr [EDI + 0x60],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "008424e9",
+      "instruction": "MOV dword ptr [EDI + 0x64],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "00842545",
+      "instruction": "MOV dword ptr [EDI + 0x68],EAX ",
+      "region": "depth_tables"
+    },
+    {
+      "address": "008425a1",
+      "instruction": "MOV dword ptr [EDI + 0x6c],EAX ",
+      "region": "depth_tables"
+    }
+  ],
+  "timings": [
+    {
+      "settings_offset": "1F4",
+      "lua_path": "LandAvoidance.CheckMovePosZoneTime",
+      "index": 1,
+      "installed_value": 2.5,
+      "getter_site": "0083c032",
+      "store_site": "0083c037"
+    },
+    {
+      "settings_offset": "1F8",
+      "lua_path": "LandAvoidance.CheckMovePosZoneTime",
+      "index": 2,
+      "installed_value": 3.0,
+      "getter_site": "0083c09b",
+      "store_site": "0083c0a0"
+    },
+    {
+      "settings_offset": "1FC",
+      "lua_path": "LandAvoidance.CheckShipPosZoneTime",
+      "index": 1,
+      "installed_value": 2.5,
+      "getter_site": "0083c104",
+      "store_site": "0083c109"
+    },
+    {
+      "settings_offset": "200",
+      "lua_path": "LandAvoidance.CheckShipPosZoneTime",
+      "index": 2,
+      "installed_value": 3.0,
+      "getter_site": "0083c16d",
+      "store_site": "0083c172"
+    },
+    {
+      "settings_offset": "204",
+      "lua_path": "LandAvoidance.CheckTravelZoneTime",
+      "index": 1,
+      "installed_value": 3.0,
+      "getter_site": "0083c1d6",
+      "store_site": "0083c1db"
+    },
+    {
+      "settings_offset": "208",
+      "lua_path": "LandAvoidance.CheckTravelZoneTime",
+      "index": 2,
+      "installed_value": 4.0,
+      "getter_site": "0083c23f",
+      "store_site": "0083c244"
+    }
+  ],
+  "installed_tuning_groups": [
+    {
+      "key": "MotherShip",
+      "mode": 0,
+      "type": "MotherShip",
+      "array_source": "04",
+      "scalar_source": "00",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 0,
+      "type_ids": [
+        1,
+        2,
+        3,
+        24,
+        50,
+        51,
+        52,
+        53,
+        57,
+        256,
+        257,
+        266,
+        271,
+        291,
+        298,
+        300,
+        302,
+        812
+      ]
+    },
+    {
+      "key": "MotherShip",
+      "mode": -1,
+      "type": "MotherShip",
+      "array_source": "04",
+      "scalar_source": "00",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 3,
+      "type_ids": [
+        1,
+        2,
+        3,
+        24,
+        50,
+        51,
+        52,
+        53,
+        57,
+        256,
+        257,
+        266,
+        271,
+        291,
+        298,
+        300,
+        302,
+        812
+      ]
+    },
+    {
+      "key": "Submarine",
+      "mode": 0,
+      "type": "Submarine",
+      "array_source": "60",
+      "scalar_source": "5c",
+      "array": [
+        11,
+        26,
+        46,
+        86
+      ],
+      "scalar": 0,
+      "type_ids": [
+        4,
+        8,
+        30,
+        31,
+        81,
+        83,
+        93,
+        193,
+        814
+      ]
+    },
+    {
+      "key": "Submarine",
+      "mode": -1,
+      "type": "Submarine",
+      "array_source": "60",
+      "scalar_source": "5c",
+      "array": [
+        11,
+        46,
+        46,
+        86
+      ],
+      "scalar": 1,
+      "type_ids": [
+        4,
+        8,
+        30,
+        31,
+        81,
+        83,
+        93,
+        193,
+        814
+      ]
+    },
+    {
+      "key": "BattleShip",
+      "mode": 0,
+      "type": "BattleShip",
+      "array_source": "2c",
+      "scalar_source": "28",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 0,
+      "type_ids": [
+        7,
+        9,
+        10,
+        13,
+        15,
+        59,
+        60,
+        61,
+        253,
+        254,
+        255,
+        259,
+        260,
+        261,
+        267,
+        279,
+        284,
+        287,
+        292,
+        301,
+        304,
+        310,
+        311,
+        314,
+        315,
+        321,
+        346,
+        347,
+        348,
+        351,
+        358,
+        360,
+        369,
+        372,
+        382,
+        386,
+        387,
+        388,
+        389
+      ]
+    },
+    {
+      "key": "BattleShip",
+      "mode": -1,
+      "type": "BattleShip",
+      "array_source": "2c",
+      "scalar_source": "28",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 3,
+      "type_ids": [
+        7,
+        9,
+        10,
+        13,
+        15,
+        59,
+        60,
+        61,
+        253,
+        254,
+        255,
+        259,
+        260,
+        261,
+        267,
+        279,
+        284,
+        287,
+        292,
+        301,
+        304,
+        310,
+        311,
+        314,
+        315,
+        321,
+        346,
+        347,
+        348,
+        351,
+        358,
+        360,
+        369,
+        372,
+        382,
+        386,
+        387,
+        388,
+        389
+      ]
+    },
+    {
+      "key": "Destroyer",
+      "mode": 0,
+      "type": "Destroyer",
+      "array_source": "0c",
+      "scalar_source": "08",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 0,
+      "type_ids": [
+        11,
+        14,
+        23,
+        25,
+        48,
+        58,
+        73,
+        75,
+        265,
+        273,
+        275,
+        276,
+        277,
+        288,
+        289,
+        290,
+        296,
+        299,
+        306,
+        308,
+        309,
+        332,
+        352,
+        353,
+        356,
+        362,
+        364,
+        366,
+        367,
+        378,
+        381
+      ]
+    },
+    {
+      "key": "Destroyer",
+      "mode": -1,
+      "type": "Destroyer",
+      "array_source": "0c",
+      "scalar_source": "08",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 1,
+      "type_ids": [
+        11,
+        14,
+        23,
+        25,
+        48,
+        58,
+        73,
+        75,
+        265,
+        273,
+        275,
+        276,
+        277,
+        288,
+        289,
+        290,
+        296,
+        299,
+        306,
+        308,
+        309,
+        332,
+        352,
+        353,
+        356,
+        362,
+        364,
+        366,
+        367,
+        378,
+        381
+      ]
+    },
+    {
+      "key": "LargeLandingShip",
+      "mode": 0,
+      "type": "LandingShip",
+      "array_source": "24",
+      "scalar_source": "20",
+      "array": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "scalar": 0,
+      "type_ids": [
+        12,
+        41,
+        91,
+        345
+      ]
+    },
+    {
+      "key": "LargeLandingShip",
+      "mode": -1,
+      "type": "LandingShip",
+      "array_source": "24",
+      "scalar_source": "20",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 3,
+      "type_ids": [
+        12,
+        41,
+        91,
+        345
+      ]
+    },
+    {
+      "key": "LightCruiser",
+      "mode": 0,
+      "type": "Cruiser",
+      "array_source": "3c",
+      "scalar_source": "38",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 0,
+      "type_ids": [
+        17,
+        18,
+        20,
+        70,
+        71,
+        252,
+        263,
+        274,
+        305,
+        337,
+        338,
+        359,
+        368,
+        373,
+        383,
+        384,
+        391
+      ]
+    },
+    {
+      "key": "LightCruiser",
+      "mode": -1,
+      "type": "Cruiser",
+      "array_source": "3c",
+      "scalar_source": "38",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 3,
+      "type_ids": [
+        17,
+        18,
+        20,
+        70,
+        71,
+        252,
+        263,
+        274,
+        305,
+        337,
+        338,
+        359,
+        368,
+        373,
+        383,
+        384,
+        391
+      ]
+    },
+    {
+      "key": "HeavyCruiser",
+      "mode": 0,
+      "type": "Cruiser",
+      "array_source": "44",
+      "scalar_source": "40",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 0,
+      "type_ids": [
+        19,
+        21,
+        67,
+        68,
+        69,
+        258,
+        268,
+        270,
+        278,
+        293,
+        294,
+        295,
+        297,
+        307,
+        335,
+        349,
+        355,
+        357,
+        363,
+        365,
+        374,
+        377,
+        380,
+        390
+      ]
+    },
+    {
+      "key": "HeavyCruiser",
+      "mode": -1,
+      "type": "Cruiser",
+      "array_source": "44",
+      "scalar_source": "40",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 3,
+      "type_ids": [
+        19,
+        21,
+        67,
+        68,
+        69,
+        258,
+        268,
+        270,
+        278,
+        293,
+        294,
+        295,
+        297,
+        307,
+        335,
+        349,
+        355,
+        357,
+        363,
+        365,
+        374,
+        377,
+        380,
+        390
+      ]
+    },
+    {
+      "key": "TBoat",
+      "mode": 0,
+      "type": "TorpedoBoat",
+      "array_source": "14",
+      "scalar_source": "10",
+      "array": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "scalar": 0,
+      "type_ids": [
+        27,
+        43,
+        77
+      ]
+    },
+    {
+      "key": "TBoat",
+      "mode": -1,
+      "type": "TorpedoBoat",
+      "array_source": "14",
+      "scalar_source": "10",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 1,
+      "type_ids": [
+        27,
+        43,
+        77
+      ]
+    },
+    {
+      "key": "CargoShip",
+      "mode": 0,
+      "type": "Cargo",
+      "array_source": "34",
+      "scalar_source": "30",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 0,
+      "type_ids": [
+        35,
+        37,
+        39,
+        85,
+        87,
+        92,
+        94,
+        95,
+        96,
+        224,
+        234,
+        246,
+        628
+      ]
+    },
+    {
+      "key": "CargoShip",
+      "mode": -1,
+      "type": "Cargo",
+      "array_source": "34",
+      "scalar_source": "30",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 3,
+      "type_ids": [
+        35,
+        37,
+        39,
+        85,
+        87,
+        92,
+        94,
+        95,
+        96,
+        224,
+        234,
+        246,
+        628
+      ]
+    },
+    {
+      "key": "SmallLandingShip",
+      "mode": 0,
+      "type": "LandingShip",
+      "array_source": "1c",
+      "scalar_source": "18",
+      "array": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "scalar": 0,
+      "type_ids": [
+        40,
+        90
+      ]
+    },
+    {
+      "key": "SmallLandingShip",
+      "mode": -1,
+      "type": "LandingShip",
+      "array_source": "1c",
+      "scalar_source": "18",
+      "array": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "scalar": 1,
+      "type_ids": [
+        40,
+        90
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Only class570 exposed by mission Lua depth reader",
+      "is": "New full navigation input additionally exposes exact class560..56C values and source offsets",
+      "evidence": "Native source tables and320 installed-row/mode reads"
+    },
+    {
+      "was": "Six timing producer rows existed without a mission-state input reader",
+      "is": "New protected timing reader supplies exactly six values through native Number",
+      "evidence": "0083C032/09B/104/16D/1D6/23F getter calls and existing schema"
+    }
+  ],
+  "no_ghidra_function": [],
+  "false_free_flow_gaps": [],
+  "prior_reported_outer_flow_gaps": [
+    {
+      "function": "0083b5e0",
+      "inclusive_start": "0083bd5d",
+      "inclusive_end": "0083bd5f",
+      "reason": "after jump; outside selected depth region"
+    },
+    {
+      "function": "0083b5e0",
+      "inclusive_start": "0083be15",
+      "inclusive_end": "0083be1f",
+      "reason": "after jump; outside selected depth region"
+    },
+    {
+      "function": "0083b5e0",
+      "inclusive_start": "00840474",
+      "inclusive_end": "00840507",
+      "reason": "after jump; outside selected depth region"
+    },
+    {
+      "function": "0083b5e0",
+      "inclusive_start": "0084139a",
+      "inclusive_end": "0084139f",
+      "reason": "after jump; outside selected depth region"
+    },
+    {
+      "function": "0074c630",
+      "inclusive_start": "0074c865",
+      "inclusive_end": "0074c86f",
+      "reason": "after jump; outside flag/selected scalar projection"
+    }
+  ],
+  "flow_scope": "No gap in the reviewed timing/depth spans or selector. Prior outer-region gaps are retained as external evidence, not repaired or newly attributed to free.",
+  "validation": {
+    "build": "Win32Release ./scripts/build.ps1 passed",
+    "tests": "2/2 reconstructed_math and native_math_differential passed after verify-seeds",
+    "report_calls": "207 direct call rows checked,0 failed",
+    "fixture_kind": "Exact compiled implementation excerpt using real Lua5.1.1 and existing native wrapper core; NOT original-byte execution",
+    "implementation_excerpt_sha256": "9217e26336bc1d6fadf847ab1c74b4940e7808ff5067e5187aa36f91087c495b",
+    "supported_ship_rows": 160,
+    "rejected_nonship_rows": 473,
+    "variants": 10,
+    "full_reads": 320,
+    "modes": [
+      0,
+      -1
+    ],
+    "installed_timings": [
+      2.5,
+      3,
+      2.5,
+      3,
+      3,
+      4
+    ],
+    "boundary_failures": 0,
+    "boundary_checks": [
+      "case-insensitive Type and exact Boolean variant selection",
+      "surface index2 read once with stateful __index",
+      "scalar-only API ignores array that throws",
+      "Submarine four distinct slots and negative/nonzero session mode",
+      "numeric string16777217 float32 spill to16777216",
+      "negative integer bit preservation with SSE2 and x87 CRT selection",
+      "final nil/nonnumeric zero with no fallback",
+      "late timing error, non-string errors, missing parent and unsupported/negative type preserve output and stack"
+    ],
+    "new_tracked_tests": 0,
+    "gameplay_validated": false
+  },
+  "installed_inputs": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\ShipGlobals.lua",
+      "bytes": 44442,
+      "sha256": "5a5df16493c8d27d08ea2c74860a59a81dd97e7c24ab6f6f6713ba79ef60ef80"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\autoload\\vehicleclasses.lua",
+      "bytes": 3349364,
+      "sha256": "0649dddf3a765a8340db2e6d545d04ac86503b4f8ba2e867c88ecbd2d2983650"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\fundamentals.lua",
+      "bytes": 657,
+      "sha256": "20e128ebe9a1cb7678e3324b0baae93adab4f34f4d96bd081fb7b86505f63526"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\global\\luamw_init.lua",
+      "bytes": 13549,
+      "sha256": "3a807d3cb53d6e753901ab378a3b10311b2aa6dec5e99b05f5d63d4b98ea7533"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\ScriptOptions.lua",
+      "bytes": 238,
+      "sha256": "386ac4dc83a36f2521c5219289b7d16b588a94696af0f1564eefdedbe3f1b7a7"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\unlocks.lua",
+      "bytes": 20,
+      "sha256": "62fd3055a3449c7112aae59e09b6f48258f9b34843dfb13031dfd08b6468fa6c"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "local/game_ship_layer_probe.cpp",
+      "sha256": "5d2da81b86033dbe526f1176d4dfbd76e5ad88fcdfc800f5211b86c1aca2e4c1"
+    },
+    {
+      "path": "local/game_ship_layer_reader_probe.cpp",
+      "sha256": "ded6ef766d7bad9f2ebea137386dc2b67b2502083b8dbb88ab9ca5d23dbd641f"
+    },
+    {
+      "path": "local/extract_game_ship_layer_probe.py",
+      "sha256": "089b40603bd4519f286d284789a1a3cd70e4f27d71b8defd3114cd2af550f368"
+    },
+    {
+      "path": "local/build_game_ship_layer_probe.cmd",
+      "sha256": "b76b166fa10e277f1ddbf2aa957cd86194efd6ac2b464d4cdf5eedc2e57502ae"
+    },
+    {
+      "path": "local/ship_depth_degree.lua",
+      "sha256": "d6cb5545d8beffa6a6307a9a5acd16ed293d1fe64741a3918e22fb4e9311d39b"
+    },
+    {
+      "path": "local/game_ship_layer_probe.log",
+      "sha256": "43ebe2543f033a44fe64ecc989eaaf20257e1bf39945d4c25b809fdba0b58992"
+    },
+    {
+      "path": "local/game_ship_layer_probe_compile.log",
+      "sha256": "aed86804dbd82438b00c210c6e8608f2b7b7a109c69059a766242849e139a9ef"
+    },
+    {
+      "path": "local/game_ship_layer_probe.exe",
+      "sha256": "5b45bdae0aec1caa97563b36221559ff37b3fa8528c7aed7784161809421dec9"
+    },
+    {
+      "path": "local/ship_layer_build.log",
+      "sha256": "3e9bae370d42e347773c32ea14b35c6d0ebecb50eb8b076fff2659019f26e8a2"
+    },
+    {
+      "path": "local/ship_layer_verify_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/ship_layer_report_calls.log",
+      "sha256": "927fe3eaccef053dfde3d879012564cfe492acf460b2a3f7596b99420131e955"
+    },
+    {
+      "path": "local/settings_loader_asm.txt",
+      "sha256": "149d2e9839f4e30b8cf1c1a152979979523c1ff5c17acff8329819b7f8c1a87c"
+    },
+    {
+      "path": "local/submarine_leaf_asm.txt",
+      "sha256": "56bbdaa2e4fef97c37cfeb5e918ff0982a6244c6df5de292da14466bb3f7ffa3"
+    }
+  ],
+  "reproduce": [
+    "python local/extract_game_ship_layer_probe.py",
+    "python tools/ghidra_export.py verify-seeds",
+    "./scripts/build.ps1",
+    "cmd /c local\\build_game_ship_layer_probe.cmd",
+    "local\\game_ship_layer_probe.exe",
+    "python tools/verify_report_calls.py reports/game_ship_layer_input.json"
+  ],
+  "limits": [
+    "No whole76Ch singleton, descriptor allocation, native ABI, or original SEH/GC timing reproduction",
+    "Only selected class/table values are read; whole loader key lookup schedule across every class/table is not reproduced",
+    "Fixture initializes a fresh interpreter with installed scripts and installed DEG/unlock function excerpts; production readers do not execute scripts",
+    "Actual mission runtime/world integration remains root-owned; no new mission or frame-causality claim",
+    "Existing scalar Type/variant/core conversion contracts are reused, not independently reconstructed again"
+  ]
+}

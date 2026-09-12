@@ -192,3 +192,13 @@ CEFC48 at screen+8 supplies Listbox04=598B60,08=5966F0,0C=4F8F20.
 The04 callback has two stack arguments and RET8; it is distinct from widget04
 at5993A0. Its page/activation provider remains required. 4F8F20 is exactly RET0C
 and has no effects. The same borrowed listener registration now routes all three.
+
+
+## Correction from docs/ORCH5_MENU_INPUT_BATCH.md
+
+598B60 activation and594BF0 objective Text/Listbox row caller sequences now
+have canonical command-service bindings. The layout owns the sole description
+lists and header fields.582F30's post-current14 fragment produces2B0/2B4 from
+authored Text positions/heights. Mission picture selection reads an engaged
+native texture owner, rejects unresolved metadata and preserves5966F0 unitUV.
+Remaining provider/runtime limits are in ORCH5_MENU_INPUT_BATCH.md.

@@ -1,8 +1,23 @@
 #include "bsp/main_menu_selection_services.hpp"
+#include "bsp/main_menu_objective_rows.hpp"
 #include "bsp/gui_type_dispatch.hpp"
 #include <stdexcept>
 
 namespace bsp {
+MainMenuObjectiveRowsBindings make_main_menu_objective_rows_bindings(
+    MainMenuSelectionListenerBindings& selection, MainMenuObjectiveProviders& objectives,
+    MainMenuObjectiveRowsProviders& providers, GuiWidgetSceneHost& clones,
+    MainMenuLayoutNativeCalls& native, MovieWidgetHost& movies,
+    GuiTextResourceNameServices& names, GuiTextChildDeletion& deletion,
+    void* listener, volatile std::int32_t& page, const volatile double& depth) {
+    auto& layout = selection.command.widget.layout;
+    if (!layout.field_2b0 || !layout.field_2b4)
+        throw std::logic_error("Objective row spacing requires its actual native field producers");
+    return {selection, objectives, providers, clones, native, movies, names, deletion,
+        listener, page, layout.field_2c4, *layout.field_2b0, *layout.field_2b4,
+        layout.primary_header_2b8, layout.secondary_header_2bc, layout.hidden_header_2c0,
+        layout.descriptions_280, layout.descriptions_298, layout.descriptions_2a4, depth};
+}
 MainMenuObjectiveBindings make_main_menu_objective_bindings(
     MainMenuSelectionListenerBindings& selection, MainMenuObjectiveProviders& providers) {
     auto& command = selection.command;
@@ -22,6 +37,11 @@ GuiWidgetOwner& MainMenuCanonicalSelectionServices::require_owner(GuiWidgetOwner
     if (&owner.runtime() != &command_.widget.owners)
         throw std::logic_error("Menu selection provider requires the same canonical widget owner domain");
     return owner;
+}
+void* MainMenuCanonicalSelectionServices::mission_picture_texture_0a0(const MissionRecordData& record) {
+    if (!record.picture)
+        throw std::logic_error("Mission picture requires the completed native texture producer");
+    return record.picture->texture_0a0();
 }
 void MainMenuCanonicalSelectionServices::call_00ab2690(GuiWidgetOwner& owner,
     std::uint32_t state, void* texture, const GuiUvRect& uv) {

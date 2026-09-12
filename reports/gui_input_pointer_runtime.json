@@ -1,0 +1,182 @@
+{
+  "packet": "orch5_gui_input_pointer",
+  "status": "complete_normal_pointer_caller_with_required_hit_provider",
+  "functions": [
+    {
+      "address": "00aa3910",
+      "name": "BSP_GuiManager_UpdatePointer",
+      "source": "src/gui_pointer_runtime.cpp",
+      "original_abi": "ECX manager; RET; 194 instructions through00AA3BC6",
+      "coverage": "Complete normal caller; same raw input/frame publication, canonical pointer fields, actual Icon current88; AA2F10 provider required"
+    },
+    {
+      "address": "004ba6d0",
+      "name": "BSP_InputBackend_GetDeviceByClassAndIndex_Provisional",
+      "source": "src/gui_input_runtime.cpp",
+      "original_abi": "ECX backend; class/index stack; RET8",
+      "coverage": "Actual raw class vector headers6C +class*24h; begin/end+4/+8; valid pointer-vector domain"
+    },
+    {
+      "address": "00aa5d70",
+      "name": "BSP_GuiManager_Construct",
+      "source": "src/gui_pointer_runtime.cpp",
+      "original_abi": "ECX manager; RET",
+      "coverage": "Pointer-field fragment AA5DE4/5DF9..5E06 only; capture CE3800 once, enabled48=0, bothpositionlanes, exclusive6C=null; delta64/68 unwritten"
+    },
+    {
+      "address": "00a9bec0",
+      "name": "BSP_GuiListbox_ClearRows",
+      "source": "src/gui_listbox_runtime.cpp",
+      "original_abi": "ECX Listbox; RET throughA9BF89",
+      "coverage": "Complete normal clear on sole FC list, actual current4 destruction domain; suppress/restore114,selected=end,110=null,80(false)"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004ba70b",
+      "native": "0x00bf6713",
+      "function": "004ba6d0",
+      "coverage": "direct native boundary"
+    },
+    {
+      "address": "00aa3962",
+      "native": "0x00bf6713",
+      "function": "00aa3910",
+      "coverage": "direct native boundary"
+    },
+    {
+      "address": "00aa3993",
+      "native": "mouse+vtable3c",
+      "function": "00aa3910",
+      "coverage": "current actual-owner virtual; profile/signature checked in source"
+    },
+    {
+      "address": "00aa39a6",
+      "native": "mouse+vtable40",
+      "function": "00aa3910",
+      "coverage": "current actual-owner virtual; profile/signature checked in source"
+    },
+    {
+      "address": "00aa39d1",
+      "native": "mouse+vtable3c",
+      "function": "00aa3910",
+      "coverage": "current actual-owner virtual; profile/signature checked in source"
+    },
+    {
+      "address": "00aa39ec",
+      "native": "mouse+vtable40",
+      "function": "00aa3910",
+      "coverage": "current actual-owner virtual; profile/signature checked in source"
+    },
+    {
+      "address": "00aa3a07",
+      "native": "mouse+vtable3c",
+      "function": "00aa3910",
+      "coverage": "current actual-owner virtual; profile/signature checked in source"
+    },
+    {
+      "address": "00aa3a1a",
+      "native": "mouse+vtable40",
+      "function": "00aa3910",
+      "coverage": "current actual-owner virtual; profile/signature checked in source"
+    },
+    {
+      "address": "00aa3a9f",
+      "native": "cursor+vtable38",
+      "function": "00aa3910",
+      "coverage": "current actual-owner virtual; profile/signature checked in source"
+    },
+    {
+      "address": "00aa3aa7",
+      "native": "0x00419210",
+      "function": "00aa3910",
+      "coverage": "direct native boundary"
+    },
+    {
+      "address": "00aa3ac4",
+      "native": "cursor+vtable34",
+      "function": "00aa3910",
+      "coverage": "current actual-owner virtual; profile/signature checked in source"
+    },
+    {
+      "address": "00aa3b1d",
+      "native": "0x004155b0",
+      "function": "00aa3910",
+      "coverage": "direct native boundary"
+    },
+    {
+      "address": "00aa3b77",
+      "native": "0x00aa7d00",
+      "function": "00aa3910",
+      "coverage": "direct native boundary"
+    },
+    {
+      "address": "00aa3b7e",
+      "native": "0x00aa2f10",
+      "function": "00aa3910",
+      "coverage": "direct native boundary"
+    },
+    {
+      "address": "00aa3bb4",
+      "native": "cursor+vtable88",
+      "function": "00aa3910",
+      "coverage": "current actual-owner virtual; profile/signature checked in source"
+    },
+    {
+      "address": "00a9bef7",
+      "native": "0x00bf6713",
+      "function": "00a9bec0",
+      "coverage": "direct native boundary"
+    },
+    {
+      "address": "00a9bf05",
+      "native": "0x00bf6713",
+      "function": "00a9bec0",
+      "coverage": "direct native boundary"
+    },
+    {
+      "address": "00a9bf18",
+      "native": "row+vtable04",
+      "function": "00a9bec0",
+      "coverage": "current actual-owner virtual; profile/signature checked in source"
+    },
+    {
+      "address": "00a9bf1f",
+      "native": "0x00bf6713",
+      "function": "00a9bec0",
+      "coverage": "direct native boundary"
+    },
+    {
+      "address": "00a9bf45",
+      "native": "0x00bf65ac",
+      "function": "00a9bec0",
+      "coverage": "direct native boundary"
+    },
+    {
+      "address": "00a9bf83",
+      "native": "Listbox+vtable80",
+      "function": "00a9bec0",
+      "coverage": "current actual-owner virtual; profile/signature checked in source"
+    }
+  ],
+  "evidence": [
+    "docs/GUI_INPUT_POINTER_RUNTIME.md",
+    "reports/orch5_listbox_clear_flow_repair.json",
+    "reports/orch5_gui_input_clear_prelude.json"
+  ],
+  "floating_point": "SSE signed latch conversion; x87 difference/pair factors/spills/accumulation, unspilled actual vector length, mixed X/Y clamps retained",
+  "same_owner_integration": "GuiWidgetFrameRuntime and Listbox bind same publication; GuiPointerRuntime borrows frame input_source; MainMenuCanonicalCommandServices late-binds actual activation and objective caller bindings",
+  "boundaries": [
+    "AA2F10/AA8BD0 actual hit-test provider",
+    "native class-vector producer and hardware input",
+    "manager/page/window/render owner construction and full game loop",
+    "native SEH, corrupt pointer arrays and drop-in original ABI"
+  ],
+  "validation": {
+    "win32_build": "passed",
+    "ctest": "2/2 passed",
+    "focused_fixtures": "see final batch report",
+    "game_validated": false,
+    "abi_compatible": false
+  }
+}

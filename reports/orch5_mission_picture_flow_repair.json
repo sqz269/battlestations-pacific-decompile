@@ -1,0 +1,127 @@
+{
+ "repairs": [
+  {
+   "function": "005c8ae0",
+   "owner": "agent/orch5-20260911",
+   "when": "2026-09-12T22:18:24Z",
+   "decompile_lines_before": 19,
+   "gaps": [
+    {
+     "site": "005c8b2b",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "005c8b30",
+     "gap_end_exclusive": "005c8dad",
+     "bytes": 637,
+     "after_call": true,
+     "sha256": "df5c3183d9ce75d06320afee349dc68191d57f47f9fc6fcd09dd6cd2e4f876e9"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "005c8b2b",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "005c8b30",
+      "gap_end_exclusive": "005c8dad",
+      "bytes": 637,
+      "after_call": true,
+      "sha256": "df5c3183d9ce75d06320afee349dc68191d57f47f9fc6fcd09dd6cd2e4f876e9"
+     },
+     "clear": "Success: Cleared flow override at 005c8b2b (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 637 byte(s)"
+    },
+    {
+     "explicit_tail_call": "005c8b2b",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 005c8b2b (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "005c8bb6",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 005c8bb6 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "005c8bf1",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 005c8bf1 (was: CALL_RETURN, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "005c8dad",
+   "explicit_body_sha256": "5cc30ed279ce8551dac193088b6627a6fba91aae2e3cad4dc6267ab6021630d3",
+   "body_before": "Function: CG_vector_deleting_dtor_005c8ae0 at 005c8ae0\nSignature: undefined CG_vector_deleting_dtor_005c8ae0(void)\nEntry: 005c8ae0\nBody: 005c8ae0 - 005c8b2f",
+   "decompile_lines_after": 156,
+   "gaps_remaining": 1,
+   "body_after": "Function: CG_vector_deleting_dtor_005c8ae0 at 005c8ae0\nSignature: undefined CG_vector_deleting_dtor_005c8ae0(void)\nEntry: 005c8ae0\nBody: 005c8ae0 - 005c8b2f",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  },
+  {
+   "function": "005c9530",
+   "owner": "agent/orch5-20260911",
+   "when": "2026-09-12T22:18:30Z",
+   "decompile_lines_before": 114,
+   "gaps": [
+    {
+     "site": "005c96c2",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "005c96c7",
+     "gap_end_exclusive": "005c96ca",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    },
+    {
+     "site": "005c96fc",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "005c9701",
+     "gap_end_exclusive": "005c970d",
+     "bytes": 12,
+     "after_call": true,
+     "sha256": "cafab53e28aa94811ac9353032a51ce4eaab0d9ca78c476763fbc5f3bb09273c"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "005c96c2",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "005c96c7",
+      "gap_end_exclusive": "005c96ca",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 005c96c2 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    },
+    {
+     "gap": {
+      "site": "005c96fc",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "005c9701",
+      "gap_end_exclusive": "005c970d",
+      "bytes": 12,
+      "after_call": true,
+      "sha256": "cafab53e28aa94811ac9353032a51ce4eaab0d9ca78c476763fbc5f3bb09273c"
+     },
+     "clear": "Success: Cleared flow override at 005c96fc (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 12 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 113,
+   "gaps_remaining": 0
+  }
+ ]
+}

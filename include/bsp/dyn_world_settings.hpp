@@ -22,7 +22,7 @@
 //   00C420E0  __thiscall(engine, const desc*): operator_new(48Ch) at 00C420F8, then
 //             00C41AD0 at 00C4211B, then the new world is appended to the engine's
 //             world vector.
-//   00C41AD0  the world constructor, __cdecl world*(world*, const desc*). Fifteen
+//   00C41AD0  the world constructor, __stdcall world*(world*, const desc*), RET8. Fifteen
 //             copies at 00C41AF2..00C41B4A are the whole of the descriptor's effect.
 //   00C5C540  the substep schedule: world+00h (00C5C651), world+34h (00C5C63C) and the
 //             accumulator world+48h.
@@ -102,7 +102,7 @@ inline constexpr float kDynWorldGameStep = 0.05f;
 // the zero the same block writes (EBX and the zeroed XMM0).
 DynWorldDescriptor dyn_world_descriptor_004ddb90() noexcept;
 
-// 00C41AD0, __cdecl world*(world*, const desc*); 00C420E0 pushes the descriptor at
+// 00C41AD0, __stdcall world*(world*, const desc*), RET8;00C420E0 pushes the descriptor at
 // 00C42119 and the fresh world at 00C4211A. The fifteen copies at 00C41AF2..00C41B4A are
 // the whole of the descriptor's effect on the world.
 DynWorldSettings dyn_world_construct_00c41ad0(const DynWorldDescriptor& desc) noexcept;

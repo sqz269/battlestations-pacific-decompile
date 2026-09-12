@@ -37,15 +37,26 @@ Win32PlatformState& platform(NativeKeyboardMouseContext& context) {
     return *result;
 }
 
-// The native callers capture the VTABLE before BEC230 and read slot34 from that
-// captured table afterward, while reloading the actual COM this argument.
+enum class CooperativeLoadOrder { receiver_first, slot_first };
+
+// All callers capture the old VTABLE before BEC230. Afterward keyboard ctor
+// A9A44C/A9A44E and setter A9A15C/A9A163 load receiver then slot; mouse poll
+// A9A1B5/A9A1B9 loads slot then receiver. The current receiver may use a new table.
 void cooperate(void* object, std::size_t offset, DWORD flags,
-    NativeKeyboardMouseContext& context) {
+    NativeKeyboardMouseContext& context, CooperativeLoadOrder order) {
     const auto* table = read<const std::byte*>(device(object, offset), 0);
     const auto window = get_platform_window_00bec230(platform(context));
     using Call = HRESULT (__stdcall*)(IDirectInputDevice8A*, HWND, DWORD);
-    const auto call = read<Call>(table, 0x34);
-    call(device(object, offset), window, flags);
+    IDirectInputDevice8A* current;
+    Call call;
+    if (order == CooperativeLoadOrder::receiver_first) {
+        current = device(object, offset);
+        call = read<Call>(table, 0x34);
+    } else {
+        call = read<Call>(table, 0x34);
+        current = device(object, offset);
+    }
+    call(current, window, flags);
 }
 
 float click_seconds(DWORD milliseconds, NativeKeyboardMouseGlobals& globals) {
@@ -155,7 +166,7 @@ void* construct_native_keyboard_00a9a3e0(void* storage, IDirectInput8A& input,
         sdk.create_device(input, GUID_SysKeyboard,
             reinterpret_cast<IDirectInputDevice8A**>(bytes(storage, 0x30c)));
         device(storage, 0x30c)->SetDataFormat(&c_dfDIKeyboard);
-        cooperate(storage, 0x30c, 6, context);
+        cooperate(storage, 0x30c, 6, context, CooperativeLoadOrder::receiver_first);
     } catch (...) {
         destroy_native_keyboard_base_00a95e60(storage);
         throw;
@@ -262,7 +273,7 @@ bool poll_native_mouse_00a9a180(void* object, NativeKeyboardMouseContext& contex
     write<std::uint8_t>(object, 0x210, 0);
     if (!initial_device) return false;
     if (read<std::uint8_t>(object, 0x234) == 0) {
-        cooperate(object, 0x20c, 5, context);
+        cooperate(object, 0x20c, 5, context, CooperativeLoadOrder::slot_first);
         write<std::uint8_t>(object, 0x234, 1);
     }
     auto& current_platform = platform(context);
@@ -288,7 +299,7 @@ bool poll_native_mouse_00a9a180(void* object, NativeKeyboardMouseContext& contex
 }
 void set_native_mouse_cooperative_level_00a9a140(void* object, std::uint32_t flags,
     NativeKeyboardMouseContext& context) {
-    cooperate(object, 0x20c, flags, context);
+    cooperate(object, 0x20c, flags, context, CooperativeLoadOrder::receiver_first);
     write<std::uint8_t>(object, 0x234, 1);
 }
 

@@ -107,10 +107,23 @@ partially written sample with 32-bit wrap and update history, then return true.
 
 A9A140 takes arbitrary flags; its sole direct caller BECBB7 supplies 6, whereas
 the initial mouse-poll arm supplies 5 inline. Keyboard construction also uses 6.
-These paths capture the COM vtable before BEC230, read slot34 from that captured
-table afterward, and reload the member COM pointer for the this argument.
+These paths capture the COM vtable before BEC230. After the window getter,
+A9A140 reloads the receiver at A9A15C before loading the captured table's slot34
+at A9A163. Keyboard construction likewise reloads at A9A44C before its slot load
+at A9A44E. Mouse polling has the opposite order: slot load A9A1B5, then receiver
+reload A9A1B9. The private source helper selects this order per caller. Mouse
+construction A9A290 performs no cooperative call; it initializes byte234 to0
+after SetDataFormat and leaves the initial flags5 call to polling.
 The source calls the existing concrete platform-window getter on the current
 `Win32PlatformState` publication; no fake platform or cached window is created.
+
+The AF correction was checked against all three source helper callers and their
+complete native body extents. Its strict Win32 build, both existing CTests,
+eight seed comparisons and21 direct/tail CALL checks passed. The previous real
+SDK probe below remains historical evidence; this ordering correction did not
+launch a game or run new device/cursor operations. The appended
+`cooperative_load_order_af` report section preserves the exact instruction
+sequence and separate correction build hashes.
 
 A99E90 performs previous-store, virtual query, current-store for each byte in
 order. `NativeInputHistoryHost` is a required shared raw dispatcher; its query20
