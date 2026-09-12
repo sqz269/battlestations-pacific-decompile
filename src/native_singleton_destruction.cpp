@@ -2,6 +2,8 @@
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/native_input_action_owner.hpp"
 #include "bsp/native_input_backend_owner.hpp"
+#include "bsp/native_physical_factory.hpp"
+#include "bsp/native_string_pool_owner.hpp"
 #include "bsp/xlive_owner_lifetime.hpp"
 
 #include "bsp/native_gameplay_effect_destruction.hpp"
@@ -96,6 +98,22 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
         if (bindings.input_actions != nullptr) {
             scalar_delete_native_input_action_owner_00a93e50(owner, flags,
                 *bindings.input_actions);
+            return;
+        }
+        break;
+    case 0x00d68200:
+        if (bindings.actual_string_pool_publication_01090aa8 != nullptr &&
+            bindings.actual_string_returns_disabled_01090aa4 != nullptr) {
+            delete_native_string_pool_00bd1730(*static_cast<NativeStringPoolStorage*>(owner),
+                flags, *bindings.actual_string_pool_publication_01090aa8,
+                *bindings.actual_string_returns_disabled_01090aa4);
+            return;
+        }
+        break;
+    case 0x00d68cf8:
+        if (bindings.physical_factory != nullptr) {
+            delete_native_physical_factory_secondary_00bed910(owner, flags,
+                *bindings.physical_factory);
             return;
         }
         break;

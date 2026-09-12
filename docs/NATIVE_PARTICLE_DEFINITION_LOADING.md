@@ -163,3 +163,15 @@ The earlier worker harness printed matching observations but returned1; its
 shell log-print step hid that status. Current-library replay caught it. An
 explicit return0 corrects the MSVC inline-assembly main exit path in the scratch
 probe; production code is unchanged. The corrected process exit is checked.
+
+## Correction from docs/NATIVE_PARTICLE_TYPE_FACTORY.md
+
+AP connects AF44C0 suffix extraction and B00CE0 child creation directly to
+their concrete implementations. The loading binding borrows particle-type
+services from the same owner/string/parameter domain. A selected Particle
+entry checks that domain identity, then constructs the actual type and calls
+its captured current parser08. Those five parsers remain required application
+services. Earlier AO boundary and validation statements describe that earlier
+revision. The AP textual replay compares the recovered suffix against native
+AF44C0/AF4450 while preserving original fixtures and uses decoded operand
+relocations. It does not execute a real child-specific text parser.

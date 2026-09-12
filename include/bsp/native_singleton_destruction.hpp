@@ -7,12 +7,14 @@ struct NativeResourceRegistryDeleteBindings;
 class XLiveOwnerAllocation;
 struct NativeInputBackendOwnerContext;
 struct NativeInputActionOwnerContext;
+struct NativeStringPoolStorage;
+struct NativePhysicalFactoryContext;
 namespace game { class GameSoundRuntime; }
 
 // Stable borrowed source bindings. Every nonnull object admitted to the raw
 // manager must carry one of these recovered slot-zero profiles: CE3818,
 // D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478, D58F78, D24138,
-// D2413C, D5B5F4, D5B5F8, D5B72C or D5B630. D0DA64
+// D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200 or D68CF8. D0DA64
 // requires its actual publication cell; registry and sound profiles require
 // their concrete borrowed bindings. Sound and XLive owners retain C++ projected
 // storage; XLive additionally requires the exact allocation identity. Input
@@ -29,8 +31,13 @@ struct NativeSingletonDeletionBindings {
     XLiveOwnerAllocation* xlive_owner{};
     NativeInputBackendOwnerContext* input_backend{};
     NativeInputActionOwnerContext* input_actions{};
+    // Stable actual01090AA8/01090AA4 cells; both required for D68200.
+    NativeStringPoolStorage* volatile* actual_string_pool_publication_01090aa8{};
+    volatile std::uint32_t* actual_string_returns_disabled_01090aa4{};
+    // D68CF8 is the registered factory+4 subobject. Dispatch adjusts -4.
+    NativePhysicalFactoryContext* physical_factory{};
 };
-static_assert(sizeof(NativeSingletonDeletionBindings) == 24);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 36);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

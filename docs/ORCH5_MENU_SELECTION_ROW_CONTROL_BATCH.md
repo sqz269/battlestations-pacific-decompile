@@ -48,3 +48,7 @@ transform/prompt/Movie providers and Listbox properties, full frame and teardown
 ## Initial combined validation
 
 MSVC Win32 build passed both existing tests. Three focused fixtures linked only their fixture object against the combined production library and passed: actual Listbox/Group/dispatcher ownership, actual Lua/profile unlock sequencing, and NativeString contents/allocation order. The call reports contain245 rows with0failures, and16 annotations were saved with prior names/comments retained. The report hashes sources, library and logs and records narrower fixture limits.
+
+## Promoted validation
+
+Source batch `bf54b1329913cfffc00d483a032a6bbb9d96cd1d` was integrated with concurrent main. Commit `e0bd7c4b5b692253f5186263863937395d920885` passed both existing tests and was promoted without any post-build code change. All three scoped fixtures were then linked solely against that integrated production library and passed again. The report pins source, build and promotion commits, library/source/log hashes, and retained worker evidence. This does not validate future main changes.
