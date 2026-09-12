@@ -101,7 +101,11 @@ void end_tail(NativeModelOwner& owner) noexcept {
 }
 void finish_node(NativeModelOwner& owner) {
     try {
-        destroy_native_node_00b6f440(owner.environment.nodes, owner.node);
+        if (owner.environment.actual_names)
+            destroy_native_node_00b6f440(owner.environment.nodes, owner.node,
+                *owner.environment.actual_names);
+        else
+            destroy_native_node_00b6f440(owner.environment.nodes, owner.node);
     } catch (...) {
         end_tail(owner);
         throw;
@@ -165,8 +169,12 @@ void* construct_native_model_00b75030(NativeModelOwner& owner, const NativeStrin
         throw std::logic_error("model constructor requires its unused prepared slot");
     owner.phase = NativeModelOwner::Phase::constructing;
     try {
-        construct_native_node_00b6f5a0(&owner.storage.node, NativeModelPool::slot_bytes,
-            name, owner.environment.nodes.strings);
+        if (owner.environment.actual_names)
+            construct_native_node_00b6f5a0(&owner.storage.node, NativeModelPool::slot_bytes,
+                name, *owner.environment.actual_names);
+        else
+            construct_native_node_00b6f5a0(&owner.storage.node, NativeModelPool::slot_bytes,
+                name, owner.environment.nodes.strings);
     } catch (...) {
         end_tail(owner);
         throw;

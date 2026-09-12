@@ -1,0 +1,365 @@
+{
+  "packet": "orch2_filestore_subtree_ar",
+  "base_commit": "b44ac4fa",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verified_by": "bsp.py CLI client.verify before each live request"
+  },
+  "status": "complete_actual_storage_with_explicit_service_and_exception_boundaries",
+  "routines": [
+    {
+      "entry": "00be5d70",
+      "coverage": "complete",
+      "end_instruction_inclusive": "00be5dee",
+      "end_byte_inclusive": "00be5dee",
+      "end_exclusive": "00be5def",
+      "bytes": 127,
+      "sha256": "b57836aa29c8daaf79277beede1aadaa4241349695c1213f891ad5914fb868f7",
+      "live_bytes_match": true,
+      "direct_calls": [
+        {
+          "address": "00be5dd2",
+          "native": "00419cc0",
+          "containing_function": "00be5d70"
+        },
+        {
+          "address": "00be5dd9",
+          "native": "00bd1510",
+          "containing_function": "00be5d70"
+        }
+      ],
+      "address": "00be5d70",
+      "name": "destroy_native_file_store_payload_00be5d70",
+      "ghidra_name_hypothesis": "BSP_FileStorePayload_Destroy",
+      "old_ghidra_name": "FUN_00be5d70",
+      "abi": "ECX actual0Ch payload; no stack arguments; RET",
+      "source": "src/native_filestore_subtree.cpp"
+    },
+    {
+      "entry": "00be66c0",
+      "coverage": "complete",
+      "end_instruction_inclusive": "00be670f",
+      "end_byte_inclusive": "00be6711",
+      "end_exclusive": "00be6712",
+      "bytes": 82,
+      "sha256": "120cefe0fcf103775bb51b4d8c7754f614054cfcff13603144029578f0a7c380",
+      "live_bytes_match": true,
+      "direct_calls": [
+        {
+          "address": "00be66d7",
+          "native": "00be66c0",
+          "containing_function": "00be66c0"
+        },
+        {
+          "address": "00be66ef",
+          "native": "00419cc0",
+          "containing_function": "00be66c0"
+        },
+        {
+          "address": "00be66f6",
+          "native": "00bd1510",
+          "containing_function": "00be66c0"
+        },
+        {
+          "address": "00be66fc",
+          "native": "00bf65ac",
+          "containing_function": "00be66c0"
+        }
+      ],
+      "address": "00be66c0",
+      "name": "erase_native_file_store_pending_subtree_00be66c0",
+      "ghidra_name_hypothesis": "BSP_FileStorePendingTree_EraseSubtree",
+      "old_ghidra_name": "FUN_00be66c0",
+      "abi": "ECX tree; one stack node; RET4",
+      "source": "src/native_filestore_subtree.cpp"
+    },
+    {
+      "entry": "00be6720",
+      "coverage": "complete",
+      "end_instruction_inclusive": "00be675a",
+      "end_byte_inclusive": "00be675c",
+      "end_exclusive": "00be675d",
+      "bytes": 61,
+      "sha256": "d8d1f5ba079c7e80831718222cf400ad626c92bfe9f65ae437d34522c668af84",
+      "live_bytes_match": true,
+      "direct_calls": [
+        {
+          "address": "00be6737",
+          "native": "00be6720",
+          "containing_function": "00be6720"
+        },
+        {
+          "address": "00be6741",
+          "native": "00be5d70",
+          "containing_function": "00be6720"
+        },
+        {
+          "address": "00be6747",
+          "native": "00bf65ac",
+          "containing_function": "00be6720"
+        }
+      ],
+      "address": "00be6720",
+      "name": "erase_native_file_store_resident_subtree_00be6720",
+      "ghidra_name_hypothesis": "BSP_FileStoreResidentTree_EraseSubtree",
+      "old_ghidra_name": "FUN_00be6720",
+      "abi": "ECX tree; one stack node; RET4",
+      "source": "src/native_filestore_subtree.cpp"
+    },
+    {
+      "entry": "00be4c30",
+      "coverage": "complete",
+      "end_instruction_inclusive": "00be4c92",
+      "end_byte_inclusive": "00be4c92",
+      "end_exclusive": "00be4c93",
+      "bytes": 99,
+      "sha256": "5820cc905f639c22ac31c02a4c5f7a865941908b5f698b7c1909173051c478c8",
+      "live_bytes_match": true,
+      "direct_calls": [
+        {
+          "address": "00be4c38",
+          "native": "00bf6713",
+          "containing_function": "00be4c30"
+        }
+      ],
+      "address": "00be4c30",
+      "name": "advance_native_file_store_resident_iterator_00be4c30",
+      "ghidra_name_hypothesis": "BSP_FileStoreResidentIterator_Advance",
+      "old_ghidra_name": "FUN_00be4c30",
+      "abi": "ECX actual8h iterator; RET",
+      "source": "src/native_filestore_subtree.cpp"
+    },
+    {
+      "entry": "00be4e40",
+      "coverage": "complete",
+      "end_instruction_inclusive": "00be4ea2",
+      "end_byte_inclusive": "00be4ea2",
+      "end_exclusive": "00be4ea3",
+      "bytes": 99,
+      "sha256": "f465f772b3e18e985455da6a7a259e5e771d9ff48232655b59ce47b327f8c178",
+      "live_bytes_match": true,
+      "direct_calls": [
+        {
+          "address": "00be4e48",
+          "native": "00bf6713",
+          "containing_function": "00be4e40"
+        }
+      ],
+      "address": "00be4e40",
+      "name": "advance_native_file_store_pending_iterator_00be4e40",
+      "ghidra_name_hypothesis": "BSP_FileStorePendingIterator_Advance",
+      "old_ghidra_name": "FUN_00be4e40",
+      "abi": "ECX actual8h iterator; RET",
+      "source": "src/native_filestore_subtree.cpp"
+    },
+    {
+      "entry": "00cc6c40",
+      "coverage": "complete",
+      "end_instruction_inclusive": "00cc6c43",
+      "end_byte_inclusive": "00cc6c47",
+      "end_exclusive": "00cc6c48",
+      "bytes": 8,
+      "sha256": "82bde14f2a644c166cc09a07bebddeb95cfe13c8287979458dc5a1d6df154afc",
+      "live_bytes_match": true,
+      "direct_calls": [],
+      "address": "00cc6c40",
+      "name": "file_store_payload_string_unwind_00cc6c40",
+      "ghidra_name_hypothesis": "BSP_FileStorePayload_UnwindString",
+      "old_ghidra_name": "Unwind@00cc6c40",
+      "abi": "captured payload EBP-10; tail JMP41DD20",
+      "source": "src/native_filestore_subtree.cpp"
+    }
+  ],
+  "eh": {
+    "handler": "00cc6c48",
+    "func_info": "00e0146c",
+    "unwind_map": "00e01464",
+    "states": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00cc6c40",
+        "captured_payload": "EBP-10"
+      }
+    ]
+  },
+  "indirect_calls": [
+    {
+      "site": "00be5da1",
+      "target": "IAT CE2220 InterlockedDecrement",
+      "contract": "stdcall owner+4; real Windows atomic; callee removes4"
+    },
+    {
+      "site": "00be5db1",
+      "target": "captured owner CURRENT table CURRENT slot0",
+      "contract": "ECX captured owner; EDX captured table; EAX entry; no pushed arguments",
+      "source_boundary": "NativeAdoptedSubstreamDispatch::source_zero_reference; concrete NativeVfsRuntimeBindings numeric D642C0,D68DB0,D691B0; other targets require binding"
+    }
+  ],
+  "tail_transfers": [
+    {
+      "site": "00be4c47",
+      "target": "00bf6713",
+      "containing_function": "00be4c30"
+    },
+    {
+      "site": "00be4e57",
+      "target": "00bf6713",
+      "containing_function": "00be4e40"
+    },
+    {
+      "site": "00cc6c43",
+      "target": "0041dd20",
+      "containing_function": "00cc6c40"
+    }
+  ],
+  "no_ghidra_function": [],
+  "raw_gaps": [
+    {
+      "start": "00be6701",
+      "end_byte_inclusive": "00be670b",
+      "end_exclusive": "00be670c",
+      "instructions": "ADD ESP,4; CMP byte [ESI+19],0; MOV EDI,ESI; JE BE66D1"
+    },
+    {
+      "start": "00be674c",
+      "end_byte_inclusive": "00be6756",
+      "end_exclusive": "00be6757",
+      "instructions": "ADD ESP,4; CMP byte [ESI+19],0; MOV EDI,ESI; JE BE6731"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "BE5D70 EH map unread",
+      "is": "complete state0 string unwind recovered",
+      "evidence": "E0146C->E01464 {-1,CC6C40}; CC6C43 JMP41DD20"
+    },
+    {
+      "was": "pseudocode returns after subtree free",
+      "is": "raw continuation walks captured left after right recursion and current payload/free",
+      "evidence": "BE6701..BE670B and BE674C..BE6756 live=disk"
+    },
+    {
+      "was": "snapshot BE63E0 CALLBE5D70 and xref CC6DBB CALL",
+      "is": "live BE63E0 has no CALLBE5D70; CC6DBB is JMP",
+      "evidence": "complete live BE63E0 and CC6DB8 listings"
+    }
+  ],
+  "validation": {
+    "strict_win32_build": "scripts/build.ps1 passed; process MSBUILDDISABLENODEREUSE=1; local/subtree_build_corrected.log",
+    "ctests": [
+      "reconstructed_math passed",
+      "native_math_differential passed"
+    ],
+    "native_seed_gate": "eight original seed bodies matched disk",
+    "call_check": "11 checked, 0 failed",
+    "probe": "17 original/source cases: 3 payload, 4 mutation-sensitive tree traversals, 10 iterators; source-only throwing terminal string unwind passed",
+    "probe_services": "ActualNativeStringPoolStorage and real pool getter/return; shared CRT allocate/free; original uses actual kernel32 InterlockedDecrement export and source uses real Windows atomic primitive",
+    "reference_modifications": "Private copies only: external E8/E9 dependency displacements; BE5DA1 absolute IAT pointer operand relocated to actual Windows atomic function pointer. Recursive relative calls unchanged. Original FH3 handler addresses retained but never executed. Original PE and production library entries untouched.",
+    "frozen_before_execution": "local/subtree_frozen_pre_execution/manifest.json",
+    "frozen_manifest_sha256": "c2e4495dfbf19ddf541f83bcab7edb9f05427a2f89515067e0c10ca2bff8c9c0",
+    "frozen_artifacts": [
+      {
+        "path": "include/bsp/native_filestore_subtree.hpp",
+        "bytes": 2525,
+        "sha256": "337f302856908f35b3563c8f7517edffa54eaa0dd5a314c91e5f68cba400708f"
+      },
+      {
+        "path": "src/native_filestore_subtree.cpp",
+        "bytes": 4753,
+        "sha256": "08992cf8c002fa647dce295078b7da85219cd40f554baac89c47c7c1acdb241c"
+      },
+      {
+        "path": "include/bsp/native_adopted_substream.hpp",
+        "bytes": 4690,
+        "sha256": "a5d41d65fb462fbe64b002ab38c646a8cb5f066c80415f33523b454100c302d8"
+      },
+      {
+        "path": "src/native_adopted_substream.cpp",
+        "bytes": 9011,
+        "sha256": "cc290d6afb33d1e3ee42455b2aa7a327e1c34d5eb12e3903f82c13caed15985a"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "bytes": 6719,
+        "sha256": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "bytes": 6430,
+        "sha256": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a"
+      },
+      {
+        "path": "src/native_vfs_runtime_bindings.cpp",
+        "bytes": 7559,
+        "sha256": "c2c36b94f3c17aed17d09cc0f791015c1317934aaa1f40a55953182a0b731b0e"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_filestore_subtree.obj",
+        "bytes": 6554,
+        "sha256": "23b08e6541ffe82888dc149c5522b28e0f974197ab038e5f16b3cad5b0737ab1"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 45599370,
+        "sha256": "395c41dac6ddc8b4b6ebe0cc3dbca606287a7cb7e1d3b072a1dc38fc8c597655"
+      },
+      {
+        "path": "local/subtree_probe.cpp",
+        "bytes": 8978,
+        "sha256": "2c58b09273f30efe7a20ef8d8cc961f06611c090d3ed6e7c8c658148c91430fc"
+      },
+      {
+        "path": "local/subtree_probe.obj",
+        "bytes": 41987,
+        "sha256": "bc35145151fb99437f6596c6e5ace1dc79bd3077ff10cbafa27d1ae640fb1b6d"
+      },
+      {
+        "path": "local/subtree_probe.exe",
+        "bytes": 26112,
+        "sha256": "a93de2e2fdc41a8987dc7e1f1fb9993d57cfb161ab103e80d56aa5f2eea144c6"
+      },
+      {
+        "path": "local/subtree_bytes.hpp",
+        "bytes": 3101,
+        "sha256": "ab282950cc05931d9b958e3d1e4ac97717edc39bf6433304c5664be711dc8263"
+      },
+      {
+        "path": "local/subtree_bytes.json",
+        "bytes": 4748,
+        "sha256": "b4b6c94051bc512007ee0664c1b26fd5ee8d0c021d45de4d26304cd9ef038898"
+      },
+      {
+        "path": "local/prepare_subtree_probe.py",
+        "bytes": 3019,
+        "sha256": "7f1bb3f2e01309f80212569a17035eb0635c65996033af060e0a4d13ef5d37fc"
+      },
+      {
+        "path": "local/compile_subtree_probe.ps1",
+        "bytes": 809,
+        "sha256": "c8aa37a77aa1a6c4d1e511c75d693596245a46f0b5e9b94c32a8c44173962f47"
+      },
+      {
+        "path": "local/compile_subtree_probe.cmd",
+        "bytes": 316,
+        "sha256": "81e6da2a40304cce0db66b7c442d2634a1216574afb6fdfb96865560e9d81c51"
+      },
+      {
+        "path": "local/freeze_subtree_probe.py",
+        "bytes": 1563,
+        "sha256": "57c1816663bcc76bdd3580f40065f1d38d2c05516567d063385f8ba880c1c9a1"
+      }
+    ],
+    "post_execution_check": "all 18 hashes unchanged",
+    "execution_command": "./local/subtree_probe.exe *> local/subtree_probe_run.log",
+    "game_validated": false,
+    "native_binary_abi_compatible": false
+  },
+  "boundaries": [
+    "NativeStringStorage release noexcept excludes throwing native lazy getter; FH3/SEH identity not proved",
+    "Other numeric profiles require concrete current-slot dispatch",
+    "No tree owner/head/count/range/rebalance/wrapper composition",
+    "No game execution or binary ABI replacement claim"
+  ]
+}

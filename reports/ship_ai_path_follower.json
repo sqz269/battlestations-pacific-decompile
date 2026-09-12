@@ -1,0 +1,370 @@
+{
+  "packet": "cc_ai_path_follower",
+  "owner": "agent/cc-ai-path-follower",
+  "doc": "docs/SHIP_AI_PATH_FOLLOWER.md",
+  "header": "include/bsp/ship_ai_path_follower.hpp",
+  "source": "src/ship_ai_path_follower.cpp",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only",
+  "question": "How a ship walks its path plan, and what advances plan+34h.",
+  "answer": "plan+34h is a step cursor into the path, not a node count. Nine writers exist in the image; eight store zero and the only advance is ADD dword [ESI+34h],1 at 009E421F inside 009E3C00, taken when the ship is inside the look-ahead of its target node or has been carried past it AND 00417EF0 reports the straight run from the ship to the node after the target clear of avoid zones.",
+
+  "routines": [
+    {
+      "address": "009e3c00",
+      "proposed_name": "BSP_ShipAiPathPlan_NextPathPoint",
+      "name_applied": false,
+      "name_blocked_by": "leased to agent/cc-exe-2q",
+      "original_abi": "void __thiscall(plan)(float* record), RET 4 at 009E3C65, 009E3D81 and 009E4328",
+      "body": "009e3c00-009e432a",
+      "coverage": "complete: 009E3C00-009E432A, read from the listing",
+      "reconstruction": "ship_ai_path_follower_point_009e3c00",
+      "deviations": [
+        "009E3C80 re-enters the cursor loop without testing the node pointer and 009E3D11 hands a null cursor to 009D5930; the reconstruction stops and returns NoTargetNode instead of faulting",
+        "009E413D-009E415E pre-seed 009D6550's two out buffers with the circle centre and the offset vector, so a failed tangent with a negative side byte steers at a vector as if it were a point; reproduced, not repaired"
+      ]
+    },
+    {
+      "address": "009d5930",
+      "name": "BSP_ShipAiPathNode_DecideDirection",
+      "name_applied": true,
+      "original_abi": "void __thiscall(node), RET 0",
+      "body": "009d5930-009d5987",
+      "coverage": "complete: 009D5930-009D5987",
+      "reconstruction": "ship_ai_path_node_decide_direction_009d5930"
+    },
+    {
+      "address": "009d6550",
+      "name": "BSP_Circle2f_TangentPointPair",
+      "name_applied": true,
+      "original_abi": "bool __thiscall(circle)(const float2* point, float2* first, float2* second), RET 0Ch",
+      "body": "009d6550-009d65d0",
+      "coverage": "complete: 009D6550-009D65D0",
+      "reconstruction": "ship_ai_path_tangent_points_009d6550"
+    },
+    {
+      "address": "004f3970",
+      "proposed_name": "BSP_Circle2f_TangentChord",
+      "name_applied": false,
+      "name_blocked_by": "belongs to the open ship_ai_nav_circle_tangent packet",
+      "original_abi": "bool __thiscall(circle)(const float2* point, float2* base, float2* half_chord), RET 0Ch",
+      "body": "004f3970-004f3b98",
+      "coverage": "complete: 004F3970-004F3B98",
+      "reconstruction": "ship_ai_path_tangent_chord_004f3970"
+    },
+    {
+      "address": "00417ef0",
+      "proposed_name": "BSP_AvoidZoneManager_SegmentHitPoint",
+      "name_applied": false,
+      "name_blocked_by": "also called from 00422500, which belongs to avoid_zone_geometry",
+      "original_abi": "bool __thiscall(manager)(layer, const float2* from, const float2* to, float2* hit), RET 10h",
+      "body": "00417ef0-00417f59",
+      "coverage": "complete: 00417EF0-00417F59 read whole, but its decider 004179D0 was not read; the true-means-blocked polarity is from the sibling 00417E90 and both call sites, not from the deciding body",
+      "reconstruction": "modelled as ShipAiPathFollowerHost::segment_hits_zone_00417ef0"
+    },
+    {
+      "address": "009d9e50",
+      "name": "BSP_ShipAiPathPlan_RemainingLength",
+      "name_applied": "evidence appended",
+      "original_abi": "float __thiscall(plan)(const float2* pose) in ST0, RET 4",
+      "body": "009d9e50-009d9f8c",
+      "coverage": "complete, projected by packet ship_ai_path_planner as ship_ai_path_remaining_length_009d9e50; this packet adds only the meaning of the loop bound at 009D9E67 and no new code",
+      "reconstruction": "src/ship_ai_path_planner.cpp, unchanged"
+    },
+    {
+      "address": "009ed6b0",
+      "name": "BSP_ShipAi_ControlsStep",
+      "coverage": "partial: read only for the consumer mapping, 009EE580-009EE6E5 and 009EE6D3-009EE7BD. 009ED6B0-009EE57F and 009EE7BD-009EF228 unread here",
+      "reconstruction": "none in this packet"
+    },
+    {
+      "address": "009e46f0",
+      "coverage": "partial: 009E47D3-009E4878 only, read to confirm the second call site's contract. 009E46F0-009E47D2 and 009E4879-009E489B unread",
+      "reconstruction": "none in this packet"
+    },
+    {
+      "address": "00417e90",
+      "name": "segment_blocked_00417e90",
+      "coverage": "partial: 00417E90-00417EEB read for the polarity comparison with 00417EF0, not projected",
+      "reconstruction": "none in this packet"
+    }
+  ],
+
+  "host_steps": [
+    {
+      "step": 1,
+      "address": "009e3d13",
+      "function": "009e3c00",
+      "native": "009d5930",
+      "method": "reconstructed as ship_ai_path_node_decide_direction_009d5930, not a host method",
+      "note": "the cursor node's direction"
+    },
+    {
+      "step": 2,
+      "address": "009e3d3c",
+      "function": "009e3c00",
+      "native": "009d5930",
+      "method": "reconstructed as ship_ai_path_node_decide_direction_009d5930, not a host method",
+      "note": "the target node's direction"
+    },
+    {
+      "step": 3,
+      "address": "009e3d8c",
+      "function": "009e3c00",
+      "method": "lateral_anchor_node_10",
+      "note": "a dereference of node+10h, not a call; re-tested at 009E3DAB and read again at 009E3DD2"
+    },
+    {
+      "step": 4,
+      "address": "009e3dcd",
+      "function": "009e3c00",
+      "native": "00811d80",
+      "method": "order_turn_limit_at_00811d80",
+      "note": "this = owner + 0A98h + 54h * [owner+0B40h], the unit's own published order slot (009E3DB5-009E3DC1). Contract from include/bsp/ship_ai_throttle_ring.hpp"
+    },
+    {
+      "step": 5,
+      "address": "009e3e83",
+      "function": "009e3c00",
+      "native": "00bf7030",
+      "method": "length_2d_00414c60",
+      "note": "the CRT square root inside the same 1e-10 guard 00414C60 uses: the pose-to-target distance"
+    },
+    {
+      "step": 6,
+      "address": "009e3eae",
+      "function": "009e3c00",
+      "native": "0082e850",
+      "method": "owner_class_turn_radius_0082e850",
+      "note": "ECX = [[plan+3Ch]+538h]; 009E3EB3 multiplies by the double 1.5 at 00CE3D78"
+    },
+    {
+      "step": 7,
+      "address": "009e3ec0",
+      "function": "009e3c00",
+      "method": "owner_radius_09c8",
+      "note": "a field read of owner+9C8h through plan+3Ch, not a call; 009E3EC6 multiplies by the double 0.75 at 00CEC9D8"
+    },
+    {
+      "step": 8,
+      "address": "009e3ef4",
+      "function": "009e3c00",
+      "native": "00bf7030",
+      "method": "length_2d_00414c60",
+      "note": "the incoming leg's length"
+    },
+    {
+      "step": 9,
+      "address": "009e3f36",
+      "function": "009e3c00",
+      "native": "00bf7030",
+      "method": "length_2d_00414c60",
+      "note": "the following leg's length"
+    },
+    {
+      "step": 10,
+      "address": "009e3ffc",
+      "function": "009e3c00",
+      "native": "00414c60",
+      "method": "length_2d_00414c60",
+      "note": "the corner bisector's length, compared against 1e-6f at 00D7A288"
+    },
+    {
+      "step": 11,
+      "address": "009e4162",
+      "function": "009e3c00",
+      "native": "009d6550",
+      "method": "reconstructed as ship_ai_path_tangent_points_009d6550, not a host method",
+      "note": "ECX = {centre.x, centre.z, look_ahead} on the stack; the two out buffers are pre-seeded"
+    },
+    {
+      "step": 12,
+      "address": "009e4200",
+      "function": "009e3c00",
+      "native": "004218e0",
+      "method": "avoid_zone_manager_004218e0"
+    },
+    {
+      "step": 13,
+      "address": "009e4216",
+      "function": "009e3c00",
+      "native": "00417ef0",
+      "method": "segment_hits_zone_00417ef0",
+      "note": "false runs 009E421F, the only advance of plan+34h in the image"
+    },
+    {
+      "step": 14,
+      "address": "009e426d",
+      "function": "009e3c00",
+      "native": "00bf7030",
+      "method": "length_2d_00414c60",
+      "note": "the steering vector's length, floored at 0.1f"
+    },
+    {
+      "step": 15,
+      "address": "009d6562",
+      "function": "009d6550",
+      "native": "004f3970",
+      "method": "ship_ai_path_tangent_chord_004f3970"
+    },
+    {
+      "step": 16,
+      "address": "004f39c9",
+      "function": "004f3970",
+      "native": "00bf7030",
+      "method": "length_2d_00414c60",
+      "note": "the centre-to-point distance"
+    },
+    {
+      "step": 17,
+      "address": "004f3a91",
+      "function": "004f3970",
+      "native": "00bf7030",
+      "method": "std::sqrt",
+      "note": "sqrt(len*len - r*r), the external tangent length; no 1e-10 guard here"
+    },
+    {
+      "step": 18,
+      "address": "004f3b35",
+      "function": "004f3970",
+      "native": "00bf7030",
+      "method": "std::sqrt",
+      "note": "sqrt(r*r - len*len), the interior half-chord"
+    },
+    {
+      "step": 19,
+      "address": "00417f2e",
+      "function": "00417ef0",
+      "native": "004120d0",
+      "method": "zone_group_for_layer_004120d0",
+      "note": "not reconstructed here; declared by include/bsp/ship_ai_path_planner.hpp"
+    },
+    {
+      "step": 20,
+      "address": "00417f35",
+      "function": "00417ef0",
+      "native": "004179d0",
+      "method": "unread",
+      "note": "the body that decides whether the segment meets a zone; belongs to avoid_zone_geometry"
+    }
+  ],
+
+  "call_sites": [
+    {
+      "address": "009ee5f4",
+      "function": "009ed6b0",
+      "native": "009e3c00",
+      "note": "BSP_ShipAi_ControlsStep on blk+2F4h, the plan in use, with the record at [ESP+78h]"
+    },
+    {
+      "address": "009e4813",
+      "function": "009e46f0",
+      "native": "009e3c00",
+      "note": "the second site; reads only record+08h/+0Ch and takes an atan2 of it"
+    },
+    {
+      "address": "009ee6ac",
+      "function": "009ed6b0",
+      "native": "009d9e50",
+      "note": "the remaining path length, the walk whose loop bound this packet settles"
+    }
+  ],
+
+  "plan_cursor_writers": [
+    {"address": "009d9d1c", "function": "009d9cc0", "value": "0", "what": "BSP_ShipAiPathPlan_Init"},
+    {"address": "009d9d63", "function": "009d9d40", "value": "0", "what": "BSP_ShipAiPathPlan_Reset"},
+    {"address": "009dbdd9", "function": "009dbdb0", "value": "0", "what": "the second plan-vtable 00D2152C method"},
+    {"address": "009dbf1e", "function": "009dbef0", "value": "0", "what": "CG_scalar_deleting_dtor_009DBEF0"},
+    {"address": "009da50c", "function": "009da4e0", "value": "0", "what": "BSP_ShipAi_ClearPathPlan through nav+258h = slot A + 34h"},
+    {"address": "009da557", "function": "009da4e0", "value": "0", "what": "BSP_ShipAi_ClearPathPlan through nav+2C0h = slot B + 34h"},
+    {"address": "009ec721", "function": "009ec680", "value": "0", "what": "BSP_ShipAiPathSearch_Tick, the 3-to-4 transition"},
+    {"address": "009e3c3f", "function": "009e3c00", "value": "0", "what": "a plan with no head node"},
+    {"address": "009ed65f", "function": "009ed3e0", "value": "0", "what": "BSP_ShipAi_RefreshPathPlan, the inlined reset"},
+    {"address": "009e421f", "function": "009e3c00", "value": "+1", "what": "the shortcut: the only advance in the image"}
+  ],
+  "plan_cursor_scan": "scan-bytes over 009D0000-009F7000 for 89/C7/83/FF/01/29 ?? 34 and over the whole .text for 83 ?? 34 01, plus 89/C7/83 ?? 58 02 00 00 and ?? c0 02 00 00 for the nav-relative forms. The plan pointer does not leave that window: the plan vtable 00D2152C has exactly three referencing functions (009D9CC0, 009DBDB0, 009DBEF0) and nav+2F4h/+2F8h are written only at 009ED5BD/009ED5C3.",
+
+  "constants": [
+    {"address": "00d7a24c", "value": "1.0f", "site": "009E3C23 into plan+4Ch, 009E3F71 the shortest following leg that counts as a corner"},
+    {"address": "00ce3d78", "value": "1.5 (double)", "site": "009E3EB3, the class turn radius scale that makes the look-ahead radius"},
+    {"address": "00cec9d8", "value": "0.75 (double)", "site": "009E3EC6, the unit radius scale that floors the step"},
+    {"address": "00d7a288", "value": "1.0e-6f", "site": "009E4009, a degenerate corner bisector"},
+    {"address": "00d7a208", "value": "-0.0f", "site": "009E4027, 009E403F, the negation used to build the perpendicular"},
+    {"address": "00d7a250", "value": "-1.0 (double)", "site": "009E40E1, the overshoot bound"},
+    {"address": "00d7a3a0", "value": "0.1 (double)", "site": "009E428F, below which the steering length is not used as a divisor"},
+    {"address": "00d7a2f0", "value": "0.1f", "site": "009E429B, the substituted divisor"},
+    {"address": "00ce3820", "value": "1.0e-10 (double)", "site": "009E3E73, 009E3EE4, 009E3F26, 009E425D, the sqrt guard shared with 00414C60"}
+  ],
+
+  "corrections": [
+    {
+      "target": "include/bsp/ship_ai_path_planner.hpp ShipAiPathPlanBlock::node_count",
+      "was": "node_count, +34h, 009D9D1C; 009EC6AC clears it",
+      "is": "a step cursor: the index of the node the ship has already passed",
+      "evidence": "nine writers image-wide, eight storing zero and 009E421F a +1; 009E3C6C walks that many links to the node the ship came from and 009D9E67 walks one more to the target"
+    },
+    {
+      "target": "include/bsp/ship_ai_goal_vector.hpp ShipAiPathPointRecord::node_18",
+      "was": "node_18, +18h out, 009EE5F9; zero means no point",
+      "is": "the target node's lateral record handle, node+10h",
+      "evidence": "009E4243 MOV EAX,[EDI+10h] and 009E4246 MOV [EBP+18h],EAX, with EDI the target node"
+    },
+    {
+      "target": "include/bsp/ship_ai_goal_vector.hpp ShipAiPathPickHost::path_node_width_20",
+      "was": "the float at node+20h",
+      "is": "the float at the lateral record's +20h",
+      "evidence": "009EE63A reads [EDI+20h] where EDI came from record+18h, which the row above shows is node+10h"
+    },
+    {
+      "target": "include/bsp/ship_ai_goal_vector.hpp ShipAiPathPointRecord::direction_1c",
+      "was": "direction_1c, read as a direction",
+      "is": "a side code 0/1/2 from the target node's signed byte +14h, identical to ShipAiNavTurnSide",
+      "evidence": "009E4229-009E4240: TEST AL,AL / JLE, positive gives 2, negative gives 1, zero gives 0"
+    },
+    {
+      "target": "include/bsp/ship_ai_goal_vector.hpp ShipAiPathPointRecord::more_path_20",
+      "was": "the path continues past this point",
+      "is": "the reverse: 1 means there is no node past the target, the published point is the target point and +10h/+14h are not written",
+      "evidence": "009E3D65 sets it when the node after the target is null, 009E3D88 clears it when that node exists, 009E3F88 and 009E419B agree"
+    },
+    {
+      "target": "include/bsp/ship_ai_navigation.hpp ShipAiNavState::last_leg_338",
+      "was": "last_leg_338",
+      "is": "blk+338h is 'a following leg exists', the opposite of last_leg",
+      "evidence": "009EE776 CMP byte [ESP+98h],0 / 009EE77E SETZ AL / 009EE783 MOV [ESI+338h],AL, so it is record+20h == 0"
+    },
+    {
+      "target": "docs/SHIP_AI_PATH_SEARCH.md, the +10h lateral record row",
+      "was": "read by 009E3D75 and 009E3D8C",
+      "is": "read at 009E3D8C, 009E3DAB, 009E3DD2 and 009E4243; 009E3D75 is not an instruction start",
+      "evidence": "the stored listing of 009E3C00"
+    }
+  ],
+
+  "runtime_evidence": {
+    "command": "bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500 --log local/follower_run.log --game-root \"I:/SteamLibrary/steamapps/common/Battlestations Pacific\"",
+    "exit": 0,
+    "lines": [
+      "ShipAiPath::plan_009e3780          009e3780   concrete      calls=468",
+      "ShipAiPath::search_step_009ec680   009ec680   UNIMPLEMENTED calls=468",
+      "ShipAiPath::next_point_009e3c00    009e3c00   UNIMPLEMENTED calls=468",
+      "summary mission ship ai plan requests=468 seeds=6 accepts=468 approach_frames=96 controller_updates=2496",
+      "summary mission ship ai goal vector ... path_plan_refreshes=468 path_picks=468 path_publishes=0"
+    ],
+    "what_it_establishes": "The executable still records 009E3C00, so this run did not reach the reconstructed body and cannot confirm the projection. It does establish the input: 009EC680 is also a record, so all six seeded plans stay in state 1 with a two-node ship-to-goal graph, and the follower would run the two-node path on all 468 picks.",
+    "static_prediction": "Wiring the follower leaves path_publishes at 0 on this mission, because a two-node plan sets record+20h = 1 and never reaches 009E4243, so 009EE5F9 keeps taking the skip. What changes is blk+A94h/+A9Ch, which would stop taking the pose and start taking the goal, and 009D9E50's answer at 009EE6AC. Unverified: src/game_hosts_ship_ai.cpp belongs to packet cc_exe_2q."
+  },
+
+  "no_ghidra_function": [],
+
+  "uncertainty": [
+    "00417EF0's true-means-blocked polarity rests on 00417E90 having the same body shape and the same two callees; 004179D0 itself was not read.",
+    "The x87 intermediates that are multiplied or divided and only then stored are modelled in double and rounded once. The exact-product cases (the overshoot test at 009E40DD) are reproduced exactly; the divide cases (009E3EB3, 009E3EC6, 004F3A78, 004F3AA8) can differ by one ulp from an 80-bit divide rounded to float32.",
+    "0082E850's return reaches 009E3EB3 as an 80-bit value; the reconstruction takes it as a float before scaling.",
+    "The reconstruction is build-tested only. No native differential fixture exists for 009E3C00, and no run reaches it (see runtime_evidence)."
+  ],
+
+  "build": "scripts/build.ps1, MSVC Win32 Release, /W4 /WX clean; build/win32/bsp_core.dir/Release/ship_ai_path_follower.obj; ctest reconstructed_math passed",
+  "tests_added": "none: the routine has no host-free behavioural risk the existing checks miss, and the packet brief caps new tests at one"
+}

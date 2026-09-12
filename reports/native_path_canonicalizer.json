@@ -1,0 +1,1016 @@
+{
+  "packet": "orch2_native_path_canonicalizer_ar",
+  "created_utc": "2026-09-12T16:48:17.511167+00:00",
+  "base_commit": "b44ac4fae0d8cac994596163ce1ed84cc0ef5e9e",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "address": "00bee390",
+      "name": "canonicalize_native_path_00bee390",
+      "source": "src/native_path_canonicalizer.cpp",
+      "header": "include/bsp/native_path_canonicalizer.hpp",
+      "status": "complete_actual_header_algorithm_with_explicit_library_services_build_and_native_fixture_checked",
+      "original_abi": "ECX output, EDX input; EAX output; RET0",
+      "coverage": "complete source body with stated library/FH3 boundaries",
+      "native_bytes": 387,
+      "end_inclusive": "00bee512",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/NATIVE_PATH_CANONICALIZER.md; reports/native_path_canonicalizer.json"
+    },
+    {
+      "address": "00bdb970",
+      "name": "canonicalize_discard_native_path_00bdb970",
+      "source": "src/native_path_canonicalizer.cpp",
+      "header": "include/bsp/native_path_canonicalizer.hpp",
+      "status": "complete_actual_header_algorithm_with_explicit_library_services_build_and_native_fixture_checked",
+      "original_abi": "one C-string stack argument; incoming ECX/EDX unused; RET4; no stable result",
+      "coverage": "complete source body with stated library/FH3 boundaries",
+      "native_bytes": 149,
+      "end_inclusive": "00bdba04",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/NATIVE_PATH_CANONICALIZER.md; reports/native_path_canonicalizer.json"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bee3b9",
+      "native": "00bf55be",
+      "function": "00bee390",
+      "contract": "cdecl wrapping DWORD scratch bytes; ADD ESP4; existing CRT allocation boundary"
+    },
+    {
+      "address": "00bee4ca",
+      "native": "00bf9611",
+      "function": "00bee390",
+      "contract": "cdecl MOVSX signed-byte integer; ADD ESP4; current lowercase library result low byte"
+    },
+    {
+      "address": "00bee4f0",
+      "native": "0041e870",
+      "function": "00bee390",
+      "contract": "ECX raw output/header, stack C-string; RET4; existing actual constructor clears header first"
+    },
+    {
+      "address": "00bee500",
+      "native": "00bf65ac",
+      "function": "00bee390",
+      "contract": "cdecl captured scratch; ADD ESP4; successful-only source CRT free"
+    },
+    {
+      "address": "00bdb991",
+      "native": "0041e870",
+      "function": "00bdb970",
+      "contract": "ECX raw output/header, stack C-string; RET4; existing actual constructor clears header first"
+    },
+    {
+      "address": "00bdb9a5",
+      "native": "00bee390",
+      "function": "00bdb970",
+      "contract": "ECX output header, EDX source header; RET0; source and output separate"
+    },
+    {
+      "address": "00bdb9c1",
+      "native": "00419cc0",
+      "function": "00bdb970",
+      "contract": "no stack arguments; current canonical pool getter; pending pushed values belong to following BD1510"
+    },
+    {
+      "address": "00bdb9c8",
+      "native": "00bd1510",
+      "function": "00bdb970",
+      "contract": "ECX current pool; captured block,size+1,unused1; RET0C"
+    },
+    {
+      "address": "00bdb9e8",
+      "native": "00419cc0",
+      "function": "00bdb970",
+      "contract": "no stack arguments; current canonical pool getter; pending pushed values belong to following BD1510"
+    },
+    {
+      "address": "00bdb9ef",
+      "native": "00bd1510",
+      "function": "00bdb970",
+      "contract": "ECX current pool; captured block,size+1,unused1; RET0C"
+    },
+    {
+      "address": "00bf9630",
+      "native": "00bf94fa",
+      "function": "00bf9611",
+      "contract": "external CRT __tolower_l signature: signed integer and null locale; two caller POP ECX cleanups; locale-active implementation not executed by the probe"
+    }
+  ],
+  "incoming_calls": [
+    {
+      "address": "00aeec94",
+      "function": "00aeeaf0",
+      "native": "00bee390",
+      "contract": "ECX output and EDX current input raw headers; RET0"
+    },
+    {
+      "address": "00be1764",
+      "function": "00be1740",
+      "native": "00bee390",
+      "contract": "ECX output and EDX current input raw headers; RET0"
+    },
+    {
+      "address": "00be0776",
+      "function": "00be0750",
+      "native": "00bee390",
+      "contract": "ECX output and EDX current input raw headers; RET0"
+    },
+    {
+      "address": "00bdba76",
+      "function": "00bdba50",
+      "native": "00bee390",
+      "contract": "ECX output and EDX current input raw headers; RET0"
+    },
+    {
+      "address": "00bee553",
+      "function": "00bee520",
+      "native": "00bee390",
+      "contract": "ECX output and EDX current input raw headers; RET0"
+    },
+    {
+      "address": "00bee577",
+      "function": "00bee520",
+      "native": "00bee390",
+      "contract": "ECX output and EDX current input raw headers; RET0"
+    },
+    {
+      "address": "00bee5c5",
+      "function": "00bee520",
+      "native": "00bee390",
+      "contract": "ECX output and EDX current input raw headers; RET0"
+    },
+    {
+      "address": "00be1f10",
+      "function": "00be1dc0",
+      "native": "00bdb970",
+      "contract": "one pushed static C-string; RET4, ignored output"
+    },
+    {
+      "address": "00be1f1a",
+      "function": "00be1dc0",
+      "native": "00bdb970",
+      "contract": "one pushed static C-string; RET4, ignored output"
+    },
+    {
+      "address": "00be1f24",
+      "function": "00be1dc0",
+      "native": "00bdb970",
+      "contract": "one pushed static C-string; RET4, ignored output"
+    },
+    {
+      "address": "00be1f2e",
+      "function": "00be1dc0",
+      "native": "00bdb970",
+      "contract": "one pushed static C-string; RET4, ignored output"
+    },
+    {
+      "address": "00be1f38",
+      "function": "00be1dc0",
+      "native": "00bdb970",
+      "contract": "one pushed static C-string; RET4, ignored output"
+    },
+    {
+      "address": "00be1f42",
+      "function": "00be1dc0",
+      "native": "00bdb970",
+      "contract": "one pushed static C-string; RET4, ignored output"
+    }
+  ],
+  "original_spans": [
+    {
+      "label": "canonicalize",
+      "entry": "00bee390",
+      "bytes": 387,
+      "end_exclusive": "00bee513",
+      "sha256": "f3db474665b49451a2e7ec5b0662cbbac9c9531025ba92c19256c2f6eafc134a",
+      "live_equals_installed_load_image": true,
+      "pe_zero_fill": false,
+      "transfers": [],
+      "raw_call_instructions": [
+        {
+          "instruction_address": "00bee3b9",
+          "callee": "00bf55be",
+          "containing_entry": "00bee390"
+        },
+        {
+          "instruction_address": "00bee4ca",
+          "callee": "00bf9611",
+          "containing_entry": "00bee390"
+        },
+        {
+          "instruction_address": "00bee4f0",
+          "callee": "0041e870",
+          "containing_entry": "00bee390"
+        },
+        {
+          "instruction_address": "00bee500",
+          "callee": "00bf65ac",
+          "containing_entry": "00bee390"
+        }
+      ]
+    },
+    {
+      "label": "discard",
+      "entry": "00bdb970",
+      "bytes": 149,
+      "end_exclusive": "00bdba05",
+      "sha256": "a5308d1cb4feae1adad899d5995ff2f220a45327b43f9c14583e495104a685c8",
+      "live_equals_installed_load_image": true,
+      "pe_zero_fill": false,
+      "transfers": [],
+      "raw_call_instructions": [
+        {
+          "instruction_address": "00bdb991",
+          "callee": "0041e870",
+          "containing_entry": "00bdb970"
+        },
+        {
+          "instruction_address": "00bdb9a5",
+          "callee": "00bee390",
+          "containing_entry": "00bdb970"
+        },
+        {
+          "instruction_address": "00bdb9c1",
+          "callee": "00419cc0",
+          "containing_entry": "00bdb970"
+        },
+        {
+          "instruction_address": "00bdb9c8",
+          "callee": "00bd1510",
+          "containing_entry": "00bdb970"
+        },
+        {
+          "instruction_address": "00bdb9e8",
+          "callee": "00419cc0",
+          "containing_entry": "00bdb970"
+        },
+        {
+          "instruction_address": "00bdb9ef",
+          "callee": "00bd1510",
+          "containing_entry": "00bdb970"
+        }
+      ]
+    },
+    {
+      "label": "lowercase",
+      "entry": "00bf9611",
+      "bytes": 39,
+      "end_exclusive": "00bf9638",
+      "sha256": "d51d7fcca8a5a23d45346a96c67165cfcd746cc82e6e9a8531113f0d8b9c9235",
+      "live_equals_installed_load_image": true,
+      "pe_zero_fill": false,
+      "transfers": [],
+      "raw_call_instructions": [
+        {
+          "instruction_address": "00bf9630",
+          "callee": "00bf94fa",
+          "containing_entry": "00bf9611"
+        }
+      ]
+    },
+    {
+      "label": "discard_handler",
+      "entry": "00cc60e0",
+      "bytes": 10,
+      "end_exclusive": "00cc60ea",
+      "sha256": "380ba2899baafb0c6becf3043df98619a5e45300bb5fafffe61330716a5711a8",
+      "live_equals_installed_load_image": true,
+      "pe_zero_fill": false,
+      "transfers": [
+        {
+          "instruction_address": "00cc60e5",
+          "operand": "0xbf6b43"
+        }
+      ],
+      "raw_call_instructions": []
+    },
+    {
+      "label": "discard_source_unwind",
+      "entry": "00cc60d0",
+      "bytes": 8,
+      "end_exclusive": "00cc60d8",
+      "sha256": "e487e6e42b38df2470803e132f0dc064ee0cd1e0501277e15fc9ad0e876318d7",
+      "live_equals_installed_load_image": true,
+      "pe_zero_fill": false,
+      "transfers": [
+        {
+          "instruction_address": "00cc60d3",
+          "operand": "0x41dd20"
+        }
+      ],
+      "raw_call_instructions": []
+    },
+    {
+      "label": "discard_output_unwind",
+      "entry": "00cc60d8",
+      "bytes": 8,
+      "end_exclusive": "00cc60e0",
+      "sha256": "f0e5e75442731595c2cc4d368ddd78e8cf787af25ab2cfdeb92eb7e7021506aa",
+      "live_equals_installed_load_image": true,
+      "pe_zero_fill": false,
+      "transfers": [
+        {
+          "instruction_address": "00cc60db",
+          "operand": "0x41dd20"
+        }
+      ],
+      "raw_call_instructions": []
+    },
+    {
+      "label": "discard_fh3",
+      "entry": "00e00464",
+      "bytes": 52,
+      "end_exclusive": "00e00498",
+      "sha256": "b42266184191fad799cd64adb8385b3567c0fde2b2a67d3e6a070f744636aacb",
+      "live_equals_installed_load_image": true,
+      "pe_zero_fill": false
+    },
+    {
+      "label": "null_source",
+      "entry": "0109db91",
+      "bytes": 1,
+      "end_exclusive": "0109db92",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "live_equals_installed_load_image": true,
+      "pe_zero_fill": true
+    },
+    {
+      "label": "locale_mode",
+      "entry": "0109de1c",
+      "bytes": 4,
+      "end_exclusive": "0109de20",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "live_equals_installed_load_image": true,
+      "pe_zero_fill": true
+    },
+    {
+      "label": "manager_names",
+      "entry": "00d68400",
+      "bytes": 112,
+      "end_exclusive": "00d68470",
+      "sha256": "c55d9c90adfb94ff685a04db773a427ff6f27b384413a4d16b49429416800841",
+      "live_equals_installed_load_image": true,
+      "pe_zero_fill": false
+    }
+  ],
+  "unwind": {
+    "function": "00bdb970",
+    "handler": "00cc60e0",
+    "funcinfo": "00e0047c",
+    "map": "00e00464",
+    "states": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00cc60d0",
+        "header": "source EBP-1C"
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "action": "00cc60d8",
+        "header": "output EBP-14"
+      },
+      {
+        "state": 2,
+        "previous": -1,
+        "action": "00cc60d8",
+        "header": "output EBP-14"
+      }
+    ],
+    "normal_states": [
+      "unarmed during source constructor",
+      "0 around canonicalization",
+      "2 around source return",
+      "unarmed before output return"
+    ],
+    "source_getter_can_throw": true,
+    "original_FH3_executed": false
+  },
+  "validation": {
+    "strict_msvc_win32_build": true,
+    "existing_ctests_passed": 2,
+    "native_source_cases": 559,
+    "source_exception_schedules": 7,
+    "original_owned_bytes_unchanged": 536,
+    "original_lowercase_bytes_unchanged": 39,
+    "actual_pool_creation_reuse_output_shutdown": true,
+    "permanent_tests_added": 0,
+    "pre_execution_inputs_verified": 52,
+    "independent_review": {
+      "path": "local/native-path-ar-evidence/independent-review.json",
+      "sha256": "7fc4f51c1989d7f1473d10d441858f83ca63d90f2e730d15a62e88f92a1782d3",
+      "bytes": 3558
+    },
+    "fixture_boundary": "Owned2 bodies execute unchanged at +30000000. External constructor/heap/pool calls bind established source or instrumented services. Original39-byte BF9611 runs at its own translation; active-locale BF94FA is an instrumented call boundary. Actual pool smoke is source composition, separate from native algorithm comparisons.",
+    "direct_call_rows_checked": 24,
+    "direct_call_rows_failed": 0
+  },
+  "important_observations": {
+    "initial_stack_threshold": 256,
+    "stack_scratch_bytes": 260,
+    "heap_request": "initial unsigned header length+1 modulo2^32",
+    "counted_traversal": "header count reloaded after NUL-terminated scratch copy, then captured across lowercase calls",
+    "byte_input": "MOVSX to signed int, low byte returned to output",
+    "final_parent_boundary": {
+      "input_bytes": 257,
+      "requested_heap_bytes": 258,
+      "result_bytes": 258,
+      "terminator_offset": 258,
+      "fixture_padding": 32,
+      "qualification": "Native one-byte write beyond requested extent preserved; fixture grants slack. Not a general memory-safety claim."
+    }
+  },
+  "corrections": [
+    {
+      "was": "Only bounded std::string ASCII/NUL-free canonicalizer available",
+      "is": "Actual raw-header body, full cursor paths and library argument domain with explicit lowercase binding",
+      "evidence": "BEE390 full bytes and559 fixture cases"
+    },
+    {
+      "was": "BDB970 actual canonicalizer dependency absent",
+      "is": "Discard wrapper with actual header construction and independent current pool getters, including source exception phase order",
+      "evidence": "BDB970 and E00464/E0047C map plus7 source schedules"
+    }
+  ],
+  "limits": [
+    "These are new C++ interfaces, not original binary ABI.",
+    "Native BF94FA locale-active implementation, original CRT allocation handler/FH3/SEH identity and simultaneous cleanup failure remain unvalidated.",
+    "Runtime lowercase library binding is explicitly supplied; no default ASCII substitution.",
+    "Stack bytes beyond copied NUL and storage outside valid native accesses remain unspecified; malformed-input safety is not supplied.",
+    "Manager startup, mounting and game execution are not established by these fixtures."
+  ],
+  "pre_execution_manifest": {
+    "path": "local/native-path-ar-evidence/pre-execution/manifest.json",
+    "sha256": "7aca4fd673bcd6d12fec38a3c3c4da2d74206513083cdc61c2e7d769527e2fe0",
+    "bytes": 15559
+  },
+  "source_files": [
+    {
+      "path": "src/native_path_canonicalizer.cpp",
+      "sha256": "cb43008308875d890185e9e5e8d6dcd41e66575ea0941462f3e3a0eba6e7817e",
+      "bytes": 6735
+    },
+    {
+      "path": "include/bsp/native_path_canonicalizer.hpp",
+      "sha256": "afcc9ed18ed1aed403edb625ecfb2c8b4f4a1fc4c9c4f926a0a80157c3c764ea",
+      "bytes": 3406
+    },
+    {
+      "path": "docs/NATIVE_PATH_CANONICALIZER.md",
+      "sha256": "05435e1dff4e8febec437f935020a0ea83dae9bd75820cecb52f72e4fcedd3c8",
+      "bytes": 6889
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "local/native-path-ar-evidence/canonicalize.asm.txt",
+      "sha256": "2a6c8eb7366d446286de55cf016f287289bad3cdae864e5e599833e29a706480",
+      "bytes": 3694
+    },
+    {
+      "path": "local/native-path-ar-evidence/canonicalize.bin",
+      "sha256": "f3db474665b49451a2e7ec5b0662cbbac9c9531025ba92c19256c2f6eafc134a",
+      "bytes": 387
+    },
+    {
+      "path": "local/native-path-ar-evidence/canonicalize.bytes.txt",
+      "sha256": "d46f7e65978667dfaa5921fef8ab2c762da826222b8ebf508ebc6173ef2e8ca6",
+      "bytes": 1873
+    },
+    {
+      "path": "local/native-path-ar-evidence/comments-before.json",
+      "sha256": "c60a14816e779489cf808aab03fb4ea9749ae45ab95d17348bbf1bc03b101fb2",
+      "bytes": 1276
+    },
+    {
+      "path": "local/native-path-ar-evidence/comments-before.log",
+      "sha256": "e8d716b421f2d0b7d47b28d7815873cabea4af0275622c8461efb37615fbe6e4",
+      "bytes": 80
+    },
+    {
+      "path": "local/native-path-ar-evidence/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native-path-ar-evidence/discard.asm.txt",
+      "sha256": "a5e80797540ce58aa9793467257a7958854bf63c8f07230d6fb52a185608f3bd",
+      "bytes": 1177
+    },
+    {
+      "path": "local/native-path-ar-evidence/discard.bin",
+      "sha256": "a5308d1cb4feae1adad899d5995ff2f220a45327b43f9c14583e495104a685c8",
+      "bytes": 149
+    },
+    {
+      "path": "local/native-path-ar-evidence/discard.bytes.txt",
+      "sha256": "a4f7323ea8d1c5a499323ebe09f6b8551863c242e7d93b7250895c2bc3373967",
+      "bytes": 726
+    },
+    {
+      "path": "local/native-path-ar-evidence/discard_fh3.bin",
+      "sha256": "b42266184191fad799cd64adb8385b3567c0fde2b2a67d3e6a070f744636aacb",
+      "bytes": 52
+    },
+    {
+      "path": "local/native-path-ar-evidence/discard_fh3.bytes.txt",
+      "sha256": "eb52a7fa80dadd91150758d7b2486e16fff912acbe4508c6ee445d1cb16bd34e",
+      "bytes": 260
+    },
+    {
+      "path": "local/native-path-ar-evidence/discard_handler.asm.txt",
+      "sha256": "42e84a675e23bf6265951cfbb1385992a22a30c68bae1358d57f0417aa99f740",
+      "bytes": 53
+    },
+    {
+      "path": "local/native-path-ar-evidence/discard_handler.bin",
+      "sha256": "380ba2899baafb0c6becf3043df98619a5e45300bb5fafffe61330716a5711a8",
+      "bytes": 10
+    },
+    {
+      "path": "local/native-path-ar-evidence/discard_handler.bytes.txt",
+      "sha256": "2ba86c96da2e0459a490c201cc0555c0ee6abf005a1cce24c22baaf658742bb1",
+      "bytes": 53
+    },
+    {
+      "path": "local/native-path-ar-evidence/discard_output_unwind.asm.txt",
+      "sha256": "54fd9a42bb6459dc8123471df73f4e5ba892b7ec69587f1388c7141cc0ab9cd2",
+      "bytes": 57
+    },
+    {
+      "path": "local/native-path-ar-evidence/discard_output_unwind.bin",
+      "sha256": "f0e5e75442731595c2cc4d368ddd78e8cf787af25ab2cfdeb92eb7e7021506aa",
+      "bytes": 8
+    },
+    {
+      "path": "local/native-path-ar-evidence/discard_output_unwind.bytes.txt",
+      "sha256": "eac16db7e4032b7aeb8a8f70770b6c9892ae26360bcd8960606123464a40905e",
+      "bytes": 45
+    },
+    {
+      "path": "local/native-path-ar-evidence/discard_source_unwind.asm.txt",
+      "sha256": "ea00de3561cd94a53af798dc278951e6b56eb1bdbe65336053fc7aa5d5ef6fb3",
+      "bytes": 57
+    },
+    {
+      "path": "local/native-path-ar-evidence/discard_source_unwind.bin",
+      "sha256": "e487e6e42b38df2470803e132f0dc064ee0cd1e0501277e15fc9ad0e876318d7",
+      "bytes": 8
+    },
+    {
+      "path": "local/native-path-ar-evidence/discard_source_unwind.bytes.txt",
+      "sha256": "f9d7e37e221cdf84d910fc68945b742b98b1bb13b7ae2a24641db7c57668bbbc",
+      "bytes": 45
+    },
+    {
+      "path": "local/native-path-ar-evidence/independent-review.json",
+      "sha256": "7fc4f51c1989d7f1473d10d441858f83ca63d90f2e730d15a62e88f92a1782d3",
+      "bytes": 3558
+    },
+    {
+      "path": "local/native-path-ar-evidence/locale_mode.bin",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "bytes": 4
+    },
+    {
+      "path": "local/native-path-ar-evidence/locale_mode.bytes.txt",
+      "sha256": "32b5bc730a696e962799429a18cae1e26a7ee2ab3eb22a1f09471eae6609cbc6",
+      "bytes": 29
+    },
+    {
+      "path": "local/native-path-ar-evidence/lowercase.asm.txt",
+      "sha256": "8f597cfbbe2f5e2c6c1fd982b883691a8ebc06ddba7278dfec623b507b8f7334",
+      "bytes": 359
+    },
+    {
+      "path": "local/native-path-ar-evidence/lowercase.bin",
+      "sha256": "d51d7fcca8a5a23d45346a96c67165cfcd746cc82e6e9a8531113f0d8b9c9235",
+      "bytes": 39
+    },
+    {
+      "path": "local/native-path-ar-evidence/lowercase.bytes.txt",
+      "sha256": "1c45e5e84304d6ebeedee62d7fc268305a16aeb3ff065c0f14f575f5e4245d10",
+      "bytes": 195
+    },
+    {
+      "path": "local/native-path-ar-evidence/manager_names.bin",
+      "sha256": "c55d9c90adfb94ff685a04db773a427ff6f27b384413a4d16b49429416800841",
+      "bytes": 112
+    },
+    {
+      "path": "local/native-path-ar-evidence/manager_names.bytes.txt",
+      "sha256": "066147479d87447a54f15727563ebdd3276a94eed34f60eba579546c8030f9a4",
+      "bytes": 539
+    },
+    {
+      "path": "local/native-path-ar-evidence/native.hpp",
+      "sha256": "bc6a5356dadfa9cfa968c1488d75481928f3f4a28c3b6bfd71f93fe51209318c",
+      "bytes": 4237
+    },
+    {
+      "path": "local/native-path-ar-evidence/null_source.bin",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "bytes": 1
+    },
+    {
+      "path": "local/native-path-ar-evidence/null_source.bytes.txt",
+      "sha256": "846625afa9038aa5445ea015a2031778b9a04ea18f458c090579a9f715ff3c86",
+      "bytes": 17
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/build/win32/bsp_core.dir/Release/native_path_canonicalizer.obj",
+      "sha256": "f057986e48fc949d1ec639c55e6cd08923a467be35a1a39080397a831d00ddf8",
+      "bytes": 10509
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/build/win32/Release/bsp_core.lib",
+      "sha256": "e639692dcbb1fb40a86e8ef95b0ff56741e7dbe811ae34ebcc8dec34b62aef2f",
+      "bytes": 45595956
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/include/bsp/native_path_canonicalizer.hpp",
+      "sha256": "afcc9ed18ed1aed403edb625ecfb2c8b4f4a1fc4c9c4f926a0a80157c3c764ea",
+      "bytes": 3406
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/include/bsp/native_physical_file_date.hpp",
+      "sha256": "78fa2bd31ebe6c8b786ecdf4dcfdaafbfb577aa7b529e5a6cc53320798787939",
+      "bytes": 4310
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/include/bsp/native_string.hpp",
+      "sha256": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72",
+      "bytes": 6719
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/include/bsp/native_string_pool_owner.hpp",
+      "sha256": "c434ef6a756fe1df206dddcdef70d4444159e4e5e756ec5bb43fc9b20a7f35bc",
+      "bytes": 5399
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/include/bsp/native_string_pool_storage.hpp",
+      "sha256": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749",
+      "bytes": 2488
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/include/bsp/singleton_lifetime.hpp",
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "bytes": 4372
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/canonicalize.asm.txt",
+      "sha256": "2a6c8eb7366d446286de55cf016f287289bad3cdae864e5e599833e29a706480",
+      "bytes": 3694
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/canonicalize.bin",
+      "sha256": "f3db474665b49451a2e7ec5b0662cbbac9c9531025ba92c19256c2f6eafc134a",
+      "bytes": 387
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/canonicalize.bytes.txt",
+      "sha256": "d46f7e65978667dfaa5921fef8ab2c762da826222b8ebf508ebc6173ef2e8ca6",
+      "bytes": 1873
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/comments-before.json",
+      "sha256": "c60a14816e779489cf808aab03fb4ea9749ae45ab95d17348bbf1bc03b101fb2",
+      "bytes": 1276
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/comments-before.log",
+      "sha256": "e8d716b421f2d0b7d47b28d7815873cabea4af0275622c8461efb37615fbe6e4",
+      "bytes": 80
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/compile.log",
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+      "bytes": 11
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/discard.asm.txt",
+      "sha256": "a5e80797540ce58aa9793467257a7958854bf63c8f07230d6fb52a185608f3bd",
+      "bytes": 1177
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/discard.bin",
+      "sha256": "a5308d1cb4feae1adad899d5995ff2f220a45327b43f9c14583e495104a685c8",
+      "bytes": 149
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/discard.bytes.txt",
+      "sha256": "a4f7323ea8d1c5a499323ebe09f6b8551863c242e7d93b7250895c2bc3373967",
+      "bytes": 726
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/discard_fh3.bin",
+      "sha256": "b42266184191fad799cd64adb8385b3567c0fde2b2a67d3e6a070f744636aacb",
+      "bytes": 52
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/discard_fh3.bytes.txt",
+      "sha256": "eb52a7fa80dadd91150758d7b2486e16fff912acbe4508c6ee445d1cb16bd34e",
+      "bytes": 260
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/discard_handler.asm.txt",
+      "sha256": "42e84a675e23bf6265951cfbb1385992a22a30c68bae1358d57f0417aa99f740",
+      "bytes": 53
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/discard_handler.bin",
+      "sha256": "380ba2899baafb0c6becf3043df98619a5e45300bb5fafffe61330716a5711a8",
+      "bytes": 10
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/discard_handler.bytes.txt",
+      "sha256": "2ba86c96da2e0459a490c201cc0555c0ee6abf005a1cce24c22baaf658742bb1",
+      "bytes": 53
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/discard_output_unwind.asm.txt",
+      "sha256": "54fd9a42bb6459dc8123471df73f4e5ba892b7ec69587f1388c7141cc0ab9cd2",
+      "bytes": 57
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/discard_output_unwind.bin",
+      "sha256": "f0e5e75442731595c2cc4d368ddd78e8cf787af25ab2cfdeb92eb7e7021506aa",
+      "bytes": 8
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/discard_output_unwind.bytes.txt",
+      "sha256": "eac16db7e4032b7aeb8a8f70770b6c9892ae26360bcd8960606123464a40905e",
+      "bytes": 45
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/discard_source_unwind.asm.txt",
+      "sha256": "ea00de3561cd94a53af798dc278951e6b56eb1bdbe65336053fc7aa5d5ef6fb3",
+      "bytes": 57
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/discard_source_unwind.bin",
+      "sha256": "e487e6e42b38df2470803e132f0dc064ee0cd1e0501277e15fc9ad0e876318d7",
+      "bytes": 8
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/discard_source_unwind.bytes.txt",
+      "sha256": "f9d7e37e221cdf84d910fc68945b742b98b1bb13b7ae2a24641db7c57668bbbc",
+      "bytes": 45
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/locale_mode.bin",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "bytes": 4
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/locale_mode.bytes.txt",
+      "sha256": "32b5bc730a696e962799429a18cae1e26a7ee2ab3eb22a1f09471eae6609cbc6",
+      "bytes": 29
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/lowercase.asm.txt",
+      "sha256": "8f597cfbbe2f5e2c6c1fd982b883691a8ebc06ddba7278dfec623b507b8f7334",
+      "bytes": 359
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/lowercase.bin",
+      "sha256": "d51d7fcca8a5a23d45346a96c67165cfcd746cc82e6e9a8531113f0d8b9c9235",
+      "bytes": 39
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/lowercase.bytes.txt",
+      "sha256": "1c45e5e84304d6ebeedee62d7fc268305a16aeb3ff065c0f14f575f5e4245d10",
+      "bytes": 195
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/manager_names.bin",
+      "sha256": "c55d9c90adfb94ff685a04db773a427ff6f27b384413a4d16b49429416800841",
+      "bytes": 112
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/manager_names.bytes.txt",
+      "sha256": "066147479d87447a54f15727563ebdd3276a94eed34f60eba579546c8030f9a4",
+      "bytes": 539
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/native.hpp",
+      "sha256": "bc6a5356dadfa9cfa968c1488d75481928f3f4a28c3b6bfd71f93fe51209318c",
+      "bytes": 4237
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/null_source.bin",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "bytes": 1
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/null_source.bytes.txt",
+      "sha256": "846625afa9038aa5445ea015a2031778b9a04ea18f458c090579a9f715ff3c86",
+      "bytes": 17
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/probe.asm",
+      "sha256": "f4a63a8b78110e82f4280905b8cc750bda736120469fddd5039c4b1d8f0ed6fd",
+      "bytes": 1823306
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/probe.cpp",
+      "sha256": "e9cfd6ffbe6227e010b4a5e43217e783ea0f78f37c92de91fd80e79a96b60f5d",
+      "bytes": 13430
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/probe.exe",
+      "sha256": "a911dcbd363245b8856ef50b93e30499e0bf36f8b52025213cd1e47d8edc73cb",
+      "bytes": 48128
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/probe.obj",
+      "sha256": "62afb5c1779a60ca6352bd0d3c9092a6a2bd7b2e2a506f308425d37901bc1087",
+      "bytes": 284073
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/protos.log",
+      "sha256": "e86dd9990ec5ed7b1a00d5c296f9537d20f6d22020733f01e24e52fa0ec37964",
+      "bytes": 767
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/native-path-ar-evidence/spans.json",
+      "sha256": "7eba58588565cefdd44e179a63a3f0282cd9bd88710af5ff0ea66825f8530b7f",
+      "bytes": 5485
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/run_native_path_ar_probe.ps1",
+      "sha256": "92861d9f84dc3b403c23907b0c90ebac1b90c065fc73e8b4e1636715b009191c",
+      "bytes": 1358
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/local/seal_native_path_ar_probe.py",
+      "sha256": "fc8f171720a47cbf2fd401925d5522a4248f2efaa948dbf34d1c58b8bb62972f",
+      "bytes": 1393
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/manifest.json",
+      "sha256": "7aca4fd673bcd6d12fec38a3c3c4da2d74206513083cdc61c2e7d769527e2fe0",
+      "bytes": 15559
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/src/native_path_canonicalizer.cpp",
+      "sha256": "cb43008308875d890185e9e5e8d6dcd41e66575ea0941462f3e3a0eba6e7817e",
+      "bytes": 6735
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/src/native_physical_file_date.cpp",
+      "sha256": "6c7671a3b07969df77952f3a7338fc1e5e6369120944bdb67c045e2cd304905f",
+      "bytes": 15465
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/src/native_string.cpp",
+      "sha256": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a",
+      "bytes": 6430
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/src/native_string_pool_owner.cpp",
+      "sha256": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c",
+      "bytes": 6295
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/src/native_string_pool_storage.cpp",
+      "sha256": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8",
+      "bytes": 4579
+    },
+    {
+      "path": "local/native-path-ar-evidence/pre-execution/src/singleton_lifetime.cpp",
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "bytes": 13257
+    },
+    {
+      "path": "local/native-path-ar-evidence/probe.asm",
+      "sha256": "f4a63a8b78110e82f4280905b8cc750bda736120469fddd5039c4b1d8f0ed6fd",
+      "bytes": 1823306
+    },
+    {
+      "path": "local/native-path-ar-evidence/probe.cpp",
+      "sha256": "e9cfd6ffbe6227e010b4a5e43217e783ea0f78f37c92de91fd80e79a96b60f5d",
+      "bytes": 13430
+    },
+    {
+      "path": "local/native-path-ar-evidence/probe.exe",
+      "sha256": "a911dcbd363245b8856ef50b93e30499e0bf36f8b52025213cd1e47d8edc73cb",
+      "bytes": 48128
+    },
+    {
+      "path": "local/native-path-ar-evidence/probe.obj",
+      "sha256": "62afb5c1779a60ca6352bd0d3c9092a6a2bd7b2e2a506f308425d37901bc1087",
+      "bytes": 284073
+    },
+    {
+      "path": "local/native-path-ar-evidence/protos.log",
+      "sha256": "e86dd9990ec5ed7b1a00d5c296f9537d20f6d22020733f01e24e52fa0ec37964",
+      "bytes": 767
+    },
+    {
+      "path": "local/native-path-ar-evidence/result.log",
+      "sha256": "adb6348f318327bb3ee4eecd005f6d5e5bc27ee284c52cde1fc2c33da6baf023",
+      "bytes": 322
+    },
+    {
+      "path": "local/native-path-ar-evidence/spans.json",
+      "sha256": "7eba58588565cefdd44e179a63a3f0282cd9bd88710af5ff0ea66825f8530b7f",
+      "bytes": 5485
+    },
+    {
+      "path": "local/native-path-ar-initial-build.log",
+      "sha256": "29a7867702769d7d1ee7d2af742a863c348e416a0e9c2bab2cdab08fdfc7f671",
+      "bytes": 2373
+    },
+    {
+      "path": "local/native-path-ar-probe-run.log",
+      "sha256": "3a904659aaa26a5f874aed99f5f91aeca6056cb6db79cba1f5627beeb600c1d9",
+      "bytes": 604
+    },
+    {
+      "path": "local/native-path-ar-capture.log",
+      "sha256": "a606e9096fcede9e198a12db7d859db10cb2d8360432d4a9fe15e8c508771923",
+      "bytes": 340
+    },
+    {
+      "path": "local/native-path-ar-capture-complete.log",
+      "sha256": "75de427985925f3005dd321f9ee6a6e51e274f7e7dc85449e2c42d3c3d2820aa",
+      "bytes": 62
+    },
+    {
+      "path": "local/capture_native_path_ar.py",
+      "sha256": "ff3c16f77ad09ef56afa56de75add31c032e269c550f2c1830e74bb416032e62",
+      "bytes": 3375
+    },
+    {
+      "path": "local/record_native_path_ar.py",
+      "sha256": "affe1a354d59119b1f1cee545142b10a109bc784c44acab859a43691a938634c",
+      "bytes": 8779
+    },
+    {
+      "path": "local/native-path-ar-evidence/calls-final.log",
+      "bytes": 72,
+      "sha256": "ca232800a0cdeb783ee4fa216cfb02f6a7d862d855f5b69fed63ac7214db60c8"
+    },
+    {
+      "path": "local/native-path-ar-evidence/annotate.log",
+      "bytes": 238,
+      "sha256": "4c2eee08f5ac7788a39ca936129cef075ed69fede99e580de53a087d4f1ca4de"
+    },
+    {
+      "path": "local/native-path-ar-evidence/comments-after.log",
+      "bytes": 79,
+      "sha256": "8257c9461b63434bf199847eb70dbc557c95c565b57601db3ae6ffc9662034c8"
+    },
+    {
+      "path": "local/native-path-ar-evidence/comments-after.json",
+      "bytes": 3090,
+      "sha256": "1fbedfcf7a8b8698bb1d88c81a6748acb8d6a4d009b81a327ac88cd1c9583596"
+    },
+    {
+      "path": "local/native-path-ar-evidence/export.log",
+      "bytes": 250,
+      "sha256": "801293608c049462edda8245fdc14929beb0bf9d27b75114895b8a857754bb61"
+    },
+    {
+      "path": "local/ghidra-annotations-20260912T165113Z.json",
+      "bytes": 3260,
+      "sha256": "fd9cbeb582fc2e7e13ace57eaa6146e5583fefc6b180b8bb326bc226c8fc0d09"
+    },
+    {
+      "path": "local/finish_native_path_ar.py",
+      "bytes": 2504,
+      "sha256": "eeb1bc2d49c6739a7c1598eb42bf9d307a24a2a5d68e8162148e6bba4fd4f174"
+    }
+  ],
+  "ghidra_annotations": {
+    "saved": true,
+    "force_exports": 2,
+    "checks": [
+      {
+        "entry": "00bee390",
+        "old_name": "BSP_Path_CanonicalizeMountName",
+        "current_name": "BSP_Path_CanonicalizeMountName",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00bdb970",
+        "old_name": "FUN_00bdb970",
+        "current_name": "BSP_Path_CanonicalizeAndDiscard",
+        "earlier_comment_preserved": true
+      }
+    ],
+    "prior_values": "local/ghidra-annotations-20260912T165113Z.json"
+  }
+}

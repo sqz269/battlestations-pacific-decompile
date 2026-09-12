@@ -5976,6 +5976,595 @@ right reason.
    missing operand of a rule that otherwise runs: the world box `0071C4F0` compares against, and
    the session mode at `[*(00E188A8) + 1FE4h]` that arm 7 of `0071F290` tests.
 
+## Milestone 2q: the scene's cruise ships sail, a moveto ship gets a path, and a finished command comes back through the session
+
+Addresses: 00926110 into 00822c20 with 00823576 / 008f2260, 00823590 / 008f2260, 008235ba and
+008235dc / 0080fc30, 008235d5 / 0080d9b0 and 008235f7 / 0092d770; 009ee5c2 / 009ed3e0 and inside
+it the arm 009ed4e4..009ed69e, with 009ed4ae and 009ed4d1 / 009d9de0, 009ed523, 009ed588, 009ed5fd
+and 009ed692 / 009e3780, 009ed558 / 009d9d40, 009ed59b and 009ed614 / 009ec680, and the swap
+009ed5b6 / 009ed5bd / 009ed5c3; inside 009ec680's tree 009ec30b / 00424c40, 009e3058 / 004218e0,
+009e3075 / 00417e90, 009e3105 / 00422500, 009e3189 / 0071c4f0, 009e3263 / 00bf681b, 009d5917 /
+00417610, 009d5923 / 00423190 and 009e340d; 009ee5f4 / 009e3c00 with its walk 009e3c0d..009e3d96,
+009e3dcd / 00811d80, 009e3eae / 0082e850, 009e3ec0, the unprojected corner arm 009e3f1a..009e4222
+and the store 009e4223..009e4328; 009ee609 into the output block 009ee671..009eeaa2 with 009ee6ac /
+009d9e50, 009ee765, 009ee776 and 009ee8c7, then the tail 009eeaab..009ef226 with 009eeb63 /
+004192e0, 009eeb8b, 009eebb0 / 009dbbc0, 009eebc8, 009eebd2, 009eebe0, 009eec41 / 00427eb0,
+009eecdb, 009eef0a, 009eef34, 009ef034, 009ef045, 009ef051, 009ef0d6, 009ef112 and 009ef213 /
+009de5b0, and the four inlined copies of 009d5240; the per-tick clears 009ed769, 009ed772 and
+009ed779; 009e5821 through 009dab10 into 009da590; 009e595c / 00984300, 009e5997 and 009e88c1 / 0071e430 with 0071e463 /
+0071d810, 0071e480 / 0071d9e0, 0071d852 / 0071c730, 00721bb7 / 00720850, 00720889, 00720916 /
+00521ea0, 0072092a / 006952a0 and 00720b56; 0097e611 and 0097e63a / 0097c8a0.
+
+Packet `cc_exe_2q`, worker `agent/cc-exe-2q`. Sources: `include/bsp/ship_ai_path_refresh.hpp`,
+`src/ship_ai_path_refresh.cpp`, `include/bsp/ship_ai_path_point.hpp`,
+`src/ship_ai_path_point.cpp`, `src/game_hosts_units.cpp`, `include/bsp/game_hosts_units.hpp`,
+`src/game_hosts_ship_ai.cpp`, `include/bsp/game_hosts_ship_ai.hpp`,
+`src/game_hosts_commands.cpp`, `include/bsp/game_hosts_commands.hpp`,
+`src/game_hosts_scene_contents.cpp`, `include/bsp/game_hosts_scene_contents.hpp`,
+`cmake/startup.cmake`. Merged from `main` and consumed rather than written:
+`include/bsp/ship_ai_navigation_arm_tail.hpp` (packet `ship_ai_navigation_arm_tail`, `4491d04f`)
+and `include/bsp/ship_ai_ring_scan.hpp` (packet `cc_ai_ring_scan`, `6a9c557b`). Report:
+`reports/game_executable_milestone_2q.json`. Ghidra was read-only:
+no renames, comments, prototypes, function creation or saves. One ledger name was added
+(`009D9DE0`) and run-time evidence was appended to two existing names (`009EC680`, `00822C20`).
+
+### 1. Thirteen ships make way, and the speed is the one the mission authored
+
+`00822C20`'s property-bag arm now runs where `BSP_SEntity_InitAll` puts it, at the slot-`0A0h`
+call `00926110`, which in this process is the per-entity pass `create_units` makes over the
+records the instantiate pass left. It runs before `issue_authored_commands`, which is the order
+that matters: the arm writes the ring's live throttle and the latch at `00835E17` reads it.
+
+The scene-contents host keeps what the arm looks up. `0046D5B0` wraps the merged entity bag in
+the `0Ch`-byte holder at `entity+0C0h` with kind tag 1, and the executable does not build that
+object, but it does keep the two keys the arm reads out of it: `ShipYardLaunch` and `StartSpeed`,
+with the authored type letter, so `0082359C`'s compare against zero selects the same arm the
+native selects.
+
+All 32 created instances find a `StartSpeed` record, because the `Ship` property group declares
+the key and `0046CF40` step 6 merges the group defaults into every bag. Fourteen carry the
+authored `12.0`; the other eighteen carry the group's `0.0` and the seed writes two zeroes.
+
+| quantity | value |
+| --- | --- |
+| units whose bag carries the key | 32 |
+| units whose value is non-zero | 14 |
+| authored `StartSpeed` | 12.0 m/s |
+| `ring+148h` after `0080D9B0` | 0.6571 to 0.7405, one per class |
+| argument to `0092D770` | 12.0 m/s for every one of the fourteen |
+
+Twelve of the fourteen then hold 12.0 m/s for the whole run. The two that do not are `DeRuyter`,
+which the player controls and whose ring the input path zeroes every step, and `Kortenaer`, whose
+authored order is misfiled in the scene (section 2) and which this run's `--order` puts into
+`movetopos`; both coast down from the seeded 12.0 m/s and end 34.80 m from where they started.
+
+| run | expected | measured | delta |
+| --- | --- | --- | --- |
+| 490 steps, 24.5 s | 294.00 m | 294.05 m | 0.05 m |
+| 1200 steps, 59.5 s | 713.99 m | 714.12 m | 0.12 m |
+
+`expected` is the ratio `0080D9B0` received times the class `MaxSpeed` times the seconds
+simulated. There is no acceleration transient to allow for, because `0092D770` sets the hull's
+axial velocity to the same speed the throttle asks for: the ship is already at 12.0 m/s on its
+first step. The delta is one frame of the 0.05 s step.
+
+### 2. `Kortenaer`'s `Cruise` is in the wrong block, and the game would drop it too
+
+The shipped `usn_2_java.scn` has fourteen `Command = E CommandType : Cruise` lines and fourteen
+`StartSpeed = F 12.0000` lines, and `docs/CRUISE_SPEED_SETTING.md` reads that as fourteen `Cruise`
+units. A count that tracks which sub-block each line sits in says otherwise: **thirteen** of the
+Cruise lines are inside a `"Command"` sub-block and one, `Kortenaer`'s at line 1104, is inside its
+`"CamoColorGun"` sub-block. `Kortenaer`'s own `"Command"` block is empty.
+
+`004E6B30` queues a command only for the `Command` key of the `"Command"` sub-block, so the
+shipped game gives `Kortenaer` no order at all, and the executable reproduces that: with no
+`--order` on the command line `Kortenaer` is one of thirteen ships the director's idle tail hands
+a `stop`. The two counts are therefore different questions with different answers - fourteen
+units are seeded with a speed, thirteen are ordered to cruise - and milestone 2n's "thirteen ships
+that author `Cruise`" was right about the one that matters for motion.
+
+### 3. The search runs, and the arm that calls it is projected
+
+`009ED3E0`'s second half is now a projection rather than a host contract. The arm
+`009ED4E4..009ED69E` is `include/bsp/ship_ai_path_refresh.hpp`; what it does in one pass is
+decided by `nav+2FCh`, the "a plan is being computed" byte:
+
+| `nav+2FCh` | what the pass does |
+| --- | --- |
+| clear, both plans Empty | `009ED523` seeds the back plan and `009ED528` raises the byte, and the same pass falls into the arm below |
+| set | revalidate the back plan for states 0, 2 and 3 (`009ED588`, with `009D9D40` first for a Failed one), tick `009EC680` on it at `009ED59B`, and when its state passes 3 swap it into use and clear the byte (`009ED5A6`, `009ED5B6`, `009ED5BD`, `009ED5C3`) |
+| clear, a plan in use | revalidate the plan in use at `009ED5FD` and tick `009EC680` on it at `009ED614`; when the revalidation refuses, mark it Failed, reset the back plan and seed it at `009ED692`, and raise the byte again |
+
+The head `009ED3E0..009ED4E2` is **not** projected. It builds two corridor widths, seeded from the
+`20.0f` at `00CE3930` and replaced from the unit's group through `00778890`, `0070D400` and
+`0070D5D0`, and hands each to `009D9DE0` on each plan. `009D9DE0` is read whole here and named
+`BSP_ShipAiPathPlan_CorridorWidthChanged`: it answers "one of the two widths moved by more than
+the `25.0` at `00CE3880` since the last pass", and then stores both widths whatever it answered.
+Its one consumer is `009ED49A`-`009ED4DE`, which loads `nav+2FCh` into `BL`, ORs both answers into
+it and writes it back - so the routine can only **raise** the flag, never clear it. Not projecting
+the head therefore costs one thing and only one: a plan is never invalidated mid-search by a
+corridor that changed width. Carrying the byte forward is what the image does whenever `009D9DE0`
+answers false, which on a constant width is every call after the first.
+
+With the arm in place the four-tick sequence `docs/SHIP_AI_PATH_SEARCH.md` predicts for an open
+sea is what the run reports. The avoid-zone manager is not built in this process, so `00417E90`
+cannot be asked and its neutral answer is "not blocked" - and on an empty sea that is the only
+host call the search makes at all. `00422500`, `0071C4F0`, `00417610` and `00423190` are never
+reached, and `009EC280`'s turn ramp reads three zeroes, which costs every route the same.
+
+```
+plan refreshes 3426   search ticks 3421   seeds 12   accepted revalidations 3397
+front/back swaps 12   plans reaching state 7 (Ready) 7   node_count after the prune 0
+```
+
+`node_count` is zero on a Ready plan because `009EC721` clears `plan+34h` at the 3-to-4
+transition, which is also why the walk in the next section takes no steps and stops on the head.
+
+### 4. `009E3C00` hands back a point, and it is the goal node
+
+The walk and the store are projected; the corner-rounding arm is not. In call order:
+
+1. `009E3C11`-`009E3C37` seeds five plan fields from the query point and clears the record's
+   `+18h` and `+1Ch`.
+2. `009E3C3A`: a plan with no head answers with the query point and clears `+20h` and `+21h`.
+3. `009E3C6C`-`009E3D0A`: the walk, at most `plan+34h` steps. With the count cleared by the prune
+   it takes none and the head is the node it stops on.
+4. `009E3D13`-`009E3D5D`: the successor and the node after it, each through `009D5930`.
+5. `009E3D8C`: the successor's own `+18h`/`+1Ch`, or its lateral corner record offset by
+   `00811D80`'s answer. No node of an unzoned plan carries such a record, so the first branch is
+   the one taken.
+6. `009E3F14`: **the branch**. A successor that still carries a link and an outgoing leg of at
+   least one unit goes into the corner arm `009E3F1A..009E4222`, which is not projected. A two-node
+   plan's goal node carries neither link, so the other arm runs: `+20h` is set, the direction is
+   `successor - query`, and `009E42BD` raises the advance to `|successor - query|`.
+7. `009E4320`: the point is the query point advanced by that distance along that direction, which
+   is the successor's own position.
+
+So on this mission the point `009E3C00` hands back is the goal node of the plan, exactly. It does
+not depend on `[plan+3Ch]+9C8h`, the unit radius that has no producer anywhere, because
+`009E42BD`'s `max` discards it; and it does not depend on `0082E850`'s turn radius, which
+`009E3EAE` fetches unconditionally but only the corner arm and its unreachable clearance test read.
+**0 of 8319 points needed the corner arm** over the 1200-step run.
+
+### 5. The output block was never gated on the point, and milestone 2p read the jump backwards
+
+Milestone 2p's section 4 says that with no point "`009EE5F9` takes the skip and neither the block
+nor the bearing runs". The instruction at `009EE609` is `JZ 009EE671`, and `009EE671` is the
+**first** instruction of the output block. A record with no node at `+18h` jumps *into* the block,
+not past it; what `+18h` gates is the band computation `009EE60B`-`009EE64C` and the lateral
+publish `009EE66C` through `00815F30`, and nothing else. The block runs on every pass the
+`009EE59B` / `009EE59F` gate lets through, which is 3426 of the 490-step run's navigation ticks and
+matches `navigate_mode_steps` exactly.
+
+With the point now real, `009EE671`-`009EEAA2` writes the trio `009F4D10` publishes:
+
+| unit | state | point x | point z | `blk+32Ch` | `blk+324h` |
+| --- | --- | --- | --- | --- | --- |
+| `Kortenaer` | movetopos | -250.0 | -2742.6 | 387.49 | -1.8845 |
+| `Haguro` | attackmove | 250.0 | -3000.0 | 3250.00 | 3.1417 |
+| `Jintsu` | attackmove | -250.0 | -3000.0 | 3250.00 | 3.1415 |
+
+3419 of the 3426 blocks take the bearing at `009EE813`; the seven that do not are the passes
+before each unit's plan first reaches a usable state.
+
+### 6. The arm tail runs, and a `movetopos` ship moves on its own order
+
+`009EEAAB..009EF226` was milestone 2p's first follow-up and is now packet
+`ship_ai_navigation_arm_tail`, which landed on `main` at `4491d04f` during this packet's turn. It
+is merged in and wired here, over a ten-method host and the block fields the output block just
+wrote. Three of its four outputs are live in this process:
+
+| output | site | what the run gets |
+| --- | --- | --- |
+| `blk+344h`, the approach throttle ceiling | `009EEF0A` | `clamp(blk+330h / stopping distance, 0.25, 1.0)` from the cached reference speed and the class `Retardation`, both real here. It clamps to 1.0 at this mission's ranges, and the executable now hands it to `009F4439`'s cap instead of the `009F4DA0` record's 1.0f |
+| `blk+35Ch`, the ahead/astern latch | `009EF19C` through the inlined `009D5240` | 1955 of the 3426 tail bodies leave it non-zero. That is what takes `009F43D2`'s `direction == Stopped` arm out of the drive and lets the throttle chain run |
+| `blk+2FDh` / `blk+2FEh`, the arrival bytes | `009EF034` / `009EF045` | 0 in this run, and section 7 says why |
+| the traffic setback walk | `009EEAAB..009EEEEC` | 0 entries: `blk+604h` comes from `FUN_009E4330`, which no packet has read, and the world entity list at `[[00E188A8]+19CCh]` needs `construct_world` |
+
+The executable also performs the three stores at `009ED769`, `009ED772` and `009ED779` that
+`src/ship_ai_states.cpp`'s projection of the direct-control arm leaves out: without the per-tick
+clear of `blk+2FDh` and `blk+2FEh` the arrival latch would be a one-way byte instead of a
+per-frame answer.
+
+**`Kortenaer` moves on its own order, with no diagnostic switch.** It leaves the seeded 12.0 m/s,
+settles at throttle 0.500 with the rudder hard over, and covers 261.14 m in 24.5 s and 844.50 m in
+59.5 s. The 0.500 is not a stand-in: it is `ThrustMinSlow` out of the shipped
+`ShipGlobals["Navigator"]["AutoThrust"]` block, which `009EC7C0` interpolates to while the heading
+error is wide.
+
+### 7. The ship steers, and then the hull runs away sideways
+
+`Kortenaer` does not reach `Java`, and the reason is not in the AI. Over a 3000-step run the
+rudder never leaves the stop, the heading rotates at a constant 2.667 deg/s, and the ship's actual
+speed grows while its forward-axis speed does not:
+
+| t (s) | speed from the trajectory (m/s) | `fwd_speed` (m/s) | drift angle (deg) |
+| --- | --- | --- | --- |
+| 15 | 10.84 | 9.12 | 32.7 |
+| 90 | 38.71 | 9.04 | 76.5 |
+| 120 | 51.11 | 9.01 | 79.8 |
+| 135 | 57.71 | 10.05 | 80.0 |
+
+The hull is travelling almost sideways and accelerating. `0092D770` replaces only the component of
+the velocity along the body axis and leaves the rest, which is correct; what the shipped game has
+and this process does not is anything that resists the rest. The rigid body's linear damping is
+zero because `00C37E00` is never called: `docs/RIGID_BODY_INTEGRATION.md`'s follow-up
+`ship_hull_body_creation` is still open, so the mass, the inertia and both damping rates keep the
+values a freshly constructed body has. Each tick therefore adds thrust along the new heading and
+nothing removes the old velocity, and the magnitude integrates upward.
+
+The 490-step run is short enough that the effect is still small (`Kortenaer` is 24.5 s in, with
+the drift angle passing 40 degrees), which is why its distance is close to what a ship at 9 m/s
+would cover. The effect is a property of the hull, not of the order: the twelve cruise ships hold
+an exactly straight course at 12.0 m/s and are untouched by it.
+
+That is also why nothing finishes a command through the AI here. `009E5821`'s
+`state->vtable[2Ch]` is recovered - both navigation vtables hold `009DAB10`, three instructions
+into `009DA590`, projected as `bsp::ship_ai_path_arrival_009da590` - and `009EF034` now runs. But
+`009EF034` needs the ship **stopped and not releasing the stop**, and the release test at
+`009EEF14` is `record+21h && blk+3D8h + setback < blk+330h`. `blk+3D8h`, the start radius, comes
+from `FUN_009E4330` and is zero here, so `0 < 536` releases the stop on every tick and the latch is
+never set:
+
+```
+summary mission ship ai arm tail bodies=3426 latched=1955 stops=0 arrival_latches=0
+summary mission ship ai command completion events=0 callbacks=0 end_commands=0 queue_advances=0
+```
+
+The record has moved twice now: off `009DA590`, then off `009EF034`, and onto `FUN_009E4330`, the
+per-ship tuning that fills `blk+3C8h`, `blk+3CCh`, `blk+3D4h`, `blk+3D8h` and `blk+604h`. That is
+one unread routine standing between this executable and a `moveto` that ends itself.
+
+### 8. A command does finish, and it goes the whole way round
+
+The completion path is wired end to end and the director's own stage ladder exercises it. `0071D810`
+is monotonic and stage 2 is what sends: `0071C730` builds `MT_GAMEUNIT_CLEARCMD` (`5Dh`) with
+`+20h = 1` and `+24h = 0`, and because this is a local session the process that sent it is the
+process that receives it, so `00721A40`'s `5Dh` arm runs here and takes the `00721BB7` branch into
+`00720850`. `00720850` copies slot 0 into the previous-command record, shifts the queue down,
+snaps the empty slot to the target's position, and calls `vtable[6Ch]`, whose head `0071C130`
+clears the acceptance byte and the stage. Both of `0071D810`'s call sites route, not just the one
+the AI reaches.
+
+```
+summary mission director completion end_commands=0 stage_raises=2 clear_messages=2
+        clear_receives=2 queue_advances=2 restarts=0 command_events=0 event_callbacks=0
+
+  command finished: DeRuyter cleared `moveto` from slot 0 (mode 1); the queue now holds `(none)`
+                    and 0071c130 left the stage pair at 0
+  command finished: DeRuyter cleared `cruise` from slot 0 (mode 1); the queue now holds `(none)`
+                    and 0071c130 left the stage pair at 0
+```
+
+Both are `DeRuyter`, and the rule is `00836941`'s: a queue head at stage 1 on a **player-driven**
+unit goes to stage 2 with no other condition. The standing re-issue then runs in the same step and
+installs `cruise`, because `unit+184h` is set - which is what relatches `DeRuyter`'s authored
+throttle after the advance and is why the run reports 14 latched commands where milestone 2p
+reported 13. Lengthening the run to 1200 frames adds nothing: the same two completions, and no
+third.
+
+What the standing re-issue installs for everyone else is unchanged: **13 `stop`, 1 `cruise`, 0
+`follow`**. The choice at `00836E59` reads `*(unit+73Ch)+28h`, the commanded-speed timestamp, and
+the `StartSpeed` seed does not touch that pair - `0082352B..008235FB` has no store to
+`[unit+73Ch]` - so a seeded ship whose queue empties still gets `stop`, not `cruise`.
+
+The Lua side runs and finds nothing. `00984300` builds its four parameters and looks the channel
+named `command` up on the mission event director's map; `009843D8` returns at once when the channel
+holds no subscription. `0097E360`, the parser that would put one there, is not reconstructed, and
+this mission authors none: `usn_2_java.scn` has no event block and `usn_2_java.lua` registers no
+`command` handler. The early return is the native's own, not a substitute for it.
+
+### 9. `--ai-drive` stays for one state out of four
+
+| state | ships | produces a desired throttle | moves in the run | what blocks it |
+| --- | --- | --- | --- | --- |
+| `cruise` | 13 | **yes, the authored `StartSpeed`** | yes, 12.0 m/s | - |
+| `stop` | 12 | yes, and 0 is the answer | correctly not | - |
+| `movetopos` | 1 | **yes, through the arm tail's latch and ceiling** | yes, 261.14 m | - |
+| `attackmove` | 6 | yes, at `009F3635`, and it is 0 | no | `009E76D0` with `009E5E90` and the four slot scorers. Packet `cc_ai_ring_scan` landed on `main` at `6a9c557b` during this packet's turn and is **not wired here**: `009E6A90`, the routine that turns its commanded heading into the commanded throttle, is only partially projected, so wiring the scan alone would feed a complete consumer from an incomplete producer |
+
+The switch is **kept**, for `attackmove` alone. Milestone 2p needed it for two states out of four
+and reported the other two as producing zero; three of the four now produce their own values and
+two of them move a hull.
+
+### Host methods
+
+`bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500
+--mission-frame-seconds 0.05 --mission-complete-frame 490 --order moveto:Java --order-unit
+Kortenaer --order-frame 5 --trajectory-csv local/traj_2q_all.csv --log local/run_2q_all.log
+--game-root "<install>"`, exit 0: **571 concrete, 483 unimplemented**, against milestone 2p's
+**545 / 470** for the same command line on this branch's base commit `f0012d01`. With
+`--ai-drive Kortenaer=1,0.5`: **570 / 481**. With no `--order`: **556 / 476**.
+
+`reports/game_executable_milestone_2q.json` carries the per-step table with the call site and
+callee of every row (`start_speed_steps`, `path_refresh_steps`, `search_steps`,
+`path_point_steps`, `nav_steps`, `completion_steps`, `routines`, `measurements`,
+`probe_comparison`, `corrections`, `ai_drive`, `read_for_this_packet`, `still_unimplemented`,
+`names_added`, `evidence_appended`, `no_ghidra_function`). In call order, with the containing
+function where it is not the packet's main routine:
+
+| Step | Call site | Callee | Disposition |
+| --- | --- | --- | --- |
+| the unit's init slot (in 00925f20) | 00926110 | vtable +0A0h = 00822c20 | indirect, 32 bodies |
+| find `ShipYardLaunch` (in 00822c20) | 00823576 | 008f2260 | concrete |
+| find `StartSpeed` (in 00822c20) | 00823590 | 008f2260 | concrete, 32 finds, 14 non-zero |
+| the reference speed (in 00822c20) | 008235ba / 008235dc | 0080fc30 | concrete, twice per unit |
+| seed the ring throttle (in 00822c20) | 008235d5 | 0080d9b0 | concrete |
+| seed the hull velocity (in 00822c20) | 008235f7 | 0092d770 | concrete, 12.0 m/s |
+| the plan refresh | 009ee5c2 | 009ed3e0 | concrete, arm 009ed4e4 projected |
+| the corridor widths (in 009ed3e0) | 009ed4ae / 009ed4d1 | 009d9de0 | concrete, always false |
+| the fresh seed (in 009ed3e0) | 009ed523 | 009e3780 | concrete |
+| the back-plan revalidation (in 009ed3e0) | 009ed588 | 009e3780 | concrete |
+| the Failed reset (in 009ed3e0) | 009ed558 | 009d9d40 | record, 0 calls |
+| the search on the back plan (in 009ed3e0) | 009ed59b | 009ec680 | concrete |
+| the live revalidation (in 009ed3e0) | 009ed5fd | 009e3780 | concrete, 3397 accepts |
+| the search on the live plan (in 009ed3e0) | 009ed614 | 009ec680 | concrete |
+| the re-seed (in 009ed3e0) | 009ed692 | 009e3780 | concrete |
+| the turn ramp (in 009ec280) | 009ec30b | 00424c40 | record, three zeroes |
+| the avoid-zone singleton (in 009e3040) | 009e3058 | 004218e0 | record |
+| the segment test (in 009e3040) | 009e3075 | 00417e90 | record, `not blocked` |
+| the detour corners (in 009e3040) | 009e3105 | 00422500 | record, 0 calls |
+| the world-bounds test (in 009e3040) | 009e3189 | 0071c4f0 | record, 0 calls |
+| the node allocation (in 009e3040) | 009e3263 | 00bf681b | record, 0 calls |
+| the corner record (in 009d58f0) | 009d5917 | 00417610 | record, 0 calls |
+| the corner metric (in 009d58f0) | 009d5923 | 00423190 | record, 0 calls |
+| the node release (in 009e3330) | 009e340d | vtable +0h | indirect, 0 calls |
+| the path point | 009ee5f4 | 009e3c00 | concrete, 3419 points |
+| the lateral offset (in 009e3c00) | 009e3dcd | 00811d80 | record, 0 calls |
+| the class turn radius (in 009e3c00) | 009e3eae | 0082e850 | record |
+| the owner radius (in 009e3c00) | 009e3ec0 | field +9C8h | record, discarded by 009e42bd |
+| the corner arm (in 009e3c00) | 009e3f1a | - | record, 0 entries |
+| the output block | - | 009ee671 | concrete, 3426 bodies |
+| the remaining path length (in 009ed6b0) | 009ee6ac | 009d9e50 | concrete |
+| the unit heading (in 009ed6b0) | 009ee8c7 | vtable +50h | indirect, 3419 calls |
+| the navigation arm tail | - | 009eeaab | concrete, 3426 bodies, 1955 latched |
+| the corridor normalise (in 009ed6b0) | 009eeb63 | 004192e0 | concrete, 0 calls |
+| the neighbour list (in 009ed6b0) | 009eeb8b | field read | record, count 0 |
+| the list indexer (in 009ed6b0) | 009eebb0 | 009dbbc0 | record, 0 calls |
+| the neighbour position (in 009ed6b0) | 009eec41 | 00427eb0 | record, 0 calls |
+| the approach ceiling (in 009ed6b0) | 009eecdb | - | concrete, clamps to 1.0 |
+| the tail's own heading (in 009ed6b0) | 009ef0d6 | vtable +50h | indirect, concrete |
+| the tail's turn radius (in 009ed6b0) | 009ef112 | 0082e850 | record |
+| the per-ship tuning | - | 009e4330 | record, five fields |
+| the arm's last step (in 009ed6b0) | 009ef213 | 009de5b0 | record |
+| the arrival test (in 009e5770) | 009e5821 | vtable +2Ch = 009da590 | concrete, always false |
+| the arrival latch (in 009ed6b0) | 009ef034 | - | concrete, 0 sets |
+| the per-tick arrival clear (in 009ed6b0) | 009ed779 | - | concrete |
+| the `finished` event (in 009e5770) | 009e595c | 00984300 | concrete, 0 bodies |
+| end the command (in 009e5770) | 009e5997 | 0071e430 | concrete, 0 bodies |
+| end the command (in 009e8820) | 009e88c1 | 0071e430 | concrete, 0 bodies |
+| raise the queue stage (in 0071e430) | 0071e463 | 0071d810 | concrete |
+| raise the override stage (in 0071e430) | 0071e480 | 0071d9e0 | record, no override mode |
+| build the clear message (in 0071d810) | 0071d852 | 0071c730 | concrete, 2 messages |
+| receive it and clear the slot (in 00721a40) | 00721bb7 | 00720850 | concrete, 2 advances |
+| the class name (in 00720850) | 00720889 | vtable +4h | indirect |
+| the target resolve (in 00720850) | 00720916 | 00521ea0 | concrete |
+| the observer unregister (in 00720850) | 0072092a | 006952a0 | record |
+| the stage reset (in 00720850) | 00720b56 | vtable +6Ch = 00835bf0 -> 0071c130 | indirect, concrete |
+| the `command` subscription (in 0097e360) | 0097e63a | 0097c8a0 | record, no block authored |
+
+### Corrections
+
+1. **Milestone 2p's "neither the block nor the bearing runs" reads `009EE609` backwards.**
+   `JZ 009EE671` jumps *into* the output block; `record+18h` gates only the band computation and
+   the lateral publish `009EE66C`. Evidence: `009ee609`, `009ee671`, `009ee66c`, and the run's
+   `output_blocks=3426` against `navigate_mode_steps=3426`.
+2. **`docs/CRUISE_SPEED_SETTING.md`'s "every `Cruise` unit authors `StartSpeed`" conflates two
+   counts.** Fourteen units author `StartSpeed`; thirteen author a `Cruise` inside a `"Command"`
+   sub-block. `Kortenaer`'s Cruise line sits in its `"CamoColorGun"` sub-block and its `"Command"`
+   block is empty. Evidence: `usn_2_java.scn` lines 1098..1120; a block-aware count gives
+   `Command` 13 and `CamoColorGun` 1; with no `--order` the executable puts `Kortenaer` in `stop`.
+3. **Milestone 2p section 7's `cruise | 13 | yes, and it is 0 for every ship: nothing ordered them
+   to move` is superseded.** Something did order them, and the executable was not reading it. The
+   thirteen cruise ships latch 0.657..0.741 and hold 12.0 m/s. Evidence: the run's start-speed
+   table, `009e1265`, `00835e17`.
+4. **Milestone 2p's acceptance-form numbers no longer reproduce, and the reason is the seed.**
+   `--order-frame 1 --order throttle=1,rudder=1` now gives `heading -45.318523, fwd 16.422674,
+   yaw -0.061087` at t = 14 s where milestone 2j published `-41.252617, 16.429752, -0.061087`. The
+   controlled `DeRuyter` starts at 12.0 m/s instead of at rest, reaches the saturated yaw rate
+   sooner and has turned further. `bsp_ship_motion_probe.exe --class 20 --steps 290 --dt 0.05
+   --throttle 1 --rudder 1` prints `-41.253 / 16.4298 / -0.06109` at t = 14.00 from rest, which is
+   milestone 2j's row to every printed digit: the old figure was the from-rest answer of this same
+   motion model, not a different one.
+5. **Milestone 2p's `no_ghidra_function` row for `009E8820..009E88F9` is closed.** The integrator
+   defined the function; `python tools/bsp.py ghidra proto 009e88c1 --brief` reports
+   `BSP_ShipAi_AttackMoveStateStep` with that body, and this milestone's attackmove call site
+   verifies against it.
+6. **Milestone 2p's `the plan request - 3426 requests` counted refreshes, not requests.**
+   `009ED3E0` has four `009E3780` call sites and which one runs depends on `nav+2FCh` and on the
+   back plan's state. The same 3426 refreshes now make 3421 search ticks, 12 seeds and 3397
+   accepted revalidations. Evidence: `009ed523`, `009ed588`, `009ed5fd`, `009ed692`.
+7. **Milestone 2p's follow-up 1 overstates what the arm tail forms.** It says the range "is
+   the only code that can latch `blk+35Ch` and form a desired throttle for a ship in `Navigate`".
+   It latches `blk+35Ch` and writes the throttle **ceiling** `blk+344h`; it never writes `blk+1D0h`
+   or `blk+1D4h`. `009F3F80` forms the ring command from the latch, the ceiling and the heading
+   target. `docs/SHIP_AI_NAVIGATION_ARM_TAIL.md` carries the same correction from the other side.
+8. **Milestone 2p's `movetopos | 1 | no | 009EEAAB..009EF228` row is closed, and a different row
+   opens.** With the tail wired, `movetopos` does produce a desired throttle and the ship moves
+   261.14 m on its own order. What it cannot do is finish: `blk+3D8h` is zero because
+   `FUN_009E4330` is unread, so `009EEF14`'s release test passes on every tick and `009EF034` never
+   sets the arrival latch.
+9. **The path record's `+20h` carries the opposite of what its name says.** `009E3D65` and
+   `009E419B` set the byte exactly when there is no node after the successor or the outgoing leg is
+   under one unit - that is, on the final leg - and `009E3D88` and `009E3F88` clear it when a corner
+   is being rounded; `009EE776`'s `SETZ` then makes `blk+338h` true when the byte is *clear*. So
+   `more_path_20` in `include/bsp/ship_ai_goal_vector.hpp` marks the last leg and `last_leg_338` in
+   `include/bsp/ship_ai_navigation.hpp` is set when the path continues. Nothing is mis-wired: this
+   milestone passes the bit through unchanged. Both headers belong to other packets and are not
+   edited here; the rename is follow-up 6.
+
+### no_ghidra_function
+
+| Start | End (inclusive) | Note |
+| --- | --- | --- |
+| 007b3dd0 | 007b3dd2 | the empty attackmove sub-state step, one `RET 4`; boundary defined by packet `cc_ai_attackmove_substates`, unchanged here and not touched by this milestone |
+
+Every other address this milestone touched lies in a Ghidra function whose body range the bridge
+reports, `009E8820` included. `python tools/verify_report_calls.py
+reports/game_executable_milestone_2q.json` checks **43 call rows and reports 0 failures**; the
+vtable slots, field reads and unprojected spans are reported as indirect and skipped.
+
+### Validation
+
+`scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest case
+`reconstructed_math` passes, 1 of 1. No test cases were added. `origin/main` was merged in twice:
+at `f0012d01` before any change was made, which brought in `docs/SHIP_AI_PATH_PLANNER.md`'s
+corrections and the path-search packet, and at `c3bfb005` mid-packet, which brought in
+`ship_ai_navigation_arm_tail` (`4491d04f`) and `cc_ai_ring_scan` (`6a9c557b`). The arm tail is
+wired and validated here; the ring scan is **not** wired, and section 9 says why.
+
+The full `scripts/build.ps1` could not run to completion: the drive holding every worker's
+worktree was down to 0.86 GB free and MSBuild failed with `MSB3191` / `MSB3491` on its `.tlog`
+directories across every project. Deleting and re-creating `build/win32` did not help. The three
+targets this milestone needs were built one at a time through the same generator and toolchain the
+script configures (`cmake --build build/win32 --config Release --target bsp_game`, then
+`bsp_math_tests` and `bsp_ship_motion_probe`), each exit 0 with no warnings, and `ctest -C Release`
+was then run against the same build directory. That is a machine-state problem, not a code one, and
+it is reported here rather than hidden.
+
+```
+bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500
+  --mission-frame-seconds 0.05 --mission-complete-frame 490 --order moveto:Java
+  --order-unit Kortenaer --order-frame 5 --trajectory-csv local/traj_2q_all.csv
+  --log local/run_2q_all.log --game-root "<install>"
+
+summary mission ship ai units=32 ai_owned=31 steps=15680 gated=0 replans=5048
+        state_steps{concrete=4803 records=245} publishes=15680 promotions=15680
+summary mission ship ai states cruise=13 stop=12 attackmove=6 movetopos=1 other=0
+summary mission ship ai plan requests=3426 seeds=12 accepts=3397 approach_frames=588
+        controller_updates=15680
+summary mission ship ai path search ticks=3420 swaps=13 points=3419 corner_arms=0
+        units_with_point=7 output_blocks=3426 bearings=3419
+summary mission ship ai command completion events=0 callbacks=0 end_commands=0 queue_advances=0
+summary mission ship ai arm tail bodies=3426 latched=1955 stops=0 arrival_latches=0
+summary mission ship ai ring hops=15680 gated_3f5=0 writes=15680 rudder_law=15190
+        deadbands=9212 live_pair_changes=43 driven=0
+summary mission commands units=32 resolved=14 issued=21 pushed=35 current=35 latched=14
+        with_thrust=14 ai_groups=0 ai_forwards=0 steps=2940
+summary mission director steps=15680 idle_reissues=14 stop=13 cruise=1 follow=0
+        script_issues=7 blocked_at_00816f7c=0 commanded_speeds=0
+summary mission director completion end_commands=0 stage_raises=2 clear_messages=2
+        clear_receives=2 queue_advances=2 restarts=0 command_events=0 event_callbacks=0
+summary mission start speed seeds=32 non_zero=14 key=StartSpeed
+summary mission world units=32 walked=15680 updated=15680 motion_ticks=15680
+        simulated=24.50 s controlled=DeRuyter moved=34.80 total_path=3825.35
+host methods 571 concrete, 483 unimplemented
+
+  unit          StartSpeed  reference   ratio    axial   expected    moved    delta
+  DeRuyter         12.0000    16.4622  0.7289  12.0000     294.00    34.80  -259.20
+  Java             12.0000    16.4622  0.7289  12.0000     294.00   294.05     0.05
+  Kortenaer        12.0000    18.2628  0.6571  12.0000     294.00   261.14   -32.86
+  Electra          12.0000    18.2628  0.6571  12.0000     294.00   294.05     0.05
+  Houston          12.0000    16.7194  0.7177  12.0000     294.00   294.05     0.05
+  Exeter           12.0000    16.5908  0.7233  12.0000     294.00   294.05     0.05
+  Perth            12.0000    16.2050  0.7405  12.0000     294.00   294.05     0.05
+  (Alden, John1, John2, John3, Encounter, Jupiter, Witte: 0.6571, 294.05, 0.05)
+
+  unit          state       searches  state  nodes  swaps  points    point_x    point_z  nav_dist  nav_hdg
+  Kortenaer     movetopos        480      7      0      7     485     -250.0    -2724.6    536.00  -2.4473
+  Haguro        attackmove       490      7      0      1     489      250.0    -3000.0   3250.00   3.1417
+  Jintsu        attackmove       490      7      0      1     489     -250.0    -3000.0   3250.00   3.1415
+
+  unit          state        hops  writes deadband slot_thr slot_rud live_thr live_rud livechg
+  Kortenaer     movetopos     490     490        0   0.5000   1.0000   0.5000   1.0000      20
+  Java          cruise        490     490        0   0.7289  -0.0000   0.7289  -0.0000       1
+  Haguro        attackmove    490     490      490   0.0000   0.0000   0.0000   0.0000       0
+```
+
+The `--mission-frames 1200` run (59.5 s, `local/run_2q_long.log`) reports the same host-method
+counts, `search ticks=8303 swaps=30 points=8319 corner_arms=0 output_blocks=8326 bearings=8319`,
+`arm tail bodies=8326 latched=4755 stops=0 arrival_latches=0`, the same two completions and
+`total_path=9554.63`, with the twelve holding ships at 714.12 m against 713.99 expected and
+`Kortenaer` at 844.50 m. A 3000-step run (149.5 s, `local/run_2q_conv.log`) is what section 7's
+drift table comes from; it adds no completion and no arrival latch.
+
+Against `bsp_ship_motion_probe.exe --class 20 --steps 490 --dt 0.05 --throttle 0.7289426
+--rudder 0` - `Java`'s own class and its own seeded ratio - through
+`python tools/motion_trace_compare.py --trace local/traj_2q_java.csv --probe
+local/probe_2q_class20.txt --align-origin`:
+
+| channel | peak &#124;delta&#124; | final delta |
+| --- | --- | --- |
+| speed (m/s) | 11.8650 | 0.0000 |
+| heading (deg) | 0.0000 | 0.0000 |
+| position (m) | 24.3489 | 24.3489 |
+| yaw (rad/s) | 0.00000 | - |
+
+The whole difference is the probe starting from rest: the first divergence is at t = 0.05 s with
+the trace at 12.0000 and the probe at 0.1350, and the probe needs 4 s at `MaxAccel` 3.0 to reach
+12.0, losing 24.35 m on the way. Over the steady span alone (both sides trimmed to t >= 4.5 s)
+**speed and heading agree to every printed digit**, peaks 0.0000 and 0.0000, and the position delta
+is a constant 30.30 m set by aligning on samples 0.05 s apart, moving 0.04 m over 20 s: the two
+trajectories are parallel, not drifting. That is the regression this comparison is for, and it is
+the first time a cruise ship of this mission has had a straight run to compare.
+
+Every earlier switch was rechecked on this binary. A 120 frame run with `--press-start-frame 30`
+and no `--menu-select` exits 0 and reports **155 concrete and 79 unimplemented**, a 40 frame
+title-only run reports **130 and 48**, `--vfs-probe fonts/fonts.lua` exits 0 and `--vfs-probe
+does/not/exist.lua` exits 3: all four match milestones 2o and 2p exactly. A `--mission-frames 60`
+run with no `--mission-complete-frame` still ends on the frame count with
+`summary mission exit reachable=0`. The one switch whose published numbers moved is the acceptance
+form, and correction 4 shows the move is the `StartSpeed` seed rather than a regression.
+
+This remains a runtime-validated process, not a game-validated one. What it proves that milestone
+2p did not is that thirteen ships of this mission move under the speed the mission author gave
+them, through the routine the game uses and in the order the game runs it; that a navigating ship's
+plan reaches Ready in the four ticks the search predicts and hands back a real path point; that the
+navigation arm's output block runs and writes a real heading target and a real distance; that the
+arm's tail turns those into a latched direction and a throttle ceiling; that a `movetopos` ship
+then moves 261.14 m on its own order with the diagnostic switch off; and that a finished command
+makes the whole round trip through the session message and comes back out as a queue advance and a
+standing re-issue. What it does not prove is that a ship so moved goes where it was sent.
+
+The milestone's two cautionary results are both in section 7. The first is the hull: giving a ship
+a sustained turn for the first time exposed that the rigid body has no lateral resistance, and a
+turning ship's speed integrates upward while its forward-axis speed does not. That is not an AI
+result and it would have been easy to read the growing distance as success. The second is the
+arrival latch: `009DA590` and `009EF034` are both recovered and both run, and the byte is still
+never set, because the release test compares against a start radius `FUN_009E4330` would have
+written. Running two complete routines over an input their producer never wrote is exactly what
+milestone 2p's section 5 warned about, and the honest answer is that they run and answer no.
+
+### Follow-up packets
+
+1. **`ship_hull_body_creation`**, `00C37F40`, `00C37E70`, `00C37E00` and `00C37DE0`, and whatever
+   fills the mass, the inertia and the two damping rates. Promoted to first place by section 7: it
+   is why the first ship this executable has ever steered accelerates sideways instead of turning.
+   `docs/RIGID_BODY_INTEGRATION.md` already carries it as a follow-up; what is new is a run that
+   shows the cost.
+2. **`ship_ai_nav_tuning_009e4330`**, `FUN_009E4330` with `009E4537`, `009E453F`, `009E4568`,
+   `009E4659` and `0082E960`. Five fields - `blk+3C8h`, `blk+3CCh`, `blk+3D4h`, `blk+3D8h` and
+   `blk+604h` - and every one of them is an input the arm tail reads and nothing writes.
+   `blk+3D8h` alone decides whether a `moveto` can ever end itself, and `blk+604h` decides whether
+   the traffic setback walk runs at all. `docs/SHIP_AI_NAVIGATION_ARM_TAIL.md` lists it too.
+3. **`game_executable_ring_scan`**, wiring `009E76D0` (packet `cc_ai_ring_scan`, on `main` at
+   `6a9c557b`) into `009F3090`'s two call sites. It needs `009E6A90` finished first: only
+   `009E6A90`'s head and one tail helper are projected, and it is the routine that turns the scan's
+   commanded heading at `nested+120Ch` into the commanded throttle `009F3635` forwards. Wiring the
+   scan without it would feed a complete consumer from an incomplete producer.
+4. **`ship_ai_path_follower_corner_arm`**, `009E3F1A..009E4222` of `009E3C00`, with `009D6550`,
+   `00417EF0` and `00811D80`. The arm that rounds a corner instead of steering at the node. It is
+   unreachable on an open sea and becomes reachable the moment `avoid_zone_geometry` lands, because
+   a detour node has links on both sides.
+5. **`ship_ai_order_consumer_corridor`**, `009ED3E0..009ED4E2` with `00778890`, `0070D400` and
+   `0070D5D0`. The two corridor widths, and the only thing that can invalidate a plan mid-search.
+6. **`avoid_zone_geometry`**, `004179D0`, `00422500`, `004218E0` and the manager itself. Everything
+   the search's zone side needs; until it lands, `00417E90` answers `not blocked` and every plan is
+   a straight line.
+7. **`ship_ai_arm_final_step_009de5b0`**, `009DE5B0`, `0B67h` bytes, the unconditional last step of
+   every arm of `009ED6B0`. The executable now reaches it on every navigation tick and records it.
+8. **`ship_ai_path_record_20h`**, the rename in `include/bsp/ship_ai_goal_vector.hpp` and
+   `include/bsp/ship_ai_navigation.hpp` that correction 9 asks for. Both headers belong to other
+   packets.
+9. **`mission_command_event_block`**, `0097E360` and `0097C8A0`, the parser and the subscription.
+   `00984300` runs now and has nowhere to deliver; a mission that authors a `command` event is what
+   would show the other half.
+10. **`ship_class_turn_fields`**, `00828F20` and `class+520h`, the turn radius `0082E850` returns.
+    Read by the corner arm, by the arm tail's astern test, by `00836920` and by three sub-state
+    steps, and written by nothing this process runs.
+11. **`construct_world` 004de610**, unchanged from milestones 2h through 2p, and now also the
+    producer of the world entity list `[[00E188A8]+19CCh]` the arm tail's traffic walk needs.
+
 ## Next milestones
 
 1. **Title page.** Phase 6 locale tables 00aa09d0 over the locale file phase 2 can now read

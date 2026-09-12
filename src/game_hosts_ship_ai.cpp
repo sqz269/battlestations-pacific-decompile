@@ -22,10 +22,16 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/command_completion.hpp"
 #include "bsp/director_update_arms.hpp"
 #include "bsp/ship_ai_approach_update.hpp"
 #include "bsp/ship_ai_attackmove_substates.hpp"
+#include "bsp/ship_ai_navigation.hpp"
+#include "bsp/ship_ai_navigation_arm_tail.hpp"
 #include "bsp/ship_ai_path_planner.hpp"
+#include "bsp/ship_ai_path_point.hpp"
+#include "bsp/ship_ai_path_refresh.hpp"
+#include "bsp/ship_ai_path_search.hpp"
 #include "bsp/ship_ai_goal_vector.hpp"
 #include "bsp/ship_ai_obstacle_tables.hpp"
 #include "bsp/ship_ai_state_steps.hpp"
@@ -183,6 +189,20 @@ struct GameShipAiHost::Impl {
         bsp::ShipAiPathPlanBlock plan_a{};
         bsp::ShipAiPathPlanBlock plan_b{};
         int plan_front{0};                 // 0 selects plan_a, 1 plan_b
+        // Milestone 2q: nav+2FCh, the "a plan is being computed" byte the
+        // 009ED4E4 arm raises at 009ED528 / 009ED63B and clears at 009ED5B6.
+        bool plan_computing_2fc{false};
+        // The blk half 009EE671's output block owns. Every offset is named in
+        // bsp/ship_ai_navigation.hpp; none of them is in ShipAiControlBlock.
+        bsp::ShipAiNavState nav{};
+        // The blk half 009EEAAB's tail owns: blk+2FCh, +2FDh, +2FEh, +344h and
+        // the plan's search state. Packet ship_ai_navigation_arm_tail, on main
+        // at 4491d04f. blk+2FCh is the same byte 009ED3E0 writes at 009ED4DE,
+        // because 009EE5B5 hands 009ED3E0 the controls step's own `this`.
+        bsp::ShipAiArmTailState tail{};
+        // Whether the tail ran on this tick, which decides whether blk+344h
+        // carries its ceiling or the 009F4DA0 record's 1.0f.
+        bool arm_tail_ran{false};
         // A deque because a push_back never moves an existing element, and the
         // plan block links the nodes by address.
         std::deque<bsp::ShipAiPathNode> plan_nodes;
@@ -509,10 +529,27 @@ public:
         owner_.run_navigation_goal_009de050(ctl_, row_, index_, goal_x, goal_z, keep_mode,
                                             final_leg);
     }
-    bool state_goal_reached_vtable_002c(float, float) override {
-        // 009E5821, state->vtable[2Ch]. Callee body unread: contract unread.
-        owner_.record_slot("ShipAiMoveTo::goal_reached_vtable2c", "00d21628+vtable2c");
-        return false;
+    bool state_goal_reached_vtable_002c(float goal_x, float goal_z) override {
+        // 009E5821, state->vtable[2Ch]. Milestone 2p left this a record;
+        // docs/SHIP_AI_PATH_PLANNER.md has since read the slot whole: both
+        // navigation vtables hold 009DAB10, three instructions that load
+        // [state+4h]+8h into ECX and tail-jump to 009DA590, which is projected.
+        const bsp::ShipAiPathPlanBlock& live
+            = (ctl_.plan_front == 0) ? ctl_.plan_a : ctl_.plan_b;
+        const bsp::ShipAiPathArrivalResult arrival = bsp::ship_ai_path_arrival_009da590(
+            ctl_.goal.flag_2fe, goal_x, goal_z, live.latched_goal_x, live.latched_goal_z);
+        owner_.done("ShipAiMoveTo::goal_reached_009da590", 0x009da590u);
+        if (arrival.clears_latch) ctl_.goal.flag_2fe = false;  // 009DA5F6
+        // The latch itself is raised only at 009EF034, inside the navigation
+        // arm's tail, which this milestone runs. It is still never reached:
+        // 009EEF14's release test is blk+3D8h + setback < blk+330h and
+        // blk+3D8h comes from FUN_009E4330, which no packet has read, so the
+        // zero releases the stop on every tick. The record has moved off the
+        // store and onto that tuning routine.
+        if (!ctl_.goal.flag_2fe) {
+            owner_.record("ShipAiMoveTo::arrival_latch_input_009e4330", 0x009e4330u);
+        }
+        return arrival.reached;
     }
     std::uint32_t director_current_command_0054() override {
         owner_.done("ShipAiMoveTo::director_current_command", 0x009e5831u);
@@ -567,14 +604,32 @@ public:
     void message_text_assign_0041e870(const char*) override {
         owner_.record("ShipAiMoveTo::message_text_assign", 0x0041e870u);
     }
-    void post_command_message_00984300(std::uint32_t) override {
-        owner_.record("ShipAiMoveTo::post_command_message", 0x00984300u);
+    void post_command_message_00984300(std::uint32_t command) override {
+        // 009E595C, 00984300 on [00F8A0C4] with the `finished` literal the
+        // step assigned at 009E58EF.
+        const std::size_t callbacks = owner_.units.report_command_event_00984300(
+            index_, command, bsp::kCommandEventStatusFinished);
+        owner_.done("ShipAiMoveTo::post_command_message", 0x00984300u);
+        ++row_.command_events;
+        ++owner_.summary.command_events;
+        owner_.summary.command_event_callbacks += callbacks;
     }
     void release_message_text_00419cc0() override {
         owner_.record("ShipAiMoveTo::release_message_text", 0x00419cc0u);
     }
-    void end_command_0071e430(std::uint32_t, int) override {
-        owner_.record("ShipAiMoveTo::end_command", 0x0071e430u);
+    void end_command_0071e430(std::uint32_t command, int flag) override {
+        // 009E5997, 0071E430(director, 00E08F68, 1). The whole round trip is in
+        // the commands host: the stage ladder, the 5Dh message, this process's
+        // own receipt of it and the queue advance.
+        const GameCommandCompletion done
+            = owner_.units.end_command_0071e430(index_, command, flag != 0);
+        owner_.done("ShipAiMoveTo::end_command", 0x0071e430u);
+        ++row_.command_endings;
+        ++owner_.summary.command_endings;
+        if (done.queue_advanced) {
+            ++row_.command_completions;
+            ++owner_.summary.command_completions;
+        }
     }
     void hold_heading_and_stop_009e00a0() override {
         HeadingHoldBinding hold(owner_, ctl_, index_);
@@ -1119,8 +1174,19 @@ public:
         owner_.record_slot("ShipAiAttack::unit_director", "00cfc3d0+vtable114");
         return 0u;
     }
-    void end_command_0071e430(std::uint32_t, std::uint32_t, int) override {
-        owner_.record("ShipAiAttack::end_command", 0x0071e430u);
+    void end_command_0071e430(std::uint32_t, std::uint32_t command, int flag) override {
+        // 009E88C1. The director argument is the unit's own vtable[114h]
+        // accessor, which this process answers with the unit index, so the
+        // completion runs on this unit's director.
+        const GameCommandCompletion done
+            = owner_.units.end_command_0071e430(index_, command, flag != 0);
+        owner_.done("ShipAiAttack::end_command", 0x0071e430u);
+        ++row_.command_endings;
+        ++owner_.summary.command_endings;
+        if (done.queue_advanced) {
+            ++row_.command_completions;
+            ++owner_.summary.command_completions;
+        }
     }
     void select_substate_009e86f0(float seconds) override {
         AttackMoveSelectorBinding selector(owner_, ctl_, index_);
@@ -1655,60 +1721,300 @@ private:
     std::size_t index_;
 };
 
+// Milestone 2q: bsp::ShipAiPathSearchHost, the nine call sites of 009EC680's
+// five routines. Packet cc_ai_path_search landed on main at 4d3b1e49 and this
+// packet merged it in, so the search itself is a projection; what stays a
+// record is the avoid-zone manager, which construct_world 004DE610 would have
+// to build. With no manager, 00417E90 cannot be called and the edge probe's own
+// step 2 is the whole "is the sea clear between these two points" question
+// (docs/SHIP_AI_PATH_SEARCH.md), so the neutral answer is `not blocked` and the
+// search never reaches 00422500, 0071C4F0, 00417610 or 00423190.
+class PathSearchBinding final : public bsp::ShipAiPathSearchHost {
+public:
+    PathSearchBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl)
+        : owner_(owner), ctl_(ctl) {}
+
+    bsp::ShipAiPathSearchTurnRamp game_settings_turn_ramp_00424c40() override {
+        // settings+6F0h / +6F4h / +6F8h. The gameplay settings singleton this
+        // process builds carries the zeroes a fresh object has for this block:
+        // 0083B5E0's recovered head fills the rudder curve and the auto-thrust
+        // band, and no recovered loader writes these three.
+        owner_.record("ShipAiSearch::turn_ramp", 0x00424c40u);
+        return bsp::ShipAiPathSearchTurnRamp{0.0f, 0.0f, 0.0f};
+    }
+    std::uint32_t avoid_zone_manager_004218e0() override {
+        owner_.record("ShipAiSearch::avoid_zone_manager", 0x004218e0u);
+        return 0u;
+    }
+    bool segment_blocked_00417e90(std::uint32_t, std::uint32_t,
+                                  const std::array<float, 2>&, const std::array<float, 2>&,
+                                  std::uint32_t& out_zone,
+                                  std::int32_t& out_edge_index) override {
+        owner_.record("ShipAiSearch::segment_blocked", 0x00417e90u);
+        out_zone = 0u;
+        out_edge_index = -1;
+        return false;
+    }
+    std::int32_t zone_detour_corners_00422500(std::uint32_t, const std::array<float, 2>&,
+                                              std::int32_t, std::int32_t, std::int32_t, float,
+                                              std::array<float, 2>&, std::array<float, 2>&,
+                                              std::int32_t& out_left_index,
+                                              std::int32_t& out_right_index) override {
+        owner_.record("ShipAiSearch::zone_detour_corners", 0x00422500u);
+        out_left_index = -1;
+        out_right_index = -1;
+        return 0;
+    }
+    bool point_outside_world_bounds_0071c4f0(const std::array<float, 3>&) override {
+        // Milestone 2p correction 8: the world box at [00E188A8]+711Ch.. does
+        // not exist, so the neutral `inside` answer stands.
+        owner_.record("ShipAiSearch::point_outside_world_bounds", 0x0071c4f0u);
+        return false;
+    }
+    bsp::ShipAiPathNode* allocate_path_node_00bf681b(std::size_t) override {
+        ctl_.plan_nodes.emplace_back();
+        owner_.done("ShipAiSearch::allocate_path_node", 0x00bf681bu);
+        return &ctl_.plan_nodes.back();
+    }
+    std::uint32_t zone_corner_record_00417610(std::uint32_t, std::int32_t) override {
+        owner_.record("ShipAiSearch::zone_corner_record", 0x00417610u);
+        return 0u;
+    }
+    void ensure_zone_corner_metric_00423190(std::uint32_t, std::uint32_t) override {
+        owner_.record("ShipAiSearch::zone_corner_metric", 0x00423190u);
+    }
+    void release_path_node_vtable0(bsp::ShipAiPathNode*) override {
+        // The nodes live in the controller's own deque, which the plan links by
+        // address, so nothing is freed here. The same boundary the planner's
+        // own release records.
+        owner_.record_slot("ShipAiSearch::release_path_node", "00d214f4+vtable00");
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+};
+
+// Milestone 2q: bsp::ShipAiPathPointHost, the four call sites of 009E3C00 the
+// walk reaches.
+class PathPointBinding final : public bsp::ShipAiPathPointHost {
+public:
+    PathPointBinding(GameShipAiHost::Impl& owner, GameShipAiRow& row, std::size_t index)
+        : owner_(owner), row_(row), index_(index) {}
+
+    std::array<float, 2> lateral_point_offset_00811d80(std::uint32_t,
+                                                       const std::array<float, 2>&) override {
+        // Unreachable without an avoid zone: no node of this mission's plans
+        // carries a corner record at +10h.
+        owner_.record("ShipAiPathPoint::lateral_offset", 0x00811d80u);
+        return std::array<float, 2>{0.0f, 0.0f};
+    }
+    float class_turn_radius_0082e850() override {
+        // 0082E853 reads class+520h, whose only writer is 00828F20
+        // BSP_ShipClass_DeriveTurnFields; no packet has reconstructed it, so
+        // the field is a record here. The answer is used only inside the
+        // corner arm and its unreachable clearance test.
+        owner_.record("ShipAiPathPoint::class_turn_radius", 0x0082e850u);
+        return 0.0f;
+    }
+    float owner_radius_09c8() override {
+        // 009E3EC0, [plan+3Ch]+9C8h. The same field the planner and the drive
+        // record; no recovered producer anywhere.
+        owner_.record("ShipAiPathPoint::owner_radius_09c8", 0x009e3ec0u);
+        return 0.0f;
+    }
+    void corner_arm_009e3f1a() override {
+        owner_.record("ShipAiPathPoint::corner_arm", 0x009e3f1au);
+        ++row_.path_corner_arms;
+        ++owner_.summary.path_corner_arms;
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+};
+
+// Milestone 2q: bsp::ShipAiNavHost, the two call sites of 009EE671's block.
+class NavArmBinding final : public bsp::ShipAiNavHost {
+public:
+    NavArmBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                  std::size_t index)
+        : owner_(owner), ctl_(ctl), index_(index) {}
+
+    float remaining_path_length_009d9e50() override {
+        // 009EE6AC, 009D9E50([nav+2F4h])(&pose). Packet ship_ai_path_planner
+        // projected it; with the plan now filled it walks real nodes.
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(index_, x, y, z);
+        bsp::ShipAiPathPlanBlock& live
+            = (ctl_.plan_front == 0) ? ctl_.plan_a : ctl_.plan_b;
+        const float length = bsp::ship_ai_path_remaining_length_009d9e50(
+            live, std::array<float, 2>{x, z});
+        owner_.done("ShipAiNav::remaining_path_length", 0x009d9e50u);
+        return length;
+    }
+
+    float unit_heading_vtable_0050() override {
+        owner_.done("ShipAiNav::unit_heading", 0x009ee8c7u);
+        return owner_.units.unit_heading_radians(index_);
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    std::size_t index_;
+};
+
+// Milestone 2q: bsp::ShipAiArmTailHost, the ten call sites of 009EEAAB..
+// 009EF226. Packet ship_ai_navigation_arm_tail landed on main at 4491d04f
+// during this packet's turn and was merged in before validation, so the tail is
+// a projection rather than the record milestone 2p left.
+class ArmTailBinding final : public bsp::ShipAiArmTailHost {
+public:
+    ArmTailBinding(GameShipAiHost::Impl& owner, std::size_t index)
+        : owner_(owner), index_(index) {}
+
+    bsp::ShipAiNavPose normalize_004192e0_009eeb63(float x, float z) override {
+        // 004192E0(&out, &in): 00419260 answers 1/sqrt(x*x + z*z), and +0.0f
+        // for a zero-length vector, and both components are scaled by it.
+        owner_.done("ShipAiArmTail::normalize", 0x004192e0u);
+        const double square = static_cast<double>(x) * x + static_cast<double>(z) * z;
+        bsp::ShipAiNavPose out{};
+        if (square <= 0.0) return out;
+        const float scale = static_cast<float>(1.0 / std::sqrt(square));
+        out.x = x * scale;
+        out.z = z * scale;
+        return out;
+    }
+    int neighbour_list_count_009eeb8b() override {
+        // [[00E188A8]+19CCh]+60h. construct_world 004DE610 is a load record, so
+        // there is no world entity list to walk, the same boundary the obstacle
+        // sector scan and the world-bounds box hit.
+        owner_.record("ShipAiArmTail::neighbour_list_count", 0x009eeb8bu);
+        return 0;
+    }
+    bsp::ShipAiArmTailEntity list_element_009dbbc0(int) override {
+        owner_.record("ShipAiArmTail::list_element", 0x009dbbc0u);
+        return nullptr;
+    }
+    bool entity_is_kind_009eebc8(bsp::ShipAiArmTailEntity, int) override {
+        owner_.record_slot("ShipAiArmTail::entity_is_kind", "00cfc3d0+vtable5c");
+        return false;
+    }
+    bsp::ShipAiArmTailEntity own_unit_009eebd2() override {
+        owner_.done("ShipAiArmTail::own_unit", 0x009eebd2u);
+        return reinterpret_cast<bsp::ShipAiArmTailEntity>(
+            static_cast<std::uintptr_t>(index_) + 1u);
+    }
+    float entity_hull_radius_009eebe0(bsp::ShipAiArmTailEntity) override {
+        owner_.record("ShipAiArmTail::entity_hull_radius", 0x009eebe0u);
+        return 0.0f;
+    }
+    bsp::ShipAiNavPose entity_position_00427eb0_009eec41(
+        bsp::ShipAiArmTailEntity) override {
+        owner_.record("ShipAiArmTail::entity_position", 0x00427eb0u);
+        return bsp::ShipAiNavPose{};
+    }
+    float unit_heading_vtable_0050_009ef0d6() override {
+        owner_.done("ShipAiArmTail::unit_heading", 0x009ef0d6u);
+        return owner_.units.unit_heading_radians(index_);
+    }
+    float ship_class_turn_radius_0082e850_009ef112() override {
+        // class+520h, whose only writer 00828F20 is not reconstructed. It only
+        // widens the astern test's distance threshold, so a zero answer makes a
+        // ship decline to reverse rather than invent a reversal.
+        owner_.record("ShipAiArmTail::class_turn_radius", 0x0082e850u);
+        return 0.0f;
+    }
+    void after_arm_009de5b0(float) override {
+        owner_.record("ShipAiArmTail::after_arm", 0x009de5b0u);
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    std::size_t index_;
+};
+
 class PathPickBinding final : public bsp::ShipAiPathPickHost {
 public:
     PathPickBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
                     GameShipAiRow& row, std::size_t index)
         : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
-    void refresh_path_plan_009ed3e0(float) override {
-        // 009EE5C2, 009ED3E0(blk)(seconds). Its own body is read as a host
-        // contract and not projected: it hands the latched goal blk+1DCh /
-        // +1E0h and the pose blk+184h to the planner 009E3780 at four sites and
-        // swaps the front and back plans at blk+2F4h / +2F8h once the back
-        // plan's status word passes 3. The executable makes the request the
-        // routine makes and records the swap.
-        owner_.record("ShipAiPath::refresh_plan_009ed3e0", 0x009ed3e0u);
+    void refresh_path_plan_009ed3e0(float seconds) override {
+        // 009EE5C2, 009ED3E0(nav)(seconds). Milestone 2q projects the arm
+        // 009ED4E4..009ED69E out of that body: the two 009E3780 revalidation
+        // sites, the two 009EC680 search ticks and the front/back swap. The
+        // head 009ED3E0..009ED4E2, which builds the two corridor widths from
+        // the unit's group, is not projected, so both widths are the literal
+        // 20.0f at 00CE3930 that 009ED3E3 seeds them with.
+        owner_.done("ShipAiPath::refresh_plan_009ed4e4", 0x009ed4e4u);
+        owner_.record("ShipAiPath::refresh_plan_head", 0x009ed3e0u);
         ++row_.path_plan_refreshes;
         ++owner_.summary.path_plan_refreshes;
 
-        bsp::ShipAiPathPlanBlock& plan
-            = (ctl_.plan_front == 0) ? ctl_.plan_a : ctl_.plan_b;
-        plan.owner = &ctl_;
+        ctl_.plan_a.owner = &ctl_;
+        ctl_.plan_b.owner = &ctl_;
         float pose_x = 0.0f, pose_y = 0.0f, pose_z = 0.0f;
         owner_.units.unit_position_00fc(index_, pose_x, pose_y, pose_z);
+
+        bsp::ShipAiPathRefreshState state{};
+        state.in_use = (ctl_.plan_front == 0) ? &ctl_.plan_a : &ctl_.plan_b;
+        state.computing = (ctl_.plan_front == 0) ? &ctl_.plan_b : &ctl_.plan_a;
+        state.computing_flag_2fc = ctl_.plan_computing_2fc;
+
         PathPlannerBinding planner(owner_, ctl_, index_);
-        const bsp::ShipAiPathPlanRequestResult result
-            = bsp::ship_ai_path_plan_request_009e3780(plan,
-                std::array<float, 2>{pose_x, pose_z},
-                std::array<float, 2>{ctl_.goal.goal_x_1dc, ctl_.goal.goal_z_1e0},
-                plan.zone_layer, 0.0f, planner);
+        PathSearchBinding search(owner_, ctl_);
+        const bsp::ShipAiPathRefreshResult result = bsp::ship_ai_path_refresh_arm_009ed4e4(
+            state, seconds,
+            std::array<float, 2>{pose_x, pose_z},
+            std::array<float, 2>{ctl_.goal.goal_x_1dc, ctl_.goal.goal_z_1e0},
+            state.in_use->zone_layer, 0.0f,
+            bsp::kShipAiPathCorridorWidthDefault, bsp::kShipAiPathCorridorWidthDefault,
+            planner, search);
         owner_.done("ShipAiPath::plan_009e3780", 0x009e3780u);
-        if (result.seeded) {
+        owner_.done("ShipAiPath::search_step_009ec680", 0x009ec680u);
+        owner_.done("ShipAiPath::corridor_width_009d9de0", 0x009d9de0u);
+
+        ctl_.plan_computing_2fc = state.computing_flag_2fc;
+        ctl_.plan_front = (state.in_use == &ctl_.plan_a) ? 0 : 1;
+        if (result.seeded_fresh || result.reseeded_back) {
             ++row_.path_plan_seeds;
             ++owner_.summary.path_plan_seeds;
         }
-        if (result.accepted) {
+        if (result.front_accepted) {
             ++row_.path_plan_accepts;
             ++owner_.summary.path_plan_accepts;
         }
-        // 009EC680, the one state transition per navigation tick that fills the
-        // nodes between the two seeds. Leased to agent/cc-ai-path-search and
-        // being read by packet cc_ai_path_search, so it is a record here and
-        // the graph stays the two-node ship-to-goal seed 009E3780 built.
-        owner_.record("ShipAiPath::search_step_009ec680", 0x009ec680u);
-        row_.path_plan_state = plan.search_state;
-        row_.path_plan_nodes = plan.node_count;
+        if (result.searched_back || result.searched_front) {
+            ++row_.path_search_ticks;
+            ++owner_.summary.path_search_ticks;
+        }
+        if (result.swapped) {
+            ++row_.path_plan_swaps;
+            ++owner_.summary.path_plan_swaps;
+        }
+        const bsp::ShipAiPathPlanBlock& live = *state.in_use;
+        row_.path_plan_state = live.search_state;
+        row_.path_plan_nodes = live.node_count;
     }
     void next_path_point_009e3c00(bsp::ShipAiPathPointRecord& record) override {
-        // 009EE5F4, 009E3C00([blk+2F4h])(&record). Body not read by any packet,
-        // and there is no path object to ask, so the record comes back with
-        // node_18 = 0, which 009EE5F9 reads as "no point": the publish at
-        // 009EE66C and the whole output block from 009EE671 are skipped.
-        owner_.record("ShipAiPath::next_point_009e3c00", 0x009e3c00u);
-        record.node_18 = 0u;
-        record.direction_1c = 0;
-        record.more_path_20 = false;
-        record.steer_enabled_21 = false;
+        // 009EE5F4, 009E3C00([nav+2F4h])(&record). Milestone 2q projects the
+        // walk, the three-node pick and the final store; the corner arm
+        // 009E3F1A..009E4222 stays a record and is unreachable on an unzoned
+        // plan, whose goal node carries neither link.
+        bsp::ShipAiPathPlanBlock& live
+            = (ctl_.plan_front == 0) ? ctl_.plan_a : ctl_.plan_b;
+        PathPointBinding point(owner_, row_, index_);
+        const bsp::ShipAiPathPointResult result
+            = bsp::ship_ai_path_point_009e3c00(live, record, point);
+        owner_.done("ShipAiPath::next_point_009e3c00", 0x009e3c00u);
+        if (result.has_head && !result.no_successor && !result.corner_arm) {
+            ++row_.path_points;
+            ++owner_.summary.path_points;
+            row_.path_point_x = record.point_x_08;
+            row_.path_point_z = record.point_z_0c;
+        }
     }
     float path_width_2f4_08() override {
         owner_.record("ShipAiPath::path_width_2f4", 0x009ee61eu);
@@ -1933,6 +2239,19 @@ public:
         const bool early_out
             = bsp::ship_ai_direct_control_arm_009ed6b0(ctl_.blk, seconds, binding);
         owner_.done("ShipAi::direct_control_arm", 0x009ed6b0u);
+        // 009ED769..009ED779, three stores inside the per-step reset span that
+        // src/ship_ai_states.cpp's projection of the arm does not model (it
+        // covers 009ED74D..009ED780 and keeps only blk+330h). blk+2FDh and
+        // blk+2FEh are cleared at the top of every tick, which is what makes
+        // 009EF034 the only thing that can set the arrival latch for a
+        // Navigate ship, and blk+340h is re-seeded from blk+3C8h.
+        ctl_.arm_tail_ran = false;
+        ctl_.tail.parked_2fd = false;        // 009ED772
+        ctl_.tail.goal_reached_2fe = false;  // 009ED779
+        ctl_.goal.flag_2fd = false;
+        ctl_.goal.flag_2fe = false;
+        ctl_.nav.look_ahead_340 = ctl_.nav.look_ahead_max_3c8;  // 009ED769
+        owner_.done("ShipAi::per_tick_arrival_reset", 0x009ed779u);
         if (early_out) return true;
         // Milestone 2p. The rest of 009ED6B0 is two alternatives, not a
         // prologue and a tail (docs/SHIP_AI_GOAL_VECTOR.md, correction 4):
@@ -1967,16 +2286,101 @@ public:
             ++row_.path_picks;
             ++owner_.summary.path_picks;
         }
-        // 009EE671..009EEAA2 is the output block src/ship_ai_navigation.cpp
-        // projects, and it needs the path point 009E3C00 would have returned.
-        // With no planner there is no point (node_18 == 0), so 009EE5F9 takes
-        // the skip and neither the block nor the bearing runs; 009EEAAB..
-        // 009EF228, which is what would set the latched direction and the
-        // desired throttle for a Navigate ship, is unprojected everywhere.
-        if (result.point_found) {
-            owner_.record("ShipAi::navigation_output_block", 0x009ee671u);
+        // 009EE671..009EEAA2, the output block src/ship_ai_navigation.cpp
+        // projects. Milestone 2p said the block was skipped when the record
+        // came back without a node; that reads 009EE609 backwards. `JZ 009EE671`
+        // JUMPS INTO the block: the only thing record+18h gates is the lateral
+        // publish at 009EE66C. The block therefore runs on every pass the
+        // 009EE59B / 009EE59F gate lets through, on whatever point 009E3C00
+        // left in the record. A closed gate leaves through 009EE59F JZ 009EF206
+        // and reaches neither.
+        if (!result.entered) {
+            owner_.record("ShipAi::navigation_arm_tail", 0x009eeaabu);
+            return false;
         }
-        owner_.record("ShipAi::navigation_arm_tail", 0x009eeaabu);
+        bsp::ShipAiNavWaypoint waypoint{};
+        waypoint.x = ctl_.path_point.point_x_08;            // 009EE671
+        waypoint.z = ctl_.path_point.point_z_0c;            // 009EE694
+        waypoint.next_x = ctl_.path_point.next_x_10;        // 009EE78B
+        waypoint.next_z = ctl_.path_point.next_z_14;        // 009EE79D
+        waypoint.more_path = ctl_.path_point.more_path_20;  // 009EE776
+        waypoint.steer_enabled = ctl_.path_point.steer_enabled_21;  // 009EE801
+        waypoint.side = static_cast<bsp::ShipAiNavTurnSide>(
+            ctl_.path_point.direction_1c);                  // 009EE765
+        bsp::ShipAiNavPose nav_pose{};
+        nav_pose.x = pose_x;
+        nav_pose.z = pose_z;
+        NavArmBinding nav_host(owner_, ctl_, index_);
+        const bsp::ShipAiNavResult nav = bsp::ship_ai_navigation_arm_009ee671(
+            ctl_.blk, ctl_.nav, waypoint, nav_pose, nav_host);
+        owner_.done("ShipAi::navigation_output_block", 0x009ee671u);
+        ++row_.nav_output_blocks;
+        ++owner_.summary.nav_output_blocks;
+        if (nav.bearing_taken) {
+            ++row_.nav_bearings;
+            ++owner_.summary.nav_bearings;
+        }
+        row_.nav_distance_32c = nav.distance_to_waypoint;
+        row_.nav_heading_324 = nav.heading_target;
+
+        // 009EEAAB..009EF226, packet ship_ai_navigation_arm_tail, merged from
+        // main at 4491d04f. It is the only code that latches blk+35Ch for a
+        // ship in Navigate, the only writer of the approach ceiling blk+344h on
+        // this arm, and the only writer of the arrival latch blk+2FEh after the
+        // per-tick clear at 009ED779.
+        bsp::ShipAiArmTailTuning tuning{};
+        // blk+3C4h, the cached reference speed. The executable already fills it
+        // for the obstacle middle from 009EC97B's inputs.
+        tuning.reference_speed_3c4 = ctl_.obstacle.reference_speed_3c4;
+        // [[blk+3FCh]+538h]+508h, `Retardation` out of the installed
+        // VehicleClass row, the same divisor 009ED8EC uses.
+        tuning.class_deceleration_508 = owner_.units.unit_retardation_0508(index_);
+        owner_.done("ShipAiArmTail::class_deceleration_508", 0x009eed1au);
+        // blk+3CCh, blk+3D4h, blk+3D8h and blk+604h all come from FUN_009E4330,
+        // which no packet has read, so the four keep the zeroes a fresh block
+        // carries. blk+604h being zero is what holds the traffic setback walk
+        // shut at 009EEAD5, which is the honest answer while the world entity
+        // list has no producer either.
+        owner_.record("ShipAiArmTail::nav_tuning_009e4330", 0x009e4330u);
+        // [blk+3FCh]+9C8h, the hull radius, and the navigatorParams byte +21h.
+        owner_.record("ShipAiArmTail::hull_radius_09c8", 0x009ef112u);
+        tuning.hull_radius_9c8 = 0.0f;
+        tuning.keep_clear_of_traffic_21 = true;
+        ctl_.tail.plan_reset_2fc = ctl_.plan_computing_2fc;
+        ctl_.tail.leader_snapshot_3a6 = ctl_.flag_3a6;
+        {
+            const bsp::ShipAiPathPlanBlock& live
+                = (ctl_.plan_front == 0) ? ctl_.plan_a : ctl_.plan_b;
+            ctl_.tail.plan_search_state_1c = live.search_state;
+        }
+        // [ESP+43h] at 009EE6E5 / 009EE6EC: record+20h != 0 && blk+1E4h != 0.
+        const bool goal_is_destination
+            = waypoint.more_path && ctl_.goal.final_leg_1e4;
+        ArmTailBinding tail_host(owner_, index_);
+        const bsp::ShipAiArmTailResult tail = bsp::ship_ai_navigation_arm_tail_009eeaab(
+            ctl_.blk, ctl_.tail, ctl_.nav, tuning, waypoint,
+            bsp::ShipAiNavPose{ctl_.goal.goal_x_1dc, ctl_.goal.goal_z_1e0},
+            nav_pose, goal_is_destination, seconds, tail_host);
+        owner_.done("ShipAi::navigation_arm_tail", 0x009eeaabu);
+        ctl_.arm_tail_ran = true;
+        ++row_.arm_tails;
+        ++owner_.summary.arm_tails;
+        row_.throttle_limit_344 = tail.throttle_ceiling;
+        row_.latched_direction_35c = static_cast<int>(tail.direction);
+        if (tail.direction != bsp::ShipAiThrottleDirection::Stopped) {
+            ++row_.arm_tail_latched;
+            ++owner_.summary.arm_tail_latched;
+        }
+        if (tail.request_stop) {
+            ++row_.arm_tail_stops;
+            ++owner_.summary.arm_tail_stops;
+        }
+        if (ctl_.tail.goal_reached_2fe) {
+            ctl_.goal.flag_2fe = true;   // 009EF034, the byte 009DA590 requires
+            ++row_.arrival_latches;
+            ++owner_.summary.arrival_latches;
+        }
+        ctl_.goal.flag_2fd = ctl_.tail.parked_2fd;   // 009EF045
         return false;
     }
     void publish_009f4d10(float seconds) override {
@@ -2468,12 +2872,21 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
     // packet has read, so the field keeps the zero a fresh block carries and
     // the ramp's ratio is zero, which is full danger. The record carries that.
     record("ShipAiObstacle::clearance_37c_producer", 0x009ef910u);
-    // blk+344h and blk+348h, the two limits 009F4DA0 writes one step earlier.
-    // 009F4DBC stores 1.0f into blk+348h unconditionally before the 009F4DC1
-    // early out; blk+344h's own arms, 009F4DC7..009F50BA, are the record this
-    // milestone keeps from 2o.
+    // blk+344h and blk+348h. 009F4DBC stores 1.0f into blk+348h unconditionally
+    // before the 009F4DC1 early out; blk+344h's own arms inside 009F4DA0,
+    // 009F4DC7..009F50BA, are still the record milestone 2o left. Milestone 2q
+    // adds the other writer: 009EEF0A, in the navigation arm's tail, which runs
+    // earlier in the same tick for a ship in Navigate, so the ceiling the drive
+    // caps against is the one the approach computed.
     ctl.obstacle.rudder_limit_348 = 1.0f;
     done("ShipAiObstacle::rudder_limit_348", 0x009f4dbcu);
+    if (ctl.arm_tail_ran) {
+        ctl.obstacle.throttle_limit_344 = ctl.tail.throttle_ceiling_344;
+        done("ShipAiObstacle::throttle_ceiling_344", 0x009eef0au);
+    } else {
+        ctl.obstacle.throttle_limit_344 = 1.0f;
+        record("ShipAiObstacle::throttle_ceiling_344", 0x009f4dc7u);
+    }
     ObstacleBinding obstacle(*this, index);
     obstacle.set_direction(ctl.blk.direction);
     const float rudder_before = ctl.blk.desired_rudder;
@@ -2788,6 +3201,34 @@ void GameShipAiHost::report() {
         host.summary.path_plan_refreshes, host.summary.path_plan_seeds,
         host.summary.path_plan_accepts, host.summary.approach_frames,
         host.summary.controller_updates);
+    // Milestone 2q: the search, the swap and the point.
+    host.log.notef("  %-20s %-10s %8s %6s %6s %10s %7s %11s %11s %9s %9s", "unit", "state",
+        "searches", "state", "nodes", "swaps", "points", "point_x", "point_z", "nav_dist",
+        "nav_hdg");
+    for (const GameShipAiRow& row : host.rows) {
+        if (row.path_search_ticks == 0 && row.nav_output_blocks == 0) continue;
+        if (row.path_points > 0) ++host.summary.units_with_path_point;
+        host.log.notef("  %-20s %-10s %8llu %6d %6d %10llu %7llu %11.1f %11.1f %9.2f %9.4f",
+            row.unit.c_str(), row.state.c_str(), row.path_search_ticks, row.path_plan_state,
+            row.path_plan_nodes, row.path_plan_swaps, row.path_points,
+            static_cast<double>(row.path_point_x), static_cast<double>(row.path_point_z),
+            static_cast<double>(row.nav_distance_32c),
+            static_cast<double>(row.nav_heading_324));
+    }
+    host.log.notef("summary mission ship ai path search ticks=%llu swaps=%llu points=%llu "
+        "corner_arms=%llu units_with_point=%zu output_blocks=%llu bearings=%llu",
+        host.summary.path_search_ticks, host.summary.path_plan_swaps,
+        host.summary.path_points, host.summary.path_corner_arms,
+        host.summary.units_with_path_point, host.summary.nav_output_blocks,
+        host.summary.nav_bearings);
+    host.log.notef("summary mission ship ai command completion events=%llu callbacks=%llu "
+        "end_commands=%llu queue_advances=%llu",
+        host.summary.command_events, host.summary.command_event_callbacks,
+        host.summary.command_endings, host.summary.command_completions);
+    host.log.notef("summary mission ship ai arm tail bodies=%llu latched=%llu stops=%llu "
+        "arrival_latches=%llu",
+        host.summary.arm_tails, host.summary.arm_tail_latched, host.summary.arm_tail_stops,
+        host.summary.arrival_latches);
     host.log.notef("summary mission ship ai goal vector prepasses=%llu refreshes=%llu "
         "nonzero_goals=%zu brain_targets=%zu path_plan_refreshes=%llu path_picks=%llu "
         "path_publishes=%llu station_keeping=%llu sector_refreshes=%llu middle_runs=%llu "

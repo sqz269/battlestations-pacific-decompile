@@ -175,6 +175,9 @@ target_sources(bsp_core PRIVATE src/native_node_construction.cpp src/light_scene
   src/native_gameplay_effect_destruction.cpp
   src/native_singleton_destruction.cpp
   src/native_renderer_gamma.cpp
+  src/native_shader_constants.cpp
+  src/native_renderer_draw_primitive.cpp
+  src/native_renderer_format_check.cpp
   src/native_tracked_critical_section_release.cpp
   src/native_resource_registry_scalar_delete.cpp
   src/native_resource_registry_base.cpp
