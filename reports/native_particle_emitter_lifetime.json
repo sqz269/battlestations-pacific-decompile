@@ -1,0 +1,545 @@
+{
+  "packet": "orch3_emitter_lifetime_ak",
+  "status": "complete_bounded_actual_storage_through_required_real_current_cleanup_bindings",
+  "source": [
+    "include/bsp/native_particle_emitter_lifetime.hpp",
+    "src/native_particle_emitter_lifetime.cpp"
+  ],
+  "documentation": "docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md",
+  "project_verification": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "method": "verifying bsp.py ghidra queries per batch",
+    "ghidra_writes": false
+  },
+  "routines": [
+    {
+      "entry": "00aff690",
+      "end_exclusive": "00aff6f6",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+    },
+    {
+      "entry": "00b04f00",
+      "end_exclusive": "00b04fb1",
+      "coverage": "complete",
+      "boundary": "required current definition1C, actual72B740/B7C160/B6DFA0 bindings"
+    },
+    {
+      "entry": "00b053d0",
+      "end_exclusive": "00b053fc",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+    },
+    {
+      "entry": "00b04e30",
+      "end_exclusive": "00b04ef6",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+    },
+    {
+      "entry": "00b04b50",
+      "end_exclusive": "00b04bff",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+    },
+    {
+      "entry": "00b04900",
+      "end_exclusive": "00b04910",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+    },
+    {
+      "entry": "00b04910",
+      "end_exclusive": "00b04911",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+    },
+    {
+      "entry": "00b04a80",
+      "end_exclusive": "00b04aa1",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+    },
+    {
+      "entry": "00b04c40",
+      "end_exclusive": "00b04c77",
+      "coverage": "complete",
+      "boundary": "existing canonical CRT service; actual raw storage; new C++ interface"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00aff690",
+      "address": "00aff6b1",
+      "native": "00bf681b",
+      "abi": "cdecl size30h; EAX raw; ADD ESP,4 at AFF6B6",
+      "kind": "call"
+    },
+    {
+      "function": "00aff690",
+      "address": "00aff6d7",
+      "native": "00b053d0",
+      "abi": "ECX raw30h; stack(model08,emitter,definition0C+20); EAX same; RET0C at B053F9",
+      "kind": "call"
+    },
+    {
+      "function": "00b053d0",
+      "address": "00b053e4",
+      "native": "00b04e30",
+      "abi": "ECX raw30h; stack(model,emitter,capacity); EAX same; RET0C at B04EF3",
+      "kind": "call"
+    },
+    {
+      "function": "00b04e30",
+      "address": "00b04e95",
+      "native": "00b04b50",
+      "abi": "ECX actual0C; stack DWORD capacity; RET4 at B04BFC",
+      "kind": "call"
+    },
+    {
+      "function": "00b04e30",
+      "address": "00b04ea2",
+      "native": "00bf6989",
+      "abi": "cdecl current states14; ADD ESP,4 at B04EA7 omitted by saved no-return analysis",
+      "kind": "call"
+    },
+    {
+      "function": "00b04e30",
+      "address": "00b04ebd",
+      "native": "00bf55be",
+      "abi": "cdecl saturated capacity*6C; EAX raw; ADD ESP,4 at B04EC5",
+      "kind": "call"
+    },
+    {
+      "function": "00b04b50",
+      "address": "00b04b7f",
+      "native": "00bf7c6e",
+      "abi": "stdcall(rows,8,cookie,B04910); RET10 at BF7CB6; destroys backwards",
+      "kind": "call"
+    },
+    {
+      "function": "00b04b50",
+      "address": "00b04b85",
+      "native": "00bf6989",
+      "abi": "cdecl old rows-4; ADD ESP,4 at B04B8A omitted by saved no-return analysis",
+      "kind": "call"
+    },
+    {
+      "function": "00b04b50",
+      "address": "00b04bb0",
+      "native": "00bf55be",
+      "abi": "cdecl saturated count*8+4; EAX raw; ADD ESP,4 at B04BB5",
+      "kind": "call"
+    },
+    {
+      "function": "00b04b50",
+      "address": "00b04bdb",
+      "native": "00bf7cd1",
+      "abi": "stdcall(raw+4,8,count,B04900,B04910); RET14 at BF7D1B; initializes forwards",
+      "kind": "call"
+    },
+    {
+      "function": "00b04a80",
+      "address": "00b04a8a",
+      "native": "00bf6989",
+      "abi": "cdecl actual current state backing; ADD ESP,4 at B04A8F",
+      "kind": "call"
+    },
+    {
+      "function": "00b04c40",
+      "address": "00b04c59",
+      "native": "00bf7c6e",
+      "abi": "stdcall(rows,8,cookie,B04910); RET10",
+      "kind": "call"
+    },
+    {
+      "function": "00b04c40",
+      "address": "00b04c5f",
+      "native": "00bf6989",
+      "abi": "cdecl old rows-4; ADD ESP,4 at B04C64 then POP EDI B04C67",
+      "kind": "call"
+    },
+    {
+      "function": "00b04f00",
+      "address": "00b04f2a",
+      "native": "state64+vtable1c",
+      "abi": "captured ECX definition; stack(actual state,full DWORD argument); AL; RET8",
+      "kind": "call"
+    },
+    {
+      "function": "00b04f00",
+      "address": "00b04f35",
+      "native": "0072b740",
+      "abi": "cdecl no arguments; EAX actual current8h singleton owner; RET",
+      "kind": "call"
+    },
+    {
+      "function": "00b04f00",
+      "address": "00b04f4e",
+      "native": "00ce2218+iat",
+      "abi": "stdcall EnterCriticalSection(actual captured owner04); RET4; then actual DWORD18 increment",
+      "kind": "call"
+    },
+    {
+      "function": "00b04f00",
+      "address": "00b04f63",
+      "native": "00b7c160",
+      "abi": "ECX reloaded actual state60 point light; RET; real backlink unlink",
+      "kind": "call"
+    },
+    {
+      "function": "00b04f00",
+      "address": "00b04f6b",
+      "native": "00b6dfa0",
+      "abi": "ECX separately reloaded actual state60 node; RET through current virtual18; real ownership release",
+      "kind": "call"
+    },
+    {
+      "function": "00b04f00",
+      "address": "00b04f80",
+      "native": "00ce2210+iat",
+      "abi": "stdcall LeaveCriticalSection(captured section); RET4; state60 already cleared, actual18 decremented",
+      "kind": "call"
+    },
+    {
+      "function": "00bf7cd1",
+      "address": "00bf7cf5",
+      "native": "00b04900",
+      "abi": "indirect CRT iterator callback resolved from B04BCD push B04900; ECX current actual row; RET",
+      "kind": "call"
+    },
+    {
+      "function": "00bf7c6e",
+      "address": "00bf7c99",
+      "native": "00b04910",
+      "abi": "indirect CRT iterator callback resolved from B04B76/B04C50 pushes B04910; ECX previous actual row; RET",
+      "kind": "call"
+    },
+    {
+      "function": "00cbb340",
+      "address": "00cbb344",
+      "native": "00bf65ac",
+      "abi": "unwind raw container [EBP-10]; cdecl free; POP ECX CBB349, RET CBB34A",
+      "kind": "call"
+    },
+    {
+      "function": "00cbb740",
+      "address": "00cbb744",
+      "native": "00bf6989",
+      "abi": "unwind raw cookie allocation [EBP+4]; cdecl free; POP ECX CBB749, RET CBB74A",
+      "kind": "call"
+    },
+    {
+      "function": "00cbb760",
+      "address": "00cbb766",
+      "native": "00b04c40",
+      "abi": "unwind ECX containing base [EBP-10]+0C; RET",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbb76b",
+      "address": "00cbb771",
+      "native": "00b04a80",
+      "abi": "unwind ECX containing base [EBP-10]+14; RET",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbb780",
+      "address": "00cbb783",
+      "native": "00411ee0",
+      "abi": "unwind ECX actual raw8h guard [EBP-14]; RET; capture physical04 before profile write",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00bf6989",
+      "address": "00bf6989",
+      "native": "00bf65ac",
+      "abi": "cdecl free pointer; library thunk retains native identity",
+      "kind": "tail_jump"
+    }
+  ],
+  "unwind_map": {
+    "address_df3868": [
+      "state0 -> -1,CBB760: destroy actual rows0C",
+      "state1 -> 0,CBB76B: destroy actual states14"
+    ],
+    "getter_unwind": "CBB340 frees raw30h after constructor member unwind",
+    "cleanup_unwind": "CBB780 -> existing411EE0 actual8h guard; armed after successful Enter/depth increment"
+  },
+  "required_runtime": [
+    "Captured actual definition64/current table/current1C lookup must be nonmutating; invoke actual full callback with state and DWORD",
+    "Actual72B740 full0108FF50 publication and existing01090AA0 lifetime domain; actual physical section owner04",
+    "Actual B7C160 light backlinks; no substitution of modeled GeneratedModelPointLightLinks",
+    "Actual B6DFA0 parent/root unlink and current18 through existing canonical native lifetime/count04/terminal/pool bindings",
+    "AF6DD0 simulation remains separate; adapt these free functions through existing RegisteredModelEffectBehaviorCallees"
+  ],
+  "corrections": [
+    {
+      "was": "B04B50 analysis label suggests vector deleting destructor",
+      "is": "replacement cookie-backed row allocation, destructor old/backwards then constructor new/forwards",
+      "evidence": "B04B7F/B04B85 then B04BB0/B04BDB, publication B04BE0/B04BEC"
+    },
+    {
+      "was": "Pseudocode stops at BF6989 free call",
+      "is": "Returning CRT free followed by stack cleanup and continued replacement or descriptor reset",
+      "evidence": "raw gaps B04B8A..8C, B04EA7..A9, B04A8F..91, B04C64..67; BF6989 JMP BF65AC"
+    },
+    {
+      "was": "Potential independent count or modeled light owner",
+      "is": "Container04/model pointer is borrowed; cleanup targets actual native light/node storage with sole node04",
+      "evidence": "B04E7E/B04E81 store pointers; B04F63/B04F6B actual60 reloads; canonical diagnostic light model is separate"
+    },
+    {
+      "was": "All cleanup inputs can be captured once",
+      "is": "Definition/current virtual captured first; state60 reloaded after callback, getter, unlink; actual lock is captured once",
+      "evidence": "B04F20..2A, B04F2C, B04F3A, B04F58, B04F68, B04F72"
+    }
+  ],
+  "integration_analysis_repairs": {
+    "verified_on": "2026-09-12",
+    "method": "read-only verifying bsp.py ghidra proto and bytes; definitions and suffix repairs remain owned by integrator",
+    "missing_function_definitions": [
+      {
+        "entry": "00b04900",
+        "end_inclusive": "00b0490f",
+        "end_exclusive": "00b04910",
+        "last_instruction": "00b0490f: RET",
+        "last_instruction_length": 1
+      },
+      {
+        "entry": "00b04910",
+        "end_inclusive": "00b04910",
+        "end_exclusive": "00b04911",
+        "last_instruction": "00b04910: RET",
+        "last_instruction_length": 1
+      }
+    ],
+    "undefined_free_suffixes": [
+      {
+        "function": "00b04b50",
+        "start": "00b04b8a",
+        "end_exclusive": "00b04b8d",
+        "instructions": "ADD ESP,4",
+        "bytes_hex": "83 c4 04"
+      },
+      {
+        "function": "00b04e30",
+        "start": "00b04ea7",
+        "end_exclusive": "00b04eaa",
+        "instructions": "ADD ESP,4",
+        "bytes_hex": "83 c4 04"
+      },
+      {
+        "function": "00b04a80",
+        "start": "00b04a8f",
+        "end_exclusive": "00b04a92",
+        "instructions": "ADD ESP,4",
+        "bytes_hex": "83 c4 04"
+      },
+      {
+        "function": "00b04c40",
+        "start": "00b04c64",
+        "end_exclusive": "00b04c68",
+        "instructions": "ADD ESP,4; POP EDI",
+        "bytes_hex": "83 c4 04 5f"
+      },
+      {
+        "function": "00cbb340",
+        "start": "00cbb349",
+        "end_exclusive": "00cbb34b",
+        "instructions": "POP ECX; RET",
+        "bytes_hex": "59 c3",
+        "last_instruction": "00cbb34a: RET",
+        "last_instruction_length": 1
+      },
+      {
+        "function": "00cbb740",
+        "start": "00cbb749",
+        "end_exclusive": "00cbb74b",
+        "instructions": "POP ECX; RET",
+        "bytes_hex": "59 c3",
+        "last_instruction": "00cbb74a: RET",
+        "last_instruction_length": 1
+      }
+    ],
+    "existing_unwind_function_definitions": [
+      {
+        "entry": "00cbb340",
+        "current_end_exclusive": "00cbb349",
+        "required_end_exclusive": "00cbb34b",
+        "repair": "extend existing function through free-call suffix; do not create another function"
+      },
+      {
+        "entry": "00cbb740",
+        "current_end_exclusive": "00cbb749",
+        "required_end_exclusive": "00cbb74b",
+        "repair": "extend existing function through free-call suffix; do not create another function"
+      },
+      {
+        "entry": "00cbb760",
+        "current_end_exclusive": "00cbb76b",
+        "repair": "none"
+      },
+      {
+        "entry": "00cbb76b",
+        "current_end_exclusive": "00cbb776",
+        "repair": "none"
+      },
+      {
+        "entry": "00cbb780",
+        "current_end_exclusive": "00cbb788",
+        "repair": "none"
+      }
+    ]
+  },
+  "byte_verification": [
+    {
+      "entry": "00aff690",
+      "end_exclusive": "00aff6f6",
+      "bytes": 102,
+      "sha256": "bd3132e6711bc8c86ad4096f1216d3af9273ba1b4c3b19ae367478b5d88ee03d",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "00b04f00",
+      "end_exclusive": "00b04fb1",
+      "bytes": 177,
+      "sha256": "0b66bb1e63dfdd1118a57b61d5e7ef121b19daaec187eab803cd47d3f445a56c",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "00b053d0",
+      "end_exclusive": "00b053fc",
+      "bytes": 44,
+      "sha256": "6ebcf8deccfddbcbe2af4c71c5c6eaa97ce59e3f404f3861447db25f45a35867",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "00b04e30",
+      "end_exclusive": "00b04ef6",
+      "bytes": 198,
+      "sha256": "965a039cebafbecc6fdd85cbf5d8c5781166e5ab8cf38a3e8a576f6fbba267e2",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "00b04b50",
+      "end_exclusive": "00b04bff",
+      "bytes": 175,
+      "sha256": "23e7bf9b6700fe22ce76a9a0d9f9a9b008cd13442707230c722fc9d8edbcac55",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "00b04900",
+      "end_exclusive": "00b04910",
+      "bytes": 16,
+      "sha256": "89743e325b422bbade3c7566071a91d02a3d7114be569864369727c504787283",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "00b04910",
+      "end_exclusive": "00b04911",
+      "bytes": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "00b04a80",
+      "end_exclusive": "00b04aa1",
+      "bytes": 33,
+      "sha256": "17fd51bca3ec7bce4b74c8daeb3905a6d509207414a07ba93567b4e7e5412eb1",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "00b04c40",
+      "end_exclusive": "00b04c77",
+      "bytes": 55,
+      "sha256": "9584069ddd2d47a8b082712020cff2015489c880081f8f2a88e1571a5e2fe7de",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "00b7c160",
+      "end_exclusive": "00b7c19a",
+      "bytes": 58,
+      "sha256": "2abd7c1a49a382aedd0ada85fdf0c20022c12c44e2e3b882fb1b2e1a839c92dc",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "00b6dfa0",
+      "end_exclusive": "00b6e009",
+      "bytes": 105,
+      "sha256": "1dcfcfe0477feddec6f7d54533816577db3c6937fe7dcb7e0445a6d16e175277",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "00b6f310",
+      "end_exclusive": "00b6f3c0",
+      "bytes": 176,
+      "sha256": "08d6f5b9949ee2e3f9ecc976d66356676207cbeff420b8a4d8169be2683387af",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "00b6f3c0",
+      "end_exclusive": "00b6f3d3",
+      "bytes": 19,
+      "sha256": "70ea5b7925fccd82a2da3c5428892b68a7e555b4a9fc2bc4f3adf2ddff7af267",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "00b6f090",
+      "end_exclusive": "00b6f0f7",
+      "bytes": 103,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "00b6ec70",
+      "end_exclusive": "00b6ecc0",
+      "bytes": 80,
+      "sha256": "7d49b540b7027a0379c29b1a086967bae79e08c7bd449fce8e7e43b44c2f3174",
+      "live_disk_equal": true
+    },
+    {
+      "entry": "0059fce0",
+      "end_exclusive": "0059fd30",
+      "bytes": 80,
+      "sha256": "70fda56d92aa22fbd38fb6b50c99210e2fff34f228b79849eb7bd421870ea8bc",
+      "live_disk_equal": true
+    }
+  ],
+  "verification": {
+    "strict_msvc_win32_compile": "passed /std:c++17 /EHsc /W4 /WX /fp:strict /MD",
+    "scripts_build_ps1": "passed",
+    "verify_seeds": "8 of8 matched live and installed bytes",
+    "existing_tests": [
+      "reconstructed_math passed",
+      "native_math_differential passed"
+    ],
+    "fixture": "ignored local/emitter_probe.cpp; linked actual built bsp_core.lib and new object; /MANIFEST:EMBED",
+    "fixture_result": "passed: 9 reconstructed original spans plus7 actual native ownership callees;16 spans1422bytes;25 relative and7 absolute relocations",
+    "fixture_coverage": [
+      "row WORD/float writes and untouched padding",
+      "base2C preservation",
+      "getter actual allocation/publication/repeated acquisition; signed zero/positive/negative capacity",
+      "cookie-based old-row replacement and member free/reset",
+      "eight source/original actual model backlink,parent unlink,count04 decrement2to1,current60 replacement,physical Win32 lock,null-light combinations",
+      "exact return5A and full argument12345678",
+      "source-only actual CRT allocation failure: old descriptor dangling and lazy publication null",
+      "source-only unlink exception: canonical raw guard unlock, current60 uncleared, release not called"
+    ],
+    "call_report": "2026-09-12: 24 call rows checked, 2 failed solely because numeric iterator callback targets B04900/B04910 are not Ghidra functions; rerun after integrator adds those definitions",
+    "final_review": "2026-09-12: strict MSVC Win32 compile and existing original-byte fixture passed again; all 16 recorded hashes matched fresh live/installed extraction; saved full seeded build log confirms both existing tests passed"
+  },
+  "limits": [
+    "not a callable original ABI/vtable/SEH replacement",
+    "no original-byte throwing/unwind execution",
+    "no zero-reference terminal light destruction or arbitrary parent/root/scene/child path fixture coverage",
+    "getter72B740 publication intercepted at its required provider boundary in fixture; actual physical Win32 lock used",
+    "current definition callback is a deterministic fixture callback, not a particle definition implementation",
+    "actual native light/node provider code is fixture evidence; full application runtime bindings remain explicit requirements",
+    "no AF6DD0 update, AF74A0 construction, application game or visual validation",
+    "CMake/ledger/Ghidra integration owned by root"
+  ]
+}
