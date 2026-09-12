@@ -1,0 +1,1111 @@
+{
+  "packet": "orch3_particle_sprite_state_ar",
+  "status": "complete_reconstruction_isolated_compile_and_installed_native_differential_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "read_only_ghidra": true,
+  "functions": [
+    {
+      "address": "00b08f60",
+      "end_inclusive": "00b094dc",
+      "cpp_symbol": "bsp::initialize_native_particle_sprite_state_00b08f60",
+      "ghidra_name": "BSP_ParticleSprite_InitializeState",
+      "original_abi": "ECX actual definition; stack(state6Ch,record108h),RET8; incidental EAX unestablished",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleSprite_InitializeState(void * state, void * record)",
+      "source": "src/native_particle_sprite_state.cpp",
+      "header": "include/bsp/native_particle_sprite_state.hpp",
+      "evidence": "AR reconstruction: descriptive hypothesis, not a recovered symbol. Complete live/installed-equal span and inclusive RET8 end verified. Actual90h Sprite and6Ch state; same current globals, RandomThreads and exact curves. Optional light uses actual shared lock, real pool/constructor and canonical adoption, with ordered native name lifetimes. Original FH3, MXCSR/all-register state and gameplay unvalidated. Strict Win32 native-byte probe passed72 initializer plus6cleanup comparisons. See docs/NATIVE_PARTICLE_SPRITE_STATE.md and reports/native_particle_sprite_state.json.",
+      "coverage": "complete",
+      "status": "complete_reconstruction_isolated_compile_and_installed_native_differential_passed"
+    },
+    {
+      "address": "00b007f0",
+      "end_inclusive": "00b007fd",
+      "cpp_symbol": "bsp::release_native_particle_sprite_state_00b007f0",
+      "ghidra_name": "BSP_ParticleSprite_ReleaseState",
+      "original_abi": "ECX definition; stack(state,argument DWORD),RET8; EAX1; all original inputs unread",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "unsigned int __thiscall BSP_ParticleSprite_ReleaseState(void * state, unsigned int argument)",
+      "source": "src/native_particle_sprite_state.cpp",
+      "header": "include/bsp/native_particle_sprite_state.hpp",
+      "evidence": "AR reconstruction: descriptive hypothesis, not a recovered symbol. Complete live/installed-equal span and inclusive RET8 end verified. Actual90h Sprite and6Ch state; same current globals, RandomThreads and exact curves. Optional light uses actual shared lock, real pool/constructor and canonical adoption, with ordered native name lifetimes. Original FH3, MXCSR/all-register state and gameplay unvalidated. Strict Win32 native-byte probe passed72 initializer plus6cleanup comparisons. See docs/NATIVE_PARTICLE_SPRITE_STATE.md and reports/native_particle_sprite_state.json.",
+      "coverage": "complete",
+      "status": "complete_reconstruction_isolated_compile_and_installed_native_differential_passed"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b08f91",
+      "native": "0072b740",
+      "function": "00b08f60",
+      "binding": "get_native_particle_population_lock_0072b740 using actual manager/lock publications"
+    },
+    {
+      "address": "00b08fc5",
+      "native": "00b7bd30",
+      "function": "00b08f60",
+      "binding": "environment.pool_0109011c.allocate_raw_slot_00b7b810, same canonical native owner"
+    },
+    {
+      "address": "00b08fe2",
+      "native": "0041e870",
+      "function": "00b08f60",
+      "binding": "construct_native_string_cstring_0041e870, actual temporary-string storage"
+    },
+    {
+      "address": "00b09002",
+      "native": "004261a0",
+      "function": "00b08f60",
+      "binding": "concatenate_native_string_headers_004261a0, current definition14 target name8"
+    },
+    {
+      "address": "00b09017",
+      "native": "00b7c710",
+      "function": "00b08f60",
+      "binding": "construct_native_point_light_00b7c710 then existing adopt_constructed_native_point_light on same raw slot"
+    },
+    {
+      "address": "00b0904a",
+      "native": "00419cc0",
+      "function": "00b08f60",
+      "binding": "actual current string-storage getter as part of release"
+    },
+    {
+      "address": "00b09051",
+      "native": "00bd1510",
+      "function": "00b08f60",
+      "binding": "destroy_native_string_header_0041dd20/current storage release of pointer,length+1"
+    },
+    {
+      "address": "00b09076",
+      "native": "00419cc0",
+      "function": "00b08f60",
+      "binding": "actual current string-storage getter as part of release"
+    },
+    {
+      "address": "00b0907d",
+      "native": "00bd1510",
+      "function": "00b08f60",
+      "binding": "destroy_native_string_header_0041dd20/current storage release of pointer,length+1"
+    },
+    {
+      "address": "00b090c7",
+      "native": "00bd2fc0",
+      "function": "00b08f60",
+      "binding": "same application RandomThreads::next_00bd2fc0 primary stream"
+    },
+    {
+      "address": "00b0910f",
+      "native": "00affa70",
+      "function": "00b08f60",
+      "binding": "existing exact evaluate_native_particle_linear_curve_00affa70 at time zero"
+    },
+    {
+      "address": "00b09116",
+      "native": "00affae0",
+      "function": "00b08f60",
+      "binding": "existing exact evaluate_native_particle_cubic_curve_00affae0 at time zero"
+    },
+    {
+      "address": "00b09159",
+      "native": "00bd2fc0",
+      "function": "00b08f60",
+      "binding": "same application RandomThreads::next_00bd2fc0 primary stream"
+    },
+    {
+      "address": "00b091a2",
+      "native": "00affa70",
+      "function": "00b08f60",
+      "binding": "existing exact evaluate_native_particle_linear_curve_00affa70 at time zero"
+    },
+    {
+      "address": "00b091a9",
+      "native": "00affae0",
+      "function": "00b08f60",
+      "binding": "existing exact evaluate_native_particle_cubic_curve_00affae0 at time zero"
+    },
+    {
+      "address": "00b091ef",
+      "native": "00bd2fc0",
+      "function": "00b08f60",
+      "binding": "same application RandomThreads::next_00bd2fc0 primary stream"
+    },
+    {
+      "address": "00b09254",
+      "native": "00bd2fc0",
+      "function": "00b08f60",
+      "binding": "same application RandomThreads::next_00bd2fc0 primary stream"
+    },
+    {
+      "address": "00b092a6",
+      "native": "00bd2fc0",
+      "function": "00b08f60",
+      "binding": "same application RandomThreads::next_00bd2fc0 primary stream"
+    },
+    {
+      "address": "00b09301",
+      "native": "00bd2fc0",
+      "function": "00b08f60",
+      "binding": "same application RandomThreads::next_00bd2fc0 primary stream"
+    },
+    {
+      "address": "00b0932a",
+      "native": "00bd2f40",
+      "function": "00b08f60",
+      "binding": "existing exact native_particle_unit_random_00bd2f40 on same RandomThreads"
+    },
+    {
+      "address": "00b09389",
+      "native": "00bd2fc0",
+      "function": "00b08f60",
+      "binding": "same application RandomThreads::next_00bd2fc0 primary stream"
+    },
+    {
+      "address": "00b093db",
+      "native": "00bd2fc0",
+      "function": "00b08f60",
+      "binding": "same application RandomThreads::next_00bd2fc0 primary stream"
+    },
+    {
+      "address": "00b0942d",
+      "native": "00bd2fc0",
+      "function": "00b08f60",
+      "binding": "same application RandomThreads::next_00bd2fc0 primary stream"
+    },
+    {
+      "address": "00b09467",
+      "native": "00bd2fc0",
+      "function": "00b08f60",
+      "binding": "same application RandomThreads::next_00bd2fc0 primary stream"
+    },
+    {
+      "address": "00b0949a",
+      "native": "00bd2fc0",
+      "function": "00b08f60",
+      "binding": "same application RandomThreads::next_00bd2fc0 primary stream"
+    }
+  ],
+  "imports": [
+    {
+      "address": "00b08fae",
+      "native": "EnterCriticalSection via IAT00ce2218",
+      "function": "00b08f60",
+      "stack_cleanup": "RET4"
+    },
+    {
+      "address": "00b09095",
+      "native": "LeaveCriticalSection via IAT00ce2210",
+      "function": "00b08f60",
+      "stack_cleanup": "RET4"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00b007f0",
+      "start": "00b007f0",
+      "end_inclusive": "00b007fd",
+      "reason": "Current Ghidra proto has no function. Complete live/disk span is MOV EAX,1; SUB [F8D388],EAX; RET8. Root must create bounded function before annotation."
+    }
+  ],
+  "free_gaps": [
+    {
+      "start": "00b007f0",
+      "end_inclusive": "00b007fd",
+      "containing_function": null,
+      "repair": "create exactly this function; no worker mutation"
+    }
+  ],
+  "existing_main_body": {
+    "start": "00b08f60",
+    "end_inclusive": "00b094dc",
+    "listed_instructions": 369,
+    "flow_gaps": []
+  },
+  "incoming_references": {
+    "00b08f60": [
+      "00d5dd30",
+      "00d5e00c"
+    ],
+    "00b007f0": [
+      "00d5dd34",
+      "00d5e010"
+    ]
+  },
+  "dispatch_evidence": {
+    "initializer": "B0CAD5..B0CADF current definition/table+18,stack record/state,RET8",
+    "cleanup": "B04F20..B04F2A current definition/table+1C,stack argument DWORD/state,RET8; B04F30 preserves AL"
+  },
+  "corrections": [
+    {
+      "was": "pseudocode B08F60 signature float state and one stack argument",
+      "is": "actual6Ch state pointer plus unread actual108h record,ECX definition,RET8",
+      "evidence": "B08F87 reads ESP40 as EDI pointer; B0CADA/B0CADE push record/state; B094DA RET8"
+    },
+    {
+      "was": "possible logical initializer uint result",
+      "is": "incidental EAX only; cleanup explicitly returns1",
+      "evidence": "initializer LAHF modifies pointer bits and DIV exposes quotients; B0CAE1 overwrites EAX; B007F0 MOV EAX1 and B04F30 preserve AL"
+    }
+  ],
+  "validation": {
+    "compile": "MSVC Win32 /MD /W4 /WX /O2 /fp:strict; source plus updated integrator native_point_light_owner.cpp; manifest embedded",
+    "initializer_cases": 72,
+    "cleanup_cases": 6,
+    "light_cases": 18,
+    "ordered_actual_string_events": 102,
+    "first_draws_with_sign_bit": 48,
+    "x87_precisions": [
+      24,
+      53,
+      64
+    ],
+    "checked": [
+      "all6Ch state bytes",
+      "all90h definition bytes",
+      "all108h record bytes",
+      "complete canonical primary RandomState",
+      "current counter",
+      "incidental EAX",
+      "x87 status/control",
+      "preexisting80-bit sentinel",
+      "physical200h light bytes except normalized separately checked name pointer",
+      "actual light name text",
+      "physical scene/backlink/lifetime identity",
+      "ordered temporary-string sizes/depth/publication events"
+    ],
+    "results": {
+      "exit_code": 0,
+      "stdout": "PASS 72 full-state native differential cases; 48 first draws have sign bit set; all record bytes, RandomState, counter, incidental EAX, x87 status/control/sentinel match\nPASS 6 complete Sprite cleanup comparisons; 18 light cases use real raw pool/constructor/adoption/physical domains and 102 ordered actual-string storage events\n",
+      "stderr": "",
+      "source_sha256": {
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-particle-sprite-state-ar\\include\\bsp\\native_particle_sprite_state.hpp": "e797a0a6fbdf5581afc8b10d9bb632a782d33275ddd5099a781d6514cb433fc8",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-particle-sprite-state-ar\\src\\native_particle_sprite_state.cpp": "e0656e906b4e8811ef77c48720e0434734d1469f2154dc629abd4d57df87254c",
+        "C:\\Users\\sqz269\\bsp-ar-sprite-state\\probe.cpp": "912559c8e6fc15ce151f6d384a9082dc39e3c8d714c6896cd42608d77a65628d",
+        "C:\\Users\\sqz269\\bsp-ar-sprite-state\\make_fixture.py": "8a901ee3d863e89c8670fbd05adceffd43fa6b3a1526c17d09a0b3b694c3be69",
+        "C:\\Users\\sqz269\\bsp-ar-sprite-state\\make_source.py": "6448f4c27917c084d950ce50b69737748827a277c158ac81bc047e9e49579552",
+        "C:\\Users\\sqz269\\bsp-ar-sprite-state\\make_probe.py": "660f3cec1e05e233c37be5acf5fda2b56e89a42ff4944cc10ef77c22d5124711",
+        "C:\\Users\\sqz269\\bsp-ar-sprite-state\\build.ps1": "b3e943422a22ff37c00698c1601485354e5f737580cdcbd4c44781d75666890a",
+        "C:\\Users\\sqz269\\bsp-ar-sprite-state\\original_bytes.hpp": "0883a0f0c34762362e3d1da40c75830411b00edfb159d684064faca12687b1a0",
+        "C:\\Users\\sqz269\\bsp-ar-sprite-state\\bind_original.inl": "d5918e04a971f471396046d226130fdd655a29acfb7b9e2f83dcfe6af75fac5f",
+        "C:\\Users\\sqz269\\bsp-ar-sprite-state\\probe.exe": "044067f1d8dd3b07ecbea3e381846ab09e014b4bf59bfe33e58191c7148d7ee4",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_point_light_owner.cpp": "a27fedeb63682735ff55f86eae587c473760c37af17e7848cd478e48552eabd7",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_point_light_owner.hpp": "802c6428e480d16e32489eb4f76bcf29f5cd8b6341c226140db387ee6e533787",
+        "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095"
+      }
+    },
+    "byte_evidence": {
+      "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "bridge": 8089,
+      "relocation_directory_size": 0,
+      "functions": [
+        {
+          "address": "00b08f60",
+          "size": 1405,
+          "end_inclusive": "00b094dc",
+          "sha256": "9d2ad0567a2949454a7635071ef9d52ff45be3cb9d02d56888843193ce1edea3",
+          "last_instruction": {
+            "address": "00b094da",
+            "size": 3,
+            "text": "ret 8"
+          },
+          "live_disk_equal": true,
+          "calls": [
+            {
+              "address": "00b08f91",
+              "native": "0072b740",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b08fc5",
+              "native": "00b7bd30",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b08fe2",
+              "native": "0041e870",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b09002",
+              "native": "004261a0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b09017",
+              "native": "00b7c710",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b0904a",
+              "native": "00419cc0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b09051",
+              "native": "00bd1510",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b09076",
+              "native": "00419cc0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b0907d",
+              "native": "00bd1510",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b090c7",
+              "native": "00bd2fc0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b0910f",
+              "native": "00affa70",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b09116",
+              "native": "00affae0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b09159",
+              "native": "00bd2fc0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b091a2",
+              "native": "00affa70",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b091a9",
+              "native": "00affae0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b091ef",
+              "native": "00bd2fc0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b09254",
+              "native": "00bd2fc0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b092a6",
+              "native": "00bd2fc0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b09301",
+              "native": "00bd2fc0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b0932a",
+              "native": "00bd2f40",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b09389",
+              "native": "00bd2fc0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b093db",
+              "native": "00bd2fc0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b0942d",
+              "native": "00bd2fc0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b09467",
+              "native": "00bd2fc0",
+              "function": "00b08f60"
+            },
+            {
+              "address": "00b0949a",
+              "native": "00bd2fc0",
+              "function": "00b08f60"
+            }
+          ]
+        },
+        {
+          "address": "00b007f0",
+          "size": 14,
+          "end_inclusive": "00b007fd",
+          "sha256": "f6ec4af63ba3ada40fee751ecb0960c1d9b9faa759d34c835a2e57fe054ecdbe",
+          "last_instruction": {
+            "address": "00b007fb",
+            "size": 3,
+            "text": "ret 8"
+          },
+          "live_disk_equal": true,
+          "calls": []
+        },
+        {
+          "address": "00affa70",
+          "size": 99,
+          "end_inclusive": "00affad2",
+          "sha256": "03ded3de90d7bba2632b36e57d10ac6ac4da7a259f94340287bea90e82686224",
+          "last_instruction": {
+            "address": "00affad0",
+            "size": 3,
+            "text": "ret 4"
+          },
+          "live_disk_equal": true,
+          "calls": []
+        },
+        {
+          "address": "00affae0",
+          "size": 119,
+          "end_inclusive": "00affb56",
+          "sha256": "6b80757fff83b19b32d13272e4b85f48476062f424b3b299456f305b128ee85d",
+          "last_instruction": {
+            "address": "00affb54",
+            "size": 3,
+            "text": "ret 4"
+          },
+          "live_disk_equal": true,
+          "calls": []
+        },
+        {
+          "address": "00bd2f40",
+          "size": 69,
+          "end_inclusive": "00bd2f84",
+          "sha256": "3f4e848120f36b3f98af12f610e6ffc086a71ba5805ee44a575ee12a1fe8aee9",
+          "last_instruction": {
+            "address": "00bd2f84",
+            "size": 1,
+            "text": "ret "
+          },
+          "live_disk_equal": true,
+          "calls": [
+            {
+              "address": "00bd2f41",
+              "native": "00bd2ed0",
+              "function": "00bd2f40"
+            },
+            {
+              "address": "00bd2f62",
+              "native": "00ba2c20",
+              "function": "00bd2f40"
+            }
+          ]
+        }
+      ],
+      "globals_and_tables": [
+        {
+          "address": "00d7a218",
+          "size": 4,
+          "bytes": "00000000",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00d7a24c",
+          "size": 4,
+          "bytes": "0000803f",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00d5da30",
+          "size": 8,
+          "bytes": "000000000000003e",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00d7a210",
+          "size": 8,
+          "bytes": "000000000000f03f",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00d5daf8",
+          "size": 8,
+          "bytes": "0000006046df913f",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00f8d388",
+          "size": 4,
+          "bytes": "00000000",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00ce3800",
+          "size": 4,
+          "bytes": "0000003f",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00d7a260",
+          "size": 4,
+          "bytes": "000080bf",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00ce3978",
+          "size": 4,
+          "bytes": "0000804f",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00d63b80",
+          "size": 8,
+          "bytes": "000000000000f03d",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00d5dd18",
+          "size": 44,
+          "bytes": "e030bd000009b000c08ab0002009b000e089b00000a0b000608fb000f007b0004007b0005089b0001095b000",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00d5dff4",
+          "size": 44,
+          "bytes": "e030bd00c089b000c08ab0002009b000e089b0008e69bf00608fb000f007b0004007b0005089b0008e69bf00",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00d0de04",
+          "size": 14,
+          "bytes": "64796e616d69635f6c696768745f",
+          "live_disk_equal": true
+        },
+        {
+          "address": "00df3ba4",
+          "size": 84,
+          "bytes": "2205931906000000c83bdf00000000000000000000000000000000000000000001000000ffffffffd0b9cb0000000000d8b9cb0001000000e0b9cb0002000000f9b9cb0000000000e0b9cb0004000000f9b9cb00",
+          "live_disk_equal": true
+        }
+      ],
+      "decoded_operand_rebindings": [
+        {
+          "site": "00b08f62",
+          "kind": "absolute_immediate",
+          "operand_offset": 1,
+          "native": "00cbba12",
+          "binding": "native_handler"
+        },
+        {
+          "site": "00b08f91",
+          "kind": "relative_call",
+          "native": "0072b740",
+          "binding": "lock_native"
+        },
+        {
+          "site": "00b08fae",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00ce2218",
+          "binding": "&enter_iat"
+        },
+        {
+          "site": "00b08fc5",
+          "kind": "relative_call",
+          "native": "00b7bd30",
+          "binding": "allocate_native"
+        },
+        {
+          "site": "00b08fd9",
+          "kind": "absolute_immediate",
+          "operand_offset": 1,
+          "native": "00d0de04",
+          "binding": "dynamic_light_text"
+        },
+        {
+          "site": "00b08fe2",
+          "kind": "relative_call",
+          "native": "0041e870",
+          "binding": "prefix_native"
+        },
+        {
+          "site": "00b09002",
+          "kind": "relative_call",
+          "native": "004261a0",
+          "binding": "concat_native"
+        },
+        {
+          "site": "00b09017",
+          "kind": "relative_call",
+          "native": "00b7c710",
+          "binding": "construct_native"
+        },
+        {
+          "site": "00b0904a",
+          "kind": "relative_call",
+          "native": "00419cc0",
+          "binding": "pool_native"
+        },
+        {
+          "site": "00b09051",
+          "kind": "relative_call",
+          "native": "00bd1510",
+          "binding": "release_native"
+        },
+        {
+          "site": "00b09076",
+          "kind": "relative_call",
+          "native": "00419cc0",
+          "binding": "pool_native"
+        },
+        {
+          "site": "00b0907d",
+          "kind": "relative_call",
+          "native": "00bd1510",
+          "binding": "release_native"
+        },
+        {
+          "site": "00b09095",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00ce2210",
+          "binding": "&leave_iat"
+        },
+        {
+          "site": "00b090a2",
+          "kind": "absolute_memory",
+          "operand_offset": 3,
+          "native": "00d7a218",
+          "binding": "current_zero"
+        },
+        {
+          "site": "00b090b5",
+          "kind": "absolute_memory",
+          "operand_offset": 4,
+          "native": "00d7a24c",
+          "binding": "current_one"
+        },
+        {
+          "site": "00b090c7",
+          "kind": "relative_call",
+          "native": "00bd2fc0",
+          "binding": "random_native"
+        },
+        {
+          "site": "00b090d8",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d5da30",
+          "binding": "current_scale"
+        },
+        {
+          "site": "00b090de",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d7a210",
+          "binding": "current_base"
+        },
+        {
+          "site": "00b0910f",
+          "kind": "relative_call",
+          "native": "00affa70",
+          "binding": "original_00affa70"
+        },
+        {
+          "site": "00b09116",
+          "kind": "relative_call",
+          "native": "00affae0",
+          "binding": "original_00affae0"
+        },
+        {
+          "site": "00b09134",
+          "kind": "absolute_memory",
+          "operand_offset": 3,
+          "native": "00d7a218",
+          "binding": "current_zero"
+        },
+        {
+          "site": "00b09147",
+          "kind": "absolute_memory",
+          "operand_offset": 4,
+          "native": "00d7a24c",
+          "binding": "current_one"
+        },
+        {
+          "site": "00b09159",
+          "kind": "relative_call",
+          "native": "00bd2fc0",
+          "binding": "random_native"
+        },
+        {
+          "site": "00b0916a",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d5da30",
+          "binding": "current_scale"
+        },
+        {
+          "site": "00b09170",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d7a210",
+          "binding": "current_base"
+        },
+        {
+          "site": "00b091a2",
+          "kind": "relative_call",
+          "native": "00affa70",
+          "binding": "original_00affa70"
+        },
+        {
+          "site": "00b091a9",
+          "kind": "relative_call",
+          "native": "00affae0",
+          "binding": "original_00affae0"
+        },
+        {
+          "site": "00b091b6",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d5daf8",
+          "binding": "current_angle"
+        },
+        {
+          "site": "00b091ca",
+          "kind": "absolute_memory",
+          "operand_offset": 3,
+          "native": "00d7a218",
+          "binding": "current_zero"
+        },
+        {
+          "site": "00b091dd",
+          "kind": "absolute_memory",
+          "operand_offset": 4,
+          "native": "00d7a24c",
+          "binding": "current_one"
+        },
+        {
+          "site": "00b091ef",
+          "kind": "relative_call",
+          "native": "00bd2fc0",
+          "binding": "random_native"
+        },
+        {
+          "site": "00b09200",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d5da30",
+          "binding": "current_scale"
+        },
+        {
+          "site": "00b09206",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d7a210",
+          "binding": "current_base"
+        },
+        {
+          "site": "00b09235",
+          "kind": "absolute_memory",
+          "operand_offset": 3,
+          "native": "00d7a218",
+          "binding": "current_zero"
+        },
+        {
+          "site": "00b09248",
+          "kind": "absolute_memory",
+          "operand_offset": 4,
+          "native": "00d7a24c",
+          "binding": "current_one"
+        },
+        {
+          "site": "00b09254",
+          "kind": "relative_call",
+          "native": "00bd2fc0",
+          "binding": "random_native"
+        },
+        {
+          "site": "00b09265",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d5da30",
+          "binding": "current_scale"
+        },
+        {
+          "site": "00b0926b",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d7a210",
+          "binding": "current_base"
+        },
+        {
+          "site": "00b09287",
+          "kind": "absolute_memory",
+          "operand_offset": 3,
+          "native": "00d7a218",
+          "binding": "current_zero"
+        },
+        {
+          "site": "00b0929a",
+          "kind": "absolute_memory",
+          "operand_offset": 4,
+          "native": "00d7a24c",
+          "binding": "current_one"
+        },
+        {
+          "site": "00b092a6",
+          "kind": "relative_call",
+          "native": "00bd2fc0",
+          "binding": "random_native"
+        },
+        {
+          "site": "00b092b7",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d5da30",
+          "binding": "current_scale"
+        },
+        {
+          "site": "00b092bd",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d7a210",
+          "binding": "current_base"
+        },
+        {
+          "site": "00b092dc",
+          "kind": "absolute_memory",
+          "operand_offset": 3,
+          "native": "00d7a218",
+          "binding": "current_zero"
+        },
+        {
+          "site": "00b092ef",
+          "kind": "absolute_memory",
+          "operand_offset": 4,
+          "native": "00d7a24c",
+          "binding": "current_one"
+        },
+        {
+          "site": "00b09301",
+          "kind": "relative_call",
+          "native": "00bd2fc0",
+          "binding": "random_native"
+        },
+        {
+          "site": "00b09312",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d5da30",
+          "binding": "current_scale"
+        },
+        {
+          "site": "00b09318",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d7a210",
+          "binding": "current_base"
+        },
+        {
+          "site": "00b0932a",
+          "kind": "relative_call",
+          "native": "00bd2f40",
+          "binding": "original_00bd2f40"
+        },
+        {
+          "site": "00b0932f",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00ce3800",
+          "binding": "current_threshold"
+        },
+        {
+          "site": "00b0933d",
+          "kind": "absolute_memory",
+          "operand_offset": 4,
+          "native": "00d7a260",
+          "binding": "current_negative"
+        },
+        {
+          "site": "00b09347",
+          "kind": "absolute_memory",
+          "operand_offset": 4,
+          "native": "00d7a24c",
+          "binding": "current_one"
+        },
+        {
+          "site": "00b0936a",
+          "kind": "absolute_memory",
+          "operand_offset": 3,
+          "native": "00d7a218",
+          "binding": "current_zero"
+        },
+        {
+          "site": "00b0937d",
+          "kind": "absolute_memory",
+          "operand_offset": 4,
+          "native": "00d7a24c",
+          "binding": "current_one"
+        },
+        {
+          "site": "00b09389",
+          "kind": "relative_call",
+          "native": "00bd2fc0",
+          "binding": "random_native"
+        },
+        {
+          "site": "00b0939a",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d5da30",
+          "binding": "current_scale"
+        },
+        {
+          "site": "00b093a0",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d7a210",
+          "binding": "current_base"
+        },
+        {
+          "site": "00b093bc",
+          "kind": "absolute_memory",
+          "operand_offset": 3,
+          "native": "00d7a218",
+          "binding": "current_zero"
+        },
+        {
+          "site": "00b093cf",
+          "kind": "absolute_memory",
+          "operand_offset": 4,
+          "native": "00d7a24c",
+          "binding": "current_one"
+        },
+        {
+          "site": "00b093db",
+          "kind": "relative_call",
+          "native": "00bd2fc0",
+          "binding": "random_native"
+        },
+        {
+          "site": "00b093ec",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d5da30",
+          "binding": "current_scale"
+        },
+        {
+          "site": "00b093f2",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d7a210",
+          "binding": "current_base"
+        },
+        {
+          "site": "00b0940e",
+          "kind": "absolute_memory",
+          "operand_offset": 3,
+          "native": "00d7a218",
+          "binding": "current_zero"
+        },
+        {
+          "site": "00b09421",
+          "kind": "absolute_memory",
+          "operand_offset": 4,
+          "native": "00d7a24c",
+          "binding": "current_one"
+        },
+        {
+          "site": "00b0942d",
+          "kind": "relative_call",
+          "native": "00bd2fc0",
+          "binding": "random_native"
+        },
+        {
+          "site": "00b0943e",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d5da30",
+          "binding": "current_scale"
+        },
+        {
+          "site": "00b09444",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d7a210",
+          "binding": "current_base"
+        },
+        {
+          "site": "00b09467",
+          "kind": "relative_call",
+          "native": "00bd2fc0",
+          "binding": "random_native"
+        },
+        {
+          "site": "00b0949a",
+          "kind": "relative_call",
+          "native": "00bd2fc0",
+          "binding": "random_native"
+        },
+        {
+          "site": "00b094b8",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d7a210",
+          "binding": "current_base"
+        },
+        {
+          "site": "00b094c5",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00f8d388",
+          "binding": "current_counter"
+        },
+        {
+          "site": "00b007f5",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00f8d388",
+          "binding": "current_counter"
+        },
+        {
+          "site": "00bd2f41",
+          "kind": "relative_call",
+          "native": "00bd2ed0",
+          "binding": "state_native"
+        },
+        {
+          "site": "00bd2f62",
+          "kind": "relative_call",
+          "native": "00ba2c20",
+          "binding": "next_native"
+        },
+        {
+          "site": "00bd2f71",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00ce3978",
+          "binding": "current_correction"
+        },
+        {
+          "site": "00bd2f77",
+          "kind": "absolute_memory",
+          "operand_offset": 2,
+          "native": "00d63b80",
+          "binding": "current_unit"
+        }
+      ]
+    }
+  },
+  "remaining_limits": [
+    "Root must integrate CMake/build and create B007F0 before annotation/export/ledger edits.",
+    "Existing adopted PointLight API and constructor environment/retained-string contract are required; no shadow owners.",
+    "Compositional fixture: native outer/curves/fraction bytes, existing real C++ light services.",
+    "Original FH3/SEH unwind, provider register/throw identity, MXCSR and all CPU registers are not established.",
+    "Fixture continue-search handler and /SAFESEH:NO are only hardware-fault observation boundaries.",
+    "Allocator exhaustion, gameplay and rendering unvalidated."
+  ]
+}
