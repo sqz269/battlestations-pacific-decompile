@@ -471,3 +471,9 @@ The sub-type at descriptor `+8h` is set by the class constructors, not by Lua: 1
 - **Was:** the projectile is 284h bytes
   **Is:** the base class is 284h; the flak subclass allocates and zero-fills 298h, which is what makes +290h and +294h legal
   **Evidence:** 0070cc4e PUSH 0x298 into 00bf55be and 0070cc5c..0070cc67 memset(obj, 0, 0x298); 006e844b PUSH 0x284 for the base
+
+## Correction from docs/SHIP_HIT_RECORD.md (packet cc2_ship_hit_record)
+
+- **Was:** scope note only, not an error: 0077CE60 was listed in this packet's brief as part of the handler
+  **Is:** 0077CE60 is not called by 00826F10 at all; it is step 7 of the dispatcher 009239A0, which runs after the handler returns
+  **Evidence:** python tools/bsp.py callees 00826f10 lists 23 callees and 0077CE60 is not among them

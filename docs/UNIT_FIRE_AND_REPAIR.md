@@ -474,3 +474,12 @@ timer and `+38h` the **fire** timer; `0093C120` (runs `+34h`) is the water step 
 `+3CCh FireRepairMultiplier`. The authored key names were right; the two step names were
 swapped in Ghidra (now BSP_RepairTask_* per that packet) and the fire/water repair priorities
 in the table above are exchanged accordingly.
+
+## Correction from docs/SHIP_HIT_RECORD.md (packet cc2_ship_hit_record)
+
+- **Was:** the call site 00827450 has no Ghidra function; the enclosing candidate is 00826D70
+  **Is:** the site is inside 00826F10, whose Ghidra body is 00826F10-0082781B
+  **Evidence:** python tools/bsp.py ghidra proto 00826f10 --brief
+- **Was:** no in-engine producer of the fire or water timers was found; whether a hit can ignite a fire without script is an open question
+  **Is:** 00826F10 sends message 9Eh on every hit that carries a weapon (channel 1, water) and on a probability roll (channel 0, fire). The channel mapping comes from the two Lua setters, which build the identical message: 0088E320 SetFireDamage loads 0 with XOR EBP,EBP at 0088E343 and 0088E790 SetWaterDamage loads 1 with MOV EBP,1 at 0088E7AF. The 9Eh handler itself is still contract: unread
+  **Evidence:** scan-bytes "68 9e 00 00 00" --section .text returns exactly 0080FA51, 0088E4AC, 0088E919 (plus 00548AA7 in unrelated code); all three write vtable 00D0334C and the same field layout

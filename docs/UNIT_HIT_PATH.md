@@ -334,3 +334,15 @@ timers apply rather than shortening the burn.
 In the repair-task note above, `+34h` is the water timer and `+38h` the fire timer (the
 provisional order was reversed); the writers are the `9Eh` message arm's setters
 `00939F90`/`0093A470` (fire, `+38h`) and `00939FA0`/`0093A4F0` (water, `+34h`).
+
+## Correction from docs/SHIP_HIT_RECORD.md (packet cc2_ship_hit_record)
+
+- **Was:** level 0 of the impact-to-damage chain is 007BBCF0, the unit instance's entity-side hit response, producer unread
+  **Is:** 007BBCF0 is the plane family's vtable[ECh] override (nine vtables, class ids 0F..17). The unit instance vtable 00CFC3D0 that docs/UNIT_INSTANCE_LAYOUT.md gives for MDestroyer carries 00826F10 at +ECh, so a shell hit on a destroyer never enters 007BBCF0
+  **Evidence:** scan-bytes of .rdata for each handler address; hit - 0xEC lands on a named vtable base every time, and ghidra xrefs 00826F10 returns exactly the nine ship vtables as DATA refs with no code ref
+- **Was:** level 1: 008777D0 is reached from 007BBCF0 at 007BBDB1
+  **Is:** that holds for planes only; for a ship 008777D0 is the tail call of 00826F10 at 008277FC (PUSH ESI; MOV ECX,EDI; CALL 0x008777D0), so the base handler has two producers
+  **Evidence:** the listing at 008277F9..008277FC, and 00826F10's Ghidra body 00826F10-0082781B contains it
+- **Was:** hit+0Ch: negative selects the [unit+354h]->vtable[24h]() armour source
+  **Is:** 008777D0 also gates that branch on this->vtable[5Ch](6) at 008777ED, so it applies only to class-06-derived entities; 00826F10 makes the same selection from [this+538h], the ref-counted pointer to the same descriptor, with no class test
+  **Evidence:** 008777E8..00877819 in the listing, and 009553D0's setter MOV [ECX+0x538],EAX with the addref through [00CE221C]
