@@ -8098,6 +8098,36 @@
       ],
       "evidence": "reports/native_effect_tree_erasure_audit.json",
       "qualification": "Complete raw normal erasure and source owning exception/destruction contracts; one concrete source fixture. Two saved Ghidra body extents remain short. Raw mixed-owner lifetime dispatch, canonical executable migration and full gameplay remain open."
+    },
+    {
+      "id": "native_singleton_runtime4",
+      "packet": "native_singleton_runtime4",
+      "state": "raw_executable_lifetime_integrated_build_fixture_and_180_frame_runtime",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00bd0400",
+        "00412440",
+        "0086b0b0"
+      ],
+      "fragment_addresses": [
+        "004e4000",
+        "008f8449"
+      ],
+      "code_ownership": [
+        "src/native_singleton_destruction.cpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/game_hosts_singletons.cpp",
+        "include/bsp/game_hosts_singletons.hpp",
+        "src/frontend_entry.cpp",
+        "include/bsp/frontend_entry.hpp",
+        "src/game_hosts_menu.cpp",
+        "docs/NATIVE_SINGLETON_RUNTIME.md",
+        "reports/native_singleton_runtime_audit.json"
+      ],
+      "evidence": "reports/native_singleton_runtime_audit.json",
+      "qualification": "Raw manager drain, finite four-profile concrete deletion map, raw effect probe and canonical application ownership. Current executable admits effect only; fixture executes base/effect. Source exception cleanup and180-frame rebuilt shutdown verified. Arbitrary original owner dispatch, original ABI/SEH, visual/full gameplay remain open."
     }
   ],
   "snapshot_after_analysis": {
