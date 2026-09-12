@@ -503,3 +503,18 @@ holds it next:
 | start | end (inclusive) | evidence |
 | --- | --- | --- |
 | none | | Every routine this packet read or named has a Ghidra function whose body range the bridge reports: `009F3F80-009F4D06`, `009D6B40-009D6D57`, `009D8B90-009D8C51`, `009EC7C0-009ECA1A`, `009EF230-009EF347`, `009EB660-009EC277`, `009F4DA0-009F50D2`, `009F50E0-009F5253`. `tools/verify_report_calls.py` checked all 23 call rows of `reports/ship_ai_obstacle_tables.json` against the live bodies and the call graph, and caught one wrong attribution before this doc was written (`009F50C6` is inside `009F4DA0`, not `009F50E0`) |
+
+## Correction from docs/SHIP_AI_CLEARANCE_PROFILE.md
+
+Packet `cc_ai_clearance_profile` (read `009EF910` and `009E04E0` whole) closes uncertainties 1, 2
+and 6 above and corrects two readings: `blk+37Ch` is the turn **clearance**, not the danger
+level. `009EF910`, its sole writer, rewrites it with the 9999.0f sentinel `00CE3D64` on a timer and
+only ever lowers it, from the static avoid-zone segment tree and the neighbour footprints, measured
+from the inside-of-turn shoulder point `009DE2F0` builds; `009F3F80` forms the danger `blk+0A84h`
+from it at `009F416E`, so an open-sea ship reads danger 0.0 (the executable's 1.0 saturation was
+its substitute record leaving `blk+37Ch` at zero). `blk+33Ch` is not computed by `009EF910`: it
+is the constant -1.0f `009F4D10` stores at `009F4D27`, which `009EF350` can replace with a real
+distance at `009EF876`; the rudder clamp at `009F451D` runs only while it is negative, so -1.0f
+opens that gate. The 65 throttle cost bins at `blk+4h` are written only by `009D56F0` (through
+its cost-1 wrapper `009D67F0`) from `009E04E0`, and the constructor `009E4330` sets the bypass byte
+`blk+45h` to 1, so an untouched profile is switched off rather than merely empty.
