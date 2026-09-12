@@ -1,0 +1,322 @@
+{
+  "packet": "cc_unit_subupdates",
+  "owner": "agent/cc-unit-subupdates",
+  "docs": ["docs/UNIT_TIMERS.md", "docs/UNIT_WATER_ANCHORS.md"],
+  "files": [
+    "include/bsp/unit_timers.hpp",
+    "src/unit_timers.cpp",
+    "include/bsp/unit_water_anchors.hpp",
+    "src/unit_water_anchors.cpp",
+    "tests/math_tests.cpp"
+  ],
+  "premise": {
+    "brief": "the three timed sub-updates in full, plus 004842C0 and the water anchors at unit+9F0h/+9F4h",
+    "correction": "The three timed sub-updates 008252C0, 00956600 and 00834E90 were already complete in docs/UNIT_TIMED_SUBUPDATES.md and include/bsp/unit_motion.hpp. What was open, and what this packet delivers, is the three second-level sub-updates 00834E90 tails into (00834820, 00834CC0, 00834A70), a single table of every timer the six own, and the water-anchor object end to end."
+  },
+  "routines": [
+    {
+      "address": "00834820",
+      "name": "BSP_UnitInstance_UpdateBowWave",
+      "signature": "void __thiscall(unit, float scaledDelta)",
+      "ret": "RET 4 at 00834A5C and 00834A6B",
+      "body": "00834820-00834a6d",
+      "instructions": 169,
+      "seh": "none",
+      "role": "Solves the water line between two unit-local probe points, runs the +9F8h timer, and republishes the BowWave point effect at unit+9E8h.",
+      "coverage": "complete",
+      "state": "reconstructed, build-tested, one focused fixture case"
+    },
+    {
+      "address": "00834cc0",
+      "name": "BSP_UnitInstance_UpdateSternWave",
+      "signature": "void __thiscall(unit, float scaledDelta)",
+      "ret": "RET 4 at 00834E7D and 00834E8D",
+      "body": "00834cc0-00834e8f",
+      "instructions": 149,
+      "role": "The same water-line solve and timer for the WaveStern effect at unit+9ECh and the timer at +9FCh, with the probe points read straight out of the class block and a shorter publish.",
+      "coverage": "complete",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "00834a70",
+      "name": "BSP_UnitInstance_UpdatePropellerSpray",
+      "signature": "void __thiscall(unit, float scaledDelta)",
+      "ret": "RET 4 at 00834CB6",
+      "body": "00834a70-00834cb8",
+      "instructions": 148,
+      "role": "Walks the class's spray points, transforms each by the unit pose, clamps it to just under the water surface and publishes it to unit+A00h[i] while the +A10h hold timer is alive.",
+      "coverage": "complete",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "004842c0",
+      "name": "BSP_PointEffect_SetWorldPoint",
+      "signature": "void __thiscall(point effect, const float3* world_point)",
+      "ret": "RET 4 at 0048431D and 0048433F",
+      "body": "004842c0-00484341",
+      "instructions": 42,
+      "role": "Sets the effect node's world position through the node vtable +30h and caches the same point, in parent space when the effect has a parent, in the translation row of the effect's relative matrix at +D0h.",
+      "coverage": "complete",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "00815370",
+      "name": "BSP_EffectGroup_SetScalar",
+      "signature": "void __thiscall(point effect, float value)",
+      "ret": "RET 4 at 008153DC",
+      "body": "00815370-008153dd",
+      "instructions": 30,
+      "role": "The scalar half of the anchor contract: two pointer arrays with counts at +0Ch/+10h and +18h/+1Ch, each element given element->vtable[14h](value). The first walk null-tests, the second does not.",
+      "coverage": "complete",
+      "state": "reconstructed, build-tested"
+    },
+    {
+      "address": "00439820",
+      "name": "BSP_Vector3f_TransformProjectPoint",
+      "signature": "float3* __thiscall(float3* out, const float3* local, const Matrix4x4*, float* out_inverse_w)",
+      "ret": "RET 8 at 004398D2",
+      "body": "00439820-004398d4",
+      "instructions": 41,
+      "role": "Stages (x, y, z, 1.0f), calls 00B62D10 and divides the result by w, writing 1/w through the fourth argument when it is non-null. 00834A70 inlines the same body at 00834B4A..00834BE6.",
+      "coverage": "complete",
+      "state": "analysed; the rule lives in the host method transform_by_unit_pose"
+    },
+    {
+      "address": "00866b70",
+      "name": "FUN_00866b70",
+      "signature": "void __thiscall(point effect)",
+      "body": "00866b70-00866baa",
+      "role": "Under the effect manager's critical section, clears effect->byte_9h and sets effect->byte_Ah when effect->byte_8h is set.",
+      "coverage": "partial: the two byte writes and the lock bracket; 00866440 is an external contract",
+      "state": "analysed as a host contract"
+    },
+    {
+      "address": "00867b10",
+      "name": "BSP_PointEffect_StopChildren",
+      "signature": "void __thiscall(point effect)",
+      "body": "00867b10-00867bfe",
+      "role": "Moves the effect's live rows into its own reference array and releases them under the same lock.",
+      "coverage": "partial: read far enough to establish that it detaches and releases; the row walk was not transcribed",
+      "state": "analysed as a host contract"
+    },
+    {
+      "address": "00867d00",
+      "name": "BSP_Effect_AdvanceTransform",
+      "signature": "void __thiscall(point effect, float delta, void*)",
+      "body": "00867d00-00867eda",
+      "role": "The reader of the relative matrix 004842C0 writes: refreshes the parent's world, multiplies relative by parent+F0h and pushes the product into the effect node's vtable +34h.",
+      "coverage": "partial: 00867D00..00867D7B only, the parent-times-relative path",
+      "state": "analysed"
+    },
+    {
+      "address": "00822c20",
+      "name": "FUN_00822c20",
+      "signature": "void __thiscall(ship unit)",
+      "body": "00822c20-00824b57",
+      "role": "The producer of all five point effects and of the two probe-point copies at unit+1054h and +1060h.",
+      "coverage": "partial: 00823B7B..00823BCF and 008240CB..0082490B",
+      "state": "analysed as a producer only; not named"
+    },
+    {
+      "address": "0082fe30",
+      "name": "FUN_0082fe30",
+      "signature": "unknown",
+      "body": "0082fe30-00831801",
+      "role": "Writes the bow and stern anchor matrices as identities and fills the bow translation from element 0 of a vector at its source object +48h.",
+      "coverage": "partial: 00830195..008302D1",
+      "state": "analysed as a producer only; not named"
+    }
+  ],
+  "host_steps": [
+    {"step": "bow wave: refresh the unit pose before the first probe", "function": "00834820", "address": "0083486a", "native": "00414db0"},
+    {"step": "bow wave: near probe into world space", "function": "00834820", "address": "00834882", "native": "00439820"},
+    {"step": "bow wave: refresh the unit pose before the second probe", "function": "00834820", "address": "00834892", "native": "00414db0"},
+    {"step": "bow wave: far probe into world space", "function": "00834820", "address": "008348a4", "native": "00439820"},
+    {"step": "bow wave: water height under the near probe", "function": "00834820", "address": "008348d3", "native": "0078cf20"},
+    {"step": "bow wave: clear the effect stop byte", "function": "00834820", "address": "008349c2", "native": "00866b70"},
+    {"step": "bow wave: the unit virtual whose float lands at effect+54h", "function": "00834820", "address": "008349ce", "call": "indirect, unit vtable +38h, contract unread"},
+    {"step": "bow wave: publish the water-line point", "function": "00834820", "address": "008349f6", "native": "004842c0"},
+    {"step": "bow wave: the unit world matrix whose +20h row lands at effect+68h", "function": "00834820", "address": "008349fd", "native": "0042d7e0"},
+    {"step": "bow wave: stop the effect once the timer passes 0.8f", "function": "00834820", "address": "00834a61", "native": "00867b10"},
+
+    {"step": "stern wave: refresh the unit pose before the first probe", "function": "00834cc0", "address": "00834cf7", "native": "00414db0"},
+    {"step": "stern wave: near probe into world space", "function": "00834cc0", "address": "00834d11", "native": "00439820"},
+    {"step": "stern wave: refresh the unit pose before the second probe", "function": "00834cc0", "address": "00834d21", "native": "00414db0"},
+    {"step": "stern wave: far probe into world space", "function": "00834cc0", "address": "00834d33", "native": "00439820"},
+    {"step": "stern wave: water height under the near probe", "function": "00834cc0", "address": "00834d62", "native": "0078cf20"},
+    {"step": "stern wave: clear the effect stop byte", "function": "00834cc0", "address": "00834e4d", "native": "00866b70"},
+    {"step": "stern wave: the unit virtual whose float lands at effect+54h", "function": "00834cc0", "address": "00834e59", "call": "indirect, unit vtable +38h, contract unread"},
+    {"step": "stern wave: publish the water-line point", "function": "00834cc0", "address": "00834e72", "native": "004842c0"},
+    {"step": "stern wave: stop the effect once the timer passes 0.8f", "function": "00834cc0", "address": "00834e82", "native": "00867b10"},
+
+    {"step": "spray: stop a slot whose hold timer ran out", "function": "00834a70", "address": "00834b2b", "native": "00867b10"},
+    {"step": "spray: clear the slot's stop byte", "function": "00834a70", "address": "00834b35", "native": "00866b70"},
+    {"step": "spray: refresh the unit pose", "function": "00834a70", "address": "00834b45", "native": "00414db0"},
+    {"step": "spray: the inlined 00439820 transform of the class spray point", "function": "00834a70", "address": "00834b91", "native": "00b62d10"},
+    {"step": "spray: water height under the transformed point", "function": "00834a70", "address": "00834bff", "native": "0078cf20"},
+    {"step": "spray: publish the clamped point", "function": "00834a70", "address": "00834c85", "native": "004842c0"},
+
+    {"step": "publish: the effect node's world position", "function": "004842c0", "address": "004842d7", "call": "indirect, node vtable +30h, 00B6DAE0 for the class 00B6F5A0 builds"},
+    {"step": "publish: the parent's inverse world matrix", "function": "004842c0", "address": "004842ec", "native": "00b6e0d0"},
+    {"step": "publish: the point through that matrix", "function": "004842c0", "address": "004842f9", "native": "004142e0"},
+
+    {"step": "scalar: the element setter of the first array", "function": "00815370", "address": "008153a1", "call": "indirect, element vtable +14h"},
+    {"step": "scalar: the element setter of the second array, with no null test", "function": "00815370", "address": "008153cf", "call": "indirect, element vtable +14h"},
+
+    {"step": "transform helper: the float4 transform", "function": "00439820", "address": "00439862", "native": "00b62d10"},
+
+    {"step": "step 5: refresh the unit node world before the bow matrix product", "function": "008255b0", "address": "008258b2", "native": "00b6db70"},
+    {"step": "step 5: bow anchor matrix times the node world matrix", "function": "008255b0", "address": "008258cf", "native": "00413920"},
+    {"step": "step 5: refresh the unit node world before the stern matrix product", "function": "008255b0", "address": "00825903", "native": "00b6db70"},
+    {"step": "step 5: stern anchor matrix times the node world matrix", "function": "008255b0", "address": "00825920", "native": "00413920"},
+    {"step": "step 5: water height under the bow point", "function": "008255b0", "address": "00825972", "native": "0078cf20"},
+    {"step": "step 5: water height under the stern point", "function": "008255b0", "address": "0082599f", "native": "0078cf20"},
+    {"step": "step 5: publish the bow point", "function": "008255b0", "address": "008259b9", "native": "004842c0"},
+    {"step": "step 5: publish the stern point", "function": "008255b0", "address": "008259c9", "native": "004842c0"},
+
+    {"step": "producer: create the bow-wave effect from class+630h", "function": "00822c20", "address": "00824189", "native": "00868420"},
+    {"step": "producer: create the stern-wave effect from class+634h", "function": "00822c20", "address": "008246b2", "native": "00868420"},
+    {"step": "producer: create one of four spray effects from class+65Ch", "function": "00822c20", "address": "00824889", "native": "00868420"},
+    {"step": "producer: create the bow anchor from class+5ACh at the class+5B0h matrix", "function": "00822c20", "address": "00823f9c", "native": "008687c0"},
+    {"step": "producer: create the stern anchor from class+5ACh at the class+5F0h matrix", "function": "00822c20", "address": "00824051", "native": "008687c0"},
+    {"step": "producer: the setup pass publishes points to three of the effects it built", "function": "00822c20", "address": "008243b2", "native": "004842c0"},
+    {"step": "producer: the same, second site", "function": "00822c20", "address": "008244e9", "native": "004842c0"},
+    {"step": "producer: the same, third site", "function": "00822c20", "address": "008245c4", "native": "004842c0"},
+
+    {"step": "reader: refresh the parent's world matrix", "function": "00867d00", "address": "00867d49", "native": "00b6db70"},
+    {"step": "reader: relative matrix times the parent world matrix", "function": "00867d00", "address": "00867d69", "native": "00413920"}
+  ],
+  "timers": [
+    {"field": "+9F8h", "routine": "00834820", "site": "00834996", "rule": "cleared while the water line crosses the probe segment, otherwise += delta", "threshold": "0.8f at 00CE3D40, strict, stops the effect"},
+    {"field": "+9FCh", "routine": "00834cc0", "site": "00834e25", "rule": "the same rule", "threshold": "0.8f at 00CE3D40, strict, stops the effect"},
+    {"field": "+A10h", "routine": "00834a70", "site": "00834afb", "rule": "reloaded with 0.6f (00CE3D30) while |throttle| >= 0.01f, otherwise -= delta, once per live slot", "threshold": "below 0.0f stops that slot's effect"},
+    {"field": "+524h", "routine": "00956600", "site": "00956626", "rule": "+= delta, unbounded", "threshold": "none in the routine", "source": "docs/UNIT_TIMED_SUBUPDATES.md"},
+    {"field": "+728h", "routine": "00956600", "site": "0095662c", "rule": "max(x - delta, 0) while x > 0", "threshold": "none in the routine", "source": "docs/UNIT_TIMED_SUBUPDATES.md"},
+    {"field": "+6D8h", "routine": "00956600", "site": "0095666f", "rule": "-= delta, may go negative", "threshold": "below 0 runs the damage scan and reloads 0.2f at 00CE54A0", "source": "docs/UNIT_TIMED_SUBUPDATES.md"},
+    {"field": "+2F4h", "routine": "00956600", "site": "009569f8", "rule": "chases +2F8h at 0.5 per second, asymmetric", "threshold": "0.5f gate on the node visibility factor", "source": "docs/UNIT_TIMED_SUBUPDATES.md"},
+    {"field": "+BC4h", "routine": "008252c0", "site": "00825362", "rule": "0042AC60 rate limiter with step settings[+8] * delta", "threshold": "none", "source": "docs/UNIT_TIMED_SUBUPDATES.md"}
+  ],
+  "effect_slots": [
+    {"unit": "+9E8h", "class_template": "+630h BowWave", "gate": "008240d1", "stored": "008241a7", "creator": "00868420", "parent": "null", "consumer": "00834820"},
+    {"unit": "+9ECh", "class_template": "+634h WaveStern", "gate": "008245fa", "stored": "008246d0", "creator": "00868420", "parent": "null", "consumer": "00834cc0"},
+    {"unit": "+9F0h", "class_template": "+5ACh BowParticle", "gate": "00823f12 plus a non-zero class+5E0h", "stored": "00823fba", "creator": "008687c0", "parent": "unit+4A4h", "consumer": "008255b0 step 5 and 00815aa0"},
+    {"unit": "+9F4h", "class_template": "+5ACh BowParticle", "gate": "the same gate", "stored": "0082406f", "creator": "008687c0", "parent": "unit+4A4h", "consumer": "008255b0 step 5 and 00815aa0"},
+    {"unit": "+A00h..+A0Ch", "class_template": "+65Ch RotorParticle", "gate": "008247bb", "stored": "008248a3", "creator": "00868420", "parent": "null", "consumer": "00834a70", "note": "exactly four slots are filled (008247d7), while 00834A70's loop bound is class+654h"}
+  ],
+  "class_fields": [
+    {"offset": "+A0h", "type": "float", "meaning": "Length, from the base descriptor reader", "site": "00834a3d"},
+    {"offset": "+A4h", "type": "float", "meaning": "Width", "site": "00834a2d"},
+    {"offset": "+A8h", "type": "float", "meaning": "Height", "site": "00834a35"},
+    {"offset": "+500h", "type": "float", "meaning": "MaxSpeed; both wave routines publish its reciprocal", "site": "008349e6"},
+    {"offset": "+594h", "type": "float3", "meaning": "bow wave near probe, copied to unit+1054h", "site": "00823b81"},
+    {"offset": "+5A0h", "type": "float3", "meaning": "bow wave far probe, copied to unit+1060h", "site": "00823bab"},
+    {"offset": "+5ACh", "type": "ptr", "meaning": "BowParticle, the template both anchors share", "site": "00823f12"},
+    {"offset": "+5B0h", "type": "matrix4x4", "meaning": "bow anchor placement; its translation at +5E0h is the creation gate", "site": "008258c9"},
+    {"offset": "+5F0h", "type": "matrix4x4", "meaning": "stern anchor placement", "site": "0082591a"},
+    {"offset": "+630h", "type": "ptr", "meaning": "BowWave template", "site": "008240d1"},
+    {"offset": "+634h", "type": "ptr", "meaning": "WaveStern template", "site": "008245fa"},
+    {"offset": "+638h", "type": "float3", "meaning": "stern wave near probe, read in place", "site": "00834d07"},
+    {"offset": "+644h", "type": "float3", "meaning": "stern wave far probe, read in place", "site": "00834d29"},
+    {"offset": "+650h", "type": "ptr", "meaning": "spray point array, stride 0x0C", "site": "00834b4a"},
+    {"offset": "+654h", "type": "int", "meaning": "spray point count and the loop bound", "site": "00834aa2"},
+    {"offset": "+65Ch", "type": "ptr", "meaning": "RotorParticle template", "site": "008247bb"}
+  ],
+  "unit_fields": [
+    {"offset": "+9E8h", "type": "ptr", "meaning": "bow-wave effect", "site": "00834827"},
+    {"offset": "+9ECh", "type": "ptr", "meaning": "stern-wave effect", "site": "00834cc8"},
+    {"offset": "+9F8h", "type": "float", "meaning": "bow-wave timer", "site": "00834988"},
+    {"offset": "+9FCh", "type": "float", "meaning": "stern-wave timer", "site": "00834e17"},
+    {"offset": "+A00h", "type": "ptr[4]", "meaning": "spray effects", "site": "00834ab8"},
+    {"offset": "+A10h", "type": "float", "meaning": "the shared spray hold timer", "site": "00834afb"},
+    {"offset": "+1054h", "type": "float3", "meaning": "bow wave near probe, a copy of class+594h", "site": "00834878"},
+    {"offset": "+1060h", "type": "float3", "meaning": "bow wave far probe, a copy of class+5A0h", "site": "0083489a"}
+  ],
+  "point_effect_fields": [
+    {"offset": "+0Ch/+10h/+14h", "meaning": "the first scalar target array 00815370 walks, null-tested", "site": "00815375"},
+    {"offset": "+18h/+1Ch/+20h", "meaning": "the second scalar target array, not null-tested", "site": "008153aa"},
+    {"offset": "+2Ch", "meaning": "cleared by the bow wave", "site": "00834a20"},
+    {"offset": "+50h", "meaning": "1/MaxSpeed from the wave routines, 1.0f from the spray routine", "site": "008349f3"},
+    {"offset": "+54h", "meaning": "the unit virtual +38h float from the wave routines, the clamped spray scalar from the spray routine", "site": "008349d0"},
+    {"offset": "+58h", "meaning": "the steering source unit+984h, bow wave only", "site": "008349dd"},
+    {"offset": "+68h..+70h", "meaning": "the unit world matrix row at +20h, bow wave only", "site": "00834a11"},
+    {"offset": "+74h/+78h/+7Ch", "meaning": "class Width, Height, Length in that order, bow wave only", "site": "00834a48"},
+    {"offset": "+8Ch", "meaning": "the constructor's parent argument; null for the four 00868420 effects, unit+4A4h for the two anchors", "site": "0086823f"},
+    {"offset": "+D0h", "meaning": "the relative placement matrix; +100h is its translation row, which 004842C0 writes", "site": "00867d63"},
+    {"offset": "+110h", "meaning": "the effect's own scene node, which receives the world position", "site": "004842c6"}
+  ],
+  "corrections": [
+    {
+      "was": "docs/UNIT_INSTANCE_UPDATE.md lists unit_timers as an open packet for the three timed sub-updates",
+      "is": "those three were finished by docs/UNIT_TIMED_SUBUPDATES.md; the open work was the three routines 00834E90 tails into",
+      "evidence": "the ledger names at 008252C0, 00956600 and 00834E90, and include/bsp/unit_motion.hpp"
+    },
+    {
+      "was": "docs/UNIT_INSTANCE_UPDATE.md step 5 reads the anchor matrices from 'descriptor->m_5B0h'",
+      "is": "they are in the class block at unit+538h, which docs/UNIT_TIMED_SUBUPDATES.md keeps distinct from the descriptor at unit+354h",
+      "evidence": "MOV EAX,[ESI+0x538] at 008258B7 and 00825908"
+    },
+    {
+      "was": "docs/UNIT_CONTROLLER.md: the object at unit+9F0h is 'an emitter group that takes both a position and a scalar'",
+      "is": "it is a point-effect instance of the 0x114 class 008680B0 builds; the emitter group is only its two component arrays",
+      "evidence": "008687C0 at 00823F9C and 00824051, and PointEffectInstanceStorage in docs/POINT_EFFECT_INSTANCE.md"
+    },
+    {
+      "was": "unit+9F0h's cached float3 at effect+100h reads as a free position cache",
+      "is": "+100h is the translation row of the relative matrix at +D0h, and 00867D00 reads that matrix whole",
+      "evidence": "PointEffectInstanceStorage::relative_d0, LEA ECX,[ESI+0xD0] at 00867D63"
+    }
+  ],
+  "observations": [
+    {
+      "what": "The spray timer at unit+A10h is stepped inside the slot loop",
+      "evidence": "00834AEE..00834B1D sits between the null test at 00834AE8 and the loop back-edge at 00834CA9",
+      "consequence": "a unit with N live spray slots subtracts the frame delta N times per frame",
+      "status": "read from the listing; no run-time evidence"
+    },
+    {
+      "what": "The spray slot array holds four entries while the loop bound is class+654h",
+      "evidence": "MOV dword ptr [ESP+18h],4 at 008247D7 with SUB/JNZ at 00824900, against CMP EAX,[EBX+0x654] at 00834C9F",
+      "consequence": "a class declaring more than four spray points would read unit+A10h and beyond as effect pointers",
+      "status": "the shipped class rows were not checked; the Lua reader does not write +654h"
+    },
+    {
+      "what": "Only 00834820 tests the game singleton and its ocean before using them",
+      "evidence": "00834846..0083485A, with no equivalent in 00834CC0..00834CED or 00834A70..00834AA2",
+      "status": "read from the listing"
+    },
+    {
+      "what": "No direct-displacement read of point effect +100h..+108h exists in the effect class code range",
+      "evidence": "byte-pattern searches for FLD (d9 ?? 00 01 00 00), MOVSS (f3 0f 10 ?? 00 01 00 00), MOV (8b ?? 00 01 00 00) and LEA (8d ?? 00 01 00 00) return no hit in 00868000..0086F000",
+      "consequence": "the cache is read only as part of the +D0h matrix",
+      "status": "negative result, limited to disp32 base+offset forms"
+    }
+  ],
+  "no_ghidra_function": "none",
+  "flow_gaps": [
+    {
+      "function": "00834a70",
+      "range": "00834ac5-00834acf",
+      "bytes": "EB 09 then a 7-byte and a 2-byte NOP",
+      "finding": "alignment fill after the JMP 00834AD6 at 00834AC3; no instruction in the body reaches it, so it is not a missing path"
+    }
+  ],
+  "uncertainties": [
+    "The unit virtual at vtable +38h, called at 008349CE and 00834E59, was not read. A speed is the hypothesis, not a finding.",
+    "The producer of class+594h, +5A0h, +638h, +644h, +650h, +654h, +5B0h and +5E0h is not established; the ship Lua reader 00831840 writes none of them and 0082FE30 only initialises the two matrices and the bow translation.",
+    "The +A10h per-slot decrement and the four-versus-+654h bound mismatch are read from the listing; neither was exercised at run time.",
+    "The row 00834820 copies from the unit world matrix is the one at +20h. Which axis that is depends on the matrix convention, which was not re-derived here.",
+    "The effect fields +2Ch, +58h, +68h..+70h and +74h..+7Ch are written by these routines; no reader was looked for."
+  ],
+  "follow_up_packets": [
+    {"id": "unit_speed_virtual", "addresses": ["ship instance vtable +38h", "0080fc30", "0092d730"], "contract": "Resolve the unit vtable slot +38h and settle what the wave effects are fed."},
+    {"id": "ship_class_anchor_matrices", "addresses": ["0082fe30", "00830195", "008302b9"], "contract": "The producer of the anchor matrices and probe points the Lua reader does not write."},
+    {"id": "ship_effect_setup_pass", "addresses": ["00822c20"], "contract": "The rest of 00822C20, and whether class+654h can exceed four."},
+    {"id": "point_effect_transform_advance", "addresses": ["00867d00", "00866f50"], "contract": "The rest of 00867D00: the +80h age accumulator and the byte_Ah branch."}
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "Win32 /W4 /WX clean; reconstructed_math passed 1/1",
+    "new_test": "one case in tests/math_tests.cpp pinning the flat-probe arm of the water-line straddle chain and the wake timer it feeds"
+  },
+  "state": "reconstructed, build-tested, one focused fixture case. Nothing is ABI-compatible or game-validated."
+}
