@@ -7668,6 +7668,16 @@ python tools/motion_trace_compare.py --trace local/trace_2s_kortenaer_to_arrival
   --probe local/probe_2s_c265_hydro.txt --align-origin
 ```
 
+`origin/main` was merged again after this milestone was committed, taking in packets
+`ship_buoyancy_elements`, `ship_ai_settings_block` and the rest of `c6de1e9a`..`e7afcb1a`, and the
+500-frame line was rerun on the merged tree (`local/m_run_all.log`, exit 0). Everything this
+milestone measures is unchanged to the digit: `hydrodynamics calls=15680 element_steps=125440
+submerged_steps=93928 add_force=15680 add_torque=15680 gravity_y=-10.0`, `world lists
+registrations=32 pushes=192 lists{1=32 2=32 4=32 5=32 6=32 7=32}`, `arm tail bodies=3426
+latched=3425 stops=6 arrival_latches=0`, `states cruise=13 stop=12 attackmove=6 movetopos=1` and
+`total_path=5007.14`. The one figure that moves is `host methods`, 618 concrete / 495 unimplemented
+to 629 / 486, which is the merged packets' own hosts and none of this one's.
+
 This remains a runtime-validated process, not a game-validated one, and it is now runtime-validated
 against a stand-in `xlive.dll` rather than the installed one. What it proves that milestone 2r did
 not: that the hull's hydrodynamics run where the game runs them and take a turning ship's drift
