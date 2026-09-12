@@ -1,0 +1,378 @@
+{
+  "packet": "orch5_menu_vehicle_unlock",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline": "771085f2",
+  "ghidra_mutations": false,
+  "routines": [
+    {
+      "address": "00584750",
+      "end_inclusive": "00584a21",
+      "name": "main_menu_vehicle_class_unlocked_00584750",
+      "coverage": "complete normal caller control flow; inherited semantic profile predicate",
+      "abi": "Two stack DWORDs; first argument and incoming ECX unread; AL Boolean; RET8 at00584a1f; SEH00c6f9bc",
+      "source": "src/main_menu_vehicle_unlock.cpp"
+    },
+    {
+      "address": "00b67690",
+      "end_inclusive": "00b676fd",
+      "name": "assign_native_lua_object_00b67690",
+      "coverage": "complete actual storage normal body",
+      "abi": "ECX destination; stack source; EAX destination; RET4 at00b676fb",
+      "source": "src/native_lua_objects.cpp"
+    },
+    {
+      "address": "00b65fb0",
+      "end_inclusive": "00b65ff0",
+      "name": "native_lua_is_nil_00b65fb0",
+      "coverage": "complete actual storage body",
+      "abi": "ECX LuaObject; AL Boolean; RET",
+      "source": "src/native_lua_objects.cpp"
+    },
+    {
+      "address": "00b66250",
+      "end_inclusive": "00b66264",
+      "name": "native_lua_boolean_00b66250",
+      "coverage": "complete actual storage body",
+      "abi": "ECX LuaObject; AL Boolean; RET at00b66264",
+      "source": "src/native_lua_objects.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00584797",
+      "native": "00b67980",
+      "function": "00584750",
+      "implementation": "native_lua_globals_00b67980",
+      "contract": "body read"
+    },
+    {
+      "address": "005847af",
+      "native": "00b67800",
+      "function": "00584750",
+      "implementation": "native_lua_get_by_name_00b67800",
+      "contract": "body read"
+    },
+    {
+      "address": "005847c3",
+      "native": "00b67700",
+      "function": "00584750",
+      "implementation": "destroy_native_lua_object_00b67700",
+      "contract": "body read"
+    },
+    {
+      "address": "005847cc",
+      "native": "00b65f50",
+      "function": "00584750",
+      "implementation": "construct_native_lua_object_00b65f50",
+      "contract": "body read"
+    },
+    {
+      "address": "005847dd",
+      "native": "00b65f50",
+      "function": "00584750",
+      "implementation": "construct_native_lua_object_00b65f50",
+      "contract": "body read"
+    },
+    {
+      "address": "005847f4",
+      "native": "00b67720",
+      "function": "00584750",
+      "implementation": "native_lua_get_by_index_00b67720",
+      "contract": "body read"
+    },
+    {
+      "address": "00584806",
+      "native": "00b67690",
+      "function": "00584750",
+      "implementation": "assign_native_lua_object_00b67690",
+      "contract": "body read"
+    },
+    {
+      "address": "00584817",
+      "native": "00b67700",
+      "function": "00584750",
+      "implementation": "destroy_native_lua_object_00b67700",
+      "contract": "body read"
+    },
+    {
+      "address": "00584820",
+      "native": "00b661b0",
+      "function": "00584750",
+      "implementation": "native_lua_is_table_00b661b0",
+      "contract": "body read"
+    },
+    {
+      "address": "0058483b",
+      "native": "00b67800",
+      "function": "00584750",
+      "implementation": "native_lua_get_by_name_00b67800",
+      "contract": "body read"
+    },
+    {
+      "address": "0058484c",
+      "native": "00b66000",
+      "function": "00584750",
+      "implementation": "native_lua_is_boolean_00b66000",
+      "contract": "body read"
+    },
+    {
+      "address": "0058485d",
+      "native": "00b66250",
+      "function": "00584750",
+      "implementation": "native_lua_boolean_00b66250",
+      "contract": "body read"
+    },
+    {
+      "address": "00584878",
+      "native": "00b67800",
+      "function": "00584750",
+      "implementation": "native_lua_get_by_name_00b67800",
+      "contract": "body read"
+    },
+    {
+      "address": "00584889",
+      "native": "00b65fb0",
+      "function": "00584750",
+      "implementation": "native_lua_is_nil_00b65fb0",
+      "contract": "body read"
+    },
+    {
+      "address": "0058489a",
+      "native": "00b660a0",
+      "function": "00584750",
+      "implementation": "native_lua_is_string_00b660a0",
+      "contract": "body read"
+    },
+    {
+      "address": "005848a7",
+      "native": "00b662b0",
+      "function": "00584750",
+      "implementation": "native_lua_string_00b662b0",
+      "contract": "body read"
+    },
+    {
+      "address": "005848b1",
+      "native": "0041e870",
+      "function": "00584750",
+      "implementation": "NativeString::assign_0041e870 (existing constructor)",
+      "contract": "body read"
+    },
+    {
+      "address": "005848ce",
+      "native": "00425850",
+      "function": "00584750",
+      "implementation": "equal_native_string_header_00425850 (existing actual header)",
+      "contract": "body read"
+    },
+    {
+      "address": "005848db",
+      "native": "00b662b0",
+      "function": "00584750",
+      "implementation": "native_lua_string_00b662b0",
+      "contract": "body read"
+    },
+    {
+      "address": "005848e5",
+      "native": "0041e870",
+      "function": "00584750",
+      "implementation": "NativeString::assign_0041e870 (existing constructor)",
+      "contract": "body read"
+    },
+    {
+      "address": "0058490f",
+      "native": "007fc4c0",
+      "function": "00584750",
+      "implementation": "is_unlock_expression_satisfied_007fc4c0 (existing borrowed ProfileResetState.unlock_state projection)",
+      "contract": "body read"
+    },
+    {
+      "address": "0058493f",
+      "native": "0041dd20",
+      "function": "00584750",
+      "implementation": "destroy_native_string_header_0041dd20 (existing actual header)",
+      "contract": "body read"
+    },
+    {
+      "address": "00584958",
+      "native": "0041dd20",
+      "function": "00584750",
+      "implementation": "destroy_native_string_header_0041dd20 (existing actual header)",
+      "contract": "body read"
+    },
+    {
+      "address": "00584969",
+      "native": "00b67700",
+      "function": "00584750",
+      "implementation": "destroy_native_lua_object_00b67700",
+      "contract": "body read"
+    },
+    {
+      "address": "00584981",
+      "native": "00b67700",
+      "function": "00584750",
+      "implementation": "destroy_native_lua_object_00b67700",
+      "contract": "body read"
+    },
+    {
+      "address": "00584992",
+      "native": "00b67700",
+      "function": "00584750",
+      "implementation": "destroy_native_lua_object_00b67700",
+      "contract": "body read"
+    },
+    {
+      "address": "005849a3",
+      "native": "00b67700",
+      "function": "00584750",
+      "implementation": "destroy_native_lua_object_00b67700",
+      "contract": "body read"
+    },
+    {
+      "address": "005849b7",
+      "native": "00b67700",
+      "function": "00584750",
+      "implementation": "destroy_native_lua_object_00b67700",
+      "contract": "body read"
+    },
+    {
+      "address": "005849cc",
+      "native": "00b67700",
+      "function": "00584750",
+      "implementation": "destroy_native_lua_object_00b67700",
+      "contract": "body read"
+    },
+    {
+      "address": "005849dd",
+      "native": "00b67700",
+      "function": "00584750",
+      "implementation": "destroy_native_lua_object_00b67700",
+      "contract": "body read"
+    },
+    {
+      "address": "005849ee",
+      "native": "00b67700",
+      "function": "00584750",
+      "implementation": "destroy_native_lua_object_00b67700",
+      "contract": "body read"
+    },
+    {
+      "address": "00584a02",
+      "native": "00b67700",
+      "function": "00584750",
+      "implementation": "destroy_native_lua_object_00b67700",
+      "contract": "body read"
+    },
+    {
+      "address": "00b676a3",
+      "native": "00b66de0",
+      "function": "00b67690",
+      "implementation": "release_native_lua_tracked_object_00b66de0",
+      "contract": "body read"
+    },
+    {
+      "address": "00b65fd3",
+      "native": "00a675a0",
+      "function": "00b65fb0",
+      "implementation": "Lua5.1.1 lua_type (library reuse)",
+      "contract": "body read"
+    },
+    {
+      "address": "00b6625a",
+      "native": "00a677e0",
+      "function": "00b66250",
+      "implementation": "Lua5.1.1 lua_toboolean (library reuse)",
+      "contract": "body read"
+    }
+  ],
+  "caller_evidence": [
+    {
+      "address": "00599039",
+      "native": "00584750",
+      "function": "00598b60",
+      "evidence": "599026 loads class;599032 pushes it;599036 pushes derived Boolean;599037 ECX screen; callee RET8"
+    },
+    {
+      "address": "0059951a",
+      "native": "00584750",
+      "function": "005993a0",
+      "evidence": "599507 loads checkpoint class;599513 pushes it;599519 pushes derived Boolean;599517 ECX screen; callee RET8"
+    }
+  ],
+  "storage_accessors": [
+    {
+      "name": "MainMenuVehicleUnlockStorage::lua_owner_00e188a8_1a0c",
+      "evidence": "584783 MOV ECX,[E188A8];584790 ADD ECX,1A0C;584797 CALL B67980; bypassed for class-1",
+      "contract": "Fresh current global owner association only; actual existing NativeLuaStateStorage"
+    },
+    {
+      "name": "MainMenuVehicleUnlockStorage::profile_00e188a8_650",
+      "evidence": "5848E5 CALL41E870 completes second NativeString;5848EA MOV ECX,[E188A8];5848F9 ADD ECX,650;58490F CALL7FC4C0",
+      "contract": "Fresh current global profile association after second string construction; borrowed same ProfileResetState.unlock_state"
+    }
+  ],
+  "producer_evidence": [
+    "Existing B65F50/B67980/B67720/B67800 producers and native_lua_objects.hpp establish actual14h objects and4C8h tracked owner. No new layout constants.",
+    "B67690 assembly reads source only after destination release and copies kind04/owner00/index08/tracked10, leaving0C andpadding unchanged.",
+    "ProfileResetState owns ProfileUnlockState; profile_reset.cpp and profile_persistence.cpp retain existing initialization and completion synchronization. No replacement state produced here.",
+    "41E870 zeros fresh8h header before resize;425850 compares actual header to C-string; CE3A0C live bytes begin00. Existing bodies reused.",
+    "PROFILE_UNLOCK_PREDICATE.md identifies five native profile-container producers and priority; profile_unlock.cpp retains that priority."
+  ],
+  "corrections": [
+    {
+      "was": "584750 was an addressed required menu action boundary",
+      "is": "Concrete Lua/string/profile composition with two exact storage association accessors",
+      "evidence": "src/main_menu_vehicle_unlock.cpp and full00584750..00584A21 listing"
+    },
+    {
+      "was": "Generic Lua assignment could be mistaken for memberwise copy or harmless self-assignment",
+      "is": "Release before source capture; actual address registration; no0C/padding copy and no self-assignment guard",
+      "evidence": "B67693..B676F3; real-Lua fixture source index2 shifts to1; selfcopy leaves kind0/tracked1 after popping value"
+    }
+  ],
+  "uncertainties": [
+    "ProfileUnlockState is the existing semantic C++ projection, not borrowed native-tree memory. No map/set/list ABI closure is claimed.",
+    "Completion coherence after unrelated MissionProgress mutations remains existing owner integration work; this provider does not resynchronize or copy state.",
+    "7FC4C0 existing projection does not reproduce per-token NativeString/pool/strtok effects, native256-byte overflow, or original comparator ABI.",
+    "C++ exception cleanup does not establish native SEH or Lua longjmp unwinding equivalence.",
+    "Native unchecked tracker capacities and valid owner lifetimes remain caller contracts.",
+    "Original instruction differential, installed game, menu reachability and gameplay not validated."
+  ],
+  "missing_functions": [],
+  "pending_annotations": [
+    {
+      "address": "00584750",
+      "was_name": "FUN_00584750",
+      "proposed_name": "BSP_MainMenu_IsVehicleClassUnlocked",
+      "comment": "Complete normal caller. Two DWORD stack operands/RET8, first and ECX unread. Actual Lua owner read then fresh profile read after second NativeString construction. Existing profile projection boundary. docs/MAIN_MENU_VEHICLE_UNLOCK.md; reports/main_menu_vehicle_unlock.json."
+    },
+    {
+      "address": "00b67690",
+      "was_name": "BSP_LuaObject_Assign",
+      "proposed_name": "BSP_LuaObject_Assign",
+      "comment": "Actual-storage body reconstructed. Release destination before source reads, register actual address, preserve opaque0C/padding, no self-assignment guard. docs/MAIN_MENU_VEHICLE_UNLOCK.md."
+    },
+    {
+      "address": "00b65fb0",
+      "was_name": "BSP_LuaObject_IsNil",
+      "proposed_name": "BSP_LuaObject_IsNil",
+      "comment": "Full actual-storage predicate: kind2 and lua_type==LUA_TNIL; unbound false. docs/MAIN_MENU_VEHICLE_UNLOCK.md."
+    },
+    {
+      "address": "00b66250",
+      "was_name": "BSP_LuaObject_GetBoolean",
+      "proposed_name": "BSP_LuaObject_GetBoolean",
+      "comment": "Full actual-storage getter: unconditional lua_toboolean at current owner/index, normalize nonzero; no kind gate. docs/MAIN_MENU_VEHICLE_UNLOCK.md."
+    }
+  ],
+  "validation": {
+    "strict_compile": "passed: MSVC Win32 /std:c++17 /EHsc /MD /W4 /WX /fp:strict for new provider, changed native_lua_objects, local fixture",
+    "fixture": "passed: one ignored local actual Lua5.1.1/profile fixture; second-allocation fresh profile switch, branch matrix, reverse string cleanup before Lua, final stack/reference cleanup, source-index shift and self-copy quirks",
+    "fixture_command": "./local/run_vehicle_unlock_probe.ps1",
+    "fixture_output": "vehicle_unlock_probe: PASS (Lua 5.1.1, fresh profile, cleanup, alias registration)",
+    "fixture_link": "Parent baseline bsp_core.lib + bsp_lua511.lib + bsp_zlib121.lib, changed native_lua_objects and new provider objects; /MANIFEST:EMBED",
+    "permanent_tests_added": 0,
+    "repository_build": "passed: ./scripts/build.ps1; complete Win32 Release build and 1/1 existing CTest reconstructed_math; includes shared Lua helpers; new provider separately strict-compiled/fixture-linked pending parent CMake registration",
+    "report_calls": "passed: 37 call rows checked, 0 failed (35 implemented-body CALLs plus 2 callers)"
+  }
+}

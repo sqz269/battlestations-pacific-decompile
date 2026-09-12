@@ -118,8 +118,38 @@ void destroy_native_lua_object_00b67700(NativeLuaObjectStorage& object){
     if(!object.kind_04)return;
     release_native_lua_tracked_object_00b66de0(object.owner_00,object,object.index_08,1);object.kind_04=0;
 }
+NativeLuaObjectStorage* assign_native_lua_object_00b67690(
+    NativeLuaObjectStorage& destination,const NativeLuaObjectStorage& source){
+    if(destination.kind_04){
+        release_native_lua_tracked_object_00b66de0(
+            destination.owner_00,destination,destination.index_08,1);
+        destination.kind_04=0;
+    }
+    // Capture after release: source can alias destination or another tracked
+    // object whose index was shifted by that release. Native leaves0C/padding.
+    const auto tracked=source.tracked_10;
+    const auto kind=source.kind_04;
+    const auto index=source.index_08;
+    auto* const owner=source.owner_00;
+    destination.kind_04=kind;destination.owner_00=owner;
+    destination.index_08=index;destination.tracked_10=tracked;
+    if(tracked){
+        const auto slot_index=static_cast<std::int32_t>(
+            static_cast<std::uint32_t>(owner->stack_offset_0c)+static_cast<std::uint32_t>(index));
+        if(owner->high_water_4c4<=slot_index)owner->high_water_4c4=slot_index+1;
+        auto& slot=owner->slots_14[slot_index];
+        slot.references_00[slot.count_14]=&destination;++slot.count_14;
+    }
+    return &destination;
+}
 bool native_lua_is_boolean_00b66000(const NativeLuaObjectStorage& object){
     return object.kind_04==2 && lua_type(object.owner_00->state_04,object.index_08)==LUA_TBOOLEAN;
+}
+bool native_lua_is_nil_00b65fb0(const NativeLuaObjectStorage& object){
+    return object.kind_04==2 && lua_type(object.owner_00->state_04,object.index_08)==LUA_TNIL;
+}
+bool native_lua_boolean_00b66250(const NativeLuaObjectStorage& object){
+    return lua_toboolean(object.owner_00->state_04,object.index_08)!=0;
 }
 bool native_lua_is_table_00b661b0(const NativeLuaObjectStorage& object){
     if(!object.kind_04)return false;
