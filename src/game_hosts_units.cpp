@@ -14,6 +14,7 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/unit_hull_extents.hpp"
 
@@ -262,6 +263,11 @@ struct GameUnitsHost::Impl {
     // Milestone 2n: the ship AI controller that publishes into each unit's own
     // 84-byte AI order slot, which the motion head at 00825f2c promotes.
     GameShipAiHost* ship_ai{nullptr};
+
+    // Milestone 2t: the gun chain, one object per run. It owns the gunnery pass
+    // at unit+6DCh of every created unit, the guns the authored `Platforms`
+    // table produces, the projectiles in flight and the hit path behind them.
+    std::unique_ptr<GameGunneryHost> gunnery;
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -1377,6 +1383,15 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
     host.log.notef("world units: %zu created instance(s) carried into the frame, %zu with a "
         "VehicleClass row out of the installed table", host.summary.units,
         host.summary.class_rows);
+    // Milestone 2t: the unit-side gunnery pass. 00810DD0's creation block puts a
+    // 558h-byte object at unit+6DCh and attaches it to the unit's own tick
+    // element unit+310h through its vtable +4h (00864BD0), which is why it runs
+    // on the fixed step beside the motion pass. The guns themselves come from
+    // the authored `VehicleClass[id].Platforms` table, because this process
+    // builds no model hierarchy; include/bsp/game_hosts_gunnery.hpp says so.
+    host.gunnery = std::make_unique<GameGunneryHost>(host.log, *this, host.lua);
+    host.gunnery->set_ship_ai(host.ship_ai);
+    host.gunnery->attach_00864bd0();
 }
 
 void GameUnitsHost::issue_authored_commands() {
@@ -1638,6 +1653,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         host.ship_ai->controller_step(step_seconds);
         host.ship_ai->log_sample(host.summary.motion_steps, 10);
     }
+    // Milestone 2t: the gunnery pass, the gun bots' aim ticks, 0072D130's 0ADh
+    // send and the projectiles. 00875B90 runs a tick element's sub-nodes in
+    // wave 2 of the fixed step at 0.05 s (docs/FIXED_STEP_JOB_WAVES.md), and
+    // the pass and the gun bots are both sub-nodes of a tick element, so they
+    // run on this step. Their position relative to the motion pass is the
+    // executable's decision and is recorded as one: the guns read the pose the
+    // previous step left, which is what a sub-node of unit+310h does.
+    if (host.gunnery != nullptr) {
+        host.gunnery->fixed_step(step_seconds);
+        host.gunnery->log_sample(host.summary.motion_steps, 100);
+    }
     for (std::size_t index = 0; index < host.slots.size(); ++index) {
         GameUnitSlot& slot = *host.slots[index];
         if (!slot.state->active) continue;
@@ -1782,7 +1808,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 // Milestone 2n: what the ship AI controller reads off a unit
 // ---------------------------------------------------------------------------
 
-void GameUnitsHost::set_ship_ai(GameShipAiHost* ai) noexcept { impl_->ship_ai = ai; }
+void GameUnitsHost::set_ship_ai(GameShipAiHost* ai) noexcept {
+    impl_->ship_ai = ai;
+    if (impl_->gunnery != nullptr) impl_->gunnery->set_ship_ai(ai);
+}
+
+GameGunneryHost* GameUnitsHost::gunnery() noexcept { return impl_->gunnery.get(); }
+const GameGunneryHost* GameUnitsHost::gunnery() const noexcept {
+    return impl_->gunnery.get();
+}
 
 std::uint32_t GameUnitsHost::director_current_command_0071be40(std::size_t index) const {
     return impl_->commands.current_command_0071be40(index);
@@ -2240,6 +2274,7 @@ void GameUnitsHost::log_controlled_trajectory(unsigned long long mission_frame) 
 void GameUnitsHost::report() {
     Impl& host = *impl_;
     if (host.slots.empty()) return;
+    if (host.gunnery != nullptr) host.gunnery->report();
     host.log.notef("unit motion: %llu motion step(s) of %llu unit tick(s) over %.2f s of "
         "simulated time, %llu instance update(s) of 008255b0",
         host.summary.motion_steps, host.summary.motion_ticks,
