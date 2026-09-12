@@ -2,6 +2,23 @@
 
 Addresses: 005902e0, 005ca880, 00626630, 0051e4d0, 0052fce0, 00563370, 005098b0, 005884a0
 
+## Correction from docs/GAME_TITLE_SOUND.md
+
+The later concrete title composition corrects several interpretations below.
+E19504 is a live C-string buffer passed to 0041E870, not a native eight-byte
+string header. The cited 0058BE63/0058BE6F/0059A16B sites are reads, and its
+track-selection producer remains unresolved. 0073DB76 reads F889A8 and writes
+alternate-owner+218; it does not produce the music-volume global.
+
+A85C20 requests fade-in: unsigned state+20 <=2 and clear byte+A permit setting
+byte+B and positive-zero float+C. The older host's `play_stream` name does not
+describe this operation. Full 005884A0 composition also requires all six current
+menu reloads, actual eight-byte temporary ownership and A877D0's two consumed
+arguments. The BF681B throwing allocator/new-handler path does not provide a
+successful null-allocation policy. See the later document and report for the
+complete sequence, native ABI, installed-stream fixture and application limits.
+The old semantic wrapper remains pending replacement at the shared menu binding.
+
 Read-only context: 004f7180, 004f71d0, 00e18b60 (`docs/GAME_FRONTEND_STATES.md`), 00686170,
 00686380, 004cc460, 006840f0 (`docs/FRONTEND_MANAGERS.md`), 004e4000 (`docs/GAME_FRONTEND_ENTRY.md`),
 00e08cd8 (`docs/GAME_SIMULATION_GATE.md`).

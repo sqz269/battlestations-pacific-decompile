@@ -1,0 +1,226 @@
+{
+  "packet": "cc2_airfield_taxi",
+  "owner": "agent/cc2-airfield-taxi",
+  "date": "2026-09-12",
+  "ghidra": "read-only",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "doc": "docs/AIRFIELD_TAXI.md",
+  "headline": "The airfield's EntryPath/ExitPath hangar list is consumed by an air-operations launch-site object the block owns at block+3Ch. A plane holds a reference to the block at unit+BF4h; the launch-site slot +2Ch (006CF420) turns the chosen hangar exit path into the state-5 taxi target, and the plane bot (009CD540, 009B22C0) flips 4 <-> 5 on a steering-authority test, not on a path threshold.",
+
+  "chain": [
+    {"step": "plane -> holder", "expression": "unit+BF4h", "evidence": "007B8E80 is its only writer outside the constructor"},
+    {"step": "holder -> air-operations block", "expression": "holder+4h", "evidence": "006CF9F0 passes unit+72Ch to 007C5F60, which reads +3Ch, +7Ch and +80h off it"},
+    {"step": "block -> launch site", "expression": "block+3Ch", "evidence": "007C5F79 LEA/MOV ECX,[EDI+3Ch]; 009CD5EB MOV ECX,[EAX+3Ch]"},
+    {"step": "block -> owner unit", "expression": "block+7Ch", "evidence": "docs/AIR_OPERATIONS.md; mirrored at site+44h by 006CF3E0"},
+    {"step": "airfield -> hangar vector", "expression": "airfield+830h base, +834h count, +838h capacity, stride 0Ch", "evidence": "006D5220 builds it; 006D2640, 006D2780 and 006D2730 walk it"}
+  ],
+
+  "hangar_record": {
+    "stride": "0Ch",
+    "fields": [
+      {"offset": "+0h", "name": "object", "scene_key": "Object / entityID", "type": "entity pointer"},
+      {"offset": "+4h", "name": "entry_path", "scene_key": "EntryPath (00CF8EF4) / entryPathID", "type": "path interface from 007AC9D0"},
+      {"offset": "+8h", "name": "exit_path", "scene_key": "ExitPath (00CF8EE8) / exitPathID", "type": "path interface from 007AC9D0"}
+    ],
+    "producer": "006D5220 BSP_AirField_ReadHangarAndMarkerProperties, MAirfield vtable slot +0A4h",
+    "branches": [
+      {"selector": "*(airfield+0C0h)+4 == 1", "source": "scene property bag", "keys": "\"Hangar %d\" 00CF8F08, Object, EntryPath, ExitPath"},
+      {"selector": "*(airfield+0C0h)+4 == 2", "source": "compiled table", "keys": "count at src+138h, ushort array at src+13Ch with stride 6; each id resolved through (id - DAT_00F89A60)*10h + 0Ch + DAT_00F89AA8 or the low-range pair _DAT_00F89A0C/DAT_00F89A54"},
+      {"selector": "*(airfield+0C0h)+4 == 3", "source": "Lua reader", "keys": "hangars, entityID, entryPathID, exitPathID"}
+    ],
+    "occupancy": "not in the record; the launch site carries it at site+34h (base) and site+38h (count), walked by 006CF5B0",
+    "park_slots": "a separate inline vec3 array at airfield+83Ch with the count at +884h (six slots, 884h-83Ch = 48h); 006D3250 randomises over it and nothing read in this packet reaches it"
+  },
+
+  "launch_site_vtable": {
+    "address": "00CF89F8",
+    "stored_by": ["006CF3C0", "006CFABC"],
+    "adjacent_field_names": ["lastLandingTime 00CF89D8", "readyPlane 00CF89E8"],
+    "fields": [
+      {"offset": "+4h", "meaning": "embedded observer node", "evidence": "006CF190, 006CF9F0 use it as EDX"},
+      {"offset": "+18h", "meaning": "the observed ready-plane target", "evidence": "006CF190; 006CFA43-006CFA54 clears it"},
+      {"offset": "+20h", "meaning": "a base subobject: slot +28h is an adjustor thunk ADD ECX,20h", "evidence": "006CF180"},
+      {"offset": "+34h", "meaning": "occupancy vector base (unit**)", "evidence": "006CF5B0"},
+      {"offset": "+38h", "meaning": "occupancy count", "evidence": "006CF5B0"},
+      {"offset": "+44h", "meaning": "the owning MAirfield unit", "evidence": "006CF3E0 returns site+44h + 72Ch"}
+    ],
+    "slots_identified": [
+      {"slot": "+14h", "address": "006cf9f0", "native": "none", "name": "BSP_AirOpsSite_PlacePlaneOnSpot"},
+      {"slot": "+20h", "address": "006cf400", "native": "none", "name": "returns true, RET 4"},
+      {"slot": "+28h", "address": "006cf180", "native": "none", "name": "BSP_AirOpsSite_GroundSurfaceThunk -> 006CEF80"},
+      {"slot": "+2Ch", "address": "006cf420", "native": "none", "name": "BSP_AirOpsSite_TaxiTargetPoint"},
+      {"slot": "+30h", "address": "006cf3f0", "native": "none", "name": "returns true, RET 0"},
+      {"slot": "+34h", "address": "006cf5b0", "native": "none", "name": "BSP_AirOpsSite_SpotIsClear"},
+      {"slot": "+40h", "address": "006cf730", "native": "none", "name": "BSP_AirOpsSite_PoseQueuedPlane"},
+      {"slot": "+44h", "address": "006cf520", "native": "none", "name": "BSP_AirOpsSite_QueueOriginLocal"},
+      {"slot": "+4Ch", "address": "006cf3e0", "native": "none", "name": "BSP_AirOpsSite_GetAirFieldBlock"}
+    ],
+    "slots_unread": ["+0h 006CFA60", "+4h 006CF980", "+8h 006CEBE0", "+0Ch 006CF1C0", "+10h 006CF2A0", "+18h 006CDF60", "+1Ch 006CE4A0", "+24h 006CED90", "+38h 006CEBF0", "+3Ch 006CEC00", "+48h 006CE230", "+50h 006CEC10"]
+  },
+
+  "routines": [
+    {"address": "006cf420", "native": "none", "name": "BSP_AirOpsSite_TaxiTargetPoint", "convention": "__thiscall(site, vec3* out, unit* plane), RET 8", "body": "006CF420-006CF517", "coverage": "complete", "state": "reconstructed", "role": "the state-5 taxi target: 006D2640 picks a hangar exit path, the index used is the LAST point ((path+0Ch - path+8h)>>2 - 1), sampled by 007AF800 and transformed into the airfield's local frame at +110h; with no usable hangar it returns the plane's own world position at plane+0FCh", "evidence": "006CF431/006CF46D/006CF494 call 006D2640; 006CF49B calls 007AF800; 006CF4AE calls 004142E0"},
+    {"address": "006cf520", "native": "none", "name": "BSP_AirOpsSite_QueueOriginLocal", "convention": "__thiscall(site, vec3* out), RET 4", "body": "006CF520-006CF5A6", "coverage": "complete", "state": "analyzed", "role": "point 0 of 006D2780's hangar entry path, in airfield-local space: the head of the launch queue", "evidence": "006CF55C calls 006D2780; the tail transforms through iVar1+110h"},
+    {"address": "006cf730", "native": "none", "name": "BSP_AirOpsSite_PoseQueuedPlane", "convention": "__thiscall(site, matrix* out, unit* plane)", "body": "006CF730-006CF972", "coverage": "partial, the matrix tail past 006CF8C0 was not read", "state": "analyzed", "role": "the queue pose 007C5F60 uses: points 0 and 1 of the entry path give a direction, 0085DAD0 builds the frame, and the origin slides by (classDesc+158h + 1.0) - plane+9D8h * 00CE3D10 so successive planes line up", "evidence": "006CF73A calls 006D2780; two 007AF800 calls with indices 0 and 1"},
+    {"address": "006cf9f0", "native": "none", "name": "BSP_AirOpsSite_PlacePlaneOnSpot", "convention": "__thiscall(site, unit* plane), RET 4", "body": "006CF9F0-006CFA5D", "coverage": "complete", "state": "reconstructed", "role": "guarded by site+44h and the block owner at unit+7A8h being alive (byte +5Dh clear); calls 007C5F60(plane, unit+72Ch), 007C3C90(plane,1), 0042ED50 and (plane+310h)->vtable[8](0.0f), then always clears the ready-plane watch", "evidence": "006CF9F4-006CFA0E is the guard; 006CFA01 ADD EAX,72Ch"},
+    {"address": "006cf5b0", "native": "none", "name": "BSP_AirOpsSite_SpotIsClear", "convention": "__thiscall(site, unit* plane, char enable, ..., float) -> bool", "body": "006CF5B0-006CF728", "coverage": "partial, the distance arithmetic around 0042BE90 was not read", "state": "analyzed", "role": "separation test: gated on plane+904h set and plane+910h clear, walks the occupancy vector and returns false if another plane with a clear +904h byte is within 00CE7630 = 30.0", "evidence": "the walk over [site+34h] .. [site+34h] + [site+38h]*4"},
+    {"address": "006cf190", "native": "none", "name": "BSP_AirOpsSite_SetReadyPlaneObserver", "convention": "__thiscall(site, entity* target), RET 4", "body": "006CF190-006CF1BD", "coverage": "complete", "state": "analyzed", "role": "rebinds the observer at site+4h: unregister the old site+18h, store, register the new", "evidence": "006CF1A6 calls 006952A0; 006CF1B6 calls 00694A60"},
+    {"address": "006cf3e0", "native": "none", "name": "BSP_AirOpsSite_GetAirFieldBlock", "convention": "__fastcall(site) -> block*, RET 0", "body": "006CF3E0-006CF3EC", "coverage": "complete", "state": "analyzed", "role": "site+44h + 72Ch, or 0; the independent confirmation that site+44h is the MAirfield unit", "evidence": "006CF3E7 ADD EAX,72Ch; matches 006BCD20 BSP_AirOps_GetBlock"},
+    {"address": "006cf180", "native": "none", "name": "BSP_AirOpsSite_GroundSurfaceThunk", "convention": "__fastcall adjustor thunk", "body": "006CF180-006CF187", "coverage": "complete", "state": "analyzed", "role": "ADD ECX,20h then JMP 006CEF80; vtable slot +28h, the slot docs/PLANE_GROUND_OPS.md reaches as (unit+BF4h)->+4h->+3Ch->vtable[28h](unit)", "evidence": "the two-instruction body"},
+    {"address": "006d2640", "native": "none", "name": "BSP_AirField_PickHangarExitPath", "convention": "__fastcall(airfield) -> scene path*, RET 0", "body": "006D2640-006D2720", "coverage": "complete", "state": "reconstructed", "role": "walks the hangar vector, skips a null object or one whose object+370h is not above 0, keeps the MINIMUM airfield-local Z (sentinel 00CE4C04 = +9999.0f) and returns record[2], the ExitPath", "evidence": "006D2643 seeds the sentinel; 006D267B-006D268A is the condition gate; 006D26DD-006D26E9 is the minimum; 006D26F1 reads [EDI+8]"},
+    {"address": "006d2780", "native": "none", "name": "BSP_AirField_PickHangarEntryPath", "convention": "__fastcall(airfield) -> scene path*, RET 0", "body": "006D2780-006D284E", "coverage": "complete", "state": "reconstructed", "role": "the mirror: null check only, MAXIMUM airfield-local Z (sentinel 00CF8E44 = -9999.0f), returns record[1], the EntryPath", "evidence": "006D2783 seeds the sentinel; 006D280B-006D2817 is the maximum; 006D281F reads [EDI+4]"},
+    {"address": "006d2730", "native": "none", "name": "BSP_AirField_FindUsableHangarObject", "convention": "__fastcall(airfield) -> entity*, RET 0", "body": "006D2730-006D277B", "coverage": "complete", "state": "reconstructed", "role": "the first hangar object passing the liveness quartet +5Ch set with +5Dh, +60h, +5Eh clear; the same quartet 007C16F0 applies to the plane", "evidence": "the four byte compares; callers 005A12C2 and 006D2A93"},
+    {"address": "007b8e80", "native": "none", "name": "BSP_Plane_SetGroundContactSite", "convention": "__thiscall(plane, holder*), RET 4", "body": "007B8E80-007B8ED2", "coverage": "complete", "state": "reconstructed", "role": "the only writer of plane+BF4h outside the constructor: detach the observer from the old owner, set byte ((old+4)->+3Ch)+1Ch = 1, attach to the new owner, store", "evidence": "007B8E9F 006952A0; 007B8EB4 the byte store; 007B8EC5 00694A60; 007B8ECA the field store"},
+    {"address": "007c5f60", "native": "none", "name": "BSP_Plane_PlaceOnLaunchSpotLocked", "convention": "__thiscall(plane, block*), RET 4", "body": "007C5F60-007C632E", "coverage": "partial, the control-block writes 007C6090-007C61E0 were not read", "state": "analyzed", "role": "poses the plane on the queue through block+3Ch ->vtable[40h], splits the airfield and carrier arms on block+7Ch ->vtable[5Ch](45h), attaches the holder at *(block+80h) and sets plane+900h = 2 Locked", "evidence": "007C5F79 [EDI+3Ch]; 007C5FE2 the class test; 007C6239 [EAX+80h]; 007C627C the state store"},
+    {"address": "009cd540", "native": "none", "name": "BSP_PlaneBot_TaxiStep", "convention": "__thiscall(task, float dt), RET 4", "body": "009CD540-009CDC92", "coverage": "partial, the x87 rate and speed arithmetic 009CD6AB-009CDC48 was not reduced", "state": "analyzed", "role": "the state-5 ground driver: requires plane+900h == 5 and plane+BF4h, drops off the path when the owner is dead, reads 006CF420 for the target and flips 4 <-> 5 on the required-yaw-rate verdict", "evidence": "vtable 00D21150 slot +0Ch; 009CD564 the state gate; 009CD7E1-009CD802 the switch"},
+    {"address": "009b22c0", "native": "none", "name": "BSP_PlaneBot_ApproachBaseStep", "convention": "__thiscall(task, float dt), RET 4", "body": "009B22C0-009B2C68", "coverage": "partial, only the head, the queue read and the switch were reduced", "state": "analyzed", "role": "the sibling for a plane heading to a base it is not yet attached to: the site comes from (task+4)+34h, the queue origin from 006CF520 and the target from 006CF420, with the identical 4 <-> 5 switch", "evidence": "vtable 00D1FF60 slot +0Ch; 009B22DC-009B2306 the gate; 009B271A-009B273A the switch"},
+    {"address": "006d2510", "native": "none", "name": "BSP_AirField_TickAdvance", "convention": "__thiscall(this = unit+310h, float dt), RET 4", "body": "006D2510-006D2551", "coverage": "complete", "state": "analyzed", "role": "the whole airfield per-step slot: 00953CC0(dt) with ECX = unit+310h, then unit->vtable[1A8h]() = 006D40F0, then 006CDC70(unit+72Ch, dt) behind the byte[unit+5Dh] gate. It touches no hangar, park slot or launch slot itself", "evidence": "006D251B, 006D2532, 006D2534 CMP byte [ESI-2B3h], 006D254B with LEA ECX,[ESI+41Ch]"}
+  ],
+
+  "call_sites": [
+    {"address": "006cf55c", "native": "006d2780", "function": "006cf520", "note": "the queue origin takes the entry path", "kind": "call"},
+    {"address": "006cf73a", "native": "006d2780", "function": "006cf730", "note": "the queue pose takes the entry path", "kind": "call"},
+    {"address": "006cfa17", "native": "007c5f60", "function": "006cf9f0", "note": "place and lock, argument unit+72Ch pushed at 006CFA14", "kind": "call"},
+    {"address": "006cfa20", "native": "007c3c90", "function": "006cf9f0", "note": "007C3C90(plane, 1) after the placement", "kind": "call"},
+    {"address": "006cfa27", "native": "0042ed50", "function": "006cf9f0", "note": "BSP_SceneNode_InvalidateSubtreePose on the plane", "kind": "call"},
+    {"address": "006cfa4f", "native": "006952a0", "function": "006cf9f0", "note": "clears the ready-plane watch at site+18h on both paths", "kind": "call"},
+    {"address": "007c6242", "native": "007b8e80", "function": "007c5f60", "note": "attaches *(block+80h) as the plane's ground-contact holder", "kind": "call"},
+    {"address": "007c6253", "native": "007c5ac0", "function": "007c5f60", "note": "the pre-pass, same routine docs/PLANE_GROUND_OPS.md names", "kind": "call"},
+    {"address": "007c628a", "native": "007c11e0", "function": "007c5f60", "note": "the state-change notify after plane+900h = 2", "kind": "call"},
+    {"address": "007c631c", "native": "008073c0", "function": "007c5f60", "note": "BSP_Recon_RebuildSlotLists in the tail", "kind": "call"},
+    {"address": "007b8e9f", "native": "006952a0", "function": "007b8e80", "note": "detach from the old owner", "kind": "call"},
+    {"address": "007b8ec5", "native": "00694a60", "function": "007b8e80", "note": "attach to the new owner", "kind": "call"},
+    {"address": "006d251b", "native": "00953cc0", "function": "006d2510", "note": "the inherited base advance", "kind": "call"},
+    {"address": "006d254b", "native": "006cdc70", "function": "006d2510", "note": "the air-operations block update", "kind": "call"},
+    {"address": "006cf431", "native": "unmapped", "callee": "006d2640", "function": "006cf420", "note": "006D2640 is not a Ghidra function, so this row is not machine-checkable; the CALL is at 006CF431 in the live 006CF420 listing, with two more at 006CF46D and 006CF494"},
+    {"address": "006cf49b", "native": "007af800", "function": "006cf420", "note": "samples the last point of the exit path", "kind": "call"},
+    {"address": "006cf4ae", "native": "004142e0", "function": "006cf420", "note": "transforms the sampled point into the airfield's local frame", "kind": "call"},
+    {"address": "009cd59e", "native": "unmapped", "callee": "007b9000", "function": "009cd540", "note": "the call site is inside 009CD540, which Ghidra has no function for"},
+    {"address": "009cd5a9", "native": "unmapped", "callee": "007c1680", "function": "009cd540", "note": "leave the path when the owner is dead; call site in unmapped code"},
+    {"address": "009cd5ff", "native": "unmapped", "callee": "006cf420", "function": "009cd540", "note": "indirect: CALL EDX with EDX = [[block+3Ch]+2Ch]; call site in unmapped code"},
+    {"address": "009cd7f6", "native": "unmapped", "callee": "007c16f0", "function": "009cd540", "note": "4 -> 5; call site in unmapped code"},
+    {"address": "009cd7fd", "native": "unmapped", "callee": "007c1680", "function": "009cd540", "note": "5 -> 4; call site in unmapped code"},
+    {"address": "009cd98e", "native": "unmapped", "callee": "006cf5b0", "function": "009cd540", "note": "indirect: CALL EAX with EAX = [[block+3Ch]+34h]; call site in unmapped code"},
+    {"address": "009b2367", "native": "unmapped", "callee": "006cf520", "function": "009b22c0", "note": "indirect: CALL EAX with EAX = [[site]+44h]; call site in unmapped code"},
+    {"address": "009b238e", "native": "unmapped", "callee": "006cf420", "function": "009b22c0", "note": "indirect: CALL EDX with EDX = [[site]+2Ch]; call site in unmapped code"},
+    {"address": "009b272e", "native": "unmapped", "callee": "007c16f0", "function": "009b22c0", "note": "4 -> 5; call site in unmapped code"},
+    {"address": "009b2735", "native": "unmapped", "callee": "007c1680", "function": "009b22c0", "note": "5 -> 4; call site in unmapped code"}
+  ],
+
+  "host_steps": [
+    {"address": "007b8e9f", "native": "006952a0", "method": "unregister_observer_006952a0", "function": "007b8e80", "signature": "__fastcall(ECX = owner unit, EDX = plane+10h) / void"},
+    {"address": "007b8ec5", "native": "00694a60", "method": "register_observer_00694a60", "function": "007b8e80", "signature": "__fastcall(ECX = owner unit, EDX = plane+10h) / void"},
+    {"address": "006cfa17", "native": "007c5f60", "method": "pose_on_queue_006cf730 + attach_contact_holder_007c6242 + set_flight_state_locked_007c627c", "function": "006cf9f0", "signature": "__thiscall(plane, block*) / void; the reconstruction splits it into the three effects it was read for"},
+    {"address": "006cfa20", "native": "007c3c90", "method": "arm_after_place_007c3c90", "function": "006cf9f0", "signature": "__thiscall(plane, int 1) / void"},
+    {"address": "006cfa27", "native": "0042ed50", "method": "invalidate_subtree_pose_0042ed50", "function": "006cf9f0", "signature": "__fastcall(node) / void"},
+    {"address": "006cfa4f", "native": "006952a0", "method": "clear_ready_plane_watch_006cfa4f", "function": "006cf9f0", "signature": "__fastcall(ECX = site+18h, EDX = site+4h) / void, then site+18h = 0"},
+    {"address": "007c6253", "native": "007c5ac0", "method": "run_pre_pass_007c5ac0", "function": "007c5f60", "signature": "__thiscall(plane, float) / void"},
+    {"address": "007c631c", "native": "008073c0", "method": "rebuild_slot_lists_008073c0", "function": "007c5f60", "signature": "__fastcall(list) / void"}
+  ],
+
+  "constants": [
+    {"address": "00CF8E44", "value": "-9999.0f, the entry-path search sentinel (006D2783)"},
+    {"address": "00CE4C04", "value": "+9999.0f, the exit-path search sentinel (006D2643)"},
+    {"address": "00D7A218", "value": "0.0f, the hangar condition threshold at 006D2683"},
+    {"address": "00CE3D78", "value": "double 1.5, the numerator of the required-rate quotient at 006D2787 area / 009CD787"},
+    {"address": "00CE7630", "value": "double 30.0, the spot separation radius in 006CF5B0 and an additive term at 009CDA72"},
+    {"address": "00CF0B58", "value": "double 0.85, a speed-reference scale at 009CD70A"},
+    {"address": "00D7A220", "value": "double 100.0, the threshold at 009CD6F6"},
+    {"address": "00CE3DC0", "value": "double 10.0, at 009CD6C4"},
+    {"address": "00D7A370", "value": "double 5.0, at 009CD6DC and 009CDA6C"}
+  ],
+
+  "corrections": [
+    {
+      "document": "docs/LAND_AND_STRUCTURES.md",
+      "was": "the EntryPath/ExitPath list is a plausible producer for the taxi paths of ground state 5 but the consumer side was not traced; that link is open",
+      "is": "the consumer is the air-operations launch-site object at block+3Ch. 006D2780 feeds 006CF520 and 006CF730 (the launch queue); 006D2640 feeds 006CF420 (the state-5 taxi target), which the plane bot reads every step through (plane+BF4h)->+4h->+3Ch->vtable[2Ch]",
+      "evidence": "006CF55C and 006CF73A call 006D2780; 006CF431, 006CF46D and 006CF494 call 006D2640; 009CD5EB MOV ECX,[EAX+3Ch] then CALL EDX with EDX = [[ECX]+2Ch] at 009CD5FF"
+    },
+    {
+      "document": "docs/LAND_AND_STRUCTURES.md",
+      "was": "006D5220 walks Hangar %d sub-bags for Object, EntryPath and ExitPath into the 0xC-stride vector at +830h",
+      "is": "three source branches keyed on *(airfield+0C0h)+4: the property bag (1), a compiled ushort table with stride 6 at src+13Ch counted by src+138h (2), and the Lua reader hangars/entityID/entryPathID/exitPathID (3). All three store path interfaces from 007AC9D0, not the authored entities",
+      "evidence": "the three arms of 006D5220; the compiled arm's (id - DAT_00F89A60)*10h + 0Ch + DAT_00F89AA8 record-map lookup with the iVar5 += 6 stride"
+    },
+    {
+      "document": "docs/PLANE_GROUND_OPS.md",
+      "was": "unit+BF4h is kGroundContactOwner, \"the object the plane rests on\"",
+      "is": "it is a holder one level further out: holder+4h is the owner's air-operations block (owner+72Ch for MAirfield, owner+1188h for MMothership), block+3Ch the launch-site object and block+7Ch the owner unit. The doc's own dereference chain (unit+BF4h)->+4h->+3Ch->vtable[28h](unit) was already right",
+      "evidence": "007B8E96-007B8EB4 dereferences (value)+4h ->+7Ch and ->+3Ch; 006CFA01 passes unit+72Ch to 007C5F60, which reads +3Ch at 007C5F79, +7Ch at 007C5FDB and +80h at 007C6239"
+    },
+    {
+      "document": "docs/AIR_OPERATIONS.md",
+      "was": "the block field table lists +0Ch, +40h, +4Ch, +50h, +54h, +58h and +7Ch",
+      "is": "add +3Ch, the launch-site object, and +80h, the ground-contact holder 007C5F60 hands to 007B8E80",
+      "evidence": "007C5F79 MOV ECX,[EDI+3Ch] and 007C6239 MOV ECX,[EAX+80h], with EDI and EAX the block 006CFA01 formed as unit+72Ch"
+    },
+    {
+      "document": "docs/AIR_OPERATIONS.md",
+      "was": "the owner at block+7Ch exists and its byte at +5Dh is clear. That byte is contract: unread",
+      "is": "it is the owner's out-of-action byte: 006CF9F0 refuses to place a plane while it is set, 009CD596 drops a taxiing plane off the path when it is set, and 006D2534 gates the airfield's whole air-operations update on it",
+      "evidence": "006CFA0A CMP byte ptr [ECX+5Dh],0; 009CD596 CMP byte ptr [ECX+5Dh],DL; 006D2534 CMP byte ptr [ESI-2B3h],0"
+    }
+  ],
+
+  "no_ghidra_function": [
+    {"address": "006cf180", "name": "BSP_AirOpsSite_GroundSurfaceThunk", "end_address": "006cf187"},
+    {"address": "006cf3e0", "name": "BSP_AirOpsSite_GetAirFieldBlock", "end_address": "006cf3ec"},
+    {"address": "006cf3f0", "name": "launch-site vtable slot +30h, returns true, RET 0", "end_address": "006cf3f2"},
+    {"address": "006cf400", "name": "launch-site vtable slot +20h, returns true, RET 4", "end_address": "006cf404"},
+    {"address": "006d2640", "name": "BSP_AirField_PickHangarExitPath", "end_address": "006d2720"},
+    {"address": "009cd540", "name": "BSP_PlaneBot_TaxiStep", "end_address": "009cdc92"},
+    {"address": "009b22c0", "name": "BSP_PlaneBot_ApproachBaseStep", "end_address": "009b2c68"}
+  ],
+
+  "flow_gaps": [
+    {
+      "call_site": "006d5220 free arm",
+      "symptom": "the decompiler emits `if (*(void **)(param_1 + 0x830) != 0) { _free(...); return; }` in both the compiled-table arm and the Lua arm of 006D5220, a spurious return after a _free-class call",
+      "reality": "the real code is `free(old); base = new;` and the walk continues; the following store `*(undefined4 **)(param_1 + 0x830) = puVar4` is unreachable in the pseudocode but is reached in the binary",
+      "impact": "the hangar-vector grow path reads as if it leaked the new buffer; it does not"
+    },
+    {
+      "call_site": "006d25f0",
+      "symptom": "Ghidra's function body stops at 006D263F while the int3-delimited block runs to 006D2720",
+      "reality": "006D2640 is a separate routine (BSP_AirField_PickHangarExitPath) that Ghidra never created; 006D25F0's own body is the four-way BSP_CString_CompareInsensitive chain and is complete as decompiled",
+      "impact": "the exit-path search is invisible to ghidra callers/callees and to the index"
+    },
+    {
+      "call_site": "009cd420",
+      "symptom": "bsp.py lookup names 009CD420 as the enclosing candidate for 009CD7F6, but Ghidra's 009CD420 body is 009CD420-009CD4C0",
+      "reality": "009CD7F6 lies in 009CD540-009CDC92, a routine with no Ghidra function; the same holds for 009B272E against the 009B21D0 candidate",
+      "impact": "every callers/callees answer for the two bot steps is empty; the two call sites of 007C16F0 are reachable only through ghidra xrefs"
+    },
+    {
+      "call_site": "int3 boundary heuristic",
+      "symptom": "a boundary scan that requires two consecutive 0xCC bytes merges neighbours separated by a single int3",
+      "reality": "006CF9F0 ends at 006CFA5D, not the 006CFA7D the scan reported, and 006D2780 ends at 006D284E, not 006D2906; both were re-established from the RET in the listing",
+      "impact": "every end_address above was taken from the listing's terminating RET, not from the padding scan"
+    }
+  ],
+
+  "uncertainties": [
+    "The 4 <-> 5 switch predicate: the structure at 009CD7E1-009CD802 is exact, but the x87 comparison at 009CD7A4-009CD7D7 that produces BL was not reduced to closed form. src/airfield_taxi.cpp takes the verdict from the caller rather than recomputing it.",
+    "The frame of plane+A4h/+A8h/+ACh. 006CF420 and 006CF520 return their point in the airfield's local frame; 006CF730 samples the path in world space and its tail past 006CF8C0 was not read. The subtraction at 009CD62F is only consistent if the plane's triple is parent-relative and the plane is parented to the airfield on the ground; that parenting was not verified.",
+    "plane->vtable[38h] is read by both the taxi law (009CD657) and 006CF5B0 as a per-plane scalar. Its body was not opened, so its meaning is a guess and is not named anywhere.",
+    "Why the launch queue takes the hangar with the maximum airfield-local Z and the taxi target the hangar with the minimum. Nothing forces them to be the same hangar.",
+    "The trigger of 006CF9F0. Its only reference is the vtable at 00CF8A0C, so what inside 006CDC70 invokes slot +14h, and how a hangar is chosen for a launch, were not reached.",
+    "The return leg past the approach: the routine that writes state 1 Inside and the sender of plane message sub-kind 1 were not traced. docs/PLANE_GROUND_OPS.md already assigns the slot release to 006C65B0 through 007F1B70.",
+    "006D3250's six park slots at airfield+83Ch are reached by nothing read in this packet."
+  ],
+
+  "run_time_evidence": "none; the executable was not run for this packet",
+
+  "reconstruction": {
+    "header": "include/bsp/airfield_taxi.hpp",
+    "source": "src/airfield_taxi.cpp",
+    "cmake": "cmake/startup.cmake, one appended line",
+    "build": "scripts/build.ps1, Win32 Release, clean, warnings as errors",
+    "tests": "ctest reconstructed_math 1/1 passed; no new test case added",
+    "state": "pure rules reconstructed and build-tested; the sequences are structure over an injected host and are not ABI-compatible"
+  },
+
+  "state": "read-only analysis complete for the five packet questions; questions 3 and 4 are partial and their unread halves are named above"
+}

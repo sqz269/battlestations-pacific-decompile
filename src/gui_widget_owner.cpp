@@ -435,7 +435,8 @@ void GuiWidgetOwnerRuntime::retire_model(void* context, NativeModelReference& re
 GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_child_00aa6560(GuiLayoutWidget& layout) {
     if (layout.type != GuiWidgetType::Group && layout.type != GuiWidgetType::Icon &&
         layout.type != GuiWidgetType::FrameBox && layout.type != GuiWidgetType::ClipBox &&
-        layout.type != GuiWidgetType::Text && layout.type != GuiWidgetType::Section)
+        layout.type != GuiWidgetType::Text && layout.type != GuiWidgetType::Section &&
+        layout.type != GuiWidgetType::Listbox)
         throw std::invalid_argument("unsupported retained GUI widget type");
     auto& result = construct_base(layout);
     try { result.bind_scene_00aa6720(create_model(layout.key)); }
@@ -542,7 +543,16 @@ void GuiWidgetOwnerRuntime::erase_tree(GuiLayoutWidget& layout) {
 void GuiWidgetOwnerRuntime::retire_tree(GuiLayoutWidget& layout) {
     const auto found = widgets_.find(&layout);
     if (found == widgets_.end()) return;
-    found->second->require_no_active_owned_operation();
+    // Reject unsupported descendant retirement before the first recursive
+    // virtual20 releases any scene nodes. This is pure host validation, not
+    // derived teardown; AA31F0's release-before-delete ordering stays intact.
+    const auto preflight = [this](auto&& self, GuiLayoutWidget& current) -> void {
+        auto& retained = owner(current);
+        retained.require_no_active_owned_operation();
+        retained.implementation().before_host_tree_retirement(retained);
+        for (const auto& child : current.children) self(self, *child);
+    };
+    preflight(preflight, layout);
     // AA31F0 calls current virtual20 at AA326A BEFORE deleting virtual04(1)
     // at AA3276. A scene's final release may consume its remaining roots, so
     // derived Screen teardown must never precede this logical-node release.

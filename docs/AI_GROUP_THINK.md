@@ -491,3 +491,21 @@ the emptied-list size decrement; it was not transcribed.
 
 `00A18410`, `00A18420` and `00A184D0` sit in the same unclaimed block and are trivial accessors of
 the planner class; they are outside this packet.
+
+## Correction from docs/AI_PLANNERS.md (packet cc2_ai_planners)
+
+- **Was:** the brain is 28h bytes: +0h..+0Ch four planners, all ticked through vtable[+20h] every think; +10h..+1Ch mode-specific planners for modes 4..7
+  **Is:** the brain is 28h bytes but only one of the two sets exists at a time. 00A15A70 branches on 004BCA50 and for modes 4..7 constructs exactly one mode planner, leaving +0h..+0Ch null; for any other mode it constructs the first four and leaves +10h..+1Ch null.
+  **Evidence:** 00A15A70 body 00a15a70-00a15ce3, the eight arms at 00A15ADA, 00A15B31, 00A15B88, 00A15BDF, 00A15C31, 00A15C61, 00A15C92, 00A15CC3, each guarded by the CMP against 004BCA50's result at 00A15AB7
+- **Was:** 00A22750 planner_claim_group ... appends the group to planner+20h
+  **Is:** the std::list object is at planner+20h and the node is spliced against the root at planner+24h; planner+28h is the size. LEA EDI,[ESI+20h] at 00A22773 is the container's ECX, MOV EBX,[ESI+24h] at 00A2276C the root.
+  **Evidence:** 00A22750 listing 00a2276b-00a2279b, and the base constructor 00A1EE8D-00A1EEA3 which builds the same three fields
+- **Was:** then 00A1C8B0(planner)(group); when that answers false it appends the group
+  **Is:** 00A1C8B0 is a list-membership test over planner+24h, not an accept or scoring test. Body read in full, 00a1c8b0-00a1c8fe.
+  **Evidence:** 00A1C8B0 walks the root at param_1+24h comparing node+8h against the argument and returns 1 on a hit
+- **Was:** the aggressive ratio reaches the group as a scalar argument of 00A2CBD0 (__thiscall(planner)(group, float aggressive), contract: unread)
+  **Is:** 00A2CBD0 is __thiscall(AiGroup* group)(AiGroup* target, float aggressive), RET 8. ECX is the group being ordered and the first stack argument is the chosen target group, not the group.
+  **Evidence:** 00A1CEED MOV ECX,EBX with EBX = [ESP+40h] set at 00A1CB89 (the group), 00A1CEEC PUSH ESI (the chosen candidate) and 00A1CEE4/00A1CEE9 pushing the float; the body then reads group+5644h, group+564Ch and group+5640h off ECX
+- **Was:** What puts a group into the list at 00F8AA60/00F8AA64 that the proximity merge walks (open question)
+  **Is:** 00F8AA60 is element 2 of std::list<AiGroup*> g_aiGroupsByTeam[3] at 00F8AA48 with stride 0Ch, and BSP_AiGroup_Construct appends every group to element group+5638h unconditionally. include/bsp/ai_group_think.hpp already declares the array as kAiGroupPerTeamListBase, so the doc's open question is the stale half.
+  **Evidence:** CG_static_init_00CE04B0 calls 00BF7C6E(0xF8AA48, 0xC, 3, 0xA16E00); the constructor's insert is at 00A2E086-00A2E0BD keyed on param_1[0x158e] = param_2+54h

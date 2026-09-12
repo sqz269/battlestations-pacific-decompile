@@ -1,0 +1,154 @@
+{
+  "packet": "orch6_scene_zone_paths",
+  "analysis_mode": "read_only_ghidra",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "document": "docs/GAME_SCENE_ZONE_PATHS.md",
+  "source": "src/game_hosts_scene_contents.cpp",
+  "header": "include/bsp/game_hosts_scene_contents.hpp",
+  "names_are_hypotheses": true,
+  "routines": [
+    {
+      "address": "004ea650",
+      "was": "FUN_004ea650",
+      "name": "BSP_SceneDatabase_CreatePath",
+      "coverage": "analysis_only; creator remains unresolved",
+      "original_abi": "EDX name; stack parent,frame,two unread arguments; RET10h",
+      "native_end_inclusive": "004ea753",
+      "last_instruction_address": "004ea751",
+      "last_instruction_size": 3
+    },
+    {
+      "address": "007b34f0",
+      "was": "FUN_007b34f0",
+      "name": "BSP_ScenePath_LoadSourceHolder",
+      "reconstruction": "retain_path_points",
+      "coverage": "partial_projection: fresh kind1 PathPoints lookup/local XYZ; excludes Group, kinds2/3, allocation and derived-data refresh",
+      "original_abi": "ECX path; stack source holder; RET4",
+      "native_end_inclusive": "007b3727",
+      "last_instruction_address": "007b3725",
+      "last_instruction_size": 3
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "004ea6bc",
+      "native": "0047b660",
+      "function": "004ea650",
+      "contract": "Path native entity construction, not implemented by retention"
+    },
+    {
+      "address": "007b3552",
+      "native": "008f2260",
+      "function": "007b34f0",
+      "contract": "find PathPoints nested property record"
+    },
+    {
+      "address": "007b355c",
+      "native": "00415870",
+      "function": "007b34f0",
+      "contract": "current point count supplies numeric Point key"
+    },
+    {
+      "address": "007b356c",
+      "native": "004f9a80",
+      "function": "007b34f0",
+      "contract": "format Point%002i; ADD ESP0Ch at007B3571"
+    },
+    {
+      "address": "007b357b",
+      "native": "008f2260",
+      "function": "007b34f0",
+      "contract": "find first/current numbered point block"
+    },
+    {
+      "address": "007b35a3",
+      "native": "008f2260",
+      "function": "007b34f0",
+      "contract": "find Pos and copy local XYZ"
+    },
+    {
+      "address": "007b35dc",
+      "native": "00415870",
+      "function": "007b34f0",
+      "contract": "new point count after append"
+    },
+    {
+      "address": "007b35ec",
+      "native": "004f9a80",
+      "function": "007b34f0",
+      "contract": "format next Point%002i; ADD ESP0Ch at007B35F1"
+    },
+    {
+      "address": "007b35fb",
+      "native": "008f2260",
+      "function": "007b34f0",
+      "contract": "find next numbered point block"
+    },
+    {
+      "address": "007b390c",
+      "native": "007b34f0",
+      "function": "007b38d0",
+      "contract": "actual entity+C0 holder passed to entity+1E4 path"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Path record discarded all PathPoints and authored parent/local frame inputs",
+      "is": "retains fresh kind1 native numeric point order plus actual scene hierarchy/transform/header inputs; created remains false",
+      "evidence": "007B3552..007B3604, 0047B68A..0047B6A4, 004EA6C3..004EA6FB and SceneFileReaderHost visit_entity"
+    }
+  ],
+  "gaps": [
+    {
+      "begin": "007b3619",
+      "end_inclusive": "007b361f",
+      "bytes": "8d a4 24 00 00 00 00",
+      "meaning": "LEA ESP,[ESP], alignment outside retained kind1 branch"
+    }
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed MSVC Win32 Release; existing reconstructed_math test1/1 passed",
+      "log": "local/scene_zone_paths_build.log"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/game_scene_zone_paths.json",
+      "checked": 10,
+      "failed": 0
+    },
+    "installed_scene": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/scenes/missions/USN/usn_1_marshall.scn",
+      "sha256": "9235d9a6364b08cbd5cf3c6735ba9828aba5a6e7b2569300dc2eecf6d8dac17b",
+      "parse_errors": 0,
+      "avoid_zones": 21,
+      "local_points": 2193,
+      "nested_zones": 21,
+      "numeric_order_check": "exact retention function extracted from source into one ignored manifested x86 probe; reversing point block order preserves output",
+      "fixture_log": "local/scene_zone_paths_probe.log"
+    },
+    "runtime": {
+      "command": "bsp_game.exe --frames180 --press-start-frame3 --menu-select USN01 --mission-frames1 --game-root <installed root> --log <local log>",
+      "exit_code": 0,
+      "log": "local/scene_zone_paths_runtime.log",
+      "avoid_zone_records": 21,
+      "local_points": 2193,
+      "all_points_retained": true,
+      "all_creator_concrete": false,
+      "actual_parent_scene_ids": [
+        1,
+        93,
+        99,
+        105
+      ],
+      "example": "line865: id=87 parent=1 name=AvoidZoneG all 1 #001 points=84 valid=1 creator_concrete=0",
+      "scene_summary": "line900: mode8,147 registered,147 instantiated,147 generated,0 rejected,77 created"
+    }
+  },
+  "limits": [
+    "No concrete native Path creator or parent entity is fabricated",
+    "No world bounds fallback",
+    "No native differential, ABI replacement, query or original-game validation"
+  ]
+}

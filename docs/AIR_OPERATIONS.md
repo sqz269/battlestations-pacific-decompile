@@ -430,3 +430,12 @@ Unread bindings in the same family, listed so the next packet does not re-derive
 - **Was:** the +72Ch caution names two cases, the ship's owned-ref slot and MAirfield's air-operations block
   **Is:** three cases. MLandFort's +72Ch is an owned-ref slot built by the same 00809270 as the ship's, so the ship and the fort share that subobject and the airfield does not.
   **Evidence:** 00745978 calls 00809270 with ECX = this+72Ch (LEA at 0074596C), against 0081ED7B for the ship; MCommandBuilding re-vptrs the same offset to 00CFAFD8 at 006F568D, which proves it is a base subobject and not a member
+
+## Correction from docs/AIRFIELD_TAXI.md (packet cc2_airfield_taxi)
+
+- **Was:** the block field table lists +0Ch, +40h, +4Ch, +50h, +54h, +58h and +7Ch
+  **Is:** add +3Ch, the launch-site object, and +80h, the ground-contact holder 007C5F60 hands to 007B8E80
+  **Evidence:** 007C5F79 MOV ECX,[EDI+3Ch] and 007C6239 MOV ECX,[EAX+80h], with EDI and EAX the block 006CFA01 formed as unit+72Ch
+- **Was:** the owner at block+7Ch exists and its byte at +5Dh is clear. That byte is contract: unread
+  **Is:** it is the owner's out-of-action byte: 006CF9F0 refuses to place a plane while it is set, 009CD596 drops a taxiing plane off the path when it is set, and 006D2534 gates the airfield's whole air-operations update on it
+  **Evidence:** 006CFA0A CMP byte ptr [ECX+5Dh],0; 009CD596 CMP byte ptr [ECX+5Dh],DL; 006D2534 CMP byte ptr [ESI-2B3h],0

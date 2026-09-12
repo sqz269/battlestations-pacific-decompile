@@ -123,6 +123,13 @@ void raise_prompt_00531b00(FrontEndPromptScreen&, FrontEndPromptHost&, int slot,
     int timeout_result, NativeString countdown_key, bool dismissible);
 void dismiss_prompt_00532a20(FrontEndPromptScreen&, FrontEndPromptHost&, int slot); //ECX screen, RET4
 void dismiss_all_prompts_00530650(FrontEndPromptScreen&, FrontEndPromptHost&); //ECX screen, RET
+// Complete normal00530670/00530C20 (ECX prompt screen, no stack args, RET).
+// Only input_mode+264==0 changes navigation. The last helper reads the current
+// navigation count, then selects its native DWORD count-minus-one (empty =>-1).
+// Host operations resolve the SAME screen's current navigation widget+24;
+// they retain actual Listbox current80 effects. No requested_focus+284 store.
+void focus_first_prompt_navigation_00530670(FrontEndPromptScreen&, FrontEndPromptHost&);
+void focus_last_prompt_navigation_00530c20(FrontEndPromptScreen&, FrontEndPromptHost&);
 void refresh_prompt_screen_00532360(FrontEndPromptScreen&, FrontEndPromptHost&); //ECX screen, tail00530a60
 void complete_prompt_00532c50(FrontEndPromptScreen&, FrontEndPromptHost&, int result); //ECX screen, RET4
 void prompt_widget_event_00532cb0(FrontEndPromptScreen&, FrontEndPromptHost&, std::uintptr_t event); //ECX screen+10h, RET4

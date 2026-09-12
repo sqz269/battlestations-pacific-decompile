@@ -31,11 +31,14 @@
 // docs/SCENE_ENTITY_FACTORY.md, docs/SCENE_UNIT_CREATORS.md,
 // docs/SCENE_ENTITY_CREATE.md, docs/VEHICLE_CLASS_DESCRIPTORS.md.
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
+
+#include "bsp/scene_file.hpp"
 
 namespace bsp::game {
 
@@ -59,6 +62,22 @@ struct GameSceneEntityRecord {
     bool created{false};       // the class creator ran and handed back an instance
     std::string skipped_because;
     float world[16]{};
+    // Authored scene identities, not native pointers. Zero means no authored
+    // parent; IDs include unregistered entities and follow the reader's visit
+    // order. The local frame and actual parent's composed frame are retained
+    // separately; parent_world is meaningful only when parent_scene_id != 0.
+    std::size_t scene_id{0};
+    std::size_t parent_scene_id{0};
+    std::string parent_name;
+    float local[16]{};
+    float parent_world[16]{};
+    // Partial projection of 007B34F0's kind-1 property-bag branch, for a fresh
+    // Path. Numeric Point%002i lookup order, stopping at the first absent or
+    // non-block key; Pos triples remain LOCAL. No Path entity is constructed:
+    // created and the creator tally retain their existing unresolved status.
+    bool path_points_retained{false};
+    std::string path_points_error;
+    std::vector<std::array<float, 3>> path_points_local;
     // Milestone 2l: the two strings 004f0520 hands 00469610 at its last step,
     // the authored `Command = E CommandType : <name>` token and the
     // `CommandTarget = R "<name>"` value ("" when the entity authored none).
@@ -157,6 +176,9 @@ public:
 
     const GameSceneContentsSummary& summary() const noexcept;
     const std::vector<GameSceneEntityRecord>& entities() const noexcept;
+    // Actual parsed header properties, including Map.BorderSizeX/Y and the
+    // MultiPlayMapSizes block. This is source data, not a fabricated world box.
+    const bsp::ScenePropertyBlock& root_properties() const noexcept;
     // The entities the instantiate pass created, which is what the frame's unit
     // passes would walk if the world object the gate at 00875e69 tests existed.
     std::size_t created_unit_count() const noexcept;

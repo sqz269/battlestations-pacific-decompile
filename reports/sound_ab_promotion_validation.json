@@ -1,0 +1,123 @@
+{
+  "packet": "orch4_sound_ab_validation",
+  "utc": "2026-09-12T18:53:48.766432+00:00",
+  "validated_source_commit": "3a1dc455ae15924607d0f671d62871c24768338d",
+  "promotion": "Integration helper merged current main before building; log shows no further main merge after the passing build. Main promoted to this same commit.",
+  "build": {
+    "command": "python tools/integrate_workers.py agent/orch4-20260910 --no-push",
+    "log": "local/sound_ab_promote.log",
+    "msvc": "Win32 Release",
+    "ctests_passed": 2
+  },
+  "artifacts_sha256": {
+    "build\\win32\\Release\\bsp_core.lib": "b54d1b46254fd427e29091a277a8d1a689fd7cec7d1d2cd749500976de194639",
+    "build\\win32\\Release\\bsp_lua511.lib": "00315ac717aac3d2b2161fefefe71b36a974335ff9c95d48c137423eb4e2f4b2",
+    "build\\win32\\Release\\bsp_game.exe": "6375ab84aca8b6b366158b8bf4bd889dd3202af00981eb0c30afc1c5f0df33f1"
+  },
+  "application": {
+    "run": {
+      "command": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_game.exe",
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--settings-personal-root",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\sound-application-ab-personal",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--frames",
+        "2",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\sound_application_ab_run.log"
+      ],
+      "returncode": 0,
+      "seconds": 1.5521490573883057
+    },
+    "log": "local/sound_application_ab_run.log",
+    "log_sha256": "09750a39a673f0ce5b53f4f5e177e65c0d2b4ee5a53dea77db61bdd72b076540",
+    "startup": {
+      "enabled": 1,
+      "classes": 7,
+      "resources": 1,
+      "resource_bytes": 0,
+      "opens": 0,
+      "closes": 0,
+      "fmod_calls": 131,
+      "fmod_errors": 0,
+      "load_pretranslations": 0,
+      "load_focus_calls": 1
+    },
+    "shutdown": {
+      "started": 0,
+      "samples": 0,
+      "resources": 0,
+      "classes": 0,
+      "opens": 0,
+      "sdk_closes": 0,
+      "host_reclaims": 0,
+      "pending": 0,
+      "fmod_errors": 0
+    },
+    "loop": {
+      "finished": 1,
+      "frames": 2,
+      "presented": 2
+    },
+    "real_xlive_pretranslation_calls": 2,
+    "raw_singleton_registered_slots": 3,
+    "audio_file_opened": false,
+    "audible_playback_verified": false
+  },
+  "title": {
+    "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-title-sound-ab\\local\\title_fixture_ab_promoted.log",
+    "log_sha256": "fba3d92374ce3980641d339e3d09c84f91d6495d6f1f8e7ca62c608ff2490869",
+    "compile": "Primary headers and core/Lua archives only; /MANIFEST:EMBED",
+    "native_fade_cases": 18,
+    "native_fade_failures": 0,
+    "length_ms": 138032,
+    "channels": 2,
+    "routes": 4,
+    "fade": 0.006,
+    "fmod_calls": 185,
+    "opens": 1,
+    "closes": 1,
+    "reclaims": 0,
+    "pending": 0,
+    "strings": 0,
+    "application_title_or_active_movie_verified": false
+  },
+  "frame": {
+    "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-sound-frame-ab\\local\\sound-frame-promoted-ab-probe.log",
+    "log_sha256": "1c2bef369a06f18e018b3fe355c3d7a0108c137af6df7548bd0f684c1506ca4b",
+    "domain": "Actual 00735B50 null-interface arm, current core publication/update context/clock",
+    "sdk_calls": 3,
+    "errors": 0,
+    "pending": 0,
+    "strings": 0,
+    "listener_callbacks": 0,
+    "queued_and_transition_paths_executed": false
+  },
+  "direct_call_audit": {
+    "total_rows": 76,
+    "failures": 0,
+    "reports": {
+      "game_title_sound": 29,
+      "sound_frame_service": 11,
+      "game_platform_services": 33,
+      "sound_application_wiring": 3
+    },
+    "log": "local/sound_ab_final_calls.log",
+    "coverage": "Owned native title/frame bodies and documented incoming/callee rows; application/loop fragment partial; indirect calls qualified separately"
+  },
+  "analysis": "Names/prototypes, two metadata EH handlers and movie no-op saved; C6FDD0 truncated cleanup repaired retaining name/comment. Analysis additions are not new C++ routine claims.",
+  "game_validated": false,
+  "next_dependencies": [
+    "Shared raw online/IPC lifecycle",
+    "Actual input backend and lazy action manager",
+    "Real game-render/interface/listener sequence",
+    "Canonical menu title path/owning stream slot and MoviePlayer host",
+    "E19504 track-selection producer"
+  ],
+  "ownership_note": "Old main_menu_screens.hpp title comments remain in a separately leased file. docs/MAIN_MENU_SCREENS.md carries a correction; this packet does not modify that owner file."
+}

@@ -72,8 +72,11 @@ and two presents, with an isolated settings root and an 800x600 window.
 Only settings are isolated; the existing save-directory handling still refers
 to the user's normal Documents/Battlestations-Pacific/save directory.
 
-The recorded startup log reports enabled sound, seven classes, one resource,
-132 FMOD calls with zero errors and one load-focus call. Startup precedes window
+The initial startup run reported enabled sound, seven classes, one resource,
+132 FMOD calls with zero errors and one load-focus call. The final run at
+3a1dc455 reported 131 FMOD calls, again with zero errors and the same remaining
+counters; `reports/sound_ab_promotion_validation.json` records that exact run.
+Startup precedes window
 creation. The ordinary message loop made two real XLive pretranslation calls.
 Raw teardown drained three singleton registrations and left zero sound classes,
 samples, resources and pending file adapters. See

@@ -387,3 +387,21 @@ Every routine this doc names has a Ghidra function and its body range is quoted 
 is introduced. Five `unit+900h` store sites lie inside blocks Ghidra has no function for and their
 starts were not established: `007C36BC`, `007D63EA`, `007D65DD`, `007D6600` and `007D711A`. None is
 named here.
+
+## Correction from docs/GAMEPLAY_LOOSE_ENDS_2.md (packet cc2_gameplay_loose_ends_2)
+
+- **Was:** 2 in the water law (007DCDD3)
+  **Is:** the store instruction starts at 007DCDDC
+  **Evidence:** 007DCDDC C7 86 FC 00 00 00 02 00 00 00 MOV dword ptr [ESI+FCh],2
+- **Was:** open question: what classDesc+1FCh is; it has no key in docs/PLANE_CLASS_FIELDS.md
+  **Is:** the undercarriage height reference, the distance from the model origin to the wheels
+  **Evidence:** 007DB70B FSUB [ECX+1FCh] builds the ground plane's distance in the core law's mode-1 arm; 007DA30A-007DA318 subtracts it plus 0.01 from the sampled deck height before lifting the pose; the lift-off test unit+BFCh - classDesc+1FCh > 0.1 uses the same reference
+- **Was:** open question: which of unit+ACCh, unit+B1Ch and unit+BFCh the physics body writes
+  **Is:** unit+BFCh is not written by the physics body; it is 006BC530's out-parameter
+  **Evidence:** 007BB2E3 LEA EAX,[ESI+BFCh] / 007BB2E9 PUSH EAX and 007C5F1C LEA EDX,[ESI+BFCh] / 007C5F22 PUSH EDX before 006BC530; these are the only unit-based LEA instructions in the 0B82h-0C01h displacement band across 00600000-00A00000
+
+## Correction from docs/AIRFIELD_TAXI.md (packet cc2_airfield_taxi)
+
+- **Was:** unit+BF4h is kGroundContactOwner, "the object the plane rests on"
+  **Is:** it is a holder one level further out: holder+4h is the owner's air-operations block (owner+72Ch for MAirfield, owner+1188h for MMothership), block+3Ch the launch-site object and block+7Ch the owner unit. The doc's own dereference chain (unit+BF4h)->+4h->+3Ch->vtable[28h](unit) was already right
+  **Evidence:** 007B8E96-007B8EB4 dereferences (value)+4h ->+7Ch and ->+3Ch; 006CFA01 passes unit+72Ch to 007C5F60, which reads +3Ch at 007C5F79, +7Ch at 007C5FDB and +80h at 007C6239
