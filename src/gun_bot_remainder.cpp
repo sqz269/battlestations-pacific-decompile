@@ -141,7 +141,7 @@ float ship_lead_length_taper_00816941(float box_z_draw) noexcept {
 }
 
 std::array<float, 3> ship_lead_point_00816650(const ShipLeadSections& sections,
-                                              const ShipHullExtents& hull,
+                                              const LeadAimHullExtents& hull,
                                               const std::array<float, 3>& box,
                                               const std::array<float, 3>& origin,
                                               float section_chance,

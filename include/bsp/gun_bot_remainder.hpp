@@ -134,7 +134,7 @@ struct ShipLeadSections {
 };
 
 // [ship+538h]+0A0h/+0A4h/+0A8h, the hull box the fallback samples.
-struct ShipHullExtents {
+struct LeadAimHullExtents {
     float width = 0.0f;  // +0A0h, halved for the z offset
     float length = 0.0f; // +0A4h, halved for the x offset
     float height = 0.0f; // +0A8h, quartered for the y offset
@@ -158,7 +158,7 @@ std::array<float, 3> entity_lead_point_0042d810() noexcept;
 // 0093A570(ship+0A20h, id) gives, negated at each call site: a section whose id
 // is already in that vector is skipped.
 std::array<float, 3> ship_lead_point_00816650(const ShipLeadSections& sections,
-                                              const ShipHullExtents& hull,
+                                              const LeadAimHullExtents& hull,
                                               const std::array<float, 3>& box,
                                               const std::array<float, 3>& origin,
                                               float section_chance,
