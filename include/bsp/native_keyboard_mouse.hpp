@@ -55,7 +55,8 @@ void* construct_native_mouse_00a9a290(void* storage, IDirectInput8A&,
     NativeInputDeviceSdk&, NativeKeyboardMouseContext&);
 
 // A95E60/A99EF0: ECX storage, tail BD30F0, RET; root profile becomes CEB130.
-// Scalar entries RET4, bit0 frees STANDARD operator-new compatible allocation;
+// Scalar entries RET4, bit0 frees singleton_lifetime_allocate-compatible storage
+// through singleton_lifetime_free, matching actual enumeration's BF681B domain;
 // the result is the captured allocation identity, even after freeing it.
 // Native destruction and constructor EH do not release DirectInput references.
 // SDK tracking must outlive all borrowers, followed by explicit host release.

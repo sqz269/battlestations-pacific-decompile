@@ -59,8 +59,10 @@ not adjusting-this thunks: each writes D5B638 then jumps to BD30F0, which writes
 CEB130. They perform no COM Release, Unacquire, refcount decrement or sample clear.
 The common root/no-argument dispatch is owned by the primary integration packet.
 
-Scalar flags 1 require storage from ordinary operator new; source operator delete
-frees the same identity and the function returns its captured value. Flags 0/2
+Scalar flags 1 require storage from `singleton_lifetime_allocate`, the shared
+malloc/new-handler allocation domain used by actual A98030. The matching
+`singleton_lifetime_free` frees the same identity and the function returns its
+captured value. Flags 0/2
 retain allocation storage. No second owning wrapper may free it again.
 
 ## Constructor failure
@@ -145,3 +147,8 @@ passed with three CreateDevice calls, three raw frees, zero references after
 explicit release, 256 interleaved history calls and one real shared BD30E0
 zero-ref dispatch. Both real hardware polls returned false. Initial build and
 probe logs are preserved separately; the final log uses the shared root source.
+
+Integration review harmonized both scalar frees and the probe's allocations with
+the existing singleton allocation wrappers used by raw enumeration. This removes
+the earlier source contract requiring operator-new-compatible storage; no reliance
+on the MSVC default operator delete forwarding malloc storage to free remains.

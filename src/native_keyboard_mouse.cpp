@@ -1,9 +1,9 @@
 #include "bsp/native_keyboard_mouse.hpp"
 #include "bsp/input_focus_reset.hpp"
 #include "bsp/native_ref_counted.hpp"
+#include "bsp/singleton_lifetime.hpp"
 
 #include <cstring>
-#include <new>
 #include <stdexcept>
 
 #pragma comment(lib, "dinput8.lib")
@@ -191,13 +191,13 @@ void* delete_native_keyboard_00a9a470(void* object, std::uint8_t flags) noexcept
     void* identity = object;
     write(object, 0, native_keyboard_profile);
     destroy_native_keyboard_base_00a95e60(object);
-    if ((flags & 1) != 0) ::operator delete(object);
+    if ((flags & 1) != 0) singleton_lifetime_free(object);
     return identity;
 }
 void* delete_native_mouse_00a9a390(void* object, std::uint8_t flags) noexcept {
     void* identity = object;
     reset_base_profile(object);
-    if ((flags & 1) != 0) ::operator delete(object);
+    if ((flags & 1) != 0) singleton_lifetime_free(object);
     return identity;
 }
 std::int32_t native_keyboard_class_00a96350() noexcept { return 0; }

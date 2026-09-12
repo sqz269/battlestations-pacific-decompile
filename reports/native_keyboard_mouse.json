@@ -501,6 +501,11 @@
       "was": "prior report noted A9A470 gap",
       "is": "current live listing and flow contain12 instructions, zero gaps",
       "evidence": "A9A48B ADD ESP,4 present; A9A491 RET4 length3"
+    },
+    {
+      "was": "Raw scalar source used operator delete and required operator-new-compatible storage while actual enumeration allocates through singleton_lifetime_allocate.",
+      "is": "Both scalar bodies use singleton_lifetime_free; source contract and focused real SDK fixture use the same shared allocation domain as A98030.",
+      "evidence": "A9806D/A980AD BF681B allocation; A9A486/A9A3A6 BF65AC frees; src/singleton_lifetime.cpp51..66 wrappers."
     }
   ],
   "ownership": {
@@ -509,7 +514,7 @@
     "mouse_bytes": 572,
     "native_com_release": false,
     "sdk_recovery": "explicit release_tracked_references after all raw owners/borrowers are gone",
-    "source_boundary": "standard operator-new-compatible allocation for scalar flags1; valid SDK reference outputs and readable explicit preimages"
+    "source_boundary": "singleton_lifetime_allocate/free allocation domain for scalar flags1, matching actual A98030; valid SDK reference outputs and readable explicit preimages"
   },
   "remaining": [
     "Full vtable coverage is not claimed: activity/selection, names and mouse property slots remain separate raw binding work.",
@@ -539,6 +544,7 @@
     "build_log": "local/native_keyboard_mouse_ad_build.log",
     "probe_log": "local/native_keyboard_mouse_ad_probe.log",
     "call_audit_log": "local/native_keyboard_mouse_ad_calls.log",
-    "initial_build": "Initial configure preceded shared-root header integration and failed missing include; preserved local/native_keyboard_mouse_ad_build_initial.log; final reconfigure/build passed."
+    "initial_build": "Initial configure preceded shared-root header integration and failed missing include; preserved local/native_keyboard_mouse_ad_build_initial.log; final reconfigure/build passed.",
+    "allocator_integration": "Final rebuild/probe repeated with singleton_lifetime_allocate/free for all three raw fixture allocations; original pre-correction logs retained."
   }
 }
