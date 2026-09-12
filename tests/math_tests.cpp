@@ -90,6 +90,7 @@
 #include "bsp/unit_parts.hpp"
 #include "bsp/projectile_impact.hpp"
 #include "bsp/recon_slot_lists.hpp"
+#include "bsp/sensor_tables.hpp"
 #include "bsp/blast_damage.hpp"
 #include "bsp/bot_fire_target.hpp"
 #include "bsp/collision_shapes.hpp"
@@ -2865,6 +2866,27 @@ int main() {
         check(std::fabs(cruise_seed.ordered.throttle - cruise_seed.seed.ring_throttle) < 1e-6f &&
               cruise_seed.ordered.mode == bsp::CruiseSteerMode::Heading,
             "009E1265 orders the seeded throttle, so a scene `Cruise` ship makes way");
+    }
+
+    {
+        // 00852B90: a submarine's sensor category is a depth state, and the
+        // three comparisons run in one direction only. Getting a boundary
+        // backwards silently makes a surfaced boat sonar-visible or a deep one
+        // detectable by sight, with nothing else in the build to catch it.
+        bsp::SubmarineDepthBands bands;
+        bands.band_1200 = -2.0f;
+        bands.band_1204 = -4.0f;  // surface limit (-4 + -2) / 3 = -2
+        bands.band_1208 = -20.0f;
+        bands.band_120c = -30.0f; // deep limit (-30 + -20) * 0.5 = -25
+        using bsp::SensorCategory;
+        check(bsp::sensor_category_submarine_00852b90(0.0f, bands) == SensorCategory::surface &&
+              bsp::sensor_category_submarine_00852b90(-5.0f, bands) == SensorCategory::periscope_in &&
+              bsp::sensor_category_submarine_00852b90(-15.0f, bands) == SensorCategory::underwater &&
+              bsp::sensor_category_submarine_00852b90(-30.0f, bands) == SensorCategory::deep_underwater,
+            "00852B90 walks surface, periscope, underwater, deep as the hull sinks");
+        bands.periscope_raised = true;
+        check(bsp::sensor_category_submarine_00852b90(-5.0f, bands) == SensorCategory::periscope_out,
+            "00852C4C picks PeriscopeOut from the +1234h flag, PeriscopeIn without it");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
