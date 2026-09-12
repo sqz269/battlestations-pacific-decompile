@@ -27,6 +27,10 @@ public:
     std::int32_t mouse_accumulated_y() const;
     std::uint8_t buttons_active(GuiListboxFrameCalls& typed_provider) const;
     std::uint8_t activity_current28() const;
+    std::uint8_t query_current20(std::uint32_t code) const;
+    // Mouse A99FE0 explicitly spills binary32 before its return. The value
+    // transport preserves that result for the caller's ordered comparison.
+    float value_current24(std::uint32_t code) const;
 private:
     friend class GuiInputSource;
     InputDevice* typed_{};

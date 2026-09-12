@@ -26,6 +26,12 @@ device+0 and invokes the existing finite NativeInputDeviceRuntime dispatcher.
 The separate typed input domain requires an explicit InputFocusDeviceHost;
 the old typed constructor does not fabricate activity when that path is reached.
 
+The same captured-device reference exposes current20 and current24, capturing
+the raw profile anew at each call or dispatching the actual typed state device.
+The mouse A99FE0 axis return spills binary32 at A9A0A0 and reloads it before
+RET4, so passing that float to the Listbox comparison does not narrow an
+unspilled native result. Its providers remain the existing input implementation.
+
 Supported current68 profiles are Screen, Group, Text, Icon, ClipBox,
 Section and FrameBox. Unsupported profiles fail explicitly. Their native slot
 words and each call site are recorded in the companion report. The owner domain

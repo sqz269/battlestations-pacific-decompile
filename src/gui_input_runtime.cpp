@@ -98,4 +98,16 @@ std::uint8_t GuiInputDeviceRef::activity_current28() const {
         throw std::logic_error("GUI current28 requires its actual typed activity provider");
     return static_cast<std::uint8_t>(typed_activity_->activity_vslot28(*typed_));
 }
+std::uint8_t GuiInputDeviceRef::query_current20(std::uint32_t code) const {
+    if(raw_) return native_->query_vslot20(raw_,read<std::uint32_t>(raw_,0),code);
+    const auto* state=dynamic_cast<const InputStateDevice*>(typed_);
+    if(!state) throw std::logic_error("GUI current20 requires its actual typed state device");
+    return state->query_20(code);
+}
+float GuiInputDeviceRef::value_current24(std::uint32_t code) const {
+    if(raw_) return native_->value_vslot24(raw_,read<std::uint32_t>(raw_,0),code);
+    const auto* state=dynamic_cast<const InputStateDevice*>(typed_);
+    if(!state) throw std::logic_error("GUI current24 requires its actual typed state device");
+    return state->value_24(code);
+}
 } // namespace bsp
