@@ -912,17 +912,34 @@
     "runtime_physics_integration": false,
     "executable_wiring_changed": false,
     "independent_review": "Accepted after correcting final descriptor coverage to include0042445C shape-vector end increment and00424463 flag OR; instruction bytes through00424469. No runtime physics claim.",
-    "flow_repair": "reports/avoid_zone_draft_flow_repair.json: nine CALL_RETURN gaps repaired in00423C50;00424D00 had no remaining call gap and alignment was retained"
+    "flow_repair": "reports/avoid_zone_draft_flow_repair.json: nine CALL_RETURN gaps repaired in00423C50;00424D00 had no remaining call gap and alignment was retained",
+    "integration": {
+      "compiled_commit": "42efe67075e27763330422effe6605f90b797e56",
+      "synchronized_commit": "2d3249d0ea195d13107375faae04819a17e5c012",
+      "compiled_input_comparison": "src,include,cmake,CMakeLists.txt identical after synchronization",
+      "result": "MSVC Win32 Release and existing CTest2/2 passed",
+      "log": "local/orch6_draft_final_integration.log",
+      "call_validation": "119/119 live rows passed in primary recheck",
+      "runtime_physics_integration": false
+    }
   },
   "ghidra_annotation_policy": {
-    "applied": false,
+    "applied": true,
     "prior_comments_preserved": true,
     "prior_names": {
       "00424d00": "BSP_AvoidZoneManager_RebuildFromScene",
       "004223b0": "FUN_004223b0",
       "00423c50": "FUN_00423c50"
     },
-    "ledger_previous_values_log": "local/avoid_zone_draft_layers_ledger.log"
+    "ledger_previous_values_log": "local/avoid_zone_draft_layers_ledger.log",
+    "applied_entries": 3,
+    "saved_project": true,
+    "previous_values_log": "local/orch6_draft_applied_annotations.json",
+    "refreshed_exports": [
+      "004223b0",
+      "00423c50",
+      "00424d00"
+    ]
   },
   "completed_utc": "2026-09-12T19:45:40.527761+00:00"
 }
