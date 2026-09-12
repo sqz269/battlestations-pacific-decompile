@@ -358,7 +358,7 @@ float ship_ai_approach_commanded_heading_009e5e90(float reference, float bearing
 // RET 0Ch at 009D6A3A and 009D6ABF, body 009D68B0-009D6AC1, complete. The
 // circle is three floats: centre x at +0h, centre z at +4h, radius at +8h.
 // `side` picks which of the two tangents 009D6550 returns: the index is
-// `side == 0 ? 1 : 0` (the SETZ at 009D68C7 feeding the EBP*8 scaling).
+// `(side & 0xff) == 0 ? 1 : 0` (byte CMP at 009D68B7, SETZ at 009D68C7).
 struct ShipAiCircleTangentCircle {
     float x{0.0f};      // circle+0h
     float z{0.0f};      // circle+4h
@@ -368,29 +368,36 @@ struct ShipAiCircleTangentCircle {
 struct ShipAiCircleTangentHost {
     virtual ~ShipAiCircleTangentHost() = default;
     // 009D68EC, 009D6550 with ECX = circle and three stack arguments: the
-    // point and two out pointers. Returns false when no tangent exists.
-    // Body unread (it belongs to the ship_ai_nav_circle_tangent packet):
-    // contract unread beyond "fills both out points and returns a flag".
+    // point and two out pointers. External query: two tangent points; internal
+    // query: endpoints of the perpendicular chord through it. False leaves
+    // both outputs untouched. Fully read in docs/SHIP_AI_NAV_CIRCLE_TANGENT.md.
     virtual bool tangent_points_009d6550(const ShipAiAttackMoveXZ& point,
                                          ShipAiAttackMoveXZ& first,
                                          ShipAiAttackMoveXZ& second) = 0;
     // 009D6A8A, 004F47B0 with ECX = a three-float block {point.x, point.z,
-    // clearance} and EDX = circle, plus two out pointers. Body unread:
-    // contract unread.
+    // clearance} and EDX = circle, plus two out pointers. Circle intersections:
+    // status <= 0 leaves outputs untouched; positive writes both. 009D68B0
+    // discards the status. Concrete binding: ShipAiCircleGeometryHost.
     virtual void offset_points_004f47b0(const ShipAiAttackMoveXZ& point,
                                         float clearance,
                                         ShipAiAttackMoveXZ& first,
                                         ShipAiAttackMoveXZ& second) = 0;
     // 009D69DD, 00BD2F10(stream 1, low, high): the shared random draw
-    // 009E5530 also uses. Body unread.
+    // 009E5530 also uses; 00BD2ED0 selects thread/stream state and 00BD2E60
+    // scales its next unsigned draw. Actual RNG remains a caller dependency.
     virtual float random_stream1_00bd2f10(float low, float high) = 0;
     // 009D695A and 009D69A6, 00BF7030, the CRT square root.
     virtual float sqrt_00bf7030(float value) = 0;
 };
 
+// Complete control-flow projection, new ABI. The native second intersection
+// buffer has no initialization before a no-write status. Explicit seed models
+// those incoming stack bits; the compatibility default {0,0} is a defined
+// deviation, NOT recovered initialization. First buffer retains chosen point.
 ShipAiAttackMoveXZ ship_ai_circle_tangent_009d68b0(
     const ShipAiCircleTangentCircle& circle, const ShipAiAttackMoveXZ& point,
-    float clearance, int side, ShipAiCircleTangentHost& host);
+    float clearance, int side, ShipAiCircleTangentHost& host,
+    ShipAiAttackMoveXZ second_intersection_seed = {});
 
 // ---------------------------------------------------------------------------
 // 009F3090, the nested update
