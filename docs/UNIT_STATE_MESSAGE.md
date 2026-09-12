@@ -350,3 +350,17 @@ Read from the disk listing; no functions were created.
 | `0077C710`, `00780670`, `0076C600`, `0076E520`, `00768530`, `00521E30` | analysed |
 | `00813DC0`, `00813EF0`, `0075A660`, `00813950`, `0092F2E0`, `00927F30`, `0092BD70` | analysed |
 | `00813CA0`, `00816B00`, `0080DAD0`, `00825F20`, `00822C20`, `0081F980`, `0077C2A0` | read only |
+
+## Correction from docs/SESSION_MESSAGE_DISPATCH.md
+
+Packet `cc2-session-dispatch` (main 9af47d1f) read 0077C2A0 BSP_Session_RouteMessage in full and
+corrects two claims here: the enqueue takes `(message, sender)` and copies `+14h` from the source
+message, not from a peer; and drain status 0 keeps the entry and continues rather than stopping. The
+routing rule: bit 1 of the flag word delivers locally through 0076E520 (a serialise/rebuild copy
+appended to the array at session+24Ch, drained once per fixed step by 00778450 with the current tick),
+bit 2 sends to the host through 00779F90 when the session mode is 2, bit 4 sends to each peer in the list
+at entity+2A4h when the mode is 1; the word is the caller's override or the default at 00E0AF1C, mode 0
+replaces it with 1, a word of exactly 4 returns early outside a host session. Kind 58h reaches
+entity->vtable[160h] = BSP_UnitInstance_ApplyEntityCommand; 5Ah/5Eh go through the 59h arm into the
+weapon director (0071C1E0, and 00836240 = BSP_WeaponDirector_SetFireTarget); 4Eh writes entity+70h and
+calls vtable[70h]; 99h/9Ah (this doc's MT_SHIP_SYNC family) fall through to the unit's own switch.
