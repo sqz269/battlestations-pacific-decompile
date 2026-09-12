@@ -1,0 +1,530 @@
+{
+  "packet": "cc2_lobby_settings",
+  "owner": "agent/cc2-lobby-settings",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_access": "read-only; no renames, comments, prototypes or saves from this packet",
+  "docs": [
+    "docs/MISSION_LOBBY_SETTINGS.md",
+    "docs/MISSION_LUA_TEARDOWN.md"
+  ],
+  "sources": [
+    "include/bsp/mission_lobby_settings.hpp",
+    "src/mission_lobby_settings.cpp"
+  ],
+  "no_ghidra_function": [],
+  "routines": [
+    {
+      "address": "005e2f00",
+      "name": "BSP_Game_SyncLobbySettingsFromLua",
+      "abi": "__fastcall void(void)",
+      "body": "005e2f00-005e3282",
+      "coverage": "complete for the normal flow 005e2f00..005e3282; the SEH unwind funclet at 00c74f38 was not read",
+      "caller": "004dfb70 at 004e02d0"
+    },
+    {
+      "address": "005d5500",
+      "name": "lobby setting slot to menu row",
+      "abi": "__fastcall int(int slot)",
+      "body": "005d5500-005d55ac",
+      "coverage": "complete"
+    },
+    {
+      "address": "005e2320",
+      "name": "lobby setting option label",
+      "abi": "__fastcall NativeString*(NativeString* ret, int slot)",
+      "body": "005e2320-005e274e",
+      "coverage": "partial: the slot 0 and slot 1 branches and the label/number fallback are read; the slot 0Dh branch (00e195bc) and the exception paths are not"
+    },
+    {
+      "address": "008d2f50",
+      "name": "MultiGlobals datatable loader",
+      "abi": "unread; __fastcall on the game object",
+      "body": "008d2f50-008d3dff",
+      "coverage": "partial: only the MultiLobbySettings loop that fills the two option maps was read; the latency, ping and bandwidth blocks were not"
+    },
+    {
+      "address": "004dc5c0",
+      "name": "BSP_Game_OnDestroy",
+      "abi": "__fastcall void(GGame*)",
+      "coverage": "partial: the Lua teardown 004dc5c0..004dc634 is complete; 0046f3e0, the four object deletes at 004dc634..004dc694 and 004a9ac0 are listed for order only"
+    },
+    {
+      "address": "00888300",
+      "name": "mission Lua host destructor",
+      "abi": "__fastcall void(MissionLuaHost*)",
+      "coverage": "complete"
+    },
+    {
+      "address": "00887d90",
+      "name": "deferred call list clear",
+      "abi": "__fastcall void(list*)",
+      "coverage": "complete"
+    },
+    {
+      "address": "008844f0",
+      "name": "release the LuaMachine held at host+4h",
+      "abi": "__fastcall void(MissionLuaHost*)",
+      "coverage": "complete"
+    }
+  ],
+  "corrections": [
+    {
+      "subject": "004dc729",
+      "was": "the mission Lua teardown, reached from BSP_Game_OnDestroy (docs/MISSION_LUA_HOST.md) / 'the teardown at 004DC729 is a different address and remains unread' (docs/MISSION_LUA_MACHINE.md)",
+      "is": "MOV ECX,[EBP+1A08h] at 004dc729 followed by CALL 00886900 at 004dc72f, inside 004dc6a0 BSP_Game_ConstructGlobalSubsystems (body 004dc6a0-004dc93f). A load-path call, not a teardown.",
+      "evidence": "ghidra proto 004dc729 reports the containing function; the listing at 004dc729..004dc72f shows the load of the host pointer and the direct call"
+    },
+    {
+      "subject": "the real mission Lua teardown",
+      "was": "unread",
+      "is": "004dc5c0 BSP_Game_OnDestroy steps 7 to 9: 00b65e80 on game+1A0Ch drops the borrowed state pointer, 008844f0 deletes the LuaMachine at host+4h (lua_close at 006b87d2), then the host vtable slot 0 (00888380 -> 00888300) clears the queued named calls and frees the host",
+      "evidence": "listing 004dc5c0..004dc634 and the callee bodies 00b65e80, 008844f0, 006b87c0, 00888300, 00887d90"
+    },
+    {
+      "subject": "src/mission_scene_load.cpp:222, the thisTable rebuild gate",
+      "was": "if (host.lua_global_exists(\"thisTable\")) host.lua_clear_global(\"thisTable\"); - a rebuild when the global is present",
+      "is": "004e0225 calls 00b65fb0, which answers 'is nil', and 004e0249 TEST BL,BL / JZ 004e02d0 skips the rebuild when the answer is false. The native rebuilds only when the global is nil, so the self table survives every later scene load.",
+      "evidence": "listing 004e0203..004e02d0 inside 004dfb70; the 00b65fb0 ledger record (kind 0 false, kind 2 lua_type == LUA_TNIL). Not fixed here: src/mission_scene_load.cpp is another owner's file."
+    }
+  ],
+  "native": [
+    {
+      "address": "004e02d0",
+      "native": "005e2f00",
+      "function": "004dfb70",
+      "note": "sole caller of the sync"
+    },
+    {
+      "address": "005e2f2a",
+      "native": "0041e870",
+      "function": "005e2f00",
+      "note": "NativeString 'LobbySettings' from [00e08904]"
+    },
+    {
+      "address": "005e2f48",
+      "native": "00b67980",
+      "function": "005e2f00",
+      "note": "GetGlobals on game+1A0Ch"
+    },
+    {
+      "address": "005e2f59",
+      "native": "00b67350",
+      "function": "005e2f00",
+      "note": "globals.LobbySettings = nil"
+    },
+    {
+      "address": "005e2f67",
+      "native": "00b67700",
+      "function": "005e2f00",
+      "note": "release the globals object"
+    },
+    {
+      "address": "005e2fce",
+      "native": "004bca50",
+      "function": "005e2f00",
+      "note": "effective game mode into 00e19564, and 00e19568 when below 4"
+    },
+    {
+      "address": "005e301c",
+      "native": "0041e870",
+      "function": "005e2f00",
+      "note": "table name for the rebuild"
+    },
+    {
+      "address": "005e303a",
+      "native": "00b67980",
+      "function": "005e2f00",
+      "note": "GetGlobals"
+    },
+    {
+      "address": "005e304b",
+      "native": "00b67580",
+      "function": "005e2f00",
+      "note": "globals.LobbySettings = {}"
+    },
+    {
+      "address": "005e3096",
+      "native": "00b67980",
+      "function": "005e2f00",
+      "note": "GetGlobals"
+    },
+    {
+      "address": "005e30b1",
+      "native": "00b67800",
+      "function": "005e2f00",
+      "note": "t = globals.LobbySettings"
+    },
+    {
+      "address": "005e30d2",
+      "native": "005d5500",
+      "function": "005e2f00",
+      "note": "menu row for the slot, ECX = slot"
+    },
+    {
+      "address": "005e30f1",
+      "native": "0041e870",
+      "function": "005e2f00",
+      "note": "field name for the nil write"
+    },
+    {
+      "address": "005e3104",
+      "native": "00b67350",
+      "function": "005e2f00",
+      "note": "t[field] = nil"
+    },
+    {
+      "address": "005e312e",
+      "native": "00576b10",
+      "function": "005e2f00",
+      "note": "option registry singleton"
+    },
+    {
+      "address": "005e3140",
+      "native": "00575fd0",
+      "function": "005e2f00",
+      "note": "registry+1Ch operator[](slot)"
+    },
+    {
+      "address": "005e3147",
+      "native": "00573410",
+      "function": "005e2f00",
+      "note": "operator[](0), the type probe"
+    },
+    {
+      "address": "005e316c",
+      "native": "0041e870",
+      "function": "005e2f00",
+      "note": "field name for the number write"
+    },
+    {
+      "address": "005e3176",
+      "native": "00576b10",
+      "function": "005e2f00",
+      "note": "option registry singleton"
+    },
+    {
+      "address": "005e3188",
+      "native": "00575fd0",
+      "function": "005e2f00",
+      "note": "registry+1Ch operator[](slot)"
+    },
+    {
+      "address": "005e318f",
+      "native": "00573410",
+      "function": "005e2f00",
+      "note": "operator[](stored option index)"
+    },
+    {
+      "address": "005e31a0",
+      "native": "00b67460",
+      "function": "005e2f00",
+      "note": "t[field] = number; body is lua_pushlstring + lua_pushnumber + lua_settable"
+    },
+    {
+      "address": "005e31bd",
+      "native": "005e2320",
+      "function": "005e2f00",
+      "note": "option label, ECX = out string, EDX = slot"
+    },
+    {
+      "address": "005e31d4",
+      "native": "00b67630",
+      "function": "005e2f00",
+      "note": "t[field] = string"
+    },
+    {
+      "address": "005e3214",
+      "native": "00b67700",
+      "function": "005e2f00",
+      "note": "release the table object"
+    },
+    {
+      "address": "005e321f",
+      "native": "004bca50",
+      "function": "005e2f00",
+      "note": "mode for the command-point float"
+    },
+    {
+      "address": "005e323a",
+      "native": "00576b10",
+      "function": "005e2f00",
+      "note": "option registry singleton"
+    },
+    {
+      "address": "005e324c",
+      "native": "00575fd0",
+      "function": "005e2f00",
+      "note": "operator[](5), ResourceLimit"
+    },
+    {
+      "address": "005e3253",
+      "native": "00573410",
+      "function": "005e2f00",
+      "note": "operator[](00e19570); result doubled into 00e0cfb4"
+    },
+    {
+      "address": "005e26fb",
+      "native": "00575fd0",
+      "function": "005e2320",
+      "note": "integer-map fallback when the label entry is null"
+    },
+    {
+      "address": "008d378a",
+      "native": "00575fd0",
+      "function": "008d2f50",
+      "note": "MultiLobbySettings loader writes the integer map"
+    },
+    {
+      "address": "008d387f",
+      "native": "00575fd0",
+      "function": "008d2f50",
+      "note": "MultiLobbySettings loader writes the integer map"
+    },
+    {
+      "address": "008d3b16",
+      "native": "00575fd0",
+      "function": "008d2f50",
+      "note": "integer option key -> integer map"
+    },
+    {
+      "address": "004dc5c9",
+      "native": "004254b0",
+      "function": "004dc5c0",
+      "note": "logs GGame::OnDestroy()"
+    },
+    {
+      "address": "004dc5e2",
+      "native": "004da780",
+      "function": "004dc5c0",
+      "note": "BSP_Game_TeardownSessionState"
+    },
+    {
+      "address": "004dc5e9",
+      "native": "004da650",
+      "function": "004dc5c0",
+      "note": "BSP_FrontEnd_DestroyManagers"
+    },
+    {
+      "address": "004dc601",
+      "native": "00992ac0",
+      "function": "004dc5c0",
+      "note": "after the indirect call on 00f8a2fc"
+    },
+    {
+      "address": "004dc60c",
+      "native": "00b65e80",
+      "function": "004dc5c0",
+      "note": "LuaStateOwner::Close on game+1A0Ch; drops the borrowed pointer only"
+    },
+    {
+      "address": "004dc617",
+      "native": "008844f0",
+      "function": "004dc5c0",
+      "note": "delete the LuaMachine at host+4h; not null-guarded"
+    },
+    {
+      "address": "004dc62c",
+      "native": "00d0e7a8+vtable00",
+      "function": "004dc5c0",
+      "note": "indirect: host vtable slot 0 = 00888380, flag 1"
+    },
+    {
+      "address": "006b87d2",
+      "native": "00a68a90",
+      "function": "006b87c0",
+      "note": "lua_close(L) with the state in ECX, gated on the owns byte at machine+8h"
+    },
+    {
+      "address": "00888338",
+      "native": "00cf8394+vtable00",
+      "function": "00888300",
+      "note": "indirect: machine vtable slot 0 = 006b87c0"
+    },
+    {
+      "address": "00888354",
+      "native": "00887d90",
+      "function": "00888300",
+      "note": "clear the deferred-call list at host+8h"
+    },
+    {
+      "address": "0088835d",
+      "native": "00bf65ac",
+      "function": "00888300",
+      "note": "free the list sentinel node at host+0Ch"
+    },
+    {
+      "address": "004de093",
+      "native": "008882d0",
+      "function": "004ddb90",
+      "note": "host constructor on the 14h-byte block"
+    },
+    {
+      "address": "004dd627",
+      "native": "00884be0",
+      "function": "004dd5b0",
+      "note": "BSP_MissionLuaHost_Initialize, ECX = [game+1A08h]"
+    },
+    {
+      "address": "004dd641",
+      "native": "00b65e20",
+      "function": "004dd5b0",
+      "note": "inline LuaStateOwner at game+1A0Ch over the machine's state"
+    },
+    {
+      "address": "004dc72f",
+      "native": "00886900",
+      "function": "004dc6a0",
+      "note": "the call 004dc729 loads ECX for; a load-path step, not a teardown"
+    },
+    {
+      "address": "004e0203",
+      "native": "00b67980",
+      "function": "004dfb70",
+      "note": "globals for the thisTable test"
+    },
+    {
+      "address": "004e021a",
+      "native": "00b67800",
+      "function": "004dfb70",
+      "note": "t = globals.thisTable, name at 00ce7494"
+    },
+    {
+      "address": "004e0225",
+      "native": "00b65fb0",
+      "function": "004dfb70",
+      "note": "IsNil into BL; TEST BL,BL / JZ 004e02d0 keeps an existing table"
+    },
+    {
+      "address": "004e029b",
+      "native": "00b67580",
+      "function": "004dfb70",
+      "note": "globals.thisTable = {} only when it was nil"
+    },
+    {
+      "address": "004e0321",
+      "native": "00b67350",
+      "function": "004dfb70",
+      "note": "globals.recon = nil, name at 00ce74a0, unconditional"
+    }
+  ],
+  "slots": [
+    {
+      "slot": 0,
+      "field": "PlayerCount",
+      "type": "string",
+      "source": "game+218Ch, game+2017h, game+2018h or the slot records at game+18D0h-4",
+      "always_published": true
+    },
+    {
+      "slot": 1,
+      "field": "Map",
+      "type": "string",
+      "source": "mission record 00e19594 through 004be940, field +920h"
+    },
+    {
+      "slot": 2,
+      "field": "GameMode",
+      "type": "string",
+      "source": "00e19564, overwritten from 004bca50 when game+61Ch is set",
+      "always_published": true
+    },
+    {
+      "slot": 3,
+      "field": "MapSize",
+      "type": "string",
+      "source": "00e19568, overwritten with the mode when it is below 4"
+    },
+    {
+      "slot": 4,
+      "field": "UnitType",
+      "type": "string",
+      "source": "00e1956c"
+    },
+    {
+      "slot": 5,
+      "field": "ResourceLimit",
+      "type": "number",
+      "source": "00e19570",
+      "conversion": "integer payload of (5, value); 9600 4800 3600 2400 1200 900 600 300"
+    },
+    {
+      "slot": 6,
+      "field": "TimeLimit",
+      "type": "string",
+      "source": "00e19574"
+    },
+    {
+      "slot": 7,
+      "field": "TimeLimit_IC",
+      "type": "string",
+      "source": "00e19578"
+    },
+    {
+      "slot": 8,
+      "field": "PointLimit",
+      "type": "string",
+      "source": "00e1957c"
+    },
+    {
+      "slot": 9,
+      "field": "RoundLimit",
+      "type": "string",
+      "source": "00e19580"
+    },
+    {
+      "slot": 10,
+      "field": "EnablePowerups",
+      "type": "string",
+      "source": "00e19584"
+    },
+    {
+      "slot": 11,
+      "field": "EnableMap",
+      "type": "string",
+      "source": "00e19588"
+    },
+    {
+      "slot": 12,
+      "field": "ReloadPayload",
+      "type": "string",
+      "source": "00e1958c"
+    },
+    {
+      "slot": 13,
+      "field": null,
+      "type": "not published",
+      "source": "00e19590",
+      "note": "skipped by number at 005e30c7"
+    }
+  ],
+  "mode_flags": [
+    {
+      "global": "00e0c978",
+      "rule": "00e19584 == 0 (EnablePowerups is globals.enable)",
+      "single_player": 1,
+      "reader": "008e9be1"
+    },
+    {
+      "global": "00e17bf2",
+      "rule": "00e1958c == 0 (ReloadPayload is globals.on)",
+      "single_player": 0,
+      "reader": "007b6381"
+    },
+    {
+      "global": "00e08880",
+      "rule": "00e19588 == 0 (EnableMap is globals.enable)",
+      "single_player": 1,
+      "reader": "0068ac30"
+    }
+  ],
+  "installed_file_evidence": [
+    "Scripts/datatables/multiglobals.lua, table MultiLobbySettings: slots 0 and 1 are empty, slot 5 has integer keys, every other slot has string keys",
+    "Scripts/missions/multi/competitive01.lua:121 compares LobbySettings.PointLimit to \"500\"",
+    "Scripts/missions/multi/duelOne.lua:311 compares LobbySettings.RoundLimit to \"1\"",
+    "Scripts/missions/multi/islandcapture03.lua:91 compares LobbySettings.MapSize to \"FE.multi_small\""
+  ],
+  "unsatisfied_checks": [
+    "rule 6 run-time evidence: bsp_game.exe reports 005e2f00 as an unimplemented host and does not reach the OnDestroy Lua steps, so no run log supports either part"
+  ]
+}
