@@ -178,6 +178,29 @@ public:
         bool player_controlled, float mission_clock, const bsp::UnitOrderRing& ring,
         float heading_radians);
 
+    // Milestone 2p. 0071eb60 on the unit's own weapon director, the routine
+    // 009f1420's brain pre-pass calls at 009f146b with ECX = [brain+0ab8h]:
+    // director+30h == 1 hands back the slot-0 descriptor at director+58h,
+    // == 2 the override descriptor at director+18ch, anything else the empty
+    // singleton at 00e19b98. False is that singleton; `mode` is the raw +30h.
+    bool active_command_descriptor_0071eb60(std::size_t unit_index,
+        bsp::SceneCommandTarget& out, int& mode) const;
+    // 00521ea0 BSP_CommandTarget_ResolveObject on a descriptor: the created
+    // instance its +2h id names, one-based, or 0.
+    std::uint32_t resolve_command_target_00521ea0(const bsp::SceneCommandTarget& target) const;
+    // 0071df70's first test: the float at director+40h. See GameDirector for
+    // the three producers and which of them this process reaches.
+    float director_target_hold_0040(std::size_t unit_index) const;
+    // 0071df83..0071dfc2: the categories of the leading occupied command slots
+    // at director+54h, stride 1ch, stopped at the first null. Returns how many
+    // were written; a category of 1 or 2 rejects the automatic target think.
+    int director_leading_slot_categories_0071df83(std::size_t unit_index, int* out,
+        int max_out) const;
+    // The command object one slot carries, for the report's "what slot 0 holds".
+    std::uint32_t director_slot_command(std::size_t unit_index, int slot_index) const;
+    // The registry name of a command object, or "" when no row matches.
+    const char* command_name_of(std::uint32_t command_object) const;
+
     // 0071be40 with the director's own mode: does this unit hold `cruise`?
     bool holds_cruise(std::size_t unit_index) const;
     // Milestone 2n. The same read without the `cruise` test, which is what

@@ -58,6 +58,7 @@
 
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/ship_ai_obstacle_tables.hpp"
 
 namespace bsp::game {
 
@@ -272,6 +273,46 @@ public:
     // to the world-bounds test, so the y at +100h is part of it; 009e57aa and
     // 009e57c2 read the x and z alone.
     void unit_position_00fc(std::size_t index, float& x, float& y, float& z) const;
+
+    // ---- milestone 2p: what the brain pre-pass 009f1420 reads --------------
+    // 0071eb60 on [brain+0ab8h], the unit's own weapon director. False is the
+    // empty singleton at 00e19b98; `mode` is director+30h.
+    bool active_command_descriptor_0071eb60(std::size_t index,
+        bsp::SceneCommandTarget& out, int& mode) const;
+    // 00521ea0 BSP_CommandTarget_ResolveObject on that descriptor. Returns a
+    // one-based created-instance handle, or 0 when the descriptor names no
+    // object or the object is not one of this process's instances.
+    std::uint32_t resolve_command_target_00521ea0(const bsp::SceneCommandTarget& target) const;
+    // 004142e0 BSP_Vector3f_TransformAffinePoint with the matrix at unit+0cch,
+    // which is what 009dbcc0 carries the latched offset out through.
+    void transform_by_unit_matrix_004142e0(std::size_t index, float in_x, float in_y,
+        float in_z, float& out_x, float& out_y, float& out_z) const;
+    // unit+54h, the side word 009f14db / 009f14e4 compare and 009e2588 copies.
+    int unit_side_0054(std::size_t index) const;
+    // 0071df70's two inputs on the unit's own director, forwarded.
+    float director_target_hold_0040(std::size_t index) const;
+    int director_leading_slot_categories_0071df83(std::size_t index, int* out,
+        int max_out) const;
+    std::uint32_t director_slot_command(std::size_t index, int slot_index) const;
+    const char* command_name_of(std::uint32_t command_object) const;
+    // The seven AutoThrust keys 009ec7c0 consumes, loaded once beside the turn
+    // multipliers. `loaded` is false when the sub-table was absent, in which
+    // case every field is the zero a fresh settings object carries.
+    const bsp::ShipAiAutoThrustSettings& auto_thrust_settings(bool& loaded) const;
+    // 009ec97b / 009ec9a4 / 009ec99c / 009ec9ab, the four live reads the
+    // throttle ceiling makes outside the tuning block.
+    bsp::ShipAiThrottleCeilingInputs throttle_ceiling_inputs(std::size_t index) const;
+    // unit+9cch, the half width the danger ramp divides the clearance by, and
+    // [[unit+538h]+500h] / +508h, the two class fields 009ef230 builds a
+    // sector's braking distance from.
+    float unit_half_width_09cc(std::size_t index) const;
+    float unit_class_max_speed_0500(std::size_t index) const;
+    // unit+102ch and unit+1034h, the two load latches 009f3f80's middle raises
+    // with the inlined bodies of 009d4fb0 and 009d4fe0.
+    void raise_turn_assist_load_102c(std::size_t index, float value);
+    void raise_secondary_load_1034(std::size_t index, float value);
+    float turn_assist_load_102c(std::size_t index) const;
+    float secondary_load_1034(std::size_t index) const;
 
     std::size_t count() const noexcept;
     bool unit_active(std::size_t index) const noexcept;
