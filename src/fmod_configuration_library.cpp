@@ -153,6 +153,34 @@ FmodResult FmodConfigurationLibrary::channel_is_playing(void* channel, bool* val
     *value = native != 0;
     return result;
 }
+FmodResult FmodConfigurationLibrary::stream_channel_is_playing(void* channel, std::uint8_t& value) {
+    // Loaded installed export RVA1CF31: explicit this/output stack slots,
+    // RET8. Pass the original caller's byte directly, preserving every write
+    // and unwritten error result; do not pass through the C FMOD_BOOL wrapper.
+    return impl_->call("?isPlaying@Channel@FMOD@@QAG?AW4FMOD_RESULT@@PA_N@Z", channel, &value);
+}
+FmodResult FmodConfigurationLibrary::sound_get_open_state(void* sound, std::int32_t* state,
+    std::uint32_t* percent, std::uint8_t* starving) {
+    // Loaded installed export RVA1E67C: this/state/percent/byte, RET10.
+    // The caller's percent/starving outputs may initially be unwritten.
+    return impl_->call("?getOpenState@Sound@FMOD@@QAG?AW4FMOD_RESULT@@PAW4FMOD_OPENSTATE@@PAIPA_N@Z",
+        sound, state, percent, starving);
+}
+FmodResult FmodConfigurationLibrary::sound_get_format(void* sound, std::int32_t* type,
+    std::int32_t* format, std::int32_t* channels, std::int32_t* bits) {
+    return impl_->call("FMOD_Sound_GetFormat", sound, type, format, channels, bits);
+}
+FmodResult FmodConfigurationLibrary::channel_set_speaker_levels(void* channel, std::int32_t speaker,
+    const float* levels, std::int32_t count) {
+    return impl_->call("FMOD_Channel_SetSpeakerLevels", channel, speaker, levels, count);
+}
+FmodResult FmodConfigurationLibrary::channel_set_priority(void* channel, std::int32_t priority) {
+    return impl_->call("FMOD_Channel_SetPriority", channel, priority);
+}
+FmodResult FmodConfigurationLibrary::channel_set_position(void* channel, std::uint32_t position,
+    std::uint32_t unit) {
+    return impl_->call("FMOD_Channel_SetPosition", channel, position, unit);
+}
 FmodResult FmodConfigurationLibrary::channel_set_frequency(void* channel, float value) {
     return impl_->call("FMOD_Channel_SetFrequency", channel, value);
 }

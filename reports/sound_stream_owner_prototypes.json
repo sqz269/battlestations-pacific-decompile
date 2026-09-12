@@ -1,0 +1,136 @@
+{
+  "reason": "Native ABI from verified listing; unused_edx represents an unconsumed register, not an original argument. Stream ctor uses three owned stack DWORDs (8h name plus retained pointer), RET0C.",
+  "entries": [
+    {
+      "address": "00a877d0",
+      "proposed": "void* __fastcall BSP_SoundStream_Construct(void* self, void* unused_edx, uint name_length, char* name_data, void* retained_table)",
+      "before": "Function: FUN_00a877d0 at 00a877d0\nSignature: undefined FUN_00a877d0(void)\nEntry: 00a877d0\nBody: 00a877d0 - 00a87b2e",
+      "apply": "Successfully set prototype for function at 00a877d0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_Construct at 00a877d0\nSignature: void * __fastcall BSP_SoundStream_Construct(void * self, void * unused_edx, uint name_length, char * name_data, void * retained_table)\nEntry: 00a877d0\nBody: 00a877d0 - 00a87b2e",
+      "readback_verified": true
+    },
+    {
+      "address": "00a87390",
+      "proposed": "void __fastcall BSP_SoundStream_Destroy(void* self)",
+      "before": "Function: FUN_00a87390 at 00a87390\nSignature: undefined FUN_00a87390(void)\nEntry: 00a87390\nBody: 00a87390 - 00a8741a",
+      "apply": "Successfully set prototype for function at 00a87390 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStream_Destroy at 00a87390\nSignature: void __fastcall BSP_SoundStream_Destroy(void * self)\nEntry: 00a87390\nBody: 00a87390 - 00a8741a",
+      "readback_verified": true
+    },
+    {
+      "address": "00a87b30",
+      "proposed": "void* __fastcall BSP_SoundStream_ScalarDelete(void* self, void* unused_edx, uint flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a87b30 at 00a87b30\nSignature: undefined CG_scalar_deleting_dtor_00a87b30(void)\nEntry: 00a87b30\nBody: 00a87b30 - 00a87b4d",
+      "apply": "Successfully set prototype for function at 00a87b30 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a87b30 at 00a87b30\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a87b30(void * self, void * unused_edx, uint flags)\nEntry: 00a87b30\nBody: 00a87b30 - 00a87b4d",
+      "readback_verified": true
+    },
+    {
+      "address": "00a79150",
+      "proposed": "void* __fastcall BSP_SoundStreamTable_Construct(void* self, void* unused_edx, void* filename)",
+      "before": "Function: FUN_00a79150 at 00a79150\nSignature: undefined FUN_00a79150(void)\nEntry: 00a79150\nBody: 00a79150 - 00a791c6",
+      "apply": "Successfully set prototype for function at 00a79150 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStreamTable_Construct at 00a79150\nSignature: void * __fastcall BSP_SoundStreamTable_Construct(void * self, void * unused_edx, void * filename)\nEntry: 00a79150\nBody: 00a79150 - 00a791c6",
+      "readback_verified": true
+    },
+    {
+      "address": "00a86540",
+      "proposed": "void __fastcall BSP_SoundStreamControls_Reserve(void* self, void* unused_edx, int capacity)",
+      "before": "Function: FUN_00a86540 at 00a86540\nSignature: undefined FUN_00a86540(void)\nEntry: 00a86540\nBody: 00a86540 - 00a865c1",
+      "apply": "Successfully set prototype for function at 00a86540 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStreamControls_Reserve at 00a86540\nSignature: void __fastcall BSP_SoundStreamControls_Reserve(void * self, void * unused_edx, int capacity)\nEntry: 00a86540\nBody: 00a86540 - 00a865c1",
+      "readback_verified": true
+    },
+    {
+      "address": "00a868b0",
+      "proposed": "void __fastcall BSP_SoundStreamControls_Resize(void* self, void* unused_edx, int count)",
+      "before": "Function: FUN_00a868b0 at 00a868b0\nSignature: undefined FUN_00a868b0(void)\nEntry: 00a868b0\nBody: 00a868b0 - 00a8697f",
+      "apply": "Successfully set prototype for function at 00a868b0 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStreamControls_Resize at 00a868b0\nSignature: void __fastcall BSP_SoundStreamControls_Resize(void * self, void * unused_edx, int count)\nEntry: 00a868b0\nBody: 00a868b0 - 00a8697f",
+      "readback_verified": true
+    },
+    {
+      "address": "00a86990",
+      "proposed": "void __fastcall BSP_SoundStreamControls_Destroy(void* self)",
+      "before": "Function: FUN_00a86990 at 00a86990\nSignature: undefined FUN_00a86990(void)\nEntry: 00a86990\nBody: 00a86990 - 00a869a1",
+      "apply": "Successfully set prototype for function at 00a86990 with __fastcall calling convention",
+      "after": "Function: BSP_SoundStreamControls_Destroy at 00a86990\nSignature: void __fastcall BSP_SoundStreamControls_Destroy(void * self)\nEntry: 00a86990\nBody: 00a86990 - 00a869a1",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a877d0",
+        "prototype": "void* __fastcall BSP_SoundStream_Construct(void* self, void* unused_edx, uint name_length, char* name_data, void* retained_table)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a877d0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a87390",
+        "prototype": "void __fastcall BSP_SoundStream_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a87390 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a87b30",
+        "prototype": "void* __fastcall BSP_SoundStream_ScalarDelete(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a87b30 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a79150",
+        "prototype": "void* __fastcall BSP_SoundStreamTable_Construct(void* self, void* unused_edx, void* filename)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a79150 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a86540",
+        "prototype": "void __fastcall BSP_SoundStreamControls_Reserve(void* self, void* unused_edx, int capacity)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a86540 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a868b0",
+        "prototype": "void __fastcall BSP_SoundStreamControls_Resize(void* self, void* unused_edx, int count)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a868b0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a86990",
+        "prototype": "void __fastcall BSP_SoundStreamControls_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a86990 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

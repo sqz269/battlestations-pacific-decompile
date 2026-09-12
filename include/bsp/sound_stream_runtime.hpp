@@ -42,8 +42,8 @@ struct SoundStreamRuntimeContext {
     const char* null_integer_format_01090ab4;
 };
 
-// Body-read A87B60: ECX manager, EAX +170, RET (7 bytes). Ghidra currently
-// lacks this function start; D5B44C+8 points here. Typed projection, not ABI.
+// Body-read A87B60: ECX manager, EAX +170, RET (7 bytes). Its initially missing
+// Ghidra start is now defined; D5B44C+8 points here. Typed projection, not ABI.
 std::uint32_t sound_stream_speaker_layout_00a87b60(const SoundSystemOwner&) noexcept;
 // ECX actual54h receiver. Gain takes float/RET4; row takes index,float/RET8.
 // Both copy raw float bits. Row indexing is unchecked native pointer arithmetic.
