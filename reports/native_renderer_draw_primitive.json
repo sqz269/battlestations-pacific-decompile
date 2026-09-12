@@ -1,0 +1,186 @@
+{
+  "packet": "renderer_draw_actual5",
+  "status": "complete_actual_storage_strict_Win32_and_original_body_capture_fixture_checked",
+  "source_ready": true,
+  "address": "00b21b40",
+  "native_size": 175,
+  "native_end_exclusive": "00b21bef",
+  "function": "draw_native_renderer_primitive_00b21b40",
+  "source": "src/native_renderer_draw_primitive.cpp",
+  "header": "include/bsp/native_renderer_draw_primitive.hpp",
+  "doc": "docs/NATIVE_RENDERER_DRAW_PRIMITIVE.md",
+  "original_abi": "ECX renderer, stack type/start/count DWORDs, RET0C; device slot144 stdcall HRESULT ignored.",
+  "proposed_name": "BSP_D3D9Renderer_DrawPrimitive",
+  "retain_existing_name": true,
+  "proposed_evidence_comment": "Complete175-byte raw renderer body: DWORD+1D90 then byte+1D8A skips; current+1904 and actual B1F740 before zero count; actual optional guard entry, current device/table+144 DrawPrimitive, ignored HRESULT, no counter writes; current mode read precedes disarm, saved DWORD/renderer and actual leave. New C++ interface uses actual synchronization and B21110 C++ cleanup; original FH3/SEH/private frame/caller-stack aliases and drop-in ABI excluded. Strict Win32 build, seven normal captured-native/source cases and one source-only C++ unwind fixture passed; local COM capture and actual Win32 lock, no game claim.",
+  "dependencies": [
+    {
+      "address": "00b1f740",
+      "source": "src/native_renderer_indexed_draw.cpp"
+    },
+    {
+      "address": "00b33ad0",
+      "source": "src/native_renderer_synchronization_actual.cpp"
+    },
+    {
+      "address": "00b33b00",
+      "source": "src/native_renderer_synchronization_actual.cpp"
+    },
+    {
+      "address": "00b21110",
+      "source": "src/native_renderer_synchronization_actual.cpp"
+    }
+  ],
+  "capture": {
+    "time_utc": "2026-09-12T16:49:29.053151+00:00",
+    "config": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "verification": "Each bsp ghidra command verifies saved project name, program path, x86 language and image base before reading.",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b21b40",
+        "length": 175,
+        "role": "complete DrawPrimitive body",
+        "sha256": "6ece2956a55cd9e9e8d3cc409755c1d6d15c5804753d20b3cb1fbbc03c325b54",
+        "live_equals_disk": true,
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b21b40",
+          "--length",
+          "175"
+        ]
+      },
+      {
+        "address": "00b1f740",
+        "length": 4,
+        "role": "complete existing viewport address provider",
+        "sha256": "108eb05660dfe1a041240deb6da273082575a75017fa45a5f13e0086c713bc3d",
+        "live_equals_disk": true,
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00b1f740",
+          "--length",
+          "4"
+        ]
+      },
+      {
+        "address": "00cbcdf0",
+        "length": 18,
+        "role": "unwind funclet and FH3 handler thunk",
+        "sha256": "d748e0b0bc66f077c945aaebcf648602e8783527ae2fd8a72f33d1c247e45dad",
+        "live_equals_disk": true,
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00cbcdf0",
+          "--length",
+          "18"
+        ]
+      },
+      {
+        "address": "00df53a0",
+        "length": 36,
+        "role": "FH3 function metadata",
+        "sha256": "a0efc4ec761ac095cd4110c49fb8bd5bcc8c8f1d214ec98d131d72d5ba675eed",
+        "live_equals_disk": true,
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "00df53a0",
+          "--length",
+          "36"
+        ]
+      },
+      {
+        "address": "00df5398",
+        "length": 8,
+        "role": "FH3 single unwind state map",
+        "sha256": "962ed66d267626d23b6f5bd85f237ab1da00f5744db9584bc74a3c0382e36886",
+        "live_equals_disk": true
+      }
+    ]
+  },
+  "build": {
+    "command": [
+      "C:\\Program Files\\PowerShell\\7\\pwsh.EXE",
+      "-NoProfile",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      "J:\\PROG\\battlestations-pacific-decompile-renderer-draw-actual5\\scripts\\build.ps1"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 34.87401843070984,
+    "input_count": 1738,
+    "changed_inputs": [],
+    "temporary_cmake_registration": true
+  },
+  "fixture": {
+    "exit_code": 0,
+    "elapsed_seconds": 0.04608726501464844,
+    "executable_sha256": "3b42c94a55358f3fc3a73e5f9ea0c7aedb3b4fd58854da465cf5a616174e3ebc",
+    "library_sha256": "3a1dd232bb0a8c5c86a0992f18084448a468b2f95e263b58ae97368d11c3d9de",
+    "normal_scenarios": 7,
+    "source_cpp_unwind_scenarios": 1,
+    "replay": "Captured complete175-byte body: two mode operands and three direct provider calls relocated; no original EH path executed.",
+    "device": "Local COM ABI capture fixture; no actual graphics device or gameplay."
+  },
+  "source_pins": {
+    "include/bsp/native_renderer_draw_primitive.hpp": "dcf8371a149880129b01144f941267fceea04f8a6a793f91912853d33e4d57ea",
+    "src/native_renderer_draw_primitive.cpp": "ebf22e08702e312df99a3ce193c58c79bf7c280779592e4a41cb523c44defe09",
+    "docs/NATIVE_RENDERER_DRAW_PRIMITIVE.md": "ccbdad3f6b7cb0b85e8577f339a049c795063f5c13d0cd3d321713ac0be270de"
+  },
+  "evidence_directory": "J:\\PROG\\battlestations-pacific-decompile-renderer-draw-actual5\\local\\draw_actual5",
+  "seal_sha256": "d0eb46e06dbec77fb437fb17f191fc3490377b74bc423cd7991c14478cd42dd7",
+  "sealed_files": 62,
+  "validation_boundaries": {
+    "exported": true,
+    "reconstructed": true,
+    "build_tested": true,
+    "fixture_tested": true,
+    "original_entry_abi_compatible": false,
+    "original_fh3_or_seh_tested": false,
+    "game_validated": false
+  },
+  "normal_cases": [
+    "mode0 draw",
+    "inhibit DWORD high bit",
+    "device-lost high byte bit",
+    "zero count",
+    "enabled optional guard with null lock",
+    "enabled mode changed to zero by device",
+    "enabled real Win32 tracked critical section"
+  ],
+  "source_only_cases": [
+    "C++ capture-device exception unwinds through actual B21110 cleanup"
+  ],
+  "remaining_integration": [
+    "permanent CMake registration",
+    "primary review",
+    "ledger/name evidence update",
+    "Ghidra comment/save/forced export"
+  ],
+  "ghidra_mutations_by_worker": false,
+  "shared_metadata_mutations_by_worker": false,
+  "pushed_by_worker": false
+}
