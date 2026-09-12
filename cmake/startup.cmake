@@ -22,6 +22,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_ef
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_factory.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_material_pools.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_physical_stream_conversion.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_physical_stream_open.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_shader_state_definitions.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/platform_services.cpp src/xlive_manager_runtime.cpp)
