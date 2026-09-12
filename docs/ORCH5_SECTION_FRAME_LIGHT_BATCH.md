@@ -74,6 +74,12 @@ TOP/tag. It does not execute the full Section owner or renderer. No permanent
 tests were added. Numeric call-row verification is recorded separately and does
 not establish indirect profile or gameplay equivalence by itself.
 
+The merged source at `6dd1441418c652038a1394d3ec083638f6304692` also passed the
+required Win32 build and 2/2 tests. The three owner probes were freshly relinked
+against that merged library and passed. The mechanical call check passed all
+99 numeric rows, including eight resolved indirect rows requiring profile
+evidence; 45 symbolic rows remain separately reviewed, not mechanically checked.
+
 ## Follow-up packets
 
 - Recover Section AC0280 property/texture loading, ABF5B0 copy and native Section
@@ -84,6 +90,25 @@ not establish indirect profile or gameplay equivalence by itself.
   owners, then validate complete Section mapping/emission and visible GUI output.
 - Extend common widget deletion to other actual derived profiles and native GUI
   allocation contracts when their independent resource tails are established.
+
+Section property work should start with AC0280 and ABF6F0, reusing evaluated
+`GuiTable`, `NativeStringStorage` and the actual AA2660 texture/atlas resolver.
+Texture replacement release order and exceptional ownership need proof first.
+ABF5B0 copy remains gated by a canonical AA9520 base-copy path and texture/string
+lifetime; the current default-construction factory does not establish copying.
+
+For Icon AB1150, establish the producers of +128/+12C/+130 and the actual
+current44/current88 targets before implementing its post-AA87B0 tail. Listener
+investigation starts at AA6BC0 and binder5861B0; resolve the screen's +40 listener
+table and adjusted-this/argument contracts. Existing slot adapters are incomplete
+dependencies until those concrete handlers are recovered.
+
+For PointLight provider integration, preserve B752B0/B6F150 cloning as borrowed
+raw identities from the source Model; populate that source through B6EED0 and
+reciprocal B7BE40 in the same destruction/link/scene domains. Constructor callers
+8740E0, AF90A0, B08F60, B0B6A0 and BC0510 are investigation candidates, not proven
+Text-provider routes. Establish +1EC..1FB render-value producers and both
+node-first/light-first teardown before illuminated rendering or reachability claims.
 
 This is exported, reconstructed, build-tested and scoped source-fixture-tested
 work. It is not a drop-in binary replacement or a gameplay-validated game rebuild.

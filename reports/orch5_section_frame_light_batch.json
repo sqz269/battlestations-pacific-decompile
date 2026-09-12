@@ -185,5 +185,133 @@
     "sha256": "1f79e7c9a9b817d0158402927a50e6856c4e3e6f21c5c23049b8a73e5fde6329",
     "scope": "live stored body and direct instruction targets; resolved indirect rows still require separately reviewed profile evidence",
     "symbolic_rows_not_mechanically_checked": 45
-  }
+  },
+  "integration": {
+    "tested_code_commit": "6dd1441418c652038a1394d3ec083638f6304692",
+    "build": "MSVC Win32 Release passed; 2/2 existing tests passed",
+    "tool": "tools/integrate_workers.py agent/orch5-20260911 --no-push",
+    "log": "local/orch5-section-frame-light-integration.log",
+    "log_sha256": "102c7364b57d9be747bae893eccb4002aa536ad28b6314375fe9c4c5412ee578",
+    "main_advanced_during_build_retry": false,
+    "mechanical_conflicts": [
+      "cmake/startup.cmake",
+      "config/parallel_work.json"
+    ],
+    "reviewed_implementation_sources_unchanged": true,
+    "source_sha256_lf": {
+      "cmake/startup.cmake": "51028073f424db1d0e6e1a1d838cf49ce241eaf6a21759106dd8938e97275fe1",
+      "include/bsp/directional_light_owner.hpp": "afa436a30516dcb1c66e7ca2058c0bf31a5e8910207fa1a13bdcc07ddff34bce",
+      "include/bsp/gui_material_binding.hpp": "9d6a380b2ea93fdf8910fa73733229c2a3bac0528f669bf8e655fc3e8f0cdafd",
+      "include/bsp/gui_section_runtime.hpp": "405b8395a28e7d432ec3f2a755c93d0fa1453de3ead780917286b9f8c6dba138",
+      "include/bsp/gui_text_child_lifetime.hpp": "e9f65b47da68105fad0281a6018ba9be348f8dfb17d94cc86eaf05d669e00ced",
+      "include/bsp/gui_type_dispatch.hpp": "8fe56312b5e6574b44dfd0cbf4eb6fdaf3193fa8ca9f5591f781e62a88c49499",
+      "include/bsp/gui_widget_base_lifetime.hpp": "1290fe07948c9946c09ef1ef19f5a9b93bb03ada8be0be304dfc26a078ab9d52",
+      "include/bsp/gui_widget_frame_runtime.hpp": "8cb8682cc80c41e10ecc035ff612b0b73b622cdba8a3f028bc7f67a91ef5a822",
+      "include/bsp/gui_widget_owner.hpp": "0fe09fec526cf557ffa84e6f6a4fa780b83082eec8526093d95dac449c66e8cc",
+      "include/bsp/native_point_light_owner.hpp": "45d721d47600268c16877f4f8b96e961abe41e97e16a9fe68f8d558a543d8dcc",
+      "include/bsp/native_point_light_pool.hpp": "2d7a53ed837c2832866461b2e891f1cb86af6ccc06b842124957a3c4b0696233",
+      "src/directional_light_owner.cpp": "ec841412e352009e5e0c02bab8bab75a928382fb0a568dc47aad6944504e4647",
+      "src/gui_material_binding.cpp": "de3312f993d3180fb7023c9869908a74134370c430bdb8844e20b1cadcac15e2",
+      "src/gui_section_runtime.cpp": "2f934834a43e3e03521ec41c42052ede28f406c74dff4aabaf1d128cbd400ae6",
+      "src/gui_text_child_lifetime.cpp": "1367f1d70595f33a187601752e286b4b306a0c86431751ad8e6a03c5bab50fcc",
+      "src/gui_timed_entry_types.cpp": "dd235a13bd9f26276a40d33c0c6517b2641f59004f45c0ee4c16d0aeebca071c",
+      "src/gui_type_dispatch.cpp": "ea1b584efae298a91a16d43a0b3fa8c5f7046b38d2c7c85291f2289ca0676ef5",
+      "src/gui_widget_base_lifetime.cpp": "24abae2f71a1e5945b02f8f943d370fbb43235ac6529142497f149f6fc56ebf0",
+      "src/gui_widget_clip_refresh.cpp": "6e7cf72ad36257b82e03e51289728faf6b0531661f44d16ce67363aadb034354",
+      "src/gui_widget_color_dispatch.cpp": "652c80178c334832f08085d4586c6843e5eb82d8c9eba5135d7a6553d6d11c87",
+      "src/gui_widget_frame_runtime.cpp": "b4e324018fe896619828419b7929ab1c6250e5d76c0c93dd6d8d2fb76e1395e9",
+      "src/gui_widget_owner.cpp": "d1b7550c36a1c5558d9f730a34f46ca300c3e1caa4ea7954cd65ea2e727111c5",
+      "src/native_point_light_owner.cpp": "649741e9b5357b06694027d398a45f4ba698f0cb0046ebcf9a1c8f24c7ef6c27",
+      "src/native_point_light_pool.cpp": "363e1f2220577bea8e007ec09c410d5dbe687d068feed325a375659f818b555f"
+    },
+    "post_merge_fixtures": {
+      "base": {
+        "result": "passed",
+        "log": "local/orch5-integrated-base-probe.log",
+        "sha256": "6498a83341b5b5bd4d78ab7296faa0c136ab5294e687ba340e7fc69a6e692aac",
+        "link": "fresh probe against merged bsp_core.lib; source fixture, not original-byte execution"
+      },
+      "frame": {
+        "result": "passed",
+        "log": "local/orch5-integrated-frame-probe.log",
+        "sha256": "924de5b82db64422039f70bf004ffde993771d44e3adbca6de369d39c54535bf",
+        "link": "fresh probe against merged bsp_core.lib; source fixture, not original-byte execution"
+      },
+      "point": {
+        "result": "passed",
+        "log": "local/orch5-integrated-point-probe.log",
+        "sha256": "35ffacb45317ee26d7c0500cb694827cc3397126c4d6a3f9db2b0caf678b3348",
+        "link": "fresh probe against merged bsp_core.lib; source fixture, not original-byte execution"
+      }
+    },
+    "runtime_limit": "no game/renderer execution; Section numeric fixture remains the exact-kernel test recorded before integration"
+  },
+  "follow_up_candidates": [
+    {
+      "packet": "Section property and texture ownership",
+      "addresses": [
+        "00ac0280",
+        "00abf6f0",
+        "00aa2660"
+      ],
+      "source_ready": false,
+      "gates": [
+        "actual retained texture and same atlas outputs",
+        "replacement release order and exception ownership"
+      ]
+    },
+    {
+      "packet": "Section copy",
+      "addresses": [
+        "00abf5b0",
+        "00aa9520"
+      ],
+      "source_ready": false,
+      "gates": [
+        "canonical base widget copy",
+        "texture/string lifetime and unwritten segment128"
+      ]
+    },
+    {
+      "packet": "Icon current40 tail",
+      "addresses": [
+        "00ab1150"
+      ],
+      "source_ready": false,
+      "gates": [
+        "128/12c/130 field producers",
+        "actual current44/current88 bodies and callback contracts"
+      ]
+    },
+    {
+      "packet": "Concrete widget listener owners",
+      "addresses": [
+        "00aa6bc0",
+        "005861b0"
+      ],
+      "source_ready": false,
+      "gates": [
+        "screen+40 actual table",
+        "adjusted-this and widget arguments",
+        "resolved concrete handlers"
+      ]
+    },
+    {
+      "packet": "PointLight source Model provider",
+      "addresses": [
+        "008740e0",
+        "00af90a0",
+        "00b08f60",
+        "00b0b6a0",
+        "00bc0510"
+      ],
+      "source_ready": false,
+      "gates": [
+        "prove actual Text-provider route",
+        "shared scene/link/destruction domains",
+        "real light references and render-value producers",
+        "node-first and light-first teardown"
+      ]
+    }
+  ]
 }
