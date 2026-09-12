@@ -1,0 +1,363 @@
+{
+  "packet": "orch3_type4_behavior_aj",
+  "source": "src/registered_type4_effect_behavior.cpp",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "ghidra": "read_only; no mutations or save"
+  },
+  "routines": [
+    {
+      "end_inclusive": "0087205B",
+      "size": 60,
+      "sha256": "4e8a9bc22d1529e990b7c40f5c18065a7027c3d2a9d8973550d605b9fdb37573",
+      "live_disk_equal": true,
+      "address": "00872020",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; RET"
+    },
+    {
+      "end_inclusive": "00872073",
+      "size": 20,
+      "sha256": "bf219500ce4608254c147de5a7f3c1b6f59c0b5a30c77ebf6be8c346a09bda62",
+      "address": "00872060",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; RET"
+    },
+    {
+      "end_inclusive": "00872BC0",
+      "size": 1073,
+      "sha256": "ca2b5f22cdb919dfbba0f9b18e8d742e17ae89aaedca23d56e65af88afd3ffa9",
+      "live_disk_equal": true,
+      "address": "00872790",
+      "coverage": "complete",
+      "original_abi": "ECX event; stack(float delta, reference); RET8 at00872BBE",
+      "scope": "complete entry control/state behavior; real allocator/constructor/curve/update/predicate bindings required"
+    },
+    {
+      "end_inclusive": "00BA984E",
+      "size": 47,
+      "sha256": "9652a41f5bc56fcd523bf1fba0d5f014d3ff9e3a174441739f8899afa078da56",
+      "address": "00BA9820",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; RET"
+    },
+    {
+      "end_inclusive": "00BA9910",
+      "size": 17,
+      "sha256": "772eef7c9f6d111577c25f71f48c95ccb440fd51b9210d8995fbc4acaf10469c",
+      "address": "00BA9900",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4"
+    },
+    {
+      "end_inclusive": "00BA9930",
+      "size": 17,
+      "sha256": "8cac4bef7f977686501eb379453600ffc6ddbe88a842c0dc14aa7307c03e72dd",
+      "address": "00BA9920",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4"
+    },
+    {
+      "end_inclusive": "00BA9950",
+      "size": 17,
+      "sha256": "45b5a85761340e00fa89163265b039bf01bcdfcdb23b63587c3f6d8c1be11709",
+      "address": "00BA9940",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4"
+    },
+    {
+      "end_inclusive": "00BA99D0",
+      "size": 17,
+      "sha256": "07f1f88ade0a22d7a8ca8197702932ef6a08e4742129fcfdbc952fcd19b902c6",
+      "address": "00BA99C0",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4"
+    },
+    {
+      "end_inclusive": "00BA99F0",
+      "size": 17,
+      "sha256": "ad907abfb42c5b496446c62dae4361261e38c3c57c3b27a4cbdad79b9f90b56c",
+      "address": "00BA99E0",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4"
+    },
+    {
+      "end_inclusive": "00BA9A10",
+      "size": 17,
+      "sha256": "2d518620af9e42adb1a09b39a1da619b8843d28b1cba9407238595ac26c81ce4",
+      "address": "00BA9A00",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4"
+    },
+    {
+      "end_inclusive": "00BA9A30",
+      "size": 17,
+      "sha256": "2066a765d40dafae3daa19852c7fa05d3ef17a4a674f014f065882543d6b3e2d",
+      "address": "00BA9A20",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4"
+    },
+    {
+      "end_inclusive": "00BA9A50",
+      "size": 17,
+      "sha256": "8b1f46cc2ffedfc9f249696b6e49f1555f493c54d15ac8ceab6d5fdc1626d84a",
+      "address": "00BA9A40",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4"
+    },
+    {
+      "end_inclusive": "00BA9A6C",
+      "size": 13,
+      "sha256": "d2bde254c8aa966104015ea3832bb0a38cbf36db95429c7bb386b852deb4820c",
+      "address": "00BA9A60",
+      "coverage": "complete",
+      "original_abi": "ECX tracer; low byte of stack DWORD; RET4"
+    },
+    {
+      "end_inclusive": "00BA9A80",
+      "size": 17,
+      "sha256": "61594300898508a2078a12f702f4c21eaf45ea1c158985a621f9a5365469f8c6",
+      "address": "00BA9A70",
+      "coverage": "complete",
+      "original_abi": "ECX actual owner; one float stack word; RET4"
+    },
+    {
+      "end_inclusive": "00BA9AAE",
+      "size": 31,
+      "sha256": "2b4cee04a1209695724a15e09e2bfcf001b2d8a46692fca0418de37ce4a97475",
+      "address": "00BA9A90",
+      "coverage": "complete",
+      "original_abi": "ECX tracer; two float stack words; RET8 at00BA9AAC"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "008728C8",
+      "native": "00BAC660",
+      "function": "00872790",
+      "contract": "actual pool0109049C allocation"
+    },
+    {
+      "address": "0087290D",
+      "native": "00BAD6F0",
+      "function": "00872790",
+      "contract": "real generated-model-derived constructor; five words RET14"
+    },
+    {
+      "address": "0087295C",
+      "native": "00BA9900",
+      "function": "00872790",
+      "contract": "reciprocal into1EC"
+    },
+    {
+      "address": "0087296C",
+      "native": "00BA9A60",
+      "function": "00872790",
+      "contract": "byteA0 to202"
+    },
+    {
+      "address": "0087297B",
+      "native": "00BA9920",
+      "function": "00872790",
+      "contract": "float44 to1F0"
+    },
+    {
+      "address": "0087298A",
+      "native": "00BA9940",
+      "function": "00872790",
+      "contract": "float58 to1F4"
+    },
+    {
+      "address": "00872999",
+      "native": "00BA99C0",
+      "function": "00872790",
+      "contract": "float5C to1E0"
+    },
+    {
+      "address": "008729AB",
+      "native": "00BA99E0",
+      "function": "00872790",
+      "contract": "floatAC to1E4"
+    },
+    {
+      "address": "008729BD",
+      "native": "00BA9A00",
+      "function": "00872790",
+      "contract": "floatA8 to1E8"
+    },
+    {
+      "address": "008729CF",
+      "native": "00BA9A20",
+      "function": "00872790",
+      "contract": "floatB0 to1D8"
+    },
+    {
+      "address": "008729DE",
+      "native": "00BA9A40",
+      "function": "00872790",
+      "contract": "float60 to1FC"
+    },
+    {
+      "address": "008729ED",
+      "native": "00BA9A70",
+      "function": "00872790",
+      "contract": "float74 to210"
+    },
+    {
+      "address": "00872A23",
+      "native": "00BA9A90",
+      "function": "00872790",
+      "contract": "sample0 then sample1 to184/188; RET8"
+    },
+    {
+      "address": "00872A90",
+      "native": "00B6DB70",
+      "function": "00872790",
+      "contract": "first current node world refresh"
+    },
+    {
+      "address": "00872AB7",
+      "native": "00B6DB70",
+      "function": "00872790",
+      "contract": "reloaded current node world refresh"
+    },
+    {
+      "address": "00872AF8",
+      "native": "00BAABB0",
+      "function": "00872790",
+      "contract": "actual tracer update six stack words RET18"
+    },
+    {
+      "address": "00872B82",
+      "native": "00BAA510",
+      "function": "00872790",
+      "contract": "real live clock/fade predicate"
+    },
+    {
+      "address": "008728B2",
+      "native": "EnterCriticalSection via00CE2218",
+      "function": "00872790",
+      "contract": "actualF87684; increment depth after"
+    },
+    {
+      "address": "0087292F",
+      "native": "LeaveCriticalSection via00CE2210",
+      "function": "00872790",
+      "contract": "publish34/decrement depth before"
+    },
+    {
+      "address": "00872A05",
+      "native": "curve+vtable08",
+      "function": "00872790",
+      "contract": "captured curve; current slot; sample1 RET4"
+    },
+    {
+      "address": "00872A1A",
+      "native": "curve+vtable08",
+      "function": "00872790",
+      "contract": "same captured curve; current slot; sample0 RET4"
+    },
+    {
+      "address": "00872B61",
+      "native": "event+vtable30",
+      "function": "00872790",
+      "contract": "capture current slot; clear0C; invoke"
+    },
+    {
+      "address": "00872B75",
+      "native": "event+vtable30",
+      "function": "00872790",
+      "contract": "capture current slot; clear0C; invoke"
+    }
+  ],
+  "tail_steps": [
+    {
+      "address": "0087206E",
+      "native": "00BA9820 (tail JMP)",
+      "function": "00872060",
+      "contract": "clear1C then reload actual34"
+    },
+    {
+      "address": "00C96176",
+      "native": "00BAC2B0 (unwind tail JMP)",
+      "function": "00C96170",
+      "contract": "state0 return actual raw pool slot; no outer unlock"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "C++ passed raw current age24 to BAABB0 while subject58 used a spill inside the argument list",
+      "is": "explicit ordered x87 spills for captured subject58, cached scaled speed, then current age24; reload current34 afterwards",
+      "evidence": "native872ABC/872ADC,872AE0/872AE4,872AE8/872AF1, then872AF5; strict compiled assembly FLD/FSTP pairs precede current34 MOV; internal SNaN7F812345 becomes7FC12345 with source unchanged"
+    },
+    {
+      "was": "single immediately preceding push implies one BA9A90 argument",
+      "is": "two float words: sample0, preserved sample1",
+      "evidence": "872A0C SUB ESP8; curve BA9E48 RET4; BA9AAC RET8"
+    },
+    {
+      "was": "BAC660 incomingECX7AC is allocator size",
+      "is": "BAC660 overwritesECX with0109049C; fixed pool7B0 stride and trailing ID7AC",
+      "evidence": "BAC660 MOV ECX109049C; BAC665 JMP BAC4A0; BABF70 reads slot7AC"
+    },
+    {
+      "was": "constructor failure unlocks outer F87684",
+      "is": "state0 returns raw slot only and preserves incrementedF8769C/heldF87684",
+      "evidence": "DC8190 -> DC8188 -> C96170 -> BAC2B0; no lock cleanup"
+    },
+    {
+      "was": "BAABB0 decompile exposes only five stack inputs",
+      "is": "six stack words; first matrix and sixth subject58 unread by current body",
+      "evidence": "872AD1..872AF8 pushes; BAB3E4 RET18; full EBP-argument listing"
+    }
+  ],
+  "required_real_bindings": [
+    "BAC660/BAC2B0 actual pool0109049C",
+    "BAD6F0 complete constructor/member unwind and existing canonical actual-owner/node/lifetime associations",
+    "captured curve current08, producer defaultBA9DA0",
+    "BAABB0 complete tracer update",
+    "BAA510 actual clock/fade predicate",
+    "NativeEffectJobEvents and PointEffectChildEvents current30"
+  ],
+  "missing_live_functions": [
+    {
+      "address": "00872020",
+      "end_inclusive": "0087205B",
+      "last_instruction_address": "0087205B",
+      "last_instruction": "RET",
+      "last_instruction_length": 1
+    },
+    {
+      "address": "00BA9DA0",
+      "end_inclusive": "00BA9E4A",
+      "last_instruction_address": "00BA9E48",
+      "last_instruction": "RET4",
+      "last_instruction_length": 3,
+      "ownership": "consumed only; not reconstructed/leased"
+    }
+  ],
+  "validation": {
+    "strict_compile": "passed MSVC Win32 /std:c++17 /MD /O2 /W4 /WX /EHsc /fp:strict",
+    "repository_build": "scripts/build.ps1 passed existing targets; verify-seeds passed; reconstructed_math and native_math_differential passed; source registration integrator-owned",
+    "fixture": "local/type4_probe_aj.log: PASS13 original full-body872790 paths without tracer creation/update; actual3Ch equality inclNaN/direction/timers/current30; original completion/deactivation and11 setters compare actual7AC/link bytes and native RET cleanup",
+    "live_disk_hashes": "update1073/completion60/consumed curve171 equal; local/type4_body_evidence_aj.json",
+    "constructor_fault": "passed injected required-binding constructor throw: five current args, raw-slot return before propagation, actual04 unchanged, no34 publication, cleared1C/set20, actual OS section held/depth1; real allocator/constructor/member unwind not exercised and no successful tracer owner made",
+    "scalar_argument_spill": "passed focused internal production-helper check SNaN7F812345 ->7FC12345, source unchanged; compiled assembly confirms subject58/speed/current-age24 FLD/FSTP order then current34 reload; nonnull actual node/tracer update still unvalidated",
+    "unvalidated": [
+      "real tracer creation/update/predicate",
+      "nonnull node110 update path",
+      "original SEH",
+      "family dispatch integration",
+      "game behavior"
+    ]
+  },
+  "artifacts": [
+    "local/type4_probe_aj.cpp",
+    "local/type4_probe_aj.log",
+    "local/type4_body_evidence_aj.json",
+    "local/type4_build_aj.log",
+    "local/type4_definition_aj.txt",
+    "local/type4_tracer_update_aj.asm"
+  ]
+}
