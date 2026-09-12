@@ -1,0 +1,468 @@
+{
+  "packet": "orch3_particle_record_update_am",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "status": "reconstructed_strict_win32_compile_tested_bounded_original_byte_fixture_tested",
+  "headers": [
+    "include/bsp/native_particle_record_update.hpp"
+  ],
+  "sources": [
+    "src/native_particle_record_update.cpp"
+  ],
+  "documentation": "docs/NATIVE_PARTICLE_RECORD_UPDATE.md",
+  "functions": [
+    {
+      "address": "00afcf50",
+      "end_inclusive": "00afd0e6",
+      "end_exclusive": "00afd0e7",
+      "size": 407,
+      "instructions": 111,
+      "sha256": "1370d5e31835a8f6864d1957a85967f77d5b25cd69f2aebec3112e35f0f262ed",
+      "last_instruction": {
+        "address": "00afd0e4",
+        "size": 3,
+        "text": "ret 4",
+        "bytes": "c20400"
+      },
+      "coverage": "complete",
+      "cpp_symbol": "copy_native_particle_record_00afcf50",
+      "proposed_ghidra_name": "BSP_CopyNativeParticleRecord",
+      "original_abi": "ECX destination108h; stack source108h; EAX destination; RET4",
+      "header": "include/bsp/native_particle_record_update.hpp",
+      "source": "src/native_particle_record_update.cpp",
+      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation.",
+      "uncertainty": "Descriptive name is provisional. Added EDX access on update entries is a new integration ABI. Actual native object/EH ABI and game validation unproven.",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00afd410",
+      "end_inclusive": "00afd43c",
+      "end_exclusive": "00afd43d",
+      "size": 45,
+      "instructions": 15,
+      "sha256": "a212bb087d2d768fce1ea5207eac7f3c3d11d611fb8e490f9a031a5974534b82",
+      "last_instruction": {
+        "address": "00afd43a",
+        "size": 3,
+        "text": "ret 4",
+        "bytes": "c20400"
+      },
+      "coverage": "complete",
+      "cpp_symbol": "append_native_particle_record_00afd410",
+      "proposed_ghidra_name": "BSP_AppendNativeParticleRecord",
+      "original_abi": "ECX actual18h owner; stack source108h; RET4",
+      "header": "include/bsp/native_particle_record_update.hpp",
+      "source": "src/native_particle_record_update.cpp",
+      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation.",
+      "uncertainty": "Descriptive name is provisional. Added EDX access on update entries is a new integration ABI. Actual native object/EH ABI and game validation unproven.",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00afe030",
+      "end_inclusive": "00afe07a",
+      "end_exclusive": "00afe07b",
+      "size": 75,
+      "instructions": 24,
+      "sha256": "8cab55b72ecf63eb0a3ec9e985293022138f161e32ceef67c57861b1811c0fe8",
+      "last_instruction": {
+        "address": "00afe078",
+        "size": 3,
+        "text": "ret 4",
+        "bytes": "c20400"
+      },
+      "coverage": "complete",
+      "cpp_symbol": "copy_native_particle_model_position_00afe030",
+      "proposed_ghidra_name": "BSP_CopyNativeParticleModelPosition",
+      "original_abi": "ECX same actual2DCh model; stack destination; EAX destination; RET4",
+      "header": "include/bsp/native_particle_record_update.hpp",
+      "source": "src/native_particle_record_update.cpp",
+      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation.",
+      "uncertainty": "Descriptive name is provisional. Added EDX access on update entries is a new integration ABI. Actual native object/EH ABI and game validation unproven.",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00afe290",
+      "end_inclusive": "00afead6",
+      "end_exclusive": "00afead7",
+      "size": 2119,
+      "instructions": 581,
+      "sha256": "ebc5c4f6a6c3b4c673f46acbd52d8b90d0b9b38127a14cabb453788add5d74a0",
+      "last_instruction": {
+        "address": "00afead4",
+        "size": 3,
+        "text": "ret 0xc",
+        "bytes": "c20c00"
+      },
+      "coverage": "complete through required real emission bindings",
+      "cpp_symbol": "update_native_particle_record_00afe290",
+      "proposed_ghidra_name": "BSP_UpdateNativeParticleRecord",
+      "original_abi": "ECX actual108h record; stack float time, float step, low mode byte; AL alive, upper EAX unspecified; RET0C",
+      "header": "include/bsp/native_particle_record_update.hpp",
+      "source": "src/native_particle_record_update.cpp",
+      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation.",
+      "uncertainty": "Descriptive name is provisional. Added EDX access on update entries is a new integration ABI. Actual native object/EH ABI and game validation unproven.",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00afd7a0",
+      "end_inclusive": "00afd81d",
+      "end_exclusive": "00afd81e",
+      "size": 126,
+      "instructions": 46,
+      "sha256": "a733c1451ec03bca525a636c75111f4d3590dfe1273c440eb33c0ea493927255",
+      "last_instruction": {
+        "address": "00afd81b",
+        "size": 3,
+        "text": "ret 8",
+        "bytes": "c20800"
+      },
+      "coverage": "complete",
+      "cpp_symbol": "update_native_particle_records_00afd7a0",
+      "proposed_ghidra_name": "BSP_UpdateNativeParticleRecords",
+      "original_abi": "ECX same actual18h owner; stack float time, low mode byte; EAX signed current count14; RET8",
+      "header": "include/bsp/native_particle_record_update.hpp",
+      "source": "src/native_particle_record_update.cpp",
+      "evidence": "Complete verified-target assembly and installed PE bytes; original caller stack setup and final RET decoded. See packet documentation.",
+      "uncertainty": "Descriptive name is provisional. Added EDX access on update entries is a new integration ABI. Actual native object/EH ABI and game validation unproven.",
+      "live_disk_equal": true
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00afcf50",
+      "address": "00afcfee",
+      "native": "004134f0",
+      "implementation": "copy_native_camera_matrix_004134f0",
+      "original_abi": "ECX destination, stack source; EAX destination; RET4",
+      "contract": "Existing forward x87 16-word matrix copy; source alias ordering retained.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afd410",
+      "address": "00afd430",
+      "native": "00afcf50",
+      "implementation": "copy_native_particle_record_00afcf50",
+      "original_abi": "ECX destination108h; stack source108h; EAX destination; RET4",
+      "contract": "Concrete complete record copy in this packet; no retain.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe030",
+      "address": "00afe042",
+      "native": "00b6e0a0",
+      "implementation": "copy_native_node_local_position_00b6e0a0",
+      "original_abi": "ECX actual model; stack destination; EAX destination; RET4",
+      "contract": "Existing forward local-position E0 copy.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe030",
+      "address": "00afe054",
+      "native": "00b6db70",
+      "implementation": "refresh_native_camera_world_00b6db70",
+      "original_abi": "ECX actual node/model; RET",
+      "contract": "Existing canonical native world transform refresh.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe37d",
+      "native": "00affa70",
+      "implementation": "evaluate_native_particle_linear_curve_00affa70",
+      "original_abi": "ECX curve; stack float time; ST0 float; RET4",
+      "contract": "Existing complete20-byte linear segment walk.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe384",
+      "native": "00affae0",
+      "implementation": "evaluate_native_particle_cubic_curve_00affae0",
+      "original_abi": "ECX curve; stack float time; ST0 float; RET4",
+      "contract": "Existing complete28-byte cubic segment walk.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe3f0",
+      "native": "00affa70",
+      "implementation": "evaluate_native_particle_linear_curve_00affa70",
+      "original_abi": "ECX curve; stack float time; ST0 float; RET4",
+      "contract": "Existing complete20-byte linear segment walk.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe3f7",
+      "native": "00affae0",
+      "implementation": "evaluate_native_particle_cubic_curve_00affae0",
+      "original_abi": "ECX curve; stack float time; ST0 float; RET4",
+      "contract": "Existing complete28-byte cubic segment walk.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe499",
+      "native": "00affa70",
+      "implementation": "evaluate_native_particle_linear_curve_00affa70",
+      "original_abi": "ECX curve; stack float time; ST0 float; RET4",
+      "contract": "Existing complete20-byte linear segment walk.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe4a0",
+      "native": "00affae0",
+      "implementation": "evaluate_native_particle_cubic_curve_00affae0",
+      "original_abi": "ECX curve; stack float time; ST0 float; RET4",
+      "contract": "Existing complete28-byte cubic segment walk.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe54c",
+      "native": "00affa70",
+      "implementation": "evaluate_native_particle_linear_curve_00affa70",
+      "original_abi": "ECX curve; stack float time; ST0 float; RET4",
+      "contract": "Existing complete20-byte linear segment walk.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe553",
+      "native": "00affae0",
+      "implementation": "evaluate_native_particle_cubic_curve_00affae0",
+      "original_abi": "ECX curve; stack float time; ST0 float; RET4",
+      "contract": "Existing complete28-byte cubic segment walk.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe5fd",
+      "native": "00afe030",
+      "implementation": "copy_native_particle_model_position_00afe030",
+      "original_abi": "ECX same actual model; stack destination; EAX destination; RET4",
+      "contract": "Concrete local/world position selector in this packet.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe675",
+      "native": "00419440",
+      "implementation": "camera_vector_length_00419440",
+      "original_abi": "ECX three-float vector; ST0 float; RET",
+      "contract": "Existing exact native length; added EDX borrows actual CRT access.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe6e5",
+      "native": "00b63f10",
+      "implementation": "look_at_bridge",
+      "original_abi": "ECX matrix, EDX eye; stack target,up.x,up.y,up.z; EAX matrix; RET10",
+      "contract": "Existing complete look-at kernel, current CRT and one; adapter borrows original stack up triple.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe6f0",
+      "native": "004134f0",
+      "implementation": "copy_native_camera_matrix_004134f0",
+      "original_abi": "ECX destination, stack source; EAX destination; RET4",
+      "contract": "Existing forward x87 16-word matrix copy; source alias ordering retained.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe758",
+      "native": "004134f0",
+      "implementation": "copy_native_camera_matrix_004134f0",
+      "original_abi": "ECX destination, stack source; EAX destination; RET4",
+      "contract": "Existing forward x87 16-word matrix copy; source alias ordering retained.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe7da",
+      "native": "00affa70",
+      "implementation": "evaluate_native_particle_linear_curve_00affa70",
+      "original_abi": "ECX curve; stack float time; ST0 float; RET4",
+      "contract": "Existing complete20-byte linear segment walk.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe7e1",
+      "native": "00affae0",
+      "implementation": "evaluate_native_particle_cubic_curve_00affae0",
+      "original_abi": "ECX curve; stack float time; ST0 float; RET4",
+      "contract": "Existing complete28-byte cubic segment walk.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe837",
+      "native": "00bf7030",
+      "implementation": "native_crt_sqrt_st0_00bf7030",
+      "original_abi": "Operand ST0; result ST0; RET",
+      "contract": "Existing native CRT sqrt entry with current dispatch and real exceptional handler. Added ECX borrows actual CRT access.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe8eb",
+      "native": "00aff690",
+      "implementation": "acquire_bridge",
+      "original_abi": "ECX actual emitter; EAX current actual container10; RET",
+      "contract": "Existing canonical actual lazy container acquisition.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe911",
+      "native": "00b04c80",
+      "implementation": "dword ptr [edx+01ch]",
+      "original_abi": "ECX actual30h container; stack definition,parent108h,requested,time,elapsed; EAX clamped signed request; RET14",
+      "contract": "Required real emission including floor/FTOI, AFDAF0, B0CA40 state construction, current capacity and model counters. Return can differ from actual emitted count.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe981",
+      "native": "00affa70",
+      "implementation": "evaluate_native_particle_linear_curve_00affa70",
+      "original_abi": "ECX curve; stack float time; ST0 float; RET4",
+      "contract": "Existing complete20-byte linear segment walk.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe988",
+      "native": "00affae0",
+      "implementation": "evaluate_native_particle_cubic_curve_00affae0",
+      "original_abi": "ECX curve; stack float time; ST0 float; RET4",
+      "contract": "Existing complete28-byte cubic segment walk.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afe9de",
+      "native": "00bf7030",
+      "implementation": "native_crt_sqrt_st0_00bf7030",
+      "original_abi": "Operand ST0; result ST0; RET",
+      "contract": "Existing native CRT sqrt entry with current dispatch and real exceptional handler. Added ECX borrows actual CRT access.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afe290",
+      "address": "00afea8e",
+      "native": "00afd440",
+      "implementation": "dword ptr [edx+020h]",
+      "original_abi": "ECX actual18h owner; stack same model,definition,parent108h,requested,time,elapsed; EAX appended count; RET18",
+      "contract": "Required real indexed108h initialization/append including AFE1A0, random/curves and AFDBF0; current owner14 mutations.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    },
+    {
+      "function": "00afd7a0",
+      "address": "00afd7e0",
+      "native": "00afe290",
+      "implementation": "update_native_particle_record_00afe290",
+      "original_abi": "ECX actual108h record; stack time,step,low mode; AL alive; RET0C",
+      "contract": "Concrete complete record update through required real emission bindings.",
+      "evidence": "Full containing-function assembly and direct callee body/established native implementation; exact numeric call instruction verified with verify_report_calls.py."
+    }
+  ],
+  "missing_definitions": [],
+  "ghidra_mutation": "none; read only",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verified_utc_date": "2026-09-12",
+  "required_unreconstructed": [
+    {
+      "target": "00b04c80",
+      "end_inclusive": "00b04de6",
+      "last_instruction": {
+        "address": "00b04de4",
+        "size": 3,
+        "text": "RET 0x14"
+      },
+      "contract": "Required real emission including floor/FTOI, AFDAF0, B0CA40 state construction, current capacity and model counters. Return can differ from actual emitted count."
+    },
+    {
+      "target": "00afd440",
+      "end_inclusive": "00afd792",
+      "last_instruction": {
+        "address": "00afd790",
+        "size": 3,
+        "text": "RET 0x18"
+      },
+      "contract": "Required real indexed108h initialization/append including AFE1A0, random/curves and AFDBF0; current owner14 mutations."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Existing model-update temporary contract only guaranteed through9F.",
+      "is": "AFCF50 source must support full108h extent through107.",
+      "evidence": "AFCF50 reads final float104 atAFD0D5 and returnsAFD0E4/3."
+    },
+    {
+      "was": "Initial new owner adapter shifted outgoing ESP+4 step store with incoming arguments.",
+      "is": "Final AFD7D5 store remains ESP+4; only incoming owner argument offsets shift by4.",
+      "evidence": "Original-byte fixture caught unchanged motion under owner traversal; corrected kernel passes byte/status/count/index comparison."
+    }
+  ],
+  "verification": {
+    "strict_compile": {
+      "result": "passed",
+      "command": "compile_record.cmd: MSVC Win32 /std:c++20 /EHsc /O2 /W4 /WX /fp:strict /Gy /MD",
+      "log": "C:\\Users\\sqz269\\bsp-am-record-update\\strict_compile.log"
+    },
+    "direct_call_verifier": {
+      "result": "passed",
+      "rows": 27,
+      "command": "python tools/verify_report_calls.py reports/native_particle_record_update.json"
+    },
+    "original_byte_fixture": {
+      "result": "passed",
+      "directory": "C:\\Users\\sqz269\\bsp-am-record-update",
+      "log": "C:\\Users\\sqz269\\bsp-am-record-update\\fixture.log",
+      "scenarios": 10,
+      "fp_configurations": 4,
+      "comparison": "Complete108h records, full record/index arrays, return values, floating-point status, exact emission callback argument words.",
+      "coverage": [
+        "expiry and restart",
+        "local and cached-world position",
+        "inactive model",
+        "velocity with changed current transverse global",
+        "constant/linear/cubic curve modes",
+        "orientation look-at and transpose",
+        "B04C80 and AFD440 argument/count boundaries",
+        "self and forward overlap and separate record copy with signaling NaN",
+        "indexed swap removal and append and full-owner no-op"
+      ],
+      "limitations": [
+        "Controlled emission callbacks do not validate actual downstream implementations.",
+        "Reused curve, math, transform and container implementations are shared by the two paths.",
+        "CRT exceptional handler, dirty-world refresh, native EH, gameplay and full successful application simulation unvalidated."
+      ]
+    },
+    "combined_build": "Integrator owns CMake registration and scripts/build.ps1; no full build performed on space-limited J worktree.",
+    "ghidra": "Read only; no annotation/name/prototype/save mutations.",
+    "artifact_sha256": {
+      "C:\\Users\\sqz269\\bsp-am-record-update\\generate_record.py": "0e5ad421691fefa76f3afafa8a686a7e60207ea59de6997e40078e634f212ba8",
+      "C:\\Users\\sqz269\\bsp-am-record-update\\make_fixture.py": "8362bd6f9bd237de506a6548ce88825c48c1545834512ce684f44259e1952a38",
+      "C:\\Users\\sqz269\\bsp-am-record-update\\record_probe.cpp": "0bf94a17969f4eb59a5ab70e8ab7965e169a1e8f97c108d25f0083e4cffd2b87",
+      "C:\\Users\\sqz269\\bsp-am-record-update\\original_bytes.hpp": "374091ef3ffa1543156e4a86f8261d1b67abbab10a4fdc983e35c33d16f38923",
+      "C:\\Users\\sqz269\\bsp-am-record-update\\compile_record.cmd": "cd75bfe0714068e8bf8495245008eae97d4f577b60317ea9ddd133bd64a6762b",
+      "C:\\Users\\sqz269\\bsp-am-record-update\\run_record.cmd": "7fe8cb6fa2447ad6f613215429869f152a9cec147b2185e428594e6c898ade3f",
+      "C:\\Users\\sqz269\\bsp-am-record-update\\strict_compile.log": "917fc6ace2bc35af1c73d45b62dbcecc3c2e300a6fd9f224c29c1d39f8baf18d",
+      "C:\\Users\\sqz269\\bsp-am-record-update\\fixture.log": "91f5613501341ce8542513a997fd1cab5c6b2e0feb8d082dddad2716d370ad67",
+      "C:\\Users\\sqz269\\bsp-am-record-update\\native_particle_record_update.obj": "dcc9375123d06ad664a07911c89f2f0100bbbc94b72961e2c308099725e317b4",
+      "C:\\Users\\sqz269\\bsp-am-record-update\\record_probe.exe": "026b5b061d6f20531c3c15e8e06b6336dd5340a768cc2f97c6d79ea5634eef97"
+    },
+    "linked_existing_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+      "sha256": "4f9bccfb266252d2318918e11718abf3cda1109fb944249a1bab95fd15977913",
+      "link_order": "new strict Win32 record object before existing bsp_core.lib"
+    }
+  }
+}
