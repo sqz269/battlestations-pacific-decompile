@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "abi_compatible": false,
+  "game_validated": false,
+  "documentation": "docs/ORCH5_MENU_SELECTION_ROW_CONTROL_BATCH.md",
+  "packet": "orch5_listbox_insertion_integration",
+  "source": "src/gui_listbox_runtime.cpp",
+  "status": "combined_win32_build_and_scoped_final_library_validation_recorded",
+  "functions": [
+    {
+      "address": "00a9cd20",
+      "name": "GuiListboxRuntime::set_active60_00a9cd20",
+      "original_abi": "ECX Listbox; low-byte active stack argument; RET4",
+      "coverage": "Complete normal caller sequencing over actual FC rows; BA90 borrowed-child callback-domain projection remains partial",
+      "ledger_kind": "fragment",
+      "body_inclusive": [
+        "00a9cd20",
+        "00a9cdb4"
+      ]
+    },
+    {
+      "address": "00a9da30",
+      "name": "GuiListboxRuntime::append_row_with_data_00a9da30",
+      "original_abi": "ECX Listbox; row, data, position, after stack arguments; RET10h",
+      "coverage": "Partial: native null-position branch only; store same row D8 before existing A9D750 append",
+      "ledger_kind": "fragment",
+      "body_inclusive": [
+        "00a9da30",
+        "00a9da50"
+      ]
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00a9cd20",
+      "address": "00a9cd2c",
+      "native": "00aa6a30",
+      "binding": "Base active60 FIRST; then test original active and live auto_control11E"
+    },
+    {
+      "function": "00a9cd20",
+      "address": "00a9cd5f",
+      "native": "00bf6713",
+      "binding": "Native checked-iterator diagnostics; valid iterator domain excludes error path"
+    },
+    {
+      "function": "00a9cd20",
+      "address": "00a9cd76",
+      "native": "00bf6713",
+      "binding": "Native checked-iterator diagnostics; valid iterator domain excludes error path"
+    },
+    {
+      "function": "00a9cd20",
+      "address": "00a9cd98",
+      "native": "00bf6713",
+      "binding": "Native checked-iterator diagnostics; valid iterator domain excludes error path"
+    },
+    {
+      "function": "00a9cd20",
+      "address": "00a9cda2",
+      "native": "00bf6713",
+      "binding": "Native checked-iterator diagnostics; valid iterator domain excludes error path"
+    },
+    {
+      "function": "00a9cd20",
+      "address": "00a9cd8f",
+      "native": "00a9ba90",
+      "binding": "Fresh current selected iterator supplies state1 or3; reload current FC next after callback"
+    },
+    {
+      "function": "00a9da30",
+      "address": "00a9da49",
+      "native": "00a9d750",
+      "binding": "Forward same row after writing D8; null-position append subset implemented"
+    }
+  ],
+  "evidence": [
+    "Actual GuiListboxTypeImplementation current60 now reaches same runtime and base owner",
+    "Row control uses actual Text current50/80 and Icon current88; no synthetic state callbacks",
+    "Native Group child list is canonical borrowed transform.children and can contain duplicate entries"
+  ],
+  "unresolved_nonnull_insert": {
+    "function": "00a9d750",
+    "range": [
+      "00a9d7ac",
+      "00a9d812"
+    ],
+    "observation": "Non-null iterator container/node is copied, optionally incremented, then passed to base AAA5A0 (GUI+64 list) and A9D6C0 (FC list). These lists have distinct constructor heads; insertion mutates using supplied node while incrementing receiver count.",
+    "next_work": "Establish actual non-null caller/producer and cross-list node identity before implementing; ordinary before/after insertion would invent semantics."
+  },
+  "limitations": [
+    "Current FC node and widget must survive callback; invalid checked iterators excluded",
+    "BA90 visited borrowed-child prefix retains membership/order/owners; only unvisited suffix/appends may change",
+    "No Text/Icon resource fixture, full properties/frame/native teardown, binary replacement or gameplay validation"
+  ],
+  "validation_report": "reports/orch5_menu_selection_row_control_batch.json"
+}

@@ -36,6 +36,9 @@ struct GuiListboxRuntimeServices {
     // bind 00941250 above only when the original initialization established it.
     const std::function<void(bool, bool)>& sound_callback_f8bc0c;
     GuiListboxLayoutConstants layout_constants;
+    // Live D7A24C is needed only by the reached Text globals.live color branch
+    // of automatic row control. No synthetic value for an unbound producer.
+    const volatile float* row_state_one_00d7a24c{};
 };
 
 // Fields established by A9DF40, shared by the real companion. A9AC90 writes
@@ -104,6 +107,11 @@ public:
     // A9C050: actual base78, layout7C, nonempty selected=first (without hidden
     // check), refresh80(0). A failed downstream operation is not completion.
     void loaded78_00a9c050();
+    // Full A9CD20: base60 first, then clearing activation with live11E nonzero
+    // applies state1 to the CURRENT selected node, state3 to each other node.
+    // Callbacks may alter selection/other rows; keep the current list node and
+    // borrowed widget alive through its subsequent native iterator advance.
+    void set_active60_00a9cd20(bool active);
 
     // Partial A9D750: insert_position=null branch and common tail. Native RETC
     // proves (row, optional iterator, after-byte), not two arguments. For a
@@ -113,11 +121,17 @@ public:
     // Non-null iterator insertion and native allocation/SEH ABI are not claimed.
     void append_row_00a9d750(GuiWidgetOwner& row,
         std::unique_ptr<GuiLayoutWidget>& detached_allocation);
+    // A9DA30 null-position branch: write SAME row+D8 before the current34,
+    // actual attach and FC insertion sequence. Native non-null position still
+    // requires resolving its cross-list insertion semantics, not an ordinal.
+    void append_row_with_data_00a9da30(GuiWidgetOwner& row, std::uint32_t data,
+        std::unique_ptr<GuiLayoutWidget>& detached_allocation);
     // A9BE60: current34(0), remove EVERY matching FC entry without detaching or
     // deleting the widget, selected=end, previous110=null, current80(0),7C.
     void remove_row_00a9be60(GuiWidgetOwner& row);
 
 private:
+    friend bool has_selectable_gui_listbox_row_00a9ba40(const GuiListboxRuntime&) noexcept;
     class Operation;
     using Rows = std::list<GuiWidgetOwner*>;
     GuiWidgetOwner& owner_;

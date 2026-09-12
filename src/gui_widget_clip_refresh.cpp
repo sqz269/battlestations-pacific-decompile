@@ -93,6 +93,7 @@ bool gui_widget_uses_base_clip70_profile(GuiWidgetType type) noexcept {
     switch (type) {
     case GuiWidgetType::Screen:
     case GuiWidgetType::Group:
+    case GuiWidgetType::Listbox: // D5BBF8+70 is the same actual AAA3E0 body.
     case GuiWidgetType::Icon:
     case GuiWidgetType::ClipBox:
     case GuiWidgetType::FrameBox:
