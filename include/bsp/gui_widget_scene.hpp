@@ -198,7 +198,8 @@ struct GuiWidgetSceneHost {
     virtual void* create_scene_node(const char* name) = 0;
 
     // 00AA96EA..00AA96FC: node vtable +10h on the source widget's node, with
-    // the per-type name from the table at 00d5c0b8 indexed by the type tag.
+    // the DWORD clone flags from00D5C0B8 indexed by the type tag, and parent0.
+    // Text3 is3Eh; Section17/FrameBox18 are26h. This is not a name table.
     virtual void* clone_scene_node(void* source_node, std::int32_t type_id) = 0;
 
     // 00B6E680 BSP_Node_SetParent_Provisional, __thiscall(child_node, parent),
