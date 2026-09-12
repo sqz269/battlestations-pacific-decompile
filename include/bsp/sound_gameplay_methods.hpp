@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/sound_lifetime_access.hpp"
 #include "bsp/sound_event_instance.hpp"
 #include "bsp/random_threads.hpp"
 
@@ -26,7 +27,7 @@ struct SoundEventQueryLock {
     TrackedCriticalSection* section_04{};
 };
 struct SoundEventQueryLockBindings {
-    SingletonLifetimeDomain& domain;
+    SoundLifetimeAccess domain;
     SoundEventQueryLock* volatile& global_00f8bbdc;
 };
 SoundEventQueryLock& construct_sound_event_query_lock_00a89460(

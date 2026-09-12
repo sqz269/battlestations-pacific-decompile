@@ -21,18 +21,7 @@ void copy_float(void* destination, const void* source, std::size_t n) noexcept {
     __asm { fstp converted }
     write(destination, n, converted);
 }
-class ManagerSection {
-public:
-    explicit ManagerSection(SingletonLifetimeDomain& domain)
-        : section_(domain.get_manager_00415350()->system_owner().section_10) {
-        if (section_) { singleton_enter_critical_section(*section_); ++section_->recursion_18; }
-    }
-    ~ManagerSection() {
-        if (section_) { --section_->recursion_18; singleton_leave_critical_section(*section_); }
-    }
-private:
-    SystemSingletonCriticalSection* section_;
-};
+using ManagerSection = CapturedSoundLifetimeSection;
 class QuerySection {
 public:
     explicit QuerySection(TrackedCriticalSection* section) : section_(section) {

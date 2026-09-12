@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/sound_lifetime_access.hpp"
 
 #include "bsp/native_singleton_destruction.hpp"
 
@@ -6,9 +7,9 @@ namespace bsp::game {
 class GameHostLog;
 
 // One application-owned raw14h manager and raw10h gameplay-effect owner.
-// Private publications outlive the menu and all shutdown calls. The only
-// admitted registration is raw004C1650's D0DA64 owner; its fixed actual
-// deletion binding is established before that getter can run.
+// Private publications outlive the menu and all shutdown calls. Admitted
+// registrations use recovered fixed deletion profiles. Sound binds its
+// concrete runtime before registering and keeps it alive through the drain.
 class GameSingletonHost final {
 public:
     explicit GameSingletonHost(GameHostLog&);
@@ -17,6 +18,8 @@ public:
     GameSingletonHost& operator=(const GameSingletonHost&) = delete;
 
     void probe_gameplay_effect_memory(const char* label);
+    SoundLifetimeAccess sound_lifetime() noexcept;
+    void bind_sound_runtime(GameSoundRuntime*) noexcept;
     // 008F8449: capture current manager, rawBD0400 drain, free captured manager,
     // then clear its actual publication, while all bindings remain alive.
     void shutdown();

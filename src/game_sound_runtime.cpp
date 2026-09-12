@@ -47,7 +47,7 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost {
     VfsSoundConfigurationLuaOwner lua;
     NativeSoundFileContext files;
     NativeSoundFileContext* previous_files{};
-    bool bound{}, attempted{}, running{}, manager_destroyed{}, cleanup_failed{};
+    bool bound{}, attempted{}, running{}, manager_destroyed{}, cache_destroyed{}, cleanup_failed{};
     std::atomic<std::size_t> opens{}, closes{}, reads{}, seeks{};
     std::mutex file_error_mutex;
     std::exception_ptr file_error;
@@ -171,8 +171,9 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost {
         unbind_files();
     }
     void destroy_cache(std::uint32_t flags) {
-        if (!cache || !current_cache) return;
+        if (!cache || cache_destroyed) return;
         auto* object = cache.get();
+        cache_destroyed = true;
         if (flags & 1u) cache.release();
         scalar_delete_sound_sample_cache_00a88750(object, flags, samples.sample_cache_context(), lifetime);
     }
@@ -299,13 +300,16 @@ SoundEventQueryLockBindings& GameSoundRuntime::event_query_lifetime() noexcept {
 GameSoundRuntimeWords& GameSoundRuntime::words() noexcept { return impl_->words; }
 void* volatile& GameSoundRuntime::current_alternate() noexcept { return impl_->alternate; }
 bool GameSoundRuntime::owns_registered(void* object) const noexcept {
-    return object && (object == impl_->current_owner || object == impl_->current_cache || object == impl_->current_query_lock);
+    return object && ((!impl_->manager_destroyed && object == impl_->manager.get()) ||
+        (!impl_->cache_destroyed && object == impl_->cache.get()) ||
+        object == impl_->current_query_lock || object == impl_->alternate);
 }
 void GameSoundRuntime::delete_registered(void* object, std::uint32_t flags) noexcept {
     try {
-        if (object && object == impl_->current_owner) impl_->destroy_manager(flags);
-        else if (object && object == impl_->current_cache) impl_->destroy_cache(flags);
+        if (object && !impl_->manager_destroyed && object == impl_->manager.get()) impl_->destroy_manager(flags);
+        else if (object && !impl_->cache_destroyed && object == impl_->cache.get()) impl_->destroy_cache(flags);
         else if (object && object == impl_->current_query_lock) impl_->destroy_query(flags);
+        else if (object && object == impl_->alternate) impl_->services.alternate_shutdown.delete_alternate_slot00(object, flags);
         else throw std::logic_error("Foreign singleton passed to game sound deleting dispatcher");
     } catch (...) { std::terminate(); }
 }
