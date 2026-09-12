@@ -1,0 +1,402 @@
+{
+  "packet": "orch3_particle_record_children_am",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "status": "reconstructed_strict_win32_build_tested_bounded_fixture_tested_saved_analysis_verified",
+  "headers": [
+    "include/bsp/native_particle_record_children.hpp"
+  ],
+  "sources": [
+    "src/native_particle_record_children.cpp"
+  ],
+  "documentation": "docs/NATIVE_PARTICLE_RECORD_CHILDREN.md",
+  "functions": [
+    {
+      "address": "00afe1a0",
+      "end_inclusive": "00afe28d",
+      "end_exclusive": "00afe28e",
+      "size": 238,
+      "instructions": 44,
+      "sha256": "39cb977c8dc5b419d72b70b50ceb0c00fe0a9a79fc906a7cea1fa4ef0518650c",
+      "last_instruction": {
+        "address": "00afe28b",
+        "size": 3,
+        "text": "ret 0x10",
+        "bytes": "c21000"
+      },
+      "coverage": "complete",
+      "cpp_symbol": "initialize_native_particle_record_00afe1a0",
+      "proposed_ghidra_name": "BSP_InitializeNativeParticleRecord",
+      "original_abi": "ECX record108h; stack same model,definition,time,velocity; RET10",
+      "header": "include/bsp/native_particle_record_children.hpp",
+      "source": "src/native_particle_record_children.cpp",
+      "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX record108h; stack same model,definition,time,velocity; RET10. Complete live/installed span and final instruction verified. See reports/native_particle_record_children.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "uncertainty": "Names are provisional hypotheses; added EDX access is a new integration ABI. Required captured definition implementation and CRT exceptional behavior, native EH/object compatibility and gameplay unvalidated.",
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_InitializeNativeParticleRecord",
+      "native_prototype": "void __thiscall BSP_InitializeNativeParticleRecord(void * model, void * definition, float time, void * velocity)",
+      "native_calling_convention": "__thiscall",
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00afdbf0",
+      "end_inclusive": "00afdceb",
+      "end_exclusive": "00afdcec",
+      "size": 252,
+      "instructions": 80,
+      "sha256": "3d5c304f3f084181e41455d561182be14f948dcf40998d433d10775a6e28f1f8",
+      "last_instruction": {
+        "address": "00afdce9",
+        "size": 3,
+        "text": "ret 0x14",
+        "bytes": "c21400"
+      },
+      "coverage": "complete through required real CRT/definition dispatch",
+      "cpp_symbol": "interpolate_native_particle_record_00afdbf0",
+      "proposed_ghidra_name": "BSP_InterpolateNativeParticleRecord",
+      "original_abi": "ECX parent108h; stack position,velocity,matrix,ordinal,fraction; RET14; ordinal unread",
+      "header": "include/bsp/native_particle_record_children.hpp",
+      "source": "src/native_particle_record_children.cpp",
+      "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX parent108h; stack position,velocity,matrix,ordinal,fraction; RET14; ordinal unread. Complete live/installed span and final instruction verified. See reports/native_particle_record_children.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "uncertainty": "Names are provisional hypotheses; added EDX access is a new integration ABI. Required captured definition implementation and CRT exceptional behavior, native EH/object compatibility and gameplay unvalidated.",
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_InterpolateNativeParticleRecord",
+      "native_prototype": "void __thiscall BSP_InterpolateNativeParticleRecord(void * position, void * velocity, void * matrix, int ordinal, float fraction)",
+      "native_calling_convention": "__thiscall",
+      "original_abi_compatible": false
+    },
+    {
+      "address": "00afd440",
+      "end_inclusive": "00afd792",
+      "end_exclusive": "00afd793",
+      "size": 851,
+      "instructions": 218,
+      "sha256": "864b5435b68f769958d30adc8c2fe825c25155a9e45d04c3ab019b3d5506015b",
+      "last_instruction": {
+        "address": "00afd790",
+        "size": 3,
+        "text": "ret 0x18",
+        "bytes": "c21800"
+      },
+      "coverage": "complete through required real CRT/definition dispatch",
+      "cpp_symbol": "append_native_particle_record_children_00afd440",
+      "proposed_ghidra_name": "BSP_AppendNativeParticleRecordChildren",
+      "original_abi": "ECX actual18h owner; stack same model,definition,parent108h,requested,time,elapsed; EAX actual appended count; RET18; elapsed unread",
+      "header": "include/bsp/native_particle_record_children.hpp",
+      "source": "src/native_particle_record_children.cpp",
+      "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual18h owner; stack same model,definition,parent108h,requested,time,elapsed; EAX actual appended count; RET18; elapsed unread. Complete live/installed span and final instruction verified. See reports/native_particle_record_children.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "uncertainty": "Names are provisional hypotheses; added EDX access is a new integration ABI. Required captured definition implementation and CRT exceptional behavior, native EH/object compatibility and gameplay unvalidated.",
+      "live_disk_equal": true,
+      "ghidra_name": "BSP_NativeParticleRecords_GenerateDescendants",
+      "native_prototype": "int __thiscall BSP_NativeParticleRecords_GenerateDescendants(void * model, void * definition, void * parent, float requested, float time, float elapsed)",
+      "native_calling_convention": "__thiscall",
+      "original_abi_compatible": false,
+      "name_correction": {
+        "was": "BSP_AppendNativeParticleRecordChildren",
+        "is": "BSP_NativeParticleRecords_GenerateDescendants",
+        "reason": "Ghidra name-collision guard rejects token-subset extension of existing single-record append; generated descendants distinguishes actual behavior."
+      }
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00afd440",
+      "address": "00afd456",
+      "native": "00bf85b0",
+      "implementation": "dword ptr [edx+04h]",
+      "original_abi": "cdecl double request; ST0 result; ADD ESP,8 atAFD463",
+      "contract": "Required real CRT floor with current0109EEA0/MXCSR/x87 dispatch, control/exception effects.",
+      "evidence": "Complete original caller assembly/stack cleanup and callee body or established native implementation; numeric direct call verified."
+    },
+    {
+      "function": "00afd440",
+      "address": "00afd466",
+      "native": "00bf7420",
+      "implementation": "dword ptr [edx+08h]",
+      "original_abi": "Operand already in ST0; EAX signed result; RET",
+      "contract": "Required real CRT conversion with current0109EEA4 dispatch to SSE or x87 fallback; no C++ cast substitute.",
+      "evidence": "Complete original caller assembly/stack cleanup and callee body or established native implementation; numeric direct call verified."
+    },
+    {
+      "function": "00afd440",
+      "address": "00afd51a",
+      "native": "00afe1a0",
+      "implementation": "initialize_native_particle_record_00afe1a0",
+      "original_abi": "ECX actual108h; stack actual model,definition,time,velocity; RET10",
+      "contract": "Concrete sparse record initialization; current one and forward x87 input copy.",
+      "evidence": "Complete original caller assembly/stack cleanup and callee body or established native implementation; numeric direct call verified."
+    },
+    {
+      "function": "00afd440",
+      "address": "00afd54b",
+      "native": "00bd2fc0",
+      "implementation": "random_bridge",
+      "original_abi": "ECX stream0; EAX random bits; RET",
+      "contract": "Existing canonical RandomThreads state/lookup and draw; native caller signed FILD retained.",
+      "evidence": "Complete original caller assembly/stack cleanup and callee body or established native implementation; numeric direct call verified."
+    },
+    {
+      "function": "00afd440",
+      "address": "00afd591",
+      "native": "00affa70",
+      "implementation": "evaluate_native_particle_linear_curve_00affa70",
+      "original_abi": "ECX curve; stack float time; ST0 result; RET4",
+      "contract": "Existing complete linear segment walk.",
+      "evidence": "Complete original caller assembly/stack cleanup and callee body or established native implementation; numeric direct call verified."
+    },
+    {
+      "function": "00afd440",
+      "address": "00afd598",
+      "native": "00affae0",
+      "implementation": "evaluate_native_particle_cubic_curve_00affae0",
+      "original_abi": "ECX curve; stack float time; ST0 result; RET4",
+      "contract": "Existing complete cubic segment walk.",
+      "evidence": "Complete original caller assembly/stack cleanup and callee body or established native implementation; numeric direct call verified."
+    },
+    {
+      "function": "00afd440",
+      "address": "00afd5ec",
+      "native": "00afdbf0",
+      "implementation": "interpolate_native_particle_record_00afdbf0",
+      "original_abi": "ECX parent108h; stack position,velocity,matrix,ordinal,fraction; RET14",
+      "contract": "Concrete captured virtual10 dispatch plus post-call parent interpolation; ordinal unread.",
+      "evidence": "Complete original caller assembly/stack cleanup and callee body or established native implementation; numeric direct call verified."
+    },
+    {
+      "function": "00afd440",
+      "address": "00afd65e",
+      "native": "004134f0",
+      "implementation": "copy_native_camera_matrix_004134f0",
+      "original_abi": "ECX destination; stack source; RET4",
+      "contract": "Existing complete forward x87 matrix copy.",
+      "evidence": "Complete original caller assembly/stack cleanup and callee body or established native implementation; numeric direct call verified."
+    },
+    {
+      "function": "00afd440",
+      "address": "00afd689",
+      "native": "00bd2fc0",
+      "implementation": "random_bridge",
+      "original_abi": "ECX stream0; EAX random bits; RET",
+      "contract": "Existing canonical RandomThreads state/lookup and draw; native caller signed FILD retained.",
+      "evidence": "Complete original caller assembly/stack cleanup and callee body or established native implementation; numeric direct call verified."
+    },
+    {
+      "function": "00afd440",
+      "address": "00afd6de",
+      "native": "00bd2fc0",
+      "implementation": "random_bridge",
+      "original_abi": "ECX stream0; EAX random bits; RET",
+      "contract": "Existing canonical RandomThreads state/lookup and draw; native caller signed FILD retained.",
+      "evidence": "Complete original caller assembly/stack cleanup and callee body or established native implementation; numeric direct call verified."
+    },
+    {
+      "function": "00afd440",
+      "address": "00afd733",
+      "native": "00bd2fc0",
+      "implementation": "random_bridge",
+      "original_abi": "ECX stream0; EAX random bits; RET",
+      "contract": "Existing canonical RandomThreads state/lookup and draw; native caller signed FILD retained.",
+      "evidence": "Complete original caller assembly/stack cleanup and callee body or established native implementation; numeric direct call verified."
+    }
+  ],
+  "indirect_calls": [
+    {
+      "function": "00afdbf0",
+      "address": "00afdc12",
+      "native": "captured definition vtable+10",
+      "original_abi": "ECX actual parent.A0 definition; stack parent108h,position,velocity,matrix; RET10",
+      "binding": "definition_virtual10; EDX carries captured original target",
+      "contract": "Dynamic implementation unread; exact slot/argument dispatch only, required real generation.",
+      "evidence": "Live containing-function query placesAFDC12 insideAFDBF0..AFDCEB. AFDC04 loadsparent.A0, AFDC0A loadsitsvtable, AFDC0C captures+10, AFDC12 CALL EAX withfourstackwords."
+    }
+  ],
+  "missing_definitions": [],
+  "ghidra_mutation": "none; read only",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verified_utc_date": "2026-09-12",
+  "corrections": [
+    {
+      "was": "AFD440 pseudocode omitted the complete native argument list.",
+      "is": "Six stack arguments, RET18; sixth elapsed word is unread.",
+      "evidence": "Caller AFEA8E pushes model,definition,parent,requested,time,elapsed; AFD47E/AFD790 RET18; full body has no sixth-word read."
+    },
+    {
+      "was": "AFDBF0 pseudocode showed three stack arguments and used a pointer as a fraction.",
+      "is": "Five stack words position,velocity,matrix,ordinal,fraction; RET14. Matrix input slot reused as float scratch; ordinal unread.",
+      "evidence": "Caller AFD5EC pushesfivewords. AFDC53 readsfifthfraction atESP40 after24locals+8saved. FinalAFDCE9 RET14."
+    }
+  ],
+  "verification": {
+    "strict_compile": {
+      "result": "passed",
+      "log": "C:\\Users\\sqz269\\bsp-am-record-children\\strict_compile.log",
+      "flags": "MSVC Win32 /std:c++20 /EHsc /O2 /W4 /WX /fp:strict /Gy /MD"
+    },
+    "call_verifier": {
+      "result": "passed",
+      "direct_rows": 11,
+      "indirect_rows_inspected": 1,
+      "command": "python tools/verify_report_calls.py reports/native_particle_record_children.json"
+    },
+    "original_byte_fixture": {
+      "result": "passed",
+      "directory": "C:\\Users\\sqz269\\bsp-am-record-children",
+      "log": "C:\\Users\\sqz269\\bsp-am-record-children\\fixture.log",
+      "comparisons": 21,
+      "scenarios": 7,
+      "fp_configurations": 3,
+      "comparison": "Full indexed108h record buffers, EAX actual appended count, current owner14, FP status, captured target/actual object trace and next canonical random output.",
+      "coverage": [
+        "early zero request",
+        "zero and random amplitudes",
+        "constant/linear/cubic curves",
+        "zero-capacity reciprocal FP effect",
+        "callback fills current capacity and exposes actual appended-count result",
+        "callback changes parent current definition target and positions",
+        "next-child current model velocity and current one reload",
+        "sparse initializer forward alias and signaling NaN"
+      ],
+      "limitations": [
+        "Deterministic definition callback is a controlled boundary, not actual generation.",
+        "Finite shared CRT fixture floor and ST0 conversion do not validate actual CRT dispatch/exception policy.",
+        "Existing curves/random/matrix implementation shared between paths.",
+        "Actual dynamic definition implementation, native EH/object compatibility and gameplay unvalidated."
+      ]
+    },
+    "combined_build": "Integrator owns CMake registration and scripts/build.ps1; no full build performed in worker worktree.",
+    "ghidra": "Read only; no mutations or saved-analysis changes.",
+    "artifact_sha256": {
+      "C:\\Users\\sqz269\\bsp-am-record-children\\generate_children.py": "b7853a88081a4fdd156fbd039b67dc6a4abaeaf838a08c4ac0d9bf275d327f1e",
+      "C:\\Users\\sqz269\\bsp-am-record-children\\make_fixture.py": "4883ef9669816fec347aeed12cdb69b187715cee04948241cc6d58e05d93b848",
+      "C:\\Users\\sqz269\\bsp-am-record-children\\children_probe.cpp": "04f5427f37af82eff7e02194f302dac3350ae23d2c18b57d824450a69dbecc52",
+      "C:\\Users\\sqz269\\bsp-am-record-children\\original_bytes.hpp": "a8539f76b0914d203efde31df3144af6caf255169256c4e4a072a137de046d1f",
+      "C:\\Users\\sqz269\\bsp-am-record-children\\compile_children.cmd": "984ad02eb8781459cd3121d548b505a1ee6d88dfe2501b21bbd1144493bbbc67",
+      "C:\\Users\\sqz269\\bsp-am-record-children\\run_children.cmd": "3582c139c926aca868d2e2dfcb6d4db6854962e8fb2e01ce6c0f4f91af67fd8d",
+      "C:\\Users\\sqz269\\bsp-am-record-children\\strict_compile.log": "26b1f2e871441eed862b1846585049a42fa41603faf79c49503f29786cce60f8",
+      "C:\\Users\\sqz269\\bsp-am-record-children\\fixture.log": "774c0113f7692b1c0381af0a4a1e125cc42fc238905405221ec55c321d5c12a3",
+      "C:\\Users\\sqz269\\bsp-am-record-children\\native_particle_record_children.obj": "7fa33cf70d2cfdd41800ca45ab71926211f42f2e4a0731953aa34f0830a562b1",
+      "C:\\Users\\sqz269\\bsp-am-record-children\\children_probe.exe": "1757292dbe72a88cdcaabf35c1c7b31a39b124291125eb3de788a09538905583"
+    },
+    "linked_existing_library": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+      "sha256": "4f9bccfb266252d2318918e11718abf3cda1109fb944249a1bab95fd15977913",
+      "link_order": "new strict Win32 children object before existing bsp_core.lib"
+    }
+  },
+  "integration_am": {
+    "source_review": "complete; preparation/constructor additionally independently reviewed",
+    "saved_analysis": "saved and read back;41 name/evidence rows,33 native signatures,43 refreshed exports",
+    "full_build": "passed standard scripts/build.ps1 strict MSVC Win32 and both seeded CTests",
+    "gameplay": false,
+    "tested_source_commit": "43c83a7deb1af1a030c1f1d755aad0ab297b6bdc",
+    "build_log": "local/am-first-combined-build.log",
+    "combined_library_sha256": "b5aee7ed0e30c940c912e27f0fc02fb27e7b208c8f4003bcf45044fcb5ea4f3b",
+    "source_hashes": {
+      "include/bsp/native_particle_record_children.hpp": "f0d037ed725afc8213fdac98c4fda4eb2678a8ae7f17ac873798b0cd1878491e",
+      "src/native_particle_record_children.cpp": "f50ca3363a9050e5e10b42a1dd2a8543cbfaf2fcc3e4fcf137c0bc36e0ca1a8d"
+    },
+    "call_reports": "200 direct CALL rows across8 reports,0failed; indirect/tail boundaries retain manual/native-fixture coverage limits",
+    "fixture": "local/am-fixture-record-children.log",
+    "original_exception_and_gameplay": false
+  },
+  "ghidra_annotation_audit_am": {
+    "attempt_records": [
+      "local/ghidra-annotations-20260912T174341Z.json",
+      "local/ghidra-annotations-20260912T174629Z.json"
+    ],
+    "earliest_preimages_preserved": true,
+    "old_comments_preserved": true,
+    "project_saved": true,
+    "readback_verified": true,
+    "changes": [
+      {
+        "address": "00afd440",
+        "before": {
+          "address": "00afd440",
+          "function_name": "FUN_00afd440"
+        },
+        "after": {
+          "address": "00afd440",
+          "name": "BSP_NativeParticleRecords_GenerateDescendants",
+          "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual18h owner; stack same model,definition,parent108h,requested,time,elapsed; EAX actual appended count; RET18; elapsed unread. Complete live/installed span and final instruction verified. See reports/native_particle_record_children.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated. Proposed AppendNativeParticleRecordChildren was rejected by the live name-collision guard; GenerateDescendants describes repeated initialized child generation."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afdbf0",
+        "before": {
+          "address": "00afdbf0",
+          "function_name": "FUN_00afdbf0"
+        },
+        "after": {
+          "address": "00afdbf0",
+          "name": "BSP_InterpolateNativeParticleRecord",
+          "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX parent108h; stack position,velocity,matrix,ordinal,fraction; RET14; ordinal unread. Complete live/installed span and final instruction verified. See reports/native_particle_record_children.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afe1a0",
+        "before": {
+          "address": "00afe1a0",
+          "function_name": "FUN_00afe1a0"
+        },
+        "after": {
+          "address": "00afe1a0",
+          "name": "BSP_InitializeNativeParticleRecord",
+          "evidence": "Complete verified-target assembly, native caller setup and final RET; installed-byte original fixture. See packet documentation. AM integration review: descriptive hypothesis, not a recovered symbol. ECX record108h; stack same model,definition,time,velocity; RET10. Complete live/installed span and final instruction verified. See reports/native_particle_record_children.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit_am": {
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00afe1a0": "00afe1a0 BSP_InitializeNativeParticleRecord  undefined BSP_InitializeNativeParticleRecord(void)  body 00afe1a0 - 00afe28d\n",
+      "00afdbf0": "00afdbf0 BSP_InterpolateNativeParticleRecord  undefined BSP_InterpolateNativeParticleRecord(void)  body 00afdbf0 - 00afdceb\n",
+      "00afd440": "00afd440 BSP_NativeParticleRecords_GenerateDescendants  undefined BSP_NativeParticleRecords_GenerateDescendants(void)  body 00afd440 - 00afd792\n"
+    },
+    "changes": [
+      {
+        "address": "00afe1a0",
+        "prototype": "void __thiscall BSP_InitializeNativeParticleRecord(void * model, void * definition, float time, void * velocity)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afe1a0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afdbf0",
+        "prototype": "void __thiscall BSP_InterpolateNativeParticleRecord(void * position, void * velocity, void * matrix, int ordinal, float fraction)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afdbf0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afd440",
+        "prototype": "int __thiscall BSP_NativeParticleRecords_GenerateDescendants(void * model, void * definition, void * parent, float requested, float time, float elapsed)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afd440 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ]
+  },
+  "final_merged_validation_am": {
+    "tested_commit": "98b5bc67287460ad1e15f36f388cc013bb753fcb",
+    "build": "local/am-final-combined-build.log: standard scripts/build.ps1 strict Win32 and both existing seeded CTests passed",
+    "fixtures": [
+      "am-fixture-preparation.log",
+      "am-fixture-arrays.log",
+      "am-fixture-record-update.log",
+      "am-fixture-emitter-update.log",
+      "am-fixture-spawn.log",
+      "am-fixture-record-children.log",
+      "am-fixture-model-composition.log"
+    ],
+    "reviewed_source_commit": "cc993c1dc7768a79abfe1cb820670ab527f09b04",
+    "all16_owned_source_header_hashes_preserved": true,
+    "library_sha256": "0dc405a61fadfc8d09ff86522dae3e54359944191221c35627ebc08567b5c67d",
+    "full_application_native_EH_and_gameplay": false
+  }
+}

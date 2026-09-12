@@ -1,0 +1,268 @@
+{
+  "packet": "orch3_particle_emission_spawn_am",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_read_only": true,
+  "functions": [
+    {
+      "address": "00b04c80",
+      "end_exclusive": "00b04de7",
+      "inclusive_end": "00b04de6",
+      "final_instruction_address": "00b04de4",
+      "final_instruction_length": 3,
+      "length": 359,
+      "sha256": "52588ea383e7e8ea81649c4a608fd5b93daf91c1b23b999bb6848c9a16091b53",
+      "live_disk_equal": true,
+      "live_prototype": "00b04c80 FUN_00b04c80  undefined FUN_00b04c80(void)  body 00b04c80 - 00b04de6",
+      "original_abi": "ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count",
+      "native_calling_convention": "__thiscall",
+      "cpp_symbol": "spawn_native_particle_emission_00b04c80",
+      "ghidra_name": "BSP_NativeParticleEmission_Spawn",
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false,
+      "coverage": "complete through explicit required actual services",
+      "source": "src/native_particle_emission_spawn.cpp",
+      "header": "include/bsp/native_particle_emission_spawn.hpp",
+      "xrefs": [
+        "From 00afe911 in FUN_00afe290 [UNCONDITIONAL_CALL]",
+        "From 00aff782 in FUN_00aff700 [UNCONDITIONAL_CALL]"
+      ],
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count. Complete live/installed span and final instruction verified. See reports/native_particle_emission_spawn.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "native_prototype": "int __thiscall BSP_NativeParticleEmission_Spawn(void * definition, void * record, float requested, float time, float elapsed)",
+      "end_inclusive": "00b04de6"
+    },
+    {
+      "address": "00afdaf0",
+      "end_exclusive": "00afdbe7",
+      "inclusive_end": "00afdbe6",
+      "final_instruction_address": "00afdbe4",
+      "final_instruction_length": 3,
+      "length": 247,
+      "sha256": "3fa9c7697bac4027f6d2b8dfab5b12156cdf677ab64d2b030963aafe7d7fe84b",
+      "live_disk_equal": true,
+      "live_prototype": "00afdaf0 FUN_00afdaf0  undefined FUN_00afdaf0(void)  body 00afdaf0 - 00afdbe6",
+      "original_abi": "ECX108h record; stack(position,direction,unused sequence,fraction), RET10h",
+      "native_calling_convention": "__thiscall",
+      "cpp_symbol": "generate_native_particle_spawn_vectors_00afdaf0",
+      "ghidra_name": "BSP_NativeParticleRecord_GenerateSpawnVectors",
+      "descriptive_name_is_hypothesis": true,
+      "original_abi_compatible": false,
+      "coverage": "complete through explicit required actual services",
+      "source": "src/native_particle_emission_spawn.cpp",
+      "header": "include/bsp/native_particle_emission_spawn.hpp",
+      "xrefs": [
+        "From 00b04d41 in FUN_00b04c80 [UNCONDITIONAL_CALL]"
+      ],
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX108h record; stack(position,direction,unused sequence,fraction), RET10h. Complete live/installed span and final instruction verified. See reports/native_particle_emission_spawn.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "native_prototype": "void __thiscall BSP_NativeParticleRecord_GenerateSpawnVectors(float * position, float * direction, int unused_sequence, float fraction)",
+      "end_inclusive": "00afdbe6"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b04c90",
+      "native": "00bf85b0",
+      "function": "00b04c80",
+      "stack_cleanup": "one double; ADD ESP8 atB04C9D after float spill/reload",
+      "contract": "actual CRT floor; current modes and exceptional path required"
+    },
+    {
+      "address": "00b04ca0",
+      "native": "00bf7420",
+      "function": "00b04c80",
+      "stack_cleanup": "ST0 input; pops ST0; RET",
+      "contract": "actual CURRENT0109EEA4 conversion; EAX retained"
+    },
+    {
+      "address": "00b04d41",
+      "native": "00afdaf0",
+      "function": "00b04c80",
+      "stack_cleanup": "four stack words; RET10h",
+      "contract": "concrete current definition vector generation and record position interpolation"
+    },
+    {
+      "address": "00b04d74",
+      "native": "00b0ca40",
+      "function": "00b04c80",
+      "stack_cleanup": "six stack words; RET18h",
+      "contract": "required complete6Ch state initialization, definition18 and point-light side effects"
+    },
+    {
+      "address": "00afdb0d",
+      "native": "00afdaf0+vtable0c",
+      "function": "00afdaf0",
+      "stack_cleanup": "three stack words(record,position,direction); actual definition virtual0C RET0C",
+      "contract": "captured recordA0 definition and current vtable0C; source dispatch binding must honor captured target"
+    }
+  ],
+  "game_validated": false,
+  "original_abi_compatible": false,
+  "corrections": [
+    {
+      "was": "B04C80 is a required opaque emission callback",
+      "is": "Concrete desired-count clamp, indexed state generation and actual model statistics; initializer/CRT remain explicit",
+      "evidence": "B04DDC returns clamped requested slot; B04D87 counts actual emissions separately and writes statistics atB04DB8/B04DCA/B04DD6"
+    },
+    {
+      "was": "AFDAF0 decompiler confuses output pointer and interpolation fraction",
+      "is": "Four native stack words, fraction atentry ESP+10h; unused sequence retained; output vector modified after virtual0C",
+      "evidence": "AFDB4E loads stack fraction; AFDBE4 RET10h; three pushes beforeAFDB0D dispatch"
+    }
+  ],
+  "consumer_calls": [
+    {
+      "address": "00afe911",
+      "native": "00b04c80",
+      "function": "00afe290",
+      "stack_cleanup": "five words; RET14h",
+      "contract": "actualAFF690 acquired container, definition, record, requested/time/elapsed; EAX used in accumulated emission subtraction"
+    },
+    {
+      "address": "00aff782",
+      "native": "00b04c80",
+      "function": "00aff700",
+      "stack_cleanup": "five words; RET14h",
+      "contract": "same actual lazy30h container, forwarding definition/record and three floats"
+    }
+  ],
+  "validation": {
+    "strict_win32_production_compile": "PASS /std:c++20 /EHsc /MD /W4 /WX /O2 /Gy /fp:strict /permissive-",
+    "focused_probe": {
+      "original_byte_comparisons": 24,
+      "x87_precision_modes": [
+        24,
+        53,
+        64
+      ],
+      "assertions": 217,
+      "result": "PASS",
+      "local_artifacts": "C:/Users/sqz269/bsp-am-spawn",
+      "compared": [
+        "complete state bytes",
+        "callback argument bits",
+        "return and actual counts",
+        "model statistic bytes",
+        "FP status",
+        "preexisting lower x87 stack value"
+      ],
+      "native_boundaries_redirected": [
+        "BF85B0 fixture floor",
+        "BF7420 fixture SSE2 conversion",
+        "B0CA40 observable initializer fixture",
+        "actual definition virtual0C fixture"
+      ],
+      "alternate_bf7420_mode_tested": false
+    },
+    "call_report": {
+      "direct_rows_checked": 6,
+      "failed": 0,
+      "indirect_rows_not_verified": 1
+    },
+    "combined_build": "primary integrator separately",
+    "gameplay": false
+  },
+  "uncertainties": [
+    "Descriptive names are hypotheses, not recovered symbols",
+    "New EDX access ABI; not original ABI replacement",
+    "Individual dynamic definition implementations and full B0CA40 remain required services",
+    "Native CRT alternate-mode/error behavior and FH3 exceptions were not executed",
+    "No full model/gameplay validation"
+  ],
+  "integration_am": {
+    "source_review": "complete; preparation/constructor additionally independently reviewed",
+    "saved_analysis": "saved and read back;41 name/evidence rows,33 native signatures,43 refreshed exports",
+    "full_build": "passed standard scripts/build.ps1 strict MSVC Win32 and both seeded CTests",
+    "gameplay": false,
+    "tested_source_commit": "43c83a7deb1af1a030c1f1d755aad0ab297b6bdc",
+    "build_log": "local/am-first-combined-build.log",
+    "combined_library_sha256": "b5aee7ed0e30c940c912e27f0fc02fb27e7b208c8f4003bcf45044fcb5ea4f3b",
+    "source_hashes": {
+      "include/bsp/native_particle_emission_spawn.hpp": "9788cb87a687adcf5ee20e7ebaeb170d4df6b8033b439792cece4c1186d7b4c8",
+      "src/native_particle_emission_spawn.cpp": "a115dbdc27ed48e89a5ec9e11b9048f87c8952a97df0b088698b7df1da07cacd"
+    },
+    "call_reports": "200 direct CALL rows across8 reports,0failed; indirect/tail boundaries retain manual/native-fixture coverage limits",
+    "fixture": "local/am-fixture-spawn.log",
+    "original_exception_and_gameplay": false
+  },
+  "status": "reconstructed_strict_win32_build_tested_bounded_fixture_tested_saved_analysis_verified",
+  "ghidra_annotation_audit_am": {
+    "attempt_records": [
+      "local/ghidra-annotations-20260912T174341Z.json",
+      "local/ghidra-annotations-20260912T174629Z.json"
+    ],
+    "earliest_preimages_preserved": true,
+    "old_comments_preserved": true,
+    "project_saved": true,
+    "readback_verified": true,
+    "changes": [
+      {
+        "address": "00afdaf0",
+        "before": {
+          "address": "00afdaf0",
+          "function_name": "FUN_00afdaf0"
+        },
+        "after": {
+          "address": "00afdaf0",
+          "name": "BSP_NativeParticleRecord_GenerateSpawnVectors",
+          "evidence": "AM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX108h record; stack(position,direction,unused sequence,fraction), RET10h. Complete live/installed span and final instruction verified. See reports/native_particle_emission_spawn.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b04c80",
+        "before": {
+          "address": "00b04c80",
+          "function_name": "FUN_00b04c80"
+        },
+        "after": {
+          "address": "00b04c80",
+          "name": "BSP_NativeParticleEmission_Spawn",
+          "evidence": "AM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count. Complete live/installed span and final instruction verified. See reports/native_particle_emission_spawn.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit_am": {
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00b04c80": "00b04c80 BSP_NativeParticleEmission_Spawn  undefined BSP_NativeParticleEmission_Spawn(void)  body 00b04c80 - 00b04de6\n",
+      "00afdaf0": "00afdaf0 BSP_NativeParticleRecord_GenerateSpawnVectors  undefined BSP_NativeParticleRecord_GenerateSpawnVectors(void)  body 00afdaf0 - 00afdbe6\n"
+    },
+    "changes": [
+      {
+        "address": "00b04c80",
+        "prototype": "int __thiscall BSP_NativeParticleEmission_Spawn(void * definition, void * record, float requested, float time, float elapsed)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b04c80 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afdaf0",
+        "prototype": "void __thiscall BSP_NativeParticleRecord_GenerateSpawnVectors(float * position, float * direction, int unused_sequence, float fraction)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afdaf0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ]
+  },
+  "final_merged_validation_am": {
+    "tested_commit": "98b5bc67287460ad1e15f36f388cc013bb753fcb",
+    "build": "local/am-final-combined-build.log: standard scripts/build.ps1 strict Win32 and both existing seeded CTests passed",
+    "fixtures": [
+      "am-fixture-preparation.log",
+      "am-fixture-arrays.log",
+      "am-fixture-record-update.log",
+      "am-fixture-emitter-update.log",
+      "am-fixture-spawn.log",
+      "am-fixture-record-children.log",
+      "am-fixture-model-composition.log"
+    ],
+    "reviewed_source_commit": "cc993c1dc7768a79abfe1cb820670ab527f09b04",
+    "all16_owned_source_header_hashes_preserved": true,
+    "library_sha256": "0dc405a61fadfc8d09ff86522dae3e54359944191221c35627ebc08567b5c67d",
+    "full_application_native_EH_and_gameplay": false
+  }
+}
