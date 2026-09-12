@@ -61,3 +61,39 @@ binding remain missing. Identity/zero describes only735B50's null-interface
 arm. Title music creation is separately unimplemented. Keep the core, dialog
 facade, load callbacks and all borrowed services alive through raw WinMain
 singleton drain, then destroy core, facade and singleton wrapper in that order.
+
+## Z/AA integrated lifecycle correction
+
+The integrated facade now plays the installed `sound/music/chance.fsb` stream
+through actual FMOD and the existing VFS/Lua/platform providers in no-sound
+output. Its length is163272ms. Explicit stop/restart and raw singleton drain
+each finish with2opens/2SDKcloses, no retained strings and no FMOD errors.
+Injected dialog-table VFS failure balances registration, publication and strings.
+
+EOF reaches native state3 and preserves the Sound/Channel words even through
+stream object destruction. With the installed SDK, successful EventSystem
+release leaves2opens/1close after two seconds. Independent forwarding counters
+confirm the omitted callback. The release binding was checked against the
+actual EventSystem virtual slot and the installed C-export tail jump.
+Post-release System queries return37; a cached Sound length is not evidence of
+ownership, and an isolated post-release Sound::release probe crashed.
+
+GameSoundRuntime therefore tracks only its own VFS file adapters and, after
+successful EventSystem release, reclaims any remaining adapters through
+A7B750. It never calls an expired FMOD Sound handle. Native stream teardown
+is unchanged. SDK closes and host reclaims are separate counters: the EOF
+fixture now records2opens,1SDKclose,1hostreclaim and0pending adapters, with no
+remaining strings or FMOD errors. Registry entries detach before free, and a
+failed SDK release retains the existing failed-teardown policy even with an
+empty registry. This is application ownership policy, not recovered game code.
+
+Win32 Release and2existing CTests pass after integration. The earlier semantic
+and raw-domain five-case installed fixtures also pass with this host cleanup;
+their expected never-started Channel_Stop result0x25 is unchanged. The byte
+export fixture returns36 from each invalid-handle call and preserves canaries
+and unwritten outputs;36 is a result code, not a case count.
+
+The listener provider0068A670 is now recovered and integrated in
+`docs/INTERFACE_SOUND_LISTENER.md`. Actual game/interface storage and dynamic
+virtual dispatch bindings remain required at the application call sites.
+Phase5 composition, title music requests and game/audio validation remain open.

@@ -1,0 +1,34 @@
+{
+  "reason": "Original ECX interface, stack matrix64 and velocity12 destinations, RET8. The explicit unused_edx is a decompiler annotation for an unconsumed register, not an original argument.",
+  "entries": [
+    {
+      "address": "0068a670",
+      "proposed": "void __fastcall BSP_Interface_GetSoundListener(void* self, void* unused_edx, void* matrix64, void* velocity12)",
+      "before": "Function: BSP_Interface_GetSoundListener at 0068a670\nSignature: undefined BSP_Interface_GetSoundListener(void)\nEntry: 0068a670\nBody: 0068a670 - 0068a89f",
+      "apply": "Successfully set prototype for function at 0068a670 with __fastcall calling convention",
+      "after": "Function: BSP_Interface_GetSoundListener at 0068a670\nSignature: void __fastcall BSP_Interface_GetSoundListener(void * self, void * unused_edx, void * matrix64, void * velocity12)\nEntry: 0068a670\nBody: 0068a670 - 0068a89f",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "0068a670",
+        "prototype": "void __fastcall BSP_Interface_GetSoundListener(void* self, void* unused_edx, void* matrix64, void* velocity12)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 0068a670 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}
