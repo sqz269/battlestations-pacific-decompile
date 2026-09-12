@@ -1,0 +1,364 @@
+{
+  "packet": "cc_ai_sector_scan",
+  "owner": "agent/cc-ai-sector-scan",
+  "doc": "docs/SHIP_AI_SECTOR_SCAN.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "summary": "009EB660 between 009EB6B7 and 009EBECC: the two probe shapes one obstacle sector describes, how a neighbour is tested against them, how 009D84E0 picks the passing corner, and the producers of the twelve sector shapes (009E0270) and of the neighbour list at blk+604h / blk+608h (009F0D20 appends from BSP_ShipAi_BrainPrePass, 009F0EA0 ages and compacts, 009E52E0 constructs).",
+  "sources": [
+    "include/bsp/ship_ai_sector_scan.hpp",
+    "src/ship_ai_sector_scan.cpp"
+  ],
+  "routines": [
+    {
+      "address": "009eb660",
+      "native": "009eb660",
+      "name": "BSP_ShipAi_ScanObstacleSector",
+      "abi": "void __thiscall(sector)(blk), RET 4",
+      "body": "009EB660-009EC277",
+      "coverage": "complete: every instruction 009EB660..009EC275 is projected by ship_ai_scan_obstacle_sector_009eb660 and ship_ai_sector_probe_009eb660. The bodies of the five geometry callees stay behind host methods.",
+      "status": "semantic_reconstruction_strict_win32_build_passed"
+    },
+    {
+      "address": "009d84e0",
+      "native": "009d84e0",
+      "name": "BSP_ShipAi_ObstacleNodeChoosePassingSide",
+      "abi": "float* __thiscall(node)(float* out_point, const float* observer, float reference_bearing, int other_side, unsigned char* out_flag), RET 14h",
+      "body": "009D84E0-009D885A",
+      "coverage": "complete",
+      "status": "semantic_reconstruction_strict_win32_build_passed"
+    },
+    {
+      "address": "009e0270",
+      "native": "009e0270",
+      "name": "BSP_ShipAi_BuildObstacleSectorShapes",
+      "abi": "void __thiscall(blk)(float), RET 4",
+      "body": "009E0270-009E04D9",
+      "coverage": "partial: 009E0328..009E0493, the twelve-shape loop, is projected. The head 009E0270..009E0327 (blk+168h, blk+3C4h and the 009DE2F0 call) and the tail 009E0499..009E04D7 are not.",
+      "status": "semantic_reconstruction_strict_win32_build_passed"
+    },
+    {
+      "address": "009ef230",
+      "native": "009ef230",
+      "name": "BSP_ShipAi_RefreshObstacleSectors",
+      "abi": "void __thiscall(blk)(void), RET",
+      "body": "009EF230-009EF347",
+      "coverage": "complete: the round robin and the braking distance, which docs/SHIP_AI_OBSTACLE_TABLES.md documented but did not project, are now ship_ai_sector_refresh_slots_009ef230 and ship_ai_sector_braking_distance_009ef230. No ledger record was changed; the name stays as that packet set it.",
+      "status": "semantic_reconstruction_strict_win32_build_passed"
+    },
+    {
+      "address": "009f0d20",
+      "native": "009f0d20",
+      "name": "BSP_ShipAi_NeighbourListAdd",
+      "abi": "void __thiscall(blk)(unit* candidate), RET 4",
+      "body": "009F0D20-009F0E83",
+      "coverage": "partial: 009F0D39..009F0D43 and 009F0DC8..009F0E69 are projected. The three admission predicates 009F0D49..009F0DBF, which call the entity vtable slot +5Ch with the literal 8 and 00827F70, are not projected and stay with packet entity_kind_predicate_vtable_005c.",
+      "status": "semantic_reconstruction_strict_win32_build_passed"
+    },
+    {
+      "address": "009f0ea0",
+      "native": "009f0ea0",
+      "name": "BSP_ShipAi_NeighbourListRefresh",
+      "abi": "void __thiscall(blk)(float dt), RET 4",
+      "body": "009F0EA0-009F115D",
+      "coverage": "partial: 009F0FD3..009F1152, the ageing, the destroy and the compaction, are projected. The head 009F0EA9..009F0FCF (the clamped velocity the box refresh is given) and the two box-refresh calls 009EAE20 and 009EAFC0 are not read.",
+      "status": "semantic_reconstruction_strict_win32_build_passed"
+    },
+    {
+      "address": "009d8160",
+      "native": "009d8160",
+      "name": "BSP_ShipAi_ObstacleNodePointInAvoidBox",
+      "abi": "char __thiscall(node)(const float* point), RET 4",
+      "body": "009D8160-009D8200",
+      "coverage": "read, not projected: it is a host method. |dot(point - (+44h,+48h), (+28h,+2Ch))| < +5Ch and the same against (+30h,+34h) and +60h, false when +68h or +69h is set."
+    },
+    {
+      "address": "009d80c0",
+      "native": "009d80c0",
+      "name": "BSP_ShipAi_ObstacleNodePointInNearBox",
+      "abi": "char __thiscall(node)(const float* point), RET 4",
+      "body": "009D80C0-009D8156",
+      "coverage": "read, not projected: it is a host method. The same test against centre (+20h,+24h) and half extents (+38h,+3Ch), false when +68h is set."
+    },
+    {
+      "address": "009dd540",
+      "native": "009dd540",
+      "name": "BSP_ShipAi_ObstacleNodeClipRay",
+      "abi": "char __thiscall(node)(const float* origin, const float* direction, float* io_range), RET 0Ch",
+      "body": "009DD540-009DD9BA",
+      "coverage": "read, not projected: it is a host method. Four support-point rejections through 009D8860, then the four edges of the avoid box clipped against the ray by 009D8210, narrowing io_range."
+    },
+    {
+      "address": "009dd010",
+      "native": "009dd010",
+      "name": "BSP_ShipAi_ObstacleNodeClipArc",
+      "abi": "char __thiscall(node)(const float* centre, float radius, float from_bearing, float* io_to_bearing), RET 10h",
+      "body": "009DD010-009DD530",
+      "coverage": "read, not projected: it is a host method. The same four corners, clipped against the arc, narrowing io_to_bearing; false when +68h or +69h is set."
+    },
+    {
+      "address": "009e52e0",
+      "native": "009e52e0",
+      "name": "BSP_ShipAi_ObstacleNodeConstruct",
+      "abi": "void* __thiscall(node)(unit* owner, void* blk, float lifetime), RET 0Ch",
+      "body": "009E52E0-009E53A5",
+      "coverage": "read, not projected: the field initialisation is the evidence for ShipAiObstacleNode's layout, not a routine the projection needs."
+    },
+    {
+      "address": "009dc2e0",
+      "native": "009dc2e0",
+      "name": "FUN_009dc2e0",
+      "abi": "char __thiscall(blk+0A24h)(query*), RET 4",
+      "body": "009DC2E0-009DCEA2",
+      "coverage": "not read past its call site. Only the 0x24-byte query block 009EC089..009EC0C1 builds and the bearing it reads back at 009EC0CE are established."
+    }
+  ],
+  "host_steps": [
+    {
+      "step": 1,
+      "method": "settings_blocked_margin_1d8",
+      "address": "009eb681",
+      "native": "00424c40",
+      "function": "009eb660",
+      "evidence": "009EB686 MOVSS XMM0,[EAX+1D8h] after the call; reached only when sector+14h was set on entry (009EB66E)."
+    },
+    {
+      "step": 2,
+      "method": "unit_heading_vtable50",
+      "address": "009eb939",
+      "native": "indirect [[blk+3FCh]]+50h",
+      "function": "009eb660",
+      "evidence": "009EB92E MOV ECX,[ESI+3FCh]; 009EB934 MOV EAX,[ECX]; 009EB936 MOV EDX,[EAX+50h]; CALL EDX. The arc arm only."
+    },
+    {
+      "step": 3,
+      "method": "avoid_zone_segment_crossing_004158e0",
+      "address": "009eb819",
+      "native": "004158e0",
+      "function": "009eb660",
+      "evidence": "ECX = LEA [ESI+0A3Ch]; three pushes (the probe point at E+20h, the far point at E+30h, the out slot at E+3Ch) and RET 0Ch. Gated on [blk+0A3Ch] != 0 at 009EB778 and on the byte blk+0A24h at 009EB7AA. The straight arm only."
+    },
+    {
+      "step": 4,
+      "method": "length_2d_00414c60 (already reconstructed, called directly)",
+      "address": "009eb848",
+      "native": "00414c60",
+      "function": "009eb660",
+      "evidence": "ECX = &[ESP+30h], the crossing point minus the probe origin; the result replaces the range at [ESP+10h]."
+    },
+    {
+      "step": 5,
+      "method": "point_in_avoid_box_009d8160",
+      "address": "009eb8c0",
+      "native": "009d8160",
+      "function": "009eb660",
+      "evidence": "ECX = *cursor, one push of &[ESP+20h] (the probe point). A true result breaks the loop at 009EB925 and records the index straight away."
+    },
+    {
+      "step": 6,
+      "method": "point_in_near_box_009d80c0",
+      "address": "009eb8ca",
+      "native": "009d80c0",
+      "function": "009eb660",
+      "evidence": "PUSH EBX with EBX = LEA [ESI+184h], the hull position. ECX is the neighbour the previous call left there. A true result skips the neighbour."
+    },
+    {
+      "step": 7,
+      "method": "clip_ray_against_node_009dd540",
+      "address": "009eb8e2",
+      "native": "009dd540",
+      "function": "009eb660",
+      "evidence": "three pushes (&origin at E+28h, &direction at E+44h, &range at E+10h) and RET 0Ch; 009EB8EB..009EB8F6 keeps the result only when it exceeds sector+0Ch."
+    },
+    {
+      "step": 8,
+      "method": "clip_arc_against_avoid_zones_00415970",
+      "address": "009ebdaa",
+      "native": "00415970",
+      "function": "009eb660",
+      "evidence": "ECX = LEA [ESI+0A3Ch]; four arguments (&centre at E+44h, the radius sector+4h, the start bearing, &swept bearing at E+10h) and RET 10h. Gated the same two ways at 009EBD4C and 009EBD70."
+    },
+    {
+      "step": 9,
+      "method": "point_in_avoid_box_009d8160",
+      "address": "009ebe0e",
+      "native": "009d8160",
+      "function": "009eb660",
+      "evidence": "the arc arm's copy, with &[ESP+3Ch], the start point pushed one clearance along the hull forward vector."
+    },
+    {
+      "step": 10,
+      "method": "clip_arc_against_node_009dd010",
+      "address": "009ebe36",
+      "native": "009dd010",
+      "function": "009eb660",
+      "evidence": "four arguments and RET 10h; 009EBE3F..009EBE7D turns the bearing change into an arc length by multiplying by sector+4h and keeps it only when it exceeds sector+0Ch."
+    },
+    {
+      "step": 11,
+      "method": "settings_neighbour_memory_194",
+      "address": "009ebede",
+      "native": "00424c40",
+      "function": "009eb660",
+      "evidence": "009EBEE3 FLD [EAX+194h]; 009EBEE9 FADD the double 1.0 at 00D7A210."
+    },
+    {
+      "step": 12,
+      "method": "raise_node_lifetime_78",
+      "address": "009ebef7",
+      "native": "inlined, no CALL",
+      "function": "009eb660",
+      "evidence": "009EBEF7 FLD [ECX+78h]; 009EBEFE FCOMIP; 009EBF02 JBE; 009EBF0A MOVSS [ECX+78h],XMM0. The compare-and-store pair is the whole operation, so the host carries the raise."
+    },
+    {
+      "step": 13,
+      "method": "unit_heading_vtable50",
+      "address": "009ebf1a",
+      "native": "indirect [[blk+3FCh]]+50h",
+      "function": "009eb660",
+      "evidence": "the unit arm reads the heading again and turns it by pi at 009EBF39 when sector+0h is zero."
+    },
+    {
+      "step": 14,
+      "method": "ship_ai_node_passing_corner_009d84e0 (projected, not a host method)",
+      "address": "009ebf67",
+      "native": "009d84e0",
+      "function": "009eb660",
+      "evidence": "five pushes and RET 14h: &out at E+44h, EBX = &hull position, the reference heading, [node+88h], &flag at E+0Fh. EAX comes back as the out pointer, read at 009EBF6C and 009EBF71."
+    },
+    {
+      "step": 15,
+      "method": "unit_heading_vtable50",
+      "address": "009ebffe",
+      "native": "indirect [[blk+3FCh]]+50h",
+      "function": "009eb660",
+      "evidence": "009EBFF3 MOV ECX,[ESI+3FCh]; 009EBFF9 MOV EDX,[ECX]; 009EBFFB MOV EAX,[EDX+50h]; CALL EAX. The avoid-zone arm's own read of the heading."
+    },
+    {
+      "step": 16,
+      "method": "avoid_zone_free_bearing_009dc2e0",
+      "address": "009ec0c1",
+      "native": "009dc2e0",
+      "function": "009eb660",
+      "evidence": "ECX = LEA [ESI+0A24h]; one push of &[ESP+4Ch], the 0x24-byte block 009EC077..009EC0BB fills. The bearing is read back from block+1Ch at 009EC0CE."
+    },
+    {
+      "step": 17,
+      "method": "clamped_interpolate_00419010 (already reconstructed, called directly)",
+      "address": "009ec235",
+      "native": "00419010",
+      "function": "009eb660",
+      "evidence": "SUB ESP,14h at 009EC20B and five stores: 10.0f (00CE38B8), 0.0f, 150.0f (00CE3808), 8 degrees (00D20A18) and the distance."
+    }
+  ],
+  "call_sites": [
+    {"address": "009eb953", "native": "00438b10", "function": "009eb660", "evidence": "the starboard beam bearing, heading - pi/2"},
+    {"address": "009eb970", "native": "00438aa0", "function": "009eb660", "evidence": "the port beam bearing, heading + pi/2"},
+    {"address": "009ebaa1", "native": "00438b10", "function": "009eb660", "evidence": "arc arm, ahead fan, lateral >= 0: swept = Sub(port beam bearing, arc/radius)"},
+    {"address": "009ebb58", "native": "00438aa0", "function": "009eb660", "evidence": "arc arm, ahead fan, lateral < 0: swept = Add(starboard beam bearing, arc/radius)"},
+    {"address": "009ebc57", "native": "00438b10", "function": "009eb660", "evidence": "arc arm, astern fan, lateral >= 0: swept = Sub(starboard beam bearing, arc/radius)"},
+    {"address": "009ebd0e", "native": "00438aa0", "function": "009eb660", "evidence": "arc arm, astern fan, lateral < 0: swept = Add(port beam bearing, arc/radius)"},
+    {"address": "009ebd6b", "native": "00438aa0", "function": "009eb660", "evidence": "the avoid-zone arc start bearing, reference + (+/- clearance / radius)"},
+    {"address": "009ebe51", "native": "00438b10", "function": "009eb660", "evidence": "the bearing change a node hit costs, before the sign clear at 009EBE5E"},
+    {"address": "009ebf39", "native": "00438aa0", "function": "009eb660", "evidence": "the astern fan turns the heading by pi (00D7A264) before 009D84E0"},
+    {"address": "009ebfa1", "native": "00bf701a", "function": "009eb660", "evidence": "atan2 of the corner offset, ST(1) = dz, ST(0) = dx"},
+    {"address": "009ec01d", "native": "00438aa0", "function": "009eb660", "evidence": "the same pi turn on the avoid-zone arm"},
+    {"address": "009ec1e9", "native": "00bf7030", "function": "009eb660", "evidence": "the CRT square root of the squared distance to the hit point, guarded by 1e-10 at 009EC1D9"},
+    {"address": "009ec256", "native": "00438aa0", "function": "009eb660", "evidence": "the bias is added when 009D84E0 chose the max side"},
+    {"address": "009ec267", "native": "00438b10", "function": "009eb660", "evidence": "and subtracted otherwise, including every avoid-zone hit"},
+    {"address": "009d873e", "native": "00bf701a", "function": "009d84e0", "evidence": "the bearing of one of the four corners from the observer"},
+    {"address": "009d877b", "native": "00438b10", "function": "009d84e0", "evidence": "that bearing relative to the reference heading"},
+    {"address": "009ef242", "native": "0092d730", "function": "009ef230", "evidence": "the hull's body-axis speed, ECX = [unit+1018h]"},
+    {"address": "009ef334", "native": "009eb660", "function": "009ef230", "evidence": "one scan per refreshed sector, ECX = blk + index*2Ch + 808h, one push of blk"},
+    {"address": "009e028f", "native": "0080fc30", "function": "009e0270", "evidence": "the reference speed blk+3C4h is floored at 1.4f (00D045F0, 00D06874)"},
+    {"address": "009e02c2", "native": "009de2f0", "function": "009e0270", "evidence": "the pose refresh that writes blk+19Ch..blk+1B0h, the three direction pairs the scan reads"},
+    {"address": "009e02d7", "native": "00811a30", "function": "009e0270", "evidence": "the turn radius reference, ECX = blk+3FCh and the float 0.5f at 00CE3800"},
+    {"address": "009f0dc8", "native": "00424c40", "function": "009f0d20", "evidence": "009F0DCD FLD [EAX+194h]; 009F0DD3 FADD the double 1.2 at 00CEC160"},
+    {"address": "009f0d82", "native": "00827f70", "function": "009f0d20", "evidence": "the class-level admission predicate, ECX = [[blk+3FCh]+538h]"},
+    {"address": "009f0e2f", "native": "00bf681b", "function": "009f0d20", "evidence": "operator new(0x90): the neighbour node is 0x90 bytes"},
+    {"address": "009f0e53", "native": "009e52e0", "function": "009f0d20", "evidence": "the node constructor, ECX = the block, three pushes (candidate, blk, lifetime)"},
+    {"address": "009f0ec0", "native": "00414db0", "function": "009f0ea0", "evidence": "the pose refresh on blk+3FCh when the dirty byte unit+0C8h is clear"},
+    {"address": "009f0f38", "native": "00bf7030", "function": "009f0ea0", "evidence": "the speed the clamped direction pair is built from"},
+    {"address": "009f0f62", "native": "00424c40", "function": "009f0ea0", "evidence": "009F0F6D FMUL [EAX+1B8h], the cap on the class speed class+500h"},
+    {"address": "009f104d", "native": "009eae20", "function": "009f0ea0", "evidence": "the first of the two box refreshes on a surviving node"},
+    {"address": "009f1067", "native": "0080e160", "function": "009f0ea0", "evidence": "the team lookup behind the hostile flag passed to 009EAFC0"},
+    {"address": "009f1075", "native": "00424c40", "function": "009f0ea0", "evidence": "the settings byte +4h that gates the hostile flag"},
+    {"address": "009f10ff", "native": "009eafc0", "function": "009f0ea0", "evidence": "the second box refresh, given the clamped direction, blk+1BCh/+1C0h, the braking distance and the clearance"},
+    {"address": "009f1121", "native": "0064a610", "function": "009f0ea0", "evidence": "the node destructor on an expired node"},
+    {"address": "009f1127", "native": "00bf65ac", "function": "009f0ea0", "evidence": "free of the 0x90-byte node; the ten bytes after this call are an undisassembled flow gap"},
+    {"address": "009f1944", "native": "00414db0", "function": "009f1420", "evidence": "the observing unit's pose, before the candidate loop"},
+    {"address": "009f199d", "native": "00424c40", "function": "009f1420", "evidence": "settings+19Ch, the lookahead seconds of the admission radius"},
+    {"address": "009f19b8", "native": "00424c40", "function": "009f1420", "evidence": "settings+198h, the floor under that radius"},
+    {"address": "009f1a25", "native": "009f0d20", "function": "009f1420", "evidence": "the sole append site, ECX = EDI+8 (the control block), one push of the candidate unit"},
+    {"address": "009f5156", "native": "009e0270", "function": "009f50e0", "evidence": "frame order step 1: the twelve sector shapes"},
+    {"address": "009f516c", "native": "009f1420", "function": "009f50e0", "evidence": "frame order step 2: the throttled pre-pass that appends neighbours"},
+    {"address": "009f51e4", "native": "009f0ea0", "function": "009f50e0", "evidence": "frame order step 3: age and compact the neighbour list"},
+    {"address": "009f51fa", "native": "009ef230", "function": "009f50e0", "evidence": "frame order step 4: refresh three sectors, which runs 009EB660 three times"}
+  ],
+  "corrections": [
+    {
+      "was": "docs/SHIP_AI_OBSTACLE_TABLES.md sector table: `+4h` is the `half width of the probe`",
+      "is": "`+4h` is the probe's turn radius, and a negative value (-1.0f) selects a straight probe instead of an arc",
+      "evidence": "009EB69F COMISS against +0.0f with 009EB6AE JBE picks the two arms; 009EBA84 FDIV divides the clearance by it to get an angle and 009EBA8A divides the arc length by it to get the swept angle; 009E034A / 009E03B1 write 00D7A260 = -1.0f into buckets 2 and 3"
+    },
+    {
+      "was": "the same table: `+0Ch` is the `reach`",
+      "is": "`+0Ch` is a small longitudinal clearance, one tenth, one fifth or one half of blk+3E4h = unit+9C8h * 0.45. It is the distance the probe point sits ahead of (or astern of) the offset origin, the angle the avoid-zone arc starts off the beam bearing, and the minimum travel a hit must exceed to count",
+      "evidence": "009E0345, 009E037B, 009E03AC and siblings write it; 009E44DB FMUL against the double 0.45 at 00CF1748 makes blk+3E4h; 009EB7B8, 009EBB6E, 009EBD24 place the probe point; 009EBA7F and 009EBD59 make the start angle; 009EB8EB and 009EBE72 are the two minimum-travel tests"
+    },
+    {
+      "was": "the same table: `+10h` is the `lateral offset`; `+0h` is the `kind byte`",
+      "is": "confirmed and made precise. `+10h` is a signed lateral offset of +/- unit+9CCh / 2.2 or +/- unit+9CCh / 4, and its sign selects which beam vector the arc centre is offset along. `+0h` is the direction: non-zero is the ahead fan, zero the astern fan",
+      "evidence": "009E0336, 009E036C and the four FCHS siblings write +10h; 009EB9E1 and 009EBB9B test its sign against +0.0f at 00D7A218; 009E0338 SETZ writes +0h as (group == 0); 009EB725 negates the hull forward vector and 009EBD38 subtracts the clearance when it is zero"
+    },
+    {
+      "was": "docs/SHIP_AI_OBSTACLE_TABLES.md: \"`[sector+24h]+88h` is the passing side the other ship picked and `sector+28h` is the one this ship picked, both written by the same 009D84E0 side flag in 009EB660\"",
+      "is": "009EB660 never writes node+88h; it only reads it (009EBF51) and passes it to 009D84E0 as the side to bias against. The only instruction in the image that stores a non-zero value into a node's +88h is 009D912F in BSP_ShipAi_PredictTrackCrossing, which in one arm copies the other party's +88h (009D90C7). Every other writer clears it: 009E5364 and 009E5417 in the two constructors, 009D803A and 009D8086 in 009D8010, 009D8C80 in 009D8C60's zero arm, and 009F019F, 009F06EC, 009F073C, 009F09C7 in 009F0100",
+      "evidence": "a whole-image scan of the C7 /0 and 89 /r forms with the disp32 0x88 (local/find_store88.py); 009D8C60's non-zero arm builds a message with 009D66B0 and routes it with BSP_Session_RouteMessage rather than storing, so the value is replicated rather than assigned locally"
+    },
+    {
+      "was": "docs/SHIP_AI_OBSTACLE_TABLES.md uncertainty 5: \"The sector fields +0h, +4h, +0Ch and +10h are named from how the unread geometry uses them and are the weakest names in this doc\"",
+      "is": "closed. Their producer is 009E0270, called from the controller step at 009F5156 and from the brain construct at 009E46A9",
+      "evidence": "009E02FA LEA EAX,[ESI+818h] with the 0x108 outer step at 009E048B and the two iterations at 009E0490"
+    },
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2p follow-up 6: \"the neighbour list blk+604h / blk+608h. The refresh runs 15680 times and marks nothing\"",
+      "is": "the list is inline in the control block, capacity 0x80 pointers spanning blk+608h..blk+807h, which is exactly where the sector array begins. Its producer is BSP_ShipAi_BrainPrePass through 009F0D20 at 009F1A25, throttled by the accumulator gate at 009F515B, and its candidates are the world's unit list at [[00E188A8]+19CCh] filtered by an altitude band of 15.0 and a closing-distance radius",
+      "evidence": "009F0D39 CMP against 0x80; 009F1877..009F18B8 walks the list (count +60h, head +64h, payload +8h, next +4h); 009F1929 compares against the double 15.0 at 00CF3F20; 009F1987..009F1A1F is the radius test"
+    }
+  ],
+  "run_time_evidence": {
+    "claim": "no sector is ever marked blocked in bsp_game.exe",
+    "status": "already recorded, not re-run",
+    "evidence": "docs/GAME_EXECUTABLE.md milestone 2p states the refresh runs 15680 times and marks nothing because the neighbour list is empty in that process. This packet adds the reason rather than a new run: nothing in bsp_game.exe reaches 009F1A25, the sole append site, and the avoid-zone object blk+0A24h / blk+0A3Ch is the scan's only other input. Wiring either is a milestone in the executable's own packet, not this one; src/ship_motion_probe.cpp and the game executable sources belong to cc-exe-2q and were not touched."
+  },
+  "no_ghidra_function": [
+    {
+      "start": "none",
+      "end": "",
+      "evidence": "every routine this packet read or named has a Ghidra function whose body range the bridge reports: 009EB660-009EC277, 009D84E0-009D885A, 009D80C0-009D8156, 009D8160-009D8200, 009DD010-009DD530, 009DD540-009DD9BA, 009DC2E0-009DCEA2, 009E0270-009E04D9, 009E52E0-009E53A5, 009F0D20-009F0E83, 009F0EA0-009F115D, 009F1420-009F1BBA, 009EF230-009EF347, 004158E0-00415963, 00415970-00415D6E, 00811A30-00811AAA"
+    }
+  ],
+  "flow_gaps": [
+    {
+      "function": "009f0ea0",
+      "after_call": "009f1127",
+      "range": "009F112C..009F1136",
+      "bytes": "83 c4 04 83 c5 01 89 6c 24 1c",
+      "evidence": "`python tools/bsp.py ghidra flow 009f0ea0` reports one gap of ten bytes after the CALL to 00BF65AC. The disk bytes are ADD ESP,4; ADD EBP,1; MOV [ESP+1Ch],EBP, the increment of the removal count the compaction at 009F1112 and the count fixup at 009F114E both depend on. The projection uses them; the listing does not have them. `python tools/ghidra_flow_repair.py 009f0ea0 --apply` is the integrator's step."
+    }
+  ],
+  "uncertainties": [
+    "Which of blk+19Ch/+1A0h and blk+1A4h/+1A8h is the port beam vector is inferred, not read: the arm that offsets the turn centre along blk+19Ch/+1A0h passes heading + pi/2 as the bearing from the centre back to the hull (009EB9FD, 009EBA9A), which forces blk+19Ch/+1A0h to point at heading - pi/2. Their producer, 009DE2F0 at 009DE462 with defaults in 009DFCB0, was not read.",
+    "00811A30 returns a class curve 0082E960 evaluated at the rudder fraction 0.5f, divided by the gameplay modifier product for category 5. That the sector uses it as the radius of a turning circle is what the geometry needs, but 0082E960 was not read, so `turn radius` is a hypothesis about the curve.",
+    "The neighbour node's two oriented boxes share the axis pair +28h..+34h in the containment tests (009D80C0, 009D8160) while the corner builders use +4Ch..+58h for the second box (009D84E0, 009DD010, 009DD540). That is what the listing says. Whether the two pairs are kept identical by 009EAE20 and 009EAFC0 was not checked; neither was read.",
+    "The meaning of the passing side codes 1 and 2 is not settled. 009D84E0 penalises the side matching the argument by 25 degrees, so a node whose +88h is 1 pushes this ship toward code 1, and 009F3F80 backs off when the node's +88h differs from the sector's choice. Which absolute side each code names was not established.",
+    "009DC2E0's query block is described by what 009EB660 writes into it and reads back. The two 5.0f at block+10h and block+14h and the context pointer at block+20h (blk+0A38h) are passed through unread.",
+    "blk+0A24h is treated as an inline avoid-zone object whose first byte is an enable and whose +18h (blk+0A3Ch) is the head of a segment tree. That is from its two uses here (009EB7AA tests the byte, 009EC0AF passes the address as `this`, 009EB819 and 009EBDAA pass &blk+0A3Ch as `this`); the object itself was not read."
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "pass",
+    "detail": "src/ship_ai_sector_scan.cpp builds clean under /W4 /WX for Win32; the existing reconstructed_math test still passes. No new test case was added: every routine here is a projection whose evidence is the listing, and the four math helpers it calls (00419010, 00438AA0, 00438B10, 00414C60) already have their own coverage."
+  }
+}

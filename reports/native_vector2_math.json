@@ -1,0 +1,290 @@
+{
+  "packet": "orch3_tracer_kernels_ak",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "004155b0",
+      "end_exclusive": "004155ef",
+      "length": 63,
+      "sha256": "8dab6ef63469410ee1f880e5fdbea7b7e3006e10cc7b2568297fa74f3098383e",
+      "live_disk_equal": true,
+      "signature": "float __fastcall clamp_native_float_004155b0(const float*,const float*,const float*) noexcept",
+      "instruction_count": 23,
+      "last_instruction": "004155ec",
+      "ghidra_name": "BSP_Float_ClampByPointer",
+      "cpp_symbol": "clamp_native_float_004155b0",
+      "source": "src/native_vector2_math.cpp",
+      "header": "include/bsp/native_vector2_math.hpp",
+      "coverage": "complete native body through required explicit bindings",
+      "original_abi": "ECX value pointer, EDX minimum pointer, stack maximum pointer; ST0 result; RET4",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Spill value/minimum to binary32; ordered lower compare and unordered-inclusive upper branch select native operands. Pointer alias/read order and NaN asymmetry retained. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX value pointer, EDX minimum pointer, stack maximum pointer; ST0 result; RET4. See docs/NATIVE_VECTOR2_MATH.md and reports/native_vector2_math.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "float __fastcall BSP_Float_ClampByPointer(float * value, float * minimum, float * maximum)",
+      "native_calling_convention": "__fastcall"
+    },
+    {
+      "address": "00419210",
+      "end_exclusive": "00419257",
+      "length": 71,
+      "sha256": "42d813193434f69047d3fe225dbd61cb2378d0e9baba9e325736ba488bc688f4",
+      "live_disk_equal": true,
+      "signature": "float __fastcall native_vector2_length_00419210(const float*,const CameraAxesCrtAccess*)",
+      "instruction_count": 22,
+      "last_instruction": "00419256",
+      "ghidra_name": "BSP_Vector2f_Length",
+      "cpp_symbol": "native_vector2_length_00419210",
+      "source": "src/native_vector2_math.cpp",
+      "header": "include/bsp/native_vector2_math.hpp",
+      "coverage": "complete native body through required explicit bindings",
+      "original_abi": "ECX two-float source; ST0 result; RET",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Both squares and their sum cross original binary32 spill boundaries, then use actual CRT sqrt and spill result to binary32. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX two-float source; ST0 result; RET. See docs/NATIVE_VECTOR2_MATH.md and reports/native_vector2_math.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "float __fastcall BSP_Vector2f_Length(float * source)",
+      "native_calling_convention": "__fastcall"
+    },
+    {
+      "address": "00419260",
+      "end_exclusive": "004192d5",
+      "length": 117,
+      "sha256": "849731764d807ebf37050dfe0c941d1f1e2b40c7b333a95da105a02a185e4bba",
+      "live_disk_equal": true,
+      "signature": "float __fastcall native_vector2_reciprocal_length_00419260(const float*,const CameraAxesCrtAccess*)",
+      "instruction_count": 41,
+      "last_instruction": "004192d4",
+      "ghidra_name": "BSP_Vector2f_ReciprocalLength",
+      "cpp_symbol": "native_vector2_reciprocal_length_00419260",
+      "source": "src/native_vector2_math.cpp",
+      "header": "include/bsp/native_vector2_math.hpp",
+      "coverage": "complete native body through required explicit bindings",
+      "original_abi": "ECX two-float source; ST0 result; RET",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Native square/sum/sqrt spills followed by FUCOMIP/LAHF/TEST AH44/JP reciprocal-or-zero selection. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX two-float source; ST0 result; RET. See docs/NATIVE_VECTOR2_MATH.md and reports/native_vector2_math.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "float __fastcall BSP_Vector2f_ReciprocalLength(float * source)",
+      "native_calling_convention": "__fastcall"
+    },
+    {
+      "address": "00b9a7a0",
+      "end_exclusive": "00b9a812",
+      "length": 114,
+      "sha256": "cd04266782f097952e5a3c12557f304a1f97668ecef512bfc7123c35ea08f57b",
+      "live_disk_equal": true,
+      "signature": "float* __fastcall native_vector2_min_00b9a7a0(float*,const float*,const float*) noexcept",
+      "instruction_count": 37,
+      "last_instruction": "00b9a80f",
+      "ghidra_name": "BSP_Vector2f_ComponentMinimum",
+      "cpp_symbol": "native_vector2_min_00b9a7a0",
+      "source": "src/native_vector2_math.cpp",
+      "header": "include/bsp/native_vector2_math.hpp",
+      "coverage": "complete native body through required explicit bindings",
+      "original_abi": "ECX destination, EDX left, stack right; EAX destination; RET4",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Preserves native x87 comparisons and selected MOVSS words including asymmetric unordered selection and destination/source aliasing. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX destination, EDX left, stack right; EAX destination; RET4. See docs/NATIVE_VECTOR2_MATH.md and reports/native_vector2_math.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "float * __fastcall BSP_Vector2f_ComponentMinimum(float * destination, float * left, float * right)",
+      "native_calling_convention": "__fastcall"
+    },
+    {
+      "address": "00b9a820",
+      "end_exclusive": "00b9a892",
+      "length": 114,
+      "sha256": "fa587feda5d95129e0d8570c0c8f9a7055cc59dfe3093550ce378d3a8988a2a8",
+      "live_disk_equal": true,
+      "signature": "float* __fastcall native_vector2_max_00b9a820(float*,const float*,const float*) noexcept",
+      "instruction_count": 37,
+      "last_instruction": "00b9a88f",
+      "ghidra_name": "BSP_Vector2f_ComponentMaximum",
+      "cpp_symbol": "native_vector2_max_00b9a820",
+      "source": "src/native_vector2_math.cpp",
+      "header": "include/bsp/native_vector2_math.hpp",
+      "coverage": "complete native body through required explicit bindings",
+      "original_abi": "ECX destination, EDX left, stack right; EAX destination; RET4",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Preserves native x87 comparisons and selected MOVSS words including asymmetric unordered selection and destination/source aliasing. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX destination, EDX left, stack right; EAX destination; RET4. See docs/NATIVE_VECTOR2_MATH.md and reports/native_vector2_math.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "float * __fastcall BSP_Vector2f_ComponentMaximum(float * destination, float * left, float * right)",
+      "native_calling_convention": "__fastcall"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00419210",
+      "address": "00419246",
+      "native": "00bf7030"
+    },
+    {
+      "function": "00419260",
+      "address": "00419296",
+      "native": "00bf7030"
+    }
+  ],
+  "immutable_constants": {},
+  "verification": {
+    "original_byte_fixture": "local/tracer_probe_ak.cpp; local/tracer-probe-ak.log",
+    "pairs": 3000,
+    "complete_update_pairs": 864,
+    "x87_control_words": 12,
+    "comparison": "identical-address restored owner/ring/mesh/material/child storage; selected NaN and aliased min/max/clamp words; x87 sticky flags/TOP/CW and MXCSR, not every x87 register/condition bit",
+    "build": "Combined strict MSVC Win32 library and both seeded CTests passed via explicit --parallel 1. scripts/build.ps1 parallel MSBuild encountered MSB3491 tlog access-denied before C++ compilation.",
+    "review": "Independent read-only review reverified16 original fixture spans, ten kernel spans/constants and reran3000 pairs successfully."
+  },
+  "limits": [
+    "Production requires already constructed actual7ACh BAD6F0 owner, actual ring and geometry/material graph; no synthetic production owner is allocated.",
+    "Both fixture sides share existing actual CRT sqrt boundary; its exception dispatch is not independently revalidated here.",
+    "Current native virtual34 is captured at BAAEBA and invoked at BAAF12 through required pure canonical lookup. Fixture records dispatch and matrix; actual scene setter/application binding remains required.",
+    "Full recursive B6DA70 is not claimed: all four consumed calls use recurse0 and the bridge implements that exact branch.",
+    "New C++ parameter/return adapters are not binary-compatible replacements; native EH, construction/geometry production, application lifetime and gameplay remain unvalidated."
+  ],
+  "integration_validation": {
+    "build": "local/ak-final-build.log: all7 AK modules in strict MSVC Win32 bsp_core; serial --parallel 1 workaround for parallel MSBuild MSB3491",
+    "tests": "local/ak-final-ctest.log: both existing seeded CTests passed",
+    "call_checks": "local/ak-final-call-checks.log: 245 rows across7 reports, zero failures; indirect IAT/current-slot behavior remains outside mechanical checker",
+    "fixtures": [
+      "local/tracer-probe-ak.log"
+    ],
+    "fixture_note": "Focused native/source comparison within original worker/root reports limits; all fixture source compilations use /fp:strict and root combined-library linking. Root tracer and earlier pool/curve fixtures were replayed before adding independent emitter/model-update sources; relevant source unchanged. Exact final merged-head replay is recorded separately.",
+    "combined_library_sha256": "d7393d8246d01614b1ce3f0de3ea7a0fc25e567d9ca79218070d07d11ede603a",
+    "source_sha256": {
+      "src/native_vector2_math.cpp": "3637188992ddfa573fb83d09cde0dc919f081678e252e8104ab421054dc24989"
+    },
+    "game_validated": false,
+    "original_binary_replacement": false,
+    "worker_historical_note": "Earlier worker read-only/Ghidra repair/CMake pending observations describe the pre-integration snapshot; this section and saved audits are the current result."
+  },
+  "status": "reconstructed_strict_win32_build_tested_bounded_original_byte_fixture_tested_saved_analysis_verified",
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T160551Z.json",
+    "readback": "local/ak-comment-readback.json",
+    "project_saved": true,
+    "old_comments_preserved": true,
+    "changes": [
+      {
+        "address": "004155b0",
+        "before": {
+          "address": "004155b0",
+          "function_name": "BSP_Float_ClampByPointer",
+          "comment": "[BSP reconstruction 004155b0]\nHypothesis, not a recovered symbol. Packet cc2_ship_hit_record, read-only analysis. __fastcall(const float* v /*ECX*/, const float* lo /*EDX*/, const float* hi /*[ESP+4]*/), RET 4, result in ST0, body 004155B0-004155EE. Returns max(*lo, min(*v, *hi)): FCOMI at 004155C5 returns *lo when *lo > *v, then FCOMI at 004155DB returns *v when *v <= *hi and *hi otherwise. Used by 00826F10 at 008274F4 to clamp damage/10.0 into [0, 63]; the same arithmetic is inlined in that function's part loop at 00827693..008276BC. docs/SHIP_HIT_RECORD.md."
+        },
+        "after": {
+          "address": "004155b0",
+          "name": "BSP_Float_ClampByPointer",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Spill value/minimum to binary32; ordered lower compare and unordered-inclusive upper branch select native operands. Pointer alias/read order and NaN asymmetry retained. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX value pointer, EDX minimum pointer, stack maximum pointer; ST0 result; RET4. See docs/NATIVE_VECTOR2_MATH.md and reports/native_vector2_math.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00419210",
+        "before": {
+          "address": "00419210",
+          "function_name": "FUN_00419210"
+        },
+        "after": {
+          "address": "00419210",
+          "name": "BSP_Vector2f_Length",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Both squares and their sum cross original binary32 spill boundaries, then use actual CRT sqrt and spill result to binary32. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX two-float source; ST0 result; RET. See docs/NATIVE_VECTOR2_MATH.md and reports/native_vector2_math.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00419260",
+        "before": {
+          "address": "00419260",
+          "function_name": "FUN_00419260"
+        },
+        "after": {
+          "address": "00419260",
+          "name": "BSP_Vector2f_ReciprocalLength",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Native square/sum/sqrt spills followed by FUCOMIP/LAHF/TEST AH44/JP reciprocal-or-zero selection. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX two-float source; ST0 result; RET. See docs/NATIVE_VECTOR2_MATH.md and reports/native_vector2_math.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b9a7a0",
+        "before": {
+          "address": "00b9a7a0",
+          "function_name": "FUN_00b9a7a0"
+        },
+        "after": {
+          "address": "00b9a7a0",
+          "name": "BSP_Vector2f_ComponentMinimum",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Preserves native x87 comparisons and selected MOVSS words including asymmetric unordered selection and destination/source aliasing. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX destination, EDX left, stack right; EAX destination; RET4. See docs/NATIVE_VECTOR2_MATH.md and reports/native_vector2_math.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b9a820",
+        "before": {
+          "address": "00b9a820",
+          "function_name": "FUN_00b9a820"
+        },
+        "after": {
+          "address": "00b9a820",
+          "name": "BSP_Vector2f_ComponentMaximum",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Preserves native x87 comparisons and selected MOVSS words including asymmetric unordered selection and destination/source aliasing. Exact live/installed bytes match; strict Win32 and original-byte fixture passed. New C++ interfaces; required CRT/current-slot bindings, native exception ABI and gameplay remain unvalidated as described in report. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete native body through required explicit bindings; ECX destination, EDX left, stack right; EAX destination; RET4. See docs/NATIVE_VECTOR2_MATH.md and reports/native_vector2_math.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/ak-signature-audit.json",
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "004155b0": "004155b0 BSP_Float_ClampByPointer  undefined BSP_Float_ClampByPointer(void)  body 004155b0 - 004155ee\n",
+      "00419210": "00419210 BSP_Vector2f_Length  undefined BSP_Vector2f_Length(void)  body 00419210 - 00419256\n",
+      "00419260": "00419260 BSP_Vector2f_ReciprocalLength  undefined BSP_Vector2f_ReciprocalLength(void)  body 00419260 - 004192d4\n",
+      "00b9a7a0": "00b9a7a0 BSP_Vector2f_ComponentMinimum  undefined BSP_Vector2f_ComponentMinimum(void)  body 00b9a7a0 - 00b9a811\n",
+      "00b9a820": "00b9a820 BSP_Vector2f_ComponentMaximum  undefined BSP_Vector2f_ComponentMaximum(void)  body 00b9a820 - 00b9a891\n"
+    },
+    "changes": [
+      {
+        "address": "004155b0",
+        "prototype": "float __fastcall BSP_Float_ClampByPointer(float * value, float * minimum, float * maximum)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 004155b0 with __fastcall calling convention"
+        }
+      },
+      {
+        "address": "00419210",
+        "prototype": "float __fastcall BSP_Vector2f_Length(float * source)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00419210 with __fastcall calling convention"
+        }
+      },
+      {
+        "address": "00419260",
+        "prototype": "float __fastcall BSP_Vector2f_ReciprocalLength(float * source)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00419260 with __fastcall calling convention"
+        }
+      },
+      {
+        "address": "00b9a7a0",
+        "prototype": "float * __fastcall BSP_Vector2f_ComponentMinimum(float * destination, float * left, float * right)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b9a7a0 with __fastcall calling convention"
+        }
+      },
+      {
+        "address": "00b9a820",
+        "prototype": "float * __fastcall BSP_Vector2f_ComponentMaximum(float * destination, float * left, float * right)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b9a820 with __fastcall calling convention"
+        }
+      }
+    ],
+    "note": "Original native calling convention/arguments only; implicit this is ECX. Added C++ bindings do not change this recovered native signature. Compiler handler remains opaque."
+  },
+  "final_merged_validation": {
+    "tested_commit": "aab1373abde21d9a8d03ad113f8a53317cfd8ff5",
+    "build": "local/ak-integrate.log: repository standard scripts/build.ps1 completed successfully after merge with current main; strict MSVC Win32 and both existing seeded CTests passed",
+    "earlier_parallel_issue": "Intermittent MSB3491 creating Lua/zlib tlog temporary files occurred before C++ compilation, including a later documentation-only integration rerun. Standard integration build at the pinned source commit passed. Serial final full build and both CTests passed again; no ACL/global workaround installed.",
+    "original_byte_fixture": "local/tracer-probe-final-merged-ak.log",
+    "fixture_compiler": "MSVC Win32 /std:c++20 /W4 /WX /O2 /fp:strict /MD; /link /MANIFEST:EMBED",
+    "combined_library_sha256": "3ca30054b3287e5612c4b6fc9c684a8927805b4591db28a95d9367a4e05977ef",
+    "owned_sources_unchanged_from_review": "local/ak-merged-source-audit.json: all14 source/header files unchanged from020d8f85",
+    "game_validated": false,
+    "native_binary_replacement": false,
+    "documentation_only_retry": {
+      "build": "local/ak-documentation-final-build.log: serial strict Win32 full build passed",
+      "tests": "local/ak-documentation-final-ctest.log: both seeded tests passed",
+      "source_unchanged": true,
+      "library_sha256": "3ca30054b3287e5612c4b6fc9c684a8927805b4591db28a95d9367a4e05977ef"
+    }
+  }
+}

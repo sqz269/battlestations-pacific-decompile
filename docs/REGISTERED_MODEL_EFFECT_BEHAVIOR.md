@@ -137,3 +137,7 @@ both existing CTests passed. The report records the focused fixture replay, exac
 call/tail checks, saved Ghidra name/signature preimages and comment readback.
 Required external runtime bindings, original exception ABI and gameplay remain
 limited as described above; this integration does not extend the fixture coverage.
+
+## Correction from docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md, docs/NATIVE_PARTICLE_MODEL_UPDATE.md and docs/NATIVE_PARTICLE_EMITTER_LIFETIME.md
+
+AK reconstructs AF74A0 construction and AF6DD0 update through their required real application services, AFF690 actual container allocation and B04F00 cleanup through actual current-definition/point-light bindings. Construction still requires derived canonical ownership and rendering resources; nonempty particle simulation, allocation initializer paths, native EH and gameplay remain unvalidated.

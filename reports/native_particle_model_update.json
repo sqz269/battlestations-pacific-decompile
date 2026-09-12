@@ -1,0 +1,770 @@
+{
+  "packet": "orch3_model_update_ak",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "verified_utc_date": "2026-09-12",
+  "status": "reconstructed_strict_win32_build_tested_bounded_original_byte_fixture_tested_saved_analysis_verified",
+  "headers": [
+    "include/bsp/native_particle_model_update.hpp"
+  ],
+  "sources": [
+    "src/native_particle_model_update.cpp"
+  ],
+  "documentation": "docs/NATIVE_PARTICLE_MODEL_UPDATE.md",
+  "functions": [
+    {
+      "address": "00af6dd0",
+      "end_exclusive": "00af7392",
+      "size": 1474,
+      "sha256": "93dfae6699d8d96e54ec5101cd7c676d2d3c46f9554c4afc5c54053f3e628dcd",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af738f",
+        "size": 3,
+        "text": "ret 8",
+        "bytes": "c20800"
+      },
+      "coverage": "complete",
+      "cpp_symbol": "update_native_particle_model_00af6dd0",
+      "proposed_ghidra_name": "BSP_ParticleModel_Update",
+      "original_abi": "thiscall: ECX actual 2DCh model; stack(float delta, low mode byte); RET8",
+      "source": "src/native_particle_model_update.cpp",
+      "instructions": 375,
+      "end_inclusive": "00af7391",
+      "uncertainty": "Descriptive symbol is a hypothesis. Main routine requires actual application services and an added EDX access pointer. Original object/EH ABI and game behavior unvalidated.",
+      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX actual 2DCh model; stack(float delta, low mode byte); RET8. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_ParticleModel_Update",
+      "header": "include/bsp/native_particle_model_update.hpp",
+      "native_prototype": "void __thiscall BSP_ParticleModel_Update(float delta, uint mode)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00b6e0a0",
+      "end_exclusive": "00b6e0c1",
+      "size": 33,
+      "sha256": "403e620de6b1bd451a25a60930c35537c616fabc0af563224821cec05edcd4b6",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00b6e0be",
+        "size": 3,
+        "text": "ret 4",
+        "bytes": "c20400"
+      },
+      "coverage": "complete",
+      "cpp_symbol": "copy_native_node_local_position_00b6e0a0",
+      "proposed_ghidra_name": "BSP_Node_CopyLocalPosition",
+      "original_abi": "thiscall: ECX node; stack destination; EAX destination; RET4",
+      "source": "src/native_particle_model_update.cpp",
+      "instructions": 8,
+      "end_inclusive": "00b6e0c0",
+      "uncertainty": "Descriptive symbol is a hypothesis. Main routine requires actual application services and an added EDX access pointer. Original object/EH ABI and game behavior unvalidated.",
+      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX node; stack destination; EAX destination; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_Node_CopyLocalPosition",
+      "header": "include/bsp/native_particle_model_update.hpp",
+      "native_prototype": "float * __thiscall BSP_Node_CopyLocalPosition(float * destination)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00b6db60",
+      "end_exclusive": "00b6db67",
+      "size": 7,
+      "sha256": "07370f3bf9af1ccfdf7e4d94825bcc82587190a22845ffbf5f24fd22d3d80b1f",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00b6db66",
+        "size": 1,
+        "text": "ret ",
+        "bytes": "c3"
+      },
+      "coverage": "complete",
+      "cpp_symbol": "get_native_node_local_matrix_00b6db60",
+      "proposed_ghidra_name": "BSP_Node_GetLocalMatrix",
+      "original_abi": "thiscall: ECX node; EAX node+B0h; RET",
+      "source": "src/native_particle_model_update.cpp",
+      "instructions": 2,
+      "end_inclusive": "00b6db66",
+      "uncertainty": "Descriptive symbol is a hypothesis. Main routine requires actual application services and an added EDX access pointer. Original object/EH ABI and game behavior unvalidated.",
+      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX node; EAX node+B0h; RET. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_Node_GetLocalMatrix",
+      "header": "include/bsp/native_particle_model_update.hpp",
+      "native_prototype": "float * __thiscall BSP_Node_GetLocalMatrix(void)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00af3f50",
+      "end_exclusive": "00af3f7d",
+      "size": 45,
+      "sha256": "b1e61548ad062251b272d5643c61748f266506ee0a2d787217ce639fb48c5b6b",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af3f7a",
+        "size": 3,
+        "text": "ret 4",
+        "bytes": "c20400"
+      },
+      "coverage": "complete",
+      "cpp_symbol": "copy_native_particle_definition_bounds_00af3f50",
+      "proposed_ghidra_name": "BSP_ParticleDefinition_CopyBounds",
+      "original_abi": "thiscall: ECX definition; stack destination; EAX destination; RET4",
+      "source": "src/native_particle_model_update.cpp",
+      "instructions": 11,
+      "end_inclusive": "00af3f7c",
+      "uncertainty": "Descriptive symbol is a hypothesis. Main routine requires actual application services and an added EDX access pointer. Original object/EH ABI and game behavior unvalidated.",
+      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX definition; stack destination; EAX destination; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_ParticleDefinition_CopyBounds",
+      "header": "include/bsp/native_particle_model_update.hpp",
+      "native_prototype": "float * __thiscall BSP_ParticleDefinition_CopyBounds(float * destination)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00afd9f0",
+      "end_exclusive": "00afd9f1",
+      "size": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00afd9f0",
+        "size": 1,
+        "text": "ret ",
+        "bytes": "c3"
+      },
+      "coverage": "complete",
+      "cpp_symbol": "destroy_native_particle_temporary_00afd9f0",
+      "proposed_ghidra_name": "BSP_ParticleTemporary_Destroy",
+      "original_abi": "thiscall: ECX temporary; RET",
+      "source": "src/native_particle_model_update.cpp",
+      "instructions": 1,
+      "end_inclusive": "00afd9f0",
+      "uncertainty": "Descriptive symbol is a hypothesis. Main routine requires actual application services and an added EDX access pointer. Original object/EH ABI and game behavior unvalidated.",
+      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX temporary; RET. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_ParticleTemporary_Destroy",
+      "header": "include/bsp/native_particle_model_update.hpp",
+      "native_prototype": "void __thiscall BSP_ParticleTemporary_Destroy(void)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00affa70",
+      "end_exclusive": "00affad3",
+      "size": 99,
+      "sha256": "03ded3de90d7bba2632b36e57d10ac6ac4da7a259f94340287bea90e82686224",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00affad0",
+        "size": 3,
+        "text": "ret 4",
+        "bytes": "c20400"
+      },
+      "coverage": "complete",
+      "cpp_symbol": "evaluate_native_particle_linear_curve_00affa70",
+      "proposed_ghidra_name": "BSP_ParticleCurve_EvaluateLinear",
+      "original_abi": "thiscall: ECX curve; stack float time; ST0 float; RET4",
+      "source": "src/native_particle_model_update.cpp",
+      "instructions": 38,
+      "end_inclusive": "00affad2",
+      "uncertainty": "Descriptive symbol is a hypothesis. Main routine requires actual application services and an added EDX access pointer. Original object/EH ABI and game behavior unvalidated.",
+      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX curve; stack float time; ST0 float; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_ParticleCurve_EvaluateLinear",
+      "header": "include/bsp/native_particle_model_update.hpp",
+      "native_prototype": "float __thiscall BSP_ParticleCurve_EvaluateLinear(float time)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00affae0",
+      "end_exclusive": "00affb57",
+      "size": 119,
+      "sha256": "6b80757fff83b19b32d13272e4b85f48476062f424b3b299456f305b128ee85d",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00affb54",
+        "size": 3,
+        "text": "ret 4",
+        "bytes": "c20400"
+      },
+      "coverage": "complete",
+      "cpp_symbol": "evaluate_native_particle_cubic_curve_00affae0",
+      "proposed_ghidra_name": "BSP_ParticleCurve_EvaluateCubic",
+      "original_abi": "thiscall: ECX curve; stack float time; ST0 float; RET4",
+      "source": "src/native_particle_model_update.cpp",
+      "instructions": 47,
+      "end_inclusive": "00affb56",
+      "uncertainty": "Descriptive symbol is a hypothesis. Main routine requires actual application services and an added EDX access pointer. Original object/EH ABI and game behavior unvalidated.",
+      "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX curve; stack float time; ST0 float; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_ParticleCurve_EvaluateCubic",
+      "header": "include/bsp/native_particle_model_update.hpp",
+      "native_prototype": "float __thiscall BSP_ParticleCurve_EvaluateCubic(float time)",
+      "native_calling_convention": "__thiscall"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00af6de5",
+      "native": "00b6db70",
+      "function": "00af6dd0",
+      "bytes": "e8866d0700",
+      "binding": "refresh_native_camera_world_00b6db70",
+      "contract": "existing actual native world refresh"
+    },
+    {
+      "address": "00af6df7",
+      "native": "004134f0",
+      "function": "00af6dd0",
+      "bytes": "e8f4c691ff",
+      "binding": "copy_native_camera_matrix_004134f0",
+      "contract": "complete existing forward x87 matrix copy"
+    },
+    {
+      "address": "00af6dfe",
+      "native": "00b6e0d0",
+      "function": "00af6dd0",
+      "bytes": "e8cd720700",
+      "binding": "get_native_camera_view_00b6fcb0",
+      "contract": "canonical identical world/inverse/copy/flags kernel"
+    },
+    {
+      "address": "00af6e0a",
+      "native": "004134f0",
+      "function": "00af6dd0",
+      "bytes": "e8e1c691ff",
+      "binding": "copy_native_camera_matrix_004134f0",
+      "contract": "complete existing forward x87 matrix copy"
+    },
+    {
+      "address": "00af6e0f",
+      "native": "0051f6b0",
+      "function": "00af6dd0",
+      "bytes": "e89c88a2ff",
+      "binding": "RegisteredModelEffectCallees.call_0051f6b0",
+      "contract": "actual singleton getter; read its current byte04 after return"
+    },
+    {
+      "address": "00af6e6c",
+      "native": "selected_definition+vtable08",
+      "function": "00af6dd0",
+      "bytes": "ffd2",
+      "binding": "NativeParticleModelUpdateCallees.definition_virtual08",
+      "contract": "Dynamic implementation unread; address/slot ABI only: captured current vtable+08, ECX actual entry, stack(actual model,time184), RET8, EAX actual temporary supporting +00..+9F"
+    },
+    {
+      "address": "00af6e9c",
+      "native": "00bd2fc0",
+      "function": "00af6dd0",
+      "bytes": "e81fc10d00",
+      "binding": "RandomThreads.next_00bd2fc0",
+      "contract": "application random thread domain; stream0; signed FILD of result bits"
+    },
+    {
+      "address": "00af6ee2",
+      "native": "00affa70",
+      "function": "00af6dd0",
+      "bytes": "e8898b0000",
+      "binding": "evaluate_native_particle_linear_curve_00affa70",
+      "contract": "complete native linear curve in this packet; RET4"
+    },
+    {
+      "address": "00af6ee9",
+      "native": "00affae0",
+      "function": "00af6dd0",
+      "bytes": "e8f28b0000",
+      "binding": "evaluate_native_particle_cubic_curve_00affae0",
+      "contract": "complete native cubic curve in this packet; RET4"
+    },
+    {
+      "address": "00af6f1e",
+      "native": "00b6e0a0",
+      "function": "00af6dd0",
+      "bytes": "e87d710700",
+      "binding": "copy_native_node_local_position_00b6e0a0",
+      "contract": "complete native local translation copy in this packet; RET4"
+    },
+    {
+      "address": "00af6f6b",
+      "native": "00b6db60",
+      "function": "00af6dd0",
+      "bytes": "e8f06b0700",
+      "binding": "get_native_node_local_matrix_00b6db60",
+      "contract": "complete node+B0h getter in this packet; RET"
+    },
+    {
+      "address": "00af6f7e",
+      "native": "00b6db70",
+      "function": "00af6dd0",
+      "bytes": "e8ed6b0700",
+      "binding": "refresh_native_camera_world_00b6db70",
+      "contract": "existing actual native world refresh"
+    },
+    {
+      "address": "00af6fe5",
+      "native": "00b6db70",
+      "function": "00af6dd0",
+      "bytes": "e8866b0700",
+      "binding": "refresh_native_camera_world_00b6db70",
+      "contract": "existing actual native world refresh"
+    },
+    {
+      "address": "00af6ff4",
+      "native": "004134f0",
+      "function": "00af6dd0",
+      "bytes": "e8f7c491ff",
+      "binding": "copy_native_camera_matrix_004134f0",
+      "contract": "complete existing forward x87 matrix copy"
+    },
+    {
+      "address": "00af7001",
+      "native": "00b6db70",
+      "function": "00af6dd0",
+      "bytes": "e86a6b0700",
+      "binding": "refresh_native_camera_world_00b6db70",
+      "contract": "existing actual native world refresh"
+    },
+    {
+      "address": "00af703d",
+      "native": "00afd410",
+      "function": "00af6dd0",
+      "bytes": "e8ce630000",
+      "binding": "NativeParticleModelUpdateCallees.call_00afd410",
+      "contract": "actual owner; current count/capacity; byte index and 108h stride; AFCF50 then current count increment; RET4"
+    },
+    {
+      "address": "00af7044",
+      "native": "00afd9f0",
+      "function": "00af6dd0",
+      "bytes": "e8a7690000",
+      "binding": "destroy_native_particle_temporary_00afd9f0",
+      "contract": "complete literal native RET, no body effects"
+    },
+    {
+      "address": "00af704a",
+      "native": "00bf65ac",
+      "function": "00af6dd0",
+      "bytes": "e85df50f00",
+      "binding": "NativeParticleModelUpdateAccess.free_00bf65ac",
+      "contract": "actual allocation domain paired with virtual08; tail-jump to returning BF9DC8; cdecl caller ADD ESP,4 at AF705C"
+    },
+    {
+      "address": "00af7099",
+      "native": "00b6e0a0",
+      "function": "00af6dd0",
+      "bytes": "e802700700",
+      "binding": "copy_native_node_local_position_00b6e0a0",
+      "contract": "complete native local translation copy in this packet; RET4"
+    },
+    {
+      "address": "00af710d",
+      "native": "00b6e0a0",
+      "function": "00af6dd0",
+      "bytes": "e88e6f0700",
+      "binding": "copy_native_node_local_position_00b6e0a0",
+      "contract": "complete native local translation copy in this packet; RET4"
+    },
+    {
+      "address": "00af7139",
+      "native": "00b6db70",
+      "function": "00af6dd0",
+      "bytes": "e8326a0700",
+      "binding": "refresh_native_camera_world_00b6db70",
+      "contract": "existing actual native world refresh"
+    },
+    {
+      "address": "00af71d0",
+      "native": "00b6db70",
+      "function": "00af6dd0",
+      "bytes": "e89b690700",
+      "binding": "refresh_native_camera_world_00b6db70",
+      "contract": "existing actual native world refresh"
+    },
+    {
+      "address": "00af7233",
+      "native": "00bf85b0",
+      "function": "00af6dd0",
+      "bytes": "e878131000",
+      "binding": "NativeParticleModelUpdateAccess.floor_00bf85b0",
+      "contract": "actual CRT floor(double), ST0; current0109EEA0/MXCSR/x87 dispatch and exceptional handlers; caller ADD ESP,8 at AF7240"
+    },
+    {
+      "address": "00af728e",
+      "native": "00aff640",
+      "function": "00af6dd0",
+      "bytes": "e8ad830000",
+      "binding": "NativeParticleModelUpdateCallees.call_00aff640",
+      "contract": "actual emitter, delta; B05110 simulation and current emptied-container virtual04(1); RET4; EAX active count"
+    },
+    {
+      "address": "00af7302",
+      "native": "00afd7a0",
+      "function": "00af6dd0",
+      "bytes": "e899640000",
+      "binding": "NativeParticleModelUpdateCallees.call_00afd7a0",
+      "contract": "actual owner, time, low mode-equal byte; AFE290 over actual108h indexed records; swap indices/current count reloads; RET8"
+    },
+    {
+      "address": "00af7375",
+      "native": "00af3f50",
+      "function": "00af6dd0",
+      "bytes": "e8d6cbffff",
+      "binding": "copy_native_particle_definition_bounds_00af3f50",
+      "contract": "complete native definition bounds copy in this packet; RET4"
+    },
+    {
+      "address": "00af737d",
+      "native": "00b74390",
+      "function": "00af6dd0",
+      "bytes": "e80ed00700",
+      "binding": "set_native_generated_model_bounds_00b74390",
+      "contract": "existing canonical native four-word bounds stores and flags update through cdecl adapter"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Ghidra export omitted AF704F..AF7071 after the free call, obscuring initializer loop and fallthrough.",
+      "is": "Complete native continuation advances index, reloads current definition count, loops, then resets EBX and pops EBP before regular update.",
+      "evidence": "35 live bytes match installed PE: 8b44241c8b8e8c01000083c00183c40483c3043b4130894424180f8ce1fdffff33db5d. BF65AC tail-jumps returning CRT free BF9DC8. Ghidra left read-only."
+    },
+    {
+      "was": "Unfinished fixture image shrank while assigning absent PE BSS bytes to fixed-width memory slices.",
+      "is": "Missing uninitialized data is zero-filled to operand width and fixed image size is asserted before execution.",
+      "evidence": "make_model_update_probe.py uses ljust(op.size,b\"\\0\") and len(image)==0xca0000; regenerated image and original-byte comparisons pass."
+    }
+  ],
+  "required_services": [
+    "existing actual0051F6B0 options binding",
+    "existing application RandomThreads domain",
+    "actual captured definition virtual08 construction",
+    "actual00AFD410 owner append",
+    "actual00AFF640 emitter simulation",
+    "actual00AFD7A0 particle stepping",
+    "actual00BF85B0 CRT floor dispatch",
+    "actual00BF65AC matching allocation-domain free"
+  ],
+  "reused_kernels": {
+    "00b6e0d0": "get_native_camera_view_00b6fcb0: exact instruction kernel with relocated addresses",
+    "00b74390": "set_native_generated_model_bounds_00b74390 in integrator native_tracer_update.hpp/.cpp",
+    "00b6db70": "refresh_native_camera_world_00b6db70",
+    "004134f0": "copy_native_camera_matrix_004134f0"
+  },
+  "verification": {
+    "target": "bsp.py ghidra count/bytes Client.verify verified bsp project, /battlestationspacific.exe, x86 image base00400000",
+    "live_disk_spans_equal": 7,
+    "strict_compile_link": "PASS MSVC Win32 /std:c++17 /permissive- /EHsc /W4 /WX /fp:strict /O2 /MD; /MANIFEST:EMBED; current integrator bsp_core.lib",
+    "fixture": {
+      "result": "PASS",
+      "original_source_pairs": 696,
+      "complete_main_invocations": 480,
+      "x87_control_words": 12,
+      "curve_pairs": 216,
+      "delta_values": [
+        0.0,
+        0.004,
+        0.04,
+        0.08,
+        -0.02
+      ],
+      "main_scenarios": "initialized/uninitialized, local/world, suppressed/enabled; existing singleton, empty top-level definition list, two empty emitters, empty owner count14",
+      "curves": "zero/signed-zero, boundaries, positive infinity, quiet/signaling NaN; actual 14h/1Ch rows",
+      "compared": "entire model/definition/owner/options/emitter/pointer-list backing bytes; x87 sticky/TOP mask383F, control word, MXCSR; float result bits; preexisting x87 sentinel",
+      "native_services": "Original0051F6B0, SSE2 floor00BF85B0, AFF640 empty-container path and AFD7A0 empty-owner path. Construction/append/free abort if reached.",
+      "image_size": "0x00ca0000",
+      "uncopied_code": "INT3",
+      "fixture_spans": [
+        [
+          "0xaf6dd0",
+          "0xaf7392"
+        ],
+        [
+          "0xb6e0a0",
+          "0xb6e0c1"
+        ],
+        [
+          "0xb6db60",
+          "0xb6db67"
+        ],
+        [
+          "0xaf3f50",
+          "0xaf3f7d"
+        ],
+        [
+          "0xafd9f0",
+          "0xafd9f1"
+        ],
+        [
+          "0xaffa70",
+          "0xaffad3"
+        ],
+        [
+          "0xaffae0",
+          "0xaffb57"
+        ],
+        [
+          "0x4134f0",
+          "0x413557"
+        ],
+        [
+          "0xb6db70",
+          "0xb6dbc0"
+        ],
+        [
+          "0xb6e0d0",
+          "0xb6e10a"
+        ],
+        [
+          "0xb63b30",
+          "0xb63d43"
+        ],
+        [
+          "0xb6d4d0",
+          "0xb6d623"
+        ],
+        [
+          "0xb74390",
+          "0xb743c0"
+        ],
+        [
+          "0xaff640",
+          "0xaff68a"
+        ],
+        [
+          "0xafd7a0",
+          "0xafd81e"
+        ],
+        [
+          "0xbf85b0",
+          "0xbf86d1"
+        ],
+        [
+          "0x51f6b0",
+          "0x51f766"
+        ]
+      ]
+    },
+    "standard_build_script": "FAIL MSB3491 access denied creating bsp_lua511/bsp_zlib121 .tlog temporary files in parallel build; no source diagnostic",
+    "serial_build": "PASS cmake --build build/win32 --config Release --parallel 1; existing registered targets; new packet source awaits integrator CMake registration",
+    "ctest": "PASS reconstructed_math 1/1 (existing worktree suite)",
+    "report_calls": "PASS 26 direct call rows checked, 0 failed; one dynamic selected-definition vtable08 row explicitly indirect and unchecked",
+    "game_validated": false,
+    "original_object_exception_abi_validated": false,
+    "unvalidated": [
+      "initializer loop with real entries",
+      "random branch in model update",
+      "actual definition construction and allocation/free",
+      "nonempty particle/emitter simulation",
+      "CRT floor fallback and error handlers",
+      "dynamic payload mutation and reentrancy by real application services",
+      "original C++ object/EH ABI",
+      "game behavior"
+    ]
+  },
+  "integration": {
+    "ghidra_writes": "none; integrator owns annotations, missing body repair and export refresh",
+    "cmake": "integrator adds src/native_particle_model_update.cpp and canonical tracer bounds source",
+    "ledger_writes": "none; integrator owns ledger additions",
+    "local_fixture_artifacts": "ignored, retained in this existing worktree; not committed"
+  },
+  "artifact_sha256": {
+    "local/make_model_update_probe.py": "6467d3cf8a3b16f80b5d059a22391365d4d5a111828688b2b70cf759b5a97ba3",
+    "local/model_update_probe.cpp": "b8c7e7ab4826ad770ee18cc7fca3172f6216a450e088c22e965c8c1078a46bd5",
+    "local/run_model_update_probe.cmd": "c061bb3eb5e68d9af6b96235f5e5c49c94d15bda3179664afbf6c18b1a6f66d6",
+    "local/model_update_image.bin": "3843b6902d7d0ff7fc822c0c716ebd0fca8ddf9e6550f58f6b2c21185de2c561",
+    "local/model_update_relocations.hpp": "9c3311b4fefa58652d5d292fd760e2345bed8a681ac8480475a5178be8bbcea3",
+    "include/bsp/native_particle_model_update.hpp": "4f74655c49fa07749f9882a38a157b85565dce74de0bf17758c5b6e90c1d3652",
+    "src/native_particle_model_update.cpp": "c860da2df80928b93d7312d17428a02c0160b595544a1d0c4afb47da3c821444"
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T160551Z.json",
+    "readback": "local/ak-comment-readback.json",
+    "project_saved": true,
+    "old_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00af3f50",
+        "before": {
+          "address": "00af3f50",
+          "function_name": "FUN_00af3f50"
+        },
+        "after": {
+          "address": "00af3f50",
+          "name": "BSP_ParticleDefinition_CopyBounds",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX definition; stack destination; EAX destination; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af6dd0",
+        "before": {
+          "address": "00af6dd0",
+          "function_name": "FUN_00af6dd0"
+        },
+        "after": {
+          "address": "00af6dd0",
+          "name": "BSP_ParticleModel_Update",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX actual 2DCh model; stack(float delta, low mode byte); RET8. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afd9f0",
+        "before": {
+          "address": "00afd9f0",
+          "function_name": "TRIV_body_00afd9f0"
+        },
+        "after": {
+          "address": "00afd9f0",
+          "name": "BSP_ParticleTemporary_Destroy",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX temporary; RET. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00affa70",
+        "before": {
+          "address": "00affa70",
+          "function_name": "FUN_00affa70"
+        },
+        "after": {
+          "address": "00affa70",
+          "name": "BSP_ParticleCurve_EvaluateLinear",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX curve; stack float time; ST0 float; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00affae0",
+        "before": {
+          "address": "00affae0",
+          "function_name": "FUN_00affae0"
+        },
+        "after": {
+          "address": "00affae0",
+          "name": "BSP_ParticleCurve_EvaluateCubic",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX curve; stack float time; ST0 float; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b6db60",
+        "before": {
+          "address": "00b6db60",
+          "function_name": "TRIV_body_00b6db60"
+        },
+        "after": {
+          "address": "00b6db60",
+          "name": "BSP_Node_GetLocalMatrix",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX node; EAX node+B0h; RET. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b6e0a0",
+        "before": {
+          "address": "00b6e0a0",
+          "function_name": "FUN_00b6e0a0"
+        },
+        "after": {
+          "address": "00b6e0a0",
+          "name": "BSP_Node_CopyLocalPosition",
+          "evidence": "Full installed PE and verified live Ghidra bytes match, including last instruction. Main body includes independently decoded 35-byte AF704F continuation. See packet documentation for focused fixture domain. Descriptive name is a provisional hypothesis, not a recovered symbol. thiscall: ECX node; stack destination; EAX destination; RET4. See docs/NATIVE_PARTICLE_MODEL_UPDATE.md for required real services and bounded fixture coverage. New interface; native object/EH ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/ak-signature-audit.json",
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00af6dd0": "00af6dd0 BSP_ParticleModel_Update  undefined BSP_ParticleModel_Update(void)  body 00af6dd0 - 00af7391\n",
+      "00b6e0a0": "00b6e0a0 BSP_Node_CopyLocalPosition  undefined BSP_Node_CopyLocalPosition(void)  body 00b6e0a0 - 00b6e0c0\n",
+      "00b6db60": "00b6db60 BSP_Node_GetLocalMatrix  undefined BSP_Node_GetLocalMatrix(void)  body 00b6db60 - 00b6db66\n",
+      "00af3f50": "00af3f50 BSP_ParticleDefinition_CopyBounds  undefined BSP_ParticleDefinition_CopyBounds(void)  body 00af3f50 - 00af3f7c\n",
+      "00afd9f0": "00afd9f0 BSP_ParticleTemporary_Destroy  undefined BSP_ParticleTemporary_Destroy(void)  body 00afd9f0 - 00afd9f0\n",
+      "00affa70": "00affa70 BSP_ParticleCurve_EvaluateLinear  undefined BSP_ParticleCurve_EvaluateLinear(void)  body 00affa70 - 00affad2\n",
+      "00affae0": "00affae0 BSP_ParticleCurve_EvaluateCubic  undefined BSP_ParticleCurve_EvaluateCubic(void)  body 00affae0 - 00affb56\n"
+    },
+    "changes": [
+      {
+        "address": "00af6dd0",
+        "prototype": "void __thiscall BSP_ParticleModel_Update(float delta, uint mode)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af6dd0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b6e0a0",
+        "prototype": "float * __thiscall BSP_Node_CopyLocalPosition(float * destination)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b6e0a0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b6db60",
+        "prototype": "float * __thiscall BSP_Node_GetLocalMatrix(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b6db60 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af3f50",
+        "prototype": "float * __thiscall BSP_ParticleDefinition_CopyBounds(float * destination)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af3f50 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afd9f0",
+        "prototype": "void __thiscall BSP_ParticleTemporary_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afd9f0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00affa70",
+        "prototype": "float __thiscall BSP_ParticleCurve_EvaluateLinear(float time)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00affa70 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00affae0",
+        "prototype": "float __thiscall BSP_ParticleCurve_EvaluateCubic(float time)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00affae0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "note": "Original native calling convention/arguments only; implicit this is ECX. Added C++ bindings do not change this recovered native signature. Compiler handler remains opaque."
+  },
+  "integration_validation": {
+    "build": "local/ak-final-build.log: all7 AK modules in strict MSVC Win32 bsp_core; serial --parallel 1 workaround for parallel MSBuild MSB3491",
+    "tests": "local/ak-final-ctest.log: both existing seeded CTests passed",
+    "call_checks": "local/ak-final-call-checks.log: 245 rows across7 reports, zero failures; indirect IAT/current-slot behavior remains outside mechanical checker",
+    "fixtures": [
+      "local/model-update-merged-ak.log"
+    ],
+    "fixture_note": "Focused native/source comparison within original worker/root reports limits; all fixture source compilations use /fp:strict and root combined-library linking. Root tracer and earlier pool/curve fixtures were replayed before adding independent emitter/model-update sources; relevant source unchanged. Exact final merged-head replay is recorded separately.",
+    "combined_library_sha256": "d7393d8246d01614b1ce3f0de3ea7a0fc25e567d9ca79218070d07d11ede603a",
+    "source_sha256": {
+      "src/native_particle_model_update.cpp": "73e1e28b31a59f02c4c3b1d0d86cccdf439cf2c1440477730b2e0cb5039477c3"
+    },
+    "game_validated": false,
+    "original_binary_replacement": false,
+    "worker_historical_note": "Earlier worker read-only/Ghidra repair/CMake pending observations describe the pre-integration snapshot; this section and saved audits are the current result.",
+    "flow_repairs": "reports/native_particle_model_update_flow_repairs.json"
+  },
+  "final_merged_validation": {
+    "tested_commit": "aab1373abde21d9a8d03ad113f8a53317cfd8ff5",
+    "build": "local/ak-integrate.log: repository standard scripts/build.ps1 completed successfully after merge with current main; strict MSVC Win32 and both existing seeded CTests passed",
+    "earlier_parallel_issue": "Intermittent MSB3491 creating Lua/zlib tlog temporary files occurred before C++ compilation, including a later documentation-only integration rerun. Standard integration build at the pinned source commit passed. Serial final full build and both CTests passed again; no ACL/global workaround installed.",
+    "original_byte_fixture": "local/model-update-final-merged-ak.log",
+    "fixture_compiler": "MSVC Win32 /std:c++20 /W4 /WX /O2 /fp:strict /MD; /link /MANIFEST:EMBED",
+    "combined_library_sha256": "3ca30054b3287e5612c4b6fc9c684a8927805b4591db28a95d9367a4e05977ef",
+    "owned_sources_unchanged_from_review": "local/ak-merged-source-audit.json: all14 source/header files unchanged from020d8f85",
+    "game_validated": false,
+    "native_binary_replacement": false,
+    "documentation_only_retry": {
+      "build": "local/ak-documentation-final-build.log: serial strict Win32 full build passed",
+      "tests": "local/ak-documentation-final-ctest.log: both seeded tests passed",
+      "source_unchanged": true,
+      "library_sha256": "3ca30054b3287e5612c4b6fc9c684a8927805b4591db28a95d9367a4e05977ef"
+    }
+  }
+}
