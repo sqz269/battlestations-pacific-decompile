@@ -1,0 +1,1686 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "packet": "orch5_menu_selection",
+  "functions": [
+    {
+      "address": "005966f0",
+      "name": "BSP_MainMenuListboxListener_Current08",
+      "end_inclusive": "0059786c",
+      "original_abi": "ECX screen+8; selected row and callback Listbox stack operands (both unread); RET8",
+      "coverage": "complete normal caller sequence over canonical owners with required addressed providers; no complete concrete menu provider",
+      "source": "src/main_menu_selection_listener.cpp"
+    },
+    {
+      "address": "004260b0",
+      "name": "BSP_NativeString_FromInt",
+      "end_inclusive": "00426194",
+      "original_abi": "ECX output native8h header; signed integer stack; EAX same output; RET4",
+      "coverage": "complete normal NativeString body and temporary allocation/release sequence; new C++ ABI",
+      "source": "src/main_menu_selection_listener.cpp"
+    },
+    {
+      "address": "004263b0",
+      "name": "BSP_NativeString_ConcatInt",
+      "end_inclusive": "00426490",
+      "original_abi": "ECX source native8h header; output and signed integer stack; EAX output; RET8",
+      "coverage": "complete normal NativeString body and temporary allocation/release sequence; new C++ ABI",
+      "source": "src/main_menu_selection_listener.cpp"
+    },
+    {
+      "address": "005c35d0",
+      "name": "BSP_MissionTree_SelectById",
+      "end_inclusive": "005c3600",
+      "original_abi": "ECX same mission-tree owner; native mission id string pointer stack; RET4",
+      "coverage": "complete normal composition of existing last-match005C3470 over canonical MissionTreeTables; native string/vector ABI excluded",
+      "source": "src/main_menu_selection_listener.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "005966f0",
+      "address": "0059671a",
+      "native": "00a9c990",
+      "dispatch": "direct",
+      "binding": "canonical GuiListboxRuntime selected current rowD8",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059673d",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596758",
+      "native": "0054a0c0",
+      "dispatch": "direct",
+      "binding": "same MainMenuCommandOwner.bar/actual host help line",
+      "coverage": "complete existing normal projection"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596779",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596794",
+      "native": "0054a0c0",
+      "dispatch": "direct",
+      "binding": "same MainMenuCommandOwner.bar/actual host help line",
+      "coverage": "complete existing normal projection"
+    },
+    {
+      "function": "005966f0",
+      "address": "005967b5",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "005967d0",
+      "native": "0054a0c0",
+      "dispatch": "direct",
+      "binding": "same MainMenuCommandOwner.bar/actual host help line",
+      "coverage": "complete existing normal projection"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596821",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059683c",
+      "native": "0054a0c0",
+      "dispatch": "direct",
+      "binding": "same MainMenuCommandOwner.bar/actual host help line",
+      "coverage": "complete existing normal projection"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596850",
+      "native": "0041dd20",
+      "dispatch": "direct",
+      "binding": "destroy current native header through actual string storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "005968a6",
+      "native": "00582130",
+      "dispatch": "direct",
+      "binding": "same screen-owned list node payload+8 after sentinel validation",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "005968b3",
+      "native": "00ab6b50",
+      "dispatch": "resolved_indirect",
+      "binding": "actual Text current50, same screen260 color quartet",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "005968c0",
+      "native": "00582160",
+      "dispatch": "direct",
+      "binding": "same list iterator next+0, native debug checks excluded",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596904",
+      "native": "00582130",
+      "dispatch": "direct",
+      "binding": "same screen-owned list node payload+8 after sentinel validation",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596911",
+      "native": "00ab6b50",
+      "dispatch": "resolved_indirect",
+      "binding": "actual Text current50, same screen260 color quartet",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059691e",
+      "native": "00582160",
+      "dispatch": "direct",
+      "binding": "same list iterator next+0, native debug checks excluded",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596964",
+      "native": "00582130",
+      "dispatch": "direct",
+      "binding": "same screen-owned list node payload+8 after sentinel validation",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596971",
+      "native": "00ab6b50",
+      "dispatch": "resolved_indirect",
+      "binding": "actual Text current50, same screen260 color quartet",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059697e",
+      "native": "00582160",
+      "dispatch": "direct",
+      "binding": "same list iterator next+0, native debug checks excluded",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "005969cb",
+      "native": "00582160",
+      "dispatch": "direct",
+      "binding": "same list iterator next+0, native debug checks excluded",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "005969d9",
+      "native": "00582130",
+      "dispatch": "direct",
+      "binding": "same screen-owned list node payload+8 after sentinel validation",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "005969e2",
+      "native": "00582130",
+      "dispatch": "direct",
+      "binding": "same screen-owned list node payload+8 after sentinel validation",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "005969ed",
+      "native": "00580820",
+      "dispatch": "direct",
+      "binding": "same screen294 show; AC0820(selected,background,0); background height+CEE4E8",
+      "coverage": "required provider; full body/listing read"
+    },
+    {
+      "function": "005966f0",
+      "address": "005969f6",
+      "native": "00582130",
+      "dispatch": "direct",
+      "binding": "same screen-owned list node payload+8 after sentinel validation",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596a09",
+      "native": "00ab6b50",
+      "dispatch": "resolved_indirect",
+      "binding": "actual Text current50, same screen270 color quartet",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596a4b",
+      "native": "00582160",
+      "dispatch": "direct",
+      "binding": "same list iterator next+0, native debug checks excluded",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596a9d",
+      "native": "00582160",
+      "dispatch": "direct",
+      "binding": "same list iterator next+0, native debug checks excluded",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596ab5",
+      "native": "00582130",
+      "dispatch": "direct",
+      "binding": "same screen-owned list node payload+8 after sentinel validation",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596abe",
+      "native": "00582130",
+      "dispatch": "direct",
+      "binding": "same screen-owned list node payload+8 after sentinel validation",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596ac9",
+      "native": "00580820",
+      "dispatch": "direct",
+      "binding": "same screen294 show; AC0820(selected,background,0); background height+CEE4E8",
+      "coverage": "required provider; full body/listing read"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596ad2",
+      "native": "00582130",
+      "dispatch": "direct",
+      "binding": "same screen-owned list node payload+8 after sentinel validation",
+      "coverage": "existing borrowed-list view"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596ae5",
+      "native": "00ab6b50",
+      "dispatch": "resolved_indirect",
+      "binding": "actual Text current50, same screen270 color quartet",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596b11",
+      "native": "00519dc0",
+      "dispatch": "direct",
+      "binding": "same screen2CC/2DC vector index; actual widget payload and its node+4C",
+      "coverage": "required provider; full body read; producer association remains open"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596b29",
+      "native": "00b6da70",
+      "dispatch": "direct",
+      "binding": "actual NativeNodeBinding factor and recursive flag=true",
+      "coverage": "required same-node provider; full body read"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596b3a",
+      "native": "00519dc0",
+      "dispatch": "direct",
+      "binding": "same screen2CC/2DC vector index; actual widget payload and its node+4C",
+      "coverage": "required provider; full body read; producer association remains open"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596b52",
+      "native": "00b6da70",
+      "dispatch": "direct",
+      "binding": "actual NativeNodeBinding factor and recursive flag=true",
+      "coverage": "required same-node provider; full body read"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596b5a",
+      "native": "00519dc0",
+      "dispatch": "direct",
+      "binding": "same screen2CC/2DC vector index; actual widget payload and its node+4C",
+      "coverage": "required provider; full body read; producer association remains open"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596b6e",
+      "native": "00b6da70",
+      "dispatch": "direct",
+      "binding": "actual NativeNodeBinding factor and recursive flag=true",
+      "coverage": "required same-node provider; full body read"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596b76",
+      "native": "00519dc0",
+      "dispatch": "direct",
+      "binding": "same screen2CC/2DC vector index; actual widget payload and its node+4C",
+      "coverage": "required provider; full body read; producer association remains open"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596b8a",
+      "native": "00b6da70",
+      "dispatch": "direct",
+      "binding": "actual NativeNodeBinding factor and recursive flag=true",
+      "coverage": "required same-node provider; full body read"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596bad",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596be0",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596c19",
+      "native": "005806a0",
+      "dispatch": "direct",
+      "binding": "same existing MainMenuCommandServices fresh selected mission",
+      "coverage": "required existing provider"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596c22",
+      "native": "005c27e0",
+      "dispatch": "direct",
+      "binding": "selected mission side index from low byte of block0 enabled",
+      "coverage": "complete existing mission_side_index"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596c41",
+      "native": "00427ac0",
+      "dispatch": "direct",
+      "binding": "borrowed same mission side hiddenHints vector count",
+      "coverage": "valid existing container projection"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596c4d",
+      "native": "0047bc00",
+      "dispatch": "direct",
+      "binding": "borrowed same hiddenHints vector native8h string index",
+      "coverage": "valid existing container projection"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596c59",
+      "native": "0054a0c0",
+      "dispatch": "direct",
+      "binding": "same MainMenuCommandOwner.bar/actual host help line",
+      "coverage": "complete existing normal projection"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596c69",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596c84",
+      "native": "0054a0c0",
+      "dispatch": "direct",
+      "binding": "same MainMenuCommandOwner.bar/actual host help line",
+      "coverage": "complete existing normal projection"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596c98",
+      "native": "0041dd20",
+      "dispatch": "direct",
+      "binding": "destroy current native header through actual string storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596cb5",
+      "native": "00519dc0",
+      "dispatch": "direct",
+      "binding": "same screen2CC/2DC vector index; actual widget payload and its node+4C",
+      "coverage": "required provider; full body read; producer association remains open"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596ccb",
+      "native": "00b6da70",
+      "dispatch": "direct",
+      "binding": "actual NativeNodeBinding factor and recursive flag=true",
+      "coverage": "required same-node provider; full body read"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596cda",
+      "native": "00519dc0",
+      "dispatch": "direct",
+      "binding": "same screen2CC/2DC vector index; actual widget payload and its node+4C",
+      "coverage": "required provider; full body read; producer association remains open"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596cf0",
+      "native": "00b6da70",
+      "dispatch": "direct",
+      "binding": "actual NativeNodeBinding factor and recursive flag=true",
+      "coverage": "required same-node provider; full body read"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596cff",
+      "native": "00aa6bc0",
+      "dispatch": "direct",
+      "binding": "same current screen1B8 widget DC=null then byte79=0; does NOT clear Listbox114",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596d25",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596d40",
+      "native": "0054a0c0",
+      "dispatch": "direct",
+      "binding": "same MainMenuCommandOwner.bar/actual host help line",
+      "coverage": "complete existing normal projection"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596d54",
+      "native": "0041dd20",
+      "dispatch": "direct",
+      "binding": "destroy current native header through actual string storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596d63",
+      "native": "00aa6bc0",
+      "dispatch": "direct",
+      "binding": "same current screen1B8 widget DC=null then byte79=0; does NOT clear Listbox114",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596d8b",
+      "native": "00580650",
+      "dispatch": "direct",
+      "binding": "capture E198AC+5C owner and group vector before E194D8; obtain same MissionGroupData",
+      "coverage": "valid existing container projection"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596d95",
+      "native": "0057d4a0",
+      "dispatch": "direct",
+      "binding": "same group mission vector indexed by selected D8, not list ordinal",
+      "coverage": "valid existing container projection"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596ddd",
+      "native": "00ab2690",
+      "dispatch": "direct",
+      "binding": "Icon state, actual retained textureA0, UV; RET0C; retain/release/current80",
+      "coverage": "required provider; full body read"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596df4",
+      "native": "00ab27a0",
+      "dispatch": "direct",
+      "binding": "Icon output size and state0; native texture pixel/UV size throughAB17B0",
+      "coverage": "required provider; full body read"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596e02",
+      "native": "00ab1ef0",
+      "dispatch": "resolved_indirect",
+      "binding": "actual Icon current58; captured profile, fresh same-screen2F4 receiver",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596e10",
+      "native": "00abaed0",
+      "dispatch": "direct",
+      "binding": "same actual Text implementation and current source; localize=true",
+      "coverage": "complete existing normal content domain"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596e27",
+      "native": "00ac0820",
+      "dispatch": "direct",
+      "binding": "ECX source widget, EDX destination widget, float width; RET4",
+      "coverage": "required provider; full body/listing read"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596e39",
+      "native": "00aa8530",
+      "dispatch": "resolved_indirect",
+      "binding": "same mission-name background334 current34(true)",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596e4a",
+      "native": "0043bc30",
+      "dispatch": "direct",
+      "binding": "output native string, EDX date60, stack date64/date68; language-sensitive builder",
+      "coverage": "required provider; full body/listing read"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596e63",
+      "native": "00abaed0",
+      "dispatch": "direct",
+      "binding": "same actual Text implementation and current source; localize=true",
+      "coverage": "complete existing normal content domain"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596e86",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596e8d",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596e9e",
+      "native": "00abaed0",
+      "dispatch": "direct",
+      "binding": "same actual Text implementation and current source; localize=true",
+      "coverage": "complete existing normal content domain"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596f21",
+      "native": "00ab1710",
+      "dispatch": "resolved_indirect",
+      "binding": "same top-arrow Icon current88(0,0,FLD1)",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596f41",
+      "native": "00aa6980",
+      "dispatch": "resolved_indirect",
+      "binding": "same top-arrow current4C",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596f5c",
+      "native": "00a9be00",
+      "dispatch": "direct",
+      "binding": "same actual Listbox row at selected+1; live hidden77 read",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596f91",
+      "native": "00ab1710",
+      "dispatch": "resolved_indirect",
+      "binding": "same bottom-arrow Icon current88(0,0,FLD1)",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596fa8",
+      "native": "00aa6980",
+      "dispatch": "resolved_indirect",
+      "binding": "same bottom-arrow current4C",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596fb3",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596fcc",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596fe4",
+      "native": "004263b0",
+      "dispatch": "direct",
+      "binding": "actual native string concat signed decimal integer",
+      "coverage": "complete normal new helper"
+    },
+    {
+      "function": "005966f0",
+      "address": "00596ffd",
+      "native": "004261a0",
+      "dispatch": "direct",
+      "binding": "actual native header concatenation",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597013",
+      "native": "00aa7e00",
+      "dispatch": "direct",
+      "binding": "same current group110 direct children/current native node names; second DWORD unused",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597039",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597040",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597060",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597067",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597087",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059708e",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005970b1",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005970b8",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005970c8",
+      "native": "00580650",
+      "dispatch": "direct",
+      "binding": "capture E198AC+5C owner and group vector before E194D8; obtain same MissionGroupData",
+      "coverage": "valid existing container projection"
+    },
+    {
+      "function": "005966f0",
+      "address": "005970dc",
+      "native": "00bf6713",
+      "dispatch": "direct",
+      "binding": "native iterator-debug error path excluded from valid-container domain",
+      "coverage": "excluded invalid-container path"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597114",
+      "native": "00bf6713",
+      "dispatch": "direct",
+      "binding": "native iterator-debug error path excluded from valid-container domain",
+      "coverage": "excluded invalid-container path"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059712a",
+      "native": "00bf6713",
+      "dispatch": "direct",
+      "binding": "native iterator-debug error path excluded from valid-container domain",
+      "coverage": "excluded invalid-container path"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597135",
+      "native": "00bf6713",
+      "dispatch": "direct",
+      "binding": "native iterator-debug error path excluded from valid-container domain",
+      "coverage": "excluded invalid-container path"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059714f",
+      "native": "00bf6713",
+      "dispatch": "direct",
+      "binding": "native iterator-debug error path excluded from valid-container domain",
+      "coverage": "excluded invalid-container path"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059715d",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597176",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059718f",
+      "native": "004263b0",
+      "dispatch": "direct",
+      "binding": "actual native string concat signed decimal integer",
+      "coverage": "complete normal new helper"
+    },
+    {
+      "function": "005966f0",
+      "address": "005971a8",
+      "native": "004261a0",
+      "dispatch": "direct",
+      "binding": "actual native header concatenation",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "005971be",
+      "native": "00aa7e00",
+      "dispatch": "direct",
+      "binding": "same current group110 direct children/current native node names; second DWORD unused",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "005971e0",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005971e7",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597207",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059720e",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059722e",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597235",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597258",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059725f",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597292",
+      "native": "00ab1710",
+      "dispatch": "resolved_indirect",
+      "binding": "same selected map point current88(sideMission*2+1,0,1)",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "005972b2",
+      "native": "00ab1710",
+      "dispatch": "resolved_indirect",
+      "binding": "same other map point current88(sideMission?2:0,0,1)",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "005972dc",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "005972f5",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059730a",
+      "native": "004263b0",
+      "dispatch": "direct",
+      "binding": "actual native string concat signed decimal integer",
+      "coverage": "complete normal new helper"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597323",
+      "native": "004261a0",
+      "dispatch": "direct",
+      "binding": "actual native header concatenation",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597339",
+      "native": "00aa7e00",
+      "dispatch": "direct",
+      "binding": "same current group110 direct children/current native node names; second DWORD unused",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059734d",
+      "native": "00aa6980",
+      "dispatch": "resolved_indirect",
+      "binding": "same map flag current4C; alpha captured before string allocation",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059736a",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597371",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597391",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597398",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005973b8",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005973bf",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005973e2",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005973e9",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005973fb",
+      "native": "00bf6713",
+      "dispatch": "direct",
+      "binding": "native iterator-debug error path excluded from valid-container domain",
+      "coverage": "excluded invalid-container path"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059741f",
+      "native": "00594b60",
+      "dispatch": "direct",
+      "binding": "same screen medal2F8; fresh selected mission/profile score and9052D0 predicate",
+      "coverage": "required provider; full body/listing read"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597426",
+      "native": "005806a0",
+      "dispatch": "direct",
+      "binding": "same existing MainMenuCommandServices fresh selected mission",
+      "coverage": "required existing provider"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597435",
+      "native": "005c35d0",
+      "dispatch": "direct",
+      "binding": "same MissionTreeTables selection publication using existing last-match find",
+      "coverage": "complete normal new composition"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597456",
+      "native": "007f8d60",
+      "dispatch": "direct",
+      "binding": "same captured profile checkpoint map contains by EARLIER mission id+0",
+      "coverage": "required existing MainMenuCommandServices; full body read"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597464",
+      "native": "00aa8530",
+      "dispatch": "resolved_indirect",
+      "binding": "captured FrameBox current34 target, fresh same-screen2FC receiver",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059747e",
+      "native": "007f8d60",
+      "dispatch": "direct",
+      "binding": "same captured profile checkpoint map contains by EARLIER mission id+0",
+      "coverage": "required existing MainMenuCommandServices; full body read"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059748c",
+      "native": "00aa8530",
+      "dispatch": "resolved_indirect",
+      "binding": "captured Text current34 target, fresh same-screen300 receiver",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059749b",
+      "native": "007fc370",
+      "dispatch": "direct",
+      "binding": "same profile checkpoint vehicle class is-1 or actual Lua table",
+      "coverage": "required existing MainMenuCommandServices; full body read"
+    },
+    {
+      "function": "005966f0",
+      "address": "005974b7",
+      "native": "00abbe50",
+      "dispatch": "direct",
+      "binding": "same captured Text cached C-string gate, native temporary and actual source submission",
+      "coverage": "inline existing setter behavior over canonical Text"
+    },
+    {
+      "function": "005966f0",
+      "address": "005974c2",
+      "native": "00aa6740",
+      "dispatch": "direct",
+      "binding": "same actual widget transform.size reference",
+      "coverage": "complete existing owner field access"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059751c",
+      "native": "00acf120",
+      "dispatch": "resolved_indirect",
+      "binding": "required actual FrameBox current58 size/update all state sizes/current88",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597561",
+      "native": "00ab1110",
+      "dispatch": "resolved_indirect",
+      "binding": "actual Icon current84(2,0,currentD7A2F0)",
+      "coverage": "supported actual profile; vtable evidence required separately"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597573",
+      "native": "00aa6bc0",
+      "dispatch": "direct",
+      "binding": "same current screen1B8 widget DC=null then byte79=0; does NOT clear Listbox114",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597582",
+      "native": "00683790",
+      "dispatch": "direct",
+      "binding": "same mission_scroller1D4 attach_content(null), resets without clearing content pointer",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059758d",
+      "native": "00ab6bd0",
+      "dispatch": "direct",
+      "binding": "same actual Text runtime normalized_height; existing private helper exposed by parent",
+      "coverage": "complete existing parent API"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059759c",
+      "native": "00ab6bd0",
+      "dispatch": "direct",
+      "binding": "same actual Text runtime normalized_height; existing private helper exposed by parent",
+      "coverage": "complete existing parent API"
+    },
+    {
+      "function": "005966f0",
+      "address": "005975b5",
+      "native": "00aa6740",
+      "dispatch": "direct",
+      "binding": "same actual widget transform.size reference",
+      "coverage": "complete existing owner field access"
+    },
+    {
+      "function": "005966f0",
+      "address": "005975cf",
+      "native": "006834a0",
+      "dispatch": "direct",
+      "binding": "same mission_scroller1D4 range and actual scroller host",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "005975fa",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597620",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597636",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059764c",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597663",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "005976a6",
+      "native": "0054b530",
+      "dispatch": "direct",
+      "binding": "same command bar five triples; RET3C at54C045",
+      "coverage": "complete existing normal projection"
+    },
+    {
+      "function": "005966f0",
+      "address": "005976c5",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005976cc",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005976ec",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005976f3",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597705",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059771b",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597731",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597748",
+      "native": "0041e870",
+      "dispatch": "direct",
+      "binding": "native string constructor, not assignment to live storage",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059778b",
+      "native": "0054b530",
+      "dispatch": "direct",
+      "binding": "same command bar five triples; RET3C at54C045",
+      "coverage": "complete existing normal projection"
+    },
+    {
+      "function": "005966f0",
+      "address": "005977aa",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005977b1",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005977d1",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005977d8",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005977f8",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "005977ff",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "0059781f",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597826",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597849",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005966f0",
+      "address": "00597850",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "004260b0",
+      "address": "004260e4",
+      "native": "00bf7a6a",
+      "dispatch": "direct",
+      "binding": "signed decimal sprintf %d in 52-byte stack array; bounded snprintf same int32 contents",
+      "coverage": "CRT transport, native CRT ABI excluded"
+    },
+    {
+      "function": "004260b0",
+      "address": "00426112",
+      "native": "0041dd40",
+      "dispatch": "direct",
+      "binding": "actual native header resize and storage callbacks",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "004260b0",
+      "address": "0042612d",
+      "native": "00bf7680",
+      "dispatch": "direct",
+      "binding": "native memcpy with same source/count at each site",
+      "coverage": "existing CRT copy"
+    },
+    {
+      "function": "004260b0",
+      "address": "00426146",
+      "native": "0041dd40",
+      "dispatch": "direct",
+      "binding": "actual native header resize and storage callbacks",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "004260b0",
+      "address": "00426157",
+      "native": "00bf7680",
+      "dispatch": "direct",
+      "binding": "native memcpy with same source/count at each site",
+      "coverage": "existing CRT copy"
+    },
+    {
+      "function": "004260b0",
+      "address": "00426172",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "004260b0",
+      "address": "00426179",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "004263b0",
+      "address": "004263ec",
+      "native": "0041dd40",
+      "dispatch": "direct",
+      "binding": "actual native header resize and storage callbacks",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "004263b0",
+      "address": "00426400",
+      "native": "00bf7680",
+      "dispatch": "direct",
+      "binding": "native memcpy with same source/count at each site",
+      "coverage": "existing CRT copy"
+    },
+    {
+      "function": "004263b0",
+      "address": "0042641d",
+      "native": "004260b0",
+      "dispatch": "direct",
+      "binding": "actual native integer string temporary and copy into result",
+      "coverage": "complete normal new helper"
+    },
+    {
+      "function": "004263b0",
+      "address": "0042643c",
+      "native": "0041dd40",
+      "dispatch": "direct",
+      "binding": "actual native header resize and storage callbacks",
+      "coverage": "complete existing"
+    },
+    {
+      "function": "004263b0",
+      "address": "0042644c",
+      "native": "00bf7680",
+      "dispatch": "direct",
+      "binding": "native memcpy with same source/count at each site",
+      "coverage": "existing CRT copy"
+    },
+    {
+      "function": "004263b0",
+      "address": "0042646e",
+      "native": "00419cc0",
+      "dispatch": "direct",
+      "binding": "actual caller temporary storage acquisition boundary via NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "004263b0",
+      "address": "00426475",
+      "native": "00bd1510",
+      "dispatch": "direct",
+      "binding": "actual sized temporary release through NativeStringStorage",
+      "coverage": "complete existing storage boundary"
+    },
+    {
+      "function": "005c35d0",
+      "address": "005c35e2",
+      "native": "005c3470",
+      "dispatch": "direct",
+      "binding": "existing same-table case-insensitive id search, last equal match wins",
+      "coverage": "complete existing normal projection"
+    }
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "native_byte_differential": false,
+  "new_permanent_tests": 0,
+  "ghidra_mutated": false,
+  "no_ghidra_function": [],
+  "dispatch_evidence": [
+    {
+      "table": "00cefc48",
+      "offset": "08",
+      "target": "005966f0",
+      "bytes": "f0 66 59 00"
+    },
+    {
+      "table": "00d5d130",
+      "offset": "58",
+      "target": "00acf120",
+      "bytes": "20 f1 ac 00"
+    },
+    {
+      "table": "00d5c6c8",
+      "offset": "50",
+      "target": "00ab6b50",
+      "basis": "existing actual Text profile"
+    },
+    {
+      "profile": "Icon",
+      "offset": "88",
+      "target": "00ab1710",
+      "basis": "existing actual Icon profile"
+    },
+    {
+      "profile": "Icon",
+      "offset": "84",
+      "target": "00ab1110",
+      "basis": "existing actual Icon profile"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "selection callback assumed incoming selected row or callback Listbox supplied the selected data",
+      "evidence": "full005966F0..0059786C listing; ESI=ECX=screen+8",
+      "is": "both RET8 operands are unread;596713 loads screen1B8 before59671A A9C990"
+    },
+    {
+      "was": "58C010 help line/control expectations used for all menu navigation",
+      "evidence": "liveCEFC48 bytes, current listener tables and distinct originalABIs",
+      "is": "5966F0 is CEFC48+08 selection;5993A0 is CEFC04+04 command on screen+40"
+    },
+    {
+      "was": "ABBE50 composed with unconditional native string allocation",
+      "evidence": "ABBE70..ABBECD; source corrected during worker review",
+      "is": "preserve cached C-string equality gate and captured Text receiver before allocation"
+    },
+    {
+      "was": "color50 could copy screen color to temporary lanes",
+      "evidence": "AB6B50 reloads input alpha after base/material callbacks",
+      "is": "borrow same contiguous MSVC GuiTextColor quartet through material callbacks"
+    },
+    {
+      "was": "580650 pseudocode suggested E194D8 before E198AC+5C and current_group initially followed it",
+      "evidence": "peer review and full580650 listing:580650 E198AC,580656 owner+5C,580659 vector,580662 E194D8",
+      "is": "actual owner and group vector captured before group index at both caller sites"
+    }
+  ],
+  "unresolved_providers": [
+    {
+      "native": "00580820",
+      "contract": "same screen294 show; AC0820(selected,background,0); background height+CEE4E8",
+      "coverage": "required provider; full body/listing read"
+    },
+    {
+      "native": "00519dc0",
+      "contract": "same screen2CC/2DC vector index; actual widget payload and its node+4C",
+      "coverage": "required provider; full body read; producer association remains open"
+    },
+    {
+      "native": "00b6da70",
+      "contract": "actual NativeNodeBinding factor and recursive flag=true",
+      "coverage": "required same-node provider; full body read"
+    },
+    {
+      "native": "005806a0",
+      "contract": "same existing MainMenuCommandServices fresh selected mission",
+      "coverage": "required existing provider"
+    },
+    {
+      "native": "00ab2690",
+      "contract": "Icon state, actual retained textureA0, UV; RET0C; retain/release/current80",
+      "coverage": "required provider; full body read"
+    },
+    {
+      "native": "00ab27a0",
+      "contract": "Icon output size and state0; native texture pixel/UV size throughAB17B0",
+      "coverage": "required provider; full body read"
+    },
+    {
+      "native": "00ac0820",
+      "contract": "ECX source widget, EDX destination widget, float width; RET4",
+      "coverage": "required provider; full body/listing read"
+    },
+    {
+      "native": "0043bc30",
+      "contract": "output native string, EDX date60, stack date64/date68; language-sensitive builder",
+      "coverage": "required provider; full body/listing read"
+    },
+    {
+      "native": "00594b60",
+      "contract": "same screen medal2F8; fresh selected mission/profile score and9052D0 predicate",
+      "coverage": "required provider; full body/listing read"
+    },
+    {
+      "native": "007f8d60",
+      "contract": "same captured profile checkpoint map contains by EARLIER mission id+0",
+      "coverage": "required existing MainMenuCommandServices; full body read"
+    },
+    {
+      "native": "007fc370",
+      "contract": "same profile checkpoint vehicle class is-1 or actual Lua table",
+      "coverage": "required existing MainMenuCommandServices; full body read"
+    }
+  ],
+  "additional_required_providers": [
+    {
+      "native": "00acf120",
+      "contract": "actual FrameBox current58 updates every state size then current88; required provider"
+    },
+    {
+      "native": "mission+0a0",
+      "contract": "producer-owned retained texture association from5C75CC/5C75F1, not authored extra.picture string"
+    },
+    {
+      "native": "screen+60/64/68/6c,280/298/2a4,2cc/2dc",
+      "contract": "same objective producer field/list/vector associations; no additional menu state created"
+    }
+  ],
+  "validation": {
+    "strict_win32": "passed /W4 /WX /O2 /Gy /MD /fp:strict using parent current Text API header",
+    "focused_fixture": "passed local/menu_selection_strings_probe.exe; int32 minimum and negative concat contents plus exact native allocation/release order",
+    "fixture_link": "worker wholeTU + freshly compiled parent actual gui_text_runtime_factory.cpp + existing parent bsp_core.lib/bsp_lua511.lib/user32.lib; /MANIFEST:EMBED",
+    "whole_combined_build": "parent integrator pending",
+    "call_report": "passed:184 numeric rows,166 direct,18 resolved indirect,zero failures",
+    "runtime": "no executable reachability/render/game assertion",
+    "peer_review": "Owner/index load-order issue confirmed against580650 assembly and fixed; parent worker review continues separately."
+  },
+  "limits": [
+    "Only complete synchronous Text content domain; pending operations require retained caller continuation.",
+    "Borrowed owners, type profiles, record containers, list nodes must survive callbacks; vector invalidation/debug traps are outside valid domain.",
+    "Native object/string/vector/SEH ABI and exceptional allocation paths are not claimed.",
+    "Existing MissionTreeTables/MissionRecordData and MainMenuCommandBar projections retain their documented source-interface limits."
+  ],
+  "validation_input_sha256": {
+    "source": "9de938bdc3c1996d84f88a19afc3c2c985caab50096e6c0e9eaa08e90bff98e0",
+    "header": "d8d600da4b91cb1aadd0e1d38ab6b680c168d9bd58a3f9c89054301c6ec6b6c8",
+    "parent_text_source": "acf7fee3ab1ac12d5855f21f53f6cb6538e8510355455c7538ae0672f996b5d7",
+    "parent_library": "b5c104dab6e49ebc09fc0222504dca889d769b94c81fdac917a316fdeb2913e7"
+  },
+  "status": "partial_concrete_provider_composition_complete_normal_caller",
+  "annotation_handoff": [
+    {
+      "address": "005966f0",
+      "was": "FUN_005966f0",
+      "name": "BSP_MainMenuListboxListener_Current08",
+      "comment": "Hypothesis, not a recovered symbol. CEFC48+08, ECX screen+8, RET8; both callback operands are unread. First A9C990 uses fresh screen1B8. Full normal caller over canonical menu/Text/Icon/Listbox/scroller/command owners; concrete resource/profile/objective providers remain required. Source/header/doc/report main_menu_selection_listener; strict Win32 compile and184 numeric call rows passed. No original ABI or game claim."
+    },
+    {
+      "address": "005c35d0",
+      "was": "FUN_005c35d0",
+      "name": "BSP_MissionTree_SelectById",
+      "comment": "Hypothesis, not a recovered symbol. ECX same mission-tree owner, native id string stack, RET4. Existing5C3470 last-match lookup; unknown id preserves both selection fields, otherwise+C=mission then+10=group. Canonical MissionTreeTables composition main_menu_selection_listener.cpp. Native string/vector ABI excluded; no game claim."
+    }
+  ]
+}
