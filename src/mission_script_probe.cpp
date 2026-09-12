@@ -18,10 +18,12 @@
 //
 // Usage: bsp_mission_script_probe [game-root] [mission-name]
 //            [--stub-dofile] [--skip-global-folders] [--skip-lobby-settings]
-//            [--no-self-table] [--recon-tables] [--core-bindings] [--sweep] [--quiet]
+//            [--no-self-table] [--recon-tables] [--core-bindings] [--navigator-bindings]
+//            [--stand-in-random] [--sweep] [--quiet]
 // Defaults to the installed copy and "usn/usn_2_java".
 
 #include "bsp/lua_binding_core.hpp"
+#include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/mission_lua_host.hpp"
 #include "bsp/mission_lua_machine.hpp"
@@ -116,6 +118,36 @@ struct ProbeState {
     // created against and registry references to the extra arguments; the sweep calls them the
     // way 00887750 would.
     std::vector<CreatedScript> created_scripts;
+
+    // --navigator-bindings: the eight rows of docs/LUA_BINDING_NAVIGATOR.md run for real
+    // against the stub entity state below, instead of logging and returning nothing.
+    bool navigator_bindings{false};
+    // Native steps the navigator host recorded rather than performed.
+    std::map<std::string, int> navigator_host_steps;
+    // The label a minted entity was created under: the first string argument of the
+    // entity-returning row that produced it, which for FindEntity is the ship's authored name.
+    std::map<std::uint16_t, std::string> entity_labels;
+    // One record per minted entity that a navigator binding actually addressed. The fields are
+    // exactly the ones the eight bindings write; nothing else about a ship is modelled.
+    struct StubEntity {
+        bool skill_level_set{false};
+        int skill_level{0};
+        bool repair_set{false};
+        bool repair_enabled{false};
+        bool repair_routed{false};
+        bool formation_set{false};
+        std::string formation_leader;
+        // "attackmove -> <target>" / "moveto -> <target>", in call order.
+        std::vector<std::string> orders;
+    };
+    std::map<std::uint16_t, StubEntity> entity_state;
+    // Order in which entities were first addressed, so the report is deterministic.
+    std::vector<std::uint16_t> entity_state_order;
+    // Role rows SetRoleAvailable set, and which arm each took.
+    std::vector<std::string> role_rows;
+    // --stand-in-random: see the note above stand_in_random_binding. Not a reconstruction.
+    bool stand_in_random{false};
+    int stand_in_random_calls{0};
 };
 
 ProbeState g_probe;
@@ -463,6 +495,395 @@ int run_core_binding(lua_State* L, const char* name)
     return produced;
 }
 
+// ---------------------------------------------------------------------------
+// --navigator-bindings: the eight routines of include/bsp/lua_binding_navigator.hpp
+// ---------------------------------------------------------------------------
+//
+// The stub returns nothing for every row, so in docs/GAME_EXECUTABLE.md milestone 2l the
+// mission's own order function addresses 21 ships and moves none of them. These adapters give
+// the eight bindings the argument surface the native has and a stub entity state to write to,
+// so the question "which ship receives which order" gets an answer from the script itself
+// rather than from a reading of it. The state is only the fields the eight bindings write; the
+// host records every native step the probe cannot perform and invents no game behaviour.
+
+// The probe's `Ptr` is `id + 1` (push_new_entity_table), so a pointer maps back to its id.
+std::uint16_t probe_entity_id(void* entity)
+{
+    const std::uintptr_t raw = reinterpret_cast<std::uintptr_t>(entity);
+    return raw == 0 ? std::uint16_t{0} : static_cast<std::uint16_t>(raw - 1u);
+}
+
+// The authored name the entity was minted under, or its self key when the row that minted it
+// took no string argument.
+std::string probe_entity_label(void* entity)
+{
+    if (entity == nullptr) {
+        return "(none)";
+    }
+    const std::uint16_t id = probe_entity_id(entity);
+    const std::map<std::uint16_t, std::string>::const_iterator found = g_probe.entity_labels.find(id);
+    if (found != g_probe.entity_labels.end() && !found->second.empty()) {
+        return found->second;
+    }
+    return bsp::mission_entity_self_key(id);
+}
+
+ProbeState::StubEntity& probe_entity_state(void* entity)
+{
+    const std::uint16_t id = probe_entity_id(entity);
+    if (g_probe.entity_state.find(id) == g_probe.entity_state.end()) {
+        g_probe.entity_state_order.push_back(id);
+    }
+    return g_probe.entity_state[id];
+}
+
+void record_navigator_step(const char* step) { g_probe.navigator_host_steps[step] += 1; }
+
+// 0088A810's four reads, over the probe's Lua stack.
+class ProbeCommandTargetSource final : public bsp::LuaCommandTargetSource {
+public:
+    explicit ProbeCommandTargetSource(lua_State* state) : state_(state) {}
+
+    bool argument_id_field_is_nil(int index) override
+    {
+        const int at = bsp::mission_binding_argument_slot(index);
+        if (lua_istable(state_, at) == 0) {
+            return true;  // 00b67910 on a non-table answers an unbound object, 00b65fb0 true
+        }
+        lua_getfield(state_, at, bsp::kEntitySelfFieldId);
+        const bool is_nil = lua_isnil(state_, -1) != 0;
+        lua_pop(state_, 1);
+        return is_nil;
+    }
+
+    void* argument_entity(int index) override
+    {
+        const int at = bsp::mission_binding_argument_slot(index);
+        if (lua_istable(state_, at) == 0) {
+            return nullptr;
+        }
+        lua_getfield(state_, at, bsp::kEntitySelfFieldPtr);
+        void* pointer = lua_islightuserdata(state_, -1) ? lua_touserdata(state_, -1) : nullptr;
+        lua_pop(state_, 1);
+        return pointer;
+    }
+
+    // 00888760 walks the value's elements. The probe reads slots 1..3 of an array-style table,
+    // which is the shape the shipped scripts pass; anything else leaves the position at zero
+    // and is reported as a step the probe could not perform.
+    bool argument_vector3(int index, float out[3]) override
+    {
+        const int at = bsp::mission_binding_argument_slot(index);
+        if (lua_istable(state_, at) == 0) {
+            record_navigator_step("lua_object_read_vector3_00888760 (not a table)");
+            return false;
+        }
+        for (int component = 0; component < 3; ++component) {
+            lua_rawgeti(state_, at, component + 1);
+            if (lua_isnumber(state_, -1) == 0) {
+                lua_pop(state_, 1);
+                record_navigator_step("lua_object_read_vector3_00888760 (missing component)");
+                return false;
+            }
+            out[component] = static_cast<float>(lua_tonumber(state_, -1));
+            lua_pop(state_, 1);
+        }
+        return true;
+    }
+
+    std::uint16_t entity_object_id(void* entity) override { return probe_entity_id(entity); }
+
+private:
+    lua_State* state_;
+};
+
+// The probe is not a game: every step below that would reach game state is recorded, and the
+// three that only touch the entity's own fields are applied to the stub record.
+class ProbeNavigatorHost final : public bsp::LuaBindingNavigatorHost {
+public:
+    explicit ProbeNavigatorHost(lua_State* state) : state_(state) {}
+
+    void* argument_entity(int index) override
+    {
+        const int at = bsp::mission_binding_argument_slot(index);
+        if (lua_istable(state_, at) == 0) {
+            return nullptr;
+        }
+        lua_getfield(state_, at, bsp::kEntitySelfFieldPtr);
+        void* pointer = lua_islightuserdata(state_, -1) ? lua_touserdata(state_, -1) : nullptr;
+        lua_pop(state_, 1);
+        return pointer;
+    }
+
+    int argument_integer(int index) override
+    {
+        return static_cast<int>(lua_tointeger(state_, bsp::mission_binding_argument_slot(index)));
+    }
+
+    bool argument_boolean(int index) override
+    {
+        return lua_toboolean(state_, bsp::mission_binding_argument_slot(index)) != 0;
+    }
+
+    // 00888d20 reads `Ptr` without 00888aa0's entity-table validation, so the probe does the
+    // same: any table carrying light userdata answers.
+    void* argument_ptr_field(int index) override { return argument_entity(index); }
+
+    void entity_issue_command(void* entity, std::uint32_t command_object,
+                              const bsp::SceneCommandTarget& target, int flags) override
+    {
+        record_navigator_step("entity_issue_command_0077d600");
+        const char* name = command_object == bsp::kCommandObjectAttackMove ? "attackmove" : "moveto";
+        std::string order(name);
+        order += " -> ";
+        if (target.kind == 1) {
+            order += probe_entity_label(target.object);
+        } else if (target.position_valid != 0) {
+            char buffer[96];
+            std::snprintf(buffer, sizeof(buffer), "position %.2f %.2f %.2f",
+                          static_cast<double>(target.position[0]),
+                          static_cast<double>(target.position[1]),
+                          static_cast<double>(target.position[2]));
+            order += buffer;
+        } else {
+            order += "unresolved target (origin)";
+        }
+        if (flags != bsp::kNavigatorIssueFlags) {
+            order += " [flags differ]";
+        }
+        probe_entity_state(entity).orders.push_back(order);
+    }
+
+    // 008162b0 for MDestroyer; a predicate the probe cannot evaluate. Answering true is the
+    // arm that does something, which is what makes the rest of 0077c8d0 observable; the false
+    // arm is recorded as unexercised in the report rather than silently chosen.
+    bool entity_command_is_available(void* entity, const char* command_name, void* target) override
+    {
+        (void)entity;
+        (void)command_name;
+        (void)target;
+        record_navigator_step("entity_command_is_available_vtable16c (answered true)");
+        return true;
+    }
+
+    int entity_route_slot(void* entity) override
+    {
+        (void)entity;
+        record_navigator_step("entity_route_slot_1ac");
+        return -1;  // out of 0..7, so 00905300 is not reached and nothing is invented
+    }
+
+    void slot_counter_increment(int slot) override
+    {
+        (void)slot;
+        record_navigator_step("slot_counter_increment_00905300");
+    }
+
+    std::uint16_t entity_object_id(void* entity) override { return probe_entity_id(entity); }
+
+    void session_route_formation_message(void* follower, std::uint16_t leader_object_id) override
+    {
+        record_navigator_step("session_route_formation_message_0077c8d0_type76");
+        ProbeState::StubEntity& state = probe_entity_state(follower);
+        state.formation_set = true;
+        state.formation_leader = probe_entity_label(
+            reinterpret_cast<void*>(static_cast<std::uintptr_t>(leader_object_id) + 1u));
+    }
+
+    void entity_set_skill_level(void* entity, int level) override
+    {
+        ProbeState::StubEntity& state = probe_entity_state(entity);
+        state.skill_level_set = true;
+        state.skill_level = level;
+    }
+
+    bool entity_is_kind_of(void* entity, int class_id) override
+    {
+        (void)entity;
+        (void)class_id;
+        record_navigator_step("entity_is_kind_of_vtable5c (answered false)");
+        return false;  // the local-write arm; the routed arm needs a session this probe lacks
+    }
+
+    void entity_set_repair_enabled_field(void* entity, bool enabled) override
+    {
+        ProbeState::StubEntity& state = probe_entity_state(entity);
+        state.repair_set = true;
+        state.repair_enabled = enabled;
+        state.repair_routed = false;
+    }
+
+    void session_route_repair_enable_message(void* entity, bool enabled) override
+    {
+        record_navigator_step("session_route_repair_enable_message_008ad330_type9f");
+        ProbeState::StubEntity& state = probe_entity_state(entity);
+        state.repair_set = true;
+        state.repair_enabled = enabled;
+        state.repair_routed = true;
+    }
+
+    // The probe is a single process with no session: [00E188A8]+1FE4h is 0 there, which is the
+    // direct arm. Same choice the core host makes for the campaign fields.
+    int game_session_mode() override
+    {
+        record_navigator_step("game_session_mode_1fe4 (answered 0)");
+        return 0;
+    }
+
+    int game_effective_game_mode() override
+    {
+        record_navigator_step("game_effective_game_mode_004bca50");
+        return 0;
+    }
+
+    void role_owner_set_role_available(void* owner, int role, int value) override
+    {
+        record_navigator_step("role_owner_set_role_available_vtable148");
+        char buffer[128];
+        std::snprintf(buffer, sizeof(buffer), "%s role %d = %d",
+                      probe_entity_label(owner).c_str(), role, value);
+        g_probe.role_rows.push_back(buffer);
+    }
+
+    void session_route_role_message(void* owner, int role, int value) override
+    {
+        (void)owner;
+        (void)role;
+        (void)value;
+        record_navigator_step("session_route_role_message_008ab850_type4c");
+    }
+
+    void game_assign_party_player_slots(int value) override
+    {
+        (void)value;
+        record_navigator_step("game_assign_party_player_slots_004c3840");
+    }
+
+private:
+    lua_State* state_;
+};
+
+ProbeNavigatorHost* g_navigator_host = nullptr;
+
+// What the eight bindings did, per ship, in the order the script first addressed each.
+void report_navigator_bindings()
+{
+    std::cout << "\nnavigator bindings: stub entity state after the mission's own orders\n";
+    if (g_probe.entity_state_order.empty()) {
+        std::cout << "  no entity was addressed by one of the eight\n";
+    }
+    for (std::size_t i = 0; i < g_probe.entity_state_order.size(); ++i) {
+        const std::uint16_t id = g_probe.entity_state_order[i];
+        const ProbeState::StubEntity& state = g_probe.entity_state[id];
+        void* pointer = reinterpret_cast<void*>(static_cast<std::uintptr_t>(id) + 1u);
+        std::cout << "  " << probe_entity_label(pointer);
+        if (state.skill_level_set) {
+            std::cout << "  skill=" << state.skill_level;
+        }
+        if (state.repair_set) {
+            std::cout << "  repair=" << (state.repair_enabled ? "on" : "off")
+                      << (state.repair_routed ? " (routed)" : " (local +378h)");
+        }
+        if (state.formation_set) {
+            std::cout << "  follows=" << state.formation_leader;
+        }
+        std::cout << "\n";
+        for (std::size_t order = 0; order < state.orders.size(); ++order) {
+            std::cout << "      order " << state.orders[order] << "\n";
+        }
+    }
+    if (!g_probe.role_rows.empty()) {
+        std::cout << "  SetRoleAvailable rows:\n";
+        for (std::size_t i = 0; i < g_probe.role_rows.size(); ++i) {
+            std::cout << "      " << g_probe.role_rows[i] << "\n";
+        }
+    }
+    std::cout << "native steps the navigator host recorded rather than performed:\n";
+    for (const std::pair<const std::string, int>& row : g_probe.navigator_host_steps) {
+        std::cout << "  " << row.second << "  " << row.first << "\n";
+    }
+}
+
+// Runs the reconstructed routine for `name` when --navigator-bindings is on. Returns -1 when
+// the name is not one of the eight, which is the caller's signal to fall back to the stub.
+int run_navigator_binding(lua_State* L, const char* name)
+{
+    if (!g_probe.navigator_bindings || g_navigator_host == nullptr) {
+        return -1;
+    }
+    ProbeCommandTargetSource targets(L);
+    int produced = -1;
+    if (std::strcmp(name, "NavigatorAttackMove") == 0) {
+        produced = bsp::lua_binding_navigator_attack_move(targets, *g_navigator_host);
+    } else if (std::strcmp(name, "NavigatorMoveToRange") == 0
+               || std::strcmp(name, "NavigatorMoveToPos") == 0
+               || std::strcmp(name, "NavigatorDirectMoveToRange") == 0) {
+        produced = bsp::lua_binding_navigator_move_to(targets, *g_navigator_host);
+    } else if (std::strcmp(name, "JoinFormation") == 0) {
+        produced = bsp::lua_binding_join_formation(*g_navigator_host);
+    } else if (std::strcmp(name, "SetSkillLevel") == 0) {
+        produced = bsp::lua_binding_set_skill_level(*g_navigator_host);
+    } else if (std::strcmp(name, "RepairEnable") == 0) {
+        bsp::RepairEnableArm arm = bsp::RepairEnableArm::kLocalFieldWrite;
+        produced = bsp::lua_binding_repair_enable(*g_navigator_host, arm);
+    } else if (std::strcmp(name, "SetRoleAvailable") == 0) {
+        bsp::SetRoleAvailableArm arm = bsp::SetRoleAvailableArm::kDirectCall;
+        produced = bsp::lua_binding_set_role_available(*g_navigator_host, arm);
+    }
+    return produced;
+}
+
+// ---------------------------------------------------------------------------
+// --stand-in-random: a probe fixture, NOT a reconstruction
+// ---------------------------------------------------------------------------
+//
+// usn_2_java's luaInit reaches its order function only through luaPickRnd
+// (Scripts/global/commandhelpers.lua:1003), which compares the result of luaRnd() and so of
+// the native row `random` 0088C160. Stubbed, that row pushes nothing, luaRnd returns nil, and
+// luaInit dies at that comparison before a single ship is ordered -- which is the
+// "status=2 ... attempt to compare number with nil" line of docs/GAME_EXECUTABLE.md
+// milestone 2l.
+//
+// 0088C160 was not reconstructed by this packet and is not in its lease. All that was read of
+// it is the argument-count switch at 0088C1xx through 00B663F0: zero arguments draw against
+// the float at 00D11318, one argument against arg0+1, two against arg0+1 and arg1, each
+// through 00BD2F10 + 00BF7420 and pushed as an integer. The generator, its seeding and the
+// exact bound convention were NOT read.
+//
+// So this is a deterministic fixture with the native's argument shape and none of its
+// numerics: it exists so the rest of luaInit runs and the eight navigator bindings can be
+// observed against real script control flow. Any report that depends on it says so. It is off
+// by default, and the default run keeps reproducing milestone 2l's failure exactly.
+int stand_in_random_binding(lua_State* L)
+{
+    static std::uint32_t state = 0x13579bdfu;  // fixed seed: the run must be reproducible
+    state = state * 1664525u + 1013904223u;
+    const std::uint32_t draw = (state >> 16) & 0x7fffu;
+    g_probe.stand_in_random_calls += 1;
+
+    const int argc = lua_gettop(L);
+    if (argc == 0) {
+        lua_pushnumber(L, static_cast<lua_Number>(draw));
+        return 1;
+    }
+    long low = 0;
+    long high = static_cast<long>(lua_tointeger(L, 1));
+    if (argc >= 2) {
+        low = static_cast<long>(lua_tointeger(L, 1));
+        high = static_cast<long>(lua_tointeger(L, 2));
+    }
+    if (high < low) {
+        const long swap = low;
+        low = high;
+        high = swap;
+    }
+    const long span = high - low + 1;
+    const long value = span > 0 ? low + static_cast<long>(draw % static_cast<std::uint32_t>(span))
+                                : low;
+    lua_pushnumber(L, static_cast<lua_Number>(value));
+    return 1;
+}
+
 // Every binding is installed as this one C function plus an index upvalue.
 // 006b8610 uses nup = 0 because each native row is a distinct function; the
 // probe needs identity at call time, so it carries the row index instead. That
@@ -478,6 +899,13 @@ int binding_stub(lua_State* L)
     if (!g_probe.current_script.empty()) {
         g_probe.calls_by_script[row.name][g_probe.current_script] += 1;
     }
+    if (g_probe.stand_in_random && std::strcmp(row.name, "random") == 0) {
+        return stand_in_random_binding(L);
+    }
+    const int navigator_results = run_navigator_binding(L, row.name);
+    if (navigator_results >= 0) {
+        return navigator_results;
+    }
     const int core_results = run_core_binding(L, row.name);
     if (core_results >= 0) {
         return core_results;
@@ -492,6 +920,13 @@ int binding_stub(lua_State* L)
     if (key.empty()) {
         lua_pushnil(L);
         return 1;
+    }
+    // The id push_new_entity_table just consumed, labelled with the row's first string
+    // argument when it has one: for FindEntity that is the ship's authored name, which is what
+    // lets --navigator-bindings report orders per ship instead of per anonymous key.
+    if (argc >= 1 && lua_isstring(L, 1) != 0) {
+        g_probe.entity_labels[static_cast<std::uint16_t>(g_probe.next_entity_id - 1u)]
+            = lua_tostring(L, 1);
     }
     // CreateScript registers a named Lua function against the entity it just created; the
     // engine calls it later through 00887750 with that entity's table as `this`, followed by
@@ -1050,6 +1485,9 @@ int run_sweep(lua_State* L)
             std::cout << "  " << row.second << "  " << row.first << "\n";
         }
     }
+    if (g_probe.navigator_bindings) {
+        report_navigator_bindings();
+    }
 
     std::cout << "\nbindings reached at load time: " << ranked.size() << " of "
               << bsp::mission_lua_binding_count() << "\n";
@@ -1084,6 +1522,10 @@ int main(int argc, char** argv)
             g_probe.install_recon_tables = true;
         } else if (argument == "--core-bindings") {
             g_probe.core_bindings = true;
+        } else if (argument == "--navigator-bindings") {
+            g_probe.navigator_bindings = true;
+        } else if (argument == "--stand-in-random") {
+            g_probe.stand_in_random = true;
         } else if (argument == "--sweep") {
             sweep = true;
         } else if (argument == "--quiet") {
@@ -1103,6 +1545,11 @@ int main(int argc, char** argv)
     std::cout << "core bindings  : "
               << (g_probe.core_bindings ? "the ten of docs/LUA_BINDING_CORE.md run for real"
                                         : "stubbed with every other row")
+              << "\n";
+    std::cout << "nav bindings   : "
+              << (g_probe.navigator_bindings
+                      ? "the eight of docs/LUA_BINDING_NAVIGATOR.md run for real"
+                      : "stubbed with every other row")
               << "\n\n";
 
     // -- the machine, 006b8740 ----------------------------------------------
@@ -1116,6 +1563,8 @@ int main(int argc, char** argv)
     // binding call and is released with the state at the end of main.
     ProbeCoreHost core_host(L);
     g_core_host = &core_host;
+    ProbeNavigatorHost navigator_host(L);
+    g_navigator_host = &navigator_host;
     lua_gc(L, bsp::kLuaGcSetPause, bsp::kMissionLuaGcPause);
     open_standard_libraries(L);
 
@@ -1327,6 +1776,9 @@ int main(int argc, char** argv)
         }
     }
     std::cout << "natives outside the table: " << unresolved << "\n";
+    if (g_probe.navigator_bindings) {
+        report_navigator_bindings();
+    }
     if (g_probe.first_error.empty()) {
         std::cout << "first error: none\n";
     } else {

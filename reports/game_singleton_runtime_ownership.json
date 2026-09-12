@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "packet": "game_singleton_runtime_ownership",
+  "status": "source_host_ownership_integrated_strict_build_and_bounded_runtime_verified",
+  "problem": "Menu owned a private lifetime domain with no-op destroy/validation callbacks; main final-manager shutdown reported unimplemented. The effect context was owned by the earlier-destroyed menu.",
+  "change": "One application-owned GameSingletonHost keeps its domain, effect publication and deleting context alive through final shutdown. Menu borrows the existing context; concrete scalar delete and source CRT validation replace no-ops.",
+  "owned_files": [
+    "src/game_hosts_singletons.cpp",
+    "include/bsp/game_hosts_singletons.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_hosts.hpp",
+    "src/game_hosts_menu.cpp",
+    "include/bsp/game_hosts_menu.hpp",
+    "cmake/startup.cmake",
+    "docs/GAME_SINGLETON_RUNTIME_OWNERSHIP.md",
+    "reports/game_singleton_runtime_ownership.json"
+  ],
+  "admitted_owner_contract": "Only the existing004C1650 GameplayEffectManager registration path is currently admitted. Additional types require their concrete deleting bindings before admission.",
+  "native_shutdown_fragment": {
+    "address": "008f8449",
+    "end_exclusive": "008f846d",
+    "bytes": 36,
+    "capture_bytes": 37,
+    "context_instruction": "008f846d PUSH EBP begins the following mutex cleanup"
+  },
+  "native_profile": {
+    "address": "00d0da64",
+    "slot0": "008703e0"
+  },
+  "validation": {
+    "strict_Win32": true,
+    "existing_CTests": 2,
+    "reference_seeds": 8,
+    "actual_compiler_commands": 5,
+    "compiler_read_dependencies": 365,
+    "source_snapshot_timing": "post-build",
+    "evidence": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\game_singleton_runtime\\verification.json",
+      "bytes": 264471,
+      "sha256": "078ad0f7c368f10ad3ec9b6150485689e63e8bb0f3de0d1864ab39ac68225ecd"
+    },
+    "runtime": {
+      "executable": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\game_singleton_runtime\\runtime\\bsp_game.exe",
+        "bytes": 1241600,
+        "sha256": "347b9fe58a1cca32c9bace63fd33da20bccd786042f868e5c0a4fe381e0c884a"
+      },
+      "process_id": 87804,
+      "exit_code": 0,
+      "frames_presented": 180,
+      "front_end_effect_manager_context_calls": 1,
+      "drain_records": 1,
+      "registered_slots_at_drain": 1,
+      "effect_publication_null": true,
+      "manager_publication_null": true,
+      "ordered_markers": [
+        "host FrontEndShell::effect_manager_context [004c1650] concrete",
+        "host StartupHost::application_shutdown [00737f30] concrete",
+        "host StartupHost::application_destruct [008f8444] concrete",
+        "host StartupHost::destroy_singleton_lifetime_manager [008f8449] concrete",
+        "singleton lifetime drained: registered_slots=1 effect_publication=null manager_publication=null",
+        "host StartupHost::close_mutex [008f846e] concrete"
+      ],
+      "log": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\game_singleton_runtime\\runtime\\game.log",
+        "bytes": 59190,
+        "sha256": "e5efb58dfed7866bbae510525bb14ae1ab2f399693080038a90555071a246a9a"
+      },
+      "visual_validation": false,
+      "full_gameplay_validation": false
+    },
+    "native_captures": [
+      {
+        "address": "008f8449",
+        "bytes": 37,
+        "saved_equals_disk": true,
+        "sha256": "01f05f031c9e10af540f1614c8e824bba07fbe452c58139ea7d8ac336a3ef946",
+        "assembly": [
+          "008f8449: mov ecx, dword ptr [0x1090aa0]",
+          "008f844f: test ecx, ecx",
+          "008f8451: je 0x8f846d",
+          "008f8453: mov edi, ecx",
+          "008f8455: call 0xbd0400",
+          "008f845a: push edi",
+          "008f845b: call 0xbf65ac",
+          "008f8460: add esp, 4",
+          "008f8463: mov dword ptr [0x1090aa0], 0",
+          "008f846d: push ebp"
+        ]
+      },
+      {
+        "address": "008703e0",
+        "bytes": 30,
+        "saved_equals_disk": true,
+        "sha256": "0c5a8a96499f0d71d34518e5593cc5ff0b87c60d37e037edf145a6462d18e86f",
+        "assembly": [
+          "008703e0: push esi",
+          "008703e1: mov esi, ecx",
+          "008703e3: call 0x86fe20",
+          "008703e8: test byte ptr [esp + 8], 1",
+          "008703ed: je 0x8703f8",
+          "008703ef: push esi",
+          "008703f0: call 0xbf65ac",
+          "008703f5: add esp, 4",
+          "008703f8: mov eax, esi",
+          "008703fa: pop esi",
+          "008703fb: ret 4"
+        ]
+      },
+      {
+        "address": "00d0da64",
+        "bytes": 4,
+        "saved_equals_disk": true,
+        "sha256": "0e29ac3db8a82d6852bdefc7b9fe8a4a64328e1deb702d67d67149062f9d4aa7",
+        "slot0": "008703e0"
+      }
+    ]
+  },
+  "new_tests_added": 0,
+  "added_native_reconstructed_function_count": 0,
+  "source_runtime_binding_only": true,
+  "raw_manager_destructor_and_all_profiles_complete": false,
+  "original_CRT_and_SEH_compatible": false,
+  "visual_validation": false,
+  "full_gameplay_validated": false,
+  "saved_annotations": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\game_singleton_runtime_ownership_annotations.json",
+    "bytes": 10697,
+    "sha256": "5a8c1843a5332c34d1bd33e712b24244aac56925bb035675c146c33e1492aa0b"
+  },
+  "refreshed_exports": [
+    {
+      "address": "008f81f0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008f81f0\\decompiled.c",
+      "bytes": 11371,
+      "sha256": "13e29335efd39ee62eb49d47249468595091373e1089fa2f1d077da0edcdfeb5"
+    },
+    {
+      "address": "004c1650",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\004c1650\\decompiled.c",
+      "bytes": 2955,
+      "sha256": "3349d6b69e275cdd448bb628527a588b54bc18ab242e52aedbd8aacbf0a42bdb"
+    },
+    {
+      "address": "008703e0",
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\008703e0\\decompiled.c",
+      "bytes": 1717,
+      "sha256": "eb5388ea447f0f2a7329b9cba047823a43ef0cb917add65b9a9eebdb7eccbe71"
+    }
+  ],
+  "registered_fragment": {
+    "kind": "fragment",
+    "address": "008f8449",
+    "name": "winmain_application_owned_singleton_shutdown_binding",
+    "cpp_symbol": "bsp::game::GameStartupHost::destroy_singleton_lifetime_manager",
+    "source": "src/game_hosts.cpp",
+    "native_end_exclusive": "008f846d",
+    "status": "source_host_ownership_integrated_and_180_frame_runtime_shutdown_observed",
+    "evidence": "reports/game_singleton_runtime_ownership.json",
+    "original_abi": "WinMain internal fragment, no standalone callable ABI. Capture current01090AA0; call BD0400; free captured manager; clear publication before mutex cleanup.",
+    "source_abi": "Existing C++ StartupHost virtual method and typed SingletonLifetimeDomain. GameSingletonHost owns the effect publication/deleting context across menu teardown.",
+    "native_original_executed": false,
+    "abi_compatible": false,
+    "bounded_rebuilt_runtime_observed": true,
+    "full_gameplay_validated": false
+  },
+  "primary_seal": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\game_singleton_runtime\\sealed.json",
+    "bytes": 116712,
+    "sha256": "588c42ef5acd1780bba2e52285c6bff604898fe6a4d94070a3342cf7cc1a3448"
+  }
+}
