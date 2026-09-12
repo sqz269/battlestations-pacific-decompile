@@ -1,0 +1,436 @@
+{
+  "packet": "cc_lua_navigator",
+  "owner": "agent/cc-lua-navigator",
+  "doc": "docs/LUA_BINDING_NAVIGATOR.md",
+  "header": "include/bsp/lua_binding_navigator.hpp",
+  "source": "src/lua_binding_navigator.cpp",
+  "probe": "src/mission_script_probe.cpp",
+  "ghidra": "read-only",
+  "summary": "The eight mission Lua bindings that carry usn_2_java's authored orders, plus the Lua-to-SceneCommandTarget reader 0088A810 and the formation request 0077C8D0 they go through.",
+  "routines": [
+    {
+      "name": "lua_read_command_target",
+      "address": "0088a810",
+      "ghidra_name": "BSP_LuaObject_ReadCommandTarget",
+      "body": "0088a810-0088a8f3",
+      "abi": "__fastcall(ECX = SceneCommandTarget* out, EDX = const LuaObject*), RET 0, returns out in EAX",
+      "coverage": "complete",
+      "notes": "Both branches and the shared tail are modelled. The record is bsp::SceneCommandTarget from include/bsp/scene_deferred_refs.hpp; no layout is restated."
+    },
+    {
+      "name": "lua_binding_navigator_attack_move",
+      "address": "008a30d0",
+      "ghidra_name": "BSP_LuaBinding_NavigatorAttackMove",
+      "body": "008a30d0-008a32be",
+      "abi": "__fastcall(lua_State* in ECX), result count in EAX",
+      "coverage": "complete for the binding's own work; the shared machine prologue/epilogue (00B66C00, 00B679B0, 00B677E0, 00B66400, 00B669A0) and the dead error-prefix block at 008a3110/008a316c are docs/MISSION_LUA_MACHINE.md's and are not modelled"
+    },
+    {
+      "name": "lua_binding_navigator_move_to",
+      "address": "008a2f20",
+      "ghidra_name": "BSP_LuaBinding_NavigatorMoveToRange",
+      "body": "008a2f20-008a30c2",
+      "abi": "__fastcall(lua_State* in ECX), result count in EAX",
+      "coverage": "complete; also covers 008a2bc0 NavigatorMoveToPos (008a2bc0-008a2d62) and 008a2d70 NavigatorDirectMoveToRange (008a2d70-008a2f12), which are the same routine with the same command object"
+    },
+    {
+      "name": "lua_binding_join_formation",
+      "address": "00899d10",
+      "ghidra_name": "BSP_LuaBinding_JoinFormation",
+      "body": "00899d10-00899eaa",
+      "abi": "__fastcall(lua_State* in ECX), result count in EAX",
+      "coverage": "complete"
+    },
+    {
+      "name": "entity_join_formation",
+      "address": "0077c8d0",
+      "ghidra_name": "BSP_Entity_RequestJoinFormation",
+      "body": "0077c8d0-0077c97b",
+      "abi": "__thiscall(entity /*ECX*/, void* other), RET 4",
+      "coverage": "complete for the sequence; the predicate at vtable+16Ch (008162B0 for MDestroyer) and the delivery of the type-76h message are host steps this packet did not read"
+    },
+    {
+      "name": "lua_binding_set_skill_level",
+      "address": "00895250",
+      "ghidra_name": "BSP_LuaBinding_SetSkillLevel",
+      "body": "00895250-008953ef",
+      "abi": "__fastcall(lua_State* in ECX), result count in EAX",
+      "coverage": "complete"
+    },
+    {
+      "name": "lua_binding_repair_enable",
+      "address": "008ad330",
+      "ghidra_name": "BSP_LuaBinding_RepairEnable",
+      "body": "008ad330-008ad534",
+      "abi": "__fastcall(lua_State* in ECX), result count in EAX",
+      "coverage": "complete; both exclusive arms are modelled and the caller is told which ran"
+    },
+    {
+      "name": "lua_binding_set_role_available",
+      "address": "008ab850",
+      "ghidra_name": "BSP_LuaBinding_SetRoleAvailable",
+      "body": "008ab850-008ababf",
+      "abi": "__fastcall(lua_State* in ECX), result count in EAX",
+      "coverage": "complete; all three arms are modelled and the caller is told which ran"
+    }
+  ],
+  "host_methods": [
+    {
+      "method": "LuaCommandTargetSource::argument_id_field_is_nil",
+      "address": "0088a83b",
+      "native": "00b67910",
+      "containing_function": "0088a810",
+      "note": "fetches the literal 00CE59B4 ('ID'); the nil test is 00B65FB0 at 0088A84A"
+    },
+    {
+      "method": "LuaCommandTargetSource::argument_id_field_is_nil (nil test)",
+      "address": "0088a84a",
+      "native": "00b65fb0",
+      "containing_function": "0088a810"
+    },
+    {
+      "method": "LuaCommandTargetSource::argument_entity",
+      "address": "0088a855",
+      "native": "00888aa0",
+      "containing_function": "0088a810"
+    },
+    {
+      "method": "LuaCommandTargetSource::argument_vector3",
+      "address": "0088a8a1",
+      "native": "00888760",
+      "containing_function": "0088a810"
+    },
+    {
+      "method": "LuaCommandTargetSource::entity_object_id",
+      "address": "0088a88e",
+      "native": "entity+174h (MOVZX EAX, word ptr [EAX + 0x174])",
+      "containing_function": "0088a810",
+      "note": "a field read, not a call"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::argument_entity (attackmove)",
+      "address": "008a31cf",
+      "native": "00888aa0",
+      "containing_function": "008a30d0"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::entity_issue_command (attackmove)",
+      "address": "008a3273",
+      "native": "0077d600",
+      "containing_function": "008a30d0",
+      "note": "command object 00E08F78, flags 1"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::argument_entity (moveto)",
+      "address": "008a301f",
+      "native": "00888aa0",
+      "containing_function": "008a2f20"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::entity_issue_command (moveto)",
+      "address": "008a3077",
+      "native": "0077d600",
+      "containing_function": "008a2f20",
+      "note": "command object 00E08F68, flags 1"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::argument_entity (follower)",
+      "address": "00899e10",
+      "native": "00888aa0",
+      "containing_function": "00899d10"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::argument_entity (leader)",
+      "address": "00899e41",
+      "native": "00888aa0",
+      "containing_function": "00899d10"
+    },
+    {
+      "method": "entity_join_formation call site",
+      "address": "00899e5b",
+      "native": "0077c8d0",
+      "containing_function": "00899d10"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::entity_command_is_available",
+      "address": "0077c8fe",
+      "native": "vtable+16Ch (CALL EDX; 008162B0 for MDestroyer, vtable 00CFC3D0)",
+      "containing_function": "0077c8d0",
+      "note": "arguments are the literal 00CFB52C ('follow') and the other entity"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::entity_route_slot",
+      "address": "0077c904",
+      "native": "entity+1ACh (MOV EAX, dword ptr [ESI + 0x1ac])",
+      "containing_function": "0077c8d0",
+      "note": "a field read, not a call"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::slot_counter_increment",
+      "address": "0077c91b",
+      "native": "00905300",
+      "containing_function": "0077c8d0"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::session_route_formation_message (construct)",
+      "address": "0077c926",
+      "native": "0075b430",
+      "containing_function": "0077c8d0",
+      "note": "message type 76h"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::session_route_formation_message (route)",
+      "address": "0077c964",
+      "native": "0077c2a0",
+      "containing_function": "0077c8d0",
+      "note": "flags 7, out 0"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::argument_integer (skill level)",
+      "address": "00895351",
+      "native": "00b66290",
+      "containing_function": "00895250"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::argument_entity (skill level)",
+      "address": "00895381",
+      "native": "00888aa0",
+      "containing_function": "00895250"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::entity_set_skill_level",
+      "address": "008953a2",
+      "native": "vtable+128h (CALL EDX)",
+      "containing_function": "00895250"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::argument_entity (repair)",
+      "address": "008ad42e",
+      "native": "00888aa0",
+      "containing_function": "008ad330"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::entity_is_kind_of",
+      "address": "008ad44f",
+      "native": "vtable+5Ch (CALL EAX), class id 6",
+      "containing_function": "008ad330"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::argument_boolean",
+      "address": "008ad46d",
+      "native": "00b66250",
+      "containing_function": "008ad330"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::session_route_repair_enable_message (construct)",
+      "address": "008ad494",
+      "native": "0075b430",
+      "containing_function": "008ad330",
+      "note": "message type 9Fh"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::session_route_repair_enable_message (route)",
+      "address": "008ad4cd",
+      "native": "0077c2a0",
+      "containing_function": "008ad330",
+      "note": "flags 7, out 0"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::entity_set_repair_enabled_field",
+      "address": "008ad4e8",
+      "native": "entity+378h (MOV byte ptr [ESI + 0x378], CL)",
+      "containing_function": "008ad330",
+      "note": "a field write, not a call"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::argument_ptr_field",
+      "address": "008ab953",
+      "native": "00888d20",
+      "containing_function": "008ab850"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::argument_integer (role)",
+      "address": "008ab984",
+      "native": "00b66290",
+      "containing_function": "008ab850"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::argument_integer (value)",
+      "address": "008ab9b4",
+      "native": "00b66290",
+      "containing_function": "008ab850"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::game_session_mode",
+      "address": "008ab9d1",
+      "native": "[00E188A8]+1FE4h (CMP dword ptr [ECX + 0x1fe4], 0x0)",
+      "containing_function": "008ab850",
+      "note": "a field read, not a call"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::game_effective_game_mode",
+      "address": "008ab9de",
+      "native": "004bca50",
+      "containing_function": "008ab850"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::session_route_role_message (construct)",
+      "address": "008ab9ee",
+      "native": "0075b430",
+      "containing_function": "008ab850",
+      "note": "message type 4Ch"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::session_route_role_message (route)",
+      "address": "008aba2f",
+      "native": "0077c2a0",
+      "containing_function": "008ab850",
+      "note": "flags 5, out 0"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::role_owner_set_role_available (local arm)",
+      "address": "008aba51",
+      "native": "vtable+148h (CALL EAX)",
+      "containing_function": "008ab850"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::game_assign_party_player_slots",
+      "address": "008aba60",
+      "native": "004c3840",
+      "containing_function": "008ab850"
+    },
+    {
+      "method": "LuaBindingNavigatorHost::role_owner_set_role_available (party arm)",
+      "address": "008aba73",
+      "native": "vtable+148h (CALL EAX)",
+      "containing_function": "008ab850"
+    }
+  ],
+  "names_added": [
+    {"address": "008a30d0", "name": "BSP_LuaBinding_NavigatorAttackMove"},
+    {"address": "008a2f20", "name": "BSP_LuaBinding_NavigatorMoveToRange"},
+    {"address": "008a2bc0", "name": "BSP_LuaBinding_NavigatorMoveToPos"},
+    {"address": "008a2d70", "name": "BSP_LuaBinding_NavigatorDirectMoveToRange"},
+    {"address": "00899d10", "name": "BSP_LuaBinding_JoinFormation"},
+    {"address": "00895250", "name": "BSP_LuaBinding_SetSkillLevel"},
+    {"address": "008ad330", "name": "BSP_LuaBinding_RepairEnable"},
+    {"address": "008ab850", "name": "BSP_LuaBinding_SetRoleAvailable"},
+    {"address": "0088a810", "name": "BSP_LuaObject_ReadCommandTarget"},
+    {"address": "0077c8d0", "name": "BSP_Entity_RequestJoinFormation"},
+    {"address": "00905300", "name": "BSP_SlotCounter_Increment"}
+  ],
+  "corrections": [
+    {
+      "subject": "NavigatorMoveToRange 008a2f20",
+      "was": "the packet brief expected a target plus a range argument",
+      "is": "the binding reads Lua arguments 0 and 1 only and has no range argument",
+      "evidence": "008A2FFD pushes index 0 and 008A3036 pushes index 1 into 00B677E0; there is no third BSP_LuaObject_ArgumentAt in the body 008A2F20-008A30C2, and 0077D600's three stack arguments at 008A3069/008A306F/008A3070 are flags 1, the descriptor and the command object."
+    },
+    {
+      "subject": "the moveto family",
+      "was": "NavigatorMoveToPos, NavigatorDirectMoveToRange and NavigatorMoveToRange read as three behaviours",
+      "is": "three Lua names for one native routine",
+      "evidence": "008a2bc0, 008a2d70 and 008a2f20 have identical bodies of 0x1a2 bytes and all three PUSH 0xe08f68 (008A2D10, 008A2EC0, 008A3070); they differ only in the dead error-prefix length (0x20, 0x28, 0x22) and the one-time luakod guard global."
+    },
+    {
+      "subject": "Ghidra's unreachable-block warnings",
+      "was": "the decompiler reports 'Removing unreachable block' at 008a3110 and 008a316c (and the matching pairs in 008a2f20, 008a2bc0, 008a2d70, 00899d10)",
+      "is": "those blocks are reachable; they build and immediately free the 'luaMW_<name> failed:' prefix string",
+      "evidence": "008A30FB/008A30FF zero the string object before 0041DD40 writes through ECX; Ghidra's prototype does not model that write, so it folds CMP EDI,EBP at 008A310C to always-equal. 008AD330 uses the same idiom with a different stack layout and decompiles with the memcpy visible, and its length 0x1A equals strlen(\"luaMW_RepairEnable failed:\")."
+    },
+    {
+      "subject": "JoinFormation direction",
+      "was": "unknown which of the two entities becomes leader",
+      "is": "Lua argument 0 is the follower, Lua argument 1 the leader",
+      "evidence": "00899E59 puts argument 0 in ECX and 00899E58 pushes argument 1; 0077C8F8 then asks ECX's vtable[16Ch] whether it may 'follow' the stack argument, and 0077C92B takes the message's +20h id from the stack argument."
+    },
+    {
+      "subject": "vtable slot 16Ch",
+      "was": "read from the call site as 'apply the follow command'",
+      "is": "a bool-returning availability predicate; 0077C8D0 issues no command",
+      "evidence": "MDestroyer's vtable base is 00CFC3D0 because [00CFC3D0+160h] is 00816E30; [00CFC3D0+16Ch] is 008162B0, whose body 008162B0-00816408 returns bool and dispatches only IsKindOf tests and BSP_CString_CompareInsensitive. A false answer makes 0077C8D0 return with no effect at 0077C902."
+    },
+    {
+      "subject": "[00E188A8]+1FE4h in SetRoleAvailable",
+      "was": "first read here as a non-campaign flag",
+      "is": "the session mode already declared by include/bsp/unit_damage.hpp, include/bsp/unit_order_record.hpp and include/bsp/unit_state_message.hpp",
+      "evidence": "those headers document the same address as the session mode (0 local, 2 client); no constant for it is restated in include/bsp/lua_binding_navigator.hpp."
+    },
+    {
+      "subject": "SetInvincible 00897a50",
+      "was": "listed in the packet brief as possibly this packet's work",
+      "is": "already named and documented by packet cc2_unit_damage",
+      "evidence": "python tools/bsp.py lookup 00897a50 shows BSP_LuaBinding_SetInvincible with docs/UNIT_DAMAGE_AND_DEATH.md and reports/unit_damage.json; it was left alone and not leased."
+    }
+  ],
+  "run": {
+    "executable": "build/win32/Release/bsp_mission_script_probe.exe",
+    "command": "bsp_mission_script_probe.exe --core-bindings --navigator-bindings --stand-in-random",
+    "mission": "usn/usn_2_java",
+    "luaInit": "ok (default run without --stand-in-random still fails at Scripts/global/commandhelpers.lua:1003, reproducing docs/GAME_EXECUTABLE.md milestone 2l)",
+    "stand_in_random": "the native row `random` 0088C160 is NOT reconstructed by this packet and is not in its lease; --stand-in-random is a deterministic probe fixture with the native's argument-count shape and none of its numerics, present only so luaInit runs past luaPickRnd. Every ship row below depends on it.",
+    "entities_addressed": 28,
+    "binding_calls": {
+      "SetSkillLevel": 22,
+      "JoinFormation": 14,
+      "RepairEnable": 34,
+      "NavigatorAttackMove": 14,
+      "NavigatorMoveToRange": 1,
+      "SetRoleAvailable": 4
+    },
+    "note_on_counts": "These are larger than docs/GAME_EXECUTABLE.md milestone 2l's (15/14/12/6/1/4) because that run resolves FindEntity only over the 32 created scene instances, while this probe mints an entity for every entity-returning row, so more of the script's branches run. JoinFormation and NavigatorMoveToRange and SetRoleAvailable match exactly.",
+    "orders_issued": [
+      {"ship": "DeRuyter", "order": "moveto", "target": "DRGoTo", "follows": "DeRuyter", "skill": 0, "repair": false},
+      {"ship": "Java", "follows": "DeRuyter", "skill": 0, "repair": false},
+      {"ship": "Kortenaer", "follows": "DeRuyter", "skill": 0, "repair": false},
+      {"ship": "Electra", "follows": "DeRuyter", "skill": 0, "repair": false},
+      {"ship": "Houston", "follows": "Houston", "skill": 2, "repair": true},
+      {"ship": "Alden", "follows": "Houston", "skill": 2, "repair": true},
+      {"ship": "John1", "follows": "Houston", "skill": 2, "repair": true},
+      {"ship": "John2", "follows": "Houston", "skill": 2, "repair": true},
+      {"ship": "John3", "follows": "Houston", "skill": 2, "repair": true},
+      {"ship": "Exeter", "follows": "Exeter", "skill": 2, "repair": true},
+      {"ship": "Perth", "follows": "Exeter", "skill": 2, "repair": true},
+      {"ship": "Encounter", "follows": "Exeter", "skill": 2, "repair": true},
+      {"ship": "Jupiter", "follows": "Exeter", "skill": 2, "repair": true},
+      {"ship": "Witte", "follows": "Exeter", "skill": 2, "repair": true},
+      {"ship": "Haguro", "order": "attackmove", "target": "DeRuyter", "repair": false},
+      {"ship": "Jintsu", "order": "attackmove", "target": "Java", "repair": false},
+      {"ship": "Yudachi", "order": "attackmove", "target": "DeRuyter", "repair": false},
+      {"ship": "Samidare", "order": "attackmove", "target": "Java", "repair": false},
+      {"ship": "Murasame", "order": "attackmove", "target": "DeRuyter", "repair": false},
+      {"ship": "Harusame", "order": "attackmove", "target": "Java", "repair": false},
+      {"ship": "Yamakaze", "order": "attackmove", "target": "John1", "skill": 1, "repair": true},
+      {"ship": "Minegumo", "order": "attackmove", "target": "Houston", "skill": 1, "repair": true},
+      {"ship": "Asagumo", "order": "attackmove", "target": "John3", "skill": 1, "repair": true},
+      {"ship": "Yukikaze", "order": "attackmove", "target": "John2", "skill": 1, "repair": true},
+      {"ship": "Kawakaze", "order": "attackmove", "target": "Perth", "skill": 1, "repair": true},
+      {"ship": "Tokitsukaze", "order": "attackmove", "target": "Encounter", "skill": 1, "repair": true},
+      {"ship": "Amatsukaze", "order": "attackmove", "target": "Jupiter", "skill": 1, "repair": true},
+      {"ship": "Hatsukaze", "order": "attackmove", "target": "Exeter", "skill": 1, "repair": true}
+    ],
+    "role_rows": [
+      "DeRuyter role 511 = 8",
+      "Java role 511 = 8",
+      "Kortenaer role 511 = 8",
+      "Electra role 511 = 8"
+    ],
+    "attackmove_targets_depend_on_random": "the six Haguro..Harusame rows and the eight Yamakaze..Hatsukaze rows pick their target through luaPickRnd, so the target column is a function of the --stand-in-random fixture, not of the native. The ship column is not: those loops are over fixed FindEntity lists.",
+    "self_follow_rows": "DeRuyter, Houston and Exeter follow themselves because usn_2_java's loops run over the whole group including index 1 and call JoinFormation(unit, group[1]) for every member (Scripts/missions/usn/usn_2_java.lua:210-228). Whether the native accepts a self-follow is decided by the unread predicate 008162B0; the probe answers it true for every call.",
+    "host_steps_recorded_not_performed": {
+      "entity_command_is_available_vtable16c": 14,
+      "entity_is_kind_of_vtable5c": 34,
+      "entity_issue_command_0077d600": 15,
+      "entity_route_slot_1ac": 14,
+      "game_session_mode_1fe4": 4,
+      "role_owner_set_role_available_vtable148": 4,
+      "session_route_formation_message_0077c8d0_type76": 14
+    }
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "Win32 Release, /W4 /WX clean; ctest 1/1 reconstructed_math passed",
+    "new_tests": "none added"
+  },
+  "no_ghidra_function": "none: every address this packet read, named or reconstructed already has a Ghidra function with the body range cited above."
+}
