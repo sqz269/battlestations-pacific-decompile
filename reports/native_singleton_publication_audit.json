@@ -1,0 +1,379 @@
+{
+  "schema_version": 1,
+  "packet": "native_singleton_publication2",
+  "status": "complete_source_strict_build_and_compiled_cleanup_reviewed",
+  "base_commit": "87b608110abd22342478336ff303c7c3bdf5da6a",
+  "owned_files": [
+    "src/native_singleton_publication.cpp",
+    "include/bsp/native_singleton_publication.hpp",
+    "docs/NATIVE_SINGLETON_PUBLICATION.md",
+    "reports/native_singleton_publication_audit.json"
+  ],
+  "owned_functions": [
+    {
+      "kind": "function",
+      "address": "00415350",
+      "name": "get_native_singleton_manager_00415350",
+      "cpp_symbol": "bsp::get_native_singleton_manager_00415350",
+      "source": "src/native_singleton_publication.cpp",
+      "native_end_exclusive": "004153b9",
+      "status": "complete_raw_source_borrowed_publications_build_and_compiled_EH_reviewed",
+      "evidence": "reports/native_singleton_publication_audit.json",
+      "original_abi": "No input consumed; EAX pointer; plain RET.",
+      "source_abi": "New cdecl with stable borrowed reference to actual volatile01090AA0 publication; original consumed no input, EAX pointer, plain RET.",
+      "original_owned_body_executed": false,
+      "source_getter_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 105,
+      "ghidra_name": "BSP_SingletonLifetime_GetManager",
+      "behavior": "Capture01090AA0 once; raw14h allocation before cleanup state; fullBD0960 construction; publish/return captured result without a reload or lock. Constructor failure frees captured raw allocation after its own cleanup."
+    },
+    {
+      "kind": "function",
+      "address": "00b1b730",
+      "name": "get_native_resource_registry_00b1b730",
+      "cpp_symbol": "bsp::get_native_resource_registry_00b1b730",
+      "source": "src/native_singleton_publication.cpp",
+      "native_end_exclusive": "00b1b7f8",
+      "status": "complete_raw_source_borrowed_publications_build_and_compiled_EH_reviewed",
+      "evidence": "reports/native_singleton_publication_audit.json",
+      "original_abi": "No input consumed; EAX pointer; plain RET.",
+      "source_abi": "New cdecl with distinct stable borrowed references to actual volatile01090AA0 andF8D41C publications; original consumed no input, EAX pointer, plain RET.",
+      "original_owned_body_executed": false,
+      "source_getter_executed": false,
+      "abi_compatible": false,
+      "game_validated": false,
+      "native_bytes": 200,
+      "ghidra_name": "BSP_ResourceRegistry_GetSingleton",
+      "behavior": "Fast captured registry return; first manager lookup/captured rawsection+10; Enter and physical+18 increment before guard cleanup. Recheck registry; allocate10h/baseB1AA70/storeD5E59C; end allocation cleanup, publish, second manager lookup, current registry reread then fullBD0C30 registration. Release original captured section before final registry reread. Construction failures free captured allocation; subsequent lookup/registration failures retain publication and invoke411EE0 guard cleanup."
+    }
+  ],
+  "owned_native_bytes": 305,
+  "native_EH_bytes": 146,
+  "emitted_CODE_bytes": 561,
+  "emitted_EH_and_SafeSEH_bytes": 236,
+  "native_capture": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\singleton_publication_primary\\native_captures.json",
+    "bytes": 2094,
+    "sha256": "d5e7237b94886999a9ea2b80e3732d7c0529539576fd9099476dda4bc9a6b964"
+  },
+  "complete_emitted_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\singleton_publication_primary\\complete_proof.json",
+    "bytes": 7045,
+    "sha256": "00966471dfafa178d862841d79ba1fb3b781ce079b244c38d752366c5ea781af"
+  },
+  "main_build": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\singleton_publication_build_frozen\\manifest.json",
+      "bytes": 92468,
+      "sha256": "9b0082fe7ce313b6fbcdde541ae7db053fb8ca0febab3d2d3aba60542148766f"
+    },
+    "library_sha256": "747c25074329cb942f627d75a0b7e7c86219aaad5b1c46c10b5f805c2b888f6e",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_reference_spans_matched": 8,
+    "unchanged_prebuild_inputs": 44,
+    "exact_archive_members": 6,
+    "actual_compiler_commands": 6,
+    "frozen_compiler_dependencies": 215
+  },
+  "native_exception_maps": [
+    {
+      "funcinfo": "00d8418c",
+      "fields": [
+        429065506,
+        1,
+        14172548,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "unwind_entries": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00c5e0d0"
+        }
+      ]
+    },
+    {
+      "funcinfo": "00df4b38",
+      "fields": [
+        429065506,
+        2,
+        14633768,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "unwind_entries": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00cbc7b0"
+        },
+        {
+          "state": 1,
+          "to_state": 0,
+          "action": "00cbc7b8"
+        }
+      ]
+    }
+  ],
+  "compiled_exception_maps": [
+    {
+      "entry": "?get_native_singleton_manager_00415350",
+      "states": 2,
+      "unwind": [
+        [
+          -1,
+          0
+        ],
+        [
+          -1,
+          0
+        ]
+      ],
+      "try_blocks": [
+        [
+          0,
+          0,
+          1,
+          1,
+          0
+        ]
+      ],
+      "catch_target_offsets": [
+        141
+      ]
+    },
+    {
+      "entry": "?get_native_resource_registry_00b1b730",
+      "states": 4,
+      "unwind": [
+        [
+          -1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          -1,
+          0
+        ]
+      ],
+      "try_blocks": [
+        [
+          1,
+          1,
+          2,
+          1,
+          0
+        ],
+        [
+          0,
+          2,
+          3,
+          1,
+          0
+        ]
+      ],
+      "catch_target_offsets": [
+        279,
+        258
+      ]
+    }
+  ],
+  "concrete_source_providers": [
+    {
+      "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+      "archive_member_header_offset": 37816870,
+      "member_sha256": "119e5429a49f175879383bb9d8ea86ea7fad80f0c9ae48a82b3c7f027fc3b613"
+    },
+    {
+      "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+      "archive_member_header_offset": 37816870,
+      "member_sha256": "119e5429a49f175879383bb9d8ea86ea7fad80f0c9ae48a82b3c7f027fc3b613"
+    },
+    {
+      "symbol": "?destroy_native_singleton_guard_00411ee0@bsp@@YAXPAX@Z",
+      "archive_member_header_offset": 36355620,
+      "member_sha256": "6725828ad32e05b8ad9c3214e20b47334f7b1d7547f47d262550ba3e34e27434"
+    },
+    {
+      "symbol": "?construct_native_resource_registry_00b1aa70@bsp@@YIPAXPAXACRAX@Z",
+      "archive_member_header_offset": 36447640,
+      "member_sha256": "e7795670c5373e3297221416e7da1350f90799dd3dc13ecd344362247492ad1b"
+    },
+    {
+      "symbol": "?register_native_singleton_object_00bd0c30@bsp@@YIXPAX00@Z",
+      "archive_member_header_offset": 36425994,
+      "member_sha256": "f545b5ac1a851a4ce444f28b216e8db579f27833b531b2a14f88b9d465ccd2c2"
+    },
+    {
+      "symbol": "?construct_native_singleton_manager_00bd0960@bsp@@YIPAXPAX0@Z",
+      "archive_member_header_offset": 36430150,
+      "member_sha256": "0496922e096bc20fa967eb57efa81765c3e8768f69bd81adf46b5c737072519d"
+    }
+  ],
+  "whole_provider_objects_unchanged": [
+    {
+      "object": "native_singleton_vector_reserve_construct.obj",
+      "sha256": "0496922e096bc20fa967eb57efa81765c3e8768f69bd81adf46b5c737072519d",
+      "current_member_header_offset": 36430150,
+      "previous_member_header_offset": 35962164,
+      "entire_object_byte_identical": true
+    },
+    {
+      "object": "native_singleton_vector_registration_wrappers.obj",
+      "sha256": "f545b5ac1a851a4ce444f28b216e8db579f27833b531b2a14f88b9d465ccd2c2",
+      "current_member_header_offset": 36425994,
+      "previous_member_header_offset": 35958008,
+      "entire_object_byte_identical": true
+    },
+    {
+      "object": "native_resource_registry_construction.obj",
+      "sha256": "e7795670c5373e3297221416e7da1350f90799dd3dc13ecd344362247492ad1b",
+      "current_member_header_offset": 36447640,
+      "previous_member_header_offset": 35979654,
+      "entire_object_byte_identical": true
+    },
+    {
+      "object": "native_diagnostic_sink_lifetime.obj",
+      "sha256": "6725828ad32e05b8ad9c3214e20b47334f7b1d7547f47d262550ba3e34e27434",
+      "current_member_header_offset": 36355620,
+      "previous_member_header_offset": 35892718,
+      "entire_object_byte_identical": true
+    },
+    {
+      "object": "singleton_lifetime.obj",
+      "sha256": "119e5429a49f175879383bb9d8ea86ea7fad80f0c9ae48a82b3c7f027fc3b613",
+      "current_member_header_offset": 37816870,
+      "previous_member_header_offset": 37348884,
+      "entire_object_byte_identical": true
+    }
+  ],
+  "prior_address_records": [
+    {
+      "shard": "config\\names\\00410000.jsonl",
+      "record": {
+        "address": "00415350",
+        "name": "BSP_SingletonLifetime_GetManager",
+        "evidence": "No input consumed; EAX manager, RET. Lazily allocate20 bytes, construct00bd0960, publish01090aa0. Getter has no explicit lock. Native allocation failure leaves null; unported lifetime dependency. | One captured global01090AA0 read on fastpath; allocate14h, construct, publish captured result; no publication lock. Original ABI: No input consumed; EAX manager; RET. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+      }
+    },
+    {
+      "shard": "config\\reconstruction\\00410000.jsonl",
+      "record": {
+        "address": "00415350",
+        "name": "SingletonLifetimeDomain::get_manager_00415350",
+        "source": "src/singleton_lifetime.cpp",
+        "status": "typed_implementation_integrated_strict_win32_build_and_focused_evidence_checked",
+        "original_abi": "No input consumed; EAX manager; RET.",
+        "abi_compatible": false,
+        "game_validated": false,
+        "evidence": "docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json; docs/SYSTEM_CONSTANT_BUILDER.md",
+        "remaining": "Scope: typed_function. Generic unselected vector paths, original allocator/layout/SEH ABI and foreign registered-owner dispatch remain.",
+        "kind": "function"
+      }
+    }
+  ],
+  "limits": [
+    "Manually reviewed complete emitted schedules, with focused assertions and exact reviewed-section hashes; not an exact native instruction-byte equivalence claim.",
+    "Source C++ EH/CRT/Win32 contract; native stack/SEH spill aliases and provider throw/register identities excluded.",
+    "Native entries and new source getters not executed; no original caller ABI or gameplay validation.",
+    "Raw publication references must bind distinct actual cells and remain stable; no aliases to private source stack bindings or EH spills.",
+    "Native identity DWORD profiles are not callable C++ vtables. Canonical executable remains on its typed application-owned domain until all admitted raw-owner destructor bindings are completed.",
+    "The compiler emits a four-byte SDK __Avx2WmemEnabledWeakValue BSS symbol; no private publication cell is defined."
+  ],
+  "new_tests_added": 0,
+  "fixture_tested": false,
+  "source_getters_executed": false,
+  "original_native_runtime_executed": false,
+  "original_caller_ABI_compatible": false,
+  "game_validated": false,
+  "primary_review": {
+    "utc": "2026-09-12T04:31:53.255319+00:00",
+    "integration_state": "complete_raw_getter_source_build_compiled_cleanup_review_saved_and_registered",
+    "main_library_sha256": "747c25074329cb942f627d75a0b7e7c86219aaad5b1c46c10b5f805c2b888f6e",
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_singleton_publication_annotations.json",
+      "bytes": 4138,
+      "sha256": "58e92da7c18cd31ee3c4576ff76754fe79e87c9cdd643c7d8df761ed5128d2e2"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "00415350",
+        "name": "get_native_singleton_manager_00415350",
+        "cpp_symbol": "bsp::get_native_singleton_manager_00415350",
+        "source": "src/native_singleton_publication.cpp",
+        "native_end_exclusive": "004153b9",
+        "status": "complete_raw_source_borrowed_publications_build_and_compiled_EH_reviewed",
+        "evidence": "reports/native_singleton_publication_audit.json",
+        "original_abi": "No input consumed; EAX pointer; plain RET.",
+        "source_abi": "New cdecl with stable borrowed reference to actual volatile01090AA0 publication; original consumed no input, EAX pointer, plain RET.",
+        "original_owned_body_executed": false,
+        "source_getter_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b1b730",
+        "name": "get_native_resource_registry_00b1b730",
+        "cpp_symbol": "bsp::get_native_resource_registry_00b1b730",
+        "source": "src/native_singleton_publication.cpp",
+        "native_end_exclusive": "00b1b7f8",
+        "status": "complete_raw_source_borrowed_publications_build_and_compiled_EH_reviewed",
+        "evidence": "reports/native_singleton_publication_audit.json",
+        "original_abi": "No input consumed; EAX pointer; plain RET.",
+        "source_abi": "New cdecl with distinct stable borrowed references to actual volatile01090AA0 andF8D41C publications; original consumed no input, EAX pointer, plain RET.",
+        "original_owned_body_executed": false,
+        "source_getter_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00415350",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00415350\\decompiled.c",
+        "bytes": 2805,
+        "sha256": "8c6553a7568485725d9b2bb0ebf3d691a5a6d64d4f94f6f21f78ff3eeda268d7"
+      },
+      {
+        "address": "00b1b730",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b1b730\\decompiled.c",
+        "bytes": 3011,
+        "sha256": "a9b832df2dfa8b96fabb8a84eafa60ea63cefe2b1507ff741944a217559e0a42"
+      }
+    ],
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_SINGLETON_PUBLICATION.md",
+      "bytes": 4613,
+      "sha256": "558e87e5f42d12dcd8a2e68969d9dcfcec4174c0311eb15122a083a85b18474b"
+    },
+    "new_getters_executed": false,
+    "original_caller_ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\singleton_publication_primary\\sealed.json",
+      "bytes": 103737,
+      "sha256": "1442595a2e36d4e61e80368c358012b5c736d12c07ec074e5a4b8b3a54d377c1"
+    }
+  }
+}
