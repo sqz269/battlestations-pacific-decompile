@@ -18,8 +18,8 @@
       "native_calling_convention": "__fastcall",
       "native_prototype": "void * __fastcall BSP_ParticleTypeDefinition_Create(void * kind, void * name, void * parent, void * text)",
       "original_abi": "ECX actual8h kind; EDX actual8h name; stack(parent,text); RET8/EAX actual child",
-      "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated.",
-      "coverage": "complete source body through actual base/library/parser services",
+      "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full installed/live bytes and original register inputs/RET verified. Actual common particle-definition storage, real shared string/parameter/array domain and sparse native writes. See docs/NATIVE_PARTICLE_TYPE_FACTORY.md and reports/native_particle_type_factory.json. Current virtual08 remains a required real parser boundary; new C++ interfaces, original FH3 and gameplay unvalidated. AQ integration: when actual loading domains are supplied, all five reviewed current native parser08 targets call concrete Sprite/Axial/Floating/Object/Tracer parsers directly. Same owner/base domain identity is checked. Other targets and legacy callers without loading domains retain the required real current parser dispatcher. See docs/NATIVE_PARTICLE_TYPE_LOADING.md.",
+      "coverage": "complete source with optional concrete five-parser dispatch and required real unknown/current-target boundary",
       "prototype_qualification_note": "Ghidra API cannot resolve const void pointer; ABI annotation uses void pointer. Source/header retain read-only input contract; original C++ type not recovered."
     },
     {
@@ -1667,5 +1667,31 @@
       "five actual particle text parsers",
       "Sprite/Object/Tracer state initializers and their real resource dependencies"
     ]
+  },
+  "integration_aq": {
+    "direct_known_targets": [
+      "00b08ac0",
+      "00b064a0",
+      "00b07d60",
+      "00af8bd0",
+      "00b0ad50"
+    ],
+    "loading_binding": "optional actual domain pointer; callers without it retain AP dispatcher",
+    "domain_validation": "properties.base == factory.base; parameters.owners == factory.base.owners",
+    "native_factory_composition": "pending focused probe",
+    "limitations": [
+      "Original FH3 and gameplay remain unvalidated.",
+      "Shader/model/renderer services remain explicit actual-target dispatch boundaries."
+    ]
+  },
+  "integration_aq_review": {
+    "all_call_rows_verified": true,
+    "saved_names_and_comments": 36,
+    "ordinary_native_signatures": 34,
+    "custom_register_signatures_retained": [
+      "00af3750",
+      "00af3960"
+    ],
+    "combined_validation": "pending exact merged build/replay"
   }
 }

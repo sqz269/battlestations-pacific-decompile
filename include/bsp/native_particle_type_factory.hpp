@@ -3,6 +3,7 @@
 
 namespace bsp {
 struct NativeParticleTypeBaseBindings;
+struct NativeParticleTypeLoadingBindings;
 
 // The original particle-definition family has eleven vtable slots and an 80h
 // common prefix. These are the actual application profiles, borrowed without
@@ -18,11 +19,13 @@ struct NativeParticleTypeFactoryBindings {
     const volatile std::uint32_t* object_profile_00d5db00;
     const volatile std::uint32_t* tracer_profile_00d5e048;
     void* context;
-    // Required real application dispatcher for the captured CURRENT +08
-    // target. ECX actual child, stack actual TextBuffer, RET4. This boundary
-    // does not claim reconstruction of the five type-specific text parsers.
+    // Real application dispatcher for an unrecognized CURRENT +08 target,
+    // or for callers that have not yet supplied concrete loading domains.
     void (*parser_virtual08)(void*, void* actual_child,
         std::uint32_t captured_target, void* actual_text);
+    // AQ: when provided, the five reviewed native +08 targets dispatch
+    // directly through concrete parsers using these SAME native domains.
+    NativeParticleTypeLoadingBindings* loading = nullptr;
 };
 
 // Complete derived constructors, original ECX raw owner,
