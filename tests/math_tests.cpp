@@ -47,6 +47,7 @@
 #include "bsp/input_tick.hpp"
 #include "bsp/press_start_screen.hpp"
 #include "bsp/profile_unlock.hpp"
+#include "bsp/session_message_dispatch.hpp"
 #include "bsp/session_polls.hpp"
 #include "bsp/world_construct.hpp"
 #include "bsp/world_entities.hpp"
@@ -2291,6 +2292,38 @@ int main() {
             bsp::kHudMinimapDepthSelf);
         check(std::fabs(turned.x) < 1e-4f && std::fabs(turned.y - 40.0f / 768.0f) < 1e-4f,
             "005C1B93 rotates by +heading in the mx*cos + my*sin sense");
+    }
+
+    {
+        // 0077C2A0's local-session rule. A single-player session ignores the
+        // flag override entirely (0077C32F forces 1), except for the word 4,
+        // which returns at 0077C31D before the mode is ever consulted. Getting
+        // these two apart matters: 7 is what the weapon director passes.
+        bsp::SessionRouteInputs local;
+        local.mode = bsp::SessionMode::kLocal;
+        local.default_flags = bsp::default_route_flags_for_mode(bsp::SessionMode::kLocal);
+        local.flags_override = 7;
+        const bsp::SessionRouteDecision seven = bsp::route_session_message_0077c2a0(local);
+        check(seven.routed && seven.deliver_local && !seven.send_to_host && !seven.send_to_peers,
+            "0077C333 replaces a mode-0 flag word with 1, so an override of 7 stays local");
+
+        local.flags_override = 4;
+        const bsp::SessionRouteDecision four = bsp::route_session_message_0077c2a0(local);
+        check(!four.routed && !four.deliver_local,
+            "0077C31D drops a flag word of exactly 4 outside a host session");
+
+        // A client sends an ordinary message to the host and does not apply it.
+        bsp::SessionRouteInputs client;
+        client.mode = bsp::SessionMode::kClient;
+        client.default_flags = bsp::default_route_flags_for_mode(bsp::SessionMode::kClient);
+        const bsp::SessionRouteDecision remote = bsp::route_session_message_0077c2a0(client);
+        check(remote.send_to_host && !remote.deliver_local,
+            "0076FD2C leaves a client on flags 2, so 0077C43D skips the local queue");
+
+        client.privileged_kind = true;
+        const bsp::SessionRouteDecision privileged = bsp::route_session_message_0077c2a0(client);
+        check(privileged.send_to_host && privileged.deliver_local,
+            "0077C35A adds the local bit when 00779FF0 answers true");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
