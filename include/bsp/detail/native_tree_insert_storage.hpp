@@ -24,6 +24,57 @@ struct TreeInsertAccess {
     static void* head(void* tree) noexcept { return word(tree, 4); }
 };
 
+// Existing B23020 traversal with its node comparison made explicit. The
+// comparison policy controls when the caller's key storage is read.
+template<class Access, class NodeLess>
+void* lower_bound_tree_node(void* tree, NodeLess less) noexcept {
+    auto* candidate = Access::head(tree);
+    auto* node = Access::parent(candidate);
+    while (!Access::sentinel(node)) {
+        if (less(node)) {
+            node = Access::right(node);
+        } else {
+            candidate = node;
+            node = Access::left(node);
+        }
+    }
+    return candidate;
+}
+
+// Existing B2F540 unique driver. Iterator shape, comparison loads, leaf
+// operations and output publication remain policies of the consuming source.
+template<class Access, class Iterator, class Output, class SearchLess,
+    class FinalLess, class Decrement, class Link, class Publish>
+Output* insert_unique_tree_pair(void* tree, Output* output, const void* pair,
+    SearchLess search_less, FinalLess final_less, Decrement decrement,
+    Link link, Publish publish) {
+    auto* selected_parent = Access::head(tree);
+    auto* node = Access::parent(selected_parent);
+    bool insert_left = true;
+    while (!Access::sentinel(node)) {
+        selected_parent = node;
+        insert_left = search_less(node);
+        node = insert_left ? Access::left(node) : Access::right(node);
+    }
+    Iterator predecessor{tree, selected_parent};
+    if (insert_left) {
+        if (selected_parent == Access::left(Access::head(tree))) {
+            link(tree, &predecessor, 1, selected_parent, pair);
+            publish(output, predecessor.owner, predecessor.node, 1);
+            return output;
+        }
+        decrement(predecessor);
+    }
+    node = predecessor.node;
+    if (final_less(node)) {
+        link(tree, &predecessor, static_cast<std::uint8_t>(insert_left), selected_parent, pair);
+        publish(output, predecessor.owner, predecessor.node, 1);
+    } else {
+        publish(output, predecessor.owner, node, 0);
+    }
+    return output;
+}
+
 template<class Access>
 void rotate_left_inlined(void* tree, void* node) noexcept {
     auto* const replacement = Access::right(node);

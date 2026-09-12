@@ -18,8 +18,6 @@ void* volatile& left(void* node) noexcept { return word(node, 0); }
 void* volatile& parent(void* node) noexcept { return word(node, 4); }
 void* volatile& right(void* node) noexcept { return word(node, 8); }
 volatile std::uint8_t& color(void* node) noexcept { return byte(node, 0x24); }
-bool sentinel(void* node) noexcept { return byte(node, 0x25) != 0; }
-void* head(void* tree) noexcept { return word(tree, 4); }
 void* key(void* node) noexcept { return static_cast<unsigned char*>(node) + 0x0c; }
 void invalid(const SingletonLifetimeCallbacks& callbacks) {
     callbacks.invalid_parameter(callbacks.context);
@@ -105,32 +103,13 @@ NativeHardwareLayoutTreeIterator* link_native_hardware_layout_node_00b2f1b0(
 NativeHardwareLayoutTreeInsertResult* insert_native_hardware_layout_pair_00b2f540(
     void* tree, NativeHardwareLayoutTreeInsertResult* output,
     const void* pair, const SingletonLifetimeCallbacks& callbacks) {
-    auto* selected_parent = head(tree);
-    auto* node = parent(selected_parent);
-    bool insert_left = true;
-    while (!sentinel(node)) {
-        selected_parent = node;
-        insert_left = less_native_hardware_layout_key_00b20bf0(pair, key(node));
-        node = insert_left ? left(node) : right(node);
-    }
-    NativeHardwareLayoutTreeIterator predecessor{tree, selected_parent};
-    if (insert_left) {
-        if (selected_parent == left(head(tree))) {
-            link_native_hardware_layout_node_00b2f1b0(tree, &predecessor, 1, selected_parent, pair);
-            publish_insert_result(output, predecessor.owner, predecessor.node, 1);
-            return output;
-        }
-        decrement_native_hardware_layout_iterator_00b20d30(predecessor, callbacks);
-    }
-    node = predecessor.node;
-    if (less_native_hardware_layout_key_00b20bf0(key(node), pair)) {
-        link_native_hardware_layout_node_00b2f1b0(
-            tree, &predecessor, static_cast<std::uint8_t>(insert_left), selected_parent, pair);
-        publish_insert_result(output, predecessor.owner, predecessor.node, 1);
-    } else {
-        publish_insert_result(output, predecessor.owner, node, 0);
-    }
-    return output;
+    return detail::insert_unique_tree_pair<detail::TreeInsertAccess<0x24, 0x25>,
+        NativeHardwareLayoutTreeIterator>(tree, output, pair,
+        [pair](void* node) { return less_native_hardware_layout_key_00b20bf0(pair, key(node)); },
+        [pair](void* node) { return less_native_hardware_layout_key_00b20bf0(key(node), pair); },
+        [&callbacks](NativeHardwareLayoutTreeIterator& iterator) {
+            decrement_native_hardware_layout_iterator_00b20d30(iterator, callbacks);
+        }, link_native_hardware_layout_node_00b2f1b0, publish_insert_result);
 }
 
 } // namespace bsp
