@@ -1,0 +1,920 @@
+{
+  "packet": "orch6_avoid_zone_draft_layers",
+  "worker": "agent/orch6-zone-wrappers",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "source": "src/avoid_zone_draft_layers.cpp",
+  "documentation": "docs/AVOID_ZONE_DRAFT_LAYERS.md",
+  "routines": [
+    {
+      "address": "00424d00",
+      "body_end_inclusive": "00425487",
+      "original_abi": "ECX manager, no stack arguments, plain RET",
+      "coverage": "full body/listing attribution read; partial tail00424DDF..00425487 inputs only; scene prefix unchanged; no00423C50 world call implementation"
+    },
+    {
+      "address": "004223b0",
+      "body_end_inclusive": "00422432",
+      "original_abi": "ECX vector, stack element pointer, RET4",
+      "coverage": "complete valid-container append semantics; std::vector replaces native allocation, growth/debug iterator/SEH ABI",
+      "implementation": "avoid_zone_draft_pair_append_004223b0"
+    },
+    {
+      "address": "00423c50",
+      "body_end_inclusive": "00424671",
+      "original_abi": "ECX manager, stack signed layer and uint32 mask, RET8",
+      "coverage": "partial_projection: exact existing group, corner snapshot, explicit partition-index extrusion, body/shape descriptor stores",
+      "unresolved_ranges": [
+        "00423cf2-00423d44",
+        "0042414e-00424203",
+        "004243e6-0042465a"
+      ]
+    },
+    {
+      "address": "00837de0",
+      "body_end_inclusive": "00837dfa",
+      "original_abi": "ECX settings, no stack arguments, EAX selected record, plain RET",
+      "coverage": "complete existing selector reused; no new implementation"
+    }
+  ],
+  "fragments": [
+    {
+      "address": "00424dfb",
+      "body_end_inclusive": "00425420",
+      "containing_function": "00424d00",
+      "name": "avoid_zone_draft_layers_00424dfb"
+    },
+    {
+      "address": "00425459",
+      "body_end_inclusive": "0042545d",
+      "containing_function": "00424d00",
+      "name": "avoid_zone_draft_key_00425459"
+    },
+    {
+      "address": "00423cb6",
+      "body_end_inclusive": "00423cf1",
+      "containing_function": "00423c50",
+      "name": "avoid_zone_draft_points_00423cb6"
+    },
+    {
+      "address": "00423d81",
+      "body_end_inclusive": "0042414d",
+      "containing_function": "00423c50",
+      "name": "avoid_zone_draft_extrude_00423d81"
+    },
+    {
+      "address": "00424204",
+      "body_end_inclusive": "004243e5",
+      "containing_function": "00423c50",
+      "name": "avoid_zone_draft_body_inputs_00424204"
+    }
+  ],
+  "no_ghidra_function": [],
+  "fragment_identity": "Fragment starts are inside existing bodies, not new function entrypoints. All actual claimed function entries exist.",
+  "host_steps": [
+    {
+      "address": "00424d22",
+      "native": "0041f600",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424d7a",
+      "native": "00bf75b3",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424d92",
+      "native": "00bf75b3",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424dae",
+      "native": "00bf7533",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424dbe",
+      "native": "00417ca0",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424dc5",
+      "native": "0041d1e0",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424dda",
+      "native": "00417ca0",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424ddf",
+      "native": "00424c40",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424df6",
+      "native": "00837de0",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424e19",
+      "native": "004223b0",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424e2c",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424e3f",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424e88",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424e99",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424ebe",
+      "native": "004223b0",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424ec9",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424ed3",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424eea",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424efd",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424f46",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424f57",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424f7c",
+      "native": "004223b0",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424f87",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424f91",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424fa8",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00424fbb",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425004",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425015",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "0042503a",
+      "native": "004223b0",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425045",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "0042504f",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425069",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "0042507c",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "004250c5",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "004250d6",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "004250fb",
+      "native": "004223b0",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425106",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425110",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "0042512a",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "0042513d",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425186",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425197",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "004251bc",
+      "native": "004223b0",
+      "function": "00424d00"
+    },
+    {
+      "address": "004251c7",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "004251d1",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "004251eb",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "004251fe",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425247",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425258",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "0042527d",
+      "native": "004223b0",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425288",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425292",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "004252ac",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "004252bf",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425308",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425319",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "0042533e",
+      "native": "004223b0",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425349",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425353",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "0042536d",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425380",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "004253c9",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "004253da",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "004253ff",
+      "native": "004223b0",
+      "function": "00424d00"
+    },
+    {
+      "address": "0042540a",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425414",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "0042544d",
+      "native": "00bf6713",
+      "function": "00424d00"
+    },
+    {
+      "address": "00425462",
+      "native": "00423c50",
+      "function": "00424d00"
+    },
+    {
+      "address": "0042546d",
+      "native": "00bf65ac",
+      "function": "00424d00"
+    },
+    {
+      "address": "004223f9",
+      "native": "0041c7e0",
+      "function": "004223b0"
+    },
+    {
+      "address": "00422413",
+      "native": "00bf6713",
+      "function": "004223b0"
+    },
+    {
+      "address": "00422426",
+      "native": "00421a50",
+      "function": "004223b0"
+    },
+    {
+      "address": "00423c7c",
+      "native": "004120d0",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423cde",
+      "native": "004222c0",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423d08",
+      "native": "004f6f20",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423d1c",
+      "native": "004f4130",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423d40",
+      "native": "004f62c0",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423d68",
+      "native": "00bf65ac",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423db6",
+      "native": "00421ae0",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423e10",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423e3d",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423e6b",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423e94",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423eb9",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423ee7",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423f1f",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423f50",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423f93",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "00423fd3",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "0042400e",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "004240ca",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "0042411f",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "0042414e",
+      "native": "00c5df30",
+      "function": "00423c50"
+    },
+    {
+      "address": "0042415f",
+      "native": "00c32d20",
+      "function": "00423c50"
+    },
+    {
+      "address": "00424175",
+      "native": "00c37450",
+      "function": "00423c50"
+    },
+    {
+      "address": "00424183",
+      "native": "00bf65ac",
+      "function": "00423c50"
+    },
+    {
+      "address": "004241a8",
+      "native": "00bf65ac",
+      "function": "00423c50"
+    },
+    {
+      "address": "004241d3",
+      "native": "0041c0f0",
+      "function": "00423c50"
+    },
+    {
+      "address": "004241de",
+      "native": "00420030",
+      "function": "00423c50"
+    },
+    {
+      "address": "004241f5",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "004241ff",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "004243e6",
+      "native": "00bf55be",
+      "function": "00423c50"
+    },
+    {
+      "address": "0042442b",
+      "native": "00bf6989",
+      "function": "00423c50"
+    },
+    {
+      "address": "00424472",
+      "native": "00c5d580",
+      "function": "00423c50"
+    },
+    {
+      "address": "004244b9",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "004244cf",
+      "native": "00420830",
+      "function": "00423c50"
+    },
+    {
+      "address": "004244f5",
+      "native": "00bf7a6a",
+      "function": "00423c50"
+    },
+    {
+      "address": "0042453c",
+      "native": "00408720",
+      "function": "00423c50"
+    },
+    {
+      "address": "0042456a",
+      "native": "00bf6713",
+      "function": "00423c50"
+    },
+    {
+      "address": "00424581",
+      "native": "00bf65ac",
+      "function": "00423c50"
+    },
+    {
+      "address": "00424595",
+      "native": "00bf6989",
+      "function": "00423c50"
+    },
+    {
+      "address": "004245a9",
+      "native": "00c37450",
+      "function": "00423c50"
+    },
+    {
+      "address": "004245b7",
+      "native": "00bf65ac",
+      "function": "00423c50"
+    },
+    {
+      "address": "004245dc",
+      "native": "00bf65ac",
+      "function": "00423c50"
+    },
+    {
+      "address": "0042460e",
+      "native": "004235a0",
+      "function": "00423c50"
+    },
+    {
+      "address": "00424627",
+      "native": "00bf65ac",
+      "function": "00423c50"
+    },
+    {
+      "address": "004e07be",
+      "native": "00424d00",
+      "function": "004dfb70"
+    },
+    {
+      "address": "0041c151",
+      "native": "00c40f50",
+      "function": "0041c0f0"
+    },
+    {
+      "address": "00c40f89",
+      "native": "004039d0",
+      "function": "00c40f50"
+    }
+  ],
+  "flow_gaps": [
+    {
+      "start": "00423d6d",
+      "end_inclusive": "00423d6f",
+      "bytes": "83c404",
+      "classification": "ADD ESP,4 after returning free; decompiler early return is wrong; read-only verified"
+    },
+    {
+      "start": "00424188",
+      "end_inclusive": "0042418a",
+      "bytes": "83c404",
+      "classification": "ADD ESP,4 after returning free; decompiler early return is wrong; read-only verified"
+    },
+    {
+      "start": "004241ad",
+      "end_inclusive": "004241af",
+      "bytes": "83c404",
+      "classification": "ADD ESP,4 after returning free; decompiler early return is wrong; read-only verified"
+    },
+    {
+      "start": "00424430",
+      "end_inclusive": "00424432",
+      "bytes": "83c404",
+      "classification": "ADD ESP,4 after returning free; decompiler early return is wrong; read-only verified"
+    },
+    {
+      "start": "00424586",
+      "end_inclusive": "00424588",
+      "bytes": "83c404",
+      "classification": "ADD ESP,4 after returning free; decompiler early return is wrong; read-only verified"
+    },
+    {
+      "start": "0042459a",
+      "end_inclusive": "0042459c",
+      "bytes": "83c404",
+      "classification": "ADD ESP,4 after returning free; decompiler early return is wrong; read-only verified"
+    },
+    {
+      "start": "004245bc",
+      "end_inclusive": "004245be",
+      "bytes": "83c404",
+      "classification": "ADD ESP,4 after returning free; decompiler early return is wrong; read-only verified"
+    },
+    {
+      "start": "004245e1",
+      "end_inclusive": "004245e3",
+      "bytes": "83c404",
+      "classification": "ADD ESP,4 after returning free; decompiler early return is wrong; read-only verified"
+    },
+    {
+      "start": "0042462c",
+      "end_inclusive": "0042462e",
+      "bytes": "83c404",
+      "classification": "ADD ESP,4 after returning free; decompiler early return is wrong; read-only verified"
+    },
+    {
+      "start": "00425472",
+      "end_inclusive": "00425474",
+      "bytes": "83c404",
+      "classification": "ADD ESP,4 after returning free; decompiler early return is wrong; read-only verified"
+    }
+  ],
+  "alignment_gap": {
+    "start": "00424d47",
+    "end_inclusive": "00424d4f",
+    "bytes": "8da424000000008bff",
+    "classification": "unreachable alignment skipped by00424D45 JMP00424D50"
+  },
+  "tuning": {
+    "single": {
+      "lua_key": "ShipGlobals.AvoidZoneDepthsSingle",
+      "offset": "80"
+    },
+    "multi": {
+      "lua_key": "ShipGlobals.AvoidZoneDepthsMulti",
+      "offset": "f0"
+    },
+    "selection": "(*00E188A8)+1FE4 signed dword: zero single, any nonzero multi",
+    "actual_loaded_bytes_required": true,
+    "default_initialization": false,
+    "fields": [
+      {
+        "key": "BattleShip[1]",
+        "offset": "28",
+        "producer_store": "00841bee",
+        "mask": 16,
+        "append_call": "00424e19"
+      },
+      {
+        "key": "MotherShip[1]",
+        "offset": "00",
+        "producer_store": "00841ca6",
+        "mask": 32,
+        "append_call": "00424ebe"
+      },
+      {
+        "key": "Destroyer[1]",
+        "offset": "08",
+        "producer_store": "00841d5d",
+        "mask": 64,
+        "append_call": "00424f7c"
+      },
+      {
+        "key": "TBoat[1]",
+        "offset": "10",
+        "producer_store": "00841e11",
+        "mask": 128,
+        "append_call": "0042503a"
+      },
+      {
+        "key": "LargeLandingShip[1]",
+        "offset": "20",
+        "producer_store": "00841f85",
+        "mask": 512,
+        "append_call": "004250fb"
+      },
+      {
+        "key": "CargoShip[1]",
+        "offset": "30",
+        "producer_store": "0084203d",
+        "mask": 1024,
+        "append_call": "004251bc"
+      },
+      {
+        "key": "LightCruiser[1]",
+        "offset": "38",
+        "producer_store": "008420f5",
+        "mask": 2048,
+        "append_call": "0042527d"
+      },
+      {
+        "key": "HeavyCruiser[1]",
+        "offset": "40",
+        "producer_store": "008421ad",
+        "mask": 4096,
+        "append_call": "0042533e"
+      },
+      {
+        "key": "Submarine[1]",
+        "offset": "5c",
+        "producer_store": "00842431",
+        "mask": 8192,
+        "append_call": "004253ff"
+      }
+    ],
+    "omitted": [
+      "SmallLandingShip",
+      "MiniSub",
+      "all non-first depth values"
+    ],
+    "conversion": "CVTSI2SS before ordered float dedup; CVTTSS2SI before group lookup; current MXCSR rounding/exception behavior"
+  },
+  "constants": [
+    {
+      "address": "00ce3984",
+      "bits": "3c8efa35",
+      "role": "opaque004F6F20 partition parameter"
+    },
+    {
+      "address": "00ce3980",
+      "bits": "c3fa0000",
+      "value": -500,
+      "role": "even vertex Y"
+    },
+    {
+      "address": "00ce397c",
+      "bits": "43fa0000",
+      "value": 500,
+      "role": "odd vertex Y"
+    },
+    {
+      "address": "00d7a258",
+      "bits": "0000000000000000",
+      "value": 0,
+      "role": "double Y centering subtraction"
+    }
+  ],
+  "ownership": {
+    "source_zones": "borrowed native storage; no new groups/zones and no corner mutation",
+    "temporary_hull": "8-byte handle created by00C5DF30; acceptance is00C32D20>=4; destroyed by00C37450",
+    "retained_hull": "manager+6C list, sentinel+70;0041C0F0 allocates10h node;00C40F50 copies handle into node+8 and allocates68h internal data",
+    "shape_pointer": "shape+14 points to retained node+8, not temporary handle or source zone",
+    "body": "00C5D580 through world from(*00E188A8)+18; returned pointer appended to manager+5C vector",
+    "diagnostic_string": "aimap%d built after append and destroyed; no body-name assignment in native listing",
+    "cpp_projection": "only explicit inputs/descriptors produced; native allocations/body creation/retention/destruction not executed"
+  },
+  "unresolved": [
+    "004F6F20 partition algorithm and its concrete substeps",
+    "00C5DF30/00C5DEB0/00C5DDD0 hull producer",
+    "00C32D20 returned field producer meaning",
+    "0041C0F0/00C40F50/004039D0 native owned hull copy execution",
+    "00C5D580 real world and shape attachment",
+    "manager body/hull teardown ordering and native allocation failure behavior"
+  ],
+  "corrections": [
+    "Tail does not register/create draft-layer groups; it builds static physics bodies from exact existing groups.",
+    "004223B0 appends float-key/mask pairs, not group or zone pointers.",
+    "Actual Lua keys are AvoidZoneDepthsSingle/Multi directly under ShipGlobals.",
+    "aimap string formatting has no observed native body-name assignment."
+  ],
+  "installed_script": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/shipglobals.lua",
+    "sha256": "5a5df16493c8d27d08ea2c74860a59a81dd97e7c24ab6f6f6713ba79ef60ef80",
+    "lines": "210-237",
+    "single_pairs": [
+      [
+        0,
+        16112
+      ]
+    ],
+    "multi_pairs": [
+      [
+        3,
+        7728
+      ],
+      [
+        1,
+        8384
+      ]
+    ],
+    "scope": "read current installed values; no Lua execution in this packet"
+  },
+  "verification": {
+    "build": "PASS scripts/build.ps1 MSVC Win32 Release; existing CTest2/2",
+    "build_log": "local/avoid_zone_draft_layers_build.log",
+    "fixture": "PASS8/8 focused fixture checks",
+    "fixture_source": "local/avoid_zone_draft_probe.cpp",
+    "fixture_log": "local/avoid_zone_draft_probe.log",
+    "fixture_manifest": "/link /MANIFEST:EMBED",
+    "live_call_rows": "PASS119/119 live call-site rows, zero failures",
+    "new_tracked_tests": 0,
+    "whole_native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_physics_integration": false,
+    "executable_wiring_changed": false
+  },
+  "ghidra_annotation_policy": {
+    "applied": false,
+    "prior_comments_preserved": true,
+    "prior_names": {
+      "00424d00": "BSP_AvoidZoneManager_RebuildFromScene",
+      "004223b0": "FUN_004223b0",
+      "00423c50": "FUN_00423c50"
+    },
+    "ledger_previous_values_log": "local/avoid_zone_draft_layers_ledger.log"
+  },
+  "completed_utc": "2026-09-12T19:45:40.527761+00:00"
+}
