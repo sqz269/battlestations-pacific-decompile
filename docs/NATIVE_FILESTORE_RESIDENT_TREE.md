@@ -132,3 +132,9 @@ aliasing, concurrent mutation, ABI replacement or gameplay. The production
 interfaces retain `NativeStringStorage::release`'s existing noexcept boundary.
 No permanent tests or game-install changes were made; proposed Ghidra annotations
 and body-tail repair remain the integrator's locked task.
+
+## Correction from docs/NATIVE_FILESTORE_PROVIDER_LIFETIME.md
+
+AV integration completed the proposed locked Ghidra annotations and required stored-body repairs, preserved prior comments, saved the project and refreshed affected exports. The combined Win32 build and both existing CTests passed. The fresh `local/native-av-worker-deliveries/resident/local/resident_av/integrated02` fixture passed 39 native/source comparisons. All physical inputs remained unchanged; actual linked objects matched archive members.
+
+The current source/header/object gate and preserved worker attempts are recorded in `reports/native_av_integration.json`. Earlier worker-only annotation and provider-composition limitations above are historical; actual provider composition is now separately tested with one actual pool/raw manager domain. Original FH3/SEH, zero-reference provider stream terminal coverage and gameplay remain qualified.

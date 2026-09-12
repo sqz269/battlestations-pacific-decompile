@@ -498,5 +498,33 @@
   "source_pins": {
     "include/bsp/native_singleton_destruction.hpp": "5ad664880c7dfd5d5c5651c44e29fdf864a684e0cb16b8f3b04b38f08c1d9bb2",
     "src/native_singleton_destruction.cpp": "edddf13133964211981b0334bc9976aafc0108537337ae8400779a2ba5922e7f"
+  },
+  "integrator_validation": {
+    "strict_win32_build": "local/native-av-build02.log",
+    "existing_ctests_passed": 2,
+    "fixture": {
+      "fixture": "local/native-av-worker-deliveries/canonical/local/native-vfs-canonical-drain-av/integrated01",
+      "native_source_comparisons": 1,
+      "manifest_before_sha256": "7e16f2f29279f44ac711ab70376eaba8395fd8d0d656811c1d6412f85e18fcf7",
+      "result_file": "summary.json",
+      "result_sha256": "2edf746814897e5caf0129e270c15963c72f636f7e8e67a62253f843569a14cf",
+      "result": {
+        "result": "passed",
+        "case": "one canonical drain scenario compared between unchanged original BD0400 and reconstructed source",
+        "result_bytes": 6148,
+        "result_sha256": "0ec4663927b553e8d1e3cf1827a3aeaab94c5fa82d9b2f564eb2b1405ddfaf36",
+        "input_files": 505,
+        "changed_inputs": [],
+        "linked_archive_equal_objects": 123,
+        "library_sha256": "b17d54ea1129bea09e93c9c5e629fd2e3b572bf83a4d25f14ecf63bb152c3b76",
+        "manifest_before_sha256": "7e16f2f29279f44ac711ab70376eaba8395fd8d0d656811c1d6412f85e18fcf7",
+        "native_original_FH3_SEH_executed": false,
+        "game_executed": false
+      }
+    },
+    "locked_ghidra_annotations_and_required_body_repairs_completed": true,
+    "current_source_header_object_gate": "local/native-av-promotion-inputs.json; reports/native_av_integration.json",
+    "worker_historical_results_preserved": true,
+    "game_validated": false
   }
 }

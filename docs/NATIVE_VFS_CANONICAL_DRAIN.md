@@ -102,3 +102,9 @@ Every failed attempt remains separate. The reusable local driver takes `--repo` 
 Original FH3/SEH handlers, exceptional cleanup, arbitrary virtual targets,
 original CRT identity, binary ABI replacement and game startup/gameplay remain
 unvalidated. Successful bounded composition does not establish those properties.
+
+## Correction from docs/NATIVE_FILESTORE_PROVIDER_LIFETIME.md
+
+AV integration completed the proposed locked Ghidra annotations and required stored-body repairs, preserved prior comments, saved the project and refreshed affected exports. The combined Win32 build and both existing CTests passed. The fresh `local/native-av-worker-deliveries/canonical/local/native-vfs-canonical-drain-av/integrated01` fixture passed 1 native/source comparison. All physical inputs remained unchanged; actual linked objects matched archive members.
+
+The current source/header/object gate and preserved worker attempts are recorded in `reports/native_av_integration.json`. Earlier worker-only annotation and provider-composition limitations above are historical; actual provider composition is now separately tested with one actual pool/raw manager domain. Original FH3/SEH, zero-reference provider stream terminal coverage and gameplay remain qualified.

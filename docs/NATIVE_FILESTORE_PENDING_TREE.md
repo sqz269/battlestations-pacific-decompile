@@ -140,3 +140,9 @@ Source C++ RTTI/EH, the explicit noexcept string-release boundary, and host CRT
 allocation remain the established interface limits. Arbitrary stack aliasing,
 concurrent mutation, original FH3/SEH exception identity, binary replacement,
 FileStore provider composition and gameplay have not been validated here.
+
+## Correction from docs/NATIVE_FILESTORE_PROVIDER_LIFETIME.md
+
+AV integration completed the proposed locked Ghidra annotations and required stored-body repairs, preserved prior comments, saved the project and refreshed affected exports. The combined Win32 build and both existing CTests passed. The fresh `local/native-av-pending-integrated01` fixture passed 20 native/source comparisons. All physical inputs remained unchanged; actual linked objects matched archive members.
+
+The current source/header/object gate and preserved worker attempts are recorded in `reports/native_av_integration.json`. Earlier worker-only annotation and provider-composition limitations above are historical; actual provider composition is now separately tested with one actual pool/raw manager domain. Original FH3/SEH, zero-reference provider stream terminal coverage and gameplay remain qualified.

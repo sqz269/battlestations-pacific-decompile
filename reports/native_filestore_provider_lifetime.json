@@ -1,0 +1,492 @@
+{
+  "packet": "orch2_native_filestore_provider_lifetime_av",
+  "captured_utc": "2026-09-12T21:23:44.079029+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_filestore_provider_lifetime.cpp",
+  "new_complete_routine_count": 5,
+  "owned_native_bytes": 596,
+  "routines": [
+    {
+      "entry": "00be7fa0",
+      "bytes": 238,
+      "exclusive_end": "00be808e",
+      "sha256": "ca1ebfa3644d33ca4377a8b23aa70f064f10019c33efaef5ae0c2d92e6499ad2",
+      "matches_installed_pe": true,
+      "inclusive_end": "00be808d",
+      "last_instruction": "00be808d",
+      "coverage": "complete logical body in stated explicit-service source domain",
+      "original_abi": "ECX raw2Ch owner; EAX original owner; RET0",
+      "source_api": "construct_native_file_store_provider_00be7fa0",
+      "ghidra_name": "BSP_FileStore_Construct",
+      "behavior": "Native state0 temp cleanup, state2 base cleanup, state3 BE7BB0 resident then base cleanup; tree+0 words untouched.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "entry": "00be80b0",
+      "bytes": 105,
+      "exclusive_end": "00be8119",
+      "sha256": "7ccbd70886a44c579ae9b92e65a164e4cf73985736d748bb81934c343678d2f4",
+      "matches_installed_pe": true,
+      "inclusive_end": "00be8118",
+      "last_instruction": "00be8118",
+      "coverage": "complete logical body in stated explicit-service source domain",
+      "original_abi": "ECX factory0Ch; no stacked arguments; EAX captured cached/new provider; RET0",
+      "source_api": "get_native_file_store_provider_00be80b0",
+      "ghidra_name": "BSP_FileStoreFactory_GetOrCreate",
+      "behavior": "First cache+8 read returns when nonnull; allocation2Ch; publish only constructed result; CC6E80 frees captured allocation on construction failure.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "entry": "00be8120",
+      "bytes": 43,
+      "exclusive_end": "00be814b",
+      "sha256": "7b04ce7d7b506df5d215d6751236701bcae5f35bd8a3087082052184a7c16baf",
+      "matches_installed_pe": true,
+      "inclusive_end": "00be814a",
+      "last_instruction": "00be8148",
+      "coverage": "complete logical body in stated explicit-service source domain",
+      "original_abi": "ECX factory; stacked actual8h system/virtual headers; EAX provider/null; RET8",
+      "source_api": "create_native_file_store_provider_00be8120",
+      "ghidra_name": "BSP_FileStoreFactory_Create",
+      "behavior": "Zero unsigned length fails; actual425850 comparison consumes AL; virtual header unused; match calls BE80B0.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "entry": "00be7bf0",
+      "bytes": 180,
+      "exclusive_end": "00be7ca4",
+      "sha256": "f2f30e2d28ef6d94fc5b470b31097d9ce22032659d38929bf8038a82776730c3",
+      "matches_installed_pe": true,
+      "inclusive_end": "00be7ca3",
+      "last_instruction": "00be7ca3",
+      "coverage": "complete logical body in stated explicit-service source domain",
+      "original_abi": "ECX actual2Ch provider; no stacked arguments; RET0; no semantic result",
+      "source_api": "destroy_native_file_store_provider_00be7bf0",
+      "ghidra_name": "BSP_FileStore_Destroy",
+      "behavior": "Install D689E8, ClearStore, pending erase/free/reset, resident erase/free/reset, BB5380; states2/1/0/-1 lowered before member cleanup.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "entry": "00be8090",
+      "bytes": 30,
+      "exclusive_end": "00be80ae",
+      "sha256": "1609cb2f5679352b4d526c0ffb08f1a96a084a8ec8a22287b14766e331ee7a41",
+      "matches_installed_pe": true,
+      "inclusive_end": "00be80ad",
+      "last_instruction": "00be80ab",
+      "coverage": "complete logical body in stated explicit-service source domain",
+      "original_abi": "ECX owner; stacked DWORDflags; EAX original owner; RET4",
+      "source_api": "delete_native_file_store_provider_00be8090",
+      "ghidra_name": "BSP_FileStore_ScalarDeletingDestructor",
+      "behavior": "D689E8 slot4; BE7BF0 first, free only on successful return and flags bit0; cache remains untouched.",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00be7fd2",
+      "native": "0041dd40",
+      "function": "00be7fa0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be7fed",
+      "native": "00bf7680",
+      "function": "00be7fa0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be8000",
+      "native": "00bb5590",
+      "function": "00be7fa0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be8019",
+      "native": "00419cc0",
+      "function": "00be7fa0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be8020",
+      "native": "00bd1510",
+      "function": "00be7fa0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be8030",
+      "native": "00be55e0",
+      "function": "00be7fa0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be805a",
+      "native": "00be5690",
+      "function": "00be7fa0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be80d2",
+      "native": "00bf681b",
+      "function": "00be80b0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be80ec",
+      "native": "00be7fa0",
+      "function": "00be80b0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be8131",
+      "native": "00425850",
+      "function": "00be8120",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be813c",
+      "native": "00be80b0",
+      "function": "00be8120",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be7c1f",
+      "native": "00be72c0",
+      "function": "00be7bf0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be7c3c",
+      "native": "00be7580",
+      "function": "00be7bf0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be7c45",
+      "native": "00bf65ac",
+      "function": "00be7bf0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be7c6c",
+      "native": "00be7690",
+      "function": "00be7bf0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be7c75",
+      "native": "00bf65ac",
+      "function": "00be7bf0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be7c8d",
+      "native": "00bb5380",
+      "function": "00be7bf0",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be8093",
+      "native": "00be7bf0",
+      "function": "00be8090",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00be80a0",
+      "native": "00bf65ac",
+      "function": "00be8090",
+      "contract": "Exact original CALL; reconstructed dependency or established CRT service; see raw listing and ABI table."
+    },
+    {
+      "address": "00cc6e53",
+      "native": "0041dd20",
+      "function": "00cc6e50",
+      "kind": "tail_jump",
+      "contract": "External original EH action/handler; decoded and modeled cleanup ordering only; native FH3 not executed."
+    },
+    {
+      "address": "00cc6e5b",
+      "native": "00bb5380",
+      "function": "00cc6e58",
+      "kind": "tail_jump",
+      "contract": "External original EH action/handler; decoded and modeled cleanup ordering only; native FH3 not executed."
+    },
+    {
+      "address": "00cc6e66",
+      "native": "00be7bb0",
+      "function": "00cc6e60",
+      "kind": "tail_jump",
+      "contract": "External original EH action/handler; decoded and modeled cleanup ordering only; native FH3 not executed."
+    },
+    {
+      "address": "00cc6e70",
+      "native": "00bf6b43",
+      "function": "00cc6e6b",
+      "kind": "tail_jump",
+      "contract": "External original EH action/handler; decoded and modeled cleanup ordering only; native FH3 not executed."
+    },
+    {
+      "address": "00cc6e84",
+      "native": "00bf65ac",
+      "function": "00cc6e80",
+      "kind": "call",
+      "contract": "External original EH action/handler; decoded and modeled cleanup ordering only; native FH3 not executed."
+    },
+    {
+      "address": "00cc6e90",
+      "native": "00bf6b43",
+      "function": "00cc6e8b",
+      "kind": "tail_jump",
+      "contract": "External original EH action/handler; decoded and modeled cleanup ordering only; native FH3 not executed."
+    },
+    {
+      "address": "00cc6df3",
+      "native": "00bb5380",
+      "function": "00cc6df0",
+      "kind": "tail_jump",
+      "contract": "External original EH action/handler; decoded and modeled cleanup ordering only; native FH3 not executed."
+    },
+    {
+      "address": "00cc6dfe",
+      "native": "00be7bb0",
+      "function": "00cc6df8",
+      "kind": "tail_jump",
+      "contract": "External original EH action/handler; decoded and modeled cleanup ordering only; native FH3 not executed."
+    },
+    {
+      "address": "00cc6e09",
+      "native": "00be7a70",
+      "function": "00cc6e03",
+      "kind": "tail_jump",
+      "contract": "External original EH action/handler; decoded and modeled cleanup ordering only; native FH3 not executed."
+    },
+    {
+      "address": "00cc6e13",
+      "native": "00bf6b43",
+      "function": "00cc6e0e",
+      "kind": "tail_jump",
+      "contract": "External original EH action/handler; decoded and modeled cleanup ordering only; native FH3 not executed."
+    }
+  ],
+  "actual_layout": {
+    "provider_bytes": "2Ch",
+    "provider_base": "0..13",
+    "resident_tree": "14..1F",
+    "pending_tree": "20..2B",
+    "tree": "untouched+0,head+4,count+8",
+    "node": "1Ch; links0/4/8,keylengthC,keydata10,residentstream_or_pendingvalue14,color18,nil19",
+    "producer": "BE7FA0 plus complete existing BE55E0/BE5690 and worker BE63E0/BE6540 audits",
+    "profile": "D689E8[0]=BD30E0 zero-reference dispatch; [4]=BE8090 scalar deletion; no reference decrement inside BD30E0"
+  },
+  "eh": {
+    "construct": {
+      "handler": "00cc6e6b",
+      "func_info": "00e017b8",
+      "map": "00e01798",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc6e50",
+          "callee": "0041dd20",
+          "owner": "temporary header EBP-14"
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cc6e58",
+          "callee": "00bb5380",
+          "normal_body_arms_state": false
+        },
+        {
+          "state": 2,
+          "previous": -1,
+          "action": "00cc6e58",
+          "callee": "00bb5380",
+          "owner": "provider EBP-18"
+        },
+        {
+          "state": 3,
+          "previous": 2,
+          "action": "00cc6e60",
+          "callee": "00be7bb0",
+          "owner": "provider+14"
+        }
+      ]
+    },
+    "getter": {
+      "handler": "00cc6e8b",
+      "func_info": "00e017e4",
+      "map": "00e017dc",
+      "state0": "CC6E80 captures allocation EBP-10, calls BF65AC, POP ECX/RET atCC6E89..CC6E8A"
+    },
+    "destroy": {
+      "handler": "00cc6e0e",
+      "func_info": "00e01738",
+      "map": "00e01720",
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc6df0",
+          "callee": "00bb5380"
+        },
+        {
+          "state": 1,
+          "previous": 0,
+          "action": "00cc6df8",
+          "callee": "00be7bb0"
+        },
+        {
+          "state": 2,
+          "previous": 1,
+          "action": "00cc6e03",
+          "callee": "00be7a70"
+        }
+      ]
+    },
+    "source_domain": "C++ cleanup order; native FH3/SEH, stack aliases and a second exception during cleanup are not equivalence claims."
+  },
+  "no_ghidra_function": [
+    {
+      "start": "00be7c4a",
+      "end_inclusive": "00be7ca3",
+      "continuation_of": "00be7bf0",
+      "status": "original raw tail; now incorporated into repaired containing body"
+    },
+    {
+      "start": "00cc6e89",
+      "end_inclusive": "00cc6e8a",
+      "continuation_of": "00cc6e80",
+      "status": "original raw tail; repaired containing EH action, not a new standalone routine"
+    },
+    {
+      "start": "00cc6e6b",
+      "end_inclusive": "00cc6e74",
+      "end_exclusive": "00cc6e75",
+      "status": "external FH3 wrapper defined with verified bytes; no new reconstructed routine count"
+    },
+    {
+      "start": "00cc6e8b",
+      "end_inclusive": "00cc6e94",
+      "end_exclusive": "00cc6e95",
+      "status": "external FH3 wrapper defined with verified bytes; no new reconstructed routine count"
+    },
+    {
+      "start": "00cc6e0e",
+      "end_inclusive": "00cc6e17",
+      "end_exclusive": "00cc6e18",
+      "status": "external FH3 wrapper defined with verified bytes; no new reconstructed routine count"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Saved BE7BF0 ended after first free atBE7C49",
+      "is": "Full180-byte body endsBE7CA3, including resident cleanup/base destruction/RET",
+      "evidence": "All180 bytes live equal installedPE; original normal fixture; supported locked recreation after local flow repair, prior name/comment recorded and restored"
+    },
+    {
+      "was": "Provider tree cleanup could consume BE7650/BE7A30 by similarity",
+      "is": "Native EH explicitly invokes BE7A70 andBE7BB0; both variants independently reconstructed and compared",
+      "evidence": "CC6E03/CC6DF8/CC6E60 actual JMP targets and unwind map words"
+    },
+    {
+      "was": "Initial provider probe called profile slot0 as scalar deleter",
+      "is": "D689E8 slot0 isBD30E0; scalar deleting method is slot4 BE8090",
+      "evidence": "Immutable failed attempt01; exact8-byte profile recapture evidence02; corrected fresh fixture passes; no production-code change"
+    }
+  ],
+  "validation": {
+    "strict_win32": "local/native-av-build01.log and local/native-av-build02.log; scripts/build.ps1; /W4 /WX /fp:strict; two existing CTests passed",
+    "fixture": "local\\native-av-provider\\attempt03",
+    "source_repo": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910",
+    "captured_utc": "2026-09-12T21:21:41.686899+00:00",
+    "process_exit": 0,
+    "all_preexecution_hashes_unchanged": true,
+    "files_rechecked": 558,
+    "preexecution_manifest_sha256": "272d39a1fc7664d36a11c3bd0283e839a732cbee0c36215fc1d17b851e622cc6",
+    "execution_log_sha256": "a23125230f1bca13dc6b994a19f6fdf689ab1c7221866d7c34e23c55dbcdb78a",
+    "exe_sha256": "02c205fb7b846071ac3d0e3ca845a08ed1d80c5fa2549c14e819eb3d2ac1ef10",
+    "library_sha256": "64856001b498525bd0e76244b6c9f0e2964032b1ca36131b9e0ff7e05be7252f",
+    "native_source_states": 19,
+    "assertions": 1357,
+    "native_FH3_SEH_executed": false,
+    "linked_objects": 127,
+    "owned_source_sha256": "397dc03cab757126e2a7bb42c190cbe31df6ad49bda71e5da3ca03d903999e3a",
+    "owned_header_sha256": "6823e9ed29918260ae7607960439a59a64f635ab94e5148abe8a78612cc6cab0",
+    "observations": "19 native/source states;empty and populated providers, direct/lazy/case-insensitive selector routes, stale nonzero length, zero length/null-data/mismatch rejection, flags0/1/2/101, untouched bytes, exact free order, retained cache and actual pool returns.",
+    "source_only": "Five malloc-failure cases: getter fails owner/resident/pending allocation; direct constructor fails resident/pending allocation. Native state2/3 cleanup, allocation ownership and cache publication inspected.",
+    "services": "Actual pool/getter/storage and one raw01090AA0 domain, full source base and tree callees, real CRT allocation/free; borrowed stream starts ref2 and ends ref1, no terminal dispatch.",
+    "not_executed": "Original FH3/SEH; constructor state0, provider destructor exception transitions, zero-reference stream terminal, double cleanup failures, game."
+  },
+  "follow_up_packets": [
+    {
+      "packet": "native_filestore_runtime_dispatch_aw",
+      "files": [
+        "include/bsp/native_vfs_runtime_bindings.hpp",
+        "src/native_vfs_runtime_bindings.cpp"
+      ],
+      "scope": "Finite D688B4 factory Create and D689E8 zero-reference/deleting routing through these established bodies; preserve captured-vs-current targets and same actual context."
+    },
+    {
+      "packet": "native_vfs_factory_selection_aw",
+      "addresses": [
+        "00bdb040"
+      ],
+      "scope": "Raw85-byte factory list selector including BDB078 slot4(system,virtual); source native selection remains incomplete. Native mount BE1890/insertionBE1740 and MPKG/MPAK factories are separate dependencies."
+    }
+  ],
+  "remaining_boundaries": [
+    "New C++ service interfaces are not original binary ABI replacements",
+    "Original CRT/FH3 exception identity and SEH",
+    "Throwing pool recreation in inherited noexcept string release",
+    "No arbitrary stack aliases or concurrent mutation guarantee",
+    "Numeric provider runtime composition is the follow-up packet",
+    "No game startup/gameplay proof"
+  ],
+  "integrator_validation": {
+    "strict_win32_build": "local/native-av-build02.log",
+    "existing_ctests_passed": 2,
+    "fixture": {
+      "fixture": "local/native-av-provider/attempt03",
+      "native_source_comparisons": 19,
+      "manifest_before_sha256": "272d39a1fc7664d36a11c3bd0283e839a732cbee0c36215fc1d17b851e622cc6",
+      "result_file": "manifest_after.json",
+      "result_sha256": "c91a5184a1e99a06cf75cdc996b2da501dbf5f95a175daa364a88379031b0eaa",
+      "result": {
+        "source_repo": "J:\\PROG\\battlestations-pacific-decompile-orch2-20260910",
+        "captured_utc": "2026-09-12T21:21:41.686899+00:00",
+        "process_exit": 0,
+        "all_preexecution_hashes_unchanged": true,
+        "files_rechecked": 558,
+        "preexecution_manifest_sha256": "272d39a1fc7664d36a11c3bd0283e839a732cbee0c36215fc1d17b851e622cc6",
+        "execution_log_sha256": "a23125230f1bca13dc6b994a19f6fdf689ab1c7221866d7c34e23c55dbcdb78a",
+        "exe_sha256": "02c205fb7b846071ac3d0e3ca845a08ed1d80c5fa2549c14e819eb3d2ac1ef10",
+        "library_sha256": "64856001b498525bd0e76244b6c9f0e2964032b1ca36131b9e0ff7e05be7252f",
+        "native_source_states": 19,
+        "assertions": 1357,
+        "native_FH3_SEH_executed": false
+      }
+    },
+    "locked_ghidra_annotations_and_required_body_repairs_completed": true,
+    "current_source_header_object_gate": "local/native-av-promotion-inputs.json; reports/native_av_integration.json",
+    "worker_historical_results_preserved": true,
+    "game_validated": false
+  }
+}
