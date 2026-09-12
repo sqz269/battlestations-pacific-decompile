@@ -1,0 +1,482 @@
+{
+  "packet": "native_filestore_resident_tree_av",
+  "generated_utc": "2026-09-12T21:05:01.919367+00:00",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_mutations": "none; read-only worker; names and tail repairs proposed for locked integrator",
+  "functions": [
+    {
+      "label": "maximum",
+      "entry": "00be4920",
+      "end_inclusive": "00be493b",
+      "bytes": 28,
+      "sha256": "6f640fcf9f202b2fd9542a1da5578933f953aefd242bd1af3a0d59f1f5c5c5c8",
+      "live_equal_disk": true,
+      "name": "maximum_native_file_store_resident_node_00be4920",
+      "proposed_name": "BSP_FileStoreResidentTree_Maximum",
+      "previous_name": "FUN_00be4920",
+      "coverage": "complete_logical_body_in_stated_host_domain",
+      "source": "src/native_filestore_resident_tree.cpp",
+      "original_abi": "ECX node; EAX selected maximum; RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "minimum",
+      "entry": "00be4940",
+      "end_inclusive": "00be495a",
+      "bytes": 27,
+      "sha256": "b9b972cb8e9c9c854d087b568d5dc0f6cfa90558c3ce70ab4726e69ddef04613",
+      "live_equal_disk": true,
+      "name": "minimum_native_file_store_resident_node_00be4940",
+      "proposed_name": "BSP_FileStoreResidentTree_Minimum",
+      "previous_name": "FUN_00be4940",
+      "coverage": "complete_logical_body_in_stated_host_domain",
+      "source": "src/native_filestore_resident_tree.cpp",
+      "original_abi": "ECX node; EAX selected minimum; RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "right",
+      "entry": "00be4980",
+      "end_inclusive": "00be49d1",
+      "bytes": 82,
+      "sha256": "e42b0897d23d00413aefba0f2366246f1aae06cad9b22bfcdbe23fa0d8ffe502",
+      "live_equal_disk": true,
+      "name": "rotate_native_file_store_resident_right_00be4980",
+      "proposed_name": "BSP_FileStoreResidentTree_RotateRight",
+      "previous_name": "FUN_00be4980",
+      "coverage": "complete_logical_body_in_stated_host_domain",
+      "source": "src/native_filestore_resident_tree.cpp",
+      "original_abi": "ECX tree; stack node; RET4; no specified semantic result",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "left",
+      "entry": "00be50e0",
+      "end_inclusive": "00be512d",
+      "bytes": 78,
+      "sha256": "0439f0befe0245fd4352ce96b0a1925cf906071c3d97d0d6b31232037d4a02b4",
+      "live_equal_disk": true,
+      "name": "rotate_native_file_store_resident_left_00be50e0",
+      "proposed_name": "BSP_FileStoreResidentTree_RotateLeft",
+      "previous_name": "FUN_00be50e0",
+      "coverage": "complete_logical_body_in_stated_host_domain",
+      "source": "src/native_filestore_resident_tree.cpp",
+      "original_abi": "ECX tree; stack node; RET4; no specified semantic result",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "erase",
+      "entry": "00be6760",
+      "end_inclusive": "00be6a12",
+      "bytes": 691,
+      "sha256": "8958eb8447b76b9a5a3c83008523ee46a207c56c8dfef3edf7bce12ebb076da0",
+      "live_equal_disk": true,
+      "name": "erase_native_file_store_resident_iterator_00be6760",
+      "proposed_name": "BSP_FileStoreResidentTree_EraseIterator",
+      "previous_name": "FUN_00be6760",
+      "coverage": "complete_logical_body_in_stated_host_domain",
+      "source": "src/native_filestore_resident_tree.cpp",
+      "original_abi": "ECX tree; stack output/owner/node; EAX output; RET0C",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "range",
+      "entry": "00be7690",
+      "end_inclusive": "00be7758",
+      "bytes": 201,
+      "sha256": "87046ae37e56b9e5f7fc6ac02231aab61b123aa3e6f9fd0b3c59b93d1428da4f",
+      "live_equal_disk": true,
+      "name": "erase_native_file_store_resident_range_00be7690",
+      "proposed_name": "BSP_FileStoreResidentTree_EraseRange",
+      "previous_name": "FUN_00be7690",
+      "coverage": "complete_logical_body_in_stated_host_domain",
+      "source": "src/native_filestore_resident_tree.cpp",
+      "original_abi": "ECX tree; stack output/first-owner/first-node/last-owner/last-node; EAX output; RET14",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "destroy",
+      "entry": "00be7a30",
+      "end_inclusive": "00be7a63",
+      "bytes": 52,
+      "sha256": "3bb595cd6dc0fec82fb0831c71457ca98479b340d631e946706e3dd5d5c20f23",
+      "live_equal_disk": true,
+      "name": "destroy_native_file_store_resident_tree_00be7a30",
+      "proposed_name": "BSP_FileStoreResidentTree_Destroy",
+      "previous_name": "FUN_00be7a30",
+      "coverage": "complete_logical_body_in_stated_host_domain",
+      "source": "src/native_filestore_resident_tree.cpp",
+      "original_abi": "ECX tree; native EAX0; RET",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "clear",
+      "entry": "00be72c0",
+      "end_inclusive": "00be733b",
+      "bytes": 124,
+      "sha256": "75e02d78155ced4b04ceadcf2dabc47df1b2706e5c5f1e645dba2e0489c3ff25",
+      "live_equal_disk": true,
+      "name": "clear_native_file_store_00be72c0",
+      "proposed_name": "BSP_FileStore_ClearStore",
+      "previous_name": "FUN_00be72c0",
+      "coverage": "complete_logical_body_in_stated_host_domain",
+      "source": "src/native_filestore_resident_tree.cpp",
+      "original_abi": "ECX actual provider; RET; no specified semantic result",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "label": "unwind_destroy",
+      "entry": "00be7bb0",
+      "end_inclusive": "00be7be3",
+      "bytes": 52,
+      "sha256": "6eeb527f3a1b716c2ed132e06ccf5d12d6149a246bd035a7e8933772dcd3223d",
+      "live_equal_disk": true,
+      "name": "destroy_native_file_store_resident_tree_00be7bb0",
+      "proposed_name": "BSP_FileStoreResidentTree_DestroyForUnwind",
+      "previous_name": "FUN_00be7bb0",
+      "coverage": "complete_logical_body_in_stated_host_domain",
+      "source": "src/native_filestore_resident_tree.cpp",
+      "original_abi": "ECX tree; native EAX0; RET",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00be67a4",
+      "native": "00408720",
+      "function": "00be6760"
+    },
+    {
+      "address": "00be67b6",
+      "native": "00411700",
+      "function": "00be6760"
+    },
+    {
+      "address": "00be67cd",
+      "native": "00bf6885",
+      "function": "00be6760"
+    },
+    {
+      "address": "00be67de",
+      "native": "00be4c30",
+      "function": "00be6760"
+    },
+    {
+      "address": "00be6843",
+      "native": "00be4940",
+      "function": "00be6760"
+    },
+    {
+      "address": "00be6865",
+      "native": "00be4920",
+      "function": "00be6760"
+    },
+    {
+      "address": "00be6903",
+      "native": "00be50e0",
+      "function": "00be6760"
+    },
+    {
+      "address": "00be6932",
+      "native": "00be4980",
+      "function": "00be6760"
+    },
+    {
+      "address": "00be694c",
+      "native": "00be50e0",
+      "function": "00be6760"
+    },
+    {
+      "address": "00be6963",
+      "native": "00be4980",
+      "function": "00be6760"
+    },
+    {
+      "address": "00be69a7",
+      "native": "00be50e0",
+      "function": "00be6760"
+    },
+    {
+      "address": "00be69bf",
+      "native": "00be4980",
+      "function": "00be6760"
+    },
+    {
+      "address": "00be69ce",
+      "native": "00be5d70",
+      "function": "00be6760"
+    },
+    {
+      "address": "00be69d8",
+      "native": "00bf65ac",
+      "function": "00be6760"
+    },
+    {
+      "address": "00be76aa",
+      "native": "00bf6713",
+      "function": "00be7690"
+    },
+    {
+      "address": "00be76c6",
+      "native": "00bf6713",
+      "function": "00be7690"
+    },
+    {
+      "address": "00be76da",
+      "native": "00be6720",
+      "function": "00be7690"
+    },
+    {
+      "address": "00be771a",
+      "native": "00bf6713",
+      "function": "00be7690"
+    },
+    {
+      "address": "00be7729",
+      "native": "00be4c30",
+      "function": "00be7690"
+    },
+    {
+      "address": "00be7737",
+      "native": "00be6760",
+      "function": "00be7690"
+    },
+    {
+      "address": "00be7a46",
+      "native": "00be7690",
+      "function": "00be7a30"
+    },
+    {
+      "address": "00be7a4f",
+      "native": "00bf65ac",
+      "function": "00be7a30"
+    },
+    {
+      "address": "00be72db",
+      "native": "00bf6713",
+      "function": "00be72c0"
+    },
+    {
+      "address": "00be72f0",
+      "native": "00bf6713",
+      "function": "00be72c0"
+    },
+    {
+      "address": "00be7300",
+      "native": "00bf6713",
+      "function": "00be72c0"
+    },
+    {
+      "address": "00be7318",
+      "native": "004254b0",
+      "function": "00be72c0"
+    },
+    {
+      "address": "00be7329",
+      "native": "00be6760",
+      "function": "00be72c0"
+    },
+    {
+      "address": "00be7bc6",
+      "native": "00be7690",
+      "function": "00be7bb0"
+    },
+    {
+      "address": "00be7bcf",
+      "native": "00bf65ac",
+      "function": "00be7bb0"
+    },
+    {
+      "address": "00be719b",
+      "native": "00be6760",
+      "function": "00be7130",
+      "role": "incoming reviewed call"
+    },
+    {
+      "address": "00be7292",
+      "native": "00be6760",
+      "function": "00be7210",
+      "role": "incoming reviewed call"
+    },
+    {
+      "address": "00be7c1f",
+      "native": "00be72c0",
+      "function": "00be7bf0",
+      "role": "incoming reviewed call"
+    },
+    {
+      "address": "00be6e23",
+      "native": "00be4980",
+      "function": "00be6cf0",
+      "role": "incoming reviewed call"
+    },
+    {
+      "address": "00be6e51",
+      "native": "00be4980",
+      "function": "00be6cf0",
+      "role": "incoming reviewed call"
+    },
+    {
+      "address": "00be6e05",
+      "native": "00be50e0",
+      "function": "00be6cf0",
+      "role": "incoming reviewed call"
+    },
+    {
+      "address": "00cc6dfe",
+      "native": "00be7bb0",
+      "function": "00cc6df8",
+      "kind": "tail_jump",
+      "contract": "captured provider EBP-18 plus14"
+    },
+    {
+      "address": "00cc6e66",
+      "native": "00be7bb0",
+      "function": "00cc6e60",
+      "kind": "tail_jump",
+      "contract": "captured provider EBP-18 plus14"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00be69dd",
+      "end": "00be6a12",
+      "end_inclusive": "00be6a12",
+      "logical_owner": "00be6760",
+      "coverage": "complete raw continuation",
+      "bytes": 54,
+      "note": "outside stored body, after free; current count, output, SEH restore, RET0C"
+    },
+    {
+      "start": "00be7a54",
+      "end": "00be7a63",
+      "end_inclusive": "00be7a63",
+      "logical_owner": "00be7a30",
+      "coverage": "complete raw continuation",
+      "bytes": 16,
+      "note": "outside stored body, after free; reset head/count, RET"
+    },
+    {
+      "start": "00be7bd4",
+      "end": "00be7be3",
+      "end_inclusive": "00be7be3",
+      "logical_owner": "00be7bb0",
+      "coverage": "complete raw continuation",
+      "bytes": 16,
+      "note": "outside stored body, after free; reset head/count, RET"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "BE6760 two-child branches marked unreachable by decompiler",
+      "is": "BE686F..BE68C5 reachable successor transplant and color exchange",
+      "evidence": "BE67FD loads advanced input node; BE6806 JNZ BE686F; exact39-state fixture"
+    },
+    {
+      "was": "export ends at free before count/output and wrapper reset",
+      "is": "raw continuations are part of the logical routines with inclusive ends recorded above",
+      "evidence": "live bytes equal installed PE; raw RET0C atBE6A10, RET atBE7A63/BE7BE3"
+    },
+    {
+      "was": "ClearStore diagnostic could be assumed observable logger",
+      "is": "4254B0 complete body RET; preserve actual count/name loads and checks",
+      "evidence": "BE7318 three cdecl pushes and ADD ESP,0C; current4254B0 listing"
+    },
+    {
+      "was": "xref endpoint labels CC6DFE/CC6E66 CALL toBE7BB0",
+      "is": "both are tail JMP after captured provider+14",
+      "evidence": "live stored listings CC6DF8 andCC6E60"
+    }
+  ],
+  "layout_evidence": [
+    "BE55E0 PUSH1C/CALLBF681B/ADD ESP4; links0/4/8; black18=1,nil19=0",
+    "BE7FA0 BE8025..BE804D: provider resident+14,head+4,count+8,selflinks,nil19=1",
+    "Existing BE63E0/BE6250/BE5D70 producer/payload declarations reconciled; NativeFileStoreNameIterator reused"
+  ],
+  "exception_evidence": {
+    "funcinfo": "00e015dc",
+    "unwind_map": "00e015d4",
+    "state0": "previous=-1, action00cc6d00",
+    "action": "CC6D00 LEA ECX,[EBP-50]; CC6D03 JMP004072D0; consumed existing action, not separately claimed",
+    "source": "existing NativeHardwareLayoutInvalidIterator and completed SBO temporary guard; host RTTI/FH3 boundary"
+  },
+  "validation": {
+    "strict_win32_build": "local/resident_av/build03.log",
+    "ctests": "2/2 passed reconstructed_math and native_math_differential",
+    "seeds": "local/resident_av/verify_seeds01.log",
+    "fixture": {
+      "exit_code": 0,
+      "all_preexecution_hashes_unchanged": true,
+      "files_rechecked": 1038,
+      "native_source_states": 39,
+      "checks": 366,
+      "manifest_sha256": "e2fccacb7e29acd53b255c07d6475190890f240e0f23722dfdba1b7490f06ca1",
+      "exe_sha256": "038edf3bc89a88423fd7d987cbded6e17a84b6b5b371c134774a17d3f92a9503",
+      "library_sha256": "c4fef9ebf74c310bde360337eaebae80bfab5947b07aa0c3fb9b444607127572",
+      "native_FH3_SEH_executed": false,
+      "attempt": "local/resident_av/attempt02",
+      "driver": "local/resident_av/run_fixture.py",
+      "previous_attempt": "local/resident_av/attempt01 retained read-only; 37states343checks"
+    },
+    "fixture_boundaries": [
+      "Original nine routine bytes; only direct CALL displacement relocations; no branch bytes changed",
+      "Existing source BE4C30/BE5D70/BE6720 dependency adapters; these original dependency bodies are not independently retested",
+      "Real sharedCRT allocation/free, real InterlockedDecrement, actual callable terminal ABI; explicit fixture invalid-return callback",
+      "Native4254B0 diagnostic reproduced as exactRET; original nil/EH calls are fatal excluded-path traps",
+      "Source-only terminal throwing cleanup and nil owning exception; originalFH3/SEH not run"
+    ],
+    "report_calls": {
+      "log": "local/resident_av/report_calls01.log",
+      "rows": 37,
+      "failed": 0
+    }
+  },
+  "remaining": [
+    "Original CRT/FH3/SEH identity; throwing lazy pool getter through existing noexcept release",
+    "Arbitrary stack aliases and concurrent mutation; gameplay and binary replacement",
+    "Primary locked Ghidra rename/comment/export and three stored-body tail repairs"
+  ],
+  "tool_problems": [
+    "New worktree had no index; built with bsp.py index --if-stale",
+    "Initial build configured before seed verification, so ran1CTest; build02/build03 ran both after seed verification",
+    "Ghidra export omissions and misleading no-return/unreachable metadata handled with verified disk/live bytes; no mutations"
+  ],
+  "integrator_validation": {
+    "strict_win32_build": "local/native-av-build02.log",
+    "existing_ctests_passed": 2,
+    "fixture": {
+      "fixture": "local/native-av-worker-deliveries/resident/local/resident_av/integrated02",
+      "native_source_comparisons": 39,
+      "manifest_before_sha256": "38da8d929a751beba2e46e581d52882e03a04793469c04db27f0f431a9849ca3",
+      "result_file": "manifest_after.json",
+      "result_sha256": "9f2dedc00d8083c1ec413f528ccdb74b403b0f0fac45b784c28c7ba92aee1da1",
+      "result": {
+        "exit_code": 0,
+        "all_preexecution_hashes_unchanged": true,
+        "files_rechecked": 1057,
+        "native_source_states": 39,
+        "checks": 366,
+        "manifest_sha256": "38da8d929a751beba2e46e581d52882e03a04793469c04db27f0f431a9849ca3",
+        "exe_sha256": "5e25b5c224d24c8f35b7637f831b2692468ca178fbed779dbeb655b4d6dec7fd",
+        "library_sha256": "64856001b498525bd0e76244b6c9f0e2964032b1ca36131b9e0ff7e05be7252f",
+        "native_FH3_SEH_executed": false
+      }
+    },
+    "locked_ghidra_annotations_and_required_body_repairs_completed": true,
+    "current_source_header_object_gate": "local/native-av-promotion-inputs.json; reports/native_av_integration.json",
+    "worker_historical_results_preserved": true,
+    "game_validated": false
+  }
+}

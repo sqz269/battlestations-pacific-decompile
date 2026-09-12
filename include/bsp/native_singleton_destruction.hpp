@@ -9,12 +9,15 @@ struct NativeInputBackendOwnerContext;
 struct NativeInputActionOwnerContext;
 struct NativeStringPoolStorage;
 struct NativePhysicalFactoryContext;
+struct NativeVfsManagerLifetimeContext;
+struct NativeFileStoreFactoryContext;
 namespace game { class GameSoundRuntime; }
 
 // Stable borrowed source bindings. Every nonnull object admitted to the raw
 // manager must carry one of these recovered slot-zero profiles: CE3818,
 // D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478, D58F78, D24138,
-// D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200 or D68CF8. D0DA64
+// D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
+// D688B0. D0DA64
 // requires its actual publication cell; registry and sound profiles require
 // their concrete borrowed bindings. Sound and XLive owners retain C++ projected
 // storage; XLive additionally requires the exact allocation identity. Input
@@ -36,8 +39,14 @@ struct NativeSingletonDeletionBindings {
     volatile std::uint32_t* actual_string_returns_disabled_01090aa4{};
     // D68CF8 is the registered factory+4 subobject. Dispatch adjusts -4.
     NativePhysicalFactoryContext* physical_factory{};
+    // D68D04 deletes the actual VFS owner through BEDAC0 -> BE1F60.
+    // Borrow the construction context and its SAME raw lifetime publication;
+    // string release can recreate/register the pool during this drain.
+    NativeVfsManagerLifetimeContext* vfs_manager{};
+    // D688B0 is the registered FileStore factory+4 secondary; BE5340 adjusts -4.
+    NativeFileStoreFactoryContext* filestore_factory{};
 };
-static_assert(sizeof(NativeSingletonDeletionBindings) == 36);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 44);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

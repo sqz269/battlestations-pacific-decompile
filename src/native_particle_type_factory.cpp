@@ -2,6 +2,11 @@
 #include "bsp/native_particle_type_base.hpp"
 #include "bsp/native_particle_definition.hpp"
 #include "bsp/native_string_compare.hpp"
+#include "bsp/native_particle_type_loading.hpp"
+#include "bsp/native_particle_parameter_loading.hpp"
+#include "bsp/native_particle_type_property.hpp"
+#include "bsp/native_particle_axial_loading.hpp"
+#include "bsp/native_particle_object_tracer_loading.hpp"
 #include <cstring>
 #include <stdexcept>
 
@@ -111,6 +116,19 @@ void* create_native_particle_type_definition_00b00ce0(const void* kind,
     }
     const void* table = load<const void*>(owner);
     const auto target = load<std::uint32_t>(table, 8);
+    if (a.loading) {
+        auto& b = *a.loading;
+        if (&b.properties.base != &a.base || &b.parameters.owners != &a.base.owners)
+            throw std::logic_error("particle type loading requires the same native domains");
+        switch (target) {
+        case 0x00b08ac0: (void)load_native_sprite_particle_definition_00b08ac0(owner,text,b); return owner;
+        case 0x00b064a0: (void)load_native_axial_particle_definition_00b064a0(owner,text,b); return owner;
+        case 0x00b07d60: (void)load_native_floating_particle_definition_00b07d60(owner,text,b); return owner;
+        case 0x00af8bd0: (void)load_native_object_particle_definition_00af8bd0(owner,text,b); return owner;
+        case 0x00b0ad50: (void)load_native_tracer_particle_definition_00b0ad50(owner,text,b); return owner;
+        default: break;
+        }
+    }
     if (!a.parser_virtual08)
         throw std::logic_error("particle type requires current parser virtual08");
     a.parser_virtual08(a.context, owner, target, text);

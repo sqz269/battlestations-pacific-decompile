@@ -1,0 +1,46 @@
+; Ordinal map for the offline XLive stand-in (tools/xlive_stub/xlive_stub.cpp).
+;
+; bsp_game.exe resolves every one of these with
+; GetProcAddress(module, MAKEINTRESOURCEA(<ordinal>)), so the ordinal is the
+; ABI, not the name.  Each ordinal below is the one the original
+; battlestationspacific.exe imports from xlive.dll at the listed IAT cell; the
+; names are the installed xlive.dll's own export names for the same ordinals.
+;
+; The right-hand side is the MSVC x86 __stdcall decoration _Name@<argument
+; bytes>.  It is spelled out rather than left to the linker's undecorated match
+; so that a changed parameter count fails the link instead of silently shifting
+; the caller's stack.
+
+LIBRARY xlive_stub
+
+EXPORTS
+    XWSAStartup=_XWSAStartup@8                                                  @1
+    XWSACleanup=_XWSACleanup@0                                                  @2
+    XSocketNTOHS=_XSocketNTOHS@4                                                @38
+    XNetSetSystemLinkPort=_XNetSetSystemLinkPort@4                              @84
+    XNotifyGetNext=_XNotifyGetNext@16                                           @651
+    XGetOverlappedExtendedError=_XGetOverlappedExtendedError@4                  @1082
+    XGetOverlappedResult=_XGetOverlappedResult@12                               @1083
+    XLiveOnCreateDevice=_XLiveOnCreateDevice@8                                  @5005
+    XLiveOnDestroyDevice=_XLiveOnDestroyDevice@0                                @5006
+    XLiveGetUpdateInformation=_XLiveGetUpdateInformation@4                      @5022
+    XLiveUpdateSystem=_XLiveUpdateSystem@4                                      @5024
+    XLivePreTranslateMessage=_XLivePreTranslateMessage@4                        @5030
+    XShowSigninUI=_XShowSigninUI@8                                              @5260
+    XUserGetXUID=_XUserGetXUID@8                                                @5261
+    XUserGetSigninState=_XUserGetSigninState@4                                  @5262
+    XUserGetName=_XUserGetName@12                                               @5263
+    XUserCheckPrivilege=_XUserCheckPrivilege@12                                 @5265
+    XShowMessageBoxUI=_XShowMessageBoxUI@36                                     @5266
+    XUserGetSigninInfo=_XUserGetSigninInfo@12                                   @5267
+    XNotifyCreateListener=_XNotifyCreateListener@8                              @5270
+    XUserSetContext=_XUserSetContext@12                                         @5277
+    XUserWriteAchievements=_XUserWriteAchievements@12                           @5278
+    XLiveInitializeEx=_XLiveInitializeEx@8                                      @5297
+    XStorageUploadFromMemoryGetProgress=_XStorageUploadFromMemoryGetProgress@16 @5304
+    XStorageUploadFromMemory=_XStorageUploadFromMemory@20                       @5305
+    XStorageDownloadToMemoryGetProgress=_XStorageDownloadToMemoryGetProgress@16 @5307
+    XOnlineStartup=_XOnlineStartup@0                                            @5310
+    XInviteGetAcceptedInfo=_XInviteGetAcceptedInfo@8                            @5315
+    XStorageBuildServerPath=_XStorageBuildServerPath@28                         @5344
+    XStorageDownloadToMemory=_XStorageDownloadToMemory@28                       @5345
