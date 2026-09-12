@@ -1,0 +1,384 @@
+{
+  "packet": "orch5_icon_state",
+  "status": "implemented_build_and_inactive_actual_resource_fixture_tested",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "Read-only verified CLI batches; no live mutations.",
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "00ab2690",
+      "coverage": "complete supported retained Icon projection",
+      "abi": "ECX Icon; DWORD state, borrowed texture, UV pointer; RET0C at00AB2791; body00AB2690..00AB2793",
+      "implementation": "GuiIconRuntime::set_state_texture_00ab2690"
+    },
+    {
+      "address": "00ab27a0",
+      "coverage": "complete supported retained Icon projection",
+      "abi": "ECX Icon; output pointer, DWORD state; RET8 at00AB27E4; body00AB27A0..00AB27E6; EAX output",
+      "implementation": "GuiIconRuntime::state_texture_size_00ab27a0"
+    },
+    {
+      "address": "00ab17b0",
+      "coverage": "complete supported retained texture callback projection",
+      "abi": "ECX output, EDX texture, stack UV pointer; RET4 at00AB1852; body00AB17B0..00AB1854; EAX output",
+      "implementation": "GuiIconRuntime::state_texture_size_00ab27a0 with x87 helpers"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00ab26b1",
+      "native": "00bf6713",
+      "function": "00ab2690",
+      "contract": "Native failure call becomes explicit checked exception."
+    },
+    {
+      "address": "00ab26d7",
+      "native": "IAT00CE221C InterlockedIncrement",
+      "function": "00ab2690",
+      "contract": "Store replacement first; nonthrowing retain only when unequal/non-null."
+    },
+    {
+      "address": "00ab26e5",
+      "native": "IAT00CE2220 InterlockedDecrement",
+      "function": "00ab2690",
+      "contract": "Release old after replacement retains."
+    },
+    {
+      "address": "00ab26f5",
+      "native": "old_texture+vtable00",
+      "function": "00ab2690",
+      "contract": "Old release destroys on zero."
+    },
+    {
+      "address": "00ab278d",
+      "native": "00ab3cb0",
+      "function": "00ab2690",
+      "contract": "Actual Icon current80; DWORD index equals sign-extended current state. Slot00D5C4C0+80=00D5C540."
+    },
+    {
+      "address": "00ab27c1",
+      "native": "00bf6713",
+      "function": "00ab27a0",
+      "contract": "Full unsigned state range check."
+    },
+    {
+      "address": "00ab27db",
+      "native": "00ab17b0",
+      "function": "00ab27a0",
+      "contract": "Capture texture, borrow resolved UV, same output."
+    },
+    {
+      "address": "00ab17c0",
+      "native": "texture+vtable48",
+      "function": "00ab17b0",
+      "contract": "Unsigned width, x87 divide960 then float spill before height."
+    },
+    {
+      "address": "00ab17e5",
+      "native": "texture+vtable4c",
+      "function": "00ab17b0",
+      "contract": "Same captured texture height, x87 divide720, float spill; then live UV reads."
+    }
+  ],
+  "caller_review": [
+    {
+      "address": "005d6c93",
+      "native": "00ab2690",
+      "function": "005d6c10"
+    },
+    {
+      "address": "005d9988",
+      "native": "00ab2690",
+      "function": "005d98e0"
+    },
+    {
+      "address": "00510df6",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "00510e3e",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "00510e87",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "00510f6a",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "00510fb2",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "00510ffb",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "005110de",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "00511126",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "0051116f",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "00ab458a",
+      "native": "00ab2690",
+      "function": "00ab44b0"
+    },
+    {
+      "address": "00619fd7",
+      "native": "00ab2690",
+      "function": "00619c50"
+    },
+    {
+      "address": "0061aba4",
+      "native": "00ab2690",
+      "function": "0061a6c0"
+    },
+    {
+      "address": "004fb16b",
+      "native": "00ab2690",
+      "function": "004fb150"
+    },
+    {
+      "address": "004fc08b",
+      "native": "00ab2690",
+      "function": "004fc070"
+    },
+    {
+      "address": "0066b9e7",
+      "native": "00ab2690",
+      "function": "0066b6c0"
+    },
+    {
+      "address": "0066beb8",
+      "native": "00ab2690",
+      "function": "0066b6c0"
+    },
+    {
+      "address": "0066c159",
+      "native": "00ab2690",
+      "function": "0066b6c0"
+    },
+    {
+      "address": "0066d21b",
+      "native": "00ab2690",
+      "function": "0066d020"
+    },
+    {
+      "address": "006753d9",
+      "native": "00ab2690",
+      "function": "00674b80"
+    },
+    {
+      "address": "0067551c",
+      "native": "00ab2690",
+      "function": "00674b80"
+    },
+    {
+      "address": "00677e02",
+      "native": "00ab2690",
+      "function": "00675c40"
+    },
+    {
+      "address": "00678108",
+      "native": "00ab2690",
+      "function": "00675c40"
+    },
+    {
+      "address": "00678e87",
+      "native": "00ab2690",
+      "function": "00675c40"
+    },
+    {
+      "address": "006791e6",
+      "native": "00ab2690",
+      "function": "00675c40"
+    },
+    {
+      "address": "00679e0c",
+      "native": "00ab2690",
+      "function": "00675c40"
+    },
+    {
+      "address": "00679f57",
+      "native": "00ab2690",
+      "function": "00675c40"
+    },
+    {
+      "address": "00596ddd",
+      "native": "00ab2690",
+      "function": "005966f0"
+    },
+    {
+      "address": "00596df4",
+      "native": "00ab27a0",
+      "function": "005966f0"
+    },
+    {
+      "address": "00ab2bbc",
+      "native": "00ab27a0",
+      "function": "00ab2b70"
+    },
+    {
+      "address": "00ab24c0",
+      "native": "00ab17b0",
+      "function": "00ab24b0"
+    },
+    {
+      "address": "00ab3972",
+      "native": "00ab17b0",
+      "function": "00ab3840"
+    },
+    {
+      "address": "00ab68b9",
+      "native": "00ab17b0",
+      "function": "00ab66c0"
+    }
+  ],
+  "caller_contract": "All direct xrefs inspected: mutator states0/2/3 or forwarded DWORD; UVs from stack/atlas records. Both state-size callers request state0. All pixel-size callers pass output, captured texture and resolved UV.",
+  "producer": "Existing GuiIconState reconciled with00AB66C0; one adopt per appended record. No duplicate native-layout struct.",
+  "ordering": "All input UV DWORDs read after old release, before stores; UCOMISS ordered flips retain FLD/FSTP versus MOVSS. Width store precedes vertical UV reads. No vector element reference retained across ownership-slot replacement.",
+  "live_constants": {
+    "binding": "Optional GuiIconRuntimeServices::state_texture_constants pointer; required only when new methods reach constant reads; no numeric fallbacks.",
+    "00d7a24c": "Load once after old release and four borrowed UV reads, before first resolved-UV store; reused by both authored flips.",
+    "00ce3978": "Volatile float correction read only after a negative signed FILD input, separately for each dimension.",
+    "00cec380": "Volatile double width divisor read after width callback, before width float spill and height callback.",
+    "00cef1b8": "Volatile double height divisor read after height callback."
+  },
+  "limits": [
+    "Retain/release must not throw; logical lookup is observational. Callbacks preserve runtime/texture lifetimes. Reload cannot invalidate borrowed state storage.",
+    "Native OOM/SEH, malformed pointers and unsupported derived vtables excluded; failures can expose partial state.",
+    "Active current80 delegates existing retained geometry; fixture will cover inactive states only."
+  ],
+  "corrections": [
+    {
+      "was": "Initial runtime used fixed ONE, unsigned correction and logical-page dimensions.",
+      "is": "Required live aliases read at the native phases; callback changes are observed.",
+      "evidence": "00AB270B follows old release;00AB17CE/00AB17D4 precede height callback;00AB17F3/00AB17F9 follow it. Actual-resource fixture mutates ONE during release and divisors during height."
+    },
+    {
+      "was": "00AB27A0 named STL_inst_00ab27a0",
+      "is": "Provisional Icon state texture sizing wrapper",
+      "evidence": "00AB27CF texture EDX;00AB27D9 output ECX;00AB27DB calls00AB17B0;RET8."
+    }
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release /W4 /WX /fp:strict; both existing CTests passed.",
+    "strict_compile": "Standalone optimized /W4 /WX /fp:strict compile passed; x87 callback/spill and output alias instructions inspected.",
+    "fixture": "Actual D3D9 COM textures/cache plus evaluated Lua5.1 Icon; inactive ownership, duplicate/equal/null, release UV/ONE mutation, record guard, captured width/height resource, divisor timing and output alias passed. High-bit correction branch assembly-checked only.",
+    "report_calls": "38 checked, zero failed; indirect calls explicitly distinguished.",
+    "seed_bytes": "8/8 matched",
+    "rerun": "local/run_gui_icon_state_probe.ps1",
+    "logs": [
+      "local/gui_icon_state_constants_probe.log",
+      "local/gui_icon_state_constants_build.log"
+    ],
+    "assembly": "local/gui_icon_runtime_strict.asm",
+    "parent_rerun": "local/run_gui_icon_state_parent_probe.ps1 -ParentRoot J:/PROG/battlestations-pacific-decompile-orch5-20260911; fixture-only compile, parent headers/libraries, manifest hashes.",
+    "parent_fixture": {
+      "parent_root": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
+      "parent_head": "a6b54bfe2cc9629800ad9ebdddd9b1a472b71910",
+      "started_utc": "2026-09-12T20:34:35.8035994Z",
+      "includes": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include"
+      ],
+      "library_policy": "Fixture only; all headers and libraries from explicit parent root; no worker production translation units compiled.",
+      "artifacts": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+          "sha256": "9DA645DECB05DD4E1C799CB809F74FE9C5CB673C0731024B3A3B58A9CE8F8FC8",
+          "bytes": 50033120,
+          "modified_utc": "2026-09-12T20:33:48.9557923Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib",
+          "sha256": "B6C19DD56BCE2C86DCF1ABF5C3044D48DDC2AC2C33EF04E3DC87F022413EE193",
+          "bytes": 455244,
+          "modified_utc": "2026-09-11T20:18:56.1505626Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib",
+          "sha256": "2C89BD9AE83D791564EA847C75E8E5EE025E40810C1DF8D55E5799E0C7B8C471",
+          "bytes": 71906,
+          "modified_utc": "2026-09-11T19:49:30.7288074Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_icon_runtime.hpp",
+          "sha256": "80ED43786A41364839B6D75AADE4444833BE75D0F1C3D7C6B1BA6114AA4013F0",
+          "bytes": 8993,
+          "modified_utc": "2026-09-12T20:32:52.5637843Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_icon.hpp",
+          "sha256": "1E2DC70631E3EBEA332C8253956C9FBBA9571BD2CB9E783D381E5863018F8CA7",
+          "bytes": 16834,
+          "modified_utc": "2026-09-12T17:53:40.3671830Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_layout_loader.hpp",
+          "sha256": "3EDE9DC470A4D5A3285D1578483428B548025B0B2EBA9AB6ECC79967B242D8B1",
+          "bytes": 20811,
+          "modified_utc": "2026-09-11T19:45:50.2661099Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_widget.hpp",
+          "sha256": "846D1F6378E3459FB585917289D2F3342DE37BA98DAFC7FC952C9C48EA8061F9",
+          "bytes": 13391,
+          "modified_utc": "2026-09-11T19:45:50.3816066Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_widget_owner.hpp",
+          "sha256": "621ADB43E7271214CA0FB61A0542448998FD39ECDCCF21A01A7FE2C78E3C24E7",
+          "bytes": 13269,
+          "modified_utc": "2026-09-12T20:18:10.4428511Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_type_dispatch.hpp",
+          "sha256": "101F2AEE3C59F8391EC01176675B43A765F2F5EE16C29DFB870C285B5ED43734",
+          "bytes": 7130,
+          "modified_utc": "2026-09-12T20:10:49.6933350Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_widget_relative_bounds.hpp",
+          "sha256": "34D9EBB92FE07B5F1DA083A10689A0F73796CDAA89CEF60D347652BBB966277C",
+          "bytes": 2192,
+          "modified_utc": "2026-09-12T20:24:50.7798617Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_probe.cpp",
+          "sha256": "2EE409B4F232F90912D2D22BCC4755A02C4CBCC4EAF0E336E1BFC360B0B3C18B",
+          "bytes": 10472,
+          "modified_utc": "2026-09-12T20:26:33.5302254Z"
+        }
+      ],
+      "compile_exit": 0,
+      "fixture_exit": 0,
+      "finished_utc": "2026-09-12T20:34:38.7477945Z",
+      "result": "PASS: actual D3D9 resources, Lua Icon state, ownership order, duplicate/equal/null, borrowed UV, live callback constants, x87 sizing and output alias",
+      "logs": [
+        "local/gui_icon_state_parent_compile.log",
+        "local/gui_icon_state_parent_probe.log",
+        "local/gui_icon_state_parent_manifest.json"
+      ]
+    }
+  }
+}
