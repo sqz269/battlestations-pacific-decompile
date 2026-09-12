@@ -244,3 +244,9 @@ Destroy, so a damage death lands on the destroy list `00F899A8` only (drained th
 `vtable[74h]`); an explicit Kill additionally calls `vtable[70h]`, which for a unit is that same
 `0077D1A0`, so a Kill lands on both lists and is the only path that runs on-killed slot 32
 (`009273A0`, dispatched over the copied Kill list).
+
+## Correction from docs/SUBMARINE_MODEL.md (packet cc2_submarine_model)
+
+- **Was:** 0080E490 BSP_UnitInstance_GetPartsObject, whose body is MOV EAX,[ECX+1018h]; the returned object holds the per-part health vector at its +310h.
+  **Is:** The object at unit+1018h is the unit controller, not a parts container. 00855498 passes it to 0092D730 BSP_UnitController_GetBodyAxisSpeed, and 00854ec3 passes it to 0092BEC0, which reads its +1Ch as the unit exactly as 00936DC0 does for the controller. The health vector at +310h and the controller are the same object, so the name is narrower than the thing it returns.
+  **Evidence:** 00855480 MOV ECX,[ESI+0D08h] then CALL 0092D730 at 00855498 with ESI = unit+310h, so the argument is [unit+1018h]; 00854ec3 CALL 0080E490 then MOV ECX,EAX then CALL 0092BEC0 at 00854eca; 0092BEC0's [param+1Ch] and 00936DC0's [param_1+1Ch] are both the unit. Not applied: 0080E490 belongs to packet cc2_unit_damage and is not leased to this packet.

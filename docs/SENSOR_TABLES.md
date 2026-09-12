@@ -323,3 +323,9 @@ Ghidra function, which is why it is not a `host_steps` row of `reports/sensor_ta
 - **Was:** [[game+19CCh]+13Ch] is the world list; no writer of a +13Ch list head was found, so the head is written through a register-held address by a helper this packet did not find.
   **Is:** There is no separate world list and no missing helper. registry+13Ch is the head dword of the per-class-id list triple for class id 24, in the same registry+18h+id*0Ch array the recon scan's own step 5 walks; plane squadrons are pushed onto it through BSP_UnitList_PushBack.
   **Evidence:** 0x13C = 0x18 + 24*0xC + 4, and the reader itself uses the array at 008074C7 LEA EAX,[EBX+EBX*0x2] / 008074CA MOV EBP,[EDX+EAX*0x4+0x1C]. The array is built by the 004CB076 vector constructor iterator with PUSH 0x61 count and PUSH 0xC stride. 00484540 BSP_UnitList_PushBack writes the head at list+4h. 007F10C8 ADD ECX,0x138 then 007F10CE CALL 0x00484540 in FUN_007f10b0, at 00D087C0+130h, is the insert; the squadron's primary vptr 00D087C0 is installed at 007F2CAD.
+
+## Correction from docs/SUBMARINE_MODEL.md (packet cc2_submarine_model)
+
+- **Was:** The four depth words and the periscope byte are produced elsewhere and are not read here.
+  **Is:** The producers are now named. The four depth words at unit+1200h..+120Ch are built once at scene attach by 00853630's loop at 00853A90-00853AC5 from the class keys PeriscopeDepth, SwimDepth2 and SwimDepth3 against a default table of 0.0, -20.0, -40.0, -80.0 at 00E0B578; band 0 is always the default. The periscope byte at unit+1234h is cleared every frame at 00854b00 and set at 00855057 only when the extending mast reaches class.PeriscopeMoveRange + periscopeY - 1.0.
+  **Evidence:** 00853630 008539e0-00853a7c for the band loop, 00854b00 and 00855057 for the byte, and the save schema binding at 00854008 which names the byte periscopeOut.
