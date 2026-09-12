@@ -339,7 +339,19 @@
     "Runnable game rebuild and required gameplay validation."
   ],
   "publication": {
-    "state": "prepared in own worktree; final moving-main integration/build and normal push still pending",
-    "fixture_scope": "f0e188f21b9db3e326fd0afa20894bc818296af7; final promotion build will be recorded separately if main advances."
+    "state": "integrated into main and strict build tested; final publication log and remote verification retained locally",
+    "validated_head": "06ce857dce43d208370d56859aef79c1b3477a3f",
+    "validated_core_sha256": "17b536af0499a2c5804c62855942e26ef001d49ab1177ec76a61afdd61b71783",
+    "promotion_manifest": {
+      "path": "local/native-as-promotion-first/manifest.json",
+      "sha256": "2f7afffa233da57abee0dab407b3c2713e4d0e6083c4edfb3069229491b077a5",
+      "bytes": 585440
+    },
+    "changed_build_inputs_from_fixture": 38,
+    "owned_sources_and_headers_unchanged": true,
+    "fixture_revision": "f0e188f21b9db3e326fd0afa20894bc818296af7",
+    "final_publication_inputs": "local/native-as-promotion-final/manifest.json",
+    "remote_verification": "local/native-as-remote-publication.json",
+    "scope": "The moving-main promotion is build/CTest checked. The four unchanged focused fixtures ran against the earlier exact combined library; do not identify these two archives as the same fixture run."
   }
 }
