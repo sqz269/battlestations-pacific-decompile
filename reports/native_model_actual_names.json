@@ -99,5 +99,34 @@
     "header_sha256": "8ad5bc6167d9fa913583b1cbd19fb9f944d9fc5552d224848c4e0ef113996326",
     "library_sha256": "5675ba1eb32c06451c04ab5299c0834e6ab3c803ce61a8a23cf4c0a7f7db033c",
     "result": "passed after retaining main actual point-light implementation"
+  },
+  "final_merged_validation": {
+    "tested_commit": "bf1f317a9e894d71f3f646249b97e9158c7b42f5",
+    "reviewed_implementation": "ead4bce6f8e148bbb61223864707aab3cbb21bab",
+    "source_hashes": {
+      "include/bsp/native_particle_model_manager.hpp": "2575deb3981060303320cf0c51eaed2a6659dc7686ec1243c23375064c20005d",
+      "include/bsp/native_tracer_construction.hpp": "800696c0606a51e39c25dda3b5120f6bf3dd56d8036e34ae07e47ca6833168b9",
+      "include/bsp/native_tracer_lifetime.hpp": "e4a6b0c57a3e8e210b397023106e575f3c5850d69c2fca043cffb25d8b286e3e",
+      "include/bsp/native_particle_model_lifetime.hpp": "16f364973a92950a0405423eaa90f062bef05716842f87b93bf52915b44a7a96",
+      "include/bsp/native_model_owner.hpp": "8ad5bc6167d9fa913583b1cbd19fb9f944d9fc5552d224848c4e0ef113996326",
+      "include/bsp/native_particle_model_construction.hpp": "3d7fb5c745fde8c07d4fa7dd3820380fd4848cc737040371c1ea0c548141dc60",
+      "src/native_particle_model_manager.cpp": "8f4333c6485f219eb4e523a731f69c2c7fd02505f6de4d48f47fd033d40195fc",
+      "src/native_tracer_construction.cpp": "d5fc641f753ef4b6e5f1fa125771f0ecc960d0276ebd753ea37e67b84888d72b",
+      "src/native_tracer_lifetime.cpp": "9ac1a10fdcc3cf1edb6ee3c10e7776148140b4476459a05af7e9733027bf7adf",
+      "src/native_particle_model_lifetime.cpp": "47e60f2fed80e33afbdefec4bccd721b6d7b20a75e45944984b9c1e1cc360e67",
+      "src/native_model_owner.cpp": "8a0e4e81df6331933be4d21749d6ec4096da96ab5d060fc8e84ecf22e971e9a2",
+      "src/native_particle_model_construction.cpp": "91b2663f0aeab94186ea72f3572bb731087c9a1e907ff3b4dd7119461a8bf746"
+    },
+    "build": "local/al-final-merged-build.log",
+    "fixtures": [
+      "local/al-final-merged-fixtures.log",
+      "local/al-final-merged-manager.log"
+    ],
+    "library_sha256": "5c19fe9fc4ca4b98a663f608fe42e1e0c1bb32e7cca38195121372cf7c82eb0b",
+    "promoted_commit": "bf1f317a9e894d71f3f646249b97e9158c7b42f5",
+    "standard_build_and_two_seeded_ctests": "passed",
+    "focused_fixtures": "passed within documented coverage",
+    "promotion_rule": "Only the exact immutable tested commit was fast-forwarded; no untested main remerge. This follow-up changes report metadata only.",
+    "original_EH_and_gameplay": false
   }
 }
