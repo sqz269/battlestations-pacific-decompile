@@ -173,12 +173,37 @@ struct GameExecutableOptions {
     long order_frame{-1};
     float order_throttle{0.0f};
     float order_rudder{0.0f};
+    // Milestone 2m: --order speed=<m/s> makes the store luaMW_SetShipSpeed
+    // 00890d30 makes on the controlled unit's navigator parameter block at
+    // *(unit+73Ch). It is not a throttle: it is what makes the weapon
+    // director's idle tail 00836e59 choose `cruise` over `stop`, and what
+    // 009e12bd divides by the reference speed to get one.
+    float order_speed{0.0f};
+    bool order_speed_set{false};
     // Milestone 2l: --order may also name a command class instead of a pair.
     // `order_command` is the token 0046aab0 resolves against the 26-row registry
     // and `order_command_target` the `CommandTarget` name, which for the
     // position form `moveto=x,z` stays empty and the position is carried here.
     std::string order_command;
     std::string order_command_target;
+    // Milestone 2n: --order-unit <name> names which created instance the
+    // command form of --order is issued to. Empty keeps the controlled unit,
+    // which is what every earlier milestone's run used. It exists because
+    // 009f3dd0 replaces the director's current command with `cruise` for a
+    // player-controlled unit at 009f3df3, so a command issued to the controlled
+    // ship can never put its AI controller into any other state.
+    std::string order_unit;
+    // Milestone 2o: --ai-drive <name>=<throttle>,<rudder>. A LABELLED
+    // DIAGNOSTIC STAND-IN, engaged on --order-frame like the player order.
+    // Eight of the nine ship AI state steps have no reconstructed body, so on
+    // each re-plan tick of the named unit the executable calls the two
+    // recovered setters 009dbf90 and 009dffb0 on its control block with this
+    // pair, and the rest of the chain - 009ed6b0, 009f4d10, 009f4da0's tail
+    // into 009f3f80, the hop through 0080e170 / 0080e190, 00813020 and
+    // 00825f20 - runs as the game's own routines. Empty drives nothing.
+    std::string ai_drive_unit;
+    float ai_drive_throttle{0.0f};
+    float ai_drive_rudder{0.0f};
     bool order_command_position{false};
     float order_command_x{0.0f};
     float order_command_z{0.0f};

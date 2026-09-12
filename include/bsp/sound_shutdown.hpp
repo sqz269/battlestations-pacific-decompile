@@ -4,6 +4,7 @@
 
 namespace bsp {
 class SoundResourceRuntime;
+class SoundChannelRuntime;
 
 class SoundShutdownFmodHost : public SoundConfigurationShutdownFmodHost {
 public:
@@ -13,8 +14,7 @@ public:
 
 // Required virtual/reference operations on the two retained pointer arrays.
 // A7F2F0 produces +80 from actual sample references and +74 from the distinct
-// D5AD58/D5ADA0/D5ADE8 channel variants. Those variants own additional +5C
-// records and are not yet reconstructed; +74 cannot use base-only deletion.
+// D5AD58/D5ADA0/D5ADE8 channel variants, including their additional +5C records.
 // Release implements atomic decrement of the receiver's native +4 ownership
 // and zero-reference vslot0. Adapters map that operation to their actual type.
 // There is no default no-op, alternate engine destructor or synthetic reference
@@ -26,6 +26,29 @@ public:
     virtual void release_retained_74_reference(void*) noexcept = 0;
     virtual void release_retained_80_reference(void*) noexcept = 0;
     virtual void delete_alternate_slot00(void*, std::uint32_t flags) = 0;
+};
+
+// Alternate engine destruction remains a required independently bound service.
+class SoundAlternateShutdownHost {
+public:
+    virtual ~SoundAlternateShutdownHost() = default;
+    virtual void delete_alternate_slot00(void*, std::uint32_t flags) = 0;
+};
+// Concrete +74 channel and +80 actual-sample reference operations. All services
+// outlive shutdown. Actual sample zero-reference dispatch is the same lifetime
+// used by SoundInstanceContext, normally SoundSampleRuntime.
+class SoundRetainedShutdownRuntime final : public SoundShutdownVirtualHost {
+public:
+    SoundRetainedShutdownRuntime(SoundChannelRuntime&, GameplayEffectComponentLifetime&,
+        SoundAlternateShutdownHost&) noexcept;
+    void stop_retained_74_slot08(void*, std::uint32_t) override;
+    void release_retained_74_reference(void*) noexcept override;
+    void release_retained_80_reference(void*) noexcept override;
+    void delete_alternate_slot00(void*, std::uint32_t) override;
+private:
+    SoundChannelRuntime& channels_;
+    GameplayEffectComponentLifetime& samples_;
+    SoundAlternateShutdownHost& alternate_;
 };
 
 struct SoundSystemShutdownContext {

@@ -1,0 +1,221 @@
+{
+  "packet": "cc2_settings_tail",
+  "owner": "agent/cc2-settings-tail",
+  "doc": "docs/GAMEPLAY_SETTINGS_TAIL.md",
+  "sources": [
+    "include/bsp/gameplay_settings_tail.hpp",
+    "src/gameplay_settings_tail.cpp"
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read-only: no renames, comments, prototypes, function creation or saves"
+  },
+  "routines": [
+    {
+      "address": "00836ef0",
+      "name": "BSP_WeaponHitAccuracy_ApplyDefaults",
+      "abi": "__fastcall(WeaponHitAccuracyProfile* this) -> this",
+      "coverage": "complete: 00836ef0-00836f77",
+      "note": "22 MOVSS stores, no calls. +0h=100.0 (00ce3d08), +4h=200.0 (00ce386c), +8h..+54h=0.5 (00ce3800)."
+    },
+    {
+      "address": "00836f80",
+      "name": "BSP_WeaponHitAccuracy_LoadFromLuaTable",
+      "abi": "__thiscall(WeaponHitAccuracyProfile* this, LuaObject* table)",
+      "coverage": "complete for the key-to-offset mapping: 00836f80-008376ab; the SEH scope records and the NativeString temporaries are not modelled",
+      "note": "11 keys x 2 elements; element [1] fills +0h and +8h..+2Ch, element [2] fills +4h and +30h..+54h."
+    },
+    {
+      "address": "0093c120",
+      "name": "BSP_RepairTask_ApplyWaterDamage",
+      "abi": "__thiscall(RepairTask* this, float dt)",
+      "coverage": "complete: 0093c120-0093c20b",
+      "note": "Ghidra currently calls this BSP_RepairTask_ApplyFireDamage; it runs task+34h, the timer SetWaterDamage writes."
+    },
+    {
+      "address": "0093c210",
+      "name": "BSP_RepairTask_ApplyFireDamage",
+      "abi": "__thiscall(RepairTask* this, float dt)",
+      "coverage": "complete: 0093c210-0093c2fb",
+      "note": "Ghidra currently calls this BSP_RepairTask_ApplyWaterDamage; it runs task+38h, the timer SetFireDamage writes."
+    },
+    {
+      "address": "00b685c0",
+      "name": "BSP_LuaObject_ConstructStringOrDefault",
+      "abi": "__fastcall(LuaReference* this, uint, NativeString* out, const NativeString* fallback) -> out",
+      "coverage": "complete: 00b685c0-00b68622",
+      "note": "Existing name kept. Requires kind field +4h == 2 and Lua type 4, else assigns the fallback."
+    },
+    {
+      "address": "00939f90",
+      "name": "BSP_RepairTask_SetFireSeconds",
+      "abi": "__thiscall(RepairTask* this, float seconds)",
+      "coverage": "complete: 00939f90-00939f9d"
+    },
+    {
+      "address": "00939fa0",
+      "name": "BSP_RepairTask_SetWaterSeconds",
+      "abi": "__thiscall(RepairTask* this, float seconds)",
+      "coverage": "complete: 00939fa0-00939fad"
+    },
+    {
+      "address": "0093a470",
+      "name": "BSP_RepairTask_AddFireSeconds",
+      "abi": "__thiscall(RepairTask* this, float seconds)",
+      "coverage": "partial: the field writes to +38h, +3ch and +44h are covered; the trailing comparison against unit+370h and the call 00983780 are unread (0093a4b1-0093a4e4)"
+    },
+    {
+      "address": "0093a4f0",
+      "name": "BSP_RepairTask_AddWaterSeconds",
+      "abi": "__thiscall(RepairTask* this, float seconds)",
+      "coverage": "partial: the field writes to +34h, +40h and +44h are covered; the trailing comparison against unit+370h and the call 009832f0 are unread (0093a533-0093a566)"
+    },
+    {
+      "address": "0088e320",
+      "name": "BSP_LuaBinding_SetFireDamage",
+      "abi": "__thiscall(Unit* unit, lua_State*)",
+      "coverage": "partial: only the message fill 0088e4ac-0088e4ff and the selector are covered",
+      "note": "Name from the log literal 'luaMW_SetFireDamage failed:' at 00d115d4."
+    },
+    {
+      "address": "0088e790",
+      "name": "BSP_LuaBinding_SetWaterDamage",
+      "abi": "__thiscall(Unit* unit, lua_State*)",
+      "coverage": "partial: only the message fill 0088e919-0088e96b and the selector are covered",
+      "note": "Name from the log literal 'luaMW_SetWaterDamage failed:' at 00d11614."
+    }
+  ],
+  "no_ghidra_function": [],
+  "sub_objects": {
+    "parent_key": "WeaponHitAccuracy",
+    "parent_key_string": "00d0b344",
+    "stride": "0x58",
+    "constructor": "00836ef0",
+    "loader": "00836f80",
+    "instances": [
+      {"offset": "0x240", "key": "Artillery", "key_string": "00ce5454", "this_at": "0083c814", "call": "0083c81a", "installed_reference_sizes": [100, 250]},
+      {"offset": "0x298", "key": "AA", "key_string": "00cfa420", "this_at": "0083c869", "call": "0083c86f", "installed_reference_sizes": [80, 200]},
+      {"offset": "0x2f0", "key": "Torpedo", "key_string": "00ce544c", "this_at": "0083c8be", "call": "0083c8c4", "installed_reference_sizes": [100, 300]},
+      {"offset": "0x348", "key": "DepthCharge", "key_string": "00cfa700", "this_at": "0083c913", "call": "0083c919", "installed_reference_sizes": [100, 200]}
+    ],
+    "layout": [
+      {"offset": "0x00", "key": "TargetReferenceSizes", "element": 1, "store": "00836fd3", "default": 100.0},
+      {"offset": "0x04", "key": "TargetReferenceSizes", "element": 2, "store": "00837025", "default": 200.0},
+      {"offset": "0x08", "key": "Accuracy_10percent_Range", "element": 1, "store": "00837077", "default": 0.5},
+      {"offset": "0x0c", "key": "Accuracy_20percent_Range", "element": 1, "store": "00837119", "default": 0.5},
+      {"offset": "0x10", "key": "Accuracy_30percent_Range", "element": 1, "store": "008371bb", "default": 0.5},
+      {"offset": "0x14", "key": "Accuracy_40percent_Range", "element": 1, "store": "0083725d", "default": 0.5},
+      {"offset": "0x18", "key": "Accuracy_50percent_Range", "element": 1, "store": "008372ff", "default": 0.5},
+      {"offset": "0x1c", "key": "Accuracy_60percent_Range", "element": 1, "store": "008373a1", "default": 0.5},
+      {"offset": "0x20", "key": "Accuracy_70percent_Range", "element": 1, "store": "00837443", "default": 0.5},
+      {"offset": "0x24", "key": "Accuracy_80percent_Range", "element": 1, "store": "008374e5", "default": 0.5},
+      {"offset": "0x28", "key": "Accuracy_90percent_Range", "element": 1, "store": "00837587", "default": 0.5},
+      {"offset": "0x2c", "key": "Accuracy_100percent_Range", "element": 1, "store": "00837629", "default": 0.5},
+      {"offset": "0x30", "key": "Accuracy_10percent_Range", "element": 2, "store": "008370c8", "default": 0.5},
+      {"offset": "0x34", "key": "Accuracy_20percent_Range", "element": 2, "store": "0083716a", "default": 0.5},
+      {"offset": "0x38", "key": "Accuracy_30percent_Range", "element": 2, "store": "0083720c", "default": 0.5},
+      {"offset": "0x3c", "key": "Accuracy_40percent_Range", "element": 2, "store": "008372ae", "default": 0.5},
+      {"offset": "0x40", "key": "Accuracy_50percent_Range", "element": 2, "store": "00837350", "default": 0.5},
+      {"offset": "0x44", "key": "Accuracy_60percent_Range", "element": 2, "store": "008373f2", "default": 0.5},
+      {"offset": "0x48", "key": "Accuracy_70percent_Range", "element": 2, "store": "00837494", "default": 0.5},
+      {"offset": "0x4c", "key": "Accuracy_80percent_Range", "element": 2, "store": "00837536", "default": 0.5},
+      {"offset": "0x50", "key": "Accuracy_90percent_Range", "element": 2, "store": "008375d8", "default": 0.5},
+      {"offset": "0x54", "key": "Accuracy_100percent_Range", "element": 2, "store": "0083767a", "default": 0.5}
+    ],
+    "consumer": "contract: unread. Narrow searches for LEA ECX,[EAX+240h] (8D 88 40 02 00 00) and MOVSS XMM0,[EAX+240h] (F3 0F 10 80 40 02 00 00) found nothing; the only FLD [EAX+240h] (009fce81) reads a 0x248-stride record from 0099c210, not the settings object."
+  },
+  "string_keys": [
+    {"key": "ShipAvoidance.RightOfWayValues[n][1]", "address": "0083bd7f", "native": "00b662b0", "containing": "0083b5e0", "name": "get_right_of_way_class_name", "destination": "settings+1dch", "sink": "class-keyed value", "note": "positional element 1 via 00b677e0; the class name is matched against the 97 char* entries at 00e0cd80 with strcmp 00bf7fbf at 0083c675 and the pair {index, float} is pushed by 0083a880"},
+    {"key": "CollisionEffect", "address": "0083e016", "native": "00b662b0", "containing": "0083b5e0", "name": "get_collision_effect_name", "key_string": "00d0adac", "destination": "settings+3a4h", "sink": "effect handle", "store": "0083e08c"},
+    {"key": "FailureName", "address": "0083e7c4", "native": "00b662b0", "containing": "0083b5e0", "name": "get_failure_name", "key_string": "00d0ac48", "destination": "contract: unread", "sink": "failure descriptor", "note": "kept at [ESP+88h] at 0083e7cb into the unread failure build"},
+    {"key": "SectionName", "address": "0083e8da", "native": "00b662b0", "containing": "0083b5e0", "name": "get_failure_section_name", "key_string": "00d0ac30", "destination": "contract: unread", "sink": "failure descriptor", "note": "copied to a stack NativeString and consumed by 00438e10 at 0083e956, which indexes the table at 00e08138"},
+    {"key": "SinkEffect", "address": "0083eaec", "native": "00b662b0", "containing": "0083b5e0", "name": "get_sink_effect_name", "key_string": "00d0abf4", "destination": "settings+72ch", "sink": "effect handle", "store": "0083eb60"},
+    {"key": "BulletEffect", "address": "008414a7", "native": "00b662b0", "containing": "0083b5e0", "name": "get_free_camera_shot_bullet_effect_name", "key_string": "00d0a300", "destination": "free-camera-shot record +24h", "sink": "effect handle", "store": "008414e6"},
+    {"key": "ExplosionEffect", "address": "0084159a", "native": "00b662b0", "containing": "0083b5e0", "name": "get_free_camera_shot_explosion_effect_name", "key_string": "00d0a2f0", "destination": "free-camera-shot record +28h", "sink": "effect handle", "store": "008415d9"},
+    {"key": "SplashEffect", "address": "0084168d", "native": "00b662b0", "containing": "0083b5e0", "name": "get_free_camera_shot_splash_effect_name", "key_string": "00d0a2e0", "destination": "free-camera-shot record +2ch", "sink": "effect handle", "store": "008416cf"},
+    {"key": "Name", "address": "008418a4", "native": "00b685c0", "containing": "0083b5e0", "name": "get_free_camera_shot_name", "key_string": "00ce8ed0", "fallback_string": "00ce3a0c (empty)", "destination": "free-camera-shot record +0h", "sink": "NativeString", "note": "the only 00b685c0 call site in the image"}
+  ],
+  "free_camera_shot_record": {
+    "size": "0x30",
+    "evidence": "00841411 ADD EBP,-0x30 after MOV EBP,[EDI+8] at 008413ee; EBP has exactly three writes in 00841100..008418a4",
+    "fields": [
+      {"offset": "0x00", "type": "NativeString", "meaning": "Name"},
+      {"offset": "0x24", "type": "EffectHandle*", "meaning": "BulletEffect"},
+      {"offset": "0x28", "type": "EffectHandle*", "meaning": "ExplosionEffect"},
+      {"offset": "0x2c", "type": "EffectHandle*", "meaning": "SplashEffect"}
+    ]
+  },
+  "host": [
+    {"address": "00424a62", "native": "00836ef0", "containing": "00424a10", "name": "apply_weapon_hit_accuracy_defaults_00836ef0", "note": "one site in a 4-iteration loop, EBX counts 3..0 and EBP steps 58h"},
+    {"address": "0083c81a", "native": "00836f80", "containing": "0083b5e0", "name": "load_weapon_hit_accuracy_profile_00836f80", "note": "this = settings+240h, Artillery"},
+    {"address": "0083c86f", "native": "00836f80", "containing": "0083b5e0", "name": "load_weapon_hit_accuracy_profile_00836f80", "note": "this = settings+298h, AA"},
+    {"address": "0083c8c4", "native": "00836f80", "containing": "0083b5e0", "name": "load_weapon_hit_accuracy_profile_00836f80", "note": "this = settings+2f0h, Torpedo"},
+    {"address": "0083c919", "native": "00836f80", "containing": "0083b5e0", "name": "load_weapon_hit_accuracy_profile_00836f80", "note": "this = settings+348h, DepthCharge"},
+    {"address": "00836fce", "native": "00b66270", "containing": "00836f80", "name": "read_number", "note": "first of 22 identical GetNumber sites, TargetReferenceSizes[1]"},
+    {"address": "00837675", "native": "00b66270", "containing": "00836f80", "name": "read_number", "note": "last of the 22, Accuracy_100percent_Range[2]; the store is 0083767a"},
+    {"address": "00836fae", "native": "00b67800", "containing": "00836f80", "name": "read_number (field by name)", "note": "folded into read_number; 22 sites"},
+    {"address": "00836fc2", "native": "00b67720", "containing": "00836f80", "name": "read_number (element by index)", "note": "folded into read_number; 22 sites, index 1 then 2"},
+    {"address": "0083e06b", "native": "00871ba0", "containing": "0083b5e0", "name": "acquire_effect_by_name", "note": "contract: unread, CollisionEffect"},
+    {"address": "0083eb45", "native": "00871ba0", "containing": "0083b5e0", "name": "acquire_effect_by_name", "note": "contract: unread, SinkEffect"},
+    {"address": "008414ce", "native": "00871ba0", "containing": "0083b5e0", "name": "acquire_effect_by_name", "note": "contract: unread, BulletEffect"},
+    {"address": "008415c1", "native": "00871ba0", "containing": "0083b5e0", "name": "acquire_effect_by_name", "note": "contract: unread, ExplosionEffect"},
+    {"address": "008416b7", "native": "00871ba0", "containing": "0083b5e0", "name": "acquire_effect_by_name", "note": "contract: unread, SplashEffect"},
+    {"address": "0083be6c", "native": "0083a880", "containing": "0083b5e0", "name": "push_right_of_way_entry", "note": "contract: unread vector push, element stride 8 from SAR ECX,3 at 0083a897"},
+    {"address": "0083e956", "native": "00438e10", "containing": "0083b5e0", "name": "resolve_section_name", "note": "contract: unread"},
+    {"address": "0093c12c", "native": "00424c40", "containing": "0093c120", "name": "gameplay_settings_singleton", "note": "gated on task+24h == 4"},
+    {"address": "0093c21c", "native": "00424c40", "containing": "0093c210", "name": "gameplay_settings_singleton", "note": "gated on task+24h == 3"},
+    {"address": "0093c16a", "native": "008e6430", "containing": "0093c120", "name": "difficulty_modifier", "note": "contract: unread; args 3 and the unit, x87 return"},
+    {"address": "0093c25a", "native": "008e6430", "containing": "0093c210", "name": "difficulty_modifier", "note": "contract: unread; args 3 and the unit, x87 return"},
+    {"address": "0082205c", "native": "0093a4f0", "containing": "00821e80", "name": "add_water_seconds", "note": "message 9Eh selector 1, flag set"},
+    {"address": "00822076", "native": "00939fa0", "containing": "00821e80", "name": "set_water_seconds", "note": "the address is the JZ target; the call is 00822076 itself"},
+    {"address": "008220a3", "native": "0093a470", "containing": "00821e80", "name": "add_fire_seconds", "note": "message 9Eh selector 0, flag set"},
+    {"address": "008220bd", "native": "00939f90", "containing": "00821e80", "name": "set_fire_seconds", "note": "message 9Eh selector 0, flag clear"},
+    {"address": "0088e4ff", "native": "0077c2a0", "containing": "0088e320", "name": "route_message", "note": "SetFireDamage routes 9Eh with selector 0 at msg+24h"},
+    {"address": "0088e96b", "native": "0077c2a0", "containing": "0088e790", "name": "route_message", "note": "SetWaterDamage routes 9Eh with selector 1 at msg+24h"}
+  ],
+  "corrections": [
+    {
+      "subject": "0093c120",
+      "was": "BSP_RepairTask_ApplyFireDamage (the Ghidra name and docs/UNIT_FIRE_AND_REPAIR.md section 4)",
+      "is": "the water damage step. It runs task+34h and clears task+40h, and task+34h is written only by 00939fa0 / 0093a4f0, which the message 9Eh arm at 0082203d reaches for selector 1, the selector SetWaterDamage (0088e790, log literal luaMW_SetWaterDamage failed: at 00d11614) puts at msg+24h via MOV EBP,0x1 at 0088e7af.",
+      "evidence": "0082203d-008220c2; 00939fa0; 0093a4f0; 0088e954-0088e96b; 0093c18f; 0093c1c3"
+    },
+    {
+      "subject": "0093c210",
+      "was": "BSP_RepairTask_ApplyWaterDamage (the Ghidra name and docs/UNIT_FIRE_AND_REPAIR.md section 5)",
+      "is": "the fire damage step. It runs task+38h and clears task+3ch, and task+38h is written only by 00939f90 / 0093a470, which the 9Eh arm reaches for selector 0, the selector SetFireDamage (0088e320, log literal luaMW_SetFireDamage failed: at 00d115d4) puts at msg+24h via XOR EBP,EBP at 0088e343.",
+      "evidence": "0082203d-008220c2; 00939f90; 0093a470; 0088e4e9-0088e4ff; 0093c27f; 0093c2b3"
+    },
+    {
+      "subject": "docs/UNIT_FIRE_AND_REPAIR.md state-field table",
+      "was": "+34h fire seconds remaining, +38h water seconds remaining, +2ch fire damage per second, +30h water damage per second, +3ch cleared when the water timer expires, +40h cleared when the fire timer expires (marked provisional, 'the message 9Eh handler that would settle it is unread')",
+      "is": "reversed: +34h water seconds, +38h fire seconds, +2ch water damage per second, +30h fire damage per second, +3ch cleared when the fire timer expires, +40h cleared when the water timer expires. The 9Eh handler is the arm at 0082203d of 00821e80 and it settles the assignment.",
+      "evidence": "0082203d; 00939f90 writes +38h; 00939fa0 writes +34h; 0093a470 pairs +38h with +3ch; 0093a4f0 pairs +34h with +40h"
+    },
+    {
+      "subject": "docs/UNIT_FIRE_AND_REPAIR.md repair priorities",
+      "was": "+3c8h fire damage divisor when the priority is 4, +3cch water damage divisor when the priority is 3",
+      "is": "+3c8h water damage divisor when the priority is 4, +3cch fire damage divisor when the priority is 3. The offsets and the priority tests are unchanged; only the labels move.",
+      "evidence": "0093c126 CMP [ESI+24h],4 in the +34h step; 0093c216 CMP [ESI+24h],3 in the +38h step"
+    },
+    {
+      "subject": "docs/GAMEPLAY_SETTINGS.md 'One correction to record'",
+      "was": "the authored key names PumpRepairMultiplier (+3c8h) and FireRepairMultiplier (+3cch) are crossed against the code's use of them",
+      "is": "they are not crossed. +3c8h PumpRepairMultiplier divides the water step's damage and +3cch FireRepairMultiplier divides the fire step's, which is exactly what the shipped comments say ('the water gives this many times less damage over time' and 'the fire gives this many times less damage over time'). The crossed pair is the two Ghidra function names. Both values are 3 in the installed file, so no shipped run is affected either way.",
+      "evidence": "the two rows above; the consumer bodies 0093c120-0093c20b and 0093c210-0093c2fb were read for this packet"
+    },
+    {
+      "subject": "docs/GAMEPLAY_SETTINGS.md host table row for 00836f80",
+      "was": "contract: unread, this = settings+348h, one pointer argument",
+      "is": "BSP_WeaponHitAccuracy_LoadFromLuaTable: __thiscall(profile, LuaObject* table), four call sites at settings+240h, +298h, +2f0h and +348h, reading 11 keys of ShipGlobals['WeaponHitAccuracy'] by two elements each.",
+      "evidence": "0083c814-0083c919; 00836f80-008376ab"
+    }
+  ],
+  "runtime_evidence": {
+    "claim": "none",
+    "note": "bsp_game.exe does not load a mission, so neither the loader path nor the repair tick was observed on a frame (docs/WORKER_VERIFICATION_CHECKLIST.md rule 6). The installed values quoted for WeaponHitAccuracy are read from scripts/datatables/shipglobals.lua lines 148-206."
+  },
+  "build": "scripts/build.ps1, Win32 MSVC, warnings as errors",
+  "tests": "no new test: the two reconstructed functions are a constant fill and a fixed key sequence, both fully covered by the offset static_asserts in the header"
+}

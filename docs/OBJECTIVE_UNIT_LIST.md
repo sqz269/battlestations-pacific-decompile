@@ -238,3 +238,12 @@ insert half (008de42c..), 006de150, 006de000 and 006dbd40.
   list erase of the remove path.
 - `player+8h` and `player+9h`, the two bytes `Objectives_AddUnit` tests before accepting an
   explicit slot.
+
+## Correction from docs/ENTITY_LIFECYCLE_TAILS.md (packet cc2_entity_lifecycle_tails)
+
+- **Was:** 006DE3F0's insert half is contract: unread, so whether 008DFE50 refreshes or clears is open
+  **Is:** 006DE3F0 has no insert half: it destroys the marker in the (unit, name) slot and, when no entry of the unit's container still has +14h set, unregisters the unit/marker-manager observer pair. 008DFE50 is a clear
+  **Evidence:** 006DE418-006DE426 destroy and null; the loop 006DE447-006DE491 returns at 006DE47E on the first surviving entry; 006DE49F 00694AF0 then 006DE4AC 006952A0; nothing between 006DE3F0 and 006DE4BA writes a non-zero value into a slot
+- **Was:** host row 008DF338 / 00694AF0 / observer_pair_registered / -/objective,unit/bool
+  **Is:** the arguments are ECX = unit and EDX = the ObjectiveSet; no objective pointer is passed
+  **Evidence:** 008DF2C9 MOV EBP,[ESP+0x24] loads the second argument, the unit whose +5Dh and +5Eh are tested at 008DF2CD and 008DF2DC; 008DF2D2 stores ECX (the set) into the local at E-18h and 008DF330 MOV EBX,[ESP+0x10] reloads it before 008DF334 MOV EDX,EBX

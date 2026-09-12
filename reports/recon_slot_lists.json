@@ -1,0 +1,938 @@
+{
+  "packet": "cc2_recon_slot_lists",
+  "owner": "agent/cc2-recon-slot-lists",
+  "docs": "docs/RECON_SLOT_LISTS.md",
+  "sources": "include/bsp/recon_slot_lists.hpp, src/recon_slot_lists.cpp",
+  "subject": "The three per-party recon slots: the whole of 008073C0 with its callees, the membership and detection rule behind the intrusive chain at slot+0DE8h, the rest of 00806B10 and what it writes into the nineteen Lua category tables, and what the three recon indices are.",
+  "reuses": "include/bsp/fixed_step_countdown.hpp for kReconSlotSize, kReconSlotIndexOffset, kReconSlotDirtyOffset, kReconSlotArrayOffsets/Length/Stride and kReconSlotCount; include/bsp/recon_values.hpp for recon_category_names_00e0b590; docs/OBSERVER_LIFETIME.md names for 00694A60 and 006952A0; docs/ENTITY_CLASS_IDS.md for every class id; docs/UNIT_INSTANCE_LAYOUT.md for +54h, +5Ch..+60h, +C4h, +C8h, +170h, +174h, +1E4h",
+  "answer": [
+    {
+      "question": "(1) The membership rule: what decides that a unit appears in party P's recon list.",
+      "result": "Four independent conditions, none of which is a line-of-sight trace. (a) The unit's class id is one of the twenty-two 00805F60 pushes into the singleton vector 00806480 returns: 35h, 07h, 0Ah, 0Bh, 0Ch, 0Dh, 08h, 09h, 0Eh, 13h, 10h, 12h, 11h, 15h, 16h, 17h, 19h, 1Bh, 45h, 46h, 2Bh, 34h. The scan only ever walks the world registry's per-class list for these. (b) The unit passes the gate at 008074D5: +5Ch set, +5Dh clear, +60h clear, +5Eh clear, then vtable[5Ch](2), IsKindOf(02h). (c) 008065B0 buckets it by relation, a pure function of the slot's index at +28h and the unit's party at +54h: relation = (slotIndex == 2) ? (party == 2 ? own : neutral) : (slotIndex == party ? own : (party == 2 ? neutral : enemy)). Slot 2 has its own branch at 00806721 and never produces `enemy`. Membership in the three class arrays depends on nothing but party. (d) Detection then decides which list is PUBLISHED. Each 1Ch-byte entry record carries a level at +0Ch, created 2 for own and 0 otherwise (00804E70's second argument). 00806840 runs the sensor pass over the enemy and neutral arrays and writes +0Ch from the target's own accumulator at unit+1E8h+party*34h. The drain at 00807644/008077C2 keeps level 2 in the relation triple, copies level 1 into the `unknown` triple and drops level 0. The own triple is never drained. The level comes from a float in [0, 1.0] (00D7A24C) thresholded at 0.25 (00CE3868) and 0.5 (00CE3800) by 00805AF0. The sensor test 008048A0 is a horizontal-distance-and-bearing table lookup: distSq is (dx*dx + dz*dz) from the two world frames' +FCh and +104h with no height term, normalised by env*env*signature*tuning74*tuning74, with an extra tuning78*tuning78 factor for a submerged MSubmarine, matched against a per-(observerCategory, targetCategory) row of 1Ch-byte entries that carry a max normalised squared range, a mask bit, an optional bearing window and a per-second gain with a cap. Only own-triple units that are IsKindOf(05h) act as observers."
+    },
+    {
+      "question": "(2) The slot layout as a producer-backed table.",
+      "result": "0x12A0 bytes. Beyond what docs/FIXED_STEP_COUNTDOWN.md already had: +24h the contents-changed flag (set 00806818, cleared 008073E6 and 0080799C), +2Ch the time of this rebuild and +30h the seconds since the last one (008073C1..008073E1, read at 008068CD as the sensor dt), the five {count, head, tail} triples at +DD8h own, +DE4h enemy (head +DE8h), +DF0h neutral, +DFCh unknown and +E08h their union, and a FOURTH 61h-entry array of 0Ch-byte lists at +E14h, the per-class carry-over lists. 0xE14 + 0x61*0x0C == 0x12A0 exactly and 00805300 destroys that array with the same helper triplet as the other three. The entry record is 1Ch: vptr 00D08E78, +4h the unit, +8h the refreshed category, +0Ch the level, +10h/+14h/+18h a member list used only by group records."
+    },
+    {
+      "question": "(3) The rebuild's cadence.",
+      "result": "Four rebuild sites. 00807A08 inside the 3-second countdown 008079B0 rebuilds every present slot and publishes only the ones whose +25h is set. 004E059B in BSP_Game_LoadMissionScene rebuilds the active local player's slot right after creating all three with a 0..2 loop at 004E0537 and arming 00807A50. 004C9E82 in BSP_Game_ApplyInGameInterface and 007C631C in FUN_007C5F60 both rebuild the active local player's slot. Unit death does not rebuild: 00779B43 and 0077D2B6 only mark the contexts dirty with 00803BA0."
+    },
+    {
+      "question": "(4) What 00806B10 publishes into the nineteen category tables, counts or lists.",
+      "result": "Neither. recon[index][relation][category] is a MAP keyed by the unit's decimal entity id as a string: 00805D90 builds it with itoa(unit->+174h, 10) through 006B8120 as the key and 00927BF0's unit Lua value as the value, settable at -3 (006B84D0). The four relations map to triples: enemy -> +DE4h, own -> +DD8h, neutral -> +DF0h, unknown -> +DFCh; the fifth triple at +E08h is never published. 00805D90 drops ten class ids outright (0Fh, 10h, 11h, 12h, 14h, 15h, 16h, 17h, 13h, 19h), so individual planes and land vehicles never reach the script and only their squadron and convoy aggregates stand for them; the category itself is unit->[+170h]->vtable[0]() with 13h meaning none. 00805D90's third argument, 0 for own and 1 for the rest, is never read."
+    },
+    {
+      "question": "(5) What distinguishes recon[0], recon[1] and recon[2].",
+      "result": "The index is the party (side) index: 0 and 1 the two belligerents, 2 the neutral side, which is why 008065B0 treats party 2 specially and why slot 2 has no enemies. BSP_Game_LoadMissionScene creates exactly three with for(i=0;i<3;++i) 008053C0(i) at 004E0537. 009F5D3A passes a unit's +54h. 00806840 and 008048A0 index the unit's three-entry detection array at +1E8h with the observer's +54h while 008065B0 indexes the same array with the slot's +28h. 00779B26 and 0077D29C walk exactly three of those 34h records per unit."
+    }
+  ],
+  "functions": [
+    {
+      "address": "008073c0",
+      "name": "BSP_Recon_RebuildSlotLists",
+      "body": "008073c0-008079a5",
+      "abi": "__thiscall void(ReconSlot*), RET",
+      "coverage": "complete"
+    },
+    {
+      "address": "008065b0",
+      "name": "BSP_Recon_AddOrRefreshUnit",
+      "body": "008065b0-00806837",
+      "abi": "__thiscall void(int classId, Unit* unit), RET 8",
+      "coverage": "complete"
+    },
+    {
+      "address": "008048a0",
+      "name": "BSP_Recon_EvaluateSensors",
+      "body": "008048a0-00804bd3",
+      "abi": "__fastcall bool(ECX=observer, EDX=target, int mask, float dt, float* outGain), RET 0Ch",
+      "coverage": "complete"
+    },
+    {
+      "address": "00806840",
+      "name": "BSP_Recon_RunSensorPass",
+      "body": "00806840-0080699c",
+      "abi": "__thiscall void(List* targetClassList, List* ownTriple), RET 8",
+      "coverage": "complete"
+    },
+    {
+      "address": "00805430",
+      "name": "BSP_Recon_RetireCarryOverClass",
+      "body": "00805430-00805484",
+      "abi": "__thiscall void(int classId), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "00805490",
+      "name": "BSP_Recon_GroupMembersUnderSquadron",
+      "body": "00805490-00805674",
+      "abi": "__thiscall void(List* memberClassList, List* groupClassList), RET 8",
+      "coverage": "complete"
+    },
+    {
+      "address": "00805680",
+      "name": "BSP_Recon_GroupMembersUnderConvoy",
+      "body": "00805680-00805864",
+      "abi": "__thiscall void(List* memberClassList, List* groupClassList), RET 8",
+      "coverage": "complete"
+    },
+    {
+      "address": "008069a0",
+      "name": "BSP_Recon_PublishGroupLevelFromMembers",
+      "body": "008069a0-00806a59",
+      "abi": "__thiscall void(List* groupClassList), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "00806a60",
+      "name": "BSP_Recon_PublishGroupLevelStored",
+      "body": "00806a60-00806b03",
+      "abi": "__thiscall void(List* groupClassList), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "00806480",
+      "name": "BSP_Recon_ScanClassIds",
+      "body": "00806480-0080653c",
+      "abi": "__cdecl void*(), RET",
+      "coverage": "complete"
+    },
+    {
+      "address": "00805f60",
+      "name": "BSP_Recon_ConstructScanClassIds",
+      "body": "00805f60-008063fe",
+      "abi": "__thiscall void(), the two class-id vectors",
+      "coverage": "complete for both vectors"
+    },
+    {
+      "address": "00805af0",
+      "name": "BSP_Recon_AccumulateDetection",
+      "body": "00805af0-00805bde",
+      "abi": "__thiscall void(float value, int accumulate, Unit* observer), RET 0Ch",
+      "coverage": "complete"
+    },
+    {
+      "address": "00805be0",
+      "name": "BSP_Recon_ResetDetection",
+      "body": "00805be0-00805c5b",
+      "abi": "__thiscall void(), RET",
+      "coverage": "complete"
+    },
+    {
+      "address": "00805d90",
+      "name": "BSP_Recon_PublishRelationCategories",
+      "body": "00805d90-00805f29",
+      "abi": "__thiscall void(LuaInstance*, List* triple, int unused), RET 0Ch",
+      "coverage": "complete as a reading; the Lua primitives are not projected"
+    },
+    {
+      "address": "00806b10",
+      "name": "BSP_Recon_PublishSlotTable",
+      "body": "00806b10-00806cce",
+      "abi": "__thiscall void(LuaInstance*), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "008053c0",
+      "name": "BSP_Recon_EnsureSlot",
+      "body": "008053c0-00805423",
+      "abi": "__fastcall void*(int index), RET",
+      "coverage": "complete"
+    },
+    {
+      "address": "00803ba0",
+      "name": "BSP_Recon_MarkSlotDirty",
+      "body": "00803ba0-00803bd7",
+      "abi": "__fastcall void(int index), RET",
+      "coverage": "complete"
+    },
+    {
+      "address": "00805240",
+      "name": "BSP_Recon_DestroySlot",
+      "body": "00805240-008053bc",
+      "abi": "__thiscall void(), RET",
+      "coverage": "complete"
+    },
+    {
+      "address": "008042b0",
+      "name": "BSP_ReconList_Clear",
+      "body": "008042b0-008042f5",
+      "abi": "__thiscall void(), RET",
+      "coverage": "complete"
+    },
+    {
+      "address": "00804150",
+      "name": "BSP_ReconList_SpliceAll",
+      "body": "00804150-008041b7",
+      "abi": "__thiscall void(List* source), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "008040e0",
+      "name": "BSP_ReconList_SpliceNode",
+      "body": "008040e0-00804147",
+      "abi": "__thiscall void(List* source, Node* node), RET 8",
+      "coverage": "complete"
+    },
+    {
+      "address": "00804e10",
+      "name": "BSP_ReconList_CopyAppend",
+      "body": "00804e10-00804e6d",
+      "abi": "__thiscall void(List* source), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "00804c30",
+      "name": "BSP_ReconList_PushBack",
+      "body": "00804c30-00804c86",
+      "abi": "__thiscall void(void* payload), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "00804d20",
+      "name": "BSP_ReconList_DestroyPayloads",
+      "body": "00804d20-00804d84",
+      "abi": "__thiscall void(), RET",
+      "coverage": "complete"
+    },
+    {
+      "address": "00804e70",
+      "name": "BSP_ReconEntry_Construct",
+      "body": "00804e70-00804ed3",
+      "abi": "__thiscall Entry*(Unit* unit, int level), RET 8",
+      "coverage": "complete"
+    }
+  ],
+  "host_steps": [
+    {
+      "step": 1,
+      "address": "008073ea",
+      "native": "008042b0",
+      "function": "008073c0",
+      "method": "clear_triple_008042b0",
+      "note": "the own triple at +DD8h; four more follow at 008073f5, 00807400, 0080740b, 00807416"
+    },
+    {
+      "step": 2,
+      "address": "0080743f",
+      "native": "00804150",
+      "function": "008073c0",
+      "method": "move_relation_list_into_carry_over_00804150",
+      "note": "carry-over absorbs the own bucket; 00807447 the enemy bucket, 00807455 the neutral one"
+    },
+    {
+      "step": 3,
+      "address": "00807490",
+      "native": "00805be0",
+      "function": "008073c0",
+      "method": "reset_detection_for_world_list_00805be0",
+      "note": "this = payload + slot->+28h*34h + 1E8h, over [[game+19CCh]+13Ch]"
+    },
+    {
+      "step": 4,
+      "address": "008074b0",
+      "native": "00806480",
+      "function": "008073c0",
+      "method": "scanned_class_ids_00806480",
+      "note": "re-read every iteration; the count is [EAX+8] and the data [EAX+4]"
+    },
+    {
+      "step": 5,
+      "address": "008074f6",
+      "native": "00480930",
+      "function": "008073c0",
+      "method": "unit_is_kind_of_008074f6",
+      "kind": "indirect",
+      "note": "vtable slot 5Ch with the query 2; 00480930 is one of the 87 class tests, the call site is indirect"
+    },
+    {
+      "step": 6,
+      "address": "00807500",
+      "native": "008065b0",
+      "function": "008073c0",
+      "method": "add_or_refresh_unit_008065b0",
+      "note": "PUSH unit, PUSH classId, ECX = slot"
+    },
+    {
+      "step": 7,
+      "address": "00807513",
+      "native": "00805430",
+      "function": "008073c0",
+      "method": "retire_carry_over_00805430",
+      "note": "once per scanned class id, reached even for an empty class list"
+    },
+    {
+      "step": 8,
+      "address": "0080753a",
+      "native": "00804e10",
+      "function": "008073c0",
+      "method": "append_class_list_to_triple_00804e10",
+      "note": "the own triple takes every own bucket, before the grouping pass"
+    },
+    {
+      "step": 9,
+      "address": "00807556",
+      "native": "00806840",
+      "function": "008073c0",
+      "method": "run_sensor_pass_00806840",
+      "note": "enemy buckets; 00807574 the same for neutral buckets"
+    },
+    {
+      "step": 10,
+      "address": "00807591",
+      "native": "00805490",
+      "function": "008073c0",
+      "method": "group_members_00805490",
+      "note": "first of seven for the enemy array; 008075a0, 008075af, 008075be, 008075cd, 008075dc, 008075eb"
+    },
+    {
+      "step": 11,
+      "address": "008075f3",
+      "native": "008069a0",
+      "function": "008073c0",
+      "method": "publish_group_level_from_members_008069a0",
+      "note": "the enemy squadron bucket; 0080776b neutral, 008078e9 own"
+    },
+    {
+      "step": 12,
+      "address": "00807608",
+      "native": "00805680",
+      "function": "008073c0",
+      "method": "group_members_00805680",
+      "note": "land vehicles into convoys; 00807780 neutral, 0080790c own"
+    },
+    {
+      "step": 13,
+      "address": "00807610",
+      "native": "00806a60",
+      "function": "008073c0",
+      "method": "publish_group_level_stored_00806a60",
+      "note": "the enemy convoy bucket; 00807788 neutral, 00807914 own"
+    },
+    {
+      "step": 14,
+      "address": "00807627",
+      "native": "00804e10",
+      "function": "008073c0",
+      "method": "append_class_list_to_triple_00804e10",
+      "note": "the enemy triple takes every enemy bucket; 008077a7 the neutral triple"
+    },
+    {
+      "step": 15,
+      "address": "00807656",
+      "native": "00bf681b",
+      "function": "008073c0",
+      "method": "drain_triple_to_unknown_00807634",
+      "note": "the 0Ch node the drain allocates for the unknown triple; 008077d4 in the neutral drain"
+    },
+    {
+      "step": 16,
+      "address": "008076e2",
+      "native": "00bf65ac",
+      "function": "008073c0",
+      "method": "drain_triple_to_unknown_00807634",
+      "note": "the removed node is freed; 00807860 in the neutral drain"
+    },
+    {
+      "step": 17,
+      "address": "008078f7",
+      "native": "00804e10",
+      "function": "008073c0",
+      "method": "append_class_list_to_triple_00804e10",
+      "note": "the own triple takes the squadron bucket A[18h]; 0080791c takes the convoy bucket A[1Ah]"
+    },
+    {
+      "step": 18,
+      "address": "00807925",
+      "native": "00805430",
+      "function": "008073c0",
+      "method": "retire_carry_over_00805430",
+      "note": "the literal 18h; 0080792e the literal 1Ah"
+    },
+    {
+      "step": 19,
+      "address": "0080793c",
+      "native": "00804e10",
+      "function": "008073c0",
+      "method": "append_triple_to_triple_00804e10",
+      "note": "triple 4 takes triple 0; 0080794a, 00807958, 00807966 take 1, 2 and 3"
+    }
+  ],
+  "call_sites": [
+    {
+      "site": "00806631",
+      "function": "008065b0",
+      "kind": "indirect_vtable",
+      "note": "the found path refreshes record+8h from unit->[+1E4h]->vtable[1](); the callee is per-class, so no single native address applies"
+    },
+    {
+      "address": "00806687",
+      "native": "008040e0",
+      "function": "008065b0",
+      "note": "neutral relation: splice the node from carry-over into C[classId]"
+    },
+    {
+      "address": "008066b3",
+      "native": "008040e0",
+      "function": "008065b0",
+      "note": "enemy relation"
+    },
+    {
+      "address": "008066dc",
+      "native": "008040e0",
+      "function": "008065b0",
+      "note": "own relation"
+    },
+    {
+      "address": "008066f8",
+      "native": "00805af0",
+      "function": "008065b0",
+      "note": "own relation, refresh path: (1.0f, 1, nullptr) on unit+1E8h+slotIndex*34h"
+    },
+    {
+      "address": "00806744",
+      "native": "00bf681b",
+      "function": "008065b0",
+      "note": "operator new(1Ch) for a new neutral record; 00806785 enemy, 008067c3 own"
+    },
+    {
+      "address": "00806761",
+      "native": "00804e70",
+      "function": "008065b0",
+      "note": "construct with level 0 for neutral; 008067a2 level 0 for enemy, 008067e0 level 2 for own"
+    },
+    {
+      "address": "00806779",
+      "native": "00804c30",
+      "function": "008065b0",
+      "note": "append to C[classId]; 008067b2 to B[classId], 008067ed to A[classId]"
+    },
+    {
+      "address": "00806811",
+      "native": "00805af0",
+      "function": "008065b0",
+      "note": "own relation, create path"
+    },
+    {
+      "address": "0080681e",
+      "native": "00694a60",
+      "function": "008065b0",
+      "note": "BSP_Observer_RegisterPair(unit, slot) after +24h is set at 0080681a"
+    },
+    {
+      "address": "0080545a",
+      "native": "00694af0",
+      "function": "00805430",
+      "note": "the predicate gating the retire notification"
+    },
+    {
+      "address": "00805467",
+      "native": "006952a0",
+      "function": "00805430",
+      "note": "BSP_Observer_UnregisterPair(unit, slot)"
+    },
+    {
+      "address": "0080547a",
+      "native": "00804d20",
+      "function": "00805430",
+      "note": "destroy the carry-over list for the class, records included"
+    },
+    {
+      "address": "00805521",
+      "native": "008040e0",
+      "function": "00805490",
+      "note": "the group record's node moves from carry-over D[18h] into the destination list"
+    },
+    {
+      "address": "00805529",
+      "native": "008042b0",
+      "function": "00805490",
+      "note": "clear the reused group record's member list at record+10h"
+    },
+    {
+      "address": "0080555d",
+      "native": "00bf681b",
+      "function": "00805490",
+      "note": "operator new(1Ch) for a new group record, constructed inline at 00805573..0080559a"
+    },
+    {
+      "address": "008055e9",
+      "native": "00694a60",
+      "function": "00805490",
+      "note": "register the new group record's unit with the slot"
+    },
+    {
+      "address": "00805711",
+      "native": "008040e0",
+      "function": "00805680",
+      "note": "the convoy form of the same move"
+    },
+    {
+      "address": "00805719",
+      "native": "008042b0",
+      "function": "00805680"
+    },
+    {
+      "address": "008057d9",
+      "native": "00694a60",
+      "function": "00805680"
+    },
+    {
+      "address": "008068c4",
+      "native": "00480930",
+      "function": "00806840",
+      "kind": "indirect",
+      "note": "ownUnit->vtable[5Ch](5): only IsKindOf(05h) own units are observers"
+    },
+    {
+      "address": "008068e7",
+      "native": "008048a0",
+      "function": "00806840",
+      "note": "the sensor evaluation, mask 0FFh, dt = slot->+30h, out = [ESP+0x14]"
+    },
+    {
+      "address": "0080693d",
+      "native": "00805af0",
+      "function": "00806840",
+      "note": "the best gain and the best observer are applied to the target"
+    },
+    {
+      "address": "00806957",
+      "native": "00805be0",
+      "function": "00806840",
+      "note": "nothing detected the target this pass: the accumulator is reset, not decayed"
+    },
+    {
+      "address": "008048d5",
+      "native": "00480930",
+      "function": "008048a0",
+      "kind": "indirect",
+      "note": "target->vtable[5Ch](5) selects the target's own signature at [[target+538h]+B8h]"
+    },
+    {
+      "address": "0080491e",
+      "native": "008e6430",
+      "function": "008048a0",
+      "note": "BSP_GameplayModifiers_ProductForUnit(category 0Ch, observer): the environment factor"
+    },
+    {
+      "address": "0080497f",
+      "native": "00480930",
+      "function": "008048a0",
+      "kind": "indirect",
+      "note": "target->vtable[5Ch](8): MSubmarine"
+    },
+    {
+      "address": "00804987",
+      "native": "00922dc0",
+      "function": "008048a0",
+      "note": "BSP_Entity_IsSurfaceTarget; false plus IsKindOf(8) applies the submerged range factor"
+    },
+    {
+      "address": "008049c4",
+      "native": "00414db0",
+      "function": "008048a0",
+      "note": "the target's world frame is refreshed when +C8h is clear; 008049f0 the observer's"
+    },
+    {
+      "address": "00804afa",
+      "native": "00bf701a",
+      "function": "008048a0",
+      "note": "_CIatan2 on ST(1)=dx, ST(0)=dz, the bearing to the target"
+    },
+    {
+      "address": "00804b0b",
+      "native": "00438b10",
+      "function": "008048a0",
+      "note": "BSP_Math_SubtractWrappedAngle(bearing, observer heading), RET 8"
+    },
+    {
+      "address": "00806b37",
+      "native": "006b8190",
+      "function": "00806b10",
+      "note": "push the global recon table, first pass"
+    },
+    {
+      "address": "00806b45",
+      "native": "00803750",
+      "function": "00806b10",
+      "note": "descend into recon[slot->+28h]"
+    },
+    {
+      "address": "00806b59",
+      "native": "006b8390",
+      "function": "00806b10",
+      "note": "enemy = nil; 00806b65 own, 00806b71 neutral, 00806b7d unknown"
+    },
+    {
+      "address": "00806ba9",
+      "native": "006b8190",
+      "function": "00806b10",
+      "note": "second pass, the fill"
+    },
+    {
+      "address": "00806bce",
+      "native": "008037d0",
+      "function": "00806b10",
+      "note": "named scope enemy; 00806c04 own, 00806c3a neutral, 00806c70 unknown"
+    },
+    {
+      "address": "00806be4",
+      "native": "00805d90",
+      "function": "00806b10",
+      "note": "enemy <- triple 1 at +DE4h; 00806c1a own <- +DD8h, 00806c50 neutral <- +DF0h, 00806c86 unknown <- +DFCh"
+    },
+    {
+      "address": "00806cb7",
+      "native": "006b8210",
+      "function": "00806b10",
+      "note": "pop the recon table"
+    },
+    {
+      "address": "00805dc2",
+      "native": "00bf7cd1",
+      "function": "00805d90",
+      "note": "construct the nineteen local category lists, 0Ch each, ctor 008039B0"
+    },
+    {
+      "address": "00805e43",
+      "native": "00804c30",
+      "function": "00805d90",
+      "note": "bucket one record under its category"
+    },
+    {
+      "address": "00805e69",
+      "native": "008037d0",
+      "function": "00805d90",
+      "note": "descend into the named category table, names from 00E0B590"
+    },
+    {
+      "address": "00805e9a",
+      "native": "00bf9010",
+      "function": "00805d90",
+      "note": "itoa(unit->+174h, buffer, 10): the table key is the decimal entity id as a string"
+    },
+    {
+      "address": "00805ea5",
+      "native": "006b8120",
+      "function": "00805d90",
+      "note": "push that string as the key"
+    },
+    {
+      "address": "00805eb1",
+      "native": "00927bf0",
+      "function": "00805d90",
+      "note": "push the unit's Lua value"
+    },
+    {
+      "address": "00805eba",
+      "native": "006b84d0",
+      "function": "00805d90",
+      "note": "settable at -3: the category table is a map, not an array and not a count"
+    },
+    {
+      "address": "00805404",
+      "native": "008050e0",
+      "function": "008053c0",
+      "note": "construct the 12A0h slot with its index"
+    },
+    {
+      "address": "00805290",
+      "native": "008042b0",
+      "function": "00805240",
+      "note": "the five triples; 0080529b, 008052a6, 008052b1, 008052bc"
+    },
+    {
+      "address": "008052d6",
+      "native": "00804d20",
+      "function": "00805240",
+      "note": "destroy A[i]; 008052dd B[i], 008052e8 C[i], over 61h buckets"
+    },
+    {
+      "address": "0080530c",
+      "native": "00bf7c6e",
+      "function": "00805240",
+      "note": "destroy the FOURTH array at +E14h with {0Ch, 61h, 00804E00}: the proof it is a constructed member"
+    },
+    {
+      "address": "00805396",
+      "native": "00695760",
+      "function": "00805240",
+      "note": "detach the second base at slot+14h"
+    },
+    {
+      "address": "008053a5",
+      "native": "00695870",
+      "function": "00805240",
+      "note": "detach the first base at slot+0h"
+    },
+    {
+      "address": "004e0539",
+      "native": "008053c0",
+      "function": "004dfb70",
+      "note": "the 0..2 loop that creates all three slots at mission scene load"
+    },
+    {
+      "address": "004e0546",
+      "native": "00807a50",
+      "function": "004dfb70",
+      "note": "arm an immediate refresh"
+    },
+    {
+      "address": "004e0583",
+      "native": "008053c0",
+      "function": "004dfb70",
+      "note": "resolve the local player's slot from localPlayerSlot+28h and cache it at +30h"
+    },
+    {
+      "address": "004e059b",
+      "native": "008073c0",
+      "function": "004dfb70",
+      "note": "rebuild the active local player's slot at load"
+    },
+    {
+      "address": "004c9e6a",
+      "native": "008053c0",
+      "function": "004c9ca0",
+      "note": "the same resolve in BSP_Game_ApplyInGameInterface"
+    },
+    {
+      "address": "004c9e82",
+      "native": "008073c0",
+      "function": "004c9ca0"
+    },
+    {
+      "address": "007c631c",
+      "native": "008073c0",
+      "function": "007c5f60",
+      "note": "rebuild the active local player's slot"
+    },
+    {
+      "address": "00807a08",
+      "native": "008073c0",
+      "function": "008079b0",
+      "note": "the 3-second periodic rebuild, once per present slot"
+    },
+    {
+      "address": "0077d2b6",
+      "native": "00803ba0",
+      "function": "0077d270",
+      "note": "mark every context whose detection record for the unit is above zero; the loop is unit+1F0h, stride 34h, three iterations"
+    },
+    {
+      "address": "00779b43",
+      "native": "00803ba0",
+      "function": "00779af0",
+      "note": "the same loop in BSP_MissionEntity_OnKilledPlayerUnit"
+    },
+    {
+      "address": "009f5d3a",
+      "native": "008053c0",
+      "function": "009f5d30",
+      "note": "the consumer: ECX = [[state+14h]+54h], the owner's party, then the chain at slot+0DE8h"
+    }
+  ],
+  "no_ghidra_function": [],
+  "data": [
+    {
+      "address": "00f874bc",
+      "what": "the three slot pointers; 00F874C8 is the class-id singleton, not a fourth slot"
+    },
+    {
+      "address": "00f874c8",
+      "what": "the lazily constructed scan-class-id singleton 00806480 returns, built by 00805F60"
+    },
+    {
+      "address": "00d7a24c",
+      "what": "1.0f: the detection accumulator's clamp, and the default signature and environment factor"
+    },
+    {
+      "address": "00ce3868",
+      "what": "0.25f: the level 0 to 1 threshold, 00805B45"
+    },
+    {
+      "address": "00ce3800",
+      "what": "0.5f: the level 1 to 2 threshold, 00805B5B"
+    },
+    {
+      "address": "00f876a4",
+      "what": "the global time the slot's +2Ch and +30h are computed from"
+    },
+    {
+      "address": "00d08e78",
+      "what": "the 1Ch entry record's vtable"
+    },
+    {
+      "address": "00e0b590",
+      "what": "the nineteen category name pointers, 00E0B590..00E0B5DB, walked by 00805D90"
+    },
+    {
+      "address": "00d08e64",
+      "what": "\"enemy\"; 00D08E60 \"own\", 00CE5604 \"neutral\", 00CEB808 \"unknown\", 00CE74A0 \"recon\""
+    }
+  ],
+  "corrections": [
+    {
+      "document": "docs/FIXED_STEP_COUNTDOWN.md",
+      "was": "the slot holds three arrays of 61h elements of 0Ch bytes at +34h, +4C0h and +94Ch",
+      "is": "four. The fourth is the carry-over array at +E14h",
+      "evidence": "00805300..0080530C in the destructor destroys slot+0E14h with the same array helper 00BF7C6E and the same {0Ch, 61h, 00804E00} triplet as the three at 00805353, 0080536D and 00805384; 0xE14 + 0x61*0x0C == 0x12A0, the whole object. 008065D5 and 0080543C index it as [slot + classId*0Ch + 0E18h]."
+    },
+    {
+      "document": "docs/FIXED_STEP_COUNTDOWN.md",
+      "was": "008042B0 unread; the five calls at 008073D0..00807416 described as clears on the strength of the caller",
+      "is": "008042B0 really is a full clear, but only because it loops; the listing tool hides the loop",
+      "evidence": "python tools/bsp.py ghidra disasm 008042B0 jumps from 008042E7 CALL 00BF65AC straight to 008042F4 POP ESI. The disk bytes at 008042EC are 83 C4 04 83 3E 00 75 C4: ADD ESP,4 / CMP dword [ESI],0 / JNZ 008042B8. The same omission hides 00804D7A..00804D82 in 00804D20."
+    },
+    {
+      "document": "docs/FIXED_STEP_COUNTDOWN.md",
+      "was": "the arrays are plausibly per-class unit lists and plausibly the relations; uncertain, because the report has four relations against three arrays",
+      "is": "settled. The three arrays are exactly own, enemy and neutral, indexed by class id; the fourth Lua relation, unknown, is triple 3 at +DFCh, drained out of the enemy and neutral triples by detection level",
+      "evidence": "008067EA, 008067AC and 0080676B select +34h, +4C0h and +94Ch from the relation 008065FF computes; 00806BE4/00806C1A/00806C50/00806C86 map enemy, own, neutral, unknown to +DE4h, +DD8h, +DF0h, +DFCh; only 0080769B and 00807819 write +DFCh."
+    },
+    {
+      "document": "docs/FIXED_STEP_COUNTDOWN.md",
+      "was": "the five triples at +DD8h..+E08h are the same five lists 004C3CB0 walks",
+      "is": "they are own, enemy, neutral, unknown and the union of those four; the fifth is never published to Lua",
+      "evidence": "00807933..00807966 appends triples 0, 1, 2 and 3 into +E08h and nothing reads +E08h afterwards; 00806B10 publishes only the first four."
+    },
+    {
+      "document": "packet brief cc2_recon_slot_lists (from docs/FIXED_STEP_COUNTDOWN.md's follow-up table)",
+      "was": "00885A70 belongs with 00806B10 and 006B8390 in recon_report_values",
+      "is": "00885A70 is not on the recon publish path at all",
+      "evidence": "python tools/bsp.py ghidra callers 00885a70 returns only 00885DA0 BSP_MissionLua_PushArgumentRecord and itself; 00806B10's callees are 006B8190, 00803750, 006B8390, 008037D0, 00805D90, 00A673E0 and 006B8210."
+    },
+    {
+      "document": "docs/LOCAL_PLAYER_UNIT_LISTS.md",
+      "was": "008073C0 coverage row 'partial: only the five 008042B0 clears at 008073D0..00807416 and the list-1-to-list-3 move at 00807634..008076E2 were read', with the follow-up packet unit_registry_five_lists asking what the five triples separate",
+      "is": "answered and complete. The five triples are own (+DD8h), enemy (+DE4h), neutral (+DF0h), unknown (+DFCh) and the union of those four (+E08h); the 1-to-3 move is the detection drain that copies level-1 records into the unknown triple and removes anything below level 2 from the relation triple",
+      "evidence": "the whole body 008073C0-008079A5 is read in docs/RECON_SLOT_LISTS.md section 3; 00806B10's four 00805D90 calls at 00806BE4, 00806C1A, 00806C50 and 00806C86 fix the names; 00807647 and 00807823 are the level compares. That doc's reading that 004C3CB0 walks triples 0, 1 and 3 and the HUD triple 4 is consistent and not superseded."
+    },
+    {
+      "document": "docs/RECON_SLOT_LISTS.md (this packet, self-correction before commit)",
+      "was": "drafted as 'docs/MISSION_LOAD_PATH.md and docs/MISSION_SCENE_LOAD.md name no 008073C0 site of their own'",
+      "is": "both already name it. docs/MISSION_SCENE_LOAD.md line 185 has 'slot +30h = 008053C0(), 008073C0' and docs/MISSION_LOAD_PATH.md line 153 calls the pair 'the view priming at 008053C0/008073C0'",
+      "evidence": "rg -n 008073C0 over the two files. Both describe the 004E0583/004E059B sites; this packet narrows 'view priming' to resolving the local player's recon context and rebuilding it."
+    }
+  ],
+  "names_added": [
+    {
+      "address": "008065b0",
+      "name": "BSP_Recon_AddOrRefreshUnit"
+    },
+    {
+      "address": "008048a0",
+      "name": "BSP_Recon_EvaluateSensors"
+    },
+    {
+      "address": "00806840",
+      "name": "BSP_Recon_RunSensorPass"
+    },
+    {
+      "address": "00805430",
+      "name": "BSP_Recon_RetireCarryOverClass"
+    },
+    {
+      "address": "00805490",
+      "name": "BSP_Recon_GroupMembersUnderSquadron"
+    },
+    {
+      "address": "00805680",
+      "name": "BSP_Recon_GroupMembersUnderConvoy"
+    },
+    {
+      "address": "008069a0",
+      "name": "BSP_Recon_PublishGroupLevelFromMembers"
+    },
+    {
+      "address": "00806a60",
+      "name": "BSP_Recon_PublishGroupLevelStored"
+    },
+    {
+      "address": "00806480",
+      "name": "BSP_Recon_ScanClassIds"
+    },
+    {
+      "address": "00805f60",
+      "name": "BSP_Recon_ConstructScanClassIds"
+    },
+    {
+      "address": "00805af0",
+      "name": "BSP_Recon_AccumulateDetection"
+    },
+    {
+      "address": "00805be0",
+      "name": "BSP_Recon_ResetDetection"
+    },
+    {
+      "address": "00805d90",
+      "name": "BSP_Recon_PublishRelationCategories"
+    },
+    {
+      "address": "008042b0",
+      "name": "BSP_ReconList_Clear"
+    },
+    {
+      "address": "00804150",
+      "name": "BSP_ReconList_SpliceAll"
+    },
+    {
+      "address": "008040e0",
+      "name": "BSP_ReconList_SpliceNode"
+    },
+    {
+      "address": "00804e10",
+      "name": "BSP_ReconList_CopyAppend"
+    },
+    {
+      "address": "00804c30",
+      "name": "BSP_ReconList_PushBack"
+    },
+    {
+      "address": "00804d20",
+      "name": "BSP_ReconList_DestroyPayloads"
+    },
+    {
+      "address": "00804e70",
+      "name": "BSP_ReconEntry_Construct"
+    },
+    {
+      "address": "00805240",
+      "name": "BSP_Recon_DestroySlot"
+    }
+  ],
+  "contracts": [
+    {
+      "address": "009f5d30",
+      "what": "BSP_AutoTarget_ScanPartyList walks slot+0DE8h, the head of triple 1. That list is the party's IDENTIFIED enemies: every enemy-relation unit whose detection level reached 2, plus the squadron and convoy aggregates. External, not leased."
+    },
+    {
+      "address": "0070c370",
+      "what": "BSP_FlakProjectile_TickAdvance walks the same chain. External."
+    },
+    {
+      "address": "00694a60",
+      "what": "BSP_Observer_RegisterPair, docs/OBSERVER_LIFETIME.md. Used, not re-derived."
+    },
+    {
+      "address": "006952a0",
+      "what": "BSP_Observer_UnregisterPair, same doc."
+    },
+    {
+      "address": "00922dc0",
+      "what": "BSP_Entity_IsSurfaceTarget, already named. Used as the submerged test."
+    },
+    {
+      "address": "00438b10",
+      "what": "BSP_Math_SubtractWrappedAngle, already named and reconstructed in src/unit_rudder.cpp."
+    },
+    {
+      "address": "008e6430",
+      "what": "BSP_GameplayModifiers_ProductForUnit, already named and reconstructed. Category 0Ch is the detection-range modifier."
+    }
+  ],
+  "run_time_evidence": "none. bsp_game.exe fakes the recon list (docs/GAME_EXECUTABLE.md line ~4806), so no path the executable reaches runs 008073C0.",
+  "build": "./scripts/build.ps1 from the worktree: bsp_core, bsp_game and the probes compile Win32 Release with warnings as errors.",
+  "tests": "ctest: reconstructed_math passes, 1/1. One case added to tests/math_tests.cpp pinning recon_relation_for_008065ff over all nine (slot index, party) pairs, including the slot 2 branch that never yields enemy."
+}

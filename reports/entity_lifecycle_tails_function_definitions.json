@@ -1,0 +1,90 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0042baf0",
+    "end_address": "0042baf5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0042baf0",
+    "end_address": "0042baf4",
+    "bytes_disassembled": 5,
+    "message": "Successfully disassembled 5 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0042baf0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "0042baf0",
+    "function_name": "FUN_0042baf0",
+    "entry_point": "0042baf0",
+    "body_size": 5,
+    "message": "Function created successfully at 0042baf0"
+   }
+  },
+  {
+   "defined": "0042baf0",
+   "end": "0042baf5",
+   "name": null,
+   "after": "Function: FUN_0042baf0 at 0042baf0\nSignature: undefined FUN_0042baf0(void)\nEntry: 0042baf0\nBody: 0042baf0 - 0042baf4"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00826f10",
+    "end_address": "0082781c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00826f10",
+    "end_address": "0082781b",
+    "bytes_disassembled": 2316,
+    "message": "Successfully disassembled 2316 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00826f10",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00826f10",
+    "function_name": "FUN_00826f10",
+    "entry_point": "00826f10",
+    "body_size": 2316,
+    "message": "Function created successfully at 00826f10"
+   }
+  },
+  {
+   "defined": "00826f10",
+   "end": "0082781c",
+   "name": null,
+   "after": "Function: FUN_00826f10 at 00826f10\nSignature: undefined FUN_00826f10(void)\nEntry: 00826f10\nBody: 00826f10 - 0082781b"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

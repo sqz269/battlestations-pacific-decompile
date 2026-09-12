@@ -1,4 +1,6 @@
 #include "bsp/sound_channel_runtime.hpp"
+#include "bsp/sound_retained_channel.hpp"
+#include "bsp/sound_retained_update.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <windows.h>
@@ -12,7 +14,9 @@ SoundChannelRuntime::SoundChannelRuntime(SoundSpatialChannelContext& spatial, So
 }
 SoundInstance& SoundChannelRuntime::checked(SoundLevelEntry* entry) {
     auto& base = *static_cast<SoundInstance*>(entry);
-    if (base.native_vtable_00 != 0x00d5abf8 && !(base.native_vtable_00 == 0x00d5b510 && spatial_) &&
+    if (base.native_vtable_00 != 0x00d5abf8 && base.native_vtable_00 != 0x00d5ad58 &&
+        base.native_vtable_00 != 0x00d5ada0 && base.native_vtable_00 != 0x00d5ade8 &&
+        !(base.native_vtable_00 == 0x00d5b510 && spatial_) &&
         !(base.native_vtable_00 == 0x00d5b4c8 && events_))
         throw std::logic_error("Unbound active sound instance profile");
     return base;
@@ -52,6 +56,12 @@ void SoundChannelRuntime::release_reference(void* canonical_entry) noexcept {
                 scalar_delete_spatial_sound_event_00a89ee0(static_cast<SpatialSoundEventInstance*>(&s), 1, *events_);
             else if (s.native_vtable_00 == 0x00d5b510)
                 scalar_delete_spatial_sound_channel_00a8a460(static_cast<SpatialSoundChannelInstance*>(&s), 1, *spatial_);
+            else if (s.native_vtable_00 == 0x00d5ad58)
+                scalar_delete_retained_sound_channel_00a7db20(static_cast<RetainedSoundChannelInstance*>(&s), 1, context_);
+            else if (s.native_vtable_00 == 0x00d5ada0)
+                scalar_delete_scaled_retained_sound_channel_00a7dc70(static_cast<ScaledRetainedSoundChannelInstance*>(&s), 1, context_);
+            else if (s.native_vtable_00 == 0x00d5ade8)
+                scalar_delete_underwater_retained_sound_channel_00a7ddb0(static_cast<RetainedSoundChannelInstance*>(&s), 1, context_);
             else scalar_delete_sound_channel_00a7d5a0(static_cast<SoundChannelInstance*>(&s), 1, context_);
         }
     } catch (...) { std::terminate(); }
@@ -69,6 +79,17 @@ void SoundChannelRuntime::update_slot30(SoundLevelEntry* entry, float dt, SoundL
         update_spatial_sound_event_00a89770(static_cast<SpatialSoundEventInstance&>(s), dt, listener, *events_);
     else if (s.native_vtable_00 == 0x00d5b510)
         update_spatial_sound_channel_00a8a480(static_cast<SpatialSoundChannelInstance&>(s), dt, listener, *spatial_);
+    else if (s.native_vtable_00 == 0x00d5ad58) {
+        auto& retained = static_cast<RetainedSoundChannelInstance&>(s);
+        update_retained_sound_ramp_00a7b520(retained, retained.source_5c.field_0c,
+            retained.source_5c.field_10, dt, reinterpret_cast<std::uint32_t>(&listener), context_);
+    } else if (s.native_vtable_00 == 0x00d5ada0) {
+        auto& retained = static_cast<ScaledRetainedSoundChannelInstance&>(s);
+        update_retained_sound_scaled_ramp_00a7b5d0(retained, retained.source_5c.field_0c,
+            retained.source_5c.field_10, retained.scale_70, dt, reinterpret_cast<std::uint32_t>(&listener), context_);
+    } else if (s.native_vtable_00 == 0x00d5ade8)
+        update_retained_sound_nonpositive_00a7b690(static_cast<RetainedSoundChannelInstance&>(s),
+            dt, reinterpret_cast<std::uint32_t>(&listener), context_);
     else update_sound_channel_00a7af10(static_cast<SoundChannelInstance&>(s), dt, reinterpret_cast<std::uint32_t>(&listener), context_);
 }
 bool SoundChannelRuntime::transition_slot24(SoundLevelEntry* entry) {

@@ -1,0 +1,244 @@
+{
+  "packet": "cc2_command_completion",
+  "owner": "agent/cc2-command-completion",
+  "docs": "docs/COMMAND_COMPLETION.md",
+  "sources": "include/bsp/command_completion.hpp, src/command_completion.cpp",
+  "subject": "What happens the moment a unit's command finishes: 0071E430 whole, the stage ladder it feeds, the MT_GAMEUNIT_CLEARCMD round trip that turns a terminal stage into a queue advance, the standing command the controller falls back to, the `command` mission-event channel and its Lua subscription, the attackmove target-death paths, and the unread callees 00984300, 00984800, 0071F3B0, 007788D0.",
+  "reuses": "include/bsp/command_execution.hpp for CommandMode, CommandSlot, CommandParams, kCommandStage*, the controller offsets and the command singleton addresses; it already projects 00720850 as clear_command_slot_00720850, which this packet does not reimplement.",
+  "answer": [
+    {
+      "question": "(1) The end-command sequence as a rule table, from the `finished` text to the controller's next state, with every call site.",
+      "result": "There is no finish routine; finishing is a one-way stage counter. 0071E430 BSP_WeaponDirector_EndCommand, __thiscall(controller)(void* command, char terminal), RET 8, body 0071E430-0071E4B9, has four arms. A non-null command whose vtable[0Ch] category is neither 1 nor 2 jumps to the queue raise at 0071E454 without consulting the mode; a null command or category 1/2 falls into the mode test at 0071E44C, where mode 1 raises the queue stage through 0071D810 and mode 2 the override stage through 0071D9E0, both with the stage 1 + (terminal != 0) built at 0071E454-0071E45F. Any other mode takes a fourth arm at 0071E489 that is not an ending at all: it counts the occupied slots and, if any, sets mode 1 and clears +44h and +48h, restarting the queue head. The stage only rises (both raisers return when the stored value already meets the request) and only 0071C130, reached as vtable[6Ch], resets it. Stage 1 alone does nothing; 00836920 turns it into 2 at 00836985 when more than one command is queued or unit+184h is set, and at 00836993 unconditionally for the override. Stage 2 routes MT_GAMEUNIT_CLEARCMD unless the session mode at *(00E188A8)+1FE4h is 2. All ten call sites were read: 009C312E and 009CFB47 pass terminal 0 (a soft arrival on `moveto`); 009BCB0E, 009E5997, 009E5C70, 009E88C1, 009F3718, 009F7CFC, 009F7D8A and 009F83A8 pass 1."
+    },
+    {
+      "question": "(2) The queue advance: who shifts the slots, when, and what the controller looks like after the last queued command.",
+      "result": "Nothing shifts the queue locally. 0071D810's stage-2 arm builds MT_GAMEUNIT_CLEARCMD (kind 5Dh, vtable 00CFD9D8) through 0071C730(1, 0) at 0071D852 and routes it at 0071D867; 0071D900 builds the byte-identical message with an explicit slot index and is reached only from 0071E550 at 0071E5AA; 0071D880 sends index -1. The receiver is 00721A40's 5Dh arm: msg+20h zero goes to 0071E610 ClearOverrideCommand at 00721BC5, a negative msg+24h to 00720CA0 ClearAllCommandSlots at 00721BA8, and any other index to 00720850 InternalClearPrimaryCommand at 00721BB7. So the advance is a session round trip and the local controller keeps running the command until the message returns. 00720850 with index 0 (owned by docs/COMMAND_EXECUTION.md) copies slot 0 into the previous-command record at +16Ch, shifts slots 1..n-1 down when two or more are queued, and otherwise zeroes slot 0's command, snaps its parameters to the target's world position and drops mode to 0. Its tail vtable[6Ch](1) reaches 00835BF0, which calls 0071C130 first, and 0071C130 with a non-zero argument is exactly +44h = 0 and +48h = 0 at 0071C138/0071C13B. That is the link back to the start: a clear acceptance byte is the condition arm 6 of 0071F290 tests before calling vtable[78h](1), so the promoted head begins the next frame and 0071F600 sends the `start` event. After the last queued command the controller is not left idle: LAB_00836DC9 issues a standing command, follow 00E08F60 on 007788D0's controlling entity when 007788B0 answers true, else cruise 00E08F70 when unit+184h is set or the commanded speed at *(unit+73Ch)+28h is at least 0.0f, else stop 00E08F88."
+    },
+    {
+      "question": "(3) The Lua/mission-event side of `finished`: message kind, payload, receiver, and whether a script handler runs.",
+      "result": "A script handler does run. 00984300 BSP_MissionEvents_ReportCommand is __thiscall(reporter)(entity, CommandTarget*, CommandClass*, NativeString* status), RET 10h, body 00984300-009847FD, and `this` is the global mission event director at 00F8A0C4, not a director. It fires the event channel named `command` (00D186C4) on the map at reporter+F8h and returns at once when channel+8h (_Mysize) is zero. It boxes four parameters: the acting entity's u16 id at +174h, the resolved command target's id, the command class name from cls->vtable[4](), and the status string. 0097B8C0 collects the callback names of every subscription whose vtable[0Ch] accepts them, then 00887E50 BSP_MissionLuaHost_CallNamedThreadSafe runs each on the host at *(00E188A8)+1A08h with the same four values as Lua variants. The status vocabulary is closed: `start` (00CFDB1C, 0071F768 and 0071F892) and `finished` (00D09FD8, 00836D17, 0084E3BE, 009E58E6, 009E5BBC). There is no fixed OnFinished entry point. 0097E360 accepts the Lua event kind `command` at 0097E611 and builds a 4Ch-byte subscription with 0097C8A0, whose four filter containers at +0Ch, +1Ch, +2Ch and +3Ch are ANDed against the four parameters by 00968AF0 (vtable 00D1B770 slot +0Ch). So a mission filters a command event on unit, target, command name and status, and the callback name at subscription+4h is the Lua function that runs. For Kortenaer arriving at Java: the moveto state step assigns `finished` at 009E58E6, reports at 009E595C, any matching Lua handler runs, and 009E5997 then ends the command."
+    },
+    {
+      "question": "(4) What ends an attackmove when its target dies, and what the unit does next.",
+      "result": "Three watchers, one ending. The director step's attackmove arm at 00836B45 (documented in docs/COMMAND_EXECUTION.md and confirmed here) goes to stage 2 when the target no longer resolves; converts the command by issuing `moveto` on the target's position through 0071ECF0 at 00836BAD and then stage 2 when the target passes vtable[5Ch](1Ch) and is flagged at +5Eh or shares the session's side; and goes to stage 2 when a live visible unit fails 005457C0. 005457C0 is __thiscall(unit)(int side) returning unit+54h != side && side != 2, so an attackmove also ends when its target stops being hostile. The ship AI state step ends with 0071E430(attackmove, 1) at 009E88C1 and the tangent sub-state the same at 009F3718, both terminal, so an attackmove gets no stage-1 grace period. BSP_Bot_RevalidateCurrentCommand does not end anything: a category 1 or 2 command with a dead target falls to LAB_009F8412 and sets bot+3Dh. 0072BCE0 is narrower still, firing only for the bot's own fire target. What the unit does next is the ordinary path: 00720850(0) copies the slot to +16Ch and, for the last queued command, snaps slot 0 to the dead target's last world position and drops to mode 0; the next 00836920 reaches LAB_00836DC9 and issues cruise or stop. Six ships on one attackmove therefore hold station or cruise at their own last commanded throttle. No revert: +16Ch is written by 00720850 and zeroed by the constructor at 0072023B, and this packet found no reader."
+    },
+    {
+      "question": "(5) 00984800, 0071F3B0, 007788D0.",
+      "result": "00984800 BSP_MissionEvents_ReportTarget, __thiscall(reporter)(entity, target), body 00984800-00984B93, is 00984300's twin for the channel named `target`: same lock, same lookup, same early return on an empty channel, two boxed entity ids, evaluate at 009849D2 and call the host at 00984ACA. Its only native producer is 0071F600 at 0071F7E8, fired when a command that has just started has a target that resolves, so `target` is a start event and never a completion one. 0071F3B0 BSP_RefCountedPtr_Release, __fastcall(void** slot), body 0071F3B0-0071F3D8, is not a command routine at all: InterlockedDecrement on obj+4, obj->vtable[0]() at zero, then *slot = 0. It appears on the command path only because 0071F600 uses it at 0071F880 to drop the old slot-0 path object. 007788D0 BSP_Entity_ControllingEntity, __fastcall(entity), body 007788D0-007788DE, returns [entity+284h] ? [[entity+284h]+14h] : 0, the twin of 007788B0, and is read at 00836AF2, 00836B03, 00836B1A in the follow arm and at 00836E28 in the idle tail."
+    }
+  ],
+  "functions": [
+    {
+      "address": "0071e430",
+      "name": "BSP_WeaponDirector_EndCommand",
+      "abi": "__thiscall(controller)(void* command, char terminal), RET 8 at 0071E469/0071E486/0071E4B7, body 0071e430-0071e4b9",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "0071E431 MOV ESI,ECX fixes the controller as the this pointer; the two stack arguments are [ESP+8] and [ESP+0Ch] after the single push",
+        "0071E437 TEST ECX,ECX / JZ 0071E44C: a null command skips the category call",
+        "0071E43D-0071E44A: command->vtable[0Ch](); CMP EAX,1 / JZ 0071E44C, CMP EAX,2 / JNZ 0071E454, so only categories 1 and 2 consult the mode",
+        "0071E454-0071E45F: XOR EAX,EAX / CMP byte [ESP+0Ch],AL / SETNZ AL / ADD EAX,1 builds the stage as 1 + (terminal != 0); 0071E471 is the ECX twin for the override arm",
+        "0071E44C mode == 1 -> 0071E463 CALL 0071D810; 0071E46C mode == 2 -> 0071E480 CALL 0071D9E0",
+        "0071E489-0071E49E: the 0071BE60 loop inline, counting leading occupied slots at +54h stride 1Ch, at most ten",
+        "0071E4A0 TEST EAX,EAX / JLE 0071E4B6 skips the writes on an empty queue; otherwise 0071E4A4 mode = 1, 0071E4AB +44h = 0, 0071E4AF +48h = 0"
+      ]
+    },
+    {
+      "address": "00984300",
+      "name": "BSP_MissionEvents_ReportCommand",
+      "abi": "__thiscall(reporter)(void* entity, CommandTarget* target, CommandClass* cls, NativeString* status), RET 10h at 009847FB, body 00984300-009847fd",
+      "coverage": "complete for the control flow and the four parameters; the box and variant helpers 00884A90, 00884FC0, 006E0E00, 0096DC00 and 00975EA0 are read only as far as their role in the sequence",
+      "no_ghidra_function": false,
+      "rules": [
+        "Every call site loads this from the global at 00F8A0C4 (MOV ECX,[00F8A0C4] at 0071F785, 0071F8AE-equivalent, 00836D4B and 0084E405), so the receiver is the mission event director, not a weapon director",
+        "0098431C MOV EBP,ECX then 00984329 saves it to [ESP+14h]; 009843CE MOV EBP,EAX reassigns EBP to 00980150's return and only 009847AF restores it, so the +104h/+105h clears at 00984380/00984386 are on the reporter and the +105h store at 0098473F is on the channel",
+        "The two undisassembled gaps at 0098472E and 0098478D were decoded from disk: neither restores EBP",
+        "009843EA MOV EAX,[EBP+8] / JZ 009847AF: an empty channel costs one map lookup and nothing else",
+        "00984414 MOV ECX,[ESP+78h] is argument 1 and 0098446D MOV EDI,[ESP+7Ch] is the slot 00984352's resolve overwrote, so the two boxes are the acting entity and the resolved target, each as the u16 at +174h behind vtable 00D1AF24",
+        "0098462D/0098465A read the same two slots for the Lua variants, 00984687 LEA EDX,[ESP+1Ch] is the class-name string built at 0098436E, and 009846B4 MOV ECX,[ESP+84h] is argument 4, the status",
+        "009846FB-00984710: PUSH -1 / PUSH 0 / this = [[00E188A8]+1A08h] / PUSH variants / PUSH &name / PUSH 0, so the host call takes five stack arguments"
+      ]
+    },
+    {
+      "address": "0071d900",
+      "name": "BSP_WeaponDirector_SendClearCommandSlot",
+      "abi": "__fastcall(int slotIndex), RET 0, body 0071d900-0071d977",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "0071D921 CALL 0075B430 BSP_SessionMessage_ConstructBase with 5Dh; vtable 00CFD9D8; +4h = 1, +18h/+1Ah/+1Ch zero, +20h = 1, +24h = the argument",
+        "0071D961 CALL 0077C2A0 BSP_Session_RouteMessage(msg, 7, 0)",
+        "Byte-identical in shape to 0071C730(1, index), so the stage-2 send and the make-room send are one mechanism"
+      ]
+    },
+    {
+      "address": "00984800",
+      "name": "BSP_MissionEvents_ReportTarget",
+      "abi": "__thiscall(reporter)(void* entity, void* target), body 00984800-00984b93",
+      "coverage": "structural only: the same shape as 00984300, two parameters, one producer",
+      "no_ghidra_function": false,
+      "rules": [
+        "Channel name `target`, six characters through 0041DD40(6, 1); same lock at reporter+24h, same +104h/+105h clear, same 00980150 lookup on reporter+F8h and the same empty-channel early return",
+        "009849D2 CALL 0097B8C0 then 00984ACA CALL 00887E50",
+        "Single native producer 0071F600 at 0071F7E8, after a start event whose target resolves, so no completion ever reaches this channel"
+      ]
+    },
+    {
+      "address": "0071f3b0",
+      "name": "BSP_RefCountedPtr_Release",
+      "abi": "__fastcall(void** slot), RET 0, body 0071f3b0-0071f3d8",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "Null pointer returns without touching the slot; otherwise InterlockedDecrement(obj+4) and obj->vtable[0]() at zero, then *slot = 0",
+        "Not a command routine; the only call site on the command path is 0071F880 inside 0071F600"
+      ]
+    },
+    {
+      "address": "007788d0",
+      "name": "BSP_Entity_ControllingEntity",
+      "abi": "__fastcall(entity), RET 0, body 007788d0-007788de",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "[entity+284h] == 0 returns 0; otherwise returns [[entity+284h]+14h]",
+        "The twin of 007788B0 BSP_Entity_ControllerBelongsToAnother, which is ctrl != 0 && [ctrl+14h] != entity",
+        "Read at 00836AF2, 00836B03 and 00836B1A in the follow arm and at 00836E28 in the idle tail"
+      ]
+    },
+    {
+      "address": "0097c8a0",
+      "name": "BSP_CommandEventSubscription_Construct",
+      "abi": "__fastcall(void* storage), RET 0, body 0097c8a0-0097c9a2",
+      "coverage": "complete; the container element types and the filters' vtable[0] are not read",
+      "no_ghidra_function": false,
+      "rules": [
+        "Reached from 0097E360 at 0097E63A after the Lua event kind literal `command` (00D186C4) matches at 0097E611 and 0097E61A allocates 4Ch bytes",
+        "Installs vtable 00D1B770 and builds four empty ordered containers: 0096BA00 trees at +0Ch and +1Ch, 004C26B0 trees (18h-byte nodes) at +2Ch and +3Ch"
+      ]
+    },
+    {
+      "address": "00968af0",
+      "name": "BSP_EventSubscription_MatchFourParameters",
+      "abi": "__thiscall(subscription)(ParamVector* params), body 00968af0-00968bc7",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "Slot +0Ch of 00D1B770, so it is what 0097B8C0 calls per subscription",
+        "Requires the vector (begin at params+4h, end at params+8h, four-byte elements) to hold at least 1, 2, 3 and 4 entries in turn, raising the CRT range check otherwise",
+        "Calls filter->vtable[0] on +0Ch, +1Ch, +2Ch and +3Ch with params[0..3] and returns 1 only when all four answer true, so the filters are a conjunction and an empty container must accept everything"
+      ]
+    },
+    {
+      "address": "005457c0",
+      "name": "FUN_005457c0",
+      "abi": "__thiscall(unit)(int side), RET 4, body 005457c0-005457d8",
+      "coverage": "complete; not renamed, it is outside this packet's subject",
+      "no_ghidra_function": false,
+      "rules": [
+        "Returns 1 when unit+54h != side and side != 2, else 0",
+        "00836920's attackmove arm raises stage 2 on a false answer, so it reads `the target is still hostile`"
+      ]
+    }
+  ],
+  "host_steps": [
+    { "step": "0071E430 arm B raises the queue-head stage", "function": "FUN_0071e430", "address": "0071e463", "native": "0071d810", "host_method": "raise_queue_stage" },
+    { "step": "0071E430 arm C raises the override stage", "function": "FUN_0071e430", "address": "0071e480", "native": "0071d9e0", "host_method": "raise_override_stage" },
+    { "step": "0071E430 arm A reads the command category", "function": "FUN_0071e430", "address": "0071e440", "native": "00CFB378+0Ch", "host_method": "command_category", "kind": "indirect" },
+    { "step": "stage 2 builds MT_GAMEUNIT_CLEARCMD for the queue head", "function": "BSP_WeaponDirector_RaiseCommandStage", "address": "0071d852", "native": "0071c730", "host_method": "route_clear_command_message" },
+    { "step": "and routes it", "function": "BSP_WeaponDirector_RaiseCommandStage", "address": "0071d867", "native": "0077c2a0", "host_method": "route_clear_command_message" },
+    { "step": "the slot-indexed twin constructs the same message", "function": "FUN_0071d900", "address": "0071d921", "native": "0075b430", "host_method": "route_clear_command_message" },
+    { "step": "and routes it", "function": "FUN_0071d900", "address": "0071d961", "native": "0077c2a0", "host_method": "route_clear_command_message" },
+    { "step": "make-room sends the slot clear with count - 1", "function": "BSP_WeaponDirector_MakeRoomForCommand", "address": "0071e5aa", "native": "0071d900", "host_method": "route_clear_command_message" },
+    { "step": "the 5Dh receiver clears every slot on a negative index", "function": "BSP_WeaponDirector_ApplyGameUnitMessage", "address": "00721ba8", "native": "00720ca0", "host_method": "clear_command_action" },
+    { "step": "removes one slot otherwise", "function": "BSP_WeaponDirector_ApplyGameUnitMessage", "address": "00721bb7", "native": "00720850", "host_method": "clear_command_action" },
+    { "step": "clears the override when msg+20h is zero", "function": "BSP_WeaponDirector_ApplyGameUnitMessage", "address": "00721bc5", "native": "0071e610", "host_method": "clear_command_action" },
+    { "step": "the queue advance clears the override first in mode 2", "function": "BSP_WeaponDirector_InternalClearPrimaryCommand", "address": "007208ef", "native": "0071e610", "host_method": "contract, docs/COMMAND_EXECUTION.md" },
+    { "step": "the moveonpath arm raises the terminal stage before reporting", "function": "BSP_WeaponDirector_Step", "address": "00836d12", "native": "0071d810", "host_method": "raise_queue_stage" },
+    { "step": "assigns the `finished` literal 00D09FD8", "function": "BSP_WeaponDirector_Step", "address": "00836d20", "native": "0041e870", "host_method": "assign_status_text" },
+    { "step": "builds the command target descriptor", "function": "BSP_WeaponDirector_Step", "address": "00836d3e", "native": "004f1830", "host_method": "make_command_target" },
+    { "step": "reports the command event on [00F8A0C4]", "function": "BSP_WeaponDirector_Step", "address": "00836d51", "native": "00984300", "host_method": "report_command_event" },
+    { "step": "the idle tail asks whether the controller belongs to another", "function": "BSP_WeaponDirector_Step", "address": "00836e13", "native": "007788b0", "host_method": "controller_belongs_to_another" },
+    { "step": "and reads the controlling entity on the follow branch", "function": "BSP_WeaponDirector_Step", "address": "00836e28", "native": "007788d0", "host_method": "controlling_entity" },
+    { "step": "wraps it as a command target", "function": "BSP_WeaponDirector_Step", "address": "00836e32", "native": "00465080", "host_method": "contract" },
+    { "step": "issues the standing command", "function": "BSP_WeaponDirector_Step", "address": "00836e92", "native": "0071ecf0", "host_method": "issue_command" },
+    { "step": "the attackmove arm converts a dead target into a moveto", "function": "BSP_WeaponDirector_Step", "address": "00836bad", "native": "0071ecf0", "host_method": "issue_command" },
+    { "step": "the begin path assigns the `start` literal 00CFDB1C", "function": "BSP_WeaponDirector_BeginCommandBase", "address": "0071f771", "native": "0041e870", "host_method": "assign_status_text" },
+    { "step": "reports the start event", "function": "BSP_WeaponDirector_BeginCommandBase", "address": "0071f79b", "native": "00984300", "host_method": "report_command_event" },
+    { "step": "resolves the started command's target", "function": "BSP_WeaponDirector_BeginCommandBase", "address": "0071f7c9", "native": "00521ea0", "host_method": "contract" },
+    { "step": "and fires the `target` channel for it", "function": "BSP_WeaponDirector_BeginCommandBase", "address": "0071f7e8", "native": "00984800", "host_method": "report_target_event" },
+    { "step": "drops the old slot-0 path object", "function": "BSP_WeaponDirector_BeginCommandBase", "address": "0071f880", "native": "0071f3b0", "host_method": "contract" },
+    { "step": "the reporter resolves the command target", "function": "FUN_00984300", "address": "00984352", "native": "00521ea0", "host_method": "internal" },
+    { "step": "assigns the class name from cls->vtable[4]", "function": "FUN_00984300", "address": "0098436e", "native": "0041e870", "host_method": "internal" },
+    { "step": "builds the channel name `command`", "function": "FUN_00984300", "address": "00984394", "native": "0041dd40", "host_method": "internal" },
+    { "step": "looks the channel up on reporter+F8h", "function": "FUN_00984300", "address": "009843c7", "native": "00980150", "host_method": "internal" },
+    { "step": "evaluates the subscriptions", "function": "FUN_00984300", "address": "009845bd", "native": "0097b8c0", "host_method": "command_event_callbacks" },
+    { "step": "boxes the acting entity as a Lua variant", "function": "FUN_00984300", "address": "00984636", "native": "00884a90", "host_method": "internal" },
+    { "step": "pushes it", "function": "FUN_00984300", "address": "00984647", "native": "006edf00", "host_method": "internal" },
+    { "step": "boxes the class-name string", "function": "FUN_00984300", "address": "00984690", "native": "00884fc0", "host_method": "internal" },
+    { "step": "calls the mission Lua host per matching callback", "function": "FUN_00984300", "address": "00984710", "native": "00887e50", "host_method": "command_event_callbacks" },
+    { "step": "the `target` twin evaluates", "function": "FUN_00984800", "address": "009849d2", "native": "0097b8c0", "host_method": "report_target_event" },
+    { "step": "and calls the host", "function": "FUN_00984800", "address": "00984aca", "native": "00887e50", "host_method": "report_target_event" },
+    { "step": "the Lua event parser matches the kind `command`", "function": "BSP_WarningManager_ParseEventBlock", "address": "0097e611", "native": "00425850", "host_method": "contract" },
+    { "step": "and builds the four-filter subscription", "function": "BSP_WarningManager_ParseEventBlock", "address": "0097e63a", "native": "0097c8a0", "host_method": "command_event_matches" },
+    { "step": "moveonpath state step ends its command", "function": "BSP_ShipAi_MoveOnPathStateStep", "address": "009e5c70", "native": "0071e430", "host_method": "run_end_command_0071e430" },
+    { "step": "movetopos state step ends its command", "function": "BSP_ShipAi_MoveToPosStateStep", "address": "009e5997", "native": "0071e430", "host_method": "run_end_command_0071e430" },
+    { "step": "movetopos state step reports `finished` first", "function": "BSP_ShipAi_MoveToPosStateStep", "address": "009e595c", "native": "00984300", "host_method": "report_command_event" },
+    { "step": "moveonpath state step reports `finished` first", "function": "BSP_ShipAi_MoveOnPathStateStep", "address": "009e5c35", "native": "00984300", "host_method": "report_command_event" },
+    { "step": "attackmove state step ends its command, terminal", "function": "BSP_ShipAi_AttackMoveStateStep", "address": "009e88c1", "native": "0071e430", "host_method": "run_end_command_0071e430" },
+    { "step": "attackmove tangent sub-state does the same", "function": "BSP_ShipAi_AttackMoveTangentSubStateStep", "address": "009f3718", "native": "0071e430", "host_method": "run_end_command_0071e430" },
+    { "step": "the bot ends a dogfight command", "function": "BSP_Bot_RevalidateCurrentCommand", "address": "009f83a8", "native": "0071e430", "host_method": "run_end_command_0071e430" },
+    { "step": "a moveto soft finish, terminal 0", "function": "FUN_009c3100", "address": "009c312e", "native": "0071e430", "host_method": "run_end_command_0071e430" },
+    { "step": "the second moveto soft finish, terminal 0", "function": "FUN_009cfa80", "address": "009cfb47", "native": "0071e430", "host_method": "run_end_command_0071e430" },
+    { "step": "a moveonpath finish, terminal 1", "function": "FUN_009bca50", "address": "009bcb0e", "native": "0071e430", "host_method": "run_end_command_0071e430" },
+    { "step": "the current command finished twice in one body", "function": "FUN_009f7c90", "address": "009f7cfc", "native": "0071e430", "host_method": "run_end_command_0071e430" },
+    { "step": "second site", "function": "FUN_009f7c90", "address": "009f7d8a", "native": "0071e430", "host_method": "run_end_command_0071e430" },
+    { "step": "the fourth `finished` producer reports", "function": "FUN_0084e010", "address": "0084e431", "native": "00984300", "host_method": "report_command_event" }
+  ],
+  "no_ghidra_function": [],
+  "corrections": [
+    {
+      "document": "docs/MISSION_EVENTS_UPDATE.md",
+      "was": "`+104h`, `+105h`: two bytes cleared by each channel dispatch, on the reporter",
+      "is": "In 00984300 only the clears belong to the reporter. EBP holds this from 0098431C, is overwritten with 00980150's return at 009843CE and is restored only at 009847AF, so the +104h/+105h clears at 00984380/00984386 are on the reporter but the +105h store at 0098473F is on the channel object.",
+      "evidence": "Filtered the whole 00984300 listing for EBP: writes at 0098431C, 009843CE and 009847AF only. The two regions Ghidra left undisassembled, 0098472E-0098473A and 0098478D-00984793, were decoded from disk bytes and contain no EBP restore. 009843EA MOV EAX,[EBP+8] reading _Mysize confirms EBP is the channel at that point."
+    },
+    {
+      "document": "docs/COMMAND_EXECUTION.md",
+      "was": "00984300, 00984800, 0071F3B0, 007788D0 and 005457C0 listed as unread callees of the command path",
+      "is": "All five are read. 00984300 and 00984800 are the `command` and `target` mission-event dispatchers; 0071F3B0 is a refcounted-pointer reset that is on the path only because 0071F600 drops a path object with it; 007788D0 is the controlling-entity accessor; 005457C0 is the still-hostile test.",
+      "evidence": "docs/COMMAND_COMPLETION.md sections 3 and 5; bodies 00984300-009847FD, 00984800-00984B93, 0071F3B0-0071F3D8, 007788D0-007788DE, 005457C0-005457D8."
+    },
+    {
+      "document": "docs/CRUISE_COMMAND.md",
+      "was": "the 5Dh senders are 0071E390, 0071C7A0, 0071C7E0, 0071C770",
+      "is": "That list is not exhaustive. The senders on the completion path are 0071C730 (the builder 0071D810 uses at 0071D852 and 0071D9E0 uses), 0071D880 with index -1, and 0071D900, which 0071E550 reaches at 0071E5AA.",
+      "evidence": "0071D921 and 0071D852 both reach BSP_SessionMessage_ConstructBase(5Dh) with vtable 00CFD9D8; the three builders differ only in msg+20h and msg+24h."
+    },
+    {
+      "document": "reports/command_completion.json",
+      "was": "this packet's own first ledger notes gave body 00984300-009847FB, 0071E430-0071E4B7, 00984800-00984B9x, and follow-arm sites 00836AF4 / 00836DE6",
+      "is": "The inclusive body ends are 009847FD, 0071E4B9 and 00984B93 (each RET n is three bytes), and the 007788D0 sites are 00836AF2, 00836B03, 00836B1A and 00836E28.",
+      "evidence": "ghidra proto --brief for the three bodies; grep of the 00836920 listing for CALL 0x007788d0. Corrected in the ledger with --append-evidence."
+    }
+  ],
+  "open_questions": [
+    "Which entity director+34h is. docs/WEAPON_DIRECTOR.md calls it the session endpoint, but 00984300 reads only its +174h and 0071F290's gate reads the same +5Ch/+5Dh/+5Eh/+60h bytes an entity carries, and the two `finished` producers report +24Ch instead.",
+    "Whether anything reads the previous-command record at +16Ch. This packet found no reader; a targeted byte scan was not run.",
+    "How channel+105h can be in bounds if the channel value really is a std::list base as docs/MISSION_EVENTS_UPDATE.md reads it.",
+    "What bot+3Ch and bot+3Dh do once BSP_Bot_RevalidateCurrentCommand sets them.",
+    "0084E010's owner and vtable slot. It is the fourth `finished` producer and was not read."
+  ],
+  "build": "scripts/build.ps1 clean, Win32 Release, warnings as errors. ctest: 1/1 reconstructed_math passed. No new tests added.",
+  "names_added": [
+    "0071e430 BSP_WeaponDirector_EndCommand",
+    "00984300 BSP_MissionEvents_ReportCommand",
+    "00984800 BSP_MissionEvents_ReportTarget",
+    "0071d900 BSP_WeaponDirector_SendClearCommandSlot",
+    "007788d0 BSP_Entity_ControllingEntity",
+    "0071f3b0 BSP_RefCountedPtr_Release",
+    "0097c8a0 BSP_CommandEventSubscription_Construct",
+    "00968af0 BSP_EventSubscription_MatchFourParameters"
+  ]
+}

@@ -334,3 +334,9 @@ a `__thiscall` on the objective set, never a completion test). The three constan
 `kUnitMarkerTreeOffset` / `kUnitMarkerHeadOffset` / `kUnitMarkerSizeOffset` in
 `include/bsp/local_player_unit_lists.hpp` (no source used them); the objective list is declared in
 `include/bsp/objective_units.hpp`.
+
+## Correction from docs/RECON_SLOT_LISTS.md (packet cc2_recon_slot_lists)
+
+- **Was:** 008073C0 coverage row 'partial: only the five 008042B0 clears at 008073D0..00807416 and the list-1-to-list-3 move at 00807634..008076E2 were read', with the follow-up packet unit_registry_five_lists asking what the five triples separate
+  **Is:** answered and complete. The five triples are own (+DD8h), enemy (+DE4h), neutral (+DF0h), unknown (+DFCh) and the union of those four (+E08h); the 1-to-3 move is the detection drain that copies level-1 records into the unknown triple and removes anything below level 2 from the relation triple
+  **Evidence:** the whole body 008073C0-008079A5 is read in docs/RECON_SLOT_LISTS.md section 3; 00806B10's four 00805D90 calls at 00806BE4, 00806C1A, 00806C50 and 00806C86 fix the names; 00807647 and 00807823 are the level compares. That doc's reading that 004C3CB0 walks triples 0, 1 and 3 and the HUD triple 4 is consistent and not superseded.

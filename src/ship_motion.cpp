@@ -260,6 +260,14 @@ ShipMotionStepResult ship_motion_step_00825f20(ShipMotionState& state,
     ShipMotionStepResult result{};
     result.dt_raw = dt;
 
+    // 00825F2C..00825F7C, the first thing the tick does: when the slot the unit
+    // is on carries a published order it clears the flag, flips the index and
+    // copies the record it is leaving through 00811D10. That copy stops at the
+    // record's +3Fh, so the order triple stays behind and nothing on this path
+    // reads it. docs/UNIT_AI_ORDER_SLOT_READER.md.
+    unit_promote_ai_order_00825f2c(state.ai_order);
+    result.ai_order_promoted = state.ai_order.promoted;
+
     // 00826121: the ring tick, with the raw delta. It is what writes state.throttle and
     // state.to_turn, so the host runs it before anything reads them.
     host.tick_order_ring(dt);

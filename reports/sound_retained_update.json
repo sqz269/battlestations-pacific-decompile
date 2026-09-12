@@ -1,0 +1,232 @@
+{
+  "packet": "orch4_retained_methods_x",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00a7b520",
+      "name": "update_retained_sound_ramp_00a7b520",
+      "proposed_name": "BSP_RetainedSoundChannel_UpdateRamp",
+      "source": "src/sound_retained_update.cpp",
+      "document": "docs/SOUND_RETAINED_UPDATE.md",
+      "status": "reconstructed_build_and_native_byte_differential_fixture_tested",
+      "coverage": "complete normal-return behavior in documented valid-storage and masked-FP domain",
+      "abi": "ECX=this; ESI saves this across both calls. Stack float dt and uint listener; RET8. EDX is not an input; A7AF10 does not consume it. Void result.",
+      "meaning": "Read current owner F8. Positive input computes x87 (current-field68)/(field6C-field68), spills ratio to float, performs FLD1/FLDZ interpolation and spills again. Lower JA and upper JBE retain unordered ramp. Multiply actual sample options+4 by ramp, write volume24, dirty14=1, then call existing A7AF10.",
+      "vtable_evidence": "D5AD58 slot30 at D5AD88",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7b5cb",
+      "last_instruction_length": 3,
+      "abi_compatible": false,
+      "game_validated": false,
+      "start": "00a7b520",
+      "end_exclusive": "00a7b5ce",
+      "byte_span": 174,
+      "sha256": "0c1e15499c201ffa8ddf7a10cb9064a723b3369ad5e9c060b962a8bcbe0db7b2",
+      "disk_analysis_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=this; ESI saves this across both calls. Stack float dt and uint listener; RET8. EDX is not an input; A7AF10 does not consume it. Void result. Read current owner F8. Positive input computes x87 (current-field68)/(field6C-field68), spills ratio to float, performs FLD1/FLDZ interpolation and spills again. Lower JA and upper JBE retain unordered ramp. Multiply actual sample options+4 by ramp, write volume24, dirty14=1, then call existing A7AF10. Full native span SHA256 0c1e15499c201ffa8ddf7a10cb9064a723b3369ad5e9c060b962a8bcbe0db7b2. docs/SOUND_RETAINED_UPDATE.md. C++ projection, not native layout/ABI; audible and gameplay validation remain open. MSVC Win32 Release build and both existing CTests passed. Focused relocated-native fixture passed 5040 bitwise volume/dirty comparisons across three x87 precision modes and four rounding modes; real A81860 and stopped A7AF10 bytes execute, no host callbacks.",
+      "fixture_tested": true
+    },
+    {
+      "address": "00a7b5d0",
+      "name": "update_retained_sound_scaled_ramp_00a7b5d0",
+      "proposed_name": "BSP_RetainedSoundChannel_UpdateScaledRamp",
+      "source": "src/sound_retained_update.cpp",
+      "document": "docs/SOUND_RETAINED_UPDATE.md",
+      "status": "reconstructed_build_and_native_byte_differential_fixture_tested",
+      "coverage": "complete normal-return behavior in documented valid-storage and masked-FP domain",
+      "abi": "ECX=this; ESI saves this across both calls. Stack float dt and uint listener; RET8. EDX is not an input; A7AF10 does not consume it. Void result.",
+      "meaning": "Same gated/clamped ramp as B520, then FLD field70; FMUL ramp; FSTP float before calling sample-options getter. Multiply actual options+4 by this rounded scaled gain, write volume24, dirty14=1, then call A7AF10.",
+      "vtable_evidence": "D5ADA0 slot30 at D5ADD0",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7b686",
+      "last_instruction_length": 3,
+      "abi_compatible": false,
+      "game_validated": false,
+      "start": "00a7b5d0",
+      "end_exclusive": "00a7b689",
+      "byte_span": 185,
+      "sha256": "0b50ffb56d8088e13f608d48f14909c41a4ee1956851f335ea5c373cca87a979",
+      "disk_analysis_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=this; ESI saves this across both calls. Stack float dt and uint listener; RET8. EDX is not an input; A7AF10 does not consume it. Void result. Same gated/clamped ramp as B520, then FLD field70; FMUL ramp; FSTP float before calling sample-options getter. Multiply actual options+4 by this rounded scaled gain, write volume24, dirty14=1, then call A7AF10. Full native span SHA256 0b50ffb56d8088e13f608d48f14909c41a4ee1956851f335ea5c373cca87a979. docs/SOUND_RETAINED_UPDATE.md. C++ projection, not native layout/ABI; audible and gameplay validation remain open. MSVC Win32 Release build and both existing CTests passed. Focused relocated-native fixture passed 5040 bitwise volume/dirty comparisons across three x87 precision modes and four rounding modes; real A81860 and stopped A7AF10 bytes execute, no host callbacks.",
+      "fixture_tested": true
+    },
+    {
+      "address": "00a7b690",
+      "name": "update_retained_sound_nonpositive_00a7b690",
+      "proposed_name": "BSP_RetainedSoundChannel_UpdateNonpositive",
+      "source": "src/sound_retained_update.cpp",
+      "document": "docs/SOUND_RETAINED_UPDATE.md",
+      "status": "reconstructed_build_and_native_byte_differential_fixture_tested",
+      "coverage": "complete normal-return behavior in documented valid-storage and masked-FP domain",
+      "abi": "ECX=this; ESI saves this across both calls. Stack float dt and uint listener; RET8. EDX is not an input; A7AF10 does not consume it. Void result.",
+      "meaning": "Read current owner F8. SSE COMISS/JBE selects zero only for ordered positive input; otherwise one including unordered. Retain native redundant SSE lower/upper clamp. Multiply actual options+4 by gain, write volume24, dirty14=1, then call A7AF10.",
+      "vtable_evidence": "D5ADE8 slot30 at D5AE18",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7b705",
+      "last_instruction_length": 3,
+      "abi_compatible": false,
+      "game_validated": false,
+      "start": "00a7b690",
+      "end_exclusive": "00a7b708",
+      "byte_span": 120,
+      "sha256": "829960ce1510ffa88631d9c3ad1a572c84b855e3475eed523ae191229a155337",
+      "disk_analysis_bytes_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX=this; ESI saves this across both calls. Stack float dt and uint listener; RET8. EDX is not an input; A7AF10 does not consume it. Void result. Read current owner F8. SSE COMISS/JBE selects zero only for ordered positive input; otherwise one including unordered. Retain native redundant SSE lower/upper clamp. Multiply actual options+4 by gain, write volume24, dirty14=1, then call A7AF10. Full native span SHA256 829960ce1510ffa88631d9c3ad1a572c84b855e3475eed523ae191229a155337. docs/SOUND_RETAINED_UPDATE.md. C++ projection, not native layout/ABI; audible and gameplay validation remain open. MSVC Win32 Release build and both existing CTests passed. Focused relocated-native fixture passed 5040 bitwise volume/dirty comparisons across three x87 precision modes and four rounding modes; real A81860 and stopped A7AF10 bytes execute, no host callbacks.",
+      "fixture_tested": true
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00a7b5a0",
+      "native": "00a81860",
+      "caller": "00a7b520",
+      "contract": "Return actual sample+8 in EAX; no callback."
+    },
+    {
+      "address": "00a7b5c2",
+      "native": "00a7af10",
+      "caller": "00a7b520",
+      "contract": "Update existing channel with x87-copied dt and unchanged listener stack word."
+    },
+    {
+      "address": "00a7b65b",
+      "native": "00a81860",
+      "caller": "00a7b5d0",
+      "contract": "Return actual sample+8 after scaled-gain float spill."
+    },
+    {
+      "address": "00a7b67d",
+      "native": "00a7af10",
+      "caller": "00a7b5d0",
+      "contract": "Update existing channel with x87-copied dt and unchanged listener stack word."
+    },
+    {
+      "address": "00a7b6dc",
+      "native": "00a81860",
+      "caller": "00a7b690",
+      "contract": "Return actual sample+8 in EAX; no callback."
+    },
+    {
+      "address": "00a7b6fe",
+      "native": "00a7af10",
+      "caller": "00a7b690",
+      "contract": "Update existing channel with x87-copied dt and unchanged listener stack word."
+    }
+  ],
+  "tail_transfers": [],
+  "no_ghidra_function": [
+    {
+      "start": "00a7b690",
+      "last_instruction": "00a7b705",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7b708",
+      "evidence": "No function at initial live proto; full raw disk span decoded and matched against saved analysis bytes. Integrator definition requested."
+    }
+  ],
+  "vtable_raw_span": {
+    "start": "00d5ad58",
+    "end_exclusive": "00d5ae28",
+    "byte_span": 208,
+    "sha256": "20104993b2599a921c88266c1eda3ccd53f1b65fe86ec93e9472e2f042a8c050",
+    "disk_analysis_bytes_equal": true
+  },
+  "corrections": [
+    {
+      "was": "Decompiler lower-bound predicate 0 <= ramp implies unordered gain becomes zero.",
+      "is": "FCOMIP 0,ramp; JA only zeroes an ordered negative value; unordered ramp passes, and SSE JBE preserves it at upper bound.",
+      "evidence": "B579..B597 and B629..B647."
+    },
+    {
+      "was": "Decompiler options_volume * field70 * ramp suggests left-associated products without an intermediate float store.",
+      "is": "field70 * ramp is rounded to float first, then options_volume is multiplied by that stored gain.",
+      "evidence": "B64D FLD field70; B653 FMUL ramp; B657 FSTP float; B660 FLD options+4; B667 FMUL stored gain."
+    },
+    {
+      "was": "Potentially label current owner+F8 as an independent height or velocity field.",
+      "is": "Reuse canonical listener.transform_c4[13], a component of the submitted listener position; no axis-height interpretation added.",
+      "evidence": "A7E817 ESI=owner+A4; E828 ECX=ESI+20; E830 calls 4134F0 matrix copy. E85E copies ESI+54 (owner+F8) into the FMOD position triple."
+    }
+  ],
+  "valid_domain": [
+    "Live current owner, instance and actual sample options storage; live referenced source fields.",
+    "Calls serialized; no concurrent modification of referenced fields or current owner.",
+    "Inherited A7AF10 and its injected concrete host contracts remain valid.",
+    "x87/SSE exceptions masked; native x87 precision/rounding and SSE unordered branches retained. No exception-delivery or status-register identity claim."
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "passed": true,
+      "log": "local/retained-update-build.log"
+    },
+    "existing_tests": {
+      "seed_command": "python tools/ghidra_export.py verify-seeds",
+      "seed_log": "local/retained-update-seeds.log",
+      "reconstructed_math": "passed",
+      "native_math_differential": "passed"
+    },
+    "native_differential_fixture": {
+      "command": "./local/run_retained_probe.ps1",
+      "executable": "local/retained_channel_probe.exe",
+      "source": "local/retained_update_probe.cpp",
+      "source_sha256": "1c1c545b4bb1cccb24007f7bc80158cf2dbc59e259245f5c66e67f1bfbcd9569",
+      "log": "local/retained-update-probe.log",
+      "passed": true,
+      "comparisons": 5040,
+      "dimensions": "3 methods x 140 deterministic inputs x 3 x87 precision settings x 4 rounding modes",
+      "assertions": [
+        "Bit-identical output volume including NaN payloads and signed zero.",
+        "dirty14 becomes1 even on stopped instances; update count remains unchanged.",
+        "Actual native sample getter and native base updater stopped branch execute; every injected host callback aborts if called."
+      ],
+      "relocation": "Original relative CALL displacements retained in shared allocated image. Absolute F8BBD8/D7A24C operands rebound to fixture owner word/one. All copied native byte spans matched current disk and analysis."
+    },
+    "call_site_verifier": {
+      "command": "python tools/verify_report_calls.py reports/sound_retained_update.json",
+      "log": "local/retained-update-calls.log",
+      "checked": 6,
+      "passed": 4,
+      "pending": 2,
+      "reason": "B6DC and B6FE are in missing Ghidra function B690; all four existing-function rows passed. Integrator defines B690 after worker lease release and reruns verifier."
+    },
+    "game_validated": false,
+    "audible_output_validated": false,
+    "native_object_abi_compatible": false
+  },
+  "before_annotations": [
+    {
+      "address": "00a7b520",
+      "name": "FUN_00a7b520",
+      "plate_comment": {
+        "address": "00a7b520",
+        "function_name": "FUN_00a7b520"
+      }
+    },
+    {
+      "address": "00a7b5d0",
+      "name": "FUN_00a7b5d0",
+      "plate_comment": {
+        "address": "00a7b5d0",
+        "function_name": "FUN_00a7b5d0"
+      }
+    },
+    {
+      "address": "00a7b690",
+      "name": null,
+      "plate_comment": null
+    }
+  ],
+  "primary_integration": {
+    "owner": "agent/orch4-20260910",
+    "report": "reports/sound_retained_channels.json",
+    "combined_build": "Win32 and2/2 existing tests passed",
+    "installed_fmod_retained_factory_and_shutdown": true,
+    "original_worker_validation_preserved": true,
+    "all_direct_call_rows_passed": true,
+    "missing_B690_function_defined": true,
+    "game_validated": false
+  }
+}

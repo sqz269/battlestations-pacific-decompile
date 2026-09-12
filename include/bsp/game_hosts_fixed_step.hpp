@@ -27,6 +27,7 @@
 namespace bsp::game {
 
 class GameHostLog;
+class GameStepSubsystemsHost;
 
 // What the run's fixed steps did.
 struct GameFixedStepSummary {
@@ -54,6 +55,11 @@ class GameFixedStepHost final : public bsp::FixedStepFanoutHost,
                                 private bsp::GameDynamicsBuoyancyHost {
 public:
     GameFixedStepHost(GameHostLog& log, bsp::GameDynamicsState& dynamics);
+
+    // Milestone 2m: the six rows whose reconstructions are on main. Attached on
+    // the load's own load_scene_contents row, because row 16 walks the entity
+    // chain that step creates.
+    void attach_subsystems(GameStepSubsystemsHost* subsystems) noexcept;
 
     // 00875cc0..00875dfc, waves 1..3 over the five groups, inside the step loop.
     void run_job_waves_00875cc0(std::uint8_t run_pass);
@@ -115,6 +121,7 @@ private:
 
     GameHostLog& log_;
     bsp::GameDynamicsState& dynamics_;
+    GameStepSubsystemsHost* subsystems_{nullptr};
     GameFixedStepSummary summary_{};
     bool first_step_reported_{false};
     bool groups_reported_{false};

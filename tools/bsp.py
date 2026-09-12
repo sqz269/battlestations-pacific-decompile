@@ -324,6 +324,22 @@ def mark_asm_gaps(text):
     return '\n'.join(rows)
 
 
+def resolve_start(value, asm_text):
+    """--start is a line count, or (with --asm) a hex instruction address at or above the image base."""
+    v = str(value).strip().lower()
+    looks_hex = v.startswith('0x') or (len(v) == 8 and all(c in '0123456789abcdef' for c in v))
+    n = int(v, 16) if looks_hex else int(v, 0)
+    if looks_hex and n >= 0x400000:
+        if asm_text is None:
+            raise SystemExit(f'--start {value}: an address start needs --asm; without it --start counts lines')
+        key = f'{n:08x}'
+        for i, line in enumerate(asm_text.splitlines()):
+            if line.strip().lower().startswith(key):
+                return i
+        raise SystemExit(f'--start {value}: no listing line starts at that address')
+    return n
+
+
 def show(args):
     """Capped excerpt of the exported pseudocode (default) or assembly for one function."""
     a = int(args.address, 16)
@@ -344,7 +360,8 @@ def show(args):
         return
     if args.asm:
         text = mark_asm_gaps(text)
-    elif args.start == 0:
+    start = resolve_start(args.start, text if args.asm else None)
+    if not args.asm and start == 0:
         # A long evidence comment at the top of an export would otherwise eat the whole line budget:
         # print it capped separately so --lines always yields code.
         m = re.match(r'\s*(/\*.*?\*/\s*)+', text, re.S)
@@ -352,8 +369,8 @@ def show(args):
             comment, text = text[:m.end()], text[m.end():]
             rows = comment.strip().splitlines()
             print('\n'.join(rows[:10]) + (f'\n   ... {len(rows) - 10} more comment lines (see the export file)' if len(rows) > 10 else ''))
-    cap(text, args.lines, args.start)
-    if db and not args.asm and args.start == 0:
+    cap(text, args.lines, start)
+    if db and not args.asm and start == 0:
         callees = [r[0] for r in db.execute('SELECT callee FROM calls WHERE caller=? ORDER BY callee', (a,))]
         if callees:
             print(f"callees ({len(callees)}): " + ', '.join(fn_label(db, c) for c in callees[:12]) + (' ...' if len(callees) > 12 else ''))
@@ -925,7 +942,7 @@ def main():
     p = sub.add_parser('state'); p.add_argument('--limit', type=int, default=8); p.set_defaults(func=state)
     p = sub.add_parser('lookup'); p.add_argument('address'); p.add_argument('--limit', type=int, default=12); p.add_argument('--width', type=int, default=300); p.set_defaults(func=lookup)
     p = sub.add_parser('show'); p.add_argument('address'); p.add_argument('--asm', action='store_true'); p.add_argument('--live', action='store_true')
-    p.add_argument('--lines', '--limit', dest='lines', type=int, default=80); p.add_argument('--start', type=int, default=0); p.set_defaults(func=show)
+    p.add_argument('--lines', '--limit', dest='lines', type=int, default=80); p.add_argument('--start', default='0', help='lines to skip, or with --asm a hex instruction address (8 digits or 0x...) to start at'); p.set_defaults(func=show)
     p = sub.add_parser('range'); p.add_argument('start'); p.add_argument('end'); p.add_argument('--only', help='name prefix filter, e.g. FUN_'); p.add_argument('--limit', type=int, default=40); p.set_defaults(func=range_query)
     p = sub.add_parser('callers'); p.add_argument('address'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=lambda a: calls_query(a, 'callers'))
     p = sub.add_parser('callees'); p.add_argument('address'); p.add_argument('--limit', type=int, default=25); p.set_defaults(func=lambda a: calls_query(a, 'callees'))

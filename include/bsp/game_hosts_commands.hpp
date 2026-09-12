@@ -49,6 +49,8 @@
 
 #include "bsp/cruise_command.hpp"
 #include "bsp/scene_deferred_refs.hpp"
+#include "bsp/ship_ai_states.hpp"
+#include "bsp/unit_commanded_speed.hpp"
 #include "bsp/unit_state_message.hpp"
 
 namespace bsp::game {
@@ -89,6 +91,19 @@ struct GameCommandRow {
     float descriptor_position[3]{};
     unsigned long long steps{0};   // 009e1170 runs over this unit
     std::string blocked;           // why the latched pair reaches no ring
+    // Milestone 2m. Who issued this command: the scene's own authored token, one
+    // of the mission script's navigator bindings, `--order`, or the weapon
+    // director's own idle tail at 00836dc9.
+    std::string source{"scene"};
+};
+
+// Milestone 2m. What 00836920's stage spine did to one director in one fixed
+// simulation step. Every field is the answer of a recovered test.
+struct GameDirectorStepOutcome {
+    bool ran{false};
+    bool prepass_flag{false};     // the local flag at [ESP+0Bh], 00836941
+    bool stop_arm_raised{false};  // 00836a8b raised the primary stage to 2
+    bsp::DirectorDefaultCommand reissued{bsp::DirectorDefaultCommand::None};
 };
 
 struct GameCommandsSummary {
@@ -103,6 +118,15 @@ struct GameCommandsSummary {
     std::size_t ai_forwards{0};
     unsigned long long steps{0};
     std::string command_name;      // the one token this mission authors
+    // Milestone 2m: the director stage ladder and the commanded-speed pair.
+    unsigned long long director_steps{0};   // 00836920 bodies run
+    unsigned long long idle_reissues{0};    // 00836dc9 chose a default command
+    std::size_t idle_stop{0};
+    std::size_t idle_cruise{0};
+    std::size_t idle_follow{0};
+    std::size_t commanded_speeds{0};        // units whose +28h is active
+    std::size_t script_issues{0};           // commands the mission script issued
+    std::size_t script_blocked{0};          // of those, stopped at 00816f7c
 };
 
 // The weapon directors this process owns, one per created unit, and the three
@@ -128,8 +152,60 @@ public:
         const std::string& target_token, const bsp::UnitOrderRing& ring,
         float heading_radians);
 
+    // Milestone 2m. The navigator bindings' own issue. 008a30d0 and 008a2f20
+    // push a fixed command object and the descriptor 0088a810 built, so the
+    // chain starts at 0077d600 rather than at 0046aab0's registry walk; the
+    // rest of the hops are the same ones `issue` runs.
+    const GameCommandRow* issue_command_object(std::size_t unit_index,
+        std::uint32_t command_object, const bsp::SceneCommandTarget& target,
+        int flags, const std::string& source, const std::string& target_name,
+        const bsp::UnitOrderRing& ring, float heading_radians);
+
+    // Milestone 2m. The commanded-speed store both producers make on the
+    // navigator parameter block at *(unit+73Ch): +24h = max(requested, 0) and
+    // +28h = the mission clock (00890e6f in luaMW_SetShipSpeed, 008a38d5 in
+    // luaMW_NavigatorMoveOnPath). The director reaches the same block through
+    // [director+24Ch]+73Ch, which is why this process holds it beside the
+    // director rather than inside it.
+    void store_commanded_speed_00890e6f(std::size_t unit_index, float requested,
+        float mission_clock);
+    bsp::CruiseSpeedSetting commanded_speed(std::size_t unit_index) const;
+
+    // Milestone 2m. 00836920's stage spine for one unit, once per fixed
+    // simulation step: the pre-pass 00836941, the `stop` arm 00836a8b and the
+    // idle tail 00836dc9 that re-issues a default command through 0071ecf0.
+    GameDirectorStepOutcome director_step_00836920(std::size_t unit_index,
+        bool player_controlled, float mission_clock, const bsp::UnitOrderRing& ring,
+        float heading_radians);
+
+    // Milestone 2p. 0071eb60 on the unit's own weapon director, the routine
+    // 009f1420's brain pre-pass calls at 009f146b with ECX = [brain+0ab8h]:
+    // director+30h == 1 hands back the slot-0 descriptor at director+58h,
+    // == 2 the override descriptor at director+18ch, anything else the empty
+    // singleton at 00e19b98. False is that singleton; `mode` is the raw +30h.
+    bool active_command_descriptor_0071eb60(std::size_t unit_index,
+        bsp::SceneCommandTarget& out, int& mode) const;
+    // 00521ea0 BSP_CommandTarget_ResolveObject on a descriptor: the created
+    // instance its +2h id names, one-based, or 0.
+    std::uint32_t resolve_command_target_00521ea0(const bsp::SceneCommandTarget& target) const;
+    // 0071df70's first test: the float at director+40h. See GameDirector for
+    // the three producers and which of them this process reaches.
+    float director_target_hold_0040(std::size_t unit_index) const;
+    // 0071df83..0071dfc2: the categories of the leading occupied command slots
+    // at director+54h, stride 1ch, stopped at the first null. Returns how many
+    // were written; a category of 1 or 2 rejects the automatic target think.
+    int director_leading_slot_categories_0071df83(std::size_t unit_index, int* out,
+        int max_out) const;
+    // The command object one slot carries, for the report's "what slot 0 holds".
+    std::uint32_t director_slot_command(std::size_t unit_index, int slot_index) const;
+    // The registry name of a command object, or "" when no row matches.
+    const char* command_name_of(std::uint32_t command_object) const;
+
     // 0071be40 with the director's own mode: does this unit hold `cruise`?
     bool holds_cruise(std::size_t unit_index) const;
+    // Milestone 2n. The same read without the `cruise` test, which is what
+    // 009f3dd0 asks the director for at 009f3de6 before it picks an AI state.
+    std::uint32_t current_command_0071be40(std::size_t unit_index) const;
 
     // 009e1170's AI arm for one unit. False when the unit holds no current
     // `cruise`, which is the state 009f3dd0 would have left the AI state in.
@@ -137,8 +213,15 @@ public:
     // arm at 009e11e8 instead, which forwards the ring's confirmed pair at
     // +15ch / +160h and touches no cruise field. That arm is not projected, so
     // it is recorded and the AI arm is not run in its place.
+    //
+    // Milestone 2n: `blk` and `setters` are the AI controller's own control
+    // block, blk = brain+8h. With them the three setters run the reconstructions
+    // include/bsp/ship_ai_states.hpp carries instead of recording the three
+    // addresses, so the desired throttle, rudder and heading are the clamped
+    // values 009dbf90 and 009dffb0 store and 009ed6b0 reads.
     bool cruise_step(std::size_t unit_index, bool player_controlled,
-        float body_axis_speed, float reference_speed, bsp::CruiseOrderedValues& out);
+        float body_axis_speed, float reference_speed, bsp::CruiseOrderedValues& out,
+        bsp::ShipAiControlBlock* blk = nullptr, bsp::ShipAiSetterHost* setters = nullptr);
 
     const std::vector<GameCommandRow>& rows() const noexcept;
     const GameCommandsSummary& summary() const noexcept;

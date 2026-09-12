@@ -326,3 +326,34 @@ shape at the site.
 - Whether a periodic director step aims guns, and where the AI target-weight model of
   `docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md` feeds in.
 - The `1E4h`-byte throwaway entity `0089A8B0` builds for a map-position target, and its `+54h` = 2.
+
+## Correction from docs/DIRECTOR_TARGET_GATE.md (packet cc2_director_target_gate)
+
+- The session-side caller of `0071C1E0` is `00721A40` (`BSP_WeaponDirector_ApplyGameUnitMessage`)
+  at `00721A93`, as `director->vtable[38h](message)`, reached from `00780120`'s `IsA(59h)` arm
+  (also recorded in docs/SESSION_MESSAGE_DISPATCH.md). The "contract: unread" above is closed.
+- `00720850` has since been read by packet cc2_director_commands and is documented in
+  docs/COMMAND_EXECUTION.md; the `00720CD0` coverage row above is stale on that point.
+- `director+40h` is a float countdown in seconds: `-1.0f` at construction (`00720225` inside the
+  base constructor `00720180`, which `008363E0` calls with `ECX` still the director), `-= dt` per
+  frame while non-negative (`0071F314` in `0071F290`, controller vtable `+0Ch`), and `3.0f` when a
+  `cleartarget` order arrives (`00817031`). `0071DF70` rejects a new target only while the hold is
+  strictly above `0.0f`; the constructed `-1.0f` passes.
+
+## Correction from docs/DIRECTOR_UPDATE_ARMS.md (packet cc2_director_update_arms)
+
+- **Was:** +221h 'sub-kind 4 flag' and +223h 'sub-kind 6 flag', with an open question asking what sub-kinds 4 and 6 mean
+  **Is:** +221h is aaEnabled and +223h is depthChargeEnabled; the four bytes are one enable per weapon category, not two pairs
+  **Evidence:** 008360C0 hands its visitor the string pointers 00D09E00 ('aaEnabled') at 00836114 and 00D09DDC ('depthChargeEnabled') at 008361A1, beside 00D09E0C ('artilleryEnabled') and 00D09DF0 ('torpedoEnabled'). The four strings are literals in .rdata
+- **Was:** +238h 'fire target entity pointer' and +23Ch 'byte that gates an unforced fire-target change', both unnamed
+  **Is:** their names are fireTargetID (00D09DCC) and fireTargetIsPrimary (00D09DB8)
+  **Evidence:** 008361C9 loads 00D09DCC and 008361FA pushes 00D09DB8 in the same visitor
+- **Was:** open question: who writes +238h; a full .text scan for mov [reg+238h], reg found only the constructor's zero and 00836230's clear
+  **Is:** 00836240 BSP_WeaponDirector_StoreFireTarget writes it, reached from 00721A40's 5Eh arm at 00721BF1. The scan missed it because the store uses a different displacement
+  **Evidence:** 0083626D LEA ESI,[ECX+224h]; 00836287 MOV [ESI+14h],EDI, and 224h + 14h = 238h
+- **Was:** open question: whether a periodic director step aims guns
+  **Is:** yes. 0071F290 arm 7 calls [controller+38h]->vtable[4](frameDelta), and that slot is 009F5DA0, the bot fire-target think, then vtable[7Ch] = 00836920 BSP_WeaponDirector_Step
+  **Evidence:** 009F6A45 installs vtable 00D21B48; 00D21B4C holds 009F5DA0; 00D09FD4 holds 00836920
+- **Was:** the field table jumps from +1CCh to +220h
+  **Is:** +1D0h..+21Fh is twenty dwords the base constructor fills with D01502F9h
+  **Evidence:** 0072032E MOV EAX,0D01502F9h then twenty stores from 00720333 to 007203A5

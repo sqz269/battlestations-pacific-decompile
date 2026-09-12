@@ -155,7 +155,7 @@ struct GameMenuHost::Impl {
     MainMenuMusicState title_music{};
     FrontEndShellState shell_state{};
     LoadingScreenConfig loading_globals{};
-    GameplayEffectManagerContext& effect_context;
+    GameSingletonHost& singletons;
 
     // --- the main-menu path -------------------------------------------------
     MainMenuPathState path{};
@@ -1134,7 +1134,7 @@ private:
 // 004e4000, BSP_Game_EnterFrontEndShell
 // ---------------------------------------------------------------------------
 
-class MenuShellHost final : public FrontEndShellHost {
+class MenuShellHost final : public FrontEndShellServices {
 public:
     MenuShellHost(GameMenuHost::Impl& owner, MenuManagerHost& managers,
         MenuPayloadHost& payloads, MenuScreenSetHost& screens)
@@ -1152,9 +1152,9 @@ public:
         static_cast<void>(label);
         owner_.log.unimplemented("FrontEndShell::probe_sound_memory", "00a7a460");
     }
-    GameplayEffectManagerContext& effect_manager_context() override {
-        owner_.log.implemented("FrontEndShell::effect_manager_context", "004c1650");
-        return owner_.effect_context;
+    void probe_effect_memory(const char* label) override {
+        owner_.log.implemented("FrontEndShell::probe_effect_memory", "004c1650");
+        owner_.singletons.probe_gameplay_effect_memory(label);
     }
     bool title_screen_present() override { return owner_.world.title != nullptr; }
     void destroy_title_screen() override {
@@ -1433,10 +1433,10 @@ private:
 // ---------------------------------------------------------------------------
 
 GameMenuHost::Impl::Impl(GameHostLog& log_in, GameFrontendHost& frontend_in,
-    GameStateSlot& state_in, GameSingletonHost& singletons, long press_start_frame_in)
+    GameStateSlot& state_in, GameSingletonHost& singletons_in, long press_start_frame_in)
     : log(log_in), frontend(frontend_in), state(state_in),
       press_start_frame(press_start_frame_in),
-      effect_context(singletons.gameplay_effect_context()) {
+      singletons(singletons_in) {
     summary.press_start_frame = press_start_frame_in;
     world.title = nullptr;
     // The press-start action record is enabled so 004c43c0's own gate at
@@ -1526,7 +1526,8 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     std::string menu_select, long mission_frames, GameFrameProfiler* profiler,
     std::string language, long mission_complete_frame, long order_frame,
     float order_throttle, float order_rudder, float mission_frame_seconds,
-    std::string trajectory_csv, std::string order_command, std::string order_command_target)
+    std::string trajectory_csv, std::string order_command, std::string order_command_target,
+    float order_speed, bool order_speed_set)
     : impl_(std::make_unique<Impl>(log, frontend, state, singletons, press_start_frame)) {
     // Milestone 2h: the in-mission HUD registers into the same registry this
     // object owns, so the HUD host is built here and handed to the mission.
@@ -1536,7 +1537,8 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
             locale, std::move(menu_select), mission_frames, profiler, std::move(language),
             mission_complete_frame, impl_->hud.get(), order_frame, order_throttle,
             order_rudder, mission_frame_seconds, std::move(trajectory_csv),
-            std::move(order_command), std::move(order_command_target));
+            std::move(order_command), std::move(order_command_target), order_speed,
+            order_speed_set);
     }
 }
 

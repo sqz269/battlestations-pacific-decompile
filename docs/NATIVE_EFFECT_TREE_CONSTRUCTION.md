@@ -81,17 +81,15 @@ prebuild inputs, six actual compiler commands and196 read dependencies are pinne
 in `reports/native_effect_tree_construction_audit.json`. No new tests were added
 and none of the new source entries was executed by this packet.
 
-The next complete source dependencies are iterator erasure `0086E8A0` and range
-erasure `0086EE50`. All their raw traversal/rotation/subtree leaf providers now
-exist. Iterator erasure still needs its full invalid-iterator exception path,
-including owning legacy out_of_range transport, and verification beyond the
-shortened stored body ending86EB10. Implement the full range routine, including
-its partial-range path. The manager's empty range in a normal destructor does
-not justify omitting that path.
+Iterator erasure `0086E8A0`, full range erasure `0086EE50`, tree destruction
+`0086FDE0`, raw effect-manager destruction `0086FE20` and scalar deletion
+`008703E0` have since been completed under the source contracts in
+[NATIVE_EFFECT_TREE_ERASURE.md](NATIVE_EFFECT_TREE_ERASURE.md). That follow-up
+includes the owning invalid-iterator exception, partial-range path, full native
+tail captures and one concrete raw source fixture. Two saved Ghidra function
+extents remain short, as documented there.
 
-Then complete raw manager destructor `0086FE20`, scalar deleting wrapper
-`008703E0`, and their source publication bindings. Only after every owner admitted
-to the canonical manager has an evidence-backed terminal can raw `00BD0400` and
-the executable ownership domain be integrated. Full gameplay validation and
-original callable ABI compatibility remain unproved. Descriptive names are
-reconstruction hypotheses.
+Raw `00BD0400` and the executable ownership domain still require evidence-backed
+terminal bindings for every admitted owner. Full gameplay validation and original
+callable ABI compatibility remain unproved. Descriptive names are reconstruction
+hypotheses.

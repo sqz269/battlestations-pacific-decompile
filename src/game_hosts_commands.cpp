@@ -21,6 +21,7 @@
 #include "bsp/game_hosts.hpp"
 
 #include "bsp/entity_orders.hpp"
+#include "bsp/entity_command_arms.hpp"
 #include "bsp/weapon_director.hpp"
 
 #include <cstdio>
@@ -73,6 +74,20 @@ struct GameDirector {
     int stage{0};
     bsp::CruiseAutopilotFields cruise{};
     bool latched{false};
+    // Milestone 2m: the last default command 00836dc9's idle tail chose for this
+    // director. The tail runs every step and re-issues the same command while
+    // nothing changes, so the executable records one row per distinct choice
+    // rather than one per step.
+    std::uint32_t last_idle_command{0};
+    // Milestone 2p: director+40h, the auto-target re-acquisition hold
+    // 0071DF70 tests first. 00720225 stores -1.0f in the command controller
+    // base constructor 00720180, which 008363E0 calls at 00836403 with ECX
+    // still the director (docs/DIRECTOR_TARGET_GATE.md), so every director in
+    // this process starts there. 0071F314's per-frame `hold -= dt` runs only
+    // while the value is at or above 0.0f, so the -1.0f sentinel never moves,
+    // and 00817031's 3.0f is the `cleartarget` arm, which this mission never
+    // issues.
+    float target_hold_0040{-1.0f};
 };
 
 struct GameCommandsHost::Impl {
@@ -81,12 +96,22 @@ struct GameCommandsHost::Impl {
     GameHostLog& log;
     std::vector<GameCommandUnit> units;
     std::vector<GameDirector> directors;
+    // Milestone 2m. One navigator parameter block per unit, the 0081f283
+    // allocation at *(unit+73Ch). Only the commanded-speed pair at +24h / +28h
+    // has a recovered producer, and it is the pair the director's stage reset
+    // 00835bf0, its `stop` arm 00836a8b, its idle tail 00836e59 and the cruise
+    // state 009e12ac all read. The seven tuning floats at +0h..+18h stay out of
+    // this process because 00822b70's only call site here passes the literal 0.
+    std::vector<bsp::CruiseSpeedSetting> navigator_params;
     std::vector<GameCommandRow> rows;
     bsp::SceneCommandRegistry registry;
     GameCommandsSummary summary{};
     bool logged_path{false};
     bool logged_block{false};
     bool logged_step{false};
+    bool logged_director_step{false};
+    bool logged_navigator_params{false};
+    bool logged_commanded_step{false};
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -128,6 +153,17 @@ struct GameCommandsHost::Impl {
         return bsp::entity_order_command_class_by_address(object);
     }
 
+    bsp::CruiseSpeedSetting params_of(std::size_t index) const noexcept {
+        if (index >= navigator_params.size()) return bsp::CruiseSpeedSetting{};
+        return navigator_params[index];
+    }
+
+    // The store at 00835c54 and 009e13f8 into the block's +28h.
+    void set_commanded_speed_time(std::size_t index, float value) noexcept {
+        if (index >= navigator_params.size()) return;
+        navigator_params[index].enable = value;
+    }
+
     int command_count(const GameDirector& director) const noexcept {
         // 0071d780, __fastcall(director), body 0071d780-0071d807: the index of
         // the first empty slot. The `moveonpath` variant, where a slot whose
@@ -159,6 +195,11 @@ struct ChainState {
     bsp::SceneCommandTarget pending_target{};
     std::uint32_t pending_command{0};
     std::uint8_t pending_flag{0};
+    // Milestone 2n: the AI controller's control block, blk = brain+8h, and the
+    // two callees the mode switches make. When they are present the three
+    // desired-value setters run their reconstructions instead of recording.
+    bsp::ShipAiControlBlock* ai_block{nullptr};
+    bsp::ShipAiSetterHost* ai_setters{nullptr};
 };
 
 // ---------------------------------------------------------------------------
@@ -605,25 +646,45 @@ public:
         return reference;
     }
     bsp::CruiseSpeedSetting speed_setting() override {
-        // *(unit+73ch) +24h and +28h. 00822b70 copies the tuning singleton's
-        // +160h..+178h into the block's +0h..+18h and writes neither of these
-        // two, 009e11c6 stores the -1.0f that disables the override, and no
-        // direct-displacement store to +24h exists in the image
-        // (docs/CRUISE_COMMAND.md, follow-up `cruise_speed_setting`). So the
-        // block a created unit carries has the override off.
-        chain_.owner.record("CruiseState::commanded_speed_setting", 0x00822b70u);
-        return bsp::CruiseSpeedSetting{};
+        // *(unit+73ch) +24h and +28h, the navigator parameter block the unit
+        // constructor allocates at 0081f283. docs/UNIT_COMMANDED_SPEED.md
+        // corrects docs/CRUISE_COMMAND.md's "no producer": there are two, the
+        // Lua bindings 00890d30 luaMW_SetShipSpeed and 008a3600
+        // luaMW_NavigatorMoveOnPath, and both make the same store. This process
+        // owns the block, so the read is the field read the native makes.
+        chain_.owner.done("CruiseState::commanded_speed_setting", 0x009e12acu);
+        return chain_.owner.params_of(chain_.unit.index);
     }
     void set_desired_steering(float rudder) override {
-        chain_.owner.record("CruiseState::set_desired_steering", 0x009dffb0u);
+        // Milestone 2n: 009dffb0, complete in src/ship_ai_states.cpp. It clears
+        // the two timers and switches the mode on a change, then stores the
+        // argument clamped into [-1,+1] at blk+1D4h.
+        if (chain_.ai_block != nullptr && chain_.ai_setters != nullptr) {
+            bsp::ship_ai_set_desired_steering_009dffb0(*chain_.ai_block, rudder,
+                *chain_.ai_setters);
+            chain_.owner.done("CruiseState::set_desired_steering", 0x009dffb0u);
+        } else {
+            chain_.owner.record("CruiseState::set_desired_steering", 0x009dffb0u);
+        }
         desired_rudder = rudder;
     }
     void set_desired_heading(float heading_radians) override {
-        chain_.owner.record("CruiseState::set_desired_heading", 0x009e0040u);
+        if (chain_.ai_block != nullptr && chain_.ai_setters != nullptr) {
+            bsp::ship_ai_set_desired_heading_009e0040(*chain_.ai_block, heading_radians,
+                *chain_.ai_setters);
+            chain_.owner.done("CruiseState::set_desired_heading", 0x009e0040u);
+        } else {
+            chain_.owner.record("CruiseState::set_desired_heading", 0x009e0040u);
+        }
         desired_heading = heading_radians;
     }
     void set_desired_throttle(float throttle) override {
-        chain_.owner.record("CruiseState::set_desired_throttle", 0x009dbf90u);
+        if (chain_.ai_block != nullptr) {
+            bsp::ship_ai_set_desired_throttle_009dbf90(*chain_.ai_block, throttle);
+            chain_.owner.done("CruiseState::set_desired_throttle", 0x009dbf90u);
+        } else {
+            chain_.owner.record("CruiseState::set_desired_throttle", 0x009dbf90u);
+        }
         desired_throttle = throttle;
     }
 
@@ -654,6 +715,105 @@ void SceneResolveBinding::issue_command(void* owner, void* command,
     ++chain_.owner.summary.issued;
 }
 
+// ---------------------------------------------------------------------------
+// bsp::EntityCommandArmsHost, one method per call site of 00816EA6..0081732E
+// ---------------------------------------------------------------------------
+
+class EntityCommandArmsBinding final : public bsp::EntityCommandArmsHost {
+public:
+    explicit EntityCommandArmsBinding(ChainState& chain) : chain_(chain) {}
+
+    std::uint32_t resolve_target_00521ea0() override {
+        // 00521EA0 returns 0 for a descriptor whose kind is 0 and otherwise
+        // resolves the uint16 id through the two handle tables at 00f89a54 and
+        // 00f89aa8. This process numbers its own entities, which is the
+        // substitution this header already declares for entity+174h, so the
+        // resolve is that numbering rather than the native tables.
+        chain_.owner.done("EntityCommandArm::resolve_target", 0x00521ea0u);
+        if (chain_.pending_target.kind == 0) return 0u;
+        return chain_.pending_target.object_id;
+    }
+    bool target_is_kind_of_vtable5c(std::uint32_t, int) override {
+        chain_.owner.record_slot("EntityCommandArm::target_is_kind_of", "00cfc3d0+vtable5c");
+        return false;
+    }
+    bool self_is_kind_of_vtable5c(int) override {
+        chain_.owner.record_slot("EntityCommandArm::self_is_kind_of", "00cfc3d0+vtable5c");
+        return false;
+    }
+    void request_join_formation_0077c8d0(std::uint32_t) override {
+        chain_.owner.record("EntityCommandArm::request_join_formation", 0x0077c8d0u);
+    }
+    void call_0064a8e0() override {
+        chain_.owner.record("EntityCommandArm::follow_tail", 0x0064a8e0u);
+    }
+    void call_0077c980(std::uint32_t) override {
+        chain_.owner.record("EntityCommandArm::leave", 0x0077c980u);
+    }
+    void call_0077ca60() override {
+        chain_.owner.record("EntityCommandArm::disband", 0x0077ca60u);
+    }
+    std::uint32_t path_interface_007ac9d0(std::uint32_t target) override {
+        // 007AC9D0 is complete in src/entity_command_arms.cpp; its own host is
+        // the entity's IsKindOf, which for a created ship this process answers
+        // through the recovered class chain only in GameUnitsHost. The command
+        // path holds no class id, so the four kind tests are records and the
+        // routine answers "no path interface", which is the ship case: 47h to
+        // 4Ah are the path-following kinds of docs/ENTITY_COMMAND_ARMS.md.
+        chain_.owner.record("EntityCommandArm::path_interface", 0x007ac9d0u);
+        static_cast<void>(target);
+        return 0u;
+    }
+    void set_fire_target_00835860(std::uint32_t, int) override {
+        chain_.owner.record("EntityCommandArm::set_fire_target", 0x00835860u);
+    }
+    bool controller_belongs_to_another_007788b0() override {
+        chain_.owner.record("EntityCommandArm::controller_belongs_to_another", 0x007788b0u);
+        return false;
+    }
+    void send_clear_commands_0071d880() override {
+        chain_.owner.record("EntityCommandArm::send_clear_commands", 0x0071d880u);
+    }
+    bool call_0080dc70() override {
+        chain_.owner.record("EntityCommandArm::free_fire_gate", 0x0080dc70u);
+        return false;
+    }
+    void free_fire_0071bf20() override {
+        chain_.owner.record("EntityCommandArm::free_fire", 0x0071bf20u);
+    }
+    void clear_target_block_00817023() override {
+        chain_.owner.record("EntityCommandArm::clear_target_block", 0x00817023u);
+    }
+    std::uint32_t allocate_zeroed_00470b80(std::uint32_t) override {
+        chain_.owner.record("EntityCommandArm::allocate_throwaway", 0x00470b80u);
+        return 0u;
+    }
+    std::uint32_t construct_entity_004e5980(std::uint32_t) override {
+        chain_.owner.record("EntityCommandArm::construct_throwaway", 0x004e5980u);
+        return 0u;
+    }
+    void place_entity_vtable98(std::uint32_t, std::uint32_t) override {
+        chain_.owner.record_slot("EntityCommandArm::place_throwaway", "00cfc3d0+vtable98");
+    }
+    std::uint32_t transform_from_position_0059bd20() override {
+        chain_.owner.record("EntityCommandArm::throwaway_transform", 0x0059bd20u);
+        return 0u;
+    }
+    void set_entity_transform_006e8040(std::uint32_t, std::uint32_t) override {
+        chain_.owner.record("EntityCommandArm::set_throwaway_transform", 0x006e8040u);
+    }
+    void set_descriptor_target_00464f70(std::uint32_t, float) override {
+        chain_.owner.record("EntityCommandArm::set_descriptor_target", 0x00464f70u);
+    }
+    std::uint32_t session_field_19cc() override {
+        chain_.owner.record("EntityCommandArm::session_world", 0x008172e9u);
+        return 0u;
+    }
+
+private:
+    ChainState& chain_;
+};
+
 void EntityIssueBinding::route_message(void* entity, const bsp::EntityOrderMessage& message) {
     static_cast<void>(entity);
     // 0077c2a0 at 0077d7bd. The router reads the default routing flags at
@@ -679,17 +839,43 @@ void EntityIssueBinding::route_message(void* entity, const bsp::EntityOrderMessa
     const bsp::EntityOrderCommandClass* klass
         = bsp::entity_order_command_class_by_ordinal(
             static_cast<int>(view.command_ordinal));
-    if (klass != nullptr && !command_takes_movement_fall_through(klass->object_address)) {
-        // 00816f7c..00817330 holds the `follow`, `land`, `disband`, `settarget`,
-        // `cleartarget`, `clearorders`, `moveto`, `attackmove` and `artillery`
-        // arms. docs/CRUISE_COMMAND.md reads them in pseudocode and projects
-        // none of them, so a command that selects one stops here.
-        chain_.owner.record("EntityCommand::non_movement_arm", 0x00816f7cu);
-        if (chain_.row != nullptr) {
-            chain_.row->blocked = "00816e30's own arm for this command "
-                "(00816f7c..00817330) is not projected";
+    // Milestone 2n: the arm cascade 00816ea6..0081732e, reconstructed by packet
+    // cc_ship_ai_arms in src/entity_command_arms.cpp. Milestone 2m recorded the
+    // whole block at 00816f7c and stopped every scripted moveto and attackmove
+    // there; the cascade decides which command singleton the order becomes and
+    // hands the survivors to the same tail, so the seven commands this
+    // mission's script issues now reach 0071ecf0.
+    if (klass != nullptr) {
+        EntityCommandArmsBinding arms(chain_);
+        const bsp::EntityCommandArmDecision decision
+            = bsp::entity_command_arm_cascade_00816ea6(
+                static_cast<bsp::EntityCommandArmId>(klass->object_address), view.target,
+                arms);
+        chain_.owner.done("EntityCommand::arm_cascade", 0x00816ea6u);
+        if (decision.result == bsp::EntityCommandArmResult::HandledWithoutQueueing) {
+            if (chain_.row != nullptr) {
+                chain_.row->blocked = "00816e30's arm for this command did its own work and "
+                    "returned; nothing is queued on the director";
+            }
+            return;
         }
-        return;
+        if (decision.command != bsp::EntityCommandArmId::None
+            && static_cast<std::uint32_t>(decision.command) != klass->object_address) {
+            // 00816fb4 (moveto -> moveonpath), 00816fd9 (land -> attackmove) and
+            // 00817238 (attackmove / artillery -> attackmove): the arm rewrote
+            // EBP, and the tail issues what EBP holds.
+            const bsp::EntityOrderCommandClass* substituted
+                = bsp::entity_order_command_class_by_address(
+                    static_cast<std::uint32_t>(decision.command));
+            if (substituted != nullptr) {
+                view.command_ordinal = static_cast<std::uint8_t>(substituted->ordinal);
+                if (chain_.row != nullptr) chain_.row->command = substituted->name;
+            }
+        }
+        if (decision.made_throwaway_target && chain_.row != nullptr) {
+            chain_.row->blocked = "00817243..0081732e manufactured a throwaway target entity; "
+                "its six call sites are records";
+        }
     }
     if (chain_.row != nullptr) chain_.row->projected_arm = true;
     DirectorBinding director(chain_);
@@ -734,9 +920,19 @@ void GameCommandsHost::register_units(std::vector<GameCommandUnit> units) {
     Impl& host = *impl_;
     host.units = std::move(units);
     host.directors.assign(host.units.size(), GameDirector{});
+    // 0081f273 / 0081f278 leave the pair at -1.0f, which is what
+    // CruiseSpeedSetting's own defaults are, so a fresh block is the
+    // constructor's state rather than a zeroed one.
+    host.navigator_params.assign(host.units.size(), bsp::CruiseSpeedSetting{});
     host.summary.units = host.units.size();
     host.build_registry();
 }
+
+namespace {
+// Defined below, after the hop bindings it uses.
+const GameCommandRow* finish_issue(GameCommandsHost::Impl& host, ChainState& chain,
+    GameCommandRow& row, const bsp::UnitOrderRing& ring);
+}  // namespace
 
 const GameCommandRow* GameCommandsHost::issue(std::size_t unit_index,
     const std::string& token, const std::string& target_token,
@@ -794,7 +990,18 @@ const GameCommandRow* GameCommandsHost::issue(std::size_t unit_index,
     }
     resolve.clear_queue();
     host.done("SceneCommand::resolve_deferred_reference", 0x0046aab0u);
+    return finish_issue(host, chain, row, ring);
+}
 
+namespace {
+
+// The tail every issue shares, from 0071be40's current-command read to
+// 00835c70's own arm. Extracted at milestone 2m so the navigator bindings'
+// issue, which starts at 0077d600 with a fixed command object rather than at
+// 0046aab0's registry walk, runs exactly the same hops.
+const GameCommandRow* finish_issue(GameCommandsHost::Impl& host, ChainState& chain,
+    GameCommandRow& row, const bsp::UnitOrderRing& ring) {
+    const std::size_t unit_index = row.unit_index;
     GameDirector& director = host.directors[unit_index];
     // 0071be40 with the mode 0071e6c0 set: 1 means the current command is slot 0.
     const std::uint32_t current = bsp::director_current_command_0071be40(director.mode,
@@ -842,6 +1049,239 @@ const GameCommandRow* GameCommandsHost::issue(std::size_t unit_index,
     return &host.rows.back();
 }
 
+}  // namespace
+
+const GameCommandRow* GameCommandsHost::issue_command_object(std::size_t unit_index,
+    std::uint32_t command_object, const bsp::SceneCommandTarget& target, int flags,
+    const std::string& source, const std::string& target_name,
+    const bsp::UnitOrderRing& ring, float heading_radians) {
+    Impl& host = *impl_;
+    if (unit_index >= host.units.size()) return nullptr;
+    host.build_registry();
+
+    GameCommandRow row;
+    row.unit_index = unit_index;
+    row.unit = host.units[unit_index].name;
+    row.source = source;
+    row.target_token = target_name;
+    row.resolve_outcome = "fixed_command_object";
+    const bsp::EntityOrderCommandClass* klass = host.class_of(command_object);
+    if (klass != nullptr) {
+        row.command = klass->name;
+        row.token = klass->name;
+        row.ordinal = klass->ordinal;
+        row.category = klass->category;
+    }
+    for (int lane = 0; lane < 3; ++lane) row.descriptor_position[lane] = target.position[lane];
+
+    ChainState chain{host, host.units[unit_index], host.directors[unit_index], &row,
+        &ring, heading_radians, bsp::SceneCommandTarget{}, 0u, 0u};
+    SceneResolveBinding resolve(chain);
+    resolve.issue_command(&host.units[unit_index],
+        reinterpret_cast<void*>(static_cast<std::uintptr_t>(command_object)), target, flags);
+    ++host.summary.script_issues;
+    const GameCommandRow* stored = finish_issue(host, chain, row, ring);
+    if (stored != nullptr && !stored->projected_arm) ++host.summary.script_blocked;
+    return stored;
+}
+
+void GameCommandsHost::store_commanded_speed_00890e6f(std::size_t unit_index,
+    float requested, float mission_clock) {
+    Impl& host = *impl_;
+    if (unit_index >= host.navigator_params.size()) return;
+    const bool was_active
+        = bsp::navigator_commanded_speed_active(host.navigator_params[unit_index]);
+    host.navigator_params[unit_index]
+        = bsp::navigator_commanded_speed_store_00890e6f(requested, mission_clock);
+    if (!was_active) ++host.summary.commanded_speeds;
+    if (!host.logged_navigator_params) {
+        host.logged_navigator_params = true;
+        host.log.notef("commanded speed stored on the navigator parameter block at "
+            "*(unit+73Ch): +24h = max(requested, 0) and +28h = the mission clock "
+            "DAT_00F876A4, the store 00890e6f and 008a38d5 both make. +28h is a timestamp, "
+            "not an enable: 00835c28 measures its age against 1.0f, and 00836e59 is what "
+            "turns an active pair into a `cruise` instead of a `stop`");
+    }
+    host.done("NavigatorParams::store_commanded_speed", 0x00890e6fu);
+}
+
+bsp::CruiseSpeedSetting GameCommandsHost::commanded_speed(std::size_t unit_index) const {
+    return impl_->params_of(unit_index);
+}
+
+namespace {
+
+// ---------------------------------------------------------------------------
+// bsp::WeaponDirectorStageHost, one method per call site inside 00836920
+// ---------------------------------------------------------------------------
+//
+// Milestone 2m. The director's stage ladder is what decides, every step, that a
+// unit with nothing to do should be told to `stop` or to `cruise`, and the
+// commanded-speed pair is the field that separates the two. Nothing here is a
+// reconstruction: the pre-pass, the `stop` arm, the idle tail and the stage
+// reset are docs/UNIT_COMMANDED_SPEED.md's routines.
+class DirectorStageBinding final : public bsp::WeaponDirectorStageHost {
+public:
+    DirectorStageBinding(ChainState& chain, float mission_clock)
+        : chain_(chain), clock_(mission_clock),
+          post_reset(chain.owner.params_of(chain.unit.index)) {}
+
+    int director_filled_command_slots_0071be60() override {
+        chain_.owner.done("WeaponDirector::filled_command_slots", 0x0071be60u);
+        return chain_.owner.command_count(chain_.director);
+    }
+    void director_raise_primary_stage_0071d810(int stage) override {
+        if (stage > chain_.director.stage) chain_.director.stage = stage;
+        // The stage-2 completion message 0071c730 builds and 0077c2a0 routes is
+        // the same session boundary every other hop in this file records.
+        if (stage == bsp::kDirectorCommandStageFinished) {
+            chain_.owner.record("WeaponDirector::route_stage_completion", 0x0071c730u);
+        }
+        chain_.owner.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
+    }
+    void director_raise_secondary_stage_0071d9e0(int stage) override {
+        if (stage > secondary_stage_) secondary_stage_ = stage;
+        chain_.owner.done("WeaponDirector::raise_secondary_stage", 0x0071d9e0u);
+    }
+    void director_clear_command_slot_0071c130(bool primary) override {
+        if (primary) {
+            chain_.director.stage = 0;
+        } else {
+            secondary_stage_ = 0;
+        }
+        chain_.owner.done("WeaponDirector::clear_command_stage_pair", 0x0071c130u);
+    }
+    void navigator_params_reset_from_tuning_00822b70(bool reset) override {
+        // 00835c65 passes the literal 0, and 00822b70's own body is skipped
+        // entirely when its char argument is zero, so the call does nothing.
+        // The projection makes it because the native makes it.
+        static_cast<void>(reset);
+        chain_.owner.done("NavigatorParams::reset_from_tuning", 0x00822b70u);
+    }
+    void set_navigator_commanded_speed_time(float value) override {
+        chain_.owner.set_commanded_speed_time(chain_.unit.index, value);
+    }
+    void director_reset_command_stage_vtable6c(bool primary) override {
+        // 00d09fc4, the derived director's vtable slot 6Ch, which is 00835bf0.
+        post_reset = bsp::weapon_director_reset_command_stage_00835bf0(primary,
+            chain_.owner.params_of(chain_.unit.index), clock_, *this);
+        chain_.owner.done("WeaponDirector::reset_command_stage", 0x00835bf0u);
+    }
+    bool unit_controller_belongs_to_another_007788b0() override {
+        // entity+284h, the controller back-pointer. No controller object exists
+        // in this process, which is the same boundary 0071ecf0's own AI-group
+        // block reports, so the answer is recorded rather than read.
+        chain_.owner.record("WeaponDirector::controller_belongs_to_another", 0x007788b0u);
+        return false;
+    }
+    std::uint32_t unit_controller_owner_007788d0() override {
+        chain_.owner.record("WeaponDirector::controller_owner", 0x007788d0u);
+        return 0;
+    }
+    std::uint32_t make_command_target_00465080(std::uint32_t object, float range) override {
+        static_cast<void>(range);
+        target_ = bsp::SceneCommandTarget{};
+        if (object != 0) {
+            target_.kind = 1;
+            target_.object = &chain_.unit;
+            target_.object_id = chain_.unit.object_id;
+        }
+        chain_.owner.done("WeaponDirector::make_command_target", 0x00465080u);
+        return object;
+    }
+    void director_issue_command_0071ecf0(std::uint32_t command,
+        std::uint32_t target) override {
+        static_cast<void>(target);
+        DirectorBinding director(chain_);
+        director.director_issue_command(command, target_);
+    }
+
+    bsp::CruiseSpeedSetting post_reset{};
+
+private:
+    ChainState& chain_;
+    float clock_{0.0f};
+    int secondary_stage_{0};
+    bsp::SceneCommandTarget target_{};
+};
+
+}  // namespace
+
+GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t unit_index,
+    bool player_controlled, float mission_clock, const bsp::UnitOrderRing& ring,
+    float heading_radians) {
+    Impl& host = *impl_;
+    GameDirectorStepOutcome outcome;
+    if (unit_index >= host.units.size()) return outcome;
+    if (!host.logged_director_step) {
+        host.logged_director_step = true;
+        host.log.notef("weapon director step 00836920 runs once per unit per fixed "
+            "simulation step: the pre-pass 00836941, the `stop` arm 00836a8b and the idle "
+            "tail 00836dc9 that re-issues a default command. Its own caller is the unit "
+            "update's director block, which this process does not reach, so the position "
+            "in the step is the executable's decision and is recorded as one. The `follow`, "
+            "`attackmove` and `moveonpath` arms 00836adc..00836d66 are read in "
+            "docs/UNIT_COMMANDED_SPEED.md and projected nowhere, so they are records");
+    }
+    host.record("WeaponDirector::step_command_arms", 0x00836adcu);
+
+    GameDirector& director = host.directors[unit_index];
+    GameCommandRow row;
+    row.unit_index = unit_index;
+    row.unit = host.units[unit_index].name;
+    row.source = "director idle tail";
+    row.resolve_outcome = "idle_reissue";
+
+    ChainState chain{host, host.units[unit_index], director, &row, &ring, heading_radians,
+        bsp::SceneCommandTarget{}, 0u, 0u};
+    DirectorStageBinding stage(chain, mission_clock);
+
+    bsp::WeaponDirectorCommandState state;
+    state.primary_stage = director.stage;
+    state.secondary_stage = 0;
+    state.primary_command = director.slot_command[0];
+    state.secondary_command = 0;
+    state.unit = static_cast<std::uint32_t>(unit_index + 1);
+    state.unit_player_controlled = player_controlled;
+
+    outcome.ran = true;
+    ++host.summary.director_steps;
+    outcome.prepass_flag = bsp::weapon_director_step_prepass_00836941(state, stage);
+    host.done("WeaponDirector::step_prepass", 0x00836941u);
+    state.primary_stage = director.stage;
+
+    outcome.stop_arm_raised = bsp::weapon_director_stop_arm_00836a8b(state,
+        host.params_of(unit_index), stage);
+    host.done("WeaponDirector::stop_arm", 0x00836a8bu);
+    state.primary_stage = director.stage;
+
+    outcome.reissued = bsp::weapon_director_idle_reissue_00836dc9(state,
+        outcome.prepass_flag, stage.post_reset, stage);
+    host.done("WeaponDirector::idle_reissue", 0x00836dc9u);
+
+    const std::uint32_t reissued_object = static_cast<std::uint32_t>(outcome.reissued);
+    if (outcome.reissued != bsp::DirectorDefaultCommand::None
+        && reissued_object != director.last_idle_command) {
+        director.last_idle_command = reissued_object;
+        ++host.summary.idle_reissues;
+        switch (outcome.reissued) {
+        case bsp::DirectorDefaultCommand::Stop: ++host.summary.idle_stop; break;
+        case bsp::DirectorDefaultCommand::Cruise: ++host.summary.idle_cruise; break;
+        case bsp::DirectorDefaultCommand::Follow: ++host.summary.idle_follow; break;
+        case bsp::DirectorDefaultCommand::None: break;
+        }
+        const bsp::EntityOrderCommandClass* klass = host.class_of(reissued_object);
+        if (klass != nullptr) {
+            row.command = klass->name;
+            row.token = klass->name;
+            row.ordinal = klass->ordinal;
+            row.category = klass->category;
+        }
+        finish_issue(host, chain, row, ring);
+    }
+    return outcome;
+}
+
 bool GameCommandsHost::holds_cruise(std::size_t unit_index) const {
     const Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return false;
@@ -851,8 +1291,100 @@ bool GameCommandsHost::holds_cruise(std::size_t unit_index) const {
             == bsp::kCruiseCommandObjectAddress;
 }
 
+std::uint32_t GameCommandsHost::current_command_0071be40(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0u;
+    const GameDirector& director = host.directors[unit_index];
+    return bsp::director_current_command_0071be40(director.mode, director.slot_command[0], 0u);
+}
+
+// ---------------------------------------------------------------------------
+// Milestone 2p: what the ship AI brain reads off the same director
+// ---------------------------------------------------------------------------
+
+bool GameCommandsHost::active_command_descriptor_0071eb60(std::size_t unit_index,
+    bsp::SceneCommandTarget& out, int& mode) const {
+    const Impl& host = *impl_;
+    mode = 0;
+    if (unit_index >= host.directors.size()) return false;
+    const GameDirector& director = host.directors[unit_index];
+    mode = static_cast<int>(director.mode);
+    // 0071EB60's own three-way select, read from the body: mode 1 hands back
+    // director+58h, which 0071E6C0 filled with slot 0's descriptor; mode 2 the
+    // override descriptor at director+18Ch; anything else the lazily built
+    // empty singleton at 00E19B98, whose +1h byte and +14h handle are zero.
+    if (director.mode == bsp::CruiseCommandMode::QueuedSlots) {
+        out = director.slot_target[0];
+        return true;
+    }
+    if (director.mode == bsp::CruiseCommandMode::Override) {
+        // 00835C92 is the only writer of director+18Ch and this process reaches
+        // it through no path: 0071E7F0's queue arm is a record here
+        // (WeaponDirector::queue_command). The descriptor is therefore the one
+        // a fresh director carries, and the caller is told which arm it got.
+        out = bsp::SceneCommandTarget{};
+        return true;
+    }
+    return false;
+}
+
+std::uint32_t GameCommandsHost::resolve_command_target_00521ea0(
+    const bsp::SceneCommandTarget& target) const {
+    // 00521EA0 BSP_CommandTarget_ResolveObject reads the descriptor's +0h kind,
+    // +2h object id and +4h object. This process numbers its own entities
+    // because the two handle tables at 00f89a0c / 00f89a60 are not built, so
+    // the id is matched against the register_units table and the answer is a
+    // one-based created-instance handle.
+    const Impl& host = *impl_;
+    if (target.kind == 0 || target.object_id == 0) return 0u;
+    for (const GameCommandUnit& unit : host.units) {
+        if (unit.object_id != target.object_id) continue;
+        return static_cast<std::uint32_t>(unit.index) + 1u;
+    }
+    return 0u;
+}
+
+float GameCommandsHost::director_target_hold_0040(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0.0f;
+    return host.directors[unit_index].target_hold_0040;
+}
+
+int GameCommandsHost::director_leading_slot_categories_0071df83(std::size_t unit_index,
+    int* out, int max_out) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size() || out == nullptr || max_out <= 0) return 0;
+    const GameDirector& director = host.directors[unit_index];
+    // 0071DF83..0071DF9E: walk director+54h in 1Ch steps from index 0 and stop
+    // at the first null command pointer, capped at ten slots. A gap hides every
+    // slot behind it, which is what 0071E6C0's fill-the-first-null and
+    // 00720850's shift-the-tail-down together guarantee.
+    int written = 0;
+    for (int i = 0; i < bsp::kDirectorCommandSlotCount && written < max_out; ++i) {
+        const std::uint32_t command = director.slot_command[i];
+        if (command == 0u) break;
+        const bsp::EntityOrderCommandClass* klass = host.class_of(command);
+        out[written++] = (klass != nullptr) ? klass->category : -1;
+    }
+    return written;
+}
+
+std::uint32_t GameCommandsHost::director_slot_command(std::size_t unit_index,
+    int slot_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0u;
+    if (slot_index < 0 || slot_index >= bsp::kDirectorCommandSlotCount) return 0u;
+    return host.directors[unit_index].slot_command[slot_index];
+}
+
+const char* GameCommandsHost::command_name_of(std::uint32_t command_object) const {
+    const bsp::EntityOrderCommandClass* klass = impl_->class_of(command_object);
+    return (klass != nullptr) ? klass->name : "";
+}
+
 bool GameCommandsHost::cruise_step(std::size_t unit_index, bool player_controlled,
-    float body_axis_speed, float reference_speed, bsp::CruiseOrderedValues& out) {
+    float body_axis_speed, float reference_speed, bsp::CruiseOrderedValues& out,
+    bsp::ShipAiControlBlock* blk, bsp::ShipAiSetterHost* setters) {
     Impl& host = *impl_;
     if (!holds_cruise(unit_index)) return false;
     if (player_controlled) {
@@ -865,24 +1397,40 @@ bool GameCommandsHost::cruise_step(std::size_t unit_index, bool player_controlle
     }
     if (!host.logged_step) {
         host.logged_step = true;
-        host.log.notef("cruise state step 009e1170 runs once per unit per fixed simulation "
-            "step: its own scheduler is the ship AI state class family at 00d21598, whose "
-            "009f3dd0 keeps the state in sync with 0071be40's answer and which has no "
-            "reconstruction, so where it runs is the executable's decision");
-        host.log.notef("the latched pair reaches no order ring: 009dbf90, 009dffb0 and "
-            "009e0040 write the AI controller block at [state]+8, and the hop from that "
-            "block to unit+0fc4h / unit+0fdch under the unit+61h gate that 00825f20 reads "
-            "at 008266c1 has no recovered writer (docs/CRUISE_COMMAND.md, follow-up "
-            "`unit_autopilot_pair`), so nothing this rule decides reaches the motion path");
+        // Milestone 2n corrects milestone 2l here. 009e1170 is the `cruise`
+        // state's vtable +0Ch, and 009f5186 calls it only on a re-plan tick, at
+        // most once every state->vtable[28h]() * 0.05f seconds; the controller
+        // 009f50e0 is what schedules it, and this process now runs that
+        // controller once per unit per fixed simulation step.
+        host.log.notef("cruise state step 009e1170 runs on a re-plan tick of the ship AI "
+            "controller 009f50e0, not on every step: 009f3dd0 keeps the state in sync with "
+            "0071be40's answer and 009f519e reloads the interval from the state's own "
+            "vtable +28h (009dac30, 2.0 ticks of 0.05 s for `cruise`)");
+        host.log.notef("the three desired-value setters 009dbf90 / 009dffb0 / 009e0040 now "
+            "write the AI control block blk = brain+8h through their reconstructions, and "
+            "009ed6b0's direct-control arm and 009f4d10 carry what they wrote into the "
+            "unit's own 84-byte AI order slot (docs/SHIP_AI_STATES.md, "
+            "docs/UNIT_AUTOPILOT_PAIR.md)");
     }
-    host.record("ShipAiState::sync_with_current_command", 0x009f3dd0u);
     ChainState chain{host, host.units[unit_index], host.directors[unit_index], nullptr,
-        nullptr, 0.0f, bsp::SceneCommandTarget{}, 0u, 0u};
+        nullptr, 0.0f, bsp::SceneCommandTarget{}, 0u, 0u, blk, setters};
     DirectorBinding binding(chain);
     binding.body_speed = body_axis_speed;
     binding.reference = reference_speed;
     out = bsp::cruise_state_step_009e1170(binding);
     host.done("ShipAiState::cruise_step", 0x009e1170u);
+    const bsp::CruiseSpeedSetting speed = host.params_of(unit_index);
+    if (bsp::navigator_commanded_speed_active(speed) && !host.logged_commanded_step) {
+        host.logged_commanded_step = true;
+        host.log.notef("cruise state with an active commanded speed on \"%s\": "
+            "009e12bd divided +24h %.3f m/s by 0080fc30's reference %.3f and asked the AI "
+            "controller for throttle %.6f, steer mode %d, value %.4f. That triple reaches "
+            "009dbf90 / 009dffb0 / 009e0040 and stops there: the hop from the controller "
+            "block to unit+0fc4h / unit+0fdch has no recovered writer",
+            host.units[unit_index].name.c_str(), static_cast<double>(speed.speed),
+            static_cast<double>(reference_speed), static_cast<double>(out.throttle),
+            static_cast<int>(out.mode), static_cast<double>(out.steer_or_heading));
+    }
     ++host.summary.steps;
     for (GameCommandRow& row : host.rows) {
         if (row.unit_index == unit_index) ++row.steps;
@@ -901,11 +1449,12 @@ const GameCommandsSummary& GameCommandsHost::summary() const noexcept {
 void GameCommandsHost::report() {
     Impl& host = *impl_;
     if (host.rows.empty()) return;
-    host.log.notef("  %-20s %-11s %4s %4s %5s %5s %5s %9s %9s %9s", "unit", "command",
-        "ord", "cat", "issue", "slot", "curr", "latch", "steer", "thrust");
+    host.log.notef("  %-20s %-11s %-20s %4s %4s %5s %5s %5s %9s %9s %9s", "unit", "command",
+        "source", "ord", "cat", "issue", "slot", "curr", "latch", "steer", "thrust");
     for (const GameCommandRow& row : host.rows) {
-        host.log.notef("  %-20s %-11s %4d %4d %5d %5d %5d %9s %9.3f %9.3f",
+        host.log.notef("  %-20s %-11s %-20s %4d %4d %5d %5d %5d %9s %9.3f %9.3f",
             row.unit.c_str(), row.command.empty() ? row.token.c_str() : row.command.c_str(),
+            row.source.c_str(),
             row.ordinal, row.category, row.issued ? 1 : 0, row.slot_pushed ? 1 : 0,
             row.current ? 1 : 0,
             row.latched ? (row.fields.is_heading ? "heading" : "rudder") : "-",
@@ -950,6 +1499,11 @@ void GameCommandsHost::report() {
         host.summary.units, host.summary.resolved, host.summary.issued, host.summary.pushed,
         host.summary.current, host.summary.latched, host.summary.moving,
         host.summary.ai_groups, host.summary.ai_forwards, host.summary.steps);
+    host.log.notef("summary mission director steps=%llu idle_reissues=%llu stop=%zu "
+        "cruise=%zu follow=%zu script_issues=%zu blocked_at_00816f7c=%zu commanded_speeds=%zu",
+        host.summary.director_steps, host.summary.idle_reissues, host.summary.idle_stop,
+        host.summary.idle_cruise, host.summary.idle_follow, host.summary.script_issues,
+        host.summary.script_blocked, host.summary.commanded_speeds);
 }
 
 }  // namespace bsp::game

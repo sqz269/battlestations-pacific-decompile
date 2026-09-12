@@ -1,0 +1,54 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0071f290",
+    "end_address": "0071f3a5"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0071f290",
+    "end_address": "0071f3a4",
+    "bytes_disassembled": 277,
+    "message": "Successfully disassembled 277 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0071f290",
+    "disassemble_first": false,
+    "name": "BSP_CommandControllerBase_Update"
+   },
+   "result": {
+    "success": true,
+    "address": "0071f290",
+    "function_name": "BSP_CommandControllerBase_Update",
+    "entry_point": "0071f290",
+    "body_size": 277,
+    "message": "Function created successfully at 0071f290",
+    "warnings": [
+     "Function name 'BSP_CommandControllerBase_Update' \u2014 main part 'CommandControllerBase_Update' is not PascalCase. Expected: CommandcontrollerbaseUpdate",
+     "Function name 'BSP_CommandControllerBase_Update' \u2014 main part 'CommandControllerBase_Update' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_CommandControllerBase_Update' does not start with a recognized verb. First word 'Command' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0071f290",
+   "end": "0071f3a5",
+   "name": "BSP_CommandControllerBase_Update",
+   "after": "Function: BSP_CommandControllerBase_Update at 0071f290\nSignature: undefined BSP_CommandControllerBase_Update(void)\nEntry: 0071f290\nBody: 0071f290 - 0071f3a4"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

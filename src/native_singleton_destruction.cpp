@@ -1,0 +1,197 @@
+#include "bsp/native_singleton_destruction.hpp"
+
+#include "bsp/native_gameplay_effect_destruction.hpp"
+#include "bsp/native_int_pointer_tree18_leaves.hpp"
+#include "bsp/native_resource_registry_scalar_delete.hpp"
+#include "bsp/native_singleton_vector_leaves.hpp"
+#include "bsp/native_tracked_critical_section_release.hpp"
+#include "bsp/singleton_lifetime.hpp"
+
+#include <cstdlib>
+#include <stdexcept>
+
+namespace bsp {
+namespace {
+__declspec(naked) void __cdecl current_crt_invalid_parameter() {
+    __asm { jmp _invalid_parameter_noinfo }
+}
+
+// Concrete recovered slot-zero targets. No original numeric address is
+// invoked as a source vtable and no generic destructor callback is supplied.
+__declspec(noinline) void __fastcall delete_current_profile(void* owner,
+    const NativeSingletonDeletionBindings& bindings, std::uint32_t profile,
+    std::uint32_t flags) {
+    switch (profile) {
+    case 0x00ce3818:
+        delete_native_singleton_base_00412440(owner, nullptr, flags);
+        return;
+    case 0x00d0da64:
+        if (bindings.actual_effect_publication_00f87664 != nullptr) {
+            delete_native_gameplay_effect_manager_008703e0(
+                owner, *bindings.actual_effect_publication_00f87664, flags);
+            return;
+        }
+        break;
+    case 0x00d5e594:
+        if (bindings.resource_registry != nullptr) {
+            delete_native_resource_registry_00b1b660(owner, bindings.resource_registry, flags);
+            return;
+        }
+        break;
+    case 0x00d5e59c:
+        if (bindings.resource_registry != nullptr) {
+            delete_native_resource_registry_00b1b710(owner, bindings.resource_registry, flags);
+            return;
+        }
+        break;
+    }
+    throw std::logic_error("raw singleton deletion requires a recovered profile and its actual bindings");
+}
+
+__declspec(naked) void __fastcall destroy_manager_body(
+    void*, const NativeSingletonDeletionBindings&) {
+    __asm {
+        // Replace native FH3 registration/scratch with24bytes of padding.
+        // The source outer scope owns EH. Its stable binding replaces the
+        // native unwind-only owner spill; normal iterator scratch stays +14h.
+        sub esp, 18h
+        push ebx
+        push esi
+        mov esi, ecx
+        mov dword ptr [esp + 8], edx
+        xor ebx, ebx
+        call count_native_singleton_slots_00bcf910
+        test eax, eax
+        jz drained
+        push edi
+    next_owner:
+        mov edi, dword ptr [esi + 8]
+        cmp dword ptr [esi + 4], edi
+        jbe end_valid
+        call current_crt_invalid_parameter
+    end_valid:
+        lea eax, [edi - 4]
+        cmp eax, dword ptr [esi + 8]
+        mov dword ptr [esp + 14h], edi
+        ja invalid_last
+        cmp eax, dword ptr [esi + 4]
+        jae last_valid
+    invalid_last:
+        call current_crt_invalid_parameter
+    last_valid:
+        add edi, -4
+        cmp edi, dword ptr [esi + 8]
+        jb slot_valid
+        call current_crt_invalid_parameter
+    slot_valid:
+        mov eax, dword ptr [esi + 4]
+        cmp eax, ebx
+        mov ecx, dword ptr [edi]
+        je popped
+        mov edx, dword ptr [esi + 8]
+        mov edi, edx
+        sub edi, eax
+        sar edi, 2
+        je popped
+        add edx, -4
+        mov dword ptr [esi + 8], edx
+    popped:
+        cmp ecx, ebx
+        je recount
+        mov eax, dword ptr [ecx]
+        push 1
+        push eax
+        // +8 binding spill +4 savedEDI +8 source arguments = +14h.
+        mov edx, dword ptr [esp + 14h]
+        call delete_current_profile
+    recount:
+        mov ecx, esi
+        call count_native_singleton_slots_00bcf910
+        test eax, eax
+        jne next_owner
+        pop edi
+    drained:
+        lea ecx, [esi + 10h]
+        call release_native_tracked_critical_section_0041cc80
+        mov eax, dword ptr [esi + 4]
+        cmp eax, ebx
+        je storage_released
+        push eax
+        call singleton_lifetime_free
+        add esp, 4
+    storage_released:
+        mov dword ptr [esi + 4], ebx
+        mov dword ptr [esi + 8], ebx
+        mov dword ptr [esi + 0ch], ebx
+        pop esi
+        pop ebx
+        add esp, 18h
+        ret
+    }
+}
+} // namespace
+
+__declspec(noinline) void __fastcall destroy_native_singleton_manager_00bd0400(
+    void* owner, const NativeSingletonDeletionBindings& bindings) {
+    try {
+        destroy_manager_body(owner, bindings);
+    } catch (...) {
+        // Native FuncInfoDFF490: state0 -> -1, CC5450 -> BD0220.
+        clear_native_singleton_storage_00bd0220(owner, nullptr);
+        throw;
+    }
+}
+
+__declspec(naked) void* __fastcall delete_native_singleton_base_00412440(
+    void*, void*, std::uint32_t) {
+    __asm {
+        test byte ptr [esp + 4], 1
+        push esi
+        mov esi, ecx
+        mov dword ptr [esi], 00ce3818h
+        je keep_owner
+        push esi
+        call singleton_lifetime_free
+        add esp, 4
+    keep_owner:
+        mov eax, esi
+        pop esi
+        ret 4
+    }
+}
+
+__declspec(naked) void __fastcall probe_native_gameplay_effect_registry_0086b0b0(
+    void*, void*, const char*) {
+    __asm {
+        sub esp, 8
+        mov eax, dword ptr [ecx + 8]
+        push esi
+        lea esi, [ecx + 4]
+        mov ecx, dword ptr [eax]
+        mov eax, esi
+        push edi
+        mov dword ptr [esp + 0ch], ecx
+        mov dword ptr [esp + 8], eax
+    next:
+        test eax, eax
+        mov edi, dword ptr [esi + 4]
+        je invalid_iterator
+        cmp eax, esi
+        je compare_end
+    invalid_iterator:
+        call current_crt_invalid_parameter
+    compare_end:
+        cmp dword ptr [esp + 0ch], edi
+        je done
+        lea ecx, [esp + 8]
+        call increment_native_int_pointer_tree18_00869a20
+        mov eax, dword ptr [esp + 8]
+        jmp next
+    done:
+        pop edi
+        pop esi
+        add esp, 8
+        ret 4
+    }
+}
+} // namespace bsp

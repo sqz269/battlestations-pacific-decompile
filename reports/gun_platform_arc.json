@@ -1,0 +1,974 @@
+{
+  "packet": "cc2_gun_platform_arc",
+  "owner": "agent/cc2-gun-platform-arc",
+  "docs": [
+    "docs/GUN_PLATFORM_ARC.md"
+  ],
+  "sources": [
+    "include/bsp/gun_platform_arc.hpp",
+    "src/gun_platform_arc.cpp"
+  ],
+  "subject": "The gun platform's traverse-arc routines 007F6530/007F6840/007F5960, the producer of the arc window table (007F6B10 and 007F5A10), the fire decision (who sends opcode 0ADh and how the request latch gun+454h is set), the six gun vtable slot helpers the aiming doc left unread, and the remainder of 0085B0F0.",
+  "reuses": [
+    "docs/GUN_AIMING.md for the gun record, the aim rule, CanFire and the vtable map",
+    "include/bsp/gun_aiming.hpp for GunFiringArc, GunPlatformArcs, GunStepDeltas and the shared angle constants",
+    "docs/WEAPON_DIRECTOR.md for director+3Ch and 00836210",
+    "docs/VEHICLE_CLASS_FIELDS.md as the Lua-side producer named by BSP_VehicleClass_ReadLuaFields"
+  ],
+  "functions": [
+    {
+      "address": "007f6530",
+      "name": "BSP_GunPlatform_ArcRoutedStepDeltas",
+      "abi": "__thiscall(platform)(float horz, float vert, float tHorz, float tVert, float* outStepH, float* outStepV), RET 18h at 007F682A and 007F6836",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "007f6547",
+          "native": "00438b10",
+          "role": "wrap(tHorz - horz) into *outStepH; the callee cleans 8 bytes, which is how the two pointer arguments at [E+14h]/[E+18h] were identified"
+        },
+        {
+          "address": "007f6564",
+          "native": "00438b10",
+          "role": "wrap(tVert - vert) into *outStepV"
+        },
+        {
+          "address": "007f67fa",
+          "native": "00438b10",
+          "role": "wrap(window.MinVertAngle - vert), the vertical clamp toward the lower bound"
+        },
+        {
+          "address": "007f681b",
+          "native": "00438b10",
+          "role": "wrap(window.MaxVertAngle - vert), the clamp toward the upper bound"
+        }
+      ],
+      "reads": [
+        {
+          "address": "007f656d",
+          "field": "platform+3Ch",
+          "value": "arc window array base"
+        },
+        {
+          "address": "007f6572",
+          "field": "platform+40h",
+          "value": "arc window count; the stride is 14h from LEA ECX,[EAX+EAX*4] then [EAX+ECX*4]"
+        },
+        {
+          "address": "007f65e2",
+          "field": "arc+4h",
+          "value": "MinHorzAngle, first walk"
+        },
+        {
+          "address": "007f65ef",
+          "field": "arc+8h",
+          "value": "MaxHorzAngle, first walk"
+        },
+        {
+          "address": "007f65f8",
+          "field": "arc+0h",
+          "value": "flag byte, bit 0 must be set for the current window"
+        },
+        {
+          "address": "007f661d",
+          "field": "*outStepH",
+          "value": "the sign that picks the walk direction, compared against 00D7A218 = 0.0f"
+        },
+        {
+          "address": "007f66d5",
+          "field": "arc+Ch",
+          "value": "MinVertAngle on the routed path"
+        },
+        {
+          "address": "007f66e8",
+          "field": "arc+10h",
+          "value": "MaxVertAngle on the routed path"
+        }
+      ],
+      "writes": [
+        {
+          "address": "007f66ab",
+          "field": "*outStepH",
+          "value": "-0.0f (00D7A208) minus the delta, i.e. the negation that routes the gun the other way"
+        },
+        {
+          "address": "007f6825",
+          "field": "*outStepV",
+          "value": "the delta clamped to the blocking window's elevation bound"
+        }
+      ]
+    },
+    {
+      "address": "007f6840",
+      "name": "BSP_GunPlatform_FindTraverseWindow",
+      "abi": "__thiscall(platform)(float horz, float vert) -> GunFiringArc*, RET 8",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [],
+      "reads": [
+        {
+          "address": "007f6840",
+          "field": "platform+3Ch",
+          "value": "arc array base"
+        },
+        {
+          "address": "007f6843",
+          "field": "platform+40h",
+          "value": "arc count"
+        },
+        {
+          "address": "007f68f3",
+          "field": "arc+0h",
+          "value": "bit 0, the traverse flag"
+        }
+      ],
+      "writes": []
+    },
+    {
+      "address": "007f6b10",
+      "name": "BSP_GunPlatform_AddAuthoredArc",
+      "abi": "__thiscall(platform)(GunFiringArc* arc), RET 4 at 007F6C92",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "007f6bc2",
+          "native": "00605070",
+          "role": "re-wrap the widened MinHorzAngle in place"
+        },
+        {
+          "address": "007f6bc9",
+          "native": "00605070",
+          "role": "re-wrap the widened MaxHorzAngle in place"
+        },
+        {
+          "address": "007f6c6a",
+          "native": "007f5a10",
+          "role": "insert the [MinHorzAngle, +pi] half of a seam-straddling window"
+        },
+        {
+          "address": "007f6c88",
+          "native": "007f5a10",
+          "role": "insert the window (or its second half)"
+        }
+      ],
+      "reads": [
+        {
+          "address": "007f6b17",
+          "field": "[ESP+14h]",
+          "value": "the single stack argument, the arc record; ECX is the platform, saved into EBP at 007F6B2A"
+        }
+      ],
+      "writes": []
+    },
+    {
+      "address": "007f5a10",
+      "name": "BSP_GunPlatform_SplitInsertArc",
+      "abi": "__thiscall(platform)(GunFiringArc* arc)",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "007f5b96",
+          "native": "00438b10",
+          "role": "wrap(found.MinHorzAngle - new.MinHorzAngle), the left-edge test against 00D08B90"
+        },
+        {
+          "address": "007f5c17",
+          "native": "00bf55be",
+          "role": "operator new for the grown record array on the left-remainder insert"
+        },
+        {
+          "address": "007f5cde",
+          "native": "00bf6989",
+          "role": "free the old record array"
+        },
+        {
+          "address": "007f5da8",
+          "native": "00438b10",
+          "role": "wrap(found.MaxHorzAngle - new.MaxHorzAngle), the right-edge test"
+        },
+        {
+          "address": "007f5e3b",
+          "native": "00bf55be",
+          "role": "operator new for the right-remainder insert"
+        },
+        {
+          "address": "007f5eff",
+          "native": "00bf6989",
+          "role": "free the old record array"
+        }
+      ],
+      "reads": [
+        {
+          "address": "007f5a1c",
+          "field": "platform+3Ch",
+          "value": "record array base"
+        },
+        {
+          "address": "007f5a1f",
+          "field": "platform+40h",
+          "value": "record count"
+        },
+        {
+          "address": "007f5bec",
+          "field": "platform+44h",
+          "value": "record capacity; a full vector grows to 2*capacity+1"
+        }
+      ],
+      "writes": [
+        {
+          "address": "007f5bca",
+          "field": "found+8h",
+          "value": "MaxHorzAngle truncated to the new window's MinHorzAngle"
+        },
+        {
+          "address": "007f5c14",
+          "field": "platform+44h",
+          "value": "the new capacity on the left-remainder grow"
+        },
+        {
+          "address": "007f5cea",
+          "field": "platform+3Ch",
+          "value": "the reallocated record array"
+        },
+        {
+          "address": "007f5d87",
+          "field": "platform+40h",
+          "value": "count incremented by the left-remainder insert"
+        },
+        {
+          "address": "007f5f07",
+          "field": "platform+40h",
+          "value": "count incremented by the right-remainder insert"
+        }
+      ]
+    },
+    {
+      "address": "0072d130",
+      "name": "BSP_Gun_FixedStepTick",
+      "abi": "__thiscall(gun+310h)(float dt), RET 4",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0072d18c",
+          "native": "0072ad40",
+          "role": "the base tick the gun runs first"
+        },
+        {
+          "address": "0072d21b",
+          "native": "0072cf00",
+          "role": "BSP_Gun_SetBarrelReloadTimer(i, timer - dt, 0) for each barrel"
+        },
+        {
+          "address": "0072d25b",
+          "native": "0075b430",
+          "role": "BSP_SessionMessage_ConstructBase(0ADh); the opcode immediate is at 0072D252"
+        },
+        {
+          "address": "0072d290",
+          "native": "0077c2a0",
+          "role": "BSP_Session_RouteMessage(&msg, 1, 0): this is the send of opcode 0ADh"
+        }
+      ],
+      "reads": [
+        {
+          "address": "0072d14d",
+          "field": "gun+420h",
+          "value": "the reference count the tick decrements"
+        },
+        {
+          "address": "0072d166",
+          "field": "gun+41Ch",
+          "value": "the reference released when that count reaches zero"
+        },
+        {
+          "address": "0072d1bb",
+          "field": "gun+3F0h",
+          "value": "the owning unit"
+        },
+        {
+          "address": "0072d1c1",
+          "field": "unit+720h",
+          "value": "first gate on the send"
+        },
+        {
+          "address": "0072d1cd",
+          "field": "gun+3B8h",
+          "value": "the same disable byte the aim step reads"
+        },
+        {
+          "address": "0072d1d9",
+          "field": "gun+5Dh",
+          "value": "third gate"
+        },
+        {
+          "address": "0072d1e5",
+          "field": "gun+448h",
+          "value": "barrel count"
+        },
+        {
+          "address": "0072d1ed",
+          "field": "gun+414h",
+          "value": "barrel reload timer array"
+        },
+        {
+          "address": "0072d22f",
+          "field": "gun+454h",
+          "value": "the fire-request latch: set means one 0ADh message per fixed step"
+        },
+        {
+          "address": "0072d23a",
+          "field": "gun+46Ch",
+          "value": "the fire target reference"
+        },
+        {
+          "address": "0072d248",
+          "field": "target+174h",
+          "value": "the 16-bit id the 0ADh message carries at msg+20h"
+        }
+      ],
+      "writes": [
+        {
+          "address": "0072d15e",
+          "field": "gun+420h",
+          "value": "the decremented reference count"
+        },
+        {
+          "address": "0072d178",
+          "field": "gun+41Ch",
+          "value": "nulled after the release"
+        },
+        {
+          "address": "0072d1a7",
+          "field": "gun+478h",
+          "value": "the fire stagger, counted down by dt"
+        },
+        {
+          "address": "0072d1b5",
+          "field": "gun+450h",
+          "value": "barrelDelayTime, counted down by dt"
+        },
+        {
+          "address": "0072d252",
+          "field": "msg+10h",
+          "value": "the opcode immediate 0ADh pushed into BSP_SessionMessage_ConstructBase"
+        }
+      ]
+    },
+    {
+      "address": "0072d2c0",
+      "name": "BSP_Gun_SetFireRequest",
+      "abi": "__thiscall(gun)(bool wantFire), RET 4; gun vtable slot 1E8h",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0072d311",
+          "native": "006952a0",
+          "role": "BSP_Observer_UnregisterPair on the fire target reference when the request drops"
+        },
+        {
+          "address": "0072d342",
+          "native": "0075b430",
+          "role": "BSP_SessionMessage_ConstructBase(0AFh), the MRFSGun-only notification"
+        },
+        {
+          "address": "0072d37d",
+          "native": "0077c7b0",
+          "role": "send the 0AFh message"
+        },
+        {
+          "address": "0072d3b3",
+          "native": "00bd2f10",
+          "role": "random draw in [0, 0.12) for the fire stagger; 0.12f is 00CE81A8"
+        },
+        {
+          "address": "0072d3d3",
+          "native": "0072b4c0",
+          "role": "the stop-firing tail on a falling edge"
+        }
+      ],
+      "reads": [
+        {
+          "address": "0072d2dc",
+          "field": "gun+3F0h",
+          "value": "the owning unit; null forces the request false"
+        },
+        {
+          "address": "0072d2e6",
+          "field": "unit+5Dh",
+          "value": "forces the request false"
+        },
+        {
+          "address": "0072d2ec",
+          "field": "gun+5Dh",
+          "value": "forces the request false"
+        },
+        {
+          "address": "0072d2fe",
+          "field": "gun+46Ch",
+          "value": "the observed fire target, field +14h of the observer pair at gun+458h"
+        },
+        {
+          "address": "0072d31e",
+          "field": "gun+454h",
+          "value": "the latch, compared against the wanted value: everything below is edge-triggered"
+        },
+        {
+          "address": "0072d32c",
+          "field": "gun vtable+5Ch",
+          "value": "the class test, called indirectly with 23h"
+        }
+      ],
+      "writes": [
+        {
+          "address": "0072d316",
+          "field": "gun+46Ch",
+          "value": "nulled after BSP_Observer_UnregisterPair on gun+458h"
+        },
+        {
+          "address": "0072d339",
+          "field": "msg+10h",
+          "value": "the opcode immediate 0AFh, MRFSGun only"
+        },
+        {
+          "address": "0072d394",
+          "field": "gun+454h",
+          "value": "the fire-request latch"
+        },
+        {
+          "address": "0072d3b8",
+          "field": "gun+478h",
+          "value": "the random stagger, on a rising edge only"
+        }
+      ]
+    },
+    {
+      "address": "0072f6e0",
+      "name": "BSP_Gun_TargetShotDecision",
+      "abi": "__thiscall(gun+424h)(int targetKey) -> bool; reached through the 00730A20 thunk that is gun vtable slot 1D4h",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0072f73a",
+          "native": "00729670",
+          "role": "the fresh decision for a target not in the table"
+        },
+        {
+          "address": "0072f743",
+          "native": "00432650",
+          "role": "BSP_GlobalConfig_GetSingleton, whose +8Ch scales the stored value"
+        },
+        {
+          "address": "0072f76d",
+          "native": "00bd2f10",
+          "role": "the random draw stored in the third word of the record"
+        },
+        {
+          "address": "0072f794",
+          "native": "00bf55be",
+          "role": "operator new for the grown decision table"
+        },
+        {
+          "address": "0072f7e4",
+          "native": "00bf6989",
+          "role": "free the old decision table"
+        }
+      ],
+      "reads": [
+        {
+          "address": "0072f6e6",
+          "field": "gun+42Ch",
+          "value": "when zero the routine returns 1 without consulting the table"
+        },
+        {
+          "address": "0072f6f5",
+          "field": "gun+430h",
+          "value": "decision record array, stride 0Ch"
+        },
+        {
+          "address": "0072f6f8",
+          "field": "gun+434h",
+          "value": "record count"
+        },
+        {
+          "address": "0072f778",
+          "field": "gun+438h",
+          "value": "record capacity"
+        }
+      ],
+      "writes": [
+        {
+          "address": "0072f809",
+          "field": "record+0h",
+          "value": "the target key"
+        },
+        {
+          "address": "0072f80b",
+          "field": "record+4h",
+          "value": "the cached decision byte from 00729670"
+        },
+        {
+          "address": "0072f80e",
+          "field": "record+8h",
+          "value": "the random draw scaled by GlobalConfig+8Ch"
+        },
+        {
+          "address": "0072f811",
+          "field": "gun+434h",
+          "value": "record count incremented"
+        }
+      ]
+    },
+    {
+      "address": "006fe160",
+      "name": "BSP_MSTGun_RingMuzzleOrigin",
+      "abi": "__thiscall(gun)(float* out, const float* in); gun vtable slot 1E0h for class 27h",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "006fe1a4",
+          "native": "00b63f10",
+          "role": "BSP_Matrix_BuildLookAt on the input direction, producing the two basis rows"
+        }
+      ],
+      "reads": [
+        {
+          "address": "006fe1b5",
+          "field": "gun+3F4h",
+          "value": "the weapon class descriptor; its +9Ch/+A0h node vector gives the muzzle count and +D0h the ring radius"
+        },
+        {
+          "address": "006fe26a",
+          "field": "gun+44Ch",
+          "value": "the barrel index that picks the ring position, converted with FILD"
+        },
+        {
+          "address": "006fe2b2",
+          "field": "descriptor+D0h",
+          "value": "the ring radius on the cos term"
+        },
+        {
+          "address": "006fe318",
+          "field": "descriptor+D0h",
+          "value": "the same radius on the sin term"
+        }
+      ],
+      "writes": []
+    },
+    {
+      "address": "007297b0",
+      "name": "BSP_Gun_ApplyWreckVisibility",
+      "abi": "__fastcall(gun)",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "007297cd",
+          "native": "00b6da70",
+          "role": "BSP_SceneNode_SetVisibilityFactor(1.0) on the intact gun node"
+        },
+        {
+          "address": "007297e2",
+          "native": "00b6d800",
+          "role": "BSP_Node_GetNameHeader for the MeshHolder name test"
+        },
+        {
+          "address": "007297f4",
+          "native": "00bf7fbf",
+          "role": "stricmp against \"MeshHolder\""
+        },
+        {
+          "address": "0072980f",
+          "native": "00b6da70",
+          "role": "hide the MeshHolder child while the gun is intact"
+        },
+        {
+          "address": "00729822",
+          "native": "00b6da70",
+          "role": "BSP_SceneNode_SetVisibilityFactor(0) on the gun node once destroyed"
+        },
+        {
+          "address": "00729832",
+          "native": "00b6d800",
+          "role": "BSP_Node_GetNameHeader on the destroyed path"
+        },
+        {
+          "address": "00729844",
+          "native": "00bf7fbf",
+          "role": "stricmp against \"MeshHolder\""
+        },
+        {
+          "address": "0072985f",
+          "native": "00b6da70",
+          "role": "show the MeshHolder wreck"
+        }
+      ],
+      "reads": [
+        {
+          "address": "007297b3",
+          "field": "gun+358h",
+          "value": "zero shows the intact gun, non-zero shows the MeshHolder wreck; this is what settles +358h as a destruction level"
+        }
+      ],
+      "writes": []
+    },
+    {
+      "address": "0085b0f0",
+      "name": "BSP_TurningGun_SetAnglesImmediate",
+      "abi": "__thiscall(gun)(float tHorz, float tVert, float horz, float vert), RET 10h",
+      "coverage": "complete for the four stored angles and the seam search; partial: 0085B720-0085B9xx, the tail that writes gun+480h/+488h and calls 00859550, is the aiming doc's coverage",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0085b103",
+          "native": "00bf857a",
+          "role": "fmod for the first of the four argument wraps"
+        },
+        {
+          "address": "0085b2a6",
+          "native": "005471b0",
+          "role": "std::vector::at out-of-range for the platform index"
+        },
+        {
+          "address": "0085b2cf",
+          "native": "007f5960",
+          "role": "the replicated target horizontal angle against each window"
+        },
+        {
+          "address": "0085b38a",
+          "native": "007f5960",
+          "role": "the same angle plus half a degree (00D08B88)"
+        },
+        {
+          "address": "0085b441",
+          "native": "007f5960",
+          "role": "the same angle minus half a degree"
+        },
+        {
+          "address": "0085b4b4",
+          "native": "00438b10",
+          "role": "wrap(replicated horz - gun+480h), compared against 0.8 rad"
+        },
+        {
+          "address": "0085b552",
+          "native": "007f5960",
+          "role": "the replicated current horizontal angle, first candidate"
+        },
+        {
+          "address": "0085b60a",
+          "native": "007f5960",
+          "role": "plus half a degree"
+        },
+        {
+          "address": "0085b6c1",
+          "native": "007f5960",
+          "role": "minus half a degree"
+        },
+        {
+          "address": "0085b7bb",
+          "native": "00859550",
+          "role": "the node matrix rebuild that ends the routine"
+        }
+      ],
+      "reads": [
+        {
+          "address": "0085b249",
+          "field": "gun+38Ch",
+          "value": "the platform index, bounds-checked against descriptor+98h at 0085B2A6"
+        },
+        {
+          "address": "0085b4a0",
+          "field": "gun+480h",
+          "value": "compared with the replicated current angle against 0.8 rad (00CE3D40)"
+        }
+      ],
+      "writes": [
+        {
+          "address": "0085b24f",
+          "field": "gun+4C0h",
+          "value": "the wrapped fourth argument, the replicated current vertical angle"
+        },
+        {
+          "address": "0085b25d",
+          "field": "gun+4BCh",
+          "value": "the wrapped third argument, the replicated current horizontal angle"
+        },
+        {
+          "address": "0085b26b",
+          "field": "gun+4C8h",
+          "value": "the wrapped second argument, the replicated target vertical angle"
+        },
+        {
+          "address": "0085b279",
+          "field": "gun+4C4h",
+          "value": "the wrapped first argument, the replicated target horizontal angle"
+        },
+        {
+          "address": "0085b722",
+          "field": "gun+480h",
+          "value": "the accepted horizontal angle, only past the 0.8 rad test"
+        },
+        {
+          "address": "0085b72a",
+          "field": "gun+488h",
+          "value": "the same value into the held pair"
+        },
+        {
+          "address": "0085b78d",
+          "field": "gun+484h",
+          "value": "the accepted vertical angle"
+        },
+        {
+          "address": "0085b795",
+          "field": "gun+48Ch",
+          "value": "the same value into the held pair"
+        },
+        {
+          "address": "0085b7a3",
+          "field": "gun+494h",
+          "value": "the target horizontal angle, written unconditionally"
+        },
+        {
+          "address": "0085b7b3",
+          "field": "gun+498h",
+          "value": "the target vertical angle, written unconditionally"
+        }
+      ]
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0072d18c",
+      "native": "0072ad40",
+      "host": "base_tick_0072ad40",
+      "containing": "0072d130"
+    },
+    {
+      "address": "0072d21b",
+      "native": "0072cf00",
+      "host": "set_barrel_reload_timer_0072cf00",
+      "containing": "0072d130"
+    },
+    {
+      "address": "0072d290",
+      "native": "0077c2a0",
+      "host": "send_fire_message_0ad",
+      "containing": "0072d130"
+    },
+    {
+      "address": "0072d311",
+      "native": "006952a0",
+      "host": "release_fire_target_ref_006952a0",
+      "containing": "0072d2c0"
+    },
+    {
+      "address": "0072d37d",
+      "native": "0077c7b0",
+      "host": "send_fixed_slave_fire_message_0077c7b0",
+      "containing": "0072d2c0"
+    },
+    {
+      "address": "0072d3b3",
+      "native": "00bd2f10",
+      "host": "random_stagger_00bd2f10",
+      "containing": "0072d2c0"
+    },
+    {
+      "address": "0072d3d3",
+      "native": "0072b4c0",
+      "host": "stop_firing_0072b4c0",
+      "containing": "0072d2c0"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00730a20",
+      "name": "BSP_Gun_TargetShotDecisionThunk",
+      "body": "00730a20-00730a2a",
+      "enclosing": "none; BSP_Gun_Fire's body ends at 00730A1D and INT3 padding follows the thunk. The aiming doc's note that 00730A20 is swallowed by 00730160 is wrong: the two bodies are adjacent, not nested.",
+      "note": "ADD ECX,424h then JMP 0072F6E0. 00730A30 (MOV AL,1; RET) is a separate routine after the padding."
+    },
+    {
+      "address": "004f17f0",
+      "name": "BSP_Stub_Ret8",
+      "body": "004f17f0-004f17f2",
+      "enclosing": "none; BSP_ClassId02_IsKindOf does not contain it. A shared stub referenced by 25 vtables.",
+      "note": "the single instruction RET 8"
+    },
+    {
+      "address": "006e3dc0",
+      "name": "BSP_Slot_CopyVec3Identity",
+      "body": "006e3dc0-006e3dda",
+      "enclosing": "none; BSP_ClassId20_IsKindOf's body ends at 006E3D85.",
+      "note": "copies three floats from the second stack argument to the first, RET 8, ECX unused"
+    },
+    {
+      "address": "006e3de0",
+      "name": "BSP_Stub_Ret4",
+      "body": "006e3de0-006e3de2",
+      "enclosing": "none",
+      "note": "the single instruction RET 4, referenced by 5 vtables"
+    },
+    {
+      "address": "006fdc90",
+      "name": "BSP_MRTGun_SetFireRequest",
+      "body": "006fdc90-006fdcb0",
+      "enclosing": "none",
+      "note": "calls 0072D2C0 then clears gun+4D4h when gun+454h came back clear"
+    },
+    {
+      "address": "006fdcd0",
+      "name": "BSP_MSTGun_SetFireRequest",
+      "body": "006fdcd0-006fdcfc",
+      "enclosing": "none",
+      "note": "as 006FDC90, but a false request is skipped unless gun+4D8h is zero"
+    },
+    {
+      "address": "00859a20",
+      "name": "BSP_TurningGun_WriteAimSnapshotFields",
+      "body": "00859a20-00859b04",
+      "enclosing": "none; FUN_00859950's body does not reach it.",
+      "note": "RET 8, SEH frame at 00C94AB8; calls 00859410, 00779FC0, 00779F80 from the raw listing, so verify_report_calls cannot check those sites"
+    },
+    {
+      "address": "008598b0",
+      "name": "BSP_TurningGun_ReadRecentShot",
+      "body": "008598b0-0085991b",
+      "enclosing": "none",
+      "note": "RET 4, no calls; copies gun+4A4h..gun+4B8h into out+78h..out+8Ch when the shot is younger than 0.25 s"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "docs/GUN_AIMING.md line 365: 'the four atan2-derived values it stores into gun+4BCh..+4C8h are contract: unread'",
+      "is": "gun+4BCh..+4C8h receive 0085B0F0's own four arguments after the (-pi, pi] wrap, in the order tHorz -> +4C4h, tVert -> +4C8h, horz -> +4BCh, vert -> +4C0h. No atan2 is involved. The atan2 pair in this family is at 0085A467 and 0085A488 inside BSP_TurningGun_SetupFromDescriptor, which builds an arc record and inserts it with 007F5A10 at 0085A4A8.",
+      "evidence": "0085B17B, 0085B181, 0085B187, 0085B18D store fStack00000010/0000000C/00000008/00000004; the argument order comes from RET 10h and the four fmod wraps at 0085B103, 0085B154, 0085B1A5 and the fourth."
+    },
+    {
+      "was": "docs/GUN_AIMING.md line 211: '007F6840's exact predicate is unread'",
+      "is": "007F6840 is byte-for-byte the 007F5FC0 walk, returning the matching 14h-byte record instead of a bool. 0085B0C5 uses only its truth, so the restore at 0085B0CE fires exactly when no traverse window holds the stepped pair.",
+      "evidence": "007F6840-007F691E against 007F5FC0-007F609E; TEST EAX,EAX at 0085B0CA."
+    },
+    {
+      "was": "docs/GUN_AIMING.md line 327: 'gun+358h, a per-gun counter, contract: unread'",
+      "is": "gun+358h is a destruction level, not an ammunition or barrel count. BSP_Gun_ApplyWreckVisibility (007297B0) shows the gun's own node at visibility 1.0 when it is zero and swaps in the MeshHolder children when it is not. The constructor zeroes it at 0072E61A and BSP_Gun_Fire lets a non-zero gun fire only when the global at [00E188A8]+1FE4h equals 2 (007301A7).",
+      "evidence": "007297B3, 0072E61A, 007301A7, 00729AA7, 0072EDDF."
+    },
+    {
+      "was": "docs/GUN_AIMING.md line 345: 'which routine decides to send opcode 0ADh was not read'",
+      "is": "BSP_Gun_FixedStepTick (0072D130) sends it, once per fixed step, whenever the latch gun+454h is set and unit+720h, gun+3B8h and gun+5Dh are all clear. The latch is written only by BSP_Gun_SetFireRequest (0072D2C0), gun vtable slot 1E8h.",
+      "evidence": "the inline message construction at 0072D252 with opcode 0ADh and the route call at 0072D283; the latch read at 0072D206 and its only writer at 0072D3B8."
+    },
+    {
+      "was": "the aiming doc lists 00730A20 as swallowed by BSP_Gun_Fire's body",
+      "is": "BSP_Gun_Fire's Ghidra body is 00730160-00730A1D, so 00730A20 follows it after INT3 padding rather than sitting inside it. The same holds for 004F17F0 against BSP_ClassId02_IsKindOf and for 006E3DC0/006E3DE0 against BSP_ClassId20_IsKindOf (body 006E3D50-006E3D85).",
+      "evidence": "python tools/bsp.py ghidra proto on each address reports no containing function."
+    }
+  ],
+  "unread": [
+    "The writer that raises gun+358h above zero. A full scan of the executable sections for a [reg+358h] displacement finds exactly one store, the constructor's zero at 0072E61A. The damage path most likely writes through the gun+310h tick sub-object as [reg+48h], a displacement too common to scan for.",
+    "The path from the weapon director's allowFire byte at director+3Ch to BSP_Gun_SetFireRequest. The slot 1E8h dispatches are at 009003AB inside BSP_GunBot_HeadingAimTick and at 00959F47, 00959F5E, 0095A1B8 and 0095A5AC inside BSP_Unit_ApplyGunAimMessage; both bodies belong to packet cc2_gun_bot_ticks and were not opened. Two more 1E8h dispatches at 006DF508 and 008FC22C have no Ghidra function and were not decoded. The dispatch at 006E5878 in FUN_006E56F0 is on the unit's vtable, not the gun's, so it is not a fire request.",
+    "BSP_Gun_TargetShotDecision's meaning: 00729670 supplies the decision and GlobalConfig+8Ch scales the stored third word, but neither was read, so whether the table is an accuracy roll or a target permission is unsettled.",
+    "00859410, 00779FC0 and 00779F80, the three routines BSP_TurningGun_WriteAimSnapshotFields calls, and the out-struct at +78h..+90h that BSP_TurningGun_ReadRecentShot fills.",
+    "007F5A10's behaviour when no covering window exists. The native routine dereferences the search result with no null guard, so the list must be seeded before the first insert; the seeding call site was not found, only 0085A4A8 in BSP_TurningGun_SetupFromDescriptor, which is itself an insert."
+  ],
+  "indirect_call_sites": [
+    {
+      "address": "0072d323",
+      "slot": "gun->vtable[5Ch](23h)",
+      "resolved": "006e3d50 for the base gun",
+      "host": "is_rapid_fixed_slave_006e3d50",
+      "note": "an indirect dispatch, so tools/verify_report_calls.py cannot check it"
+    },
+    {
+      "address": "0072d166",
+      "slot": "[gun+41Ch]->vtable[0h](1)",
+      "resolved": "unread",
+      "host": "release_effect_ref",
+      "note": "the scalar deleting destructor of the reference the tick releases"
+    },
+    {
+      "address": "006fdc98",
+      "slot": "direct CALL 0072d2c0",
+      "resolved": "0072d2c0",
+      "host": "the MRT override's base call",
+      "note": "006FDC90 has no Ghidra function, so the site is listed here rather than under calls"
+    },
+    {
+      "address": "006fdce4",
+      "slot": "direct CALL 0072d2c0",
+      "resolved": "0072d2c0",
+      "host": "the MST override's base call",
+      "note": "006FDCD0 has no Ghidra function"
+    },
+    {
+      "address": "00730a26",
+      "slot": "JMP 0072f6e0 after ADD ECX,424h",
+      "resolved": "0072f6e0",
+      "host": "the slot 1D4h thunk",
+      "note": "a tail jump from a routine Ghidra has no function for"
+    },
+    {
+      "address": "009003ab",
+      "slot": "gun->vtable[1E8h]",
+      "resolved": "0072d2c0 and its overrides",
+      "host": "not modelled",
+      "note": "inside BSP_GunBot_HeadingAimTick, owned by packet cc2_gun_bot_ticks"
+    },
+    {
+      "address": "00959f47",
+      "slot": "gun->vtable[1E8h]",
+      "resolved": "0072d2c0 and its overrides",
+      "host": "not modelled",
+      "note": "inside BSP_Unit_ApplyGunAimMessage, owned by packet cc2_gun_bot_ticks"
+    },
+    {
+      "address": "00959f5e",
+      "slot": "gun->vtable[1E8h]",
+      "resolved": "0072d2c0 and its overrides",
+      "host": "not modelled",
+      "note": "inside BSP_Unit_ApplyGunAimMessage, owned by packet cc2_gun_bot_ticks"
+    },
+    {
+      "address": "0095a1b8",
+      "slot": "gun->vtable[1E8h]",
+      "resolved": "0072d2c0 and its overrides",
+      "host": "not modelled",
+      "note": "inside BSP_Unit_ApplyGunAimMessage, owned by packet cc2_gun_bot_ticks"
+    },
+    {
+      "address": "0095a5ac",
+      "slot": "gun->vtable[1E8h]",
+      "resolved": "0072d2c0 and its overrides",
+      "host": "not modelled",
+      "note": "inside BSP_Unit_ApplyGunAimMessage, owned by packet cc2_gun_bot_ticks"
+    },
+    {
+      "address": "009594b1",
+      "slot": "gun->vtable[1E8h]",
+      "resolved": "0072d2c0 and its overrides",
+      "host": "not modelled",
+      "note": "inside BSP_Unit_OnDestroyed: a destroyed unit drops every gun's fire request"
+    },
+    {
+      "address": "006df508",
+      "slot": "gun->vtable[1E8h]",
+      "resolved": "0072d2c0 and its overrides",
+      "host": "not modelled",
+      "note": "no Ghidra function contains the site; not decoded"
+    },
+    {
+      "address": "008fc22c",
+      "slot": "gun->vtable[1E8h]",
+      "resolved": "0072d2c0 and its overrides",
+      "host": "not modelled",
+      "note": "no Ghidra function contains the site; not decoded"
+    }
+  ]
+}

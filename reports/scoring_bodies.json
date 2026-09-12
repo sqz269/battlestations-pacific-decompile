@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "packet": "cc2_scoring_bodies",
+  "owner": "agent/cc2-scoring-bodies",
+  "base_commit": "bcdb8f8a",
+  "status": "five_non_map_bindings_kill_trees_and_multiplier_vector_reconstructed_and_build_tested",
+  "owned_files": [
+    "docs/SCORING_BODIES.md",
+    "reports/scoring_bodies.json",
+    "include/bsp/scoring_bodies.hpp",
+    "src/scoring_bodies.cpp",
+    "cmake/startup.cmake"
+  ],
+  "doc": "docs/SCORING_BODIES.md",
+  "parts": {
+    "grant_bonus": {
+      "coverage": "complete for both callees, the dedupe rule and the 1Ch record; partial for 007f8b40, whose body was read only for the field order",
+      "target_object": "[00e188a8]+650h, the player profile; not the scoring manager at [00e188a8]+21A0h",
+      "granted_names_vector": "profile+ACh, _Myfirst +B0h, _Mylast +B4h, _Myend +B8h, 8-byte NativeString elements",
+      "record_vector": "profile+BCh, _Myfirst +C0h, stride 1Ch",
+      "record_layout": [
+        {"offset": "0x0", "field": "NativeString, Lua argument 1", "producer": "007fc9f0 at 007fcb39, 007fcbc0 at 007fcd09"},
+        {"offset": "0x8", "field": "NativeString, Lua argument 2", "producer": "007fc9f0 at 007fcafc, 007fcbc0 at 007fcccc"},
+        {"offset": "0x10", "field": "NativeString, Lua argument 3 in the string form, empty otherwise", "producer": "007fcbc0 at 007fcc93, 007fc9f0 at 007fcac3"},
+        {"offset": "0x18", "field": "int, Lua argument 3 in the integer form, 0 otherwise", "producer": "007fc9f0 at 007fcac2, 007fcbc0 at 007fcc92"}
+      ],
+      "abi": "both callees __thiscall(profile, NativeString*, NativeString*, NativeString*, int|NativeString*), RET 10h at 007fcbba and 007fcd8a"
+    },
+    "clears": {
+      "coverage": "complete",
+      "clear_player_score": "008bc540 saves manager+slot*284h+0Ch (record difficulty_08) and +254h (record used_slot_250), calls 00915760 on the record, writes both back, sets manager+14B0h+slot to 1",
+      "clear_all_missions_score": "008d2d60 erases the root of the map at [game+6B4h]+0h through 007fd510, resets the head self-pointers and _Mysize, then calls 00916980",
+      "node_layout": "MissionScoreMapStorage node {_Left 0h, _Parent 4h, _Right 8h, NativeString key 0Ch, MissionScoreRecord 14h, _Color 29Ch, _Isnil 29Dh}; the _Isnil test is 007fd52b"
+    },
+    "mission_messages": {
+      "coverage": "complete for the two setters; partial for the two bindings, whose session-message branch was not read",
+      "condition_message": {"record_offset": "0x254", "text_pointer": "0x258", "writer": "0090bda0"},
+      "victory_message": {"record_offset": "0x25c", "text_pointer": "0x260", "writer": "0090be30"},
+      "target_record": "the commit slot from 004b4750, never the slot the script names",
+      "persisted": false,
+      "readers_found": "none; 00593ca0 copy, 00593570 destructor and 00915760 clear only"
+    },
+    "kill_trees": {
+      "coverage": "complete for the write; 0091bda0 itself partial (0091bda0-0091bf7f and 0091c049-0091c553 unread)",
+      "player_kills": {"record_offset": "0xb4", "selected_when": "[unit+2D8h] == [unit+2DCh]", "lea": "0091bff0"},
+      "party_kills": {"record_offset": "0xc0", "selected_when": "[unit+2D8h] != [unit+2DCh]", "lea": "0091c02d"},
+      "shape": "std::map<int, std::map<int, std::map<int,int>>>, MissionEnumCounterTriples in include/bsp/mission_progress.hpp",
+      "keys": [
+        {"level": 1, "key": "relative party from 00803510([unit+2D0h], [unit+54h])", "push": "0091bfef / 0091c02c", "operator_index": "0062c170"},
+        {"level": 2, "key": "attacker unit class, [unit+2CCh]", "push": "0091bfea / 0091c02b", "operator_index": "0062bb60"},
+        {"level": 3, "key": "victim unit class, virtual +0h on [unit+170h]", "push": "0091bfe1 / 0091c022", "operator_index": "00625900"}
+      ],
+      "increment": "ADD dword ptr [EAX],0x1 at 0091c046",
+      "record_slot": "[unit+2D8h], rejected above 7 by the unsigned CMP/JA at 0091bf86 and 0091bf97",
+      "attribution_producer": "0077ce60 on every damaging hit; +2CCh, +2D0h, +2D8h, +2DCh, +2E4h",
+      "readers": ["008bc9b0 over +B4h only, level-1 key 1, level-3 keys 7..0Ch", "no Lua reader of +C0h"]
+    },
+    "unit_type_shot_down": {
+      "coverage": "complete",
+      "reads": "the name -> int loss maps at record+1ECh (argument 0 true, allied) and record+1F8h (false, Japanese) of the commit record",
+      "lookup": "004c8b80 find, returns 0 without inserting",
+      "not_a_kill_tree": true
+    },
+    "difficulty_multipliers": {
+      "coverage": "complete",
+      "vector": "std::vector<float> at GlobalConfig+2Ch, _Myfirst +30h, _Mylast +34h, _Myend +38h",
+      "producer": "0087d7b0, Globals.Difficulty.ScoreMultipliers, string at 00d0e50c, push_back target 0087dc08",
+      "length": 3,
+      "values": [0.25, 0.5, 1.0],
+      "source_file": "scripts/datatables/globals.lua line 11, installed build",
+      "sibling_vectors": [
+        {"table": "HPMultipliers", "config_offset": "0x1c", "stored": "1/x"},
+        {"table": "LockRadiusMultipliers", "config_offset": "0x3c", "stored": "x"},
+        {"table": "PlayerCheatMultipliers", "config_offset": "0x4c", "stored": "x"}
+      ],
+      "consumers": ["009103f0", "00910480", "00910500", "00910570"]
+    }
+  },
+  "host_methods": [
+    {"host_method": "kill_tree_leaf level 1", "address": "0091c033", "native": "0062c170", "containing_function": "0091bda0"},
+    {"host_method": "kill_tree_leaf level 2", "address": "0091c03a", "native": "0062bb60", "containing_function": "0091bda0"},
+    {"host_method": "kill_tree_leaf level 3", "address": "0091c041", "native": "00625900", "containing_function": "0091bda0"},
+    {"host_method": "clear_slot_record", "address": "008bc6b4", "native": "00915760", "containing_function": "008bc540"},
+    {"host_method": "commit_slot", "address": "008bc023", "native": "004b4750", "containing_function": "008bbe00"},
+    {"host_method": "commit_slot", "address": "008bc304", "native": "004b4750", "containing_function": "008bc0c0"},
+    {"host_method": "set_condition_message", "address": "008bc032", "native": "0090bda0", "containing_function": "008bbe00"},
+    {"host_method": "set_victory_message", "address": "008bc313", "native": "0090be30", "containing_function": "008bc0c0"},
+    {"host_method": "profile_record_granted_bonus", "address": "007fcab9", "native": "00450540", "containing_function": "007fc9f0"},
+    {"host_method": "profile_record_granted_bonus", "address": "007fcc87", "native": "00450540", "containing_function": "007fcbc0"},
+    {"host_method": "profile_append_bonus record build", "address": "007fcb7e", "native": "007f8b40", "containing_function": "007fc9f0"},
+    {"host_method": "profile_append_bonus", "address": "007fcb96", "native": "007fc940", "containing_function": "007fc9f0"},
+    {"host_method": "profile_append_bonus record build", "address": "007fcd4e", "native": "007f8b40", "containing_function": "007fcbc0"},
+    {"host_method": "profile_append_bonus", "address": "007fcd66", "native": "007fc940", "containing_function": "007fcbc0"},
+    {"host_method": "clear_all_mission_records", "address": "008d2e5b", "native": "007fd510", "containing_function": "008d2d60"},
+    {"host_method": "grant bonus integer form", "address": "008bbb34", "native": "007fc9f0", "containing_function": "008bb770"},
+    {"host_method": "grant bonus string form", "address": "008bb982", "native": "007fcbc0", "containing_function": "008bb770"},
+    {"host_method": "record kill", "address": "00959519", "native": "0091bda0", "containing_function": "00959450"},
+    {"host_method": "damage attribution trace", "address": "0077d13c", "native": "00915f20", "containing_function": "0077ce60"}
+  ],
+  "routines": [
+    {"address": "004b4750", "name": "BSP_MissionScoring_GetCommitRecord", "coverage": "complete", "status": "analyzed, reconstructed"},
+    {"address": "008bb770", "name": "BSP_LuaBinding_ScoringGrantBonus", "coverage": "complete", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "007fc9f0", "name": "BSP_PlayerProfile_GrantBonusValue", "coverage": "complete", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "007fcbc0", "name": "BSP_PlayerProfile_GrantBonusText", "coverage": "complete", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "007f8b40", "name": "BSP_ProfileBonusRecord_Construct", "coverage": "partial: field order and 1Ch size only", "status": "analyzed"},
+    {"address": "007fc940", "name": "BSP_ProfileBonusVector_PushBack", "coverage": "complete", "status": "analyzed"},
+    {"address": "008bc540", "name": "BSP_LuaBinding_ScoringClearPlayerScore", "coverage": "complete", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "00915760", "name": "BSP_MissionScoreRecord_Clear", "coverage": "complete for the offsets it clears", "status": "analyzed"},
+    {"address": "008d2d60", "name": "BSP_LuaBinding_ScoringClearAllMissionsScore", "coverage": "complete", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "007fd510", "name": "STL_MissionScoreMapNode_EraseSubtree", "coverage": "complete", "status": "analyzed"},
+    {"address": "008bbe00", "name": "BSP_LuaBinding_ScoringSetConditionMessage", "coverage": "partial: the session-message branch unread", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "0090bda0", "name": "BSP_MissionScoreRecord_SetConditionMessage", "coverage": "complete", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "008bc0c0", "name": "BSP_LuaBinding_ScoringSetVictoryMessage", "coverage": "partial: the session-message branch unread", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "0090be30", "name": "BSP_MissionScoreRecord_SetVictoryMessage", "coverage": "complete", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "008bc9b0", "name": "BSP_LuaBinding_ScoringGetPlayerShotDown", "coverage": "complete", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "008d0140", "name": "BSP_LuaBinding_ScoringGetUnitTypeShotDown", "coverage": "complete", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "0091bda0", "name": "BSP_MissionScoring_RecordUnitKill", "coverage": "partial: 0091bda0-0091bf7f and 0091c049-0091c553 unread", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "0077ce60", "name": "BSP_Unit_RecordDamageAttribution", "coverage": "partial: the +2DCh fallback branch unread", "status": "analyzed"},
+    {"address": "00803510", "name": "BSP_Party_RelativeTo", "coverage": "complete", "status": "analyzed, reconstructed, build-tested"},
+    {"address": "00593570", "name": "BSP_MissionScoreRecord_Destruct", "coverage": "partial: identified by callers and the two message fields", "status": "analyzed"},
+    {"address": "00593ca0", "name": "BSP_MissionScoreRecord_Assign", "coverage": "partial: identified by callers and the two message fields", "status": "analyzed"},
+    {"address": "0091c560", "name": "BSP_MissionScoring_ResetForNewMission", "coverage": "complete", "status": "analyzed"}
+  ],
+  "no_ghidra_function": [],
+  "corrections": [
+    {
+      "document": "docs/SCORING_BINDING_TABLE.md",
+      "was": "Scoring_GetUnitTypeShotDown (008d0140) reads the kill trees at +B4h/+C0h",
+      "is": "008d0140 reads neither kill tree; it copy-assigns one of the commit record's name -> int loss maps at +1ECh (Lua argument 0 true, allied) or +1F8h (false, Japanese) and looks up Lua argument 1 with 004c8b80",
+      "evidence": "008d0140's body takes its record from 004b4750, selects +1ECh or +1F8h on the boolean and joins at LAB_008d02f0; the two offsets are the archive doc's objective/allied_losses and japanese_losses"
+    },
+    {
+      "document": "docs/SCORING_BINDING_TABLE.md",
+      "was": "Scoring_GrantBonus (008bb770) writes outside the keyed maps of the 284h scoring record",
+      "is": "008bb770 writes no part of the scoring record; both callees take ECX = [00e188a8]+650h, the player profile, and append to its vectors at +ACh and +BCh",
+      "evidence": "008bbb07 MOV ESI,[00e188a8]; 008bbb17 ADD ESI,0x650; 008bbb32 MOV ECX,ESI before 008bbb34 CALL 007fc9f0, and 008bb964/008bb974 before 008bb982 CALL 007fcbc0"
+    },
+    {
+      "document": "docs/SCORING_BINDING_TABLE.md",
+      "was": "the multiplier table's contents are contract: unread",
+      "is": "the vector at GlobalConfig+2Ch is Globals.Difficulty.ScoreMultipliers, length 3, values 0.25, 0.5, 1.0",
+      "evidence": "0087d7b0 push_backs the second named sub-table into 0087dc08 LEA EBP,[ESI+0x2c]; the name string is 00d0e50c ScoreMultipliers; the installed scripts/datatables/globals.lua line 11 is { 1/4, 1/2, 1, }"
+    },
+    {
+      "document": "docs/SCORING_BINDING_TABLE.md",
+      "was": "every keyed binding defaults its slot to the local player index at game+18ECh",
+      "is": "Scoring_GetPlayerShotDown (008bc9b0) is not a keyed binding and defaults its slot to 0, not to game+18ECh",
+      "evidence": "008bc9b0 initialises the slot local to 0 and only overwrites it when the argument count is 1 and argument 0 is an integer; it never reads game+18ECh"
+    }
+  ],
+  "open_questions": [
+    "No reader of profile+BCh along an ADD reg,0BCh path and no reader of record+254h/+25Ch by disp32; both are scan results, not proofs",
+    "The per-slot flag array at manager+14B0h has writers 008bc540 and 0091c560 and no located reader",
+    "0091bda0's per-slot Counter_* string maps and award tokens, 0091bda0-0091bf7f and 0091c049-0091c553",
+    "0077ce60's +2DCh fallback on the 6/1Bh capability branch, where the decompiler lost a register",
+    "Which of 0062c2c0's seven game+650h sites renders the bonus list; 005097d0, 007fcd90, 007f93f0, 007fb990 and 00574050 were not opened"
+  ],
+  "build": "scripts/build.ps1, Win32 Release, warnings as errors: succeeded",
+  "tests": "ctest reconstructed_math: 1/1 passed; no new test added"
+}

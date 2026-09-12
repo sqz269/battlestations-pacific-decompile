@@ -7995,6 +7995,56 @@
       "qualification": "Explicit borrowed raw publication references and source C++ EH/CRT/Win32 contract. Raw mixed-owner destruction/canonical executable migration and full gameplay remain open."
     },
     {
+      "id": "orch4_sound_retained_x",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reviewed_build_and_installed_retained_fixture_tested",
+      "function_addresses": [
+        "00a7f2f0",
+        "00a7f0f0",
+        "0054d510",
+        "0054d4c0",
+        "00a7c5f0",
+        "004c7fa0",
+        "004e7bb0",
+        "00a7b520",
+        "00a7b5d0",
+        "00a7b690",
+        "00a7da40",
+        "00a7dad0",
+        "00a7db20",
+        "00a7db80",
+        "00a7dc20",
+        "00a7dc70",
+        "00a7dcd0",
+        "00a7dd60",
+        "00a7ddb0"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_retained_factory.hpp",
+        "src/sound_retained_factory.cpp",
+        "include/bsp/sound_retained_record.hpp",
+        "src/sound_retained_record.cpp",
+        "include/bsp/sound_retained_channel.hpp",
+        "src/sound_retained_channel.cpp",
+        "include/bsp/sound_retained_update.hpp",
+        "src/sound_retained_update.cpp",
+        "include/bsp/sound_channel_runtime.hpp",
+        "src/sound_channel_runtime.cpp",
+        "include/bsp/sound_shutdown.hpp",
+        "src/sound_shutdown.cpp",
+        "include/bsp/voice_slot_start.hpp",
+        "src/voice_slot_start.cpp",
+        "include/bsp/sound_instance.hpp",
+        "src/sound_instance.cpp",
+        "include/bsp/sound_spatial_instance.hpp",
+        "src/sound_spatial_instance.cpp"
+      ],
+      "integration_report": "reports/sound_retained_channels.json",
+      "discovery_evidence": "docs/SOUND_RETAINED_CHANNELS.md",
+      "validated_revision": "48a62b5f8e907c08210b7502fe25a8c7133431ec"
+    },
+    {
       "id": "native_effect_tree_construction2",
       "packet": "native_effect_tree_construction2",
       "state": "complete_raw_tree_and_construction_build_static_review_saved_and_registered",
@@ -8023,6 +8073,61 @@
       ],
       "evidence": "reports/native_effect_tree_construction_audit.json",
       "qualification": "Seven complete raw tree leaves and three owner construction/getter entries under explicit source bindings. Full iterator/range erase, owner destruction, mixed-owner dispatch and canonical executable migration remain open."
+    },
+    {
+      "id": "native_effect_tree_erasure3",
+      "packet": "native_effect_tree_erasure3",
+      "state": "complete_raw_erasure_destruction_build_static_review_source_fixture_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "0086e8a0",
+        "0086ee50",
+        "0086fde0",
+        "0086fe20",
+        "008703e0"
+      ],
+      "code_ownership": [
+        "src/native_int_pointer_tree18_erase.cpp",
+        "include/bsp/native_int_pointer_tree18_erase.hpp",
+        "src/native_gameplay_effect_destruction.cpp",
+        "include/bsp/native_gameplay_effect_destruction.hpp",
+        "docs/NATIVE_EFFECT_TREE_ERASURE.md",
+        "reports/native_effect_tree_erasure_audit.json"
+      ],
+      "evidence": "reports/native_effect_tree_erasure_audit.json",
+      "qualification": "Complete raw normal erasure and source owning exception/destruction contracts; one concrete source fixture. Two saved Ghidra body extents remain short. Raw mixed-owner lifetime dispatch, canonical executable migration and full gameplay remain open."
+    },
+    {
+      "id": "native_singleton_runtime4",
+      "packet": "native_singleton_runtime4",
+      "state": "raw_executable_lifetime_integrated_build_fixture_and_180_frame_runtime",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00bd0400",
+        "00412440",
+        "0086b0b0"
+      ],
+      "fragment_addresses": [
+        "004e4000",
+        "008f8449"
+      ],
+      "code_ownership": [
+        "src/native_singleton_destruction.cpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/game_hosts_singletons.cpp",
+        "include/bsp/game_hosts_singletons.hpp",
+        "src/frontend_entry.cpp",
+        "include/bsp/frontend_entry.hpp",
+        "src/game_hosts_menu.cpp",
+        "docs/NATIVE_SINGLETON_RUNTIME.md",
+        "reports/native_singleton_runtime_audit.json"
+      ],
+      "evidence": "reports/native_singleton_runtime_audit.json",
+      "qualification": "Raw manager drain, finite four-profile concrete deletion map, raw effect probe and canonical application ownership. Current executable admits effect only; fixture executes base/effect. Source exception cleanup and180-frame rebuilt shutdown verified. Arbitrary original owner dispatch, original ABI/SEH, visual/full gameplay remain open."
     }
   ],
   "snapshot_after_analysis": {

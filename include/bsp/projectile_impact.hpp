@@ -65,7 +65,7 @@ inline constexpr int kProjectileSubTypeFriendlyExempt = 0x11;  // 0084BF00
 
 inline constexpr std::size_t kProjectileOffChildNodeNext = 0x44;   // 006E7699
 inline constexpr std::size_t kProjectileOffChildNodeHead = 0x48;   // 006E767D
-inline constexpr std::size_t kProjectileOffOwnerId = 0x54;         // 0072C025
+inline constexpr std::size_t kProjectileOffOwnerParty = 0x54;      // 0072C025; the owner PARTY index, not an id (docs/PROJECTILE_HELPERS.md)
 inline constexpr std::size_t kProjectileOffGunId = 0x58;           // 0072C013
 inline constexpr std::size_t kProjectileOffSweepEnabled = 0x5C;    // 006E64EF
 inline constexpr std::size_t kProjectileOffBindGate = 0x5D;        // 006E6BB0
@@ -196,16 +196,17 @@ bool projectile_fuse_is_armed(float flight_time, float class_fuse_time);
 // 0084BF00 step 2: the sweep runs only for a segment longer than this.
 bool projectile_segment_is_sweepable(const TickPoint3& from, const TickPoint3& to);
 
-// 0084BC60 step 1: mode 1 becomes 3 for a scoring target and 4 for a unit.
+// 0084BC60 step 1: mode 1 becomes 3 for a Landscape hit and 4 for a plane hit
+// (docs/PROJECTILE_HELPERS.md corrected the earlier "scoring target" / "unit" reading).
 enum class ProjectileImpactMode : std::uint8_t {
     kEntity = 1,
     kStatic = 2,
-    kScoringTarget = 3,
-    kUnit = 4,
+    kLandscape = 3,
+    kPlane = 4,
 };
 ProjectileImpactMode projectile_refine_impact_mode(ProjectileImpactMode mode,
-                                                   bool target_is_scoring_kind,
-                                                   bool target_is_unit_kind);
+                                                   bool target_is_landscape_kind,
+                                                   bool target_is_plane_kind);
 
 // ---------------------------------------------------------------------------
 // Spawn

@@ -198,7 +198,7 @@ void issue_target_command_00720cd0(WeaponDirectorHost& host,
     }
     const bool has_target = target != 0;
     const std::uint16_t target_id = has_target ? host.entity_id(target) : std::uint16_t{0};
-    host.issue_command(kDirectorAttackCommandDescriptor, has_target, target_id, position);
+    host.issue_command(kDirectorFollowCommandDescriptor, has_target, target_id, position);
 }
 
 } // namespace bsp

@@ -171,3 +171,25 @@ Start and inclusive end (the last byte of the final `RET`).
 | --- | --- | --- | --- |
 | `00803B80` | `00803B90` | `00F874B8 = -1.0e-4f`, `void()` | `MOVSS [00F874B8],XMM0` at `00803B88..00803B8F`, `RET` at `00803B90`; `00803B91..00803B9F` are `CC` |
 | `006F23C0` | `006F23CB` | `00F874B8 = 0.0f`, `void()` | `XORPS XMM0,XMM0` at `006F23C0`, `MOVSS` at `006F23C3..006F23CA`, `RET` at `006F23CB`; `006F23CC` is `CC` |
+
+## Correction from docs/BOT_FIRE_TARGET.md
+
+Packet `cc2-bot-fire-target` found that `009F5D30` uses the `EAX` returned by `008053C0` as the list
+owner, so `008053C0` is not `void`: it returns the slot's object pointer (the one it lazily constructs
+into `[index*4 + 00F874BC]`). The row above and the ledger evidence should read `__fastcall void* (int index)`;
+the lazy-construction rule is unchanged.
+
+## Correction from docs/RECON_SLOT_LISTS.md (packet cc2_recon_slot_lists)
+
+- **Was:** the slot holds three arrays of 61h elements of 0Ch bytes at +34h, +4C0h and +94Ch
+  **Is:** four. The fourth is the carry-over array at +E14h
+  **Evidence:** 00805300..0080530C in the destructor destroys slot+0E14h with the same array helper 00BF7C6E and the same {0Ch, 61h, 00804E00} triplet as the three at 00805353, 0080536D and 00805384; 0xE14 + 0x61*0x0C == 0x12A0, the whole object. 008065D5 and 0080543C index it as [slot + classId*0Ch + 0E18h].
+- **Was:** 008042B0 unread; the five calls at 008073D0..00807416 described as clears on the strength of the caller
+  **Is:** 008042B0 really is a full clear, but only because it loops; the listing tool hides the loop
+  **Evidence:** python tools/bsp.py ghidra disasm 008042B0 jumps from 008042E7 CALL 00BF65AC straight to 008042F4 POP ESI. The disk bytes at 008042EC are 83 C4 04 83 3E 00 75 C4: ADD ESP,4 / CMP dword [ESI],0 / JNZ 008042B8. The same omission hides 00804D7A..00804D82 in 00804D20.
+- **Was:** the arrays are plausibly per-class unit lists and plausibly the relations; uncertain, because the report has four relations against three arrays
+  **Is:** settled. The three arrays are exactly own, enemy and neutral, indexed by class id; the fourth Lua relation, unknown, is triple 3 at +DFCh, drained out of the enemy and neutral triples by detection level
+  **Evidence:** 008067EA, 008067AC and 0080676B select +34h, +4C0h and +94Ch from the relation 008065FF computes; 00806BE4/00806C1A/00806C50/00806C86 map enemy, own, neutral, unknown to +DE4h, +DD8h, +DF0h, +DFCh; only 0080769B and 00807819 write +DFCh.
+- **Was:** the five triples at +DD8h..+E08h are the same five lists 004C3CB0 walks
+  **Is:** they are own, enemy, neutral, unknown and the union of those four; the fifth is never published to Lua
+  **Evidence:** 00807933..00807966 appends triples 0, 1, 2 and 3 into +E08h and nothing reads +E08h afterwards; 00806B10 publishes only the first four.

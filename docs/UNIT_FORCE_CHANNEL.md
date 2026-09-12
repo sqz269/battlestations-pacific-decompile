@@ -143,3 +143,9 @@ input. It is the only `AddForce` caller in the image.
 
 none. Every address named or reconstructed in this packet lies inside an existing Ghidra
 function body, checked with `python tools/bsp.py ghidra proto <addr> --brief`.
+
+## Correction from docs/SHIP_HIT_RECORD.md (packet cc2_ship_hit_record)
+
+- **Was:** 0080FFD0 is the local constructor for the message class whose vtable is 00D034C8. It has no callers in the image ... nothing in this image produces such a message locally; a hull body's only force and torque come from 009329C0's hydrodynamic model and 00937440's rudder term
+  **Is:** 00826F10 produces one: 0080FFD0 at 00827312, routed by 0077C2A0(this, &msg, 7, 0) at 00827329. The producer is the torpedo roll torque, gated on the shot being 2Bh MTorpedo, the class Mass being above 500.0 and the session mode being 0 or 1. The earlier reading predates Ghidra having a function at 00826F10, so the call site sat in unrecognised bytes and no caller scan could see it
+  **Evidence:** the listing 00827304..00827329 inside the Ghidra body 00826F10-0082781B, and python tools/bsp.py callees 00826f10, which lists 0080ffd0
