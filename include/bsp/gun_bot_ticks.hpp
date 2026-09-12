@@ -45,14 +45,25 @@ inline constexpr std::uint32_t kEntityFindAncestorOfKindAddress = 0x00922E90u;
 // ---------------------------------------------------------------------------
 // The bot vtables. The primary table sits at bot+0h, the observer base at
 // bot+1Ch. Section 2 of the document.
+//
+// The class names below are RECOVERED STRINGS, not hypotheses. The loader
+// load_robot_config_00901610 builds one class descriptor per name and stores it
+// in the global each constructor reads, so the name and the tick are paired by
+// that global: "TailGunnerBot" 00D17D5C -> [00E199A0], "AAFlakBot" 00D17D50 ->
+// [00E1999C], "AAGunnerBot" 00D17D6C -> [00E19998], "ArtilleryGunnerBot"
+// 00D17D90 -> [00E19990], "TorpedoBot" 00D17DA4 -> [00E1998C],
+// "DepthChargeBot" 00D17DB0 -> [00E19988]. Two more names in the same run,
+// "PilotBot" 00D17D44 -> [00F8A30C] and "ArtillerySubDirectorBot" 00D17D78 ->
+// [00E19994], belong to classes outside this packet.
 // ---------------------------------------------------------------------------
 inline constexpr std::uint32_t kGunBotBaseVtable = 0x00CFDFA0u;
 inline constexpr std::uint32_t kGunBotBaseObserverVtable = 0x00CFDF88u;
-inline constexpr std::uint32_t kTurretBotVtable = 0x00D18140u;     // 008FFA20
-inline constexpr std::uint32_t kLeadBotVtable = 0x00D180A0u;       // 00902920
-inline constexpr std::uint32_t kBallisticBotVtable = 0x00D18238u;  // 009030C0
-inline constexpr std::uint32_t kTorpedoBotVtable = 0x00D182B0u;    // 008FFF20
-inline constexpr std::uint32_t kMuzzleBotVtable = 0x00CFE000u;     // 006DF520
+inline constexpr std::uint32_t kTailGunnerBotVtable = 0x00D18140u;      // 008FFA20
+inline constexpr std::uint32_t kAAGunnerBotVtable = 0x00D180A0u;        // 00902920
+inline constexpr std::uint32_t kAAFlakBotVtable = 0x00D18238u;          // 009030C0
+inline constexpr std::uint32_t kTorpedoBotVtable = 0x00D182B0u;         // 008FFF20
+inline constexpr std::uint32_t kArtilleryGunnerBotVtable = 0x00CFE000u; // 006DF520
+inline constexpr std::uint32_t kDepthChargeBotVtable = 0x00D18338u;     // 008FC080
 
 // Primary vtable slots, read from the base and every override.
 inline constexpr std::size_t kGunBotSlotDestructor = 0x00;   // 0072BE20
@@ -80,39 +91,39 @@ inline constexpr std::size_t kGunBotBaseOffGun = 0x50;           // param_1[14h]
 
 // The per-class cache of bot+50h. There is no single shared offset; see the
 // correction in docs/GUN_BOT_TICKS.md section 9.
-inline constexpr std::size_t kTurretBotOffGun = 0x68;    // 008FBEC0
-inline constexpr std::size_t kLeadBotOffGun = 0x5c;      // 008FBDC0
-inline constexpr std::size_t kBallisticBotOffGun = 0x68; // 008FF040
+inline constexpr std::size_t kTailGunnerBotOffGun = 0x68;    // 008FBEC0
+inline constexpr std::size_t kAAGunnerBotOffGun = 0x5c;      // 008FBDC0
+inline constexpr std::size_t kAAFlakBotOffGun = 0x68; // 008FF040
 inline constexpr std::size_t kTorpedoBotOffGun = 0x58;   // 008FF310
-inline constexpr std::size_t kMuzzleBotOffGun = 0x58;    // 006DF1F0
+inline constexpr std::size_t kArtilleryGunnerBotOffGun = 0x58;    // 006DF1F0
 
 // 008FEAC0's literal property names for the 008FFA20 class.
-inline constexpr std::size_t kTurretBotOffActFireState = 0x58;
-inline constexpr std::size_t kTurretBotOffNextFireState = 0x59;
-inline constexpr std::size_t kTurretBotOffFireDelay = 0x5c;
-inline constexpr std::size_t kTurretBotOffHorzAngleError = 0x60;
-inline constexpr std::size_t kTurretBotOffVertAngleError = 0x64;
-inline constexpr std::size_t kTurretBotOffAimTime = 0x6c;
-inline constexpr std::size_t kTurretBotOffAimPair = 0x70;
-inline constexpr std::size_t kTurretBotOffLeadPoint = 0x78;
-inline constexpr std::size_t kTurretBotOffAngleError = 0x84;
-inline constexpr std::size_t kTurretBotOffAimPeriodMin = 0x88;
-inline constexpr std::size_t kTurretBotOffAimPeriodMax = 0x8c;
-inline constexpr std::size_t kTurretBotOffShootRange = 0x90;
+inline constexpr std::size_t kTailGunnerBotOffActFireState = 0x58;
+inline constexpr std::size_t kTailGunnerBotOffNextFireState = 0x59;
+inline constexpr std::size_t kTailGunnerBotOffFireDelay = 0x5c;
+inline constexpr std::size_t kTailGunnerBotOffHorzAngleError = 0x60;
+inline constexpr std::size_t kTailGunnerBotOffVertAngleError = 0x64;
+inline constexpr std::size_t kTailGunnerBotOffAimTime = 0x6c;
+inline constexpr std::size_t kTailGunnerBotOffAimPair = 0x70;
+inline constexpr std::size_t kTailGunnerBotOffLeadPoint = 0x78;
+inline constexpr std::size_t kTailGunnerBotOffAngleError = 0x84;
+inline constexpr std::size_t kTailGunnerBotOffAimPeriodMin = 0x88;
+inline constexpr std::size_t kTailGunnerBotOffAimPeriodMax = 0x8c;
+inline constexpr std::size_t kTailGunnerBotOffShootRange = 0x90;
 
 // 006DF260's literal property names for the 006DF520 class.
-inline constexpr std::size_t kMuzzleBotOffError = 0x5c;         // float2
-inline constexpr std::size_t kMuzzleBotOffErrorEndHorz = 0x64;  // 006DF623's y1
-inline constexpr std::size_t kMuzzleBotOffErrorEndVert = 0x68;  // 006DF651's y1
-inline constexpr std::size_t kMuzzleBotOffErrorStartHorz = 0x6c; // 006DF623's y0
-inline constexpr std::size_t kMuzzleBotOffErrorStartVert = 0x70; // 006DF651's y0
-inline constexpr std::size_t kMuzzleBotOffCalcErrTick = 0x74;
-inline constexpr std::size_t kMuzzleBotOffErrPeriod = 0x78;
-inline constexpr std::size_t kMuzzleBotOffDelayedFire = 0x7c;
-inline constexpr std::size_t kMuzzleBotOffFireDelayTime = 0x80;
-inline constexpr std::size_t kMuzzleBotOffErrorOffset = 0x84;   // float3
-inline constexpr std::size_t kMuzzleBotOffLeadPoint = 0xa8;     // float3
-inline constexpr std::size_t kMuzzleBotOffLeadCountdown = 0xb4;
+inline constexpr std::size_t kArtilleryGunnerBotOffError = 0x5c;         // float2
+inline constexpr std::size_t kArtilleryGunnerBotOffErrorEndHorz = 0x64;  // 006DF623's y1
+inline constexpr std::size_t kArtilleryGunnerBotOffErrorEndVert = 0x68;  // 006DF651's y1
+inline constexpr std::size_t kArtilleryGunnerBotOffErrorStartHorz = 0x6c; // 006DF623's y0
+inline constexpr std::size_t kArtilleryGunnerBotOffErrorStartVert = 0x70; // 006DF651's y0
+inline constexpr std::size_t kArtilleryGunnerBotOffCalcErrTick = 0x74;
+inline constexpr std::size_t kArtilleryGunnerBotOffErrPeriod = 0x78;
+inline constexpr std::size_t kArtilleryGunnerBotOffDelayedFire = 0x7c;
+inline constexpr std::size_t kArtilleryGunnerBotOffFireDelayTime = 0x80;
+inline constexpr std::size_t kArtilleryGunnerBotOffErrorOffset = 0x84;   // float3
+inline constexpr std::size_t kArtilleryGunnerBotOffLeadPoint = 0xa8;     // float3
+inline constexpr std::size_t kArtilleryGunnerBotOffLeadCountdown = 0xb4;
 
 // ---------------------------------------------------------------------------
 // Gun fields these ticks touch that gun_aiming.hpp does not already name.
@@ -150,18 +161,18 @@ inline constexpr float kGunBotQuarterPi = 0.785398185f;       // 00CEB5A8 and 00
 inline constexpr float kGunBotFloatMax = 3.402823466e+38f;    // 00D7A278, a double
 inline constexpr float kGunBotHalf = 0.5f;                    // 00D7A280, a double
 inline constexpr float kGunBotIdleRestFraction = 0.25f;       // 00D7A348, a double
-inline constexpr float kBallisticBotDepressionFloor = -0.02f; // 00D7A320
-inline constexpr float kBallisticBotDepressionBias = 0.02f;   // 00D7A2F8, a double
-inline constexpr float kMuzzleBotErrorPeriodMin = 3.0f;       // 00CE3854
-inline constexpr float kMuzzleBotErrorPeriodMax = 8.0f;       // 00CE3918
-inline constexpr float kMuzzleBotErrorStepRate = 30.0f;       // 00CE7630, a double
-inline constexpr float kMuzzleBotFireDelayMax = 0.1f;         // 00D7A2F0
-inline constexpr float kLeadBotSpanAtSkillZero = 1.0f;        // 00902B38's y0
-inline constexpr float kLeadBotSkillSpanEnd = 6.0f;           // 00CE6630
-inline constexpr float kLeadBotSpanAtSkillEnd = 0.2f;         // 00CE54A0
-inline constexpr float kLeadBotErrorClampNumerator = 25.0f;   // 00CE3880, a double
-inline constexpr float kLeadBotRateReversal = -0.5f;          // 00CEC9E0, a double
-inline constexpr float kLeadBotRangeFraction = 0.9f;          // 00D7A390, a double
+inline constexpr float kAAFlakBotDepressionFloor = -0.02f; // 00D7A320
+inline constexpr float kAAFlakBotDepressionBias = 0.02f;   // 00D7A2F8, a double
+inline constexpr float kArtilleryGunnerBotErrorPeriodMin = 3.0f;       // 00CE3854
+inline constexpr float kArtilleryGunnerBotErrorPeriodMax = 8.0f;       // 00CE3918
+inline constexpr float kArtilleryGunnerBotErrorStepRate = 30.0f;       // 00CE7630, a double
+inline constexpr float kArtilleryGunnerBotFireDelayMax = 0.1f;         // 00D7A2F0
+inline constexpr float kAAGunnerBotSpanAtSkillZero = 1.0f;        // 00902B38's y0
+inline constexpr float kAAGunnerBotSkillSpanEnd = 6.0f;           // 00CE6630
+inline constexpr float kAAGunnerBotSpanAtSkillEnd = 0.2f;         // 00CE54A0
+inline constexpr float kAAGunnerBotErrorClampNumerator = 25.0f;   // 00CE3880, a double
+inline constexpr float kAAGunnerBotRateReversal = -0.5f;          // 00CEC9E0, a double
+inline constexpr float kAAGunnerBotRangeFraction = 0.9f;          // 00D7A390, a double
 inline constexpr float kTorpedoBotRecomputePeriod = 0.2f;     // 00CE54A0
 inline constexpr float kGunBotPredictDirectionScalar = 0.6f;  // 00CE3D30
 inline constexpr float kUnitGunAimWindowKind12 = 0.05235987902f; // 00D1A8A0, a double
@@ -173,21 +184,22 @@ inline constexpr float kUnitGunAimWindowKind4 = 0.0872664675f;   // 00CEDF5C
 // ---------------------------------------------------------------------------
 enum class GunBotClass {
     kNone,
-    kLead,      // 008FE740, tick 00902920
-    kTurret,    // 008FE9F0, tick 008FFA20
-    kBallistic, // 008FEFD0, tick 009030C0
-    kMuzzle,    // 0072BE40, tick 006DF520
-    kTorpedo,   // 008FF260, tick 008FFF20
-    kSubType8,  // 008FF4A0, outside this packet
+    kAAGunner,        // 008FE740, tick 00902920, descriptor [00E19998]
+    kTailGunner,      // 008FE9F0, tick 008FFA20, descriptor [00E199A0]
+    kAAFlak,          // 008FEFD0, tick 009030C0, descriptor [00E1999C]
+    kArtilleryGunner, // 0072BE40, tick 006DF520, descriptor [00E19990]
+    kTorpedo,         // 008FF260, tick 008FFF20, descriptor [00E1998C]
+    kDepthCharge,     // 008FF4A0, tick 008FC080, descriptor [00E19988];
+                      // not reconstructed by this packet
 };
 
 struct GunBotSlotAssignment {
     GunBotClass primary = GunBotClass::kNone;   // gun+390h
-    GunBotClass ballistic = GunBotClass::kNone; // gun+394h
-    GunBotClass muzzle = GunBotClass::kNone;    // gun+398h
+    GunBotClass aa_flak = GunBotClass::kNone; // gun+394h
+    GunBotClass artillery_gunner = GunBotClass::kNone;    // gun+398h
     GunBotClass torpedo = GunBotClass::kNone;   // gun+39Ch
-    GunBotClass sub_type_8 = GunBotClass::kNone; // gun+3A0h
-    GunBotClass muzzle_second = GunBotClass::kNone; // gun+3A4h
+    GunBotClass depth_charge = GunBotClass::kNone; // gun+3A0h
+    GunBotClass artillery_gunner_second = GunBotClass::kNone; // gun+3A4h
     bool destroys_primary = false;              // 0072C7A9, the sub-type 5/6 arm
 };
 
@@ -234,7 +246,7 @@ GunBotIdleAction gun_bot_idle_timer_008fbce0(GunBotIdleTimer& timer,
 // ---------------------------------------------------------------------------
 // 008FFA20, the turret bot
 // ---------------------------------------------------------------------------
-struct TurretBotState {
+struct TailGunnerBotState {
     float aim_countdown = 0.0f;    // +6Ch aimTime
     GunAimAngles aim;              // +70h, the cached pair
     float aim_error_degrees = 0.0f; // +84h angleError
@@ -257,7 +269,7 @@ bool gun_bot_turret_recompute_due_008ffa20(float& countdown, float dt) noexcept;
 float gun_bot_ballistic_vertical_correction_009030c0(float vert,
                                                      bool target_is_kind_0f) noexcept;
 
-struct BallisticBotFireInputs {
+struct AAFlakBotFireInputs {
     float distance = 0.0f;     // 00901C20's outDist
     float min_range = 0.0f;    // [muzzle+58h]
     float max_range = 0.0f;    // [muzzle+60h]
@@ -265,18 +277,18 @@ struct BallisticBotFireInputs {
     float vert_delta = 0.0f;   // 00438B10(gun+484h, v)
     bool player_inhibit = false; // bit 0 of [gun+3F0h]+634h
 };
-bool gun_bot_ballistic_fire_009030c0(const BallisticBotFireInputs& in) noexcept;
+bool gun_bot_ballistic_fire_009030c0(const AAFlakBotFireInputs& in) noexcept;
 
 // ---------------------------------------------------------------------------
 // 006DF520, the muzzle-solution bot
 // ---------------------------------------------------------------------------
-struct MuzzleBotErrorEnvelope {
+struct ArtilleryGunnerBotErrorEnvelope {
     float start_horz = 0.0f; // +6Ch
     float end_horz = 0.0f;   // +64h
     float start_vert = 0.0f; // +70h
     float end_vert = 0.0f;   // +68h
 };
-struct MuzzleBotErrorState {
+struct ArtilleryGunnerBotErrorState {
     float period = 0.0f;    // +78h, the value the countdown started from
     float countdown = 0.0f; // +74h calcErrTick
     GunAimAngles error;     // +5Ch Error
@@ -284,7 +296,7 @@ struct MuzzleBotErrorState {
 
 // 006DF623 and 006DF651. The pair is interpolated from the envelope's start to
 // its end as the countdown falls from `period` to zero.
-GunAimAngles gun_bot_muzzle_error_006df520(const MuzzleBotErrorEnvelope& envelope,
+GunAimAngles gun_bot_muzzle_error_006df520(const ArtilleryGunnerBotErrorEnvelope& envelope,
                                            float period, float countdown) noexcept;
 
 // 006DEE40, __stdcall(a, b, tol) -> int, RET 0Ch.
@@ -295,13 +307,13 @@ bool gun_bot_angle_within_tolerance_006dee40(float current, float desired,
 // unit's +634h mask inhibits the shot.
 int gun_bot_muzzle_inhibit_bit_006df520(int muzzle_kind) noexcept;
 
-struct MuzzleBotDelayedFire {
+struct ArtilleryGunnerBotDelayedFire {
     bool armed = false;  // +7Ch delayedFire
     float delay = 0.0f;  // +80h fireDelayTime
 };
 
 // 006DFB8C..006DFBE5, the arming half. `draw` is 00BD2F10(0, 0.1)'s result.
-void gun_bot_muzzle_arm_fire_006df520(MuzzleBotDelayedFire& state,
+void gun_bot_muzzle_arm_fire_006df520(ArtilleryGunnerBotDelayedFire& state,
                                       bool solver_ok, bool aim_accepted,
                                       float gun_horz, float gun_vert,
                                       const GunAimAngles& commanded,
@@ -309,7 +321,7 @@ void gun_bot_muzzle_arm_fire_006df520(MuzzleBotDelayedFire& state,
 
 // 006DFC40..006DFC6C, the release half. Returns true on the frame the gun's
 // vtable[1F0h] should be called.
-bool gun_bot_muzzle_release_fire_006df520(MuzzleBotDelayedFire& state,
+bool gun_bot_muzzle_release_fire_006df520(ArtilleryGunnerBotDelayedFire& state,
                                           bool inhibited, float dt) noexcept;
 
 // ---------------------------------------------------------------------------
@@ -322,12 +334,12 @@ float gun_bot_lead_error_span_00902920(float skill) noexcept;
 // 00902E6D and 00902EF7: an axis is clamped once it leaves 25/distance.
 float gun_bot_lead_error_limit_00902920(float distance) noexcept;
 
-struct LeadBotFireInputs {
+struct AAGunnerBotFireInputs {
     float distance = 0.0f;
     float max_range = 0.0f;  // [muzzle+60h]
     bool aim_accepted = false; // 0085ABA0's answer
 };
-bool gun_bot_lead_fire_00902920(const LeadBotFireInputs& in) noexcept;
+bool gun_bot_lead_fire_00902920(const AAGunnerBotFireInputs& in) noexcept;
 
 // ---------------------------------------------------------------------------
 // 008FFF20, the torpedo bot
@@ -405,7 +417,7 @@ struct GunBotTickHost {
     // -- 009030C0 -----------------------------------------------------------
     virtual bool gun_is_kind5_00903154() = 0;                 // bot+50h->IsKindOf(5)
     virtual bool descriptor_flag_95h() = 0;                   // [[gun+3F4h]+95h]
-    virtual BallisticBotFireInputs solve_intercept_00901c20() = 0; // 00901C20 plus the deltas
+    virtual AAFlakBotFireInputs solve_intercept_00901c20() = 0; // 00901C20 plus the deltas
     virtual GunAimAngles ballistic_angles_009030c0() = 0;     // 0090326D then 0090327B
     virtual bool target_is_kind_0f() = 0;                     // 009032B5
     virtual void set_trigger_slot1e8(bool held) = 0;          // gun->vtable[1E8h]
@@ -413,7 +425,7 @@ struct GunBotTickHost {
     // -- 006DF520 -----------------------------------------------------------
     virtual bool has_fire_target_slot40() = 0;                // bot->vtable[40h]
     virtual void reroll_error_envelope_006deff0() = 0;        // 006DEFF0
-    virtual MuzzleBotErrorEnvelope error_envelope() = 0;      // +64h..+70h
+    virtual ArtilleryGunnerBotErrorEnvelope error_envelope() = 0;      // +64h..+70h
     virtual void step_error_offset_0042ac60(float rate_dt) = 0; // three 0042AC60 calls
     virtual bool solve_gravity_arc_00955630(GunAimAngles& out) = 0; // 00955630
     virtual void store_aim_point_006dfae9() = 0;              // gun+408h
@@ -422,15 +434,15 @@ struct GunBotTickHost {
 };
 
 // 008FFA20, body 008FFA20..008FFF1F.
-void gun_bot_turret_tick_008ffa20(GunBotTickHost& host, TurretBotState& state,
+void gun_bot_turret_tick_008ffa20(GunBotTickHost& host, TailGunnerBotState& state,
                                   float dt);
 
 // 009030C0, body 009030C0..0090341D.
 void gun_bot_ballistic_tick_009030c0(GunBotTickHost& host, float dt);
 
 // 006DF520, body 006DF520..006DFC6C.
-void gun_bot_muzzle_tick_006df520(GunBotTickHost& host, MuzzleBotErrorState& error,
-                                  MuzzleBotDelayedFire& fire, float dt);
+void gun_bot_muzzle_tick_006df520(GunBotTickHost& host, ArtilleryGunnerBotErrorState& error,
+                                  ArtilleryGunnerBotDelayedFire& fire, float dt);
 
 } // namespace bsp
 

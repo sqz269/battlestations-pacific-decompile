@@ -21,29 +21,29 @@ GunBotSlotAssignment gun_bot_slots_for_subtype_0072c6a0(int weapon_sub_type,
     // 0072C6C2: sub-type 1 and gun->vtable[5Ch](22h).
     if (weapon_sub_type == 1 && gun_is_turning) {
         // 0072C6EB: 00922E90(gun, 0Fh) picks between the two classes.
-        slots.primary = owner_of_kind_0f ? GunBotClass::kTurret : GunBotClass::kLead;
+        slots.primary = owner_of_kind_0f ? GunBotClass::kTailGunner : GunBotClass::kAAGunner;
     }
 
     // 0072C75D: sub-types 5 and 6, which also destroy whatever gun+390h holds.
     if (weapon_sub_type == 5 || weapon_sub_type == 6) {
-        slots.ballistic = GunBotClass::kBallistic;
+        slots.aa_flak = GunBotClass::kAAFlak;
         slots.destroys_primary = true;
     }
 
     // 0072C7DB: sub-types 2, 3, 4 and 6.
     if (weapon_sub_type == 2 || weapon_sub_type == 3 || weapon_sub_type == 4 ||
         weapon_sub_type == 6) {
-        slots.muzzle = GunBotClass::kMuzzle;
+        slots.artillery_gunner = GunBotClass::kArtilleryGunner;
     }
 
     if (weapon_sub_type == 7) { // 0072C83x
         slots.torpedo = GunBotClass::kTorpedo;
     }
     if (weapon_sub_type == 8) { // 0072C88x
-        slots.sub_type_8 = GunBotClass::kSubType8;
+        slots.depth_charge = GunBotClass::kDepthCharge;
     }
     if (weapon_sub_type == 9) { // 0072C8Fx
-        slots.muzzle_second = GunBotClass::kMuzzle;
+        slots.artillery_gunner_second = GunBotClass::kArtilleryGunner;
     }
     return slots;
 }
@@ -118,14 +118,14 @@ float gun_bot_ballistic_vertical_correction_009030c0(float vert,
     if (target_is_kind_0f) { // 009032B5, vtable[5Ch](0Fh)
         return 0.0f;
     }
-    if (vert < kBallisticBotDepressionFloor) { // 009032CE, COMISS -0.02 vs v
+    if (vert < kAAFlakBotDepressionFloor) { // 009032CE, COMISS -0.02 vs v
         // 009032D5..009032E9: v - (0.02 + v) * 0.5.
-        return vert - (kBallisticBotDepressionBias + vert) * kGunBotHalf;
+        return vert - (kAAFlakBotDepressionBias + vert) * kGunBotHalf;
     }
     return vert;
 }
 
-bool gun_bot_ballistic_fire_009030c0(const BallisticBotFireInputs& in) noexcept
+bool gun_bot_ballistic_fire_009030c0(const AAFlakBotFireInputs& in) noexcept
 {
     if (!(in.min_range < in.distance)) { // 00903333 FCOMI / JBE
         return false;
@@ -145,7 +145,7 @@ bool gun_bot_ballistic_fire_009030c0(const BallisticBotFireInputs& in) noexcept
 // ---------------------------------------------------------------------------
 // 006DF520
 // ---------------------------------------------------------------------------
-GunAimAngles gun_bot_muzzle_error_006df520(const MuzzleBotErrorEnvelope& envelope,
+GunAimAngles gun_bot_muzzle_error_006df520(const ArtilleryGunnerBotErrorEnvelope& envelope,
                                            float period, float countdown) noexcept
 {
     GunAimAngles error;
@@ -178,7 +178,7 @@ int gun_bot_muzzle_inhibit_bit_006df520(int muzzle_kind) noexcept
     return 1;
 }
 
-void gun_bot_muzzle_arm_fire_006df520(MuzzleBotDelayedFire& state,
+void gun_bot_muzzle_arm_fire_006df520(ArtilleryGunnerBotDelayedFire& state,
                                       bool solver_ok, bool aim_accepted,
                                       float gun_horz, float gun_vert,
                                       const GunAimAngles& commanded,
@@ -202,7 +202,7 @@ void gun_bot_muzzle_arm_fire_006df520(MuzzleBotDelayedFire& state,
     state.armed = true;
 }
 
-bool gun_bot_muzzle_release_fire_006df520(MuzzleBotDelayedFire& state,
+bool gun_bot_muzzle_release_fire_006df520(ArtilleryGunnerBotDelayedFire& state,
                                           bool inhibited, float dt) noexcept
 {
     if (!state.armed || inhibited) { // 006DFC4x
@@ -223,9 +223,9 @@ bool gun_bot_muzzle_release_fire_006df520(MuzzleBotDelayedFire& state,
 float gun_bot_lead_error_span_00902920(float skill) noexcept
 {
     // 00902B38: InterpolateClamped(0, 1.0, 6.0, 0.2, skill).
-    return clamped_interpolate_00419010(0.0f, kLeadBotSpanAtSkillZero,
-                                        kLeadBotSkillSpanEnd,
-                                        kLeadBotSpanAtSkillEnd, skill);
+    return clamped_interpolate_00419010(0.0f, kAAGunnerBotSpanAtSkillZero,
+                                        kAAGunnerBotSkillSpanEnd,
+                                        kAAGunnerBotSpanAtSkillEnd, skill);
 }
 
 float gun_bot_lead_error_limit_00902920(float distance) noexcept
@@ -233,14 +233,14 @@ float gun_bot_lead_error_limit_00902920(float distance) noexcept
     if (distance == 0.0f) {
         return 0.0f;
     }
-    return kLeadBotErrorClampNumerator / distance; // 00902E5x, 25 / range
+    return kAAGunnerBotErrorClampNumerator / distance; // 00902E5x, 25 / range
 }
 
-bool gun_bot_lead_fire_00902920(const LeadBotFireInputs& in) noexcept
+bool gun_bot_lead_fire_00902920(const AAGunnerBotFireInputs& in) noexcept
 {
     // 00902FEx: the aim must have been accepted and the range must be inside
     // nine tenths of the weapon's maximum.
-    return in.aim_accepted && in.distance < in.max_range * kLeadBotRangeFraction;
+    return in.aim_accepted && in.distance < in.max_range * kAAGunnerBotRangeFraction;
 }
 
 // ---------------------------------------------------------------------------
@@ -339,7 +339,7 @@ bool run_shared_prologue(GunBotTickHost& host, float dt)
 
 } // namespace
 
-void gun_bot_turret_tick_008ffa20(GunBotTickHost& host, TurretBotState& state,
+void gun_bot_turret_tick_008ffa20(GunBotTickHost& host, TailGunnerBotState& state,
                                   float dt)
 {
     if (!run_shared_prologue(host, dt)) {
@@ -414,7 +414,7 @@ void gun_bot_ballistic_tick_009030c0(GunBotTickHost& host, float dt)
     // same outputs, so the host answers with the solved pair.
     host.gun_is_kind5_00903154();
     host.descriptor_flag_95h();
-    BallisticBotFireInputs fire = host.solve_intercept_00901c20(); // 009031CF / 00903219
+    AAFlakBotFireInputs fire = host.solve_intercept_00901c20(); // 009031CF / 00903219
 
     GunAimAngles angles = host.ballistic_angles_009030c0(); // 0090326D, 0090327B
     angles.vert = gun_bot_ballistic_vertical_correction_009030c0(
@@ -429,8 +429,8 @@ void gun_bot_ballistic_tick_009030c0(GunBotTickHost& host, float dt)
     host.set_trigger_slot1e8(gun_bot_ballistic_fire_009030c0(fire));
 }
 
-void gun_bot_muzzle_tick_006df520(GunBotTickHost& host, MuzzleBotErrorState& error,
-                                  MuzzleBotDelayedFire& fire, float dt)
+void gun_bot_muzzle_tick_006df520(GunBotTickHost& host, ArtilleryGunnerBotErrorState& error,
+                                  ArtilleryGunnerBotDelayedFire& fire, float dt)
 {
     host.resolve_fire_target_00521ea0(); // 006DF52C
     if (!gun_bot_target_still_valid_008ffa20(host.target_validity())) {
@@ -447,8 +447,8 @@ void gun_bot_muzzle_tick_006df520(GunBotTickHost& host, MuzzleBotErrorState& err
     // 006DF59x: the error period counts down and is re-rolled on expiry.
     error.countdown -= dt;
     if (error.countdown < 0.0f) {
-        const float period = host.random_range_00bd2f10(kMuzzleBotErrorPeriodMin,
-                                                        kMuzzleBotErrorPeriodMax);
+        const float period = host.random_range_00bd2f10(kArtilleryGunnerBotErrorPeriodMin,
+                                                        kArtilleryGunnerBotErrorPeriodMax);
         error.period = period;    // 006DF5D4
         error.countdown = period;
         host.reroll_error_envelope_006deff0(); // 006DF5E9
@@ -457,7 +457,7 @@ void gun_bot_muzzle_tick_006df520(GunBotTickHost& host, MuzzleBotErrorState& err
                                                 error.countdown);
 
     // 006DF694..006DF6D2: the offset walks toward its target at dt * 30.
-    host.step_error_offset_0042ac60(dt * kMuzzleBotErrorStepRate);
+    host.step_error_offset_0042ac60(dt * kArtilleryGunnerBotErrorStepRate);
 
     GunAimAngles commanded;
     const bool solved = host.solve_gravity_arc_00955630(commanded); // 006DFAD4
@@ -477,7 +477,7 @@ void gun_bot_muzzle_tick_006df520(GunBotTickHost& host, MuzzleBotErrorState& err
             gun_bot_angle_within_tolerance_006dee40(host.gun_vert_angle(),
                                                     commanded.vert,
                                                     kGunBotTenthDegree)) {
-            const float draw = host.random_range_00bd2f10(0.0f, kMuzzleBotFireDelayMax);
+            const float draw = host.random_range_00bd2f10(0.0f, kArtilleryGunnerBotFireDelayMax);
             gun_bot_muzzle_arm_fire_006df520(fire, solved, accepted,
                                              host.gun_horz_angle(),
                                              host.gun_vert_angle(), commanded, draw);
