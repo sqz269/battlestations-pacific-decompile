@@ -1127,7 +1127,14 @@
       "cause": "Every difference is a borrowed hull-data pointer at shape+210, serialized once per attached shape and once in its owning pool slot. Null-arena hull allocations bypass current creation-arena pointer normalization. These pointers match between native and rebuilt within a run but vary across processes.",
       "other_bytes_differ": false,
       "validated_hull_id_normalized_sha256": "a58e17a99c043f1d4b8a203bd45442c38fe9cedc605b606f2df75cf4f45d1491",
-      "scope": "Original-byte body creation comparisons remain valid. Raw record digest is run-specific; normalization audit is separate from C++ probe execution."
+      "scope": "Original-byte body creation comparisons remain valid. Raw record digest is run-specific; normalization audit is separate from C++ probe execution.",
+      "script": "local/audit_dyn_body_hashes.py",
+      "result": "local/audit_dyn_body_hashes.json",
+      "retained_worker_records": [
+        "local/worker_dyn_body_native_records.bin",
+        "local/worker_dyn_body_rebuilt_records.bin"
+      ],
+      "replay": "python local/audit_dyn_body_hashes.py local/worker_dyn_body_native_records.bin local/dyn_body_native_records.bin --worker-root . --root-root . --output local/dyn_body_hash_audit_replay.json"
     },
     "call_check": {
       "direct_checked": 107,
