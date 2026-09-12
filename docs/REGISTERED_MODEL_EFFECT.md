@@ -160,3 +160,18 @@ Ghidra now contains the restored `874605 ADD ESP,4`, recovered signatures and
 evidence comments with their previous values retained in the report. The correct
 `CG_scalar_deleting_dtor_008745f0` name is preserved. Consumed `871FE0` and
 `AF5F20` stop functions are defined; this packet does not reconstruct them in C++.
+
+## Correction from docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md
+
+AJ reconstructs the complete completion/update/deactivation entries, model completion
+and stop, nullable emitter stop and filtered state-removal loop. The actual F8D2D0
+particle-model pool now has reconstructed owner, allocation, return, trim and CRT
+lifetime entries; see NATIVE_PARTICLE_MODEL_POOL_OWNER.md and
+NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md. MODEL_EFFECT_OPTIONS.md supplies the actual
+eight-byte option singleton and scalar destructor.
+
+The combined strict Win32 build and both existing CTests pass. Original-byte pool,
+model callback and actual-singleton fixtures pass within their documented boundaries.
+AF74A0 model construction, AF6DD0 full model update, AFF690 lazy container access and
+B04F00 state cleanup remain required real dependencies. Application family dispatch,
+canonical ownership composition, native exception ABI and gameplay remain open.

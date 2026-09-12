@@ -43,6 +43,7 @@
 
 #include "bsp/cruise_command.hpp"
 #include "bsp/unit_commanded_speed.hpp"
+#include "bsp/dyn_physics_substep.hpp"
 #include "bsp/dyn_world_settings.hpp"
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/ship_hull_body.hpp"
@@ -383,6 +384,49 @@ struct HullBodySetup {
     bsp::DynMotionState motion{};
     bsp::DynBody body{};
     bsp::DynWorldStepConstants world{};
+    // The two fields 00C5C540's accumulator loop reads, world+00h and world+34h. Both
+    // setups take the shipped values from 004DDB90, because the stand-in below stands in
+    // for the BODY, not for the world's step size; giving it a zero substep would make
+    // the schedule take no substep at all and the comparison meaningless.
+    bsp::DynWorldSettings settings{};
+};
+
+// 00C5C540's schedule driven over the one hull body this probe owns.
+//
+// The probe sails in open water, so the rest of 00C5BB30 is inert: the collision pass
+// finds no manifolds, 00C4B610 forms no groups, the solver dispatch is skipped for a
+// zero group count, world+24h holds no contact listener and 00C4B550 sleeps nothing.
+// What is left of the substep is exactly the two integration phases, which is what
+// dyn_body_substep runs. The counters record what the schedule actually did rather than
+// assuming it.
+struct ProbeSimulateHost final : bsp::DynSimulateHost {
+    bsp::DynBody* body{nullptr};
+    const bsp::DynWorldStepConstants* world{nullptr};
+    bsp::DynPreviousTransform previous{};
+    int substeps{0};
+    int removal_flushes{0};
+    int counter_resets{0};
+
+    void reset_profiler_counter_tree_00c321b0() override { counter_resets += 1; }
+    void push_profiler_scope(const bsp::DynProfilerScopeSlot&) override {}
+    void pop_profiler_scope(const bsp::DynProfilerScopeSlot&) override {}
+    void flush_pending_body_removals_00c4d980() override { removal_flushes += 1; }
+
+    bsp::DynRegisteredBody first_registered_body() override {
+        bsp::DynRegisteredBody entry{};
+        entry.body = body;
+        entry.previous = &previous;
+        return entry;
+    }
+    // One body, so the next step is the sentinel at world+208h.
+    bsp::DynRegisteredBody next_registered_body(bsp::DynBody*) override {
+        return bsp::DynRegisteredBody{};
+    }
+
+    void run_substep_00c5bb30(float dt) override {
+        substeps += 1;
+        bsp::dyn_body_substep(*body, *world, dt);
+    }
 };
 
 // The hand-built stand-in every earlier version of this probe carried: no mass, no
@@ -394,6 +438,7 @@ HullBodySetup stand_in_body() {
     setup.motion.max_linear_speed = 1.0e30f;   // M+18h, a clamp that never fires
     setup.motion.max_angular_speed = 1.0e30f;  // M+1Ch, likewise
     setup.body.motion = &setup.motion;
+    setup.settings = bsp::dyn_world_settings_game();
     return setup;  // world: gravity and both sleep thresholds zero
 }
 
@@ -414,7 +459,8 @@ HullBodySetup class_body(const LuaVehicleClass& c, const bsp::OceanVec3& extent)
     bsp::ship_hull_body_create_00937c90(in, setup.body, setup.motion);
     setup.body.motion = &setup.motion;
 
-    setup.world = bsp::dyn_world_step_constants(bsp::dyn_world_settings_game());
+    setup.settings = bsp::dyn_world_settings_game();
+    setup.world = bsp::dyn_world_step_constants(setup.settings);
     return setup;
 }
 
@@ -453,6 +499,10 @@ struct TrajectoryResult {
     // override produced at the latch frame.
     bsp::CruiseSpeedSetting commanded{};
     float commanded_throttle{0.0f};
+    // What 00C5C540's schedule did over the whole run: how many times it was called
+    // (world+2Ch) and how many substeps of 00C5BB30 that came to.
+    int schedule_calls{0};
+    int substeps{0};
 };
 
 TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup,
@@ -518,6 +568,14 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
     bsp::DynMotionState& motion = setup.motion;
     bsp::DynBody& body = setup.body;
     body.motion = &motion;
+
+    // The world's own per-step state: the accumulator at world+48h, which 00C5C540
+    // leaves at zero on every path, and the call counter at world+2Ch.
+    ProbeSimulateHost sim_host{};
+    sim_host.body = &body;
+    sim_host.world = &setup.world;
+    float sim_accumulator = 0.0f;
+    std::int32_t sim_step_counter = 0;
 
     // --- the run --------------------------------------------------------------
     TrajectoryResult result{};
@@ -600,10 +658,14 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
 
         bsp::ship_motion_step_00825f20(state, cls, host, in.dt);
 
-        // The game's own integrator, not an Euler stand-in: 00C41550 then 00C5B1B0, the
-        // two phases of one Dyn substep. 00C5C540's schedule takes exactly one substep of
-        // the whole game step, because world+00h is the game step itself (00CE7638) and
-        // the budget at world+34h is 1. docs/DYN_WORLD_SETTINGS.md.
+        // The game's own integrator, and now the game's own schedule around it: the
+        // whole of 00C5C540, which resets the profiler counters, flushes the pending
+        // removals, publishes every body's previous transform into M+84h and then runs
+        // 00C5BB30 as many times as its accumulator and budget allow. With world+00h =
+        // 0.05f and world+34h = 1 that is one substep of the whole game step, so the
+        // trajectory is unchanged against the direct dyn_body_substep call this replaced;
+        // the schedule is here so the probe exercises the rule rather than its result.
+        // docs/DYN_PHYSICS_SUBSTEP.md, docs/DYN_WORLD_SETTINGS.md.
         motion.linear_velocity = state.linear_velocity;
         motion.angular_velocity = state.angular_velocity;
         for (int i = 0; i < 3; ++i) {
@@ -612,7 +674,8 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
             body.row2[i] = state.pose_row2[i];
             body.position[i] = state.position[i];
         }
-        bsp::dyn_body_substep(body, setup.world, in.dt);
+        bsp::dyn_physics_world_simulate_00c5c540(setup.settings, sim_accumulator,
+                                                 sim_step_counter, in.dt, sim_host);
         state.linear_velocity = motion.linear_velocity;
         state.angular_velocity = motion.angular_velocity;
         for (int i = 0; i < 3; ++i) {
@@ -638,6 +701,8 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
     result.z = state.position[2];
     result.heading = heading_degrees(state);
     result.final_speed = host.forward_speed();
+    result.schedule_calls = sim_step_counter;
+    result.substeps = sim_host.substeps;
     return result;
 }
 
@@ -846,6 +911,8 @@ int main(int argc, char** argv) {
                 static_cast<double>(b.peak_speed));
     std::printf("  peak yaw (rad/s) %12.5f %22.5f\n", static_cast<double>(a.peak_yaw),
                 static_cast<double>(b.peak_yaw));
+    std::printf("  00C5C540 calls   %12d %22d\n", a.schedule_calls, b.schedule_calls);
+    std::printf("  00C5BB30 substeps%12d %22d\n", a.substeps, b.substeps);
     std::printf("  B's y falls because 00C41550 adds the world's gravity and nothing here\n"
                 "  cancels it: 009329C0's buoyancy is not reconstructed.\n");
 

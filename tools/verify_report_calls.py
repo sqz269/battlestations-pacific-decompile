@@ -7,7 +7,8 @@ report (`host_steps`, `path_steps`, `steps`, `host_methods`, ...), the script ch
 
   1. the callee is the start of a Ghidra function (or a thunk that is one);
   2. the call site lies inside some Ghidra function F (live `get_function_by_address`);
-  3. the live listing contains `CALL <callee>` at that exact site. A caller/callee graph edge
+  3. the live listing contains `CALL <callee>` at that exact site, or `JMP <callee>` when the
+     row explicitly declares `kind: "tail_jump"`. A caller/callee graph edge
      alone cannot validate an instruction address elsewhere in the same function.
 
 Rows that name a `function` (or `caller`) are also checked to be that F. Vtable slots written as
@@ -106,8 +107,8 @@ class Live:
         self.cache[key] = result
         return result
 
-    def listing_calls(self, fn_start, site, callee):
-        """'direct' when the site is CALL <callee>, 'indirect' when the site is a CALL through a
+    def listing_calls(self, fn_start, site, callee, mnemonic='CALL'):
+        """'direct' when the site is the requested CALL/JMP <callee>, 'indirect' for a transfer through a
         register or memory operand (a virtual the report resolved), 'other' when the site is a
         CALL to a different immediate or not a CALL, None when the listing is unavailable."""
         if fn_start not in self.listings:
@@ -125,11 +126,11 @@ class Live:
         if not line:
             return 'other'
         ins = line.group(0)
-        if not re.search(r'\bCALL\b', ins, re.IGNORECASE):
+        if not re.search(rf'\b{mnemonic}\b', ins, re.IGNORECASE):
             return 'other'
         if re.search(rf'{callee:08x}', ins, re.IGNORECASE):
             return 'direct'
-        if re.search(r'\bCALL\b\s+(?:dword\s+ptr\s+)?\[|\bCALL\b\s+E[A-D]X|\bCALL\b\s+E[SD]I|\bCALL\b\s+E[BS]P', ins, re.IGNORECASE):
+        if re.search(rf'\b{mnemonic}\b\s+(?:dword\s+ptr\s+)?\[|\b{mnemonic}\b\s+E[A-D]X|\b{mnemonic}\b\s+E[SD]I|\b{mnemonic}\b\s+E[BS]P', ins, re.IGNORECASE):
             return 'indirect'
         return 'other'
 
@@ -164,12 +165,13 @@ def check_report(path, index, live):
             claimed = parse_addr(row.get('function') or row.get('caller'))
             if claimed is not None and claimed != start:
                 problems.append(f'call site {site:08x} is inside {start:08x} ({name}), row claims {claimed:08x}')
-            seen = live.listing_calls(start, site, callee)
+            mnemonic = 'JMP' if row.get('kind') == 'tail_jump' else 'CALL'
+            seen = live.listing_calls(start, site, callee, mnemonic)
             if seen == 'indirect':
-                print(f'  indirect  {where}: {site:08x} calls through a register or memory operand; '
+                print(f'  indirect  {where}: {site:08x} uses {mnemonic} through a register or memory operand; '
                       f'the report resolves it to {callee:08x} (not verifiable here)')
             elif seen == 'other':
-                problems.append(f'{site:08x} in {start:08x} is not a CALL to {callee:08x} (live listing)')
+                problems.append(f'{site:08x} in {start:08x} is not a {mnemonic} to {callee:08x} (live listing)')
             elif seen is None:
                 problems.append(f'{site:08x} -> {callee:08x}: live listing unavailable')
         if problems:

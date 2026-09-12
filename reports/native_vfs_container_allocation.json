@@ -1,0 +1,407 @@
+{
+  "schema_version": 1,
+  "packet": "orch2_vfs_containers_ao",
+  "status": "complete_source_strict_win32_build_existing_tests_and_focused_original_source_probe_passed",
+  "source": "src/native_vfs_container_allocation.cpp",
+  "header": "include/bsp/native_vfs_container_allocation.hpp",
+  "document": "docs/NATIVE_VFS_CONTAINER_ALLOCATION.md",
+  "owned_function_count": 6,
+  "owned_native_bytes": 243,
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra": "All live queries through verified read-only bsp.py ghidra CLI; no annotations, signatures, body definitions or saved project changed.",
+  "functions": [
+    {
+      "address": "00bda960",
+      "end_inclusive": "00bda979",
+      "length": 26,
+      "coverage": "complete",
+      "source_function": "allocate_native_list_head_00bda960",
+      "original_name": "FUN_00bda960",
+      "proposed_name": "BSP_RawListHead_Allocate0C_00bda960",
+      "name_status": "descriptive hypothesis; Ghidra read-only",
+      "saved_signature": "undefined FUN_00bda960(void)",
+      "source_signature": "void* __cdecl()",
+      "original_abi": "No consumed incoming register or stack arguments; EAX raw pointer result; ECX postallocation scratch; RET0.",
+      "register_provenance": "PUSH immediate size, BF681B defines EAX; leaf never overwrites EAX. ECX first written by LEA EAX+4 after call. EDX and callee-saved registers are not used by leaf.",
+      "allocation_bytes": 12,
+      "allocator": "singleton_lifetime_allocate({SingletonAllocationKind::object, size, size})",
+      "writes": [
+        {
+          "offset": 0,
+          "width": 4,
+          "value": "allocation",
+          "producer_instruction": "00bda96e"
+        },
+        {
+          "offset": 4,
+          "width": 4,
+          "value": "allocation",
+          "producer_instruction": "00bda977"
+        }
+      ],
+      "write_conditions": "Each DWORD store independently tests its computed 32-bit destination for zero; tree byte stores unconditional. Null allocation skips +0 then faults writing +4. All other bytes untouched.",
+      "native_sha256": "460c21a98295c59093694cfe7faf79b5120dce4c1b097881272e21abd4c3f2b9",
+      "live_matches_installed_pe": true,
+      "raw_definition_or_repair_needed": false,
+      "native_calls": [
+        {
+          "address": "00bda962",
+          "native": "00bf681b",
+          "function": "00bda960",
+          "arguments": "One cdecl stack DWORD immediate 0xC",
+          "cleanup_address": "00bda967",
+          "cleanup_instruction": "ADD ESP,4",
+          "contract": "BF681B body inspected live: malloc(size), retry through current new-handler, otherwise bad_alloc throw. Existing actual source allocation service reused."
+        }
+      ]
+    },
+    {
+      "address": "00bda980",
+      "end_inclusive": "00bda999",
+      "length": 26,
+      "coverage": "complete",
+      "source_function": "allocate_native_list_head_00bda980",
+      "original_name": "FUN_00bda980",
+      "proposed_name": "BSP_RawListHead_Allocate28_00bda980",
+      "name_status": "descriptive hypothesis; Ghidra read-only",
+      "saved_signature": "undefined FUN_00bda980(void)",
+      "source_signature": "void* __cdecl()",
+      "original_abi": "No consumed incoming register or stack arguments; EAX raw pointer result; ECX postallocation scratch; RET0.",
+      "register_provenance": "PUSH immediate size, BF681B defines EAX; leaf never overwrites EAX. ECX first written by LEA EAX+4 after call. EDX and callee-saved registers are not used by leaf.",
+      "allocation_bytes": 40,
+      "allocator": "singleton_lifetime_allocate({SingletonAllocationKind::object, size, size})",
+      "writes": [
+        {
+          "offset": 0,
+          "width": 4,
+          "value": "allocation",
+          "producer_instruction": "00bda98e"
+        },
+        {
+          "offset": 4,
+          "width": 4,
+          "value": "allocation",
+          "producer_instruction": "00bda997"
+        }
+      ],
+      "write_conditions": "Each DWORD store independently tests its computed 32-bit destination for zero; tree byte stores unconditional. Null allocation skips +0 then faults writing +4. All other bytes untouched.",
+      "native_sha256": "8301686f9a0293956ffc3b13e1ee485e15799983232140be24232126b52bae7b",
+      "live_matches_installed_pe": true,
+      "raw_definition_or_repair_needed": false,
+      "native_calls": [
+        {
+          "address": "00bda982",
+          "native": "00bf681b",
+          "function": "00bda980",
+          "arguments": "One cdecl stack DWORD immediate 0x28",
+          "cleanup_address": "00bda987",
+          "cleanup_instruction": "ADD ESP,4",
+          "contract": "BF681B body inspected live: malloc(size), retry through current new-handler, otherwise bad_alloc throw. Existing actual source allocation service reused."
+        }
+      ]
+    },
+    {
+      "address": "00bdabf0",
+      "end_inclusive": "00bdac26",
+      "length": 55,
+      "coverage": "complete",
+      "source_function": "allocate_native_tree_node_00bdabf0",
+      "original_name": "FUN_00bdabf0",
+      "proposed_name": "BSP_RawTreeNode_Allocate24_00bdabf0",
+      "name_status": "descriptive hypothesis; Ghidra read-only",
+      "saved_signature": "undefined FUN_00bdabf0(void)",
+      "source_signature": "void* __cdecl()",
+      "original_abi": "No consumed incoming register or stack arguments; EAX raw pointer result; ECX postallocation scratch; RET0.",
+      "register_provenance": "PUSH immediate size, BF681B defines EAX; leaf never overwrites EAX. ECX first written by LEA EAX+4 after call. EDX and callee-saved registers are not used by leaf.",
+      "allocation_bytes": 36,
+      "allocator": "singleton_lifetime_allocate({SingletonAllocationKind::object, size, size})",
+      "writes": [
+        {
+          "offset": 0,
+          "width": 4,
+          "value": 0,
+          "producer_instruction": "00bdabfe"
+        },
+        {
+          "offset": 4,
+          "width": 4,
+          "value": 0,
+          "producer_instruction": "00bdac0b"
+        },
+        {
+          "offset": 8,
+          "width": 4,
+          "value": 0,
+          "producer_instruction": "00bdac18"
+        },
+        {
+          "offset": 32,
+          "width": 1,
+          "value": 1,
+          "producer_instruction": "00bdac1e"
+        },
+        {
+          "offset": 33,
+          "width": 1,
+          "value": 0,
+          "producer_instruction": "00bdac22"
+        }
+      ],
+      "write_conditions": "Each DWORD store independently tests its computed 32-bit destination for zero; tree byte stores unconditional. Null allocation skips +0 then faults writing +4. All other bytes untouched.",
+      "native_sha256": "f6fa6aabc0e0200c52111e4c05caf3e21a538e31892d027396c1b49c22c75d17",
+      "live_matches_installed_pe": true,
+      "raw_definition_or_repair_needed": false,
+      "native_calls": [
+        {
+          "address": "00bdabf2",
+          "native": "00bf681b",
+          "function": "00bdabf0",
+          "arguments": "One cdecl stack DWORD immediate 0x24",
+          "cleanup_address": "00bdabf7",
+          "cleanup_instruction": "ADD ESP,4",
+          "contract": "BF681B body inspected live: malloc(size), retry through current new-handler, otherwise bad_alloc throw. Existing actual source allocation service reused."
+        }
+      ]
+    },
+    {
+      "address": "00bdaba0",
+      "end_inclusive": "00bdabd6",
+      "length": 55,
+      "coverage": "complete",
+      "source_function": "allocate_native_tree_node_00bdaba0",
+      "original_name": "FUN_00bdaba0",
+      "proposed_name": "BSP_RawTreeNode_Allocate20_00bdaba0",
+      "name_status": "descriptive hypothesis; Ghidra read-only",
+      "saved_signature": "undefined FUN_00bdaba0(void)",
+      "source_signature": "void* __cdecl()",
+      "original_abi": "No consumed incoming register or stack arguments; EAX raw pointer result; ECX postallocation scratch; RET0.",
+      "register_provenance": "PUSH immediate size, BF681B defines EAX; leaf never overwrites EAX. ECX first written by LEA EAX+4 after call. EDX and callee-saved registers are not used by leaf.",
+      "allocation_bytes": 32,
+      "allocator": "singleton_lifetime_allocate({SingletonAllocationKind::object, size, size})",
+      "writes": [
+        {
+          "offset": 0,
+          "width": 4,
+          "value": 0,
+          "producer_instruction": "00bdabae"
+        },
+        {
+          "offset": 4,
+          "width": 4,
+          "value": 0,
+          "producer_instruction": "00bdabbb"
+        },
+        {
+          "offset": 8,
+          "width": 4,
+          "value": 0,
+          "producer_instruction": "00bdabc8"
+        },
+        {
+          "offset": 28,
+          "width": 1,
+          "value": 1,
+          "producer_instruction": "00bdabce"
+        },
+        {
+          "offset": 29,
+          "width": 1,
+          "value": 0,
+          "producer_instruction": "00bdabd2"
+        }
+      ],
+      "write_conditions": "Each DWORD store independently tests its computed 32-bit destination for zero; tree byte stores unconditional. Null allocation skips +0 then faults writing +4. All other bytes untouched.",
+      "native_sha256": "c267e23c97e68d19df6172aca9f643dc3b4e76e522f06f4a278908f2c8df1433",
+      "live_matches_installed_pe": true,
+      "raw_definition_or_repair_needed": false,
+      "native_calls": [
+        {
+          "address": "00bdaba2",
+          "native": "00bf681b",
+          "function": "00bdaba0",
+          "arguments": "One cdecl stack DWORD immediate 0x20",
+          "cleanup_address": "00bdaba7",
+          "cleanup_instruction": "ADD ESP,4",
+          "contract": "BF681B body inspected live: malloc(size), retry through current new-handler, otherwise bad_alloc throw. Existing actual source allocation service reused."
+        }
+      ]
+    },
+    {
+      "address": "004c26b0",
+      "end_inclusive": "004c26e6",
+      "length": 55,
+      "coverage": "complete",
+      "source_function": "allocate_native_tree_node_004c26b0",
+      "original_name": "FUN_004c26b0",
+      "proposed_name": "BSP_RawTreeNode_Allocate18_004c26b0",
+      "name_status": "descriptive hypothesis; Ghidra read-only",
+      "saved_signature": "undefined FUN_004c26b0(void)",
+      "source_signature": "void* __cdecl()",
+      "original_abi": "No consumed incoming register or stack arguments; EAX raw pointer result; ECX postallocation scratch; RET0.",
+      "register_provenance": "PUSH immediate size, BF681B defines EAX; leaf never overwrites EAX. ECX first written by LEA EAX+4 after call. EDX and callee-saved registers are not used by leaf.",
+      "allocation_bytes": 24,
+      "allocator": "singleton_lifetime_allocate({SingletonAllocationKind::object, size, size})",
+      "writes": [
+        {
+          "offset": 0,
+          "width": 4,
+          "value": 0,
+          "producer_instruction": "004c26be"
+        },
+        {
+          "offset": 4,
+          "width": 4,
+          "value": 0,
+          "producer_instruction": "004c26cb"
+        },
+        {
+          "offset": 8,
+          "width": 4,
+          "value": 0,
+          "producer_instruction": "004c26d8"
+        },
+        {
+          "offset": 20,
+          "width": 1,
+          "value": 1,
+          "producer_instruction": "004c26de"
+        },
+        {
+          "offset": 21,
+          "width": 1,
+          "value": 0,
+          "producer_instruction": "004c26e2"
+        }
+      ],
+      "write_conditions": "Each DWORD store independently tests its computed 32-bit destination for zero; tree byte stores unconditional. Null allocation skips +0 then faults writing +4. All other bytes untouched.",
+      "native_sha256": "b3ef31e4eafd19b0e5d3bb9b8242c189ddb3d248479ee4d580c97b3ab8f47be4",
+      "live_matches_installed_pe": true,
+      "raw_definition_or_repair_needed": false,
+      "native_calls": [
+        {
+          "address": "004c26b2",
+          "native": "00bf681b",
+          "function": "004c26b0",
+          "arguments": "One cdecl stack DWORD immediate 0x18",
+          "cleanup_address": "004c26b7",
+          "cleanup_instruction": "ADD ESP,4",
+          "contract": "BF681B body inspected live: malloc(size), retry through current new-handler, otherwise bad_alloc throw. Existing actual source allocation service reused."
+        }
+      ]
+    },
+    {
+      "address": "007f82f0",
+      "end_inclusive": "007f8309",
+      "length": 26,
+      "coverage": "complete",
+      "source_function": "allocate_native_list_head_007f82f0",
+      "original_name": "FUN_007f82f0",
+      "proposed_name": "BSP_RawListHead_Allocate0C_007f82f0",
+      "name_status": "descriptive hypothesis; Ghidra read-only",
+      "saved_signature": "undefined FUN_007f82f0(void)",
+      "source_signature": "void* __cdecl()",
+      "original_abi": "No consumed incoming register or stack arguments; EAX raw pointer result; ECX postallocation scratch; RET0.",
+      "register_provenance": "PUSH immediate size, BF681B defines EAX; leaf never overwrites EAX. ECX first written by LEA EAX+4 after call. EDX and callee-saved registers are not used by leaf.",
+      "allocation_bytes": 12,
+      "allocator": "singleton_lifetime_allocate({SingletonAllocationKind::object, size, size})",
+      "writes": [
+        {
+          "offset": 0,
+          "width": 4,
+          "value": "allocation",
+          "producer_instruction": "007f82fe"
+        },
+        {
+          "offset": 4,
+          "width": 4,
+          "value": "allocation",
+          "producer_instruction": "007f8307"
+        }
+      ],
+      "write_conditions": "Each DWORD store independently tests its computed 32-bit destination for zero; tree byte stores unconditional. Null allocation skips +0 then faults writing +4. All other bytes untouched.",
+      "native_sha256": "32e36fff19947a44438a563893553d2058b760fe8ef89d9dd6ff7910c9a1f2f9",
+      "live_matches_installed_pe": true,
+      "raw_definition_or_repair_needed": false,
+      "native_calls": [
+        {
+          "address": "007f82f2",
+          "native": "00bf681b",
+          "function": "007f82f0",
+          "arguments": "One cdecl stack DWORD immediate 0xC",
+          "cleanup_address": "007f82f7",
+          "cleanup_instruction": "ADD ESP,4",
+          "contract": "BF681B body inspected live: malloc(size), retry through current new-handler, otherwise bad_alloc throw. Existing actual source allocation service reused."
+        }
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Saved Ghidra signatures present allocation leaves as undefined/void return.",
+      "is": "EAX is preserved from allocator through RET and returns the raw allocated pointer.",
+      "evidence": "Complete live assembly of all six entries; no EAX overwrite after BF681B."
+    }
+  ],
+  "boundaries": [
+    "Raw MSVC Win32 ABI/storage shape only; no original address relocation, game injection or game runtime claim.",
+    "Actual source CRT malloc/new-handler/free service; original static CRT globals, exception type identity and heap identity are not reconstructed.",
+    "These six leaves do not establish complete VFS manager owner readiness.",
+    "Tree nodes initially have sentinel byte zero; owning constructors separately create sentinels.",
+    "BDABA0 is shared raw allocation for physical-directory BF4D30 and VFS construction; no competing owner class."
+  ],
+  "verification": {
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed",
+      "configuration": "Release Win32",
+      "existing_tests": [
+        "reconstructed_math passed",
+        "native_math_differential passed"
+      ]
+    },
+    "seed_verification": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "result": "passed",
+      "matching_seed_count": 8
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_vfs_container_allocation.json",
+      "checked": 6,
+      "failed": 0
+    },
+    "focused_probe": {
+      "path": "local/vfs_container_allocation/allocation_probe.cpp",
+      "result": "passed all six leaves",
+      "link": "/MANIFEST:EMBED; Release bsp_core.lib; /O2 /W4 /WX /fp:strict /EHsc /MD",
+      "checks": [
+        "243 emitted source bytes match all six original bodies except allocation CALL rel32 fields",
+        "Unmodified source entries allocate through actual shared service and free through matching service",
+        "One allocation with exact native byte count and return pointer preserved",
+        "Private executable copies with only sole CALL redirected to controlled fixture preserve all exact stores, unlisted payload/padding bytes and guards",
+        "Forced null return in private copies skips first store then raises write access violation at address 4 in original and emitted source"
+      ],
+      "boundary": "Controlled allocation is a probe fixture in private code copies, not a production seam; original static CRT allocation failure identity and game runtime are not tested."
+    },
+    "artifacts": {
+      "build.log": "10f09d13190dd25123cd96f81c2f23679c133e5696ec6c59df7332221dc4f9cd",
+      "seeds.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "probe_build.log": "d440ad98f6f552405ef2da735cc4047c7b71578ff8c630a39e2064d09789bb33",
+      "probe.log": "4b1d81bdb5b71e2771aef86c438a7901fef328f63bd2e17ce3fa9b415cfe9c04",
+      "allocation_probe.cpp": "ca9d8243590b2256ba7ab64cb137a72fe4a0e5d06258707cb125fa4ebae8259e",
+      "allocation_probe.exe": "21f7335bbca92c1894b4932bc788dd90ff16cc3eebaf37bb12a1c0b5700458b9"
+    },
+    "source_sha256": "dbb7ca65319f7d4c07a68a1b2f5df58fa9faf52a0432298490fa81f9669f93ad",
+    "header_sha256": "7aa5f78de45034f75163da77a7630418511918523325ed4a125a676f17e4deeb"
+  }
+}

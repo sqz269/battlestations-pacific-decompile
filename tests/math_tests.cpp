@@ -27,6 +27,7 @@
 #include "bsp/game_render_frame.hpp"
 #include "bsp/lua_binding_entity_lookup.hpp"
 #include "bsp/mission_lobby_settings.hpp"
+#include "bsp/command_execution.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
 #include "bsp/spatial_index.hpp"
@@ -2525,6 +2526,20 @@ int main() {
             "0098AB62 keeps a sphere whose max exactly meets the node min");
         check(!bsp::collision_node_sphere_aabb_overlap(node_min, node_max, clear, 2.0f),
             "0098AB62 rejects once the sphere clears the node min");
+    }
+
+    {
+        // 00836A6C's arrival test. FLD double ptr [00D09FE8] loads 4000000.0 and
+        // FCOMIP/JBE raises stage 2 only on a strict less-than, so a unit exactly
+        // 2000 units out has not arrived. The distance uses x and z only
+        // (00836A40..00836A62 reads pfVar7[0] and pfVar7[2]); a y term or a
+        // non-strict compare would each complete the command a frame early.
+        check(!bsp::command_arrival_reached(0.0f, 0.0f, 2000.0f, 0.0f),
+            "00836A76 keeps the command at exactly the 2000-unit arrival radius");
+        check(bsp::command_arrival_reached(0.0f, 0.0f, 1999.0f, 0.0f),
+            "00836A76 completes the command just inside the radius");
+        check(bsp::command_arrival_reached(0.0f, 0.0f, 0.0f, 1999.0f),
+            "the arrival distance is built from x and z, not x and y");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

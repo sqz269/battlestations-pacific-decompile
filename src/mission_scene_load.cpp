@@ -270,7 +270,7 @@ void run_mission_scene_load(MissionSceneLoadState& state, MissionSceneLoadHost& 
     // 004e0750..004e0870.
     state.objective_counter = 0;
     state.objective_timer = 0.0f;
-    host.reset_objective_list();
+    host.reset_avoid_zone_state(); // 004e0754, formerly reset_objective_list
     host.set_input_capture(true);
     host.input_update(0.0f);
     host.input_update(0.0f);

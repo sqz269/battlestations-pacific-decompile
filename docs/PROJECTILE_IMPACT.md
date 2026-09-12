@@ -425,3 +425,13 @@ entity** (compared with `!=` against each candidate's owner), not a collision ma
 base's active and torn-down flags (written by `00922F30`, `00922F80`, `00922FD0`, `009263C0`,
 `00925F20`, `009274CE`), not projectile fields. A segment hit carries hull damage only: the record's
 damage `+28h`, centre and radius `+24h` come from the blast path `00904470` / `0084BAD0`.
+
+## Corrections from docs/PROJECTILE_KINDS.md (packet cc2_projectile_kinds)
+
+The spawn table above mislabels two of `006E8430`'s seven arguments: arguments 5 and 6 land in
+`+278h` and `+1CCh` respectively (the reverse of the reading above), the spawn hook fires on
+argument 5, and arguments 1 and 7 are never read. The descriptor's `+74h` is `ExplWaterHit` and
+`+CCh`/`+D0h` are the two decal ids (provisional: the consumer at `00923A2C` was not re-read).
+The sub-type at descriptor `+8h` is set by the class constructors, not by Lua: 1 Bullet,
+4 Artillery, 9 Bomb, 0Ah Torpedo, 0Bh DepthCharge, 0Ch DummyTarget, 0Dh DummyKamikazePlane,
+0Eh DummySubmarine, 0Fh Paratrooper, 10h Flak, 11h Kamikaze, 12h Rocket, 13h WaterMine.

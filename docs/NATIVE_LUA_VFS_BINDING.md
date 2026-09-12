@@ -86,3 +86,9 @@ Recover actual VFS manager/provider/tree population and startup registration,
 then connect this source composition into the application startup owner. Add
 native bindings for archive stream classes and physical-to-memory conversion
 where the current FileStore conversion requires callable external methods.
+
+## Integration correction from docs/NATIVE_PHYSICAL_MEMORY_BINDING.md
+
+The newer composition uses the actual file, memory and physical type initializers in the shared root/counter lifetime domain. It also loads fundamentals through a FileStore entry retaining an actual physical stream; clearing Platform before the load and observing its restoration verifies execution. Counter publication clears during canonical shutdown while descriptor guards stay set. Initializer order, manager and mount records, and FileStore tree population remain explicit fixture inputs; this does not establish full native startup.
+
+Evidence: reports/native_ao_integration.json; reports/native_physical_memory_binding.json.
