@@ -1,0 +1,418 @@
+{
+  "schema_version": 1,
+  "packet": "native_singleton_removal_reorder2",
+  "status": "complete_raw_source_main_build_and_static_archive_proof_checked",
+  "source": "src/native_singleton_removal_reorder.cpp",
+  "header": "include/bsp/native_singleton_removal_reorder.hpp",
+  "document": "docs/NATIVE_SINGLETON_REMOVAL_REORDER.md",
+  "owned_functions": [
+    {
+      "address": "00bcfca0",
+      "symbol": "?unregister_native_singleton_object_00bcfca0@bsp@@YIXPAX00@Z",
+      "native_bytes": 115,
+      "emitted_bytes": 115,
+      "instructions": 47,
+      "nonrelocation_bytes": 99,
+      "complete_native_bytes_match_except_named_calls": true,
+      "calls": [
+        {
+          "native_site": "00bcfcaf",
+          "native_target": "00bcf910",
+          "relocation": {
+            "offset": 16,
+            "symbol": "?count_native_singleton_slots_00bcf910@bsp@@YIIPBXPAX@Z",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bcfccb",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 44,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bcfcdd",
+          "native_target": "00bcf910",
+          "relocation": {
+            "offset": 62,
+            "symbol": "?count_native_singleton_slots_00bcf910@bsp@@YIIPBXPAX@Z",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bcfcfe",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 95,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        }
+      ],
+      "ret_immediates": [
+        "4",
+        "4"
+      ],
+      "ghidra_name": "BSP_SingletonLifetime_Unregister",
+      "source_symbol": "unregister_native_singleton_object_00bcfca0",
+      "original_abi": "ECX actual raw owner, incoming EDX unconsumed; one stack object pointer, RET4, no semantic result.",
+      "complete_behavior": "Null object does not access owner fields. Recheck current count and bounds, retain captured object and index across returning validation, reload current begin before comparison and final zero store. Clear only first match without shrinking or destroying."
+    },
+    {
+      "address": "00bd0d70",
+      "symbol": "?move_native_singleton_object_after_00bd0d70@bsp@@YIXPAX000@Z",
+      "native_bytes": 474,
+      "emitted_bytes": 474,
+      "instructions": 178,
+      "nonrelocation_bytes": 378,
+      "complete_native_bytes_match_except_named_calls": true,
+      "calls": [
+        {
+          "native_site": "00bd0d81",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 18,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0d98",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 41,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0da5",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 54,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0db2",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 67,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0dbc",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 77,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0dca",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 91,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0dd8",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 105,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0de2",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 115,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0e04",
+          "native_target": "00bf67a7",
+          "relocation": {
+            "offset": 149,
+            "symbol": "_memmove_s",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0e18",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 169,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0e25",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 182,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0e38",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 201,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0e45",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 214,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0e52",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 227,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0e5c",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 237,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0e6a",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 251,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0e80",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 273,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0e8f",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 288,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0ea1",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 306,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0eaa",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 315,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0ef8",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 393,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0f0b",
+          "native_target": "00bd08d0",
+          "relocation": {
+            "offset": 412,
+            "symbol": "?insert_one_native_singleton_slots_checked_00bd08d0@bsp@@YIPAXPAX00PBX01@Z",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0f28",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 441,
+            "symbol": "?current_crt_invalid_parameter@?A0x33fea425@bsp@@YAXXZ",
+            "type": 20
+          }
+        },
+        {
+          "native_site": "00bd0f3b",
+          "native_target": "00bd08d0",
+          "relocation": {
+            "offset": 460,
+            "symbol": "?insert_one_native_singleton_slots_checked_00bd08d0@bsp@@YIPAXPAX00PBX01@Z",
+            "type": 20
+          }
+        }
+      ],
+      "ret_immediates": [
+        "8",
+        "8",
+        "8"
+      ],
+      "ghidra_name": "BSP_SingletonLifetime_MoveObjectAfter",
+      "source_symbol": "move_native_singleton_object_after_00bd0d70",
+      "original_abi": "ECX actual raw owner, incoming EDX unconsumed; stack object then anchor, RET8, no semantic result.",
+      "complete_behavior": "Remove first current matching slot by signed-positive tail memmove and current-end decrement. Store removed current slot into original object argument, search first remaining anchor, retain captured/current validation and stack-result schedule, then inline append or full checked insertion. Missing matches follow native validation/continuation, not a new no-op. No rollback or EH frame."
+    }
+  ],
+  "owned_native_bytes": 589,
+  "owned_emitted_CODE_bytes": 689,
+  "native_capture": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\singleton_removal_primary\\native_captures.json",
+    "bytes": 400,
+    "sha256": "450f2af6e54d9d947ec7aeb1f78e239a7863e87ebd1bd59261857d1c83603a39"
+  },
+  "complete_emitted_proof": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\singleton_removal_primary\\complete_proof.json",
+    "bytes": 18735,
+    "sha256": "3165ea0539b4cdedc02ab1b72da6e6c7b67a0a9b4e309e94fafea95639e795e2"
+  },
+  "main_build": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\singleton_removal_build_frozen\\manifest.json",
+      "bytes": 83509,
+      "sha256": "3863498b144c2c0f0cd54c2dc7da7a63e59863d56cd760d603a5d51f99a6aecd"
+    },
+    "library_sha256": "1db1371ebac8a09235f07f93e0c0dd57b46e14fb8527eaa250ff4656f0ec24f7",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_reference_spans_matched": 8,
+    "unchanged_prebuild_inputs": 31,
+    "exact_archive_members": 8,
+    "actual_compiler_commands": 8,
+    "frozen_compiler_dependencies": 197
+  },
+  "actual_source_providers": {
+    "count": "count_native_singleton_slots_00bcf910",
+    "checked_insert": "insert_one_native_singleton_slots_checked_00bd08d0",
+    "invalid_parameter": "_invalid_parameter_noinfo through fixed actual six-byte adapter",
+    "copy": "Actual SDK memmove_s,94 complete bytes and exact relocations equal to accepted leaf provider",
+    "entire_unchanged_provider_objects": 7,
+    "external_archive_symbols_resolved": 5,
+    "previous_primary_pins_rechecked": 1289
+  },
+  "scope_limits": [
+    "Original encoded global109DD64, errno, heap and exception ownership are not reproduced by the source CRT services.",
+    "The original source-service volatile register/flag and hardware-fault/SEH identities are not claimed.",
+    "Missing matches and returning invalid handlers retain original continuations; no safety no-op or rollback is added.",
+    "Raw manager destruction still requires complete evidence-backed profile/slot dispatch for every admitted owner, including destructors with added source binding context.",
+    "Current bsp_game linking/execution of these static-library entries is not established."
+  ],
+  "new_tests_added": 0,
+  "fixture_tested": false,
+  "native_runtime_executed": false,
+  "original_runtime_ABI_compatible": false,
+  "game_validated": false,
+  "primary_review": {
+    "utc": "2026-09-12T03:51:40.917517+00:00",
+    "integration_state": "complete_source_main_build_static_proof_saved_and_registered",
+    "main_library_sha256": "1db1371ebac8a09235f07f93e0c0dd57b46e14fb8527eaa250ff4656f0ec24f7",
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_singleton_removal_reorder_annotations.json",
+      "bytes": 4935,
+      "sha256": "aa2d93353c07971fc9189f08b6557b7ca779314fce94f2f474d40e3d7814ee6f"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "00bcfca0",
+        "name": "unregister_native_singleton_object_00bcfca0",
+        "cpp_symbol": "bsp::unregister_native_singleton_object_00bcfca0",
+        "source": "src/native_singleton_removal_reorder.cpp",
+        "native_end_exclusive": "00bcfd13",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_removal_reorder_audit.json",
+        "original_abi": "ECX actual raw owner, incoming EDX unconsumed; one stack object pointer, RET4, no semantic result.",
+        "source_abi": "MSVC Win32 naked fastcall with unused EDX; complete raw32 instruction/argument schedule and actual source providers. Original CRT service-internal register/flag and FH3/SEH identities excluded.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00bd0d70",
+        "name": "move_native_singleton_object_after_00bd0d70",
+        "cpp_symbol": "bsp::move_native_singleton_object_after_00bd0d70",
+        "source": "src/native_singleton_removal_reorder.cpp",
+        "native_end_exclusive": "00bd0f4a",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_removal_reorder_audit.json",
+        "original_abi": "ECX actual raw owner, incoming EDX unconsumed; stack object then anchor, RET8, no semantic result.",
+        "source_abi": "MSVC Win32 naked fastcall with unused EDX; complete raw32 instruction/argument schedule and actual source providers. Original CRT service-internal register/flag and FH3/SEH identities excluded.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00bcfca0",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bcfca0\\decompiled.c",
+        "bytes": 3655,
+        "sha256": "2cef296009868820348e0d10df6b7fcfc327113ce0356105122000f4d5c2a708"
+      },
+      {
+        "address": "00bd0d70",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd0d70\\decompiled.c",
+        "bytes": 4975,
+        "sha256": "4fa8d5c055c7d431ff595e5258c65c8173a36939f883edc7183dc05e08df01f5"
+      }
+    ],
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_SINGLETON_REMOVAL_REORDER.md",
+      "bytes": 6847,
+      "sha256": "a2551976ded9296a68e074c5c9a8677973d40607c0d885f8ca0f6f6da5c09358"
+    },
+    "new_routine_runtime_executed": false,
+    "original_caller_ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\singleton_removal_primary\\sealed.json",
+      "bytes": 473270,
+      "sha256": "ac431dd6ef9494b39ad19841f77c7d0de9381ba635ccf8f46220c8cc8b7b8bee"
+    }
+  }
+}

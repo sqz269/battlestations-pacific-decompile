@@ -68,7 +68,34 @@ int binding_trampoline(lua_State* state) {
     const int row = static_cast<int>(lua_tointeger(state, lua_upvalueindex(2)));
     const int argc = lua_gettop(state);
     if (host == nullptr) return 0;
-    host->note_native_call(static_cast<std::size_t>(row), argc);
+    // The replay of a failed named call, which the executable makes only to
+    // recover the error message, must not count a second time.
+    if (!host->error_replay()) {
+        host->note_native_call(static_cast<std::size_t>(row), argc);
+        // Milestone 2l. Which created instance a binding was called on, read
+        // off argument 1 when it is an entity table. The `ID` field is the one
+        // 00928a00 seeds, so this is the same identity the native carries.
+        if (argc >= 1 && lua_type(state, 1) == LUA_TTABLE) {
+            lua_getfield(state, 1, "ID");
+            if (lua_type(state, -1) == LUA_TNUMBER) {
+                host->note_binding_subject(static_cast<std::size_t>(row),
+                    static_cast<int>(lua_tonumber(state, -1)));
+            }
+            lua_settop(state, argc);
+        }
+        // Milestone 2l. `CreateScript` (row 00898750) is the one binding whose
+        // argument the executable keeps: the mission's own stage init hands it
+        // the name of the function that issues the mission's orders, and the
+        // binding body is a record, so without the name there is nothing to run
+        // later. The value is read, not invented, and no other row is read.
+        const bsp::MissionLuaBinding& row_binding =
+            bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
+        if (std::strcmp(row_binding.name, "CreateScript") == 0 && argc >= 1
+            && lua_type(state, 1) == LUA_TSTRING) {
+            const char* name = lua_tolstring(state, 1, nullptr);
+            if (name != nullptr) host->note_created_script(std::string(name));
+        }
+    }
     // The nineteen entity-returning rows of the table end in one recovered tail
     // (docs/LUA_BINDING_ENTITY.md): they push thisTable[key] for the entity they
     // resolved, or, at 0089903C, nil when the lookup produced nothing. This
@@ -79,7 +106,12 @@ int binding_trampoline(lua_State* state) {
     const bsp::MissionLuaBinding& binding =
         bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
     if (bsp::mission_binding_returns_entity(binding.name)) {
-        host->note_entity_return();
+        // 0089903C is the arm the native takes when the lookup produced
+        // nothing. When it produced an entity the same tail pushes that
+        // entity's thisTable slot instead, and milestone 2l fills those slots
+        // for the created scene instances, so `FindEntity` can answer for real.
+        if (host->push_resolved_entity(state, binding.name, argc)) return 1;
+        if (!host->error_replay()) host->note_entity_return();
         lua_pushnil(state);
         return 1;
     }
@@ -677,6 +709,7 @@ bool GameMissionLuaHost::call_entry_point(const std::string& name, bool threadsa
         // executable reruns the same call with errfunc 0 purely to recover the
         // message for the log; that rerun is the executable's, not the game's.
         const int top = ::lua_gettop(state_);
+        set_error_replay(true);
         lua_getfield(state_, LUA_GLOBALSINDEX, name.c_str());
         if (!lua_isnil(state_, -1)) {
             if (::lua_pcall(state_, 0, 0, 0) != 0) {
@@ -684,6 +717,7 @@ bool GameMissionLuaHost::call_entry_point(const std::string& name, bool threadsa
                 run.error = message != nullptr ? message : "(no message)";
             }
         }
+        set_error_replay(false);
         ::lua_settop(state_, top);
         note_error(run.error);
     }
@@ -692,6 +726,215 @@ bool GameMissionLuaHost::call_entry_point(const std::string& name, bool threadsa
         run.error.empty() ? "" : run.error.c_str());
     summary_.entry_points.push_back(run);
     return run.dispatched && run.pcall_status == 0;
+}
+
+std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
+    const std::vector<SceneEntity>& entities) {
+    if (state_ == nullptr || entities.empty()) return 0;
+    lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    if (lua_isnil(state_, -1)) {
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        return 0;
+    }
+    std::size_t made = 0;
+    std::size_t classes = 0;
+    for (const SceneEntity& entity : entities) {
+        char key[16];
+        std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, entity.id);
+        // 00928b53 assigns a fresh table, then 00928bxx seeds `ID`, `Dead` and
+        // `Ptr`. The native `Ptr` is lightuserdata(entity), the entity object
+        // itself; this process has no such object, so the slot carries the
+        // entity's own id as a light pointer and nothing dereferences it.
+        lua_createtable(state_, 0, 3);
+        lua_pushnumber(state_, static_cast<lua_Number>(entity.id));
+        lua_setfield(state_, -2, "ID");
+        lua_pushboolean(state_, 0);
+        lua_setfield(state_, -2, "Dead");
+        lua_pushlightuserdata(state_,
+            reinterpret_cast<void*>(static_cast<std::uintptr_t>(entity.id)));
+        lua_setfield(state_, -2, "Ptr");
+        // `Class`, the field a per-kind setter adds through 00b675d0. It is the
+        // installed `VehicleClass` row the autoload folder already loaded, not
+        // a table this file builds: the slot is assigned the global's own row.
+        if (entity.class_index >= 0) {
+            lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+            if (lua_istable(state_, -1)) {
+                lua_rawgeti(state_, -1, entity.class_index);
+                if (lua_istable(state_, -1)) {
+                    lua_setfield(state_, -3, "Class");
+                    ++classes;
+                } else {
+                    ::lua_settop(state_, ::lua_gettop(state_) - 1);
+                }
+            }
+            ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        }
+        lua_setfield(state_, -2, key);
+        scene_entity_ids_[entity.name] = entity.id;
+        ++made;
+    }
+    ::lua_settop(state_, ::lua_gettop(state_) - 1);
+    summary_.self_table_entities = made;
+    log_.unimplemented("MissionLua::entity_lua_attach", "00928a00");
+    log_.notef("thisTable: %zu per-entity slot(s) built for the created scene instances, "
+        "%zu of them with the installed `VehicleClass` row as their `Class` field. 00928a00 "
+        "and its caller 0077e830 are records, and so is the per-kind `Class` setter that "
+        "goes through 00b675d0; what the executable supplies is the slot with its recovered "
+        "`ID`, `Dead` and `Ptr` fields, so the entity tail at 0089903c can take its "
+        "resolved arm instead of the nil one", made, classes);
+    return made;
+}
+
+bool GameMissionLuaHost::push_resolved_entity(lua_State* state, const char* binding_name,
+    int argument_count) {
+    if (state == nullptr || binding_name == nullptr) return false;
+    if (scene_entity_ids_.empty()) return false;
+    // Only FindEntity. Its argument is a name and 00925a90 answers the scene
+    // database's entity of that name; every other entity-returning row takes
+    // its subject from game state this process does not own.
+    if (std::strcmp(binding_name, "FindEntity") != 0) return false;
+    if (argument_count < 1 || lua_type(state, 1) != LUA_TSTRING) return false;
+    const char* name = lua_tolstring(state, 1, nullptr);
+    if (name == nullptr) return false;
+    const std::map<std::string, int>::const_iterator found = scene_entity_ids_.find(name);
+    if (found == scene_entity_ids_.end()) return false;
+    char key[16];
+    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, found->second);
+    lua_getfield(state, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    if (lua_isnil(state, -1)) {
+        ::lua_settop(state, ::lua_gettop(state) - 1);
+        return false;
+    }
+    lua_getfield(state, -1, key);
+    ::lua_remove(state, -2);
+    if (lua_isnil(state, -1)) {
+        ::lua_settop(state, ::lua_gettop(state) - 1);
+        return false;
+    }
+    if (!error_replay_) ++summary_.entity_resolves;
+    return true;
+}
+
+void GameMissionLuaHost::set_error_replay(bool active) noexcept { error_replay_ = active; }
+
+bool GameMissionLuaHost::error_replay() const noexcept { return error_replay_; }
+
+void GameMissionLuaHost::note_binding_subject(std::size_t row, int entity_id) {
+    if (row >= bsp::mission_lua_binding_count()) return;
+    const char* name = bsp::mission_lua_bindings()[row].name;
+    for (GameMissionNativeCall& record : summary_.natives) {
+        if (record.name != name) continue;
+        for (int existing : record.entity_subjects) {
+            if (existing == entity_id) return;
+        }
+        record.entity_subjects.push_back(entity_id);
+        return;
+    }
+}
+
+void GameMissionLuaHost::report_entity_subjects() {
+    std::vector<int> distinct;
+    std::size_t bindings = 0;
+    for (const GameMissionNativeCall& record : summary_.natives) {
+        if (record.entity_subjects.empty()) continue;
+        ++bindings;
+        log_.notef("  script binding %-28s %08lx addressed %zu created instance(s) in "
+            "%llu call(s)", record.name.c_str(),
+            static_cast<unsigned long>(record.address), record.entity_subjects.size(),
+            record.calls);
+        for (int id : record.entity_subjects) {
+            bool seen = false;
+            for (int existing : distinct) {
+                if (existing == id) {
+                    seen = true;
+                    break;
+                }
+            }
+            if (!seen) distinct.push_back(id);
+        }
+    }
+    log_.notef("summary mission script orders instances=%zu/%zu bindings=%zu "
+        "entity_resolves=%llu: every one of those bindings is a host record with its own "
+        "row address, so the mission's own orders reach no ship",
+        distinct.size(), summary_.self_table_entities, bindings, summary_.entity_resolves);
+}
+
+void GameMissionLuaHost::note_created_script(std::string name) {
+    for (const std::string& existing : summary_.created_scripts) {
+        if (existing == name) return;
+    }
+    summary_.created_scripts.push_back(std::move(name));
+}
+
+std::size_t GameMissionLuaHost::run_created_scripts() {
+    if (state_ == nullptr || summary_.created_scripts.empty()) return 0;
+    // The script manager. 00898750 is the `CreateScript` binding body, which
+    // registers a script object; the fixed step's row 7 at 00875e55 drains the
+    // queued Lua calls through 00888230 and row 8 at 00875e64 dispatches the
+    // due entity think through 00929460. None of the three is reconstructed, so
+    // the executable calls the named global once with one fresh table, which is
+    // the `this` a script function takes, and records all three.
+    log_.notef("script objects: the mission's stage init handed CreateScript %zu name(s). "
+        "The binding body 00898750, the queued-call drain 00888230 (fixed-step row 7 at "
+        "00875e55) and the due-think dispatch 00929460 (row 8 at 00875e64) are all "
+        "records, so the executable calls each named global once with one fresh table and "
+        "says so; the call itself is the executable's, the name is the mission's",
+        summary_.created_scripts.size());
+    log_.unimplemented("MissionScript::create_script", "00898750");
+    log_.unimplemented("MissionScript::drain_queued_calls", "00888230");
+    log_.unimplemented("MissionScript::run_due_entity_think", "00929460");
+
+    const std::size_t natives_before = summary_.natives.size();
+    const unsigned long long calls_before = summary_.native_calls;
+    std::size_t ran = 0;
+    // A script may create further script objects while it runs, which is what
+    // the native manager then picks up, so the walk reads the list by index and
+    // takes each name by value: the vector grows underneath it. The cap is the
+    // executable's own guard against a script that creates itself.
+    constexpr std::size_t kCreatedScriptRunLimit = 32;
+    for (std::size_t i = 0;
+         i < summary_.created_scripts.size() && i < kCreatedScriptRunLimit; ++i) {
+        const std::string name = summary_.created_scripts[i];
+        GameMissionEntryPointRun run;
+        run.name = name;
+        set_phase(name);
+        run.defined = global_is_defined(name.c_str());
+        std::vector<bsp::MissionLuaArgument> arguments;
+        bsp::MissionLuaArgument self;
+        self.type = bsp::MissionLuaArgumentType::Table;
+        arguments.push_back(self);
+        const bsp::NamedCallOutcome outcome
+            = bsp::call_entry_point_if_defined(*this, name, arguments, true);
+        run.dispatched = outcome.dispatched;
+        run.pcall_status = outcome.pcall_status;
+        if (outcome.dispatched && outcome.pcall_status != 0) {
+            // The same rerun with errfunc 0 the entry points use, purely to
+            // recover the message for the log.
+            const int top = ::lua_gettop(state_);
+            set_error_replay(true);
+            lua_getfield(state_, LUA_GLOBALSINDEX, name.c_str());
+            if (!lua_isnil(state_, -1)) {
+                lua_createtable(state_, 0, 0);
+                if (::lua_pcall(state_, 1, 0, 0) != 0) {
+                    const char* message = lua_tolstring(state_, -1, nullptr);
+                    run.error = message != nullptr ? message : "(no message)";
+                }
+            }
+            set_error_replay(false);
+            ::lua_settop(state_, top);
+            note_error(run.error);
+        }
+        if (outcome.dispatched) ++ran;
+        log_.notef("  script object %-20s defined=%d dispatched=%d status=%d %s",
+            name.c_str(), run.defined ? 1 : 0, run.dispatched ? 1 : 0, run.pcall_status,
+            run.error.empty() ? "" : run.error.c_str());
+        summary_.created_script_runs.push_back(run);
+    }
+    log_.notef("script objects reached %zu further binding(s) in %llu call(s); every one of "
+        "them is a host record with its own row address, so no order leaves the script",
+        summary_.natives.size() - natives_before, summary_.native_calls - calls_before);
+    report_entity_subjects();
+    return ran;
 }
 
 void GameMissionLuaHost::report_natives(std::size_t limit) {

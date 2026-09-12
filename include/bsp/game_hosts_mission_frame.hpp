@@ -141,6 +141,9 @@ public:
     // unit, through the same 00816a40 the authored command takes. A negative
     // frame issues nothing.
     void set_player_order(long frame, float throttle, float rudder) noexcept;
+    // Milestone 2l: --order <command>[:<entity>] on the same --order-frame,
+    // issued through 0046aab0 -> 0077d600 instead of through the order ring.
+    void set_player_command(std::string token, std::string target);
     // Milestone 2i, --mission-frame-seconds S: a fixed in-mission frame delta
     // instead of the wall clock. Zero keeps the wall clock.
     void set_mission_frame_seconds(float seconds) noexcept;

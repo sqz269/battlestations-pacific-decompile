@@ -1,6 +1,6 @@
-# bsp_game.exe, milestones 1 through 2k
+# bsp_game.exe, milestones 1 through 2l
 
-Milestone 2k is the current state of the executable, and its section corrects the earlier
+Milestone 2l is the current state of the executable, and its section corrects the earlier
 ones. Milestone 1 is the spine it was all built on.
 
 Addresses added by milestone 2a: 0073d604-0073d899 (the phase-2 VFS block of Init), 00beda60
@@ -3967,6 +3967,352 @@ the five marker sources this mission never reaches.
 7. **`construct_world` 004DE610**, unchanged from milestones 2h, 2i and 2j.
 8. **The world itself.** The ships are on the HUD now; what still draws nothing is the scene,
    004CA440 and 004CA1F0, both records since milestone 2f.
+
+## Milestone 2l: the mission's orders as the game issues them
+
+Addresses: 0046aab0 with its issue call site 0046ac0b and the descriptor block
+0046aba2-0046abf3; 0077d600 with the builder 007798d0 and the AI-group notify
+0077d787-0077d7a3; 00816e30 with 00816e9c / 0077a050, 0081733e / 0071d880, 0081734b
+(00835e90), 0081735d and the unprojected arm block 00816f7c-00817330; 0071ecf0 with
+0071ed19, 0071ed43 / 007788b0, 0071ed54 / 00a2bd90, 0071ed62 (0071e550), 0071ed6c /
+0071c830 and 0071ed81 / 0077c2a0; 00721a40's 5Ch arm with 00721b47 / 00721030, 00721b4f /
+007216d0 and 00721b5a (008358d0); 008358d0 with 008358df / 0071e6c0 and 00835930 / 00835860;
+0071e6c0 with 0071e6c3 / 0071d780, 0071e70c / 0071e200, 0071e72a / 0071d6d0, 0071e73c
+(00836040), 0071e764, 0071e76c / 0071db50, 0071e78a / 00694a60, 0071e795 and 0071e7c9 /
+006e38e0; 0071be40; 00835c70's `cruise` arm 00835e0e-00835e5d with 00835e12 / 0071d810,
+00835e46 and 00835e58 / 00835ac0; 009e1170's AI arm 009e1265-009e13b1 with 009e126b /
+008356f0, 009e1282 / 0092d730, 009e130e / 008356c0, 009e135c / 008356e0, 009e1367 /
+009e0040, 009e138c / 008356d0, 009e1397 / 009dffb0 and 009e13a6 / 009dbf90, and its player
+arm 009e11e8; 0078061c, 00780649 / 00778820 and 00780653 / 00721a40 (the session dispatch);
+00898750, 00875e55 / 00888230 and 00875e64 / 00929460 (the script manager); 00928a00 with
+0077e830 and the entity tail 0089903c; and 00b2aff9 with 00c0683c for the precision read.
+Packet `cc_exe_2l`, owner `agent/cc-exe-2l`. Sources: `src/game_hosts_commands.cpp`,
+`include/bsp/game_hosts_commands.hpp`, plus edits to `src/game_hosts_units.cpp`,
+`src/game_hosts_lua.cpp`, `src/game_hosts_scene_contents.cpp`,
+`src/game_hosts_mission_frame.cpp`, `src/game_hosts_mission.cpp`, `src/game_hosts_menu.cpp`,
+`src/game_hosts.cpp`, `src/game_main.cpp` and their headers. Report:
+`reports/game_executable_milestone_2l.json`. Ghidra was read-only for this packet.
+
+Milestones 2i to 2k moved 32 destroyers by writing an order-ring order that stood in for
+each ship's authored `Cruise`, and said so. `docs/CRUISE_COMMAND.md` then recovered what the
+token means, and the answer is the opposite of an order: **`Cruise` is a latch.** When it
+becomes a unit's current command it captures the ring's ordered pair and the unit's heading
+and re-applies what it captured every step, so a ship whose ring is zero holds zero. This
+milestone runs that path instead of the stand-in, and the mission's ships stop.
+
+### 1. The command path, end to end
+
+`GameCommandsHost` owns one weapon director per created unit and runs the chain the game
+runs. Nothing in it is new reconstruction: every step is a call site of
+`bsp::SceneDeferredReferenceHost`, `bsp::EntityOrderHost` or `bsp::CruiseCommandHost`.
+
+| Hop | Native | What one authored `Cruise` did |
+| --- | --- | --- |
+| resolve | 0046aab0 | the token against the 26-row registry at 00e19a70, first match, case-insensitive |
+| issue | 0077d600 at 0046ac0b | 007798d0 at 0077d7be builds MT_COMMAND, ordinal at +20h, flags 1 at +21h |
+| route | 0077c2a0 at 0077d7d3 | recorded; the executable delivers the message to the same process |
+| apply | 00816e30 | flags 1, so 0081733e clears every slot and 0081735d issues |
+| director | 0071ecf0 | the AI-group block skipped, 0071e550 drops nothing, 0071c830 builds MT_GAMEUNIT_SETCMD |
+| receive | 00721a40's 5Ch arm | session mode 1, message flag 1, so 00721b5a calls 008358d0 |
+| push | 008358d0 / 0071e6c0 | slot 0 stored, director+30h None to 1 at 0071e795 |
+| current | 0071be40 | mode 1, so slot 0's command is the current one |
+| latch | 00835c70's `cruise` arm | 00835ac0 with the ring pair and the heading |
+| step | 009e1170's AI arm | once per unit per fixed simulation step |
+
+**Not all 32 ships author `Cruise`.** Thirteen do; the other nineteen carry `None`, which is
+the default `properties Command` declares in `universe/library/commandunit.props` and is
+value 1 of that file's own `enum CommandType`, not a command class. `None` matches no
+registry name, so 0046aab0 ends those records at 0046ab13 and builds no message for them.
+That corrects milestone 2h, and it means milestone 2i's stand-in was wrong twice over: it
+gave a throttle to nineteen ships that authored no command at all.
+
+All thirteen that do reach the latch **latch a zero**, because the load leaves the ring at
+its constructed state and `00835ac0` therefore stores `cruiseIsHeading = 1`,
+`cruiseSteerOrHeading = the heading` and `cruiseThrust = 0`. Thirteen ships hold station for
+all 290 in-mission frames, and the only ship that moves is the one `--order` drives.
+
+**The latched pair reaches no ring, and that is the packet's boundary.** 009e1170's three
+setters 009dbf90, 009dffb0 and 009e0040 write the AI controller block at `[state]+8`
+(+1d0h throttle, +1d4h rudder, +1d8h heading, +1c4h mode), and the hop from that block to
+`unit+0fc4h` / `unit+0fdch`, which is what 00825f20 copies into the ring under the
+`unit+61h` gate at 008266c1, has no recovered writer. That is `docs/CRUISE_COMMAND.md`'s
+follow-up `unit_autopilot_pair`, and it is now the single step between a latched command and
+a ship that obeys it.
+
+The controlled unit takes a different arm: with `unit+184h` set, 009e1170 runs
+009e11e8..009e1262, which forwards the ring's **confirmed** pair and touches no cruise
+field. That arm is not projected, so it is recorded and the AI arm is not run in its place.
+
+### 2. The new `--order` forms
+
+`--order` still takes `throttle=<f>,rudder=<f>` and writes the controlled unit's ring
+through 00816a40, which is the player's own path and is unchanged. It now also takes the
+name of one of the 26 command classes, with an optional `:<entity>` target, and issues it
+through the whole chain above:
+
+| Form | What the run does |
+| --- | --- |
+| `--order cruise` | resolves, pushes slot 0, latches (heading arm, steer 0.000, thrust 0.000) |
+| `--order stop` | resolves and pushes, raises the command stage, latches nothing: 00835e17 compares the command against 00e08f70 first |
+| `--order settarget:Haguro` | resolves and reaches 00816e30, whose own arm for it (00816f7c..00817330) is recorded as unimplemented, so no slot is pushed |
+| `--order moveto=1000,-2000` | refused at parse time, exit 2 |
+
+The last row is the honest answer to the brief's "when the reconstruction supports the
+descriptor". It does not: 0046aab0 builds only two descriptors, a named target or the
+owner's own world position, and 00816e30's arm for a command that carries a coordinate is
+not projected. There is nothing for an authored coordinate to travel through.
+
+### 3. The mission's own orders, and why they are not the AI's
+
+The brief asked for the mission's AI groups to be run from their scripted `AICreate` and
+`AISetCommand` bindings. **No installed mission script calls them.** A scan of the 299 `.lua`
+files under `Scripts/missions` finds zero call sites for `AICreate`, `AICreateGroup`,
+`AISetCommand`, `AIEnable`, `AIEnableGrouping`, `AIMergeGroups`, `AIGetGroupInfo`,
+`AIReloadGlobals`, `AIGetTargetWeight` and `AISetQuickSpawnTargetPos`; only the four tuning
+bindings appear (`AISetHintWeight` in 32 files, `AISetSpawnSceneUnitsWeightMul` in 31,
+`AISetTargetWeight` in 29, `AISetDefendResourcePercent` in 6). `usn_2_java.lua` calls no AI
+binding at all. That is what `docs/LUA_BINDING_AI.md`'s own "What the installed scripts
+reach" section already says, and it is why both AI-group forwards in the command chain
+(0077d787 on the commanded entity and 0071ed54 on the session endpoint's subject) are not
+reached: nothing writes `entity+16ch`.
+
+What does issue this mission's orders is its own script. `luaStageInit` calls
+`CreateScript("luaInit")`, and `luaInit` is where every order lives. Three things were in
+the way and two of them are now gone:
+
+- **The script manager.** `CreateScript` 00898750 registers a script object and the fixed
+  step's rows 7 and 8 (00888230 at 00875e55, 00929460 at 00875e64) would run it. All three
+  are records, so the executable keeps the name the binding was handed and calls that global
+  once, with one fresh table, on the frame the mission enters state 0Dh. The call is the
+  executable's; the name is the mission's.
+- **`thisTable`.** Milestone 2f created the self table empty and said 00928a00 adds one slot
+  per entity and this process creates none. It creates 32 now, so the executable builds the
+  32 slots with the `ID`, `Dead` and `Ptr` fields 00928a00 seeds, and assigns each one the
+  installed `VehicleClass` row as its `Class`: `docs/MISSION_LUA_SELF_TABLE.md` records that
+  `Class` is added later by a per-kind setter through 00b675d0, and that the value is the
+  `VehicleClass` row is settled by the scripts themselves, which read `.Class.Type` against
+  the literal set those rows' own `Type` keys carry and also read `.Class.Length`,
+  `.Class.Name`, `.Class.Height` and `.Class.Width`. 00928a00, 0077e830 and the `Class`
+  setter stay records; the slot is the executable's.
+- **`FindEntity`.** With the slots built, the entity tail of the nineteen entity-returning
+  rows can take its resolved arm instead of the nil arm at 0089903c. Only `FindEntity` is
+  resolved, and only over the created instances: 00925a90's own lookup on the scene database
+  is a record, and every other entity-returning row resolves its subject from game state
+  this process does not own.
+
+With those three in place the mission's own order function runs and **addresses 21 of the 32
+created instances through ten bindings**:
+
+| Binding | Row | Instances | Calls |
+| --- | --- | --- | --- |
+| `NavigatorSetTorpedoEvasion` | 008a3cd0 | 21 | 21 |
+| `NavigatorSetAvoidLandCollision` | 008a3b10 | 21 | 21 |
+| `SetSkillLevel` | 00895250 | 15 | 15 |
+| `JoinFormation` | 00899d10 | 14 | 14 |
+| `SetInvincible` | 00897a50 | 10 | 10 |
+| `NavigatorAttackMove` | 008a30d0 | 6 | 6 |
+| `SetFireTarget` | 0089a8b0 | 6 | 6 |
+| `RepairEnable` | 008ad330 | 6 | 12 |
+| `SetRoleAvailable` | 008ab850 | 4 | 4 |
+| `NavigatorMoveToRange` | 008a2f20 | 1 | 1 |
+
+Every one of the ten is a host record with its own row address, so **no order reaches a
+ship**. That is the answer to "how many ships end up under an order and how far they
+travel": the scene puts 13 under a `cruise` that latches a zero, the script addresses 21
+through bindings that are records, and every ship but the one `--order` drives ends the run
+at the coordinates the scene placed it at, to the printed 0.01 m, over 14.5 simulated
+seconds.
+
+`luaInit` itself stops part way, and the reason is worth recording: it reached 16 further
+bindings in 149 calls and then failed at `scripts/global/commandhelpers.lua:1003` with
+`attempt to compare number with nil`, because `luaPickRnd` compares the result of `luaRnd()`
+and that binding is a record that returns no value. The first shipped script line that
+consumes a binding's **return value** is where a run of this kind ends; the calls before it
+are real.
+
+### 4. The precision boundary
+
+`docs/X87_CONTROL_WORD.md` established statically that the CRT startup asks for 53-bit
+precision (`__setdefaultprecision` pushes `_PC_53` under `_MCW_PC` at 00c0683c), that no
+game code changes the field again, and that the Direct3D 9 device is created without
+`D3DCREATE_FPU_PRESERVE` at 00b2aff9, so `d3d9.dll` should drop the field to 24 bits for the
+life of the device. Its first uncertainty was that the last step is documented API behaviour
+rather than an instruction in the image, and that no run log had been taken. This milestone
+takes it: the executable reads `_controlfp_s(&v, 0, 0) & _MCW_PC` once in `WinMain` before
+Direct3D exists and once on the first fixed simulation step. The answers are `0x00010000`
+(53-bit) and `0x00020000` (24-bit). The static reading was right, and the reads change no
+arithmetic.
+
+What that means for this reconstruction is narrower than it sounds. The shipped executable
+evaluates 00825f20's `float` expressions on the x87 stack with a 24-bit mantissa, which
+rounds each intermediate to single precision; this reconstruction evaluates them with SSE2
+`float` under `/fp:strict`, which rounds each intermediate to single precision as well. For
+every expression whose operands and result are `float`, the two agree bit for bit, and the
+motion path is almost entirely such expressions. The places where they can differ are the
+ones that load a `double` constant: the `0.05` at 00d7a270 that 009e1170 compares the
+throttle against, and the `double` pairs inside 00825f20. On x87 those comparisons and
+products are formed at 24 bits of mantissa with a 15-bit exponent; here they are formed at
+53 bits and rounded once. A 24-bit intermediate can only change the answer when the
+`double` operand's extra mantissa bits matter, which for a comparison against 0.05 means a
+throttle within about 3e-9 of that threshold, and for the `1.0` pairs means nothing at all.
+On x87 those comparisons and products are formed at 24 bits of mantissa; here they are
+formed at 53 and rounded once. The `0.05` threshold is the only one a trajectory could turn
+on, and the gap between it and its 24-bit image is about 7e-10, so a run would have to hold
+a throttle inside that band for the two sides to disagree. This run never does: the latched
+throttle is exactly 0 and the ordered one exactly 1. **The precision boundary is stated, not
+measured against the game**, and the honest form of the claim is that the two sides round
+`float` arithmetic identically and differ only in how they carry a `double` intermediate,
+which no trajectory here makes decisive.
+
+### What it looks like on screen
+
+Unchanged from milestone 2k, with one difference that is the point of the packet: the ships
+no longer move. The capture at in-mission frame 280 is the captain HUD over the cleared dark
+blue buffer, the minimap cluster in the top right with its authored `error.tga` island map
+and compass ring, the repair wheel in the middle left, the engine telegraph and the damage
+bar in the bottom right, the `Artillery`, `Fighter Ace` and `Repair` text runs, and the one
+unit marker with its `Unit Name` label and `1254` distance. The sprite bridge holds the same
+192 quads. On the minimap, fourteen icons are placed every frame and they now drift only
+because the camera ship moves: `Java`'s local position goes from (-0.00977, 0.00000) at
+in-mission frame 1 to (-0.01015, -0.00005) at frame 500, which is the camera's own 196 m of
+travel and rotation, not the ship's. The captures are the ignored `local/run_2l.png` at the
+validation machine's 2560x1440 and `local/run_2l_1024.png` at 1024x768 through an isolated
+`--settings-personal-root`; the wide-screen caveat of milestone 2k's follow-up 4 is
+unchanged, and at 2560x1440 the minimap cluster still sits half outside the window.
+
+### Host methods
+
+`bsp_game.exe --frames 600 --press-start-frame 30 --menu-select USN02 --mission-frames 300
+--mission-frame-seconds 0.05 --order-frame 0 --order throttle=1,rudder=0.5
+--mission-complete-frame 290 --trajectory-csv local/trajectory.csv --screenshot
+local/run_2l.png --screenshot-mission-frame 280 --log local/game_run_2l.log --game-root
+"<install>"`, exit 0: **375 concrete, 412 unimplemented**. Milestone 2k's published pair for
+the same shape of command is 349 and 377.
+
+The per-step table with the call site and callee of every row is
+`reports/game_executable_milestone_2l.json` (`command_path_steps`, `cruise_step_steps`,
+`session_delivery_steps`, `mission_script_steps`). The counts by group:
+
+| Group | Steps | Concrete | Records |
+| --- | --- | --- | --- |
+| The command path 0046aab0 to 0071e6c0 | 35 | 18 | 17 |
+| The cruise step 009e1170 | 11 | 6 | 5 |
+| The session delivery of the three messages | 5 | 0 | 5 |
+| The script manager and the entity tables | 5 | 1 | 4 |
+
+### Corrections
+
+1. **Milestone 2h's "the `Command` property, which all 32 author as `Cruise`" is wrong, and
+   with it milestone 2i's stand-in.** Thirteen instances author `Cruise`; nineteen carry
+   `None`, the default of `properties Command` in `universe/library/commandunit.props`, which
+   is that file's `enum CommandType` value 1 and not a command class. Nineteen ships were
+   given a throttle by a stand-in for a command they never authored.
+2. **`docs/CRUISE_COMMAND.md`'s "both producers ... a descriptor whose kind is 0 and whose
+   position is the read-only zero vector at 00F87574" is right for the Lua producer only.**
+   The scene queue's targetless branch fills the descriptor with the **owner's own world
+   position**: 0046abb7, 0046abc5 and 0046abd8 load owner+fch, +100h and +104h into
+   [ESP+20h], [ESP+24h] and [ESP+28h], the kind byte is cleared at 0046abef and
+   position_valid is set to 1 at 0046abe0. The two producers agree on the command object and
+   the flags, not on the descriptor. Nothing about `cruise` depends on it, because the latch
+   reads the ring rather than the descriptor, and `src/scene_deferred_refs.cpp` already had
+   the branch right; it is the summary sentence that is wrong.
+3. **Milestone 2i's "what that token means is not recovered" is superseded**, and so is the
+   stand-in it justified. The token is a latch and it writes no ring.
+4. **This packet's brief asked for the mission's AI groups to be run from scripted `AICreate`
+   and `AISetCommand` calls. There are none**, in this mission or in any of the 299 installed
+   mission scripts; section 3 has the corpus scan. The mission's orders are the `Navigator*`
+   family, from the function its stage init hands to `CreateScript`.
+5. **`docs/X87_CONTROL_WORD.md`'s uncertainty 1 is closed by observation.** Section 4.
+6. **Milestone 2f's "the self table is empty because this process creates no entity" is
+   superseded.** It creates 32, and the slots are built.
+
+### Code with no Ghidra function
+
+| Start | End (inclusive) | Note |
+| --- | --- | --- |
+| — | — | none |
+
+Every address this packet touched already has a Ghidra function and a reviewed ledger name.
+No name was added; run-time evidence was appended to 0046aab0, 0077d600, 00816e30, 0071ecf0,
+00721a40, 008358d0, 0071e6c0, 00835c70, 00835ac0, 009e1170 and 00a2bd90.
+
+### Validation
+
+`scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest
+case `reconstructed_math` passes, 1 of 1. No test cases were added.
+`python tools/verify_report_calls.py reports/game_executable_milestone_2l.json` checks 40
+call rows and reports 0 failures; eight rows are reported as indirect because the native call
+goes through a vtable slot.
+
+```
+x87 precision before Direct3D: 53-bit (double) (_controlfp_s & _MCW_PC = 0x00010000)
+thisTable: 32 per-entity slot(s) built for the created scene instances, 32 of them with the
+        installed `VehicleClass` row as their `Class` field
+  authored token "Cruise" x13 resolves to command class "cruise"
+  authored token "None" x19 resolves to no command class: 0046aab0's case-insensitive
+        first-match walk over the registry at 00e19a70 finds nothing and ends the record at
+        0046ab13, so no MT_COMMAND is built for those units
+  DeRuyter             cruise        16    3     1     1     1   heading     0.000     0.000
+  Haguro               None          -1   -1     0     0     0         -     0.000     0.000
+the latched pair reaches no order ring: 009dbf90, 009dffb0 and 009e0040 write the AI
+        controller block at [state]+8, and the hop from that block to unit+0fc4h /
+        unit+0fdch under the unit+61h gate that 00825f20 reads at 008266c1 has no recovered
+        writer
+  script object luaInit              defined=1 dispatched=1 status=2
+        [string "scripts/global/commandhelpers.lua"]:1003: attempt to compare number with nil
+  script binding NavigatorSetTorpedoEvasion   008a3cd0 addressed 21 created instance(s) in 21 call(s)
+  script binding NavigatorMoveToRange         008a2f20 addressed 1 created instance(s) in 1 call(s)
+x87 precision at the fixed simulation step: 24-bit (single) (_controlfp_s & _MCW_PC = 0x00020000)
+summary mission commands units=32 resolved=13 issued=13 pushed=13 current=13 latched=13
+        with_thrust=0 ai_groups=0 ai_forwards=0 steps=3480
+summary mission script orders instances=21/32 bindings=10 entity_resolves=33: every one of
+        those bindings is a host record with its own row address, so the mission's own
+        orders reach no ship
+summary mission world units=32 walked=9280 updated=9280 motion_ticks=9280 simulated=14.50 s
+        controlled=DeRuyter moved=196.54 total_path=196.55
+host methods 375 concrete, 412 unimplemented
+```
+
+Every earlier switch was rechecked on the same binary. A 120 frame run with
+`--press-start-frame 30` and no `--menu-select` exits 0 and reports 154 concrete and 80
+unimplemented, a 40 frame title-only run reports 129 and 49, `--vfs-probe fonts/fonts.lua`
+exits 0 and `--vfs-probe does/not/exist.lua` exits 3: all four match milestones 2d, 2h, 2i,
+2j and 2k exactly. A `--mission-frames 60` run with no `--mission-complete-frame` still ends
+on the frame count with `summary mission exit reachable=0`, and the 300 frame run above still
+leaves state 0Dh through 004d7970 and exits on the front-end request rather than on the frame
+count. The acceptance form `--order-frame 1 --order throttle=1,rudder=1` reproduces milestone
+2j's published numbers exactly: `heading -41.253, fwd 16.430, yaw -0.06109` at t = 14 s.
+
+This remains a runtime-validated process, not a game-validated one. What it now proves, that
+milestone 2k did not, is that the recovered path from an authored scene command to a weapon
+director's command slot runs end to end over the mission's own data, that `cruise` latches
+what the ring holds and therefore holds a ship at rest, and that the mission's own order
+function runs and names 21 of its 32 ships. It proves nothing about what those orders would
+do: the hop from the AI controller block to the order ring has no recovered writer, every
+`Navigator*` binding is a host record, and no ship moved under anything but the player's own
+`--order`.
+
+### Follow-up packets
+
+1. **`unit_autopilot_pair`**, `docs/CRUISE_COMMAND.md`'s own first follow-up: `unit+61h`,
+   `unit+0fc4h`, `unit+0fdch` and the writer that carries the AI controller block at
+   `[state]+8` into them. It is now the single step between a latched command and a ship that
+   obeys it, and it is why thirteen ships hold station under a command this executable runs
+   end to end.
+2. **`cruise_speed_setting`**, `*(unit+73ch)+24h` and `+28h`. Its enable is read at three
+   sites and cleared at one, and nothing writes the speed through a direct displacement.
+3. **The `Navigator*` binding family**: 008a2f20 `NavigatorMoveToRange`, 008a30d0
+   `NavigatorAttackMove`, 00899d10 `JoinFormation`, 0089a8b0 `SetFireTarget`, 008a3cd0 and
+   008a3b10. They are what this mission's own script calls on 21 of its 32 ships.
+4. **The script manager**, 00898750 with 00888230 and 00929460, so a script object is
+   registered and run by the game's own scheduler rather than called once by the executable.
+5. **`ship_ai_state_machine`**, 00d21598 and 009f3dd0, so 009e1170 runs where the game runs
+   it and the `moveto`, `follow` and `stop` states exist at all.
+6. **`entity_command_arms`**, 00816e30's 00816f7c..00817330, which is what `--order
+   settarget`, `--order moveto` and `--order follow` need.
+7. **Binding return values.** The first shipped script line that consumes one stops the
+   script; `luaRnd` is the one this mission hits.
+8. **`construct_world` 004de610**, unchanged from milestones 2h, 2i, 2j and 2k.
 
 ## Next milestones
 

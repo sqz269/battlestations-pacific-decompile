@@ -181,7 +181,8 @@ public:
         std::string language = {}, long mission_complete_frame = -1,
         GameHudHost* hud = nullptr, long order_frame = -1, float order_throttle = 0.0f,
         float order_rudder = 0.0f, float mission_frame_seconds = 0.0f,
-        std::string trajectory_csv = {});
+        std::string trajectory_csv = {}, std::string order_command = {},
+        std::string order_command_target = {});
     ~GameMissionHost();
     GameMissionHost(const GameMissionHost&) = delete;
     GameMissionHost& operator=(const GameMissionHost&) = delete;

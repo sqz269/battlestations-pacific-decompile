@@ -1,0 +1,886 @@
+{
+  "schema_version": 1,
+  "packet": "native_singleton_vector_reserve_construct2",
+  "status": "complete_reconstructed_build_and_emitted_native_source_eh_proven_with_explicit_service_boundaries",
+  "base_commit": "4e745ac2f9328fc2955b6c15ab75c359d3c10fc1",
+  "owned_files": [
+    "src/native_singleton_vector_reserve_construct.cpp",
+    "include/bsp/native_singleton_vector_reserve_construct.hpp",
+    "docs/NATIVE_SINGLETON_VECTOR_RESERVE_CONSTRUCT.md",
+    "reports/native_singleton_vector_reserve_construct_audit.json"
+  ],
+  "owned_functions": [
+    {
+      "address": "00bd0600",
+      "end_inclusive": "00bd06a4",
+      "native_bytes": 165,
+      "source_name": "reserve_native_singleton_slots_00bd0600",
+      "native_abi": "ECX raw owner; incoming EDX unused; one stack capacity DWORD; RET4; no declared return value",
+      "source_abi": "MSVC Win32 __fastcall(void* owner, void* unused_edx, uint32_t capacity)",
+      "scope": "complete general reserve, including populated copy/free/republication and failure schedule"
+    },
+    {
+      "address": "00bd0960",
+      "end_inclusive": "00bd09af",
+      "native_bytes": 80,
+      "source_name": "construct_native_singleton_manager_00bd0960",
+      "native_abi": "ECX actual14h owner; no consumed EDX/stack input; EAX same owner; RET",
+      "source_abi": "MSVC Win32 void* __fastcall(void* owner, void* unused_edx)",
+      "scope": "complete raw zero/reserve256/actual tracked-section construction plus source-C++ cleanup/rethrow"
+    }
+  ],
+  "owned_native_bytes": 245,
+  "evidence": {
+    "seal_path": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-reserve-construct\\local\\reserve_construct\\sealed.json",
+    "seal_sha256": "cdc2ab760cace4929bb0c91eb46e3e0f10deeddd2c4a0a7e6222a26a873b41bd",
+    "artifact_count": 346,
+    "source_input_count": 19,
+    "compiler_dependency_count": 198,
+    "reviewed_provider_source_count": 6,
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "fresh_saved_disk_spans": [
+      {
+        "address": "00bd0600",
+        "end_inclusive": "00bd06a4",
+        "length": 165,
+        "decoded_bytes": 165,
+        "sha256": "642b340a24e6fa34c9f79eb024504513ac4f9c838b28a58ceb9cce3ca5c8e234",
+        "disk_matches_saved_ghidra": true
+      },
+      {
+        "address": "00bd0960",
+        "end_inclusive": "00bd09af",
+        "length": 80,
+        "decoded_bytes": 80,
+        "sha256": "a327dd6728cd67142f5b53513e6662c18fd9b6a4ad5fcbc157bf1f0e38aba60d",
+        "disk_matches_saved_ghidra": true
+      },
+      {
+        "address": "00cc5490",
+        "end_inclusive": "00cc5497",
+        "length": 8,
+        "decoded_bytes": 8,
+        "sha256": "d4c36a5759cb581cf094fc05caf1f1366165fd484b7e65d1f3b66f43c8995819",
+        "disk_matches_saved_ghidra": true
+      },
+      {
+        "address": "00cc5498",
+        "end_inclusive": "00cc54a1",
+        "length": 10,
+        "decoded_bytes": 10,
+        "sha256": "095e11996a13c5fe34d5bd936d448ec9ad7b2eaf5ba7550d9126e88d49625ae9",
+        "disk_matches_saved_ghidra": true
+      },
+      {
+        "address": "00bd0220",
+        "end_inclusive": "00bd0249",
+        "length": 42,
+        "decoded_bytes": 42,
+        "sha256": "eaec52792da9825f9c23415d3dead28e291139dc954199823b0b3c37db7ae7f3",
+        "disk_matches_saved_ghidra": true
+      },
+      {
+        "address": "00bd1860",
+        "end_inclusive": "00bd1886",
+        "length": 39,
+        "decoded_bytes": 39,
+        "sha256": "84ae6492318402d85664cc3e4a42dddb89477a2aafbe4e09a1eb62b9e43a5b4f",
+        "disk_matches_saved_ghidra": true
+      },
+      {
+        "address": "00dff4e0",
+        "end_inclusive": "00dff50b",
+        "length": 44,
+        "decoded_bytes": 0,
+        "sha256": "5d27423ceaffef20e2e18e521275b11b73ada83e9b5a4d84aaf264b010173285",
+        "disk_matches_saved_ghidra": true
+      }
+    ],
+    "fresh_saved_disk_bytes": 388,
+    "prior_discovery_seal_sha256": "d992c6b6d68ae04a03e4be9a8b3d09657e8e5a0dd3482d56f9171ef127ad2d8d",
+    "verified_prior_discovery_pins": 276,
+    "allocation_provider_seal_sha256": "7ebe6a551f00ed3a4d844308def4e3fe4b289102a2efdf17209dc42e8188af4b",
+    "verified_allocation_provider_pins": 178,
+    "source_inputs_frozen_before_build_and_unchanged_at_seal": true
+  },
+  "raw_storage": {
+    "manager_bytes": 20,
+    "untouched_offset_00": true,
+    "begin_offset": 4,
+    "end_offset": 8,
+    "capacity_end_offset": 12,
+    "actual_section_offset": 16,
+    "pointer_slot_bytes": 4,
+    "previous_section_untouched_until_success_store": true,
+    "no_typed_manager_or_section_projection": true
+  },
+  "native_semantic_and_eh_proof": {
+    "owned_functions": 2,
+    "owned_bytes": 245,
+    "complete_decoded_instructions": 88,
+    "reserve": {
+      "instructions": 64,
+      "bytes": 165,
+      "call_sites": [
+        [
+          "00bd060f",
+          "0xbd0590"
+        ],
+        [
+          "00bd062f",
+          "0xbcfeb0"
+        ],
+        [
+          "00bd063e",
+          "0xbf6713"
+        ],
+        [
+          "00bd064c",
+          "0xbf6713"
+        ],
+        [
+          "00bd0663",
+          "0xbf67a7"
+        ],
+        [
+          "00bd0684",
+          "0xbf65ac"
+        ]
+      ],
+      "missing_saved_flow_bytes": "00bd0689:83c404",
+      "no_native_local_eh_frame": true,
+      "no_replacement_storage_cleanup_on_intervening_exception": true
+    },
+    "constructor": {
+      "instructions": 24,
+      "bytes": 80,
+      "initial_state": -1,
+      "armed_state": 0,
+      "initial_stores": [
+        "+4=0",
+        "+8=0",
+        "+0C=0"
+      ],
+      "armed_before_reserve": true,
+      "protected_calls": [
+        "00bd0600",
+        "00bd1860"
+      ],
+      "success_store": "+10=returned actual section",
+      "section_and_offset_zero_untouched_before_success": true,
+      "unwind_owner_spill": "original establisher EBP-10h"
+    },
+    "original_eh": {
+      "funcinfo": "00dff4e8",
+      "magic": "19930522",
+      "max_state": 1,
+      "unwind_map": "00dff4e0",
+      "entries": [
+        {
+          "state": 0,
+          "to_state": -1,
+          "action": "00cc5490",
+          "tail_target": "00bd0220"
+        }
+      ],
+      "try_blocks": 0,
+      "ip_map_entries": 0,
+      "eh_flags": 1,
+      "handler": "00cc5498",
+      "handler_tail": "00bf6b43",
+      "no_original_catch_handler": true,
+      "source_qualification": "Source catch/cleanup/rethrow is synchronous C++ effect equivalence only, not original EH state numbering, dispatch phase, FH3/SEH frame/code identity, or mutable unwind-spill alias equivalence."
+    }
+  },
+  "reserve_capture_schedule": [
+    "Check unsigned request maximum before inspecting storage.",
+    "Current capacity is zero for null begin, otherwise raw32 SUB/SAR2 compared unsigned.",
+    "Allocate replacement with actual BCFEB0; capture end EDI then replacement EBX.",
+    "Validate current begin against captured end; returning handler may mutate owner.",
+    "Capture current begin EBP; validate capture against current end; retain both captures.",
+    "Nonzero signed-shift distance copies with equal actual memmove_s dst-size and count; ignore status.",
+    "Reload current begin/end after copy to retain current count; free captured current begin.",
+    "Include original returning-free ADD ESP,4 atBD0689.",
+    "Reload original requested stack word; publish begin, capacity-end, end in order.",
+    "No local replacement-allocation exception cleanup is added."
+  ],
+  "emitted_complete_proof": {
+    "owned_object_sha256": "6aaa8342022369d6a4f37e94d3809c3fe54c5a183d0b8e5a2184b73f0d14ce69",
+    "native_owned_bytes": 245,
+    "reserve": {
+      "native_address": "00bd0600",
+      "complete_bytes": 165,
+      "exact_except_named_relocations": true,
+      "relocations": [
+        {
+          "offset": 16,
+          "symbol": "?native_singleton_length_error_00bd0590@bsp@@YAXXZ",
+          "type": 20
+        },
+        {
+          "offset": 48,
+          "symbol": "?native_singleton_pointer_allocate_00bcfeb0@bsp@@YIPAXIPAX@Z",
+          "type": 20
+        },
+        {
+          "offset": 63,
+          "symbol": "?current_crt_invalid_parameter@?A0x93adbf22@bsp@@YAXXZ",
+          "type": 20
+        },
+        {
+          "offset": 77,
+          "symbol": "?current_crt_invalid_parameter@?A0x93adbf22@bsp@@YAXXZ",
+          "type": 20
+        },
+        {
+          "offset": 100,
+          "symbol": "_memmove_s",
+          "type": 20
+        },
+        {
+          "offset": 133,
+          "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+          "type": 20
+        }
+      ],
+      "sha256": "da3a3ba91abb184595122c458389578334f1104f81a55dce3f9823c52b3c8a63"
+    },
+    "constructor": {
+      "complete_normal_body_bytes": 116,
+      "catch_body_bytes": 19,
+      "post_noreturn_int3_bytes": 6,
+      "complete_code_section_bytes": 141,
+      "eh_handler_bytes": 29,
+      "eh_data_bytes": 88,
+      "safe_seh_bytes": 4,
+      "complete_instruction_and_relocation_schedules_asserted": true,
+      "source_owner_spill": "[EBP-14h]",
+      "initial_state": -1,
+      "armed_state": 0,
+      "normal_state_remains_armed_through_section_publication": true,
+      "source_funcinfo": {
+        "magic": "19930522",
+        "max_state": 2,
+        "unwind_entries": [
+          [
+            -1,
+            0
+          ],
+          [
+            -1,
+            0
+          ]
+        ],
+        "try_blocks": [
+          {
+            "try_low": 0,
+            "try_high": 0,
+            "catch_high": 1,
+            "n_catches": 1
+          }
+        ],
+        "catch_type": {
+          "adjectives": 64,
+          "type_descriptor": 0,
+          "catch_object_displacement": 0,
+          "target_offset": 116
+        },
+        "ip_map_entries": 0,
+        "eh_flags": 1
+      },
+      "catch_owner_reload_offset": 116,
+      "cleanup_call_offset": 121,
+      "rethrow_call_offset": 130,
+      "rethrow_arguments": [
+        0,
+        0
+      ],
+      "guarded_handler_runtime": "__CxxFrameHandler3",
+      "synchronous_source_cpp_effect_equivalence_only": true
+    },
+    "complete_owned_code_sections": [
+      4,
+      5,
+      6,
+      8,
+      9,
+      10
+    ],
+    "complete_owned_code_bytes": 452,
+    "owned_other_code": {
+      "crt_invalid_adapter": 6,
+      "raw_store_helper": 17,
+      "sdk_memmove_s": 94
+    },
+    "complete_owned_noncode_sections_classified": true,
+    "source_bss": {
+      "symbol": "__Avx2WmemEnabledWeakValue",
+      "zero_fill_bytes": 4,
+      "packet_storage": false
+    },
+    "providers": {
+      "clear": {
+        "native_address": "00bd0220",
+        "complete_bytes": 42,
+        "exact_except_named_relocations": true,
+        "relocations": [
+          {
+            "offset": 12,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z",
+            "type": 20
+          }
+        ],
+        "sha256": "8d190b99f3d745f3d64b0a568d8694656971dac5480015166e206d50c937117f"
+      },
+      "section": {
+        "native_address": "00bd1860",
+        "complete_bytes": 39,
+        "exact_except_named_relocations": true,
+        "relocations": [
+          {
+            "offset": 4,
+            "symbol": "?allocate_worker_lock@?A0xc762246e@bsp@@YAPAXI@Z",
+            "type": 20
+          },
+          {
+            "offset": 20,
+            "symbol": "__imp__InitializeCriticalSection@4",
+            "type": 6
+          }
+        ],
+        "sha256": "1db52e102ea5d192930afc98a1f7c8c8e71b24b44bf56848919db9a3b4edcfb4"
+      },
+      "section_allocate_adapter_bytes": 58,
+      "free_bytes": 6,
+      "allocation_bytes": 93,
+      "length_throw_bytes": 111,
+      "allocation_full_semantics_and_eh_owner": "Independent native_singleton_vector_allocation audit; actual object archived here."
+    },
+    "archive_sha256": "c2f5fea4199ea33818f38b23d5950fc906d0307ae5412e94cb530ff65f77b3e0",
+    "exact_archive_members": [
+      {
+        "object": "build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_allocation.obj",
+        "member_offset": 33474390,
+        "bytes": 10600,
+        "sha256": "79afc4d7788f2116c54caeb0225ea5a59913bca19de34d620efb337a21ce5d77",
+        "exact_match": true
+      },
+      {
+        "object": "build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_leaves.obj",
+        "member_offset": 33485050,
+        "bytes": 2620,
+        "sha256": "c1d2597f5ecba4b53014fa0ac02072f892d0dd5ceca263c18251b2da609a586a",
+        "exact_match": true
+      },
+      {
+        "object": "build\\win32\\bsp_core.dir\\Release\\native_singleton_vector_reserve_construct.obj",
+        "member_offset": 33487730,
+        "bytes": 4213,
+        "sha256": "6aaa8342022369d6a4f37e94d3809c3fe54c5a183d0b8e5a2184b73f0d14ce69",
+        "exact_match": true
+      },
+      {
+        "object": "build\\win32\\bsp_core.dir\\Release\\native_renderer_worker_lifetime.obj",
+        "member_offset": 35791722,
+        "bytes": 6125,
+        "sha256": "7ccc424a50107caf4e2335cd30193170adced584fedb27123732645529590232",
+        "exact_match": true
+      },
+      {
+        "object": "build\\win32\\bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "member_offset": 37037566,
+        "bytes": 32983,
+        "sha256": "15cd204d32fb4ada01c00c1966585631a48990902c4fc4f31c75c40383f71b81",
+        "exact_match": true
+      }
+    ],
+    "qualification": "Archive emission and source C++ EH proof; no packet execution, original FH3/SEH identity or game validation."
+  },
+  "actual_import_proof": {
+    "actual_build_link_read_log": "build\\win32\\bsp_game.dir\\Release\\bsp_game.tlog\\link.read.1.tlog",
+    "link_read_sha256": "b0bddd1848f49910a3355d4d2b1cad6ab060bf2a5654aa62e2f82a213b535d67",
+    "libraries": [
+      {
+        "path": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UM\\X86\\KERNEL32.LIB",
+        "bytes": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\MSVCRT.LIB",
+        "bytes": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\OLDNAMES.LIB",
+        "bytes": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\VCRUNTIME.LIB",
+        "bytes": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UCRT\\X86\\UCRT.LIB",
+        "bytes": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      }
+    ],
+    "exact_import_members": [
+      {
+        "symbol": "_InitializeCriticalSection@4",
+        "library": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UM\\X86\\KERNEL32.LIB",
+        "dll": "KERNEL32.dll",
+        "member_offset": 259930,
+        "bytes": 62,
+        "sha256": "457caf3241f6055362e35966a4c46356526bc0416731ec05de2083f6ba4d92b4",
+        "hint": 908,
+        "type_info": 12
+      },
+      {
+        "symbol": "__CxxThrowException@8",
+        "library": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\VCRUNTIME.LIB",
+        "dll": "VCRUNTIME140.dll",
+        "member_offset": 386482,
+        "bytes": 59,
+        "sha256": "fd5717fa2bd822534f16f035c5c1f1629cc7c484fa362ec92732a9f4ec99b532",
+        "hint": 1,
+        "type_info": 12
+      },
+      {
+        "symbol": "___CxxFrameHandler3",
+        "library": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\VCRUNTIME.LIB",
+        "dll": "VCRUNTIME140.dll",
+        "member_offset": 388150,
+        "bytes": 57,
+        "sha256": "a77be392163433729066c2367e58c48e69861eb5a1b43b16f2a563e62f3f77eb",
+        "hint": 16,
+        "type_info": 8
+      },
+      {
+        "symbol": "_memmove",
+        "library": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\VCRUNTIME.LIB",
+        "dll": "VCRUNTIME140.dll",
+        "member_offset": 394632,
+        "bytes": 46,
+        "sha256": "e975b7b376409ba4b2d3b3d0f32213813b9afb484dd8250563c60cbd16612286",
+        "hint": 71,
+        "type_info": 8
+      },
+      {
+        "symbol": "__callnewh",
+        "library": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UCRT\\X86\\UCRT.LIB",
+        "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+        "member_offset": 144642,
+        "bytes": 62,
+        "sha256": "b791956eaae0a6ea8304ab3f0c3190706348a6cad3f79e442498bdec4fe6ea54",
+        "hint": 8,
+        "type_info": 8
+      },
+      {
+        "symbol": "_free",
+        "library": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UCRT\\X86\\UCRT.LIB",
+        "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+        "member_offset": 146630,
+        "bytes": 57,
+        "sha256": "48bd23599bf1b3cd3277f7ffdaa3c088768cbc483dd1df15e246d65c96c3d325",
+        "hint": 24,
+        "type_info": 8
+      },
+      {
+        "symbol": "_malloc",
+        "library": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UCRT\\X86\\UCRT.LIB",
+        "dll": "api-ms-win-crt-heap-l1-1-0.dll",
+        "member_offset": 146748,
+        "bytes": 59,
+        "sha256": "a68150bb1d83a68c410c8ed69001d0513fc8a3e4428f78878ed403b8f77037b1",
+        "hint": 25,
+        "type_info": 8
+      },
+      {
+        "symbol": "__errno",
+        "library": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UCRT\\X86\\UCRT.LIB",
+        "dll": "api-ms-win-crt-runtime-l1-1-0.dll",
+        "member_offset": 229558,
+        "bytes": 62,
+        "sha256": "486ea5a6f2b3657e58e5e1bbb24c8bc25460ea03d4633aa749910b4e91d3542f",
+        "hint": 35,
+        "type_info": 8
+      },
+      {
+        "symbol": "__invalid_parameter_noinfo",
+        "library": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UCRT\\X86\\UCRT.LIB",
+        "dll": "api-ms-win-crt-runtime-l1-1-0.dll",
+        "member_offset": 232668,
+        "bytes": 81,
+        "sha256": "a811148541bd1425836378d4b5f936fb1ae31ac22056cf45ef48588dea4dd934",
+        "hint": 58,
+        "type_info": 8
+      }
+    ],
+    "existing_bsp_game_imports": [
+      {
+        "name": "InitializeCriticalSection",
+        "dll": "KERNEL32.dll"
+      },
+      {
+        "name": "__CxxFrameHandler3",
+        "dll": "VCRUNTIME140.dll"
+      },
+      {
+        "name": "memmove",
+        "dll": "VCRUNTIME140.dll"
+      },
+      {
+        "name": "_CxxThrowException",
+        "dll": "VCRUNTIME140.dll"
+      },
+      {
+        "name": "_errno",
+        "dll": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      {
+        "name": "_invalid_parameter_noinfo",
+        "dll": "api-ms-win-crt-runtime-l1-1-0.dll"
+      },
+      {
+        "name": "_callnewh",
+        "dll": "api-ms-win-crt-heap-l1-1-0.dll"
+      },
+      {
+        "name": "malloc",
+        "dll": "api-ms-win-crt-heap-l1-1-0.dll"
+      },
+      {
+        "name": "free",
+        "dll": "api-ms-win-crt-heap-l1-1-0.dll"
+      }
+    ],
+    "existing_bsp_game_sha256": "327aa227c9d1854663c3d77632a223b6c2f421c8e6fa1a8d99e2f900fed70596",
+    "qualification": "Import-library and existing executable evidence only. The new reserve/constructor remain in bsp_core.lib; no claim that bsp_game links or executes them. Source C++ EH runtime and original native EH identity are distinct."
+  },
+  "all_owned_external_relocations": {
+    "allocation_seal_path": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-allocation\\local\\singleton_vector_allocation\\sealed.json",
+    "allocation_seal_sha256": "7ebe6a551f00ed3a4d844308def4e3fe4b289102a2efdf17209dc42e8188af4b",
+    "verified_allocation_pins": 178,
+    "allocation_audit_sha256": "5af59233f8ed9b5efcd8d8cf15a183d4b05301107365575f67c06cbe3b0eb3a5",
+    "all_owned_external_relocations_resolved_in_actual_archives": true,
+    "external_symbol_count": 12,
+    "external_archive_providers": {
+      "?clear_native_singleton_storage_00bd0220@bsp@@YIXPAX0@Z": [
+        {
+          "library": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-reserve-construct\\build\\win32\\Release\\bsp_core.lib",
+          "member_offset": 33485050,
+          "bytes": 2620,
+          "sha256": "c1d2597f5ecba4b53014fa0ac02072f892d0dd5ceca263c18251b2da609a586a"
+        }
+      ],
+      "__imp___errno": [
+        {
+          "library": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UCRT\\X86\\UCRT.LIB",
+          "member_offset": 229558,
+          "bytes": 62,
+          "sha256": "486ea5a6f2b3657e58e5e1bbb24c8bc25460ea03d4633aa749910b4e91d3542f"
+        }
+      ],
+      "___security_cookie": [
+        {
+          "library": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\MSVCRT.LIB",
+          "member_offset": 6223408,
+          "bytes": 2234,
+          "sha256": "2c5c1a9b4f2bb85e0b901c002762e2df971915450643605673691a4760c97b38"
+        }
+      ],
+      "__imp___invalid_parameter_noinfo": [
+        {
+          "library": "C:\\PROGRAM FILES (X86)\\WINDOWS KITS\\10\\LIB\\10.0.26100.0\\UCRT\\X86\\UCRT.LIB",
+          "member_offset": 232668,
+          "bytes": 81,
+          "sha256": "a811148541bd1425836378d4b5f936fb1ae31ac22056cf45ef48588dea4dd934"
+        }
+      ],
+      "?create_native_tracked_critical_section_00bd1860@bsp@@YAPAUTrackedCriticalSection@1@XZ": [
+        {
+          "library": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-reserve-construct\\build\\win32\\Release\\bsp_core.lib",
+          "member_offset": 35791722,
+          "bytes": 6125,
+          "sha256": "7ccc424a50107caf4e2335cd30193170adced584fedb27123732645529590232"
+        }
+      ],
+      "_memmove": [
+        {
+          "library": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\VCRUNTIME.LIB",
+          "member_offset": 394632,
+          "bytes": 46,
+          "sha256": "e975b7b376409ba4b2d3b3d0f32213813b9afb484dd8250563c60cbd16612286"
+        }
+      ],
+      "@__security_check_cookie@4": [
+        {
+          "library": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\MSVCRT.LIB",
+          "member_offset": 5196154,
+          "bytes": 31838,
+          "sha256": "3632164b4291f94daaabbe5321dad44c21a470840b62c06c6f79b50944dac745"
+        }
+      ],
+      "?native_singleton_length_error_00bd0590@bsp@@YAXXZ": [
+        {
+          "library": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-reserve-construct\\build\\win32\\Release\\bsp_core.lib",
+          "member_offset": 33474390,
+          "bytes": 10600,
+          "sha256": "79afc4d7788f2116c54caeb0225ea5a59913bca19de34d620efb337a21ce5d77"
+        }
+      ],
+      "__CxxThrowException@8": [
+        {
+          "library": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\VCRUNTIME.LIB",
+          "member_offset": 386482,
+          "bytes": 59,
+          "sha256": "fd5717fa2bd822534f16f035c5c1f1629cc7c484fa362ec92732a9f4ec99b532"
+        }
+      ],
+      "?native_singleton_pointer_allocate_00bcfeb0@bsp@@YIPAXIPAX@Z": [
+        {
+          "library": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-reserve-construct\\build\\win32\\Release\\bsp_core.lib",
+          "member_offset": 33474390,
+          "bytes": 10600,
+          "sha256": "79afc4d7788f2116c54caeb0225ea5a59913bca19de34d620efb337a21ce5d77"
+        }
+      ],
+      "___CxxFrameHandler3": [
+        {
+          "library": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\VCRUNTIME.LIB",
+          "member_offset": 388150,
+          "bytes": 57,
+          "sha256": "a77be392163433729066c2367e58c48e69861eb5a1b43b16f2a563e62f3f77eb"
+        }
+      ],
+      "?singleton_lifetime_free@bsp@@YAXPAX@Z": [
+        {
+          "library": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-reserve-construct\\build\\win32\\Release\\bsp_core.lib",
+          "member_offset": 37037566,
+          "bytes": 32983,
+          "sha256": "15cd204d32fb4ada01c00c1966585631a48990902c4fc4f31c75c40383f71b81"
+        }
+      ]
+    },
+    "runtime_cookie_members": [
+      {
+        "symbol": "@__security_check_cookie@4",
+        "artifact": "runtime.___security_check_cookie_4.member.bin",
+        "library": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\MSVCRT.LIB",
+        "member_offset": 5196154,
+        "bytes": 31838,
+        "sha256": "3632164b4291f94daaabbe5321dad44c21a470840b62c06c6f79b50944dac745"
+      },
+      {
+        "symbol": "___security_cookie",
+        "artifact": "runtime.___security_cookie.member.bin",
+        "library": "C:\\PROGRAM FILES\\MICROSOFT VISUAL STUDIO\\18\\COMMUNITY\\VC\\TOOLS\\MSVC\\14.51.36231\\LIB\\X86\\MSVCRT.LIB",
+        "member_offset": 6223408,
+        "bytes": 2234,
+        "sha256": "2c5c1a9b4f2bb85e0b901c002762e2df971915450643605673691a4760c97b38"
+      }
+    ],
+    "qualification": "Actual archive/import-library provenance; source runtime internals and loader behavior are concrete service boundaries, not original native runtime reconstruction or packet execution."
+  },
+  "providers": [
+    {
+      "native": "00bcfeb0",
+      "source": "native_singleton_pointer_allocate_00bcfeb0",
+      "contract": "Actual complete source provider, ECX count/EDX ignored; fixed current malloc/new-handler retry; zero requests zero bytes; source std::bad_alloc."
+    },
+    {
+      "native": "00bd0590",
+      "source": "native_singleton_length_error_00bd0590",
+      "contract": "Actual complete source provider with owning28h legacy NativeSingletonVectorLengthError payload and source C++ EH; no original RTTI or std::length_error catch compatibility."
+    },
+    {
+      "native": "00bf6713",
+      "source": "fixed current_crt_invalid_parameter -> actual _invalid_parameter_noinfo",
+      "contract": "Retain both returning validation callsites. Current thread-local then global UCRT handler differs from original global-only109DD64; BF6713/BF66EF/Watson ownership not reconstructed."
+    },
+    {
+      "native": "00bf67a7",
+      "source": "actual SDK memmove_s",
+      "contract": "Complete94-byte emitted helper verified; actual current errno/invalid-handler and memmove services."
+    },
+    {
+      "native": "00bf65ac",
+      "source": "singleton_lifetime_free -> actual free",
+      "contract": "Paired current malloc/free source domain, no original small-block/static-CRT heap closure."
+    },
+    {
+      "native": "00bd0220",
+      "source": "clear_native_singleton_storage_00bd0220",
+      "contract": "Complete42-byte raw captured-begin free and ordered zeroing; untouched+0/+10."
+    },
+    {
+      "native": "00bd1860",
+      "source": "create_native_tracked_critical_section_00bd1860",
+      "contract": "Complete39-byte raw1Ch section create; actual InitializeCriticalSection and physical depth18h; no compensating OS-initialization cleanup."
+    }
+  ],
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "configuration": "Release Win32",
+    "toolset": "MSVC14.51.36231",
+    "windows_sdk": "10.0.26100.0",
+    "actual_compiler_flags": [
+      "/MD",
+      "/W4",
+      "/WX",
+      "/fp:strict",
+      "/EHsc"
+    ],
+    "strict_build_passed": true,
+    "existing_ctests_passed": [
+      "reconstructed_math",
+      "native_math_differential"
+    ],
+    "native_seed_ranges_matched": 8,
+    "new_tests_added": 0,
+    "packet_execution_tests_run": 0,
+    "source_overlay": "Ignored local/reserve_construct/worker_sources.cmake, actual frozen external leaves/allocation CPP/HPP; no shared CMake edit.",
+    "complete_owned_code_bytes_asserted": 452,
+    "owned_native_bytes": 245,
+    "reserve_exact_native_bytes_except_named_calls": 165,
+    "source_constructor_normal_catch_handler_and_eh_data_complete": true,
+    "exact_archive_objects": 5,
+    "all_12_external_owned_relocation_symbols_resolved": true
+  },
+  "uncertainty_and_limits": [
+    "Descriptive names are behavioral hypotheses, not recovered symbols.",
+    "Source C++ synchronous cleanup/rethrow effects are qualified; original native unwind-only frame and source catch frame are not identical.",
+    "Original owner spill EBP-10h and source owner spill EBP-14h differ; arbitrary unwind-spill aliases and hardware faults are excluded.",
+    "Source EH maxState2/one HT_IsStdDotDot catch differs from original maxState1/no catch; original dispatch, RTTI, fault addresses, original FH3/SEH stack layout and terminate identity are excluded.",
+    "Reserve does not install replacement-allocation rollback if an intervening actual source service throws.",
+    "Original invalid-handler109DD64, Watson, errno, static CRT heap/new-handler state and runtime DLL internals are not reconstructed.",
+    "Full raw manager getter/registration/destruction integration and current mixed-owner terminal dispatch remain separate work.",
+    "Existing tests are regression evidence, not packet execution or game validation."
+  ],
+  "shared_state": {
+    "ghidra_mutations": false,
+    "ledgers_modified": false,
+    "shared_cmake_modified": false,
+    "installed_game_modified": false,
+    "new_globals_or_callback_interfaces": false,
+    "integration_owner": "primary agent"
+  },
+  "claims": {
+    "exported": true,
+    "complete_functions_reconstructed": true,
+    "build_tested": true,
+    "fixture_tested_packet": false,
+    "full_emitted_code_eh_provider_archive_proven": true,
+    "native_register_stack_entry_conventions_retained": true,
+    "original_eh_abi_compatible": false,
+    "drop_in_binary_replacement": false,
+    "game_validated": false
+  },
+  "primary_review": {
+    "utc": "2026-09-12T03:29:01.354432+00:00",
+    "integration_state": "complete_source_main_build_static_proof_saved_and_registered",
+    "summary": "Four complete source entries cover435 native bytes. One strict main build contains7 exact archived objects with35 unchanged prebuild inputs,7 actual compiler commands and206 frozen compiler dependencies. Five unchanged worker verifiers replay successfully against those main objects. All464 relevant CODE/data/EH sections match across9 main/worker object pairs, including232 complete CODE sections totaling14832 bytes; repeated provider comparisons are counted per pair. Only collision-checked compiler namespace/lambda spellings and resolved SafeSEH symbol indices are normalized. Native35 disk spans2693bytes and10 fresh guarded Ghidra spans559bytes verified.",
+    "main_library_sha256": "92e383410f1bcb7d3ae8fd7ec50bf9232d1b021261c6f5654eab10466bd63f48",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_construct_build_frozen\\manifest.json",
+      "bytes": 86386,
+      "sha256": "0fb460562bc2e693f83f0e4c27cc5623f1a4b7bc222d427dae68468db330f40c"
+    },
+    "strict_Win32": true,
+    "existing_CTests": 2,
+    "fresh_seed_matches": 8,
+    "main_replay": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_construct_primary\\replay_results.json",
+      "bytes": 17864,
+      "sha256": "eab20d37c81d498f1956e5abaee62ff806c1458147a4307cfe0dc312e9c6e5d3"
+    },
+    "full_code_data_and_eh_parity": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_construct_primary\\full_object_parity.json",
+      "bytes": 613871,
+      "sha256": "9cda20d031e2c02b84c71e03b5b0210e6a0bffc6c785aa8ce9356e7875b99e24"
+    },
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_singleton_vector_reserve_construct_annotations.json",
+      "bytes": 4774,
+      "sha256": "441bd5b41e3273d4e4b3a4a62e46880e35f3c9b980b37189fdfb6d990b0a8534"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "00bd0600",
+        "name": "reserve_native_singleton_slots_00bd0600",
+        "cpp_symbol": "bsp::reserve_native_singleton_slots_00bd0600",
+        "source": "src/native_singleton_vector_reserve_construct.cpp",
+        "native_end_exclusive": "00bd06a5",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_reserve_construct_audit.json",
+        "original_abi": "ECX raw owner; incoming EDX unused; one stack capacity DWORD; RET4; no declared return value",
+        "source_abi": "MSVC Win32 __fastcall(void* owner, void* unused_edx, uint32_t capacity); actual raw owner and concrete source CRT services. Source synchronous C++ cleanup effects only, not original FH3/SEH/catch ABI.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00bd0960",
+        "name": "construct_native_singleton_manager_00bd0960",
+        "cpp_symbol": "bsp::construct_native_singleton_manager_00bd0960",
+        "source": "src/native_singleton_vector_reserve_construct.cpp",
+        "native_end_exclusive": "00bd09b0",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_reserve_construct_audit.json",
+        "original_abi": "ECX actual14h owner; no consumed EDX/stack input; EAX same owner; RET",
+        "source_abi": "MSVC Win32 void* __fastcall(void* owner, void* unused_edx); actual raw owner and concrete source CRT services. Source synchronous C++ cleanup effects only, not original FH3/SEH/catch ABI.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00bd0600",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd0600\\decompiled.c",
+        "bytes": 3271,
+        "sha256": "7e1a604293a83fc8694dd7b6e6b904a3e982ecace81f5e7d3c2d1c4544856ce9"
+      },
+      {
+        "address": "00bd0960",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd0960\\decompiled.c",
+        "bytes": 2903,
+        "sha256": "4ea195d5bd2d4a13b707027967dde49530efce00b6ee79c6df195e3b0d4dde2f"
+      }
+    ],
+    "new_routine_runtime_executed": false,
+    "original_CRT_or_SEH_compatible": false,
+    "original_caller_ABI_compatible": false,
+    "game_validated": false,
+    "saved_flow_repair": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_singleton_vector_reserve_construct_flow_repair.json",
+      "bytes": 1686,
+      "sha256": "cc67024ae7cf98fba1815b1519e41bee26ce206a95b62f4318bbc027ff878573"
+    },
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_SINGLETON_VECTOR_RESERVE_CONSTRUCT.md",
+      "bytes": 10574,
+      "sha256": "4cc61ddf6749847dc33dd98d80f6431805936a04d4f8f10f6cc01aa9bd3a3719"
+    },
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_construct_primary\\sealed.json",
+      "bytes": 283964,
+      "sha256": "f12fc424b308cb21a3a56a08d7182dc068008a4e7d574c4988b72f85cf3d6965"
+    }
+  }
+}

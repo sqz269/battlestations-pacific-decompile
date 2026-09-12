@@ -1,0 +1,30 @@
+[
+  {
+    "address": "00bcfca0",
+    "before": {
+      "address": "00bcfca0",
+      "function_name": "BSP_SingletonLifetime_Unregister",
+      "comment": "[BSP reconstruction 00bcfca0]\nHypothesis, not a recovered symbol. void __thiscall f(manager, object): ignores a null object, then linearly scans the manager pointer vector (begin manager+4, end manager+8, count through BSP_PointerVector_Count) and writes 0 into the matching slot without erasing it, so the vector keeps its length and later walks contain holes. Every singleton destroy and unregister helper calls it with the manager from BSP_SingletonLifetime_GetManager in ECX.\n\n[BSP reconstruction 00bcfca0] update\nHypothesis, not a recovered symbol. void __thiscall f(manager, object): ignores a null object, then linearly scans the manager pointer vector (begin manager+4, end manager+8, count through BSP_PointerVector_Count) and writes 0 into the matching slot without erasing it, so the vector keeps its length and later walks contain holes. Every singleton destroy and unregister helper calls it with the manager from BSP_SingletonLifetime_GetManager in ECX. | Ignore null; linear scan; zero first matching slot; retain holes/length; subsequent duplicates remain. Original ABI: ECX manager; stack owner; RET4. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: typed_function; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00bcfca0",
+      "name": "BSP_SingletonLifetime_Unregister",
+      "evidence": "Supersedes earlier typed-container interpretation for this complete raw 115-byte source entry. Null object does not access owner fields. Recheck current count and bounds, retain captured object and index across returning validation, reload current begin before comparison and final zero store. Clear only first match without shrinking or destroying. Original ABI: ECX actual raw owner, incoming EDX unconsumed; one stack object pointer, RET4, no semantic result. All589 native bytes/225 instructions match emitted bodies except28 named CALL operands;6-byte actual invalid adapter and94-byte actual SDK memmove_s also verified. Seven entire existing provider objects are byte-identical to prior accepted main archive; all5 external symbols resolve. Strict Win32 main build,2 existing CTests and8 reference seeds passed. Main library SHA256 1db1371ebac8a09235f07f93e0c0dd57b46e14fb8527eaa250ff4656f0ec24f7. Source CRT handler/allocator/errno/exception domains remain explicit, original runtime ABI and gameplay unproven. Descriptive names are hypotheses. reports/native_singleton_removal_reorder_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00bd0d70",
+    "before": {
+      "address": "00bd0d70",
+      "function_name": "BSP_SingletonLifetime_MoveObjectAfter",
+      "comment": "[BSP reconstruction 00bd0d70]\nHypothesis, not a recovered symbol. docs/COMPLETE_SOUND_STARTUP.md. Remove first matching registration, then insert after first remaining anchor. Preserve holes/count/capacity and returning validation callbacks; use captured bases00bd08db/00bd0925. Existing checked insert reused. Focused order fixture and Win32 build pass; no native exception ABI claim."
+    },
+    "after": {
+      "address": "00bd0d70",
+      "name": "BSP_SingletonLifetime_MoveObjectAfter",
+      "evidence": "Supersedes earlier typed-container interpretation for this complete raw 474-byte source entry. Remove first current matching slot by signed-positive tail memmove and current-end decrement. Store removed current slot into original object argument, search first remaining anchor, retain captured/current validation and stack-result schedule, then inline append or full checked insertion. Missing matches follow native validation/continuation, not a new no-op. No rollback or EH frame. Original ABI: ECX actual raw owner, incoming EDX unconsumed; stack object then anchor, RET8, no semantic result. All589 native bytes/225 instructions match emitted bodies except28 named CALL operands;6-byte actual invalid adapter and94-byte actual SDK memmove_s also verified. Seven entire existing provider objects are byte-identical to prior accepted main archive; all5 external symbols resolve. Strict Win32 main build,2 existing CTests and8 reference seeds passed. Main library SHA256 1db1371ebac8a09235f07f93e0c0dd57b46e14fb8527eaa250ff4656f0ec24f7. Source CRT handler/allocator/errno/exception domains remain explicit, original runtime ABI and gameplay unproven. Descriptive names are hypotheses. reports/native_singleton_removal_reorder_audit.json"
+    },
+    "status": "applied"
+  }
+]

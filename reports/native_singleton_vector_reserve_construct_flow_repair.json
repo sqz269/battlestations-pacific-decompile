@@ -1,0 +1,52 @@
+{
+ "repairs": [
+  {
+   "function": "00bd0600",
+   "owner": "main",
+   "when": "2026-09-12T03:22:45Z",
+   "decompile_lines_before": 58,
+   "gaps": [
+    {
+     "site": "00bd0684",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00bd0689",
+     "gap_end_exclusive": "00bd068c",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00bd0684",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00bd0689",
+      "gap_end_exclusive": "00bd068c",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00bd0684 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00bd0684",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00bd0684 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00bd06a5",
+   "explicit_body_sha256": "642b340a24e6fa34c9f79eb024504513ac4f9c838b28a58ceb9cce3ca5c8e234",
+   "body_before": "Function: BSP_PointerVector_Reserve at 00bd0600\nSignature: undefined BSP_PointerVector_Reserve(void)\nEntry: 00bd0600\nBody: 00bd0600 - 00bd06a4",
+   "decompile_lines_after": 62,
+   "gaps_remaining": 0,
+   "body_after": "Function: BSP_PointerVector_Reserve at 00bd0600\nSignature: undefined BSP_PointerVector_Reserve(void)\nEntry: 00bd0600\nBody: 00bd0600 - 00bd06a4",
+   "stored_body_tail_complete": true
+  }
+ ]
+}

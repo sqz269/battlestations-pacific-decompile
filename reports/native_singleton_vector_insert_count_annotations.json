@@ -1,0 +1,16 @@
+[
+  {
+    "address": "00bd0700",
+    "before": {
+      "address": "00bd0700",
+      "function_name": "BSP_PointerVector_InsertCopies",
+      "comment": "[BSP reconstruction 00bd0700]\nSame-owner count1 append; capture value; max3FFFFFFFh; capacity max(size+1,capacity+capacity/2), zero growth candidate on limit overflow; copy prefix/value/tail then free old storage and publish fields. No generic middle-insert interface. Original ABI: ECX vector; stack iterator-owner,position,count,pointer-to-value; RET10h. Evidence docs/SINGLETON_LIFETIME.md; reports/singleton_lifetime_audit.json. Scope: append_specialization_only; no broader generic-helper claim. Composed system prefix integration: docs/SYSTEM_CONSTANT_BUILDER.md; reports/system_constant_builder_audit.json. Earlier bounded-worker limitations describe the worker snapshot; current root composition uses explicit actual owners and has a new typed ABI, without gameplay validation."
+    },
+    "after": {
+      "address": "00bd0700",
+      "name": "BSP_PointerVector_InsertCopies",
+      "evidence": "Supersedes earlier typed/count-one reconstruction scope for this raw complete 436-byte entry. Capture value into its invocation argument word before count-zero test. Full modulo32/SAR size/count/1.5capacity arithmetic, growth prefix/fill/suffix and post-copy current-size/free/publication schedule. Preserve both in-place branches and combined cdecl argument cleanup. No local replacement-storage rollback or EH frame. Original ABI: ECX raw owner; EDX and iterator-owner stack word unconsumed; stack iterator_owner, position, count, value_slot; RET10h, no semantic result. All717 native bytes in the four-entry batch match emitted bytes except21 named call operands, with six-byte actual invalid-parameter import adapter. Complete provider CODE/data/EH parity and actual archived symbol bindings verified. Strict main Win32 build,2 existing CTests,8 seeds passed; main archive SHA256 c257efd65c865acafc48711f2333c05a7820444fb6c283de9c8399afc521931e. Source CRT handler/allocator/exception ownership differs from original; no packet execution or game validation. Descriptive names remain hypotheses. reports/native_singleton_vector_insert_count_audit.json"
+    },
+    "status": "applied"
+  }
+]

@@ -42,6 +42,7 @@
 #include <vector>
 
 #include "bsp/cruise_command.hpp"
+#include "bsp/unit_commanded_speed.hpp"
 #include "bsp/dyn_world_settings.hpp"
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/ship_hull_body.hpp"
@@ -427,6 +428,12 @@ struct TrajectoryInputs {
     // a hand order re-issued every step. docs/CRUISE_COMMAND.md.
     bool cruise{false};
     int cruise_frame{20};
+    // --commanded-speed: what luaMW_SetShipSpeed (00890D30) or
+    // luaMW_NavigatorMoveOnPath (008A3600) would have written into the navigator
+    // parameter block at *(unit+73Ch) +24h/+28h before the latch frame.
+    // docs/UNIT_COMMANDED_SPEED.md.
+    bool have_commanded_speed{false};
+    float commanded_speed{0.0f};
 };
 
 struct TrajectoryResult {
@@ -442,6 +449,10 @@ struct TrajectoryResult {
     bool cruise{false};
     bsp::CruiseAutopilotFields cruise_fields{};
     bsp::CruiseSteerMode cruise_mode{bsp::CruiseSteerMode::Rudder};
+    // The commanded-speed pair as the cruise rule saw it, and the throttle the
+    // override produced at the latch frame.
+    bsp::CruiseSpeedSetting commanded{};
+    float commanded_throttle{0.0f};
 };
 
 TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup,
@@ -518,11 +529,14 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
                     "   throttle    rudder   yaw_rate\n");
     }
 
-    // --cruise state. The speed setting at *(unit+73Ch) +24h / +28h is left disabled
-    // (-1.0f, the value 009E11C6 stores) because its producer is unread, so the rule
-    // takes cruiseThrust rather than the commanded-speed override.
+    // --cruise state. The speed setting at *(unit+73Ch) +24h / +28h defaults to
+    // disabled (-1.0f, the value 0081F278 constructs it with and 009E13F8 restores).
+    // Under --commanded-speed the run stores the pair the two producers store,
+    // 00890E6F..00890E97 and 008A38D5..008A3912: the clamped speed at +24h and the
+    // mission clock DAT_00F876A4 at +28h, taken here as the run's own clock at the
+    // latch frame. docs/UNIT_COMMANDED_SPEED.md.
     bsp::CruiseAutopilotFields cruise_fields{};
-    const bsp::CruiseSpeedSetting cruise_speed_setting{};
+    bsp::CruiseSpeedSetting cruise_speed_setting{};
 
     float t = 0.0f;
     for (int step = 0; step <= in.steps; ++step) {
@@ -560,10 +574,18 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
                 cruise_fields = bsp::cruise_command_begin_00835e17(ring, heading_radians(state));
                 result.cruise = true;
                 result.cruise_fields = cruise_fields;
+                if (in.have_commanded_speed) {
+                    cruise_speed_setting = bsp::navigator_commanded_speed_store_00890e6f(
+                        in.commanded_speed, t);
+                }
+                result.commanded = cruise_speed_setting;
             }
             const bsp::CruiseOrderedValues ordered = bsp::cruise_ordered_values_009e1170(
                 cruise_fields, cruise_speed_setting, result.reference, host.forward_speed());
             result.cruise_mode = ordered.mode;
+            if (step == in.cruise_frame) {
+                result.commanded_throttle = ordered.throttle;
+            }
             order_a = ordered.throttle;
             order_b = (ordered.mode == bsp::CruiseSteerMode::Rudder) ? ordered.steer_or_heading
                                                                     : 0.0f;
@@ -635,6 +657,11 @@ int main(int argc, char** argv) {
     // executable runs under the authored `Cruise` before the injected order.
     bool cruise = false;
     int cruise_frame = 20;
+    // --commanded-speed: the metres per second a Lua `SetShipSpeed` or
+    // `NavigatorMoveOnPath` order would have put on the navigator parameter block,
+    // which 009E1265's arm turns into a throttle of speed / reference.
+    bool have_commanded_speed = false;
+    float commanded_speed = 0.0f;
     // The hull's collision AABB span. Its producer is the shape attach 00C5C940, which
     // this packet does not read, so it defaults to zero rather than to an invented box.
     bsp::OceanVec3 hull_extent{};
@@ -660,6 +687,9 @@ int main(int argc, char** argv) {
             cruise = true;
         } else if (arg == "--cruise-frame" && has_next) {
             cruise_frame = std::atoi(argv[++i]);
+        } else if (arg == "--commanded-speed" && has_next) {
+            commanded_speed = static_cast<float>(std::atof(argv[++i]));
+            have_commanded_speed = true;
         } else if (arg == "--hull-extent" && (i + 3) < argc) {
             hull_extent.x = static_cast<float>(std::atof(argv[++i]));
             hull_extent.y = static_cast<float>(std::atof(argv[++i]));
@@ -668,7 +698,8 @@ int main(int argc, char** argv) {
             std::printf("usage: %s [--lua <vehicleclasses.lua>] [--class N] [--type T]\n"
                         "          [--steps N] [--dt S] [--throttle X] [--rudder X]\n"
                         "          [--cruise] [--cruise-frame N]"
-                        " [--hull-extent DX DY DZ]\n",
+                        " [--commanded-speed M_PER_S]\n"
+                        "          [--hull-extent DX DY DZ]\n",
                         argv[0]);
             return 2;
         }
@@ -726,9 +757,19 @@ int main(int argc, char** argv) {
                     " cruiseSteerOrHeading /\n"
                     "               cruiseThrust and 009E1170 re-applies it every step."
                     " The commanded\n"
-                    "               speed at *(unit+73Ch)+24h/+28h stays disabled, its"
-                    " producer unread.\n",
-                    cruise_frame);
+                    "               speed at *(unit+73Ch)+24h/+28h is %s.\n",
+                    cruise_frame,
+                    have_commanded_speed ? "set at that frame" : "left at -1.0f (inactive)");
+    }
+    if (have_commanded_speed) {
+        const bsp::CruiseSpeedSetting stored =
+            bsp::navigator_commanded_speed_store_00890e6f(commanded_speed, 0.0f);
+        std::printf("  cmd speed    %.4f m/s requested -> +24h %.4f, +28h the mission clock\n"
+                    "               (00890E6F..00890E97 in luaMW_SetShipSpeed, the same store"
+                    " as\n"
+                    "               008A38D5..008A3912 in luaMW_NavigatorMoveOnPath)\n",
+                    static_cast<double>(commanded_speed),
+                    static_cast<double>(stored.speed));
     }
     std::printf("  inputs       ocean 0078CF20 reconstructed, flat sea (wave field off -> 0.0)\n"
                 "               gameplay scale 008E6430 reconstructed, empty list -> 1.0\n"
@@ -755,6 +796,8 @@ int main(int argc, char** argv) {
     run_in.rudder = rudder;
     run_in.cruise = cruise;
     run_in.cruise_frame = cruise_frame;
+    run_in.have_commanded_speed = have_commanded_speed;
+    run_in.commanded_speed = commanded_speed;
 
     HullBodySetup stand_in = stand_in_body();
     HullBodySetup real = class_body(*chosen, hull_extent);
@@ -818,6 +861,16 @@ int main(int argc, char** argv) {
                     b.cruise_fields.is_heading ? "radians of heading" : "the ordered rudder",
                     static_cast<double>(b.cruise_fields.thrust),
                     kModeName[static_cast<int>(b.cruise_mode)]);
+        const bool active = bsp::navigator_commanded_speed_active(b.commanded);
+        std::printf("    commanded speed       +24h %.6f, +28h %.6f -> %s\n"
+                    "    throttle at the latch frame %.6f  (%s)\n",
+                    static_cast<double>(b.commanded.speed),
+                    static_cast<double>(b.commanded.enable),
+                    active ? "active, 009E12BD overrides cruiseThrust"
+                           : "inactive, 009E12AC keeps cruiseThrust",
+                    static_cast<double>(b.commanded_throttle),
+                    active ? "+24h / the reference speed 0080FC30"
+                           : "cruiseThrust straight from the latch");
     }
 
     const TrajectoryResult& result = b;

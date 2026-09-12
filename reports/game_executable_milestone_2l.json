@@ -1,0 +1,565 @@
+{
+  "packet": "cc_exe_2l",
+  "owner": "agent/cc-exe-2l",
+  "binary": "bsp_game.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "doc": "docs/GAME_EXECUTABLE.md",
+  "sources": [
+    "src/game_hosts_commands.cpp",
+    "include/bsp/game_hosts_commands.hpp",
+    "src/game_hosts_units.cpp",
+    "include/bsp/game_hosts_units.hpp",
+    "src/game_hosts_lua.cpp",
+    "include/bsp/game_hosts_lua.hpp",
+    "src/game_hosts_scene_contents.cpp",
+    "include/bsp/game_hosts_scene_contents.hpp",
+    "src/game_hosts_mission_frame.cpp",
+    "include/bsp/game_hosts_mission_frame.hpp",
+    "src/game_hosts_mission.cpp",
+    "include/bsp/game_hosts_mission.hpp",
+    "src/game_hosts_menu.cpp",
+    "include/bsp/game_hosts_menu.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_hosts.hpp",
+    "src/game_main.cpp"
+  ],
+  "evidence_date": "2026-09-12",
+  "ghidra": "read-only; no rename, comment, prototype, function creation or save",
+  "summary": "Milestone 2l replaces milestone 2i's authored-command stand-in with the path the game uses. The scene's `Command` token is resolved by 0046aab0 against the 26-row registry at 00e19a70, issued by 0077d600 as MT_COMMAND with flags 1, applied by 00816e30, handed to the weapon director by 0071ecf0, received back as MT_GAMEUNIT_SETCMD by 00721a40's 5Ch arm and pushed into command slot 0 by 008358d0 / 0071e6c0; 00835c70's own arm then latches the ring's ordered pair and the heading through 00835ac0, and 009e1170's AI arm re-applies what it latched every fixed step. Because `cruise` is a latch rather than an order, the ships hold what their ring held, which for this mission is zero: 13 of the 32 created instances author `Cruise` and all 13 stay stopped, and the other 19 author `None`, which resolves to no command class at all. The mission's own orders come from its script rather than from the scene or the AI bindings: `luaStageInit` hands `CreateScript` the name `luaInit`, and that function addresses 21 of the 32 created instances through ten bindings, every one of which is a host record. The x87 precision field is read at run time before Direct3D (53-bit) and at the fixed simulation step (24-bit), which confirms docs/X87_CONTROL_WORD.md's static answer by observation.",
+
+  "command_path_steps": [
+    {
+      "step": "resolve_deferred_reference",
+      "address": "0046ac0b",
+      "native": "0077d600",
+      "function": "0046aab0",
+      "status": "concrete",
+      "note": "bsp::resolve_scene_command_0046aab0 over a one-record queue per unit, against a registry built from the 26 rows of bsp::kEntityOrderCommandClasses. 13 of the 32 records resolve; 19 carry `None` and end at 0046ab13."
+    },
+    {
+      "step": "command_requires_target",
+      "address": "0046aba2",
+      "native": "00cfb554+vtable8",
+      "function": "0046aab0",
+      "status": "concrete",
+      "note": "The matched object's vtable[8]. Every derived body is a constant return, so the registry row carries it; `cruise` answers false and the record takes the position branch."
+    },
+    {
+      "step": "refresh_owner_pose",
+      "address": "0046abb2",
+      "native": "00414db0",
+      "function": "0046aab0",
+      "status": "unimplemented",
+      "note": "Not reached: a created instance is published with its world matrix valid, so owner+c8h is set."
+    },
+    {
+      "step": "find_entity_by_name",
+      "address": "0046ab48",
+      "native": "00925a90",
+      "function": "0046aab0",
+      "status": "unimplemented",
+      "note": "The scene database at [[00e188a8]+19cch] is the scene-graph owner's; the executable walks the created instances instead and records the native lookup. Not reached by this mission, whose 13 `Cruise` records name no target."
+    },
+    {
+      "step": "build_entity_command_message",
+      "address": "0077d7be",
+      "native": "007798d0",
+      "function": "0077d600",
+      "status": "concrete",
+      "note": "bsp::entity_order_build_message_007798d0: the ordinal at +20h, flags 1 at +21h, the descriptor's kind and position_valid as one word at +24h, and the position at +2ch."
+    },
+    {
+      "step": "route_entity_command_message",
+      "address": "0077d7d3",
+      "native": "0077c2a0",
+      "function": "0077d600",
+      "status": "unimplemented",
+      "note": "The routing-flag override is 0, so the first hop takes the default flags at [00e0af1c], which this process does not model. The executable delivers the message to the same process instead and records the router."
+    },
+    {
+      "step": "command_from_message_ordinal",
+      "address": "00816e9c",
+      "native": "0077a050",
+      "function": "00816e30",
+      "status": "concrete",
+      "note": "The byte at message +20h back to a registry object, over the same 26-row table."
+    },
+    {
+      "step": "clear_all_commands",
+      "address": "0081733e",
+      "native": "0071d880",
+      "function": "00816e30",
+      "status": "unimplemented",
+      "note": "Taken on all 13, because both authored producers push flags 1. 0071d880 builds MT_GAMEUNIT_CLEARCMD with +20h = 1 and +24h = -1 and routes it with flags 7; the receive arm 00720ca0 is not projected, so the executable performs the documented `every slot` clear and records both."
+    },
+    {
+      "step": "command_accepted",
+      "address": "0081734b",
+      "native": "00d09f58+vtable34",
+      "function": "00816e30",
+      "status": "concrete",
+      "note": "bsp::cruise_command_accepted_00835e90 with 0071c0c0's documented base rule. Not reached: the flags byte is 1 on every authored command."
+    },
+    {
+      "step": "non_movement_arm",
+      "address": "00816f7c",
+      "native": "00816f7c",
+      "function": "00816e30",
+      "status": "unimplemented",
+      "note": "00816f7c..00817330 holds the `follow`, `land`, `disband`, `settarget`, `cleartarget`, `clearorders`, `moveto`, `attackmove` and `artillery` arms, none of which docs/CRUISE_COMMAND.md projects. Reached only by an --order <command> run that names one of them; a `--order settarget:Haguro` run records it once."
+    },
+    {
+      "step": "director_issue_command",
+      "address": "0081735d",
+      "native": "0071ecf0",
+      "function": "00816e30",
+      "status": "concrete",
+      "note": "bsp::director_issue_command_0071ecf0, 13 calls."
+    },
+    {
+      "step": "endpoint_subject",
+      "address": "0071ed19",
+      "native": "00d09ec0+vtable140",
+      "function": "0071ecf0",
+      "status": "unimplemented",
+      "note": "The session endpoint at director+34h is the session owner's object and this process builds none, so the whole AI-group block 0071ed19..0071ed5c is skipped."
+    },
+    {
+      "step": "controller_is_another_entity",
+      "address": "0071ed43",
+      "native": "007788b0",
+      "function": "0071ecf0",
+      "status": "unimplemented",
+      "note": "Not reached: the endpoint subject is null."
+    },
+    {
+      "step": "ai_group_forward_command",
+      "address": "0071ed54",
+      "native": "00a2bd90",
+      "function": "0071ecf0",
+      "status": "unimplemented",
+      "note": "Not reached. entity+16ch has no writer in this process: its only reconstructed producer is the AICreateGroup binding 00a38a50 through 00a2dfa0, and none of the 299 installed mission scripts calls it."
+    },
+    {
+      "step": "make_room_for_command",
+      "address": "0071ed62",
+      "native": "00d09f58+vtable30",
+      "function": "0071ecf0",
+      "status": "concrete",
+      "note": "bsp::cruise_make_room_0071e550. `cruise` is category 3, so the routine drops nothing on all 13."
+    },
+    {
+      "step": "build_set_command_message",
+      "address": "0071ed6c",
+      "native": "0071c830",
+      "function": "0071ecf0",
+      "status": "unimplemented",
+      "note": "MT_GAMEUNIT_SETCMD, the flag at +20h and the ordinal at +21h."
+    },
+    {
+      "step": "route_set_command_message",
+      "address": "0071ed81",
+      "native": "0077c2a0",
+      "function": "0071ecf0",
+      "status": "unimplemented",
+      "note": "The router, the local queue on session+24ch and the drain 0076c600 / 00780670 / 00780120 are the session owner's, so the executable delivers the message to the same process synchronously and records the routing path."
+    },
+    {
+      "step": "drop_top_slot",
+      "address": "0071e5aa",
+      "native": "0071d900",
+      "function": "0071e550",
+      "status": "unimplemented",
+      "note": "Not reached: 0071e550 refuses to drop for a non-weapon command."
+    },
+    {
+      "step": "message_target_descriptor",
+      "address": "00721b47",
+      "native": "00721030",
+      "function": "00721a40",
+      "status": "concrete",
+      "note": "The 5Ch arm's flag-set branch, 13 calls."
+    },
+    {
+      "step": "message_command_object",
+      "address": "00721b4f",
+      "native": "007216d0",
+      "function": "00721a40",
+      "status": "concrete",
+      "note": "The byte at message +21h back to a registry object."
+    },
+    {
+      "step": "director_set_command",
+      "address": "00721b5a",
+      "native": "00d09f58+vtable60",
+      "function": "00721a40",
+      "status": "concrete",
+      "note": "bsp::director_set_command_008358d0, session mode 1."
+    },
+    {
+      "step": "director_queue_command",
+      "address": "00721b7c",
+      "native": "0071e7f0",
+      "function": "00721a40",
+      "status": "unimplemented",
+      "note": "Not reached: the message flag is 1 on every hop this milestone makes."
+    },
+    {
+      "step": "push_command_slot",
+      "address": "008358df",
+      "native": "0071e6c0",
+      "function": "008358d0",
+      "status": "concrete",
+      "note": "bsp::director_push_command_slot_0071e6c0, 13 calls, all into slot 0."
+    },
+    {
+      "step": "set_fire_target",
+      "address": "00835930",
+      "native": "00835860",
+      "function": "008358d0",
+      "status": "unimplemented",
+      "note": "Not reached: the weapon-target block runs only for categories 1 and 2 and `cruise` is 3."
+    },
+    {
+      "step": "command_count",
+      "address": "0071e6c3",
+      "native": "0071d780",
+      "function": "0071e6c0",
+      "status": "concrete",
+      "note": "The first-empty-slot index. The `moveonpath` variant, where a slot's path object contributes its point count, needs a path object this process does not build."
+    },
+    {
+      "step": "slot_target_matches",
+      "address": "0071e70c",
+      "native": "0071e200",
+      "function": "0071e6c0",
+      "status": "concrete",
+      "note": "The documented body 0071e200-0071e2d9 projected: same resolved object and a squared position distance below 1.0. Not reached on the authored commands, which all push at index 0."
+    },
+    {
+      "step": "command_allowed",
+      "address": "0071e72a",
+      "native": "0071d6d0",
+      "function": "0071e6c0",
+      "status": "concrete",
+      "note": "The documented body 0071d6d0-0071d772 projected. `cruise` does not require a target, so it is allowed on all 13. The `torpedo` and `moveonpath` extra tests 009229f0 and 007ac9d0 are recorded."
+    },
+    {
+      "step": "normalize_self_target",
+      "address": "0071e73c",
+      "native": "00d09f58+vtable14",
+      "function": "0071e6c0",
+      "status": "concrete",
+      "note": "00836040's documented body. It rewrites a descriptor that names the director's own endpoint; the endpoint is null here, so nothing resolves to it and the answer is false."
+    },
+    {
+      "step": "store_slot_target",
+      "address": "0071e76c",
+      "native": "0071db50",
+      "function": "0071e6c0",
+      "status": "concrete",
+      "note": "The descriptor half of the slot at director+58h+i*1ch; the command pointer half is the store at 0071e764."
+    },
+    {
+      "step": "observe_target",
+      "address": "0071e78a",
+      "native": "00694a60",
+      "function": "0071e6c0",
+      "status": "unimplemented",
+      "note": "Not reached: the descriptor resolves to no object."
+    },
+    {
+      "step": "session_echo_gate",
+      "address": "0071e7c9",
+      "native": "006e38e0",
+      "function": "0071e6c0",
+      "status": "unimplemented",
+      "note": "Not reached: `cruise` is category 3 and director+188h is null."
+    },
+    {
+      "step": "echo_command",
+      "address": "0071e7d4",
+      "native": "0071e2e0",
+      "function": "0071e6c0",
+      "status": "unimplemented",
+      "note": "Not reached, same gate."
+    },
+    {
+      "step": "raise_command_stage",
+      "address": "00835e12",
+      "native": "0071d810",
+      "function": "00835c70",
+      "status": "concrete",
+      "note": "director+48h to 1, 13 times for `cruise` and once more for a `--order stop` run."
+    },
+    {
+      "step": "unit_heading",
+      "address": "00835e46",
+      "native": "00cfc3d0+vtable50",
+      "function": "00835c70",
+      "status": "unimplemented",
+      "note": "The unit's primary vtable slot 50h is a RET 0 getter with no reconstruction, so the executable supplies atan2 over the instance's own pose row 2, the convention the trajectory dump prints, and records the slot."
+    },
+    {
+      "step": "latch_cruise_fields",
+      "address": "00835e58",
+      "native": "00835ac0",
+      "function": "00835c70",
+      "status": "concrete",
+      "note": "bsp::cruise_latch_00835ac0 with the unit's live ring pair and its heading. All 13 latched (is_heading 1, steer 0.000, thrust 0.000), because the load leaves the ring at zero."
+    }
+  ],
+
+  "cruise_step_steps": [
+    {
+      "step": "cruise_thrust",
+      "address": "009e126b",
+      "native": "008356f0",
+      "function": "009e1170",
+      "status": "concrete",
+      "note": "director+248h."
+    },
+    {
+      "step": "body_axis_speed",
+      "address": "009e1282",
+      "native": "0092d730",
+      "function": "009e1170",
+      "status": "concrete",
+      "note": "bsp::unit_forward_speed_0092d730 over the instance's linear velocity and pose row 2."
+    },
+    {
+      "step": "reference_speed",
+      "address": "009e12ce",
+      "native": "0080fc30",
+      "function": "009e1170",
+      "status": "concrete",
+      "note": "Not reached: the commanded-speed override at 009e12ac needs *(unit+73ch)+28h >= 0 and that field carries the -1.0f that disables it."
+    },
+    {
+      "step": "cruise_is_heading",
+      "address": "009e130e",
+      "native": "008356c0",
+      "function": "009e1170",
+      "status": "concrete",
+      "note": "director+243h, set on all 13."
+    },
+    {
+      "step": "cruise_heading_field",
+      "address": "009e135c",
+      "native": "008356e0",
+      "function": "009e1170",
+      "status": "concrete",
+      "note": "Not reached: with a zero thrust and a zero body-axis speed the rule takes the straight arm at 009e1350."
+    },
+    {
+      "step": "set_desired_heading",
+      "address": "009e1367",
+      "native": "009e0040",
+      "function": "009e1170",
+      "status": "unimplemented",
+      "note": "Writes the AI controller block at [state]+8: mode word +1c4h to 1 and the value unclamped at +1d8h. Not reached, same arm."
+    },
+    {
+      "step": "cruise_steer_field",
+      "address": "009e138c",
+      "native": "008356d0",
+      "function": "009e1170",
+      "status": "concrete",
+      "note": "Not reached: cruiseIsHeading is set on all 13."
+    },
+    {
+      "step": "set_desired_steering",
+      "address": "009e1397",
+      "native": "009dffb0",
+      "function": "009e1170",
+      "status": "unimplemented",
+      "note": "Mode word +1c4h to 0 and the value clamped to [-1,+1] at +1d4h. Reached 3480 times with the literal zero of the straight arm."
+    },
+    {
+      "step": "set_desired_throttle",
+      "address": "009e13a6",
+      "native": "009dbf90",
+      "function": "009e1170",
+      "status": "unimplemented",
+      "note": "Clears +1c8h and +1cch and stores the value clamped to [-1,+1] at +1d0h. Reached 3480 times with the latched zero thrust. The hop from this block to unit+0fc4h / unit+0fdch under the unit+61h gate that 00825f20 reads at 008266c1 has no recovered writer, so nothing this rule decides reaches the motion path: docs/CRUISE_COMMAND.md follow-up `unit_autopilot_pair`."
+    },
+    {
+      "step": "player_controlled_arm",
+      "address": "009e11e8",
+      "native": "009e11e8",
+      "function": "009e1170",
+      "status": "unimplemented",
+      "note": "009e11e8..009e1262: with unit+184h set the routine forwards the ring's confirmed pair at unit+998h / unit+994h and touches no cruise field. Not projected, so the controlled unit records it instead of running the AI arm."
+    },
+    {
+      "step": "ship_ai_state_sync",
+      "address": "009f3dd0",
+      "native": "009f3dd0",
+      "function": "009f3dd0",
+      "status": "unimplemented",
+      "note": "The ship AI state class family at 00d21598, whose 009f3dd0 keeps the state in sync with 0071be40's answer, has no reconstruction, so where 009e1170 runs in a frame is the executable's decision: once per latched unit per fixed simulation step."
+    }
+  ],
+
+  "session_delivery_steps": [
+    {
+      "step": "message_tick_window",
+      "native": "00780670",
+      "status": "unimplemented",
+      "note": "Category 49h widens the window from 3ch to 1770h ticks; both message classes answer 49h."
+    },
+    {
+      "step": "drain_local_messages",
+      "native": "0076c600",
+      "status": "unimplemented",
+      "note": "The local delivery queue on session+24ch."
+    },
+    {
+      "step": "dispatch_entity_command",
+      "address": "0078061c",
+      "native": "00cfc530+vtable160",
+      "function": "00780120",
+      "status": "unimplemented",
+      "note": "The 58h arm. The executable calls the reconstruction of 00816e30 directly instead."
+    },
+    {
+      "step": "wrap_weapon_director",
+      "address": "00780649",
+      "native": "00778820",
+      "function": "00780120",
+      "status": "unimplemented",
+      "note": "The 59h arm's one-word wrapper around unit->vtable[114h]()."
+    },
+    {
+      "step": "dispatch_gameunit_message",
+      "address": "00780653",
+      "native": "00721a40",
+      "function": "00780120",
+      "status": "unimplemented",
+      "note": "The 59h arm's dispatch. The executable calls the reconstruction of the 5Ch arm directly instead."
+    }
+  ],
+
+  "mission_script_steps": [
+    {
+      "step": "create_script",
+      "native": "00898750",
+      "status": "unimplemented",
+      "note": "The `CreateScript` binding row of the 560-entry table at 00e0b7b8. Its body registers a script object; the executable keeps the name it was handed and nothing else. usn_2_java.lua's `luaStageInit` hands it `luaInit`."
+    },
+    {
+      "step": "drain_queued_lua_calls",
+      "address": "00875e55",
+      "native": "00888230",
+      "function": "00875bb0",
+      "status": "unimplemented",
+      "note": "Fixed-step fan-out row 7, one of the two rows that would run a registered script object."
+    },
+    {
+      "step": "run_due_entity_think",
+      "address": "00875e64",
+      "native": "00929460",
+      "function": "00875bb0",
+      "status": "unimplemented",
+      "note": "Fixed-step fan-out row 8, the other. With both recorded, the executable calls the named global once with one fresh table on the frame the mission enters state 0dh."
+    },
+    {
+      "step": "entity_lua_attach",
+      "native": "00928a00",
+      "status": "unimplemented",
+      "note": "The per-entity `thisTable` slot builder and its caller 0077e830. The executable builds 32 slots with the recovered `ID`, `Dead` and `Ptr` fields, and assigns each one the installed `VehicleClass` row as its `Class`, which is the field a per-kind setter adds later through 00b675d0. The native `Ptr` is lightuserdata(entity); this process has no entity object, so the slot carries the entity's own id as a light pointer and nothing dereferences it."
+    },
+    {
+      "step": "entity_tail_resolved_arm",
+      "native": "0089903c",
+      "status": "concrete",
+      "note": "With the slots built, the entity tail of the 19 entity-returning rows can push thisTable[key] instead of the nil arm. Only `FindEntity` is resolved, 33 times: 00925a90's own lookup is a record and the executable walks the created instances instead. Every other entity-returning row resolves its subject from game state this process does not own and keeps the nil arm."
+    }
+  ],
+
+  "precision": {
+    "doc": "docs/X87_CONTROL_WORD.md",
+    "claim": "The CRT startup sets the x87 precision field to 53 bits and nothing in the image changes it again; the Direct3D 9 device is created without D3DCREATE_FPU_PRESERVE, so d3d9.dll is expected to drop the field to 24 bits for the life of the device.",
+    "observed_before_direct3d": "0x00010000 (_PC_53, 53-bit)",
+    "observed_at_fixed_step": "0x00020000 (_PC_24, 24-bit)",
+    "reader": "_controlfp_s(&value, 0, 0) & _MCW_PC, once in WinMain before Direct3D exists and once on the first fixed simulation step",
+    "note": "This closes uncertainty 1 of that document, which recorded the 24-bit write as documented API behaviour of d3d9.dll rather than as an observation. Neither read changes any arithmetic."
+  },
+
+  "corrections": [
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2h: `the `Command` property, which all 32 author as `Cruise``, and milestone 2i's stand-in, which gave all 32 an order-ring order of throttle 1 and rudder 0.",
+      "is": "13 of the 32 created instances author `Cruise`; the other 19 carry `None`, the value `properties Command` in universe/library/commandunit.props declares as its default. `None` is value 1 of that file's `enum CommandType` and is not a command class, so 0046aab0's first-match walk over the registry at 00e19a70 finds nothing and ends those records at 0046ab13.",
+      "evidence": "The run's per-unit command table: DeRuyter, Java, Electra, Houston, Alden, John1, John2, John3, Exeter, Perth, Encounter, Jupiter and Witte resolve to ordinal 16; Kortenaer and the eighteen Japanese ships resolve to nothing. universe/library/commandunit.props lines 1-31."
+    },
+    {
+      "was": "docs/CRUISE_COMMAND.md: `Both producers of a `Cruise` with no target agree exactly ... a descriptor whose kind is 0 and whose position is the read-only zero vector at 00F87574.`",
+      "is": "Only the Lua producer builds a zero-vector descriptor. The scene queue's targetless branch fills the descriptor with the OWNER's own world position: 0046abb7, 0046abc5 and 0046abd8 load owner+fch, owner+100h and owner+104h into [ESP+20h], [ESP+24h] and [ESP+28h], with the kind byte clear at 0046abef and position_valid set to 1 at 0046abe0. The two producers agree on the command object and the flags, not on the descriptor. Nothing about `cruise` depends on it, because the latch reads the ring and not the descriptor.",
+      "evidence": "Raw disassembly 0046aba0-0046abf3 against the disk bytes, and the same branch in src/scene_deferred_refs.cpp, which already wrote the owner position."
+    },
+    {
+      "was": "This packet's brief: `run the mission's AI groups from their scripted AICreate/AISetCommand bindings (the mission script calls them at stage init)`.",
+      "is": "No installed mission script calls them. A scan of the 299 `.lua` files under Scripts/missions finds zero call sites for AICreate, AICreateGroup, AISetCommand, AIEnable, AIEnableGrouping, AIMergeGroups, AIGetGroupInfo, AIReloadGlobals, AIGetTargetWeight and AISetQuickSpawnTargetPos; only the four tuning bindings appear (AISetHintWeight 32 files, AISetSpawnSceneUnitsWeightMul 31, AISetTargetWeight 29, AISetDefendResourcePercent 6). usn_2_java.lua calls no AI binding at all. What issues this mission's orders is the `Navigator*` family, from the `luaInit` function its stage init hands to CreateScript.",
+      "evidence": "The corpus scan above, and docs/LUA_BINDING_AI.md's own `What the installed scripts reach` section, which says the same thing."
+    },
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2i: `Every unit's authored `Command` is `Cruise`. What that token means is not recovered ... The executable turns it into one order-ring order of throttle 1 and rudder 0 through the recovered 00816a40`.",
+      "is": "Superseded. The token is recovered and it writes no ring: 00835ac0 stores three fields on the weapon director at +243h, +244h and +248h, and 00825f20 refills the ring from unit+0fc4h / unit+0fdch under the unit+61h gate, from a producer that is still unread. The executable no longer writes a ring for an authored command, and the mission's 13 `Cruise` ships therefore stay where the scene placed them.",
+      "evidence": "The 2l run: 13 units latched, 0 with a non-zero thrust, total path 196.55 m of which 196.54 m is the controlled unit under --order."
+    },
+    {
+      "was": "docs/X87_CONTROL_WORD.md uncertainty 1: `The 24-bit write is performed by d3d9.dll. It is documented behaviour ... and no run log was taken`.",
+      "is": "Observed. The executable reads _controlfp_s(&v, 0, 0) & _MCW_PC twice in the same run: 0x00010000 (53-bit) in WinMain before Direct3D is created, and 0x00020000 (24-bit) on the first fixed simulation step. The static reading was right.",
+      "evidence": "local/game_run_2l.log, the two `x87 precision` lines."
+    }
+  ],
+
+  "run": {
+    "command": "bsp_game.exe --frames 600 --press-start-frame 30 --menu-select USN02 --mission-frames 300 --mission-frame-seconds 0.05 --order-frame 0 --order throttle=1,rudder=0.5 --mission-complete-frame 290 --trajectory-csv local/trajectory.csv --screenshot local/run_2l.png --screenshot-mission-frame 280 --log local/game_run_2l.log --game-root <install>",
+    "exit_code": 0,
+    "host_methods": "375 concrete, 412 unimplemented",
+    "commands": "units=32 resolved=13 issued=13 pushed=13 current=13 latched=13 with_thrust=0 ai_groups=0 ai_forwards=0 steps=3480",
+    "script_orders": "instances=21/32 bindings=10 entity_resolves=33",
+    "script_bindings": [
+      {"name": "SetSkillLevel", "row": "00895250", "instances": 15, "calls": 15},
+      {"name": "NavigatorSetTorpedoEvasion", "row": "008a3cd0", "instances": 21, "calls": 21},
+      {"name": "NavigatorSetAvoidLandCollision", "row": "008a3b10", "instances": 21, "calls": 21},
+      {"name": "SetRoleAvailable", "row": "008ab850", "instances": 4, "calls": 4},
+      {"name": "JoinFormation", "row": "00899d10", "instances": 14, "calls": 14},
+      {"name": "SetInvincible", "row": "00897a50", "instances": 10, "calls": 10},
+      {"name": "NavigatorMoveToRange", "row": "008a2f20", "instances": 1, "calls": 1},
+      {"name": "RepairEnable", "row": "008ad330", "instances": 6, "calls": 12},
+      {"name": "NavigatorAttackMove", "row": "008a30d0", "instances": 6, "calls": 6},
+      {"name": "SetFireTarget", "row": "0089a8b0", "instances": 6, "calls": 6}
+    ],
+    "script_stop": "luaInit reached 16 further bindings in 149 calls and then failed at scripts/global/commandhelpers.lua:1003, `attempt to compare number with nil`: luaPickRnd compares the result of luaRnd(), which is a host record and returns no value. Every binding it reached before that point is a host record too, so no order left the script either way.",
+    "world": "units=32 walked=9280 updated=9280 motion_ticks=9280 simulated=14.50 s controlled=DeRuyter moved=196.54 total_path=196.55",
+    "regressions": {
+      "frames_120_press_start_30": "exit 0, 154 concrete, 80 unimplemented (matches milestone 2d)",
+      "frames_40_title_only": "exit 0, 129 concrete, 49 unimplemented (matches milestone 2d)",
+      "vfs_probe_present": "exit 0",
+      "vfs_probe_absent": "exit 3",
+      "mission_frames_60_no_complete": "exit 0, summary mission exit reachable=0",
+      "acceptance_order_frame_1_throttle_1_rudder_1": "heading -41.253, fwd 16.430, yaw -0.06109 at t = 14 s, which reproduces milestone 2j's published numbers exactly"
+    },
+    "new_switch_forms": {
+      "--order cruise": "exit 0; the controlled unit resolves `cruise`, pushes slot 0 and latches (heading arm, steer 0.000, thrust 0.000)",
+      "--order stop": "exit 0; `stop` reaches the same slot and raises the command stage, and latches nothing, because 00835e17 compares the command against 00e08f70",
+      "--order settarget:Haguro": "exit 0; the command resolves and reaches 00816e30, whose own arm for it (00816f7c..00817330) is recorded as unimplemented, so no slot is pushed",
+      "--order moveto=1000,-2000": "exit 2 with a parse error: 0046aab0 builds only a named-target or owner-position descriptor and 00816e30's arm for such a command is not projected"
+    }
+  },
+
+  "no_ghidra_function": [],
+
+  "follow_up_packets": [
+    "unit_autopilot_pair: unit+61h, unit+0fc4h, unit+0fdch and the writer that carries the AI controller block at [state]+8 into them. It is the one hop between a latched cruise and a moving ship, and it is why 13 ships hold station under a command the reconstruction runs end to end.",
+    "cruise_speed_setting: *(unit+73ch)+24h and +28h, the commanded speed 009e1170 would divide by 0080fc30's reference speed. Its enable is read at three sites and cleared at one; nothing writes +24h through a direct displacement.",
+    "mission_navigator_bindings: 008a2f20 NavigatorMoveToRange, 008a30d0 NavigatorAttackMove, 00899d10 JoinFormation, 0089a8b0 SetFireTarget, 008a3cd0 and 008a3b10. They are what usn_2_java.lua's own luaInit calls on 21 of its 32 ships, and every one of them is a host record today.",
+    "mission_script_manager: 00898750 CreateScript, 00888230 and 00929460, so a script object is registered and run by the game's own scheduler rather than called once by the executable.",
+    "ship_ai_state_machine: 00d21598, 009f3dd0 and the rest of the state class family, so 009e1170 runs where the game runs it and the moveto / follow / stop states exist at all.",
+    "entity_command_arms: 00816e30's 00816f7c..00817330, the nine non-movement arms, which is what --order settarget / moveto / follow would need.",
+    "lua_binding_return_values: the first binding whose return value a shipped script consumes stops the script. luaRnd is the one this mission hits; a run that wants luaInit to finish needs those rows to answer."
+  ]
+}

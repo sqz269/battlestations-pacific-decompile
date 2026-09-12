@@ -256,3 +256,12 @@ at the site.
 - `gun[+3B4h]`, the delay-group block Fire decrements, has no reader outside `00730160` here.
 - Planes' bombs and torpedoes: `ShipSetTorpedoStock` and `GetShipTorpedoes` are ship-only by
   name, and no plane path was followed. Contract, unread.
+
+## Corrections from docs/GUN_AIMING.md and docs/WEAPON_DIRECTOR.md (packets cc2_gun_aiming, cc2_weapon_director)
+
+Four readings above are corrected by the packets that read the gun's update and the director:
+the per-barrel record's `dist`/`speed` are a recoil spring, not a projectile speed, and no lead
+computation reads them; `gun+3F0h` is the owning unit, not an ammo provider; `0071DFD0` and
+`0071E0D0` are director methods routing through the endpoint at director+34h, not free functions
+that null-gate the director; and there is one fire-target setter (`00835860`), whose three
+branches are argument shapes, not three setters.
