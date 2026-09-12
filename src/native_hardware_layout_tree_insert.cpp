@@ -1,4 +1,5 @@
 #include "bsp/native_hardware_layout_tree_insert.hpp"
+#include "bsp/detail/native_tree_insert_storage.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native hardware-layout tree insertion requires MSVC Win32.
@@ -9,9 +10,6 @@ namespace {
 
 void* volatile& word(void* storage, std::size_t offset) noexcept {
     return *reinterpret_cast<void* volatile*>(static_cast<unsigned char*>(storage) + offset);
-}
-volatile std::uint32_t& count(void* tree) noexcept {
-    return *reinterpret_cast<volatile std::uint32_t*>(static_cast<unsigned char*>(tree) + 8);
 }
 volatile std::uint8_t& byte(void* storage, std::size_t offset) noexcept {
     return *reinterpret_cast<volatile std::uint8_t*>(static_cast<unsigned char*>(storage) + offset);
@@ -42,31 +40,6 @@ struct CompletedLengthMessage {
     throw NativeHardwareLayoutTreeLengthError{message};
 }
 
-// The inlined rotation at B2F326 rereads the replacement's left after the
-// first store, unlike the out-of-line helper's captured-child sequence.
-void rotate_left_inlined(void* tree, void* node) noexcept {
-    auto* const replacement = right(node);
-    right(node) = left(replacement);
-    auto* const current_child = left(replacement);
-    if (!sentinel(current_child)) {
-        parent(current_child) = node;
-    }
-    parent(replacement) = parent(node);
-    auto* const current_head = head(tree);
-    if (node == parent(current_head)) {
-        parent(current_head) = replacement;
-    } else {
-        auto* const current_parent = parent(node);
-        if (node == left(current_parent)) {
-            left(current_parent) = replacement;
-        } else {
-            right(current_parent) = replacement;
-        }
-    }
-    left(replacement) = node;
-    parent(node) = replacement;
-}
-
 void publish_insert_result(NativeHardwareLayoutTreeInsertResult* output,
     void* owner, void* node, std::uint8_t inserted) noexcept {
     word(output, 4) = node;
@@ -91,43 +64,8 @@ NativeHardwareLayoutTreeLengthError::~NativeHardwareLayoutTreeLengthError() noex
 
 void decrement_native_hardware_layout_iterator_00b20d30(
     NativeHardwareLayoutTreeIterator& iterator, const SingletonLifetimeCallbacks& callbacks) {
-    if (word(&iterator, 0) == nullptr) {
-        invalid(callbacks);
-    }
-    auto* node = word(&iterator, 4);
-    if (sentinel(node)) {
-        node = right(node);
-        word(&iterator, 4) = node;
-        if (sentinel(node)) {
-            invalid(callbacks);
-        }
-        return;
-    }
-    auto* child = left(node);
-    if (!sentinel(child)) {
-        auto* next = right(child);
-        while (!sentinel(next)) {
-            child = next;
-            next = right(child);
-        }
-        word(&iterator, 4) = child;
-        return;
-    }
-    auto* ancestor = parent(node);
-    while (!sentinel(ancestor)) {
-        auto* const current = word(&iterator, 4);
-        if (current != left(ancestor)) {
-            break;
-        }
-        word(&iterator, 4) = ancestor;
-        ancestor = parent(ancestor);
-    }
-    node = word(&iterator, 4);
-    if (sentinel(node)) {
-        invalid(callbacks);
-        return;
-    }
-    word(&iterator, 4) = ancestor;
+    detail::decrement_tree_iterator<detail::TreeInsertAccess<0x24, 0x25>>(
+        &iterator, [&callbacks] { invalid(callbacks); });
 }
 
 void* initialize_native_hardware_layout_node_00b28370(
@@ -156,72 +94,11 @@ void* allocate_native_hardware_layout_node_00b29cd0(
 NativeHardwareLayoutTreeIterator* link_native_hardware_layout_node_00b2f1b0(
     void* tree, NativeHardwareLayoutTreeIterator* output,
     std::uint8_t insert_left, void* parent_node, const void* pair) {
-    if (count(tree) >= 0x0aaaaaa9u) {
-        throw_length_error();
-    }
-    auto* const allocated_head = head(tree);
-    auto* const node = allocate_native_hardware_layout_node_00b29cd0(
-        allocated_head, parent_node, allocated_head, pair, 0);
-    auto* const current_head = head(tree);
-    count(tree) = count(tree) + 1u;
-    if (parent_node == current_head) {
-        parent(current_head) = node;
-        left(head(tree)) = node;
-        right(head(tree)) = node;
-    } else if (insert_left != 0) {
-        left(parent_node) = node;
-        auto* const current = head(tree);
-        if (parent_node == left(current)) {
-            left(current) = node;
-        }
-    } else {
-        right(parent_node) = node;
-        auto* const current = head(tree);
-        if (parent_node == right(current)) {
-            right(current) = node;
-        }
-    }
-    auto* repair = node;
-    while (color(parent(repair)) == 0) {
-        auto* const direct_parent = parent(repair);
-        auto* const grandparent = parent(direct_parent);
-        if (direct_parent == left(grandparent)) {
-            auto* const uncle = right(grandparent);
-            if (color(uncle) == 0) {
-                color(direct_parent) = 1;
-                color(uncle) = 1;
-                color(parent(parent(repair))) = 0;
-                repair = parent(parent(repair));
-            } else {
-                if (repair == right(direct_parent)) {
-                    repair = direct_parent;
-                    rotate_native_hardware_layout_left_00b22bd0(tree, repair);
-                }
-                color(parent(repair)) = 1;
-                color(parent(parent(repair))) = 0;
-                rotate_native_hardware_layout_right_00b20910(tree, parent(parent(repair)));
-            }
-        } else {
-            auto* const uncle = left(grandparent);
-            if (color(uncle) == 0) {
-                color(direct_parent) = 1;
-                color(uncle) = 1;
-                color(parent(parent(repair))) = 0;
-                repair = parent(parent(repair));
-            } else {
-                if (repair == left(direct_parent)) {
-                    repair = direct_parent;
-                    rotate_native_hardware_layout_right_00b20910(tree, repair);
-                }
-                color(parent(repair)) = 1;
-                color(parent(parent(repair))) = 0;
-                rotate_left_inlined(tree, parent(parent(repair)));
-            }
-        }
-    }
-    color(parent(head(tree))) = 1;
-    word(output, 4) = node;
-    word(output, 0) = tree;
+    detail::link_tree_node<detail::TreeInsertAccess<0x24, 0x25>>(
+        tree, output, insert_left, parent_node, pair, 0x0aaaaaa9u,
+        allocate_native_hardware_layout_node_00b29cd0,
+        rotate_native_hardware_layout_left_00b22bd0,
+        rotate_native_hardware_layout_right_00b20910, throw_length_error);
     return output;
 }
 

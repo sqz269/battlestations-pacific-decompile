@@ -1,0 +1,489 @@
+{
+  "packet": "orch4_native_input_deadline_map_storage_ag",
+  "status": "compatible_source_storage_layer_verified_hinted_subscript_remaining",
+  "baseline_commit": "195722afcc611187182bae5bd4b41fc7b55bf1b8",
+  "source": [
+    "include/bsp/detail/native_tree_insert_storage.hpp",
+    "include/bsp/native_input_deadline_map_storage.hpp",
+    "src/native_input_deadline_map_storage.cpp",
+    "src/native_hardware_layout_tree_insert.cpp"
+  ],
+  "document": "docs/NATIVE_INPUT_DEADLINE_MAP_STORAGE.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py verifies each live analysis batch; complete policy-comparison spans match disk/live"
+  },
+  "ghidra_mutations": false,
+  "native_records_added": false,
+  "scope": "Narrow parameterized extraction of existing source mechanics; no new STL port or original library name/ABI claim. Existing hardware source entrypoints preserved.",
+  "functions": [
+    {
+      "address": "00b20d30",
+      "source_entry": "decrement_native_hardware_layout_iterator_00b20d30",
+      "coverage": "existing complete source contract preserved through parameterized nil-offset extraction",
+      "native_abi": "ECXiterator; no stackargs; RET or tailreturninginvalidhandler",
+      "end_inclusive": "00b20db8",
+      "end_exclusive": "00b20db9",
+      "last_instruction": "00b20db8",
+      "last_instruction_length": 1
+    },
+    {
+      "address": "00b2f1b0",
+      "source_entry": "link_native_hardware_layout_node_00b2f1b0",
+      "coverage": "existing complete source contract preserved through parameterized layout/allocation/countlimit extraction",
+      "native_abi": "ECXtree; stackoutput/leftbyte/parent/pair; EAXoutput; RET10h",
+      "end_inclusive": "00b2f39b",
+      "end_exclusive": "00b2f39c",
+      "last_instruction": "00b2f399",
+      "last_instruction_length": 3
+    }
+  ],
+  "source_storage_contracts": [
+    {
+      "source_entry": "allocate_input_deadline_map_node",
+      "native_evidence": "004c27e0",
+      "coverage": "18h scalar node allocation/paircopy over evaluatedsourcearguments, no originalstackaliasABI",
+      "policy": "linksleft/right/parent; currentpairkey then mappedDWORD afterallocation; color/nil; paddingpreserved"
+    },
+    {
+      "source_entry": "decrement_input_deadline_map_iterator",
+      "native_evidence": "004b7520",
+      "coverage": "existing predecessor mechanics specializedtonil15, realreturningCRT invalidservice"
+    },
+    {
+      "source_entry": "equal_input_deadline_map_iterators",
+      "native_evidence": "004b5ac0",
+      "coverage": "rawcheckediterator ownercapture and nodecompare after realvalidation; not originalSTLentry"
+    },
+    {
+      "source_entry": "link_input_deadline_map_node",
+      "native_evidence": "004cf010",
+      "coverage": "existing link/rebalance mechanics specialized18h/+14,+15/limit1FFFFFFE; callerselectsvalidsite; no comparator or duplicatehandling"
+    }
+  ],
+  "native_call_sites": [
+    {
+      "function": "00b20d30",
+      "address": "00b20d38",
+      "native": "00bf6713"
+    },
+    {
+      "function": "00b20d30",
+      "address": "00b20d53",
+      "native": "00bf6713",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00b20d30",
+      "address": "00b20daf",
+      "native": "00bf6713",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00b2f1b0",
+      "address": "00b2f1f3",
+      "native": "00408720"
+    },
+    {
+      "function": "00b2f1b0",
+      "address": "00b2f205",
+      "native": "00411700"
+    },
+    {
+      "function": "00b2f1b0",
+      "address": "00b2f21c",
+      "native": "00bf6885"
+    },
+    {
+      "function": "00b2f1b0",
+      "address": "00b2f234",
+      "native": "00b29cd0"
+    },
+    {
+      "function": "00b2f1b0",
+      "address": "00b2f2c5",
+      "native": "00b22bd0"
+    },
+    {
+      "function": "00b2f1b0",
+      "address": "00b2f2e3",
+      "native": "00b20910"
+    },
+    {
+      "function": "00b2f1b0",
+      "address": "00b2f311",
+      "native": "00b20910"
+    },
+    {
+      "function": "004b7520",
+      "address": "004b7528",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004b7520",
+      "address": "004b7543",
+      "native": "00bf6713",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "004b7520",
+      "address": "004b759f",
+      "native": "00bf6713",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "004cf010",
+      "address": "004cf053",
+      "native": "00408720"
+    },
+    {
+      "function": "004cf010",
+      "address": "004cf065",
+      "native": "00411700"
+    },
+    {
+      "function": "004cf010",
+      "address": "004cf07c",
+      "native": "00bf6885"
+    },
+    {
+      "function": "004cf010",
+      "address": "004cf094",
+      "native": "004c27e0"
+    },
+    {
+      "function": "004cf010",
+      "address": "004cf125",
+      "native": "004bdd00"
+    },
+    {
+      "function": "004cf010",
+      "address": "004cf143",
+      "native": "004bdd50"
+    },
+    {
+      "function": "004cf010",
+      "address": "004cf171",
+      "native": "004bdd50"
+    },
+    {
+      "function": "004c27e0",
+      "address": "004c27e2",
+      "native": "00bf681b"
+    },
+    {
+      "function": "004b5ac0",
+      "address": "004b5ad2",
+      "native": "00bf6713"
+    }
+  ],
+  "extraction_proof": [
+    {
+      "deadline_contract": "004b7520",
+      "reused_hardware_body": "00b20d30",
+      "bytes": 137,
+      "instructions": 48,
+      "disk_live_equal": true,
+      "exact_after_documented_policy_and_transfer_substitutions": true,
+      "policy_changes": [
+        {
+          "deadline_site": "004b7530",
+          "hardware_site": "00b20d40",
+          "kind": "color/nil field policy",
+          "deadline_offset": 21,
+          "hardware_offset": 37
+        },
+        {
+          "deadline_site": "004b753c",
+          "hardware_site": "00b20d4c",
+          "kind": "color/nil field policy",
+          "deadline_offset": 21,
+          "hardware_offset": 37
+        },
+        {
+          "deadline_site": "004b754a",
+          "hardware_site": "00b20d5a",
+          "kind": "color/nil field policy",
+          "deadline_offset": 21,
+          "hardware_offset": 37
+        },
+        {
+          "deadline_site": "004b7553",
+          "hardware_site": "00b20d63",
+          "kind": "color/nil field policy",
+          "deadline_offset": 21,
+          "hardware_offset": 37
+        },
+        {
+          "deadline_site": "004b7565",
+          "hardware_site": "00b20d75",
+          "kind": "color/nil field policy",
+          "deadline_offset": 21,
+          "hardware_offset": 37
+        },
+        {
+          "deadline_site": "004b7573",
+          "hardware_site": "00b20d83",
+          "kind": "color/nil field policy",
+          "deadline_offset": 21,
+          "hardware_offset": 37
+        },
+        {
+          "deadline_site": "004b758f",
+          "hardware_site": "00b20d9f",
+          "kind": "color/nil field policy",
+          "deadline_offset": 21,
+          "hardware_offset": 37
+        },
+        {
+          "deadline_site": "004b7598",
+          "hardware_site": "00b20da8",
+          "kind": "color/nil field policy",
+          "deadline_offset": 21,
+          "hardware_offset": 37
+        }
+      ],
+      "deadline_sha256": "287713b4385fb67ae32ca312f1ed93dfa6f2bfd1a40363e49ed8869c997c85d4",
+      "hardware_sha256": "267eb4535b6833c506f6ad22ad8105b14c1d7f4bf9aaf0f402635ac88d4751bf"
+    },
+    {
+      "deadline_contract": "004cf010",
+      "reused_hardware_body": "00b2f1b0",
+      "bytes": 492,
+      "instructions": 167,
+      "disk_live_equal": true,
+      "exact_after_documented_policy_and_transfer_substitutions": true,
+      "policy_changes": [
+        {
+          "deadline_site": "004cf018",
+          "hardware_site": "00b2f1b8",
+          "kind": "original FH3 handler address; source EH transport remains explicit"
+        },
+        {
+          "deadline_site": "004cf02c",
+          "hardware_site": "00b2f1cc",
+          "kind": "count-limit policy"
+        },
+        {
+          "deadline_site": "004cf0df",
+          "hardware_site": "00b2f27f",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        },
+        {
+          "deadline_site": "004cf0fc",
+          "hardware_site": "00b2f29c",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        },
+        {
+          "deadline_site": "004cf102",
+          "hardware_site": "00b2f2a2",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        },
+        {
+          "deadline_site": "004cf105",
+          "hardware_site": "00b2f2a5",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        },
+        {
+          "deadline_site": "004cf10d",
+          "hardware_site": "00b2f2ad",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        },
+        {
+          "deadline_site": "004cf12d",
+          "hardware_site": "00b2f2cd",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        },
+        {
+          "deadline_site": "004cf136",
+          "hardware_site": "00b2f2d6",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        },
+        {
+          "deadline_site": "004cf14c",
+          "hardware_site": "00b2f2ec",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        },
+        {
+          "deadline_site": "004cf152",
+          "hardware_site": "00b2f2f2",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        },
+        {
+          "deadline_site": "004cf155",
+          "hardware_site": "00b2f2f5",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        },
+        {
+          "deadline_site": "004cf15d",
+          "hardware_site": "00b2f2fd",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        },
+        {
+          "deadline_site": "004cf179",
+          "hardware_site": "00b2f319",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        },
+        {
+          "deadline_site": "004cf182",
+          "hardware_site": "00b2f322",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        },
+        {
+          "deadline_site": "004cf196",
+          "hardware_site": "00b2f336",
+          "kind": "color/nil field policy",
+          "deadline_offset": 21,
+          "hardware_offset": 37
+        },
+        {
+          "deadline_site": "004cf1c8",
+          "hardware_site": "00b2f368",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        },
+        {
+          "deadline_site": "004cf1df",
+          "hardware_site": "00b2f37f",
+          "kind": "color/nil field policy",
+          "deadline_offset": 20,
+          "hardware_offset": 36
+        }
+      ],
+      "deadline_sha256": "9594b8703cec841ef702dc315f8bdf322ab02f2849ba34fdfd112d784cc09c4c",
+      "hardware_sha256": "a2dbecd3c70ec9eb474a9b76d61acaae4d8c0b7a5daa5ed07361d2a28c9b3799"
+    }
+  ],
+  "hardware_policies": {
+    "node_bytes": 40,
+    "color": 36,
+    "nil": 37,
+    "count_limit": "0aaaaaa9",
+    "allocator": "allocate_native_hardware_layout_node_00b29cd0",
+    "rotations": [
+      "rotate_native_hardware_layout_left_00b22bd0",
+      "rotate_native_hardware_layout_right_00b20910"
+    ],
+    "validation": "unchanged borrowedSingletonLifetimeCallbacks",
+    "exception": "unchanged originalprivate owninglength-error service"
+  },
+  "deadline_policies": {
+    "node_bytes": 24,
+    "color": 20,
+    "nil": 21,
+    "count_limit": "1ffffffe",
+    "pair": "signedkeyDWORD0,mappedfloatbitsDWORD4",
+    "rotations": [
+      "rotate_left_native_int_pointer_tree18_0086a2f0",
+      "rotate_right_native_int_pointer_tree18_00869810"
+    ],
+    "validation": "realCRT _invalid_parameter_noinfo,returninghandler supported",
+    "exception": "existing publicNativeHardwareLayoutTreeLengthError28hD69260 with19payloadbytemessage andcompleted-onlytemporarycleanup"
+  },
+  "ownership_order": [
+    "canonical12hheader and18hnodes only; opaqueheaderwordpreserved",
+    "countlimit before allocation; passedhead/parent/pair captured bycaller",
+    "read pairDWORDs after allocation; no floatingconversion/retain",
+    "increment currentcount after allocation; link/rebalance; rootblack",
+    "output nodebeforeowner; source supportsvalidaddressableoutputaliasing",
+    "allocation/validation/length-error exceptions propagate; no rollback or newowners inserted"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Win32Release /W4 /WX exit0",
+    "ctest": "2/2 passed",
+    "native_seeds": "8/8 matched",
+    "hardware_fixture": "existing originalinstruction fixture source/reference copiedunchanged; before andafter archive-linked reruns match8582behaviorwords,56native+56hostoutputstores,5actualCRTthrows each",
+    "deadline_fixture": "one manifestedarchive-only source fixture:6actualnodes andpayloads, signedorder/RBinvariants,1aliasedoutput,2returningCRThandlers,1owninglengtherror,actualrawcleanup",
+    "not_claimed": "native-differentialdeadlineadapter, hinted/uniqueinsertion/subscript, deadlineallocationfaultinjection, SDK/game/application/nativeFH3ABI",
+    "call_audit": "22 address/native rows checked,0failed"
+  },
+  "remaining": [
+    "signedlowerbound/subscript4D6900",
+    "checkedhint insertion4D3CD0 and unique fallback4D1F40",
+    "nativekeycapture/reloads,duplicate/resultpublication andreturningiteratorvalidation composition"
+  ],
+  "no_ghidra_function": [],
+  "excluded_tail_calls": [],
+  "artifacts": [
+    {
+      "path": "include/bsp/detail/native_tree_insert_storage.hpp",
+      "sha256": "333c441ee107b14823773bdda50d2248003dd85e6b9569728ae56368df251a62"
+    },
+    {
+      "path": "include/bsp/native_input_deadline_map_storage.hpp",
+      "sha256": "d0aef5fd7c7d51381e16ab309ebbf74c2279e88c2a4aef28499c2ef6501a5b13"
+    },
+    {
+      "path": "src/native_input_deadline_map_storage.cpp",
+      "sha256": "7c5a17a82ff2ed775ef14bf042e4c13d6f9dc884a7fb6e645bd2b22789f9031c"
+    },
+    {
+      "path": "src/native_hardware_layout_tree_insert.cpp",
+      "sha256": "2f16d8c5752bfac803a30d7400768d2f42f94da7301c13907490055c8f0a7242"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "f956d3b72140169424aa99c47a6ec4f2efc68b2d428b0e87f1f002db8f7fa7bd"
+    },
+    {
+      "path": "local/hardware_insert_storage_regression/fixture.cpp",
+      "sha256": "2f42acc1e4201e6ab41746ae885ed8f42c35d76c20c0b94c0d6fc09c643406b6"
+    },
+    {
+      "path": "local/hardware_insert_storage_regression/reference.hpp",
+      "sha256": "cf9fc3c14f102385cf5e2172152721d7905cccd485a3caebd7b3278feb75869f"
+    },
+    {
+      "path": "local/native_input_deadline_storage_hardware_before.log",
+      "sha256": "db68d793142d34e1b81550b9fe76ab12a502c08808dca80a38a71c1ae03c73d7"
+    },
+    {
+      "path": "local/native_input_deadline_storage_hardware_after.log",
+      "sha256": "db68d793142d34e1b81550b9fe76ab12a502c08808dca80a38a71c1ae03c73d7"
+    },
+    {
+      "path": "local/native_input_deadline_map_storage_ag_probe.log",
+      "sha256": "5e440b102894f2f8a60e699659ba4beb10d656dbcd1ff45c3fd4b1b12484b29d"
+    },
+    {
+      "path": "local/native_input_deadline_map_storage_ag_build.log",
+      "sha256": "1363fd6710a960bee7689c875361512f633e23e290a8f89c78931d8e8e37c848"
+    },
+    {
+      "path": "local/native_input_deadline_map_storage_ag_seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/deadline_storage_extraction_proof.json",
+      "sha256": "0961d4a1c15565752f4abced5939f200f429f376a580bb7aab7827682921f879"
+    }
+  ]
+}
