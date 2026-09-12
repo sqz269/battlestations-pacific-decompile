@@ -63,6 +63,12 @@ NW(-10000,0,10000)/SE(10000,0,-10000). It ran18480 AI steps,240 search ticks,
 no FMOD errors. No corner-detour arm or lateral publish occurred in that run.
 Corner selection/clearance therefore retains the separately documented
 original-byte fixture evidence; gameplay detour behavior is not established.
+After merging current main, a second120-frame run accepted the supported
+`moveto:Airfield2` command for Enterprise, completed238 search ticks and three
+plan swaps, and exited0. It also reached no corner-detour arm. An earlier
+attempt hit another orchestrator's single-instance mutex; that process was
+left untouched. `MoveToPos` is an internal state description, not a recognized
+command token; the successful command uses the registry's `moveto` spelling.
 The differential probes and limitations are in `AVOID_ZONE_CLEARANCE.md`,
 `WORLD_MAP_BOUNDS.md`, and their reports. No new tracked tests were added.
 
