@@ -358,3 +358,20 @@ bytes on disk: `009E3C00-009E432A`, `009D5930-009D5987`, `009D6550-009D65D0`,
 was inside `009ED6B0`, whose stored listing has undisassembled spans past `009EE6E5`; the consumer
 reads quoted here were taken from the stored listing starting at instruction boundaries it does
 carry, never from a `disasm-raw` resync.
+
+## Correction from docs/SHIP_AI_LATERAL_RECORD.md
+
+The follow-up address `009D5920` is the instruction `MOV [ESI+10h],EAX`,
+inside `009D58F0-009D5929`, not a function entry or a record constructor.
+`009D58F0` selects a record through `00417610` at `009D5917`, attaches it at
+`009D5920`, then calls `00423190` at `009D5923`. The producer evidence and
+the record's derived geometry are tracked in `docs/SHIP_AI_LATERAL_RECORD.md`.
+
+## Correction from docs/SHIP_AI_NAV_CIRCLE_TANGENT.md
+
+At `004F3A36`, `COMISS` compares epsilon against the absolute radius gap;
+`004F3A3B JBE` continues for an unordered comparison as well as epsilon less
+than or equal to the gap. The earlier C++ condition
+`!(epsilon <= gap)` incorrectly rejected NaN. The rejection condition is
+`epsilon > gap`. This corrects the helper's unordered branch, without
+establishing bit-for-bit x87 equivalence or original-game validation.

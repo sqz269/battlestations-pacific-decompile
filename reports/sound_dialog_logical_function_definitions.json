@@ -1,0 +1,95 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a77820",
+    "end_address": "00a7782c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a77820",
+    "end_address": "00a7782b",
+    "bytes_disassembled": 12,
+    "message": "Successfully disassembled 12 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a77820",
+    "disassemble_first": false,
+    "name": "BSP_LogicalDialog_PrimaryGain"
+   },
+   "result": {
+    "success": true,
+    "address": "00a77820",
+    "function_name": "BSP_LogicalDialog_PrimaryGain",
+    "entry_point": "00a77820",
+    "body_size": 12,
+    "message": "Function created successfully at 00a77820",
+    "warnings": [
+     "Function name 'BSP_LogicalDialog_PrimaryGain' \u2014 main part 'LogicalDialog_PrimaryGain' is not PascalCase. Expected: LogicaldialogPrimarygain",
+     "Function name 'BSP_LogicalDialog_PrimaryGain' \u2014 main part 'LogicalDialog_PrimaryGain' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_LogicalDialog_PrimaryGain' does not start with a recognized verb. First word 'Logical' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a77820",
+   "end": "00a7782c",
+   "name": "BSP_LogicalDialog_PrimaryGain",
+   "after": "Function: BSP_LogicalDialog_PrimaryGain at 00a77820\nSignature: undefined BSP_LogicalDialog_PrimaryGain(void)\nEntry: 00a77820\nBody: 00a77820 - 00a7782b"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a77830",
+    "end_address": "00a7783c"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a77830",
+    "end_address": "00a7783b",
+    "bytes_disassembled": 12,
+    "message": "Successfully disassembled 12 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a77830",
+    "disassemble_first": false,
+    "name": "BSP_LogicalDialog_SecondaryGain"
+   },
+   "result": {
+    "success": true,
+    "address": "00a77830",
+    "function_name": "BSP_LogicalDialog_SecondaryGain",
+    "entry_point": "00a77830",
+    "body_size": 12,
+    "message": "Function created successfully at 00a77830",
+    "warnings": [
+     "Function name 'BSP_LogicalDialog_SecondaryGain' \u2014 main part 'LogicalDialog_SecondaryGain' is not PascalCase. Expected: LogicaldialogSecondarygain",
+     "Function name 'BSP_LogicalDialog_SecondaryGain' \u2014 main part 'LogicalDialog_SecondaryGain' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_LogicalDialog_SecondaryGain' does not start with a recognized verb. First word 'Logical' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a77830",
+   "end": "00a7783c",
+   "name": "BSP_LogicalDialog_SecondaryGain",
+   "after": "Function: BSP_LogicalDialog_SecondaryGain at 00a77830\nSignature: undefined BSP_LogicalDialog_SecondaryGain(void)\nEntry: 00a77830\nBody: 00a77830 - 00a7783b"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

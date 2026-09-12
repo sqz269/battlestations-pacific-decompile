@@ -1,0 +1,238 @@
+{
+  "packet": "orch6_navigation_geometry_batch",
+  "created_utc": "2026-09-12T17:56:05.693823+00:00",
+  "orchestrator_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912",
+  "branch": "agent/orch6-20260912",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source_integration_commit": "125e104d1a2ada368dd97637e14f2278be30770b",
+  "first_build_input_commit": "125e104d1a2ada368dd97637e14f2278be30770b",
+  "checked_build_commit": "125e104d1a2ada368dd97637e14f2278be30770b",
+  "build_inputs_unchanged_since_checked_commit": true,
+  "workers": [
+    {
+      "id": "orch6_ship_ai_lateral_record",
+      "worker_branch": "agent/orch6-lateral-record",
+      "commit": "81b9407f30929ad5e8b833b57e21eb9a407ee46c",
+      "report": "reports/ship_ai_lateral_record.json",
+      "verified_call_rows": 19,
+      "call_failures": 0,
+      "qualification": "Two routines reconstructed; record constructor and clearance cache retain the report's analysis-only coverage.",
+      "worker_verification": {
+        "report_call_rows": "python tools/verify_report_calls.py reports/ship_ai_lateral_record.json: 19 checked, 0 failed",
+        "build_and_existing_ctest": "./scripts/build.ps1 Release Win32 succeeded; reconstructed_math 1/1 passed (0.05 sec); total CTest0.09sec",
+        "build_log": "local/ship_ai_lateral_record-build.log (ignored local evidence)",
+        "new_tests": 0,
+        "native_differential_fixture": false,
+        "abi_compatible": false,
+        "game_validated": false,
+        "runtime_boundary": "New module is not wired into bsp_game.exe; no frame-behavior claim. Existing executable tables list accessor/cache hosts with zero calls.",
+        "known_limits": [
+          "Current host CRT atan2 behavior is inherited from existing heading helper; legacy diagnostics and exceptional results may differ.",
+          "Valid nonnegative count and valid record pointers are preconditions for the derivation; no zero-edge, count>=3 or self-intersection sanitizer is added.",
+          "00423190 is statically explained, not reconstructed. Complete selected scene-geometry membership remains unresolved.",
+          "Native typed layout verified by compile-time offsets; new whole routines have no native differential fixture or game integration."
+        ]
+      }
+    },
+    {
+      "id": "orch6_ship_ai_circle_tangent",
+      "worker_branch": "agent/orch6-circle-tangent",
+      "commit": "e7b0b1b9d317a0a12f2e3369b65158974783b829",
+      "report": "reports/ship_ai_nav_circle_tangent.json",
+      "verified_call_rows": 18,
+      "call_failures": 0,
+      "qualification": "Three geometry routines reconstructed, two existing projections corrected, one reused; native scratch uncertainty remains explicit.",
+      "worker_verification": {
+        "seed_ranges": "8/8 matched installed image",
+        "report_calls": "18 checked, 0 failed",
+        "build": "MSVC Win32 Release scripts/build.ps1 passed; 2/2 existing CTest checks passed",
+        "focused_probe": "local/run_circle_probe.ps1: 22 checks, 0 failures; /MANIFEST:EMBED; fixture evidence",
+        "game_validated": false,
+        "build_log": "local/circle-build-final.log",
+        "probe_log": "local/circle-probe.log",
+        "probe_source": "local/circle_geometry_probe.cpp",
+        "native_differential_scope": "Existing seed routines only; new geometry is fixture-tested, not native-differential-tested"
+      }
+    },
+    {
+      "id": "orch6_avoid_zone_boundary",
+      "worker_branch": "agent/orch6-avoid-geometry",
+      "commit": "7edb693d0a3270432e494d5104fb34ca4a95cb5e",
+      "report": "reports/avoid_zone_boundary.json",
+      "verified_call_rows": 11,
+      "call_failures": 0,
+      "qualification": "Two control-flow projections through required geometry callees; no executable wiring or native storage adapter.",
+      "worker_verification": {
+        "checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md read once; all ten rules addressed",
+        "callee_before_contract": "All direct callees read whole from pseudocode and assembly; transitive library/math behavior not ported or silently replaced",
+        "boundary_before_attribution": "Live proto on all 10 unique call sites confirms owning body; report checker run required",
+        "all_call_sites": "Live xrefs reports both callers of each owned function; both argument setups read. Every host invocation in the owned kernel appears above",
+        "producer_before_layout": "Producer store evidence above; no new native record layout",
+        "partial_coverage": "Neither owned body partial. Producer/caller context inspection and unimplemented external callees explicitly separate",
+        "runtime_evidence": "No executable wiring: game_hosts_ship_ai.cpp zone_group_for_layer returns0; nearest_zone_boundary logs then returns point. No frame-causation claim or game runtime test",
+        "argument_count": "Owned RET0Ch/RET10h confirms3/4 stack args; 00416F30 RET14h confirms all5 args including ignored edge/endpoint outputs; 00419AB0 RET4 and 004F4B50 RET8 establish hidden register endpoint inputs",
+        "register_provenance": "Whole owned listings filtered for ECX/EBX/ESI/EDI/EBP. Kernel EDI=zone, EBX=query, ESI=normal, EBP=vertex iterator; ECX remains zone at first call, restored0041AF85 then assigned to required locals. Wrapper EBX=query, EDI=group, ESI=zone iterator; reused stack args read as scratch only after spill",
+        "lease_scope": "Only0041AEA0/0041B840 and four new module files claimed; external callees read only; no Ghidra mutation",
+        "report_call_check": "PASS: 11 call rows checked, 0 failed",
+        "build_and_existing_tests": "PASS: ./scripts/build.ps1; 100% tests passed, 0 tests failed out of 1; log local/avoid_zone_boundary_build.log",
+        "fixture": {
+          "source": "local/avoid_zone_boundary_probe.cpp",
+          "command": "./local/run_avoid_zone_boundary_probe.ps1",
+          "worktree": "J:/PROG/battlestations-pacific-decompile-orch6-avoid-geometry",
+          "compile": "cl /nologo /std:c++17 /W4 /WX /fp:strict /EHsc /Iinclude src/avoid_zone_boundary.cpp local/avoid_zone_boundary_probe.cpp /Fe:local/avoid_zone_boundary_probe.exe /Fo:local/ /link /MANIFEST:EMBED",
+          "result": "PASS: point(12,5), square[0,10], slack5, push1 -> (9,5); expanded maxX=15 rejects, clears normal, calls no host, preserves point",
+          "scope": "One synthetic-host fixture; not original-byte differential or installed-game proof. First-tie policy inspected in assembly, not independently executed"
+        }
+      }
+    }
+  ],
+  "verification": {
+    "report_calls": {
+      "checked": 48,
+      "failed": 0,
+      "log": "local/orch6_report_calls.log"
+    },
+    "win32_release_build": "passed",
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "integration_log": "local/orch6_integration.log",
+    "additional_build_log": null,
+    "native_seed_verification": {
+      "status": "passed",
+      "log": "local/seed_verification.log",
+      "scope": "Existing seed ranges only; not whole-image identity or new geometry native differential proof."
+    },
+    "circle_fixture": {
+      "checks": 22,
+      "failed": 0,
+      "command": "./local/run_circle_probe.ps1",
+      "source": "local/circle_geometry_probe.cpp",
+      "log": "local/orch6_circle_probe.log"
+    },
+    "boundary_fixture": {
+      "status": "passed",
+      "command": "./local/run_avoid_zone_boundary_probe.ps1",
+      "source": "local/avoid_zone_boundary_probe.cpp",
+      "log": "local/orch6_boundary_probe.log",
+      "result": "(12,5) -> (9,5), half-open maxX rejection clears direction and preserves query"
+    }
+  },
+  "ghidra": {
+    "workers_read_only": true,
+    "mutation_tool": "tools/ghidra_annotate.py under ghidra_lock",
+    "saved": true,
+    "new_function_definitions_required": [],
+    "annotations": [
+      {
+        "address": "00417610",
+        "before": "FUN_00417610",
+        "after": "BSP_AvoidZone_CornerRecordAtSignedIndex",
+        "readback_matches_report": true
+      },
+      {
+        "address": "0041a200",
+        "before": "FUN_0041a200",
+        "after": "BSP_AvoidZone_DeriveCornerGeometryAndWinding",
+        "readback_matches_report": true
+      },
+      {
+        "address": "0041aea0",
+        "before": "FUN_0041aea0",
+        "after": "BSP_AvoidZone_DistanceAndBoundaryDirection",
+        "readback_matches_report": true
+      },
+      {
+        "address": "0041b840",
+        "before": "BSP_AvoidZoneGroup_NearestBoundaryPoint",
+        "after": "BSP_AvoidZoneGroup_NearestBoundaryPoint",
+        "readback_matches_report": true
+      },
+      {
+        "address": "0041ccd0",
+        "before": "FUN_0041ccd0",
+        "after": "BSP_AvoidZone_ConstructFromScenePath",
+        "readback_matches_report": true
+      },
+      {
+        "address": "00423190",
+        "before": "FUN_00423190",
+        "after": "BSP_AvoidZone_EnsureCornerClearanceScale",
+        "readback_matches_report": true
+      },
+      {
+        "address": "004f3560",
+        "before": "FUN_004f3560",
+        "after": "BSP_Math_RelativeEqualFloat",
+        "readback_matches_report": true
+      },
+      {
+        "address": "004f3970",
+        "before": "BSP_Circle2f_TangentChord",
+        "after": "BSP_Circle2f_TangentChord",
+        "readback_matches_report": true
+      },
+      {
+        "address": "004f4520",
+        "before": "FUN_004f4520",
+        "after": "BSP_Circle2f_IntersectionsByCenters",
+        "readback_matches_report": true
+      },
+      {
+        "address": "004f47b0",
+        "before": "FUN_004f47b0",
+        "after": "BSP_Circle2f_Intersections",
+        "readback_matches_report": true
+      },
+      {
+        "address": "009d58f0",
+        "before": "BSP_ShipAiPathNode_AttachCornerRecord",
+        "after": "BSP_ShipAiPathNode_AttachCornerRecord",
+        "readback_matches_report": true
+      },
+      {
+        "address": "009d6550",
+        "before": "BSP_Circle2f_TangentPointPair",
+        "after": "BSP_Circle2f_TangentPointPair",
+        "readback_matches_report": true
+      },
+      {
+        "address": "009d68b0",
+        "before": "BSP_ShipAi_CircleTangentOrOffsetPoint",
+        "after": "BSP_ShipAi_CircleTangentOrOffsetPoint",
+        "readback_matches_report": true
+      }
+    ],
+    "prior_comments": "local/orch6_annotations_before.json",
+    "readback": "local/orch6_annotations_after.json",
+    "refreshed_exports": [
+      "00417610",
+      "0041a200",
+      "0041aea0",
+      "0041b840",
+      "0041ccd0",
+      "00423190",
+      "004f3560",
+      "004f3970",
+      "004f4520",
+      "004f47b0",
+      "009d58f0",
+      "009d6550",
+      "009d68b0"
+    ],
+    "export_log": "local/orch6_export_refresh.log"
+  },
+  "limits": [
+    "No original installation files modified.",
+    "No original-object ABI compatibility or in-game avoidance validation.",
+    "Native second intersection scratch is explicit; the compatibility default is a defined deviation.",
+    "Boundary routines require external callee bindings; constructor/cache dependency analysis remains bounded."
+  ],
+  "report_sha256": {
+    "reports/ship_ai_lateral_record.json": "8c95728134a6549b69310c6032543675c266176481892ce0178f5baf638d9d6b",
+    "reports/ship_ai_nav_circle_tangent.json": "deb49575fd9815a67958c41d5a27a144efe1a0d8e654d4a330cbb73d8f1eb4bb",
+    "reports/avoid_zone_boundary.json": "45da884f4cc4c59637c4dd5cf088718818fe23e53e7b4e325ce55686800ac3f2"
+  }
+}

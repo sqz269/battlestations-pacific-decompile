@@ -16,6 +16,13 @@ GameSingletonHost::~GameSingletonHost() {
     shutdown();
 }
 
+SoundLifetimeAccess GameSingletonHost::sound_lifetime() noexcept {
+    return SoundLifetimeAccess(manager_publication_01090aa0_);
+}
+void GameSingletonHost::bind_sound_runtime(GameSoundRuntime* runtime) noexcept {
+    deletion_bindings_.sound_runtime = runtime;
+}
+
 void GameSingletonHost::probe_gameplay_effect_memory(const char* label) {
     void* const owner = get_native_gameplay_effect_manager_004c1650(
         manager_publication_01090aa0_, effect_publication_00f87664_);

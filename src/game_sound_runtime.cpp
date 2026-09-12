@@ -8,12 +8,14 @@
 #include <exception>
 #include <filesystem>
 #include <mutex>
+#include <optional>
 #include <stdexcept>
+#include <unordered_set>
 #include <utility>
 
 namespace bsp::game {
 
-struct GameSoundRuntime::Impl final : SoundSystemUpdateHost {
+struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHost {
     static std::atomic<Impl*> callback_owner;
     GameSoundRuntimeServices services;
     GameSoundRuntimeWords words;
@@ -47,8 +49,12 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost {
     VfsSoundConfigurationLuaOwner lua;
     NativeSoundFileContext files;
     NativeSoundFileContext* previous_files{};
-    bool bound{}, attempted{}, running{}, manager_destroyed{}, cleanup_failed{};
+    bool bound{}, attempted{}, running{}, manager_destroyed{}, cache_destroyed{}, cleanup_failed{};
     std::atomic<std::size_t> opens{}, closes{}, reads{}, seeks{};
+    std::atomic<std::size_t> reclaimed_files{};
+    mutable std::mutex file_handles_mutex;
+    std::unordered_set<void*> open_file_handles;
+    std::optional<FmodResult> event_release_result;
     std::mutex file_error_mutex;
     std::exception_ptr file_error;
 
@@ -69,7 +75,7 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost {
           event{instance, library, library, services.crt, words.null_data_00f8bbec.data() + 3, event_virtuals},
           channels(spatial, event), update{*this, library, channels},
           retained(channels, samples, services.alternate_shutdown),
-          shutdown_context{lifetime, retained, update, resources, library, alternate, services.strings},
+          shutdown_context{lifetime, retained, update, resources, *this, alternate, services.strings},
           clock(services.clock), lua(services.script_files, services.script_runtime, services.script_globals),
           files{services.strings, this, resolve_file, open_file} {
         if (!services.crt.dispatch_bypass_0109dd78 || !services.crt.except_00c27489)
@@ -84,6 +90,42 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost {
         if (!services.update_alternate)
             throw std::logic_error("Published alternate sound owner has no update service");
         services.update_alternate(object, dt);
+    }
+    FmodResult dsp_remove(void* dsp) override { return library.dsp_remove(dsp); }
+    FmodResult dsp_release(void* dsp) override { return library.dsp_release(dsp); }
+    FmodResult channel_group_release(void* group) override { return library.channel_group_release(group); }
+    void memory_get_stats(std::int32_t* current, std::int32_t* maximum) override {
+        library.memory_get_stats(current, maximum);
+    }
+    FmodResult release_event_system(void* event_handle) override {
+        const auto result = library.release_event_system(event_handle);
+        event_release_result = result;
+        return result;
+    }
+    void reclaim_closed_system_files() {
+        // Host-only ownership, after successful SDK shutdown and its final
+        // callbacks. Native EOF can destroy its stream without Sound::release;
+        // this installed SDK then drops that sound without invoking file Close.
+        // These pointers are our callable VFS adapters, NEVER FMOD Sound handles.
+        // Even with no open files, a failed release cannot establish that the
+        // SDK has stopped using its library or callbacks. Caller retains the
+        // binding and takes the existing failed-teardown exception path.
+        if (event_release_result && *event_release_result != FmodResult::ok)
+            throw std::logic_error("FMOD shutdown failed; its library and callback lifetime must be retained");
+        for (;;) {
+            void* handle;
+            {
+                std::lock_guard<std::mutex> lock(file_handles_mutex);
+                if (open_file_handles.empty()) return;
+                if (!event_release_result)
+                    throw std::logic_error("Cannot reclaim VFS adapters before successful FMOD shutdown");
+                const auto entry = open_file_handles.begin();
+                handle = *entry;
+                open_file_handles.erase(entry);
+            }
+            sound_file_close_00a7b750(handle, nullptr);
+            ++reclaimed_files;
+        }
     }
     static bool resolve_file(void* raw, NativeString& name) {
         return static_cast<Impl*>(raw)->samples.resolve_name_00bdf4c0(name);
@@ -107,15 +149,35 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost {
         if (!self) { *handle = nullptr; return 0x17; }
         try {
             const auto result = sound_file_open_00a7d410(name, unicode, size, handle, userdata);
-            if (!result) ++self->opens;
+            if (!result) {
+                try {
+                    std::lock_guard<std::mutex> lock(self->file_handles_mutex);
+                    self->open_file_handles.insert(*handle);
+                } catch (...) {
+                    // The source callback itself cannot accept ownership if
+                    // its bookkeeping allocation fails. SDK sees failed open.
+                    sound_file_close_00a7b750(*handle, nullptr); // Native userdata is unwritten and ignored.
+                    *handle = nullptr;
+                    throw;
+                }
+                ++self->opens;
+            }
             return result;
         } catch (...) { self->remember_file_error(); *handle = nullptr; return 0x17; }
     }
     static std::int32_t __stdcall close_callback(void* handle, void* userdata) noexcept {
         auto* self = callback_owner.load();
         try {
+            if (self && handle) {
+                // Detach before native close frees the adapter. A concurrent
+                // Open may reuse that address as soon as it has been freed.
+                std::lock_guard<std::mutex> lock(self->file_handles_mutex);
+                self->open_file_handles.erase(handle);
+            }
             const auto result = sound_file_close_00a7b750(handle, userdata);
-            if (self && handle && !result) ++self->closes;
+            if (self && handle && !result) {
+                ++self->closes;
+            }
             return result;
         } catch (...) { if (self) self->remember_file_error(); return 0x17; }
     }
@@ -167,12 +229,14 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost {
         if (flags & 1u) manager.release();
         try {
             scalar_delete_sound_system_00a883b0(object, static_cast<std::uint8_t>(flags), shutdown_context);
+            reclaim_closed_system_files();
         } catch (...) { cleanup_failed = true; throw; }
         unbind_files();
     }
     void destroy_cache(std::uint32_t flags) {
-        if (!cache || !current_cache) return;
+        if (!cache || cache_destroyed) return;
         auto* object = cache.get();
+        cache_destroyed = true;
         if (flags & 1u) cache.release();
         scalar_delete_sound_sample_cache_00a88750(object, flags, samples.sample_cache_context(), lifetime);
     }
@@ -215,7 +279,8 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost {
                 resources.destroy_owner(*manager->resource_owner_54);
                 manager->resource_owner_54.destroy_storage_preserving_word();
             }
-            if (system.event_system) library.release_event_system(system.event_system);
+            if (system.event_system) release_event_system(system.event_system);
+            reclaim_closed_system_files();
         } catch (...) { current_owner = nullptr; throw; }
         current_owner = nullptr;
         destroy_cache(0);
@@ -282,6 +347,8 @@ GameSoundRuntimeSummary GameSoundRuntime::summary() const noexcept {
     for (const auto& call : self.library.calls()) if (call.result != FmodResult::ok) ++value.fmod_errors;
     value.file_opens = self.opens; value.file_closes = self.closes;
     value.file_reads = self.reads; value.file_seeks = self.seeks;
+    value.file_reclaims = self.reclaimed_files;
+    { std::lock_guard<std::mutex> lock(self.file_handles_mutex); value.file_handles_pending = self.open_file_handles.size(); }
     return value;
 }
 SoundSystemOwner& GameSoundRuntime::owner() {
@@ -299,13 +366,16 @@ SoundEventQueryLockBindings& GameSoundRuntime::event_query_lifetime() noexcept {
 GameSoundRuntimeWords& GameSoundRuntime::words() noexcept { return impl_->words; }
 void* volatile& GameSoundRuntime::current_alternate() noexcept { return impl_->alternate; }
 bool GameSoundRuntime::owns_registered(void* object) const noexcept {
-    return object && (object == impl_->current_owner || object == impl_->current_cache || object == impl_->current_query_lock);
+    return object && ((!impl_->manager_destroyed && object == impl_->manager.get()) ||
+        (!impl_->cache_destroyed && object == impl_->cache.get()) ||
+        object == impl_->current_query_lock || object == impl_->alternate);
 }
 void GameSoundRuntime::delete_registered(void* object, std::uint32_t flags) noexcept {
     try {
-        if (object && object == impl_->current_owner) impl_->destroy_manager(flags);
-        else if (object && object == impl_->current_cache) impl_->destroy_cache(flags);
+        if (object && !impl_->manager_destroyed && object == impl_->manager.get()) impl_->destroy_manager(flags);
+        else if (object && !impl_->cache_destroyed && object == impl_->cache.get()) impl_->destroy_cache(flags);
         else if (object && object == impl_->current_query_lock) impl_->destroy_query(flags);
+        else if (object && object == impl_->alternate) impl_->services.alternate_shutdown.delete_alternate_slot00(object, flags);
         else throw std::logic_error("Foreign singleton passed to game sound deleting dispatcher");
     } catch (...) { std::terminate(); }
 }

@@ -316,3 +316,20 @@ none. Every routine read for this packet starts a Ghidra function: `009EC680`
 | `ship_ai_path_follower` | `009E3C00`, `009D5930`, `009D6550`, `009D9E50` | Unchanged, plus one question this packet could not answer: what advances `plan+34h`. Nothing in the search does, and both walks read it as a cursor |
 | `ship_ai_owner_seed` | `009E3980+vtable50` | Unchanged, and now with a consumer: `009EC280` compares node `+48h` against the bearing to each child, so the slot returns a heading in the `00414EB0` convention |
 | `game_settings_turn_ramp` | `settings+6F0h`, `+6F4h`, `+6F8h` | The three floats `009EC310`, `009EC323` and `009EC336` read. Their producer is the settings loader, not read here, so the ramp's units are inferred from `00419010`'s x being an absolute angle |
+
+## Correction from docs/SHIP_AI_LATERAL_RECORD.md
+
+`00417610` selects an existing corner record; its `IDIV` is at `00417619`,
+while `0041761B` loads the array pointer. The quotient truncates toward zero,
+but the signed remainder can remain negative and index before the array.
+There is no positive-modulo correction. `009D5920` is the attachment store
+inside `009D58F0`, before the metric-refresh call at `009D5923`; the existing
+C++ attachment routine already has that order.
+
+The nine-float record's producer is now documented: `0041CCD0` initializes
+positions and the cached scalar, and `0041A200` derives outgoing direction,
+edge length, signed turn and the normalized right normal of incoming plus
+outgoing directions. `00423190` supplies the cached clearance scale at
+`+20h`; its selected-geometry and lifetime dependencies remain separate.
+See the new document's coverage table for reconstructed versus supporting
+analysis boundaries.

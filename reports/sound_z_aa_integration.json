@@ -1,0 +1,141 @@
+{
+  "packet": "orch4_sound_z_aa_integration",
+  "utc": "2026-09-12T17:57:39.140680+00:00",
+  "source_commit": "bc82c02b844f2dacec795d67ac7d89057949a905",
+  "new_native_functions": 28,
+  "direct_call_rows": 194,
+  "direct_call_failures": 0,
+  "source_packets": [
+    "sound_dialog_logical",
+    "sound_stream_owner",
+    "sound_stream_runtime",
+    "interface_sound_listener"
+  ],
+  "native_annotations": "28 saved/readback native prototypes;3 previously missing starts defined. Owner A87390/A86990 remaining stored-body truncation is documented in sound_stream_owner_flow.json.",
+  "validation": {
+    "win32_release": true,
+    "existing_ctests": 2,
+    "installed_facade_lifecycle_cases": 3,
+    "table_failure_case": true,
+    "semantic_lifetime_cases": 5,
+    "raw_lifetime_cases": 5,
+    "byte_export_calls": 2,
+    "byte_export_result_each": 36,
+    "ownership": {
+      "stop_restart": {
+        "opens": 2,
+        "sdk_closes": 2,
+        "host_reclaims": 0,
+        "pending": 0
+      },
+      "raw_manager_drain": {
+        "opens": 2,
+        "sdk_closes": 2,
+        "host_reclaims": 0,
+        "pending": 0
+      },
+      "eof": {
+        "opens": 2,
+        "sdk_closes": 1,
+        "host_reclaims": 1,
+        "pending": 0
+      },
+      "strings_after_each": 0,
+      "fmod_errors_after_each": 0
+    },
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "game_installation_modified": false,
+    "listener_integrated_probe": {
+      "passed": true,
+      "library": "build/win32/Release/bsp_core.lib",
+      "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-sound-stream-owner-z\\local\\interface_listener_primary_integrated_20260912_105628493.log",
+      "sha256": "ce0e2d05d2a9a05be606bc371a339ba3697af395aa11002e8d39bdfbbb41b218",
+      "coverage": "Callback reloads, returned-pointer copies, native boolean scaling, raw camera refresh and fallback bits; compiled only existing probe against integrated library."
+    }
+  },
+  "logs": [
+    {
+      "path": "local/sound_z_aa_integrated_build.log",
+      "sha256": "1324ac82edd808d741295eef4263cdddfc49fc87b9c8b925b998560a9516aa08"
+    },
+    {
+      "path": "local/sound_z_aa_facade_final.log",
+      "sha256": "fb19cc17f45b86db24bcf716aeec911cd241628bafbc5e8e85ffa8e587abfd76"
+    },
+    {
+      "path": "local/sound_z_aa_table_final.log",
+      "sha256": "bb10cb98a77c086fea0d38c27c5a548439e02a34bd9bf808c5563139ee1e02cf"
+    },
+    {
+      "path": "local/sound_semantic_host_eof_z_validation.log",
+      "sha256": "933d8459dc69b3af88f19039b5ed8a10d4c8befe16305a4172d0454ceabcf685"
+    },
+    {
+      "path": "local/sound_raw_host_eof_z_validation.log",
+      "sha256": "d65039ba7af104b11836837e4860394cfe3e1067db7cbbdb8993491adb3765fe"
+    },
+    {
+      "path": "local/sound_byte_host_eof_z_validation.log",
+      "sha256": "587fd6e09815c40077568bb95a0bb9514e1ba089e20169678913743afeb4d279"
+    }
+  ],
+  "promotion": {
+    "state": "exact_source_commit_promoted_and_validated",
+    "source_commit": "0b798be8d08e64f4cc9d76c95c3788a30290f374",
+    "source_tree": "79f6388df8fde499897954cf97b1b39e9b94c8f3",
+    "utc": "2026-09-12T18:03:12.911979+00:00",
+    "win32_build_and_existing_ctests_passed": true,
+    "installed_facade_cases_passed": 3,
+    "table_failure_case_passed": true,
+    "semantic_cases_passed": 5,
+    "raw_lifetime_cases_passed": 5,
+    "byte_output_calls_passed": 2,
+    "listener_probe_passed": true,
+    "logs": [
+      {
+        "path": "local/sound_z_aa_promote.log",
+        "sha256": "7e4204a06f6c05f8b933dd00de479d004de5d2a0e001cf637f3f4986a35e6d8b"
+      },
+      {
+        "path": "local/sound_z_aa_promoted_facade.log",
+        "sha256": "f91da8b03f9f52b7cfa69b64bb708992acde31c88dd781bbdfcff1689dc71b8e"
+      },
+      {
+        "path": "local/sound_z_aa_promoted_table.log",
+        "sha256": "bb10cb98a77c086fea0d38c27c5a548439e02a34bd9bf808c5563139ee1e02cf"
+      },
+      {
+        "path": "local/sound_z_aa_promoted_semantic.log",
+        "sha256": "933d8459dc69b3af88f19039b5ed8a10d4c8befe16305a4172d0454ceabcf685"
+      },
+      {
+        "path": "local/sound_z_aa_promoted_raw.log",
+        "sha256": "d65039ba7af104b11836837e4860394cfe3e1067db7cbbdb8993491adb3765fe"
+      },
+      {
+        "path": "local/sound_z_aa_promoted_bytes.log",
+        "sha256": "587fd6e09815c40077568bb95a0bb9514e1ba089e20169678913743afeb4d279"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-sound-stream-owner-z\\local\\interface_listener_primary_final_0b798be8_20260912_110053534.log",
+        "sha256": "ce0e2d05d2a9a05be606bc371a339ba3697af395aa11002e8d39bdfbbb41b218"
+      }
+    ],
+    "library": {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "3302819378ef326845056c6cf4816c88b3c055a29210bb857847fccce871dfa8"
+    },
+    "annotation": "38 new or extended reviewed names applied by integration and project saved; prior annotation receipt in main local/ghidra-annotations-20260912T175948Z.json; index refreshed",
+    "qualification": "This receipt records validation of the named promoted source commit. Later metadata-only commits do not change those source artifacts. No drop-in ABI or game/audio validation claimed."
+  },
+  "remaining": [
+    "Actual game+1ED4/+19FC publication and actual interface+4; semantic owner objects cannot be passed as raw storage",
+    "Current dynamic virtual slots120/34 for published objects; no guessed unit subtype, callback implementation, null-success dispatch or extra identity fallback",
+    "Shared PE constants/default velocity words and concrete CameraAxesCrtAccess kept alive through each call",
+    "Application render/load call-site composition and gameplay validation remain outside this packet",
+    "GameStartupHost phase5, real load/platform services and shutdown order",
+    "Title music request construction",
+    "Runnable game/audio validation"
+  ]
+}

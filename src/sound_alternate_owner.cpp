@@ -20,18 +20,7 @@ template<class T> void write(void* p, std::size_t n, T v) noexcept {
     std::memcpy(static_cast<std::byte*>(p) + n, &v, sizeof v);
 }
 void* at(void* p, std::size_t n) noexcept { return static_cast<std::byte*>(p) + n; }
-class ManagerSection {
-public:
-    explicit ManagerSection(SingletonLifetimeDomain& domain)
-        : section_(domain.get_manager_00415350()->system_owner().section_10) {
-        if (section_) { singleton_enter_critical_section(*section_); ++section_->recursion_18; }
-    }
-    ~ManagerSection() {
-        if (section_) { --section_->recursion_18; singleton_leave_critical_section(*section_); }
-    }
-private:
-    SystemSingletonCriticalSection* section_;
-};
+using ManagerSection = CapturedSoundLifetimeSection;
 void* allocate(std::uint32_t n) {
     return singleton_lifetime_allocate({SingletonAllocationKind::object, n, n});
 }
@@ -86,7 +75,7 @@ NativeSoundAlternateOwnerStorage& construct_sound_alternate_base_00a778d0(
     try {
         ManagerSection section(b.domain);
         b.global_00f8bbcc = &owner;
-        auto* manager = b.domain.get_manager_00415350();
+        auto manager = b.domain.get_manager_00415350();
         manager->register_object(b.global_00f8bbcc);
     } catch (...) {
         // DEAB2C state1 releases the captured guard, then state0/412430
@@ -100,7 +89,7 @@ void destroy_sound_alternate_base_00a77970(
     write<std::uint32_t>(&owner, 0, 0x00d58e58);
     try {
         ManagerSection section(b.domain);
-        auto* manager = b.domain.get_manager_00415350();
+        auto manager = b.domain.get_manager_00415350();
         manager->unregister_object(b.global_00f8bbcc);
         b.global_00f8bbcc = nullptr;
     } catch (...) {

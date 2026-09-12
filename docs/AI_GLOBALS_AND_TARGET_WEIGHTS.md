@@ -503,3 +503,9 @@ site runs.
   Their shape is visible (two `00E0CD80` name walks and a `00A32500` insert at `00A36FD5`) but the
   stack record they assemble was not transcribed field by field.
 - `00A2EEE0`'s body, and the four unread `LuaObject` setters named in section 5.
+
+## Correction from docs/AI_GROUP_THINK.md (packet cc2_ai_group_think)
+
+- **Was:** 00A2EEE0 is the AIGetGroupInfo fill routine, body not read (listed as a routine of that packet)
+  **Is:** confirmed, and confirmed not to be a think: its only caller is 00A378C0 and its call set is Lua-object setters plus string builders, with no call site on any fixed-step path
+  **Evidence:** ghidra xrefs 00A2EEE0 returns BSP_LuaBinding_AIGetGroupInfo @ 00A378C0 only. Its calls include 00B675D0, 00B67580, 00B67700, 00B67800, 00B666C0, 00B673A0, 0041E870, 0041DD40, 00BF7680. The fixed-step path is 00A32D50 -> 00A2E720 and 00A182C0.

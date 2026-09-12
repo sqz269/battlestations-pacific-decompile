@@ -5,6 +5,7 @@
 #include "bsp/director_update_arms.hpp"
 #include "bsp/plane_squadron.hpp"
 #include "bsp/app_bootstrap.hpp"
+#include "bsp/avoid_zone_geometry.hpp"
 #include "bsp/award_grant.hpp"
 #include "bsp/entity_event_queues.hpp"
 #include "bsp/entity_lifecycle_tails.hpp"
@@ -3049,6 +3050,55 @@ int main() {
             "007BB6E0: q >= 0FFh gives 1.0f and q <= 1 gives -1.0f, the two saturations");
         check(below_step == 1.0f / bsp::kPilotQuantizeScale,
             "007BB6E0: the 128.5 bias snaps a sub-step command up to exactly one step, 1/127");
+    }
+
+    {
+        // 004179D0 and 00422500, the two halves of the search's zone side. The
+        // risk worth one case is that the two ends of the native's walk are
+        // easy to swap: 004179D0 reports the crossing nearest its FIRST point
+        // argument (00416DD0 moves the running point toward it), and 00422500's
+        // backward index names the edge that leaves the corner it published,
+        // one below that corner's own index, while the forward index is the
+        // corner's own. A square and a segment straight through it pins both.
+        std::vector<std::array<float, 3>> outline = {
+            {{-100.0f, 0.0f, -100.0f}}, {{100.0f, 0.0f, -100.0f}},
+            {{100.0f, 0.0f, 100.0f}}, {{-100.0f, 0.0f, 100.0f}}};
+        const AvoidZonePolygon square = avoid_zone_from_path_points(outline, 0);
+        float turn_sum = 0.0f;
+        for (const AvoidZoneCorner& corner : square.corners) turn_sum += corner.turn_angle;
+
+        check(square.corners.size() == 4, "0041CCD0: four path points more than five units apart");
+        check(std::fabs(turn_sum + kAvoidZoneTwoPi) < 1e-4f,
+            "0041A200: the finished winding sums to -2*pi, so 0041A47E did not reverse it");
+
+        AvoidZoneTable table;
+        const std::int32_t group = avoid_zone_group_find_or_create_00417ca0(table, 0);
+        table.groups[static_cast<std::size_t>(group)].zones.push_back(square);
+
+        const std::array<float, 2> west = {{-500.0f, 0.0f}};
+        const std::array<float, 2> east = {{500.0f, 0.0f}};
+        const AvoidZoneGroupHit hit = avoid_zone_group_segment_hit_004179d0(
+            table.groups[static_cast<std::size_t>(group)], west, east);
+
+        check(hit.hit && hit.edge_index == 3,
+            "004179D0: the crossing nearest the first point is the west edge, corner 3 to 0");
+        check(std::fabs(hit.point[0] + 100.0f) < 1e-3f && std::fabs(hit.point[1]) < 1e-3f,
+            "00416DD0: the reported point is that crossing, not the far one at x = +100");
+
+        const AvoidZoneTangentCorners detour =
+            avoid_zone_tangent_corners_00422500(table, square, east, hit.edge_index, -1, 0, 30.0f);
+        const float offset = 100.0f + 30.0f * 0.70710678f;
+
+        check(detour.has_forward && detour.has_backward && detour.side_code == 0,
+            "00422500: both passes find a corner, so the side code is 0");
+        check(std::fabs(detour.forward_point[0] - offset) < 1e-2f
+                && std::fabs(detour.forward_point[1] + offset) < 1e-2f,
+            "00422500: the forward corner is (100, -100) pushed 30 units along its bisector");
+        check(std::fabs(detour.backward_point[0] - offset) < 1e-2f
+                && std::fabs(detour.backward_point[1] - offset) < 1e-2f,
+            "00422500: the backward corner is (100, 100) pushed the same way");
+        check(detour.forward_index == 1 && detour.backward_index == 1,
+            "00422BCA and 00423173: corner 1 forward, corner 2 backward reported as edge 1");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

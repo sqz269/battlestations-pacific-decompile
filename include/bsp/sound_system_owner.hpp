@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/sound_lifetime_access.hpp"
 
 #include "bsp/camera_projection.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -7,6 +8,7 @@
 #include "bsp/panel_sequence_types.hpp"
 
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <list>
 #include <map>
@@ -148,6 +150,10 @@ struct SoundSystemOwner {
     SoundSystemOwner(const SoundSystemOwner&) = delete;
     SoundSystemOwner& operator=(const SoundSystemOwner&) = delete;
 
+    // Identity prefix for the raw lifetime dispatcher; remaining fields are
+    // canonical C++ bindings, not the original178h object layout.
+    std::uint32_t native_vtable_00{};
+
     // Bindings refer to the canonical state, including scalar defaults, FMOD
     // handles, enabled byte, global level, listeners, entries and class table.
     SoundSystemState& system;
@@ -155,7 +161,6 @@ struct SoundSystemOwner {
     SoundManagerLevels& levels;
     SoundClassOwnership& classes;
 
-    std::uint32_t native_vtable_00{};
     std::uint8_t flag_50{};
     SoundResourceOwnerSlot resource_owner_54;
     std::array<std::uint32_t, 4> words_58{};
@@ -173,8 +178,10 @@ struct SoundSystemOwner {
     std::array<std::uint32_t, 4> words_160{};
 };
 
+static_assert(offsetof(SoundSystemOwner, native_vtable_00) == 0);
+
 struct SoundOwnerLifetimeBindings {
-    SingletonLifetimeDomain& domain;
+    SoundLifetimeAccess domain;
     SoundSystemOwner* volatile& global_00f8bbd8;
     SoundAuxiliaryTreeOwner* volatile& global_00f8bbe8;
 };

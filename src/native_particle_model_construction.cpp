@@ -1,5 +1,6 @@
 #include "bsp/native_particle_model_construction.hpp"
 #include "bsp/native_particle_model_manager.hpp"
+#include "bsp/native_particle_array_resize.hpp"
 #include "bsp/native_particle_model_lifetime.hpp"
 #include "bsp/gui_text_material.hpp"
 #include "bsp/native_camera_matrix_copy.hpp"
@@ -100,11 +101,11 @@ NativeMaterialStorage* create_material(NativeParticleModelConstructionAccess& ac
     NativeMaterialStorage* material;
     try {
         NativeMaterialStorage* source;
-        if (second) source = access.callees.call_00af1120(access.resources_00f8c280);
+        if (second) source = native_particle_secondary_material_00af1120(access.resources_00f8c280);
         else {
             const auto flag79 = load<std::uint8_t>(captured_variant, 0x79);
             const auto flag78 = load<std::uint8_t>(captured_variant, 0x78);
-            source = access.callees.call_00af10f0(access.resources_00f8c280, flag78, flag79);
+            source = native_particle_material_variant_00af10f0(access.resources_00f8c280, nullptr, flag78, flag79);
         }
         material = clone_native_material_00b18b60(raw, required(source), access.materials.retained_owners);
     } catch (...) { access.materials.material_slots.return_slot_00b17a80(raw); throw; }
@@ -141,7 +142,7 @@ void finish_mesh(NativeMeshStorage*& current_mesh, NativeMeshSectionStorage& sec
     void* renderer = access.renderer_00f8d394;
     const void* table = load<void*>(renderer, 0);
     const auto entry = load<std::uint32_t>(table, 0x5c);
-    void* descriptor = access.callees.call_00af10b0(access.resources_00f8c280);
+    void* descriptor = native_particle_vertex_descriptor_00af10b0(access.resources_00f8c280);
     void* stream = access.callees.renderer_virtual5c(renderer, entry, 0, 0x1000, descriptor);
     auto& owners = access.materials.retained_owners;
     set_native_mesh_vertex_stream_00b73bb0(required(current_mesh), owners, 0, stream);
@@ -184,7 +185,7 @@ void reserve_native_particle_emitter_pointers_00af6120(
 
 NativeParticleModelArraysStorage* construct_native_particle_model_arrays_00afd2e0(
     void* raw, NativeNodeStorage& model, std::int32_t count,
-    NativeParticleModelConstructionCallees& callees) {
+    const volatile std::uint32_t& one_00d7a24c) {
     auto* arrays = place_preserving<NativeParticleModelArraysStorage>(raw);
     arrays->bytes_04.data_00 = nullptr;
     arrays->bytes_04.count_04 = 0;
@@ -192,8 +193,8 @@ NativeParticleModelArraysStorage* construct_native_particle_model_arrays_00afd2e
     arrays->records_0c.count_04 = 0;
     arrays->model_00 = &model;
     try {
-        callees.call_00afd130(arrays->bytes_04, count);
-        callees.call_00afd220(arrays->records_0c, count);
+        resize_native_particle_model_byte_array_00afd130(arrays->bytes_04, count);
+        resize_native_particle_model_record_array_00afd220(arrays->records_0c, count, one_00d7a24c);
         for (std::int32_t i = 0; i < count; ++i)
             static_cast<std::uint8_t*>(arrays->bytes_04.data_00)[i] = static_cast<std::uint8_t>(i);
         arrays->word_14 = 0;
@@ -231,7 +232,7 @@ NativeNodeStorage* construct_native_particle_model_00af74a0(
     tail.variant_18c = variant;
     access.callees.bind_particle_profile(base);
     try {
-        access.callees.call_00af40e0(variant);
+        prepare_native_particle_variant_00af40e0(variant, access.preparation);
         retain(variant);
         copy_identity(tail.point_matrix_298, access.one_00d7a24c);
         void* current_variant = tail.variant_18c;
@@ -240,13 +241,13 @@ NativeNodeStorage* construct_native_particle_model_00af74a0(
         tail.mesh_1b4 = create_mesh(access);
         const auto unchanged = base.environment.constants.unchanged_00d7a260;
         set_native_model_geometry_00b75170(base, 0, tail.mesh_1b4, float_bits(unchanged), float_bits(unchanged));
-        void* index = access.callees.call_00af10a0(access.resources_00f8c280);
+        void* index = native_particle_index_stream_00af10a0(access.resources_00f8c280);
         set_native_mesh_index_stream_00b73b70(required(tail.mesh_1b4), access.materials.retained_owners, index);
         auto& first_section = create_section(access);
         auto& first_material = required(create_material(access, variant, false));
-        void* texture = access.callees.call_00b0d140(access.shadow_00f8d39c);
+        void* texture = native_shadow_owner_map_texture_00b0d140(access.shadow_00f8d39c);
         set_native_material_texture_00b189f0(first_material, 1, texture, access.materials.retained_owners);
-        texture = access.callees.call_00b0d130(access.shadow_00f8d39c);
+        texture = native_shadow_owner_texture_00b0d130(access.shadow_00f8d39c);
         set_native_material_texture_00b189f0(first_material, 2, texture, access.materials.retained_owners);
         set_native_mesh_section_material_00b864c0(first_section, access.materials.retained_owners, &first_material);
         register_matrices(first_material, tail, access);
@@ -258,11 +259,11 @@ NativeNodeStorage* construct_native_particle_model_00af74a0(
         finish_mesh(tail.mesh_1b4, first_section, access);
 
         tail.mesh_1c8 = create_mesh(access);
-        index = access.callees.call_00af10a0(access.resources_00f8c280);
+        index = native_particle_index_stream_00af10a0(access.resources_00f8c280);
         set_native_mesh_index_stream_00b73b70(required(tail.mesh_1c8), access.materials.retained_owners, index);
         auto& second_section = create_section(access);
         auto& second_material = required(create_material(access, nullptr, true));
-        texture = access.callees.call_00b0d130(access.shadow_00f8d39c);
+        texture = native_shadow_owner_texture_00b0d130(access.shadow_00f8d39c);
         set_native_material_texture_00b189f0(second_material, 1, texture, access.materials.retained_owners);
         set_native_mesh_section_material_00b864c0(second_section, access.materials.retained_owners, &second_material);
         register_matrices(second_material, tail, access);
@@ -301,7 +302,7 @@ NativeNodeStorage* construct_native_particle_model_00af74a0(
         NativeParticleModelArraysStorage* arrays = nullptr;
         if (raw) {
             const auto count = load<std::int32_t>(tail.variant_18c, 0x58);
-            try { arrays = construct_native_particle_model_arrays_00afd2e0(raw, node, count, access.callees); }
+            try { arrays = construct_native_particle_model_arrays_00afd2e0(raw, node, count, access.one_00d7a24c); }
             catch (...) { singleton_lifetime_free(raw); throw; }
         }
         const auto random_max = access.random_max_00ce3d64;
@@ -320,7 +321,7 @@ NativeNodeStorage* construct_native_particle_model_00af74a0(
         node.mask_48 = 0x1b;
         tail.random_1fc = truncate_low_word(random_value);
         while (child) {
-            access.callees.call_007099c0(*child, 0x1b);
+            set_native_node_hierarchy_mask_007099c0(child, nullptr, 0x1b);
             child = reinterpret_cast<NativeNodeStorage*>(child->next_sibling_3c);
         }
         register_native_particle_model_00af0950(access.manager_00f8c274, &node);

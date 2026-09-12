@@ -11,6 +11,7 @@
 #include "bsp/sound_event_instance.hpp"
 #include "bsp/sound_gameplay_methods.hpp"
 #include "bsp/sound_shutdown.hpp"
+#include "bsp/sound_stream_runtime.hpp"
 
 #include <memory>
 #include <string>
@@ -23,7 +24,9 @@ struct FmodConfigurationCall {
     FmodResult result;
 };
 
-// Concrete library boundary for the installed Win32 fmodex.dll C exports.
+// Concrete library boundary for the installed Win32 fmodex.dll exports.
+// Stream byte outputs use the original exported C++ stdcall entries; their
+// C wrappers normalize separate FMOD_BOOL storage and alter unwritten bytes.
 // This loads the supplied DLL; it does not reconstruct FMOD or replace the
 // original game's object ABI. See docs/INSTALLED_SOUND_CONFIGURATION.md.
 // The caller must serialize access. Release every system before destroying the library;
@@ -32,8 +35,15 @@ class FmodConfigurationLibrary final : public SoundConfigurationFmodHost,
     public FmodStartupHost, public SoundResourceAssetFmodHost,
     public SoundResourceCleanupFmodHost, public SoundSampleFmodHost,
     public SoundChannelFmodHost, public SoundSystemUpdateFmodHost, public SoundSpatialChannelFmodHost,
-    public SoundEventFmodHost, public SoundGameplayFmodHost, public SoundShutdownFmodHost {
+    public SoundEventFmodHost, public SoundGameplayFmodHost, public SoundShutdownFmodHost,
+    public SoundStreamFmodHost {
 public:
+    FmodResult sound_get_open_state(void*, std::int32_t*, std::uint32_t*, std::uint8_t*) override;
+    FmodResult sound_get_format(void*, std::int32_t*, std::int32_t*, std::int32_t*, std::int32_t*) override;
+    FmodResult channel_set_speaker_levels(void*, std::int32_t, const float*, std::int32_t) override;
+    FmodResult channel_set_priority(void*, std::int32_t) override;
+    FmodResult channel_set_position(void*, std::uint32_t, std::uint32_t) override;
+    FmodResult stream_channel_is_playing(void*, std::uint8_t&) override;
     FmodResult channel_set_3d_minmax_distance(void*, float, float) override;
     FmodResult channel_get_mode(void*, std::optional<std::uint32_t>&) override;
     FmodResult channel_set_mode(void*, std::uint32_t) override;
@@ -66,7 +76,7 @@ public:
         const std::array<float, 3>&, const std::array<float, 3>&,
         const std::array<float, 3>&, const std::array<float, 3>&) override;
     FmodResult create_stream(void* system, const char* path, std::uint32_t mode,
-        void* extra_info, void** sound);
+        void* extra_info, void** sound) override;
     FmodResult release_sound(void* sound) override;
     FmodResult release_event_project(void*) override;
     FmodResult create_sound(void*, const char*, std::uint32_t, void*, void**) override;

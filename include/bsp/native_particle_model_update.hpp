@@ -4,6 +4,8 @@
 
 namespace bsp {
 class RandomThreads;
+struct NativeParticleRecordUpdateAccess;
+struct NativeParticleEmitterUpdateBindings;
 
 // Required real application services. All pointers designate the existing
 // native payloads; these interfaces create no substitute model/particle owner.
@@ -11,21 +13,12 @@ class NativeParticleModelUpdateCallees {
 public:
     virtual ~NativeParticleModelUpdateCallees() = default;
     // AF6E6C: captured CURRENT definition vtable+08, ECX definition,
-    // stack(model,time184), RET8; EAX actual temporary supporting +00..+9F.
+    // stack(model,time184), RET8; EAX actual temporary supporting +00..+107 (AFCF50 reads +104).
     // Dispatch the supplied native target through its canonical binding.
     virtual void* definition_virtual08(void* actual_definition,
         std::uint32_t captured_target, NativeNodeStorage& actual_model,
         float time) = 0;
-    // AFD410: ECX actual model190; stack temporary; RET4. Conditional capacity
-    // check then AFCF50 into actual108h indexed slot and CURRENT count14++.
-    virtual void call_00afd410(void* actual_owner, const void* actual_temporary) = 0;
-    // AFF640: ECX actual emitter; stack delta; EAX active count; RET4. B05110
-    // simulation, current container virtual04(1) when emptied, clear emitter10.
-    virtual std::int32_t call_00aff640(void* actual_emitter, float delta) = 0;
-    // AFD7A0: ECX actual model190; stack(time, low mode byte); EAX count14;
-    // RET8. AFE290 over actual108h records, swap index bytes and reload count.
-    virtual std::int32_t call_00afd7a0(void* actual_owner, float time,
-        std::uint8_t mode_equal) = 0;
+
 };
 
 struct NativeParticleModelUpdateAccess {
@@ -39,6 +32,8 @@ struct NativeParticleModelUpdateAccess {
     // Same real CRT allocation domain as definition virtual08. Cdecl/RET;
     // BF65AC tail-jumps BF9DC8, which RETURNS after actual heap/error handling.
     void (__cdecl* free_00bf65ac)(void*);
+    const NativeParticleRecordUpdateAccess* records;
+    const NativeParticleEmitterUpdateBindings* emitters;
 };
 
 // Complete AF6DD0..AF7391, including previously undisassembled AF704F..AF7071

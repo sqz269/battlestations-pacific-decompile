@@ -1,0 +1,546 @@
+{
+  "packet": "orch4_sound_logical_z",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00a77820",
+      "name": "sound_dialog_primary_gain_00a77820",
+      "proposed_name": "BSP_LogicalDialog_PrimaryGain",
+      "previous_name": "no_ghidra_function",
+      "source": "src/sound_dialog_logical.cpp",
+      "document": "docs/SOUND_DIALOG_LOGICAL.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body in documented valid-storage and constructor-profile domain; C++ ctor argument cleanup follows native EH map",
+      "abi": "No input; ST0 current F8BBCC+218 float; RET",
+      "original_abi": "No input; ST0 current F8BBCC+218 float; RET",
+      "meaning": "Current streamed-dialog manager primary gain, read through the live singleton word.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7782b",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7782c",
+      "ghidra_missing_start_at_initial_review": true,
+      "evidence": "Hypothesis, not recovered symbol. No input; ST0 current F8BBCC+218 float; RET. Current streamed-dialog manager primary gain, read through the live singleton word. See docs/SOUND_DIALOG_LOGICAL.md and reports/sound_dialog_logical.json. Actual native storage with explicit stream services; no original ABI, Windows SEH or game validation claim. Strict ReleaseWin32 build,2existing CTests and35 direct-call audit rows passed. Ignored probe passed8 installed-byte caller/lookup fixtures with substituted copy/clear and stream services; original ctor/EH and FMOD execution remain untested."
+    },
+    {
+      "address": "00a77830",
+      "name": "sound_dialog_secondary_gain_00a77830",
+      "proposed_name": "BSP_LogicalDialog_SecondaryGain",
+      "previous_name": "no_ghidra_function",
+      "source": "src/sound_dialog_logical.cpp",
+      "document": "docs/SOUND_DIALOG_LOGICAL.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body in documented valid-storage and constructor-profile domain; C++ ctor argument cleanup follows native EH map",
+      "abi": "No input; ST0 current F8BBCC+21C float; RET",
+      "original_abi": "No input; ST0 current F8BBCC+21C float; RET",
+      "meaning": "Current streamed-dialog manager secondary gain, read through the live singleton word.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7783b",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7783c",
+      "ghidra_missing_start_at_initial_review": true,
+      "evidence": "Hypothesis, not recovered symbol. No input; ST0 current F8BBCC+21C float; RET. Current streamed-dialog manager secondary gain, read through the live singleton word. See docs/SOUND_DIALOG_LOGICAL.md and reports/sound_dialog_logical.json. Actual native storage with explicit stream services; no original ABI, Windows SEH or game validation claim. Strict ReleaseWin32 build,2existing CTests and35 direct-call audit rows passed. Ignored probe passed8 installed-byte caller/lookup fixtures with substituted copy/clear and stream services; original ctor/EH and FMOD execution remain untested."
+    },
+    {
+      "address": "00a77bb0",
+      "name": "clear_sound_dialog_configuration_references_00a77bb0",
+      "proposed_name": "BSP_LogicalDialogConfiguration_ClearReferences",
+      "previous_name": "FUN_00a77bb0",
+      "source": "src/sound_dialog_logical.cpp",
+      "document": "docs/SOUND_DIALOG_LOGICAL.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body in documented valid-storage and constructor-profile domain; C++ ctor argument cleanup follows native EH map",
+      "abi": "ECX actual1Ch configuration; RET",
+      "original_abi": "ECX actual1Ch configuration; RET",
+      "meaning": "Release refs10/18 and clear after callbacks; preserve both strings and gain14.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a77bfd",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a77bfe",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual1Ch configuration; RET. Release refs10/18 and clear after callbacks; preserve both strings and gain14. See docs/SOUND_DIALOG_LOGICAL.md and reports/sound_dialog_logical.json. Actual native storage with explicit stream services; no original ABI, Windows SEH or game validation claim. Strict ReleaseWin32 build,2existing CTests and35 direct-call audit rows passed. Ignored probe passed8 installed-byte caller/lookup fixtures with substituted copy/clear and stream services; original ctor/EH and FMOD execution remain untested."
+    },
+    {
+      "address": "00a78230",
+      "name": "copy_sound_dialog_record_00a78230",
+      "proposed_name": "BSP_LogicalDialogRecord_Assign",
+      "previous_name": "FUN_00a78230",
+      "source": "src/sound_dialog_logical.cpp",
+      "document": "docs/SOUND_DIALOG_LOGICAL.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body in documented valid-storage and constructor-profile domain; C++ ctor argument cleanup follows native EH map",
+      "abi": "ECX destination18h; stack source18h; EAX destination; RET4",
+      "original_abi": "ECX destination18h; stack source18h; EAX destination; RET4",
+      "meaning": "Copy actual strings0/8, publish-retain-release ref10, then x87 copy gain14.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a782d0",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a782d3",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX destination18h; stack source18h; EAX destination; RET4. Copy actual strings0/8, publish-retain-release ref10, then x87 copy gain14. See docs/SOUND_DIALOG_LOGICAL.md and reports/sound_dialog_logical.json. Actual native storage with explicit stream services; no original ABI, Windows SEH or game validation claim. Strict ReleaseWin32 build,2existing CTests and35 direct-call audit rows passed. Ignored probe passed8 installed-byte caller/lookup fixtures with substituted copy/clear and stream services; original ctor/EH and FMOD execution remain untested."
+    },
+    {
+      "address": "00a783f0",
+      "name": "start_sound_dialog_logical_00a783f0",
+      "proposed_name": "BSP_LogicalDialog_Start",
+      "previous_name": "FUN_00a783f0",
+      "source": "src/sound_dialog_logical.cpp",
+      "document": "docs/SOUND_DIALOG_LOGICAL.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body in documented valid-storage and constructor-profile domain; C++ ctor argument cleanup follows native EH map",
+      "abi": "ECX actual5Ch logical; no EDX input; no stack arguments; RET",
+      "original_abi": "ECX actual5Ch logical; no EDX input; no stack arguments; RET",
+      "meaning": "Requested stream replacement with consumed string8h/reference4h ctor arguments; restart only existing state0/3; preserve current-header and ref callback order.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a785c7",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a785c8",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual5Ch logical; no EDX input; no stack arguments; RET. Requested stream replacement with consumed string8h/reference4h ctor arguments; restart only existing state0/3; preserve current-header and ref callback order. See docs/SOUND_DIALOG_LOGICAL.md and reports/sound_dialog_logical.json. Actual native storage with explicit stream services; no original ABI, Windows SEH or game validation claim. Strict ReleaseWin32 build,2existing CTests and35 direct-call audit rows passed. Ignored probe passed8 installed-byte caller/lookup fixtures with substituted copy/clear and stream services; original ctor/EH and FMOD execution remain untested."
+    },
+    {
+      "address": "00a785d0",
+      "name": "copy_sound_dialog_configuration_00a785d0",
+      "proposed_name": "BSP_LogicalDialogConfiguration_Assign",
+      "previous_name": "FUN_00a785d0",
+      "source": "src/sound_dialog_logical.cpp",
+      "document": "docs/SOUND_DIALOG_LOGICAL.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body in documented valid-storage and constructor-profile domain; C++ ctor argument cleanup follows native EH map",
+      "abi": "ECX destination1Ch; stack source1Ch; EAX destination; RET4",
+      "original_abi": "ECX destination1Ch; stack source1Ch; EAX destination; RET4",
+      "meaning": "Copy base18h throughA78230 then publish-retain-release reference18.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a78617",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7861a",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX destination1Ch; stack source1Ch; EAX destination; RET4. Copy base18h throughA78230 then publish-retain-release reference18. See docs/SOUND_DIALOG_LOGICAL.md and reports/sound_dialog_logical.json. Actual native storage with explicit stream services; no original ABI, Windows SEH or game validation claim. Strict ReleaseWin32 build,2existing CTests and35 direct-call audit rows passed. Ignored probe passed8 installed-byte caller/lookup fixtures with substituted copy/clear and stream services; original ctor/EH and FMOD execution remain untested."
+    },
+    {
+      "address": "00a78820",
+      "name": "update_sound_dialog_logical_00a78820",
+      "proposed_name": "BSP_LogicalDialog_Update",
+      "previous_name": "FUN_00a78820",
+      "source": "src/sound_dialog_logical.cpp",
+      "document": "docs/SOUND_DIALOG_LOGICAL.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body in documented valid-storage and constructor-profile domain; C++ ctor argument cleanup follows native EH map",
+      "abi": "ECX actual5Ch logical; stack float dt,float gain; RET8",
+      "original_abi": "ECX actual5Ch logical; stack float dt,float gain; RET8",
+      "meaning": "Float-rounded timer expiry stages pending configuration, then actual stream gain and tick; x87 multiplication order retained for constructor-produced D58E60/D58E64 profiles.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7889c",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7889f",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual5Ch logical; stack float dt,float gain; RET8. Float-rounded timer expiry stages pending configuration, then actual stream gain and tick; x87 multiplication order retained for constructor-produced D58E60/D58E64 profiles. See docs/SOUND_DIALOG_LOGICAL.md and reports/sound_dialog_logical.json. Actual native storage with explicit stream services; no original ABI, Windows SEH or game validation claim. Strict ReleaseWin32 build,2existing CTests and35 direct-call audit rows passed. Ignored probe passed8 installed-byte caller/lookup fixtures with substituted copy/clear and stream services; original ctor/EH and FMOD execution remain untested."
+    },
+    {
+      "address": "00a865f0",
+      "name": "find_sound_dialog_record_00a865f0",
+      "proposed_name": "BSP_DialogTable_FindRecordByName",
+      "previous_name": "FUN_00a865f0",
+      "source": "src/sound_dialog_logical.cpp",
+      "document": "docs/SOUND_DIALOG_LOGICAL.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body in documented valid-storage and constructor-profile domain; C++ ctor argument cleanup follows native EH map",
+      "abi": "ECX actual20h table; stack actual8h name; EAX index; RET4",
+      "original_abi": "ECX actual20h table; stack actual8h name; EAX index; RET4",
+      "meaning": "Capture vector endpoints, require equal native lengths, compare names with current CRT stricmp; return0 on miss.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a86667",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a8666a",
+      "ghidra_missing_start_at_initial_review": false,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual20h table; stack actual8h name; EAX index; RET4. Capture vector endpoints, require equal native lengths, compare names with current CRT stricmp; return0 on miss. See docs/SOUND_DIALOG_LOGICAL.md and reports/sound_dialog_logical.json. Actual native storage with explicit stream services; no original ABI, Windows SEH or game validation claim. Strict ReleaseWin32 build,2existing CTests and35 direct-call audit rows passed. Ignored probe passed8 installed-byte caller/lookup fixtures with substituted copy/clear and stream services; original ctor/EH and FMOD execution remain untested."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a78432",
+      "native": "004254b0",
+      "caller": "00a783f0",
+      "contract": "RET-only diagnostic; caller cleanup ADD ESP8"
+    },
+    {
+      "address": "00a78448",
+      "native": "00ce2220+IAT",
+      "caller": "00a783f0",
+      "contract": "InterlockedDecrement(previous stream+4)"
+    },
+    {
+      "address": "00a78458",
+      "native": "actual_reference+vtable00",
+      "caller": "00a783f0",
+      "contract": "Current zero-reference callback; ECX captured stream"
+    },
+    {
+      "address": "00a7845f",
+      "native": "00bf681b",
+      "caller": "00a783f0",
+      "contract": "Allocate54h; ADD ESP4; caller state0 owns allocation"
+    },
+    {
+      "address": "00a7848b",
+      "native": "00ce221c+IAT",
+      "caller": "00a783f0",
+      "contract": "Retain captured logical+28 for by-value4h argument before string copy"
+    },
+    {
+      "address": "00a784a0",
+      "native": "00426060",
+      "caller": "00a783f0",
+      "contract": "Copy-construct stack8h name from logical+10; state1 owns retained ref"
+    },
+    {
+      "address": "00a784ab",
+      "native": "00a877d0",
+      "caller": "00a783f0",
+      "contract": "ECX allocated54h; stack8h name and retained4h table; RET0C; callee consumes both"
+    },
+    {
+      "address": "00a784c5",
+      "native": "00a867b0",
+      "caller": "00a783f0",
+      "contract": "Actual stream start using logical+18 actual header"
+    },
+    {
+      "address": "00a784d8",
+      "native": "0041dd40",
+      "caller": "00a783f0",
+      "contract": "Actual logical+8 resize from CURRENT logical+18 length; preserve1"
+    },
+    {
+      "address": "00a784ed",
+      "native": "00bf7680",
+      "caller": "00a783f0",
+      "contract": "Copy source-current/destination-current headers; ADD ESP0C"
+    },
+    {
+      "address": "00a78502",
+      "native": "00a865f0",
+      "caller": "00a783f0",
+      "contract": "ECX current stream+3C table; stack logical+18 name"
+    },
+    {
+      "address": "00a78512",
+      "native": "00a86670",
+      "caller": "00a783f0",
+      "contract": "ECX current stream; stack index then gain logical+24; RET8"
+    },
+    {
+      "address": "00a7851b",
+      "native": "00a77bb0",
+      "caller": "00a783f0",
+      "contract": "Clear active configuration refs; receiver logical+10"
+    },
+    {
+      "address": "00a7854b",
+      "native": "00a77ff0",
+      "caller": "00a783f0",
+      "contract": "Construct diagnostic temporary name from state0/3 stream"
+    },
+    {
+      "address": "00a78562",
+      "native": "004254b0",
+      "caller": "00a783f0",
+      "contract": "RET-only diagnostic; ADD ESP8"
+    },
+    {
+      "address": "00a7857d",
+      "native": "00419cc0",
+      "caller": "00a783f0",
+      "contract": "Obtain sized-pool singleton for captured diagnostic name data"
+    },
+    {
+      "address": "00a78584",
+      "native": "00bd1510",
+      "caller": "00a783f0",
+      "contract": "Return captured diagnostic data length+1, alignment1"
+    },
+    {
+      "address": "00a78590",
+      "native": "00a867b0",
+      "caller": "00a783f0",
+      "contract": "Reload logical+4 receiver and restart using retained last-name header logical+8"
+    },
+    {
+      "address": "00a785ad",
+      "native": "004254b0",
+      "caller": "00a783f0",
+      "contract": "RET-only no-start diagnostic; ADD ESP4"
+    },
+    {
+      "address": "00a78854",
+      "native": "00a785d0",
+      "caller": "00a78820",
+      "contract": "Copy pending logical+30 to active logical+10 after flags4D=0,4C=1"
+    },
+    {
+      "address": "00a7885b",
+      "native": "00a77bb0",
+      "caller": "00a78820",
+      "contract": "Clear pending config refs; ECX saved EDI=logical+30"
+    },
+    {
+      "address": "00a7886d",
+      "native": "actual_logical+vtable00",
+      "caller": "00a78820",
+      "contract": "D58E60 resolvesA77820 and D58E64 resolvesA77830; ST0 gain"
+    },
+    {
+      "address": "00a78885",
+      "native": "00a864f0",
+      "caller": "00a78820",
+      "contract": "Reload stream; x87(base*logical54*input gain) rounded once to float"
+    },
+    {
+      "address": "00a78895",
+      "native": "00a874d0",
+      "caller": "00a78820",
+      "contract": "Reload stream after setter; same input dt"
+    },
+    {
+      "address": "00a77bc9",
+      "native": "00ce2220+IAT",
+      "caller": "00a77bb0",
+      "contract": "InterlockedDecrement(config10+4), through capturedEBP"
+    },
+    {
+      "address": "00a77bd5",
+      "native": "actual_reference+vtable00",
+      "caller": "00a77bb0",
+      "contract": "Current ref10 zero callback; clear10 after callback and again unconditionally"
+    },
+    {
+      "address": "00a77be8",
+      "native": "00ce2220+IAT",
+      "caller": "00a77bb0",
+      "contract": "Reload config18 then decrement+4 through capturedEBP"
+    },
+    {
+      "address": "00a77bf4",
+      "native": "actual_reference+vtable00",
+      "caller": "00a77bb0",
+      "contract": "Current ref18 zero callback; clear18 after callback"
+    },
+    {
+      "address": "00a78242",
+      "native": "0041dd40",
+      "caller": "00a78230",
+      "contract": "Actual destination string0 resize; preserve1"
+    },
+    {
+      "address": "00a78257",
+      "native": "00bf7680",
+      "caller": "00a78230",
+      "contract": "Current-header copy; ADD ESP0C"
+    },
+    {
+      "address": "00a78271",
+      "native": "0041dd40",
+      "caller": "00a78230",
+      "contract": "Actual destination string8 resize; preserve1"
+    },
+    {
+      "address": "00a78287",
+      "native": "00bf7680",
+      "caller": "00a78230",
+      "contract": "Current-header copy; ADD ESP0C"
+    },
+    {
+      "address": "00a782a5",
+      "native": "00ce221c+IAT",
+      "caller": "00a78230",
+      "contract": "Retain incoming after publish destination10"
+    },
+    {
+      "address": "00a782b3",
+      "native": "00ce2220+IAT",
+      "caller": "00a78230",
+      "contract": "Release captured previous10"
+    },
+    {
+      "address": "00a782c3",
+      "native": "actual_reference+vtable00",
+      "caller": "00a78230",
+      "contract": "Current old-reference zero callback; no republish after callback"
+    },
+    {
+      "address": "00a785d9",
+      "native": "00a78230",
+      "caller": "00a785d0",
+      "contract": "Copy actual18h record base"
+    },
+    {
+      "address": "00a785f3",
+      "native": "00ce221c+IAT",
+      "caller": "00a785d0",
+      "contract": "Retain incoming after publish destination18"
+    },
+    {
+      "address": "00a78601",
+      "native": "00ce2220+IAT",
+      "caller": "00a785d0",
+      "contract": "Release captured previous18"
+    },
+    {
+      "address": "00a78611",
+      "native": "actual_reference+vtable00",
+      "caller": "00a785d0",
+      "contract": "Current old-reference zero callback; no republish after callback"
+    },
+    {
+      "address": "00a86639",
+      "native": "00bf7fbf",
+      "caller": "00a865f0",
+      "contract": "Current CRT _stricmp after equal nonzero native lengths; ADD ESP8"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00a77820",
+      "last_instruction": "00a7782b",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7782c",
+      "evidence": "Disk-byte disassembly and live vtable bytes; worker did not define or mutate Ghidra functions."
+    },
+    {
+      "address": "00a77830",
+      "last_instruction": "00a7783b",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7783c",
+      "evidence": "Disk-byte disassembly and live vtable bytes; worker did not define or mutate Ghidra functions."
+    }
+  ],
+  "caller_evidence": [
+    {
+      "address": "00a78a32",
+      "native": "00a78820",
+      "caller": "00a789c0",
+      "contract": "Manager passes its dt and accumulated group gain; RET8"
+    },
+    {
+      "address": "00a78c91",
+      "native": "00a783f0",
+      "caller": "00a789c0",
+      "contract": "ECX selected logical; no stack arguments"
+    },
+    {
+      "address": "00a787e8",
+      "native": "00a77bb0",
+      "caller": "00a786f0",
+      "contract": "Both delay branches clear opposite active/pending configuration"
+    },
+    {
+      "address": "00a7874c",
+      "native": "00a78230",
+      "caller": "00a786f0",
+      "contract": "Delayed request copies source18h into logical30"
+    },
+    {
+      "address": "00a7879f",
+      "native": "00a78230",
+      "caller": "00a786f0",
+      "contract": "Immediate request copies source18h into logical10"
+    },
+    {
+      "address": "00a794b8",
+      "native": "00a78230",
+      "caller": "00a79480",
+      "contract": "Manager copies source18h into inline category record"
+    },
+    {
+      "address": "00a8671d",
+      "native": "00a865f0",
+      "caller": "00a86710",
+      "contract": "Stream row-ramp selection loads ECX stream+3C table"
+    },
+    {
+      "address": "00a867d7",
+      "native": "00a865f0",
+      "caller": "00a867b0",
+      "contract": "Stream start loads ECX stream+3C table"
+    }
+  ],
+  "exception_evidence": {
+    "handler": "00cb4dc3",
+    "map": "00deac90",
+    "states": "DEAC80 state0 (-1,CB4DB0) frees receiver; state1 (0,CB4DBB) destroys retained argument then state0. Caller lowers state1->0 before entering consuming ctor.",
+    "allocation_free": {
+      "address": "00cb4db4",
+      "native": "00bf65ac",
+      "caller": "00cb4db0",
+      "contract": "Free captured local receiver allocation; excluded POP ECX/RET at CB4DB9/BA are not host calls"
+    },
+    "reference_cleanup_tail": {
+      "tail_site": "00cb4dbe",
+      "callee": "0052e020",
+      "evidence": "Tail destroys retained reference argument slot; callee body read; auxiliary helper not owned/annotated"
+    },
+    "domain": "C++ exception cleanup only. No native Windows SEH registration; cleanup reference callbacks must not throw."
+  },
+  "corrections": [
+    {
+      "was": "A783F0 inferred fastcall EDX input and A877D0 apparently no arguments",
+      "evidence": "EDI=ECX; A78475/A78491 reserve4h/8h, A784A0 constructs string, A784AB calls ctor; ctor RET0C; DEAC90 states",
+      "is": "A783F0 thiscall no stack/EDX input; A877D0 takes consuming8h string+4h reference"
+    },
+    {
+      "was": "A865F0 plausibly a stream receiver helper",
+      "evidence": "A784FB..A78502 and A86719/A8671D; constructorA79230 and table parserA87060 produce offsets",
+      "is": "Actual20h table receiver,14h row vector; called through stream+3C"
+    },
+    {
+      "was": "A78820 pseudocode timer could compare unrounded difference and multiply with float intermediates",
+      "evidence": "A7882A..A78842 and A7886D..A78885",
+      "is": "FSTP float scratch then FLD/FST countdown before FCOMIP; gain multiplies in x87 and rounds only final result"
+    },
+    {
+      "was": "D58E60/D58E64 gain targets absent as Ghidra functions",
+      "evidence": "Live D58E5C bytes8e69bf002078a7003078a700; raw MOV/FLD/RET ends2C/3C",
+      "is": "A77820 reads F8BBCC+218; A77830 reads+21C"
+    }
+  ],
+  "validation": {
+    "build": "Release Win32 full scripts/build.ps1 passed after final source change; /W4 /WX /fp:strict",
+    "existing_tests": "2/2 passed: reconstructed_math and native_math_differential",
+    "seed_verification": "8/8 matched installed disk bytes",
+    "call_audit": "35 direct CALL rows checked;0 failures;14 indirect rows manually evidenced",
+    "focused_probe": "8 installed-byte differential fixtures passed:4 countdown/gain cases including quietNaN/negativeZero,4 equal-length/case/missing-name lookups; copy/clear and stream services substituted",
+    "game_validation": "not run; application integration and real stream/FMOD services owned by primary and peer packets",
+    "probe_command": "local/run_sound_logical_probe.ps1",
+    "probe_runtime_library": "MSVC /MD matching bsp_core; explicit /link /MANIFEST:EMBED",
+    "probe_reference_bytes": [
+      {
+        "address": "00a78820",
+        "length": 127,
+        "live_ghidra_matches_installed": true,
+        "sha256": "68a87642ee03025c47808acc0e7fab27e3bb9f4f627b6d61eb9c46cbee7a805d"
+      },
+      {
+        "address": "00a865f0",
+        "length": 122,
+        "live_ghidra_matches_installed": true,
+        "sha256": "4727702c92b7b52044d2c278198c348d79947d8512e5d86aab2abb1c1a9fe6cc"
+      }
+    ]
+  },
+  "boundaries": [
+    "New C++ interfaces; not original thiscall/SEH ABI replacements.",
+    "Required stream ctor/start/row-gain/gain/tick services are separately reconstructed and composed by the primary.",
+    "Only existing logical vtables D58E60/D58E64 supported; foreign vtables explicitly raise logic_error.",
+    "String allocation and current-CRT comparison remain existing library service boundaries; no original VC2005 locale/pool equivalence claim.",
+    "A783F0 allocator-null branch is retained although supplied actual operator-new service throws on exhausted allocation.",
+    "No game or audible-playback evidence."
+  ],
+  "integration": {
+    "prototypes": "reports/sound_dialog_logical_prototypes.json",
+    "annotation_and_export_completed": true,
+    "strict_win32_release": true,
+    "existing_ctests_passed": 2,
+    "game_validated": false,
+    "function_definitions": "reports/sound_dialog_logical_function_definitions.json"
+  }
+}
