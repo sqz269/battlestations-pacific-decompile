@@ -1,0 +1,524 @@
+{
+  "packet": "native_filestore_pending_tree_av",
+  "generated_utc": "2026-09-12T21:05:23.126522+00:00",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_mutations": "none; read-only worker; proposed names/flow repairs require locked parent integration",
+  "owned_bytes": 1236,
+  "functions": [
+    {
+      "label": "maximum",
+      "entry": "00be4a70",
+      "end_inclusive": "00be4a8b",
+      "bytes": 28,
+      "sha256": "6f640fcf9f202b2fd9542a1da5578933f953aefd242bd1af3a0d59f1f5c5c5c8",
+      "live_equal_installed_pe": true,
+      "name": "maximum_native_file_store_pending_node_00be4a70",
+      "proposed_name": "BSP_FileStorePendingTree_Maximum",
+      "previous_name": "FUN_00be4a70",
+      "coverage": "complete",
+      "source": "src/native_filestore_pending_tree.cpp",
+      "native_abi": "ECX node; EAX result; RET",
+      "domain": "actual MSVC Win32 storage; explicit existing services; source C++ exception ABI"
+    },
+    {
+      "label": "minimum",
+      "entry": "00be4a90",
+      "end_inclusive": "00be4aaa",
+      "bytes": 27,
+      "sha256": "b9b972cb8e9c9c854d087b568d5dc0f6cfa90558c3ce70ab4726e69ddef04613",
+      "live_equal_installed_pe": true,
+      "name": "minimum_native_file_store_pending_node_00be4a90",
+      "proposed_name": "BSP_FileStorePendingTree_Minimum",
+      "previous_name": "FUN_00be4a90",
+      "coverage": "complete",
+      "source": "src/native_filestore_pending_tree.cpp",
+      "native_abi": "ECX node; EAX result; RET",
+      "domain": "actual MSVC Win32 storage; explicit existing services; source C++ exception ABI"
+    },
+    {
+      "label": "right",
+      "entry": "00be4ad0",
+      "end_inclusive": "00be4b21",
+      "bytes": 82,
+      "sha256": "e42b0897d23d00413aefba0f2366246f1aae06cad9b22bfcdbe23fa0d8ffe502",
+      "live_equal_installed_pe": true,
+      "name": "rotate_native_file_store_pending_right_00be4ad0",
+      "proposed_name": "BSP_FileStorePendingTree_RotateRight",
+      "previous_name": "FUN_00be4ad0",
+      "coverage": "complete",
+      "source": "src/native_filestore_pending_tree.cpp",
+      "native_abi": "ECX tree; stack node; RET4; no semantic result",
+      "domain": "actual MSVC Win32 storage; explicit existing services; source C++ exception ABI"
+    },
+    {
+      "label": "left",
+      "entry": "00be5140",
+      "end_inclusive": "00be518d",
+      "bytes": 78,
+      "sha256": "0439f0befe0245fd4352ce96b0a1925cf906071c3d97d0d6b31232037d4a02b4",
+      "live_equal_installed_pe": true,
+      "name": "rotate_native_file_store_pending_left_00be5140",
+      "proposed_name": "BSP_FileStorePendingTree_RotateLeft",
+      "previous_name": "FUN_00be5140",
+      "coverage": "complete",
+      "source": "src/native_filestore_pending_tree.cpp",
+      "native_abi": "ECX tree; stack node; RET4; no semantic result",
+      "domain": "actual MSVC Win32 storage; explicit existing services; source C++ exception ABI"
+    },
+    {
+      "label": "erase",
+      "entry": "00be6a20",
+      "end_inclusive": "00be6ceb",
+      "bytes": 716,
+      "sha256": "3fff6f1c22c1149722268774a7e2372538dc287cc23b2b8e4082f9c9bace5383",
+      "live_equal_installed_pe": true,
+      "name": "erase_native_file_store_pending_iterator_00be6a20",
+      "proposed_name": "BSP_FileStorePendingTree_EraseIterator",
+      "previous_name": "FUN_00be6a20",
+      "coverage": "complete",
+      "source": "src/native_filestore_pending_tree.cpp",
+      "native_abi": "ECX tree; stack output, iterator owner, iterator node; EAX output; RET0Ch",
+      "domain": "actual MSVC Win32 storage; explicit existing services; source C++ exception ABI"
+    },
+    {
+      "label": "range",
+      "entry": "00be7580",
+      "end_inclusive": "00be7648",
+      "bytes": 201,
+      "sha256": "12bd7a75200fe5a112f88983a6e4ebadd8a7b370d681f502fc3be6f54fa9272b",
+      "live_equal_installed_pe": true,
+      "name": "erase_native_file_store_pending_range_00be7580",
+      "proposed_name": "BSP_FileStorePendingTree_EraseRange",
+      "previous_name": "FUN_00be7580",
+      "coverage": "complete",
+      "source": "src/native_filestore_pending_tree.cpp",
+      "native_abi": "ECX tree; stack output, first owner/node, last owner/node; EAX output; RET14h",
+      "domain": "actual MSVC Win32 storage; explicit existing services; source C++ exception ABI"
+    },
+    {
+      "label": "destroy",
+      "entry": "00be7650",
+      "end_inclusive": "00be7683",
+      "bytes": 52,
+      "sha256": "6ec7d90337511d1d588606d9930fbff92f893317f8a3b3875602e945f0af7ea8",
+      "live_equal_installed_pe": true,
+      "name": "destroy_native_file_store_pending_tree_00be7650",
+      "proposed_name": "BSP_FileStorePendingTree_Destroy",
+      "previous_name": "FUN_00be7650",
+      "coverage": "complete",
+      "source": "src/native_filestore_pending_tree.cpp",
+      "native_abi": "ECX tree; RET; no semantic result",
+      "domain": "actual MSVC Win32 storage; explicit existing services; source C++ exception ABI"
+    },
+    {
+      "label": "destroy_unwind",
+      "entry": "00be7a70",
+      "end_inclusive": "00be7aa3",
+      "bytes": 52,
+      "sha256": "b29f568f71b1a9cbed0191b48208756996362f5c00d947980d0e9255319e2c5d",
+      "live_equal_installed_pe": true,
+      "name": "destroy_native_file_store_pending_tree_unwind_00be7a70",
+      "proposed_name": "BSP_FileStorePendingTree_DestroyUnwindEntry",
+      "previous_name": "FUN_00be7a70",
+      "coverage": "complete",
+      "source": "src/native_filestore_pending_tree.cpp",
+      "native_abi": "ECX pending tree (provider+20 in CC6E09 tail); RET; no semantic result",
+      "domain": "actual MSVC Win32 storage; explicit existing services; source C++ exception ABI"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00be6a68",
+      "native": "00408720",
+      "function": "00be6a20",
+      "contract": "Existing counted SBO assignment; ECX temporary; stack message,count27; RET8"
+    },
+    {
+      "address": "00be6a7a",
+      "native": "00411700",
+      "function": "00be6a20",
+      "contract": "Existing owning legacy logic-error constructor; ECX exception; stack temporary; RET4"
+    },
+    {
+      "address": "00be6a91",
+      "native": "00bf6885",
+      "function": "00be6a20",
+      "contract": "Correct library __CxxThrowException@8; stack object/ThrowInfo D863A8; source owning exception transport"
+    },
+    {
+      "address": "00be6a9e",
+      "native": "00be4e40",
+      "function": "00be6a20",
+      "contract": "Existing actual iterator successor; ECX by-value iterator; RET or invalid-parameter tail"
+    },
+    {
+      "address": "00be6b00",
+      "native": "00be4a90",
+      "function": "00be6a20",
+      "contract": "Minimum leaf; ECX replacement; EAX node; RET"
+    },
+    {
+      "address": "00be6b22",
+      "native": "00be4a70",
+      "function": "00be6a20",
+      "contract": "Maximum leaf; ECX replacement; EAX node; RET"
+    },
+    {
+      "address": "00be6bc2",
+      "native": "00be5140",
+      "function": "00be6a20",
+      "contract": "Left rotation; ECX tree; stack node; RET4"
+    },
+    {
+      "address": "00be6bf5",
+      "native": "00be4ad0",
+      "function": "00be6a20",
+      "contract": "Right rotation; ECX tree; stack node; RET4"
+    },
+    {
+      "address": "00be6c11",
+      "native": "00be5140",
+      "function": "00be6a20",
+      "contract": "Left rotation; ECX tree; stack node; RET4"
+    },
+    {
+      "address": "00be6c26",
+      "native": "00be4ad0",
+      "function": "00be6a20",
+      "contract": "Right rotation; ECX tree; stack node; RET4"
+    },
+    {
+      "address": "00be6c6f",
+      "native": "00be5140",
+      "function": "00be6a20",
+      "contract": "Left rotation; ECX tree; stack node; RET4"
+    },
+    {
+      "address": "00be6c89",
+      "native": "00be4ad0",
+      "function": "00be6a20",
+      "contract": "Right rotation; ECX tree; stack node; RET4"
+    },
+    {
+      "address": "00be6ca0",
+      "native": "00419cc0",
+      "function": "00be6a20",
+      "contract": "Actual string-pool getter; no consumed arguments; EAX pool; RET. Three pushed words belong to following return."
+    },
+    {
+      "address": "00be6ca7",
+      "native": "00bd1510",
+      "function": "00be6a20",
+      "contract": "Actual pool return; ECX getter result; stack current data/current length+1/unused1; RET0Ch"
+    },
+    {
+      "address": "00be6cad",
+      "native": "00bf65ac",
+      "function": "00be6a20",
+      "contract": "Correct library _free; shared singleton_lifetime_free; stack node/head; ADD ESP,4 in raw continuation"
+    },
+    {
+      "address": "00be759a",
+      "native": "00bf6713",
+      "function": "00be7580",
+      "contract": "Existing returning invalid-parameter callback; no consumed arguments; continue after return"
+    },
+    {
+      "address": "00be75b6",
+      "native": "00bf6713",
+      "function": "00be7580",
+      "contract": "Existing returning invalid-parameter callback; no consumed arguments; continue after return"
+    },
+    {
+      "address": "00be75ca",
+      "native": "00be66c0",
+      "function": "00be7580",
+      "contract": "Existing complete pending subtree erasure; ECX tree; stack current root; RET4"
+    },
+    {
+      "address": "00be760a",
+      "native": "00bf6713",
+      "function": "00be7580",
+      "contract": "Existing returning invalid-parameter callback; no consumed arguments; continue after return"
+    },
+    {
+      "address": "00be7619",
+      "native": "00be4e40",
+      "function": "00be7580",
+      "contract": "Existing actual iterator successor; ECX by-value iterator; RET or invalid-parameter tail"
+    },
+    {
+      "address": "00be7627",
+      "native": "00be6a20",
+      "function": "00be7580",
+      "contract": "ECX tree; stack output, iterator owner, iterator node; EAX output; RET0Ch"
+    },
+    {
+      "address": "00be7666",
+      "native": "00be7580",
+      "function": "00be7650",
+      "contract": "ECX tree; stack output, first owner/node, last owner/node; EAX output; RET14h"
+    },
+    {
+      "address": "00be766f",
+      "native": "00bf65ac",
+      "function": "00be7650",
+      "contract": "Correct library _free; shared singleton_lifetime_free; stack node/head; ADD ESP,4 in raw continuation"
+    },
+    {
+      "address": "00be7a86",
+      "native": "00be7580",
+      "function": "00be7a70",
+      "contract": "ECX tree; stack output, first owner/node, last owner/node; EAX output; RET14h"
+    },
+    {
+      "address": "00be7a8f",
+      "native": "00bf65ac",
+      "function": "00be7a70",
+      "contract": "Correct library _free; shared singleton_lifetime_free; stack node/head; ADD ESP,4 in raw continuation"
+    },
+    {
+      "address": "00be6ff5",
+      "native": "00be5140",
+      "function": "00be6ee0",
+      "contract": "ECX captured tree EDI; PUSH ESI; RET4"
+    },
+    {
+      "address": "00be7013",
+      "native": "00be4ad0",
+      "function": "00be6ee0",
+      "contract": "ECX captured tree EDI; PUSH grandparent; RET4"
+    },
+    {
+      "address": "00be7041",
+      "native": "00be4ad0",
+      "function": "00be6ee0",
+      "contract": "ECX captured tree EDI; PUSH ESI; RET4"
+    },
+    {
+      "address": "00be7922",
+      "native": "00be6a20",
+      "function": "00be78b0",
+      "contract": "ECX provider+20; output/lookup owner/node; callback+14 captured before erase; RET0Ch"
+    },
+    {
+      "address": "00be7a19",
+      "native": "00be7580",
+      "function": "00be79c0",
+      "contract": "ECX tree; output/tree/lower node/tree/upper node; RET14h"
+    },
+    {
+      "address": "00be7c3c",
+      "native": "00be7580",
+      "function": "00be7bf0",
+      "contract": "ECX provider+20; output/tree/minimum/tree/head; RET14h"
+    },
+    {
+      "address": "00cc6e09",
+      "native": "00be7a70",
+      "function": "00cc6e03",
+      "contract": "MOV ECX,[EBP-18]; ADD ECX,20; E9 tail to second destructor entry",
+      "kind": "tail_jump"
+    }
+  ],
+  "dependency_evidence": [
+    {
+      "label": "iterator_dependency",
+      "entry": "00be4e40",
+      "end_inclusive": "00be4ea2",
+      "bytes": 99,
+      "sha256": "f465f772b3e18e985455da6a7a259e5e771d9ff48232655b59ce47b327f8c178",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "subtree_dependency",
+      "entry": "00be66c0",
+      "end_inclusive": "00be6711",
+      "bytes": 82,
+      "sha256": "120cefe0fcf103775bb51b4d8c7754f614054cfcff13603144029578f0a7c380",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "allocation_producer",
+      "entry": "00be5690",
+      "end_inclusive": "00be56c6",
+      "bytes": 55,
+      "sha256": "0b834747db83a68aec1d0459d171f6df0e1d67887e19531a61e54d273299803e",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "node_producer",
+      "entry": "00be63e0",
+      "end_inclusive": "00be644f",
+      "bytes": 112,
+      "sha256": "751e2618515e6814a6cc32b3ad157f14c6bc2daab5a15b8a275d2366cbac1261",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "exception_cleanup",
+      "entry": "00cc6d20",
+      "end_inclusive": "00cc6d27",
+      "bytes": 8,
+      "sha256": "13878ed380ae3dffadc1f99b4550e568f68a22e0350ca70cb32cc33ab691a21c",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "exception_handler",
+      "entry": "00cc6d28",
+      "end_inclusive": "00cc6d32",
+      "bytes": 11,
+      "sha256": "5622125e49b3b62a607a5ddd821d33a6be659baa3b5698770a14aa6e3721b97b",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "func_info_and_map",
+      "entry": "00e01600",
+      "end_inclusive": "00e0162b",
+      "bytes": 44,
+      "sha256": "2d721a68761396942c9984e7b1f3b4b9e24e02bccc1c029b4bfec19bfecbb5cf",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "throw_info",
+      "entry": "00d863a8",
+      "end_inclusive": "00d863b7",
+      "bytes": 16,
+      "sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814",
+      "live_equal_installed_pe": true
+    },
+    {
+      "label": "message",
+      "entry": "00ce44e0",
+      "end_inclusive": "00ce44fa",
+      "bytes": 27,
+      "sha256": "177525a16a3554b1bfd100c9d4aeff528d3a733b90015fd19e69d691ecad795b",
+      "live_equal_installed_pe": true
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "entry": "00be6cb2",
+      "end_inclusive": "00be6ceb",
+      "continuation_of": "00be6a20",
+      "coverage": "complete",
+      "reason": "Saved body ends at _free CALL; current count/successor/FS/RET0Ch tail is live-equal-PE"
+    },
+    {
+      "entry": "00be7674",
+      "end_inclusive": "00be7683",
+      "continuation_of": "00be7650",
+      "coverage": "complete",
+      "reason": "Saved body ends at _free CALL; zero head/count and RET tail is live-equal-PE"
+    },
+    {
+      "entry": "00be7a94",
+      "end_inclusive": "00be7aa3",
+      "continuation_of": "00be7a70",
+      "coverage": "complete",
+      "reason": "Saved body ends at _free CALL; same complete reset/RET schedule as BE7650"
+    },
+    {
+      "entry": "00cc6d28",
+      "end_inclusive": "00cc6d32",
+      "coverage": "static_eh_evidence_only",
+      "reason": "MOV EAX,E01608; tail JMP BF6B43; no native FH3 execution"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "BE6B2C..BE6B83 marked unreachable by saved pseudocode",
+      "is": "Reachable successor transplant for original with two nonnil children",
+      "evidence": "BE6ABE loads advanced iterator node; BE6AC2 compares original EBP; BE6AC7 branches; native/source two-child cases pass"
+    },
+    {
+      "was": "BE6A20 stops at BE6CB1; BE7650 stops at BE7673; BE7A70 stops at BE7A93",
+      "is": "Complete ranges end BE6CEB, BE7683 and BE7AA3 respectively",
+      "evidence": "Live memory equals installed PE; full decoded continuations and differential count/output/reset checks"
+    },
+    {
+      "was": "CC6E09 xref classified UNCONDITIONAL_CALL",
+      "is": "Tail JMP to BE7A70 from existing Unwind@00cc6e03",
+      "evidence": "Live bytes CC6E09 E9 62 0C F2 FF; containing body CC6E03..CC6E0D"
+    }
+  ],
+  "layout": {
+    "node_bytes": "1Ch",
+    "links": [
+      "+0",
+      "+4",
+      "+8"
+    ],
+    "string": [
+      "+0C length",
+      "+10 data"
+    ],
+    "pending_payload": "+14 preserved and unowned by erase",
+    "color": "+18",
+    "nil": "+19",
+    "tree_head": "+4",
+    "tree_count": "+8",
+    "provider_pending_tree": "+20",
+    "producer_evidence": "BE5690 allocation; BE63E0 three links/string/payload/color/nil stores; BE8050..BE807B pending sentinel initialization"
+  },
+  "exception": {
+    "message_count": 27,
+    "profile": "00d6926c",
+    "throw_info": "00d863a8",
+    "state_arm": "00be6a76",
+    "func_info": "00e01608",
+    "unwind_map": "00e01600",
+    "cleanup_entry": "00cc6d20",
+    "cleanup_end_inclusive": "00cc6d27",
+    "retained_cleanup_name": "Unwind@00cc6d20",
+    "cleanup": "LEA ECX,[EBP-50]; JMP 4072D0",
+    "source_transport": "existing owning NativeHardwareLayoutInvalidIterator; source RTTI/EH ABI"
+  },
+  "checklist": {
+    "callee_before_contract": "All direct consumed callees read; established services reused",
+    "boundary_before_attribution": "Owned and external call rows carry actual containing functions; raw tails recorded separately",
+    "all_call_sites_before_contract": "Live xrefs/callers plus incoming argument setups inspected; BE7650 has no live references",
+    "producer_before_layout": "BE5690, BE63E0 and BE7FA0 stores inspected",
+    "partial_projection_label": "All eight routines complete within explicit source service boundaries",
+    "runtime_evidence": "No game/runtime explanation claimed; independent focused native/source fixture only",
+    "argument_counts": "RET4, RET0Ch, RET14h and ADD ESP,4 checked in full assembly/raw spans",
+    "register_provenance": "BE6A20 full listing: EBP original; EBX initial tree saved ESP+10, then1; ESI repair parent; EDI replacement",
+    "lease_scope": "Exactly eight reconstructed functions and four output files; shared registry append authorized by parent",
+    "report_evidence": "All direct CALLs, incoming transfers, coverage, corrections and raw-inclusive ends present"
+  },
+  "validation": {
+    "strict_win32_build": "local/pending_av/build03.log; /W4 /WX /fp:strict; MSBUILDDISABLENODEREUSE=1",
+    "build_log_sha256": "e15513af111966a9d72a912ea30f9412d643de8727e3f2a0a42083ef881adc87",
+    "ctest": "2/2: reconstructed_math and native_math_differential",
+    "seed_verification": "Eight installed PE seed bodies match; local/pending_av/verify_seeds01.log",
+    "fixture": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch2-filestore-pending-av\\local\\pending_av\\attempt02",
+      "driver": "J:\\PROG\\battlestations-pacific-decompile-orch2-filestore-pending-av\\local\\pending_av\\run_fixture.py",
+      "relink": "python run_fixture.py --repo <built repo> --attempt <new directory> --build-log <log>",
+      "exit_code": 0,
+      "all_preexecution_hashes_unchanged": true,
+      "files_rechecked": 98,
+      "seal_sha256": "af22e7e3bf574162100b15147c68f3ba5cac3c998d74973044a2e87329475a96",
+      "exe_sha256": "9488f0cb565feb5045d8bed6bc95edf67bc2ca29e4a3774269809d674b3103be",
+      "library_sha256": "49b9b37ff7b07621e6bf15750f78576077f8304d2de801a329a23b9aaa983957",
+      "execution_sha256": "af898e7fc24d16cd3084dc2779b88d5a3e8dcfd407d8c6628d40d67579b11545",
+      "native_source_cases": 20,
+      "native_FH3_SEH_executed": false,
+      "linked_objects_equal_archive_members": 18,
+      "native_bytes": "Private bounded original mapping, uniform 30000000 delta; explicit dependency relocations only",
+      "services": "Genuine actual pool getter/return, canonical lifetime, allocation leaf and source CRT; owning string/exception helpers",
+      "cases": "20 distinct native/source cases covering transplantation, six balancing shapes, range/destruction/ownership/count and intercepted original throw",
+      "earlier_preserved_attempt": "attempt01: 19 native/source cases, 97 frozen files; original immutable seal retained"
+    },
+    "report_calls": "32 live call/transfer rows checked; 0 failures; local/pending_av/verify_report_calls01.log",
+    "report_calls_sha256": "3d8356f9e71c827db467770314d49d43674bfb0a5e14435193931ed041ff3c5e"
+  },
+  "remaining_boundaries": [
+    "New source C++ interfaces, RTTI/EH ABI and original CRT identity differ",
+    "Original FH3 dispatch and SEH unwind unexecuted; intercepted original throw is an observation only",
+    "NativeStringStorage release remains noexcept; throwing lazy-pool recreation terminates at that existing boundary",
+    "No arbitrary stack aliasing, concurrent mutation, binary replacement, provider composition or gameplay proof"
+  ]
+}
