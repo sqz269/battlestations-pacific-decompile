@@ -1,0 +1,340 @@
+{
+  "packet": "orch4_native_input_deadline_map_lookup_ag",
+  "status": "read_only_dependency_assessment_no_thin_existing_helper_composition",
+  "primary_revision": "7652e949d777dfe32f9152980f1367d5709367a3",
+  "worker_revision": "3e3aeb787f09cc67b69bbda294802169a85bfd80",
+  "scope": "Documentation/report only. No new native reconstruction, original-name/signature/fragment record, source implementation or address lease. Original library names preserved.",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py live clients verify target everybatch; transfer comparisons use whole disk/live equal spans"
+  },
+  "ghidra_mutations": false,
+  "source_inspected": [
+    {
+      "path": "include/bsp/native_hardware_layout_tree_insert.hpp",
+      "sha256": "ab22f0f87d42c9c6b4cb6823b28bfbff1098a21ec9ff917a9cf4be211163dbd4"
+    },
+    {
+      "path": "src/native_hardware_layout_tree_insert.cpp",
+      "sha256": "e50bbbb1fc84d8005675cf2137f594ee171933e8ea1e5d270f38c1c33ffd81d0"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_tree_key.hpp",
+      "sha256": "5a190ee237ac1a73f5fba270c0524724acd875499f4fbba205cb78d132a9f761"
+    },
+    {
+      "path": "src/native_hardware_layout_tree_key.cpp",
+      "sha256": "36b86814c8a2a24a6e3e9b2a231a5ed1f2fea13393b12336b3bb49b4e136fe8d"
+    },
+    {
+      "path": "include/bsp/native_int_pointer_tree18_leaves.hpp",
+      "sha256": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1"
+    },
+    {
+      "path": "src/native_int_pointer_tree18_leaves.cpp",
+      "sha256": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816"
+    },
+    {
+      "path": "include/bsp/native_int_pointer_tree18_erase.hpp",
+      "sha256": "86571aedc38dc363aad43efffc8e7d23525181f505885ae72c8fd17a8e99df96"
+    },
+    {
+      "path": "include/bsp/native_input_action_deadline_map.hpp",
+      "sha256": "7f468256922049e1284f457413a3d8dd1f5616d8aaad61929f7ddf038ffe4b31"
+    }
+  ],
+  "functions": [
+    {
+      "address": "004d6900",
+      "coverage": "read-only full-body subscript contract and direct-callee assessment; no implemented adapter",
+      "native_abi": "ECXactualtree, EDXunused, stackconstsignedintkeypointer, EAXfloatmappedaddress, RET4 at4D697D",
+      "end_inclusive": "004d697f",
+      "end_exclusive": "004d6980",
+      "sha256": "a6cb00a3cec618fbcd1813234aab037aa323107f4691765dd06437b14110e13d",
+      "disk_live_equal": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "native_call_sites": [
+    {
+      "function": "004d6900",
+      "address": "004d6957",
+      "native": "004d3cd0"
+    },
+    {
+      "function": "004d6900",
+      "address": "004d6965",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004d6900",
+      "address": "004d696f",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3cef",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3d10",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3d38",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3d54",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3d7d",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3da1",
+      "native": "004b7520"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3dc5",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3ddc",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3e09",
+      "native": "004b75b0"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3e17",
+      "native": "004b5ac0"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3e3f",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3e54",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d3cd0",
+      "address": "004d3e6d",
+      "native": "004d1f40"
+    },
+    {
+      "function": "004d1f40",
+      "address": "004d1f9e",
+      "native": "004cf010"
+    },
+    {
+      "function": "004d1f40",
+      "address": "004d1fc0",
+      "native": "004b7520"
+    },
+    {
+      "function": "004cf010",
+      "address": "004cf053",
+      "native": "00408720"
+    },
+    {
+      "function": "004cf010",
+      "address": "004cf065",
+      "native": "00411700"
+    },
+    {
+      "function": "004cf010",
+      "address": "004cf07c",
+      "native": "00bf6885"
+    },
+    {
+      "function": "004cf010",
+      "address": "004cf094",
+      "native": "004c27e0"
+    },
+    {
+      "function": "004cf010",
+      "address": "004cf125",
+      "native": "004bdd00"
+    },
+    {
+      "function": "004cf010",
+      "address": "004cf143",
+      "native": "004bdd50"
+    },
+    {
+      "function": "004cf010",
+      "address": "004cf171",
+      "native": "004bdd50"
+    },
+    {
+      "function": "004c27e0",
+      "address": "004c27e2",
+      "native": "00bf681b"
+    },
+    {
+      "function": "004b7520",
+      "address": "004b7528",
+      "native": "00bf6713"
+    },
+    {
+      "function": "004b7520",
+      "address": "004b7543",
+      "native": "00bf6713",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "004b7520",
+      "address": "004b759f",
+      "native": "00bf6713",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "004b5ac0",
+      "address": "004b5ad2",
+      "native": "00bf6713"
+    }
+  ],
+  "verified_reuse": [
+    {
+      "native_leaf": "004bdd00",
+      "existing_provider_address": "0086a2f0",
+      "span": 78,
+      "disk_live_equal": true,
+      "identical_except_direct_transfer_displacements": true,
+      "native_sha256": "bfe2e0ce417eeb6e69580063c88eafeae8dc1059708aa6a157813eaac4fe6cca",
+      "existing_sha256": "bfe2e0ce417eeb6e69580063c88eafeae8dc1059708aa6a157813eaac4fe6cca",
+      "direct_transfers": []
+    },
+    {
+      "native_leaf": "004bdd50",
+      "existing_provider_address": "00869810",
+      "span": 82,
+      "disk_live_equal": true,
+      "identical_except_direct_transfer_displacements": true,
+      "native_sha256": "2f89359fd0d0c768ce8a145086e6eccc83741c05575d6849e3db233447831059",
+      "existing_sha256": "2f89359fd0d0c768ce8a145086e6eccc83741c05575d6849e3db233447831059",
+      "direct_transfers": []
+    },
+    {
+      "native_leaf": "004b75b0",
+      "existing_provider_address": "00869a20",
+      "span": 99,
+      "disk_live_equal": true,
+      "identical_except_direct_transfer_displacements": true,
+      "native_sha256": "d69eab5c8b4259ec6e9039200956fc508766ccd8d0e5179a6ed99216a5437a9f",
+      "existing_sha256": "7f5ec53d7913d19dc67199a6b3d7662b403322a55da6e33ec4458591d6aeee51",
+      "direct_transfers": [
+        {
+          "site": "004b75b8",
+          "target": "0xbf6713"
+        },
+        {
+          "site": "004b75c7",
+          "target": "0xbf6713"
+        },
+        {
+          "site": "00869a28",
+          "target": "0xbf6713"
+        },
+        {
+          "site": "00869a37",
+          "target": "0xbf6713"
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "thin_composition": false,
+    "reason": "Hardware-layout functions expose fixed28h allocations, +24/+25 color/nil,14h key pluspointervalue, descending count/unsignedword comparator and fixed0AAAAAA9 limit.18h leaves have no parameterized signedkey insertion. Pointercasts cannot adapt simultaneously shared link offsets and different color/nil/key layout without rewriting canonical storage.",
+    "no_stub": "No native_input_deadline_map_lookup.hpp/.cpp created, no success or empty-map provider added"
+  },
+  "layout_comparison": {
+    "shared": [
+      "actual12hheader opaqueDWORD0/head4/count8",
+      "links0/4/8 and key startC",
+      "raw8howner/node iterator",
+      "unowned payloadwords, malloc/new-handler and free domain"
+    ],
+    "deadline": {
+      "allocation": "18h",
+      "key": "signedint32 at+C",
+      "mapped": "floatbits at+10",
+      "color_nil": "14/15",
+      "padding": "16/17",
+      "insert_limit": "unsigned count>=1FFFFFFE throws beforeallocation"
+    },
+    "hardware": {
+      "allocation": "28h",
+      "key": "4streamDWORDs+signedcount,14h key at+C",
+      "mapped": "unownedpointer at+20",
+      "color_nil": "24/25",
+      "padding": "26/27",
+      "comparator": "signedcount descending, then unsignedstreamwords ascending",
+      "insert_limit": "unsignedcount>=0AAAAAA9 throws"
+    }
+  },
+  "reusable_source": [
+    "rotate_left_native_int_pointer_tree18_0086a2f0 for4BDD00",
+    "rotate_right_native_int_pointer_tree18_00869810 for4BDD50",
+    "increment_native_int_pointer_tree18_00869a20 for4B75B0",
+    "allocate_native_int_pointer_tree18_node_0086ac00 for4C27A0 sentinel only; not initializedpair allocation4C27E0",
+    "existing86AA60/86EE50 fullrange cleanup established inmaplifetimepacket",
+    "NativeHardwareLayoutTreeLengthError publicowningclass:28h D69260, constructor411700, copy411940, destructor411780; preparation/throw helper currently private",
+    "actual CRT _invalid_parameter_noinfo permits installed handler to return; no forced throw/default success"
+  ],
+  "remaining_contracts": [
+    "signedkey lowerbound/subscript usingoriginalkeycapture/reloads",
+    "18h pair allocation/copy4C27E0 readsleft/parent/right/pair AFTER allocating, thenDWORDkey/value copy, color/nil, paddingpreserved",
+    "checkedhint insertion4D3CD0 and unique insertion4D1F40, including duplicate and returningvalidation paths",
+    "18h predecessor4B7520, checkediterator equality4B5AC0; hardware counterpart nil25 incompatible",
+    "node linking/redblack repair4CF010 with deadline limit, reloadedhead/count afterallocation, outputnodebeforeowner",
+    "message preparation counted19bytes andcompleted-onlycleanup beforethrowing public owninglengtherror"
+  ],
+  "native_order": {
+    "subscript": "keycachedonceforlowerbound4D6916; reread4D6935/4D693C; pairkey+positivezero copiedbefore4D6957; returnedowner/node readat4D695C/E; invalidcalls4D6965/6Fmayreturn; finalnode+10",
+    "insertion": "count>=1FFFFFFE brancheslengtherror at4CF02C/33; capturehead/parent/pair before4CF094 allocator; incrementcurrentcount at4CF0A3; link thenrepair; rootblack at4CF1DF; outputnode4CF1E6 beforeowner4CF1EB",
+    "exception": "messageassign4CF053 length19 beforestatearmed4CF061; logicerrorconstruct4CF065; D69260profile; throw4CF07C; sourceowningtransport reusable butnative FH3/RTTI not claimed"
+  },
+  "next_packet": {
+    "files": [
+      "include/bsp/native_input_deadline_map_storage.hpp",
+      "src/native_input_deadline_map_storage.cpp",
+      "docs/NATIVE_INPUT_DEADLINE_MAP_STORAGE.md",
+      "reports/native_input_deadline_map_storage.json"
+    ],
+    "required_decision": "A dedicated stateless source storage adapter or narrowly parameterized extraction of existing insertion logic needs explicit scope; currentpublichelpersalone do not suffice. Preserve canonicalnodes and avoidnewSTLport/addressclaims.",
+    "dependencies": [
+      "existing18h leaves",
+      "singleton_lifetime allocation/free",
+      "NativeHardwareLayoutTreeLengthError andcompleted stringproviders",
+      "real returningCRT validation"
+    ],
+    "validation_needed": "One focused canonical rawstorage comparison for signednegative/positive ordering, duplicate no-allocation/valuepreservation, insertionrotation/pointeridentity, key/pairalias timing and returning/throwing validation. Do not count manualtree population or sourcebuild as insertion proof."
+  },
+  "validation": {
+    "static": "currentprimarysource read; complete scalar/native spans; three exactleafcomparisons; callauditpending",
+    "build": "not rerun: no C++ changes",
+    "runtime": "notrun: assessmentonly; no fixture needed to prove hardcodedlayout mismatch",
+    "call_audit": "30 address/native rows checked,0failed"
+  },
+  "no_ghidra_function": [],
+  "excluded_tail_calls": [],
+  "source_file_lease_observation": "At assessment, native_hardware_layout_tree_insert.hpp/.cpp and native_int_pointer_tree18_leaves.hpp/.cpp unleased; recheck beforefuturework"
+}
