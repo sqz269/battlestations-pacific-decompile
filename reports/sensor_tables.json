@@ -1,0 +1,561 @@
+{
+  "packet": "cc2_sensor_tables",
+  "owner": "agent/cc2-sensor-tables",
+  "document": "docs/SENSOR_TABLES.md",
+  "summary": "The producer side of the sensor tables 008048A0 reads: the 2A8h refcounted record of 7x8 entry lists, the 1Ch entry named from its writer, the ReconClass Lua loader 008082A0, the per-id resolver and registry 00808F90/00808EA0, the seven +1E4h categories including the submarine's depth state, and the two mission-scripted range multipliers on [game+21C4h].",
+  "evidence_kind": "static, read-only; no run-time evidence (bsp_game.exe fakes the recon lists, docs/RECON_SLOT_LISTS.md section 10)",
+
+  "routines": [
+    {
+      "address": "008082a0",
+      "name": "load_sensor_class_table_008082a0",
+      "abi": "__thiscall void(ECX = record, LuaObject* row)",
+      "body": "008082a0-00808c1c",
+      "coverage": "partial: normal path complete; the unwind funclets 00808b78-00808c1c are unread",
+      "role": "reads row.Details and fills the record's 56 entry lists and 7 GUIRange lists"
+    },
+    {
+      "address": "00808f90",
+      "name": "resolve_sensor_class_00808f90",
+      "abi": "__fastcall Record**(ECX = out, EDX = reconClassId), RET",
+      "body": "00808f90-008091cd",
+      "coverage": "complete",
+      "role": "registry lookup, ReconClass[id] row, row.ID and row.Got write-back, allocate, load, publish"
+    },
+    {
+      "address": "00808ea0",
+      "name": "sensor_class_registry_00808ea0",
+      "abi": "__cdecl Registry*(void)",
+      "body": "00808ea0-00808f51",
+      "coverage": "complete",
+      "role": "the 10h singleton at 00F874E4 under the singleton-lifetime lock"
+    },
+    {
+      "address": "00808cb0",
+      "name": "sensor_class_record_ctor_00808cb0",
+      "abi": "__thiscall Record*(ECX = 2A8h block)",
+      "body": "00808cb0-00808d10",
+      "coverage": "complete",
+      "role": "vtable 00D08FEC, refcount 1, then 7 groups of 60h through the vector ctor iterator"
+    },
+    {
+      "address": "00852b90",
+      "name": "sensor_category_submarine_00852b90",
+      "abi": "__thiscall int(ECX = unit + 1E4h)",
+      "body": "00852b90-00852c5d (no Ghidra function; read with bsp.py disasm-raw)",
+      "coverage": "complete",
+      "role": "returns 1..5 from the hull's world Y against three depth bands and the periscope byte"
+    },
+    {
+      "address": "008b2320",
+      "name": "lua_set_simplified_recon_multiplier_008b2320",
+      "abi": "__fastcall int(lua_State*)",
+      "body": "008b2320-008b2491",
+      "coverage": "complete",
+      "role": "SetSimplifiedReconMultiplier: argument 0 into [game+21C4h]+74h"
+    },
+    {
+      "address": "008b24a0",
+      "name": "lua_get_simplified_recon_multiplier_008b24a0",
+      "abi": "__fastcall int(lua_State*)",
+      "body": "008b24a0-008b25ef",
+      "coverage": "complete",
+      "role": "GetSimplifiedReconMultiplier"
+    },
+    {
+      "address": "008b25f0",
+      "name": "lua_set_simplified_sonar_multiplier_008b25f0",
+      "abi": "__fastcall int(lua_State*)",
+      "body": "008b25f0-008b2761",
+      "coverage": "complete",
+      "role": "SetSimplifiedSonarMultiplier: argument 0 into [game+21C4h]+78h"
+    },
+    {
+      "address": "008b2770",
+      "name": "lua_get_simplified_sonar_multiplier_008b2770",
+      "abi": "__fastcall int(lua_State*)",
+      "body": "008b2770-008b28bf",
+      "coverage": "complete",
+      "role": "GetSimplifiedSonarMultiplier"
+    },
+    {
+      "address": "00444d20",
+      "name": "BSP_WeatherConfig_LoadGlobals",
+      "abi": "__thiscall void(ECX = config), RET",
+      "body": "00444d20-0044578c",
+      "coverage": "partial: only 0044569f-004456b2, the tail that stores 1.0f into +74h and +78h. docs/WEATHER_CONFIG.md owns the rest",
+      "role": "existing name kept; this packet read only its tail"
+    },
+    {
+      "address": "00807f60",
+      "name": "sensor_gui_range_push_back_00807f60",
+      "abi": "__thiscall void(ECX = ring vector, Ring* row)",
+      "body": "00807f60-00807f9d",
+      "coverage": "partial: read only far enough to establish the 20h stride and the destination",
+      "role": "appends one GUIRange ring"
+    },
+    {
+      "address": "00807bd0",
+      "name": "sensor_entry_list_reserve_00807bd0",
+      "abi": "__thiscall void(ECX = list header, int capacity)",
+      "body": "00807bd0-00807c54",
+      "coverage": "partial: read only far enough to establish the 1Ch stride and max(2 * capacity, 1)",
+      "role": "grows one entry list"
+    }
+  ],
+
+  "host_steps": [
+    {
+      "step": "row_is_table_008082cd",
+      "function": "008082a0",
+      "address": "008082cd",
+      "native": "00b661b0",
+      "note": "LuaObject::IsTable on the record's row; false at 008082D4 abandons the load"
+    },
+    {
+      "step": "open_details_008082e9",
+      "function": "008082a0",
+      "address": "008082e9",
+      "native": "00b67800",
+      "note": "GetByName(00D08FE4 \"Details\")"
+    },
+    {
+      "step": "details_is_table_008082fe",
+      "function": "008082a0",
+      "address": "008082fe",
+      "native": "00b661b0",
+      "note": "false at 00808305 abandons the load"
+    },
+    {
+      "step": "details_keys_0080834a",
+      "function": "008082a0",
+      "address": "0080834a",
+      "native": "00b67080",
+      "note": "IterateFirst over the keys of Details; the key names pick the observer category"
+    },
+    {
+      "step": "details_iteration_unbound_0080835e",
+      "function": "008082a0",
+      "address": "0080835e",
+      "native": "00b66420",
+      "note": "IsUnbound, the outer loop's exit test"
+    },
+    {
+      "step": "details_key_string_00808377",
+      "function": "008082a0",
+      "address": "00808377",
+      "native": "00b662b0",
+      "note": "GetString on the key before the comparison chain"
+    },
+    {
+      "step": "observer_key_observer_air_008083d3",
+      "function": "008082a0",
+      "address": "008083d3",
+      "native": "00bf7fbf",
+      "note": "case-insensitive compare against 00D08FD8 \"ObserverAir\"; match sets index 0 at 008083E4"
+    },
+    {
+      "step": "observer_key_observer_periscope_in_00808417",
+      "function": "008082a0",
+      "address": "00808417",
+      "native": "00425850",
+      "note": "compare against 00D08FB4 \"ObserverPeriscopeIn\"; match sets index 2 at 00808420"
+    },
+    {
+      "step": "observer_group_keys_008084b5",
+      "function": "008082a0",
+      "address": "008084b5",
+      "native": "00b67080",
+      "note": "IterateFirst over the keys of one observer group"
+    },
+    {
+      "step": "subject_key_subject_air_00808537",
+      "function": "008082a0",
+      "address": "00808537",
+      "native": "00bf7fbf",
+      "note": "compare against 00D08F64 \"SubjectAir\"; match sets index 0 at 0080854C"
+    },
+    {
+      "step": "subject_rows_0080858c",
+      "function": "008082a0",
+      "address": "0080858c",
+      "native": "00b67080",
+      "note": "IterateFirst over the numbered rows of one subject list; the row address is computed at 008085AA-008085BC"
+    },
+    {
+      "step": "entry_dist_008085d1",
+      "function": "008082a0",
+      "address": "008085d1",
+      "native": "00b67800",
+      "note": "GetByName(00D08F5C \"Dist\"); the number is read at 008085E0 and squared at 008085F1"
+    },
+    {
+      "step": "entry_dist_number_008085e0",
+      "function": "008082a0",
+      "address": "008085e0",
+      "native": "00b66270",
+      "note": "GetNumber; stored to +0h, its square to +4h"
+    },
+    {
+      "step": "entry_gain_00808615",
+      "function": "008082a0",
+      "address": "00808615",
+      "native": "00b67800",
+      "note": "GetByName(00D08F54 \"Gain\"); the value is multiplied by the double 0.5 at 00D7A280 and stored to +8h"
+    },
+    {
+      "step": "entry_max_level_00808655",
+      "function": "008082a0",
+      "address": "00808655",
+      "native": "00b67800",
+      "note": "GetByName(00D08F48 \"MaxLevel\")"
+    },
+    {
+      "step": "entry_max_level_integer_00808666",
+      "function": "008082a0",
+      "address": "00808666",
+      "native": "00b66380",
+      "note": "integer-with-default 2 (0080865A PUSH 2); 0 -> 0.0f, 1 -> 0.25f (00CE3868), else 1.0f (00D7A24C) into +0Ch"
+    },
+    {
+      "step": "entry_angle_008089a6",
+      "function": "008082a0",
+      "address": "008089a6",
+      "native": "00b67800",
+      "note": "GetByName(00D08ED0 \"Angle\")"
+    },
+    {
+      "step": "entry_angle_is_nil_008089ba",
+      "function": "008082a0",
+      "address": "008089ba",
+      "native": "00b65fb0",
+      "note": "nil stores +0.0f and clears the +18h flag (008089C6/008089CF); otherwise 008089E5/008089EC"
+    },
+    {
+      "step": "entry_raw_type_00808a08",
+      "function": "008082a0",
+      "address": "00808a08",
+      "native": "00b67800",
+      "note": "GetByName(00D08EC8 \"RawType\")"
+    },
+    {
+      "step": "entry_raw_type_integer_00808a17",
+      "function": "008082a0",
+      "address": "00808a17",
+      "native": "00b66290",
+      "note": "GetInteger; stored to +10h at 00808A23, the bit 008048A0 tests against the mask"
+    },
+    {
+      "step": "entry_list_reserve_00808a4e",
+      "function": "008082a0",
+      "address": "00808a4e",
+      "native": "00807bd0",
+      "note": "grow to max(2 * capacity, 1) when count == capacity (00808A37-00808A4B)"
+    },
+    {
+      "step": "gui_range_rows_00808786",
+      "function": "008082a0",
+      "address": "00808786",
+      "native": "00b67080",
+      "note": "IterateFirst over the numbered rows of the GUIRange list"
+    },
+    {
+      "step": "gui_range_push_back_00808903",
+      "function": "008082a0",
+      "address": "00808903",
+      "native": "00807f60",
+      "note": "appends the 20h ring {RawType, hasAngle, Range, Angle, four colour words}"
+    },
+
+    {
+      "step": "registry_singleton_00808fbe",
+      "function": "00808f90",
+      "address": "00808fbe",
+      "native": "00808ea0",
+      "note": "the process-wide registry at 00F874E4"
+    },
+    {
+      "step": "reserve_registry_00808fd1",
+      "function": "00808f90",
+      "address": "00808fd1",
+      "native": "00808c20",
+      "note": "grow the pointer vector to id + 1"
+    },
+    {
+      "step": "open_globals_0080902c",
+      "function": "00808f90",
+      "address": "0080902c",
+      "native": "00b67980",
+      "note": "the embedded Lua owner at [00E188A8]+1A0Ch"
+    },
+    {
+      "step": "open_recon_class_global_00809041",
+      "function": "00808f90",
+      "address": "00809041",
+      "native": "00b67800",
+      "note": "GetByName(00D08FF8 \"ReconClass\")"
+    },
+    {
+      "step": "open_class_row_0080905e",
+      "function": "00808f90",
+      "address": "0080905e",
+      "native": "00b67720",
+      "note": "GetByIndex(reconClassId): the class's row in the script table"
+    },
+    {
+      "step": "assign_id_key_00809071",
+      "function": "00808f90",
+      "address": "00809071",
+      "native": "0041e870",
+      "note": "NativeString = 00CE59B4 \"ID\""
+    },
+    {
+      "step": "set_row_id_00809085",
+      "function": "00808f90",
+      "address": "00809085",
+      "native": "00b67460",
+      "note": "row.ID = reconClassId, a write back into the script table"
+    },
+    {
+      "step": "assign_got_key_008090b5",
+      "function": "00808f90",
+      "address": "008090b5",
+      "native": "0041e870",
+      "note": "NativeString = 00CE452C \"Got\""
+    },
+    {
+      "step": "set_row_got_008090c9",
+      "function": "00808f90",
+      "address": "008090c9",
+      "native": "00b673a0",
+      "note": "row.Got = true"
+    },
+    {
+      "step": "construct_record_0080910d",
+      "function": "00808f90",
+      "address": "0080910d",
+      "native": "00808cb0",
+      "note": "constructs the 2A8h block allocated at 008090F6; skipped when the allocation is null"
+    },
+    {
+      "step": "load_from_row_00809147",
+      "function": "00808f90",
+      "address": "00809147",
+      "native": "008082a0",
+      "note": "ECX = the new record, stack = the row object; reached even with a null record"
+    },
+    {
+      "step": "registry_singleton_again_0080914c",
+      "function": "00808f90",
+      "address": "0080914c",
+      "native": "00808ea0",
+      "note": "the registry is re-fetched before the publish"
+    },
+    {
+      "step": "reserve_registry_again_0080915f",
+      "function": "00808f90",
+      "address": "0080915f",
+      "native": "00808c20",
+      "note": "then the slot at data + id * 4 takes the record, releasing the old one (00809164-0080919B)"
+    },
+
+    {
+      "step": "resolver_call_site_00962419",
+      "function": "00960230",
+      "address": "00962419",
+      "native": "00808f90",
+      "note": "BSP_VehicleClass_ReadLuaFields resolves the row's integer ReconClass field into class+B4h. docs/VEHICLE_CLASS_FIELDS.md line 116 cites 009623F0, which is the field read, not the call"
+    }
+  ],
+
+  "sites_outside_a_ghidra_function": [
+    {
+      "site": "00852ba6",
+      "callee": "00414db0",
+      "enclosing": "00852b90, which has no Ghidra function",
+      "note": "refresh the world pose when unit+C8h is clear, before reading the hull Y at unit+100h; read with bsp.py disasm-raw"
+    },
+    {
+      "site": "00852f45",
+      "writes": "00d0bf54 into unit+1E4h",
+      "enclosing": "00852f10",
+      "note": "a data write, not a call; 00852F10 is called only by 008531A0 BSP_VehicleClassSubmarine_CreateInstance, which is what ties the depth classifier to the submarine class"
+    }
+  ],
+
+  "record_layout": {
+    "size": "0x2a8",
+    "fields": [
+      {"offset": "+0h", "size": 4, "meaning": "vtable 00D08FEC", "written_at": "00808cf4"},
+      {"offset": "+4h", "size": 4, "meaning": "refcount, starts at 1", "written_at": "00808cd3"},
+      {"offset": "+8h", "size": "0x2a0", "meaning": "7 groups x 8 list headers of 0Ch", "written_at": "00808cfa"}
+    ],
+    "list_header": [
+      {"offset": "+0h", "meaning": "Entry* begin"},
+      {"offset": "+4h", "meaning": "int count"},
+      {"offset": "+8h", "meaning": "int capacity"}
+    ],
+    "index": "record + 8 + (observerCategory * 8 + subjectCategory) * 0Ch; 008085AA in the writer, 00804A79 in the reader"
+  },
+
+  "entry_layout": {
+    "size": "0x1c",
+    "fields": [
+      {"offset": "+0h", "type": "float", "lua_key": "Dist", "written_at": "008085e5", "read_at": "never"},
+      {"offset": "+4h", "type": "float", "meaning": "Dist * Dist", "written_at": "008085f1", "read_at": "00804ab7"},
+      {"offset": "+8h", "type": "float", "lua_key": "Gain", "meaning": "Gain * 0.5 (double 00D7A280)", "written_at": "00808626", "read_at": "00804b35"},
+      {"offset": "+0ch", "type": "float", "lua_key": "MaxLevel", "meaning": "0 -> 0.0f, 1 -> 0.25f, else 1.0f", "written_at": "0080866b", "read_at": "00804b69"},
+      {"offset": "+10h", "type": "int", "lua_key": "RawType", "meaning": "mask bit index; RRT_VISION 0, RRT_RADAR 1, RRT_SONAR 2", "written_at": "00808a23", "read_at": "00804acf"},
+      {"offset": "+14h", "type": "float", "lua_key": "Angle", "meaning": "bearing half-angle, radians", "written_at": "008089e5", "read_at": "00804b29"},
+      {"offset": "+18h", "type": "byte", "meaning": "Angle present", "written_at": "008089ec", "read_at": "00804b0f"}
+    ]
+  },
+
+  "categories": [
+    {"value": 0, "name": "Air", "lua_keys": ["ObserverAir", "SubjectAir"], "native": "0074e190", "address": "0074e190", "kind": "constant", "classes": "plane instances; 9 vtables including 00D05EF4, whose +88h is BSP_PlaneInstance_IsKindOf 0074E400"},
+    {"value": 1, "name": "Surface", "lua_keys": ["ObserverSurface", "SubjectSurface"], "native": "006dfd20", "address": "006dfd20", "kind": "constant", "classes": "the ship chain levels 5-6; 8 vtables including 00CFC3A4 from 006FE460 BSP_UnitInstance_Construct"},
+    {"value": 1, "name": "Surface", "native": "0074dd50", "address": "0074dd50", "kind": "constant", "classes": "land vehicle; vtable 00CFFDB4, whose +88h is BSP_MLandVehicle_IsKindOf 0074DD90"},
+    {"value": 1, "name": "Surface", "native": "006d1d30", "address": "006d1d30", "kind": "constant", "classes": "airfield; vtable 00CF8BD8, whose +8Ch is BSP_MAirfield_IsKindOf 006D20E0"},
+    {"value": 1, "name": "Surface", "native": "006f57b0", "address": "006f57b0", "kind": "constant", "classes": "land fort; vtables 00CFAFF8 and 00CFF3CC, whose +88h is BSP_MLandFort_IsKindOf 006F5890"},
+    {"value": 4, "name": "Underwater", "native": "0085ea40", "address": "0085ea40", "kind": "constant", "classes": "vtable 00D0D100 from 0085E9C0 in the submarine/torpedo module; owning class not identified"},
+    {"value": 6, "name": "unclassified", "lua_keys": [], "native": "004f1740", "address": "004f1740", "kind": "constant", "classes": "the base default; 24 vtables including 00D03E54, 00D0DF40 and 00D1A66C, levels 2-4 of the unit chain. No Lua key reaches row or column 6"},
+    {"value": "1..5", "name": "submarine depth state", "native": "00852b90", "address": "00852b90", "kind": "state", "classes": "submarine; vtable 00D0BF54 from 00852F10, reached only from 008531A0 BSP_VehicleClassSubmarine_CreateInstance"},
+    {"value": "delegated", "name": "owner's category", "native": "007ecfe0", "address": "007ecfe0", "kind": "delegating", "classes": "plane squadron; vtable 00D08794 from 007F2C60 BSP_PlaneSquadronTickableEntity_Construct. Forwards to the object at +3D0h, or returns 6 when that pointer is null"},
+    {"value": 1, "name": "Surface", "native": "004f24f0", "address": "004f24f0", "kind": "constant", "classes": "vtable 00CEA540; owning class not identified"},
+    {"value": 1, "name": "Surface", "native": "00846b50", "address": "00846b50", "kind": "constant", "classes": "vtable 00D0B740; owning class not identified"},
+    {"value": 1, "name": "Surface", "native": "008561e0", "address": "008561e0", "kind": "constant", "classes": "vtable 00D0C3B8; owning class not identified"}
+  ],
+
+  "submarine_depth_rule": {
+    "native": "00852b90",
+    "address": "00852b90",
+    "inputs": "hull world Y at unit+100h (pose refreshed through 00414DB0 when unit+C8h is clear); bands at unit+1200h, +1204h, +1208h, +120Ch; periscope byte at unit+1234h",
+    "steps": [
+      {"at": "00852bab", "test": "y > (unit[1204h] + unit[1200h]) / 3.0 (double 00D7A2B0)", "result": "1 Surface"},
+      {"at": "00852be4", "test": "unit[1204h] - 5.0 (double 00D7A370) <= y", "result": "3 PeriscopeOut when unit+1234h is set, else 2 PeriscopeIn (00852c4c)"},
+      {"at": "00852c14", "test": "(unit[120Ch] + unit[1208h]) * 0.5 (double 00D7A280) <= y", "result": "4 Underwater, else 5 DeepUnderwater"}
+    ]
+  },
+
+  "tuning_scalars": [
+    {
+      "offset": "+74h",
+      "lua_name": "SimplifiedReconMultiplier",
+      "getter_native": "008b24a0",
+      "setter_native": "008b2320",
+      "binding_rows": "00E0C248 (set) and 00E0C250 (get); names at 00D0F8E4 and 00D0F8C4",
+      "default": "1.0f stored at 004456AD by 00444D20, unconditionally and after every Lua read",
+      "effect": "scales sensor range linearly: 008048A0 divides the squared distance by m74 squared before comparing against Dist squared",
+      "shipped_use": "about 60 live calls across the shipped missions, 0.1 to 10.5; commonest 0.5 (9), 10.0 (8), 1.0 (7)"
+    },
+    {
+      "offset": "+78h",
+      "lua_name": "SimplifiedSonarMultiplier",
+      "getter_native": "008b2770",
+      "setter_native": "008b25f0",
+      "binding_rows": "00E0C258 (set) and 00E0C260 (get); names at 00D0F8A4 and 00D0F884",
+      "default": "1.0f stored at 004456B2 by 00444D20",
+      "effect": "applied only when the target is IsKindOf(08h) and not a surface target (008049A3)",
+      "shipped_use": "no shipped script calls the setter, so the submerged-submarine range penalty is 1.0 in all shipped content"
+    }
+  ],
+
+  "lua_producer": {
+    "entry_point": "scripts/datatables/autoload/reconclasses.lua",
+    "variants": [
+      "scripts/datatables/classtables/arcade/reconclasses.lua (GameMode != 1), 12 classes",
+      "scripts/datatables/classtables/realistic/reconclasses.lua (GameMode == 1), same shape, larger base ranges"
+    ],
+    "raw_types": {"RRT_VISION": 0, "RRT_RADAR": 1, "RRT_SONAR": 2},
+    "installed_class_example": {
+      "recon_class_id": 3,
+      "script_comment": "Sonar ship (Destroyer)",
+      "source": "arcade/reconclasses.lua lines 71-108",
+      "constants": {"SonarShip_recon_SonarRange": 1000, "NormalShip_recon_VisionRange": 4000},
+      "vehicle_classes": "31 rows of vehicleclasses.lua, including VehicleClass[11] Allen M. Sumner 1945, VehicleClass[23] Fletcher 1943, VehicleClass[14] Akizuki 1944",
+      "observer": "ObserverSurface only; 55 of the 56 lists stay empty",
+      "lists": [
+        {"subject": "Air", "index": 8, "entries": [{"dist": 4000, "dist_sq": 16000000, "gain": 0.5, "cap": 1.0, "raw_type": 0, "angle": 0, "bearing_limited": false}]},
+        {"subject": "Surface", "index": 9, "entries": [{"dist": 4000, "dist_sq": 16000000, "gain": 0.5, "cap": 1.0, "raw_type": 0, "angle": 0, "bearing_limited": false}]},
+        {"subject": "PeriscopeIn", "index": 10, "entries": [{"dist": 1000, "dist_sq": 1000000, "gain": 0.5, "cap": 1.0, "raw_type": 2, "angle": 0, "bearing_limited": false}, {"dist": 2500, "dist_sq": 6250000, "gain": 0.5, "cap": 1.0, "raw_type": 2, "angle": 0.7853982, "bearing_limited": true}]},
+        {"subject": "PeriscopeOut", "index": 11, "entries": [{"dist": 1000, "dist_sq": 1000000, "gain": 0.5, "cap": 1.0, "raw_type": 2, "angle": 0, "bearing_limited": false}, {"dist": 2500, "dist_sq": 6250000, "gain": 0.5, "cap": 1.0, "raw_type": 2, "angle": 0.7853982, "bearing_limited": true}]},
+        {"subject": "Underwater", "index": 12, "entries": [{"dist": 660, "dist_sq": 435600, "gain": 0.5, "cap": 1.0, "raw_type": 2, "angle": 0, "bearing_limited": false}, {"dist": 1660, "dist_sq": 2755600, "gain": 0.5, "cap": 1.0, "raw_type": 2, "angle": 0.7853982, "bearing_limited": true}]},
+        {"subject": "DeepUnderwater", "index": 13, "entries": [], "note": "a destroyer cannot detect a deep-running submarine at all"}
+      ],
+      "gui_rings": [
+        {"range": 1000, "raw_type": 2, "angle": null},
+        {"range": 2500, "raw_type": 2, "angle": 0.7853982},
+        {"range": 4000, "raw_type": 0, "angle": null}
+      ]
+    },
+    "class_table": [
+      {"id": 1, "comment": "Normal Ship (Cargo ship, Torpedoboat)", "vehicle_classes": 22},
+      {"id": 2, "comment": "Radar ship (Battleship, Carrier)", "vehicle_classes": 99},
+      {"id": 3, "comment": "Sonar ship (Destroyer)", "vehicle_classes": 31},
+      {"id": 4, "comment": "Ship with radar and sonar (Cruiser - TONE)", "vehicle_classes": 1},
+      {"id": 5, "comment": "Normal plane", "vehicle_classes": 67},
+      {"id": 6, "comment": "Recon plane", "vehicle_classes": 8},
+      {"id": 7, "comment": "Normal submarine", "vehicle_classes": 9},
+      {"id": 8, "comment": "Ground unit w/o radar", "vehicle_classes": 305},
+      {"id": 9, "comment": "Ground unit with high vision (Observation post)", "vehicle_classes": 3},
+      {"id": 10, "comment": "Ground unit with radar (Radar station)", "vehicle_classes": 3},
+      {"id": 11, "comment": "Ground unit with small radar (Airfield)", "vehicle_classes": 6},
+      {"id": 12, "comment": "Units with no recon", "vehicle_classes": 83}
+    ]
+  },
+
+  "no_ghidra_function": [
+    {"address": "00808200", "name": "sensor_class_group_ctor_00808200", "end_address": "00808225"},
+    {"address": "00807b60", "name": "sensor_list_header_ctor_00807b60", "end_address": "00807b6c"},
+    {"address": "00852b90", "name": "sensor_category_submarine_00852b90", "end_address": "00852c5d"},
+    {"address": "004f1740", "name": "sensor_category_unclassified_004f1740", "end_address": "004f1745"},
+    {"address": "006dfd20", "name": "sensor_category_surface_006dfd20", "end_address": "006dfd25"},
+    {"address": "0074e190", "name": "sensor_category_air_0074e190", "end_address": "0074e192"},
+    {"address": "0074dd50", "name": "sensor_category_surface_0074dd50", "end_address": "0074dd55"},
+    {"address": "006d1d30", "name": "sensor_category_surface_006d1d30", "end_address": "006d1d35"},
+    {"address": "006f57b0", "name": "sensor_category_surface_006f57b0", "end_address": "006f57b5"},
+    {"address": "0085ea40", "name": "sensor_category_underwater_0085ea40", "end_address": "0085ea45"},
+    {"address": "007ecfe0", "name": "sensor_category_delegated_007ecfe0", "end_address": "007ecffc"},
+    {"address": "004f24f0", "name": "sensor_category_surface_004f24f0", "end_address": "004f24f5"},
+    {"address": "00846b50", "name": "sensor_category_surface_00846b50", "end_address": "00846b55"},
+    {"address": "008561e0", "name": "sensor_category_surface_008561e0", "end_address": "008561e5"}
+  ],
+
+  "corrections": [
+    {
+      "document": "WEATHER_CONFIG.md",
+      "was": "+74h and +78h are provisionally named amplitude multipliers (current view-mode amplitude multiplier, current weather amplitude multiplier); the loader writes 1.0f to both",
+      "is": "they are SimplifiedReconMultiplier and SimplifiedSonarMultiplier, the sensor range scalars 008048A0 reads; the 1.0f is their default and only a mission script changes them",
+      "evidence": "the Lua binding rows at 00E0C248-00E0C264 pair 008B2320/008B24A0 with 00D0F8E4/00D0F8C4 \"SimplifiedReconMultiplier\" and 008B25F0/008B2770 with 00D0F8A4/00D0F884 \"SimplifiedSonarMultiplier\"; 008B243C stores into +74h and 008B270C into +78h; 00804937 and 00804998 read them"
+    },
+    {
+      "document": "RECON_SLOT_LISTS.md",
+      "was": "the categories run 0..7 and the table is observerCategory * 8 + targetCategory",
+      "is": "the stride is 8 but the record holds seven groups; the categories run 0..6 and column 7 is allocated and unreachable",
+      "evidence": "00808CE4 PUSH 7 with element size 0x60 into a 0x2a8 allocation (8 + 7 * 0x60 = 0x2a8); the six Lua key names map to 0..5 and 004F1740 returns 6"
+    },
+    {
+      "document": "RECON_SLOT_LISTS.md",
+      "was": "entry +0Ch is a clamp the gain is reduced against",
+      "is": "it is one of exactly three values derived from the script's MaxLevel: 0 -> 0.0f, 1 -> 0.25f, 2 (the default) -> 1.0f, which are the published-level thresholds",
+      "evidence": "0080865A PUSH 2 into 00B66380, then 0080866B-00808685 with 00CE3868 and 00D7A24C"
+    },
+    {
+      "document": "recon_slot_lists.hpp",
+      "was": "ReconSensorEntry starts at +4h with max_normalized_distance_sq",
+      "is": "the entry starts at +0h with the authored Dist; +4h is its square",
+      "evidence": "008085E5 stores the Lua number to +0h and 008085F1 FMUL ST0 stores the square to +4h; 00808A5B copies seven dwords"
+    }
+  ],
+
+  "open_questions": [
+    "[[game+19CCh]+13Ch]: the node shape is {?, next +4h, unit +8h} and 00807462-0080749A resets one detection record per node, but no writer of that list head was found (scanning .text for MOV [reg+13Ch] yields nothing in the world, scene or recon modules)",
+    "the owning class of 0085EA40 (returns Underwater) and of the three further Surface implementations 004F24F0, 00846B50, 008561E0",
+    "00807BD0 and 00807F60 bodies beyond their strides and growth rule, and the GUIRange consumer",
+    "the COL_BLUE / COL_RED / COL_GREEN Lua constants behind the GUIRange colour words"
+  ],
+
+  "build": "scripts/build.ps1 Win32 Release, warnings as errors: passed",
+  "tests": "ctest reconstructed_math: 1/1 passed. One case added to tests/math_tests.cpp for 00852B90's five-way depth classification; two static_asserts in src/sensor_tables.cpp tie the MaxLevel caps to kReconDetectionBlipThreshold and kReconDetectionValueMax",
+  "state": "exported, analysed, reconstructed, build-tested. Not ABI-compatible: the native record is refcounted with raw {begin, count, capacity} lists"
+}
