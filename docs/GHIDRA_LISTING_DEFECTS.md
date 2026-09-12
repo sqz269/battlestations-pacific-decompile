@@ -44,3 +44,15 @@ Run again from the Script Manager after the `00643c1c..00643c68` row was added: 
 `00643C1C: JLE 00643C69` onward), the body stays `006435d0-00643d96`,
 `ghidra_flow_repair.py 006435d0` reports 0 gaps, and `snapshot --force` / `index` were refreshed
 (62924 functions). All four rows are repaired.
+
+## Repair run 3 (2026-09-12, RepairListingDefects.java, Ghidra 12.0.4)
+
+- `004ceca1..004cecab`: repaired. `BSP_NativeStringSet_EraseSubtree` now owns `004cec60 - 004cecb1`;
+  the hole decodes as `ADD ESP,4 / CMP byte ptr [ESI+15h],0 / MOV EDI,ESI / JZ 004cec71` (the erase
+  loop back edge). `tools/ghidra_flow_repair.py 004cec60` reports 34 instructions, 0 gaps.
+- `00643c1c..00643c68`: NOT repaired. The bytes were disassembled but the script printed "no function
+  owns the range": `BSP_InGameHudMarkersScreen_Update` owns `00643c18` (the four-byte
+  `MOV [ESP+34h],EAX`) and `00643c69` (the `JLE` target) but not `00643c19..00643c68`, so the
+  one-byte-back anchor at `00643c1b` found no owner. The script now walks back up to 64 bytes to
+  the nearest owned address, adds the range from the byte after it through the end of the last
+  decoded instruction, and skips rows an earlier run already repaired. One more run is queued.

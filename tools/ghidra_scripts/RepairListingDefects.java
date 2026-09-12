@@ -35,8 +35,8 @@ public class RepairListingDefects extends GhidraScript {
         {"004e4a40", "004e5537", "BSP_Game_OnMove"},                    // body stopped after MOV EAX,FS:[0]
         {"00643c0c", "00643c18", ""},                                   // one-byte-late decode inside the HUD marker routine
         {"004c9800", "004c981d", "BSP_SceneRecordPlayerSlot_Construct"}, // defined data blocked create_function
-        {"00643c1c", "00643c68", ""},
-        {"004ceca1", "004cecab", ""},                                   // eleven-byte hole inside 004cec60 (erase loop back edge)                                   // hole left inside 006435d0 after the first repair (target-group member loop)
+        {"00643c1c", "00643c68", ""},                                   // hole left inside 006435d0 after the first repair (target-group member loop)
+        {"004ceca1", "004cecab", ""},                                   // eleven-byte hole inside 004cec60 (erase loop back edge)
     };
 
     @Override
@@ -49,6 +49,13 @@ public class RepairListingDefects extends GhidraScript {
             Function existing = listing.getFunctionContaining(start);
             String name = row[2];
             boolean createHere = !name.isEmpty();  // a named row starts a function; an unnamed row is a hole inside one
+            // skip a row an earlier run already repaired: the range is decoded and one function owns all of it
+            if (existing != null && existing.getBody().contains(end) && listing.getInstructionAt(start) != null
+                    && (!createHere || (existing.getEntryPoint().equals(start) && existing.getName().equals(name)))) {
+                println(row[0] + ": already repaired (" + existing.getName() + " " + existing.getBody().getMinAddress()
+                        + " - " + existing.getBody().getMaxAddress() + ")");
+                continue;
+            }
             if (name.isEmpty() && existing != null) {
                 name = existing.getName();
             }
@@ -88,11 +95,26 @@ public class RepairListingDefects extends GhidraScript {
                             + " - " + created.getBody().getMaxAddress());
                 }
             } else {
-                // the range lies inside an existing function: extend its body to cover the new units
-                Function owner = listing.getFunctionContaining(start.subtract(1));
+                // the range lies inside an existing function: extend its body to cover the new units.
+                // Walk back to the nearest owned byte (the hole can begin inside the tail bytes of the last
+                // owned instruction, as at 00643c19..00643c1b) and take the range up to the end of the last
+                // decoded instruction.
+                Function owner = null;
+                Address anchor = start.subtract(1);
+                for (int back = 0; back < 64 && owner == null; back++) {
+                    owner = listing.getFunctionContaining(anchor);
+                    if (owner == null) {
+                        anchor = anchor.subtract(1);
+                    }
+                }
                 if (owner != null) {
+                    Address last = end;
+                    Instruction tail = listing.getInstructionContaining(end);
+                    if (tail != null) {
+                        last = tail.getMaxAddress();
+                    }
                     AddressSet body = new AddressSet(owner.getBody());
-                    body.add(range);
+                    body.add(new AddressSet(anchor.add(1), last));
                     owner.setBody(body);
                     println(row[0] + ": re-bodied " + owner.getName() + " to " + body.getMinAddress()
                             + " - " + body.getMaxAddress());
