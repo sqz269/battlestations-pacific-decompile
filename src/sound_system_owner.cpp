@@ -52,17 +52,30 @@ SoundSystemOwner::SoundSystemOwner(SoundSystemState& system_state,
 void register_sound_system_owner_00a7b190(SoundSystemOwner& owner,
     SoundOwnerLifetimeBindings& lifetime) {
     owner.native_vtable_00 = 0x00d5abacu;
-    CapturedSoundSection section(lifetime.domain);
-    lifetime.global_00f8bbd8 = &owner;
-    lifetime.domain.get_manager_00415350()->register_object(lifetime.global_00f8bbd8);
+    try {
+        CapturedSoundSection section(lifetime.domain);
+        lifetime.global_00f8bbd8 = &owner;
+        lifetime.domain.get_manager_00415350()->register_object(lifetime.global_00f8bbd8);
+    } catch (...) {
+        // DEAEDC unwinds the captured guard, then CB4FD0 -> 00412430.
+        // Neither action clears the published global or unregisters it.
+        owner.native_vtable_00 = 0x00ce3818u;
+        throw;
+    }
 }
 
 void register_sound_auxiliary_tree_owner_00a880e0(SoundAuxiliaryTreeOwner& owner,
     SoundOwnerLifetimeBindings& lifetime) {
     owner.native_vtable_00 = 0x00d5b448u;
-    CapturedSoundSection section(lifetime.domain);
-    lifetime.global_00f8bbe8 = &owner;
-    lifetime.domain.get_manager_00415350()->register_object(lifetime.global_00f8bbe8);
+    try {
+        CapturedSoundSection section(lifetime.domain);
+        lifetime.global_00f8bbe8 = &owner;
+        lifetime.domain.get_manager_00415350()->register_object(lifetime.global_00f8bbe8);
+    } catch (...) {
+        // DEC36C has the same guard/root-base unwind via CB6208/CB6200.
+        owner.native_vtable_00 = 0x00ce3818u;
+        throw;
+    }
 }
 
 void construct_sound_listener_owner_00a7fd40(SoundListenerOwnerState& owner,

@@ -1,0 +1,463 @@
+{
+  "packet": "orch4_sound_dialog_table_y",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00a87060",
+      "name": "load_sound_dialog_table_00a87060",
+      "proposed_name": "BSP_DialogStreamTable_Parse",
+      "source": "src/sound_dialog_table.cpp",
+      "document": "docs/SOUND_DIALOG_TABLE.md",
+      "status": "reconstructed_build_and_installed_fixture_tested",
+      "coverage": "complete sequence in documented valid storage and scanner projection",
+      "abi": "ECX self; stack void* filename; RET4; void result",
+      "last_instruction": "00a87386",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a87389",
+      "byte_span": 809,
+      "sha256": "9be902ead8f39a34adfcdbd2b489133893f537b6a7419b8ee349045d96938538",
+      "disk_analysis_equal": true,
+      "meaning": "Append actual14h channel records to actual20h table; preserve settings and native EH surviving allocations.",
+      "name_is_hypothesis": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self; stack void* filename; RET4; void result. Append actual14h channel records to actual20h table; preserve settings and native EH surviving allocations. Native span SHA256 9be902ead8f39a34adfcdbd2b489133893f537b6a7419b8ee349045d96938538. docs/SOUND_DIALOG_TABLE.md. Actual Win32 table/record storage, projected scanner/allocator/C++ interface; no gameplay or binary ABI claim. Win32 Release,2 existing tests and installed repeated-append/owner fixture passed; logical stream playback remains unvalidated."
+    },
+    {
+      "address": "00a77ef0",
+      "name": "copy_sound_dialog_record_00a77ef0",
+      "proposed_name": "BSP_DialogChannelRecord_Copy",
+      "source": "src/sound_dialog_table.cpp",
+      "document": "docs/SOUND_DIALOG_TABLE.md",
+      "status": "reconstructed_build_and_installed_fixture_tested",
+      "coverage": "complete sequence in documented valid storage and scanner projection",
+      "abi": "ECX self; stack void* source; RET4; EAX destination",
+      "last_instruction": "00a77f7d",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a77f80",
+      "byte_span": 144,
+      "sha256": "1786c7485a2fec2fb839a1849259a741812921dcfe1727d00f84d142b7362cbc",
+      "disk_analysis_equal": true,
+      "meaning": "Clear destination name before self-copy check; deep copy with live field reloads and name exception cleanup.",
+      "name_is_hypothesis": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self; stack void* source; RET4; EAX destination. Clear destination name before self-copy check; deep copy with live field reloads and name exception cleanup. Native span SHA256 1786c7485a2fec2fb839a1849259a741812921dcfe1727d00f84d142b7362cbc. docs/SOUND_DIALOG_TABLE.md. Actual Win32 table/record storage, projected scanner/allocator/C++ interface; no gameplay or binary ABI claim. Win32 Release,2 existing tests and installed repeated-append/owner fixture passed; logical stream playback remains unvalidated."
+    },
+    {
+      "address": "00a78dc0",
+      "name": "reserve_sound_dialog_records_00a78dc0",
+      "proposed_name": "BSP_DialogChannelRecords_Reserve",
+      "source": "src/sound_dialog_table.cpp",
+      "document": "docs/SOUND_DIALOG_TABLE.md",
+      "status": "reconstructed_build_and_installed_fixture_tested",
+      "coverage": "complete sequence in documented valid storage and scanner projection",
+      "abi": "ECX self; stack int capacity; RET4; void result",
+      "last_instruction": "00a78eb2",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a78eb5",
+      "byte_span": 245,
+      "sha256": "be36bad5da503b18343cd57427f091e09a53f7b6f1fff55ba8b22a1d65f29927",
+      "disk_analysis_equal": true,
+      "meaning": "Grow actual0Ch vector header; deep copy forward then release old names forward; preserve failed-copy prefix leak.",
+      "name_is_hypothesis": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self; stack int capacity; RET4; void result. Grow actual0Ch vector header; deep copy forward then release old names forward; preserve failed-copy prefix leak. Native span SHA256 be36bad5da503b18343cd57427f091e09a53f7b6f1fff55ba8b22a1d65f29927. docs/SOUND_DIALOG_TABLE.md. Actual Win32 table/record storage, projected scanner/allocator/C++ interface; no gameplay or binary ABI claim. Win32 Release,2 existing tests and installed repeated-append/owner fixture passed; logical stream playback remains unvalidated."
+    },
+    {
+      "address": "00a77ea0",
+      "name": "destroy_sound_dialog_record_00a77ea0",
+      "proposed_name": "BSP_DialogChannelRecord_Destroy",
+      "source": "src/sound_dialog_table.cpp",
+      "document": "docs/SOUND_DIALOG_TABLE.md",
+      "status": "reconstructed_build_and_installed_fixture_tested",
+      "coverage": "complete sequence in documented valid storage and scanner projection",
+      "abi": "ECX self; RET; void result",
+      "last_instruction": "00a77ebc",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a77ebd",
+      "byte_span": 29,
+      "sha256": "f601293c0a9f88fe847ba452ee8f20faf6624126c785030f9387cb84fd50f9bd",
+      "disk_analysis_equal": true,
+      "meaning": "Release captured nonnull native name using current length plus one; leave header untouched.",
+      "name_is_hypothesis": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self; RET; void result. Release captured nonnull native name using current length plus one; leave header untouched. Native span SHA256 f601293c0a9f88fe847ba452ee8f20faf6624126c785030f9387cb84fd50f9bd. docs/SOUND_DIALOG_TABLE.md. Actual Win32 table/record storage, projected scanner/allocator/C++ interface; no gameplay or binary ABI claim. Win32 Release,2 existing tests and installed repeated-append/owner fixture passed; logical stream playback remains unvalidated."
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00a87087",
+      "native": "00bf681b",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a870bd",
+      "native": "0041dd40",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a870d2",
+      "native": "00bf7680",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a870dc",
+      "native": "00bef2e0",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a870f2",
+      "native": "00bee8e0",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a8712c",
+      "native": "00bee8e0",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87132",
+      "native": "00bf7fbf",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87144",
+      "native": "00bee800",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87150",
+      "native": "00bee8e0",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87156",
+      "native": "00bf7fbf",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87187",
+      "native": "00bef020",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a871a9",
+      "native": "00419cc0",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a871b3",
+      "native": "00bd1120",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a871cb",
+      "native": "00bf7680",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a871de",
+      "native": "00bee8e0",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a871e4",
+      "native": "00bf7fbf",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a871f2",
+      "native": "00bee800",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a8720f",
+      "native": "00bee8e0",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87215",
+      "native": "00bf7fbf",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87223",
+      "native": "00bee800",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87241",
+      "native": "00bee8e0",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87247",
+      "native": "00bf7fbf",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87255",
+      "native": "00bee800",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a8728a",
+      "native": "00a78dc0",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a872ac",
+      "native": "00a77ef0",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a872ea",
+      "native": "00419cc0",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a872f1",
+      "native": "00bd1510",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a872fd",
+      "native": "00bee800",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a8730c",
+      "native": "00bee8e0",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87312",
+      "native": "00bf7fbf",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87320",
+      "native": "00bee800",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a8732c",
+      "native": "00bef170",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a8733e",
+      "native": "00bee8e0",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87344",
+      "native": "00bf7fbf",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87356",
+      "native": "00bee800",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a87366",
+      "native": "00bef220",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a8736c",
+      "native": "00bf65ac",
+      "caller": "00a87060"
+    },
+    {
+      "address": "00a77f42",
+      "native": "0041dd40",
+      "caller": "00a77ef0"
+    },
+    {
+      "address": "00a77f57",
+      "native": "00bf7680",
+      "caller": "00a77ef0"
+    },
+    {
+      "address": "00a78e04",
+      "native": "00bf55be",
+      "caller": "00a78dc0"
+    },
+    {
+      "address": "00a78e3f",
+      "native": "00a77ef0",
+      "caller": "00a78dc0"
+    },
+    {
+      "address": "00a78e75",
+      "native": "00419cc0",
+      "caller": "00a78dc0"
+    },
+    {
+      "address": "00a78e7c",
+      "native": "00bd1510",
+      "caller": "00a78dc0"
+    },
+    {
+      "address": "00a78e8f",
+      "native": "00bf6989",
+      "caller": "00a78dc0"
+    },
+    {
+      "address": "00a77eb0",
+      "native": "00419cc0",
+      "caller": "00a77ea0"
+    },
+    {
+      "address": "00a77eb7",
+      "native": "00bd1510",
+      "caller": "00a77ea0"
+    }
+  ],
+  "read_only_evidence": [
+    {
+      "address": "00e12ef0",
+      "length": 16,
+      "bytes_hex": "00000000010000000200000006000000",
+      "sha256": "5fa93bdcd2715a0d5267fb2fd4aaa78a23ddb967b5ba7d6df47702921b096e53",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00d5b330",
+      "length": 12,
+      "bytes_hex": "353100004368616e6e656c73",
+      "sha256": "96b460661f3c1dcfb6b76a502e3a266bd9c2b19693e9c077750053265bbf064e",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00deabec",
+      "length": 8,
+      "bytes_hex": "ffffffff404dcb00",
+      "sha256": "70d8e6c39af4a96147272b4a005f2aa28dc243559bb0da8283fcf0b2809abbf1",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00dead38",
+      "length": 8,
+      "bytes_hex": "ffffffff304ecb00",
+      "sha256": "372f8a47366212b8ca201a1e6858723a84d04127c459bbee989a87735c8f3b0b",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00dec1f0",
+      "length": 80,
+      "bytes_hex": "ffffffff9060cb00ffffffff9b60cb00ffffffffa360cb00020000000000000003000000000000000200000000000000050000000000000002000000ab60cb00ffffffff000000000800000000000000",
+      "sha256": "010887f5d893c639b5d825691b47f89fde9d1f9e036f2a87a32527b06b8c45ed",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00cb4d40",
+      "length": 8,
+      "bytes_hex": "8b4df0e9d88f76ff",
+      "sha256": "b464195fc0a0fe5539dccdc24e1eb98faa0713b2ee4f55791269ef012c2fa260",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00cb4e30",
+      "length": 23,
+      "bytes_hex": "8b45e86bc0140345ec508b4df051e8edc274ff83c408c3",
+      "sha256": "24431e54f2a316a5784c3a342d906d4ca314423215bf8b7fbe49cb312f6f078b",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00cb6090",
+      "length": 55,
+      "bytes_hex": "8b45d850e81305f4ff59c38d4de0e97d7c76ff8d4de0e9f51ddcff8b45dc8b48046bc9148b55dc030a518b45d850e86db074ff83c408c3",
+      "sha256": "f099cf91b6dd979219dce80dd321cc386407b460ca0cb17f9ce9518a423b8fcb",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a87371",
+      "length": 24,
+      "bytes_hex": "8b4c243483c4045f5e5d64890d000000005b83c42cc20400",
+      "sha256": "2e7b1ceaab31584b8b37786303870d625b25e600dfe1d48095b82bff581f47f4",
+      "disk_analysis_equal": true
+    }
+  ],
+  "no_ghidra_function": [],
+  "flow_report": "reports/sound_dialog_table_flow.json",
+  "prototype_report": "reports/sound_dialog_table_prototypes.json",
+  "boundaries": [
+    "Scanner is existing NativeTextTokens/SoundSampleScanner VFS value projection, not actual828h storage.",
+    "Native invalid storage, format indices outside0..3, oversized allocations and SEH are outside the domain.",
+    "Malformed top-level tokens can make no progress, including empty quoted tokens.",
+    "Opaque temporary+C is caller supplied and overwritten in appended row before next external call.",
+    "Scanner and copied reserve-prefix allocations survive post-construction failures, matching native EH.",
+    "A87060 stored Ghidra body remains truncated; native end verified separately.",
+    "Application phase5/raw singleton integration, stream logical update/start, audible playback and gameplay remain open."
+  ],
+  "validation": {
+    "independent_review": "sound_startup_y reviewed all four listings and EH maps; quoted-empty-token fix included.",
+    "game_validated": false,
+    "native_abi": false,
+    "new_permanent_tests": 0,
+    "build": "MSVC Win32 Release passed",
+    "ctests": "2/2 passed",
+    "build_log": "local/sound_application_y_build.log",
+    "build_commit": "79f4b70d",
+    "fixture": "local/sound_dialog_fixture.cpp",
+    "fixture_sha256": "b84433b1b9e7937c1f6f375746f7f7df39c1287ebeac273305d6a856c2acfb67",
+    "runner": "local/run_sound_dialog_fixture.ps1",
+    "runner_sha256": "438f93819c8ae0c9e10d05aad3d4e02556ce3c6b9447a59219fb96854c406138",
+    "manifest_embedded": true,
+    "fixture_log": "local/sound_dialog_y_fixture.log",
+    "fixture_log_sha256": "933d8459dc69b3af88f19039b5ed8a10d4c8befe16305a4172d0454ceabcf685",
+    "code_sha256": {
+      "include/bsp/game_sound_runtime.hpp": "59daeb303258c74ce692a6b074acc4363a06484e97caf7052269dab3810c08e8",
+      "src/game_sound_runtime.cpp": "879e52c33c75d82be3ea21510d3af102a4714941fc585ce2da36a9bd71c9afd3",
+      "include/bsp/game_sound_platform.hpp": "0d7576437f308c2bd212119c2874d17401b3aff2eaf8c9d4940c31c294d0dac4",
+      "src/game_sound_platform.cpp": "0e94ef85632fb19ca74af38e57ece41dfa69a49ef53262b459892d7d4e182080",
+      "include/bsp/sound_dialog_table.hpp": "4dbbb1286a837698319d65b52e07231cbe7021030562079c478b05d537b9b591",
+      "src/sound_dialog_table.cpp": "dfff2ee81f64dbcc8c12cc0fa8b92f63adb68c8632159044b18ae13c8175f57e",
+      "include/bsp/sound_alternate_owner.hpp": "d2087c37d158255e6e3acc2b21cf9189002a60eb70ba18faada81667d8a5b540",
+      "src/sound_alternate_owner.cpp": "621cfb98f430e44a6622436e4caac936b8b9e216c9b7e216e39cdd41f86459b8",
+      "include/bsp/sound_startup.hpp": "e40f978b6234fa9fb60a403b14c6a2523bb3ed0b628518ad2d4de0dba63bbcf7",
+      "src/sound_startup.cpp": "df982f9b8cfd8c4451ec540750f5f41b0c45b14bae43210043c04f54df0b27e0",
+      "src/sound_system_owner.cpp": "9cdc4718527b480008fbce053cfc791b5d8fdc79543016ee7fc6c95523b03ed7"
+    },
+    "library_sha256": "5f3269dc42f77c8373ad1cc3bc4b6091283889b13a8e89b0a1212512ecb24826",
+    "normal_runs": 3,
+    "failure_runs": 2,
+    "installed_dialog_file_sha256": "ed9fedb69f6c45ab4b23e8b822c59e50b5849c3759d0b6e6458c233977b10584",
+    "results": [
+      "Actual234h dialog constructor, publication, table and logical-owner allocations; scalar destruction and balanced tracked pooled strings.",
+      "Installed basic mono row, repeated append, capacity growth1/2/4, live format count change, preserved earlier counts, first-channel offsets, volume and loop.",
+      "Sound disabled twice and enabled once, installed FSB sample/channel and FEV callback file ownership, zero startup FMOD errors.",
+      "Explicit shutdown with query lock followed by shared-domain drain has no stale deletion callbacks; shared-domain drain dispatches four live owners.",
+      "Missing Event DLL and injected sound Lua VFS failure propagate and clear owned state.",
+      "Actual Microsoft XLive ordinal5030 WM_NULL; cursor policy uses actual absent-online/input guards."
+    ],
+    "preserved_fmod_result": "FMOD_Channel_Stop0x25 per run for never-started fixture channel; native caller ignores result.",
+    "native_exception_differential": false,
+    "audible_output": false
+  },
+  "merged_validation": {
+    "merged_tested_commit": "71516808617bf22befb1b7df23c1938591efd1eb",
+    "source_validation_commit": "4ea84f9b",
+    "win32_release": "passed",
+    "existing_ctests": "2/2 passed",
+    "installed_fixture": "3 normal paths and2 failure paths passed against merged library",
+    "build_log": "local/sound_application_y_merged_build.log",
+    "fixture_log": "local/sound_dialog_y_merged_fixture.log",
+    "fixture_log_sha256": "933d8459dc69b3af88f19039b5ed8a10d4c8befe16305a4172d0454ceabcf685",
+    "library_sha256": "fd04de21350e78dfe498f3fbd2fb2378b592851e0f1d9a302c1536793f1fa313",
+    "owned_source_hashes_unchanged": true,
+    "direct_calls_checked": 130,
+    "direct_calls_failed": 0,
+    "qualified_indirect_rows": 35,
+    "game_validated": false,
+    "native_abi": false,
+    "application_phase5_wired": false
+  }
+}
