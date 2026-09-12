@@ -143,13 +143,21 @@ public:
         long press_start_frame, GameVfsHost& vfs, GameScriptHost& scripts,
         LocaleTables& locale, std::string menu_select, long mission_frames = 0,
         GameFrameProfiler* profiler = nullptr, std::string language = {},
-        long mission_complete_frame = -1);
+        long mission_complete_frame = -1, long order_frame = -1,
+        float order_throttle = 0.0f, float order_rudder = 0.0f,
+        float mission_frame_seconds = 0.0f);
     ~GameMenuHost();
     GameMenuHost(const GameMenuHost&) = delete;
     GameMenuHost& operator=(const GameMenuHost&) = delete;
 
     // 004c9a70, reached from BSP_Game_BeginStartupSequence 004e5753.
     void run_title_init_004c9a70();
+    // 00518250 on the 164h layout-set singleton at 00e18d80, for a caller other
+    // than the title bring-up. The mission load's own `select_front_end_layout`
+    // row is 004c1ac0(3,0) then 00518250(3,0), a NON-committing call: it loads
+    // set 3's `GUI_pause` and `GUI_pause_title` and, because commit is clear,
+    // releases nothing and does not make the set current.
+    void select_front_end_frame_set_00518250(int set, bool commit);
     // One frame of the front end. frame_index counts presented frames, so the
     // injected press lands on the frame the command line names.
     void frame(float raw_delta, unsigned long long frame_index);

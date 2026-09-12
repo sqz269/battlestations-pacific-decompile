@@ -1,0 +1,581 @@
+{
+  "packet": "cc_exe_2i",
+  "owner": "agent/cc-exe-2i",
+  "milestone": "2i",
+  "title": "bsp_game.exe milestone 2i: the destroyers tick and move",
+  "ghidra": "read-only for this packet",
+  "sources": [
+    "src/game_hosts_world.cpp",
+    "include/bsp/game_hosts_world.hpp",
+    "src/game_hosts_units.cpp",
+    "include/bsp/game_hosts_units.hpp",
+    "src/game_hosts_mission_frame.cpp",
+    "include/bsp/game_hosts_mission_frame.hpp",
+    "src/game_hosts_lua.cpp",
+    "include/bsp/game_hosts_lua.hpp",
+    "src/game_hosts_hud.cpp",
+    "include/bsp/game_hosts_hud.hpp",
+    "src/game_hosts_menu.cpp",
+    "include/bsp/game_hosts_menu.hpp",
+    "src/game_hosts_mission.cpp",
+    "include/bsp/game_hosts_mission.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_hosts.hpp"
+  ],
+  "switches_added": [
+    {
+      "switch": "--order throttle=<f>,rudder=<f>",
+      "what": "the two parameters 00816a40 publishes into the controlled unit's order ring"
+    },
+    {
+      "switch": "--order-frame N",
+      "what": "the in-mission frame the player order is issued on"
+    },
+    {
+      "switch": "--mission-frame-seconds S",
+      "what": "a fixed in-mission frame delta instead of the wall clock, so a headless run accumulates simulated time deterministically. Zero keeps the wall clock, which is what every earlier milestone's run used."
+    }
+  ],
+  "world_steps": [
+    {
+      "method": "World::allocate_entity_chains",
+      "address": "004de69c",
+      "native": "009037f0",
+      "function": "004de610",
+      "status": "concrete",
+      "note": "the two 0Ch chain headers stored at world+4h and world+8h; the executable owns the first one, because construct_world 004de610 itself is a load record"
+    },
+    {
+      "method": "InMissionTick::update_world_entities",
+      "address": "004c40ce",
+      "native": "00904bf0",
+      "function": "004c40a0",
+      "status": "concrete",
+      "note": "call 3 of the in-mission subsystem tick; the dispatch is world vtable slot 0Ch at 00ce7790, so the call site is indirect"
+    },
+    {
+      "method": "World::update_entity",
+      "address": "00904c18",
+      "native": "008255b0",
+      "function": "00904bf0",
+      "status": "concrete",
+      "note": "entity->vtable[0DCh](scaledDelta), an indirect CALL EAX; the gate is entity+5Ch at 00904c00 and the link entity+38h at 00904c1a"
+    },
+    {
+      "method": "World::update_matrix_interpolators",
+      "address": "00904c2b",
+      "native": "00904600",
+      "function": "00904bf0",
+      "status": "concrete",
+      "note": "the float the walk forwards is dead in the body, which works off the mission clock at 00f876a4"
+    },
+    {
+      "method": "MatrixInterpolator::entity_set_local_matrix",
+      "address": "00904ae3",
+      "native": "00904ae3+vtable88",
+      "function": "00904600",
+      "status": "unimplemented",
+      "note": "not reached: the world+4B0h list is empty, because its only producer is the AddMatrixInterpolator binding 00905080 and no script of this mission called it"
+    },
+    {
+      "method": "MatrixInterpolator::invalidate_subtree_pose",
+      "address": "00904b09",
+      "native": "0042ed50",
+      "function": "00904600",
+      "status": "unimplemented",
+      "note": "not reached, same reason"
+    },
+    {
+      "method": "MatrixInterpolator::entity_refresh",
+      "address": "00904b2a",
+      "native": "00904b2a+vtableD8",
+      "function": "00904600",
+      "status": "unimplemented",
+      "note": "not reached, same reason"
+    },
+    {
+      "method": "InMissionTick::unit_lists",
+      "address": "004c40b4",
+      "native": "004c3cb0",
+      "function": "004c40a0",
+      "status": "concrete",
+      "note": "milestone 2f ran the guard only and recorded the body"
+    },
+    {
+      "method": "UnitLists::clear_all",
+      "address": "004c3ce3",
+      "native": "004bfdf0",
+      "function": "004c3cb0",
+      "status": "concrete"
+    },
+    {
+      "method": "UnitLists::registry_walk0",
+      "address": "004c3cf8",
+      "native": "004c3cf8",
+      "function": "004c3cb0",
+      "status": "stand-in",
+      "note": "a field read, not a call: EBP = [[game+18CCh + slot*4]+30h]+DDCh. Nothing in this process fills that registry and docs/LOCAL_PLAYER_UNIT_LISTS.md does not settle what each of its five triples holds, so the executable hands walk 0 the created units"
+    },
+    {
+      "method": "UnitLists::registry_walk1",
+      "address": "004c3d61",
+      "native": "004c3d61",
+      "function": "004c3cb0",
+      "status": "unimplemented",
+      "note": "the head at registry+DE8h, a field read; empty here"
+    },
+    {
+      "method": "UnitLists::registry_walk2",
+      "address": "004c3eb4",
+      "native": "004c3eb4",
+      "function": "004c3cb0",
+      "status": "unimplemented",
+      "note": "the head at registry+E00h, a field read; empty here"
+    },
+    {
+      "method": "UnitLists::objective_set_contains",
+      "address": "004c3e90",
+      "native": "008ddf90",
+      "function": "004c3cb0",
+      "status": "unimplemented",
+      "note": "the eight SzurkeNyil sets at game+21A4h are the world's"
+    }
+  ],
+  "unit_instance_steps": [
+    {
+      "method": "UnitInstance::refresh_scene_node",
+      "address": "00825608",
+      "native": "00b6db70",
+      "function": "008255b0",
+      "status": "unimplemented",
+      "note": "not reached: the state carries has_scene_node = false, because 00928860, the placement that would give a created unit a scene node, is a milestone 2h record"
+    },
+    {
+      "method": "UnitInstance::release_submerged_effect",
+      "address": "00825640",
+      "native": "00867b10",
+      "function": "008255b0",
+      "status": "unimplemented"
+    },
+    {
+      "method": "UnitInstance::draw_bubble_interval",
+      "address": "0082571d",
+      "native": "00bd2f10",
+      "function": "008255b0",
+      "status": "unimplemented"
+    },
+    {
+      "method": "UnitInstance::spawn_bubble_effect",
+      "address": "008257f5",
+      "native": "008687c0",
+      "function": "008255b0",
+      "status": "unimplemented"
+    },
+    {
+      "method": "UnitInstance::controller_body_axis_speed",
+      "address": "0082584b",
+      "native": "0092d730",
+      "function": "008255b0",
+      "status": "concrete",
+      "note": "unit_forward_speed_0092d730 over the motion state's own body axis and linear velocity"
+    },
+    {
+      "method": "UnitInstance::publish_effect_intensity",
+      "address": "0082586b",
+      "native": "00815aa0",
+      "function": "008255b0",
+      "status": "unimplemented",
+      "note": "reconstructed, but it publishes into the effect groups at unit+FFCh and a created unit has none: the 1188h instance behind the descriptor's vtable +28h is the milestone 2h record 006fe590"
+    },
+    {
+      "method": "UnitInstance::transform_bow_anchor",
+      "address": "008258cf",
+      "native": "00413920",
+      "function": "008255b0",
+      "status": "unimplemented",
+      "note": "not reached: unit+9F0h is clear"
+    },
+    {
+      "method": "UnitInstance::transform_stern_anchor",
+      "address": "00825920",
+      "native": "00413920",
+      "function": "008255b0",
+      "status": "unimplemented",
+      "note": "not reached: unit+9F4h is clear"
+    },
+    {
+      "method": "UnitInstance::publish_bow_anchor",
+      "address": "008259b9",
+      "native": "004842c0",
+      "function": "008255b0",
+      "status": "unimplemented"
+    },
+    {
+      "method": "UnitInstance::publish_stern_anchor",
+      "address": "008259c9",
+      "native": "004842c0",
+      "function": "008255b0",
+      "status": "unimplemented"
+    },
+    {
+      "method": "UnitInstance::controller_update",
+      "address": "008259df",
+      "native": "0092be80",
+      "function": "008255b0",
+      "status": "concrete",
+      "note": "the whole recovered body is one RET (docs/UNIT_CONTROLLER_UPDATE.md); running it is what records that"
+    },
+    {
+      "method": "UnitInstance::sub_update_0081c050",
+      "address": "008259e6",
+      "native": "0081c050",
+      "function": "008255b0",
+      "status": "unimplemented"
+    },
+    {
+      "method": "UnitInstance::smooth_intensity",
+      "address": "00825a54",
+      "native": "008227e0",
+      "function": "008255b0",
+      "status": "unimplemented"
+    },
+    {
+      "method": "UnitInstance::wake_setting",
+      "address": "00825af4",
+      "native": "00424c40",
+      "function": "008255b0",
+      "status": "unimplemented",
+      "note": "the settings byte at +680h that enables the wake spawn"
+    },
+    {
+      "method": "UnitInstance::spawn_wake",
+      "address": "00825bcf",
+      "native": "00935540",
+      "function": "008255b0",
+      "status": "unimplemented"
+    },
+    {
+      "method": "UnitInstance::stop_prop_wash",
+      "address": "00825c0c",
+      "native": "00b6da70",
+      "function": "008255b0",
+      "status": "unimplemented"
+    },
+    {
+      "method": "UnitInstance::update_attachment",
+      "address": "00825c74",
+      "native": "004142e0",
+      "function": "008255b0",
+      "status": "unimplemented"
+    },
+    {
+      "method": "UnitInstance::update_engine_audio",
+      "address": "00825d5a",
+      "native": "008252c0",
+      "function": "008255b0",
+      "status": "unimplemented",
+      "note": "docs/UNIT_TIMED_SUBUPDATES.md analyses it; packet cc_unit_subupdates owns the reconstruction"
+    },
+    {
+      "method": "UnitInstance::update_unit_timers",
+      "address": "00825d6c",
+      "native": "00956600",
+      "function": "008255b0",
+      "status": "unimplemented",
+      "note": "same packet"
+    },
+    {
+      "method": "UnitInstance::update_propellers",
+      "address": "00825d7e",
+      "native": "00834e90",
+      "function": "008255b0",
+      "status": "unimplemented",
+      "note": "same packet"
+    },
+    {
+      "method": "UnitInstance::tick_part",
+      "address": "00825db4",
+      "native": "00815370",
+      "function": "008255b0",
+      "status": "unimplemented",
+      "note": "not reached: unit+A18h is zero, the instance has no parts here"
+    }
+  ],
+  "motion_steps": [
+    {
+      "method": "World::unit_motion_tick",
+      "address": "00825f20",
+      "native": "00825f20",
+      "status": "concrete",
+      "note": "the motion virtual's own caller is not established: docs/SHIP_MOTION.md names 0085542f, 00749b2c and 00644a38 and reads none. The executable runs it once per fixed simulation step, which is the 0.05 s period the order ring is written for (kUnitStateMessageTickSeconds == kFixedSimulationStepFloat); that placement is the executable's decision"
+    },
+    {
+      "method": "ShipMotion::order_ring_tick",
+      "address": "00826121",
+      "native": "00813020",
+      "function": "00825f20",
+      "status": "concrete",
+      "note": "gets the raw delta; everything after the rescale at 00826126 gets the scaled one"
+    },
+    {
+      "method": "ShipMotion::ocean_height",
+      "address": "00826985",
+      "native": "0078cf20",
+      "function": "00825f20",
+      "status": "stand-in",
+      "note": "there is no ocean object: construct_world 004de610 is a load record. A flat sea at y = 0, the same stand-in src/ship_motion_probe.cpp reports"
+    },
+    {
+      "method": "ShipMotion::gameplay_scale",
+      "address": "00826a21",
+      "native": "008e6430",
+      "function": "00825f20",
+      "status": "stand-in",
+      "note": "008e6430 was never analysed; the two globals tested at 00826a06 are clear in single player, so the literal 1.0f at 00d7a24c is used"
+    },
+    {
+      "method": "ShipMotion::force_model",
+      "address": "00826a6d",
+      "native": "00937440",
+      "function": "00825f20",
+      "status": "concrete",
+      "note": "controller->vtable[0](dt), an indirect call. The torque is computed and reported; nothing applies it, because the hydrodynamic tail 009329c0 and the rigid-body solver are external"
+    },
+    {
+      "method": "ShipMotion::reference_speed",
+      "address": "00826aab",
+      "native": "0080fc30",
+      "function": "00825f20",
+      "status": "concrete"
+    },
+    {
+      "method": "ShipMotion::apply_speed_command",
+      "address": "00826b29",
+      "native": "0092d300",
+      "function": "00825f20",
+      "status": "concrete"
+    },
+    {
+      "method": "ShipMotion::apply_steering",
+      "address": "00826b54",
+      "native": "0092e8c0",
+      "function": "00825f20",
+      "status": "concrete"
+    },
+    {
+      "method": "ShipMotion::controller_step",
+      "address": "00826b6a",
+      "native": "0092be80",
+      "function": "00825f20",
+      "status": "concrete"
+    },
+    {
+      "method": "ShipMotion::unit_post_motion",
+      "address": "00826b84",
+      "native": "00826b84+vtable1EC",
+      "function": "00825f20",
+      "status": "unimplemented"
+    },
+    {
+      "method": "ShipMotion::rudder_curve_settings",
+      "address": "00424c40",
+      "native": "00424c40",
+      "status": "stand-in",
+      "note": "the rudder curve at 00424c40()+438h..+44Ch was never recovered; the three denominator knots are forced to 1, which makes 0082e890 answer 1.0 at every speed. The same stand-in src/ship_motion_probe.cpp reports"
+    },
+    {
+      "method": "ShipMotion::rigid_body_integrate",
+      "address": "00c37e50",
+      "native": "00c37e50",
+      "status": "stand-in",
+      "note": "an explicit Euler step. The game integrates in the physics library reached through 00c32000 / 00c37e20 / 00c37e50, none of which was read"
+    },
+    {
+      "method": "ShipMotion::issue_order_record",
+      "address": "00816a40",
+      "native": "00816a40",
+      "status": "concrete",
+      "note": "the executable is the caller: the HUD order path that reaches 00816a40 in the game has no input backend here"
+    },
+    {
+      "method": "UnitOrder::construct_message",
+      "address": "0075b430",
+      "native": "0075b430",
+      "status": "unimplemented",
+      "note": "not reached: the session mode is single player"
+    },
+    {
+      "method": "UnitOrder::send_message",
+      "address": "0077c2a0",
+      "native": "0077c2a0",
+      "status": "unimplemented",
+      "note": "not reached, same reason"
+    },
+    {
+      "method": "SceneCommand::resolve_command_object",
+      "address": "0046aab0",
+      "native": "0046aab0",
+      "status": "unimplemented",
+      "note": "the authored `Command = E CommandType : Cruise` token is queued by 00469610 and resolved by 0046aab0 against a registry whose command objects have no reconstruction, so the token-to-order mapping is the executable's"
+    }
+  ],
+  "controlled_unit_steps": [
+    {
+      "method": "ControlledUnit::set_controlled_unit",
+      "address": "004c0890",
+      "native": "004c0890",
+      "status": "concrete",
+      "note": "the executable is the caller; 00645600, the HUD root's own select sequence, needs a HUD root this process does not own"
+    },
+    {
+      "method": "ControlledUnit::store_global",
+      "address": "004c0893",
+      "native": "004c0893",
+      "status": "concrete",
+      "note": "the unconditional store of 00e188d8, before any test"
+    },
+    {
+      "method": "ControlledUnit::driven_listener_handle",
+      "address": "004c08f7",
+      "native": "004c08f7+vtable18",
+      "function": "004c0890",
+      "status": "unimplemented",
+      "note": "not reached: the resolved object answers neither IsKindOf(0Fh) nor IsKindOf(18h), so the zero path runs"
+    },
+    {
+      "method": "ControlledUnit::publish_listener",
+      "address": "004c0905",
+      "native": "00b0d7b0",
+      "function": "004c0890",
+      "status": "unimplemented",
+      "note": "the render-resources singleton at 00f8d39c is the renderer owner's. The clear arm at 004c091e makes the same two stores with the value zero"
+    }
+  ],
+  "load_steps": [
+    {
+      "method": "MissionLoad::select_menu_layout",
+      "address": "004e04e7",
+      "native": "004c1ac0",
+      "function": "004dfb70",
+      "status": "unimplemented",
+      "note": "the menu-layout selector on a second singleton, not reconstructed"
+    },
+    {
+      "method": "MissionLoad::select_front_end_frame_set",
+      "address": "004e04ee",
+      "native": "00518250",
+      "function": "004dfb70",
+      "status": "concrete",
+      "note": "00518250(3, 0). Set 3 is the pause pair GUI_pause / GUI_pause_title. The call does NOT commit, so 00518250 releases no other set's handles (00518272) and does not record the new set at 0051864a: the front-end frame layouts the title bring-up acquired stay loaded through the mission"
+    },
+    {
+      "method": "FrontEndFrameLayouts::acquire",
+      "address": "00518380",
+      "native": "00518380",
+      "status": "concrete",
+      "note": "004c12b0 then 00aa5840 for each non-null slot of the requested set"
+    }
+  ],
+  "stand_ins": [
+    "The ocean sampler 0078cf20: a flat sea at y = 0.",
+    "The gameplay scale hook 008e6430: the literal 1.0f at 00d7a24c.",
+    "The rudder curve settings at 00424c40()+438h..+44Ch: the three denominator knots forced to 1.",
+    "The rigid-body integrator behind 00c32000 / 00c37e20 / 00c37e50: an explicit Euler step.",
+    "The authored `Cruise` command token: one order-ring order of throttle 1, rudder 0, because the command object 0046aab0 resolves is not reconstructed.",
+    "Walk 0 of 004c3cb0: the created units, because the local player's unit registry at [[game+18CCh + slot*4]+30h] is not filled here.",
+    "The pause layouts set 3 acquires: published hidden, because no pause screen exists in this process to publish a byte for them."
+  ],
+  "corrections": [
+    {
+      "id": 1,
+      "was": "milestone 2h: `32 unit record(s) exist and every unit pass of the frame and of the fixed step ticked 0 of them`",
+      "is": "the world walk 00904bf0 and the motion virtual 00825f20 now run over the created units; what still ticks nothing is every pass that reads the world object itself, because construct_world 004de610 is a load record",
+      "evidence": "the executable owns the chain header 009037f0 allocates at world+4h, which is the only thing 00904bf0 reads from the world (00904bf4 loads the field, 00904bf7 dereferences it again)"
+    },
+    {
+      "id": 2,
+      "was": "the packet brief: `hide the front-end frame pages once the mission state is entered if the state machine's screen sets say they are gone`",
+      "is": "they are not gone. The mission load's own `select_front_end_layout` row is 00518250(3, 0), a non-committing call: src/title_init.cpp's reconstruction releases the other sets' handles and records the set only when commit is set (00518272, 0051864a), so FE_frame and FE_frame_title stay loaded through the mission",
+      "evidence": "include/bsp/mission_scene_load.hpp `select_front_end_layout` comment, src/title_init.cpp select_front_end_frame_set, and the xref of 00518250 from 004e04ee in BSP_Game_LoadMissionScene"
+    },
+    {
+      "id": 3,
+      "was": "the packet brief: the `Error` tiles of milestone 2h's capture are an atlas miss the in-game atlas would fix",
+      "is": "milestone 2h already recorded that the large `Error` image is the page's own authored texture: `minimap_islandmap_Icon` names `error.tga` with the material `minimap_terrain.mshd`, and the running game replaces it with the mission's island map",
+      "evidence": "docs/GAME_EXECUTABLE.md milestone 2h, and interface/gui_minimap.lua on the installed game"
+    },
+    {
+      "id": 4,
+      "was": "the type id the scene's `Type = E ShipClasses : <symbol>` resolves to was only used to name the class",
+      "is": "it is the index of the installed `VehicleClass[N]` row: 19 Northampton, 20 DeRuyter, 21 York, 25 Clemson, 70 Kuma, 73 Fubuki, 263 leander, 265 Tribal, 276 Kagero, 289 Shiratsuyu, 293 Myoko all match the scene's own symbols",
+      "evidence": "scripts/datatables/autoload/vehicleclasses.lua, read through the live Lua state the recovered global-script step 00886900 loaded it into"
+    },
+    {
+      "id": 5,
+      "was": "docs/HUD_CENTRAL_UPDATES.md: `00427EB0(unit)` returns an icon-space float3",
+      "is": "it returns the entity's world translation. The body 00427EB0..00427EC8 is `if (unit+C8h == 0) BSP_EntityPose_RefreshWorld(); return unit + 0FCh`, and unit+FCh is pose row 3, so the per-axis differences hud_minimap_icon_position divides by 1024 and 768 are world units",
+      "evidence": "the live decompilation of 00427EB0, a three-statement body"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "run": {
+    "state": "obtained",
+    "command": "bsp_game.exe --frames 600 --press-start-frame 30 --menu-select USN02 --mission-frames 300 --order-frame 20 --order throttle=1,rudder=0.5 --mission-complete-frame 280 --screenshot local/run.png --screenshot-mission-frame 200 --log local/game_run.log --game-root \"<install>\"",
+    "exit_code": 0,
+    "host_methods": {"concrete": 306, "unimplemented": 331},
+    "milestone_2h_for_comparison": {"concrete": 290, "unimplemented": 318},
+    "world": {
+      "chain_entities": 32,
+      "mission_frames": 280,
+      "entities_walked": 8960,
+      "entities_updated": 8960,
+      "interpolator_records": 0,
+      "unit_lists": {"walk0_ships": 32, "walk0_rest": 32, "ships": 0, "squadrons": 0,
+        "airfields": 0, "shipyards": 0, "land_forts": 0, "merged": 0},
+      "fixed_steps": 18,
+      "motion_ticks": 576,
+      "simulated_seconds": 0.90,
+      "controlled_unit": "DeRuyter",
+      "controlled_moved_metres": 1.15,
+      "total_path_metres": 35.19
+    },
+    "deterministic_run": {
+      "extra_switch": "--mission-frame-seconds 0.05",
+      "exit_code": 0,
+      "host_methods": {"concrete": 305, "unimplemented": 331},
+      "method_not_reached": "FixedStep::interpolation_wave, because the driver runs that wave only while the accumulator is still above zero after its steps (00875f43) and a frame delta of exactly one step leaves it at zero",
+      "fixed_steps": 280,
+      "motion_ticks": 8960,
+      "simulated_seconds": 14.0,
+      "controlled_unit": {
+        "name": "DeRuyter",
+        "class_id": "0Ah MCruiser",
+        "max_speed_table": 16.4622,
+        "forward_speed_reached": 16.451,
+        "speed_ratio": 0.999,
+        "max_rot_angle_table": 0.122173,
+        "yaw_rate_at_rudder_half": 0.06109,
+        "yaw_ratio": 0.5,
+        "heading_degrees": [0.0, -38.591],
+        "moved_metres": 195.17
+      },
+      "units_moved_metres_range": [163.05, 209.52],
+      "total_path_metres": 6210.07
+    },
+    "regressions_rechecked": [
+      "120 frames with --press-start-frame 30 and no --menu-select: exit 0, 154 concrete, 80 unimplemented (milestone 2d)",
+      "40 frame title-only: exit 0, 129 concrete, 49 unimplemented (milestone 2d)",
+      "--vfs-probe fonts/fonts.lua: exit 0; --vfs-probe does/not/exist.lua: exit 3",
+      "--mission-frames 60 with no --mission-complete-frame: exit 0, 301 concrete, 322 unimplemented, summary mission exit reachable=0"
+    ],
+    "screenshot": "unchanged from milestone 2h: the front-end frame and the four level-1 HUD pages, 70 sprite-bridge quads of which 29 are glyphs. The mission's units are not drawn, because the mission render block 004ca440 / 004ca1f0 is a record and the HUD's own per-unit icon pass needs 00427eb0",
+    "environment_note": "Direct3D 9 reports `adapter count = 0` while the machine's interactive Windows session is disconnected, and the executable then exits during Init with `startup failed: Renderer adapter identification failed` and device_hr=0x80004005. A bsp_game.exe built from main fails identically, so the cause is the session. A run needs a connected session.",
+    "validated": [
+      "scripts/build.ps1 Release Win32 with /W4 /WX /fp:strict, no warnings",
+      "the existing ctest case reconstructed_math passes, 1 of 1",
+      "no test cases were added",
+      "python tools/verify_report_calls.py: 40 call rows checked, 0 failed"
+    ]
+  }
+}

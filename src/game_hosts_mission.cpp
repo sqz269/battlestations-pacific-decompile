@@ -313,6 +313,12 @@ struct GameMissionHost::Impl {
     // Milestone 2g, --mission-complete-frame N: the in-mission frame on which
     // the executable makes the call a script's end-movie binding makes.
     long mission_complete_frame{-1};
+    // Milestone 2i: the player order --order issues on --order-frame, and the
+    // fixed in-mission frame delta --mission-frame-seconds asks for.
+    long order_frame{-1};
+    float order_throttle{0.0f};
+    float order_rudder{0.0f};
+    float mission_frame_seconds{0.0f};
     GameFrameProfiler* profiler{nullptr};
     std::string language;
     std::unique_ptr<GameMissionLuaHost> lua;
@@ -1273,7 +1279,8 @@ void GameMissionHost::Impl::consume_load_request() {
 GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& scripts,
     GameFrontendHost& frontend, LocaleTables& locale, std::string requested_mission_id,
     long mission_frames, GameFrameProfiler* profiler, std::string language,
-    long mission_complete_frame, GameHudHost* hud)
+    long mission_complete_frame, GameHudHost* hud, long order_frame, float order_throttle,
+    float order_rudder, float mission_frame_seconds)
     : impl_(std::make_unique<Impl>(log, vfs, scripts, frontend, locale,
           std::move(requested_mission_id), mission_frames, profiler,
           std::move(language))) {
@@ -1282,6 +1289,11 @@ GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptH
     // Milestone 2h: the in-mission HUD, owned by the front-end host because the
     // registry its screens land in is that object's.
     impl_->hud = hud;
+    // Milestone 2i, --order-frame / --order and --mission-frame-seconds.
+    impl_->order_frame = order_frame;
+    impl_->order_throttle = order_throttle;
+    impl_->order_rudder = order_rudder;
+    impl_->mission_frame_seconds = mission_frame_seconds;
 }
 
 GameMissionHost::~GameMissionHost() = default;
@@ -1580,6 +1592,9 @@ void GameMissionHost::Impl::finish_scene_load() {
     // frame the executable makes the script's end-movie call on.
     frame_host->set_mission_key(summary.selected_id);
     frame_host->set_mission_complete_frame(mission_complete_frame);
+    // Milestone 2i: the player order and the deterministic frame delta.
+    frame_host->set_player_order(order_frame, order_throttle, order_rudder);
+    frame_host->set_mission_frame_seconds(mission_frame_seconds);
     // Milestone 2h. The load's release of the main-menu manager runs
     // BSP_MainMenu_Destroy 00686c90, which exits each of its seven screens,
     // clears both flag bytes and commits through 004f83b0 at 00686db9, then
