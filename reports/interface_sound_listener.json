@@ -1,0 +1,51 @@
+{
+  "packet": "orch4_interface_sound_listener_aa",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source": ["include/bsp/interface_sound_listener.hpp", "src/interface_sound_listener.cpp"],
+  "documentation": "docs/INTERFACE_SOUND_LISTENER.md",
+  "routines": [{
+    "address": "0068a670",
+    "name": "BSP_Interface_GetSoundListener",
+    "coverage": "complete control flow, memory ordering and x87/SSE kernel under explicit raw-storage and current-virtual-dispatch contracts",
+    "abi": "ECX actual interface; stack matrix64 destination, velocity12 destination; RET8; no semantic return value; new C++ API adds required context",
+    "final_instruction": "0068a89d",
+    "final_instruction_length": 3,
+    "end_exclusive": "0068a8a0",
+    "eh": "no native EH frame or cleanup; completed output writes survive propagated callback exceptions"
+  }],
+  "host_steps": [
+    {"address":"0068a69d","native":"target+vtable120","caller":"0068a670","contract":"captured object/current virtual; unwritten scratch64; copy returned pointer, not presumed scratch"},
+    {"address":"0068a6bb","native":"00b6db70","caller":"0068a670","contract":"captured actual camera, native low flag byte bit2 test; existing raw world refresh"},
+    {"address":"0068a73a","native":"004134f0","caller":"0068a670","contract":"ECX matrix destination, stack source, RET4; existing sequential x87 copy"},
+    {"address":"0068a76f","native":"controlled+vtable34","caller":"0068a670","contract":"current controlled publication captured after matrix; unwritten scratch12; returned pointer; no target-only arithmetic"},
+    {"address":"0068a7af","native":"target+vtable34","caller":"0068a670","contract":"reload current game/target after matrix callback and excluded-id branch; unwritten scratch12; returned pointer"},
+    {"address":"0068a830","native":"00bf7030","caller":"0068a670","contract":"ST0 receives float(comparison result), not squared length; existing recovered CRT sqrt with live borrowed CRT access"}
+  ],
+  "caller_steps": [
+    {"address":"004bbd8f","native":"0068a670","caller":"004bbd00","contract":"current interface ECX, matrix output then velocity output, RET8; no interface null check"},
+    {"address":"004cd680","native":"0068a670","caller":"004cd610","contract":"same ABI in five-iteration transition sound service loop"},
+    {"address":"00735be2","native":"0068a670","caller":"00735b50","contract":"same ABI only for nonnull current interface; outer identity/zero arm belongs to caller"},
+    {"address":"008cc977","native":"0068a670","caller":"008cc850","contract":"same ABI in load service path"}
+  ],
+  "corrections": [
+    {"was":"Ghidra void/no-argument prototype; pseudocode reuses param_2 for the velocity destination","is":"ECX actual interface plus stack matrix64/velocity12 destinations, RET8; target math reuses stack argument slots as scalar scratch","evidence":"0068A736 loads matrix argument before CALL4134F0; 0068A773/7B3 load velocity argument; all exits RET8"},
+    {"was":"plausible normalization by square root of squared speed","is":"comparison result is converted to float and replaces squared speed; native constants multiply over-threshold target velocity by100","evidence":"0068A7F8 spill; 0068A80A..815 boolean; 0068A824 overwrite; 0068A82C FLD; 0068A830 BF7030; 0068A83E FDIVR double D7A220"}
+  ],
+  "remaining_bindings": [
+    "Actual game+1ED4/+19FC publication and actual interface+4; semantic owner objects cannot be passed as raw storage",
+    "Current dynamic virtual slots120/34 for published objects; no guessed unit subtype, callback implementation, null-success dispatch or extra identity fallback",
+    "Shared PE constants/default velocity words and concrete CameraAxesCrtAccess kept alive through each call",
+    "Application render/load call-site composition and gameplay validation remain outside this packet"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release MSVC Win32 passed with MSBUILDDISABLENODEREUSE=1; local/interface_sound_listener_build.log",
+    "seed_verification": "tools/ghidra_export.py verify-seeds: all8 Ghidra byte windows matched disk",
+    "ctest": "reconstructed_math and native_math_differential passed,2/2;0 failures",
+    "call_audit": "tools/verify_report_calls.py:7 direct call rows checked,0 failed;3 explicit virtual rows separately inspected in listing",
+    "local_probe": "One ignored local/interface_listener_probe.cpp, compiled /W4 /WX /MANIFEST:EMBED: callback game/controlled/applied-id reloads, returned-pointer copies, target boolean scaling, raw camera refresh and fallback negative-zero bit preservation passed; local/interface_listener_probe.log",
+    "game_validated": false,
+    "native_abi_compatible": false
+  }
+}
