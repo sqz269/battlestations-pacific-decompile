@@ -1,0 +1,391 @@
+{
+  "packet": "cc2_projectile_helpers",
+  "owner": "agent/cc2-projectile-helpers",
+  "doc": "docs/PROJECTILE_HELPERS.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "summary": "The flight-and-impact leaves docs/PROJECTILE_IMPACT.md left as contract: unread. The two static traces are a water-surface crossing search over a segment list, resolved by the bisection 0078D1B0; 0084AFD0 is a parent-chain hit notification; 007BC4E0 binds a plane's crash effect once; 0084B000 builds session message kind 0BAh; 0084B650 is a guarded down-cast to class 2Ah; 0084B8C0 is the impact-effect dispatch, not a decal; 007C0910 is the plane's own swept collision test and the second caller of 0084BF00; the flak proximity search walks the owner's party recon list and fuses on a lead solution. Read-only static analysis, no Ghidra object modified.",
+  "routines": [
+    {
+      "address": "0084b380",
+      "native": "0084b380",
+      "name": "BSP_Projectile_TraceWaterSurfaceEntry",
+      "body": "0084b380-0084b4a6",
+      "abi": "__fastcall float* (float out[4] = ECX hidden return buffer, TraceSegmentList* list = EDX); no stack argument, plain RET at 0084b4a6",
+      "coverage": "complete",
+      "evidence": "Walks list[0..count) with count at list+0C0h and stride 18h (0084b388, 0084b38e). Per segment samples 0078CF20 on the water object [[00E188A8]+19F0h] with the end point's first two components (pushed at 0084b3d8 and 0084b3eb) and takes the segment when end.y <= the result (0084b3fd, 0084b405). Hands (from, to) to 0078D1B0 at 0084b485, writes the three floats and sets the hit byte at out+0Ch (0084b496); clears it at 0084b41d when no segment crosses."
+    },
+    {
+      "address": "0084b4b0",
+      "native": "0084b4b0",
+      "name": "BSP_Projectile_TraceWaterSurfaceExit",
+      "body": "0084b4b0-0084b5d6",
+      "abi": "__fastcall float* (float out[4] = ECX hidden return buffer, TraceSegmentList* list = EDX); no stack argument, plain RET at 0084b5d6",
+      "coverage": "complete",
+      "evidence": "Identical to 0084b380 with the predicate inverted (surface < end.y) and the bisection arguments swapped: at 0084b55a-0084b5a4 the block at the higher stack address, argument 2, is the segment's from point, where 0084b42a-0084b474 puts the to point. Selected by 0084BF00 only when shot->vtable[2Ch]() is non-zero and classDesc[+74h] is zero (0084c12f, 0084c133)."
+    },
+    {
+      "address": "0078d1b0",
+      "native": "0078d1b0",
+      "name": "BSP_GameWorld_BisectWaterCrossing",
+      "body": "0078d1b0-0078d3c8",
+      "abi": "__thiscall void (World* this = ECX = [[00E188A8]+19F0h], float3* out hidden, float3 from by value, float3 to by value)",
+      "coverage": "complete",
+      "evidence": "Midpoint at 0078d1b9-0078d212, each component sum stored to a float before the double 0.5 at 00D7A280. Refuses a segment whose |to.y - from.y|, folded through the -0.0f at 00D7A208, is not above the double 0.01 at 00CE6638 (0078d249-0078d257). Length from 0042B2F0 at 0078d277, loop while above FLD1 at 0078d280, halving at each step. Samples 0078C890 and 00B9CF50 on [this+A8h] at 0078d2a8 and 0078d2c2 with the midpoint's first two components. Returns the fresh midpoint when the last probe was submerged, else the far endpoint (0078d3a3-0078d3af)."
+    },
+    {
+      "address": "0084afd0",
+      "native": "0084afd0",
+      "name": "BSP_Projectile_NotifyEntityHitChain",
+      "body": "0084afd0-0084affc",
+      "abi": "__thiscall void (Entity* e = ECX, void* notice), RET 4 at 0084affa",
+      "coverage": "complete",
+      "evidence": "Null receiver returns at 0084afd5. Calls e->vtable[F8h](notice) at 0084afeb and stops when it answers non-zero (0084afef); otherwise follows the parent link [e+3Ch] at 0084aff1 and repeats."
+    },
+    {
+      "address": "007bc4e0",
+      "native": "007bc4e0",
+      "name": "BSP_Plane_BindCrashEffect",
+      "body": "007bc4e0-007bc548",
+      "abi": "__fastcall void (Plane* p = ECX), plain RET at 007bc548",
+      "coverage": "complete; p->vtable[34h] and the effect registry below 0084B6F0 are contracts",
+      "evidence": "Returns when [p+0AA4h] or the byte [p+0AA8h] is set (007bc4e6, 007bc4ef). Refreshes the pose through 00414DB0 when [p+0C8h] is clear (007bc4f8). Calls p->vtable[34h](&local) at 007bc512 for the direction, then 0084B6F0([[p+730h]+24h], p+0FCh, direction) at 007bc524. Stores the handle at 007bc52b, takes a reference with InterlockedIncrement on handle+4h at 007bc537 and sets [p+0AA8h] at 007bc53d."
+    },
+    {
+      "address": "0084b000",
+      "native": "0084b000",
+      "name": "BSP_ProjectileHitMessage_Construct",
+      "body": "0084b000-0084b064",
+      "abi": "__thiscall Message* (Message* this = ECX, int mode, void* source, const float3* hitPos, const float3* direction), RET 10h at 0084b062",
+      "coverage": "complete",
+      "evidence": "Four stack arguments from the cleanup. 0075B430 with 0BAh at 0084b001/0084b008 is the session message base. Writes the vtable 00D02D80 at 0084b025, 1 into +4h twice (0084b033, 0084b05e), zeroes +18h and +1Ah, mode into +1Ch (0084b01e), source into +20h (0084b02b), *hitPos into +24h..+2Ch (0084b036-0084b048) and *direction into +30h..+38h (0084b04b-0084b05b)."
+    },
+    {
+      "address": "0084b650",
+      "native": "0084b650",
+      "name": "BSP_Projectile_CastShotOwnerKind2A",
+      "body": "0084b650-0084b66b",
+      "abi": "__fastcall void* (void* o = ECX); no stack argument, plain RET at 0084b667 and 0084b66b",
+      "coverage": "complete",
+      "evidence": "Returns o when it is non-null (0084b653) and answers vtable[5Ch](2Ah) (0084b65c, 0084b660), else zero at 0084b668. The PUSH EDI at 0084bd43 before the only call site is a register save paired with POP EDI at 0084bdad, not an argument."
+    },
+    {
+      "address": "0084b8c0",
+      "native": "0084b8c0",
+      "name": "BSP_Projectile_DispatchImpactEffect",
+      "body": "0084b8c0-0084b96b",
+      "abi": "__fastcall void (int mode = ECX, WeaponClassDesc* d = EDX, int medium, const float3* position, const float3* direction), RET 0Ch at every exit",
+      "coverage": "complete",
+      "evidence": "A two-level switch whose every arm calls 0084B6F0(d + offset, position, direction). mode 1 with medium 0/1/2 takes d+28h (0084b908), d+30h (0084b8f5), d+34h (0084b8e0); mode 2 takes d+24h unconditionally (0084b922); mode 3 with medium 0 takes d+38h (0084b943) and otherwise jumps into mode 1's chain at 0084b93d; mode 4 takes d+3Ch unconditionally (0084b95d); anything else returns at 0084b969."
+    },
+    {
+      "address": "0084b6f0",
+      "native": "0084b6f0",
+      "name": "BSP_Effect_SpawnOrientedPointEffect",
+      "body": "0084b6f0-0084b880",
+      "abi": "__fastcall int (void* definitionSlot = ECX, const float3* position = EDX, const float3* direction)",
+      "coverage": "contract: renderer. The six-step shape is read; BSP_PointEffect_CreateFromMatrix, the effect manager at [00E188A8]+19ECh and the matrix helpers are not.",
+      "evidence": "Builds an identity 4x4 from the 1.0f at 00D7A24C, calls BSP_Matrix_BuildLookAt and BSP_Matrix_Copy4x4X87 only when a component of direction is non-zero, writes *position into the translation row, InterlockedIncrement on the definition, then BSP_PointEffect_CreateFromMatrix(&holder, [00E188A8]+19ECh, definition, matrix, 0, 0) and returns its first dword, releasing the holder with InterlockedDecrement."
+    },
+    {
+      "address": "007c0910",
+      "native": "007c0910",
+      "name": "BSP_Plane_SweepCollisionPoints",
+      "body": "007c0910-007c0c5f",
+      "abi": "__thiscall int (Plane* p = ECX, void* a, void* b, void* extra, float step)",
+      "coverage": "partial: the caller's shape and the 0084BF00 call. 007c0a4x-007c0c30, the per-point water-crossing arm, is contract: unread.",
+      "evidence": "Returns early while the cooldown [p+9DCh] is positive or [p+61h] is set, decrementing by step. Iterates the collision-point vector [[p+538h]+5BCh]..[+5C0h] at stride 0Ch, transforming each point by the previous pose p+924h and the current pose p+0CCh into one segment of a 0C0h-byte local. Calls 0084BF00(list, p+72Ch, p, [p+730h], extra, &local) at the tail. It is the caller the [shot+0CCh] IsKindOf(0Fh) branch belongs to, because on this path [shot+0CCh] is the plane."
+    },
+    {
+      "address": "0070c370",
+      "native": "0070c370",
+      "name": "BSP_FlakProjectile_TickAdvance",
+      "body": "0070c370-0070cad3",
+      "abi": "__thiscall(void* tickElement = ECX, float step), RET 4 at 0070c3d7, 0070c7aa and 0070cad1",
+      "coverage": "partial: 0070c370-0070c795 and the tail at 0070c79b-0070c806. 0070c808-0070cad3 is contract: unread.",
+      "evidence": "No Ghidra function; read from the raw PE listing with capstone. ESI is the tick element at projectile+244h, so EBP = ESI-244h is the projectile and [ESI-0D0h] the weapon class descriptor. The squared search radius is (segmentLength/2 + 2*classDesc[+70h])^2 at 0070c50f-0070c526. The candidate list is BSP_Recon_EnsureSlot([proj+54h]) at 0070c52a, then the intrusive list at slot+0DE8h. The nearest candidate inside the radius, clamped to 90000.0f at 00CFD508, latches [proj+288h]/[proj+294h] and sets [proj+28Ch] = max(0, [proj+290h] + dot(direction, leadPoint - [proj+1DCh])). The round bursts through 0070C210(projectile, 1) at 0070c79b once a step covers [proj+28Ch]."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0084c13f",
+      "native": "0084b4b0",
+      "function": "0084bf00",
+      "method": "trace_static_surface_exit",
+      "this": "the float[4] result buffer at ESP+2Ch",
+      "args": "EDX = ESI, the segment list; no stack argument",
+      "gate": "shot->vtable[2Ch]() non-zero at 0084c12f and classDesc[+74h] zero at 0084c133"
+    },
+    {
+      "address": "0084c14c",
+      "native": "0084b380",
+      "function": "0084bf00",
+      "method": "trace_static_surface_entry",
+      "this": "the float[4] result buffer at ESP+2Ch",
+      "args": "EDX = ESI, the segment list; no stack argument",
+      "gate": "otherwise"
+    },
+    {
+      "address": "0084b485",
+      "native": "0078d1b0",
+      "function": "0084b380",
+      "method": "water_crossing_point",
+      "this": "[[00E188A8]+19F0h], the world",
+      "args": "hidden out buffer at ESP+3Ch; from = rec+0h..8h, to = rec+0Ch..14h, both by value",
+      "gate": "the first segment whose end is at or below the surface"
+    },
+    {
+      "address": "0084b5b5",
+      "native": "0078d1b0",
+      "function": "0084b4b0",
+      "method": "water_crossing_point",
+      "this": "[[00E188A8]+19F0h], the world",
+      "args": "hidden out buffer at ESP+3Ch; from = rec+0Ch..14h, to = rec+0h..8h, swapped against 0084b380",
+      "gate": "the first segment whose end is above the surface"
+    },
+    {
+      "address": "0084b3f8",
+      "native": "0078cf20",
+      "function": "0084b380",
+      "method": "water_height",
+      "this": "[[00E188A8]+19F0h], the world",
+      "args": "[rec+0Ch] and [rec+10h], the end point's first two components. The routine's contract is (x, z); see the corrections",
+      "gate": "every segment"
+    },
+    {
+      "address": "0078d277",
+      "native": "0042b2f0",
+      "function": "0078d1b0",
+      "method": "segment_length",
+      "this": "the delta at ESP+34h",
+      "args": "to - from, built at 0078d263-0078d273",
+      "gate": "after the height-delta guard"
+    },
+    {
+      "address": "0084c2f2",
+      "native": "0084afd0",
+      "function": "0084bf00",
+      "method": "notify_entity_hit_chain",
+      "this": "[ESP+78h], the hit entity at staging+1Ch",
+      "args": "a pointer to the pair {1, [shot+0CCh]} built at 0084c2e6 and 0084c2ee",
+      "gate": "the replay flag CL at 0084c2c8 and a non-null hit entity at 0084c2d0"
+    },
+    {
+      "address": "0084c34b",
+      "native": "007bc4e0",
+      "function": "0084bf00",
+      "method": "bind_plane_crash_effect",
+      "this": "EBP = [shot+0CCh], set at 0084bf3f and 0084bf66 only when it answers IsKindOf(0Fh)",
+      "args": "none",
+      "gate": "the static-hit byte at [ESP+13h], the plane flag at [ESP+11h], and [EBP+60h] or [EBP+5Dh] set (0084c33f, 0084c344)"
+    },
+    {
+      "address": "007bc524",
+      "native": "0084b6f0",
+      "function": "007bc4e0",
+      "method": "spawn_point_effect",
+      "this": "[[p+730h]+24h], the unit class descriptor's effect slot",
+      "args": "EDX = p+0FCh the world position; the pushed EAX is p->vtable[34h]'s result",
+      "gate": "the cache and its flag both clear"
+    },
+    {
+      "address": "0084bd44",
+      "native": "0084b650",
+      "function": "0084bc60",
+      "method": "cast_shot_owner",
+      "this": "[[staging+0h]+0CCh], the projectile",
+      "args": "none; PUSH EDI at 0084bd43 is a register save",
+      "gate": "[00E188A8]+1FE4h == 1 at 0084bd0f and IsKindOf(2Ah) at 0084bd33"
+    },
+    {
+      "address": "0084bd89",
+      "native": "0084b000",
+      "function": "0084bc60",
+      "method": "build_hit_message",
+      "this": "the message buffer at ESP+48h",
+      "args": "EBP the refined mode, EAX the result of [EDI+310h]->vtable[2Ch](), &hitPos = staging+24h pushed at 0084bd77, EBX = 0084bc60's fourth stack argument pushed at 0084bd67",
+      "gate": "the same world-mode and IsKindOf(2Ah) gate"
+    },
+    {
+      "address": "0084bda0",
+      "native": "0077c2a0",
+      "function": "0084bc60",
+      "method": "route_hit_message",
+      "this": "EDI, the class-2Ah owner",
+      "args": "the message, 4, 0",
+      "gate": "the same"
+    },
+    {
+      "address": "0084bdea",
+      "native": "0084b8c0",
+      "function": "0084bc60",
+      "method": "dispatch_impact_effect",
+      "this": "ECX = EBP, the refined mode",
+      "args": "EDX = [staging+8h] the weapon class descriptor; stack low to high: shot->vtable[2Ch]() pushed at 0084bde7, &hitPos pushed at 0084bdd8, the fourth stack argument pushed at 0084bdc8",
+      "gate": "the byte [shot+45h] at 0084bdb0"
+    },
+    {
+      "address": "0084b8e8",
+      "native": "0084b6f0",
+      "function": "0084b8c0",
+      "method": "spawn_point_effect",
+      "this": "EDX+34h, the medium-2 slot",
+      "args": "EDX = the position argument, the pushed dword is the direction argument",
+      "gate": "mode 1 or 3 with medium 2"
+    },
+    {
+      "address": "0084b929",
+      "native": "0084b6f0",
+      "function": "0084b8c0",
+      "method": "spawn_point_effect",
+      "this": "EDX+24h, the static-hit slot",
+      "args": "the same pair",
+      "gate": "mode 2, no medium test"
+    },
+    {
+      "address": "007c0c0a",
+      "native": "0084bf00",
+      "function": "007c0910",
+      "method": "sweep_segment_list",
+      "this": "not the packet's; ECX and DL are the replay and mode flags",
+      "args": "local_c4 the 0C0h segment list, p+72Ch the shot, p the owner, [p+730h] the class descriptor, the caller's extra, and a stack local as the sixth argument",
+      "gate": "at least one segment was filled"
+    },
+    {
+      "address": "0070c52a",
+      "native": "008053c0",
+      "function": "0070c370",
+      "method": "recon_slot_for_party",
+      "this": "ECX = [proj+54h], the owner's party index",
+      "args": "none; EAX is the slot and [EAX+0DE8h] the candidate list",
+      "gate": "the fuse is armed and no target is latched (0070c4a4, 0070c503)"
+    },
+    {
+      "address": "0070c557",
+      "native": "0070c557+vtable5C",
+      "function": "0070c370",
+      "method": "candidate_is_kind",
+      "this": "EDI, the candidate entity",
+      "args": "PUSH 5; then PUSH 0Fh at 0070c56a, PUSH 0Eh at 0070c579 and PUSH 0Ch at 0070c588 as an early-out chain",
+      "gate": "every list element"
+    },
+    {
+      "address": "0070c677",
+      "native": "00427eb0",
+      "function": "0070c370",
+      "method": "projectile_world_position",
+      "this": "EBP, the projectile",
+      "args": "none; the routine is a plain RET, so the four dwords pushed at 0070c656-0070c66e are 00901c20's",
+      "gate": "a candidate that beat both distance tests"
+    },
+    {
+      "address": "0070c680",
+      "native": "00901c20",
+      "function": "0070c370",
+      "method": "ballistic_lead_solution",
+      "this": "ECX = EAX, the projectile world position",
+      "args": "EDX = EDI the candidate; stack low to high: classDesc[+50h] the muzzle speed, 00F87574 the zero vector, an out float3 at ESP+54h, an out block at ESP+0A0h. RET 10h at 0090227e confirms four",
+      "gate": "the same"
+    },
+    {
+      "address": "0070c79b",
+      "native": "0070c210",
+      "function": "0070c370",
+      "method": "detonate",
+      "this": "EBP, the projectile",
+      "args": "1",
+      "gate": "a latched target whose remaining distance this step covers, or the 10% airburst roll at 0070c7f7"
+    },
+    {
+      "address": "0070c7f7",
+      "native": "00bd2f10",
+      "function": "0070c370",
+      "method": "random_in_range",
+      "this": "ECX = 1",
+      "args": "0.0f and [00CE3D08] = 100.0f; compared against [00CE38B8] = 10.0f at 0070c802",
+      "gate": "no burst, the miss distance growing and above 2500.0f"
+    },
+    {
+      "address": "0070c89b",
+      "native": "0084c430",
+      "function": "0070c370",
+      "method": "sweep_segment",
+      "this": "CL and DL, the replay and mode flags",
+      "args": "the current position [proj+0FCh] and the previous [proj+1DCh] by value, then esi-0D4h the shot, [esi-0Ch] the owner, [esi-0D0h] the class descriptor, 00F87574 the zero direction and esi-7Ch = proj+1C8h",
+      "gate": "outside the packet's range; quoted because it fixes 0084bf00's sixth argument"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0070c370",
+      "body": "0070c370-0070cad3",
+      "name": "BSP_FlakProjectile_TickAdvance",
+      "abi": "__thiscall(void* tickElement, float step), RET 4 at 0070c3d7, 0070c7aa and 0070cad1",
+      "evidence": "Read from the PE bytes with capstone (local/lst.py). The inclusive end is the three-byte RET 4 at 0070cad1; int3 padding runs 0070cad4-0070cadf and the next function starts at 0070cae0. The name is already in the ledger from docs/PROJECTILE_IMPACT.md; only the body range is new."
+    }
+  ],
+  "corrections": [
+    {
+      "subject": "0084bf00",
+      "was": "__fastcall(char replayFlag, uint flags, float segment[6], shot, owner, classDesc, extra), five stack arguments (docs/PROJECTILE_IMPACT.md, copied from Ghidra's signature)",
+      "is": "six stack arguments: the segment list, shot, owner, classDesc, a const float3 direction and a sixth pointer",
+      "evidence": "RET 0x18 at 0084c427 is six dwords. The prologue reads six slots: 0084bf71 [ESP+0DCh], then at push depth 0Ch 0084bfca [ESP+0ECh], 0084bfd1 [ESP+0F0h] and 0084bfd8 [ESP+0F4h], which are base+0E0h, +0E4h and +0E8h. 0084c430 pushes five forwarded dwords plus the buffer (0084c446, 0084c44e, 0084c456, 0084c47c, 0084c4a2, 0084c4b6) and 007c0910 passes six. The fifth is 00F87574 for a projectile and the sixth projectile+1C8h."
+    },
+    {
+      "subject": "0084bf00",
+      "was": "the third argument is a float[6] holding one segment",
+      "is": "a 0C4h-byte segment list: eight {float3 from; float3 to} records at +0h and the count at +0C0h",
+      "evidence": "0084c430 does SUB ESP,0xc4, writes six floats at base+0h..14h and MOV [ESP+0xd8],1 at 0084c4bd, which is base+0C0h after six pushes. 0084b388 reads [EDI+0C0h] as the count and 0084b38e scales it by 18h. 0C0h/18h = 8. 007c0910's local_c4 is the same 0C0h block, filled with one segment per collision point."
+    },
+    {
+      "subject": "0084bc60",
+      "was": "step 3 [..+310h]->vtable[2Ch](&hitPos, extra) and step 4 shot->vtable[2Ch](&hitPos, extra)",
+      "is": "slot 2Ch takes no arguments; the two dwords pushed before each call are the following helper's",
+      "evidence": "0084b000 is RET 10h, four stack arguments, but only PUSH EAX and PUSH EBP follow the virtual call at 0084bd81. 0084b8c0 is RET 0Ch, three, but only PUSH EAX follows the call at 0084bde2. The pushes at 0084bd67/0084bd77 and 0084bdc8/0084bdd8 make up the difference. The three other call sites of slot 2Ch, 0084c12d, 0084c364 and 0084c3e1, push nothing at all."
+    },
+    {
+      "subject": "0084b8c0",
+      "was": "place_decal, the decal placement (docs/PROJECTILE_IMPACT.md host table and coverage row)",
+      "is": "the impact-effect dispatch: a switch on (mode, medium) over six class-descriptor effect slots",
+      "evidence": "Every arm of 0084b8c0 calls 0084b6f0, which builds a matrix and calls BSP_PointEffect_CreateFromMatrix on the effect manager [00E188A8]+19ECh. No decal call exists anywhere in 0084b6f0's body."
+    },
+    {
+      "subject": "0070c370",
+      "was": "body 0070C370-0070C7AA",
+      "is": "body 0070C370-0070CAD3",
+      "evidence": "0070c3e6 and 0070c400 jump to 0070c808, past the RET 4 at 0070c7aa; 0070c7c1 and 0070c7de jump there too. 0070c89b calls 0084c430 with the same eleven-dword shape as 006e657f. The last RET 4 is at 0070cad1 and int3 padding follows to 0070cadf."
+    },
+    {
+      "subject": "0070c370",
+      "was": "step 5 lists 008053C0, four virtual calls, 00427EB0 and 00901C20 without attributing arguments",
+      "is": "the four dwords pushed at 0070c656-0070c66e belong to 00901C20, not 00427EB0",
+      "evidence": "00427eb0 BSP_EntityPose_GetWorldPositionRefreshed is __fastcall(ECX) with a plain RET at 00427ec8. 00901c20 is RET 10h at 0090227e, and its SUB ESP,0xcc / COMISS XMM0,[ESP+0xd0] at 00901c2e reads the first of the four, the muzzle speed classDesc[+50h]."
+    },
+    {
+      "subject": "include/bsp/projectile_impact.hpp ProjectileImpactMode",
+      "was": "kScoringTarget = 3 and kUnit = 4",
+      "is": "mode 3 is a Landscape hit and mode 4 a plane hit",
+      "evidence": "0084bc99 pushes 0x44 and 0084bcb0 pushes 0x0f to the hit entity's vtable[5Ch]. docs/ENTITY_CLASS_IDS.md maps class id 44h to Landscape and 0Fh to the plane base. The effect table confirms it: mode 3 selects the terrain slot d+38h and mode 4 the aircraft slot d+3Ch."
+    },
+    {
+      "subject": "include/bsp/projectile_impact.hpp kProjectileOffOwnerId",
+      "was": "0x54, the owner id",
+      "is": "0x54, the owner's party index",
+      "evidence": "0070c512 loads [proj+54h] into ECX for BSP_Recon_EnsureSlot, whose table at 00F874BC has exactly three slots (docs/FIXED_STEP_COUNTDOWN.md). docs/BOT_FIRE_TARGET.md names the same field on a unit the owner's party index at 009f5d30."
+    },
+    {
+      "subject": "0084bf00",
+      "was": "the [shot+0CCh] IsKindOf(0Fh) branch is contract: other caller unread",
+      "is": "the caller is 007C0910, the plane's swept collision test, and the branch binds the plane's crash effect",
+      "evidence": "007c0910 passes p+72Ch as the shot, so [shot+0CCh] is the plane, whose class id is 0Fh, the plane base. 0084bf3f and 0084bf66 set EBP to that object and 0084c34b calls 007bc4e0 on it."
+    }
+  ],
+  "unread": [
+    "00901c20, the ballistic lead solution that decides where every flak round bursts. RET 10h and the first argument is the muzzle speed; the body is contract: unread here and in docs/BOT_FIRE_TARGET.md.",
+    "BSP_PointEffect_CreateFromMatrix, BSP_Matrix_BuildLookAt and the effect manager at [00E188A8]+19ECh, below 0084b6f0: renderer territory, described as a contract.",
+    "The producers of [shot+45h], the gate on the whole impact-effect step, and of [proj+290h], the bias added to the flak burst distance.",
+    "What consumes 0084bf00's sixth stack argument, projectile+1C8h on the projectile path.",
+    "0070c808-0070cad3, the flak tick's own sweep-and-impact tail, and 007c0910's per-point arm 007c0a4x-007c0c30.",
+    "Whether a shipped mission has wave regions, which is what makes the (x, y) surface lookup in 0084b380, 0084b4b0 and 0078d1b0 observable rather than latent."
+  ]
+}
