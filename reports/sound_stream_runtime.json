@@ -1,0 +1,472 @@
+{
+  "packet": "orch4_sound_stream_runtime_z",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "target_verified_each_live_batch": true,
+  "ghidra_mutations": false,
+  "status": "reconstructed_build_tested_native_arithmetic_and_routing_differential",
+  "functions": [
+    {
+      "address": "00a874d0",
+      "name": "BSP_SoundStream_Update",
+      "original_name": "FUN_00a874d0",
+      "body": "00a874d0 - 00a877c8",
+      "implementation": "update_sound_stream_00a874d0",
+      "source": "src/sound_stream_runtime.cpp",
+      "abi": "ECX actual54h; stack float dt; RET4",
+      "behavior": "Source pause+69 gates all work; levels precede fade; pending/playing/EOF paths preserve ignored results and low dt-byte isPlaying input.",
+      "callers": [
+        "BSP_InterfaceManager_UpdateMusicStreams @ 00685c80",
+        "BSP_OptionsScreen_Update @ 005f7310",
+        "FUN_00a78820 @ 00a78820"
+      ],
+      "callees": [
+        "BSP_Math_MinFloatByRef @ 00415510",
+        "BSP_StringBuilder_AppendCString @ 00bd1a60",
+        "BSP_StringBuilder_AppendHeader @ 00bd1a20",
+        "BSP_StringBuilder_Construct @ 00426500",
+        "BSP_StringBuilder_Destroy @ 00425f80",
+        "FUN_00a86150 @ 00a86150",
+        "FUN_00a86b40 @ 00a86b40",
+        "FUN_00a86bf0 @ 00a86bf0",
+        "FUN_00a86de0 @ 00a86de0",
+        "FUN_00bd1bb0 @ 00bd1bb0",
+        "getLength @ 00c2deba",
+        "isPlaying @ 00c2dde8",
+        "setPaused @ 00c2de36"
+      ],
+      "abi_compatible": false,
+      "missing_start": false,
+      "missing_tail": false,
+      "graph_diagnostics": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "address": "00a86150",
+      "name": "BSP_SoundStream_UpdateLevels",
+      "original_name": "FUN_00a86150",
+      "body": "00a86150 - 00a864eb",
+      "implementation": "update_sound_stream_levels_00a86150",
+      "source": "src/sound_stream_runtime.cpp",
+      "abi": "ECX actual54h; stack float dt; RET4",
+      "behavior": "Advance actual12h rows; x87 gain chain; descriptor channel routing; virtual slot8 getter; reload current manager after nonempty row loop.",
+      "callers": [
+        "FUN_00a874d0 @ 00a874d0"
+      ],
+      "callees": [
+        "FUN_00a85b50 @ 00a85b50",
+        "_memset @ 00bf79f0",
+        "setSpeakerLevels @ 00c2decc"
+      ],
+      "abi_compatible": false,
+      "missing_start": false,
+      "missing_tail": false,
+      "graph_diagnostics": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "address": "00a86b40",
+      "name": "BSP_SoundStream_QueryOpenState",
+      "original_name": "FUN_00a86b40",
+      "body": "00a86b40 - 00a86bec",
+      "implementation": "query_sound_stream_open_state_00a86b40",
+      "source": "src/sound_stream_runtime.cpp",
+      "abi": "ECX actual54h; EAX open state; RET",
+      "behavior": "State output initialized2; other outputs unwritten; ignored FMOD result; release/clear/stop when state2.",
+      "callers": [
+        "FUN_00a86bf0 @ 00a86bf0",
+        "FUN_00a874d0 @ 00a874d0"
+      ],
+      "callees": [
+        "BSP_StringBuilder_AppendCString @ 00bd1a60",
+        "BSP_StringBuilder_AppendHeader @ 00bd1a20",
+        "BSP_StringBuilder_Construct @ 00426500",
+        "BSP_StringBuilder_Destroy @ 00425f80",
+        "FUN_00a86bf0 @ 00a86bf0",
+        "getOpenState @ 00c2ded8",
+        "release @ 00c2dec6"
+      ],
+      "abi_compatible": false,
+      "missing_start": false,
+      "missing_tail": false,
+      "graph_diagnostics": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "address": "00a86bf0",
+      "name": "BSP_SoundStream_Stop",
+      "original_name": "FUN_00a86bf0",
+      "body": "00a86bf0 - 00a86dd7",
+      "implementation": "stop_sound_stream_00a86bf0",
+      "source": "src/sound_stream_runtime.cpp",
+      "abi": "ECX actual54h; RET",
+      "behavior": "Sleep(0) pending-open loop; state2 rewind, stop/release; other states retain handles; reset controls/state/fade.",
+      "callers": [
+        "FUN_00a86b40 @ 00a86b40",
+        "FUN_00a87390 @ 00a87390",
+        "FUN_00a874d0 @ 00a874d0"
+      ],
+      "callees": [
+        "BSP_SoundSystem_SampleFmodMemoryStats @ 00a7a460",
+        "BSP_StringBuilder_AppendCString @ 00bd1a60",
+        "BSP_StringBuilder_AppendHeader @ 00bd1a20",
+        "BSP_StringBuilder_Construct @ 00426500",
+        "BSP_StringBuilder_Destroy @ 00425f80",
+        "FUN_00a86b40 @ 00a86b40",
+        "FUN_00bd1ca0 @ 00bd1ca0",
+        "Sleep @ EXTERNAL:00000161",
+        "getPosition @ 00c2de18",
+        "release @ 00c2dec6",
+        "stop @ 00c2de0c"
+      ],
+      "abi_compatible": false,
+      "missing_start": false,
+      "missing_tail": false,
+      "graph_diagnostics": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "address": "00a86de0",
+      "name": "BSP_SoundStream_OnReady",
+      "original_name": "FUN_00a86de0",
+      "body": "00a86de0 - 00a86f30",
+      "implementation": "ready_sound_stream_00a86de0",
+      "source": "src/sound_stream_runtime.cpp",
+      "abi": "ECX actual54h; RET",
+      "behavior": "Play channel-1 paused, priority0, ignored format outputs, optional saved-ms position and reset.",
+      "callers": [
+        "FUN_00a874d0 @ 00a874d0"
+      ],
+      "callees": [
+        "BSP_SoundSystem_SampleFmodMemoryStats @ 00a7a460",
+        "BSP_StringBuilder_AppendCString @ 00bd1a60",
+        "BSP_StringBuilder_AppendHeader @ 00bd1a20",
+        "BSP_StringBuilder_Construct @ 00426500",
+        "BSP_StringBuilder_Destroy @ 00425f80",
+        "FUN_00bd1ca0 @ 00bd1ca0",
+        "getFormat @ 00c2dee4",
+        "playSound @ 00c2de00",
+        "setPosition @ 00c2dede",
+        "setPriority @ 00c2deea"
+      ],
+      "abi_compatible": false,
+      "missing_start": false,
+      "missing_tail": false,
+      "graph_diagnostics": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "address": "00a864f0",
+      "name": "BSP_SoundStream_SetGain",
+      "original_name": "FUN_00a864f0",
+      "body": "00a864f0 - 00a864fd",
+      "implementation": "set_sound_stream_gain_00a864f0",
+      "source": "src/sound_stream_runtime.cpp",
+      "abi": "ECX actual54h; stack float; RET4",
+      "behavior": "MOVSS raw float bits to+14.",
+      "callers": [
+        "BSP_InterfaceManager_UpdateMusicStreams @ 00685c80",
+        "BSP_MainMenu_StartTitleMusic @ 005884a0",
+        "BSP_OptionsScreen_Update @ 005f7310",
+        "BSP_Settings_ApplyAudio @ 008d5430",
+        "FUN_00a78330 @ 00a78330",
+        "FUN_00a78820 @ 00a78820"
+      ],
+      "callees": [],
+      "abi_compatible": false,
+      "missing_start": false,
+      "missing_tail": false,
+      "graph_diagnostics": {
+        "callers": [],
+        "callees": [
+          "No callees found for function: null"
+        ]
+      }
+    },
+    {
+      "address": "00a86670",
+      "name": "BSP_SoundStream_SetRowGain",
+      "original_name": "FUN_00a86670",
+      "body": "00a86670 - 00a8668e",
+      "implementation": "set_sound_stream_row_gain_00a86670",
+      "source": "src/sound_stream_runtime.cpp",
+      "abi": "ECX actual54h; stack signed index,float; RET8",
+      "behavior": "Unchecked actual12h control indexing; target/current copies preserve rate.",
+      "callers": [
+        "FUN_00a783f0 @ 00a783f0"
+      ],
+      "callees": [],
+      "abi_compatible": false,
+      "missing_start": false,
+      "missing_tail": false,
+      "graph_diagnostics": {
+        "callers": [],
+        "callees": [
+          "No callees found for function: null"
+        ]
+      }
+    },
+    {
+      "address": "00a867b0",
+      "name": "BSP_SoundStream_Start",
+      "original_name": "FUN_00a867b0",
+      "body": "00a867b0 - 00a868ac",
+      "implementation": "start_sound_stream_00a867b0",
+      "source": "src/sound_stream_runtime.cpp",
+      "abi": "ECX actual54h; stack native8h name pointer; RET4",
+      "behavior": "Actual table lookup/mask precedes active-state return; nonblocking createStream100C0h|loop2; reset controls and length; saved position arms fade-in.",
+      "callers": [
+        "BSP_MainMenu_StartTitleMusic @ 005884a0",
+        "FUN_004fe7a0 @ 004fe7a0",
+        "FUN_005162b0 @ 005162b0",
+        "FUN_0052e150 @ 0052e150",
+        "FUN_0052ee30 @ 0052ee30",
+        "FUN_00a783f0 @ 00a783f0"
+      ],
+      "callees": [
+        "BSP_SoundSystem_SampleFmodMemoryStats @ 00a7a460",
+        "FUN_00a865f0 @ 00a865f0",
+        "createStream @ 00c2ded2"
+      ],
+      "abi_compatible": false,
+      "missing_start": false,
+      "missing_tail": false,
+      "graph_diagnostics": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "address": "00a85b50",
+      "name": "BSP_SoundStream_AdvanceRow",
+      "original_name": "FUN_00a85b50",
+      "body": "00a85b50 - 00a85bf0",
+      "implementation": "advance_sound_stream_row_00a85b50",
+      "source": "src/sound_stream_runtime.cpp",
+      "abi": "ECX actual12h; stack float dt; AL changed; RET4; ECX/XMM2 preserved",
+      "behavior": "Original x87 comparisons/spills and raw target/current/rate mutations; explicit MSVC fastcall binder preserves native row entry.",
+      "callers": [
+        "FUN_00a86150 @ 00a86150"
+      ],
+      "callees": [],
+      "abi_compatible": true,
+      "missing_start": false,
+      "missing_tail": false,
+      "graph_diagnostics": {
+        "callers": [],
+        "callees": [
+          "No callees found for function: null"
+        ]
+      }
+    },
+    {
+      "address": "00a87b60",
+      "name": "BSP_SoundSystem_GetStreamSpeakerLayout",
+      "original_name": null,
+      "body": "00a87b60 - 00a87b66 (independent byte-read body; missing Ghidra start)",
+      "implementation": "sound_stream_speaker_layout_00a87b60",
+      "source": "src/sound_stream_runtime.cpp",
+      "abi": "ECX manager; EAX [ECX+170h]; RET",
+      "behavior": "Seven-byte missing-start body; virtual D5B44C+8, typed canonical manager projection.",
+      "callers": [],
+      "callees": [],
+      "abi_compatible": false,
+      "missing_start": true,
+      "missing_tail": false,
+      "graph_diagnostics": {
+        "callers": [
+          "Function not found: null"
+        ],
+        "callees": [
+          "Function not found: null"
+        ]
+      }
+    },
+    {
+      "address": "00bd1bb0",
+      "name": "BSP_StringBuilder_AppendInt",
+      "original_name": "FUN_00bd1bb0",
+      "body": "00bd1bb0 - 00bd1c93",
+      "implementation": "append_native_log_int_00bd1bb0",
+      "source": "src/sound_stream_runtime.cpp",
+      "abi": "ECX actual18h builder; stack DWORD; EAX builder; RET4",
+      "behavior": "Current integer format/default%d; sprintf64 temporary, native pooled-string resize/copy/append/release; source rejects overlong format output.",
+      "callers": [
+        "BSP_Settings_WriteOptionsText @ 008d6170",
+        "FUN_0050aa10 @ 0050aa10",
+        "FUN_00781910 @ 00781910",
+        "FUN_00782020 @ 00782020",
+        "FUN_00a7ea30 @ 00a7ea30",
+        "FUN_00a83120 @ 00a83120",
+        "FUN_00a874d0 @ 00a874d0",
+        "FUN_00bd2760 @ 00bd2760"
+      ],
+      "callees": [
+        "BSP_NativeString_Resize @ 0041dd40",
+        "BSP_SizedStoragePool_GetSingleton @ 00419cc0",
+        "BSP_SizedStoragePool_ReturnBlock @ 00bd1510",
+        "_memcpy @ 00bf7680",
+        "_sprintf @ 00bf7a6a"
+      ],
+      "abi_compatible": false,
+      "missing_start": false,
+      "missing_tail": false,
+      "graph_diagnostics": {
+        "callers": [],
+        "callees": []
+      }
+    },
+    {
+      "address": "00bd1ca0",
+      "name": "BSP_StringBuilder_AppendUnsignedBits",
+      "original_name": "FUN_00bd1ca0",
+      "body": "00bd1ca0 - 00bd1d83",
+      "implementation": "append_native_log_uint_00bd1ca0",
+      "source": "src/sound_stream_runtime.cpp",
+      "abi": "ECX actual18h builder; stack DWORD; EAX builder; RET4",
+      "behavior": "Identical numeric body uses signed-format DWORD bits for unsigned saved positions; no invented unsigned formatting.",
+      "callers": [
+        "FUN_00a86bf0 @ 00a86bf0",
+        "FUN_00a86de0 @ 00a86de0"
+      ],
+      "callees": [
+        "BSP_NativeString_Resize @ 0041dd40",
+        "BSP_SizedStoragePool_GetSingleton @ 00419cc0",
+        "BSP_SizedStoragePool_ReturnBlock @ 00bd1510",
+        "_memcpy @ 00bf7680",
+        "_sprintf @ 00bf7a6a"
+      ],
+      "abi_compatible": false,
+      "missing_start": false,
+      "missing_tail": false,
+      "graph_diagnostics": {
+        "callers": [],
+        "callees": []
+      }
+    }
+  ],
+  "receiver_producer": {
+    "address": "00a877d0",
+    "native_size": "0x54",
+    "owner_commit": "33606628",
+    "callers": [
+      "0052ee30",
+      "005884a0",
+      "00a783f0"
+    ],
+    "fields": {
+      "08": "pause byte",
+      "09": "stop byte",
+      "0a": "fade out byte",
+      "0b": "fade in byte",
+      "0c": "fade factor",
+      "10": "untouched caller word",
+      "14": "gain",
+      "18": "saved milliseconds",
+      "1c": "length milliseconds",
+      "20": "state",
+      "24": "original NativeString",
+      "2c": "resolved NativeString",
+      "34": "third NativeString",
+      "3c": "retained actual20h descriptor table",
+      "40": "FMOD Sound",
+      "44": "FMOD Channel",
+      "48": "actual12h controls data",
+      "4c": "controls count",
+      "50": "controls capacity"
+    }
+  },
+  "direct_callee_contracts": {
+    "00415510": "x87 minimum by two float references, ST0 result; ordered b>a chooses a else b including unordered; exact comparison in fade helper.",
+    "00a85b50": "Concrete row body in this packet; dt FLD/FSTP copied by levels caller.",
+    "00a86150 / 00a86b40 / 00a86bf0 / 00a86de0": "Concrete level/query/stop/ready bodies in this packet; query and stop intentionally recurse on open error after clearing +40.",
+    "00a87b60": "Indirect D5B44C+8 getter returns manager+170; seven exact bytes; missing-start item retained.",
+    "00a865f0": "Real actual20h-table NativeString lookup from companion821149b7; equal length and _stricmp, index0 for miss/empty.",
+    "00a7a460": "Existing recovered memory checkpoint ignores ECX and one stack message word; calls memory_get_stats with two unwritten locals, discards both.",
+    "00426500 / 00425f80": "Existing actual18h native log builder construct/destroy; actual pooled strings, no separate output sink.",
+    "00bd1a60 / 00bd1a20": "Existing appendCString/appendNativeHeader with original allocation and copy semantics.",
+    "00bd1bb0 / 00bd1ca0": "Concrete signed/default%d rawDWORD numeric append bodies in this packet.",
+    "0041dd40 / 00419cc0 / 00bd1510": "Recovered native string resize and allocator singleton/return-block routes via required NativeStringStorage; numeric temporary cleanup retained.",
+    "00bf7680 / 00bf79f0": "memcpy/memset byte operations; captured lengths and native array sizes preserved.",
+    "00bf7a6a": "sprintf CRT formatting; typed source uses snprintf to restrict valid native64byte output domain, strlen retains embedded-NUL length behavior.",
+    "00c2ded2": "createStream(system,resolved filename,mode100C0h|loop2,null extra,&sound40); stdcall explicit object.",
+    "00c2ded8": "getOpenState(sound,int32 state*,uint32 percent*,native byte starving*); state starts2, other outputs unwritten; explicit-object stdcall C++ byte ABI.",
+    "00c2dec6": "release(sound); return ignored except memory checkpoint in state2 stop.",
+    "00c2de00": "playSound(system,channel-1,sound,true,&channel44); memory checkpoint only result2Bh.",
+    "00c2deba": "getLength(sound,&length1c,timeunit1); ignored result.",
+    "00c2dee4": "getFormat(sound,&type,&format,&channels,&bits); unwritten outputs never read, memory checkpoint only result2Bh.",
+    "00c2decc": "setSpeakerLevels(channel,speaker,float array,signed count); stdcall explicit object, ignored result.",
+    "00c2deea": "setPriority(channel,0); ignored result.",
+    "00c2dede": "setPosition(channel,saved18,timeunit1); memory checkpoint only result2Bh.",
+    "00c2de18": "getPosition(channel,&saved18,timeunit1); ignored result, writes directly to receiver.",
+    "00c2de36": "setPaused(channel,pause08); native raw byte preserved.",
+    "00c2dde8": "isPlaying(channel,native byte*); incoming byte is low updated-dt word; explicit-object stdcall C++ byte ABI; no invented false initialization.",
+    "00c2de0c": "stop(channel); ignored result.",
+    "Sleep": "Win32 Sleep(0) in pending-open polling; no timeout inserted."
+  },
+  "caller_evidence": "Address rows retain live direct callers; native receiver is produced byA877D0. D5B44C+8 indirect routing is separately byte-read; CLI omission does not prove no indirect caller.",
+  "exception_evidence": "Native StringBuilder local lifetimes and numeric temporary pooled release mapped to RAII; owned stream constructor/destructor EH remains companion packet. No synthetic catch-and-success. Invalid descriptor bounds retain native preconditions; null current manager/base pure-virtual profile rejected by typed interface.",
+  "verification": {
+    "build": "scripts/build.ps1 MSVC Win32 Release, MSBUILDDISABLENODEREUSE=1",
+    "seed_verification": "tools/ghidra_export.py verify-seeds before native CTest",
+    "ctests": {
+      "passed": 2,
+      "failed": 0
+    },
+    "row_original_instruction_cases": 63888,
+    "fade_original_instruction_cases": 5808,
+    "mix_original_instruction_cases": 672,
+    "precision_modes": 3,
+    "rounding_modes": 4,
+    "probe": "local/sound_stream_probe.cpp",
+    "runner": "local/run_sound_stream_probe.ps1",
+    "build_log": "local/sound-stream-build.log",
+    "probe_log": "local/sound-stream-probe.log",
+    "native_spans": [
+      {
+        "name": "row",
+        "address": "00a85b50",
+        "length": 161,
+        "sha256": "f829a52d17e1f4282b96cfab7d9a84080bf26618d54cbd1c253f6b7e8079bd2e"
+      },
+      {
+        "name": "fade",
+        "address": "00a87508",
+        "length": 156,
+        "sha256": "6b8b35a66bef004ce01345c4b71451ddd7fd049fc510678e30ca308b82e46518"
+      },
+      {
+        "name": "minimum",
+        "address": "00415510",
+        "length": 62,
+        "sha256": "6dbad5358822151fed88ad431af0f75739a5861dbde58b95a29721a732e500af"
+      },
+      {
+        "name": "mix",
+        "address": "00a86150",
+        "length": 924,
+        "sha256": "f8e680fe4bd12fbd5dd80693a017d607d0c9972dded3aaee1dab08cc3613a39f"
+      }
+    ],
+    "new_permanent_tests": 0,
+    "installed_audio_test": false,
+    "game_validated": false
+  },
+  "remaining_boundaries": [
+    "Parent provides real FMOD DLL methods, with original C++ native-byte query exports rather than normalizing C wrappers.",
+    "Facade/application integration and installed streaming playback fixture belong to primary and logical facade packets.",
+    "Non-loop EOF state3 retains sound/channel handles and stop preserves them; FMOD system must outlive native stream owner drain.",
+    "Function naming and missing A87B60 start were recorded without Ghidra mutation.",
+    "Typed source is not binary replacement except separately bound row arithmetic; CRT overlong-format undefined behavior is outside valid domain."
+  ]
+}
