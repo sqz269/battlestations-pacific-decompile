@@ -1,0 +1,248 @@
+{
+  "packet": "cc_ai_avoid_zones",
+  "owner": "agent/cc-ai-avoid-zones",
+  "doc": "docs/AVOID_ZONE_GEOMETRY.md",
+  "header": "include/bsp/avoid_zone_geometry.hpp",
+  "source": "src/avoid_zone_geometry.cpp",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only",
+  "question": "The avoid-zone manager's geometry, so an AI plan can bend around an island: the zone record and its producer, the segment-versus-zone test 004179D0, the tangent walk 00422500, and what usn_2_java.scn authors.",
+  "answer": "A zone is a 24h-byte record holding a hand-grown vector of 24h-byte corner records, a layer key at +0Ch and an AABB at +14h..+20h, all in the (x, z) plane. Layer groups (14h bytes, key at +10h) hang off the manager's twenty inline slots at +8h with the count at +58h. 00424D00 rebuilds the table at mission load by scanning the world for entities named AvoidZone or AvoidZoneG <layer> #nnn; every one of the 6476 in the shipped scenes is a (Path) entity and its PathPoints become the polygon, points closer than five units dropped, the winding normalised to a turn sum at or below zero. 004179D0 hands one running point to every zone in the group and so reports the crossing nearest its `toward` endpoint together with the zone and the edge (the edge's first corner) that owns it. 00422500 walks the corners both ways from the blocked edge, tracking the bearing to the far point minus the edge bearing across each corner's +1Ch turn, accepts the corner where that angle changes sign, and publishes it pushed `margin` units along the corner bisector, pulled back to the nearest zone boundary when the margin exceeds ten units. usn_2_java.scn authors no avoid zones at all.",
+  "routines": [
+    {
+      "address": "004179d0",
+      "proposed_name": "BSP_AvoidZoneGroup_SegmentHit",
+      "original_abi": "bool __thiscall(group)(const float2* toward, const float2* from, float2* running, zone** hit_zone, int* edge), RET 14h at 00417A37",
+      "body": "004179d0-00417a39",
+      "coverage": "complete",
+      "reconstruction": "avoid_zone_group_segment_hit_004179d0",
+      "note": "004179FD..004179FF is three bytes of padding after the JMP at 004179FB, not code"
+    },
+    {
+      "address": "00416dd0",
+      "proposed_name": "BSP_AvoidZone_SegmentHit",
+      "original_abi": "bool __thiscall(zone)(const float2* toward, const float2* start, float2* running, int* edge), RET 10h at 00416DF8 and 00416F1E",
+      "body": "00416dd0-00416f20",
+      "coverage": "complete",
+      "reconstruction": "avoid_zone_segment_hit_00416dd0"
+    },
+    {
+      "address": "00416b50",
+      "proposed_name": "BSP_AvoidZone_ContainsPoint",
+      "original_abi": "bool __thiscall(zone)(const float2* point), RET 4",
+      "body": "00416b50-00416cc4",
+      "coverage": "complete",
+      "reconstruction": "avoid_zone_contains_point_00416b50"
+    },
+    {
+      "address": "004178f0",
+      "proposed_name": "BSP_AvoidZoneGroup_ZoneContainingPoint",
+      "original_abi": "zone* __thiscall(group)(const float2* point), RET 4",
+      "body": "004178f0-0041793b",
+      "coverage": "complete",
+      "reconstruction": "avoid_zone_first_containing_004178f0"
+    },
+    {
+      "address": "00412120",
+      "proposed_name": "BSP_AvoidZoneManager_GroupForLayerOrBelow",
+      "original_abi": "group* __thiscall(manager)(int layer_key), RET 4",
+      "body": "00412120-0041216b",
+      "coverage": "complete",
+      "reconstruction": "avoid_zone_group_for_layer_00412120",
+      "note": "the same lookup as 004120D0, which belongs to another packet and is referenced only"
+    },
+    {
+      "address": "00422500",
+      "proposed_name": "BSP_AvoidZone_TangentCorners",
+      "original_abi": "int __thiscall(zone)(float far_x, float far_z, int edge_index, int near_corner_hint, int far_side_hint, float margin, float2* out_backward, float2* out_forward, int* out_backward_index, int* out_forward_index), RET 28h at 0042318D",
+      "body": "00422500-0042318f",
+      "coverage": "complete",
+      "reconstruction": "avoid_zone_tangent_corners_00422500"
+    },
+    {
+      "address": "00417ca0",
+      "proposed_name": "BSP_AvoidZoneManager_GroupForLayerOrCreate",
+      "original_abi": "group* __thiscall(manager)(int layer_key), RET 4",
+      "body": "00417ca0-00417d58",
+      "coverage": "complete",
+      "reconstruction": "avoid_zone_group_find_or_create_00417ca0"
+    },
+    {
+      "address": "0085c910",
+      "proposed_name": "BSP_Math_BoxMeetsSegment2D",
+      "original_abi": "bool __fastcall(ECX const float2* box_min, EDX const float2* box_max, const float2* b0, const float2* b1), RET 8",
+      "body": "0085c910-0085cac7",
+      "coverage": "complete",
+      "reconstruction": "avoid_zone_box_meets_segment_0085c910",
+      "note": "reached only through the adjustor thunk 004F2B00, which turns ECX = zone+14h into the (min, max) pair"
+    },
+    {
+      "address": "0041f600",
+      "proposed_name": "BSP_AvoidZoneManager_ClearGroups",
+      "original_abi": "void __fastcall(manager), RET",
+      "body": "0041f600-0041f639",
+      "coverage": "partial: 0041F600-0041F62E projected; the tail call 0041F62F 0041E960 is unread",
+      "reconstruction": "avoid_zone_table_clear_0041f600"
+    },
+    {
+      "address": "0041d1e0",
+      "proposed_name": "BSP_AvoidZoneGroup_AddSceneEntity",
+      "original_abi": "void __thiscall(group)(entity*), RET 4 at 0041D2D2 and 0041D30D",
+      "body": "0041d1e0-0041d310",
+      "coverage": "partial: the register path 0041D1E0-0041D2D2 projected; the failure branch 0041D2D5-0041D30F (004167C0 and the two frees) and the vector-growth early return at 0041D2A8 are read but not projected",
+      "reconstruction": "folded into avoid_zone_rebuild_from_scene_00424d00"
+    },
+    {
+      "address": "0041ccd0",
+      "proposed_name": null,
+      "original_abi": "zone* __thiscall(zone)(path_interface*, int layer_key), RET 8",
+      "body": "0041ccd0-0041d0b1",
+      "coverage": "evidence only, not owned: read whole, but the address is leased to orch6_ship_ai_lateral_record, so no ledger record is claimed. 0041A540 (0041D053) and 00923810 (0041D06D) are not projected",
+      "reconstruction": "avoid_zone_from_path_points, deliberately without an address suffix"
+    },
+    {
+      "address": "0041a200",
+      "proposed_name": null,
+      "original_abi": "bool __thiscall(zone)(bool allow_reverse), RET 4",
+      "body": "0041a200-0041a4d8",
+      "coverage": "evidence only, not owned: read whole, same lease as 0041CCD0",
+      "reconstruction": "avoid_zone_rebuild_corner_data, deliberately without an address suffix"
+    },
+    {
+      "address": "00424d00",
+      "proposed_name": null,
+      "original_abi": "void __thiscall(manager), RET",
+      "body": "00424d00-00425487",
+      "coverage": "partial and owned by cc2_mission_load_hosts: the scan 00424D00-00424DDF is projected; the tail 00424DDF-00425487 (004223B0 and 00423C50, the ship tuning block's layer keys) is not",
+      "reconstruction": "avoid_zone_rebuild_from_scene_00424d00"
+    }
+  ],
+  "host_steps": [
+    {
+      "step": 1,
+      "address": "00424d32",
+      "function": "00424d00",
+      "method": "world_entity_count",
+      "note": "not a call: MOV EBX,[EAX+370h] off [[00E188A8]+19CCh], the intrusive list head, walked through node+4h with the element at node+8h (00424D50)"
+    },
+    {
+      "step": 2,
+      "address": "00424d53",
+      "function": "00424d00",
+      "method": "world_entity_name",
+      "note": "not a call: CMP dword ptr [EDI+154h],0 then MOV ESI,[EDI+158h] at 00424D5C, with the literal at 00CE3870 for a zero length and 00E17654 for a null buffer"
+    },
+    {
+      "step": 3,
+      "address": "0041d201",
+      "function": "0041d1e0",
+      "native": "007ac9d0",
+      "method": "world_entity_is_zone_path",
+      "note": "BSP_Entity_PathInterfaceForKind, paired with 0041D206 CMP dword ptr [EDI+54h],2; the host answers for both because which of the two the field belongs to was not read"
+    },
+    {
+      "step": 4,
+      "address": "0041cd32",
+      "function": "0041ccd0",
+      "native": "007af800",
+      "method": "world_entity_path_points",
+      "note": "point 0; the loop repeats it at 0041CE7E and the count comes from ([path+0Ch] - [path+8h]) >> 2 at 0041CD1B"
+    }
+  ],
+  "call_sites": [
+    {"address": "004e07be", "function": "004dfb70", "native": "00424d00", "note": "the rebuild, with ECX = the 004218E0 singleton"},
+    {"address": "00424d22", "function": "00424d00", "native": "0041f600", "note": "clear the twenty group slots"},
+    {"address": "00424d7a", "function": "00424d00", "native": "00bf75b3", "note": "_strncmp(name, \"AvoidZone\", 9), the name gate"},
+    {"address": "00424d92", "function": "00424d00", "native": "00bf75b3", "note": "_strncmp(name, \"AvoidZoneG\", 10)"},
+    {"address": "00424dae", "function": "00424d00", "native": "00bf7533", "note": "_sscanf with \"AvoidZoneG %*s %d #%03d\" into the layer slot at [ESP+10h], zeroed at 00424D8E"},
+    {"address": "00424dbe", "function": "00424d00", "native": "00417ca0", "note": "find or create the layer's group, before the entity is examined"},
+    {"address": "00424dc5", "function": "00424d00", "native": "0041d1e0", "note": "add the entity, with ECX = the group 00417CA0 returned"},
+    {"address": "00424dda", "function": "00424d00", "native": "00417ca0", "note": "00417CA0(0): layer 0 always exists after a rebuild"},
+    {"address": "0041d233", "function": "0041d1e0", "native": "0041ccd0", "note": "the zone constructor, on operator new(24h) from 0041D214"},
+    {"address": "0041cfb9", "function": "0041ccd0", "native": "00415010", "note": "BSP_Geometry_IncludePoint with ECX = zone+14h, the AABB"},
+    {"address": "0041d053", "function": "0041ccd0", "native": "0041a540", "note": "the world-box step, read but not projected"},
+    {"address": "0041d063", "function": "0041ccd0", "native": "0041a200", "note": "the per-corner pass that fills +8h..+1Ch and normalises the winding"},
+    {"address": "0041a3f0", "function": "0041a200", "native": "00438b10", "note": "subtract(outgoing bearing, incoming bearing) into corner+1Ch at 0041A3F7"},
+    {"address": "0041a47e", "function": "0041a200", "native": null, "note": "COMISS against 00D7A218 (0.0): a turn sum above zero reverses the corner order and remeasures"},
+    {"address": "00417ece", "function": "00417e90", "native": "004120d0", "note": "the layer's group"},
+    {"address": "00417ed5", "function": "00417e90", "native": "004179d0", "note": "the group's segment test; 00417EDC copies the zone only when AL is set"},
+    {"address": "00417f2e", "function": "00417ef0", "native": "004120d0", "note": "the same lookup in the hit-point wrapper"},
+    {"address": "00417f35", "function": "00417ef0", "native": "004179d0", "note": "00417F3C copies the hit point only when AL is set"},
+    {"address": "00417a0e", "function": "004179d0", "native": "00416dd0", "note": "one zone, with the running point shared across the whole group"},
+    {"address": "00416de9", "function": "00416dd0", "native": "004f2b00", "note": "the AABB reject, ECX = zone+14h"},
+    {"address": "004f2b03", "function": "004f2b00", "native": "0085c910", "kind": "tail_jump", "note": "LEA EDX,[ECX+8] then JMP: the min and max pair"},
+    {"address": "00416ea5", "function": "00416dd0", "native": "004f3730", "note": "BSP_Math_SegmentCrossing2D(ECX toward, EDX running, prev corner, next corner, &out)"},
+    {"address": "00417913", "function": "004178f0", "native": "00416b50", "note": "the first zone of the group that contains the point"},
+    {"address": "004225bf", "function": "00422500", "native": "00bf701a", "note": "atan2 with ST0 = dx and ST1 = dy, the first of eight bearing sites"},
+    {"address": "004226af", "function": "00422500", "native": "00438b10", "note": "subtract(bearing to the far point, edge bearing), the forward pass's starting angle"},
+    {"address": "004228a7", "function": "00422500", "native": "00438b10", "note": "the forward pass's exact test; 004228AE FCOMI and 004228B2 JBE accept a negative result"},
+    {"address": "00422a0e", "function": "00422500", "native": "00419260", "note": "BSP_Vector2f_ReciprocalLength on the first bisector leg"},
+    {"address": "00422b95", "function": "00422500", "native": "004218e0", "note": "the manager singleton for the forward corner's pull-back, reached only when the margin exceeds ten units (00422B85)"},
+    {"address": "00422bab", "function": "00422500", "native": "00417ef0", "note": "SegmentHitPoint(zone+0Ch layer, corner+1 unit, corner+margin, out_forward)"},
+    {"address": "00422cb4", "function": "00422500", "native": "00438b10", "note": "the backward pass's starting angle"},
+    {"address": "00422ed5", "function": "00422500", "native": "00438b10", "note": "the backward pass's exact test; 00422EDE FCOMIP and 00422EE0 JA accept a positive result"},
+    {"address": "00423146", "function": "00422500", "native": "004218e0", "note": "the same singleton for the backward corner"},
+    {"address": "0042315c", "function": "00422500", "native": "00417ef0", "note": "the backward corner's pull-back"},
+    {"address": "009e3058", "function": "009e3040", "native": "004218e0", "note": "the search fetches the manager once per edge test"},
+    {"address": "009e3075", "function": "009e3040", "native": "00417e90", "note": "the blocked-edge test; arg2 is the near node's point at EBX+18h and arg3 the far node's at EDI+18h, so the reported edge is the crossing nearest the near node"},
+    {"address": "009e3105", "function": "009e3040", "native": "00422500", "note": "the detour corners, with the far node's point by value, the hint byte from EDI+14h (009E30B6) and the hint word from EBX+0Ch (009E30C3)"}
+  ],
+  "constants": [
+    {"address": "00d7a238", "value": "0.01f", "site": "00416E92: the squared distance at which 00416DD0 stops walking edges"},
+    {"address": "00d7a280", "value": "0.5 (double)", "site": "0085C918: every extent in the separating-axis test is halved"},
+    {"address": "00ce3830", "value": "1.5707963705062866 (double, float-rounded pi/2)", "site": "004225CC and every other bearing"},
+    {"address": "00ce3828", "value": "6.2831854820251465 (double, float-rounded 2*pi)", "site": "004225E0, one correction only"},
+    {"address": "00d7a24c", "value": "1.0f", "site": "00422515: the tangent margin floor"},
+    {"address": "00ce38b8", "value": "10.0f", "site": "00422B85 and 00423136: above this margin the pushed corner is pulled back"},
+    {"address": "00d7a288", "value": "1.0e-6f", "site": "00422A80 and 00423012: a bisector this short means the two edges are opposite"},
+    {"address": "00d7a3a0", "value": "0.1 (double)", "site": "004226C1: the forward pass's starting side tolerance"},
+    {"address": "00ce3928", "value": "-0.1 (double)", "site": "00422CC2: the backward pass's"},
+    {"address": "00ce3880", "value": "25.0 (double)", "site": "0041CEDB: path points closer than five units are dropped"},
+    {"address": "00d7a218", "value": "0.0 (double)", "site": "0041A47E: a turn sum above zero reverses the polygon"},
+    {"address": "00ce3820", "value": "about 1.0e-10 (double)", "site": "0041A310: below this an edge has no length"},
+    {"address": "00d7a260", "value": "-1.0f", "site": "0041CDC0 and 0041CF34: corner+20h, never written again"},
+    {"address": "00d7a208", "value": "-0.0f", "site": "00422A9E and 0042302E: the negation in the degenerate bisector fallback"}
+  ],
+  "scene_survey": {
+    "method": "read-only text scan of I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/scenes for entity \"AvoidZone...\" (<kind>)",
+    "total_zone_entities": 6476,
+    "kinds": {"Path": 6476},
+    "names_without_group_form": 16,
+    "layer_keys_observed": [0, 1, 3, 5, 10, 11, 26, 46, 86],
+    "usn_2_java_scn": 0,
+    "other_usn_missions_with_none": ["usn_9_santa", "usn_14_phil_sea", "usn_17_engano", "usn_19_coralus"],
+    "densest": {"usn_13_truk": 87, "usn_12_augusta": 67},
+    "example": "usn_1_marshall.scn: 21 zones over layers 1, 3, 11, 46 and 86, median 123 authored points each"
+  },
+  "corrections": [
+    {
+      "target": "include/bsp/ship_ai_path_search.hpp, segment_blocked_00417e90",
+      "was": "004179D0's body is not read here, so which zone wins when the segment crosses several is open",
+      "is": "the zone that owns the crossing nearest the `from` endpoint wins, and the edge index is that crossing's edge",
+      "evidence": "004179D4..004179E6 seeds one running point from *from and 00417A0A passes that same pointer to every zone; 00416DD0 only ever moves it toward its `toward` argument, so the last write is the nearest crossing"
+    },
+    {
+      "target": "reports/ship_ai_path_follower.json uncertainty",
+      "was": "00417EF0's true-means-blocked polarity rests on 00417E90 having the same body shape and the same two callees; 004179D0 itself was not read",
+      "is": "settled: 004179D0 returns BL, set only where a zone reported a crossing (00417A1D), and both wrappers copy their out values only when AL is non-zero",
+      "evidence": "004179D0-00417A39 read whole; 00417EDC and 00417F3C are the two TEST AL,AL / JZ guards"
+    },
+    {
+      "target": "docs/SHIP_AI_PATH_SEARCH.md, the corner-record array",
+      "was": "the corner records behind zone+0h were opaque",
+      "is": "a corner is 24h bytes: position at +0h/+4h, edge direction at +8h, normal at +10h, edge length at +18h, and the signed turn the tangent walk consumes at +1Ch",
+      "evidence": "0041CD4D allocates 24h and clears the derived half; 0041A3F7 FSTP float ptr [EDX+1Ch] writes the turn as subtract(outgoing bearing, incoming bearing)"
+    },
+    {
+      "target": "docs/SHIP_AI_PATH_SEARCH.md line 191, the hit edge index",
+      "was": "inferred from the caller",
+      "is": "confirmed from the producer: the index names the crossing edge's first corner, with -1 wrapped to the last corner",
+      "evidence": "00416E30 seeds -1, 00416EDC increments after the test, 00416F11 adds the corner count when the result is negative"
+    }
+  ],
+  "uncertainty": "The reading that 00422500's two indices both name the edge leaving the published corner is provisional: what is established is the arithmetic (forward index = edge_index + steps and the corner it published is that index; backward index = edge_index - steps while the corner it published is that index + 1). zone+10h has a producer (0041D099, from 00923810 and a vtable[5Ch](44h) query) and no identified reader. corner+20h is set to -1.0 and never written again; no reader was found. Which of the path interface and the entity owns the +54h field 0041D206 tests was not read, so the host method answers for the pair. The layer keys the scenes author get their meaning in 00424D00's unread tail, so nothing here says what layer 46 means.",
+  "no_ghidra_function": [],
+  "build": "scripts/build.ps1, MSVC Win32 Release, /W4 /WX clean; build/win32/bsp_core.dir/Release/avoid_zone_geometry.obj; ctest reconstructed_math passed",
+  "tests_added": "one case in tests/math_tests.cpp: a square zone built through the producer, a segment straight through it, and the two 30-unit tangent corners. It pins the two ends the native makes easy to swap, the endpoint 004179D0 reports the crossing nearest and the backward index being one below the corner it published."
+}
