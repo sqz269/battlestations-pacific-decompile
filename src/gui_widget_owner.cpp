@@ -125,7 +125,8 @@ bool GuiWidgetOwner::has_pending_base_clip() const noexcept {
     return base_clip_ && base_clip_->has_pending();
 }
 void GuiWidgetOwner::require_no_active_owned_operation() const {
-    if (has_pending_base_clip() || (timed_entries_ && timed_entries_->operation_active()))
+    if (base_lifetime_.phase != GuiWidgetBaseDeletionPhase::not_started || scene_release_active_ ||
+        has_pending_base_clip() || (timed_entries_ && timed_entries_->operation_active()))
         throw std::logic_error("widget still owns an active or pending native operation");
 }
 void GuiWidgetOwner::base_refresh_clip70_00aaa3e0() {
@@ -262,8 +263,19 @@ void GuiWidgetOwner::set_position_00aa7dc0(const GuiWidgetPoint& position) {
 }
 void GuiWidgetOwner::release_scene_nodes_00aa8320() {
     require_no_active_owned_operation();
-    for (const auto& child : layout_.children)
+    struct SceneCall {
+        bool& active;
+        explicit SceneCall(bool& value) : active(value) { active = true; }
+        ~SceneCall() { active = false; }
+    } scene_call(scene_release_active_);
+    const auto child_count = layout_.children.size();
+    for (std::size_t index = 0; index < child_count; ++index) {
+        auto* child = layout_.children[index].get();
+        if (!child) throw std::logic_error("current20 requires a live child");
         runtime_.owner(*child).release_scene_nodes_00aa8320();
+        if (layout_.children.size() != child_count || layout_.children[index].get() != child)
+            throw std::logic_error("current20 changed the borrowed host child collection");
+    }
     implementation().release_secondary_scene_nodes(*this);
     if (node_) {
         auto& lifetime = runtime_.environment_.models.nodes.attachments.resolve(node_->transform);

@@ -16,9 +16,9 @@ public:
 // Uses the one widget runtime/tree and each owner's exact borrowed companion.
 // No Text factory or substitute virtual implementation is created.
 //
-// Domain: live canonical Text children, empty native timed-entry header+88/8C/90,
+// Domain: live canonical Group/Text children, provenance-owned timed entries,
 // valid stable child collections across scene callbacks, and no destructive
-// reentry. Non-Text or unbound remaining children and nonzero entry headers
+// reentry. Unbound/unsupported remaining children or foreign entry headers
 // throw GuiTextDeletionBoundary AT the missing native phase, retaining owner,
 // companion and any transferred wrapper. Never treat that exception as success.
 // Native Text slot pool00AB75A0, native CRT/SEH and raw vtable writes remain out
@@ -37,15 +37,22 @@ public:
     // then preserves only the wrapper allocation for explicit later disposal.
     // flags1 requires transferred ownership or an existing owning parent entry.
     void delete_text_child_virtual4(GuiLayoutWidget&, std::uint32_t flags) override;
+    // Current4 over the same Group/Text owner and allocation domain. Group
+    // AC73E0 has no derived resource tail before AA9730. Other profiles reject.
+    void delete_widget_virtual4(GuiLayoutWidget&, std::uint32_t flags);
 
     // Transfer an ordinary live detached handle for reattachment, or completed
     // flags0 storage for disposal. Pending destruction cannot be taken/dropped.
     std::unique_ptr<GuiLayoutWidget> take_detached_storage(GuiLayoutWidget&);
     std::size_t retained_storage_count() const noexcept { return detached_.size(); }
 private:
+    friend void destroy_gui_widget_base_00aa9730(GuiWidgetOwner&, GuiTextChildDeletion&);
     using Handles = std::list<std::unique_ptr<GuiLayoutWidget>>;
     Handles::iterator find_storage(GuiLayoutWidget&) noexcept;
     void release_primary(GuiWidgetOwner&);
+    void require_scalar_storage(GuiLayoutWidget&, std::uint32_t flags);
+    void set_base_phase(GuiWidgetOwner&, GuiWidgetBaseDeletionPhase) noexcept;
+    void erase_completed_owner(GuiWidgetOwner&, std::uint32_t flags);
     GuiWidgetOwnerRuntime& owners_;
     NativeNodeParentingRuntime& parenting_;
     // Allocation handles only, never a second widget/companion lookup map/tree.
