@@ -205,15 +205,17 @@ struct ShipAiPathSearchHost {
 
     // 009D5917: 00417610(zone)(index), RET 4, body 009D5917's callee
     // 00417610-00417623, complete: returns zone_records[index % zone_count],
-    // a signed IDIV so a negative index wraps toward zero.
+    // signed IDIV at 00417619: quotient truncates toward zero; the remainder
+    // keeps the index's sign and can address before the array. No fixup/guard.
     virtual std::uint32_t zone_corner_record_00417610(std::uint32_t zone,
                                                       std::int32_t index) = 0;
 
     // 009D5923: 00423190(zone)(record), body 00423190-004234F8. Contract
-    // partial: the head shows the whole body skipped when record+20h is above
-    // the constant at 00D7A218 (004231C4 JA), the avoid-zone manager's critical
-    // section taken, record+10h and record+14h read, and record+20h written at
-    // 004234BC. Nothing between was read, so what +20h ends up holding is open.
+    // bounded by selected geometry: positive record+20h skips computation;
+    // otherwise caches an outward clearance scale, initially 800, refined
+    // against a temporary segment list (004234BC store). The full outer body
+    // is now read; list membership/lifetime remain dependencies. See
+    // docs/SHIP_AI_LATERAL_RECORD.md for its producer and exact refinement.
     virtual void ensure_zone_corner_metric_00423190(std::uint32_t zone,
                                                     std::uint32_t record) = 0;
 
@@ -314,8 +316,9 @@ ShipAiPathEdgeProbe ship_ai_path_probe_edge_009e3040(ShipAiPathNode& node,
 // fresh corner node its zone corner record, once: a node that already has one,
 // or has no zone, or whose corner index is negative, is left alone. The record
 // index is the corner index, plus one when the side code is negative, so the
-// two sides of a corner take the two edges that meet there. 00417610 wraps the
-// index and 00423190 refreshes the record before it is stored.
+// two sides of a corner take adjacent indexed records. 00417610 applies signed
+// remainder indexing; 009D5920 stores the record handle before 00423190
+// refreshes its cached scale at 009D5923. Producer: SHIP_AI_LATERAL_RECORD.md.
 void ship_ai_path_node_attach_corner_record_009d58f0(ShipAiPathNode& node,
                                                      ShipAiPathSearchHost& host);
 
