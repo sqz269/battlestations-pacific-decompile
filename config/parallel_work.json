@@ -7993,6 +7993,36 @@
       ],
       "evidence": "reports/native_singleton_publication_audit.json",
       "qualification": "Explicit borrowed raw publication references and source C++ EH/CRT/Win32 contract. Raw mixed-owner destruction/canonical executable migration and full gameplay remain open."
+    },
+    {
+      "id": "native_effect_tree_construction2",
+      "packet": "native_effect_tree_construction2",
+      "state": "complete_raw_tree_and_construction_build_static_review_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "008697b0",
+        "008697d0",
+        "00869810",
+        "0086a2f0",
+        "00869a20",
+        "0086aa60",
+        "0086ac00",
+        "00869c50",
+        "00870370",
+        "004c1650"
+      ],
+      "code_ownership": [
+        "src/native_int_pointer_tree18_leaves.cpp",
+        "include/bsp/native_int_pointer_tree18_leaves.hpp",
+        "src/native_gameplay_effect_construction.cpp",
+        "include/bsp/native_gameplay_effect_construction.hpp",
+        "docs/NATIVE_EFFECT_TREE_CONSTRUCTION.md",
+        "reports/native_effect_tree_construction_audit.json"
+      ],
+      "evidence": "reports/native_effect_tree_construction_audit.json",
+      "qualification": "Seven complete raw tree leaves and three owner construction/getter entries under explicit source bindings. Full iterator/range erase, owner destruction, mixed-owner dispatch and canonical executable migration remain open."
     }
   ],
   "snapshot_after_analysis": {

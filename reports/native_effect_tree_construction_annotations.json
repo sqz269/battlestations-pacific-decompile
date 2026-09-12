@@ -1,0 +1,137 @@
+[
+  {
+    "address": "008697b0",
+    "before": {
+      "address": "008697b0",
+      "function_name": "FUN_008697b0"
+    },
+    "after": {
+      "address": "008697b0",
+      "name": "STL_IntPointerTree18_Maximum",
+      "evidence": "Complete raw source entry[28]. Walk right links until nil15; retain native padding. Original/source ABI: ECX subtree, EAX extreme node, RET. Ten bodies732 bytes plus143 EH bytes freshly match saved BSP/disk. All422 leaf bytes match emitted bodies except5 named CALL/tail-JMP operands; constructor normal56 bytes and source EH/getter schedules reviewed. Strict Win32/2 existing CTests/8 seeds passed. Library SHA256 5a931a3d23c258e053bec55478ef014f924e05a893b37a9927b3ab67b7db86ae. Source CRT/Win32 and C++ EH bindings are explicit; no new-entry execution, original ABI or gameplay claim. Names are hypotheses; correct existing library names retained. reports/native_effect_tree_construction_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "008697d0",
+    "before": {
+      "address": "008697d0",
+      "function_name": "FUN_008697d0"
+    },
+    "after": {
+      "address": "008697d0",
+      "name": "STL_IntPointerTree18_Minimum",
+      "evidence": "Complete raw source entry[27]. Walk left links until nil15; retain native six-byte alignment LEA. Original/source ABI: ECX subtree, EAX extreme node, RET. Ten bodies732 bytes plus143 EH bytes freshly match saved BSP/disk. All422 leaf bytes match emitted bodies except5 named CALL/tail-JMP operands; constructor normal56 bytes and source EH/getter schedules reviewed. Strict Win32/2 existing CTests/8 seeds passed. Library SHA256 5a931a3d23c258e053bec55478ef014f924e05a893b37a9927b3ab67b7db86ae. Source CRT/Win32 and C++ EH bindings are explicit; no new-entry execution, original ABI or gameplay claim. Names are hypotheses; correct existing library names retained. reports/native_effect_tree_construction_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00869810",
+    "before": {
+      "address": "00869810",
+      "function_name": "FUN_00869810"
+    },
+    "after": {
+      "address": "00869810",
+      "name": "STL_IntPointerTree18_RotateRight",
+      "evidence": "Complete raw source entry[82]. Complete root/right-child/left-child rotation cases, current rereads and nil-child parent update. Original/source ABI: ECX tree, EDX unconsumed, stack pivot, RET4. Ten bodies732 bytes plus143 EH bytes freshly match saved BSP/disk. All422 leaf bytes match emitted bodies except5 named CALL/tail-JMP operands; constructor normal56 bytes and source EH/getter schedules reviewed. Strict Win32/2 existing CTests/8 seeds passed. Library SHA256 5a931a3d23c258e053bec55478ef014f924e05a893b37a9927b3ab67b7db86ae. Source CRT/Win32 and C++ EH bindings are explicit; no new-entry execution, original ABI or gameplay claim. Names are hypotheses; correct existing library names retained. reports/native_effect_tree_construction_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0086a2f0",
+    "before": {
+      "address": "0086a2f0",
+      "function_name": "FUN_0086a2f0"
+    },
+    "after": {
+      "address": "0086a2f0",
+      "name": "STL_IntPointerTree18_RotateLeft",
+      "evidence": "Complete raw source entry[78]. Complete root/left-child/right-child rotation cases, current rereads and nil-child parent update. Original/source ABI: ECX tree, EDX unconsumed, stack pivot, RET4. Ten bodies732 bytes plus143 EH bytes freshly match saved BSP/disk. All422 leaf bytes match emitted bodies except5 named CALL/tail-JMP operands; constructor normal56 bytes and source EH/getter schedules reviewed. Strict Win32/2 existing CTests/8 seeds passed. Library SHA256 5a931a3d23c258e053bec55478ef014f924e05a893b37a9927b3ab67b7db86ae. Source CRT/Win32 and C++ EH bindings are explicit; no new-entry execution, original ABI or gameplay claim. Names are hypotheses; correct existing library names retained. reports/native_effect_tree_construction_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00869a20",
+    "before": {
+      "address": "00869a20",
+      "function_name": "STL_IntPointerTree18_IncrementCheckedIterator",
+      "comment": "[BSP reconstruction 00869a20]\nHypothesis, not a recovered symbol. ECX=owner/node iterator; RET. Null owner and nil current node validation; right-subtree leftmost or parent walk. Stock library contract only. Full-span live/disk bytes match SHA256 7f5ec53d7913d19dc67199a6b3d7662b403322a55da6e33ec4458591d6aeee51. See docs/GAMEPLAY_EFFECT_MANAGER.md. Win32 build and existing tests passed; native STL error/SEH/ABI and gameplay unvalidated.\n\n[BSP reconstruction 00869a20] update\nHypothesis, not a recovered symbol. ECX=owner/node iterator; RET. Null owner and nil current node validation; right-subtree leftmost or parent walk. Stock library contract only. Full-span live/disk bytes match SHA256 7f5ec53d7913d19dc67199a6b3d7662b403322a55da6e33ec4458591d6aeee51. See docs/GAMEPLAY_EFFECT_MANAGER.md. Win32 build and existing tests passed; native STL error/SEH/ABI and gameplay unvalidated. | Hypothesis, not a recovered symbol. ECX mutable owner/node iterator; RET. Prior library name preserved. Restored explicit mutable pointer in ECX with one-argument fastcall analysis model, removing false unreachable transplant warnings in0086E8A0. Source convention not recovered. Full-span disk/live bytes match SHA256 7f5ec53d7913d19dc67199a6b3d7662b403322a55da6e33ec4458591d6aeee51. See docs/GAMEPLAY_EFFECT_DEFINITION.md. Existing Win32 checks and focused ownership fixture passed; component dispatch, native SEH/ABI and gameplay remain external/unvalidated."
+    },
+    "after": {
+      "address": "00869a20",
+      "name": "STL_IntPointerTree18_IncrementCheckedIterator",
+      "evidence": "Complete raw source entry[99]. Returning null-owner validation precedes current node read; nil node tails actual invalid service. Right-subtree minimum or parent walk writes only iterator node. Original/source ABI: ECX actual owner/node iterator, RET. Ten bodies732 bytes plus143 EH bytes freshly match saved BSP/disk. All422 leaf bytes match emitted bodies except5 named CALL/tail-JMP operands; constructor normal56 bytes and source EH/getter schedules reviewed. Strict Win32/2 existing CTests/8 seeds passed. Library SHA256 5a931a3d23c258e053bec55478ef014f924e05a893b37a9927b3ab67b7db86ae. Source CRT/Win32 and C++ EH bindings are explicit; no new-entry execution, original ABI or gameplay claim. Names are hypotheses; correct existing library names retained. reports/native_effect_tree_construction_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0086aa60",
+    "before": {
+      "address": "0086aa60",
+      "function_name": "STL_IntPointerTree18_EraseSubtree",
+      "comment": "[BSP reconstruction 0086aa60]\nHypothesis, not a recovered symbol. ECX=map; stack subtree root; RET4. Right recursion, capture left, free current node, continue left until nil15. No payload release. Standard-container clear reused. Full-span live/disk bytes match SHA256 da289bbd106b1b525a8805157a5948f2ca4aec2a24ed0986a20cbbb5dcd8229a. See docs/GAMEPLAY_EFFECT_MANAGER.md. Win32 build and existing tests passed; native STL error/SEH/ABI and gameplay unvalidated."
+    },
+    "after": {
+      "address": "0086aa60",
+      "name": "STL_IntPointerTree18_EraseSubtree",
+      "evidence": "Complete raw source entry[53]. Recurse right, capture left, actual node free, continue left until nil15; no payload/header operations. Original/source ABI: ECX tree retained through recursion, EDX unconsumed, stack subtree, RET4. Ten bodies732 bytes plus143 EH bytes freshly match saved BSP/disk. All422 leaf bytes match emitted bodies except5 named CALL/tail-JMP operands; constructor normal56 bytes and source EH/getter schedules reviewed. Strict Win32/2 existing CTests/8 seeds passed. Library SHA256 5a931a3d23c258e053bec55478ef014f924e05a893b37a9927b3ab67b7db86ae. Source CRT/Win32 and C++ EH bindings are explicit; no new-entry execution, original ABI or gameplay claim. Names are hypotheses; correct existing library names retained. reports/native_effect_tree_construction_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "0086ac00",
+    "before": {
+      "address": "0086ac00",
+      "function_name": "STL_IntPointerTree18_AllocateBlankNode",
+      "comment": "[BSP reconstruction 0086ac00]\nHypothesis, not a recovered symbol. No consumed inputs; EAX=node; RET. 18h node; links0/4/8 zero, color14=1,nil15=0; payloadC/10 untouched. Standard allocation contract only. Full-span live/disk bytes match SHA256 72e93bea65cb4f0cc6a67b12f44bd1edb7dc2f01241e8c0d52407815da81982b. See docs/GAMEPLAY_EFFECT_MANAGER.md. Win32 build and existing tests passed; native STL error/SEH/ABI and gameplay unvalidated."
+    },
+    "after": {
+      "address": "0086ac00",
+      "name": "STL_IntPointerTree18_AllocateBlankNode",
+      "evidence": "Complete raw source entry[55]. Actual raw18h allocation; full LEA/TEST/store null branches; initialize links and color14/nil15 only. Payload/padding untouched. Original/source ABI: No input consumed, EAX raw18h node, RET. Ten bodies732 bytes plus143 EH bytes freshly match saved BSP/disk. All422 leaf bytes match emitted bodies except5 named CALL/tail-JMP operands; constructor normal56 bytes and source EH/getter schedules reviewed. Strict Win32/2 existing CTests/8 seeds passed. Library SHA256 5a931a3d23c258e053bec55478ef014f924e05a893b37a9927b3ab67b7db86ae. Source CRT/Win32 and C++ EH bindings are explicit; no new-entry execution, original ABI or gameplay claim. Names are hypotheses; correct existing library names retained. reports/native_effect_tree_construction_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00869c50",
+    "before": {
+      "address": "00869c50",
+      "function_name": "FUN_00869c50"
+    },
+    "after": {
+      "address": "00869c50",
+      "name": "BSP_GameplayEffectManager_ResetPublicationBase",
+      "evidence": "Complete raw source entry[17]. Clear actual publication before writingCE3818 to captured owner; no free or unregister. Original/source ABI: Native ECX owner, RET; source adds EDX stable actual volatileF87664 reference. Ten bodies732 bytes plus143 EH bytes freshly match saved BSP/disk. All422 leaf bytes match emitted bodies except5 named CALL/tail-JMP operands; constructor normal56 bytes and source EH/getter schedules reviewed. Strict Win32/2 existing CTests/8 seeds passed. Library SHA256 5a931a3d23c258e053bec55478ef014f924e05a893b37a9927b3ab67b7db86ae. Source CRT/Win32 and C++ EH bindings are explicit; no new-entry execution, original ABI or gameplay claim. Names are hypotheses; correct existing library names retained. reports/native_effect_tree_construction_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "00870370",
+    "before": {
+      "address": "00870370",
+      "function_name": "BSP_GameplayEffectManager_Construct",
+      "comment": "[BSP reconstruction 00870370]\nHypothesis, not a recovered symbol. ECX=fresh10h owner; EAX=this; RET. Vtable D0DA64, empty map head8/countC; allocator4 untouched. Full-span live/disk bytes match SHA256 7d625327b10ce61e28f45df5e2b2aae33b5824f4dfdb3dc58d3e10d4175e95ae. See docs/GAMEPLAY_EFFECT_MANAGER.md. Win32 build and existing tests passed; native STL error/SEH/ABI and gameplay unvalidated."
+    },
+    "after": {
+      "address": "00870370",
+      "name": "BSP_GameplayEffectManager_Construct",
+      "evidence": "Complete raw source entry[104]. Arm cleanup before D0DA64 and raw18h sentinel allocation. Head publication, nil mark, current-head self-links, count0; owner allocator/payload/padding untouched. Failure reset869C50 then rethrow, without added frees. Original/source ABI: Native ECX raw10h owner, EAX same owner, RET; source adds EDX actual volatileF87664 reference. Ten bodies732 bytes plus143 EH bytes freshly match saved BSP/disk. All422 leaf bytes match emitted bodies except5 named CALL/tail-JMP operands; constructor normal56 bytes and source EH/getter schedules reviewed. Strict Win32/2 existing CTests/8 seeds passed. Library SHA256 5a931a3d23c258e053bec55478ef014f924e05a893b37a9927b3ab67b7db86ae. Source CRT/Win32 and C++ EH bindings are explicit; no new-entry execution, original ABI or gameplay claim. Names are hypotheses; correct existing library names retained. reports/native_effect_tree_construction_audit.json"
+    },
+    "status": "applied"
+  },
+  {
+    "address": "004c1650",
+    "before": {
+      "address": "004c1650",
+      "function_name": "BSP_GameplayEffectManager_GetSingleton",
+      "comment": "[BSP reconstruction 004c1650]\nHypothesis, not a recovered symbol. No consumed inputs; EAX=current owner; RET. Lazy publication via shared lifetime manager, captured section enter/increment and decrement/leave, second manager lookup then global reload/register, final global reload. Full-span live/disk bytes match SHA256 3b17a759a29b286bfcf61315e06b859e89425ceba3ae84d8d0941fc7f66d5903. See docs/GAMEPLAY_EFFECT_MANAGER.md. Win32 build and existing tests passed; native STL error/SEH/ABI and gameplay unvalidated.\n\n[BSP reconstruction 004c1650] update\nExecutable host integration now keeps one application-owned SingletonLifetimeDomain and GameplayEffectManager publication/context alive after menu teardown through008F8449. The only owner currently admitted is the actual004C1650 GameplayEffectManager; dispatch calls completed scalar_delete_gameplay_effect_manager_008703e0(flags1) with that live context. Native D0DA64[0]=008703E0 reverified. Removed both no-op menu callbacks; validation calls actual source CRT invalid-parameter service. Strict Win32 build,2 existing CTests and8 reference seeds passed. Executed PE SHA256 347b9fe58a1cca32c9bace63fd33da20bccd786042f868e5c0a4fe381e0c884a:180 title/menu frames, exit0, one registered slot drained, effect and manager publications null, then mutex/thread cleanup. This is an existing typed source-host ownership binding, not complete raw BD0400/profile dispatch or original CRT/SEH ABI. Other singleton teardown and full gameplay remain unproven. reports/game_singleton_runtime_ownership.json\n\n[BSP reconstruction 004c1650] update\nHypothesis, not a recovered symbol. No consumed inputs; EAX=current owner; RET. Lazy publication via shared lifetime manager, captured section enter/increment and decrement/leave, second manager lookup then global reload/register, final global reload. Full-span live/disk bytes match SHA256 3b17a759a29b286bfcf61315e06b859e89425ceba3ae84d8d0941fc7f66d5903. See docs/GAMEPLAY_EFFECT_MANAGER.md. Win32 build and existing tests passed; native STL error/SEH/ABI and gameplay unvalidated. | Executable host integration now keeps one application-owned SingletonLifetimeDomain and GameplayEffectManager publication/context alive after menu teardown through008F8449. The only owner currently admitted is the actual004C1650 GameplayEffectManager; dispatch calls completed scalar_delete_gameplay_effect_manager_008703e0(flags1) with that live context. Native D0DA64[0]=008703E0 reverified. Removed both no-op menu callbacks; validation calls actual source CRT invalid-parameter service. Strict Win32 build,2 existing CTests and8 reference seeds passed. Executed PE SHA256 347b9fe58a1cca32c9bace63fd33da20bccd786042f868e5c0a4fe381e0c884a:180 title/menu frames, exit0, one registered slot drained, effect and manager publications null, then mutex/thread cleanup. This is an existing typed source-host ownership binding, not complete raw BD0400/profile dispatch or original CRT/SEH ABI. Other singleton teardown and full gameplay remain unproven. reports/game_singleton_runtime_ownership.json"
+    },
+    "after": {
+      "address": "004c1650",
+      "name": "BSP_GameplayEffectManager_GetSingleton",
+      "evidence": "Complete raw source entry[189]. First manager/section capture, enter/depth then guard cleanup, current publication recheck, raw10h construction, end allocation cleanup, publish result, second manager lookup/current publication reload/register, captured section release, final current publication. Fast return captured; registration failure retains published owner and cleans guard. Original/source ABI: Native no input, EAX pointer, RET; source cdecl borrows distinct actual volatile01090AA0/F87664 cells. Ten bodies732 bytes plus143 EH bytes freshly match saved BSP/disk. All422 leaf bytes match emitted bodies except5 named CALL/tail-JMP operands; constructor normal56 bytes and source EH/getter schedules reviewed. Strict Win32/2 existing CTests/8 seeds passed. Library SHA256 5a931a3d23c258e053bec55478ef014f924e05a893b37a9927b3ab67b7db86ae. Source CRT/Win32 and C++ EH bindings are explicit; no new-entry execution, original ABI or gameplay claim. Names are hypotheses; correct existing library names retained. reports/native_effect_tree_construction_audit.json"
+    },
+    "status": "applied"
+  }
+]
