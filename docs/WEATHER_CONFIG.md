@@ -174,3 +174,9 @@ Fixture/recipe: `local/weather_config_fixture.cpp` and
 `local/run_weather_config_fixture.ps1 [-Repository <tree>]`. Detailed ABI,
 scope, addresses and gaps are in `reports/weather_config.json`. There is no
 native differential, drop-in binary ABI or game-runtime validation claim.
+
+## Correction from docs/SENSOR_TABLES.md (packet cc2_sensor_tables)
+
+- **Was:** +74h and +78h are provisionally named amplitude multipliers (current view-mode amplitude multiplier, current weather amplitude multiplier); the loader writes 1.0f to both
+  **Is:** they are SimplifiedReconMultiplier and SimplifiedSonarMultiplier, the sensor range scalars 008048A0 reads; the 1.0f is their default and only a mission script changes them
+  **Evidence:** the Lua binding rows at 00E0C248-00E0C264 pair 008B2320/008B24A0 with 00D0F8E4/00D0F8C4 "SimplifiedReconMultiplier" and 008B25F0/008B2770 with 00D0F8A4/00D0F884 "SimplifiedSonarMultiplier"; 008B243C stores into +74h and 008B270C into +78h; 00804937 and 00804998 read them

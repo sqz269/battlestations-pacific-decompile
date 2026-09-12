@@ -219,13 +219,18 @@ constexpr ReconTripleFilterResult recon_triple_filter_00807647(ReconDetectionLev
 // One row of the observer's sensor table, 1Ch bytes. The table lives at
 // [[observer+538h]+B4h]+8, indexed observerCategory * 8 + targetCategory with a
 // 0Ch stride per pair; each pair holds {const Entry* begin, int count, ...}.
+// docs/SENSOR_TABLES.md: the categories run 0..6 (column 7 is allocated and
+// unreachable), the entry starts at +0h with the script's authored Dist and +4h
+// holds its square, and +0Ch is the published-level threshold derived from the
+// script's MaxLevel (0 -> 0.0f, 1 -> 0.25f, 2 -> 1.0f), not a free clamp.
 struct ReconSensorEntry {
     float max_normalized_distance_sq{0.0f}; // +4h, compared at 00804AB7
     float gain_per_second{0.0f};            // +8h, multiplied by dt at 00804B35
-    float cap{0.0f};                        // +0Ch, the clamp at 00804B69
+    float cap{0.0f};                        // +0Ch, the MaxLevel threshold (0.0 / 0.25 / 1.0) clamped at 00804B69
     float max_bearing_error{0.0f};          // +14h, compared at 00804B29
     int mask_bit{0};                        // +10h, 1 << it tested at 00804ACF
     bool bearing_limited{false};            // +18h, gates the bearing test
+    float authored_distance{0.0f};          // +0h, the script's Dist; +4h above is its square
 };
 
 inline constexpr std::size_t kReconSensorBlockOffset = 0x538;      // observer+538h

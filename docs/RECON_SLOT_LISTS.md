@@ -358,3 +358,12 @@ None. Every routine named in this document has a Ghidra function.
   (`docs/OBJECTIVE_UNIT_LIST.md` touches it).
 * No run-time evidence: `bsp_game.exe` fakes this list (`docs/GAME_EXECUTABLE.md` line ~4806), so
   no path it runs reaches `008073C0`.
+
+## Correction from docs/SENSOR_TABLES.md (packet cc2_sensor_tables)
+
+- **Was:** the categories run 0..7 and the table is observerCategory * 8 + targetCategory
+  **Is:** the stride is 8 but the record holds seven groups; the categories run 0..6 and column 7 is allocated and unreachable
+  **Evidence:** 00808CE4 PUSH 7 with element size 0x60 into a 0x2a8 allocation (8 + 7 * 0x60 = 0x2a8); the six Lua key names map to 0..5 and 004F1740 returns 6
+- **Was:** entry +0Ch is a clamp the gain is reduced against
+  **Is:** it is one of exactly three values derived from the script's MaxLevel: 0 -> 0.0f, 1 -> 0.25f, 2 (the default) -> 1.0f, which are the published-level thresholds
+  **Evidence:** 0080865A PUSH 2 into 00B66380, then 0080866B-00808685 with 00CE3868 and 00D7A24C
