@@ -123,3 +123,7 @@ This satisfies the pending-vector dependency of BF4D30 constructor cleanup.
 Complete provider destruction, pending submission/completion, cancellation, tree
 cleanup and FileStore manager lifetime remain outside this packet. There is no
 frame-causality claim, original ABI replacement claim or game validation.
+
+## AR parent integration, 2026-09-12
+
+All five bodies (755 bytes) are integrated and independently reviewed. The original seven native/source whole-arena and ordered-trace comparisons, one source exception case, and58-input pre-execution proof remain unchanged. Names/comments are saved and exports refreshed; all28 report call/transfer rows pass. Standard locked repair decoded BF4B92..BF4B96, but the stored BF4B80 body still ends BF4B91: full stored-tail repair is not claimed. Original FH3 and game behavior remain unvalidated.

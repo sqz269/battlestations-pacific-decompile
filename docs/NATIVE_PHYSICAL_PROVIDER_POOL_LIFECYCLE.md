@@ -153,3 +153,7 @@ Selected SHA256 values (full manifests and commands are in the report):
 | compiled lifecycle object | 0253f6a84819cc5b8b558ba5c753cea675df6be1a30a974b8a9c0526ec3a784c |
 | linked bsp_core.lib | 343b7caef18abfee67a574073a7937a962946c160b55992f317eb20659166f0b |
 | successful probe.exe | 6a6a7b1b9f69c8c40ccdc4d0de740c1a0b4cb2a2a42b9eb23b3ee1df9f67dbbc |
+
+## AR parent integration, 2026-09-12
+
+Six native bodies (555 bytes) are integrated with the actual shared allocator list and pool storage. Independent review verified all849 final v4 frozen inputs and all six native spans. The fixture compares4,525 raw values, with separate source SEH and native/source real CRT exit checks; this is not4,525 independent test cases. CD9010 is now defined through exclusive CD9026. Standard locked repairs restored all five recorded pool call gaps, retaining unreachable alignment. Names/comments are saved and exports refreshed; six ordinary CALL rows pass. Historical worker snapshots remain unchanged. Original FH3, forced allocation/atexit failures, concurrency, repeated startup and gameplay remain unproved.

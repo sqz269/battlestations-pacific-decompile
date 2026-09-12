@@ -92,3 +92,7 @@ arbitrary stack aliasing, concurrent mutation, original CRT exception identity,
 game execution and native binary replacement remain unproved. No tracked tests
 were added. The next dependencies are full BE6760/BE6A20 erase/rebalance,
 BE7580/BE7690 range operations, BE7A70/BE7BB0 wrappers, and owner composition.
+
+## AR parent integration, 2026-09-12
+
+Five full bodies (468 bytes) plus the8-byte CC6C40 cleanup fragment are integrated, independently reviewed, named, commented and exported. Both internal call gaps were repaired with the standard locked tool. All11 direct CALL rows pass. The original17 native/source cases and source-only throwing terminal cleanup remain frozen. A separate source-composition fixture invokes the actual numeric D642C0, D68DB0 and D691B0 dispatch through payload disposal, including adopted chains, real HANDLE closure, physical-pool return/reuse, zero memory counters, one resident leaf and canonical shutdown. This establishes focused source composition; original FH3 and gameplay remain unvalidated.
