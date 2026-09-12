@@ -1,4 +1,5 @@
 #include "bsp/gui_timed_entry_types.hpp"
+#include "bsp/gui_section_runtime.hpp"
 #include "bsp/gui_widget_owner.hpp"
 #include <stdexcept>
 
@@ -203,12 +204,16 @@ bool approach_gui_timed_entry_section_00abe7b0(const float& current,
     return changed;
 }
 bool update_gui_timed_entry_section_00abe7b0(GuiTimedEntryStorage& entry,
-    GuiWidgetOwner& domain_owner, float /*delta*/) {
+    GuiWidgetOwner& domain_owner, float delta) {
     require_profile(entry, kGuiTimedEntrySectionProfile);
     auto& widget = borrowed_widget(entry, domain_owner);
     if (widget.implementation().type5c(widget) != 0x11) return false;
-    throw std::logic_error(
-        "ABE7B0 Section update requires canonical +F4/+F8/+100 fields and ABE6E0/current7C owner");
+    // ABE7C9 reloads entry+08 after current5C; the callback may change it.
+    auto& current = borrowed_widget(entry, domain_owner);
+    auto* section = dynamic_cast<GuiSectionRuntimeImplementation*>(&current.implementation());
+    if (!section || &section->owner() != &current)
+        throw std::logic_error("Section timed update requires its same canonical companion");
+    return update_gui_section_timed_owner_00abe7b0(*section, entry, delta);
 }
 
 bool advance_gui_timed_entry_00ad39a0(GuiTimedEntryStorage& entry,

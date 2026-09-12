@@ -3,7 +3,7 @@
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "verification_target": "bsp.py ghidra wrappers verify project/program before each analysis/export batch",
-  "ghidra_mutations": false,
+  "ghidra_mutations": "Parent: matching-byte CD8060 definition, B7C5B0 body extension, four pool CALL_RETURN gap repairs; no global CRT no-return mutation",
   "document": "docs/NATIVE_POINT_LIGHT_OWNER.md",
   "routines": [
     {
@@ -102,7 +102,7 @@
       "name": "initialize_static_native_point_light_pool_00cd8060",
       "source": "src/native_point_light_pool.cpp",
       "abi": "no arguments; EAX CRT atexit result; RET",
-      "coverage": "complete_installed_byte_span_no_current_Ghidra_function"
+      "coverage": "complete_installed_byte_span_matching_Ghidra_function_defined_by_parent"
     },
     {
       "address": "00ce0ea0",
@@ -308,26 +308,24 @@
       "native": "actual_point_vtable04:00b7c850(flags1)",
       "function": "00bd30e0",
       "contract": "assembly_read"
-    }
-  ],
-  "raw_calls_outside_current_bodies": [
-    {
-      "site": "00cd8065",
-      "target": "00b7b690",
-      "expected_function": "00cd8060",
-      "evidence": "installed raw span CD8060..CD8075; no current Ghidra function"
     },
     {
-      "site": "00cd806f",
-      "target": "00bf6ff5",
-      "expected_function": "00cd8060",
-      "evidence": "push CE0EA0; CALL BF6FF5; POP ECX at CD8074; RET at CD8075"
+      "address": "00cd8065",
+      "native": "00b7b690",
+      "function": "00cd8060",
+      "binding": "installed raw span CD8060..CD8075; no current Ghidra function; parent defined/repaired body before final verification"
     },
     {
-      "site": "00b7c693",
-      "target": "00b6f440",
-      "expected_function": "00b7c5b0",
-      "evidence": "installed raw tail B7C686..B7C6A9; current body ends B7C685"
+      "address": "00cd806f",
+      "native": "00bf6ff5",
+      "function": "00cd8060",
+      "binding": "push CE0EA0; CALL BF6FF5; POP ECX at CD8074; RET at CD8075; parent defined/repaired body before final verification"
+    },
+    {
+      "address": "00b7c693",
+      "native": "00b6f440",
+      "function": "00b7c5b0",
+      "binding": "installed raw tail B7C686..B7C6A9; current body ends B7C685; parent defined/repaired body before final verification"
     }
   ],
   "raw_body_repairs": [
@@ -492,8 +490,8 @@
         "queued same+04 reference and terminal flags1 deletion"
       ]
     },
-    "report_calls": "passed:26 numeric rows,0 failures;9 symbolic indirect rows retain separate assembly evidence",
-    "combined_build": "parent scripts/build.ps1 gate; no worker full build tree",
+    "report_calls": "passed:29 numeric rows,0 failures after parent definition/repair;9 symbolic indirect rows retain separate assembly evidence",
+    "combined_build": "passed MSVC Win32 Release; 2/2 existing tests; actual PointLight fixture linked final bsp_core.lib",
     "native_byte_differential": false,
     "game_validated": false,
     "binary_ABI_compatible": false
@@ -526,5 +524,41 @@
     "new factory host setup rollback is a C++ composition contract",
     "immutable caller profiles and initialized actual predicate services required",
     "new point construction still leaves render values+1EC..+1FB unwritten"
-  ]
+  ],
+  "raw_calls_worker_observation": [
+    {
+      "site": "00cd8065",
+      "target": "00b7b690",
+      "expected_function": "00cd8060",
+      "evidence": "installed raw span CD8060..CD8075; no current Ghidra function"
+    },
+    {
+      "site": "00cd806f",
+      "target": "00bf6ff5",
+      "expected_function": "00cd8060",
+      "evidence": "push CE0EA0; CALL BF6FF5; POP ECX at CD8074; RET at CD8075"
+    },
+    {
+      "site": "00b7c693",
+      "target": "00b6f440",
+      "expected_function": "00b7c5b0",
+      "evidence": "installed raw tail B7C686..B7C6A9; current body ends B7C685"
+    }
+  ],
+  "raw_calls_outside_current_bodies": [],
+  "parent_validation": {
+    "build_log": "local/orch5-section-frame-point-final-build.log",
+    "build_log_sha256": "f8e9373ee8de71b75ea3368e94fb00def9769a4bade1830495a1c42535cdc9b0",
+    "fixture": {
+      "source": "local/point_owner_probe.cpp",
+      "source_sha256": "124f85e6135a257dba61e02437c40dcc6ac6b8546e0651cfeba420c66342bb6f",
+      "log": "local/orch5-final-point-probe.log",
+      "log_sha256": "35ffacb45317ee26d7c0500cb694827cc3397126c4d6a3f9db2b0caf678b3348",
+      "result": "passed",
+      "scope": "source fixture linked final bsp_core.lib; no original-byte execution"
+    },
+    "batch_report": "reports/orch5_section_frame_light_batch.json",
+    "game_validated": false,
+    "drop_in_abi_compatible": false
+  }
 }

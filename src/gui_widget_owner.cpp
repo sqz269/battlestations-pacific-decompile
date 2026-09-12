@@ -4,6 +4,7 @@
 #include "bsp/gui_timed_entry_owner.hpp"
 #include "bsp/gui_widget_clip_refresh.hpp"
 #include "bsp/gui_widget_color_dispatch.hpp"
+#include "bsp/gui_widget_frame_runtime.hpp"
 #include <algorithm>
 #include <cstring>
 #include <stdexcept>
@@ -126,6 +127,8 @@ bool GuiWidgetOwner::has_pending_base_clip() const noexcept {
 }
 void GuiWidgetOwner::require_no_active_owned_operation() const {
     if (base_lifetime_.phase != GuiWidgetBaseDeletionPhase::not_started || scene_release_active_ ||
+        (implementation_ && implementation_->has_active_operation()) ||
+        (runtime_.frame_runtime_ && runtime_.frame_runtime_->operation_active(*this)) ||
         has_pending_base_clip() || (timed_entries_ && timed_entries_->operation_active()))
         throw std::logic_error("widget still owns an active or pending native operation");
 }
@@ -285,6 +288,12 @@ void GuiWidgetOwner::release_scene_nodes_00aa8320() {
         layout_.node_id = 0;
     }
 }
+void GuiWidgetOwner::update40(float seconds) {
+    require_no_active_owned_operation();
+    if (!runtime_.frame_runtime_)
+        throw std::logic_error("current40 requires an actual registered frame runtime");
+    runtime_.frame_runtime_->update40(*this, seconds);
+}
 
 GuiWidgetOwnerRuntime::GuiWidgetOwnerRuntime(GuiWidgetOwnerEnvironment environment)
     : environment_(std::move(environment)) {
@@ -292,7 +301,16 @@ GuiWidgetOwnerRuntime::GuiWidgetOwnerRuntime(GuiWidgetOwnerEnvironment environme
 }
 GuiWidgetOwnerRuntime::~GuiWidgetOwnerRuntime() {
     //Layouts/queued retained references must be retired by their real owners.
-    if (!widgets_.empty() || !models_.empty()) std::terminate();
+    if (frame_runtime_ || !widgets_.empty() || !models_.empty()) std::terminate();
+}
+void GuiWidgetOwnerRuntime::bind_frame_runtime(GuiWidgetFrameRuntime& frame) {
+    if (&frame.widgets() != this || frame_runtime_)
+        throw std::logic_error("widget runtime requires one original live frame service");
+    frame_runtime_ = &frame;
+}
+void GuiWidgetOwnerRuntime::unbind_frame_runtime(GuiWidgetFrameRuntime& frame) noexcept {
+    if (frame_runtime_ != &frame) std::terminate();
+    frame_runtime_ = nullptr;
 }
 GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_base(GuiLayoutWidget& layout) {
     if (widgets_.count(&layout) || layout.before_destroy)
@@ -417,7 +435,7 @@ void GuiWidgetOwnerRuntime::retire_model(void* context, NativeModelReference& re
 GuiWidgetOwner& GuiWidgetOwnerRuntime::construct_child_00aa6560(GuiLayoutWidget& layout) {
     if (layout.type != GuiWidgetType::Group && layout.type != GuiWidgetType::Icon &&
         layout.type != GuiWidgetType::FrameBox && layout.type != GuiWidgetType::ClipBox &&
-        layout.type != GuiWidgetType::Text)
+        layout.type != GuiWidgetType::Text && layout.type != GuiWidgetType::Section)
         throw std::invalid_argument("unsupported retained GUI widget type");
     auto& result = construct_base(layout);
     try { result.bind_scene_00aa6720(create_model(layout.key)); }

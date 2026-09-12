@@ -3,6 +3,7 @@
 #include "bsp/native_render_batch_keys.hpp"
 #include <cmath>
 #include <cstring>
+#include <exception>
 #include <stdexcept>
 
 namespace bsp {
@@ -10,6 +11,17 @@ namespace {
 void require(bool condition, const char* message) {
     if (!condition) throw std::logic_error(message);
 }
+struct SectionOperation {
+    std::uint32_t& calls;
+    bool& failed;
+    int exceptions;
+    SectionOperation(std::uint32_t& count, bool& failure)
+        : calls(count), failed(failure), exceptions(std::uncaught_exceptions()) { ++calls; }
+    ~SectionOperation() {
+        if (std::uncaught_exceptions() > exceptions) failed = true;
+        --calls;
+    }
+};
 template<class Function> Function current_slot(void* object, std::size_t offset) {
     require(object != nullptr, "Section requires a current actual renderer");
     const auto* table = *static_cast<const std::uintptr_t* const*>(object);
@@ -1272,8 +1284,13 @@ NativeModelOwner& GuiSectionRuntimeImplementation::model() const {
         "Section model, material and geometry owner domains must agree");
     return result;
 }
+GuiSectionRuntimeImplementation::~GuiSectionRuntimeImplementation() noexcept {
+    if (has_active_operation()) std::terminate();
+}
 void GuiSectionRuntimeImplementation::constructed74(GuiWidgetOwner& owner) {
     require_owner(owner);
+    require(!has_active_operation(), "Section construction overlaps an unfinished operation");
+    SectionOperation active(active_calls_, failed_);
     if (!owner_.layout().transform.bounds_enabled)
         services_.buffers.geometry.construct_and_associate74_fragment(model());
     owner_.set_position_00aa7dc0({0, 0, 0});
@@ -1283,7 +1300,10 @@ void GuiSectionRuntimeImplementation::properties_bound(GuiWidgetOwner& owner, co
     throw std::logic_error("Section AC0280 requires native property/texture-loading ownership");
 }
 void GuiSectionRuntimeImplementation::loaded78(GuiWidgetOwner& owner) {
-    require_owner(owner); owner_.base_loaded78_00aa7170();
+    require_owner(owner);
+    require(!has_active_operation(), "Section load overlaps an unfinished operation");
+    SectionOperation active(active_calls_, failed_);
+    owner_.base_loaded78_00aa7170();
 }
 void GuiSectionRuntimeImplementation::set_active60(GuiWidgetOwner& owner, bool value) {
     require_owner(owner); owner_.base_set_active60_00aa6a30(value);
@@ -1299,12 +1319,14 @@ std::int32_t GuiSectionRuntimeImplementation::type5c(GuiWidgetOwner& owner) {
 }
 void GuiSectionRuntimeImplementation::before_scene_release(GuiWidgetOwner& owner) {
     require_owner(owner);
+    require(!has_active_operation(), "Section resource operations must finish before retirement");
     require(fields_.texture_114 == nullptr && fields_.texture_name_ec.length() == 0,
         "Section authored texture/string destruction requires its native lifetime owner");
 }
 
 void GuiSectionRuntimeImplementation::set_values_00abe6e0(
     float value, float start_angle, float u0, float u1) {
+    require(!emitting_ && !failed_, "Section setter cannot reenter or replay unfinished emission");
     auto* fields = &fields_;
     std::uint8_t changed;
     __asm {
@@ -1356,6 +1378,13 @@ void GuiSectionRuntimeImplementation::set_values_00abe6e0(
 }
 
 void GuiSectionRuntimeImplementation::emit7c_00abf770() {
+    require(!emitting_ && !failed_, "Section emission cannot reenter or replay unfinished work");
+    SectionOperation active(active_calls_, failed_);
+    struct Emission {
+        bool& flag;
+        explicit Emission(bool& value) : flag(value) { flag = true; }
+        ~Emission() { flag = false; }
+    } emitting(emitting_);
     auto* fields = &fields_;
     const auto* one = &services_.constants.one_00d7a24c;
     __asm {

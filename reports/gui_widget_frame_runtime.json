@@ -32,7 +32,7 @@
       "address": "00a9a380",
       "name": "gui_mouse_double_click_seconds_00a9a380",
       "end_inclusive": "00a9a386",
-      "coverage": "complete raw seven-byte getter; no saved Ghidra function at entry",
+      "coverage": "complete seven-byte getter; matching-byte Ghidra function now defined through A9A386",
       "original_abi": "ECXmouse; ST0float; RET",
       "bytes": "d9 81 38 02 00 00 c3",
       "decoded": "FLD dword ptr [ECX+238h]; RET"
@@ -279,11 +279,11 @@
     "clock": "existing fields_7c_80, no copy or new frame clock"
   },
   "integration_requirements": [
-    "parent adds configured environment.frame with same widgets() identity",
-    "owner.update40 delegates to this runtime",
-    "shared destructive preflight checks operation_active(owner)",
-    "actual listener subobject owners provide mandatory slot adapters",
-    "stable live tree/owners/services across callbacks"
+    "implemented: one borrowed GuiWidgetFrameRuntime registers with the same GuiWidgetOwnerRuntime",
+    "implemented: owner.update40 dispatch and global destruction preflight; frame update preflight before active borrow",
+    "implemented: standalone contains_pointer current64 owner borrow; nested frame hit test reuses active owner",
+    "required: actual listener subobject owners supply mandatory slot adapters; stable tree and live services",
+    "unimplemented: executable configuration of canonical GUI runtime and native listener body recovery"
   ],
   "boundaries": [
     "unreviewed dynamic listener target bodies remain required dependencies",
@@ -296,13 +296,13 @@
   ],
   "verification": {
     "standalone_compile": "PASS MSVC Win32 /std:c++17 /EHsc /W4 /WX /fp:strict",
-    "combined_build": "parent integration pending",
+    "combined_build": "passed MSVC Win32 Release; 2/2 existing tests; final-library frame fixture passed",
     "report_calls": "PASS: 15 numeric call rows, 0 failures; 5 resolved indirect rows require separate profile evidence, 8 symbolic rows remain explicit",
     "fixture": "PASS linked actual parent bsp_core + bsp_lua511 and this new TU: canonical child-before-entry sequence, original delta, skipped child, live timed allocation, listener identity/history reloads, ordered timing/equality/NaN, reentry guard and exception partial stores; synthetic bound listener owners, no native callback-body parity",
     "native_differential": false,
     "game_validated": false,
     "render_validated": false,
-    "ghidra_mutations": false
+    "ghidra_mutations": "parent defined A9A380; annotations recorded in batch archive"
   },
   "fixture_files": {
     "source": "J:/PROG/battlestations-pacific-decompile-orch5-widget-update/local/gui_frame_probe.cpp",
@@ -312,5 +312,20 @@
     "source_sha256": "e922ced21e4e99914cc6595133fab8fceee36fa044e0fdfb25b9920137647c15",
     "linked_library_sha256": "302aa2280b95e17b7f9404cc1c26cd6cd8750d8cb9b04256764250da541f0d74",
     "runner": "J:/PROG/battlestations-pacific-decompile-orch5-widget-update/local/run_gui_frame_probe.ps1"
+  },
+  "parent_validation": {
+    "build_log": "local/orch5-section-frame-point-final-build.log",
+    "build_log_sha256": "f8e9373ee8de71b75ea3368e94fb00def9769a4bade1830495a1c42535cdc9b0",
+    "fixture": {
+      "source": "local/gui_frame_probe.cpp",
+      "source_sha256": "e922ced21e4e99914cc6595133fab8fceee36fa044e0fdfb25b9920137647c15",
+      "log": "local/orch5-final-frame-probe.log",
+      "log_sha256": "924de5b82db64422039f70bf004ffde993771d44e3adbca6de369d39c54535bf",
+      "result": "passed",
+      "scope": "source fixture linked final bsp_core.lib; no original-byte execution"
+    },
+    "batch_report": "reports/orch5_section_frame_light_batch.json",
+    "game_validated": false,
+    "drop_in_abi_compatible": false
   }
 }

@@ -135,9 +135,11 @@ mouse and service storage alive. In particular replacing the frame service
 while its call stack is active is unsupported.
 
 Active metadata rejects reentry into the same owner while allowing ordinary
-parent-to-child recursion. The parent integrator connects `operation_active`
-to the shared widget retirement preflight; the standalone worker does not edit
-shared lifetime files. Callback exceptions propagate immediately with completed
+parent-to-child recursion. The runtime now registers with the same canonical
+widget runtime, and shared retirement checks its `operation_active` state.
+The update preflight runs before entering a frame; standalone pointer testing
+borrows the owner for its current64 callback. The frame binding must be destroyed
+before its widget runtime. Callback exceptions propagate immediately with completed
 effects retained (for example +80 or a first-click stamp). There is no resumed
 native exception frame or automatic retry. Listener unbinding is forbidden
 while any frame callback is active. Text operations retain their existing
@@ -150,8 +152,8 @@ child-before-entry ordering, skipped invisible child, original delta, actual
 timed allocation, listener identity and button-history reloads, equality/NaN
 timing, active reentry rejection, and partial stores after a callback exception.
 Its bound listener handlers are synthetic observers, not native listener-body
-validation. Required combined `scripts/build.ps1` and final-library fixture
-rerun belong to the parent integration. No permanent tests were added.
+validation. The parent combined `scripts/build.ps1` and final-library fixture
+rerun also passed; see docs/ORCH5_SECTION_FRAME_LIGHT_BATCH.md. No permanent tests were added.
 `tools/verify_report_calls.py` passed 15 numeric rows with zero failures; five
 are resolved indirect calls needing the profile evidence above. Eight symbolic
 rows (including raw A9A380) remain separately evidenced dependencies.

@@ -49,6 +49,13 @@
       "original_abi": "ECX Section; RET",
       "end_inclusive": "00ac0272",
       "coverage": "all three mapped geometry modes and native skip branches, stream/section/material/layout publication; host CRT/SEH and invalid storage excluded; parent owns definition and ledger"
+    },
+    {
+      "address": "00abe630",
+      "name": "GuiSectionRuntimeImplementation::loaded78",
+      "original_abi": "ECX Section; JMP AA7170, no extra stack arguments",
+      "end_inclusive": "00abe634",
+      "coverage": "complete base-loaded tail jump on canonical owner; matching-byte function defined by parent"
     }
   ],
   "host_steps": [
@@ -766,6 +773,13 @@
       "original_abi": "ECX same Section; pointer to its current color50 stack; RET4; D5C938",
       "instruction": "call edx",
       "resolved_native": "00aa6870"
+    },
+    {
+      "address": "00abe630",
+      "native": "00aa7170",
+      "function": "00abe630",
+      "kind": "tail_jump",
+      "binding": "Section current78 tail jump to existing base loaded78"
     }
   ],
   "producer": {
@@ -816,12 +830,12 @@
     "numeric_fixture": "passed modes0/1/2 in both winding directions at fill.25; 18 segments; center/rim first positions; first triangle; white active vertices; x87 TOP/tag balanced",
     "fixture_implementation": "exact extracted kernel and existing native_render_batch_keys.cpp; no replacement owner/render callbacks",
     "report_calls": "passed: 36 direct call rows, 0 failed; 28 indirect rows separately evidenced by tables/imports/native setup",
-    "combined_repository_build": "parent required after shared owner integration",
+    "combined_repository_build": "passed MSVC Win32 Release; 2/2 existing tests; exact current numeric kernel rerun passed six cases",
     "native_differential": false,
     "full_owner_runtime": false,
     "game_validated": false,
     "binary_replacement_abi": false,
-    "full_repository_build": "delegated to primary integrator; worker did not allocate another build tree on low-space shared drive"
+    "full_repository_build": "passed in primary worktree"
   },
   "uncertainties": [
     "AC0280 properties and ABF6F0 texture ownership explicitly unsupported",
@@ -829,5 +843,27 @@
     "host CRT fmod substitutes original CRT dispatch; no old-CRT exceptional/bit-level equivalence",
     "successful live owner/storage/mapped extents and masked x87 domain only; original SEH/allocation failure behavior excluded",
     "parent must bind type17 current5C timed dispatch, current50/54/4C/70 profile gates and CMake; no game/runtime claim"
-  ]
+  ],
+  "parent_integration": {
+    "factory": "Section17 accepted by AA6560 child gate and GuiTypeDispatchServices requires real Section services",
+    "profiles": "D5C8E8 table proves inherited4C/50/54/5C/70; gates now accept Section17",
+    "timed": "same owner08 reloaded after current5C per ABE7C9, then actual Section setter/emitter",
+    "lifetime": "nested constructor/load/emitter permitted; retirement while active and setter reentry during emission rejected; exceptions mark failed state terminal",
+    "exception_limit": "no rollback/unmap continuation or retry; borrowed renderer/stream/material owners must survive callbacks"
+  },
+  "parent_validation": {
+    "build_log": "local/orch5-section-frame-point-final-build.log",
+    "build_log_sha256": "f8e9373ee8de71b75ea3368e94fb00def9769a4bade1830495a1c42535cdc9b0",
+    "fixture": {
+      "source": "local/section_kernel_probe.cpp",
+      "source_sha256": "69736e03f44983d625897f370f841fbec9b907c1cf34460b440b2744523f001b",
+      "log": "local/orch5-final-section-numeric-probe.log",
+      "log_sha256": "b89f691d4f1bebc76c8608eeb9b693f71348001996387152adc4cae8eff0a9fe",
+      "result": "passed",
+      "scope": "exact current staged numeric kernel; no full owner/renderer fixture"
+    },
+    "batch_report": "reports/orch5_section_frame_light_batch.json",
+    "game_validated": false,
+    "drop_in_abi_compatible": false
+  }
 }

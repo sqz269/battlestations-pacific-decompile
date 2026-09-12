@@ -52,6 +52,7 @@ void gui_widget_base_bounds64_00a9e120(float&, float&, float&, float&) noexcept;
 class GuiWidgetFrameRuntime final {
 public:
     explicit GuiWidgetFrameRuntime(GuiWidgetFrameServices);
+    ~GuiWidgetFrameRuntime() noexcept;
     GuiWidgetFrameRuntime(const GuiWidgetFrameRuntime&) = delete;
     GuiWidgetFrameRuntime& operator=(const GuiWidgetFrameRuntime&) = delete;
     GuiWidgetOwnerRuntime& widgets() const noexcept { return services_.widgets; }

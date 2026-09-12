@@ -55,6 +55,8 @@ struct GuiSectionRuntimeServices {
 class GuiSectionRuntimeImplementation final : public GuiWidgetTypeImplementation {
 public:
     GuiSectionRuntimeImplementation(GuiWidgetOwner&, GuiSectionRuntimeServices);
+    ~GuiSectionRuntimeImplementation() noexcept override;
+    bool has_active_operation() const noexcept override { return active_calls_ != 0 || failed_; }
     GuiSectionFields& fields() noexcept { return fields_; }
     GuiWidgetOwner& owner() noexcept { return owner_; }
     void set_values_00abe6e0(float value, float start_angle, float u0, float u1);
@@ -73,6 +75,9 @@ private:
     GuiWidgetOwner& owner_;
     GuiSectionRuntimeServices services_;
     GuiSectionFields fields_;
+    std::uint32_t active_calls_{};
+    bool emitting_{};
+    bool failed_{}; // incomplete callback/mapping effects; no automatic replay
 };
 
 // ABE7C9..ABE877 owner/emission companion, called only after the existing

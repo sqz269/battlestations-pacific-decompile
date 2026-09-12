@@ -3,6 +3,7 @@
 #include "bsp/gui_timed_entry_owner.hpp"
 #include "bsp/input_device_state.hpp"
 #include <limits>
+#include <optional>
 #include <stdexcept>
 
 namespace bsp {
@@ -180,7 +181,13 @@ GuiWidgetFrameListenerOwner::GuiWidgetFrameListenerOwner(void* identity) : ident
     require(identity != nullptr, "GUI listener adapter requires its actual owner identity");
 }
 GuiWidgetFrameRuntime::GuiWidgetFrameRuntime(GuiWidgetFrameServices services)
-    : services_(services) {}
+    : services_(services) {
+    services_.widgets.bind_frame_runtime(*this);
+}
+GuiWidgetFrameRuntime::~GuiWidgetFrameRuntime() noexcept {
+    if (active_) std::terminate();
+    services_.widgets.unbind_frame_runtime(*this);
+}
 void GuiWidgetFrameRuntime::bind_listener(GuiWidgetFrameListenerOwner& owner) {
     const auto found = listeners_.find(owner.actual_identity());
     require(found == listeners_.end() || found->second == &owner,
@@ -231,6 +238,12 @@ void GuiWidgetFrameRuntime::align_bounds64(GuiWidgetOwner& widget,
 }
 bool GuiWidgetFrameRuntime::contains_pointer_00aa6a40(GuiWidgetOwner& widget) {
     require(&widget.runtime() == &services_.widgets, "GUI hit test requires the same widget runtime");
+    require(widget.base_lifetime_.phase == GuiWidgetBaseDeletionPhase::not_started &&
+        !widget.scene_release_active_, "GUI hit test cannot borrow a retiring widget");
+    // AA87B0 already borrows this widget. A direct AA6A40 call must retain the
+    // same protection through its actual current64 callback as well.
+    std::optional<ActiveFrame> hit_frame;
+    if (!operation_active(widget)) hit_frame.emplace(*this, widget);
     const auto& transform = widget.layout().transform;
     float width, height;
     copy_float(width, transform.size.width);
@@ -302,6 +315,7 @@ void GuiWidgetFrameRuntime::update40(GuiWidgetOwner& widget, float seconds) {
 }
 void GuiWidgetFrameRuntime::update_base_00aa87b0(GuiWidgetOwner& widget, float seconds) {
     require(&widget.runtime() == &services_.widgets, "GUI frame requires the same widget runtime");
+    widget.require_no_active_owned_operation();
     ActiveFrame active(*this, widget);
     auto& layout = widget.layout();
     const auto count = layout.children.size();

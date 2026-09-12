@@ -27,7 +27,7 @@ writers and render-value projection into those words remain separate work.
 | B7B110 | ECX pool; RET at B7B199 | Complete pool destruction including installed-byte continuation |
 | B7BD30 | No arguments; tail JMP B7B810 | Complete allocation thunk; old static-dtor label is wrong |
 | B7B600 | Slot in ECX; RET at B7B60B | Complete static pool-return thunk |
-| CD8060 | No arguments; EAX atexit result; RET at CD8075 | Complete installed-byte static-init span; no current Ghidra function |
+| CD8060 | No arguments; EAX atexit result; RET at CD8075 | Complete installed-byte static-init span; parent defined matching-byte Ghidra body |
 | CE0EA0 | No arguments; tail JMP B7B110 | Complete atexit pool-destruction thunk |
 | B7C4C0/B7C5B0 | ECX light; constructor stack name RET4; destructor RET | Existing complete implementation reused; reference-only destructor adapter added |
 
@@ -135,3 +135,14 @@ The integrator must register `src/native_point_light_pool.cpp` and
 merging. No full worker build tree or permanent test suite was added. These are
 source/fixture checks, not native-byte differential, game, render or binary ABI
 validation.
+
+## Parent integration correction
+
+The parent defined the matching CD8060..CD8075 body, repaired the Point pool's
+local false-free fall-through gaps, and extended the B7C5B0 destructor through
+B7C6A9. B7C693 now belongs to that body and calls B6F440. The three previously
+raw-only call rows are promoted into the final mechanical call check, with their
+original observations retained in the report. Global CRT no-return annotations
+were preserved. The combined Win32 build, both existing tests and a fresh probe
+linked to the final combined library passed. See
+`docs/ORCH5_SECTION_FRAME_LIGHT_BATCH.md` for reviewed integration limits.

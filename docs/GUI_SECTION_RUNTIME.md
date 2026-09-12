@@ -148,9 +148,11 @@ not verified binary equivalence to the shipped CRT's exceptional dispatch.
 In particular, a callback/profile error after a successful map can leave that
 mapping outstanding; no implicit unlock guard or rollback is supplied. Callbacks
 must also keep this Section companion, its canonical widget/model/mesh and the
-captured streams alive until emission returns. The companion has no active
-deletion gate or continuation that would make callback-triggered `retire_tree`
-safe during emission.
+captured streams alive until emission returns. The canonical owner now rejects
+retirement during Section operations. Emission reentry, including an equal-value
+setter during emission, is rejected before stores. A failed Section operation is
+terminal: subsequent operations and retirement are rejected. These host lifetime
+guards supply neither rollback nor a continuation for outstanding mappings.
 
 Verification: the full translation unit compiled MSVC x86 `/W4 /WX /fp:strict`.
 A focused local executable compiled the exact staged kernel plus the existing
@@ -159,6 +161,6 @@ BF7420 implementation and passed all three modes in both directions at fill
 colors, and unchanged x87 stack TOP/tag. It used mapped-storage fixtures, not
 fake rendering callbacks. No full Section owner/service runtime, native-byte
 differential, game execution, visual output or drop-in ABI validation is claimed.
-The parent must run the combined repository `scripts/build.ps1` after integrating
+The parent passed the combined repository `scripts/build.ps1` after integrating
 its owned dispatch/profile changes. `reports/gui_section_runtime.json` carries
 the exact call rows and coverage boundaries.

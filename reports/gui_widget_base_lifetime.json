@@ -145,7 +145,7 @@
   },
   "validation": {
     "strict_win32": "passed /W4 /WX /fp:strict on base, owner and Text lifetime/factory TUs",
-    "combined_build": "scripts/build.ps1 passed Release Win32 and 2/2 existing tests before worker integration",
+    "combined_build": "passed final combined MSVC Win32 Release, 2/2 existing tests and final-library Group fixture",
     "fixture": "local/gui_widget_base_probe.cpp passed actual nested Group Model/timed/tree owners, flags1 and flags0 with /MANIFEST:EMBED",
     "fixture_sha256": "a2d862f8e97690a5bf2e91fdc1172c8f8ba6f5a1f3fbb065e1f88f38797d855c",
     "fixture_log_sha256": "6498a83341b5b5bd4d78ab7296faa0c136ab5294e687ba340e7fc69a6e692aac",
@@ -162,5 +162,20 @@
     "per-owner guard not atomic whole-tree or ancestor-borrow protection"
   ],
   "game_validated": false,
-  "abi_compatible": false
+  "abi_compatible": false,
+  "parent_validation": {
+    "build_log": "local/orch5-section-frame-point-final-build.log",
+    "build_log_sha256": "f8e9373ee8de71b75ea3368e94fb00def9769a4bade1830495a1c42535cdc9b0",
+    "fixture": {
+      "source": "local/gui_widget_base_probe.cpp",
+      "source_sha256": "a2d862f8e97690a5bf2e91fdc1172c8f8ba6f5a1f3fbb065e1f88f38797d855c",
+      "log": "local/orch5-final-base-probe.log",
+      "log_sha256": "6498a83341b5b5bd4d78ab7296faa0c136ab5294e687ba340e7fc69a6e692aac",
+      "result": "passed",
+      "scope": "source fixture linked final bsp_core.lib; no original-byte execution"
+    },
+    "batch_report": "reports/orch5_section_frame_light_batch.json",
+    "game_validated": false,
+    "drop_in_abi_compatible": false
+  }
 }
