@@ -6040,3 +6040,18 @@ IssueCommand passes 1 (queue). Names: `BSP_WeaponDirector_SendOverrideCommand` `
 The executable's `AutoTarget::director_accepts_new_target` record (`src/game_hosts_ship_ai.cpp`)
 still answers with the old reading; replacing it with the hold test and the slot category scan,
 and reporting what slot 0 carries, is the next executable milestone's first item.
+
+## Correction from docs/CRUISE_SPEED_SETTING.md
+
+Packet `cc_cruise_speed_setting` (main 677c93cd) read usn_2_java.scn and the game-unit init slot
+`0A0h` (`00822C20`, `BSP_UnitInstance_SEntityInit`, partial coverage) and corrects two counts and
+one conclusion above: the shipped mission has **fourteen** `Cruise` units and **eighteen** empty
+`Command` blocks, not thirteen and nineteen; and the scene record does carry a speed, on the unit
+entity rather than in the `Command` sub-block: every `Cruise` unit authors `StartSpeed = F 12.0000`
+(207 of the shipped .scn files use the key). `00822C20` reads it out of the entity's scene
+property bag at init and seeds the order ring's live throttle at `ring+148h` with
+`StartSpeed / 0080FC30(unit)` and the hull body's axial velocity with `0080FC30(unit)` times that
+float32 ratio (`008235BF`, `008235BA`, `008235DC`, `008235C3`). The scene's `Cruise` is only
+queued at that point, so when `00835E17` latches it the ring already holds the ratio and the
+untouched rudder keeps the spawn heading. The executable's cruise ships stand still because its
+unit creation skips that seed; wiring it is the next milestone's item.

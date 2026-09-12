@@ -287,3 +287,9 @@ So `BSP_SceneDatabase_CreateEntityByName` instantiates an authored *hidden* enti
 is what `Spawn` and `GenerateObject` do; `record+8h` is the strdup'd entity name, not a class-name
 length, and the record is `5Ch` bytes (vftable `00CE5640`, bag `+4h`, name `+8h`, class name
 `+0Ch`, party `+10h`, sixteen floats `+14h`, parent name `+54h/+58h`).
+
+## Correction from docs/CRUISE_SPEED_SETTING.md
+
+Packet `cc_cruise_speed_setting` (main 677c93cd): the holder at `entity+0C0h` carries a kind tag
+at `+4h`, not a reference count. `00922E20` stores 1 and `00774DC0` stores 2, and nothing
+increments or decrements the field.
