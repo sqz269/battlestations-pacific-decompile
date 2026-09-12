@@ -38,7 +38,8 @@ public class RepairListingDefects extends GhidraScript {
         {"00643c1c", "00643c68", ""},                                   // hole left inside 006435d0 after the first repair (target-group member loop)
         {"004ceca1", "004cecab", ""},                                   // eleven-byte hole inside 004cec60 (erase loop back edge)
         {"0081f56c", "0081f8ad", ""},                                   // tail of the unit vector deleting dtor 0081f3a0 after the 00bf6989 free (decoded, unowned)
-        {"0077e442", "0077e490", ""},                                   // tail of the level-2 unit dtor 0077e380 after the 00bf65ac free (decoded, unowned)
+        {"0077e442", "0077e490", ""},
+        {"004dd123", "004dd5a6", ""},                                   // tail of the game destructor 004dcf90 after 004dd122 (decoded, unowned)                                   // tail of the level-2 unit dtor 0077e380 after the 00bf65ac free (decoded, unowned)
     };
 
     @Override

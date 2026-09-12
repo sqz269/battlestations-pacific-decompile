@@ -1,0 +1,147 @@
+{
+ "repairs": [
+  {
+   "function": "004dcf90",
+   "owner": "agent/cc2",
+   "when": "2026-09-12T17:33:13Z",
+   "decompile_lines_before": 76,
+   "gaps": [
+    {
+     "site": "004dd03d",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "004dd042",
+     "gap_end_exclusive": "004dd04b",
+     "bytes": 9,
+     "after_call": true,
+     "sha256": "9da331e01bf062cc99236cbeddf57a46039c260f54d7bea41edb6e428a98deaf"
+    },
+    {
+     "site": "004dd11e",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "004dd123",
+     "gap_end_exclusive": "004dd5a7",
+     "bytes": 1156,
+     "after_call": true,
+     "sha256": "a37aee59b665c2d673b2979f406de11fbaca54ad6794edd75fbd7803dfabc981"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "004dd03d",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "004dd042",
+      "gap_end_exclusive": "004dd04b",
+      "bytes": 9,
+      "after_call": true,
+      "sha256": "9da331e01bf062cc99236cbeddf57a46039c260f54d7bea41edb6e428a98deaf"
+     },
+     "clear": "Success: Cleared flow override at 004dd03d (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 9 byte(s)"
+    },
+    {
+     "gap": {
+      "site": "004dd11e",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "004dd123",
+      "gap_end_exclusive": "004dd5a7",
+      "bytes": 1156,
+      "after_call": true,
+      "sha256": "a37aee59b665c2d673b2979f406de11fbaca54ad6794edd75fbd7803dfabc981"
+     },
+     "clear": "Success: Cleared flow override at 004dd11e (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 1156 byte(s)"
+    },
+    {
+     "explicit_tail_call": "004dd03d",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 004dd03d (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "004dd11e",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 004dd11e (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "004dd1b9",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 004dd1b9 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "004dd1e0",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 004dd1e0 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "004dd3cf",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 004dd3cf (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "004dd438",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 004dd438 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "004dd46a",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 004dd46a (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "004dd4de",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 004dd4de (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "004dd513",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 004dd513 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "004dd548",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 004dd548 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "004dd585",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 004dd585 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "004dd5a7",
+   "explicit_body_sha256": "39bce3177f8954c87f56c7c97e43c14b66a931333c36186e8ba0c529d2e852c3",
+   "body_before": "Function: CG_vector_deleting_dtor_004dcf90 at 004dcf90\nSignature: undefined CG_vector_deleting_dtor_004dcf90(void)\nEntry: 004dcf90\nBody: 004dcf90 - 004dd122",
+   "decompile_lines_after": 246,
+   "gaps_remaining": 1,
+   "body_after": "Function: CG_vector_deleting_dtor_004dcf90 at 004dcf90\nSignature: undefined CG_vector_deleting_dtor_004dcf90(void)\nEntry: 004dcf90\nBody: 004dcf90 - 004dd122",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}
