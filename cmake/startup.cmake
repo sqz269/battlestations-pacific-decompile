@@ -44,6 +44,7 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_gamepad_for
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_action_deadlines.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_action_tick.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_backend_startup.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_configuration_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_device_sdk.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_input_enumeration.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_joystick.cpp)

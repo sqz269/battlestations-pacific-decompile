@@ -1,0 +1,551 @@
+{
+  "packet": "orch4_native_input_configuration_owner_ag",
+  "final_lease_packet": "orch4_native_input_configuration_owner_keep_ag",
+  "sources": [
+    "include/bsp/native_input_configuration_owner.hpp",
+    "src/native_input_configuration_owner.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_CONFIGURATION_OWNER.md",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "verified_each_live_batch": true,
+    "worker_ghidra_mutations": 0
+  },
+  "functions": [
+    {
+      "address": "00698680",
+      "name": "construct_native_input_configuration_00698680",
+      "original_name": "FUN_00698680",
+      "end_inclusive": "00698729",
+      "end_exclusive": "0069872a",
+      "length": 170,
+      "instruction_count": 36,
+      "final_instruction": {
+        "address": "00698729",
+        "length": 1,
+        "mnemonic": "RET"
+      },
+      "native_abi": {
+        "ecx": "Actual embedded configuration",
+        "edx": "Not an incoming argument",
+        "stack": [],
+        "ret_cleanup_bytes": 0,
+        "result": "EAX same actual configuration address"
+      },
+      "native_eh": true,
+      "coverage": "complete within the actual-storage and existing CRT/Lua service domain",
+      "instruction_gaps": [],
+      "no_ghidra_function": false,
+      "source": "src/native_input_configuration_owner.cpp",
+      "source_abi_is_original": false
+    },
+    {
+      "address": "004dceb0",
+      "name": "destroy_native_input_configuration_004dceb0",
+      "original_name": "FUN_004dceb0",
+      "end_inclusive": "004dcf88",
+      "end_exclusive": "004dcf89",
+      "length": 217,
+      "instruction_count": 64,
+      "final_instruction": {
+        "address": "004dcf84",
+        "length": 5,
+        "mnemonic": "JMP B669A0"
+      },
+      "tail_site": "004dcf84",
+      "callee": "00b669a0",
+      "native_abi": {
+        "ecx": "Actual embedded configuration",
+        "edx": "Not an incoming argument",
+        "stack": [],
+        "ret_cleanup_bytes": 0,
+        "result": "No semantic result, tail closes same-base Lua owner"
+      },
+      "native_eh": false,
+      "coverage": "complete within the actual-storage and existing CRT/Lua service domain",
+      "instruction_gaps": [],
+      "no_ghidra_function": false,
+      "source": "src/native_input_configuration_owner.cpp",
+      "source_abi_is_original": false
+    }
+  ],
+  "calls": [
+    {
+      "address": "00698699",
+      "native": "00b66bd0",
+      "function": "00698680",
+      "contract": "ECX unchanged actual configuration BASE, not+4CC. Native no stack args; EAX same4C8h Lua storage. Reuse concrete NativeLuaStateStorage constructor."
+    },
+    {
+      "address": "004dcec3",
+      "native": "00bf65ac",
+      "function": "004dceb0",
+      "contract": "One captured nonnull buffer pointer from configuration+514; _free library contract, ADD ESP4 at004dcec8; source uses same singleton CRT free domain. Outer4D4 pointer is reloaded after nested destruction."
+    },
+    {
+      "address": "004dcee8",
+      "native": "00bf65ac",
+      "function": "004dceb0",
+      "contract": "One captured nonnull buffer pointer from configuration+504; _free library contract, ADD ESP4 at004dceed; source uses same singleton CRT free domain. Outer4D4 pointer is reloaded after nested destruction."
+    },
+    {
+      "address": "004dcf0d",
+      "native": "00bf65ac",
+      "function": "004dceb0",
+      "contract": "One captured nonnull buffer pointer from configuration+4F4; _free library contract, ADD ESP4 at004dcf12; source uses same singleton CRT free domain. Outer4D4 pointer is reloaded after nested destruction."
+    },
+    {
+      "address": "004dcf32",
+      "native": "00bf65ac",
+      "function": "004dceb0",
+      "contract": "One captured nonnull buffer pointer from configuration+4E4; _free library contract, ADD ESP4 at004dcf37; source uses same singleton CRT free domain. Outer4D4 pointer is reloaded after nested destruction."
+    },
+    {
+      "address": "004dcf6b",
+      "native": "00bf65ac",
+      "function": "004dceb0",
+      "contract": "One captured nonnull buffer pointer from configuration+4D4; _free library contract, ADD ESP4 at004dcf70; source uses same singleton CRT free domain. Outer4D4 pointer is reloaded after nested destruction."
+    },
+    {
+      "address": "004dcf62",
+      "native": "004d49b0",
+      "function": "004dceb0",
+      "contract": "ECX captured outer begin4D4, EDX captured end4D8; stack outer header then unused scratch word, RET8. Concrete private source adapter destroys actual10h DWORD-vector rows to captured endpoint; original STL function/name unclaimed."
+    },
+    {
+      "address": "004ddbe2",
+      "native": "00698680",
+      "function": "004ddb90",
+      "contract": "4DDBDB LEA ECX,[ESI+3C], ESI incoming game captured4DDBAB. No stack arguments; constructor EAX same configuration; next member beginsgame+560."
+    },
+    {
+      "address": "004dd577",
+      "native": "004dceb0",
+      "function": "004dcf90",
+      "contract": "4DD570 LEA ECX,[ESI+3C], no stack args; game EH state set0 before call. Tail Lua close returns directly to caller."
+    },
+    {
+      "address": "004d49c8",
+      "native": "00bf65ac",
+      "function": "004d49b0",
+      "contract": "Captured actual10h row begin+4, free only nonnull; ADD ESP4 at4D49CD, then zero current row+4/+8/+C and advance10h to captured end. Library body read, not named/reconstructed here."
+    },
+    {
+      "address": "004d9e4e",
+      "native": "004d49b0",
+      "function": "004d9e40",
+      "contract": "ECX first pointer and EDX second pointer from caller stack; two additional unused words passed, calleeRET8; wrapperRET8. Confirms range inputs are registers, not those two stack words."
+    },
+    {
+      "address": "004dca44",
+      "native": "004d49b0",
+      "function": "004dca30",
+      "contract": "ECX captured vector+4 begin, EDX vector+8 end; stack header and unused local word; RET8. Caller reloads vector+4 before freeing outer buffer."
+    },
+    {
+      "address": "00698542",
+      "native": "004d49b0",
+      "function": "00698400",
+      "contract": "ECX old begin remains captured, EDX reloaded old end, stack current header and preserved caller scratch; RET8. Source adapter retains explicit captured range only."
+    }
+  ],
+  "producer": {
+    "function": "004ddb90",
+    "body_end_inclusive": "004de266",
+    "game_capture": "004ddbab MOV ESI,ECX",
+    "receiver_site": "004ddbdb LEA ECX,[ESI+3C]",
+    "constructor_call": "004ddbe2",
+    "next_member": "004ddbf5 LEA EAX,[ESI+560] for5 actual10h elements, iterator call4DDC01",
+    "embedded_span_bytes": 1316,
+    "span_boundary": "Derived from neighboring members in the actual game construction; no standalone object allocation/sizeof or new settings owner claim"
+  },
+  "actual_layout": [
+    {
+      "offset": "000",
+      "extent": "4C8h",
+      "meaning": "Actual NativeLuaStateStorage base",
+      "producer": "698699 passes unchanged ECX to B66BD0. Existing source native_lua_objects.cpp/header size assertion4C8.",
+      "writes": "owns BYTE0,state DWORD4,wordsC/10,fifty counts28+18*i,high_water4C4",
+      "preserved": "padding01..03,opaque08,all five reference pointers per tracked slot"
+    },
+    {
+      "offset": "4C8..4CB",
+      "extent": "4 bytes",
+      "meaning": "Configuration flags",
+      "constructor_store_order": [
+        "4C8",
+        "4CB",
+        "4CA",
+        "4C9"
+      ],
+      "loader_evidence": "698A36 tests4C8;698A41 same base ECX to Lua open,698B58 sets4C8; no Lua owner at4CC",
+      "destructor": "Preserved"
+    },
+    {
+      "offset": "4CC",
+      "extent": "4 bytes",
+      "meaning": "Opaque/unwritten by owned lifetime routines",
+      "constructor": "Untouched",
+      "destructor": "Untouched"
+    },
+    {
+      "offsets": [
+        "4D0",
+        "4E0",
+        "4F0",
+        "500",
+        "510"
+      ],
+      "extent_each": "10h",
+      "meaning": "Checked-vector headers, opaque0/begin4/end8/capacityC",
+      "constructor": "Only fifteen pointer triplet words are zeroed, in increasing address order",
+      "element_types": {
+        "4D0": "actual10h DWORD-vector rows",
+        "4E0": "DWORD",
+        "4F0": "DWORD",
+        "500": "DWORD",
+        "510": "DWORD"
+      },
+      "producer_evidence": "698680 pointer stores; populated698A10 and checked-vector producers separately recovered by cleanup worker; consumed4D49B0 row stride10/free+4/clear+4+8+C corroborates outer record layout"
+    },
+    {
+      "offset": "520",
+      "extent": "1 byte",
+      "constructor": "Last zero-byte store698716",
+      "destructor": "Preserved"
+    },
+    {
+      "offset": "521..523",
+      "extent": "3 bytes",
+      "meaning": "Padding to neighboring game member",
+      "constructor": "Preserved",
+      "destructor": "Preserved"
+    }
+  ],
+  "constructor_eh": {
+    "handler": "00c7ecc0",
+    "handler_no_ghidra_function": true,
+    "handler_bytes": "b840bbda00e9797ef7ff",
+    "handler_end_exclusive": "00c7ecca",
+    "handler_final_instruction": {
+      "address": "00c7ecc5",
+      "length": 5,
+      "mnemonic": "JMP BF6B43"
+    },
+    "func_info": "00dabb40",
+    "magic": "19930522",
+    "max_state": 5,
+    "unwind_map": "00dabb64",
+    "states": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "funclet": "00c7ec80",
+        "tail_site": "00c7ec83",
+        "callee": "00b669a0",
+        "receiver": "saved configuration base"
+      },
+      {
+        "state": 1,
+        "next_state": 0,
+        "funclet": "00c7ec88",
+        "tail_site": "00c7ec91",
+        "callee": "004dca30",
+        "receiver": "saved configuration+4D0"
+      },
+      {
+        "state": 2,
+        "next_state": 1,
+        "funclet": "00c7ec96",
+        "tail_site": "00c7ec9f",
+        "callee": "004cdce0",
+        "receiver": "saved configuration+4E0"
+      },
+      {
+        "state": 3,
+        "next_state": 2,
+        "funclet": "00c7eca4",
+        "tail_site": "00c7ecad",
+        "callee": "004cdce0",
+        "receiver": "saved configuration+4F0"
+      },
+      {
+        "state": 4,
+        "next_state": 3,
+        "funclet": "00c7ecb2",
+        "tail_site": "00c7ecbb",
+        "callee": "004cdce0",
+        "receiver": "saved configuration+500"
+      }
+    ],
+    "reachable": "PUSH -1 at698680; no emitted state advancement in all36 instructions. Only calleeB66BD0 is a field-store leaf with no calls. No C++ throwing operation; source adds no unreachable higher-state cleanup.",
+    "hardware_fault_boundary": "Original FH3/SEH behavior and unmasked hardware faults are not reproduced"
+  },
+  "destructor_schedule": {
+    "flat_order": [
+      "510",
+      "500",
+      "4F0",
+      "4E0"
+    ],
+    "flat": "Capture current begin; free ifnonnull; clear current begin/end/cap after return, retaining opaque0",
+    "outer": "Capture begin4D4; ifnonnull capture end4D8 and destroy10h rows forward to captured end. Reload outer begin4D4 after row destruction, free it, clear triplet.",
+    "lua": "ECX same captured configuration at4DCF7D, JMP B669A0 at4DCF84. Concrete close captures state4, closes iff nonnull and owns0 byte!=0, clears state4 without clearing other metadata.",
+    "no_extra_operations": [
+      "No698730 action reset or unregister",
+      "No configuration allocation/free",
+      "No flag/opaque-word clear",
+      "No null/count/capacity/range guards beyond native pointer tests",
+      "No scripted defaults or private lifetime"
+    ],
+    "exceptions": "No native destructor EH frame. CRT free source service noexcept; final Lua close uses existing real Lua service. No added rollback/retry/cleanup."
+  },
+  "library_adapter": {
+    "address": "004d49b0",
+    "body_end_inclusive": "004d49e5",
+    "body_end_exclusive": "004d49e6",
+    "length": 54,
+    "instruction_count": 25,
+    "instruction_gaps": [],
+    "final_ret": {
+      "address": "004d49e3",
+      "length": 3,
+      "cleanup_bytes": 8
+    },
+    "register_provenance": "4D49B2 captures incoming EDX end in EBX;4D49B4 captures incoming ECX begin in ESI; neither endpoint nor current row is loaded from the two stack words.",
+    "contract": "Walk captured actual10h range with pointer inequality, free each current row begin+4 ifnonnull, then zero+4/+8/+C. Retain row+0; source adapter uses existing singleton_lifetime_free.",
+    "all_live_call_sites": [
+      "004dcf62",
+      "004d9e4e",
+      "004dca44",
+      "00698542"
+    ],
+    "all_sites_read": true,
+    "original_symbol_reconstructed": false,
+    "original_library_name_changed": false,
+    "new_ledger_record": false
+  },
+  "caller_evidence": {
+    "constructor_sites": [
+      "004ddbe2"
+    ],
+    "destructor_call_sites": [
+      "004dd577"
+    ],
+    "destructor_eh_tails": [
+      {
+        "funclet": "00c66a5b",
+        "end_inclusive": "00c66a65",
+        "tail_site": "00c66a61",
+        "callee": "004dceb0",
+        "receiver": "[EBP-18]+3C",
+        "parent_func_info": "00d8f954",
+        "parent_unwind_map": "00d8f978",
+        "state": 1,
+        "state_entry": "00d8f980"
+      },
+      {
+        "funclet": "00c66d0b",
+        "end_inclusive": "00c66d15",
+        "tail_site": "00c66d11",
+        "callee": "004dceb0",
+        "receiver": "[EBP-50]+3C",
+        "parent_func_info": "00d8fb30",
+        "parent_unwind_map": "00d8fb54",
+        "state": 1,
+        "state_entry": "00d8fb5c"
+      }
+    ],
+    "all_owned_routine_xrefs_read": true
+  },
+  "ghidra_repair": {
+    "owner": "agent/orch4-20260910",
+    "receipt": "reports/native_input_configuration_owner_flow_repair.json",
+    "worker_temporarily_released_destructor_then_reclaimed": true,
+    "functions": {
+      "004dceb0": [
+        "004dcec8",
+        "004dceed",
+        "004dcf12",
+        "004dcf37",
+        "004dcf70"
+      ],
+      "004d49b0": [
+        "004d49cd"
+      ]
+    },
+    "existing_gap_bytes": "83c404",
+    "instruction": "ADD ESP4",
+    "native_bytes_changed": false,
+    "global_no_return_changed": false,
+    "worker_verified_final_zero_gaps": true
+  },
+  "corrections": [
+    {
+      "was": "A proposed layout placed a Lua owner at4CC and treated preceding bytes as opaque",
+      "is": "Actual4C8h Lua owner begins atconfiguration0;4CC stays opaque/unwritten",
+      "evidence": "698697/698699 unchangedECX; nativeB66BD0 producer and sizeofNativeLuaStateStorage4C8; two native524h constructor comparisons"
+    },
+    {
+      "was": "Truncated destructor/helper decompilation returned immediately after nonempty frees",
+      "is": "The existing ADD ESP4 instructions continue clearing and later cleanup",
+      "evidence": "Six83C404 gaps read from disk; primary cleared call-site flow overrides, saved/exported; fresh64/25 instruction listings have0gaps"
+    },
+    {
+      "was": "Input configuration cleanup698730 might be conflated with object destruction",
+      "is": "4DCEB0 performs vector ownership cleanup and Lua close only; it never resets/unregisters actions",
+      "evidence": "Entire217-byte destructor and all calls/tail; separate cleanup worker owns698730"
+    }
+  ],
+  "validation": {
+    "seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "passed": 8,
+      "failed": 0,
+      "before_native_execution": true,
+      "receipt": "local/native_input_configuration_owner_ag_seeds.json",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "build": {
+      "command": "MSBUILDDISABLENODEREUSE=1; ./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "exit_code": 0,
+      "ctests_passed": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "ctests_failed": 0,
+      "log": "local/native_input_configuration_owner_ag_build.log",
+      "log_sha256": "27c77052dc2f52b754873b09ac6b5d960e4b22781c994da256f2c39bcf0d88e2"
+    },
+    "fixture": {
+      "command": "./local/native_config_owner_probe.ps1 -CoreWorktree J:/PROG/battlestations-pacific-decompile-orch4-input-startup-af -LogPath J:/PROG/battlestations-pacific-decompile-orch4-input-startup-af/local/native_config_owner_ag_probe.log",
+      "receipt": {
+        "core_worktree": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af",
+        "source_commit": "67248e261642bad9169dbbfc9483ba709cbc5584",
+        "core_archive": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af\\build\\win32\\Release\\bsp_core.lib",
+        "core_archive_sha256": "5884408a639db4f031159328f32aa7367f84f3f051e85141bc4437cf409e54bc",
+        "archive_stable": true,
+        "fixture_source_sha256": "b01c57f0c26cf01285678f0657afe423b8f06bc4901d678aee50dd22dadd8be4",
+        "runner_sha256": "9427d875b779a123367e2c2c88314714faae49bd775c85fcd162817a092af490",
+        "project_include_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af\\include",
+        "game_sources_compiled_separately": false,
+        "manifest_embedded": true,
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-input-startup-af\\local\\native_config_owner_ag_probe.log",
+        "log_sha256": "44aba7f3d2d668f2fe2702a3375b7056e3511c7369a8107577bbbea952c55c33",
+        "exit_code": 0,
+        "sdk_calls": 0,
+        "real_activation_calls": 0,
+        "game_launches": 0
+      },
+      "native_bytes": {
+        "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+        "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "ranges": [
+          {
+            "address": "00698680",
+            "end_exclusive": "0069872a",
+            "length": 170,
+            "sha256": "66262aace495b9dcf7b227d124e652c3f2f405010d08346f725d184d8d015bfb"
+          },
+          {
+            "address": "004dceb0",
+            "end_exclusive": "004dcf89",
+            "length": 217,
+            "sha256": "b7ff7eef91cedc511b9af70019a31cef900bba5878853acac7696f681deb8985"
+          },
+          {
+            "address": "004d49b0",
+            "end_exclusive": "004d49e6",
+            "length": 54,
+            "sha256": "0b0cf5dd95a4c58091d690158c6f53d2e2feed4e8f0f1538863a7a24065a1d27"
+          },
+          {
+            "address": "00b66bd0",
+            "end_exclusive": "00b66bfa",
+            "length": 42,
+            "sha256": "920f447a607f12c862be7646afe39ef6c470b897b6ede27c9db650a8ca53b880"
+          },
+          {
+            "address": "00b669a0",
+            "end_exclusive": "00b669bd",
+            "length": 29,
+            "sha256": "f2f3a551ad68e23dd8f613be2fea3bbeef728a3eaf7acf22251ec033e48163b6"
+          }
+        ],
+        "source": "Exact unchanged installed bytes; eight seeds verified before native execution"
+      },
+      "source_snapshot_note": "ReceiptHEAD is parent67248e26 at build; new owner source present but uncommitted. Compiled file hashes identify exact code.",
+      "compiled_source_sha256": "9f328ea49dfe2dd42428a1a33372f86620e41a3f92588ba0ae6def64f9c90d33",
+      "compiled_header_sha256": "fb218a898acedfbf309cfecabe5f0c0f697754134f4d25d35dccb8078a956681",
+      "constructor_patterns": [
+        "55",
+        "A5"
+      ],
+      "constructor_whole_span_bytes_compared": 1316,
+      "constructor_return_identity": true,
+      "destructor_nonempty_flat_buffers": 4,
+      "destructor_nonempty_nested_rows": 2,
+      "native_free_identities": 7,
+      "native_free_order": [
+        3,
+        2,
+        1,
+        0,
+        4,
+        5,
+        6
+      ],
+      "native_nested_opaque_preserved": true,
+      "source_final_whole_storage_equal": true,
+      "actual_lua_owned_finalizers": [
+        1,
+        1
+      ],
+      "actual_lua_live_blocks_after_close": [
+        0,
+        0
+      ],
+      "lua_finalizers_observed_all_outer_triplets_zero": true,
+      "empty_second_source_close_no_repeat": true,
+      "relocations": "Constructor directB66BD0 call targets copied42-byte leaf. Destructor5free calls and nested rowfree target observing thunk that calls real singleton CRT free. Row helper copied54bytes. Destructor Lua tail targets copied29-byteB669A0 with real Lua5.1.1 close thunk.",
+      "observation_boundary": "Native free trace directly observed; source CRT path executed and checked by final rawstorage and real Lua callbacks/counts. Source frees are not separately instrumented.",
+      "constructor_eh_exercised": false,
+      "configuration_loads": 0,
+      "script_executions": 0,
+      "action_resets": 0,
+      "sdk_calls": 0,
+      "device_poll_calls": 0,
+      "force_calls": 0,
+      "show_cursor_calls": 0,
+      "game_launches": 0
+    },
+    "call_audit": {
+      "command": "python tools/verify_report_calls.py reports/native_input_configuration_owner.json",
+      "status": "passed",
+      "numeric_call_rows": 13,
+      "scope": "All7 owned CALLs, two normal game callers, library rowfree and three other row-helper callers. Lua/EH tail sites separate.",
+      "numeric_call_rows_checked": 13,
+      "failures": 0,
+      "log": "local/native_config_owner_ag_call_audit.log",
+      "log_sha256": "9b129183ec65cba75573e2caa93f58b5c32989b8d9b7b11b1b09865a0e509681"
+    }
+  },
+  "dependencies": {
+    "constructor": "Existing actualNativeLuaStateStorage constructor, concrete and reused",
+    "destructor": "Existing singleton CRT free and actual Lua5.1.1 close, concrete and reused; nested row destruction is private source adapter",
+    "separate_reset": "native_input_configuration_cleanup packet698730, not invoked implicitly",
+    "outside_packet": "Whole game owner/lifetime, Lua bootstrap/configuration loading698A10 and action/provider composition"
+  },
+  "limitations": [
+    "New C++ source ABI; no original callable/FH3/SEH or arbitrary hardware-fault equivalence.",
+    "No standalone configuration allocation;524h is observed embedded span to next member.",
+    "Untouched4CC and checked-vector opaque words remain unnamed.",
+    "Original higher constructor-EH states and malformed/asynchronous storage are not exercised.",
+    "No configuration/script/SDK/input/game activation claim."
+  ]
+}
