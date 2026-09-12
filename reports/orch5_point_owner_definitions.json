@@ -1,0 +1,139 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd8060",
+    "end_address": "00cd8076"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd8060",
+    "end_address": "00cd8075",
+    "bytes_disassembled": 22,
+    "message": "Successfully disassembled 22 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd8060",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00cd8060",
+    "function_name": "FUN_00cd8060",
+    "entry_point": "00cd8060",
+    "body_size": 22,
+    "message": "Function created successfully at 00cd8060"
+   }
+  },
+  {
+   "defined": "00cd8060",
+   "end": "00cd8076",
+   "name": null,
+   "after": "Function: FUN_00cd8060 at 00cd8060\nSignature: undefined FUN_00cd8060(void)\nEntry: 00cd8060\nBody: 00cd8060 - 00cd8075"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "00b7c5b0",
+   "previous": "Function: BSP_Light_Destroy at 00b7c5b0\nSignature: undefined BSP_Light_Destroy(void)\nEntry: 00b7c5b0\nBody: 00b7c5b0 - 00b7c685",
+   "plate": "[BSP reconstruction 00b7c5b0]\nNative [00b7c5b0,00b7c6aa); ECX light; RET. Complete light body including returning node-base tail and reconstructed cleanup unwind. Same actual1F0 pool slot,174 node prefix,178 scene array and mutable shader words; no copied owner count/scene registry. Native-unwritten tail words and1EC slabID preserved. Actual directional/light/node type predicates and live callback reloads; shadow release uses same real retained-owner bindings. B7C5B0 continues past incorrectly no-return free through node callB7C693 and RETB7C6A9. Native flags0/1 matched every496-byte slot and actualpoolreturn; nonempty callbacks/EH tested in host. Installed asset draw now composes real pool/type/config/scene ownership with explicit diagnostic values. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b7c5b0"
+   },
+   "result": {
+    "success": true,
+    "address": "00b7c5b0",
+    "deleted_function": "BSP_Light_Destroy",
+    "body_size": 214,
+    "message": "Function 'BSP_Light_Destroy' deleted at 00b7c5b0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b7c5b0",
+    "end_address": "00b7c6aa"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b7c5b0",
+    "end_address": "00b7c6a9",
+    "bytes_disassembled": 250,
+    "message": "Successfully disassembled 250 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b7c5b0",
+    "disassemble_first": false,
+    "name": "BSP_Light_Destroy"
+   },
+   "result": {
+    "success": true,
+    "address": "00b7c5b0",
+    "function_name": "BSP_Light_Destroy",
+    "entry_point": "00b7c5b0",
+    "body_size": 250,
+    "message": "Function created successfully at 00b7c5b0",
+    "warnings": [
+     "Function name 'BSP_Light_Destroy' \u2014 main part 'Light_Destroy' is not PascalCase. Expected: LightDestroy",
+     "Function name 'BSP_Light_Destroy' \u2014 main part 'Light_Destroy' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Light_Destroy' does not start with a recognized verb. First word 'Light_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00b7c5b0",
+    "comment": "[BSP reconstruction 00b7c5b0]\nNative [00b7c5b0,00b7c6aa); ECX light; RET. Complete light body including returning node-base tail and reconstructed cleanup unwind. Same actual1F0 pool slot,174 node prefix,178 scene array and mutable shader words; no copied owner count/scene registry. Native-unwritten tail words and1EC slabID preserved. Actual directional/light/node type predicates and live callback reloads; shadow release uses same real retained-owner bindings. B7C5B0 continues past incorrectly no-return free through node callB7C693 and RETB7C6A9. Native flags0/1 matched every496-byte slot and actualpoolreturn; nonempty callbacks/EH tested in host. Installed asset draw now composes real pool/type/config/scene ownership with explicit diagnostic values. Integration: docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json. Descriptive names are hypotheses; new C++ interface, not native ABI or game validation."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00b7c5b0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00b7c5b0",
+   "end": "00b7c6aa",
+   "name": "BSP_Light_Destroy",
+   "after": "Function: BSP_Light_Destroy at 00b7c5b0\nSignature: undefined BSP_Light_Destroy(void)\nEntry: 00b7c5b0\nBody: 00b7c5b0 - 00b7c6a9"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
