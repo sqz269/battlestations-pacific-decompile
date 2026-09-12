@@ -429,3 +429,5 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_hosts_text.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_hosts_units.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_hosts_world.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/hud_markers_runtime.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/hud_minimap.cpp)

@@ -19,6 +19,7 @@
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/frontend_screen_sets.hpp"
 #include "bsp/hud_screens.hpp"
+#include "bsp/hud_minimap.hpp"
 #include "bsp/hud_updates.hpp"
 #include "bsp/ingame_interface.hpp"
 #include "bsp/game_render_frame.hpp"
@@ -2167,6 +2168,49 @@ int main() {
             "00958DAA treats exactly zero health as dead and 008790C1 refuses further damage");
     }
 
+    {
+        // Packet cc_hud_minimap, docs/HUD_MINIMAP.md. The world-to-minimap
+        // transform at 005C1A3C..005C1C99 has three places where a sign or a
+        // divisor is easy to get wrong: the rim clamp radius, the rotation
+        // sense, and the two different divisors (1024 on x, 768 on y). One
+        // input with a hand-computed output pins all three.
+        bsp::HudMinimapWorldPoint camera;
+        camera.x = 100.0f;
+        camera.y = 0.0f;
+        camera.z = 200.0f;
+
+        // 2000 units due +x of the camera, inside MinimapRange, heading zero:
+        // mx = 2000 * (80/4000) = 40, my = 0. x = 40/1024, y = -0/768.
+        bsp::HudMinimapWorldPoint east;
+        east.x = camera.x + 2000.0f;
+        east.y = 0.0f;
+        east.z = camera.z;
+        const bsp::HudGuiPoint near_icon = bsp::hud_minimap_icon_position_005c1b62(
+            east, camera, bsp::kHudMinimapInstalledRange, 0.0f, bsp::kHudMinimapDepthSelf);
+        check(std::fabs(near_icon.x - 40.0f / 1024.0f) < 1e-6f
+                  && std::fabs(near_icon.y) < 1e-6f && near_icon.z == -1.0f,
+            "005C1B62 scales by 80/MinimapRange then divides x by 1024");
+
+        // 8000 units due +z, beyond MinimapRange, so the rim clamp pulls it to
+        // 4000: my = 4000 * 0.02 = 80 and y = -80/768. Nothing on x.
+        bsp::HudMinimapWorldPoint far_south;
+        far_south.x = camera.x;
+        far_south.y = 0.0f;
+        far_south.z = camera.z + 8000.0f;
+        const bsp::HudGuiPoint rim_icon = bsp::hud_minimap_icon_position_005c1b62(
+            far_south, camera, bsp::kHudMinimapInstalledRange, 0.0f, bsp::kHudMinimapDepthSelf);
+        check(std::fabs(rim_icon.x) < 1e-4f
+                  && std::fabs(rim_icon.y + 80.0f / 768.0f) < 1e-4f,
+            "005C1A3C clamps to MinimapRange and 005C1C86 negates y over 768");
+
+        // A quarter turn moves the +x icon onto -y: mx' = 0, my' = -40, so the
+        // widget y becomes +40/768 after the negation at 005C1C86.
+        const bsp::HudGuiPoint turned = bsp::hud_minimap_icon_position_005c1b62(
+            east, camera, bsp::kHudMinimapInstalledRange, 1.5707963267948966f,
+            bsp::kHudMinimapDepthSelf);
+        check(std::fabs(turned.x) < 1e-4f && std::fabs(turned.y - 40.0f / 768.0f) < 1e-4f,
+            "005C1B93 rotates by +heading in the mx*cos + my*sin sense");
+    }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
     return failures ? 1 : 0;
