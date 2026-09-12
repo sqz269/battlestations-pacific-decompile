@@ -28,6 +28,7 @@
 #include "bsp/mission_lobby_settings.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
+#include "bsp/spatial_index.hpp"
 #include "bsp/title_init.hpp"
 #include "bsp/unit_forces.hpp"
 #include "bsp/weapon_director.hpp"
@@ -2350,6 +2351,45 @@ int main() {
         check(std::fabs(bsp::gun_step_axis_0085ad80(near_delta, rate, 1.0f, true) - near_delta)
                   < 1e-6f,
             "MRFSGun skips the soft approach and turns at the full rate");
+    }
+
+    {
+        // 0098BD01's cell key. The re-bucket path packs the AABB's two corner
+        // cells without clamping them the way 0098ADD0's walk does, so the edge
+        // cases are the risk worth pinning: the last in-grid cell must survive
+        // the round trip, and a cell that left the grid must not, because the
+        // ADDs borrow across the byte lanes.
+        bsp::SpatialCellRect corner{};
+        corner.min = {0, 0};
+        corner.max = {bsp::kSpatialGridMaxIndex, bsp::kSpatialGridMaxIndex};
+        const std::uint32_t corner_key = bsp::spatial_cell_key_0098bd01(corner);
+        const bsp::SpatialCellRect corner_back =
+            bsp::spatial_cell_key_unpack_0098a3d3(corner_key);
+        check(corner_key == 0x95950000u,
+            "0098BD01 packs minX, minZ, maxX, maxZ into the four bytes, low first");
+        check(corner_back.min.x == 0 && corner_back.min.z == 0
+                  && corner_back.max.x == bsp::kSpatialGridMaxIndex
+                  && corner_back.max.z == bsp::kSpatialGridMaxIndex,
+            "0098A3D0 recovers the cells 0098A310 stored while every index is in range");
+
+        bsp::SpatialCellRect outside{};
+        outside.min = {-1, 4};
+        outside.max = {2, 5};
+        const bsp::SpatialCellRect outside_back =
+            bsp::spatial_cell_key_unpack_0098a3d3(bsp::spatial_cell_key_0098bd01(outside));
+        check(outside_back.min.x != outside.min.x || outside_back.min.z != outside.min.z,
+            "a cell index below the grid borrows into the next lane and 0098A3D0 unlinks the wrong cells");
+
+        // 0098BAD2 sends anything wider than 2x2 to the loose array, which is
+        // what keeps the register loop inside the node's four link slots.
+        check(bsp::spatial_placement_0098bad2(corner) == bsp::SpatialPlacement::kLooseArray,
+            "a grid-wide box cannot fit four cell links");
+        bsp::SpatialCellRect quad{};
+        quad.min = {10, 10};
+        quad.max = {11, 11};
+        check(bsp::spatial_placement_0098bad2(quad) == bsp::SpatialPlacement::kGridCells
+                  && bsp::spatial_cell_slot_count_0098a310(quad) == bsp::kSpatialNodeCellLinkSlots,
+            "a 2x2 span is exactly the four links at node+0Ch");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

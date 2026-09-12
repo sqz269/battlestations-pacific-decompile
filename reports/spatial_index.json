@@ -1,0 +1,542 @@
+{
+ "packet": "cc2_spatial_index",
+ "owner": "agent/cc2-spatial-index",
+ "doc": "docs/SPATIAL_INDEX.md",
+ "program": "/battlestationspacific.exe",
+ "project": "C:/Users/sqz269/bsp.gpr",
+ "summary": "0042E630 is a double-checked lazy singleton over 00F8A0D8 holding one 0x16018-byte spatial index: a 30-slot loose array at +8h with its count at +80h, a 0x96 x 0x96 grid of cell heads at +84h (index (x*0x96 + z)*4, the mapping itself is 0098AD60's, floor(p/[00CE3D90]) + 4Bh on x and z), and the head of a doubly linked list of grid-registered root nodes at +16014h. The list at +16014h is not a moved list: 0098BA10 links a node into it at attach time and nothing marks a node moved afterwards, so 0098BDB0 walks every registered root each fixed step and 0098BC70 re-derives the node's bucket from its refreshed world AABB. node+8h, written from 0098BA10's fourth argument, means skip this root entirely. The four-byte cell key at node+3Ch packs the AABB's two corner cells, minX | minZ<<8 | maxX<<16 | maxZ<<24, and a node is re-bucketed (0098A3D0 then 0098A310) only when that key changes and only when node+40h, the number of cells it occupies, is not zero. The node carries four 12-byte cell links at +0Ch..+3Bh, which is why 0098BA10 sends any node whose AABB spans more than 2x2 cells to the loose array instead. 0098A750 rebuilds the world AABB once per frame stamp ([00E188A8]+648h at node+154h) as centre*M +- sum |M_row_i| * extent_i. Children (node+108h set by 0098B920) never enter the grid; 0098BC70 recurses into node+FCh so their matrices and boxes still refresh. 0098A500 is the inverse of 0098BA10 with three exits: parent, loose, grid.",
+ "routines": [
+  {
+   "address": "0098bdb0",
+   "native": "0098bdb0",
+   "name": "BSP_SpatialIndex_RefreshMovedNodes",
+   "body": "0098bdb0-0098bdd5",
+   "abi": "__thiscall(void* index, float step), RET 4 at 0098bdd5; the float is never read",
+   "coverage": "complete",
+   "evidence": "MOV ESI,[ECX+0x16014] at 0098bdb1 takes the root-list head; the loop body at 0098bdc0 tests byte [ESI+8] and calls 0098bc70 with ECX = the node only when it is zero; the next pointer comes from [ESI+0x48] at 0098bdcd, read before the callee can change it. The pushed 0.05f is consumed by the RET 4 and never loaded."
+  },
+  {
+   "address": "0098bc70",
+   "native": "0098bc70",
+   "name": "BSP_SpatialIndex_RefreshNode",
+   "body": "0098bc70-0098bd73",
+   "abi": "__thiscall(void* node), RET at 0098bd73, recursive",
+   "coverage": "complete",
+   "evidence": "Pose at [ESI+0x4c]; world matrix copied from pose+0xcc into node+0x50 and the cached inverse from pose+0x110 into node+0x90; 0098a750 rebuilds the world AABB; the key block at 0098bcdd is gated on [ESI+0x40] != 0; the children at [ESI+0xfc] with count [ESI+0x100] are walked at 0098bd45..0098bd6c with no flag test."
+  },
+  {
+   "address": "0098a310",
+   "native": "0098a310",
+   "name": "BSP_SpatialIndex_RegisterNodeCells",
+   "body": "0098a310-0098a3cd",
+   "abi": "__fastcall(void* index /*ECX*/, void* node /*EDX*/, const int cellMin[2], const int cellMax[2]), RET 8 at 0098a3cb",
+   "coverage": "complete",
+   "evidence": "Two stack arguments from RET 8. EBP = [ESP+0x1c] at 0098a315 is entry ESP+8 (cellMax, pushed first at 0098bd31) and ESI = [ESP+0x1c] at 0098a31a is entry ESP+4 (cellMin). The link address is node + 12*slot + 12 from LEA ECX,[EBX+EBX*2+3] / LEA EAX,[EAX+ECX*4]; the cell head is index + (x*0x96 + z)*4 + 0x84 from LEA ESI,[ESI+ECX*4+0x84]. Head insertion writes link->next = *head, link->prev = 0, (*head)->prev = link, *head = link. The slot count lands in [node+0x40] at 0098a3ab and the packed key in [node+0x3c] at 0098a3c4."
+  },
+  {
+   "address": "0098a3d0",
+   "native": "0098a3d0",
+   "name": "BSP_SpatialIndex_UnregisterNodeCells",
+   "body": "0098a3d0-0098a4be",
+   "abi": "__fastcall(void* index /*ECX*/, void* node /*EDX*/), RET at 0098a4b3 and 0098a4be",
+   "coverage": "complete",
+   "evidence": "The key at [EDX+0x3c] is unpacked into four bytes at 0098a3de..0098a3e9 (MOVZX EBX,AH; SHR ESI,0x10; SHR EAX,0x18; AND EDI,0xff). The first loop unlinks each of the [EDX+0x40] links through its own prev/next; the second walks the same x-major rectangle and replaces any cell head that still equals the link. [EDX+0x40] is cleared on both exits (0098a4aa, 0098a4b6)."
+  },
+  {
+   "address": "0098a750",
+   "native": "0098a750",
+   "name": "BSP_SpatialNode_RebuildWorldBounds",
+   "body": "0098a750-0098a8d7",
+   "abi": "__thiscall(void* node), RET at 0098a8d7",
+   "coverage": "complete",
+   "evidence": "Frame stamp: [00E188A8]+0x648 compared with [ESI+0x154] at 0098a761 and stored at 0098a77e. Three 00722C20 calls take matrix rows node+0x50, +0x60, +0x70 with the half extents node+0x130/+0x134/+0x138; 004142E0 transforms the local centre node+0x124 by node+0x50. The x87 tail writes min = centre - extent into node+0x13c and max = centre + extent into node+0x148."
+  },
+  {
+   "address": "0098ba10",
+   "native": "0098ba10",
+   "name": "BSP_SpatialIndex_AttachNode",
+   "body": "0098ba10-0098bb4b",
+   "abi": "__thiscall(void* index, void* node, void* parent, const float* matrix, char staticFlag), RET 0x10 at 0098baa4 / 0098bb29 / 0098bb4b",
+   "coverage": "complete",
+   "evidence": "Four stack arguments from RET 0x10. MOV AL,[ESP+0x10] at 0098ba10 is entry ESP+0x10, the fourth, and it is stored into byte [node+8] at 0098ba22; MOV ESI,[ESP+0x20] at 0098ba1a is entry ESP+4 (the node); MOV ECX,[ESP+0x28] at 0098ba87 is entry ESP+8 (the parent). The third argument is never read. The 2x2 test at 0098bad2..0098bae8 compares both spans against EBX = 1; the loose path writes [index + count*4 + 8] and bumps [index+0x80]."
+  },
+  {
+   "address": "0098a500",
+   "native": "0098a500",
+   "name": "BSP_SpatialIndex_DetachNode",
+   "body": "0098a500-0098a585",
+   "abi": "__thiscall(void* index, void* node), RET 4 at 0098a560 / 0098a571 / 0098a583",
+   "coverage": "complete",
+   "evidence": "Gate on byte [ESI+0x158] at 0098a505. [ESI+0x108] != 0 takes the child path 0098a2c0; [ESI+0x40] == 0 takes the loose path 0098a4c0; otherwise 0098a3d0 and the root-list unlink through [ESI+0x44] / [ESI+0x48] with the head at [EDI+0x16014]. Every path clears [ESI+0x158]."
+  },
+  {
+   "address": "0042e630",
+   "native": "0042e630",
+   "name": "BSP_SpatialIndex_GetSingleton",
+   "body": "0042e630-0042e6dd",
+   "abi": "__cdecl void* (void), RET; the instance is returned in EAX",
+   "coverage": "complete",
+   "evidence": "Double-checked test of [00F8A0D8] at 0042e645 and 0042e67d around the lock taken from 00415350()+0x10 (entered through [00CE2218], left through [00CE2210], recursion count at +0x18). operator new is called with 0x16018 at 0042e686, the block is constructed by 0042d450 and registered with 00BD0C30. A failed allocation publishes null at 0042e6a0."
+  },
+  {
+   "address": "0042d450",
+   "native": "0042d450",
+   "name": "BSP_SpatialIndex_Construct",
+   "body": "0042d450-0042d48d",
+   "abi": "__thiscall void* (void* this), RET, returns this in EAX",
+   "coverage": "complete",
+   "evidence": "[this] = 0x00CE3CEC at 0042d461, [this+4] = 0 at 0042d467, memset(this+0x84, 0, 0x15F90) at 0042d453..0042d46e, [this+0x80] = 0 at 0042d476, [this+0x16014] = 0 at 0042d480. The loose array at +8 is not cleared."
+  },
+  {
+   "address": "0098a4c0",
+   "native": "0098a4c0",
+   "name": "BSP_SpatialIndex_RemoveLooseNode",
+   "body": "0098a4c0-0098a4f3",
+   "abi": "__fastcall(void* index /*ECX*/, void* node /*EDX*/), RET",
+   "coverage": "complete",
+   "evidence": "Linear search of index+8 for EDX bounded by [ECX+0x80]; on a match the last entry [ECX + count*4 + 4] is moved into the found slot and the count is decremented at 0098a4ea."
+  },
+  {
+   "address": "0098a2c0",
+   "native": "0098a2c0",
+   "name": "BSP_SpatialNode_DetachFromParent",
+   "body": "0098a2c0-0098a30a",
+   "abi": "__thiscall(void* parent, void* child), RET 4",
+   "coverage": "complete",
+   "evidence": "[ECX+0x100] is decremented first; the child's slot [EDX+0x15c] is compared with the new count and, when it is not the last, the last child is moved into the slot and its own +0x15c is rewritten. [EDX+0x108] is cleared at 0098a2ff."
+  },
+  {
+   "address": "0098b920",
+   "native": "0098b920",
+   "name": "BSP_SpatialNode_AttachAsChild",
+   "body": "0098b920-0098b9b5",
+   "abi": "__thiscall(void* parent, void* child), RET 4",
+   "coverage": "complete",
+   "evidence": "Capacity doubling at [ESI+0x104] with operator_new 00BF55BE, _memcpy 00BF7680 and _free 00BF6989; the child is stored at [[ESI+0xfc] + count*4], its slot index written to [child+0x15c] and the parent to [child+0x108], then 0098b530 merges the child's box into the parent's."
+  },
+  {
+   "address": "00722c20",
+   "native": "00722c20",
+   "name": "BSP_Vector3f_AccumulateAbsScaled",
+   "body": "00722c20-00722c96",
+   "abi": "__thiscall(float acc[3] /*ECX*/, float x, float y, float z, float s), RET 0x10",
+   "coverage": "complete",
+   "evidence": "Each component's sign bit is cleared with AND 0x7fffffff on the spilled float bits (00722c36, 00722c5b, 00722c7d) before the x87 multiply by the fourth argument and the add into [ECX], [ECX+4], [ECX+8]. Only caller is 0098a750."
+  },
+  {
+   "address": "0098a920",
+   "native": "0098a920",
+   "name": "BSP_SpatialNode_SetLocalBounds",
+   "body": "0098a920-0098aa7a",
+   "abi": "__thiscall(void* node, const float min[3], const float max[3]), RET 8 (cleanup not read)",
+   "coverage": "partial: 0098aa13-0098aa7a unread, the local centre store",
+   "evidence": "The two corners are stored at node+0x10c and node+0x118 (0098a927..0098a959); the double 0.5 at 00D7A280 scales both before the subtraction that yields the half extents at node+0x130/+0x134/+0x138 (0098a9d1..0098a9e9)."
+  },
+  {
+   "address": "0098b530",
+   "native": "0098b530",
+   "name": "BSP_SpatialNode_MergeChildBounds",
+   "body": "0098b530-0098b91c",
+   "abi": "__thiscall(void* parent, void* child), RET 4 (from the 0098b9af call site pairing)",
+   "coverage": "partial: 0098b530-0098b5dc read, the eight-corner setup; the merge tail unread",
+   "evidence": "The child's local box child+0x10c..+0x120 is spilled, EBP is the parent's inverse world matrix parent+0x90 and EBX the parent's local box parent+0x10c; ESI's low three bits select the corner (AND 1, SAR 1, SAR 2) over eight iterations."
+  },
+  {
+   "address": "0098b7d0",
+   "native": "0098b7d0",
+   "name": "BSP_SpatialNode_UnionShapeBounds",
+   "body": "0098b7d0-0098b91c",
+   "abi": "__thiscall(void* node), cleanup not read",
+   "coverage": "partial: 0098b7d0-0098b8f2 read, the shape-box union; the tail unread",
+   "evidence": "Early return when [ECX+0xf8] (the shape count) is zero; the first shape's box is read from [[ECX+0xd0]+4..+0x18] and each further shape at [ECX + i*4 + 0xd0] is folded in with FCOMIP compares."
+  }
+ ],
+ "host_steps": [
+  {
+   "address": "00875e33",
+   "native": "0042e630",
+   "function": "00875bb0",
+   "method": "spatial_index_singleton",
+   "this": "none",
+   "args": "none",
+   "gate": "always"
+  },
+  {
+   "address": "00875e3a",
+   "native": "0098bdb0",
+   "function": "00875bb0",
+   "method": "refresh_moved_spatial_nodes",
+   "this": "EAX from 00875e33",
+   "args": "0.05f pushed at 00875e2f, never read by the callee",
+   "gate": "always"
+  },
+  {
+   "address": "0098bdc8",
+   "native": "0098bc70",
+   "function": "0098bdb0",
+   "method": "refresh_node",
+   "this": "ECX = node",
+   "args": "none",
+   "gate": "byte [node+8] == 0"
+  },
+  {
+   "address": "0098bc85",
+   "native": "00414db0",
+   "function": "0098bc70",
+   "method": "pose_refresh_world",
+   "this": "ECX = [node+0x4c]",
+   "args": "none",
+   "gate": "byte [pose+0xc8] == 0"
+  },
+  {
+   "address": "0098bc94",
+   "native": "004134f0",
+   "function": "0098bc70",
+   "method": "node_copy_world_matrix",
+   "this": "ECX = node+0x50",
+   "args": "pose+0xcc",
+   "gate": "always"
+  },
+  {
+   "address": "0098bca7",
+   "native": "00414db0",
+   "function": "0098bc70",
+   "method": "pose_refresh_world",
+   "this": "ECX = [node+0x4c]",
+   "args": "none",
+   "gate": "byte [pose+0x10c] == 0"
+  },
+  {
+   "address": "0098bcbf",
+   "native": "00b63d50",
+   "function": "0098bc70",
+   "method": "pose_build_inverse",
+   "this": "ECX = pose+0x110",
+   "args": "EDX = pose+0xcc",
+   "gate": "byte [pose+0x10c] == 0"
+  },
+  {
+   "address": "0098bcd1",
+   "native": "004134f0",
+   "function": "0098bc70",
+   "method": "node_copy_inverse_matrix",
+   "this": "ECX = node+0x90",
+   "args": "pose+0x110",
+   "gate": "always"
+  },
+  {
+   "address": "0098bcd8",
+   "native": "0098a750",
+   "function": "0098bc70",
+   "method": "node_rebuild_world_bounds",
+   "this": "ECX = node",
+   "args": "none",
+   "gate": "always"
+  },
+  {
+   "address": "0098bced",
+   "native": "0098ad60",
+   "function": "0098bc70",
+   "method": "cell_of_point",
+   "this": "ECX = &cellMin",
+   "args": "EDX = node+0x13c",
+   "gate": "[node+0x40] != 0"
+  },
+  {
+   "address": "0098bcfc",
+   "native": "0098ad60",
+   "function": "0098bc70",
+   "method": "cell_of_point",
+   "this": "ECX = &cellMax",
+   "args": "EDX = node+0x148",
+   "gate": "[node+0x40] != 0"
+  },
+  {
+   "address": "0098bd1f",
+   "native": "0042e630",
+   "function": "0098bc70",
+   "method": "spatial_index_singleton",
+   "this": "none",
+   "args": "none",
+   "gate": "packed key != [node+0x3c]"
+  },
+  {
+   "address": "0098bd28",
+   "native": "0098a3d0",
+   "function": "0098bc70",
+   "method": "unregister_node",
+   "this": "ECX = index",
+   "args": "EDX = node",
+   "gate": "packed key != [node+0x3c]"
+  },
+  {
+   "address": "0098bd37",
+   "native": "0042e630",
+   "function": "0098bc70",
+   "method": "spatial_index_singleton",
+   "this": "none",
+   "args": "none",
+   "gate": "packed key != [node+0x3c]"
+  },
+  {
+   "address": "0098bd40",
+   "native": "0098a310",
+   "function": "0098bc70",
+   "method": "register_node",
+   "this": "ECX = index",
+   "args": "EDX = node; &cellMin, &cellMax",
+   "gate": "packed key != [node+0x3c]"
+  },
+  {
+   "address": "0098bd62",
+   "native": "0098bc70",
+   "function": "0098bc70",
+   "method": "refresh_node",
+   "this": "ECX = child",
+   "args": "none",
+   "gate": "per child of [node+0xfc]"
+  },
+  {
+   "address": "0098a7b0",
+   "native": "00722c20",
+   "function": "0098a750",
+   "method": "accumulate_abs_scaled",
+   "this": "ECX = &extentAccumulator",
+   "args": "node+0x50 row, node+0x130",
+   "gate": "frame stamp differs"
+  },
+  {
+   "address": "0098a7da",
+   "native": "00722c20",
+   "function": "0098a750",
+   "method": "accumulate_abs_scaled",
+   "this": "ECX = &extentAccumulator",
+   "args": "node+0x60 row, node+0x134",
+   "gate": "frame stamp differs"
+  },
+  {
+   "address": "0098a804",
+   "native": "00722c20",
+   "function": "0098a750",
+   "method": "accumulate_abs_scaled",
+   "this": "ECX = &extentAccumulator",
+   "args": "node+0x70 row, node+0x138",
+   "gate": "frame stamp differs"
+  },
+  {
+   "address": "0098a815",
+   "native": "004142e0",
+   "function": "0098a750",
+   "method": "transform_local_centre",
+   "this": "ECX = node+0x124",
+   "args": "&centre, node+0x50",
+   "gate": "frame stamp differs"
+  },
+  {
+   "address": "0098ba32",
+   "native": "00414db0",
+   "function": "0098ba10",
+   "method": "pose_refresh_world",
+   "this": "ECX = [node+0x4c]",
+   "args": "none",
+   "gate": "byte [pose+0xc8] == 0"
+  },
+  {
+   "address": "0098ba41",
+   "native": "004134f0",
+   "function": "0098ba10",
+   "method": "node_copy_world_matrix",
+   "this": "ECX = node+0x50",
+   "args": "pose+0xcc",
+   "gate": "always"
+  },
+  {
+   "address": "0098ba59",
+   "native": "00414db0",
+   "function": "0098ba10",
+   "method": "pose_refresh_world",
+   "this": "ECX = [node+0x4c]",
+   "args": "none",
+   "gate": "byte [pose+0x10c] == 0"
+  },
+  {
+   "address": "0098ba70",
+   "native": "00b63d50",
+   "function": "0098ba10",
+   "method": "pose_build_inverse",
+   "this": "ECX = pose+0x110",
+   "args": "EDX = pose+0xcc",
+   "gate": "byte [pose+0x10c] == 0"
+  },
+  {
+   "address": "0098ba82",
+   "native": "004134f0",
+   "function": "0098ba10",
+   "method": "node_copy_inverse_matrix",
+   "this": "ECX = node+0x90",
+   "args": "pose+0x110",
+   "gate": "always"
+  },
+  {
+   "address": "0098ba92",
+   "native": "0098b920",
+   "function": "0098ba10",
+   "method": "attach_as_child",
+   "this": "ECX = parent (arg2)",
+   "args": "node",
+   "gate": "arg2 != 0"
+  },
+  {
+   "address": "0098baaf",
+   "native": "0098a750",
+   "function": "0098ba10",
+   "method": "node_rebuild_world_bounds",
+   "this": "ECX = node",
+   "args": "none",
+   "gate": "arg2 == 0"
+  },
+  {
+   "address": "0098babe",
+   "native": "0098ad60",
+   "function": "0098ba10",
+   "method": "cell_of_point",
+   "this": "ECX = &cellMin",
+   "args": "EDX = node+0x13c",
+   "gate": "arg2 == 0"
+  },
+  {
+   "address": "0098bacd",
+   "native": "0098ad60",
+   "function": "0098ba10",
+   "method": "cell_of_point",
+   "this": "ECX = &cellMax",
+   "args": "EDX = node+0x148",
+   "gate": "arg2 == 0"
+  },
+  {
+   "address": "0098baf8",
+   "native": "0098a310",
+   "function": "0098ba10",
+   "method": "register_node",
+   "this": "ECX = index",
+   "args": "EDX = node; &cellMin, &cellMax",
+   "gate": "both cell spans <= 1"
+  },
+  {
+   "address": "0098a525",
+   "native": "0098a3d0",
+   "function": "0098a500",
+   "method": "unregister_node",
+   "this": "ECX = index",
+   "args": "EDX = node",
+   "gate": "[node+0x40] != 0"
+  },
+  {
+   "address": "0098a563",
+   "native": "0098a4c0",
+   "function": "0098a500",
+   "method": "remove_loose",
+   "this": "ECX = index",
+   "args": "EDX = node",
+   "gate": "[node+0x40] == 0"
+  },
+  {
+   "address": "0098a575",
+   "native": "0098a2c0",
+   "function": "0098a500",
+   "method": "detach_from_parent",
+   "this": "ECX = [node+0x108]",
+   "args": "node",
+   "gate": "[node+0x108] != 0"
+  },
+  {
+   "address": "0042e652",
+   "native": "00415350",
+   "function": "0042e630",
+   "method": "singleton_lock",
+   "this": "none",
+   "args": "none",
+   "gate": "[00F8A0D8] == 0"
+  },
+  {
+   "address": "0042e68b",
+   "native": "00bf681b",
+   "function": "0042e630",
+   "method": "operator_new",
+   "this": "none",
+   "args": "0x16018",
+   "gate": "[00F8A0D8] still 0 under the lock"
+  },
+  {
+   "address": "0042e699",
+   "native": "0042d450",
+   "function": "0042e630",
+   "method": "construct_index",
+   "this": "ECX = the new block",
+   "args": "none",
+   "gate": "allocation succeeded"
+  },
+  {
+   "address": "0042e6a7",
+   "native": "00415350",
+   "function": "0042e630",
+   "method": "singleton_lock",
+   "this": "none",
+   "args": "none",
+   "gate": "[00F8A0D8] still 0 under the lock"
+  },
+  {
+   "address": "0042e6b5",
+   "native": "00bd0c30",
+   "function": "0042e630",
+   "method": "register_singleton_lifetime",
+   "this": "ECX = the lock owner",
+   "args": "[00F8A0D8]",
+   "gate": "[00F8A0D8] still 0 under the lock"
+  },
+  {
+   "address": "0042d46e",
+   "native": "00bf79f0",
+   "function": "0042d450",
+   "method": "memset",
+   "this": "none",
+   "args": "this+0x84, 0, 0x15F90",
+   "gate": "always"
+  }
+ ],
+ "no_ghidra_function": [],
+ "corrections": [
+  {
+   "doc": "docs/FIXED_STEP_FANOUT.md",
+   "was": "0098BDB0 walks the list at [this+16014h] through +48h and, for every node whose +8h byte is clear, calls 0098BC70 (read as a moved list)",
+   "is": "+16014h is the head of every grid-registered root node, filled at attach time by 0098BA10, and node+8h is a static flag written from 0098BA10's fourth argument. Nothing marks a node moved; the walk re-derives every root's bucket each step and a set +8h byte means never refresh this root.",
+   "evidence": "0098BA22 stores arg4 into byte [node+8]; 0098BAFD..0098BB16 is the only code that links a node into +16014h, on the branch where the AABB fits 2x2 cells; 0098A53D..0098A554 is the only unlink. The three attach sites pass 1 (006D3E28), 0 (0092B30C) and a class test (00710B6D)."
+  },
+  {
+   "doc": "docs/FIXED_STEP_FANOUT.md",
+   "was": "constructor 0042D450 (a memset and nothing else)",
+   "is": "0042D450 also stores the vtable 00CE3CEC at +0h and zeroes +4h, +80h and +16014h; the memset covers only the 0x15F90-byte grid at +84h and leaves the loose array at +8h untouched",
+   "evidence": "0042d453, 0042d461, 0042d467, 0042d476, 0042d480"
+  },
+  {
+   "doc": "docs/FIXED_STEP_FANOUT.md",
+   "was": "computes a four-byte key from a transformed point (0098A750 -> BSP_Vector3f_TransformAffinePoint, 0098AD60 -> the CRT float helpers); the spatial index reading of the key is provisional",
+   "is": "the key packs the four cell indices of the node's world AABB, minX | minZ<<8 | maxX<<16 | maxZ<<24, over the cells 0098AD60 returns for node+13Ch and node+148h. It is settled, not provisional: 0098A310 writes the identical packing into node+3Ch right after linking the node into exactly those cells and 0098A3D0 unpacks node+3Ch to find the cells to unlink.",
+   "evidence": "0098bd01..0098bd1a, 0098a3ae..0098a3c4, 0098a3d3..0098a3e9"
+  },
+  {
+   "doc": "docs/HIT_NARROWPHASE.md",
+   "was": "each cell is a singly linked list, node +4h is the next node and node +8h is the entity",
+   "is": "the cell list is doubly linked and its nodes are 12-byte links embedded in the proxy node at +0Ch + 0Ch*slot: +0h prev, +4h next, +8h the owner back-pointer. The query only ever walks forward, so its reading of +4h and +8h stands.",
+   "evidence": "0098a360..0098a375 writes both prev and next on insert; 0098a410..0098a425 repairs both on removal; the link base is node + 12*slot + 12 from 0098a34c"
+  }
+ ],
+ "unread": [
+  "The writer of the cell link's owner back-pointer (node+14h, +20h, +2Ch, +38h). Neither 0098A310 nor 0098A3D0 touches it, so it is initialised where the proxy node object is constructed, which this packet did not reach. 0098ADD0 reads it as the node to test, which fixes what the value has to be but not where it comes from.",
+  "Whatever keeps 0098BC70 from re-registering a node whose refreshed AABB spans more than 2x2 cells. The 2x2 test exists only at attach (0098BAD2); the re-bucket path calls 0098A310 with the new rectangle unchecked, and a fifth link slot would overwrite node+3Ch and node+40h.",
+  "index+4h: zeroed by the constructor, read by nothing in these routines.",
+  "The index vtable at 00CE3CEC and the destruction path behind BSP_SingletonLifetime_Register.",
+  "The callers that guarantee 00880CDF and 00929D82 never actually pass their null node to 0098A500, which dereferences node+158h with no null test.",
+  "Run-time evidence. The refresh is on the executable's fixed-step path, so a bsp_game.exe run could confirm that a static root is skipped and how many roots the list holds; the executable belongs to the orchestrator, so no run was taken."
+ ]
+}
