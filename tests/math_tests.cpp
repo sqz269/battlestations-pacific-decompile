@@ -68,6 +68,7 @@
 #include "bsp/scene_record_map.hpp"
 #include "bsp/entity_think_dispatch.hpp"
 #include "bsp/unit_damage.hpp"
+#include "bsp/unit_hit_path.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -2165,6 +2166,23 @@ int main() {
         check(!lethal.refused && bsp::unit_is_dead(mortal)
                   && bsp::apply_damage_00879070(mortal, gates, 10.0f).refused,
             "00958DAA treats exactly zero health as dead and 008790C1 refuses further damage");
+    }
+
+    {
+        // 00879810 negates before calling 00879070, so the repair tick's positive
+        // amount must arrive as a negative damage. Inverting this sign would turn
+        // every damage-control repair into damage and still compile.
+        bsp::UnitHealth health;
+        health.max_health = 1000.0f;
+        health.current_health = 400.0f;
+        health.invincibility = 0.0f;
+        const bsp::UnitDamageGates gates;
+
+        const float as_damage = bsp::health_delta_to_damage_00879810(120.0f);
+        const bsp::UnitDamageOutcome repaired =
+            bsp::apply_damage_00879070(health, gates, as_damage);
+        check(as_damage == -120.0f && !repaired.refused && repaired.new_health == 520.0f,
+            "00879810 turns a positive delta into a repair through 00879070");
     }
 
 

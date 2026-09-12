@@ -1,0 +1,221 @@
+{
+  "packet": "cc2_unit_hit_path",
+  "owner": "agent/cc2-unit-hit-path",
+  "doc": "docs/UNIT_HIT_PATH.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "summary": "00879810 is not on the hit path: it negates its float and calls ApplyDamage, so it is a health-delta helper used only by the two damage-control repair steps 0093C770 and 0093C860. The impact path is 007BBCF0 -> 008777D0 -> vtable[1ACh] AddDamage -> 0087D730 -> 00879070 -> 00877B90. Maximum health +36Ch is written once at 0087BD01 from the vehicle-class descriptor's HP field [+354h]+48h, and the armour +368h the hit handler subtracts is the same descriptor's Armour at +4Ch.",
+  "routines": [
+    {
+      "address": "00879810",
+      "native": "00879810",
+      "name": "BSP_UnitInstance_ApplyHealthDelta",
+      "body": "00879810-0087982B",
+      "abi": "__thiscall(void* unit, float delta), RET 4",
+      "coverage": "complete",
+      "evidence": "Six instructions read from the listing. MOVSS XMM0,[00D7A208] loads -0.0f (bytes 00 00 00 80 at that address), SUBSS [ESP+4] makes -delta, PUSH ECX only allocates the outgoing slot because MOVSS [ESP],XMM0 overwrites it, ECX is never written so this passes through to 00879070."
+    },
+    {
+      "address": "008777D0",
+      "native": "008777D0",
+      "name": "BSP_UnitInstance_ApplyHitRecord",
+      "body": "008777D0-00877A43",
+      "abi": "__thiscall(void* unit, HitRecord* hit), RET 4, returns 1 in AL",
+      "coverage": "complete",
+      "evidence": "Argument from MOV EBX,[ESP+0x1C] at 008777D4 after SUB ESP,0x14 / PUSH EBX; return RET 4 at 00877A41. Hull pass 008777DD-008778D4, part pass 008778E4-00877A37."
+    },
+    {
+      "address": "00470510",
+      "native": "00470510",
+      "name": "BSP_HitRecord_HullDamage",
+      "abi": "__thiscall(HitRecord*, float armourScaled) -> float in ST(0)",
+      "coverage": "complete",
+      "formula": "(hit+14h * ownerModifier - armourScaled) * weaponScale; not floored at zero",
+      "evidence": "Decompiled body; weaponScale is [hit+4h]->vtable[58h]() or 1.0f (00D7A24C), ownerModifier is BSP_GameplayModifiers_ProductForUnit(1, [[hit+4h]->vtable[108h]()+ACh]) gated on 00E0C978 and [00F88C30+94h]."
+    },
+    {
+      "address": "004705C0",
+      "native": "004705C0",
+      "name": "BSP_HitRecord_PartDamage",
+      "abi": "__thiscall(HitRecord*, float armourScaled, float partHitIndex) -> float in ST(0)",
+      "coverage": "complete",
+      "formula": "f = 1 - entry[i].+0Ch / hit+24h; if (hit+2Ch && f > 0) f = 1; max(0, f * hit+28h * ownerModifier - armourScaled) * weaponScale",
+      "evidence": "Decompiled body; the index reaches the entry through [hit+3Ch] + index*10h + 0Ch."
+    },
+    {
+      "address": "0093C770",
+      "native": "0093C770",
+      "name": "BSP_RepairTask_RepairHull",
+      "body": "0093C770-0093C856",
+      "abi": "__thiscall(RepairTask* task, float dt), RET 4",
+      "coverage": "complete",
+      "evidence": "Full listing read. amount = task+28h * dt * settings+3B4h * unit+36Ch * rate; rate comes from task byte +45h and int +24h with settings+3D4h, then the gameplay-modifier product for kind 3. 00879810 is called with the positive amount, so health rises; the tail clamps with 00877B90 when health exceeds max."
+    },
+    {
+      "address": "0093C860",
+      "native": "0093C860",
+      "name": "BSP_RepairTask_RepairSubObjects",
+      "body": "0093C860-0093CA11",
+      "abi": "__thiscall(RepairTask* task, float dt)",
+      "coverage": "partial: 0093C9AE-0093C9F5, the \"destroyed\" string dispatch through child vtable[19Ch] and the sized-storage-pool release, is summarised only",
+      "evidence": "Walks unit+48h with next at +44h, keeps children with vtable[5Ch](4) true, vtable[5Ch](0Fh) false and byte +378h set; amount = settings+3B8h * dt * child+36Ch * rate with settings+3D8h selected by task+24h == 2."
+    },
+    {
+      "address": "0093CA20",
+      "native": "0093CA20",
+      "name": "BSP_RepairTask_Update",
+      "body": "0093CA20-0093CAF9",
+      "abi": "__thiscall(RepairTask* task, float dt)",
+      "coverage": "analyzed, not reconstructed",
+      "evidence": "Calls 0093C770, 0093C860, 0093C520, 0093C120, 0093C210 in order, then logs \"Ship Repaired Fire && Leak %s Hp %6f %f\" through 004254B0 when task+24h is 3 or 4, task+34h and task+38h are zero and the byte at +44h is clear."
+    },
+    {
+      "address": "0087BCC0",
+      "native": "0087BCC0",
+      "name": "BSP_UnitInstance_InitHealthAndParts",
+      "body": "0087BCC0-0087BF73",
+      "abi": "__thiscall(void* unit), SEH frame 00C967E6",
+      "coverage": "partial: 0087BCC0-0087BEA4 read; 0087BEAA-0087BF73 (the +C0h property-bag tail into 00876EC0 and 008F2260) unread",
+      "evidence": "Writes +368h from [+354h]+4Ch at 0087BCF4, +36Ch from [+354h]+48h at 0087BD01, +164h = 1.0f at 0087BD09, +370h from the same XMM0 at 0087BD11 and +378h = 1 at 0087BD19, then sizes the vector at +344h to ([+354h]+20h - [+354h]+1Ch)/30h and fills it with pointers into that array."
+    },
+    {
+      "address": "00934150",
+      "native": "00934150",
+      "name": "BSP_UnitParts_DetachPart",
+      "body": "00934150-0093553A",
+      "abi": "__thiscall(void* partsObject, int index, const float impulse[3]), RET 8",
+      "coverage": "contract: unread (ABI only)",
+      "evidence": "ABI from 0080E440: the caller pushes a stack vec3, then &vec3 and the index, calls, and cleans only 0Ch at 0080E46C, so the callee popped the two pushed arguments."
+    },
+    {
+      "address": "0080E440",
+      "native": "0080E440",
+      "name": "BSP_UnitInstance_DetachPart",
+      "body": "0080E440-0080E46F",
+      "abi": "__thiscall(void* unit, int index), RET 4",
+      "coverage": "complete",
+      "evidence": "Reads the parts object from [ECX+1018h], zeroes a stack vec3 and calls 00934150 with it."
+    },
+    {
+      "address": "0080E410",
+      "native": "0080E410",
+      "name": "BSP_UnitInstance_ResetCondition",
+      "body": "0080E410-0080E43F",
+      "abi": "__thiscall(void* unit)",
+      "coverage": "complete",
+      "evidence": "Calls 00878340, writes 1.0f (00D7A24C) to +9D8h and +9DCh and clears the bytes +9E4h and +9E5h. Only caller 00758370."
+    },
+    {
+      "address": "00878340",
+      "native": "00878340",
+      "name": "BSP_UnitInstance_RestoreFullHealth",
+      "body": "00878340-0087834F",
+      "abi": "__thiscall(void* unit)",
+      "coverage": "complete",
+      "evidence": "FLD [ECX+36Ch] / PUSH ECX / FSTP [ESP] / CALL 00877B90 / RET."
+    },
+    {
+      "address": "007BBCF0",
+      "native": "007BBCF0",
+      "name": "BSP_UnitInstance_OnHit",
+      "body": "007BBCF0-007BBDBC",
+      "abi": "__thiscall(void* unit, HitRecord* hit)",
+      "coverage": "analyzed, not reconstructed",
+      "evidence": "Clears +520h, sets +DFCh when [hit+4h] passes vtable[5Ch](5), refreshes the local player's pose, forwards to [+9D4h]->vtable[ECh] and 00999AA0, copies [[hit+38h]+4h] into unit+800h when hit+34h != -1, then tail-calls 008777D0."
+    }
+  ],
+  "host_steps": [
+    {"address": "008778A4", "native": "00470510", "function": "008777D0", "method": "hull_damage_from_record", "this": "hit record", "args": "float armour * modifier", "ret": "float", "gate": "hit+34h != -1"},
+    {"address": "008779D3", "native": "004705C0", "function": "008777D0", "method": "part_damage_from_record", "this": "hit record", "args": "float armour * modifier, int part-hit index", "ret": "float", "gate": "entry+4h != -1"},
+    {"address": "008778D2", "native": "vtable+1ACh -> 0095DA00", "function": "008777D0", "method": "unit_add_damage", "this": "unit", "args": "float hull damage", "ret": "void", "gate": "damage > 0"},
+    {"address": "00877A37", "native": "vtable+1ACh -> 0095DA00", "function": "008777D0", "method": "unit_add_damage", "this": "unit", "args": "float best part damage", "ret": "void", "gate": "index >= 0 and value > 0.0f"},
+    {"address": "008777EF", "native": "vtable+5Ch (IsKindOf)", "function": "008777D0", "method": "unit_is_kind_of", "this": "unit", "args": "int 6", "ret": "bool", "gate": "none"},
+    {"address": "00877828", "native": "vtable+5Ch (IsKindOf)", "function": "008777D0", "method": "unit_is_kind_of", "this": "unit", "args": "int 20h", "ret": "bool", "gate": "none"},
+    {"address": "00877809", "native": "[[unit+354h] vtable+24h]", "function": "008777D0", "method": "unit_alternate_armour", "this": "class descriptor", "args": "none", "ret": "float", "gate": "IsKindOf(6) and hit+0Ch < 0"},
+    {"address": "0087791F", "native": "[[unit+354h] vtable+24h]", "function": "008777D0", "method": "unit_alternate_armour", "this": "class descriptor", "args": "none", "ret": "float", "gate": "entry+0h == 4"},
+    {"address": "0087784F", "native": "008E6430", "function": "008777D0", "method": "gameplay_modifier_product", "this": "none", "args": "int 2, unit+3F0h", "ret": "float", "gate": "00E0C978 and [00F88C30+A0h]"},
+    {"address": "00877875", "native": "008E6430", "function": "008777D0", "method": "gameplay_modifier_product", "this": "none", "args": "int 2, unit", "ret": "float", "gate": "00E0C978 and [00F88C30+A0h]"},
+    {"address": "00877965", "native": "008E6430", "function": "008777D0", "method": "gameplay_modifier_product", "this": "none", "args": "int 2, unit+3F0h", "ret": "float", "gate": "part loop, IsKindOf(20h)"},
+    {"address": "008779A3", "native": "008E6430", "function": "008777D0", "method": "gameplay_modifier_product", "this": "none", "args": "int 2, unit", "ret": "float", "gate": "part loop"},
+    {"address": "00879824", "native": "00879070", "function": "00879810", "method": "unit_apply_damage", "this": "unit", "args": "float -delta", "ret": "void", "gate": "none"},
+    {"address": "0093C787", "native": "00424C40", "function": "0093C770", "method": "game_settings", "this": "none", "args": "none", "ret": "ptr", "gate": "task+24h == 0"},
+    {"address": "0093C7C5", "native": "008E6430", "function": "0093C770", "method": "gameplay_modifier_product", "this": "none", "args": "int 3, task unit", "ret": "float", "gate": "00F88C30, 00E0C978 and [00F88C30+ACh]"},
+    {"address": "0093C7F6", "native": "00424C40", "function": "0093C770", "method": "game_settings", "this": "none", "args": "none", "ret": "ptr", "gate": "none"},
+    {"address": "0093C820", "native": "00879810", "function": "0093C770", "method": "unit_apply_health_delta", "this": "unit", "args": "float repair amount", "ret": "void", "gate": "none"},
+    {"address": "0093C844", "native": "00877B90", "function": "0093C770", "method": "unit_set_health", "this": "unit", "args": "float max health", "ret": "void", "gate": "health > max"},
+    {"address": "0093C887", "native": "00424C40", "function": "0093C860", "method": "game_settings", "this": "none", "args": "none", "ret": "ptr", "gate": "task+24h == 2"},
+    {"address": "0093C8C5", "native": "008E6430", "function": "0093C860", "method": "gameplay_modifier_product", "this": "none", "args": "int 3, task unit", "ret": "float", "gate": "00F88C30, 00E0C978 and [00F88C30+ACh]"},
+    {"address": "0093C900", "native": "vtable+5Ch (IsKindOf)", "function": "0093C860", "method": "unit_is_kind_of", "this": "child", "args": "int 4", "ret": "bool", "gate": "per child"},
+    {"address": "0093C913", "native": "vtable+5Ch (IsKindOf)", "function": "0093C860", "method": "unit_is_kind_of", "this": "child", "args": "int 0Fh", "ret": "bool", "gate": "IsKindOf(4) true"},
+    {"address": "0093C933", "native": "00424C40", "function": "0093C860", "method": "game_settings", "this": "none", "args": "none", "ret": "ptr", "gate": "per child"},
+    {"address": "0093C957", "native": "00879810", "function": "0093C860", "method": "unit_apply_health_delta", "this": "child", "args": "float repair amount", "ret": "void", "gate": "per child"},
+    {"address": "0093C99A", "native": "00877B90", "function": "0093C860", "method": "unit_set_health", "this": "child", "args": "float max health", "ret": "void", "gate": "child health >= max"},
+    {"address": "0093CA2B", "native": "0093C770", "function": "0093CA20", "method": "repair_hull", "this": "task", "args": "float dt", "ret": "void", "gate": "none"},
+    {"address": "0093CA3A", "native": "0093C860", "function": "0093CA20", "method": "repair_subobjects", "this": "task", "args": "float dt", "ret": "void", "gate": "none"},
+    {"address": "0093CA49", "native": "0093C520", "function": "0093CA20", "method": "repair_step_0093c520", "this": "task", "args": "float dt", "ret": "void", "gate": "contract: unread"},
+    {"address": "0093CA58", "native": "0093C120", "function": "0093CA20", "method": "repair_step_0093c120", "this": "task", "args": "float dt", "ret": "void", "gate": "contract: unread"},
+    {"address": "0093CA67", "native": "0093C210", "function": "0093CA20", "method": "repair_step_0093c210", "this": "task", "args": "float dt", "ret": "void", "gate": "contract: unread"},
+    {"address": "0093CAAF", "native": "00923BE0", "function": "0093CA20", "method": "entity_health", "this": "unit", "args": "none", "ret": "float", "gate": "completion log"},
+    {"address": "0093CAD1", "native": "004254B0", "function": "0093CA20", "method": "debug_log", "this": "none", "args": "format string, one string and two floats", "ret": "void", "gate": "completion log"},
+    {"address": "0087BD4F", "native": "0087B460", "function": "0087BCC0", "method": "resize_part_table", "this": "unit+344h", "args": "int count, int 0", "ret": "void", "gate": "none"},
+    {"address": "0087BE1C", "native": "00BF681B", "function": "0087BCC0", "method": "allocate_part_instance", "this": "none", "args": "size 1ACh", "ret": "ptr", "gate": "[desc+50h] non-null and IsKindOf(1Bh)"},
+    {"address": "0087BE5F", "native": "00BF681B", "function": "0087BCC0", "method": "allocate_part_instance", "this": "none", "args": "size 1ACh", "ret": "ptr", "gate": "[desc+50h] non-null and not IsKindOf(1Bh)"},
+    {"address": "0087BE11", "native": "vtable+5Ch (IsKindOf)", "function": "0087BCC0", "method": "unit_is_kind_of", "this": "unit", "args": "int 1Bh", "ret": "bool", "gate": "[desc+50h] non-null"},
+    {"address": "0087BE4B", "native": "vtable+190h", "function": "0087BCC0", "method": "unit_detail_for_lod", "this": "unit", "args": "float 0.95f (00CED9E0)", "ret": "handle", "gate": "IsKindOf(1Bh)"},
+    {"address": "0087BE8E", "native": "vtable+190h", "function": "0087BCC0", "method": "unit_detail_for_lod", "this": "unit", "args": "float 1.0f (FLD1)", "ret": "handle", "gate": "not IsKindOf(1Bh)"},
+    {"address": "0087BE52", "native": "[[desc+50h] vtable+8]", "function": "0087BCC0", "method": "part_set_for_detail", "this": "part set", "args": "handle", "ret": "ptr", "gate": "IsKindOf(1Bh)"},
+    {"address": "0087BE95", "native": "[[desc+50h] vtable+8]", "function": "0087BCC0", "method": "part_set_for_detail", "this": "part set", "args": "handle", "ret": "ptr", "gate": "not IsKindOf(1Bh)"},
+    {"address": "0087BE58", "native": "007135C0", "function": "0087BCC0", "method": "construct_part_instance", "this": "new 1ACh object", "args": "unit, part set", "ret": "void", "gate": "allocation non-null"},
+    {"address": "0087BE9B", "native": "007135C0", "function": "0087BCC0", "method": "construct_part_instance", "this": "new 1ACh object", "args": "unit, part set", "ret": "void", "gate": "allocation non-null"},
+    {"address": "0080E467", "native": "00934150", "function": "0080E440", "method": "detach_part", "this": "[unit+1018h]", "args": "int index, const float impulse[3] = {0,0,0}", "ret": "void", "gate": "none"},
+    {"address": "0080E413", "native": "00878340", "function": "0080E410", "method": "restore_full_health", "this": "unit", "args": "none", "ret": "void", "gate": "none"},
+    {"address": "0087834A", "native": "00877B90", "function": "00878340", "method": "unit_set_health", "this": "unit", "args": "float max health", "ret": "void", "gate": "none"},
+    {"address": "007BBDB1", "native": "008777D0", "function": "007BBCF0", "method": "apply_hit_record", "this": "unit", "args": "hit record", "ret": "int", "gate": "none"},
+    {"address": "0095DA8D", "native": "0087D730", "function": "0095DA00", "method": "scale_damage_for_player_unit", "this": "unit", "args": "float damage", "ret": "void", "gate": "docs/UNIT_DAMAGE_AND_DEATH.md"},
+    {"address": "0087D7A3", "native": "00879070", "function": "0087D730", "method": "unit_apply_damage", "this": "unit", "args": "float damage", "ret": "void", "gate": "none"}
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "008160E5",
+      "inclusive_end": "008160E9",
+      "what": "the CALL 0093CA20 that drives the repair tick",
+      "evidence": "python tools/bsp.py ghidra proto 008160E5 --brief reports no function start; the enclosing Ghidra candidate is 00815F30. Read from the raw listing, not attributed to a body."
+    },
+    {
+      "address": "0043F854",
+      "inclusive_end": "0043F858",
+      "what": "a CALL 008777D0 outside any Ghidra function body",
+      "evidence": "python tools/bsp.py ghidra xrefs 008777D0 lists it as an unconditional call; proto --brief reports no containing function. Not attributed."
+    },
+    {
+      "address": "008277FC",
+      "inclusive_end": "00827800",
+      "what": "a CALL 008777D0 outside any Ghidra function body",
+      "evidence": "Same source; proto --brief reports no containing function. Not attributed."
+    }
+  ],
+  "corrections": [
+    {
+      "what": "the writer of the unit's maximum health +36Ch",
+      "was": "docs/UNIT_DAMAGE_AND_DEATH.md line 47 and its open questions: \"no writer found\"",
+      "is": "0087BD01 in 0087BCC0 stores [unit+354h]+48h into unit+36Ch, and 0087BD11 stores the same value into unit+370h",
+      "evidence": "mcp__ghidra__search_byte_patterns over the whole program for every MOVSS [reg+36Ch],XMM0 and FSTP [reg+36Ch] encoding returned ten sites; only 0087BD01 sits in a routine that writes +368h, +36Ch, +370h and +378h of a +1188h unit instance in one block. +354h is the vehicle-class descriptor (docs/UNIT_INSTANCE_UPDATE.md line 321) and its +48h is the Lua HP key, +4Ch the Armour key (docs/VEHICLE_CLASS_FIELDS.md lines 65-66)."
+    },
+    {
+      "what": "the role of 00879810",
+      "was": "the packet brief's premise that 00879810 is a step on the hit path",
+      "is": "a health-delta helper: it negates its float argument and calls 00879070, so a positive argument repairs. Both callers are damage-control repair steps",
+      "evidence": "The six-instruction listing at 00879810 plus the constant -0.0f at 00D7A208, and the debug literal \"Ship Repaired Fire && Leak %s Hp %6f %f\" at 0093CAD1 in their common caller 0093CA20."
+    }
+  ],
+  "unread": [
+    "the producer of the hit record (who fills +14h, +24h, +28h, +3Ch, +40h)",
+    "the vtable slot and dispatcher of 007BBCF0",
+    "00934150 body (00934150-0093553A)",
+    "the 48-byte part descriptor in [unit+354h]+18h",
+    "0093C520, 0093C120, 0093C210",
+    "007135C0, the 1ACh part-instance constructor",
+    "0043F7B0 and 00955420, the callers of 0087BCC0",
+    "the game-settings offsets +3B4h, +3B8h, +3D4h, +3D8h"
+  ]
+}
