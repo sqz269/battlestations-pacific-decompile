@@ -1,0 +1,427 @@
+{
+  "schema_version": 1,
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "status": "reconstructed_bounded_combined_win32_and_scoped_fixture_validation_recorded",
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "validation_report": "reports/orch5_menu_concrete_providers_batch.json",
+  "documentation": "docs/GUI_WIDGET_RELATIVE_BOUNDS.md",
+  "source": "src/gui_widget_relative_bounds.cpp",
+  "functions": [
+    {
+      "address": "00ac06c0",
+      "name": "BSP_GuiWidget_MeasurePaddedRelativeBounds",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "ledger_kind": "function",
+      "original_abi": "ECX source widget, EDX size output; stack offset output, padding pointer, width float; RET0C",
+      "coverage": "Padded measurement over actual canonical owners; Text branch requires same completed Text lifetime; native x87 spill and alias order and saved-horizontal vertical alignment bug retained",
+      "end_inclusive": "00ac081b",
+      "reviewed_original_abi": "ECX source widget;EDX size output;stack offset output,padding pair,float width;RET0C atAC07F2/AC0819;no stable result"
+    },
+    {
+      "address": "00ac0820",
+      "name": "BSP_GuiWidget_FitRelativeToSource",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "ledger_kind": "function",
+      "original_abi": "ECX source, EDX destination; width float stack; RET4",
+      "coverage": "Canonical current58 dispatch before fresh geometry reads; separate pre-call width float spill and original width comparison; same owner runtime and synchronous Text completion required",
+      "end_inclusive": "00ac0929",
+      "reviewed_original_abi": "ECX source widget;EDX destination widget;float width stack;RET4 atAC0927;no stable result"
+    },
+    {
+      "address": "00580820",
+      "name": "BSP_MainMenu_PositionHighlight",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "ledger_kind": "function",
+      "original_abi": "ECX menu screen; selected objective pointer stack; RET4",
+      "coverage": "Actual screen highlight294 reloaded after visibility and fit callbacks; separate live size reads and CEE4E8 double height adjustment",
+      "end_inclusive": "005808a3",
+      "reviewed_original_abi": "ECX menu screen;selected objective widget stack;RET4 at5808A1;no stable result"
+    }
+  ],
+  "limits": [
+    "Text measurement and FrameBox resource rebuild reviewed and compiled, not fixture executed.",
+    "AC06C0 extracted-byte differential covers only non-Text type2, finite random inputs, five specified alias modes and12 x87 controls.",
+    "Parentless resolved_position uses inherited value copy; signaling-NaN parity and inherited inverse-parent arithmetic remain unverified.",
+    "Callback fixtures keep owners, node bindings, type profiles and borrowed storage alive; no outer resume when Text operation yields."
+  ],
+  "host_steps": [
+    {
+      "address": "00ac06cb",
+      "function": "00ac06c0",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00aa6740",
+      "coverage": "normal body call",
+      "native": "00aa6740"
+    },
+    {
+      "address": "00ac0737",
+      "function": "00ac06c0",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL EDX",
+      "coverage": "normal body call",
+      "native": "00a9e110",
+      "dispatch": "indirect actual profile; primary target is current menu FrameBox where applicable",
+      "indirect_targets": [
+        {
+          "profile": "Group",
+          "table": "00d5cb80",
+          "slot": "5c",
+          "slot_address": "00d5cbdc",
+          "target": "00a9e110",
+          "bytes": "10 e1 a9 00"
+        },
+        {
+          "profile": "Screen",
+          "table": "00d5be38",
+          "slot": "5c",
+          "slot_address": "00d5be94",
+          "target": "00a9e110",
+          "bytes": "10 e1 a9 00"
+        },
+        {
+          "profile": "Listbox",
+          "table": "00d5bbf8",
+          "slot": "5c",
+          "slot_address": "00d5bc54",
+          "target": "00a9e110",
+          "bytes": "10 e1 a9 00"
+        },
+        {
+          "profile": "Icon",
+          "table": "00d5c4c0",
+          "slot": "5c",
+          "slot_address": "00d5c51c",
+          "target": "00a9e110",
+          "bytes": "10 e1 a9 00"
+        },
+        {
+          "profile": "Text",
+          "table": "00d5c6c8",
+          "slot": "5c",
+          "slot_address": "00d5c724",
+          "target": "00a9e110",
+          "bytes": "10 e1 a9 00"
+        },
+        {
+          "profile": "FrameBox",
+          "table": "00d5d130",
+          "slot": "5c",
+          "slot_address": "00d5d18c",
+          "target": "00a9e110",
+          "bytes": "10 e1 a9 00"
+        }
+      ]
+    },
+    {
+      "address": "00ac0775",
+      "function": "00ac06c0",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00ab6bd0",
+      "coverage": "normal body call",
+      "native": "00ab6bd0"
+    },
+    {
+      "address": "00ac0791",
+      "function": "00ac06c0",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00aa6740",
+      "coverage": "normal body call",
+      "native": "00aa6740"
+    },
+    {
+      "address": "00ac07ad",
+      "function": "00ac06c0",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00aa6740",
+      "coverage": "normal body call",
+      "native": "00aa6740"
+    },
+    {
+      "address": "00ac07cf",
+      "function": "00ac06c0",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00aa6740",
+      "coverage": "normal body call",
+      "native": "00aa6740"
+    },
+    {
+      "address": "00ac07fc",
+      "function": "00ac06c0",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00aa6740",
+      "coverage": "normal body call",
+      "native": "00aa6740"
+    },
+    {
+      "address": "00ac0858",
+      "function": "00ac0820",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00ac06c0",
+      "coverage": "normal body call",
+      "native": "00ac06c0"
+    },
+    {
+      "address": "00ac087e",
+      "function": "00ac0820",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL EDX",
+      "coverage": "normal body call",
+      "native": "00acf120",
+      "dispatch": "indirect actual profile; primary target is current menu FrameBox where applicable",
+      "indirect_targets": [
+        {
+          "profile": "Group",
+          "table": "00d5cb80",
+          "slot": "58",
+          "slot_address": "00d5cbd8",
+          "target": "00aa7970",
+          "bytes": "70 79 aa 00"
+        },
+        {
+          "profile": "Screen",
+          "table": "00d5be38",
+          "slot": "58",
+          "slot_address": "00d5be90",
+          "target": "00aa7970",
+          "bytes": "70 79 aa 00"
+        },
+        {
+          "profile": "Listbox",
+          "table": "00d5bbf8",
+          "slot": "58",
+          "slot_address": "00d5bc50",
+          "target": "00aa7970",
+          "bytes": "70 79 aa 00"
+        },
+        {
+          "profile": "Icon",
+          "table": "00d5c4c0",
+          "slot": "58",
+          "slot_address": "00d5c518",
+          "target": "00ab1ef0",
+          "bytes": "f0 1e ab 00"
+        },
+        {
+          "profile": "Text",
+          "table": "00d5c6c8",
+          "slot": "58",
+          "slot_address": "00d5c720",
+          "target": "00abbf30",
+          "bytes": "30 bf ab 00"
+        },
+        {
+          "profile": "FrameBox",
+          "table": "00d5d130",
+          "slot": "58",
+          "slot_address": "00d5d188",
+          "target": "00acf120",
+          "bytes": "20 f1 ac 00"
+        }
+      ]
+    },
+    {
+      "address": "00ac08df",
+      "function": "00ac0820",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00aa6750",
+      "coverage": "normal body call",
+      "native": "00aa6750"
+    },
+    {
+      "address": "00ac091d",
+      "function": "00ac0820",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00aa8240",
+      "coverage": "normal body call",
+      "native": "00aa8240"
+    },
+    {
+      "address": "00580833",
+      "function": "00580820",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL EDX",
+      "coverage": "normal body call",
+      "native": "00aa8530",
+      "dispatch": "indirect actual profile; primary target is current menu FrameBox where applicable",
+      "indirect_targets": [
+        {
+          "profile": "FrameBox",
+          "table": "00d5d130",
+          "slot": "34",
+          "slot_address": "00d5d164",
+          "target": "00aa8530",
+          "bytes": "30 85 aa 00"
+        }
+      ]
+    },
+    {
+      "address": "00580845",
+      "function": "00580820",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00ac0820",
+      "coverage": "normal body call",
+      "native": "00ac0820"
+    },
+    {
+      "address": "00580850",
+      "function": "00580820",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00aa6740",
+      "coverage": "normal body call",
+      "native": "00aa6740"
+    },
+    {
+      "address": "00580865",
+      "function": "00580820",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL 0x00aa6740",
+      "coverage": "normal body call",
+      "native": "00aa6740"
+    },
+    {
+      "address": "0058089b",
+      "function": "00580820",
+      "source": "src/gui_widget_relative_bounds.cpp",
+      "instruction": "CALL EAX",
+      "coverage": "normal body call",
+      "native": "00acf120",
+      "dispatch": "indirect actual profile; primary target is current menu FrameBox where applicable",
+      "indirect_targets": [
+        {
+          "profile": "FrameBox",
+          "table": "00d5d130",
+          "slot": "58",
+          "slot_address": "00d5d188",
+          "target": "00acf120",
+          "bytes": "20 f1 ac 00"
+        }
+      ]
+    }
+  ],
+  "live_call_review": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review.json",
+  "indirect_table_evidence": [
+    {
+      "profile": "Group",
+      "table": "00d5cb80",
+      "slot": "58",
+      "slot_address": "00d5cbd8",
+      "target": "00aa7970",
+      "bytes": "70 79 aa 00"
+    },
+    {
+      "profile": "Screen",
+      "table": "00d5be38",
+      "slot": "58",
+      "slot_address": "00d5be90",
+      "target": "00aa7970",
+      "bytes": "70 79 aa 00"
+    },
+    {
+      "profile": "Listbox",
+      "table": "00d5bbf8",
+      "slot": "58",
+      "slot_address": "00d5bc50",
+      "target": "00aa7970",
+      "bytes": "70 79 aa 00"
+    },
+    {
+      "profile": "Icon",
+      "table": "00d5c4c0",
+      "slot": "58",
+      "slot_address": "00d5c518",
+      "target": "00ab1ef0",
+      "bytes": "f0 1e ab 00"
+    },
+    {
+      "profile": "Text",
+      "table": "00d5c6c8",
+      "slot": "58",
+      "slot_address": "00d5c720",
+      "target": "00abbf30",
+      "bytes": "30 bf ab 00"
+    },
+    {
+      "profile": "FrameBox",
+      "table": "00d5d130",
+      "slot": "58",
+      "slot_address": "00d5d188",
+      "target": "00acf120",
+      "bytes": "20 f1 ac 00"
+    },
+    {
+      "profile": "Group",
+      "table": "00d5cb80",
+      "slot": "5c",
+      "slot_address": "00d5cbdc",
+      "target": "00a9e110",
+      "bytes": "10 e1 a9 00"
+    },
+    {
+      "profile": "Screen",
+      "table": "00d5be38",
+      "slot": "5c",
+      "slot_address": "00d5be94",
+      "target": "00a9e110",
+      "bytes": "10 e1 a9 00"
+    },
+    {
+      "profile": "Listbox",
+      "table": "00d5bbf8",
+      "slot": "5c",
+      "slot_address": "00d5bc54",
+      "target": "00a9e110",
+      "bytes": "10 e1 a9 00"
+    },
+    {
+      "profile": "Icon",
+      "table": "00d5c4c0",
+      "slot": "5c",
+      "slot_address": "00d5c51c",
+      "target": "00a9e110",
+      "bytes": "10 e1 a9 00"
+    },
+    {
+      "profile": "Text",
+      "table": "00d5c6c8",
+      "slot": "5c",
+      "slot_address": "00d5c724",
+      "target": "00a9e110",
+      "bytes": "10 e1 a9 00"
+    },
+    {
+      "profile": "FrameBox",
+      "table": "00d5d130",
+      "slot": "5c",
+      "slot_address": "00d5d18c",
+      "target": "00a9e110",
+      "bytes": "10 e1 a9 00"
+    },
+    {
+      "profile": "FrameBox",
+      "table": "00d5d130",
+      "slot": "34",
+      "slot_address": "00d5d164",
+      "target": "00aa8530",
+      "bytes": "30 85 aa 00"
+    },
+    {
+      "profile": "FrameBox",
+      "table": "00d5d130",
+      "slot": "88",
+      "slot_address": "00d5d1b8",
+      "target": "00aceb30",
+      "bytes": "30 eb ac 00"
+    },
+    {
+      "profile": "FrameBox",
+      "table": "00d5d130",
+      "slot": "80",
+      "slot_address": "00d5d1b0",
+      "target": "00ad0d80",
+      "bytes": "80 0d ad 00"
+    }
+  ]
+}

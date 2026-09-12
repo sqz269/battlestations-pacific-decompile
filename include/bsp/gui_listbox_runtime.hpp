@@ -4,8 +4,27 @@
 #include <cstdint>
 #include <functional>
 #include <list>
+#include <optional>
 
 namespace bsp {
+struct GuiResourceState;
+struct GuiWidgetRelativeBoundsConstants;
+class NativeStringStorage;
+
+// AA0F50, ECX actual manager, signed selector stack, EAX borrowed widget,
+// RET4. Reads the existing AA5E20-produced manager slots; no cached selector.
+GuiLayoutWidget* select_gui_highlight_widget_00aa0f50(
+    const GuiResourceState&, std::int32_t selector) noexcept;
+// A9ABD0, ECX actual native node, x87 float result, RET. Each parent product
+// spills to float32. Uses the SAME native parent30/scalarAC words and registry.
+float gui_node_hierarchy_factor_00a9abd0(GuiWidgetOwnerRuntime&, NativeNodeBinding&);
+struct GuiListboxHighlightServices {
+    const std::function<const GuiResourceState&()>& get_manager_004c12b0;
+    const GuiWidgetRelativeBoundsConstants& relative_bounds;
+    const volatile float& paging_y_00d7a23c;
+    const volatile float& ordinary_y_paging_height_00d5bbf0;
+    const volatile float& ordinary_height_00d5bbec;
+};
 
 // 00941250: CL first flag, DL second flag, RET. The registered target of
 // F8BC0C after 004DD6FB..004DD700. Uses the SAME request queue as 00941140;
@@ -50,8 +69,20 @@ struct GuiListboxFields {
     std::uint8_t center_vertical_11d{};
     std::uint8_t auto_control_11e{};
     std::uint8_t horizontal_11f{};
+    float highlight_width_124{};
+    float highlight_height_128{};
+    GuiWidgetPoint highlight_offset_12c{};
     float line_distance_13c{};
     std::uint8_t paging_148{};
+    // Constructor-unwritten storage has no invented value. E230 writes EC,
+    // 158,15C,160,164,168 in native order; C540 writes F0..F8 after fitting.
+    std::optional<std::uint32_t> raw_ec;
+    std::optional<GuiWidgetPoint> highlight_position_f0;
+    std::optional<std::int32_t> page_size_158;
+    std::optional<GuiWidgetOwner*> previous_arrow_15c;
+    std::optional<GuiWidgetOwner*> next_arrow_160;
+    std::optional<std::int32_t> page_start_164;
+    std::optional<float> page_delay_168;
 };
 
 // Actual owner adaptations of the existing named base routines. Both preserve
@@ -63,7 +94,7 @@ void set_gui_widget_local_y_00aa78f0(GuiWidgetOwner&, float y);
 // tree. Its FC list borrows the actual row owners attached to owner.layout().
 // A9DF40 establishes empty rows, selected=end, previous110=null, listener114=
 // null and paging148=false. Only those constructor fields are projected here.
-// Full properties A9E400, frame40 A9D030, navigation and scalar/copy teardown
+// Full properties A9E400, frame40 A9D030, directional84 and scalar/copy teardown
 // remain required integration work. Owner and every borrowed row must stay
 // alive; remove a row here before its actual deleting destructor is invoked.
 class GuiListboxRuntime final {
@@ -92,6 +123,29 @@ public:
     // ECX owner; ordinal/row pointer on stack; each RET4.
     void select_index_00a9c7c0(std::int32_t ordinal);
     void select_row_00a9c740(GuiWidgetOwner* row);
+    // A9C310, ECX Listbox, RET. First row with hidden77==0, then current80(0).
+    // Empty/all-hidden preserves current selection and does not notify.
+    void select_first_selectable_00a9c310();
+    // A9C540, ECX Listbox, stack(row, low-byte paging, float depth), RETC.
+    // Actual AA0F50 manager widget is dereferenced BEFORE testing row=null.
+    // Uses its live current34/58 and native node hierarchy factor. No rendering
+    // or missing manager/row-node fallback. Borrowed objects survive callbacks.
+    void update_highlight_00a9c540(GuiWidgetOwner* row, std::uint8_t paging,
+        float depth, const GuiListboxHighlightServices&);
+    // E230 successful allocation/valid-list projection, RET4 page size signed.
+    // Copies row POINTERS into the native separate14C list, resolves direct
+    // arrow children by actual native names, initializes the paging window,
+    // then selects0 and rebuilds. Native allocator/SEH and allocation reentry
+    // are excluded. Missing arrows fail at their later native dereference.
+    void enable_paging_00a9e230(std::int32_t page_size, NativeStringStorage&,
+        int (*compare_names_00bf7fbf)(const char*, const char*));
+    // D870 normal valid iterator domain. Rebuild SAME FC list from live14C
+    // window using actual hide/remove and append/attach operations. Does not
+    // change ownership of14C rows. Keep captured selected row and current14C
+    // node alive across callbacks; replacing14C during traversal is excluded.
+    void rebuild_page_00a9d870();
+    std::uint32_t paging_row_count_154() const noexcept;
+    GuiWidgetOwner* paging_row_at_14c(std::int32_t ordinal) const noexcept;
     // Current80 A9C220, low-byte force argument, RET4. Listener may change
     // selection/listener/rows; the post-callback tests and previous110 reload
     // observe the SAME current storage. Reentrancy is native behavior.
@@ -137,6 +191,8 @@ private:
     GuiWidgetOwner& owner_;
     GuiListboxRuntimeServices services_;
     Rows rows_;
+    Rows paging_rows_; // Native14C list, separately constructed empty by A9DF40.
+    std::uint32_t paging_assignment_generation_{}; // Host iterator-validity guard.
     Rows::const_iterator selected_;
     GuiWidgetOwner* previous_110_{};
     void* listener_114_{};

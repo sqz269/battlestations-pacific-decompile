@@ -39,6 +39,7 @@
 #include "bsp/ship_ai_path_follower.hpp"
 #include "bsp/ship_ai_path_planner.hpp"
 #include "bsp/ship_ai_sector_scan.hpp"
+#include "bsp/ship_ai_hull_geometry.hpp"
 #include "bsp/ship_ai_path_point.hpp"
 #include "bsp/ship_ai_path_refresh.hpp"
 #include "bsp/ship_ai_path_search.hpp"
@@ -53,6 +54,43 @@
 
 namespace bsp::game {
 namespace {
+
+class HullGeometryUnitAccess final : public bsp::ShipAiHullUnitAccess {
+public:
+    HullGeometryUnitAccess(GameUnitsHost& units, std::size_t index)
+        : units_(units), index_(index) {}
+
+    const bsp::CameraMatrix& unit_world_pose_3fc() override {
+        if (!units_.unit_pose_valid_00c8(index_)) {
+            throw std::runtime_error("ship hull geometry requires a valid unit pose cache");
+        }
+        float right[3], up[3], forward[3], position[3];
+        if (!units_.unit_pose(index_, right, up, forward, position)) {
+            throw std::runtime_error("ship hull geometry unit pose is unavailable");
+        }
+        // 004142E0 and009DE2F0 consume these twelve affine components.
+        // The unused homogeneous lanes do not represent borrowed pose fields.
+        for (std::size_t lane = 0; lane < 3; ++lane) {
+            world_[lane] = right[lane];
+            world_[4 + lane] = up[lane];
+            world_[8 + lane] = forward[lane];
+            world_[12 + lane] = position[lane];
+        }
+        return world_;
+    }
+
+    const bsp::HitQueryBounds* unit_model_vtable20() override {
+        // The represented unit/class owner creates no model box or parts.
+        // Native0087BE02..0087BF5B maps absent descriptor+50h to unit+360h=0;
+        // the verified virtual20 target006D1E30 returns that field.
+        return nullptr;
+    }
+
+private:
+    GameUnitsHost& units_;
+    std::size_t index_;
+    bsp::CameraMatrix world_{};
+};
 
 // The two re-plan interval getters, read from the image for this packet.
 // 009DAC30 is `FLD [00CE3958]` and 00CE3958 holds 40 00 00 00 = 2.0f; 009DAA90
@@ -137,6 +175,7 @@ struct GameShipAiHost::Impl {
     GameAvoidZoneRuntime zones;
     bsp::ShipAiPathSearchTurnRamp path_turn_ramp{};
     bool path_turn_ramp_loaded{};
+    unsigned long long hull_geometry_updates{};
 
     // One controller per created unit. `ai` in docs/SHIP_AI_STATES.md is the
     // whole of this record: the timers are ai+0B14h / ai+0B18h, the block is
@@ -241,6 +280,7 @@ struct GameShipAiHost::Impl {
         // blk+340h, +318h, +1B4h, +1B8h and +3E4h beside them.
         bsp::ShipAiNavBlockFields nav_block{};
         bool nav_block_built{false};
+        bsp::ShipAiHullGeometry hull_geometry{};
         // Milestone 2r: the blk half 009EF910 owns - the refresh timer +374h,
         // the clearance +37Ch, the outcome +370h and the hold +354h. Packet
         // cc_ai_clearance_profile. 009F4D87 calls it from inside the publish,
@@ -307,6 +347,8 @@ struct GameShipAiHost::Impl {
     // across the call. Defined below the host bindings it builds.
     void run_navigation_goal_009de050(Controller& ctl, GameShipAiRow& row, std::size_t index,
         float goal_x, float goal_z, bool keep_mode, bool final_leg);
+    void refresh_hull_geometry(Controller& ctl, std::size_t index,
+        const bsp::ShipAiNavBlockFields& fields);
     void done(const char* method, std::uint32_t address) {
         char text[16];
         std::snprintf(text, sizeof(text), "%08lx", static_cast<unsigned long>(address));
@@ -646,8 +688,10 @@ public:
         return 0;
     }
     float unit_radius_09c8() override {
-        owner_.record("ShipAiMoveTo::unit_radius_09c8", 0x009e58d4u);
-        return 0.0f;
+        // 009E58C8 loads the controlled unit from brain+AA8h; 009E58D4
+        // subtracts its full +9C8h hull extent from the target's range.
+        owner_.done("ShipAiMoveTo::unit_radius_09c8", 0x009e58d4u);
+        return owner_.units.unit_hull_length_09c8(index_);
     }
     float planar_length_00414c60(float dx, float dz) override {
         owner_.done("ShipAiMoveTo::planar_length", 0x009e58b9u);
@@ -1904,10 +1948,11 @@ public:
         return owner_.units.unit_retardation_0508(index_);
     }
     float unit_field_09c8() override {
-        // 009ED902, FADD [EAX+9C8h]. No recovered field and no producer, so the
-        // record's neutral zero is added to the stopping distance.
-        owner_.record("ShipAiControls::unit_field_09c8", 0x009ed902u);
-        return 0.0f;
+        // 009ED8DA loads the controlled unit from blk+3FCh; 009ED902 adds
+        // its +9C8h hull extent to the braking distance. The existing unit
+        // owner supplies the native no-model-box fallback from class Length.
+        owner_.done("ShipAiControls::unit_field_09c8", 0x009ed902u);
+        return owner_.units.unit_hull_length_09c8(index_);
     }
     float unit_heading_vtable_0050() override {
         owner_.done("ShipAiControls::unit_heading", 0x009ed95du);
@@ -2227,33 +2272,15 @@ public:
                 // neighbour list at blk+608h is empty and both avoid-zone
                 // gates are the zeroes 009E4330 wrote, so no sector is marked.
                 bsp::ShipAiSectorScanInputs scan{};
-                {
-                    float x = 0.0f, y = 0.0f, z = 0.0f;
-                    owner.units.unit_position_00fc(index, x, y, z);
-                    scan.pose.x = x;      // blk+184h
-                    scan.pose.z = z;      // blk+188h
-                }
-                // blk+19Ch..+1B0h, the two beam axes and the hull forward that
-                // 009DE2F0 rebuilds inside the pre-step 009E0270, a record
-                // here. The hull's own world forward is available and is what
-                // 009DE452 normalises, so the forward pair is filled from the
-                // pose and the two beam pairs are its perpendiculars, which is
-                // the same construction 009DE4F6 makes.
-                {
-                    float right[3] = {0.0f, 0.0f, 0.0f};
-                    float up[3] = {0.0f, 0.0f, 0.0f};
-                    float forward[3] = {0.0f, 0.0f, 0.0f};
-                    float translation[3] = {0.0f, 0.0f, 0.0f};
-                    if (owner.units.unit_pose(index, right, up, forward, translation)) {
-                        scan.pose.forward_x = forward[0];
-                        scan.pose.forward_z = forward[2];
-                        scan.pose.port_x = -forward[2];
-                        scan.pose.port_z = forward[0];
-                        scan.pose.starboard_x = forward[2];
-                        scan.pose.starboard_z = -forward[0];
-                    }
-                    owner.record("ShipAiSectors::hull_axes_009de2f0", 0x009de2f0u);
-                }
+                const auto& hull = ctl.hull_geometry;
+                scan.pose.x = hull.position_184[0];
+                scan.pose.z = hull.position_184[1];
+                scan.pose.forward_x = hull.forward_1ac[0];
+                scan.pose.forward_z = hull.forward_1ac[1];
+                scan.pose.port_x = hull.beam_19c[0];
+                scan.pose.port_z = hull.beam_19c[1];
+                scan.pose.starboard_x = hull.opposite_beam_1a4[0];
+                scan.pose.starboard_z = hull.opposite_beam_1a4[1];
                 scan.pose.heading = owner.units.unit_heading_radians(index);
                 scan.avoid_zones_present = false;  // blk+0A3Ch, 009E4401
                 scan.avoid_zones_enabled = false;  // blk+0A24h
@@ -2265,11 +2292,10 @@ public:
                 owner.done("ShipAiSectors::scan_sector", 0x009eb660u);
                 ++owner.summary.sector_scans;
                 if (result.blocked) ++owner.summary.sector_marks;
-                // 009D84E0, the corner to steer at and the side to pass on. Its
-                // only call site 009EBF51 sits inside the blocked arm, so a run
-                // with no neighbour never reaches it.
-                if (result.blocking_node < 0) {
-                    owner.record("ShipAiSectors::passing_corner_009d84e0", 0x009d84e0u);
+                // The scan executes recovered 009D84E0 at 009EBF67 only for
+                // a blocking neighbour. An empty list reaches no such call.
+                if (result.blocking_node >= 0) {
+                    owner.done("ShipAiSectors::passing_corner_009d84e0", 0x009d84e0u);
                 }
                 ctl.obstacle.sector[static_cast<std::size_t>(sector)].blocked
                     = result.blocked;
@@ -2931,6 +2957,9 @@ public:
         return changed;
     }
     void pre_step_009e0270(bool) override {
+        owner_.refresh_hull_geometry(ctl_, index_, ctl_.nav_block);
+        // The class+570 depth input and the remaining pre-step stores still
+        // need their runtime producers. The geometry call is now concrete.
         owner_.record("ShipAi::pre_step", 0x009e0270u);
     }
     void replan_prepare_009f1420(float elapsed) override {
@@ -3109,25 +3138,13 @@ public:
         in.acceleration = owner_.units.unit_class_max_accel_0504(index_);
         in.hull_half_width = owner_.units.unit_half_width_09cc(index_);
         in.hull_beam = owner_.units.unit_hull_length_09c8(index_);
-        {
-            float x = 0.0f, y = 0.0f, z = 0.0f;
-            owner_.units.unit_position_00fc(index_, x, y, z);
-            in.position_x = x;
-            in.position_z = z;
-        }
-        {
-            float right[3] = {0.0f, 0.0f, 0.0f};
-            float up[3] = {0.0f, 0.0f, 0.0f};
-            float forward[3] = {0.0f, 0.0f, 0.0f};
-            float translation[3] = {0.0f, 0.0f, 0.0f};
-            if (owner_.units.unit_pose(index_, right, up, forward, translation)) {
-                in.forward_x = forward[0];
-                in.forward_z = forward[2];
-                in.normal_x = -forward[2];
-                in.normal_z = forward[0];
-            }
-            owner_.record("ShipAiThrottleProfile::hull_axes_009de2f0", 0x009de2f0u);
-        }
+        const auto& hull = ctl_.hull_geometry;
+        in.position_x = hull.position_184[0];
+        in.position_z = hull.position_184[1];
+        in.forward_x = hull.forward_1ac[0];
+        in.forward_z = hull.forward_1ac[1];
+        in.normal_x = hull.beam_19c[0];
+        in.normal_z = hull.beam_19c[1];
         ThrottleProfileBinding profile(owner_, ctl_, index_);
         bsp::ship_ai_build_throttle_profile_009e04e0(ctl_.throttle_profile, in, seconds,
                                                      profile);
@@ -3333,12 +3350,13 @@ public:
         // blk+1B4h and blk+3CCh, both written by 009E4330 at construction.
         geometry.sweep_half_angle = ctl_.nav_block.shoulder_angle_1b4;
         geometry.hull_radius = ctl_.nav_block.turn_circle_cruise_3cc;
-        // blk+18Ch..+1B0h, the two shoulders and the hull forward, which
-        // 009DE2F0 rebuilds inside the pre-step 009E0270. That routine is a
-        // record here, so the four are the zeroes the constructor left. They
-        // only place the pivot of the sweep; nothing in this run lowers the
-        // clearance, so they decide nothing it measures.
-        owner_.record("ShipAiClearance::shoulder_geometry_009de2f0", 0x009de2f0u);
+        const auto& hull = ctl_.hull_geometry;
+        geometry.shoulder_port_x = hull.shoulder_18c[0];
+        geometry.shoulder_port_z = hull.shoulder_18c[1];
+        geometry.shoulder_stbd_x = hull.shoulder_194[0];
+        geometry.shoulder_stbd_z = hull.shoulder_194[1];
+        geometry.forward_x = hull.forward_1ac[0];
+        geometry.forward_z = hull.forward_1ac[1];
         bsp::ShipAiClearanceSettings settings{};
         // settings+1D4h, +214h and +218h. 00424C40's block has no producer for
         // these three in this process; a zero refresh period makes 009EF91D's
@@ -3707,6 +3725,15 @@ void ControllerUpdateBinding::step_auto_target(float frame_delta) {
     }
 }
 
+void GameShipAiHost::Impl::refresh_hull_geometry(Controller& ctl, std::size_t index,
+    const bsp::ShipAiNavBlockFields& fields) {
+    HullGeometryUnitAccess access(units, index);
+    bsp::ship_ai_hull_geometry_009de2f0(ctl.hull_geometry, fields.hull_scale_3e4,
+        fields.shoulder_offset_1b8, access, application_camera_axes_crt());
+    ++hull_geometry_updates;
+    done("ShipAi::hull_geometry_009de2f0", 0x009de2f0u);
+}
+
 void GameShipAiHost::Impl::run_navigation_goal_009de050(Controller& ctl, GameShipAiRow& row,
     std::size_t index, float goal_x, float goal_z, bool keep_mode, bool final_leg) {
     // The three fields ShipAiControlBlock and ShipAiGoalPlan both describe, in
@@ -3715,15 +3742,12 @@ void GameShipAiHost::Impl::run_navigation_goal_009de050(Controller& ctl, GameShi
     ctl.goal.mode = ctl.blk.mode;
     ctl.goal.throttle_hold_1c8 = ctl.blk.throttle_hold_1c8;
     ctl.goal.requested_direction = ctl.blk.requested_direction;
-    // 009DE17C and 009DE189 read the pose the per-frame chain leaves on the
-    // block at +184h / +188h. This process has no recovered writer for that
-    // pair, so it supplies the unit's own world position, which is what the
-    // plan length is meant to measure from, and says so.
-    float x = 0.0f, y = 0.0f, z = 0.0f;
-    units.unit_position_00fc(index, x, y, z);
-    record("ShipAiGoal::block_pose_0184", 0x009de17cu);
-    ctl.goal.pose_x_184 = x;
-    ctl.goal.pose_z_188 = z;
+    // 009DE17C/009DE189 read the actual block fields produced by009DE2F0
+    // during the constructor and each controller pre-step.
+    static_cast<void>(index);
+    done("ShipAiGoal::block_pose_0184", 0x009de17cu);
+    ctl.goal.pose_x_184 = ctl.hull_geometry.position_184[0];
+    ctl.goal.pose_z_188 = ctl.hull_geometry.position_184[1];
 
     const float planned_x = ctl.goal.planned_x_1e8;
     const float planned_z = ctl.goal.planned_z_1ec;
@@ -3923,8 +3947,17 @@ public:
             throttle_fraction);
     }
     float sqrt_00bf7030(float value) override {
+        const auto* crt = &application_camera_axes_crt();
+        float result;
+        // Preserve the actual CRT domain/NaN handling at009E45F3.
+        __asm {
+            fld value
+            mov ecx, crt
+            call native_crt_sqrt_st0_00bf7030
+            fstp result
+        }
         owner_.done("ShipAiNavBlock::sqrt_00bf7030", 0x00bf7030u);
-        return value > 0.0f ? std::sqrt(value) : 0.0f;
+        return result;
     }
     float uniform_float_00bd2f10(float low, float high) override {
         // 009E465F. 00BD2F10's random stream has no producer in this process -
@@ -3938,12 +3971,10 @@ public:
     }
     void build_sector_shapes_009e0270(bsp::ShipAiNavBlockFields& fields,
                                       std::uint32_t raw_argument) override {
-        // 009E46A9. 009E0270 rewrites blk+168h, blk+3C4h and the twelve sector
-        // shapes and calls 009DE2F0 for blk+19Ch / +1A0h. The per-step chain
-        // slot that would re-run it (009EF230's own refresh) is wired; the
-        // construction-time call is recorded with its own address, as
-        // `ShipAi::pre_step` already records the same routine.
-        static_cast<void>(fields);
+        // Geometry consumes the constructor's local output before it is
+        // assigned to Controller::nav_block. Other pre-step fields retain
+        // their separately recorded upstream input boundaries.
+        owner_.refresh_hull_geometry(owner_.controllers[index_], index_, fields);
         static_cast<void>(raw_argument);
         owner_.record("ShipAiNavBlock::build_sector_shapes_009e0270", 0x009e0270u);
     }
@@ -4194,6 +4225,9 @@ void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long lon
 void GameShipAiHost::report() {
     Impl& host = *impl_;
     if (host.rows.empty()) return;
+    host.log.notef("native ship hull geometry: updates=%llu; pose=cache-valid; "
+        "model=absent; class-depth/pre-step remaining fields unresolved",
+        host.hull_geometry_updates);
     host.log.notef("  %-20s %-10s %8s %8s %8s %8s %9s %7s %7s %-14s %s", "unit", "state",
         "steps", "replans", "publish", "promote", "heading", "thinks", "scans", "chose",
         "blocked at");

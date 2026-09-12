@@ -140,6 +140,37 @@ GuiFrameBoxTypeImplementation::GuiFrameBoxTypeImplementation(GuiWidgetOwner& own
       crt_sse2_conversion_(crt_sse2_conversion) {
     require(owner.layout().type == GuiWidgetType::FrameBox, "FrameBox adapter requires type18");
 }
+void GuiIconTypeImplementation::set_size58(GuiWidgetOwner& owner, const GuiWidgetSize& size) {
+    runtime_.set_size58_00ab1ef0(owner, size);
+}
+void GuiFrameBoxTypeImplementation::rebuild_current88_00aceb30(GuiWidgetOwner& owner) {
+    require(owner.layout().type == GuiWidgetType::FrameBox && &owner.implementation() == this,
+        "FrameBox current88 requires the same canonical owner");
+    const auto selected = state_.current_state;
+    gui_framebox_rebuild_00ad0d80(state_, owner.layout(), owner.extra_fields().overbright_94,
+        selected, services_);
+}
+void GuiFrameBoxTypeImplementation::set_size58(GuiWidgetOwner& owner, const GuiWidgetSize& size) {
+    require(owner.layout().type == GuiWidgetType::FrameBox && &owner.implementation() == this,
+        "FrameBox current58 requires the same canonical owner");
+    owner.base_set_size58_00aa7970(size);
+    if (state_.current_state == -1) return; // Reload AFTER base callbacks.
+    // The borrowed input must survive base recomposition. Native reads it
+    // afresh for each record and lane, including input/record aliasing.
+    for (std::size_t index = 0; index < state_.states.size(); ++index) {
+        const auto* input = &size;
+        auto* output = &state_.states[index].size;
+        __asm {
+            mov eax, input
+            mov edx, output
+            fld dword ptr [eax]
+            fstp dword ptr [edx]
+            fld dword ptr [eax + 4]
+            fstp dword ptr [edx + 4]
+        }
+    }
+    rebuild_current88_00aceb30(owner);
+}
 void GuiFrameBoxTypeImplementation::constructed74(GuiWidgetOwner& owner) {
     gui_framebox_constructed74_00acf8f0(owner.layout(), services_);
 }

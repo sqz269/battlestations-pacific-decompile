@@ -27,8 +27,9 @@ void return_native_string_pool_00bd1510(NativeStringPoolStorage* actual_pool,
     volatile std::uint32_t& actual_small_returns_disabled_01090aa4) noexcept;
 
 // Borrow the application's one publication slot, real shutdown gate and
-// canonical lifetime domain. The latter must use NativeStringPoolLifetimeBinding
-// (composed with all other owners). EVERY operation calls00419CC0, even large
+// canonical lifetime domain. Semantic domains use NativeStringPoolLifetimeBinding;
+// raw publications require the explicit pool deletion binding. EVERY operation
+// calls00419CC0, even large
 // allocations/frees and disabled small returns: do not cache the pool here.
 // NativeStringStorage::release is noexcept: its returning-getter domain is
 // covered; C++ failure while lazily recreating a pool terminates under that
@@ -38,13 +39,18 @@ public:
     ActualNativeStringPoolStorage(NativeStringPoolStorage* volatile& publication,
         volatile std::uint32_t& returns_disabled,
         SingletonLifetimeDomain& lifetime) noexcept;
+    ActualNativeStringPoolStorage(NativeStringPoolStorage* volatile& publication,
+        volatile std::uint32_t& returns_disabled,
+        void* volatile& actual_manager_publication_01090aa0) noexcept;
     char* allocate(std::uint32_t size) override;
     void release(char* block, std::uint32_t size) noexcept override;
 
 private:
     NativeStringPoolStorage* volatile& publication_;
     volatile std::uint32_t& returns_disabled_;
-    SingletonLifetimeDomain& lifetime_;
+    NativeStringPoolStorage* get_pool();
+    SingletonLifetimeDomain* lifetime_{};
+    void* volatile* actual_manager_{};
 };
 
 } // namespace bsp

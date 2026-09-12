@@ -1,0 +1,1731 @@
+{
+  "schema_version": 1,
+  "status": "promoted_exact_built_code_and_four_integrated_library_fixtures_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "initial_baseline": "a5c35c6e",
+  "source_capture_head": "09ee5374c4c2794be7b79381cb8a6da6ce27ba17",
+  "source_capture_note": "Initial combined library identified by source hashes, with parent uncommitted additions. Immutable promoted code commit recorded after integration.",
+  "worker_commits": {
+    "icon-state": "bcba38b7efe07ad4b07da5e84c0e5e94e8b78f23",
+    "listbox-navigation": "697a4e06d3ac70bbaa9fbc6d3fc74dd5db1f009d",
+    "menu-profile-display": "529d628a801b3deb6d22cb6ed0f6db16a6eb9935"
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release",
+    "passed": 2,
+    "failed": 0,
+    "log": "local/orch5-menu-providers-final-build.log",
+    "sha256": "996a8aee866f579a8ba4b3e670292248f6fad6917ca9723b9c6d0701b528456f"
+  },
+  "probes": [
+    {
+      "log": "local/orch5-menu-provider-workers/icon-state/gui_icon_state_parent_probe.log",
+      "sha256": "8967080ff7645d7d7a4740d176cef83df506fb9fbe22ae3a3fb3b81a0c29a23b",
+      "passed": true
+    },
+    {
+      "log": "local/orch5-menu-provider-workers/listbox-navigation/navigation_probe.log",
+      "sha256": "4c28ee8307d0d521b6f1f5e629a2d28dcb85a75fe07fd5e49c766b7df3df188b",
+      "passed": true
+    },
+    {
+      "log": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_parent_probe.log",
+      "sha256": "1a53169bae2fb27e07c8b2e84190b525d9544d09dd89db40dd99517fcff9c323",
+      "passed": true
+    },
+    {
+      "log": "local/relative_bounds_probe.log",
+      "sha256": "98f8029a7f643a0cbee767663c15cdbcdfbc495d71e63f5c9a01e1f4bed04f94",
+      "passed": true
+    }
+  ],
+  "library_sha256": "9da645decb05dd4e1c799cb809f74fe9c5cb673c0731024b3a3b58a9ce8f8fc8",
+  "source_sha256_lf": {
+    "cmake/startup.cmake": "a5c6af99102daab30674ac22af65af09f8b3424e840023bff0cbf49b6765d765",
+    "include/bsp/gui_icon_runtime.hpp": "80ed43786a41364839b6d75aade4444833be75d0f1c3d7c6b1ba6114aa4013f0",
+    "include/bsp/gui_listbox_runtime.hpp": "95d9e45cd81d65f76beb79e31f60c48dec8e7ea0541f65cf12254f5d950ba612",
+    "include/bsp/gui_text_runtime_factory.hpp": "20d1f73b2f733565cde4260fe739459eb56425cd8a7c63552ac2680339bee0a8",
+    "include/bsp/gui_type_dispatch.hpp": "101f2aee3c59f8391ec01176675b43a765f2f5ee16c29dfb870c285b5ed43734",
+    "include/bsp/gui_widget_owner.hpp": "621adb43e7271214ca0fb61a0542448998fd39ecdccf21a01a7fe2c78e3c24e7",
+    "include/bsp/gui_widget_relative_bounds.hpp": "34d9ebb92fe07b5f1da083a10689a0f73796cdaa89cef60d347652bbb966277c",
+    "include/bsp/main_menu_profile_display.hpp": "9c240d87b59a97cbcfeeb0562d4ab743d2e242d636ff9b9887b1087af8f7e94f",
+    "include/bsp/main_menu_selection_services.hpp": "3a99a17a8fcf2e6af7d35f183818bd879b807925d4647c057db3346cfd025907",
+    "src/gui_icon_runtime.cpp": "eebf7a7201aad041a62cb13977e598e1c7dafe75125b0fc8ce8a2d38d917aee0",
+    "src/gui_listbox_runtime.cpp": "f7bfb2fedcea75c6b8946ee17a3b07fd4efb96d33323e5211bf309aae18fe549",
+    "src/gui_text_runtime_factory.cpp": "c4f654468f70f7b5ea08ae1ef8f4e8fdc03c405be93041dd7adf84be88ffc1b7",
+    "src/gui_type_dispatch.cpp": "a0cac573ee0fd632a5f2a66246d26ad4c822048f34e742e4992ab14229ae9a72",
+    "src/gui_widget_owner.cpp": "5ea0fdd87ce3034ee139d5b0ae41696266615fba3802d3391c61203bec5ad030",
+    "src/gui_widget_relative_bounds.cpp": "72ab4ebc4840577834242168b1ec3f1c44b8eb51b7db69ac724cf1eec9322633",
+    "src/main_menu_profile_display.cpp": "b18afd02982dc7a8067d86b6f574d35b6f4b37183b5372abe9be0702b08abee5",
+    "src/main_menu_selection_services.cpp": "f40b51c4b7d1353af194e19f5812edd2136bb0ee79189e382b87d016cf78196d"
+  },
+  "mechanical_calls": {
+    "rows": 157,
+    "failed": 0,
+    "log": "local/orch5-menu-provider-report-calls.log",
+    "sha256": "b86f46def6cef67c6842e952fdd67af258a36b231f2750832de236461fe654b2",
+    "limitation": "Numeric call rows verified mechanically; indirect target identities rely on separately reviewed tables. Six additional symbolic Listbox rows are not included in157."
+  },
+  "annotations": {
+    "count": 26,
+    "saved": true,
+    "archive": "reports/orch5_menu_concrete_providers_annotations.json",
+    "sha256": "dd41796449944845d4f627aeff9f9716d17e2a089b78b19ea389af242e68f8ea",
+    "old_values_preserved": true,
+    "exports_refreshed": true
+  },
+  "function_definition": "reports/orch5_framebox_current_rebuild_definition.json",
+  "flow_repairs": [
+    "reports/orch5_menu_provider_flow_repair.json",
+    "reports/orch5_date_builder_flow_repair.json",
+    "reports/orch5_date_builder_body_recreation.json"
+  ],
+  "flow_repair_note": "A9D9D0 internal11-byte gap repaired. Initial851EC0 tail disassembly left body truncated; subsequent documented recreation restores body through851ED0. Native/library no-return flags unchanged.",
+  "native_measure_probe": {
+    "comparisons": 30720,
+    "controls": 12,
+    "alias_modes": 5,
+    "scope": "AC06C0 non-Text type2 finite random inputs, installed/live matched original bytes with actual getter bodies",
+    "inputs": {
+      "local/relative_bounds_probe.cpp": "2fc7b76bde88733eaead130cf48318b4ce6301802a6b5623ebbf3c7d142f1055",
+      "local/relative_bounds_native_bytes.hpp": "3d20bfd30d8a9fa5e3ab085692d3dbaed54096731743f5bc139f358cbb62af90",
+      "local/relative_bounds_native_bytes.json": "098d8da7bced4397f37d0a17b953b9b4b51f4d8d6e2adbb1e6ad5481674a7800",
+      "local/run_relative_bounds_probe.ps1": "b0eeb88bae97e6935e5215fc2ee5fb60cda84f2eac97ac71ecf24b2ccc00a50f",
+      "local/relative_bounds_probe.exe": "bb5840cee9af518685d2cb5b2cb45568ad583d03313cc8dd4aa95bc3aa0c8de7"
+    },
+    "callback_scope": "Actual canonical Group/Model current58 dispatch and recomposition, observer injected at documented attached+A0 notification boundary. No real attachment implementation claimed."
+  },
+  "reviews": [
+    "Icon live constant timing fixed after peer review; callback mutations exercised with actual D3D9/Lua textures",
+    "AC0820 pre-call float width spill restored and independently reviewed",
+    "Text pending concern retracted after confirming retain_submission throws before outer placement continues",
+    "All eight parent routines reviewed;27 CALL rows and15 live vtable entries archived"
+  ],
+  "worker_evidence_archives": [
+    {
+      "worker": "icon-state",
+      "files": [
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_build.log",
+          "archive": "local/orch5-menu-provider-workers/icon-state/gui_icon_state_build.log",
+          "bytes": 3780,
+          "sha256": "575d5978de19628dae6a64676a5f27fd932eaa767e7a706d84ef7123184ecb6f"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_commit.txt",
+          "archive": "local/orch5-menu-provider-workers/icon-state/gui_icon_state_commit.txt",
+          "bytes": 558,
+          "sha256": "8e14f5903e085821a40f9df0ed83f164d3f65b8706ffeb29cc2d6c19a82388e3"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_constants_build.log",
+          "archive": "local/orch5-menu-provider-workers/icon-state/gui_icon_state_constants_build.log",
+          "bytes": 3709,
+          "sha256": "b75cc957c6d34893dcae221b6b41fde789262700983f65560f1fb26fe382a628"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_constants_probe.log",
+          "archive": "local/orch5-menu-provider-workers/icon-state/gui_icon_state_constants_probe.log",
+          "bytes": 440,
+          "sha256": "ee769095778cd76d02f672709d14d4891c1442c223c16bc4b5e932b1da3efe5f"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_parent_compile.log",
+          "archive": "local/orch5-menu-provider-workers/icon-state/gui_icon_state_parent_compile.log",
+          "bytes": 26,
+          "sha256": "9f61dea8c40ab2f5c2d026cfb24161b317163f65853fd70258df507cd867d662"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_parent_manifest.json",
+          "archive": "local/orch5-menu-provider-workers/icon-state/gui_icon_state_parent_manifest.json",
+          "bytes": 3736,
+          "sha256": "40e623132fc3b32dd337d076f04a8e4ed745b6d256f3f9f4236ab4a706831907"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_parent_probe.log",
+          "archive": "local/orch5-menu-provider-workers/icon-state/gui_icon_state_parent_probe.log",
+          "bytes": 151,
+          "sha256": "8967080ff7645d7d7a4740d176cef83df506fb9fbe22ae3a3fb3b81a0c29a23b"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_parent_runner.log",
+          "archive": "local/orch5-menu-provider-workers/icon-state/gui_icon_state_parent_runner.log",
+          "bytes": 392,
+          "sha256": "b9a5874f22a7e9b1f61be5fd8256f09a30d576efc92f7617ec48e645c61170f8"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_probe.cpp",
+          "archive": "local/orch5-menu-provider-workers/icon-state/gui_icon_state_probe.cpp",
+          "bytes": 10472,
+          "sha256": "2ee409b4f232f90912d2d22bcc4755a02c4cbcc4eaf0e336e1bfc360b0b3c18b"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_probe.log",
+          "archive": "local/orch5-menu-provider-workers/icon-state/gui_icon_state_probe.log",
+          "bytes": 415,
+          "sha256": "93a1fbf3322ba1835410f34721887c8c55ab0c1f7b4a519a96dd49991c8509dd"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\listbox_navigation_review_manifest.json",
+          "archive": "local/orch5-menu-provider-workers/icon-state/listbox_navigation_review_manifest.json",
+          "bytes": 2036,
+          "sha256": "0d15cd943fe114ae1e3095c3013ddabe994c45468bf155d57011262bcb02c200"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\run_gui_icon_state_parent_probe.ps1",
+          "archive": "local/orch5-menu-provider-workers/icon-state/run_gui_icon_state_parent_probe.ps1",
+          "bytes": 3329,
+          "sha256": "e2797d7178e05a809832f77319e2c94eae765eaa5562d517033244415c754c0a"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\run_gui_icon_state_probe.ps1",
+          "archive": "local/orch5-menu-provider-workers/icon-state/run_gui_icon_state_probe.ps1",
+          "bytes": 1341,
+          "sha256": "d1aebb0b0f506bc79c428fe61a10dbe4f7bcbe3af680ebcb2936373012cc0a28"
+        }
+      ]
+    },
+    {
+      "worker": "listbox-navigation",
+      "files": [
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\icon_peer_followup_review.json",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/icon_peer_followup_review.json",
+          "bytes": 1326,
+          "sha256": "3cc673655a952f014a45ca414dd82542914c8dfe19422545f7540d6000856f20"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\icon_peer_review.md",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/icon_peer_review.md",
+          "bytes": 1383,
+          "sha256": "c000e70e0384b8889eecc5ffc64dca5b438c387484f8a3a115db46c2dc7dd2f2"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\initial_combined\\navigation_probe.log",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/initial_combined/navigation_probe.log",
+          "bytes": 844,
+          "sha256": "4c28ee8307d0d521b6f1f5e629a2d28dcb85a75fe07fd5e49c766b7df3df188b"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\initial_combined\\navigation_validation.json",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/initial_combined/navigation_validation.json",
+          "bytes": 2199,
+          "sha256": "0c5f97d2e207b7ebb7de782a5d2c2cf1dff9e38c5e132a7d10336bb8e55b9d8b"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00a9abd0\\assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_evidence/00a9abd0/assembly.txt",
+          "bytes": 490,
+          "sha256": "c8b52c14dae3251d2cb6fd0066365cf9fed358501c5479f05345c2d5c29523c4"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00a9c310\\assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_evidence/00a9c310/assembly.txt",
+          "bytes": 1050,
+          "sha256": "efd648a519be8942a39757ba899f1ae943090e934a28a369d947c889c93a794d"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00a9c540\\assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_evidence/00a9c540/assembly.txt",
+          "bytes": 4473,
+          "sha256": "1d4ccc803d079f1b259697c603a3013bbff9d1abc8566efdef9ce99ede21b5c7"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00a9d560\\assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_evidence/00a9d560/assembly.txt",
+          "bytes": 2860,
+          "sha256": "df494aaaa65cc1f12016314be264cdb5869cd58871496d1d4f217a70d3146e27"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00a9d870\\assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_evidence/00a9d870/assembly.txt",
+          "bytes": 3426,
+          "sha256": "fbe48f6898ae3bfc84820316294658ef7efc3631881beaeb9869c32df308c395"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00a9d9d0\\assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_evidence/00a9d9d0/assembly.txt",
+          "bytes": 985,
+          "sha256": "91d9ecc2018e2cde853ae52c7a082b835624155693f7a4e7e61d93959406cef4"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00a9e230\\assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_evidence/00a9e230/assembly.txt",
+          "bytes": 3683,
+          "sha256": "77300c39add1b0ae9f7bd608664840552e5635e1b9e81ceb879a38da601ab5ba"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00aa0f50\\assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_evidence/00aa0f50/assembly.txt",
+          "bytes": 301,
+          "sha256": "1f46245b1cb5f83899a0b01e4d33c80381657fd032b4b07d81a48793749dae70"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\icon_peer_followup_review.json",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_evidence/icon_peer_followup_review.json",
+          "bytes": 1326,
+          "sha256": "3cc673655a952f014a45ca414dd82542914c8dfe19422545f7540d6000856f20"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\icon_peer_review.md",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_evidence/icon_peer_review.md",
+          "bytes": 1383,
+          "sha256": "c000e70e0384b8889eecc5ffc64dca5b438c387484f8a3a115db46c2dc7dd2f2"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\listbox_navigation_review_manifest.json",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_evidence/listbox_navigation_review_manifest.json",
+          "bytes": 2036,
+          "sha256": "0d15cd943fe114ae1e3095c3013ddabe994c45468bf155d57011262bcb02c200"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\manifest.json",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_evidence/manifest.json",
+          "bytes": 5134,
+          "sha256": "b32b034b77aa51ca71139c0fd95dbab402c01a97a72df90a8abe497db7b06972"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_probe.cpp",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_probe.cpp",
+          "bytes": 30665,
+          "sha256": "45f274cba8f20aef7bcb6244c4e704b9c8ca606c646a67b40b53d1f44488a3ea"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_probe.log",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_probe.log",
+          "bytes": 844,
+          "sha256": "4c28ee8307d0d521b6f1f5e629a2d28dcb85a75fe07fd5e49c766b7df3df188b"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_validation.json",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/navigation_validation.json",
+          "bytes": 2159,
+          "sha256": "f5d50b195e7215ec5e8dd7daef4f53366faf535a1db9f52ac407ae41db4173bc"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\run_navigation_probe.ps1",
+          "archive": "local/orch5-menu-provider-workers/listbox-navigation/run_navigation_probe.ps1",
+          "bytes": 2351,
+          "sha256": "7fb0c7d6ee28b3f49c868c703a58c2c3b26e1f44fa8d79537e51870d17d57257"
+        }
+      ]
+    },
+    {
+      "worker": "menu-profile-display",
+      "files": [
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\main_menu_profile_display_build.log",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/main_menu_profile_display_build.log",
+          "bytes": 3712,
+          "sha256": "1ea40814c5614faba2b1b6f4d7da264b01173102dcd8c66ab419d8d9678bcd85"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review.json",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review.json",
+          "bytes": 20734,
+          "sha256": "e32ae2eb457a930ffdac9befd79d0557625f33145246b2503d4021961344e009"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00580820_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00580820_assembly.txt",
+          "bytes": 1197,
+          "sha256": "613c3b348ba2f781def3845d3f1fc02ecb60f792328fc5cb996801da1d1a57ab"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00580820_proto.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00580820_proto.txt",
+          "bytes": 79,
+          "sha256": "f71aed1456291a689cae1bf3110031ceefbbf9287935886a0c5c904a00a8c73d"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00aa7970_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00aa7970_assembly.txt",
+          "bytes": 240,
+          "sha256": "d67eba04b2506a4f0a65f03efef7fbaa74f1886e199fbaadae3b937719685e89"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00aa7970_proto.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00aa7970_proto.txt",
+          "bytes": 97,
+          "sha256": "d078806dae34cc4d928204829cf3db07970a8ccd3614c8b1b941127d0dad606c"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00aa8240_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00aa8240_assembly.txt",
+          "bytes": 2095,
+          "sha256": "2a319110233695b303ab7597f4d23f66045d8511d8ae318eb23318c97191b4f2"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00aa8240_proto.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00aa8240_proto.txt",
+          "bytes": 121,
+          "sha256": "18e3af1aa9584dea0652566d474381ae50606039153fdf91c4c88705f3891070"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00ac06c0_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00ac06c0_assembly.txt",
+          "bytes": 3612,
+          "sha256": "64c5bb73b8f7997ae983cad13ede826fca94c69b1181097cf69cb6f5a7d2e910"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00ac06c0_proto.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00ac06c0_proto.txt",
+          "bytes": 79,
+          "sha256": "8751410da2c84ddd0c98c9865f0de4f7bb1ea6b3b1c02e9b625899fe0c8755a0"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00ac0820_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00ac0820_assembly.txt",
+          "bytes": 2663,
+          "sha256": "7a3ac998af7ee53280724826bd63e0f4309d82c082d7b1caf6fcbbe56e60b81d"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00ac0820_proto.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00ac0820_proto.txt",
+          "bytes": 79,
+          "sha256": "09afb914bf3dcf99fa4e61276c1eb52fa4848bdeeed94d323ebcccda7f79de3d"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00aceb30_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00aceb30_assembly.txt",
+          "bytes": 181,
+          "sha256": "f541c5f4f48702c3f6644688f9f43aa8d4ee85842418ec6b084769c83a3cd3ee"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00aceb30_proto.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00aceb30_proto.txt",
+          "bytes": 79,
+          "sha256": "bd8d39f50f798c89947036a44d9ecd57dfcc1250eec4012f6e7b913e19816955"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00acf120_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00acf120_assembly.txt",
+          "bytes": 1593,
+          "sha256": "cd8851583e51f17610fcd625351858c989df812eed7da4aee558383fa6c7bae4"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00acf120_proto.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00acf120_proto.txt",
+          "bytes": 79,
+          "sha256": "3608602a2b3393b469cd4852e1b47870f6e1ded60f532c0e5746088d77f28df8"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00b6da70_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00b6da70_assembly.txt",
+          "bytes": 654,
+          "sha256": "066ce0ca93168aa0cc844ffd3feda6ad17076feeaff3cd8a51632221eb450cb0"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00b6da70_proto.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00b6da70_proto.txt",
+          "bytes": 121,
+          "sha256": "a1de96a9255d547a46395d5448130f4ba2d551dea66fb7da5297d70030f0a8ed"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5bc50_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5bc50_table.txt",
+          "bytes": 29,
+          "sha256": "9ee936f96cfb203b66c3c967383da1d4982c7436a10bf30acbdfee359d65d900"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5bc54_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5bc54_table.txt",
+          "bytes": 29,
+          "sha256": "8170ef4b1faabfea74597be9341b7000216ff83d9a051426a21b2dd76b5a985b"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5be90_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5be90_table.txt",
+          "bytes": 29,
+          "sha256": "48763017fe49541c6799a92aa58ea8b5bd21f531e228822438ac7c872bb4bbe0"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5be94_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5be94_table.txt",
+          "bytes": 29,
+          "sha256": "0f7648813e3b36c85f82c6e35a7b6c70ed67e73edb6ff8c55f6f9e0a3da95202"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5c518_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5c518_table.txt",
+          "bytes": 29,
+          "sha256": "3d07cb721c209da6978b3337e45054a6d00f0b04e7a10b78ad2521f8b528e0a4"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5c51c_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5c51c_table.txt",
+          "bytes": 29,
+          "sha256": "4467a44378f99d94a7c86b51e8076dcabc73fc599a01b508cf61678cbb73010e"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5c720_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5c720_table.txt",
+          "bytes": 29,
+          "sha256": "d04ad1b931151d4d8806be556383970705caf34b0b46fa584e392b1c4ac117f5"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5c724_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5c724_table.txt",
+          "bytes": 29,
+          "sha256": "022c77e47bd4e0c22a3eea1a97861168a60e0a7d88854969b35cecd9d7411d3f"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5cbd8_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5cbd8_table.txt",
+          "bytes": 29,
+          "sha256": "07c827af2d80e8b46a3651fb039051f7511d77d462d40b67b4f4e6701f125659"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5cbdc_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5cbdc_table.txt",
+          "bytes": 29,
+          "sha256": "4d9ddaafad870cd66ae00ff940d8a584b21e915bc3d2e0d0408a2b45e2b2c2b3"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5d164_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5d164_table.txt",
+          "bytes": 29,
+          "sha256": "60c2cec9cdffa7b54ba0d6f950145e4c40b0b4c44d8c29e631b95cb7fb17f8cd"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5d188_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5d188_table.txt",
+          "bytes": 29,
+          "sha256": "2bac1bf7d3916dbc97795a82a2e105b2474e5dabf2a1848f7535186bc018109b"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5d18c_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5d18c_table.txt",
+          "bytes": 29,
+          "sha256": "c73abbb1140ab55df0e89cabf38ef05695f9fdb67b43704987010e3f8415eafd"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5d1b0_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5d1b0_table.txt",
+          "bytes": 29,
+          "sha256": "0dd278c93d18c00abe4a54bd7f14e5f3c0f60afa23c7b314fc9638c6b6c87e6d"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5d1b8_table.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_inputs/00d5d1b8_table.txt",
+          "bytes": 29,
+          "sha256": "3adb1a41d50c2fa4e9ab2ac36a5fb2b88a6687ef0598abf56b90620bd123147b"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_verification.log",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/parent_size_call_review_verification.log",
+          "bytes": 966,
+          "sha256": "84ab23becc6d43dfdd12a4826204359ccecbbb8b07fb872e7f9c67d1616373f8"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_commit.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_commit.txt",
+          "bytes": 673,
+          "sha256": "ed9e1ed0a910a3513518312a8078ea4dde8284347228e43a01fdfb7da85561db"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\orch5-menu-providers-final-build.log",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/orch5-menu-providers-final-build.log",
+          "bytes": 3782,
+          "sha256": "996a8aee866f579a8ba4b3e670292248f6fad6917ca9723b9c6d0701b528456f"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00580820_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00580820_assembly.txt",
+          "bytes": 1479,
+          "sha256": "f1786917f8a57933223039ebf4477fa4ac0a7db33f88382e8903ad0b8b687383"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00aa6750_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00aa6750_assembly.txt",
+          "bytes": 2210,
+          "sha256": "b7cf925abc5b3cfb996cd2e1b5e4c585dd187e4657ee8036d48ab856c346bf22"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00aa7970_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00aa7970_assembly.txt",
+          "bytes": 862,
+          "sha256": "590857b9747c38a5a70ab138da94d1bc658c39470b68bc94126e6058178b1093"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00aa8240_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00aa8240_assembly.txt",
+          "bytes": 2741,
+          "sha256": "4da748dd7f3e8cf2376734f34001be22788d80e5e2a42c11d7ef4e3e5bd0747c"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00ab6bd0_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00ab6bd0_assembly.txt",
+          "bytes": 1834,
+          "sha256": "e2d160a84f2df94f2f5a91e054c4b45219765e2d9f2c242c014c0ce94c294c66"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00ac06c0_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00ac06c0_assembly.txt",
+          "bytes": 3885,
+          "sha256": "e8ac8d189f8d8ef946a03409bee869e1b7da994062af95e7f55fd1f758eba564"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00ac0820_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00ac0820_assembly.txt",
+          "bytes": 2936,
+          "sha256": "30a5435f12b64624742be734ff89b907f1dd460e011db6f80218e7625bcbf94c"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00aceb30_live_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00aceb30_live_assembly.txt",
+          "bytes": 181,
+          "sha256": "f541c5f4f48702c3f6644688f9f43aa8d4ee85842418ec6b084769c83a3cd3ee"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00acf120_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00acf120_assembly.txt",
+          "bytes": 1956,
+          "sha256": "344859a0a8a57e2bd1927540ff2317ddb4dd786985cb13e2bdbfa30b100047bc"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\corrected\\include\\bsp\\gui_widget_relative_bounds.hpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/corrected/include/bsp/gui_widget_relative_bounds.hpp",
+          "bytes": 2192,
+          "sha256": "34d9ebb92fe07b5f1da083a10689a0f73796cdaa89cef60d347652bbb966277c"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\corrected\\src\\gui_widget_relative_bounds.cpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/corrected/src/gui_widget_relative_bounds.cpp",
+          "bytes": 9900,
+          "sha256": "72ab4ebc4840577834242168b1ec3f1c44b8eb51b7db69ac724cf1eec9322633"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\include\\bsp\\gui_text_runtime_factory.hpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/include/bsp/gui_text_runtime_factory.hpp",
+          "bytes": 6377,
+          "sha256": "20d1f73b2f733565cde4260fe739459eb56425cd8a7c63552ac2680339bee0a8"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\include\\bsp\\gui_type_dispatch.hpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/include/bsp/gui_type_dispatch.hpp",
+          "bytes": 7130,
+          "sha256": "101f2aee3c59f8391ec01176675b43a765f2f5ee16c29dfb870c285b5ed43734"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\include\\bsp\\gui_widget_owner.hpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/include/bsp/gui_widget_owner.hpp",
+          "bytes": 13269,
+          "sha256": "621adb43e7271214ca0fb61a0542448998fd39ecdccf21a01a7fe2c78e3c24e7"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\include\\bsp\\gui_widget_relative_bounds.hpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/include/bsp/gui_widget_relative_bounds.hpp",
+          "bytes": 2034,
+          "sha256": "7ea144bc2cc808311b0a66d6068bba13fb6548e6eb03f6eece55b08f34b99787"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\inputs.json",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/inputs.json",
+          "bytes": 1760,
+          "sha256": "2af1e844a0b87a9f5dd3ebaaefa25b5abe1f89b6f8aa02e911978d592db378f7"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\review.json",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/review.json",
+          "bytes": 4738,
+          "sha256": "9f5829eb2bfdec68c4a2dac360244772df45801af2a7607bfe202b8e11d2e851"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\src\\gui_text_runtime_factory.cpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/src/gui_text_runtime_factory.cpp",
+          "bytes": 23771,
+          "sha256": "c4f654468f70f7b5ea08ae1ef8f4e8fdc03c405be93041dd7adf84be88ffc1b7"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\src\\gui_type_dispatch.cpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/src/gui_type_dispatch.cpp",
+          "bytes": 16322,
+          "sha256": "a0cac573ee0fd632a5f2a66246d26ad4c822048f34e742e4992ab14229ae9a72"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\src\\gui_widget.cpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/src/gui_widget.cpp",
+          "bytes": 8936,
+          "sha256": "c59c3b3a8f6aad8bdd8ebf72c830df870ca8a491835d92e4f9e50b342e8a4fdf"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\src\\gui_widget_owner.cpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/src/gui_widget_owner.cpp",
+          "bytes": 28393,
+          "sha256": "5ea0fdd87ce3034ee139d5b0ae41696266615fba3802d3391c61203bec5ad030"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\src\\gui_widget_relative_bounds.cpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/src/gui_widget_relative_bounds.cpp",
+          "bytes": 9529,
+          "sha256": "dab46e0fd26434dc69a58afb0f57809c33a12930ccf8538394b9545a0424ddcc"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\profile_display_parent_probe.log",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/profile_display_parent_probe.log",
+          "bytes": 171,
+          "sha256": "1a53169bae2fb27e07c8b2e84190b525d9544d09dd89db40dd99517fcff9c323"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\profile_display_parent_probe_hashes.json",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/profile_display_parent_probe_hashes.json",
+          "bytes": 1047,
+          "sha256": "a0c8bc22ba5eb3a7c77808e7295fccca8113386517909585f77614a03073e640"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\profile_display_probe.cpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/profile_display_probe.cpp",
+          "bytes": 4573,
+          "sha256": "552ede6252c9efc8c6b600248652127d1fe98bbab7ca8290883820b2406766ba"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\run_profile_display_parent_probe.ps1",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_final_parent_20260912/run_profile_display_parent_probe.ps1",
+          "bytes": 2058,
+          "sha256": "e17e42aab133fdfd50127acbf9e6ae7ac6014fadca2358ae48958af42d00d199"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_ledger_changes.log",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_ledger_changes.log",
+          "bytes": 688,
+          "sha256": "895c78e982f9932524ea8d54e110f19f0d5ce244936f7c92a105a47d6727b464"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_ledger_records.json",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_ledger_records.json",
+          "bytes": 4395,
+          "sha256": "6b2f18daa86989e21808ff19843e066c1ae36c0103f8f28428ef3462b84371a6"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_parent_probe.log",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_parent_probe.log",
+          "bytes": 171,
+          "sha256": "1a53169bae2fb27e07c8b2e84190b525d9544d09dd89db40dd99517fcff9c323"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_parent_probe_hashes.json",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_parent_probe_hashes.json",
+          "bytes": 1047,
+          "sha256": "a0c8bc22ba5eb3a7c77808e7295fccca8113386517909585f77614a03073e640"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_probe.cpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_probe.cpp",
+          "bytes": 4573,
+          "sha256": "552ede6252c9efc8c6b600248652127d1fe98bbab7ca8290883820b2406766ba"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_probe.log",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/profile_display_probe.log",
+          "bytes": 202,
+          "sha256": "0513f178d394fc32f47a114eb22f885f5a65805a20270e2dd9b7932a169667de"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00580820_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/00580820_assembly.txt",
+          "bytes": 1479,
+          "sha256": "f1786917f8a57933223039ebf4477fa4ac0a7db33f88382e8903ad0b8b687383"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00aa6750_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/00aa6750_assembly.txt",
+          "bytes": 2210,
+          "sha256": "b7cf925abc5b3cfb996cd2e1b5e4c585dd187e4657ee8036d48ab856c346bf22"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00aa7970_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/00aa7970_assembly.txt",
+          "bytes": 862,
+          "sha256": "590857b9747c38a5a70ab138da94d1bc658c39470b68bc94126e6058178b1093"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00aa8240_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/00aa8240_assembly.txt",
+          "bytes": 2741,
+          "sha256": "4da748dd7f3e8cf2376734f34001be22788d80e5e2a42c11d7ef4e3e5bd0747c"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00ab6bd0_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/00ab6bd0_assembly.txt",
+          "bytes": 1834,
+          "sha256": "e2d160a84f2df94f2f5a91e054c4b45219765e2d9f2c242c014c0ce94c294c66"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00ac06c0_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/00ac06c0_assembly.txt",
+          "bytes": 3885,
+          "sha256": "e8ac8d189f8d8ef946a03409bee869e1b7da994062af95e7f55fd1f758eba564"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00ac0820_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/00ac0820_assembly.txt",
+          "bytes": 2936,
+          "sha256": "30a5435f12b64624742be734ff89b907f1dd460e011db6f80218e7625bcbf94c"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00aceb30_live_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/00aceb30_live_assembly.txt",
+          "bytes": 181,
+          "sha256": "f541c5f4f48702c3f6644688f9f43aa8d4ee85842418ec6b084769c83a3cd3ee"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00acf120_assembly.txt",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/00acf120_assembly.txt",
+          "bytes": 1956,
+          "sha256": "344859a0a8a57e2bd1927540ff2317ddb4dd786985cb13e2bdbfa30b100047bc"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\corrected\\include\\bsp\\gui_widget_relative_bounds.hpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/corrected/include/bsp/gui_widget_relative_bounds.hpp",
+          "bytes": 2192,
+          "sha256": "34d9ebb92fe07b5f1da083a10689a0f73796cdaa89cef60d347652bbb966277c"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\corrected\\src\\gui_widget_relative_bounds.cpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/corrected/src/gui_widget_relative_bounds.cpp",
+          "bytes": 9900,
+          "sha256": "72ab4ebc4840577834242168b1ec3f1c44b8eb51b7db69ac724cf1eec9322633"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\include\\bsp\\gui_text_runtime_factory.hpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/include/bsp/gui_text_runtime_factory.hpp",
+          "bytes": 6377,
+          "sha256": "20d1f73b2f733565cde4260fe739459eb56425cd8a7c63552ac2680339bee0a8"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\include\\bsp\\gui_type_dispatch.hpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/include/bsp/gui_type_dispatch.hpp",
+          "bytes": 7130,
+          "sha256": "101f2aee3c59f8391ec01176675b43a765f2f5ee16c29dfb870c285b5ed43734"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\include\\bsp\\gui_widget_owner.hpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/include/bsp/gui_widget_owner.hpp",
+          "bytes": 13269,
+          "sha256": "621adb43e7271214ca0fb61a0542448998fd39ecdccf21a01a7fe2c78e3c24e7"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\include\\bsp\\gui_widget_relative_bounds.hpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/include/bsp/gui_widget_relative_bounds.hpp",
+          "bytes": 2034,
+          "sha256": "7ea144bc2cc808311b0a66d6068bba13fb6548e6eb03f6eece55b08f34b99787"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\inputs.json",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/inputs.json",
+          "bytes": 1760,
+          "sha256": "2af1e844a0b87a9f5dd3ebaaefa25b5abe1f89b6f8aa02e911978d592db378f7"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\review.json",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/review.json",
+          "bytes": 4738,
+          "sha256": "9f5829eb2bfdec68c4a2dac360244772df45801af2a7607bfe202b8e11d2e851"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\src\\gui_text_runtime_factory.cpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/src/gui_text_runtime_factory.cpp",
+          "bytes": 23771,
+          "sha256": "c4f654468f70f7b5ea08ae1ef8f4e8fdc03c405be93041dd7adf84be88ffc1b7"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\src\\gui_type_dispatch.cpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/src/gui_type_dispatch.cpp",
+          "bytes": 16322,
+          "sha256": "a0cac573ee0fd632a5f2a66246d26ad4c822048f34e742e4992ab14229ae9a72"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\src\\gui_widget.cpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/src/gui_widget.cpp",
+          "bytes": 8936,
+          "sha256": "c59c3b3a8f6aad8bdd8ebf72c830df870ca8a491835d92e4f9e50b342e8a4fdf"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\src\\gui_widget_owner.cpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/src/gui_widget_owner.cpp",
+          "bytes": 28393,
+          "sha256": "5ea0fdd87ce3034ee139d5b0ae41696266615fba3802d3391c61203bec5ad030"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\src\\gui_widget_relative_bounds.cpp",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/relative_bounds_review_20260912/src/gui_widget_relative_bounds.cpp",
+          "bytes": 9529,
+          "sha256": "dab46e0fd26434dc69a58afb0f57809c33a12930ccf8538394b9545a0424ddcc"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\run_profile_display_parent_probe.ps1",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/run_profile_display_parent_probe.ps1",
+          "bytes": 2058,
+          "sha256": "e17e42aab133fdfd50127acbf9e6ae7ac6014fadca2358ae48958af42d00d199"
+        },
+        {
+          "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\run_profile_display_probe.ps1",
+          "archive": "local/orch5-menu-provider-workers/menu-profile-display/run_profile_display_probe.ps1",
+          "bytes": 1587,
+          "sha256": "bb489194b46de1b58cfc31c2f9ca4720d353c0ce3376a31168acdfdf31a264cd"
+        }
+      ]
+    }
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "new_permanent_tests": 0,
+  "limits": [
+    "Canonical service adapter remains abstract for actual mutable mission-tree, command-bar, texture and objective-vector producers; no full5966F0 menu execution",
+    "Full medal widget and active Icon geometry rebuild not fixture-executed",
+    "Actual Text and FrameBox resource paths compiled/reviewed, not executed or render validated",
+    "Inherited resolved_position signaling-NaN and inverse-parent arithmetic parity not established by this batch",
+    "A9D9D0/A9D560 remain empty-destination valid-allocation projections, not complete STL reimplementations",
+    "Listbox selector0/full current40, directional84, non-null row insertion and native teardown remain open;14C row lifetimes stay caller-owned",
+    "Text current58 must finish synchronously; resuming Text alone does not resume its outer relative-fit caller"
+  ],
+  "promoted_validation": {
+    "source_commit": "e31fa46130c2296a9863c515944899317921a004",
+    "built_code_commit": "8d40875fdff63ddf2f050cd137b9b696145cd84f",
+    "promoted_commit": "8d40875fdff63ddf2f050cd137b9b696145cd84f",
+    "compiled_inputs_identical_after_promotion": true,
+    "changes_after_build": [],
+    "build_passed": true,
+    "tests_passed": 2,
+    "tests_failed": 0,
+    "integration_log": "local/orch5-menu-provider-integration.log",
+    "integration_log_sha256": "6ba89aa2c04b65d2676512d2265bb545786180f02929df7962e4f7b531912219",
+    "final_library_sha256": "4f89770cf625318732da160c94568d63fb396a832cefc642d8ea40be91adfa10",
+    "source_sha256_lf": {
+      "cmake/startup.cmake": "801de62646ff0595665bcdc38eff8a918a6528968ee223d2047a50c9818ec6a0",
+      "include/bsp/gui_icon_runtime.hpp": "80ed43786a41364839b6d75aade4444833be75d0f1c3d7c6b1ba6114aa4013f0",
+      "include/bsp/gui_listbox_runtime.hpp": "95d9e45cd81d65f76beb79e31f60c48dec8e7ea0541f65cf12254f5d950ba612",
+      "include/bsp/gui_text_runtime_factory.hpp": "20d1f73b2f733565cde4260fe739459eb56425cd8a7c63552ac2680339bee0a8",
+      "include/bsp/gui_type_dispatch.hpp": "101f2aee3c59f8391ec01176675b43a765f2f5ee16c29dfb870c285b5ed43734",
+      "include/bsp/gui_widget_owner.hpp": "621adb43e7271214ca0fb61a0542448998fd39ecdccf21a01a7fe2c78e3c24e7",
+      "include/bsp/gui_widget_relative_bounds.hpp": "34d9ebb92fe07b5f1da083a10689a0f73796cdaa89cef60d347652bbb966277c",
+      "include/bsp/main_menu_profile_display.hpp": "9c240d87b59a97cbcfeeb0562d4ab743d2e242d636ff9b9887b1087af8f7e94f",
+      "include/bsp/main_menu_selection_services.hpp": "3a99a17a8fcf2e6af7d35f183818bd879b807925d4647c057db3346cfd025907",
+      "src/gui_icon_runtime.cpp": "eebf7a7201aad041a62cb13977e598e1c7dafe75125b0fc8ce8a2d38d917aee0",
+      "src/gui_listbox_runtime.cpp": "f7bfb2fedcea75c6b8946ee17a3b07fd4efb96d33323e5211bf309aae18fe549",
+      "src/gui_text_runtime_factory.cpp": "c4f654468f70f7b5ea08ae1ef8f4e8fdc03c405be93041dd7adf84be88ffc1b7",
+      "src/gui_type_dispatch.cpp": "a0cac573ee0fd632a5f2a66246d26ad4c822048f34e742e4992ab14229ae9a72",
+      "src/gui_widget_owner.cpp": "5ea0fdd87ce3034ee139d5b0ae41696266615fba3802d3391c61203bec5ad030",
+      "src/gui_widget_relative_bounds.cpp": "72ab4ebc4840577834242168b1ec3f1c44b8eb51b7db69ac724cf1eec9322633",
+      "src/main_menu_profile_display.cpp": "b18afd02982dc7a8067d86b6f574d35b6f4b37183b5372abe9be0702b08abee5",
+      "src/main_menu_selection_services.cpp": "f40b51c4b7d1353af194e19f5812edd2136bb0ee79189e382b87d016cf78196d"
+    },
+    "source_changes_from_initial_wave_build": [
+      "cmake/startup.cmake"
+    ],
+    "final_library_probes": [
+      {
+        "log": "local/orch5-menu-provider-promoted-workers/icon-state/gui_icon_state_parent_probe.log",
+        "sha256": "8967080ff7645d7d7a4740d176cef83df506fb9fbe22ae3a3fb3b81a0c29a23b",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_probe.log",
+        "sha256": "4c28ee8307d0d521b6f1f5e629a2d28dcb85a75fe07fd5e49c766b7df3df188b",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_parent_probe.log",
+        "sha256": "1a53169bae2fb27e07c8b2e84190b525d9544d09dd89db40dd99517fcff9c323",
+        "passed": true
+      },
+      {
+        "log": "local/relative_bounds_promoted_probe.log",
+        "sha256": "98f8029a7f643a0cbee767663c15cdbcdfbc495d71e63f5c9a01e1f4bed04f94",
+        "passed": true
+      }
+    ],
+    "fixture_input_manifests": [
+      {
+        "path": "local/orch5-menu-provider-promoted-workers/icon-state/gui_icon_state_parent_manifest.json",
+        "sha256": "7afe95c226f5fa70551cd9a53ce4f0927cf52007bf6c3ef85dab077a3282f3c5"
+      },
+      {
+        "path": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_validation.json",
+        "sha256": "9ebcbc0a9df191a8654049e109682e544154c9dc54e97d334985a9d26f9e3115"
+      },
+      {
+        "path": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_parent_probe_hashes.json",
+        "sha256": "125f678bf9eb312387bd384bded333c8a4a1abfa538fee6b31da9fe2d16a6e26"
+      }
+    ],
+    "relative_probe_inputs": {
+      "local/relative_bounds_probe.cpp": "2fc7b76bde88733eaead130cf48318b4ce6301802a6b5623ebbf3c7d142f1055",
+      "local/relative_bounds_native_bytes.hpp": "3d20bfd30d8a9fa5e3ab085692d3dbaed54096731743f5bc139f358cbb62af90",
+      "local/run_relative_bounds_probe.ps1": "b0eeb88bae97e6935e5215fc2ee5fb60cda84f2eac97ac71ecf24b2ccc00a50f",
+      "local/relative_bounds_probe.exe": "edbe2b9fe0b5b6235a180180407e1d9be6c00ddcc7ca1681c15378d00a4adcc2"
+    },
+    "worker_evidence_archives": [
+      {
+        "worker": "icon-state",
+        "files": [
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_build.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/icon-state/gui_icon_state_build.log",
+            "bytes": 3780,
+            "sha256": "575d5978de19628dae6a64676a5f27fd932eaa767e7a706d84ef7123184ecb6f"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_commit.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/icon-state/gui_icon_state_commit.txt",
+            "bytes": 558,
+            "sha256": "8e14f5903e085821a40f9df0ed83f164d3f65b8706ffeb29cc2d6c19a82388e3"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_constants_build.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/icon-state/gui_icon_state_constants_build.log",
+            "bytes": 3709,
+            "sha256": "b75cc957c6d34893dcae221b6b41fde789262700983f65560f1fb26fe382a628"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_constants_probe.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/icon-state/gui_icon_state_constants_probe.log",
+            "bytes": 440,
+            "sha256": "ee769095778cd76d02f672709d14d4891c1442c223c16bc4b5e932b1da3efe5f"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_parent_compile.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/icon-state/gui_icon_state_parent_compile.log",
+            "bytes": 26,
+            "sha256": "9f61dea8c40ab2f5c2d026cfb24161b317163f65853fd70258df507cd867d662"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_parent_manifest.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/icon-state/gui_icon_state_parent_manifest.json",
+            "bytes": 3736,
+            "sha256": "7afe95c226f5fa70551cd9a53ce4f0927cf52007bf6c3ef85dab077a3282f3c5"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_parent_probe.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/icon-state/gui_icon_state_parent_probe.log",
+            "bytes": 151,
+            "sha256": "8967080ff7645d7d7a4740d176cef83df506fb9fbe22ae3a3fb3b81a0c29a23b"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_parent_runner.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/icon-state/gui_icon_state_parent_runner.log",
+            "bytes": 392,
+            "sha256": "b9a5874f22a7e9b1f61be5fd8256f09a30d576efc92f7617ec48e645c61170f8"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_probe.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/icon-state/gui_icon_state_probe.cpp",
+            "bytes": 10472,
+            "sha256": "2ee409b4f232f90912d2d22bcc4755a02c4cbcc4eaf0e336e1bfc360b0b3c18b"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_probe.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/icon-state/gui_icon_state_probe.log",
+            "bytes": 415,
+            "sha256": "93a1fbf3322ba1835410f34721887c8c55ab0c1f7b4a519a96dd49991c8509dd"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\listbox_navigation_review_manifest.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/icon-state/listbox_navigation_review_manifest.json",
+            "bytes": 2036,
+            "sha256": "0d15cd943fe114ae1e3095c3013ddabe994c45468bf155d57011262bcb02c200"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\run_gui_icon_state_parent_probe.ps1",
+            "archive": "local/orch5-menu-provider-promoted-workers/icon-state/run_gui_icon_state_parent_probe.ps1",
+            "bytes": 3329,
+            "sha256": "e2797d7178e05a809832f77319e2c94eae765eaa5562d517033244415c754c0a"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\run_gui_icon_state_probe.ps1",
+            "archive": "local/orch5-menu-provider-promoted-workers/icon-state/run_gui_icon_state_probe.ps1",
+            "bytes": 1341,
+            "sha256": "d1aebb0b0f506bc79c428fe61a10dbe4f7bcbe3af680ebcb2936373012cc0a28"
+          }
+        ]
+      },
+      {
+        "worker": "listbox-navigation",
+        "files": [
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\icon_peer_followup_review.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/icon_peer_followup_review.json",
+            "bytes": 1326,
+            "sha256": "3cc673655a952f014a45ca414dd82542914c8dfe19422545f7540d6000856f20"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\icon_peer_review.md",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/icon_peer_review.md",
+            "bytes": 1383,
+            "sha256": "c000e70e0384b8889eecc5ffc64dca5b438c387484f8a3a115db46c2dc7dd2f2"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\initial_combined\\navigation_probe.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/initial_combined/navigation_probe.log",
+            "bytes": 844,
+            "sha256": "4c28ee8307d0d521b6f1f5e629a2d28dcb85a75fe07fd5e49c766b7df3df188b"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\initial_combined\\navigation_validation.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/initial_combined/navigation_validation.json",
+            "bytes": 2199,
+            "sha256": "0c5f97d2e207b7ebb7de782a5d2c2cf1dff9e38c5e132a7d10336bb8e55b9d8b"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00a9abd0\\assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_evidence/00a9abd0/assembly.txt",
+            "bytes": 490,
+            "sha256": "c8b52c14dae3251d2cb6fd0066365cf9fed358501c5479f05345c2d5c29523c4"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00a9c310\\assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_evidence/00a9c310/assembly.txt",
+            "bytes": 1050,
+            "sha256": "efd648a519be8942a39757ba899f1ae943090e934a28a369d947c889c93a794d"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00a9c540\\assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_evidence/00a9c540/assembly.txt",
+            "bytes": 4473,
+            "sha256": "1d4ccc803d079f1b259697c603a3013bbff9d1abc8566efdef9ce99ede21b5c7"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00a9d560\\assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_evidence/00a9d560/assembly.txt",
+            "bytes": 2860,
+            "sha256": "df494aaaa65cc1f12016314be264cdb5869cd58871496d1d4f217a70d3146e27"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00a9d870\\assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_evidence/00a9d870/assembly.txt",
+            "bytes": 3426,
+            "sha256": "fbe48f6898ae3bfc84820316294658ef7efc3631881beaeb9869c32df308c395"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00a9d9d0\\assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_evidence/00a9d9d0/assembly.txt",
+            "bytes": 985,
+            "sha256": "91d9ecc2018e2cde853ae52c7a082b835624155693f7a4e7e61d93959406cef4"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00a9e230\\assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_evidence/00a9e230/assembly.txt",
+            "bytes": 3683,
+            "sha256": "77300c39add1b0ae9f7bd608664840552e5635e1b9e81ceb879a38da601ab5ba"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\00aa0f50\\assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_evidence/00aa0f50/assembly.txt",
+            "bytes": 301,
+            "sha256": "1f46245b1cb5f83899a0b01e4d33c80381657fd032b4b07d81a48793749dae70"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\icon_peer_followup_review.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_evidence/icon_peer_followup_review.json",
+            "bytes": 1326,
+            "sha256": "3cc673655a952f014a45ca414dd82542914c8dfe19422545f7540d6000856f20"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\icon_peer_review.md",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_evidence/icon_peer_review.md",
+            "bytes": 1383,
+            "sha256": "c000e70e0384b8889eecc5ffc64dca5b438c387484f8a3a115db46c2dc7dd2f2"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\listbox_navigation_review_manifest.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_evidence/listbox_navigation_review_manifest.json",
+            "bytes": 2036,
+            "sha256": "0d15cd943fe114ae1e3095c3013ddabe994c45468bf155d57011262bcb02c200"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_evidence\\manifest.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_evidence/manifest.json",
+            "bytes": 5134,
+            "sha256": "b32b034b77aa51ca71139c0fd95dbab402c01a97a72df90a8abe497db7b06972"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_probe.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_probe.cpp",
+            "bytes": 30665,
+            "sha256": "45f274cba8f20aef7bcb6244c4e704b9c8ca606c646a67b40b53d1f44488a3ea"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_probe.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_probe.log",
+            "bytes": 844,
+            "sha256": "4c28ee8307d0d521b6f1f5e629a2d28dcb85a75fe07fd5e49c766b7df3df188b"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\navigation_validation.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/navigation_validation.json",
+            "bytes": 2159,
+            "sha256": "9ebcbc0a9df191a8654049e109682e544154c9dc54e97d334985a9d26f9e3115"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-navigation\\local\\run_navigation_probe.ps1",
+            "archive": "local/orch5-menu-provider-promoted-workers/listbox-navigation/run_navigation_probe.ps1",
+            "bytes": 2351,
+            "sha256": "7fb0c7d6ee28b3f49c868c703a58c2c3b26e1f44fa8d79537e51870d17d57257"
+          }
+        ]
+      },
+      {
+        "worker": "menu-profile-display",
+        "files": [
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\main_menu_profile_display_build.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/main_menu_profile_display_build.log",
+            "bytes": 3712,
+            "sha256": "1ea40814c5614faba2b1b6f4d7da264b01173102dcd8c66ab419d8d9678bcd85"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review.json",
+            "bytes": 20734,
+            "sha256": "e32ae2eb457a930ffdac9befd79d0557625f33145246b2503d4021961344e009"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00580820_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00580820_assembly.txt",
+            "bytes": 1197,
+            "sha256": "613c3b348ba2f781def3845d3f1fc02ecb60f792328fc5cb996801da1d1a57ab"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00580820_proto.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00580820_proto.txt",
+            "bytes": 79,
+            "sha256": "f71aed1456291a689cae1bf3110031ceefbbf9287935886a0c5c904a00a8c73d"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00aa7970_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00aa7970_assembly.txt",
+            "bytes": 240,
+            "sha256": "d67eba04b2506a4f0a65f03efef7fbaa74f1886e199fbaadae3b937719685e89"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00aa7970_proto.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00aa7970_proto.txt",
+            "bytes": 97,
+            "sha256": "d078806dae34cc4d928204829cf3db07970a8ccd3614c8b1b941127d0dad606c"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00aa8240_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00aa8240_assembly.txt",
+            "bytes": 2095,
+            "sha256": "2a319110233695b303ab7597f4d23f66045d8511d8ae318eb23318c97191b4f2"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00aa8240_proto.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00aa8240_proto.txt",
+            "bytes": 121,
+            "sha256": "18e3af1aa9584dea0652566d474381ae50606039153fdf91c4c88705f3891070"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00ac06c0_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00ac06c0_assembly.txt",
+            "bytes": 3612,
+            "sha256": "64c5bb73b8f7997ae983cad13ede826fca94c69b1181097cf69cb6f5a7d2e910"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00ac06c0_proto.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00ac06c0_proto.txt",
+            "bytes": 79,
+            "sha256": "8751410da2c84ddd0c98c9865f0de4f7bb1ea6b3b1c02e9b625899fe0c8755a0"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00ac0820_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00ac0820_assembly.txt",
+            "bytes": 2663,
+            "sha256": "7a3ac998af7ee53280724826bd63e0f4309d82c082d7b1caf6fcbbe56e60b81d"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00ac0820_proto.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00ac0820_proto.txt",
+            "bytes": 79,
+            "sha256": "09afb914bf3dcf99fa4e61276c1eb52fa4848bdeeed94d323ebcccda7f79de3d"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00aceb30_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00aceb30_assembly.txt",
+            "bytes": 181,
+            "sha256": "f541c5f4f48702c3f6644688f9f43aa8d4ee85842418ec6b084769c83a3cd3ee"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00aceb30_proto.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00aceb30_proto.txt",
+            "bytes": 79,
+            "sha256": "bd8d39f50f798c89947036a44d9ecd57dfcc1250eec4012f6e7b913e19816955"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00acf120_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00acf120_assembly.txt",
+            "bytes": 1593,
+            "sha256": "cd8851583e51f17610fcd625351858c989df812eed7da4aee558383fa6c7bae4"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00acf120_proto.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00acf120_proto.txt",
+            "bytes": 79,
+            "sha256": "3608602a2b3393b469cd4852e1b47870f6e1ded60f532c0e5746088d77f28df8"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00b6da70_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00b6da70_assembly.txt",
+            "bytes": 654,
+            "sha256": "066ce0ca93168aa0cc844ffd3feda6ad17076feeaff3cd8a51632221eb450cb0"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00b6da70_proto.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00b6da70_proto.txt",
+            "bytes": 121,
+            "sha256": "a1de96a9255d547a46395d5448130f4ba2d551dea66fb7da5297d70030f0a8ed"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5bc50_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5bc50_table.txt",
+            "bytes": 29,
+            "sha256": "9ee936f96cfb203b66c3c967383da1d4982c7436a10bf30acbdfee359d65d900"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5bc54_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5bc54_table.txt",
+            "bytes": 29,
+            "sha256": "8170ef4b1faabfea74597be9341b7000216ff83d9a051426a21b2dd76b5a985b"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5be90_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5be90_table.txt",
+            "bytes": 29,
+            "sha256": "48763017fe49541c6799a92aa58ea8b5bd21f531e228822438ac7c872bb4bbe0"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5be94_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5be94_table.txt",
+            "bytes": 29,
+            "sha256": "0f7648813e3b36c85f82c6e35a7b6c70ed67e73edb6ff8c55f6f9e0a3da95202"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5c518_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5c518_table.txt",
+            "bytes": 29,
+            "sha256": "3d07cb721c209da6978b3337e45054a6d00f0b04e7a10b78ad2521f8b528e0a4"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5c51c_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5c51c_table.txt",
+            "bytes": 29,
+            "sha256": "4467a44378f99d94a7c86b51e8076dcabc73fc599a01b508cf61678cbb73010e"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5c720_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5c720_table.txt",
+            "bytes": 29,
+            "sha256": "d04ad1b931151d4d8806be556383970705caf34b0b46fa584e392b1c4ac117f5"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5c724_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5c724_table.txt",
+            "bytes": 29,
+            "sha256": "022c77e47bd4e0c22a3eea1a97861168a60e0a7d88854969b35cecd9d7411d3f"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5cbd8_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5cbd8_table.txt",
+            "bytes": 29,
+            "sha256": "07c827af2d80e8b46a3651fb039051f7511d77d462d40b67b4f4e6701f125659"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5cbdc_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5cbdc_table.txt",
+            "bytes": 29,
+            "sha256": "4d9ddaafad870cd66ae00ff940d8a584b21e915bc3d2e0d0408a2b45e2b2c2b3"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5d164_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5d164_table.txt",
+            "bytes": 29,
+            "sha256": "60c2cec9cdffa7b54ba0d6f950145e4c40b0b4c44d8c29e631b95cb7fb17f8cd"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5d188_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5d188_table.txt",
+            "bytes": 29,
+            "sha256": "2bac1bf7d3916dbc97795a82a2e105b2474e5dabf2a1848f7535186bc018109b"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5d18c_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5d18c_table.txt",
+            "bytes": 29,
+            "sha256": "c73abbb1140ab55df0e89cabf38ef05695f9fdb67b43704987010e3f8415eafd"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5d1b0_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5d1b0_table.txt",
+            "bytes": 29,
+            "sha256": "0dd278c93d18c00abe4a54bd7f14e5f3c0f60afa23c7b314fc9638c6b6c87e6d"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_inputs\\00d5d1b8_table.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_inputs/00d5d1b8_table.txt",
+            "bytes": 29,
+            "sha256": "3adb1a41d50c2fa4e9ab2ac36a5fb2b88a6687ef0598abf56b90620bd123147b"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\parent_size_call_review_verification.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/parent_size_call_review_verification.log",
+            "bytes": 966,
+            "sha256": "84ab23becc6d43dfdd12a4826204359ccecbbb8b07fb872e7f9c67d1616373f8"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_commit.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_commit.txt",
+            "bytes": 673,
+            "sha256": "ed9e1ed0a910a3513518312a8078ea4dde8284347228e43a01fdfb7da85561db"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\orch5-menu-providers-final-build.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/orch5-menu-providers-final-build.log",
+            "bytes": 3782,
+            "sha256": "996a8aee866f579a8ba4b3e670292248f6fad6917ca9723b9c6d0701b528456f"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00580820_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00580820_assembly.txt",
+            "bytes": 1479,
+            "sha256": "f1786917f8a57933223039ebf4477fa4ac0a7db33f88382e8903ad0b8b687383"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00aa6750_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00aa6750_assembly.txt",
+            "bytes": 2210,
+            "sha256": "b7cf925abc5b3cfb996cd2e1b5e4c585dd187e4657ee8036d48ab856c346bf22"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00aa7970_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00aa7970_assembly.txt",
+            "bytes": 862,
+            "sha256": "590857b9747c38a5a70ab138da94d1bc658c39470b68bc94126e6058178b1093"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00aa8240_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00aa8240_assembly.txt",
+            "bytes": 2741,
+            "sha256": "4da748dd7f3e8cf2376734f34001be22788d80e5e2a42c11d7ef4e3e5bd0747c"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00ab6bd0_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00ab6bd0_assembly.txt",
+            "bytes": 1834,
+            "sha256": "e2d160a84f2df94f2f5a91e054c4b45219765e2d9f2c242c014c0ce94c294c66"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00ac06c0_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00ac06c0_assembly.txt",
+            "bytes": 3885,
+            "sha256": "e8ac8d189f8d8ef946a03409bee869e1b7da994062af95e7f55fd1f758eba564"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00ac0820_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00ac0820_assembly.txt",
+            "bytes": 2936,
+            "sha256": "30a5435f12b64624742be734ff89b907f1dd460e011db6f80218e7625bcbf94c"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00aceb30_live_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00aceb30_live_assembly.txt",
+            "bytes": 181,
+            "sha256": "f541c5f4f48702c3f6644688f9f43aa8d4ee85842418ec6b084769c83a3cd3ee"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\00acf120_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/00acf120_assembly.txt",
+            "bytes": 1956,
+            "sha256": "344859a0a8a57e2bd1927540ff2317ddb4dd786985cb13e2bdbfa30b100047bc"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\corrected\\include\\bsp\\gui_widget_relative_bounds.hpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/corrected/include/bsp/gui_widget_relative_bounds.hpp",
+            "bytes": 2192,
+            "sha256": "34d9ebb92fe07b5f1da083a10689a0f73796cdaa89cef60d347652bbb966277c"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\corrected\\src\\gui_widget_relative_bounds.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/corrected/src/gui_widget_relative_bounds.cpp",
+            "bytes": 9900,
+            "sha256": "72ab4ebc4840577834242168b1ec3f1c44b8eb51b7db69ac724cf1eec9322633"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\include\\bsp\\gui_text_runtime_factory.hpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/include/bsp/gui_text_runtime_factory.hpp",
+            "bytes": 6377,
+            "sha256": "20d1f73b2f733565cde4260fe739459eb56425cd8a7c63552ac2680339bee0a8"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\include\\bsp\\gui_type_dispatch.hpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/include/bsp/gui_type_dispatch.hpp",
+            "bytes": 7130,
+            "sha256": "101f2aee3c59f8391ec01176675b43a765f2f5ee16c29dfb870c285b5ed43734"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\include\\bsp\\gui_widget_owner.hpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/include/bsp/gui_widget_owner.hpp",
+            "bytes": 13269,
+            "sha256": "621adb43e7271214ca0fb61a0542448998fd39ecdccf21a01a7fe2c78e3c24e7"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\include\\bsp\\gui_widget_relative_bounds.hpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/include/bsp/gui_widget_relative_bounds.hpp",
+            "bytes": 2034,
+            "sha256": "7ea144bc2cc808311b0a66d6068bba13fb6548e6eb03f6eece55b08f34b99787"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\inputs.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/inputs.json",
+            "bytes": 1760,
+            "sha256": "2af1e844a0b87a9f5dd3ebaaefa25b5abe1f89b6f8aa02e911978d592db378f7"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\review.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/review.json",
+            "bytes": 4738,
+            "sha256": "9f5829eb2bfdec68c4a2dac360244772df45801af2a7607bfe202b8e11d2e851"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\src\\gui_text_runtime_factory.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/src/gui_text_runtime_factory.cpp",
+            "bytes": 23771,
+            "sha256": "c4f654468f70f7b5ea08ae1ef8f4e8fdc03c405be93041dd7adf84be88ffc1b7"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\src\\gui_type_dispatch.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/src/gui_type_dispatch.cpp",
+            "bytes": 16322,
+            "sha256": "a0cac573ee0fd632a5f2a66246d26ad4c822048f34e742e4992ab14229ae9a72"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\src\\gui_widget.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/src/gui_widget.cpp",
+            "bytes": 8936,
+            "sha256": "c59c3b3a8f6aad8bdd8ebf72c830df870ca8a491835d92e4f9e50b342e8a4fdf"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\src\\gui_widget_owner.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/src/gui_widget_owner.cpp",
+            "bytes": 28393,
+            "sha256": "5ea0fdd87ce3034ee139d5b0ae41696266615fba3802d3391c61203bec5ad030"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review\\src\\gui_widget_relative_bounds.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/peer_review/src/gui_widget_relative_bounds.cpp",
+            "bytes": 9529,
+            "sha256": "dab46e0fd26434dc69a58afb0f57809c33a12930ccf8538394b9545a0424ddcc"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\profile_display_parent_probe.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/profile_display_parent_probe.log",
+            "bytes": 171,
+            "sha256": "1a53169bae2fb27e07c8b2e84190b525d9544d09dd89db40dd99517fcff9c323"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\profile_display_parent_probe_hashes.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/profile_display_parent_probe_hashes.json",
+            "bytes": 1047,
+            "sha256": "a0c8bc22ba5eb3a7c77808e7295fccca8113386517909585f77614a03073e640"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\profile_display_probe.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/profile_display_probe.cpp",
+            "bytes": 4573,
+            "sha256": "552ede6252c9efc8c6b600248652127d1fe98bbab7ca8290883820b2406766ba"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\run_profile_display_parent_probe.ps1",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_final_parent_20260912/run_profile_display_parent_probe.ps1",
+            "bytes": 2058,
+            "sha256": "e17e42aab133fdfd50127acbf9e6ae7ac6014fadca2358ae48958af42d00d199"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_ledger_changes.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_ledger_changes.log",
+            "bytes": 688,
+            "sha256": "895c78e982f9932524ea8d54e110f19f0d5ce244936f7c92a105a47d6727b464"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_ledger_records.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_ledger_records.json",
+            "bytes": 4395,
+            "sha256": "6b2f18daa86989e21808ff19843e066c1ae36c0103f8f28428ef3462b84371a6"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_parent_probe.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_parent_probe.log",
+            "bytes": 171,
+            "sha256": "1a53169bae2fb27e07c8b2e84190b525d9544d09dd89db40dd99517fcff9c323"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_parent_probe_hashes.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_parent_probe_hashes.json",
+            "bytes": 1047,
+            "sha256": "125f678bf9eb312387bd384bded333c8a4a1abfa538fee6b31da9fe2d16a6e26"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_probe.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_probe.cpp",
+            "bytes": 4573,
+            "sha256": "552ede6252c9efc8c6b600248652127d1fe98bbab7ca8290883820b2406766ba"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_probe.log",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/profile_display_probe.log",
+            "bytes": 202,
+            "sha256": "0513f178d394fc32f47a114eb22f885f5a65805a20270e2dd9b7932a169667de"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00580820_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/00580820_assembly.txt",
+            "bytes": 1479,
+            "sha256": "f1786917f8a57933223039ebf4477fa4ac0a7db33f88382e8903ad0b8b687383"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00aa6750_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/00aa6750_assembly.txt",
+            "bytes": 2210,
+            "sha256": "b7cf925abc5b3cfb996cd2e1b5e4c585dd187e4657ee8036d48ab856c346bf22"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00aa7970_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/00aa7970_assembly.txt",
+            "bytes": 862,
+            "sha256": "590857b9747c38a5a70ab138da94d1bc658c39470b68bc94126e6058178b1093"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00aa8240_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/00aa8240_assembly.txt",
+            "bytes": 2741,
+            "sha256": "4da748dd7f3e8cf2376734f34001be22788d80e5e2a42c11d7ef4e3e5bd0747c"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00ab6bd0_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/00ab6bd0_assembly.txt",
+            "bytes": 1834,
+            "sha256": "e2d160a84f2df94f2f5a91e054c4b45219765e2d9f2c242c014c0ce94c294c66"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00ac06c0_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/00ac06c0_assembly.txt",
+            "bytes": 3885,
+            "sha256": "e8ac8d189f8d8ef946a03409bee869e1b7da994062af95e7f55fd1f758eba564"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00ac0820_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/00ac0820_assembly.txt",
+            "bytes": 2936,
+            "sha256": "30a5435f12b64624742be734ff89b907f1dd460e011db6f80218e7625bcbf94c"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00aceb30_live_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/00aceb30_live_assembly.txt",
+            "bytes": 181,
+            "sha256": "f541c5f4f48702c3f6644688f9f43aa8d4ee85842418ec6b084769c83a3cd3ee"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\00acf120_assembly.txt",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/00acf120_assembly.txt",
+            "bytes": 1956,
+            "sha256": "344859a0a8a57e2bd1927540ff2317ddb4dd786985cb13e2bdbfa30b100047bc"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\corrected\\include\\bsp\\gui_widget_relative_bounds.hpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/corrected/include/bsp/gui_widget_relative_bounds.hpp",
+            "bytes": 2192,
+            "sha256": "34d9ebb92fe07b5f1da083a10689a0f73796cdaa89cef60d347652bbb966277c"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\corrected\\src\\gui_widget_relative_bounds.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/corrected/src/gui_widget_relative_bounds.cpp",
+            "bytes": 9900,
+            "sha256": "72ab4ebc4840577834242168b1ec3f1c44b8eb51b7db69ac724cf1eec9322633"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\include\\bsp\\gui_text_runtime_factory.hpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/include/bsp/gui_text_runtime_factory.hpp",
+            "bytes": 6377,
+            "sha256": "20d1f73b2f733565cde4260fe739459eb56425cd8a7c63552ac2680339bee0a8"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\include\\bsp\\gui_type_dispatch.hpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/include/bsp/gui_type_dispatch.hpp",
+            "bytes": 7130,
+            "sha256": "101f2aee3c59f8391ec01176675b43a765f2f5ee16c29dfb870c285b5ed43734"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\include\\bsp\\gui_widget_owner.hpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/include/bsp/gui_widget_owner.hpp",
+            "bytes": 13269,
+            "sha256": "621adb43e7271214ca0fb61a0542448998fd39ecdccf21a01a7fe2c78e3c24e7"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\include\\bsp\\gui_widget_relative_bounds.hpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/include/bsp/gui_widget_relative_bounds.hpp",
+            "bytes": 2034,
+            "sha256": "7ea144bc2cc808311b0a66d6068bba13fb6548e6eb03f6eece55b08f34b99787"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\inputs.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/inputs.json",
+            "bytes": 1760,
+            "sha256": "2af1e844a0b87a9f5dd3ebaaefa25b5abe1f89b6f8aa02e911978d592db378f7"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\review.json",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/review.json",
+            "bytes": 4738,
+            "sha256": "9f5829eb2bfdec68c4a2dac360244772df45801af2a7607bfe202b8e11d2e851"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\src\\gui_text_runtime_factory.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/src/gui_text_runtime_factory.cpp",
+            "bytes": 23771,
+            "sha256": "c4f654468f70f7b5ea08ae1ef8f4e8fdc03c405be93041dd7adf84be88ffc1b7"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\src\\gui_type_dispatch.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/src/gui_type_dispatch.cpp",
+            "bytes": 16322,
+            "sha256": "a0cac573ee0fd632a5f2a66246d26ad4c822048f34e742e4992ab14229ae9a72"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\src\\gui_widget.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/src/gui_widget.cpp",
+            "bytes": 8936,
+            "sha256": "c59c3b3a8f6aad8bdd8ebf72c830df870ca8a491835d92e4f9e50b342e8a4fdf"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\src\\gui_widget_owner.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/src/gui_widget_owner.cpp",
+            "bytes": 28393,
+            "sha256": "5ea0fdd87ce3034ee139d5b0ae41696266615fba3802d3391c61203bec5ad030"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\relative_bounds_review_20260912\\src\\gui_widget_relative_bounds.cpp",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/relative_bounds_review_20260912/src/gui_widget_relative_bounds.cpp",
+            "bytes": 9529,
+            "sha256": "dab46e0fd26434dc69a58afb0f57809c33a12930ccf8538394b9545a0424ddcc"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\run_profile_display_parent_probe.ps1",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/run_profile_display_parent_probe.ps1",
+            "bytes": 2058,
+            "sha256": "e17e42aab133fdfd50127acbf9e6ae7ac6014fadca2358ae48958af42d00d199"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\run_profile_display_probe.ps1",
+            "archive": "local/orch5-menu-provider-promoted-workers/menu-profile-display/run_profile_display_probe.ps1",
+            "bytes": 1587,
+            "sha256": "bb489194b46de1b58cfc31c2f9ca4720d353c0ce3376a31168acdfdf31a264cd"
+          }
+        ]
+      }
+    ],
+    "runtime_scope": "Same four scoped fixtures linked only against exact integrated production library and current parent headers; no full menu/resource/native ABI/game validation."
+  }
+}

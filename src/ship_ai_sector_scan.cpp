@@ -86,45 +86,134 @@ void ship_ai_build_sector_shapes_009e0270(
     const ShipAiSectorHullMetrics& hull,
     std::array<ShipAiObstacleSector, 12>& sectors) noexcept
 {
-    // 009E02E4 keeps the raw radius, 009E02EA scales the wide one, 009E02F0
-    // keeps the straight marker.
-    const float narrow = hull.turn_radius_reference;
-    const float wide = static_cast<float>(static_cast<double>(hull.turn_radius_reference)
-                                          * kShipAiSectorWideRadiusScale);
-    // blk+3E4h, written once in the brain constructor at 009E44DB.
-    const float reach_base = static_cast<float>(static_cast<double>(hull.half_length_9c8)
-                                                * kShipAiSectorReachHullScale);
-    const double width = static_cast<double>(hull.half_width_9cc);
-    const double reach = static_cast<double>(reach_base);
+    // Compatibility projection: derive constructor3E4 once. The actual full
+    // pre-step uses the overload below with the existing stored3E4 instead.
+    const float hull_length = hull.half_length_9c8; // legacy field name: full length.
+    float reach;
+    __asm {
+        fld hull_length
+        fmul qword ptr kShipAiSectorReachHullScale
+        fstp reach
+    }
+    ship_ai_build_sector_shapes_009e0270(
+        hull.turn_radius_reference, reach, hull.half_width_9cc, sectors);
+}
 
-    const float radius[6] = {narrow, wide, kShipAiSectorStraightRadius,
-                             kShipAiSectorStraightRadius, wide, narrow};
-    const float lateral[6] = {
-        static_cast<float>(width / kShipAiSectorOuterLateralDivisor),   // 009E0336
-        static_cast<float>(width * kShipAiSectorInnerLateralScale),     // 009E036C
-        static_cast<float>(width / kShipAiSectorOuterLateralDivisor),   // 009E03A0
-        static_cast<float>(-width / kShipAiSectorOuterLateralDivisor),  // 009E03D4 FCHS
-        static_cast<float>(-width * kShipAiSectorInnerLateralScale),    // 009E0412 FCHS
-        static_cast<float>(-width / kShipAiSectorOuterLateralDivisor)}; // 009E0454 FCHS
-    const float clearance[6] = {
-        static_cast<float>(reach / kShipAiSectorNearReachDivisor),  // 009E0345
-        static_cast<float>(reach / kShipAiSectorMidReachDivisor),   // 009E037B
-        static_cast<float>(reach * kShipAiSectorFarReachScale),     // 009E03AC
-        static_cast<float>(reach * kShipAiSectorFarReachScale),     // 009E03E2
-        static_cast<float>(reach / kShipAiSectorMidReachDivisor),   // 009E0424
-        static_cast<float>(reach / kShipAiSectorNearReachDivisor)}; // 009E0460
-
-    for (int group = 0; group < 2; ++group) {
-        // 009E0334 TEST EDX,EDX; 009E0338 SETZ CL: group 0 is the ahead fan.
-        const std::uint8_t kind = (group == 0) ? std::uint8_t{1} : std::uint8_t{0};
-        for (int bucket = 0; bucket < kShipAiObstacleGroupSize; ++bucket) {
-            ShipAiObstacleSector& sector =
-                sectors[static_cast<std::size_t>(group * kShipAiObstacleGroupSize + bucket)];
-            sector.kind = kind;
-            sector.half_width = radius[bucket];
-            sector.reach = clearance[bucket];
-            sector.lateral = lateral[bucket];
-        }
+void ship_ai_build_sector_shapes_009e0270(float radius, float stored_reach,
+    float full_beam, std::array<ShipAiObstacleSector, 12>& sectors) noexcept
+{
+    static_assert(sizeof(ShipAiObstacleSector) == 0x2c);
+    static_assert(offsetof(ShipAiObstacleSector, kind) == 0);
+    static_assert(offsetof(ShipAiObstacleSector, half_width) == 4);
+    static_assert(offsetof(ShipAiObstacleSector, reach) == 0x0c);
+    static_assert(offsetof(ShipAiObstacleSector, lateral) == 0x10);
+    ShipAiObstacleSector* slots = sectors.data();
+    float scratch[2];
+    // Native009E02E0..009E0499 with plain stable field reads supplied as
+    // explicit float inputs. Retains x87 constants, stack/store order, FCHS,
+    // both direction groups and selective byte/word stores into each record.
+    __asm {
+        FLD dword ptr radius // 009e02e0
+        MOVSS XMM0,dword ptr radius // 009e02e4
+        FMUL qword ptr kShipAiSectorWideRadiusScale // 009e02ea
+        MOVSS XMM1,dword ptr kShipAiSectorStraightRadius // 009e02f0
+        XOR EDX,EDX // 009e02f8
+        MOV EAX,slots
+        ADD EAX,0x10 // 009e02fa
+        FSTP dword ptr scratch[4] // 009e0300
+        FLD qword ptr kShipAiSectorOuterLateralDivisor // 009e0304
+        MOVSS XMM2,dword ptr scratch[4] // 009e030a
+        FLD qword ptr kShipAiSectorNearReachDivisor // 009e0310
+        FLD qword ptr kShipAiSectorInnerLateralScale // 009e0316
+        FLD qword ptr kShipAiSectorMidReachDivisor // 009e031c
+        FLD qword ptr kShipAiSectorFarReachScale // 009e0322
+    L_sector_loop:
+        FLD dword ptr full_beam // 009e032e
+        TEST EDX,EDX // 009e0334
+        FDIV st(0),st(5) // 009e0336
+        SETZ CL // 009e0338
+        FSTP dword ptr scratch[4] // 009e033b
+        FLD dword ptr stored_reach // 009e033f
+        FDIV st(0),st(4) // 009e0345
+        MOV byte ptr [EAX + -0x10],CL // 009e0347
+        MOVSS dword ptr [EAX + -0xc],XMM0 // 009e034a
+        FSTP dword ptr scratch[0] // 009e034f
+        FLD dword ptr scratch[4] // 009e0353
+        FSTP dword ptr [EAX] // 009e0357
+        FLD dword ptr scratch[0] // 009e0359
+        FSTP dword ptr [EAX + -0x4] // 009e035d
+        FLD dword ptr full_beam // 009e0366
+        FMUL st(0),st(3) // 009e036c
+        FSTP dword ptr scratch[4] // 009e036e
+        FLD dword ptr stored_reach // 009e0372
+        MOV byte ptr [EAX + 0x1c],CL // 009e0378
+        FDIV st(0),st(2) // 009e037b
+        MOVSS dword ptr [EAX + 0x20],XMM2 // 009e037d
+        FSTP dword ptr scratch[0] // 009e0382
+        FLD dword ptr scratch[4] // 009e0386
+        FSTP dword ptr [EAX + 0x2c] // 009e038a
+        FLD dword ptr scratch[0] // 009e038d
+        FSTP dword ptr [EAX + 0x28] // 009e0391
+        FLD dword ptr full_beam // 009e039a
+        FDIV st(0),st(5) // 009e03a0
+        FSTP dword ptr scratch[4] // 009e03a2
+        FLD dword ptr stored_reach // 009e03a6
+        FMUL st(0),st(1) // 009e03ac
+        MOV byte ptr [EAX + 0x48],CL // 009e03ae
+        MOVSS dword ptr [EAX + 0x4c],XMM1 // 009e03b1
+        FSTP dword ptr scratch[0] // 009e03b6
+        FLD dword ptr scratch[4] // 009e03ba
+        FSTP dword ptr [EAX + 0x58] // 009e03be
+        FLD dword ptr scratch[0] // 009e03c1
+        FSTP dword ptr [EAX + 0x54] // 009e03c5
+        FLD dword ptr full_beam // 009e03ce
+        FCHS // 009e03d4
+        FDIV st(0),st(5) // 009e03d6
+        FSTP dword ptr scratch[4] // 009e03d8
+        FLD dword ptr stored_reach // 009e03dc
+        FMUL st(0),st(1) // 009e03e2
+        MOV byte ptr [EAX + 0x74],CL // 009e03e4
+        MOVSS dword ptr [EAX + 0x78],XMM1 // 009e03e7
+        FSTP dword ptr scratch[0] // 009e03ec
+        FLD dword ptr scratch[4] // 009e03f0
+        FSTP dword ptr [EAX + 0x84] // 009e03f4
+        FLD dword ptr scratch[0] // 009e03fa
+        FSTP dword ptr [EAX + 0x80] // 009e03fe
+        FLD dword ptr full_beam // 009e040a
+        FCHS // 009e0410
+        FMUL st(0),st(3) // 009e0412
+        FSTP dword ptr scratch[4] // 009e0414
+        FLD dword ptr stored_reach // 009e0418
+        MOV byte ptr [EAX + 0xa0],CL // 009e041e
+        FDIV st(0),st(2) // 009e0424
+        MOVSS dword ptr [EAX + 0xa4],XMM2 // 009e0426
+        FSTP dword ptr scratch[0] // 009e042e
+        FLD dword ptr scratch[4] // 009e0432
+        FSTP dword ptr [EAX + 0xb0] // 009e0436
+        FLD dword ptr scratch[0] // 009e043c
+        FSTP dword ptr [EAX + 0xac] // 009e0440
+        FLD dword ptr full_beam // 009e044c
+        FCHS // 009e0452
+        FDIV st(0),st(5) // 009e0454
+        FSTP dword ptr scratch[4] // 009e0456
+        FLD dword ptr stored_reach // 009e045a
+        FDIV st(0),st(4) // 009e0460
+        MOV byte ptr [EAX + 0xcc],CL // 009e0462
+        MOVSS dword ptr [EAX + 0xd0],XMM0 // 009e0468
+        FSTP dword ptr scratch[0] // 009e0470
+        FLD dword ptr scratch[4] // 009e0474
+        FSTP dword ptr [EAX + 0xdc] // 009e0478
+        FLD dword ptr scratch[0] // 009e047e
+        ADD EDX,0x1 // 009e0482
+        FSTP dword ptr [EAX + 0xd8] // 009e0485
+        ADD EAX,0x108 // 009e048b
+        CMP EDX,0x2 // 009e0490
+        JL L_sector_loop // 009e0493
+        FSTP st(4) // 009e0499
+        FSTP st(2) // 009e049e
+        FSTP st(0) // 009e04a7
+        FSTP st(0) // 009e04b7
+        FSTP st(0) // 009e04bd
     }
 }
 

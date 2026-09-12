@@ -98,15 +98,29 @@ ActualNativeStringPoolStorage::ActualNativeStringPoolStorage(
     NativeStringPoolStorage* volatile& publication,
     volatile std::uint32_t& returns_disabled,
     SingletonLifetimeDomain& lifetime) noexcept
-    : publication_(publication), returns_disabled_(returns_disabled), lifetime_(lifetime) {}
+    : publication_(publication), returns_disabled_(returns_disabled), lifetime_(&lifetime) {}
+
+ActualNativeStringPoolStorage::ActualNativeStringPoolStorage(
+    NativeStringPoolStorage* volatile& publication,
+    volatile std::uint32_t& returns_disabled,
+    void* volatile& actual_manager_publication_01090aa0) noexcept
+    : publication_(publication), returns_disabled_(returns_disabled),
+      actual_manager_(&actual_manager_publication_01090aa0) {}
+
+NativeStringPoolStorage* ActualNativeStringPoolStorage::get_pool() {
+    if (actual_manager_) {
+        return native_string_pool_get_or_create_00419cc0(publication_, *actual_manager_);
+    }
+    return native_string_pool_get_or_create_00419cc0(publication_, *lifetime_);
+}
 
 char* ActualNativeStringPoolStorage::allocate(std::uint32_t size) {
-    auto* const owner = native_string_pool_get_or_create_00419cc0(publication_, lifetime_);
+    auto* const owner = get_pool();
     return static_cast<char*>(allocate_native_string_pool_00bd1120(owner, size));
 }
 
 void ActualNativeStringPoolStorage::release(char* block, std::uint32_t size) noexcept {
-    auto* const owner = native_string_pool_get_or_create_00419cc0(publication_, lifetime_);
+    auto* const owner = get_pool();
     return_native_string_pool_00bd1510(owner, block, size, returns_disabled_);
 }
 

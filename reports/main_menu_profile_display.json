@@ -1,0 +1,408 @@
+{
+  "packet": "orch5_menu_profile_display",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline": "a5c35c6e",
+  "ghidra_mutations": false,
+  "routines": [
+    {
+      "address": "00594b60",
+      "end_inclusive": "00594be4",
+      "name": "update_main_menu_medal_00594b60",
+      "coverage": "complete normal caller over canonical semantic score storage and actual Icon",
+      "abi": "ECX screen;RET",
+      "source": "src/main_menu_profile_display.cpp"
+    },
+    {
+      "address": "009052d0",
+      "end_inclusive": "009052d7",
+      "name": "mission_score_completed_009052d0",
+      "coverage": "complete predicate",
+      "abi": "ECX score;EAX0/1;RET",
+      "source": "src/main_menu_profile_display.cpp"
+    },
+    {
+      "address": "0043bc30",
+      "end_inclusive": "0043bde5",
+      "name": "build_main_menu_date_0043bc30",
+      "coverage": "complete normal body; all language branches and native allocations",
+      "abi": "ECX fresh native8h output;EDX date60;stack date64/date68;EAX output;RET8",
+      "source": "src/main_menu_profile_display.cpp"
+    },
+    {
+      "address": "00851e90",
+      "end_inclusive": "00851ebd",
+      "name": "construct_fixed_string_builder_00851e90",
+      "coverage": "complete normal actual-storage body",
+      "abi": "ECX16h builder;capacity stack;EAX builder;RET4",
+      "source": "src/main_menu_profile_display.cpp"
+    },
+    {
+      "address": "00851ec0",
+      "end_inclusive": "00851ed0",
+      "name": "destroy_fixed_string_builder_00851ec0",
+      "coverage": "complete normal actual-storage body through installed RET",
+      "abi": "ECX16h builder;RET at851ED0 beyond current truncated Ghidra body",
+      "source": "src/main_menu_profile_display.cpp"
+    },
+    {
+      "address": "00851f50",
+      "end_inclusive": "00851f9c",
+      "name": "append_fixed_string_00851f50",
+      "coverage": "complete actual-storage body",
+      "abi": "ECX16h builder;C-string stack;EAX builder;RET4",
+      "source": "src/main_menu_profile_display.cpp"
+    },
+    {
+      "address": "00851fa0",
+      "end_inclusive": "00852004",
+      "name": "append_fixed_integer_00851fa0",
+      "coverage": "complete actual-storage body",
+      "abi": "ECX16h builder;signed DWORD stack;EAX builder;RET4",
+      "source": "src/main_menu_profile_display.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00594b68",
+      "native": "005806a0",
+      "function": "00594b60",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "00594b7a",
+      "native": "00594a70",
+      "function": "00594b60",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "00594b83",
+      "native": "009052d0",
+      "function": "00594b60",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "00594b9e",
+      "native": "00aa8530",
+      "function": "00594b60",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "00594bdc",
+      "native": "00ab1710",
+      "function": "00594b60",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bc64",
+      "native": "00851e90",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bc76",
+      "native": "008d4870",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bc80",
+      "native": "0041e870",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bc98",
+      "native": "00bf7fbf",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bcb6",
+      "native": "00425850",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bccc",
+      "native": "00425850",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bcf7",
+      "native": "00425850",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bd38",
+      "native": "00851f50",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bd3f",
+      "native": "00851f50",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bd46",
+      "native": "00851fa0",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bd6d",
+      "native": "00851fa0",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bd74",
+      "native": "00851f50",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bd7b",
+      "native": "00851f50",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bd82",
+      "native": "00851f50",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bd89",
+      "native": "00851fa0",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bd95",
+      "native": "0041e870",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bdb6",
+      "native": "00419cc0",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bdbd",
+      "native": "00bd1510",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0043bdcb",
+      "native": "00851ec0",
+      "function": "0043bc30",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "00851ea2",
+      "native": "00bf55be",
+      "function": "00851e90",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "00851eca",
+      "native": "00bf6989",
+      "function": "00851ec0",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "00851f80",
+      "native": "00bf7680",
+      "function": "00851f50",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "00851fb3",
+      "native": "00bf9010",
+      "function": "00851fa0",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "00851fe6",
+      "native": "00bf7680",
+      "function": "00851fa0",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "00596e4a",
+      "native": "0043bc30",
+      "function": "005966f0",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "0059741f",
+      "native": "00594b60",
+      "function": "005966f0",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "006237a3",
+      "native": "0043bc30",
+      "function": "00623710",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    },
+    {
+      "address": "005985c4",
+      "native": "00594b60",
+      "function": "00597870",
+      "contract": "body read; direct library boundary or concrete existing/new implementation"
+    }
+  ],
+  "storage_evidence": {
+    "score": "594A70 operator[] body;91D620 ctor;91CE90 clears+00/+04/+08; canonical MissionProgress; fresh game+6B4 association distinct from profile650",
+    "month_table": "E08100..E08133: null thenCE426C,CE4258,CE4244,CE4230,CE421C,CE4208,CE41F4,CE41E0,CE41CC,CE41B8,CE41A4,CE4190",
+    "literals": "live CE42F4..CE4333 bytes; all native markup retained",
+    "date_producer": "5C6A70 date read;writes+60/+64/+68",
+    "fixed_builder": "851E90 actual16h writes,separate129-byte allocation;no initial buffer terminator"
+  },
+  "corrections": [
+    {
+      "was": "594B60 required addressed provider",
+      "is": "concrete same score-map and same actual Icon composition with fresh2F8 read after visibility",
+      "evidence": "594B68..594BDC;src/main_menu_profile_display.cpp"
+    },
+    {
+      "was": "851EC0 Ghidra body ends851ECE after CRT_free call",
+      "is": "installed tail POP ECX851ECF;RET851ED0;free returns normally",
+      "evidence": "bsp disasm-raw851EC0 plus BF6989 body;Ghidra read-only"
+    },
+    {
+      "was": "date helper could be approximated with translated English month names or pooled log builder",
+      "is": "all native locale-markup arms with distinct fixed-capacity16h builder and allocation lifetimes",
+      "evidence": "43BC30 full listing;E08100 andCE42F4 bytes;851E90/F50/FA0 bodies"
+    }
+  ],
+  "pending_annotations": [
+    {
+      "address": "00594b60",
+      "was_name": "FUN_00594b60",
+      "proposed_name": "BSP_MainMenu_UpdateMissionMedal",
+      "comment": "complete normal caller over canonical semantic score storage and actual Icon; ECX screen;RET; docs/MAIN_MENU_PROFILE_DISPLAY.md; reports/main_menu_profile_display.json. Worker kept Ghidra read-only."
+    },
+    {
+      "address": "009052d0",
+      "was_name": "FUN_009052d0",
+      "proposed_name": "BSP_MissionScore_IsCompleted",
+      "comment": "complete predicate; ECX score;EAX0/1;RET; docs/MAIN_MENU_PROFILE_DISPLAY.md; reports/main_menu_profile_display.json. Worker kept Ghidra read-only."
+    },
+    {
+      "address": "0043bc30",
+      "was_name": "FUN_0043bc30",
+      "proposed_name": "BSP_MainMenu_BuildLocalizedDate",
+      "comment": "complete normal body; all language branches and native allocations; ECX fresh native8h output;EDX date60;stack date64/date68;EAX output;RET8; docs/MAIN_MENU_PROFILE_DISPLAY.md; reports/main_menu_profile_display.json. Worker kept Ghidra read-only."
+    },
+    {
+      "address": "00851e90",
+      "was_name": "FUN_00851e90",
+      "proposed_name": "BSP_FixedStringBuilder_Construct",
+      "comment": "complete normal actual-storage body; ECX16h builder;capacity stack;EAX builder;RET4; docs/MAIN_MENU_PROFILE_DISPLAY.md; reports/main_menu_profile_display.json. Worker kept Ghidra read-only."
+    },
+    {
+      "address": "00851ec0",
+      "was_name": "FUN_00851ec0",
+      "proposed_name": "BSP_FixedStringBuilder_Destruct",
+      "comment": "complete normal actual-storage body through installed RET; ECX16h builder;RET at851ED0 beyond current truncated Ghidra body; docs/MAIN_MENU_PROFILE_DISPLAY.md; reports/main_menu_profile_display.json. Worker kept Ghidra read-only."
+    },
+    {
+      "address": "00851f50",
+      "was_name": "FUN_00851f50",
+      "proposed_name": "BSP_FixedStringBuilder_AppendCString",
+      "comment": "complete actual-storage body; ECX16h builder;C-string stack;EAX builder;RET4; docs/MAIN_MENU_PROFILE_DISPLAY.md; reports/main_menu_profile_display.json. Worker kept Ghidra read-only."
+    },
+    {
+      "address": "00851fa0",
+      "was_name": "FUN_00851fa0",
+      "proposed_name": "BSP_FixedStringBuilder_AppendInteger",
+      "comment": "complete actual-storage body; ECX16h builder;signed DWORD stack;EAX builder;RET4; docs/MAIN_MENU_PROFILE_DISPLAY.md; reports/main_menu_profile_display.json. Worker kept Ghidra read-only."
+    }
+  ],
+  "uncertainties": [
+    "Existing semantic MissionProgress/std::map and language catalog interfaces retain their native ABI limitations.",
+    "Current game+6B4 MissionProgress and screen2F8 must be bound by actual provider domain;no copied ProfileResetState or completion map.",
+    "No invalid month/index normalization is added;valid native pointers/indices and storage lifetimes are required.",
+    "C++ CRT builder allocator is a source allocation domain;original heap/new-handler/SEH behavior is not claimed.",
+    "Full medal widget path is not fixture-exercised. No instruction differential,executable-menu/game/render validation."
+  ],
+  "validation": {
+    "strict_compile": "passed: MSVC Win32 /std:c++17 /EHsc /MD /W4 /WX /fp:strict",
+    "fixture": "passed: six locales;allocation-order language switch;signed date words;exact capacity skip;actual8h NativeString storage;real canonical score-map identity/predicate",
+    "fixture_command": "./local/run_profile_display_probe.ps1",
+    "fixture_output": "profile_display_probe: PASS (six locale cases, fresh language, signed date words, exact buffer capacity, native8h allocations, real score map)",
+    "fixture_libraries": "parent baseline bsp_core.lib,bsp_lua511.lib,bsp_zlib121.lib plus strict new provider object;/MANIFEST:EMBED",
+    "permanent_tests_added": 0,
+    "repository_build": "passed: ./scripts/build.ps1; complete MSVC Win32 Release build and 1/1 existing CTest reconstructed_math; source registered in cmake/startup.cmake",
+    "report_calls": "passed: 33 call rows checked, 0 failed; two medal current34/current88 calls confirmed indirect and require actual profile dispatch",
+    "final_parent_library": {
+      "status": "passed",
+      "validated_utc": "2026-09-12T20:35:52.001165+00:00",
+      "parent_root": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
+      "parent_git_head": "a6b54bfe2cc9629800ad9ebdddd9b1a472b71910",
+      "parent_tracked_source_diff_present": true,
+      "command": "./local/run_profile_display_parent_probe.ps1 -ParentRoot J:/PROG/battlestations-pacific-decompile-orch5-20260911",
+      "composition": "Only local/profile_display_probe.cpp compiled, using parent include tree; exclusively parent bsp_core/lua/zlib production libraries. No worker production object linked. Embedded manifest.",
+      "output": "profile_display_probe.cpp\nprofile_display_probe: PASS (six locale cases, fresh language, signed date words, exact buffer capacity, native8h allocations, real score map)",
+      "build_evidence": "Parent final MSVC Win32 Release build log: reconstructed_math and native_math_differential both passed (2/2). This native math test does not differential-test the date/profile helpers.",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912",
+      "build_log_sha256": "996a8aee866f579a8ba4b3e670292248f6fad6917ca9723b9c6d0701b528456f",
+      "probe_log_sha256": "1a53169bae2fb27e07c8b2e84190b525d9544d09dd89db40dd99517fcff9c323",
+      "inputs": [
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_widget_owner.hpp",
+          "Hash": "621ADB43E7271214CA0FB61A0542448998FD39ECDCCF21A01A7FE2C78E3C24E7"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\main_menu_profile_display.hpp",
+          "Hash": "9C240D87B59A97CBCFEEB0562D4AB743D2E242D636FF9B9887B1087AF8F7E94F"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+          "Hash": "9DA645DECB05DD4E1C799CB809F74FE9C5CB673C0731024B3A3B58A9CE8F8FC8"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_probe.cpp",
+          "Hash": "552EDE6252C9EFC8C6B600248652127D1FE98BBAB7CA8290883820B2406766BA"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_parent_probe.exe",
+          "Hash": "6EFCAF3B275CCB6863E713A579BFF41B0768AB0FD6CC4A007B61104FCE68BFE7"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\src\\main_menu_profile_display.cpp",
+          "Hash": "B18AFD02982DC7A8067D86B6F574D35B6F4B37183B5372ABE9BE0702B08ABEE5"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib",
+          "Hash": "B6C19DD56BCE2C86DCF1ABF5C3044D48DDC2AC2C33EF04E3DC87F022413EE193"
+        },
+        {
+          "Path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib",
+          "Hash": "2C89BD9AE83D791564EA847C75E8E5EE025E40810C1DF8D55E5799E0C7B8C471"
+        }
+      ],
+      "limits": "Full medal widget body, native date/profile instruction differential, original ABI and game/render execution remain unvalidated."
+    },
+    "peer_review": {
+      "status": "read-only review complete; no open concrete issue after parent correction",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-profile-display\\local\\profile_display_final_parent_20260912\\peer_review",
+      "review_sha256": "9f5829eb2bfdec68c4a2dac360244772df45801af2a7607bfe202b8e11d2e851",
+      "input_manifest_sha256": "2af1e844a0b87a9f5dd3ebaaefa25b5abe1f89b6f8aa02e911978d592db378f7",
+      "scope": "AC06C0,AC0820,580820,AA7970,ACF120,ACEB30 plus current58 adapters",
+      "correction": "Parent corrected missing AC0820 separate x87 width argument spill; revised source rechecked. Suspected pending Text issue retracted after verifying retain_submission throws.",
+      "limits": "Static source/assembly review; inherited resolved-position numeric/native ABI limits and no bounds/FrameBox runtime differential."
+    }
+  }
+}

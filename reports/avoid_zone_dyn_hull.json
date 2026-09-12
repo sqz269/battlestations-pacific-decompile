@@ -1,0 +1,1369 @@
+{
+  "packet": "orch6_dyn_hull_d",
+  "worker": "agent/orch6-dyn-hull-d",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/avoid_zone_dyn_hull.cpp",
+  "documentation": "docs/AVOID_ZONE_DYN_HULL.md",
+  "ghidra_worker_read_only": true,
+  "status": "Win32 Release built; 2 existing CTests passed; 719 original-byte hull and retained-lifetime fixtures matched",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "00c5df30",
+      "body_end_inclusive": "00c5df56",
+      "original_abi": "ECX handle; stack count, points; RET8",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "avoid_zone_dyn_hull_construct_00c5df30",
+      "proposed_name": "DYN_ConvexHull_Construct_00C5DF30",
+      "name_provisional": true
+    },
+    {
+      "address": "00c5deb0",
+      "body_end_inclusive": "00c5df21",
+      "original_abi": "ECX handle; stack count, points; RET8",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "avoid_zone_dyn_hull_replace_00c5deb0",
+      "proposed_name": "DYN_ConvexHull_Replace_00C5DEB0",
+      "name_provisional": true
+    },
+    {
+      "address": "00c5ddd0",
+      "body_end_inclusive": "00c5deae",
+      "original_abi": "stack data, count, points; RET0Ch",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "avoid_zone_dyn_hull_replace_00c5deb0",
+      "proposed_name": "DYN_ConvexHull_BuildInternal_00C5DDD0",
+      "name_provisional": true
+    },
+    {
+      "address": "00c389c0",
+      "body_end_inclusive": "00c38f8a",
+      "original_abi": "ECX data; stack point count, XYZ, triangle count, indices; RET10h",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "avoid_zone_dyn_hull_data_00c389c0",
+      "proposed_name": "DYN_ConvexHull_BuildVertexAdjacency_00C389C0",
+      "name_provisional": true
+    },
+    {
+      "address": "00c5dae0",
+      "body_end_inclusive": "00c5ddcd",
+      "original_abi": "EAX output; stack descriptor; RET4",
+      "coverage": "partial_projection: actual constructor flags1, stride12, epsilon0.001, limit4096; alternate descriptor inputs not exposed",
+      "unresolved_ranges": [
+        "00C5DC94-00C5DCC5 reverse-winding branch",
+        "00C5DCE8-00C5DD8D polygon output branch"
+      ],
+      "implementation": "avoid_zone_dyn_hull_triangles_00c5dae0",
+      "proposed_name": "DYN_ConvexHull_GenerateTriangles_00C5DAE0",
+      "name_provisional": true
+    },
+    {
+      "address": "00c32d20",
+      "body_end_inclusive": "00c32d25",
+      "original_abi": "ECX handle; EAX result; RET",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "avoid_zone_dyn_hull_vertex_count_00c32d20",
+      "proposed_name": "DYN_ConvexHull_VertexCount_00C32D20",
+      "name_provisional": true
+    },
+    {
+      "address": "00c35e80",
+      "body_end_inclusive": "00c36713",
+      "original_abi": "EDX output points; stack count, source, stride, count-out, epsilon, scale-out; RET18h",
+      "coverage": "partial_projection: actual packed XYZ, epsilon0.001, nonnull scale output; both native degeneracy paths covered",
+      "unresolved_ranges": [
+        "00C3606C-00C36070 null-scale branch; arbitrary stride/epsilon inputs not exposed"
+      ],
+      "implementation": "cleanup_00c35e80",
+      "proposed_name": "DYN_ConvexHull_CleanupPoints_00C35E80",
+      "name_provisional": true
+    },
+    {
+      "address": "00c5d900",
+      "body_end_inclusive": "00c5da8a",
+      "original_abi": "ECX count, EDX points; stack indices-out, triangle-count-out, limit; RET0Ch",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "avoid_zone_dyn_hull_triangles_00c5dae0",
+      "proposed_name": "DYN_ConvexHull_CollectTriangles_00C5D900",
+      "name_provisional": true
+    },
+    {
+      "address": "00c32510",
+      "body_end_inclusive": "00c32761",
+      "original_abi": "EAX source count, ESI count-out; stack source, destination, indices, index count; RET10h",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "avoid_zone_dyn_hull_triangles_00c5dae0",
+      "proposed_name": "DYN_ConvexHull_CompactVertices_00C32510",
+      "name_provisional": true
+    },
+    {
+      "address": "00c37450",
+      "body_end_inclusive": "00c37480",
+      "original_abi": "ECX handle; RET",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "avoid_zone_dyn_hull_destroy_00c37450",
+      "proposed_name": "DYN_ConvexHull_Destroy_00C37450",
+      "name_provisional": true
+    },
+    {
+      "address": "004039d0",
+      "body_end_inclusive": "00403b54",
+      "original_abi": "EAX source, ESI destination; RET",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "avoid_zone_dyn_hull_copy_data_004039d0",
+      "proposed_name": "DYN_ConvexHull_CopyInternal_004039D0",
+      "name_provisional": true
+    },
+    {
+      "address": "00c40f50",
+      "body_end_inclusive": "00c40fa3",
+      "original_abi": "ECX destination; stack source handle; RET4",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "avoid_zone_dyn_hull_copy_00c40f50",
+      "proposed_name": "DYN_ConvexHull_CopyHandle_00C40F50",
+      "name_provisional": true
+    },
+    {
+      "address": "00c5cae0",
+      "body_end_inclusive": "00c5d550",
+      "original_abi": "stack points, point count, vertex limit; RET0Ch",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "hull_00c5cae0",
+      "proposed_name": "DYN_ConvexHull_BuildTriangles_00C5CAE0",
+      "name_provisional": true
+    },
+    {
+      "address": "00c32860",
+      "body_end_inclusive": "00c3294c",
+      "original_abi": "stack epsilon; EAX triangle pointer; RET4",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "extrudable_00c32860",
+      "proposed_name": "DYN_ConvexHull_SelectExtrudable_00C32860",
+      "name_provisional": true
+    },
+    {
+      "address": "00c48170",
+      "body_end_inclusive": "00c482a6",
+      "original_abi": "EDX point A, ECX point B, EAX point C, ESI output; RET",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "normal_00c48170",
+      "proposed_name": "DYN_ConvexHull_TriangleNormal_00C48170",
+      "name_provisional": true
+    },
+    {
+      "address": "00c51480",
+      "body_end_inclusive": "00c51738",
+      "original_abi": "ESI source triangle; stack vertex id; RET4",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "extrude_00c51480",
+      "proposed_name": "DYN_ConvexHull_ExtrudeTriangle_00C51480",
+      "name_provisional": true
+    },
+    {
+      "address": "00c51740",
+      "body_end_inclusive": "00c517c6",
+      "original_abi": "ECX triangle indices, EDX points, EBX point; stack epsilon; RET4",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "above_00c51740",
+      "proposed_name": "DYN_ConvexHull_PointAboveTriangle_00C51740",
+      "name_provisional": true
+    },
+    {
+      "address": "00c58920",
+      "body_end_inclusive": "00c58ea9",
+      "original_abi": "stack output4, points, count, allow vector; RET10h",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "simplex_00c58920",
+      "proposed_name": "DYN_ConvexHull_SelectSimplex_00C58920",
+      "name_provisional": true
+    },
+    {
+      "address": "00c35bf0",
+      "body_end_inclusive": "00c35dd2",
+      "original_abi": "EDI direction; stack hull data; EAX index; RET4",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "avoid_zone_dyn_hull_data_00c389c0",
+      "proposed_name": "DYN_ConvexHull_SupportVertex_00C35BF0",
+      "name_provisional": true
+    },
+    {
+      "address": "00c35de0",
+      "body_end_inclusive": "00c35e74",
+      "original_abi": "ECX adjacency-vector array, EAX vertex id, BX neighbor id; RET",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "avoid_zone_dyn_hull_data_00c389c0",
+      "proposed_name": "DYN_ConvexHull_AppendUniqueNeighbor_00C35DE0",
+      "name_provisional": true
+    },
+    {
+      "address": "0040c790",
+      "body_end_inclusive": "0040cb8d",
+      "original_abi": "ESI direction; stack points, count, allow vector; EAX index; RET0Ch",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "max_direction_0040c790",
+      "proposed_name": "DYN_ConvexHull_StableSupportVertex_0040C790",
+      "name_provisional": true
+    },
+    {
+      "address": "00c482b0",
+      "body_end_inclusive": "00c4832f",
+      "original_abi": "ESI source, EDI output; EAX output; RET",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "normalize_00c482b0",
+      "proposed_name": "DYN_ConvexHull_NormalizeVector_00C482B0",
+      "name_provisional": true
+    },
+    {
+      "address": "00c36730",
+      "body_end_inclusive": "00c367ad",
+      "original_abi": "stack triangle, first vertex, second vertex; EAX slot; RET0Ch",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "neighbor_00c36730",
+      "proposed_name": "DYN_ConvexHull_FindNeighborSlot_00C36730",
+      "name_provisional": true
+    },
+    {
+      "address": "00c38f90",
+      "body_end_inclusive": "00c39035",
+      "original_abi": "EBX triangle A; stack triangle B; RET4",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "splice_back_to_back_00c38f90",
+      "proposed_name": "DYN_ConvexHull_SpliceBackToBack_00C38F90",
+      "name_provisional": true
+    },
+    {
+      "address": "004060e0",
+      "body_end_inclusive": "00406147",
+      "original_abi": "EDI allocated triangle, EAX/ECX/EDX vertex ids; RET",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "append_triangle_004060e0",
+      "proposed_name": "DYN_ConvexHull_AppendTriangle_004060E0",
+      "name_provisional": true
+    },
+    {
+      "address": "0040ef40",
+      "body_end_inclusive": "0040f28f",
+      "original_abi": "EDX points, EBX direction; stack count, allow vector; RET8",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "max_direction_filtered_0040ef40",
+      "proposed_name": "DYN_ConvexHull_FilteredSupportVertex_0040EF40",
+      "name_provisional": true
+    },
+    {
+      "address": "00c517d0",
+      "body_end_inclusive": "00c518c5",
+      "original_abi": "EAX direction, ECX output; EAX output; RET",
+      "coverage": "complete finite-input algorithm/data semantics; C++ ownership replaces native work-pool allocation and SEH ABI",
+      "unresolved_ranges": [],
+      "implementation": "orthogonal_00c517d0",
+      "proposed_name": "DYN_ConvexHull_OrthogonalVector_00C517D0",
+      "name_provisional": true
+    }
+  ],
+  "calls": [
+    {
+      "address": "00c5df4c",
+      "native": "00c5deb0",
+      "containing_function": "00c5df30",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dec5",
+      "native": "00bf6989",
+      "containing_function": "00c5deb0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5ded4",
+      "native": "00bf6989",
+      "containing_function": "00c5deb0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dedd",
+      "native": "00bf65ac",
+      "containing_function": "00c5deb0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dee7",
+      "native": "00bf681b",
+      "containing_function": "00c5deb0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5df15",
+      "native": "00c5ddd0",
+      "containing_function": "00c5deb0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5de60",
+      "native": "00c5dae0",
+      "containing_function": "00c5ddd0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5de7c",
+      "native": "00c389c0",
+      "containing_function": "00c5ddd0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5de86",
+      "native": "00bf6989",
+      "containing_function": "00c5ddd0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5de93",
+      "native": "00bf6989",
+      "containing_function": "00c5ddd0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c389fd",
+      "native": "00bf55be",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38a4a",
+      "native": "00bf6989",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38ba1",
+      "native": "00bf55be",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38bdf",
+      "native": "00bf79f0",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38c0a",
+      "native": "00bf55be",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38c68",
+      "native": "00c35de0",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38c75",
+      "native": "00c35de0",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38c84",
+      "native": "00c35de0",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38c93",
+      "native": "00c35de0",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38ca2",
+      "native": "00c35de0",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38cb1",
+      "native": "00c35de0",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38d3e",
+      "native": "00407a50",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38d72",
+      "native": "00407af0",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38dc8",
+      "native": "00bf55be",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38e01",
+      "native": "00bf6989",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38ee1",
+      "native": "00c35bf0",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38f22",
+      "native": "00bf6989",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38f2f",
+      "native": "00408340",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38f57",
+      "native": "00bf6989",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38f68",
+      "native": "00bf6989",
+      "containing_function": "00c389c0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5db1a",
+      "native": "00bf55be",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5db5b",
+      "native": "00c35e80",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dbb7",
+      "native": "00c5d900",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dbe7",
+      "native": "00bf55be",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dc0b",
+      "native": "00c32510",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dc42",
+      "native": "00bf55be",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dc68",
+      "native": "00bf55be",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dc84",
+      "native": "00bf7680",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dcdb",
+      "native": "00bf7680",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dcf7",
+      "native": "00bf55be",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dd1f",
+      "native": "00bf55be",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dd3b",
+      "native": "00bf7680",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dd97",
+      "native": "00bf6989",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5dda8",
+      "native": "00bf6989",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5ddb9",
+      "native": "00bf6989",
+      "containing_function": "00c5dae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d923",
+      "native": "00c5cae0",
+      "containing_function": "00c5d900",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d9b2",
+      "native": "00bf55be",
+      "containing_function": "00c5d900",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d9e6",
+      "native": "00bf6989",
+      "containing_function": "00c5d900",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5da2b",
+      "native": "00407960",
+      "containing_function": "00c5d900",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c3252d",
+      "native": "00bf55be",
+      "containing_function": "00c32510",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c3253f",
+      "native": "00bf79f0",
+      "containing_function": "00c32510",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c3275d",
+      "native": "00bf6989",
+      "containing_function": "00c32510",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c3745f",
+      "native": "00bf6989",
+      "containing_function": "00c37450",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c3746e",
+      "native": "00bf6989",
+      "containing_function": "00c37450",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c37477",
+      "native": "00bf65ac",
+      "containing_function": "00c37450",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "004039ef",
+      "native": "00bf55be",
+      "containing_function": "004039d0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00403a3e",
+      "native": "00bf6989",
+      "containing_function": "004039d0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00403aa0",
+      "native": "00bf55be",
+      "containing_function": "004039d0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00403ad4",
+      "native": "00bf6989",
+      "containing_function": "004039d0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c40f66",
+      "native": "00bf681b",
+      "containing_function": "00c40f50",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c40f89",
+      "native": "004039d0",
+      "containing_function": "00c40f50",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5cb67",
+      "native": "0040eef0",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5cb96",
+      "native": "0040eef0",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5cbf3",
+      "native": "00bf55be",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5cc26",
+      "native": "00bf6989",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5cc6e",
+      "native": "00bf55be",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5cca6",
+      "native": "00bf6989",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5ce78",
+      "native": "004011d0",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5ce9a",
+      "native": "00c58920",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5cead",
+      "native": "00bf6989",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5ceba",
+      "native": "00bf6989",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5cf96",
+      "native": "004077f0",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5cfb7",
+      "native": "004060e0",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5cfe0",
+      "native": "004077f0",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d001",
+      "native": "004060e0",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d027",
+      "native": "004077f0",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d046",
+      "native": "004060e0",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d06c",
+      "native": "004077f0",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d08b",
+      "native": "004060e0",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d11c",
+      "native": "00c48170",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d12f",
+      "native": "0040c790",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d1bf",
+      "native": "00c32860",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d23f",
+      "native": "00c51740",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d24d",
+      "native": "00c51480",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d2d4",
+      "native": "00c51740",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d3c4",
+      "native": "004011d0",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d3ec",
+      "native": "00c51480",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d456",
+      "native": "00c48170",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d469",
+      "native": "0040c790",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d518",
+      "native": "00bf6989",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5d529",
+      "native": "00bf6989",
+      "containing_function": "00c5cae0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c48241",
+      "native": "004011d0",
+      "containing_function": "00c48170",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c514b5",
+      "native": "004077f0",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c514d6",
+      "native": "004060e0",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5151a",
+      "native": "00c36730",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c51521",
+      "native": "004077f0",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c51546",
+      "native": "004060e0",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c51590",
+      "native": "00c36730",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c51597",
+      "native": "004077f0",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c515bc",
+      "native": "004060e0",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c515fa",
+      "native": "00c36730",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c51625",
+      "native": "00c38f90",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5163c",
+      "native": "00407960",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c51657",
+      "native": "00407960",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c5167f",
+      "native": "00c38f90",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c51695",
+      "native": "00407960",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c516b0",
+      "native": "00407960",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c516d8",
+      "native": "00c38f90",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c516ef",
+      "native": "00407960",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c51709",
+      "native": "00407960",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c51720",
+      "native": "00407960",
+      "containing_function": "00c51480",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c51765",
+      "native": "00c48170",
+      "containing_function": "00c51740",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c58985",
+      "native": "0040c790",
+      "containing_function": "00c58920",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c589c8",
+      "native": "0040c790",
+      "containing_function": "00c58920",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c58b32",
+      "native": "004011d0",
+      "containing_function": "00c58920",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c58b5d",
+      "native": "004011d0",
+      "containing_function": "00c58920",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c58b78",
+      "native": "00c482b0",
+      "containing_function": "00c58920",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c58bac",
+      "native": "0040c790",
+      "containing_function": "00c58920",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c58c04",
+      "native": "0040c790",
+      "containing_function": "00c58920",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c58cb5",
+      "native": "00c482b0",
+      "containing_function": "00c58920",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c58cec",
+      "native": "0040c790",
+      "containing_function": "00c58920",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c58d52",
+      "native": "0040c790",
+      "containing_function": "00c58920",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c35e23",
+      "native": "00bf55be",
+      "containing_function": "00c35de0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c35e55",
+      "native": "00bf6989",
+      "containing_function": "00c35de0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "0040c7b9",
+      "native": "0040ef40",
+      "containing_function": "0040c790",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "0040c7d3",
+      "native": "00c517d0",
+      "containing_function": "0040c790",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "0040c957",
+      "native": "0040ef40",
+      "containing_function": "0040c790",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "0040cadb",
+      "native": "0040ef40",
+      "containing_function": "0040c790",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c482df",
+      "native": "004011d0",
+      "containing_function": "00c482b0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38fc0",
+      "native": "00c36730",
+      "containing_function": "00c38f90",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38fcc",
+      "native": "00c36730",
+      "containing_function": "00c38f90",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38fdf",
+      "native": "00c36730",
+      "containing_function": "00c38f90",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38fef",
+      "native": "00c36730",
+      "containing_function": "00c38f90",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c38fff",
+      "native": "00c36730",
+      "containing_function": "00c38f90",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c39012",
+      "native": "00c36730",
+      "containing_function": "00c38f90",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "0040611d",
+      "native": "0040ee00",
+      "containing_function": "004060e0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c51877",
+      "native": "004011d0",
+      "containing_function": "00c517d0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c518a2",
+      "native": "004011d0",
+      "containing_function": "00c517d0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    },
+    {
+      "address": "00c518b9",
+      "native": "00c482b0",
+      "containing_function": "00c517d0",
+      "contract": "decoded direct call; algorithm semantics or explicit allocator/CRT/container boundary described in documentation"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Ghidra pseudocode passes zeros to 00C389C0 and eliminates output buffer frees",
+      "evidence": "00C5DE4A,00C5DE60,00C5DE65..00C5DE7C; assembly register provenance",
+      "is": "00C5DAE0 writes a result through EAX and 00C5DDD0 passes its generated vertex/triangle buffers"
+    },
+    {
+      "was": "free paths appear terminal",
+      "evidence": "reports/avoid_zone_dyn_hull_flow_repair.json; refreshed exports and original-byte runtime fixture",
+      "is": "26 false CALL_RETURN gaps repaired by root in 9 functions; all free continuations execute"
+    },
+    {
+      "was": "internal+4 count meaning unresolved",
+      "evidence": "00C38A62 count store and 16-byte vertex producer;00C32D20 exact read",
+      "is": "native hull vertex count written by 00C389C0"
+    },
+    {
+      "was": "raw handle could be shallow-copied for retention",
+      "evidence": "00C40F64..00C40F9A;719 copies verified after source destruction",
+      "is": "00C40F50 allocates 68h and 004039D0 copies all owned vertex/adjacency storage independently"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Win32 Release; 2/2 existing CTests passed after verify-seeds",
+    "probe": "ignored local/dyn_hull_probe.cpp linked against build/win32/Release/bsp_core.lib; /MANIFEST:EMBED",
+    "cases": 719,
+    "installed_pieces": 706,
+    "geometric_cases": 13,
+    "lifetime_copies_after_source_destroy": 719,
+    "original_byte_spans": [
+      {
+        "address": "00C5DF30",
+        "length": 39,
+        "matches": true,
+        "sha256": "c2af6e7b507ff37e6509c169f845c0516172ef7d3aea3614742c2df3fee53a17"
+      },
+      {
+        "address": "00C5DEB0",
+        "length": 114,
+        "matches": true,
+        "sha256": "0f2613cb773b78f0a39172b5a74fb93d72455e605cffc245aa85c3cdd375ff87"
+      },
+      {
+        "address": "00C5DDD0",
+        "length": 223,
+        "matches": true,
+        "sha256": "994c80fe853299358156f6d2017eea953860ce9756b557332d7c43ac2e278b02"
+      },
+      {
+        "address": "00C389C0",
+        "length": 1483,
+        "matches": true,
+        "sha256": "03551583c6371cfbba72b22a377d0456359c580224dd8cbec988be1d46ce6856"
+      },
+      {
+        "address": "00C5DAE0",
+        "length": 750,
+        "matches": true,
+        "sha256": "8ac0e83056603738c56017660f4f9642228c80fed8ae7d2a8716c69a7421450e"
+      },
+      {
+        "address": "00C32D20",
+        "length": 6,
+        "matches": true,
+        "sha256": "9b94de54edca5be8aaa5cff854e34f8d27670d44c961ed3af0fe606167e991aa"
+      },
+      {
+        "address": "00C35E80",
+        "length": 2196,
+        "matches": true,
+        "sha256": "44ead10b985e88c318f3ba411d0b780bf2f9be24eb215396f3a84925611ff787"
+      },
+      {
+        "address": "00C5D900",
+        "length": 395,
+        "matches": true,
+        "sha256": "e1b8bb835f06331c05f67c9886d90958df43981bea309e8247d5ec587a3a4a56"
+      },
+      {
+        "address": "00C32510",
+        "length": 594,
+        "matches": true,
+        "sha256": "369dcb868bec97effc0fa7275bda52d30e91556734abbe0da081d23cca84de18"
+      },
+      {
+        "address": "00C37450",
+        "length": 49,
+        "matches": true,
+        "sha256": "2ad7fe75071a180826055e3f63c11627365c04b1f6cb65daedaa84c0edada7ea"
+      },
+      {
+        "address": "004039D0",
+        "length": 389,
+        "matches": true,
+        "sha256": "60fca5376e7c75f716f94a49b3d6d6df4192560b36b4986498646d5e92f1ba64"
+      },
+      {
+        "address": "00C40F50",
+        "length": 84,
+        "matches": true,
+        "sha256": "a6fc6700f501cd9d405c5189d55494e98fd1647a827836a7bd7e63638b32e13f"
+      },
+      {
+        "address": "00C5CAE0",
+        "length": 2673,
+        "matches": true,
+        "sha256": "9ae78afccdf253b710f02e2ce30aab46ce6cb170683924a2ac2c839016e18048"
+      },
+      {
+        "address": "00C32860",
+        "length": 237,
+        "matches": true,
+        "sha256": "6accb059963948d0b37b0c22662ed9ab0705f6df6b44bfc1772896115a1ac90b"
+      },
+      {
+        "address": "00C48170",
+        "length": 311,
+        "matches": true,
+        "sha256": "79e469cf614286242b738ea5981af0a4374078fa3c97ea94cfb24a1c567ed6da"
+      },
+      {
+        "address": "00C51480",
+        "length": 697,
+        "matches": true,
+        "sha256": "63a7b21994db5c983a7fad66ec1eaa32ffb3a3eff1a1e18ee792329048d0e1af"
+      },
+      {
+        "address": "00C51740",
+        "length": 135,
+        "matches": true,
+        "sha256": "1b9580c67e023193ec37a6e63083cde057fb009ddf2fbcaf966163bfa56380d2"
+      },
+      {
+        "address": "00C58920",
+        "length": 1418,
+        "matches": true,
+        "sha256": "7dcdb232f7b9572515464fc6d085805c6c5555b4ff2c5c0a79a94af93202be80"
+      },
+      {
+        "address": "00C35BF0",
+        "length": 483,
+        "matches": true,
+        "sha256": "5da4f9312f5407d47753a5baddc7bccfaf64393925b9192310ffbcea37013a03"
+      },
+      {
+        "address": "00C35DE0",
+        "length": 149,
+        "matches": true,
+        "sha256": "14fb0ec94dbb1de780ff1813cda011a50de975f64942f92f008d9094dfd869f0"
+      },
+      {
+        "address": "0040C790",
+        "length": 1022,
+        "matches": true,
+        "sha256": "6fad3d2cba7f7dd749311819ddf839d5f9fbafd386a93a40b0efd615d1be4955"
+      },
+      {
+        "address": "00C482B0",
+        "length": 128,
+        "matches": true,
+        "sha256": "564b3c3a390d1f1a1ea6bad8881ffea1d00d8f7a3569fb99e3c7eafabe844f33"
+      },
+      {
+        "address": "00C36730",
+        "length": 126,
+        "matches": true,
+        "sha256": "1919224251484aca917160be18d7d86755e199fbc3a71d1d25a3aed25bda6ccf"
+      },
+      {
+        "address": "00C38F90",
+        "length": 166,
+        "matches": true,
+        "sha256": "9de15a9024adda0d2728ed2ad7a984a60ccfba8934cbf7bca557dcd61362ec6a"
+      },
+      {
+        "address": "004060E0",
+        "length": 104,
+        "matches": true,
+        "sha256": "30dec355260343b8f8e9c022e28e62209cbd7dda2c894a65d0810c2219bdeeab"
+      },
+      {
+        "address": "0040EF40",
+        "length": 848,
+        "matches": true,
+        "sha256": "d4e72395416abe4d14dfa633e849e646d5020070e709e4a5da27698fa0910285"
+      },
+      {
+        "address": "00C517D0",
+        "length": 246,
+        "matches": true,
+        "sha256": "7d90befca22e1a7620389b0e47cad308bf964da3815cb66b837f5cdd31ee73a1"
+      }
+    ],
+    "input_json_sha256": "5dc602ba766b1c5d866fe4f2367fd0e0e488910964f712553d81c9fd97be212e",
+    "scene_sha256": "9235d9a6364b08cbd5cf3c6735ba9828aba5a6e7b2569300dc2eecf6d8dac17b",
+    "native_records_sha256": "069001ff313745494c7d8c6323a3cdda09278e6b3caf68b40bfc4120af50644f",
+    "rebuilt_records_sha256": "069001ff313745494c7d8c6323a3cdda09278e6b3caf68b40bfc4120af50644f",
+    "retained_native_pool_allocations": 5,
+    "fixture_boundaries": [
+      "host allocation/free pair",
+      "host memcpy/memset",
+      "finite sqrt FSQRT binding",
+      "real Win32 critical sections",
+      "relocated decoded absolute operands in00401000..00410000 and00C30930..00C5DF60; relative branches unchanged",
+      "A5 allocation poison proves unspecified vertex0Eh and support slot13 remain untouched; not a native initializer"
+    ],
+    "actual_probe_exit_code": 0,
+    "probe_executable_sha256": "5e818dad3e0ec8ff0ba3c7555cbddc28b500be2e9eed0be8fc999cebadf95002",
+    "release_library_sha256": "397b6e69dc94549cb3b7a157e4b9c33355def900ab891c2c94cace55f97e8781",
+    "integrator_reproduction": {
+      "build": "local/orch6_final_geometry_build.log",
+      "probe_log": "local/orch6_integrated_dyn_hull_probe.log",
+      "cases": 719,
+      "retained_copies_after_source_destruction": 719,
+      "release_library_sha256": "264d3d7a574ec158d6b062352ec9d4785274867bcd4c585b4521dcb6c9237be5",
+      "probe_executable_sha256": "956ed8e094fde13d66473a6cb2eb4e864b6ef417110d65a336775cd8899c01aa",
+      "records_sha256": "069001ff313745494c7d8c6323a3cdda09278e6b3caf68b40bfc4120af50644f",
+      "native_calls_checked": 139,
+      "failed_calls": 0
+    },
+    "independent_review": {
+      "result": "accepted",
+      "compared": "all16 vertex bytes, adjacency, counters/capacities, data18h..65h including support seed13; independent copied storage and single destruction",
+      "excluded": "pointer identities and data66h..67h padding; pool ABI, OOM/unwind, alternate flags and collision gameplay"
+    }
+  },
+  "limitations": [
+    "finite coordinates and finite representable intermediates only",
+    "native allocator/pool/SEH ABI not reconstructed",
+    "alternate generator flags/stride/epsilon not exposed",
+    "native malformed topology E1750C fallback raises domain_error",
+    "manager retained-list insertion and Dyn body creation are separate integration work",
+    "no game runtime or collision validation"
+  ],
+  "source_sha256": "e4be35881ddd46bcbf3110b05309745df565951e1f41656080aea3c1777edf45",
+  "installed_data_report": "reports/avoid_zone_installed_geometry.json",
+  "ghidra_integration": {
+    "applied_functions": 27,
+    "prior_values": "local/ghidra-annotations-20260912T204234Z.json",
+    "existing_comments_preserved": true,
+    "project_saved": true,
+    "exports_refreshed": true,
+    "export_log": "local/orch6_dyn_geometry_exports.log"
+  }
+}

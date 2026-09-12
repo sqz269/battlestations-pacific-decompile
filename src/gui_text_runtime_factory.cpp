@@ -296,6 +296,11 @@ void GuiTextRuntimeImplementation::rebuild_content_00abb1d0() {
 void GuiTextRuntimeImplementation::resize58_00abbf30(const GuiWidgetSize& size) {
     require_idle(); retain_submission(resize_gui_text_00abbf30(*lifetime_, size, factory_.services_.properties.submit));
 }
+void GuiTextRuntimeImplementation::set_size58(GuiWidgetOwner& owner, const GuiWidgetSize& size) {
+    if (&owner != &owner_)
+        throw std::logic_error("Text current58 requires the same canonical owner");
+    resize58_00abbf30(size);
+}
 void GuiTextRuntimeImplementation::set_color50_00ab6b50(const float (&rgba)[4]) {
     require_idle();
     auto binding = lifetime_->style_binding(factory_.services_.properties.submit.content.nonempty.style);

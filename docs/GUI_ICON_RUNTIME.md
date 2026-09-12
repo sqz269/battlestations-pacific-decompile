@@ -128,3 +128,7 @@ implementations are required at the application boundary and remain for
 integration validation. No runtime draw, screenshot, complete native lifetime,
 native Icon differential, ABI compatibility or in-game result is claimed.
 No new permanent tests were added; the game installation was unchanged.
+
+## Correction from docs/ORCH5_MENU_CONCRETE_PROVIDERS_BATCH.md
+
+The table base is00D5C4C0;00D5C530 is a mid-table dump start. Current80 is stored at00D5C540 and targets00AB3CB0. The new AB2690/AB27A0 operations require live constant aliases and preserve their reads around texture callbacks; see docs/GUI_ICON_STATE_MUTATION.md. Inactive-state actual D3D9/Lua fixtures passed, while active geometry rebuild effects remain outside that fixture.
