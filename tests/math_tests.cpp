@@ -1,5 +1,6 @@
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/award_grant.hpp"
+#include "bsp/entity_event_queues.hpp"
 #include "bsp/award_trackers.hpp"
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
@@ -2324,6 +2325,25 @@ int main() {
         const bsp::SessionRouteDecision privileged = bsp::route_session_message_0077c2a0(client);
         check(privileged.send_to_host && privileged.deliver_local,
             "0077C35A adds the local bit when 00779FF0 answers true");
+    }
+
+    {
+        // 00903610's grace period. An entity marked by 00922FD0 carries a 1 and
+        // must survive two more passes: releasing at 2 instead of 3 would free
+        // it a whole fixed step early, and ageing a zero counter would release
+        // entities nothing ever marked.
+        using bsp::EntityExpiryAction;
+        check(bsp::entity_expiry_step_00903620(0).action == EntityExpiryAction::kSkip &&
+              bsp::entity_expiry_step_00903620(0).counter == 0,
+            "00903625 JLE leaves an unmarked entity alone");
+        check(bsp::entity_expiry_step_00903620(-1).action == EntityExpiryAction::kSkip,
+            "00903625 is a signed test, so a negative counter is skipped too");
+        const bsp::EntityExpiryStep marked = bsp::entity_expiry_step_00903620(1);
+        check(marked.action == EntityExpiryAction::kAge && marked.counter == 2,
+            "00903627 ages the 1 that 00922FE8 stored to 2 and keeps the entity");
+        const bsp::EntityExpiryStep aged = bsp::entity_expiry_step_00903620(2);
+        check(aged.action == EntityExpiryAction::kRelease && aged.counter == 3,
+            "0090362A releases on the pass that reaches 3, the second after marking");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
