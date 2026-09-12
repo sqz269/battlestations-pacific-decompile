@@ -92,6 +92,8 @@
 #include "bsp/blast_damage.hpp"
 #include "bsp/bot_fire_target.hpp"
 #include "bsp/collision_shapes.hpp"
+#include "bsp/ship_ai_ring_scan.hpp"
+#include "bsp/unit_rudder.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -2832,6 +2834,76 @@ int main() {
                 && recon_relation_for_008065ff(2, 0) == ReconRelation::neutral
                 && recon_relation_for_008065ff(2, 1) == ReconRelation::neutral,
             "00806721: slot 2 has no enemy, every other party is neutral");
+    }
+
+    {
+        // 009E76D0 -> 009E5E90 -> the 009E6A90 sentinel arm. The executable
+        // sailed its six attackmove ships on the 9999.0f that 009F1BF7 seeds
+        // into nested+1210h every frame, so the risk worth pinning is that the
+        // ring scan still hands 009E5E90 a real bearing and that the sentinel
+        // never survives to the throttle 009F3635 forwards.
+        struct ClearWaterHost final : bsp::ShipAiRingScanHost {
+            float committed_bearing = -1.0f;
+            bool committed = false;
+            float wrap_phase_00605070(float value) override { return value; }
+            std::uint32_t probe_space_vtable_0218() override { return 1u; }
+            bool unit_pose_fresh_00c8() override { return true; }
+            void refresh_unit_pose_00414db0() override {}
+            bsp::ShipAiAttackMoveXZ unit_world_xz() override { return {}; }
+            bsp::ShipAiAttackMoveXZ probe_origin_00417b10(std::uint32_t,
+                                                          const bsp::ShipAiAttackMoveXZ& point,
+                                                          float, int) override {
+                return point;
+            }
+            bool probe_hit_0041b4e0(std::uint32_t, const bsp::ShipAiAttackMoveXZ&,
+                                    const bsp::ShipAiAttackMoveXZ&,
+                                    bsp::ShipAiAttackMoveXZ&) override {
+                return false;
+            }
+            float planar_length_00414c60(const bsp::ShipAiAttackMoveXZ&) override { return 0.0f; }
+            float tune_reject_penalty_04() override { return 0.5f; }
+            void rebuild_unit_world_matrix() override {}
+            bsp::ShipAiAttackMoveXZ brain_goal_0b2c() override { return {}; }
+            float unit_cruise_speed_0490() override { return 0.0f; }
+            void commit_bearing_009e5e90(float bearing, float) override {
+                committed_bearing = bearing;
+                committed = true;
+            }
+        };
+
+        bsp::ShipAiAttackMoveRingSlot ring[bsp::kShipAiApproachSlotCount];
+        for (int i = 0; i < bsp::kShipAiApproachSlotCount; ++i) {
+            ring[i] = bsp::ship_ai_attackmove_ring_slot_009e5530(i, 1u, 2u);
+        }
+        bsp::ShipAiApproachSlotScore slots[bsp::kShipAiApproachSlotCount];
+        bsp::ShipAiApproachState state;
+        state.turn_radius_11f0 = 500.0f;
+        state.commanded_throttle_1210 = bsp::kApproachCommandUnset; // 009F1BF7
+        ClearWaterHost host;
+        bsp::ship_ai_ring_scan_009e76d0(state, ring, slots, 0.1f, host);
+
+        bool every_slot_accepted = true;
+        for (int i = 0; i < bsp::kShipAiApproachSlotCount; ++i) {
+            // 009E784B would have written -0.0f - tune+4h on a rejection.
+            if (slots[i].blocked_40 || slots[i].penalty_30 != 0.0f) every_slot_accepted = false;
+        }
+        check(every_slot_accepted,
+            "009E6640: a clear probe scores 1.0, so 009E7822 accepts every slot");
+        check(host.committed && host.committed_bearing == state.selected_bearing_11f8,
+            "009E7ECB: the ring scan hands 009E5E90 the winning slot's bearing");
+
+        bool blocked[bsp::kShipAiApproachSlotCount] = {};
+        bsp::ship_ai_approach_commit_bearing_009e5e90(state, blocked,
+                                                      host.committed_bearing);
+        const float error = std::fabs(
+            bsp::wrapped_angle_subtract_00438b10(0.0f, state.commanded_heading_120c));
+        // 009E6ADE: the sentinel is above 1000, so 009E6B12 replaces it.
+        check(state.commanded_throttle_1210 > 1000.0f,
+            "009F1BF7: the throttle still holds the 9999.0f sentinel here");
+        const float seeded = bsp::ship_ai_approach_throttle_seed_009e6a90(error);
+        const float limited = bsp::ship_ai_approach_command_limit_009e6a90(seeded, 1.0f);
+        check(limited >= -1.0f && limited <= 1.0f && limited != bsp::kApproachCommandUnset,
+            "009E6A90: the sentinel never reaches the throttle 009F3635 forwards");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

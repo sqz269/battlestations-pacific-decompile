@@ -1,0 +1,430 @@
+{
+ "packet": "cc_ai_ring_scan",
+ "owner": "agent/cc-ai-ring-scan",
+ "project": "C:/Users/sqz269/bsp.gpr",
+ "program": "/battlestationspacific.exe",
+ "ghidra_access": "read-only",
+ "doc": "docs/SHIP_AI_RING_SCAN.md",
+ "header": "include/bsp/ship_ai_ring_scan.hpp",
+ "source": "src/ship_ai_ring_scan.cpp",
+ "build": "scripts/build.ps1, Win32 MSVC /W4 /WX, bsp_core; ctest reconstructed_math passed",
+ "note": "009E76D0, the bearing ring scan, plus the four slot scorers 009E6400, 009E5DA0, 009E6870 and 009E6640 that the cc_ai_approach_update packet carried as host methods with an unread contract. Every descriptive name is a hypothesis, not a recovered symbol. bsp_game.exe does NOT run this path: src/game_hosts_ship_ai.cpp records 009E76D0 and 009E6A90 instead of running them, so no run log supports or contradicts anything here (docs/WORKER_VERIFICATION_CHECKLIST.md rule 6 does not bind). Wiring the executable is the follow-up ship_ai_ring_scan_runtime.",
+ "routines": [
+  {
+   "address": "009e76d0",
+   "native": "009e76d0",
+   "name": "BSP_ShipAi_ApproachSelectRingSlot",
+   "abi": "__thiscall(nested)(float seconds), RET 4",
+   "body": "body 009e76d0-009e7edc",
+   "coverage": "complete. The six-way unrolled accept/reject body 009E7822-009E79AA (EDX += 6, ECX += 1C8h at 009E799E) and the eight-way unrolled winner scan 009E79E5-009E7BC9 with its 009E7BD4-009E7C17 remainder loop were read step by step for this packet; docs/SHIP_AI_APPROACH_UPDATE.md had read them at their first and last step only."
+  },
+  {
+   "address": "009e6640",
+   "native": "009e6640",
+   "name": "BSP_ShipAi_ApproachProbeSlotClearance",
+   "abi": "__thiscall(slot)(float seconds, float bearing, char override_a, char override_b, float range), RET 14h, ST0 result",
+   "body": "body 009e6640-009e6868",
+   "coverage": "complete"
+  },
+  {
+   "address": "009e6870",
+   "native": "009e6870",
+   "name": "BSP_ShipAi_ApproachScoreSlotArc",
+   "abi": "__thiscall(slot)(const float block[4]), RET 4",
+   "body": "body 009e6870-009e697f",
+   "coverage": "complete"
+  },
+  {
+   "address": "009e6400",
+   "native": "009e6400",
+   "name": "BSP_ShipAi_ApproachScoreSlotBeam",
+   "abi": "__thiscall(slot)(float bearing), RET 4",
+   "body": "body 009e6400-009e647b",
+   "coverage": "complete"
+  },
+  {
+   "address": "009e5da0",
+   "native": "009e5da0",
+   "name": "BSP_ShipAi_ApproachRateSlotBearing",
+   "abi": "__thiscall(slot)(a 44h-byte block by value), RET 44h",
+   "body": "body 009e5da0-009e5dfb",
+   "coverage": "complete; the rating itself is 0095EB40, whose body is unread"
+  },
+  {
+   "address": "009e5e90",
+   "native": "009e5e90",
+   "name": "BSP_ShipAi_ApproachCommitBearing",
+   "abi": "__thiscall(nested)(float bearing, float seconds), RET 8",
+   "body": "body 009e5e90-009e605a",
+   "coverage": "complete, verified instruction by instruction against docs/SHIP_AI_APPROACH_UPDATE.md; not re-reconstructed (ship_ai_approach_commit_bearing_009e5e90 already covers it)"
+  },
+  {
+   "address": "009e6a90",
+   "native": "009e6a90",
+   "name": "BSP_ShipAi_ApproachLimitThrottle",
+   "abi": "__thiscall(nested)(), RET 0",
+   "body": "body 009e6a90-009e6e78",
+   "coverage": "complete, verified instruction by instruction against docs/SHIP_AI_APPROACH_UPDATE.md; not re-reconstructed (ship_ai_approach_limit_throttle_009e6a90 already covers it)"
+  }
+ ],
+ "host_steps": [
+  {
+   "routine": "009e76d0",
+   "address": "009e76f4",
+   "native": "00605070",
+   "function": "009e76d0",
+   "method": "wrap_phase_00605070",
+   "note": "ECX = &nested+1214h, the wobble phase, wrapped in place after 009E76E4 stores seconds*0.2 + phase"
+  },
+  {
+   "routine": "009e76d0",
+   "address": "009e7755",
+   "native": "009e6640",
+   "function": "009e76d0",
+   "method": "(reconstructed here: ship_ai_ring_scan_probe_009e6640)",
+   "note": "ECX = slot i; seconds, nested+11DCh, the two override bytes and nested+11F0h"
+  },
+  {
+   "routine": "009e76d0",
+   "address": "009e7c6d",
+   "native": "00438aa0",
+   "function": "009e76d0",
+   "method": "(not projected: dead)",
+   "note": "wrap(bearing + sin(phase) * the double 0.0 at 00D7A258); the result is popped by FSTP ST0 at 009E7C78"
+  },
+  {
+   "routine": "009e76d0",
+   "address": "009e7cb4",
+   "native": "00414db0",
+   "function": "009e76d0",
+   "method": "rebuild_unit_world_matrix",
+   "note": "ECX = [unit+3Ch], the parent, taken only when that pointer is non-null"
+  },
+  {
+   "routine": "009e76d0",
+   "address": "009e7cd1",
+   "native": "00413920",
+   "function": "009e76d0",
+   "method": "rebuild_unit_world_matrix",
+   "note": "ECX = [unit+74h], out = a local 4x4, second argument [parent+0CCh]; the result is copied into [unit+0CCh..108h] and [unit+0C8h] is set to 1"
+  },
+  {
+   "routine": "009e76d0",
+   "address": "009e7db2",
+   "native": "00bf701a",
+   "function": "009e76d0",
+   "method": "(library: _CIatan2 inside ship_ai_approach_heading_from_delta)",
+   "note": "ST1 = goal.z - unit.z, ST0 = goal.x - unit.x; the heading is pi/2 - the result, lifted by 2*pi at 009E7DD3"
+  },
+  {
+   "routine": "009e76d0",
+   "address": "009e7e0d",
+   "native": "00438b10",
+   "function": "009e76d0",
+   "method": "(library: wrapped_angle_subtract_00438b10)",
+   "note": "wrap(nested+11ECh - goal bearing); the sign mask is at 009E7E27"
+  },
+  {
+   "routine": "009e76d0",
+   "address": "009e7e68",
+   "native": "00419010",
+   "function": "009e76d0",
+   "method": "(library: clamped_interpolate_00419010)",
+   "note": "interp(0.2, 400, 1.2, 50, |turn|) from 00CE54A0, 00CFD710, 00CE3814, 00CEB4D4"
+  },
+  {
+   "routine": "009e76d0",
+   "address": "009e7e97",
+   "native": "00438aa0",
+   "function": "009e76d0",
+   "method": "(library: wrapped_angle_add_00438aa0)",
+   "note": "the pi at 00D7A264 added to the goal bearing on the reversing arm"
+  },
+  {
+   "routine": "009e76d0",
+   "address": "009e7ecb",
+   "native": "009e5e90",
+   "function": "009e76d0",
+   "method": "commit_bearing_009e5e90",
+   "note": "ECX = nested, (bearing, seconds); the bearing is nested+11F8h as stored at 009E7C28 or 009E7EA6"
+  },
+  {
+   "routine": "009e6640",
+   "address": "009e666b",
+   "native": "00438b10",
+   "function": "009e6640",
+   "method": "(library: wrapped_angle_subtract_00438b10)",
+   "note": "wrap(slot.angle_08 - bearing), the side gate; evaluated only when an override byte is set"
+  },
+  {
+   "routine": "009e6640",
+   "address": "009e66eb",
+   "native": "unit+vtable218",
+   "function": "009e6640",
+   "method": "probe_space_vtable_0218",
+   "note": "CALL EAX with ECX = [[slot+4h]+0h]+0AA8h, the unit; the returned object is the this of 00417B10 and 0041B4E0; callee body unread"
+  },
+  {
+   "routine": "009e6640",
+   "address": "009e6705",
+   "native": "00414db0",
+   "function": "009e6640",
+   "method": "refresh_unit_pose_00414db0",
+   "note": "ECX = the unit, taken only when the byte at [unit+0C8h] is clear (009E66F8)"
+  },
+  {
+   "routine": "009e6640",
+   "address": "009e673e",
+   "native": "00417b10",
+   "function": "009e6640",
+   "method": "probe_origin_00417b10",
+   "note": "ECX = the probe space; (&out, &in, 3.0f at 00CE3854, 1); the two floats it returns replace the probe start at 009E6751 and 009E6763; callee body unread"
+  },
+  {
+   "routine": "009e6640",
+   "address": "009e6769",
+   "native": "00438b10",
+   "function": "009e6640",
+   "method": "(library: wrapped_angle_subtract_00438b10)",
+   "note": "wrap(bearing - slot.angle_08); the sign mask is at 009E6776"
+  },
+  {
+   "routine": "009e6640",
+   "address": "009e67aa",
+   "native": "00419010",
+   "function": "009e6640",
+   "method": "(library: clamped_interpolate_00419010)",
+   "note": "interp(20 deg at 00CE398C, 0, 120 deg at 00D2017C, 1, |wrap|); the product with the range is at 009E67AF"
+  },
+  {
+   "routine": "009e6640",
+   "address": "009e6808",
+   "native": "0041b4e0",
+   "function": "009e6640",
+   "method": "probe_hit_0041b4e0",
+   "note": "ECX = the probe space; (&start, &end, &hit); AL tested at 009E680D; callee body unread"
+  },
+  {
+   "routine": "009e6640",
+   "address": "009e6833",
+   "native": "00414c60",
+   "function": "009e6640",
+   "method": "planar_length_00414c60",
+   "note": "ECX = the two-float delta start - hit built at 009E6813..009E682F; the result is slot+44h"
+  },
+  {
+   "routine": "009e6870",
+   "address": "009e688a",
+   "native": "00438aa0",
+   "function": "009e6870",
+   "method": "(library: wrapped_angle_add_00438aa0)",
+   "note": "wrap(block[2] + block[0]), the add-side arc edge"
+  },
+  {
+   "routine": "009e6870",
+   "address": "009e68a2",
+   "native": "00438b10",
+   "function": "009e6870",
+   "method": "(library: wrapped_angle_subtract_00438b10)",
+   "note": "wrap(block[2] - block[0]), the subtract-side arc edge"
+  },
+  {
+   "routine": "009e6870",
+   "address": "009e68bc",
+   "native": "00438b10",
+   "function": "009e6870",
+   "method": "(library: wrapped_angle_subtract_00438b10)",
+   "note": "wrap(slot.angle_08 - add edge); masked at 009E68D4"
+  },
+  {
+   "routine": "009e6870",
+   "address": "009e68e3",
+   "native": "00438b10",
+   "function": "009e6870",
+   "method": "(library: wrapped_angle_subtract_00438b10)",
+   "note": "wrap(slot.angle_08 - subtract edge); masked at 009E68F0, the minimum taken at 009E6902"
+  },
+  {
+   "routine": "009e6870",
+   "address": "009e6970",
+   "native": "00419010",
+   "function": "009e6870",
+   "method": "(library: clamped_interpolate_00419010)",
+   "note": "interp(0, block[3], pi at 00D7A264, 0, cost); the result is slot+30h at 009E6975"
+  },
+  {
+   "routine": "009e6e80",
+   "address": "009e74b7",
+   "native": "009e6870",
+   "function": "009e6e80",
+   "method": "(call site of 009E6870)",
+   "note": "ECX = slot i; the block at [ESP+30h] is {side, span, nested+11DCh, tune+4h}, laid out at 009E7483..009E74A0; sixty iterations from 009E74B0"
+  },
+  {
+   "routine": "009e6400",
+   "address": "009e6414",
+   "native": "00438b10",
+   "function": "009e6400",
+   "method": "(library: wrapped_angle_subtract_00438b10)",
+   "note": "wrap(bearing - slot.angle_08); masked at 009E6421"
+  },
+  {
+   "routine": "009e7fc0",
+   "address": "009e8080",
+   "native": "009e6400",
+   "function": "009e7fc0",
+   "method": "(call site of 009E6400)",
+   "note": "ECX = slot i and the float nested+1290h; the mode-4 arm only, and only while nested+11E0h - nested+11E4h < 300.0"
+  },
+  {
+   "routine": "009e5da0",
+   "address": "009e5db4",
+   "native": "00438b10",
+   "function": "009e5da0",
+   "method": "(library: wrapped_angle_subtract_00438b10)",
+   "note": "wrap(word5 - slot.angle_08); the result overwrites word 5 of the block copy at 009E5DBB"
+  },
+  {
+   "routine": "009e5da0",
+   "address": "009e5dc4",
+   "native": "0095eb40",
+   "function": "009e5da0",
+   "method": "rate_bearing_0095eb40",
+   "note": "ECX = [slot+0h], the unit; one argument, a pointer to the 44h-byte block; the result is slot+18h; callee body unread"
+  },
+  {
+   "routine": "009e7fc0",
+   "address": "009e81a7",
+   "native": "009e5da0",
+   "function": "009e7fc0",
+   "method": "(call site of 009E5DA0)",
+   "note": "ECX = slot i; the block is a REP MOVSD of 0x11 dwords from nested+127Ch pushed at 009E8192..009E81A2, and the callee's RET 44h is the argument count (checklist rule 7)"
+  }
+ ],
+ "host_fields": [
+  {
+   "routine": "009e76d0",
+   "address": "009e7846",
+   "field": "tune+4h",
+   "method": "tune_reject_penalty_04",
+   "note": "reloaded through [slot+4h] -> [nested+0h] -> [brain+0AB0h] at each of the six unrolled reject arms: 009E7843/784B, 009E7877/787F, 009E78B7/78BC, 009E78FD/7902, 009E7943/7948, 009E7989/798E"
+  },
+  {
+   "routine": "009e76d0",
+   "address": "009e7ca1",
+   "field": "[unit+0C8h]",
+   "method": "unit_pose_fresh_00c8",
+   "note": "the same byte 009E6640 tests at 009E66F8; non-zero means the world matrix at [unit+0CCh] is current"
+  },
+  {
+   "routine": "009e76d0",
+   "address": "009e7d7a",
+   "field": "brain+0B2Ch and brain+0B34h",
+   "method": "brain_goal_0b2c",
+   "note": "the attackmove goal x and z; brain+0B30h, the y, is not read here"
+  },
+  {
+   "routine": "009e76d0",
+   "address": "009e7d92",
+   "field": "[unit+104h] and [unit+0FCh]",
+   "method": "unit_world_xz",
+   "note": "the unit's world z then x, subtracted from the goal in that order"
+  },
+  {
+   "routine": "009e76d0",
+   "address": "009e7de7",
+   "field": "[unit+490h]",
+   "method": "unit_cruise_speed_0490",
+   "note": "widened to double at 009E7E35 for the reversal test"
+  },
+  {
+   "routine": "009e6640",
+   "address": "009e6710",
+   "field": "[unit+104h] and [unit+0FCh]",
+   "method": "unit_world_xz",
+   "note": "the probe start before 00417B10 adjusts it"
+  }
+ ],
+ "corrections": [
+  {
+   "where": "include/bsp/ship_ai_approach_update.hpp, ShipAiApproachSlotScore::penalty_30",
+   "was": "float penalty_30{0.0f};  // +30h, 009E784B: -tune[4] on a rejected slot",
+   "is": "+30h is the standoff-arc score 009E6870 writes at 009E6975: tune+4h on either edge of the arc centred on nested+11DCh and stepped by the side weight, falling linearly to 0 at pi of arc cost. 009E76D0's reject arm overwrites it with -0.0f - tune+4h, which is the only case the earlier packet had seen.",
+   "evidence": "009E6870 body 009E6870-009E697F read whole. 009E688A wrap(block[2]+block[0]), 009E68A2 wrap(block[2]-block[0]), 009E68BC and 009E68E3 the two wrapped distances from slot.angle_08, masked at 009E68D4/68F0 and minimised at 009E6902. 009E6925..009E6947 the piecewise cost with the knee at block[1]. 009E6956..009E6970 interp(0, block[3], pi at 00D7A264, 0, cost), stored to slot+30h at 009E6975. The call site 009E74B7 lays the block out at 009E7483..009E74A0 as {side, span, nested+11DCh, tune+4h}."
+  },
+  {
+   "where": "include/bsp/ship_ai_attackmove_substates.hpp, ShipAiAttackMoveRingSlot::reset_44 and ::jitter_48",
+   "was": "float reset_44{kAttackMoveRingScoreReset}; float jitter_48{0.0f}; with the comment 'those two are the only non-zero members of the first pass; the rest are left as zero here because the packet did not establish what reads them.'",
+   "is": "slot+44h is the clear distance along the slot's direction, seeded to the probe range on every re-probe and set to the distance to the obstacle on a hit; slot+48h is the seconds left before the next re-probe, counted down by the frame time and reseeded to 2.0f. 009E6640 is the reader and the running writer of both; the 1000.0f and the [0, 2) draw are construction values only.",
+   "evidence": "009E669C..009E66AB slot+48h -= seconds with one float store; 009E66B4 JBE on the FLDZ comparison re-probes on a strictly negative timer. 009E66BA slot+44h = the range argument, 009E66D0 slot+40h = 0, 009E66D4 slot+48h = 2.0f (00CE3958). 009E681F slot+40h = 1 and 009E6838 slot+44h = 00414C60 of the start-to-hit delta. 009E6852..009E6856 returns slot+44h / range. The construction stores are 009E55A1/009E55B1 and 009F3153/009F315E."
+  },
+  {
+   "where": "docs/SHIP_AI_APPROACH_UPDATE.md, the 009E76D0 section",
+   "was": "'Nothing in this packet ever sets that byte to non-zero; 009E6640 or 009E6870 must.'",
+   "is": "009E6640 sets slot+40h to 1 at 009E681F, on the frame its probe hits something. 009E6870 never touches the byte. 009E76D0's accept arm (009E7852) and its mode-3 arm (009E79C0) are the only clears.",
+   "evidence": "009E6870 body read whole: its only store is slot+30h at 009E6975. 009E6640 at 009E66D0 clears the byte on a re-probe and at 009E681F sets it on a hit."
+  },
+  {
+   "where": "config/names ledger, 009E76D0, and docs/SHIP_AI_APPROACH_UPDATE.md Coverage",
+   "was": "PARTIAL: the 6-way unrolled accept/reject body 009E78CC-009E79AA and the 8-way unrolled winner scan 009E79E5-009E7B7E were read in their first and last step only.",
+   "is": "complete. The accept/reject body starts at 009E7822, not 009E78CC (009E78CC is its fourth unrolled step), and runs to 009E79AA with EDX += 6 and ECX += 1C8h at 009E799E. The winner scan is 009E79CA-009E7C17: slot 0 seeds at 009E79CA, the eight-way body 009E79E5-009E7BC9 covers slots 1..56 (EDX += 8, ECX += 260h, CMP EDX,0x35 at 009E7BC6) and the remainder loop 009E7BD4-009E7C17 covers 57..59.",
+   "evidence": "Every unrolled step read: the six reject arms at 009E782A, 009E785D, 009E7891, 009E78D4, 009E791A and 009E7960 with their accept arms at 009E7852, 009E7886, 009E78C6, 009E790C, 009E7952 and 009E7998; the eight winner steps at 009E79E5, 009E7A13, 009E7A43, 009E7A82, 009E7AC1, 009E7B00, 009E7B3F and 009E7B7E. The ECX offsets +0h/+4Ch/+98h/... confirm the 4Ch stride in both."
+  },
+  {
+   "where": "include/bsp/ship_ai_approach_update.hpp, ShipAiApproachState::cleared_1218",
+   "was": "float cleared_1218{0.0f};  // nested+1218h, zeroed at 009E7FD1, no reader",
+   "is": "it has a reader: 009F2C52, inside 009F1BC0, loads it (FLD [EBP+1218h]) and pushes it to a call at 009F2C5D. That is nested+1218h, not the commanded throttle: EBP is ECX from 009F1BE5 and is written nowhere else in 009F1BC0's body, and the throttle 009F1BF7 seeds is [EBP+1210h].",
+   "evidence": "The whole 009F1BC0 listing filtered for EBP (checklist rule 8) has one write, MOV EBP,ECX at 009F1BE5, and one POP EBP at 009F3072. A byte-pattern search for the displacement 18 12 00 00 finds 009E7FD5 (the zeroing), 009E5603 (the constructor), 009F2C54 and 009F339E; the last is sub+1218h in 009F3240, which is nested+1210h."
+  },
+  {
+   "where": "docs/SHIP_AI_APPROACH_UPDATE.md, the 009E6A90 section, the final clamp",
+   "was": "'both are JBE, so a NaN command falls through both and is stored unchanged'",
+   "is": "clarification, not a behaviour change: on an unordered comparison FCOMIP sets ZF=PF=CF, so both JBEs are TAKEN, not fallen through. The path 009E6BE8 -> 009E6E4D -> 009E6E66 then stores the value reloaded from the stack at 009E6E66, which is the original command. The outcome the doc states is right.",
+   "evidence": "009E6BC7..009E6BFE and 009E6E4D..009E6E78 read whole. 009E6BE6 FCOMIP of -limit against the command with JBE to 009E6E4D; 009E6E4D FCOMIP of the command against limit with JBE to 009E6E66; 009E6E66 MOVSS from [ESP+0Ch], the copy 009E6BDA made before either test."
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "start": "009e5e70",
+   "end": "009e5e76",
+   "name": "(unnamed) the commanded-heading accessor",
+   "abi": "__thiscall(nested)(), no RET imm, ST0 result",
+   "body": "FLD float ptr [ECX + 0x120c]; RET",
+   "evidence": "Start: 009E5E67-009E5E6F are nine INT3 padding bytes after the RET at 009E5E66 that ends the preceding accessor, so 009E5E70 is the first instruction of a new body. End: the RET at 009E5E76 is followed by INT3 from 009E5E77 to 009E5E7F. Read from the disk bytes with bsp.py disasm-raw; Ghidra has no function, label or thunk at 009E5E70 (ghidra proto 009e5e70 answers 'body ?')."
+  },
+  {
+   "start": "009e5e80",
+   "end": "009e5e86",
+   "name": "(unnamed) the commanded-throttle accessor",
+   "abi": "__thiscall(nested)(), no RET imm, ST0 result",
+   "body": "FLD float ptr [ECX + 0x1210]; RET",
+   "evidence": "Start: 009E5E77-009E5E7F are INT3 padding after the RET at 009E5E76. End: the RET at 009E5E86 is followed by INT3 from 009E5E87 to 009E5E8F, and the next function 009E5E90 (BSP_ShipAi_ApproachCommitBearing) starts there. Ghidra has no function at 009E5E80."
+  }
+ ],
+ "follow_up_packets": [
+  {
+   "id": "ship_ai_ring_scan_runtime",
+   "what": "Wire bsp_game.exe to run the ring scan instead of recording it. src/game_hosts_ship_ai.cpp lines 837-853 record 009E76D0, 009E5E90 and 009E6A90 with the note 'the four unread scorers'; three of the four are now read and the fourth (009E5DA0) is a thin adapter around one host call. The binding needs a ShipAiRingScanHost whose probe_hit_0041b4e0 can answer, which is the next item.",
+   "owner_hint": "the packet that owns src/game_hosts_ship_ai.cpp"
+  },
+  {
+   "id": "ship_ai_probe_space",
+   "what": "unit->vtable[218h] (009E66EB), 00417B10 (009E673E) and 0041B4E0 (009E6808): the object the obstacle probe is cast against, the start-point adjustment with a 3.0f clearance, and the segment query that returns the hit point. Without these the probe always reports clear water and every slot scores 1.0."
+  },
+  {
+   "id": "ship_ai_class_bearing_rating",
+   "what": "0095EB40 (009E5DC4) and the producer of the 17-dword block at nested+127Ch..12BFh. 0095EB40 is in the vehicle-class cluster and has two other callers, 0095F080 and 009E6240. It is what fills slot+18h and therefore, through 009E7FC0's mode-0 normalisation, slot+2Ch: the largest of the five ring weights."
+  },
+  {
+   "id": "ship_ai_approach_accessor_gap",
+   "what": "Define the four one-instruction accessors in the gap 009E5E30-009E5E8F that Ghidra has no functions for: 009E5E50 (LEA EAX,[ECX+1228h], the approach point), 009E5E60 (FLD [ECX+11E0h], the goal range) and the two this packet documents. tools/ghidra_define_function.py with the ranges in the no_ghidra_function table."
+  }
+ ],
+ "uncertainties": [
+  "The probe-length ramp at 009E67AA gives a slot pointing at the reference bearing a zero-length probe and a slot 120 degrees away the full range, so a slot aligned with the goal is never blocked. That is what the listing says (x0 = 20 deg with y0 = 0 at 009E67A1 and 009E679D, x1 = 120 deg with y1 = 1 at 009E6791 and 009E678B); it is reproduced, not corrected, and no run-time evidence was available to test it.",
+  "00CE3D10 is one pooled double, 0.2f widened. 009E76DA uses it as the wobble-phase rate and 009E692B as the arc-cost slope. The header carries one constant for both; whether the source had one constant or two is not recoverable.",
+  "009E6870's side and span arguments come from 009E6E80's tail, whose two curve arms are projected as host calls, so the arc geometry is only as good as those.",
+  "The seventeen dwords 009E5DA0 forwards are copied with REP MOVSD, so only the five words this packet saw used as floats (5, 10, 11, 12, 13) are known to be floats. The producer of the block beyond nested+1290h/1294h/1298h is unknown.",
+  "nested+11E8h, the committed slot 009E5E90's ring walk starts from, is still written by no routine any packet has read; 009E5530 zeroes it at 009E561F. The walk therefore always starts at slot 0 in the projection."
+ ]
+}
