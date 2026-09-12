@@ -1,0 +1,65 @@
+{
+  "packet": "orch3_registered_model_ai",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "function_count": 63371,
+  "ghidra_mutations": false,
+  "source": "src/registered_model_effect.cpp",
+  "header": "include/bsp/registered_model_effect.hpp",
+  "documentation": "docs/REGISTERED_MODEL_EFFECT.md",
+  "status": "complete_typed_bodies_with_required_particle_model_callees_strict_win32_compile_bounded_native_destructor_and_suppressed_factory_fixture_passed",
+  "routines": [
+    {"address":"008742a0","name":"construct_registered_model_effect_008742a0","end_inclusive":"0087442e","length":399,"coverage":"complete through required model allocator/constructor; actual successful model path unvalidated","abi":"ECX event; stack definition,point; EAX event; RET8","disk_sha256":"6af25155b69c5175a999391b8fccc455489cf6ea1e9c6cd7d9b433a64290a022"},
+    {"address":"00874430","name":"destroy_registered_model_effect_00874430","end_inclusive":"0087449a","length":107,"coverage":"complete","abi":"ECX event; RET","disk_sha256":"5f22b86f96878fafd4c517ecc8c81b676015f382cfad2e76b94f87fd56959f62"},
+    {"address":"0086b1c0","name":"create_registered_model_effect_0086b1c0","end_inclusive":"0086b230","length":113,"coverage":"complete through required gate/model callees; suppressed path native-compared","abi":"ECX definition; stack point; EAX event/null; RET4","disk_sha256":"6752e3bc1fcbddd98b0d2ad95baa10fe42adf08e23ee33dc9848961a27074598"},
+    {"address":"008745f0","name":"delete_registered_model_effect_008745f0","end_inclusive":"0087460d","length":30,"coverage":"complete","abi":"ECX event; stack flags; EAX original address; RET4","disk_sha256":"b218a383f83b97218b979e0d82ac6599988385408f0714043766ea351970f62f"}
+  ],
+  "host_steps": [
+    {"function":"008742a0","address":"00874313","native":"00bd2fc0","contract":"read; ECX0 primary random; no stack arguments"},
+    {"function":"008742a0","address":"00874327","native":"00af6b60","contract":"read; raw model slot from actual F8D2D0 pool; required"},
+    {"function":"008742a0","address":"0087433e","native":"00af74a0","contract":"read; ECX raw2DCh slot, stack selected variant; RET4; required complete actual constructor"},
+    {"function":"008742a0","address":"008743c9","native":"00d5da50+vtable38","resolved":"00b6db10","contract":"current virtual38, identity local matrix; canonical actual scene binding"},
+    {"function":"008742a0","address":"008743dc","native":"00b6e680","contract":"read; current model child, point110 parent; RET4"},
+    {"function":"008742a0","address":"00874400","native":"004134f0","contract":"read; model298 destination, captured point90 matrix; RET4"},
+    {"function":"008742a0","address":"00874406","native":"004d1100","contract":"read; actual F8765C singleton through same domain"},
+    {"function":"008742a0","address":"0087440d","native":"00866a10","contract":"read; manager/raw event; RET4; actual F87654 lock"},
+    {"function":"00874430","address":"00874463","native":"004d1100","contract":"read; same actual manager domain"},
+    {"function":"00874430","address":"0087446a","native":"00866b00","contract":"read; unregister raw event; RET4"},
+    {"function":"00874430","address":"00874486","native":"00bd30f0","contract":"read; primary CEB130 store only; RET"},
+    {"function":"0086b1c0","address":"0086b1d9","native":"0051f6b0","contract":"read; actual live8h F8C27C singleton getter; required"},
+    {"function":"0086b1c0","address":"0086b1e6","native":"00bf681b","contract":"allocation20h; ADD ESP4 at86B1EB"},
+    {"function":"0086b1c0","address":"0086b206","native":"008742a0","contract":"captured definition and stack point; RET8"},
+    {"function":"008745f0","address":"008745f3","native":"00874430","contract":"read; ECX event; RET"},
+    {"function":"008745f0","address":"00874600","native":"00bf65ac","contract":"free actual event only when flags bit0 set"}
+  ],
+  "unwind_edges": [
+    {"site":"00c96363","target":"00858150","kind":"tail_jump","state":0,"contract":"base tables then BD30F0"},
+    {"site":"00c9636b","target":"00af62f0","kind":"tail_jump","state":1,"contract":"return raw model slot; then state0"},
+    {"site":"00c96383","target":"00858150","kind":"tail_jump","state":0,"contract":"destructor base unwind"}
+  ],
+  "corrections": [
+    {"was":"AF6B60 getter/static destructor name","is":"actual F8D2D0 raw model slot allocator thunk","evidence":"AF6B60 MOV ECX,F8D2D0; JMP AF69E0; AF69E0 locked2E0h slot allocation"},
+    {"was":"same constructor input supplies variants and point matrix","is":"first stack argument definition14 supplies variants; second point10 supplies node110 and matrix90","evidence":"complete ESP provenance at8742BB/8742CC/8743CB plus RET8"},
+    {"was":"event destructor could own model release","is":"unregister and base stores only; model1C unchanged","evidence":"full874430 listing and native107-byte differential comparison; virtual30 is separate871FE0->AF5F20 stop action"},
+    {"was":"saved scalar listing stops at incorrectly nonreturning _free call","is":"ADD ESP4 at874605 continues to original-address return at874608","evidence":"disk/live complete30-byte span contains83C404 at874605; no worker flow mutation"}
+  ],
+  "missing_function_starts": [
+    {"start":"00871fe0","end_inclusive":"00871fe7","length":8,"evidence":"D0DE18+30; raw MOV ECX,[ECX+1C], JMP AF5F20"},
+    {"start":"00af5f20","end_inclusive":"00af5f50","length":49,"evidence":"raw clears1A4, captured194/198 emitter loop CALL AFF570, RET"}
+  ],
+  "verification": {
+    "all_body_spans_disk_live_equal":true,
+    "canonical_seeds":"8 disk/live matches; native probe executed after verification",
+    "report_call_rows":"15 direct passed;1 indirect current table separately inspected",
+    "strict_msvc_win32":"passed /std:c++20 /MD /EHsc /W4 /WX",
+    "fixture":"local/model_probe_ai.cpp and local/run_model_probe_ai.cmd; /MANIFEST:EMBED; PASS",
+    "original_bytes_executed":"107-byte destructor,30-byte scalar flags0/2, and suppressed branch of113-byte factory; direct external call boundaries redirected to same registry/base or required gate fixture",
+    "constructor_failure":"injected AF74A0 failure; raw-slot return then base unwind, no model publication or registration; passed",
+    "successful_model_construction":false,
+    "full_application_run":false,
+    "game_validated":false,
+    "binary_replacement_abi":false,
+    "full_build":"root integrator owns CMake/build/CTest integration"
+  },
+  "open_contracts":["actual AF6B60/AF69E0 model pool includingAF62F0/AF60B0 return", "complete AF74A0 derived particle-model constructor/member unwind and stable actual node bindings", "real0051F6B0 singleton access", "later particle model/emitter/node disposal and application update/render path", "current virtual38 dispatch beyond recovered D5DA50/B6DB10"]
+}
