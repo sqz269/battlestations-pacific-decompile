@@ -1,0 +1,51 @@
+{
+  "packet": "orch4_sound_runtime_y",
+  "status": "composition_build_and_installed_fixture_verified",
+  "kind": "application_composition_of_existing_recovered_functions",
+  "source": ["include/bsp/game_sound_runtime.hpp", "src/game_sound_runtime.cpp"],
+  "source_dependency": "96f06a9c: sound constructor base-only unwind and required shutdown context",
+  "analysis_project": "C:/Users/sqz269/bsp.gpr",
+  "analysis_program": "/battlestationspacific.exe",
+  "new_native_addresses": [],
+  "ghidra_mutations": false,
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "verification": {
+    "seed_bytes": "8 spans match installed executable",
+    "build": "scripts/build.ps1 Win32 Release passed",
+    "ctest": {"passed": 2, "failed": 0},
+    "build_environment": "MSBUILDDISABLENODEREUSE=1 avoids cross-process MSBuild worker access failures",
+    "probe_source": "local/game_sound_probe.cpp",
+    "probe_source_sha256": "B9E63AF92EA08ECF64B4B621AAD1CDE3BD76B73BA4FCB676BC06647EA343A2E4",
+    "probe_runner": "local/run_game_sound_probe.ps1",
+    "probe_log": "local/game-sound-probe.log",
+    "probe_log_sha256": "610AF451BBEAA0501FBA40DA043336C5DB3E7DD10C30BE1A8C1A134B489CC673",
+    "normal_runs": [
+      {"sound_disabled": true, "shutdown": "explicit", "fmod_calls": 168, "initialization_errors": 0, "all_fmod_errors": 1, "classes": 7, "initial_resources": 1, "file_opens": 1, "file_closes": 1},
+      {"sound_disabled": true, "shutdown": "shared_domain_scalar_deletion", "fmod_calls": 168, "initialization_errors": 0, "all_fmod_errors": 1, "deleted_singletons": 3, "classes": 7, "initial_resources": 1, "file_opens": 1, "file_closes": 1},
+      {"sound_disabled": false, "shutdown": "explicit", "driver_count": 8, "queried_output": 9, "fmod_calls": 177, "initialization_errors": 0, "all_fmod_errors": 1, "classes": 7, "initial_resources": 1, "file_opens": 1, "file_closes": 1}
+    ],
+    "preserved_fmod_error": {"function": "FMOD_Channel_Stop", "result_hex": "0x25", "source": "00A7BF40 unconditionally stops the never-started fixture channel during destruction"},
+    "ownership": "Actual sample retained by actual nonspatial channel until manager shutdown; tracked strings, resource accounting, samples and file handles balanced in all normal runs",
+    "failure_runs": [
+      {"injection": "missing Event DLL", "fmod_calls": 0, "error": "Win32 126", "owned_publications_remaining": 0, "tracked_strings_remaining": 0},
+      {"injection": "sound/soundsetup.lua VFS open exception", "fmod_calls": 25, "error": "original injected exception", "owned_publications_remaining": 0, "tracked_strings_remaining": 0}
+    ],
+    "fixture_platform_policy": "Explicit pretranslation/focus observers, not the production platform host",
+    "audio_played": false
+  },
+  "installed_inputs": [
+    {"path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmodex.dll", "sha256": "31E7451AEF6115B0AEC353E4E508FF9F0FC14EA3A8957E5DDB805EDE911700E8"},
+    {"path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/fmod_event.dll", "sha256": "4B6AE7BA8D3DA780C23ABB5E72A65EA50E5348A60A1B4AEF43196E09AE771890"},
+    {"path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/sound/soundsetup.lua", "sha256": "17A237A56369D11AF275533F0E7A1E3B0D0C68FF817A1AA1F4FD365660390D65"},
+    {"path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/sound/gui/error.fsb", "sha256": "247374FBB9CFCB9E3867F054C72E0663F346EE858ECC1EA1FFA4C4FFF32FB555"}
+  ],
+  "boundaries": [
+    "Application phase-5 wiring awaits its shared native singleton registration boundary; this runtime never creates a second private domain",
+    "A published alternate engine requires real update/destruction dependencies; the runtime does not construct one",
+    "Startup-failure external-resource recovery is an explicit host policy, separate from native base-only exception unwind",
+    "Borrowed application services and CRT bindings outlive runtime; external sample/channel references are released before shutdown",
+    "Callbacks and owner operations require serialized access; callback exception translation was source-reviewed, not separately fault-injected inside FMOD",
+    "No audible playback, original object layout/ABI or gameplay validation"
+  ]
+}
