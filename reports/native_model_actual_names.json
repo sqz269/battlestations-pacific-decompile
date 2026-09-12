@@ -1,0 +1,96 @@
+{
+  "result": "passed",
+  "purpose": "Root NativeModelEnvironment.actual_names nonempty construction/destruction allocator routing",
+  "runtime": "MSVC Win32 reconstructed C++ source execution",
+  "observed": [
+    "B75030 copied nonempty input into actual NativeStringPoolStorage arena at8+bump_before",
+    "Actual arena bump increased by name_length+1",
+    "B750C0/node destruction returned copy to same actual size ring",
+    "Next actual pool allocation returned the exact released copy",
+    "Actual model scalar deletion returned physical188h model slot and cleanup left allocator list empty"
+  ],
+  "limitations": [
+    "No original-byte differential coverage claimed for model name routing",
+    "No native FH3/SEH or gameplay execution",
+    "Only empty scene/hierarchy/retained-owner model case"
+  ],
+  "build": "W4 WX EHsc fp:strict O2 MD Win32; root updated native_model_owner.cpp explicitly precedes older bsp_core.lib; MANIFEST:EMBED",
+  "log": "run.log",
+  "files": [
+    {
+      "path": "C:\\Users\\sqz269\\bsp-orch3-al\\local\\tracer_model_names_route\\probe.cpp",
+      "sha256": "F3726E7E26E6ABE2FC540EA72257D698A1BA7DE76AE3DA3F9518410331B31053",
+      "last_write_utc": "2026-09-12T16:39:58.1714314Z"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-orch3-al\\local\\tracer_model_names_route\\tables.hpp",
+      "sha256": "15C916F94B4C02D8D37DF1ED030C675098B1CDB66CB064FD96CAAED90342B353",
+      "last_write_utc": "2026-09-12T16:40:46.0659138Z"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-orch3-al\\local\\tracer_model_names_route\\model_names_route_probe.exe",
+      "sha256": "05313DD3CB00D4DA62F98E10C848E826026CB6A93CC2759A89CE0CE813BEDF13",
+      "last_write_utc": "2026-09-12T16:40:49.7739736Z"
+    },
+    {
+      "path": "C:\\Users\\sqz269\\bsp-orch3-al\\local\\tracer_model_names_route\\native_model_owner.obj",
+      "sha256": "3B5D9F091F64C516EB0C859A83906F35085FF4E4B651757EA9984CCF22CB834E",
+      "last_write_utc": "2026-09-12T16:40:49.6428141Z"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_model_owner.hpp",
+      "sha256": "487D4F81C444955FE6FEB48D70A52241044852139C94EF2526FC8CCB7F0E2DB2",
+      "last_write_utc": "2026-09-12T16:32:04.2717769Z"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_model_owner.cpp",
+      "sha256": "94FE741D5D99B7E5F16721769241427AE14198B07440F4796348E78CA13B6882",
+      "last_write_utc": "2026-09-12T16:32:04.2722795Z"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\build\\win32\\Release\\bsp_core.lib",
+      "sha256": "019CE045F960989F36EF1BCD3FB58B709C0580A015EA33FA82ECF56F674D2212",
+      "last_write_utc": "2026-09-12T16:22:27.5528973Z"
+    }
+  ],
+  "source": "src/native_model_owner.cpp",
+  "header": "include/bsp/native_model_owner.hpp",
+  "addresses": [
+    "00b75030",
+    "00b750c0"
+  ],
+  "change": "Appended optional actual_names binding; constructor/destructor use existing explicit NativeStringStorage node overloads. New tracer/particle construction requires exact canonical parameter_names identity.",
+  "legacy_boundary": "Existing semantic callers retain null-pointer fallback. Caller must keep borrowed storage binding stable through destruction.",
+  "annotation_audit": [
+    {
+      "address": "00b75030",
+      "before": {
+        "address": "00b75030",
+        "function_name": "BSP_GeneratedModel_Construct",
+        "comment": "[BSP reconstruction 00b75030]\nConstruct184h model wrapper via00b6f5a0; install00d62de8, null+180 geometry. Full model layout/lifetime unported. Original ABI: ECX destination; stack model-constructor argument; EAX destination; RET4. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation.\n\n[BSP reconstruction 00b75030] update\nComplete original[00b75030,00b750b4); ECX actual188h slot; stack NativeString*; EAX same slot; RET4. Complete node constructor over actual174h prefix, current model type/profile, exact174..183 tail and signed-zero pose stores; preserve184h pool ID. Shared model pool/node/type/runtime, no copied descriptor tokens. Evidence reports/native_model_owner_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+      },
+      "after": {
+        "address": "00b75030",
+        "name": "BSP_GeneratedModel_Construct",
+        "evidence": "Construct184h model wrapper via00b6f5a0; install00d62de8, null+180 geometry. Full model layout/lifetime unported. Original ABI: ECX destination; stack model-constructor argument; EAX destination; RET4. Evidence: docs/GENERATED_INSTANCE_GEOMETRY.md; reports/generated_instance_geometry_audit.json. Names are descriptive hypotheses. Typed interfaces are not original ABI or gameplay validation. | Complete original[00b75030,00b750b4); ECX actual188h slot; stack NativeString*; EAX same slot; RET4. Complete node constructor over actual174h prefix, current model type/profile, exact174..183 tail and signed-zero pose stores; preserve184h pool ID. Shared model pool/node/type/runtime, no copied descriptor tokens. Evidence reports/native_model_owner_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation. | AL source binding correction: optional canonical actual_names uses the existing explicit NativeStringStorage node constructor/destructor overloads. New particle/tracer constructors require the SAME parameter_names domain. Nonempty actual-pool allocation, return and exact-pointer reuse passed in reconstructed C++; no additional original-byte model/EH/game claim. See reports/native_model_actual_names.json."
+      },
+      "status": "applied"
+    },
+    {
+      "address": "00b750c0",
+      "before": {
+        "address": "00b750c0",
+        "function_name": "BSP_Model_Destroy",
+        "comment": "[BSP reconstruction 00b750c0]\n[BSP reconstruction] Release then clear retained174, then retainedgeometry180, loading each field after prior terminal callback. Then invoke base node destructor00B6F440. This packet closes the terminal path reached after00B6F310 has cleared hierarchy/root links. Opaque174 and130 require actual RenderCommandReference owners;180 retains the actual GeneratedInstanceGeometry. Original ABI: ECX model; no stack args; RET.. Evidence: docs/GENERATED_MODEL_LIFETIME.md; reports/generated_model_lifetime_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation.\n\n[BSP reconstruction 00b750c0] update\nComplete original[00b750c0,00b75165); ECX actualmodel; RET. Publish model table, release/clear174 then reload/release/clear180 through sameactual04/currentvirtual0; complete node destruction. State1 unwind current180 then base; state0 base only; no physical free. Evidence reports/native_model_owner_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation."
+      },
+      "after": {
+        "address": "00b750c0",
+        "name": "BSP_Model_Destroy",
+        "evidence": "[BSP reconstruction] Release then clear retained174, then retainedgeometry180, loading each field after prior terminal callback. Then invoke base node destructor00B6F440. This packet closes the terminal path reached after00B6F310 has cleared hierarchy/root links. Opaque174 and130 require actual RenderCommandReference owners;180 retains the actual GeneratedInstanceGeometry. Original ABI: ECX model; no stack args; RET.. Evidence: docs/GENERATED_MODEL_LIFETIME.md; reports/generated_model_lifetime_audit.json. Descriptive names are hypotheses; typed interfaces are not native ABI or game validation. | Complete original[00b750c0,00b75165); ECX actualmodel; RET. Publish model table, release/clear174 then reload/release/clear180 through sameactual04/currentvirtual0; complete node destruction. State1 unwind current180 then base; state0 base only; no physical free. Evidence reports/native_model_owner_audit.json; reports/native_model_group_integration_audit.json. StrictMSVCWin32 build2/2 and focused originalmachine-code comparisons passed; new C++ ABI, no nativeEH execution/fullcommand/fullrenderer/game validation. | AL source binding correction: optional canonical actual_names uses the existing explicit NativeStringStorage node constructor/destructor overloads. New particle/tracer constructors require the SAME parameter_names domain. Nonempty actual-pool allocation, return and exact-pointer reuse passed in reconstructed C++; no additional original-byte model/EH/game claim. See reports/native_model_actual_names.json."
+      },
+      "status": "applied"
+    }
+  ],
+  "current_library_replay": "local/al-current-fixtures.log",
+  "standard_build_and_ctest": "passed"
+}

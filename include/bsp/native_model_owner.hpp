@@ -34,6 +34,10 @@ struct NativeModelEnvironment {
     // Unknown owner/table entries have no constructed-type/default fallback.
     const volatile std::uint32_t* vtable_00d62de8;
     const volatile std::uint32_t* vtable_00d62c88;
+    // Bind the SAME native string storage used by the actual object's other
+    // names. Null retains the older semantic pool interface for existing users.
+    // This borrowed binding must remain stable through node destruction.
+    NativeStringStorage* actual_names = nullptr;
 };
 
 class NativeModelOwner final {

@@ -532,5 +532,204 @@
     "native_tracer_lifetime.hpp/.cpp sibling publishes actual profile and supplies BAC860/BAC880 member destruction",
     "root NativeModelEnvironment.actual_names appended and routed through existing explicit native node string overloads",
     "root CMake registration, name/reconstruction ledger integration, saved-analysis repairs and final strict combined build"
-  ]
+  ],
+  "functions": [
+    {
+      "address": "00bad6f0",
+      "end_inclusive": "00badc6d",
+      "bytes": 1406,
+      "coverage": "complete through required real renderer and canonical owner bindings",
+      "native_abi": "ECX actual7ACh; stack source/unused/texture0/texture1/template; EAX same owner; BADC6B RET14h",
+      "cpp_symbol": "construct_native_tracer_00bad6f0",
+      "proposed_name": "BSP_NativeTracer_Construct",
+      "ghidra_name_preimage": "FUN_00bad6f0",
+      "ghidra_signature_preimage": "undefined FUN_00bad6f0(void)",
+      "disk_sha256": "360f755a0d5d50a2a3345797b5092d78114693c820054ed5fc866570cc475fad",
+      "live_sha256": "360f755a0d5d50a2a3345797b5092d78114693c820054ed5fc866570cc475fad",
+      "live_equals_installed": true,
+      "source": "src/native_tracer_construction.cpp",
+      "header": "include/bsp/native_tracer_construction.hpp",
+      "original_abi": "ECX actual7ACh; stack source/unused/texture0/texture1/template; EAX same owner; BADC6B RET14h",
+      "ghidra_name": "BSP_NativeTracer_Construct",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeTracer_Construct(void * source, void * unused, void * texture0, void * texture1, void * parameters)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual7ACh; stack source/unused/texture0/texture1/template; EAX same owner; BADC6B RET14h. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_construction.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "address": "00bac070",
+      "end_inclusive": "00bac12a",
+      "bytes": 187,
+      "coverage": "complete native-valid header and backing domain",
+      "native_abi": "ECX actual0Ch header; signed capacity/count stack; RET4",
+      "cpp_symbol": "reserve_native_tracer_points_00bac070",
+      "proposed_name": "BSP_NativeTracerPoints_Reserve",
+      "ghidra_name_preimage": "FUN_00bac070",
+      "ghidra_signature_preimage": "undefined FUN_00bac070(void)",
+      "disk_sha256": "a920a585f3bbe9464960eb94832733d7ebb7d2c006c76d351a08da18595334f0",
+      "live_sha256": "a920a585f3bbe9464960eb94832733d7ebb7d2c006c76d351a08da18595334f0",
+      "live_equals_installed": true,
+      "source": "src/native_tracer_construction.cpp",
+      "header": "include/bsp/native_tracer_construction.hpp",
+      "original_abi": "ECX actual0Ch header; signed capacity/count stack; RET4",
+      "ghidra_name": "BSP_NativeTracerPoints_Reserve",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeTracerPoints_Reserve(int capacity)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual0Ch header; signed capacity/count stack; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_construction.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "address": "00bac310",
+      "end_inclusive": "00bac363",
+      "bytes": 84,
+      "coverage": "complete native-valid header and backing domain",
+      "native_abi": "ECX actual0Ch header; signed capacity/count stack; RET4",
+      "cpp_symbol": "resize_native_tracer_points_00bac310",
+      "proposed_name": "BSP_NativeTracerPoints_Resize",
+      "ghidra_name_preimage": "FUN_00bac310",
+      "ghidra_signature_preimage": "undefined FUN_00bac310(void)",
+      "disk_sha256": "ee68b96bc83e882a0e5226f1c928fa31fbc427e4a015e7d89aa80aa635fe2eb0",
+      "live_sha256": "ee68b96bc83e882a0e5226f1c928fa31fbc427e4a015e7d89aa80aa635fe2eb0",
+      "live_equals_installed": true,
+      "source": "src/native_tracer_construction.cpp",
+      "header": "include/bsp/native_tracer_construction.hpp",
+      "original_abi": "ECX actual0Ch header; signed capacity/count stack; RET4",
+      "ghidra_name": "BSP_NativeTracerPoints_Resize",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeTracerPoints_Resize(int count)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual0Ch header; signed capacity/count stack; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_construction.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    }
+  ],
+  "integration_al": {
+    "full_build": "local/al-standard-build-fixed.log; standard scripts/build.ps1 passed, strict Win32 and both seeded CTests",
+    "source_review": "complete",
+    "code_sha256": {
+      "src/native_tracer_construction.cpp": "d5fc641f753ef4b6e5f1fa125771f0ecc960d0276ebd753ea37e67b84888d72b",
+      "include/bsp/native_tracer_construction.hpp": "800696c0606a51e39c25dda3b5120f6bf3dd56d8036e34ae07e47ca6833168b9"
+    },
+    "library_sha256": "764c03f8480e2e9053daba197aeaa04e5a8c464c5af4818360c8822b52e25b7d",
+    "call_checks": "local/al-call-checks.log; 204 direct rows across5 reports,0 failures; indirect slots/imports retain documented manual-evidence limits",
+    "fixture_log": "local/al-current-fixtures.log",
+    "fixture_scope": "Original-byte and source-runtime scope remains exactly as documented; current combined-library replay passed. Full tracer constructor/teardown and original EH/gameplay are not implied.",
+    "body_ranges": [
+      {
+        "address": "00bad6f0",
+        "end_exclusive": "00badc6e",
+        "verified": true
+      },
+      {
+        "address": "00bac070",
+        "end_exclusive": "00bac12b",
+        "verified": true
+      },
+      {
+        "address": "00bac310",
+        "end_exclusive": "00bac364",
+        "verified": true
+      }
+    ],
+    "repair_records": [
+      "local/al-manager-flow-repairs.json",
+      "local/al-tracer_lifetime-flow-repairs.json",
+      "local/al-remaining-flow-repairs.json",
+      "local/al-manager-definitions.json",
+      "local/al-tracer_lifetime-definitions.json",
+      "local/al-remaining-definitions.json",
+      "local/al-missing-definitions.json"
+    ],
+    "gameplay": false,
+    "historical_note": "Worker pending-repair/build observations above describe earlier isolated snapshots; this section records current root integration."
+  },
+  "status": "reconstructed_strict_win32_build_tested_bounded_fixture_tested_saved_analysis_verified",
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T165027Z.json",
+    "project_saved": true,
+    "old_comments_preserved": true,
+    "readback_verified": true,
+    "changes": [
+      {
+        "address": "00bac070",
+        "before": {
+          "address": "00bac070",
+          "function_name": "FUN_00bac070"
+        },
+        "after": {
+          "address": "00bac070",
+          "name": "BSP_NativeTracerPoints_Reserve",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual0Ch header; signed capacity/count stack; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_construction.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bac310",
+        "before": {
+          "address": "00bac310",
+          "function_name": "FUN_00bac310"
+        },
+        "after": {
+          "address": "00bac310",
+          "name": "BSP_NativeTracerPoints_Resize",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual0Ch header; signed capacity/count stack; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_construction.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bad6f0",
+        "before": {
+          "address": "00bad6f0",
+          "function_name": "FUN_00bad6f0"
+        },
+        "after": {
+          "address": "00bad6f0",
+          "name": "BSP_NativeTracer_Construct",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual7ACh; stack source/unused/texture0/texture1/template; EAX same owner; BADC6B RET14h. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_tracer_construction.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cc3e94",
+        "before": {
+          "address": "00cc3e94",
+          "function_name": "FUN_00cc3e94"
+        },
+        "after": {
+          "address": "00cc3e94",
+          "name": "BSP_NativeTracer_Construct_FH3Dispatcher",
+          "evidence": "Provisional descriptive hypothesis, not a recovered symbol. Compiler MOV EAX,DFD694; JMP BF6B43, CC3E94..CC3E9D. Analyzed only, original FH3 not implemented/executed."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/al-signature-audit.json",
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00bad6f0": "00bad6f0 BSP_NativeTracer_Construct  undefined BSP_NativeTracer_Construct(void)  body 00bad6f0 - 00badc6d\n",
+      "00bac070": "00bac070 BSP_NativeTracerPoints_Reserve  undefined BSP_NativeTracerPoints_Reserve(void)  body 00bac070 - 00bac12a\n",
+      "00bac310": "00bac310 BSP_NativeTracerPoints_Resize  undefined BSP_NativeTracerPoints_Resize(void)  body 00bac310 - 00bac363\n"
+    },
+    "changes": [
+      {
+        "address": "00bad6f0",
+        "prototype": "void * __thiscall BSP_NativeTracer_Construct(void * source, void * unused, void * texture0, void * texture1, void * parameters)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bad6f0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bac070",
+        "prototype": "void __thiscall BSP_NativeTracerPoints_Reserve(int capacity)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bac070 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bac310",
+        "prototype": "void __thiscall BSP_NativeTracerPoints_Resize(int count)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bac310 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ]
+  }
 }

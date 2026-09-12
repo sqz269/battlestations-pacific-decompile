@@ -1,0 +1,1195 @@
+{
+  "packet": "orch3_particle_model_manager_al",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "reconstructed_strict_win32_build_tested_bounded_fixture_tested_saved_analysis_verified",
+  "functions": [
+    {
+      "name": "reserve",
+      "address": "00af0630",
+      "end_inclusive": "00af068e",
+      "end_exclusive": "00af068f",
+      "length": 95,
+      "sha256": "0801888269aa047dc6cd7ec4bc014c508cfc9ce76770414acc93246a1471b67a",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af068c",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "calls": [
+        {
+          "address": "00af0650",
+          "target": "0xbf55be",
+          "bytes": "e8694f1000"
+        },
+        {
+          "address": "00af067c",
+          "target": "0xbf6989",
+          "bytes": "e808631000"
+        }
+      ],
+      "cpp_symbol": "reserve_native_particle_manager_pointers_00af0630",
+      "ghidra_name": "BSP_ParticleManagerPointers_Reserve",
+      "source": "src/native_particle_model_manager.cpp",
+      "header": "include/bsp/native_particle_model_manager.hpp",
+      "coverage": "complete_cpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleManagerPointers_Reserve(int capacity)",
+      "original_abi": "ECX actual owner/header; int capacity; RET4; void return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; int capacity; RET4; void return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "name": "base_construct",
+      "address": "00af06a0",
+      "end_inclusive": "00af0730",
+      "end_exclusive": "00af0731",
+      "length": 145,
+      "sha256": "f9c0156bf4c804e2e1d39fe24db46f492555a32e30763538e0efd8f17d51c365",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af0730",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "calls": [
+        {
+          "address": "00af06ce",
+          "target": "0x415350",
+          "bytes": "e87d4c92ff"
+        },
+        {
+          "address": "00af06e7",
+          "target": "dword ptr [0xce2218]",
+          "bytes": "ff151822ce00"
+        },
+        {
+          "address": "00af06fc",
+          "target": "0x415350",
+          "bytes": "e84f4c92ff"
+        },
+        {
+          "address": "00af070a",
+          "target": "0xbd0c30",
+          "bytes": "e821050e00"
+        },
+        {
+          "address": "00af0718",
+          "target": "dword ptr [0xce2210]",
+          "bytes": "ff151022ce00"
+        }
+      ],
+      "cpp_symbol": "construct_native_particle_manager_base_00af06a0",
+      "ghidra_name": "BSP_FoliageGroupManager_BaseCtor",
+      "source": "src/native_particle_model_manager.cpp",
+      "header": "include/bsp/native_particle_model_manager.hpp",
+      "coverage": "complete_cpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_FoliageGroupManager_BaseCtor(void)",
+      "original_abi": "ECX actual owner/header; void; RET; void * return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void; RET; void * return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "name": "base_destroy",
+      "address": "00af0740",
+      "end_inclusive": "00af07d8",
+      "end_exclusive": "00af07d9",
+      "length": 153,
+      "sha256": "83a0e62b26be28cd474fe96cd009e3516dabf8958da93a72b8256cd86fa854b1",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af07d8",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "calls": [
+        {
+          "address": "00af076e",
+          "target": "0x415350",
+          "bytes": "e8dd4b92ff"
+        },
+        {
+          "address": "00af0787",
+          "target": "dword ptr [0xce2218]",
+          "bytes": "ff151822ce00"
+        },
+        {
+          "address": "00af0796",
+          "target": "0x415350",
+          "bytes": "e8b54b92ff"
+        },
+        {
+          "address": "00af07a4",
+          "target": "0xbcfca0",
+          "bytes": "e8f7f40d00"
+        },
+        {
+          "address": "00af07bc",
+          "target": "dword ptr [0xce2210]",
+          "bytes": "ff151022ce00"
+        }
+      ],
+      "cpp_symbol": "destroy_native_particle_manager_base_00af0740",
+      "ghidra_name": "BSP_FoliageGroupManager_BaseDestroy",
+      "source": "src/native_particle_model_manager.cpp",
+      "header": "include/bsp/native_particle_model_manager.hpp",
+      "coverage": "complete_cpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_FoliageGroupManager_BaseDestroy(void)",
+      "original_abi": "ECX actual owner/header; void; RET; void return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void; RET; void return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "name": "append",
+      "address": "00af07e0",
+      "end_inclusive": "00af0818",
+      "end_exclusive": "00af0819",
+      "length": 57,
+      "sha256": "0b1edf108a2d7851d540b6288ecc967ed11b2c91bdc0cdd8db8e59561570c3e8",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af0816",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "calls": [
+        {
+          "address": "00af07f8",
+          "target": "0xaf0630",
+          "bytes": "e833feffff"
+        }
+      ],
+      "cpp_symbol": "append_native_particle_manager_pointer_00af07e0",
+      "ghidra_name": "BSP_ParticleManagerPointers_Append",
+      "source": "src/native_particle_model_manager.cpp",
+      "header": "include/bsp/native_particle_model_manager.hpp",
+      "coverage": "complete_cpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleManagerPointers_Append(void ** value)",
+      "original_abi": "ECX actual owner/header; void ** value; RET4; void return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void ** value; RET4; void return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "name": "base_delete",
+      "address": "00af0870",
+      "end_inclusive": "00af088d",
+      "end_exclusive": "00af088e",
+      "length": 30,
+      "sha256": "773dc337e08222af3ce3c023fe55fbabfa7812a35b0966a7f10c10e299a86422",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af088b",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "calls": [
+        {
+          "address": "00af0873",
+          "target": "0xaf0740",
+          "bytes": "e8c8feffff"
+        },
+        {
+          "address": "00af0880",
+          "target": "0xbf65ac",
+          "bytes": "e8275d1000"
+        }
+      ],
+      "cpp_symbol": "delete_native_particle_manager_base_00af0870",
+      "ghidra_name": "BSP_FoliageGroupManager_BaseScalarDelete",
+      "source": "src/native_particle_model_manager.cpp",
+      "header": "include/bsp/native_particle_model_manager.hpp",
+      "coverage": "complete_cpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_FoliageGroupManager_BaseScalarDelete(uint flags)",
+      "original_abi": "ECX actual owner/header; uint flags; RET4; void * return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; uint flags; RET4; void * return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "name": "resize",
+      "address": "00af0900",
+      "end_inclusive": "00af094f",
+      "end_exclusive": "00af0950",
+      "length": 80,
+      "sha256": "8a205cbbac81404e7ba80996cdc53cffa8d997136bf9e4c5a7e3f59a1fc19da9",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af094d",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "calls": [
+        {
+          "address": "00af090e",
+          "target": "0xaf0630",
+          "bytes": "e81dfdffff"
+        }
+      ],
+      "cpp_symbol": "resize_native_particle_manager_pointers_00af0900",
+      "ghidra_name": "BSP_ParticleManagerPointers_Resize",
+      "source": "src/native_particle_model_manager.cpp",
+      "header": "include/bsp/native_particle_model_manager.hpp",
+      "coverage": "complete_cpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleManagerPointers_Resize(int count)",
+      "original_abi": "ECX actual owner/header; int count; RET4; void return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; int count; RET4; void return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "name": "register",
+      "address": "00af0950",
+      "end_inclusive": "00af0989",
+      "end_exclusive": "00af098a",
+      "length": 58,
+      "sha256": "d909df6343c10a460bb51bb78bc4ecc9b013bcf72c5a2b0f1939e2eeff8c4798",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af0987",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "calls": [
+        {
+          "address": "00af096b",
+          "target": "0xaf0630",
+          "bytes": "e8c0fcffff"
+        }
+      ],
+      "cpp_symbol": "register_native_particle_model_00af0950",
+      "ghidra_name": "BSP_FoliageGroupManager_RegisterWeakModel",
+      "source": "src/native_particle_model_manager.cpp",
+      "header": "include/bsp/native_particle_model_manager.hpp",
+      "coverage": "complete_cpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_FoliageGroupManager_RegisterWeakModel(void * model)",
+      "original_abi": "ECX actual owner/header; void * model; RET4; void return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void * model; RET4; void return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "name": "remove",
+      "address": "00af0a60",
+      "end_inclusive": "00af0ac6",
+      "end_exclusive": "00af0ac7",
+      "length": 103,
+      "sha256": "24d2aab156d7889ea7543c821483002b5f93b654671b47704e8253690ef1b8d0",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af0ac4",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "calls": [],
+      "cpp_symbol": "remove_native_particle_manager_pointer_00af0a60",
+      "ghidra_name": "BSP_ParticleManagerPointers_RemoveSwapLast",
+      "source": "src/native_particle_model_manager.cpp",
+      "header": "include/bsp/native_particle_model_manager.hpp",
+      "coverage": "complete_cpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "byte __thiscall BSP_ParticleManagerPointers_RemoveSwapLast(void ** value)",
+      "original_abi": "ECX actual owner/header; void ** value; RET4; byte return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void ** value; RET4; byte return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "name": "unregister",
+      "address": "00af0ae0",
+      "end_inclusive": "00af0aef",
+      "end_exclusive": "00af0af0",
+      "length": 16,
+      "sha256": "ae4c7ac022426d710dffaa1f252923752280f836e10463c42cfc72255cb44a41",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af0aed",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "calls": [
+        {
+          "address": "00af0ae8",
+          "target": "0xaf0a60",
+          "bytes": "e873ffffff"
+        }
+      ],
+      "cpp_symbol": "unregister_native_particle_model_00af0ae0",
+      "ghidra_name": "BSP_FoliageGroupManager_UnregisterWeakModel",
+      "source": "src/native_particle_model_manager.cpp",
+      "header": "include/bsp/native_particle_model_manager.hpp",
+      "coverage": "complete_cpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "byte __thiscall BSP_FoliageGroupManager_UnregisterWeakModel(void * model)",
+      "original_abi": "ECX actual owner/header; void * model; RET4; byte return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void * model; RET4; byte return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "name": "array_destroy",
+      "address": "00af0af0",
+      "end_inclusive": "00af0b06",
+      "end_exclusive": "00af0b07",
+      "length": 23,
+      "sha256": "87c3591bcb61af75f0bb4e24d45a2043d21c240d18dee2e22374e8560123d1c9",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af0b06",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "calls": [
+        {
+          "address": "00af0af5",
+          "target": "0xaf0900",
+          "bytes": "e806feffff"
+        },
+        {
+          "address": "00af0afd",
+          "target": "0xbf6989",
+          "bytes": "e8875e1000"
+        }
+      ],
+      "cpp_symbol": "destroy_native_particle_manager_pointers_00af0af0",
+      "ghidra_name": "BSP_ParticleManagerPointers_Destroy",
+      "source": "src/native_particle_model_manager.cpp",
+      "header": "include/bsp/native_particle_model_manager.hpp",
+      "coverage": "complete_cpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleManagerPointers_Destroy(void)",
+      "original_abi": "ECX actual owner/header; void; RET; void return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void; RET; void return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "name": "construct",
+      "address": "00af0b10",
+      "end_inclusive": "00af0b81",
+      "end_exclusive": "00af0b82",
+      "length": 114,
+      "sha256": "a82c87eedda65534b94de94ce1c65b0dc3dcd060c9f81a85150aa181e9511a8c",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af0b81",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "calls": [
+        {
+          "address": "00af0b2d",
+          "target": "0xaf06a0",
+          "bytes": "e86efbffff"
+        },
+        {
+          "address": "00af0b68",
+          "target": "0xbd1860",
+          "bytes": "e8f30c0e00"
+        }
+      ],
+      "cpp_symbol": "construct_native_particle_model_manager_00af0b10",
+      "ghidra_name": "BSP_FoliageGroupManager_Ctor",
+      "source": "src/native_particle_model_manager.cpp",
+      "header": "include/bsp/native_particle_model_manager.hpp",
+      "coverage": "complete_cpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_FoliageGroupManager_Ctor(void)",
+      "original_abi": "ECX actual owner/header; void; RET; void * return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void; RET; void * return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "name": "destroy",
+      "address": "00af0b90",
+      "end_inclusive": "00af0c40",
+      "end_exclusive": "00af0c41",
+      "length": 177,
+      "sha256": "01832e7de2588c69de47f8dcaa51104b11f71eb7bb60d44e895e4b567de03e31",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af0c40",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "calls": [
+        {
+          "address": "00af0bd5",
+          "target": "ebx",
+          "bytes": "ffd3"
+        },
+        {
+          "address": "00af0bdf",
+          "target": "dword ptr [0xce2214]",
+          "bytes": "ff151422ce00"
+        },
+        {
+          "address": "00af0be6",
+          "target": "0xbf65ac",
+          "bytes": "e8c1591000"
+        },
+        {
+          "address": "00af0bf5",
+          "target": "0xaf0900",
+          "bytes": "e806fdffff"
+        },
+        {
+          "address": "00af0bfd",
+          "target": "0xbf6989",
+          "bytes": "e8875d1000"
+        },
+        {
+          "address": "00af0c11",
+          "target": "0xaf0900",
+          "bytes": "e8eafcffff"
+        },
+        {
+          "address": "00af0c19",
+          "target": "0xbf6989",
+          "bytes": "e86b5d1000"
+        },
+        {
+          "address": "00af0c2b",
+          "target": "0xaf0740",
+          "bytes": "e810fbffff"
+        }
+      ],
+      "cpp_symbol": "destroy_native_particle_model_manager_00af0b90",
+      "ghidra_name": "BSP_FoliageGroupManager_Destroy",
+      "source": "src/native_particle_model_manager.cpp",
+      "header": "include/bsp/native_particle_model_manager.hpp",
+      "coverage": "complete_cpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_FoliageGroupManager_Destroy(void)",
+      "original_abi": "ECX actual owner/header; void; RET; void return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void; RET; void return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    },
+    {
+      "name": "delete",
+      "address": "00af1080",
+      "end_inclusive": "00af109d",
+      "end_exclusive": "00af109e",
+      "length": 30,
+      "sha256": "1af2ccdfa748592f0fd8e90c7c50a4581e1e78ed3444d34ec27781150773473a",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00af109b",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      },
+      "calls": [
+        {
+          "address": "00af1083",
+          "target": "0xaf0b90",
+          "bytes": "e808fbffff"
+        },
+        {
+          "address": "00af1090",
+          "target": "0xbf65ac",
+          "bytes": "e817551000"
+        }
+      ],
+      "cpp_symbol": "delete_native_particle_model_manager_00af1080",
+      "ghidra_name": "BSP_FoliageGroupManager_ScalarDelete",
+      "source": "src/native_particle_model_manager.cpp",
+      "header": "include/bsp/native_particle_model_manager.hpp",
+      "coverage": "complete_cpp",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_FoliageGroupManager_ScalarDelete(uint flags)",
+      "original_abi": "ECX actual owner/header; uint flags; RET4; void * return",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; uint flags; RET4; void * return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+    }
+  ],
+  "supporting_spans": [
+    {
+      "name": "base_eh",
+      "address": "00df2608",
+      "end_inclusive": "00df2673",
+      "end_exclusive": "00df2674",
+      "length": 108,
+      "sha256": "4ef93447e01c145a701de459cff3a41d03a9716d9bf7ac2221e9cc1790dababa",
+      "live_disk_equal": true
+    },
+    {
+      "name": "derived_eh",
+      "address": "00df269c",
+      "end_inclusive": "00df2703",
+      "end_exclusive": "00df2704",
+      "length": 104,
+      "sha256": "6c10a57f94fbc55c87c5b1ce598d0b9b5796f5c7072f6da4bce6e8685ba238b1",
+      "live_disk_equal": true
+    },
+    {
+      "name": "base_unwind",
+      "address": "00cba8b0",
+      "end_inclusive": "00cba8c9",
+      "end_exclusive": "00cba8ca",
+      "length": 26,
+      "sha256": "49658e4c2dd070b0d1a34dc3cdda7dd13f8a6fc59c3509f249c8bcec09b80cef",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00cba8c5",
+        "length": 5,
+        "bytes": "e979c2f3ff",
+        "text": "jmp 0xbf6b43"
+      },
+      "calls": []
+    },
+    {
+      "name": "base_destroy_unwind",
+      "address": "00cba8d0",
+      "end_inclusive": "00cba8e9",
+      "end_exclusive": "00cba8ea",
+      "length": 26,
+      "sha256": "99099371bcbf61bf0f352dfcc293164cb5d2e19e7b647e32f012cfa15a7a0c02",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00cba8e5",
+        "length": 5,
+        "bytes": "e959c2f3ff",
+        "text": "jmp 0xbf6b43"
+      },
+      "calls": []
+    },
+    {
+      "name": "construct_unwind",
+      "address": "00cba910",
+      "end_inclusive": "00cba937",
+      "end_exclusive": "00cba938",
+      "length": 40,
+      "sha256": "e38feba1c892d05924c8053e7833bbe159543e6c65bb470bfee5b76ad3f26da6",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00cba933",
+        "length": 5,
+        "bytes": "e90bc2f3ff",
+        "text": "jmp 0xbf6b43"
+      },
+      "calls": []
+    },
+    {
+      "name": "destroy_unwind",
+      "address": "00cba940",
+      "end_inclusive": "00cba95c",
+      "end_exclusive": "00cba95d",
+      "length": 29,
+      "sha256": "921497e4c3fc2c50e09d0f8f40161df160e02b82a1db977226331376fffe9143",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00cba958",
+        "length": 5,
+        "bytes": "e9e6c1f3ff",
+        "text": "jmp 0xbf6b43"
+      },
+      "calls": []
+    },
+    {
+      "name": "tables",
+      "address": "00d5d7ec",
+      "end_inclusive": "00d5d80b",
+      "end_exclusive": "00d5d80c",
+      "length": 32,
+      "sha256": "facbca8cc402c4900a0770999fd95f9cf36c478d73ed27baee9bffbc7574130c",
+      "live_disk_equal": true
+    },
+    {
+      "name": "one",
+      "address": "00d7a24c",
+      "end_inclusive": "00d7a24f",
+      "end_exclusive": "00d7a250",
+      "length": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_disk_equal": true
+    },
+    {
+      "name": "base_leaf",
+      "address": "00412430",
+      "end_inclusive": "00412436",
+      "end_exclusive": "00412437",
+      "length": 7,
+      "sha256": "197860f577f6cbc985b15e4605cd24b4388d933d89eb449e8ef5d9ca60d86ea1",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00412436",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      },
+      "calls": []
+    },
+    {
+      "name": "new_thunk",
+      "address": "00bf55be",
+      "end_inclusive": "00bf55c2",
+      "end_exclusive": "00bf55c3",
+      "length": 5,
+      "sha256": "1a1c5ac8daef760366aa45f2877b739d5fc503454ccccf7cce90f1613619b406",
+      "live_disk_equal": true,
+      "last_instruction": {
+        "address": "00bf55be",
+        "length": 5,
+        "bytes": "e958120000",
+        "text": "jmp 0xbf681b"
+      },
+      "calls": []
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00af0650",
+      "native": "00bf55be",
+      "function": "00af0630"
+    },
+    {
+      "address": "00af067c",
+      "native": "00bf6989",
+      "function": "00af0630"
+    },
+    {
+      "address": "00af06ce",
+      "native": "00415350",
+      "function": "00af06a0"
+    },
+    {
+      "address": "00af06e7",
+      "native": "dword ptr [0xce2218]",
+      "function": "00af06a0"
+    },
+    {
+      "address": "00af06fc",
+      "native": "00415350",
+      "function": "00af06a0"
+    },
+    {
+      "address": "00af070a",
+      "native": "00bd0c30",
+      "function": "00af06a0"
+    },
+    {
+      "address": "00af0718",
+      "native": "dword ptr [0xce2210]",
+      "function": "00af06a0"
+    },
+    {
+      "address": "00af076e",
+      "native": "00415350",
+      "function": "00af0740"
+    },
+    {
+      "address": "00af0787",
+      "native": "dword ptr [0xce2218]",
+      "function": "00af0740"
+    },
+    {
+      "address": "00af0796",
+      "native": "00415350",
+      "function": "00af0740"
+    },
+    {
+      "address": "00af07a4",
+      "native": "00bcfca0",
+      "function": "00af0740"
+    },
+    {
+      "address": "00af07bc",
+      "native": "dword ptr [0xce2210]",
+      "function": "00af0740"
+    },
+    {
+      "address": "00af07f8",
+      "native": "00af0630",
+      "function": "00af07e0"
+    },
+    {
+      "address": "00af0873",
+      "native": "00af0740",
+      "function": "00af0870"
+    },
+    {
+      "address": "00af0880",
+      "native": "00bf65ac",
+      "function": "00af0870"
+    },
+    {
+      "address": "00af090e",
+      "native": "00af0630",
+      "function": "00af0900"
+    },
+    {
+      "address": "00af096b",
+      "native": "00af0630",
+      "function": "00af0950"
+    },
+    {
+      "address": "00af0ae8",
+      "native": "00af0a60",
+      "function": "00af0ae0"
+    },
+    {
+      "address": "00af0af5",
+      "native": "00af0900",
+      "function": "00af0af0"
+    },
+    {
+      "address": "00af0afd",
+      "native": "00bf6989",
+      "function": "00af0af0"
+    },
+    {
+      "address": "00af0b2d",
+      "native": "00af06a0",
+      "function": "00af0b10"
+    },
+    {
+      "address": "00af0b68",
+      "native": "00bd1860",
+      "function": "00af0b10"
+    },
+    {
+      "address": "00af0bd5",
+      "native": "ebx",
+      "function": "00af0b90"
+    },
+    {
+      "address": "00af0bdf",
+      "native": "dword ptr [0xce2214]",
+      "function": "00af0b90"
+    },
+    {
+      "address": "00af0be6",
+      "native": "00bf65ac",
+      "function": "00af0b90"
+    },
+    {
+      "address": "00af0bf5",
+      "native": "00af0900",
+      "function": "00af0b90"
+    },
+    {
+      "address": "00af0bfd",
+      "native": "00bf6989",
+      "function": "00af0b90"
+    },
+    {
+      "address": "00af0c11",
+      "native": "00af0900",
+      "function": "00af0b90"
+    },
+    {
+      "address": "00af0c19",
+      "native": "00bf6989",
+      "function": "00af0b90"
+    },
+    {
+      "address": "00af0c2b",
+      "native": "00af0740",
+      "function": "00af0b90"
+    },
+    {
+      "address": "00af1083",
+      "native": "00af0b90",
+      "function": "00af1080"
+    },
+    {
+      "address": "00af1090",
+      "native": "00bf65ac",
+      "function": "00af1080"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "strict_win32_object_compile": true,
+    "original_byte_fixture": "pending",
+    "game_validated": false
+  },
+  "limitations": [
+    "Source interfaces add explicit canonical lifetime/publication bindings. No drop-in native ABI/EH claim.",
+    "Pointer arrays require actual readable/writable backing; native invalid pointer behavior is not made safe.",
+    "Original object lifetime registration dispatch remains the application domain callback; no replacement owner or registry is created."
+  ],
+  "integration_al": {
+    "full_build": "local/al-standard-build-fixed.log; standard scripts/build.ps1 passed, strict Win32 and both seeded CTests",
+    "source_review": "complete",
+    "code_sha256": {
+      "src/native_particle_model_manager.cpp": "8f4333c6485f219eb4e523a731f69c2c7fd02505f6de4d48f47fd033d40195fc",
+      "include/bsp/native_particle_model_manager.hpp": "2575deb3981060303320cf0c51eaed2a6659dc7686ec1243c23375064c20005d"
+    },
+    "library_sha256": "764c03f8480e2e9053daba197aeaa04e5a8c464c5af4818360c8822b52e25b7d",
+    "call_checks": "local/al-call-checks.log; 204 direct rows across5 reports,0 failures; indirect slots/imports retain documented manual-evidence limits",
+    "fixture_log": "local/al-manager-probe.log",
+    "fixture_scope": "Original-byte and source-runtime scope remains exactly as documented; current combined-library replay passed. Full tracer constructor/teardown and original EH/gameplay are not implied.",
+    "body_ranges": [
+      {
+        "address": "00af0630",
+        "end_exclusive": "00af068f",
+        "verified": true
+      },
+      {
+        "address": "00af06a0",
+        "end_exclusive": "00af0731",
+        "verified": true
+      },
+      {
+        "address": "00af0740",
+        "end_exclusive": "00af07d9",
+        "verified": true
+      },
+      {
+        "address": "00af07e0",
+        "end_exclusive": "00af0819",
+        "verified": true
+      },
+      {
+        "address": "00af0870",
+        "end_exclusive": "00af088e",
+        "verified": true
+      },
+      {
+        "address": "00af0900",
+        "end_exclusive": "00af0950",
+        "verified": true
+      },
+      {
+        "address": "00af0950",
+        "end_exclusive": "00af098a",
+        "verified": true
+      },
+      {
+        "address": "00af0a60",
+        "end_exclusive": "00af0ac7",
+        "verified": true
+      },
+      {
+        "address": "00af0ae0",
+        "end_exclusive": "00af0af0",
+        "verified": true
+      },
+      {
+        "address": "00af0af0",
+        "end_exclusive": "00af0b07",
+        "verified": true
+      },
+      {
+        "address": "00af0b10",
+        "end_exclusive": "00af0b82",
+        "verified": true
+      },
+      {
+        "address": "00af0b90",
+        "end_exclusive": "00af0c41",
+        "verified": true
+      },
+      {
+        "address": "00af1080",
+        "end_exclusive": "00af109e",
+        "verified": true
+      }
+    ],
+    "repair_records": [
+      "local/al-manager-flow-repairs.json",
+      "local/al-tracer_lifetime-flow-repairs.json",
+      "local/al-remaining-flow-repairs.json",
+      "local/al-manager-definitions.json",
+      "local/al-tracer_lifetime-definitions.json",
+      "local/al-remaining-definitions.json",
+      "local/al-missing-definitions.json"
+    ],
+    "gameplay": false,
+    "historical_note": "Worker pending-repair/build observations above describe earlier isolated snapshots; this section records current root integration."
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T165027Z.json",
+    "project_saved": true,
+    "old_comments_preserved": true,
+    "readback_verified": true,
+    "changes": [
+      {
+        "address": "00af0630",
+        "before": {
+          "address": "00af0630",
+          "function_name": "FUN_00af0630"
+        },
+        "after": {
+          "address": "00af0630",
+          "name": "BSP_ParticleManagerPointers_Reserve",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; int capacity; RET4; void return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af06a0",
+        "before": {
+          "address": "00af06a0",
+          "function_name": "BSP_FoliageGroupManager_BaseCtor",
+          "comment": "[BSP reconstruction 00af06a0]\nHypothesis, not a recovered symbol. __thiscall(ECX = the 34h foliage group manager), RET, EAX = this. Installs base vtable 00d5d7ec, takes the singleton lifetime manager critical section through 00415350, publishes the instance at 00f8c274 (00af06f6), registers it with 00bd0c30 by re-reading that global, and releases the lock. The same four steps as 0073fa70. docs/APP_INIT_TAIL.md."
+        },
+        "after": {
+          "address": "00af06a0",
+          "name": "BSP_FoliageGroupManager_BaseCtor",
+          "evidence": "Hypothesis, not a recovered symbol. __thiscall(ECX = the 34h foliage group manager), RET, EAX = this. Installs base vtable 00d5d7ec, takes the singleton lifetime manager critical section through 00415350, publishes the instance at 00f8c274 (00af06f6), registers it with 00bd0c30 by re-reading that global, and releases the lock. The same four steps as 0073fa70. docs/APP_INIT_TAIL.md. | Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void; RET; void * return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af0740",
+        "before": {
+          "address": "00af0740",
+          "function_name": "FUN_00af0740"
+        },
+        "after": {
+          "address": "00af0740",
+          "name": "BSP_FoliageGroupManager_BaseDestroy",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void; RET; void return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af07e0",
+        "before": {
+          "address": "00af07e0",
+          "function_name": "FUN_00af07e0"
+        },
+        "after": {
+          "address": "00af07e0",
+          "name": "BSP_ParticleManagerPointers_Append",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void ** value; RET4; void return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af0870",
+        "before": {
+          "address": "00af0870",
+          "function_name": "CG_scalar_deleting_dtor_00af0870"
+        },
+        "after": {
+          "address": "00af0870",
+          "name": "BSP_FoliageGroupManager_BaseScalarDelete",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; uint flags; RET4; void * return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af0900",
+        "before": {
+          "address": "00af0900",
+          "function_name": "FUN_00af0900"
+        },
+        "after": {
+          "address": "00af0900",
+          "name": "BSP_ParticleManagerPointers_Resize",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; int count; RET4; void return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af0950",
+        "before": {
+          "address": "00af0950",
+          "function_name": "FUN_00af0950"
+        },
+        "after": {
+          "address": "00af0950",
+          "name": "BSP_FoliageGroupManager_RegisterWeakModel",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void * model; RET4; void return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af0a60",
+        "before": {
+          "address": "00af0a60",
+          "function_name": "FUN_00af0a60"
+        },
+        "after": {
+          "address": "00af0a60",
+          "name": "BSP_ParticleManagerPointers_RemoveSwapLast",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void ** value; RET4; byte return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af0ae0",
+        "before": {
+          "address": "00af0ae0",
+          "function_name": "FUN_00af0ae0"
+        },
+        "after": {
+          "address": "00af0ae0",
+          "name": "BSP_FoliageGroupManager_UnregisterWeakModel",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void * model; RET4; byte return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af0af0",
+        "before": {
+          "address": "00af0af0",
+          "function_name": "FUN_00af0af0"
+        },
+        "after": {
+          "address": "00af0af0",
+          "name": "BSP_ParticleManagerPointers_Destroy",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void; RET; void return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af0b10",
+        "before": {
+          "address": "00af0b10",
+          "function_name": "BSP_FoliageGroupManager_Ctor",
+          "comment": "[BSP reconstruction 00af0b10]\nHypothesis, not a recovered symbol. __thiscall(ECX = 0x34 object allocated at 0073e005), RET, EAX = this. Base ctor 00af06a0 writes the instance to 00f8c274 at 00af06f6 and registers a singleton lifetime, so this is the foliage group manager of docs/GAME_RENDER_TAIL.md whose +0x2c scalar reaches shader constant c33 Time.z via 00af0450/00af0460. Seeds +0x2c from 00d7a24c (bytes 00 00 80 3f = 1.0f) and stores BSP_CriticalSection_Create (00bd1860) at +0x30. Evidence: docs/APP_INIT_WORLD_EFFECTS.md; reports/app_init_world_effects.json."
+        },
+        "after": {
+          "address": "00af0b10",
+          "name": "BSP_FoliageGroupManager_Ctor",
+          "evidence": "Hypothesis, not a recovered symbol. __thiscall(ECX = 0x34 object allocated at 0073e005), RET, EAX = this. Base ctor 00af06a0 writes the instance to 00f8c274 at 00af06f6 and registers a singleton lifetime, so this is the foliage group manager of docs/GAME_RENDER_TAIL.md whose +0x2c scalar reaches shader constant c33 Time.z via 00af0450/00af0460. Seeds +0x2c from 00d7a24c (bytes 00 00 80 3f = 1.0f) and stores BSP_CriticalSection_Create (00bd1860) at +0x30. Evidence: docs/APP_INIT_WORLD_EFFECTS.md; reports/app_init_world_effects.json. | Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void; RET; void * return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af0b90",
+        "before": {
+          "address": "00af0b90",
+          "function_name": "FUN_00af0b90"
+        },
+        "after": {
+          "address": "00af0b90",
+          "name": "BSP_FoliageGroupManager_Destroy",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; void; RET; void return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af1080",
+        "before": {
+          "address": "00af1080",
+          "function_name": "CG_scalar_deleting_dtor_00af1080"
+        },
+        "after": {
+          "address": "00af1080",
+          "name": "BSP_FoliageGroupManager_ScalarDelete",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live Ghidra and installed PE span match; actual 34h manager and 0Ch weak pointer arrays; raw pointer/count and captured singleton section ordering. New C++ ABI; original CRT/FH3/SEH and gameplay not established. AL review: descriptive hypothesis, not a recovered symbol. ECX actual owner/header; uint flags; RET4; void * return. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_manager.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/al-signature-audit.json",
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00af0630": "00af0630 BSP_ParticleManagerPointers_Reserve  undefined BSP_ParticleManagerPointers_Reserve(void)  body 00af0630 - 00af068e\n",
+      "00af06a0": "00af06a0 BSP_FoliageGroupManager_BaseCtor  undefined BSP_FoliageGroupManager_BaseCtor(void)  body 00af06a0 - 00af0730\n",
+      "00af0740": "00af0740 BSP_FoliageGroupManager_BaseDestroy  undefined BSP_FoliageGroupManager_BaseDestroy(void)  body 00af0740 - 00af07d8\n",
+      "00af07e0": "00af07e0 BSP_ParticleManagerPointers_Append  undefined BSP_ParticleManagerPointers_Append(void)  body 00af07e0 - 00af0818\n",
+      "00af0870": "00af0870 BSP_FoliageGroupManager_BaseScalarDelete  undefined BSP_FoliageGroupManager_BaseScalarDelete(void)  body 00af0870 - 00af088d\n",
+      "00af0900": "00af0900 BSP_ParticleManagerPointers_Resize  undefined BSP_ParticleManagerPointers_Resize(void)  body 00af0900 - 00af094f\n",
+      "00af0950": "00af0950 BSP_FoliageGroupManager_RegisterWeakModel  undefined BSP_FoliageGroupManager_RegisterWeakModel(void)  body 00af0950 - 00af0989\n",
+      "00af0a60": "00af0a60 BSP_ParticleManagerPointers_RemoveSwapLast  undefined BSP_ParticleManagerPointers_RemoveSwapLast(void)  body 00af0a60 - 00af0ac6\n",
+      "00af0ae0": "00af0ae0 BSP_FoliageGroupManager_UnregisterWeakModel  undefined BSP_FoliageGroupManager_UnregisterWeakModel(void)  body 00af0ae0 - 00af0aef\n",
+      "00af0af0": "00af0af0 BSP_ParticleManagerPointers_Destroy  undefined BSP_ParticleManagerPointers_Destroy(void)  body 00af0af0 - 00af0b06\n",
+      "00af0b10": "00af0b10 BSP_FoliageGroupManager_Ctor  undefined BSP_FoliageGroupManager_Ctor(void)  body 00af0b10 - 00af0b81\n",
+      "00af0b90": "00af0b90 BSP_FoliageGroupManager_Destroy  undefined BSP_FoliageGroupManager_Destroy(void)  body 00af0b90 - 00af0c40\n",
+      "00af1080": "00af1080 BSP_FoliageGroupManager_ScalarDelete  undefined BSP_FoliageGroupManager_ScalarDelete(void)  body 00af1080 - 00af109d\n"
+    },
+    "changes": [
+      {
+        "address": "00af0630",
+        "prototype": "void __thiscall BSP_ParticleManagerPointers_Reserve(int capacity)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af0630 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af06a0",
+        "prototype": "void * __thiscall BSP_FoliageGroupManager_BaseCtor(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af06a0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af0740",
+        "prototype": "void __thiscall BSP_FoliageGroupManager_BaseDestroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af0740 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af07e0",
+        "prototype": "void __thiscall BSP_ParticleManagerPointers_Append(void ** value)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af07e0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af0870",
+        "prototype": "void * __thiscall BSP_FoliageGroupManager_BaseScalarDelete(uint flags)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af0870 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af0900",
+        "prototype": "void __thiscall BSP_ParticleManagerPointers_Resize(int count)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af0900 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af0950",
+        "prototype": "void __thiscall BSP_FoliageGroupManager_RegisterWeakModel(void * model)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af0950 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af0a60",
+        "prototype": "byte __thiscall BSP_ParticleManagerPointers_RemoveSwapLast(void ** value)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af0a60 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af0ae0",
+        "prototype": "byte __thiscall BSP_FoliageGroupManager_UnregisterWeakModel(void * model)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af0ae0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af0af0",
+        "prototype": "void __thiscall BSP_ParticleManagerPointers_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af0af0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af0b10",
+        "prototype": "void * __thiscall BSP_FoliageGroupManager_Ctor(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af0b10 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af0b90",
+        "prototype": "void __thiscall BSP_FoliageGroupManager_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af0b90 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af1080",
+        "prototype": "void * __thiscall BSP_FoliageGroupManager_ScalarDelete(uint flags)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af1080 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ]
+  }
+}

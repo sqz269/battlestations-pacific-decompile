@@ -138,3 +138,13 @@ recovered calls so live call verification exposes unrepaired saved boundaries.
 Full derived-reference teardown, populated retained-owner/child callbacks,
 exception trajectories, successful complete tracer construction, renderer
 composition and gameplay have not been dynamically validated by this packet.
+
+## AL saved-analysis and combined-build integration
+
+All four AL modules are registered in bsp_core. The standard Win32 build and
+both seeded CTests passed. The report records saved name/signature preimages,
+old-comment preservation, full body-range readback and the current-library
+replay of bounded fixtures. Returning-free gaps and missing function definitions
+are repaired and saved. Earlier worker pending notes describe their original
+snapshot. Full constructor/teardown coverage, native EH compatibility and
+gameplay remain bounded as documented above.

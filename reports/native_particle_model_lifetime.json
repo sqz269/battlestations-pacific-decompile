@@ -23,7 +23,12 @@
         "From 00af7f43 in FUN_00af7f40 [UNCONDITIONAL_CALL]"
       ],
       "descriptive_name_is_hypothesis": true,
-      "original_abi_compatible": false
+      "original_abi_compatible": false,
+      "header": "include/bsp/native_particle_model_lifetime.hpp",
+      "ghidra_name": "BSP_NativeParticleModel_Destroy",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticleModel_Destroy(void)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual2DCh model; RET; two-state FH3 member/base unwind. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
     },
     {
       "address": "00af7f40",
@@ -43,7 +48,12 @@
         "From 00d5da54 [DATA]"
       ],
       "descriptive_name_is_hypothesis": true,
-      "original_abi_compatible": false
+      "original_abi_compatible": false,
+      "header": "include/bsp/native_particle_model_lifetime.hpp",
+      "ghidra_name": "BSP_NativeParticleModel_ScalarDelete",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_NativeParticleModel_ScalarDelete(uint flags)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX model; stack full flags; same EAX; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
     },
     {
       "address": "00afd370",
@@ -64,7 +74,12 @@
         "From 00af6c8c in FUN_00af6c50 [UNCONDITIONAL_CALL]"
       ],
       "descriptive_name_is_hypothesis": true,
-      "original_abi_compatible": false
+      "original_abi_compatible": false,
+      "header": "include/bsp/native_particle_model_lifetime.hpp",
+      "ghidra_name": "BSP_NativeParticleModelArrays_Destroy",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticleModelArrays_Destroy(void)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual18h owner; RET; one-state byte-member FH3 unwind. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
     },
     {
       "address": "00af6180",
@@ -85,7 +100,12 @@
         "From 00af6d60 in FUN_00af6c50 [UNCONDITIONAL_CALL]"
       ],
       "descriptive_name_is_hypothesis": true,
-      "original_abi_compatible": false
+      "original_abi_compatible": false,
+      "header": "include/bsp/native_particle_model_lifetime.hpp",
+      "ghidra_name": "BSP_NativeParticleEmitterPointers_Resize",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticleEmitterPointers_Resize(int count)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual0Ch header; stack signed count; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
     },
     {
       "address": "00af6b70",
@@ -106,7 +126,12 @@
         "From 00cbadb1 in Unwind@00cbada8 [UNCONDITIONAL_CALL]"
       ],
       "descriptive_name_is_hypothesis": true,
-      "original_abi_compatible": false
+      "original_abi_compatible": false,
+      "header": "include/bsp/native_particle_model_lifetime.hpp",
+      "ghidra_name": "BSP_NativeParticleEmitterPointers_Destroy",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticleEmitterPointers_Destroy(void)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual0Ch header; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
     },
     {
       "address": "00afd0f0",
@@ -127,7 +152,12 @@
         "From 00cbb216 in Unwind@00cbb210 [UNCONDITIONAL_CALL]"
       ],
       "descriptive_name_is_hypothesis": true,
-      "original_abi_compatible": false
+      "original_abi_compatible": false,
+      "header": "include/bsp/native_particle_model_lifetime.hpp",
+      "ghidra_name": "BSP_NativeParticleModelBytes_Destroy",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticleModelBytes_Destroy(void)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual8h header; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
     },
     {
       "address": "00afd1e0",
@@ -147,7 +177,12 @@
         "From 00cbb201 in Unwind@00cbb1fb [UNCONDITIONAL_CALL]"
       ],
       "descriptive_name_is_hypothesis": true,
-      "original_abi_compatible": false
+      "original_abi_compatible": false,
+      "header": "include/bsp/native_particle_model_lifetime.hpp",
+      "ghidra_name": "BSP_NativeParticleModelRecords_Destroy",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticleModelRecords_Destroy(void)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual8h header; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
     },
     {
       "address": "00afcda0",
@@ -170,7 +205,12 @@
         "From 00afd3d7 in CG_vector_deleting_dtor_00afd370 [DATA]"
       ],
       "descriptive_name_is_hypothesis": true,
-      "original_abi_compatible": false
+      "original_abi_compatible": false,
+      "header": "include/bsp/native_particle_model_lifetime.hpp",
+      "ghidra_name": "BSP_NativeParticleArrayByte_Destroy",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_NativeParticleArrayByte_Destroy(void)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX byte; literal RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
     },
     {
       "address": "00af6da0",
@@ -190,7 +230,12 @@
         "From 00d5da5c [DATA]"
       ],
       "descriptive_name_is_hypothesis": true,
-      "original_abi_compatible": false
+      "original_abi_compatible": false,
+      "header": "include/bsp/native_particle_model_lifetime.hpp",
+      "ghidra_name": "BSP_NativeParticleModel_IsType",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "byte __thiscall BSP_NativeParticleModel_IsType(uint token)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX ignored; stack DWORD token; AL boolean; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
     },
     {
       "address": "00af5af0",
@@ -210,7 +255,12 @@
         "From 00d5da58 [DATA]"
       ],
       "descriptive_name_is_hypothesis": true,
-      "original_abi_compatible": false
+      "original_abi_compatible": false,
+      "header": "include/bsp/native_particle_model_lifetime.hpp",
+      "ghidra_name": "BSP_NativeParticleModel_GetTypeId",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "uint __thiscall BSP_NativeParticleModel_GetTypeId(void)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX ignored; EAX current native ownID; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
     },
     {
       "address": "00af5b00",
@@ -230,7 +280,12 @@
         "From 00d5da64 [DATA]"
       ],
       "descriptive_name_is_hypothesis": true,
-      "original_abi_compatible": false
+      "original_abi_compatible": false,
+      "header": "include/bsp/native_particle_model_lifetime.hpp",
+      "ghidra_name": "BSP_NativeParticleModel_GetTypeName",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "char * __thiscall BSP_NativeParticleModel_GetTypeName(void)",
+      "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX ignored; EAX current native name address; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
     }
   ],
   "host_steps": [
@@ -585,5 +640,360 @@
     "render_validated": false,
     "native_exception_abi_validated": false,
     "complete_application_construction_and_terminal_bindings": false
+  },
+  "integration_al": {
+    "full_build": "local/al-standard-build-fixed.log; standard scripts/build.ps1 passed, strict Win32 and both seeded CTests",
+    "source_review": "complete",
+    "code_sha256": {
+      "src/native_particle_model_lifetime.cpp": "0c7289d37b3583f0f33eae8d699a99218db3c57e98fd2e35d17d1262cda93305",
+      "include/bsp/native_particle_model_lifetime.hpp": "5d4f3a57d89e5a82b48315daf158f731c6370a7095e51cea22e34aa12e8d725a"
+    },
+    "library_sha256": "764c03f8480e2e9053daba197aeaa04e5a8c464c5af4818360c8822b52e25b7d",
+    "call_checks": "local/al-call-checks.log; 204 direct rows across5 reports,0 failures; indirect slots/imports retain documented manual-evidence limits",
+    "fixture_log": "local/al-current-fixtures.log",
+    "fixture_scope": "Original-byte and source-runtime scope remains exactly as documented; current combined-library replay passed. Full tracer constructor/teardown and original EH/gameplay are not implied.",
+    "body_ranges": [
+      {
+        "address": "00af6c50",
+        "end_exclusive": "00af6d92",
+        "verified": true
+      },
+      {
+        "address": "00af7f40",
+        "end_exclusive": "00af7f60",
+        "verified": true
+      },
+      {
+        "address": "00afd370",
+        "end_exclusive": "00afd406",
+        "verified": true
+      },
+      {
+        "address": "00af6180",
+        "end_exclusive": "00af61d0",
+        "verified": true
+      },
+      {
+        "address": "00af6b70",
+        "end_exclusive": "00af6b87",
+        "verified": true
+      },
+      {
+        "address": "00afd0f0",
+        "end_exclusive": "00afd127",
+        "verified": true
+      },
+      {
+        "address": "00afd1e0",
+        "end_exclusive": "00afd21a",
+        "verified": true
+      },
+      {
+        "address": "00afcda0",
+        "end_exclusive": "00afcda1",
+        "verified": true
+      },
+      {
+        "address": "00af6da0",
+        "end_exclusive": "00af6dc8",
+        "verified": true
+      },
+      {
+        "address": "00af5af0",
+        "end_exclusive": "00af5af6",
+        "verified": true
+      },
+      {
+        "address": "00af5b00",
+        "end_exclusive": "00af5b06",
+        "verified": true
+      }
+    ],
+    "repair_records": [
+      "local/al-manager-flow-repairs.json",
+      "local/al-tracer_lifetime-flow-repairs.json",
+      "local/al-remaining-flow-repairs.json",
+      "local/al-manager-definitions.json",
+      "local/al-tracer_lifetime-definitions.json",
+      "local/al-remaining-definitions.json",
+      "local/al-missing-definitions.json"
+    ],
+    "gameplay": false,
+    "historical_note": "Worker pending-repair/build observations above describe earlier isolated snapshots; this section records current root integration."
+  },
+  "status": "reconstructed_strict_win32_build_tested_bounded_fixture_tested_saved_analysis_verified",
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T165027Z.json",
+    "project_saved": true,
+    "old_comments_preserved": true,
+    "readback_verified": true,
+    "changes": [
+      {
+        "address": "00af5af0",
+        "before": {
+          "address": "00af5af0",
+          "function_name": "FUN_00af5af0"
+        },
+        "after": {
+          "address": "00af5af0",
+          "name": "BSP_NativeParticleModel_GetTypeId",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX ignored; EAX current native ownID; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af5b00",
+        "before": {
+          "address": "00af5b00",
+          "function_name": "FUN_00af5b00"
+        },
+        "after": {
+          "address": "00af5b00",
+          "name": "BSP_NativeParticleModel_GetTypeName",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX ignored; EAX current native name address; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af6180",
+        "before": {
+          "address": "00af6180",
+          "function_name": "FUN_00af6180"
+        },
+        "after": {
+          "address": "00af6180",
+          "name": "BSP_NativeParticleEmitterPointers_Resize",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual0Ch header; stack signed count; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af6b70",
+        "before": {
+          "address": "00af6b70",
+          "function_name": "FUN_00af6b70"
+        },
+        "after": {
+          "address": "00af6b70",
+          "name": "BSP_NativeParticleEmitterPointers_Destroy",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual0Ch header; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af6c50",
+        "before": {
+          "address": "00af6c50",
+          "function_name": "FUN_00af6c50"
+        },
+        "after": {
+          "address": "00af6c50",
+          "name": "BSP_NativeParticleModel_Destroy",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual2DCh model; RET; two-state FH3 member/base unwind. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af6da0",
+        "before": {
+          "address": "00af6da0",
+          "function_name": "FUN_00af6da0"
+        },
+        "after": {
+          "address": "00af6da0",
+          "name": "BSP_NativeParticleModel_IsType",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX ignored; stack DWORD token; AL boolean; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af7f40",
+        "before": {
+          "address": "00af7f40",
+          "function_name": "FUN_00af7f40"
+        },
+        "after": {
+          "address": "00af7f40",
+          "name": "BSP_NativeParticleModel_ScalarDelete",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX model; stack full flags; same EAX; RET4. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afcda0",
+        "before": {
+          "address": "00afcda0",
+          "function_name": "FUN_00afcda0"
+        },
+        "after": {
+          "address": "00afcda0",
+          "name": "BSP_NativeParticleArrayByte_Destroy",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX byte; literal RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afd0f0",
+        "before": {
+          "address": "00afd0f0",
+          "function_name": "CG_vector_deleting_dtor_00afd0f0"
+        },
+        "after": {
+          "address": "00afd0f0",
+          "name": "BSP_NativeParticleModelBytes_Destroy",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual8h header; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afd1e0",
+        "before": {
+          "address": "00afd1e0",
+          "function_name": "CG_vector_deleting_dtor_00afd1e0"
+        },
+        "after": {
+          "address": "00afd1e0",
+          "name": "BSP_NativeParticleModelRecords_Destroy",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual8h header; RET. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afd370",
+        "before": {
+          "address": "00afd370",
+          "function_name": "CG_vector_deleting_dtor_00afd370"
+        },
+        "after": {
+          "address": "00afd370",
+          "name": "BSP_NativeParticleModelArrays_Destroy",
+          "evidence": " AL review: descriptive hypothesis, not a recovered symbol. ECX actual18h owner; RET; one-state byte-member FH3 unwind. Complete installed/live body verified; repaired returning-free flow and native stack cleanup. See reports/native_particle_model_lifetime.json for canonical actual owners, bounded fixtures and unresolved runtime paths. New C++ interface; original EH and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cbad96",
+        "before": {
+          "address": "00cbad96",
+          "function_name": "FUN_00cbad96"
+        },
+        "after": {
+          "address": "00cbad96",
+          "name": "BSP_NativeParticleModel_Destroy_FH3Dispatcher",
+          "evidence": "Provisional descriptive hypothesis, not a recovered symbol. Compiler MOV EAX,DF2C10; JMP BF6B43, CBAD96..CBAD9F. Analyzed only."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cbb21b",
+        "before": {
+          "address": "00cbb21b",
+          "function_name": "FUN_00cbb21b"
+        },
+        "after": {
+          "address": "00cbb21b",
+          "name": "BSP_NativeParticleModelArrays_Destroy_FH3Dispatcher",
+          "evidence": "Provisional descriptive hypothesis, not a recovered symbol. Compiler MOV EAX,DF31E4; JMP BF6B43, CBB21B..CBB224. Analyzed only."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/al-signature-audit.json",
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00af6c50": "00af6c50 BSP_NativeParticleModel_Destroy  undefined BSP_NativeParticleModel_Destroy(void)  body 00af6c50 - 00af6d91\n",
+      "00af7f40": "00af7f40 BSP_NativeParticleModel_ScalarDelete  undefined BSP_NativeParticleModel_ScalarDelete(void)  body 00af7f40 - 00af7f5f\n",
+      "00afd370": "00afd370 BSP_NativeParticleModelArrays_Destroy  undefined BSP_NativeParticleModelArrays_Destroy(void)  body 00afd370 - 00afd405\n",
+      "00af6180": "00af6180 BSP_NativeParticleEmitterPointers_Resize  undefined BSP_NativeParticleEmitterPointers_Resize(void)  body 00af6180 - 00af61cf\n",
+      "00af6b70": "00af6b70 BSP_NativeParticleEmitterPointers_Destroy  undefined BSP_NativeParticleEmitterPointers_Destroy(void)  body 00af6b70 - 00af6b86\n",
+      "00afd0f0": "00afd0f0 BSP_NativeParticleModelBytes_Destroy  undefined BSP_NativeParticleModelBytes_Destroy(void)  body 00afd0f0 - 00afd126\n",
+      "00afd1e0": "00afd1e0 BSP_NativeParticleModelRecords_Destroy  undefined BSP_NativeParticleModelRecords_Destroy(void)  body 00afd1e0 - 00afd219\n",
+      "00afcda0": "00afcda0 BSP_NativeParticleArrayByte_Destroy  undefined BSP_NativeParticleArrayByte_Destroy(void)  body 00afcda0 - 00afcda0\n",
+      "00af6da0": "00af6da0 BSP_NativeParticleModel_IsType  undefined BSP_NativeParticleModel_IsType(void)  body 00af6da0 - 00af6dc7\n",
+      "00af5af0": "00af5af0 BSP_NativeParticleModel_GetTypeId  undefined BSP_NativeParticleModel_GetTypeId(void)  body 00af5af0 - 00af5af5\n",
+      "00af5b00": "00af5b00 BSP_NativeParticleModel_GetTypeName  undefined BSP_NativeParticleModel_GetTypeName(void)  body 00af5b00 - 00af5b05\n"
+    },
+    "changes": [
+      {
+        "address": "00af6c50",
+        "prototype": "void __thiscall BSP_NativeParticleModel_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af6c50 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af7f40",
+        "prototype": "void * __thiscall BSP_NativeParticleModel_ScalarDelete(uint flags)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af7f40 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afd370",
+        "prototype": "void __thiscall BSP_NativeParticleModelArrays_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afd370 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af6180",
+        "prototype": "void __thiscall BSP_NativeParticleEmitterPointers_Resize(int count)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af6180 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af6b70",
+        "prototype": "void __thiscall BSP_NativeParticleEmitterPointers_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af6b70 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afd0f0",
+        "prototype": "void __thiscall BSP_NativeParticleModelBytes_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afd0f0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afd1e0",
+        "prototype": "void __thiscall BSP_NativeParticleModelRecords_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afd1e0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afcda0",
+        "prototype": "void __thiscall BSP_NativeParticleArrayByte_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afcda0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af6da0",
+        "prototype": "byte __thiscall BSP_NativeParticleModel_IsType(uint token)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af6da0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af5af0",
+        "prototype": "uint __thiscall BSP_NativeParticleModel_GetTypeId(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af5af0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af5b00",
+        "prototype": "char * __thiscall BSP_NativeParticleModel_GetTypeName(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af5b00 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ]
   }
 }

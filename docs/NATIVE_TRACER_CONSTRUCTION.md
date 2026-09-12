@@ -174,3 +174,13 @@ production, application renderer/current-slot binding, construction/update/
 destruction composition, native ABI compatibility, rendering and gameplay remain
 unvalidated. The returned view is the actual constructed owner when all required
 real callees and canonical bindings are provided.
+
+## AL saved-analysis and combined-build integration
+
+All four AL modules are registered in bsp_core. The standard Win32 build and
+both seeded CTests passed. The report records saved name/signature preimages,
+old-comment preservation, full body-range readback and the current-library
+replay of bounded fixtures. Returning-free gaps and missing function definitions
+are repaired and saved. Earlier worker pending notes describe their original
+snapshot. Full constructor/teardown coverage, native EH compatibility and
+gameplay remain bounded as documented above.

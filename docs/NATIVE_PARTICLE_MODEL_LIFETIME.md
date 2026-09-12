@@ -195,3 +195,13 @@ This is bounded byte/fixture/source evidence. Complete application binding,
 particle emitter/variant terminal lifetime, native binary/C++ exception ABI,
 throwing original FH3 paths, successful AF74A0 composition, rendering and game
 behavior remain unvalidated. No permanent tests were added.
+
+## AL saved-analysis and combined-build integration
+
+All four AL modules are registered in bsp_core. The standard Win32 build and
+both seeded CTests passed. The report records saved name/signature preimages,
+old-comment preservation, full body-range readback and the current-library
+replay of bounded fixtures. Returning-free gaps and missing function definitions
+are repaired and saved. Earlier worker pending notes describe their original
+snapshot. Full constructor/teardown coverage, native EH compatibility and
+gameplay remain bounded as documented above.
