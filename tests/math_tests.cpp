@@ -23,6 +23,7 @@
 #include "bsp/ingame_interface.hpp"
 #include "bsp/game_render_frame.hpp"
 #include "bsp/lua_binding_entity_lookup.hpp"
+#include "bsp/mission_lobby_settings.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
 #include "bsp/title_init.hpp"
@@ -2103,6 +2104,19 @@ int main() {
                   && bsp::scene_property_bag_find(dest, 0, "Numbering") == nullptr,
             "008F23E0 overwrites a key the destination already has, case-insensitively, "
             "and drops a key it does not");
+    }
+
+    {
+        // 005D5500 is the only reason the LobbySettings table carries both
+        // TimeLimit and TimeLimit_IC: Island Capture (modes 0..3) offers slot 7
+        // and nils slot 6, mode 4 does the opposite, and slots 0 and 2 ignore
+        // the row entirely (005E30DC, 005E30E3).
+        check(bsp::lobby_settings_slot_is_published(0, 7) && !bsp::lobby_settings_slot_is_published(0, 6)
+                  && bsp::lobby_settings_slot_is_published(4, 6) && !bsp::lobby_settings_slot_is_published(4, 7)
+                  && bsp::lobby_settings_slot_is_published(9, 0) && bsp::lobby_settings_slot_is_published(9, 2)
+                  && !bsp::lobby_settings_slot_is_published(9, 5),
+            "005D5500 offers TimeLimit_IC in Island Capture and TimeLimit in mode 4, "
+            "and PlayerCount and GameMode publish in every mode");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
