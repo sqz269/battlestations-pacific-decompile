@@ -1,0 +1,530 @@
+{
+  "packet": "orch2_vfs_canonical_drain_av",
+  "status": "existing_actual_source_adapter_extended_strict_win32_and_frozen_original_drain_source_composition_passed",
+  "new_complete_routine_count": 0,
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "routines": [
+    {
+      "entry": "00bd0400",
+      "inclusive_end": "00bd04c4",
+      "bytes": 197,
+      "coverage": "existing complete normal body/source cleanup; finite dispatch extended for two recovered profiles",
+      "source": "src/native_singleton_destruction.cpp",
+      "original_abi": "ECX raw14h owner; no stacked arguments; RET. Native virtual0 gets one DWORD flags1 and RET4.",
+      "source_abi": "Existing __fastcall ECX owner, EDX explicit borrowed deletion bindings. Not original ABI/FH3 replacement."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bd0426",
+      "native": "00bcf910",
+      "function": "00bd0400",
+      "contract": "Initial raw live-slot count; null begin yields zero, otherwise DWORD difference SAR2."
+    },
+    {
+      "address": "00bd0438",
+      "native": "00bf6713",
+      "function": "00bd0400",
+      "contract": "Returning CRT invalid-parameter boundary for begin/end ordering."
+    },
+    {
+      "address": "00bd044e",
+      "native": "00bf6713",
+      "function": "00bd0400",
+      "contract": "Returning CRT invalid-parameter boundary for last-element range."
+    },
+    {
+      "address": "00bd045b",
+      "native": "00bf6713",
+      "function": "00bd0400",
+      "contract": "Returning CRT invalid-parameter boundary for slot range."
+    },
+    {
+      "address": "00bd0489",
+      "native": "00bcf910",
+      "function": "00bd0400",
+      "contract": "Reload live count after current owner deletion, including reentrant registrations."
+    },
+    {
+      "address": "00bd0496",
+      "native": "0041cc80",
+      "function": "00bd0400",
+      "contract": "Release captured current section after the loop; signed tracked depth and final pointer clear retained."
+    },
+    {
+      "address": "00bd04a3",
+      "native": "00bf65ac",
+      "function": "00bd0400",
+      "contract": "Free current vector; ADD ESP,4 atBD04A8 then zero+4/+8/+C."
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "00bd0485",
+      "native": "current_profile+vtable00",
+      "function": "00bd0400",
+      "contract": "Capture popped owner and current profile, load slot0, PUSH1 then CALL EDX; owner removed from vector before dispatch.",
+      "resolved_profiles": {
+        "00d68d04": "00bedac0",
+        "00d688b0": "00be5340",
+        "00d68200": "00bd1730",
+        "00d68cf8": "00bed910"
+      }
+    }
+  ],
+  "consumed_call_evidence": [
+    {
+      "address": "00bedac3",
+      "native": "00be1f60",
+      "function": "00bedac0",
+      "contract": "Complete VFS owner destruction before optional owner free."
+    },
+    {
+      "address": "00bedad0",
+      "native": "00bf65ac",
+      "function": "00bedac0",
+      "contract": "Captured original owner, only flags bit0; ADD ESP4 atBEDAD5; RET4 atBEDADB."
+    },
+    {
+      "address": "00be5343",
+      "native": "00be5790",
+      "function": "00be5340",
+      "kind": "tail_jump",
+      "contract": "SUB ECX4 then JMP complete primary deleter; inherited RET4."
+    },
+    {
+      "address": "00be57bc",
+      "native": "00bf65ac",
+      "function": "00be5790",
+      "contract": "Free primary allocation only bit0 after publication/profile stores; ADD ESP4 atBE57C1, RET4 atBE57C7."
+    },
+    {
+      "address": "00bda7f4",
+      "native": "00bcfca0",
+      "function": "00bda790",
+      "contract": "Remove current VFS publication after manager lookup, allowing already-popped owner to be absent; clear publication only after returning."
+    }
+  ],
+  "bindings": {
+    "previous_bytes": 36,
+    "current_bytes": 44,
+    "appended": [
+      {
+        "offset": 36,
+        "type": "NativeVfsManagerLifetimeContext*",
+        "field": "vfs_manager",
+        "profile": "00d68d04"
+      },
+      {
+        "offset": 40,
+        "type": "NativeFileStoreFactoryContext*",
+        "field": "filestore_factory",
+        "profile": "00d688b0"
+      }
+    ],
+    "previous_fields_and_cases_unchanged": true,
+    "defaults": "all null",
+    "unsupported_or_missing": "existing std::logic_error; no fallback or no-op",
+    "same_domain": "contexts borrow construction publications and same raw01090AA0 manager; string release must use canonical raw storage"
+  },
+  "native_evidence": {
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "Every live CLI call verifies project/program before access. Read-only bytes/proto/xrefs only.",
+    "spans": [
+      {
+        "entry": "00bd0400",
+        "inclusive_end": "00bd04c4",
+        "bytes": 197,
+        "label": "drain",
+        "sha256": "6e73798d0366545ebbf2ebe6aa005e4630fd95238cdae48df6bc9f20240a3c36",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00bedac0",
+        "inclusive_end": "00bedadd",
+        "bytes": 30,
+        "label": "vfs_delete",
+        "sha256": "0b563e72ba91208839c5d8e716eb44bd834598e54911d17452b831646a1678bc",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00be5340",
+        "inclusive_end": "00be5347",
+        "bytes": 8,
+        "label": "filestore_secondary",
+        "sha256": "75f0568e11feaf4f0a604c893aa6225eaae8e19db2fad21365b8da0affb2b816",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00be5790",
+        "inclusive_end": "00be57c9",
+        "bytes": 58,
+        "label": "filestore_delete",
+        "sha256": "2ae7c18eb0d0d42b60b7a27d9a14b2ecad5f2758b7c7611bdce05aad8b0d8d47",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00beda60",
+        "inclusive_end": "00bedaae",
+        "bytes": 79,
+        "label": "vfs_construct",
+        "sha256": "2c88005b2fa380f4c99d6553bfdcf0a42a7979f599c168f8537c310a836f5524",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00be5320",
+        "inclusive_end": "00be533d",
+        "bytes": 30,
+        "label": "filestore_construct",
+        "sha256": "d1dabe94c872013d848593fc806e0b78abc15985f8eb3601478fe7dee8841893",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00bcfca0",
+        "inclusive_end": "00bcfd10",
+        "bytes": 113,
+        "label": "unregister",
+        "sha256": "e3fc97e499913fd8fac8f1ebb0804b4ced06333e49c628b44ba06316e5cc6463",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00d68d04",
+        "inclusive_end": "00d68d07",
+        "bytes": 4,
+        "label": "vfs_profile",
+        "sha256": "4bdeabca1863952f18f2ecd3ccbbdc3a3a3c6c3d3ee29a3ea1ec39d222391067",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00d688b0",
+        "inclusive_end": "00d688b3",
+        "bytes": 4,
+        "label": "filestore_profile",
+        "sha256": "4241a74e7aaeb80d4455de42a798d913e7bb60139241e87e0ea6d1be70efdd97",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00d68200",
+        "inclusive_end": "00d68203",
+        "bytes": 4,
+        "label": "pool_profile",
+        "sha256": "091912a17813d59e253da1d6a26434050434a69b283807bf9dff3e0e5520f012",
+        "live_equals_installed_PE": true
+      },
+      {
+        "entry": "00d68cf8",
+        "inclusive_end": "00d68cfb",
+        "bytes": 4,
+        "label": "physical_profile",
+        "sha256": "00a0c63c284397eaf20b7c26ee27ab4b3e0a94bd949cae33abfcd90390f43451",
+        "live_equals_installed_PE": true
+      }
+    ]
+  },
+  "no_ghidra_function": [],
+  "flow_mutations": [],
+  "build": {
+    "status": "passed",
+    "command": "scripts/build.ps1",
+    "environment": {
+      "MSBUILDDISABLENODEREUSE": "1"
+    },
+    "target": "MSVC Win32 /W4 /WX /fp:strict",
+    "first_attempt": "local/native-vfs-canonical-drain-av/build01-download-failure.log: Lua TLS download failure; no compilation",
+    "dependency_reuse": "314 existing dependency source files physically copied and hash checked; cache-only source overrides; no dependency source changes",
+    "existing_ctests_passed": 2,
+    "log": "local/native-vfs-canonical-drain-av/build.log",
+    "log_sha256": "cccd5f5a01100954db406d77cd4d73319b6bd13ef69cc40f1e7062b29d65975a",
+    "library_sha256": "30dbb1ff551ac4d7f6d8d5b7c1d774648907cfbfe552390ed050d4ddeb238d65",
+    "all_314_copied_dependency_files_unchanged_after_build": true
+  },
+  "fixture": {
+    "status": "passed",
+    "driver": "local/native-vfs-canonical-drain-av/run.py --repo <current-repo> --attempt <fresh-name>",
+    "scenario": "Initial [VFS,pool,physical+4,FileStore+4], reverse drain then reentrant pool creation during VFS string release; same raw publication throughout.",
+    "attempt": "local/native-vfs-canonical-drain-av/attempt03",
+    "checks": 258,
+    "native_source_comparisons": 1,
+    "total_allocations_each": 17,
+    "drain_events_each": 17,
+    "summary": {
+      "result": "passed",
+      "case": "one canonical drain scenario compared between unchanged original BD0400 and reconstructed source",
+      "result_bytes": 6148,
+      "result_sha256": "0ec4663927b553e8d1e3cf1827a3aeaab94c5fa82d9b2f564eb2b1405ddfaf36",
+      "input_files": 506,
+      "changed_inputs": [],
+      "linked_archive_equal_objects": 123,
+      "library_sha256": "30dbb1ff551ac4d7f6d8d5b7c1d774648907cfbfe552390ed050d4ddeb238d65",
+      "manifest_before_sha256": "af68d73751773b58e6abbbba8f325c9096ca7e63fc081626a2edcfca5cc09404",
+      "native_original_FH3_SEH_executed": false,
+      "game_executed": false
+    },
+    "summary_sha256": "cade7f1428b610a31b78c46a5165905083a4046a0adb4a45bf65de310a7185f8",
+    "execution_log_sha256": "988f3998df1ba8eb6a566cd8914c689b837b4e28083a445393369af599b9dd43",
+    "before_manifest_sha256": "af68d73751773b58e6abbbba8f325c9096ca7e63fc081626a2edcfca5cc09404",
+    "after_manifest_sha256": "d820124d41719c2f8bb40e50f4c57f64ff9e768c5ccccf1aa62c75ddf63f9cf5",
+    "body_bytes_unchanged": 197,
+    "direct_calls": 7,
+    "relative_transfers": 17,
+    "original_numeric_profile_page": "Exact installed PE D60000..D6FFFF copied read-only; slots D68200/BD1730,D68CF8/BED910,D68D04/BEDAC0,D688B0/BE5340 unchanged.",
+    "launcher_pages": [
+      "00bd0000",
+      "00be0000",
+      "00d60000"
+    ],
+    "launcher_contract": "Only dedicated manager_probe.exe child created suspended; reserve exact three64KiB MEM_PRIVATE pages and write42535046 markers; child checks allocation base/extent/marker before loading. No existing mapping or unrelated process modified.",
+    "original_external_calls": "Four shifted callee entry JMP bridges and four original numeric virtual-target JMP bridges invoke actual reconstructed source bodies. No original BD0400 instruction modified.",
+    "observed_events": [
+      {
+        "kind": 2,
+        "allocation_tag": 14,
+        "allocation_bytes": 12,
+        "live_raw_slots": 3,
+        "return_gate": 0,
+        "current_pool_tag": 11
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 12,
+        "allocation_bytes": 8,
+        "live_raw_slots": 2,
+        "return_gate": 0,
+        "current_pool_tag": 11
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 11,
+        "allocation_bytes": 9098400,
+        "live_raw_slots": 1,
+        "return_gate": 1,
+        "current_pool_tag": 0
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 10,
+        "allocation_bytes": 12,
+        "live_raw_slots": 0,
+        "return_gate": 1,
+        "current_pool_tag": 0
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 9,
+        "allocation_bytes": 24,
+        "live_raw_slots": 0,
+        "return_gate": 1,
+        "current_pool_tag": 0
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 8,
+        "allocation_bytes": 40,
+        "live_raw_slots": 0,
+        "return_gate": 1,
+        "current_pool_tag": 0
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 7,
+        "allocation_bytes": 32,
+        "live_raw_slots": 0,
+        "return_gate": 1,
+        "current_pool_tag": 0
+      },
+      {
+        "kind": 1,
+        "allocation_tag": 17,
+        "allocation_bytes": 9098400,
+        "live_raw_slots": 0,
+        "return_gate": 1,
+        "current_pool_tag": 0
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 16,
+        "allocation_bytes": 161,
+        "live_raw_slots": 1,
+        "return_gate": 1,
+        "current_pool_tag": 17
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 15,
+        "allocation_bytes": 8,
+        "live_raw_slots": 1,
+        "return_gate": 1,
+        "current_pool_tag": 17
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 6,
+        "allocation_bytes": 36,
+        "live_raw_slots": 1,
+        "return_gate": 1,
+        "current_pool_tag": 17
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 13,
+        "allocation_bytes": 12,
+        "live_raw_slots": 1,
+        "return_gate": 1,
+        "current_pool_tag": 17
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 5,
+        "allocation_bytes": 12,
+        "live_raw_slots": 1,
+        "return_gate": 1,
+        "current_pool_tag": 17
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 1,
+        "allocation_bytes": 160,
+        "live_raw_slots": 1,
+        "return_gate": 1,
+        "current_pool_tag": 17
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 17,
+        "allocation_bytes": 9098400,
+        "live_raw_slots": 0,
+        "return_gate": 1,
+        "current_pool_tag": 0
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 4,
+        "allocation_bytes": 28,
+        "live_raw_slots": 0,
+        "return_gate": 1,
+        "current_pool_tag": 0
+      },
+      {
+        "kind": 2,
+        "allocation_tag": 3,
+        "allocation_bytes": 1024,
+        "live_raw_slots": 0,
+        "return_gate": 1,
+        "current_pool_tag": 0
+      }
+    ],
+    "event_legend": {
+      "kind1": "real CRT allocation during drain",
+      "kind2": "real CRT free before memory release",
+      "allocation_tags": {
+        "1": "VFS owner",
+        "2": "raw singleton manager, caller freed after drain",
+        "3": "raw singleton vector",
+        "4": "manager tracked section",
+        "11": "initial pool",
+        "12": "physical factory primary",
+        "14": "FileStore factory primary",
+        "17": "recreated pool"
+      }
+    },
+    "final_state": {
+      "vfs_publication": null,
+      "log_publication": null,
+      "physical_factory_publication": null,
+      "filestore_factory_publication": null,
+      "pool_publication": null,
+      "string_return_gate": 1,
+      "manager_fields_04_08_0c_10": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "all_observed_allocations_freed_after_caller_manager_free": true,
+      "new_pool_registered_into_same_raw_manager": true,
+      "absent_popped_vfs_unregister_retained_new_pool_slot": true,
+      "new_pool_ring_live_and_bump_at_vfs_free": [
+        0,
+        0
+      ]
+    },
+    "failed_attempts": [
+      {
+        "attempt": "attempt01",
+        "stage": "compile before execution",
+        "reason": "missing declaration include in fixture only"
+      },
+      {
+        "attempt": "attempt02",
+        "stage": "compile before execution",
+        "reason": "incorrect replacement header still lacked declaration; correct declaration in native_physical_file_date.hpp"
+      }
+    ],
+    "pins": {
+      "probe.cpp": "0717e3e8914147530efb376b5b398e7f0d1d1ae5cb321de2230f21b32943766a",
+      "manager_probe.obj": "b6f974c5e3260ce34beb552d38049ec687cf6516d46dc6f58e8ac8c8e25999b1",
+      "manager_probe.exe": "a4c0df0044eb92f40acf32737c280bb29dac6ccf65f7dd54849090a8a4f9c53c",
+      "launcher.cpp": "684f9b3797df46a179c311ec3e11c7bf2ab53fdf9b45d19f1ecddb3557346fbd",
+      "launcher.obj": "87306ceebd4d9a90c87d4a6a0a5b0881392740af656d3bf32d627a647e3329ac",
+      "manager_probe_launcher.exe": "ec8a7468b554fd964e3ea3f89f88d87012c773df995861a58fceba790debbe29"
+    },
+    "replay_boundaries": [
+      "Only original BD0400 normal body replayed; its original FH3/SEH handlers not invoked.",
+      "All external and concrete virtual target calls use actual reviewed source implementations.",
+      "No logger or mounted-provider target is exercised; required manager virtual callbacks fail if unexpectedly reached.",
+      "Construction and string allocations use the one raw manager and actual canonical string storage. No early VFS deletion or alternative domain.",
+      "Current CRT allocation/free is observed with deterministic initial fill; original static-CRT/global identity not reproduced."
+    ]
+  },
+  "limits": [
+    "Finite source profile admission; other recovered old cases unchanged, unsupported or missing contexts still throw.",
+    "Source exception/storage cleanup schedule unchanged; no new throwing or malformed-input execution.",
+    "Original FH3/SEH, original CRT/global identity and original C++-context ABI not reproduced.",
+    "Only bounded original drain body/source-callee composition; no game startup or gameplay claim."
+  ],
+  "corrections": [
+    {
+      "was": "D68D04 and D688B0 unsupported by canonical raw adapter despite complete consumed source deleters.",
+      "is": "Explicit borrowed contexts route current popped profiles to actual BEDAC0 and BE5340 source.",
+      "evidence": "Live producer/table/RET4 listings and complete unchanged BD0400 pop-before-call/recount schedule; consumed addresses are not newly reconstructed or leased."
+    }
+  ],
+  "source_pins": {
+    "include/bsp/native_singleton_destruction.hpp": "5ad664880c7dfd5d5c5651c44e29fdf864a684e0cb16b8f3b04b38f08c1d9bb2",
+    "src/native_singleton_destruction.cpp": "edddf13133964211981b0334bc9976aafc0108537337ae8400779a2ba5922e7f"
+  },
+  "integrator_validation": {
+    "strict_win32_build": "local/native-av-build02.log",
+    "existing_ctests_passed": 2,
+    "fixture": {
+      "fixture": "local/native-av-worker-deliveries/canonical/local/native-vfs-canonical-drain-av/integrated01",
+      "native_source_comparisons": 1,
+      "manifest_before_sha256": "7e16f2f29279f44ac711ab70376eaba8395fd8d0d656811c1d6412f85e18fcf7",
+      "result_file": "summary.json",
+      "result_sha256": "2edf746814897e5caf0129e270c15963c72f636f7e8e67a62253f843569a14cf",
+      "result": {
+        "result": "passed",
+        "case": "one canonical drain scenario compared between unchanged original BD0400 and reconstructed source",
+        "result_bytes": 6148,
+        "result_sha256": "0ec4663927b553e8d1e3cf1827a3aeaab94c5fa82d9b2f564eb2b1405ddfaf36",
+        "input_files": 505,
+        "changed_inputs": [],
+        "linked_archive_equal_objects": 123,
+        "library_sha256": "b17d54ea1129bea09e93c9c5e629fd2e3b572bf83a4d25f14ecf63bb152c3b76",
+        "manifest_before_sha256": "7e16f2f29279f44ac711ab70376eaba8395fd8d0d656811c1d6412f85e18fcf7",
+        "native_original_FH3_SEH_executed": false,
+        "game_executed": false
+      }
+    },
+    "locked_ghidra_annotations_and_required_body_repairs_completed": true,
+    "current_source_header_object_gate": "local/native-av-promotion-inputs.json; reports/native_av_integration.json",
+    "worker_historical_results_preserved": true,
+    "game_validated": false
+  }
+}

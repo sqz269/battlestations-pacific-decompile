@@ -1,0 +1,996 @@
+{
+  "reason": "Native registers, stack arguments and RET cleanup verified in original listings. unused EDX represents an unconsumed register, not an original argument; source contexts are excluded. Prior names and signatures are preserved in each receipt.",
+  "entries": [
+    {
+      "address": "00bd30e0",
+      "proposed": "void __fastcall BSP_RefCounted_InvokeDeletingDestructor(void* self)",
+      "before": "Function: BSP_RefCounted_InvokeDeletingDestructor at 00bd30e0\nSignature: undefined BSP_RefCounted_InvokeDeletingDestructor(void)\nEntry: 00bd30e0\nBody: 00bd30e0 - 00bd30ed",
+      "apply": "Successfully set prototype for function at 00bd30e0 with __fastcall calling convention",
+      "after": "Function: BSP_RefCounted_InvokeDeletingDestructor at 00bd30e0\nSignature: void __fastcall BSP_RefCounted_InvokeDeletingDestructor(void * self)\nEntry: 00bd30e0\nBody: 00bd30e0 - 00bd30ed",
+      "readback_verified": true
+    },
+    {
+      "address": "00bd30f0",
+      "proposed": "void __fastcall BSP_RefCounted_DestroyBase(void* self)",
+      "before": "Function: BSP_RefCounted_DestroyBase at 00bd30f0\nSignature: undefined BSP_RefCounted_DestroyBase(void)\nEntry: 00bd30f0\nBody: 00bd30f0 - 00bd30f6",
+      "apply": "Successfully set prototype for function at 00bd30f0 with __fastcall calling convention",
+      "after": "Function: BSP_RefCounted_DestroyBase at 00bd30f0\nSignature: void __fastcall BSP_RefCounted_DestroyBase(void * self)\nEntry: 00bd30f0\nBody: 00bd30f0 - 00bd30f6",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93e70",
+      "proposed": "void __fastcall CG_adjustor_thunk_00a93e70(void* self)",
+      "before": "Function: CG_adjustor_thunk_00a93e70 at 00a93e70\nSignature: undefined CG_adjustor_thunk_00a93e70(void)\nEntry: 00a93e70\nBody: 00a93e70 - 00a93e7a",
+      "apply": "Successfully set prototype for function at 00a93e70 with __fastcall calling convention",
+      "after": "Function: CG_adjustor_thunk_00a93e70 at 00a93e70\nSignature: void __fastcall CG_adjustor_thunk_00a93e70(void * self)\nEntry: 00a93e70\nBody: 00a93e70 - 00a93e7a",
+      "readback_verified": true
+    },
+    {
+      "address": "00a904e0",
+      "proposed": "void __fastcall BSP_InputDeviceTable_AttachDevice(void* self, void* unused_edx, uint slot, void* device)",
+      "before": "Function: BSP_InputDeviceTable_AttachDevice at 00a904e0\nSignature: undefined BSP_InputDeviceTable_AttachDevice(void)\nEntry: 00a904e0\nBody: 00a904e0 - 00a90523",
+      "apply": "Successfully set prototype for function at 00a904e0 with __fastcall calling convention",
+      "after": "Function: BSP_InputDeviceTable_AttachDevice at 00a904e0\nSignature: void __fastcall BSP_InputDeviceTable_AttachDevice(void * self, void * unused_edx, uint slot, void * device)\nEntry: 00a904e0\nBody: 00a904e0 - 00a90523",
+      "readback_verified": true
+    },
+    {
+      "address": "00a98030",
+      "proposed": "int __stdcall BSP_InputDeviceManager_OnDeviceEnumerated(void* backend, void* instance)",
+      "before": "Function: BSP_InputDeviceManager_OnDeviceEnumerated at 00a98030\nSignature: undefined BSP_InputDeviceManager_OnDeviceEnumerated(void)\nEntry: 00a98030\nBody: 00a98030 - 00a982ac",
+      "apply": "Successfully set prototype for function at 00a98030 with __stdcall calling convention",
+      "after": "Function: BSP_InputDeviceManager_OnDeviceEnumerated at 00a98030\nSignature: int __stdcall BSP_InputDeviceManager_OnDeviceEnumerated(void * backend, void * instance)\nEntry: 00a98030\nBody: 00a98030 - 00a982ac",
+      "readback_verified": true
+    },
+    {
+      "address": "00a982b0",
+      "proposed": "int __stdcall BSP_InputDeviceManager_EnumDevicesCallbackA(void* instance, void* backend)",
+      "before": "Function: BSP_InputDeviceManager_EnumDevicesCallbackA at 00a982b0\nSignature: undefined BSP_InputDeviceManager_EnumDevicesCallbackA(void)\nEntry: 00a982b0\nBody: 00a982b0 - 00a982c1",
+      "apply": "Successfully set prototype for function at 00a982b0 with __stdcall calling convention",
+      "after": "Function: BSP_InputDeviceManager_EnumDevicesCallbackA at 00a982b0\nSignature: int __stdcall BSP_InputDeviceManager_EnumDevicesCallbackA(void * instance, void * backend)\nEntry: 00a982b0\nBody: 00a982b0 - 00a982c1",
+      "readback_verified": true
+    },
+    {
+      "address": "00a962f0",
+      "proposed": "void* __fastcall BSP_KeyboardInputDevice_InitializeState_Provisional(void* self)",
+      "before": "Function: BSP_KeyboardInputDevice_InitializeState_Provisional at 00a962f0\nSignature: undefined BSP_KeyboardInputDevice_InitializeState_Provisional(void)\nEntry: 00a962f0\nBody: 00a962f0 - 00a96342",
+      "apply": "Successfully set prototype for function at 00a962f0 with __fastcall calling convention",
+      "after": "Function: BSP_KeyboardInputDevice_InitializeState_Provisional at 00a962f0\nSignature: void * __fastcall BSP_KeyboardInputDevice_InitializeState_Provisional(void * self)\nEntry: 00a962f0\nBody: 00a962f0 - 00a96342",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a3e0",
+      "proposed": "void* __fastcall BSP_KeyboardInputDevice_Construct(void* self, void* unused_edx, void* direct_input)",
+      "before": "Function: BSP_KeyboardInputDevice_Construct at 00a9a3e0\nSignature: undefined BSP_KeyboardInputDevice_Construct(void)\nEntry: 00a9a3e0\nBody: 00a9a3e0 - 00a9a46a",
+      "apply": "Successfully set prototype for function at 00a9a3e0 with __fastcall calling convention",
+      "after": "Function: BSP_KeyboardInputDevice_Construct at 00a9a3e0\nSignature: void * __fastcall BSP_KeyboardInputDevice_Construct(void * self, void * unused_edx, void * direct_input)\nEntry: 00a9a3e0\nBody: 00a9a3e0 - 00a9a46a",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a290",
+      "proposed": "void* __fastcall BSP_MouseInputDevice_Construct(void* self, void* unused_edx, void* direct_input)",
+      "before": "Function: BSP_MouseInputDevice_Construct at 00a9a290\nSignature: undefined BSP_MouseInputDevice_Construct(void)\nEntry: 00a9a290\nBody: 00a9a290 - 00a9a37e",
+      "apply": "Successfully set prototype for function at 00a9a290 with __fastcall calling convention",
+      "after": "Function: BSP_MouseInputDevice_Construct at 00a9a290\nSignature: void * __fastcall BSP_MouseInputDevice_Construct(void * self, void * unused_edx, void * direct_input)\nEntry: 00a9a290\nBody: 00a9a290 - 00a9a37e",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a470",
+      "proposed": "void* __fastcall CG_scalar_deleting_dtor_00a9a470(void* self, void* unused_edx, uint flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a9a470 at 00a9a470\nSignature: undefined CG_scalar_deleting_dtor_00a9a470(void)\nEntry: 00a9a470\nBody: 00a9a470 - 00a9a493",
+      "apply": "Successfully set prototype for function at 00a9a470 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a9a470 at 00a9a470\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a9a470(void * self, void * unused_edx, uint flags)\nEntry: 00a9a470\nBody: 00a9a470 - 00a9a493",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a390",
+      "proposed": "void* __fastcall CG_scalar_deleting_dtor_00a9a390(void* self, void* unused_edx, uint flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a9a390 at 00a9a390\nSignature: undefined CG_scalar_deleting_dtor_00a9a390(void)\nEntry: 00a9a390\nBody: 00a9a390 - 00a9a3b3",
+      "apply": "Successfully set prototype for function at 00a9a390 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a9a390 at 00a9a390\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a9a390(void * self, void * unused_edx, uint flags)\nEntry: 00a9a390\nBody: 00a9a390 - 00a9a3b3",
+      "readback_verified": true
+    },
+    {
+      "address": "00a95e60",
+      "proposed": "void __fastcall CG_adjustor_thunk_00a95e60(void* self)",
+      "before": "Function: CG_adjustor_thunk_00a95e60 at 00a95e60\nSignature: undefined CG_adjustor_thunk_00a95e60(void)\nEntry: 00a95e60\nBody: 00a95e60 - 00a95e6a",
+      "apply": "Successfully set prototype for function at 00a95e60 with __fastcall calling convention",
+      "after": "Function: CG_adjustor_thunk_00a95e60 at 00a95e60\nSignature: void __fastcall CG_adjustor_thunk_00a95e60(void * self)\nEntry: 00a95e60\nBody: 00a95e60 - 00a95e6a",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99ef0",
+      "proposed": "void __fastcall CG_adjustor_thunk_00a99ef0(void* self)",
+      "before": "Function: CG_adjustor_thunk_00a99ef0 at 00a99ef0\nSignature: undefined CG_adjustor_thunk_00a99ef0(void)\nEntry: 00a99ef0\nBody: 00a99ef0 - 00a99efa",
+      "apply": "Successfully set prototype for function at 00a99ef0 with __fastcall calling convention",
+      "after": "Function: CG_adjustor_thunk_00a99ef0 at 00a99ef0\nSignature: void __fastcall CG_adjustor_thunk_00a99ef0(void * self)\nEntry: 00a99ef0\nBody: 00a99ef0 - 00a99efa",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99e90",
+      "proposed": "void __fastcall BSP_MouseDevice_UpdateButtonHistory(void* self)",
+      "before": "Function: BSP_MouseDevice_UpdateButtonHistory at 00a99e90\nSignature: undefined BSP_MouseDevice_UpdateButtonHistory(void)\nEntry: 00a99e90\nBody: 00a99e90 - 00a99ec7",
+      "apply": "Successfully set prototype for function at 00a99e90 with __fastcall calling convention",
+      "after": "Function: BSP_MouseDevice_UpdateButtonHistory at 00a99e90\nSignature: void __fastcall BSP_MouseDevice_UpdateButtonHistory(void * self)\nEntry: 00a99e90\nBody: 00a99e90 - 00a99ec7",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a4a0",
+      "proposed": "bool __fastcall BSP_KeyboardDevice_PollState(void* self, void* unused_edx, float seconds)",
+      "before": "Function: BSP_KeyboardDevice_PollState at 00a9a4a0\nSignature: undefined BSP_KeyboardDevice_PollState(void)\nEntry: 00a9a4a0\nBody: 00a9a4a0 - 00a9a56b",
+      "apply": "Successfully set prototype for function at 00a9a4a0 with __fastcall calling convention",
+      "after": "Function: BSP_KeyboardDevice_PollState at 00a9a4a0\nSignature: bool __fastcall BSP_KeyboardDevice_PollState(void * self, void * unused_edx, float seconds)\nEntry: 00a9a4a0\nBody: 00a9a4a0 - 00a9a56b",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a180",
+      "proposed": "bool __fastcall BSP_MouseDevice_PollState(void* self, void* unused_edx, float seconds)",
+      "before": "Function: BSP_MouseDevice_PollState at 00a9a180\nSignature: undefined BSP_MouseDevice_PollState(void)\nEntry: 00a9a180\nBody: 00a9a180 - 00a9a287",
+      "apply": "Successfully set prototype for function at 00a9a180 with __fastcall calling convention",
+      "after": "Function: BSP_MouseDevice_PollState at 00a9a180\nSignature: bool __fastcall BSP_MouseDevice_PollState(void * self, void * unused_edx, float seconds)\nEntry: 00a9a180\nBody: 00a9a180 - 00a9a287",
+      "readback_verified": true
+    },
+    {
+      "address": "00a95e70",
+      "proposed": "bool __fastcall BSP_KeyboardDevice_QueryDown(void* self, void* unused_edx, uint code)",
+      "before": "Function: BSP_KeyboardDevice_QueryDown at 00a95e70\nSignature: undefined BSP_KeyboardDevice_QueryDown(void)\nEntry: 00a95e70\nBody: 00a95e70 - 00a95e82",
+      "apply": "Successfully set prototype for function at 00a95e70 with __fastcall calling convention",
+      "after": "Function: BSP_KeyboardDevice_QueryDown at 00a95e70\nSignature: bool __fastcall BSP_KeyboardDevice_QueryDown(void * self, void * unused_edx, uint code)\nEntry: 00a95e70\nBody: 00a95e70 - 00a95e82",
+      "readback_verified": true
+    },
+    {
+      "address": "00a95e90",
+      "proposed": "float __fastcall BSP_KeyboardDevice_QueryValue(void* self, void* unused_edx, uint code)",
+      "before": "Function: BSP_KeyboardDevice_QueryValue at 00a95e90\nSignature: undefined BSP_KeyboardDevice_QueryValue(void)\nEntry: 00a95e90\nBody: 00a95e90 - 00a95ec4",
+      "apply": "Successfully set prototype for function at 00a95e90 with __fastcall calling convention",
+      "after": "Function: BSP_KeyboardDevice_QueryValue at 00a95e90\nSignature: float __fastcall BSP_KeyboardDevice_QueryValue(void * self, void * unused_edx, uint code)\nEntry: 00a95e90\nBody: 00a95e90 - 00a95ec4",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99f70",
+      "proposed": "bool __fastcall BSP_MouseDevice_QueryDown(void* self, void* unused_edx, uint code)",
+      "before": "Function: BSP_MouseDevice_QueryDown at 00a99f70\nSignature: undefined BSP_MouseDevice_QueryDown(void)\nEntry: 00a99f70\nBody: 00a99f70 - 00a99fda",
+      "apply": "Successfully set prototype for function at 00a99f70 with __fastcall calling convention",
+      "after": "Function: BSP_MouseDevice_QueryDown at 00a99f70\nSignature: bool __fastcall BSP_MouseDevice_QueryDown(void * self, void * unused_edx, uint code)\nEntry: 00a99f70\nBody: 00a99f70 - 00a99fda",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99fe0",
+      "proposed": "float __fastcall BSP_MouseDevice_QueryValue(void* self, void* unused_edx, uint code)",
+      "before": "Function: BSP_MouseDevice_QueryValue at 00a99fe0\nSignature: undefined BSP_MouseDevice_QueryValue(void)\nEntry: 00a99fe0\nBody: 00a99fe0 - 00a9a0aa",
+      "apply": "Successfully set prototype for function at 00a99fe0 with __fastcall calling convention",
+      "after": "Function: BSP_MouseDevice_QueryValue at 00a99fe0\nSignature: float __fastcall BSP_MouseDevice_QueryValue(void * self, void * unused_edx, uint code)\nEntry: 00a99fe0\nBody: 00a99fe0 - 00a9a0aa",
+      "readback_verified": true
+    },
+    {
+      "address": "00a96350",
+      "proposed": "int __fastcall BSP_KeyboardDevice_Class(void* self)",
+      "before": "Function: BSP_KeyboardDevice_Class at 00a96350\nSignature: undefined BSP_KeyboardDevice_Class(void)\nEntry: 00a96350\nBody: 00a96350 - 00a96352",
+      "apply": "Successfully set prototype for function at 00a96350 with __fastcall calling convention",
+      "after": "Function: BSP_KeyboardDevice_Class at 00a96350\nSignature: int __fastcall BSP_KeyboardDevice_Class(void * self)\nEntry: 00a96350\nBody: 00a96350 - 00a96352",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a0f0",
+      "proposed": "int __fastcall BSP_MouseDevice_Class(void* self)",
+      "before": "Function: BSP_MouseDevice_Class at 00a9a0f0\nSignature: undefined BSP_MouseDevice_Class(void)\nEntry: 00a9a0f0\nBody: 00a9a0f0 - 00a9a0f5",
+      "apply": "Successfully set prototype for function at 00a9a0f0 with __fastcall calling convention",
+      "after": "Function: BSP_MouseDevice_Class at 00a9a0f0\nSignature: int __fastcall BSP_MouseDevice_Class(void * self)\nEntry: 00a9a0f0\nBody: 00a9a0f0 - 00a9a0f5",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a140",
+      "proposed": "void __fastcall BSP_MouseInput_SetCooperativeLevel_Provisional(void* self, void* unused_edx, uint flags)",
+      "before": "Function: BSP_MouseInput_SetCooperativeLevel_Provisional at 00a9a140\nSignature: undefined BSP_MouseInput_SetCooperativeLevel_Provisional(void)\nEntry: 00a9a140\nBody: 00a9a140 - 00a9a174",
+      "apply": "Successfully set prototype for function at 00a9a140 with __fastcall calling convention",
+      "after": "Function: BSP_MouseInput_SetCooperativeLevel_Provisional at 00a9a140\nSignature: void __fastcall BSP_MouseInput_SetCooperativeLevel_Provisional(void * self, void * unused_edx, uint flags)\nEntry: 00a9a140\nBody: 00a9a140 - 00a9a174",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99940",
+      "proposed": "void* __fastcall BSP_JoystickInputDevice_Construct(void* actual_device, void* unused_edx, void* direct_input8, void* device_instance)",
+      "before": "Function: BSP_JoystickInputDevice_Construct at 00a99940\nSignature: undefined BSP_JoystickInputDevice_Construct(void)\nEntry: 00a99940\nBody: 00a99940 - 00a99e8d",
+      "apply": "Successfully set prototype for function at 00a99940 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_Construct at 00a99940\nSignature: void * __fastcall BSP_JoystickInputDevice_Construct(void * actual_device, void * unused_edx, void * direct_input8, void * device_instance)\nEntry: 00a99940\nBody: 00a99940 - 00a99e8d",
+      "readback_verified": true
+    },
+    {
+      "address": "00a991f0",
+      "proposed": "void __fastcall BSP_JoystickInputDevice_Destroy(void* actual_device)",
+      "before": "Function: BSP_JoystickInputDevice_Destroy at 00a991f0\nSignature: undefined BSP_JoystickInputDevice_Destroy(void)\nEntry: 00a991f0\nBody: 00a991f0 - 00a992de",
+      "apply": "Successfully set prototype for function at 00a991f0 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_Destroy at 00a991f0\nSignature: void __fastcall BSP_JoystickInputDevice_Destroy(void * actual_device)\nEntry: 00a991f0\nBody: 00a991f0 - 00a992de",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99900",
+      "proposed": "void* __fastcall CG_scalar_deleting_dtor_00a99900(void* actual_device, void* unused_edx, uint flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a99900 at 00a99900\nSignature: undefined CG_scalar_deleting_dtor_00a99900(void)\nEntry: 00a99900\nBody: 00a99900 - 00a9991d",
+      "apply": "Successfully set prototype for function at 00a99900 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a99900 at 00a99900\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a99900(void * actual_device, void * unused_edx, uint flags)\nEntry: 00a99900\nBody: 00a99900 - 00a9991d",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99920",
+      "proposed": "int __stdcall BSP_JoystickInputDevice_ObjectCallbackA(void* object_instance, void* actual_device)",
+      "before": "Function: BSP_JoystickInputDevice_ObjectCallbackA at 00a99920\nSignature: undefined BSP_JoystickInputDevice_ObjectCallbackA(void)\nEntry: 00a99920\nBody: 00a99920 - 00a99930",
+      "apply": "Successfully set prototype for function at 00a99920 with __stdcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_ObjectCallbackA at 00a99920\nSignature: int __stdcall BSP_JoystickInputDevice_ObjectCallbackA(void * object_instance, void * actual_device)\nEntry: 00a99920\nBody: 00a99920 - 00a99930",
+      "readback_verified": true
+    },
+    {
+      "address": "00a98400",
+      "proposed": "void __fastcall BSP_JoystickInputDevice_ResetFeedback(void* actual_device)",
+      "before": "Function: BSP_JoystickInputDevice_ResetFeedback at 00a98400\nSignature: undefined BSP_JoystickInputDevice_ResetFeedback(void)\nEntry: 00a98400\nBody: 00a98400 - 00a98434",
+      "apply": "Successfully set prototype for function at 00a98400 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_ResetFeedback at 00a98400\nSignature: void __fastcall BSP_JoystickInputDevice_ResetFeedback(void * actual_device)\nEntry: 00a98400\nBody: 00a98400 - 00a98434",
+      "readback_verified": true
+    },
+    {
+      "address": "00a98cc0",
+      "proposed": "void __fastcall BSP_GamepadForce_SetJoystickOutput(void* actual_device, void* unused_edx, uint channel, float value)",
+      "before": "Function: BSP_GamepadForce_SetJoystickOutput at 00a98cc0\nSignature: undefined BSP_GamepadForce_SetJoystickOutput(void)\nEntry: 00a98cc0\nBody: 00a98cc0 - 00a98e1e",
+      "apply": "Successfully set prototype for function at 00a98cc0 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_SetJoystickOutput at 00a98cc0\nSignature: void __fastcall BSP_GamepadForce_SetJoystickOutput(void * actual_device, void * unused_edx, uint channel, float value)\nEntry: 00a98cc0\nBody: 00a98cc0 - 00a98e1e",
+      "readback_verified": true
+    },
+    {
+      "address": "00a98e30",
+      "proposed": "bool __fastcall BSP_JoystickInputDevice_Poll(void* actual_device, void* unused_edx, float ignored_seconds)",
+      "before": "Function: BSP_JoystickInputDevice_Poll at 00a98e30\nSignature: undefined BSP_JoystickInputDevice_Poll(void)\nEntry: 00a98e30\nBody: 00a98e30 - 00a9914d",
+      "apply": "Successfully set prototype for function at 00a98e30 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_Poll at 00a98e30\nSignature: bool __fastcall BSP_JoystickInputDevice_Poll(void * actual_device, void * unused_edx, float ignored_seconds)\nEntry: 00a98e30\nBody: 00a98e30 - 00a9914d",
+      "readback_verified": true
+    },
+    {
+      "address": "00a992f0",
+      "proposed": "int __fastcall BSP_JoystickInputDevice_DescribeObject(void* actual_device, void* unused_edx, void* object_instance)",
+      "before": "Function: BSP_JoystickInputDevice_DescribeObject at 00a992f0\nSignature: undefined BSP_JoystickInputDevice_DescribeObject(void)\nEntry: 00a992f0\nBody: 00a992f0 - 00a99707",
+      "apply": "Successfully set prototype for function at 00a992f0 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_DescribeObject at 00a992f0\nSignature: int __fastcall BSP_JoystickInputDevice_DescribeObject(void * actual_device, void * unused_edx, void * object_instance)\nEntry: 00a992f0\nBody: 00a992f0 - 00a99707",
+      "readback_verified": true
+    },
+    {
+      "address": "00a98750",
+      "proposed": "bool __fastcall BSP_JoystickInputDevice_QueryRelative(void* actual_device, void* unused_edx, uint code)",
+      "before": "Function: BSP_JoystickInputDevice_QueryRelative at 00a98750\nSignature: undefined BSP_JoystickInputDevice_QueryRelative(void)\nEntry: 00a98750\nBody: 00a98750 - 00a98779",
+      "apply": "Successfully set prototype for function at 00a98750 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_QueryRelative at 00a98750\nSignature: bool __fastcall BSP_JoystickInputDevice_QueryRelative(void * actual_device, void * unused_edx, uint code)\nEntry: 00a98750\nBody: 00a98750 - 00a98779",
+      "readback_verified": true
+    },
+    {
+      "address": "00a98780",
+      "proposed": "bool __fastcall BSP_JoystickInputDevice_BindingDown(void* actual_device, void* unused_edx, void* binding)",
+      "before": "Function: BSP_JoystickInputDevice_BindingDown at 00a98780\nSignature: undefined BSP_JoystickInputDevice_BindingDown(void)\nEntry: 00a98780\nBody: 00a98780 - 00a98919",
+      "apply": "Successfully set prototype for function at 00a98780 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_BindingDown at 00a98780\nSignature: bool __fastcall BSP_JoystickInputDevice_BindingDown(void * actual_device, void * unused_edx, void * binding)\nEntry: 00a98780\nBody: 00a98780 - 00a98919",
+      "readback_verified": true
+    },
+    {
+      "address": "00a98940",
+      "proposed": "float __fastcall BSP_JoystickInputDevice_BindingValue(void* actual_device, void* unused_edx, void* binding)",
+      "before": "Function: BSP_JoystickInputDevice_BindingValue at 00a98940\nSignature: undefined BSP_JoystickInputDevice_BindingValue(void)\nEntry: 00a98940\nBody: 00a98940 - 00a98b65",
+      "apply": "Successfully set prototype for function at 00a98940 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_BindingValue at 00a98940\nSignature: float __fastcall BSP_JoystickInputDevice_BindingValue(void * actual_device, void * unused_edx, void * binding)\nEntry: 00a98940\nBody: 00a98940 - 00a98b65",
+      "readback_verified": true
+    },
+    {
+      "address": "00a98b90",
+      "proposed": "int __stdcall BSP_JoystickInputDevice_CountObjectsCallbackA(void* object_instance, void* actual_device)",
+      "before": "Function: BSP_JoystickInputDevice_CountObjectsCallbackA at 00a98b90\nSignature: undefined BSP_JoystickInputDevice_CountObjectsCallbackA(void)\nEntry: 00a98b90\nBody: 00a98b90 - 00a98bac",
+      "apply": "Successfully set prototype for function at 00a98b90 with __stdcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_CountObjectsCallbackA at 00a98b90\nSignature: int __stdcall BSP_JoystickInputDevice_CountObjectsCallbackA(void * object_instance, void * actual_device)\nEntry: 00a98b90\nBody: 00a98b90 - 00a98bac",
+      "readback_verified": true
+    },
+    {
+      "address": "00a98bb0",
+      "proposed": "void __fastcall BSP_JoystickInputDevice_SetRelativeBinding(void* actual_device, void* unused_edx, uint code, byte raw_relative)",
+      "before": "Function: BSP_JoystickInputDevice_SetRelativeBinding at 00a98bb0\nSignature: undefined BSP_JoystickInputDevice_SetRelativeBinding(void)\nEntry: 00a98bb0\nBody: 00a98bb0 - 00a98bc4",
+      "apply": "Successfully set prototype for function at 00a98bb0 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_SetRelativeBinding at 00a98bb0\nSignature: void __fastcall BSP_JoystickInputDevice_SetRelativeBinding(void * actual_device, void * unused_edx, uint code, byte raw_relative)\nEntry: 00a98bb0\nBody: 00a98bb0 - 00a98bc4",
+      "readback_verified": true
+    },
+    {
+      "address": "00a98bd0",
+      "proposed": "bool __fastcall BSP_JoystickInputDevice_QueryDown(void* actual_device, void* unused_edx, uint code)",
+      "before": "Function: BSP_JoystickInputDevice_QueryDown at 00a98bd0\nSignature: undefined BSP_JoystickInputDevice_QueryDown(void)\nEntry: 00a98bd0\nBody: 00a98bd0 - 00a98c47",
+      "apply": "Successfully set prototype for function at 00a98bd0 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_QueryDown at 00a98bd0\nSignature: bool __fastcall BSP_JoystickInputDevice_QueryDown(void * actual_device, void * unused_edx, uint code)\nEntry: 00a98bd0\nBody: 00a98bd0 - 00a98c47",
+      "readback_verified": true
+    },
+    {
+      "address": "00a98c50",
+      "proposed": "float __fastcall BSP_JoystickInputDevice_QueryValue(void* actual_device, void* unused_edx, uint code)",
+      "before": "Function: BSP_JoystickInputDevice_QueryValue at 00a98c50\nSignature: undefined BSP_JoystickInputDevice_QueryValue(void)\nEntry: 00a98c50\nBody: 00a98c50 - 00a98cb1",
+      "apply": "Successfully set prototype for function at 00a98c50 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_QueryValue at 00a98c50\nSignature: float __fastcall BSP_JoystickInputDevice_QueryValue(void * actual_device, void * unused_edx, uint code)\nEntry: 00a98c50\nBody: 00a98c50 - 00a98cb1",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99150",
+      "proposed": "void* __fastcall BSP_JoystickObject_InitializeName_Provisional(void* actual_metadata_record)",
+      "before": "Function: BSP_JoystickObject_InitializeName_Provisional at 00a99150\nSignature: undefined BSP_JoystickObject_InitializeName_Provisional(void)\nEntry: 00a99150\nBody: 00a99150 - 00a9915f",
+      "apply": "Successfully set prototype for function at 00a99150 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickObject_InitializeName_Provisional at 00a99150\nSignature: void * __fastcall BSP_JoystickObject_InitializeName_Provisional(void * actual_metadata_record)\nEntry: 00a99150\nBody: 00a99150 - 00a9915f",
+      "readback_verified": true
+    },
+    {
+      "address": "00a99160",
+      "proposed": "void __fastcall BSP_JoystickObject_DestroyName_Provisional(void* actual_metadata_record)",
+      "before": "Function: BSP_JoystickObject_DestroyName_Provisional at 00a99160\nSignature: undefined BSP_JoystickObject_DestroyName_Provisional(void)\nEntry: 00a99160\nBody: 00a99160 - 00a9917c",
+      "apply": "Successfully set prototype for function at 00a99160 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickObject_DestroyName_Provisional at 00a99160\nSignature: void __fastcall BSP_JoystickObject_DestroyName_Provisional(void * actual_metadata_record)\nEntry: 00a99160\nBody: 00a99160 - 00a9917c",
+      "readback_verified": true
+    },
+    {
+      "address": "00a992e0",
+      "proposed": "char* __fastcall BSP_JoystickInputDevice_ProductName_Provisional(void* actual_device)",
+      "before": "Function: BSP_JoystickInputDevice_ProductName_Provisional at 00a992e0\nSignature: undefined BSP_JoystickInputDevice_ProductName_Provisional(void)\nEntry: 00a992e0\nBody: 00a992e0 - 00a992ef",
+      "apply": "Successfully set prototype for function at 00a992e0 with __fastcall calling convention",
+      "after": "Function: BSP_JoystickInputDevice_ProductName_Provisional at 00a992e0\nSignature: char * __fastcall BSP_JoystickInputDevice_ProductName_Provisional(void * actual_device)\nEntry: 00a992e0\nBody: 00a992e0 - 00a992ef",
+      "readback_verified": true
+    },
+    {
+      "address": "00a95d70",
+      "proposed": "void* __fastcall BSP_GamepadInputDevice_Initialize_Provisional(void* self)",
+      "before": "Function: BSP_GamepadInputDevice_Initialize_Provisional at 00a95d70\nSignature: undefined BSP_GamepadInputDevice_Initialize_Provisional(void)\nEntry: 00a95d70\nBody: 00a95d70 - 00a95e32",
+      "apply": "Successfully set prototype for function at 00a95d70 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadInputDevice_Initialize_Provisional at 00a95d70\nSignature: void * __fastcall BSP_GamepadInputDevice_Initialize_Provisional(void * self)\nEntry: 00a95d70\nBody: 00a95d70 - 00a95e32",
+      "readback_verified": true
+    },
+    {
+      "address": "00a95a80",
+      "proposed": "void __fastcall BSP_GamepadForce_DestroyState(void* self)",
+      "before": "Function: BSP_GamepadForce_DestroyState at 00a95a80\nSignature: undefined BSP_GamepadForce_DestroyState(void)\nEntry: 00a95a80\nBody: 00a95a80 - 00a95bc4",
+      "apply": "Successfully set prototype for function at 00a95a80 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_DestroyState at 00a95a80\nSignature: void __fastcall BSP_GamepadForce_DestroyState(void * self)\nEntry: 00a95a80\nBody: 00a95a80 - 00a95bc4",
+      "readback_verified": true
+    },
+    {
+      "address": "00a95e40",
+      "proposed": "void* __fastcall CG_scalar_deleting_dtor_00a95e40(void* self, void* unused_edx, uint flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a95e40 at 00a95e40\nSignature: undefined CG_scalar_deleting_dtor_00a95e40(void)\nEntry: 00a95e40\nBody: 00a95e40 - 00a95e5d",
+      "apply": "Successfully set prototype for function at 00a95e40 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a95e40 at 00a95e40\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a95e40(void * self, void * unused_edx, uint flags)\nEntry: 00a95e40\nBody: 00a95e40 - 00a95e5d",
+      "readback_verified": true
+    },
+    {
+      "address": "00a954c0",
+      "proposed": "void __fastcall BSP_GamepadForce_PumpRequests(void* self, void* unused_edx, float seconds)",
+      "before": "Function: BSP_GamepadForce_PumpRequests at 00a954c0\nSignature: undefined BSP_GamepadForce_PumpRequests(void)\nEntry: 00a954c0\nBody: 00a954c0 - 00a95672",
+      "apply": "Successfully set prototype for function at 00a954c0 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_PumpRequests at 00a954c0\nSignature: void __fastcall BSP_GamepadForce_PumpRequests(void * self, void * unused_edx, float seconds)\nEntry: 00a954c0\nBody: 00a954c0 - 00a95672",
+      "readback_verified": true
+    },
+    {
+      "address": "00a95890",
+      "proposed": "void __fastcall BSP_GamepadForce_ClearRequests(void* self)",
+      "before": "Function: BSP_GamepadForce_ClearRequests at 00a95890\nSignature: undefined BSP_GamepadForce_ClearRequests(void)\nEntry: 00a95890\nBody: 00a95890 - 00a9595c",
+      "apply": "Successfully set prototype for function at 00a95890 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadForce_ClearRequests at 00a95890\nSignature: void __fastcall BSP_GamepadForce_ClearRequests(void * self)\nEntry: 00a95890\nBody: 00a95890 - 00a9595c",
+      "readback_verified": true
+    },
+    {
+      "address": "00a95bd0",
+      "proposed": "int __fastcall BSP_GamepadInputDevice_GetClass(void* self)",
+      "before": "Function: BSP_GamepadInputDevice_GetClass at 00a95bd0\nSignature: undefined BSP_GamepadInputDevice_GetClass(void)\nEntry: 00a95bd0\nBody: 00a95bd0 - 00a95bd5",
+      "apply": "Successfully set prototype for function at 00a95bd0 with __fastcall calling convention",
+      "after": "Function: BSP_GamepadInputDevice_GetClass at 00a95bd0\nSignature: int __fastcall BSP_GamepadInputDevice_GetClass(void * self)\nEntry: 00a95bd0\nBody: 00a95bd0 - 00a95bd5",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a5a0",
+      "proposed": "void* __fastcall BSP_XInputDevice_Construct(void* self, void* unused_edx, int controller_index)",
+      "before": "Function: BSP_XInputDevice_Construct at 00a9a5a0\nSignature: undefined BSP_XInputDevice_Construct(void)\nEntry: 00a9a5a0\nBody: 00a9a5a0 - 00a9a5e3",
+      "apply": "Successfully set prototype for function at 00a9a5a0 with __fastcall calling convention",
+      "after": "Function: BSP_XInputDevice_Construct at 00a9a5a0\nSignature: void * __fastcall BSP_XInputDevice_Construct(void * self, void * unused_edx, int controller_index)\nEntry: 00a9a5a0\nBody: 00a9a5a0 - 00a9a5e3",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a600",
+      "proposed": "void __fastcall BSP_XInputDevice_Destroy(void* self)",
+      "before": "Function: BSP_XInputDevice_Destroy at 00a9a600\nSignature: undefined BSP_XInputDevice_Destroy(void)\nEntry: 00a9a600\nBody: 00a9a600 - 00a9a60a",
+      "apply": "Successfully set prototype for function at 00a9a600 with __fastcall calling convention",
+      "after": "Function: BSP_XInputDevice_Destroy at 00a9a600\nSignature: void __fastcall BSP_XInputDevice_Destroy(void * self)\nEntry: 00a9a600\nBody: 00a9a600 - 00a9a60a",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a7c0",
+      "proposed": "void* __fastcall CG_scalar_deleting_dtor_00a9a7c0(void* self, void* unused_edx, uint flags)",
+      "before": "Function: CG_scalar_deleting_dtor_00a9a7c0 at 00a9a7c0\nSignature: undefined CG_scalar_deleting_dtor_00a9a7c0(void)\nEntry: 00a9a7c0\nBody: 00a9a7c0 - 00a9a7e3",
+      "apply": "Successfully set prototype for function at 00a9a7c0 with __fastcall calling convention",
+      "after": "Function: CG_scalar_deleting_dtor_00a9a7c0 at 00a9a7c0\nSignature: void * __fastcall CG_scalar_deleting_dtor_00a9a7c0(void * self, void * unused_edx, uint flags)\nEntry: 00a9a7c0\nBody: 00a9a7c0 - 00a9a7e3",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a5f0",
+      "proposed": "int __fastcall BSP_XInputDevice_IdentifierZero(void* self)",
+      "before": "Function: BSP_XInputDevice_IdentifierZero at 00a9a5f0\nSignature: undefined BSP_XInputDevice_IdentifierZero(void)\nEntry: 00a9a5f0\nBody: 00a9a5f0 - 00a9a5f2",
+      "apply": "Successfully set prototype for function at 00a9a5f0 with __fastcall calling convention",
+      "after": "Function: BSP_XInputDevice_IdentifierZero at 00a9a5f0\nSignature: int __fastcall BSP_XInputDevice_IdentifierZero(void * self)\nEntry: 00a9a5f0\nBody: 00a9a5f0 - 00a9a5f2",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a610",
+      "proposed": "uint __fastcall BSP_XInputDevice_QueryDown(void* self, void* unused_edx, uint code)",
+      "before": "Function: BSP_XInputDevice_QueryDown at 00a9a610\nSignature: undefined BSP_XInputDevice_QueryDown(void)\nEntry: 00a9a610\nBody: 00a9a610 - 00a9a659",
+      "apply": "Successfully set prototype for function at 00a9a610 with __fastcall calling convention",
+      "after": "Function: BSP_XInputDevice_QueryDown at 00a9a610\nSignature: uint __fastcall BSP_XInputDevice_QueryDown(void * self, void * unused_edx, uint code)\nEntry: 00a9a610\nBody: 00a9a610 - 00a9a659",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a660",
+      "proposed": "float __fastcall BSP_XInputDevice_Value(void* self, void* unused_edx, uint code)",
+      "before": "Function: BSP_XInputDevice_Value at 00a9a660\nSignature: undefined BSP_XInputDevice_Value(void)\nEntry: 00a9a660\nBody: 00a9a660 - 00a9a78f",
+      "apply": "Successfully set prototype for function at 00a9a660 with __fastcall calling convention",
+      "after": "Function: BSP_XInputDevice_Value at 00a9a660\nSignature: float __fastcall BSP_XInputDevice_Value(void * self, void * unused_edx, uint code)\nEntry: 00a9a660\nBody: 00a9a660 - 00a9a78f",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a790",
+      "proposed": "uint __fastcall BSP_XInputDevice_StopVibration(void* self)",
+      "before": "Function: BSP_XInputDevice_StopVibration at 00a9a790\nSignature: undefined BSP_XInputDevice_StopVibration(void)\nEntry: 00a9a790\nBody: 00a9a790 - 00a9a7b1",
+      "apply": "Successfully set prototype for function at 00a9a790 with __fastcall calling convention",
+      "after": "Function: BSP_XInputDevice_StopVibration at 00a9a790\nSignature: uint __fastcall BSP_XInputDevice_StopVibration(void * self)\nEntry: 00a9a790\nBody: 00a9a790 - 00a9a7b1",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a7f0",
+      "proposed": "bool __fastcall BSP_XInputDevice_Poll(void* self, void* unused_edx, float seconds_unused)",
+      "before": "Function: BSP_XInputDevice_Poll at 00a9a7f0\nSignature: undefined BSP_XInputDevice_Poll(void)\nEntry: 00a9a7f0\nBody: 00a9a7f0 - 00a9a9b7",
+      "apply": "Successfully set prototype for function at 00a9a7f0 with __fastcall calling convention",
+      "after": "Function: BSP_XInputDevice_Poll at 00a9a7f0\nSignature: bool __fastcall BSP_XInputDevice_Poll(void * self, void * unused_edx, float seconds_unused)\nEntry: 00a9a7f0\nBody: 00a9a7f0 - 00a9a9b7",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9a9c0",
+      "proposed": "void __fastcall BSP_XInputDevice_SetMotorValue(void* self, void* unused_edx, uint channel, float value)",
+      "before": "Function: BSP_XInputDevice_SetMotorValue at 00a9a9c0\nSignature: undefined BSP_XInputDevice_SetMotorValue(void)\nEntry: 00a9a9c0\nBody: 00a9a9c0 - 00a9aa3a",
+      "apply": "Successfully set prototype for function at 00a9a9c0 with __fastcall calling convention",
+      "after": "Function: BSP_XInputDevice_SetMotorValue at 00a9a9c0\nSignature: void __fastcall BSP_XInputDevice_SetMotorValue(void * self, void * unused_edx, uint channel, float value)\nEntry: 00a9a9c0\nBody: 00a9a9c0 - 00a9aa3a",
+      "readback_verified": true
+    },
+    {
+      "address": "00a9aa40",
+      "proposed": "void* __fastcall BSP_XInputDevice_ConstructControlName(void* self, void* unused_edx, void* actual8h_output, uint code)",
+      "before": "Function: BSP_XInputDevice_ConstructControlName at 00a9aa40\nSignature: undefined BSP_XInputDevice_ConstructControlName(void)\nEntry: 00a9aa40\nBody: 00a9aa40 - 00a9aaa5",
+      "apply": "Successfully set prototype for function at 00a9aa40 with __fastcall calling convention",
+      "after": "Function: BSP_XInputDevice_ConstructControlName at 00a9aa40\nSignature: void * __fastcall BSP_XInputDevice_ConstructControlName(void * self, void * unused_edx, void * actual8h_output, uint code)\nEntry: 00a9aa40\nBody: 00a9aa40 - 00a9aaa5",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bd30e0",
+        "prototype": "void __fastcall BSP_RefCounted_InvokeDeletingDestructor(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bd30e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00bd30f0",
+        "prototype": "void __fastcall BSP_RefCounted_DestroyBase(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00bd30f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93e70",
+        "prototype": "void __fastcall CG_adjustor_thunk_00a93e70(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93e70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a904e0",
+        "prototype": "void __fastcall BSP_InputDeviceTable_AttachDevice(void* self, void* unused_edx, uint slot, void* device)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a904e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a98030",
+        "prototype": "int __stdcall BSP_InputDeviceManager_OnDeviceEnumerated(void* backend, void* instance)",
+        "calling_convention": "__stdcall"
+      },
+      "result": "Successfully set prototype for function at 00a98030 with __stdcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a982b0",
+        "prototype": "int __stdcall BSP_InputDeviceManager_EnumDevicesCallbackA(void* instance, void* backend)",
+        "calling_convention": "__stdcall"
+      },
+      "result": "Successfully set prototype for function at 00a982b0 with __stdcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a962f0",
+        "prototype": "void* __fastcall BSP_KeyboardInputDevice_InitializeState_Provisional(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a962f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a3e0",
+        "prototype": "void* __fastcall BSP_KeyboardInputDevice_Construct(void* self, void* unused_edx, void* direct_input)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a3e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a290",
+        "prototype": "void* __fastcall BSP_MouseInputDevice_Construct(void* self, void* unused_edx, void* direct_input)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a290 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a470",
+        "prototype": "void* __fastcall CG_scalar_deleting_dtor_00a9a470(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a470 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a390",
+        "prototype": "void* __fastcall CG_scalar_deleting_dtor_00a9a390(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a390 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a95e60",
+        "prototype": "void __fastcall CG_adjustor_thunk_00a95e60(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a95e60 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99ef0",
+        "prototype": "void __fastcall CG_adjustor_thunk_00a99ef0(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99ef0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99e90",
+        "prototype": "void __fastcall BSP_MouseDevice_UpdateButtonHistory(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99e90 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a4a0",
+        "prototype": "bool __fastcall BSP_KeyboardDevice_PollState(void* self, void* unused_edx, float seconds)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a4a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a180",
+        "prototype": "bool __fastcall BSP_MouseDevice_PollState(void* self, void* unused_edx, float seconds)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a180 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a95e70",
+        "prototype": "bool __fastcall BSP_KeyboardDevice_QueryDown(void* self, void* unused_edx, uint code)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a95e70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a95e90",
+        "prototype": "float __fastcall BSP_KeyboardDevice_QueryValue(void* self, void* unused_edx, uint code)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a95e90 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99f70",
+        "prototype": "bool __fastcall BSP_MouseDevice_QueryDown(void* self, void* unused_edx, uint code)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99f70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99fe0",
+        "prototype": "float __fastcall BSP_MouseDevice_QueryValue(void* self, void* unused_edx, uint code)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99fe0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a96350",
+        "prototype": "int __fastcall BSP_KeyboardDevice_Class(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a96350 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a0f0",
+        "prototype": "int __fastcall BSP_MouseDevice_Class(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a0f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a140",
+        "prototype": "void __fastcall BSP_MouseInput_SetCooperativeLevel_Provisional(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a140 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99940",
+        "prototype": "void* __fastcall BSP_JoystickInputDevice_Construct(void* actual_device, void* unused_edx, void* direct_input8, void* device_instance)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99940 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a991f0",
+        "prototype": "void __fastcall BSP_JoystickInputDevice_Destroy(void* actual_device)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a991f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99900",
+        "prototype": "void* __fastcall CG_scalar_deleting_dtor_00a99900(void* actual_device, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99900 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99920",
+        "prototype": "int __stdcall BSP_JoystickInputDevice_ObjectCallbackA(void* object_instance, void* actual_device)",
+        "calling_convention": "__stdcall"
+      },
+      "result": "Successfully set prototype for function at 00a99920 with __stdcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a98400",
+        "prototype": "void __fastcall BSP_JoystickInputDevice_ResetFeedback(void* actual_device)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a98400 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a98cc0",
+        "prototype": "void __fastcall BSP_GamepadForce_SetJoystickOutput(void* actual_device, void* unused_edx, uint channel, float value)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a98cc0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a98e30",
+        "prototype": "bool __fastcall BSP_JoystickInputDevice_Poll(void* actual_device, void* unused_edx, float ignored_seconds)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a98e30 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a992f0",
+        "prototype": "int __fastcall BSP_JoystickInputDevice_DescribeObject(void* actual_device, void* unused_edx, void* object_instance)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a992f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a98750",
+        "prototype": "bool __fastcall BSP_JoystickInputDevice_QueryRelative(void* actual_device, void* unused_edx, uint code)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a98750 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a98780",
+        "prototype": "bool __fastcall BSP_JoystickInputDevice_BindingDown(void* actual_device, void* unused_edx, void* binding)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a98780 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a98940",
+        "prototype": "float __fastcall BSP_JoystickInputDevice_BindingValue(void* actual_device, void* unused_edx, void* binding)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a98940 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a98b90",
+        "prototype": "int __stdcall BSP_JoystickInputDevice_CountObjectsCallbackA(void* object_instance, void* actual_device)",
+        "calling_convention": "__stdcall"
+      },
+      "result": "Successfully set prototype for function at 00a98b90 with __stdcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a98bb0",
+        "prototype": "void __fastcall BSP_JoystickInputDevice_SetRelativeBinding(void* actual_device, void* unused_edx, uint code, byte raw_relative)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a98bb0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a98bd0",
+        "prototype": "bool __fastcall BSP_JoystickInputDevice_QueryDown(void* actual_device, void* unused_edx, uint code)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a98bd0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a98c50",
+        "prototype": "float __fastcall BSP_JoystickInputDevice_QueryValue(void* actual_device, void* unused_edx, uint code)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a98c50 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99150",
+        "prototype": "void* __fastcall BSP_JoystickObject_InitializeName_Provisional(void* actual_metadata_record)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99150 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a99160",
+        "prototype": "void __fastcall BSP_JoystickObject_DestroyName_Provisional(void* actual_metadata_record)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a99160 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a992e0",
+        "prototype": "char* __fastcall BSP_JoystickInputDevice_ProductName_Provisional(void* actual_device)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a992e0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a95d70",
+        "prototype": "void* __fastcall BSP_GamepadInputDevice_Initialize_Provisional(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a95d70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a95a80",
+        "prototype": "void __fastcall BSP_GamepadForce_DestroyState(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a95a80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a95e40",
+        "prototype": "void* __fastcall CG_scalar_deleting_dtor_00a95e40(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a95e40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a954c0",
+        "prototype": "void __fastcall BSP_GamepadForce_PumpRequests(void* self, void* unused_edx, float seconds)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a954c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a95890",
+        "prototype": "void __fastcall BSP_GamepadForce_ClearRequests(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a95890 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a95bd0",
+        "prototype": "int __fastcall BSP_GamepadInputDevice_GetClass(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a95bd0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a5a0",
+        "prototype": "void* __fastcall BSP_XInputDevice_Construct(void* self, void* unused_edx, int controller_index)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a5a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a600",
+        "prototype": "void __fastcall BSP_XInputDevice_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a600 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a7c0",
+        "prototype": "void* __fastcall CG_scalar_deleting_dtor_00a9a7c0(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a7c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a5f0",
+        "prototype": "int __fastcall BSP_XInputDevice_IdentifierZero(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a5f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a610",
+        "prototype": "uint __fastcall BSP_XInputDevice_QueryDown(void* self, void* unused_edx, uint code)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a610 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a660",
+        "prototype": "float __fastcall BSP_XInputDevice_Value(void* self, void* unused_edx, uint code)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a660 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a790",
+        "prototype": "uint __fastcall BSP_XInputDevice_StopVibration(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a790 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a7f0",
+        "prototype": "bool __fastcall BSP_XInputDevice_Poll(void* self, void* unused_edx, float seconds_unused)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a7f0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9a9c0",
+        "prototype": "void __fastcall BSP_XInputDevice_SetMotorValue(void* self, void* unused_edx, uint channel, float value)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9a9c0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a9aa40",
+        "prototype": "void* __fastcall BSP_XInputDevice_ConstructControlName(void* self, void* unused_edx, void* actual8h_output, uint code)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a9aa40 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

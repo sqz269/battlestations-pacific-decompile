@@ -175,3 +175,20 @@ Peer review caught an ordering error inherited from580650 pseudocode:
 580650/580656/580659 capture the owner/vector before580662 reads E194D8.
 Both caller sites now preserve that assembly order. The correction is also
 recorded in the report; strict compilation and the focused fixture were rerun.
+
+
+## Correction from docs/ORCH5_MENU_FRAME_STORAGE_BATCH.md
+
+The objective producer/association described as open above is now reconstructed.
+58F5B0 writes primary/secondary authored Group counts at64/68 and the selected
+side's hidden-objective count at6C. `make_main_menu_objective_bindings` aliases
+these same existing selection fields and the sole layout slots2C8/2CC/2DC/2EC.
+The canonical selection service implements519DC0 over those actual vectors and
+widget owners. 51DDA0 loads the briefing screen's map;5C5B40 preserves duplicate
+layer occurrences. Full594BF0 Text/Listbox row construction and runtime page
+traversal remain separate; see docs/MAIN_MENU_OBJECTIVE_RUNTIME.md.
+
+CEFC48 at screen+8 supplies Listbox04=598B60,08=5966F0,0C=4F8F20.
+The04 callback has two stack arguments and RET8; it is distinct from widget04
+at5993A0. Its page/activation provider remains required. 4F8F20 is exactly RET0C
+and has no effects. The same borrowed listener registration now routes all three.

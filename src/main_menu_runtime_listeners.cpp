@@ -61,7 +61,7 @@ private:
 MainMenuRuntimeListeners::MainMenuRuntimeListeners(void* screen_plus_40, void* screen_plus_8,
     MainMenuSelectionListenerBindings& selection)
     : MainMenuWidgetListener(screen_plus_40, selection.command.widget),
-      GuiListboxSelectionListener(screen_plus_8), selection_(selection) {
+      GuiListboxFrameListener(screen_plus_8), selection_(selection) {
     if (screen_plus_40 == screen_plus_8 ||
         &selection.arrow_bottom_enabled_1c4 != &selection.command.widget.arrow_bottom_enabled_1c4 ||
         &selection.arrow_top_enabled_1c5 != &selection.command.widget.arrow_top_enabled_1c5)
@@ -109,5 +109,22 @@ void MainMenuRuntimeListeners::call_current18(GuiWidgetOwner& widget, bool insid
 void MainMenuRuntimeListeners::call_current08(GuiWidgetOwner* row, GuiWidgetOwner& listbox) {
     Operation operation(*this);
     main_menu_listener_current08_005966f0(selection_, row, listbox);
+}
+void MainMenuRuntimeListeners::call_current04(GuiWidgetOwner& row, GuiWidgetOwner& listbox) {
+    Operation operation(*this);
+    auto& owners = selection_.command.widget.owners;
+    if (&row.runtime() != &owners || &listbox.runtime() != &owners ||
+        listbox.layout().type != GuiWidgetType::Listbox)
+        throw std::logic_error("Menu Listbox04 requires its canonical row and Listbox");
+    // CEFC48+4 -> 598B60, the same required page/activation provider already
+    // reached by the command listener. This is not widget04 at5993A0.
+    selection_.command.services.call_00598b60(&row, listbox);
+}
+void MainMenuRuntimeListeners::call_current0c(bool, bool, GuiWidgetOwner& listbox) {
+    Operation operation(*this);
+    if (&listbox.runtime() != &selection_.command.widget.owners ||
+        listbox.layout().type != GuiWidgetType::Listbox)
+        throw std::logic_error("Menu Listbox0C requires its canonical Listbox");
+    // CEFC48+C -> 4F8F20 is exactly C2 0C 00 (RET0C): no native effects.
 }
 } // namespace bsp

@@ -1,0 +1,38 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "documentation": "docs/ORCH5_MENU_FRAME_STORAGE_BATCH.md",
+  "status": "canonical_listener_identity_binding_build_tested",
+  "functions": [
+    {
+      "address": "004f8f20",
+      "name": "BSP_MainMenu_ListboxListenerNoOp0C",
+      "cpp": "MainMenuRuntimeListeners::call_current0c(bool,bool,GuiWidgetOwner&)",
+      "source": "src/main_menu_runtime_listeners.cpp",
+      "original_abi": "ECX screen+8 listener; three stack DWORDs; RET0C (C2 0C 00)",
+      "coverage": "complete native empty body, routed through same CEFC48 listener identity",
+      "ledger_kind": "function"
+    },
+    {
+      "address": "00598b60",
+      "name": "BSP_MainMenu_HandleBack",
+      "cpp": "MainMenuRuntimeListeners::call_current04(row,listbox)",
+      "source": "src/main_menu_runtime_listeners.cpp",
+      "original_abi": "ECX screen+8 listener, row and Listbox stack DWORDs, RET8; body subtracts8 from ECX",
+      "coverage": "partial: actual CEFC48+4 binding only to existing required598B60 page/activation provider; full body not implemented here; supersedes old unary screen-base ABI evidence",
+      "ledger_kind": "fragment"
+    }
+  ],
+  "table": {
+    "address": "00cefc48",
+    "targets": [
+      "005905d0",
+      "00598b60",
+      "005966f0",
+      "004f8f20"
+    ],
+    "constructor_store": "0059032d screen+8"
+  },
+  "abi_compatible": false,
+  "game_validated": false
+}

@@ -183,6 +183,14 @@ inline constexpr std::array<std::string_view, kMissionMultiplayerModeCount>
                               "IslandCapture2v2",         "IslandCapture3v3",
                               "IslandCapture4v4"};
 
+// Lua keys in the same offset order. 005C6066/60A7/60E8/6129 read the
+// abbreviated IC names; the mode identifiers above do not form those keys.
+inline constexpr std::array<std::string_view, kMissionMultiplayerModeCount>
+    kMissionSideUnitListKeys{"multiunitsidDuel", "multiunitsidSiege",
+                             "multiunitsidEscort", "multiunitsidCompetitive",
+                             "multiunitsidIC1v1", "multiunitsidIC2v2",
+                             "multiunitsidIC3v3", "multiunitsidIC4v4"};
+
 // 005C6DE1's else arm writes the corners at this stride, mode-major, in the
 // kMissionMultiplayerModes order: +364h is IslandCapture1v1_nw.
 inline constexpr std::uint32_t kMissionMapSizeTableOffset = 0x364;
@@ -267,7 +275,11 @@ struct MissionRecordExtra {
 struct MissionRecordData {
     MissionRecord screen{};
     MissionRecordExtra extra{};
-    std::array<MissionSideBlockData, kMissionSideBlockCount> sides{};
+    // Native +0B8h and +20Ch each contain one 154h side block. The fields
+    // used by screens live only in screen.sides; these are the remaining
+    // fields of those same blocks, paired by side index. Value ownership
+    // keeps record/vector copy and move operations independent of aliases.
+    std::array<MissionSideBlockExtra, kMissionSideBlockCount> side_extras{};
 };
 
 // The 24h of a 34h group entry that precedes its mission vector.
@@ -334,6 +346,10 @@ struct MissionTreeLuaView {
 // Each of these is called with the view positioned on the table it reads and
 // leaves it there. They are the bodies of 005C5DA0, 005C6A70 and 005C9F70.
 void read_mission_side_block_005c5da0(MissionTreeLuaView& view, MissionSideBlockData& out);
+// Fill the two disjoint parts of one native block directly. MissionRecordData
+// passes its canonical screen.sides element and matching side_extras element.
+void read_mission_side_block_005c5da0(MissionTreeLuaView& view,
+                                    MissionSideBlock& screen, MissionSideBlockExtra& extra);
 void read_mission_record_005c6a70(MissionTreeLuaView& view, MissionRecordData& out);
 void read_mission_group_005c9f70(MissionTreeLuaView& view, MissionGroupData& out);
 

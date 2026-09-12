@@ -1,0 +1,66 @@
+{
+  "packet": "orch4_native_input_runtime_ae",
+  "kind": "source_composition_no_original_function_claim",
+  "sources": [
+    "include/bsp/native_input_device_runtime.hpp",
+    "src/native_input_device_runtime.cpp"
+  ],
+  "documentation": "docs/NATIVE_INPUT_DEVICE_RUNTIME.md",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "worker_commits": {
+    "force_requests": "394b380b4869bccf17a2b2ffbc81185940b70388",
+    "virtuals": "3c897b00ddf49f52329362b1aaa5b7ac01e60799",
+    "guid_storage": "36fd92561baa1b39c017609ed89568555038ccc4"
+  },
+  "profiles": {
+    "keyboard": "00d5b904",
+    "mouse": "00d5b8b0",
+    "xinput": "00d5bb48",
+    "joystick": "00d5b7f0",
+    "gamepad_base": "00d5b670"
+  },
+  "ownership": "Borrows SDK/string/XInput services and canonical source clock/window publications. No second raw owner, manager, device table, GUID owner or implicit COM release.",
+  "dispatch": "Supplied captured profile selects fixed target; other methods read actual raw+0 on entry, nested native virtual calls capture afresh. Known pure slots use real CRT purecall.",
+  "native_metadata": {
+    "prototype_receipt": "reports/native_input_provider_prototypes.json",
+    "saved_readback_count": 35,
+    "missing_start_definitions": "reports/native_input_virtuals_function_definitions.json",
+    "force_base_definition": "reports/native_gamepad_force_requests_definitions.json"
+  },
+  "review": {
+    "mapped_slots_verified": 74,
+    "actual_total_slots": 82,
+    "extra_tail_providers_pending": true,
+    "evidence": "worker ignored local/native_input_runtime_review_ae.md; summarized in tracked documentation"
+  },
+  "validation": {
+    "code_revision": "41944009f4df28e0d1d258cb0ead1bb07994b0ad",
+    "uncommitted_runtime_at_first_build": true,
+    "win32_release_build": true,
+    "existing_ctests_passed": 2,
+    "native_seeds_match_disk": 8,
+    "direct_call_rows": 31,
+    "direct_call_failures": 0,
+    "indirect_calls_separately_reviewed": 10,
+    "indirect_tail_jumps_separately_reviewed": 1,
+    "primary_archive_sha256": "c3b141f4d971ebace17dfe71b2e088f0257f2f2ceb36318bfac47e61da6dfb1f",
+    "primary_guid_fixture": {
+      "path": "local/input_guid_storage_primary_ae.log",
+      "sha256": "ed69e4a34470ea46b100ea343e066beeb11a7e81fb8f9edd78b7f7627b24452d",
+      "output": "CORE_WORKTREE_HEAD 41944009f4df28e0d1d258cb0ead1bb07994b0ad\nCORE_SHA256 C3B141F4D971EBACE17DFE71B2E088F0257F2F2CEB36318BFAC47E61DA6DFB1F\nADAPTER_SOURCE_SHA256 EA2F6B0F4A72669F44906B2F59F828BEE75195504064DC3FCD55BD9C2EEB3B64\ninput_guid_storage_probe.cpp\nPASS canonical backend header: appends6 capacities1,2,3,4,6,6 growths5 aliases2 leading/prefix/suffix preserved; A97B00 teardown1\nPASS real UCRT returning invalid handler1 zero arguments; repaired empty-owner append1; A97B00 teardown2; heap validation\nBOUNDARY source archive fixture only; no allocation-failure replay/free counters/native ABI/SDK enumeration/game validation"
+    },
+    "primary_virtual_fixture": {
+      "path": "local/input_virtuals_primary_ae.log",
+      "sha256": "f2c3e7208ad3cc1930d799aa3fb9311829161a56b24bb6d35a4a8df2feb5d99b",
+      "output": "native_input_virtuals_probe.cpp\nraw keyboard: query20=512 first=255 tail_AL=128 no_write_leaves=3 literal_identity=3\nfixture dispatch: gamepad_queries=90 mouse_queries=17 profile_reloads=107 selected=7 tie_first=1 NaN_zero_ignored=1\nraw mouse getter: offset=238 x87_value=0.375; hardware/device-owner/runtime integration not exercised"
+    }
+  },
+  "limitations": [
+    "New source ABI; no original vtable or exception ABI claim.",
+    "Canonical source FrameClock/Win32PlatformState owners are not original singleton/vtable ABI casts.",
+    "Borrowed fixture image constants are not installed original executable globals.",
+    "Full application frame/input-action path and raw request event/submission/insertion are not yet connected.",
+    "No game launch, single-instance bypass, hardware input or gameplay validation."
+  ]
+}

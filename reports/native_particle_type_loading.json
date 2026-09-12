@@ -1,0 +1,2364 @@
+{
+  "functions": [
+    {
+      "address": "00b08ac0",
+      "end_inclusive": "00b08f55",
+      "end_exclusive": "00b08f56",
+      "ghidra_name": "BSP_SpriteParticleDefinition_Load",
+      "sha256": "b0cff7209a099856715d18743aab56145c43129c73e1e310df9852de903bc85e",
+      "live_disk_equal": true,
+      "cpp_symbol": "load_native_sprite_particle_definition_00b08ac0",
+      "source": "src/native_particle_type_loading.cpp",
+      "header": "include/bsp/native_particle_type_loading.hpp",
+      "native_prototype": "bool __thiscall BSP_SpriteParticleDefinition_Load(void * text)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX actual Sprite definition; stack actual TextBuffer; RET4/AL",
+      "evidence": "AQ reconstruction: descriptive hypothesis, not a recovered symbol. Complete installed/live-equal byte span, original register/stack inputs and RET verified. Actual native definition, pooled text, builder and parameter domains; same current globals and CRT. Curve bound kernels retain original x87 spills, comparisons and polynomial order. Sprite Size caches an upper bound rather than the value at zero. See docs/NATIVE_PARTICLE_TYPE_LOADING.md and reports/native_particle_type_loading.json. New C++ bindings, not original FH3 ABI or gameplay proof.",
+      "coverage": "complete source body through documented actual shared domains; current Shader/model/renderer services remain boundaries"
+    },
+    {
+      "address": "00b07d60",
+      "end_inclusive": "00b08202",
+      "end_exclusive": "00b08203",
+      "ghidra_name": "BSP_FloatingParticleDefinition_Load",
+      "sha256": "d5cf38092cee1eb6745e40aa880b137289dab62e14f53dd915f93d0db39be699",
+      "live_disk_equal": true,
+      "cpp_symbol": "load_native_floating_particle_definition_00b07d60",
+      "source": "src/native_particle_type_loading.cpp",
+      "header": "include/bsp/native_particle_type_loading.hpp",
+      "native_prototype": "bool __thiscall BSP_FloatingParticleDefinition_Load(void * text)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX actual Floating definition; stack actual TextBuffer; RET4/AL",
+      "evidence": "AQ reconstruction: descriptive hypothesis, not a recovered symbol. Complete installed/live-equal byte span, original register/stack inputs and RET verified. Actual native definition, pooled text, builder and parameter domains; same current globals and CRT. Curve bound kernels retain original x87 spills, comparisons and polynomial order. Sprite Size caches an upper bound rather than the value at zero. See docs/NATIVE_PARTICLE_TYPE_LOADING.md and reports/native_particle_type_loading.json. New C++ bindings, not original FH3 ABI or gameplay proof.",
+      "coverage": "complete source body through documented actual shared domains; current Shader/model/renderer services remain boundaries"
+    },
+    {
+      "address": "00b00980",
+      "end_inclusive": "00b00c04",
+      "end_exclusive": "00b00c05",
+      "ghidra_name": "BSP_ParticleTypeDefinition_LoadParameter",
+      "sha256": "413175e650d6ff683093a2d84d56f93e794c8fab16efffa720f93b758ff1cdde",
+      "live_disk_equal": true,
+      "cpp_symbol": "load_native_particle_type_parameter_00b00980",
+      "source": "src/native_particle_type_loading.cpp",
+      "header": "include/bsp/native_particle_type_loading.hpp",
+      "native_prototype": "bool __thiscall BSP_ParticleTypeDefinition_LoadParameter(void * property, void * builder, float percentage)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX definition; stack actual4h pooled property, actual10h builder,float percentage; RET0C/AL",
+      "evidence": "AQ reconstruction: descriptive hypothesis, not a recovered symbol. Complete installed/live-equal byte span, original register/stack inputs and RET verified. Actual native definition, pooled text, builder and parameter domains; same current globals and CRT. Curve bound kernels retain original x87 spills, comparisons and polynomial order. Sprite Size caches an upper bound rather than the value at zero. See docs/NATIVE_PARTICLE_TYPE_LOADING.md and reports/native_particle_type_loading.json. New C++ bindings, not original FH3 ABI or gameplay proof.",
+      "coverage": "complete source body through documented actual shared domains; current Shader/model/renderer services remain boundaries"
+    },
+    {
+      "address": "00afc1c0",
+      "end_inclusive": "00afc1c7",
+      "end_exclusive": "00afc1c8",
+      "ghidra_name": "BSP_ParticleParameterBuilder_FirstInteger",
+      "sha256": "55ae1f7ffc839c96931cfcdc9b84b4dd89a5855bc9c3a123788b712949fc88c4",
+      "live_disk_equal": true,
+      "cpp_symbol": "first_native_particle_parameter_integer_00afc1c0",
+      "source": "src/native_particle_type_loading.cpp",
+      "header": "include/bsp/native_particle_type_loading.hpp",
+      "native_prototype": "int __thiscall BSP_ParticleParameterBuilder_FirstInteger(void)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX actual10h builder; RET/EAX; original CVTTSS2SI",
+      "evidence": "AQ reconstruction: descriptive hypothesis, not a recovered symbol. Complete installed/live-equal byte span, original register/stack inputs and RET verified. Actual native definition, pooled text, builder and parameter domains; same current globals and CRT. Curve bound kernels retain original x87 spills, comparisons and polynomial order. Sprite Size caches an upper bound rather than the value at zero. See docs/NATIVE_PARTICLE_TYPE_LOADING.md and reports/native_particle_type_loading.json. New C++ bindings, not original FH3 ABI or gameplay proof.",
+      "coverage": "complete source body through documented actual shared domains; current Shader/model/renderer services remain boundaries"
+    },
+    {
+      "address": "00b08870",
+      "end_inclusive": "00b088aa",
+      "end_exclusive": "00b088ab",
+      "ghidra_name": "BSP_SpriteParticleDefinition_SetSize",
+      "sha256": "e6562bd4d154526382c798c6de7ec402a754659d203461114e6dcaa648655d46",
+      "live_disk_equal": true,
+      "cpp_symbol": "set_native_sprite_particle_size_00b08870",
+      "source": "src/native_particle_type_loading.cpp",
+      "header": "include/bsp/native_particle_type_loading.hpp",
+      "native_prototype": "void __thiscall BSP_SpriteParticleDefinition_SetSize(void * parameter)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX actual90h Sprite; stack actual0Ch runtime parameter; RET4",
+      "evidence": "AQ reconstruction: descriptive hypothesis, not a recovered symbol. Complete installed/live-equal byte span, original register/stack inputs and RET verified. Actual native definition, pooled text, builder and parameter domains; same current globals and CRT. Curve bound kernels retain original x87 spills, comparisons and polynomial order. Sprite Size caches an upper bound rather than the value at zero. See docs/NATIVE_PARTICLE_TYPE_LOADING.md and reports/native_particle_type_loading.json. New C++ bindings, not original FH3 ABI or gameplay proof.",
+      "coverage": "complete source body through documented actual shared domains; current Shader/model/renderer services remain boundaries"
+    },
+    {
+      "address": "00b001a0",
+      "end_inclusive": "00b002bc",
+      "end_exclusive": "00b002bd",
+      "ghidra_name": "BSP_ParticleRuntimeParameter_UpperBound",
+      "sha256": "97d82c680f73ffd3c17364540d5840695c5ec50582fde9d04a6b7aa72ae52b4c",
+      "live_disk_equal": true,
+      "cpp_symbol": "bound_native_runtime_particle_value_00b001a0",
+      "source": "src/native_particle_type_loading.cpp",
+      "header": "include/bsp/native_particle_type_loading.hpp",
+      "native_prototype": "float __thiscall BSP_ParticleRuntimeParameter_UpperBound(void)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX actual0Ch runtime parameter; RET/ST0, original float spills",
+      "evidence": "AQ reconstruction: descriptive hypothesis, not a recovered symbol. Complete installed/live-equal byte span, original register/stack inputs and RET verified. Actual native definition, pooled text, builder and parameter domains; same current globals and CRT. Curve bound kernels retain original x87 spills, comparisons and polynomial order. Sprite Size caches an upper bound rather than the value at zero. See docs/NATIVE_PARTICLE_TYPE_LOADING.md and reports/native_particle_type_loading.json. New C++ bindings, not original FH3 ABI or gameplay proof.",
+      "coverage": "complete source body through documented actual shared domains; current Shader/model/renderer services remain boundaries"
+    },
+    {
+      "address": "00affe90",
+      "end_inclusive": "00b00036",
+      "end_exclusive": "00b00037",
+      "ghidra_name": "BSP_ParticleCubicSegment_UpperBound",
+      "sha256": "1ad46149cba7d975b613d991b82614ad33a1668381e18db80dd3628c0d58eec3",
+      "live_disk_equal": true,
+      "cpp_symbol": "bound_native_particle_cubic_segment_00affe90",
+      "source": "src/native_particle_type_loading.cpp",
+      "header": "include/bsp/native_particle_type_loading.hpp",
+      "native_prototype": "float __thiscall BSP_ParticleCubicSegment_UpperBound(void)",
+      "native_calling_convention": "__thiscall",
+      "original_abi": "ECX actual1Ch cubic segment; RET/ST0",
+      "evidence": "AQ reconstruction: descriptive hypothesis, not a recovered symbol. Complete installed/live-equal byte span, original register/stack inputs and RET verified. Actual native definition, pooled text, builder and parameter domains; same current globals and CRT. Curve bound kernels retain original x87 spills, comparisons and polynomial order. Sprite Size caches an upper bound rather than the value at zero. See docs/NATIVE_PARTICLE_TYPE_LOADING.md and reports/native_particle_type_loading.json. New C++ bindings, not original FH3 ABI or gameplay proof.",
+      "coverage": "complete source body through documented actual shared domains; current Shader/model/renderer services remain boundaries"
+    },
+    {
+      "address": "00affe20",
+      "end_inclusive": "00affe89",
+      "end_exclusive": "00affe8a",
+      "ghidra_name": "BSP_ParticlePolynomial_QuadraticRoots",
+      "sha256": "de217109fac55653ebc56b6704c0e1ba5519a5909dd03a6b7f678413f911f4fa",
+      "live_disk_equal": true,
+      "cpp_symbol": "solve_native_particle_quadratic_00affe20",
+      "source": "src/native_particle_type_loading.cpp",
+      "header": "include/bsp/native_particle_type_loading.hpp",
+      "native_prototype": "float __fastcall BSP_ParticlePolynomial_QuadraticRoots(float * first, float * second, float a, float b, float c)",
+      "native_calling_convention": "__fastcall",
+      "original_abi": "ECX/EDX root pointers; stack a,b,c; RET0C/ST0 discriminant",
+      "evidence": "AQ reconstruction: descriptive hypothesis, not a recovered symbol. Complete installed/live-equal byte span, original register/stack inputs and RET verified. Actual native definition, pooled text, builder and parameter domains; same current globals and CRT. Curve bound kernels retain original x87 spills, comparisons and polynomial order. Sprite Size caches an upper bound rather than the value at zero. See docs/NATIVE_PARTICLE_TYPE_LOADING.md and reports/native_particle_type_loading.json. New C++ bindings, not original FH3 ABI or gameplay proof.",
+      "coverage": "complete source body through documented actual shared domains; current Shader/model/renderer services remain boundaries"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b08af7",
+      "native": "00af5740",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08b0a",
+      "native": "00bf7fbf",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08b1d",
+      "native": "00af5740",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08b3a",
+      "native": "00bf7fbf",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08b54",
+      "native": "00bf7fbf",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08b6e",
+      "native": "00aee3c0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08b7b",
+      "native": "00bf7fbf",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08ba9",
+      "native": "00419cc0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08bb0",
+      "native": "00bd1510",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08bce",
+      "native": "00af44c0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08bdb",
+      "native": "00b015c0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08c07",
+      "native": "00419cc0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08c0e",
+      "native": "00bd1510",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08c2c",
+      "native": "00aee3c0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08c41",
+      "native": "00af44c0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08c53",
+      "native": "00aee3c0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08c5b",
+      "native": "00bfa66c",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08c86",
+      "native": "00419cc0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08c8d",
+      "native": "00bd1510",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08cba",
+      "native": "00419cc0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08cc1",
+      "native": "00bd1510",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08cce",
+      "native": "00afbed0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08ce8",
+      "native": "00afc360",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08cf8",
+      "native": "00af44c0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08d0b",
+      "native": "00af44c0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08d1a",
+      "native": "00afc470",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08d43",
+      "native": "00419cc0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08d4a",
+      "native": "00bd1510",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08d77",
+      "native": "00419cc0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08d7e",
+      "native": "00bd1510",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08d9b",
+      "native": "00b00980",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08da9",
+      "native": "00bf6989",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08de7",
+      "native": "00bf7fbf",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08df7",
+      "native": "00afbf60",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08e13",
+      "native": "00bf6989",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08e4a",
+      "native": "00419cc0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08e51",
+      "native": "00bd1510",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08e66",
+      "native": "00bf7fbf",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08e7a",
+      "native": "00afbf60",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08e96",
+      "native": "00bf6989",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08eb2",
+      "native": "00aee2a0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08ebe",
+      "native": "00af5740",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08ef2",
+      "native": "00419cc0",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08ef9",
+      "native": "00bd1510",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08f1f",
+      "native": "00bf7fbf",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08f33",
+      "native": "00afbf60",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b08f47",
+      "native": "00b08870",
+      "function": "00b08ac0"
+    },
+    {
+      "address": "00b07d92",
+      "native": "00af5740",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07da5",
+      "native": "00bf7fbf",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07db8",
+      "native": "00af5740",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07dd0",
+      "native": "00bf7fbf",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07dea",
+      "native": "00bf7fbf",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07e04",
+      "native": "00aee3c0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07e11",
+      "native": "00bf7fbf",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07e42",
+      "native": "00419cc0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07e49",
+      "native": "00bd1510",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07e65",
+      "native": "00af44c0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07e72",
+      "native": "00b015c0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07ea2",
+      "native": "00419cc0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07ea9",
+      "native": "00bd1510",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07ec5",
+      "native": "00aee3c0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07eda",
+      "native": "00af44c0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07eec",
+      "native": "00aee3c0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07ef4",
+      "native": "00bfa66c",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07f22",
+      "native": "00419cc0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07f29",
+      "native": "00bd1510",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07f56",
+      "native": "00419cc0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07f5d",
+      "native": "00bd1510",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07f6a",
+      "native": "00afbed0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07f84",
+      "native": "00afc360",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07f94",
+      "native": "00af44c0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07fa7",
+      "native": "00af44c0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07fb6",
+      "native": "00afc470",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07fe2",
+      "native": "00419cc0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b07fe9",
+      "native": "00bd1510",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b08016",
+      "native": "00419cc0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b0801d",
+      "native": "00bd1510",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b0803a",
+      "native": "00b00980",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b08048",
+      "native": "00bf6989",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b08087",
+      "native": "00bf7fbf",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b08097",
+      "native": "00afbf60",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b080b3",
+      "native": "00bf6989",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b080f2",
+      "native": "00419cc0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b080f9",
+      "native": "00bd1510",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b0810e",
+      "native": "00bf7fbf",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b08122",
+      "native": "00afbf60",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b0813e",
+      "native": "00bf6989",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b0815b",
+      "native": "00aee2a0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b08169",
+      "native": "00af5740",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b081a2",
+      "native": "00419cc0",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b081a9",
+      "native": "00bd1510",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b081ce",
+      "native": "00bf7fbf",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b081e2",
+      "native": "00afbf60",
+      "function": "00b07d60"
+    },
+    {
+      "address": "00b00990",
+      "native": "00bf7fbf",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b009a0",
+      "native": "00afc1b0",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b009b7",
+      "native": "00bf7fbf",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b009c7",
+      "native": "00afbf60",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b009ea",
+      "native": "00bf7fbf",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b009fa",
+      "native": "00afc1b0",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00a11",
+      "native": "00bf7fbf",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00a21",
+      "native": "00afbf60",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00a44",
+      "native": "00bf7fbf",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00a54",
+      "native": "00afbf60",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00a76",
+      "native": "00aedf80",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00a83",
+      "native": "00afbf60",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00aa5",
+      "native": "00aedf80",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00ab2",
+      "native": "00afbf60",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00ad4",
+      "native": "00aedf80",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00ae1",
+      "native": "00afbf60",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00b03",
+      "native": "00aedf80",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00b10",
+      "native": "00afbf60",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00b32",
+      "native": "00aedf80",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00b3f",
+      "native": "00afbf60",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00b61",
+      "native": "00aedf80",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00b6e",
+      "native": "00afbf60",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00b90",
+      "native": "00aedf80",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00b9d",
+      "native": "00afbf60",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00bbf",
+      "native": "00aedf80",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00bcc",
+      "native": "00afc1c0",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00be2",
+      "native": "00aedf80",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b00bef",
+      "native": "00afc1c0",
+      "function": "00b00980"
+    },
+    {
+      "address": "00b08881",
+      "native": "00b001a0",
+      "function": "00b08870"
+    },
+    {
+      "address": "00b001d5",
+      "native": "00affe90",
+      "function": "00b001a0"
+    },
+    {
+      "address": "00affee7",
+      "native": "00affe20",
+      "function": "00affe90"
+    },
+    {
+      "address": "00affe4d",
+      "native": "00bf7030",
+      "function": "00affe20"
+    }
+  ],
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "packet": "orch3_particle_sprite_floating_loading_aq",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "no_ghidra_function": [],
+  "validation": {
+    "strict_source_compile": "passed /MD /W4 /WX /fp:strict /O2",
+    "native_bounds": "570 comparisons passed across3 x87 precision modes, current constants, root aliasing, NaNs, full output/status/control/sentinel; same existing CRT sqrt service on both sides",
+    "parser_fixture": "42 original-byte Sprite/Floating parser comparisons,16182 ordered pool/array events,10 AFC1C0 edge cases passed; original B00980 and AFC1C0 on native parser side",
+    "combined_build": "passed exact merged Win32 and both seeded CTests",
+    "parser_evidence": {
+      "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "relocation_directory_size": 0,
+      "functions": [
+        {
+          "address": "00b08ac0",
+          "end_inclusive": "00b08f55",
+          "size": 1174,
+          "sha256": "b0cff7209a099856715d18743aab56145c43129c73e1e310df9852de903bc85e",
+          "live_disk_equal": true,
+          "last_instruction": "00b08f51: jmp 0xb08e96",
+          "calls": [
+            {
+              "address": "00b08af7",
+              "native": "00af5740",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08b0a",
+              "native": "00bf7fbf",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08b1d",
+              "native": "00af5740",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08b3a",
+              "native": "00bf7fbf",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08b54",
+              "native": "00bf7fbf",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08b6e",
+              "native": "00aee3c0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08b7b",
+              "native": "00bf7fbf",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08ba9",
+              "native": "00419cc0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08bb0",
+              "native": "00bd1510",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08bce",
+              "native": "00af44c0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08bdb",
+              "native": "00b015c0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08c07",
+              "native": "00419cc0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08c0e",
+              "native": "00bd1510",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08c2c",
+              "native": "00aee3c0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08c41",
+              "native": "00af44c0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08c53",
+              "native": "00aee3c0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08c5b",
+              "native": "00bfa66c",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08c86",
+              "native": "00419cc0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08c8d",
+              "native": "00bd1510",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08cba",
+              "native": "00419cc0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08cc1",
+              "native": "00bd1510",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08cce",
+              "native": "00afbed0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08ce8",
+              "native": "00afc360",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08cf8",
+              "native": "00af44c0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08d0b",
+              "native": "00af44c0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08d1a",
+              "native": "00afc470",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08d43",
+              "native": "00419cc0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08d4a",
+              "native": "00bd1510",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08d77",
+              "native": "00419cc0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08d7e",
+              "native": "00bd1510",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08d9b",
+              "native": "00b00980",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08da9",
+              "native": "00bf6989",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08de7",
+              "native": "00bf7fbf",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08df7",
+              "native": "00afbf60",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08e13",
+              "native": "00bf6989",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08e4a",
+              "native": "00419cc0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08e51",
+              "native": "00bd1510",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08e66",
+              "native": "00bf7fbf",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08e7a",
+              "native": "00afbf60",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08e96",
+              "native": "00bf6989",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08eb2",
+              "native": "00aee2a0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08ebe",
+              "native": "00af5740",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08ef2",
+              "native": "00419cc0",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08ef9",
+              "native": "00bd1510",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08f1f",
+              "native": "00bf7fbf",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08f33",
+              "native": "00afbf60",
+              "function": "00b08ac0"
+            },
+            {
+              "address": "00b08f47",
+              "native": "00b08870",
+              "function": "00b08ac0"
+            }
+          ]
+        },
+        {
+          "address": "00b07d60",
+          "end_inclusive": "00b08202",
+          "size": 1187,
+          "sha256": "d5cf38092cee1eb6745e40aa880b137289dab62e14f53dd915f93d0db39be699",
+          "live_disk_equal": true,
+          "last_instruction": "00b081fe: jmp 0xb0813e",
+          "calls": [
+            {
+              "address": "00b07d92",
+              "native": "00af5740",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07da5",
+              "native": "00bf7fbf",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07db8",
+              "native": "00af5740",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07dd0",
+              "native": "00bf7fbf",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07dea",
+              "native": "00bf7fbf",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07e04",
+              "native": "00aee3c0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07e11",
+              "native": "00bf7fbf",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07e42",
+              "native": "00419cc0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07e49",
+              "native": "00bd1510",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07e65",
+              "native": "00af44c0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07e72",
+              "native": "00b015c0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07ea2",
+              "native": "00419cc0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07ea9",
+              "native": "00bd1510",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07ec5",
+              "native": "00aee3c0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07eda",
+              "native": "00af44c0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07eec",
+              "native": "00aee3c0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07ef4",
+              "native": "00bfa66c",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07f22",
+              "native": "00419cc0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07f29",
+              "native": "00bd1510",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07f56",
+              "native": "00419cc0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07f5d",
+              "native": "00bd1510",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07f6a",
+              "native": "00afbed0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07f84",
+              "native": "00afc360",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07f94",
+              "native": "00af44c0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07fa7",
+              "native": "00af44c0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07fb6",
+              "native": "00afc470",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07fe2",
+              "native": "00419cc0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b07fe9",
+              "native": "00bd1510",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b08016",
+              "native": "00419cc0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b0801d",
+              "native": "00bd1510",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b0803a",
+              "native": "00b00980",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b08048",
+              "native": "00bf6989",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b08087",
+              "native": "00bf7fbf",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b08097",
+              "native": "00afbf60",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b080b3",
+              "native": "00bf6989",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b080f2",
+              "native": "00419cc0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b080f9",
+              "native": "00bd1510",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b0810e",
+              "native": "00bf7fbf",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b08122",
+              "native": "00afbf60",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b0813e",
+              "native": "00bf6989",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b0815b",
+              "native": "00aee2a0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b08169",
+              "native": "00af5740",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b081a2",
+              "native": "00419cc0",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b081a9",
+              "native": "00bd1510",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b081ce",
+              "native": "00bf7fbf",
+              "function": "00b07d60"
+            },
+            {
+              "address": "00b081e2",
+              "native": "00afbf60",
+              "function": "00b07d60"
+            }
+          ]
+        },
+        {
+          "address": "00b00980",
+          "end_inclusive": "00b00c04",
+          "size": 645,
+          "sha256": "413175e650d6ff683093a2d84d56f93e794c8fab16efffa720f93b758ff1cdde",
+          "live_disk_equal": true,
+          "last_instruction": "00b00c02: ret 0xc",
+          "calls": [
+            {
+              "address": "00b00990",
+              "native": "00bf7fbf",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b009a0",
+              "native": "00afc1b0",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b009b7",
+              "native": "00bf7fbf",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b009c7",
+              "native": "00afbf60",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b009ea",
+              "native": "00bf7fbf",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b009fa",
+              "native": "00afc1b0",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00a11",
+              "native": "00bf7fbf",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00a21",
+              "native": "00afbf60",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00a44",
+              "native": "00bf7fbf",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00a54",
+              "native": "00afbf60",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00a76",
+              "native": "00aedf80",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00a83",
+              "native": "00afbf60",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00aa5",
+              "native": "00aedf80",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00ab2",
+              "native": "00afbf60",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00ad4",
+              "native": "00aedf80",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00ae1",
+              "native": "00afbf60",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00b03",
+              "native": "00aedf80",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00b10",
+              "native": "00afbf60",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00b32",
+              "native": "00aedf80",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00b3f",
+              "native": "00afbf60",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00b61",
+              "native": "00aedf80",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00b6e",
+              "native": "00afbf60",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00b90",
+              "native": "00aedf80",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00b9d",
+              "native": "00afbf60",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00bbf",
+              "native": "00aedf80",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00bcc",
+              "native": "00afc1c0",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00be2",
+              "native": "00aedf80",
+              "function": "00b00980"
+            },
+            {
+              "address": "00b00bef",
+              "native": "00afc1c0",
+              "function": "00b00980"
+            }
+          ]
+        },
+        {
+          "address": "00afc1c0",
+          "end_inclusive": "00afc1c7",
+          "size": 8,
+          "sha256": "55ae1f7ffc839c96931cfcdc9b84b4dd89a5855bc9c3a123788b712949fc88c4",
+          "live_disk_equal": true,
+          "last_instruction": "00afc1c7: ret ",
+          "calls": []
+        }
+      ],
+      "strings": {
+        "13520184": "{",
+        "13520084": "}",
+        "13515276": "",
+        "14014348": "Param",
+        "14016476": "InitialRotation",
+        "13528080": "RotationSpeed",
+        "13628024": "Size",
+        "14015368": "BornRatio",
+        "13686592": "Lifetime",
+        "14015836": "TerminateAfter",
+        "13527460": "Speed",
+        "14015316": "VerticalSpeed",
+        "14015300": "InheritedSpeed",
+        "14015284": "WindSensitivity",
+        "13520524": "Alpha",
+        "14015828": "Color_R",
+        "14015820": "Color_G",
+        "14015812": "Color_B",
+        "13683356": "AnimPlaySpeed",
+        "13683388": "AnimStartFrame",
+        "13683372": "AnimEndFrame"
+      },
+      "constants": {
+        "00d7a358": "00000040e17a843f",
+        "00ce3928": "000000a09999b9bf",
+        "00ce3cb4": "cdccccbd",
+        "00d7a3a0": "000000a09999b93f",
+        "00d7a2f0": "cdcccc3d",
+        "00ce3d08": "0000c842",
+        "00ce65d8": "0000c8c2",
+        "00cf1450": "000000605555d53f",
+        "00d5dca0": "54daae4a",
+        "00d7a280": "000000000000e03f",
+        "00d7a348": "000000000000d03f",
+        "00d7a218": "00000000",
+        "00d7a220": "0000000000005940",
+        "00d7a260": "000080bf",
+        "00d7a24c": "0000803f",
+        "00d5daf8": "0000006046df913f",
+        "00ce3830": "00000060fb21f93f",
+        "00d7a208": "00000080",
+        "00d7a210": "000000000000f03f",
+        "00d7a2b0": "0000000000000840",
+        "00d7a328": "0000000000001040"
+      },
+      "recorded_utc": "2026-09-12T20:56:32.780546+00:00",
+      "command": "C:\\Users\\sqz269\\bsp-aq-loading-sprite\\build_parser.ps1",
+      "process_exit_code": 0,
+      "probe_log": "PASS 42 Sprite/Floating parser observations, 16182 ordered string/array events, 10 SSE integer edge comparisons; original B00980/AFC1C0 composed inside native parsers; actual90h bytes, all common fields, curve payloads, EOF/text cursor, ignored parse failure after reused kind, 3 x87 precisions.\n",
+      "observations": {
+        "parser_cases": 42,
+        "ordered_pool_array_events": 16182,
+        "integer_cases": 10
+      },
+      "flags": "/MD /W4 /WX /fp:strict /O2 /MANIFEST:EMBED",
+      "native_composition": "Native parser B08AC0/B07D60 calls captured B00980; captured B00980 calls captured AFC1C0. Existing concrete pooled-text, parameter builders, converters, common properties and B08870 are external verified C++ boundaries.",
+      "limitations": "Normal allocations, supplied real parameter/pool domain, no original FH3/resource/visual/gameplay proof. B08870 bound behavior separately verified by primary. Four spans only, no root production edits.",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\sqz269\\bsp-aq-loading-sprite\\parser_probe.cpp",
+          "sha256": "e82a47d841ea750f4bda526dda5d1c815240c5a2ac5fdb92530ee4e7b9569f06",
+          "bytes": 14277,
+          "modified_utc": "2026-09-12T20:55:26.273492+00:00"
+        },
+        {
+          "path": "C:\\Users\\sqz269\\bsp-aq-loading-sprite\\parser_probe.exe",
+          "sha256": "8f6a8656048df84b410ba22edc779b6d20e04f5774d46b8b2466fc41ff4d1ab7",
+          "bytes": 80384,
+          "modified_utc": "2026-09-12T20:55:29.650025+00:00"
+        },
+        {
+          "path": "C:\\Users\\sqz269\\bsp-aq-loading-sprite\\probe_data.hpp",
+          "sha256": "66967bc12d37a337a62135f4195fe503786a2186129e32a9a51c2dda35e0eea6",
+          "bytes": 22823,
+          "modified_utc": "2026-09-12T20:54:53.385337+00:00"
+        },
+        {
+          "path": "C:\\Users\\sqz269\\bsp-aq-loading-sprite\\capture.py",
+          "sha256": "8403be71eaa8a5e4f81dc2991f1a486ec2fffeeeab33259bc1375cee0c3c83c0",
+          "bytes": 4334,
+          "modified_utc": "2026-09-12T20:54:34.230603+00:00"
+        },
+        {
+          "path": "C:\\Users\\sqz269\\bsp-aq-loading-sprite\\build_parser.ps1",
+          "sha256": "0370d43a706d7f26ebe4df138f3e6bd8fdfa076fa97a9a1ef526c91f81507659",
+          "bytes": 1450,
+          "modified_utc": "2026-09-12T20:54:34.233116+00:00"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_particle_type_loading.cpp",
+          "sha256": "87840100602a06d5656692631430b2ada665a75ae4dc99aad99b467a4ea7d1ac",
+          "bytes": 22018,
+          "modified_utc": "2026-09-12T20:49:34.265749+00:00"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\include\\bsp\\native_particle_type_loading.hpp",
+          "sha256": "9e290876d4f763ab0ba2490abf45020c481bec6801091afbcb4809859693b510",
+          "bytes": 2860,
+          "modified_utc": "2026-09-12T20:49:34.264973+00:00"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+          "sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+          "bytes": 49942256,
+          "modified_utc": "2026-09-12T20:22:17.608747+00:00"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+          "sha256": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bytes": 455244,
+          "modified_utc": "2026-09-11T20:34:44.949035+00:00"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-particle-properties-aq\\src\\native_particle_type_property.cpp",
+          "sha256": "3f69a650503b89d01c268d34494f0c81b9196008c232113d14afa7d8aecd96c3",
+          "bytes": 18298,
+          "modified_utc": "2026-09-12T20:47:32.459878+00:00"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-particle-properties-aq\\include\\bsp\\native_particle_type_property.hpp",
+          "sha256": "bf2eacfb97f29580cc0749e1497107f8894fc2f64a329eb8c771e20477957c3a",
+          "bytes": 5288,
+          "modified_utc": "2026-09-12T20:47:32.454873+00:00"
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "New C++ APIs and private borrowed EBX bound domain; no original FH3/drop-in ABI/gameplay proof.",
+    "Actual Shader/model/renderer targets remain real service boundaries.",
+    "Native initial builder kind residue is explicit; native parser retains it across lines and ignores malformed curve parse failures.",
+    "Native CRT, shared parameter/string functions and actual allocators are reused as documented services."
+  ],
+  "integration_aq_repairs": {
+    "aq-flow-repair.json": {
+      "repairs": [
+        {
+          "function": "00b08ac0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T20:57:25Z",
+          "decompile_lines_before": 205,
+          "gaps": [
+            {
+              "site": "00b08da9",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b08dae",
+              "gap_end_exclusive": "00b08ddd",
+              "bytes": 47,
+              "after_call": true,
+              "sha256": "28100c5af80fd1426847fb0935721054bcddd849c87529f4e99a72d299de5038"
+            },
+            {
+              "site": "00b08e13",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b08e18",
+              "gap_end_exclusive": "00b08e5c",
+              "bytes": 68,
+              "after_call": true,
+              "sha256": "a1716896960fee473b929a5195541db765144e7c6bf4595dd14c29da12996b8c"
+            },
+            {
+              "site": "00b08e96",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b08e9b",
+              "gap_end_exclusive": "00b08eb7",
+              "bytes": 28,
+              "after_call": true,
+              "sha256": "2b9b61465621a4a6e85e869bbeebe1c0099522463ad5c01a35dd49b6e4b714df"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b08da9",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b08dae",
+                "gap_end_exclusive": "00b08ddd",
+                "bytes": 47,
+                "after_call": true,
+                "sha256": "28100c5af80fd1426847fb0935721054bcddd849c87529f4e99a72d299de5038"
+              },
+              "clear": "Success: Cleared flow override at 00b08da9 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 47 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "00b08e13",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b08e18",
+                "gap_end_exclusive": "00b08e5c",
+                "bytes": 68,
+                "after_call": true,
+                "sha256": "a1716896960fee473b929a5195541db765144e7c6bf4595dd14c29da12996b8c"
+              },
+              "clear": "Success: Cleared flow override at 00b08e13 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 68 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "00b08e96",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b08e9b",
+                "gap_end_exclusive": "00b08eb7",
+                "bytes": 28,
+                "after_call": true,
+                "sha256": "2b9b61465621a4a6e85e869bbeebe1c0099522463ad5c01a35dd49b6e4b714df"
+              },
+              "clear": "Success: Cleared flow override at 00b08e96 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 28 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 248,
+          "gaps_remaining": 0
+        },
+        {
+          "function": "00b07d60",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T20:57:38Z",
+          "decompile_lines_before": 204,
+          "gaps": [
+            {
+              "site": "00b08048",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b0804d",
+              "gap_end_exclusive": "00b0807d",
+              "bytes": 48,
+              "after_call": true,
+              "sha256": "3a47c87da3229b781cd6364b9176f06d798856f5b6eda0c986b3b7d6eb11b2a3"
+            },
+            {
+              "site": "00b080b3",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b080b8",
+              "gap_end_exclusive": "00b08104",
+              "bytes": 76,
+              "after_call": true,
+              "sha256": "7ac838888f3d6991ce750de197443b5c4e812e051cfe66edc90a0c7199e6a57c"
+            },
+            {
+              "site": "00b0813e",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b08143",
+              "gap_end_exclusive": "00b08160",
+              "bytes": 29,
+              "after_call": true,
+              "sha256": "5820b8ca8c5a14bc8b31daebad63d9387c5d1a1896c2f92e8540a010d7176423"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b08048",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0804d",
+                "gap_end_exclusive": "00b0807d",
+                "bytes": 48,
+                "after_call": true,
+                "sha256": "3a47c87da3229b781cd6364b9176f06d798856f5b6eda0c986b3b7d6eb11b2a3"
+              },
+              "clear": "Success: Cleared flow override at 00b08048 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 48 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "00b080b3",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b080b8",
+                "gap_end_exclusive": "00b08104",
+                "bytes": 76,
+                "after_call": true,
+                "sha256": "7ac838888f3d6991ce750de197443b5c4e812e051cfe66edc90a0c7199e6a57c"
+              },
+              "clear": "Success: Cleared flow override at 00b080b3 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 76 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "00b0813e",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b08143",
+                "gap_end_exclusive": "00b08160",
+                "bytes": 29,
+                "after_call": true,
+                "sha256": "5820b8ca8c5a14bc8b31daebad63d9387c5d1a1896c2f92e8540a010d7176423"
+              },
+              "clear": "Success: Cleared flow override at 00b0813e (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 29 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 247,
+          "gaps_remaining": 0
+        },
+        {
+          "function": "00b064a0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T20:57:57Z",
+          "decompile_lines_before": 286,
+          "gaps": [
+            {
+              "site": "00b068c8",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b068cd",
+              "gap_end_exclusive": "00b068e1",
+              "bytes": 20,
+              "after_call": true,
+              "sha256": "8c6a9a401ce9de51f994dccfaedd54dad64ab63b8f19a9212625df5257877d1c"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b068c8",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b068cd",
+                "gap_end_exclusive": "00b068e1",
+                "bytes": 20,
+                "after_call": true,
+                "sha256": "8c6a9a401ce9de51f994dccfaedd54dad64ab63b8f19a9212625df5257877d1c"
+              },
+              "clear": "Success: Cleared flow override at 00b068c8 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 20 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 291,
+          "gaps_remaining": 0
+        },
+        {
+          "function": "00af8bd0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T20:58:10Z",
+          "decompile_lines_before": 231,
+          "gaps": [
+            {
+              "site": "00af8f48",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00af8f4d",
+              "gap_end_exclusive": "00af8f79",
+              "bytes": 44,
+              "after_call": true,
+              "sha256": "8b0cb759f566611163217ff501459c9909c4b88663cec9f2ed791630f287d849"
+            },
+            {
+              "site": "00af8fce",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00af8fd3",
+              "gap_end_exclusive": "00af8ff0",
+              "bytes": 29,
+              "after_call": true,
+              "sha256": "c6aec90d57a38f9ba3e6bc50f6919f0fc953590e47df2ac72071484b1133fe4c"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00af8f48",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af8f4d",
+                "gap_end_exclusive": "00af8f79",
+                "bytes": 44,
+                "after_call": true,
+                "sha256": "8b0cb759f566611163217ff501459c9909c4b88663cec9f2ed791630f287d849"
+              },
+              "clear": "Success: Cleared flow override at 00af8f48 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 44 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "00af8fce",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af8fd3",
+                "gap_end_exclusive": "00af8ff0",
+                "bytes": 29,
+                "after_call": true,
+                "sha256": "c6aec90d57a38f9ba3e6bc50f6919f0fc953590e47df2ac72071484b1133fe4c"
+              },
+              "clear": "Success: Cleared flow override at 00af8fce (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 29 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 256,
+          "gaps_remaining": 0
+        },
+        {
+          "function": "00b0a920",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T20:58:23Z",
+          "decompile_lines_before": 111,
+          "gaps": [
+            {
+              "site": "00b0a9f0",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b0a9f5",
+              "gap_end_exclusive": "00b0a9f8",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            {
+              "site": "00b0aae0",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b0aae5",
+              "gap_end_exclusive": "00b0aae8",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b0a9f0",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0a9f5",
+                "gap_end_exclusive": "00b0a9f8",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00b0a9f0 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "00b0aae0",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0aae5",
+                "gap_end_exclusive": "00b0aae8",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00b0aae0 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 109,
+          "gaps_remaining": 0
+        }
+      ]
+    },
+    "aq-function-definitions.json": {
+      "events": [
+        {
+          "recreate": "00b08ac0",
+          "previous": "Function: FUN_00b08ac0 at 00b08ac0\nSignature: undefined FUN_00b08ac0(void)\nEntry: 00b08ac0\nBody: 00b08ac0 - 00b08f55",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b08ac0"
+          },
+          "result": {
+            "success": true,
+            "address": "00b08ac0",
+            "deleted_function": "FUN_00b08ac0",
+            "body_size": 1031,
+            "message": "Function 'FUN_00b08ac0' deleted at 00b08ac0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b08ac0",
+            "end_address": "00b08f56"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b08ac0",
+            "end_address": "00b08f55",
+            "bytes_disassembled": 1174,
+            "message": "Successfully disassembled 1174 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b08ac0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b08ac0",
+            "function_name": "FUN_00b08ac0",
+            "entry_point": "00b08ac0",
+            "body_size": 1174,
+            "message": "Function created successfully at 00b08ac0"
+          }
+        },
+        {
+          "defined": "00b08ac0",
+          "end": "00b08f56",
+          "name": null,
+          "after": "Function: FUN_00b08ac0 at 00b08ac0\nSignature: undefined FUN_00b08ac0(void)\nEntry: 00b08ac0\nBody: 00b08ac0 - 00b08f55"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00b07d60",
+          "previous": "Function: FUN_00b07d60 at 00b07d60\nSignature: undefined FUN_00b07d60(void)\nEntry: 00b07d60\nBody: 00b07d60 - 00b08202",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b07d60"
+          },
+          "result": {
+            "success": true,
+            "address": "00b07d60",
+            "deleted_function": "FUN_00b07d60",
+            "body_size": 1028,
+            "message": "Function 'FUN_00b07d60' deleted at 00b07d60"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b07d60",
+            "end_address": "00b08203"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b07d60",
+            "end_address": "00b08202",
+            "bytes_disassembled": 1187,
+            "message": "Successfully disassembled 1187 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b07d60",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b07d60",
+            "function_name": "FUN_00b07d60",
+            "entry_point": "00b07d60",
+            "body_size": 1181,
+            "message": "Function created successfully at 00b07d60"
+          }
+        },
+        {
+          "defined": "00b07d60",
+          "end": "00b08203",
+          "name": null,
+          "after": "Function: FUN_00b07d60 at 00b07d60\nSignature: undefined FUN_00b07d60(void)\nEntry: 00b07d60\nBody: 00b07d60 - 00b08202"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00b064a0",
+          "previous": "Function: FUN_00b064a0 at 00b064a0\nSignature: undefined FUN_00b064a0(void)\nEntry: 00b064a0\nBody: 00b064a0 - 00b06a33",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b064a0"
+          },
+          "result": {
+            "success": true,
+            "address": "00b064a0",
+            "deleted_function": "FUN_00b064a0",
+            "body_size": 1399,
+            "message": "Function 'FUN_00b064a0' deleted at 00b064a0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b064a0",
+            "end_address": "00b06a34"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b064a0",
+            "end_address": "00b06a33",
+            "bytes_disassembled": 1428,
+            "message": "Successfully disassembled 1428 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b064a0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b064a0",
+            "function_name": "FUN_00b064a0",
+            "entry_point": "00b064a0",
+            "body_size": 1419,
+            "message": "Function created successfully at 00b064a0"
+          }
+        },
+        {
+          "defined": "00b064a0",
+          "end": "00b06a34",
+          "name": null,
+          "after": "Function: FUN_00b064a0 at 00b064a0\nSignature: undefined FUN_00b064a0(void)\nEntry: 00b064a0\nBody: 00b064a0 - 00b06a33"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00af8bd0",
+          "previous": "Function: FUN_00af8bd0 at 00af8bd0\nSignature: undefined FUN_00af8bd0(void)\nEntry: 00af8bd0\nBody: 00af8bd0 - 00af9094",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00af8bd0"
+          },
+          "result": {
+            "success": true,
+            "address": "00af8bd0",
+            "deleted_function": "FUN_00af8bd0",
+            "body_size": 1145,
+            "message": "Function 'FUN_00af8bd0' deleted at 00af8bd0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00af8bd0",
+            "end_address": "00af9095"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00af8bd0",
+            "end_address": "00af9094",
+            "bytes_disassembled": 1221,
+            "message": "Successfully disassembled 1221 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00af8bd0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00af8bd0",
+            "function_name": "FUN_00af8bd0",
+            "entry_point": "00af8bd0",
+            "body_size": 1218,
+            "message": "Function created successfully at 00af8bd0"
+          }
+        },
+        {
+          "defined": "00af8bd0",
+          "end": "00af9095",
+          "name": null,
+          "after": "Function: FUN_00af8bd0 at 00af8bd0\nSignature: undefined FUN_00af8bd0(void)\nEntry: 00af8bd0\nBody: 00af8bd0 - 00af9094"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00b0a920",
+          "previous": "Function: FUN_00b0a920 at 00b0a920\nSignature: undefined FUN_00b0a920(void)\nEntry: 00b0a920\nBody: 00b0a920 - 00b0ab8a",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b0a920"
+          },
+          "result": {
+            "success": true,
+            "address": "00b0a920",
+            "deleted_function": "FUN_00b0a920",
+            "body_size": 613,
+            "message": "Function 'FUN_00b0a920' deleted at 00b0a920"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b0a920",
+            "end_address": "00b0ab8b"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b0a920",
+            "end_address": "00b0ab8a",
+            "bytes_disassembled": 619,
+            "message": "Successfully disassembled 619 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b0a920",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b0a920",
+            "function_name": "FUN_00b0a920",
+            "entry_point": "00b0a920",
+            "body_size": 619,
+            "message": "Function created successfully at 00b0a920"
+          }
+        },
+        {
+          "defined": "00b0a920",
+          "end": "00b0ab8b",
+          "name": null,
+          "after": "Function: FUN_00b0a920 at 00b0a920\nSignature: undefined FUN_00b0a920(void)\nEntry: 00b0a920\nBody: 00b0a920 - 00b0ab8a"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    }
+  },
+  "integration_aq_review": {
+    "all_call_rows_verified": true,
+    "saved_names_and_comments": 36,
+    "ordinary_native_signatures": 34,
+    "custom_register_signatures_retained": [
+      "00af3750",
+      "00af3960"
+    ],
+    "combined_validation": "passed exact merged build and seven current-library probes"
+  },
+  "final_merged_validation_aq": {
+    "tested_commit": "cad90a51b1455deb797425951c4ed3d953e32878",
+    "reviewed_source_commit": "de95ab7f2ccc14b572512585330550d91973094e",
+    "build": "Strict MSVC Win32 and both seeded CTests passed; local/aq-final-combined-build.log",
+    "all10_reviewed_source_header_hashes_preserved": true,
+    "all36_name_evidence_rows_preserved": true,
+    "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+    "current_library_replays": [
+      {
+        "label": "properties",
+        "exit_code": 0,
+        "log": "local\\aq-properties-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-properties\\probe.cpp": "add900f89be405a85215b6f97810c10636a251aa5ce01214957b9806e9a3499d",
+          "C:\\Users\\sqz269\\bsp-aq-properties\\literal_bytes.hpp": "fa3bd79cde1083ba8d430257941dc5f4f96c06a01c3b4cb539fcca3a4d58bddd",
+          "C:\\Users\\sqz269\\bsp-aq-properties\\native_bytes.hpp": "b992df3252e5e76cb31c4195574788f142259107a93a237972e47936143ac854",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\properties-current.cmd",
+        "executable_sha256": "c619fb61968aa018785a041797b3c35ca5234988ca9782710094d55ad114e07d"
+      },
+      {
+        "label": "axial_math",
+        "exit_code": 0,
+        "log": "local\\aq-axial_math-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-axial\\math_probe.cpp": "6aabe86b4b3de41a661f6bd82a9b2b29be2ad9f2d567dfb33d755384bba02c9c",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\axial_math-current.cmd",
+        "executable_sha256": "678cded86b9a27b5128d4e63a9e45ca4716057dc6e23543b05a15b60bfc0480c"
+      },
+      {
+        "label": "axial_parser",
+        "exit_code": 0,
+        "log": "local\\aq-axial_parser-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-axial\\parser_probe.cpp": "196a195a6a4dd46c37855701d72dd5fc019e6823ff3cfe7c0e85ba94a5bf52c2",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\axial_parser-current.cmd",
+        "executable_sha256": "a66e233ca65445075bc80305e9b390bc3cba63fefce40ebca9d92ace5fd8d519"
+      },
+      {
+        "label": "object_tracer",
+        "exit_code": 0,
+        "log": "local\\aq-object_tracer-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-object-tracer\\probe.cpp": "3c52914ee95cd52af21c7eb3ba51d183ca0c9e6559e7ee1194d4d93a3a0a974d",
+          "C:\\Users\\sqz269\\bsp-aq-object-tracer\\probe_data.hpp": "3867d22139b02d784126b6d31dab8b97e0a79720917ab05ddaec801eef32887f",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\object_tracer-current.cmd",
+        "executable_sha256": "154fd4157b94f63e13bb2dbaab00eb947b5c5afa3cd8f554bedb73bcc27d3d0e"
+      },
+      {
+        "label": "sprite_floating",
+        "exit_code": 0,
+        "log": "local\\aq-sprite_floating-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-loading-sprite\\parser_probe.cpp": "e82a47d841ea750f4bda526dda5d1c815240c5a2ac5fdb92530ee4e7b9569f06",
+          "C:\\Users\\sqz269\\bsp-aq-loading-sprite\\probe_data.hpp": "66967bc12d37a337a62135f4195fe503786a2186129e32a9a51c2dda35e0eea6",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\sprite_floating-current.cmd",
+        "executable_sha256": "8a739a26a68a0d3ff8918d96adb443323ea3a6acefe3868503ae01cd4353cc5d"
+      },
+      {
+        "label": "bounds",
+        "exit_code": 0,
+        "log": "local\\aq-bounds-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-loading\\bound_probe.cpp": "21652df0f87f34b17ff2ab7a0c603b6f87b50ef6fe75ca59b8fd81824fd0f542",
+          "C:\\Users\\sqz269\\bsp-aq-loading\\bound_data.hpp": "67ebbd42f625117aa6b6dcffc893d39b327136b5247899f6fa043ca54ec8e8d1",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\bounds-current.cmd",
+        "executable_sha256": "9ae1017198ba17c0ec4a92e59439edc4054a14a3510f02b26a6eaede6600a624"
+      },
+      {
+        "label": "factory",
+        "exit_code": 0,
+        "log": "local\\aq-factory-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-factory\\probe.cpp": "beae2a91cb4eb1e30b0786a8bad5ea8f72c46760b83f3dbeccf239d8ef096919",
+          "C:\\Users\\sqz269\\bsp-aq-factory\\constants.hpp": "d398630c9cee2f046cad03eba9ffa0c1631ec2a543e0bd77500ef17cc05f31b7",
+          "C:\\Users\\sqz269\\bsp-aq-factory\\native_bytes.hpp": "00be5632e62efbb7d6cbd1b2f828f1c89de94786910a0eae2d6f2b429d7bb742",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\factory-current.cmd",
+        "executable_sha256": "bc4e8cb5554487e2679fddc6edac14aefa178fa45444849f29051925d2dc6507"
+      }
+    ],
+    "new_function_entries": 32,
+    "refined_interfaces": 3,
+    "revised_factory": 1,
+    "native_signatures": 34,
+    "custom_register_signatures_retained": [
+      "00af3750",
+      "00af3960"
+    ],
+    "checked_call_rows": 716,
+    "checked_rows_include_duplicate_embedded_fixture_evidence": true,
+    "failed_call_rows": 0,
+    "game_validated": false,
+    "original_fh3_validated": false,
+    "remaining_boundaries": [
+      "Actual shader/model/renderer services and unknown current parser targets",
+      "Factory callers must supply actual loading domains to select concrete dispatch",
+      "Sprite/Object/Tracer state initializers and full application/runtime ownership",
+      "Original FH3/invalid-storage faults and gameplay"
+    ]
+  }
+}

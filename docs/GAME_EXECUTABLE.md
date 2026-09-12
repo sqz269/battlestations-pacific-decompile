@@ -7725,3 +7725,14 @@ neighbour list, whose consumer this packet could not reach.
 
 6. **`ship_ai_moveto_static_goal`** is closed by section 6 and should be struck from milestone 2r's
    follow-up list.
+
+## Correction from docs/SHIP_AI_AVOIDANCE_REQUEST.md
+
+Packet `cc_ai_avoidance_request` read the avoidance request block whole: it is four fields, not
+three, each ANDed at its consumers with one of the three authored booleans on the command
+controller that `008362A0` names (`blk+3ECh` with `director+240h` torpedoAvoidance, `blk+3F0h` with
+`+241h` shipCollisionAvoidance, `blk+3F4h` with `+242h` landCollisionAvoidance) plus `blk+3F5h`,
+read by `009ED6B0` and `009F3F80`. `blk+3F5h`, which the milestone 2o section above records as
+having no writer, is written by `009E1170`'s arm 1: it is the whole-controller bypass for a helm a
+person is holding. The request never changes which ships enter the neighbour list (`009F0D20`
+reads none of the four bytes); the filter only sets `node+69h` through `009EAFC0`.

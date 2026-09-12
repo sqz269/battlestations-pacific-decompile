@@ -1,0 +1,1422 @@
+{
+  "packet": "orch3_particle_axial_loading_aq",
+  "status": "complete_reconstruction_isolated_strict_compile_and_native_differential_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "read_only_ghidra": true,
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "pe_relocation_directory_size": 0,
+  "functions": [
+    {
+      "address": "00b064a0",
+      "end_inclusive": "00b06a33",
+      "cpp_symbol": "load_native_axial_particle_definition_00b064a0",
+      "ghidra_name": "BSP_AxialParticle_LoadDefinition",
+      "native_prototype": "bool __thiscall BSP_AxialParticle_LoadDefinition(void* actual_text)",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_particle_axial_loading.cpp",
+      "header": "include/bsp/native_particle_axial_loading.hpp",
+      "evidence": "docs/NATIVE_PARTICLE_AXIAL_LOADING.md; live/disk-equal full native span and final RET; exact operand-decoded capture in C:/Users/sqz269/bsp-aq-axial/byte_evidence.json; descriptive names are hypotheses.",
+      "original_abi": "ECX actualA4h definition; stack actualTextBuffer; RET4; AL=true, including missing braces and EOF",
+      "coverage": "complete",
+      "reconstruction_kind": "complete_actual_storage_reconstruction",
+      "bytes": 1428,
+      "sha256": "5d07cfd3fd4c47c61227ae5517ae6ac80d6af47167a2c56d3e4eb3c7620b543a",
+      "last_instruction": "00b06a31: ret 4",
+      "live_disk_equal": true,
+      "end_exclusive": "00b06a34"
+    },
+    {
+      "address": "00b05d00",
+      "end_inclusive": "00b05dc7",
+      "cpp_symbol": "refresh_native_axial_particle_axis_00b05d00",
+      "ghidra_name": "BSP_AxialParticle_RefreshAxis",
+      "native_prototype": "void __thiscall BSP_AxialParticle_RefreshAxis(void)",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_particle_axial_loading.cpp",
+      "header": "include/bsp/native_particle_axial_loading.hpp",
+      "evidence": "docs/NATIVE_PARTICLE_AXIAL_LOADING.md; live/disk-equal full native span and final RET; exact operand-decoded capture in C:/Users/sqz269/bsp-aq-axial/byte_evidence.json; descriptive names are hypotheses.",
+      "original_abi": "ECX actualA4h definition; no stack arguments; RET; incidental EAX unused",
+      "coverage": "complete",
+      "reconstruction_kind": "complete_actual_storage_reconstruction",
+      "bytes": 200,
+      "sha256": "75233d7ad3eaf4872310e4bf628d01b595609440aa49d1067680cea80d04dcc3",
+      "last_instruction": "00b05dc7: ret ",
+      "live_disk_equal": true,
+      "end_exclusive": "00b05dc8"
+    },
+    {
+      "address": "00b062f0",
+      "end_inclusive": "00b06499",
+      "cpp_symbol": "set_native_axial_particle_alignment_00b062f0",
+      "ghidra_name": "BSP_AxialParticle_SetAlignment",
+      "native_prototype": "void __thiscall BSP_AxialParticle_SetAlignment(char* text)",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_particle_axial_loading.cpp",
+      "header": "include/bsp/native_particle_axial_loading.hpp",
+      "evidence": "docs/NATIVE_PARTICLE_AXIAL_LOADING.md; live/disk-equal full native span and final RET; exact operand-decoded capture in C:/Users/sqz269/bsp-aq-axial/byte_evidence.json; descriptive names are hypotheses.",
+      "original_abi": "ECX actualA4h definition; stack nonnull C-string; RET4; C++ text is read-only",
+      "coverage": "complete",
+      "reconstruction_kind": "complete_actual_storage_reconstruction",
+      "bytes": 426,
+      "sha256": "990669d5eab85c2394c8401e84b1a6dd1214e956999d94636937abef9a98223d",
+      "last_instruction": "00b06497: ret 4",
+      "live_disk_equal": true,
+      "end_exclusive": "00b0649a"
+    },
+    {
+      "address": "00b64640",
+      "end_inclusive": "00b646de",
+      "cpp_symbol": "build_native_particle_rotation_x_00b64640",
+      "ghidra_name": "BSP_Matrix_BuildRotationX",
+      "native_prototype": "void* __fastcall BSP_Matrix_BuildRotationX(void* destination,float* angle)",
+      "native_calling_convention": "__fastcall",
+      "source": "src/native_particle_axial_loading.cpp",
+      "header": "include/bsp/native_particle_axial_loading.hpp",
+      "evidence": "docs/NATIVE_PARTICLE_AXIAL_LOADING.md; live/disk-equal full native span and final RET; exact operand-decoded capture in C:/Users/sqz269/bsp-aq-axial/byte_evidence.json; descriptive names are hypotheses.",
+      "original_abi": "ECX actual64-byte destination; EDX float angle pointer; RET; EAX destination; C++ angle is read-only",
+      "coverage": "complete",
+      "reconstruction_kind": "complete_actual_storage_reconstruction",
+      "bytes": 159,
+      "sha256": "b80e6bf8d0debabd9bf1b0577c9b905d0ece579f188579433a59bc45eee3201c",
+      "last_instruction": "00b646de: ret ",
+      "live_disk_equal": true,
+      "end_exclusive": "00b646df"
+    },
+    {
+      "address": "00b646e0",
+      "end_inclusive": "00b6477e",
+      "cpp_symbol": "build_native_particle_rotation_y_00b646e0",
+      "ghidra_name": "BSP_Matrix_BuildRotationY",
+      "native_prototype": "void* __fastcall BSP_Matrix_BuildRotationY(void* destination,float* angle)",
+      "native_calling_convention": "__fastcall",
+      "source": "src/native_particle_axial_loading.cpp",
+      "header": "include/bsp/native_particle_axial_loading.hpp",
+      "evidence": "docs/NATIVE_PARTICLE_AXIAL_LOADING.md; live/disk-equal full native span and final RET; exact operand-decoded capture in C:/Users/sqz269/bsp-aq-axial/byte_evidence.json; descriptive names are hypotheses.",
+      "original_abi": "ECX actual64-byte destination; EDX float angle pointer; RET; EAX destination; C++ angle is read-only",
+      "coverage": "complete",
+      "reconstruction_kind": "complete_actual_storage_reconstruction",
+      "bytes": 159,
+      "sha256": "bf50bf1402d4fdd6068817d1735fe9b90ed05e12c1e6b73c3d452f1ba96ba4ff",
+      "last_instruction": "00b6477e: ret ",
+      "live_disk_equal": true,
+      "end_exclusive": "00b6477f"
+    },
+    {
+      "address": "00b64780",
+      "end_inclusive": "00b6481e",
+      "cpp_symbol": "build_gui_rotation_z_00b64780",
+      "ghidra_name": "BSP_Matrix_BuildRotationZ",
+      "native_prototype": "void* __fastcall BSP_Matrix_BuildRotationZ(void* destination,float* angle)",
+      "native_calling_convention": "__fastcall",
+      "source": "src/native_particle_axial_loading.cpp",
+      "header": "include/bsp/native_particle_axial_loading.hpp",
+      "evidence": "docs/NATIVE_PARTICLE_AXIAL_LOADING.md; live/disk-equal full native span and final RET; exact operand-decoded capture in C:/Users/sqz269/bsp-aq-axial/byte_evidence.json; descriptive names are hypotheses.",
+      "original_abi": "ECX actual64-byte destination; EDX float angle pointer; RET; EAX destination; new four-argument overload returns void",
+      "coverage": "complete",
+      "reconstruction_kind": "current_global_overload_refinement",
+      "bytes": 159,
+      "sha256": "0af68adacbc3e9cc638f6c18ca99d75462fc721c285da1ed80602503a6b73994",
+      "last_instruction": "00b6481e: ret ",
+      "live_disk_equal": true,
+      "end_exclusive": "00b6481f"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b064d2",
+      "native": "00af5740",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b064e5",
+      "native": "00bf7fbf",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b064f8",
+      "native": "00af5740",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06510",
+      "native": "00bf7fbf",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b0652a",
+      "native": "00bf7fbf",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06544",
+      "native": "00aee3c0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06551",
+      "native": "00bf7fbf",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06582",
+      "native": "00419cc0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06589",
+      "native": "00bd1510",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b065a5",
+      "native": "00af44c0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b065b2",
+      "native": "00b015c0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b065e2",
+      "native": "00419cc0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b065e9",
+      "native": "00bd1510",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06605",
+      "native": "00aee3c0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06619",
+      "native": "00bf7fbf",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06630",
+      "native": "00aee3c0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06638",
+      "native": "00bf8417",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b0666a",
+      "native": "00419cc0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06671",
+      "native": "00bd1510",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b066a8",
+      "native": "00bf7fbf",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b066c3",
+      "native": "00aee3c0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b066d2",
+      "native": "00b062f0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06702",
+      "native": "00419cc0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06709",
+      "native": "00bd1510",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06736",
+      "native": "00419cc0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b0673d",
+      "native": "00bd1510",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06754",
+      "native": "00af44c0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06766",
+      "native": "00aee3c0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b0676e",
+      "native": "00bfa66c",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06799",
+      "native": "00419cc0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b067a0",
+      "native": "00bd1510",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b067d2",
+      "native": "00419cc0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b067d9",
+      "native": "00bd1510",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b067e6",
+      "native": "00afbed0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06800",
+      "native": "00afc360",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06810",
+      "native": "00af44c0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06823",
+      "native": "00af44c0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06832",
+      "native": "00afc470",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06862",
+      "native": "00419cc0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06869",
+      "native": "00bd1510",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06896",
+      "native": "00419cc0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b0689d",
+      "native": "00bd1510",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b068ba",
+      "native": "00b00980",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b068c8",
+      "native": "00bf6989",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b068eb",
+      "native": "00bf7fbf",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b068fb",
+      "native": "00afc1b0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06910",
+      "native": "00b05d00",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06926",
+      "native": "00bf7fbf",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06936",
+      "native": "00afc1b0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b0694b",
+      "native": "00b05d00",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b0695c",
+      "native": "00bf7fbf",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b0696c",
+      "native": "00afbf60",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b0698f",
+      "native": "00bf7fbf",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b0699f",
+      "native": "00afbf60",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b069ba",
+      "native": "00af4110",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b069c8",
+      "native": "00aee2a0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b069d6",
+      "native": "00af5740",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06a12",
+      "native": "00419cc0",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b06a19",
+      "native": "00bd1510",
+      "function": "00b064a0"
+    },
+    {
+      "address": "00b05d3e",
+      "native": "00b646e0",
+      "function": "00b05d00"
+    },
+    {
+      "address": "00b05d54",
+      "native": "00b64640",
+      "function": "00b05d00"
+    },
+    {
+      "address": "00b05d6d",
+      "native": "00b64780",
+      "function": "00b05d00"
+    },
+    {
+      "address": "00b05d74",
+      "native": "00413920",
+      "function": "00b05d00"
+    },
+    {
+      "address": "00b05d7b",
+      "native": "00413920",
+      "function": "00b05d00"
+    },
+    {
+      "address": "00b05dab",
+      "native": "004142e0",
+      "function": "00b05d00"
+    },
+    {
+      "address": "00b06315",
+      "native": "0041e870",
+      "function": "00b062f0"
+    },
+    {
+      "address": "00b06328",
+      "native": "00bf7fbf",
+      "function": "00b062f0"
+    },
+    {
+      "address": "00b06356",
+      "native": "00419cc0",
+      "function": "00b062f0"
+    },
+    {
+      "address": "00b0635d",
+      "native": "00bd1510",
+      "function": "00b062f0"
+    },
+    {
+      "address": "00b0637e",
+      "native": "00425850",
+      "function": "00b062f0"
+    },
+    {
+      "address": "00b063ac",
+      "native": "00419cc0",
+      "function": "00b062f0"
+    },
+    {
+      "address": "00b063b3",
+      "native": "00bd1510",
+      "function": "00b062f0"
+    },
+    {
+      "address": "00b063d4",
+      "native": "00425850",
+      "function": "00b062f0"
+    },
+    {
+      "address": "00b06402",
+      "native": "00419cc0",
+      "function": "00b062f0"
+    },
+    {
+      "address": "00b06409",
+      "native": "00bd1510",
+      "function": "00b062f0"
+    },
+    {
+      "address": "00b0642a",
+      "native": "00425850",
+      "function": "00b062f0"
+    },
+    {
+      "address": "00b06457",
+      "native": "00425850",
+      "function": "00b062f0"
+    },
+    {
+      "address": "00b06482",
+      "native": "0041dd20",
+      "function": "00b062f0"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "CE3830 bound as float by misleading pseudocode",
+      "evidence": "B05D34 FSUBR qword [00CE3830]; live bytes 00000060fb21f93f",
+      "is": "CURRENT double axis base operand"
+    },
+    {
+      "was": "B064A0 pseudo returns after common/elevation path because free is marked no-return",
+      "evidence": "B068CD..B068E0 live/disk bytes 83c404897c243c897c2440897c2444e9de000000",
+      "is": "free, clear builder0/4/8, release name, continue parser loop"
+    },
+    {
+      "was": "matrix arguments omitted from B05D00 pseudo",
+      "evidence": "B05D43..B05D7B stack setup; both 413920 calls RET8",
+      "is": "(RotZ(0)*RotX(base-scale*elevation))*RotY(scale*heading)"
+    },
+    {
+      "was": "assuming invalid curve has kind0",
+      "evidence": "AFBED0 only clears0/4/8, B064A0 ignores AFC470 AL",
+      "is": "caller-supplied incoming kind+C residue reused across lines"
+    }
+  ],
+  "validation": {
+    "strict_compile": "Full Axial cpp, root common cpp and property cpp compile/link MSVC Win32 /MD /W4 /WX /O2 /fp:strict; /MANIFEST:EMBED probes exit0",
+    "math": {
+      "status": "passed",
+      "observations": 354,
+      "command": "pwsh -NoProfile -File C:/Users/sqz269/bsp-aq-axial/build.ps1",
+      "comparison": "all matrix64/definitionA4h bytes and x87 status; 3 precision modes, 9 bit inputs, input/global aliases, changed current globals",
+      "source_projection": "temporary math_source.cpp excludes only parser entry while real common providers are under integration",
+      "executable_sha256": "580df9ea42d5a015bf89333f7f3c47e244957c5744aa9251ab518e4b45d17667"
+    },
+    "parser": {
+      "status": "passed",
+      "observations": 28,
+      "parser_observations": 21,
+      "direct_alignment_observations": 7,
+      "ordered_string_array_events": 9303,
+      "command": "pwsh -NoProfile -File C:/Users/sqz269/bsp-aq-axial/build_parser.ps1",
+      "executable_sha256": "cffe0cf1538381b06f387015835461221ccc5d2c58657b491f43463365c0cfe5",
+      "scope": "Complete actualA4h storage with pointer normalization, runtime multiplier/value/count/capacity/kind and Const/Linear/Hermite segment bytes; text cursor, EOF and missing braces; common/elevation continuation, rejected curve after reusedkind; all temporary text/array allocations balanced; 3 x87 precision controls",
+      "native_side": "Captured B064A0/B062F0/B05D00/B64640/B646E0/B64780/413920/4142E0 bytes; genuine shared reconstructed text/string/parameter/property services",
+      "limit": "B015C0 and B00980 use the same concrete provider on both sides; no independent differential claim for those providers or renderer/resource paths"
+    },
+    "full_build": "primary integrator required",
+    "original_abi": "new C++ interfaces; no drop-in or original FH3 claim",
+    "game_validated": false,
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_particle_axial_loading.json",
+      "checked": 78,
+      "failed": 0
+    },
+    "build_inputs": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-particle-axial-loading-aq\\src\\native_particle_axial_loading.cpp",
+        "sha256": "3de653dc9f7c7ec2cb6c0e6589ab655e4bcc2e80f01e04a8b95559ce9b823770"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_particle_type_loading.cpp",
+        "sha256": "87840100602a06d5656692631430b2ada665a75ae4dc99aad99b467a4ea7d1ac"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-particle-properties-aq\\src\\native_particle_type_property.cpp",
+        "sha256": "3f69a650503b89d01c268d34494f0c81b9196008c232113d14afa7d8aecd96c3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+        "sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-aq-axial\\math_probe.cpp",
+        "sha256": "6aabe86b4b3de41a661f6bd82a9b2b29be2ad9f2d567dfb33d755384bba02c9c"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-aq-axial\\math_source.cpp",
+        "sha256": "0efde8644b617f1c202db1faeb0d36b2d476e8b99b3476e879bf1b43c4899b89"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-aq-axial\\parser_probe.cpp",
+        "sha256": "196a195a6a4dd46c37855701d72dd5fc019e6823ff3cfe7c0e85ba94a5bf52c2"
+      },
+      {
+        "path": "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp",
+        "sha256": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+      }
+    ]
+  },
+  "boundaries": [
+    "Original FH3/SEH ABI and unmasked exception unwinding not reproduced",
+    "Invalid/concurrently modified storage and unsupported renderer/resource paths untested",
+    "Current shared CRT services reused; installed CRT equivalence not separately proved",
+    "Matrix helpers preserve current operands and ordered aliases; axis uses disjoint shared typed transform domain",
+    "No replacement release for overwritten runtime parameter pointers",
+    "B64780 extends established provider under a new overload; existing two-argument GUI function is unchanged"
+  ],
+  "integration_aq_repairs": {
+    "aq-flow-repair.json": {
+      "repairs": [
+        {
+          "function": "00b08ac0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T20:57:25Z",
+          "decompile_lines_before": 205,
+          "gaps": [
+            {
+              "site": "00b08da9",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b08dae",
+              "gap_end_exclusive": "00b08ddd",
+              "bytes": 47,
+              "after_call": true,
+              "sha256": "28100c5af80fd1426847fb0935721054bcddd849c87529f4e99a72d299de5038"
+            },
+            {
+              "site": "00b08e13",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b08e18",
+              "gap_end_exclusive": "00b08e5c",
+              "bytes": 68,
+              "after_call": true,
+              "sha256": "a1716896960fee473b929a5195541db765144e7c6bf4595dd14c29da12996b8c"
+            },
+            {
+              "site": "00b08e96",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b08e9b",
+              "gap_end_exclusive": "00b08eb7",
+              "bytes": 28,
+              "after_call": true,
+              "sha256": "2b9b61465621a4a6e85e869bbeebe1c0099522463ad5c01a35dd49b6e4b714df"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b08da9",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b08dae",
+                "gap_end_exclusive": "00b08ddd",
+                "bytes": 47,
+                "after_call": true,
+                "sha256": "28100c5af80fd1426847fb0935721054bcddd849c87529f4e99a72d299de5038"
+              },
+              "clear": "Success: Cleared flow override at 00b08da9 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 47 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "00b08e13",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b08e18",
+                "gap_end_exclusive": "00b08e5c",
+                "bytes": 68,
+                "after_call": true,
+                "sha256": "a1716896960fee473b929a5195541db765144e7c6bf4595dd14c29da12996b8c"
+              },
+              "clear": "Success: Cleared flow override at 00b08e13 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 68 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "00b08e96",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b08e9b",
+                "gap_end_exclusive": "00b08eb7",
+                "bytes": 28,
+                "after_call": true,
+                "sha256": "2b9b61465621a4a6e85e869bbeebe1c0099522463ad5c01a35dd49b6e4b714df"
+              },
+              "clear": "Success: Cleared flow override at 00b08e96 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 28 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 248,
+          "gaps_remaining": 0
+        },
+        {
+          "function": "00b07d60",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T20:57:38Z",
+          "decompile_lines_before": 204,
+          "gaps": [
+            {
+              "site": "00b08048",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b0804d",
+              "gap_end_exclusive": "00b0807d",
+              "bytes": 48,
+              "after_call": true,
+              "sha256": "3a47c87da3229b781cd6364b9176f06d798856f5b6eda0c986b3b7d6eb11b2a3"
+            },
+            {
+              "site": "00b080b3",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b080b8",
+              "gap_end_exclusive": "00b08104",
+              "bytes": 76,
+              "after_call": true,
+              "sha256": "7ac838888f3d6991ce750de197443b5c4e812e051cfe66edc90a0c7199e6a57c"
+            },
+            {
+              "site": "00b0813e",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b08143",
+              "gap_end_exclusive": "00b08160",
+              "bytes": 29,
+              "after_call": true,
+              "sha256": "5820b8ca8c5a14bc8b31daebad63d9387c5d1a1896c2f92e8540a010d7176423"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b08048",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0804d",
+                "gap_end_exclusive": "00b0807d",
+                "bytes": 48,
+                "after_call": true,
+                "sha256": "3a47c87da3229b781cd6364b9176f06d798856f5b6eda0c986b3b7d6eb11b2a3"
+              },
+              "clear": "Success: Cleared flow override at 00b08048 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 48 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "00b080b3",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b080b8",
+                "gap_end_exclusive": "00b08104",
+                "bytes": 76,
+                "after_call": true,
+                "sha256": "7ac838888f3d6991ce750de197443b5c4e812e051cfe66edc90a0c7199e6a57c"
+              },
+              "clear": "Success: Cleared flow override at 00b080b3 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 76 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "00b0813e",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b08143",
+                "gap_end_exclusive": "00b08160",
+                "bytes": 29,
+                "after_call": true,
+                "sha256": "5820b8ca8c5a14bc8b31daebad63d9387c5d1a1896c2f92e8540a010d7176423"
+              },
+              "clear": "Success: Cleared flow override at 00b0813e (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 29 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 247,
+          "gaps_remaining": 0
+        },
+        {
+          "function": "00b064a0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T20:57:57Z",
+          "decompile_lines_before": 286,
+          "gaps": [
+            {
+              "site": "00b068c8",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b068cd",
+              "gap_end_exclusive": "00b068e1",
+              "bytes": 20,
+              "after_call": true,
+              "sha256": "8c6a9a401ce9de51f994dccfaedd54dad64ab63b8f19a9212625df5257877d1c"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b068c8",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b068cd",
+                "gap_end_exclusive": "00b068e1",
+                "bytes": 20,
+                "after_call": true,
+                "sha256": "8c6a9a401ce9de51f994dccfaedd54dad64ab63b8f19a9212625df5257877d1c"
+              },
+              "clear": "Success: Cleared flow override at 00b068c8 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 20 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 291,
+          "gaps_remaining": 0
+        },
+        {
+          "function": "00af8bd0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T20:58:10Z",
+          "decompile_lines_before": 231,
+          "gaps": [
+            {
+              "site": "00af8f48",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00af8f4d",
+              "gap_end_exclusive": "00af8f79",
+              "bytes": 44,
+              "after_call": true,
+              "sha256": "8b0cb759f566611163217ff501459c9909c4b88663cec9f2ed791630f287d849"
+            },
+            {
+              "site": "00af8fce",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00af8fd3",
+              "gap_end_exclusive": "00af8ff0",
+              "bytes": 29,
+              "after_call": true,
+              "sha256": "c6aec90d57a38f9ba3e6bc50f6919f0fc953590e47df2ac72071484b1133fe4c"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00af8f48",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af8f4d",
+                "gap_end_exclusive": "00af8f79",
+                "bytes": 44,
+                "after_call": true,
+                "sha256": "8b0cb759f566611163217ff501459c9909c4b88663cec9f2ed791630f287d849"
+              },
+              "clear": "Success: Cleared flow override at 00af8f48 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 44 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "00af8fce",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af8fd3",
+                "gap_end_exclusive": "00af8ff0",
+                "bytes": 29,
+                "after_call": true,
+                "sha256": "c6aec90d57a38f9ba3e6bc50f6919f0fc953590e47df2ac72071484b1133fe4c"
+              },
+              "clear": "Success: Cleared flow override at 00af8fce (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 29 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 256,
+          "gaps_remaining": 0
+        },
+        {
+          "function": "00b0a920",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T20:58:23Z",
+          "decompile_lines_before": 111,
+          "gaps": [
+            {
+              "site": "00b0a9f0",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b0a9f5",
+              "gap_end_exclusive": "00b0a9f8",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            {
+              "site": "00b0aae0",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b0aae5",
+              "gap_end_exclusive": "00b0aae8",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b0a9f0",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0a9f5",
+                "gap_end_exclusive": "00b0a9f8",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00b0a9f0 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "gap": {
+                "site": "00b0aae0",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0aae5",
+                "gap_end_exclusive": "00b0aae8",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00b0aae0 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 109,
+          "gaps_remaining": 0
+        }
+      ]
+    },
+    "aq-function-definitions.json": {
+      "events": [
+        {
+          "recreate": "00b08ac0",
+          "previous": "Function: FUN_00b08ac0 at 00b08ac0\nSignature: undefined FUN_00b08ac0(void)\nEntry: 00b08ac0\nBody: 00b08ac0 - 00b08f55",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b08ac0"
+          },
+          "result": {
+            "success": true,
+            "address": "00b08ac0",
+            "deleted_function": "FUN_00b08ac0",
+            "body_size": 1031,
+            "message": "Function 'FUN_00b08ac0' deleted at 00b08ac0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b08ac0",
+            "end_address": "00b08f56"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b08ac0",
+            "end_address": "00b08f55",
+            "bytes_disassembled": 1174,
+            "message": "Successfully disassembled 1174 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b08ac0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b08ac0",
+            "function_name": "FUN_00b08ac0",
+            "entry_point": "00b08ac0",
+            "body_size": 1174,
+            "message": "Function created successfully at 00b08ac0"
+          }
+        },
+        {
+          "defined": "00b08ac0",
+          "end": "00b08f56",
+          "name": null,
+          "after": "Function: FUN_00b08ac0 at 00b08ac0\nSignature: undefined FUN_00b08ac0(void)\nEntry: 00b08ac0\nBody: 00b08ac0 - 00b08f55"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00b07d60",
+          "previous": "Function: FUN_00b07d60 at 00b07d60\nSignature: undefined FUN_00b07d60(void)\nEntry: 00b07d60\nBody: 00b07d60 - 00b08202",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b07d60"
+          },
+          "result": {
+            "success": true,
+            "address": "00b07d60",
+            "deleted_function": "FUN_00b07d60",
+            "body_size": 1028,
+            "message": "Function 'FUN_00b07d60' deleted at 00b07d60"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b07d60",
+            "end_address": "00b08203"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b07d60",
+            "end_address": "00b08202",
+            "bytes_disassembled": 1187,
+            "message": "Successfully disassembled 1187 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b07d60",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b07d60",
+            "function_name": "FUN_00b07d60",
+            "entry_point": "00b07d60",
+            "body_size": 1181,
+            "message": "Function created successfully at 00b07d60"
+          }
+        },
+        {
+          "defined": "00b07d60",
+          "end": "00b08203",
+          "name": null,
+          "after": "Function: FUN_00b07d60 at 00b07d60\nSignature: undefined FUN_00b07d60(void)\nEntry: 00b07d60\nBody: 00b07d60 - 00b08202"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00b064a0",
+          "previous": "Function: FUN_00b064a0 at 00b064a0\nSignature: undefined FUN_00b064a0(void)\nEntry: 00b064a0\nBody: 00b064a0 - 00b06a33",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b064a0"
+          },
+          "result": {
+            "success": true,
+            "address": "00b064a0",
+            "deleted_function": "FUN_00b064a0",
+            "body_size": 1399,
+            "message": "Function 'FUN_00b064a0' deleted at 00b064a0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b064a0",
+            "end_address": "00b06a34"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b064a0",
+            "end_address": "00b06a33",
+            "bytes_disassembled": 1428,
+            "message": "Successfully disassembled 1428 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b064a0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b064a0",
+            "function_name": "FUN_00b064a0",
+            "entry_point": "00b064a0",
+            "body_size": 1419,
+            "message": "Function created successfully at 00b064a0"
+          }
+        },
+        {
+          "defined": "00b064a0",
+          "end": "00b06a34",
+          "name": null,
+          "after": "Function: FUN_00b064a0 at 00b064a0\nSignature: undefined FUN_00b064a0(void)\nEntry: 00b064a0\nBody: 00b064a0 - 00b06a33"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00af8bd0",
+          "previous": "Function: FUN_00af8bd0 at 00af8bd0\nSignature: undefined FUN_00af8bd0(void)\nEntry: 00af8bd0\nBody: 00af8bd0 - 00af9094",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00af8bd0"
+          },
+          "result": {
+            "success": true,
+            "address": "00af8bd0",
+            "deleted_function": "FUN_00af8bd0",
+            "body_size": 1145,
+            "message": "Function 'FUN_00af8bd0' deleted at 00af8bd0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00af8bd0",
+            "end_address": "00af9095"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00af8bd0",
+            "end_address": "00af9094",
+            "bytes_disassembled": 1221,
+            "message": "Successfully disassembled 1221 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00af8bd0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00af8bd0",
+            "function_name": "FUN_00af8bd0",
+            "entry_point": "00af8bd0",
+            "body_size": 1218,
+            "message": "Function created successfully at 00af8bd0"
+          }
+        },
+        {
+          "defined": "00af8bd0",
+          "end": "00af9095",
+          "name": null,
+          "after": "Function: FUN_00af8bd0 at 00af8bd0\nSignature: undefined FUN_00af8bd0(void)\nEntry: 00af8bd0\nBody: 00af8bd0 - 00af9094"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00b0a920",
+          "previous": "Function: FUN_00b0a920 at 00b0a920\nSignature: undefined FUN_00b0a920(void)\nEntry: 00b0a920\nBody: 00b0a920 - 00b0ab8a",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b0a920"
+          },
+          "result": {
+            "success": true,
+            "address": "00b0a920",
+            "deleted_function": "FUN_00b0a920",
+            "body_size": 613,
+            "message": "Function 'FUN_00b0a920' deleted at 00b0a920"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b0a920",
+            "end_address": "00b0ab8b"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b0a920",
+            "end_address": "00b0ab8a",
+            "bytes_disassembled": 619,
+            "message": "Successfully disassembled 619 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b0a920",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b0a920",
+            "function_name": "FUN_00b0a920",
+            "entry_point": "00b0a920",
+            "body_size": 619,
+            "message": "Function created successfully at 00b0a920"
+          }
+        },
+        {
+          "defined": "00b0a920",
+          "end": "00b0ab8b",
+          "name": null,
+          "after": "Function: FUN_00b0a920 at 00b0a920\nSignature: undefined FUN_00b0a920(void)\nEntry: 00b0a920\nBody: 00b0a920 - 00b0ab8a"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    }
+  },
+  "integration_aq_review": {
+    "all_call_rows_verified": true,
+    "saved_names_and_comments": 36,
+    "ordinary_native_signatures": 34,
+    "custom_register_signatures_retained": [
+      "00af3750",
+      "00af3960"
+    ],
+    "combined_validation": "passed exact merged build and seven current-library probes"
+  },
+  "final_merged_validation_aq": {
+    "tested_commit": "cad90a51b1455deb797425951c4ed3d953e32878",
+    "reviewed_source_commit": "de95ab7f2ccc14b572512585330550d91973094e",
+    "build": "Strict MSVC Win32 and both seeded CTests passed; local/aq-final-combined-build.log",
+    "all10_reviewed_source_header_hashes_preserved": true,
+    "all36_name_evidence_rows_preserved": true,
+    "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+    "current_library_replays": [
+      {
+        "label": "properties",
+        "exit_code": 0,
+        "log": "local\\aq-properties-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-properties\\probe.cpp": "add900f89be405a85215b6f97810c10636a251aa5ce01214957b9806e9a3499d",
+          "C:\\Users\\sqz269\\bsp-aq-properties\\literal_bytes.hpp": "fa3bd79cde1083ba8d430257941dc5f4f96c06a01c3b4cb539fcca3a4d58bddd",
+          "C:\\Users\\sqz269\\bsp-aq-properties\\native_bytes.hpp": "b992df3252e5e76cb31c4195574788f142259107a93a237972e47936143ac854",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\properties-current.cmd",
+        "executable_sha256": "c619fb61968aa018785a041797b3c35ca5234988ca9782710094d55ad114e07d"
+      },
+      {
+        "label": "axial_math",
+        "exit_code": 0,
+        "log": "local\\aq-axial_math-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-axial\\math_probe.cpp": "6aabe86b4b3de41a661f6bd82a9b2b29be2ad9f2d567dfb33d755384bba02c9c",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\axial_math-current.cmd",
+        "executable_sha256": "678cded86b9a27b5128d4e63a9e45ca4716057dc6e23543b05a15b60bfc0480c"
+      },
+      {
+        "label": "axial_parser",
+        "exit_code": 0,
+        "log": "local\\aq-axial_parser-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-axial\\parser_probe.cpp": "196a195a6a4dd46c37855701d72dd5fc019e6823ff3cfe7c0e85ba94a5bf52c2",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\axial_parser-current.cmd",
+        "executable_sha256": "a66e233ca65445075bc80305e9b390bc3cba63fefce40ebca9d92ace5fd8d519"
+      },
+      {
+        "label": "object_tracer",
+        "exit_code": 0,
+        "log": "local\\aq-object_tracer-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-object-tracer\\probe.cpp": "3c52914ee95cd52af21c7eb3ba51d183ca0c9e6559e7ee1194d4d93a3a0a974d",
+          "C:\\Users\\sqz269\\bsp-aq-object-tracer\\probe_data.hpp": "3867d22139b02d784126b6d31dab8b97e0a79720917ab05ddaec801eef32887f",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\object_tracer-current.cmd",
+        "executable_sha256": "154fd4157b94f63e13bb2dbaab00eb947b5c5afa3cd8f554bedb73bcc27d3d0e"
+      },
+      {
+        "label": "sprite_floating",
+        "exit_code": 0,
+        "log": "local\\aq-sprite_floating-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-loading-sprite\\parser_probe.cpp": "e82a47d841ea750f4bda526dda5d1c815240c5a2ac5fdb92530ee4e7b9569f06",
+          "C:\\Users\\sqz269\\bsp-aq-loading-sprite\\probe_data.hpp": "66967bc12d37a337a62135f4195fe503786a2186129e32a9a51c2dda35e0eea6",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\sprite_floating-current.cmd",
+        "executable_sha256": "8a739a26a68a0d3ff8918d96adb443323ea3a6acefe3868503ae01cd4353cc5d"
+      },
+      {
+        "label": "bounds",
+        "exit_code": 0,
+        "log": "local\\aq-bounds-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-loading\\bound_probe.cpp": "21652df0f87f34b17ff2ab7a0c603b6f87b50ef6fe75ca59b8fd81824fd0f542",
+          "C:\\Users\\sqz269\\bsp-aq-loading\\bound_data.hpp": "67ebbd42f625117aa6b6dcffc893d39b327136b5247899f6fa043ca54ec8e8d1",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\bounds-current.cmd",
+        "executable_sha256": "9ae1017198ba17c0ec4a92e59439edc4054a14a3510f02b26a6eaede6600a624"
+      },
+      {
+        "label": "factory",
+        "exit_code": 0,
+        "log": "local\\aq-factory-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-factory\\probe.cpp": "beae2a91cb4eb1e30b0786a8bad5ea8f72c46760b83f3dbeccf239d8ef096919",
+          "C:\\Users\\sqz269\\bsp-aq-factory\\constants.hpp": "d398630c9cee2f046cad03eba9ffa0c1631ec2a543e0bd77500ef17cc05f31b7",
+          "C:\\Users\\sqz269\\bsp-aq-factory\\native_bytes.hpp": "00be5632e62efbb7d6cbd1b2f828f1c89de94786910a0eae2d6f2b429d7bb742",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\factory-current.cmd",
+        "executable_sha256": "bc4e8cb5554487e2679fddc6edac14aefa178fa45444849f29051925d2dc6507"
+      }
+    ],
+    "new_function_entries": 32,
+    "refined_interfaces": 3,
+    "revised_factory": 1,
+    "native_signatures": 34,
+    "custom_register_signatures_retained": [
+      "00af3750",
+      "00af3960"
+    ],
+    "checked_call_rows": 716,
+    "checked_rows_include_duplicate_embedded_fixture_evidence": true,
+    "failed_call_rows": 0,
+    "game_validated": false,
+    "original_fh3_validated": false,
+    "remaining_boundaries": [
+      "Actual shader/model/renderer services and unknown current parser targets",
+      "Factory callers must supply actual loading domains to select concrete dispatch",
+      "Sprite/Object/Tracer state initializers and full application/runtime ownership",
+      "Original FH3/invalid-storage faults and gameplay"
+    ]
+  }
+}

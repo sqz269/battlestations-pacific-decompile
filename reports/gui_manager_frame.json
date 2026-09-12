@@ -1,0 +1,153 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "documentation": "docs/GUI_MANAGER_FRAME.md",
+  "status": "reconstructed_normal_sequences_combined_build_tested",
+  "functions": [
+    {
+      "address": "00aa4f80",
+      "name": "BSP_GuiManager_Update",
+      "cpp": "update_gui_manager_00aa4f80",
+      "original_abi": "ECX manager, seconds/raw blocked byte in two stack DWORDs, RET8",
+      "coverage": "complete normal caller sequence over same actual manager/page registry; AA3910 required pointer provider and actual page profiles remain explicit",
+      "source": "src/gui_manager_frame.cpp",
+      "ledger_kind": "function"
+    },
+    {
+      "address": "00aa0f70",
+      "name": "BSP_GuiManager_ResetScreens",
+      "cpp": "reset_gui_manager_highlights_00aa0f70",
+      "original_abi": "ECX manager, no stack arguments, RET",
+      "coverage": "complete normal74/78 reset sequence with native callback reloads and live MOVSS constant",
+      "source": "src/gui_manager_frame.cpp",
+      "ledger_kind": "function"
+    },
+    {
+      "address": "00aa7ef0",
+      "name": "BSP_GuiScreen_HasLiveEntries",
+      "cpp": "gui_widget_has_live_entries_00aa7ef0",
+      "original_abi": "ECX widget, no stack arguments, RET/AL",
+      "coverage": "complete normal captured signed count and first nonnull scan; count<=0 returns before owner allocation or88 read; positive arrays require canonical ownership",
+      "source": "src/gui_manager_frame.cpp",
+      "ledger_kind": "function"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00aa4fa8",
+      "function": "00aa4f80",
+      "native": "00aa3910",
+      "contract": "required actual pointer-device/global/cursor provider, raw70 zero only"
+    },
+    {
+      "address": "00aa4faf",
+      "function": "00aa4f80",
+      "native": "00aa0f70",
+      "contract": "reset same current highlight slots"
+    },
+    {
+      "address": "00aa4fbc",
+      "function": "00aa4f80",
+      "native": "004d35d0",
+      "contract": "STL actual page pointer snapshot; allocation/checked iterator contracts"
+    },
+    {
+      "address": "00aa4fd5",
+      "function": "00aa4f80",
+      "native": "00bf6713",
+      "contract": "native checked-STL invalid iterator boundary"
+    },
+    {
+      "address": "00aa4fe4",
+      "function": "00aa4f80",
+      "native": "00bf6713",
+      "contract": "native checked-STL invalid iterator boundary"
+    },
+    {
+      "address": "00aa4fef",
+      "function": "00aa4f80",
+      "native": "00bf6713",
+      "contract": "native checked-STL invalid iterator boundary"
+    },
+    {
+      "address": "00aa5005",
+      "function": "00aa4f80",
+      "native": "00bf6713",
+      "contract": "native checked-STL invalid iterator boundary"
+    },
+    {
+      "address": "00aa5019",
+      "function": "00aa4f80",
+      "native": "00bf6713",
+      "contract": "native checked-STL invalid iterator boundary"
+    },
+    {
+      "address": "00aa5033",
+      "function": "00aa4f80",
+      "native": "00bf6713",
+      "contract": "native checked-STL invalid iterator boundary"
+    },
+    {
+      "address": "00aa4ffb",
+      "function": "00aa4f80",
+      "native": "page.current38",
+      "contract": "same actual Screen root visibility"
+    },
+    {
+      "address": "00aa500c",
+      "function": "00aa4f80",
+      "native": "00aa7ef0",
+      "contract": "captured signed88/8C timed-entry query"
+    },
+    {
+      "address": "00aa502d",
+      "function": "00aa4f80",
+      "native": "page.current40",
+      "contract": "same root current40 with x87-spilled seconds"
+    },
+    {
+      "address": "00aa5047",
+      "function": "00aa4f80",
+      "native": "00bf65ac",
+      "contract": "STL pointer snapshot free after raw70 cleared"
+    },
+    {
+      "address": "00aa0f9f",
+      "function": "00aa0f70",
+      "native": "00aa8240",
+      "contract": "position captured74 with MOVSS negative/negative/zero"
+    },
+    {
+      "address": "00aa0fae",
+      "function": "00aa0f70",
+      "native": "highlight74.current34",
+      "contract": "fresh74 after position callback, false"
+    },
+    {
+      "address": "00aa0fd9",
+      "function": "00aa0f70",
+      "native": "00aa8240",
+      "contract": "position captured fresh78 after first arm and constant reload"
+    },
+    {
+      "address": "00aa0fe8",
+      "function": "00aa0f70",
+      "native": "highlight78.current34",
+      "contract": "fresh78 after position callback, false"
+    }
+  ],
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "validation": {
+    "build": "local/orch5-menu-frame-storage-build-final.log; Win32 Release2/2 passed",
+    "peer_review": "mission_side_storage independently checked assembly, callback reloads, snapshot timing, raw70 lifetime and floating operations; fixed count<=0 allocation mismatch",
+    "fixture": "local/gui_manager_frame_probe.log; PASS actual empty registry/Group highlights; no Screen page traversal"
+  },
+  "limits": [
+    "AA3910 remains required actual pointer provider, not a default callback",
+    "Native manager constructor leaves70 unwritten; optional storage stays disengaged until producer",
+    "Page roots/owners and positive timed allocations must survive callbacks; STL allocator/checked iterator/EH ABI not ported",
+    "No game or complete page traversal validation"
+  ]
+}
