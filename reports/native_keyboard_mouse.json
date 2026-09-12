@@ -1,0 +1,550 @@
+{
+  "packet": "orch4_native_keyboard_mouse_ad",
+  "source": [
+    "include/bsp/native_keyboard_mouse.hpp",
+    "src/native_keyboard_mouse.cpp"
+  ],
+  "analysis": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program": "/battlestationspacific.exe",
+    "image_base": "00400000",
+    "language": "x86:LE:32:default",
+    "mode": "read-only; bsp.py client.verify before every live query; assembly and EH maps revalidated"
+  },
+  "routines": [
+    {
+      "address": "00a962f0",
+      "name": "construct_native_keyboard_base_00a962f0",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX storage; EAX storage; RET",
+      "final_instruction": "00a96342",
+      "final_instruction_length": 1,
+      "end_exclusive": "00a96343"
+    },
+    {
+      "address": "00a9a3e0",
+      "name": "construct_native_keyboard_00a9a3e0",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX storage; one DI8 pointer stack argument; EAX storage; RET4",
+      "final_instruction": "00a9a468",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a9a46b"
+    },
+    {
+      "address": "00a9a290",
+      "name": "construct_native_mouse_00a9a290",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX storage; one DI8 pointer stack argument; EAX storage; RET4",
+      "final_instruction": "00a9a37c",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a9a37f"
+    },
+    {
+      "address": "00a9a470",
+      "name": "delete_native_keyboard_00a9a470",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX storage; flag byte in DWORD stack slot; EAX captured identity; RET4",
+      "final_instruction": "00a9a491",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a9a494"
+    },
+    {
+      "address": "00a9a390",
+      "name": "delete_native_mouse_00a9a390",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX storage; flag byte in DWORD stack slot; EAX captured identity; RET4",
+      "final_instruction": "00a9a3b1",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a9a3b4"
+    },
+    {
+      "address": "00a95e60",
+      "name": "destroy_native_keyboard_base_00a95e60",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX storage; tail BD30F0; RET",
+      "final_instruction": "00a95e66",
+      "final_instruction_length": 5,
+      "end_exclusive": "00a95e6b"
+    },
+    {
+      "address": "00a99ef0",
+      "name": "destroy_native_mouse_base_00a99ef0",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX storage; tail BD30F0; RET",
+      "final_instruction": "00a99ef6",
+      "final_instruction_length": 5,
+      "end_exclusive": "00a99efb"
+    },
+    {
+      "address": "00a99e90",
+      "name": "update_native_input_history_00a99e90",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX storage; RET; virtual query20(code) RET4",
+      "final_instruction": "00a99ec7",
+      "final_instruction_length": 1,
+      "end_exclusive": "00a99ec8"
+    },
+    {
+      "address": "00a9a4a0",
+      "name": "poll_native_keyboard_00a9a4a0",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX storage; ignored float stack argument; AL bool; RET4",
+      "final_instruction": "00a9a569",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a9a56c"
+    },
+    {
+      "address": "00a9a180",
+      "name": "poll_native_mouse_00a9a180",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX storage; ignored float stack argument; AL bool; RET4",
+      "final_instruction": "00a9a285",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a9a288"
+    },
+    {
+      "address": "00a95e70",
+      "name": "query_native_keyboard_00a95e70",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX storage; stack code; AL bool; RET4",
+      "final_instruction": "00a95e80",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a95e83"
+    },
+    {
+      "address": "00a95e90",
+      "name": "value_native_keyboard_00a95e90",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX storage; stack code; ST0 float; RET4",
+      "final_instruction": "00a95ec2",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a95ec5"
+    },
+    {
+      "address": "00a99f70",
+      "name": "query_native_mouse_00a99f70",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX storage; stack code; AL bool; RET4",
+      "final_instruction": "00a99fd8",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a99fdb"
+    },
+    {
+      "address": "00a99fe0",
+      "name": "value_native_mouse_00a99fe0",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX storage; stack code; ST0 float; RET4",
+      "final_instruction": "00a9a0a8",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a9a0ab"
+    },
+    {
+      "address": "00a96350",
+      "name": "native_keyboard_class_00a96350",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX unused; EAX 0; RET",
+      "final_instruction": "00a96352",
+      "final_instruction_length": 1,
+      "end_exclusive": "00a96353"
+    },
+    {
+      "address": "00a9a0f0",
+      "name": "native_mouse_class_00a9a0f0",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX unused; EAX 1; RET",
+      "final_instruction": "00a9a0f5",
+      "final_instruction_length": 1,
+      "end_exclusive": "00a9a0f6"
+    },
+    {
+      "address": "00a9a140",
+      "name": "set_native_mouse_cooperative_level_00a9a140",
+      "coverage": "complete within documented valid raw-storage and required provider domain",
+      "abi": "ECX mouse; stack flags; RET4",
+      "final_instruction": "00a9a172",
+      "final_instruction_length": 3,
+      "end_exclusive": "00a9a175"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a9630b",
+      "native": "00bf79f0",
+      "caller": "00a962f0",
+      "contract": "zero first history; 3 args, combined cleanup24h"
+    },
+    {
+      "address": "00a9631e",
+      "native": "00bf79f0",
+      "caller": "00a962f0",
+      "contract": "zero second history; 3 args, combined cleanup24h"
+    },
+    {
+      "address": "00a96337",
+      "native": "00bf79f0",
+      "caller": "00a962f0",
+      "contract": "zero keyboard sample; combined ADD ESP,24h A9633C"
+    },
+    {
+      "address": "00a9a3ff",
+      "native": "00a962f0",
+      "caller": "00a9a3e0",
+      "contract": "completed base before EH state0"
+    },
+    {
+      "address": "00a9a447",
+      "native": "00bec230",
+      "caller": "00a9a3e0",
+      "contract": "capture COM vtable before current platform window; no stack args"
+    },
+    {
+      "address": "00a9a2c8",
+      "native": "00bf79f0",
+      "caller": "00a9a290",
+      "contract": "zero first history; 3 args, combined cleanup18h"
+    },
+    {
+      "address": "00a9a2da",
+      "native": "00bf79f0",
+      "caller": "00a9a290",
+      "contract": "zero second history; ADD ESP,18h A9A2DF"
+    },
+    {
+      "address": "00a9a479",
+      "native": "00a95e60",
+      "caller": "00a9a470",
+      "contract": "keyboard base teardown before flag test"
+    },
+    {
+      "address": "00a9a486",
+      "native": "00bf65ac",
+      "caller": "00a9a470",
+      "contract": "free captured storage if low flag bit; ADD ESP,4 A9A48B"
+    },
+    {
+      "address": "00a9a399",
+      "native": "00bd30f0",
+      "caller": "00a9a390",
+      "contract": "mouse stamps D5B638 before root teardown"
+    },
+    {
+      "address": "00a9a3a6",
+      "native": "00bf65ac",
+      "caller": "00a9a390",
+      "contract": "free captured storage if low flag bit; ADD ESP,4 A9A3AB"
+    },
+    {
+      "address": "00a95e66",
+      "native": "00bd30f0",
+      "caller": "00a95e60",
+      "contract": "base profile tail; no member cleanup",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00a99ef6",
+      "native": "00bd30f0",
+      "caller": "00a99ef0",
+      "contract": "base profile tail; no member cleanup",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00a9a4b2",
+      "native": "00bf79f0",
+      "caller": "00a9a4a0",
+      "contract": "clear sample before null test; ADD ESP,C A9A4B7"
+    },
+    {
+      "address": "00a9a527",
+      "native": "00bf79f0",
+      "caller": "00a9a4a0",
+      "contract": "clear sample if reloaded platform170 nonzero; ADD ESP,C A9A52C"
+    },
+    {
+      "address": "00a9a1b0",
+      "native": "00bec230",
+      "caller": "00a9a180",
+      "contract": "initial cooperation flags5 using captured COM vtable"
+    },
+    {
+      "address": "00a9a27b",
+      "native": "00a99e90",
+      "caller": "00a9a180",
+      "contract": "history even after failed GetDeviceState"
+    },
+    {
+      "address": "00a9a157",
+      "native": "00bec230",
+      "caller": "00a9a140",
+      "contract": "current window; preserve arbitrary supplied flags"
+    },
+    {
+      "address": "00a9808e",
+      "native": "00a9a3e0",
+      "caller": "00a98030",
+      "contract": "310h allocation; reloaded backendE0 stack argument; RET4"
+    },
+    {
+      "address": "00a980ce",
+      "native": "00a9a290",
+      "caller": "00a98030",
+      "contract": "23Ch allocation; reloaded backendE0 stack argument; RET4"
+    },
+    {
+      "address": "00becbb7",
+      "native": "00a9a140",
+      "caller": "00becb20",
+      "contract": "sole direct call passes flags6"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "00a9a42a",
+      "native": "DI8+vtable0c",
+      "caller": "00a9a3e0",
+      "contract": "CreateDevice(SysKeyboard,actual+30C,null), ignored HRESULT",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a439",
+      "native": "device+vtable2c",
+      "caller": "00a9a3e0",
+      "contract": "SetDataFormat(c_dfDIKeyboard), ignored HRESULT",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a453",
+      "native": "captured_device_vtable+34",
+      "caller": "00a9a3e0",
+      "contract": "reloaded current device this, HWND,6; ignored HRESULT",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a31b",
+      "native": "DI8+vtable0c",
+      "caller": "00a9a290",
+      "contract": "CreateDevice(SysMouse,actual+20C,null), ignored HRESULT",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a32a",
+      "native": "device+vtable2c",
+      "caller": "00a9a290",
+      "contract": "SetDataFormat(c_dfDIMouse2), ignored HRESULT",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a334",
+      "native": "IAT00ce230c:GetSystemMetrics",
+      "caller": "00a9a290",
+      "contract": "argument23; normalize nonzero to one byte",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a345",
+      "native": "IAT00ce2308:GetDoubleClickTime",
+      "caller": "00a9a290",
+      "contract": "DWORD milliseconds unsigned conversion",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a99eb3",
+      "native": "current_device+vtable20",
+      "caller": "00a99e90",
+      "contract": "per-byte query; RET4",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a95e9a",
+      "native": "current_device+vtable20",
+      "caller": "00a95e90",
+      "contract": "value uses current query before live one read",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a99fb9",
+      "native": "current_device+vtable24",
+      "caller": "00a99f70",
+      "contract": "axis down queries current value; NaN true",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a4cf",
+      "native": "device+vtable64",
+      "caller": "00a9a4a0",
+      "contract": "Poll; negative result branches",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a4e1",
+      "native": "reloaded_device+vtable1c",
+      "caller": "00a9a4a0",
+      "contract": "Acquire on Poll failure; ignored HRESULT",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a4fc",
+      "native": "reloaded_device+vtable24",
+      "caller": "00a9a4a0",
+      "contract": "GetDeviceState(100h,actual+20C); ignored HRESULT",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a553",
+      "native": "current_device+vtable20",
+      "caller": "00a9a4a0",
+      "contract": "inline shared history loop; RET4",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a1c0",
+      "native": "captured_device_vtable+34",
+      "caller": "00a9a180",
+      "contract": "reloaded device this, HWND,5; ignored result; configured=1",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a1da",
+      "native": "IAT00ce230c:GetSystemMetrics",
+      "caller": "00a9a180",
+      "contract": "clear captured platform2C before query23",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a1eb",
+      "native": "IAT00ce2308:GetDoubleClickTime",
+      "caller": "00a9a180",
+      "contract": "DWORD unsigned conversion",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a21b",
+      "native": "reloaded_device+vtable64",
+      "caller": "00a9a180",
+      "contract": "Poll; negative result branches",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a22d",
+      "native": "reloaded_device+vtable1c",
+      "caller": "00a9a180",
+      "contract": "Acquire on Poll failure; ignored result",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a24c",
+      "native": "reloaded_device+vtable24",
+      "caller": "00a9a180",
+      "contract": "GetDeviceState(14h,actual+214); writes valid1 only for success",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    },
+    {
+      "address": "00a9a167",
+      "native": "captured_device_vtable+34",
+      "caller": "00a9a140",
+      "contract": "reloaded current device this, HWND,flags; ignored result",
+      "coverage": "assembly audited; dynamic COM/provider call excluded from direct CALL audit"
+    }
+  ],
+  "eh_tails": [
+    {
+      "tail_site": "00cb6af3",
+      "callee": "00a99ef0",
+      "cleanup_start": "00cb6af0",
+      "map": "00decf74",
+      "func_info": "00decf7c",
+      "state": "0 -> -1",
+      "end_exclusive": "00cb6af8",
+      "evidence": "MOV ECX,[EBP-10h]; JMP target; no COM release"
+    },
+    {
+      "tail_site": "00cb6b13",
+      "callee": "00a95e60",
+      "cleanup_start": "00cb6b10",
+      "map": "00decfa0",
+      "func_info": "00decfa8",
+      "state": "0 -> -1",
+      "end_exclusive": "00cb6b18",
+      "evidence": "MOV ECX,[EBP-10h]; JMP target; no COM release"
+    }
+  ],
+  "missing_handler_findings": [
+    {
+      "entry": "00cb6af8",
+      "final_instruction": "00cb6afd",
+      "final_instruction_length": 5,
+      "end_exclusive": "00cb6b02",
+      "callee": "00bf6b43",
+      "state": "Initially missing; primary repaired; worker verified current exact 10-byte body via bsp.py ghidra proto."
+    },
+    {
+      "entry": "00cb6b18",
+      "final_instruction": "00cb6b1d",
+      "final_instruction_length": 5,
+      "end_exclusive": "00cb6b22",
+      "callee": "00bf6b43",
+      "state": "Initially missing; primary repaired; worker verified current exact 10-byte body via bsp.py ghidra proto."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "typed projections could be mistaken for canonical allocations",
+      "is": "new independent raw variants preserve310h/23Ch storage and actual SDK output slots; old typed records unchanged",
+      "evidence": "A98068/A980A8 allocation sizes; A962FD..A96337 and A9A2B6..A9A36A producers"
+    },
+    {
+      "was": "A95E60/A99EF0 classified adjustor thunks",
+      "is": "base-vtable stores and root-destructor tails, no this adjustment",
+      "evidence": "MOV [ECX],D5B638; JMP BD30F0, complete11-byte bodies"
+    },
+    {
+      "was": "prior report noted A9A470 gap",
+      "is": "current live listing and flow contain12 instructions, zero gaps",
+      "evidence": "A9A48B ADD ESP,4 present; A9A491 RET4 length3"
+    },
+    {
+      "was": "Raw scalar source used operator delete and required operator-new-compatible storage while actual enumeration allocates through singleton_lifetime_allocate.",
+      "is": "Both scalar bodies use singleton_lifetime_free; source contract and focused real SDK fixture use the same shared allocation domain as A98030.",
+      "evidence": "A9806D/A980AD BF681B allocation; A9A486/A9A3A6 BF65AC frees; src/singleton_lifetime.cpp51..66 wrappers."
+    }
+  ],
+  "ownership": {
+    "allocation_identity": "raw first byte; canonical profile at+0 and native reference count+4",
+    "keyboard_bytes": 784,
+    "mouse_bytes": 572,
+    "native_com_release": false,
+    "sdk_recovery": "explicit release_tracked_references after all raw owners/borrowers are gone",
+    "source_boundary": "singleton_lifetime_allocate/free allocation domain for scalar flags1, matching actual A98030; valid SDK reference outputs and readable explicit preimages"
+  },
+  "remaining": [
+    "Full vtable coverage is not claimed: activity/selection, names and mouse property slots remain separate raw binding work.",
+    "Primary owns shared no-argument BD30E0 dispatch, shared root BD30F0, raw enumeration and attachment.",
+    "Required history query/value dispatch must inspect current raw profile and provide all profiles callbacks can reach.",
+    "No application input startup or hardware event-delivery claim."
+  ],
+  "validation": {
+    "status": "passed",
+    "build": "scripts/build.ps1, MSVC Win32 Release, MSBUILDDISABLENODEREUSE=1; both existing CTests passed",
+    "seeds": "8/8 original byte seeds match",
+    "call_audit": "21 address/native rows checked, 0 failed; 21 dynamic SDK/Win32/vtable rows separately assembly-audited; 2 EH tails separately recorded",
+    "probe": "one ignored archive-linked /W4 /WX /MD /MANIFEST:EMBED real DirectInput probe",
+    "probe_result": {
+      "real_CreateDevice": 3,
+      "sdk_refs_after_explicit_release": 0,
+      "raw_frees": 3,
+      "history_interleaved": 256,
+      "padding_and_sample": "preserved",
+      "host_failure_base_reset": 1,
+      "zero_ref_thunk": 1,
+      "keyboard_poll": false,
+      "mouse_poll": false
+    },
+    "limits": "No focused hardware event delivery, native DLL exception injection, or full application input startup proof.",
+    "seed_log": "local/native_keyboard_mouse_ad_seeds.json",
+    "build_log": "local/native_keyboard_mouse_ad_build.log",
+    "probe_log": "local/native_keyboard_mouse_ad_probe.log",
+    "call_audit_log": "local/native_keyboard_mouse_ad_calls.log",
+    "initial_build": "Initial configure preceded shared-root header integration and failed missing include; preserved local/native_keyboard_mouse_ad_build_initial.log; final reconfigure/build passed.",
+    "allocator_integration": "Final rebuild/probe repeated with singleton_lifetime_allocate/free for all three raw fixture allocations; original pre-correction logs retained."
+  }
+}
