@@ -155,6 +155,28 @@ public:
     // --order-frame. Returns false when no unit is bound.
     bool issue_player_command(const std::string& token, const std::string& target_token);
 
+    // Milestone 2m. The mission script's navigator bindings hand 0077d600 a
+    // fixed command object and the descriptor 0088a810 read, so the chain starts
+    // there rather than at 0046aab0's registry walk. Returns the row the command
+    // path produced, or null when the index is out of range.
+    const GameCommandRow* issue_script_command(std::size_t unit_index,
+        std::uint32_t command_object, const bsp::SceneCommandTarget& target,
+        int flags, const std::string& source, const std::string& target_name);
+
+    // Milestone 2m. The commanded-speed store 00890e6f makes on the navigator
+    // parameter block at *(unit+73Ch), and the pair as it stands.
+    void store_commanded_speed_00890e6f(std::size_t unit_index, float speed);
+    bsp::CruiseSpeedSetting commanded_speed(std::size_t unit_index) const;
+
+    // Milestone 2m. 00836920's stage ladder over every unit's weapon director,
+    // once per fixed simulation step: the pre-pass, the `stop` arm and the idle
+    // tail that re-issues a default command.
+    void run_director_steps_00836920();
+
+    // DAT_00F876A4 as this process advances it: the simulated seconds the fixed
+    // step has accumulated. 00835c28 measures a commanded speed's age against it.
+    float mission_clock() const noexcept;
+
     // The command path's own rows and counters, for the report.
     const GameCommandsHost& commands() const noexcept;
 

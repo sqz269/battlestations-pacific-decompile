@@ -323,6 +323,8 @@ struct GameMissionHost::Impl {
     // throttle/rudder pair, with an optional target entity.
     std::string order_command;
     std::string order_command_target;
+    float order_speed{0.0f};
+    bool order_speed_set{false};
     // Milestone 2j, --trajectory-csv <path>.
     std::string trajectory_csv;
     GameFrameProfiler* profiler{nullptr};
@@ -1287,7 +1289,8 @@ GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptH
     long mission_frames, GameFrameProfiler* profiler, std::string language,
     long mission_complete_frame, GameHudHost* hud, long order_frame, float order_throttle,
     float order_rudder, float mission_frame_seconds, std::string trajectory_csv,
-    std::string order_command, std::string order_command_target)
+    std::string order_command, std::string order_command_target, float order_speed,
+    bool order_speed_set)
     : impl_(std::make_unique<Impl>(log, vfs, scripts, frontend, locale,
           std::move(requested_mission_id), mission_frames, profiler,
           std::move(language))) {
@@ -1306,6 +1309,9 @@ GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptH
     // Milestone 2l, --order <command>[:<entity>].
     impl_->order_command = std::move(order_command);
     impl_->order_command_target = std::move(order_command_target);
+    // Milestone 2m, --order speed=<m/s>.
+    impl_->order_speed = order_speed;
+    impl_->order_speed_set = order_speed_set;
 }
 
 GameMissionHost::~GameMissionHost() = default;
@@ -1608,6 +1614,8 @@ void GameMissionHost::Impl::finish_scene_load() {
     frame_host->set_player_order(order_frame, order_throttle, order_rudder);
     // Milestone 2l: --order <command>[:<entity>] takes the same frame.
     frame_host->set_player_command(order_command, order_command_target);
+    // Milestone 2m: --order speed=<m/s> takes it too.
+    if (order_speed_set) frame_host->set_player_commanded_speed(order_speed);
     frame_host->set_mission_frame_seconds(mission_frame_seconds);
     // Milestone 2j: where the per-step per-unit trace is written.
     frame_host->set_trajectory_csv(trajectory_csv);

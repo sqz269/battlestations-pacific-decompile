@@ -333,7 +333,8 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
             }
             const std::string text = argv[++index];
             if (text.find("throttle=") == std::string::npos
-                && text.find("rudder=") == std::string::npos) {
+                && text.find("rudder=") == std::string::npos
+                && text.find("speed=") == std::string::npos) {
                 if (text.find('=') != std::string::npos) {
                     // `moveto=x,z` and every other parameterised form. 0046aab0
                     // builds only two descriptors, a named target or the
@@ -375,8 +376,18 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                     } else if (key == "rudder") {
                         order_rudder = value;
                         seen = true;
+                    } else if (key == "speed") {
+                        // Milestone 2m: the call luaMW_SetShipSpeed 00890d30
+                        // makes. It writes no throttle: it stores the pair on
+                        // the unit's navigator parameter block at *(unit+73Ch),
+                        // which is what makes the weapon director's idle tail
+                        // choose `cruise` over `stop` and what 009e12bd then
+                        // divides by the reference speed.
+                        order_speed = value;
+                        order_speed_set = true;
+                        seen = true;
                     } else {
-                        error = "--order takes throttle=<f> and rudder=<f>";
+                        error = "--order takes throttle=<f>, rudder=<f> and speed=<m/s>";
                         return false;
                     }
                 }
@@ -1264,7 +1275,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         *vfs_, *scripts_, locale_->tables(), options_.menu_select, options_.mission_frames,
         profiler_, summary_.language, options_.mission_complete_frame, options_.order_frame,
         options_.order_throttle, options_.order_rudder, options_.mission_frame_seconds,
-        options_.trajectory_csv, options_.order_command, options_.order_command_target);
+        options_.trajectory_csv, options_.order_command, options_.order_command_target,
+        options_.order_speed, options_.order_speed_set);
     menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();
     summary_.gui_pages_loaded = frontend.pages_loaded;

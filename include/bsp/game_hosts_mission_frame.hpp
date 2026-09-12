@@ -55,6 +55,10 @@ struct GameMissionLoadRunSummary {
     bool engine_movie_arm{false};     // 004e0a50
     std::size_t locale_tables{0};     // names split off record+980h
     std::size_t slots_reset{0};       // the eight records at game+1008h
+    // Milestone 2m: the function-valued Lua globals 004d30f0 recorded into the
+    // set at game+1930h, the baseline teardown nils the mission's own additions
+    // against.
+    std::size_t scripted_names{0};
     std::int32_t mission_id{0};       // record+1098h, published to [00f8a2fc]+48h
 };
 
@@ -144,6 +148,9 @@ public:
     // Milestone 2l: --order <command>[:<entity>] on the same --order-frame,
     // issued through 0046aab0 -> 0077d600 instead of through the order ring.
     void set_player_command(std::string token, std::string target);
+    // Milestone 2m: --order speed=<m/s> on the same --order-frame, the store
+    // luaMW_SetShipSpeed 00890d30 makes on *(unit+73Ch) +24h / +28h.
+    void set_player_commanded_speed(float speed) noexcept;
     // Milestone 2i, --mission-frame-seconds S: a fixed in-mission frame delta
     // instead of the wall clock. Zero keeps the wall clock.
     void set_mission_frame_seconds(float seconds) noexcept;

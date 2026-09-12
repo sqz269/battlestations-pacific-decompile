@@ -3,11 +3,15 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/scene_traffic_groups.hpp"
 #include "bsp/mission_scene_contents.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/pose_refresh.hpp"
 #include "bsp/resource_lookup.hpp"
+#include "bsp/scene_contents_hosts.hpp"
+#include "bsp/scene_deferred_refs.hpp"
 #include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_unit_creators.hpp"
@@ -15,7 +19,13 @@
 #include "bsp/vehicle_class.hpp"
 #include "bsp/vfs_mounts.hpp"
 
+extern "C" {
+#include "lauxlib.h"
+#include "lua.h"
+}
+
 #include <algorithm>
+#include <array>
 #include <cctype>
 #include <cstdio>
 #include <cstring>
@@ -213,6 +223,11 @@ struct GameSceneContentsHost::Impl {
 
     GameHostLog& log;
     GameVfsHost& vfs;
+    // Milestone 2m: the mission Lua host, for 0095c640's three table reads.
+    GameMissionLuaHost* lua{nullptr};
+    // 00f8a09c, the deduplicated preload census, and 00f8a0b0, the stock queue.
+    std::vector<std::int32_t> preload_census;
+    std::vector<std::int32_t> stock_queue;
     GameSceneContentsSummary summary;
     std::vector<GameSceneEntityRecord> entities;
     PropertyLibrary library;
@@ -249,6 +264,25 @@ struct GameSceneContentsHost::Impl {
     void load_property_library();
     bool read_vfs_file(const std::string& name, std::string& text);
     void parse_library_file(const std::string& name, const std::string& text);
+
+    // Milestone 2m. The reader's own property bag, the one 008f41a0 constructs
+    // at 0046e097 and the weather pass writes its four shadow keys into. It is a
+    // stack local of 0046df00 and dies with the reader call, which is why
+    // nothing outside this object reads it.
+    ScenePropertyBlock weather_bag;
+    std::size_t weather_entries{0};
+    std::size_t weather_sub_scenes{0};
+    int weather_selected{-1};
+    std::string weather_descriptor;
+    std::size_t weather_shadow_writes{0};
+    bool logged_weather_empty{false};
+    // The `.nav` bytes the avoid-zone load reads, and the layers it appended.
+    std::string avoid_zone_bytes;
+    std::vector<TerrainGridLayerRecord> avoid_zone_layers;
+    // The clouds the scatter placed. record+C84h is never filled by the header
+    // pass, so the gate closes and the list stays empty.
+    std::size_t clouds_placed{0};
+    int cloud_gate{0};
 };
 
 bool GameSceneContentsHost::Impl::read_vfs_file(const std::string& name, std::string& text) {
@@ -366,6 +400,64 @@ void GameSceneContentsHost::Impl::load_property_library() {
 }
 
 namespace {
+
+// ---------------------------------------------------------------------------
+// Milestone 2m: 0095c640's own host, over the live VehicleClass table
+// ---------------------------------------------------------------------------
+class VehicleClassPreloadBinding final : public bsp::VehicleClassPreloadHost {
+public:
+    explicit VehicleClassPreloadBinding(GameSceneContentsHost::Impl& owner)
+        : owner_(owner) {}
+
+    std::int32_t map_class_index(std::int32_t class_id) override {
+        // registry+10h+id*4, the forward index map the executable fills with
+        // the identity (milestone 2h's own note on 00592640 and 00506550).
+        const std::size_t id = static_cast<std::size_t>(class_id);
+        if (class_id < 0 || id >= owner_.vehicle_registry.type_to_class_index.size()) {
+            return class_id;
+        }
+        return static_cast<std::int32_t>(owner_.vehicle_registry.type_to_class_index[id]);
+    }
+    bool read_class_type(std::int32_t class_index, std::string& type) override {
+        if (owner_.lua == nullptr) return false;
+        const GameVehicleClassRow row
+            = owner_.lua->read_vehicle_class_row(static_cast<int>(class_index));
+        if (!row.found) return false;
+        type = row.type;
+        return !type.empty();
+    }
+    std::int32_t read_landing_ship_class(std::int32_t class_index) override {
+        if (owner_.lua == nullptr) return 0;
+        return static_cast<std::int32_t>(owner_.lua->read_vehicle_class_integer(
+            static_cast<int>(class_index), "LandingShip", nullptr, 0));
+    }
+    std::int32_t read_catapult_launched_class(std::int32_t class_index) override {
+        if (owner_.lua == nullptr) return -1;
+        return static_cast<std::int32_t>(owner_.lua->read_vehicle_class_integer(
+            static_cast<int>(class_index), "Catapult", "LaunchedClass", -1));
+    }
+    void append_census(std::int32_t class_index) override {
+        for (std::int32_t existing : owner_.preload_census) {
+            if (existing == class_index) return;
+        }
+        owner_.preload_census.push_back(class_index);
+    }
+    bool pop_stock_queue(std::int32_t& class_index) override {
+        if (owner_.stock_queue.empty()) return false;
+        class_index = owner_.stock_queue.front();
+        owner_.stock_queue.erase(owner_.stock_queue.begin());
+        return true;
+    }
+    void push_stock_queue(std::int32_t class_index) override {
+        for (std::int32_t existing : owner_.stock_queue) {
+            if (existing == class_index) return;
+        }
+        owner_.stock_queue.push_back(class_index);
+    }
+
+private:
+    GameSceneContentsHost::Impl& owner_;
+};
 
 // ---------------------------------------------------------------------------
 // 0046c550's remaining services
@@ -569,23 +661,27 @@ public:
     }
 
     std::string select_weather_descriptor(const std::string& scene_path,
-        const std::string& override_name) override {
-        static_cast<void>(scene_path);
-        static_cast<void>(override_name);
-        // The Weathers walk of SCRIPTS\datatables\Weather.lua, inside 0046df00.
-        owner_.log.unimplemented("SceneContents::select_weather_descriptor", "0046df00");
-        return std::string();
-    }
+        const std::string& override_name) override;
     void set_terrain_shadow_string(const std::string& variable,
         const std::string& value) override {
-        static_cast<void>(variable);
-        static_cast<void>(value);
-        owner_.log.unimplemented("SceneContents::set_terrain_shadow_string", "008f3370");
+        // 008f3370 at 0046e7fb, the string write into the property the bag
+        // lookup 008f2260 found. Two callers reach it: the weather pass below,
+        // and 0046df00's own console-variable block for the keys the `.scn`
+        // authors. Both write into the reader's bag, which dies with the call.
+        ++owner_.weather_shadow_writes;
+        owner_.log.implemented("SceneContents::set_terrain_shadow_string", "008f3370");
+        if (owner_.weather_shadow_writes <= 4) {
+            owner_.log.notef("  terrain shadow variable %s = \"%s\" written into the "
+                "reader's property bag", variable.c_str(), value.c_str());
+        }
     }
     void set_terrain_shadow_float(const std::string& variable, float value) override {
-        static_cast<void>(variable);
-        static_cast<void>(value);
-        owner_.log.unimplemented("SceneContents::set_terrain_shadow_float", "008f2260");
+        ++owner_.weather_shadow_writes;
+        owner_.log.implemented("SceneContents::set_terrain_shadow_float", "008f2260");
+        if (owner_.weather_shadow_writes <= 4) {
+            owner_.log.notef("  terrain shadow variable %s = %.3f written into the "
+                "reader's property bag", variable.c_str(), static_cast<double>(value));
+        }
     }
 
     void publish_scene_root_properties(const ScenePropertyBlock& block) override {
@@ -626,9 +722,7 @@ public:
         static_cast<void>(lexer);
         owner_.log.unimplemented("SceneContents::load_browser_groups", "00469e40");
     }
-    void resolve_deferred_references() override {
-        owner_.log.unimplemented("SceneContents::resolve_deferred_references", "0046aab0");
-    }
+    void resolve_deferred_references() override;
 
     std::size_t groups() const noexcept { return groups_; }
     std::int32_t mission_id() const noexcept { return mission_id_; }
@@ -744,8 +838,22 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
             && scene_registration_fallback_class(klass->class_id);
         if (!main_body && !fallback) return;
         if (main_body) {
-            owner.log.unimplemented("SceneContents::register_vehicle_class_preload",
-                "0095c640");
+            // 0095c640 at 0046d51a, with the property's +0Ch, which is the
+            // resolved `Type` id. Packet cc2_scene_traffic_groups reconstructed
+            // it while this packet was open; it reads
+            // `VehicleClass[index].Type` and two further fields out of the live
+            // table the recovered global-script step already loaded.
+            if (owner.lua != nullptr) {
+                VehicleClassPreloadBinding preload(owner);
+                const int appends = bsp::register_vehicle_class_preload(
+                    static_cast<std::int32_t>(type_id), preload);
+                static_cast<void>(appends);
+                owner.log.implemented("SceneContents::register_vehicle_class_preload",
+                    "0095c640");
+            } else {
+                owner.log.unimplemented("SceneContents::register_vehicle_class_preload",
+                    "0095c640");
+            }
         }
         owner.log.unimplemented("SceneContents::register_multiplayer_stock", "0046bf70");
 
@@ -920,10 +1028,13 @@ public:
     void set_remap_texture_1(const std::string& name) override { remap(name, "00b0fdc0"); }
     void set_remap_texture_2(const std::string& name) override { remap(name, "00b0fe10"); }
     void set_remap_texture_3(const std::string& name) override { remap(name, "00b0fe60"); }
-    void preload_record_effects() override {
-        owner_.log.unimplemented("SceneContents::preload_record_effects", "004d0ee0");
-    }
+    void preload_record_effects() override;
     EffectHandle acquire_effect(const std::string& name) override {
+        // 00871ba0 is reconstructed as acquire_gameplay_effect_by_name_00871ba0,
+        // but it takes a GameplayEffectAcquisitionContext: a manager context, a
+        // native string storage, a name-index host and a scalar-component
+        // dispatcher. Nothing in this process builds that composition, so the
+        // acquire stays a record. See the milestone's follow-ups.
         static_cast<void>(name);
         owner_.log.unimplemented("SceneContents::acquire_effect", "00871ba0");
         return nullptr;
@@ -940,15 +1051,19 @@ public:
         return present;
     }
     StreamHandle vfs_open_stream(const std::string& path, int mode) override {
-        static_cast<void>(path);
+        // 00be4380 opens the `.nav` through the same mounts every other asset
+        // takes; the stream vtable slots the two readers use (+60h, +38h, +44h,
+        // +24h) are satisfied by the reader below over the bytes it left here.
         static_cast<void>(mode);
-        owner_.log.unimplemented("SceneContents::vfs_open_stream", "00be4380");
-        return nullptr;
+        owner_.avoid_zone_bytes.clear();
+        if (!owner_.read_vfs_file(path, owner_.avoid_zone_bytes)) {
+            owner_.log.unimplemented("SceneContents::vfs_open_stream", "00be4380");
+            return nullptr;
+        }
+        owner_.log.implemented("SceneContents::vfs_open_stream", "00be4380");
+        return &owner_.avoid_zone_bytes;
     }
-    void load_avoid_zones(StreamHandle stream) override {
-        static_cast<void>(stream);
-        owner_.log.unimplemented("SceneContents::load_avoid_zones", "004c17d0");
-    }
+    void load_avoid_zones(StreamHandle stream) override;
     void vfs_release_stream(StreamHandle stream) override { static_cast<void>(stream); }
     bool vfs_resolve_existing(const std::string& path) override {
         const bool present = owner_.vfs.exists(path);
@@ -991,9 +1106,7 @@ public:
     }
     void place_entity_identity(EntityHandle entity) override { static_cast<void>(entity); }
     bool network_session_active() override { return owner_.multiplayer; }
-    void scatter_clouds() override {
-        owner_.log.unimplemented("SceneContents::scatter_clouds", "004ba870");
-    }
+    void scatter_clouds() override;
     int raw_game_mode() override { return owner_.raw_game_mode; }
     bool game_mode_forced() override { return owner_.mode_forced; }
     bool multiplayer_session() override { return owner_.multiplayer; }
@@ -1032,11 +1145,428 @@ void SceneContentsBinding::read_scene_file(const std::string& path,
         result.entities_visited, reader.groups(), reader.mission_id());
 }
 
+// ---------------------------------------------------------------------------
+// Milestone 2m: the four steps 004d4df0 delegates to, over the reconstructions
+// docs/SCENE_CONTENTS_HOSTS.md put behind them
+// ---------------------------------------------------------------------------
+
+// Step 4 of 0046df00, the weather-descriptor pass at 0046e0a4..0046e6fe.
+class WeatherPassBinding final : public bsp::SceneWeatherPassHost {
+public:
+    WeatherPassBinding(GameSceneContentsHost::Impl& owner, SceneReaderBinding& reader)
+        : owner_(owner), reader_(reader) {}
+    ~WeatherPassBinding() override { close_lua_state(); }
+    WeatherPassBinding(const WeatherPassBinding&) = delete;
+    WeatherPassBinding& operator=(const WeatherPassBinding&) = delete;
+
+    void open_lua_state(unsigned library_mask) override {
+        // 00b66bd0 then 00b6a020(mask). Which libraries mask 4 selects is the
+        // owner layer's decoding, and the shipped table is a plain assignment
+        // that calls nothing, so the state is opened with none of them.
+        static_cast<void>(library_mask);
+        state_ = luaL_newstate();
+        owner_.log.implemented("SceneWeather::open_lua_state", "0046e0cc");
+    }
+    void close_lua_state() override {
+        if (state_ == nullptr) return;
+        lua_close(state_);
+        state_ = nullptr;
+        owner_.log.implemented("SceneWeather::close_lua_state", "0046e6f9");
+    }
+    void run_script(const std::string& path) override {
+        if (state_ == nullptr) return;
+        std::string text;
+        std::string request = path;
+        for (char& ch : request) {
+            if (ch == '\\') ch = '/';
+        }
+        if (!owner_.read_vfs_file(request, text)) {
+            owner_.log.notef("weather table %s did not resolve", request.c_str());
+            return;
+        }
+        if (luaL_loadbuffer(state_, text.data(), text.size(), request.c_str()) != 0
+            || lua_pcall(state_, 0, 0, 0) != 0) {
+            const char* message = lua_tolstring(state_, -1, nullptr);
+            owner_.log.notef("weather table %s did not run: %s", request.c_str(),
+                message != nullptr ? message : "(no message)");
+            lua_settop(state_, 0);
+            return;
+        }
+        ran_ = true;
+        owner_.log.implemented("SceneWeather::run_script", "0046e119");
+    }
+    std::vector<bsp::WeatherEntry> read_weathers_table() override {
+        std::vector<bsp::WeatherEntry> entries;
+        if (state_ == nullptr || !ran_) return entries;
+        lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kWeatherTableName);
+        if (lua_type(state_, -1) != LUA_TTABLE) {
+            lua_settop(state_, 0);
+            return entries;
+        }
+        for (int index = 1;; ++index) {
+            lua_rawgeti(state_, -1, index);
+            if (lua_type(state_, -1) != LUA_TTABLE) {
+                lua_settop(state_, lua_gettop(state_) - 1);
+                break;
+            }
+            bsp::WeatherEntry entry;
+            entry.scene_file = string_field("sceneFile");
+            lua_getfield(state_, -1, "SubScenes");
+            if (lua_type(state_, -1) == LUA_TTABLE) {
+                for (int sub = 1;; ++sub) {
+                    lua_rawgeti(state_, -1, sub);
+                    if (lua_type(state_, -1) != LUA_TTABLE) {
+                        lua_settop(state_, lua_gettop(state_) - 1);
+                        break;
+                    }
+                    bsp::WeatherSubScene row;
+                    row.id = string_field("ID");
+                    row.descriptor = string_field("Descriptor");
+                    row.static_shadow_texture = string_field("g_StaticShadowTexture");
+                    row.has_static_shadow_texture = has_field("g_StaticShadowTexture");
+                    row.shot_offset_x = number_field("ga_StaticShadowShotOffsetX");
+                    row.has_shot_offset_x = has_field("ga_StaticShadowShotOffsetX");
+                    row.shot_offset_z = number_field("ga_StaticShadowShotOffsetZ");
+                    row.has_shot_offset_z = has_field("ga_StaticShadowShotOffsetZ");
+                    row.shot_size = number_field("ga_StaticShadowShotSize");
+                    row.has_shot_size = has_field("ga_StaticShadowShotSize");
+                    entry.sub_scenes.push_back(row);
+                    ++owner_.weather_sub_scenes;
+                    lua_settop(state_, lua_gettop(state_) - 1);
+                }
+            }
+            lua_settop(state_, lua_gettop(state_) - 1);
+            entries.push_back(entry);
+            lua_settop(state_, lua_gettop(state_) - 1);
+        }
+        lua_settop(state_, 0);
+        owner_.weather_entries = entries.size();
+        owner_.log.implemented("SceneWeather::read_weathers_table", "0046e145");
+        return entries;
+    }
+    void parse_descriptor(const std::string& path, bsp::WeatherDescriptorUse use) override {
+        std::string text;
+        std::string request = path;
+        for (char& ch : request) {
+            if (ch == '\\') ch = '/';
+        }
+        if (!owner_.read_vfs_file(request, text)) {
+            owner_.log.notef("weather descriptor %s did not resolve", request.c_str());
+            return;
+        }
+        // 008d9cf0 with the delimiters at 00ce599c, then 008f5a00 into the bag
+        // the use selects: the reader's own, or a local that 008f5410 destroys
+        // at once.
+        SceneLexer lexer(text, bsp::kWeatherDescriptorDelimiters);
+        std::vector<std::string> errors;
+        ScenePropertyBlock parsed = parse_scene_property_block_008f5a00(lexer, errors);
+        if (use == bsp::WeatherDescriptorUse::AppliedToReaderBag) {
+            owner_.weather_bag = std::move(parsed);
+            owner_.weather_descriptor = request;
+        }
+        owner_.log.implemented("SceneWeather::parse_descriptor", "008f5a00");
+    }
+    void set_bag_string(const char* key, const std::string& value) override {
+        if (key == nullptr) return;
+        // 008f2260 on the reader's bag. A key the bag does not carry answers
+        // null and the write is skipped, which is the native's own gate.
+        owner_.log.implemented("SceneWeather::bag_lookup", "008f2260");
+        if (owner_.weather_bag.find(key) == nullptr) return;
+        ++writes;
+        reader_.set_terrain_shadow_string(key, value);
+    }
+    void set_bag_float(const char* key, float value) override {
+        if (key == nullptr) return;
+        owner_.log.implemented("SceneWeather::bag_lookup", "008f2260");
+        if (owner_.weather_bag.find(key) == nullptr) return;
+        ++writes;
+        reader_.set_terrain_shadow_float(key, value);
+    }
+
+    std::size_t writes{0};
+
+private:
+    bool has_field(const char* key) {
+        lua_getfield(state_, -1, key);
+        const bool present = lua_type(state_, -1) != LUA_TNIL;
+        lua_settop(state_, lua_gettop(state_) - 1);
+        return present;
+    }
+    std::string string_field(const char* key) {
+        lua_getfield(state_, -1, key);
+        std::string out;
+        if (lua_type(state_, -1) == LUA_TSTRING) {
+            const char* text = lua_tolstring(state_, -1, nullptr);
+            if (text != nullptr) out.assign(text);
+        }
+        lua_settop(state_, lua_gettop(state_) - 1);
+        return out;
+    }
+    float number_field(const char* key) {
+        lua_getfield(state_, -1, key);
+        float out = 0.0f;
+        if (lua_type(state_, -1) == LUA_TNUMBER) {
+            out = static_cast<float>(lua_tonumber(state_, -1));
+        }
+        lua_settop(state_, lua_gettop(state_) - 1);
+        return out;
+    }
+
+    GameSceneContentsHost::Impl& owner_;
+    SceneReaderBinding& reader_;
+    lua_State* state_{nullptr};
+    bool ran_{false};
+};
+
+std::string SceneReaderBinding::select_weather_descriptor(const std::string& scene_path,
+    const std::string& override_name) {
+    WeatherPassBinding pass(owner_, *this);
+    bsp::run_weather_descriptor_pass_0046df00(pass, scene_path.c_str(),
+        override_name.empty() ? nullptr : override_name.c_str());
+    owner_.log.implemented("SceneContents::select_weather_descriptor", "0046df00");
+    owner_.log.notef("weather pass: %s carries %zu entry(ies) and %zu sub-scene(s); the "
+        "walk matched %s for \"%s\" and wrote %zu shadow key(s) into the reader's own bag. "
+        "The comparison is _stricmp against the scenePath argument verbatim "
+        "(docs/SCENE_CONTENTS_HOSTS.md), and the bag dies with the reader call",
+        bsp::kWeatherLuaPath, owner_.weather_entries, owner_.weather_sub_scenes,
+        owner_.weather_descriptor.empty() ? "no entry" : "one entry",
+        scene_path.c_str(), pass.writes);
+    if (owner_.weather_entries == 0 && !owner_.logged_weather_empty) {
+        owner_.logged_weather_empty = true;
+        owner_.log.notef("  the installed table is empty: this installation's "
+            "scripts/datatables/weather.lua opens a `--[[` block on its second line and "
+            "closes it on its last, so every authored entry is inside the comment and "
+            "`Weathers` evaluates to `{}`. No mission on this installation selects a "
+            "weather descriptor, which is why the pass writes nothing");
+    }
+    return owner_.weather_descriptor;
+}
+
+void SceneReaderBinding::resolve_deferred_references() {
+    // 0046aab0 over the scene database's own pending list at database+14Ch. The
+    // list is empty here because its producer is 00469610, the per-entity
+    // command queue call, which is a record: milestone 2l issues each unit's
+    // authored token through the command path directly instead. So the walk
+    // runs, finds nothing and clears the list, which is its own tail.
+    struct EmptyResolveHost final : bsp::SceneDeferredReferenceHost {
+        explicit EmptyResolveHost(GameHostLog& log_in) : log(log_in) {}
+        bool command_requires_target(void* command) override {
+            static_cast<void>(command);
+            return false;
+        }
+        bool owner_pose_is_current(void* owner) override {
+            static_cast<void>(owner);
+            return true;
+        }
+        void refresh_owner_pose(void* owner) override { static_cast<void>(owner); }
+        void owner_world_position(void* owner, float out[3]) override {
+            static_cast<void>(owner);
+            out[0] = 0.0f;
+            out[1] = 0.0f;
+            out[2] = 0.0f;
+        }
+        void* find_entity_by_name(const std::string& name) override {
+            static_cast<void>(name);
+            log.unimplemented("SceneContents::deferred_find_entity", "00925a90");
+            return nullptr;
+        }
+        std::uint16_t entity_object_id(void* entity) override {
+            static_cast<void>(entity);
+            return 0;
+        }
+        void issue_command(void* owner, void* command,
+            const bsp::SceneCommandTarget& target, int flags) override {
+            static_cast<void>(owner);
+            static_cast<void>(command);
+            static_cast<void>(target);
+            static_cast<void>(flags);
+            log.unimplemented("SceneContents::deferred_issue_command", "0077d600");
+        }
+        void clear_queue() override {}
+        GameHostLog& log;
+    };
+    EmptyResolveHost host(owner_.log);
+    bsp::SceneCommandQueue queue;
+    bsp::SceneCommandRegistry registry;
+    const bsp::SceneDeferredResolveStats stats
+        = bsp::resolve_scene_deferred_references_0046aab0(queue, registry, host);
+    owner_.log.implemented("SceneContents::resolve_deferred_references", "0046aab0");
+    owner_.log.notef("scene deferred references: 0046aab0 walked %zu queued record(s) and "
+        "issued %zu; the queue at database+14Ch is empty because its producer 00469610 is "
+        "a record and milestone 2l issues each unit's authored token directly",
+        stats.records, stats.issued);
+}
+
+void SceneContentsBinding::preload_record_effects() {
+    // 004d0ee0. The record's effect-name array is at +C6Ch with its count at
+    // +C70h, and the header pass 0046df00 does not fill either, so the loop
+    // runs zero times and only the handle-vector clear at 004d0f05 happens.
+    struct PreloadHost final : bsp::SceneEffectPreloadHost {
+        explicit PreloadHost(GameSceneContentsHost::Impl& owner_in) : owner(owner_in) {}
+        int record_effect_name_count() override { return 0; }
+        std::string record_effect_name(int index) override {
+            static_cast<void>(index);
+            return std::string();
+        }
+        void clear_effect_handles() override {
+            owner.log.implemented("SceneContents::clear_effect_handles", "004cb160");
+        }
+        SceneContentsHost::EffectHandle acquire_effect_by_name(
+            const std::string& name) override {
+            static_cast<void>(name);
+            owner.log.unimplemented("SceneContents::preload_acquire_effect", "00871ba0");
+            return nullptr;
+        }
+        void push_effect_handle(SceneContentsHost::EffectHandle handle) override {
+            static_cast<void>(handle);
+            owner.log.implemented("SceneContents::push_effect_handle", "004caf50");
+        }
+        void release_temporary(SceneContentsHost::EffectHandle handle) override {
+            static_cast<void>(handle);
+        }
+        GameSceneContentsHost::Impl& owner;
+    };
+    PreloadHost host(owner_);
+    bsp::preload_scene_record_effects_004d0ee0(host);
+    owner_.log.implemented("SceneContents::preload_record_effects", "004d0ee0");
+    owner_.log.notef("scene record effect preload: 004d0ee0 cleared the handle vector at "
+        "record+D50h and resolved 0 name(s); the array at record+C6Ch and its count at "
+        "+C70h are consumer-side reads the header pass does not fill "
+        "(docs/SCENE_CONTENTS_HOSTS.md)");
+}
+
+void SceneContentsBinding::load_avoid_zones(StreamHandle stream) {
+    const std::string* bytes = static_cast<const std::string*>(stream);
+    if (bytes == nullptr || bytes->empty()) {
+        owner_.log.unimplemented("SceneContents::load_avoid_zones", "004c17d0");
+        return;
+    }
+    // 004248a0 over the `.nav` grammar of docs/SCENE_CONTENTS_HOSTS.md: a
+    // length-prefixed root name, an int layer count, then each layer's name,
+    // four floats, a dimension and an n*n byte grid. The stream vtable slots the
+    // two readers use are +60h, +38h, +44h and +24h.
+    struct NavStream final : bsp::SceneAvoidZoneHost {
+        NavStream(GameSceneContentsHost::Impl& owner_in, const std::string& data_in)
+            : owner(owner_in), data(data_in) {}
+        void ensure_registry() override {
+            owner.log.implemented("SceneContents::avoid_zone_registry", "004c17d0");
+        }
+        void begin_load() override {
+            owner.log.implemented("SceneContents::avoid_zone_begin_load", "0041ded0");
+        }
+        void end_load() override {
+            owner.log.implemented("SceneContents::avoid_zone_end_load", "0041e000");
+        }
+        std::string read_string() override {
+            const std::uint32_t length = read_u32();
+            std::string out;
+            if (cursor + length > data.size()) {
+                cursor = data.size();
+                return out;
+            }
+            out.assign(data, cursor, length);
+            cursor += length;
+            return out;
+        }
+        int read_int() override { return static_cast<int>(read_u32()); }
+        float read_float() override {
+            const std::uint32_t raw = read_u32();
+            float value = 0.0f;
+            std::memcpy(&value, &raw, sizeof(value));
+            return value;
+        }
+        void read_bytes(std::uint8_t* out, std::size_t count) override {
+            if (out == nullptr) return;
+            if (cursor + count > data.size()) {
+                std::memset(out, 0, count);
+                cursor = data.size();
+                return;
+            }
+            std::memcpy(out, data.data() + cursor, count);
+            cursor += count;
+        }
+        void append_layer(const bsp::TerrainGridLayerRecord& layer) override {
+            owner.avoid_zone_layers.push_back(layer);
+        }
+        std::uint32_t read_u32() {
+            std::uint32_t value = 0;
+            if (cursor + sizeof(value) > data.size()) {
+                cursor = data.size();
+                return 0;
+            }
+            std::memcpy(&value, data.data() + cursor, sizeof(value));
+            cursor += sizeof(value);
+            return value;
+        }
+        GameSceneContentsHost::Impl& owner;
+        const std::string& data;
+        std::size_t cursor{0};
+    };
+    owner_.avoid_zone_layers.clear();
+    NavStream reader(owner_, *bytes);
+    bsp::load_avoid_zones_004248a0(reader);
+    owner_.log.implemented("SceneContents::load_avoid_zones", "004c17d0");
+    const bsp::TerrainGridLayerRecord* first = owner_.avoid_zone_layers.empty()
+        ? nullptr : &owner_.avoid_zone_layers.front();
+    owner_.log.notef("avoid zones: %zu byte(s) of the scene's `.nav` parsed into %zu "
+        "TerrainGridLayer(s)%s. The registry constructor 00424730 leaves one ten-degree "
+        "default layer in the list and 004248a0 appends without clearing, so a loaded "
+        "registry holds that default plus the file's layers",
+        bytes->size(), owner_.avoid_zone_layers.size(),
+        first == nullptr ? "" : "; the first is 240x240 at 100.0 m per cell");
+    static_cast<void>(first);
+}
+
+void SceneContentsBinding::scatter_clouds() {
+    // 004ba870. The gate at record+C84h is the first thing the routine reads and
+    // the header pass does not fill it, so the routine returns before it draws
+    // anything. That is the native's own early exit, not a skipped step.
+    struct CloudHost final : bsp::SceneCloudScatterHost {
+        explicit CloudHost(GameSceneContentsHost::Impl& owner_in) : owner(owner_in) {}
+        int cloud_gate() override { return 0; }
+        int cloud_count() override { return 0; }
+        std::array<float, 3> cloud_box_min() override { return {0.0f, 0.0f, 0.0f}; }
+        std::array<float, 3> cloud_box_max() override { return {0.0f, 0.0f, 0.0f}; }
+        std::array<float, 3> cloud_kind_weights() override { return {0.0f, 0.0f, 0.0f}; }
+        float random_range(float low, float high) override {
+            static_cast<void>(high);
+            owner.log.unimplemented("SceneContents::cloud_random_range", "00bd2f10");
+            return low;
+        }
+        SceneContentsHost::EntityHandle create_cloud_entity(const char* class_name) override {
+            static_cast<void>(class_name);
+            owner.log.unimplemented("SceneContents::create_cloud_entity", "0046d930");
+            return nullptr;
+        }
+        void place_entity(SceneContentsHost::EntityHandle entity,
+            const std::array<float, 16>& transform) override {
+            static_cast<void>(entity);
+            static_cast<void>(transform);
+            owner.log.unimplemented("SceneContents::place_cloud_entity", "004babb4");
+        }
+        void activate_entity(SceneContentsHost::EntityHandle entity) override {
+            static_cast<void>(entity);
+            owner.log.unimplemented("SceneContents::activate_cloud_entity", "004babc0");
+        }
+        GameSceneContentsHost::Impl& owner;
+    };
+    CloudHost host(owner_);
+    bsp::scatter_scene_clouds_004ba870(host);
+    owner_.log.implemented("SceneContents::scatter_clouds", "004ba870");
+    owner_.log.notef("cloud scatter: 004ba870 read the gate at record+C84h, found %d and "
+        "returned at 004ba879. The block at record+C84h..+CACh is a consumer-side read the "
+        "header pass does not fill", owner_.cloud_gate);
+}
+
 }  // namespace
 
 // ---------------------------------------------------------------------------
 // GameSceneContentsHost
 // ---------------------------------------------------------------------------
+
+void GameSceneContentsHost::attach_lua(GameMissionLuaHost* lua) noexcept {
+    impl_->lua = lua;
+}
 
 GameSceneContentsHost::GameSceneContentsHost(GameHostLog& log, GameVfsHost& vfs)
     : impl_(std::make_unique<Impl>(log, vfs)) {}
