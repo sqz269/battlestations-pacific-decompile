@@ -1,0 +1,252 @@
+{
+  "packet": "cc2_plane_ground_ops",
+  "owner": "agent/cc2-plane-ground-ops",
+  "date": "2026-09-12",
+  "ghidra": "read-only; no renames, comments, prototypes, function creation or saves",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "doc": "docs/PLANE_GROUND_OPS.md",
+  "headline": "unit+900h is an eight-value plane state enum and the shipped executable names it: 007CCB30's jump table at 007CCBC0 maps 0 \"N/A plane state\", 1 \"Inside\", 2 \"Locked\", 3 (no label, prints \"huh?\"), 4 \"Runway\", 5 \"Runway on Path\", 6 \"Water\", 7 \"Flying\". unit+908h is the airborne clock in seconds and unit+904h is \"this ground contact followed a real flight\", derived as clock > 5s on entering 4 or 5.",
+
+  "flight_state_enum": [
+    {"value": 0, "label": "N/A plane state", "string": "00D05E74", "table_entry": "007CCBC0", "handler": "007CCB48", "meaning": "the plane unit constructor's value; no motion arm matches"},
+    {"value": 1, "label": "Inside", "string": "00D05E6C", "table_entry": "007CCBC4", "handler": "007CCB57", "meaning": "stowed inside the hangar or airbase"},
+    {"value": 2, "label": "Locked", "string": "00D05E64", "table_entry": "007CCBC8", "handler": "007CCB66", "meaning": "held on a launch spot; the setter cuts the throttle and the ground law passes 0.0f instead of 1.0f to the core law"},
+    {"value": 3, "label": null, "string": "00D05E34 (\"huh?\", the out-of-range arm)", "table_entry": "007CCBCC", "handler": "007CCBB1", "meaning": "launching (provisional): the setter forces the throttle to 1.0f and 007C6340 has a dedicated no-write arm for it"},
+    {"value": 4, "label": "Runway", "string": "00D05E5C", "table_entry": "007CCBD0", "handler": "007CCB75", "meaning": "free ground roll on a runway or a deck"},
+    {"value": 5, "label": "Runway on Path", "string": "00D05E4C", "table_entry": "007CCBD4", "handler": "007CCB84", "meaning": "ground roll driven along a path; no steering authority and no self-initiated takeoff"},
+    {"value": 6, "label": "Water", "string": "00D05E44", "table_entry": "007CCBD8", "handler": "007CCB93", "meaning": "floating or ditched"},
+    {"value": 7, "label": "Flying", "string": "00D05E3C", "table_entry": "007CCBDC", "handler": "007CCBA2", "meaning": "airborne"}
+  ],
+
+  "state_writers": [
+    {"address": "007D0060", "native": "none", "containing": "007CFD20", "value": "0", "note": "MOV [ESI+900h],EBX; EBX is zeroed at 007CFD56 and the whole listing was filtered for EBX with no later write before this store"},
+    {"address": "007CC857", "native": "none", "containing": "007CC820", "value": "1", "note": "already named BSP_Plane_EnterFlightStateOne by packet cc2_pilot_controls"},
+    {"address": "007CC7E2", "native": "none", "containing": "007CC7A0", "value": "2", "note": "already named BSP_Plane_EnterFlightStateTwo"},
+    {"address": "007C1697", "native": "none", "containing": "007C1680", "value": "4", "note": "from 5 only; guard 007C1680 CMP dword [ECX+900h],5"},
+    {"address": "007C7488", "native": "none", "containing": "007C7430", "value": "4", "note": "from 5 only; guard 007C747F CMP dword [ESI+900h],5 / JNE 007C7492"},
+    {"address": "007C171E", "native": "none", "containing": "007C16F0", "value": "5", "note": "from 4 only"},
+    {"address": "007CBA12", "native": "none", "containing": "007CB9E0", "value": "6", "note": "guard 007CB9FA CMP dword [ESI+900h],6 / JE 007CBA48"},
+    {"address": "007C63F4", "native": "none", "containing": "007C6340", "value": "7", "note": "the airborne placement arm; also writes unit+908h = 3600.0f"},
+    {"address": "007C6481", "native": "none", "containing": "007C6340", "value": "6", "note": "the water placement arm; unit+908h = 0"},
+    {"address": "007C7183", "native": "none", "containing": "007C7110", "value": "7", "note": "the become-airborne routine; the setter's state-7 arm inlined"},
+    {"address": "007C145B", "native": "none", "containing": "007C1430", "value": "the argument", "note": "the guarded setter; the only writer that stamps unit+C04h and dispatches the per-state arms"},
+    {"address": "007C36BC", "native": "none", "containing": "no Ghidra function", "value": "EAX", "note": "an argument bounded by 007C36B9 CMP EAX,7; also clears unit+904h at 007C36C2"},
+    {"address": "007C627C", "native": "none", "containing": "007C5F60", "value": "EAX", "note": "inlined setter tail; 007C6282 stamps unit+C04h with 00D7A260"},
+    {"address": "007C78F1", "native": "none", "containing": "007C78A0", "value": "ECX", "note": "007C78EE CMP ECX,1 and 007C78F9 CMP ECX,2 branch after the store"},
+    {"address": "007CB673", "native": "none", "containing": "007CB5F0", "value": "EDI", "note": "inlined setter copy; 007CB679 stamps unit+C04h"},
+    {"address": "007CB6E2", "native": "none", "containing": "007CB5F0", "value": "EDI", "note": "the second inlined copy; 007CB6E8 stamps unit+C04h"},
+    {"address": "007D63EA", "native": "none", "containing": "no Ghidra function", "value": "EAX", "note": "bounded by 007D63E4 CMP EAX,7; clears unit+904h"},
+    {"address": "007D65DD", "native": "none", "containing": "no Ghidra function", "value": "EAX", "note": "bounded by 007D65D7 CMP EAX,7; the value comes from [EAX+0Ch]"},
+    {"address": "007D6600", "native": "none", "containing": "no Ghidra function", "value": "7", "note": "listed by packet cc2_pilot_controls; start not established"},
+    {"address": "007D711A", "native": "none", "containing": "no Ghidra function", "value": "EAX", "note": "clears unit+910h at 007D7123 and takes LEA EBP,[ESI+90Ch] first"}
+  ],
+
+  "routines": [
+    {
+      "address": "007CCB30", "native": "none", "name": "BSP_Plane_FormatFlightStateName",
+      "convention": "__fastcall(outString, int state), RET 0",
+      "body": "007CCB30-007CCBBF",
+      "role": "formats unit+900h for the debug dump; the eight-entry jump table at 007CCBC0 is the enum and each handler pushes one string into 0041E870 BSP_NativeString_Assign",
+      "coverage": "complete",
+      "state": "reconstructed",
+      "evidence": "007CCB31 CMP EDX,7; 007CCB3F JA 007CCBB1; 007CCB41 JMP dword ptr [EDX*4 + 007CCBC0]; table 007CCB48 007CCB57 007CCB66 007CCBB1 007CCB75 007CCB84 007CCB93 007CCBA2; strings 00D05E74 00D05E6C 00D05E64 00D05E34 00D05E5C 00D05E4C 00D05E44 00D05E3C"
+    },
+    {
+      "address": "007C1430", "native": "none", "name": "BSP_Plane_SetFlightState",
+      "convention": "__thiscall(unit, int state), RET 4",
+      "body": "007C1430-007C156C",
+      "role": "the guarded state writer; jump table 007C1550 indexed by state-3 over five entries, states 0/1/2 and above 7 sharing the tail 007C1542",
+      "coverage": "complete",
+      "state": "reconstructed",
+      "evidence": "007C1434 CMP EAX,2 then 007C143C MOVSS [ECX+9F0h],XMM0 before the equality test; 007C144C JNE; 007C145B store; 007C146A MOVSS [ECX+C04h],XMM1 with 00D7A260 = -1.0f; 007C1462 ADD EAX,-3; 007C1467 CMP EAX,4; 007C1472 JA 007C1542; 007C1478 JMP [EAX*4+007C1550]; case 4/5 at 007C147F gates on [ECX+538h]+198h and sets [ECX+904h] = (00CE3850 = 5.0f < [ECX+908h]) and [ECX+C18h] = 3; case 7 at 007C14D0 sets [ECX+908h] to 0 when the previous state was 4 or 3 else 00CFDEB0 = 3600.0f",
+      "name_note": "name already in the ledger from packet cc2_pilot_controls; not changed"
+    },
+    {
+      "address": "007CBFA0", "native": "none", "name": "BSP_Plane_GroundRollStep",
+      "convention": "__thiscall(unit, float step), RET 4",
+      "body": "007CBFA0-007CC2C5",
+      "role": "the ground-roll arm of the motion dispatch: the wreck fuse, the runway steering gate unit+C0Ch, the control clamp, the ground law and the two lift-off requests",
+      "coverage": "partial: the eight rule-table steps; the object at unit+DECh and the two message payloads unread",
+      "state": "reconstructed",
+      "evidence": "only caller 007CE040; 007CBFC3 CALL 007C5AC0; 007CBFF0 CMP byte [ESI+5Dh],0; 007CC001 FLD [ESI+C44h] / FSUB [ESP+68h]; 007CC013-007CC02B clamps down to 00CE3850 = 5.0f when [ESI+C0Ch] is clear; 007CC063 PUSH 00D05A18 (\"explosion\"); 007CC0C9-007CC126 builds [ESI+C0Ch] and ANDs it with (tuning+18Ch < [ESI+B1Ch]); 007CC13F CALL EDX for vtable[+1ECh]; 007CC145 MOV EBX,2 / 007CC14A CMP [ESI+900h],EBX / 007CC150 SETZ AL / 007CC155 LEA ECX,[ESI+AB0h] / 007CC15E CALL 007DCCF0"
+    },
+    {
+      "address": "007DCCF0", "native": "none", "name": "BSP_PlaneFlight_GroundRollLaw",
+      "convention": "__thiscall(ctl, float step, int flag), RET 8",
+      "body": "007DCCF0-007DCDCB",
+      "role": "the ground arm's control law: falls back to the free-flight step without ground contact unless the state is 5, otherwise sets the controller mode to 1, calls the core law with 1.0f (or 0.0f when the plane is Locked) and installs the ground reference frame at ctl+80h",
+      "coverage": "complete",
+      "state": "reconstructed",
+      "evidence": "007DCCF4 MOV EAX,[ESI+8]; 007DCCF9 CMP byte [EAX+BF8h],CL with CL=0; 007DCD01 CMP dword [EAX+900h],5; 007DCD14 CALL 007DC830 then XOR AL,AL / RET 8; 007DCD20 CMP byte [ESP+10h],CL so only the flag's low byte matters; 007DCD24 MOV [ESI+FCh],1; 007DCD2E/31 MOV byte [ESI+4]/[ESI+5],CL; 007DCD3B MOVSS XMM0,[00D7A24C] = 1.0f on the zero arm; 007DCDB9 reads the mirror 00F87384 = tuning+2A4h Dynamics/RunwaySmoothStrength = 4.0"
+    },
+    {
+      "address": "007CBA50", "native": "none", "name": "BSP_Plane_WaterSurfaceStep",
+      "convention": "__thiscall(unit, float step), RET 4",
+      "body": "007CBA50-007CBF93",
+      "role": "the water arm: the ditching impact test that raises \"splash\", the hull water-height sampling, the water law, the engine-drowning test that raises \"powerlost\", the submersion accumulator unit+90Ch and the request for the Flying state",
+      "coverage": "partial: steps 1, 2 and 5-8 read; the hull loop and the 007D7A80 / 007D8180 block unread",
+      "state": "reconstructed",
+      "evidence": "007CBB91 PUSH 00D05A10 (\"splash\") then [ESI+911h] = 1; 007CBD79 FLD [EAX+24Ch] / 007CBD7F FMUL [EBX+184h]; 007CBDB4 FLD [EDI+B8h] with EDI = tuning+210h so the field is tuning+2C8h; 007CBDC6 FLD [EDI+C4h] = tuning+2D4h; 007CBDE0 JBE 007CBE7A; 007CBE02 PUSH 00D059F8 (\"powerlost\"); 007CBE7A FADD qword [00D7A280] = 0.5; 007CBEA1 FLD [EAX+198h]; 007CBEB7 FDIVP / FLD1 / FSUBRP; 007CBEC5 FADD [ESI+90Ch]; 007CBEE4 MOV EAX,[ESI+900h] / CMP EAX,7; 007CBEF9 MOV EDI,2 / 007CBEFE CMP [ECX+1FE4h],EDI / JE 007CBF68"
+    },
+    {
+      "address": "007DCDD0", "native": "none", "name": "BSP_PlaneFlight_WaterSurfaceLaw",
+      "convention": "__thiscall(ctl, float step, float accumulator), returns a depth in ST0",
+      "body": "007DCDD0-007DD9AC",
+      "role": "the water arm's control law; sets the controller mode to 2 and, only for a class whose MinWaterSpd is zero, samples the water height at three hull points",
+      "coverage": "partial: the mode stores and the three-point sampling only; the body past the sampling unread",
+      "state": "analysed",
+      "evidence": "007DCDD3 MOV [ESI+FCh],2 (pseudocode *(param_1+0xFC) = 2); gate *(float*)(*(int*)(param_1+0xC)+0x198) == 0.0; three BSP_Vector3f_TransformAffinePoint calls off unit+CCh with local X 0.0, 00CE3918 and 00CE3CC8, each followed by 0078CF20 BSP_GameWorld_SampleWaterHeight"
+    },
+    {
+      "address": "007C6340", "native": "none", "name": "BSP_Plane_ChooseSpawnFlightState",
+      "convention": "__fastcall(unit), RET 0",
+      "body": "007C6340-007C64F5",
+      "role": "the placement chooser: the only routine that decides between Water and Flying when a plane is put into the world; writes unit+900h directly and notifies with 007C11E0(1) rather than the setter's (0)",
+      "coverage": "partial: the three arms; the tail past 007C64B0 unread",
+      "state": "reconstructed",
+      "evidence": "only caller 007F2920; 007C6347 CMP dword [ESI+900h],3 selects the no-write arm; the airborne test is classDesc+A8h - 00D7A280 (0.5) <= unit+A8h OR classDesc+198h != 0; 007C63F4 stores 7 with 00CFDEB0 = 3600.0f into unit+908h; 007C6481 stores 6 with unit+908h = 0"
+    },
+    {
+      "address": "007C7110", "native": "none", "name": "BSP_Plane_BeginFlying",
+      "convention": "__fastcall(unit), RET 0",
+      "body": "007C7110-007C71DF",
+      "role": "the become-airborne routine reached from plane message sub-kind 7; on the authority it notifies the surface the plane is leaving, then inlines the setter's state-7 arm",
+      "coverage": "complete",
+      "state": "reconstructed",
+      "evidence": "007C711A tests game+1FE4h == 2 and then (*(unit+72Ch))->vtable[+38h]() before 007C6F50(0); the authority arm requires unit+900h in {4,5} and unit+BF4h != 0 and calls ((unit+BF4h)->+4h->+3Ch)->vtable[+28h](unit); 007C7183 stores 7, then unit+C04h = 00D7A260, unit+910h = 0, unit+904h cleared, unit+908h = 0 when the previous state was 4 or 3 else 00CFDEB0"
+    },
+    {
+      "address": "006049F0", "native": "none", "name": "BSP_Plane_GetGroundContactOwner",
+      "convention": "__fastcall(unit), RET 0",
+      "body": "006049F0-00604A02",
+      "role": "returns unit+BF4h when unit+BF8h is set, else 0; this is the pair that establishes unit+BF8h as the ground-contact flag and unit+BF4h as the object being stood on",
+      "coverage": "complete",
+      "state": "reconstructed",
+      "evidence": "006049F0 CMP byte [ECX+BF8h],0; 006049F7 JZ 00604A00; 006049F9 MOV EAX,[ECX+BF4h]; 006049FF RET; 00604A00 XOR EAX,EAX; RET"
+    },
+    {
+      "address": "00762A00", "native": "none", "name": "BSP_SessionMessage_ConstructPlaneTakeoff",
+      "convention": "__fastcall(buffer), constructs in place",
+      "body": "00762A00-(not established; the routine continues past 00762A2A)",
+      "role": "builds the plane takeoff message: vtable 00D02C68, +4h = 3, +8h and +Ch zero, +10h = 0C6h, then reads game+18ECh",
+      "coverage": "partial: the header stores only",
+      "state": "analysed",
+      "evidence": "00762A05 MOV dword [EAX+4],3; 00762A12 MOV dword [EAX],00D02C68; 00762A18 MOV byte [EAX+10h],0C6h; callers 00768530 BSP_SessionMessage_CreateFromStream and 007CBFA0"
+    },
+    {
+      "address": "007DA380", "native": "none", "name": "none added",
+      "convention": "__thiscall(ctl, ...), three out-parameters per docs/PLANE_FLIGHT.md",
+      "body": "007DA380-007DA707",
+      "role": "the runway steering band 007DA540-007DA616: below RunwayYawTurnSpdLimit the yaw rate becomes max(YawSpd * RunwayYawTurnSpdMul, DEG(50)/YawSpd), halved for classes 10h and 16h that have just landed, then blended by InterpolateClamped",
+      "coverage": "partial: the runway band only; 007DA380-007DA540 and 007DA616-007DA707 unread",
+      "state": "reconstructed",
+      "evidence": "007DA560 FLD [ESI+6Ch]; 007DA563 FLD [00F8738C] = tuning+2ACh; 007DA56D JBE 007DA6D9; 007DA576 FLD [EAX+1B0h] YawSpd; 007DA586 FDIVR qword [00D057E0] = 0.872665 = DEG(50); 007DA590 FMUL [00F87390] = tuning+2B0h = 2.2; 007DA5A2 selects the max; 007DA5C3 CALL 0047B850; 007DA5CF CMP byte [ECX+904h],0; 007DA5DC FMUL qword [00D7A280] = 0.5; 007DA608 FLD [00F87388] = tuning+2A8h; 007DA611 CALL 00419010"
+    },
+    {
+      "address": "007DB680", "native": "none", "name": "none added",
+      "convention": "__thiscall(ctl, float step, float a, float b, int flag)",
+      "body": "007DB680-007DC82A",
+      "role": "the shared core law; this packet read only its ground bands: the wheel brake and arrestor wire 007DBEEE-007DC088 and the wheel friction 007DC08C-007DC17A",
+      "coverage": "partial: 007DBEEE-007DC17A only; 007DB760-007DBEC8 and 007DC190-007DC82A unread",
+      "state": "reconstructed",
+      "evidence": "007DBEEE CMP byte [ESP+13h],0; 007DBEF6 FLD [EAX+1E0h] WheelBrake with EAX = [ESI+0Ch]; 007DBF06 LEA EDI,[ESI+ACh]; 007DBF22 JBE 007DC08C against 00D7A3A0 = 0.1; 007DC004 CALL 00414C60 BSP_Vector2f_LengthWithCutoff; 007DC00D FMUL [EBP+518h] = Pilot/Landing/WireRope; 007DC01C LEA ECX,[EAX+51Ch] = Pilot/Landing/MaxWireRope then CALL 00415510 BSP_Math_MinFloatByRef; 007DC04E-007DC078 pushes 00D04A10 = 160.0, 00D06874 = 1.4, 00CE77B0 = 250.0, FLD1 and owner+B4h into 00419010; 007DC085 zeroes ctl+ACh; 007DC08C PUSH 00F87380 (tuning+2A0h = 8.0) with EDX = 00F8737C (tuning+29Ch = 0.0) into 00415620 BSP_Math_ClampFloatByRef on ctl+68h"
+    }
+  ],
+
+  "host_steps": [
+    {"address": "007CBFC3", "native": "007C5AC0", "method": "run_pre_pass_007c5ac0", "containing": "007CBFA0", "signature": "__thiscall(unit, float step) / void", "note": "the pre-pass the free-flight arm also runs; reads tuning+4ECh Pilot/Landing/ApproachDist per docs/GAME_TUNING_SINGLETON.md"},
+    {"address": "007CBFDE", "native": "none", "method": "arm_ground_subsystem_007cbfd2", "containing": "007CBFA0", "signature": "void / void", "note": "three stores on the object at unit+DECh: +45h = 1 and +4Ch = 1 when +45h != 1, then +11h = 1 while +4Ch is set. Entry pass; 007CC1A1 repeats it on the exit pass. contract: unread, the object at unit+DECh was not identified"},
+    {"address": "007CC06C", "native": "0041E870", "method": "raise_effect", "containing": "007CBFA0", "signature": "__thiscall(string, const char*) / void", "note": "\"explosion\" 00D05A18; the effect itself goes through unit->vtable[+194h] at 007CC08A"},
+    {"address": "007CC108", "native": "0042E740", "method": "game_tuning", "containing": "007CBFA0", "signature": "() / tuning*", "note": "the only tuning read in the arm: +18Ch AirField/PlayerControlSpd at 007CC10D"},
+    {"address": "007CC13F", "native": "007CAF10+vtable1EC", "method": "clamp_controls_007caf10", "containing": "007CBFA0", "signature": "__thiscall(unit, float step) / void", "note": "indirect through unit->vtable[+1ECh]; the plane's slot is 007CAF10 per docs/PLANE_FLIGHT.md"},
+    {"address": "007CC15E", "native": "007DCCF0", "method": "run_ground_law_007dccf0", "containing": "007CBFA0", "signature": "__thiscall(ctl, float step, int flag) / bool", "note": "this = unit+AB0h from 007CC155 LEA ECX,[ESI+AB0h]; the flag is SETZ(unit+900h == 2)"},
+    {"address": "007CC186", "native": "007cbfa0+vtable38", "method": "surface_still_holds_007cc186", "containing": "007CBFA0", "signature": "__thiscall(deck, unit) / bool", "note": "indirect; ((unit+BF4h)->+4h->+3Ch)->vtable[+38h](unit), reached only when unit+904h is set"},
+    {"address": "007CC18E", "native": "007B8DA0", "method": "run_surface_hold_007b8da0", "containing": "007CBFA0", "signature": "__fastcall(unit) / void", "note": "taken when the deck answers true; body 007B8DA0-007B8DBE, contract: unread"},
+    {"address": "007CC212", "native": "00762A00", "method": "send_takeoff_message_00762a00", "containing": "007CBFA0", "signature": "__fastcall(buffer) / message*", "note": "the height-test lift-off path; message kind 0C6h"},
+    {"address": "007CC226", "native": "0077C2A0", "method": "send_takeoff_message_00762a00", "containing": "007CBFA0", "signature": "__thiscall(unit, message*, 1, 0) / void", "note": "BSP_Session_RouteMessage for the height-test path"},
+    {"address": "007CC26E", "native": "00762A00", "method": "send_takeoff_message_00762a00", "containing": "007CBFA0", "signature": "__fastcall(buffer) / message*", "note": "the deck-edge lift-off path, after the class-9 test on the surface owner"},
+    {"address": "007CC27E", "native": "0077C2A0", "method": "send_takeoff_message_00762a00", "containing": "007CBFA0", "signature": "__thiscall(unit, message*, 1, 0) / void", "note": "BSP_Session_RouteMessage for the deck-edge path"},
+    {"address": "007CC2AD", "native": "none", "method": "stamp_pending_byte_007cc2ad", "containing": "007CBFA0", "signature": "void / void", "note": "MOV byte [ESI+C01h],BL with EBX = 2 from 007CC145; no reader of unit+C01h was found"},
+    {"address": "007DCD14", "native": "007DC830", "method": "free_flight_fallback", "containing": "007DCCF0", "signature": "__thiscall(ctl, float step) / void", "note": "the ground law's fallback when there is no ground contact and the state is not 5"},
+    {"address": "007CBA89", "native": "0042E740", "method": "game_tuning", "containing": "007CBA50", "signature": "() / tuning*", "note": "the water arm's first tuning handle; the impact test reads +2B4h..+2C0h from it"},
+    {"address": "007CBB99", "native": "0041E870", "method": "raise_effect", "containing": "007CBA50", "signature": "__thiscall(string, const char*) / void", "note": "\"splash\" 00D05A10 pushed at 007CBB90; latches unit+911h so it fires once"},
+    {"address": "007CBC31", "native": "007DCDD0", "method": "run_water_law_007dcdd0", "containing": "007CBA50", "signature": "__thiscall(ctl, float step, float accumulator) / float in ST0", "note": "called before the hull sampling loop, not after it; the returned depth is what the drown test and the accumulator consume"},
+    {"address": "007CBD2B", "native": "0078CF20", "method": "sample_water_height", "containing": "007CBA50", "signature": "(x, z) / float", "note": "BSP_GameWorld_SampleWaterHeight, once per hull point of the loop over classDesc+5BCh..+5C0h"},
+    {"address": "007CBD74", "native": "0042E740", "method": "game_tuning", "containing": "007CBA50", "signature": "() / tuning*", "note": "the second tuning handle, for the drown test: +24Ch, +2C8h and +2D4h"},
+    {"address": "007CBDBD", "native": "00419010", "method": "blend_drown_threshold", "containing": "007CBA50", "signature": "(tuning+2C8h, 1.0, LevelFlight*StallSpd, 00CE3800, speed) / float", "note": "BSP_Math_InterpolateClamped; the result scales Dynamics/Water/MaxDepth"},
+    {"address": "007CBE0D", "native": "0041E870", "method": "raise_effect", "containing": "007CBA50", "signature": "__thiscall(string, const char*) / void", "note": "\"powerlost\" 00D059F8 pushed at 007CBE02, the engine-drowning arm"},
+    {"address": "007CBF4F", "native": "0077C2A0", "method": "send_state_change_message", "containing": "007CBA50", "signature": "__thiscall(message, 7, 0) / void", "note": "BSP_Session_RouteMessage for the kind-C3h state-change request; the authority arm"},
+    {"address": "007CBF7B", "native": "007C1430", "method": "set_flight_state", "containing": "007CBA50", "signature": "__thiscall(unit, 7) / bool", "note": "the client arm (net mode 2) sets Flying directly, and only from state 6, 4 or 5"},
+    {"address": "007DC004", "native": "00414C60", "method": "ground_track_speed", "containing": "007DB680", "signature": "__thiscall(vec2) / float", "note": "BSP_Vector2f_LengthWithCutoff over the two velocity taps [EBX] and [EBX+8]"},
+    {"address": "007DC024", "native": "00415510", "method": "clamp_wire_rope", "containing": "007DB680", "signature": "__fastcall(&MaxWireRope, &ctl+ACh) / float", "note": "BSP_Math_MinFloatByRef; the cap is Pilot/Landing/MaxWireRope = 100"},
+    {"address": "007DC078", "native": "00419010", "method": "deck_length_multiplier", "containing": "007DB680", "signature": "(160.0, 1.4, 250.0, 1.0, owner+B4h) / float", "note": "BSP_Math_InterpolateClamped; a shorter deck brakes harder"},
+    {"address": "007DC099", "native": "00415620", "method": "clamp_wheel_load", "containing": "007DB680", "signature": "__fastcall(ctl+68h, &0.0, &8.0) / float", "note": "BSP_Math_ClampFloatByRef over Dynamics/WheelFrictionAccel/1 and /2"},
+    {"address": "007DA5C3", "native": "0047B850", "method": "class_is_10h_or_16h", "containing": "007DA380", "signature": "__fastcall(unit) / bool", "note": "unit->vtable[+5Ch](10h) or (16h); body 0047B850-0047B879"},
+    {"address": "007DA611", "native": "00419010", "method": "blend_runway_yaw", "containing": "007DA380", "signature": "(tuning+2A8h, speed, tuning+2ACh, 1.0, ctl+6Ch) / float", "note": "BSP_Math_InterpolateClamped"}
+  ],
+
+  "constants": [
+    {"address": "00CE3850", "value": "5.0f, the landed-clock threshold and the wreck-fuse clamp"},
+    {"address": "00CFDEB0", "value": "3600.0f, the airborne clock a plane placed in the air is given"},
+    {"address": "00D7A260", "value": "-1.0f, the unit+C04h state-change stamp"},
+    {"address": "00D7A24C", "value": "1.0f, the ground law's core-law argument and the state-3 throttle"},
+    {"address": "00D7A3A0", "value": "double 0.1, the lift-off height and rate epsilon and the wire-rope floor"},
+    {"address": "00D7A280", "value": "double 0.5, the landed yaw halving, the placement height slack and the water depth offset"},
+    {"address": "00D057E0", "value": "double 0.872665 = DEG(50), the runway yaw-turn numerator"},
+    {"address": "00D04A10", "value": "160.0f, the short-deck length of the wire multiplier"},
+    {"address": "00D06874", "value": "1.4f, the short-deck wire multiplier"},
+    {"address": "00CE77B0", "value": "250.0f, the long-deck length"},
+    {"address": "00F87384", "value": "the Dynamics mirror of tuning+2A4h RunwaySmoothStrength = 4.0; uninitialised in the image, filled by the tuning producer"},
+    {"address": "00F87388", "value": "the mirror of tuning+2A8h RunwayYawTurnSpdLimit/1 = KMH(25)"},
+    {"address": "00F8738C", "value": "the mirror of tuning+2ACh, the shipped duplicate of the same key"},
+    {"address": "00F87390", "value": "the mirror of tuning+2B0h RunwayYawTurnSpdMul = 2.2"}
+  ],
+
+  "corrections": [
+    {
+      "document": "docs/PLANE_FLIGHT.md",
+      "was": "the motion dispatch's surface arm is gated on a second enum, \"surface | unit+5F0h == 6 | 007CECAF 007CBA50\", and the doc's open question asks what unit+900h's six values mean",
+      "is": "the gate is unit+900h == 6, the Water value of the eight-value enum; there is no enum at unit+5F0h",
+      "evidence": "in 007CEC30-007CECB4 EDI is the unit and ESI is unit+310h: 007CECB4 LEA ECX,[ESI+364h] feeds 0085DC80, which the same doc writes as unit+674h, and 007CEC30 MOV EDX,[ESI+41Ch] is its own unit+72Ch. 007CEC99 CMP dword ptr [ESI+5F0h],6 under the same bias is unit+900h == 6, and 007CEC4E FADD [ESI+5F8h] is unit+908h, the airborne clock the doc's own free-flight row describes"
+    },
+    {
+      "document": "include/bsp/plane_flight.hpp",
+      "was": "PlaneMotionDispatchInputs carries `int surface_mode{0}; // unit+5F0h` and select_motion_arm_007ce040 branches on it",
+      "is": "the third arm branches on the same ground_water_mode field; select_motion_arm_007cec30 in include/bsp/plane_ground_ops.hpp supersedes it with two inputs",
+      "evidence": "the same 007CEC99 reading as above. The header was not edited: it is not an owned file of this packet"
+    },
+    {
+      "document": "docs/PLANE_FLIGHT.md",
+      "was": "the per-class gain table attributes `+1E0h WheelBrake` to the \"ground arm\"",
+      "is": "WheelBrake is read in 007DB680 BSP_PlaneFlight_CoreLaw, the law all three arms share, not in the ground arm 007CBFA0 or the ground law 007DCCF0",
+      "evidence": "a scan of every disp32 access at displacement 1E0h in .text finds exactly two: the class-field writer 007D22BD and the read 007DBEF6 FLD dword ptr [EAX+1E0h], whose containing function is 007DB680 (body 007DB680-007DC82A)"
+    }
+  ],
+
+  "no_ghidra_function": [],
+
+  "flow_gaps": [],
+
+  "uncertainties": [
+    "state 3 is named Launching from its side effects only: the shipped debug table has no label for it, and no routine was found that requests it. If nothing requests it the state is dead in the shipped build",
+    "unit+C01h has five writers (007B9000, 007B9010, 007CB37E, 007CC2AD, 007D0116) and no reader that a full disp32 scan of .text can see; the takeoff chain's third outcome therefore has no established consumer",
+    "docs/PLANE_FLIGHT.md records 007DA8D9 as discarding the roll term when ctl+FCh != 1. With ctl+FCh established as 0 in free flight, 1 on the ground and 2 on the water, that would confine the roll term to the ground roll; 007DA8D9 was not re-read",
+    "classDesc+1FCh, the reference the lift-off height test subtracts, has no key in docs/PLANE_CLASS_FIELDS.md and sits between the two GroundPitch slots +1F8h and +200h",
+    "the reading of MinWaterSpd as the flying-boat discriminator is consistent across four sites (the setter's 4/5 gate, the placement chooser, the submersion accumulator and the water law's floating arm) but was not cross-tabulated against the installed per-class values",
+    "the object at unit+DECh and the deck object reached as (unit+BF4h)->+4h->+3Ch are used by vtable slot only; neither was identified"
+  ],
+
+  "run_time_evidence": "none. bsp_game.exe has no path that reaches a plane on a deck or on the water, so no claim in this packet is supported by a run log and none is presented as run-time evidence.",
+
+  "reconstruction": {
+    "header": "include/bsp/plane_ground_ops.hpp",
+    "source": "src/plane_ground_ops.cpp",
+    "cmake": "one appended line in cmake/startup.cmake",
+    "build": "scripts/build.ps1 succeeded, Win32 Release, warnings as errors",
+    "tests": "ctest reconstructed_math passed 1/1; no new test added",
+    "level": "reconstructed and build-tested; not ABI-compatible and not game-validated"
+  },
+
+  "state": "complete for the enum, the dispatch correction, the ground law, the two lift-off paths and the water arm's decisions; partial for the core law's ground bands, the runway steering band and the water law body"
+}
