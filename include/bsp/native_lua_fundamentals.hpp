@@ -2,6 +2,7 @@
 
 #include "bsp/native_lua_bootstrap.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/native_lua_vfs_dispatch.hpp"
 #include <cstddef>
 
 namespace bsp {
@@ -16,9 +17,10 @@ struct NativeLuaFundamentalsContext {
     SingletonLifetimeDomain& lifetime; // application's canonical01090AA0 domain
     NativeLuaFundamentalsOwner* volatile& publication_0108ff1c;
     NativeStringStorage& strings; // may be ActualNativeStringPoolStorage
-    // Actual VFS owner with CALLABLE original-ABI table. Its slot04 returns
-    // an actual refcounted stream, also with a callable table. No fallback.
+    // Actual VFS owner. The default adapter requires callable original-ABI
+    // tables; an explicit NativeVfsRuntimeBindings handles native identities.
     void* const volatile& manager_0109ceec;
+    NativeLuaVfsDispatch& vfs=callable_native_lua_vfs_dispatch();
 };
 
 // B68340..B68458 normal flow and EH transitions within the returning-cleanup

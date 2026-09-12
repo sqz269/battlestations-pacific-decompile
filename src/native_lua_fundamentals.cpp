@@ -11,12 +11,6 @@ namespace bsp {
 namespace {
 constexpr std::uintptr_t profile = 0x00d62c18;
 constexpr std::uintptr_t base_profile = 0x00ce3818;
-using Open = void*(__fastcall*)(void*, void*, const NativeString*, std::uint32_t);
-using IsOpen = std::uint8_t(__fastcall*)(void*, void*);
-using Length = std::uint64_t(__fastcall*)(void*, void*);
-using Read = void(__fastcall*)(void*, void*, void*, std::uint32_t, std::uint32_t*);
-using Release = void(__fastcall*)(void*, void*);
-std::uintptr_t* table(void* object) { return *static_cast<std::uintptr_t**>(object); }
 }
 
 NativeLuaFundamentalsOwner* construct_native_lua_fundamentals_00b68340(
@@ -31,21 +25,21 @@ NativeLuaFundamentalsOwner* construct_native_lua_fundamentals_00b68340(
         static constexpr char native_path[25] = "Scripts\\fundamentals.lua";
         if (path.data()) std::memcpy(path.data(), native_path, path.length() + 1u);
         void* const manager = context.manager_0109ceec;
-        const auto open = reinterpret_cast<Open>(table(manager)[1]);
+        const auto open_table = capture_native_lua_vfs_table(manager);
         unwind_state = 1;
-        void* const stream = open(manager, nullptr, &path, 2);
-        if (reinterpret_cast<IsOpen>(table(stream)[0x18 / 4])(stream, nullptr)) {
+        void* const stream = context.vfs.open(open_table, manager, path, 2);
+        if (context.vfs.is_open(capture_native_lua_vfs_table(stream), stream)) {
             owner->size_08 = static_cast<std::uint32_t>(
-                reinterpret_cast<Length>(table(stream)[0x30 / 4])(stream, nullptr));
+                context.vfs.length(capture_native_lua_vfs_table(stream), stream));
             auto* const bytes = static_cast<char*>(singleton_lifetime_allocate({
                 SingletonAllocationKind::object, owner->size_08, owner->size_08}));
             owner->bytes_04 = bytes;
             std::uint32_t ignored_read_count;
-            reinterpret_cast<Read>(table(stream)[0x24 / 4])(
-                stream, nullptr, bytes, owner->size_08, &ignored_read_count);
+            context.vfs.read(capture_native_lua_vfs_table(stream),
+                stream, bytes, owner->size_08, &ignored_read_count);
             if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(
                     static_cast<char*>(stream) + 4)) == 0)
-                reinterpret_cast<Release>(table(stream)[0])(stream, nullptr);
+                context.vfs.zero_reference(capture_native_lua_vfs_table(stream), stream);
         }
     } __finally {
         if (unwind_state == 1) destroy_native_string_header_0041dd20(&path, context.strings);

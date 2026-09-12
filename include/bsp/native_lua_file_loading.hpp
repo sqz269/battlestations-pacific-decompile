@@ -1,14 +1,17 @@
 #pragma once
 #include "bsp/native_lua_objects.hpp"
 #include "bsp/native_string_vector.hpp"
+#include "bsp/native_lua_vfs_dispatch.hpp"
 namespace bsp {
-// Explicit application services. Manager and returned streams have actual
-// storage with CALLABLE original-ABI tables. This is not a numeric-vtable
-// resolver, VFS owner or stream implementation. No default service is supplied.
+// Explicit application services over actual owner storage. The default vfs
+// adapter requires CALLABLE original-ABI tables. NativeVfsRuntimeBindings
+// resolves supported original numeric tables to concrete rebuilt methods.
+// Neither interface constructs a VFS owner or supplies an absent provider.
 struct NativeLuaFileServices {
     void* const volatile& manager_0109ceec;
     void (*append_overrides_00bdef90)(void* manager,const NativeString&,NativeStringVectorStorage&);
     int (*do_file_00b69e00)(lua_State*);
+    NativeLuaVfsDispatch& vfs=callable_native_lua_vfs_dispatch();
 };
 // ECX owner; stack NativeString path / low-byte obfuscation flag; RET8.
 // Calls current manager+04 and stream+18/+30/+24 with original stack ABI.
