@@ -1,0 +1,159 @@
+{
+  "packet": "orch5_timed_entry_owner",
+  "source": "src/gui_timed_entry_owner.cpp",
+  "documentation": "docs/GUI_TIMED_ENTRY_OWNER.md",
+  "functions": [
+    {
+      "address": "00aa6f30",
+      "name": "GuiTimedEntryOwner::reserve_00aa6f30",
+      "end_inclusive": "00aa6f8e",
+      "coverage": "valid-allocation reserve with live header and matching source CRT ownership"
+    },
+    {
+      "address": "00aa77b0",
+      "name": "GuiTimedEntryOwner::resize_00aa77b0",
+      "end_inclusive": "00aa77ff",
+      "coverage": "nonnegative valid allocation size; no pointed-entry destruction on shrink"
+    },
+    {
+      "address": "00aa8b00",
+      "name": "GuiTimedEntryOwner::get_or_create_00aa8b00",
+      "end_inclusive": "00aa8b7e",
+      "coverage": "nonnegative nonoverflow index; original captured-slot publication and all three resize sites"
+    },
+    {
+      "address": "00ad3a80",
+      "name": "GuiTimedEntryOwner::create_by_index_00ad3a80",
+      "end_inclusive": "00ad3b40",
+      "coverage": "14h source allocation and original three-index producers; unknown indexnull"
+    },
+    {
+      "address": "00aa87b0",
+      "name": "GuiTimedEntryOwner::update_entries_00aa87b0_fragment",
+      "end_inclusive": "00aa892c",
+      "coverage": "partial AA884D..AA892C only, actual update/deletion; no elapsed/child/listener sequence"
+    },
+    {
+      "address": "00aa9730",
+      "name": "GuiTimedEntryOwner::destroy_entries_00aa9730_fragment",
+      "end_inclusive": "00aa9950",
+      "coverage": "partial AA97F6..AA9950 only, live drain and backingretirement; negativecount outside backing domain"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00aa6f50",
+      "native": "00bf55be",
+      "function": "00aa6f30",
+      "evidence": "exact capacity*4 allocation; signed minimum1"
+    },
+    {
+      "address": "00aa6f7c",
+      "native": "00bf6989",
+      "function": "00aa6f30",
+      "evidence": "current backing free before pointer/capacity publication"
+    },
+    {
+      "address": "00aa77be",
+      "native": "00aa6f30",
+      "function": "00aa77b0",
+      "evidence": "reserve only if requested size exceeds current capacity"
+    },
+    {
+      "address": "00aa8b20",
+      "native": "00aa77b0",
+      "function": "00aa8b00",
+      "evidence": "first index+1 resize"
+    },
+    {
+      "address": "00aa8b3f",
+      "native": "00aa77b0",
+      "function": "00aa8b00",
+      "evidence": "reload before capturing original null destination slot"
+    },
+    {
+      "address": "00aa8b4f",
+      "native": "00ad3a80",
+      "function": "00aa8b00",
+      "evidence": "ECX index EDX current widget; capture destination before allocation"
+    },
+    {
+      "address": "00aa8b62",
+      "native": "00aa77b0",
+      "function": "00aa8b00",
+      "evidence": "reload current count and backing after captured publication"
+    },
+    {
+      "address": "00ad3aae",
+      "native": "00bf681b",
+      "function": "00ad3a80",
+      "evidence": "index2 alloc14h; scalar new, ADD ESP4"
+    },
+    {
+      "address": "00ad3ae7",
+      "native": "00bf681b",
+      "function": "00ad3a80",
+      "evidence": "index1 alloc14h; ADD ESP4"
+    },
+    {
+      "address": "00ad3aff",
+      "native": "00bf681b",
+      "function": "00ad3a80",
+      "evidence": "index0 alloc14h; ADD ESP4"
+    },
+    {
+      "address": "00ad3b1a",
+      "native": "00ac2ed0",
+      "function": "00ad3a80",
+      "evidence": "indices0/1 same alpha constructor; RET4"
+    },
+    {
+      "address": "00aa88e6",
+      "native": "00ad39a0",
+      "function": "00aa87b0",
+      "evidence": "x87 spilled original delta plus unused borrowed widget; RET8"
+    },
+    {
+      "address": "00aa890e",
+      "native": "00ac2fe0",
+      "function": "00aa87b0",
+      "evidence": "resolved alpha current0; index2 selects AD3A40; numeric target separately profile-checked"
+    },
+    {
+      "address": "00aa9825",
+      "native": "00aa6f30",
+      "function": "00aa9730",
+      "evidence": "native inline resize before entry drain slot access"
+    },
+    {
+      "address": "00aa986e",
+      "native": "00ac2fe0",
+      "function": "00aa9730",
+      "evidence": "resolved alpha current0(1), Section AD3A40 separately established"
+    },
+    {
+      "address": "00aa98a3",
+      "native": "00bf55be",
+      "function": "00aa9730",
+      "evidence": "negative capacity repairs by exact4-byte allocation"
+    },
+    {
+      "address": "00aa98e4",
+      "native": "00bf6989",
+      "function": "00aa9730",
+      "evidence": "repair frees current backing before new data/capacity stores"
+    },
+    {
+      "address": "00aa994c",
+      "native": "00bf6989",
+      "function": "00aa9730",
+      "evidence": "count0 before finalfree; backing andcapacity intentionally remain"
+    }
+  ],
+  "header": "same GuiWidgetBaseExtraFields.pointers_88_90 words via DWORD memcpy",
+  "allocation": "existing singleton_lifetime_allocate/free, only newly allocated provenance-tracked backing and14h entries",
+  "validation": "strict Win32 TU compilation passed; combined build and focused actual-owner fixture pending batch",
+  "abi_compatible": false,
+  "game_validated": false,
+  "new_permanent_tests": 0
+}

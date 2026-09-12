@@ -1,0 +1,120 @@
+{
+  "packet": "orch5_widget_color_dispatch",
+  "source": "src/gui_widget_color_dispatch.cpp",
+  "functions": [
+    {
+      "address": "00aa68f0",
+      "coverage": "complete actual-owner getter within Model domain",
+      "end_inclusive": "00aa6971"
+    },
+    {
+      "address": "00aa6980",
+      "coverage": "complete actual-owner basealpha within Model domain",
+      "end_inclusive": "00aa69dc"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00aa68f6",
+      "native": "00b74650",
+      "function": "00aa68f0",
+      "evidence": "actual current model/mesh/section0/material access in native order"
+    },
+    {
+      "address": "00aa6904",
+      "native": "00b74640",
+      "function": "00aa68f0",
+      "evidence": "actual current model/mesh/section0/material access in native order"
+    },
+    {
+      "address": "00aa690b",
+      "native": "00b72b40",
+      "function": "00aa68f0",
+      "evidence": "actual current model/mesh/section0/material access in native order"
+    },
+    {
+      "address": "00aa691b",
+      "native": "00b74640",
+      "function": "00aa68f0",
+      "evidence": "actual current model/mesh/section0/material access in native order"
+    },
+    {
+      "address": "00aa6922",
+      "native": "00b732c0",
+      "function": "00aa68f0",
+      "evidence": "actual current model/mesh/section0/material access in native order"
+    },
+    {
+      "address": "00aa692e",
+      "native": "00b179f0",
+      "function": "00aa68f0",
+      "evidence": "actual current model/mesh/section0/material access in native order"
+    },
+    {
+      "address": "00aa6991",
+      "native": "00b74650",
+      "function": "00aa6980",
+      "evidence": "actual current model/mesh/section0/material access in native order"
+    },
+    {
+      "address": "00aa699f",
+      "native": "00b74640",
+      "function": "00aa6980",
+      "evidence": "actual current model/mesh/section0/material access in native order"
+    },
+    {
+      "address": "00aa69a6",
+      "native": "00b72b40",
+      "function": "00aa6980",
+      "evidence": "actual current model/mesh/section0/material access in native order"
+    },
+    {
+      "address": "00aa69b6",
+      "native": "00b74640",
+      "function": "00aa6980",
+      "evidence": "actual current model/mesh/section0/material access in native order"
+    },
+    {
+      "address": "00aa69bd",
+      "native": "00b732c0",
+      "function": "00aa6980",
+      "evidence": "actual current model/mesh/section0/material access in native order"
+    },
+    {
+      "address": "00aa69c9",
+      "native": "00b179f0",
+      "function": "00aa6980",
+      "evidence": "actual current model/mesh/section0/material access in native order"
+    },
+    {
+      "address": "00ac2f53",
+      "native": "00aa68f0",
+      "function": "00ac2f40",
+      "evidence": "resolved current54 inherited by six canonical profiles"
+    },
+    {
+      "address": "00ac2fc2",
+      "native": "00aa6980",
+      "function": "00ac2f40",
+      "evidence": "resolved base current4C; Text profile insteadAB6AD0"
+    },
+    {
+      "address": "00ab6adb",
+      "native": "00aa6980",
+      "function": "00ab6ad0",
+      "evidence": "Text x87-spills argument into base alpha before shadow tail"
+    }
+  ],
+  "profile_bases": [
+    "00d5be38",
+    "00d5cb80",
+    "00d5c6c8",
+    "00d5c4c0",
+    "00d5d058",
+    "00d5d130"
+  ],
+  "abi": "ECXwidget; float4output/floatarg stack; RET4; getterEAXoutput",
+  "validation": "strict Win32 compilation passed; batch records combined build and actual-owner fixture",
+  "abi_compatible": false,
+  "game_validated": false
+}
