@@ -100,8 +100,10 @@ installed PE SHA256. The Ghidra project/program were verified by every CLI
 analysis batch. This worker did not mutate Ghidra or the game installation.
 
 The ignored native fixture maps the frozen installed image at50000000 and
-executes these five bodies. The original00400000 reservation failed with Win32
-error487 before any native owner ran; both failed attempts are retained. The
+executes these five bodies. Attempt02's original00400000 reservation failed with
+Win32 error487 before any native owner ran. Attempt01 failed with empty output;
+its exact stage is unlocalized, and associating it with the reservation failure
+is an inference from attempt02. Both failed attempts are retained. The
 fixture changes only eight verified global/IAT DWORD operands in the bodies:
 7374F8/737503/73759D/7375AB and7374E9/73751A/737589/7375BE. Native table tokens,
 relative branches/calls, stack instructions, and FS:[0] operations remain
