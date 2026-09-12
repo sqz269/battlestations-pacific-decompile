@@ -55,9 +55,10 @@
     "command": "$env:MSBUILDDISABLENODEREUSE=1; ./scripts/build.ps1",
     "result": "passed Release MSVC Win32",
     "ctest": "2/2: reconstructed_math and native_math_differential",
-    "bsp_core_sha256": "067e128368c2ed55f5225f47c328d892e0f5f82a91d36cdc97669575491f54e5",
-    "bsp_game_sha256": "b7e593295ffaff2b70a0e8730fc67caed01a0e9203f0b77d3db3a29998f867f8",
-    "note": "Initial parallel invocation hit MSB3491 temporary tracking-file access errors. Reviewed normal invocation passed. No shared processes or permissions changed."
+    "bsp_core_sha256": "9cfdba1ea7b9d86e36da72748a359d24acbd19f6d3ed97a2dc086b7d7ce5fb36",
+    "bsp_game_sha256": "9efac73855175dc5e1023a8cf545077251f25c91d2119ff507c45c7eab8cbaf5",
+    "note": "Initial parallel invocation hit MSB3491 temporary tracking-file access errors. Reviewed normal invocation passed. No shared processes or permissions changed.",
+    "verified_commit": "8c5863423c02c35e77f233d65edc828420c75a61"
   },
   "call_verification": {
     "numeric_rows": 71,
@@ -74,7 +75,9 @@
     "native_byte_differential_for_new_modules": false,
     "new_permanent_tests": 0,
     "clip_operation_execution": false,
-    "initial_tested_bsp_core_sha256": "13e56cd2ed8605b64e8587d04284b0f2d6cd9001c6cb16be511f1496678c4280"
+    "initial_tested_bsp_core_sha256": "13e56cd2ed8605b64e8587d04284b0f2d6cd9001c6cb16be511f1496678c4280",
+    "final_merged_tested_bsp_core_sha256": "9cfdba1ea7b9d86e36da72748a359d24acbd19f6d3ed97a2dc086b7d7ce5fb36",
+    "final_merged_result": "All three existing local fixtures were recompiled and passed against the final merged library, without duplicate module sources; embedded manifests."
   },
   "review_fixes": [
     "new-handler allocation callback cannot retire its active owner",
@@ -105,7 +108,12 @@
     "local/gui_timed_types_integrated_probe.cpp": "768efeacaa7ee6fd05dc6e4377101ff667f71ef8de79257db46739e243a15d33",
     "local/run_timed_types_integrated_probe.cmd": "5b5c46a23368d1ece9e65c2455bf727f6a0f5eb36faae58090481dab7f0f9770",
     "local/gui_timed_types_integrated_probe.log": "561e58511f496b22bd209241f72d09d9ae25a0190f2b5c29131b94112aa0cbff",
-    "local/orch5-timed-clip-final-build.log": "72ce754c9579e8f8dffa075bd6bd28102349d5405e58c8c06b07be4ec97c7df8"
+    "local/orch5-timed-clip-final-build.log": "72ce754c9579e8f8dffa075bd6bd28102349d5405e58c8c06b07be4ec97c7df8",
+    "local/orch5-timed-clip-final-merged-build.log": "0de8a6978d4611dfb61bfcf5802a19edfaaa2aa9882243aa24473ffadda38458",
+    "local/gui-timed-owner-final-merged-probe.log": "cda5280b123ce39c4851959a337561b71592a64fb36276a61811d5b32335ccb2",
+    "local/point-links-final-merged-probe.log": "e68ac162c9272980362ac4dfb64a5841e557a4bea7f1e6c3bd2bdb694badcc9d",
+    "local/timed-types-final-merged-probe.log": "23a9ef853f25e306fabbd0f4ac89fa1506888d7d68425d009901fb31cd7da68a",
+    "local/orch5-timed-clip-integration.log": "928f5a095e1fb80980858be318167ac58c42cc9e89b59787f5694ad2bf60ceec"
   },
   "remaining": [
     "active Section17 widget fields F4/F8/100, ABE6E0 and current7C",
@@ -115,5 +123,14 @@
   ],
   "abi_compatible": false,
   "game_validated": false,
-  "integration": "pending main merge and final-tree build"
+  "integration": {
+    "main_integration_commit": "8c5863423c02c35e77f233d65edc828420c75a61",
+    "rebuilt_commit": "8c5863423c02c35e77f233d65edc828420c75a61",
+    "owned_source_hashes_unchanged": true,
+    "mechanical_conflict": "config/parallel_work.json independent insertions; no source conflicts",
+    "main_moved_during_first_build": true,
+    "rebuilt_after_retry": true,
+    "worktree": "agent/orch5-20260911"
+  },
+  "local_cleanup": "Completed worker worktrees removed with bsp.py worktree remove after preserving probe sources/commands/logs in orchestrator local/. First commit failed at zero free disk; retry succeeded after cleanup."
 }

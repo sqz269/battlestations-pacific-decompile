@@ -349,3 +349,18 @@ One row per native call site the reconstruction models.
 - `00780090`, the second caller of `0077FE80`, was not opened, so the generic kind switch may have a
   second entry path.
 - `00814560` (kind `9Ah`) and the `4Bh` player block of `00780120` were not read.
+
+## Correction from docs/UNIT_MESSAGE_ARMS.md (packet cc2_unit_message_arms)
+
+- **Was:** `0095ABE0`'s own switch covers `4Bh`, `4Ch`, `79h`, `7Dh`-`80h` and returns false for the rest (`0095AE06`).
+  **Is:** the kind list is right, but 0095AE06 is not a false return: it calls 00878350(this, msg) with ECX = this and returns that callee's result. 00878350 answers 4Bh, 4Ch, 56h MT_DAMAGEDGFXLEVEL and D2h with 1, and only its own default returns 0. A caller of vtable[164h] therefore sees true for three more kinds than the two switches alone explain.
+  **Evidence:** 0095AE06 PUSH EAX / 0095AE07 MOV ECX,ESI / 0095AE09 CALL 0x00878350, then the epilogue at 0095AE0E-0095AE1D with no MOV AL, so AL is the callee's. 00878350's body 00878350-0087839A is a four-case switch on byte [msg+10h] returning 1 for 4Bh/4Ch/56h/D2h and 0 by default. The pre-existing ledger record for 0095ABE0 already said "the default to the base handler 00878350", so the dispatch doc contradicted a record already in config/names/00950000.jsonl.
+- **Was:** Kinds with a real target are `4Bh`, `4Ch`, ... ; every other index selects target `1Ah` = `0082237B`, the base call.
+  **Is:** true as far as it goes, but three of the 27 targets do no unit work and the difference between them matters. Target 00h (4Bh, arm 00821EEA) calls the base and then forces AL to 1, discarding the base's answer. Target 01h (4Ch, arm 00821ED5) is the shared return-true epilogue and never reaches the base at all. Only target 1Ah (0082237B) returns the base's value. So 4Ch is swallowed by the unit rather than handled by it.
+  **Evidence:** 00821EEA PUSH ESI / CALL 0095ABE0 / 00821EF1 MOV AL,1 versus 0082237B PUSH ESI / CALL 0095ABE0 / 00822381 MOV ECX,[ESP+20h] with no MOV AL. The byte table at 00822400 gives index 00h to offset 0 and index 01h to offset 1, and the target dwords at 00822394 are 00821EEA and 00821ED5.
+- **Was:** `99h` -> `00821FF0` ... `9Ah` -> `00821FD6` -> `00814560`. ... the `4Bh` arm at `00821EEB`
+  **Is:** the arm entry for 4Bh is 00821EEA; 00821EEB is the CALL instruction inside it. The 99h and 9Ah rows are correct.
+  **Evidence:** target dword index 00h at 00822394 is 00821EEA, and the instruction at 00821EEA is PUSH ESI with the CALL at 00821EEB.
+- **Was:** | `4Eh` destroy | `00780120` -> `IsA(4Eh)` | `entity+70h = msg[24h]`; `entity->vtable[70h](msg[20h])` | complete |
+  **Is:** the route and the effect are right; the label is not. Kind 4Eh is MT_DEADMEAT and kind 4Fh is MT_DESTROY. Since the ladder's is-a ids and the message kind bytes coincide where both are known (the 58h test is MT_COMMAND), the arm read there is the MT_DEADMEAT one, not a destroy.
+  **Evidence:** the name pointer table at 00E0AB68 gives index 4Eh the pointer 00D02710 -> "MT_DEADMEAT" and index 4Fh 00D02704 -> "MT_DESTROY". The same table's index 58h is 00D0267C -> "MT_COMMAND", which docs/ENTITY_ORDER_MESSAGE.md already fixed as the 58h message class, and index 8Ch is "MT_SHIP_SYNC", matching docs/UNIT_STATE_MESSAGE.md's kind 8Ch.
