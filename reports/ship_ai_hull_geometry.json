@@ -1,0 +1,253 @@
+{
+  "packet": "orch6_ship_ai_hull_axes_d",
+  "branch": "agent/orch6-hull-axes-d",
+  "base_commit": "e0bd7c4b",
+  "ghidra": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "worker_access": "read_only",
+    "proposed_names_applied": false
+  },
+  "sources": [
+    "include/bsp/ship_ai_hull_geometry.hpp",
+    "src/ship_ai_hull_geometry.cpp",
+    "include/bsp/ship_ai_sector_scan.hpp",
+    "src/ship_ai_sector_scan.cpp"
+  ],
+  "doc": "docs/SHIP_AI_HULL_GEOMETRY.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "functions": [
+    {
+      "address": "009de2f0",
+      "end": "009de5a0",
+      "instructions": 150,
+      "flow_gaps": [],
+      "abi": "ECX=block; no stack arguments; RET",
+      "implementation": "ship_ai_hull_geometry_009de2f0",
+      "coverage": "complete through required actual pose/model/CRT access"
+    },
+    {
+      "address": "009e0270",
+      "end": "009e04d9",
+      "instructions": 148,
+      "flow_gaps": [],
+      "abi": "ECX=block; one unused stack word; RET4 at009E04D7",
+      "implementation": "ship_ai_hull_pre_step_009e0270",
+      "coverage": "complete pre-step head, hull call, exact shape writes and profile/flag tail"
+    },
+    {
+      "address": "0098a8e0",
+      "end": "0098a91e",
+      "instructions": 15,
+      "flow_gaps": [],
+      "abi": "ECX=collision node; stack minimumXYZ,maximumXYZ; RET8",
+      "implementation": "ship_ai_hull_copy_bounds_0098a8e0",
+      "coverage": "complete six x87 load/stores over existing HitQueryBounds projection"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "009de325",
+      "native": "00414db0",
+      "function": "009de2f0",
+      "meaning": "first dirty world refresh"
+    },
+    {
+      "address": "009de33a",
+      "native": "004142e0",
+      "function": "009de2f0",
+      "meaning": "transform local positive stored3E4"
+    },
+    {
+      "address": "009de382",
+      "native": "00414db0",
+      "function": "009de2f0",
+      "meaning": "second dirty world refresh"
+    },
+    {
+      "address": "009de397",
+      "native": "004142e0",
+      "function": "009de2f0",
+      "meaning": "transform local negative-zero minus stored3E4"
+    },
+    {
+      "address": "009de3c9",
+      "native": "00414db0",
+      "function": "009de2f0",
+      "meaning": "third dirty world refresh before translation read"
+    },
+    {
+      "address": "009de423",
+      "native": "00419260",
+      "function": "009de2f0",
+      "meaning": "reciprocal length of float-stored bow-position projection"
+    },
+    {
+      "address": "009de535",
+      "native": "006d1e30",
+      "function": "009de2f0",
+      "meaning": "indirect virtual20; resolved for MDestroyer vtable00CFC3D0 to unit+360 getter"
+    },
+    {
+      "address": "009de550",
+      "native": "006d1e30",
+      "function": "009de2f0",
+      "meaning": "second indirect virtual20; RET0 leaves the two following copier arguments"
+    },
+    {
+      "address": "009de554",
+      "native": "0098a8e0",
+      "function": "009de2f0",
+      "meaning": "copy actual cached model world bounds"
+    },
+    {
+      "address": "009e028f",
+      "native": "0080fc30",
+      "function": "009e0270",
+      "meaning": "actual unit reference speed; category4 modifiers when present"
+    },
+    {
+      "address": "009e02c2",
+      "native": "009de2f0",
+      "function": "009e0270",
+      "meaning": "full hull geometry producer"
+    },
+    {
+      "address": "009e02d7",
+      "native": "00811a30",
+      "function": "009e0270",
+      "meaning": "class turn-circle at0.5 divided by category5 modifiers when present"
+    },
+    {
+      "address": "009e04cc",
+      "native": "00bf79f0",
+      "function": "009e0270",
+      "meaning": "65-byte profile clear after valid byte set"
+    },
+    {
+      "address": "009e46a9",
+      "native": "009e0270",
+      "function": "009e4330",
+      "meaning": "constructor passes ignored word1"
+    },
+    {
+      "address": "009f5156",
+      "native": "009e0270",
+      "function": "009f50e0",
+      "meaning": "controller passes ignored word with boolean low byte"
+    },
+    {
+      "address": "009eb009",
+      "native": "0098a8e0",
+      "function": "009eafc0",
+      "meaning": "second copier caller, same min/max stack ABI"
+    }
+  ],
+  "no_ghidra_function": [],
+  "function_definitions_by_integrator": [
+    {
+      "address": "006d1e30",
+      "end": "006d1e36",
+      "bytes": "8b8160030000c3",
+      "status": "defined_saved_exported_by_integrator; live proto verified as actual function",
+      "report": "reports/ship_ai_hull_geometry_function_definitions.json"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "range": "009E44DB..009E44E1",
+      "fields": "block3E4 from full hull length unit9C8 times widened0.45f at00CF1748"
+    },
+    {
+      "range": "009E45D7..009E4606",
+      "fields": "block1B8 from sqrt(cruise radius squared minus full length squared*0.25); no guard"
+    },
+    {
+      "entry": "006fe460",
+      "fields": "MDestroyer primary vtable00CFC3D0; slot00CFC3F0 contains006D1E30"
+    },
+    {
+      "range": "0087BDFB..0087BF5B",
+      "fields": "unit354 descriptor+50 model pointer; XOR EBX; null branch stores zero into unit360"
+    },
+    {
+      "range": "0087BE58..0087BEA4",
+      "fields": "model-present path constructs1AC-byte node007135C0 and publishes unit360"
+    },
+    {
+      "entry": "0098a750",
+      "fields": "existing node matrix50/local center124/extents130/frame154 produce world min13C and max148; copier never refreshes"
+    },
+    {
+      "source": "src/vehicle_class_lua_load.cpp",
+      "fields": "ShipLeafTuning.scalar sourced by actual selected70h AvoidZoneDepth record offsets; class570 must not be invented from an unbound zero"
+    }
+  ],
+  "constant_corrections": [
+    {
+      "address": "00d7a208",
+      "bits": "80000000",
+      "meaning": "negative zero in SSE stern and beam subtracts"
+    },
+    {
+      "address": "00d045f0",
+      "bits": "3ff6666660000000",
+      "meaning": "widened1.4f reference-speed comparison"
+    },
+    {
+      "address": "00d05ac8",
+      "bits": "40019999a0000000",
+      "meaning": "widened2.2f lateral divisor replaces old decimal double approximation"
+    },
+    {
+      "address": "00cf1748",
+      "bits": "3fdcccccc0000000",
+      "meaning": "widened0.45f constructor reach scale; owned compatibility helper corrected, parent owns actual constructor correction"
+    }
+  ],
+  "corrections_to_prior_evidence": [
+    "009E0270 argument is an unread word, not float dt; controller belongs to009F50E0..009F5253.",
+    "Existing partial sector helper remains a compatibility projection; new full entry covers prior omitted head and tail.",
+    "Legacy half_length_9c8 and half_width_9cc names represent full length/full beam.",
+    "Model absence is proven by actual class+50 null producer; unknown model data does not prove absence.",
+    "Class570 has an existing loader producer; unresolved runtime binding is distinct from an unknown field."
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1; MSVC Win32 Release passed",
+    "ctest": "2/2 existing tests passed",
+    "seeds": "python tools/ghidra_export.py verify-seeds; all configured seeds matched disk",
+    "probe": {
+      "source": "local/ship_ai_hull_native_probe.cpp",
+      "bytes_generator": "local/make_hull_native_probe.py",
+      "build": "local/build_hull_probe.cmd; /MANIFEST:EMBED",
+      "log": "local/ship_ai_hull_native_probe.log",
+      "cases": 4,
+      "failures": 0,
+      "comparison": "whole synthetic native block including untouched bytes, profile, all sector fields and hull geometry; pose/model callback counts",
+      "native_byte_bodies": [
+        "009e0270..009e04d9",
+        "009de2f0..009de5a0",
+        "004142e0..00414363",
+        "00419260..004192d4",
+        "0098a8e0..0098a91e",
+        "006d1e30..006d1e36"
+      ],
+      "adapters": "reference and turn-circle fixture returns; common existing reconstructed CRT sqrt access; constants and direct calls relocated",
+      "not_exercised": [
+        "dirty pose refresh",
+        "CRT exception dispatch",
+        "native model construction",
+        "game runtime"
+      ]
+    },
+    "report_calls": "16 call rows checked, 0 failed; two indirect virtual20 targets separately grounded by vtable bytes and getter body"
+  },
+  "runtime_limits": [
+    "Actual class570 scalar required for full pre-step; no invented zero/depth.",
+    "Actual full beam9CC required; placeholder runtime getter zero does not validate width.",
+    "Cache-only world binding must reject dirty unsupported state.",
+    "Model-present path requires actual cached node world bounds.",
+    "Runtime integration owned by primary, not edited or claimed here."
+  ]
+}
