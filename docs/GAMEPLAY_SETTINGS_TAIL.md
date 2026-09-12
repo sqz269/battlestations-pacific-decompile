@@ -270,3 +270,16 @@ One row per native call site the reconstruction models.
 | `weapon_hit_accuracy_consumer` | 00424c40 | Find the reader of `settings+240h + category*58h` and confirm the bucket interpolation |
 | `repair_task_name_swap` | 0093c120 0093c210 | Apply the two Ghidra renames and correct docs/UNIT_FIRE_AND_REPAIR.md's timer table and priorities |
 | `failure_record_string_fields` | 0083e5d8 00438e10 | Where `FailureName` and `SectionName` land in the failure descriptor |
+
+## Correction from docs/SHIP_AI_SETTINGS_BLOCK.md
+
+Packet `cc_ai_settings_block` (main, after c42aeab7) read every gameplay-settings field the ship
+AI reads (42 offsets with key, getter, loader site, fallback, installed value and reader) and
+closes three items here: `008387B0` is the WeaponHitAccuracy consumer this doc recorded as unread
+(`009F1BC0` calls it at `009F2D87` with kind 7, Torpedo, and stores the answer at `nested+12B4h`);
+the installed values at `+1ECh` and `+210h` are both 1.5; and `settings+4h` is
+`AvoidAllShipCollision`, set to 1 by the loader at `0083BCD5` with no key and overridden only by
+`luaMW_NavigatorSetAvoidAllShipCollision` `008D0740` at `008D0852` (usn_09_leyte.lua, false). The
+approach tuning block the ship AI reads is not a separate table: `[brain+0AB0h] = *(unit+73Ch)`,
+whose `+0h..+18h` are the seven `ShipGlobals.AttackMoveDirector` keys copied from
+`settings+160h..+178h` by `00822B70`.

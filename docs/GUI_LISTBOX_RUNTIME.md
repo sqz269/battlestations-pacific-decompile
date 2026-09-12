@@ -102,3 +102,7 @@ function definitions/names and the dedicated Listbox type adapter. Remaining
 work includes A9E400 properties, A9D030 frame and navigation, paged-list
 producers, non-null row insertion, linked highlight/automatic row-control
 tails, and the actual native derived destructor/copy/pool paths.
+
+## Correction from docs/ORCH5_MENU_SELECTION_ROW_CONTROL_BATCH.md
+
+The later selection/row-control batch implements menu current08 and actual vehicle unlock, canonical listener/layout bindings, Listbox row predicate/state/current60, null-position D8 append and existing native table64/70 profiles. BA90 retains an explicit visited-prefix callback domain. Full Listbox frame/properties/teardown, non-null insertion and complete menu/resource providers remain open. Earlier validation remains pinned to its original commit; see the new batch report for current scope and integrated validation.

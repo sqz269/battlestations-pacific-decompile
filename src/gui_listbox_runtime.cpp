@@ -1,5 +1,6 @@
 #include "bsp/gui_listbox_runtime.hpp"
 #include "bsp/gui_text_lifetime.hpp"
+#include "bsp/gui_listbox_row_control.hpp"
 #include <exception>
 #include <stdexcept>
 
@@ -199,6 +200,21 @@ void GuiListboxRuntime::remove_row_00a9be60(GuiWidgetOwner& row) {
     previous_110_ = nullptr;
     refresh80_00a9c220(false); // A9BEA8 may therefore be an ordinary early return.
     layout7c_00a9c0a0(); // A9BEB1.
+}
+void GuiListboxRuntime::append_row_with_data_00a9da30(GuiWidgetOwner& row,
+    std::uint32_t data, std::unique_ptr<GuiLayoutWidget>& detached) {
+    row.extra_fields().pointer_d8 = reinterpret_cast<void*>(static_cast<std::uintptr_t>(data));
+    append_row_00a9d750(row, detached);
+}
+void GuiListboxRuntime::set_active60_00a9cd20(bool active) {
+    Operation operation(*this);
+    owner_.base_set_active60_00aa6a30(active); // A9CD2C precedes BOTH tail tests.
+    if (active || fields_.auto_control_11e == 0) return;
+    for (auto it = rows_.begin(); it != rows_.end(); ++it) {
+        const std::int32_t state = it == selected_ ? 1 : 3; // A9CD7D..A9CD88.
+        apply_gui_listbox_row_state_00a9ba90(**it, state, services_.row_state_one_00d7a24c);
+        // A9CDA7 reloads current.next only AFTER row-state callbacks.
+    }
 }
 void GuiListboxRuntime::set_layout_flags_00a9ac90(std::uint8_t dont_move,
     std::uint8_t center_vertical, std::uint8_t auto_control) noexcept {

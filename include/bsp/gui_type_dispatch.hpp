@@ -47,9 +47,9 @@ public:
     void visibility_changed3c(GuiWidgetOwner&, bool) override;
     void set_visible34(GuiWidgetOwner&, bool) override;
 };
-// Actual type11 companion. The constructed-state current34/60 paths are
-// supported; linked highlight pages and automatic row-state control still
-// require their recovered providers. Full properties/frame/scalar ABI is open.
+// Actual type11 companion. Current60 uses canonical row-state dispatch;
+// current34 supports the unlinked highlight page domain. Full properties,
+// frame and scalar ABI remain open.
 class GuiListboxTypeImplementation final : public GuiGroupTypeImplementation {
 public:
     GuiListboxTypeImplementation(GuiWidgetOwner&, GuiListboxRuntimeServices);

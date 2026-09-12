@@ -306,6 +306,11 @@ void GuiTextRuntimeImplementation::set_state80_00ab7200(std::int32_t state) {
     auto binding = lifetime_->style_binding(factory_.services_.properties.submit.content.nonempty.style);
     set_gui_text_state80_00ab7200(binding, state);
 }
+float GuiTextRuntimeImplementation::normalized_height_00ab6bd0() {
+    require_idle();
+    return normalized_height(*lifetime_, factory_.services_.properties.font_names.fonts,
+        factory_.services_.bounds.height_divisor_00cef1b8);
+}
 void GuiTextRuntimeImplementation::set_alpha4c_00ab6ad0(float alpha) {
     require_idle();
     auto& s = factory_.services_;

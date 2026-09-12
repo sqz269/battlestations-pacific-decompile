@@ -1,0 +1,232 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "packet": "orch5_listbox_row_control",
+  "functions": [
+    {
+      "address": "00a9b340",
+      "name": "BSP_GuiListbox_ApplyWidgetState",
+      "end_inclusive": "00a9b3ed",
+      "cpp": "apply_gui_listbox_widget_state_00a9b340",
+      "original_abi": "ECX unused; stack actual widget pointer,state DWORD; RET8",
+      "coverage": "complete normal body for established actual current5C profiles; existing Text/Icon supported input domains"
+    },
+    {
+      "address": "00a9ba40",
+      "name": "BSP_GuiListbox_HasSelectableRow",
+      "end_inclusive": "00a9ba8d",
+      "cpp": "has_selectable_gui_listbox_row_00a9ba40",
+      "original_abi": "ECX Listbox; ALbool; RET",
+      "coverage": "complete valid canonical FC list domain; corrupt checked-STL error ABI excluded"
+    },
+    {
+      "address": "00a9ba90",
+      "name": "BSP_GuiListbox_ApplyRowState",
+      "end_inclusive": "00a9bb24",
+      "cpp": "apply_gui_listbox_row_state_00a9ba90",
+      "original_abi": "ECX Listbox; stack checked iterator container,node,state DWORD; RETC",
+      "coverage": "partial_projection: complete normal sequence over actual GUI64 borrowed transform.children with duplicate entries; callback prefix through current ordinal must preserve membership/order; native node identity and visited-prefix edits excluded"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a9b34f",
+      "native": "00a9e110",
+      "function": "00a9b340",
+      "contract": "current5C actual base+60 type; the non-Text second query is preserved"
+    },
+    {
+      "address": "00a9b3c7",
+      "native": "00a9e110",
+      "function": "00a9b340",
+      "contract": "current5C actual base+60 type; the non-Text second query is preserved"
+    },
+    {
+      "address": "00a9b36a",
+      "native": "00425850",
+      "function": "00a9b340",
+      "contract": "actual sourceF4 header, globals.live; ALbool RET4"
+    },
+    {
+      "address": "00a9b382",
+      "native": "00ab7200",
+      "function": "00a9b340",
+      "contract": "actual Text current80 original state DWORD RET4"
+    },
+    {
+      "address": "00a9b3b7",
+      "native": "00ab6b50",
+      "function": "00a9b340",
+      "contract": "actual Text current50 four copies of one live D7A24C MOVSS load RET4"
+    },
+    {
+      "address": "00a9b3e5",
+      "native": "00ab1710",
+      "function": "00a9b340",
+      "contract": "actual Icon current88 low16(state),0,literal FLD1 RETC"
+    },
+    {
+      "address": "00a9ba58",
+      "native": "00bf6713",
+      "function": "00a9ba40",
+      "contract": "native checked-list invalid domain excluded; existing library name retained"
+    },
+    {
+      "address": "00a9ba66",
+      "native": "00bf6713",
+      "function": "00a9ba40",
+      "contract": "native checked-list invalid domain excluded; existing library name retained"
+    },
+    {
+      "address": "00a9ba79",
+      "native": "00bf6713",
+      "function": "00a9ba40",
+      "contract": "native checked-list invalid domain excluded; existing library name retained"
+    },
+    {
+      "address": "00a9baa2",
+      "native": "00bf6713",
+      "function": "00a9ba90",
+      "contract": "native checked-iterator invalid domain excluded; tautological checks retained in evidence"
+    },
+    {
+      "address": "00a9bab0",
+      "native": "00bf6713",
+      "function": "00a9ba90",
+      "contract": "native checked-iterator invalid domain excluded; tautological checks retained in evidence"
+    },
+    {
+      "address": "00a9bada",
+      "native": "00bf6713",
+      "function": "00a9ba90",
+      "contract": "native checked-iterator invalid domain excluded; tautological checks retained in evidence"
+    },
+    {
+      "address": "00a9bae8",
+      "native": "00bf6713",
+      "function": "00a9ba90",
+      "contract": "native checked-iterator invalid domain excluded; tautological checks retained in evidence"
+    },
+    {
+      "address": "00a9bb00",
+      "native": "00bf6713",
+      "function": "00a9ba90",
+      "contract": "native checked-iterator invalid domain excluded; tautological checks retained in evidence"
+    },
+    {
+      "address": "00a9babf",
+      "native": "00a9e110",
+      "function": "00a9ba90",
+      "contract": "current5C actual row; only Group2 selects direct-child traversal"
+    },
+    {
+      "address": "00a9baf6",
+      "native": "00a9b340",
+      "function": "00a9ba90",
+      "contract": "actual direct child, original state; ECX Listbox RET8"
+    },
+    {
+      "address": "00a9bb11",
+      "native": "00a9b340",
+      "function": "00a9ba90",
+      "contract": "actual nonGroup FC row, original state; ECX Listbox RET8"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00a9ba40",
+      "end_inclusive": "00a9ba8d",
+      "bytes": 78,
+      "initial_state": "No function on worker initial verified proto read",
+      "resolution": "Parent created and saved exact body [00A9BA40,00A9BA8E) under write lock; worker verified current proto before call checks",
+      "parent_evidence": "reports/orch5_listbox_control_function_definitions.json"
+    }
+  ],
+  "current_tables": {
+    "00d5c718": "00ab6b50",
+    "00d5c724": "00a9e110",
+    "00d5c748": "00ab7200",
+    "00d5c51c": "00a9e110",
+    "00d5c548": "00ab1710",
+    "00d5c18c": "00a9e110",
+    "00d5bc84": "00a9ba40"
+  },
+  "corrections": [
+    {
+      "was": "Text+EC might be a special mode flag",
+      "is": "NativeWideString current UTF-16 length; compare exactly one",
+      "evidence": "ABA98D passes Text+EC to4C5E20;4C5E2C reads source length,4C5E31 calls4C53E0,4C5482 stores length"
+    },
+    {
+      "was": "Use one color constant for every state-selection argument",
+      "is": "globals.live color reads live D7A24C once; Icon receives literal FLD1",
+      "evidence": "A9B38B MOVSS followed by four stores; A9B3CE FLD1/A9B3DD FSTP argument"
+    },
+    {
+      "was": "Group row control could recurse through nested Groups",
+      "is": "Only direct children receive B340; B340 treats Group2 as inert",
+      "evidence": "A9BAC6..A9BB07 +64 list walk; B340 type3/type6 branches only"
+    },
+    {
+      "was": "Selectable-row test might call visibility current38",
+      "is": "Callback-free actual FC rows with raw row77 zero predicate; empty/allhidden false",
+      "evidence": "A9BA6B..A9BA8D and constructor AA946C clears77"
+    },
+    {
+      "was": "Initial BA90 implementation traversed owning layout.children and re-found current child by pointer",
+      "is": "Traverse SAME borrowed transform.children GUI64 vector including duplicate entries; live ordinal with explicit prefix-preservation callback domain. Child pointer equality is not native node identity.",
+      "evidence": "GuiWidgetTransform children declaration maps64..6C; actual AA7E00 in gui_text_type_dispatch.hpp uses borrowed transform.children; AA83A0 canonical adapter erases every borrowed occurrence but moves one owning allocation; extended actual-owner fixture tests borrowed duplicates and omitted owning child"
+    }
+  ],
+  "validation": {
+    "strict_msvc_win32": "passed /EHsc /std:c++17 /W4 /WX /O2 /MD /fp:strict",
+    "fixture": "passed existing actual-owner fixture extended locally for empty/allhidden/mixed77, direct-child-only Group traversal, parent full current60 true fast path and false nonzero-auto-control tail; no selected-state callback reentry validation; added borrowed GUI64 duplicate entries and borrowed membership differing from owning allocations",
+    "fixture_build": "worker row-control TU plus parent current gui_listbox_runtime/gui_type_dispatch TUs against baseline parent bsp_core.lib and bsp_lua511.lib; /MANIFEST:EMBED",
+    "fixture_log": "local/row_control_probe.log",
+    "report_calls": "passed 17 numeric call rows, zero failures; six indirect sites resolved from current table bytes",
+    "aggregate_build": "parent integration owns scripts/build.ps1 after CMake registration",
+    "new_permanent_tests": 0,
+    "abi_compatible": false,
+    "game_validated": false,
+    "render_validated": false,
+    "text_icon_resource_runtime_validated": false,
+    "native_byte_differential": false,
+    "input_hashes": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-control\\src\\gui_listbox_row_control.cpp",
+        "sha256": "419833ee05eee06f43e1bb5d6877b3c2db8a97e0e02441fed1f3a05993f115a3"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-control\\include\\bsp\\gui_listbox_row_control.hpp",
+        "sha256": "3590c5aada169eeeeba61b64547ed7d255f9e67b2f7275d29222596ef9e047f2"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-control\\local\\row_control_probe.cpp",
+        "sha256": "0d1db36c7988260a7b5d5dd9f385171088514696d0a013220aae614dd0092daa"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_listbox_runtime.hpp",
+        "sha256": "6e45017f13025d18d8f36d2049c1695af2a8478c4d5c5faa998e6c789746305c"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\src\\gui_listbox_runtime.cpp",
+        "sha256": "2565d0af4f5325f05f735d36097864512a60b05cd03c7f2b2169b086b234ed6a"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\src\\gui_type_dispatch.cpp",
+        "sha256": "c7332d5c95c9a47efc027b7dc16815e3cc931f36003e0fb87901dedf115747f4"
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+        "sha256": "b5c104dab6e49ebc09fc0222504dca889d769b94c81fdac917a316fdeb2913e7"
+      }
+    ]
+  },
+  "uncertainty": [
+    "Descriptive names are hypotheses, not recovered symbols.",
+    "New C++ ABI, canonical vector/list owner transport and NativeString source header borrow are not native object/pool/SEH/STL ABI.",
+    "Actual row/group/current child and their same owner domain must survive callbacks; visited borrowed prefix membership/order must remain stable. Equal pointers do not establish native node identity; edits to visited prefix are excluded.",
+    "Unsupported current5C profiles and downstream Text/Icon service/input domains fail explicitly in existing companions.",
+    "Fixture validates actual Listbox/Group paths including borrowed duplicates and different owning membership, not actual Text/Icon resource effects or render output."
+  ]
+}
