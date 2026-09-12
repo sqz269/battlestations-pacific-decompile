@@ -64,6 +64,7 @@
 #include "bsp/scene_property_bag.hpp"
 #include "bsp/entity_identity.hpp"
 #include "bsp/scene_property_bag_merge.hpp"
+#include "bsp/scene_record_map.hpp"
 #include "bsp/entity_think_dispatch.hpp"
 #include <algorithm>
 #include <cmath>
@@ -2105,6 +2106,22 @@ int main() {
             "008F23E0 overwrites a key the destination already has, case-insensitively, "
             "and drops a key it does not");
     }
+
+    {
+        // 00443D00 reaches __stricmp, so the hidden-entity map at
+        // SceneDatabase+18h matches names case-insensitively. A consumer that
+        // used an ordinary case-sensitive map would miss a record a script asks
+        // for by a differently cased name.
+        bsp::SceneRecordMapView map;
+        bsp::SceneHiddenEntityRecord carrier;
+        carrier.name = "Carrier_A";
+        map.entries.push_back({"Carrier_A", &carrier});
+        check(bsp::scene_record_map_find(map, "carrier_a") == &carrier
+                  && bsp::scene_record_map_contains(map, "CARRIER_A")
+                  && bsp::scene_record_map_find(map, "Carrier_B") == nullptr,
+            "00468CD0 matches a hidden-entity record's name case-insensitively");
+    }
+
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
     return failures ? 1 : 0;
