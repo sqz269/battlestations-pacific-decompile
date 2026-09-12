@@ -1,0 +1,1147 @@
+{
+  "packet": "orch6_dyn_world_connection_g",
+  "worker": "agent/orch6-dyn-world-g",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "documentation": "docs/DYN_WORLD_OWNER_CONNECTION.md",
+  "status": "connected real-owner normal constructor fixture passed; Win32 Release and two existing CTests passed",
+  "core_source_changes": false,
+  "tracked_tests_added": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "ghidra_worker_read_only": true,
+  "new_ghidra_annotations": [],
+  "no_ghidra_function": [],
+  "dependency_inputs": {
+    "local_head": "b453f63409388b7a2efa3ced43b40905aa2955fc",
+    "source_commits": {
+      "engine": "afd9a1bd564fa8d7c0bb8b0edc559e4de7b5a9b4",
+      "dispatch": "d0c048c0e951dd33712cbe72d3c5d9f309f72cb1",
+      "tasks": "7d0f80fe333af0bab0ea645fececee0f610380f3"
+    },
+    "compiled_source_inputs": {
+      "src/dyn_engine_runtime.cpp": "7b2608638c893d8135993072ed01ae1e8fbdd0070db8fc31242e227d0ace8360",
+      "include/bsp/dyn_engine_runtime.hpp": "059c3367a5d71532c076a29895b62394e1d88d71fa6cd828c5a540604359d82a",
+      "src/dyn_task_manager.cpp": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0",
+      "include/bsp/dyn_task_manager.hpp": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147",
+      "src/dyn_dispatch_initialization.cpp": "75829e5d8da162c35cf29ac9f083e76a881c8b08ba808aba7d3c25b9e764302a",
+      "include/bsp/dyn_dispatch_initialization.hpp": "6511497f51a59ae26f76a36e6e2fd58d14e0d0873c89103842165239c7ac25ee",
+      "src/dyn_world_runtime.cpp": "e4ab60cdd8ed206c82c77eaf44f383de90f868826388d11fb5ea5ca6d97c8399",
+      "include/bsp/dyn_world_runtime.hpp": "fe53091179272be0d15c1e69a80174d69f9c9e5199a5bc61329be0490ba18a19",
+      "src/dyn_scene_runtime.cpp": "6efa488d22e05beb310164dd2633e102caab5b07c4ba96b6c7030333beeec32a",
+      "include/bsp/dyn_scene_runtime.hpp": "55bbd6bda1cbdde923b48381c85998db05f4db9ce96e60d9f964c2d2b6be378c",
+      "src/dyn_body_creation.cpp": "e915e3325ceca411c14df2424129c7e82bebf6bc272921205e62d43744d4c93c",
+      "include/bsp/dyn_body_creation.hpp": "771890801179db08b6ec963a2145cb05c4346da8f79d402514770aae2210535b",
+      "src/avoid_zone_dyn_hull.cpp": "e4be35881ddd46bcbf3110b05309745df565951e1f41656080aea3c1777edf45",
+      "include/bsp/avoid_zone_dyn_hull.hpp": "c4b13f13e5cb94a4e1423c0c96aa725935615f92d2cb65a823c36572bf1f2c3a",
+      "src/native_legacy_sbo_string.cpp": "377004812adb5e8760b02a84fff81f0004f08fd145c4ce4acfebf31cc583164c",
+      "include/bsp/native_legacy_sbo_string.hpp": "9729dd1df270ad0c6f3e2601219735bd71f6758a797aaf2b59e687527704f422",
+      "src/system_camera_axes.cpp": "2682460d77fd18e19909c946ddd58ed60e63234e441c2f5badafc2c2815f0415",
+      "include/bsp/system_camera_axes.hpp": "abfa9300a54975dcdb7489f466d941b9341991af3f027ebb764a19cbb08124d5",
+      "src/dyn_world_settings.cpp": "f9466be1338c3ea03dc7adea234f956e229a4454d35fb46647c8aa3d900aac68",
+      "include/bsp/dyn_world_settings.hpp": "b00dde4b4a80912c7c255d9080d56213028f6723810499f3d54be157c1c34b33",
+      "cmake/startup.cmake": "8585f8e9645b5d7cc85c4e8b21617897c911c9aeaaa935d2b3ea2f8248ba647a"
+    },
+    "original_PE": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "private_image_sha256": "86f0f456d654ba64cf421f073ba2aa95d7dbef99fa324b42c7e29a6ad3f1728e",
+    "fixture_parent_sha256": "f50981c06d2cd2b8040f318eb38505409307dc7a1a5b3320b90f7842fca8492e",
+    "borrowed_vtables": [
+      {
+        "address": "00d7a160",
+        "slots": 8,
+        "native_targets": [
+          "00c54aa0",
+          "00c4c380",
+          "00c4c270",
+          "00c4c320",
+          "00c32b30",
+          "00c32b10",
+          "00c32af0",
+          "004043d0"
+        ],
+        "sha256": "ebd982341298e133842c110bfd9250bce8097e0ed2632192039d8332a1af8d2c",
+        "all_targets_in_PE_executable_sections": true
+      },
+      {
+        "address": "00d7a080",
+        "slots": 1,
+        "native_targets": [
+          "00bf698e"
+        ],
+        "sha256": "02b0d2f98cdca124036199ae8e499b047ce80fb4c504cc3ab2f3b30da8cfb500",
+        "all_targets_in_PE_executable_sections": true
+      },
+      {
+        "address": "00d7a088",
+        "slots": 1,
+        "native_targets": [
+          "00403720"
+        ],
+        "sha256": "65de32183f7c5bdcf3e3c52055c668adc0da35d9506b337290700bc2ff0b821e",
+        "all_targets_in_PE_executable_sections": true
+      },
+      {
+        "address": "00d7a090",
+        "slots": 1,
+        "native_targets": [
+          "00403850"
+        ],
+        "sha256": "bcfaa7a192ee05d84c2dd9367fe525b7d7e3e91aa15fb49c9d8f7d5a1b183d9a",
+        "all_targets_in_PE_executable_sections": true
+      },
+      {
+        "address": "00d7a110",
+        "slots": 1,
+        "native_targets": [
+          "00403cc0"
+        ],
+        "sha256": "7d3add2293ebca4f6eb73a7c6bc0fa6102492be4e87c21d6be1727516ce51747",
+        "all_targets_in_PE_executable_sections": true
+      },
+      {
+        "address": "00d7a184",
+        "slots": 1,
+        "native_targets": [
+          "00c49a30"
+        ],
+        "sha256": "4ee6519e35b104349a9051bdc899981e61d44273b0fb6e6a92b5dc9a2fc8ee93",
+        "all_targets_in_PE_executable_sections": true
+      },
+      {
+        "address": "00d7a18c",
+        "slots": 1,
+        "native_targets": [
+          "00c53630"
+        ],
+        "sha256": "9d7e5a6bbb44f443e2ea1a6bfb312a93143c120392d937cebc6cbc5802c839ea",
+        "all_targets_in_PE_executable_sections": true
+      },
+      {
+        "address": "00d7a1cc",
+        "slots": 1,
+        "native_targets": [
+          "00c518d0"
+        ],
+        "sha256": "20b5817b03b6263268493db2c95142fce31710f98ffc6dc8951f446a5eeb534c",
+        "all_targets_in_PE_executable_sections": true
+      },
+      {
+        "address": "00d7a1d4",
+        "slots": 1,
+        "native_targets": [
+          "00c48330"
+        ],
+        "sha256": "40ca41c59e1618c63769b8295c5e243f1cc921078d762c30829ac51f5d165ec5",
+        "all_targets_in_PE_executable_sections": true
+      },
+      {
+        "address": "00d7a1a8",
+        "slots": 1,
+        "native_targets": [
+          "00c535e0"
+        ],
+        "sha256": "9a4e2c5b09f23d2ceabbc8db24c8d1bf2da69f11fd809a1403ef00d908c7f7e5",
+        "all_targets_in_PE_executable_sections": true
+      },
+      {
+        "address": "00d7a1f4",
+        "slots": 1,
+        "native_targets": [
+          "00c44780"
+        ],
+        "sha256": "a9eeb9ae7f77ac83cf46561a4b824ce38066b5e959ebb196cb9827f3c950da2e",
+        "all_targets_in_PE_executable_sections": true
+      },
+      {
+        "address": "00d7a1fc",
+        "slots": 1,
+        "native_targets": [
+          "00c50dd0"
+        ],
+        "sha256": "f28f8379c6d1aa6d71b02db2815b6ce526954da5c02280a1866527da1aeeb731",
+        "all_targets_in_PE_executable_sections": true
+      },
+      {
+        "address": "00d7a204",
+        "slots": 1,
+        "native_targets": [
+          "00c50740"
+        ],
+        "sha256": "e5aa4be49eea830afc2538736d4558ee047545f17e90cfc064ea3614251a94ed",
+        "all_targets_in_PE_executable_sections": true
+      }
+    ],
+    "note": "Original PE method pointers are relocated by fixture; no method is substituted or executed. This validates slot extent and executable-section targets, not transitive runtime method readiness."
+  },
+  "connected_entries": [
+    {
+      "address": "00cc8950",
+      "end_inclusive": "00cc8960",
+      "role": "GeneralConvex static startup, actual CRT registration",
+      "original_abi": "cdecl no arguments, EAX atexit result; RET"
+    },
+    {
+      "address": "00c48fd0",
+      "end_inclusive": "00c49222",
+      "role": "global GeneralConvex full constructor",
+      "original_abi": "cdecl no arguments, EAX global owner; RET"
+    },
+    {
+      "address": "00c55f50",
+      "end_inclusive": "00c55fbe",
+      "role": "engine ensure/publication",
+      "original_abi": "ECX descriptor, EAX engine; RET"
+    },
+    {
+      "address": "00c55ea0",
+      "end_inclusive": "00c55f4e",
+      "role": "full engine construction",
+      "original_abi": "stack engine/descriptor, EAX engine; RET8"
+    },
+    {
+      "address": "00c50310",
+      "end_inclusive": "00c50382",
+      "role": "profile construction/publication",
+      "original_abi": "ESI profile, EAX profile; RET"
+    },
+    {
+      "address": "00c44000",
+      "end_inclusive": "00c44081",
+      "role": "Root node and actual inline string",
+      "original_abi": "EDX name, stack node/word2C, EAX node; RET8"
+    },
+    {
+      "address": "00c37740",
+      "end_inclusive": "00c377ed",
+      "role": "actual zero-worker native/source manager; one-worker source manager",
+      "original_abi": "stack manager/count; RET8"
+    },
+    {
+      "address": "00c41ad0",
+      "end_inclusive": "00c420db",
+      "role": "complete world constructor and late shared motion",
+      "original_abi": "stack world/descriptor; RET8"
+    },
+    {
+      "address": "00c38070",
+      "end_inclusive": "00c38461",
+      "role": "complete scene constructor",
+      "original_abi": "stack scene/world; RET8"
+    },
+    {
+      "address": "00cd91d0",
+      "end_inclusive": "00cd91db",
+      "role": "actual original/source registered dispatch cleanup",
+      "original_abi": "cdecl no arguments; RET"
+    }
+  ],
+  "inherited_native_call_evidence": [
+    {
+      "function": "00c55f50",
+      "address": "00c55f74",
+      "native": "00bf681b",
+      "contract": "Existing operator new;14h engine allocation",
+      "inherited_from": "reports/dyn_engine_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "function": "00c55f50",
+      "address": "00c55f8e",
+      "native": "00c55ea0",
+      "contract": "Complete engine constructor before global publication",
+      "inherited_from": "reports/dyn_engine_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "function": "00c55ea0",
+      "address": "00c55ecf",
+      "native": "00bf681b",
+      "contract": "Existing operator new;9Ch profile allocation",
+      "inherited_from": "reports/dyn_engine_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "function": "00c55ea0",
+      "address": "00c55ee7",
+      "native": "00c50310",
+      "contract": "ESI profile owner; exact Root allocation, publication and tail zeroing",
+      "inherited_from": "reports/dyn_engine_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "function": "00c55ea0",
+      "address": "00c55efd",
+      "native": "00bf681b",
+      "contract": "Existing operator new;358h task-manager allocation",
+      "inherited_from": "reports/dyn_engine_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "function": "00c55ea0",
+      "address": "00c55f1a",
+      "native": "00c37740",
+      "contract": "Separate actual task-manager constructor; stack manager plus snapshotted descriptor DWORD",
+      "inherited_from": "reports/dyn_engine_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "function": "00c50310",
+      "address": "00c50328",
+      "native": "00bf681b",
+      "contract": "Existing operator new;48h Root node allocation",
+      "inherited_from": "reports/dyn_engine_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "function": "00c50310",
+      "address": "00c50347",
+      "native": "00c44000",
+      "contract": "Actual D79DC8 Root string in EDX; stack allocated node and zero word2C",
+      "inherited_from": "reports/dyn_engine_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "function": "00c50310",
+      "address": "00c5036d",
+      "native": "00bf79f0",
+      "contract": "memset profile+0C with zero for90h bytes after0109E9F8 publication; shared ADD ESP1Ch includes arguments and frame",
+      "inherited_from": "reports/dyn_engine_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "function": "00c44000",
+      "address": "00c44050",
+      "native": "00408720",
+      "contract": "Existing native legacy SBO string assign counted; ECX=node+10; stack name and byte count, RET8",
+      "inherited_from": "reports/dyn_engine_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C37775",
+      "function": "00C37740",
+      "instruction": "CALL dword ptr [0x00ce2154]",
+      "native": "KERNEL32.dll!InitializeCriticalSectionAndSpinCount",
+      "iat": "00CE2154",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C37788",
+      "function": "00C37740",
+      "instruction": "CALL dword ptr [0x00ce214c]",
+      "native": "KERNEL32.dll!CreateSemaphoreA",
+      "iat": "00CE214C",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C37799",
+      "function": "00C37740",
+      "instruction": "CALL dword ptr [0x00ce22b8]",
+      "native": "KERNEL32.dll!CreateEventA",
+      "iat": "00CE22B8",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C377BA",
+      "function": "00C37740",
+      "instruction": "CALL dword ptr [0x00ce22b8]",
+      "native": "KERNEL32.dll!CreateEventA",
+      "iat": "00CE22B8",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C377D2",
+      "function": "00C37740",
+      "instruction": "CALL 0x00c37690",
+      "native": "00C37690",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C376A2",
+      "function": "00C37690",
+      "instruction": "CALL dword ptr [0x00ce22b4]",
+      "native": "KERNEL32.dll!SetEvent",
+      "iat": "00CE22B4",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C376B3",
+      "function": "00C37690",
+      "instruction": "CALL dword ptr [0x00ce21fc]",
+      "native": "KERNEL32.dll!WaitForMultipleObjects",
+      "iat": "00CE21FC",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C376C0",
+      "function": "00C37690",
+      "instruction": "CALL dword ptr [0x00ce2158]",
+      "native": "KERNEL32.dll!ResetEvent",
+      "iat": "00CE2158",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C376C9",
+      "function": "00C37690",
+      "instruction": "CALL 0x00bf6989",
+      "native": "00BF6989",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C376F2",
+      "function": "00C37690",
+      "instruction": "CALL 0x00bf55be",
+      "native": "00BF55BE",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C37713",
+      "function": "00C37690",
+      "instruction": "CALL 0x00c03bc4",
+      "native": "00C03BC4",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C37728",
+      "function": "00C37690",
+      "instruction": "CALL dword ptr [0x00ce22a0]",
+      "native": "KERNEL32.dll!SetThreadPriority",
+      "iat": "00CE22A0",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C37685",
+      "function": "00C37680",
+      "instruction": "CALL 0x00c375f0",
+      "native": "00C375F0",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C3761F",
+      "function": "00C375F0",
+      "instruction": "CALL dword ptr [0x00ce21fc]",
+      "native": "KERNEL32.dll!WaitForMultipleObjects",
+      "iat": "00CE21FC",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C3762D",
+      "function": "00C375F0",
+      "instruction": "CALL EBP",
+      "native": "KERNEL32.dll!EnterCriticalSection",
+      "iat": "00CE2218",
+      "evidence": "loaded into EBP at00C375F5",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C3763E",
+      "function": "00C375F0",
+      "instruction": "CALL dword ptr [0x00ce2210]",
+      "native": "KERNEL32.dll!LeaveCriticalSection",
+      "iat": "00CE2210",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C3764A",
+      "function": "00C375F0",
+      "instruction": "CALL EAX",
+      "native": "task+vtable00",
+      "evidence": "00C37644 loads task vtable;00C37646 first slot;00C37648 ECX=task; no stack args; actual task methods remain external",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C37668",
+      "function": "00C375F0",
+      "instruction": "CALL dword ptr [0x00ce22b4]",
+      "native": "KERNEL32.dll!SetEvent",
+      "iat": "00CE22B4",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C3314A",
+      "function": "00C33140",
+      "instruction": "CALL dword ptr [0x00ce2218]",
+      "native": "KERNEL32.dll!EnterCriticalSection",
+      "iat": "00CE2218",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C33172",
+      "function": "00C33140",
+      "instruction": "CALL 0x00bf55be",
+      "native": "00BF55BE",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C331A4",
+      "function": "00C33140",
+      "instruction": "CALL 0x00bf6989",
+      "native": "00BF6989",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C33221",
+      "function": "00C33140",
+      "instruction": "CALL dword ptr [0x00ce2150]",
+      "native": "KERNEL32.dll!ReleaseSemaphore",
+      "iat": "00CE2150",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C3322F",
+      "function": "00C33140",
+      "instruction": "CALL dword ptr [0x00ce2210]",
+      "native": "KERNEL32.dll!LeaveCriticalSection",
+      "iat": "00CE2210",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C3323F",
+      "function": "00C33140",
+      "instruction": "CALL dword ptr [0x00ce22b0]",
+      "native": "KERNEL32.dll!WaitForSingleObject",
+      "iat": "00CE22B0",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C41015",
+      "function": "00C40FF0",
+      "instruction": "CALL 0x00c37690",
+      "native": "00C37690",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C41027",
+      "function": "00C40FF0",
+      "instruction": "CALL EDI",
+      "native": "KERNEL32.dll!CloseHandle",
+      "iat": "00CE225C",
+      "evidence": "loaded into EDI at00C41020",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C41030",
+      "function": "00C40FF0",
+      "instruction": "CALL EDI",
+      "native": "KERNEL32.dll!CloseHandle",
+      "iat": "00CE225C",
+      "evidence": "loaded into EDI at00C41020",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C41035",
+      "function": "00C40FF0",
+      "instruction": "CALL 0x00bf6989",
+      "native": "00BF6989",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C41041",
+      "function": "00C40FF0",
+      "instruction": "CALL dword ptr [0x00ce2214]",
+      "native": "KERNEL32.dll!DeleteCriticalSection",
+      "iat": "00CE2214",
+      "evidence": "PE import binding and complete live native listing",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00C4104F",
+      "function": "00C40FF0",
+      "instruction": "CALL 0x00bf6989",
+      "native": "00BF6989",
+      "inherited_from": "reports/dyn_task_manager.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c48fec",
+      "native": "00CE2154+IAT",
+      "function": "00c48fd0",
+      "contract": "InitializeCriticalSectionAndSpinCount(0109ECC0,10000); stdcall pops8; BOOL ignored",
+      "bytes": "ff155421ce00",
+      "producer": "PUSH2710 atC48FD8, PUSH109ECC0 atC48FDD; MOV[109EA48],D7A1A8 atC48FE2 before call",
+      "inherited_from": "reports/dyn_dispatch_initialization.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c491ef",
+      "native": "00bf7030",
+      "function": "00c48fd0",
+      "contract": "Actual recovered CRT sqrt with squared length already in x87 ST0; no stack arguments, RET",
+      "registers": "ESI assigned109EA60 atC491B4 and advanced18h atC491F8; no other ESI writes until epilogue",
+      "floating_input": "loads y,x,z; y*y+x*x then adds z*z without a double spill",
+      "inherited_from": "reports/dyn_dispatch_initialization.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00cc8950",
+      "native": "00c48fd0",
+      "function": "00cc8950",
+      "contract": "No arguments; constructor runs before atexit registration; EAX owner ignored",
+      "inherited_from": "reports/dyn_dispatch_initialization.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00cc895a",
+      "native": "00bf6ff5",
+      "function": "00cc8950",
+      "contract": "Actual CRT _atexit receives CD91D0 pushed atCC8955; POP ECX atCC895F removes4 bytes; EAX status returned unchanged",
+      "inherited_from": "reports/dyn_dispatch_initialization.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00cd91d5",
+      "native": "00CE2214+IAT",
+      "function": "00cd91d0",
+      "contract": "DeleteCriticalSection(0109ECC0); stdcall pops4; no later owner stores",
+      "bytes": "ff151422ce00",
+      "producer": "PUSH109ECC0 atCD91D0",
+      "inherited_from": "reports/dyn_dispatch_initialization.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c41b4d",
+      "native": "00409170",
+      "function": "00c41ad0",
+      "contract": "Existing body pool constructor; called for world+4C and +170.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c41b5f",
+      "native": "00409170",
+      "function": "00c41ad0",
+      "contract": "Existing body pool constructor; called for world+4C and +170.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c41b70",
+      "native": "00409450",
+      "function": "00c41ad0",
+      "contract": "Existing motion pool constructor for world+294.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c41bf2",
+      "native": "00bf681b",
+      "function": "00c41ad0",
+      "contract": "Native operator new: scene storage size E8h.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c41c09",
+      "native": "00c38070",
+      "function": "00c41ad0",
+      "contract": "Complete scene constructor; separate scene report verifies its own calls and owned buffers.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c41c5d",
+      "native": "00bf55be",
+      "function": "00c41ad0",
+      "contract": "Native allocation helper for task arrays/pointer arrays or inlined pool growth.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c41cd8",
+      "native": "00bf6989",
+      "function": "00c41ad0",
+      "contract": "Native free helper; old-buffer branches are unreachable for fresh zero-count construction.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c41d40",
+      "native": "00bf55be",
+      "function": "00c41ad0",
+      "contract": "Native allocation helper for task arrays/pointer arrays or inlined pool growth.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c41d7e",
+      "native": "00bf6989",
+      "function": "00c41ad0",
+      "contract": "Native free helper; old-buffer branches are unreachable for fresh zero-count construction.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c41df1",
+      "native": "00bf55be",
+      "function": "00c41ad0",
+      "contract": "Native allocation helper for task arrays/pointer arrays or inlined pool growth.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c41e6b",
+      "native": "00bf6989",
+      "function": "00c41ad0",
+      "contract": "Native free helper; old-buffer branches are unreachable for fresh zero-count construction.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c41ed2",
+      "native": "00bf55be",
+      "function": "00c41ad0",
+      "contract": "Native allocation helper for task arrays/pointer arrays or inlined pool growth.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c41f10",
+      "native": "00bf6989",
+      "function": "00c41ad0",
+      "contract": "Native free helper; old-buffer branches are unreachable for fresh zero-count construction.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c41fb6",
+      "native": "00bf9f1a",
+      "function": "00c41ad0",
+      "contract": "Existing CRT assert boundary for native shared-motion pool invariant; not a fabricated physics call.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c42008",
+      "native": "00bf55be",
+      "function": "00c41ad0",
+      "contract": "Native allocation helper for task arrays/pointer arrays or inlined pool growth.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c42048",
+      "native": "00bf6989",
+      "function": "00c41ad0",
+      "contract": "Native free helper; old-buffer branches are unreachable for fresh zero-count construction.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c420bd",
+      "native": "00bf79f0",
+      "function": "00c41ad0",
+      "contract": "CRT memset of exactly C0h bytes in the shared motion allocated from the C8h pool.",
+      "inherited_from": "reports/dyn_world_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c38102",
+      "native": "00bf79f0",
+      "function": "00c38070",
+      "listing": "0x00bf79f0",
+      "inherited_from": "reports/dyn_scene_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c38189",
+      "native": "00bf681b",
+      "function": "00c38070",
+      "listing": "0x00bf681b",
+      "inherited_from": "reports/dyn_scene_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c3819f",
+      "native": "00c36f10",
+      "function": "00c38070",
+      "listing": "0x00c36f10",
+      "inherited_from": "reports/dyn_scene_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c381b8",
+      "native": "00bf681b",
+      "function": "00c38070",
+      "listing": "0x00bf681b",
+      "inherited_from": "reports/dyn_scene_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c381d6",
+      "native": "0040a1e0",
+      "function": "00c38070",
+      "listing": "0x0040a1e0",
+      "inherited_from": "reports/dyn_scene_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c381e7",
+      "native": "00CE2154+IAT",
+      "function": "00c38070",
+      "listing": "dword ptr [0x00ce2154]",
+      "contract": "InitializeCriticalSectionAndSpinCount(container+1D8,10000), stdcall; return value ignored",
+      "inherited_from": "reports/dyn_scene_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c38234",
+      "native": "00bf55be",
+      "function": "00c38070",
+      "listing": "0x00bf55be",
+      "inherited_from": "reports/dyn_scene_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c382a8",
+      "native": "00bf6989",
+      "function": "00c38070",
+      "listing": "0x00bf6989",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture",
+      "inherited_from": "reports/dyn_scene_runtime.json"
+    },
+    {
+      "address": "00c38310",
+      "native": "00bf55be",
+      "function": "00c38070",
+      "listing": "0x00bf55be",
+      "inherited_from": "reports/dyn_scene_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c3834e",
+      "native": "00bf6989",
+      "function": "00c38070",
+      "listing": "0x00bf6989",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture",
+      "inherited_from": "reports/dyn_scene_runtime.json"
+    },
+    {
+      "address": "00c383e1",
+      "native": "00bf55be",
+      "function": "00c38070",
+      "listing": "0x00bf55be",
+      "inherited_from": "reports/dyn_scene_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "00c3843d",
+      "native": "00bf6989",
+      "function": "00c38070",
+      "listing": "0x00bf6989",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture",
+      "inherited_from": "reports/dyn_scene_runtime.json"
+    },
+    {
+      "address": "0040a23a",
+      "native": "00bf9f1a",
+      "function": "0040a1e0",
+      "listing": "0x00bf9f1a",
+      "inherited_from": "reports/dyn_scene_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "0040a27c",
+      "native": "00bf55be",
+      "function": "0040a1e0",
+      "listing": "0x00bf55be",
+      "inherited_from": "reports/dyn_scene_runtime.json",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture"
+    },
+    {
+      "address": "0040a2ad",
+      "native": "00bf6989",
+      "function": "0040a1e0",
+      "listing": "0x00bf6989",
+      "scope": "dependency contract; not every branch/site executes in this normal-path fixture",
+      "inherited_from": "reports/dyn_scene_runtime.json"
+    }
+  ],
+  "paired_fixture": {
+    "workers": 0,
+    "owned_buffer_pairs": 29,
+    "world_storage_bytes": 1164,
+    "dispatch_object_pairs": 8,
+    "allocation_publication_records": [
+      {
+        "size": 20,
+        "engine_global": 0,
+        "profile_global": 0
+      },
+      {
+        "size": 156,
+        "engine_global": 0,
+        "profile_global": 0
+      },
+      {
+        "size": 72,
+        "engine_global": 0,
+        "profile_global": 0
+      },
+      {
+        "size": 856,
+        "engine_global": 0,
+        "profile_global": 294912000
+      },
+      {
+        "size": 136000,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 8,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 136000,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 8,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 200000,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 8,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 232,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 584,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 16000,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 8,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 16000,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 8,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 16000,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 8,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 16000,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 8,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 80000,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 8,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 80000,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 8,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 2000,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 496,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 224000,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 8,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      },
+      {
+        "size": 12000,
+        "engine_global": 294649856,
+        "profile_global": 294912000
+      }
+    ],
+    "serialized_bytes": 938692,
+    "both_records_sha256": "3b79446a5134056b5293b78c40e3fa6509ca95eb67dccea0309ad922d0260478",
+    "profile_tail_ready_checks": 2,
+    "singleton_reuse_each_side": true,
+    "x87_control_word": "027f",
+    "world_status_and_TOP": "0000",
+    "dispatch_status_and_TOP_equal": true,
+    "engine_projection_used": false,
+    "task_manager_projection_used": false,
+    "shared_dispatch_owner_used": false
+  },
+  "source_one_worker_fixture": {
+    "allocation_records": 36,
+    "actual_thread_created": true,
+    "thread_priority": "THREAD_PRIORITY_HIGHEST",
+    "worker_count_reaches_three_task_record_and_pointer_vectors": true,
+    "task_record_owner_links_checked": true,
+    "submitted_batches": 0,
+    "recovered_destructor_joins_idle_worker": true,
+    "worker_exit_code": 0,
+    "paired_native_comparison": false
+  },
+  "normalization": {
+    "pointer_fields": "Established engine/profile/node/manager/world/scene/pool/task fields; native pointer-vector allocations allow all words.",
+    "dispatch_objects": "Eight distinct canonical IDs for separate actual owners; table addresses shared unchanged except relocation.",
+    "CS_DebugInfo_exclusions": [
+      {
+        "allocation_id": 103,
+        "offset": "18"
+      },
+      {
+        "allocation_id": 125,
+        "offset": "1d8"
+      },
+      {
+        "dispatch_id": 9,
+        "offset": "278"
+      }
+    ],
+    "other_CS_words_compared": true,
+    "other_uninitialized_bytes_compared": true,
+    "manager_handles": "102 each side checked valid and unsignalled, then normalized by role offset1C0..354"
+  },
+  "runtime_boundaries": {
+    "allocator": "Tracked host malloc/free with fresh A5 bytes; native allocation entry shims and source memory callbacks use same service.",
+    "CRT_vector_iterator": "BF7CD1 bridge iterates actual original element constructor, valid-construction only; no exception unwind fidelity.",
+    "CRT_sqrt": "Both sides share existing recovered native_crt_sqrt_st0_00bf7030 plus actual mapped0109DD78; 027F/positive operands; external __87except fail-fast boundary never reached.",
+    "CRT_atexit": "Exact original/source callback pointers passed through registration observer to real host CRT atexit; no manual callback substitute.",
+    "Win32": "Actual locks, semaphore, events, and source _beginthreadex/priority/wait/shutdown."
+  },
+  "cleanup": {
+    "created_handles": 307,
+    "explicit_fixture_closes": 305,
+    "recovered_destructor_closes": 2,
+    "remaining_tracked_allocations": 0,
+    "paired_zero_manager_destructor_called": false,
+    "zero_manager_plus0_and_plus8": "A5 untouched, preserved and compared; no fabricated null precondition.",
+    "source_one_manager_destructor_called": true,
+    "world_scene_engine_profile_destructor_validation": false,
+    "real_atexit": {
+      "registrations": 2,
+      "native_dispatch_deletes": 1,
+      "source_deleted_cs_matches_host": true
+    }
+  },
+  "verification": {
+    "seed_gate": "local/verify_seeds.log",
+    "release_build": "local/combined_build_after_seeds.log",
+    "existing_CTests": "2/2 passed",
+    "fixture_exit_code": 0,
+    "fixture_log": "local/dyn_world_connection_probe.log",
+    "native_call_gate": "passed; 54 direct call rows checked, 0 failures; other inherited rows are indirect/IAT contracts",
+    "fixture_CPP_sha256": "1312c6b4f2e36a49817782699c4c7d0fdf9cbfeb2681d5726bb5f3395e216723",
+    "all_compiled_source_inputs_unchanged_after_build_and_probe": true
+  },
+  "fixture_hygiene_correction": "Omitted unused inherited D7A0AC relocation (old5th slot was RTTI D7CA20) and unused C5CABC shape switch; retained13 complete used tables with actual executable targets.",
+  "limitations": [
+    "Direct world constructor does not execute engine-world-list factory00C420E0.",
+    "No body creation, scene event use, collision/solver/task execution, or whole-game startup.",
+    "World/scene child allocations disposed by fixture after lock/worker teardown; not destructor validation.",
+    "No native SEH/OOM/failed OS/concurrent reconfiguration behavior proof.",
+    "Actual method tables retained, but transitive runtime readiness of unexecuted methods is not established.",
+    "Shared reconstructed CRT service is not independent CRT-handler fidelity."
+  ],
+  "artifacts": {
+    "manifest": "local/dyn_world_connection_artifact_manifest.json",
+    "generator": "local/make_dyn_world_connection_probe.py",
+    "build_script": "local/build_dyn_world_connection_probe.ps1",
+    "native_image": "local/dyn_world_connection_native_image.bin",
+    "input_manifest": "local/dyn_world_connection_inputs.json",
+    "report_generator": "local/write_dyn_world_connection_report.py"
+  }
+}
