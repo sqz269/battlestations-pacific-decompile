@@ -10,6 +10,7 @@
 #include "bsp/game_entry.hpp"
 #include "bsp/game_settings.hpp"
 #include "bsp/gun_aiming.hpp"
+#include "bsp/gunnery_tables.hpp"
 #include "bsp/gun_platform_arc.hpp"
 #include "bsp/gun_bot_remainder.hpp"
 #include "bsp/gun_bot_ticks.hpp"
@@ -2865,6 +2866,24 @@ int main() {
         check(std::fabs(cruise_seed.ordered.throttle - cruise_seed.seed.ring_throttle) < 1e-6f &&
               cruise_seed.ordered.mode == bsp::CruiseSteerMode::Heading,
             "009E1265 orders the seeded throttle, so a scene `Cruise` ship makes way");
+    }
+
+    {
+        // 00727BD0 over the installed preference lists at 00E092C8. Pins the
+        // unclamped write index: category 0's single id 61h is one past the
+        // class-id space, so its rank lands on row 1 slot 0 and the next
+        // iteration's zeroing must erase it before row 1 is filled.
+        static std::array<int, bsp::kUnitGunneryCategoryCount * bsp::kUnitGunneryClassIdCount> ranks{};
+        bsp::build_rank_table_00727bd0(bsp::kGunneryPreferenceLists, ranks.data());
+        check(bsp::gunnery_rank(ranks.data(), 1, 0x17) == 1
+                && bsp::gunnery_rank(ranks.data(), 1, 0x41) == 12
+                && bsp::gunnery_rank(ranks.data(), 1, 0x07) == 0,
+            "00727BD0: AAMACHINEGUN ranks the kamikaze first, the navpoint last, no destroyer");
+        check(bsp::gunnery_rank(ranks.data(), 4, 0x0D) == 1
+                && bsp::gunnery_rank(ranks.data(), 2, 0x0D) == 8,
+            "00727BD0: HEAVYARTILLERY ranks the battleship first, LIGHTARTILLERY eighth");
+        check(bsp::gunnery_rank(ranks.data(), 1, 0) == 0,
+            "00727BEC: category 0's id 61h aliases row 1 slot 0 and is zeroed again");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

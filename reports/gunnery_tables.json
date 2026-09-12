@@ -1,0 +1,363 @@
+{
+  "packet": "cc2_gunnery_tables",
+  "owner": "agent/cc2-gunnery-tables",
+  "doc": "docs/GUNNERY_TABLES.md",
+  "sources": [
+    "include/bsp/gunnery_tables.hpp",
+    "src/gunnery_tables.cpp",
+    "tests/math_tests.cpp"
+  ],
+  "classification": {
+    "exported": true,
+    "reconstructed": true,
+    "build_tested": true,
+    "fixture_tested": true,
+    "abi_compatible": false,
+    "game_validated": false,
+    "note": "Read-only analysis. The tables are transcribed from the shipped image and the shipped Lua data tables; the rules are semantic projections with new C++ interfaces, not drop-in binary replacements. No run-time evidence: bsp_game.exe does not reach the unit gunnery pass."
+  },
+  "routines": [
+    {
+      "address": "00956c20",
+      "native": "00956c20",
+      "name": "BSP_Unit_RebuildWeaponCategoryIndex",
+      "abi": "__fastcall(Unit* this), RET 0",
+      "body": "00956c20-00956ed0",
+      "coverage": "complete",
+      "produces": ["unit+394h..unit+3FCh", "unit+424h..unit+42Ch", "unit+430h..unit+45Ch", "unit+460h..unit+48Ch", "unit+490h", "unit+494h", "unit+6E0h"]
+    },
+    {
+      "address": "00955eb0",
+      "native": "00955eb0",
+      "name": "BSP_GunCategoryList_Clear",
+      "abi": "__fastcall(ListHeader* this), RET 0",
+      "body": "00955eb0-00955ef5",
+      "coverage": "complete",
+      "note": "Pseudocode shows a single erase and a spurious return after the _free at 00955EE7; the listing has the back edge JNE 00955EB8 at 00955EF2, so the body empties the list."
+    },
+    {
+      "address": "00727bd0",
+      "native": "00727bd0",
+      "name": "BSP_GunneryTargetRanks_Build",
+      "abi": "__cdecl(), RET 0",
+      "body": "00727bd0-00727c24",
+      "coverage": "complete",
+      "note": "Already named by packet cc2_unit_gunnery_pass; this packet appended the source-table evidence only."
+    },
+    {
+      "address": "007327b0",
+      "native": "007327b0",
+      "name": "BSP_GunClass_ReadLuaFields",
+      "abi": "__fastcall, body 007327b0-00732f4f",
+      "coverage": "partial: only the Function chain 007327E4-00732991 was read; 007329A4-00732F4F unread",
+      "produces": ["gun class descriptor +80h"]
+    },
+    {
+      "address": "0087d7b0",
+      "native": "0087d7b0",
+      "name": "BSP_GlobalConfig_LoadFromLuaGlobals",
+      "abi": "body 0087d7b0-0087f96f",
+      "coverage": "partial: the float band 0087E0C6-0087E348 and the script/table setup 0087D7B0-0087D890 were read; the colour and string tables after 0087E3FE were mapped by key only",
+      "produces": ["GlobalConfig +80h..+0A4h"]
+    },
+    {
+      "address": "00729f10",
+      "native": "00729f10",
+      "name": "BSP_Gun_IsOperational",
+      "abi": "__fastcall(Gun* this), AL, RET 0",
+      "coverage": "complete"
+    },
+    {
+      "address": "00731020",
+      "native": "00731020",
+      "name": "BSP_Gun_MaxWeaponRange",
+      "abi": "__fastcall(GunClass* desc), ST0, RET 0",
+      "coverage": "complete"
+    },
+    {
+      "address": "008ac140",
+      "native": "008ac140",
+      "name": "BSP_Lua_AddUntouchableUnit",
+      "abi": "__fastcall(lua_State*), body 008ac140-008ac2aa",
+      "coverage": "complete"
+    },
+    {
+      "address": "008ac2b0",
+      "native": "008ac2b0",
+      "name": "BSP_Lua_RemoveUntouchableUnit",
+      "abi": "__fastcall(lua_State*), body 008ac2b0-008ac41f",
+      "coverage": "complete"
+    },
+    {
+      "address": "008ac420",
+      "native": "008ac420",
+      "name": "BSP_Lua_IsUnitUntouchable",
+      "abi": "__fastcall(lua_State*), body 008ac420-008ac5b4",
+      "coverage": "complete"
+    }
+  ],
+  "host_calls": [
+    {
+      "address": "00956c38",
+      "native": "00955eb0",
+      "function": "00956c20",
+      "host_method": "clear_list_00955eb0(-1)",
+      "note": "empties the all-guns list at unit+424h"
+    },
+    {
+      "address": "00956c4a",
+      "native": "00955eb0",
+      "function": "00956c20",
+      "host_method": "clear_list_00955eb0(category)",
+      "note": "loop body, twelve records at unit+394h + i*0Ch"
+    },
+    {
+      "address": "00956c76",
+      "native": "device_vtable+5Ch",
+      "function": "00956c20",
+      "host_method": "device_at().is_gun",
+      "kind": "indirect",
+      "note": "CALL EDX, the class test with id 20h"
+    },
+    {
+      "address": "00956c98",
+      "native": "00729f10",
+      "function": "00956c20",
+      "host_method": "device_at().operational"
+    },
+    {
+      "address": "00956cbd",
+      "native": "00bf681b",
+      "function": "00956c20",
+      "host_method": "append_to_category",
+      "note": "operator new(0Ch), the category list node"
+    },
+    {
+      "address": "00956cf9",
+      "native": "00bf681b",
+      "function": "00956c20",
+      "host_method": "append_to_all_guns",
+      "note": "operator new(0Ch), the all-guns list node"
+    },
+    {
+      "address": "00956d9f",
+      "native": "00731020",
+      "function": "00956c20",
+      "host_method": "device_at().max_range"
+    },
+    {
+      "address": "00955ee7",
+      "native": "00bf65ac",
+      "function": "00955eb0",
+      "host_method": "clear_list_00955eb0",
+      "note": "_free per node; the back edge JNE 00955EB8 at 00955EF2 follows it"
+    },
+    {
+      "address": "0087e166",
+      "native": "00b66270",
+      "function": "0087d7b0",
+      "host_method": "WeaponDirectorThinkTime -> GlobalConfig+88h",
+      "note": "the FSTP is at 0087E16B"
+    },
+    {
+      "address": "0087e19e",
+      "native": "00b66270",
+      "function": "0087d7b0",
+      "host_method": "SafeToFireCacheTimeOut -> GlobalConfig+8Ch",
+      "note": "the FSTP is at 0087E1A3"
+    },
+    {
+      "address": "0087e20b",
+      "native": "00b66270",
+      "function": "0087d7b0",
+      "host_method": "VisibleTimeOut -> GlobalConfig+0A0h",
+      "note": "the FSTP is at 0087E210"
+    },
+    {
+      "address": "0087e243",
+      "native": "00b66270",
+      "function": "0087d7b0",
+      "host_method": "InvisibleTimeOut -> GlobalConfig+0A4h",
+      "note": "the FSTP is at 0087E248"
+    },
+    {
+      "address": "0087e157",
+      "native": "00b67800",
+      "function": "0087d7b0",
+      "host_method": "GetByName(\"WeaponDirectorThinkTime\")",
+      "note": "key string 00D0E400"
+    },
+    {
+      "address": "0087e1fc",
+      "native": "00b67800",
+      "function": "0087d7b0",
+      "host_method": "GetByName(\"VisibleTimeOut\")",
+      "note": "key string 00D0E3CC"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0047f320",
+      "name": "BSP_Entity_GunneryProxy_Identity",
+      "end_address": "0047f322",
+      "note": "vtable[140h] on the ship base: MOV EAX,ECX; RET. Read from the raw listing; not named in the ledger."
+    },
+    {
+      "address": "007b97e0",
+      "name": "BSP_Plane_GunneryProxy",
+      "end_address": "007b97e6",
+      "note": "vtable[140h] on a plane: MOV EAX,[ECX+9D4h]; RET. Read from the raw listing; not named in the ledger."
+    },
+    {
+      "address": "006f57a0",
+      "name": "BSP_LandFort_GunneryProxy",
+      "end_address": "006f57ac",
+      "note": "vtable[140h] on a land fort: [ECX+738h] or ECX when null. Read from the raw listing; not named in the ledger."
+    }
+  ],
+  "record_layouts": [
+    {
+      "record": "unit weapon category record",
+      "base": "unit+394h",
+      "stride": "0Ch",
+      "count": 12,
+      "producer": "00956c20",
+      "fields": [
+        {"offset": "+0h", "name": "count", "evidence": "00956CF4 increments it; 0086516D compares it with zero as the pass's gate"},
+        {"offset": "+4h", "name": "head", "evidence": "00956CEB on an empty list; 00865777 reads it"},
+        {"offset": "+8h", "name": "tail", "evidence": "00956CEE stores the new node; 00956CE6 links the old tail's next"}
+      ]
+    },
+    {
+      "record": "category list node",
+      "base": "operator new(0Ch)",
+      "stride": "0Ch",
+      "producer": "00956c20",
+      "fields": [
+        {"offset": "+0h", "name": "prev", "evidence": "00956CDD stores the previous tail"},
+        {"offset": "+4h", "name": "next", "evidence": "00956CF1 stores null; 00955EBB and 00955EC1 walk it"},
+        {"offset": "+8h", "name": "gun", "evidence": "00956CD7 stores the device"}
+      ]
+    },
+    {
+      "record": "all-guns list",
+      "base": "unit+424h",
+      "stride": "0Ch",
+      "count": 1,
+      "producer": "00956c20",
+      "fields": [
+        {"offset": "+0h", "name": "count"},
+        {"offset": "+4h", "name": "head"},
+        {"offset": "+8h", "name": "tail"}
+      ]
+    }
+  ],
+  "installed_tables": {
+    "gunnery_preference_lists": {
+      "address": "00e092c8",
+      "extent": "00e092c8-00e0a4f8",
+      "shape": "12 rows of 61h dwords, stride 184h",
+      "source": "file-initialized .data in battlestationspacific.exe; .data raw size 10000h from VA 00E08000, so the block is on disk",
+      "producer": "none at run time; the only image reference to 00E092C8 is the MOV ESI immediate at 00727BDB",
+      "rows": {
+        "0_PLANEGUN": ["61"],
+        "1_AAMACHINEGUN": ["17", "11", "12", "15", "16", "10", "13", "0E", "0C", "0B", "08", "41"],
+        "2_LIGHTARTILLERY": ["07", "0C", "0B", "0E", "0A", "08", "09", "0D", "1C", "1B", "45", "46", "19", "41"],
+        "3_MEDIUMARTILLERY": ["07", "0A", "08", "09", "0C", "0B", "0E", "0D", "1C", "1B", "45", "46", "19", "41"],
+        "4_HEAVYARTILLERY": ["0D", "0A", "07", "09", "0C", "0B", "08", "0E", "1C", "1B", "45", "46", "19", "41"],
+        "5_FLAK": ["17", "11", "12", "15", "16", "14", "10", "13", "0E"],
+        "6_LIGHTARTILLERYFLAK": ["17", "11", "12", "16", "15", "14", "10", "13", "0E", "07", "08", "0B", "0C", "09", "0A", "0D", "1C", "1B", "45", "46", "19", "41"],
+        "7_TORPEDO": ["09", "0D", "0A", "07", "0C", "0B", "08", "41"],
+        "8_DEPTHCHARGE": ["08", "41"],
+        "9_DEPTHCHARGELAUNCHER": ["08", "41"],
+        "0A_BOMBPLATFORM": [],
+        "0B_CATAPULT": []
+      }
+    },
+    "weapon_function_to_category": {
+      "producer": "007327b0",
+      "source": "Scripts/datatables/classtables/<mode>/deviceclasses.lua, the Function key",
+      "map": {
+        "0": "PLANEGUN", "1": "AAMACHINEGUN", "2": "LIGHTARTILLERY",
+        "3": "MEDIUMARTILLERY", "4": "HEAVYARTILLERY", "5": "FLAK",
+        "6": "LIGHTARTILLERYFLAK", "7": "TORPEDO", "8": "DEPTHCHARGE",
+        "9": "DEPTHCHARGELAUNCHER", "0A": "BOMBPLATFORM", "0B": "CATAPULT"
+      },
+      "register_provenance": "PLANEGUN stores EBP (XOR EBP,EBP at 007327EC) and LIGHTARTILLERY stores EBX (MOV EBX,2 at 00732806); each register has exactly one write across 007327B0-007329A4"
+    },
+    "global_config_gunnery_band": {
+      "producer": "0087d7b0",
+      "source": "Scripts/datatables/Globals.lua (path literal 00D0E564), global table Globals (00CE490C)",
+      "fields": [
+        {"offset": "+88h", "key": "WeaponSystems.WeaponDirectorThinkTime", "site": "0087e16b", "installed": 2},
+        {"offset": "+8Ch", "key": "WeaponSystems.SafeToFireCacheTimeOut", "site": "0087e1a3", "installed": 2},
+        {"offset": "+90h", "key": "LineOfSight.TargetHeightAdd", "site": "0087e28a", "installed": 5.0},
+        {"offset": "+94h", "key": "LineOfSight.ViewerHeightAdd", "site": "0087e2cc", "installed": 5.0},
+        {"offset": "+98h", "key": "LineOfSight.TargetHeightMul", "site": "0087e30a", "installed": 0.0},
+        {"offset": "+9Ch", "key": "LineOfSight.ViewerHeightMul", "site": "0087e348", "installed": 0.0, "note": "the key is absent from the shipped table; lua_tonumber on nil gives 0.0f"},
+        {"offset": "+0A0h", "key": "LineOfSight.VisibleTimeOut", "site": "0087e210", "installed": 5},
+        {"offset": "+0A4h", "key": "LineOfSight.InvisibleTimeOut", "site": "0087e248", "installed": 4}
+      ]
+    },
+    "untouchable_bindings": {
+      "field": "entity+1D4h, one byte, reached through entity->vtable[140h]()",
+      "reader": "00862440",
+      "initializer": {"site": "00928767", "function": "00928630", "value": 0, "evidence": "stores BL; EBX is zeroed once at 00928660 and never rewritten in the constructor"},
+      "bindings": [
+        {"record": "00e0c088", "name": "IsUnitUntouchable", "fn": "008ac420", "site": "008ac552", "effect": "read"},
+        {"record": "00e0c090", "name": "AddUntouchableUnit", "fn": "008ac140", "site": "008ac263", "effect": "write 1"},
+        {"record": "00e0c098", "name": "RemoveUntouchableUnit", "fn": "008ac2b0", "site": "008ac3d6", "effect": "write 0"}
+      ]
+    }
+  },
+  "corrections": [
+    {
+      "document": "UNIT_GUNNERY_PASS.md",
+      "was": "Both tables are zero in the file on disk (they live in .data and are filled at run time by 00727BD0 from 00E092C8, which is itself zero in the image). The producer of 00E092C8 is contract: unread.",
+      "is": "00E092C8 is non-zero in the image. .data has raw size 10000h from VA 00E08000, so 00E092C8-00E0A4F8 is initialized storage on disk and carries the twelve authored rows. There is no run-time producer at all: the only reference to 00E092C8 anywhere in the image is the MOV ESI immediate at 00727BDB. Only 00E19BF8, which is past the raw extent, is zero at load.",
+      "evidence": "PE section header .data va=00E08000 vsize=297EDC raw=00A08000 rsize=010000; a whole-image scan for the little-endian dword 00E092C8 returns one hit at 00727BDC; the rows at 00E092C8, 00E0944C, 00E095D0, 00E09754, 00E098D8, 00E09A5C, 00E09BE0, 00E09D64, 00E09EE8, 00E0A06C read back as the table above, and row 1 reproduces the values the document recorded as a live-process observation."
+    },
+    {
+      "document": "UNIT_GUNNERY_PASS.md",
+      "was": "category 0's list holds the single value 61h, which is one past the class-id space and lands in category 1's slot 0; that is what the data says, and it is recorded here without explanation.",
+      "is": "Category 0 is the PLANEGUN weapon Function, which no unit-side gunnery pass drives, so the row is a placeholder whose one entry cannot match a class. The stray rank it writes at 00E19BF8+184h is erased by the REP STOSD at 00727BEC on the next iteration, which zeroes all 61h dwords of row 1 before filling it.",
+      "evidence": "007327B0's Function chain gives category 0 = PLANEGUN; 00727BEC zeroes the row at EBP = 00E19BF8 + category*184h at the top of each iteration, and category 0's write goes to 00E19BF8 + 61h*4 = 00E19BF8 + 184h."
+    },
+    {
+      "document": "UNIT_GUNNERY_PASS.md",
+      "was": "+394h is the gate step 8.1 reads and +398h is the head of a singly linked list whose nodes carry next at +4h and the gun at +8h. The third word at +39Ch is not read here.",
+      "is": "The record is a doubly linked list header: +394h is the node count, +398h the head, +39Ch the tail. The node is prev at +0h, next at +4h, gun at +8h. The pass's gate is the count compared with zero.",
+      "evidence": "00956C20's insert at 00956CB6-00956CF4: 00956CD7 node[+8h] = gun, 00956CDD node[+0h] = record[+8h], 00956CEB record[+4h] = node when record[+0h] == 0 else 00956CE6 record[+8h]->next = node, 00956CEE record[+8h] = node, 00956CF1 node[+4h] = 0, 00956CF4 record[+0h] += 1. 0086516D compares the dword at unit + cat*0Ch + 394h with zero and skips the category."
+    },
+    {
+      "document": "UNIT_GUNNERY_PASS.md",
+      "was": "The producer of GlobalConfig+88h is contract: unread; it is not written anywhere in 00432650-00434500.",
+      "is": "0087D7B0 writes it at 0087E16B from Globals.WeaponSystems.WeaponDirectorThinkTime, installed value 2 seconds. The constructor 004324E0 leaves it alone because the whole 2E8h object is filled by that loader, not by the constructor.",
+      "evidence": "0087E114 pushes the key string 00D0E418 \"WeaponSystems\" and 0087E149 pushes 00D0E400 \"WeaponDirectorThinkTime\"; 0087E166 calls 00B66270 (lua_tonumber) and 0087E16B is FSTP [ESI+88h]. Scripts/datatables/globals.lua has WeaponSystems.WeaponDirectorThinkTime = 2."
+    },
+    {
+      "document": "UNIT_GUNNERY_PASS.md",
+      "was": "00862440(entity): entity->vtable[140h]() != 0 && [that + 1D4h] != 0. A candidate whose unit-side AI sets +1D4h is skipped by the sweep. What +1D4h means is contract: unread.",
+      "is": "+1D4h is the script-set untouchable flag. The Lua binding AddUntouchableUnit(unit) sets it and RemoveUntouchableUnit(unit) clears it; IsUnitUntouchable(unit) reads it. It is not written by any AI. vtable[140h] is a proxy accessor, the identity on the ship base.",
+      "evidence": "Binding records at 00E0C088/00E0C090/00E0C098 pair the three recovered name strings with 008AC420/008AC140/008AC2B0, whose bodies read, set and clear the byte at 008AC552, 008AC263 and 008AC3D6; 0047F320 is MOV EAX,ECX; RET."
+    },
+    {
+      "document": "UNIT_GUNNERY_PASS.md",
+      "was": "the per-category engagement range lives on the unit at +430h (producer not stated).",
+      "is": "00956C20 writes it: unit+430h + cat*4 is the longest weapon range among that category's live guns, floored at the 10.0f constant at 00CE38B8.",
+      "evidence": "00956D63 seeds the row from 00CE38B8; 00956D9F calls 00731020 for each gun on the category list and 00956DF3 stores the running maximum. 00863A34 reads the same slot."
+    }
+  ],
+  "remaining": [
+    "unit+460h + cat*4, the accumulated blast term 00956C20 writes at 00956E9B, has no reader in this packet's reach: contract unread.",
+    "00956C20 walks only the unit's direct device children (head unit+48h, next device+44h); 008CF350 recurses with a worklist. Whether any shipped unit parents a gun more than one level down was not checked.",
+    "007327B0's Function chain fall-through leaves gun class descriptor +80h at the constructor's default, which was not read.",
+    "[plane+9D4h] (007B97E0) and [fort+738h] (006F57A0) were read as accessors only; their owners are outside this packet."
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 from the worktree, Win32 Release, warnings as errors: succeeded",
+    "tests": "ctest reconstructed_math: 1/1 passed, including the new 00727BD0 rank-table case",
+    "ghidra": "read-only; no renames, comments, prototypes, function creation or saves",
+    "run_time": "none; bsp_game.exe does not reach the unit gunnery pass, so no run log supports any claim here"
+  }
+}
