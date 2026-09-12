@@ -334,15 +334,20 @@ public:
         // (kUnitStateMessageTickSeconds == kFixedSimulationStepFloat), which is
         // the step this call receives.
         if (owner_.units != nullptr) {
-            owner_.units->motion_step_00825f20(step);
-            // Milestone 2j, --trajectory-csv: the trace is taken here, where the
-            // step the motion ran in is unambiguous. Executable plumbing; it
-            // reads what the motion path already wrote and changes nothing.
+            // Milestone 2j, --trajectory-csv: the file is opened before the
+            // first step so its step 0 block holds the pose the scene placed,
+            // with no motion in it. A consumer that aligns on its first sample
+            // would otherwise fold that step's displacement and rotation into
+            // the alignment. Executable plumbing; it reads what the motion path
+            // wrote and changes nothing.
             if (!owner_.trajectory_csv_path.empty() && !owner_.trajectory_csv_tried
                 && owner_.units->count() > 0) {
                 owner_.trajectory_csv_tried = true;
-                owner_.trajectory_csv.open(owner_.trajectory_csv_path, owner_.log);
+                if (owner_.trajectory_csv.open(owner_.trajectory_csv_path, owner_.log)) {
+                    owner_.trajectory_csv.append_step(0, 0.0f, owner_.units->units());
+                }
             }
+            owner_.units->motion_step_00825f20(step);
             if (owner_.trajectory_csv.is_open()) {
                 const GameUnitsSummary& units = owner_.units->summary();
                 owner_.trajectory_csv.append_step(units.motion_steps,

@@ -605,6 +605,10 @@ void GameUnitsHost::Impl::refresh_row(GameUnitSlot& slot) {
     row.ordered_rudder = slot.motion.to_turn;
     row.rudder = slot.motion.smoothed_rudder;
     row.yaw_rate = slot.motion.angular_velocity.y;
+    // The component about the hull's own up axis, which is what 0092e8c0 slews.
+    row.yaw_rate_up_axis = slot.motion.angular_velocity.x * slot.motion.pose_row1[0]
+        + slot.motion.angular_velocity.y * slot.motion.pose_row1[1]
+        + slot.motion.angular_velocity.z * slot.motion.pose_row1[2];
     const double dx = static_cast<double>(row.position[0]) - static_cast<double>(row.start[0]);
     const double dz = static_cast<double>(row.position[2]) - static_cast<double>(row.start[2]);
     row.distance = static_cast<float>(std::sqrt(dx * dx + dz * dz));

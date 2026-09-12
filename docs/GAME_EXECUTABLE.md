@@ -3247,9 +3247,33 @@ game, and makes the mission frame stop drawing the main menu.
 ### The new switch
 
 `--trajectory-csv <path>` writes one row per unit per fixed simulation step, with the header
-row `step,t,unit,class,x,y,z,heading,forward_speed,throttle,rudder,yaw_rate`. The path is
+row `step,t,unit,class,x,y,z,heading,fwd_speed,throttle,rudder,yaw_rate`. The path is
 resolved before `--game-root` changes the current directory, for the same reason `--screenshot`
 is: the run enters the installed game's read-only directory. Every earlier switch is unchanged.
+
+Three details of the format are the consumer's, not this packet's preference, and packet
+`cc_motion_trace` supplied all three while this packet was open:
+
+- The speed column is `fwd_speed`. `tools/motion_trace_compare.py` accepts `fwd_speed`,
+  `fwd_spd` or `speed` and nothing else; `forward_speed`, which this packet first emitted,
+  parses as a missing optional column and defaults to `0.0`, so the whole speed channel would
+  have read as zeros and the comparison would have reported a several-m/s divergence that was
+  not there. Only `t` is strictly required by that reader.
+- **One file per unit is written beside the combined one**, as `<stem>.<unit>.csv`. The
+  combined file interleaves 32 trajectories, and a reader that takes consecutive rows as one
+  trajectory splices them into a nonsense path with no error. The per-unit files have the same
+  header and only that unit's rows, so the single-file form works with the compare tool as it
+  stands and no `--unit` filter is needed.
+- **`yaw_rate` is `dot(w, row1)`, not the angular velocity's world y.** Row 1 is the hull's own
+  up axis and its component is the one `0092E8C0` slews toward the commanded rate. The two are
+  the same number only while the hull is upright, and they separate exactly when the limiter at
+  `0092EA15` is doing something, which is the case worth comparing. The run log's own
+  `controlled unit` line still prints the world y, which is milestone 2i's column.
+
+A **step 0 row** holds the pose the scene placed, before any motion step. Without it the first
+row is already one step into the motion, and a consumer that aligns on its first sample folds
+that step's displacement and rotation into the alignment. The 300 frame run therefore writes
+8992 rows, 32 units by 281 blocks.
 
 ### 1. The four stand-ins, replaced
 
@@ -3324,12 +3348,35 @@ numbers exactly.
 ### 2. The trajectory dump
 
 `--trajectory-csv` writes from the fixed step, immediately after `00825F20` has run for every
-unit, where the step the motion ran in is unambiguous. The 300 frame run writes **8960 rows**,
-32 units by 280 steps. `t` is simulated seconds, `x, y, z` is pose row 3 (`unit+FCh`), `heading`
-is degrees of `atan2(row2.x, row2.z)`, `forward_speed` is `0092D730` over the body axis and the
-linear velocity, `throttle` and `rudder` are `unit+980h` and `unit+984h` as the order ring
-published them, and `yaw_rate` is the body angular velocity's y. Packet `cc_motion_trace` owns
-the comparison against a trace taken from the running game; this is the file it reads.
+unit, where the step the motion ran in is unambiguous, plus the step 0 block before the first
+step. The 300 frame run writes **8992 rows**, 32 units by 281 blocks, into the combined file and
+into 32 per-unit files. `t` is simulated seconds, `x, y, z` is pose row 3 (`unit+FCh`), the same
+three floats the keel-point arithmetic reads at `00826897`, `008268A1` and `008268AF`; `heading`
+is degrees of `atan2(row2.x, row2.z)`; `fwd_speed` is `0092D730` over the body axis and the
+linear velocity; `throttle` and `rudder` are `unit+980h` and `unit+984h` as the order ring
+published them; and `yaw_rate` is `dot(w, row1)`, the component about the hull's own up axis.
+
+**The comparison it was written for passes.** `docs/MOTION_DIFFERENTIAL.md` measured milestone
+2i's executable against `src/ship_motion_probe.cpp` on this same `VehicleClass[20]` DeRuyter and
+found the one divergence the stand-in curve caused: at full throttle and rudder 1 the executable
+settled at `-0.12217` rad/s, the whole `MaxRotAngle`, against the probe's `-0.06109`, which is
+`MaxRotAngle / 2.0`. With the curve wired, `--order throttle=1,rudder=1` settles at
+**-0.06109 rad/s**, and `python tools/motion_trace_compare.py --trace <the DeRuyter file>
+--probe <bsp_ship_motion_probe.exe --class 20 --throttle 1.0 --rudder 1.0> --align-origin`
+reports **no channel outside its tolerance**:
+
+| channel | peak delta | final delta |
+| --- | --- | --- |
+| speed, m/s | 0.2188 | -0.0000 |
+| heading, degrees | 0.0434 | 0.0005 |
+| position, m | 0.0957 | 0.0031 |
+| yaw, rad/s | 0.00101 | — |
+
+That is with `--order-frame 1`. With the brief's `--order-frame 20` the same comparison reports a
+final heading delta of **1.70 degrees**, and the cause is the switch rather than the model: the
+executable runs the authored `Cruise` order (throttle 1, rudder 0) for the first 20 in-mission
+frames, which is 1.0 s of straight running the probe does not have. The remaining peak speed
+delta of 0.22 m/s is the probe's own print granularity, which is every ten steps, interpolated.
 
 ### 3. The picture: the front end comes down
 
@@ -3370,6 +3417,25 @@ after taking the widget by name at `005BED21` through `00AA7E00`, and which the 
 produces. There is nothing more for this process to load, so the renderer-owner host is
 recorded and no texture is invented.
 
+### 4. `LobbySettings` is nil in single player, and the substitute is gone
+
+Packet `cc2_lobby_settings` reconstructed `005E2F00` in full while this packet was open, so the
+load's `sync_lobby_settings_from_lua` row is no longer a record. Milestone 2f's substitute was a
+zeroed thirteen-field table, created on the reasoning that "without the table the multiplayer
+scripts index a nil global at their first line, which is why the step exists at all". **The
+routine's own answer is the opposite of that guess.** `005E2F93..005E2FCC` is a single-player
+early-out that sets the global **nil** at `005E2F59` and publishes no table at all, and
+`game+1FE4h` is zero here, so that is the path this run takes. The executable now takes it. The
+mission Lua run is unchanged by the change: the same three bindings are reached and no chunk
+error appears, so nothing in USN02 indexed the global the substitute existed for. The three mode
+flags `00E0C978`, `00E17BF2` and `00E08880` come out as `(1, 0, 1)`, which is the
+single-player branch at `005E2FAB` forcing them, and the command points at `00E0CFB4` as the
+`2400.0` constant at `00CE396C`, because the effective game mode 8 is at or above the Island
+Capture bound. The `MultiLobbySettings` option registry `008D2F50` loads from
+`Scripts/datatables/MultiGlobals.lua`, which this process does not load, so the option payload
+is a host record; the native map is a `std::map`, so a missing key reads as zero there too, and
+the early-out means no payload is read on this path anyway.
+
 ### What it looks like on screen
 
 **The flag, the two rails and the winged `MAIN MENU` plate are gone.** The capture at in-mission
@@ -3390,20 +3456,22 @@ to the ignored `local/run_2j.png` and is not committed.
 --mission-frame-seconds 0.05 --order-frame 20 --order throttle=1,rudder=0.5
 --mission-complete-frame 280 --trajectory-csv local/trajectory.csv --screenshot local/run.png
 --screenshot-mission-frame 200 --log local/game_run.log --game-root "<install>"`, exit 0:
-**321 concrete, 338 unimplemented**. The same command on this tree before this packet reports
+**325 concrete, 337 unimplemented**. The same command on this tree before this packet reports
 305 and 331, which is milestone 2i's published pair. The wall-clock form of the same command
-(no `--mission-frame-seconds`) reports 322 and 338, and a `--mission-frames 60` run with no
-`--mission-complete-frame` reports 317 and 329.
+(no `--mission-frame-seconds`) reports 326 and 337, and a `--mission-frames 60` run with no
+`--mission-complete-frame` exits 0 with `summary mission exit reachable=0` as before.
 
 The per-step table with the call site and callee of every row this packet adds is
 `reports/game_executable_milestone_2j.json` (`rudder_curve_steps`, `ocean_steps`,
-`rigid_body_steps`, `mission_entry_steps`, `minimap`). The counts by group:
+`rigid_body_steps`, `mission_entry_steps`, `lobby_settings_steps`, `minimap`). The counts by
+group:
 
 | Group | Steps | Concrete | Records |
 | --- | --- | --- | --- |
 | The rudder curve and its producer | 10 | 8 | 2 |
 | The ocean sampler and the gameplay scale | 5 | 3 | 2 |
 | The rigid-body substep | 3 | 2 | 1 |
+| `005E2F00`, the lobby settings sync | 3 | 1 | 2 |
 | `004C9CA0`, both arms | 13 | 5 | 8 |
 | The minimap's radar map | 1 | 0 | 1 |
 
@@ -3436,6 +3504,22 @@ out-of-range clamp fields, each named above with the follow-up that would settle
    found by releasing pages for the first time: `release_screen_page` erased the page from the
    screen-page set and left its widget records in the bridge. The release path now pushes the
    page hidden first.
+6. **Milestone 2f's `LobbySettings` substitute was the wrong way round.** It created a zeroed
+   thirteen-field table so that "the multiplayer scripts" would not index a nil global. The
+   reconstruction of `005E2F00` says single player leaves the global **nil**, and the USN02 run
+   with the global nil reaches the same three bindings with no chunk error. Section 4.
+7. **This packet's first trajectory header was `forward_speed`, which the consumer cannot
+   read.** `tools/motion_trace_compare.py` takes `fwd_speed`, `fwd_spd` or `speed`, and an
+   unrecognised optional column defaults to `0.0` silently, so the mistake would have shown up
+   as a several-m/s speed divergence rather than as an error. The column is `fwd_speed`, and the
+   same round of peer review moved `yaw_rate` from the world y to the hull's up axis and added
+   the step 0 row. Reported by packet `cc_motion_trace`; see "The new switch".
+8. **`docs/MOTION_DIFFERENTIAL.md`'s turn-rate divergence is closed.** It measured milestone
+   2i's executable at `-0.12217` rad/s against the probe's `-0.06109` at full throttle and
+   rudder 1, and attributed the factor of two to the stand-in denominator. With the curve wired
+   the executable settles at `-0.06109`, and the compare tool reports a final heading delta of
+   0.0005 degrees. That doc's note that "a `bsp_game.exe` milestone-2i log still forces the three
+   knots to 1" is superseded for milestone 2j and later.
 
 ### Code with no Ghidra function
 
@@ -3444,14 +3528,14 @@ out-of-range clamp fields, each named above with the follow-up that would settle
 | — | — | none |
 
 Every address this packet touched already has a Ghidra function. No name was added; run-time
-evidence was appended to 0078cf20, 008e6430, 00424c40, 0083b5e0, 00c41550, 00c5b1b0, 004c9ca0
-and 00518250.
+evidence was appended to 0078cf20, 008e6430, 00424c40, 0083b5e0, 0082e890, 0082ecb0, 00c41550,
+00c5b1b0, 00c5c540, 004c9ca0, 00518250 and 005e2f00.
 
 ### Validation
 
 `scripts/build.ps1` Release Win32 with `/W4 /WX /fp:strict`, no warnings. The existing ctest
 case `reconstructed_math` passes, 1 of 1. No test cases were added.
-`python tools/verify_report_calls.py reports/game_executable_milestone_2j.json` checks 27 call
+`python tools/verify_report_calls.py reports/game_executable_milestone_2j.json` checks 29 call
 rows and reports 0 failures; three rows are reported as indirect because the native call goes
 through the loading element's vtable.
 
@@ -3467,16 +3551,35 @@ ocean sampler 0078cf20 runs, both of its leaves are records: its receiver is
 gameplay scale 008e6430 runs over an empty category list: no modifier record is registered in
         this process, so the product is the 1.0f the accumulator starts at (00d7a24c)
 rigid body: 00c41550 then 00c5b1b0, one substep of the whole 0.0500 s game step
+LobbySettings: the global is set nil by the 005e2f93 early-out (single player,
+        game+1FE4h = 0), fields nil=0 number=0 string=0; mode flags powerups=1
+        reload_payload=0 map=1, command points 2400.0
 in-game interface applied with 0: the loading element is torn down and 00518250(3, commit=1)
         at 004c9e06 releases every other set's layouts
   controlled unit frame 280  t=  14.00  x= 244.36 z= -2812.28  heading= -20.302  fwd= 16.454
         throttle= 1.000 rudder= 0.500  yaw=-0.03054
 summary mission world units=32 walked=8960 updated=8960 motion_ticks=8960 simulated=14.00 s
         controlled=DeRuyter moved=187.81 total_path=6202.64
-summary mission trajectory csv=local\trajectory.csv rows=8960
+summary mission trajectory csv=local\trajectory.csv rows=8992
+summary mission lua bindings=560 natives=3 calls=3
 summary bridge_open=1 atlas=interface/textures/allbutingame_dxt1.ats atlas_items=678
         textures=14 quads=57 frames=320
-host methods 321 concrete, 338 unimplemented
+host methods 325 concrete, 337 unimplemented
+```
+
+and, from the acceptance run `--order-frame 1 --order throttle=1,rudder=1`:
+
+```
+  controlled unit frame 280  t=  14.00  x= 233.55 z= -2804.62  heading= -41.253  fwd= 16.430
+        throttle= 1.000 rudder= 1.000  yaw=-0.06109
+motion differential: live trace vs reconstructed probe
+  samples compared   281        time span 0.00 .. 14.00 s
+  channel         peak |delta|   final delta
+  speed (m/s)           0.2188       -0.0000
+  heading (deg)         0.0434        0.0005
+  position (m)          0.0957        0.0031
+  yaw (rad/s)          0.00101
+  no channel left its tolerance over the compared span
 ```
 
 Every earlier switch was rechecked on the same binary. A 120 frame run with
@@ -3490,10 +3593,13 @@ unimplemented, a 40 frame title-only run reports 129 and 49, `--vfs-probe fonts/
 This remains a runtime-validated process, not a game-validated one. What it now proves, that
 milestone 2i did not, is that the mission's ships are driven by the game's own authored turn
 curve read from the game's own data file, by the game's own water sampler, by the game's own
-modifier product and by the game's own two integration phases, and that the recovered mission
-entry takes the front end off the screen. It still proves nothing about the hull body's mass,
-inertia and damping, about the forces nothing pushes onto it, about the library's substep size,
-or about what a running game would draw.
+modifier product and by the game's own two integration phases, that the executable and the
+reconstruction probe agree to 0.0005 degrees of heading over 14 s on the same class, and that
+the recovered mission entry takes the front end off the screen. It still proves nothing about
+the hull body's mass, inertia and damping, about the forces nothing pushes onto it, about the
+library's substep size, or about what a running game would draw. In particular, the two sides
+that now agree share every one of those gaps: the agreement is between two runs of the same
+reconstruction, not between the reconstruction and the game.
 
 ### Follow-up packets
 
