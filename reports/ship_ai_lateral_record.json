@@ -1,0 +1,123 @@
+{
+  "packet": "orch6_ship_ai_lateral_record",
+  "analysis_mode": "read_only_ghidra",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "document": "docs/SHIP_AI_LATERAL_RECORD.md",
+  "source": "src/ship_ai_lateral_record.cpp",
+  "header": "include/bsp/ship_ai_lateral_record.hpp",
+  "names_are_hypotheses": true,
+  "routines": [
+    {
+      "address": "00417610",
+      "name": "BSP_AvoidZone_CornerRecordAtSignedIndex",
+      "was": "FUN_00417610",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_lateral_record_at_00417610",
+      "original_abi": "ECX zone; one signed stack index; EAX record; RET4",
+      "last_instruction_address": "00417621",
+      "last_instruction_size": 3,
+      "native_end_inclusive": "00417623",
+      "evidence": "00417614 CDQ; 00417619 IDIV ESI; 0041761E load [array+EDX*4]. No invalid-index or zero-count guard."
+    },
+    {
+      "address": "0041a200",
+      "name": "BSP_AvoidZone_DeriveCornerGeometryAndWinding",
+      "was": "FUN_0041a200",
+      "coverage": "complete geometry and control flow through existing math and CRT boundaries",
+      "reconstruction": "ship_ai_lateral_records_derive_0041a200",
+      "original_abi": "ECX zone; byte flag in one stack word; AL result; RET4",
+      "last_instruction_address": "0041a4d6",
+      "last_instruction_size": 3,
+      "native_end_inclusive": "0041a4d8",
+      "evidence": "0041A33E edge length; 0041A36A/371 outgoing unit; 0041A3F7 signed turn; 0041A418/423 and 454/45A bisector right normal. Positive total reverses if flag, recursively derives with flag0, and still returns AL0."
+    },
+    {
+      "address": "009d58f0",
+      "name": "BSP_ShipAiPathNode_AttachCornerRecord",
+      "coverage": "complete supporting read; reuse existing reconstruction",
+      "reconstruction": "src/ship_ai_path_search.cpp: ship_ai_path_node_attach_corner_record_009d58f0",
+      "original_abi": "ECX node; no stack args; RET",
+      "last_instruction_address": "009d5929",
+      "last_instruction_size": 1,
+      "native_end_inclusive": "009d5929"
+    },
+    {
+      "address": "0041ccd0",
+      "name": "BSP_AvoidZone_ConstructFromScenePath",
+      "was": "FUN_0041ccd0",
+      "coverage": "partial producer evidence: 0041CCD0-0041CE02, 0041CE62-0041CF47, 0041D058-0041D063; remaining growth, clipping and association branches are not reconstructed",
+      "reconstruction": null,
+      "original_abi": "ECX zone storage; stack scene path, layer; EAX zone; RET8",
+      "last_instruction_address": "0041d0af",
+      "last_instruction_size": 3,
+      "native_end_inclusive": "0041d0b1",
+      "evidence": "24h allocation at0041CD7D/0041CEF1; x/z stores0041CD92/0041CD9C and0041CF03/0041CF0D; all six derived fields zero; +20h=-1. New C++ record default initializers only, no constructor routine reconstruction."
+    },
+    {
+      "address": "00423190",
+      "name": "BSP_AvoidZone_EnsureCornerClearanceScale",
+      "was": "FUN_00423190",
+      "coverage": "complete top-level static read; no reconstruction; selected segment-list membership and lifetime dependencies are not recovered here",
+      "reconstruction": null,
+      "original_abi": "ECX zone; one stack record; RET4",
+      "last_instruction_address": "004234f7",
+      "last_instruction_size": 2,
+      "native_end_inclusive": "004234f8",
+      "evidence": "COMISS+JA cache guard004231B8/1C4; base=p+d; initial r800; ray1600; half hit-distance; nearest segment-distance refinement min(r-50,(r+q)/2), threshold25/fallback20; +20h store004234BC. Clearance interpretation is bounded to the selected geometry."
+    }
+  ],
+  "native_calls": [
+    {"address":"0041a2c1","native":"00419260","function":"0041a200","method":"native_vector2_reciprocal_length_00419260","contract":"body read; incoming reciprocal length"},
+    {"address":"0041a320","native":"00bf7030","function":"0041a200","method":"native_crt_sqrt_st0_00bf7030","contract":"existing actual CRT access; ST0 squared length, no pushed arguments"},
+    {"address":"0041a37c","native":"00bf701a","function":"0041a200","method":"existing heading_angle_00414eb0 sequence","contract":"ST0=x/ST1=z atan2(z,x); current host CRT boundary retained"},
+    {"address":"0041a3b3","native":"00bf701a","function":"0041a200","method":"existing heading_angle_00414eb0 sequence","contract":"same incoming/outgoing union; no native call to00414EB0"},
+    {"address":"0041a3f0","native":"00438b10","function":"0041a200","method":"wrapped_angle_subtract_00438b10","contract":"outgoing heading minus incoming heading; RET8"},
+    {"address":"0041a42d","native":"00419260","function":"0041a200","method":"native_vector2_reciprocal_length_00419260","contract":"body read; bisector-normal reciprocal length"},
+    {"address":"0041a4be","native":"0041a200","function":"0041a200","method":"ship_ai_lateral_records_derive_0041a200","contract":"flag0; ignore recursive AL; RET4"}
+  ],
+  "supporting_calls": [
+    {"address":"009d5917","native":"00417610","function":"009d58f0","method":"signed-index record accessor","contract":"corner signed-short + (side byte < 0)"},
+    {"address":"009d5923","native":"00423190","function":"009d58f0","method":"ensure cached scale after storing node handle","contract":"complete top-level body read; lower geometry dependencies bounded"},
+    {"address":"00423534","native":"00423190","function":"00423520","method":"ensure cached scale before clamping requested offset","contract":"supporting caller whole read; RET0Ch"},
+    {"address":"0041cd32","native":"007af800","function":"0041ccd0","method":"world path point","contract":"body read; first source point0"},
+    {"address":"0041ce7e","native":"007af800","function":"0041ccd0","method":"world path point","contract":"body read; subsequent indexed point"},
+    {"address":"0041d063","native":"0041a200","function":"0041ccd0","method":"derive with reversal enabled","contract":"PUSH1 at0041D05F; RET4"},
+    {"address":"004232de","native":"004120d0","function":"00423190","method":"call_004120d0","contract":"unread; layer from zone+0Ch"},
+    {"address":"004232ee","native":"00417a40","function":"00423190","method":"call_00417a40","contract":"unread; square input and temporary-list result consumed"},
+    {"address":"00423362","native":"004158e0","function":"00423190","method":"segment-list nearest crossing","contract":"body and whole listing read; successive hits shorten the current endpoint; RET0Ch"},
+    {"address":"00423387","native":"00414c60","function":"00423190","method":"length with cutoff","contract":"existing reconstruction; used before x0.5"},
+    {"address":"004233df","native":"00419fc0","function":"00423190","method":"minimum list point-to-segment distance","contract":"body read with00419AB0; first candidate"},
+    {"address":"0042348d","native":"00419fc0","function":"00423190","method":"minimum list point-to-segment distance","contract":"body read; refined candidate"}
+  ],
+  "corrections": [
+    {"was":"009D5920 is the producer function","is":"interior MOV [ESI+10h],EAX in009D58F0","evidence":"live proto and whole009D58F0 assembly"},
+    {"was":"00417610 produces the record","is":"signed-remainder pointer-array accessor; position producer0041CCD0 and derived geometry0041A200","evidence":"00417619 IDIV; producer stores in routine rows"},
+    {"was":"IDIV at0041761B","is":"IDIV at00417619; MOV EAX,[ECX] at0041761B","evidence":"whole00417610 listing"},
+    {"was":"negative index wraps toward zero","is":"quotient truncates toward zero; signed remainder can index before array","evidence":"CDQ, IDIV, EDX-indexed pointer load without fixup"},
+    {"was":"metric refresh before node record is stored","is":"record handle stored before metric refresh","evidence":"009D5920 MOV precedes009D5923 CALL"},
+    {"was":"consumer-only dir_x/dir_z and width interpretation","is":"normalized right normal of incoming+outgoing units and cached outward clearance scale","evidence":"0041A3FC-0041A45A;004234BC;00423539-0042358A"}
+  ],
+  "no_ghidra_function": [],
+  "disassembly_gaps": [
+    {"address":"0041a49d","size":3,"end_inclusive":"0041a49f","bytes":"8d4900","meaning":"padding LEA ECX,[ECX], no missing routine"},
+    {"address":"0041ce2c","size":3,"end_inclusive":"0041ce2e","bytes":"83c404","meaning":"ADD ESP,4 after wrongly no-return free"},
+    {"address":"0041cfa0","size":3,"end_inclusive":"0041cfa2","bytes":"83c404","meaning":"ADD ESP,4 after wrongly no-return free"}
+  ],
+  "verification": {
+    "report_call_rows": "python tools/verify_report_calls.py reports/ship_ai_lateral_record.json: 19 checked, 0 failed",
+    "build_and_existing_ctest": "./scripts/build.ps1 Release Win32 succeeded; reconstructed_math 1/1 passed (0.05 sec); total CTest0.09sec",
+    "build_log": "local/ship_ai_lateral_record-build.log (ignored local evidence)",
+    "new_tests": 0,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_boundary": "New module is not wired into bsp_game.exe; no frame-behavior claim. Existing executable tables list accessor/cache hosts with zero calls.",
+    "known_limits": [
+      "Current host CRT atan2 behavior is inherited from existing heading helper; legacy diagnostics and exceptional results may differ.",
+      "Valid nonnegative count and valid record pointers are preconditions for the derivation; no zero-edge, count>=3 or self-intersection sanitizer is added.",
+      "00423190 is statically explained, not reconstructed. Complete selected scene-geometry membership remains unresolved.",
+      "Native typed layout verified by compile-time offsets; new whole routines have no native differential fixture or game integration."
+    ]
+  }
+}

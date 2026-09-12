@@ -41,6 +41,30 @@ float sign_masked(float value) noexcept {
 float min_by_ref_00415510(float a, float b) noexcept { return (b < a) ? b : a; }
 float max_by_ref_00415550(float a, float b) noexcept { return (b > a) ? b : a; }
 
+// 009D6913-009D6942 and 009D6970-009D6992: spill the differences, then
+// accumulate both squares in x87 before the single binary32 sum store.
+float tangent_distance_squared(float x0, float z0, float x1, float z1) noexcept {
+    float delta_x;
+    float delta_z;
+    float result;
+    __asm {
+        fld x0
+        fsub x1
+        fstp delta_x
+        fld z0
+        fsub z1
+        fstp delta_z
+        fld delta_z
+        fld delta_x
+        fmul st(0), st(0)
+        fld st(1)
+        fmulp st(2), st(0)
+        faddp st(1), st(0)
+        fstp result
+    }
+    return result;
+}
+
 } // namespace
 
 // ---------------------------------------------------------------------------
@@ -244,23 +268,21 @@ float ship_ai_approach_commanded_heading_009e5e90(float reference, float bearing
 
 ShipAiAttackMoveXZ ship_ai_circle_tangent_009d68b0(
     const ShipAiCircleTangentCircle& circle, const ShipAiAttackMoveXZ& point,
-    float clearance, int side, ShipAiCircleTangentHost& host) {
-    // 009D68C7, SETZ: side 0 picks the second tangent, anything else the first.
-    const int index = (side == 0) ? 1 : 0;
+    float clearance, int side, ShipAiCircleTangentHost& host,
+    ShipAiAttackMoveXZ second_intersection_seed) {
+    // 009D68B7 compares only the low byte; 009D68C7 SETZ picks the second.
+    const int index = ((side & 0xff) == 0) ? 1 : 0;
 
-    ShipAiAttackMoveXZ first{point.x, point.z}; // 009D68D6/009D68E6 preload
+    ShipAiAttackMoveXZ first{point.x, point.z};
     ShipAiAttackMoveXZ second{point.x, point.z};
-    ShipAiAttackMoveXZ chosen{point.x, point.z};
+    ShipAiAttackMoveXZ chosen{point.x, point.z}; // 009D68D6/009D68E6 preload
 
     bool have_tangent = host.tangent_points_009d6550(point, first, second);
     if (have_tangent) {
         chosen = (index == 0) ? first : second; // 009D68F5
     } else {
         // 009D6970: the distance from the circle centre to the query point.
-        const float cdx = static_cast<float>(static_cast<double>(circle.x) - point.x);
-        const float cdz = static_cast<float>(static_cast<double>(circle.z) - point.z);
-        const float sum = static_cast<float>(static_cast<double>(cdx) * cdx +
-                                             static_cast<double>(cdz) * cdz);
+        const float sum = tangent_distance_squared(circle.x, circle.z, point.x, point.z);
         bool far_enough = false;
         if (static_cast<double>(sum) > kApproachTangentEpsilonSq) {
             const float distance = host.sqrt_00bf7030(sum);
@@ -271,14 +293,38 @@ ShipAiAttackMoveXZ ship_ai_circle_tangent_009d68b0(
             // 009D69C6, the degenerate arm: a random point on the circle.
             const float angle =
                 host.random_stream1_00bd2f10(0.0f, kApproachTangentRandomTurn);
-            const float c = std::cos(angle); // 009D69EA FCOS, float-stored
-            const float s = std::sin(angle); // 009D69FC FSIN, float-stored
-            ShipAiAttackMoveXZ out{};
-            out.x = static_cast<float>(static_cast<double>(circle.x) +
-                                       static_cast<double>(circle.radius) * s);
-            out.z = static_cast<float>(static_cast<double>(circle.z) +
-                                       static_cast<double>(circle.radius) * c);
-            return out;
+            float c;
+            float s;
+            __asm {
+                fld angle
+                fcos // 009D69EA, retain the hardware x87 operation
+                fstp c
+                fld angle
+                fsin // 009D69FC
+                fstp s
+            }
+            const float radius = circle.radius;
+            const float center_x = circle.x;
+            const float center_z = circle.z;
+            float offset_x;
+            float offset_z;
+            float out_x;
+            float out_z;
+            __asm {
+                fld radius
+                fld st(0)
+                fmul s
+                fstp offset_x // 009D6A16 binary32 store
+                fmul c
+                fstp offset_z // 009D6A1E binary32 store
+                fld center_x
+                fadd offset_x
+                fstp out_x
+                fld center_z
+                fadd offset_z
+                fstp out_z
+            }
+            return {out_x, out_z};
         }
         // Otherwise fall through to 009D690D with the query point still in the
         // chosen slots, which makes the separation below exactly zero.
@@ -286,10 +332,7 @@ ShipAiAttackMoveXZ ship_ai_circle_tangent_009d68b0(
 
     // 009D690D..009D6954, the separation between the chosen point and the query
     // point, then the clearance test.
-    const float dx = static_cast<float>(static_cast<double>(chosen.x) - point.x);
-    const float dz = static_cast<float>(static_cast<double>(chosen.z) - point.z);
-    const float sum = static_cast<float>(static_cast<double>(dx) * dx +
-                                         static_cast<double>(dz) * dz);
+    const float sum = tangent_distance_squared(chosen.x, chosen.z, point.x, point.z);
     float separation = 0.0f;
     if (static_cast<double>(sum) > kApproachTangentEpsilonSq) {
         separation = host.sqrt_00bf7030(sum);
@@ -298,8 +341,10 @@ ShipAiAttackMoveXZ ship_ai_circle_tangent_009d68b0(
     if (!(clearance > separation)) {
         return chosen;
     }
-    ShipAiAttackMoveXZ offset_first{};
-    ShipAiAttackMoveXZ offset_second{};
+    // 009D6A6D passes the existing chosen slots, not a zeroed buffer. The
+    // second slots have no native producer; expose their incoming bits.
+    ShipAiAttackMoveXZ offset_first = chosen;
+    ShipAiAttackMoveXZ offset_second = second_intersection_seed;
     host.offset_points_004f47b0(point, clearance, offset_first, offset_second);
     return (index == 0) ? offset_first : offset_second; // 009D6A8F
 }
