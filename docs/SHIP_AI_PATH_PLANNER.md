@@ -293,3 +293,15 @@ their boundaries.
 | `avoid_zone_geometry` | `00416B50`, `00416F30`, `00414F50`, `0041AEA0`, `00419AB0`, `004F4B50`, `00419260`, `004120D0`, `00412120` | The polygon primitives under this packet's four host methods, and whether the layer key `blk+30Ch` is an id or an object pointer: `004120D0` and `00412120` order groups by `[group+10h]` with a signed compare, which fits both readings |
 | `ship_ai_owner_seed` | `009E3980+vtable50` | The float the owner hands the start node at `+48h`. The vtable of the object at `plan+3Ch` is not identified here, so the slot has no callee body and no contract |
 | `ship_ai_controls_tail` | `009EEAAB-009EF228` | The gate at `009EF00D-009EF028` that decides when `nav+2FEh` is latched, which is the first half of the rule that ends a `moveto` |
+
+## Correction from docs/SHIP_AI_PATH_SEARCH.md
+
+Packet `cc_ai_path_search` (main 0220faec) read the search that fills the graph and corrects four
+field readings of `include/bsp/ship_ai_path_planner.hpp` (recorded here, the header keeps its
+names until a packet that owns it applies them): node `+2Ch` is the back pointer of `link_plus`;
+node `+14h` is a signed byte; node `+31h` and `+32h` mean "this edge has been proved clear", not
+"short link"; `plan+2Ch` is a float. `009D9050`, listed as a search routine, is not a routine: it
+lies inside `009D8CE0`'s body. The search itself is a lazy binary expansion (`009EC280` costs the
+graph, `009E3330` splits the first unproved edge on the cheapest route, `009D5A20` asks whether a
+resolved route exists, `009D9550` prunes forks, `009D96A0` smooths corners), four ticks on an open
+sea and usable after two.
