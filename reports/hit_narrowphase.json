@@ -1,0 +1,441 @@
+{
+  "packet": "cc2_hit_narrowphase",
+  "owner": "agent/cc2-hit-narrowphase",
+  "doc": "docs/HIT_NARROWPHASE.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "summary": "0098ADD0 is not a narrowphase: it is the spatial index's segment query, __thiscall(index; from, to, excludeEntity, record, kindFilter) from RET 14h. It walks a 96h x 96h horizontal grid at index+84h (cell = floor(p.x or p.z / [00CE3D90]) + 4Bh, clamped to 0..95h), rejects each node by a kind filter, an entity-pointer exclude, six AABB compares against node+13Ch..+150h and the segment-versus-AABB separating-axis test 0085CAD0, then hands the survivor to 0098AC20. 0098AC20 owns no geometry either: it calls shape->vtable[0](from, to, record) over the node+F8h shapes at node+D0h, writes record+0h = node[+4Ch] through 00470370, and recurses into the node+100h children only when the kind filter is zero. Both passes pull the segment end back to record+8h on every hit, so the record always holds the nearest hit. The hit record's class is 00470350..004707A0: 00470470 resets it with +30h and +34h at -1, 00470350 sets +4h and +14h = shot->vtable[54h](), 004704B0 frees the part array at +3Ch, 004706D0 selects the worst part. The three shape vtable[0] implementations in the program (0087FEC0, 0087FF80, 00929B80) all write +30h = 0Ah and +34h = -1, so the hull segment index and the part-hit array still have no attributed producer. The damage fields come from the blast path, not the segment path: 00904470 writes the blast centre, the radius into +24h and the ignore flag into +2Ch, and 0084BAD0 writes the damage into +28h and queues every record whose +0h is not the source entity. projectile+5Ch and +5Dh are scene-node base flags, active and torn-down, written by 00922F30 / 00922F80 / 00922FD0 / 009263C0 / 00925F20 / 009274CE and by nothing in the projectile spawn. 0070C210 is the flak detonation: one 0084BAD0 call with centre projectile+FCh, radius classDesc+70h, damage Random(classDesc+B4h, classDesc+B8h), ignore-falloff 1, the owner excluded, then the burst effect and BSP_MissionEntity_Kill(1).",
+  "routines": [
+    {
+      "address": "0098add0",
+      "native": "0098add0",
+      "name": "BSP_SpatialIndex_QuerySegment",
+      "body": "0098add0-0098b129",
+      "abi": "__thiscall(void* index, const float from[3], const float to[3], void* excludeEntity, HitRecord* record, int kindFilter) returning a bool in AL, RET 0x14 at 0098b127",
+      "coverage": "complete",
+      "evidence": "Five stack arguments from the callee cleanup RET 0x14. Argument order from the prologue: after SUB ESP,0x44 the MOV EDX,[ESP+0x4c] at 0098add3 is entry ESP+8, the second argument, and its three floats are copied to the mutable local at [ESP+0x30]; MOV ECX,[ESP+0x60] at 0098ae01 is entry ESP+4, the first argument, passed to 00722b20 in ECX. arg3 is compared with != against the entity pointer from the cell list at 0098aee4 and passed unchanged to 0098ac20, so it is an entity to exclude and not a collision mask. arg5 is the argument of entity[+4Ch]->vtable[5Ch] at 0098aed6, a class-kind id, and 0098b370 passes 0 while 0072cdd0 passes 44h. The grid is index+84h with LEA ESI,[EDI + ESI*0x4 + 0x84] at 0098ae80 and IMUL ESI,ESI,0x96 at 0098ae76; the loose array is index+8h with the count at index+80h (0098afe8). On every accepted hit 0098af95 copies record+8h/+0Ch/+10h back into the local end point."
+    },
+    {
+      "address": "0098ac20",
+      "native": "0098ac20",
+      "name": "BSP_CollisionNode_TraceSegment",
+      "body": "0098ac20-0098ad5d",
+      "abi": "__thiscall(void* node, const float from[3], const float to[3], void* excludeEntity, HitRecord* record, int kindFilter) returning a bool in AL, RET 0x14 at 0098ad5b",
+      "coverage": "complete; the shape vtable[0] bodies are contracts",
+      "evidence": "Five pushes at 0098af81..0098af89 (EBX kind, EBP record, ECX exclude, the local end point, EAX from) with ECX = ESI the entity and no ADD ESP after the call, matched by the callee's RET 0x14. The shape loop is MOV EAX,[EDI+0xf8]; LEA EBX,[EDI+EAX*0x4+0xd0]; LEA EBP,[EDI+0xd0] at 0098ac4b..0098ac58, so the array is node+D0h with the count at node+F8h and at most (F8h-D0h)/4 = 0Ah slots. The call is MOV ECX,[EBP]; MOV EDX,[ECX]; MOV EDX,[EDX] at 0098ac70, slot 0 of the shape's vtable, with three pushes (record, the local end, from) and no caller cleanup. On a hit 0098ac88 loads MOV EAX,[EDI+0x4c] and calls 00470370 with ECX = the record, so record+0h is node[+4Ch]. The child walk at 0098acc0 is entered only when the kind filter dword at [ESP+0x34] is zero (CMP/JNZ 0098acd9), over node+FCh with node+100h entries."
+    },
+    {
+      "address": "0085cad0",
+      "native": "0085cad0",
+      "name": "BSP_Geometry_SegmentOverlapsAabb",
+      "body": "0085cad0-0085cdaf",
+      "abi": "__fastcall(const float boxMin[3], const float boxMax[3], const float from[3], const float to[3]) returning a bool in AL, RET 0x8 at 0085cdad",
+      "coverage": "complete",
+      "evidence": "Two stack arguments from RET 0x8; the prologue takes them with MOV ESI,[ESP+0x3c] and MOV EDI,[ESP+0x3c] after SUB ESP,0x30 plus two pushes, and reads ECX and EDX directly (FLD [EDX] at 0085cb05, FLD [ECX] at 0085cb11). At the 0098add0 call site only two pushes precede CALL 0x0085cad0 at 0098af6c; ECX and EDX are the LEA ECX,[ESI+0x13c] at 0098aeee and LEA EDX,[ESI+0x148] at 0098af06 that the preceding AABB compares leave in place, so the box is the entity's bounds and the two pushed pointers are the segment. The body halves every extent with the double at 00D7A280 and tests three face axes (x, then z, then y) followed by three cross-product axes."
+    },
+    {
+      "address": "0098ad60",
+      "native": "0098ad60",
+      "name": "BSP_SpatialIndex_CellOfPoint",
+      "body": "0098ad60-0098adc6",
+      "abi": "__fastcall(int out[2], const float point[3])",
+      "coverage": "complete",
+      "evidence": "out[0] = (int)floor(point[0] / [00CE3D90]) + 4Bh and out[1] = (int)floor(point[2] / [00CE3D90]) + 4Bh through the CRT floor at 00BF85B0 and the float-to-int at 00BF7420. Index 2 is the z component, so the grid is horizontal and y is not indexed; 4Bh is half of the 96h grid width 0098add0 clamps to."
+    },
+    {
+      "address": "00722b20",
+      "native": "00722b20",
+      "name": "BSP_Vector3f_MinMax",
+      "body": "00722b20-00722bed",
+      "abi": "__fastcall(const float a[3], const float b[3], float outMin[3], float outMax[3])",
+      "coverage": "complete",
+      "evidence": "Called at 0098ae14 with ECX = the from pointer, EDX = the to pointer and two pushed locals; the two locals are then used as the segment AABB in the six compares at 0098aeee..0098af60 (the pushed pair at [S-0Ch] is the min side, the pair at [S-18h] the max side). Component-wise min and max with a <= test on x and y and a < test on z."
+    },
+    {
+      "address": "00470470",
+      "native": "00470470",
+      "name": "BSP_HitRecord_Reset",
+      "body": "00470470-004704af",
+      "abi": "__fastcall(HitRecord* record)",
+      "coverage": "complete",
+      "evidence": "param[0Ch] and param[0Dh] (record+30h and +34h) are set to FFFFFFFFh and every other field it touches to zero: +38h, +3Ch, +40h, +44h, +0h, +4h, +50h, +4Ch, +48h and the byte at +2Ch. So an untouched record reads as no shape kind and no hull segment, which is exactly what 008777D0 tests +34h for. Called by 0084bfa9 in BSP_Projectile_TraceSegmentAndImpact, 00926edb in BSP_DeferredEntityEventQueue_Push, 0098c55d, 0042efb6 and twenty more sites."
+    },
+    {
+      "address": "00470350",
+      "native": "00470350",
+      "name": "BSP_HitRecord_SetShot",
+      "body": "00470350-0047036f",
+      "abi": "__thiscall(HitRecord* record, void* shot)",
+      "coverage": "complete",
+      "evidence": "record+4h = shot, and when shot is non-null record+14h = shot->vtable[54h]() returning in ST(0). record+14h is the hull damage base 00470510 reads, so the base is the shot's own value and the record never scales it. Call sites: 0084c0c3 in BSP_Projectile_TraceSegmentAndImpact with shotInterface[+0CCh], 009044f4 in FUN_00904470, 0084bbb1 in FUN_0084bad0, 0080a94e and 00819b9c."
+    },
+    {
+      "address": "00470370",
+      "native": "00470370",
+      "name": "BSP_HitRecord_SetEntity",
+      "body": "00470370-0047043f",
+      "abi": "__thiscall(HitRecord* record, void* entity)",
+      "coverage": "complete for the store; the body extends to the next function start at 00470440 and the decompiler recovers only the single store",
+      "evidence": "*record = entity. Six call sites: 0098acb4 in FUN_0098ac20 with node[+4Ch], 0098c570 in FUN_0098c510 with the same field, 0098b319 in FUN_0098b130, and the three shape vtable[0] tails 0087ff57, 0087ffd9 and 00929c58."
+    },
+    {
+      "address": "004704b0",
+      "native": "004704b0",
+      "name": "BSP_HitRecord_Destroy",
+      "body": "004704b0-004704df",
+      "abi": "__fastcall(HitRecord* record)",
+      "coverage": "complete",
+      "evidence": "free(record+3Ch) when it is non-null, so the part-hit array of docs/UNIT_HIT_PATH.md is heap-owned by the record. Forty call sites, including 0084bad0's per-record cleanup loop and the SEH unwind funclets of 0042ef90 and 0098c510."
+    },
+    {
+      "address": "004704e0",
+      "native": "004704e0",
+      "name": "BSP_HitRecord_OwningUnit",
+      "body": "004704e0-0047050f",
+      "abi": "__fastcall(HitRecord* record) returning void*",
+      "coverage": "complete",
+      "evidence": "Returns [record+4h]->vtable[108h]() then +ACh, or 0 when either is null. It is the same chain 00470510 and 004705C0 use to find the unit their gameplay modifier is scoped to, so the record's owning unit is derived from the shot, not stored."
+    },
+    {
+      "address": "004706d0",
+      "native": "004706d0",
+      "name": "BSP_HitRecord_WorstPart",
+      "body": "004706d0-0047073f",
+      "abi": "__thiscall(HitRecord* record, int* outIndex, HitRecord* self) returning a float in ST(0)",
+      "coverage": "complete",
+      "evidence": "*outIndex = -1 and best = 0.0f, then for i in [0, record+40h) best = max over BSP_HitRecord_PartDamage(record, i) with a strict < compare, so a part that scores zero or less never wins and the first entry wins a tie. The armour argument is the caller's ST(0). Two callers, 0084f049 and 0047a6a9, both unread."
+    },
+    {
+      "address": "00470740",
+      "native": "00470740",
+      "name": "BSP_HitRecord_MaxPartDamage",
+      "body": "00470740-0047079f",
+      "abi": "__thiscall(HitRecord* record, HitRecord* self) returning a float in ST(0)",
+      "coverage": "complete",
+      "evidence": "The 004706D0 loop without the index write; the same seed, bound and strict compare."
+    },
+    {
+      "address": "0087fec0",
+      "native": "0087fec0",
+      "name": "BSP_CollisionShape_TraceSegment_Extruded",
+      "body": "0087fec0-0087ff7f",
+      "abi": "__thiscall(void* shape, const float from[3], const float to[3], HitRecord* record) returning a bool in AL",
+      "coverage": "complete for the record fill; the [shape+3D0h] vtable[3Ch] geometry is a contract",
+      "evidence": "Scales the direction at from[3..5] by from[6] and adds it to from[0..2], calls [shape+3D0h]->vtable[3Ch] with both points, and on a hit writes record+8h..+10h, calls 00470370 at 0087ff57 and stores MOV dword ptr [ESI+0x30],0xa at 0087ff5d then MOV dword ptr [ESI+0x34],0xffffffff. It never writes a hull segment index or a part hit."
+    },
+    {
+      "address": "0087ff80",
+      "native": "0087ff80",
+      "name": "BSP_CollisionShape_TraceSegment_Subobject",
+      "body": "0087ff80-0087ffff",
+      "abi": "__thiscall(void* shape, const float from[3], const float to[3], HitRecord* record) returning a bool in AL",
+      "coverage": "complete for the record fill; the [shape+8Ch] vtable[3Ch] geometry is a contract",
+      "evidence": "Same tail: 00470370 at 0087ffd9 with shape-344h as the entity, MOV dword ptr [ESI+0x30],0xa at 0087ffde and +34h = -1. The -344h says the shape is a subobject at offset 344h of the owning entity."
+    },
+    {
+      "address": "00929b80",
+      "native": "00929b80",
+      "name": "BSP_CollisionShape_TraceSegment_TransformedBox",
+      "body": "00929b80-00929c7f",
+      "abi": "__thiscall(void* shape, const float from[3], const float to[3], HitRecord* record) returning a bool in AL",
+      "coverage": "complete for the record fill; 0085CDB0 and DYN_physics_00C31F90 are contracts",
+      "evidence": "Transforms both endpoints into the shape's local frame with BSP_Vector3f_TransformAffinePoint over shape+B0h, tests them against a physics-library box from DYN_physics_00C31F90 through 0085CDB0, and on a hit transforms the hit point back through shape+70h into record+8h..+10h, calls 00470370 at 00929c58 with shape-1A4h, then MOV dword ptr [ESI+0x30],0xa at 00929c5e and MOV dword ptr [ESI+0x34],0xffffffff at 00929c65."
+    },
+    {
+      "address": "0098c630",
+      "native": "0098c630",
+      "name": "BSP_SpatialIndex_QuerySphere",
+      "body": "0098c630-0098c7bd",
+      "abi": "__thiscall(void* index, const float centre[3], float radius, void* excludeEntity, void* recordVector) returning a bool in AL, RET 0x10 at 0098c7ba",
+      "coverage": "complete; 0098C510 is separate and 0098C460 is a contract",
+      "evidence": "Four stack arguments from RET 0x10. The same grid walk as 0098ADD0 over index+84h with the 0098AD60 cell mapping and the 0..95h clamp, but each node is de-duplicated by stamping node+4h with [00E188A8+648h] before the per-node call, so a node spanning several cells is tested once. Called from 00904470 straight after BSP_SpatialIndex_GetSingleton."
+    },
+    {
+      "address": "0098c510",
+      "native": "0098c510",
+      "name": "BSP_CollisionNode_OverlapSphere",
+      "body": "0098c510-0098c621",
+      "abi": "__thiscall(void* node, const float centre[3], float radius, void* recordVector, void* excludeEntity) returning a byte in AL, RET 0x14 at 0098c61e, SEH frame",
+      "coverage": "complete; node->vtable[0Ch] and the append 0098C460 are contracts",
+      "evidence": "Resets a 54h-byte stack record with 00470470, sets record+0h = node[+4Ch] through 00470370 at 0098c570, then calls node->vtable[0Ch](centre, radius, recordVector, &record); on a true result it appends through 0098C460. It then recurses over the node+100h children at node+FCh. The blast path's part-hit array must be written inside that vtable[0Ch] override; no implementation was read."
+    },
+    {
+      "address": "00904470",
+      "native": "00904470",
+      "name": "BSP_Explosion_GatherHitRecords",
+      "body": "00904470-0090458d",
+      "abi": "__cdecl(void* recordVector, const float centre[3], float radius, char ignoreFalloff, void* shot, void* sourceEntity)",
+      "coverage": "complete",
+      "evidence": "exclude = sourceEntity->vtable[B0h]() when sourceEntity is non-null, then BSP_SpatialIndex_GetSingleton and 0098C630(centre, radius, exclude, vector). The vector is walked with a 54h stride (uVar3 += 0x54) and each element gets 00470350(shot) at 009044f4, +18h..+20h = the centre, +24h = the radius and the byte +2Ch = ignoreFalloff. So the part falloff divisor of docs/UNIT_HIT_PATH.md is the explosion radius."
+    },
+    {
+      "address": "0084bad0",
+      "native": "0084bad0",
+      "name": "BSP_Explosion_ApplyRadialDamage",
+      "body": "0084bad0-0084bc5f",
+      "abi": "__fastcall(const float centre[3], const float* radius, const float* damage, char ignoreFalloff, void* sourceEntity, void* shot), SEH frame",
+      "coverage": "complete for the record fill and the queue gate; 00428800 is a contract",
+      "evidence": "Returns immediately when the world mode [00E188A8+1FE4h] is 2. Calls 00904470(vector, centre, *radius, ignoreFalloff, shot, sourceEntity), then per 54h-stride record writes piVar3[10] = *damage (record+28h), calls 00470350(shot), writes piVar3[2..4] = centre (record+8h..+10h) and the byte at piVar3+0Bh (record+2Ch), and calls BSP_DeferredEntityEventQueue_Push only when *piVar3 != sourceEntity, so the source entity is never damaged by its own burst. Finally destroys every record with 004704B0 and frees the vector."
+    },
+    {
+      "address": "00922f30",
+      "native": "00922f30",
+      "name": "BSP_SceneNode_Enable",
+      "body": "00922f30-00922f73",
+      "abi": "__thiscall(void* node, int arg)",
+      "coverage": "complete",
+      "evidence": "When node+5Eh is clear and node+5Ch is clear: node+5Ch = 1 (MOV byte ptr [ECX+0x5c],0x1 style store found by the byte search at 00922f4b), call vtable[68h], then recurse over the child list node+48h walking node+44h. node+5Ch is the byte the projectile sweep gate at 006E64EF reads, and the projectile shares this base (its +44h and +48h are the same sibling and child links)."
+    },
+    {
+      "address": "00922f80",
+      "native": "00922f80",
+      "name": "BSP_SceneNode_Disable",
+      "body": "00922f80-00922fc3",
+      "abi": "__thiscall(void* node, int arg)",
+      "coverage": "complete",
+      "evidence": "The mirror of 00922F30: requires node+5Eh clear and node+5Ch set, clears node+5Ch at 00922f9b, calls vtable[6Ch] and recurses over the same child list."
+    },
+    {
+      "address": "00922fd0",
+      "native": "00922fd0",
+      "name": "BSP_SceneNode_Kill",
+      "body": "00922fd0-00923011",
+      "abi": "__fastcall(void* node)",
+      "coverage": "complete",
+      "evidence": "node+5Eh = 1, node+5Dh = 1 (MOV byte ptr [EDI+0x5d],... at 00922fe4), node+5Ch = 0 and node+6Ch = 1, recurse over children whose +6Ch is zero, then vtable[84h]. This is the writer of the +5Dh gate 006E6BB0 tests, so a node being killed can no longer re-bind to an owner."
+    },
+    {
+      "address": "009263c0",
+      "native": "009263c0",
+      "name": "BSP_SceneNode_Remove",
+      "body": "009263c0-00926414",
+      "abi": "__fastcall(void* node)",
+      "coverage": "complete",
+      "evidence": "Guarded on node+5Eh being clear, then node+5Dh = 1 at 009263fd, node+5Eh = 1, node+5Fh = 1, node+5Ch = 0, 00925C40 and vtable[80h]. +5Eh and +5Fh are the two bytes BSP_DeferredEntityEventQueue_Drain requires clear before it dispatches a queued hit."
+    },
+    {
+      "address": "00925f20",
+      "native": "00925f20",
+      "name": "BSP_SEntity_InitAll",
+      "body": "00925f20-0092638a",
+      "abi": "existing ledger name, unchanged",
+      "coverage": "partial: only the enable/disable block 009261b5-0092620f",
+      "evidence": "Inlines the 00922F30 and 00922F80 bodies: at 009261bb it tests [ESI+0x5e] and [ESI+0x5c] and stores MOV byte ptr [ESI+0x5c],0x1 at 009261d0 before a vtable call, and at 009261f2 it does the mirror with MOV byte ptr [ESI+0x5c],0x0 at 00926207. The rest of the routine was not read."
+    },
+    {
+      "address": "0070c210",
+      "native": "0070c210",
+      "name": "BSP_FlakProjectile_Detonate",
+      "body": "0070c210-0070c366",
+      "abi": "__thiscall(void* projectile, int extra)",
+      "coverage": "complete; the effect, point-effect and kill callees are contracts",
+      "evidence": "No proximity search of its own: the damage is one 0084BAD0 call at 0070c280 with ECX = LEA EBX,[ESI+0xfc] the world translation (0070c274), EDX = [ESI+0x174]+0x70 the class descriptor's radius (0070c266, 0070c27b), and four pushes at 0070c26c..0070c27a in reverse order: ESI the projectile as the shot, EDI = [ESI+0x238] the owner as the excluded entity, the immediate 1 as the ignore-falloff byte, and LEA EAX,[ESP+0x18] which is the slot FSTP float ptr [ESP+0xc] wrote at 0070c253 with the result of CALL 0x00bd2f10 over [EAX+0xb4] and [EAX+0xb8]. 00BD2F10 calls BSP_RandomThreads_GetState and 00BD2E60, so it is the random helper and the two class floats are a damage range. The pose is refreshed through 00414DB0 whenever [ESI+0xc8] is clear. Then classDesc+2Ch, when non-null, is handed to a refcounted point-effect creation at 0070c2ec with [00E188A8+19ECh] and the same position, and the created effect's byte +9h is set; projectile+198h, when non-null, is moved to the position by 004842c0; finally PUSH 0x1 at 0070c355 and the kill."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "0098ae14",
+      "native": "00722b20",
+      "function": "0098add0",
+      "method": "segment_bounds",
+      "this": "from (ECX)",
+      "args": "EDX = the to pointer, two pushed locals for the min and max",
+      "gate": "always"
+    },
+    {
+      "address": "0098ae21",
+      "native": "0098ad60",
+      "function": "0098add0",
+      "method": "cell_of_point",
+      "this": "the out pair (ECX)",
+      "args": "EDX = the segment AABB min",
+      "gate": "always"
+    },
+    {
+      "address": "0098ae2e",
+      "native": "0098ad60",
+      "function": "0098add0",
+      "method": "cell_of_point",
+      "this": "the out pair (ECX)",
+      "args": "EDX = the segment AABB max",
+      "gate": "always"
+    },
+    {
+      "address": "0098aed6",
+      "native": "0098aed6",
+      "function": "0098add0",
+      "method": "entity_is_kind",
+      "this": "entity[+4Ch] (ECX)",
+      "args": "EBX = the kind filter; indirect through vtable[5Ch]",
+      "gate": "kindFilter >= 1 and entity[+4Ch] non-null"
+    },
+    {
+      "address": "0098af6c",
+      "native": "0085cad0",
+      "function": "0098add0",
+      "method": "segment_overlaps_box",
+      "this": "entity+13Ch (ECX) and entity+148h (EDX)",
+      "args": "the from pointer and the shortened end point",
+      "gate": "after the six AABB compares"
+    },
+    {
+      "address": "0098af8c",
+      "native": "0098ac20",
+      "function": "0098add0",
+      "method": "test_entity",
+      "this": "ESI, the entity",
+      "args": "EAX from, the local end, ECX exclude, EBP record, EBX kind",
+      "gate": "after 0085CAD0 returns true"
+    },
+    {
+      "address": "0098ac82",
+      "native": "0098ac82",
+      "function": "0098ac20",
+      "method": "shape_trace_segment",
+      "this": "[EBP], one shape pointer",
+      "args": "the from pointer, the local end, the record; indirect through vtable[0]",
+      "gate": "per slot of node+D0h, node+F8h slots"
+    },
+    {
+      "address": "0098acb4",
+      "native": "00470370",
+      "function": "0098ac20",
+      "method": "record_set_entity",
+      "this": "ESI, the record",
+      "args": "EAX = [EDI+0x4c], the node's owning entity",
+      "gate": "on a shape hit"
+    },
+    {
+      "address": "0098ad18",
+      "native": "0098ac20",
+      "function": "0098ac20",
+      "method": "test_entity",
+      "this": "the child node",
+      "args": "the same five",
+      "gate": "kindFilter == 0 and the child passes 0085CAD0"
+    },
+    {
+      "address": "0084c0c3",
+      "native": "00470350",
+      "function": "0084bf00",
+      "method": "record_set_shot",
+      "this": "the staging buffer's record at +1Ch",
+      "args": "param_4[0x33], the shot interface's +0CCh",
+      "gate": "always, before the sweep"
+    },
+    {
+      "address": "0098c570",
+      "native": "00470370",
+      "function": "0098c510",
+      "method": "record_set_entity",
+      "this": "the temporary record",
+      "args": "node[+4Ch]",
+      "gate": "always"
+    },
+    {
+      "address": "009044f4",
+      "native": "00470350",
+      "function": "00904470",
+      "method": "record_set_shot",
+      "this": "one 54h-stride vector element",
+      "args": "the shot",
+      "gate": "per gathered record"
+    },
+    {
+      "address": "0084bbb1",
+      "native": "00470350",
+      "function": "0084bad0",
+      "method": "record_set_shot",
+      "this": "one 54h-stride vector element",
+      "args": "the shot",
+      "gate": "per gathered record"
+    },
+    {
+      "address": "0070c221",
+      "native": "00414db0",
+      "function": "0070c210",
+      "method": "refresh_world_pose",
+      "this": "the projectile",
+      "args": "none",
+      "gate": "[proj+C8h] == 0"
+    },
+    {
+      "address": "0070c247",
+      "native": "00bd2f10",
+      "function": "0070c210",
+      "method": "random_in_range",
+      "this": "none, ECX = 1",
+      "args": "classDesc[+B4h] and classDesc[+B8h] pushed as floats",
+      "gate": "always"
+    },
+    {
+      "address": "0070c280",
+      "native": "0084bad0",
+      "function": "0070c210",
+      "method": "apply_explosion",
+      "this": "proj+FCh (ECX), classDesc+70h (EDX)",
+      "args": "&damage, 1, [proj+238h] the owner, ESI the projectile",
+      "gate": "always"
+    },
+    {
+      "address": "0070c2ec",
+      "native": "008685e0",
+      "function": "0070c210",
+      "method": "spawn_burst_effect",
+      "this": "the out handle (ECX), EDX = [00E188A8+19ECh]",
+      "args": "the refcounted classDesc[+2Ch] definition, proj+FCh, 0, 0",
+      "gate": "classDesc[+2Ch] non-null"
+    },
+    {
+      "address": "0070c350",
+      "native": "004842c0",
+      "function": "0070c210",
+      "method": "move_attached_effect",
+      "this": "[proj+198h]",
+      "args": "EBX = proj+FCh",
+      "gate": "[proj+198h] non-null"
+    },
+    {
+      "address": "00547857",
+      "native": "0098add0",
+      "function": "00547480",
+      "method": "query_segment",
+      "this": "EBX, the singleton from 0042E630",
+      "args": "EDI from, a stack float3 to, [this+3F0h]->vtable[20h]() as the exclude, a stack record, 0 as the kind",
+      "gate": "the containing routine is contract: unread"
+    },
+    {
+      "address": "0072ce91",
+      "native": "0098add0",
+      "function": "0072cdd0",
+      "method": "query_segment",
+      "this": "the singleton",
+      "args": "the caller's point, a local end from target[+FCh] plus [00D7A370], 0 exclude, the record at this+4h, 44h as the kind",
+      "gate": "always; a hit still needs record[+0h][+54h] to equal the shooter's id"
+    },
+    {
+      "address": "0042f044",
+      "native": "0098add0",
+      "function": "0042ef90",
+      "method": "query_segment",
+      "this": "the singleton",
+      "args": "(this+A4h + delta) * 0.5 as from, this+A4h as to, 0 exclude, a stack record, 0 kind",
+      "gate": "always; on a hit this+A4h..+ACh is snapped to record+8h..+10h"
+    }
+  ],
+  "no_ghidra_function": [],
+  "corrections": [
+    "docs/PROJECTILE_IMPACT.md calls 0098B370's third argument and owner->vtable[B0h] a collision mask. 0098ADD0 compares it with != against the entity pointer taken from the cell list at 0098AEE4 and 0098AC20 compares it against child pointers at 0098ACE3, so it is an entity to exclude.",
+    "That doc lists 0042EE60 among 0098ADD0's callers. The caller in that range is 0042EF90 (call site 0042F044); 0042EE60 does not reference 0098ADD0.",
+    "docs/UNIT_HIT_PATH.md describes record+24h as a part falloff range and +2Ch as an ignore-falloff flag from the consumer side. The producer is the blast path: 00904470 writes the explosion radius into +24h and the caller's flag into +2Ch, and 0084BAD0 writes the part damage base into +28h. A direct segment hit writes neither, so a direct hit's part damage is zero and only +14h applies.",
+    "docs/PROJECTILE_IMPACT.md lists projectile+5Ch and +5Dh as unread. Neither belongs to the projectile: they are the scene-node base's active and torn-down bytes, written by 00922F30, 00922F80, 00922FD0, 009263C0, 00925F20 and 009274CE."
+  ],
+  "unread": [
+    "The shape vtable[0] implementation that writes a real hull segment index into record+34h, and the node vtable[0Ch] override that allocates record+3Ch and counts record+40h. The three shapes read here (0087FEC0, 0087FF80, 00929B80) all write +30h = 0Ah and +34h = -1, so the part-hit array of docs/UNIT_HIT_PATH.md still has no attributed producer and that row of its table stays consumer-derived.",
+    "record+38h, the source record 007BBCF0 copies into unit+800h; no writer was found.",
+    "0098B130, the widened query 0072CDD0 falls back to when the segment query misses.",
+    "Nine of the twelve callers of 0098ADD0: 0043B9C0, 00452BD0, 009043A0, 00904400, 008949D0, 00957740, 00957BD0, 00547480 beyond its call shape, and the un-functioned site 004302D4.",
+    "0084F020 and 0047A6A0, the two callers of BSP_HitRecord_WorstPart.",
+    "00428800 in 0084BAD0, 0098C460 in 0098C510, and the point-effect callees 008685E0 and 004842C0 of 0070C210."
+  ]
+}
