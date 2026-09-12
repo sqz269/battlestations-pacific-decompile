@@ -14,6 +14,7 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/game_hosts_ship_ai.hpp"
 
 #include "bsp/camera_projection.hpp"
 #include "bsp/controlled_unit.hpp"
@@ -137,6 +138,10 @@ struct GameUnitsHost::Impl {
     bool logged_cruise{false};
     bool logged_gate{false};
     bool logged_precision{false};
+
+    // Milestone 2n: the ship AI controller that publishes into each unit's own
+    // 84-byte AI order slot, which the motion head at 00825f2c promotes.
+    GameShipAiHost* ship_ai{nullptr};
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -832,12 +837,26 @@ void GameUnitsHost::issue_authored_commands() {
 }
 
 bool GameUnitsHost::issue_player_command(const std::string& token,
-    const std::string& target_token) {
+    const std::string& target_token, const std::string& unit_name) {
     Impl& host = *impl_;
-    if (!host.controlled_bound || host.controlled_index >= host.slots.size()) return false;
-    GameUnitSlot& slot = *host.slots[host.controlled_index];
+    std::size_t index = host.controlled_index;
+    if (!unit_name.empty()) {
+        index = host.slots.size();
+        for (std::size_t candidate = 0; candidate < host.slots.size(); ++candidate) {
+            if (host.slots[candidate]->row.name == unit_name) { index = candidate; break; }
+        }
+        if (index >= host.slots.size()) {
+            host.log.notef("--order-unit \"%s\" names no created instance; the command was "
+                "not issued", unit_name.c_str());
+            return false;
+        }
+    } else if (!host.controlled_bound) {
+        return false;
+    }
+    if (index >= host.slots.size()) return false;
+    GameUnitSlot& slot = *host.slots[index];
     const float heading = host.pose_heading_radians(slot);
-    const GameCommandRow* row = host.commands.issue(host.controlled_index, token,
+    const GameCommandRow* row = host.commands.issue(index, token,
         target_token, slot.ring, heading);
     if (row == nullptr) return false;
     slot.row.command = row->command.empty() ? token : row->command;
@@ -977,9 +996,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     // director block, which this process does not reach, so the position is the
     // executable's decision and is recorded as one.
     run_director_steps_00836920();
+    // Milestone 2n: the ship AI controller 009f50e0 for every created unit, and
+    // the weapon director's automatic target think 009f5da0 beside it. Neither
+    // has a caller in the call graph, so the position is the executable's
+    // decision and is recorded as one; it runs before the motion pass because
+    // the motion's own head at 00825f2c consumes the order slot 009f4d10
+    // published on this step.
+    if (host.ship_ai != nullptr) {
+        host.ship_ai->controller_step(step_seconds);
+        host.ship_ai->log_sample(host.summary.motion_steps, 10);
+    }
     for (std::size_t index = 0; index < host.slots.size(); ++index) {
         GameUnitSlot& slot = *host.slots[index];
         if (!slot.state->active) continue;
+        // 00825f2c..00825f7c, the head of BSP_UnitInstance_UpdateShipMotion:
+        // the promotion of the slot the AI controller just published, before
+        // anything else the routine does.
+        if (host.ship_ai != nullptr) host.ship_ai->promote_order_00825f2c(index);
         // The order under the write cursor is refilled every step so a standing
         // order keeps standing: the game does that from the HUD every frame the
         // key is held, and the ring's own forward copy at 00813186 would
@@ -987,26 +1020,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         if (slot.standing_order) {
             host.issue_into_ring(slot, slot.standing_throttle, slot.standing_rudder);
         }
-        // Milestone 2l: 009e1170's AI arm for a unit whose current command is
-        // `cruise`. It decides a desired throttle and either a rudder or a held
-        // heading and hands all three to the AI controller block at [state]+8;
-        // the hop from that block to unit+0fc4h / unit+0fdch, which is what
-        // 00825f20 would copy into the ring under the unit+61h gate, has no
-        // recovered writer, so nothing it decides reaches the motion below.
-        if (host.commands.holds_cruise(index)) {
-            bsp::UnitBodyAxisSpeedInputs axis{};
-            axis.velocity[0] = slot.motion.linear_velocity.x;
-            axis.velocity[1] = slot.motion.linear_velocity.y;
-            axis.velocity[2] = slot.motion.linear_velocity.z;
-            axis.axis[0] = slot.motion.pose_row2[0];
-            axis.axis[1] = slot.motion.pose_row2[1];
-            axis.axis[2] = slot.motion.pose_row2[2];
-            bsp::CruiseOrderedValues ordered{};
-            host.commands.cruise_step(index, host.is_controlled(slot),
-                bsp::unit_forward_speed_0092d730(axis),
-                bsp::unit_reference_speed_0080fc30(slot.motion.max_speed,
-                    bsp::kUnitReferenceSpeedUnscaled), ordered);
-        }
+        // Milestone 2n: 009e1170's AI arm is no longer run from here. It is the
+        // `cruise` state's vtable +0Ch, and 009f5186 calls it on a re-plan tick
+        // of the controller above, which is what milestone 2l's own correction
+        // from docs/SHIP_AI_STATES.md says. When no controller is attached the
+        // step does not run at all rather than running on the wrong schedule.
         UnitRudderBinding rudder(host, slot);
         ShipMotionBinding motion(host, slot, rudder);
         const float before[3] = {slot.motion.position[0], slot.motion.position[1],
@@ -1087,6 +1105,82 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     if (host.controlled_bound && host.controlled_index < host.slots.size()) {
         host.summary.controlled_distance = host.slots[host.controlled_index]->row.distance;
     }
+}
+
+// ---------------------------------------------------------------------------
+// Milestone 2n: what the ship AI controller reads off a unit
+// ---------------------------------------------------------------------------
+
+void GameUnitsHost::set_ship_ai(GameShipAiHost* ai) noexcept { impl_->ship_ai = ai; }
+
+std::uint32_t GameUnitsHost::director_current_command_0071be40(std::size_t index) const {
+    return impl_->commands.current_command_0071be40(index);
+}
+
+bool GameUnitsHost::unit_player_controlled_0184(std::size_t index) const {
+    const Impl& host = *impl_;
+    return host.controlled_bound && host.controlled_index == index;
+}
+
+bool GameUnitsHost::unit_flag_005d(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return false;
+    return host.slots[index]->state->simulate;
+}
+
+bool GameUnitsHost::unit_flag_0061(std::size_t index) const {
+    // docs/UNIT_AUTOPILOT_PAIR.md scanned .text for a writer of unit+61h at the
+    // direct displacement and at the seven shifted unit bases and found none, so
+    // nothing in this process or in the recovered load can set it. The byte is
+    // clear, which is what lets the ship AI controller run at all.
+    static_cast<void>(index);
+    return false;
+}
+
+float GameUnitsHost::unit_forward_speed_0092d730(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    const GameUnitSlot& slot = *host.slots[index];
+    bsp::UnitBodyAxisSpeedInputs axis{};
+    axis.velocity[0] = slot.motion.linear_velocity.x;
+    axis.velocity[1] = slot.motion.linear_velocity.y;
+    axis.velocity[2] = slot.motion.linear_velocity.z;
+    axis.axis[0] = slot.motion.pose_row2[0];
+    axis.axis[1] = slot.motion.pose_row2[1];
+    axis.axis[2] = slot.motion.pose_row2[2];
+    return bsp::unit_forward_speed_0092d730(axis);
+}
+
+float GameUnitsHost::unit_retardation_0508(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    return host.slots[index]->motion_class.retardation;
+}
+
+float GameUnitsHost::unit_heading_radians(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    return Impl::pose_heading_radians(*host.slots[index]);
+}
+
+float GameUnitsHost::unit_current_yaw_rate_00811940(std::size_t index) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    UnitRudderBinding rudder(host, *host.slots[index]);
+    return bsp::unit_current_yaw_rate_00811940(rudder);
+}
+
+bool GameUnitsHost::run_cruise_state_step_009e1170(std::size_t index,
+    bsp::ShipAiControlBlock& blk, bsp::ShipAiSetterHost& setters) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size()) return false;
+    GameUnitSlot& slot = *host.slots[index];
+    bsp::CruiseOrderedValues ordered{};
+    return host.commands.cruise_step(index, host.is_controlled(slot),
+        unit_forward_speed_0092d730(index),
+        bsp::unit_reference_speed_0080fc30(slot.motion.max_speed,
+            bsp::kUnitReferenceSpeedUnscaled),
+        ordered, &blk, &setters);
 }
 
 std::size_t GameUnitsHost::count() const noexcept { return impl_->slots.size(); }

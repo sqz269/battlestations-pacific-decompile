@@ -323,6 +323,7 @@ struct GameMissionHost::Impl {
     // throttle/rudder pair, with an optional target entity.
     std::string order_command;
     std::string order_command_target;
+    std::string order_unit;   // milestone 2n, --order-unit <name>
     float order_speed{0.0f};
     bool order_speed_set{false};
     // Milestone 2j, --trajectory-csv <path>.
@@ -1316,6 +1317,10 @@ GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptH
 
 GameMissionHost::~GameMissionHost() = default;
 
+void GameMissionHost::set_order_unit(std::string unit) {
+    impl_->order_unit = std::move(unit);
+}
+
 bool GameMissionHost::requested() const noexcept { return !impl_->requested_id.empty(); }
 
 const GameMissionSummary& GameMissionHost::summary() const noexcept {
@@ -1613,7 +1618,7 @@ void GameMissionHost::Impl::finish_scene_load() {
     // Milestone 2i: the player order and the deterministic frame delta.
     frame_host->set_player_order(order_frame, order_throttle, order_rudder);
     // Milestone 2l: --order <command>[:<entity>] takes the same frame.
-    frame_host->set_player_command(order_command, order_command_target);
+    frame_host->set_player_command(order_command, order_command_target, order_unit);
     // Milestone 2m: --order speed=<m/s> takes it too.
     if (order_speed_set) frame_host->set_player_commanded_speed(order_speed);
     frame_host->set_mission_frame_seconds(mission_frame_seconds);

@@ -155,6 +155,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             " [--press-start-frame N] [--menu-select <mission id>] [--mission-frames N]"
             " [--mission-complete-frame N]"
             " [--order throttle=<f>,rudder=<f> | --order <command>[:<entity>]]"
+            " [--order-unit <name>]"
             " [--order-frame N] [--mission-frame-seconds S]"
             " [--trajectory-csv <path>]"
             " [--screenshot <path>] [--screenshot-frame N]"

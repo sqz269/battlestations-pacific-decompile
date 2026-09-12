@@ -185,6 +185,11 @@ struct ChainState {
     bsp::SceneCommandTarget pending_target{};
     std::uint32_t pending_command{0};
     std::uint8_t pending_flag{0};
+    // Milestone 2n: the AI controller's control block, blk = brain+8h, and the
+    // two callees the mode switches make. When they are present the three
+    // desired-value setters run their reconstructions instead of recording.
+    bsp::ShipAiControlBlock* ai_block{nullptr};
+    bsp::ShipAiSetterHost* ai_setters{nullptr};
 };
 
 // ---------------------------------------------------------------------------
@@ -641,15 +646,35 @@ public:
         return chain_.owner.params_of(chain_.unit.index);
     }
     void set_desired_steering(float rudder) override {
-        chain_.owner.record("CruiseState::set_desired_steering", 0x009dffb0u);
+        // Milestone 2n: 009dffb0, complete in src/ship_ai_states.cpp. It clears
+        // the two timers and switches the mode on a change, then stores the
+        // argument clamped into [-1,+1] at blk+1D4h.
+        if (chain_.ai_block != nullptr && chain_.ai_setters != nullptr) {
+            bsp::ship_ai_set_desired_steering_009dffb0(*chain_.ai_block, rudder,
+                *chain_.ai_setters);
+            chain_.owner.done("CruiseState::set_desired_steering", 0x009dffb0u);
+        } else {
+            chain_.owner.record("CruiseState::set_desired_steering", 0x009dffb0u);
+        }
         desired_rudder = rudder;
     }
     void set_desired_heading(float heading_radians) override {
-        chain_.owner.record("CruiseState::set_desired_heading", 0x009e0040u);
+        if (chain_.ai_block != nullptr && chain_.ai_setters != nullptr) {
+            bsp::ship_ai_set_desired_heading_009e0040(*chain_.ai_block, heading_radians,
+                *chain_.ai_setters);
+            chain_.owner.done("CruiseState::set_desired_heading", 0x009e0040u);
+        } else {
+            chain_.owner.record("CruiseState::set_desired_heading", 0x009e0040u);
+        }
         desired_heading = heading_radians;
     }
     void set_desired_throttle(float throttle) override {
-        chain_.owner.record("CruiseState::set_desired_throttle", 0x009dbf90u);
+        if (chain_.ai_block != nullptr) {
+            bsp::ship_ai_set_desired_throttle_009dbf90(*chain_.ai_block, throttle);
+            chain_.owner.done("CruiseState::set_desired_throttle", 0x009dbf90u);
+        } else {
+            chain_.owner.record("CruiseState::set_desired_throttle", 0x009dbf90u);
+        }
         desired_throttle = throttle;
     }
 
@@ -1131,8 +1156,16 @@ bool GameCommandsHost::holds_cruise(std::size_t unit_index) const {
             == bsp::kCruiseCommandObjectAddress;
 }
 
+std::uint32_t GameCommandsHost::current_command_0071be40(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0u;
+    const GameDirector& director = host.directors[unit_index];
+    return bsp::director_current_command_0071be40(director.mode, director.slot_command[0], 0u);
+}
+
 bool GameCommandsHost::cruise_step(std::size_t unit_index, bool player_controlled,
-    float body_axis_speed, float reference_speed, bsp::CruiseOrderedValues& out) {
+    float body_axis_speed, float reference_speed, bsp::CruiseOrderedValues& out,
+    bsp::ShipAiControlBlock* blk, bsp::ShipAiSetterHost* setters) {
     Impl& host = *impl_;
     if (!holds_cruise(unit_index)) return false;
     if (player_controlled) {
@@ -1145,19 +1178,23 @@ bool GameCommandsHost::cruise_step(std::size_t unit_index, bool player_controlle
     }
     if (!host.logged_step) {
         host.logged_step = true;
-        host.log.notef("cruise state step 009e1170 runs once per unit per fixed simulation "
-            "step: its own scheduler is the ship AI state class family at 00d21598, whose "
-            "009f3dd0 keeps the state in sync with 0071be40's answer and which has no "
-            "reconstruction, so where it runs is the executable's decision");
-        host.log.notef("the latched pair reaches no order ring: 009dbf90, 009dffb0 and "
-            "009e0040 write the AI controller block at [state]+8, and the hop from that "
-            "block to unit+0fc4h / unit+0fdch under the unit+61h gate that 00825f20 reads "
-            "at 008266c1 has no recovered writer (docs/CRUISE_COMMAND.md, follow-up "
-            "`unit_autopilot_pair`), so nothing this rule decides reaches the motion path");
+        // Milestone 2n corrects milestone 2l here. 009e1170 is the `cruise`
+        // state's vtable +0Ch, and 009f5186 calls it only on a re-plan tick, at
+        // most once every state->vtable[28h]() * 0.05f seconds; the controller
+        // 009f50e0 is what schedules it, and this process now runs that
+        // controller once per unit per fixed simulation step.
+        host.log.notef("cruise state step 009e1170 runs on a re-plan tick of the ship AI "
+            "controller 009f50e0, not on every step: 009f3dd0 keeps the state in sync with "
+            "0071be40's answer and 009f519e reloads the interval from the state's own "
+            "vtable +28h (009dac30, 2.0 ticks of 0.05 s for `cruise`)");
+        host.log.notef("the three desired-value setters 009dbf90 / 009dffb0 / 009e0040 now "
+            "write the AI control block blk = brain+8h through their reconstructions, and "
+            "009ed6b0's direct-control arm and 009f4d10 carry what they wrote into the "
+            "unit's own 84-byte AI order slot (docs/SHIP_AI_STATES.md, "
+            "docs/UNIT_AUTOPILOT_PAIR.md)");
     }
-    host.record("ShipAiState::sync_with_current_command", 0x009f3dd0u);
     ChainState chain{host, host.units[unit_index], host.directors[unit_index], nullptr,
-        nullptr, 0.0f, bsp::SceneCommandTarget{}, 0u, 0u};
+        nullptr, 0.0f, bsp::SceneCommandTarget{}, 0u, 0u, blk, setters};
     DirectorBinding binding(chain);
     binding.body_speed = body_axis_speed;
     binding.reference = reference_speed;

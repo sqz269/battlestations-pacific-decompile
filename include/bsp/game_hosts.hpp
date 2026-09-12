@@ -186,6 +186,13 @@ struct GameExecutableOptions {
     // position form `moveto=x,z` stays empty and the position is carried here.
     std::string order_command;
     std::string order_command_target;
+    // Milestone 2n: --order-unit <name> names which created instance the
+    // command form of --order is issued to. Empty keeps the controlled unit,
+    // which is what every earlier milestone's run used. It exists because
+    // 009f3dd0 replaces the director's current command with `cruise` for a
+    // player-controlled unit at 009f3df3, so a command issued to the controlled
+    // ship can never put its AI controller into any other state.
+    std::string order_unit;
     bool order_command_position{false};
     float order_command_x{0.0f};
     float order_command_z{0.0f};
