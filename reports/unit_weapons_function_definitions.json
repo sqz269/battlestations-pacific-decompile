@@ -85,6 +85,56 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0080e150",
+    "end_address": "0080e157"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0080e150",
+    "end_address": "0080e156",
+    "bytes_disassembled": 7,
+    "message": "Successfully disassembled 7 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0080e150",
+    "disassemble_first": false,
+    "name": "BSP_UnitInstance_WeaponDirector"
+   },
+   "result": {
+    "success": true,
+    "address": "0080e150",
+    "function_name": "BSP_UnitInstance_WeaponDirector",
+    "entry_point": "0080e150",
+    "body_size": 7,
+    "message": "Function created successfully at 0080e150",
+    "warnings": [
+     "Function name 'BSP_UnitInstance_WeaponDirector' \u2014 main part 'UnitInstance_WeaponDirector' is not PascalCase. Expected: UnitinstanceWeapondirector",
+     "Function name 'BSP_UnitInstance_WeaponDirector' \u2014 main part 'UnitInstance_WeaponDirector' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_UnitInstance_WeaponDirector' does not start with a recognized verb. First word 'Unit' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0080e150",
+   "end": "0080e157",
+   "name": "BSP_UnitInstance_WeaponDirector",
+   "after": "Function: BSP_UnitInstance_WeaponDirector at 0080e150\nSignature: undefined BSP_UnitInstance_WeaponDirector(void)\nEntry: 0080e150\nBody: 0080e150 - 0080e156"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }
