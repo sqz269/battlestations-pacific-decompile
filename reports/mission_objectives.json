@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "packet": "cc2_mission_objectives",
+  "owner": "agent/cc2-mission-objectives",
+  "base_commit": "05776128",
+  "status": "two_follow_ups_reconstructed_and_build_tested",
+  "owned_files": [
+    "docs/SCORING_BINDING_TABLE.md",
+    "docs/OBJECTIVE_UNIT_LIST.md",
+    "reports/mission_objectives.json",
+    "include/bsp/scoring_bindings.hpp",
+    "include/bsp/objective_units.hpp",
+    "src/scoring_bindings.cpp",
+    "src/objective_units.cpp"
+  ],
+  "parts": {
+    "scoring_binding_table": {
+      "doc": "docs/SCORING_BINDING_TABLE.md",
+      "coverage": "complete for the ten setters, both mission-score accessors and the five getters; the five Add and four Get bindings are classified by callee and LuaObject call trace",
+      "record_base": "manager+4h+slot*284h, manager at [00e188a8]+21A0h",
+      "record_offsets": [
+        {"record": "0x18", "field": "score_maps[Mission]", "manager_expr": "this+slot*284h+1Ch", "set": "009103f0", "add": "00910480", "get": "0090c790", "rule": "trunc(multiplier[difficulty] * value) / trunc(multiplier[difficulty] * delta + current)"},
+        {"record": "0x24", "field": "score_maps[Action]", "manager_expr": "this+slot*284h+28h", "set": "0090f110", "add": "0090f140", "get": "0090c800", "rule": "set / add, unscaled"},
+        {"record": "0x30", "field": "score_maps[Ship]", "manager_expr": "this+slot*284h+34h", "set": "0090f170", "add": "0090f1a0", "get": "0090c870", "rule": "set / add, unscaled"},
+        {"record": "0x3c", "field": "score_maps[Plane]", "manager_expr": "this+slot*284h+40h", "set": "0090f1d0", "add": "0090f200", "get": "0090c8e0", "rule": "set / add, unscaled"},
+        {"record": "0x48", "field": "score_maps[Command]", "manager_expr": "this+slot*284h+4Ch", "set": "0090f230", "add": "0090f260", "get": "0090c950", "rule": "set / add, unscaled"},
+        {"record": "0x54", "field": "score_maps[MissionMedals]", "manager_expr": "this+slot*284h+58h", "set": "0090f0e0", "add": null, "get": null, "rule": "movzx byte, stores 0 or 1"},
+        {"record": "0x60", "field": "score_maps[ActionMedals]", "manager_expr": "this+slot*284h+64h", "set": "0090f290", "add": null, "get": null, "rule": "movzx byte, stores 0 or 1"},
+        {"record": "0x1e0", "field": "totals_1c8[6]", "manager_expr": "this+slot*284h+1E4h", "set": null, "add": null, "get": "inline at 008b912a", "rule": "read only here"}
+      ]
+    },
+    "objective_unit_list": {
+      "doc": "docs/OBJECTIVE_UNIT_LIST.md",
+      "coverage": "complete for the 16-byte record, both producers, the list splice, both binding argument contracts and the 008dfe50 walk; partial for 008df9b0/008dfc00 group branches",
+      "list": "std::list object at objective+20h, _Myhead at +24h, _Mysize at +28h; node {_Next+0h,_Prev+4h,value+8h}",
+      "record_offsets": [
+        {"offset": "0x0", "field": "Entity* unit, null for a position entry", "producer": "008dee67 / 008deec9"},
+        {"offset": "0x4", "field": "float x", "producer": "008deecf"},
+        {"offset": "0x8", "field": "float y", "producer": "008deed5"},
+        {"offset": "0xc", "field": "float z", "producer": "008deedb"}
+      ],
+      "note": "008dee50 writes only +0h and leaves +4h..+Fh uninitialised; 008deeb0 writes 0 to +0h and the three floats"
+    }
+  },
+  "host_methods": [
+    {"address": "008b9341", "native": "009103f0", "function": "008b9190", "name": "scoring_set_slot_mission_score", "args": "slot, &key, value", "ret": "void", "gate": "always", "note": "ECX = [00e188a8]+21A0h at 008b933a; RET 0Ch at 0091046f"},
+    {"address": "008b9771", "native": "00910480", "function": "008b95c0", "name": "scoring_add_slot_mission_score", "args": "slot, &key, delta", "ret": "void", "gate": "always", "note": "RET 0Ch at 009104fd"},
+    {"address": "008b953c", "native": "0090c790", "function": "008b93c0", "name": "scoring_get_slot_mission_score", "args": "slot, &key", "ret": "int", "gate": "always", "note": "RET 8 at 0090c7fb; 0 when the key is absent"},
+    {"address": "008b99b8", "native": "0090f0e0", "function": "008b97f0", "name": "scoring_set_slot_mission_medal", "args": "slot, &key, granted", "ret": "void", "gate": "granted defaults to 1 at 008b9961"},
+    {"address": "008b9c0e", "native": "0090f110", "function": "008b9a30", "name": "scoring_set_slot_action_score", "args": "slot, &key, value", "ret": "void", "gate": "always"},
+    {"address": "0091041d", "native": "00432650", "function": "009103f0", "name": "global_config_singleton", "args": "-", "ret": "GlobalConfig*", "gate": "mission score only", "note": "body not read, contract only"},
+    {"address": "009104c5", "native": "00432650", "function": "00910480", "name": "global_config_singleton", "args": "-", "ret": "GlobalConfig*", "gate": "mission score only"},
+    {"address": "0091044b", "native": "00bf7420", "function": "009103f0", "name": "ftol", "args": "st0", "ret": "int", "gate": "always", "note": "truncate toward zero"},
+    {"address": "009104f3", "native": "00bf7420", "function": "00910480", "name": "ftol", "args": "st0", "ret": "int", "gate": "always"},
+    {"address": "00910465", "native": "005070c0", "function": "009103f0", "name": "score_map_entry", "args": "map, &key", "ret": "int*", "gate": "always", "note": "std::map operator[], inserts 0 on a miss"},
+    {"address": "009104a5", "native": "005070c0", "function": "00910480", "name": "score_map_entry", "args": "map, &key", "ret": "int*", "gate": "always"},
+    {"address": "0090f0f3", "native": "005070c0", "function": "0090f0e0", "name": "score_map_entry", "args": "map, &key", "ret": "int*", "gate": "always"},
+    {"address": "0090c7b3", "native": "004c8b80", "function": "0090c790", "name": "score_map_find", "args": "map, &key, &it", "ret": "iterator", "gate": "always", "note": "body not read, contract only"},
+    {"address": "008ce3ae", "native": "008df9b0", "function": "008cdd60", "name": "objective_set_add_unit", "args": "set, &name, unit", "ret": "void", "gate": "mask bit set and the argument is an entity table"},
+    {"address": "008ce42d", "native": "008df5d0", "function": "008cdd60", "name": "objective_set_add_position", "args": "set, &name, pos", "ret": "void", "gate": "mask bit set and the argument is a Vector3 table"},
+    {"address": "008df358", "native": "008dee50", "function": "008df2b0", "name": "objective_push_unit_entry", "args": "objective, unit", "ret": "void", "gate": "name matched and the unit is alive", "note": "ECX = [ESI+8], the list node value"},
+    {"address": "008df338", "native": "00694af0", "function": "008df2b0", "name": "observer_pair_registered", "args": "objective, unit", "ret": "bool", "gate": "name matched", "note": "body not read, contract only"},
+    {"address": "008df345", "native": "00694a60", "function": "008df2b0", "name": "observer_register_pair", "args": "objective, unit", "ret": "void", "gate": "not already registered"},
+    {"address": "008df39e", "native": "006de3d0", "function": "008df2b0", "name": "marker_bind_unit_on_add", "args": "markers, &name, unit", "ret": "void", "gate": "objective not hidden-and-incomplete", "note": "empty body, RET 8"},
+    {"address": "008df3d7", "native": "008de6a0", "function": "008df2b0", "name": "objective_add_tail", "args": "&name, &unit", "ret": "void", "gate": "same", "note": "contract unread"},
+    {"address": "008dee57", "native": "00bf681b", "function": "008dee50", "name": "operator_new", "args": "0x10", "ret": "void*", "gate": "always"},
+    {"address": "008deeb7", "native": "00bf681b", "function": "008deeb0", "name": "operator_new", "args": "0x10", "ret": "void*", "gate": "always"},
+    {"address": "008dee83", "native": "008db650", "function": "008dee50", "name": "list_buynode", "args": "head, head->_Prev, &record", "ret": "node*", "gate": "always"},
+    {"address": "008dee8e", "native": "008de200", "function": "008dee50", "name": "list_incsize", "args": "1", "ret": "void", "gate": "always"},
+    {"address": "008dfedd", "native": "00647c20", "function": "008dfe50", "name": "live_units_push_back", "args": "&vector, &rec->unit", "ret": "void", "gate": "rec->unit != 0"},
+    {"address": "008dff3b", "native": "006de3f0", "function": "008dfe50", "name": "marker_rebind_unit", "args": "markers, &name, unit", "ret": "void", "gate": "rec->unit != 0", "note": "insert half unread"},
+    {"address": "008dffd2", "native": "006de4c0", "function": "008dfe50", "name": "marker_clear_position", "args": "markers, &name, pos", "ret": "void", "gate": "rec->unit == 0", "note": "RET 10h"},
+    {"address": "008e0035", "native": "008dfc00", "function": "008dfe50", "name": "objective_set_remove_unit", "args": "set, &objective->name, unit", "ret": "void", "gate": "per collected live unit"},
+    {"address": "008e0040", "native": "00bf65ac", "function": "008dfe50", "name": "free", "args": "vector._Myfirst", "ret": "void", "gate": "after the removal loop"},
+    {"address": "008cdeba", "native": "00b66290", "function": "008cdd60", "name": "argument_integer", "args": "index", "ret": "int", "gate": "argument 0 is an integer"},
+    {"address": "008cde73", "native": "00b66a60", "function": "008cdd60", "name": "argument_is_integer", "args": "index", "ret": "bool", "gate": "always"}
+  ],
+  "raw_listing_reads": {
+    "note": "The setter and getter families were read as bytes through `bsp.py ghidra bytes` and decoded with capstone under local/. Every one of them is the start of a Ghidra function, so no no_ghidra_function rows are needed.",
+    "ranges": [
+      {"start": "0090f0e0", "end_inclusive": "0090f2af", "functions": ["0090f0e0", "0090f110", "0090f140", "0090f170", "0090f1a0", "0090f1d0", "0090f200", "0090f230", "0090f260", "0090f290"]},
+      {"start": "0090c790", "end_inclusive": "0090c9bf", "functions": ["0090c790", "0090c800", "0090c870", "0090c8e0", "0090c950"]}
+    ]
+  },
+  "ledger_names": [
+    "008b9190 BSP_LuaScoring_SetMissionScore",
+    "008b93c0 BSP_LuaScoring_GetMissionScore",
+    "008b95c0 BSP_LuaScoring_AddMissionScore",
+    "008b97f0 BSP_LuaScoring_SetMissionMedal",
+    "008b8ff0 BSP_LuaScoring_GetTotalMissionScore",
+    "008b9a30 BSP_LuaScoring_SetActionScore",
+    "008ba0f0 BSP_LuaScoring_SetShipScore",
+    "008ba7b0 BSP_LuaScoring_SetPlaneScore",
+    "009103f0 BSP_MissionScoring_SetSlotMissionScore",
+    "0090f110 BSP_MissionScoring_SetSlotActionScore",
+    "0090f140 BSP_MissionScoring_AddSlotActionScore",
+    "0090f170 BSP_MissionScoring_SetSlotShipScore",
+    "0090f1a0 BSP_MissionScoring_AddSlotShipScore",
+    "0090f1d0 BSP_MissionScoring_SetSlotPlaneScore",
+    "0090f200 BSP_MissionScoring_AddSlotPlaneScore",
+    "0090f230 BSP_MissionScoring_SetSlotCommandScore",
+    "0090f260 BSP_MissionScoring_AddSlotCommandScore",
+    "0090f290 BSP_MissionScoring_SetSlotActionMedal",
+    "0090c790 BSP_MissionScoring_GetSlotMissionScore",
+    "0090c800 BSP_MissionScoring_GetSlotActionScore",
+    "0090c870 BSP_MissionScoring_GetSlotShipScore",
+    "0090c8e0 BSP_MissionScoring_GetSlotPlaneScore",
+    "0090c950 BSP_MissionScoring_GetSlotCommandScore",
+    "008cdd60 BSP_LuaObjectives_AddUnit",
+    "008ce510 BSP_LuaObjectives_RemoveUnit",
+    "008dee50 BSP_Objective_PushUnitEntry",
+    "008deeb0 BSP_Objective_PushPositionEntry",
+    "008df2b0 BSP_ObjectiveSet_AddUnitToNamedObjective",
+    "008df5d0 BSP_ObjectiveSet_AddPositionToNamedObjective",
+    "008df400 BSP_ObjectiveSet_RemoveUnitFromNamedObjective",
+    "008df9b0 BSP_ObjectiveSet_AddUnitExpandingGroups",
+    "008dfc00 BSP_ObjectiveSet_RemoveUnitExpandingGroups",
+    "006de4c0 BSP_MarkerManager_ClearPositionMarker",
+    "006de3f0 BSP_MarkerManager_RebindUnitMarker",
+    "006de3d0 BSP_MarkerManager_BindUnitMarkerStub",
+    "00647c20 STL_PointerVector_PushBack_00647c20"
+  ],
+  "unread": [
+    "006de150, 006de000, 006dbd40: the marker key build and slot lookup",
+    "006de3f0 tail from 008de42c: the insert half of the unit marker rebind",
+    "008de6a0, 008dc3e0: the add tail and the list erase",
+    "GlobalConfig+2Ch: the difficulty multiplier vector's producer and length",
+    "Scoring_GrantBonus 008bb770, ClearPlayerScore 008bc540, ClearAllMissionsScore 008d2d60, SetConditionMessage 008bbe00, SetVictoryMessage 008bc0c0",
+    "008df9b0 and 008dfc00 selector 1Ah/45h/46h branches (006d6010, 00848410)"
+  ]
+}
