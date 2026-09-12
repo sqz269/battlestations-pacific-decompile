@@ -417,7 +417,7 @@ constexpr MissionLoadHostStep kHostSteps[] = {
     {0x00aa0d30, "MissionSceneLoadHost", "register_locale_table", MissionLoadOwner::PureLogic,
         "names split off record+980h"},
     {0x00aa06d0, "MissionSceneLoadHost", "reload_locale_tables", MissionLoadOwner::Vfs, ""},
-    {0x004218e0, "MissionSceneLoadHost", "reset_objective_list", MissionLoadOwner::PureLogic, ""},
+    {0x004218e0, "MissionSceneLoadHost", "reset_avoid_zone_state", MissionLoadOwner::PureLogic, ""},
     {0x00a92c40, "MissionSceneLoadHost", "input_update", MissionLoadOwner::Input, ""},
     {0x0075b430, "MissionSceneLoadHost", "dispatch_session_ready_event", MissionLoadOwner::Session,
         "session mode 2 only"},
