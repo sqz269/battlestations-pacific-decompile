@@ -1,0 +1,102 @@
+{
+  "reason": "Original registers, stack arguments and RET cleanup verified in native listings; source interfaces are not original ABI. Names remain hypotheses. Prior names/signatures/comments preserved.",
+  "entries": [
+    {
+      "address": "00698730",
+      "before": "Function: FUN_00698730 at 00698730\nSignature: undefined FUN_00698730(void)\nEntry: 00698730\nBody: 00698730 - 006988e9",
+      "before_comment": {
+        "address": "00698730",
+        "function_name": "FUN_00698730"
+      },
+      "proposed": "void __fastcall BSP_InputConfiguration_Clear(void* self, void* unused_edx)",
+      "apply": "Successfully set prototype for function at 00698730 with __fastcall calling convention",
+      "after": "Function: BSP_InputConfiguration_Clear at 00698730\nSignature: void __fastcall BSP_InputConfiguration_Clear(void * self, void * unused_edx)\nEntry: 00698730\nBody: 00698730 - 006988e9",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93920",
+      "before": "Function: FUN_00a93920 at 00a93920\nSignature: undefined FUN_00a93920(void)\nEntry: 00a93920\nBody: 00a93920 - 00a93936",
+      "before_comment": {
+        "address": "00a93920",
+        "function_name": "FUN_00a93920"
+      },
+      "proposed": "void __fastcall BSP_InputManager_UnregisterAction(void* self, void* unused_edx, uint index)",
+      "apply": "Successfully set prototype for function at 00a93920 with __fastcall calling convention",
+      "after": "Function: BSP_InputManager_UnregisterAction at 00a93920\nSignature: void __fastcall BSP_InputManager_UnregisterAction(void * self, void * unused_edx, uint index)\nEntry: 00a93920\nBody: 00a93920 - 00a93936",
+      "readback_verified": true
+    },
+    {
+      "address": "00a92260",
+      "before": "Function: BSP_InputManager_IsActionRegistered at 00a92260\nSignature: undefined BSP_InputManager_IsActionRegistered(void)\nEntry: 00a92260\nBody: 00a92260 - 00a92284",
+      "before_comment": {
+        "address": "00a92260",
+        "function_name": "BSP_InputManager_IsActionRegistered",
+        "comment": "[BSP reconstruction 00a92260]\nProvisional hypothesis, not recovered symbol. docs/INPUT_BINDING_INSTALL.md. ECX=input manager; stack=uint32 action; EAX=0/1; RET4. unsigned bounds and separate byte+00h registration predicate. New value projection, not native layout or ABI; unused padding is unmodelled. Ghidra project bsp /battlestationspacific.exe verified; 00a93220/00a93500 free continuations restored by integrator under lock."
+      },
+      "proposed": "uint __fastcall BSP_InputManager_IsActionRegistered(void* self, void* unused_edx, uint index)",
+      "apply": "Successfully set prototype for function at 00a92260 with __fastcall calling convention",
+      "after": "Function: BSP_InputManager_IsActionRegistered at 00a92260\nSignature: uint __fastcall BSP_InputManager_IsActionRegistered(void * self, void * unused_edx, uint index)\nEntry: 00a92260\nBody: 00a92260 - 00a92284",
+      "readback_verified": true
+    },
+    {
+      "address": "00a93880",
+      "before": "Function: FUN_00a93880 at 00a93880\nSignature: undefined FUN_00a93880(void)\nEntry: 00a93880\nBody: 00a93880 - 00a938d6",
+      "before_comment": {
+        "address": "00a93880",
+        "function_name": "FUN_00a93880"
+      },
+      "proposed": "void __fastcall BSP_InputAction_ClearRegistration(void* self, void* unused_edx)",
+      "apply": "Successfully set prototype for function at 00a93880 with __fastcall calling convention",
+      "after": "Function: BSP_InputAction_ClearRegistration at 00a93880\nSignature: void __fastcall BSP_InputAction_ClearRegistration(void * self, void * unused_edx)\nEntry: 00a93880\nBody: 00a93880 - 00a938d6",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00698730",
+        "prototype": "void __fastcall BSP_InputConfiguration_Clear(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00698730 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93920",
+        "prototype": "void __fastcall BSP_InputManager_UnregisterAction(void* self, void* unused_edx, uint index)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93920 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a92260",
+        "prototype": "uint __fastcall BSP_InputManager_IsActionRegistered(void* self, void* unused_edx, uint index)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a92260 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a93880",
+        "prototype": "void __fastcall BSP_InputAction_ClearRegistration(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a93880 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

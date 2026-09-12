@@ -1,6 +1,6 @@
 {
   "packet": "orch4_input_action_contexts_ah",
-  "status": "reconstructed_validation_pending",
+  "status": "reconstructed_strict_win32_and_native_byte_fixture_passed",
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "battlestationspacific.exe",
   "source": [
@@ -882,5 +882,28 @@
     "Source ABI adds explicit context and excludes native incoming stack alias/FH3/SEH/hardware-fault behavior.",
     "Five caller bodies are undefined; complete16byte argument blocks were verified without invented function ownership.",
     "Application frame/configuration wiring and gameplay remain incomplete. No game or hardware actions."
-  ]
+  ],
+  "validation": {
+    "build": "local/input_configuration_ah_build.log",
+    "ctests_passed": 2,
+    "native_fixture": "local/input_context_probe_ah.log",
+    "fixture_cpp_sha256": "c82bbf46dfde125892411dfc51481ab4be91bdbc2076198d6220442cc7944fb4",
+    "fixture_log_sha256": "0dc1f3cdb7e68ff11bdeb99910295965ea1c9a109a832f0eb731c6b6407d0095",
+    "core_archive_sha256": "4cd9dea8da7e6199d999e162b30baee34257246ff776f005069ae1adf65236a4",
+    "native_spans": 4,
+    "direct_relocations": 9,
+    "phases": 7,
+    "observations": [
+      "unsigned maximum80000000",
+      "active floor1",
+      "unchanged level still refreshes",
+      "callback changes action endpoint; captured later action remains untouched",
+      "existing configuration/listener/alias phases retained"
+    ],
+    "fixture_correction": "Initial extension kept the old three-call device trace expectation. Updated to nine calls after the two added active phases; no source correction was required.",
+    "mechanical_call_rows": 35,
+    "mechanical_call_failures": 0,
+    "sdk_or_game_execution": false,
+    "final_batch_validation": "reports/input_configuration_ah_integration.json"
+  }
 }

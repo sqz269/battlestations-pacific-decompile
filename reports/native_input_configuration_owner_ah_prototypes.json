@@ -1,0 +1,59 @@
+{
+  "reason": "Original registers, stack arguments and RET cleanup verified in native listings; source interfaces are not original ABI. Names remain hypotheses. Prior names/signatures/comments preserved.",
+  "entries": [
+    {
+      "address": "00698680",
+      "before": "Function: FUN_00698680 at 00698680\nSignature: undefined FUN_00698680(void)\nEntry: 00698680\nBody: 00698680 - 00698729",
+      "before_comment": {
+        "address": "00698680",
+        "function_name": "FUN_00698680"
+      },
+      "proposed": "void* __fastcall BSP_InputConfiguration_Construct(void* self, void* unused_edx)",
+      "apply": "Successfully set prototype for function at 00698680 with __fastcall calling convention",
+      "after": "Function: BSP_InputConfiguration_Construct at 00698680\nSignature: void * __fastcall BSP_InputConfiguration_Construct(void * self, void * unused_edx)\nEntry: 00698680\nBody: 00698680 - 00698729",
+      "readback_verified": true
+    },
+    {
+      "address": "004dceb0",
+      "before": "Function: FUN_004dceb0 at 004dceb0\nSignature: undefined FUN_004dceb0(void)\nEntry: 004dceb0\nBody: 004dceb0 - 004dcf88",
+      "before_comment": {
+        "address": "004dceb0",
+        "function_name": "FUN_004dceb0"
+      },
+      "proposed": "void __fastcall BSP_InputConfiguration_Destroy(void* self, void* unused_edx)",
+      "apply": "Successfully set prototype for function at 004dceb0 with __fastcall calling convention",
+      "after": "Function: BSP_InputConfiguration_Destroy at 004dceb0\nSignature: void __fastcall BSP_InputConfiguration_Destroy(void * self, void * unused_edx)\nEntry: 004dceb0\nBody: 004dceb0 - 004dcf88",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00698680",
+        "prototype": "void* __fastcall BSP_InputConfiguration_Construct(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00698680 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "004dceb0",
+        "prototype": "void __fastcall BSP_InputConfiguration_Destroy(void* self, void* unused_edx)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 004dceb0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}
