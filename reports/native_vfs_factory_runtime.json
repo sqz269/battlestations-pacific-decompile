@@ -1,0 +1,192 @@
+{
+  "packet": "orch2_native_vfs_factory_runtime_aw",
+  "captured_utc": "2026-09-12T21:59:44.943838+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "source": "src/native_vfs_runtime_bindings.cpp",
+  "new_complete_routine_count": 0,
+  "owned_native_bytes": 0,
+  "coverage": "finite source bindings for existing complete bodies",
+  "supporting_spans": [
+    {
+      "entry": "00d685b4",
+      "bytes": 28,
+      "exclusive_end": "00d685d0",
+      "sha256": "b54a3f07237b2871c3fc9f5e1913ab48c7635ef2df5bd696328dfaedccffeca5",
+      "live_equal_installed_pe": true,
+      "label": "base_manager_profile"
+    },
+    {
+      "entry": "00d68cfc",
+      "bytes": 36,
+      "exclusive_end": "00d68d20",
+      "sha256": "e9dd9bd354c6a2794c37424a4881a4b5de0b99c182f69ebfa43833d1bf710384",
+      "live_equal_installed_pe": true,
+      "label": "physical_factory_and_derived_manager"
+    },
+    {
+      "entry": "00d688b4",
+      "bytes": 8,
+      "exclusive_end": "00d688bc",
+      "sha256": "8260797d126cb31869df4254a37b40e194bb78e7a7a929c9ec6c4f7e70f1dd05",
+      "live_equal_installed_pe": true,
+      "label": "filestore_factory_profile"
+    },
+    {
+      "entry": "00d69168",
+      "bytes": 12,
+      "exclusive_end": "00d69174",
+      "sha256": "34f82ac8a0f9ae7b78fb9204d41d4c15ba1b21bbf7b753c941a3faea859bcb5e",
+      "live_equal_installed_pe": true,
+      "label": "physical_provider_profile"
+    },
+    {
+      "entry": "00d689e8",
+      "bytes": 12,
+      "exclusive_end": "00d689f4",
+      "sha256": "be983abf7b07da8afb7ee8afd0c57d753126960adb5ad3d56b999599f19e52f9",
+      "live_equal_installed_pe": true,
+      "label": "filestore_provider_profile"
+    },
+    {
+      "entry": "00cfea6c",
+      "bytes": 4,
+      "exclusive_end": "00cfea70",
+      "sha256": "3ad9239a0c608567dc6f1e640937dd11778717e3bc1418f3685c96a51d890dda",
+      "live_equal_installed_pe": true,
+      "label": "base_log_delete_slot"
+    },
+    {
+      "entry": "00cfeae0",
+      "bytes": 4,
+      "exclusive_end": "00cfeae4",
+      "sha256": "d85c0d9d983188a207a72244aa042d7a023148b49025160393abe5364bb435d1",
+      "live_equal_installed_pe": true,
+      "label": "derived_log_delete_slot"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bdb078",
+      "native": "captured_factory_table+4",
+      "function": "00bdb040",
+      "contract": "ECX captured factory; two stacked actual8h headers; RET8; source routes captured BE8120 or BF4DF0 without profile reload."
+    },
+    {
+      "address": "00be1fa1",
+      "native": "captured_log_table+0",
+      "function": "00be1f60",
+      "contract": "ECX captured current logger; flags1; RET4; source routes captured7376A0/737CC0 without publication reload."
+    },
+    {
+      "address": "00be1ffd",
+      "native": "captured_provider_table+4",
+      "function": "00be1f60",
+      "contract": "ECX captured current mount provider; flags1; RET4; source routes capturedBE8090/BF4DD0 without profile reload; no ownership-byte gate."
+    },
+    {
+      "address": "00bd30eb",
+      "native": "current_owner_table+4",
+      "function": "00bd30e0",
+      "contract": "Null owner returns first; otherwise reload current owner table/slot4 and invoke with flags1. No decrement. Source now admits actual provider profiles."
+    }
+  ],
+  "bindings": [
+    {
+      "target": "00be8120",
+      "api": "create_native_file_store_provider_00be8120",
+      "context": "Existing actual physical_.physical.strings, this adopted-stream dispatcher and current validation callbacks."
+    },
+    {
+      "target": "00bf4df0",
+      "api": "create_native_physical_provider_00bf4df0",
+      "context": "Required borrowed NativePhysicalProviderContext; unavailable context is an explicit source error."
+    },
+    {
+      "target": "00be8090",
+      "api": "delete_native_file_store_provider_00be8090",
+      "context": "Same actual FileStore context; current captured flags and owner preserved."
+    },
+    {
+      "target": "00bf4dd0",
+      "api": "delete_native_physical_provider_00bf4dd0",
+      "context": "Same required borrowed physical provider context."
+    },
+    {
+      "target": "007376a0",
+      "api": "scalar_delete_native_file_access_log_base_007376a0",
+      "context": "Required borrowed NativeFileAccessLogLifetimeBindings."
+    },
+    {
+      "target": "00737cc0",
+      "api": "scalar_delete_native_file_access_log_00737cc0",
+      "context": "Same required borrowed log lifetime context."
+    }
+  ],
+  "raw_canonicalizer_runtime": {
+    "source": "src/native_path_canonicalizer.cpp",
+    "change": "Add existing419CC0 raw-publication overload; borrow01090AA0, no parallel semantic lifetime manager.",
+    "new_native_routine_count": 0
+  },
+  "no_ghidra_function": [],
+  "abi_compatible": false,
+  "game_validated": false,
+  "limits": [
+    "Unknown current targets and missing required contexts remain explicit source errors.",
+    "NativePhysicalStreamOpenContext still retains its existing semantic lifetime reference; no raw physical-stream-open composition is claimed.",
+    "Manager deletion preserves raw provider deletion, including native repeated-cache-mount hazards; no cache/refcount repair.",
+    "Factory/mount failure callback setup, original FH3/SEH, and gameplay are not proven."
+  ],
+  "validation": {
+    "strict_build": "passed",
+    "source_binding_fixture": "passed",
+    "existing_ctests": "2 passed",
+    "build_log": "local/native-aw-integrated-build01.log",
+    "built_core_sha256": "164b27c8f6406e12c6546362a36ba3937b2bbb6a8bb3ee0a8c42c64dbe37c8ed",
+    "source_commit": "04ff2710ea2ef9f1d42d3569884db32eca8d06ce",
+    "fixture": {
+      "attempt": "local/native-aw-worker-deliveries/mount_final/lab/attempt05",
+      "before_sha256": "e552d631cfa95331b5c0149631ad659a497de1eefbc54e5cb079b8ced194bd4c",
+      "after_sha256": "2f269417eb16f15364b285bddffb908ea3f292c38c60e0a62c2f518934932160",
+      "library_sha256": "164b27c8f6406e12c6546362a36ba3937b2bbb6a8bb3ee0a8c42c64dbe37c8ed",
+      "physical_inputs": 629,
+      "linked_objects": 156,
+      "scope": {
+        "recorded_comparisons": 3,
+        "recorded_binary_pairs": 3,
+        "source_only_checks": 2,
+        "source_only_result_files": 1,
+        "recorded_checks": 7866
+      }
+    },
+    "independent_reviews": {
+      "wrapper": {
+        "manifest": "local/native-aw-worker-deliveries/wrapper_review/lab/manifest.json",
+        "sha256": "d5acf0bffb0742f8ad1df43c3f1d9a3b0092a83a71463388b1e2f4d6897ccf62",
+        "accepted": true
+      },
+      "runtime": {
+        "manifest": "local/native-aw-worker-deliveries/runtime_review/lab/manifest.json",
+        "sha256": "c00c2ef94628537aa86be84eb4cc18be83bdfdc7e21dffd240fbcd95491506ba",
+        "accepted": true
+      },
+      "mount_fixture": {
+        "manifest": "local/native-aw-worker-deliveries/mount_review/lab/manifest.json",
+        "sha256": "1bcef5db2173d9184b0bf62ddd7c7a4b0612d8d59588b6db14a8fd4ae5be30c2",
+        "accepted": true,
+        "qualification": "Review covered unchanged attempt04 probe and native inputs. Attempt05 preserves probe/launcher bytes and adds explicit source-only output metadata; all-four gate validates05."
+      }
+    },
+    "aggregate_report": "reports/native_aw_integration.json"
+  }
+}

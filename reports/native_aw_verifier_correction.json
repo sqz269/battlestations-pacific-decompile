@@ -1,0 +1,19 @@
+{
+  "packet": "orch2_report_function_entry_aw",
+  "source": "tools/verify_report_calls.py",
+  "correction": {
+    "was": "Live.containing returned Body minimum as callee/caller identity.",
+    "is": "Use explicit Function/Entry address; preserve body end separately; missing entry fails closed.",
+    "evidence": "Current native _strchr entryBF86F0 owns a backward return block atBF86E0. CALL58413C targetsBF86F0."
+  },
+  "ghidra_modified": false,
+  "library_name_preserved": "_strchr",
+  "validation": {
+    "real_records_report": "28 call rows checked,0failed",
+    "negative_interior_target": "BF86E0 is correctly rejected as inside entryBF86F0",
+    "positive_log_sha256": "9b5eede63ad47f4f6e1c6f1acc8e6aa04ec8a3411ef82b8c823464d54bec40f3",
+    "negative_log_sha256": "67a2c4d31973ea9dbc045729ca23388dd178dbb04d97becd9d9119a066149e45"
+  },
+  "native_routines_added": 0,
+  "game_validation": false
+}

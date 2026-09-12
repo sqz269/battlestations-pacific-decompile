@@ -1,23 +1,28 @@
 #include "bsp/game_input_runtime.hpp"
 #include "bsp/native_input_backend_startup.hpp"
 #include "bsp/native_input_backend_bindings.hpp"
+#include "bsp/native_input_class_configuration.hpp"
+#include "bsp/native_input_action_listener_owner.hpp"
+#include "bsp/native_gamepad_rumble.hpp"
 #include "bsp/xlive_manager_owner.hpp"
 #include <stdexcept>
 
 namespace bsp::game {
 struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
     NativeInputBackendSlotActivation, NativeInputCursorCalls,
-    NativeInputActionRecordCalls {
+    NativeInputActionRecordCalls, NativeGamepadRumbleOutput {
     GameInputRuntimeBindings bound;
     NativeInputDeviceRuntime device_runtime;
     NativeInputBackendDirectInput direct_input;
     NativeInputBackendOwnerContext backend;
     NativeInputBackendStartupDeviceRuntime device_calls;
     NativeInputBackendBindingsContext bindings;
+    NativeInputActionListenerCalls native_listeners;
     NativeInputActionRecordsContext records;
     NativeInputActionStorageCalls record_storage;
     NativeInputActionOwnerContext actions;
     NativeInputCursorContext cursor;
+    NativeGamepadRumbleContext rumble;
     bool started{};
 
     explicit Impl(GameInputRuntimeBindings b)
@@ -27,9 +32,12 @@ struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
           records{{b.binding_one_bits_00d7a24c}, *this}, record_storage(records),
           actions{b.actions_00f8bbf8, b.lifetime, record_storage},
           cursor{b.backend_00f8bbf4, actions, b.cursor_globals,
-              b.loading_step_00d7a2f0, b.show_cursor, *this} {
+              b.loading_step_00d7a2f0, b.show_cursor, *this},
+          rumble{b.backend_00f8bbf4, b.rumble_enabled_00e12f2c, device_runtime, *this} {
         if (!b.lookup_device_004ba6d0 || !b.show_cursor)
             throw std::invalid_argument("input runtime requires its real lookup and ShowCursor providers");
+        if (&b.rumble_enabled_00e12f2c != &b.devices.xinput_tables.rumble_enabled)
+            throw std::invalid_argument("input rumble setter and devices must share the same mutable word");
     }
     std::uint32_t device_class_vslot08(void* p, std::uint32_t profile) override {
         return device_runtime.device_class_vslot08(p, profile);
@@ -89,9 +97,12 @@ struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
     }
     void call_listener_slot0(void* p, std::uint32_t profile) override {
         auto* const calls = bound.listener_calls;
-        if (!calls)
-            throw std::logic_error("input action listener release reached an unbound application provider");
-        calls->call_listener_slot0(p, profile);
+        if (calls) calls->call_listener_slot0(p, profile);
+        else native_listeners.call_listener_slot0(p, profile);
+    }
+    void set_force_vslot38(void* p, std::uint32_t profile, std::uint32_t channel,
+        float value) override {
+        device_runtime.set_force_vslot38(p, profile, channel, value);
     }
 };
 
@@ -106,6 +117,16 @@ void GameInputRuntime::startup() {
     create_and_reset_native_input_backend(impl_->backend, impl_->device_calls);
     impl_->started = true;
 }
+void GameInputRuntime::initialize_classes_004dd6a8() {
+    for (std::uint32_t type = 0; type != 3; ++type) {
+        void* const backend = impl_->bound.backend_00f8bbf4;
+        if (!backend) throw std::logic_error("input class initialization requires the current backend");
+        configure_native_input_class_00a917e0(backend, type, 1, nullptr);
+    }
+}
+void GameInputRuntime::set_rumble_enabled_00a94c50(bool enabled) {
+    set_native_gamepad_rumble_enabled_00a94c50(enabled, impl_->rumble);
+}
 void GameInputRuntime::update_cursor(bool loading) {
     auto* const platform = impl_->bound.devices.platform_0109cf04;
     if (!platform) throw std::logic_error("input cursor requires the canonical platform publication");
@@ -115,6 +136,9 @@ void GameInputRuntime::update_backend(float seconds) {
     void* const backend = impl_->bound.backend_00f8bbf4;
     if (!backend) throw std::logic_error("input update requires the actual published backend");
     const auto profile = *static_cast<const volatile std::uint32_t*>(backend);
+    impl_->backend_vslot04(backend, profile, seconds);
+}
+void GameInputRuntime::backend_update_vslot04(void* backend, std::uint32_t profile, float seconds) {
     impl_->backend_vslot04(backend, profile, seconds);
 }
 void* GameInputRuntime::action_owner() { return get_native_input_action_owner_004bec00(impl_->actions); }

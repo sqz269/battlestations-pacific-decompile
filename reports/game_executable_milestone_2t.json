@@ -1,0 +1,804 @@
+{
+  "packet": "cc_exe_2t",
+  "owner": "agent/cc-exe-2t",
+  "milestone": "2t: the guns fire",
+  "doc": "docs/GAME_EXECUTABLE.md, section `## Milestone 2t`",
+  "ghidra": "C:/Users/sqz269/bsp.gpr, /battlestationspacific.exe, read-only for this packet. No Ghidra mutation: no name added, no comment written, no snapshot taken.",
+  "sources": [
+    "src/game_hosts_gunnery.cpp",
+    "include/bsp/game_hosts_gunnery.hpp",
+    "src/game_hosts_units.cpp",
+    "include/bsp/game_hosts_units.hpp",
+    "cmake/startup.cmake"
+  ],
+  "coverage": {
+    "gun_construction": "complete for the authored `VehicleClass[id].Platforms` producer; partial for the gun as a scene object, because this process builds no model hierarchy and a platform therefore has no mount position. Every gun fires from its unit's pose translation raised by the class `Height`, and its traverse angles are hull relative. The authored `Windows` arcs are exact.",
+    "gunnery_pass_00864fe0": "complete over bsp::unit_gunnery_pass_tick_00864fe0. Step 6's per-target engagement records (00862CD0 / 00864880) are a record; step 8.7 contributes nothing because a ship instance in this process answers vtable[0FCh] with no sub-entity.",
+    "aim_ticks": "partial: 0085ABA0, 007F6530, 0085AD80, 007F60A0 and 0072D2C0 are run for every gun as one unified aim tick. The five per-class bots' own error models (006DF520 step 10, 00902920's swinging error) are not applied, and 00955630's refinement of the gravity arc is a record; the elevation is 006DF520 step 6's own pre-estimate.",
+    "fire_path": "complete for 0072D130, 00727E30, 0085A830 / 00729A80, 00730160's barrel selection and the two timers. The per-shot spread 0072F830 builds from `Throw` is not applied.",
+    "projectile": "complete for 006E8430's launch velocity and 006E7670 / 006E65C0's integration. The sweep is bsp::query_segment_0098add0 over one hull box per unit; the shape list, the spatial grid and the static landscape trace are records.",
+    "hit_and_damage": "complete for 00470350, 00826F10, 008777D0, 00879070 and 00877B90 as sequences. 00826F10's hull-segment pass never runs on a direct segment hit because every known shape writes -1 into hit+34h, so fire, flooding and the roll torque are all unreached on this path.",
+    "kill_credit": "complete for 0077CE60's attribution block and 0091BDA0's sequence over bsp::KillCreditHost. The award registry 0050FC30 is a record, so no award threshold is read and no award is granted."
+  },
+  "host_steps": [
+    {
+      "method": "Gunnery::pass_construct_00864580",
+      "address": "00810e3d",
+      "native": "00864580",
+      "function": "00810dd0",
+      "status": "concrete",
+      "note": "00810DD0's creation block: operator_new(558h), the constructor, [unit+6DCh] = obj, then the attach. One 558h object per created unit."
+    },
+    {
+      "method": "Gunnery::pass_attach_00864bd0",
+      "address": "00d0d360+vtable04",
+      "native": "00864bd0",
+      "status": "concrete, indirect",
+      "note": "00810E4C calls obj->vtable[+4h](unit+310h). 00D0D360+4h holds 00864BD0. The attach primes the throttle to [GlobalConfig+88h] so the first tick after attachment runs at once."
+    },
+    {
+      "method": "Gunnery::install_policies_008636a0",
+      "address": "00864c18",
+      "native": "008636a0",
+      "function": "00864bd0",
+      "status": "concrete",
+      "note": "The fire-target provider at pass+5Ch and the category gate at pass+60h. Every unit here is not class 8 and answers IsKindOf(2) with a director, so the gate is the default 00D0D31C whose vtable[4h] is 00861BE0, `mov al,1`."
+    },
+    {
+      "method": "Gunnery::create_director_bridge_00863a80",
+      "address": "00864c94",
+      "native": "00863a80",
+      "function": "00864bd0",
+      "status": "concrete",
+      "note": "The 14h-byte adapter at pass+64h, holding the unit's own weapon director."
+    },
+    {
+      "method": "Gunnery::director_bridge_apply_008624c0_forced",
+      "address": "00863ae7",
+      "native": "008624c0",
+      "function": "00863a80",
+      "status": "concrete",
+      "note": "The bridge's first push, force = 1."
+    },
+    {
+      "method": "Gunnery::director_bridge_apply_008624c0",
+      "address": "00865073",
+      "native": "008624c0",
+      "function": "00864fe0",
+      "status": "concrete",
+      "note": "Step 5 of the think. The stance is the defaulted one: 008363E0 leaves director+3Ch and +3Dh at 1 for a unit of neither class 0Bh nor 9, and 00720208/007202FD leave +220h..+223h at 1. No producer in this process moves any of the six."
+    },
+    {
+      "method": "Gunnery::age_visibility_cache_00862c30",
+      "address": "0086505d",
+      "native": "00862c30",
+      "function": "00864fe0",
+      "status": "concrete",
+      "note": "Step 3. Subtracts the elapsed time from every cache entry and compacts out the expired ones."
+    },
+    {
+      "method": "Gunnery::update_target_records_00862cd0",
+      "address": "008650dd",
+      "native": "00862cd0",
+      "function": "00864fe0",
+      "status": "record",
+      "note": "Step 6's per-target engagement list at pass+B0h. 00862CD0 and its producer 00864880 are contract: unread (docs/UNIT_GUNNERY_PASS.md section 10), so the list is never built and nothing reads one back."
+    },
+    {
+      "method": "Gunnery::recon_slot_contacts_008053c0",
+      "address": "00865201",
+      "native": "008053c0",
+      "function": "00864fe0",
+      "status": "record",
+      "note": "Step 8.5 reads [BSP_Recon_EnsureSlot(unit+54h) + DE8h], the side's published enemy contact list. This process builds no recon slot object. The stand-in is docs/RECON_SLOT_LISTS.md rule (a), the scanned class set, and rule (b), the four gate bytes; rule (c), the detection value, is not applied, so every enemy in class scope is a contact."
+    },
+    {
+      "method": "Gunnery::score_candidate_00863990",
+      "address": "00865237",
+      "native": "00863990",
+      "function": "00864fe0",
+      "status": "concrete",
+      "note": "The recon sweep's scoring call. The range gate reads unit+430h + category*4, which 00956C20 filled."
+    },
+    {
+      "method": "Gunnery::category_accepts_008633d0",
+      "address": "008639a2",
+      "native": "008633d0",
+      "function": "00863990",
+      "status": "concrete",
+      "note": "The mask test: bit 0 admits a plane, bit 1 admits everything else. Both bits are set on every category here."
+    },
+    {
+      "method": "Gunnery::target_class_allowed_00862820",
+      "address": "008633df",
+      "native": "00862820",
+      "function": "008633d0",
+      "status": "concrete",
+      "note": "The four liveness bytes, the per-instance allow table at pass+CCh and the rank-table non-zero test."
+    },
+    {
+      "method": "Gunnery::untouchable_gate_00862440",
+      "address": "00865248",
+      "native": "00862440",
+      "function": "00864fe0",
+      "status": "concrete",
+      "note": "entity+1D4h, the script-set untouchable flag. No binding in this mission sets it."
+    },
+    {
+      "method": "Gunnery::visibility_00864d90",
+      "address": "0086525d",
+      "native": "00864d90",
+      "function": "00864fe0",
+      "status": "concrete for the cache, record for the test",
+      "note": "The cache lookup, the TTL draw through 00BD2F10 and the append are run. The line-of-sight test 00864680 itself is contract: unread and answers yes, which is the open-water answer this process's world supports."
+    },
+    {
+      "method": "Gunnery::director_newest_command_target_0071ebf0",
+      "address": "0086549c",
+      "native": "0071ebf0",
+      "function": "00864fe0",
+      "status": "concrete",
+      "note": "Step 8.6's second target, the newest queued command's. It resolves to the ship AI row's own brain target."
+    },
+    {
+      "method": "Gunnery::director_fire_target_00863640",
+      "address": "00d0d324+vtable04",
+      "native": "00863640",
+      "status": "concrete, indirect",
+      "note": "Step 8.6's first target, [pass+5Ch]->vtable[4h] on the director-backed policy object. It is director+238h, which the automatic target think 009F5DA0 wrote through 00835860; this process reads it off the ship AI row."
+    },
+    {
+      "method": "Gunnery::set_bot_fire_target_00727f10",
+      "address": "00865833",
+      "native": "00727f10",
+      "function": "00864fe0",
+      "status": "concrete",
+      "note": "Step 8.8's assignment. 1373 calls over the 3000-frame run."
+    },
+    {
+      "method": "Gunnery::add_gun_to_target_record_00864ca0",
+      "address": "00865860",
+      "native": "00864ca0",
+      "function": "00864fe0",
+      "status": "record",
+      "note": "The per-target engagement record the pass would attach the gun to. Its builder 00864880 is unread, so the record is not created."
+    },
+    {
+      "method": "Gunnery::clear_bot_fire_target_00728000",
+      "address": "0086586c",
+      "native": "00728000",
+      "function": "00864fe0",
+      "status": "concrete",
+      "note": "The gun that found no candidate. 32048 calls over the 3000-frame run, which is most guns on most thinks."
+    },
+    {
+      "method": "Gunnery::build_target_rank_table_00727bd0",
+      "address": "004de075",
+      "native": "00727bd0",
+      "function": "004ddb90",
+      "status": "concrete",
+      "note": "The twelve authored preference rows at 00E092C8, inverted into the rank table at 00E19BF8. Run once at startup, as the game singleton's constructor does."
+    },
+    {
+      "method": "Gunnery::rebuild_weapon_category_index_00956c20",
+      "address": "0095e5f5",
+      "native": "00956c20",
+      "function": "0095e5b0",
+      "status": "concrete",
+      "note": "The twelve per-category gun lists at unit+394h, the all-guns list at unit+424h and the ranges at unit+430h, run through bsp::rebuild_weapon_category_index_00956c20 over the guns the authored Platforms table produced."
+    },
+    {
+      "method": "Gunnery::gun_max_range_00731020",
+      "address": "00956d9f",
+      "native": "00731020",
+      "function": "00956c20",
+      "status": "concrete",
+      "note": "The per-gun weapon range the category row takes the maximum of. It is the bullet class's `Range`."
+    },
+    {
+      "method": "Gunnery::gun_operational_00729f10",
+      "address": "00956c98",
+      "native": "00729f10",
+      "function": "00956c20",
+      "status": "concrete",
+      "note": "Every gun this process builds is undamaged, so the test passes for all 464."
+    },
+    {
+      "method": "Gunnery::add_authored_arc_007f6b10",
+      "address": "0096185e",
+      "native": "007f6b10",
+      "status": "concrete",
+      "note": "One insert per authored `Windows` entry, into the partition 007F5A10 maintains. The list is seeded with one full-circle window carrying flags 0 before the first insert; see the milestone's finding 3."
+    },
+    {
+      "method": "GunBot::set_target_angles_0085aba0",
+      "address": "006dfb54",
+      "native": "0085aba0",
+      "function": "006df520",
+      "status": "concrete",
+      "note": "The muzzle bot's own SetTargetAngles site. 1191353 accepted and 163447 refused over the 3000-frame run; a refusal means no traverse window contains the wanted pair."
+    },
+    {
+      "method": "GunBot::gravity_pre_estimate_006df8bf",
+      "address": "006df8bf",
+      "status": "concrete",
+      "note": "006DF520 step 6: s = distance * 9.81 / v^2, pitch = min(asin(s) * 0.5, pi/4), and the aim point pushed out along the target velocity by distance / (v * cos(pitch) * [muzzle+5Ch]). [muzzle+5Ch] has no recovered producer and is taken as one. Step 7's gate refuses the shot when s > 1."
+    },
+    {
+      "method": "GunBot::ballistic_arc_00955630",
+      "address": "006dfad4",
+      "native": "00955630",
+      "function": "006df520",
+      "status": "record",
+      "note": "The solver that refines step 6's pre-estimate. docs/GUN_BOT_TICKS.md marks its body complete but publishes no expression, and no reconstruction exports one, so the pre-estimate is the whole of this run's elevation."
+    },
+    {
+      "method": "Gun::arc_route_deltas_007f6530",
+      "address": "0085aeda",
+      "native": "007f6530",
+      "function": "0085ad80",
+      "status": "concrete",
+      "note": "The arc-aware step deltas, including the reversal around a blocked window."
+    },
+    {
+      "method": "Gun::step_aim_0085ad80",
+      "address": "00cfbce0+vtable",
+      "native": "0085ad80",
+      "status": "concrete, indirect",
+      "note": "The per-step aim slew toward the target pair. 24546 steps moved an angle over the 3000-frame run."
+    },
+    {
+      "method": "Gun::fire_window_007f60a0",
+      "address": "0085a887",
+      "native": "007f60a0",
+      "function": "0085a830",
+      "status": "concrete",
+      "note": "CanFire test 3: the current angles must lie in a window whose bit 1 is set. It refused 5940 settled shots over the 3000-frame run."
+    },
+    {
+      "method": "Gun::set_fire_request_0072d2c0",
+      "address": "00cfbf08+vtable1e8",
+      "native": "0072d2c0",
+      "status": "concrete, indirect",
+      "note": "The trigger latch gun+454h, gun vtable slot 1E8h (00CFBF08, 00CFE290, 00CFE4F0, 00CFE730). Every dispatch in the image is indirect: 009003AB in BSP_GunBot_HeadingAimTick, the four in BSP_Unit_ApplyGunAimMessage and 009594B1 in BSP_Unit_OnDestroyed. 47 rising edges over the 3000-frame run, each seeding the stagger gun+478h from 00BD2F10(0, 0.12)."
+    },
+    {
+      "method": "Gun::fixed_step_tick_0072d130",
+      "address": "00cfbce4+vtable0c",
+      "native": "0072d130",
+      "status": "concrete, indirect",
+      "note": "The gun's own tick sub-node. The two timers, the barrel reload countdowns, then the conditional 0ADh send."
+    },
+    {
+      "method": "Gun::set_barrel_reload_timer_0072cf00",
+      "address": "0072d21b",
+      "native": "0072cf00",
+      "function": "0072d130",
+      "status": "concrete",
+      "note": "Step 5 of the fixed-step tick: every barrel timer that is not already negative is advanced by -dt."
+    },
+    {
+      "method": "Gun::fire_message_0ad_0072d290",
+      "address": "0072d290",
+      "status": "concrete",
+      "note": "The opcode 0ADh message built inline at 0072D252 and routed at 0072D290. 10730 sends over the 3000-frame run."
+    },
+    {
+      "method": "Gun::fire_if_ready_00727e30",
+      "address": "0084c4e3",
+      "native": "00727e30",
+      "function": "0084c4e0",
+      "status": "concrete",
+      "note": "The 0ADh handler 0072D860 calls gun vtable[1DCh], which is 00727E30: CanFire with the reload check on, then Fire. The site cited is the other dispatch of the same routine in the image."
+    },
+    {
+      "method": "Gun::can_fire_0085a830",
+      "address": "00cfbef0+vtable1d0",
+      "native": "0085a830",
+      "status": "concrete",
+      "note": "The turning gun's CanFire: the platform window test then 00729A80's eight tests. It refused 10515 of 10730 sends, which is the reload and barrel-delay timers doing the rate limiting exactly as docs/GUN_PLATFORM_ARC.md says they do."
+    },
+    {
+      "method": "Gun::fire_00730160",
+      "address": "00cfbef8+vtable1d8",
+      "native": "00730160",
+      "status": "concrete",
+      "note": "BSP_Gun_Fire. 215 bodies over the 3000-frame run, the first at t = 43.45 s."
+    },
+    {
+      "method": "Gun::next_ready_barrel_007298d0",
+      "address": "007302c4",
+      "native": "007298d0",
+      "function": "00730160",
+      "status": "concrete",
+      "note": "The forward scan from gun+44Ch for a barrel whose reload timer has run out."
+    },
+    {
+      "method": "Gun::spawn_shot_0072bf10",
+      "address": "00730042",
+      "native": "0072bf10",
+      "function": "0072f830",
+      "status": "concrete",
+      "note": "The projectile spawn. The per-pellet spread 0072F830 builds from the class `Throw` is not applied, so every shot leaves on the commanded direction exactly."
+    },
+    {
+      "method": "Projectile::launch_velocity_006e8430",
+      "address": "00cfa158+vtable",
+      "native": "006e8430",
+      "status": "concrete",
+      "note": "v = speed * direction, with the sub-type launch bias skipped because the sub-type here is 0."
+    },
+    {
+      "method": "Projectile::flight_step_006e7670",
+      "address": "00cf9f04+vtable114",
+      "native": "006e7670",
+      "status": "concrete",
+      "note": "The ballistic position slot and 006E65C0's velocity slot, one fixed step each. 22121 steps over the 3000-frame run."
+    },
+    {
+      "method": "Projectile::sweep_segment_0084bf00",
+      "address": "0084c4c8",
+      "native": "0084bf00",
+      "function": "0084c430",
+      "status": "concrete",
+      "note": "The per-step segment sweep. 22121 sweeps produced 161 entity impacts and 42 water crossings."
+    },
+    {
+      "method": "Projectile::sweep_entities_0098add0",
+      "address": "0098b3eb",
+      "native": "0098add0",
+      "function": "0098b370",
+      "status": "concrete",
+      "note": "bsp::query_segment_0098add0 over bsp::SegmentQueryHost. The spatial grid is empty in this process, so every unit is a loose entity and each carries one shape: its hull box from the class `Length`, `Width` and `Height`, solved as a slab test in the hull's own frame."
+    },
+    {
+      "method": "Projectile::hit_record_set_shot_00470350",
+      "address": "0084c0c3",
+      "native": "00470350",
+      "function": "0084bf00",
+      "status": "concrete",
+      "note": "record+14h = shot->vtable[54h]()."
+    },
+    {
+      "method": "Projectile::shot_damage_base_006e7c60",
+      "address": "00cf9df0+vtable54",
+      "native": "006e7c60",
+      "status": "concrete",
+      "note": "006E7C60 is `MOV EAX,[ECX+174h]; FLD [EAX+0B0h]; FLD [EAX+0ACh]; CALL 00BD2F10`: a uniform draw between the weapon class descriptor's DamageMin and DamageMax, unscaled. It is the only damage field a direct segment hit gets."
+    },
+    {
+      "method": "Projectile::on_impact_0084bc60",
+      "address": "0084c314",
+      "native": "0084bc60",
+      "function": "0084bf00",
+      "status": "concrete",
+      "note": "Everything after the impact point is known."
+    },
+    {
+      "method": "Projectile::queue_hit_00926e80",
+      "address": "0084be20",
+      "native": "00926e80",
+      "function": "0084bc60",
+      "status": "concrete",
+      "note": "The record and the impact direction go on the deferred queue."
+    },
+    {
+      "method": "Projectile::dispatch_queued_hit_009239a0",
+      "address": "00926750",
+      "native": "009239a0",
+      "function": "00926700",
+      "status": "concrete",
+      "note": "The drain's dispatch: the entity gates, the OnHit delivery and the attribution listener."
+    },
+    {
+      "method": "ShipHit::apply_hit_record_00826f10",
+      "address": "00cf919c+vtableec",
+      "native": "00826f10",
+      "status": "concrete",
+      "note": "The ship's hit handler, entity vtable slot ECh. 161 bodies over the 3000-frame run."
+    },
+    {
+      "method": "ShipHit::part_health_0092d1f0",
+      "address": "0082703e",
+      "native": "0092d1f0",
+      "function": "00826f10",
+      "status": "unreached",
+      "note": "The per-part health subtraction. It sits inside the hull-segment pass, which 00826F62 gates on hit+34h != -1, and every known shape writes -1 on a direct segment hit. Zero bodies over the 3000-frame run; the fire, flooding and roll-torque arms are unreached for the same reason."
+    },
+    {
+      "method": "ShipHit::base_hit_record_008777d0",
+      "address": "008277fc",
+      "native": "008777d0",
+      "function": "00826f10",
+      "status": "concrete",
+      "note": "The tail. All 161 hits of the run applied their damage here, through 00470510's hull formula with the unit's own armour."
+    },
+    {
+      "method": "ShipHit::apply_damage_00879070",
+      "address": "00879824",
+      "native": "00879070",
+      "function": "00879810",
+      "status": "concrete",
+      "note": "The damage rule: the session gate, the release gate, the dead test and the invincibility floor."
+    },
+    {
+      "method": "ShipHit::set_health_00877b90",
+      "address": "0087914b",
+      "native": "00877b90",
+      "function": "00879070",
+      "status": "concrete",
+      "note": "The health write and the replicated health byte."
+    },
+    {
+      "method": "Hit::attribution_0077ce60",
+      "address": "00923ada",
+      "native": "0077ce60",
+      "function": "009239a0",
+      "status": "concrete",
+      "note": "Step 7 of the dispatch. 161 calls, each leaving the attacker's side, class, ordnance kind and slot on the victim's +2C4h..+2E8h block."
+    },
+    {
+      "method": "KillCredit::record_unit_kill_0091bda0",
+      "address": "00959519",
+      "native": "0091bda0",
+      "function": "00959450",
+      "status": "concrete",
+      "note": "BSP_Unit_OnDestroyed's kill writer. Two bodies over the 3000-frame run, one per sunk ship, both crediting Kortenaer."
+    }
+  ],
+  "authored_producers": [
+    {
+      "method": "Gunnery::vehicle_class_platforms_009610f6",
+      "address": "009610f6",
+      "status": "concrete",
+      "note": "`VehicleClass[id].Platforms`, the vector at class+94h/+98h. This process reads the same table out of the live Lua state the mission machine holds, through a flatten chunk run with luaL_loadbuffer and lua_pcall and read back with GameMissionLuaHost::read_vehicle_class_integer. 464 guns over 32 units."
+    },
+    {
+      "method": "Gunnery::device_class_function_007327b0",
+      "address": "007327b0",
+      "status": "concrete",
+      "note": "`DeviceClass[id].Function` is the weapon category, [gun+3F4h]+80h. The twelve literals the chain compares against are emitted from bsp::gunnery_category_function_name so the list stays on the reconstruction's side; the Lua chunk performs only the compare. 33 distinct device class rows."
+    },
+    {
+      "method": "Gunnery::weapon_director_think_time_0087e16b",
+      "address": "0087e16b",
+      "status": "concrete",
+      "note": "GlobalConfig+88h from Globals.WeaponSystems.WeaponDirectorThinkTime. The installation's value is 2 s, which is the throttle every gunnery pass runs on."
+    }
+  ],
+  "no_ghidra_function": [],
+  "run": {
+    "binary": "build/win32/Release/bsp_game.exe, Release Win32, /W4 /WX /fp:strict",
+    "xlive": "build/win32/Release/xlive_stub.dll, the registered stub target (docs/XLIVE_STUB.md)",
+    "game_root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "mission": "USN02, universe/Scenes/missions/USN/usn_2_java.scn",
+    "long_run": {
+      "frames": 3200,
+      "mission_frames": 3000,
+      "mission_frame_seconds": 0.05,
+      "simulated_seconds": 150.0,
+      "log": "local/v_run_long.log",
+      "units_with_guns": 32,
+      "guns": 464,
+      "passes_attached": 32,
+      "pass_ticks": 96000,
+      "pass_bodies": 2307,
+      "bridge_applies": 2307,
+      "recon_sweeps": 6921,
+      "candidates_accepted": 3150,
+      "candidates_rejected": 43406,
+      "assigns": 1373,
+      "clears": 32048,
+      "angle_sets": 1191353,
+      "angle_refusals": 163447,
+      "aim_steps": 24546,
+      "arc_blocks": 5940,
+      "arc_unsolved": 0,
+      "trigger_rises": 47,
+      "fire_messages_0ad": 10730,
+      "fire_if_ready": 10730,
+      "can_fire_refusals": 10515,
+      "shots": 215,
+      "first_shot_seconds": 43.45,
+      "projectiles": 215,
+      "projectile_steps": 22121,
+      "sweeps": 22121,
+      "entity_impacts": 161,
+      "water_crossings": 42,
+      "expired": 2,
+      "in_flight_at_end": 10,
+      "queued_hits": 161,
+      "dispatched_hits": 161,
+      "ship_hit_records": 161,
+      "hull_damages": 161,
+      "part_damages": 0,
+      "fires": 0,
+      "floods": 0,
+      "attributions": 161,
+      "deaths": 2,
+      "kill_credits": 2,
+      "total_damage": 14729.8,
+      "first_hit_seconds": 49.55,
+      "host_methods": "669 concrete, 471 unimplemented",
+      "sinks": [
+        {
+          "unit": "Samidare",
+          "seconds": 80.55,
+          "credited_to": "Kortenaer"
+        },
+        {
+          "unit": "Yudachi",
+          "seconds": 95.45,
+          "credited_to": "Kortenaer"
+        }
+      ],
+      "first_shot": "Java platform 2, a LIGHTARTILLERY mount firing bullet class 13 at Harusame, range 1863 m, horizontal 0.0 deg, vertical 5.7 deg"
+    },
+    "regression_run": {
+      "frames": 700,
+      "mission_frames": 500,
+      "order": "moveto:Java on Kortenaer at frame 5",
+      "log": "local/v_run_all.log",
+      "baseline_log": "local/base_run_all.log",
+      "trajectory_csv": "local/v_traj_all.csv, byte-identical to local/base_traj_all.csv",
+      "host_methods_before": "636 concrete, 476 unimplemented",
+      "host_methods_after": "660 concrete, 480 unimplemented",
+      "unchanged": [
+        "ship ai units=32 ai_owned=31 steps=15680 gated=0 replans=5048 state_steps{concrete=4803 records=245}",
+        "ship ai states cruise=13 stop=12 attackmove=6 movetopos=1 other=0",
+        "ship ai arm tail bodies=3426 latched=3425 stops=6 arrival_latches=0",
+        "ship ai ring hops=15680 writes=15680 rudder_law=15190 deadbands=6275 live_pair_changes=1691",
+        "world lists registrations=32 pushes=192 lists{1=32 2=32 4=32 5=32 6=32 7=32}",
+        "hydrodynamics calls=15680 element_steps=125440 submerged_steps=93928 add_force=15680 add_torque=15680 gravity_y=-10.0",
+        "director completion end_commands=0 stage_raises=2 clear_messages=2 clear_receives=2 queue_advances=2",
+        "world units=32 walked=15680 updated=15680 motion_ticks=15680 simulated=24.50 s moved=33.43 total_path=5007.14"
+      ]
+    },
+    "earlier_switches": {
+      "menu_120_frames": "exit 0, host methods 158 concrete / 79 unimplemented, matches milestone 2s",
+      "title_40_frames": "exit 0, host methods 133 concrete / 48 unimplemented, matches milestone 2s",
+      "vfs_probe_present": "exit 0, probes=4/4",
+      "vfs_probe_absent": "exit 3, probes=3/4"
+    }
+  },
+  "per_category": [
+    {
+      "category": 1,
+      "function": "AAMACHINEGUN",
+      "guns": 204,
+      "assigns": 0,
+      "shots": 0,
+      "note": "The category's preference row at 00E0944C lists plane classes and the soft surface classes; no class on this mission is in it, so the rank is zero and every candidate is refused at 00862820 step 3."
+    },
+    {
+      "category": 2,
+      "function": "LIGHTARTILLERY",
+      "guns": 38,
+      "assigns": 490,
+      "shots": 34,
+      "no_traverse_window": 7908,
+      "arc_blocked": 3316
+    },
+    {
+      "category": 3,
+      "function": "MEDIUMARTILLERY",
+      "guns": 20,
+      "assigns": 240,
+      "shots": 28,
+      "no_traverse_window": 13934,
+      "arc_blocked": 1934
+    },
+    {
+      "category": 5,
+      "function": "FLAK",
+      "guns": 8,
+      "assigns": 0,
+      "shots": 0,
+      "note": "Air only; no plane exists on this mission."
+    },
+    {
+      "category": 6,
+      "function": "LIGHTARTILLERYFLAK",
+      "guns": 76,
+      "assigns": 643,
+      "shots": 153,
+      "no_traverse_window": 11565,
+      "arc_blocked": 690,
+      "note": "The dual-purpose row, air first then the whole surface list. It is the category that does the killing here."
+    },
+    {
+      "category": 7,
+      "function": "TORPEDO",
+      "guns": 71,
+      "assigns": 0,
+      "shots": 0,
+      "note": "Step 8.5 never sweeps the recon list for category 7, and step 8.7's director-target expansion contributes nothing because a ship in this process answers vtable[0FCh] with no sub-entity. No torpedo is ever assigned a target."
+    },
+    {
+      "category": 8,
+      "function": "DEPTHCHARGE",
+      "guns": 41,
+      "assigns": 0,
+      "shots": 0,
+      "no_traverse_window": 118040,
+      "note": "Submarine only; no submarine exists on this mission."
+    },
+    {
+      "category": 11,
+      "function": "CATAPULT",
+      "guns": 6,
+      "assigns": 0,
+      "shots": 0,
+      "no_traverse_window": 12000,
+      "note": "The preference row at 00E0A374 is empty in the image."
+    }
+  ],
+  "per_ship": [
+    {
+      "unit": "Kortenaer",
+      "side": 0,
+      "guns": 9,
+      "range": 1700,
+      "shots": 98,
+      "damage_dealt": 6733,
+      "hits_taken": 8,
+      "damage_taken": 1074,
+      "health": 1426,
+      "kills": [
+        "Yudachi",
+        "Samidare"
+      ]
+    },
+    {
+      "unit": "Electra",
+      "side": 0,
+      "guns": 9,
+      "range": 1700,
+      "shots": 38,
+      "damage_dealt": 2201,
+      "hits_taken": 16,
+      "damage_taken": 2023,
+      "health": 477
+    },
+    {
+      "unit": "Java",
+      "side": 0,
+      "guns": 9,
+      "range": 1900,
+      "shots": 11,
+      "damage_dealt": 802,
+      "hits_taken": 27,
+      "damage_taken": 1897,
+      "health": 4103
+    },
+    {
+      "unit": "DeRuyter",
+      "side": 0,
+      "guns": 9,
+      "range": 1900,
+      "shots": 2,
+      "damage_dealt": 0,
+      "hits_taken": 0,
+      "damage_taken": 0,
+      "health": 6000
+    },
+    {
+      "unit": "Haguro",
+      "side": 1,
+      "guns": 25,
+      "range": 2200,
+      "shots": 29,
+      "damage_dealt": 3103,
+      "hits_taken": 0,
+      "damage_taken": 0,
+      "health": 7000
+    },
+    {
+      "unit": "Jintsu",
+      "side": 1,
+      "guns": 18,
+      "range": 1700,
+      "shots": 21,
+      "damage_dealt": 1365,
+      "hits_taken": 36,
+      "damage_taken": 2339,
+      "health": 3661
+    },
+    {
+      "unit": "Samidare",
+      "side": 1,
+      "guns": 15,
+      "range": 1500,
+      "shots": 8,
+      "damage_dealt": 525,
+      "hits_taken": 27,
+      "damage_taken": 2700,
+      "health": 0,
+      "sunk": true,
+      "killed_by": "Kortenaer",
+      "sunk_at_seconds": 80.55
+    },
+    {
+      "unit": "Yudachi",
+      "side": 1,
+      "guns": 15,
+      "range": 1500,
+      "shots": 4,
+      "damage_dealt": 0,
+      "hits_taken": 27,
+      "damage_taken": 2700,
+      "health": 0,
+      "sunk": true,
+      "killed_by": "Kortenaer",
+      "sunk_at_seconds": 95.45
+    },
+    {
+      "unit": "Harusame",
+      "side": 1,
+      "guns": 15,
+      "range": 1500,
+      "shots": 4,
+      "damage_dealt": 0,
+      "hits_taken": 0,
+      "damage_taken": 0,
+      "health": 2700
+    },
+    {
+      "unit": "Murasame",
+      "side": 1,
+      "guns": 15,
+      "range": 1500,
+      "shots": 0,
+      "damage_dealt": 0,
+      "hits_taken": 20,
+      "damage_taken": 1997,
+      "health": 703
+    }
+  ],
+  "corrections": [
+    {
+      "subject": "docs/GUN_PLATFORM_ARC.md, the seed of the platform window list",
+      "was": "the platform is seeded with one full-circle window somewhere this packet did not find",
+      "is": "the seed exists and its flags are 0: neither traverse nor fire. The authored data settles it. `VehicleClass[265].Platforms[1]` (Turret A) authors the two windows [-145,0] and [0,145] and `Platforms[4]` (Turret D) authors [30,180] and [-180,-30], each leaving the sector its own superstructure blocks uncovered. If the seed carried either flag, an uncovered heading would pass 007F5FC0 or 007F60A0 and a forward turret could fire aft.",
+      "evidence": "the authored rows in Scripts/datatables/autoload/vehicleclasses.lua; the run refuses 163447 of 1354800 SetTargetAngles calls and blocks 5940 settled shots at 007F60A0, both of which require an uncovered heading to be a refusal."
+    },
+    {
+      "subject": "docs/UNIT_GUNNERY_PASS.md section 8.7, the director targets",
+      "was": "the director's targets are tried before anything the recon sweep found",
+      "is": "true of the order, but only when the target answers vtable[0FCh] with at least one sub-entity. The two arms append nothing but sub-entities: the target itself is never a candidate. A target with an empty sub-entity list therefore contributes nothing at all, and every assignment comes from the recon sweep.",
+      "evidence": "src/unit_gunnery_pass.cpp's own projection of 008654AC..0086576B; the run's 1373 assignments with 0 sub-entities offered and 3150 accepted recon candidates."
+    },
+    {
+      "subject": "docs/SHIP_HIT_RECORD.md, the reach of 00826F10's hull pass",
+      "was": "the document describes the per-part damage, the roll torque, the difficulty scaling and the fire and flooding arms as the ship's hit handling",
+      "is": "none of them runs on a direct segment hit. 00826F62 gates the whole block on hit+34h != -1, and docs/HIT_NARROWPHASE.md establishes that all three known shapes write -1. On this run all 161 hits took the tail 008777D0 and produced 0 part damages, 0 fires and 0 floods.",
+      "evidence": "src/ship_hit_record.cpp line 188's projection of 00826F62; docs/HIT_NARROWPHASE.md line 136; the run's `hull=161 part=0 fires=0 floods=0`."
+    }
+  ],
+  "follow_ups": [
+    {
+      "packet": "gun_gravity_arc_00955630",
+      "note": "00955630, body 00955630..0095581F. docs/GUN_BOT_TICKS.md marks it complete but publishes no expression and no header exports one. Until it does, every elevation in this milestone is 006DF520 step 6's pre-estimate. The difference is the whole of the gun's accuracy at range."
+    },
+    {
+      "packet": "gun_dispersion",
+      "note": "Two producers of miss: 0072F830's per-pellet perturbation of the muzzle direction from the class `Throw` (0.01 on the 133mm turret), and 006DF520 step 10's per-bot error pair from the robot skill descriptor that load_robot_config_00901610 reads out of Robots.lua. Neither is applied, so the run's 161 hits in 215 shots is an upper bound, not a measurement."
+    },
+    {
+      "packet": "gun_platform_mount_positions",
+      "note": "A platform's mount point is a model node and this process holds no model. Every gun fires from its unit's pose translation raised by the class `Height`, so a battery has no spread across the hull and a blocked arc is measured from the hull centre rather than from the turret."
+    },
+    {
+      "packet": "ship_sub_entity_list_0fc",
+      "note": "entity vtable[0FCh], the sub-entity enumeration step 8.7 expands both director targets into. It is what would let the director's own fire target reach a gun without the recon sweep, and it is why no torpedo fires on this mission."
+    },
+    {
+      "packet": "hit_shape_hull_segment",
+      "note": "A shape whose vtable[0] writes a real hull segment into hit+34h. Without one, 00826F10's part damage, roll torque, fire and flooding are all unreachable from a shell."
+    },
+    {
+      "packet": "gunnery_recon_detection",
+      "note": "docs/RECON_SLOT_LISTS.md rule (c), the per-observer detection value, and the sensor tables behind it. This run applies rules (a) and (b) only, so every enemy in class scope is a contact regardless of whether anything has seen it."
+    }
+  ]
+}

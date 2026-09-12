@@ -1,0 +1,60 @@
+{
+ "repairs": [
+  {
+   "function": "00c40ff0",
+   "owner": "agent/orch6-20260912",
+   "when": "2026-09-12T22:57:24Z",
+   "decompile_lines_before": 23,
+   "gaps": [
+    {
+     "site": "00c41035",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00c4103a",
+     "gap_end_exclusive": "00c4106a",
+     "bytes": 48,
+     "after_call": true,
+     "sha256": "3d53f1bdefa2197cbbfa1b9413dfcce20d60d74420054f3b8076854db1c38e9a"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00c41035",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00c4103a",
+      "gap_end_exclusive": "00c4106a",
+      "bytes": 48,
+      "after_call": true,
+      "sha256": "3d53f1bdefa2197cbbfa1b9413dfcce20d60d74420054f3b8076854db1c38e9a"
+     },
+     "clear": "Success: Cleared flow override at 00c41035 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 48 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00c41035",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00c41035 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00c4104f",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00c4104f (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00c4106a",
+   "explicit_body_sha256": "c3752bf7c06afa70e2ecd493be343430e1288e5f656a25d45bfa45cf65b9e1f2",
+   "body_before": "Function: DYN_physics_00c40ff0 at 00c40ff0\nSignature: undefined DYN_physics_00c40ff0(void)\nEntry: 00c40ff0\nBody: 00c40ff0 - 00c41039",
+   "decompile_lines_after": 28,
+   "gaps_remaining": 1,
+   "body_after": "Function: DYN_physics_00c40ff0 at 00c40ff0\nSignature: undefined DYN_physics_00c40ff0(void)\nEntry: 00c40ff0\nBody: 00c40ff0 - 00c41039",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}

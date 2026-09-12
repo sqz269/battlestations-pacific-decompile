@@ -8,6 +8,10 @@
 #include "bsp/native_point_light_pool.hpp"
 #include "bsp/native_point_light_owner.hpp"
 #include "bsp/native_model_owner.hpp"
+#include "bsp/native_traceline_pool.hpp"
+#include "bsp/native_traceline_lifetime.hpp"
+#include "bsp/native_traceline_geometry.hpp"
+#include "bsp/native_traceline_update.hpp"
 #include "bsp/native_camera_world.hpp"
 #include "bsp/native_hardware_layout_factory.hpp"
 #include "bsp/native_singleton_publication.hpp"
@@ -112,10 +116,38 @@ void __fastcall zero_owner_bridge(void* p,const NativeParticleTracerStateAccess*
     r.release_zero_references();
 }
 void __fastcall node_attach_bridge(void* p,const NativeParticleTracerStateAccess* a,std::uint32_t target,void* data,void* root) {
+    if (const auto* bindings=a->reconstruction; bindings && target==0x00af3440) {
+        if (!bindings->geometry || !bindings->lifetime || !bindings->bind_constructed ||
+            (root && !bindings->resolve_root))
+            throw std::logic_error("Traceline attachment requires its concrete geometry and canonical companions");
+        if (bindings->geometry->allocate_array_00bf55be!=a->allocate_00bf55be ||
+            bindings->lifetime->memory.free_00bf6989!=a->free_00bf6989)
+            throw std::logic_error("Traceline geometry and state must use identical paired array allocation bindings");
+        auto& reference=bindings->bind_constructed(bindings->context,p);
+        auto& owner=reference.model_owner();
+        if (&owner.storage.node!=p || owner.environment.actual_names!=a->strings ||
+            &owner.environment.nodes.attachments!=a->nodes ||
+            &owner.environment.retained_owners!=a->retained_owners ||
+            &reference.lifetime_access()!=bindings->lifetime ||
+            bindings->lifetime->actual_pool_00f8c288!=a->actual_pool_00f8c288 ||
+            a->nodes->find_actual_node(reinterpret_cast<std::uint32_t>(p))!=&reference ||
+            &a->retained_owners->resolve_actual(p)!=static_cast<RenderCommandReference*>(&reference) ||
+            &bindings->geometry->renderer_00f8d394!=a->actual_renderer_00f8d394)
+            throw std::logic_error("Traceline attachment must use the same actual node, lifetime and renderer domains");
+        auto* roots=root?&bindings->resolve_root(bindings->context,root):nullptr;
+        attach_native_traceline_geometry_00af3440(owner,data,roots,*bindings->geometry);
+        return;
+    }
     a->application->node_virtual5c(p,target,data,root);
 }
 void __fastcall initial_update_bridge(void* p,const NativeParticleTracerStateAccess* a,std::uint32_t target,
     void* state,float age,std::uint32_t word,const void* matrix,float delta) {
+    if (const auto* bindings=a->reconstruction; bindings && target==0x00b0a110) {
+        if (!bindings->update)
+            throw std::logic_error("Traceline initial update requires its concrete current-clock and curve bindings");
+        update_native_particle_tracer_00b0a110(p,bindings->update,state,age,word,matrix,delta);
+        return;
+    }
     a->application->definition_virtual28(p,target,state,age,word,matrix,delta);
 }
 } // namespace
@@ -132,7 +164,11 @@ std::uint8_t cleanup_native_particle_tracer_state_00b0a840(void* state,std::uint
     }
     if(void* payload=read<void*>(state,0x34)) {
         const auto target=slot(a,payload,0);
-        a.application->payload_virtual00(payload,target,1);
+        if (const auto* bindings=a.reconstruction; bindings && target==0x0086ade0) {
+            if (!bindings->lifetime || bindings->lifetime->memory.free_00bf6989!=a.free_00bf6989)
+                throw std::logic_error("Traceline payload requires its actual destruction and allocation bindings");
+            delete_native_traceline_payload_0086ade0(payload,*a.retained_owners,1,bindings->lifetime->memory);
+        } else a.application->payload_virtual00(payload,target,1);
         write<void*>(state,0x34,nullptr);
     }
     if((node=read<void*>(state,0x30))!=nullptr) {
@@ -193,6 +229,12 @@ void* get_native_tracer_resources_00b0b5d0(const NativeParticleTracerStateAccess
     return *a.actual_resources_00f8d38c;
 }
 void* allocate_native_traceline_slot_00af3430(const NativeParticleTracerStateAccess& a) {
+    if (const auto* bindings=a.reconstruction) {
+        if (!bindings->lifetime || bindings->lifetime->actual_pool_00f8c288!=a.actual_pool_00f8c288 ||
+            bindings->lifetime->memory.free_00bf6989!=a.free_00bf6989)
+            throw std::logic_error("Traceline allocation requires its canonical F8C288 pool binding");
+        return allocate_native_traceline_slot_00af32f0(a.actual_pool_00f8c288);
+    }
     return a.application->call_00af32f0(a.actual_pool_00f8c288);
 }
 void* construct_native_traceline_00858260(void* raw,const void* name,const NativeParticleTracerStateAccess& a) {

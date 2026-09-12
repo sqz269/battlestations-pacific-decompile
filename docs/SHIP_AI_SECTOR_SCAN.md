@@ -461,3 +461,17 @@ bytes are `83 c4 04 83 c5 01 89 6c 24 1c`: `ADD ESP,4; ADD EBP,1; MOV [ESP+1Ch],
 of the removal count that the compaction at `009F1112` and the count fixup at `009F114E` both
 depend on. The projection uses them; the stored listing does not have them.
 `python tools/ghidra_flow_repair.py 009f0ea0 --apply` is the fix.
+
+## Correction from docs/SHIP_AI_NEIGHBOUR_BOX.md
+
+Packet `cc_ai_box_refresh` read the two box refreshes whole (`009EAE20` the near box: the observed
+hull's own oriented box, centre advanced by `min(NearbyShip_PosSpeedCorrig * body-axis speed,
+unit+9C8h * 0.25)`, half extents `unit+9C8h * 0.55 + |advance|` along the bow and `unit+9CCh * 0.60`
+abeam; `009EAFC0` the avoid box: Y bounds cached in `node+80h/+84h`, the party filter's answer in
+`node+69h`, a vertical-overlap gate against `blk+1BCh/+1C0h`, then the near box copied or the other
+ship dead-reckoned along a line or a turning circle of radius `|travel / turn|`) and corrects this
+doc's node readings from the producer's side: `+28h/+2Ch` is the forward axis and `+30h/+34h` the
+beam axis; `+38h` is the half length and `+3Ch` the half beam; the observing control block is at
+`+1Ch`, not `+18h`; `class+500h * settings+1B8h` is a floor on the hull velocity, not a cap; the
+fifth argument of `009EAFC0` (`unit+9CCh * 0.75`) is passed and never read. `006DFD60` (the
+vtable slot `00CFC3D0+50h` both refreshes call) is a seven-byte accessor now defined.

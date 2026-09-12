@@ -706,4 +706,12 @@ void* convert_native_particle_parameter_00afbf60(void* raw,Bindings& a) {
     }
     return nullptr; // Original unknown kind abandons its newly allocated slot.
 }
+__declspec(naked) float __fastcall integrate_native_particle_parameter_hermite_00affcb0(
+    const void*, const NativeParticleParameterLoadingBindings*, float) {
+    __asm { jmp integral_hermite }
+}
+__declspec(naked) float __fastcall integrate_native_particle_parameter_linear_00affd20(
+    const void*, const NativeParticleParameterLoadingBindings*, float) {
+    __asm { jmp integral_linear }
+}
 } // namespace bsp

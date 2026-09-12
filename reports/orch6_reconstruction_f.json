@@ -1,0 +1,475 @@
+{
+  "batch": "orch6_f",
+  "date": "2026-09-12",
+  "owner": "agent/orch6-20260912",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912",
+  "branch": "agent/orch6-20260912",
+  "game_rebuilt": false,
+  "status": "Integrated source and native evidence; combined build and installed mission passed. Full physics and layer runtime owners remain future work.",
+  "commits": {
+    "unit_kind": "4212f52665be59c64346a9cf47c38c9df0718287",
+    "dyn_scene": "0e234c0759dee614f0e5c1537b9eecff0d0b5faf",
+    "dyn_world": "8587a66f",
+    "lua_layer_inputs": "cf33896e8976f3e3c5f607a56fffac16cc9ffd29",
+    "navigation_layers": "d8e7b97d8b3fe0ed32d0e4a21468508c19e2cde8",
+    "byte_false_definition": "1566255b"
+  },
+  "reports": [
+    "reports/game_unit_kind_binding.json",
+    "reports/dyn_scene_runtime.json",
+    "reports/dyn_world_runtime.json",
+    "reports/game_ship_layer_input.json",
+    "reports/ship_ai_layer_selection.json"
+  ],
+  "verification": {
+    "compiled_commit": "541d39cf54c7989bc955b2fdd8d14823f27cc672",
+    "current_compiled_input_drift": [],
+    "win32_release": "passed",
+    "existing_ctests": "2/2 passed",
+    "build_log": "local/orch6_final_build_f.log",
+    "earlier_build_log": "local/orch6_integrate_first_f.log",
+    "integration_retry": "Main advanced during the first passing build; resolved only shared cmake registration conflict and rebuilt incoming code.",
+    "fixture_cases": {
+      "dyn_scene": 4,
+      "dyn_scene_owned_buffers": 78,
+      "dyn_world": 4,
+      "dyn_world_owned_buffers": 118,
+      "navigation_selection": 3072,
+      "layer_helpers": 68,
+      "lua_installed_supported_ships": 160,
+      "lua_session_reads": 320
+    },
+    "direct_call_rows": {
+      "unit_kind": 7,
+      "dyn_scene": 14,
+      "dyn_world": 17,
+      "lua_input": 207,
+      "layer_selection": 89
+    },
+    "call_rows_failed": 0,
+    "indirect_rows": "Explicit virtual/IAT rows remain separately documented; no direct-check claim for them.",
+    "independent_review": "World constructor and Lua protected-input changes independently reviewed; root reviewed layer code, producer chain, callback order and evidence limits.",
+    "previous_combined_build_log": "local/orch6_integrate_f.log",
+    "final_main_refresh": "Merged the later VFS work, rebuilt Win32 and reran the120-frame installed mission at the exact recorded final compiled commit."
+  },
+  "installed_runtime": {
+    "compiled_commit": "541d39cf54c7989bc955b2fdd8d14823f27cc672",
+    "run_commit": "541d39cf54c7989bc955b2fdd8d14823f27cc672",
+    "compiled_input_drift": [],
+    "args": [
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_game.exe",
+      "--frames",
+      "360",
+      "--press-start-frame",
+      "3",
+      "--menu-select",
+      "USN01",
+      "--mission-frames",
+      "120",
+      "--mission-frame-seconds",
+      "0.1",
+      "--game-root",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific",
+      "--fmod-dll",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmodex.dll",
+      "--fmod-event-dll",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\fmod_event.dll",
+      "--xlive-dll",
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\xlive.dll",
+      "--xlive-dependency",
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\gfwl-private-runtime\\msidcrl40.dll",
+      "--log",
+      "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_combined_f.log",
+      "--order-frame",
+      "0",
+      "--order-unit",
+      "Enterprise",
+      "--order",
+      "moveto:Airfield2"
+    ],
+    "exe_sha256": "9b3d028b9783b16915d0d53d5eb9f1f780e52d0e530c15d785620bf6ad5a55e4",
+    "source_sha256": {
+      "src/game_hosts_ship_ai.cpp": "0d5825986f7b88cf05ccdc46388a77db406820bcda8bc9444900ed9624be1b5a",
+      "src/game_hosts_units.cpp": "116a7ed79637de8b48607ad090549d5e176c3793fcb2f2e24ec14bb240ada723",
+      "src/game_hosts_lua.cpp": "5aa002cfdd1c051f81c7a890d35d9fc89e7ad6c35afc1c19f640aeb2e1346f09",
+      "src/dyn_world_runtime.cpp": "e4ab60cdd8ed206c82c77eaf44f383de90f868826388d11fb5ea5ca6d97c8399",
+      "src/dyn_scene_runtime.cpp": "6efa488d22e05beb310164dd2633e102caab5b07c4ba96b6c7030333beeec32a",
+      "src/ship_ai_layer_selection.cpp": "a4f83c8ab3eec1efde6f9bc6a3c2175072d98497b2894bc513ba24977473a070"
+    },
+    "exit": 0,
+    "seconds": 10.659083843231201,
+    "preserved_executable": "local/orch6_combined_541d39cf.exe",
+    "log": "local/orch6_combined_f.log",
+    "created_units": 77,
+    "ship_navigation_controllers": 14,
+    "requested_mission_frames": 120,
+    "ran_mission_frames": 120,
+    "simulated_mission_frames": 120,
+    "pre_step_calls": 3374,
+    "fmod_errors_after_shutdown": 0,
+    "scope": "Correct class dispatch and preserved scalar Lua input path reached with installed data. Full world constructor and new layer selector are compiled but not bound into mission runtime.",
+    "visual_or_gameplay_parity": false
+  },
+  "analysis": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "definitions": [
+      "reports/ship_ai_layer_getter_definitions.json",
+      "reports/ship_ai_landing_virtual_definition.json"
+    ],
+    "flow_repair": "reports/dyn_scene_pool_flow_repair.json",
+    "saved_annotations": "Locked annotation tools preserve prior names/comments before saving; owned affected exports refreshed.",
+    "annotation_readback": "local/orch6_annotation_readback_f.json"
+  },
+  "preserved_worker_artifacts": [
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\unit_kind_fixture.cpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\unit_kind_fixture.cpp",
+      "sha256": "15944ac72cd1921d7fe1fe6679c0320ce117c05f6ae3cacca83d1e68e8c62fc4"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\build_unit_kind_fixture.cmd",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\build_unit_kind_fixture.cmd",
+      "sha256": "5b8971517cd2ce848061feae61480aeab2fda0a75ef860365f10b07f28f90af1"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\unit_kind_fixture.exe",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\unit_kind_fixture.exe",
+      "sha256": "ee322da377758cb47ffc40ad351d975d88135f2bf378d7dae1badce096ddb12b"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\unit_kind_factory.tsv",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\unit_kind_factory.tsv",
+      "sha256": "8e118acd4ffea4e431ab8e49ad74cfb2456fd3933f5d6f31687d2282eff58794"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\classify_unit_kind.py",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\classify_unit_kind.py",
+      "sha256": "c961033707c2b4e0a84c7943b055e3be1a9fefb7f771edf08b8ed54b1724dc0b"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\unit_kind_classification.json",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\unit_kind_classification.json",
+      "sha256": "e6bdf6d3550bb2b0e57921cf549c17b20a0c2d4973748abbdeb0d6bd4cb158bb"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\orch6_unit_kind_final_build.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\orch6_unit_kind_final_build.log",
+      "sha256": "1fced6e944b4d9bdec534f4fadc882f5154d27430b0a0ed7896380f36364659e"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\unit_kind_fixture_build.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\unit_kind_fixture_build.log",
+      "sha256": "3178cc1b9f99391f8856486e880a418ddb799e26960bca0038449985b0d4ddbb"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\local\\unit_kind_calls.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\unit_kind_calls.log",
+      "sha256": "e2173b9956ffe9473dcea6cf93897a7d465db24f755c352f31a98383d696bf00"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f\\build\\win32\\Release\\bsp_game.exe",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\unit_kind_worker_f_bsp_game.exe",
+      "sha256": "7a061741735835b89d00f907e701cfa6e897cd71c7a4e3bc578743140dac48bd"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\dyn_scene_probe.cpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\dyn_scene_probe.cpp",
+      "sha256": "515278ea0a22fe8f08f11d469f24fc5f75b11b23bd1fed8ad6f970d18882e5dc"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\build_dyn_scene_probe.ps1",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\build_dyn_scene_probe.ps1",
+      "sha256": "48fb4b8bb77cbe1929db64003975d276e80492e8e2d4c37f7007781d6bae6bcf"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\dyn_scene_native_image.bin",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\dyn_scene_native_image.bin",
+      "sha256": "86f0f456d654ba64cf421f073ba2aa95d7dbef99fa324b42c7e29a6ad3f1728e"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\dyn_scene_native_records.bin",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\dyn_scene_native_records.bin",
+      "sha256": "3b77266c04a8716ab7530f254f615ef5f73fc0eeb5ad30d6eab59ec501d82ae6"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\dyn_scene_rebuilt_records.bin",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\dyn_scene_rebuilt_records.bin",
+      "sha256": "3b77266c04a8716ab7530f254f615ef5f73fc0eeb5ad30d6eab59ec501d82ae6"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\dyn_scene_bytes_verified.json",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\dyn_scene_bytes_verified.json",
+      "sha256": "211dde90faf3fefb350f8bb12505074774d8f18f9d6069e48821a7d5e7bb1bb6"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\scene_probe.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\scene_probe.log",
+      "sha256": "551d1c8855292abaca196abdceecc123b35c587c8f3374bda3b6df90f1f65b2d"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\make_scene_probe.py",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\make_scene_probe.py",
+      "sha256": "c5976672d2fa57803559d238cadb0a55a2e335c9d22adb08cffa5e842e51d27c"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\verify_dyn_scene_bytes.py",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\verify_dyn_scene_bytes.py",
+      "sha256": "60d82122c9ea53308b1e9fced62056953ee2ae7eb6a0e3442079b79ea63efb82"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\dyn_scene_boundaries.txt",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\dyn_scene_boundaries.txt",
+      "sha256": "3257695f4fe0fed809beeb701055e38cdfb998d37a1762ebc554bbe5b1947ffa"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\dyn_scene_bytes_00c38070.txt",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\dyn_scene_bytes_00c38070.txt",
+      "sha256": "8da2e235e0512eff04f86bd48b3d093026d1d528f9e6812f5fa6f83942d6ffa5"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\dyn_scene_bytes_0040a1e0.txt",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\dyn_scene_bytes_0040a1e0.txt",
+      "sha256": "d35e628a1b9e5bee26e452e90392a6b1f7518fcd58ffcc2493d514946b034e0e"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\dyn_scene_bytes_00c48fd0.txt",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\dyn_scene_bytes_00c48fd0.txt",
+      "sha256": "75ea31da6a1ea554758dcedebe13edd31f27e2e5f48a4089dfa67d1115a1b66f"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\build.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\dyn_scene_f_build.log",
+      "sha256": "65d3adbd0b318acb9fc418ed025c7e0afa793ba7b49c157ab7bfce22e5062987"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f\\local\\report_calls.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\dyn_scene_f_report_calls.log",
+      "sha256": "ac2a5a3414a105d5231f1916e89d888980cf16b80c25e2d209270e0c5b46d291"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-input-f\\local\\game_ship_layer_probe.cpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\game_ship_layer_probe.cpp",
+      "sha256": "5d2da81b86033dbe526f1176d4dfbd76e5ad88fcdfc800f5211b86c1aca2e4c1"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-input-f\\local\\game_ship_layer_reader_probe.cpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\game_ship_layer_reader_probe.cpp",
+      "sha256": "ded6ef766d7bad9f2ebea137386dc2b67b2502083b8dbb88ab9ca5d23dbd641f"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-input-f\\local\\extract_game_ship_layer_probe.py",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\extract_game_ship_layer_probe.py",
+      "sha256": "089b40603bd4519f286d284789a1a3cd70e4f27d71b8defd3114cd2af550f368"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-input-f\\local\\build_game_ship_layer_probe.cmd",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\build_game_ship_layer_probe.cmd",
+      "sha256": "b76b166fa10e277f1ddbf2aa957cd86194efd6ac2b464d4cdf5eedc2e57502ae"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-input-f\\local\\ship_depth_degree.lua",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_depth_degree.lua",
+      "sha256": "d6cb5545d8beffa6a6307a9a5acd16ed293d1fe64741a3918e22fb4e9311d39b"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-input-f\\local\\game_ship_layer_probe.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\game_ship_layer_probe.log",
+      "sha256": "43ebe2543f033a44fe64ecc989eaaf20257e1bf39945d4c25b809fdba0b58992"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-input-f\\local\\game_ship_layer_probe_compile.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\game_ship_layer_probe_compile.log",
+      "sha256": "aed86804dbd82438b00c210c6e8608f2b7b7a109c69059a766242849e139a9ef"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-input-f\\local\\game_ship_layer_probe.exe",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\game_ship_layer_probe.exe",
+      "sha256": "5b45bdae0aec1caa97563b36221559ff37b3fa8528c7aed7784161809421dec9"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-input-f\\local\\ship_layer_build.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_layer_build.log",
+      "sha256": "3e9bae370d42e347773c32ea14b35c6d0ebecb50eb8b076fff2659019f26e8a2"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-input-f\\local\\ship_layer_verify_seeds.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_layer_verify_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-input-f\\local\\ship_layer_report_calls.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_layer_report_calls.log",
+      "sha256": "927fe3eaccef053dfde3d879012564cfe492acf460b2a3f7596b99420131e955"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-input-f\\local\\settings_loader_asm.txt",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\settings_loader_asm.txt",
+      "sha256": "149d2e9839f4e30b8cf1c1a152979979523c1ff5c17acff8329819b7f8c1a87c"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-input-f\\local\\submarine_leaf_asm.txt",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\submarine_leaf_asm.txt",
+      "sha256": "56bbdaa2e4fef97c37cfeb5e918ff0982a6244c6df5de292da14466bb3f7ffa3"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\ship_ai_layer_probe.cpp",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_ai_layer_probe.cpp",
+      "sha256": "56ce05412c6239eba7d8c9b8816104a0e73f7243fe6772dd72653b4c6f558edc"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\build_ship_ai_layer_probe.py",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\build_ship_ai_layer_probe.py",
+      "sha256": "9c4e79be577f712e93de3e32e8cd77df113888f4a88c65cab568eb850bbf874e"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\build_ship_ai_layer_probe.cmd",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\build_ship_ai_layer_probe.cmd",
+      "sha256": "67e44a260e1ff652ac8bbf30d8ed99f2297c17a4f079097a95659c4b00dc56dc"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\ship_ai_layer_relocations.py",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_ai_layer_relocations.py",
+      "sha256": "35c6c0b6d76639d261e9eb720ab1b1a345a9993f47b6d59072e18d06e1fe345f"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\ship_ai_layer_relocations.inc",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_ai_layer_relocations.inc",
+      "sha256": "2061ee1409a72e5ae1cfa9bd4d4ba421378d49a77f001c3376041df99b4d3273"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\ship_ai_layer_original_bytes.json",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_ai_layer_original_bytes.json",
+      "sha256": "3810f515a78bf6273a073227cc728e1faa1f9c4b56dc87162f0211dc8b39cafa"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\ship_ai_layer_probe.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_ai_layer_probe.log",
+      "sha256": "0b94e24f4172fd11f50be388afb4ef729a5ed5f2169e6e60b523ca1e700c612d"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\ship_ai_layer_probe_compile.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_ai_layer_probe_compile.log",
+      "sha256": "b6049d73c9a49ee28236c95bd7261fc064f6756f3fe5c8b7b0022c308263b474"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\ship_ai_layer_build.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_ai_layer_build.log",
+      "sha256": "c43d413043b7c6bd42dae5bf5ee59f03dfa22d18d93da0f637b1ca5ab7bd9ec1"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\ship_ai_layer_verify_seeds.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_ai_layer_verify_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\layer_listing.txt",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\layer_listing.txt",
+      "sha256": "9ecd905b3d5365828a7ad33e2e8ce5e85565ac8862b65341c50b71bcd8743e29"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\layer_call_evidence.json",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\layer_call_evidence.json",
+      "sha256": "763579c442b05a3fe624833db52ab159b488b7745f4ccf4af68335e39998a2af"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\ship_ai_layer_report_calls.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_ai_layer_report_calls.log",
+      "sha256": "7fce1d21cc40190683cc47b67f4700efc7526915112ec3e1806c0bc9624ae2e1"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\collect_layer_evidence.py",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\collect_layer_evidence.py",
+      "sha256": "cabaa354249be4664e390408df67b8be7e5545ba39743188a300ec332bce39f9"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\ship_ai_layer_probe.exe",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_ai_layer_probe.exe",
+      "sha256": "d7f8756541de6bb4a805b0c362b99a0e52281396a4ec5aff11b9f16e7985f444"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\collect_layer_evidence.py",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\collect_layer_evidence.py",
+      "sha256": "cabaa354249be4664e390408df67b8be7e5545ba39743188a300ec332bce39f9"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\ship_ai_layer_integrator_calls.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_ai_layer_integrator_calls.log",
+      "sha256": "7fce1d21cc40190683cc47b67f4700efc7526915112ec3e1806c0bc9624ae2e1"
+    },
+    {
+      "source": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f\\local\\ship_ai_layer_report_calls.log",
+      "preserved": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\local\\ship_ai_layer_report_calls.log",
+      "sha256": "7fce1d21cc40190683cc47b67f4700efc7526915112ec3e1806c0bc9624ae2e1"
+    }
+  ],
+  "follow_up": [
+    {
+      "packet": "actual ship layer runtime binding",
+      "requirements": [
+        "Recheck leases on game_hosts.cpp/.hpp and game_hosts_mission.cpp/.hpp; startup owner and mission files were still externally leased during this batch.",
+        "Reuse main ea800790 native_particle_random_range_00bd2f10/00BD2E60 and borrow the initialized GameStartupHost RandomThreads; no second owner or reseeding.",
+        "NativeParticleUnitRandomAccess also requires actual current CE3978 float and D63B80 double owners.",
+        "Pass actual access through run_initialize_phases/menu mission/frame into GameShipAiHost before register_units; preserve startup lifetime.",
+        "Constructor009E4330 draws stream0;009ECA20 draws stream1. Initial goal caches31C/320 are1e9, non-navigation reset1e10.",
+        "Use actual ShipLeafTuning.array560..56C, submarine depth1268 and formation0070E450. Scalar570/pre-step168 cannot supply travel30C.",
+        "Reuse existing persistent goal314 and nav160/164 state; initialize308/30C/310 from proven009DBDF0 stores."
+      ]
+    },
+    {
+      "packet": "Dyn world runtime ownership",
+      "requirements": [
+        "Recover initialized engine/task manager via00C55F50,00C55EA0,00C37740 and actual dispatcher owners.",
+        "Preserve real task vtables, worker lifetime, native destruction and collision stepping; fixture engine projections are not runtime owners."
+      ]
+    }
+  ],
+  "limitations": [
+    "No full reconstructed game, native binary replacement ABI or gameplay/collision parity.",
+    "Lua source-excerpt verification does not execute the original loader; layer native fixture substitutes documented external service boundaries.",
+    "World fixture uses four paired count/FPU cases, excludes OS DebugInfo pointer, and does not run tasks or native destruction."
+  ],
+  "worker_cleanup": {
+    "artifacts_verified": 56,
+    "worktrees": [
+      {
+        "name": "orch6-unit-kind-f",
+        "target": "J:\\PROG\\battlestations-pacific-decompile-orch6-unit-kind-f",
+        "branch": "agent/orch6-unit-kind-f",
+        "commit": "4212f52665be59c64346a9cf47c38c9df0718287",
+        "tracked_clean": true,
+        "merged_main": true,
+        "removed": true
+      },
+      {
+        "name": "orch6-dyn-scene-f",
+        "target": "J:\\PROG\\battlestations-pacific-decompile-orch6-dyn-scene-f",
+        "branch": "agent/orch6-dyn-scene-f",
+        "commit": "0e234c0759dee614f0e5c1537b9eecff0d0b5faf",
+        "tracked_clean": true,
+        "merged_main": true,
+        "removed": true
+      },
+      {
+        "name": "orch6-layer-input-f",
+        "target": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-input-f",
+        "branch": "agent/orch6-layer-input-f",
+        "commit": "cf33896e8976f3e3c5f607a56fffac16cc9ffd29",
+        "tracked_clean": true,
+        "merged_main": true,
+        "removed": true
+      },
+      {
+        "name": "orch6-layer-selection-f",
+        "target": "J:\\PROG\\battlestations-pacific-decompile-orch6-layer-selection-f",
+        "branch": "agent/orch6-layer-selection-f",
+        "commit": "d8e7b97d8b3fe0ed32d0e4a21468508c19e2cde8",
+        "tracked_clean": true,
+        "merged_main": true,
+        "removed": true
+      }
+    ],
+    "primary_retained": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912",
+    "tool": "python tools/bsp.py worktree remove <name> --delete-branch"
+  }
+}

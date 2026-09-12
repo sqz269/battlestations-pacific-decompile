@@ -1,0 +1,590 @@
+{
+  "packet": "orch6_query_proof_g",
+  "status": "accepted_on_explicit_represented_domain_original_byte_fixture_passed",
+  "doc": "docs/SHIP_AI_AVOID_ZONE_SEARCH_PROOF.md",
+  "reviewed_source": "src/ship_ai_avoid_zone_search.cpp",
+  "reviewed_header": "include/bsp/ship_ai_avoid_zone_search.hpp",
+  "source_owner": "root; worker owns only this report and proof doc",
+  "source_commit": "42966aa6c219cd7b7e45d6c3d68bd62219644287",
+  "primary_integrated_at": "e1fe7d40",
+  "compiled_source_sha256": "6d5b1b7433553803def4ca656ad737f1f5257e926cb85c320892c33858f3f958",
+  "compiled_header_sha256": "033b114071d83bd68fcbc917fa9daf0c0cc78b7895431d2df8d46f837d518c17",
+  "current_primary_source_sha256": "042879872a8373214422eece7f47454486f6cf4a1e77782e19860dad026f15b3",
+  "comment_only_delta": {
+    "verified_exact_replacement": true,
+    "from": "//009D71F1, before reading/spilling query z.",
+    "to": "//009D71F1 precedes the native z spill at009D71F5.",
+    "scope": "No executable logic changed; fixture honestly names compiled snapshot. Root recompiles comment correction in final integration build."
+  },
+  "routines": [
+    {
+      "entry": "009d7050",
+      "inclusive_end": "009d724e",
+      "last_instruction": "009d724c",
+      "last_instruction_length": 3,
+      "instruction_count": 158,
+      "bytes": 511,
+      "sha256": "6ea67309f5e44e39a7ba6c12febb2471b3ea84c87591c18e72e547e98cc6f027",
+      "live_bytes_match_installed": true,
+      "coverage": "complete reviewed body on represented domain",
+      "reconstructed_by_this_packet": false
+    },
+    {
+      "entry": "00419fa0",
+      "inclusive_end": "00419fb9",
+      "last_instruction": "00419fb7",
+      "last_instruction_length": 3,
+      "instruction_count": 11,
+      "bytes": 26,
+      "sha256": "ccc8b8b438e3f5ef9b788ea1e38905320a6df19d1b10864c5ce0ea6fb7818073",
+      "live_bytes_match_installed": true,
+      "coverage": "complete reviewed body on represented domain",
+      "reconstructed_by_this_packet": false
+    },
+    {
+      "entry": "004224c0",
+      "inclusive_end": "004224f2",
+      "last_instruction": "004224f0",
+      "last_instruction_length": 3,
+      "instruction_count": 19,
+      "bytes": 51,
+      "sha256": "212081914101fe3d3379dc6438b89895d36ed4583ddf57791fbcf1dde05d4ef6",
+      "live_bytes_match_installed": true,
+      "coverage": "complete reviewed body on represented domain",
+      "reconstructed_by_this_packet": false
+    },
+    {
+      "entry": "00414f50",
+      "inclusive_end": "00414f9a",
+      "last_instruction": "00414f98",
+      "last_instruction_length": 3,
+      "instruction_count": 28,
+      "bytes": 75,
+      "sha256": "ed6f4f18045d37df247bd0996a672f6c7a4d82f6e6871998a54b22b16dae1125",
+      "coverage": "complete supporting native body executed; existing reconstruction consumed",
+      "reconstructed_by_this_packet": false
+    },
+    {
+      "entry": "004120d0",
+      "inclusive_end": "00412111",
+      "last_instruction": "0041210f",
+      "last_instruction_length": 3,
+      "instruction_count": 32,
+      "bytes": 66,
+      "sha256": "e7bfe94286f9b95d8acf01ace7114597ebda41abd3936b28a91397fdf299011f",
+      "coverage": "complete supporting native body executed; existing reconstruction consumed",
+      "reconstructed_by_this_packet": false
+    },
+    {
+      "entry": "00417a40",
+      "inclusive_end": "00417ac1",
+      "last_instruction": "00417abf",
+      "last_instruction_length": 3,
+      "instruction_count": 55,
+      "bytes": 130,
+      "sha256": "f6402364058590412b9a412afc3a19ca09475855a98292df04ebc67bd56e4b27",
+      "coverage": "complete supporting native body executed; existing reconstruction consumed",
+      "reconstructed_by_this_packet": false
+    },
+    {
+      "entry": "00417630",
+      "inclusive_end": "00417884",
+      "last_instruction": "00417882",
+      "last_instruction_length": 3,
+      "instruction_count": 200,
+      "bytes": 597,
+      "sha256": "860d799838a8d04e5dc64ef4a222efd67fd112da98cfa52660ca99f297cfff77",
+      "coverage": "complete supporting native body executed; existing reconstruction consumed",
+      "reconstructed_by_this_packet": false
+    },
+    {
+      "entry": "00415190",
+      "inclusive_end": "004151bf",
+      "last_instruction": "004151bd",
+      "last_instruction_length": 3,
+      "instruction_count": 17,
+      "bytes": 48,
+      "sha256": "2f906fe5d48dd7e30c7579e1a77dfdaabd1362691d4b8c2ad3c88f9a188e35c2",
+      "coverage": "complete supporting native body executed; existing reconstruction consumed",
+      "reconstructed_by_this_packet": false
+    },
+    {
+      "entry": "004158a0",
+      "inclusive_end": "004158d3",
+      "last_instruction": "004158d3",
+      "last_instruction_length": 1,
+      "instruction_count": 22,
+      "bytes": 52,
+      "sha256": "c02234b6fa8d493f9087ed62fc4d6469487579fa1fe658479a59a1ac4372d64b",
+      "coverage": "complete supporting native body executed; existing reconstruction consumed",
+      "reconstructed_by_this_packet": false
+    },
+    {
+      "entry": "004f2b00",
+      "inclusive_end": "004f2b07",
+      "last_instruction": "004f2b03",
+      "last_instruction_length": 5,
+      "instruction_count": 2,
+      "bytes": 8,
+      "sha256": "eb59c8b3d128dcb37d033e09067b07d830f48f341de062f1fb89cb29a17894a5",
+      "coverage": "complete supporting native body executed; existing reconstruction consumed",
+      "reconstructed_by_this_packet": false
+    },
+    {
+      "entry": "0085c910",
+      "inclusive_end": "0085cac7",
+      "last_instruction": "0085cac5",
+      "last_instruction_length": 3,
+      "instruction_count": 148,
+      "bytes": 440,
+      "sha256": "3af869de69794bef5daccaa473048a982b2fadea980cad6406590b6b83a1f862",
+      "coverage": "complete supporting native body executed; existing reconstruction consumed",
+      "reconstructed_by_this_packet": false
+    }
+  ],
+  "calls": [
+    {
+      "address": "009d70dc",
+      "native": "00414f50",
+      "function": "009d7050",
+      "instruction_bytes": "e86fdea3ff"
+    },
+    {
+      "address": "009d70ec",
+      "native": "00414f50",
+      "function": "009d7050",
+      "instruction_bytes": "e85fdea3ff"
+    },
+    {
+      "address": "009d7239",
+      "native": "00419fa0",
+      "function": "009d7050",
+      "instruction_bytes": "e8622da4ff"
+    },
+    {
+      "address": "009d7241",
+      "native": "004224c0",
+      "function": "009d7050",
+      "instruction_bytes": "e87ab2a4ff"
+    },
+    {
+      "address": "00419fad",
+      "native": "004158a0",
+      "function": "00419fa0",
+      "instruction_bytes": "e8eeb8ffff"
+    },
+    {
+      "address": "004224c8",
+      "native": "004158a0",
+      "function": "004224c0",
+      "instruction_bytes": "e8d333ffff"
+    },
+    {
+      "address": "004224cd",
+      "native": "004218e0",
+      "function": "004224c0",
+      "instruction_bytes": "e80ef4ffff"
+    },
+    {
+      "address": "004224d8",
+      "native": "004120d0",
+      "function": "004224c0",
+      "instruction_bytes": "e8f3fbfeff"
+    },
+    {
+      "address": "004224e8",
+      "native": "00417a40",
+      "function": "004224c0",
+      "instruction_bytes": "e85355ffff"
+    },
+    {
+      "address": "00417a67",
+      "native": "00417630",
+      "function": "00417a40",
+      "instruction_bytes": "e8c4fbffff"
+    },
+    {
+      "address": "0041778f",
+      "native": "004f2b00",
+      "function": "00417630",
+      "instruction_bytes": "e86cb30d00"
+    },
+    {
+      "address": "0041779f",
+      "native": "00bf681b",
+      "function": "00417630",
+      "instruction_bytes": "e877f07d00"
+    },
+    {
+      "address": "004177b7",
+      "native": "00415190",
+      "function": "00417630",
+      "instruction_bytes": "e8d4d9ffff"
+    },
+    {
+      "address": "004158c3",
+      "native": "00bf65ac",
+      "function": "004158a0",
+      "instruction_bytes": "e8e40c7e00"
+    },
+    {
+      "address": "004f2b03",
+      "native": "0085c910",
+      "function": "004f2b00",
+      "instruction_bytes": "e9089e3600",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "009da854",
+      "native": "009d7050",
+      "function": "009da6e0",
+      "contract": "Stack queryESP+0C; ECX=EDI fromESI+A24; query hull184/188, key168, two same produced half extents; calleeRET4"
+    },
+    {
+      "address": "009dc3b2",
+      "native": "009d7050",
+      "function": "009dc2e0",
+      "contract": "Stack queryESP+9C; ECX=ESI retained fromincomingECX; query frominput+0/+4/+20 and two sqrt-produced half extents; calleeRET4"
+    }
+  ],
+  "original_image": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "critical_findings": {
+    "cache_key": "009D7068 integerCMP; raw32-bit equality, not float comparison/conversion",
+    "containment": "00414F50 lower-inclusive upper-exclusive; upper corner first and lower only after success",
+    "expansion": {
+      "address": "00cec160",
+      "bytes": "000000403333f33f",
+      "double_value": "1.2000000476837158203125"
+    },
+    "half": {
+      "address": "00d7a280",
+      "bytes": "000000000000e03f",
+      "double_value": "0.5"
+    },
+    "floor": {
+      "double_address": "00ce3840",
+      "double_bytes": "0000000000407f40",
+      "replacement_float_address": "00ce397c",
+      "replacement_float_bytes": "0000fa43",
+      "value": 500
+    },
+    "fmul_destination": {
+      "009d7119": "dcc9",
+      "009d7132": "dcc9",
+      "meaning": "DC C9 = FMUL ST1,ST0 (destinationST1), not ST0*=ST1"
+    },
+    "unordered": "Max selects query candidate on unordered; floor leaves unordered selected candidate unchanged",
+    "list_order": "Cache14 key stored before00419FA0; changed list1C key clears old nodes before new list key store;004224C0 clears nonempty head then manager lookup then live key read then selected-head assignment",
+    "empty_table": "Native004120D0 count<=0 still loads manager slot0. Empty semantic vector cannot represent that spare slot and is explicitly rejected; empty selected groups remain valid and tested."
+  },
+  "callers": [
+    {
+      "entry": "009da6e0",
+      "inclusive_end": "009da860",
+      "coverage": "query producer and receiver provenance only",
+      "receiver": "ESI=incomingECX at9DA6E4; EDI=ESI+A24 at9DA713; ECX=EDI at9DA83C",
+      "query": "LEAESP+0C at9DA829, pushed9DA83B; x/z fromowner184/188; keyowner168; same produced XMM0 half extent twice",
+      "alias": "stack query disjoint from actual searcher"
+    },
+    {
+      "entry": "009dc2e0",
+      "inclusive_end": "009dcea2",
+      "coverage": "query producer9DC2E0..9DC3B2 and full ESI-write filter only; broader routine not reconstructed",
+      "receiver": "ESI=incomingECX at9DC2EE; nextESIwriteADD18 is afterquerycall9DC3B7; ECX=ESI at9DC3A9",
+      "query": "LEAESP+9C at9DC393, pushed9DC3A1; inputEDI from[EBP+8]; x/z input+0/+4; keyinput+20; both half extents sqrt(max(input+10,input+14)^2 + input+18^2), ordered max prefers+14 onunordered",
+      "alias": "stack query disjoint from actual searcher; broader input-record meaning intentionally not inferred"
+    }
+  ],
+  "fixture": {
+    "source": "local/query_proof.cpp",
+    "build": "local/build_query_proof.ps1",
+    "compile_flags": "MSVC Win32 /std:c++17 /EHsc /MD /O2 /fp:strict /MANIFEST:EMBED /BASE:0x20000000 /DYNAMICBASE:NO",
+    "exact_source_snapshots": [
+      "local/ship_ai_avoid_zone_search_review.cpp",
+      "local/review/bsp/ship_ai_avoid_zone_search.hpp"
+    ],
+    "frozen_core_library": "local/review/bsp_core.lib; actual geometry/list services from primary build; queried source compiled explicitly from snapshot",
+    "private_image": {
+      "base": "30000000",
+      "relocations": [
+        {
+          "instruction": "009d7113",
+          "operand": "009d7115",
+          "original_target": "00d7a280"
+        },
+        {
+          "instruction": "009d712c",
+          "operand": "009d712e",
+          "original_target": "00cec160"
+        },
+        {
+          "instruction": "009d7156",
+          "operand": "009d715a",
+          "original_target": "00ce397c"
+        },
+        {
+          "instruction": "009d7168",
+          "operand": "009d716a",
+          "original_target": "00ce3840"
+        },
+        {
+          "instruction": "0085c937",
+          "operand": "0085c939",
+          "original_target": "00d7a280"
+        }
+      ],
+      "trampoline": "31000000; complete00417A40 body with its relative00417630 call adjusted",
+      "installed_image_modified": false
+    },
+    "actual_native_geometry": [
+      "00414f50",
+      "004120d0",
+      "00417a40",
+      "00417630",
+      "00415190",
+      "004158a0",
+      "004f2b00",
+      "0085c910"
+    ],
+    "boundaries": [
+      {
+        "native_entry": "004218e0",
+        "fixture": "Required manager lookup returns actual explicitly initialized native slots; corresponding access returns matching semantic table. Lazy singleton allocation/locking not executed."
+      },
+      {
+        "native_entry": "00bf681b",
+        "fixture": "Actual malloc-backed20h records, A5-filled, stable allocation IDs; source allocation access uses same ownership service. Native new-handler retry/failure is not executed."
+      },
+      {
+        "native_entry": "00bf65ac",
+        "fixture": "Matching actual free; state recorded before deallocation/head replacement."
+      },
+      {
+        "native_entry": "00417a40",
+        "fixture": "Recording wrapper then complete original body in trampoline31000000; single relative00417630 call adjusted. No selection behavior substituted. New access.native_group emits corresponding view-selection record."
+      }
+    ],
+    "manager": "Three native/semantic groups with signed keys[-3,0,5]; key0 group has zero zones, two other groups have real matching rectangular polygon/corner storage.",
+    "manager_mutation": "Every seventh frozen input mutates live list.layer to5 during manager lookup, before subsequent native/source group selection.",
+    "initial_lists": "0..3 actual20h initialized nodes; final node closes_run1 and forlength>1 next=head, bypassing the cycle during nativeclear. Post-comparison cleanup uses existing reconstructedclear with loggingdisabled.",
+    "cases": 1536,
+    "frozen_inputs": 256,
+    "x87_control_inputs": [
+      "027f",
+      "037f",
+      "067f",
+      "0a7f",
+      "0e7f",
+      "007f"
+    ],
+    "mxcsr_input": "00001f80",
+    "exceptions_masked": true,
+    "final_x87_cw_compared": false,
+    "final_x87_status_compared": false,
+    "final_x87_top_compared": false,
+    "final_mxcsr_compared": false,
+    "refreshed": 1290,
+    "reused": 246,
+    "matching_callback_records": 8484,
+    "matching_selected_node_records": 4296,
+    "failures": 0,
+    "comparisons": [
+      "All24 cache bytes including padding",
+      "List head normalized allocationID and separate list layer word",
+      "Every live32-byte selected node with pointer-ID normalization",
+      "Callback order/arguments and complete cache/list snapshot",
+      "New diagnostic bool against native manager/refill observation"
+    ],
+    "inputs": [
+      "Raw equal NaN-shaped integer keys",
+      "Different positive/negative float-zero-shaped keys",
+      "Adjacent keys01000000/01000001",
+      "Lower/upper cache boundaries",
+      "Cache growth and500 floor",
+      "Expanded factor rounding aboveoldextent",
+      "Negative/zero extents",
+      "Subnormals/infinities/quiet and signalingNaNs",
+      "Deterministic finite samples"
+    ],
+    "input_artifact": {
+      "path": "local/query_proof_inputs.bin",
+      "bytes": 14336,
+      "row_bytes": 56,
+      "row_schema": "14 LE dwords: cache6words, query5words, initialnodecount, initiallistkey, mutate_key0/1",
+      "sha256": "d4aecbef982585ed2aca758ea1ae78498632899c0522636b6fbd6a79e59094a0"
+    },
+    "output_artifacts": {
+      "native": "local/query_proof_native_records.bin",
+      "rebuilt": "local/query_proof_rebuilt_records.bin",
+      "equal": true,
+      "bytes_each": 567744,
+      "sha256": "16869c75e12ace48c48bee3b86e623c5853c1762ae481bf4cf576f3a727afcc7",
+      "schema": "Per case4LEdwords[index,CW,eventcount,nodecount],8statewords, eventcount*10words[kind,detail,state8], nodecount*9words[id,coordinates4,links3,flag/paddingword]"
+    }
+  },
+  "validation": {
+    "focused_build": "passed",
+    "final_snapshot_rerun": "1536 cases passed, zero failures",
+    "full_repository_build": "not run by this docs/report-only review packet; primary owns integrationbuild",
+    "ctest": "not claimed by this packet",
+    "report_calls": "17 call rows checked, 0 failed",
+    "tracked_tests_added": 0
+  },
+  "corrections": [
+    {
+      "was": "009DA6E0 is the sole009D7050 caller",
+      "is": "009DC2E0 also calls at009DC3B2; both verified stackqueries are disjoint",
+      "evidence": "Live xrefs, exact containing bodies and preserved full caller listings"
+    },
+    {
+      "was": "Ghidra FMUL ST1 text could mean destinationST0",
+      "is": "DC C9 is destinationST1; source arithmetic is correct",
+      "evidence": "Live bytes009D7119/009D7132"
+    },
+    {
+      "was": "Native min_x store precedes reading/spilling queryz",
+      "is": "Native zFLD9D71EE precedes min_x store9D71F1; zspill9D71F5 follows. Integrator corrected only sourcecomment.",
+      "evidence": "Complete9D7050 listing and verified one-comment delta"
+    }
+  ],
+  "limits": [
+    "No source/address/Ghidra edits by reviewer; no named-library replacement.",
+    "Accepted for disjoint query/cache, nonempty represented manager table, coherent native/semantic zones and successful allocation; arbitrary raw spare slot and invalid objects are outside the API domain.",
+    "No final x87CW/status/TOP/MXCSR comparison, unmasked-fault sequencing or exhaustive IEEE-domain guarantee.",
+    "No allocation failure/retry/native EH, concurrent geometry mutation, singleton lifetime, mission/runtime or gameplay proof.",
+    "Empty-head clear invocation is statically verified; it produces no allocator callback by definition."
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "worker_mutations": false,
+    "no_ghidra_function": [],
+    "flow_gaps": []
+  },
+  "artifact_manifest": "local/query_proof_manifest.json",
+  "artifacts": [
+    {
+      "path": "local/query_proof.cpp",
+      "bytes": 15678,
+      "sha256": "daa575bff3e3f551ad8f0f2a684f7943d7d5768c9bca64520fb21c116b3fadc1"
+    },
+    {
+      "path": "local/build_query_proof.ps1",
+      "bytes": 1025,
+      "sha256": "ed5bbb0d8c1732389371211d961e8675305137c7792c734546ecd88d42ca8878"
+    },
+    {
+      "path": "local/build_query_proof.cmd",
+      "bytes": 650,
+      "sha256": "3d5b1be11410ec925dcb40b02ab6c3a0380d4ea45ec9be21488e60ceade44b8a"
+    },
+    {
+      "path": "local/prepare_query_proof.py",
+      "bytes": 3740,
+      "sha256": "00bd92442042cdf2e5857edb0f571dbb6fca7bc1d67a5233fc5e73a76d1221d1"
+    },
+    {
+      "path": "local/query_proof_native_evidence.json",
+      "bytes": 4508,
+      "sha256": "da025a1f33c1398e83bda8a8714223d4bb39290eafd8fb5d03cb3b59858a5325"
+    },
+    {
+      "path": "local/query_proof_native_image.bin",
+      "bytes": 14872576,
+      "sha256": "7b9751c263280dd6a7f5f01b4bb3a3cc05984d72d936b22f1ab34888609c1b71"
+    },
+    {
+      "path": "local/query_proof_group_trampoline.bin",
+      "bytes": 130,
+      "sha256": "b271079d0abf3c8d67246070b69d44c4540315116cfca37cf8ced66d10b39786"
+    },
+    {
+      "path": "local/query_proof_inputs.bin",
+      "bytes": 14336,
+      "sha256": "d4aecbef982585ed2aca758ea1ae78498632899c0522636b6fbd6a79e59094a0"
+    },
+    {
+      "path": "local/query_proof_native_records.bin",
+      "bytes": 567744,
+      "sha256": "16869c75e12ace48c48bee3b86e623c5853c1762ae481bf4cf576f3a727afcc7"
+    },
+    {
+      "path": "local/query_proof_rebuilt_records.bin",
+      "bytes": 567744,
+      "sha256": "16869c75e12ace48c48bee3b86e623c5853c1762ae481bf4cf576f3a727afcc7"
+    },
+    {
+      "path": "local/query_proof_compile.log",
+      "bytes": 75,
+      "sha256": "a99287fa1d1ba7b16c9032f3cb5065d94390f532dbd33bb4be791af363c4772b"
+    },
+    {
+      "path": "local/query_proof.log",
+      "bytes": 154,
+      "sha256": "e14af215c08590e317a6152f95c8986a33f04c5489fcefaff5f835e4aa6a5694"
+    },
+    {
+      "path": "local/ship_ai_avoid_zone_search_review.cpp",
+      "bytes": 4831,
+      "sha256": "6d5b1b7433553803def4ca656ad737f1f5257e926cb85c320892c33858f3f958"
+    },
+    {
+      "path": "local/review/bsp/ship_ai_avoid_zone_search.hpp",
+      "bytes": 2096,
+      "sha256": "033b114071d83bd68fcbc917fa9daf0c0cc78b7895431d2df8d46f837d518c17"
+    },
+    {
+      "path": "local/review/bsp_core.lib",
+      "bytes": 51974498,
+      "sha256": "3ad593df549798a504bfeca3bd9d4aca60a84bfb1aa0884cbbc539fca01e5200"
+    },
+    {
+      "path": "local/query_proof_bytes_009d7050.txt",
+      "bytes": 2460,
+      "sha256": "e6717fa4da053d310f46d67316bef8f1929fed4dee6d68df085f37a6ae8ee602"
+    },
+    {
+      "path": "local/query_proof_bytes_00419fa0.txt",
+      "bytes": 130,
+      "sha256": "7f3de709462f9f4bafbcc02a27e5a8ee70545e3fb56244ab3eb251d3e1a2a8a7"
+    },
+    {
+      "path": "local/query_proof_bytes_004224c0.txt",
+      "bytes": 256,
+      "sha256": "0ad9d58ea13caf86907335a81089095b6f2db7ea63611d3ffbfaba8e227c5750"
+    },
+    {
+      "path": "local/query_proof_caller_009da6e0.txt",
+      "bytes": 2997,
+      "sha256": "e13f5b8746392e40da82b8f3ccaa77ca8ee4ff995f792238c08bfaf976ec6533"
+    },
+    {
+      "path": "local/query_proof_caller_009dc2e0.txt",
+      "bytes": 27374,
+      "sha256": "120659eddf191fb7792effa9a0972eb59e14077770196d9580093df97aee47d3"
+    },
+    {
+      "path": "local/query_proof_report_calls.log",
+      "bytes": 78,
+      "sha256": "cc74b9d68ccb8bd2b0b181f144cea9e900ad37041f82482c3b708affe9e32d0a"
+    },
+    {
+      "path": "local/write_query_proof_report.py",
+      "bytes": 13250,
+      "sha256": "761a3b72371db03a47255a04e4a0a5081da0fb65b7040626b354c8adb57ef235"
+    }
+  ],
+  "linked_external_libraries": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_lua511.lib",
+      "sha256": "ae055a90b601dd5d43fad2b12bdc02ee54c0988981d6bc970b317102361fcffa"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\build\\win32\\Release\\bsp_zlib121.lib",
+      "sha256": "596ca481fe038e7be5f956bbf2540e74b3f4982752d88d022ffc0422d64cab26"
+    }
+  ]
+}

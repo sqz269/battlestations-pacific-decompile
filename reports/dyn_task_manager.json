@@ -1,0 +1,608 @@
+{
+  "packet": "orch6_dyn_tasks_g",
+  "date": "2026-09-12",
+  "status": "complete successful normal-path construction, worker replacement/entry/execution, batch queue/wait and destruction; real Win32 source fixture verified",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_read_only": true,
+  "verification": "bsp.py ghidra wrappers verify target through Client.verify() before every live batch; live listings retained in local/",
+  "source": "src/dyn_task_manager.cpp",
+  "header": "include/bsp/dyn_task_manager.hpp",
+  "document": "docs/DYN_TASK_MANAGER.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "original_byte_execution": false,
+  "functions": [
+    {
+      "address": "00C37740",
+      "native": "00C37740",
+      "end_inclusive": "00C377ED",
+      "proposed_name": "DYN_TaskManager_Construct_00C37740",
+      "cpp_symbol": "dyn_task_manager_construct_00c37740",
+      "original_abi": "stack manager, count; RET8 at00C377EB",
+      "name_is_hypothesis": true,
+      "native_span_sha256": "9f6c357444f48fb6e48ebc0d1e462623eaa011e035e8a05c0f8efabfb6b9f8ca",
+      "native_span_bytes": 174,
+      "coverage": "complete successful normal path; SEH/failure domain excluded"
+    },
+    {
+      "address": "00C37690",
+      "native": "00C37690",
+      "end_inclusive": "00C3773A",
+      "proposed_name": "DYN_TaskManager_SetWorkerCount_00C37690",
+      "cpp_symbol": "dyn_task_manager_set_worker_count_00c37690",
+      "original_abi": "ESI manager; stack count; RET4 at00C37738",
+      "name_is_hypothesis": true,
+      "native_span_sha256": "54e972c95d34224b2979baeedc86415abdfa49bca6489978d2824940809bbe72",
+      "native_span_bytes": 171,
+      "coverage": "complete successful normal path; SEH/failure domain excluded"
+    },
+    {
+      "address": "00C37680",
+      "native": "00C37680",
+      "end_inclusive": "00C3768F",
+      "proposed_name": "DYN_TaskManager_WorkerEntry_00C37680",
+      "cpp_symbol": "worker_entry_00c37680",
+      "original_abi": "stack manager; unsigned __stdcall; RET4 at00C3768D; EAX0",
+      "name_is_hypothesis": true,
+      "native_span_sha256": "385d62003075d7d85ee8a9d47ee015e252486445e26583e50556bee35cbb28c3",
+      "native_span_bytes": 16,
+      "coverage": "complete successful normal path; SEH/failure domain excluded"
+    },
+    {
+      "address": "00C375F0",
+      "native": "00C375F0",
+      "end_inclusive": "00C37676",
+      "proposed_name": "DYN_TaskManager_WorkerLoop_00C375F0",
+      "cpp_symbol": "worker_loop_00c375f0",
+      "original_abi": "ESI manager; RET at00C37676",
+      "name_is_hypothesis": true,
+      "native_span_sha256": "131a9ee76a6f4acbcb8af23afa2a9ff6c6825267f8eacaeb68a4c5e2619f94f8",
+      "native_span_bytes": 135,
+      "coverage": "complete successful normal path; SEH/failure domain excluded"
+    },
+    {
+      "address": "00C33140",
+      "native": "00C33140",
+      "end_inclusive": "00C3324B",
+      "proposed_name": "Dyn_TaskScheduler_RunBatchAndWait",
+      "cpp_symbol": "dyn_task_manager_run_batch_00c33140",
+      "original_abi": "ESI manager; EAX task vector; stack signed count; RET4 at00C33249",
+      "name_is_hypothesis": true,
+      "native_span_sha256": "25b9437b433d7ff78346130842e1b8a52b1dfb1e4421cb3a54bd2acfd9e928ee",
+      "native_span_bytes": 268,
+      "coverage": "complete successful normal path; SEH/failure domain excluded"
+    },
+    {
+      "address": "00C40FF0",
+      "native": "00C40FF0",
+      "end_inclusive": "00C41069",
+      "proposed_name": "DYN_TaskManager_Destroy_00C40FF0",
+      "cpp_symbol": "dyn_task_manager_destroy_00c40ff0",
+      "original_abi": "stack manager; RET4 at00C41067",
+      "name_is_hypothesis": true,
+      "native_span_sha256": "c3752bf7c06afa70e2ecd493be343430e1288e5f656a25d45bfa45cf65b9e1f2",
+      "native_span_bytes": 122,
+      "coverage": "complete successful normal path; SEH/failure domain excluded"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00C37775",
+      "function": "00C37740",
+      "instruction": "CALL dword ptr [0x00ce2154]",
+      "native": "KERNEL32.dll!InitializeCriticalSectionAndSpinCount",
+      "iat": "00CE2154",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C37788",
+      "function": "00C37740",
+      "instruction": "CALL dword ptr [0x00ce214c]",
+      "native": "KERNEL32.dll!CreateSemaphoreA",
+      "iat": "00CE214C",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C37799",
+      "function": "00C37740",
+      "instruction": "CALL dword ptr [0x00ce22b8]",
+      "native": "KERNEL32.dll!CreateEventA",
+      "iat": "00CE22B8",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C377BA",
+      "function": "00C37740",
+      "instruction": "CALL dword ptr [0x00ce22b8]",
+      "native": "KERNEL32.dll!CreateEventA",
+      "iat": "00CE22B8",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C377D2",
+      "function": "00C37740",
+      "instruction": "CALL 0x00c37690",
+      "native": "00C37690"
+    },
+    {
+      "address": "00C376A2",
+      "function": "00C37690",
+      "instruction": "CALL dword ptr [0x00ce22b4]",
+      "native": "KERNEL32.dll!SetEvent",
+      "iat": "00CE22B4",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C376B3",
+      "function": "00C37690",
+      "instruction": "CALL dword ptr [0x00ce21fc]",
+      "native": "KERNEL32.dll!WaitForMultipleObjects",
+      "iat": "00CE21FC",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C376C0",
+      "function": "00C37690",
+      "instruction": "CALL dword ptr [0x00ce2158]",
+      "native": "KERNEL32.dll!ResetEvent",
+      "iat": "00CE2158",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C376C9",
+      "function": "00C37690",
+      "instruction": "CALL 0x00bf6989",
+      "native": "00BF6989"
+    },
+    {
+      "address": "00C376F2",
+      "function": "00C37690",
+      "instruction": "CALL 0x00bf55be",
+      "native": "00BF55BE"
+    },
+    {
+      "address": "00C37713",
+      "function": "00C37690",
+      "instruction": "CALL 0x00c03bc4",
+      "native": "00C03BC4"
+    },
+    {
+      "address": "00C37728",
+      "function": "00C37690",
+      "instruction": "CALL dword ptr [0x00ce22a0]",
+      "native": "KERNEL32.dll!SetThreadPriority",
+      "iat": "00CE22A0",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C37685",
+      "function": "00C37680",
+      "instruction": "CALL 0x00c375f0",
+      "native": "00C375F0"
+    },
+    {
+      "address": "00C3761F",
+      "function": "00C375F0",
+      "instruction": "CALL dword ptr [0x00ce21fc]",
+      "native": "KERNEL32.dll!WaitForMultipleObjects",
+      "iat": "00CE21FC",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C3762D",
+      "function": "00C375F0",
+      "instruction": "CALL EBP",
+      "native": "KERNEL32.dll!EnterCriticalSection",
+      "iat": "00CE2218",
+      "evidence": "loaded into EBP at00C375F5"
+    },
+    {
+      "address": "00C3763E",
+      "function": "00C375F0",
+      "instruction": "CALL dword ptr [0x00ce2210]",
+      "native": "KERNEL32.dll!LeaveCriticalSection",
+      "iat": "00CE2210",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C3764A",
+      "function": "00C375F0",
+      "instruction": "CALL EAX",
+      "native": "task+vtable00",
+      "evidence": "00C37644 loads task vtable;00C37646 first slot;00C37648 ECX=task; no stack args; actual task methods remain external"
+    },
+    {
+      "address": "00C37668",
+      "function": "00C375F0",
+      "instruction": "CALL dword ptr [0x00ce22b4]",
+      "native": "KERNEL32.dll!SetEvent",
+      "iat": "00CE22B4",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C3314A",
+      "function": "00C33140",
+      "instruction": "CALL dword ptr [0x00ce2218]",
+      "native": "KERNEL32.dll!EnterCriticalSection",
+      "iat": "00CE2218",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C33172",
+      "function": "00C33140",
+      "instruction": "CALL 0x00bf55be",
+      "native": "00BF55BE"
+    },
+    {
+      "address": "00C331A4",
+      "function": "00C33140",
+      "instruction": "CALL 0x00bf6989",
+      "native": "00BF6989"
+    },
+    {
+      "address": "00C33221",
+      "function": "00C33140",
+      "instruction": "CALL dword ptr [0x00ce2150]",
+      "native": "KERNEL32.dll!ReleaseSemaphore",
+      "iat": "00CE2150",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C3322F",
+      "function": "00C33140",
+      "instruction": "CALL dword ptr [0x00ce2210]",
+      "native": "KERNEL32.dll!LeaveCriticalSection",
+      "iat": "00CE2210",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C3323F",
+      "function": "00C33140",
+      "instruction": "CALL dword ptr [0x00ce22b0]",
+      "native": "KERNEL32.dll!WaitForSingleObject",
+      "iat": "00CE22B0",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C41015",
+      "function": "00C40FF0",
+      "instruction": "CALL 0x00c37690",
+      "native": "00C37690"
+    },
+    {
+      "address": "00C41027",
+      "function": "00C40FF0",
+      "instruction": "CALL EDI",
+      "native": "KERNEL32.dll!CloseHandle",
+      "iat": "00CE225C",
+      "evidence": "loaded into EDI at00C41020"
+    },
+    {
+      "address": "00C41030",
+      "function": "00C40FF0",
+      "instruction": "CALL EDI",
+      "native": "KERNEL32.dll!CloseHandle",
+      "iat": "00CE225C",
+      "evidence": "loaded into EDI at00C41020"
+    },
+    {
+      "address": "00C41035",
+      "function": "00C40FF0",
+      "instruction": "CALL 0x00bf6989",
+      "native": "00BF6989"
+    },
+    {
+      "address": "00C41041",
+      "function": "00C40FF0",
+      "instruction": "CALL dword ptr [0x00ce2214]",
+      "native": "KERNEL32.dll!DeleteCriticalSection",
+      "iat": "00CE2214",
+      "evidence": "PE import binding and complete live native listing"
+    },
+    {
+      "address": "00C4104F",
+      "function": "00C40FF0",
+      "instruction": "CALL 0x00bf6989",
+      "native": "00BF6989"
+    }
+  ],
+  "native_layout": [
+    {
+      "offset": "00",
+      "bytes": 4,
+      "meaning": "worker handle-array pointer; fresh count0 preserves bytes"
+    },
+    {
+      "offset": "04",
+      "bytes": 4,
+      "meaning": "worker count; real thread producer00C37690"
+    },
+    {
+      "offset": "08",
+      "bytes": 4,
+      "meaning": "last beginthreadex thread ID; zero-count preserves bytes"
+    },
+    {
+      "offset": "0C",
+      "bytes": 12,
+      "meaning": "queue pointer, current size, capacity"
+    },
+    {
+      "offset": "18",
+      "bytes": 24,
+      "meaning": "real Win32 critical section; spin10000"
+    },
+    {
+      "offset": "30",
+      "bytes": 400,
+      "meaning": "100 signed atomic completion counters"
+    },
+    {
+      "offset": "1C0",
+      "bytes": 400,
+      "meaning": "100 auto-reset completion event handles"
+    },
+    {
+      "offset": "350",
+      "bytes": 4,
+      "meaning": "semaphore; initial0, maximum1000"
+    },
+    {
+      "offset": "354",
+      "bytes": 4,
+      "meaning": "manual-reset shutdown event; initial nonsignaled"
+    }
+  ],
+  "normal_domain": [
+    "fresh disjoint358h storage; successful Win32 calls and allocations; Win32 pointer/critical-section layout",
+    "release callback accepts nullptr; constructor count0 leaves+0 and+8 untouched; destructor needs+0 null or releasable",
+    "worker count1..64 for successful Win32 wait-all shutdown, or count0 for construction only/no submissions",
+    "positive signed batch count; live workers; free completion group<100; representable queue and semaphore capacity1000",
+    "borrowed real task object: callable vtable slot0 with ECX task, no stack args; writable+4 group; task callbacks return normally",
+    "replacement/destruction occur with no active submissions or pending work when a clean shutdown is required"
+  ],
+  "preserved_native_behavior": [
+    "worker waits [shutdown,semaphore] and exits only on return0; all other wait results dequeue",
+    "LIFO pop under CS; task call outside CS; atomic completion decrement and task+4 reload before signal",
+    "batch releases semaphore then stores group count while holding CS; unlocks then waits on auto-reset event",
+    "queue grows to exact required size, copies old entries before freeing and zeroes new entries",
+    "worker-array overflow allocation saturates toFFFFFFFF; queue multiplication wraps32; overflow execution excluded",
+    "zero-count submission has no early success; group scan has no100 bound; group-reuse race not repaired",
+    "native adjustment/destructor do not CloseHandle worker handles; destructor does not close100 completion events"
+  ],
+  "limits": [
+    "new C++ ABI; native SEH/unwind and allocation/Win32 failure paths are not reconstructed",
+    "task virtual implementations and payload ownership remain external actual objects; no synthetic vtable or callback",
+    "no claim of physics scheduler payload execution, gameplay, stress verification, source/original byte differential or whole-storage byte comparison",
+    "separate engine packet original-byte count0 constructor result is not claimed as this fixture evidence",
+    "no x87 expressions in owned bodies"
+  ],
+  "flow_repairs": [
+    {
+      "function": "00C37690",
+      "site": "00C376C9",
+      "restored": "00C376CE ADD ESP,4;00C376D1 MOV [ESI],0; final body through00C3773A",
+      "owner": "root"
+    },
+    {
+      "function": "00C33140",
+      "site": "00C331A4",
+      "restored": "00C331A9 ADD ESP,4; final body through00C3324B; unrelated alignment gap remains",
+      "owner": "root"
+    },
+    {
+      "function": "00C40FF0",
+      "site": "00C41035",
+      "restored": "body recreated through00C41069, including free00C4104F and RET4; later body/final-flow reports supersede incomplete initial diagnostic",
+      "owner": "root"
+    }
+  ],
+  "no_ghidra_function": [],
+  "unresolved_call_continuation_gaps": [],
+  "root_repair_reports": [
+    "reports/dyn_task_manager_flow_repairs.json",
+    "reports/dyn_scheduler_flow_repair.json",
+    "reports/dyn_task_manager_destructor_flow_repair.json",
+    "reports/dyn_task_manager_destructor_body_repair.json"
+  ],
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "build_result": "Win32 Release passed; reconstructed_math and native_math_differential2/2 passed",
+    "seed_command": "python tools/ghidra_export.py verify-seeds",
+    "seed_result": "passed",
+    "call_verification": "python tools/verify_report_calls.py reports/dyn_task_manager.json:16 direct rows checked,0 failed;20 import/virtual rows separately grounded in full listings and PE IAT/register provenance",
+    "fixture_kind": "source-execution real-Win32 fixture; not original-byte execution",
+    "fixture_build": "cmd /c local\\build_dyn_task_probe.cmd",
+    "fixture_run": "local\\dyn_task_probe.exe",
+    "fixture_result": "PASS; 4 allocations/4 owned frees/2 null frees; full extra-handle cleanup",
+    "fixture_checks": [
+      "zero-count untouched fields and102 real synchronization handles/reset modes",
+      "worker priority2 and last thread ID",
+      "compiled borrowed task vtable prefix/virtual dispatch and LIFO",
+      "queue4->7 capacity growth, then reuse at2",
+      "stop/join1 worker and recreate2",
+      "two simultaneous groups0/1 execute on distinct workers",
+      "native closes only shutdown/semaphore; fixture closes200 retained completion events and3 retained worker handles across2 manager lifetimes"
+    ],
+    "comparison_exclusions": "No original/source manager or Win32 CS bytes compared. Numerical opaque handle values and OS internal CS state are not asserted; actual validity, modes, worker ID/priority and resource lifetimes are checked.",
+    "fixture_history": "Initial probe-only vector initializer-list snapshot bug fixed before passing run; no production change was required."
+  },
+  "artifacts": [
+    {
+      "path": "src/dyn_task_manager.cpp",
+      "sha256": "0160749d351494d2ac34a08a0c4d98322a6a4aa54ab5db8c35e23931591d75d0",
+      "bytes": 6748
+    },
+    {
+      "path": "include/bsp/dyn_task_manager.hpp",
+      "sha256": "3c6736d8c7ee289631f9fdebd02f9c0915688389ec29a782357183ee2f54c147",
+      "bytes": 2343
+    },
+    {
+      "path": "local/dyn_task_probe.cpp",
+      "sha256": "b187f5d0dc6af360d7999b16790c4b04443ac8d46d64b22b600a53d338b7f479",
+      "bytes": 8243
+    },
+    {
+      "path": "local/build_dyn_task_probe.cmd",
+      "sha256": "42d494940ace1862060df581cd86ef6c2fa5d2a0b315a85851d3450bec72f00f",
+      "bytes": 463
+    },
+    {
+      "path": "local/dyn_task_probe.exe",
+      "sha256": "69ac997eb2484522a57c0f2bdbb7f80126c6d2bb34b1519beecaa26b890c5169",
+      "bytes": 22528
+    },
+    {
+      "path": "local/dyn_task_probe_compile.log",
+      "sha256": "998a0f3492e553b5ab4579078d6bf0f77583cf43fb797953cf9f1737f08446a9",
+      "bytes": 42
+    },
+    {
+      "path": "local/dyn_task_probe.log",
+      "sha256": "83db37472a942ea92ef89e420e216c0f963f6a6f2022a7a7e4a8ac94216354d9",
+      "bytes": 432
+    },
+    {
+      "path": "local/task_build.log",
+      "sha256": "2b360f411fea20b1a2747b8d978882a5ea2c0141c3323ba132161e78efc93598",
+      "bytes": 37281
+    },
+    {
+      "path": "local/task_verify_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "bytes": 3034
+    },
+    {
+      "path": "local/task_report_calls.log",
+      "sha256": "f833611117be0689df77e1907c1bcee7b46055b0afdb0335c1f0f3df69a4be08",
+      "bytes": 1738
+    },
+    {
+      "path": "local/record_dyn_task_report.py",
+      "sha256": "3e7501abb16c7293cedd6f4fa8b8f74f936c96d8613e9f287ca061884b0d7fe4",
+      "bytes": 12178
+    },
+    {
+      "path": "local/native_00C33140.txt",
+      "sha256": "b12118df6ebdfb4195b3b1e314fa0b33bdd503c625f8283a9bc0a94f1507a14c",
+      "bytes": 3013
+    },
+    {
+      "path": "local/native_00C375F0.txt",
+      "sha256": "464d54a30f00ed25765ba5010906288578c1891f564a7a7cfb0c705b279f07ae",
+      "bytes": 1462
+    },
+    {
+      "path": "local/native_00C37680.txt",
+      "sha256": "b5daa616dd840392da1277f673f17054baf2a0e048cfd5e2a352613b58378e99",
+      "bytes": 155
+    },
+    {
+      "path": "local/native_00C37690.txt",
+      "sha256": "00185fd7205c09e99a38792a9b9ed9cccd8f05d70968959423cbb241b502426d",
+      "bytes": 1780
+    },
+    {
+      "path": "local/native_00C37740.txt",
+      "sha256": "12d29e9c3b3e041f72642023b2d6416ff2f45e2780239fafe0e6c0bc299ee1c0",
+      "bytes": 1696
+    },
+    {
+      "path": "local/native_00C40FF0.txt",
+      "sha256": "dfd1c9559e99f2fb5e3d18ba46b7d95fff1439bdaf43b90b43763288e786e657",
+      "bytes": 1063
+    },
+    {
+      "path": "local/native_00C33140.bin",
+      "sha256": "25b9437b433d7ff78346130842e1b8a52b1dfb1e4421cb3a54bd2acfd9e928ee",
+      "bytes": 268
+    },
+    {
+      "path": "local/native_00C375F0.bin",
+      "sha256": "131a9ee76a6f4acbcb8af23afa2a9ff6c6825267f8eacaeb68a4c5e2619f94f8",
+      "bytes": 135
+    },
+    {
+      "path": "local/native_00C37680.bin",
+      "sha256": "385d62003075d7d85ee8a9d47ee015e252486445e26583e50556bee35cbb28c3",
+      "bytes": 16
+    },
+    {
+      "path": "local/native_00C37690.bin",
+      "sha256": "54e972c95d34224b2979baeedc86415abdfa49bca6489978d2824940809bbe72",
+      "bytes": 171
+    },
+    {
+      "path": "local/native_00C37740.bin",
+      "sha256": "9f6c357444f48fb6e48ebc0d1e462623eaa011e035e8a05c0f8efabfb6b9f8ca",
+      "bytes": 174
+    },
+    {
+      "path": "local/native_00C40FF0.bin",
+      "sha256": "c3752bf7c06afa70e2ecd493be343430e1288e5f656a25d45bfa45cf65b9e1f2",
+      "bytes": 122
+    },
+    {
+      "path": "local/caller_00C421B0.txt",
+      "sha256": "8bf9797da0214f4645592a41ede386b0212126005141a54208ceb80aa0872a07",
+      "bytes": 964
+    },
+    {
+      "path": "local/caller_00C55EA0.txt",
+      "sha256": "f9c01096b0fe2a401d16c635caafc344cb1a36c998c9d8c8a5224b07a38cbd21",
+      "bytes": 1689
+    },
+    {
+      "path": "local/caller_00C57070.txt",
+      "sha256": "313aae4283e732609cde03193a89682b2e608fe671afd80124903fba8cd766a5",
+      "bytes": 19749
+    },
+    {
+      "path": "local/caller_00C5BB30.txt",
+      "sha256": "a86a82317d024ed82147b51dba3ddb299025300b6cc1b96c8fe9beb86529a076",
+      "bytes": 25441
+    }
+  ],
+  "producer_and_consumers": [
+    {
+      "address": "00C55EFD",
+      "native": "00BF681B",
+      "function": "00C55EA0",
+      "evidence": "PUSH358h at00C55EF5; real manager allocation"
+    },
+    {
+      "address": "00C55F1A",
+      "native": "00C37740",
+      "function": "00C55EA0",
+      "evidence": "descriptor pointer loaded00C55F12; first dword00C55F16 after successful allocation; push count then manager; publish engine+10 at00C55F1F"
+    },
+    {
+      "address": "00C577EE",
+      "native": "00C33140",
+      "function": "00C57070",
+      "evidence": "00C577E4 EAX=scene+CC;00C577EA ESI=engine+10;00C577ED push countEBX"
+    },
+    {
+      "address": "00C5BCCA",
+      "native": "00C33140",
+      "function": "00C5BB30",
+      "evidence": "00C5BCBE ECX=engine+10;00C5BCC1 EAX=world+480;00C5BCC7 push countESI;00C5BCC8 ESI=ECX"
+    },
+    {
+      "address": "00C5C0E8",
+      "native": "00C33140",
+      "function": "00C5BB30",
+      "evidence": "00C5C0DE EAX=world+468;00C5C0E4 ESI=engine+10;00C5C0E7 push countEBX"
+    },
+    {
+      "address": "00C421F2",
+      "native": "00C40FF0",
+      "function": "00C421B0",
+      "evidence": "00C421EA load engine+10;00C421F1 push manager; destructor before manager storage release"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+ "events": [
+  {
+   "recreate": "00c40ff0",
+   "previous": "Function: DYN_physics_00c40ff0 at 00c40ff0\nSignature: undefined DYN_physics_00c40ff0(void)\nEntry: 00c40ff0\nBody: 00c40ff0 - 00c41039",
+   "plate": "[BSP inventory 00c40ff0] block_dyn (high): inside Dyn physics/collision (mitengine 'Dynamics' module) range [00c30930,00c5df60): main library body; ends at the .text$x unwind-funclet block; preceded by Lua loadlib.c (00c2f3e0-00c30200) and a small game glue object (00c30210-00c30570)"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00c40ff0"
+   },
+   "result": {
+    "success": true,
+    "address": "00c40ff0",
+    "deleted_function": "DYN_physics_00c40ff0",
+    "body_size": 74,
+    "message": "Function 'DYN_physics_00c40ff0' deleted at 00c40ff0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00c40ff0",
+    "end_address": "00c4106a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00c40ff0",
+    "end_address": "00c41069",
+    "bytes_disassembled": 122,
+    "message": "Successfully disassembled 122 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00c40ff0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00c40ff0",
+    "function_name": "DYN_physics_00c40ff0",
+    "entry_point": "00c40ff0",
+    "body_size": 122,
+    "message": "Function created successfully at 00c40ff0"
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00c40ff0",
+    "comment": "[BSP inventory 00c40ff0] block_dyn (high): inside Dyn physics/collision (mitengine 'Dynamics' module) range [00c30930,00c5df60): main library body; ends at the .text$x unwind-funclet block; preceded by Lua loadlib.c (00c2f3e0-00c30200) and a small game glue object (00c30210-00c30570)"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00c40ff0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00c40ff0",
+   "end": "00c4106a",
+   "name": null,
+   "after": "Function: DYN_physics_00c40ff0 at 00c40ff0\nSignature: undefined DYN_physics_00c40ff0(void)\nEntry: 00c40ff0\nBody: 00c40ff0 - 00c41069"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
