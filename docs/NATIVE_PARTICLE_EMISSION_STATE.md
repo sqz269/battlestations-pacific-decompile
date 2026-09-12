@@ -100,3 +100,10 @@ names/comments were saved and read back, preserving prior comments; exports
 were refreshed. Five reports verify484 direct call/tail rows with no failures.
 The accompanying report records per-probe coverage and exact hashes. Native
 FH3, full application composition, concurrency and gameplay are unvalidated.
+
+## Correction from docs/NATIVE_PARTICLE_TYPE_STATE_DISPATCH.md (AR)
+
+Optional same-domain state binding directly invokes all five captured current virtual18 initializers; preserves post-call actual state/definition/emitter/light reloads. Required real resource/renderer overrides, native FH3 and gameplay remain unvalidated.
+
+Earlier isolated dispatcher captures remain historical evidence; the optional
+composition does not establish complete application wiring or gameplay.

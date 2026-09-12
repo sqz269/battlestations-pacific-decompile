@@ -251,17 +251,13 @@ void NativePointLightReference::release_zero_references() noexcept {
     phase_ = Phase::retired;
     disposal.retire(disposal.context, *this);
 }
-NativePointLightReference* allocate_native_point_light(NativePointLightEnvironment& environment,
-    const NativeString& name) {
-    require_environment(environment);
-    void* raw = environment.pool_0109011c.allocate_raw_slot_00b7b810();
-    if (!raw) throw std::bad_alloc();
+NativePointLightReference* adopt_constructed_native_point_light(NativePointLightEnvironment& environment,
+    NativePointLightStorageView storage) {
+    void* raw = &storage.node;
     NativePointLightOwner* owner{};
-    bool constructed = false, scene_bound = false, backlinks_bound = false;
+    bool scene_bound = false, backlinks_bound = false;
     try {
-        auto storage = construct_native_point_light_00b7c710(raw,
-            NativePointLightPool::slot_bytes, name, environment.nodes.strings);
-        constructed = true;
+        require_environment(environment);
         owner = new NativePointLightOwner(storage, environment);
         environment.nodes.scenes.bind(owner->node.scene_attachment);
         scene_bound = true;
@@ -271,7 +267,7 @@ NativePointLightReference* allocate_native_point_light(NativePointLightEnvironme
     } catch (...) {
         if (backlinks_bound) {
             delete_native_point_light_00b7c850(*owner, 0);
-        } else if (constructed) {
+        } else {
             if (scene_bound)
                 environment.nodes.scenes.forget_destroyed_binding(owner->node.scene_attachment);
             discard_unbound_fresh_storage({*static_cast<NativeNodeStorage*>(raw),
@@ -282,5 +278,21 @@ NativePointLightReference* allocate_native_point_light(NativePointLightEnvironme
         environment.pool_0109011c.return_raw_slot_00b7b1d0(raw);
         throw;
     }
+}
+NativePointLightReference* allocate_native_point_light(NativePointLightEnvironment& environment,
+    const NativeString& name) {
+    require_environment(environment);
+    void* raw = environment.pool_0109011c.allocate_raw_slot_00b7b810();
+    if (!raw) throw std::bad_alloc();
+    NativePointLightStorageView storage = [&]() {
+        try {
+            return construct_native_point_light_00b7c710(raw,
+                NativePointLightPool::slot_bytes, name, environment.nodes.strings);
+        } catch (...) {
+            environment.pool_0109011c.return_raw_slot_00b7b1d0(raw);
+            throw;
+        }
+    }();
+    return adopt_constructed_native_point_light(environment, storage);
 }
 } // namespace bsp

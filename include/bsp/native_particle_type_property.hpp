@@ -2,6 +2,7 @@
 #include "bsp/native_particle_type_base.hpp"
 
 namespace bsp {
+struct NativeParticleTypeResourceBindings;
 struct NativeParticleTypePropertyBindings {
     NativeParticleTypeBaseBindings& base; // SAME strings, parameter pool and native array domain
     void* actual_atlas_manager_00f8c26c; // actual +4 pointer array/+8 signed count
@@ -23,6 +24,9 @@ struct NativeParticleTypePropertyBindings {
     const char* empty_frame_name_00f8d390; // Tracer texture-list null name
     const char* empty_stem_00f8c2c1; // filename helper null data
     const char* empty_texture_name_00f8d37c; // B01350 frame-name null data
+    // Optional same-domain model-resource services. Reviewed Shader targets
+    // use concrete setters; unknown current targets still use the dispatcher.
+    NativeParticleTypeResourceBindings* resources = nullptr;
 };
 
 // Complete native bodies through their real service boundaries; new C++ APIs,
