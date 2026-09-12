@@ -1,0 +1,231 @@
+{
+  "packet": "orch6_avoid_zone_segment_math",
+  "owner": "agent/orch6-segment-queries",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only",
+  "doc": "docs/AVOID_ZONE_SEGMENT_MATH.md",
+  "header": "include/bsp/avoid_zone_segment_math.hpp",
+  "source": "src/avoid_zone_segment_math.cpp",
+  "routines": [
+    {
+      "address": "004f3630",
+      "body": "004f3630-004f372e",
+      "byte_count": 255,
+      "original_abi": "ECX=a0 EDX=da; stack b0 db t u; AL success; RET10h",
+      "coverage": "complete",
+      "reconstruction": "native_segment_parameters_004f3630",
+      "source": "src/avoid_zone_segment_math.cpp",
+      "action": "reconstructed",
+      "abi_compatible": true,
+      "game_validated": false
+    },
+    {
+      "address": "00419ab0",
+      "body": "00419ab0-00419bed",
+      "byte_count": 318,
+      "original_abi": "ECX=start EDX=end; stack query; ST0 distance; RET4",
+      "coverage": "complete",
+      "reconstruction": "avoid_zone_segment_distance_00419ab0",
+      "source": "src/avoid_zone_segment_math.cpp",
+      "action": "reconstructed",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "004f4b50",
+      "body": "004f4b50-004f4c50",
+      "byte_count": 257,
+      "original_abi": "ECX=endpoints; stack output query; EAX=output; RET8",
+      "coverage": "complete",
+      "reconstruction": "avoid_zone_segment_closest_point_004f4b50",
+      "source": "src/avoid_zone_segment_math.cpp",
+      "action": "reconstructed",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00414c60",
+      "body": "00414c60-00414ca1",
+      "byte_count": 66,
+      "original_abi": "ECX=delta; ST0 length; RET",
+      "coverage": "complete",
+      "reconstruction": "segment_cutoff_length",
+      "source": "src/avoid_zone_segment_math.cpp",
+      "action": "private_actual_crt_adaptation_of_existing_reconstruction",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00419ad0",
+      "native": "00419260",
+      "function": "00419ab0",
+      "contract": "native reciprocal length with explicit actual CRT; RET"
+    },
+    {
+      "address": "00419b1f",
+      "native": "004f3630",
+      "function": "00419ab0",
+      "contract": "start/delta/query/perpendicular; t aliases query argument, u aliases unit-x; RET10h; success ignored"
+    },
+    {
+      "address": "00419b68",
+      "native": "00bf7030",
+      "function": "00419ab0",
+      "contract": "rounded start-endpoint squared distance in ST0; existing actual CRT boundary"
+    },
+    {
+      "address": "00419bba",
+      "native": "00414c60",
+      "function": "00419ab0",
+      "contract": "end-endpoint delta cutoff length; private bridge adds actual CRT"
+    },
+    {
+      "address": "004f4b7d",
+      "native": "00419260",
+      "function": "004f4b50",
+      "contract": "native reciprocal length with explicit actual CRT; RET"
+    },
+    {
+      "address": "004f4bc8",
+      "native": "004f3630",
+      "function": "004f4b50",
+      "contract": "start/delta/query/perpendicular; t aliases query argument; RET10h; success ignored"
+    },
+    {
+      "address": "004f36a5",
+      "native": "004f3560",
+      "function": "004f3630",
+      "contract": "rounded denominator and zero; strict relative comparison; RET8"
+    },
+    {
+      "address": "00414c80",
+      "native": "00bf7030",
+      "function": "00414c60",
+      "contract": "rounded squared distance in ST0; private bridge forwards actual CRT"
+    },
+    {
+      "address": "00419fe6",
+      "native": "00419ab0",
+      "function": "00419fc0",
+      "contract": "ECX start pair, EDX end pair, one pushed query pair pointer; RET4"
+    },
+    {
+      "address": "0041b069",
+      "native": "00419ab0",
+      "function": "0041aea0",
+      "contract": "ECX start pair, EDX end pair, one pushed query pair pointer; RET4"
+    },
+    {
+      "address": "0041b23b",
+      "native": "00419ab0",
+      "function": "0041b120",
+      "contract": "ECX start pair, EDX end pair, one pushed query pair pointer; RET4"
+    },
+    {
+      "address": "004f4a24",
+      "native": "00419ab0",
+      "function": "004f49f0",
+      "contract": "ECX start pair, EDX end pair, one pushed query pair pointer; RET4"
+    },
+    {
+      "address": "004f4a32",
+      "native": "00419ab0",
+      "function": "004f49f0",
+      "contract": "ECX start pair, EDX end pair, one pushed query pair pointer; RET4"
+    },
+    {
+      "address": "004f4a40",
+      "native": "00419ab0",
+      "function": "004f49f0",
+      "contract": "ECX start pair, EDX end pair, one pushed query pair pointer; RET4"
+    },
+    {
+      "address": "004f4a4e",
+      "native": "00419ab0",
+      "function": "004f49f0",
+      "contract": "ECX start pair, EDX end pair, one pushed query pair pointer; RET4"
+    },
+    {
+      "address": "00809b57",
+      "native": "00419ab0",
+      "function": "00809a80",
+      "contract": "ECX start pair, EDX end pair, one pushed query pair pointer; RET4"
+    },
+    {
+      "address": "008ff8a7",
+      "native": "00419ab0",
+      "function": "008ff640",
+      "contract": "ECX start pair, EDX end pair, one pushed query pair pointer; RET4"
+    },
+    {
+      "address": "0041b096",
+      "native": "004f4b50",
+      "function": "0041aea0",
+      "contract": "ECX adjacent endpoint pairs; pushed query then output; RET8; uses EAX output"
+    },
+    {
+      "address": "004f3781",
+      "native": "004f3630",
+      "function": "004f3730",
+      "contract": "ECX origin EDX direction; four stack pointers b0/db/t/u; RET10h"
+    },
+    {
+      "address": "004f3c5b",
+      "native": "004f3630",
+      "function": "004f3ba0",
+      "contract": "ECX origin EDX direction; four stack pointers b0/db/t/u; RET10h"
+    },
+    {
+      "address": "004f4903",
+      "native": "004f3630",
+      "function": "004f4880",
+      "contract": "ECX origin EDX direction; four stack pointers b0/db/t/u; RET10h"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "004F3630 was documentation-only; native relative tolerance was unread in the prior gun-bot evidence.",
+      "is": "Complete solver uses existing exact 004F3560 comparison and retains expanded numerator schedule.",
+      "evidence": "004F3630-004F372E and 004F3560-004F3626 full listings; no duplicate solver in gun_bot_remainder.hpp/cpp."
+    },
+    {
+      "was": "A generic point/segment projection could initialize t to zero or retry on a parallel solver result.",
+      "is": "Both native consumers ignore AL. Failed solver leaves query pointer bits in t and unit-x in u.",
+      "evidence": "00419AEC,00419B1F-00419B30;004F4B8F-004F4B99,004F4BC8-004F4BD9; solver004F36AA-004F36B3 returns without output stores."
+    }
+  ],
+  "no_ghidra_function": [],
+  "uncertainty": [
+    "Descriptive names are hypotheses. New typed consumer interfaces add borrowed actual CRT access and are not native binary replacements.",
+    "On near-parallel solver failure, results may depend on query pointer bits. Original and rebuilt objects at different addresses can differ even with identical coordinates.",
+    "CRT state/handler are required external bindings; the differential fixture shares the reconstructed CRT boundary and does not independently validate it.",
+    "No executable host binding changed in this packet; no frame or gameplay validation claimed."
+  ],
+  "verification": {
+    "report_calls": "21 call rows checked, 0 failed",
+    "build": "Standalone scripts/build.ps1 passed: MSVC Win32 Release and existing reconstructed_math CTest 1/1.",
+    "native_differential": "local/run_segment_probe.ps1 passed: 3027 checks, 0 failures. Six original installed/live machine-code routines; calls/constants relocated; CRT boundary shared.",
+    "byte_comparison": "Six complete installed/live ranges match; local/segment-byte-comparison.json",
+    "build_log": "local/segment-build.log",
+    "probe_source": "local/segment_geometry_probe.cpp",
+    "probe_runner": "local/run_segment_probe.ps1",
+    "probe_log": "local/segment-probe.log",
+    "probe_manifest": "/MANIFEST:EMBED",
+    "game_validated": false
+  },
+  "checklist": {
+    "callee_before_contract": "Complete own kernels and consumed math bodies read before naming; existing CRT boundary retained.",
+    "boundary_before_attribution": "Live proto confirms body ownership; report checker validates every call instruction.",
+    "all_call_sites_before_contract": "All15 direct caller sites for three entrypoints inspected; two are also internal rows.",
+    "producer_before_layout": "No native record offsets introduced; boundary caller MOVSS producer of adjacent endpoint pairs inspected.",
+    "partial_projection": "All four routine schedules complete; unread spans none.",
+    "runtime_evidence": "No executable caller for these new helpers at this checkout; no runtime behavior claim.",
+    "argument_counts": "RET4 distance; RET8 closest/equality; RET10h solver; RET cutoff/reciprocal.",
+    "register_provenance": "Complete own listings read and filtered for EBX/EBP/ESI/EDI; added saved holders explained in doc.",
+    "lease_only_annotated": "Four addresses claimed; no consumed-only shared registries or broad address leases.",
+    "report_evidence": "All call rows include address/native/function; corrections include was/is/evidence."
+  }
+}
