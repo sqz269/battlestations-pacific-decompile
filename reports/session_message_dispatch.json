@@ -1,0 +1,205 @@
+{
+ "packet": "cc2_session_dispatch",
+ "owner": "agent/cc2-session-dispatch",
+ "doc": "docs/SESSION_MESSAGE_DISPATCH.md",
+ "program": "/battlestationspacific.exe",
+ "project": "C:/Users/sqz269/bsp.gpr",
+ "summary": "Reads BSP_Session_RouteMessage 0077C2A0 in full and establishes its three destinations, the session mode field shared by world+1FE4h and session+F4h, and the process-wide route-flag default at 00E0AF1C written only by 0076FAD0. Shows that a local (mode 0) session forces the flag word to 1 and delivers through 0076E520, which serialises the message into a 400h-byte stack stream and rebuilds a second message before appending it to session+24Ch; the copy is stamped with the current tick, so the drain in BSP_Session_PumpStep applies it in the same fixed step when the route ran before row 9. Establishes that there is no kind table: 00780670 sorts by message category, 00780120 is an ordered is-a ladder and 0077FE80 plus the vtable[164h] switches finish the job. Resolves kinds 58h, 5Ah, 5Eh, 99h, 4Eh and 9Ah to their receivers.",
+ "routines": [
+  {
+   "address": "0077c2a0",
+   "native": "0077c2a0",
+   "name": "BSP_Session_RouteMessage",
+   "body": "0077c2a0-0077c469",
+   "abi": "__thiscall(entity /*ECX*/, message, int routeFlagsOverride, void** out), RET 0Ch",
+   "coverage": "complete",
+   "evidence": "134 instructions from python tools/bsp.py ghidra disasm 0077c2a0. Frame: SUB ESP,0xC at 0077C2A0 then PUSH EDI/EBP/EBX/ESI, so EBP = [ESP+18h] is the message (0077C2D0), [ESP+1Ch] the override (0077C2FD) and [ESP+28h] the out pointer (0077C452). 0077C2AD spills this to [ESP+4] because 0077C3D3 ADD EDI,0x2A4 clobbers EDI; 0077C400 and 0077C436 read it back. Routing: 0077C30A CMOVNZ EBX,EAX; 0077C30D CMP EBX,4 with 0077C31D CMP [EAX+1FE4h],ESI; 0077C32F TEST EAX,EAX with 0077C333 MOV EBX,ESI forcing flags to 1 in mode 0; 0077C374 MOV BL,AL / NEG BL / SBB EBX,EBX / NEG EBX / ADD EBX,2 is the predicate ? 3 : 2 idiom."
+  },
+  {
+   "address": "0076e520",
+   "native": "0076e520",
+   "name": "BSP_Session_EnqueueIncomingMessage",
+   "body": "0076e520-0076e6f2",
+   "abi": "__thiscall(session /*ECX*/, message, sender), MSVC EH frame",
+   "coverage": "complete for the copy and both append paths; the stream class at 00D0385C is contract: unread",
+   "evidence": "0076E53F MOV EDI,[ESP+448h] is the message and 0076E5A9 MOV EDX,[ESP+44Ch] the sender for the frame depth 444h (PUSH -1/handler/FS chain = 0Ch, SUB ESP,0x428, four register pushes). 0076E561 MOV EBP,0x400 is the stack stream capacity at [ESP+38h]. The local path is a serialise/rebuild round trip, not a pointer hand-off: 0076E575 CALL EDX on message->vtable[4] then 0076E5A4 CALL 00768530. 0076E5CB MOV EDX,[EDI+0x14] copies the source message's +14h, not a peer field."
+  },
+  {
+   "address": "0076c600",
+   "native": "0076c600",
+   "name": "BSP_Session_DrainMessageQueue",
+   "body": "0076c600-0076c737",
+   "abi": "__fastcall(session /*ECX*/), RET",
+   "coverage": "complete",
+   "evidence": "0076C604 loads the count at +250h and 0076C61A the base at +24Ch; 0076C639 parks the cursor at +258h and 0076C714 clears it. Status default 2 at 0076C646; 0076C662 CMP [ESP+10h],0 then 0076C678 JGE 0076C721 keeps the entry and advances (EBX = EBP), which corrects the earlier 'keep and stop' reading. 0076C6AC shifts the tail down and 0076C6DE decrements the count; 0076C6F8 CALL EDX is vtable[0](1)."
+  },
+  {
+   "address": "00780670",
+   "native": "00780670",
+   "name": "BSP_Session_DispatchQueuedMessage",
+   "body": "00780670-007807d8",
+   "abi": "__fastcall(unused ECX, message /*EDX*/, int* status), RET 4",
+   "coverage": "complete",
+   "evidence": "ECX is written at 00780681 before any read, so 0076C600's MOV CL,1 is not an input. Category ladder 47h at 0078069F, 61h at 007806EE, 49h at 00780751 selecting the 1770h window at 00780760 over the 3Ch default at 00780755, 48h at 00780797. Age limits: 0078072B CMP EAX,0xFFFFFDA8 and 007807C6 CMP EBP,-0xA with SETG/SUB/AND 2."
+  },
+  {
+   "address": "0077fe80",
+   "native": "0077fe80",
+   "name": "BSP_Session_DispatchEntityKindMessage",
+   "body": "0077fe80-0078003f",
+   "abi": "__thiscall(entity /*ECX*/, message, int* status), RET 8",
+   "coverage": "complete for the gate, the table and the default arm; the five concrete arms are named by their call targets only",
+   "evidence": "0077FE88 message->vtable[10h]() false writes *status = 0 at 0077FE9D. Switch: 0077FEAE ADD EAX,-0x53, 0077FEB1 CMP EAX,0x25, byte table at 0078005C, six targets at 00780044 (0077FFAF, 00780015, 0077FEC8, 0077FEE4, 0077FF03, 0078002F). Default 0078002F MOV EDX,[EAX+0x164] then CALL EDX."
+  },
+  {
+   "address": "00780120",
+   "native": "00780120",
+   "name": "BSP_Session_DispatchEntityMessage",
+   "body": "00780120-00780668",
+   "abi": "__thiscall(entity /*ECX*/, message, int* status), RET 8",
+   "coverage": "partial: the is-a ladder, the host relay and the 4Eh, 58h and 59h arms are complete; 00780170-007803D9 (the 4Bh player block) and the 4Fh, 50h, 51h, 52h and 97h arms are contract: unread",
+   "evidence": "Ladder arguments in order: 4Bh 00780162, 4Ch 007803DF, 57h 00780422, 4Eh 00780457, 4Fh 0078048D, 50h 007804DF, 51h 0078051E, 52h 00780548, 97h 00780591, 58h 00780607, 59h 00780636; the miss at 0078063E jumps to the shared 007803FD tail. Relay: 00780147 CMP [EAX+1FE4h],1 guarded by 0078013E MOV AL,[EDI+0x1A]."
+  },
+  {
+   "address": "0076fad0",
+   "native": "0076fad0",
+   "name": "BSP_Session_SetMode",
+   "body": "0076fad0-0076feb5",
+   "abi": "__thiscall(session /*ECX*/, int mode), RET 4",
+   "coverage": "partial: the three 00E0AF1C writes and the mode store; the per-mode teardown work is contract: unread",
+   "evidence": "Only writer of 00E0AF1C (get_xrefs_to 00e0af1c returns 0077C302 READ and 0076FBAF, 0076FD2C, 0076FE26 WRITE). Mode arms: 0076FB60 CMP EDI,1 with the write of 1 at 0076FBAF; 0076FCD7 CMP EDI,EBP with EBP = 2 at 0076FCD2 and the write of EBP at 0076FD2C; 0076FD71 CMP EDI,EBX (0) with the write of 1 at 0076FE26. 0076FE85 MOV [ESI+0xF4],EDI stores the new mode, the same field the router reads at world+1FE4h."
+  },
+  {
+   "address": "00779ff0",
+   "native": "00779ff0",
+   "name": "BSP_SessionMessage_IsPrivilegedKind",
+   "body": "00779ff0-0077a01d",
+   "abi": "__stdcall(message), RET 4; the ECX the call sites set is overwritten at 00779FF0",
+   "coverage": "complete",
+   "evidence": "00779FF0 MOV ECX,[ESP+4] then MOV AL,[ECX+0x10]; the type comparisons are 82h, 81h, A7h, A8h, A9h, and the fallback is message->vtable[0Ch](4Ah) at 0077A010."
+  },
+  {
+   "address": "00779f90",
+   "native": "00779f90",
+   "name": "BSP_Session_SendMessageToHost",
+   "body": "00779f90-00779fb4",
+   "abi": "__thiscall(entity /*ECX*/, message), tail JMP 00770AF0",
+   "coverage": "complete",
+   "evidence": "00779F90 MOV CX,[ECX+0x174] then 00779F9B MOV [EAX+0x18],CX writes the sender id into the message; 00779FA9 ADD ECX,0x1EF0 makes the session the this of the tail jump at 00779FAF."
+  },
+  {
+   "address": "00816e30",
+   "native": "00816e30",
+   "name": "BSP_UnitInstance_ApplyEntityCommand",
+   "body": "00816e30-00817376",
+   "abi": "__thiscall(unit /*ECX*/, message), RET 4",
+   "coverage": "partial: only the descriptor rebuild 00816E4B-00816EA6 was read; the rest of the 380-line body is contract: unread",
+   "evidence": "The seven descriptor fields come from msg+24h (word, 00816E8D), msg+26h (word, 00816E7B), msg+28h (dword, 00816E92) and the four floats at msg+2Ch..+38h. 00816E5E stores the first float to [ESP+24h] before 00816E69 PUSH EDI, so it lands at [ESP+28h] in the post-push frame and the dword store does not overwrite it; the 18h-byte copy is contiguous at [ESP+20h]. 00816E9C CALL 0077A050 resolves the ordinal byte and 00816EA6 compares the result with 00E08F60."
+  },
+  {
+   "address": "00721a40",
+   "native": "00721a40",
+   "name": "BSP_WeaponDirector_ApplyGameUnitMessage",
+   "body": "00721a40-00721c58",
+   "abi": "__thiscall(ref /*ECX*/, message), RET 4",
+   "coverage": "complete for the ladder; the arm bodies other than 5Eh are contract: unread",
+   "evidence": "Guards: 00721A46 [EDI] non-null, 00721A50 [EAX+0x34] non-null, 00721A5D unit->vtable[13Ch]() non-null, 00721A6D [EAX+0x5E] == 0. Ladder arguments 5Ah 00721A81, 5Bh 00721AA3, 5Ch 00721AEE, 5Dh 00721B8F, 5Eh 00721BD8, 5Fh 00721C27."
+  },
+  {
+   "address": "00821e80",
+   "native": "00821e80",
+   "name": "BSP_UnitInstance_HandleMessage",
+   "body": "00821e80-00822391",
+   "abi": "__thiscall(unit /*ECX*/, message), RET 4",
+   "coverage": "switch decoding complete; the arm bodies other than 99h are contract: unread",
+   "evidence": "00821EA1 ADD EAX,-0x4B, 00821EA4 CMP EAX,0x55, byte table 00822400 (86 bytes), 27 targets at 00822394. Slot identity: this function and 00816C80 are 28h apart in all six vtables that reference them (00CF9214/00CF923C, 00CFA8DC/00CFA904, 00CFB89C/00CFB8C4, 00CFC534/00CFC55C, 00D097DC/00D09804, 00D0C7AC/00D0C7D4), and docs/UNIT_STATE_MESSAGE.md fixes 00816C80 at slot 18Ch, so this is slot 164h and 00816E30 (the dword before it, read at 00CFC530) is slot 160h."
+  },
+  {
+   "address": "0095abe0",
+   "native": "0095abe0",
+   "name": "BSP_Unit_HandleMessage",
+   "body": "0095abe0-0095ae1d",
+   "abi": "__thiscall(entity /*ECX*/, message), RET 4",
+   "coverage": "switch decoding complete; the arm bodies are contract: unread",
+   "evidence": "0095AC03 ADD ECX,-0x4B, 0095AC06 CMP ECX,0x35, byte table 0095AE40 (54 bytes) and eight targets at 0095AE20. Only kinds 4Bh, 4Ch, 79h, 7Dh, 7Eh, 7Fh and 80h have arms; the rest select 0095AE06, which returns without a receiver."
+  }
+ ],
+ "host_steps": [
+  {"address": "0077c2cc", "native": "006fe530", "function": "0077c2a0", "name": "entity_is_kind", "note": "indirect CALL EDX on entity->vtable[5Ch] with the argument 5; the callee is the class test named in docs/ENTITY_ORDER_MESSAGE.md"},
+  {"address": "0077c2e8", "native": "006fe530", "function": "0077c2a0", "name": "entity_is_kind", "note": "indirect, argument 1Ch, gated on entity+528h >= 0 at 0077C2D6"},
+  {"address": "0077c2fb", "native": "00764d00", "function": "0077c2a0", "name": "message_is_a_discarded", "note": "indirect CALL EDX on message->vtable[0Ch] with 0D3h; EAX is overwritten at 0077C2FD so the result is unused"},
+  {"address": "0077c344", "native": "00779ff0", "function": "0077c2a0", "name": "message_is_privileged"},
+  {"address": "0077c36f", "native": "00779ff0", "function": "0077c2a0", "name": "message_is_privileged"},
+  {"address": "0077c392", "native": "00764d00", "function": "0077c2a0", "name": "message_is_long_window", "note": "indirect vtable[0Ch] with 49h, gated on [00E18DB7]"},
+  {"address": "0077c3b3", "native": "00779f90", "function": "0077c2a0", "name": "send_message_to_host"},
+  {"address": "0077c423", "native": "00770b50", "function": "0077c2a0", "name": "send_message_to_peer"},
+  {"address": "0077c44d", "native": "0076e520", "function": "0077c2a0", "name": "enqueue_local"},
+  {"address": "0076e5a4", "native": "00768530", "function": "0076e520", "name": "create_message_from_stream"},
+  {"address": "0076e5c6", "native": "00782790", "function": "0076e520", "name": "stamp_loopback_message"},
+  {"address": "0076e63d", "native": "00bf55be", "function": "0076e520", "name": "grow_queue"},
+  {"address": "00778542", "native": "0076c600", "function": "00778450", "name": "drain_in_local_mode", "note": "reached only through 007784FF JZ on session+F4h == 0"},
+  {"address": "0076c65d", "native": "00780670", "function": "0076c600", "name": "gate_message"},
+  {"address": "0076c69c", "native": "004254b0", "function": "0076c600", "name": "log_dropped_message"},
+  {"address": "007806ca", "native": "0077bac0", "function": "00780670", "name": "defer_entity_create"},
+  {"address": "007806fc", "native": "00521e30", "function": "00780670", "name": "resolve_sender_id"},
+  {"address": "00780718", "native": "00805c60", "function": "00780670", "name": "apply_sub_object_message"},
+  {"address": "0078077e", "native": "00521e30", "function": "00780670", "name": "resolve_sender_id"},
+  {"address": "007807a4", "native": "0077c710", "function": "00780670", "name": "deliver_entity_sync"},
+  {"address": "007807b8", "native": "00780120", "function": "00780670", "name": "deliver_entity_generic"},
+  {"address": "00780158", "native": "0077c7b0", "function": "00780120", "name": "relay_on_host"},
+  {"address": "00780405", "native": "0077fe80", "function": "00780120", "name": "dispatch_entity_kind"},
+  {"address": "00780473", "function": "00780120", "name": "apply_destroy", "note": "indirect entity->vtable[70h] with msg+20h; the concrete override was not resolved for this packet, so no native is claimed. docs/UNIT_DAMAGE_AND_DEATH.md names the same slot on the send side"},
+  {"address": "0078061c", "native": "00816e30", "function": "00780120", "name": "apply_unit_command", "note": "indirect entity->vtable[160h]"},
+  {"address": "00780649", "native": "00778820", "function": "00780120", "name": "make_director_ref"},
+  {"address": "00780653", "native": "00721a40", "function": "00780120", "name": "apply_director_message"},
+  {"address": "0078003b", "native": "00821e80", "function": "0077fe80", "name": "apply_generic_kind", "note": "indirect entity->vtable[164h]; 00821E80 for a unit, 0095ABE0 for the base"},
+  {"address": "00721a93", "native": "0071c1e0", "function": "00721a40", "name": "apply_director_base_message", "note": "indirect director->vtable[38h]; the slot follows from 00CFDA80 holding vtable[40h] = 0071DA50 per docs/WEAPON_DIRECTOR.md"},
+  {"address": "00721be9", "native": "00720fe0", "function": "00721a40", "name": "resolve_fire_target"},
+  {"address": "00721bf1", "native": "00836240", "function": "00721a40", "name": "set_fire_target"},
+  {"address": "00821ff6", "native": "0080e440", "function": "00821e80", "name": "detach_part", "note": "kind 99h arm at 00821FF0"},
+  {"address": "0082237c", "native": "0095abe0", "function": "00821e80", "name": "forward_to_base"},
+  {"address": "00816e9c", "native": "0077a050", "function": "00816e30", "name": "resolve_command_ordinal"}
+ ],
+ "no_ghidra_function": [
+  {
+   "address": "0075b090",
+   "end": "0075b0b4",
+   "name": "fire target message is-a",
+   "evidence": "Read with python tools/bsp.py ghidra bytes 0075b090. 8B 44 24 04 83 F8 5E 74 14 83 F8 59 74 0F 83 F8 49 74 0A 83 F8 46 74 05 33 C0 C2 04 00 B8 01 00 00 00 C2 04 00 decodes as MOV EAX,[ESP+4] then the comparisons 5Eh, 59h, 49h, 46h with XOR EAX,EAX / RET 4 and MOV EAX,1 / RET 4. It is slot 3 of the vtable 00D02E98 that 00835782 writes."
+  },
+  {
+   "address": "004499a0",
+   "end": "004499bf",
+   "name": "base session message is-a",
+   "evidence": "Slot 3 of the base message vtable 00D02C68 read with python tools/bsp.py ghidra bytes 00d02c68. Ghidra has no function here; the enclosing candidate is TRIV_body_00449930. Not decoded for this packet: contract: unread."
+  }
+ ],
+ "corrections": [
+  {
+   "doc": "docs/UNIT_STATE_MESSAGE.md",
+   "was": "0076E520, __thiscall(session, peer); sets msg+18h from peer+174h and msg+14h from peer+14h",
+   "is": "__thiscall(session, message, sender); the queued object is a rebuilt copy, its +18h comes from sender+174h and its +14h is copied from the source message's +14h",
+   "evidence": "0077C445 PUSH EDI then 0077C446 PUSH EBP gives the argument order (message, sender). 0076E53F MOV EDI,[ESP+448h] is the message for the 444h frame depth and EDI is not written again before 0076E5CB MOV EDX,[EDI+0x14]; the sender is 0076E5A9 MOV EDX,[ESP+44Ch] and is used only at 0076E5B2 MOV AX,[EDX+0x174]."
+  },
+  {
+   "doc": "docs/UNIT_STATE_MESSAGE.md",
+   "was": "0076C600 status 0 means keep and stop",
+   "is": "status 0 keeps the entry and continues with the next one; only a queue that reaches its end stops",
+   "evidence": "0076C678 JGE 0x0076C721 on the in-mission branch, 0076C721 MOV EBX,EBP advances the cursor without unlinking, and 0076C723 JMP 0x0076C6FA is the loop tail test at 0076C709."
+  },
+  {
+   "doc": "docs/ENTITY_ORDER_MESSAGE.md",
+   "was": "0077C2A0 read for the routing decision only; the rest is contract: unread. 00779FF0 is a message-type predicate used to pick the branch",
+   "is": "the whole body is read; 00779FF0 also decides whether a client applies the message locally as well as sending it, and the flag word can be rewritten to 3 or 2 by the mode-2 branch",
+   "evidence": "0077C34B JNZ 0077C35A then OR EBX,ESI, and the 0077C374 NEG/SBB/NEG/ADD 2 sequence."
+  }
+ ],
+ "unread": [
+  "00780090, the second caller of 0077FE80",
+  "00777850 beyond its queue walk at 0077788D-007778BA",
+  "00814560, the kind 9Ah arm of 00821E80",
+  "00780170-007803D9, the 4Bh player block of 00780120",
+  "the stream class at 00D0385C used by 0076E520",
+  "the shipped value of [00E0AF1C] at run time: no run log was taken"
+ ]
+}
