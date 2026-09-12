@@ -23,6 +23,107 @@ void copy_size_pair(GuiWidgetSize& destination, const GuiWidgetSize& source) {
         fstp dword ptr [edx + 4]
     }
 }
+// AB26F7..AB2775 first reads all four input DWORDs; flips use one x87
+// load/store and one MOVSS, including their different signalling-NaN effects.
+void copy_state_uv_00ab2690(GuiIconState& state, const GuiUvRect& source) {
+    std::uint32_t words[4];
+    std::memcpy(words, &source, sizeof(words));
+    std::memcpy(&state.resolved_uv, words, sizeof(words));
+    auto* resolved = &state.resolved_uv;
+    const auto* authored = &state.authored_uv;
+    const float one = 1.0f;
+    __asm {
+        mov ecx, authored
+        mov edx, resolved
+        movss xmm0, dword ptr [ecx + 4]
+        movss xmm1, one
+        xorps xmm2, xmm2
+        ucomiss xmm0, xmm1
+        lahf
+        test ah, 044h
+        jp horizontal
+        movss xmm0, dword ptr [ecx + 12]
+        ucomiss xmm0, xmm2
+        lahf
+        test ah, 044h
+        jp horizontal
+        fld dword ptr [edx + 12]
+        movss xmm0, dword ptr [edx + 4]
+        fstp dword ptr [edx + 4]
+        movss dword ptr [edx + 12], xmm0
+    horizontal:
+        movss xmm0, dword ptr [ecx]
+        ucomiss xmm0, xmm1
+        lahf
+        test ah, 044h
+        jp finished_uv
+        movss xmm0, dword ptr [ecx + 8]
+        ucomiss xmm0, xmm2
+        lahf
+        test ah, 044h
+        jp finished_uv
+        fld dword ptr [edx + 8]
+        movss xmm0, dword ptr [edx]
+        fstp dword ptr [edx]
+        movss dword ptr [edx + 8], xmm0
+    finished_uv:
+    }
+}
+// AB17C2..AB17E1 / AB17E7..AB1803. Preserve the x87 conversion and float
+// spill BEFORE the next dimension callback, which may change FP control.
+float texture_dimension_scale_00ab17b0(std::uint32_t pixels, const double& divisor) {
+    const auto* divisor_pointer = &divisor;
+    const float unsigned_correction = 4294967296.0f;
+    float result;
+    __asm {
+        mov eax, pixels
+        test eax, eax
+        fild pixels
+        jge nonnegative_pixels
+        fadd unsigned_correction
+    nonnegative_pixels:
+        mov edx, divisor_pointer
+        fdiv qword ptr [edx]
+        fstp result
+    }
+    return result;
+}
+// AB1807..AB184A: the horizontal output is written BEFORE vertical input
+// reads. Taking a precomputed GuiWidgetSize would lose this aliasing behavior.
+void write_texture_size_00ab17b0(GuiWidgetSize& output, const GuiUvRect& uv,
+    float width_scale, float height_scale) {
+    const auto* input = &uv;
+    auto* destination = &output;
+    float extent;
+    __asm {
+        mov eax, input
+        mov ecx, destination
+        fld dword ptr [eax + 8]
+        fsub dword ptr [eax]
+        fstp extent
+        and dword ptr extent, 07fffffffh
+        fld extent
+        fmul width_scale
+        fstp dword ptr [ecx]
+        fld dword ptr [eax + 12]
+        fsub dword ptr [eax + 4]
+        fstp extent
+        and dword ptr extent, 07fffffffh
+        fld extent
+        fmul height_scale
+        fstp dword ptr [ecx + 4]
+    }
+}
+struct StateRecordBorrow {
+    std::size_t& count;
+    explicit StateRecordBorrow(std::size_t& borrowed) : count(borrowed) { ++count; }
+    ~StateRecordBorrow() { --count; }
+};
+struct PropertyReadScope {
+    bool& active;
+    explicit PropertyReadScope(bool& reading) : active(reading) { active = true; }
+    ~PropertyReadScope() { active = false; }
+};
 // AB1169..AB117A: unordered rates follow the nonzero branch. Preserve UCOMISS
 // rather than allowing the compiler to fold a NaN comparison under /fp:fast.
 bool frame_rate_nonzero(float rate, const volatile float& zero) {
@@ -284,6 +385,8 @@ struct GuiIconRuntime::Impl final : GuiIconHost {
     GuiIconRuntimeServices services;
     std::vector<TextureReference> textures;
     GuiIconWidget icon;
+    std::size_t borrowed_states{};
+    bool reading_properties{};
     Impl(GuiLayoutWidget& base, float& brightness, GuiIconRuntimeServices supplied)
         : widget(base), overbright(brightness), services(std::move(supplied)) {
         require(widget.type == GuiWidgetType::Icon && widget.transform.type_id == kGuiIconTypeId,
@@ -360,6 +463,11 @@ void GuiIconRuntime::constructed74_00ab2540() {
 }
 void GuiIconRuntime::read_properties_00ab3310(const GuiTable& table) {
     auto& self = *impl_;
+    require(!self.reading_properties && self.borrowed_states == 0,
+        "Icon property loading cannot invalidate a borrowed native state record.");
+    require(self.textures.size() == self.icon.states.size(),
+        "Icon property loading cannot resume a failed state construction.");
+    PropertyReadScope reading(self.reading_properties);
     const auto authored = read_gui_icon_authored_page_00ab3310(table, self.widget.transform,
         self.services.crt_sse2_conversion);
     // Delayed texture loading is the separate00AB6430 dependency. AutoRotate
@@ -373,6 +481,57 @@ void GuiIconRuntime::loaded78_00ab10f0() {
 }
 void GuiIconRuntime::select_state_00ab1710(std::int16_t index, std::int32_t mode, float ratio) {
     if (gui_icon_select_state_00ab1710(impl_->icon, index, mode, ratio)) rebuild_00ab3cb0(index);
+}
+void GuiIconRuntime::set_state_texture_00ab2690(std::uint32_t index, void* texture,
+    const GuiUvRect& uv) {
+    auto& self = *impl_;
+    require(!self.reading_properties && index < self.icon.states.size(),
+        "Icon texture mutation requires a completed state at the full DWORD index.");
+    StateRecordBorrow borrowed(self.borrowed_states);
+    auto& state = self.icon.states[index];
+    void* old_texture = state.texture;
+    if (old_texture != texture) {
+        require(index < self.textures.size() &&
+            self.textures[index].native_reference.get() == old_texture,
+            "Icon state texture must have its exact existing ownership token.");
+        // AB26CF store precedes native retain. The supplied retain cannot throw.
+        state.texture = texture;
+        Impl::TextureReference replacement;
+        if (texture) {
+            self.services.textures.resolve.retain(texture); // AB26D7
+            replacement.native_reference = std::shared_ptr<void>(texture,
+                self.services.textures.release);
+            replacement.logical = self.services.textures.logical_texture(texture);
+            require(replacement.logical && replacement.logical->texture,
+                "Icon replacement texture needs its actual retained logical/COM owner.");
+        }
+        // There is exactly one adoption per appended state. Move its token
+        // out and publish the replacement BEFORE releasing: destructor callbacks
+        // may reenter a setter and must see the new state/reference identity.
+        auto old_reference = std::move(self.textures[index]);
+        self.textures[index] = std::move(replacement);
+        old_reference.native_reference.reset(); // AB26E5; zero invokes current00
+        old_reference.logical.reset();
+    }
+    copy_state_uv_00ab2690(state, uv); // borrowed input is first read here
+    if (index == static_cast<std::uint32_t>(static_cast<std::int32_t>(self.icon.current_state)))
+        rebuild_00ab3cb0(self.icon.current_state); // AB278D actual Icon current80
+}
+GuiWidgetSize& GuiIconRuntime::state_texture_size_00ab27a0(GuiWidgetSize& output,
+    std::uint32_t index) {
+    auto& self = *impl_;
+    require(!self.reading_properties && index < self.icon.states.size(),
+        "Icon texture sizing requires a completed state at the full DWORD index.");
+    StateRecordBorrow borrowed(self.borrowed_states);
+    const auto& state = self.icon.states[index];
+    void* texture = state.texture; // AB27CF -> EDX, captured by AB17B4 ESI
+    require(texture != nullptr, "Icon native texture sizing cannot dereference a null texture.");
+    const auto width = self.texture_width(texture); // AB17C0 current48
+    const auto width_scale = texture_dimension_scale_00ab17b0(width, kGuiLogicalPageWidth);
+    const auto height = self.texture_height(texture); // AB17E5 current4C, same ESI
+    const auto height_scale = texture_dimension_scale_00ab17b0(height, kGuiLogicalPageHeight);
+    write_texture_size_00ab17b0(output, state.resolved_uv, width_scale, height_scale);
+    return output;
 }
 void GuiIconRuntime::select_temporary84_00ab1110(std::int16_t immediate_index,
     std::int16_t expiry_index, float seconds) {
