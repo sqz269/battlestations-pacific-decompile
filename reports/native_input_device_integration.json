@@ -97,6 +97,73 @@
         "failures": 0
       },
       "joystick_native_fixture_bytes_sha256": "0043d922ed5b7127068938176119e9253c90497a9e50cd4ed2ac4231776e871c"
+    },
+    {
+      "utc": "2026-09-12T21:00:05.819757+00:00",
+      "revision_parent": "ea60458cf057fb7a17e6ad2210067410fff5d770",
+      "note": "Source manifest and built artifact identify validation even when this receipt is committed afterward. Promotion snapshot/final ignored receipt record final published revision.",
+      "source_sha256": {
+        "src/native_input_device_sdk.cpp": "01358dc74acacfea535635d48d8993661fbfcd51b66d61408b5977b4b1ab5472",
+        "include/bsp/native_input_device_sdk.hpp": "0a12b288c57b407eda80289c100375800644a6803ba67e9e409b6288197d41b2",
+        "src/native_ref_counted.cpp": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9",
+        "include/bsp/native_ref_counted.hpp": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82",
+        "src/native_input_enumeration.cpp": "95d9babe46832e4463be2657d0edd9875cb2bb37f79dc4948f7a5ddbd3229512",
+        "include/bsp/native_input_enumeration.hpp": "2e1b51ee044b0fba397b9663f818536260d9c217744743de8ec3e64a6d90ecde",
+        "src/native_keyboard_mouse.cpp": "fb6ac0f3ea9eb143b4d4c01aed12c9b9761e208db2cc0070283b50f47f77746f",
+        "include/bsp/native_keyboard_mouse.hpp": "2e86bd39815da9e51d9fd90954dccd6b6e5ae9e2542771a5f6bef8231ba6dc7d",
+        "src/native_gamepad_xinput.cpp": "237393ad55a48f8430407e0b6c660d579752f4ef1aa62893239a3a5623314ae6",
+        "include/bsp/native_gamepad_xinput.hpp": "df1a6c06efa8c26184a892ffba8d3cce83878e5c36533790a6902c3f3ff10d80",
+        "src/native_joystick.cpp": "601c83f685e16a45483deea20607c4e9a52ad7b2c0fc239f19758febe160925d",
+        "include/bsp/native_joystick.hpp": "5d3159928aed031bc747232b8332afa7966865ea5932e94ea158c4fe93115bf9"
+      },
+      "archive_sha256": "9a1ad9519f6d2ad005d3e77132bff15e8bb1ba50fe5835ac1bfa14fe439155d1",
+      "build_log": "local/native_input_device_ad_integrated_build.log",
+      "build_log_sha256": "f89f83ced02f5887fe1fa473ed7d61c9a4481562347787911a9f2bfa67c1ba42",
+      "ctests_passed": 2,
+      "probe_compile_scope": "primary include/bsp + same primary bsp_core.lib; no production source compilation or worker library",
+      "probes": [
+        {
+          "probe": "native_input_enumeration_ad_probe",
+          "log": "local/native_input_enumeration_ad_probe_integrated.log",
+          "sha256": "cc17881edca238199f687f47df8012d8fb4f9f2557a68f31dc42bb6f87b7bc74",
+          "source_sha256": "fddacaef6442802de363a8cd957dc32dcaad280441030e0cc5382eb6cd0ffc92",
+          "output": "PASS raw_GUIDs=2 duplicate_skipped=1 Xbox_before_append=1 occupied_slot_skipped=1 real_SDK_callback_failure=1 sdk_refs=0"
+        },
+        {
+          "probe": "native_keyboard_mouse_ad_probe",
+          "log": "local/native_keyboard_mouse_ad_probe_integrated.log",
+          "sha256": "4336082b433a566e46e1fa1204fde6699159dd670cdf5a32c6d83ff150e6fef2",
+          "source_sha256": "3432051b1819dab7f1c46538afb5480f7572a4ed0244647f3c3116ce2e90a961",
+          "output": "raw keyboard/mouse passed: real_CreateDevice=3 sdk_refs=0 raw_frees=3 history_interleaved=256 padding_and_sample=preserved host_failure_base_reset=1 zero_ref_thunk=1 keyboard_poll=0 mouse_poll=0"
+        },
+        {
+          "probe": "native_gamepad_probe",
+          "log": "local/native_gamepad_probe_integrated.log",
+          "sha256": "61b35371d4fe9537f52ed3d1136f61b4e6a1499ab1729e22def617601d649d5a",
+          "source_sha256": "772a3c4288cdd53107d43449a92deb7d515f6761faf96605d2572d30871bbd4e",
+          "output": "nonempty raw tree: updates=3 expired=1 replaced=1 remaining=2 clear_deletes=3 force_writes=4 heads_after_destroy=0\nrequest exception: entered=1 nodes_and_head=0 surviving_payloads=3 root=CEB130 refcount=1\nscripted SDK ONLY: direct_output_slots=1 conversion_modes=2 axes=-32768,0,32767,0 query_A=1 trigger=1\nreal SDK: index=4 poll=0 connected=1 stop_result=160"
+        },
+        {
+          "probe": "native_joystick_probe",
+          "log": "local/native_joystick_probe_integrated.log",
+          "sha256": "9a66d8f4294212554403d731c165296b512a9fe5428d1afc646d10e3f8f4677c",
+          "source_sha256": "1b7bcd736073a21a05d3c6b5677a0c2428efa6043a6dd21a4f4487c112116946",
+          "output": "PASS native object constructor 4 preimages/all28bytes; query/down x87 bit comparisons=270\nPASS original force body/live CRT SSE2 and x87 fallback comparisons=8; signed32 overflow and direction negation\nPASS raw objects4 names4/4; polls4 states3 acquire1; exact descriptors/POV/axes/padding; explicit failed-XInput preimage; effect reload writes1\nPASS actual system DirectInput8/CreateDevice keyboard SDK acquisition1 final pending0; physical joystick not implied\nBOUNDARY raw nonempty poll uses recording COM only; base ctor/dtor provider intentionally unreached; no full constructor/owner or game/hardware joystick claim"
+        }
+      ],
+      "calls": {
+        "log": "local/native_input_device_all_calls_ad.log",
+        "sha256": "9d803d5c73b1fc283b5bdd451ebd580f0b36c3280c396839605ee941d146cf84",
+        "rows": 139,
+        "failures": 0
+      },
+      "joystick_native_fixture_bytes_sha256": "0043d922ed5b7127068938176119e9253c90497a9e50cd4ed2ac4231776e871c"
     }
-  ]
+  ],
+  "native_seeds": {
+    "matched": 8,
+    "total": 8,
+    "log": "local\\native_input_device_ad_final_seeds.log",
+    "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+  }
 }
