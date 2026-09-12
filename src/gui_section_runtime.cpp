@@ -1,6 +1,9 @@
 #include "bsp/gui_section_runtime.hpp"
 #include "bsp/gui_timed_entry_types.hpp"
 #include "bsp/native_render_batch_keys.hpp"
+#include "bsp/native_physical_file_date.hpp"
+#include "bsp/gui_lua_reader.hpp"
+#include "bsp/gui_startup.hpp"
 #include <cmath>
 #include <cstring>
 #include <exception>
@@ -23,7 +26,7 @@ struct SectionOperation {
     }
 };
 template<class Function> Function current_slot(void* object, std::size_t offset) {
-    require(object != nullptr, "Section requires a current actual renderer");
+    require(object != nullptr, "Section requires a current actual native object");
     const auto* table = *static_cast<const std::uintptr_t* const*>(object);
     return reinterpret_cast<Function>(table[offset / 4]);
 }
@@ -1266,11 +1269,11 @@ GuiSectionRuntimeImplementation::GuiSectionRuntimeImplementation(
     fields_.u1_104 = one;
     fields_.rim_width_percent_108 = rim;
     fields_.clockwise_10c = 1;
-    fields_.atlas_u0_118 = fields_.atlas_v0_11c = 0;
-    fields_.atlas_u1_120 = fields_.atlas_v1_124 = one;
+    fields_.atlas_118 = {0, 0, one, one};
 }
 void GuiSectionRuntimeImplementation::require_owner(GuiWidgetOwner& owner) const {
     require(&owner == &owner_, "Section operation changed canonical owner");
+    require(!retired_, "Section operation reached a retired derived owner");
 }
 NativeModelOwner& GuiSectionRuntimeImplementation::model() const {
     auto* reference = owner_.model_reference();
@@ -1286,6 +1289,7 @@ NativeModelOwner& GuiSectionRuntimeImplementation::model() const {
 }
 GuiSectionRuntimeImplementation::~GuiSectionRuntimeImplementation() noexcept {
     if (has_active_operation()) std::terminate();
+    if (!retired_ && (fields_.texture_114 || fields_.texture_name_ec.data())) std::terminate();
 }
 void GuiSectionRuntimeImplementation::constructed74(GuiWidgetOwner& owner) {
     require_owner(owner);
@@ -1295,9 +1299,94 @@ void GuiSectionRuntimeImplementation::constructed74(GuiWidgetOwner& owner) {
         services_.buffers.geometry.construct_and_associate74_fragment(model());
     owner_.set_position_00aa7dc0({0, 0, 0});
 }
-void GuiSectionRuntimeImplementation::properties_bound(GuiWidgetOwner& owner, const GuiTable&) {
+void GuiSectionRuntimeImplementation::properties_bound(GuiWidgetOwner& owner, const GuiTable& table) {
     require_owner(owner);
-    throw std::logic_error("Section AC0280 requires native property/texture-loading ownership");
+    require(!has_active_operation(), "Section properties overlap an unfinished operation");
+    SectionOperation active(active_calls_, failed_);
+    const auto read = [&](const char* key, GuiLuaFieldType type, void* destination) {
+        const auto* value = table.find(key);
+        if (value && value->kind() != GuiValue::Kind::Nil) {
+            const bool sse2 = services_.constants.sse2_conversion_0109eea4 != 0;
+            gui_lua_store_value_00bd63b0(*value, gui_lua_field(type, destination), nullptr, sse2);
+        }
+    };
+    // AC02A2's base/children pass already ran in the canonical loader. These
+    // are the nine subsequent current0C descriptors, in their original order.
+    fields_.value_f4 = 0;
+    read("Value", GuiLuaFieldType::Float, &fields_.value_f4);
+    fields_.start_angle_f8 = 0;
+    read("StartAngle", GuiLuaFieldType::Float, &fields_.start_angle_f8);
+    NativeString texture;
+    try {
+        std::string text;
+        read("Texture", GuiLuaFieldType::String, &text);
+        // BD63B0/BD61C0 resize with preserve=false and copy CURRENT length.
+        texture.resize_0041dd40(services_.buffers.strings,
+            static_cast<std::uint32_t>(text.size()), false);
+        if (texture.data()) std::memcpy(texture.data(), text.c_str(), texture.length());
+        bool clockwise = true;
+        read("ClockWise", GuiLuaFieldType::Bool, &clockwise);
+        fields_.clockwise_10c = static_cast<std::uint8_t>(clockwise);
+        fields_.texture_angle_fc = 0;
+        read("TextureAngle", GuiLuaFieldType::Float, &fields_.texture_angle_fc);
+        fields_.u0_100 = 0;
+        read("U0", GuiLuaFieldType::Float, &fields_.u0_100);
+        fields_.u1_104 = services_.constants.one_00d7a24c;
+        read("U1", GuiLuaFieldType::Float, &fields_.u1_104);
+        fields_.rim_width_percent_108 = services_.constants.rim_default_00ce3800;
+        read("RimWidthPercent", GuiLuaFieldType::Float, &fields_.rim_width_percent_108);
+        fields_.texture_mode_110 = 0;
+        read("TextureMode", GuiLuaFieldType::Int, &fields_.texture_mode_110);
+        set_texture_impl(texture); //AC054C; emits ONLY if the name differs
+    } catch (...) {
+        destroy_native_string_header_0041dd20(&texture, services_.buffers.strings);
+        throw;
+    }
+    destroy_native_string_header_0041dd20(&texture, services_.buffers.strings);
+}
+void GuiSectionRuntimeImplementation::set_texture_00abf6f0(const NativeString& name) {
+    require(!has_active_operation() && !retired_,
+        "Section texture setter cannot reenter, replay failed work, or use a retired owner");
+    SectionOperation active(active_calls_, failed_);
+    set_texture_impl(name);
+}
+void GuiSectionRuntimeImplementation::set_texture_impl(const NativeString& name) {
+    auto& current = fields_.texture_name_ec;
+    if (equal_native_string_headers_00435c40(&current, &name)) return; //ABF705
+    // ABF70E..ABF733: same actual NativeString header, callback-visible resize
+    // and post-resize source/length reloads. Self-copy is an explicit skip.
+    current.copy_from_00be0a30_fragment(services_.buffers.strings, name);
+    static_cast<void>(services_.startup.gui_manager()); //ABF736; resolver ignores ECX
+    GuiTextureCallbacks callbacks;
+    callbacks.find_atlas_item = [&](std::string_view value) {
+        return services_.find_atlas_item_00aefb20(value);
+    };
+    callbacks.load_texture = [&](std::string_view, std::uint32_t flags) {
+        auto* renderer = services_.buffers.current_renderer_00f8d394;
+        using Load = void* (__thiscall*)(void*, NativeString*, std::uint32_t);
+        return current_slot<Load>(renderer, 0x64)(renderer, &current, flags);
+    };
+    callbacks.width = [](void* texture) {
+        using Get = std::uint32_t (__thiscall*)(void*);
+        return current_slot<Get>(texture, 0x3c)(texture);
+    };
+    callbacks.height = [](void* texture) {
+        using Get = std::uint32_t (__thiscall*)(void*);
+        return current_slot<Get>(texture, 0x40)(texture);
+    };
+    callbacks.retain = [](void* texture) {
+        auto* count = std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(
+            static_cast<std::byte*>(texture) + 4));
+        count->fetch_add(1, std::memory_order_seq_cst);
+    };
+    std::array<float, 2> extent;
+    std::memcpy(extent.data(), services_.texture_size_scratch.data(), sizeof(extent));
+    const auto view = current.data() ? std::string_view(current.data()) : std::string_view{};
+    // Atlas writes happen directly in SAME canonical118..124 before texture
+    // getter/retention callbacks. Miss preserves UVs and adds no extra retain.
+    void* texture = resolve_gui_texture_00aa2660(view, fields_.atlas_118, extent, 1.0f, callbacks);
+    fields_.texture_114 = texture; //ABF755 deliberately overwrites WITHOUT release-old
+    emit7c_impl(); //ABF762 actual current7C, after publication (also for null)
 }
 void GuiSectionRuntimeImplementation::loaded78(GuiWidgetOwner& owner) {
     require_owner(owner);
@@ -1320,13 +1409,28 @@ std::int32_t GuiSectionRuntimeImplementation::type5c(GuiWidgetOwner& owner) {
 void GuiSectionRuntimeImplementation::before_scene_release(GuiWidgetOwner& owner) {
     require_owner(owner);
     require(!has_active_operation(), "Section resource operations must finish before retirement");
-    require(fields_.texture_114 == nullptr && fields_.texture_name_ec.length() == 0,
-        "Section authored texture/string destruction requires its native lifetime owner");
+    SectionOperation active(active_calls_, failed_);
+    // ABF4F0 derived portion: capture current texture; decrement/terminal call
+    // BEFORE clear+114, then destroy the CURRENT string buffer. Parent supplies
+    // AA9730 base teardown once. Failed owner operations remain terminal.
+    void* const texture = fields_.texture_114;
+    try {
+        if (texture) {
+            release_native_render_actual_owner(services_.buffers.geometry.actual_owners(), texture);
+            fields_.texture_114 = nullptr;
+        }
+    } catch (...) {
+        destroy_native_string_header_0041dd20(&fields_.texture_name_ec, services_.buffers.strings);
+        throw;
+    }
+    destroy_native_string_header_0041dd20(&fields_.texture_name_ec, services_.buffers.strings);
+    retired_ = true;
 }
 
 void GuiSectionRuntimeImplementation::set_values_00abe6e0(
     float value, float start_angle, float u0, float u1) {
-    require(!emitting_ && !failed_, "Section setter cannot reenter or replay unfinished emission");
+    require(!has_active_operation() && !retired_,
+        "Section setter cannot reenter, replay unfinished work, or use a retired owner");
     auto* fields = &fields_;
     std::uint8_t changed;
     __asm {
@@ -1378,6 +1482,11 @@ void GuiSectionRuntimeImplementation::set_values_00abe6e0(
 }
 
 void GuiSectionRuntimeImplementation::emit7c_00abf770() {
+    require(!has_active_operation() && !retired_,
+        "Section emission cannot overlap an operation or use a retired owner");
+    emit7c_impl();
+}
+void GuiSectionRuntimeImplementation::emit7c_impl() {
     require(!emitting_ && !failed_, "Section emission cannot reenter or replay unfinished work");
     SectionOperation active(active_calls_, failed_);
     struct Emission {

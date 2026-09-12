@@ -1,0 +1,412 @@
+{
+  "packet": "cc_ai_arm_final_step",
+  "owner": "agent/cc-ai-arm-final-step",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only; bridge http://127.0.0.1:8089",
+  "range": "009DE5B0-009DF117",
+  "docs": ["docs/SHIP_AI_ARM_FINAL_STEP.md"],
+  "sources": [
+    "include/bsp/ship_ai_arm_final_step.hpp",
+    "src/ship_ai_arm_final_step.cpp",
+    "cmake/startup.cmake"
+  ],
+  "verification": {
+    "build": "scripts/build.ps1 Release, Win32, /W4 /WX: bsp_core.dir/Release/ship_ai_arm_final_step.obj produced; ctest reconstructed_math 1/1 passed",
+    "tests_added": "none; no new behavioural risk that existing checks do not cover",
+    "runtime": "no host for 009DE5B0 exists in this branch's sources at fcf8b17a and the built bsp_game.exe here reports milestone 2l, so this worktree cannot reach the path. The run-time record for the call site is reports/game_executable_milestone_2q.json on main: method ShipAiArmTail::after_arm, address 009ef213, native 009de5b0, function 009ed6b0, status record, '3426 bodies would run here.'"
+  },
+  "routines": [
+    {
+      "name": "ship_ai_arm_final_step_009de5b0",
+      "address": "009de5b0",
+      "native": "009de5b0",
+      "function": "009de5b0",
+      "range": "009DE5B0-009DF115",
+      "abi": "__thiscall(blk)(float unused), RET 4 at 009DF115",
+      "coverage": "complete",
+      "note": "Every instruction of the body read from the stored Ghidra listing and projected. The pushed float argument is never read inside the body; the only use of the incoming frame is ECX at 009DE5B4."
+    },
+    {
+      "name": "ship_ai_arm_final_escape_turn_009de6db",
+      "address": "009de6db",
+      "native": "009de6db",
+      "function": "009de5b0",
+      "range": "009DE6DB-009DE8ED",
+      "abi": "inline range of __thiscall(blk)(float), RET 4",
+      "coverage": "complete",
+      "note": "The avoid-zone escape blend. Producer of blk+14Ch / blk+150h / blk+160h is 009ECA20, read at 009ED040..009ED374 only."
+    },
+    {
+      "name": "ship_ai_arm_final_avoidance_override_009de8f1",
+      "address": "009de8f1",
+      "native": "009de8f1",
+      "function": "009de5b0",
+      "range": "009DE8F1-009DE96C",
+      "abi": "inline range of __thiscall(blk)(float), RET 4",
+      "coverage": "complete",
+      "note": "The only rule in the body that discards the arm's heading target instead of nudging it."
+    },
+    {
+      "name": "ship_ai_arm_final_separation_turn_009debb9",
+      "address": "009debb9",
+      "native": "009debb9",
+      "function": "009de5b0",
+      "range": "009DEBB9-009DEE07",
+      "abi": "inline range of __thiscall(blk)(float), RET 4",
+      "coverage": "complete",
+      "note": "The turn a finished separation vector asks for, including the blk+304h turn-side bound."
+    },
+    {
+      "name": "ship_ai_arm_final_query_range_009dee7d",
+      "address": "009dee7d",
+      "native": "009dee7d",
+      "function": "009de5b0",
+      "range": "009DEE7D-009DEEE3",
+      "abi": "inline range of __thiscall(blk)(float), RET 4",
+      "coverage": "complete",
+      "note": "min(max(widest * 2.5, 8 * hull radius), hull radius + blk+32Ch)."
+    },
+    {
+      "name": "0092d730_body_axis_speed",
+      "address": "0092d730",
+      "native": "0092d730",
+      "function": "0092d730",
+      "range": "0092D730-0092D76E",
+      "abi": "__thiscall(controller), RET 0, ST0 result",
+      "coverage": "complete, contract only: read whole, not projected here"
+    },
+    {
+      "name": "009da1d0_clearance_gate",
+      "address": "009da1d0",
+      "native": "009da1d0",
+      "function": "009da1d0",
+      "range": "009DA1D0-009DA244",
+      "abi": "__thiscall(blk), RET 0, AL result",
+      "coverage": "complete, contract only: read whole; the routine belongs to ship_ai_clearance_profile"
+    },
+    {
+      "name": "00778890_leads_its_controller",
+      "address": "00778890",
+      "native": "00778890",
+      "function": "00778890",
+      "range": "00778890-007788A7",
+      "abi": "__thiscall(entity), RET 0, AL result",
+      "coverage": "complete, contract only"
+    },
+    {
+      "name": "007788b0_follows_another",
+      "address": "007788b0",
+      "native": "007788b0",
+      "function": "007788b0",
+      "range": "007788B0-007788C7",
+      "abi": "__thiscall(entity), RET 0, AL result",
+      "coverage": "complete, contract only"
+    },
+    {
+      "name": "0070e450_controller_area_key",
+      "address": "0070e450",
+      "native": "0070e450",
+      "function": "0070e450",
+      "range": "0070E450-0070E4B2",
+      "abi": "__thiscall(controller), RET 0, EAX result",
+      "coverage": "complete, contract only"
+    },
+    {
+      "name": "0070d400_controller_extent",
+      "address": "0070d400",
+      "native": "0070d400",
+      "function": "0070d400",
+      "range": "0070D400-0070D5C3",
+      "abi": "__thiscall(controller), RET 0, ST0 result",
+      "coverage": "partial: head and one walk step read; 0070D46C-0070D5C3 (the four-way unrolled tail and the remainder loop) not projected"
+    },
+    {
+      "name": "0070d5d0_controller_extent",
+      "address": "0070d5d0",
+      "native": "0070d5d0",
+      "function": "0070d5d0",
+      "range": "0070D5D0-0070D7A4",
+      "abi": "__thiscall(controller), RET 0, ST0 result",
+      "coverage": "partial: head and one walk step read; 0070D640-0070D7A4 not projected. The only read difference from 0070D400 is the -0.0f - x at 0070D5E9"
+    },
+    {
+      "name": "009dc2e0_avoid_zone_free_bearing",
+      "address": "009dc2e0",
+      "native": "009dc2e0",
+      "function": "009dc2e0",
+      "range": "009DC2E0-009DCEA2",
+      "abi": "char __thiscall(searcher)(query*), RET 4",
+      "coverage": "not read: contract taken from docs/SHIP_AI_SECTOR_SCAN.md section 14 plus the two call paths here"
+    },
+    {
+      "name": "009eca20_layer_key_and_zone_fields",
+      "address": "009eca20",
+      "native": "009eca20",
+      "function": "009eca20",
+      "range": "009ECA20-009ED3D7",
+      "abi": "__thiscall(blk)(float), RET 4",
+      "coverage": "partial: only 009ED040-009ED3D1 read, for blk+160h, blk+14Ch, blk+150h and blk+30Ch; the rest belongs to another packet"
+    }
+  ],
+  "host_steps": [
+    {
+      "method": "ShipAiArmFinalStepHost::body_axis_speed_0092d730",
+      "address": "009de5c2",
+      "native": "0092d730",
+      "function": "009de5b0",
+      "note": "ECX = [blk+3FCh]+1018h, the unit motion controller. The early out at 009DE5E5 compares the magnitude against 1.0f."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::body_axis_speed_0092d730",
+      "address": "009de67d",
+      "native": "0092d730",
+      "function": "009de5b0",
+      "note": "Second read, not cached. Its sign picks which latch value means 'disagrees with the direction of travel' at 009DE68B..009DE6AB."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::unit_heading_vtable_0050",
+      "address": "009de6b0",
+      "native": "[[blk+3FCh]]+50h",
+      "function": "009de5b0",
+      "note": "Indirect: MOV ECX,[ESI+3FCh]; MOV EDX,[ECX]; MOV EAX,[EDX+50h]; CALL EAX. Shifted by pi at 009DE6D2 while the latch is astern."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::raise_turn_assist_load_009de853",
+      "address": "009de853",
+      "native": "inlined 009D4FB0",
+      "function": "009de5b0",
+      "note": "No call instruction: the raise-only latch is inlined. MOVSS XMM0,[ESP+18h]; MOVSS [EDI+102Ch],XMM0, guarded by the FCOMIP/JBE at 009DE847."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::clearance_gate_009da1d0",
+      "address": "009de8f3",
+      "native": "009da1d0",
+      "function": "009de5b0",
+      "note": "ECX = ESI = blk. Gates the avoidance-vector override."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::class_reference_speed_500",
+      "address": "009de9ad",
+      "native": "[[blk+3FCh]+538h]+500h",
+      "function": "009de5b0",
+      "note": "Field read, no call: MOV EAX,[EBX+538h]; FDIV [EAX+500h]. Divides the body-axis speed to size the separation probe."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::neighbour_608",
+      "address": "009dea50",
+      "native": "blk+608h[i]",
+      "function": "009de5b0",
+      "note": "Field read, no call: MOV ECX,[EDI] with EDI = ESI+608h stepped by 4. The loop reads n+14h, n+78h, n+20h, n+24h and four bytes plus +9C8h of the observed unit."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::unit_leads_controller_00778890",
+      "address": "009dee1e",
+      "native": "00778890",
+      "function": "009de5b0",
+      "note": "ECX = blk+3FCh. True when [entity+284h]+14h is the entity itself."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::controller_extent_0070d400",
+      "address": "009dee37",
+      "native": "0070d400",
+      "function": "009de5b0",
+      "note": "ECX = [blk+3FCh]+284h. First of the two extents used to size the corridor range."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::controller_extent_0070d5d0",
+      "address": "009dee4c",
+      "native": "0070d5d0",
+      "function": "009de5b0",
+      "note": "ECX = [blk+3FCh]+284h. max(0070D400, 0070D5D0) becomes the range at 009DEE7D."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::controller_area_key_0070e450",
+      "address": "009deee9",
+      "native": "0070e450",
+      "function": "009de5b0",
+      "note": "ECX = [ECX+284h]. Compared against the query's +20h word, which still carries blk+30Ch, at 009DEEEE."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::controller_extent_0070d5d0",
+      "address": "009def19",
+      "native": "0070d5d0",
+      "function": "009de5b0",
+      "note": "The key-unchanged, latch-astern path: this becomes query+10h, the first corridor half-width."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::controller_extent_0070d400",
+      "address": "009def34",
+      "native": "0070d400",
+      "function": "009de5b0",
+      "note": "The key-unchanged, latch-astern path: this becomes query+14h."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::controller_extent_0070d400",
+      "address": "009def54",
+      "native": "0070d400",
+      "function": "009de5b0",
+      "note": "The key-unchanged, latch-ahead path: this becomes query+10h."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::controller_extent_0070d5d0",
+      "address": "009def6f",
+      "native": "0070d5d0",
+      "function": "009de5b0",
+      "note": "The key-unchanged, latch-ahead path: this becomes query+14h."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::controller_area_key_0070e450",
+      "address": "009defd3",
+      "native": "0070e450",
+      "function": "009de5b0",
+      "note": "The key-changed path re-reads the key and stores it into query+20h at 009DEFE5. It is never stored into blk+30Ch."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::controller_extent_0070d5d0",
+      "address": "009deffd",
+      "native": "0070d5d0",
+      "function": "009de5b0",
+      "note": "The key-changed, latch-astern path: query+10h."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::controller_extent_0070d400",
+      "address": "009df018",
+      "native": "0070d400",
+      "function": "009de5b0",
+      "note": "The key-changed, latch-astern path: query+14h."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::controller_extent_0070d400",
+      "address": "009df02b",
+      "native": "0070d400",
+      "function": "009de5b0",
+      "note": "The key-changed, latch-ahead path: query+10h."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::controller_extent_0070d5d0",
+      "address": "009df046",
+      "native": "0070d5d0",
+      "function": "009de5b0",
+      "note": "The key-changed, latch-ahead path: query+14h."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::controller_belongs_to_another_007788b0",
+      "address": "009df06b",
+      "native": "007788b0",
+      "function": "009de5b0",
+      "note": "ECX = blk+3FCh. With blk+3A5h set, both query widths become unit+9CCh * 2.5."
+    },
+    {
+      "method": "ShipAiArmFinalStepHost::avoid_zone_free_bearing_009dc2e0",
+      "address": "009df0fa",
+      "native": "009dc2e0",
+      "function": "009de5b0",
+      "note": "One CALL reached from two paths with different ECX: blk+0A64h from 009DF056 (the key changed) and blk+0A44h from 009DF0F4. Only query+1Ch is read back, into blk+324h at 009DF109."
+    }
+  ],
+  "pure_helpers": [
+    {"address": "009de6d2", "native": "00438aa0", "function": "009de5b0", "note": "wrapAdd(H, pi) for the astern latch"},
+    {"address": "009de701", "native": "00438b10", "function": "009de5b0", "note": "the heading error the escape weight ramps on"},
+    {"address": "009de742", "native": "00419010", "function": "009de5b0", "note": "Interp(pi/4, 1.0, 80deg, 0.0, error)"},
+    {"address": "009de79c", "native": "00415550", "function": "009de5b0", "note": "max(100.0f, unit+9C8h)"},
+    {"address": "009de7d3", "native": "00419010", "function": "009de5b0", "note": "Interp(3.0, 0.0, 5.0, 1.0, remaining path in hull radii)"},
+    {"address": "009de814", "native": "00419010", "function": "009de5b0", "note": "Interp(0.0, 0.15, blk+3C8h, 1.0, blk+14Ch)"},
+    {"address": "009de86b", "native": "00414eb0", "function": "009de5b0", "note": "ECX = blk+150h, the escape direction's bearing"},
+    {"address": "009de888", "native": "00438b10", "function": "009de5b0", "note": "wrapSub(escape bearing, blk+324h)"},
+    {"address": "009de8cd", "native": "00415620", "function": "009de5b0", "note": "clamp(offset, -cap, +cap) with cap = strength * 30deg"},
+    {"address": "009de8e2", "native": "00438aa0", "function": "009de5b0", "note": "the escape blend's store into blk+324h at 009DE8E7"},
+    {"address": "009de932", "native": "00414eb0", "function": "009de5b0", "note": "ECX = blk+34Ch, the avoidance vector's bearing"},
+    {"address": "009de95d", "native": "00438aa0", "function": "009de5b0", "note": "the astern half turn on the override"},
+    {"address": "009deb08", "native": "00414c60", "function": "009de5b0", "note": "ECX = {offset_x, offset_z}, the distance to one neighbour"},
+    {"address": "009deb47", "native": "00419010", "function": "009de5b0", "note": "Interp(0.4, 100.0, 1.0, 0.0, distance / reach)"},
+    {"address": "009debe1", "native": "00bf7030", "function": "009de5b0", "note": "the CRT square root of the summed separation vector"},
+    {"address": "009dec41", "native": "00bf701a", "function": "009de5b0", "note": "the CRT atan2, ST0 = x, ST1 = z; 009DEC41..009DEC6C is 00414EB0's body inlined"},
+    {"address": "009dec7e", "native": "00438b10", "function": "009de5b0", "note": "wrapSub(separation bearing, H)"},
+    {"address": "009ded57", "native": "00438b10", "function": "009de5b0", "note": "the turn-side room, blk+304h == 1"},
+    {"address": "009dedb4", "native": "00438b10", "function": "009de5b0", "note": "the turn-side room, blk+304h == 2"},
+    {"address": "009dedce", "native": "00415510", "function": "009de5b0", "note": "min(0.0f, room)"},
+    {"address": "009deddf", "native": "00415550", "function": "009de5b0", "note": "max(turn, min(0.0f, room))"},
+    {"address": "009dedfc", "native": "00438aa0", "function": "009de5b0", "note": "the separation turn's store into blk+324h at 009DEE01"},
+    {"address": "009defad", "native": "006bc0c0", "function": "009de5b0", "note": "ECX = &[ESP+38h], the direction from blk+324h on the key-changed path only"}
+  ],
+  "block_writes": [
+    {"field": "blk+324h", "sites": ["009de8e7", "009de945", "009de962", "009dee01", "009df109"], "note": "the heading target, under four rules in order plus the query answer"},
+    {"field": "blk+354h", "sites": ["009de76c"], "note": "the clearance hold raised to 3.0f whenever the escape weight ramp is open"},
+    {"field": "unit+102Ch", "sites": ["009de853"], "note": "the turn-assist load latch, raised only"}
+  ],
+  "block_reads": [
+    {"field": "blk+318h", "sites": ["009de5eb"], "note": "the look-ahead; 0.75 of it seeds the query range"},
+    {"field": "blk+30Ch", "sites": ["009de5ff"], "note": "the avoid-zone layer key, into query+20h. No store to this offset exists in the body"},
+    {"field": "blk+324h", "sites": ["009de5f1", "009de6e8", "009de877", "009de8d9", "009dedf3", "009def8b", "009df09b"], "note": "read at entry and before each rule"},
+    {"field": "blk+32Ch", "sites": ["009de61d", "009deebf"], "note": "the distance to the path point: caps the query range twice"},
+    {"field": "blk+330h", "sites": ["009de77a"], "note": "the remaining path length, measured in hull radii"},
+    {"field": "blk+184h/+188h", "sites": ["009de60b", "009de623", "009de9e6", "009dea1a", "009def83", "009def9b"], "note": "the hull pose"},
+    {"field": "blk+174h/+178h", "sites": ["009de9e0", "009de9f0"], "note": "the point the separation probe reaches toward"},
+    {"field": "blk+34Ch/+350h", "sites": ["009de908", "009de90e"], "note": "the avoidance vector 009E04E0 fills; this is its first known reader"},
+    {"field": "blk+14Ch", "sites": ["009de7eb"], "note": "the distance still to travel to leave the avoid zone"},
+    {"field": "blk+150h/+154h", "sites": ["009de861"], "note": "the unit escape direction"},
+    {"field": "blk+160h", "sites": ["009de6db"], "note": "inside an avoid zone: gates the blend and suppresses the free-bearing query"},
+    {"field": "blk+304h", "sites": ["009ded2b"], "note": "the path point's turn side"},
+    {"field": "blk+35Ch", "sites": ["009de691", "009de699", "009de6b6", "009de93b", "009deef8", "009defd8"], "note": "the ahead/astern latch; read six times, never written"},
+    {"field": "blk+3A5h", "sites": ["009df074"], "note": "the follows-another byte"},
+    {"field": "blk+3C8h", "sites": ["009de7fb"], "note": "the look-ahead ceiling the escape distance is normalised against"},
+    {"field": "blk+3D0h", "sites": ["009decc1"], "note": "the turn window; 1.8 times it limits one tick of separation turn"},
+    {"field": "blk+604h/+608h", "sites": ["009de96c", "009de9d9", "009dea3d", "009dea43"], "note": "the neighbour list"},
+    {"field": "blk+3FCh", "sites": ["009de5b6", "009de655", "009de6a0", "009de774", "009de979", "009de99d", "009dee18", "009dee2b", "009dee40", "009dee71", "009def65", "009df065", "009df07d"], "note": "the unit"},
+    {"field": "blk+0A44h/+0A64h", "sites": ["009df0f4", "009df056"], "note": "the second and third 20h-byte avoid-zone searchers"}
+  ],
+  "no_ghidra_function": "none",
+  "corrections": [
+    {
+      "was": "docs/SHIP_AI_CLEARANCE_PROFILE.md follow-up ship_ai_avoidance_vector_consumer: '009E04E0 fills the vector every step; nothing read so far reads it back'",
+      "is": "009DE5B0 reads blk+34Ch/blk+350h back and steers straight down it when the hold blk+354h has counted past zero",
+      "evidence": "009DE908 FLD [ESI+350h]; 009DE90E LEA ECX,[ESI+34Ch]; 009DE932 CALL 00414EB0; 009DE945 FST [ESI+324h]"
+    },
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2q follow-up 7: 'the unconditional last step of every arm of 009ED6B0'",
+      "is": "unconditionally reached, not unconditionally run: the body returns immediately for a ship whose body-axis speed is at most 1.0 in magnitude, and blk+160h splits the rest into two disjoint halves",
+      "evidence": "009DE5DE COMISS XMM0,[00D7A24C] with JBE 009DF111; 009DE6E2 JZ 009DE8F1; 009DE6F5 MOV byte ptr [ESP+17h],0"
+    },
+    {
+      "was": "include/bsp/ship_ai_sector_scan.hpp declares the free-bearing query's +20h word as 'const void* context', filled from blk+0A38h",
+      "is": "both writers this routine has are integer layer keys: blk+30Ch and 0070E450's int result. The field's type is unsettled; this packet passes it as a separate int rather than redeclaring the record",
+      "evidence": "009DE5FF MOV ECX,[ESI+30Ch] then 009DE62F MOV [ESP+5Ch],ECX; 009DEFD3 CALL 0070E450 then 009DEFE5 MOV [ESP+5Ch],EAX; the query block is based at [ESP+3Ch] (009DE617 writes +0h there)"
+    },
+    {
+      "was": "docs/SHIP_AI_SECTOR_SCAN.md follow-up ship_ai_avoid_zone_object names one object, blk+0A24h",
+      "is": "at least three 20h-byte searchers: blk+0A24h, blk+0A44h and blk+0A64h. blk+0A38h and blk+0A3Ch fall inside the first",
+      "evidence": "009EC0C1 with LEA ECX,[ESI+0A24h]; 009DF056 LEA ECX,[ESI+0A64h]; 009DF0F4 LEA ECX,[ESI+0A44h]"
+    },
+    {
+      "was": "docs/SHIP_AI_PATH_PLANNER.md follow-up avoid_zone_geometry: 'whether the layer key blk+30Ch is an id or an object pointer ... fits both readings'",
+      "is": "an int id. 009ECA20 stores max(blk+164h, an int from 004121B0) into it and compares it with signed branches; 0070E450 builds the same value as a signed maximum starting at 0",
+      "evidence": "009ED393 MOV EAX,[EBX+10h]; 009ED396 CMP EAX,EDI; 009ED398 JGE; 009ED3B2 CMP EAX,EDI with JL; 009ED3B8 MOV [ESI+30Ch],EAX; 0070E452 XOR EAX,EAX; 0070E491 CMP [ESP+10h],EAX with JG"
+    },
+    {
+      "was": "Ghidra's stored prototype void __fastcall FUN_009de5b0(int param_1), and a decompilation with one FUN_009dc2e0(&local_24) call",
+      "is": "__thiscall(blk)(float unused) with RET 4, and one CALL instruction reached from two paths that set ECX to different searchers",
+      "evidence": "009DF115 RET 4 against 009EF20D PUSH ECX / 009EF210 FSTP [ESP]; 009DF060 JMP 009DF0FA from the 009DF056 path"
+    },
+    {
+      "was": "Ghidra's decompilation ends with *(undefined4 *)(param_1 + 0x324) = uStack_8 where uStack_8 is never assigned",
+      "is": "uStack_8 is the query block's +1Ch output word, written by 009DC2E0",
+      "evidence": "009DF103 MOVSS XMM0,[ESP+58h] with the block based at [ESP+3Ch]; docs/SHIP_AI_SECTOR_SCAN.md section 14 gives +1Ch as the bearing output"
+    }
+  ],
+  "uncertainties": [
+    "Which of blk+0A44h and blk+0A64h holds which zone set is unread: 009DC2E0's body was not projected and nothing read so far writes either searcher.",
+    "0070D400 and 0070D5D0 read one float column of the controller's slots chosen by [ctl+500h]. Which of the two extents is port and which is starboard is not established; only that the pair is swapped into the query when the latch is astern.",
+    "[[unit+538h]+500h] is called a class reference speed from its use as a divisor of the body-axis speed. Its producer was not read.",
+    "The 009DEEEE comparison can be true on every tick, because nothing in this body stores the re-read key back into blk+30Ch. Whether that is intentional or a bug is not settled here.",
+    "The reconstruction is build-tested only: not fixture-tested, not ABI-compatible, not game-validated. The x87 intermediates are modelled as double, which matches the 53-bit MSVC control word but not the 15-bit x87 exponent range."
+  ],
+  "follow_ups": [
+    {"packet": "ship_ai_avoid_zone_searchers", "addresses": ["009dc2e0", "004158e0", "00415970", "009d7050"], "what": "What the free-bearing search does, what its +20h word is to it, and what fills blk+0A44h and blk+0A64h"},
+    {"packet": "ship_ai_controller_formation_slots", "addresses": ["0070d400", "0070d5d0", "0070e450"], "what": "The controller slot record and which lateral extent is port"},
+    {"packet": "ship_ai_avoid_zone_layer_key", "addresses": ["009eca20", "004120d0", "004121a0", "004121b0", "004178f0", "00417b10"], "what": "The producer of blk+14Ch, blk+150h, blk+160h, blk+164h, blk+308h and blk+30Ch. Overlaps avoid_zone_geometry, which owns 004179D0 and 00422500"},
+    {"packet": "unit_turn_assist_load", "addresses": ["00825de0", "00825ec0"], "what": "What the motion side does with unit+102Ch and unit+1034h"},
+    {"packet": "ship_ai_class_speed_constants", "addresses": ["00828f20"], "what": "The producers of [unit+538h]+500h and [unit+538h]+508h"}
+  ]
+}

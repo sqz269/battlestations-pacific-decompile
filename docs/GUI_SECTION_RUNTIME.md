@@ -164,3 +164,14 @@ differential, game execution, visual output or drop-in ABI validation is claimed
 The parent passed the combined repository `scripts/build.ps1` after integrating
 its owned dispatch/profile changes. `reports/gui_section_runtime.json` carries
 the exact call rows and coverage boundaries.
+
+## Correction from docs/GUI_SECTION_TEXTURE_OWNERSHIP.md
+
+The property and texture-lifetime boundary described above is historical. The
+canonical Section now implements the nine AC0280 descriptors, ABF6F0 actual
+texture/resolver sequence and ABF4F0 derived texture/string cleanup. Required
+caller scratch preserves the native unwritten size pair; replacement does not
+release the old texture. Common Section scalar/base retirement is integrated.
+Full resource-backed setter/emitter/retirement execution, native copy/pool/SEH
+and game validation remain open. See the ownership report and
+`reports/orch5_frame_section_scalar_integration.json`.

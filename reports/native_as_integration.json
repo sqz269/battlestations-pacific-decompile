@@ -1,0 +1,357 @@
+{
+  "packet": "orch2_native_provider_and_trees_as_integration",
+  "created_utc": "2026-09-12T18:30:02.138364+00:00",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "scope": {
+    "full_bodies": 30,
+    "owned_original_bytes": 4530,
+    "behavior": "Actual provider construction/factory/destruction/deleting wrapper and complete physical-index, VFS mount and manager-string tree erase/rebalancing/range/destruction families.",
+    "components": [
+      {
+        "report": {
+          "path": "reports/native_physical_provider.json",
+          "bytes": 17574,
+          "sha256": "ae2369c075c42b13c504380167ca6e74f645a267adb05ca1916ec077dd971eb8"
+        },
+        "full_bodies": 4,
+        "owned_bytes": 561,
+        "entries": [
+          "00bf4d30",
+          "00bf4df0",
+          "00bf4c70",
+          "00bf4dd0"
+        ],
+        "source": {
+          "path": "src/native_physical_provider.cpp",
+          "bytes": 5910,
+          "sha256": "7b8670babf13b89cac98cb6844afdf8801a7a20ddab8796e7ae7f4b4ebae7b8c"
+        },
+        "header": {
+          "path": "include/bsp/native_physical_provider.hpp",
+          "bytes": 2745,
+          "sha256": "ed89add3153c7c0c1b80ba77addfab88e82f20ba48c8670e937ff21a49d2b2aa"
+        }
+      },
+      {
+        "report": {
+          "path": "reports/native_physical_index_tree.json",
+          "bytes": 29940,
+          "sha256": "0af9c619bd2597e3d9e127db50bfa96a134dabf5782c998db74e17795fbd93b2"
+        },
+        "full_bodies": 9,
+        "owned_bytes": 1338,
+        "entries": [
+          "00489d50",
+          "00bd9380",
+          "00bd93a0",
+          "00bd93e0",
+          "00bda090",
+          "00bdf7a0",
+          "00bdfd80",
+          "00be0c30",
+          "00be1700"
+        ],
+        "source": {
+          "path": "src/native_physical_index_tree.cpp",
+          "bytes": 14243,
+          "sha256": "5682455712a2d095d097be4df338b5b31859f1bcac028a75f72f5dca72d94c85"
+        },
+        "header": {
+          "path": "include/bsp/native_physical_index_tree.hpp",
+          "bytes": 3001,
+          "sha256": "6426542183b40a30e0a87acba0b0c20fb274c276680fc63e9024fbd2666cb893"
+        }
+      },
+      {
+        "report": {
+          "path": "reports/native_vfs_mount_tree.json",
+          "bytes": 34006,
+          "sha256": "c4877419f084e3c6e0e5bff2c77a5dd3d1a7491781f57d9a3820a187b33ef732"
+        },
+        "full_bodies": 8,
+        "owned_bytes": 1266,
+        "entries": [
+          "00bd94d0",
+          "00bd94f0",
+          "00bd9530",
+          "00bda0e0",
+          "00bdf7e0",
+          "00be0080",
+          "00be0d00",
+          "00be16c0"
+        ],
+        "source": {
+          "path": "src/native_vfs_mount_tree.cpp",
+          "bytes": 12527,
+          "sha256": "88d62a7a98ee32bfc29604d88fecc4e10885a011902991a13c509c515fe5589a"
+        },
+        "header": {
+          "path": "include/bsp/native_vfs_mount_tree.hpp",
+          "bytes": 2976,
+          "sha256": "e5d614d77eef2e989358f043ed15a88ad63de4723658d064d795d15ad52b33b8"
+        }
+      },
+      {
+        "report": {
+          "path": "reports/native_vfs_string_tree.json",
+          "bytes": 27532,
+          "sha256": "888231ef96eb2b2cb84d94b78f5b8f7ca029c7c9d31c10bb932d1fe43a1bf66c"
+        },
+        "full_bodies": 9,
+        "owned_bytes": 1365,
+        "entries": [
+          "004cec60",
+          "004be730",
+          "004cf8a0",
+          "004d1a50",
+          "004d74a0",
+          "004bf130",
+          "004bf180",
+          "004be360",
+          "004b9fd0"
+        ],
+        "source": {
+          "path": "src/native_vfs_string_tree.cpp",
+          "bytes": 13982,
+          "sha256": "8e24b5a1ed026a0d9a8d55481b86fa87ace4b90dbf731ac1e8b8f6decad6e256"
+        },
+        "header": {
+          "path": "include/bsp/native_vfs_string_tree.hpp",
+          "bytes": 3353,
+          "sha256": "595bac2e80321a0b720586a16102178ca57ca35bcbfc8ec4714f65aeb7117a9a"
+        }
+      }
+    ]
+  },
+  "worker_commits": {
+    "physical_index": "d8958fd295c69f8ba024cd263e02a47cedbf593d",
+    "mount": "c4999bf7388139d3c95b9fdb471750d34e550721",
+    "string": "756ca3de86b362563234022abdd0cc3f9e37a2a4",
+    "parent_provider": "8404c55f"
+  },
+  "fixture_checked_head": "f0e188f21b9db3e326fd0afa20894bc818296af7",
+  "validation": {
+    "strict_msvc_win32_build": true,
+    "existing_ctests_passed": 2,
+    "source_call_rows": 108,
+    "failed_call_rows": 0,
+    "common_library_sha256": "fde58a6299871dae206759cde4c2273771409b5314d2e17c78a3a41415124e68",
+    "common_frozen_inputs_reverified": 1829,
+    "permanent_tests_added": 0,
+    "provider": {
+      "native_source_cases": 14,
+      "normalized_observations": 580,
+      "source_failure_cases": 2,
+      "canonical_pool_composition": true,
+      "frozen_inputs_unchanged": 1838
+    },
+    "physical_index": {
+      "native_source_scenarios": 8,
+      "normalized_DWORD_observations": 1469,
+      "source_owning_sentinel_exception": true,
+      "frozen_inputs_unchanged": 1888
+    },
+    "mount": {
+      "native_source_cases": 19,
+      "snapshot_words": 665,
+      "source_and_intercepted_original_throw": true,
+      "frozen_inputs_unchanged": 902
+    },
+    "manager_string": {
+      "erase_comparisons": 16,
+      "range_and_destroy": 3,
+      "returning_validation": 2,
+      "source_owning_exception": 1,
+      "frozen_inputs_unchanged": 917
+    },
+    "real_file_composition": {
+      "successful_cycles": 2,
+      "read_bytes_each": 38,
+      "EOF_and_real_HANDLE_close_verified": true,
+      "actual_stream_and_provider_slot_reuse": true,
+      "canonical_shutdown": true,
+      "frozen_inputs_unchanged": 1767,
+      "captured_pre_combined_library_sha256": "29da9eeea559e389d5b18caa14e2fe11adf6a10aeb589a07660041930cf0b1ee",
+      "original_instructions_executed": false
+    },
+    "native_FH3_validated": false,
+    "drop_in_binary_ABI_compatible": false,
+    "game_validated": false
+  },
+  "independent_reviews": {
+    "artifacts": [
+      {
+        "module": "physical_provider",
+        "artifact": {
+          "path": "local/native-as-worker-deliveries/physical_index/provider_as_parent_review/review.json",
+          "bytes": 10928,
+          "sha256": "6f24f0b354a92aed24a20549eced8cf6c93835fcecf44493430a7ebf60afcac0"
+        }
+      },
+      {
+        "module": "mount_tree",
+        "artifact": {
+          "path": "local/native-as-worker-deliveries/mount/payload/reviews/mount_tree_as_independent_review.json",
+          "bytes": 10476,
+          "sha256": "5005071fa4d0c828f37fbc3031ecafb106cbda8ccd30486f03eb3f13437b7af4"
+        }
+      },
+      {
+        "module": "manager_string_tree",
+        "artifact": {
+          "path": "local/native-as-worker-deliveries/mount/payload/reviews/manager_string_tree_review/review.json",
+          "bytes": 11214,
+          "sha256": "36f6ebed55e0a3a6e4bb06a5cdd56669c12e895148ca8e192c6d8a22b6076cdf"
+        }
+      }
+    ],
+    "physical_index": "Parent reviewed complete source, raw transplant/range and worker evidence before merge3778ba23.",
+    "outcome": "All accepted without parent C++ corrections."
+  },
+  "ghidra": {
+    "names_saved_read_back": 30,
+    "prior_comments_preserved": true,
+    "exports_forced": 30,
+    "new_function_definitions": 0,
+    "tree_repair_functions_checked": 9,
+    "tree_stored_tails_still_incomplete": 6,
+    "provider_stored_tail_still_incomplete": 1,
+    "no_gap_query": "4CEC60 already has34 instructions and0gaps at integration; no mutation needed.",
+    "no_global_noreturn_or_unsupported_body_extension": true,
+    "raw_tail_attribution": "Stored body limits are retained. Full logical source coverage derives from matched installed/live tail bytes, not invented Ghidra body attribution."
+  },
+  "retained_evidence": {
+    "worker_deliveries": {
+      "path": "local/native-as-worker-deliveries/parent_manifest.json",
+      "bytes": 1440442,
+      "sha256": "e665ed5330f5f105869c7cfb44516b23920ed454c781583e5dc920cb1a896346"
+    },
+    "worker_delivery_copied_files": 6480,
+    "combined_worker_deliveries": {
+      "path": "local/native-as-combined/workers/parent_manifest.json",
+      "bytes": 711854,
+      "sha256": "fe1741d946f58ec9060d32c7677f9ba852547f7c65735931f4cc2e956f93cc1a"
+    },
+    "combined_worker_copied_files": 3727,
+    "common_build_inputs": {
+      "path": "local/native-as-combined/build_inputs/manifest.json",
+      "bytes": 316470,
+      "sha256": "f9cb3416914acc7b7bc24c519c5b0953f096da7d948bb322d6e94695b081e53f"
+    },
+    "provider_composition": {
+      "path": "local/native-as-provider-composition/parent_copy_manifest.json",
+      "bytes": 330568,
+      "sha256": "4c6d56807ac1b85e9bd1145fd6c0c816fc451aa7cef1cc6a1ac20195700ee0b4"
+    },
+    "provider_composition_copied_files": 1772,
+    "files": [
+      {
+        "path": "local/native-as-prepare-integration.log",
+        "bytes": 1650,
+        "sha256": "6d548858f85d182d241eddf93095467f3295286536b72dfd081ae44e1891b8c4"
+      },
+      {
+        "path": "local/native-as-annotations/result.json",
+        "bytes": 3738,
+        "sha256": "0b03898df60c615ac933873284915c6021ec2f09d44c800960476151159dc46e"
+      },
+      {
+        "path": "local/native-as-annotations/calls.log",
+        "bytes": 281,
+        "sha256": "99902cba23788c52f165361c63747ff8c364035d92a0f2a4b9ac16b7749f6163"
+      },
+      {
+        "path": "local/ghidra-annotations-20260912T182316Z.json",
+        "bytes": 21602,
+        "sha256": "acd85ee685989e11251520c5dc5fdcd67518f1f78a1791f0d6982f20db260dc0"
+      },
+      {
+        "path": "local/native-as-combined/provider/before.json",
+        "bytes": 387564,
+        "sha256": "eb39a90b6eebe5869e1b241425abb131c862e72bed847bd1e85bf0b7e3208eb9"
+      },
+      {
+        "path": "local/native-as-combined/provider/result.json",
+        "bytes": 1000,
+        "sha256": "9930380a611a6986a4e35509116812a998f28b035fc0d4305a06a2d381dc4890"
+      },
+      {
+        "path": "local/native-as-combined/workers/index/report.json",
+        "bytes": 3195,
+        "sha256": "167bf289c112334d332fafe62509063d92c6ffb100f327eec37daa7372162d13"
+      },
+      {
+        "path": "local/native-as-combined/workers/mount/result.json",
+        "bytes": 2359,
+        "sha256": "9e5147567f8887ec8e83963a2d7c411b63d3fe9b47c9142666d2ecb73e24b29f"
+      },
+      {
+        "path": "local/native-as-combined/workers/string/result.json",
+        "bytes": 1878,
+        "sha256": "e4e5bdc87886d1dfa26e332a6efbe56c92e88ae2030756784380a6c3c374f668"
+      },
+      {
+        "path": "local/native-as-provider-composition/composition_report.json",
+        "bytes": 7573,
+        "sha256": "85cc2cee4f2287cb857461e6edb807014a2dac383b4587a7602c179677693772"
+      },
+      {
+        "path": "local/native-as-snapshot.log",
+        "bytes": 294,
+        "sha256": "e33245737277c211a582a787e64cac262d71d8756483f9531710a04604b38d36"
+      }
+    ],
+    "preservation": "Actual source/header/object/library/executable/native bytes and logs copied and hash-verified under ignored local; prior failed and successful attempts retained. Originals preserved."
+  },
+  "flow_reports": [
+    {
+      "path": "reports/native_physical_provider_flow_repair.json",
+      "bytes": 2077,
+      "sha256": "b870180832ea226c5b92f2719c35ee785ce191525b5d850f13f04c54d5fbd7d6"
+    },
+    {
+      "path": "reports/native_as_flow_repairs.json",
+      "bytes": 14987,
+      "sha256": "857824dda34a1ebf6533b47399c4fa366d69fff6ef1800184e4f11e93c0b59b8"
+    }
+  ],
+  "preserved_integration_tool_issues": [
+    "Delivery collector initially omitted mount manifest payload prefix; resumed copying with correct prefix and verified existing index files before skipping copies.",
+    "Flow collector expected a record for no-gap4CEC60; tool emits no JSON for empty plan. Recorded no-op and repaired only remaining two functions."
+  ],
+  "limits": [
+    "Fixtures use private original code copies and explicit reviewed service/CRT/exception boundaries; mount includes documented service CALL and message immediate fixups.",
+    "Manager-string private high mapping preserves relative branches; PE relocations are stripped, so this is not ordinary PE relocation.",
+    "Source owning exceptions do not prove original FH3/SEH/RTTI identity. NativeStringStorage::release is noexcept.",
+    "No exhaustive malformed, aliasing or concurrent-state equivalence is claimed.",
+    "Pending provider destruction does not cancel I/O, close pending handles or free OVERLAPPED allocations.",
+    "Real-file composition uses empty provider index and success/read-only/EOF paths only, through a captured pre-combined source library.",
+    "This work is neither game startup nor gameplay validation."
+  ],
+  "remaining": [
+    "Manager base BDA6F0/BDA790 actual lifetime/publication/critical section contracts.",
+    "Request-list4D2640/BE1220/BE19E0/BE1D60 ownership.",
+    "Complete manager BE1DC0/BE1F60 and startup composition; full FileStore ownership as required.",
+    "Runnable game rebuild and required gameplay validation."
+  ],
+  "publication": {
+    "state": "integrated into main and strict build tested; final publication log and remote verification retained locally",
+    "validated_head": "06ce857dce43d208370d56859aef79c1b3477a3f",
+    "validated_core_sha256": "17b536af0499a2c5804c62855942e26ef001d49ab1177ec76a61afdd61b71783",
+    "promotion_manifest": {
+      "path": "local/native-as-promotion-first/manifest.json",
+      "sha256": "2f7afffa233da57abee0dab407b3c2713e4d0e6083c4edfb3069229491b077a5",
+      "bytes": 585440
+    },
+    "changed_build_inputs_from_fixture": 38,
+    "owned_sources_and_headers_unchanged": true,
+    "fixture_revision": "f0e188f21b9db3e326fd0afa20894bc818296af7",
+    "final_publication_inputs": "local/native-as-promotion-final/manifest.json",
+    "remote_verification": "local/native-as-remote-publication.json",
+    "scope": "The moving-main promotion is build/CTest checked. The four unchanged focused fixtures ran against the earlier exact combined library; do not identify these two archives as the same fixture run."
+  }
+}

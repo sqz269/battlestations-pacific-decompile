@@ -1,0 +1,76 @@
+{
+  "packet": "orch6_avoid_zone_offset",
+  "analysis_mode": "read_only_ghidra",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "document": "docs/AVOID_ZONE_OFFSET.md",
+  "source": "src/avoid_zone_offset.cpp",
+  "header": "include/bsp/avoid_zone_offset.hpp",
+  "names_are_hypotheses": true,
+  "routines": [
+    {
+      "address": "00416f30",
+      "name": "BSP_AvoidZone_ClosestOffsetBoundaryPoint",
+      "was": "FUN_00416f30",
+      "coverage": "complete",
+      "reconstruction": "avoid_zone_closest_offset_point_00416f30",
+      "original_abi": "ECX zone; stack point, point output, four-float edge output, endpoint-byte output, push; no return value; RET14h",
+      "native_start": "00416f30",
+      "native_end_inclusive": "004171b4",
+      "native_size": 645,
+      "last_instruction_address": "004171b2",
+      "last_instruction_size": 3,
+      "unread_spans": [],
+      "evidence": "Closing edge first; stored outgoing unit dot / stored length; clamped projection; strict unshifted squared-distance selection; interpolate existing corner offsets times push only for new best; point/byte/edge outputs; empty or no candidate leaves all outputs alone. All x87/SSE branches and binary32 stores reconstructed."
+    }
+  ],
+  "native_calls": [],
+  "supporting_calls": [
+    {"address":"00417556","native":"00416f30","function":"004174a0","method":"closest offset boundary point","contract":"push0; point to output+0h, edge to+8h, endpoint to+1Ah; separate containment+18h; RET14h"},
+    {"address":"004175c5","native":"00416f30","function":"00417580","method":"closest offset boundary point","contract":"caller float push; local point, edge and endpoint outputs; RET14h"},
+    {"address":"00417baa","native":"00416f30","function":"00417b10","method":"closest offset boundary point","contract":"caller float push; local point replaces current group query; local edge/endpoint outputs; RET14h"},
+    {"address":"0041af87","native":"00416f30","function":"0041aea0","method":"closest offset boundary point","contract":"push1; local point used for inside direction, local edge/endpoint outputs; RET14h"},
+    {"address":"0041b353","native":"00416f30","function":"0041b290","method":"closest offset boundary point","contract":"push0; local point used for subsequent distance/direction, local edge/endpoint outputs; RET14h"}
+  ],
+  "corrections": [
+    {"was":"pseudocode places unordered parameter in the start clamp","is":"unordered parameter takes interpolation, then its unordered distance cannot win","evidence":"00416FD5 FCOMIP(0,t), 00416FD7 JC; 00417004 COMISS(t,1),00417007 JC; 004170B5/B9 rejects unordered distance"},
+    {"was":"a generic closest-segment routine could supply the projection","is":"stored outgoing unit and stored length plus exact intermediate binary32 spills define this routine","evidence":"00416FB0-00416FCB,00417034-00417069"},
+    {"was":"empty input necessarily dereferences the last record","is":"00416F41 computes a pointer address; 00416F5C exits before the first record read at00416F89","evidence":"whole00416F30 listing and native empty-list differential samples"}
+  ],
+  "producer_reuse": {
+    "header": "include/bsp/ship_ai_lateral_record.hpp",
+    "records": ["ShipAiPathLateralRecord", "ShipAiPathLateralRecordList"],
+    "evidence": "Existing24h record and eight-byte list prefix reused. Position stores0041CD92/9C,0041CF03/0D; length0041A33E; outgoing0041A36A/371; offset0041A418/423 and454/45A. No declarations added for consumed native offsets."
+  },
+  "no_ghidra_function": [],
+  "verification": {
+    "ghidra_target_verification": "Every bsp.py ghidra call constructs Client(config/target.json) and runs verify() before the query; target bsp.gpr and /battlestationspacific.exe.",
+    "report_call_rows": "python tools/verify_report_calls.py reports/avoid_zone_offset.json: 5 call rows checked, 0 failed",
+    "build_and_existing_ctest": "./scripts/build.ps1 Release Win32 succeeded; reconstructed_math and native_math_differential both passed (2/2, CTest0.16sec); no compiler warnings/errors",
+    "build_log": "local/avoid_zone_offset-build.log",
+    "new_committed_tests": 0,
+    "native_seed_verification": "python tools/ghidra_export.py verify-seeds passed; all eight seed spans match disk",
+    "native_differential_fixture": {
+      "passed": true,
+      "comparisons": 96000,
+      "source": "local/avoid_zone_offset_probe.cpp",
+      "runner": "local/run_avoid_zone_offset_probe.ps1",
+      "preparation": "local/prepare_avoid_zone_offset_probe.py",
+      "log": "local/avoid_zone_offset-probe.log",
+      "native_bytes": 645,
+      "native_sha256": "1d9d8f7671b11b4e716bd8133784b3a8bcdf7377d2770685fdeb8709cdf8eadc",
+      "matches_installed_binary": true,
+      "relocations": ["00D7A248 FLT_MAX", "00D7A24C float1"],
+      "domain": "Counts0-4; finite/arbitrary float patterns; zero/NaN length; NaN/signed-zero push; endpoints; closing-edge first-on-tie square. PC24/53/64, four rounding modes, DAZ/FTZ off/on. Exact bit comparison of point, edge and endpoint including prior sentinels."
+    },
+    "abi_compatible": false,
+    "game_validated": false,
+    "runtime_boundary": "Module is not wired into the worktree's bsp_game.exe. Current ship AI planner host still returns zero group/input point at src/game_hosts_ship_ai.cpp:1684-1692. Primary integrator owns native zone query adapter.",
+    "known_limits": [
+      "Valid nonnegative count and readable stable records required; no malformed-pointer or concurrent mutation model.",
+      "Outputs must not alias inputs or each other; native object aliasing behavior is not projected.",
+      "Native differential checks cover the recorded samples, not all float inputs; exception status flags and traps were not compared.",
+      "No native ABI replacement or installed-game validation is claimed."
+    ]
+  }
+}

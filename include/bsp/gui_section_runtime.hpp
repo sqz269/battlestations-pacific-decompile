@@ -2,9 +2,11 @@
 #include "bsp/gui_text_material.hpp"
 #include "bsp/gui_material_binding.hpp"
 #include "bsp/native_logical_buffer_mapping.hpp"
+#include "bsp/gui_texture.hpp"
 
 namespace bsp {
 struct GuiTimedEntryStorage;
+struct GuiStartupHost;
 // ABF420 producer: the single Section-derived EC..12B tail. Base values live
 // exclusively in GuiWidgetOwner; this is not a second widget/mesh projection.
 struct GuiSectionFields {
@@ -15,11 +17,12 @@ struct GuiSectionFields {
     std::byte untouched_10d[3];
     std::int32_t texture_mode_110;
     void* texture_114;
-    float atlas_u0_118, atlas_v0_11c, atlas_u1_120, atlas_v1_124;
+    std::array<float, 4> atlas_118; // SAME native118..124, resolver writes in place
     std::int32_t segment_count_128; // constructor-unwritten; emitter establishes it
 };
 static_assert(sizeof(GuiSectionFields) == 0x40);
 static_assert(offsetof(GuiSectionFields, value_f4) == 8);
+static_assert(offsetof(GuiSectionFields, atlas_118) == 0x2c);
 static_assert(offsetof(GuiSectionFields, segment_count_128) == 0x3c);
 
 struct GuiSectionConstants {
@@ -41,13 +44,23 @@ struct GuiSectionRuntimeServices {
     NativeMaterialParameterAccess& parameters;
     const GuiMaterialBindingServices& colors;
     GuiSectionConstants constants;
+    GuiStartupHost& startup; // existing004C12B0 singleton service, required
+    // Existing atlas lookup, with actual retained texture identities. Atlas
+    // records/owners outlive resolver callbacks; no LogicalTexture surrogate.
+    const std::function<const TextureAtlasItem*(std::string_view)>& find_atlas_item_00aefb20;
+    // ABF6F0 leaves its two local size DWORDs unwritten. Required caller-state
+    // input, not a guessed zero/default: both zero can trigger current3C/40.
+    const std::array<std::uint32_t, 2>& texture_size_scratch;
 };
 
 // New C++ companion ABI. ABF770 all three geometry modes and +74 operate on
 // the SAME owner's actual model/mesh/streams/material. Actual renderer factory
 // slots must be callable native-ABI bindings returning registered resources.
-// AC0280 property/texture loading, ABF5B0 copy, and native Section pool deletion
-// remain unsupported. No constructor/profile token is a callable native table.
+// AC0280 consumes the evaluated table AFTER the loader's one AAA710 base pass.
+// ABF6F0 publishes one actual resolver reference; replacement deliberately
+// does not release its old+114 (native behavior). ABF4F0 derived cleanup releases
+// current+114 before its string; the canonical owner supplies base destruction.
+// ABF5B0 copy/native pool deletion remain external. New C++ ABI throughout.
 // Every callback must keep this companion, its widget/model/mesh and captured
 // streams alive until emission returns; no active-deletion continuation exists.
 // A later callback/profile error can leave an earlier mapping outstanding.
@@ -60,6 +73,7 @@ public:
     GuiSectionFields& fields() noexcept { return fields_; }
     GuiWidgetOwner& owner() noexcept { return owner_; }
     void set_values_00abe6e0(float value, float start_angle, float u0, float u1);
+    void set_texture_00abf6f0(const NativeString&);
     void emit7c_00abf770();
     void constructed74(GuiWidgetOwner&) override;
     void properties_bound(GuiWidgetOwner&, const GuiTable&) override;
@@ -72,12 +86,15 @@ public:
 private:
     void require_owner(GuiWidgetOwner&) const;
     NativeModelOwner& model() const;
+    void set_texture_impl(const NativeString&);
+    void emit7c_impl();
     GuiWidgetOwner& owner_;
     GuiSectionRuntimeServices services_;
     GuiSectionFields fields_;
     std::uint32_t active_calls_{};
     bool emitting_{};
     bool failed_{}; // incomplete callback/mapping effects; no automatic replay
+    bool retired_{}; // derived string header is stale after native destruction
 };
 
 // ABE7C9..ABE877 owner/emission companion, called only after the existing

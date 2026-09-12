@@ -192,3 +192,18 @@ Correction from docs/NATIVE_PHYSICAL_FACTORY_PRIMITIVES.md: seven factory public
 ## AR parent integration, 2026-09-12
 
 Correction from docs/NATIVE_PHYSICAL_PROVIDER_POOL_LIFECYCLE.md and docs/NATIVE_PHYSICAL_PENDING_RECORDS.md: actual physical-provider pool initialization, trim, teardown, table free and static lifetime are reconstructed, as are pending-record copy/name cleanup and queue reserve/resize/destruction. These close the corresponding dependencies of this discovery map. Complete physical-provider construction and deletion remain open; the normal deletion path still depends on full range erase and balancing, so readiness is not inferred from named helpers alone.
+
+## AS parent integration, 2026-09-12
+
+Correction from docs/NATIVE_PHYSICAL_PROVIDER.md and docs/NATIVE_PHYSICAL_INDEX_TREE.md:
+actual BF4D30/BF4DF0 construction/factory and BF4C70/BF4DD0 destruction/deletion now
+compose the existing application provider pool, base, canonical strings and pending
+records with complete index subtree, iterator erase/rebalancing and range erase.
+This closes the usable owned-provider dependency identified above. A bounded real
+Win32 local-file composition verified two factory/open/read/close/delete cycles,
+provider and stream slot reuse, and canonical lifetime shutdown. It used a captured
+pre-combined library; the four final modules were separately fixture-tested against
+one combined library. Original FH3, binary replacement ABI and game startup remain
+unvalidated. Stored Ghidra destructor/erase tails can remain incomplete after local
+flow repair; reports/native_as_flow_repairs.json and the provider flow report record
+that distinction. Manager insertion and complete startup ownership remain separate.

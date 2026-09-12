@@ -45,7 +45,8 @@ void gui_widget_base_bounds64_00a9e120(float&, float&, float&, float&) noexcept;
 // Complete AA87B0 normal sequence on the documented canonical-owner domain.
 // Child count is captured once; child identities use the SAME owning layout
 // and transform lists, whose membership/order and owners must survive callbacks.
-// Current40 profiles with derived tails (including Icon AB1150) fail explicitly.
+// Icon AB1150 composes the base and actual derived tail under one owner borrow.
+// Other current40 profiles without an established body fail explicitly.
 // Listener targets are mandatory bound adapters, not recovered native bodies.
 // Callback exceptions propagate after completed effects; there is no suspended
 // native EH frame, automatic retry, rollback, or resume-after-callback protocol.
@@ -71,6 +72,7 @@ private:
     ActiveFrame* active_{};
     GuiWidgetFrameListenerOwner& listener(GuiWidgetOwner&) const;
     void align_bounds64(GuiWidgetOwner&, float&, float&, float&, float&);
+    void update_base_active(GuiWidgetOwner&, float seconds);
     void listener_tail(GuiWidgetOwner&);
 };
 } // namespace bsp

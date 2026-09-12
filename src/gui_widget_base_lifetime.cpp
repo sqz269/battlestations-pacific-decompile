@@ -2,6 +2,7 @@
 #include "bsp/gui_text_child_lifetime.hpp"
 #include "bsp/gui_widget_detach.hpp"
 #include "bsp/gui_type_dispatch.hpp"
+#include "bsp/gui_section_runtime.hpp"
 #include <algorithm>
 
 namespace bsp {
@@ -54,17 +55,23 @@ void GuiTextChildDeletion::delete_widget_virtual4(GuiLayoutWidget& child,
         delete_text_child_virtual4(child, flags);
         return;
     }
-    if (child.type != GuiWidgetType::Group || child.transform.type_id != 2 ||
-        owner.text_lifetime_ || !dynamic_cast<GuiGroupTypeImplementation*>(&owner.implementation()))
-        throw GuiTextDeletionBoundary("current delete4 has no established canonical Group/Text implementation");
+    const bool group = child.type == GuiWidgetType::Group && child.transform.type_id == 2 &&
+        dynamic_cast<GuiGroupTypeImplementation*>(&owner.implementation());
+    auto* section = child.type == GuiWidgetType::Section && child.transform.type_id == 17
+        ? dynamic_cast<GuiSectionRuntimeImplementation*>(&owner.implementation()) : nullptr;
+    if (owner.text_lifetime_ || (!group && !section))
+        throw GuiTextDeletionBoundary("current delete4 has no established canonical Group/Text/Section implementation");
     owner.require_no_active_owned_operation();
     owner.implementation().before_scalar_deletion4(owner);
     require_scalar_storage(child, flags);
     owner.base_lifetime_.scalar_flags = flags;
     owner.base_lifetime_.phase = GuiWidgetBaseDeletionPhase::derived;
+    // ABF593 -> ABF4F0 releases current texture114, then current stringEC,
+    // before ABF578 enters AA9730. The companion never invokes the base again.
+    if (section) section->before_scene_release(owner);
     // AC73E3 installs the Group profile, then AC73E9 directly calls AA9730.
     // Flags are tested only AFTER base teardown. C++ wrapper ownership replaces
-    // the F0 source slot/AC7260 pool transport, not its raw storage ABI.
+    // the F0 Group slot/AC7260 or Section pool ABEC40 transport, not raw ABI.
     destroy_gui_widget_base_00aa9730(owner, *this);
 }
 void destroy_gui_widget_base_00aa9730(GuiWidgetOwner& owner,

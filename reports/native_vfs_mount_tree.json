@@ -1,0 +1,768 @@
+{
+  "packet": "orch2_mount_tree_as",
+  "generated_utc": "2026-09-12T17:49:01.470974+00:00",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ghidra_mutations": "none: worker read-only; names and repairs proposed for locked integrator",
+  "functions": [
+    {
+      "entry": "00bd94d0",
+      "name": "maximum_native_vfs_mount_node_00bd94d0",
+      "proposed_name": "BSP_VfsMountTree_Maximum",
+      "previous_name": "FUN_00bd94d0",
+      "native_abi": "ECX node; RET; EAX selected node",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_mount_tree.cpp",
+      "logical_end_exclusive": "00bd94ec",
+      "logical_bytes": 28,
+      "sha256": "ced69a6b75a748793a526c7bacd5a2b10d2e5c438db89187ae636f4a870265ad",
+      "domain": "actual Win32 storage; explicit source services and owning source exception transport; NativeStringStorage release is noexcept"
+    },
+    {
+      "entry": "00bd94f0",
+      "name": "minimum_native_vfs_mount_node_00bd94f0",
+      "proposed_name": "BSP_VfsMountTree_Minimum",
+      "previous_name": "FUN_00bd94f0",
+      "native_abi": "ECX node; RET; EAX selected node",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_mount_tree.cpp",
+      "logical_end_exclusive": "00bd950b",
+      "logical_bytes": 27,
+      "sha256": "89a786dbdfe3fa5e3d52d31e93bfb1c2bbd3cccc50ff3b18ee43fbf308a36f8a",
+      "domain": "actual Win32 storage; explicit source services and owning source exception transport; NativeStringStorage release is noexcept"
+    },
+    {
+      "entry": "00bd9530",
+      "name": "rotate_native_vfs_mount_right_00bd9530",
+      "proposed_name": "BSP_VfsMountTree_RotateRight",
+      "previous_name": "FUN_00bd9530",
+      "native_abi": "ECX tree; stack node; RET4; no specified result",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_mount_tree.cpp",
+      "logical_end_exclusive": "00bd9582",
+      "logical_bytes": 82,
+      "sha256": "2cf9485c469e966d4f465565736ac049a679a6ed0a40efa69df0fa596e097fda",
+      "domain": "actual Win32 storage; explicit source services and owning source exception transport; NativeStringStorage release is noexcept"
+    },
+    {
+      "entry": "00bda0e0",
+      "name": "rotate_native_vfs_mount_left_00bda0e0",
+      "proposed_name": "BSP_VfsMountTree_RotateLeft",
+      "previous_name": "FUN_00bda0e0",
+      "native_abi": "ECX tree; stack node; RET4; no specified result",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_mount_tree.cpp",
+      "logical_end_exclusive": "00bda12e",
+      "logical_bytes": 78,
+      "sha256": "d9dd8b55d4dcb29ffe4451b5b07946bfd5a728ad6229a19b420a4ac26db1ea82",
+      "domain": "actual Win32 storage; explicit source services and owning source exception transport; NativeStringStorage release is noexcept"
+    },
+    {
+      "entry": "00bdf7e0",
+      "name": "destroy_native_vfs_mount_subtree_00bdf7e0",
+      "proposed_name": "BSP_VfsMountTree_DestroySubtree",
+      "previous_name": "FUN_00bdf7e0",
+      "native_abi": "ECX tree forwarded to recursion; stack node; RET4; no specified result",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_mount_tree.cpp",
+      "logical_end_exclusive": "00bdf832",
+      "logical_bytes": 82,
+      "sha256": "0857aba7159b14ae655b8c612c3695ac0f77cc9e8e7d04ba633c8451c2321207",
+      "domain": "actual Win32 storage; explicit source services and owning source exception transport; NativeStringStorage release is noexcept"
+    },
+    {
+      "entry": "00be0080",
+      "name": "erase_native_vfs_mount_iterator_00be0080",
+      "proposed_name": "BSP_VfsMountTree_EraseIterator",
+      "previous_name": "FUN_00be0080",
+      "native_abi": "ECX tree; stack(output,iterator-owner,iterator-node); RET0C; EAX output",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_mount_tree.cpp",
+      "logical_end_exclusive": "00be034c",
+      "logical_bytes": 716,
+      "sha256": "044ce2c4276d18b301f082b06774cef8d30e6114fc84a0eaff269fc7dc4238d1",
+      "domain": "actual Win32 storage; explicit source services and owning source exception transport; NativeStringStorage release is noexcept"
+    },
+    {
+      "entry": "00be0d00",
+      "name": "erase_native_vfs_mount_range_00be0d00",
+      "proposed_name": "BSP_VfsMountTree_EraseRange",
+      "previous_name": "FUN_00be0d00",
+      "native_abi": "ECX tree; stack(output,first-owner,first-node,last-owner,last-node); RET14; EAX output",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_mount_tree.cpp",
+      "logical_end_exclusive": "00be0dc9",
+      "logical_bytes": 201,
+      "sha256": "1399b2e6dbc7350063cc35c2b496ed80bd013f4d8e6bf2ad2942f993f1b01764",
+      "domain": "actual Win32 storage; explicit source services and owning source exception transport; NativeStringStorage release is noexcept"
+    },
+    {
+      "entry": "00be16c0",
+      "name": "destroy_native_vfs_mount_tree_00be16c0",
+      "proposed_name": "BSP_VfsMountTree_Destroy",
+      "previous_name": "FUN_00be16c0",
+      "native_abi": "ECX tree; RET; native EAX0",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_mount_tree.cpp",
+      "logical_end_exclusive": "00be16f4",
+      "logical_bytes": 52,
+      "sha256": "18ce1a2c4d3e3d9c6713e633ba6b76462fcabf821835a9b81743c5be958fcd9a",
+      "domain": "actual Win32 storage; explicit source services and owning source exception transport; NativeStringStorage release is noexcept"
+    }
+  ],
+  "original_spans": [
+    {
+      "entry": "00bd94d0",
+      "end_exclusive": "00bd94ec",
+      "bytes": 28,
+      "sha256": "ced69a6b75a748793a526c7bacd5a2b10d2e5c438db89187ae636f4a870265ad",
+      "hex": "8bc18b5008807a21007510eb038d49008bc28b5008807a210074f5c3",
+      "live_equals_disk": true,
+      "stored_prototype": "00bd94d0 FUN_00bd94d0  undefined FUN_00bd94d0(void)  body 00bd94d0 - 00bd94eb"
+    },
+    {
+      "entry": "00bd94f0",
+      "end_exclusive": "00bd950b",
+      "bytes": 27,
+      "sha256": "89a786dbdfe3fa5e3d52d31e93bfb1c2bbd3cccc50ff3b18ee43fbf308a36f8a",
+      "hex": "8bc18b10807a210075108d9b000000008bc28b10807a210074f6c3",
+      "live_equals_disk": true,
+      "stored_prototype": "00bd94f0 FUN_00bd94f0  undefined FUN_00bd94f0(void)  body 00bd94f0 - 00bd950a"
+    },
+    {
+      "entry": "00bd9530",
+      "end_exclusive": "00bd9582",
+      "bytes": 82,
+      "sha256": "2cf9485c469e966d4f465565736ac049a679a6ed0a40efa69df0fa596e097fda",
+      "hex": "8b5424048b02568b700889328b7008807e210075038956048b72048970048b49043b51045e750c894104895008894204c204008b4a043b5108750c894108895008894204c204008901895008894204c20400",
+      "live_equals_disk": true,
+      "stored_prototype": "00bd9530 FUN_00bd9530  undefined FUN_00bd9530(void)  body 00bd9530 - 00bd9581"
+    },
+    {
+      "entry": "00bda0e0",
+      "end_exclusive": "00bda12e",
+      "bytes": 78,
+      "sha256": "d9dd8b55d4dcb29ffe4451b5b07946bfd5a728ad6229a19b420a4ac26db1ea82",
+      "hex": "8b5424048b4208568b308972088b30807e210075038956048b72048970048b49043b51045e750b8941048910894204c204008b4a043b11750a89018910894204c204008941088910894204c20400",
+      "live_equals_disk": true,
+      "stored_prototype": "00bda0e0 FUN_00bda0e0  undefined FUN_00bda0e0(void)  body 00bda0e0 - 00bda12d"
+    },
+    {
+      "entry": "00bdf7e0",
+      "end_exclusive": "00bdf832",
+      "bytes": 82,
+      "sha256": "0857aba7159b14ae655b8c612c3695ac0f77cc9e8e7d04ba633c8451c2321207",
+      "hex": "5356578b7c2410807f21008bd98bf7753b8b4608508bcbe8e4ffffff8b4f1485c98b3674168b47106a0183c0015051e8aca483ff8bc8e8f51cffff57e88b6d010083c404807e21008bfe74c55f5e5bc20400",
+      "live_equals_disk": true,
+      "stored_prototype": "00bdf7e0 FUN_00bdf7e0  undefined FUN_00bdf7e0(void)  body 00bdf7e0 - 00bdf831"
+    },
+    {
+      "entry": "00be0080",
+      "end_exclusive": "00be034c",
+      "bytes": 716,
+      "sha256": "044ce2c4276d18b301f082b06774cef8d30e6114fc84a0eaff269fc7dc4238d1",
+      "hex": "6aff68c866cc0064a100000000506489250000000083ec488b44246080782100538bd956895c2408744c6a1b33f668e044ce008d4c2414c744242c0f00000089742428c644241800e8538682ff8d44240c508d4c242c8974245ce8211683ff68a863d8008d4c242c51c74424306c92d600e88f67010055578d4c246c8be8e8dd96ffff8b45008078210074058b7d08eb188b5508807a210074048bf8eb0b8b4c24703bcd8b79087563807f21008b750475038977048b43043968047505897804eb0b392e7504893eeb03897e088b5b04392b7513807f210074048bc6eb078bcfe88b93ffff89038b4424108b5804396b087571807f210074078bc6894308eb648bcfe84993ffff894308eb588948048b550089113b4d0875048bf1eb1a807f21008b71047503897704893e8b45088941088b5508894a048b43043968047505894804eb0e8b4504392875048908eb038948088b45048941048a55208a4120885120884520bb01000000385d200f85ff0000008b4c24108b41043b78040f84ec000000385f200f85e30000008b063bf875678b460880782000751488582056c6462000e8b99effff8b46088b4c24108078210075768b10385a2075088b5008385a2074638b5008385a2075168b10885a2050c6402000e8d692ffff8b46088b4c24108a5620885020885e208b400856885820e86a9effffeb7680782000751388582056c6462000e8a592ffff8b068b4c24108078210075138b5008385a20751e8b10385a207517c64020008b41048bfe3b78048b76040f8547ffffffeb318b10385a2075168b5008885a2050c6402000e80c9effff8b068b4c24108a5620885020885e208b0056885820e84292ffff885f208b4d1485c974148b45105303c35051e8bb9983ff8bc8e80412ffff55e89a6201008b4c24148b410883c40485c05f5d760683c0ff8941088b4c24648b4424608b54246889088b4c24505e8950045b64890d0000000083c454c20c00",
+      "live_equals_disk": true,
+      "stored_prototype": "00be0080 FUN_00be0080  undefined FUN_00be0080(void)  body 00be0080 - 00be0311"
+    },
+    {
+      "entry": "00be0d00",
+      "end_exclusive": "00be0dc9",
+      "bytes": 201,
+      "sha256": "1399b2e6dbc7350063cc35c2b496ed80bd013f4d8e6bf2ad2942f993f1b01764",
+      "hex": "83ec08535556578b7c242085ff8bf18b46048b2874043bfe7405e8f45901008b5c24243bdd75598b44242885c08b6e0474043bc67405e8d8590100396c242c753f8b4e048b5104528bcee891eaffff8b46048940048b4604c746080000000089008b46048940088b46048b088b44241c5f89305e5d8948045b83c408c214009085ff74063b7c24287405e8845901003b5c242c74218d4c2420e8428affff53578d542418528bcee8d4f2ffff8b5c24248b7c2420ebca8b44241c89385f5e5d8958045b83c408c21400",
+      "live_equals_disk": true,
+      "stored_prototype": "00be0d00 FUN_00be0d00  undefined FUN_00be0d00(void)  body 00be0d00 - 00be0dc8"
+    },
+    {
+      "entry": "00be16c0",
+      "end_exclusive": "00be16f4",
+      "bytes": 52,
+      "sha256": "18ce1a2c4d3e3d9c6713e633ba6b76462fcabf821835a9b81743c5be958fcd9a",
+      "hex": "83ec08568bf18b46048b08505651568d442414508bcee825f6ffff8b4e0451e8c84e010083c40433c08946048946085e83c408c3",
+      "live_equals_disk": true,
+      "stored_prototype": "00be16c0 FUN_00be16c0  undefined FUN_00be16c0(void)  body 00be16c0 - 00be16e3"
+    },
+    {
+      "entry": "00bd97e0",
+      "end_exclusive": "00bd9843",
+      "bytes": 99,
+      "sha256": "038e8ecbedd6a49934410cbc5130f110d1ce98c4b8b7e8ad4830cbbc6aee1c9e",
+      "hex": "568bf1833e007505e826cf01008b46048078210074065ee917cf01008b480880792100751a8b0180782100750d8d49008bc88b018078210074f6894e045ec38b40048078210075168b4e043b4808750e8946048bd08b42048078210074ea8946045ec3",
+      "live_equals_disk": true,
+      "stored_prototype": "00bd97e0 BSP_VFS_AdvanceMountIterator  undefined BSP_VFS_AdvanceMountIterator(void)  body 00bd97e0 - 00bd9842"
+    },
+    {
+      "entry": "00bdabf0",
+      "end_exclusive": "00bdac27",
+      "bytes": 55,
+      "sha256": "f6fa6aabc0e0200c52111e4c05caf3e21a538e31892d027396c1b49c22c75d17",
+      "hex": "6a24e824bc010083c40485c07406c700000000008d480485c97406c701000000008d480885c97406c70100000000c6402001c6402100c3",
+      "live_equals_disk": true,
+      "stored_prototype": "00bdabf0 BSP_RawTreeNode_Allocate24_00bdabf0  undefined BSP_RawTreeNode_Allocate24_00bdabf0(void)  body 00bdabf0 - 00bdac26"
+    },
+    {
+      "entry": "00cc66c0",
+      "end_exclusive": "00cc66c8",
+      "bytes": 8,
+      "sha256": "dcc088b5fa8eb8b952549ec3e7153dfc4f160ef295d166262256b2cdf2f00b3f",
+      "hex": "8d4db0e9080c74ff",
+      "live_equals_disk": true
+    },
+    {
+      "entry": "00cc66c8",
+      "end_exclusive": "00cc66d2",
+      "bytes": 10,
+      "sha256": "31835bb2553fa38a67e31fa25a428fc625162ac73e6bc06f529ec9184fe80b81",
+      "hex": "b8c40ce000e97104f3ff",
+      "live_equals_disk": true
+    },
+    {
+      "entry": "00e00cbc",
+      "end_exclusive": "00e00cc4",
+      "bytes": 8,
+      "sha256": "5caa421ec7745e3ab11d7197f4a1770890d11ea6a1875f92f98d6b18f5b3c6d9",
+      "hex": "ffffffffc066cc00",
+      "live_equals_disk": true
+    },
+    {
+      "entry": "00e00cc4",
+      "end_exclusive": "00e00ce8",
+      "bytes": 36,
+      "sha256": "e423e24aa7146d2e48ca4cb5b570313bd94c563dd2d9dee965b7466b34184c61",
+      "hex": "2205931901000000bc0ce000000000000000000000000000000000000000000001000000",
+      "live_equals_disk": true
+    },
+    {
+      "entry": "00d863a8",
+      "end_exclusive": "00d863b8",
+      "bytes": 16,
+      "sha256": "39a9b8793eb4dd63140d542b89ddeb550d69d68459ff2cd0e37e3fab16adc814",
+      "hex": "00000000b012440000000000e463d800",
+      "live_equals_disk": true
+    }
+  ],
+  "core_logical_bytes": 1266,
+  "verified_span_bytes": 1498,
+  "producer_and_additional_eh_spans": [
+    {
+      "entry": "00be05c0",
+      "end_exclusive": "00be063e",
+      "bytes": 126,
+      "sha256": "73db55c71abdcd7f24ef6417b711b3a3e8933d43b7f6288e420d944921a98188",
+      "hex": "558bec6aff681167cc0064a100000000506489250000000083ec0c5356578965f06a24e8336201008bf083c4048975ecc745fc000000008975e885f6c645fc0174278b45088b4d0c8b551089068b4514894e04508d4e0c895608e841e8ffff8a4d18884e20c64621008b4df45f8bc65e64890d000000005b8be55dc21400",
+      "live_equals_disk": true
+    },
+    {
+      "entry": "00bdee60",
+      "end_exclusive": "00bdeebc",
+      "bytes": 92,
+      "sha256": "1a863371c9005f22a29d3afdfbf931d020aca07f06f31c8c927a4a1937648fcb",
+      "hex": "8b44240453568bd98b088d7304578d78043bf7890bc70600000000c746040000000074248b176a01528bcee8b0ee83ff833f0074138b068b4f048b5604505152e8db87010083c40c8b47088946088a4f0c5f884e0c5e8bc35bc20400",
+      "live_equals_disk": true
+    },
+    {
+      "entry": "00cc692e",
+      "end_exclusive": "00cc6939",
+      "bytes": 11,
+      "sha256": "d6a74a5e2d858f862aaadac3639b753b2ca57143cfb8946a4b5592faa39e7559",
+      "hex": "8b4df083c13ce987adf1ff",
+      "live_equals_disk": true
+    },
+    {
+      "entry": "00cc69ae",
+      "end_exclusive": "00cc69b9",
+      "bytes": 11,
+      "sha256": "ed5320be4a6a123b150f79d2a15a88ac85e484832b92fd67d9202d4e6817f9c9",
+      "hex": "8b4de883c13ce907adf1ff",
+      "live_equals_disk": true
+    },
+    {
+      "entry": "00ce44e0",
+      "end_exclusive": "00ce44fb",
+      "bytes": 27,
+      "sha256": "177525a16a3554b1bfd100c9d4aeff528d3a733b90015fd19e69d691ecad795b",
+      "hex": "696e76616c6964206d61702f7365743c543e206974657261746f72",
+      "live_equals_disk": true
+    },
+    {
+      "entry": "00d863e4",
+      "end_exclusive": "00d863f4",
+      "bytes": 16,
+      "sha256": "ce36cf5003f6c6d94772206183c377abcd104fc63b285da06b0b8aa354073017",
+      "hex": "03000000f463d8000040d8007c3ce000",
+      "live_equals_disk": true
+    }
+  ],
+  "all_verified_span_bytes": 1781,
+  "call_steps": [
+    {
+      "address": "00bdf7f7",
+      "native": "00bdf7e0",
+      "function": "00bdf7e0",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX tree forwarded to recursion; stack node; RET4; no specified result"
+    },
+    {
+      "address": "00bdf80f",
+      "native": "00419cc0",
+      "function": "00bdf7e0",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "No consumed caller words; RET; EAX actual string pool. Pending block/size/1 belong to BD1510. Production ActualNativeStringPoolStorage repeats getter on each release."
+    },
+    {
+      "address": "00bdf816",
+      "native": "00bd1510",
+      "function": "00bdf7e0",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX actual pool; stack(block,size,unused); RET0C. Actual large/free and small/ring service through canonical pool storage."
+    },
+    {
+      "address": "00bdf81c",
+      "native": "00bf65ac",
+      "function": "00bdf7e0",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "Correct library _free retained; cdecl pointer and caller ADD ESP,4; matching singleton_lifetime_free."
+    },
+    {
+      "address": "00be00c8",
+      "native": "00408720",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX actual SBO header; stack(text,count); RET8; EAX destination; counted assignment body reviewed."
+    },
+    {
+      "address": "00be00da",
+      "native": "00411700",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX raw28h destination; stack(source SBO); RET4; EAX destination; actual native legacy logic-error owner with failed-construction cleanup."
+    },
+    {
+      "address": "00be00f1",
+      "native": "00bf6885",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "Correct library __CxxThrowException@8 retained; stack(object,ThrowInfo); original RaiseException route; RET8 if it returns. Source owning D6926C transport, different RTTI/EH ABI."
+    },
+    {
+      "address": "00be00fe",
+      "native": "00bd97e0",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX actual owner/node iterator; RET. Nil advance tail-calls invalid parameter and returns if the callback returns; current pointer reloads retained."
+    },
+    {
+      "address": "00be0160",
+      "native": "00bd94f0",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX node; RET; EAX selected node"
+    },
+    {
+      "address": "00be0182",
+      "native": "00bd94d0",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX node; RET; EAX selected node"
+    },
+    {
+      "address": "00be0222",
+      "native": "00bda0e0",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX tree; stack node; RET4; no specified result"
+    },
+    {
+      "address": "00be0255",
+      "native": "00bd9530",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX tree; stack node; RET4; no specified result"
+    },
+    {
+      "address": "00be0271",
+      "native": "00bda0e0",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX tree; stack node; RET4; no specified result"
+    },
+    {
+      "address": "00be0286",
+      "native": "00bd9530",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX tree; stack node; RET4; no specified result"
+    },
+    {
+      "address": "00be02cf",
+      "native": "00bda0e0",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX tree; stack node; RET4; no specified result"
+    },
+    {
+      "address": "00be02e9",
+      "native": "00bd9530",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX tree; stack node; RET4; no specified result"
+    },
+    {
+      "address": "00be0300",
+      "native": "00419cc0",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "No consumed caller words; RET; EAX actual string pool. Pending block/size/1 belong to BD1510. Production ActualNativeStringPoolStorage repeats getter on each release."
+    },
+    {
+      "address": "00be0307",
+      "native": "00bd1510",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX actual pool; stack(block,size,unused); RET0C. Actual large/free and small/ring service through canonical pool storage."
+    },
+    {
+      "address": "00be030d",
+      "native": "00bf65ac",
+      "function": "00be0080",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "Correct library _free retained; cdecl pointer and caller ADD ESP,4; matching singleton_lifetime_free."
+    },
+    {
+      "address": "00be0d1a",
+      "native": "00bf6713",
+      "function": "00be0d00",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "No arguments, RET. Pushes five null arguments to BF66EF then ADD ESP,14; may return. Shared invalid-parameter callback."
+    },
+    {
+      "address": "00be0d36",
+      "native": "00bf6713",
+      "function": "00be0d00",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "No arguments, RET. Pushes five null arguments to BF66EF then ADD ESP,14; may return. Shared invalid-parameter callback."
+    },
+    {
+      "address": "00be0d4a",
+      "native": "00bdf7e0",
+      "function": "00be0d00",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX tree forwarded to recursion; stack node; RET4; no specified result"
+    },
+    {
+      "address": "00be0d8a",
+      "native": "00bf6713",
+      "function": "00be0d00",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "No arguments, RET. Pushes five null arguments to BF66EF then ADD ESP,14; may return. Shared invalid-parameter callback."
+    },
+    {
+      "address": "00be0d99",
+      "native": "00bd97e0",
+      "function": "00be0d00",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX actual owner/node iterator; RET. Nil advance tail-calls invalid parameter and returns if the callback returns; current pointer reloads retained."
+    },
+    {
+      "address": "00be0da7",
+      "native": "00be0080",
+      "function": "00be0d00",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX tree; stack(output,iterator-owner,iterator-node); RET0C; EAX output"
+    },
+    {
+      "address": "00be16d6",
+      "native": "00be0d00",
+      "function": "00be16c0",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX tree; stack(output,first-owner,first-node,last-owner,last-node); RET14; EAX output"
+    },
+    {
+      "address": "00be16df",
+      "native": "00bf65ac",
+      "function": "00be16c0",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "Correct library _free retained; cdecl pointer and caller ADD ESP,4; matching singleton_lifetime_free."
+    },
+    {
+      "address": "00bd97e8",
+      "native": "00bf6713",
+      "function": "00bd97e0",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "No arguments, RET. Pushes five null arguments to BF66EF then ADD ESP,14; may return. Shared invalid-parameter callback."
+    },
+    {
+      "address": "00bdabf2",
+      "native": "00bf681b",
+      "function": "00bdabf0",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "Correct operator_new allocation leaf; cdecl size, caller ADD ESP4; EAX raw storage; canonical singleton_lifetime_allocate malloc/new-handler boundary."
+    },
+    {
+      "address": "00cc66c3",
+      "native": "004072d0",
+      "function": "00cc66c0",
+      "kind": "tail_jump",
+      "callee_abi_and_contract": "ECX completed native SBO temporary; RET; release external backing then reset length/capacity/first NUL."
+    },
+    {
+      "address": "00cc6934",
+      "native": "00be16c0",
+      "function": "00cc692e",
+      "kind": "tail_jump",
+      "callee_abi_and_contract": "ECX tree; RET; native EAX0"
+    },
+    {
+      "address": "00cc69b4",
+      "native": "00be16c0",
+      "function": "00cc69ae",
+      "kind": "tail_jump",
+      "callee_abi_and_contract": "ECX tree; RET; native EAX0"
+    },
+    {
+      "address": "00be0730",
+      "native": "00be0080",
+      "function": "00be06a0",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX tree; stack(output,iterator-owner,iterator-node); RET0C; EAX output"
+    },
+    {
+      "address": "00be0895",
+      "native": "00be0080",
+      "function": "00be0750",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX tree; stack(output,iterator-owner,iterator-node); RET0C; EAX output"
+    },
+    {
+      "address": "00be059c",
+      "native": "00bdf7e0",
+      "function": "00be0590",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX tree forwarded to recursion; stack node; RET4; no specified result"
+    },
+    {
+      "address": "00be1e34",
+      "native": "00bdabf0",
+      "function": "00be1dc0",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "No consumed arguments; RET/EAX raw24h allocation; zero three links; byte20=1,byte21=0; all other bytes untouched."
+    },
+    {
+      "address": "00be061a",
+      "native": "00bdee60",
+      "function": "00be05c0",
+      "kind": "direct_call",
+      "callee_abi_and_contract": "ECX destination payload, stack source payload, RET4/EAX destination. Leading word plus string at+4/+8 plus provider word+0C plus byte+10. Producer evidence, not implemented here."
+    }
+  ],
+  "layout": {
+    "tree": {
+      "head": 4,
+      "count": 8,
+      "word0": "untouched"
+    },
+    "node": {
+      "allocation": 36,
+      "left": 0,
+      "parent": 4,
+      "right": 8,
+      "key_length": 16,
+      "key_data": 20,
+      "provider": 24,
+      "color": 32,
+      "nil": 33
+    },
+    "producer_evidence": [
+      "BE1E34..BE1E51 initialize manager+3C mount head, nil1, self links, count0",
+      "BE05C0 writes links and passes node+0C to BDEE60 at BE061A; publishes color20/nil21",
+      "BDEE60 writes payload+0 word, string+4/+8, provider+0C and byte+10",
+      "BE06A0 at BE070D..BE0730 and BE0750 at BE0873..BE0895 release provider before calling iterator erase"
+    ]
+  },
+  "eh": {
+    "handler_entry": "00cc66c8",
+    "handler_end_exclusive": "00cc66d2",
+    "func_info": "00e00cc4",
+    "unwind_map": "00e00cbc",
+    "state0_cleanup": "00cc66c0",
+    "cleanup_target": "004072d0",
+    "temporary": "frame-50",
+    "armed_after": "00be00d6",
+    "throw_info": "00d863a8",
+    "profile": "00d6926c",
+    "source_transport": "NativeHardwareLayoutInvalidIterator; original raw owner fields and owning copy/destruction; source RTTI/EH ABI"
+  },
+  "gaps": [
+    {
+      "start": "00bdf821",
+      "end_exclusive": "00bdf82c",
+      "kind": "internal stored-body gap",
+      "hex": "83c404807e21008bfe74c5",
+      "behavior": "caller cleanup then captured-left nil test, current assignment and loop"
+    },
+    {
+      "start": "00be0312",
+      "end_exclusive": "00be034c",
+      "kind": "no containing function",
+      "stored_owner": "00be0080",
+      "stored_end_exclusive": "00be0312",
+      "behavior": "read current count, nonzero decrement, output advanced owner/node, restore registers/FS, RET0C"
+    },
+    {
+      "start": "00be16e4",
+      "end_exclusive": "00be16f4",
+      "kind": "no containing function",
+      "stored_owner": "00be16c0",
+      "stored_end_exclusive": "00be16e4",
+      "hex": "83c40433c08946048946085e83c408c3",
+      "behavior": "caller cleanup, EAX0, zero head/count, restoration, RET"
+    },
+    {
+      "start": "00cc66c8",
+      "end_exclusive": "00cc66d2",
+      "kind": "no function start",
+      "hex": "b8c40ce000e97104f3ff",
+      "behavior": "static FH3 handler MOV EAX,E00CC4; JMP BF6B43; no live worker mutation"
+    }
+  ],
+  "alignment": [
+    {
+      "start": "00bd94dd",
+      "end_exclusive": "00bd94e0",
+      "hex": "8d4900"
+    },
+    {
+      "start": "00be0d7f",
+      "end_exclusive": "00be0d80",
+      "hex": "90"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Saved BE0080 decompilation removes BE018C..BE01E3 as unreachable",
+      "evidence": "BE011E reads current by-value iterator node; BE0127 branches to BE018C; fixture deep/immediate successor cases match",
+      "is": "Complete successor transplant branch follows the advanced iterator from BD97E0"
+    },
+    {
+      "was": "Saved _free no-return propagation truncates the erase and owner tails and subtree loop",
+      "evidence": "Live bytes equal installed PE in the precise recorded gaps; original/source fixture agrees",
+      "is": "Logical erase716/subtree82/owner52 include explicit caller cleanup and returns"
+    },
+    {
+      "was": "Fixture expected one invalid callback for first-owner==last-owner!=tree, first==minimum",
+      "evidence": "Preserved run3 first16 pass then assertion; BE0D1A and BE0D36 both reached; run5 corrected fixture passes with unchanged production source",
+      "is": "Two callbacks: initial first-owner validation and independent last-owner validation before discovering last!=head"
+    }
+  ],
+  "validation": {
+    "build": "strict MSVC Win32 Release /W4 /WX /fp:strict; process MSBUILDDISABLENODEREUSE=1",
+    "verify_seeds": "passed",
+    "ctests": [
+      "reconstructed_math passed",
+      "native_math_differential passed"
+    ],
+    "probe": {
+      "cases": 19,
+      "compared_snapshot_words": 665,
+      "run": "local/mount_tree_as/probe_run5.json",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2506065368652344,
+      "frozen": "local/mount_tree_as/frozen_v5",
+      "frozen_input_count": 871,
+      "pre_post_hashes_identical": true,
+      "original_normal_bytes": "Private mapped window original BD0000..E10000 shifted +30000000; only listed service CALL operand and message immediate changes; all internal relative branches retained",
+      "redirects": [
+        {
+          "site": "00bdf80f",
+          "kind": "CALL operand",
+          "original_target": "00419cc0",
+          "host": "no-argument storage-returning fixture getter"
+        },
+        {
+          "site": "00be0300",
+          "kind": "CALL operand",
+          "original_target": "00419cc0",
+          "host": "same fixture getter"
+        },
+        {
+          "site": "00be00c8",
+          "kind": "CALL operand",
+          "original_target": "00408720",
+          "host": "reviewed source counted-string assignment bridge"
+        },
+        {
+          "site": "00be00da",
+          "kind": "CALL operand",
+          "original_target": "00411700",
+          "host": "reviewed source actual logic-error construction bridge"
+        },
+        {
+          "site": "00bd1510",
+          "kind": "mapped entry JMP",
+          "host": "fixture size-recording storage.release"
+        },
+        {
+          "site": "00bf65ac",
+          "kind": "mapped entry JMP",
+          "host": "singleton_lifetime_free"
+        },
+        {
+          "site": "00bf6713",
+          "kind": "mapped entry JMP",
+          "host": "shared returning callback fixture"
+        },
+        {
+          "site": "00bf6885",
+          "kind": "mapped entry JMP",
+          "host": "raw throw observer then explicit fixture cleanup and captured-FS/nonlocal return"
+        },
+        {
+          "site": "00be00af",
+          "kind": "absolute message PUSH operand",
+          "original_value": "00ce44e0",
+          "fixture_value": "30ce44e0"
+        }
+      ],
+      "exceptions": "Original invalid branch reaches throw observer; owner/profile/message/ThrowInfo checked; source owning throw/catch checked. Original FH3 dispatch not executed. Isolated fixture suppresses C4611/C4733 for deliberate nonportable nonlocal return/FS restore, production source has no suppressions.",
+      "preserved_failures": [
+        "compile_probe_failure1.log C4611",
+        "compile_probe_failure2.log C4733",
+        "probe_run1.json whole preferred image reservation failed",
+        "probe_run2.json low MEM_MAPPED reservation conflict diagnosed",
+        "probe_run3.json first16 cases match; fixture one-callback expectation wrong",
+        "probe_run4.json bounded low reservation collided with process allocation"
+      ]
+    },
+    "artifact_sha256": {
+      "src\\native_vfs_mount_tree.cpp": "88d62a7a98ee32bfc29604d88fecc4e10885a011902991a13c509c515fe5589a",
+      "include\\bsp\\native_vfs_mount_tree.hpp": "e5d614d77eef2e989358f043ed15a88ad63de4723658d064d795d15ad52b33b8",
+      "build\\win32\\bsp_core.dir\\Release\\native_vfs_mount_tree.obj": "fc308fa3a03546822c9a22d2a5c496b45125bf6a02ff1f202886734370b3cd7c",
+      "build\\win32\\Release\\bsp_core.lib": "74b7c7d45531654af968cc2a00f340e68c81f99367e61f16fe81fbd6e08c1eda",
+      "local\\mount_tree_as\\frozen_v5\\mount_tree_probe.cpp": "79bc002f26cf6290f6bc760062ae8048fa17a49ead0d76e567d9ff196775eca5",
+      "local\\mount_tree_as\\frozen_v5\\mount_tree_probe.obj": "17e886c0953bb81ebd4d805288bc1a3766d940520a9dd802f6cf16071e29117d",
+      "local\\mount_tree_as\\frozen_v5\\mount_tree_probe.exe": "face1a803bbcf82357af876871a611a6f8a4019587724e0ecdd7b7d473e564fd",
+      "local\\mount_tree_as\\pre_run_manifest_v5.json": "8d16379b26ec1ee1834c83c14929d4b9dafc0cdef0f071c59d75664d470716cb",
+      "local\\mount_tree_as\\post_run_manifest_v5.json": "8d16379b26ec1ee1834c83c14929d4b9dafc0cdef0f071c59d75664d470716cb",
+      "local\\mount_tree_as\\probe_run5.json": "84fafdaf3ff79fac46126a2d7e22b256624d8b63555df0df52723e246b43f41a",
+      "local\\mount_tree_build_after_seeds.log": "160dcf650fd069fadc142ccab459899a7778208b706867d56e61b4e74242ccfd",
+      "local\\mount_tree_seed_verification.log": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    "abi": "native calling conventions statically reviewed; explicit C++ interfaces not binary ABI-compatible",
+    "game": "not run; no game validation",
+    "limits": [
+      "NativeStringStorage release noexcept excludes original throwing-getter behavior; ActualNativeStringPoolStorage is production binding",
+      "Host CRT allocator/free/invalid parameter and owning source exception transport are explicit boundaries",
+      "19 concrete fixture cases are bounded, not exhaustive across every malformed/aliased/concurrent tree state",
+      "Native register/exceptions ABI and native FH3 dispatch remain unvalidated"
+    ],
+    "call_verifier": {
+      "rows": 37,
+      "failures": 0,
+      "log": "local/mount_tree_as/report_calls.log",
+      "sha256": "97786ff0be0542f585f11a3a03d9b84d1feae9d74ae019a88284deda9e6f451c"
+    }
+  }
+}

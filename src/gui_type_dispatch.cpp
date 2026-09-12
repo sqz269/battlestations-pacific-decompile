@@ -93,6 +93,12 @@ void GuiFrameBoxTypeImplementation::properties_bound(GuiWidgetOwner& owner, cons
 void GuiFrameBoxTypeImplementation::loaded78(GuiWidgetOwner& owner) {
     gui_framebox_loaded78_00aceb50(state_, owner.layout(), owner.extra_fields().overbright_94, services_);
 }
+void GuiFrameBoxTypeImplementation::set_state84_00acf070(GuiWidgetOwner& owner, std::int16_t state) {
+    require(owner.layout().type == GuiWidgetType::FrameBox && &owner.implementation() == this,
+        "FrameBox current84 requires the same canonical owner");
+    gui_framebox_select_state_00acf070(state_, owner.layout(), owner.extra_fields().overbright_94,
+        state, services_);
+}
 
 GuiScreenLayerImplementation::GuiScreenLayerImplementation(GuiWidgetOwner& owner,
     std::uint8_t screen_flag, GuiScreenLayerServices services, const bool& crt_sse2_conversion)

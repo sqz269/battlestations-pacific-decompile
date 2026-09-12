@@ -1,0 +1,377 @@
+{
+  "packet": "cc2_submarine_model",
+  "owner": "agent/cc2-submarine-model",
+  "docs": "docs/SUBMARINE_MODEL.md",
+  "sources": [
+    "include/bsp/submarine_model.hpp",
+    "src/submarine_model.cpp"
+  ],
+  "subject": "The submarine unit's own behaviour: the leaf class layout and its two ticks, the four-band depth state machine and its command arms, the air-supply and crush-depth rules, the periscope state machine including the broken state, and the contract by which the depth target reaches the hull physics. Ghidra was read-only for this packet: no renames, no comments, no prototypes, no saves.",
+  "reuses": [
+    "include/bsp/sensor_tables.hpp for SensorCategory; 00852B90's band boundaries stay there and this packet only produces the periscopeOut byte it reads",
+    "include/bsp/gameplay_settings.hpp already names every Submarine.* setting this model reads; docs/GAMEPLAY_SETTINGS.md carries their installed values",
+    "include/bsp/ship_class_fields.hpp for MaxSpeed +500h, KamikazeDamage +510h and KamikazeBlastDamage +514h",
+    "include/bsp/vehicle_class_fields.hpp for Length +A0h, Width +A4h and Height +A8h",
+    "docs/UNIT_INSTANCE_LAYOUT.md for the six-level constructor chain the submarine leaf joins at level 5",
+    "docs/SHIP_MOTION.md, which already listed 0085542F as an unidentified override call site of 00825F20"
+  ],
+  "verification_note": "Rule 2 of docs/WORKER_VERIFICATION_CHECKLIST.md cannot be satisfied for five of the routines below: Ghidra has no function at 00854650, 00855420, 00852C60, 00853E10 or 00852D30, so tools/verify_report_calls.py rejects every site inside them with 'call site is in no Ghidra function'. Their rows are therefore carried under calls_unverifiable with site/callee keys rather than address/native, so the checker runs clean over the rows it can actually check. Every site in those lists was read from a bsp.py disasm-raw dump of the disk bytes and its containing routine established from the int3 padding boundaries listed under no_ghidra_function, not from a scroll position.",
+  "recovered_field_names": {
+    "source": "00853E10, the save/load override at main vtable slot +A4h, binds each field by address to a named archive entry; 00852D30 at slot +A8h prints the same eight with the same literals. These are string literals the binary uses as field names, not hypotheses.",
+    "fields": [
+      { "literal": "air", "string_address": "00d0bf18", "instance_offset": "127c", "type": "float" },
+      { "literal": "needAir", "string_address": "00d0bf10", "instance_offset": "1281", "type": "bool" },
+      { "literal": "unlimitedAir", "string_address": "00d0bf00", "instance_offset": "1280", "type": "bool" },
+      { "literal": "airSupply", "string_address": "00d0bf1c", "instance_offset": null, "type": "the section name over the three above" },
+      { "literal": "depthLevel", "string_address": "00d0bef4", "instance_offset": "1268", "type": "int" },
+      { "literal": "periscopeState", "string_address": "00d0bee4", "instance_offset": "122c", "type": "int" },
+      { "literal": "periscopeY", "string_address": "00d0bed8", "instance_offset": "1230", "type": "float" },
+      { "literal": "periscopeOut", "string_address": "00d0bec8", "instance_offset": "1234", "type": "bool" },
+      { "literal": "sullyesztoEro", "string_address": "00d0beb8", "instance_offset": "1270", "type": "float, Hungarian for submerging force" },
+      { "literal": "_submarine", "string_address": "00d0bf28", "instance_offset": null, "type": "the outer section name" },
+      { "literal": "periszkop", "string_address": null, "instance_offset": "1214", "type": "the model node name 00853630 looks up at 00853c90" },
+      { "literal": "s_fizika", "string_address": "00d196e0", "instance_offset": null, "type": "the literal preceding the controller vtable dword 00D196EC that holds 00936DC0" }
+    ]
+  },
+  "functions": [
+    {
+      "address": "00852f10",
+      "name": "BSP_SubmarineUnit_Construct",
+      "abi": "__thiscall(instance, int flag), RET 4, body 00852f10-00852fad",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "the level-6 leaf. Calls 0081ED40 with ECX still the instance (MOV ESI,ECX at 00852f16; the pseudocode drops the register argument and shows the flag instead), which is level 5 of docs/UNIT_INSTANCE_LAYOUT.md, the same level the ship leaf 006FE460 calls. So the submarine unit is a sibling of the ship unit, not a subclass, and its extra fields start exactly at 1188h. Writes +C4h = 8 against the ship's 7, air = 1.0 (DAT_00D7A24C) at 00852f73, and zeroes +1228h, +1235h, +1238h, +1274h, +1280h and +1281h. Installs eight vptrs: +0h 00D0BF80, +10h 00D0BF68, +24h 00D0BF60, +170h 00D0BF5C, +1E4h 00D0BF54, +310h 00D0BF3C, +38Ch 00D0BF38, +72Ch 00D0BF34.",
+      "calls": [
+        { "address": "00852f18", "native": "0081ed40", "role": "the level-5 base constructor, ECX = the instance" }
+      ]
+    },
+    {
+      "address": "00855250",
+      "name": "BSP_SubmarineUnit_StepAirSupply",
+      "abi": "__thiscall(unit, float dt), RET 4, body 00855250-00855415",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "The breathing line is bands[1] + 3.0 (00D7A2B0, a double) discarded whenever it falls below zero: 00855266-00855286 is FCOMIP of 0.0 against the sum with JBE keeping the sum, so every shipped class (periscope depth around -20) gets the flat -4.0 of 00CF1430 and the boat must come nearly to the surface to breathe. Submerged: air -= dt / class.AirRunOutTime (+838h, default 120.0). Surfaced: air += dt / class.AirReloadTime (+83Ch, default 5.0). unlimitedAir (+1280h) skips the whole submerged block, warnings included. Both warnings are downward edges only and the critical edge at SubmarineAirNeedLimit 0.16 suppresses the low edge at SubmarineAirWarningLimit 0.35 on a step that crosses both. air clamps to 1.0, and a negative air with unit+5Dh clear zeroes the field and then destroys the boat. The needAir latch arms below 0.16 and disarms above SubmarineAirEnoughLimit 0.5, and the native returns straight after arming so the disarm test is skipped that step.",
+      "calls": [
+        { "address": "00855295", "native": "00414db0", "role": "BSP_EntityPose_RefreshWorld, unconditional, before the submerged test" },
+        { "address": "00855308", "native": "00424c40", "role": "BSP_GameSettings_GetSingleton for SubmarineAirNeedLimit +4BCh, the critical edge" },
+        { "address": "0085531f", "native": "00424c40", "role": "the same singleton for the previous-value half of the critical edge" },
+        { "address": "0085533b", "native": "009771e0", "role": "BSP_WarningManager_ReportSubmarineAirCritical on the 0.16 downward edge" },
+        { "address": "00855342", "native": "00424c40", "role": "the singleton for SubmarineAirWarningLimit +4B8h" },
+        { "address": "00855359", "native": "00424c40", "role": "the same for the previous-value half of the low edge" },
+        { "address": "00855375", "native": "00977050", "role": "BSP_WarningManager_ReportSubmarineAirLow on the 0.35 downward edge" },
+        { "address": "008553b8", "native": "00d0bf80+70", "role": "indirect: vtable slot +70h = 0077D1A0 BSP_UnitInstance_DestroyAndBroadcast(1), the drowning. The air store precedes it." },
+        { "address": "008553c3", "native": "00424c40", "role": "the singleton for the needAir arm threshold" },
+        { "address": "008553f1", "native": "00424c40", "role": "the singleton for SubmarineAirEnoughLimit +4C0h, the disarm" }
+      ]
+    },
+    {
+      "address": "008551c0",
+      "name": "BSP_SubmarineUnit_StepCrushDepthDamage",
+      "abi": "__thiscall(unit, float dt), RET 4, body 008551c0-0085524f",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "+1284h accumulates dt and the sum is stored back at 008551c6 before the test, so the field carries the un-pulsed remainder between pulses. Once the accumulator passes 1.0 (008551dd COMISS, strict >), a hull Y below -SubmarineDamageDepth (+4B0h, installed 70.0) takes SubmarineDepthDamage (+4ACh, installed 9.0) times the accumulated interval, then the accumulator zeroes. The limit is a global gameplay setting and never a class key, so every submarine in the game crushes at the same 70 metres and SwimDepth3 only bounds what the player can order; a class whose SwimDepth3 is shallower than 70 never crushes under its own commands. The pose refresh is inside the branch, so the hull Y is read only on a pulse.",
+      "calls": [
+        { "address": "008551ee", "native": "00414db0", "role": "BSP_EntityPose_RefreshWorld, inside the once-a-second branch" },
+        { "address": "008551f3", "native": "00424c40", "role": "BSP_GameSettings_GetSingleton for SubmarineDamageDepth" },
+        { "address": "0085520c", "native": "00424c40", "role": "the same singleton for SubmarineDepthDamage" },
+        { "address": "00855233", "native": "00d0bf80+1ac", "role": "indirect: vtable slot +1ACh = 0095DA00 BSP_UnitInstance_AddDamage(rate * accumulated interval)" },
+        { "address": "0085523c", "native": "00977370", "role": "BSP_WarningManager_ReportSubmarineDepthDamage, after the damage call" }
+      ]
+    },
+    {
+      "address": "008528b0",
+      "name": "BSP_SubmarineUnit_SetDepthLevel",
+      "abi": "__thiscall(unit, int level), RET 4, body 008528b0-0085296e",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "clamps level to 0..3 at 008528cc and 008528d3, then forces 1 when the class has KamikazeDamage +510h or KamikazeBlastDamage +514h above zero, so a human torpedo cannot be commanded off periscope depth at all and 00853630 gives it no periscope node either. On a change it writes depthLevel and sends session message kind A2h with the level as payload, which the submarine's own handler consumes on the peers.",
+      "calls": [
+        { "address": "00852924", "native": "0075b430", "role": "BSP_SessionMessage_ConstructBase with kind A2h" },
+        { "address": "00852956", "native": "0077c7b0", "role": "the send, with the level in the message body" }
+      ]
+    },
+    {
+      "address": "00853630",
+      "name": "BSP_SubmarineUnit_SEntityInit",
+      "abi": "__thiscall(unit), RET 0, body 00853630-00853e0f, SEH scope table 00C94688",
+      "coverage": "partial: the depth-band table, the initial band and the periscope setup are established; the waterflow and waterdistortion effect setup 00853659-008539d4 is read only for the fields it writes",
+      "no_ghidra_function": false,
+      "note": "main vtable slot +A0h over 00822C20 BSP_UnitInstance_SEntityInit, which it calls first. Builds the four depth bands into +1200h..+120Ch in the loop at 00853A90-00853AC5: band 0 always takes the default table (00853A90 CMP EDI,EBX with EBX zero then JLE), and bands 1..3 take -0.0 (DAT_00D7A208) minus the class key when the key is non-negative (00853A9F COMISS then JB), otherwise the default. The four defaults are the dwords at 00E0B578, 0.0, -20.0, -40.0 and -80.0; 00853A63 loads that address and 00853A7B subtracts 80Ch so the table can be indexed by the class offset, which is why a Ghidra label appears at 00E0AD6C. Picks the initial band from the kamikaze test, then the scene property bag keys Dive (00D0B6A4, which also teleports the entity by writing bands[level] into its local Y at +A8h, clearing +C8h and +10Ch and invalidating every child pose) and TargetDive, then the nearest band by |hullY - bands[i]| over i = 1..3 with |hullY| as band 0's incumbent error and a strict < at 00853b9e so ties keep the shallower band. Looks the periscope node up by name unless the class is kamikaze, stores its rest local Y as periscopeY, allocates a 6Ch object at +1224h and reads the periscope_sight marker triple into +1218h..+1220h (default 0, 10.0, 0 from DAT_00CE38B8).",
+      "calls": [
+        { "address": "0085364c", "native": "00822c20", "role": "the base scene-attach hook" },
+        { "address": "00853b1d", "native": "008f2260", "role": "BSP_ScenePropertyBag_Find for the Dive key at 00D0B6A4" },
+        { "address": "00853b7a", "native": "0042ed50", "role": "BSP_SceneNode_InvalidateSubtreePose for every child after the Dive teleport" },
+        { "address": "00853b99", "native": "008f2260", "role": "the same find for the TargetDive key" },
+        { "address": "00853bf5", "native": "00414db0", "role": "BSP_EntityPose_RefreshWorld before the nearest-band scan" },
+        { "address": "00853c90", "native": "0071ad50", "role": "the periszkop model-node lookup, skipped for kamikaze classes" },
+        { "address": "00853cbf", "native": "00bf681b", "role": "operator new for the 6Ch object at +1224h" },
+        { "address": "00853ce6", "native": "008533e0", "role": "the 6Ch object's setup against the periscope node" },
+        { "address": "00853d1f", "native": "00718870", "role": "the periscope_sight marker-list lookup feeding +1218h..+1220h" }
+      ]
+    },
+    {
+      "address": "00936dc0",
+      "name": "BSP_SubmarineController_StepDepthPhysics",
+      "abi": "__thiscall(controller, float dt), body 00936dc0-009373b4",
+      "coverage": "partial: the effective-band resolution, the seabed clamp, the depth-curve inputs and the velocity writeback are established; the sullyesztoEro slew at 009371c1-00937398 is not, because the decompiler reports unaff_EBX and unaff_retaddr there and the sign and speed term were not settled from the listing",
+      "no_ghidra_function": false,
+      "note": "the submarine's force model. Its only reference is the vtable dword at 00D196EC, the slot before 00937440, which docs/SHIP_MOTION.md establishes as the ship's force model reached as controller->vtable[0](dt); the literal s_fizika sits at 00D196E0 immediately before the table. controller+1Ch is the unit and unit+1018h is the controller, which 00855498 and 00854ec3 both confirm by passing it to named controller routines. Overrides the commanded band twice: needAir or the catapult rule force band 0 unless the class is kamikaze, and unit+5Dh (dead) forces band 3, which is how a wreck sinks. Clamps the target up to the scan output +123Ch and raises the depth-curve gain from 1.0 to 1.5 (DAT_00CE380C) when it does, and when clamped writes two more curve results into the order-ring slots at unit + 844h + unit[97Ch]*20h and +848h. The contract: sullyesztoEro is subtracted from the body's velocity Y and written back through the two DYN physics calls below, and nothing else in the submarine module touches the physics body.",
+      "calls": [
+        { "address": "00936df8", "native": "009329c0", "role": "BSP_UnitController_ApplyHydroForces, the base hydro pass, dt forwarded" },
+        { "address": "00936e53", "native": "008522c0", "role": "the catapult surface rule, half of the band-0 override" },
+        { "address": "00936ecd", "native": "00927f10", "role": "the class-8 test on the +740h owner that gates the seabed clamp" },
+        { "address": "00936ef5", "native": "00415510", "role": "BSP_Math_MinFloatByRef, the seabed clamp itself" },
+        { "address": "00936f1b", "native": "00414db0", "role": "BSP_EntityPose_RefreshWorld before the depth error is taken" },
+        { "address": "00937033", "native": "00419010", "role": "BSP_Math_InterpolateClamped, the depth curve, bounds 0.5 and class.UpDownStopTime +82Ch" },
+        { "address": "009370a8", "native": "00419010", "role": "the same curve on the clamped-scan pitch term +1244h" },
+        { "address": "009370dd", "native": "00419010", "role": "the same curve on the clamped-scan roll term +1240h" },
+        { "address": "009371c1", "native": "0080fc30", "role": "BSP_UnitInstance_GetReferenceSpeed for the slew's speed term" },
+        { "address": "00937223", "native": "0042ac60", "role": "BSP_Math_StepTowards on the commanded rate" },
+        { "address": "0093739a", "native": "00c37e50", "role": "DYN physics: the first half of the velocity writeback" },
+        { "address": "009373a7", "native": "00c37e20", "role": "DYN physics: the velocity with sullyesztoEro subtracted from Y" }
+      ]
+    },
+    {
+      "address": "004654d0",
+      "name": "BSP_EntityCommand_SetSubmarineDepth",
+      "abi": "__thiscall(command, entity* target), RET 4, body 004654d0-00465569",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "ESI is [ESP+8], the target entity (MOV ESI,[ESP+8] at 004654d1) and EDI is ECX, the command (MOV EDI,ECX at 004654d8); ECX at every 008528B0 call site is ESI, established by filtering the whole listing for both registers. The gate is target->vtable[5Ch](8), BSP_MSubmarine_IsKindOf, called indirectly at 004654e9. command+2Ch is a native string matched case-insensitively against Surface, Periscope, Underwater and Maxdepth for bands 0..3. Its only reference is the arm-table dword at 00CE5530. python tools/bsp.py find misses the four names because they are plain .rdata literals at 00CE5490, 00CE5418 and their neighbours rather than ledger entries.",
+      "calls": [
+        { "address": "004654f9", "native": "00425850", "role": "BSP_NativeString_EqualsCStringInsensitive against the Surface literal at 00CE5490" },
+        { "address": "00465506", "native": "008528b0", "role": "band 0, Surface" },
+        { "address": "00465517", "native": "00425850", "role": "the same compare against the Periscope literal at 00CE5418" },
+        { "address": "00465524", "native": "008528b0", "role": "band 1, Periscope" },
+        { "address": "00465535", "native": "00425850", "role": "the same compare against the Underwater literal" },
+        { "address": "00465542", "native": "008528b0", "role": "band 2, Underwater" },
+        { "address": "00465553", "native": "00425850", "role": "the same compare against the Maxdepth literal" },
+        { "address": "00465560", "native": "008528b0", "role": "band 3, Maxdepth" }
+      ]
+    },
+    {
+      "address": "008522c0",
+      "name": "BSP_SubmarineUnit_CatapultNeedsSurface",
+      "abi": "__fastcall(unit) -> bool in AL, RET 0, body 008522c0-008522f7",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "answers true when unit+1279h is set and some child of the list at unit+48h (next at +44h) answers IsKindOf(28h) with its +490h non-negative. The IsKindOf goes through the child's vtable +5Ch and is an indirect call. Class 28h is MCatapult per docs/ENTITY_CLASS_IDS.md, so a seaplane-carrying boat surfaces itself for a pending launch. Read by 00936DC0 only.",
+      "calls": []
+    },
+    {
+      "address": "00853090",
+      "name": "BSP_SubmarineUnit_RegisterInWorldLists",
+      "abi": "__fastcall(unit), RET 0, body 00853090-008530d6",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "main vtable slot +130h over 006FE620. Registers in the parent entity list, then pushes the unit onto five separate world unit lists where the ship leaf uses its own count.",
+      "calls": [
+        { "address": "00853093", "native": "00928560", "role": "BSP_GameEntity_RegisterInParentEntityList" },
+        { "address": "0085309f", "native": "00484540", "role": "BSP_UnitList_PushBack, list 1 of 5" },
+        { "address": "008530ab", "native": "00484540", "role": "list 2 of 5" },
+        { "address": "008530b7", "native": "00484540", "role": "list 3 of 5" },
+        { "address": "008530c3", "native": "00484540", "role": "list 4 of 5" },
+        { "address": "008530cf", "native": "00484540", "role": "list 5 of 5" }
+      ]
+    },
+    {
+      "address": "008530e0",
+      "name": "BSP_SubmarineUnit_DetachFromWorldLists",
+      "abi": "__fastcall(unit), RET 0, body 008530e0-0085310a",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "note": "main vtable slot +134h over 006FE670. Calls the base detach, then unlinks the unit from the singly linked list at (unit+30h)+7Ch by walking next at +4h and matching the payload at +8h.",
+      "calls": [
+        { "address": "008530e3", "native": "006dffc0", "role": "BSP_UnitInstance_DetachFromMidWorldLists" },
+        { "address": "00853104", "native": "004837d0", "role": "the node unlink once the payload matches" }
+      ]
+    },
+    {
+      "address": "00854650",
+      "name": "BSP_SubmarineUnit_Update",
+      "abi": "__thiscall(unit, float dt), RET 4, body 00854650-008551b9, SEH scope table 00C94748",
+      "coverage": "partial: the periscope state machine and the depth snapshot are read; the wake and water-distortion effect blocks 00854701-00854e43 are read only for their field writes",
+      "no_ghidra_function": true,
+      "note": "main vtable slot +DCh over 008255B0 BSP_UnitInstance_Update, which it calls first. Clears periscopeOut at 00854b00 before anything else, so the byte is a per-frame output and not a latch. Snapshots the pose into +11D4h/+11D8h/+11DCh at 00854a31 and the water sample into +11E0h/+11E4h/+11E8h at 00854a90. Periscope state 2 accumulates the repair at 00854e44 with dt scaled by FailureRepairMultiplier +3D0h when unit+A44h is 1; the auto-raise at 00854ed7 needs +1235h set, depthLevel == 1 and the hull strictly inside bands[1] +/- 2.5; the mast then extends at dt*5.0 or retracts at dt*3.0, and periscopeOut is set at 00855057.",
+      "calls_unverifiable": [
+        { "site": "00854676", "callee": "008255b0", "role": "the base per-frame unit update, ECX unchanged, dt forwarded" },
+        { "site": "00854687", "callee": "00414db0", "role": "BSP_EntityPose_RefreshWorld, the first of twelve guarded refreshes on unit+C8h" },
+        { "site": "008546fc", "callee": "00933bb0", "role": "a controller call on unit+1018h behind a 1-in-15 counter gate at 008546e4" },
+        { "site": "0085477b", "callee": "00413920", "role": "the wake node transform into unit+1194h" },
+        { "site": "0085490c", "callee": "00427eb0", "role": "BSP_EntityPose_GetWorldPositionRefreshed for the cStartHeight material parameter +11F8h" },
+        { "site": "00854aef", "callee": "00852970", "role": "the +1224h object's own tick, skipped when the pointer is null" },
+        { "site": "00854b6b", "callee": "004142e0", "role": "BSP_Vector3f_TransformAffinePoint, the periscope node point" },
+        { "site": "00854bbf", "callee": "0078cf20", "role": "a world query on [00E188A8]+19F0h with the transformed point" },
+        { "site": "00854cc0", "callee": "0080fc30", "role": "BSP_UnitInstance_GetReferenceSpeed, reciprocal into the effect record +50h" },
+        { "site": "00854e5e", "callee": "00424c40", "role": "BSP_GameSettings_GetSingleton for FailureRepairMultiplier +3D0h" },
+        { "site": "00854ec3", "callee": "0080e490", "role": "the unit controller at unit+1018h, the argument to the repair completion" },
+        { "site": "00854eca", "callee": "0092bec0", "role": "periscope repair complete: zero +1254h, restore the mast's visibility and collision" },
+        { "site": "00854f28", "callee": "00427eb0", "role": "the second hull-Y read of the auto-raise window, at +4h of the returned float3" },
+        { "site": "00854fca", "callee": "0042ac60", "role": "BSP_Math_StepTowards, the mast local Y on the extending arm" },
+        { "site": "008550b5", "callee": "0042ac60", "role": "the same step on the retracting arm" },
+        { "site": "00855175", "callee": "004142e0", "role": "BSP_Vector3f_TransformAffinePoint for the periscope sight point" },
+        { "site": "00855198", "callee": "0078cf20", "role": "the same world query for the sight point" }
+      ]
+    },
+    {
+      "address": "00855420",
+      "name": "BSP_SubmarineUnit_UpdateMotion",
+      "abi": "__thiscall(unit + 310h, float dt), RET 4, body 00855420-00855937, followed by a 13-entry jump table at 00855938",
+      "coverage": "partial: the sequence, the double-buffered scan, the provider walk and the clearance formula are established; the 13 geometry arms 00855643-008556bb are read but the sample ring is not reconstructed, and the +124Ch/+1250h bucketing is taken from the branch structure only",
+      "no_ghidra_function": true,
+      "note": "+310h sub-object vtable slot +8h over 00825F20 BSP_UnitInstance_UpdateShipMotion, which it calls first. this is the sub-object, not the unit: LEA EBP,[ESI-310h] at 00855775 recovers the unit and CMP byte ptr [ESI-248h] at 0085575a is the same unit+C8h byte that CMP byte ptr [EBP+0C8h] reads at 00855782. The scan publishes +123Ch/+1240h/+1244h when the step index +1238h wraps to 0 at 00855440 and accumulates into +1248h/+124Ch/+1250h otherwise, seeding +1248h from the deepest band +120Ch. The published clearance is the max over the footprint ring of (provider height + class Height +A8h + 3.0), taken at 00855806-0085583c. The step index advances at 008558f1 and wraps past 0Ch.",
+      "calls_unverifiable": [
+        { "site": "0085542f", "callee": "00825f20", "role": "the base ship motion tick, ECX unchanged, dt forwarded from its own [ESP+4]" },
+        { "site": "00855498", "callee": "0092d730", "role": "BSP_UnitController_GetBodyAxisSpeed, ECX = unit+1018h" },
+        { "site": "008556e5", "callee": "00bf7030", "role": "the CRT square root of the two-component footprint offset" },
+        { "site": "0085577d", "callee": "00414db0", "role": "BSP_EntityPose_RefreshWorld, ECX = EBP = the unit" },
+        { "site": "0085579b", "callee": "00414db0", "role": "the same refresh on the second guarded read" },
+        { "site": "008557b1", "callee": "004142e0", "role": "BSP_Vector3f_TransformAffinePoint, the footprint point into world space" },
+        { "site": "008557e5", "callee": "0087fa50", "role": "the provider height sample at (x, z); a zero result skips the provider" },
+        { "site": "0085591c", "callee": "00855250", "role": "the air model, ECX = EBP = the unit, dt forwarded" },
+        { "site": "0085592b", "callee": "008551c0", "role": "the crush-depth model, ECX = EBP = the unit, dt forwarded" }
+      ]
+    },
+    {
+      "address": "00852c60",
+      "name": "BSP_SubmarineUnit_HandleMessage",
+      "abi": "__thiscall(unit, msg) -> AL, RET 4, body 00852c60-00852cb9",
+      "coverage": "complete",
+      "no_ghidra_function": true,
+      "note": "main vtable slot +164h over 00821E80 BSP_UnitInstance_HandleMessage, which handles kinds 4Bh..A0h; the submarine adds exactly the two kinds above that ceiling. Kind A1h steps the band: the payload byte at msg+20h zero means deeper (level+1 when level < 3) and non-zero means shallower (level-1 when level > 0), and a clamped step still answers AL = 1 without calling the setter. Kind A2h sets the band absolutely from the dword at msg+20h. Anything else rewrites [ESP+4] at 00852c74 and tail-jumps to the base.",
+      "calls_unverifiable": [
+        { "site": "00852c78", "callee": "00821e80", "kind": "tail_jump", "role": "the base handler for every kind below A1h" },
+        { "site": "00852c81", "callee": "008528b0", "role": "kind A2h, the absolute band from the payload dword at msg+20h" },
+        { "site": "00852c9f", "callee": "008528b0", "role": "kind A1h shallower, level-1" },
+        { "site": "00852cb2", "callee": "008528b0", "role": "kind A1h deeper, level+1" }
+      ]
+    },
+    {
+      "address": "00853e10",
+      "name": "BSP_SubmarineUnit_Serialize",
+      "abi": "__thiscall(unit), RET 0, body 00853e10-00854222, SEH scope table 00C946A8",
+      "coverage": "partial: the named-field bindings are complete; the tail 0085405c-00854222 is read only for its +1279h and +122Ch writes",
+      "no_ghidra_function": true,
+      "note": "main vtable slot +A4h over 0081F980, which it calls first. This is the routine that recovers the eight field names: it binds each field by address to a typed archive entry (type 0 string, 1 int, 2 float, 3 bool) under the sections _submarine and airSupply. periscopeState goes through a local and is stored back at 00853fa1 because the archive takes that entry by value. The tail sets the catapult surface enable +1279h at 0085420a.",
+      "calls_unverifiable": [
+        { "site": "00853e2d", "callee": "0081f980", "role": "the base save/load hook" },
+        { "site": "00853e80", "callee": "00bd8e20", "role": "the section open for _submarine" },
+        { "site": "00853e9b", "callee": "00bd8e20", "role": "the section open for airSupply" },
+        { "site": "00853ece", "callee": "00bd6830", "role": "the named entry for air; the same helper binds needAir, unlimitedAir, depthLevel, periscopeY, periscopeOut and sullyesztoEro" },
+        { "site": "00853f01", "callee": "00bd6830", "role": "the named entry for needAir" },
+        { "site": "00853f34", "callee": "00bd6830", "role": "the named entry for unlimitedAir" },
+        { "site": "00853f3d", "callee": "00bd7a20", "role": "the airSupply section close" },
+        { "site": "00853f70", "callee": "00bd6830", "role": "the named entry for depthLevel" },
+        { "site": "00853fd5", "callee": "00bd6830", "role": "the named entry for periscopeY" },
+        { "site": "00854008", "callee": "00bd6830", "role": "the named entry for periscopeOut" },
+        { "site": "0085403b", "callee": "00bd6830", "role": "the named entry for sullyesztoEro" },
+        { "site": "00854044", "callee": "00bd7a20", "role": "the _submarine section close" },
+        { "site": "00854070", "callee": "008f2260", "role": "BSP_ScenePropertyBag_Find in the tail, key at 00CF87EC" }
+      ]
+    },
+    {
+      "address": "00852d30",
+      "name": "BSP_SubmarineUnit_DescribeState",
+      "abi": "__thiscall(unit, sink), RET 4, body 00852d30-00852f0d",
+      "coverage": "partial: the eight emitted fields are established; the sink's own vtable slots +4h, +8h and +0Ch are named by role only, their bodies unread",
+      "no_ghidra_function": true,
+      "note": "main vtable slot +A8h over 00818340. Pushes the same eight fields with the same string literals as the serializer, tagged 0 string, 1 int, 2 float, 3 bool, so it is an independent confirmation of every recovered name. Every emit goes through the sink's vtable as CALL EDX, so the routine has no direct calls at all and nothing here can be verified against the call graph.",
+      "calls_unverifiable": [
+        { "site": "00852d73", "callee": "sink+vtable04", "role": "indirect: open the airSupply section" },
+        { "site": "00852da6", "callee": "sink+vtable0c", "role": "indirect: emit (air, float). Repeated for the other seven fields." },
+        { "site": "00852e0d", "callee": "sink+vtable08", "role": "indirect: close the airSupply section" }
+      ]
+    }
+  ],
+  "no_ghidra_function": [
+    { "address": "00854650", "name": "BSP_SubmarineUnit_Update", "end_address": "008551b9" },
+    { "address": "00855420", "name": "BSP_SubmarineUnit_UpdateMotion", "end_address": "00855937" },
+    { "address": "00852c60", "name": "BSP_SubmarineUnit_HandleMessage", "end_address": "00852cb9" },
+    { "address": "00853e10", "name": "BSP_SubmarineUnit_Serialize", "end_address": "00854222" },
+    { "address": "00852d30", "name": "BSP_SubmarineUnit_DescribeState", "end_address": "00852f0d" },
+    { "address": "009327f0", "name": "BSP_SubmarineUnit_BreakPeriscopeSilent", "end_address": "0093283a" },
+    { "address": "00852fb0", "name": "BSP_SubmarineUnit_KindConstant0D", "end_address": "00852fb5" },
+    { "address": "00852ff0", "name": "BSP_SubmarineUnit_QueryClassByDepthLevel", "end_address": "00853004" },
+    { "address": "00853010", "name": "CG_adjustor_thunk_00853010", "end_address": "00853017" }
+  ],
+  "flow_gaps": [
+    {
+      "call_site": "none",
+      "note": "No flow gaps. The long undefined bodies were taken from bsp.py disasm-raw over the disk bytes rather than ghidra disasm, so no instruction runs could be silently dropped after a free-class call; consecutive listed addresses were checked for holes across 00854650-008551b9 (743 instructions), 00855420-00855937 (325) and 00853e10-00854222 (297) and every instruction boundary is contiguous. The only int3 runs inside the region are the real padding at 008551ba, 00852cbc, 00852cf1, 00852fae, 00853005, 00853018 and 00854223, each of which is a function boundary."
+    }
+  ],
+  "corrections": [
+    {
+      "document": "docs/SENSOR_TABLES.md",
+      "was": "The four depth words and the periscope byte are produced elsewhere and are not read here.",
+      "is": "The producers are now named. The four depth words at unit+1200h..+120Ch are built once at scene attach by 00853630's loop at 00853A90-00853AC5 from the class keys PeriscopeDepth, SwimDepth2 and SwimDepth3 against a default table of 0.0, -20.0, -40.0, -80.0 at 00E0B578; band 0 is always the default. The periscope byte at unit+1234h is cleared every frame at 00854b00 and set at 00855057 only when the extending mast reaches class.PeriscopeMoveRange + periscopeY - 1.0.",
+      "evidence": "00853630 008539e0-00853a7c for the band loop, 00854b00 and 00855057 for the byte, and the save schema binding at 00854008 which names the byte periscopeOut."
+    },
+    {
+      "document": "docs/SHIP_MOTION.md",
+      "was": "0085542F, the routine starting 00855420, no Ghidra function, forwards its own [ESP+4] float.",
+      "is": "That routine is the submarine's motion tick, slot +8h of the +310h sub-object vtable 00D0BF3C (00855420 against the ship's 00825F20 at 00CFC394). Its this is unit+310h, and after the base call it runs a 13-step seabed-clearance scan and then the submarine's air and crush-depth models.",
+      "evidence": "the vtable diff of 00D0BF3C against 00CFC38C over 40 slots, LEA EBP,[ESI-310h] at 00855775, and the two tail calls at 0085591c and 0085592b with ECX = EBP."
+    },
+    {
+      "document": "docs/UNIT_DAMAGE_AND_DEATH.md",
+      "was": "0080E490 BSP_UnitInstance_GetPartsObject, whose body is MOV EAX,[ECX+1018h]; the returned object holds the per-part health vector at its +310h.",
+      "is": "The object at unit+1018h is the unit controller, not a parts container. 00855498 passes it to 0092D730 BSP_UnitController_GetBodyAxisSpeed, and 00854ec3 passes it to 0092BEC0, which reads its +1Ch as the unit exactly as 00936DC0 does for the controller. The health vector at +310h and the controller are the same object, so the name is narrower than the thing it returns.",
+      "evidence": "00855480 MOV ECX,[ESI+0D08h] then CALL 0092D730 at 00855498 with ESI = unit+310h, so the argument is [unit+1018h]; 00854ec3 CALL 0080E490 then MOV ECX,EAX then CALL 0092BEC0 at 00854eca; 0092BEC0's [param+1Ch] and 00936DC0's [param_1+1Ch] are both the unit. Not applied: 0080E490 belongs to packet cc2_unit_damage and is not leased to this packet."
+    },
+    {
+      "document": "docs/MISSION_EVENTS_UPDATE.md",
+      "was": "00977500 BSP_WarningManager_ReportSubmarinePeriscopeBroken raises submarineperiscopebroken.",
+      "is": "It does, but nothing calls it. ghidra xrefs finds no reference and a scan of the whole .text section for the absolute value 00977500 finds none either, so it is not reached through a table. Both break sites, 009373C0 and its reference-free twin 009327F0, set periscopeState to 2 without reporting. The reporter is complete and dead: the only feedback a player gets for a broken periscope is the mast disappearing.",
+      "evidence": "ghidra xrefs 00977500 returns nothing; local/scan_disp.py over .text for the value 00977500 returns 0 hits, against 1 hit for the live comparison address 00D196EC. The three sibling reporters are live: 00977050 at 00855375, 009771E0 at 0085533b and 00977370 at 0085523c."
+    }
+  ],
+  "reconstruction": {
+    "pure_rules": [
+      "submarine_build_depth_bands_00853630",
+      "submarine_nearest_depth_band_00853630",
+      "submarine_clamp_depth_command_008528b0",
+      "submarine_step_depth_command_00852c60",
+      "submarine_air_breathing_line_00855250",
+      "submarine_step_air_00855250",
+      "submarine_step_crush_008551c0",
+      "submarine_effective_depth_band_00936dc0",
+      "submarine_depth_target_00936dc0",
+      "submarine_accumulate_clearance_00855420",
+      "submarine_periscope_should_auto_raise_00854650",
+      "submarine_periscope_is_out_00855057",
+      "submarine_step_periscope_repair_00854650",
+      "submarine_break_periscope_009373c0",
+      "submarine_periscope_sensor_state"
+    ],
+    "host_sequence": "submarine_run_motion_tick_tail_00855420 over SubmarineMotionTickHost, one method per native call site of 00855420's tail",
+    "analysed_not_reconstructed": [
+      "the 13 geometry arms of the seabed scan, 00855643-008556bb",
+      "the sullyesztoEro slew, 009371c1-00937398",
+      "the periscope mast pose write through 0042AC60 and the node's vtable +2Ch",
+      "the waterflow and waterdistortion effect blocks of 00854650 and 00853630",
+      "the 6Ch object at unit+1224h and the 00852970 tick it receives"
+    ],
+    "status": "reconstructed and build-tested; not ABI-compatible and not game-validated"
+  },
+  "build": "./scripts/build.ps1 clean, Win32 Release, warnings as errors; ctest reconstructed_math passed with one added case pinning the air model's suppressed low edge, its latch skip and the -4.0 breathing line",
+  "open_questions": [
+    "The sign and speed term of the sullyesztoEro slew at 009371c1-00937398. The decompiler loses both register inputs and the listing was not read instruction by instruction, so the reconstruction stops at the commanded rate.",
+    "The 13 sample points of the seabed ring. The arms are combinations of -0.0, Width, 2*Width and Length, and three of them are pure x87 rotations, but the ring's shape was not derived.",
+    "Why 00977500 is dead. Either the break path lost its report during development or a caller was removed; nothing in the image distinguishes the two.",
+    "class +828h UpDownRotation has no reader in anything this packet read. It is loaded by 00854230 and never used here.",
+    "class +820h sits inside the submarine key range and no Lua key writes it.",
+    "unit+1279h, the catapult surface enable, is written at 0085420a in the serializer tail and read by 008522c0 and three ship-AI sites; the condition behind the serializer store was not read.",
+    "No installed per-class values are quoted anywhere in this packet: the class Lua rows live in the packed archives, which are out of scope here. Only the binary's own defaults and the installed global gameplay settings are given."
+  ],
+  "tool_problems": [
+    "ghidra xrefs and ghidra callers both answered 'No callers found for function: null' for 00855250 and 008551c0 because their caller 00855420 has no Ghidra function; xrefs still gave the raw sites, which is what located the tick.",
+    "ghidra proto on an address inside an undefined region answers '? ? body ?' with no indication of the nearest function, so every boundary in the five undefined bodies had to be established from int3 padding in a disasm-raw dump.",
+    "bsp.py ghidra disasm rejects --length, so the raw dumps went through bsp.py disasm-raw with a driver script at local/dump_region.py.",
+    "Capstone's x87 operand order for FSUBR is ambiguous in the raw listing: the dump printed 'fsubr st(1)' at 00854f10 for the bytes D8 E9, which is FSUBR ST(0),ST(1) and computes ST(0) = ST(1) - ST(0), the opposite of what the printed form suggests. The auto-raise window was wrong until the bytes were read.",
+    "rg is not on PATH in the PowerShell tool; the Grep tool was used instead.",
+    "verify_report_calls.py has no way to express a call site inside a routine Ghidra has no function for: it fails such a row unconditionally, so the five undefined routines' rows had to be moved out of the checked key names. See verification_note."
+  ]
+}

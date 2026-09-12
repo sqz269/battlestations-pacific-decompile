@@ -424,3 +424,9 @@ Unread bindings in the same family, listed so the next packet does not re-derive
 | --- | --- | --- |
 | `006EC8E0` | `006ECB40` | `MCatapult::Fire`, vtable `00CFAAB8` slot `1D8h`; single epilogue `006ECB40 RET 0Ch`. Ghidra's `FUN_006EC860` swallows the range, so it was decoded from the raw bytes with capstone (`local/dis_air.py`) |
 | `006ECB50` | `006ECBD4` | the launch-message handler, vtable slot `1F0h`, `RET 4` |
+
+## Correction from docs/LAND_AND_STRUCTURES.md (packet cc2_land_and_structures)
+
+- **Was:** the +72Ch caution names two cases, the ship's owned-ref slot and MAirfield's air-operations block
+  **Is:** three cases. MLandFort's +72Ch is an owned-ref slot built by the same 00809270 as the ship's, so the ship and the fort share that subobject and the airfield does not.
+  **Evidence:** 00745978 calls 00809270 with ECX = this+72Ch (LEA at 0074596C), against 0081ED7B for the ship; MCommandBuilding re-vptrs the same offset to 00CFAFD8 at 006F568D, which proves it is a base subobject and not a member

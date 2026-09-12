@@ -129,3 +129,20 @@ x87 parity, native exception ABI, native object aliasing, or installed-game beha
 | --- | --- |
 | `avoid_zone_boundary_bindings` | Bind the five real callee implementations and adapt native zone/group storage; reuse the existing reciprocal-length implementation. Differential-check the owned routines including cutoff/degenerate cases |
 | existing avoid-zone polygon producer packet | Own `00416F30`, `00419AB0`, `004F4B50`, and their transitive primitives only after lease checks. Preserve the producer's winding/offset policy rather than substituting generic geometry |
+
+## Correction from docs/AVOID_ZONE_QUERY_BINDING.md
+
+All five boundary host calls now have concrete implementations connected by
+`AvoidZoneBoundaryQueries`. Its inputs are zones from the real 0041CCD0 storage
+producer in `AVOID_ZONE_OWNER.md`. It copies native corner order, derived values
+and stored bounds into owned snapshots, so the original allocations can be
+released afterward. Layer/group selection remains the caller's responsibility.
+The bridge deliberately avoids the approximate semantic polygon producer.
+
+00416F30 is complete in `AVOID_ZONE_OFFSET.md`; 00419AB0 and 004F4B50 plus their
+004F3630 solver are covered in `AVOID_ZONE_SEGMENT_MATH.md`. This closes the
+implementation dependency portion of the follow-up table. Component differential
+checks and a constructor-to-query fixture are recorded in the individual
+reports. The two boundary routines themselves still have semantic C++
+interfaces; whole-query native parity, executable wiring and gameplay remain
+unverified.

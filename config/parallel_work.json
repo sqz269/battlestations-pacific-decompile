@@ -8564,6 +8564,149 @@
       "qualification": "Discovery complete; four reset parents remain incomplete. Exact +4C logical-owner, cache+04 profile, +1A78 record-callback and CRT composition boundaries retained."
     },
     {
+      "id": "orch5_icon_frame",
+      "worker": "icon_frame",
+      "done": true,
+      "state": "bounded_implementation_integrated_build_and_scoped_fixture_checked",
+      "function_addresses": [
+        "00ab1150",
+        "00ab1110",
+        "00ab27f0"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_icon_runtime.hpp",
+        "src/gui_icon_runtime.cpp",
+        "include/bsp/gui_widget_frame_runtime.hpp",
+        "src/gui_widget_frame_runtime.cpp"
+      ],
+      "output_files": [
+        "reports/gui_icon_frame_runtime.json",
+        "include/bsp/gui_icon_runtime.hpp",
+        "src/gui_icon_runtime.cpp",
+        "include/bsp/gui_widget_frame_runtime.hpp",
+        "src/gui_widget_frame_runtime.cpp"
+      ],
+      "integration_owner": "agent/orch5-20260911",
+      "contract": "Bounded concrete Icon40/44/84 with one base/tail owner guard. Full resource-backed Icon and delayed texture loading remain incomplete.",
+      "validation": "Combined MSVC Win32 Release2/2; scoped parent probes and independent review. reports/orch5_texture_icon_listener_batch.json",
+      "annotation_status": "Parent locked Ghidra annotation archive and affected exports",
+      "next_work": "Bounded concrete Icon40/44/84 with one base/tail owner guard. Full resource-backed Icon and delayed texture loading remain incomplete."
+    },
+    {
+      "id": "orch5_section_texture",
+      "worker": "section_texture",
+      "done": true,
+      "state": "bounded_implementation_integrated_build_and_scoped_fixture_checked",
+      "function_addresses": [
+        "00ac0280",
+        "00abf6f0",
+        "00abf4f0",
+        "00abf590"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_section_runtime.hpp",
+        "src/gui_section_runtime.cpp",
+        "src/gui_widget_base_lifetime.cpp"
+      ],
+      "output_files": [
+        "reports/gui_section_texture_ownership.json",
+        "include/bsp/gui_section_runtime.hpp",
+        "src/gui_section_runtime.cpp",
+        "src/gui_widget_base_lifetime.cpp"
+      ],
+      "integration_owner": "agent/orch5-20260911",
+      "contract": "Nine properties, actual texture/resolver sequence and derived/common cleanup. Explicit scratch input; native copy/pool/SEH and full resource-backed fixture remain incomplete.",
+      "validation": "Combined MSVC Win32 Release2/2; scoped parent probes and independent review. reports/orch5_texture_icon_listener_batch.json",
+      "annotation_status": "Parent locked Ghidra annotation archive and affected exports",
+      "next_work": "Nine properties, actual texture/resolver sequence and derived/common cleanup. Explicit scratch input; native copy/pool/SEH and full resource-backed fixture remain incomplete."
+    },
+    {
+      "id": "orch5_point_provider",
+      "worker": "point_provider",
+      "done": true,
+      "state": "bounded_implementation_integrated_build_and_scoped_fixture_checked",
+      "function_addresses": [
+        "00b7b090",
+        "00b72140",
+        "00b6ef20",
+        "00b6e8c0",
+        "00b8f100",
+        "00b0ca40"
+      ],
+      "code_ownership": [
+        "include/bsp/native_point_light_provider.hpp",
+        "src/native_point_light_provider.cpp"
+      ],
+      "output_files": [
+        "reports/native_point_light_provider.json",
+        "include/bsp/native_point_light_provider.hpp",
+        "src/native_point_light_provider.cpp"
+      ],
+      "integration_owner": "agent/orch5-20260911",
+      "contract": "Actual raw spatial population and partial particle volume producer. Cached/static Group only; dynamic Group, complete particle synchronization and Text provider remain incomplete.",
+      "validation": "Combined MSVC Win32 Release2/2; scoped parent probes and independent review. reports/orch5_texture_icon_listener_batch.json",
+      "annotation_status": "Parent locked Ghidra annotation archive and affected exports",
+      "next_work": "Actual raw spatial population and partial particle volume producer. Cached/static Group only; dynamic Group, complete particle synchronization and Text provider remain incomplete."
+    },
+    {
+      "id": "orch5_concrete_gui_listener",
+      "worker": "primary",
+      "done": true,
+      "state": "bounded_implementation_integrated_build_and_scoped_fixture_checked",
+      "function_addresses": [
+        "004fa100",
+        "004fa110",
+        "004fa120",
+        "004fa130",
+        "004fa140",
+        "004fa150",
+        "004fa160"
+      ],
+      "code_ownership": [
+        "include/bsp/gui_widget_listener_binding.hpp",
+        "src/gui_widget_listener_binding.cpp"
+      ],
+      "output_files": [
+        "reports/gui_widget_listener_binding.json",
+        "include/bsp/gui_widget_listener_binding.hpp",
+        "src/gui_widget_listener_binding.cpp"
+      ],
+      "integration_owner": "agent/orch5-20260911",
+      "contract": "Five exposed actual empty methods;00/08 analyzed only; existing same-owner binding preserved.",
+      "validation": "Combined MSVC Win32 Release2/2; scoped parent probes and independent review. reports/orch5_texture_icon_listener_batch.json",
+      "annotation_status": "Parent locked Ghidra annotation archive and affected exports",
+      "next_work": "Five exposed actual empty methods;00/08 analyzed only; existing same-owner binding preserved."
+    },
+    {
+      "id": "orch5_main_menu_listener_bodies",
+      "worker": "primary",
+      "done": true,
+      "state": "bounded_implementation_integrated_build_and_scoped_fixture_checked",
+      "function_addresses": [
+        "00581970",
+        "00581b20",
+        "005993a0"
+      ],
+      "code_ownership": [
+        "include/bsp/main_menu_widget_listener.hpp",
+        "src/main_menu_widget_listener.cpp",
+        "include/bsp/gui_type_dispatch.hpp",
+        "src/gui_type_dispatch.cpp"
+      ],
+      "output_files": [
+        "reports/main_menu_widget_listener.json",
+        "include/bsp/main_menu_widget_listener.hpp",
+        "src/main_menu_widget_listener.cpp",
+        "include/bsp/gui_type_dispatch.hpp",
+        "src/gui_type_dispatch.cpp"
+      ],
+      "integration_owner": "agent/orch5-20260911",
+      "contract": "Two same-screen listener handlers implemented. MainMenu current04=5993A0 remains abstract; complete screen/provider and resource-backed render validation remain incomplete.",
+      "validation": "Combined MSVC Win32 Release2/2; scoped parent probes and independent review. reports/orch5_texture_icon_listener_batch.json",
+      "annotation_status": "Parent locked Ghidra annotation archive and affected exports",
+      "next_work": "Two same-screen listener handlers implemented. MainMenu current04=5993A0 remains abstract; complete screen/provider and resource-backed render validation remain incomplete."
+    },
+    {
       "id": "orch6_ship_ai_lateral_record",
       "packet": "orch6_ship_ai_lateral_record",
       "state": "bounded_reconstruction_integrated_build_checked",
@@ -8637,6 +8780,89 @@
       "evidence": "reports/avoid_zone_boundary.json",
       "integration_report": "reports/orch6_navigation_geometry_batch.json",
       "qualification": "Two control-flow projections through required geometry callees; no executable wiring or native storage adapter. New C++ interfaces; original ABI and game behavior are not validated."
+    },
+    {
+      "id": "orch6_avoid_zone_segment_math",
+      "packet": "orch6_avoid_zone_segment_math",
+      "done": true,
+      "source_ready": true,
+      "state": "bounded_reconstruction_integrated_build_checked",
+      "worker": "orch6-segment-queries",
+      "function_addresses": [
+        "004f3630",
+        "00419ab0",
+        "004f4b50",
+        "00414c60"
+      ],
+      "output_files": [
+        "docs/AVOID_ZONE_SEGMENT_MATH.md",
+        "reports/avoid_zone_segment_math.json",
+        "include/bsp/avoid_zone_segment_math.hpp",
+        "src/avoid_zone_segment_math.cpp"
+      ],
+      "evidence": "reports/avoid_zone_segment_math.json",
+      "integration_report": "reports/avoid_zone_query_binding.json",
+      "qualification": "Three full native geometry schedules plus a private cutoff-length adaptation with explicit CRT access. Game behavior remains unvalidated."
+    },
+    {
+      "id": "orch6_avoid_zone_offset",
+      "packet": "orch6_avoid_zone_offset",
+      "done": true,
+      "source_ready": true,
+      "state": "bounded_reconstruction_integrated_build_checked",
+      "worker": "orch6-zone-offset",
+      "function_addresses": [
+        "00416f30"
+      ],
+      "output_files": [
+        "docs/AVOID_ZONE_OFFSET.md",
+        "reports/avoid_zone_offset.json",
+        "include/bsp/avoid_zone_offset.hpp",
+        "src/avoid_zone_offset.cpp"
+      ],
+      "evidence": "reports/avoid_zone_offset.json",
+      "integration_report": "reports/avoid_zone_query_binding.json",
+      "qualification": "Complete closest offset boundary point using the native record layout and floating-point instruction stages. Game behavior remains unvalidated."
+    },
+    {
+      "id": "orch6_avoid_zone_owner",
+      "packet": "orch6_avoid_zone_owner",
+      "done": true,
+      "source_ready": true,
+      "state": "bounded_reconstruction_integrated_build_checked",
+      "worker": "orch6-zone-owner",
+      "function_addresses": [
+        "0041ccd0",
+        "0041a540",
+        "004167c0",
+        "007af800"
+      ],
+      "output_files": [
+        "docs/AVOID_ZONE_OWNER.md",
+        "reports/avoid_zone_owner.json",
+        "include/bsp/avoid_zone_owner.hpp",
+        "src/avoid_zone_owner.cpp"
+      ],
+      "evidence": "reports/avoid_zone_owner.json",
+      "integration_report": "reports/avoid_zone_query_binding.json",
+      "qualification": "Complete constructor, clip/rebuild, clear and world-point control flow through actual scene/allocator/CRT services; native SEH ABI remains external. Game behavior remains unvalidated."
+    },
+    {
+      "id": "orch6_avoid_zone_query_binding",
+      "packet": "orch6_avoid_zone_query_binding",
+      "done": true,
+      "source_ready": true,
+      "state": "concrete_binding_integrated_build_fixture_checked",
+      "worker": "orch6-20260912",
+      "function_addresses": [],
+      "output_files": [
+        "docs/AVOID_ZONE_QUERY_BINDING.md",
+        "reports/avoid_zone_query_binding.json",
+        "include/bsp/avoid_zone_query_binding.hpp",
+        "src/avoid_zone_query_binding.cpp"
+      ],
+      "evidence": "reports/avoid_zone_query_binding.json",
+      "qualification": "Owned native storage snapshots bind all five boundary geometry callees. Constructor-to-query fixture passes; executable registration and gameplay remain separate."
     }
   ],
   "snapshot_after_analysis": {

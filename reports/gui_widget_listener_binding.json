@@ -1,0 +1,94 @@
+{
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "abi_compatible": false,
+  "game_validated": false,
+  "render_validated": false,
+  "native_byte_differential": false,
+  "new_permanent_tests": 0,
+  "packet": "orch5_concrete_gui_listener",
+  "functions": [
+    {
+      "address": "004fa100",
+      "name": "BSP_GuiWidgetListener_Empty00",
+      "source": null,
+      "original_abi": "ECX listener; widget stack; RET4",
+      "end_inclusive": "004fa102",
+      "coverage": "analyzed_only"
+    },
+    {
+      "address": "004fa110",
+      "name": "BSP_GuiWidgetListener_Empty04",
+      "source": "src/gui_widget_listener_binding.cpp",
+      "original_abi": "ECX listener; widget stack; RET4",
+      "end_inclusive": "004fa112",
+      "coverage": "complete_empty_body_new_cpp_interface"
+    },
+    {
+      "address": "004fa120",
+      "name": "BSP_GuiWidgetListener_Empty08",
+      "source": null,
+      "original_abi": "ECX listener; widget stack; RET4",
+      "end_inclusive": "004fa122",
+      "coverage": "analyzed_only"
+    },
+    {
+      "address": "004fa130",
+      "name": "BSP_GuiWidgetListener_Empty0C",
+      "source": "src/gui_widget_listener_binding.cpp",
+      "original_abi": "ECX listener; widget stack; RET4",
+      "end_inclusive": "004fa132",
+      "coverage": "complete_empty_body_new_cpp_interface"
+    },
+    {
+      "address": "004fa140",
+      "name": "BSP_GuiWidgetListener_Empty10",
+      "source": "src/gui_widget_listener_binding.cpp",
+      "original_abi": "ECX listener; widget stack; RET4",
+      "end_inclusive": "004fa142",
+      "coverage": "complete_empty_body_new_cpp_interface"
+    },
+    {
+      "address": "004fa150",
+      "name": "BSP_GuiWidgetListener_Empty14",
+      "source": "src/gui_widget_listener_binding.cpp",
+      "original_abi": "ECX listener; widget stack; RET4",
+      "end_inclusive": "004fa152",
+      "coverage": "complete_empty_body_new_cpp_interface"
+    },
+    {
+      "address": "004fa160",
+      "name": "BSP_GuiWidgetListener_Empty18",
+      "source": "src/gui_widget_listener_binding.cpp",
+      "original_abi": "ECX listener; widget stack plus Boolean; RET8",
+      "end_inclusive": "004fa162",
+      "coverage": "complete_empty_body_new_cpp_interface"
+    }
+  ],
+  "host_steps": [],
+  "table": {
+    "address": "00ceb110",
+    "slots": [
+      "004fa100",
+      "004fa110",
+      "004fa120",
+      "004fa130",
+      "004fa140",
+      "004fa150",
+      "004fa160"
+    ],
+    "producer": "00590320 stores at existing screen+40; 0059033a replaces with CEFC04"
+  },
+  "existing_binding": {
+    "address": "00aa6bc0",
+    "source": "src/gui_widget_attach.cpp",
+    "main_menu": "005861b0 existing source src/main_menu_layout_binding.cpp; no duplicate binder"
+  },
+  "no_ghidra_function": [],
+  "definitions": "reports/gui_widget_listener_binding_definitions.json",
+  "limitations": [
+    "No native vtable/thiscall ABI",
+    "Slots00/08 analyzed only",
+    "MainMenu current04=5993A0 remains required and abstract"
+  ]
+}

@@ -1,0 +1,508 @@
+{
+  "packet": "orch6_avoid_zone_owner",
+  "analysis_mode": "read_only_ghidra",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "document": "docs/AVOID_ZONE_OWNER.md",
+  "source": "src/avoid_zone_owner.cpp",
+  "header": "include/bsp/avoid_zone_owner.hpp",
+  "names_are_hypotheses": true,
+  "routines": [
+    {
+      "address": "0041ccd0",
+      "name": "BSP_AvoidZone_ConstructFromScenePath",
+      "was": "BSP_AvoidZone_ConstructFromScenePath",
+      "reconstruction": "avoid_zone_construct_from_scene_path_0041ccd0",
+      "last_instruction_address": "0041d0af",
+      "last_instruction_size": 3,
+      "native_end_inclusive": "0041d0b1",
+      "original_abi": "ECX zone; stack scene path,layer; EAX zone; RET8",
+      "coverage": "complete body control flow and ownership through explicit real scene, allocation and CRT services"
+    },
+    {
+      "address": "0041a540",
+      "name": "BSP_AvoidZone_ClipWorldBoundsAndRebuildCorners",
+      "was": "FUN_0041a540",
+      "reconstruction": "avoid_zone_clip_world_bounds_0041a540",
+      "last_instruction_address": "0041ac51",
+      "last_instruction_size": 3,
+      "native_end_inclusive": "0041ac53",
+      "original_abi": "ECX zone; stack minimumXYZ,maximumXYZ; RET8",
+      "coverage": "complete clipping and scratch/record ownership"
+    },
+    {
+      "address": "004167c0",
+      "name": "BSP_AvoidZone_ClearOwnedCornerRecords",
+      "was": "FUN_004167c0",
+      "reconstruction": "avoid_zone_clear_records_004167c0",
+      "last_instruction_address": "004167f7",
+      "last_instruction_size": 1,
+      "native_end_inclusive": "004167f7",
+      "original_abi": "ECX zone; no stack arguments; RET",
+      "coverage": "complete including missing004167DB-004167F1 continuation and return"
+    },
+    {
+      "address": "007af800",
+      "name": "BSP_ScenePath_TransformPointToWorld",
+      "was": "FUN_007af800",
+      "reconstruction": "avoid_zone_scene_world_point_007af800",
+      "last_instruction_address": "007af8d0",
+      "last_instruction_size": 3,
+      "native_end_inclusive": "007af8d2",
+      "original_abi": "ECX scene path; stack output,index; EAX output; RET8",
+      "coverage": "complete body through canonical pose/vector transform and explicit invalid-parameter service"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "0041cd32",
+      "native": "007af800",
+      "function": "0041ccd0",
+      "contract": "world point index0; RET8"
+    },
+    {
+      "address": "0041cd7d",
+      "native": "00bf681b",
+      "function": "0041ccd0",
+      "contract": "record allocation24h; ADD ESP4 at0041CD85"
+    },
+    {
+      "address": "0041cdfa",
+      "native": "00bf55be",
+      "function": "0041ccd0",
+      "contract": "saturated pointer bytes; ADD ESP4 at0041CDFF"
+    },
+    {
+      "address": "0041ce27",
+      "native": "00bf6989",
+      "function": "0041ccd0",
+      "contract": "old pointer allocation; missing ADD ESP4 at0041CE2C"
+    },
+    {
+      "address": "0041ce7e",
+      "native": "007af800",
+      "function": "0041ccd0",
+      "contract": "world point current unsigned index; RET8"
+    },
+    {
+      "address": "0041cef1",
+      "native": "00bf681b",
+      "function": "0041ccd0",
+      "contract": "record allocation24h; ADD ESP4 at0041CEF6"
+    },
+    {
+      "address": "0041cf6e",
+      "native": "00bf55be",
+      "function": "0041ccd0",
+      "contract": "saturated pointer bytes; ADD ESP4 at0041CF73"
+    },
+    {
+      "address": "0041cf9b",
+      "native": "00bf6989",
+      "function": "0041ccd0",
+      "contract": "old pointer allocation; missing ADD ESP4 at0041CFA0"
+    },
+    {
+      "address": "0041cfb9",
+      "native": "00415010",
+      "function": "0041ccd0",
+      "contract": "include retained point in original bounds; RET4"
+    },
+    {
+      "address": "0041d053",
+      "native": "0041a540",
+      "function": "0041ccd0",
+      "contract": "assembled minXYZ,maxXYZ with crossed z endpoints; RET8"
+    },
+    {
+      "address": "0041d063",
+      "native": "0041a200",
+      "function": "0041ccd0",
+      "contract": "flag1 then ignore return; RET4"
+    },
+    {
+      "address": "0041d06d",
+      "native": "00923810",
+      "function": "0041ccd0",
+      "contract": "generation1 first parent null check; RET4"
+    },
+    {
+      "address": "0041d07b",
+      "native": "00923810",
+      "function": "0041ccd0",
+      "contract": "generation1 actual parent for vtable dispatch; RET4"
+    },
+    {
+      "address": "0041d089",
+      "native": "parent+vtable5c",
+      "function": "0041ccd0",
+      "contract": "unread entity-specific callee; actual parent, argument44h, AL test"
+    },
+    {
+      "address": "0041d094",
+      "native": "00923810",
+      "function": "0041ccd0",
+      "contract": "generation1 third lookup stored only after nonzeroAL; RET4"
+    },
+    {
+      "address": "0041a683",
+      "native": "00bf55be",
+      "function": "0041a540",
+      "contract": "first scratch count*8; ADD ESP4 at0041A688"
+    },
+    {
+      "address": "0041a6bb",
+      "native": "00bf55be",
+      "function": "0041a540",
+      "contract": "second scratch count*8; ADD ESP4 at0041A6C0"
+    },
+    {
+      "address": "0041a6f2",
+      "native": "004167c0",
+      "function": "0041a540",
+      "contract": "free original records; retain pointer array and bounds"
+    },
+    {
+      "address": "0041a879",
+      "native": "00bf55be",
+      "function": "0041a540",
+      "contract": "entering-intersection scratch growth; ADD ESP4 at0041A87E"
+    },
+    {
+      "address": "0041a8b9",
+      "native": "00bf6989",
+      "function": "0041a540",
+      "contract": "entering-intersection old scratch; ADD ESP4 at0041A8BE"
+    },
+    {
+      "address": "0041a910",
+      "native": "00bf55be",
+      "function": "0041a540",
+      "contract": "current-point scratch growth; ADD ESP4 at0041A915"
+    },
+    {
+      "address": "0041a94b",
+      "native": "00bf6989",
+      "function": "0041a540",
+      "contract": "current-point old scratch; ADD ESP4 at0041A950"
+    },
+    {
+      "address": "0041aa0a",
+      "native": "00bf55be",
+      "function": "0041a540",
+      "contract": "leaving-intersection scratch growth; ADD ESP4 at0041AA0F"
+    },
+    {
+      "address": "0041aa49",
+      "native": "00bf6989",
+      "function": "0041a540",
+      "contract": "leaving-intersection old scratch; ADD ESP4 at0041AA4E"
+    },
+    {
+      "address": "0041aaf2",
+      "native": "00bf681b",
+      "function": "0041a540",
+      "contract": "rebuilt record24h; ADD ESP4 at0041AAF7"
+    },
+    {
+      "address": "0041ab44",
+      "native": "00bf6989",
+      "function": "0041a540",
+      "contract": "second scratch on short output; ADD ESP4 at0041AB49"
+    },
+    {
+      "address": "0041ab55",
+      "native": "00bf6989",
+      "function": "0041a540",
+      "contract": "first scratch on either exit; ADD ESP4 at0041AB5A"
+    },
+    {
+      "address": "0041aba4",
+      "native": "00bf55be",
+      "function": "0041a540",
+      "contract": "rebuilt pointer growth saturated bytes; ADD ESP4 at0041ABAD"
+    },
+    {
+      "address": "0041abd5",
+      "native": "00bf6989",
+      "function": "0041a540",
+      "contract": "rebuilt old pointer storage; ADD ESP4 at0041ABDA"
+    },
+    {
+      "address": "0041ac1a",
+      "native": "00bf6989",
+      "function": "0041a540",
+      "contract": "second scratch on success; ADD ESP4 at0041AC1F"
+    },
+    {
+      "address": "0041ac37",
+      "native": "004167c0",
+      "function": "0041a540",
+      "contract": "bounds reject clears records and preserves bounds"
+    },
+    {
+      "address": "004167d6",
+      "native": "00bf65ac",
+      "function": "004167c0",
+      "contract": "each corner raw allocation; ADD ESP4 at004167E1"
+    },
+    {
+      "address": "007af816",
+      "native": "00414db0",
+      "function": "007af800",
+      "contract": "refresh actual scene entity pose if byteC8 zero"
+    },
+    {
+      "address": "007af838",
+      "native": "00bf6713",
+      "function": "007af800",
+      "contract": "invalid range/index; may return and slots are reloaded"
+    },
+    {
+      "address": "007af87b",
+      "native": "00b62d10",
+      "function": "007af800",
+      "contract": "sourceXYZ1, distinct destination, actual worldCC; RET8"
+    }
+  ],
+  "supporting_calls": [
+    {
+      "address": "00412dca",
+      "native": "00bf6989",
+      "function": "00412dc0",
+      "contract": "constructor unwind frees pointer array, then00412DD2 nulls it"
+    },
+    {
+      "address": "00412ef7",
+      "native": "00bf6989",
+      "function": "00412ef0",
+      "contract": "scratch unwind frees first word pointer; POP ECX stack cleanup at00412EFC"
+    },
+    {
+      "address": "00c5e193",
+      "native": "00412dc0",
+      "function": "00c5e190",
+      "kind": "tail_jump",
+      "contract": "constructor unwind calls pointer-array destructor"
+    },
+    {
+      "address": "00c5e156",
+      "native": "00412ef0",
+      "function": "00c5e150",
+      "kind": "tail_jump",
+      "contract": "first scratch unwind"
+    },
+    {
+      "address": "00c5e15e",
+      "native": "00412ef0",
+      "function": "00c5e15b",
+      "kind": "tail_jump",
+      "contract": "second scratch unwind"
+    }
+  ],
+  "layout": {
+    "zone_size": 36,
+    "record_type": "ShipAiPathLateralRecord",
+    "fields": {
+      "00": "corners.records",
+      "04": "corners.count",
+      "08": "unsigned capacity",
+      "0c": "layer bits",
+      "10": "associated parent entity",
+      "14": "original minX",
+      "18": "original minZ",
+      "1c": "original maxX",
+      "20": "original maxZ"
+    },
+    "world_minimum_offsets": [
+      "711c",
+      "7120",
+      "7130"
+    ],
+    "world_maximum_offsets": [
+      "7128",
+      "712c",
+      "7124"
+    ],
+    "bounds_recomputed_after_clip": false
+  },
+  "corrections": [
+    {
+      "was": "constructor partial producer evidence only",
+      "evidence": "all0041CCD0-0041D0B1 instructions and complete direct callees inspected",
+      "is": "complete source transform, retain/filter, growth, native clip/rebuild, derive and association flow"
+    },
+    {
+      "was": "decompiler returns after old array free",
+      "evidence": "0041CE2C/0041CFA0 bytes83C404 and complete listing",
+      "is": "ADD ESP4 then continuing pointer store and append"
+    },
+    {
+      "was": "adjacent contiguous minXYZ and maxXYZ assumed",
+      "evidence": "ESP changes0041D033-0041D04D",
+      "is": "minimum711C,7120,7130; maximum7128,712C,7124"
+    },
+    {
+      "was": "bounds inferred to describe clipped polygon",
+      "evidence": "clip writes only pointers,count,capacity and record fields; no zone14..20 stores",
+      "is": "original retained-source bounds preserved after clipping"
+    },
+    {
+      "was": "004167C0 pseudocode stops after first free",
+      "evidence": "raw004167DB-004167F1 plus live bytes",
+      "is": "unsigned deletion loop and count0 store"
+    },
+    {
+      "was": "00412DC0 decompiler hides null store",
+      "evidence": "00412DCF ADD ESP4;00412DD2 MOV[ESI],0",
+      "is": "pointer freed then zeroed; count/capacity/records not cleaned"
+    }
+  ],
+  "stored_flow_gaps": [
+    {
+      "address": "004167db",
+      "end_inclusive": "004167f1",
+      "last_instruction_address": "004167f1",
+      "last_instruction_size": 1,
+      "meaning": "deletion loop continuation and independent RET"
+    },
+    {
+      "address": "00412dcf",
+      "end_inclusive": "00412dd7",
+      "last_instruction_address": "00412dd2",
+      "last_instruction_size": 6,
+      "meaning": "supporting unwind cleanup and pointer zero"
+    },
+    {
+      "address": "0041ce2c",
+      "end_inclusive": "0041ce2e",
+      "last_instruction_address": "0041ce2c",
+      "last_instruction_size": 3,
+      "bytes": "83 c4 04",
+      "meaning": "ADD ESP,4; no early return"
+    },
+    {
+      "address": "0041cfa0",
+      "end_inclusive": "0041cfa2",
+      "last_instruction_address": "0041cfa0",
+      "last_instruction_size": 3,
+      "bytes": "83 c4 04",
+      "meaning": "ADD ESP,4; no early return"
+    },
+    {
+      "address": "0041a8be",
+      "end_inclusive": "0041a8c0",
+      "last_instruction_address": "0041a8be",
+      "last_instruction_size": 3,
+      "bytes": "83 c4 04",
+      "meaning": "ADD ESP,4; no early return"
+    },
+    {
+      "address": "0041a950",
+      "end_inclusive": "0041a952",
+      "last_instruction_address": "0041a950",
+      "last_instruction_size": 3,
+      "bytes": "83 c4 04",
+      "meaning": "ADD ESP,4; no early return"
+    },
+    {
+      "address": "0041aa4e",
+      "end_inclusive": "0041aa50",
+      "last_instruction_address": "0041aa4e",
+      "last_instruction_size": 3,
+      "bytes": "83 c4 04",
+      "meaning": "ADD ESP,4; no early return"
+    },
+    {
+      "address": "0041ab49",
+      "end_inclusive": "0041ab4b",
+      "last_instruction_address": "0041ab49",
+      "last_instruction_size": 3,
+      "bytes": "83 c4 04",
+      "meaning": "ADD ESP,4; no early return"
+    },
+    {
+      "address": "0041ab5a",
+      "end_inclusive": "0041ab5c",
+      "last_instruction_address": "0041ab5a",
+      "last_instruction_size": 3,
+      "bytes": "83 c4 04",
+      "meaning": "ADD ESP,4; no early return"
+    },
+    {
+      "address": "0041abda",
+      "end_inclusive": "0041abdc",
+      "last_instruction_address": "0041abda",
+      "last_instruction_size": 3,
+      "bytes": "83 c4 04",
+      "meaning": "ADD ESP,4; no early return"
+    },
+    {
+      "address": "0041ac1f",
+      "end_inclusive": "0041ac21",
+      "last_instruction_address": "0041ac1f",
+      "last_instruction_size": 3,
+      "bytes": "83 c4 04",
+      "meaning": "ADD ESP,4; no early return"
+    },
+    {
+      "address": "0041a787",
+      "end_inclusive": "0041a78f",
+      "last_instruction_address": "0041a789",
+      "last_instruction_size": 7,
+      "bytes": "eb 07 8d a4 24 00 00 00 00",
+      "meaning": "unreachable short jump plus padding LEA ESP,[ESP]"
+    },
+    {
+      "address": "0041a88d",
+      "end_inclusive": "0041a88f",
+      "last_instruction_address": "0041a88d",
+      "last_instruction_size": 3,
+      "bytes": "8d 49 00",
+      "meaning": "padding LEA ECX,[ECX]"
+    },
+    {
+      "address": "0041aaed",
+      "end_inclusive": "0041aaef",
+      "last_instruction_address": "0041aaed",
+      "last_instruction_size": 3,
+      "bytes": "8d 49 00",
+      "meaning": "padding LEA ECX,[ECX]"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00c5e198",
+      "size": 10,
+      "last_instruction_address": "00c5e19d",
+      "last_instruction_size": 5,
+      "native_end_inclusive": "00c5e1a1",
+      "meaning": "supporting SEH dispatcher MOV EAX,D842D8; tail jump CRT; no definition/mutation"
+    },
+    {
+      "address": "00c5e163",
+      "size": 10,
+      "last_instruction_address": "00c5e168",
+      "last_instruction_size": 5,
+      "native_end_inclusive": "00c5e16c",
+      "meaning": "supporting SEH dispatcher MOV EAX,D8424C; tail jump CRT; no definition/mutation"
+    }
+  ],
+  "unresolved_contracts": [
+    "Concrete parent-specific vtable5C implementation is required via explicit access; supplied code44 and actual parent identity preserved.",
+    "Native CRT allocator/new handler/exception identity and SEH ABI stay external; actual callbacks required.",
+    "Empty source with overlapping stale bounds retains native pre-array access; no repaired input semantics."
+  ],
+  "verification": {
+    "build": "PASS standalone ./scripts/build.ps1 Release MSVC Win32, existing CTest1/1; local/avoid-zone-owner-build.log",
+    "report_calls": "PASS39 direct native call rows,0 failed;1 entity-specific vtable row unresolved; local/avoid-zone-owner-calls.log",
+    "local_probe": "PASS local/avoid_zone_clip_probe.cpp and local/run_avoid_zone_clip_probe.ps1; /MANIFEST:EMBED; diamond4->octagon8, capacity4->10, original bounds retained, touching rejected, records12/12 arrays6/6 released; local/avoid-zone-clip-probe.log",
+    "new_tracked_tests": false,
+    "native_differential_fixture": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "ghidra_mutated": false,
+    "runtime_path": "not wired to bsp_game by this packet; no frame claims",
+    "constructor_runtime_probe": "not run by worker; separate whole-path integration fixture owned by primary"
+  }
+}
