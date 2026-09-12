@@ -288,8 +288,97 @@
     "report_calls": "38 checked, zero failed; indirect calls explicitly distinguished.",
     "seed_bytes": "8/8 matched",
     "rerun": "local/run_gui_icon_state_probe.ps1",
-    "logs": ["local/gui_icon_state_constants_probe.log", "local/gui_icon_state_constants_build.log"],
+    "logs": [
+      "local/gui_icon_state_constants_probe.log",
+      "local/gui_icon_state_constants_build.log"
+    ],
     "assembly": "local/gui_icon_runtime_strict.asm",
-    "parent_rerun": "local/run_gui_icon_state_parent_probe.ps1 -ParentRoot J:/PROG/battlestations-pacific-decompile-orch5-20260911; fixture-only compile, parent headers/libraries, manifest hashes."
+    "parent_rerun": "local/run_gui_icon_state_parent_probe.ps1 -ParentRoot J:/PROG/battlestations-pacific-decompile-orch5-20260911; fixture-only compile, parent headers/libraries, manifest hashes.",
+    "parent_fixture": {
+      "parent_root": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911",
+      "parent_head": "a6b54bfe2cc9629800ad9ebdddd9b1a472b71910",
+      "started_utc": "2026-09-12T20:34:35.8035994Z",
+      "includes": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include"
+      ],
+      "library_policy": "Fixture only; all headers and libraries from explicit parent root; no worker production translation units compiled.",
+      "artifacts": [
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_core.lib",
+          "sha256": "9DA645DECB05DD4E1C799CB809F74FE9C5CB673C0731024B3A3B58A9CE8F8FC8",
+          "bytes": 50033120,
+          "modified_utc": "2026-09-12T20:33:48.9557923Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_lua511.lib",
+          "sha256": "B6C19DD56BCE2C86DCF1ABF5C3044D48DDC2AC2C33EF04E3DC87F022413EE193",
+          "bytes": 455244,
+          "modified_utc": "2026-09-11T20:18:56.1505626Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\build\\win32\\Release\\bsp_zlib121.lib",
+          "sha256": "2C89BD9AE83D791564EA847C75E8E5EE025E40810C1DF8D55E5799E0C7B8C471",
+          "bytes": 71906,
+          "modified_utc": "2026-09-11T19:49:30.7288074Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_icon_runtime.hpp",
+          "sha256": "80ED43786A41364839B6D75AADE4444833BE75D0F1C3D7C6B1BA6114AA4013F0",
+          "bytes": 8993,
+          "modified_utc": "2026-09-12T20:32:52.5637843Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_icon.hpp",
+          "sha256": "1E2DC70631E3EBEA332C8253956C9FBBA9571BD2CB9E783D381E5863018F8CA7",
+          "bytes": 16834,
+          "modified_utc": "2026-09-12T17:53:40.3671830Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_layout_loader.hpp",
+          "sha256": "3EDE9DC470A4D5A3285D1578483428B548025B0B2EBA9AB6ECC79967B242D8B1",
+          "bytes": 20811,
+          "modified_utc": "2026-09-11T19:45:50.2661099Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_widget.hpp",
+          "sha256": "846D1F6378E3459FB585917289D2F3342DE37BA98DAFC7FC952C9C48EA8061F9",
+          "bytes": 13391,
+          "modified_utc": "2026-09-11T19:45:50.3816066Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_widget_owner.hpp",
+          "sha256": "621ADB43E7271214CA0FB61A0542448998FD39ECDCCF21A01A7FE2C78E3C24E7",
+          "bytes": 13269,
+          "modified_utc": "2026-09-12T20:18:10.4428511Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_type_dispatch.hpp",
+          "sha256": "101F2AEE3C59F8391EC01176675B43A765F2F5EE16C29DFB870C285B5ED43734",
+          "bytes": 7130,
+          "modified_utc": "2026-09-12T20:10:49.6933350Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-20260911\\include\\bsp\\gui_widget_relative_bounds.hpp",
+          "sha256": "34D9EBB92FE07B5F1DA083A10689A0F73796CDAA89CEF60D347652BBB966277C",
+          "bytes": 2192,
+          "modified_utc": "2026-09-12T20:24:50.7798617Z"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch5-icon-state\\local\\gui_icon_state_probe.cpp",
+          "sha256": "2EE409B4F232F90912D2D22BCC4755A02C4CBCC4EAF0E336E1BFC360B0B3C18B",
+          "bytes": 10472,
+          "modified_utc": "2026-09-12T20:26:33.5302254Z"
+        }
+      ],
+      "compile_exit": 0,
+      "fixture_exit": 0,
+      "finished_utc": "2026-09-12T20:34:38.7477945Z",
+      "result": "PASS: actual D3D9 resources, Lua Icon state, ownership order, duplicate/equal/null, borrowed UV, live callback constants, x87 sizing and output alias",
+      "logs": [
+        "local/gui_icon_state_parent_compile.log",
+        "local/gui_icon_state_parent_probe.log",
+        "local/gui_icon_state_parent_manifest.json"
+      ]
+    }
   }
 }
