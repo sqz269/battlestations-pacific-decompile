@@ -1,0 +1,548 @@
+{
+  "packet": "orch2_filestore_provider_an",
+  "status": "complete_actual_storage_build_and_original_instruction_fixture_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00be5e90",
+      "end_inclusive": "00be5ef5",
+      "end_exclusive": "00be5ef6",
+      "length": 102,
+      "cpp_symbol": "find_native_file_store_open_name_00be5e90",
+      "proposed_name": "BSP_FileStore_FindNativeOpenName",
+      "old_name": "FUN_00be5e90",
+      "original_abi": "ECX tree; output/name stack; EAX output; RET8",
+      "coverage": "complete",
+      "implemented_interface": "new explicit-context C++ interface",
+      "uncertainty": "Descriptive name hypothesis; no game execution or native FH3 unwind proof."
+    },
+    {
+      "address": "00be5fa0",
+      "end_inclusive": "00be6030",
+      "end_exclusive": "00be6031",
+      "length": 145,
+      "cpp_symbol": "open_native_file_store_00be5fa0",
+      "proposed_name": "BSP_FileStore_Open",
+      "old_name": "BSP_FileStore_Open",
+      "original_abi": "ECX provider; name/full flags stack; EAX stream; RET8",
+      "coverage": "complete",
+      "implemented_interface": "new explicit-context C++ interface",
+      "uncertainty": "Descriptive name hypothesis; no game execution or native FH3 unwind proof."
+    },
+    {
+      "address": "00bef750",
+      "end_inclusive": "00bef83f",
+      "end_exclusive": "00bef840",
+      "length": 240,
+      "cpp_symbol": "convert_native_stored_stream_00bef750",
+      "proposed_name": "BSP_Stream_ConvertToMemory",
+      "old_name": "BSP_Stream_ConvertToMemory",
+      "original_abi": "ECX source; EAX stream; RET",
+      "coverage": "complete",
+      "implemented_interface": "new explicit-context C++ interface",
+      "uncertainty": "Descriptive name hypothesis; no game execution or native FH3 unwind proof."
+    },
+    {
+      "address": "00bb8f60",
+      "end_inclusive": "00bb8f87",
+      "end_exclusive": "00bb8f88",
+      "length": 40,
+      "cpp_symbol": "query_native_memory_stream_type_00bb8f60",
+      "proposed_name": "BSP_MemoryStream_IsType",
+      "old_name": null,
+      "original_abi": "ECX ignored; token stack; AL result; RET4",
+      "bytes": "8b4c2404b8a0db09018da424000000003908740f83c0043dacdb090175f232c0c20400b001c20400",
+      "coverage": "complete",
+      "implemented_interface": "new explicit-context C++ interface",
+      "uncertainty": "Descriptive name hypothesis; no game execution or native FH3 unwind proof."
+    },
+    {
+      "address": "00bef540",
+      "end_inclusive": "00bef57c",
+      "end_exclusive": "00bef57d",
+      "length": 61,
+      "cpp_symbol": "native_memory_stream_seek_00bef540",
+      "proposed_name": "BSP_MemoryStream_Seek",
+      "old_name": "BSP_MemoryStream_Seek",
+      "original_abi": "ECX stream; low/high/origin stack; RET0C; high ignored",
+      "coverage": "complete",
+      "implemented_interface": "naked MSVC Win32 original ABI via reserved fastcall EDX",
+      "uncertainty": "Descriptive name hypothesis; no game execution or native FH3 unwind proof."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00be5e9d",
+      "native": "00be54d0",
+      "function": "00be5e90",
+      "contract": "actual tree lower bound, ECX tree/name stack, RET4"
+    },
+    {
+      "address": "00be5eac",
+      "native": "00bf6713",
+      "function": "00be5e90",
+      "contract": "returning invalid parameter boundary, no arguments"
+    },
+    {
+      "address": "00be5ec1",
+      "native": "00443d00",
+      "function": "00be5e90",
+      "contract": "two actual name headers, AL comparator, RET8"
+    },
+    {
+      "address": "00be5fc5",
+      "native": "00be5e90",
+      "function": "00be5fa0",
+      "contract": "output/name stack, RET8"
+    },
+    {
+      "address": "00be5fd9",
+      "native": "00bf6713",
+      "function": "00be5fa0",
+      "contract": "returning invalid parameter boundary, no arguments"
+    },
+    {
+      "address": "00be6010",
+      "native": "00bf6713",
+      "function": "00be5fa0",
+      "contract": "returning invalid parameter boundary, no arguments"
+    },
+    {
+      "address": "00be601a",
+      "native": "00bf6713",
+      "function": "00be5fa0",
+      "contract": "returning invalid parameter boundary, no arguments"
+    },
+    {
+      "address": "00be6004",
+      "native": "004254b0",
+      "function": "00be5fa0",
+      "contract": "single RET diagnostic; format/name pushed, ADD ESP8 at BE6009"
+    },
+    {
+      "address": "00be6022",
+      "native": "00bef750",
+      "function": "00be5fa0",
+      "contract": "ECX current hit node+14 stream; RET"
+    },
+    {
+      "address": "00bef78f",
+      "native": "00d642c0+vtable0c",
+      "function": "00bef750",
+      "contract": "current source type slot, stack current0109DBA0, AL result, RET4; BB8F60 for numeric memory profile"
+    },
+    {
+      "address": "00bef798",
+      "native": "00bef6d0",
+      "function": "00bef750",
+      "contract": "true type result: ECX current source+8 backing, EAX new14h wrapper, RET"
+    },
+    {
+      "address": "00bef7bc",
+      "native": "source+vtable1c",
+      "function": "00bef750",
+      "contract": "current seek slot; three stack zeros low/high/origin, RET0C"
+    },
+    {
+      "address": "00bef7c5",
+      "native": "source+vtable30",
+      "function": "00bef750",
+      "contract": "current size slot; no arguments; EDX:EAX, RET; low saved, high ignored"
+    },
+    {
+      "address": "00bef7cf",
+      "native": "00bf681b",
+      "function": "00bef750",
+      "contract": "raw10h allocation, cdecl ADD ESP4 at BEF7D4"
+    },
+    {
+      "address": "00bef7ea",
+      "native": "008d43c0",
+      "function": "00bef750",
+      "contract": "ECX raw10h, signed low DWORD length stack, RET4"
+    },
+    {
+      "address": "00bef80b",
+      "native": "source+vtable24",
+      "function": "00bef750",
+      "contract": "current read slot; data/low count/null output stack, RET0C; no read-result check"
+    },
+    {
+      "address": "00bef80f",
+      "native": "00bef6d0",
+      "function": "00bef750",
+      "contract": "ECX backing, new14h wrapper/retain, RET"
+    },
+    {
+      "address": "00bef81a",
+      "native": "IAT[00ce2220]",
+      "function": "00bef750",
+      "contract": "InterlockedDecrement(backing+4), stdcall one pointer"
+    },
+    {
+      "address": "00bef82a",
+      "native": "backing+vtable00",
+      "function": "00bef750",
+      "contract": "current zero-reference dispatch only at count0; existing BD30E0/8D4470 numeric owner chain"
+    },
+    {
+      "address": "00cc7654",
+      "native": "00bf65ac",
+      "function": "00cc7650",
+      "contract": "state0 saved raw-owner scalar free, ADD-equivalent POP ECX and RET at7659/765A"
+    },
+    {
+      "address": "00be7171",
+      "native": "00be5e90",
+      "function": "00be7130",
+      "contract": "ECX primary tree; iterator output/name stack, RET8"
+    },
+    {
+      "address": "00be77a1",
+      "native": "00be5e90",
+      "function": "00be7760",
+      "contract": "ECX primary tree; iterator output/name stack, RET8"
+    },
+    {
+      "address": "00be7d9b",
+      "native": "00be5e90",
+      "function": "00be7cd0",
+      "contract": "ECX primary tree; iterator output/name stack, RET8"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "function": "00be7fa0",
+      "establishes": "D689E8, primary tree+14/head+18, sentinel+19 and head self-links"
+    },
+    {
+      "function": "00be6590",
+      "establishes": "1Ch node left/parent/right +0/+4/+8, calls BE6170 with node+C at BE65EA, color+18/sentinel+19"
+    },
+    {
+      "function": "00be6170",
+      "establishes": "eight-byte native string then retained stream+8, establishing tree node+14"
+    },
+    {
+      "function": "008d43c0",
+      "establishes": "10h D15AD8/count1 backing with current data+8/stored signed-positive length+C and actual counters"
+    },
+    {
+      "function": "00bef6d0",
+      "establishes": "14h D642C0/count1 wrapper retaining backing+8, cursor+10=data and end+C=data+currentlength"
+    },
+    {
+      "function": "00cd8fc0",
+      "establishes": "runtime-assigned ID at0109DBA0; copied current0109DB58/5C to0109DBA4/A8; descriptor initialization external"
+    }
+  ],
+  "numeric_profile_domain": {
+    "memory": "00d642c0",
+    "backing": "00d15ad8",
+    "provider": "00d689e8",
+    "memory_slots": {
+      "+0C": "00bb8f60",
+      "+1C": "00bef540",
+      "+24": "00bef590",
+      "+30": "00bef600"
+    },
+    "policy": "Read current profile and borrowed immutable original slots; no owner word replacement, resolver registry or default callable table."
+  },
+  "boundaries": [
+    "Actual FileStore construction/population and provider lifetime remain external.",
+    "Other streams require actual callable original-ABI +C/+1C/+30/+24 tables; other numeric physical/archive classes need separate concrete binding.",
+    "Current type descriptor initialization and shared CRT allocation/free/stricmp/invalid_parameter services remain external.",
+    "Constructor guard ends before read. No source release, cursor restoration, short-read trimming or zero-fill.",
+    "Native FH3 unwind, CRT implementation/exception identity, invalid-parameter continuation runtime and game I/O are not fixture validated."
+  ],
+  "corrections": [
+    {
+      "was": "BEF750 decompiler displays seek as two zero arguments",
+      "evidence": "BEF7B4/7B6/7B8 pushes and BEF540 RET0C",
+      "is": "Three zero DWORDs, low/high/origin, RET0C"
+    },
+    {
+      "was": "Semantic FileStore and MemoryStream fragments",
+      "evidence": "native_filestore_open.cpp and producer chain",
+      "is": "Actual native tree reader and existing 14h/10h owners; semantic records retained"
+    }
+  ],
+  "raw_definitions": [
+    {
+      "start": "00bb8f60",
+      "end_inclusive": "00bb8f87",
+      "end_exclusive": "00bb8f88",
+      "length": 40,
+      "bytes": "8b4c2404b8a0db09018da424000000003908740f83c0043dacdb090175f232c0c20400b001c20400",
+      "state": "no stored function at worker inspection; primary notified"
+    }
+  ],
+  "flow_repairs": [
+    {
+      "function": "00cc7650",
+      "start": "00cc7659",
+      "end_inclusive": "00cc765a",
+      "end_exclusive": "00cc765b",
+      "length": 2,
+      "bytes": "59c3",
+      "complete_start": "00cc7650",
+      "complete_end_inclusive": "00cc765a",
+      "complete_end_exclusive": "00cc765b",
+      "complete_length": 11,
+      "complete_bytes": "8b45ec50e853eff2ff59c3",
+      "state": "saved body ends7658; primary notified; no worker writes"
+    }
+  ],
+  "cleanup": {
+    "handler": "00cc765b",
+    "funcinfo": "00e02228",
+    "state0_map": "00e02220",
+    "action": "00cc7650",
+    "scope": "raw backing construction only; state -1 at BEF803 before read"
+  },
+  "byte_evidence": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00be5e90",
+        "end_inclusive": "00be5ef5",
+        "end_exclusive": "00be5ef6",
+        "length": 102,
+        "sha256": "87348a58ef49e878f958279f2e268cac8eb346b3c78a777dab39f13a02958255",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00be5fa0",
+        "end_inclusive": "00be6030",
+        "end_exclusive": "00be6031",
+        "length": 145,
+        "sha256": "af1d92ebe37c905bda5adbc73e0f396f7355edacbee07d8b9d8a4c1866d99ac9",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bef750",
+        "end_inclusive": "00bef83f",
+        "end_exclusive": "00bef840",
+        "length": 240,
+        "sha256": "696afedd7e769bad800086544926b2ea51da1cf17ed5606fc16497b8a90b80e5",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bb8f60",
+        "end_inclusive": "00bb8f87",
+        "end_exclusive": "00bb8f88",
+        "length": 40,
+        "sha256": "64c5a84c1c5b6f4a323798dd704246d49ddfdbc722aa0c1d8c20f520abe7f5b0",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bef540",
+        "end_inclusive": "00bef57c",
+        "end_exclusive": "00bef57d",
+        "length": 61,
+        "sha256": "daf89af22b34c985f1a54071d85eb03e08045470122e29fb766ecbd04657eac0",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00cc7650",
+        "end_inclusive": "00cc765a",
+        "end_exclusive": "00cc765b",
+        "length": 11,
+        "sha256": "21e83456f45a9cb18ffd6292ba3baab2421d04c61c0a1311ae8e71ebefb70881",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00e02220",
+        "end_inclusive": "00e02247",
+        "end_exclusive": "00e02248",
+        "length": 40,
+        "sha256": "7797f3f1ef988108e60bc19651c2272a6b82a5e6355ee2abab8d2724929b49b2",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00d642c0",
+        "end_inclusive": "00d642ff",
+        "end_exclusive": "00d64300",
+        "length": 64,
+        "sha256": "885d969af38e468d152a5a25f9d539573fbbbba29b68c513c536b4db12358ed7",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00d15ad8",
+        "end_inclusive": "00d15adf",
+        "end_exclusive": "00d15ae0",
+        "length": 8,
+        "sha256": "4961e9832015a124713cd4e85d58bfc0ab3700c1bb84d137d4cee67ebfdfc319",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00d689e8",
+        "end_inclusive": "00d68a0f",
+        "end_exclusive": "00d68a10",
+        "length": 40,
+        "sha256": "dc8713d0a9ff8ca29a85ed7b55c0ee37fc2103bb00ce717b4b8fb725c0fdf92c",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00cd8fc0",
+        "end_inclusive": "00cd900e",
+        "end_exclusive": "00cd900f",
+        "length": 79,
+        "sha256": "d9b00e5d6d070e6d5f769b822941350b4b9e417dce9e01ed94e8b39db5b04d68",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00be54d0",
+        "end_inclusive": "00be5522",
+        "end_exclusive": "00be5523",
+        "length": 83,
+        "sha256": "5bdcf1cde7eca209d12843f8b773035de68ccef488273a8e44ef4cc61b9a0da7",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00443d00",
+        "end_inclusive": "00443d50",
+        "end_exclusive": "00443d51",
+        "length": 81,
+        "sha256": "27301d40c436429db8b8537a7d62d230661837d45c3197510469311e73823ec6",
+        "live_matches_installed": true
+      },
+      {
+        "address": "004254b0",
+        "end_inclusive": "004254b0",
+        "end_exclusive": "004254b1",
+        "length": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "live_matches_installed": true
+      }
+    ],
+    "total_bytes": 995
+  },
+  "validation": {
+    "build": "MSVC Win32 Release /W4 /WX; scripts/build.ps1 passed",
+    "seeds": "verify-seeds: eight current spans match installed PE",
+    "tests": [
+      "reconstructed_math passed",
+      "native_math_differential passed"
+    ],
+    "report_calls": "17 direct CALL rows checked, 0 failed; six indirect rows explicitly marked",
+    "fixture": "PASS 32 original/source comparisons; five complete original bodies unchanged at common translation; counters zero",
+    "fixture_translation": "0x30000000 for copied code and direct helper targets; absolute type/counter/profile data at original numeric locations",
+    "fixture_original_bodies": [
+      "00be5e90",
+      "00be5fa0",
+      "00bef750",
+      "00bb8f60",
+      "00bef540"
+    ],
+    "fixture_patches": [
+      "translated BF681B allocation",
+      "translated 8D43C0 existing backing constructor",
+      "translated BEF6D0 existing wrapper producer",
+      "translated BF7FBF shared CRT stricmp",
+      "translated BF6713 instrumentation invalid handler",
+      "original CE2220 IAT InterlockedDecrement"
+    ],
+    "fixture_scope": "All five complete owned code preimages and postimages compare byte-for-byte. Compare full raw lookup arenas, iterator aliases, shared ownership/cursor fields, type/seek results, source event/current-table state, initialized copied prefix and final actual counters.",
+    "fixture_exclusions": "No invalid-handler runtime, constructor/read exceptions, arbitrary negative read count, physical/archive method implementation, source-wide binary ABI or game execution.",
+    "permanent_tests_added": 0
+  },
+  "artifacts": {
+    "include/bsp/native_filestore_open.hpp": {
+      "sha256": "db494e8cb9db3dee2cdb28f04c002999aaff219cc729ff44ccc141d99f29ed3e",
+      "size": 3480
+    },
+    "src/native_filestore_open.cpp": {
+      "sha256": "886c39b448b2af38f564be02e7a3ac8bb6119f562395a3fd353aafc0fac527de",
+      "size": 8602
+    },
+    "docs/NATIVE_FILESTORE_OPEN.md": {
+      "sha256": "87b4044fccc503411def4fc775cad02aa178e95965854add2d124efa9ffaee7f",
+      "size": 7085
+    },
+    "include/bsp/native_retained_memory_owners.hpp": {
+      "sha256": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c",
+      "size": 3829
+    },
+    "src/native_retained_memory_owners.cpp": {
+      "sha256": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93",
+      "size": 6850
+    },
+    "include/bsp/native_memory_stream.hpp": {
+      "sha256": "0c673ab73fe7cc5c900dd7f0d746f5b048334706c16242f32eb94a8e95eeaa42",
+      "size": 3018
+    },
+    "src/native_memory_stream.cpp": {
+      "sha256": "5b40e8f8d11255a9389805c81386458db8b06c0b3c34f12a314653dda7d370d5",
+      "size": 6286
+    },
+    "include/bsp/native_vfs_date_leaf_providers.hpp": {
+      "sha256": "ab6ba39ac240f79db04b7eb083eec54b58e27a93973c421d4fb03147b7a0a3e0",
+      "size": 3083
+    },
+    "src/native_vfs_date_leaf_providers.cpp": {
+      "sha256": "8a3615bec143538b10b50448e9e44948f3f36374b33cdc6878ad50de27f36559",
+      "size": 4749
+    },
+    "cmake/startup.cmake": {
+      "sha256": "0de40b2115de5393c1e338da572b10723a2f6fc164c9b0c201578885ba1b6ef3",
+      "size": 52313
+    },
+    "local/native_filestore_evidence.py": {
+      "sha256": "6ab853e58030bc3c0873985ac7f3295382601db5da611afe4206824550b79839",
+      "size": 1785
+    },
+    "local/native_filestore_evidence/manifest.json": {
+      "sha256": "986e515cd3e1ea389a746ec36b4ccbb9c672f6601c319937b13c69eba6d6403b",
+      "size": 3893
+    },
+    "local/native_filestore_probe.cpp": {
+      "sha256": "38dca28585bda8fd5cd5cad66fd0e885dc79b7a05637a605d27a880eb5c3e659",
+      "size": 11066
+    },
+    "local/build_native_filestore_probe.cmd": {
+      "sha256": "29afd32e90fe4e5deebfabd2bb931d5febf730e06062d550b1b42ab763a21980",
+      "size": 514
+    },
+    "local/native_filestore_probe.exe": {
+      "sha256": "7b29ecf51f32b327c6a5f34269ae51fcd6bdf22dda5ea3573b9dc8f8a45ef8a0",
+      "size": 36352
+    },
+    "local/native_filestore_probe.map": {
+      "sha256": "8527cbd918419060c69bd4fe44c2248f9671b4611dec1eab57183701c2c185fc",
+      "size": 72879
+    },
+    "local/native_filestore_probe_build.log": {
+      "sha256": "c5b92f6be3af2022c51ddee917c180e8d32ad051f881d4d36150fa8992ea14dc",
+      "size": 28
+    },
+    "local/native_filestore_probe_run.log": {
+      "sha256": "e585c753295abd7e78ed99e1d0acf63d44dbadb9ddf4325e41a0f11d02a250be",
+      "size": 115
+    },
+    "local/native_filestore_build.log": {
+      "sha256": "0b3d1437f1ccbbb412f9a770d88dda1f477b329d4464e3d8feab4daad5123d2b",
+      "size": 4099
+    },
+    "local/native_filestore_seeds.log": {
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+      "size": 3034
+    },
+    "build/win32/Release/bsp_core.lib": {
+      "sha256": "a0f1c8474c692d5bcfde3705642213d60aebbced494acac8114f10b6c64998e4",
+      "size": 43187464
+    },
+    "build/win32/bsp_core.dir/Release/native_filestore_open.obj": {
+      "sha256": "1f554e0ac085baab227e6c18ade94314ca81bcb0394236ad8bf3e65e3a587e1b",
+      "size": 7557
+    },
+    "local/native_filestore_report_calls.log": {
+      "sha256": "79ed8377254a959b0404daf5e142ecc343b24558b924601ba341a22aaf3c7565",
+      "size": 518
+    }
+  }
+}
