@@ -452,3 +452,13 @@ than guessed; the callee is proven by `bsp.py ghidra callees 008ADC40`.
 * `vtable[1B8h]` (max repair) and `vtable[19Ch]` (the named-state dispatch shared with the
   subobject step's `"destroyed"` branch).
 * The settings defaults at `+3B4h`, `+3B8h`, `+3C8h`..`+3E0h`, `+3E8h` and `+46Ch`.
+
+## Values from docs/GAMEPLAY_SETTINGS.md (packet cc2_gameplay_settings)
+
+The settings constants above now have keys and installed values: `+3B4h` is
+`BodyRepairTickPercentage` (0.1), `+3D4h` `BodyRepairMultiplier` (2), `+3ACh` `FireTickDamage`
+(40), `+3B0h` `WaterTickDamage` (100), `+3BCh`/`+3C0h` the ignition fallback pair (3 and 10),
+`+3DCh`/`+3E0h` both 100. The authored key names at `+3C8h` and `+3CCh` are crossed against
+their consumers: `PumpRepairMultiplier` feeds the fire path and `FireRepairMultiplier` the water
+path; both ship as 3, so no run can tell them apart. The second assignment block in the shipped
+script is gated on `FailureDebug`, false in the installed `ScriptOptions.lua`.
