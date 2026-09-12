@@ -74,7 +74,18 @@
   "no_ghidra_function": [],
   "validation": {
     "build": "MSVC Win32 Release and existing CTest 2/2 passed",
-    "native_differential": "independent proof packet pending; no result claimed here",
+    "native_differential": {
+      "report": "reports/ship_ai_avoid_zone_search_proof.json",
+      "cases": 1536,
+      "failures": 0,
+      "callback_records": 8484,
+      "selected_node_records": 4296,
+      "serialized_bytes": 567744,
+      "compiled_source_sha256": "6d5b1b7433553803def4ca656ad737f1f5257e926cb85c320892c33858f3f958",
+      "later_source_change": "5b888d82 changes exactly one z-load/spill comment; no executable logic changed",
+      "current_source_sha256": "042879872a8373214422eece7f47454486f6cf4a1e77782e19860dad026f15b3",
+      "final_fp_control_status_top_mxcsr_compared": false
+    },
     "loaded_map": {
       "scene": "universe/Scenes/missions/USN/usn_1_marshall.scn",
       "game_root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
