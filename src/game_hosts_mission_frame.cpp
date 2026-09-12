@@ -1213,6 +1213,15 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             host.world_host->build_entity_chains_009037f0();
             host.units->issue_authored_commands();
             if (host.units->count() > 0) host.units->set_controlled_unit_004c0890(0);
+            // Milestone 2k: the two HUD screens that show the world read the same
+            // created units. Once 004c0890 has bound one, the interface request
+            // can carry it, which is what raises the markers screen and keeps the
+            // minimap: 0068aca0's 20h arm is a unit-kind classifier with a
+            // payload and publishes 25h INTF_CAPTAIN's level-1 set for a ship.
+            if (host.hud != nullptr) {
+                host.hud->attach_world_2k(*host.units, host.lua);
+                host.hud->request_scene_interface_for_unit_004cc460();
+            }
             continue;
         }
         if (method == "apply_in_game_interface") {

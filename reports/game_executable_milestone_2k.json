@@ -1,0 +1,732 @@
+{
+  "packet": "cc_exe_2k",
+  "owner": "agent/cc-exe-2k",
+  "binary": "bsp_game.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "doc": "docs/GAME_EXECUTABLE.md",
+  "sources": [
+    "src/game_hosts_hud_world.cpp",
+    "include/bsp/game_hosts_hud_world.hpp",
+    "src/game_hosts_hud.cpp",
+    "include/bsp/game_hosts_hud.hpp",
+    "src/game_hosts_frontend.cpp",
+    "include/bsp/game_hosts_frontend.hpp",
+    "src/game_hosts_menu.cpp",
+    "include/bsp/game_hosts_menu.hpp",
+    "src/game_hosts_lua.cpp",
+    "include/bsp/game_hosts_lua.hpp",
+    "src/game_hosts_units.cpp",
+    "include/bsp/game_hosts_units.hpp",
+    "src/game_hosts_mission_frame.cpp"
+  ],
+  "evidence_date": "2026-09-12",
+  "summary": "Milestone 2k drives the two in-mission HUD screens whose update virtual is reconstructed. The interface request now carries the controlled unit, so the recovered 20h arm classifies it as a ship and publishes 25h INTF_CAPTAIN's level-1 set, which raises the markers screen (4Dh) and keeps the minimap (35h); the recovered pump 004f8830 then calls 005c0f20 and 006435d0 every frame. The minimap places one icon per unit that survives the recovered filters, at the camera-relative rotated position 005c1b62 computes, with the two radii read out of the installed globals.lua. The markers pass runs end to end over a documented stand-in camera and adds the one marker its own selection produces.",
+  "host_steps": [
+    {
+      "step": "push_scene_request_for_unit",
+      "address": "00648605",
+      "native": "004cc460",
+      "function": "006485a0",
+      "status": "unimplemented",
+      "note": "004cc460(20h, unit). The native pushers are the HUD root's own 006485a0, 00649860 and 00647300, all of which read a HUD root object this process does not own, so the push is recorded and the executable makes it on the load's own unit row."
+    },
+    {
+      "step": "service_pending_request",
+      "native": "006840f0",
+      "function": "004c40f0",
+      "status": "unimplemented",
+      "note": "The pending record 004cc460 writes is the front-end owner's."
+    },
+    {
+      "step": "apply_base_request",
+      "native": "00684600",
+      "function": "006840f0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "apply_pending_interface",
+      "native": "0068aca0",
+      "function": "00684600",
+      "status": "concrete",
+      "note": "bsp::apply_in_game_interface_0068aca0, packet cc_hud_updates. Run twice: once with the null payload Init pushes and once with the controlled unit."
+    },
+    {
+      "step": "hud_root_set_interface",
+      "native": "00646040",
+      "function": "0068aca0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "collapse_overlays",
+      "native": "0068ab80",
+      "function": "0068aca0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "set_level1_screen_set",
+      "native": "004f8530",
+      "function": "0068aca0",
+      "status": "concrete"
+    },
+    {
+      "step": "set_level1_input_contexts",
+      "native": "004d8a50",
+      "function": "0068aca0",
+      "status": "concrete"
+    },
+    {
+      "step": "prepare_frame",
+      "address": "005c0f3f",
+      "native": "005bd420",
+      "function": "005c0f20",
+      "status": "unimplemented",
+      "note": "The slot 35h screen class's own per-frame transform refresh, one of the 42 records."
+    },
+    {
+      "step": "camera_unit",
+      "address": "005c154e",
+      "native": "004b4b00",
+      "function": "005c0f20",
+      "status": "unimplemented",
+      "note": "STAND-IN: this process builds no camera at game+19FCh, so the executable hands the pass the controlled unit and records the call."
+    },
+    {
+      "step": "minimap_range",
+      "address": "005c157e",
+      "native": "00432650",
+      "function": "005c0f20",
+      "status": "unimplemented",
+      "note": "The global config singleton is not built here; +6Ch carries what 0087d7b0 reads."
+    },
+    {
+      "step": "visibility_range",
+      "address": "005c158a",
+      "native": "00432650",
+      "function": "005c0f20",
+      "status": "unimplemented",
+      "note": "+70h, the cull radius."
+    },
+    {
+      "step": "global_config_load",
+      "address": "004ddfc4",
+      "native": "0087d7b0",
+      "function": "004ddb90",
+      "status": "unimplemented",
+      "note": "Not reconstructed. Only its two Minimap reads are performed, against the installed scripts/datatables/globals.lua on the mission Lua machine: 4000 and 4000."
+    },
+    {
+      "step": "refresh_camera_pose",
+      "address": "005c15bb",
+      "native": "00414db0",
+      "function": "005c0f20",
+      "status": "concrete"
+    },
+    {
+      "step": "displayed_self_unit",
+      "address": "005c15f2",
+      "native": "00927880",
+      "function": "005c0f20",
+      "status": "unimplemented"
+    },
+    {
+      "step": "world_position",
+      "address": "005c1687",
+      "native": "00427eb0",
+      "function": "005c0f20",
+      "status": "concrete",
+      "note": "Returns unit+FCh, the world-matrix translation row."
+    },
+    {
+      "step": "length_squared",
+      "address": "005c16ce",
+      "native": "00427e30",
+      "function": "005c0f20",
+      "status": "concrete",
+      "note": "Run inside bsp::hud_minimap_within_visibility."
+    },
+    {
+      "step": "find_icon_entry",
+      "address": "005c170a",
+      "native": "005be110",
+      "function": "005c0f20",
+      "status": "unimplemented"
+    },
+    {
+      "step": "allocate_icon_entry",
+      "address": "005c171c",
+      "native": "00bf681b",
+      "function": "005c0f20",
+      "status": "unimplemented"
+    },
+    {
+      "step": "construct_icon_entry",
+      "address": "005c173a",
+      "native": "005bd590",
+      "function": "005c0f20",
+      "status": "unimplemented"
+    },
+    {
+      "step": "insert_icon_entry",
+      "address": "005c175b",
+      "native": "005c0700",
+      "function": "005c0f20",
+      "status": "unimplemented"
+    },
+    {
+      "step": "attach_icon_entry",
+      "address": "005c1767",
+      "native": "00694a60",
+      "function": "005c0f20",
+      "status": "unimplemented",
+      "note": "The four entry calls are packet hud_minimap_icon_entries'; the executable clones the page's own item_ship_Icon template instead and says so."
+    },
+    {
+      "step": "refresh_renderer_basis",
+      "address": "005c17a7",
+      "native": "00b6db70",
+      "function": "005c0f20",
+      "status": "unimplemented",
+      "note": "STAND-IN: the renderer at game+19FCh is the renderer owner's, so the basis is the controlled unit's own forward row."
+    },
+    {
+      "step": "atan2",
+      "address": "005c17e0",
+      "native": "00bf701a",
+      "function": "005c0f20",
+      "status": "concrete"
+    },
+    {
+      "step": "rim_clamp_sqrt",
+      "address": "005c1a52",
+      "native": "00bf7030",
+      "function": "005c0f20",
+      "status": "concrete",
+      "note": "Inside bsp::hud_minimap_clamp_to_rim_005c1a3c; reached only for a unit beyond MinimapRange."
+    },
+    {
+      "step": "set_icon_position",
+      "address": "005c1c99",
+      "native": "00aa7dc0",
+      "function": "005c0f20",
+      "status": "concrete"
+    },
+    {
+      "step": "bind_islandmap",
+      "address": "005bed41",
+      "native": "00aa7e00",
+      "function": "005bec50",
+      "status": "concrete",
+      "note": "The widget 005bec50 stores at +50h and, in the game, binds the RadarMap render target to. That target is the renderer owner's and is recorded."
+    },
+    {
+      "step": "bind_compass",
+      "address": "005be2a7",
+      "native": "00aa7e00",
+      "function": "005be240",
+      "status": "concrete"
+    },
+    {
+      "step": "bind_first_unit_icon",
+      "address": "005be392",
+      "native": "00aa7e00",
+      "function": "005be240",
+      "status": "concrete"
+    },
+    {
+      "step": "bind_dir_icon",
+      "address": "005beb68",
+      "native": "00aa7e00",
+      "function": "005be240",
+      "status": "concrete"
+    },
+    {
+      "step": "bind_marker_group",
+      "address": "005bebd8",
+      "native": "00aa7e00",
+      "function": "005be240",
+      "status": "concrete"
+    },
+    {
+      "step": "gui_extent",
+      "address": "00643616",
+      "native": "00aa1fe0",
+      "function": "006435d0",
+      "status": "unimplemented",
+      "note": "The executable supplies (1, 1): the GUI space its page tree composes in is the unit square the sprite bridge multiplies by the back buffer."
+    },
+    {
+      "step": "camera_unit",
+      "address": "0064368b",
+      "native": "004b4b00",
+      "function": "006435d0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "pool_reset",
+      "address": "00643695",
+      "native": "00640620",
+      "function": "006435d0",
+      "status": "unimplemented",
+      "note": "No pool entry exists in this process, so the release walks nothing."
+    },
+    {
+      "step": "clear_marked_set",
+      "address": "006436a3",
+      "native": "0063bcd0",
+      "function": "006435d0",
+      "status": "concrete"
+    },
+    {
+      "step": "self_marker_unit",
+      "address": "006436b7",
+      "native": "00927880",
+      "function": "006435d0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "refresh_screen_state",
+      "address": "006436c1",
+      "native": "006394b0",
+      "function": "006435d0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "refresh_marker_layout",
+      "address": "006436cc",
+      "native": "0063b5e0",
+      "function": "006435d0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "add_unit_marker_self",
+      "address": "006436e5",
+      "native": "006430c0",
+      "function": "006435d0",
+      "status": "concrete",
+      "note": "bsp::hud_markers_add_unit_marker_006430c0. The only marker this mission produces."
+    },
+    {
+      "step": "refresh_pose_squad_mate",
+      "address": "006437c2",
+      "native": "00414db0",
+      "function": "006435d0",
+      "status": "unimplemented",
+      "note": "The squad arm never runs: its list is the world object's and the radius at unit+7C4h has no recovered field, so hud_marker_within_radius rejects every mate."
+    },
+    {
+      "step": "target_filter",
+      "address": "0064373f",
+      "native": "00804350",
+      "function": "006435d0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "target_selectable",
+      "address": "00643755",
+      "native": "005220c0",
+      "function": "006435d0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "viewport_descriptor",
+      "address": "00643892",
+      "native": "00b6fde0",
+      "function": "006435d0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "pick_crosshair_world_point",
+      "address": "006438e8",
+      "native": "0043a290",
+      "function": "006435d0",
+      "status": "unimplemented",
+      "note": "The crosshair unproject needs the same camera 0043a660 needs."
+    },
+    {
+      "step": "sweep_objectives",
+      "address": "00643a58",
+      "native": "00643360",
+      "function": "006435d0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "sweep_command_units",
+      "address": "00643ba9",
+      "native": "00642c20",
+      "function": "006435d0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "query_target_unit",
+      "address": "00643bea",
+      "native": "00523020",
+      "function": "006435d0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "add_group_member_marker",
+      "address": "00643c72",
+      "native": "006434e0",
+      "function": "006435d0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "target_section_callout",
+      "address": "00643c8e",
+      "native": "00640d70",
+      "function": "006435d0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "pool_reset_end_of_frame",
+      "address": "00643d41",
+      "native": "00640620",
+      "function": "006435d0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "parts_object",
+      "address": "006430e4",
+      "native": "0080e490",
+      "function": "006430c0",
+      "status": "unimplemented",
+      "note": "The parts object belongs to packet unit_parts; a created instance has none, so the gate answers the value that lets the unit through and the record says so."
+    },
+    {
+      "step": "already_marked",
+      "address": "0064311c",
+      "native": "0063abd0",
+      "function": "006430c0",
+      "status": "concrete"
+    },
+    {
+      "step": "mark_unit",
+      "address": "00643131",
+      "native": "004323d0",
+      "function": "006430c0",
+      "status": "concrete"
+    },
+    {
+      "step": "objective_container_contains",
+      "address": "00643183",
+      "native": "008ddf90",
+      "function": "006430c0",
+      "status": "unimplemented"
+    },
+    {
+      "step": "is_alive_and_visible",
+      "address": "006431a8",
+      "native": "0043f080",
+      "function": "006430c0",
+      "status": "concrete",
+      "note": "bsp/unit_instance.hpp carries +5Ch and +5Dh; +5Eh and +60h have no field and are treated as the clear a created instance leaves them at."
+    },
+    {
+      "step": "build_unit_marker",
+      "address": "006432db",
+      "native": "00642040",
+      "function": "006430c0",
+      "status": "concrete",
+      "note": "The ship probe, IsKindOf(5), is the branch the mission's destroyers take."
+    },
+    {
+      "step": "marker_colour_index",
+      "address": "006420d8",
+      "native": "00639990",
+      "function": "00642040",
+      "status": "unimplemented",
+      "note": "The non-objective part of the rule is run in the executable to choose which of the six colour templates a minimap icon is cloned from; the objective arm needs an objective container this process does not build."
+    },
+    {
+      "step": "refresh_pose",
+      "address": "006420ee",
+      "native": "00414db0",
+      "function": "00642040",
+      "status": "concrete"
+    },
+    {
+      "step": "screen_bounds",
+      "address": "00642211",
+      "native": "0063a6c0",
+      "function": "00642040",
+      "status": "concrete",
+      "note": "bsp::hud_markers_add_unit_marker_006430c0 runs the whole rule."
+    },
+    {
+      "step": "unit_class_name",
+      "address": "006422f0",
+      "native": "00803dc0",
+      "function": "00642040",
+      "status": "unimplemented"
+    },
+    {
+      "step": "unit_health",
+      "address": "0064240b",
+      "native": "0077a2f0",
+      "function": "00642040",
+      "status": "unimplemented"
+    },
+    {
+      "step": "write_marker_widgets",
+      "address": "006426e6",
+      "native": "0063d1e0",
+      "function": "00642040",
+      "status": "unimplemented",
+      "note": "The per-marker widget writer has no reconstruction, so the executable clones the page's own sidemarker_Group and places the clone from the screen bounds."
+    },
+    {
+      "step": "set_localised_cstring",
+      "address": "0063d751",
+      "native": "00abbe50",
+      "function": "0063d1e0",
+      "status": "unimplemented",
+      "note": "Unit_name_Text is filled with a plain C string, not a localisation id; the executable's text path only carries ids, so the label keeps the page's authored `Unit Name` and nothing invents a string."
+    },
+    {
+      "step": "project_and_clip_corner",
+      "address": "0063a9d6",
+      "native": "00638e50",
+      "function": "0063a6c0",
+      "status": "concrete"
+    },
+    {
+      "step": "project_world_to_screen",
+      "address": "00638e58",
+      "native": "0043a660",
+      "function": "00638e50",
+      "status": "concrete"
+    },
+    {
+      "step": "view_projection_matrix",
+      "address": "0043a6a0",
+      "native": "00b70490",
+      "function": "0043a660",
+      "status": "unimplemented",
+      "note": "STAND-IN: no camera exists, so the projection is a fixed top-down orthographic camera fitted to the mission's own unit bounds."
+    },
+    {
+      "step": "transform_vec4",
+      "address": "0043a6af",
+      "native": "00b62d10",
+      "function": "0043a660",
+      "status": "unimplemented",
+      "note": "Part of the same stand-in."
+    },
+    {
+      "step": "gui_extent_for_mode1",
+      "address": "0043a7bb",
+      "native": "00aa1fe0",
+      "function": "0043a660",
+      "status": "unimplemented"
+    }
+  ],
+  "indirect_call_sites": [
+    {
+      "step": "unit_is_kind_of",
+      "native": "006fe530+vtable5C",
+      "sites": [
+        "005c165d",
+        "006430dc",
+        "006430fc",
+        "0064310f",
+        "006431bf",
+        "006431ec",
+        "00643219",
+        "0064327e",
+        "006432b9",
+        "006432eb",
+        "0068ae1c"
+      ],
+      "note": "bsp::unit_is_kind_of_006fe530 over the created unit's own class id."
+    },
+    {
+      "step": "unit_shows_on_minimap",
+      "native": "0043f080+vtableB8",
+      "sites": [
+        "005c1675"
+      ],
+      "note": "005c1675 is CALL EAX from vtable +B8h with no arguments. reports/hud_minimap.json resolves the slot to 0043f080; the four-byte gate has already passed for every unit that reaches here, so the executable answers true. The slot's identity is that packet's reading, not this one's."
+    },
+    {
+      "step": "set_icon_rotation",
+      "native": "00aa7d00+vtable44",
+      "sites": [
+        "005c1825",
+        "005c184f",
+        "005c1872",
+        "005c1cd0"
+      ],
+      "note": "The compass, the island map, the direction wedge and each unit icon."
+    },
+    {
+      "step": "redispatch",
+      "native": "0068aca0+vtable10",
+      "sites": [
+        "0068afb4"
+      ],
+      "note": "The 20h arm's re-entry with the id its unit-kind classifier chose."
+    },
+    {
+      "step": "minimap_screen_register",
+      "native": "005bec50+vtable10",
+      "sites": [
+        "0068cc70"
+      ],
+      "note": "The 42 screen classes are records; the widget bind runs over the page the manager's Init already loaded."
+    },
+    {
+      "step": "markers_screen_register",
+      "native": "0063e280+vtable10",
+      "sites": [
+        "0068cc70"
+      ],
+      "note": "As above, for slot 4Dh."
+    }
+  ],
+  "routines": [
+    {
+      "routine": "005c0f20",
+      "coverage": "partial: the executable runs bsp::hud_minimap_place_unit_icons_005c154e (005c154e..005c1c99) and the icon rotation at 005c1ca1..005c1cd0. Not run: the animation prologue 005c0f3f..005c154e and the three capture passes at 005c1f90, 005c239e and 005c2523."
+    },
+    {
+      "routine": "006435d0",
+      "coverage": "complete for the body: bsp::hud_markers_screen_update runs every block. Five of the six marker sources reach nothing in this process (the interface target, the squad list, the objectives, the command units and the target group), which is the routine's own answer for a session with only a controlled unit."
+    },
+    {
+      "routine": "006430c0",
+      "coverage": "complete for the gate, the flag derivation and the dispatch selection, through bsp::hud_markers_add_unit_marker_006430c0."
+    },
+    {
+      "routine": "0063a6c0",
+      "coverage": "complete, but every class extent is zero on this installation's ships, so the eight corners collapse onto the anchor and 0063ab75's collapse path is the one that runs."
+    },
+    {
+      "routine": "0068aca0",
+      "coverage": "complete for both the null-payload and the unit-payload arms of id 20h."
+    },
+    {
+      "routine": "0087d7b0",
+      "coverage": "partial: only the two Globals[\"Minimap\"] reads that fill +6Ch and +70h. The other seventy string reads of the loader are not performed."
+    }
+  ],
+  "stand_ins": [
+    {
+      "what": "the camera's unit",
+      "native": "004b4b00",
+      "why": "this process builds no in-mission camera at game+19FCh",
+      "value": "the controlled unit at 00e188d8"
+    },
+    {
+      "what": "the renderer basis the minimap heading comes from",
+      "native": "00b6db70 then [renderer+110h] and [renderer+118h]",
+      "why": "the renderer at game+19FCh is the renderer owner's",
+      "value": "the controlled unit's own forward row, so heading_raw is atan2(fwd.x, fwd.z)"
+    },
+    {
+      "what": "the per-unit minimap icon entry",
+      "native": "005be110, 00bf681b, 005bd590, 005c0700, 00694a60",
+      "why": "packet hud_minimap_icon_entries owns the 0Ch-byte entry",
+      "value": "a sprite-bridge clone of the page's own item_ship_Icon template, parented to unit_marker_Group"
+    },
+    {
+      "what": "the per-marker widget writer",
+      "native": "0063d1e0",
+      "why": "not reconstructed",
+      "value": "a sprite-bridge clone of the page's own sidemarker_Group, placed from the screen bounds 0063a6c0 produced"
+    },
+    {
+      "what": "the view-projection matrix the marker projection needs",
+      "native": "00b70490 and 00b62d10",
+      "why": "no camera exists",
+      "value": "a fixed top-down orthographic camera fitted to the mission's own unit bounds x[-5000, 5000] z[-8000, 250], half extent 6000 with a 1.2 margin"
+    },
+    {
+      "what": "the GUI extent",
+      "native": "00aa1fe0",
+      "why": "the native extent object is the GUI owner's",
+      "value": "(1, 1), the unit square the sprite bridge multiplies by the back buffer"
+    },
+    {
+      "what": "which of the six colour groups an icon is cloned from",
+      "native": "00639990",
+      "why": "packet hud_minimap_icon_entries lists the group an entry is parented to as unsettled",
+      "value": "00639990's own non-objective rule on the unit's team byte, indexing kHudMinimapUnitGroups"
+    },
+    {
+      "what": "the order the sprite bridge draws its own clones in",
+      "native": "none; the native render order is geOrder and belongs to another owner",
+      "why": "a Z-only order buries the unit icons under the minimap frame and glass",
+      "value": "every run-time clone is drawn after every authored quad"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2h: 'the executable applies exactly that id rather than choosing one', with the null payload Init pushes.",
+      "is": "That is right for Init's own request and wrong as the mission's final state. The 20h arm with a payload is a unit-kind classifier; with the controlled unit it re-enters its own virtual +10h with 25h INTF_CAPTAIN, whose level-1 set is 29h 49h 44h 27h 4Dh 45h 46h 26h 2Eh 35h 50h.",
+      "evidence": "docs/IN_GAME_INTERFACE_SCREEN_SETS.md's 20h table and its 25h row; the run log's two 'in-mission level-1 set' lines."
+    },
+    {
+      "was": "This packet's brief: 'the world-to-minimap transform from the mission's map bounds'.",
+      "is": "The transform is camera-relative and camera-rotated. 00432650's +6Ch and +70h are Minimap.MinimapRange and Minimap.VisibilityRange, both 4000, and docs/HUD_MINIMAP.md's own correction says neither is a map bound. The mission's bounds play no part in the minimap; they are only the stand-in marker camera's.",
+      "evidence": "docs/HUD_MINIMAP.md corrections table; 0087d7b0's two reads; 005c1a3c..005c1c99."
+    },
+    {
+      "was": "docs/MOTION_DIFFERENTIAL.md and milestone 2j: the executable and src/ship_motion_probe.cpp agree to 0.0005 degrees of heading over 14 s.",
+      "is": "They no longer do, and the executable is the side that lags. Commit 4977f563 gave the probe the hull body 00937c90's tail creates and the dynamics world 004ddb90 fills, so the probe applies the body's angular damping and settles at 0.05513 rad/s, while this executable still leaves the body without mass, inertia or damping and settles at 0.06109. The executable's own numbers are unchanged from milestone 2j's published run, so nothing here regressed; what is missing is the same hull-body creation on the executable's side.",
+      "evidence": "bsp_ship_motion_probe.exe --class 20 --throttle 1 --rudder 1 prints 'peak yaw rate 0.05513 ... the hull's angular damping (rate 1.0, twice per substep) scales that target by 0.9025'; the run log's 'controlled unit frame 280 ... yaw=-0.06109'."
+    },
+    {
+      "was": "This packet's brief: cruise, 'when cc_cruise_command is on main'.",
+      "is": "It is not on main as of 2b6cce8b, so the authored Cruise token is still turned into one order of throttle 1 and rudder 0 by milestone 2i's own decision. A run with no --order still moves all 32 ships; the ordered pair each unit runs under is now a column of the end-of-run distance table.",
+      "evidence": "git log --oneline main; the 'unit throttle rudder' table in the run log of a --mission-frames 300 run with no --order."
+    },
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2b: the sprite bridge 'orders quads back to front by the authored Z alone'.",
+      "is": "Still true for authored widgets, and this milestone shows the rule is not the game's: GUI_minimap puts its island map at Z -5 and its frame, glass and direction wedge at -22, -23 and -24, so a Z-only order draws the frame over the unit icons, while the page's geOrder puts unit_marker_Group (0) in front of all of them. geOrder is not a draw order either (sidemarker_Group gives HP_Icon 5 and HP_BG_Icon 3), so the bridge keeps the Z rule for authored widgets and adds one rule for the widgets the executable created.",
+      "evidence": "interface/gui_minimap.lua and interface/gui_markers.lua geOrder keys."
+    }
+  ],
+  "installed_data": [
+    {
+      "file": "scripts/datatables/globals.lua",
+      "read": "Globals[\"Minimap\"][\"MinimapRange\"] = 4000, [\"VisibilityRange\"] = 4000"
+    },
+    {
+      "file": "interface/gui_minimap.lua",
+      "read": "the six minimap_units_*_Group item_ship_Icon templates, unit_marker_Group at (0.865167, 0.164028, -5), the compass, the island map and the direction wedge"
+    },
+    {
+      "file": "interface/gui_markers.lua",
+      "read": "sidemarker_Group and its type_Icon, HP_Icon, HP_BG_Icon, Distance_Text and Unit_name_Text children"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release Win32, /W4 /WX /fp:strict, no warnings",
+    "ctest": "reconstructed_math 1 of 1, no test cases added",
+    "main_run": "--frames 600 --press-start-frame 30 --menu-select USN02 --mission-frames 300 --mission-frame-seconds 0.05 --order-frame 0 --order throttle=1,rudder=0.5 --mission-complete-frame 290, exit 0: 349 concrete, 377 unimplemented",
+    "milestone_2j_pair": "325 concrete, 337 unimplemented",
+    "minimap": "range 4000, visibility 4000, both read from the installed globals.lua; 16 icons created, 16 placed on the last frame, 15 units culled by VisibilityRange, 581 update calls",
+    "markers": "1 marker added, 0 rejected, 1 on screen, 1 collapsed, 579 update calls",
+    "regressions": "120 frame run with --press-start-frame 30 and no --menu-select: 154 concrete, 80 unimplemented, exit 0. 40 frame title-only run: 129 and 49, exit 0. --vfs-probe fonts/fonts.lua exit 0, --vfs-probe does/not/exist.lua exit 3. --mission-frames 60 with no --mission-complete-frame: exit 0 with 'summary mission exit reachable=0'. --trajectory-csv header unchanged and the controlled unit at t=14 s reproduces milestone 2j's acceptance run exactly: heading -41.253, fwd 16.430, yaw -0.06109",
+    "screenshots": "local/run_2k_f40.png and local/run_2k_f280.png, in-mission frames 40 and 280 of the same command at 1024x768 through an isolated --settings-personal-root, so the whole minimap cluster is inside the back buffer. Both are ignored and not committed."
+  },
+  "no_ghidra_function": [
+    {
+      "start": "-",
+      "end": "-",
+      "note": "none. Every address this packet names has a Ghidra function body. The hole docs/HUD_MARKERS_RUNTIME.md records at 00643c1c..00643c68 is inside 006435d0's body and this packet's rows avoid it: the group-member step is cited at 00643c72, the site Ghidra covers."
+    }
+  ],
+  "ghidra_writes": "none; Ghidra was read-only for this packet",
+  "follow_up_packets": [
+    "hud_minimap_icon_entries: 005be110, 005bd590, 005c0700, 005bcc00 and 00694a60, so the 0Ch-byte entry and the group it is parented to replace the executable's clone.",
+    "hud_minimap_capture_points: 005c1f90, 005c239e and 005c2523, the three tail passes the icon pass does not cover.",
+    "hud_minimap_terrain_texture: the RadarMap render target and cWorldBorderNWSE.",
+    "ship_hull_body_creation in the executable: 00937c90's tail and 004ddb90's world settings, which src/ship_motion_probe.cpp already runs. Until it does, the two sides disagree by the hull's angular damping (correction 3).",
+    "gui_render_order: what actually orders GUI quads, so the sprite bridge stops needing both an authored-Z rule and a rule for its own clones.",
+    "hud_marker_objective_pass, hud_marker_close_icons, hud_marker_type_icon_states and hud_marker_box_emit: the five marker sources this mission never reaches.",
+    "The in-mission camera at game+19FCh, which is the single stand-in behind the minimap heading, the marker projection and the crosshair pick.",
+    "construct_world 004de610, unchanged from milestones 2h, 2i and 2j."
+  ]
+}

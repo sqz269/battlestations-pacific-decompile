@@ -809,6 +809,18 @@ public:
             }
             return;
         }
+        // Milestone 2k: two of the 42 in-mission screens have their update
+        // virtual reconstructed, and the pump is where the native calls them.
+        // 005c0f20 is slot 35h's and 006435d0 is slot 4Dh's; both are reached
+        // only once the applied interface publishes their slot into level 1.
+        if (owner_.hud != nullptr && slot == 0x35) {
+            owner_.hud->update_minimap_screen_005c0f20(seconds);
+            return;
+        }
+        if (owner_.hud != nullptr && slot == 0x4d) {
+            owner_.hud->update_markers_screen_006435d0(seconds);
+            return;
+        }
         owner_.log.unimplemented("FrontEndScreen::update", "004f75c0");
     }
 
@@ -1614,6 +1626,18 @@ bool GameMenuHost::in_game_page_has_child(int slot, const std::string& widget_na
     }
     return false;
 }
+
+GuiLayoutPage* GameMenuHost::in_game_page(int slot, const std::string& page_name) {
+    Impl& host = *impl_;
+    Impl::MenuScreen* screen = host.screen_at(slot);
+    if (screen == nullptr) return nullptr;
+    for (GuiLayoutPage* page : screen->pages) {
+        if (page != nullptr && page->name == page_name) return page;
+    }
+    return nullptr;
+}
+
+GameFrontendHost& GameMenuHost::frontend() const noexcept { return impl_->frontend; }
 
 void GameMenuHost::publish_level1_screen_set_004f8530(const int* ids, std::size_t count) {
     Impl& host = *impl_;

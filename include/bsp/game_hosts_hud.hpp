@@ -35,6 +35,10 @@ namespace bsp::game {
 
 class GameHostLog;
 class GameMenuHost;
+class GameUnitsHost;
+class GameMissionLuaHost;
+class GameHudMinimapHost;
+class GameHudMarkersHost;
 
 // One of the 42 screens the manager's Init constructs, as this run built it.
 struct GameHudScreenRecord {
@@ -128,6 +132,25 @@ public:
     // manager_active() answers.
     bool manager_active() const noexcept;
     void update_in_game_interface_0068c1f0();
+
+    // ---- milestone 2k: the two HUD screens that show the world -------------
+    // The created units both screens read, and the Lua machine the minimap's two
+    // radii come out of. Called once, on the load's own load_scene_contents row
+    // after the instantiate pass created the units and 004c0890 bound one.
+    void attach_world_2k(GameUnitsHost& units, GameMissionLuaHost& lua);
+    // 004cc460(20h, controlled unit). Milestone 2h applied the request Init
+    // pushes, which carries a **null** payload, and the 20h arm's null path
+    // publishes `29h, 49h, 44h, 35h`. With a payload the same arm is a unit-kind
+    // classifier: a ship answers IsKindOf(6) and it re-enters its own virtual
+    // +10h with 25h INTF_CAPTAIN, whose level-1 set carries 4Dh (the markers) and
+    // 35h (the minimap). The native pushers of that request are the HUD root's
+    // own 00649860, 006485a0 and 00647300, none of which this process owns, so
+    // 004cc460 is recorded and the recovered service path runs from there.
+    void request_scene_interface_for_unit_004cc460();
+    // The update virtual of one HUD screen, called by the recovered pump 004f8830
+    // for every screen the applied interface published into level 1.
+    void update_minimap_screen_005c0f20(float seconds);
+    void update_markers_screen_006435d0(float seconds);
 
     // One summary line for the run log.
     void report();

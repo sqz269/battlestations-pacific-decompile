@@ -154,6 +154,15 @@ public:
     // curve settings are then left untouched.
     bool read_turn_multipliers_0083ce56(UnitRudderCurveSettings& out);
 
+    // Milestone 2k. The two reads 0087d7b0 makes into the global config object
+    // 00432650 hands out: `Globals["Minimap"]["MinimapRange"]` into +6Ch and
+    // `["VisibilityRange"]` into +70h (docs/HUD_MINIMAP.md). 0087d7b0 itself is
+    // not reconstructed and its other seventy reads are not performed; this runs
+    // `scripts/datatables/globals.lua` on the mission machine through the
+    // recovered file runner 00885110 and takes those two numbers out of the
+    // installed data. False leaves both outputs untouched.
+    bool read_minimap_globals_0087d7b0(float& minimap_range, float& visibility_range);
+
     bool started() const noexcept;
     const GameMissionLuaSummary& summary() const noexcept;
     // Logs the distinct bindings the scripts reached, highest count first.

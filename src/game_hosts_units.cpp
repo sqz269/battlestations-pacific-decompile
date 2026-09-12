@@ -948,6 +948,48 @@ int GameUnitsHost::unit_class_id(std::size_t index) const noexcept {
     return impl_->slots[index]->class_id;
 }
 
+bool GameUnitsHost::unit_alive_and_visible(std::size_t index) const {
+    if (index >= impl_->slots.size()) return false;
+    const bsp::UnitInstanceState& state = *impl_->slots[index]->state;
+    // 0043f080: [+5Ch] != 0 && [+5Dh] == 0 && [+60h] == 0 && [+5Eh] == 0.
+    return state.active && !state.simulate;
+}
+
+bool GameUnitsHost::unit_pose(std::size_t index, float right[3], float up[3],
+    float forward[3], float translation[3]) const {
+    if (index >= impl_->slots.size()) return false;
+    const bsp::CameraMatrix& world = impl_->slots[index]->world;
+    for (std::size_t lane = 0; lane < 3; ++lane) {
+        right[lane] = world[lane];
+        up[lane] = world[4 + lane];
+        forward[lane] = world[8 + lane];
+        translation[lane] = world[12 + lane];
+    }
+    return true;
+}
+
+void GameUnitsHost::unit_class_extents(std::size_t index, float& forward, float& right,
+    float& up) const {
+    forward = 0.0f;
+    right = 0.0f;
+    up = 0.0f;
+    if (index >= impl_->slots.size()) return;
+    const bsp::ShipMotionClass& motion_class = impl_->slots[index]->motion_class;
+    forward = motion_class.hull_length;  // class+A0h
+    up = motion_class.hull_height;       // class+A8h
+    // class+A4h has no recovered Lua key, so it stays zero rather than being
+    // guessed from either of the other two.
+}
+
+const GameUnitRow* GameUnitsHost::unit_row(std::size_t index) const noexcept {
+    if (index >= impl_->slots.size()) return nullptr;
+    return &impl_->slots[index]->row;
+}
+
+bool GameUnitsHost::controlled_bound() const noexcept { return impl_->controlled_bound; }
+
+std::size_t GameUnitsHost::controlled_index() const noexcept { return impl_->controlled_index; }
+
 const std::vector<GameUnitRow>& GameUnitsHost::units() const noexcept {
     // The rows live inside the slots; a flat copy is rebuilt on demand so the
     // caller sees one contiguous table.
@@ -981,12 +1023,19 @@ void GameUnitsHost::report() {
         "simulated time, %llu instance update(s) of 008255b0",
         host.summary.motion_steps, host.summary.motion_ticks,
         static_cast<double>(host.summary.simulated_seconds), host.summary.instance_updates);
-    host.log.notef("  %-20s %-12s %5s %5s %9s %9s %9s %9s %8s %5s", "unit", "type", "party",
-        "class", "start x", "start z", "x", "z", "moved", "gate");
+    // Milestone 2k adds the ordered pair each unit is running under, which is
+    // what the authored `Command` token produced through 00816a40 (or, for the
+    // controlled unit, what --order last wrote into the same ring at unit+980h
+    // and +984h). The token-to-order mapping is still milestone 2i's own
+    // decision: the command object 0046aab0 resolves has no reconstruction.
+    host.log.notef("  %-20s %-12s %5s %5s %8s %8s %9s %9s %9s %9s %8s %5s", "unit", "type",
+        "party", "class", "throttle", "rudder", "start x", "start z", "x", "z", "moved",
+        "gate");
     for (const std::unique_ptr<GameUnitSlot>& owned : host.slots) {
         const GameUnitRow& row = owned->row;
-        host.log.notef("  %-20s %-12s %5d %5d %9.1f %9.1f %9.1f %9.1f %8.2f %5d%s",
-            row.name.c_str(), row.type_symbol.c_str(), row.party, owned->class_id,
+        host.log.notef("  %-20s %-12s %5d %5d %8.3f %8.3f %9.1f %9.1f %9.1f %9.1f %8.2f "
+            "%5d%s", row.name.c_str(), row.type_symbol.c_str(), row.party, owned->class_id,
+            static_cast<double>(row.throttle), static_cast<double>(row.ordered_rudder),
             static_cast<double>(row.start[0]), static_cast<double>(row.start[2]),
             static_cast<double>(row.position[0]), static_cast<double>(row.position[2]),
             static_cast<double>(row.distance), row.command_applied ? 1 : 0,

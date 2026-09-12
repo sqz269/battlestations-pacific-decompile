@@ -185,6 +185,12 @@ constexpr const char* kShipGlobalsGlobal = "ShipGlobals";   // 00d0b670
 // bracket the fragment (0083cdd7, 0083ce19) are the AutoThrust fields, so the
 // wrapper the fragment holds at [ESP+0BCh] is ShipGlobals["Navigator"].
 constexpr const char* kNavigatorKey = "Navigator";
+// Milestone 2k, the two keys 0087d7b0 reads into global config +6Ch and +70h.
+constexpr const char* kGlobalConfigScriptPath = "scripts/datatables/globals.lua";
+constexpr const char* kGlobalsGlobal = "Globals";
+constexpr const char* kMinimapKey = "Minimap";
+constexpr const char* kMinimapRangeKey = "MinimapRange";
+constexpr const char* kMinimapVisibilityKey = "VisibilityRange";
 
 // bsp::UnitRudderCurveLoaderHost over the live interpreter. A handle is a Lua
 // stack index; the four native helpers become the four stack operations they
@@ -274,6 +280,48 @@ bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
         "at 0083b6e6 is a record), chunk ok=%d, `%s` is %s", kShipGlobalsScriptPath,
         ok ? 1 : 0, kShipGlobalsGlobal, table ? "a table" : "absent");
     return table;
+}
+
+bool GameMissionLuaHost::read_minimap_globals_0087d7b0(float& minimap_range,
+    float& visibility_range) {
+    if (state_ == nullptr) {
+        log_.unimplemented("HudMinimap::global_config_load", "0087d7b0");
+        return false;
+    }
+    // 0087d7b0 is the loader 004ddb90 runs over the global config object; it is
+    // not reconstructed, so the routine stays a record and only its two Minimap
+    // reads are performed, on this process's one Lua state.
+    log_.unimplemented("HudMinimap::global_config_load", "0087d7b0");
+    set_phase("global config");
+    const bsp::LuaChunkResult result = bsp::run_script_file(*this, kGlobalConfigScriptPath);
+    const bool ok = result.status == bsp::LuaChunkStatus::Ok;
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, kGlobalsGlobal);
+    bool read = false;
+    float range = 0.0f;
+    float visibility = 0.0f;
+    if (lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_getfield(state_, -1, kMinimapKey);
+        if (lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, kMinimapRangeKey);
+            ::lua_getfield(state_, -2, kMinimapVisibilityKey);
+            if (lua_type(state_, -2) == LUA_TNUMBER && lua_type(state_, -1) == LUA_TNUMBER) {
+                range = static_cast<float>(::lua_tonumber(state_, -2));
+                visibility = static_cast<float>(::lua_tonumber(state_, -1));
+                read = true;
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    log_.notef("minimap range: %s run through 00885110, chunk ok=%d, "
+        "Globals[\"Minimap\"] %s (MinimapRange=%.1f VisibilityRange=%.1f); 0087d7b0, the "
+        "loader that writes them into the global config object at +6Ch and +70h, is a record",
+        kGlobalConfigScriptPath, ok ? 1 : 0, read ? "read" : "absent",
+        static_cast<double>(range), static_cast<double>(visibility));
+    if (!read) return false;
+    minimap_range = range;
+    visibility_range = visibility;
+    return true;
 }
 
 bool GameMissionLuaHost::read_turn_multipliers_0083ce56(bsp::UnitRudderCurveSettings& out) {
