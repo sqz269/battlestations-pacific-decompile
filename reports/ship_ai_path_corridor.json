@@ -1,0 +1,183 @@
+{
+  "packet": "cc_ai_corridor",
+  "owner": "agent/cc-ai-corridor",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only: no renames, comments, prototypes, function creation or saves",
+  "question": "009ED3E0..009ED4E3: the two corridor widths, where they are stored, and the only thing that can invalidate a plan mid-search",
+  "docs": [
+    "docs/SHIP_AI_PATH_CORRIDOR.md"
+  ],
+  "sources": [
+    "include/bsp/ship_ai_path_corridor.hpp",
+    "src/ship_ai_path_corridor.cpp"
+  ],
+  "build": "scripts/build.ps1 Win32 /W4 /WX: bsp_core, bsp_game and the probes built; ctest reconstructed_math passed (1/1)",
+  "tests": "one focused case added to tests/math_tests.cpp: the boundary the doc's executable-facing rule rests on, that an extent moving exactly 25 keeps the plan (the JA at 009D9E09 is strict) and 26 throws it away, plus the 5.0f floor on the side with no member and the +20 margin. Nothing else was added.",
+  "verification": {
+    "checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md",
+    "callee_before_contract": "All three natives were read whole before naming: 00778890 (00778890-007788A7, ten instructions), 0070D400 (0070D400-0070D5C3) and 0070D5D0 (0070D5D0-0070D7A4), each from the listing including both loop forms and both tail clamps. 009D9DE0 was read whole as a check on cc_exe_2q's projection rather than re-projected.",
+    "boundary": "Every call site below was read back through `bsp.py ghidra proto <site> --brief`. 009ED401, 009ED41A, 009ED45B, 009ED4AE and 009ED4D1 are inside BSP_ShipAi_RefreshPathPlan (live body 009ED3E0-009ED6A0); 009EE62B is inside BSP_ShipAi_ControlsStep (009ED6B0-009EF228), not inside 009ED3E0; 0070D2A1 is inside FUN_0070D290 (0070D290-0070D3FE).",
+    "all_call_sites": "0070D400 and 0070D5D0 have two call sites each, 009DE5B0 and 009ED3E0. The 009DE5B0 pair is read in docs/SHIP_AI_ARM_FINAL_STEP.md and adds the 50.0 at 00CE3938 and a 2.5 scale; the 009ED3E0 pair adds the 20.0 at 00CE3D88 and caps at 600. The reduction itself takes no argument beyond the group, so the two sites cannot disagree about it. 00778890 has eighteen call sites; only the contract (entity+284h non-null and its +14h is the entity) is used here and it has no arguments.",
+    "producer_before_layout": "The member record's lateral column is read by 0070D400, 0070D5D0 and the consumer 0070D290 and written by nothing read for this packet. The across-axis reading and the four-column bound are therefore labelled provisional in the header, the doc and follow-up 1; no offset constant was declared as settled on a consumer's evidence.",
+    "partial_projection": "Labelled in the doc's Coverage table and in the header: this packet projects 009ED3E0-009ED498 only. 009ED49A-009ED4E3 and 009ED4E4-009ED69E stay cc_exe_2q's, 0070D290 is read only as far as 0070D2CC, 0070E450 only far enough to confirm the member walk, and 009EE61E only for the three instructions that name the reader of plan+8h.",
+    "argument_count": "00778890 ends RET at 0077889C and 007788A7, 0070D400 ends RET at 0070D5B5 and 0070D5C3, 0070D5D0 ends RET at 0070D796 and 0070D7A4: no stack arguments on any of them, ECX only. 009D9DE0 ends RET 8 at 009D9E49, which is the two width floats 009ED4A3/009ED4A7 and 009ED4CA/009ED4CE push.",
+    "register_provenance": "ECX at 009ED401 was resolved by filtering the whole 009ED3E0 listing for ECX: 009ED3ED MOV ESI,ECX then 009ED3EF MOV ECX,[ESI+3FCh]. ECX at 009ED41A comes from 009ED40E/009ED414 and at 009ED45B from 009ED449/009ED44F, each a separate reload of [[nav+3FCh]+284h]. The two stack slots handed to 009D9DE0 were resolved by tracking ESP from 009ED3E0 SUB ESP,0Ch plus the two pushes: 009ED455 writes the 0070D400 width to the slot 009ED4A7 loads and 009ED48A the 0070D5D0 width to the slot 009ED4A3 loads.",
+    "run_time": "not available. bsp_game.exe reaches 009ED3E0's arm but does not project this head: src/game_hosts_ship_ai.cpp:2812 passes kShipAiPathCorridorWidthDefault for both widths and records 009ED3E0 rather than completing it, and no fixture builds a unit group. Stated in the doc's Run-time evidence section and raised as follow-up 2; the game sources belong to another packet and were not touched.",
+    "lease": "cc_ai_corridor over 009ED3E0, 009D9DE0, 0070D400, 0070D5D0, 00778890 and the four output files. cmake/startup.cmake was appended to, not leased.",
+    "not_done": [
+      "009D9DE0 was not re-projected: cc_exe_2q's ship_ai_path_corridor_width_changed_009d9de0 already covers it and this packet builds on it.",
+      "No Ghidra function was renamed: 0070D400, 0070D5D0 and 00778890 stay FUN_ names because another orchestrator's packets own the entity-controller helpers. Only evidence was appended, to 009ED3E0 and 009D9DE0.",
+      "include/bsp/ship_ai_path_planner.hpp and include/bsp/ship_ai_path_refresh.hpp were not edited; the two corrections against them are follow-up 4."
+    ]
+  },
+  "routines": [
+    {
+      "address": "009ed3e0",
+      "name": "BSP_ShipAi_RefreshPathPlan, head",
+      "abi": "__thiscall(nav)(float seconds), RET 4, live body 009ed3e0-009ed6a0; the head is 009ed3e0-009ed498",
+      "coverage": "complete for 009ED3E0-009ED498; 009ED49A-009ED4E3 read complete but projected by cc_exe_2q; 009ED4E4-009ED69E is cc_exe_2q's arm",
+      "reconstruction": "ship_ai_path_corridor_widths_009ed3e0, ship_ai_path_refresh_plan_009ed3e0"
+    },
+    {
+      "address": "00778890",
+      "name": "unit leads its group",
+      "abi": "__fastcall(entity) -> bool in AL, RET 0, body 00778890-007788a7",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_unit_group_leads_00778890"
+    },
+    {
+      "address": "0070d400",
+      "name": "unit group positive lateral extent",
+      "abi": "__fastcall(group) -> float in ST0, RET 0, body 0070d400-0070d5c3",
+      "coverage": "complete: head, unrolled body 0070D450-0070D52E, remainder loop 0070D546-0070D57F and the tail clamps 0070D581-0070D5C3",
+      "reconstruction": "ship_ai_unit_group_extent_positive_0070d400"
+    },
+    {
+      "address": "0070d5d0",
+      "name": "unit group negative lateral extent",
+      "abi": "__fastcall(group) -> float in ST0, RET 0, body 0070d5d0-0070d7a4",
+      "coverage": "complete: the same reduction over -0.0f - offset (00D7A208 at 0070D5DB, subtracted at 0070D625 and 0070D727)",
+      "reconstruction": "ship_ai_unit_group_extent_negative_0070d5d0"
+    },
+    {
+      "address": "009d9de0",
+      "name": "BSP_ShipAiPathPlan_CorridorWidthChanged",
+      "abi": "__thiscall(plan)(float width_a, float width_b) -> bool in AL, RET 8, body 009d9de0-009d9e4b",
+      "coverage": "complete, read as a check; projected by cc_exe_2q as ship_ai_path_corridor_width_changed_009d9de0 and not re-projected here",
+      "reconstruction": "none of this packet's; evidence appended to the existing name"
+    },
+    {
+      "address": "0070d290",
+      "name": "unit group member formation slot",
+      "abi": "__thiscall(group)(entity, float* out, float lateral_scale, float axial_scale), body 0070d290-0070d3fe",
+      "coverage": "partial: 0070D290-0070D2CC only, the non-leader path that reads both float columns of a member record",
+      "reconstruction": "none; read only to identify the column 0070D400 and 0070D5D0 reduce"
+    }
+  ],
+  "host_steps": [
+    {
+      "step": "1, the only gate: does this unit lead its unit group",
+      "address": "009ed401",
+      "native": "00778890",
+      "function": "009ed3e0",
+      "method": "unit_leads_group_00778890",
+      "note": "ECX = [nav+3FCh] at 009ED3EF. 009ED408 JZ 009ED490 skips both extents, leaving both widths at the 20.0f at 00CE3930."
+    },
+    {
+      "step": "2, the positive-side lateral extent of the formation",
+      "address": "009ed41a",
+      "native": "0070d400",
+      "function": "009ed3e0",
+      "method": "group_extent_positive_0070d400",
+      "note": "ECX = [[nav+3FCh]+284h] at 009ED40E/009ED414. Returns in ST0; 009ED41F adds the double 20.0 at 00CE3D88 and 009ED425 rounds to float32. Becomes plan+4h."
+    },
+    {
+      "step": "3, the negative-side lateral extent, as a positive number",
+      "address": "009ed45b",
+      "native": "0070d5d0",
+      "function": "009ed3e0",
+      "method": "group_extent_negative_0070d5d0",
+      "note": "ECX reloaded at 009ED449/009ED44F. Same margin and cap. Becomes plan+8h. Not swapped with step 2 for an astern latch; only 009DEEF8 does that."
+    }
+  ],
+  "internal_calls": [
+    {
+      "step": "the latch on the plan in use",
+      "address": "009ed4ae",
+      "native": "009d9de0",
+      "function": "009ed3e0",
+      "method": "ship_ai_path_corridor_width_changed_009d9de0 (cc_exe_2q)",
+      "note": "ECX = [nav+2F4h] at 009ED494. Arguments pushed at 009ED4A3 (width_b, from 0070D5D0) and 009ED4A7 (width_a, from 0070D400)."
+    },
+    {
+      "step": "the latch on the plan being computed",
+      "address": "009ed4d1",
+      "native": "009d9de0",
+      "function": "009ed3e0",
+      "method": "ship_ai_path_corridor_width_changed_009d9de0 (cc_exe_2q)",
+      "note": "ECX = [nav+2F8h] at 009ED4BD, same two arguments. Either answer raises nav+2FCh at 009ED4DE; neither can clear it."
+    },
+    {
+      "step": "the member record for a group member, in the consumer that names the column",
+      "address": "0070d2a1",
+      "native": "0070d080",
+      "function": "0070d290",
+      "method": "unit group member record by entity",
+      "note": "0070D2BD then reads [record + 10h + [group+500h]*4] as the across-axis offset and 0070D2CC [record + 20h + ...] as the along-axis one."
+    },
+    {
+      "step": "the only reader found of either width slot",
+      "address": "009ee62b",
+      "native": "00415550",
+      "function": "009ed6b0",
+      "method": "BSP_Math_MaxFloatByRef",
+      "note": "009EE61E takes [nav+2F4h]+8h and 009EE60E the 30.0f at 00E0E304; 00415550 returns the larger in ST0 and 009EE630 stores it. The call site is in BSP_ShipAi_ControlsStep, not in 009ED3E0."
+    }
+  ],
+  "coverage": {
+    "009ed3e0": "partial: head 009ED3E0-009ED498 projected; 009ED49A-009ED69E is cc_exe_2q's",
+    "00778890": "complete",
+    "0070d400": "complete",
+    "0070d5d0": "complete",
+    "009d9de0": "complete (read); projection owned by cc_exe_2q",
+    "0070d290": "partial: 0070D290-0070D2CC",
+    "0070e450": "partial: the +18h/+4F8h member walk only",
+    "009ee61e": "partial: 009EE61E-009EE630 only"
+  },
+  "corrections": [
+    {
+      "was": "009ED3E0's ledger evidence calls nav+2FCh the ready byte",
+      "is": "it is the a-plan-is-being-computed byte; the head can only raise it",
+      "evidence": "009ED49A loads it into BL, 009ED4B7 and 009ED4DA can only set BL, 009ED4DE stores it back; 009ED5B6 is the only clear, immediately before the 009ED5BD/009ED5C3 swap. docs/GAME_EXECUTABLE.md milestone 2q already names it that way. Appended to the existing name, not replaced."
+    },
+    {
+      "was": "include/bsp/ship_ai_path_planner.hpp names plan+4h `field_04` and comments both +4h and +8h as the constructed 20.0f",
+      "is": "both are corridor widths rewritten every pass by 009D9DE0, in [25, 420] for a ship leading a unit group",
+      "evidence": "009ED4AE and 009ED4D1 pass the two widths; 009D9E32 and 009D9E3D store them into plan+4h and plan+8h on every call. The header belongs to another packet and was not edited; follow-up 4."
+    },
+    {
+      "was": "include/bsp/ship_ai_path_refresh.hpp states its coverage as 009ED4E4..009ED69E and the head as not projected",
+      "is": "its arm function also projects 009ED49A-009ED4E3, the two 009D9DE0 calls and the flag fold; only 009ED3E0-009ED498 was missing",
+      "evidence": "src/ship_ai_path_refresh.cpp lines 57-67 against the listing at 009ED49A-009ED4E3. Not edited; follow-up 4."
+    },
+    {
+      "was": "docs/SHIP_AI_ARM_FINAL_STEP.md leaves 0070D400 and 0070D5D0 partial, with the unrolled tail and the remainder loop unprojected",
+      "is": "both are read whole here; the tails are the same step, and the answer is clamped into [5, 400]",
+      "evidence": "0070D546-0070D57F, 0070D581-0070D5C3 and 0070D724-0070D7A4; the floor is the float at 00CE3850 and the cap the float at 00CFD710 compared as the double at 00CE3D90."
+    },
+    {
+      "was": "the brief gives the head as 009ED3E0..009ED4E2",
+      "is": "009ED3E0..009ED4E3",
+      "evidence": "009ED4DE MOV byte ptr [ESI+2FCh],BL is six bytes and ends at 009ED4E3; 009ED4E4 is the JNZ that opens the arm."
+    }
+  ],
+  "no_ghidra_function": [],
+  "follow_ups": [
+    "ship_ai_unit_group_slots: the producer of the member record's two float columns and of the column index at group+500h, and how many columns exist. Closes whether the column is the across-axis offset and which extent is port.",
+    "game_ship_ai_corridor_widths: wire ship_ai_path_corridor_widths_009ed3e0 into src/game_hosts_ship_ai.cpp:2812 behind a group host, and build a fixture with a unit group, so a mid-search invalidation can be run.",
+    "ship_ai_plan_width_consumers: who reads plan+4h. 009EE61E reads plan+8h; no reader of +4h turned up here.",
+    "ship_ai_path_refresh_coverage: the one-line coverage correction in include/bsp/ship_ai_path_refresh.hpp and the rename of ShipAiPathPlanBlock::field_04 in include/bsp/ship_ai_path_planner.hpp."
+  ]
+}
