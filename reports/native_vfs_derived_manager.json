@@ -1,0 +1,241 @@
+{
+  "packet": "orch2_native_vfs_derived_manager_au",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "complete_actual_source_strict_Win32_build_and_existing_tests_checked_composition_pending",
+  "routines": [
+    {
+      "entry": "00beda60",
+      "source_name": "construct_native_vfs_derived_manager_00beda60",
+      "proposed_name": "BSP_VFS_ProviderManager_Construct",
+      "previous_name": "BSP_VFS_ProviderManager_Construct",
+      "native_abi": "ECX A0h owner; RET0; EAX original owner",
+      "logical_end_exclusive": "00bedaaf",
+      "logical_bytes": 79,
+      "sha256": "2c88005b2fa380f4c99d6553bfdcf0a42a7979f599c168f8537c310a836f5524",
+      "live_equals_installed_PE": true,
+      "stored_body_end_inclusive": "00bedaae",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_derived_manager.cpp"
+    },
+    {
+      "entry": "00bedac0",
+      "source_name": "delete_native_vfs_derived_manager_00bedac0",
+      "proposed_name": "BSP_NativeVfsDerivedManager_ScalarDeletingDestructor",
+      "previous_name": "FUN_00bedac0",
+      "native_abi": "ECX owner; one DWORD flags on stack; RET4; EAX original possibly freed owner",
+      "logical_end_exclusive": "00bedade",
+      "logical_bytes": 30,
+      "sha256": "0b563e72ba91208839c5d8e716eb44bd834598e54911d17452b831646a1678bc",
+      "live_equals_installed_PE": true,
+      "stored_body_end_inclusive": "00bedadd",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_derived_manager.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00beda7d",
+      "native": "00be1dc0",
+      "function": "00beda60",
+      "contract": "Construct the actual base manager and all owned member containers before derived cleanup is armed."
+    },
+    {
+      "address": "00beda90",
+      "native": "00bed990",
+      "function": "00beda60",
+      "contract": "Get or create the actual physical factory through the same raw singleton-manager publication."
+    },
+    {
+      "address": "00beda98",
+      "native": "00be0660",
+      "function": "00beda60",
+      "contract": "Append the captured factory to this owner factory list; insertion allocation precedes the size check."
+    },
+    {
+      "address": "00bedac3",
+      "native": "00be1f60",
+      "function": "00bedac0",
+      "contract": "Destroy the complete actual base manager; derived profile has no separate cleanup body."
+    },
+    {
+      "address": "00bedad0",
+      "native": "00bf65ac",
+      "function": "00bedac0",
+      "contract": "CRT free of original owner, executed only when flags bit0 is set; library contract, not ported."
+    }
+  ],
+  "no_ghidra_function": [],
+  "native_spans": [
+    {
+      "label": "construct",
+      "entry": "00beda60",
+      "end_exclusive": "00bedaaf",
+      "bytes": 79,
+      "sha256": "2c88005b2fa380f4c99d6553bfdcf0a42a7979f599c168f8537c310a836f5524",
+      "live_equals_installed_PE": true,
+      "raw_transfers": [
+        {
+          "site": "00beda7d",
+          "mnemonic": "call",
+          "target": "0xbe1dc0"
+        },
+        {
+          "site": "00beda90",
+          "mnemonic": "call",
+          "target": "0xbed990"
+        },
+        {
+          "site": "00beda98",
+          "mnemonic": "call",
+          "target": "0xbe0660"
+        }
+      ]
+    },
+    {
+      "label": "deleting",
+      "entry": "00bedac0",
+      "end_exclusive": "00bedade",
+      "bytes": 30,
+      "sha256": "0b563e72ba91208839c5d8e716eb44bd834598e54911d17452b831646a1678bc",
+      "live_equals_installed_PE": true,
+      "raw_transfers": [
+        {
+          "site": "00bedac3",
+          "mnemonic": "call",
+          "target": "0xbe1f60"
+        },
+        {
+          "site": "00bedad0",
+          "mnemonic": "call",
+          "target": "0xbf65ac"
+        }
+      ]
+    },
+    {
+      "label": "unwind",
+      "entry": "00cc74e0",
+      "end_exclusive": "00cc74e8",
+      "bytes": 8,
+      "sha256": "283cb4ff9254f7c4488b8b8155a93ad82b33168b701e3985403f69c334630f37",
+      "live_equals_installed_PE": true,
+      "raw_transfers": [
+        {
+          "site": "00cc74e3",
+          "mnemonic": "jmp",
+          "target": "0xbe1f60"
+        }
+      ]
+    },
+    {
+      "label": "handler",
+      "entry": "00cc74e8",
+      "end_exclusive": "00cc74f2",
+      "bytes": 10,
+      "sha256": "35da02193c50baa2fed6103b5e2cb93676583fb8cedeaa7919bba876fe22bca5",
+      "live_equals_installed_PE": true,
+      "raw_transfers": [
+        {
+          "site": "00cc74ed",
+          "mnemonic": "jmp",
+          "target": "0xbf6b43"
+        }
+      ]
+    },
+    {
+      "label": "eh_map_and_info",
+      "entry": "00e0203c",
+      "end_exclusive": "00e02068",
+      "bytes": 44,
+      "sha256": "006be49d680e4acdb22145556b85110143e1eb263afa3b2669b14f04cbb77aee",
+      "live_equals_installed_PE": true
+    },
+    {
+      "label": "profile_first_word",
+      "entry": "00d68d04",
+      "end_exclusive": "00d68d08",
+      "bytes": 4,
+      "sha256": "4bdeabca1863952f18f2ecd3ccbbdc3a3a3c6c3d3ee29a3ea1ec39d222391067",
+      "live_equals_installed_PE": true
+    }
+  ],
+  "exception_cleanup": {
+    "func_info": "00e02044",
+    "unwind_map": "00e0203c",
+    "state0_previous": -1,
+    "action": "00cc74e0",
+    "callee": "00be1f60"
+  },
+  "original_listing_gap": {
+    "call_site": "00bedad0",
+    "start": "00bedad5",
+    "end_exclusive": "00bedad8",
+    "bytes_hex": "83c404",
+    "stored_body_already_includes_final_RET4": true
+  },
+  "factory_profile": {
+    "address_value": "00d68d04",
+    "slot0_target": "00bedac0",
+    "verified_bytes": 4
+  },
+  "contracts": {
+    "owner_size": 160,
+    "single_lifetime_domain_required": true,
+    "constructor_order": [
+      "complete BE1DC0",
+      "arm owner cleanup state0",
+      "write D68D04",
+      "capture BED990 result",
+      "BE0660 on original owner",
+      "disarm cleanup and return owner"
+    ],
+    "unwind": "CC74E0 loads owner from EBP-10h and jumps to BE1F60. No owner free, publication rollback, or factory-registration rollback is added.",
+    "deleting": "Always BE1F60, then CRT free only for bit0; return original owner even after free.",
+    "actual_domain_composition": "Requires raw singleton-manager publication shared by manager lifetime access, string pool and physical factory. A focused adapter extension is in progress; no runtime composition claim yet."
+  },
+  "validation": {
+    "owned_native_bytes": 109,
+    "supporting_native_bytes": 66,
+    "live_PE_equal_spans": 6,
+    "independent_review_manifest_sha256": "df6be41cb97361b86b8066a24c3f7e82062c91e6449cd68f9713d07a2cb2c41a",
+    "review_location": "local/native-au-worker-deliveries/derived_manager_draft_review",
+    "source_sha256": "3e66e67946388cc3cf5e19701db42af1ed017c193ae70c888cbc20cddefd43a6",
+    "header_sha256": "4989920214187baa856ad872c4ddca5a7fe7bb38db2127b449d10669b435431b",
+    "standalone_strict_Win32_object_sha256": "95a6051ddb4001ba5a80e5ac5d38050957745cf80c85605e238be1ca5a2d0034",
+    "core_build": "passed MSVC Win32 /W4 /WX /fp:strict",
+    "existing_tests": "both existing CTests passed",
+    "native_source_composition": "pending",
+    "build_log": "local/native-au-root-build.log",
+    "build_log_sha256": "0448f1a0878416d934c68619a606a316ab3edae2243afddf200bcf4199d4cc29"
+  },
+  "corrections": [
+    {
+      "was": "BEDA60 was named and analyzed without an actual derived-manager reconstruction.",
+      "is": "Complete source composes actual BE1DC0, BED990 and BE0660 with the recovered cleanup boundary.",
+      "evidence": "BEDA7D/BEDA82/BEDA8A/BEDA90/BEDA98 and FuncInfo E02044, unwind map E0203C, CC74E0."
+    }
+  ],
+  "uncertainty": [
+    "Descriptive source interfaces are not drop-in original ABI/FH3/SEH replacements.",
+    "Native FH3/SEH execution, simultaneous cleanup failures and game behavior remain unvalidated.",
+    "Constructor caller allocator failure policy remains the caller contract; no new null-owner behavior is introduced."
+  ],
+  "listing_repair": {
+    "report": "reports/native_au_flow_repair.json",
+    "gap_bytes": 3,
+    "remaining_call_gaps": 0,
+    "body_extent_unchanged": true,
+    "export_refreshed": true,
+    "global_callee_noreturn_unchanged": true
+  }
+}
