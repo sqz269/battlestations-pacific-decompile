@@ -775,7 +775,7 @@
   "integration_as_review": {
     "new_native_functions": 10,
     "full_game_validated": false,
-    "combined_validation": "pending exact merged build and current-library replays",
+    "combined_validation": "passed exact merged Win32 build and seven current-library-only probes within documented coverage",
     "native_signatures": [
       {
         "address": "00af19d0",
@@ -1348,5 +1348,176 @@
     },
     "worker_review": "Pool reviewed full AF3440; lifetime reviewed canonical Tracer composition; update reviewed captured dispatch and x87 clock/curve boundaries. Sentinel-cell and matching allocator binding gaps fixed and focused probes passed.",
     "historical_missing_function_correction": "CD77F0 and analyzed-only AF26A0 now defined with verified full ranges. Returning-free gaps in owned pool/lifetime functions repaired without changing CRT callee no-return flags. All listed direct call rows now pass."
+  },
+  "final_merged_validation_as": {
+    "tested_commit": "52fb0101683a7633b9018f935ed624d79d836263",
+    "reviewed_source_commit": "e65a5266f2babf66eb367f504dd3e68d90bd8f61",
+    "build": "Strict MSVC Win32 and both seeded CTests passed; local/as-final-combined-build.log",
+    "reviewed_source_header_hashes": {
+      "include/bsp/native_particle_parameter_loading.hpp": "f3c00ca8d2fcb9669668a4e8083ea8a7c2d8cdaae87a5d2ca2d4917304f294f0",
+      "src/native_particle_parameter_loading.cpp": "6bc2414542ac8ce0edba36c51661c7dcadc5fe4d75270af20420635196935304",
+      "include/bsp/native_particle_tracer_state.hpp": "223ff258775db69eb8f43b80e98d67e57a9303edfaaa09c1c541f96e7566aee5",
+      "src/native_particle_tracer_state.cpp": "7f4668f4dd19249dd64e1a28b6f13e011ca9a6c53951cd433ad299725033ce2c",
+      "include/bsp/native_traceline_pool.hpp": "a960be62f1ef301881f6792d07ec4b08c4981192db2a97f273e3702d54e3d8b6",
+      "src/native_traceline_pool.cpp": "7349f8e83893ca739fa713463aeb43deb4fc90cbaeffdfeb320173dd52b58bb1",
+      "include/bsp/native_traceline_lifetime.hpp": "11fd02ac45e8522edf107ddc9125f1c2ae666f9b8db47e1a99b31d04acecef84",
+      "src/native_traceline_lifetime.cpp": "74f0983114965bdbfd6475cb0978a3ed5f9dbc0aacc2da41f79af935a7e61e9e",
+      "include/bsp/native_traceline_update.hpp": "0beed3578741592b26ad26b2474203b47c3c366478646aa03e36a056e04fffab",
+      "src/native_traceline_update.cpp": "6ca7b2974c03b5e672da8528bdace20a5ebf9abe1ac34eb521aed5e6ac751f79",
+      "include/bsp/native_traceline_geometry.hpp": "2917707bdee2a4f98bb32c6e8f05bdfa6ad2029eaf9dacbabd91ad738b9359c8",
+      "src/native_traceline_geometry.cpp": "26e9f45c3258d8d0dc660de259c7e899c0601f423e2e2532fa2db3550356d323"
+    },
+    "library_sha256": {
+      "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+      "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "current_library_replays": [
+      {
+        "label": "pool",
+        "exit_code": 0,
+        "log": "local\\as-pool-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-as-traceline-pool\\header-snapshot.hpp": "a960be62f1ef301881f6792d07ec4b08c4981192db2a97f273e3702d54e3d8b6",
+          "C:\\Users\\sqz269\\bsp-as-traceline-pool\\original.hpp": "ab53900dfb295d1709a30ddf00a2af07f4a6a68891f9dc8187dc329a1f2213e3",
+          "C:\\Users\\sqz269\\bsp-as-traceline-pool\\probe.cpp": "eeeaef97dc50ebb9f9baf0b96bac60fedf8abd1bc844f668de7280eb4bc79e47",
+          "C:\\Users\\sqz269\\bsp-as-traceline-pool\\source-snapshot.cpp": "7349f8e83893ca739fa713463aeb43deb4fc90cbaeffdfeb320173dd52b58bb1"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-as\\pool-current.cmd",
+        "executable_sha256": "63a926e5029ca3a499a4f2c704b1f399b3145790a309f07eb21ec56c8982b301"
+      },
+      {
+        "label": "lifetime",
+        "exit_code": 0,
+        "log": "local\\as-lifetime-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-as-traceline-lifetime\\base_probe.hpp": "e7d5086254f4c9164d1756606d44088c1b869cd416b3e5f69f23cfbe14d8089e",
+          "C:\\Users\\sqz269\\bsp-as-traceline-lifetime\\original.hpp": "28483e4fc9e2ae09e2d4f40d01d0db091a809c3aad9a21edd2d103bf7504d132",
+          "C:\\Users\\sqz269\\bsp-as-traceline-lifetime\\probe.cpp": "af92ff2e5a541203129b0cd0a15a27c842c74f8b50e13e06570e9a73af366f71"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-as\\lifetime-current.cmd",
+        "executable_sha256": "2b5a522ffc8609553f9333942bdbd0b0cb7e519b4ec5bb13df6ade64ee33e004"
+      },
+      {
+        "label": "update",
+        "exit_code": 0,
+        "log": "local\\as-update-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-as-traceline-update\\original.hpp": "0c288f80c280c34ea929930e5997c8229d708fb0953dd277805bbfcd3fc27a9d",
+          "C:\\Users\\sqz269\\bsp-as-traceline-update\\probe.cpp": "1b78133844d06a127cccffbfd8b011815d4367e36e2f798c1829d0f55121999c"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-as\\update-current.cmd",
+        "executable_sha256": "5f056e0e4ab3b6690076e63918fb9a31cce298ce1653cd87e6ae5eb3a2ddf0d2"
+      },
+      {
+        "label": "geometry",
+        "exit_code": 0,
+        "log": "local\\as-geometry-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-as-geometry\\ar_fixture.hpp": "b23d905594148a6a08722764b4c53ba29859392ca96453d0a461b2566d1754e8",
+          "C:\\Users\\sqz269\\bsp-as-geometry\\geometry_bytes.hpp": "5c78942e19cdade6e0ca4c589d9dd501e98fad03e6eadd9e4eee61131e36f3de",
+          "C:\\Users\\sqz269\\bsp-as-geometry\\original.hpp": "6fa9032a06ad2c750074eebf75792a62e0879c8724a63a59a2f9ced044095ef0",
+          "C:\\Users\\sqz269\\bsp-as-geometry\\probe.cpp": "4d6b021a666f51d1025b7d50190ee81866495aa25dd95a932abd8688efddb560"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-as\\geometry-current.cmd",
+        "executable_sha256": "b12902e659cc20de70894a83493b2285f3224f36247c384cb25c7b555a589389"
+      },
+      {
+        "label": "geometry_guard",
+        "exit_code": 0,
+        "log": "local\\as-geometry_guard-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-as-geometry-review\\ar_fixture.hpp": "b23d905594148a6a08722764b4c53ba29859392ca96453d0a461b2566d1754e8",
+          "C:\\Users\\sqz269\\bsp-as-geometry-review\\geometry_bytes.hpp": "5c78942e19cdade6e0ca4c589d9dd501e98fad03e6eadd9e4eee61131e36f3de",
+          "C:\\Users\\sqz269\\bsp-as-geometry-review\\original.hpp": "6fa9032a06ad2c750074eebf75792a62e0879c8724a63a59a2f9ced044095ef0",
+          "C:\\Users\\sqz269\\bsp-as-geometry-review\\probe.cpp": "c80c26aa2ce116375a923c2853ab2aeb1d24f5beefdea975e2ad1432136d18ec"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-as\\geometry_guard-current.cmd",
+        "executable_sha256": "7281f19e7a8ff253336468e941c68197a3e35d4b429072ab6dfe825feefc9e0d"
+      },
+      {
+        "label": "legacy_tracer",
+        "exit_code": 0,
+        "log": "local\\as-legacy_tracer-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ar-tracer-state\\original.hpp": "6fa9032a06ad2c750074eebf75792a62e0879c8724a63a59a2f9ced044095ef0",
+          "C:\\Users\\sqz269\\bsp-ar-tracer-state\\probe.cpp": "4d79a0fc9426f407e29009d0c3ce883f29ba3b15414e6eccb47037eea0b78d58"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-as\\legacy_tracer-current.cmd",
+        "executable_sha256": "e948e4e3eaff368c12e1e84c1cb110e1aeec0af1bf4eb4fbead10dcd404eb1fa"
+      },
+      {
+        "label": "legacy_dispatch",
+        "exit_code": 0,
+        "log": "local\\as-legacy_dispatch-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "85b27b52d44afbf8e6c471abe8397df9ff67452d09be9124aa2ff08904cca702",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\bind_original.inl": "18990c2b5aa55c760b7dbac138e2e617fc60fd6f25d84ba7b20bca0c1c04e49e",
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\original_bytes.hpp": "67151ef5b596363dbf1b5491c5c5c04e034e72df57b02337624859c693711e5d",
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\probe.cpp": "41228226206e975673e5f12ad0873b0c79239faa5e3628b3c000b017a4dcd15e",
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\probe_support.hpp": "56d85cde9bc35e7004e63c73755729d89cd1e033f1d71ba0413692109b4b0d34",
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\state_body.inl": "1bb568b321bfb19ab94a56507bd790e74fd4cc27958d423ab220d3e7fe0de568"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-as\\legacy_dispatch-current.cmd",
+        "executable_sha256": "8167075745a5b84a5cca566b8edb8bdbf9d62b12a1c7e69d5a1c1b228b746aea"
+      }
+    ],
+    "new_normal_native_bodies": 18,
+    "existing_interface_refinements": 5,
+    "analyzed_only_functions": 1,
+    "saved_names_and_original_signatures": 24,
+    "checked_numeric_report_call_rows": 76,
+    "indirect_targets": "Verifier logs indirect targets without mechanically resolving them; see per-report profiles and evidence.",
+    "failed_call_rows": 0,
+    "game_validated": false,
+    "original_fh3_validated": false,
+    "coverage": {
+      "pool": "Full bounded allocation/slab/return/trim/lifecycle original-byte comparisons; repeated state/byte counts are not independent test cases. Real CRT exit cleanup observed.",
+      "lifetime": "17 full bounded original-byte lifetime variants plus real scene/backlink teardown, actual owner replacement and optional public cleanup/allocation composition.",
+      "update": "138 full core comparisons; actual current clock and existing integral implementations.",
+      "geometry": "21 original/source prefix comparisons end before renderer5C or overflowing allocation; one added alias rejection. Guard replay repeats the prefix cases. Full suffix source/build only.",
+      "legacy": "Existing Tracer and dispatch probes pass with omitted reconstruction bindings; prior AR coverage limits unchanged."
+    },
+    "remaining_boundaries": [
+      "Full successful AF3440 attachment and its following initial-update composition are not fixture-tested.",
+      "AF26A0 is analyzed geometry filling/submission with no reconstructed body.",
+      "Actual renderer5C stream factory and renderer38 declaration registry/loading remain required application dependencies.",
+      "Canonical root view and constructed-companion registration must be supplied by the application; no substitute native owner is created.",
+      "Original FH3/SEH and complete native ABI/FP environment, concurrency scheduling, rendering and gameplay remain unvalidated."
+    ]
   }
 }
