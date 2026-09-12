@@ -613,3 +613,24 @@ property is **not established**.
   descriptor sub-type `[gun+3F4h]+80h` used by `00729BC0` and `0072C6A0`. They are
   different enumerations: the descriptor sub-type reaches `9`, the category reaches `0Bh`,
   and the mapping between them was not established.
+
+## Correction from docs/GUNNERY_TABLES.md (packet cc2_gunnery_tables)
+
+- **Was:** Both tables are zero in the file on disk (they live in .data and are filled at run time by 00727BD0 from 00E092C8, which is itself zero in the image). The producer of 00E092C8 is contract: unread.
+  **Is:** 00E092C8 is non-zero in the image. .data has raw size 10000h from VA 00E08000, so 00E092C8-00E0A4F8 is initialized storage on disk and carries the twelve authored rows. There is no run-time producer at all: the only reference to 00E092C8 anywhere in the image is the MOV ESI immediate at 00727BDB. Only 00E19BF8, which is past the raw extent, is zero at load.
+  **Evidence:** PE section header .data va=00E08000 vsize=297EDC raw=00A08000 rsize=010000; a whole-image scan for the little-endian dword 00E092C8 returns one hit at 00727BDC; the rows at 00E092C8, 00E0944C, 00E095D0, 00E09754, 00E098D8, 00E09A5C, 00E09BE0, 00E09D64, 00E09EE8, 00E0A06C read back as the table above, and row 1 reproduces the values the document recorded as a live-process observation.
+- **Was:** category 0's list holds the single value 61h, which is one past the class-id space and lands in category 1's slot 0; that is what the data says, and it is recorded here without explanation.
+  **Is:** Category 0 is the PLANEGUN weapon Function, which no unit-side gunnery pass drives, so the row is a placeholder whose one entry cannot match a class. The stray rank it writes at 00E19BF8+184h is erased by the REP STOSD at 00727BEC on the next iteration, which zeroes all 61h dwords of row 1 before filling it.
+  **Evidence:** 007327B0's Function chain gives category 0 = PLANEGUN; 00727BEC zeroes the row at EBP = 00E19BF8 + category*184h at the top of each iteration, and category 0's write goes to 00E19BF8 + 61h*4 = 00E19BF8 + 184h.
+- **Was:** +394h is the gate step 8.1 reads and +398h is the head of a singly linked list whose nodes carry next at +4h and the gun at +8h. The third word at +39Ch is not read here.
+  **Is:** The record is a doubly linked list header: +394h is the node count, +398h the head, +39Ch the tail. The node is prev at +0h, next at +4h, gun at +8h. The pass's gate is the count compared with zero.
+  **Evidence:** 00956C20's insert at 00956CB6-00956CF4: 00956CD7 node[+8h] = gun, 00956CDD node[+0h] = record[+8h], 00956CEB record[+4h] = node when record[+0h] == 0 else 00956CE6 record[+8h]->next = node, 00956CEE record[+8h] = node, 00956CF1 node[+4h] = 0, 00956CF4 record[+0h] += 1. 0086516D compares the dword at unit + cat*0Ch + 394h with zero and skips the category.
+- **Was:** The producer of GlobalConfig+88h is contract: unread; it is not written anywhere in 00432650-00434500.
+  **Is:** 0087D7B0 writes it at 0087E16B from Globals.WeaponSystems.WeaponDirectorThinkTime, installed value 2 seconds. The constructor 004324E0 leaves it alone because the whole 2E8h object is filled by that loader, not by the constructor.
+  **Evidence:** 0087E114 pushes the key string 00D0E418 "WeaponSystems" and 0087E149 pushes 00D0E400 "WeaponDirectorThinkTime"; 0087E166 calls 00B66270 (lua_tonumber) and 0087E16B is FSTP [ESI+88h]. Scripts/datatables/globals.lua has WeaponSystems.WeaponDirectorThinkTime = 2.
+- **Was:** 00862440(entity): entity->vtable[140h]() != 0 && [that + 1D4h] != 0. A candidate whose unit-side AI sets +1D4h is skipped by the sweep. What +1D4h means is contract: unread.
+  **Is:** +1D4h is the script-set untouchable flag. The Lua binding AddUntouchableUnit(unit) sets it and RemoveUntouchableUnit(unit) clears it; IsUnitUntouchable(unit) reads it. It is not written by any AI. vtable[140h] is a proxy accessor, the identity on the ship base.
+  **Evidence:** Binding records at 00E0C088/00E0C090/00E0C098 pair the three recovered name strings with 008AC420/008AC140/008AC2B0, whose bodies read, set and clear the byte at 008AC552, 008AC263 and 008AC3D6; 0047F320 is MOV EAX,ECX; RET.
+- **Was:** the per-category engagement range lives on the unit at +430h (producer not stated).
+  **Is:** 00956C20 writes it: unit+430h + cat*4 is the longest weapon range among that category's live guns, floored at the 10.0f constant at 00CE38B8.
+  **Evidence:** 00956D63 seeds the row from 00CE38B8; 00956D9F calls 00731020 for each gun on the category list and 00956DF3 stores the running maximum. 00863A34 reads the same slot.
