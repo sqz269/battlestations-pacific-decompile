@@ -1,0 +1,378 @@
+{
+  "schema_version": 1,
+  "packet": "native_singleton_vector_allocation2",
+  "status": "complete_logical_strict_win32_native_bytes_coff_and_archive_verified_with_explicit_source_crt_eh_boundaries",
+  "base_commit": "05776128212b6b79d46ed998a430f0f40b69c78c",
+  "owned_files": [
+    "src/native_singleton_vector_allocation.cpp",
+    "include/bsp/native_singleton_vector_allocation.hpp",
+    "docs/NATIVE_SINGLETON_VECTOR_ALLOCATION.md",
+    "reports/native_singleton_vector_allocation_audit.json"
+  ],
+  "owned_function_count": 2,
+  "owned_native_bytes": 190,
+  "source": "src/native_singleton_vector_allocation.cpp",
+  "header": "include/bsp/native_singleton_vector_allocation.hpp",
+  "document": "docs/NATIVE_SINGLETON_VECTOR_ALLOCATION.md",
+  "evidence": {
+    "seal_path": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-allocation\\local\\singleton_vector_allocation\\sealed.json",
+    "seal_sha256": "7ebe6a551f00ed3a4d844308def4e3fe4b289102a2efdf17209dc42e8188af4b",
+    "artifact_count": 160,
+    "source_pin_count": 18,
+    "installed_pe": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "target": {
+      "project": "bsp",
+      "program": "battlestationspacific.exe",
+      "program_path": "/battlestationspacific.exe",
+      "language": "x86:LE:32:default",
+      "image_base": "00400000",
+      "ghidra_url": "http://127.0.0.1:8089",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "project_file": "C:/Users/sqz269/bsp.gpr",
+      "coordination_dir": "C:/Users/sqz269/.bsp"
+    },
+    "prior_discovery_seal_path": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-manager-raw-discovery\\local\\singleton_manager_raw\\sealed.json",
+    "prior_discovery_seal_sha256": "d992c6b6d68ae04a03e4be9a8b3d09657e8e5a0dd3482d56f9171ef127ad2d8d",
+    "prior_and_fresh_owned_body_bytes_match": true,
+    "native_saved_entry_bodies_captured": 18,
+    "native_saved_entry_body_bytes": 1730,
+    "growth_full_logical_body": {
+      "address": "004089e0",
+      "length": 304,
+      "code": true,
+      "sha256": "93a4cef994d3fc41a40a9f607f5fda2883f3f1fe16e1b2023ef64e42311a5191",
+      "disk_matches_saved": true
+    },
+    "native_inventory": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-allocation\\local\\singleton_vector_allocation\\native_inventory.json",
+    "growth_eh_inventory": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-allocation\\local\\singleton_vector_allocation\\growth_eh_inventory.json",
+    "coff_inventory": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-allocation\\local\\singleton_vector_allocation\\coff_provider_inventory.json",
+    "frozen_archive": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-allocation\\local\\singleton_vector_allocation\\bsp_core.lib"
+  },
+  "functions": [
+    {
+      "address": "00bcfeb0",
+      "name": "BSP_PointerVector_AllocateSlots",
+      "saved_signature": "undefined BSP_PointerVector_AllocateSlots(void)",
+      "end_inclusive": "00bcff04",
+      "length": 85,
+      "complete_decoded_bytes": 85,
+      "sha256": "c598c145591727617fb54eefaa1c217f671e94b5006c05b21bc6dcd600075603",
+      "disk_matches_saved": true,
+      "direct_transfers": [
+        {
+          "site": "00bcfec1",
+          "operation": "call",
+          "target": "00bf681b"
+        },
+        {
+          "site": "00bcfee9",
+          "operation": "call",
+          "target": "00bf6340"
+        },
+        {
+          "site": "00bcff00",
+          "operation": "call",
+          "target": "00bf6885"
+        }
+      ],
+      "indirect_transfers": [],
+      "source_function": "native_singleton_pointer_allocate_00bcfeb0",
+      "source_signature": "void* __fastcall(uint32_t count, void* unused_edx)",
+      "original_abi": "ECX unsigned count; EDX unconsumed; no stack input; EAX pointer; RET0",
+      "emitted_complete_bytes": 93,
+      "contract": "Zero requests0; positive UINT_MAX/count>=4 admits count*4; overflow throws source std::bad_alloc; actual shared allocator provider.",
+      "current_read_schedule": "Count consumed from ECX once. Original BF681B reloads its byte argument before each malloc/new-handler call. Source actual allocator reloads request.host_bytes before each real CRT call.",
+      "boundary": "Raw count/pointer ABI shape only; current source CRT allocation, bad_alloc, exception and new-handler ownership."
+    },
+    {
+      "address": "00bd0590",
+      "name": "STL_xlen_throw_00bd0590",
+      "saved_signature": "undefined STL_xlen_throw_00bd0590(void)",
+      "end_inclusive": "00bd05f8",
+      "length": 105,
+      "complete_decoded_bytes": 105,
+      "sha256": "867e54dad740442bfe261cae2e65739d00a71fa4051273401505d399b436cde9",
+      "disk_matches_saved": true,
+      "direct_transfers": [
+        {
+          "site": "00bd05c8",
+          "operation": "call",
+          "target": "00408720"
+        },
+        {
+          "site": "00bd05dd",
+          "operation": "call",
+          "target": "00411700"
+        },
+        {
+          "site": "00bd05f4",
+          "operation": "call",
+          "target": "00bf6885"
+        }
+      ],
+      "indirect_transfers": [],
+      "source_function": "native_singleton_length_error_00bd0590",
+      "source_signature": "[[noreturn]] void __cdecl()",
+      "original_abi": "No consumed input; genuine C++ throw path; no normal return",
+      "emitted_complete_bytes": 111,
+      "contract": "No-init1Ch temporary; capacity15, length0, first-byteNUL; assign18; arm state0; actual28h legacy constructor; D69260; owning source throw.",
+      "native_eh": {
+        "handler": "00cc5478",
+        "funcinfo": "00dff4bc",
+        "unwind_map": "00dff4b4",
+        "state": 0,
+        "target_state": -1,
+        "action": "00cc5470",
+        "cleanup_target": "004072d0",
+        "temporary_address": "[EBP-50h]",
+        "catch_maps": 0
+      },
+      "current_read_schedule": "Temporary writes precede assign18. State0 only after assign returns. Constructor reads the completed temporary through existing current-storage string services. D69260 publication follows successful owner construction.",
+      "boundary": "Actual payload storage and ownership through existing services; new transport catch type/RTTI and source EH runtime."
+    }
+  ],
+  "source_owner_domain": {
+    "allocation": "Existing singleton_lifetime_allocate/std::malloc with real _callnewh retry; native_bytes==host_bytes==uint32(count*4)",
+    "deallocation": "Existing singleton_lifetime_free/std::free, shared with raw vector leaves",
+    "manager_publication": "No owner, manager, allocation domain or publication is added",
+    "length_exception": "NativeSingletonVectorLengthError, one actual40-byte NativeLegacyExceptionStorage member",
+    "exception_native_profile": "00d69260 retained as data identity only",
+    "invalid_parameter": "No invalid-parameter callback or placeholder provider is introduced"
+  },
+  "native_provider_frontier": [
+    {
+      "address": "00bf681b",
+      "provider": "singleton_lifetime_allocate",
+      "contract": "Source real malloc/new-handler retry; native CRT internal ownership is an explicit boundary"
+    },
+    {
+      "address": "00bf9f1a",
+      "provider": "std::malloc",
+      "contract": "Original heap/newmode/oversized-request callback behavior is not reconstructed by the host service"
+    },
+    {
+      "address": "00c055b1",
+      "provider": "_callnewh",
+      "contract": "Original current encoded109DE44 decode is observed; current CRT handler domain used by source"
+    },
+    {
+      "address": "00bf6340",
+      "provider": "std::bad_alloc",
+      "contract": "Original null message / ownership1 / D6923C overflow payload is not claimed as source RTTI identity"
+    },
+    {
+      "address": "00bf6885",
+      "provider": "Compiler source C++ throw runtime",
+      "contract": "No original throw/catch/FH3 ABI claim"
+    },
+    {
+      "address": "00408720",
+      "provider": "native_legacy_sbo_string_assign_counted_00408720",
+      "contract": "Actual existing raw string provider,18-byte nonaliased literal"
+    },
+    {
+      "address": "00411700",
+      "provider": "construct_native_legacy_logic_error_00411700",
+      "contract": "Actual existing28h owner constructor with base-only failure cleanup"
+    },
+    {
+      "address": "00411940",
+      "provider": "copy_native_legacy_length_error_00411940",
+      "contract": "Actual owning copy; successful D69260 publication"
+    },
+    {
+      "address": "00411780",
+      "provider": "destroy_native_legacy_logic_error_00411780",
+      "contract": "Actual string/base destruction"
+    },
+    {
+      "address": "004072d0",
+      "provider": "native_legacy_sbo_string_destroy_004072d0",
+      "contract": "Actual completed-temporary destruction/reset"
+    }
+  ],
+  "validation": {
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Release",
+      "architecture": "Win32",
+      "options": [
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "passed": true,
+      "source_registration": "Ignored local/singleton_vector_allocation/build_hook.cmake via CMAKE_PROJECT_INCLUDE_BEFORE",
+      "shared_build_files_edited": false,
+      "log": "J:\\PROG\\battlestations-pacific-decompile-native-singleton-vector-allocation\\local\\singleton_vector_allocation\\build.txt"
+    },
+    "existing_ctests": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "verified_native_math_seeds": 8,
+    "new_tests_added": 0,
+    "owned_native_whole_bodies_saved_disk_match": true,
+    "owned_native_whole_bodies_fully_decoded": true,
+    "complete_emitted_entry_owner_and_provider_objects_decoded": true,
+    "archive_exact_whole_object_matches": [
+      {
+        "name": "native_singleton_vector_allocation",
+        "object_bytes": 10592,
+        "object_sha256": "ca187adfa0530ed1076be5dd5ce10c4cabc1c1fa2a2d0efbc27f7649c3a1273e",
+        "archive_member": "bsp_core.dir\\Release\\native_singleton_vector_allocation.obj",
+        "exact_archive_match": true,
+        "function_count": 17
+      },
+      {
+        "name": "singleton_lifetime",
+        "object_bytes": 32975,
+        "object_sha256": "06c62e97dbed8a58217450d877729c2ec28deba4c1cf82c971de97b5a6ca679d",
+        "archive_member": "bsp_core.dir\\Release\\singleton_lifetime.obj",
+        "exact_archive_match": true,
+        "function_count": 67
+      },
+      {
+        "name": "native_legacy_sbo_string",
+        "object_bytes": 18686,
+        "object_sha256": "3c2e41f388727e7f93920ccc2a6e779a9e62d79f834e6b9b8e819cd342995007",
+        "archive_member": "bsp_core.dir\\Release\\native_legacy_sbo_string.obj",
+        "exact_archive_match": true,
+        "function_count": 36
+      },
+      {
+        "name": "native_legacy_exception_owner",
+        "object_bytes": 7108,
+        "object_sha256": "096ea77f02fbe6fa2058f5cd64912be3fa848e2c39bcd2ec0aed51f6306dae2b",
+        "archive_member": "bsp_core.dir\\Release\\native_legacy_exception_owner.obj",
+        "exact_archive_match": true,
+        "function_count": 15
+      }
+    ],
+    "exception_metadata": {
+      "funcinfo_magic": "0x19930522",
+      "max_state": 1,
+      "catch_maps": 0,
+      "unwind_target_state": -1,
+      "cleanup_function": "??1CompletedMessage@?A0x911f6b3f@bsp@@QAE@XZ",
+      "cleanup_length": 9,
+      "catchable_type_count": 1,
+      "payload_bytes": 40,
+      "throw_destructor": "??1NativeSingletonVectorLengthError@bsp@@QAE@XZ",
+      "catchable_copy_constructor": "??0NativeSingletonVectorLengthError@bsp@@QAE@ABV01@@Z"
+    },
+    "external_provider_map": [
+      {
+        "symbol": "??3@YAXPAXI@Z",
+        "owned_object_provider": [],
+        "service_boundary": true
+      },
+      {
+        "symbol": "??_7type_info@@6B@",
+        "owned_object_provider": [],
+        "service_boundary": true
+      },
+      {
+        "symbol": "??_Ebad_alloc@std@@UAEPAXI@Z",
+        "owned_object_provider": [],
+        "service_boundary": true
+      },
+      {
+        "symbol": "??_Eexception@std@@UAEPAXI@Z",
+        "owned_object_provider": [],
+        "service_boundary": true
+      },
+      {
+        "symbol": "?construct_native_legacy_logic_error_00411700@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABUNativeLegacySboStringStorage@1@@Z",
+        "owned_object_provider": [
+          "native_legacy_exception_owner"
+        ],
+        "service_boundary": false
+      },
+      {
+        "symbol": "?copy_native_legacy_length_error_00411940@bsp@@YAAAUNativeLegacyExceptionStorage@1@AAU21@ABU21@@Z",
+        "owned_object_provider": [
+          "native_legacy_exception_owner"
+        ],
+        "service_boundary": false
+      },
+      {
+        "symbol": "?destroy_native_legacy_logic_error_00411780@bsp@@YAXAAUNativeLegacyExceptionStorage@1@@Z",
+        "owned_object_provider": [
+          "native_legacy_exception_owner"
+        ],
+        "service_boundary": false
+      },
+      {
+        "symbol": "?native_legacy_sbo_string_assign_counted_00408720@bsp@@YAAAUNativeLegacySboStringStorage@1@AAU21@PBDI@Z",
+        "owned_object_provider": [
+          "native_legacy_sbo_string"
+        ],
+        "service_boundary": false
+      },
+      {
+        "symbol": "?native_legacy_sbo_string_destroy_004072d0@bsp@@YAXAAUNativeLegacySboStringStorage@1@@Z",
+        "owned_object_provider": [
+          "native_legacy_sbo_string"
+        ],
+        "service_boundary": false
+      },
+      {
+        "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z",
+        "owned_object_provider": [
+          "singleton_lifetime"
+        ],
+        "service_boundary": false
+      },
+      {
+        "symbol": "@__security_check_cookie@4",
+        "owned_object_provider": [],
+        "service_boundary": true
+      },
+      {
+        "symbol": "__CxxThrowException@8",
+        "owned_object_provider": [],
+        "service_boundary": true
+      },
+      {
+        "symbol": "___CxxFrameHandler3",
+        "owned_object_provider": [],
+        "service_boundary": true
+      },
+      {
+        "symbol": "___security_cookie",
+        "owned_object_provider": [],
+        "service_boundary": true
+      },
+      {
+        "symbol": "___std_exception_copy",
+        "owned_object_provider": [],
+        "service_boundary": true
+      },
+      {
+        "symbol": "___std_exception_destroy",
+        "owned_object_provider": [],
+        "service_boundary": true
+      }
+    ],
+    "full_original_execution_of_owned_functions": false,
+    "allocation_failure_or_length_throw_runtime_fixture": false,
+    "game_validated": false
+  },
+  "uncertainties": [
+    "Names are descriptive reconstruction hypotheses, not recovered original symbols.",
+    "Existing math CTests/seeds do not exercise allocation failure or the vector length throw.",
+    "Current source CRT owns heap, zero-size semantics, errno, handlers and std::bad_alloc identity; old CRT heap/newmode and failure callback-count parity are not claimed.",
+    "NativeSingletonVectorLengthError is a new catch type; it does not match source std::length_error or original game RTTI.",
+    "Original FH3 stack records, arbitrary mutable unwind/argument-spill aliases, volatile-register clobbers and hardware-fault timing are excluded.",
+    "Legacy string/exception providers retain their existing source ABI and explicit source CRT/EH boundaries.",
+    "The packet does not complete append/register, reserve/insertion, the raw manager or canonical registered-owner dispatch."
+  ]
+}
