@@ -126,3 +126,22 @@ This packet does not make an executable-frame, audible-playback or native ABI
 claim. The application can attach the concrete frame binding when it has actual
 interface/game storage; transition execution additionally requires the real
 screen/input/cinematic services described above.
+
+## Primary integration evidence
+
+The primary integrator defined the one-byte RET dependency 004F8940 through
+the locked definition tool and saved its hypothesis name and evidence. This
+closes the analysis database gap above; it adds no reconstructed C++ routine.
+`reports/sound_frame_service_function_definitions.json` and
+`reports/sound_frame_service_prototypes.json` retain the old values and readback.
+
+An ignored manifested probe linked against the primary's actual core library
+also exercised the genuine null-interface arm of 00735B50. It used the core's
+same sound-manager publication, update context and frame clock. Identity
+matrix/zero velocity, A87BF0 previous-listener copies and the alternate owner's
+real timestamp update were verified. Real FMOD GetChannelsPlaying,
+Set3DListenerAttributes and EventSystem_Update calls returned zero. Teardown
+left zero errors, pending file adapters and tracked strings. The probe did not
+execute 004BBD00 or 004CD610, whose real interface and transition services are
+still required. Its worker runner is `local/run_sound_frame_probe.ps1` and its
+log is `local/sound-frame-integrated-probe.log` in the frame worker worktree.

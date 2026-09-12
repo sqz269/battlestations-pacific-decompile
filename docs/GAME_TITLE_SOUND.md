@@ -1,5 +1,7 @@
 # Concrete title music composition
 
+Addresses: 005884A0, 00584A30, 004F8BA0, 00A85C20
+
 `GameTitleSound` replaces the older `TitleMusicHost` sequence with an actual
 stream composition over the existing core sound and dialog services. It borrows
 the current menu's native8h path and owning stream slot, the current movie
@@ -41,7 +43,7 @@ retain or argument cleanup. The constructor loads the actual `.def` table via
 the existing VFS resolver and scanner. Publication to current menu+50 occurs
 only after construction returns.
 
-The next temporary is constructed by A41E870 from the live C string at E19504.
+The next temporary is constructed by 0041E870 from the live C string at E19504.
 After that allocation, the body reloads current menu+50 for A867B0. It destroys
 the temporary before loading F889A8 through FLD/FSTP, reloads the current stream
 for A864F0, then reloads again for A85C20. The menu provider is called six times
@@ -62,7 +64,7 @@ the incoming register.
 ## Corrected evidence and ownership
 
 The old host comment calling E19504 an8h native string is incorrect: 0058853D
-pushes its address to A41E870, a C-string constructor. The cited alleged writers
+pushes its address to 0041E870, a C-string constructor. The cited alleged writers
 0058BE63/0058BE6F and 0059A16B are fallback/address reads, not writers. The
 inspected initial PE bytes are zero. The helper borrows this input without
 claiming a recovered track-selection producer or substituting its own empty
@@ -129,3 +131,24 @@ initial storage, and volume0.375 is an explicit fixture input, not a guessed
 game default. Application current-menu/movie bindings, the current settings
 volume and any track-selection producer must be supplied by integration.
 Gameplay, original object ABI and SEH compatibility remain unverified.
+
+## Primary integration verification
+
+The primary merged this composition, applied the four supported native
+signatures and saved the project. The two metadata-only EH handler starts
+C6FDEB/C6F9D8 were defined after byte verification. Cleanup C6FDD0 had a
+CALL_RETURN-truncated body: its POP ECX and RET at C6FDD9/C6FDDA were decoded
+and the body repaired through C6FDDA, retaining its existing Unwind name and
+comment. Final live readback has five instructions and zero flow gaps.
+These analysis repairs add no reconstructed C++ routines. The definition,
+flow-repair and prototype reports record prior values and final evidence.
+
+The combined Release build passed both existing CTests. A second title fixture
+run compiled only its probe against primary headers and the primary core/Lua
+archives, without compiling an extra title implementation. All 18 native fade
+cases and existing ownership checks passed. The installed stream reported
+138032 ms, two channels, four routes, fade0.006, 185 FMOD calls, one open/close
+and zero reclaimed/pending adapters or tracked strings. Its exact runner/log
+remain in the title worktree's ignored local directory; report hashes identify
+the archive and log. This remains fixture evidence with a null selected movie,
+not application title playback or active Bink validation.

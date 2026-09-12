@@ -442,5 +442,30 @@
   "native_abi_compatible": false,
   "game_validated": false,
   "metadata_repairs": "Corrected E19504 header/producer, F889A8 producer and A85C20 playback interpretations; ledger tool also sorted five byte-identical existing A8-band records without semantic edits",
-  "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  "installed_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "primary_integration": {
+    "source_commit": "f313e6e3b32fdc0fb59290c411ad5e3b2b2287b1",
+    "configuration": "Release MSVC Win32",
+    "ctests_passed": 2,
+    "build_log": "local/sound_ab_combined_build.log",
+    "core_sha256": "01332a5142e24e05b55b2a6e2746fb30242d21d420b97f4084f4ccda4784ea56",
+    "fixture_compile": "Primary headers and primary core/Lua archives only; no explicit reconstructed source compilation; /MANIFEST:EMBED",
+    "fixture_log": "J:\\PROG\\battlestations-pacific-decompile-orch4-title-sound-ab\\local\\title_fixture_ab_integrated.log",
+    "fixture_log_sha256": "fba3d92374ce3980641d339e3d09c84f91d6495d6f1f8e7ca62c608ff2490869",
+    "native_fade_cases": 18,
+    "native_fade_failures": 0,
+    "installed_duration_ms": 138032,
+    "channels": 2,
+    "speaker_routes": 4,
+    "fade_after_tick": 0.006,
+    "fmod_calls": 185,
+    "file_opens": 1,
+    "file_closes": 1,
+    "host_reclaims": 0,
+    "pending_file_adapters": 0,
+    "tracked_strings": 0,
+    "application_title_playback_verified": false,
+    "active_movie_verified": false,
+    "analysis_repairs": "Two EH handlers defined; C6FDD0 tail repaired preserving Unwind name/comment; final body C6FDD0..C6FDDA, five instructions and no gaps. See function_definitions, flow_repair and prototypes reports."
+  }
 }

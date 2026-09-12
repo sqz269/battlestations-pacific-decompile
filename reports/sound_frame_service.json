@@ -262,5 +262,24 @@
     "seed_spans_verified": 8,
     "build_log": "local/sound-frame-build.log",
     "call_audit_log": "local/sound-frame-call-audit.log"
+  },
+  "primary_integration": {
+    "source_commit": "f313e6e3b32fdc0fb59290c411ad5e3b2b2287b1",
+    "configuration": "Release MSVC Win32",
+    "ctests_passed": 2,
+    "build_log": "local/sound_ab_combined_build.log",
+    "core_sha256": "01332a5142e24e05b55b2a6e2746fb30242d21d420b97f4084f4ccda4784ea56",
+    "fixture_log": "J:\\PROG\\battlestations-pacific-decompile-orch4-sound-frame-ab\\local\\sound-frame-combined-ab-probe.log",
+    "fixture_log_sha256": "1c2bef369a06f18e018b3fe355c3d7a0108c137af6df7548bd0f684c1506ca4b",
+    "executed_entry": "00735b50",
+    "domain": "Actual null-interface arm using current core publication/update context/frame clock",
+    "sdk_calls": 3,
+    "sdk_errors": 0,
+    "listener_callbacks": 0,
+    "pending_file_adapters": 0,
+    "tracked_strings": 0,
+    "queued_job_executed": false,
+    "transition_executed": false,
+    "analysis_dependency": "004F8940 one-byte RET defined and saved; no additional C++ reconstruction"
   }
 }

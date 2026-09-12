@@ -129,5 +129,34 @@
     "Native game-render entry and listener service bindings",
     "Canonical native menu title-path/owning stream slot, MoviePlayer host and track selection producer"
   ],
-  "no_ghidra_function": []
+  "no_ghidra_function": [],
+  "combined_integration": {
+    "source_commit": "f313e6e3b32fdc0fb59290c411ad5e3b2b2287b1",
+    "configuration": "Release MSVC Win32",
+    "ctests_passed": 2,
+    "build_log": "local/sound_ab_combined_build.log",
+    "core_sha256": "01332a5142e24e05b55b2a6e2746fb30242d21d420b97f4084f4ccda4784ea56",
+    "run": {
+      "command": [
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\build\\win32\\Release\\bsp_game.exe",
+        "--game-root",
+        "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+        "--settings-personal-root",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\sound-application-ab-personal",
+        "--xlive-dll",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\xlive.dll",
+        "--xlive-dependency",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\gfwl-private-runtime\\msidcrl40.dll",
+        "--frames",
+        "2",
+        "--log",
+        "J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\\local\\sound_application_ab_run.log"
+      ],
+      "returncode": 0,
+      "seconds": 1.418215036392212
+    },
+    "exe_sha256": "d8bdff5eea22750c2f345727897fc1de0e931dddd657ecc79591e170ebb4832e",
+    "run_log_sha256": "6b782fb971b420e09f9c3d506438609d11f0f3600a1ce9742e1bf28e3478475c",
+    "same_runtime_counters_as_initial_run": true
+  }
 }

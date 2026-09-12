@@ -69,6 +69,8 @@ Library hashes and the exact command are recorded in the report.
 `./scripts/build.ps1` passed Release Win32 compilation and both existing CTests.
 The actual `build/win32/Release/bsp_game.exe` then exited zero after two frames
 and two presents, with an isolated settings root and an 800x600 window.
+Only settings are isolated; the existing save-directory handling still refers
+to the user's normal Documents/Battlestations-Pacific/save directory.
 
 The recorded startup log reports enabled sound, seven classes, one resource,
 132 FMOD calls with zero errors and one load-focus call. Startup precedes window

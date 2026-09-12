@@ -8637,6 +8637,77 @@
       "evidence": "reports/avoid_zone_boundary.json",
       "integration_report": "reports/orch6_navigation_geometry_batch.json",
       "qualification": "Two control-flow projections through required geometry callees; no executable wiring or native storage adapter. New C++ interfaces; original ABI and game behavior are not validated."
+    },
+    {
+      "id": "orch4_sound_platform_ab",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_concrete_platform_load_adapter_and_preonline_guard_fixture_verified",
+      "function_addresses": [
+        "00beca40",
+        "00becb20",
+        "00a409f0"
+      ],
+      "code_ownership": [
+        "include/bsp/game_platform_services.hpp",
+        "src/game_platform_services.cpp"
+      ],
+      "integration_report": "reports/game_platform_services.json",
+      "discovery_evidence": "docs/GAME_PLATFORM_SERVICES.md",
+      "game_validated": false
+    },
+    {
+      "id": "orch4_sound_frame_ab",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reconstructed_native_callers_and_actual_null_interface_frame_fixture_verified",
+      "function_addresses": [
+        "00735b50",
+        "004bbd00",
+        "004cd610"
+      ],
+      "code_ownership": [
+        "include/bsp/sound_frame_service.hpp",
+        "src/sound_frame_service.cpp"
+      ],
+      "integration_report": "reports/sound_frame_service.json",
+      "discovery_evidence": "docs/SOUND_FRAME_SERVICE.md",
+      "game_validated": false
+    },
+    {
+      "id": "orch4_title_sound_ab",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_reconstructed_title_composition_and_installed_stream_fixture_verified",
+      "function_addresses": [
+        "005884a0",
+        "00584a30",
+        "004f8ba0",
+        "00a85c20"
+      ],
+      "code_ownership": [
+        "include/bsp/game_title_sound.hpp",
+        "src/game_title_sound.cpp"
+      ],
+      "integration_report": "reports/game_title_sound.json",
+      "discovery_evidence": "docs/GAME_TITLE_SOUND.md",
+      "game_validated": false
+    },
+    {
+      "id": "orch4_sound_application_ab",
+      "worker": "agent/orch4-20260910",
+      "done": true,
+      "state": "integrated_partial_application_startup_and_actual_two_frame_run_verified",
+      "function_addresses": [
+        "0073d410"
+      ],
+      "code_ownership": [
+        "include/bsp/game_hosts.hpp",
+        "src/game_hosts.cpp"
+      ],
+      "integration_report": "reports/sound_application_wiring.json",
+      "discovery_evidence": "docs/SOUND_APPLICATION_WIRING.md",
+      "game_validated": false
     }
   ],
   "snapshot_after_analysis": {
