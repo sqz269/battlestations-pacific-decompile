@@ -47,7 +47,7 @@ namespace bsp {
 //   00424DBE  00417CA0             find or create that layer's group
 //   00424DC5  0041D1E0             add the entity to the group as a zone
 //   0041D201  007AC9D0             the entity's path interface
-//   0041D206  [entity+54h] == 2    the path kind gate
+//   0041D206  [entity+54h] == 2    the entity's Neutral Party gate
 //   0041D233  0041CCD0             build the polygon from the path points
 //   00424DDA  00417CA0(0)          layer 0 always exists after a rebuild
 //
@@ -69,7 +69,9 @@ namespace bsp {
 // goal out of a zone. This header redefines none of their types; it reuses
 // segment_crossing_004f3730 from bsp/gun_bot_remainder.hpp and
 // wrapped_angle_subtract_00438b10 from bsp/unit_rudder.hpp rather than
-// restating either rule.
+// restating either rule. Correction: the active00416DD0 call sites now use the
+// exact crossing and SAT kernels from avoid_zone_clearance.hpp; the older
+// generic gun-bot crossing is not used by the manager's zone segment query.
 
 // ---------------------------------------------------------------------------
 // Sizes and offsets, from the producers
@@ -156,6 +158,8 @@ inline constexpr float kAvoidZoneBoxHalf = 0.5f;
 // 00424D00's name gate and its two literals live in
 // include/bsp/mission_load_hosts.hpp (kAvoidZonePrefix, kAvoidZoneGroupPrefix,
 // kAvoidZoneGroupFormat). 0041D206 CMP dword ptr [EDI+54h], 2.
+// Correction from SCENE_LANDSCAPE_CLASS.md: this is the entity's Neutral
+// Party value. The historical constant name is retained for source compatibility.
 inline constexpr std::int32_t kAvoidZonePathKind = 2;
 // 00424DD7 XOR ESI,ESI before the last 00417CA0: layer 0 always exists.
 inline constexpr std::int32_t kAvoidZoneDefaultLayer = 0;
@@ -405,9 +409,8 @@ struct AvoidZoneSceneHost {
     virtual std::string world_entity_name(std::int32_t index) = 0;
 
     // 0041D201 007AC9D0 then 0041D206 CMP [entity+54h], 2. True when the
-    // entity offers a path interface AND that field is 2; 0041D20C skips the
-    // entity otherwise. Which of the two the field belongs to was not read, so
-    // the host answers for the pair.
+    // entity offers a path interface AND its Party is2 (Neutral);0041D20C skips
+    // the entity otherwise. EDI still holds the original entity at0041D206.
     virtual bool world_entity_is_zone_path(std::int32_t index) = 0;
 
     // 0041CD1B: the path's point count is ([path+0Ch] - [path+8h]) >> 2, and

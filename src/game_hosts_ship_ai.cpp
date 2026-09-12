@@ -11,6 +11,8 @@
 // and the milestone 2n section of docs/GAME_EXECUTABLE.md.
 
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/game_avoid_zone_runtime.hpp"
+#include "bsp/game_hosts_lua.hpp"
 
 #include <array>
 #include <cmath>
@@ -19,6 +21,7 @@
 #include <cstring>
 #include <memory>
 #include <string>
+#include <stdexcept>
 #include <vector>
 
 #include "bsp/game_hosts.hpp"
@@ -126,10 +129,14 @@ const char* direction_name(int direction) noexcept {
 // ---------------------------------------------------------------------------
 
 struct GameShipAiHost::Impl {
-    Impl(GameHostLog& log_in, GameUnitsHost& units_in) : log(log_in), units(units_in) {}
+    Impl(GameHostLog& log_in, GameUnitsHost& units_in) : log(log_in), units(units_in),
+        zones(log_in, application_camera_axes_crt()) {}
 
     GameHostLog& log;
     GameUnitsHost& units;
+    GameAvoidZoneRuntime zones;
+    bsp::ShipAiPathSearchTurnRamp path_turn_ramp{};
+    bool path_turn_ramp_loaded{};
 
     // One controller per created unit. `ai` in docs/SHIP_AI_STATES.md is the
     // whole of this record: the timers are ai+0B14h / ai+0B18h, the block is
@@ -137,7 +144,18 @@ struct GameShipAiHost::Impl {
     struct Controller {
         bsp::ShipAiControllerTimers timers{};
         bsp::ShipAiControlBlock blk{};
-        bsp::UnitAiOrderPromotion order{};      // unit+0AECh / unit+0A98h, unit+0B40h
+        // Semantic records cover +00h..+4Ch; the native +50h owner pointer is
+        // supplied by this controller's unit index. Slot 0 is unit+AECh,
+        // slot 1 is unit+A98h. Only these records retain the order fields.
+        struct OrderStorage {
+            int index{};
+            bsp::UnitAiOrderRecord slots[2]{};
+            OrderStorage() noexcept {
+                // 0081EF85/91: both record timers start at 00D7A260 = -1.
+                slots[0].timer_04 = -1.0f;
+                slots[1].timer_04 = -1.0f;
+            }
+        } order{};
         bsp::AutoTargetState target{};          // director+38h
         std::uint32_t active_state_ai_offset{0};  // ai+2264h
         std::uint32_t active_state_command{0};
@@ -489,22 +507,8 @@ public:
         owner_.units.unit_position_00fc(index_, x, y, z);
     }
     bool position_outside_world_bounds_0071c4f0(float x, float y, float z) override {
-        // 0071C4F0's body is read (docs/SHIP_AI_STATE_STEPS.md): it answers 0
-        // when the position is INSIDE the box the world object keeps at
-        // [00E188A8] +711Ch / +7124h / +7128h / +7130h, and 1 otherwise. The
-        // rule is applied here; what is missing is the box, because
-        // construct_world 004DE610 is still a load record and this process has
-        // no world object. Running the four comparisons against a zero box
-        // would put every ship of this mission outside a world that does not
-        // exist, so the box is the record and the neutral answer stands.
-        float min_x = 0.0f, max_x = 0.0f, min_z = 0.0f, max_z = 0.0f;
-        if (owner_.units.world_bounds_box_00e188a8(min_x, max_x, min_z, max_z)) {
-            owner_.done("ShipAiStop::outside_world_bounds", 0x0071c4f0u);
-            static_cast<void>(y);
-            return !(x >= min_x && x <= max_x && z >= min_z && z <= max_z);
-        }
-        owner_.record("ShipAiStop::world_bounds_box", 0x004de610u);
-        return false;
+        owner_.done("ShipAiStop::outside_world_bounds", 0x0071c4f0u);
+        return owner_.zones.outside({x, y, z});
     }
     void set_navigation_goal_009de050(float goal_x, float goal_z, bool keep_mode,
                                       bool final_leg) override {
@@ -1877,8 +1881,10 @@ public:
     DirectControlBinding(GameShipAiHost::Impl& owner, std::size_t index)
         : owner_(owner), index_(index) {}
 
-    void prologue_0080e000(float) override {
-        owner_.record("ShipAiControls::prologue", 0x0080e000u);
+    void prologue_0080e000(float seconds) override {
+        auto& order = owner_.controllers[index_].order;
+        bsp::unit_ai_order_slot_step_0080e000(order.slots[order.index], seconds);
+        owner_.done("ShipAiControls::prologue", 0x0080e000u);
     }
     bool controller_belongs_to_another_007788b0() override {
         owner_.record("ShipAiControls::controller_belongs_to_another", 0x007788b0u);
@@ -2344,29 +2350,27 @@ public:
         : owner_(owner), ctl_(ctl), index_(index) {}
 
     std::uint32_t avoid_zone_manager_004218e0() override {
-        // The avoid-zone singleton is not built in this process, the same
-        // record the attackmove engage gate hits at 009E864C.
-        owner_.record("ShipAiPlanner::avoid_zone_manager", 0x004218e0u);
-        return 0u;
+        owner_.done("ShipAiPlanner::avoid_zone_manager", 0x004218e0u);
+        return owner_.zones.manager_handle();
     }
     std::uint32_t zone_containing_point_00417e40(std::uint32_t,
-        const std::array<float, 2>&, std::uint32_t) override {
-        owner_.record("ShipAiPlanner::zone_containing_point", 0x00417e40u);
-        return 0u;
+        const std::array<float, 2>& point, std::uint32_t layer) override {
+        owner_.done("ShipAiPlanner::zone_containing_point", 0x00417e40u);
+        return owner_.zones.containing(point, layer);
     }
-    std::array<float, 2> push_point_out_of_zone_00417580(std::uint32_t,
-        const std::array<float, 2>& point, float) override {
-        owner_.record("ShipAiPlanner::push_point_out_of_zone", 0x00417580u);
-        return point;
+    std::array<float, 2> push_point_out_of_zone_00417580(std::uint32_t zone,
+        const std::array<float, 2>& point, float margin) override {
+        owner_.done("ShipAiPlanner::push_point_out_of_zone", 0x00417580u);
+        return owner_.zones.push_out(zone, point, margin);
     }
-    std::uint32_t zone_group_for_layer_004120d0(std::uint32_t, std::uint32_t) override {
-        owner_.record("ShipAiPlanner::zone_group_for_layer", 0x004120d0u);
-        return 0u;
+    std::uint32_t zone_group_for_layer_004120d0(std::uint32_t, std::uint32_t layer) override {
+        owner_.done("ShipAiPlanner::zone_group_for_layer", 0x004120d0u);
+        return owner_.zones.group_for_layer(layer);
     }
-    std::array<float, 2> nearest_zone_boundary_0041b840(std::uint32_t,
-        const std::array<float, 2>& point, float, float) override {
-        owner_.record("ShipAiPlanner::nearest_zone_boundary", 0x0041b840u);
-        return point;
+    std::array<float, 2> nearest_zone_boundary_0041b840(std::uint32_t group,
+        const std::array<float, 2>& point, float slack, float push) override {
+        owner_.done("ShipAiPlanner::nearest_zone_boundary", 0x0041b840u);
+        return owner_.zones.nearest(group, point, slack, push);
     }
     bsp::ShipAiPathNode* allocate_path_node_00bf681b(std::size_t) override {
         // operator new. The nodes belong to the plan block, so this process
@@ -2380,10 +2384,8 @@ public:
         return owner_.units.unit_heading_radians(index_);
     }
     float owner_radius_09c8() override {
-        // 009E3ADB, [ship+9C8h]. No recovered producer anywhere; the same field
-        // the drive's danger ramp records at 009F4174.
-        owner_.record("ShipAiPlanner::owner_radius_09c8", 0x009e3adbu);
-        return 0.0f;
+        owner_.done("ShipAiPlanner::owner_radius_09c8", 0x009e3adbu);
+        return owner_.units.unit_hull_length_09c8(index_);
     }
     float owner_class_max_speed_0500() override {
         owner_.done("ShipAiPlanner::owner_class_max_speed", 0x009e3af0u);
@@ -2400,66 +2402,58 @@ private:
 };
 
 // Milestone 2q: bsp::ShipAiPathSearchHost, the nine call sites of 009EC680's
-// five routines. Packet cc_ai_path_search landed on main at 4d3b1e49 and this
-// packet merged it in, so the search itself is a projection; what stays a
-// record is the avoid-zone manager, which construct_world 004DE610 would have
-// to build. With no manager, 00417E90 cannot be called and the edge probe's own
-// step 2 is the whole "is the sea clear between these two points" question
-// (docs/SHIP_AI_PATH_SEARCH.md), so the neutral answer is `not blocked` and the
-// search never reaches 00422500, 0071C4F0, 00417610 or 00423190.
+// five routines. The process geometry adapter now supplies retained authored
+// scene paths, native corner storage, exact crossing/clearance dependencies,
+// and actual Map bounds. Full native scene creators/singleton ABI and the
+// manager's draft-layer tail remain outside that adapter; see GAME_AVOID_ZONE_RUNTIME.md.
 class PathSearchBinding final : public bsp::ShipAiPathSearchHost {
 public:
     PathSearchBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl)
         : owner_(owner), ctl_(ctl) {}
 
     bsp::ShipAiPathSearchTurnRamp game_settings_turn_ramp_00424c40() override {
-        // settings+6F0h / +6F4h / +6F8h. The gameplay settings singleton this
-        // process builds carries the zeroes a fresh object has for this block:
-        // 0083B5E0's recovered head fills the rudder curve and the auto-thrust
-        // band, and no recovered loader writes these three.
-        owner_.record("ShipAiSearch::turn_ramp", 0x00424c40u);
-        return bsp::ShipAiPathSearchTurnRamp{0.0f, 0.0f, 0.0f};
+        if (!owner_.path_turn_ramp_loaded) throw std::logic_error("Path turn ramp is not loaded");
+        owner_.done("ShipAiSearch::turn_ramp", 0x00424c40u);
+        return owner_.path_turn_ramp;
     }
     std::uint32_t avoid_zone_manager_004218e0() override {
-        owner_.record("ShipAiSearch::avoid_zone_manager", 0x004218e0u);
-        return 0u;
+        owner_.done("ShipAiSearch::avoid_zone_manager", 0x004218e0u);
+        return owner_.zones.manager_handle();
     }
-    bool segment_blocked_00417e90(std::uint32_t, std::uint32_t,
-                                  const std::array<float, 2>&, const std::array<float, 2>&,
+    bool segment_blocked_00417e90(std::uint32_t, std::uint32_t layer,
+                                  const std::array<float, 2>& toward, const std::array<float, 2>& from,
                                   std::uint32_t& out_zone,
                                   std::int32_t& out_edge_index) override {
-        owner_.record("ShipAiSearch::segment_blocked", 0x00417e90u);
-        out_zone = 0u;
-        out_edge_index = -1;
-        return false;
+        owner_.done("ShipAiSearch::segment_blocked", 0x00417e90u);
+        return owner_.zones.segment(layer, toward, from, out_zone, out_edge_index);
     }
-    std::int32_t zone_detour_corners_00422500(std::uint32_t, const std::array<float, 2>&,
-                                              std::int32_t, std::int32_t, std::int32_t, float,
-                                              std::array<float, 2>&, std::array<float, 2>&,
+    std::int32_t zone_detour_corners_00422500(std::uint32_t zone, const std::array<float, 2>& far_point,
+                                              std::int32_t edge, std::int32_t near_hint, std::int32_t side_hint, float margin,
+                                              std::array<float, 2>& left, std::array<float, 2>& right,
                                               std::int32_t& out_left_index,
                                               std::int32_t& out_right_index) override {
-        owner_.record("ShipAiSearch::zone_detour_corners", 0x00422500u);
-        out_left_index = -1;
-        out_right_index = -1;
-        return 0;
+        owner_.done("ShipAiSearch::zone_detour_corners", 0x00422500u);
+        const auto hit = owner_.zones.detour(zone, far_point, edge, near_hint, side_hint, margin);
+        if (hit.has_backward) { left = hit.backward_point; out_left_index = hit.backward_index; }
+        if (hit.has_forward) { right = hit.forward_point; out_right_index = hit.forward_index; }
+        return hit.side_code;
     }
-    bool point_outside_world_bounds_0071c4f0(const std::array<float, 3>&) override {
-        // Milestone 2p correction 8: the world box at [00E188A8]+711Ch.. does
-        // not exist, so the neutral `inside` answer stands.
-        owner_.record("ShipAiSearch::point_outside_world_bounds", 0x0071c4f0u);
-        return false;
+    bool point_outside_world_bounds_0071c4f0(const std::array<float, 3>& point) override {
+        owner_.done("ShipAiSearch::point_outside_world_bounds", 0x0071c4f0u);
+        return owner_.zones.outside(point);
     }
     bsp::ShipAiPathNode* allocate_path_node_00bf681b(std::size_t) override {
         ctl_.plan_nodes.emplace_back();
         owner_.done("ShipAiSearch::allocate_path_node", 0x00bf681bu);
         return &ctl_.plan_nodes.back();
     }
-    std::uint32_t zone_corner_record_00417610(std::uint32_t, std::int32_t) override {
-        owner_.record("ShipAiSearch::zone_corner_record", 0x00417610u);
-        return 0u;
+    std::uint32_t zone_corner_record_00417610(std::uint32_t zone, std::int32_t index) override {
+        owner_.done("ShipAiSearch::zone_corner_record", 0x00417610u);
+        return owner_.zones.corner(zone, index);
     }
-    void ensure_zone_corner_metric_00423190(std::uint32_t, std::uint32_t) override {
-        owner_.record("ShipAiSearch::zone_corner_metric", 0x00423190u);
+    void ensure_zone_corner_metric_00423190(std::uint32_t zone, std::uint32_t corner) override {
+        owner_.done("ShipAiSearch::zone_corner_metric", 0x00423190u);
+        owner_.zones.ensure_clearance(zone, corner);
     }
     void release_path_node_vtable0(bsp::ShipAiPathNode*) override {
         // The nodes live in the controller's own deque, which the plan links by
@@ -2486,23 +2480,16 @@ public:
 
     const bsp::ShipAiPathLateralAnchor* lateral_anchor_node_10(std::uint32_t handle)
         override {
-        // 009E3D8C and 009E3DD2, a dereference of node+10h, not a call. No node
-        // of an unzoned plan carries a lateral record, so the answer is null and
-        // the read is recorded with the field's own site.
-        static_cast<void>(handle);
-        owner_.record("ShipAiPathFollower::lateral_anchor_node_10", 0x009e3d8cu);
-        return nullptr;
+        owner_.done("ShipAiPathFollower::lateral_anchor_node_10", 0x009e3d8cu);
+        return owner_.zones.anchor(handle);
     }
     float order_turn_limit_at_00811d80(const std::array<float, 2>& xz) override {
-        // 009E3DCD, 00811D80 on the unit's own PUBLISHED order slot. Reached
-        // only inside the lateral-anchor arm above, which no node of an
-        // unzoned plan enters, so the call is not made in this run at all. The
-        // executable holds the four published fields of the slot
-        // (UnitAiOrderSlot) and not the two sub-records 00811D80 searches, so
-        // the answer would be the routine's own 30.0f whatever the position is.
-        static_cast<void>(xz);
-        owner_.record("ShipAiPathFollower::order_turn_limit_00811d80", 0x00811d80u);
-        return bsp::kUnitAiOrderTurnLimitDefault;
+        // 009E3DC1: unit+A98h+54h*index is the opposite, published slot.
+        const auto& order = owner_.controllers[index_].order;
+        const float limit = bsp::unit_ai_order_turn_limit_at_00811d80(
+            order.slots[1 - order.index], xz);
+        owner_.done("ShipAiPathFollower::order_turn_limit_00811d80", 0x00811d80u);
+        return limit;
     }
     float owner_class_turn_radius_0082e850() override {
         // 009E3EAE, 0082E850 on [[plan+3Ch]+538h]: class+520h, which 00828F20
@@ -2521,22 +2508,16 @@ public:
         return length;
     }
     std::uint32_t avoid_zone_manager_004218e0() override {
-        // 009E4200. The manager singleton has no producer in this process;
-        // packet cc_ai_avoid_zones owns it.
-        owner_.record("ShipAiPathFollower::avoid_zone_manager", 0x004218e0u);
-        return 0u;
+        owner_.done("ShipAiPathFollower::avoid_zone_manager", 0x004218e0u);
+        return owner_.zones.manager_handle();
     }
     bool segment_hits_zone_00417ef0(std::uint32_t manager, std::uint32_t zone_layer,
                                     const std::array<float, 2>& from,
                                     const std::array<float, 2>& to,
                                     std::array<float, 2>& hit) override {
         static_cast<void>(manager);
-        static_cast<void>(zone_layer);
-        static_cast<void>(from);
-        static_cast<void>(to);
-        static_cast<void>(hit);
-        owner_.record("ShipAiPathFollower::segment_hits_zone", 0x00417ef0u);
-        return false;
+        owner_.done("ShipAiPathFollower::segment_hits_zone", 0x00417ef0u);
+        return owner_.zones.segment_point(zone_layer, from, to, hit);
     }
 
 private:
@@ -2890,17 +2871,27 @@ public:
         if (result.advanced_cursor) ++owner_.summary.path_follower_advances;
     }
     float path_width_2f4_08() override {
-        owner_.record("ShipAiPath::path_width_2f4", 0x009ee61eu);
-        return 0.0f;
+        // Read the front after refresh_path_plan may have swapped it.
+        const bsp::ShipAiPathPlanBlock& live
+            = (ctl_.plan_front == 0) ? ctl_.plan_a : ctl_.plan_b;
+        owner_.done("ShipAiPath::path_width_2f4", 0x009ee61eu);
+        return live.published_width;
     }
-    void publish_lateral_offset_00815f30(std::uint32_t, int, float, float) override {
-        owner_.record("ShipAiPath::publish_lateral_offset", 0x00815f30u);
+    void publish_lateral_offset_00815f30(std::uint32_t node, int direction,
+        float low, float high) override {
+        // node_18 is the corner record handle; 009EE66B passes its x/z.
+        const auto* anchor = owner_.zones.anchor(node);
+        bsp::unit_ai_order_push_turn_limit_00815f30(
+            ctl_.order.slots[ctl_.order.index], {anchor->x, anchor->z},
+            direction, low, high);
+        owner_.done("ShipAiPath::publish_lateral_offset", 0x00815f30u);
         ++row_.path_publishes;
         ++owner_.summary.path_publishes;
     }
-    float path_node_width_20(std::uint32_t) override {
-        owner_.record("ShipAiPath::node_width", 0x009ee63au);
-        return 0.0f;
+    float path_node_width_20(std::uint32_t node) override {
+        const float clearance = owner_.zones.corner_clearance(node);
+        owner_.done("ShipAiPath::node_width", 0x009ee63au);
+        return clearance;
     }
 
 private:
@@ -3316,7 +3307,12 @@ public:
         const bsp::ShipAiPublishResult result = bsp::ship_ai_publish_order_009f4d10(
             ctl_.blk.heading_target_324, ctl_.blk.distance_32c, ctl_.blk.distance_330,
             seconds, publish);
-        ctl_.order.slots[result.slot_index] = result.slot;
+        // 009F4D10 writes +40h/+44h/+48h/+4Ch, preserving lateral memory.
+        auto& slot = ctl_.order.slots[result.slot_index];
+        slot.distance_40 = result.slot.distance_40;
+        slot.heading_44 = result.slot.heading_44;
+        slot.distance_48 = result.slot.distance_48;
+        slot.valid_4c = result.slot.valid_4c;
         owner_.done("ShipAi::publish_order", 0x009f4d10u);
         ++row_.publishes;
         ++owner_.summary.publishes;
@@ -3888,6 +3884,17 @@ GameShipAiHost::GameShipAiHost(GameHostLog& log, GameUnitsHost& units)
     : impl_(std::make_unique<Impl>(log, units)) {}
 GameShipAiHost::~GameShipAiHost() = default;
 
+void GameShipAiHost::load_avoid_zone_geometry(const GameSceneContentsHost& scene,
+    GameMissionLuaHost& lua, std::int32_t mode, std::uint8_t forced, std::int32_t session) {
+    std::string error;
+    if (!lua.read_path_turn_ramp(impl_->path_turn_ramp, error))
+        throw std::runtime_error("Path turn-ramp load failed: " + error);
+    impl_->path_turn_ramp_loaded = true;
+    impl_->zones.rebuild(scene, mode, forced, session);
+    impl_->log.notef("ship AI path turn ramp knee=%.9g limit=%.9g addon=%.9g",
+        impl_->path_turn_ramp.knee_x, impl_->path_turn_ramp.limit_x, impl_->path_turn_ramp.limit_y);
+}
+
 namespace {
 
 // Milestone 2r: bsp::ShipAiNavBlockCtorHost, the six call sites of 009E4330.
@@ -4099,9 +4106,23 @@ bool GameShipAiHost::promote_order_00825f2c(std::size_t unit_index) {
     Impl& host = *impl_;
     if (unit_index >= host.controllers.size()) return false;
     Impl::Controller& ctl = host.controllers[unit_index];
-    bsp::unit_promote_ai_order_00825f2c(ctl.order);
+    // The compact helper is a temporary projection, never another owner of
+    // scalar order fields. Its only mutations are old.valid and the index.
+    bsp::UnitAiOrderPromotion promotion{};
+    promotion.index = ctl.order.index;
+    for (int i = 0; i != 2; ++i) {
+        const auto& slot = ctl.order.slots[i];
+        promotion.slots[i] = {slot.distance_40, slot.heading_44,
+            slot.distance_48, slot.valid_4c};
+    }
+    const int previous = ctl.order.index;
+    bsp::unit_promote_ai_order_00825f2c(promotion);
     host.done("ShipAiOrder::promote_slot", 0x00825f2cu);
-    if (!ctl.order.promoted) return false;
+    if (!promotion.promoted) return false;
+    ctl.order.slots[previous].valid_4c = promotion.slots[previous].valid_4c;
+    ctl.order.index = promotion.index;
+    bsp::unit_ai_order_copy_00811d10(ctl.order.slots[ctl.order.index],
+        ctl.order.slots[previous]);
     host.done("ShipAiOrder::copy_slot", 0x00811d10u);
     ++host.rows[unit_index].promotions;
     ++host.summary.promotions;

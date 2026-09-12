@@ -260,3 +260,10 @@ in `AVOID_ZONE_OFFSET.md` and `AVOID_ZONE_SEGMENT_MATH.md`. Together with this
 packet's containment implementation and native reciprocal length they supply
 all five boundary-query bindings in `AVOID_ZONE_QUERY_BINDING.md`. Executable
 registration and mission/gameplay validation remain separate follow-up work.
+
+
+## Correction from docs/AVOID_ZONE_DRAFT_LAYERS.md
+
+The recovered 00424D00 tail reduces ship depth settings into ordered float-key/mask pairs; 004223B0 appends those temporary pairs. 00423C50 requires an exact existing group, partitions its polygons, and constructs extruded Dyn collision bodies. It does not register source groups or produce the proposed per-group sector tree. The source inputs are flat ShipGlobals.AvoidZoneDepthsSingle/Multi records. Partitioning, native hull ownership and physics-world execution remain unresolved; the implemented input stages are explicitly partial. See AVOID_ZONE_DRAFT_LAYERS.md and reports/avoid_zone_draft_layers.json.
+
+Integration repaired nine false free-call fallthrough gaps in 00423C50 under the Ghidra write lock. 00424D00 had no remaining call gap at the time of repair; its unreachable alignment gap was retained. Evidence: reports/avoid_zone_draft_flow_repair.json.

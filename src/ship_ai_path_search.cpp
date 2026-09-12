@@ -192,7 +192,10 @@ float ship_ai_path_search_cost_009ec280(ShipAiPathNode& node,
             node.cost_minus = turn_cost(node, *node.link_minus, ramp);       // 009EC3BC
         }
         if (node.link_plus != nullptr && node.link_plus->is_start == 0) {    // 009EC3BE / 009EC3C5
-            node.cost_plus = turn_cost(node, *node.link_plus, ramp);         // 009EC43B
+            //009EC3CB reloads [node+20h], the MINUS link, after testing the
+            //plus link. Both cost arms use that endpoint's bearing. A missing
+            //minus link in this active arm is native-invalid input.
+            node.cost_plus = turn_cost(node, *node.link_minus, ramp);        //009EC438/43D.
         }
     }
 

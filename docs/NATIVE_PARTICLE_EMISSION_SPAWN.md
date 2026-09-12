@@ -148,3 +148,18 @@ full body ranges and old-comment preservation were read back; affected exports
 were refreshed. The report embeds the earliest annotation preimages and repair
 records. Earlier worker pending notes describe isolated snapshots. No original
 exception ABI, complete application composition or gameplay claim is added.
+
+## Correction from docs/NATIVE_PARTICLE_EMISSION_STATE.md
+
+AO direct wiring: B04D74 now calls complete initialize_native_particle_emission_state_00b0ca40, passing borrowed state access in EDX and the original six stack words. Native particle virtual18 remains required; same canonical PointLight volume/population and shared0108FF50 lock are concrete. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Prior AM initializer callback probe validates its historical boundary only; AO composed validation is recorded separately. Descriptive name is a hypothesis; new C++ ABI, native unwind/gameplay unvalidated.
+
+## AO combined integration
+
+The combined strict Win32 build and both seeded CTests passed. Four focused
+original-byte probes were linked only to the current combined production
+libraries. The batch contains45 new reconstructed bodies and the directB04C80
+state call,46 native signatures and8 analyzed cleanup/static bodies. All54
+names/comments were saved and read back, preserving prior comments; exports
+were refreshed. Five reports verify484 direct call/tail rows with no failures.
+The accompanying report records per-probe coverage and exact hashes. Native
+FH3, full application composition, concurrency and gameplay are unvalidated.

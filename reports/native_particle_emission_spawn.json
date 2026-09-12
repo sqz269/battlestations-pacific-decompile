@@ -28,7 +28,7 @@
         "From 00afe911 in FUN_00afe290 [UNCONDITIONAL_CALL]",
         "From 00aff782 in FUN_00aff700 [UNCONDITIONAL_CALL]"
       ],
-      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count. Complete live/installed span and final instruction verified. See reports/native_particle_emission_spawn.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.",
+      "evidence": "AM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count. Complete live/installed span and final instruction verified. See reports/native_particle_emission_spawn.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated. AO direct wiring: B04D74 now calls complete initialize_native_particle_emission_state_00b0ca40, passing borrowed state access in EDX and the original six stack words. Native particle virtual18 remains required; same canonical PointLight volume/population and shared0108FF50 lock are concrete. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Prior AM initializer callback probe validates its historical boundary only; AO composed validation is recorded separately. Descriptive name is a hypothesis; new C++ ABI, native unwind/gameplay unvalidated.",
       "native_prototype": "int __thiscall BSP_NativeParticleEmission_Spawn(void * definition, void * record, float requested, float time, float elapsed)",
       "end_inclusive": "00b04de6"
     },
@@ -264,5 +264,153 @@
     "all16_owned_source_header_hashes_preserved": true,
     "library_sha256": "0dc405a61fadfc8d09ff86522dae3e54359944191221c35627ebc08567b5c67d",
     "full_application_native_EH_and_gameplay": false
+  },
+  "ao_direct_state_wiring": {
+    "address": "00b04c80",
+    "call_site": "00b04d74",
+    "native_target": "00b0ca40",
+    "implementation": "src/native_particle_emission_state.cpp",
+    "evidence": "AO direct wiring: B04D74 now calls complete initialize_native_particle_emission_state_00b0ca40, passing borrowed state access in EDX and the original six stack words. Native particle virtual18 remains required; same canonical PointLight volume/population and shared0108FF50 lock are concrete. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Prior AM initializer callback probe validates its historical boundary only; AO composed validation is recorded separately. Descriptive name is a hypothesis; new C++ ABI, native unwind/gameplay unvalidated.",
+    "verification": {
+      "label": "state",
+      "exit_code": 0,
+      "log": "local\\ao-state-current-replay.log",
+      "library_sha256": "0eb8e2a94a7fe7a48b15b36f472d7ed33813be49fdc55058a44525a0416a273a",
+      "source_sha256": "7c50ba3fb0915561548435540ea4f1b2274cddd75018d471bb3ca3ffe5858f71",
+      "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\state-current.cmd",
+      "executable_sha256": "77f2149696927c92a034bb0c918c67a9d9010e86952a561d2b738e47b803e404"
+    }
+  },
+  "integration_ao": {
+    "strict_win32_build_and_two_seeded_ctests": true,
+    "combined_library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+    "current_library_fixture": {
+      "label": "state",
+      "exit_code": 0,
+      "log": "local\\ao-state-current-replay.log",
+      "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+      "source_sha256": "7c50ba3fb0915561548435540ea4f1b2274cddd75018d471bb3ca3ffe5858f71",
+      "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\state-current.cmd",
+      "executable_sha256": "35ab09a74173ac78d5b4a006cea89e525a1183dbc03be3f2e375b0d4a36d6394"
+    },
+    "source_hashes": {
+      "include/bsp/native_particle_emission_spawn.hpp": "177e7e52152d4700d56f586ea361107aaa983c1eaab5cde2f0ca87a9a51e3064",
+      "src/native_particle_emission_spawn.cpp": "9672e8871f1e1ae7ed6439c3f10463ee86ebdffd9dd08687db3c084cb873d03c"
+    },
+    "normalized_entries": [
+      {
+        "address": "00b04c80",
+        "end_exclusive": "00b04de7",
+        "inclusive_end": "00b04de6",
+        "final_instruction_address": "00b04de4",
+        "final_instruction_length": 3,
+        "length": 359,
+        "sha256": "52588ea383e7e8ea81649c4a608fd5b93daf91c1b23b999bb6848c9a16091b53",
+        "live_disk_equal": true,
+        "live_prototype": "00b04c80 FUN_00b04c80  undefined FUN_00b04c80(void)  body 00b04c80 - 00b04de6",
+        "original_abi": "ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count",
+        "native_calling_convention": "__thiscall",
+        "cpp_symbol": "spawn_native_particle_emission_00b04c80",
+        "ghidra_name": "BSP_NativeParticleEmission_Spawn",
+        "descriptive_name_is_hypothesis": true,
+        "original_abi_compatible": false,
+        "coverage": "complete through explicit required actual services",
+        "source": "src/native_particle_emission_spawn.cpp",
+        "header": "include/bsp/native_particle_emission_spawn.hpp",
+        "xrefs": [
+          "From 00afe911 in FUN_00afe290 [UNCONDITIONAL_CALL]",
+          "From 00aff782 in FUN_00aff700 [UNCONDITIONAL_CALL]"
+        ],
+        "evidence": "AM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count. Complete live/installed span and final instruction verified. See reports/native_particle_emission_spawn.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated. AO direct wiring: B04D74 now calls complete initialize_native_particle_emission_state_00b0ca40, passing borrowed state access in EDX and the original six stack words. Native particle virtual18 remains required; same canonical PointLight volume/population and shared0108FF50 lock are concrete. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Prior AM initializer callback probe validates its historical boundary only; AO composed validation is recorded separately. Descriptive name is a hypothesis; new C++ ABI, native unwind/gameplay unvalidated.",
+        "native_prototype": "int __thiscall BSP_NativeParticleEmission_Spawn(void * definition, void * record, float requested, float time, float elapsed)",
+        "end_inclusive": "00b04de6"
+      }
+    ],
+    "native_signatures_readback_verified": true,
+    "saved_names_and_evidence": [
+      {
+        "address": "00b04c80",
+        "before": {
+          "address": "00b04c80",
+          "function_name": "BSP_NativeParticleEmission_Spawn",
+          "comment": "[BSP reconstruction 00b04c80]\nAM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count. Complete live/installed span and final instruction verified. See reports/native_particle_emission_spawn.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+        },
+        "after": {
+          "address": "00b04c80",
+          "name": "BSP_NativeParticleEmission_Spawn",
+          "evidence": "AM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count. Complete live/installed span and final instruction verified. See reports/native_particle_emission_spawn.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated. | AM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count. Complete live/installed span and final instruction verified. See reports/native_particle_emission_spawn.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated. AO direct wiring: B04D74 now calls complete initialize_native_particle_emission_state_00b0ca40, passing borrowed state access in EDX and the original six stack words. Native particle virtual18 remains required; same canonical PointLight volume/population and shared0108FF50 lock are concrete. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Prior AM initializer callback probe validates its historical boundary only; AO composed validation is recorded separately. Descriptive name is a hypothesis; new C++ ABI, native unwind/gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ],
+    "previous_comments": {
+      "00b04c80": {
+        "address": "00b04c80",
+        "function_name": "BSP_NativeParticleEmission_Spawn",
+        "comment": "[BSP reconstruction 00b04c80]\nAM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count. Complete live/installed span and final instruction verified. See reports/native_particle_emission_spawn.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated."
+      }
+    },
+    "current_comments": {
+      "00b04c80": {
+        "address": "00b04c80",
+        "function_name": "BSP_NativeParticleEmission_Spawn",
+        "comment": "[BSP reconstruction 00b04c80]\nAM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count. Complete live/installed span and final instruction verified. See reports/native_particle_emission_spawn.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated.\n\n[BSP reconstruction 00b04c80] update\nAM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count. Complete live/installed span and final instruction verified. See reports/native_particle_emission_spawn.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated. | AM review: descriptive hypothesis, not recovered symbol. Full installed/live bytes and final RET verified. Actual30h container/108h record storage; native x87 spills, signed clamp, current field reloads and clamped-desired return retained. New EDX access ABI; required real service contracts in docs/NATIVE_PARTICLE_EMISSION_SPAWN.md and reports/native_particle_emission_spawn.json. Native CRT/FH3/gameplay unvalidated. AM integration review: descriptive hypothesis, not a recovered symbol. ECX actual30h container; stack(definition,record,requested,time,elapsed), RET14h; EAX clamped desired count. Complete live/installed span and final instruction verified. See reports/native_particle_emission_spawn.json for actual storage, native-byte fixture limits and required current application services. New C++ interface; native exceptions and gameplay unvalidated. AO direct wiring: B04D74 now calls complete initialize_native_particle_emission_state_00b0ca40, passing borrowed state access in EDX and the original six stack words. Native particle virtual18 remains required; same canonical PointLight volume/population and shared0108FF50 lock are concrete. See docs/NATIVE_PARTICLE_EMISSION_STATE.md. Prior AM initializer callback probe validates its historical boundary only; AO composed validation is recorded separately. Descriptive name is a hypothesis; new C++ ABI, native unwind/gameplay unvalidated."
+      }
+    },
+    "game_validated": false,
+    "original_fh3_abi_validated": false
+  },
+  "final_merged_validation_ao": {
+    "tested_commit": "fe3ae2c51c2cd681a975c2e15db7092dc06f97cf",
+    "reviewed_source_commit": "89e23a18ccb60f8ec18cefb50e90ceb532783c65",
+    "build": "local/ao-final-combined-build.log: strict MSVC Win32 and both seeded CTests passed",
+    "all10_reviewed_source_header_hashes_preserved": true,
+    "all54_name_evidence_rows_preserved": true,
+    "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+    "current_library_replays": [
+      {
+        "label": "text",
+        "exit_code": 0,
+        "log": "local\\ao-text-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "9cad29f895a90fb0af2863f17e0f5485348770c31b8a5f5f020e91c3eb0da257",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\text-current.cmd",
+        "executable_sha256": "f1e546aa348f230e99378114963a239de0d3f09202f57a801313d0d910c343c3"
+      },
+      {
+        "label": "parameters",
+        "exit_code": 0,
+        "log": "local\\ao-parameters-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "2c6bf74c361c624a9779945487b3e76f84aade6e2184c0b4319d5783d173aa6f",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\parameters-current.cmd",
+        "executable_sha256": "15f890b0ba9179e5006f816069b0bfaf856354537cb92b02d7af5a36ad81604b"
+      },
+      {
+        "label": "definition-loading",
+        "exit_code": 0,
+        "log": "local\\ao-definition-loading-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "01fe7404a896ff634fd05e114351533b0146a66bcdd6025808217935a11809b6",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\definition-loading-current.cmd",
+        "executable_sha256": "bbc30283999b97b67eb05cb8d53efee8b17bf737d8916f03b62bade2702cb0f5"
+      },
+      {
+        "label": "state",
+        "exit_code": 0,
+        "log": "local\\ao-state-current-replay.log",
+        "library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+        "source_sha256": "7c50ba3fb0915561548435540ea4f1b2274cddd75018d471bb3ca3ffe5858f71",
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\state-current.cmd",
+        "executable_sha256": "35ab09a74173ac78d5b4a006cea89e525a1183dbc03be3f2e375b0d4a36d6394"
+      }
+    ],
+    "new_functions": 45,
+    "revised_spawn_functions": 1,
+    "native_signatures": 46,
+    "analyzed_bodies": 8,
+    "direct_call_rows": 484,
+    "failed_call_rows": 0,
+    "original_fh3_and_gameplay": false
   }
 }

@@ -44,6 +44,11 @@ namespace {
 // Verified loader-zero CRT publication. Process lifetime is required because
 // other recovered arithmetic can run after the sound aggregate is destroyed.
 volatile std::uint32_t application_matherr_bypass_00e16bd0{};
+volatile std::uint32_t application_dispatch_bypass_0109dd78{};
+const LegacyCrtMathRuntime application_math_runtime{
+    &application_matherr_bypass_00e16bd0, &_errno};
+const CameraAxesCrtAccess application_axes_crt{
+    &application_dispatch_bypass_0109dd78, &legacy_crt_87except_00c27489};
 
 std::wstring selected_library_path(const std::wstring& selected, const wchar_t* name) {
     return selected.empty() ? std::filesystem::absolute(name).wstring() : selected;
@@ -94,6 +99,10 @@ std::vector<std::string> split_option_tokens(const std::string& text) {
 }
 
 }  // namespace
+
+const CameraAxesCrtAccess& application_camera_axes_crt() noexcept {
+    return application_axes_crt;
+}
 
 void set_active_platform_state(Win32PlatformState* state) noexcept {
     g_active_platform = state;
@@ -863,8 +872,7 @@ struct GameStartupHost::SoundServices {
     const volatile std::uint32_t one_00d7a24c{0x3f800000};
     const volatile double fade_00ce3dc8{0.30000001192092896};
     char null_integer_format_01090ab4{};
-    volatile std::uint32_t dispatch_bypass_0109dd78{};
-    CameraAxesCrtAccess crt{&dispatch_bypass_0109dd78, &legacy_crt_87except_00c27489};
+    const CameraAxesCrtAccess& crt{application_camera_axes_crt()};
     GameSoundDialogRuntime dialog;
     GameSoundRuntime core;
 
@@ -1227,7 +1235,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         settings_.options_file.vsync_60 ? 1 : 0, settings_.options_file.antialias_58, settings_.options_file.shader_model_88,
         settings_.options_file.language.empty() ? "(none)" : settings_.options_file.language.c_str());
 
-    bind_legacy_crt_math_runtime({&application_matherr_bypass_00e16bd0, &_errno});
+    bind_legacy_crt_math_runtime(application_math_runtime);
     sound_ = std::make_unique<SoundServices>(*this);
     sound_->core.startup(!settings_.audio.enabled_24);
     log_.implemented("Phase 5 sound_system_initialize", "0073dafd");

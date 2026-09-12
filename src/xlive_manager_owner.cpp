@@ -1,4 +1,5 @@
 #include "bsp/xlive_manager_owner.hpp"
+#include "bsp/xlive_owner_lifetime.hpp"
 
 #include <algorithm>
 #include <memory>
@@ -10,26 +11,6 @@ namespace {
 constexpr std::uint32_t base_vtable = 0x00d24138;
 constexpr std::uint32_t derived_vtable = 0x00d2413c;
 constexpr std::uint32_t root_vtable = 0x00ce3818;
-
-class CapturedSection {
-public:
-    explicit CapturedSection(SystemSingletonCriticalSection* section) : section_(section) {
-        if (section_) {
-            singleton_enter_critical_section(*section_);
-            ++section_->recursion_18;
-        }
-    }
-    ~CapturedSection() {
-        if (section_) {
-            --section_->recursion_18;
-            singleton_leave_critical_section(*section_);
-        }
-    }
-    CapturedSection(const CapturedSection&) = delete;
-    CapturedSection& operator=(const CapturedSection&) = delete;
-private:
-    SystemSingletonCriticalSection* section_;
-};
 
 void reset_id_vector_slots(OnlineSystemState& online) noexcept {
     // Native constructor writes only the three pointer slots. Placement
@@ -47,11 +28,28 @@ void unwind_derived_members(XLiveManagerOwner& owner) noexcept {
 }
 
 XLiveManagerLifetimeAccess::XLiveManagerLifetimeAccess(SingletonLifetimeDomain& domain,
-    XLiveManagerOwner* volatile& published) noexcept : domain_(domain), published_(published) {}
+    XLiveManagerOwner* volatile& published) noexcept
+    : semantic_domain_(&domain), access_(domain), published_(published) {}
+XLiveManagerLifetimeAccess::XLiveManagerLifetimeAccess(SoundLifetimeAccess access,
+    XLiveManagerOwner* volatile& published) noexcept : access_(access), published_(published) {}
 ConcreteSingletonLifetimeManager& XLiveManagerLifetimeAccess::manager_00415350() {
-    auto* manager = domain_.get_manager_00415350();
+    if (!semantic_domain_)
+        throw std::logic_error("legacy XLive manager access requires the semantic-domain constructor");
+    auto* manager = semantic_domain_->get_manager_00415350();
     if (!manager) throw std::logic_error("native XLive owner requires its lifetime manager");
     return *manager;
+}
+SoundLifetimeManagerView XLiveManagerLifetimeAccess::manager_view_00415350() const {
+    return access_.get_manager_00415350();
+}
+void* XLiveManagerLifetimeAccess::published_registration_identity() const {
+    auto* const owner = published_;
+    if (!owner || !access_.uses_actual_storage()) return owner;
+    auto* const allocation = owner->allocation_identity;
+    if (!allocation || &allocation->owner() != owner ||
+        &allocation->storage() != &owner->storage)
+        throw std::logic_error("raw XLive registration requires its canonical owner allocation");
+    return allocation->identity();
 }
 XLiveManagerOwner* XLiveManagerLifetimeAccess::published_owner() const noexcept { return published_; }
 void XLiveManagerLifetimeAccess::publish(XLiveManagerOwner* owner) noexcept { published_ = owner; }
@@ -71,11 +69,10 @@ void close_xlive_ipc_00a4c280(void* handle, XLiveManagerOwnerHost& host) {
 XLiveManagerOwner* construct_xlive_manager_base_00a3f530(XLiveManagerOwner& owner) {
     owner.storage.vtable_00 = base_vtable;
     try {
-        auto* section = owner.lifetime.manager_00415350().system_owner().section_10;
-        CapturedSection lock(section);
+        CapturedSoundLifetimeSection lock(owner.lifetime.lifetime_access());
         owner.lifetime.publish(&owner);
-        auto& manager = owner.lifetime.manager_00415350();
-        manager.register_object(owner.lifetime.published_owner());
+        auto manager = owner.lifetime.manager_view_00415350();
+        manager.register_object(owner.lifetime.published_registration_identity());
     } catch (...) {
         owner.storage.vtable_00 = root_vtable;
         throw;
@@ -86,10 +83,9 @@ XLiveManagerOwner* construct_xlive_manager_base_00a3f530(XLiveManagerOwner& owne
 void destroy_xlive_manager_base_00a3f5d0(XLiveManagerOwner& owner) {
     owner.storage.vtable_00 = base_vtable;
     try {
-        auto* section = owner.lifetime.manager_00415350().system_owner().section_10;
-        CapturedSection lock(section);
-        auto& manager = owner.lifetime.manager_00415350();
-        manager.unregister_object(owner.lifetime.published_owner());
+        CapturedSoundLifetimeSection lock(owner.lifetime.lifetime_access());
+        auto manager = owner.lifetime.manager_view_00415350();
+        manager.unregister_object(owner.lifetime.published_registration_identity());
         owner.lifetime.publish(nullptr);
     } catch (...) {
         owner.storage.vtable_00 = root_vtable;

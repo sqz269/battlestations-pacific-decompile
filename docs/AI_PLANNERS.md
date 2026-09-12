@@ -331,3 +331,24 @@ per native call site. Nothing here is ABI-compatible.
   found.
 - What value `+54h` takes for a group to land in `g_aiGroupsByTeam[2]`, the list the compose pass
   walks.
+
+## Correction from docs/AI_PLANNER_TAILS.md (packet cc2_ai_planner_tails)
+
+- **Was:** the "capture: %.2f\n=(%.2f-%.2f/2)+(%.2f-%.2f/2)+%.2f" formula at 00D22CC4, unread inside the Capture think
+  **Is:** 00D22CC4 is the float -999999.0 (the initial best score of 00A1CB80 at 00A1CC17, already correct in include/bsp/ai_planners.hpp as kAiPlannerScoreFloor); the format string starts at 00D22CC8 and its only user in the image is 00A1E250
+  **Evidence:** MOVSS XMM0,[0x00D22CC4] at 00A1CC17; bytes at 00D22CC4 are f0 23 74 c9 = -999999.0f; the string body starts at 00D22CC8; a .text byte scan for the literal c8 2c d2 00 returns 00A1E8BC only (PUSH 0xd22cc8 at 00A1E8BB)
+- **Was:** 00A371A0 is used at 00A298E2 / 00A29AB0 / 00A2B4A6
+  **Is:** 00A298E2 and 00A29AB0 are 00A371A0; 00A2B4A6 is CALL 009FFC80, the effective game-mode index, feeding 00F8A8BC[mode] = Defend_ResourcePercent
+  **Evidence:** 00A2B4A6: CALL 0x009ffc80 then FLD float ptr [EAX*0x4 + 0xf8a8bc]
+- **Was:** 00A16EF0, which calls the claim 00A22750 six times, is the only candidate producer of the Attack planner's group list
+  **Is:** 00A16EF0 never touches brain+4h. Its six claims go to brain+10h, +14h, +18h, +1Ch (modes 4..7) and to brain+0Ch or brain+0h for the "[capture]" and "[defend]" name prefixes in modes 0..3. The Attack planner's group list still has no producer this packet found
+  **Evidence:** the mode dispatch at 00A16FF2-00A1706C reads [brain+10h], [brain+14h], [brain+18h], [brain+1Ch]; the prefix path at 00A170D7 reads [brain+0Ch] and at 00A171A3 reads [brain+0h]
+- **Was:** 00A13340 is a factory that installs nine of these vtables
+  **Is:** it builds ten named classes (NONCONTROL, IDLE, MOVETO, CAUTIOUSMOVE, REGROUPINGMOVE, MOVETOATTACK, CAUTIOUSATTACK, CLOSEATTACK, DEFENDPOSITION, RETREAT) plus an IDLE fallback for an unmatched name
+  **Evidence:** the strcmp at 00A1340E against [00E0E308] plus the nine BSP_NativeString_EqualsCStringInsensitive sites at 00A133D8, 00A13470, 00A1350B, 00A1357D, 00A13607, 00A13668, 00A136C8, 00A13726, 00A13754, and the default at 00A13787
+- **Was:** DEFENDPOSITION's "Ctor seen" is 00A2BE20
+  **Is:** 00A2BE20 is the issue helper: it returns early when the group's current command already answers IsType(11), otherwise it allocates 8 bytes inline, writes the vtable 00D22A38 and the owner, destroys the old command and stores the new one at group+564Ch
+  **Evidence:** 00A2BE2E PUSH 0xb then CALL [vt+8h]; 00A2BE48 MOV dword ptr [EAX],0xd22a38; 00A2BE66 MOV dword ptr [ESI + 0x564c],EDI
+- **Was:** the Lua key names of tuning fields +1CCh, +1D0h, +1D4h, +1D8h and +208h's neighbours are unknown
+  **Is:** all seven are already named in docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md's record table; that open question is stale, not open
+  **Evidence:** 00A371A0 returns coordinator + 4 + mode*23Ch, so a reader-side tuning+N is that table's `record +N` column; +1CCh FreeAttack_ObjectiveTargetMul, +1D0h FreeAttack_NearDist, +1D4h FreeAttack_FarDist, +1D8h FreeAttack_ExistingTargetMul, +204h CloseAttack_TargetGroupMemberMul, +208h AutoMerge_MergeDist, +20Ch AutoMerge_LeaveDist

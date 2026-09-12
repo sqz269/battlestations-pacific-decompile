@@ -1,5 +1,8 @@
 #include "bsp/native_singleton_destruction.hpp"
 #include "bsp/game_sound_runtime.hpp"
+#include "bsp/native_input_action_owner.hpp"
+#include "bsp/native_input_backend_owner.hpp"
+#include "bsp/xlive_owner_lifetime.hpp"
 
 #include "bsp/native_gameplay_effect_destruction.hpp"
 #include "bsp/native_int_pointer_tree18_leaves.hpp"
@@ -51,6 +54,48 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     case 0x00d58f78:
         if (bindings.sound_runtime != nullptr && bindings.sound_runtime->owns_registered(owner)) {
             bindings.sound_runtime->delete_registered(owner, flags);
+            return;
+        }
+        break;
+    case 0x00d24138:
+        if (bindings.xlive_owner != nullptr && bindings.xlive_owner->owns_identity(owner)) {
+            delete_xlive_manager_base_00a3f670(*bindings.xlive_owner,
+                static_cast<std::uint8_t>(flags));
+            return;
+        }
+        break;
+    case 0x00d2413c:
+        if (bindings.xlive_owner != nullptr && bindings.xlive_owner->owns_identity(owner)) {
+            delete_xlive_manager_00a3fdc0(*bindings.xlive_owner,
+                static_cast<std::uint8_t>(flags));
+            return;
+        }
+        break;
+    case 0x00d5b5f4:
+        if (bindings.input_backend != nullptr) {
+            scalar_delete_native_input_backend_base_00a909e0(owner,
+                static_cast<std::uint8_t>(flags), *bindings.input_backend);
+            return;
+        }
+        break;
+    case 0x00d5b5f8:
+        if (bindings.input_backend != nullptr) {
+            scalar_delete_native_input_backend_groups_00a91150(owner,
+                static_cast<std::uint8_t>(flags), *bindings.input_backend);
+            return;
+        }
+        break;
+    case 0x00d5b72c:
+        if (bindings.input_backend != nullptr) {
+            scalar_delete_native_input_backend_00a97c00(owner,
+                static_cast<std::uint8_t>(flags), *bindings.input_backend);
+            return;
+        }
+        break;
+    case 0x00d5b630:
+        if (bindings.input_actions != nullptr) {
+            scalar_delete_native_input_action_owner_00a93e50(owner, flags,
+                *bindings.input_actions);
             return;
         }
         break;

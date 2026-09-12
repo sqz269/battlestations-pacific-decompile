@@ -1,0 +1,494 @@
+{
+  "batch": "AT",
+  "owner": "agent/orch2-20260910",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-orch2-20260910",
+  "status": "all_source_build_tested_and_frozen_fixture_independently_reviewed",
+  "target_project": "C:/Users/sqz269/bsp.gpr",
+  "target_program": "/battlestationspacific.exe",
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "complete_routines": 15,
+  "complete_logical_body_bytes": 2146,
+  "packets": [
+    {
+      "label": "manager",
+      "report": "reports/native_vfs_manager_lifetime.json",
+      "complete_routines": 3,
+      "body_bytes": 1084,
+      "source_commit": null,
+      "header_sha256": "65a07959ad3e0e74b7249363ca1b1767bfa0ab16f236c4dab351336201bd019d",
+      "source_sha256": "78211679dc5a22bf5094d848b7b0b15012ac9d234ea982ff386cdcbdb110cd6b"
+    },
+    {
+      "label": "manager_base",
+      "report": "reports/native_vfs_manager_base.json",
+      "complete_routines": 3,
+      "body_bytes": 328,
+      "source_commit": "a0aaf7e43fcf1505cca342c8bfe4bc043e5ef6a0",
+      "header_sha256": "f43ba544592fbd659c4cd4e715211cf0e6963eacd12a32e472888262a13816a0",
+      "source_sha256": "d1e02101eaadeb1bd929d4faac012d9380987de4d743cbd28c9a407734e019fc"
+    },
+    {
+      "label": "request_list",
+      "report": "reports/native_vfs_request_list_lifetime.json",
+      "complete_routines": 4,
+      "body_bytes": 274,
+      "source_commit": "abd239e4217981fe1bb7ed04705318b467dc0760",
+      "header_sha256": "3b87dca4e06f206a049350cfdea8eee6f4d52155233ae4c2cc444ee8da18f5a9",
+      "source_sha256": "87bca6417c84b33b06240b87e546118f5a11f154f7a2529d62fa508bc01262c6"
+    },
+    {
+      "label": "file_log",
+      "report": "reports/native_file_access_log_owner.json",
+      "complete_routines": 5,
+      "body_bytes": 460,
+      "source_commit": "7f26dfa862077a544475d5965324451430fa3e2e",
+      "header_sha256": "044fcb439ea541fe1e0c94c3ad7e16f5f11494a0d32f7371d819d502d2548aba",
+      "source_sha256": "88ac4cbe1f550802ca3a437c80cf6b63236656bafbb90ca6b0e93f57f7e423d8"
+    }
+  ],
+  "documentation_correction_commit": "5f46ae62b58c1dabb71f7f8c40e8b3bef0587159",
+  "annotation_verification": {
+    "entries": [
+      {
+        "entry": "004d2640",
+        "name": "BSP_NativeStringList_DestroyStorage",
+        "old_name": "FUN_004d2640",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "de784df5e4326e985ac2a5af0f6b7dc232e470a74cf7aa11748d315682c08f3e"
+      },
+      {
+        "entry": "007374a0",
+        "name": "BSP_FileAccessLogBase_Construct",
+        "old_name": "FUN_007374a0",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "24486ce23403ae23934c9e8dab07256fb4f1d1d8069f7ea7522020d31c7e3d2b"
+      },
+      {
+        "entry": "00737540",
+        "name": "BSP_FileAccessLogBase_Destroy",
+        "old_name": "FUN_00737540",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "9b86013f8c0c81d4704d27ca517b20aa90a8eb131483138497e57932736b3e2e"
+      },
+      {
+        "entry": "007376a0",
+        "name": "BSP_FileAccessLogBase_ScalarDelete",
+        "old_name": "CG_scalar_deleting_dtor_007376a0",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "9c31668e5c58d160f018ea4732f78fbf510770df30de673fda082db3bc2400ed"
+      },
+      {
+        "entry": "00737c40",
+        "name": "BSP_Application_CreateFileAccessLog",
+        "old_name": "BSP_Application_CreateFileAccessLog",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "53c970406f0733baf0eca66ce0541cd0c8eb34d9423bad7f0236114b12fe622e"
+      },
+      {
+        "entry": "00737cc0",
+        "name": "BSP_FileAccessLog_ScalarDelete",
+        "old_name": "CG_scalar_deleting_dtor_00737cc0",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "e3f0bcb87c572a6402bd5c85da44bd00c0e143232c9329a388da7aeef037cb91"
+      },
+      {
+        "entry": "00bda6f0",
+        "name": "BSP_VfsManagerBase_ConstructAndPublish",
+        "old_name": "FUN_00bda6f0",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "501b3cb8f42b2005f572e3d940dd633672eee97fb37b36f7468f7625abd07fa5"
+      },
+      {
+        "entry": "00bda790",
+        "name": "BSP_VfsManagerBase_DestroyAndUnpublish",
+        "old_name": "FUN_00bda790",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "9615dc2f69ea9eaae5a3045fe3a161461c2caa83c14999ec0a52406feb71d0e5"
+      },
+      {
+        "entry": "00bda8e0",
+        "name": "BSP_VfsManagerBase_ScalarDeletingDestructor",
+        "old_name": "CG_scalar_deleting_dtor_00bda8e0",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "2da939523330600bc40fba8da0f61ac4168e8558d1272894ae08dee92961888d"
+      },
+      {
+        "entry": "00be1220",
+        "name": "BSP_VFSRequestPayload_DestroyStorage",
+        "old_name": "FUN_00be1220",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "3e62331e3e003a82f017801f49caac7467f29ded6744e48b24209ae57fab6472"
+      },
+      {
+        "entry": "00be19e0",
+        "name": "BSP_VFSRequestList_ClearStorage",
+        "old_name": "FUN_00be19e0",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "7aceeb780573a597dd4a75e85b75d76efd835ff1d23e6f27aa2d7d21abaaff24"
+      },
+      {
+        "entry": "00be1d60",
+        "name": "BSP_VFSRequestList_DestroyStorage",
+        "old_name": "FUN_00be1d60",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "26b15cfb3f997faf54bb50ef4664324d97fb14074df1dd197eedf8f7971be5d1"
+      },
+      {
+        "entry": "00be1dc0",
+        "name": "BSP_NativeVfsManager_ConstructStorage",
+        "old_name": "FUN_00be1dc0",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "98cfcabf11583f22fd03e41ec30207749173444bed77fc084f554690291c4f1c"
+      },
+      {
+        "entry": "00be1f60",
+        "name": "BSP_NativeVfsManager_DestroyStorage",
+        "old_name": "FUN_00be1f60",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "169d38fabb3116a49090b0371ef6e035838d6d284df1340707baccd71c1300f8"
+      },
+      {
+        "entry": "00be25c0",
+        "name": "BSP_NativeVfsManager_ScalarDeletingDestructor",
+        "old_name": "FUN_00be25c0",
+        "prior_comment_preserved": true,
+        "evidence_read_back": true,
+        "comment_sha256": "babaeeb5239b878c7d1e6f8f4775c688f8f651257ee6d377572f29d3b1dae630"
+      }
+    ],
+    "names": 15,
+    "old_comments_preserved": true,
+    "save_program_succeeded": true,
+    "prior_values_log": "local/ghidra-annotations-20260912T190928Z.json",
+    "readback": "local/native-at-comments-after.json",
+    "final_fixture_annotation_log": "local/ghidra-annotations-20260912T193803Z.json",
+    "final_fixture_updates_verified": 3,
+    "exports_forced": 15,
+    "export_log": "local/native-at-export.log",
+    "flow_gaps": 9,
+    "flow_bytes": 586,
+    "stored_body_tails_incomplete": [
+      "00be1f60",
+      "004d2640",
+      "00be1220",
+      "00be1d60"
+    ]
+  },
+  "callsite_verification": {
+    "command": "python tools/verify_report_calls.py reports/native_vfs_manager_lifetime.json reports/native_vfs_manager_base.json reports/native_vfs_request_list_lifetime.json reports/native_file_access_log_owner.json",
+    "log": "local/native-at-all-calls.log",
+    "reported_rows": 90,
+    "failures": 0,
+    "indirect_iat_rows_skipped_by_numeric_checker": 4,
+    "parent_captured_indirect_sites": 2,
+    "parent_raw_tail_calls_separately_qualified": 18
+  },
+  "integrated_source_build": {
+    "log": "local/native-at-all-source-build.log",
+    "strict_msvc_win32": true,
+    "existing_ctests_passed": 2,
+    "source_build_base_commit": "bd3edff9b32561e8f09c77505028268991ea1fbc",
+    "parent_source_was_uncommitted": true,
+    "library_sha256": "02f5b1a91660950f7c7ad93b9cec2b438fac448dc07031e33e3cb6439735b724",
+    "note": "Subsequent6acc6b0a merge changes only two file-log evidence documents. Exact promotion commit must be rebuilt separately."
+  },
+  "worker_fixtures": [
+    {
+      "packet": "manager_base",
+      "normal_native_source_comparisons": 8,
+      "source_callback_cases": 2,
+      "assertions": 93,
+      "frozen_inputs": 37,
+      "original_fh3_executed": false
+    },
+    {
+      "packet": "request_list",
+      "normal_native_source_comparisons": 8,
+      "frozen_inputs": 1932,
+      "original_fh3_executed": false
+    },
+    {
+      "packet": "file_log",
+      "normal_native_source_scenarios": 6,
+      "native_and_source_lifetimes": 12,
+      "final_frozen_inputs": 2833,
+      "all_attempt_pins": 8497,
+      "owned_body_bytes": 460,
+      "verified_operand_rebases": 8,
+      "original_fh3_executed": false,
+      "attempt01": "empty output; exact failing stage unlocalized; reservation explanation is inference from attempt02",
+      "attempt02": "original-image reservation failed487 before owner execution",
+      "attempt03": "shifted image, six passing scenarios with exact preserved non-rebased bytes"
+    }
+  ],
+  "parent_fixture": {
+    "status": "passed",
+    "original_attempt_path": "J:/PROG/battlestations-pacific-decompile-orch2-manager-base-at/local/manager_parent_at_fixture/attempt11",
+    "summary": {
+      "completed_utc": "2026-09-12T19:35:28.214161+00:00",
+      "result": "PASS: five native/source comparisons and one source-only constructor state9 unwind",
+      "checks": 12605,
+      "child_exit_code": 0,
+      "parent_source_sha256": "78211679dc5a22bf5094d848b7b0b15012ac9d234ea982ff386cdcbdb110cd6b",
+      "parent_header_sha256": "65a07959ad3e0e74b7249363ca1b1767bfa0ab16f236c4dab351336201bd019d",
+      "library_sha256": "02f5b1a91660950f7c7ad93b9cec2b438fac448dc07031e33e3cb6439735b724",
+      "input_files_pinned_before_execution": 192,
+      "input_files_changed_after_execution": [],
+      "linked_object_files_physically_retained_and_archive_equal": 38,
+      "manifest_before_sha256": "9ba526a3de580ffbded2bf8ce740aec116a45efdef58aec4ebceb62f42db5cc9",
+      "probe_sha256": "31b86d78b2da64340c6314109237f9232fe93df99777c93b1f52a63c98c5377c",
+      "probe_object_sha256": "30e0afbe26f4976a8a908107a283b857492ee8c8c7ddcf0dfddd52ba46902c6c",
+      "probe_executable_sha256": "70b2a51b8f2a9b33b954e857d92ed05867cfd2cbd1bf8fe4acbd42e44c40384a",
+      "launcher_source_sha256": "32fe7073d20f48cdcd61b6ab7cc5a6fb0806714bdfe43f94efd3afcb6436e6a6",
+      "launcher_object_sha256": "edaefdbb83616e5313c7190b1ba227ff6a9df14c850a29a9735b79d8a2abf0bb",
+      "launcher_executable_sha256": "a0c302877f385785f0c74cc25ea44bd885b40131abbc9dc562dca5980f19b9f3",
+      "probe_image_base": "20000000",
+      "launcher_image_base": "22000000",
+      "both_embed_manifest": true,
+      "native_code": {
+        "unchanged_bodies": {
+          "00be1dc0": 411,
+          "00be1f60": 643,
+          "00be25c0": 30
+        },
+        "unchanged_total_bytes": 1084,
+        "shift": "30000000",
+        "direct_calls_checked": 39,
+        "all_relative_calls_and_branches_checked": 55,
+        "original_profiles_and_path_literals": "Exact installed PE pages00CF0000/00D60000 mapped read-only; original7376A0/737CC0/BF4DD0 targets remain unchanged.",
+        "external_calls": "Separate JMP bridges at shifted original callee addresses call actual reviewed source services; no original body instruction is edited."
+      },
+      "launcher_contract": "Create only manager_probe.exe suspended; VirtualAllocEx exactly five required64KiB pages00730000/00BF0000/00CF0000/00D60000/01090000 in that child, write42535046 ownership markers, resume, wait, return child status. Code pages executable writable until child fills/protects; data pages writable until exact PE copy/read-only protection. Child verifies MEM_PRIVATE allocation base/extent/marker before writing. No unrelated process or existing mapping is modified.",
+      "runtime_services": "One canonical SingletonLifetimeDomain with NativeStringPoolLifetimeBinding/ActualNativeStringPoolStorage, actual physical provider pool/allocator list, original six C-string literals, actual logger base/derived deleting bodies and physical provider deleting body. Required virtual calls validate captured target/owner/flags and invoke real source bodies.",
+      "source_only_unwind": "Deliberate exception from supplied lowercase library binding after constructor state9 arms; actual owning BDB970 cleanup, all six member heads, base publication and caller-owned allocation checked. Original native FH3/SEH is not executed.",
+      "limits": [
+        "No original FH3/SEH, native throwing-getter identity or hardware-fault cleanup proof.",
+        "External callees use canonical source service bridges; this is bounded original-instruction/source composition, not unmodified original game execution.",
+        "Only actual logger base/derived and physical-provider virtual targets are exercised; other provider targets remain required caller bindings.",
+        "Fixture uses real CRT allocation/free with observation hooks and deterministic initial allocation fill; original game CRT/global identity and original calling interfaces of added C++ contexts are not reproduced.",
+        "No game startup or gameplay validation."
+      ],
+      "cases_file": "cases.json",
+      "execution_log": "execution01.log"
+    },
+    "cases": [
+      {
+        "case": 0,
+        "populated": false,
+        "deleting_wrapper": false,
+        "flags": "00000000",
+        "logger_target": null,
+        "provider_target": null,
+        "native_result": "case_0_native.bin",
+        "source_result": "case_0_source.bin",
+        "result_sha256": "0fb7168aed9a9daea05d8ff158c6a70a3c1e3e8dca618681f36d46dc76984401",
+        "result_bytes": 131088,
+        "result_bytes_identical": true,
+        "comparisons": [
+          "normalized complete A0h owner after construction",
+          "normalized complete A0h owner after non-freeing destruction",
+          "actual string pool class counts and ordered returned block/content bytes",
+          "actual malloc/free, captured virtual call and lowercase argument event order",
+          "all observed allocations released after fixture owner destruction"
+        ]
+      },
+      {
+        "case": 1,
+        "populated": true,
+        "deleting_wrapper": false,
+        "flags": "00000000",
+        "logger_target": "00737cc0",
+        "provider_target": "00bf4dd0",
+        "native_result": "case_1_native.bin",
+        "source_result": "case_1_source.bin",
+        "result_sha256": "82dd3d45a54efc460048a7d895cf98345afb3261a4240f2bbffe60c10ea9619a",
+        "result_bytes": 131088,
+        "result_bytes_identical": true,
+        "comparisons": [
+          "normalized complete A0h owner after construction",
+          "normalized complete A0h owner after non-freeing destruction",
+          "actual string pool class counts and ordered returned block/content bytes",
+          "actual malloc/free, captured virtual call and lowercase argument event order",
+          "all observed allocations released after fixture owner destruction"
+        ]
+      },
+      {
+        "case": 2,
+        "populated": true,
+        "deleting_wrapper": true,
+        "flags": "00000000",
+        "logger_target": "007376a0",
+        "provider_target": "00bf4dd0",
+        "native_result": "case_2_native.bin",
+        "source_result": "case_2_source.bin",
+        "result_sha256": "d94c5b90f4572b418dd9b97bc5331edc4db6cf7b62ea2b9f220897bc10ac29ae",
+        "result_bytes": 131088,
+        "result_bytes_identical": true,
+        "comparisons": [
+          "normalized complete A0h owner after construction",
+          "normalized complete A0h owner after non-freeing destruction",
+          "actual string pool class counts and ordered returned block/content bytes",
+          "actual malloc/free, captured virtual call and lowercase argument event order",
+          "all observed allocations released after fixture owner destruction"
+        ]
+      },
+      {
+        "case": 3,
+        "populated": true,
+        "deleting_wrapper": true,
+        "flags": "80000000",
+        "logger_target": "00737cc0",
+        "provider_target": "00bf4dd0",
+        "native_result": "case_3_native.bin",
+        "source_result": "case_3_source.bin",
+        "result_sha256": "82dd3d45a54efc460048a7d895cf98345afb3261a4240f2bbffe60c10ea9619a",
+        "result_bytes": 131088,
+        "result_bytes_identical": true,
+        "comparisons": [
+          "normalized complete A0h owner after construction",
+          "normalized complete A0h owner after non-freeing destruction",
+          "actual string pool class counts and ordered returned block/content bytes",
+          "actual malloc/free, captured virtual call and lowercase argument event order",
+          "all observed allocations released after fixture owner destruction"
+        ]
+      },
+      {
+        "case": 4,
+        "populated": true,
+        "deleting_wrapper": true,
+        "flags": "80000001",
+        "logger_target": "007376a0",
+        "provider_target": "00bf4dd0",
+        "native_result": "case_4_native.bin",
+        "source_result": "case_4_source.bin",
+        "result_sha256": "d5d4f3d899c0cf4282521517e25d090e9c7088f3bf5e8577b70beff8f2e9a8c7",
+        "result_bytes": 131088,
+        "result_bytes_identical": true,
+        "comparisons": [
+          "normalized complete A0h owner after construction",
+          "normalized complete A0h owner after non-freeing destruction",
+          "actual string pool class counts and ordered returned block/content bytes",
+          "actual malloc/free, captured virtual call and lowercase argument event order",
+          "all observed allocations released after fixture owner destruction"
+        ]
+      }
+    ],
+    "summary_sha256": "776236dd328956e67895819a2b8dd0fb50a6a262374a38bb5dc563677dfdfde5",
+    "cases_sha256": "946fed9ff490166e60994b06b9b391b4b8d0a6f004f153c4483117dc0fa5afc4",
+    "root_reverified_all_192_inputs_and_five_result_pairs": true,
+    "final_independent_review": {
+      "status": "accepted; no blocking findings; no probe rerun",
+      "path": "local/native-at-worker-deliveries/parent_fixture_review",
+      "manifest_sha256": "3746f2f660a6aae30010ad8e7eff2fa30c3460452fb8f9bfd88054c187e08a0c",
+      "checked": "192 frozen inputs,38archiveobjects,28spans1668bytes,original1084bodybytes,39calls55relative transfers,5resultpairs,launcherownership,scope-before-allocation-audit and explicit exception limits"
+    },
+    "sealed_full_delivery": {
+      "path": "local/native-at-worker-deliveries/parent_fixture",
+      "manifest_sha256": "7d7ece6c8aa0c68924730e51c5000c5b8afaa8bc718469478dee2340e066dac0",
+      "physical_files_including_manifest_and_digest": 1892,
+      "all_original_11_attempts_preserved": true,
+      "copy_verification": "local/native-at-worker-deliveries/parent_fixture-copy-verification.json",
+      "attempt11_relative_path": "fixture/attempt11"
+    },
+    "owner_snapshot_scope": "All cases compare constructed owner bytes. Post-destruction owner snapshots cover only non-freeing cases; flags80000001 checks original pointer return/free bit and skips the freed owner snapshot. This qualifies repeated comparison labels in the unchanged sealed cases.json."
+  },
+  "deliveries": [
+    {
+      "copy_record": "local/native-at-worker-deliveries/file_log_owner-copy-verification.json",
+      "copy_record_sha256": "547fb6820f49fb3c18c979dc8a818cd710b26fd690a9823cc799992c97c51da1",
+      "path": "local/native-at-worker-deliveries/file_log_owner",
+      "physical_files": 8615,
+      "bytes": 429440668,
+      "verified": true,
+      "manifest_sha256": "ef8adf428be65d58937e27361d4595f1250c7b4b4e8341784dc49c8815352ea2",
+      "seal_sha256": "7403a0e18cc4c92e70d0568cda39d63b77ab9c674fc083905550d99b0893b35c"
+    },
+    {
+      "copy_record": "local/native-at-worker-deliveries/file_log_review-copy-verification.json",
+      "copy_record_sha256": "00af7c5ec969ee7ea2bdfe57b93fcae987db57c42daf3f31da95dbd32f0d7de9",
+      "path": "local/native-at-worker-deliveries/file_log_review",
+      "physical_files": 48,
+      "bytes": 2655433,
+      "verified": true,
+      "manifest_sha256": "17eb29a6d72a1a5b6af0549be1b62d40f10f0a327bec5d5bc0edfca181dcd164",
+      "seal_sha256": "76767b554dc1ceb5b3b95bc226131b244ddd63ffac2c88e7201e2e02fff76600"
+    },
+    {
+      "copy_record": "local/native-at-worker-deliveries/manager_base-copy-verification.json",
+      "copy_record_sha256": "b0a90cec421a294d193592d6b66211ac8e61a5bff70137c474506daa30d0b735",
+      "path": "local/native-at-worker-deliveries/manager_base",
+      "physical_files": 135,
+      "bytes": 49648397,
+      "verified": true,
+      "manifest_sha256": "ac281f9071b4e24d8e407249e08d756d607efa9d0bc017d6da546c60b8d4f022",
+      "seal_sha256": "cb143342b71f6a1ba438cadca09bde493772e6ca7bd2e3f55e571e794f44cb75"
+    },
+    {
+      "copy_record": "local/native-at-worker-deliveries/parent_fixture-copy-verification.json",
+      "copy_record_sha256": "f4c4d91a5d37e9548de710735ec4d3d92ceb951d96e53ed619f496ef846d1d52",
+      "path": "local/native-at-worker-deliveries/parent_fixture",
+      "physical_files": 1892,
+      "bytes": 501503424,
+      "verified": true,
+      "manifest_sha256": "7d7ece6c8aa0c68924730e51c5000c5b8afaa8bc718469478dee2340e066dac0",
+      "seal_sha256": "441117dd58dbb71cf240375b9359f3cd8812ec05d29ac55be43cf624ddc57d7d"
+    },
+    {
+      "copy_record": "local/native-at-worker-deliveries/parent_fixture_review-copy-verification.json",
+      "copy_record_sha256": "e2e035b2f9fd0d828842fd78f06d31201417488cdf39e98b59cb213a74572708",
+      "path": "local/native-at-worker-deliveries/parent_fixture_review",
+      "physical_files": 243,
+      "bytes": 51786403,
+      "verified": true,
+      "manifest_sha256": "3746f2f660a6aae30010ad8e7eff2fa30c3460452fb8f9bfd88054c187e08a0c",
+      "seal_sha256": "f03cfb17f94b49a169909adc450433c8872cc4606b6a444e503842281bba4e7b"
+    },
+    {
+      "copy_record": "local/native-at-worker-deliveries/parent_report_review-copy-verification.json",
+      "copy_record_sha256": "6c53911f9aacaf8ba81c5654c1c1136923c0217fe3ba7da2790faaa631d9dc54",
+      "path": "local/native-at-worker-deliveries/parent_report_review",
+      "physical_files": 148,
+      "bytes": 281508,
+      "verified": true,
+      "manifest_sha256": "a13677df41edfe331d3b4554954eb5d26cf94b2b1ce7d7ac9ea4d3a9a4e80953",
+      "seal_sha256": "b11b09639352ad364823bcb1f95337d17fb2ff28447cc738154c3c582b7f79da"
+    },
+    {
+      "copy_record": "local/native-at-worker-deliveries/request_list-copy-verification.json",
+      "copy_record_sha256": "8f408ceda2dfcfd7b9ea9b46733dd60808573c8b7207691ee57ada0f65decf69",
+      "path": "local/native-at-worker-deliveries/request_list",
+      "physical_files": 2066,
+      "bytes": 65045318,
+      "verified": true,
+      "manifest_sha256": "0b58eddaaa2daeb96888b3cd81e065b43f4edf233433968ce430db178490025e",
+      "seal_sha256": "0ef5212b2c3e839d3bbef625016e0bdc2f98a592ba440125f1497806eb6770f6"
+    }
+  ],
+  "promotion": {
+    "receipt": "local/native-at-remote-publication.json",
+    "policy": "Normal push after exact merged-head strict build; remote ancestry and artifact receipts are written after committing to avoid self-referential commit hashes",
+    "no_publication_inferred_from_fixture_build": true
+  },
+  "boundaries": [
+    "C++ source APIs are not original ABI/FH3/SEH replacements",
+    "Original throwing native getter and simultaneous cleanup exceptions unvalidated",
+    "Concrete non-physical provider target bindings remain required application dependencies",
+    "No game startup, rendering or gameplay validation"
+  ],
+  "physical_worker_copy_files": 13147,
+  "physical_worker_copy_bytes": 1100361151
+}

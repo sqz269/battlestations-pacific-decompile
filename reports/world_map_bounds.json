@@ -1,0 +1,381 @@
+{
+  "packet": "orch6_world_map_bounds",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/world_map_bounds.cpp",
+  "header": "include/bsp/world_map_bounds.hpp",
+  "names_are_hypotheses": true,
+  "routines": [
+    {
+      "address": "004e6c00",
+      "body_end_inclusive": "004e7212",
+      "coverage": "partial data projection through004E713C; global border notification tail unimplemented",
+      "original_abi": "ECX property bag; RET; native globals mapped to explicit output"
+    },
+    {
+      "address": "004d5bd0",
+      "body_end_inclusive": "004d6251",
+      "coverage": "selection fragment004D5EDE..004D61BF only; initial table copies modeled as settings inputs; border allocation/publication excluded",
+      "original_abi": "ECX game; RET; globals and game fields projected as explicit input/output"
+    },
+    {
+      "address": "0071c4f0",
+      "body_end_inclusive": "0071c547",
+      "coverage": "complete predicate; new C++ input interface",
+      "original_abi": "ECX game; stack XYZ pointer; EAX0/1; RET4"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "004e6c0b",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6c2f",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6c53",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6c72",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6cbd",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6d08",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6d53",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6d9e",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6de9",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6e34",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6e7f",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6eca",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6f15",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6f60",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6fab",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e6ff6",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e7041",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e708c",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e70d7",
+      "native": "008f2260",
+      "function": "004e6c00",
+      "contract": "existing property lookup"
+    },
+    {
+      "address": "004e713d",
+      "native": "004d5bd0",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004e714e",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004e715f",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004e7170",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004e7181",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004e7192",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004e71a3",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004e71b4",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004e71c5",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004e71d6",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004e71e7",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004e71f8",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004e7209",
+      "native": "004c7150",
+      "function": "004e6c00",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004d5bd9",
+      "native": "004c7dd0",
+      "function": "004d5bd0",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004d61da",
+      "native": "00bf681b",
+      "function": "004d5bd0",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004d61f6",
+      "native": "004b6c40",
+      "function": "004d5bd0",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004d6212",
+      "native": "004c2310",
+      "function": "004d5bd0",
+      "contract": "outside data projection; raw call target retained"
+    },
+    {
+      "address": "004d621d",
+      "native": "004cf450",
+      "function": "004d5bd0",
+      "contract": "outside data projection; raw call target retained"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "build": "Final Win32 Release scripts/build.ps1 and existing CTest2/2 passed",
+    "predicate_native_byte_cases": 24576,
+    "selector_native_byte_cases": 4032,
+    "mismatches": 0,
+    "x87_modes": 12,
+    "installed_scene": "universe/scenes/missions/USN/usn_1_marshall.scn",
+    "border_sizes": [
+      20000,
+      20000
+    ],
+    "default_north_west": [
+      -10000,
+      0,
+      10000
+    ],
+    "default_south_east": [
+      10000,
+      0,
+      -10000
+    ],
+    "independent": {
+      "task": "independent world map bounds validation",
+      "ghidra": {
+        "project": "C:/Users/sqz269/bsp.gpr",
+        "program": "/battlestationspacific.exe",
+        "mode": "read_only wrappers verified target each batch"
+      },
+      "sources": {
+        "header": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\include\\bsp\\world_map_bounds.hpp",
+          "copied_to": "local\\world_map_bounds.hpp",
+          "sha256": "a91ba171c5cd1082f7fa2158b8bceb590eb96a34f384facdf8b4255c0720d926",
+          "unchanged_since_copy": true
+        },
+        "source": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch6-20260912\\src\\world_map_bounds.cpp",
+          "copied_to": "local\\world_map_bounds.cpp",
+          "sha256": "902811514969ea0454910a92614446b68ea58db28277d67b5aef76a061f79e5f",
+          "unchanged_since_copy": true
+        }
+      },
+      "native_predicate": {
+        "address": "0071c4f0",
+        "end_inclusive": "0071c547",
+        "bytes": 88,
+        "complete_body": true,
+        "comparisons": 24576,
+        "mismatches": 0,
+        "cases": "8 boxes including actual defaults, authored multiplayer bounds, finite ordinary and signed-zero boxes, quiet/signaling NaN fields;16x16 x/z coordinates including all relevant edges, \u00b10,denormal,\u00b1infinity,quiet/signalingNaN; YquietNaN ignored",
+        "abi": "ECX fixture game with actual offsets711C/7124/7128/7130; stackpoint;EAX0/1;RET4"
+      },
+      "native_selector": {
+        "start": "004d5ede",
+        "end_inclusive": "004d61bf",
+        "bytes": 738,
+        "comparisons": 4032,
+        "mismatches": 0,
+        "cases": "7 settings snapshots; modes-1,0..9,42;forced0/128;session0/-1;actual USN01,distinct multiplayer tags,negative sizes,signedzero,denormals,maxfinite,NaN border extents",
+        "relocations": "jump table004D6254 replaced by local table with8 relocalized targets;globalX00E0826C twice/globalY00E08270 twice/half00D7A280 once;appended RET at fragment exit;ESI and native scratch stack supplied",
+        "selector_table_offsets": [
+          "705c",
+          "7074",
+          "708c",
+          "70a4",
+          "70ec",
+          "7104",
+          "70bc",
+          "70d4"
+        ]
+      },
+      "x87": {
+        "modes": 12,
+        "precision_bits": [
+          24,
+          53,
+          64
+        ],
+        "rounding": [
+          "nearest",
+          "down",
+          "up",
+          "towardzero"
+        ],
+        "exception_masks": "masked throughout; prior control word restored afterward",
+        "comparison_scope": "returned predicate values and selector float32 result bits; no status-flag equivalence claim"
+      },
+      "installed_scene": {
+        "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/universe/scenes/missions/USN/usn_1_marshall.scn",
+        "sha256": "9235d9a6364b08cbd5cf3c6735ba9828aba5a6e7b2569300dc2eecf6d8dac17b",
+        "parse_errors": 0,
+        "reader": "existing parse_scene_document and copied read_world_map_settings_004e6c00",
+        "BorderSizeX": 20000,
+        "BorderSizeY": 20000,
+        "mode8_default_NW": [
+          -10000,
+          0,
+          10000
+        ],
+        "mode8_default_SE": [
+          10000,
+          0,
+          -10000
+        ]
+      },
+      "build": {
+        "compiler": "MSVC x86",
+        "flags": "/std:c++17 /EHsc /O2 /Gy /MD /link /OPT:REF /MANIFEST:EMBED",
+        "script": "local/world_bounds_validation_build.ps1",
+        "probe": "local/world_bounds_validation_probe.exe",
+        "log": "local/world_bounds_validation.log",
+        "exit_code": 0
+      },
+      "defects": [],
+      "limits": [
+        "Isolated read-only native fixtures; no game object creation or gameplay validation",
+        "Stable input memory only; no aliasing or asynchronous mutation claim",
+        "No tracked files edited or committed"
+      ]
+    }
+  },
+  "limits": [
+    "Full004E6C00 and004D5BD0 are NOT reconstructed.",
+    "Data decoder supports native-valid required F/I scalar and V3 fields; malformed native input faults are exposed as C++ errors, not native exception compatibility.",
+    "Missing MultiPlayMapSizes preserves output; authored multiplayer bounds are never normalized.",
+    "Global identity, reentrant/aliasing side effects, native object ABI and border object lifetime are outside this projection.",
+    "Numerical differential evidence is not gameplay validation."
+  ]
+}

@@ -1,0 +1,762 @@
+{
+  "packet": "cc_ai_settings_block",
+  "owner": "agent/cc-ai-settings-block",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only",
+  "doc": "docs/SHIP_AI_SETTINGS_BLOCK.md",
+  "header": "include/bsp/ship_ai_settings_block.hpp",
+  "source": "src/ship_ai_settings_block.cpp",
+  "build": "scripts/build.ps1 Win32 Release /W4 /WX: bsp_core compiled src/ship_ai_settings_block.cpp; reconstructed_math passed",
+  "headline": "tune = [brain+0AB0h] = *(unit+73Ch); its +0h..+18h are ShipGlobals.AttackMoveDirector copied by 00822B70 from settings +160h..+178h, stride 4, seven keys. tune+1Ch has no producer but the constructor's -1.0f.",
+  "routines": [
+    {
+      "address": "00822b70",
+      "name": "BSP_UnitInstance_ResetNavigatorParams",
+      "abi": "__thiscall(unit)(char reset), RET 4",
+      "body": "00822B70-00822C15",
+      "coverage": "complete",
+      "status": "reconstructed_build_tested"
+    },
+    {
+      "address": "008387b0",
+      "name": "BSP_GameSettings_SelectWeaponHitAccuracy",
+      "abi": "__thiscall(settings)(int kind, float range, float scale, float target_size), RET 10h",
+      "body": "008387B0-00838897",
+      "coverage": "complete; the category dispatch is reconstructed, the product is not reimplemented because 00838530 is partial",
+      "status": "partial_projection_build_tested"
+    },
+    {
+      "address": "00838530",
+      "name": "BSP_WeaponHitAccuracyProfile_Evaluate",
+      "abi": "__thiscall(profile)(float range, float target_size), RET 8",
+      "body": "00838530-008386E5",
+      "coverage": "partial: 00838530-008385C2 read (size blend through 00419010, ten-bucket walk capped at 008385A1); 008385C4-008386E5 not transcribed",
+      "status": "named_only"
+    },
+    {
+      "address": "008d0740",
+      "name": "BSP_LuaBinding_NavigatorSetAvoidAllShipCollision",
+      "abi": "__fastcall(lua_state), the standard luaMW binding frame",
+      "body": "008D0740-008D08AB",
+      "coverage": "partial: only the settings store 008D0840..008D0852",
+      "status": "named_only"
+    },
+    {
+      "address": "009ec770",
+      "name": "BSP_ShipAi_ObstacleSideAccepted",
+      "abi": "__thiscall(record)(int side), RET 4",
+      "body": "009EC770-009EC7BE",
+      "coverage": "complete as read; the projection covers the side arm 009EC79B-009EC7BE only",
+      "status": "partial_projection_build_tested"
+    },
+    {
+      "address": "0081ed40",
+      "name": "BSP_UnitVehicleBase_Construct",
+      "abi": "existing name, not changed here",
+      "body": "0081ED40-0081F59x",
+      "coverage": "partial: only the navigator-block seed 0081F214-0081F285",
+      "status": "evidence_only"
+    },
+    {
+      "address": "009eafc0",
+      "name": "FUN_009eafc0",
+      "coverage": "not reconstructed: read for its EDI epochs and its nine settings reads only",
+      "status": "evidence_only"
+    },
+    {
+      "address": "009f0100",
+      "name": "FUN_009f0100",
+      "coverage": "not reconstructed: read for its EDI / [ESP+40h] epochs and its three settings reads only",
+      "status": "evidence_only"
+    }
+  ],
+  "coverage": [
+    {
+      "item": "the ship AI settings sweep",
+      "coverage": "complete for direct callers: the 18 segment-67 callers of 00424C40 plus 00A08460, every CALL 00424C40 inside each (50 sites); the 7 that carry the pointer into another register were resolved by hand"
+    },
+    {
+      "item": "tune+1Ch producer search",
+      "coverage": "partial: all 33 `MOV r32,[r32+73Ch]` sites in .text (scan-bytes `8B ?? 3C 07 00 00`); a write through a pointer passed to a callee would be missed"
+    },
+    {
+      "item": "0083B5E0 loader sites",
+      "coverage": "partial: not re-swept. Every site this packet cites was individually re-checked for its callee and its store; the unkeyed immediate stores were not enumerated beyond +4h"
+    },
+    {
+      "item": "installed values",
+      "coverage": "complete for every row: read from the installed scripts/datatables/shipglobals.lua"
+    }
+  ],
+  "tune_block": {
+    "base": "*(unit+73Ch)",
+    "brain_field": "brain+0AB0h",
+    "seeded_at": "009F11A4..009F11B7 in BSP_ShipAi_BrainRecordConstruct",
+    "settings_base_offset": "0x160",
+    "stride": 4,
+    "field_count": 7,
+    "keys": [
+      {
+        "tune": "0x00",
+        "settings": "0x160",
+        "key": "AttackMoveDirector.MyDamageWeight",
+        "default": 10.0,
+        "installed": 10.0,
+        "read": "00822ba7",
+        "store": "00822bad"
+      },
+      {
+        "tune": "0x04",
+        "settings": "0x164",
+        "key": "AttackMoveDirector.IdealDistWeight",
+        "default": 4.0,
+        "installed": 4.0,
+        "read": "00822b8d",
+        "store": "00822b99"
+      },
+      {
+        "tune": "0x08",
+        "settings": "0x168",
+        "key": "AttackMoveDirector.NearbyEnemyWeight",
+        "default": 3.0,
+        "installed": 3.0,
+        "read": "00822bba",
+        "store": "00822bc0"
+      },
+      {
+        "tune": "0x0c",
+        "settings": "0x16c",
+        "key": "AttackMoveDirector.NearbyEnemyReference",
+        "default": 1000.0,
+        "installed": 1000.0,
+        "read": "00822bce",
+        "store": "00822bd4"
+      },
+      {
+        "tune": "0x10",
+        "settings": "0x170",
+        "key": "AttackMoveDirector.NearestMoveDirWeight",
+        "default": 1.0,
+        "installed": 1.0,
+        "read": "00822be2",
+        "store": "00822be8"
+      },
+      {
+        "tune": "0x14",
+        "settings": "0x174",
+        "key": "AttackMoveDirector.PrevMoveDirWeight",
+        "default": 0.25,
+        "installed": 0.25,
+        "read": "00822bf6",
+        "store": "00822bfc"
+      },
+      {
+        "tune": "0x18",
+        "settings": "0x178",
+        "key": "AttackMoveDirector.PrevMoveDirRange",
+        "default": 1.0472,
+        "installed": 1.0471976,
+        "read": "00822c0a",
+        "store": "00822c10"
+      },
+      {
+        "tune": "0x1c",
+        "settings": null,
+        "key": null,
+        "default": -1.0,
+        "installed": -1.0,
+        "read": null,
+        "store": "0081f26e",
+        "note": "the standoff-range override 009E6EC5 tests; 00822B70 does not write it and no other writer was found"
+      }
+    ]
+  },
+  "host_steps": [
+    {
+      "step": 1,
+      "method": "open_script_state_0083b60e",
+      "address": "0083b60e",
+      "native": "00b66bd0",
+      "function": "0083b5e0",
+      "note": "construct the Lua state owner in the loader's frame"
+    },
+    {
+      "step": 1,
+      "method": "open_script_state_0083b60e",
+      "address": "0083b625",
+      "native": "00b6a020",
+      "function": "0083b5e0",
+      "note": "open with 41h"
+    },
+    {
+      "step": 2,
+      "method": "run_script_0083b672",
+      "address": "0083b672",
+      "native": "00b69d40",
+      "function": "0083b5e0",
+      "note": "Scripts\\global\\luaMW_init.lua, 1Dh characters"
+    },
+    {
+      "step": 3,
+      "method": "run_script_0083b6e6",
+      "address": "0083b6e6",
+      "native": "00b69d40",
+      "function": "0083b5e0",
+      "note": "Scripts\\datatables\\ShipGlobals.lua, 22h characters"
+    },
+    {
+      "step": 4,
+      "method": "select_global_table_0083b73d",
+      "address": "0083b721",
+      "native": "00b67980",
+      "function": "0083b5e0",
+      "note": "take the globals table"
+    },
+    {
+      "step": 4,
+      "method": "select_global_table_0083b73d",
+      "address": "0083b73d",
+      "native": "00b67800",
+      "function": "0083b5e0",
+      "note": "select ShipGlobals (00D0B670)"
+    },
+    {
+      "step": 5,
+      "method": "enter_subtable_00b67690",
+      "address": "0083c7f3",
+      "native": "00b67690",
+      "function": "0083b5e0",
+      "note": "one of ten sub-table entries; this one reaches WeaponHitAccuracy.Artillery"
+    },
+    {
+      "step": 6,
+      "method": "array_element_00b67720",
+      "address": "0083b79e",
+      "native": "00b67720",
+      "function": "0083b5e0",
+      "note": "1-based element for ShipAvoidance.CollectTimer[1]"
+    },
+    {
+      "step": 6,
+      "method": "read_number_00b66270",
+      "address": "0083b7ad",
+      "native": "00b66270",
+      "function": "0083b5e0",
+      "note": "no fallback; stores +190h at 0083B7B2"
+    },
+    {
+      "step": 6,
+      "method": "read_float_or_default_00b66330",
+      "address": "0083b8df",
+      "native": "00b66330",
+      "function": "0083b5e0",
+      "note": "fallback 3.0 pushed with FSTP [ESP]; stores +1A0h at 0083B8E4"
+    },
+    {
+      "step": 6,
+      "method": "load_weapon_hit_accuracy_profile_00836f80",
+      "address": "0083c81a",
+      "native": "00836f80",
+      "function": "0083b5e0",
+      "note": "the Artillery profile at settings+240h (LEA at 0083C814)"
+    },
+    {
+      "step": 7,
+      "method": "close_script_state_00842937",
+      "address": "00842937",
+      "native": "00b669a0",
+      "function": "0083b5e0",
+      "note": "close the state"
+    },
+    {
+      "step": 8,
+      "method": "reset_navigator_params_00822ccb",
+      "address": "00822ccb",
+      "native": "00822b70",
+      "function": "00822c20",
+      "note": "per unit, reset non-zero: copies +160h..+178h into *(unit+73Ch)+0h..+18h"
+    },
+    {
+      "step": 8,
+      "method": "reset_navigator_params_no_op",
+      "address": "00835c65",
+      "native": "00822b70",
+      "function": "00835bf0",
+      "note": "literal 0 argument, whole body skipped"
+    },
+    {
+      "step": 9,
+      "method": "set_avoid_all_ship_collision_008d0852",
+      "address": "008d0849",
+      "native": "00b66250",
+      "function": "008d0740",
+      "note": "the Lua boolean stored at 008D0852 into settings+4h"
+    },
+    {
+      "step": 9,
+      "method": "settings_singleton",
+      "address": "008d0840",
+      "native": "00424c40",
+      "function": "008d0740",
+      "note": "the singleton the binding writes into"
+    }
+  ],
+  "settings_reads": [
+    {
+      "offset": "0x004",
+      "address": "009ec790",
+      "native": "00424c40",
+      "function": "009ec770",
+      "read": "009ec795",
+      "note": "CMP byte [EAX+4],0 then JZ to XOR AL,AL / RET 4"
+    },
+    {
+      "offset": "0x004",
+      "address": "009ef384",
+      "native": "00424c40",
+      "function": "009ef350",
+      "read": "009ef389"
+    },
+    {
+      "offset": "0x004",
+      "address": "009f1075",
+      "native": "00424c40",
+      "function": "009f0ea0",
+      "read": "009f107a"
+    },
+    {
+      "offset": "0x004",
+      "address": "009f1b71",
+      "native": "00424c40",
+      "function": "009f1420",
+      "read": "009f1b78",
+      "note": "SETNZ CL then LEA ECX,[ECX*4-1] into brain+3F8h"
+    },
+    {
+      "offset": "0x190",
+      "address": "009f13c4",
+      "native": "00424c40",
+      "function": "009f1160",
+      "read": "009f13e2"
+    },
+    {
+      "offset": "0x194",
+      "address": "009ead43",
+      "native": "00424c40",
+      "function": "009eaca0",
+      "read": "009ead58"
+    },
+    {
+      "offset": "0x194",
+      "address": "009ebede",
+      "native": "00424c40",
+      "function": "009eb660",
+      "read": "009ebee3"
+    },
+    {
+      "offset": "0x194",
+      "address": "009f0dc8",
+      "native": "00424c40",
+      "function": "009f0d20",
+      "read": "009f0dcd"
+    },
+    {
+      "offset": "0x194",
+      "address": "009f13cb",
+      "native": "00424c40",
+      "function": "009f1160",
+      "read": "009f13e2"
+    },
+    {
+      "offset": "0x198",
+      "address": "009f19b8",
+      "native": "00424c40",
+      "function": "009f1420",
+      "read": "009f19bd"
+    },
+    {
+      "offset": "0x19c",
+      "address": "009f199d",
+      "native": "00424c40",
+      "function": "009f1420",
+      "read": "009f19ae"
+    },
+    {
+      "offset": "0x1a0",
+      "address": "009eb05f",
+      "native": "00424c40",
+      "function": "009eafc0",
+      "read": "009eb18c",
+      "note": "EDI = EAX + 180h at 009EB081/009EB087; LEA [EDI+20h] into 00415550"
+    },
+    {
+      "offset": "0x1a4",
+      "address": "009eb05f",
+      "native": "00424c40",
+      "function": "009eafc0",
+      "read": "009eb0ba"
+    },
+    {
+      "offset": "0x1a8",
+      "address": "009eaec5",
+      "native": "00424c40",
+      "function": "009eae20",
+      "read": "009eaeca"
+    },
+    {
+      "offset": "0x1ac",
+      "address": "009eb05f",
+      "native": "00424c40",
+      "function": "009eafc0",
+      "read": "009eb340"
+    },
+    {
+      "offset": "0x1b0",
+      "address": "009eb05f",
+      "native": "00424c40",
+      "function": "009eafc0",
+      "read": "009eb334",
+      "note": "LEA [EDI+30h] into 00415550 against [unit+9C8h]"
+    },
+    {
+      "offset": "0x1b4",
+      "address": "009eb05f",
+      "native": "00424c40",
+      "function": "009eafc0",
+      "read": "009eb350"
+    },
+    {
+      "offset": "0x1b8",
+      "address": "009f0f62",
+      "native": "00424c40",
+      "function": "009f0ea0",
+      "read": "009f0f6d"
+    },
+    {
+      "offset": "0x1bc",
+      "address": "009eb05f",
+      "native": "00424c40",
+      "function": "009eafc0",
+      "read": "009eb20f"
+    },
+    {
+      "offset": "0x1c0",
+      "address": "009eb05f",
+      "native": "00424c40",
+      "function": "009eafc0",
+      "read": "009eb28f"
+    },
+    {
+      "offset": "0x1c4",
+      "address": "009eb05f",
+      "native": "00424c40",
+      "function": "009eafc0",
+      "read": "009eb288",
+      "note": "LEA [EDI+44h] into 00415510"
+    },
+    {
+      "offset": "0x1c8",
+      "address": "009f02bf",
+      "native": "00424c40",
+      "function": "009f0100",
+      "read": "009f06da",
+      "note": "EDI = EAX + 180h at 009F02CF/009F02E6, spilled to [ESP+40h] at 009F02FD"
+    },
+    {
+      "offset": "0x1cc",
+      "address": "009f02bf",
+      "native": "00424c40",
+      "function": "009f0100",
+      "read": "009f072f"
+    },
+    {
+      "offset": "0x1cc",
+      "address": "009f02bf",
+      "native": "00424c40",
+      "function": "009f0100",
+      "read": "009f098b",
+      "note": "ECX reloaded from the spill at 009F0954"
+    },
+    {
+      "offset": "0x1d0",
+      "address": "009eb05f",
+      "native": "00424c40",
+      "function": "009eafc0",
+      "read": "009eb167"
+    },
+    {
+      "offset": "0x1d4",
+      "address": "009ef943",
+      "native": "00424c40",
+      "function": "009ef910",
+      "read": "009ef948"
+    },
+    {
+      "offset": "0x1d8",
+      "address": "009eb681",
+      "native": "00424c40",
+      "function": "009eb660",
+      "read": "009eb686"
+    },
+    {
+      "offset": "0x1ec",
+      "address": "009f1392",
+      "native": "00424c40",
+      "function": "009f1160",
+      "read": "009f13b0"
+    },
+    {
+      "offset": "0x1f0",
+      "address": "009ead43",
+      "native": "00424c40",
+      "function": "009eaca0",
+      "read": "009ead4e"
+    },
+    {
+      "offset": "0x1f0",
+      "address": "009f0ba7",
+      "native": "00424c40",
+      "function": "009f0ad0",
+      "read": "009f0bac"
+    },
+    {
+      "offset": "0x1f4",
+      "address": "009ecec5",
+      "native": "00424c40",
+      "function": "009eca20",
+      "read": "009ecee3"
+    },
+    {
+      "offset": "0x1fc",
+      "address": "009ecb47",
+      "native": "00424c40",
+      "function": "009eca20",
+      "read": "009ecb65"
+    },
+    {
+      "offset": "0x204",
+      "address": "009ed01a",
+      "native": "00424c40",
+      "function": "009eca20",
+      "read": "009ed01f"
+    },
+    {
+      "offset": "0x208",
+      "address": "009ed029",
+      "native": "00424c40",
+      "function": "009eca20",
+      "read": "009ed02e"
+    },
+    {
+      "offset": "0x214",
+      "address": "009f0076",
+      "native": "00424c40",
+      "function": "009ef910",
+      "read": "009f007f"
+    },
+    {
+      "offset": "0x218",
+      "address": "009f0076",
+      "native": "00424c40",
+      "function": "009ef910",
+      "read": "009f0089"
+    },
+    {
+      "offset": "0x240",
+      "address": "009f2d62",
+      "native": "00424c40",
+      "function": "009f1bc0",
+      "read": "009f2d87",
+      "note": "the singleton is passed as ECX to 008387B0, not dereferenced here"
+    },
+    {
+      "offset": "0x240",
+      "address": "009f2d87",
+      "native": "008387b0",
+      "function": "009f1bc0",
+      "note": "PUSH 7 at 009F2D85 selects the Torpedo profile at settings+2F0h; result stored at nested+12B4h (009F2D8C)"
+    },
+    {
+      "offset": "0x3b0",
+      "address": "00a09624",
+      "native": "00424c40",
+      "function": "00a08460",
+      "read": "00a09629"
+    },
+    {
+      "offset": "0x4d4",
+      "address": "009f369f",
+      "native": "00424c40",
+      "function": "009f3670",
+      "read": "009f36a4"
+    },
+    {
+      "offset": "0x4d4",
+      "address": "009f36e1",
+      "native": "00424c40",
+      "function": "009f3670",
+      "read": "009f36e9"
+    },
+    {
+      "offset": "0x6cc",
+      "address": "009ec82a",
+      "native": "00424c40",
+      "function": "009ec7c0",
+      "read": "009ec850"
+    },
+    {
+      "offset": "0x6d0",
+      "address": "009ec823",
+      "native": "00424c40",
+      "function": "009ec7c0",
+      "read": "009ec840",
+      "note": "MOV ESI,EAX at 009EC828"
+    },
+    {
+      "offset": "0x6d4",
+      "address": "009ec8ca",
+      "native": "00424c40",
+      "function": "009ec7c0",
+      "read": "009ec8da"
+    },
+    {
+      "offset": "0x6e0",
+      "address": "009ec892",
+      "native": "00424c40",
+      "function": "009ec7c0",
+      "read": "009ec8b8"
+    },
+    {
+      "offset": "0x6e4",
+      "address": "009ec88b",
+      "native": "00424c40",
+      "function": "009ec7c0",
+      "read": "009ec8a8",
+      "note": "MOV ESI,EAX at 009EC890"
+    },
+    {
+      "offset": "0x6e8",
+      "address": "009ec900",
+      "native": "00424c40",
+      "function": "009ec7c0",
+      "read": "009ec910"
+    },
+    {
+      "offset": "0x6ec",
+      "address": "009ec7c4",
+      "native": "00424c40",
+      "function": "009ec7c0",
+      "read": "009ec7d4"
+    },
+    {
+      "offset": "0x6f0",
+      "address": "009ec30b",
+      "native": "00424c40",
+      "function": "009ec280",
+      "read": "009ec310"
+    },
+    {
+      "offset": "0x6f4",
+      "address": "009ec31e",
+      "native": "00424c40",
+      "function": "009ec280",
+      "read": "009ec323"
+    },
+    {
+      "offset": "0x6f8",
+      "address": "009ec331",
+      "native": "00424c40",
+      "function": "009ec280",
+      "read": "009ec336"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "docs/SHIP_AI_APPROACH_UPDATE.md line 408 and docs/SHIP_AI_RING_SCAN.md line 12: tune = [brain+0AB0h] has no producer",
+      "is": "tune is *(unit+73Ch), the navigator parameter block; its +0h..+18h are ShipGlobals.AttackMoveDirector copied by 00822B70 from settings +160h..+178h",
+      "evidence": "009F11A4..009F11B7 stores [unit+73Ch] into brain+0AB0h; 00822B8D..00822C10 copies the seven floats; all six tune readers match their key's meaning"
+    },
+    {
+      "was": "docs/SHIP_AI_APPROACH_UPDATE.md: nested+12B4h is written here and read by the unread slot scorers",
+      "is": "its producer is the settings WeaponHitAccuracy.Torpedo profile: 009F2D87 calls 008387B0 with kind 7 and 009F2D8C stores the answer",
+      "evidence": "009F2D62..009F2D8C; 0083882A..00838858"
+    },
+    {
+      "was": "docs/GAMEPLAY_SETTINGS_TAIL.md 'Who reads them': contract: unread, no native consumer located for the four 58h sub-objects",
+      "is": "008387B0 is the accessor, ADD ECX,240h/298h/2F0h/348h by weapon kind; callers 009F1BC0 (ship AI, kind 7) and 00901BA0 (gun bot)",
+      "evidence": "008387D3, 00838809, 0083883A, 00838870; 009F2D87. The doc's byte searches used EAX as the base; the image uses ECX (81 C1 40 02 00 00)"
+    },
+    {
+      "was": "docs/GAMEPLAY_SETTINGS.md key table: +1ECh TorpedoAvoidance.CollectTimer.[1] installed 1",
+      "is": "installed 1.5",
+      "evidence": "scripts/datatables/shipglobals.lua line 279, TorpedoAvoidance.CollectTimer = { 1.5, 2 }; the key name also appears at lines 243 and 285 under other parents"
+    },
+    {
+      "was": "docs/GAMEPLAY_SETTINGS.md key table: +210h LandAvoidance.CollectTimer.[2] installed 2",
+      "is": "installed 1.5",
+      "evidence": "scripts/datatables/shipglobals.lua line 285, LandAvoidance.CollectTimer = { 1, 1.5 }"
+    },
+    {
+      "was": "docs/GAMEPLAY_SETTINGS.md consumer survey: +1A0h, +1A4h, +1ACh, +1B0h, +1B4h, +1BCh, +1C0h, +1C4h, +1C8h, +1CCh, +1D0h, +4D4h, +6D0h, +6E4h have no consumer",
+      "is": "all fourteen are read by the ship AI",
+      "evidence": "the settings_reads rows above; the survey drops a register when it is redefined and ADD reg,180h is a redefinition, so the 009EAFC0 / 009F0100 base idiom was invisible to it"
+    },
+    {
+      "was": "docs/GAMEPLAY_SETTINGS.md consumer survey lists +004h among the 26 consumed offsets with no key because the loader does not write them directly",
+      "is": "the loader writes it directly: 0083BCD5 MOV byte ptr [ESI+4],1. It has no key, which is a different thing",
+      "evidence": "0083BCD5, between the +1D0h store at 0083BCB8 and the +1DCh vector build at 0083BCCF; ESI is the settings object throughout 0083B5E0"
+    },
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2r follow-up 6 groups settings+588h with the ship AI block",
+      "is": "+588h Physics.TBoatNyomatekSzorzo is not a ship AI read; its only reader is BSP_UnitController_ApplyShipForces in segment 61",
+      "evidence": "00937440 sweep: CALL 00424C40 at 0093757A, FMUL [EAX+588h] at 00937592"
+    }
+  ],
+  "no_ghidra_function": [],
+  "follow_up_packets": [
+    {
+      "id": "ship_ai_nearby_ship_estimate",
+      "what": "009EAFC0 whole (009EAFC0-009EB651); nine ShipAvoidance.NearbyShip_* keys land there and the shipglobals.lua comments at lines 247..260 give the intended model for each"
+    },
+    {
+      "id": "ship_ai_path_neighbour_filter",
+      "what": "009F0100 whole (009F0100-009F0ACD); it keeps the settings base in [ESP+40h] across a loop that redefines EDI, so the rest of its NearbyShip reads need the same epoch discipline. 009D8860 is its per-record helper"
+    },
+    {
+      "id": "weapon_hit_accuracy_evaluate",
+      "what": "00838530 whole; 008385C4..008386E5 is the hit-probability curve that makes nested+12B4h a number. 00419010 is its blend helper"
+    },
+    {
+      "id": "navigator_params_range_override",
+      "what": "the producer of *(unit+73Ch)+1Ch. If there is none, 009E6E80's 009E6ECA arm is dead"
+    },
+    {
+      "id": "settings_unkeyed_stores",
+      "what": "the other immediate stores 0083B5E0 makes into the singleton; the key sweep only followed getter results, so every unkeyed store beyond +4h is unenumerated"
+    }
+  ],
+  "uncertainties": [
+    "No run-time evidence. bsp_game.exe implements one host from this packet, navigator_params_reset_from_tuning_00822b70 in src/game_hosts_commands.cpp, and it is wired to the no-op call site 00835C65 (00835C63 PUSH 0); the live site 00822CCB (00822CBA PUSH 1) is not modelled, so the executable never performs the tuning copy. Two runs were attempted: without --game-root the run stops at Direct3D device creation (device_hr=0x80004005, frames_presented=0); with --game-root at the installation it reaches Phase 5 load_game_settings 008D8190 and then takes an access violation (0xC0000005) in code this packet did not touch. Logs in local/scratch/.",
+    "Loader defaults and installed values for rows not re-read individually come from the docs/GAMEPLAY_SETTINGS.md sweep; every loader site cited here was re-checked for callee and store, and the seven constructor constants were decoded from .rdata.",
+    "UnitNavigatorParamsBlock stops at +2Ch; the allocation size is unread, so fields above +28h are unknown rather than absent.",
+    "0083BCD5 is claimed unconditional from its position on the loader's straight-line key sequence, not from a control-flow reconstruction of a 6412-instruction routine.",
+    "BSP_ShipAi_ObstacleSideAccepted is a hypothesis from the routine's three gates and its single caller's argument, not from a string."
+  ],
+  "executable_state": {
+    "host": "navigator_params_reset_from_tuning_00822b70 in src/game_hosts_commands.cpp",
+    "wired_site": "00835c65 (literal 0, body skipped)",
+    "unmodelled_site": "00822ccb (PUSH 1 at 00822cba, the live copy)",
+    "consequence": "the executable never fills the approach tuning block; a tune_* host would answer the constructor seed. Harmless only because the constructor seeds, the loader fallbacks and the installed AttackMoveDirector values are the same seven numbers.",
+    "runs": [
+      {
+        "args": "--frames 20 --press-start-frame 5 --mission-frames 30",
+        "result": "device_hr=0x80004005, frames_presented=0, only 13 StartupHost methods called"
+      },
+      {
+        "args": "the same plus --game-root <installation>",
+        "result": "exit 0xC0000005 after Phase 5 load_game_settings 008D8190; not a path this packet touches"
+      }
+    ]
+  }
+}
