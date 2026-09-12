@@ -261,9 +261,16 @@ void update_registered_type4_effect_00872790(NativeRegisteredType4EffectStorage&
             refresh_camera_world_00b6db70(second_node->transform);
         CameraMatrix second_world;
         copy_world_words(second_world, second_node->transform.world);
-        bindings.tracers.update_00baabb0(tracer(event), second_world,
-            actual.value_24, first_world.data() + 12, captured_vector,
-            scaled_speed, argument_spill(subject_58));
+        //872ADC/872AE4/872AF1: all three native scalar words pass through
+        //x87 FSTP32, in this order. In particular, current age24 can have been
+        //changed by constructor/curve callbacks since its entry-time addition.
+        const float subject_argument = argument_spill(subject_58);
+        const float speed_argument = argument_spill(scaled_speed);
+        const float age_argument = argument_spill(actual.value_24);
+        const auto current_tracer = tracer(event); //872AF5, after age reload.
+        bindings.tracers.update_00baabb0(current_tracer, second_world,
+            age_argument, first_world.data() + 12, captured_vector,
+            speed_argument, subject_argument);
     }
     if (actual.prefix_00.active_0c == 1) {
         if (!above(field<float>(definition, 0x84), speed)) actual.value_30 = 0.0f;

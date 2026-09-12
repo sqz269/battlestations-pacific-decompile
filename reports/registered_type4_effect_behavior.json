@@ -287,6 +287,11 @@
   ],
   "corrections": [
     {
+      "was": "C++ passed raw current age24 to BAABB0 while subject58 used a spill inside the argument list",
+      "is": "explicit ordered x87 spills for captured subject58, cached scaled speed, then current age24; reload current34 afterwards",
+      "evidence": "native872ABC/872ADC,872AE0/872AE4,872AE8/872AF1, then872AF5; strict compiled assembly FLD/FSTP pairs precede current34 MOV; internal SNaN7F812345 becomes7FC12345 with source unchanged"
+    },
+    {
       "was": "single immediately preceding push implies one BA9A90 argument",
       "is": "two float words: sample0, preserved sample1",
       "evidence": "872A0C SUB ESP8; curve BA9E48 RET4; BA9AAC RET8"
@@ -338,6 +343,7 @@
     "fixture": "local/type4_probe_aj.log: PASS13 original full-body872790 paths without tracer creation/update; actual3Ch equality inclNaN/direction/timers/current30; original completion/deactivation and11 setters compare actual7AC/link bytes and native RET cleanup",
     "live_disk_hashes": "update1073/completion60/consumed curve171 equal; local/type4_body_evidence_aj.json",
     "constructor_fault": "passed injected required-binding constructor throw: five current args, raw-slot return before propagation, actual04 unchanged, no34 publication, cleared1C/set20, actual OS section held/depth1; real allocator/constructor/member unwind not exercised and no successful tracer owner made",
+    "scalar_argument_spill": "passed focused internal production-helper check SNaN7F812345 ->7FC12345, source unchanged; compiled assembly confirms subject58/speed/current-age24 FLD/FSTP order then current34 reload; nonnull actual node/tracer update still unvalidated",
     "unvalidated": [
       "real tracer creation/update/predicate",
       "nonnull node110 update path",

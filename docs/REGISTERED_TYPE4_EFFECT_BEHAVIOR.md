@@ -128,6 +128,24 @@ otherwise delta is added. Native NaN branch behavior and x87 arithmetic spills
 are preserved for the reconstructed comparisons/arithmetic. This is not a
 claim about exact global x87 status flags across arbitrary host bindings.
 
+The BAABB0 call explicitly marshals all three scalar words through x87
+FLD/FSTP32: captured subject58 (`872ABC/872ADC`), cached scaled speed
+(`872AE0/872AE4`), then current event24 (`872AE8/872AF1`). Current tracer34 is
+reloaded afterwards at872AF5. This ordering is explicit in the C++ statements,
+so argument evaluation order cannot move the current age/tracer loads ahead
+of the spills. In particular, an earlier constructor/curve callback can replace
+age24 with a signaling NaN after its entry-time addition; the native argument
+spill quiets that word before passing it to the required update binding.
+
+Integration review corrected the original C++ raw age24 argument and made the
+existing subject58 spill plus scaled-speed spill explicit. Strict MSVC assembly
+now contains the three ordered FLD/FSTP pairs before the current34 load.
+The ignored fixture includes the production translation unit solely to access
+its internal spill helper without a public test hook, and checks
+`7F812345 -> 7FC12345` with the input word unchanged. The translation unit is
+also compiled independently. This helper check does not validate the nonnull
+actual node/tracer update path or introduce a successful tracer implementation.
+
 ## Exception and integration boundaries
 
 The update's native handlerC9617B selects EH infoDC8190. Its one unwind entry
