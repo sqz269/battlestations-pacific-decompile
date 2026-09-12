@@ -1,0 +1,2443 @@
+{
+  "packet": "logical_alias_geometry4",
+  "status": "bounded_mesh_clone_generic_copy_excluded_nonnull_logical_4c_owner_unresolved",
+  "utc": "2026-09-12T16:12:38.853743+00:00",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "worktree_head": "8ce8b94a4c1637fc6763cc111ffdc40bc006264a",
+  "owned_files": [
+    "docs/LOGICAL_VERTEX_ALIAS_GEOMETRY.md",
+    "reports/logical_vertex_alias_geometry.json"
+  ],
+  "guarded_queries": {
+    "entrypoint": "python tools/bsp.py ghidra",
+    "verification": "bsp.py client() calls Client.verify before every query, checking bsp project, configured program path, language and image base",
+    "project_file_exists": true,
+    "byte_queries": 13,
+    "all_spans_live_PE_equal": true
+  },
+  "prior_evidence": [
+    {
+      "path": "reports/native_vertex_stream_alias_escape_discovery.json",
+      "sha256": "d3969c65bfcbdc90b08ce29c2031e92e1d01454ddfbfba20f6df993eeed0ca8b",
+      "usage": "prior bounded discovery, not newly established full owner closure"
+    },
+    {
+      "path": "reports/native_vertex_stream_owner_discovery.json",
+      "sha256": "6eb483556416bd6f12b24b838a97dc544e70d08fa13e9a1a7e69e619ca6e913c",
+      "usage": "prior bounded discovery, not newly established full owner closure"
+    }
+  ],
+  "spans": [
+    {
+      "address": "00b72a70",
+      "end_exclusive": "00b72b1a",
+      "length": 170,
+      "role": "complete_stream_clone_factory_lock_memcpy_unlock",
+      "span_kind": "code",
+      "complete_function": true,
+      "bytes_hex": "515355568bf18b068b5024578b3d94d3f8008b1fffd2508b068b501c8bceffd2508b068b50208bceffd2508b435c8bcfffd08b1e8b53206a006a008bce8bf8ffd2508b43108bceffd08b168b2f6a008bd88b42206a008bceffd08b5510508bcfffd28be88b068b50248bceffd28b80cc0000008b16894424108b42208bceffd00faf442410505355e8834b08008b168b421483c40c8bceffd08b178b42148bcfffd08bc75f5e5d5b59c3",
+      "sha256": "e31cc3680fbaf860302328deb74c021e3a0c2a501476aaa7b3672e4a90d1ba7b",
+      "fresh_live_PE_match": true,
+      "instructions": [
+        {
+          "address": "00b72a70",
+          "bytes_hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00b72a71",
+          "bytes_hex": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00b72a72",
+          "bytes_hex": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00b72a73",
+          "bytes_hex": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00b72a74",
+          "bytes_hex": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "00b72a76",
+          "bytes_hex": "8b06",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]"
+        },
+        {
+          "address": "00b72a78",
+          "bytes_hex": "8b5024",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x24]"
+        },
+        {
+          "address": "00b72a7b",
+          "bytes_hex": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00b72a7c",
+          "bytes_hex": "8b3d94d3f800",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [0xf8d394]"
+        },
+        {
+          "address": "00b72a82",
+          "bytes_hex": "8b1f",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [edi]"
+        },
+        {
+          "address": "00b72a84",
+          "bytes_hex": "ffd2",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00b72a86",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b72a87",
+          "bytes_hex": "8b06",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]"
+        },
+        {
+          "address": "00b72a89",
+          "bytes_hex": "8b501c",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x1c]"
+        },
+        {
+          "address": "00b72a8c",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00b72a8e",
+          "bytes_hex": "ffd2",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00b72a90",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b72a91",
+          "bytes_hex": "8b06",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]"
+        },
+        {
+          "address": "00b72a93",
+          "bytes_hex": "8b5020",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x20]"
+        },
+        {
+          "address": "00b72a96",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00b72a98",
+          "bytes_hex": "ffd2",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00b72a9a",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b72a9b",
+          "bytes_hex": "8b435c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebx + 0x5c]"
+        },
+        {
+          "address": "00b72a9e",
+          "bytes_hex": "8bcf",
+          "mnemonic": "mov",
+          "operands": "ecx, edi"
+        },
+        {
+          "address": "00b72aa0",
+          "bytes_hex": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "00b72aa2",
+          "bytes_hex": "8b1e",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esi]"
+        },
+        {
+          "address": "00b72aa4",
+          "bytes_hex": "8b5320",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebx + 0x20]"
+        },
+        {
+          "address": "00b72aa7",
+          "bytes_hex": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "00b72aa9",
+          "bytes_hex": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "00b72aab",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00b72aad",
+          "bytes_hex": "8bf8",
+          "mnemonic": "mov",
+          "operands": "edi, eax"
+        },
+        {
+          "address": "00b72aaf",
+          "bytes_hex": "ffd2",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00b72ab1",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b72ab2",
+          "bytes_hex": "8b4310",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebx + 0x10]"
+        },
+        {
+          "address": "00b72ab5",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00b72ab7",
+          "bytes_hex": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "00b72ab9",
+          "bytes_hex": "8b16",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi]"
+        },
+        {
+          "address": "00b72abb",
+          "bytes_hex": "8b2f",
+          "mnemonic": "mov",
+          "operands": "ebp, dword ptr [edi]"
+        },
+        {
+          "address": "00b72abd",
+          "bytes_hex": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "00b72abf",
+          "bytes_hex": "8bd8",
+          "mnemonic": "mov",
+          "operands": "ebx, eax"
+        },
+        {
+          "address": "00b72ac1",
+          "bytes_hex": "8b4220",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 0x20]"
+        },
+        {
+          "address": "00b72ac4",
+          "bytes_hex": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "00b72ac6",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00b72ac8",
+          "bytes_hex": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "00b72aca",
+          "bytes_hex": "8b5510",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebp + 0x10]"
+        },
+        {
+          "address": "00b72acd",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b72ace",
+          "bytes_hex": "8bcf",
+          "mnemonic": "mov",
+          "operands": "ecx, edi"
+        },
+        {
+          "address": "00b72ad0",
+          "bytes_hex": "ffd2",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00b72ad2",
+          "bytes_hex": "8be8",
+          "mnemonic": "mov",
+          "operands": "ebp, eax"
+        },
+        {
+          "address": "00b72ad4",
+          "bytes_hex": "8b06",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi]"
+        },
+        {
+          "address": "00b72ad6",
+          "bytes_hex": "8b5024",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0x24]"
+        },
+        {
+          "address": "00b72ad9",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00b72adb",
+          "bytes_hex": "ffd2",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00b72add",
+          "bytes_hex": "8b80cc000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [eax + 0xcc]"
+        },
+        {
+          "address": "00b72ae3",
+          "bytes_hex": "8b16",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi]"
+        },
+        {
+          "address": "00b72ae5",
+          "bytes_hex": "89442410",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], eax"
+        },
+        {
+          "address": "00b72ae9",
+          "bytes_hex": "8b4220",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 0x20]"
+        },
+        {
+          "address": "00b72aec",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00b72aee",
+          "bytes_hex": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "00b72af0",
+          "bytes_hex": "0faf442410",
+          "mnemonic": "imul",
+          "operands": "eax, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "00b72af5",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b72af6",
+          "bytes_hex": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00b72af7",
+          "bytes_hex": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00b72af8",
+          "bytes_hex": "e8834b0800",
+          "mnemonic": "call",
+          "operands": "0xbf7680"
+        },
+        {
+          "address": "00b72afd",
+          "bytes_hex": "8b16",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi]"
+        },
+        {
+          "address": "00b72aff",
+          "bytes_hex": "8b4214",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 0x14]"
+        },
+        {
+          "address": "00b72b02",
+          "bytes_hex": "83c40c",
+          "mnemonic": "add",
+          "operands": "esp, 0xc"
+        },
+        {
+          "address": "00b72b05",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00b72b07",
+          "bytes_hex": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "00b72b09",
+          "bytes_hex": "8b17",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [edi]"
+        },
+        {
+          "address": "00b72b0b",
+          "bytes_hex": "8b4214",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 0x14]"
+        },
+        {
+          "address": "00b72b0e",
+          "bytes_hex": "8bcf",
+          "mnemonic": "mov",
+          "operands": "ecx, edi"
+        },
+        {
+          "address": "00b72b10",
+          "bytes_hex": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "00b72b12",
+          "bytes_hex": "8bc7",
+          "mnemonic": "mov",
+          "operands": "eax, edi"
+        },
+        {
+          "address": "00b72b14",
+          "bytes_hex": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00b72b15",
+          "bytes_hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00b72b16",
+          "bytes_hex": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "00b72b17",
+          "bytes_hex": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "00b72b18",
+          "bytes_hex": "59",
+          "mnemonic": "pop",
+          "operands": "ecx"
+        },
+        {
+          "address": "00b72b19",
+          "bytes_hex": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "address": "00b73f50",
+      "end_exclusive": "00b73f88",
+      "length": 56,
+      "role": "mesh_clone_register_origins_fragment",
+      "span_kind": "code",
+      "complete_function": false,
+      "bytes_hex": "6aff64a10000000068101ccc00506489250000000083ec0853558b6c2420568bf1d9460c578d4610d95d0c508d4d10e84cecffff8b5c242c",
+      "sha256": "6b63c46f0029ffbd561b1816774efdd6f787fb4a2d99c3382c29ecfd7a485773",
+      "fresh_live_PE_match": true,
+      "instructions": [
+        {
+          "address": "00b73f50",
+          "bytes_hex": "6aff",
+          "mnemonic": "push",
+          "operands": "-1"
+        },
+        {
+          "address": "00b73f52",
+          "bytes_hex": "64a100000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "00b73f58",
+          "bytes_hex": "68101ccc00",
+          "mnemonic": "push",
+          "operands": "0xcc1c10"
+        },
+        {
+          "address": "00b73f5d",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b73f5e",
+          "bytes_hex": "64892500000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], esp"
+        },
+        {
+          "address": "00b73f65",
+          "bytes_hex": "83ec08",
+          "mnemonic": "sub",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "00b73f68",
+          "bytes_hex": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00b73f69",
+          "bytes_hex": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00b73f6a",
+          "bytes_hex": "8b6c2420",
+          "mnemonic": "mov",
+          "operands": "ebp, dword ptr [esp + 0x20]"
+        },
+        {
+          "address": "00b73f6e",
+          "bytes_hex": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00b73f6f",
+          "bytes_hex": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "00b73f71",
+          "bytes_hex": "d9460c",
+          "mnemonic": "fld",
+          "operands": "dword ptr [esi + 0xc]"
+        },
+        {
+          "address": "00b73f74",
+          "bytes_hex": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00b73f75",
+          "bytes_hex": "8d4610",
+          "mnemonic": "lea",
+          "operands": "eax, [esi + 0x10]"
+        },
+        {
+          "address": "00b73f78",
+          "bytes_hex": "d95d0c",
+          "mnemonic": "fstp",
+          "operands": "dword ptr [ebp + 0xc]"
+        },
+        {
+          "address": "00b73f7b",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b73f7c",
+          "bytes_hex": "8d4d10",
+          "mnemonic": "lea",
+          "operands": "ecx, [ebp + 0x10]"
+        },
+        {
+          "address": "00b73f7f",
+          "bytes_hex": "e84cecffff",
+          "mnemonic": "call",
+          "operands": "0xb72bd0"
+        },
+        {
+          "address": "00b73f84",
+          "bytes_hex": "8b5c242c",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 0x2c]"
+        }
+      ]
+    },
+    {
+      "address": "00b73fea",
+      "end_exclusive": "00b7404b",
+      "length": 97,
+      "role": "mesh_clone_stream_loop_factory_output_assignment_release_fragment",
+      "span_kind": "code",
+      "complete_function": false,
+      "bytes_hex": "8b467c33ff85c07e588bc383e010894424108d5e64eb048b44241085c08b0b0f84c8000000e85ceaffff8b4c24288be85557e88ffbffff8d4d0451ff152022ce0085c075098b55008b028bcdffd08b6c242883c70183c3043b7e7c7cba8b5c242c",
+      "sha256": "27d909b7bfe1b6a77c390d8a00dbac1565afa6cccc1c25a559c48efe599cb1f7",
+      "fresh_live_PE_match": true,
+      "instructions": [
+        {
+          "address": "00b73fea",
+          "bytes_hex": "8b467c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x7c]"
+        },
+        {
+          "address": "00b73fed",
+          "bytes_hex": "33ff",
+          "mnemonic": "xor",
+          "operands": "edi, edi"
+        },
+        {
+          "address": "00b73fef",
+          "bytes_hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00b73ff1",
+          "bytes_hex": "7e58",
+          "mnemonic": "jle",
+          "operands": "0xb7404b"
+        },
+        {
+          "address": "00b73ff3",
+          "bytes_hex": "8bc3",
+          "mnemonic": "mov",
+          "operands": "eax, ebx"
+        },
+        {
+          "address": "00b73ff5",
+          "bytes_hex": "83e010",
+          "mnemonic": "and",
+          "operands": "eax, 0x10"
+        },
+        {
+          "address": "00b73ff8",
+          "bytes_hex": "89442410",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x10], eax"
+        },
+        {
+          "address": "00b73ffc",
+          "bytes_hex": "8d5e64",
+          "mnemonic": "lea",
+          "operands": "ebx, [esi + 0x64]"
+        },
+        {
+          "address": "00b73fff",
+          "bytes_hex": "eb04",
+          "mnemonic": "jmp",
+          "operands": "0xb74005"
+        },
+        {
+          "address": "00b74001",
+          "bytes_hex": "8b442410",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "00b74005",
+          "bytes_hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00b74007",
+          "bytes_hex": "8b0b",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [ebx]"
+        },
+        {
+          "address": "00b74009",
+          "bytes_hex": "0f84c8000000",
+          "mnemonic": "je",
+          "operands": "0xb740d7"
+        },
+        {
+          "address": "00b7400f",
+          "bytes_hex": "e85ceaffff",
+          "mnemonic": "call",
+          "operands": "0xb72a70"
+        },
+        {
+          "address": "00b74014",
+          "bytes_hex": "8b4c2428",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x28]"
+        },
+        {
+          "address": "00b74018",
+          "bytes_hex": "8be8",
+          "mnemonic": "mov",
+          "operands": "ebp, eax"
+        },
+        {
+          "address": "00b7401a",
+          "bytes_hex": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00b7401b",
+          "bytes_hex": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00b7401c",
+          "bytes_hex": "e88ffbffff",
+          "mnemonic": "call",
+          "operands": "0xb73bb0"
+        },
+        {
+          "address": "00b74021",
+          "bytes_hex": "8d4d04",
+          "mnemonic": "lea",
+          "operands": "ecx, [ebp + 4]"
+        },
+        {
+          "address": "00b74024",
+          "bytes_hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00b74025",
+          "bytes_hex": "ff152022ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2220]"
+        },
+        {
+          "address": "00b7402b",
+          "bytes_hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00b7402d",
+          "bytes_hex": "7509",
+          "mnemonic": "jne",
+          "operands": "0xb74038"
+        },
+        {
+          "address": "00b7402f",
+          "bytes_hex": "8b5500",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebp]"
+        },
+        {
+          "address": "00b74032",
+          "bytes_hex": "8b02",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx]"
+        },
+        {
+          "address": "00b74034",
+          "bytes_hex": "8bcd",
+          "mnemonic": "mov",
+          "operands": "ecx, ebp"
+        },
+        {
+          "address": "00b74036",
+          "bytes_hex": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "00b74038",
+          "bytes_hex": "8b6c2428",
+          "mnemonic": "mov",
+          "operands": "ebp, dword ptr [esp + 0x28]"
+        },
+        {
+          "address": "00b7403c",
+          "bytes_hex": "83c701",
+          "mnemonic": "add",
+          "operands": "edi, 1"
+        },
+        {
+          "address": "00b7403f",
+          "bytes_hex": "83c304",
+          "mnemonic": "add",
+          "operands": "ebx, 4"
+        },
+        {
+          "address": "00b74042",
+          "bytes_hex": "3b7e7c",
+          "mnemonic": "cmp",
+          "operands": "edi, dword ptr [esi + 0x7c]"
+        },
+        {
+          "address": "00b74045",
+          "bytes_hex": "7cba",
+          "mnemonic": "jl",
+          "operands": "0xb74001"
+        },
+        {
+          "address": "00b74047",
+          "bytes_hex": "8b5c242c",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 0x2c]"
+        }
+      ]
+    },
+    {
+      "address": "00b740d7",
+      "end_exclusive": "00b740e5",
+      "length": 14,
+      "role": "mesh_clone_shared_stream_branch_fragment",
+      "span_kind": "code",
+      "complete_function": false,
+      "bytes_hex": "51578bcde8d0faffffe957ffffff",
+      "sha256": "ef7c556d53fd1b129fe3935281ad48396d71e5b1085b44fd4b01efb4933c636a",
+      "fresh_live_PE_match": true,
+      "instructions": [
+        {
+          "address": "00b740d7",
+          "bytes_hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00b740d8",
+          "bytes_hex": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00b740d9",
+          "bytes_hex": "8bcd",
+          "mnemonic": "mov",
+          "operands": "ecx, ebp"
+        },
+        {
+          "address": "00b740db",
+          "bytes_hex": "e8d0faffff",
+          "mnemonic": "call",
+          "operands": "0xb73bb0"
+        },
+        {
+          "address": "00b740e0",
+          "bytes_hex": "e957ffffff",
+          "mnemonic": "jmp",
+          "operands": "0xb7403c"
+        }
+      ]
+    },
+    {
+      "address": "00b73bb0",
+      "end_exclusive": "00b73c0f",
+      "length": 95,
+      "role": "complete_geometry_stream_assignment",
+      "span_kind": "code",
+      "complete_function": true,
+      "bytes_hex": "8b4424043b417c567c19ba01000000908b717cc744b1640000000001517c3b417c7ded8b7481648b54240c3bf2742c85d289548164740a83c20452ff151c22ce0085f674168d460450ff152022ce0085c075088b168b028bceffd05ec20800",
+      "sha256": "6a187200728c3f4e5d5acfb2e3a206ec6d6c71c622c9867475ab3d634c95a108",
+      "fresh_live_PE_match": true,
+      "instructions": [
+        {
+          "address": "00b73bb0",
+          "bytes_hex": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "00b73bb4",
+          "bytes_hex": "3b417c",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0x7c]"
+        },
+        {
+          "address": "00b73bb7",
+          "bytes_hex": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00b73bb8",
+          "bytes_hex": "7c19",
+          "mnemonic": "jl",
+          "operands": "0xb73bd3"
+        },
+        {
+          "address": "00b73bba",
+          "bytes_hex": "ba01000000",
+          "mnemonic": "mov",
+          "operands": "edx, 1"
+        },
+        {
+          "address": "00b73bbf",
+          "bytes_hex": "90",
+          "mnemonic": "nop",
+          "operands": ""
+        },
+        {
+          "address": "00b73bc0",
+          "bytes_hex": "8b717c",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [ecx + 0x7c]"
+        },
+        {
+          "address": "00b73bc3",
+          "bytes_hex": "c744b16400000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + esi*4 + 0x64], 0"
+        },
+        {
+          "address": "00b73bcb",
+          "bytes_hex": "01517c",
+          "mnemonic": "add",
+          "operands": "dword ptr [ecx + 0x7c], edx"
+        },
+        {
+          "address": "00b73bce",
+          "bytes_hex": "3b417c",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [ecx + 0x7c]"
+        },
+        {
+          "address": "00b73bd1",
+          "bytes_hex": "7ded",
+          "mnemonic": "jge",
+          "operands": "0xb73bc0"
+        },
+        {
+          "address": "00b73bd3",
+          "bytes_hex": "8b748164",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [ecx + eax*4 + 0x64]"
+        },
+        {
+          "address": "00b73bd7",
+          "bytes_hex": "8b54240c",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00b73bdb",
+          "bytes_hex": "3bf2",
+          "mnemonic": "cmp",
+          "operands": "esi, edx"
+        },
+        {
+          "address": "00b73bdd",
+          "bytes_hex": "742c",
+          "mnemonic": "je",
+          "operands": "0xb73c0b"
+        },
+        {
+          "address": "00b73bdf",
+          "bytes_hex": "85d2",
+          "mnemonic": "test",
+          "operands": "edx, edx"
+        },
+        {
+          "address": "00b73be1",
+          "bytes_hex": "89548164",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx + eax*4 + 0x64], edx"
+        },
+        {
+          "address": "00b73be5",
+          "bytes_hex": "740a",
+          "mnemonic": "je",
+          "operands": "0xb73bf1"
+        },
+        {
+          "address": "00b73be7",
+          "bytes_hex": "83c204",
+          "mnemonic": "add",
+          "operands": "edx, 4"
+        },
+        {
+          "address": "00b73bea",
+          "bytes_hex": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "00b73beb",
+          "bytes_hex": "ff151c22ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce221c]"
+        },
+        {
+          "address": "00b73bf1",
+          "bytes_hex": "85f6",
+          "mnemonic": "test",
+          "operands": "esi, esi"
+        },
+        {
+          "address": "00b73bf3",
+          "bytes_hex": "7416",
+          "mnemonic": "je",
+          "operands": "0xb73c0b"
+        },
+        {
+          "address": "00b73bf5",
+          "bytes_hex": "8d4604",
+          "mnemonic": "lea",
+          "operands": "eax, [esi + 4]"
+        },
+        {
+          "address": "00b73bf8",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b73bf9",
+          "bytes_hex": "ff152022ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2220]"
+        },
+        {
+          "address": "00b73bff",
+          "bytes_hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00b73c01",
+          "bytes_hex": "7508",
+          "mnemonic": "jne",
+          "operands": "0xb73c0b"
+        },
+        {
+          "address": "00b73c03",
+          "bytes_hex": "8b16",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi]"
+        },
+        {
+          "address": "00b73c05",
+          "bytes_hex": "8b02",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx]"
+        },
+        {
+          "address": "00b73c07",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00b73c09",
+          "bytes_hex": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "00b73c0b",
+          "bytes_hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00b73c0c",
+          "bytes_hex": "c20800",
+          "mnemonic": "ret",
+          "operands": "8"
+        }
+      ]
+    },
+    {
+      "address": "00b85b80",
+      "end_exclusive": "00b85ba2",
+      "length": 34,
+      "role": "complete_section_stream_append",
+      "span_kind": "code",
+      "complete_function": true,
+      "bytes_hex": "56578b7c240c8d4704508bf1ff151c22ce008b4e4c897c8e3c83464c015f5ec20400",
+      "sha256": "294c3682b5d9f32fb7916dc60451f45df23f5a487be7103a3f2729bf57cf2685",
+      "fresh_live_PE_match": true,
+      "instructions": [
+        {
+          "address": "00b85b80",
+          "bytes_hex": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00b85b81",
+          "bytes_hex": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00b85b82",
+          "bytes_hex": "8b7c240c",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00b85b86",
+          "bytes_hex": "8d4704",
+          "mnemonic": "lea",
+          "operands": "eax, [edi + 4]"
+        },
+        {
+          "address": "00b85b89",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b85b8a",
+          "bytes_hex": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "00b85b8c",
+          "bytes_hex": "ff151c22ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce221c]"
+        },
+        {
+          "address": "00b85b92",
+          "bytes_hex": "8b4e4c",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x4c]"
+        },
+        {
+          "address": "00b85b95",
+          "bytes_hex": "897c8e3c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + ecx*4 + 0x3c], edi"
+        },
+        {
+          "address": "00b85b99",
+          "bytes_hex": "83464c01",
+          "mnemonic": "add",
+          "operands": "dword ptr [esi + 0x4c], 1"
+        },
+        {
+          "address": "00b85b9d",
+          "bytes_hex": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00b85b9e",
+          "bytes_hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00b85b9f",
+          "bytes_hex": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b73260",
+      "end_exclusive": "00b7326b",
+      "length": 11,
+      "role": "complete_geometry_stream_getter",
+      "span_kind": "code",
+      "complete_function": true,
+      "bytes_hex": "8b4424048b448164c20400",
+      "sha256": "19cbbaa2310751119aad04e714502f2ae2d3f195bd38020eac0f0b922f2e2763",
+      "fresh_live_PE_match": true,
+      "instructions": [
+        {
+          "address": "00b73260",
+          "bytes_hex": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "00b73264",
+          "bytes_hex": "8b448164",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + eax*4 + 0x64]"
+        },
+        {
+          "address": "00b73268",
+          "bytes_hex": "c20400",
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    },
+    {
+      "address": "00b4c933",
+      "end_exclusive": "00b4c9c3",
+      "length": 144,
+      "role": "generated_mesh_constructor_and_factory_stream_assignment_fragment",
+      "span_kind": "code",
+      "complete_function": false,
+      "bytes_hex": "3bc3c744242401000000740b8bc8e82a7402008bf8eb0233ffd90560a2d7008b4c241083ec08d95424048974242cd91c245753e8058802008b3594d3f8008b1e8bcde8368d0000508b435c68001000006a008bceffd08b5c24308bf08b433c506a008bcfe814720200566a018bcfe80a7202008d4e0451c7465400000080ff152022ce0085c075088b168b028bceffd0",
+      "sha256": "5f21a2f5acba0c0928a09075f8f62114ce6eecbeaaf493def8a6a19d7a9fe183",
+      "fresh_live_PE_match": true,
+      "instructions": [
+        {
+          "address": "00b4c933",
+          "bytes_hex": "3bc3",
+          "mnemonic": "cmp",
+          "operands": "eax, ebx"
+        },
+        {
+          "address": "00b4c935",
+          "bytes_hex": "c744242401000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x24], 1"
+        },
+        {
+          "address": "00b4c93d",
+          "bytes_hex": "740b",
+          "mnemonic": "je",
+          "operands": "0xb4c94a"
+        },
+        {
+          "address": "00b4c93f",
+          "bytes_hex": "8bc8",
+          "mnemonic": "mov",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "00b4c941",
+          "bytes_hex": "e82a740200",
+          "mnemonic": "call",
+          "operands": "0xb73d70"
+        },
+        {
+          "address": "00b4c946",
+          "bytes_hex": "8bf8",
+          "mnemonic": "mov",
+          "operands": "edi, eax"
+        },
+        {
+          "address": "00b4c948",
+          "bytes_hex": "eb02",
+          "mnemonic": "jmp",
+          "operands": "0xb4c94c"
+        },
+        {
+          "address": "00b4c94a",
+          "bytes_hex": "33ff",
+          "mnemonic": "xor",
+          "operands": "edi, edi"
+        },
+        {
+          "address": "00b4c94c",
+          "bytes_hex": "d90560a2d700",
+          "mnemonic": "fld",
+          "operands": "dword ptr [0xd7a260]"
+        },
+        {
+          "address": "00b4c952",
+          "bytes_hex": "8b4c2410",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "00b4c956",
+          "bytes_hex": "83ec08",
+          "mnemonic": "sub",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "00b4c959",
+          "bytes_hex": "d9542404",
+          "mnemonic": "fst",
+          "operands": "dword ptr [esp + 4]"
+        },
+        {
+          "address": "00b4c95d",
+          "bytes_hex": "8974242c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x2c], esi"
+        },
+        {
+          "address": "00b4c961",
+          "bytes_hex": "d91c24",
+          "mnemonic": "fstp",
+          "operands": "dword ptr [esp]"
+        },
+        {
+          "address": "00b4c964",
+          "bytes_hex": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00b4c965",
+          "bytes_hex": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00b4c966",
+          "bytes_hex": "e805880200",
+          "mnemonic": "call",
+          "operands": "0xb75170"
+        },
+        {
+          "address": "00b4c96b",
+          "bytes_hex": "8b3594d3f800",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [0xf8d394]"
+        },
+        {
+          "address": "00b4c971",
+          "bytes_hex": "8b1e",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esi]"
+        },
+        {
+          "address": "00b4c973",
+          "bytes_hex": "8bcd",
+          "mnemonic": "mov",
+          "operands": "ecx, ebp"
+        },
+        {
+          "address": "00b4c975",
+          "bytes_hex": "e8368d0000",
+          "mnemonic": "call",
+          "operands": "0xb556b0"
+        },
+        {
+          "address": "00b4c97a",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b4c97b",
+          "bytes_hex": "8b435c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebx + 0x5c]"
+        },
+        {
+          "address": "00b4c97e",
+          "bytes_hex": "6800100000",
+          "mnemonic": "push",
+          "operands": "0x1000"
+        },
+        {
+          "address": "00b4c983",
+          "bytes_hex": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "00b4c985",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00b4c987",
+          "bytes_hex": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "address": "00b4c989",
+          "bytes_hex": "8b5c2430",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 0x30]"
+        },
+        {
+          "address": "00b4c98d",
+          "bytes_hex": "8bf0",
+          "mnemonic": "mov",
+          "operands": "esi, eax"
+        },
+        {
+          "address": "00b4c98f",
+          "bytes_hex": "8b433c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebx + 0x3c]"
+        },
+        {
+          "address": "00b4c992",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b4c993",
+          "bytes_hex": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "00b4c995",
+          "bytes_hex": "8bcf",
+          "mnemonic": "mov",
+          "operands": "ecx, edi"
+        },
+        {
+          "address": "00b4c997",
+          "bytes_hex": "e814720200",
+          "mnemonic": "call",
+          "operands": "0xb73bb0"
+        },
+        {
+          "address": "00b4c99c",
+          "bytes_hex": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00b4c99d",
+          "bytes_hex": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00b4c99f",
+          "bytes_hex": "8bcf",
+          "mnemonic": "mov",
+          "operands": "ecx, edi"
+        },
+        {
+          "address": "00b4c9a1",
+          "bytes_hex": "e80a720200",
+          "mnemonic": "call",
+          "operands": "0xb73bb0"
+        },
+        {
+          "address": "00b4c9a6",
+          "bytes_hex": "8d4e04",
+          "mnemonic": "lea",
+          "operands": "ecx, [esi + 4]"
+        },
+        {
+          "address": "00b4c9a9",
+          "bytes_hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00b4c9aa",
+          "bytes_hex": "c7465400000080",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x54], 0x80000000"
+        },
+        {
+          "address": "00b4c9b1",
+          "bytes_hex": "ff152022ce00",
+          "mnemonic": "call",
+          "operands": "dword ptr [0xce2220]"
+        },
+        {
+          "address": "00b4c9b7",
+          "bytes_hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00b4c9b9",
+          "bytes_hex": "7508",
+          "mnemonic": "jne",
+          "operands": "0xb4c9c3"
+        },
+        {
+          "address": "00b4c9bb",
+          "bytes_hex": "8b16",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi]"
+        },
+        {
+          "address": "00b4c9bd",
+          "bytes_hex": "8b02",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx]"
+        },
+        {
+          "address": "00b4c9bf",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00b4c9c1",
+          "bytes_hex": "ffd0",
+          "mnemonic": "call",
+          "operands": "eax"
+        }
+      ]
+    },
+    {
+      "address": "00b4ca3a",
+      "end_exclusive": "00b4ca5c",
+      "length": 34,
+      "role": "generated_geometry_to_section_pointer_handoff_fragment",
+      "span_kind": "code",
+      "complete_function": false,
+      "bytes_hex": "6a008bcfe81d680200508bcee8359103006a018bcfe80c680200508bcee824910300",
+      "sha256": "11fc657e410c48834575af5de3bae762d597d7cb86729209aa4c4361d659fa79",
+      "fresh_live_PE_match": true,
+      "instructions": [
+        {
+          "address": "00b4ca3a",
+          "bytes_hex": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "00b4ca3c",
+          "bytes_hex": "8bcf",
+          "mnemonic": "mov",
+          "operands": "ecx, edi"
+        },
+        {
+          "address": "00b4ca3e",
+          "bytes_hex": "e81d680200",
+          "mnemonic": "call",
+          "operands": "0xb73260"
+        },
+        {
+          "address": "00b4ca43",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b4ca44",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00b4ca46",
+          "bytes_hex": "e835910300",
+          "mnemonic": "call",
+          "operands": "0xb85b80"
+        },
+        {
+          "address": "00b4ca4b",
+          "bytes_hex": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00b4ca4d",
+          "bytes_hex": "8bcf",
+          "mnemonic": "mov",
+          "operands": "ecx, edi"
+        },
+        {
+          "address": "00b4ca4f",
+          "bytes_hex": "e80c680200",
+          "mnemonic": "call",
+          "operands": "0xb73260"
+        },
+        {
+          "address": "00b4ca54",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b4ca55",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00b4ca57",
+          "bytes_hex": "e824910300",
+          "mnemonic": "call",
+          "operands": "0xb85b80"
+        }
+      ]
+    },
+    {
+      "address": "00ae4a66",
+      "end_exclusive": "00ae4ab5",
+      "length": 79,
+      "role": "alternate_constructor_output_to_section_fragment",
+      "span_kind": "code",
+      "complete_function": false,
+      "bytes_hex": "8b4f48c1e105518bcde88c4206008b5424408b4c2430508b44243c5250e8285f0600eb0233c08b4c2430518947548bcec7442420ffffffffc7405400000080e8d6100a008b5754528bcee8cb100a00",
+      "sha256": "27a62ea52407fbee93e6fea775f8d4b7e18269c18f68b9b65048ed933fad0ee8",
+      "fresh_live_PE_match": true,
+      "instructions": [
+        {
+          "address": "00ae4a66",
+          "bytes_hex": "8b4f48",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [edi + 0x48]"
+        },
+        {
+          "address": "00ae4a69",
+          "bytes_hex": "c1e105",
+          "mnemonic": "shl",
+          "operands": "ecx, 5"
+        },
+        {
+          "address": "00ae4a6c",
+          "bytes_hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00ae4a6d",
+          "bytes_hex": "8bcd",
+          "mnemonic": "mov",
+          "operands": "ecx, ebp"
+        },
+        {
+          "address": "00ae4a6f",
+          "bytes_hex": "e88c420600",
+          "mnemonic": "call",
+          "operands": "0xb48d00"
+        },
+        {
+          "address": "00ae4a74",
+          "bytes_hex": "8b542440",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 0x40]"
+        },
+        {
+          "address": "00ae4a78",
+          "bytes_hex": "8b4c2430",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x30]"
+        },
+        {
+          "address": "00ae4a7c",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00ae4a7d",
+          "bytes_hex": "8b44243c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0x3c]"
+        },
+        {
+          "address": "00ae4a81",
+          "bytes_hex": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "00ae4a82",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00ae4a83",
+          "bytes_hex": "e8285f0600",
+          "mnemonic": "call",
+          "operands": "0xb4a9b0"
+        },
+        {
+          "address": "00ae4a88",
+          "bytes_hex": "eb02",
+          "mnemonic": "jmp",
+          "operands": "0xae4a8c"
+        },
+        {
+          "address": "00ae4a8a",
+          "bytes_hex": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00ae4a8c",
+          "bytes_hex": "8b4c2430",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x30]"
+        },
+        {
+          "address": "00ae4a90",
+          "bytes_hex": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "00ae4a91",
+          "bytes_hex": "894754",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edi + 0x54], eax"
+        },
+        {
+          "address": "00ae4a94",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00ae4a96",
+          "bytes_hex": "c7442420ffffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x20], 0xffffffff"
+        },
+        {
+          "address": "00ae4a9e",
+          "bytes_hex": "c7405400000080",
+          "mnemonic": "mov",
+          "operands": "dword ptr [eax + 0x54], 0x80000000"
+        },
+        {
+          "address": "00ae4aa5",
+          "bytes_hex": "e8d6100a00",
+          "mnemonic": "call",
+          "operands": "0xb85b80"
+        },
+        {
+          "address": "00ae4aaa",
+          "bytes_hex": "8b5754",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [edi + 0x54]"
+        },
+        {
+          "address": "00ae4aad",
+          "bytes_hex": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "00ae4aae",
+          "bytes_hex": "8bce",
+          "mnemonic": "mov",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "00ae4ab0",
+          "bytes_hex": "e8cb100a00",
+          "mnemonic": "call",
+          "operands": "0xb85b80"
+        }
+      ]
+    },
+    {
+      "address": "00d61d6c",
+      "end_exclusive": "00d61da0",
+      "length": 52,
+      "role": "complete_current_13_slot_logical_profile",
+      "span_kind": "data",
+      "complete_function": false,
+      "bytes_hex": "e030bd0010bfb400408db400a0aab4008099b400809ab400308db400c08cb400d08cb400e08cb400108db400f08cb400b0aab400",
+      "sha256": "384e1478cf11d2935eb491ad4f9c0bb1de1808da1189228426b27a7a38a04c88",
+      "fresh_live_PE_match": true,
+      "dwords": [
+        "00bd30e0",
+        "00b4bf10",
+        "00b48d40",
+        "00b4aaa0",
+        "00b49980",
+        "00b49a80",
+        "00b48d30",
+        "00b48cc0",
+        "00b48cd0",
+        "00b48ce0",
+        "00b48d10",
+        "00b48cf0",
+        "00b4aab0"
+      ]
+    },
+    {
+      "address": "00d5f104",
+      "end_exclusive": "00d5f108",
+      "length": 4,
+      "role": "canonical_renderer_factory_slot_5c",
+      "span_kind": "data",
+      "complete_function": false,
+      "bytes_hex": "c087b200",
+      "sha256": "2928cfb7cab4a39712fdeb4d6806d47ba1b1669798ffc67542f574883bbf6175",
+      "fresh_live_PE_match": true,
+      "dwords": [
+        "00b287c0"
+      ]
+    },
+    {
+      "address": "00b49980",
+      "end_exclusive": "00b49a7c",
+      "length": 252,
+      "role": "complete_logical_lock_dependency_refresh",
+      "span_kind": "code",
+      "complete_function": true,
+      "bytes_hex": "64a1000000006aff6898f7cb00506489250000000083ec08803ddcd608010056578bf174178b3d94d3f8008bcf897c240ce81aa1feff88442408eb048b7c240c53558b46602500f000003d00100000c74424200000000075298b4e5885c974228b5424288b46688d6e5c8956648b80cc0000006a00558be80faf6c24340fafc2eb358b4e5885c9743c8b46688b90cc0000008bc20faf44242885c075068b46640fafc28b6c2430558d6c242c558b6e70036c24340fafea8b198b53086a015550ffd2894608803ddcd60801008b76085dc744241cffffffff5b740c8b442408508bcfe899a0feff8b4c24105f8bc65e64890d0000000083c414c20c00",
+      "sha256": "e0e9868dcdc34f988d7d34bd33637d8d819c9ea453cd27e0138f91428abb44f6",
+      "fresh_live_PE_match": true,
+      "instructions": [
+        {
+          "address": "00b49980",
+          "bytes_hex": "64a100000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr fs:[0]"
+        },
+        {
+          "address": "00b49986",
+          "bytes_hex": "6aff",
+          "mnemonic": "push",
+          "operands": "-1"
+        },
+        {
+          "address": "00b49988",
+          "bytes_hex": "6898f7cb00",
+          "mnemonic": "push",
+          "operands": "0xcbf798"
+        },
+        {
+          "address": "00b4998d",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b4998e",
+          "bytes_hex": "64892500000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], esp"
+        },
+        {
+          "address": "00b49995",
+          "bytes_hex": "83ec08",
+          "mnemonic": "sub",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "00b49998",
+          "bytes_hex": "803ddcd6080100",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [0x108d6dc], 0"
+        },
+        {
+          "address": "00b4999f",
+          "bytes_hex": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "00b499a0",
+          "bytes_hex": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "00b499a1",
+          "bytes_hex": "8bf1",
+          "mnemonic": "mov",
+          "operands": "esi, ecx"
+        },
+        {
+          "address": "00b499a3",
+          "bytes_hex": "7417",
+          "mnemonic": "je",
+          "operands": "0xb499bc"
+        },
+        {
+          "address": "00b499a5",
+          "bytes_hex": "8b3d94d3f800",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [0xf8d394]"
+        },
+        {
+          "address": "00b499ab",
+          "bytes_hex": "8bcf",
+          "mnemonic": "mov",
+          "operands": "ecx, edi"
+        },
+        {
+          "address": "00b499ad",
+          "bytes_hex": "897c240c",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0xc], edi"
+        },
+        {
+          "address": "00b499b1",
+          "bytes_hex": "e81aa1feff",
+          "mnemonic": "call",
+          "operands": "0xb33ad0"
+        },
+        {
+          "address": "00b499b6",
+          "bytes_hex": "88442408",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 8], al"
+        },
+        {
+          "address": "00b499ba",
+          "bytes_hex": "eb04",
+          "mnemonic": "jmp",
+          "operands": "0xb499c0"
+        },
+        {
+          "address": "00b499bc",
+          "bytes_hex": "8b7c240c",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "00b499c0",
+          "bytes_hex": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "00b499c1",
+          "bytes_hex": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00b499c2",
+          "bytes_hex": "8b4660",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x60]"
+        },
+        {
+          "address": "00b499c5",
+          "bytes_hex": "2500f00000",
+          "mnemonic": "and",
+          "operands": "eax, 0xf000"
+        },
+        {
+          "address": "00b499ca",
+          "bytes_hex": "3d00100000",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x1000"
+        },
+        {
+          "address": "00b499cf",
+          "bytes_hex": "c744242000000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x20], 0"
+        },
+        {
+          "address": "00b499d7",
+          "bytes_hex": "7529",
+          "mnemonic": "jne",
+          "operands": "0xb49a02"
+        },
+        {
+          "address": "00b499d9",
+          "bytes_hex": "8b4e58",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x58]"
+        },
+        {
+          "address": "00b499dc",
+          "bytes_hex": "85c9",
+          "mnemonic": "test",
+          "operands": "ecx, ecx"
+        },
+        {
+          "address": "00b499de",
+          "bytes_hex": "7422",
+          "mnemonic": "je",
+          "operands": "0xb49a02"
+        },
+        {
+          "address": "00b499e0",
+          "bytes_hex": "8b542428",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 0x28]"
+        },
+        {
+          "address": "00b499e4",
+          "bytes_hex": "8b4668",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x68]"
+        },
+        {
+          "address": "00b499e7",
+          "bytes_hex": "8d6e5c",
+          "mnemonic": "lea",
+          "operands": "ebp, [esi + 0x5c]"
+        },
+        {
+          "address": "00b499ea",
+          "bytes_hex": "895664",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 0x64], edx"
+        },
+        {
+          "address": "00b499ed",
+          "bytes_hex": "8b80cc000000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [eax + 0xcc]"
+        },
+        {
+          "address": "00b499f3",
+          "bytes_hex": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "00b499f5",
+          "bytes_hex": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00b499f6",
+          "bytes_hex": "8be8",
+          "mnemonic": "mov",
+          "operands": "ebp, eax"
+        },
+        {
+          "address": "00b499f8",
+          "bytes_hex": "0faf6c2434",
+          "mnemonic": "imul",
+          "operands": "ebp, dword ptr [esp + 0x34]"
+        },
+        {
+          "address": "00b499fd",
+          "bytes_hex": "0fafc2",
+          "mnemonic": "imul",
+          "operands": "eax, edx"
+        },
+        {
+          "address": "00b49a00",
+          "bytes_hex": "eb35",
+          "mnemonic": "jmp",
+          "operands": "0xb49a37"
+        },
+        {
+          "address": "00b49a02",
+          "bytes_hex": "8b4e58",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x58]"
+        },
+        {
+          "address": "00b49a05",
+          "bytes_hex": "85c9",
+          "mnemonic": "test",
+          "operands": "ecx, ecx"
+        },
+        {
+          "address": "00b49a07",
+          "bytes_hex": "743c",
+          "mnemonic": "je",
+          "operands": "0xb49a45"
+        },
+        {
+          "address": "00b49a09",
+          "bytes_hex": "8b4668",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x68]"
+        },
+        {
+          "address": "00b49a0c",
+          "bytes_hex": "8b90cc000000",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [eax + 0xcc]"
+        },
+        {
+          "address": "00b49a12",
+          "bytes_hex": "8bc2",
+          "mnemonic": "mov",
+          "operands": "eax, edx"
+        },
+        {
+          "address": "00b49a14",
+          "bytes_hex": "0faf442428",
+          "mnemonic": "imul",
+          "operands": "eax, dword ptr [esp + 0x28]"
+        },
+        {
+          "address": "00b49a19",
+          "bytes_hex": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "00b49a1b",
+          "bytes_hex": "7506",
+          "mnemonic": "jne",
+          "operands": "0xb49a23"
+        },
+        {
+          "address": "00b49a1d",
+          "bytes_hex": "8b4664",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x64]"
+        },
+        {
+          "address": "00b49a20",
+          "bytes_hex": "0fafc2",
+          "mnemonic": "imul",
+          "operands": "eax, edx"
+        },
+        {
+          "address": "00b49a23",
+          "bytes_hex": "8b6c2430",
+          "mnemonic": "mov",
+          "operands": "ebp, dword ptr [esp + 0x30]"
+        },
+        {
+          "address": "00b49a27",
+          "bytes_hex": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00b49a28",
+          "bytes_hex": "8d6c242c",
+          "mnemonic": "lea",
+          "operands": "ebp, [esp + 0x2c]"
+        },
+        {
+          "address": "00b49a2c",
+          "bytes_hex": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00b49a2d",
+          "bytes_hex": "8b6e70",
+          "mnemonic": "mov",
+          "operands": "ebp, dword ptr [esi + 0x70]"
+        },
+        {
+          "address": "00b49a30",
+          "bytes_hex": "036c2434",
+          "mnemonic": "add",
+          "operands": "ebp, dword ptr [esp + 0x34]"
+        },
+        {
+          "address": "00b49a34",
+          "bytes_hex": "0fafea",
+          "mnemonic": "imul",
+          "operands": "ebp, edx"
+        },
+        {
+          "address": "00b49a37",
+          "bytes_hex": "8b19",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [ecx]"
+        },
+        {
+          "address": "00b49a39",
+          "bytes_hex": "8b5308",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ebx + 8]"
+        },
+        {
+          "address": "00b49a3c",
+          "bytes_hex": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "00b49a3e",
+          "bytes_hex": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "00b49a3f",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b49a40",
+          "bytes_hex": "ffd2",
+          "mnemonic": "call",
+          "operands": "edx"
+        },
+        {
+          "address": "00b49a42",
+          "bytes_hex": "894608",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esi + 8], eax"
+        },
+        {
+          "address": "00b49a45",
+          "bytes_hex": "803ddcd6080100",
+          "mnemonic": "cmp",
+          "operands": "byte ptr [0x108d6dc], 0"
+        },
+        {
+          "address": "00b49a4c",
+          "bytes_hex": "8b7608",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [esi + 8]"
+        },
+        {
+          "address": "00b49a4f",
+          "bytes_hex": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "00b49a50",
+          "bytes_hex": "c744241cffffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [esp + 0x1c], 0xffffffff"
+        },
+        {
+          "address": "00b49a58",
+          "bytes_hex": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "00b49a59",
+          "bytes_hex": "740c",
+          "mnemonic": "je",
+          "operands": "0xb49a67"
+        },
+        {
+          "address": "00b49a5b",
+          "bytes_hex": "8b442408",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 8]"
+        },
+        {
+          "address": "00b49a5f",
+          "bytes_hex": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "00b49a60",
+          "bytes_hex": "8bcf",
+          "mnemonic": "mov",
+          "operands": "ecx, edi"
+        },
+        {
+          "address": "00b49a62",
+          "bytes_hex": "e899a0feff",
+          "mnemonic": "call",
+          "operands": "0xb33b00"
+        },
+        {
+          "address": "00b49a67",
+          "bytes_hex": "8b4c2410",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "00b49a6b",
+          "bytes_hex": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "00b49a6c",
+          "bytes_hex": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "00b49a6e",
+          "bytes_hex": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "00b49a6f",
+          "bytes_hex": "64890d00000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr fs:[0], ecx"
+        },
+        {
+          "address": "00b49a76",
+          "bytes_hex": "83c414",
+          "mnemonic": "add",
+          "operands": "esp, 0x14"
+        },
+        {
+          "address": "00b49a79",
+          "bytes_hex": "c20c00",
+          "mnemonic": "ret",
+          "operands": "0xc"
+        }
+      ]
+    }
+  ],
+  "total_spans": 13,
+  "total_bytes": 1042,
+  "novel_findings": [
+    {
+      "route": "B73F50 source geometry+64 pointer -> B72A70 -> B73BB0 destination geometry+64 pointer",
+      "original_ABI": {
+        "00b73f50": "ECX source geometry; stack destination geometry, flags; RET8",
+        "00b72a70": "ECX source logical stream; EAX newly created logical stream; plain RET",
+        "00b73bb0": "ECX destination geometry; stack index, incoming logical stream; RET8"
+      },
+      "identity_trace": [
+        "B73F6F captures source geometry in ESI; B73F6A captures destination in EBP; B73F84 captures flags in EBX.",
+        "B73FFC forms source geometry+64 cell cursor in EBX; B74007 reads the stored logical pointer to ECX.",
+        "If flags&10, B7400F calls B72A70; B74018 copies its exact EAX result to EBP, then B7401A PUSH EBP/B7401B PUSH EDI/B7401C B73BB0 publish that result at the same stream index.",
+        "B74021 adjusts only the temporary factory-output reference to +4 for release; final-zero dispatch reloads its current slot0 at B7402F..36.",
+        "If flags&10 is clear, B740D7 pushes the unchanged source logical pointer and B740DB assigns it without cloning."
+      ],
+      "generic_copy": "B72AF8 calls memcpy BF7680 with destination EBP, source EBX, byte count currentSourceCount * currentSourceDeclarationStride; EBP/EBX are lock returns, not derived logical-header addresses.",
+      "ordered_alias_origins": [
+        "ESI is the input source logical object for the whole helper. Current source+24, +1C, +20 results become declaration, flags, count stack arguments to captured renderer table+5C at B72AA0.",
+        "B72AAD captures exact renderer-factory EAX output in EDI; EDI remains the destination logical object and is returned at B72B12.",
+        "Source vtable is captured at B72AA2 before its count+20 call, then that captured table supplies lock+10 at B72AB7. Result becomes EBX at B72ABF.",
+        "Destination table is captured at B72ABB before another source count+20 call; that captured destination table supplies lock+10 at B72AD0. Result becomes EBP at B72AD2.",
+        "Source declaration getter is called again at B72ADB and its +CC stride saved; source count getter is called again at B72AEE. Multiplication and memcpy occur at B72AF0..F8.",
+        "After memcpy, current source+14 is invoked at B72B07, then current destination+14 at B72B10."
+      ],
+      "exclusion_scope": "No body store or generic call argument in this helper designates logical+4C. The mapped-pointer exclusion assumes the concrete current logical/physical provider contract and valid distinct native objects/mappings; arbitrary provider returns, reentrancy or overlapping/corrupt allocations are not excluded."
+    }
+  ],
+  "constructor_output_handoffs": [
+    {
+      "fragment": "00b4c933..00b4c9c3",
+      "path": "Mesh constructor B73D70 return is captured in EDI; renderer current+5C factory return is captured in ESI at B4C98D, pushed unchanged for B73BB0(index1) at B4C99C..A1, tagged at stream+54, and creator-ref released at stream+4."
+    },
+    {
+      "fragment": "00b4ca3a..00b4ca5c",
+      "path": "B73260(index0/1) loads geometry+64+4*index unchanged. Both returned EAX pointers are pushed directly for B85B80; section cells therefore contain the same logical pointers."
+    },
+    {
+      "fragment": "00ae4a66..00ae4ab5",
+      "path": "B4A9B0 return EAX is published at caller+54 by AE4A91, tagged at logical+54 by AE4A9E, then reloaded from caller+54 at AE4AAA and pushed unchanged at AE4AAD into B85B80 at AE4AB0. Separate initial append AE4AA5 uses an existing stack-supplied stream."
+    }
+  ],
+  "refreshed_endpoint_findings": [
+    {
+      "entry": "00b85b80",
+      "result": "Stream EDI is adjusted only to +4 for InterlockedIncrement; ESI is section; B85B95 stores unchanged stream to section+3C+4*count, B85B99 increments section+4C. No generic callback receives logical+4C."
+    },
+    {
+      "entry": "00b73bb0",
+      "result": "Incoming EDX is published unchanged to geometry+64+4*index at B73BE1; only afterward EDX is adjusted by4 for retain. Old captured ESI is decremented at+4 and dispatched through current slot0 at final zero. Count/high-water and slot writes use geometry ECX."
+    }
+  ],
+  "mapping_dependency": {
+    "entry": "00b49980",
+    "fresh_bytes": true,
+    "result": "Concrete D61D6C+10 is B49980. It calls current physical+8 with the physical object as ECX. Dynamic output cell is logical+5C; nondynamic output cell is the stack count argument. Return is cached at logical+8 and returned. This proves address separation in the caller; complete provider return behavior is a dependency, not a newly reconstructed physical lock."
+  },
+  "lifetime_boundary": {
+    "logical_profile_fresh": "D61D6C 13 slots; +0 BD30E0, +4 B4BF10, +10 B49980, +14 B49A80, +24 B48CE0",
+    "known_logical_terminal_provenance": "Prior alias discovery pins BD30E0 -> current slot4(flags1) canonical B4BF10 -> B4B5D0 -> B62010, then CPU slot return B49570 only after normal destruction. Those destructor bodies were not re-pinned by this extension.",
+    "separate_field4c": "Prior B62010 evidence captures logical+4C, decrements that separate pointee+4 and calls its current slot0 at final zero. The logical object profile cannot identify that independent pointee.",
+    "nonnull_field4c_writer": null,
+    "actual_field4c_profile": null,
+    "concrete_field4c_final_zero_terminal": null
+  },
+  "remaining_bounded_paths": [
+    {
+      "candidate": "Complete direct and indirect consumer inventory of geometry inline stream cells and selected section cells",
+      "scope": "B73BB0/B85B80 caller lists and these concrete paths do not enumerate all later pointer aliases. Follow actual cell loads/current-profile dispatch rather than repeat displacement searches.",
+      "source_ready": false
+    },
+    {
+      "candidate": "A concrete nonnull logical+4C write/adoption with incoming identity",
+      "scope": "Must establish actual object origin, current profile and complete final-zero destructor/allocator/EH chain; current clone mapped-copy exclusion supplies none.",
+      "source_ready": false
+    }
+  ],
+  "assumptions_and_limits": [
+    "Current native profiles and valid distinct native object/allocation origins; no inference from equal offsets or constructor zero.",
+    "No whole-program no-writer claim. Callbacks may mutate global state/current objects; getter and lock return values are not frozen across calls.",
+    "B73F50 fragments cover stream routes, not the complete mesh clone or its exception behavior. B72A70 has no local EH wrapper in the complete 170-byte body; no rollback or cleanup guarantees are invented.",
+    "Four inline slots and unchecked native indices/counts remain original behavior; corrupt or overflowing container indices are not an established valid +4C ownership path.",
+    "Prior endpoint, lock, clear/layout and owner negatives are acknowledged; this extension adds the stream clone generic memcpy route and actual constructor-output handoff evidence."
+  ],
+  "source_ready": false,
+  "reconstructed": false,
+  "build_tested": false,
+  "original_body_fixture": false,
+  "ABI_compatible": false,
+  "game_validated": false,
+  "Ghidra_mutations": false,
+  "no_tests_reason": "Read-only native discovery with only this report and documentation changed."
+}

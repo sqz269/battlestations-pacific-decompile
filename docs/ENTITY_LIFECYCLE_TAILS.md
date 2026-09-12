@@ -299,3 +299,24 @@ function at either and this packet did not annotate them.
 | the spatial index | no step in the release chain was identified as a spatial-index removal |
 | `entity+70h` | written `1` only beside `+5Dh` in `00927050`; no reader found |
 | virtual dispatch inside a `vtable[ECh]` handler | the reachability result is static only; `00826F10` re-dispatches through `vtable[5Ch]` and `vtable[24h]` |
+
+## Correction from docs/UNIT_DESTRUCTOR_LEVELS.md (packet cc2_unit_destructor_levels)
+
+- **Was:** open question: the unit's own destructor levels above 009287B0 were not read
+  **Is:** four levels read and named - 0077E380 (level 2), 0087A410 (level 3), 00959940 (level 4), 0081F3A0 (level 5) - and level 6 has no destructor body at all: 006FE570 calls the level-5 body
+  **Evidence:** each level rewrites exactly the vptr set docs/UNIT_INSTANCE_LAYOUT.md records for its constructor: 0081f3c2..0081f408 = 00D096xx, 0095995f..00959991 = 00D1A6xx, 0087a435..0087a45d = 00D0DFxx, 0077e3a0..0077e3be = 00D03Exx
+- **Was:** 0081F3A0's Ghidra body ends at 0081F56B but the real body continues
+  **Is:** still true after the integrator's repair; the real body ends at the plain RET at 0081F8AD and the remaining truncation is at the free at 0081F567
+  **Evidence:** disasm-raw 0081f56c on the PE bytes: MOV dword ptr [ESI+0xBD0],0xD09480 and on to the RET at 0081f8ad; Ghidra's proto still reports body 0081f3a0-0081f56b
+- **Was:** the producer of player+8h / player+9h was not found
+  **Is:** player+8h is written 1 at 004BB47D in BSP_Game_ClaimParticipantRecord 004BB440, the claim flag of the 0x118-byte participant record (eight at session+748h); player+9h has no writer anywhere in .text
+  **Evidence:** 004BB446 LEA ESI,[ECX+0x748]; 004BB450 CMP byte ptr [ESI+8],BL; 004BB458 ADD ESI,0x118; 004BB45E CMP EAX,8; 004BB47D MOV byte ptr [ESI+8],1. For +9h: the only store in .text is the uncalled out-of-line setter at 004B5684, and a scan of every C6/88 byte store to [reg+9h] plus every disp32 byte store landing on field 9 of an eight-slot 0x118 array based at session+748h or session+1008h found nothing else
+- **Was:** open question: no step in the release chain was identified as a spatial-index removal
+  **Is:** none exists. The unit owns no node of its own; its grid presence is per part (docs/SPATIAL_INDEX.md's 00710B6D row) and the detach 00710B80 is reached only from 00951F40, which no destructor level calls. The entity+1C4h moving-entity node belongs to the class whose +0h vtable is 00D19500, not to the unit's branch
+  **Evidence:** the grep above; 00929E30 is the only vtable slot in the image holding the detach wrapper (00D19584, slot offset 84h of the vtable at 00D19500) and it tests [this+384h] as a byte while level 3 uses +384h as a vector end pointer
+- **Was:** entity+70h: written 1 only beside +5Dh in 00927050; no reader found
+  **Is:** read at 0077E3EB by the level-2 destructor and forwarded as the +20h payload of a kind-4Fh session message
+  **Evidence:** 0077E3EB MOV EAX,[ESI+0x70]; 0077E3EF LEA ECX,[ESP+0x18]; 0077E3F3 CALL 00779780 (which stores the argument at msg+20h at 0077979A); 0077E3FD MOV ECX,ESI; 0077E3FF CALL BSP_Session_RouteMessage 0077C2A0, gated on [00E0AF20], [00E188A8] and [[00E188A8]+1FE4h] == 1
+- **Was:** the Lua self table is not cleared on the unit path, established from levels 0 and 1 alone
+  **Is:** confirmed for the whole seven-level chain
+  **Evidence:** no reference to 00ce7494, 00b67350 or [00E188A8]+1A0Ch in any of the six listings

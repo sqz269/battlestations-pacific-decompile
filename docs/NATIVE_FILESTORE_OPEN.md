@@ -124,3 +124,9 @@ Evidence: reports/native_an_integration.json; reports/native_lua_vfs_binding.jso
 BEF750 now binds the actual numeric D691B0 physical profile through current physical type IDs and the BF4FF0/BF4F20/BF4F90/BF5030 routines. Four original-converter/physical-leaf comparisons cover ordinary, low-DWORD, retained short-read and zero-length copies, including cached and final OS cursors. A FileStore entry retaining an actual physical stream feeds its copied memory chunk into Lua. Source cursors stay consumed and source references stay unchanged. General archive ownership and native FileStore tree population remain separate.
 
 Evidence: reports/native_ao_integration.json; reports/native_physical_memory_binding.json.
+
+## Integration correction from docs/NATIVE_ADOPTED_SUBSTREAM.md
+
+D68DB0 adopted-source owners now bind to BEF750 through explicit current file type IDs and substream dispatch. The two-ID query excludes the descriptor name word. Current seek/length/read methods preserve unchecked counts and callback-visible cursor changes. Actual memory conversion and a FileStore entry retaining an adopted physical source execute through Lua. Native MPKG directory/provider construction and inflater ownership remain separate.
+
+Evidence: reports/native_adopted_substream.json.

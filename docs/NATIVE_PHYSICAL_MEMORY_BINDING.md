@@ -74,3 +74,9 @@ Use the manager packet map's allocation producers before reconstructing complete
 manager/container construction and destruction. Bind startup's derived D68D04
 identity explicitly after its ownership contract is established. Actual archive
 substreams and inflater ownership require their own reconstruction packets.
+
+## Integration correction from docs/NATIVE_ADOPTED_SUBSTREAM.md
+
+The next packet composes D68DB0 source-owning substreams with the existing memory/physical paths. Construction adopts without retaining; nested release reaches the real physical HANDLE closure. The original physical conversion pairs remain passing in the newer fixture alongside substream conversion and Lua execution. This addition does not reconstruct native MPKG provider/directory creation or initializer ordering.
+
+Evidence: reports/native_adopted_substream.json.
