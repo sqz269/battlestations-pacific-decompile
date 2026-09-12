@@ -1,0 +1,520 @@
+{
+  "packet": "orch4_sound_retained_x",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00a7f2f0",
+      "name": "set_retained_sound_00a7f2f0",
+      "proposed_name": "BSP_SoundSystem_SetRetainedChannel",
+      "source": "src/sound_retained_factory.cpp",
+      "document": "docs/SOUND_RETAINED_CHANNELS.md",
+      "status": "reconstructed_build_and_installed_fixture_tested",
+      "coverage": "complete normal sequence in documented valid index and host exception domain",
+      "abi": "ECX self; stack void* source, int index; RET8; void result",
+      "meaning": "Enabled70 and same-sample80 gate; stop old74(0); index0/1/2 alloc70h/74h/70h and constructD5AD58/D5ADA0/D5ADE8 after current-global 3DEffect lookup and receiver class-slot growth. Adopt temporary, append active retain, assign74 retain/release, assign80 actual sample retain/release, release temporary. DEB738 ten-state ownership unwind.",
+      "name_is_hypothesis": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "last_instruction": "00a7f556",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7f559",
+      "byte_span": 617,
+      "sha256": "1927b26a42320b84e21ea61c0b26abfa130500f0e3ca02b7da3bc76702c52f5c",
+      "disk_analysis_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self; stack void* source, int index; RET8; void result. Enabled70 and same-sample80 gate; stop old74(0); index0/1/2 alloc70h/74h/70h and constructD5AD58/D5ADA0/D5ADE8 after current-global 3DEffect lookup and receiver class-slot growth. Adopt temporary, append active retain, assign74 retain/release, assign80 actual sample retain/release, release temporary. DEB738 ten-state ownership unwind. Complete span SHA256 1927b26a42320b84e21ea61c0b26abfa130500f0e3ca02b7da3bc76702c52f5c. docs/SOUND_RETAINED_CHANNELS.md. Win32 build, two existing tests and installed no-sound retained factory/runtime/shutdown fixture passed. Canonical storage is not native ABI; gameplay unverified."
+    },
+    {
+      "address": "00a7f0f0",
+      "name": "sound_class_slot_00a7f0f0",
+      "proposed_name": "BSP_SoundClassArray_GetGrowingSlot",
+      "source": "src/sound_retained_factory.cpp",
+      "document": "docs/SOUND_RETAINED_CHANNELS.md",
+      "status": "reconstructed_build_and_installed_fixture_tested",
+      "coverage": "complete normal sequence in documented valid index and host exception domain",
+      "abi": "ECX self; stack int index; RET4; EAX pointer result",
+      "meaning": "Signed compare index against count, grow through A7C2C0(index+1), reload storage then return slot. Valid nonnegative index domain.",
+      "name_is_hypothesis": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "last_instruction": "00a7f10d",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7f110",
+      "byte_span": 32,
+      "sha256": "99c1ddc9b6eb21477920fa63e75b600be47ec39861319cb69897cd63e510cae0",
+      "disk_analysis_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self; stack int index; RET4; EAX pointer result. Signed compare index against count, grow through A7C2C0(index+1), reload storage then return slot. Valid nonnegative index domain. Complete span SHA256 99c1ddc9b6eb21477920fa63e75b600be47ec39861319cb69897cd63e510cae0. docs/SOUND_RETAINED_CHANNELS.md. Win32 build, two existing tests and installed no-sound retained factory/runtime/shutdown fixture passed. Canonical storage is not native ABI; gameplay unverified."
+    },
+    {
+      "address": "0054d510",
+      "name": "adopt_sound_reference_0054d510",
+      "proposed_name": "BSP_SoundReference_Adopt",
+      "source": "src/sound_retained_factory.cpp",
+      "document": "docs/SOUND_RETAINED_CHANNELS.md",
+      "status": "reconstructed_build_and_installed_fixture_tested",
+      "coverage": "complete normal sequence in documented valid index and host exception domain",
+      "abi": "ECX self; stack void* replacement; RET4; EAX pointer result",
+      "meaning": "Capture old slot, atomic release and zero-reference callback, clear after callback then adopt replacement without retain; equal pointer does not skip. RET4/EAX slot address.",
+      "name_is_hypothesis": true,
+      "abi_compatible": false,
+      "game_validated": false,
+      "last_instruction": "0054d54d",
+      "last_instruction_length": 3,
+      "end_exclusive": "0054d550",
+      "byte_span": 64,
+      "sha256": "1889e26d7ce5fa09743b922f26c14bcf01f4df885b8f64de5afa2b4b8a9bc801",
+      "disk_analysis_equal": true,
+      "evidence": "Hypothesis, not a recovered symbol. ECX self; stack void* replacement; RET4; EAX pointer result. Capture old slot, atomic release and zero-reference callback, clear after callback then adopt replacement without retain; equal pointer does not skip. RET4/EAX slot address. Complete span SHA256 1889e26d7ce5fa09743b922f26c14bcf01f4df885b8f64de5afa2b4b8a9bc801. docs/SOUND_RETAINED_CHANNELS.md. Win32 build, two existing tests and installed no-sound retained factory/runtime/shutdown fixture passed. Canonical storage is not native ABI; gameplay unverified."
+    }
+  ],
+  "integrated_new_address_count": 18,
+  "existing_interface_narrowed": "0054d4c0",
+  "worker_reports": [
+    "reports/sound_retained_record.json",
+    "reports/sound_retained_update.json",
+    "reports/sound_retained_channel_owner.json"
+  ],
+  "integrated_byte_spans": [
+    {
+      "address": "00a7f2f0",
+      "last_instruction": "00a7f556",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7f559",
+      "byte_span": 617,
+      "sha256": "1927b26a42320b84e21ea61c0b26abfa130500f0e3ca02b7da3bc76702c52f5c",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7f0f0",
+      "last_instruction": "00a7f10d",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7f110",
+      "byte_span": 32,
+      "sha256": "99c1ddc9b6eb21477920fa63e75b600be47ec39861319cb69897cd63e510cae0",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "0054d510",
+      "last_instruction": "0054d54d",
+      "last_instruction_length": 3,
+      "end_exclusive": "0054d550",
+      "byte_span": 64,
+      "sha256": "1889e26d7ce5fa09743b922f26c14bcf01f4df885b8f64de5afa2b4b8a9bc801",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "0054d4c0",
+      "last_instruction": "0054d4fe",
+      "last_instruction_length": 3,
+      "end_exclusive": "0054d501",
+      "byte_span": 65,
+      "sha256": "f68d6350dd1e3f1ae0212fed0b60692631dd2a25a2b23b8ea7ab98db3801b352",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7c5f0",
+      "last_instruction": "00a7c690",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7c693",
+      "byte_span": 163,
+      "sha256": "2428459b6bc4ef37cfca6a02fc6df8eb2784425f9e94827c1fecabd0ccdaee2a",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "004c7fa0",
+      "last_instruction": "004c801d",
+      "last_instruction_length": 1,
+      "end_exclusive": "004c801e",
+      "byte_span": 126,
+      "sha256": "e501d5c9de5bfa5283fd7add240a6c3be066c5c4304b0a907542c07152cbaf57",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "004e7bb0",
+      "last_instruction": "004e7bee",
+      "last_instruction_length": 3,
+      "end_exclusive": "004e7bf1",
+      "byte_span": 65,
+      "sha256": "f68d6350dd1e3f1ae0212fed0b60692631dd2a25a2b23b8ea7ab98db3801b352",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7b520",
+      "last_instruction": "00a7b5cb",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7b5ce",
+      "byte_span": 174,
+      "sha256": "0c1e15499c201ffa8ddf7a10cb9064a723b3369ad5e9c060b962a8bcbe0db7b2",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7b5d0",
+      "last_instruction": "00a7b686",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7b689",
+      "byte_span": 185,
+      "sha256": "0b50ffb56d8088e13f608d48f14909c41a4ee1956851f335ea5c373cca87a979",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7b690",
+      "last_instruction": "00a7b705",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7b708",
+      "byte_span": 120,
+      "sha256": "829960ce1510ffa88631d9c3ad1a572c84b855e3475eed523ae191229a155337",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7da40",
+      "last_instruction": "00a7dac4",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7dac7",
+      "byte_span": 135,
+      "sha256": "1d0c25afd288241dcf19264351d34504c0086d38e7863b86da9cc0f63dc25d7b",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7dad0",
+      "last_instruction": "00a7db1b",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7db1c",
+      "byte_span": 76,
+      "sha256": "789ec5d0f4bd3535ed4344efdc29e89d50d2970d69228270372cda9c84a88132",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7db20",
+      "last_instruction": "00a7db7d",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7db80",
+      "byte_span": 96,
+      "sha256": "cd43794b713c003d631bbd0e672b6540cedbd86c3e62ab8139071356ec8713de",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7db80",
+      "last_instruction": "00a7dc11",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7dc14",
+      "byte_span": 148,
+      "sha256": "45c6ce4c689de9b523a65683fb9f8f3dba5251846332a297a3a9cc2ec917b2f3",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7dc20",
+      "last_instruction": "00a7dc6b",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7dc6c",
+      "byte_span": 76,
+      "sha256": "5540ee3a0ef782ec973f1a956f99fdd4f1ee6d9dc8145a67c4657103a9bba59a",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7dc70",
+      "last_instruction": "00a7dccd",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7dcd0",
+      "byte_span": 96,
+      "sha256": "f9f3285e317bebe77ae1f12b83910e1d6826130684dbd77a4635b8bda7b69f9f",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7dcd0",
+      "last_instruction": "00a7dd54",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7dd57",
+      "byte_span": 135,
+      "sha256": "1a274ca8ba2e0dabe9535728186afbd77a7a035e0a96dd79f1071f8df5edac23",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7dd60",
+      "last_instruction": "00a7ddab",
+      "last_instruction_length": 1,
+      "end_exclusive": "00a7ddac",
+      "byte_span": 76,
+      "sha256": "ed6d9d72577e632356f844f613072233ac80b7e13661dcbb4517c92a40301648",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00a7ddb0",
+      "last_instruction": "00a7de0d",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7de10",
+      "byte_span": 96,
+      "sha256": "dac8fb1d7b3a2bfb6535ef85899eaf3d86d56cea8d18f7bca1364050234e9b95",
+      "disk_analysis_equal": true
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00a7f385",
+      "native": "00bf681b",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f3a5",
+      "native": "0041e870",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f3c3",
+      "native": "00a7acf0",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f3cf",
+      "native": "00a7f0f0",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f3d8",
+      "native": "00a7dcd0",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f3ee",
+      "native": "0054d510",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f3fd",
+      "native": "00bf681b",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f41d",
+      "native": "0041e870",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f43b",
+      "native": "00a7acf0",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f447",
+      "native": "00a7f0f0",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f450",
+      "native": "00a7db80",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f466",
+      "native": "0054d510",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f472",
+      "native": "00bf681b",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f492",
+      "native": "0041e870",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f4b0",
+      "native": "00a7acf0",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f4bc",
+      "native": "00a7f0f0",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f4c5",
+      "native": "00a7da40",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f4db",
+      "native": "0054d510",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f4f1",
+      "native": "0041dd20",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f501",
+      "native": "00a7d5c0",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f50f",
+      "native": "0054d4c0",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f519",
+      "native": "004e7bb0",
+      "caller": "00a7f2f0"
+    },
+    {
+      "address": "00a7f101",
+      "native": "00a7c2c0",
+      "caller": "00a7f0f0"
+    },
+    {
+      "address": "00a7f35b",
+      "native": "Current retained channel vslot8(0)",
+      "caller": "00a7f2f0",
+      "validation": "Exact CALL and register/receiver provenance read in assembly; target dispatch is data dependent."
+    },
+    {
+      "address": "00a7f532",
+      "native": "IAT CE2220 InterlockedDecrement(actual refcount4)",
+      "caller": "00a7f2f0",
+      "validation": "Exact CALL and register/receiver provenance read in assembly; target dispatch is data dependent."
+    },
+    {
+      "address": "00a7f542",
+      "native": "Captured temporary current vslot0 at zero references",
+      "caller": "00a7f2f0",
+      "validation": "Exact CALL and register/receiver provenance read in assembly; target dispatch is data dependent."
+    },
+    {
+      "address": "0054d51e",
+      "native": "IAT CE2220 InterlockedDecrement(old refcount4)",
+      "caller": "0054d510",
+      "validation": "Exact CALL and register/receiver provenance read in assembly; target dispatch is data dependent."
+    },
+    {
+      "address": "0054d52e",
+      "native": "Captured old pointer current vslot0 at zero references",
+      "caller": "0054d510",
+      "validation": "Exact CALL and register/receiver provenance read in assembly; target dispatch is data dependent."
+    }
+  ],
+  "read_only_evidence": [
+    {
+      "address": "00d5ad58",
+      "length": 216,
+      "bytes_hex": "e030bd0020dba70070a5a700b099a70060a6a70030a6a700309aa70010a7a700b0a6a7009099a700a0bea70070bea70020b5a70080bea700d0bea70090bea700a099a70000000000e030bd0070dca70070a5a700b099a70060a6a70030a6a700309aa70010a7a700b0a6a7009099a700a0bea70070bea700d0b5a70080bea700d0bea70090bea700a099a70000000000e030bd00b0dda70070a5a700b099a70060a6a70030a6a700309aa70010a7a700b0a6a7009099a700a0bea70070bea70090b6a70080bea700d0bea70090bea700a099a70044535000",
+      "sha256": "d94de524c8edec7dcfd1c4e61d111024270c71a6d153195e0d8e3623e9b8b85a",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00ce7860",
+      "length": 9,
+      "bytes_hex": "334445666665637400",
+      "sha256": "bcd0cf92eba8c1f9bcf1147d1f4933b0b0cb4d0dda9df9afe7dcbed45ea6599b",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00ce9b1c",
+      "length": 4,
+      "bytes_hex": "41697200",
+      "sha256": "81d391aeefe898acdd736d2294261ce722dceb40204a416588f86e418c4a333f",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00ce5484",
+      "length": 11,
+      "bytes_hex": "556e646572776174657200",
+      "sha256": "7574a865038bcc9808e4df4b3e505a10bb0e2fdb8efba2b7a7b029c99fbb8d75",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00d7a24c",
+      "length": 4,
+      "bytes_hex": "0000803f",
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00deb738",
+      "length": 116,
+      "bytes_hex": "220593190a0000005cb7de00000000000000000000000000000000000000000001000000ffffffff9056cb0000000000bc56cb0001000000c756cb0000000000c756cb0000000000e056cb0004000000eb56cb0000000000eb56cb00000000009856cb0007000000a356cb0000000000a356cb00",
+      "sha256": "d3a5a441c7cac54e7dd3703495e75bb2ec865f336a7cb1087c4bd26d1e65a285",
+      "disk_analysis_equal": true
+    },
+    {
+      "address": "00cb5690",
+      "length": 126,
+      "bytes_hex": "8d4d08e9e8ea86ff8b45e850e80b0ff4ff59c38b45e083e0040f840c0000008365e0fb8d4dece9658676ffc38b45e850e8e70ef4ff59c38b45e083e0010f840c0000008365e0fe8d4dece9418676ffc38b45e850e8c30ef4ff59c38b45e083e0020f840c0000008365e0fd8d4dece91d8676ffc3b838b7de00e93514f4ff",
+      "sha256": "15e481b567776575f8d4ae6bd6f1ed29e668cdbf407e2f0812220829da8643b3",
+      "disk_analysis_equal": true
+    }
+  ],
+  "no_ghidra_function": [],
+  "ghidra": {
+    "function_definitions": "reports/sound_retained_channels_function_definitions.json",
+    "prototypes": "reports/sound_retained_channels_prototypes.json",
+    "flow": "reports/sound_retained_channels_flow.json",
+    "no_return_flags_changed": false,
+    "annotations": {
+      "count": 19,
+      "saved": true,
+      "readback_verified": true,
+      "prior_comments_preserved": true,
+      "before_log": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/ghidra-annotations-20260912T051423Z.json",
+      "readback": "local/sound_retained_x_comments.json",
+      "exports": "local/sound_retained_x_final_exports.log",
+      "all_prototypes_verified_after_annotation": true
+    }
+  },
+  "validation": {
+    "build": "MSVC Win32 Release passed",
+    "tests": "2/2 existing tests passed",
+    "build_log": "local/sound_retained_x_build.log",
+    "seed_log": "local/sound_retained_x_seeds.log",
+    "fixture": "local/sound_retained_fixture.cpp",
+    "fixture_log": "local/sound_retained_x_fixture.log",
+    "fixture_sha256": "83c91a2363bad3c8030e3c2ea17f86b9a92de4f3e30e5cef403a5e26b2082eb4",
+    "runner": "local/run_sound_retained_fixture.ps1",
+    "runner_sha256": "8f830d60ed97ea85ad2cf37222babb64668645e309c16ef4a8be55107d645746",
+    "manifest_embedded": true,
+    "code_sha256": {
+      "include/bsp/sound_retained_factory.hpp": "5bf0acc311c58f29e23982cbfc578c6aca1a0b6e927e1c3d458e77b0254f3045",
+      "src/sound_retained_factory.cpp": "30a824d0536a4a572734136268e114a7220880f7c261b08cec1fd8d7e078cd58",
+      "include/bsp/sound_retained_record.hpp": "3ccca7f6594d6c6db8ab36896e1e4790505214578ea4b5fb7ba806a984fba996",
+      "src/sound_retained_record.cpp": "4c98d72d8ee1aa39296b363a6758c2578d84af876ee412ef9ed7d2f030e6fba6",
+      "include/bsp/sound_retained_channel.hpp": "23462265710e31e6813b0b86b4d01d34945ef8e74178225291c52968253064c7",
+      "src/sound_retained_channel.cpp": "92e0ad9e39b521c483af3470c23a5fc4c9147a7c2ddf19a1ffbe14cafbead2a5",
+      "include/bsp/sound_retained_update.hpp": "3980169e905152b155e62c617446ec94ea90019f623a8e80e5efdb65da6f5620",
+      "src/sound_retained_update.cpp": "eef9662c06f2f1d4545f4f9570a823518606dd64ee2846e0ff9dd2073b26ba3b",
+      "include/bsp/sound_channel_runtime.hpp": "ece72ded94c356ecfce4599c0764786d9c4ab637f80baa357a3a2866d2f53b03",
+      "src/sound_channel_runtime.cpp": "d01fcf1abf5e3b07b9f021a4d08244179847d89008e895862ae02806021dcc57",
+      "include/bsp/sound_shutdown.hpp": "46b0934f8f0a7cbea73974380504730cd110c307af0c33a94aa434ce33f45e77",
+      "src/sound_shutdown.cpp": "d49d05cf00f432c1e35ad6b6a0ac44905fc4810c31e3ff0995bf2b6b8eff35a4",
+      "include/bsp/voice_slot_start.hpp": "7f41d640ce30b13e7f5774c51e0572e485236e1d399d5fc7e5f9126da48de95d",
+      "src/voice_slot_start.cpp": "e22a796e4d889aa11dbef4811a2b77bfb2be3b9115c1e8234e9638e76f70fdfa",
+      "include/bsp/sound_instance.hpp": "62360e80832a782b893e29ff530b6291fa3d6ac371a01d5f6d87480e3f004948",
+      "src/sound_instance.cpp": "7feb69ce59f248dd53e45a440791438e711c56d18a29e77a9f986439db2bb925",
+      "include/bsp/sound_spatial_instance.hpp": "861e722427467871e72c3fa32df0697d941660749cbc26b86af1f017574a247d",
+      "src/sound_spatial_instance.cpp": "1f7fb33761efb0643196612e2d3d47c1bb69d7b50da17ca8ac3aa4fb4983cec6"
+    },
+    "library_sha256": "d34e207e4294b34a6636b9e0f2935380a51452d4ee854960df9fcb6c4ce07dd8",
+    "native_update_comparisons": 5040,
+    "independent_review": "Record worker reviewed parent factory/EH/casts/shutdown reference order against native evidence; no concrete findings in scope.",
+    "game_validated": false,
+    "audible_output": false,
+    "native_abi": false,
+    "new_permanent_tests": 0,
+    "call_site_check": "57 direct report CALL rows checked, 0 failures; 11 qualified indirect targets retain separate assembly evidence.",
+    "seed_functions_verified": 8,
+    "fixture_setup_correction": "First fixture run retained the original harness disabled sound70 byte, then incorrectly dereferenced the null result. Fixture now explicitly enables sound for positive cases and asserts nonnull before field access; production disabled gate was correct and unchanged."
+  },
+  "boundaries": [
+    "Valid factory indices0..2 and configured nonnegative class index.",
+    "Canonical channel storage, allocation sizes and C++ exception domain differ from native ABI/SEH.",
+    "Bank update is live in installed bank fixture; event-backed fixture channels are stopped before bank update.",
+    "Alternate engine shutdown remains a required independent service.",
+    "Application phase5 startup and game validation remain open."
+  ],
+  "followups": [
+    {
+      "packet": "sound_application_composition",
+      "scope": "Bind A88770 and shared owner/services to application phase5; application-host files leased by another orchestrator."
+    }
+  ]
+}

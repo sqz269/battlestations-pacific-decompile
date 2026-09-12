@@ -1,6 +1,10 @@
 #include "bsp/sound_shutdown.hpp"
 #include "bsp/sound_listener.hpp"
 #include "bsp/sound_resource_runtime.hpp"
+#include "bsp/sound_channel_runtime.hpp"
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#include <windows.h>
 
 #include <cstdlib>
 #include <exception>
@@ -84,6 +88,25 @@ struct SoundBaseUnwind {
     }
 };
 } // namespace
+
+SoundRetainedShutdownRuntime::SoundRetainedShutdownRuntime(SoundChannelRuntime& channels,
+    GameplayEffectComponentLifetime& samples, SoundAlternateShutdownHost& alternate) noexcept
+    : channels_(channels), samples_(samples), alternate_(alternate) {}
+void SoundRetainedShutdownRuntime::stop_retained_74_slot08(void* entry, std::uint32_t flag) {
+    channels_.stop_slot08(static_cast<SoundLevelEntry*>(entry), static_cast<std::uint8_t>(flag));
+}
+void SoundRetainedShutdownRuntime::release_retained_74_reference(void* entry) noexcept {
+    channels_.release_reference(entry);
+}
+void SoundRetainedShutdownRuntime::release_retained_80_reference(void* sample) noexcept {
+    try {
+        if (sample && InterlockedDecrement(reinterpret_cast<volatile LONG*>(static_cast<unsigned char*>(sample) + 4)) == 0)
+            samples_.zero_references_slot_00(sample);
+    } catch (...) { std::terminate(); }
+}
+void SoundRetainedShutdownRuntime::delete_alternate_slot00(void* alternate, std::uint32_t flags) {
+    alternate_.delete_alternate_slot00(alternate, flags);
+}
 
 void stop_retained_sound_pointers_00a7b9c0(SoundSystemOwner& owner,
     SoundShutdownVirtualHost& host) {
