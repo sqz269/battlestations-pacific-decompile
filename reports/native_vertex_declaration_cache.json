@@ -1,0 +1,464 @@
+{
+  "packet": "orch3_vertex_declaration_cache_at",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00b2f910",
+      "end_inclusive": "00b2f987",
+      "end_exclusive": "00b2f988",
+      "cpp_symbol": "destroy_native_declaration_record_00b2f910",
+      "ghidra_name": "BSP_NativeDeclarationRecord_Destroy",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeDeclarationRecord_Destroy(void)",
+      "original_abi": "Native __thiscall; stack (void); see listing RET and docs/NATIVE_VERTEX_DECLARATION_CACHE.md.",
+      "source": "src/native_vertex_declaration_cache.cpp",
+      "header": "include/bsp/native_vertex_declaration_cache.hpp",
+      "native_byte_count": 120,
+      "native_sha256": "ca27c7e6c55f4eaea81008a00d800f6eb6974c2e1b651e623f4bf1edfc4ea776",
+      "coverage": "complete normal body; B305F0 qualified to D5F060 registry profile",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual2Ch declaration cache records, native alias/name cleanup and actual+04 reference increments. Full live/disk bytes and assembly; new C++ ABI; native EH and gameplay unverified. Evidence: docs/NATIVE_VERTEX_DECLARATION_CACHE.md; reports/native_vertex_declaration_cache.json."
+    },
+    {
+      "address": "00b2fbb0",
+      "end_inclusive": "00b2fc51",
+      "end_exclusive": "00b2fc52",
+      "cpp_symbol": "copy_construct_native_declaration_record_00b2fbb0",
+      "ghidra_name": "BSP_NativeDeclarationRecord_CopyConstruct",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_NativeDeclarationRecord_CopyConstruct(void *source)",
+      "original_abi": "Native __thiscall; stack (void *source); see listing RET and docs/NATIVE_VERTEX_DECLARATION_CACHE.md.",
+      "source": "src/native_vertex_declaration_cache.cpp",
+      "header": "include/bsp/native_vertex_declaration_cache.hpp",
+      "native_byte_count": 162,
+      "native_sha256": "32e840f2542ede1b6c231ff9bf09e3fa9b134cefa5833502ea86fa69c5827f03",
+      "coverage": "complete normal body; B305F0 qualified to D5F060 registry profile",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual2Ch declaration cache records, native alias/name cleanup and actual+04 reference increments. Full live/disk bytes and assembly; new C++ ABI; native EH and gameplay unverified. Evidence: docs/NATIVE_VERTEX_DECLARATION_CACHE.md; reports/native_vertex_declaration_cache.json."
+    },
+    {
+      "address": "00b2fe20",
+      "end_inclusive": "00b2fefc",
+      "end_exclusive": "00b2fefd",
+      "cpp_symbol": "reserve_native_declaration_records_00b2fe20",
+      "ghidra_name": "BSP_NativeDeclarationRecordArray_Reserve",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeDeclarationRecordArray_Reserve(unsigned int capacity)",
+      "original_abi": "Native __thiscall; stack (unsigned int capacity); see listing RET and docs/NATIVE_VERTEX_DECLARATION_CACHE.md.",
+      "source": "src/native_vertex_declaration_cache.cpp",
+      "header": "include/bsp/native_vertex_declaration_cache.hpp",
+      "native_byte_count": 221,
+      "native_sha256": "665583b9df15257515895c67a4f6fdc6901f4cb5bae4327ba43c0bda47b59cfd",
+      "coverage": "complete normal body; B305F0 qualified to D5F060 registry profile",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual2Ch declaration cache records, native alias/name cleanup and actual+04 reference increments. Full live/disk bytes and assembly; new C++ ABI; native EH and gameplay unverified. Evidence: docs/NATIVE_VERTEX_DECLARATION_CACHE.md; reports/native_vertex_declaration_cache.json."
+    },
+    {
+      "address": "00b300c0",
+      "end_inclusive": "00b3012e",
+      "end_exclusive": "00b3012f",
+      "cpp_symbol": "append_native_declaration_record_00b300c0",
+      "ghidra_name": "BSP_NativeDeclarationRecordArray_Append",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void BSP_NativeDeclarationRecordArray_Append(void *record)",
+      "original_abi": "Native __thiscall; stack (void *record); see listing RET and docs/NATIVE_VERTEX_DECLARATION_CACHE.md.",
+      "source": "src/native_vertex_declaration_cache.cpp",
+      "header": "include/bsp/native_vertex_declaration_cache.hpp",
+      "native_byte_count": 111,
+      "native_sha256": "8528d9ff2e9b0d930083f10bf31106fea80e4bd55892cc416a76bd9bc69f4343",
+      "coverage": "complete normal body; B305F0 qualified to D5F060 registry profile",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual2Ch declaration cache records, native alias/name cleanup and actual+04 reference increments. Full live/disk bytes and assembly; new C++ ABI; native EH and gameplay unverified. Evidence: docs/NATIVE_VERTEX_DECLARATION_CACHE.md; reports/native_vertex_declaration_cache.json."
+    },
+    {
+      "address": "00b2c280",
+      "end_inclusive": "00b2c2cf",
+      "end_exclusive": "00b2c2d0",
+      "cpp_symbol": "copy_native_declaration_resolved_name_00b2c280",
+      "ghidra_name": "BSP_DeclarationRegistry_CopyResolvedName",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_DeclarationRegistry_CopyResolvedName(void *output, void *name, unsigned int word)",
+      "original_abi": "Native __thiscall; stack (void *output, void *name, unsigned int word); see listing RET and docs/NATIVE_VERTEX_DECLARATION_CACHE.md.",
+      "source": "src/native_vertex_declaration_cache.cpp",
+      "header": "include/bsp/native_vertex_declaration_cache.hpp",
+      "native_byte_count": 80,
+      "native_sha256": "040860b53dfd30e670b36ea53acaeb3048e23bd89757cc3ef36ad6bc4bc6f0a0",
+      "coverage": "complete normal body; B305F0 qualified to D5F060 registry profile",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual2Ch declaration cache records, native alias/name cleanup and actual+04 reference increments. Full live/disk bytes and assembly; new C++ ABI; native EH and gameplay unverified. Evidence: docs/NATIVE_VERTEX_DECLARATION_CACHE.md; reports/native_vertex_declaration_cache.json."
+    },
+    {
+      "address": "00b31d20",
+      "end_inclusive": "00b31d34",
+      "end_exclusive": "00b31d35",
+      "cpp_symbol": "acquire_native_cached_declaration_00b31d20",
+      "ghidra_name": "BSP_DeclarationRegistry_Acquire",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_DeclarationRegistry_Acquire(void *declaration)",
+      "original_abi": "Native __thiscall; stack (void *declaration); see listing RET and docs/NATIVE_VERTEX_DECLARATION_CACHE.md.",
+      "source": "src/native_vertex_declaration_cache.cpp",
+      "header": "include/bsp/native_vertex_declaration_cache.hpp",
+      "native_byte_count": 21,
+      "native_sha256": "984d24bc0617becd91f8537f65986b285467e90f1695f65378b419b70861961c",
+      "coverage": "complete normal body; B305F0 qualified to D5F060 registry profile",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual2Ch declaration cache records, native alias/name cleanup and actual+04 reference increments. Full live/disk bytes and assembly; new C++ ABI; native EH and gameplay unverified. Evidence: docs/NATIVE_VERTEX_DECLARATION_CACHE.md; reports/native_vertex_declaration_cache.json."
+    },
+    {
+      "address": "00b305f0",
+      "end_inclusive": "00b30b36",
+      "end_exclusive": "00b30b37",
+      "cpp_symbol": "load_native_cached_vertex_declaration_00b305f0",
+      "ghidra_name": "BSP_NativeDeclarationRegistry_Load",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_NativeDeclarationRegistry_Load(void *name, unsigned int word, unsigned char acquire_new, unsigned char allow_load)",
+      "original_abi": "Native __thiscall; stack (void *name, unsigned int word, unsigned char acquire_new, unsigned char allow_load); see listing RET and docs/NATIVE_VERTEX_DECLARATION_CACHE.md.",
+      "source": "src/native_vertex_declaration_cache.cpp",
+      "header": "include/bsp/native_vertex_declaration_cache.hpp",
+      "native_byte_count": 1351,
+      "native_sha256": "84c6714da7d04cf2fcb15508e182f7870014b28c002671194e78193ba29e4945",
+      "coverage": "complete normal body; B305F0 qualified to D5F060 registry profile",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual2Ch declaration cache records, native alias/name cleanup and actual+04 reference increments. Full live/disk bytes and assembly; new C++ ABI; native EH and gameplay unverified. Evidence: docs/NATIVE_VERTEX_DECLARATION_CACHE.md; reports/native_vertex_declaration_cache.json."
+    },
+    {
+      "address": "00b317e0",
+      "end_inclusive": "00b318a0",
+      "end_exclusive": "00b318a1",
+      "cpp_symbol": "load_native_renderer_vertex_declaration_00b317e0",
+      "ghidra_name": "BSP_Renderer_LoadVertexDeclaration",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * BSP_Renderer_LoadVertexDeclaration(void *name)",
+      "original_abi": "Native __thiscall; stack (void *name); see listing RET and docs/NATIVE_VERTEX_DECLARATION_CACHE.md.",
+      "source": "src/native_vertex_declaration_cache.cpp",
+      "header": "include/bsp/native_vertex_declaration_cache.hpp",
+      "native_byte_count": 193,
+      "native_sha256": "9969ce4bb5d7837f4e047d3866e954ca501eb25f283774880d8213bff7ba5cf5",
+      "coverage": "complete normal body; B305F0 qualified to D5F060 registry profile",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Actual2Ch declaration cache records, native alias/name cleanup and actual+04 reference increments. Full live/disk bytes and assembly; new C++ ABI; native EH and gameplay unverified. Evidence: docs/NATIVE_VERTEX_DECLARATION_CACHE.md; reports/native_vertex_declaration_cache.json."
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00b2f93b",
+      "native": "004d05e0",
+      "function": "00b2f910"
+    },
+    {
+      "address": "00b2f944",
+      "native": "00bf65ac",
+      "function": "00b2f910"
+    },
+    {
+      "address": "00b2f96b",
+      "native": "00419cc0",
+      "function": "00b2f910"
+    },
+    {
+      "address": "00b2f972",
+      "native": "00bd1510",
+      "function": "00b2f910"
+    },
+    {
+      "address": "00b2fbe8",
+      "native": "0041dd40",
+      "function": "00b2fbb0"
+    },
+    {
+      "address": "00b2fbfd",
+      "native": "00bf7680",
+      "function": "00b2fbb0"
+    },
+    {
+      "address": "00b2fc14",
+      "native": "004d48a0",
+      "function": "00b2fbb0"
+    },
+    {
+      "address": "00b2fe62",
+      "native": "00bf55be",
+      "function": "00b2fe20"
+    },
+    {
+      "address": "00b2fe9d",
+      "native": "00b2fbb0",
+      "function": "00b2fe20"
+    },
+    {
+      "address": "00b2fec4",
+      "native": "00b2f910",
+      "function": "00b2fe20"
+    },
+    {
+      "address": "00b2fedb",
+      "native": "00bf6989",
+      "function": "00b2fe20"
+    },
+    {
+      "address": "00b300f4",
+      "native": "00b2fe20",
+      "function": "00b300c0"
+    },
+    {
+      "address": "00b30114",
+      "native": "00b2fbb0",
+      "function": "00b300c0"
+    },
+    {
+      "address": "00b2c2ab",
+      "native": "0041dd40",
+      "function": "00b2c280"
+    },
+    {
+      "address": "00b2c2c0",
+      "native": "00bf7680",
+      "function": "00b2c280"
+    },
+    {
+      "address": "00b30618",
+      "native": "00beccd0",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30640",
+      "native": "0041dd40",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30657",
+      "native": "00bf7680",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30667",
+      "native": "00bee690",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30697",
+      "native": "00bf6713",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b306a5",
+      "native": "00bf6713",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b306d3",
+      "native": "00bf7fbf",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b306e9",
+      "native": "00bf6713",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30763",
+      "native": "0041dd40",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b3077a",
+      "native": "00bf7680",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b3079a",
+      "native": "00419cc0",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b307a1",
+      "native": "00bd1510",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b307aa",
+      "native": "00bee690",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b307cf",
+      "native": "00bf7fbf",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b307f8",
+      "native": "00bf6713",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30826",
+      "native": "00bf7fbf",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30882",
+      "native": "004c3020",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b308b3",
+      "native": "0041dd40",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b308cd",
+      "native": "00bf7680",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b308ea",
+      "native": "004ce6f0",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b308f7",
+      "native": "004ce780",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30913",
+      "native": "00bdd340",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b3095d",
+      "native": "004ce6f0",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30968",
+      "native": "004ce780",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b309b0",
+      "native": "00bf7fbf",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b309d1",
+      "native": "004ce6f0",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b309de",
+      "native": "004ce780",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b309fa",
+      "native": "00b300c0",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30a2f",
+      "native": "00b2f910",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30a4c",
+      "native": "00419cc0",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30a53",
+      "native": "00bd1510",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30a6c",
+      "native": "00b2f910",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30a89",
+      "native": "00419cc0",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30a90",
+      "native": "00bd1510",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30ab0",
+      "native": "00419cc0",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30ab7",
+      "native": "00bd1510",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30aed",
+      "native": "00419cc0",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30af4",
+      "native": "00bd1510",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30b14",
+      "native": "00419cc0",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b30b1b",
+      "native": "00bd1510",
+      "function": "00b305f0"
+    },
+    {
+      "address": "00b31820",
+      "native": "0041dd40",
+      "function": "00b317e0"
+    },
+    {
+      "address": "00b31837",
+      "native": "00bf7680",
+      "function": "00b317e0"
+    },
+    {
+      "address": "00b3184b",
+      "native": "004bcc00",
+      "function": "00b317e0"
+    },
+    {
+      "address": "00b31861",
+      "native": "00b305f0",
+      "function": "00b317e0"
+    },
+    {
+      "address": "00b3187f",
+      "native": "00419cc0",
+      "function": "00b317e0"
+    },
+    {
+      "address": "00b31886",
+      "native": "00bd1510",
+      "function": "00b317e0"
+    }
+  ],
+  "no_ghidra_function": [],
+  "returning_free_gaps": [
+    {
+      "address": "00b2f910",
+      "call_site": "00b2f944",
+      "start": "00b2f949",
+      "end_exclusive": "00b2f988"
+    },
+    {
+      "address": "00b2fe20",
+      "call_site": "00b2fedb",
+      "start": "00b2fee0",
+      "end_exclusive": "00b2feea"
+    }
+  ],
+  "verification": {
+    "live_disk_equal": true,
+    "build": "pending",
+    "native_probe": "pending",
+    "game_validated": false
+  }
+}
