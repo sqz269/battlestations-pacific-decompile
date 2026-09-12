@@ -341,3 +341,16 @@ none. Every address this packet read or cites is the start of a Ghidra function:
 | `ship_ai_zone_pushout` | `00417B10`, `00416B50`, `00416F30`, `0082ADC0`, `004120D0` | the zone set and the push-out. Three separate chains (`follow`, `land`, `006AC5D0`) route their goals through it, so its contract is load-bearing for all of them. |
 | `ship_ai_station_keeping_arm` | `009EDA28`, `009EDB6B`, `009EDD9B`, `009EDE87` | unchanged from `docs/SHIP_AI_GOAL_VECTOR.md`, but now with its producer known: the arm's input is this packet's request and its gate is `blk+3A5h`/`+3A6h` as the follow step sets them. |
 | `ship_ai_brain_speed_scale_0af0` | `brain+0AF0h` | unchanged from `docs/SHIP_AI_ATTACKMOVE_SUBSTATES.md`; the land step adds two more writers (`009E1E48`, `009E1FEF`, `009E200C`) and no reader. |
+
+## Correction from docs/SHIP_AI_FORMATION.md
+
+Packet `cc_ai_formation` read the member record's three producers (`0070ED30` join, `0070EFD0`
+reshape, `0070E620` the scene reader) and corrects two readings above: the slot columns are
+(across, along), not (along, across): `record+10h + 4k` is the across-track offset and
+`record+20h + 4k` the along-track distance back along the leader's wake (Lua `dist[k].x` and
+`dist[k].z`, exactly four columns, `0070E84B CMP EDI,4`); and the station offset is added while
+the making-way latch is set, not subtracted. Three 25-entry pattern tables at `00E08FE0`,
+`00E090A8` and `00E09170` (line, column, diamond) are scaled by `FormationShipDist`. `009DF2D0` is
+now whole, including the speed match that publishes `reference_speed * 1.25 / max(blend, 0.25)`
+into `record+30h`; `00810630` never writes its fourth out-parameter on the `along <= 0` arm, so
+`0070D290`'s `out[4]` is stale for a station abreast of or ahead of the leader.
