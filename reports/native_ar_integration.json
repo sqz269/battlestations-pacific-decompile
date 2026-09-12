@@ -770,5 +770,206 @@
     "failure": "WinError112 exhausted J: while copying final subtree library to parent delivery. Existing passing proofs preserved.",
     "resolution": "NTFS-compressed only three new AR parent evidence directories; approximately718MB recovered. Resumed by verifying existing copies and copying missing files only. All delivery and1755 frozen combined hashes rechecked.",
     "contents_changed_by_compression": false
+  },
+  "main_integration_build": {
+    "checked_head": "e0d1f994b1654385714339a58c23ca3a8f980468",
+    "recorded_utc": "2026-09-12T17:13:52.868024+00:00",
+    "strict_msvc_win32_build": true,
+    "existing_ctests_passed": 2,
+    "fixture_input_count": 1755,
+    "changed_existing_fixture_inputs": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "fixture_sha256": "e54171375867ea0c40130091708f9277fe6a4618d825976d46d6b518b0cf2764",
+        "checked_build_sha256": "31a3e5580ca917cdb8b8163fd9bdaef38c5fa2455b4f52e7a3bf1c71f8c557aa"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "fixture_sha256": "9375931e9b6f765297dfc703c5bfe603cf618cb5904400a452e5e86baea70e6c",
+        "checked_build_sha256": "a214cb2155b04b3030e0335864e18489088a0f23017c5c99a6beb3a9989e8132"
+      },
+      {
+        "path": "include/bsp/native_model_owner.hpp",
+        "fixture_sha256": "d5e1d7529f2d824ae1c2dd1a9181a9e40cb22ad08d9ea4fe363a8cf648d3c58f",
+        "checked_build_sha256": "8ad5bc6167d9fa913583b1cbd19fb9f944d9fc5552d224848c4e0ef113996326"
+      },
+      {
+        "path": "include/bsp/native_particle_model_construction.hpp",
+        "fixture_sha256": "adb624fb17b0cb70f5e830104417a87b5e4a06593cdbb07982fa83cb9aa90a67",
+        "checked_build_sha256": "3d7fb5c745fde8c07d4fa7dd3820380fd4848cc737040371c1ea0c548141dc60"
+      },
+      {
+        "path": "src/native_model_owner.cpp",
+        "fixture_sha256": "bb7a8bd8f053e9add33b4554bfe766e7a04ca1107367a1757f238f8a695cfe8b",
+        "checked_build_sha256": "8a0e4e81df6331933be4d21749d6ec4096da96ab5d060fc8e84ecf22e971e9a2"
+      },
+      {
+        "path": "src/native_particle_model_construction.cpp",
+        "fixture_sha256": "b9daba357f16783185049ac815054415e2e19db6d90932e6b3f9e4d5666b7144",
+        "checked_build_sha256": "91b2663f0aeab94186ea72f3572bb731087c9a1e907ff3b4dd7119461a8bf746"
+      }
+    ],
+    "new_source_header_files": [
+      "include/bsp/native_particle_model_lifetime.hpp",
+      "include/bsp/native_particle_model_manager.hpp",
+      "include/bsp/native_renderer_draw_primitive.hpp",
+      "include/bsp/native_renderer_format_check.hpp",
+      "include/bsp/native_tracer_construction.hpp",
+      "include/bsp/native_tracer_lifetime.hpp",
+      "include/bsp/ship_ai_bearing_rating.hpp",
+      "src/native_particle_model_lifetime.cpp",
+      "src/native_particle_model_manager.cpp",
+      "src/native_renderer_draw_primitive.cpp",
+      "src/native_renderer_format_check.cpp",
+      "src/native_tracer_construction.cpp",
+      "src/native_tracer_lifetime.cpp",
+      "src/ship_ai_bearing_rating.cpp"
+    ],
+    "AR_source_header_and_fixture_object_inputs_unchanged": true,
+    "interpretation": "Moving main adds source/header files and changes two model-related modules plus the registry and core archive. All AR source/header/object inputs and Lua/zlib archives remain identical. Focused fixture results stay tied to their preserved eaf4a51e archive; the latest main build and existing CTests are separate evidence.",
+    "installed_game_PE_hash_reverified": true,
+    "artifacts": [
+      {
+        "path": "local/native-ar-main-build/integration.log",
+        "bytes": 1260,
+        "sha256": "dcd0aacdb8f2505b429dee799dc98ec830f6a0fa545f944183ef40a2afa0a60e"
+      },
+      {
+        "path": "local/native-ar-main-build/bsp_core.lib",
+        "bytes": 46892956,
+        "sha256": "31a3e5580ca917cdb8b8163fd9bdaef38c5fa2455b4f52e7a3bf1c71f8c557aa"
+      },
+      {
+        "path": "local/native-ar-main-build/bsp_lua511.lib",
+        "bytes": 455244,
+        "sha256": "3152f1378e15bb0eea5391d3d9b8b2dbaed92e9355f6676cc5f05222a0aaac24"
+      },
+      {
+        "path": "local/native-ar-main-build/bsp_zlib121.lib",
+        "bytes": 71906,
+        "sha256": "c0b4c9ec00ae9019ea191da4cc2177d694fcd0b84886df725bffee8c9ca564ed"
+      },
+      {
+        "path": "local/native-ar-main-build/cmake/startup.cmake",
+        "bytes": 67143,
+        "sha256": "a214cb2155b04b3030e0335864e18489088a0f23017c5c99a6beb3a9989e8132"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_model_owner.hpp",
+        "bytes": 6041,
+        "sha256": "8ad5bc6167d9fa913583b1cbd19fb9f944d9fc5552d224848c4e0ef113996326"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_particle_model_construction.hpp",
+        "bytes": 8834,
+        "sha256": "3d7fb5c745fde8c07d4fa7dd3820380fd4848cc737040371c1ea0c548141dc60"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_particle_model_lifetime.hpp",
+        "bytes": 6829,
+        "sha256": "16f364973a92950a0405423eaa90f062bef05716842f87b93bf52915b44a7a96"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_particle_model_manager.hpp",
+        "bytes": 3702,
+        "sha256": "2575deb3981060303320cf0c51eaed2a6659dc7686ec1243c23375064c20005d"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_renderer_draw_primitive.hpp",
+        "bytes": 1258,
+        "sha256": "dcf8371a149880129b01144f941267fceea04f8a6a793f91912853d33e4d57ea"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_renderer_format_check.hpp",
+        "bytes": 1443,
+        "sha256": "d0165b331dc4274e735fe450a4a76ceb031d64937ace6b90614eb48a09da3f55"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_tracer_construction.hpp",
+        "bytes": 4945,
+        "sha256": "800696c0606a51e39c25dda3b5120f6bf3dd56d8036e34ae07e47ca6833168b9"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_tracer_lifetime.hpp",
+        "bytes": 5415,
+        "sha256": "e4a6b0c57a3e8e210b397023106e575f3c5850d69c2fca043cffb25d8b286e3e"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/ship_ai_bearing_rating.hpp",
+        "bytes": 21101,
+        "sha256": "83901e22993c63b1cc7000eab676f68526b232ca3331dfa366ce06ee5ea3fa2c"
+      },
+      {
+        "path": "local/native-ar-main-build/local/check_integrator_retry_guard.py",
+        "bytes": 744,
+        "sha256": "f4ea2a5c048949cd8fe6db949774a52cb4ba28f91967f607b354332ae2d6cb68"
+      },
+      {
+        "path": "local/native-ar-main-build/local/integrate_startup_workers.py",
+        "bytes": 3033,
+        "sha256": "28e87d4fa6e5b3bdc1185deab35b54363910f5581b6d464486f6f4b12f7695a2"
+      },
+      {
+        "path": "local/native-ar-main-build/local/pin_native_ar_main_build.py",
+        "bytes": 3357,
+        "sha256": "5053e27178b02c2feaefff351249049311a0bc34c5eb3914b28cf3aa849e7b08"
+      },
+      {
+        "path": "local/native-ar-main-build/scripts/build.ps1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_model_owner.cpp",
+        "bytes": 14403,
+        "sha256": "8a0e4e81df6331933be4d21749d6ec4096da96ab5d060fc8e84ecf22e971e9a2"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_particle_model_construction.cpp",
+        "bytes": 17003,
+        "sha256": "91b2663f0aeab94186ea72f3572bb731087c9a1e907ff3b4dd7119461a8bf746"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_particle_model_lifetime.cpp",
+        "bytes": 11898,
+        "sha256": "47e60f2fed80e33afbdefec4bccd721b6d7b20a75e45944984b9c1e1cc360e67"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_particle_model_manager.cpp",
+        "bytes": 9944,
+        "sha256": "8f4333c6485f219eb4e523a731f69c2c7fd02505f6de4d48f47fd033d40195fc"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_renderer_draw_primitive.cpp",
+        "bytes": 3090,
+        "sha256": "ebf22e08702e312df99a3ce193c58c79bf7c280779592e4a41cb523c44defe09"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_renderer_format_check.cpp",
+        "bytes": 1452,
+        "sha256": "07512586ca32dd7ce87eb7137342fc13168969b526ebc5c21ffaafd80f236e26"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_tracer_construction.cpp",
+        "bytes": 14418,
+        "sha256": "d5fc641f753ef4b6e5f1fa125771f0ecc960d0276ebd753ea37e67b84888d72b"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_tracer_lifetime.cpp",
+        "bytes": 12269,
+        "sha256": "9ac1a10fdcc3cf1edb6ee3c10e7776148140b4476459a05af7e9733027bf7adf"
+      },
+      {
+        "path": "local/native-ar-main-build/src/ship_ai_bearing_rating.cpp",
+        "bytes": 17524,
+        "sha256": "d7805505ab634e0881215eec63f31ea36e03a835886107c9fd4409cd11f2fe51"
+      },
+      {
+        "path": "local/native-ar-main-build/annotations-before-main.json",
+        "bytes": 44038,
+        "sha256": "89edbc5d6e176ab76f724b69a14d63735280d016ca7fc9332e290e3db807ee94"
+      }
+    ],
+    "publication": "Evidence commit and normal push still pending; verify remote ancestry afterward."
   }
 }
