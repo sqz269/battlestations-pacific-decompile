@@ -404,5 +404,60 @@
     "original_exception_abi_validated": false,
     "independent_review": "Read-only sphere review: saved EDX access, native RETs, current-target and parent reloads, all22 cone/23 SmartArea register/implicit x87 operations match native listings.",
     "fixture_limits": "Disjoint outputs; float status not compared. Callback changes mode70, not parentA0/A4 or current vtable. Source reload/alias order reviewed, application override composition unvalidated."
+  },
+  "final_merged_validation_an": {
+    "tested_commit": "aeb10c0f969043fcf121648538993f7a70be4ed7",
+    "build": "local/an-final-combined-build.log: standard strict MSVC Win32 build and both seeded CTests passed",
+    "reviewed_source_commit": "1c54b97343db155c9be02ea5c6c27a1fbf1be235",
+    "all10_owned_source_header_hashes_preserved": true,
+    "all32_name_evidence_preserved": true,
+    "library_sha256": "32cd1b7077ca4f51c2a90aff1375eec6d087e9134591763b9022ebb880cd4af7",
+    "current_library_replays": [
+      {
+        "label": "cone",
+        "exit_code": 0,
+        "log": "local\\an-cone-current-replay.log",
+        "library_sha256": "32cd1b7077ca4f51c2a90aff1375eec6d087e9134591763b9022ebb880cd4af7"
+      },
+      {
+        "label": "sphere",
+        "exit_code": 0,
+        "log": "local\\an-sphere-current-replay.log",
+        "library_sha256": "32cd1b7077ca4f51c2a90aff1375eec6d087e9134591763b9022ebb880cd4af7"
+      },
+      {
+        "label": "smartarea",
+        "exit_code": 0,
+        "log": "local\\an-smartarea-current-replay.log",
+        "library_sha256": "32cd1b7077ca4f51c2a90aff1375eec6d087e9134591763b9022ebb880cd4af7"
+      },
+      {
+        "label": "definition",
+        "exit_code": 0,
+        "log": "local\\an-definition-current-replay.log",
+        "library_sha256": "32cd1b7077ca4f51c2a90aff1375eec6d087e9134591763b9022ebb880cd4af7"
+      }
+    ],
+    "functions": 26,
+    "analyzed_fh3_dispatchers": 6,
+    "direct_call_rows": 132,
+    "failed_call_rows": 0,
+    "original_throwing_abi_and_gameplay": false,
+    "fixture_carryforward": {
+      "from_commit": "2a74318ba0f1f9af3e906f114b97fd6013887e76",
+      "to_commit": "aeb10c0f969043fcf121648538993f7a70be4ed7",
+      "changed_files": [
+        "config/names/006d0000.jsonl",
+        "config/names/006f0000.jsonl",
+        "config/names/00740000.jsonl",
+        "config/names/00840000.jsonl",
+        "reports/land_and_structures_function_definitions.json"
+      ],
+      "only_annotation_metadata_changed": true,
+      "all_source_and_build_input_paths_unchanged": true,
+      "rebuilt_core_sha256_identical": "32cd1b7077ca4f51c2a90aff1375eec6d087e9134591763b9022ebb880cd4af7",
+      "full_standard_build_and_two_seeded_ctests_passed": true,
+      "replays_carried": "four focused current-library original-byte probes over identical library"
+    }
   }
 }
