@@ -242,7 +242,13 @@
     "registration_correction": "Initial strictbuild passed but staticlink showed base lacked sharedCMake registration of alreadycomplete supportsource. Ignoredhook added thatsource; incremental strictbuild/test and staticlink then verified fullactualprovider. No production source changes orstub.",
     "static_mapping": "All36nativeinstructions mapped to46linked instructions; eachsource-onlycontextinstruction andbranch checked.",
     "stack_proof": "Every normalCFG path restoresentryESP; bothTLSgetcalls, actualgettermoduledecoder stdcall cleanup andcdeclgate cleanup accounted.",
-    "binding_proof": "All10fixed linkeddecoder+gate bindings classified; completeactualgate andexactstrcmpresolved, noonly-named-undefinedproviderclaim."
+    "binding_proof": "All10fixed linkeddecoder+gate bindings classified; completeactualgate andexactstrcmpresolved, noonly-named-undefinedproviderclaim.",
+    "compiler_reference_member_offsets_verified": [
+      0,
+      4,
+      8,
+      12
+    ]
   },
   "archive_provenance": {
     "archive": "build\\win32\\Release\\bsp_core.lib",
@@ -1298,6 +1304,426 @@
   "immutable_handoff": {
     "path": "local/pointer_decode_handoff",
     "manifest": "local/pointer_decode_handoff/manifest.json",
-    "manifest_hash": "Externalhandoffavoidsrecursivehash."
+    "manifest_hash": "Externalhandoffavoidsrecursivehash.",
+    "report_version": "Original pre-supplement report and source artifacts remain unchanged in the original seal. Current doc/audit versions are sealed in the separate layout supplement."
+  },
+  "context_layout_supplement": {
+    "proof_gap_closed": "Original sizeof16 and hard-coded assembly mapping did not prove compiler storage offsets of the four reference members.",
+    "directory": "local/pointer_decode_layout_supplement",
+    "original_manifest_sha256": "9c802d9477934bb81ae59a14f369b6e5dddab689ec68dd9a5e744467b502c1d2",
+    "original_report_sha256": "1636c953cc51d719bb6df7ce624a9643410504e5af9676c4b741d173c414cac4",
+    "original_seal_all63_hashes_reverified_unchanged": true,
+    "compiler_proof": {
+      "created_utc": "2026-09-11T23:55:53.042722+00:00",
+      "original_decoder_manifest_sha256": "9c802d9477934bb81ae59a14f369b6e5dddab689ec68dd9a5e744467b502c1d2",
+      "input_headers": [
+        {
+          "path": "include/bsp/native_crt_pointer_decode.hpp",
+          "bytes": 2327,
+          "sha256": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f",
+          "supplement_path": "sealed_inputs/include/bsp/native_crt_pointer_decode.hpp"
+        },
+        {
+          "path": "include/bsp/native_crt_pointer_decode_support.hpp",
+          "bytes": 2673,
+          "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722",
+          "supplement_path": "sealed_inputs/include/bsp/native_crt_pointer_decode_support.hpp"
+        }
+      ],
+      "source": "layout_probe.cpp",
+      "scope": "Four C++ member-address expressions compiled/linked only; no offsetof reference, inline asm, runtime object or provider substitution.",
+      "accessors": [
+        {
+          "export": "decoder_layout_tls",
+          "member": "getter_tls_index_00e15b00",
+          "physical_reference_word_offset": 0,
+          "object_section": 6,
+          "object_bytes": 10,
+          "bytes_hex": "558bec8b45088b005dc3",
+          "linked_VA": "00401030",
+          "linked_exact_bytes": true,
+          "relocations": 0,
+          "assembly": [
+            "push ebp",
+            "mov ebp, esp",
+            "mov eax, dword ptr [ebp + 8]",
+            "mov eax, dword ptr [eax]",
+            "pop ebp",
+            "ret "
+          ]
+        },
+        {
+          "export": "decoder_layout_ptd",
+          "member": "ptd_index_00e15afc",
+          "physical_reference_word_offset": 4,
+          "object_section": 5,
+          "object_bytes": 11,
+          "bytes_hex": "558bec8b45088b40045dc3",
+          "linked_VA": "00401020",
+          "linked_exact_bytes": true,
+          "relocations": 0,
+          "assembly": [
+            "push ebp",
+            "mov ebp, esp",
+            "mov eax, dword ptr [ebp + 8]",
+            "mov eax, dword ptr [eax + 4]",
+            "pop ebp",
+            "ret "
+          ]
+        },
+        {
+          "export": "decoder_layout_iat",
+          "member": "tls_get_value_iat_00ce20bc",
+          "physical_reference_word_offset": 8,
+          "object_section": 4,
+          "object_bytes": 11,
+          "bytes_hex": "558bec8b45088b40085dc3",
+          "linked_VA": "00401010",
+          "linked_exact_bytes": true,
+          "relocations": 0,
+          "assembly": [
+            "push ebp",
+            "mov ebp, esp",
+            "mov eax, dword ptr [ebp + 8]",
+            "mov eax, dword ptr [eax + 8]",
+            "pop ebp",
+            "ret "
+          ]
+        },
+        {
+          "export": "decoder_layout_gate",
+          "member": "module_gate",
+          "physical_reference_word_offset": 12,
+          "object_section": 3,
+          "object_bytes": 11,
+          "bytes_hex": "558bec8b45088b400c5dc3",
+          "linked_VA": "00401000",
+          "linked_exact_bytes": true,
+          "relocations": 0,
+          "assembly": [
+            "push ebp",
+            "mov ebp, esp",
+            "mov eax, dword ptr [ebp + 8]",
+            "mov eax, dword ptr [eax + 0xc]",
+            "pop ebp",
+            "ret "
+          ]
+        }
+      ],
+      "verified_offsets": [
+        0,
+        4,
+        8,
+        12
+      ],
+      "object_sha256": "1e264336ecf818821b07a4279f649387c488a7b0823f87974e26f4c395ba3d31",
+      "all_COFF_sections": [
+        {
+          "index": 1,
+          "name": ".drectve",
+          "bytes": 160,
+          "data_offset": 380,
+          "flags": "00100a00",
+          "sha256": "d9ad3ffe3d71b21cdcc52f70645c82f65cec99a7e5be64c9ef10dee9f5755ba2",
+          "bytes_hex": "2020202f44454641554c544c49423a224d535643525422202f44454641554c544c49423a224f4c444e414d455322202f4558504f52543a5f6465636f6465725f6c61796f75745f746c73202f4558504f52543a5f6465636f6465725f6c61796f75745f707464202f4558504f52543a5f6465636f6465725f6c61796f75745f696174202f4558504f52543a5f6465636f6465725f6c61796f75745f6761746520",
+          "relocations": []
+        },
+        {
+          "index": 2,
+          "name": ".debug$S",
+          "bytes": 204,
+          "data_offset": 540,
+          "flags": "42100040",
+          "sha256": "ed2e1f36001d3e5c39a0d02bb05d0d615bff5473116f353f08cc357c864149be",
+          "bytes_hex": "04000000f1000000c000000082000111000000004a3a5c50524f475c626174746c6573746174696f6e732d706163696669632d6465636f6d70696c652d6e61746976652d6372742d706f696e7465722d6465636f6465315c6c6f63616c5c706f696e7465725f6465636f64655f6c61796f75745f737570706c656d656e745c6c61796f75745f70726f62652e6f626a003a003c1101220000070013003300948d000013003300948d00004d6963726f736f667420285229204f7074696d697a696e6720436f6d70696c657200",
+          "relocations": []
+        },
+        {
+          "index": 3,
+          "name": ".text$mn",
+          "bytes": 11,
+          "data_offset": 744,
+          "flags": "60501020",
+          "sha256": "accc894b826f9affae640782d487e4476feea2028e9edf47533eb127dc02ea1e",
+          "bytes_hex": "558bec8b45088b400c5dc3",
+          "relocations": []
+        },
+        {
+          "index": 4,
+          "name": ".text$mn",
+          "bytes": 11,
+          "data_offset": 755,
+          "flags": "60501020",
+          "sha256": "3ba6aab8b7e9af300841ed504dbea4057905abf2379b6f15b0c8ac46eda62bdd",
+          "bytes_hex": "558bec8b45088b40085dc3",
+          "relocations": []
+        },
+        {
+          "index": 5,
+          "name": ".text$mn",
+          "bytes": 11,
+          "data_offset": 766,
+          "flags": "60501020",
+          "sha256": "3dfc746743527aa5ebf6559593d067a6bf62386f7edacb70c88c439b14b656df",
+          "bytes_hex": "558bec8b45088b40045dc3",
+          "relocations": []
+        },
+        {
+          "index": 6,
+          "name": ".text$mn",
+          "bytes": 10,
+          "data_offset": 777,
+          "flags": "60501020",
+          "sha256": "2246c2c753eab0352c11de33f3694e58f3791bda511313fe11bacdca6b59777d",
+          "bytes_hex": "558bec8b45088b005dc3",
+          "relocations": []
+        },
+        {
+          "index": 7,
+          "name": ".text$mn",
+          "bytes": 3,
+          "data_offset": 787,
+          "flags": "60501020",
+          "sha256": "4bc724f3b1d0caf4fe369c18cba3102e6c4ea057f63fe1587e3973134a7f755e",
+          "bytes_hex": "33c0c3",
+          "relocations": []
+        },
+        {
+          "index": 8,
+          "name": ".debug$F",
+          "bytes": 16,
+          "data_offset": 790,
+          "flags": "42101040",
+          "sha256": "5405ffa3a17ecbc674c5476dfaa0042a9a1435c9c008d5c4d6088aac50d757e8",
+          "bytes_hex": "00000000030000000000000000000000",
+          "relocations": [
+            {
+              "offset": 0,
+              "symbol": "_main",
+              "type": 7
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "name": ".chks64",
+          "bytes": 72,
+          "data_offset": 816,
+          "flags": "00000a00",
+          "sha256": "ac412d9980efff50b22b4aca04d506f3118c58a2cd7c78183a17c530ad7a3303",
+          "bytes_hex": "d9ad3ffe3d71b21ced2e1f36001d3e5caccc894b826f9aff3ba6aab8b7e9af303dfc746743527aa52246c2c753eab0354bc724f3b1d0caf45405ffa3a17ecbc60000000000000000",
+          "relocations": []
+        }
+      ],
+      "all_primary_symbols": [
+        {
+          "index": 0,
+          "name": "@comp.id",
+          "value": 17141140,
+          "section": -1,
+          "type": 0,
+          "storage": 3
+        },
+        {
+          "index": 1,
+          "name": "@feat.00",
+          "value": 2147549585,
+          "section": -1,
+          "type": 0,
+          "storage": 3
+        },
+        {
+          "index": 2,
+          "name": ".drectve",
+          "value": 0,
+          "section": 1,
+          "type": 0,
+          "storage": 3
+        },
+        {
+          "index": 4,
+          "name": ".debug$S",
+          "value": 0,
+          "section": 2,
+          "type": 0,
+          "storage": 3
+        },
+        {
+          "index": 6,
+          "name": ".text$mn",
+          "value": 0,
+          "section": 3,
+          "type": 0,
+          "storage": 3
+        },
+        {
+          "index": 8,
+          "name": ".text$mn",
+          "value": 0,
+          "section": 4,
+          "type": 0,
+          "storage": 3
+        },
+        {
+          "index": 10,
+          "name": ".text$mn",
+          "value": 0,
+          "section": 5,
+          "type": 0,
+          "storage": 3
+        },
+        {
+          "index": 12,
+          "name": ".text$mn",
+          "value": 0,
+          "section": 6,
+          "type": 0,
+          "storage": 3
+        },
+        {
+          "index": 14,
+          "name": ".text$mn",
+          "value": 0,
+          "section": 7,
+          "type": 0,
+          "storage": 3
+        },
+        {
+          "index": 16,
+          "name": ".debug$F",
+          "value": 0,
+          "section": 8,
+          "type": 0,
+          "storage": 3
+        },
+        {
+          "index": 18,
+          "name": "_decoder_layout_tls",
+          "value": 0,
+          "section": 6,
+          "type": 32,
+          "storage": 2
+        },
+        {
+          "index": 19,
+          "name": "_decoder_layout_ptd",
+          "value": 0,
+          "section": 5,
+          "type": 32,
+          "storage": 2
+        },
+        {
+          "index": 20,
+          "name": "_decoder_layout_iat",
+          "value": 0,
+          "section": 4,
+          "type": 32,
+          "storage": 2
+        },
+        {
+          "index": 21,
+          "name": "_decoder_layout_gate",
+          "value": 0,
+          "section": 3,
+          "type": 32,
+          "storage": 2
+        },
+        {
+          "index": 22,
+          "name": "_main",
+          "value": 0,
+          "section": 7,
+          "type": 32,
+          "storage": 2
+        },
+        {
+          "index": 23,
+          "name": ".chks64",
+          "value": 0,
+          "section": 9,
+          "type": 0,
+          "storage": 3
+        }
+      ],
+      "linked_PE_sha256": "353acf46714f92a5898a6038cfe2defd92cf7c1192bca26a395b73021ec88052",
+      "manifest_embedded": true,
+      "compiled_source_dependencies": [
+        {
+          "compiler_reported_path": "j:\\prog\\battlestations-pacific-decompile-native-crt-pointer-decode1\\local\\pointer_decode_layout_supplement\\sealed_inputs\\include\\bsp\\native_crt_pointer_decode.hpp",
+          "copy": "compiler_inputs/000_native_crt_pointer_decode.hpp",
+          "bytes": 2327,
+          "sha256": "b1e901d739c07419b55441988bf42177b0e6ace3ef27ef1251ecb3b36fb48a7f"
+        },
+        {
+          "compiler_reported_path": "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\cstdint",
+          "copy": "compiler_inputs/001_cstdint",
+          "bytes": 1697,
+          "sha256": "ce03526f2948c653a2ca8f68b9a8a8f0e13648243ab24068cdd473a52d4774c5"
+        },
+        {
+          "compiler_reported_path": "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\yvals_core.h",
+          "copy": "compiler_inputs/002_yvals_core.h",
+          "bytes": 100570,
+          "sha256": "10b59d42bde2105e76cf16735e34dd0f1d45a943cb1b789c4a0406c67c2bd684"
+        },
+        {
+          "compiler_reported_path": "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\vcruntime.h",
+          "copy": "compiler_inputs/003_vcruntime.h",
+          "bytes": 11444,
+          "sha256": "8a6e89fe85c66162d62c772d02367ae2e6530f1faaaa8d099427698a689bac7f"
+        },
+        {
+          "compiler_reported_path": "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\sal.h",
+          "copy": "compiler_inputs/004_sal.h",
+          "bytes": 213957,
+          "sha256": "cda06459ca38681800ce5e98703c66534c74a803aa652bd4bc2b3407dd45ed46"
+        },
+        {
+          "compiler_reported_path": "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\concurrencysal.h",
+          "copy": "compiler_inputs/005_concurrencysal.h",
+          "bytes": 17273,
+          "sha256": "1ea9a2e32a6ff298ad7904610cc71028caa9b172399a579ca90a120d1b1aec12"
+        },
+        {
+          "compiler_reported_path": "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\vadefs.h",
+          "copy": "compiler_inputs/006_vadefs.h",
+          "bytes": 7668,
+          "sha256": "282dcb4af7cdbbf34095235b069474621fdd82e28eec698b467f553df4759f01"
+        },
+        {
+          "compiler_reported_path": "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\xkeycheck.h",
+          "copy": "compiler_inputs/007_xkeycheck.h",
+          "bytes": 20754,
+          "sha256": "fdb1dc9ca22f9309bfb7e87b3f9e2b340ced7945344af2450be4beac589a3df9"
+        },
+        {
+          "compiler_reported_path": "c:\\program files\\microsoft visual studio\\18\\community\\vc\\tools\\msvc\\14.51.36231\\include\\stdint.h",
+          "copy": "compiler_inputs/008_stdint.h",
+          "bytes": 4114,
+          "sha256": "29fb6d4ba5e311e06877609c20a1bc49c6cdfb730f56dd0f9c53a6241c40ab5c"
+        },
+        {
+          "compiler_reported_path": "j:\\prog\\battlestations-pacific-decompile-native-crt-pointer-decode1\\local\\pointer_decode_layout_supplement\\sealed_inputs\\include\\bsp\\native_crt_pointer_decode_support.hpp",
+          "copy": "compiler_inputs/009_native_crt_pointer_decode_support.hpp",
+          "bytes": 2673,
+          "sha256": "dfc566daa6960a69680ea6897fce1b94127f3df0972cdaf645cf67a9f128e722"
+        }
+      ],
+      "runtime_executed": false,
+      "original_library_rebuilt_or_relinked": false,
+      "implementation_changed": false,
+      "limits": "Proves MSVC Win32 reference member binding storage offsets for exact sealed decoder header. Does not prove runtime bindings select actual IAT/TLS/PTD storage or native execution/EH."
+    },
+    "build_command": "cl /std:c++17 /EHsc /fp:strict /O2 /Oy- /MD /Gy /Gw /W4 /WX /sourceDependencies layout_dependencies.json; link /MANIFEST:EMBED /OPT:REF /OPT:NOICF /INCREMENTAL:NO",
+    "implementation_changes": false,
+    "original_library_rebuild_or_relink": false,
+    "runtime_execution": false,
+    "updated_files": [
+      "docs/NATIVE_CRT_POINTER_DECODE.md",
+      "reports/native_crt_pointer_decode_audit.json"
+    ],
+    "manifest": "local/pointer_decode_layout_supplement/manifest.json",
+    "manifest_sha256": "External handoff; omitted here to avoid a recursive hash.",
+    "limits": "Actual compiler field-layout evidence supplements original instruction/provider proof; current runtime IAT/TLS/PTD domain and native fault/SEH limits remain unchanged."
   }
 }
