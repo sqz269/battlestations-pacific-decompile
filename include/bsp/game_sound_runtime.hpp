@@ -72,6 +72,10 @@ struct GameSoundRuntimeSummary {
     std::size_t resources{}, samples{}, active_entries{}, fmod_calls{}, fmod_errors{};
     std::uint32_t resource_bytes{};
     std::size_t file_opens{}, file_closes{}, file_reads{}, file_seeks{};
+    // Host-owned VFS adapters reclaimed after successful SDK shutdown when
+    // the installed library omitted Close (observed for native EOF state3).
+    // Separate from actual FMOD callback closes; pending must end at zero.
+    std::size_t file_reclaims{}, file_handles_pending{};
 };
 
 // Application composition of recovered routines, not a native object/ABI.
