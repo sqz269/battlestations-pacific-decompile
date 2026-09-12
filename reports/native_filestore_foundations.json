@@ -1,0 +1,608 @@
+{
+  "packet": "orch2_filestore_foundations_aq",
+  "base_commit": "a7e7f3d9",
+  "status": "complete_actual_storage_strict_win32_and_bounded_original_source_fixture_checked",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "verification": "BSP CLI Client.verify on every live batch; installed PE read only."
+  },
+  "document": "docs/NATIVE_FILESTORE_FOUNDATIONS.md",
+  "routines": [
+    {
+      "address": "00be55e0",
+      "name": "allocate_native_file_store_node_00be55e0",
+      "source": "src/native_filestore_container_allocation.cpp",
+      "coverage": "complete_in_stated_host_domain",
+      "end_inclusive": "00be5616",
+      "end_exclusive": "00be5617",
+      "bytes": 55,
+      "original_abi": "No consumed incoming register/stack inputs; EAX allocation; RET",
+      "source_interface": "No extra inputs, __cdecl leaf",
+      "was_name": "FUN_00be55e0",
+      "proposed_name": "BSP_FileStore_AllocateResidentNode",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00be5690",
+      "name": "allocate_native_file_store_node_00be5690",
+      "source": "src/native_filestore_container_allocation.cpp",
+      "coverage": "complete_in_stated_host_domain",
+      "end_inclusive": "00be56c6",
+      "end_exclusive": "00be56c7",
+      "bytes": 55,
+      "original_abi": "No consumed incoming register/stack inputs; EAX allocation; RET",
+      "source_interface": "No extra inputs, __cdecl leaf",
+      "was_name": "FUN_00be5690",
+      "proposed_name": "BSP_FileStore_AllocatePendingNode",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bb5590",
+      "name": "construct_native_file_provider_base_00bb5590",
+      "source": "src/native_file_provider_base.cpp",
+      "coverage": "complete_in_stated_host_domain",
+      "end_inclusive": "00bb5622",
+      "end_exclusive": "00bb5623",
+      "bytes": 147,
+      "original_abi": "ECX actual provider base; source-name header stack; EAX owner; RET4",
+      "source_interface": "Explicit owner/sourceName/NativeStringStorage arguments for constructor; owner/NativeStringStorage for destructor",
+      "was_name": "FUN_00bb5590",
+      "proposed_name": "BSP_FileProviderBase_Construct",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bb5380",
+      "name": "destroy_native_file_provider_base_00bb5380",
+      "source": "src/native_file_provider_base.cpp",
+      "coverage": "complete_in_stated_host_domain",
+      "end_inclusive": "00bb53e6",
+      "end_exclusive": "00bb53e7",
+      "bytes": 103,
+      "original_abi": "ECX actual provider base; no stack arguments; RET",
+      "source_interface": "Explicit owner/sourceName/NativeStringStorage arguments for constructor; owner/NativeStringStorage for destructor",
+      "was_name": "FUN_00bb5380",
+      "proposed_name": "BSP_FileProviderBase_Destroy",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00be55e2",
+      "native": "00bf681b",
+      "function": "00be55e0",
+      "contract": "Whole callee body/assembly checked. PUSH1Ch, callerADD ESP4; shared source CRT allocation, EAX pointer."
+    },
+    {
+      "address": "00be5692",
+      "native": "00bf681b",
+      "function": "00be5690",
+      "contract": "Whole callee body/assembly checked. PUSH1Ch, callerADD ESP4; shared source CRT allocation, EAX pointer."
+    },
+    {
+      "address": "00bb55e9",
+      "native": "0041dd40",
+      "function": "00bb5590",
+      "contract": "Whole callee body/assembly and actual source checked. ECX destination8-byte header, stack(source length,preserve=1), RET8."
+    },
+    {
+      "address": "00bb55fe",
+      "native": "00bf7680",
+      "function": "00bb5590",
+      "contract": "Retain correct CRT name; prototype and backward-overlap branch checked. Captured destination length/source data/destination data, three pushes, ADD ESP0C; hostmemmove boundary."
+    },
+    {
+      "address": "00bb53bc",
+      "native": "00419cc0",
+      "function": "00bb5380",
+      "contract": "Whole body and actual lifetime source checked. No arguments consumed; returns current/lazy pool inEAX; pre-pushed words belong toBD1510."
+    },
+    {
+      "address": "00bb53c3",
+      "native": "00bd1510",
+      "function": "00bb5380",
+      "contract": "Whole body/assembly and actual source checked. ECX pool, stack(captured data,current length+1,unused1), RET0C."
+    },
+    {
+      "address": "00bb53d2",
+      "native": "00bd30f0",
+      "function": "00bb5380",
+      "contract": "Complete7-byte body read; ECX captured owner; writeCEB130; RET."
+    }
+  ],
+  "incoming_call_sites": [
+    {
+      "address": "00be8000",
+      "native": "00bb5590",
+      "function": "00be7fa0",
+      "contract": "ECX actual provider/source header stack RET4",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00bb8264",
+      "native": "00bb5590",
+      "function": "00bb8240",
+      "contract": "ECX actual provider/source header stack RET4",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00bb9cd3",
+      "native": "00bb5590",
+      "function": "00bb9cb0",
+      "contract": "ECX actual provider/source header stack RET4",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00bbb5d2",
+      "native": "00bb5590",
+      "function": "00bbb5b0",
+      "contract": "ECX actual provider/source header stack RET4",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00bf4d54",
+      "native": "00bb5590",
+      "function": "00bf4d30",
+      "contract": "ECX actual provider/source header stack RET4",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00be8030",
+      "native": "00be55e0",
+      "function": "00be7fa0",
+      "contract": "No consumed inputs, EAX allocated node RET",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00be58e3",
+      "native": "00be55e0",
+      "function": "00be58e0",
+      "contract": "No consumed inputs, EAX allocated node RET",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00be5ad3",
+      "native": "00be55e0",
+      "function": "00be5ad0",
+      "contract": "No consumed inputs, EAX allocated node RET",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00be7f73",
+      "native": "00be55e0",
+      "function": "00be7f70",
+      "contract": "No consumed inputs, EAX allocated node RET",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00be805a",
+      "native": "00be5690",
+      "function": "00be7fa0",
+      "contract": "No consumed inputs, EAX allocated node RET",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00be5953",
+      "native": "00be5690",
+      "function": "00be5950",
+      "contract": "No consumed inputs, EAX allocated node RET",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00be5b33",
+      "native": "00be5690",
+      "function": "00be5b30",
+      "contract": "No consumed inputs, EAX allocated node RET",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00be7b83",
+      "native": "00be5690",
+      "function": "00be7b80",
+      "contract": "No consumed inputs, EAX allocated node RET",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00bb53f3",
+      "native": "00bb5380",
+      "function": "00bb53f0",
+      "contract": "ECX actual provider, no stackargs RET",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00bb79bd",
+      "native": "00bb5380",
+      "function": "00bb7920",
+      "contract": "ECX actual provider, no stackargs RET",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00bb9ebd",
+      "native": "00bb5380",
+      "function": "00bb9e70",
+      "contract": "ECX actual provider, no stackargs RET",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    },
+    {
+      "address": "00bbb6ea",
+      "native": "00bb5380",
+      "function": "00bbb660",
+      "contract": "ECX actual provider, no stackargs RET",
+      "evidence": "Callee complete body and caller setup checked; AP record supplemented by current destructor caller listings."
+    }
+  ],
+  "contracts": {
+    "allocation": "Raw1Ch, independent p/p+4/p+8 tests and zero stores, bytes+18=1/+19=0, other bytes untouched. Real source allocator/free service; no safe-null result.",
+    "constructor": "CEB130,count1,identity capture,D641A0,arm one cleanup,zero name even onalias,resize current source length withpreserve1,current source length reload,destination length/source data/dest data capture,overlap-safe copy,deviceFFFFFFFF,disarm. No provider allocation/register.",
+    "destructor": "D641A0,captured nonnull data/current length+1 release,CEB130 reset; stale header/count/device/outer storage preserved.",
+    "services": "Use existing ActualNativeStringPoolStorage with actual publication01090AA8,gate01090AA4 and canonical lifetime plus NativeStringPoolLifetimeBinding. Real getter repeated each operation."
+  },
+  "unwind": [
+    {
+      "function": "00bb5590",
+      "func_info": "00dfdc90",
+      "map": "00dfdc88",
+      "state": 0,
+      "previous": -1,
+      "action": "00cc43a0",
+      "target": "00bd30f0",
+      "contract": "Captured owner EBP-10, writeCEB130 only."
+    },
+    {
+      "function": "00bb5380",
+      "func_info": "00dfdc64",
+      "map": "00dfdc5c",
+      "state": 0,
+      "previous": -1,
+      "action": "00cc4380",
+      "target": "00bd30f0",
+      "contract": "Captured owner EBP-10, writeCEB130 only."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Release passed; MSVC Win32 /W4 /WX /fp:strict; two existing CTests passed. First configure preceded seed-header generation; final configure/build enabled and passed both tests.",
+    "verify_seeds": "Eight seed bodies match installedPE/Ghidra.",
+    "report_calls": "24 call rows checked, 0 failed; seven owned-body calls and seventeen checked incoming call sites.",
+    "permanent_tests_added": false,
+    "fixture": {
+      "source": "local/filestore_foundations_probe.cpp",
+      "runner": "local/run_filestore_foundations_probe.ps1",
+      "log": "local/filestore_foundations_probe.log",
+      "result": "passed",
+      "checks": [
+        "Two linked real allocation/free paths",
+        "110 complete emitted leaf bytes equal originals except twoCALL displacements",
+        "Private original/source leaf copies: exact dirty payload/padding/guards and four forced-null writes faulting at4",
+        "Source cold provider construction creates actual string pool and registers it once; source destruction returns storage into its actual ring",
+        "Five provider scenarios and ten snapshots compare44 owner bytes, pooled bytes and ring/bump state: empty,normal,self-alias,current length changed after allocation,overlap",
+        "Source-only injected allocation exception resets only base profile; no originalFH3 exception execution",
+        "Actual pool lifetime shutdown clears publication and sets gate"
+      ],
+      "native_dependency_adapters": [
+        "Copied41DD40 retains all164 original bytes except directCALL displacements; pool getter/allocation/return call actual existing source services",
+        "CopiedBB5590/BB5380 retain original instructions except directCALL displacements; base reset executes original7-byteBD30F0",
+        "BF7680 CALLs route tohostmemmove with verified overlap domain",
+        "No exceptions thrown through copiedFH3 frames; original/staticCRT/SEH identity not tested"
+      ],
+      "controlled_fixture_boundaries": [
+        "Null/dirty node allocation only in private original/source code copies, never production archive entries",
+        "Post-allocation input mutation delegates to real pool operations on both sides",
+        "Throwing allocation is one source-only NativeStringStorage fixture"
+      ],
+      "link": "/MANIFEST:EMBED; safe filestore_foundations_probe.exe name"
+    },
+    "game_validation": false,
+    "full_filestore_owner_complete": false
+  },
+  "provenance": {
+    "manifest": "local/filestore_foundations_probe_provenance.json",
+    "sha256": "c4a6f77be7a91f091380f6db4d58706b3833c8ef72d5f07c93b3276c0973dfa9",
+    "timing": "before executing retained probe; after linking against pinned bsp_core.lib",
+    "all_24_hashes_rechecked_after_build_and_probe": true,
+    "artifacts": [
+      {
+        "path": "src/native_filestore_container_allocation.cpp",
+        "bytes": 1492,
+        "sha256": "b1404910a3cde50f9c1f797dd2109bde75ae32f4f330c0d6ac074f2131625137",
+        "mtime_utc": "2026-09-12T05:13:45.539784+00:00"
+      },
+      {
+        "path": "include/bsp/native_filestore_container_allocation.hpp",
+        "bytes": 731,
+        "sha256": "3196140f37aaaaf26cc9802a8c85597ff62323378a3031f3d02b9e5d86fffcc9",
+        "mtime_utc": "2026-09-12T05:13:45.539784+00:00"
+      },
+      {
+        "path": "src/native_file_provider_base.cpp",
+        "bytes": 2535,
+        "sha256": "3cef5533dc11e5c353dc6255e275e8928357199d0e08c745420b31931e497656",
+        "mtime_utc": "2026-09-12T05:13:45.539784+00:00"
+      },
+      {
+        "path": "include/bsp/native_file_provider_base.hpp",
+        "bytes": 1487,
+        "sha256": "1af70a1ec257dcbd8724a040f3ead5b473cac98bbdb49a9464f4506a8c8b62d5",
+        "mtime_utc": "2026-09-12T05:13:45.539784+00:00"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "bytes": 6430,
+        "sha256": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a",
+        "mtime_utc": "2026-09-12T05:11:43.118575+00:00"
+      },
+      {
+        "path": "src/native_string_pool_owner.cpp",
+        "bytes": 6295,
+        "sha256": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c",
+        "mtime_utc": "2026-09-12T05:11:43.118575+00:00"
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "bytes": 4579,
+        "sha256": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8",
+        "mtime_utc": "2026-09-12T05:11:43.119582+00:00"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "mtime_utc": "2026-09-12T05:11:43.158064+00:00"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 55425,
+        "sha256": "42d8c68d88d7d6f87d46de2ff1380fde666932cf940612913365157fb57b24ad",
+        "mtime_utc": "2026-09-12T05:13:48.185898+00:00"
+      },
+      {
+        "path": "local/filestore_foundations_probe.cpp",
+        "bytes": 10616,
+        "sha256": "994ae63c1b0aa9c4cf376bb95d1675c23ce76d3c8dee07e1ac0122c51bc762dc",
+        "mtime_utc": "2026-09-12T05:20:48.366024+00:00"
+      },
+      {
+        "path": "local/filestore_foundations_bytes.hpp",
+        "bytes": 3395,
+        "sha256": "79dc0dd641758e0de9085e95c42701b3d4cdfa8dcfeca31da34af38a7f3708dd",
+        "mtime_utc": "2026-09-12T05:19:48.679826+00:00"
+      },
+      {
+        "path": "local/filestore_foundations_bytes.json",
+        "bytes": 3721,
+        "sha256": "7bda41f00f25fcafd619ad36ce3d08dea928947092fa81f375795ed4044a2037",
+        "mtime_utc": "2026-09-12T05:19:48.679826+00:00"
+      },
+      {
+        "path": "local/prepare_filestore_foundations_probe.py",
+        "bytes": 1770,
+        "sha256": "a47c441e6f17c1795ec1d5df669f63f448fcedc76fcbd585e48ce68459e9ccfb",
+        "mtime_utc": "2026-09-12T05:19:44.187044+00:00"
+      },
+      {
+        "path": "local/run_filestore_foundations_probe.ps1",
+        "bytes": 1135,
+        "sha256": "293bbf8520f57dfb765d694005e519f2dce2b16e1848fcc9b69f0a32ad05df04",
+        "mtime_utc": "2026-09-12T05:20:48.366582+00:00"
+      },
+      {
+        "path": "local/compile_filestore_foundations_probe.cmd",
+        "bytes": 369,
+        "sha256": "d23a297706c797d4b9f14eeb9a92288c06cbebfd4edae7d7141052f1d95f6eb8",
+        "mtime_utc": "2026-09-12T05:21:02.149631+00:00"
+      },
+      {
+        "path": "local/filestore_foundations_probe.exe",
+        "bytes": 25600,
+        "sha256": "b3b0f21b65e42376adef602e97bec1fe9145972edc38905d1efa3ae716b9a1d0",
+        "mtime_utc": "2026-09-12T05:21:06.004527+00:00"
+      },
+      {
+        "path": "local/filestore_foundations_probe.obj",
+        "bytes": 44693,
+        "sha256": "ea2f920490c4e6e313c75b49ff97cc5232035d2c0d9003118bf646c8315c2662",
+        "mtime_utc": "2026-09-12T05:21:05.905128+00:00"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 43769468,
+        "sha256": "efb50996de9afad38a5b5be56a7723775c9c3b289db42eb4accefd73ac6ae2c4",
+        "mtime_utc": "2026-09-12T05:19:19.509438+00:00"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_filestore_container_allocation.obj",
+        "bytes": 1841,
+        "sha256": "cf0110287bc9e3fd6bf8147b46f0ebd83db05b7891f03c82e2b02f24eeddc99f",
+        "mtime_utc": "2026-09-12T05:19:15.104938+00:00"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_file_provider_base.obj",
+        "bytes": 3804,
+        "sha256": "02a5389ff9ac1f4b62538a7fd319e31ba91160122292b2369330d51927f53814",
+        "mtime_utc": "2026-09-12T05:19:15.101771+00:00"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string.obj",
+        "bytes": 15053,
+        "sha256": "ca100e82f6d21f5932e626707dd92f4fd35022413de3941e42a4de7fa75d7080",
+        "mtime_utc": "2026-09-12T05:18:00.541531+00:00"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string_pool_owner.obj",
+        "bytes": 14407,
+        "sha256": "30a5b27864bd0299607af653129991e7f2bd03ba4c9e67f0c20bff7ad46911ff",
+        "mtime_utc": "2026-09-12T05:18:00.525718+00:00"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string_pool_storage.obj",
+        "bytes": 8402,
+        "sha256": "d5286040ec44e81b1b55f2b5bb0e0069c7390452965b07e1afadafd14e1961e3",
+        "mtime_utc": "2026-09-12T05:18:00.517710+00:00"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+        "bytes": 32971,
+        "sha256": "1376fabe04620e91fa1ca4775c918db151b72c2ad9773055a1cc9e7963f73745",
+        "mtime_utc": "2026-09-12T05:14:48.373268+00:00"
+      }
+    ],
+    "post_execution_output_hashes": {
+      "local/filestore_foundations_probe.log": "f2fed3490916784686fea6f464340185d1bee8c5278ec522760ebe51bc34631b",
+      "local/native_filestore_foundations_build.log": "37b2bc1d72ae62a7a4bf5efb5984b1846588de5f0ece8d7650d3a47ed3c35739",
+      "local/native_filestore_foundations_seeds.json": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    }
+  },
+  "annotation": {
+    "live_mutations": false,
+    "pre_comments_file": "local/aq_pre_annotations.json",
+    "pre_comments_sha256": "38b62c3ee9973d5e62ef73bb537b59946373b6770d06241cd258d9b4d016e834",
+    "action": "Proposed names in ledger; primary performs live rename/comment/save after lease release."
+  },
+  "limits": [
+    "Typed base APIs add NativeStringStorage and are not drop-in nativeABI replacements.",
+    "Original staticCRT handlers/exception objects, FH3 layout and SEH propagation not reproduced.",
+    "Existing NativeStringStorage release is noexcept; C++ failure during lazy pool recreation there terminates and does not model original throwing-release behavior.",
+    "Zero-byte native copy calls omitted under existing actual-header policy, but source field reads preserved.",
+    "Full FileStore owner/tree mutation/payload EH/factory lifetime and runtime consumer binding remain outside packet."
+  ],
+  "byte_evidence": [
+    {
+      "address": "00be55e0",
+      "end_inclusive": "00be5616",
+      "end_exclusive": "00be5617",
+      "bytes": 55,
+      "sha256": "000469259393936cb7038073311e577824d82276dec61ffa781827f37465c1b9",
+      "matches_live_ghidra": true,
+      "hex": "6a1ce83412010083c40485c07406c700000000008d480485c97406c701000000008d480885c97406c70100000000c6401801c6401900c3",
+      "calls": [
+        {
+          "offset": 2,
+          "target": 12544027
+        }
+      ]
+    },
+    {
+      "address": "00be5690",
+      "end_inclusive": "00be56c6",
+      "end_exclusive": "00be56c7",
+      "bytes": 55,
+      "sha256": "0b834747db83a68aec1d0459d171f6df0e1d67887e19531a61e54d273299803e",
+      "matches_live_ghidra": true,
+      "hex": "6a1ce88411010083c40485c07406c700000000008d480485c97406c701000000008d480885c97406c70100000000c6401801c6401900c3",
+      "calls": [
+        {
+          "offset": 2,
+          "target": 12544027
+        }
+      ]
+    },
+    {
+      "address": "00bb5590",
+      "end_inclusive": "00bb5622",
+      "end_exclusive": "00bb5623",
+      "bytes": 147,
+      "sha256": "440590ad78a3993c1fe7fadbc73e4894a747c62af87a557bc7c3cd72f1009a26",
+      "matches_live_ghidra": true,
+      "hex": "6aff68a843cc0064a10000000050648925000000005153568bf1c70630b1ce00578974240cc74604010000008b5c24208d7e083bfbc706a041d600c744241800000000c70700000000c747040000000074248b036a01508bcfe8528786ff833b0074138b0f8b53048b4704515250e87d20040083c40c8b4c24105fc74610ffffffff8bc65e5b64890d0000000083c410c20400",
+      "calls": [
+        {
+          "offset": 89,
+          "target": 4316480
+        },
+        {
+          "offset": 110,
+          "target": 12547712
+        }
+      ]
+    },
+    {
+      "address": "00bb5380",
+      "end_inclusive": "00bb53e6",
+      "end_exclusive": "00bb53e7",
+      "bytes": 103,
+      "sha256": "a27895a2b4301695f149885bc2db1eb1ab687e0239a13c3c85d1027d28c6a6ca",
+      "matches_live_ghidra": true,
+      "hex": "6aff688843cc0064a100000000506489250000000051568bf189742404c706a041d6008b460c85c0c74424100000000074168b4e086a0183c1015150e8ff4886ff8bc8e848c101008bcec7442410ffffffffe819dd01008b4c24085e64890d0000000083c410c3",
+      "calls": [
+        {
+          "offset": 60,
+          "target": 4299968
+        },
+        {
+          "offset": 67,
+          "target": 12391696
+        },
+        {
+          "offset": 82,
+          "target": 12398832
+        }
+      ]
+    },
+    {
+      "address": "0041dd40",
+      "end_inclusive": "0041dde3",
+      "end_exclusive": "0041dde4",
+      "bytes": 164,
+      "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+      "matches_live_ghidra": true,
+      "hex": "568bf18b0e578b7c240c3bf90f848d00000085ff752c8b460485c074136a0183c1015150e857bfffff8bc8e8a0377b005fc7460400000000c706000000005ec2080053e838bfffff6a018d4f01518bc8e88b337b00807c2414008bd8741b8b063bf876078b56045052eb058b4604575053e8ca987d0083c40c8b4e0485c974158b066a0183c0015051e8f2beffff8bc8e83b377b00895e04893ec6043b005b5f5ec20800",
+      "calls": [
+        {
+          "offset": 36,
+          "target": 4299968
+        },
+        {
+          "offset": 43,
+          "target": 12391696
+        },
+        {
+          "offset": 67,
+          "target": 4299968
+        },
+        {
+          "offset": 80,
+          "target": 12390688
+        },
+        {
+          "offset": 113,
+          "target": 12547712
+        },
+        {
+          "offset": 137,
+          "target": 4299968
+        },
+        {
+          "offset": 144,
+          "target": 12391696
+        }
+      ]
+    },
+    {
+      "address": "00bd30f0",
+      "end_inclusive": "00bd30f6",
+      "end_exclusive": "00bd30f7",
+      "bytes": 7,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "matches_live_ghidra": true,
+      "hex": "c70130b1ce00c3",
+      "calls": []
+    }
+  ],
+  "corrections": [
+    {
+      "was": "BE55E0/BE5690 decompiler signatures returnvoid",
+      "is": "Both return allocated pointer inEAX, plainRET",
+      "evidence": "Whole55-byte source/native instruction parity and all caller setups"
+    },
+    {
+      "was": "Shared base had only named read-only contracts",
+      "is": "Actual-storage C++ constructor/destructor implemented within explicit pool/CRT/EH host domain",
+      "evidence": "Source and ten original/source snapshots using actual pool/lifetime services"
+    }
+  ],
+  "unscoped_raw_caller_evidence": "AP map retains BE7BF0 missing continuation and its base-destructor call. It is not changed or promoted into AQ complete owner coverage."
+}

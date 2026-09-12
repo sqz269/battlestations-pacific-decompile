@@ -1,0 +1,16 @@
+[
+  {
+    "address": "00b21960",
+    "before": {
+      "address": "00b21960",
+      "function_name": "BSP_D3D9Renderer_SetGammaRamp",
+      "comment": "[BSP reconstruction 00b21960]\nComplete474-byte renderer gamma setter discovered at B21960..B21B3A; original ECX renderer, actual callee float slot, RET4. Optional full synchronization guard, enabled1B53 gate before EH arm, ordered x87 cached equality skip, retained first requested x87 load FADD10 while later MOVSS rereads raw callee slot for cache196C publication, normalization FADD10/FDIV20/clamp then float exponent.256 entries use BFEB10(ST1 coordinate,ST0 exponent), float result spill, multiply65535, temporary truncation control word, low WORD blue/green then CW restore then red. Current calibration1B54/device1A10/table selector54 load order preserved; actual SetGammaRamp swapchain0. One guard EH state CBCDDB/DF5374, no cache rollback. Read-only primary discovery verified38 spans4862bytes and complete body; full raw source still blocked by genuine BFEB10/BFEB6D/C19260/C19279/error providers. Host pow is not an equivalent closure. No gamma source, runtime/display, original ABI or gameplay claim. Descriptive name is a reconstruction hypothesis. reports/native_renderer_gamma_discovery.json; reports/native_renderer_gamma_defined_function.json"
+    },
+    "after": {
+      "address": "00b21960",
+      "name": "BSP_D3D9Renderer_SetGammaRamp",
+      "evidence": "Complete474-byte raw gamma source. Optional guard precedes enabled read; state0 arms after read. Ordered equality skip, first x87 request for FADD10 and distinct MOVSS slot reread for cache publication; exact x87/SSE clamp, float spills, full raw BFEB10 and low-WORD blue/green/CW-restore/red schedule. Current calibration precedes current device/table/SetGammaRamp capture. Source guard EH reviewed. All302 native math/device bytes mapped to330-byte helper;14 full power objects identical except4 COFF timestamps. Strict Win32/2 CTests/8 seeds; three original/source768-WORD ramp/FP comparisons and source device-exception cleanup passed using capture device, no monitor gamma call. Fixture selected raw fallback only; native guard/SEH, original ABI and full gameplay unproved. Native ECX renderer; one actual float callee argument slot; RET4. New C++ interface borrows raw renderer, live requested-slot reference, actual synchronization/pow contexts and separate native literals. reports/native_renderer_gamma_audit.json"
+    },
+    "status": "applied"
+  }
+]

@@ -1,0 +1,185 @@
+{
+  "packet": "orch5_timed_types",
+  "status": "reconstructed_alpha_and_countdown_section_owner_boundary_strict_tu_compiled",
+  "documentation": "docs/GUI_TIMED_ENTRY_TYPES.md",
+  "source": "src/gui_timed_entry_types.cpp",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "00ad3970",
+      "name": "construct_gui_timed_entry_base_00ad3970",
+      "original_abi": "ECX entry, widget stack; EAX entry; RET4",
+      "coverage": "complete constructor",
+      "end_inclusive": "00ad3989"
+    },
+    {
+      "address": "00ad3990",
+      "name": "reset_gui_timed_entry_base_00ad3990",
+      "original_abi": "ECX entry; RET",
+      "coverage": "complete base profile reset",
+      "end_inclusive": "00ad3996"
+    },
+    {
+      "address": "00ac2ed0",
+      "name": "construct_gui_timed_entry_alpha_00ac2ed0",
+      "original_abi": "ECX entry, widget stack; EAX entry; RET4",
+      "coverage": "complete constructor with single live D7A24C load",
+      "end_inclusive": "00ac2efa"
+    },
+    {
+      "address": "00ac2fe0",
+      "name": "destroy_gui_timed_entry_profile",
+      "original_abi": "ECX entry, flags stack; EAX entry; RET4",
+      "coverage": "partial_projection: destructor reset phase; AC2FE8..AC2FF7 flags/free delegated to allocation owner",
+      "end_inclusive": "00ac2ffd"
+    },
+    {
+      "address": "00ad3a40",
+      "name": "destroy_gui_timed_entry_profile",
+      "original_abi": "ECX entry, flags stack; EAX entry; RET4",
+      "coverage": "partial_projection: destructor reset phase; AD3A40..AD3A45 flag test and AD3A4E..AD3A58 conditional free delegated to allocation owner",
+      "end_inclusive": "00ad3a5e"
+    },
+    {
+      "address": "00ad39a0",
+      "name": "advance_gui_timed_entry_00ad39a0",
+      "original_abi": "ECX entry, delta then unread borrowed widget stack; AL result; RET8",
+      "coverage": "complete countdown/dispatch for established current8; unknown profiles throw",
+      "end_inclusive": "00ad39e9"
+    },
+    {
+      "address": "00ac2f40",
+      "name": "update_gui_timed_entry_alpha_00ac2f40",
+      "original_abi": "ECX entry, delta stack; AL changed; RET4",
+      "coverage": "complete arithmetic and established canonical widget current54/current4C dispatch",
+      "end_inclusive": "00ac2fd9"
+    },
+    {
+      "address": "00abe7b0",
+      "name": "update_gui_timed_entry_section_00abe7b0",
+      "original_abi": "ECX entry, delta stack; AL changed; RET4",
+      "coverage": "partial_projection: current5C gate plus separate ABE7CC..ABE84B numeric fragment; Section owner branch ABE7C9..ABE877 unbound",
+      "end_inclusive": "00abe886"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00ac2ed0",
+      "address": "00ac2ed8",
+      "native": "00ad3970",
+      "binding": "base constructor with borrowed widget; RET4"
+    },
+    {
+      "function": "00ac2fe0",
+      "address": "00ac2fe3",
+      "native": "00ad3990",
+      "binding": "base destructor reset; RET"
+    },
+    {
+      "function": "00ac2fe0",
+      "address": "00ac2ff0",
+      "native": "00bf65ac",
+      "binding": "flags bit0 free; owner phase; raw AC2FF5 ADD ESP4 bytes83c404"
+    },
+    {
+      "function": "00ad3a40",
+      "address": "00ad3a51",
+      "native": "00bf65ac",
+      "binding": "flags bit0 free; owner phase; ADD ESP4 AD3A56"
+    },
+    {
+      "function": "00ad39a0",
+      "address": "00ad39d6",
+      "native": "entry+vtable8",
+      "binding": "effective delta stack; current8 RET4; zero countdown after return"
+    },
+    {
+      "function": "00ac2f40",
+      "address": "00ac2f53",
+      "native": "widget+vtable54",
+      "binding": "local float4 stack; consume returned float pointer; established base getter AA68F0"
+    },
+    {
+      "function": "00ac2f40",
+      "address": "00ac2fc2",
+      "native": "widget+vtable4c",
+      "binding": "reload borrowed widget; float candidate stack; Text current4C AB6AD0"
+    },
+    {
+      "function": "00abe7b0",
+      "address": "00abe7be",
+      "native": "widget+vtable5c",
+      "binding": "no stack arguments; established type17 Section gate"
+    },
+    {
+      "function": "00abe7b0",
+      "address": "00abe86c",
+      "native": "00abe6e0",
+      "binding": "candidate,captured widgetF8,captured widget100,literal1; RET10h; missing canonical Section binding"
+    }
+  ],
+  "all_callers": [
+    {
+      "function": "00ad3a80",
+      "address": "00ad3b1a",
+      "native": "00ac2ed0",
+      "binding": "indices0/1 same alpha construction; borrowed widget stack; RET4"
+    },
+    {
+      "function": "00aa87b0",
+      "address": "00aa88e6",
+      "native": "00ad39a0",
+      "binding": "delta then originalwidget EBP stack; EBP=ECX atAA87B9; RET8"
+    }
+  ],
+  "profile_words": {
+    "00d5ca74": [
+      "00ac2fe0",
+      "00ac2f00",
+      "00ac2f40"
+    ],
+    "00d5d210": [
+      "00ad3a40",
+      "00ad3a20",
+      "00abe7b0"
+    ],
+    "unimplemented_current4": [
+      "00ac2f00",
+      "00ad3a20"
+    ]
+  },
+  "corrections": [
+    {
+      "was": "ABE7B0 thought to call AA68F0 or act on Progress",
+      "is": "current5C17 Section and direct ABE6E0 quad-value setter",
+      "evidence": "ABE7C0 CMP EAX11h; ABE86C CALL ABE6E0; callee stores F4/F8/100/104 then current7C"
+    },
+    {
+      "was": "naive interpolation would force NaN target to NaN candidate",
+      "is": "current0,targetNaN,rate1,delta1 yields alpha+1 and Section-1",
+      "evidence": "AC2F84 and ABE81A unordered JBE select opposite directions; clamp unordered JBE preserves candidate; focused exact-source numeric probe"
+    }
+  ],
+  "verification": {
+    "native_complete_assembly_reviewed": true,
+    "all_live_xrefs_reviewed": true,
+    "abe7b0_missing_xref_reconciled_by_profile_bytes": "00d5d218=b0e7ab00",
+    "strict_win32_translation_unit": "passed /W4 /WX /fp:strict against parent actual owner header",
+    "focused_fixture": "passed exact extracted constructors/destructor and 7 Section numeric cases plus alpha unordered direction; ignored local probe; no owner stubs",
+    "full_build": "blocked twice by MSBuild access denied to Lua/zlib tlog tracking files after successful configure; integration build pending",
+    "call_report_check": "passed: 7 direct call rows, 0 failures; 4 indirect rows reviewed from full assembly",
+    "native_differential": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "section_consumer_complete": false
+  },
+  "parent_integration": {
+    "report": "reports/orch5_timed_clip_batch.json",
+    "combined_build": "Release MSVC Win32 build passed; 2/2 existing tests",
+    "canonical_runtime_reachable_in_game": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}

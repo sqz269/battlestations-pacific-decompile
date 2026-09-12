@@ -58,12 +58,12 @@ std::uint32_t NativePlainNodeReference::light_count(void* context) noexcept {
         std::terminate();
     return static_cast<std::uint32_t>(array.count);
 }
-GeneratedModelPointLightLinks& NativePlainNodeReference::light_element(void* context,
-    std::uint32_t index) noexcept {
-    const auto& array = static_cast<NativePlainNodeReference*>(context)->node_.storage.point_lights_164;
-    auto* light = array.begin[index];
-    if (!light) std::terminate();
-    return *light;
+void NativePlainNodeReference::remove_light_backlink(void* context,
+    std::uint32_t index, CameraTransform&) noexcept {
+    auto& reference = *static_cast<NativePlainNodeReference*>(context);
+    auto& node = reference.node_.storage;
+    auto& light = reference.nodes_.point_lights.light(node.point_lights_164.begin[index]);
+    remove_native_point_light_backlink_00b7c1a0(light, node);
 }
 void NativePlainNodeReference::shrink_lights(void* context) noexcept {
     auto& array = static_cast<NativePlainNodeReference*>(context)->node_.storage.point_lights_164;
@@ -75,7 +75,7 @@ void NativePlainNodeReference::release_model_virtual18_00b6f310() noexcept {
     require_slot(0x18, 0x00b6f310u);
     release_node_logical_00b6f310({nodes_.attachments, node_.transform,
         node_.storage.released_44, *this,
-        {this, light_count, light_element, shrink_lights}});
+        {this, light_count, remove_light_backlink, shrink_lights}});
 }
 
 void NativePlainNodeReference::remove_scene_virtual54(SceneResource* scene,

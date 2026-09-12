@@ -1,0 +1,1126 @@
+{
+  "packet": "orch3_model_construction_ak",
+  "status": "reconstructed_strict_win32_build_tested_bounded_original_byte_fixture_tested_saved_analysis_verified",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program_path": "/battlestationspacific.exe",
+  "target": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "routines": [
+    {
+      "address": "00af74a0",
+      "end_inclusive": 11501361,
+      "bytes": 2706,
+      "name": "construct_native_particle_model_00af74a0",
+      "coverage": "complete through required real application callees",
+      "disk_sha256": "7ba597374bc60291f2c7a7f7cc72d3c819e19a797688c691d9d18800cfab8b7c",
+      "live_sha256": "7ba597374bc60291f2c7a7f7cc72d3c819e19a797688c691d9d18800cfab8b7c",
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleModel_Construct",
+      "cpp_symbol": "construct_native_particle_model_00af74a0",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX raw2DCh, stack selected variant, EAX same, RET4 atAF7F2F len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real application callees; ECX raw2DCh, stack selected variant, EAX same, RET4 atAF7F2F len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+    },
+    {
+      "address": "00aff5f0",
+      "end_inclusive": 11531828,
+      "bytes": 69,
+      "name": "construct_native_particle_emitter_00aff5f0",
+      "coverage": "complete",
+      "disk_sha256": "716f871bc0b6789b706249dce45224455c1a3d3cbc3a614cf52ffeca7b79646c",
+      "live_sha256": "716f871bc0b6789b706249dce45224455c1a3d3cbc3a614cf52ffeca7b79646c",
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleEmitter_Construct",
+      "cpp_symbol": "construct_native_particle_emitter_00aff5f0",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX raw28h, stack model then definition, EAX same, RET8 atAFF632 len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX raw28h, stack model then definition, EAX same, RET8 atAFF632 len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+    },
+    {
+      "address": "00afd2e0",
+      "end_inclusive": 11522917,
+      "bytes": 134,
+      "name": "construct_native_particle_model_arrays_00afd2e0",
+      "coverage": "complete through required real array element constructors and destructors",
+      "disk_sha256": "26d203c704ff26b26cbc484456e359305480ba4088c039dcacb536d8b62c0322",
+      "live_sha256": "26d203c704ff26b26cbc484456e359305480ba4088c039dcacb536d8b62c0322",
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleModelArrays_Construct",
+      "cpp_symbol": "construct_native_particle_model_arrays_00afd2e0",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX raw18h, stack model then signed count, EAX same, RET8 atAFD363 len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real array element constructors and destructors; ECX raw18h, stack model then signed count, EAX same, RET8 atAFD363 len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+    },
+    {
+      "address": "00af6120",
+      "end_inclusive": 11493758,
+      "bytes": 95,
+      "name": "reserve_native_particle_emitter_pointers_00af6120",
+      "coverage": "complete supported native array domain",
+      "disk_sha256": "d2f55a3a028634277dd2db2dd0cef3480c60f4b0913df1f8779d5eedeb8d9122",
+      "live_sha256": "d2f55a3a028634277dd2db2dd0cef3480c60f4b0913df1f8779d5eedeb8d9122",
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleEmitterPointers_Reserve",
+      "cpp_symbol": "reserve_native_particle_emitter_pointers_00af6120",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX actual12h header, stack signed capacity, RET4 atAF617C len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete supported native array domain; ECX actual12h header, stack signed capacity, RET4 atAF617C len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": 11498697,
+      "native": 12013616,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11498785,
+      "native": 11485408,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11498794,
+      "native": "dword ptr [0x00ce221c]",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11498918,
+      "native": 4273392,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11498952,
+      "native": 12008288,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11498972,
+      "native": 12008816,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499013,
+      "native": 12013936,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499024,
+      "native": 11473056,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499036,
+      "native": 12008304,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499041,
+      "native": 5455776,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499072,
+      "native": 11634560,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499120,
+      "native": 11473136,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499130,
+      "native": 11635552,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499152,
+      "native": 11587904,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499162,
+      "native": 11635184,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499173,
+      "native": 11587888,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499183,
+      "native": 11635184,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499191,
+      "native": 12084416,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499326,
+      "native": 4273392,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499449,
+      "native": 4273392,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499470,
+      "native": 4316480,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499497,
+      "native": 12547712,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499524,
+      "native": 11635520,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499553,
+      "native": 4299968,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499560,
+      "native": 12391696,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499581,
+      "native": 4316480,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499608,
+      "native": 12547712,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499635,
+      "native": 11635520,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499664,
+      "native": 4299968,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499671,
+      "native": 12391696,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499692,
+      "native": 4316480,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499719,
+      "native": 12547712,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499749,
+      "native": 11635488,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499778,
+      "native": 4299968,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499785,
+      "native": 12391696,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499806,
+      "native": 4316480,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499833,
+      "native": 12547712,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499863,
+      "native": 11635456,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499892,
+      "native": 4299968,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499899,
+      "native": 12391696,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499912,
+      "native": "dword ptr [0x00ce2220]",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11499928,
+      "native": "EAX",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11499950,
+      "native": 11473072,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499968,
+      "native": "EDX",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11499980,
+      "native": 12008368,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11499993,
+      "native": "dword ptr [0x00ce2220]",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11500009,
+      "native": "EAX",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11500020,
+      "native": 12084640,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500032,
+      "native": 12008544,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500041,
+      "native": "dword ptr [0x00ce2220]",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11500058,
+      "native": "EDX",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11500065,
+      "native": 12008288,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500085,
+      "native": 12008816,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500111,
+      "native": 11473056,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500123,
+      "native": 12008304,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500128,
+      "native": 5455776,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500159,
+      "native": 11634560,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500185,
+      "native": 11473184,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500193,
+      "native": 11635552,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500215,
+      "native": 11587888,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500225,
+      "native": 11635184,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500233,
+      "native": 12084416,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500368,
+      "native": 4273392,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500491,
+      "native": 4273392,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500512,
+      "native": 4316480,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500539,
+      "native": 12547712,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500566,
+      "native": 11635520,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500595,
+      "native": 4299968,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500602,
+      "native": 12391696,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500623,
+      "native": 4316480,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500650,
+      "native": 12547712,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500677,
+      "native": 11635520,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500706,
+      "native": 4299968,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500713,
+      "native": 12391696,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500726,
+      "native": "dword ptr [0x00ce2220]",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11500743,
+      "native": "EAX",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11500765,
+      "native": 11473072,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500784,
+      "native": "EDX",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11500796,
+      "native": 12008368,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500809,
+      "native": "dword ptr [0x00ce2220]",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11500826,
+      "native": "EAX",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11500837,
+      "native": 12084640,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500849,
+      "native": 12008544,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500858,
+      "native": "dword ptr [0x00ce2220]",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11500874,
+      "native": "EDX",
+      "function": 11498656,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11500959,
+      "native": 12544027,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11500984,
+      "native": 11531760,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11501039,
+      "native": 11493664,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11501097,
+      "native": 12544027,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11501132,
+      "native": 11522784,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11501245,
+      "native": 12398352,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11501316,
+      "native": 7379392,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11501335,
+      "native": 11471184,
+      "function": 11498656,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11531800,
+      "native": "dword ptr [0x00ce221c]",
+      "function": 11531760,
+      "kind": "indirect_call"
+    },
+    {
+      "address": 11522857,
+      "native": 11522352,
+      "function": 11522784,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11522865,
+      "native": 11522592,
+      "function": 11522784,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11493696,
+      "native": 12539326,
+      "function": 11493664,
+      "kind": "direct_call"
+    },
+    {
+      "address": 11493740,
+      "native": 12544393,
+      "function": 11493664,
+      "kind": "direct_call"
+    }
+  ],
+  "abi": {
+    "00af74a0": "ECX raw2DCh, stack selected variant, EAX same, RET4 atAF7F2F len3",
+    "00aff5f0": "ECX raw28h, stack model then definition, EAX same, RET8 atAFF632 len3",
+    "00afd2e0": "ECX raw18h, stack model then signed count, EAX same, RET8 atAFD363 len3",
+    "00af6120": "ECX actual12h header, stack signed capacity, RET4 atAF617C len3"
+  },
+  "caller_review": {
+    "00af74a0": [
+      "0087433e"
+    ],
+    "00aff5f0": [
+      "00af7db8"
+    ],
+    "00afd2e0": [
+      "00af7e4c"
+    ],
+    "00af6120": [
+      "00af618e",
+      "00af6838",
+      "00af7def"
+    ]
+  },
+  "producer_evidence": {
+    "variant": "AF45D0 produces actual native string+08/count30/count54/default58=1/default5C=30 and bytes64/65/78/79; AF74A0 consumes same raw variant without a copied schema",
+    "model": "AF74A0 writes actual derived184..2DB after canonical B75030;2DC is separate F8D2D0 slot ID",
+    "emitter": "AFF5F0 produces28h object, model08 borrowed, definition0C retained,24 untouched",
+    "arrays": "AFD2E0 produces18h arrays object. AFD220 uses108h elements, not6Ch states or30h lazy container."
+  },
+  "corrections": [
+    {
+      "was": "AF6120 pseudocode returned immediately after free without publishing replacement",
+      "is": "AF6174 stores replacement;AF6176 stores capacity;AF6179 restores EBX",
+      "evidence": "Live and installed bytes AF6171..6179 =83c404891e897e085b; inclusive function endAF617E",
+      "root_repair_required": true
+    },
+    {
+      "was": "Decompiler labels AF7BED/AF7C28/AF7C5C/AF7C97 unreachable and corrupts second material stack locals",
+      "is": "All second material string copies/returns are reachable when allocation nonnull; same local8h header and ESP restored at each native call",
+      "evidence": "Full AF74A0 assembly; BF7680 cleanup ADD ESP,C atAF7C00/AF7C6F; RET8 helpers"
+    }
+  ],
+  "unwind": {
+    "descriptor": "00DF2C34",
+    "map": "00DF2C58",
+    "states": {
+      "0": "CBADA0 -> B750C0 base",
+      "1": "CBADA8 -> AF6B70 emitter pointer backing then state0",
+      "2,8": "CBADB6/CBADE6 -> B72F70 raw mesh slot then1",
+      "3,9": "CBADBE/CBADEE -> B17D70 raw material slot then1",
+      "4,5,6,7,10,11": "CBADC6/CE/D6/DE/F6/FE ->41DD20 local native string then1",
+      "12,13": "CBAE06/CBAE11 ->BF65AC raw emitter or arrays allocation then1"
+    },
+    "arrays_descriptor": "00DF31B8",
+    "arrays_map": "00DF31A8",
+    "arrays_unwind": "state1 CBB1FB ->AFD1E0 second header; state0 CBB1F0 ->AFD0F0 first header",
+    "observed_limit": "No retained variant, successful emitter object, raw mesh own reference, or live model count rollback is armed by AF74A0."
+  },
+  "required_dependencies": [
+    "Actual D5DA50 derived node callbacks and terminal model lifetime on the SAME NativeModelOwner binding, never NativeModelReference/188h scalar deletion",
+    "AF40E0/AF9F50 live variant preparation; AF10A0/AF10B0/AF10F0/AF1120 current F8C280 resources",
+    "B0D130/B0D140 current F8D39C owner chain",
+    "Current captured renderer virtual5C real stream and existing layout virtual40 services",
+    "AFD130/AFD220 actual cookie arrays, AFDAC0/AFD9F0 real108h element lifetimes, AFD0F0/AFD1E0 destruction",
+    "BD2F10/BD2E60 exact x87 float range on canonical primary RandomThreads",
+    "7099C0 actual hierarchy mask recursion",
+    "AF0950/AF0630 live F8C274 model registration",
+    "Successful particle update/destruction/render submission and gameplay"
+  ],
+  "validation": {
+    "strict_win32_source_compile": "passed /std:c++20 /EHsc /MD /W4 /WX /fp:strict /permissive-",
+    "scripts_build_ps1": "passed after verify-seeds; reconstructed_math and native_math_differential both passed",
+    "fixture": "passed local/particle_emitter_probe.cpp: original69-byte AFF5F0 full28h output, actual reference increment, same return and preserved24..27",
+    "call_report_verifier": "passed98 direct/tail rows,0 failures;16 indirect rows explicit",
+    "source_registration": "root integrates; no CMake/shared ledger edits",
+    "native_abi_compatible": false,
+    "successful_complete_model_runtime": false,
+    "game_validated": false,
+    "duplicate_header_types": "all five declarations unique under include/bsp"
+  },
+  "unwind_steps": [
+    {
+      "function": 13348256,
+      "address": 13348259,
+      "native": 12013760,
+      "kind": "tail_jump"
+    },
+    {
+      "function": 13348264,
+      "address": 13348273,
+      "native": 11496304,
+      "kind": "tail_jump"
+    },
+    {
+      "function": 13348278,
+      "address": 13348281,
+      "native": 12005232,
+      "kind": "tail_jump"
+    },
+    {
+      "function": 13348286,
+      "address": 13348289,
+      "native": 11631984,
+      "kind": "tail_jump"
+    },
+    {
+      "function": 13348294,
+      "address": 13348297,
+      "native": 4316448,
+      "kind": "tail_jump"
+    },
+    {
+      "function": 13348302,
+      "address": 13348305,
+      "native": 4316448,
+      "kind": "tail_jump"
+    },
+    {
+      "function": 13348310,
+      "address": 13348313,
+      "native": 4316448,
+      "kind": "tail_jump"
+    },
+    {
+      "function": 13348318,
+      "address": 13348321,
+      "native": 4316448,
+      "kind": "tail_jump"
+    },
+    {
+      "function": 13348326,
+      "address": 13348329,
+      "native": 12005232,
+      "kind": "tail_jump"
+    },
+    {
+      "function": 13348334,
+      "address": 13348337,
+      "native": 11631984,
+      "kind": "tail_jump"
+    },
+    {
+      "function": 13348342,
+      "address": 13348345,
+      "native": 4316448,
+      "kind": "tail_jump"
+    },
+    {
+      "function": 13348350,
+      "address": 13348353,
+      "native": 4316448,
+      "kind": "tail_jump"
+    },
+    {
+      "function": 13349360,
+      "address": 13349366,
+      "native": 11522288,
+      "kind": "tail_jump"
+    },
+    {
+      "function": 13349371,
+      "address": 13349377,
+      "native": 11522528,
+      "kind": "tail_jump"
+    },
+    {
+      "function": 13348358,
+      "address": 13348362,
+      "native": 12543404,
+      "kind": "direct_call"
+    },
+    {
+      "function": 13348369,
+      "address": 13348373,
+      "native": 12543404,
+      "kind": "direct_call"
+    }
+  ],
+  "root_repairs": [
+    {
+      "routine": 11493664,
+      "gap_start": 11493745,
+      "gap_end_inclusive": 11493753,
+      "bytes_hex": "83c404891e897e085b",
+      "end_inclusive": 11493758,
+      "final_instruction_start": 11493756,
+      "final_instruction_length": 3
+    },
+    {
+      "routine": 11496304,
+      "gap_start": 11496322,
+      "gap_end_inclusive": 11496326,
+      "bytes_hex": "83c4045ec3",
+      "end_inclusive": 11496326,
+      "final_instruction_start": 11496326,
+      "final_instruction_length": 1
+    },
+    {
+      "routine": 11522352,
+      "gap_start": 11522410,
+      "gap_end_inclusive": 11522412,
+      "bytes_hex": "83c404",
+      "end_inclusive": 11522510,
+      "final_instruction_start": 11522508,
+      "final_instruction_length": 3
+    },
+    {
+      "routine": 11522592,
+      "gap_start": 11522653,
+      "gap_end_inclusive": 11522655,
+      "bytes_hex": "83c404",
+      "end_inclusive": 11522772,
+      "final_instruction_start": 11522770,
+      "final_instruction_length": 3
+    },
+    {
+      "routine": 11522288,
+      "gap_start": 11522324,
+      "gap_end_inclusive": 11522327,
+      "bytes_hex": "83c4045f",
+      "end_inclusive": 11522342,
+      "final_instruction_start": 11522342,
+      "final_instruction_length": 1
+    },
+    {
+      "routine": 11522528,
+      "gap_start": 11522567,
+      "gap_end_inclusive": 11522570,
+      "bytes_hex": "83c4045f",
+      "end_inclusive": 11522585,
+      "final_instruction_start": 11522585,
+      "final_instruction_length": 1
+    },
+    {
+      "routine": 13348358,
+      "gap_start": 13348367,
+      "gap_end_inclusive": 13348368,
+      "bytes_hex": "59c3",
+      "end_inclusive": 13348368,
+      "final_instruction_start": 13348368,
+      "final_instruction_length": 1
+    },
+    {
+      "routine": 13348369,
+      "gap_start": 13348378,
+      "gap_end_inclusive": 13348379,
+      "bytes_hex": "59c3",
+      "end_inclusive": 13348379,
+      "final_instruction_start": 13348379,
+      "final_instruction_length": 1
+    }
+  ],
+  "functions": [
+    {
+      "address": "00af74a0",
+      "end_inclusive": 11501361,
+      "bytes": 2706,
+      "name": "construct_native_particle_model_00af74a0",
+      "coverage": "complete through required real application callees",
+      "disk_sha256": "7ba597374bc60291f2c7a7f7cc72d3c819e19a797688c691d9d18800cfab8b7c",
+      "live_sha256": "7ba597374bc60291f2c7a7f7cc72d3c819e19a797688c691d9d18800cfab8b7c",
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleModel_Construct",
+      "cpp_symbol": "construct_native_particle_model_00af74a0",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX raw2DCh, stack selected variant, EAX same, RET4 atAF7F2F len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real application callees; ECX raw2DCh, stack selected variant, EAX same, RET4 atAF7F2F len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "void * __thiscall BSP_NativeParticleModel_Construct(void * variant)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00aff5f0",
+      "end_inclusive": 11531828,
+      "bytes": 69,
+      "name": "construct_native_particle_emitter_00aff5f0",
+      "coverage": "complete",
+      "disk_sha256": "716f871bc0b6789b706249dce45224455c1a3d3cbc3a614cf52ffeca7b79646c",
+      "live_sha256": "716f871bc0b6789b706249dce45224455c1a3d3cbc3a614cf52ffeca7b79646c",
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleEmitter_Construct",
+      "cpp_symbol": "construct_native_particle_emitter_00aff5f0",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX raw28h, stack model then definition, EAX same, RET8 atAFF632 len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX raw28h, stack model then definition, EAX same, RET8 atAFF632 len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "void * __thiscall BSP_NativeParticleEmitter_Construct(void * model, void * definition)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00afd2e0",
+      "end_inclusive": 11522917,
+      "bytes": 134,
+      "name": "construct_native_particle_model_arrays_00afd2e0",
+      "coverage": "complete through required real array element constructors and destructors",
+      "disk_sha256": "26d203c704ff26b26cbc484456e359305480ba4088c039dcacb536d8b62c0322",
+      "live_sha256": "26d203c704ff26b26cbc484456e359305480ba4088c039dcacb536d8b62c0322",
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleModelArrays_Construct",
+      "cpp_symbol": "construct_native_particle_model_arrays_00afd2e0",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX raw18h, stack model then signed count, EAX same, RET8 atAFD363 len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real array element constructors and destructors; ECX raw18h, stack model then signed count, EAX same, RET8 atAFD363 len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "void * __thiscall BSP_NativeParticleModelArrays_Construct(void * model, int count)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "address": "00af6120",
+      "end_inclusive": 11493758,
+      "bytes": 95,
+      "name": "reserve_native_particle_emitter_pointers_00af6120",
+      "coverage": "complete supported native array domain",
+      "disk_sha256": "d2f55a3a028634277dd2db2dd0cef3480c60f4b0913df1f8779d5eedeb8d9122",
+      "live_sha256": "d2f55a3a028634277dd2db2dd0cef3480c60f4b0913df1f8779d5eedeb8d9122",
+      "live_equals_installed": true,
+      "ghidra_name": "BSP_NativeParticleEmitterPointers_Reserve",
+      "cpp_symbol": "reserve_native_particle_emitter_pointers_00af6120",
+      "source": "src/native_particle_model_construction.cpp",
+      "header": "include/bsp/native_particle_model_construction.hpp",
+      "original_abi": "ECX actual0Ch header, stack signed capacity, RET4 atAF617C len3",
+      "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete supported native array domain; ECX actual0Ch header, stack signed capacity, RET4 atAF617C len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "native_prototype": "void __thiscall BSP_NativeParticleEmitterPointers_Reserve(int capacity)",
+      "native_calling_convention": "__thiscall"
+    }
+  ],
+  "integration_validation": {
+    "build": "local/ak-final-build.log: all7 AK modules in strict MSVC Win32 bsp_core; serial --parallel 1 workaround for parallel MSBuild MSB3491",
+    "tests": "local/ak-final-ctest.log: both existing seeded CTests passed",
+    "call_checks": "local/ak-final-call-checks.log: 245 rows across7 reports, zero failures; indirect IAT/current-slot behavior remains outside mechanical checker",
+    "fixtures": [
+      "local/model-construction-merged-ak.log"
+    ],
+    "fixture_note": "Focused native/source comparison within original worker/root reports limits; all fixture source compilations use /fp:strict and root combined-library linking. Root tracer and earlier pool/curve fixtures were replayed before adding independent emitter/model-update sources; relevant source unchanged. Exact final merged-head replay is recorded separately.",
+    "combined_library_sha256": "d7393d8246d01614b1ce3f0de3ea7a0fc25e567d9ca79218070d07d11ede603a",
+    "source_sha256": {
+      "src/native_particle_model_construction.cpp": "b9daba357f16783185049ac815054415e2e19db6d90932e6b3f9e4d5666b7144"
+    },
+    "game_validated": false,
+    "original_binary_replacement": false,
+    "worker_historical_note": "Earlier worker read-only/Ghidra repair/CMake pending observations describe the pre-integration snapshot; this section and saved audits are the current result.",
+    "flow_repairs": "reports/native_particle_model_construction_flow_repairs.json",
+    "function_definitions": "reports/native_particle_model_construction_function_definitions.json"
+  },
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T160551Z.json",
+    "readback": "local/ak-comment-readback.json",
+    "project_saved": true,
+    "old_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00af6120",
+        "before": {
+          "address": "00af6120",
+          "function_name": "FUN_00af6120"
+        },
+        "after": {
+          "address": "00af6120",
+          "name": "BSP_NativeParticleEmitterPointers_Reserve",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete supported native array domain; ECX actual0Ch header, stack signed capacity, RET4 atAF617C len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af74a0",
+        "before": {
+          "address": "00af74a0",
+          "function_name": "FUN_00af74a0"
+        },
+        "after": {
+          "address": "00af74a0",
+          "name": "BSP_NativeParticleModel_Construct",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real application callees; ECX raw2DCh, stack selected variant, EAX same, RET4 atAF7F2F len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afd2e0",
+        "before": {
+          "address": "00afd2e0",
+          "function_name": "FUN_00afd2e0"
+        },
+        "after": {
+          "address": "00afd2e0",
+          "name": "BSP_NativeParticleModelArrays_Construct",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete through required real array element constructors and destructors; ECX raw18h, stack model then signed count, EAX same, RET8 atAFD363 len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00aff5f0",
+        "before": {
+          "address": "00aff5f0",
+          "function_name": "FUN_00aff5f0"
+        },
+        "after": {
+          "address": "00aff5f0",
+          "name": "BSP_NativeParticleEmitter_Construct",
+          "evidence": " AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX raw28h, stack model then definition, EAX same, RET8 atAFF632 len3. See docs/NATIVE_PARTICLE_MODEL_CONSTRUCTION.md and reports/native_particle_model_construction.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/ak-signature-audit.json",
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00af74a0": "00af74a0 BSP_NativeParticleModel_Construct  undefined BSP_NativeParticleModel_Construct(void)  body 00af74a0 - 00af7f31\n",
+      "00aff5f0": "00aff5f0 BSP_NativeParticleEmitter_Construct  undefined BSP_NativeParticleEmitter_Construct(void)  body 00aff5f0 - 00aff634\n",
+      "00afd2e0": "00afd2e0 BSP_NativeParticleModelArrays_Construct  undefined BSP_NativeParticleModelArrays_Construct(void)  body 00afd2e0 - 00afd365\n",
+      "00af6120": "00af6120 BSP_NativeParticleEmitterPointers_Reserve  undefined BSP_NativeParticleEmitterPointers_Reserve(void)  body 00af6120 - 00af617e\n"
+    },
+    "changes": [
+      {
+        "address": "00af74a0",
+        "prototype": "void * __thiscall BSP_NativeParticleModel_Construct(void * variant)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af74a0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00aff5f0",
+        "prototype": "void * __thiscall BSP_NativeParticleEmitter_Construct(void * model, void * definition)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00aff5f0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afd2e0",
+        "prototype": "void * __thiscall BSP_NativeParticleModelArrays_Construct(void * model, int count)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afd2e0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af6120",
+        "prototype": "void __thiscall BSP_NativeParticleEmitterPointers_Reserve(int capacity)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af6120 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "note": "Original native calling convention/arguments only; implicit this is ECX. Added C++ bindings do not change this recovered native signature. Compiler handler remains opaque."
+  },
+  "final_merged_validation": {
+    "tested_commit": "aab1373abde21d9a8d03ad113f8a53317cfd8ff5",
+    "build": "local/ak-integrate.log: repository standard scripts/build.ps1 completed successfully after merge with current main; strict MSVC Win32 and both existing seeded CTests passed",
+    "earlier_parallel_issue": "Intermittent MSB3491 creating Lua/zlib tlog temporary files occurred before C++ compilation, including a later documentation-only integration rerun. Standard integration build at the pinned source commit passed. Serial final full build and both CTests passed again; no ACL/global workaround installed.",
+    "original_byte_fixture": "local/model-construction-final-merged-ak.log",
+    "fixture_compiler": "MSVC Win32 /std:c++20 /W4 /WX /O2 /fp:strict /MD; /link /MANIFEST:EMBED",
+    "combined_library_sha256": "3ca30054b3287e5612c4b6fc9c684a8927805b4591db28a95d9367a4e05977ef",
+    "owned_sources_unchanged_from_review": "local/ak-merged-source-audit.json: all14 source/header files unchanged from020d8f85",
+    "game_validated": false,
+    "native_binary_replacement": false,
+    "documentation_only_retry": {
+      "build": "local/ak-documentation-final-build.log: serial strict Win32 full build passed",
+      "tests": "local/ak-documentation-final-ctest.log: both seeded tests passed",
+      "source_unchanged": true,
+      "library_sha256": "3ca30054b3287e5612c4b6fc9c684a8927805b4591db28a95d9367a4e05977ef"
+    }
+  }
+}

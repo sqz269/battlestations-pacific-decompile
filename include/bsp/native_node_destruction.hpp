@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/generated_model_lifetime.hpp"
 #include "bsp/native_node_construction.hpp"
+#include "bsp/native_point_light_links.hpp"
 
 namespace bsp {
 
@@ -30,6 +31,7 @@ public:
     void unbind_retained_owner(NativeNodeRetainedOwnerBinding&) noexcept;
     void release_retained_owner(void* captured_owner);
 
+    NativePointLightLinksRuntime point_lights; // actual descriptors and matching backing domain
     SceneAttachmentRuntime& scenes;
     GeneratedModelLifetimeRuntime& attachments;
     SizedStoragePool& strings;

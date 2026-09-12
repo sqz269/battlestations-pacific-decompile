@@ -185,3 +185,12 @@ both existing tests. The preceding worker-only compile and registration notes
 remain historical evidence; batch validation is in
 `reports/orch5_text_factory_batch.json`. Explicit unsupported/pending/native-ABI
 and gameplay boundaries remain unchanged.
+
+## 2026-09-12 timed and clip ownership integration
+
+Base current70 now reaches the material-prefix/child continuation when the same
+runtime has explicit actual clip services. Resume verifies those same service
+objects. Current54 and base current4C use actual canonical Model color access;
+Text retains its actual AB6AD0 shadow override. The Text base lifetime accepts
+only provenance-owned timed headers. The executable does not yet configure and
+reach this complete canonical runtime. See reports/orch5_timed_clip_batch.json.

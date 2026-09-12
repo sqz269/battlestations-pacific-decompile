@@ -40,6 +40,9 @@ void __fastcall native_crt_sqrt_st0_00bf7030(const CameraAxesCrtAccess*);
 // its first destination store precedes later source reads (do not assume alias
 // safety). The pointed-to vectors each contain three float words.
 float __fastcall camera_vector_length_00419440(const float*, const CameraAxesCrtAccess*);
+// Forward the existing normalization kernel without another FP operation.
+// ECX destination, EDX source, stack borrowed CRT access; RET4, EAX destination.
+float* __fastcall camera_vector_normalize_00419510(float*, const float*, const CameraAxesCrtAccess*);
 float* __fastcall camera_vector_cross_004f9b30(float*, const float*, const float*);
 
 // Native ECX=camera, no stack args, EAX=&camera+440 / +44C. New typed ABI.

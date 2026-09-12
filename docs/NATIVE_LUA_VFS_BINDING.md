@@ -92,3 +92,9 @@ where the current FileStore conversion requires callable external methods.
 The newer composition uses the actual file, memory and physical type initializers in the shared root/counter lifetime domain. It also loads fundamentals through a FileStore entry retaining an actual physical stream; clearing Platform before the load and observing its restoration verifies execution. Counter publication clears during canonical shutdown while descriptor guards stay set. Initializer order, manager and mount records, and FileStore tree population remain explicit fixture inputs; this does not establish full native startup.
 
 Evidence: reports/native_ao_integration.json; reports/native_physical_memory_binding.json.
+
+## Integration correction from docs/NATIVE_ADOPTED_SUBSTREAM.md
+
+NativeVfsRuntimeBindings now routes actual D68DB0 open/length/read/seek/zero-reference behavior, including nested substreams terminating in memory or physical owners. The FileStore conversion context borrows and restores its adopted-source dispatcher. Current composition verifies nested physical cached/OS cursors, real HANDLE closure, memory conversion, BEF540 EAX, binding restoration and null BD30E0 handling. Platform is cleared before a FileStore-adopted physical fundamentals load and restored by execution. Numeric physical/memory writes, seeded tree population, original EH/startup and gameplay remain outside this binding.
+
+Evidence: reports/native_adopted_substream.json.

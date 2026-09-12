@@ -8149,6 +8149,160 @@
       ],
       "integration_report": "reports/sound_application.json",
       "discovery_evidence": "docs/SOUND_APPLICATION.md"
+    },
+    {
+      "id": "gui_timed_entries_canonical_ownership",
+      "packet": "gui_timed_entries_canonical_ownership",
+      "state": "integrated_bounded_ownership_build_and_focused_evidence",
+      "done": true,
+      "source_ready": true,
+      "worker": "agent/orch5-20260911",
+      "function_addresses": [
+        "00aa6f30",
+        "00aa77b0",
+        "00aa8b00",
+        "00ad3a80",
+        "00ad3a60",
+        "00ad3970",
+        "00ad3990",
+        "00ad39a0",
+        "00ac2ed0",
+        "00ac2f40",
+        "00ac2fe0",
+        "00ad3a40",
+        "00abe7b0",
+        "00aa87b0",
+        "00aa9730",
+        "00aa68f0",
+        "00aa6980"
+      ],
+      "evidence": "reports/orch5_timed_clip_batch.json",
+      "qualification": "Canonical allocation and alpha/countdown owners plus bounded update/drain. Active Section17 and full widget virtual sequence remain open."
+    },
+    {
+      "id": "gui_widget_base_clip_actual_ownership",
+      "packet": "gui_widget_base_clip_actual_ownership",
+      "state": "integrated_bounded_ownership_build_and_focused_evidence",
+      "done": true,
+      "source_ready": true,
+      "worker": "agent/orch5-20260911",
+      "function_addresses": [
+        "00aaa3e0"
+      ],
+      "evidence": "reports/orch5_timed_clip_batch.json",
+      "qualification": "Same actual Model/material prefix and explicit stable/surviving-child continuation. No executable clip services or full intrusive-list ABI."
+    },
+    {
+      "id": "native_point_light_physical_links",
+      "packet": "native_point_light_physical_links",
+      "state": "integrated_bounded_ownership_build_and_focused_evidence",
+      "done": true,
+      "source_ready": true,
+      "worker": "agent/orch5-20260911",
+      "function_addresses": [
+        "00b6e500",
+        "00b6eed0",
+        "00b6f090",
+        "00b6f150",
+        "00b6f3c0",
+        "00b7be40",
+        "00b7bed0",
+        "00b7c160",
+        "00b7c1a0",
+        "00b7c710",
+        "00b7c770"
+      ],
+      "evidence": "reports/orch5_timed_clip_batch.json",
+      "qualification": "Actual physical forward/backlink arrays with allocation provenance; partial Text clone branch and light initialization/destruction fragments. Full light owner remains open."
+    },
+    {
+      "id": "native_singleton_runtime4",
+      "packet": "native_singleton_runtime4",
+      "state": "raw_executable_lifetime_integrated_build_fixture_and_180_frame_runtime",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00bd0400",
+        "00412440",
+        "0086b0b0"
+      ],
+      "fragment_addresses": [
+        "004e4000",
+        "008f8449"
+      ],
+      "code_ownership": [
+        "src/native_singleton_destruction.cpp",
+        "include/bsp/native_singleton_destruction.hpp",
+        "src/game_hosts_singletons.cpp",
+        "include/bsp/game_hosts_singletons.hpp",
+        "src/frontend_entry.cpp",
+        "include/bsp/frontend_entry.hpp",
+        "src/game_hosts_menu.cpp",
+        "docs/NATIVE_SINGLETON_RUNTIME.md",
+        "reports/native_singleton_runtime_audit.json"
+      ],
+      "evidence": "reports/native_singleton_runtime_audit.json",
+      "qualification": "Raw manager drain, finite four-profile concrete deletion map, raw effect probe and canonical application ownership. Current executable admits effect only; fixture executes base/effect. Source exception cleanup and180-frame rebuilt shutdown verified. Arbitrary original owner dispatch, original ABI/SEH, visual/full gameplay remain open."
+    },
+    {
+      "id": "native_renderer_gamma_actual4",
+      "packet": "native_renderer_gamma_actual4",
+      "state": "complete_raw_gamma_current_main_build_and_qualified_original_source_ramp_fixture",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b21960"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_gamma.hpp",
+        "src/native_renderer_gamma.cpp",
+        "docs/NATIVE_RENDERER_GAMMA.md",
+        "reports/native_renderer_gamma_audit.json"
+      ],
+      "evidence": "reports/native_renderer_gamma_audit.json",
+      "qualification": "Full source gamma uses completed raw pow. Three native/source fallback ramp comparisons and source exception cleanup; current build validated. Original ABI/FH3/SEH, monitor, visuals and gameplay unproved."
+    },
+    {
+      "id": "logical_alias_geometry4",
+      "packet": "logical_alias_geometry4",
+      "state": "bounded_negative_alias_discovery_primary_live_PE_reviewed",
+      "done": true,
+      "source_ready": false,
+      "worker": "main",
+      "function_addresses": [
+        "00b85b80",
+        "00b73bb0",
+        "00b72a70"
+      ],
+      "code_ownership": [
+        "docs/LOGICAL_VERTEX_ALIAS_GEOMETRY.md",
+        "reports/logical_vertex_alias_geometry.json"
+      ],
+      "evidence": "reports/logical_vertex_alias_geometry.json",
+      "primary_review": "reports/logical_vertex_alias_workers4_review.json",
+      "qualification": "Discovery only. No logical+4C nonnull writer/profile/final-zero terminal established; no source or readiness promotion."
+    },
+    {
+      "id": "logical_alias_factory4",
+      "packet": "logical_alias_factory4",
+      "state": "bounded_negative_alias_discovery_primary_live_PE_reviewed",
+      "done": true,
+      "source_ready": false,
+      "worker": "main",
+      "function_addresses": [
+        "00b287c0",
+        "00b28a40",
+        "00b29b20"
+      ],
+      "code_ownership": [
+        "docs/LOGICAL_VERTEX_ALIAS_FACTORY.md",
+        "reports/logical_vertex_alias_factory.json"
+      ],
+      "evidence": "reports/logical_vertex_alias_factory.json",
+      "primary_review": "reports/logical_vertex_alias_workers4_review.json",
+      "qualification": "Discovery only. No logical+4C nonnull writer/profile/final-zero terminal established; no source or readiness promotion."
     }
   ],
   "snapshot_after_analysis": {

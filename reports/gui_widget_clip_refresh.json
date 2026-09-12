@@ -1,0 +1,232 @@
+{
+  "packet": "orch5_base_clip",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mutated": false,
+    "old_name": "FUN_00aaa3e0",
+    "proposed_name": "BSP_GuiWidget_RefreshClip",
+    "annotation": "pending integrator; saved comments preserved"
+  },
+  "source": "src/gui_widget_clip_refresh.cpp",
+  "routines": [
+    {
+      "address": "00aaa3e0",
+      "end_inclusive": "00aaa465",
+      "last_instruction_length": 1,
+      "instruction_count": 53,
+      "native_abi": "__thiscall ECX widget; no stack arguments; RET",
+      "coverage": "complete",
+      "implemented_ranges": [
+        "00aaa3e0..00aaa465"
+      ],
+      "unread_ranges": [],
+      "domain": "Proven five non-Text profiles; same canonical actual Model/Mesh/Section/Material owners and material/name/parameter domains; borrowed child membership/order stable, surviving frame owners. Unknown profiles, non-Model nonnull roots, corrupt storage/list, intrusive mutation ABI and native SEH excluded. Actual current70 dispatch required; a throwing child retains its frame."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00aaa3ee",
+      "native": "00b74650",
+      "function": "00aaa3e0",
+      "contract": "Captured actual Model+180 nonnull test; ECX Model, no stack, RET."
+    },
+    {
+      "address": "00aaa3fb",
+      "native": "00b74640",
+      "function": "00aaa3e0",
+      "contract": "Captured actual Model geometry; unused index0 stack, RET4."
+    },
+    {
+      "address": "00aaa402",
+      "native": "00b72b40",
+      "function": "00aaa3e0",
+      "contract": "Actual mesh DWORD+58 section count; RET; zero skips material work."
+    },
+    {
+      "address": "00aaa411",
+      "native": "00b74640",
+      "function": "00aaa3e0",
+      "contract": "Reload geometry on SAME captured Model; unused index0 stack, RET4."
+    },
+    {
+      "address": "00aaa418",
+      "native": "00b732c0",
+      "function": "00aaa3e0",
+      "contract": "Actual mesh pointer array+54[index0]; index stack, RET4."
+    },
+    {
+      "address": "00aaa423",
+      "native": "00aa9f10",
+      "function": "00aaa3e0",
+      "contract": "ECX original widget, actual section0 material+20 stack, RET4; same clip parameter/name/pool/borrowed sources implementation."
+    },
+    {
+      "address": "00aaa452",
+      "native": "current_child+vtable70",
+      "function": "00aaa3e0",
+      "contract": "Actual current child dispatch via owner.refresh_clip70(), no stack args. Throw retains before-call frame; caller must finish child before explicit resume."
+    }
+  ],
+  "excluded_list_check_calls": [
+    {
+      "address": "00aaa437",
+      "native": "00bf6713",
+      "function": "00aaa3e0",
+      "contract": "Unreachable after CMP EDI,EDI/JZ; forwarding library body read."
+    },
+    {
+      "address": "00aaa445",
+      "native": "00bf6713",
+      "function": "00aaa3e0",
+      "contract": "Out-of-domain invalid-list CRT path; forwarding body read."
+    },
+    {
+      "address": "00aaa459",
+      "native": "00bf6713",
+      "function": "00aaa3e0",
+      "contract": "Out-of-domain post-child invalid-list CRT path; forwarding body read."
+    }
+  ],
+  "profiles": [
+    {
+      "type": 1,
+      "name": "Screen",
+      "constructor": "00ac6600",
+      "store": "00ac6640",
+      "table": "00d5be38",
+      "slot70": "00d5bea8",
+      "bytes": "e0 a3 aa 00",
+      "target": "00aaa3e0",
+      "limit": "Nonnull primary still requires actual Model; cGroup roots excluded."
+    },
+    {
+      "type": 2,
+      "name": "Group",
+      "constructor": "00ac6f50",
+      "store": "00ac6f5a",
+      "table": "00d5cb80",
+      "slot70": "00d5cbf0",
+      "bytes": "e0 a3 aa 00",
+      "target": "00aaa3e0"
+    },
+    {
+      "type": 6,
+      "name": "Icon",
+      "constructor": "00ab5c60",
+      "store": "00ab5c91",
+      "table": "00d5c4c0",
+      "slot70": "00d5c530",
+      "bytes": "e0 a3 aa 00",
+      "target": "00aaa3e0"
+    },
+    {
+      "type": 16,
+      "name": "ClipBox",
+      "constructor": "00ace0a0",
+      "store": "00ace0aa",
+      "table": "00d5d058",
+      "slot70": "00d5d0c8",
+      "bytes": "e0 a3 aa 00",
+      "target": "00aaa3e0"
+    },
+    {
+      "type": 18,
+      "name": "FrameBox",
+      "constructor": "00ad2600",
+      "store": "00ad262c",
+      "table": "00d5d130",
+      "slot70": "00d5d1a0",
+      "bytes": "e0 a3 aa 00",
+      "target": "00aaa3e0"
+    }
+  ],
+  "separate_text_profile": {
+    "type": 3,
+    "table": "00d5c6c8",
+    "slot70": "00d5c738",
+    "bytes": "40 7a ab 00",
+    "target": "00ab7a40",
+    "contract": "Keep actual Text main/shadow override; not accepted by base predicate."
+  },
+  "base_constructor_profile": {
+    "constructor": "00aa9390",
+    "store": "00aa93cb",
+    "table": "00d5c130",
+    "slot70": "00d5c1a0",
+    "bytes": "e0 a3 aa 00",
+    "target": "00aaa3e0"
+  },
+  "callers": {
+    "direct_functions": [],
+    "direct_sites": [],
+    "data_xrefs": [
+      "00d5bc68",
+      "00d5bd50",
+      "00d5bf40",
+      "00d5c1a0",
+      "00d5c2e0",
+      "00d5c530",
+      "00d5c868",
+      "00d5c958",
+      "00d5ca58",
+      "00d5bea8",
+      "00d5cbf0",
+      "00d5cc88",
+      "00d5cd68",
+      "00d5ced0",
+      "00d5cfa8",
+      "00d5d040",
+      "00d5d0c8",
+      "00d5d1a0"
+    ],
+    "evidence": "Live xrefs and callers both queried; only DATA refs. Supported constructor/table associations read, slot words verified individually; other tables are not added factory support."
+  },
+  "register_provenance": {
+    "edi": "ECX captured AAA3E3, original widget through AA9F10 atAAA423; becomes widget+64 atAAA42D.",
+    "esi": "Primary+4C captured AAA3E5 and used by both geometry getters; current first list-node loaded AAA42B only after material completion; next atAAA45E.",
+    "ebx": "Current sentinel reloaded AAA432 each loop, compared AAA43C; full-function filtered register listing read.",
+    "child": "Current payload ECX AAA44A; table EDX AAA44D; slot70 EAX AAA44F; CALL AAA452. Check current entry AAA454, advance AAA45E, reload current sentinel.",
+    "stack": "Geometry getters RET4; mesh element getter RET4. PUSH0 AAA40B is element index and PUSH0 AAA40D is ignored geometry DWORD. AA9F10 material pointer RET4. No list inferred from partial pushes."
+  },
+  "ownership": {
+    "widget": "Same canonical owner/layout/transform; only borrowed continuation and running flag added.",
+    "models": "Canonical attachment actual identity, same live Model environment, same node/storage and positive actual refcount; no extra retain.",
+    "materials": "Actual mesh pointer reload, section0/material+20, supported live D5E520; same retained owners, parameter slots and NativeString service as existing destruction access.",
+    "values": "Borrow same widget+E8, captured canonical ClipBox fields, live aspect global; survive callbacks and later packing.",
+    "children": "Existing transform.children with stable membership/order, no snapshot/secondary list; duplicate entries distinct, current owner/implementation re-resolved at call boundary.",
+    "failure": "Actual child70 exception retains exact pending frame. Prefix/first selection/current-child resolution/advance failure marks failed_unresumable, including consumed frames; failed state counts as pending and forbids begin/resume/deletion. Begin/reentrant resume cannot retry or skip a pending child. Explicit resume only after actual child70 completed. Destruction with pending/running/failed work terminates; parent must preflight deletion."
+  },
+  "corrections": [
+    {
+      "was": "Default current70 throws for all non-Text types.",
+      "is": "The five supported non-Text factory tables all select AAA3E0, with explicit actual-Model and child-profile domain checks.",
+      "evidence": "Live bytes in the five profile rows and their constructor stores; Screen cGroup roots remain outside supported geometry domain."
+    }
+  ],
+  "remaining": [
+    "Integrator owner lifecycle/service hooks and CMake registration; this worker owns only new module/docs/report and its reconstruction shard.",
+    "Integrator Ghidra annotation, original-name/comment archival and refreshed annotated export; this packet was read-only.",
+    "Native intrusive-list mutation/iterator ABI, self-deletion and non-Model nonnull roots remain outside supported domain.",
+    "Focused execution, native ABI differential and game/render validation not performed."
+  ],
+  "verification": {
+    "strict_compile": "passed MSVC Win32 C++17 /W4 /WX /EHsc /permissive- /fp:strict; new source compiled to local/gui_widget_clip_refresh.obj",
+    "existing_build": "passed existing Release Win32 CMake build via --build build/win32 --config Release -- /m:1 /nr:false with MSBUILDDISABLENODEREUSE=1; ordinary scripts/build.ps1 attempted twice but reused/out-of-process MSBuild failed tlog access before source compilation. New source separately strict-compiled; CMake registration is integrator-owned.",
+    "existing_tests": "passed CTest Release: 1/1 reconstructed_math. Native differential target was not enabled in this fresh worktree; no verify-seeds or ABI differential claim.",
+    "exact_call_verifier": "passed tools/verify_report_calls.py: 9 direct rows checked, 0 failed; 1 indirect current child70 manually traced",
+    "new_tests": 0,
+    "runtime": "Unwired module in worker checkout; no current executable path reaches it. No per-frame behavior, native ABI or game/render claim."
+  },
+  "tool_issues": [
+    "Ordinary parallel build returned MSB3191 creating tlog directories, then MSB3491 writing lastbuildstate temporary files. PowerShell could create the same ordinary non-reparse directories. Serial /m:1 /nr:false build succeeded; no shared processes or permissions were changed."
+  ],
+  "descriptive_names_are_hypotheses": true,
+  "parent_integration": {
+    "report": "reports/orch5_timed_clip_batch.json",
+    "combined_build": "Release MSVC Win32 build passed; 2/2 existing tests",
+    "canonical_runtime_reachable_in_game": false,
+    "abi_compatible": false,
+    "game_validated": false
+  }
+}

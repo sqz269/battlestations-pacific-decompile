@@ -1,6 +1,9 @@
 #include "bsp/gui_widget_owner.hpp"
 #include "bsp/camera_multiply.hpp"
 #include "bsp/gui_text_type_dispatch.hpp"
+#include "bsp/gui_timed_entry_owner.hpp"
+#include "bsp/gui_widget_clip_refresh.hpp"
+#include "bsp/gui_widget_color_dispatch.hpp"
 #include <algorithm>
 #include <cstring>
 #include <stdexcept>
@@ -97,8 +100,73 @@ GuiWidgetTypeImplementation& GuiWidgetOwner::implementation() {
     if (!implementation_) throw std::logic_error("GUI type implementation is not constructed");
     return *implementation_;
 }
-void GuiWidgetTypeImplementation::refresh_clip70(GuiWidgetOwner&) {
-    throw std::logic_error("current GUI clip70 profile has no established implementation");
+GuiWidgetOwner::~GuiWidgetOwner() noexcept = default;
+GuiTimedEntryOwner& GuiWidgetOwner::timed_entries(const volatile float& one) {
+    if (!timed_entries_) timed_entries_ = std::make_unique<GuiTimedEntryOwner>(*this, one);
+    if (&timed_entries_->constructor_one() != &one)
+        throw std::logic_error("widget timed entries require the original constant storage");
+    return *timed_entries_;
+}
+void GuiWidgetOwner::require_timed_entry_ownership() const {
+    if (timed_entries_) {
+        if (timed_entries_->retired()) return; // cleanup phase already completed
+        timed_entries_->validate_live();
+        return;
+    }
+    for (auto word : extra_.pointers_88_90)
+        if (word) throw std::logic_error("nonzero timed header has no actual allocation owner");
+}
+void GuiWidgetOwner::retire_timed_entries_00aa9730_fragment() {
+    require_timed_entry_ownership();
+    if (timed_entries_ && !timed_entries_->retired())
+        timed_entries_->destroy_entries_00aa9730_fragment();
+}
+bool GuiWidgetOwner::has_pending_base_clip() const noexcept {
+    return base_clip_ && base_clip_->has_pending();
+}
+void GuiWidgetOwner::require_no_active_owned_operation() const {
+    if (has_pending_base_clip() || (timed_entries_ && timed_entries_->operation_active()))
+        throw std::logic_error("widget still owns an active or pending native operation");
+}
+void GuiWidgetOwner::base_refresh_clip70_00aaa3e0() {
+    auto* services = runtime_.environment().clip;
+    if (!services || &services->widgets != &runtime_)
+        throw std::logic_error("base clip70 requires the same actual configured services");
+    if (!base_clip_) {
+        base_clip_ = std::make_unique<GuiWidgetClipRefreshOperation>(*this, *services);
+        base_clip_services_ = services;
+    }
+    if (base_clip_services_ != services)
+        throw std::logic_error("base clip70 service storage changed during its owner lifetime");
+    base_clip_->begin();
+}
+void GuiWidgetOwner::resume_base_clip_after_child70() {
+    if (!base_clip_) throw std::logic_error("base clip70 has no pending child frame");
+    auto* services = runtime_.environment().clip;
+    if (!services || services != base_clip_services_ || &services->widgets != &runtime_)
+        throw std::logic_error("base clip70 resume requires the original configured services");
+    base_clip_->resume_after_child70();
+}
+void GuiWidgetTypeImplementation::refresh_clip70(GuiWidgetOwner& owner) {
+    if (!gui_widget_uses_base_clip70_profile(owner.layout().type))
+        throw std::logic_error("current GUI clip70 profile has no established implementation");
+    owner.base_refresh_clip70_00aaa3e0();
+}
+float* GuiWidgetTypeImplementation::read_color54(GuiWidgetOwner& owner, float (&output)[4]) {
+    if (!gui_widget_has_base_color54_profile(owner.layout().type))
+        throw std::logic_error("current GUI color54 profile is not established");
+    return read_gui_widget_color_00aa68f0(owner, output);
+}
+void GuiWidgetTypeImplementation::set_alpha4c(GuiWidgetOwner& owner, float alpha) {
+    if (!gui_widget_has_base_alpha4c_profile(owner.layout().type))
+        throw std::logic_error("current GUI alpha4C profile is not established");
+    set_gui_widget_alpha_00aa6980(owner, alpha);
+}
+std::int32_t GuiWidgetTypeImplementation::type5c(GuiWidgetOwner& owner) {
+    if (!gui_widget_has_base_color54_profile(owner.layout().type) ||
+        owner.layout().transform.type_id != static_cast<std::int32_t>(owner.layout().type))
+        throw std::logic_error("current GUI type5C profile is not established");
+    return owner.layout().transform.type_id;
 }
 void GuiWidgetOwner::refresh_clip70() {
     implementation().refresh_clip70(*this);
@@ -193,6 +261,7 @@ void GuiWidgetOwner::set_position_00aa7dc0(const GuiWidgetPoint& position) {
     refresh_bounds_00aa70e0();
 }
 void GuiWidgetOwner::release_scene_nodes_00aa8320() {
+    require_no_active_owned_operation();
     for (const auto& child : layout_.children)
         runtime_.owner(*child).release_scene_nodes_00aa8320();
     implementation().release_secondary_scene_nodes(*this);
@@ -430,17 +499,20 @@ void GuiWidgetOwnerRuntime::propagate_visibility(GuiWidgetOwner& retained,
 }
 void GuiWidgetOwnerRuntime::erase_tree(GuiLayoutWidget& layout) {
     auto& retained = owner(layout);
+    retained.require_no_active_owned_operation();
     // Current deleting destructor: derived teardown precedes base AA9730,
     // whose AA8320 call is safe after the manager's separate virtual20 pass.
     retained.implementation().before_scene_release(retained);
     retained.release_scene_nodes_00aa8320();
     for (const auto& child : layout.children) erase_tree(*child);
+    retained.retire_timed_entries_00aa9730_fragment();
     layout.before_destroy = {};
     widgets_.erase(&layout);
 }
 void GuiWidgetOwnerRuntime::retire_tree(GuiLayoutWidget& layout) {
     const auto found = widgets_.find(&layout);
     if (found == widgets_.end()) return;
+    found->second->require_no_active_owned_operation();
     // AA31F0 calls current virtual20 at AA326A BEFORE deleting virtual04(1)
     // at AA3276. A scene's final release may consume its remaining roots, so
     // derived Screen teardown must never precede this logical-node release.

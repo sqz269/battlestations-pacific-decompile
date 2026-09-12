@@ -1,42 +1,37 @@
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_hosts.hpp"
 
-#include <cstdlib>
+#include "bsp/native_gameplay_effect_construction.hpp"
+#include "bsp/native_singleton_vector_leaves.hpp"
+#include "bsp/singleton_lifetime.hpp"
 
 namespace bsp::game {
 
 GameSingletonHost::GameSingletonHost(GameHostLog& log)
-    : log_(log), lifetime_01090aa0_({this, &destroy_registered, &invalid_parameter}),
-      effect_context_{lifetime_01090aa0_, effect_publication_00f87664_,
-          effect_allocation_words_} {}
+    : log_(log), deletion_bindings_{&effect_publication_00f87664_, nullptr} {}
 
 GameSingletonHost::~GameSingletonHost() {
-    // Run before automatic member destruction removes the context required
-    // by the domain's callbacks. Normal WinMain shutdown has already drained it.
+    // Normal WinMain shutdown has already drained this owner. All publication
+    // cells and source bindings remain valid through this fallback call.
     shutdown();
 }
 
-void GameSingletonHost::destroy_registered(void* context, void* owner,
-    std::uint32_t flags) noexcept {
-    auto& host = *static_cast<GameSingletonHost*>(context);
-    // The only registration path this host exposes is 004C1650. Its D0DA64
-    // owner reaches the existing full weak-map destructor and paired free.
-    scalar_delete_gameplay_effect_manager_008703e0(
-        static_cast<GameplayEffectManager*>(owner), flags, host.effect_context_);
-}
-
-void GameSingletonHost::invalid_parameter(void*) {
-    _invalid_parameter_noinfo();
+void GameSingletonHost::probe_gameplay_effect_memory(const char* label) {
+    void* const owner = get_native_gameplay_effect_manager_004c1650(
+        manager_publication_01090aa0_, effect_publication_00f87664_);
+    probe_native_gameplay_effect_registry_0086b0b0(owner, nullptr, label);
 }
 
 void GameSingletonHost::shutdown() {
-    auto* manager = lifetime_01090aa0_.published_manager();
+    void* const manager = manager_publication_01090aa0_;
     if (manager == nullptr) return;
-    const std::uint32_t registered = manager->count_00bcf910();
-    lifetime_01090aa0_.shutdown();
+    const std::uint32_t registered = count_native_singleton_slots_00bcf910(manager, nullptr);
+    destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_);
+    singleton_lifetime_free(manager);
+    manager_publication_01090aa0_ = nullptr;
     log_.notef("singleton lifetime drained: registered_slots=%u effect_publication=%s "
-        "manager_publication=%s", registered,
+        "manager_publication=%s storage=raw14h/raw10h", registered,
         effect_publication_00f87664_ == nullptr ? "null" : "non-null",
-        lifetime_01090aa0_.published_manager() == nullptr ? "null" : "non-null");
+        manager_publication_01090aa0_ == nullptr ? "null" : "non-null");
 }
 } // namespace bsp::game

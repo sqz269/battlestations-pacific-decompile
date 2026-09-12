@@ -117,3 +117,12 @@ No new tests or test targets were added. The normal combined build remains the
 parent integration check. The actual Text factory is still disabled while its
 virtual behavior is incomplete; these new operations are not reached by the game
 executable. There is no executed-operation, native differential or game proof.
+
+## 2026-09-12 timed and clip ownership integration
+
+The base-entry phase now calls the canonical timed allocation owner; nonzero
+headers are accepted only with actual ownership. Active allocation/update/drain
+or pending base clip operations reject the owner's scalar deletion before phase
+stores. Already completed timed retirement is skipped once by page retirement.
+This does not establish the rest of the generic widget destructor. See
+GUI_TIMED_ENTRY_OWNER.md and reports/orch5_timed_clip_batch.json.

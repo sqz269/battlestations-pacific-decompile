@@ -106,7 +106,11 @@ NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
         // release, then AA6E10 ->BD30F0. No physical slot return belongs here.
         while (node.point_lights_164.count > 0) --node.point_lights_164.count;
         node.point_lights_164.count = 0;
-        singleton_lifetime_free(node.point_lights_164.begin);
+        // This constructor only published an empty array. A supplied string
+        // service must not replace its backing while the node is constructing;
+        // no unproven foreign pointer may be freed through the host CRT.
+        if (node.point_lights_164.begin) std::terminate();
+        singleton_lifetime_free(nullptr);
         destroy_native_string_header_0041dd20(&node.name_54, strings);
         node.vtable_00 = 0x00d5c104u;
         node.vtable_00 = 0x00ceb130u;
