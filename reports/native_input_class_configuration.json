@@ -1,0 +1,200 @@
+{
+  "packet": "orch4_native_input_class_configuration_af",
+  "source": [
+    "include/bsp/native_input_class_configuration.hpp",
+    "src/native_input_class_configuration.cpp"
+  ],
+  "analysis": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "verified read-only CLI batches and bounded refreshed exports",
+    "ghidra_writes": false,
+    "annotation_pending": "Current proto is undefined FUN_00a917e0(void); primary may apply recovered original prototype/name after lease release"
+  },
+  "routines": [
+    {
+      "address": "00a917e0",
+      "return_type": "void",
+      "convention": "__thiscall",
+      "ecx": "void* actual_backend_F8h",
+      "edx": "not consumed as input",
+      "stack_arguments": [
+        "uint32 class_index",
+        "uint32 requested_count",
+        "const void* optional_actual10h_identifier_vector"
+      ],
+      "ret_argument_bytes": 12,
+      "return_value": "No native caller consumes a result; EAX is not a semantic return contract",
+      "body_start": "00a917e0",
+      "last_instruction": "00a91897",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a91899",
+      "end_exclusive": "00a9189a",
+      "name": "configure_native_input_class_00a917e0",
+      "coverage": "complete game body in documented actual-storage source contract; not original STL/CRT/FH3/SEH ABI",
+      "missing_starts": [],
+      "excluded_tails": []
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a91806",
+      "native": "00bf6713",
+      "function": "00a917e0",
+      "contract": "Actual returning invalid-parameter CRT; no stack args, RET. Retain captured end, reload begin/current end at later game instructions."
+    },
+    {
+      "address": "00a91814",
+      "native": "00bf6713",
+      "function": "00a917e0",
+      "contract": "Actual returning invalid-parameter CRT; no stack args, RET. Retain captured end, reload begin/current end at later game instructions."
+    },
+    {
+      "address": "00a91824",
+      "native": "00a90d00",
+      "function": "00a917e0",
+      "contract": "Recognized checked pointer erase: ECX actual10h active header; five stack DWORDs output8h iterator, first-owner, first-pointer, last-owner, last-pointer; RET14h. Stateless source storage contract preserves captured range and current end; no device release."
+    },
+    {
+      "address": "00a91835",
+      "native": "00bf6713",
+      "function": "00a917e0",
+      "contract": "Actual returning invalid-parameter CRT; no stack args, RET. Retain captured end, reload begin/current end at later game instructions."
+    },
+    {
+      "address": "00a91842",
+      "native": "00bf6713",
+      "function": "00a917e0",
+      "contract": "Actual returning invalid-parameter CRT; no stack args, RET. Retain captured end, reload begin/current end at later game instructions."
+    },
+    {
+      "address": "00a91852",
+      "native": "004685a0",
+      "function": "00a917e0",
+      "contract": "Recognized checked DWORD erase: ECX actual10h accepted-ID header; five stack DWORDs output8h iterator, first-owner, first-pointer, last-owner, last-pointer; RET14h. Stateless source storage contract preserves capacity."
+    },
+    {
+      "address": "00a91862",
+      "native": "004f60e0",
+      "function": "00a917e0",
+      "contract": "Recognized actual10h DWORD-vector assignment: ECX destination, stack actual source header; EAX destination ignored; RET4. Source storage contract covers actual nonnull vector, capacity reuse, free-before-allocation and postallocation endpoint reload; original STL/CRT/EH implementation not claimed."
+    },
+    {
+      "address": "00a91887",
+      "native": "00442190",
+      "function": "00a917e0",
+      "contract": "Recognized append: ECX actual10h accepted-ID header; one stack pointer to captured FFFFFFFF word; RET4. Reuses source DWORD insertion storage contract, never a typed device container."
+    }
+  ],
+  "incoming_calls": [
+    {
+      "address": "004dd6b4",
+      "native": "00a917e0",
+      "function": "004dd5b0",
+      "contract": "Fresh F8BBF4 in ECX; pushes null source, count1, class0; callee RET0Ch. No result consumed."
+    },
+    {
+      "address": "004dd6c5",
+      "native": "00a917e0",
+      "function": "004dd5b0",
+      "contract": "Fresh F8BBF4 in ECX; pushes null source, count1, class1; callee RET0Ch. No result consumed."
+    },
+    {
+      "address": "004dd6d6",
+      "native": "00a917e0",
+      "function": "004dd5b0",
+      "contract": "Fresh F8BBF4 in ECX; pushes null source, count1, class2; callee RET0Ch. No result consumed."
+    },
+    {
+      "address": "0067c9c6",
+      "native": "00a917e0",
+      "function": "0067c970",
+      "contract": "Fresh F8BBF4 in ECX; pushes null source, count1, class2; callee RET0Ch. No result consumed."
+    }
+  ],
+  "call_audit": {
+    "owned_CALLs": 8,
+    "owned_direct_CALLs": 8,
+    "owned_indirect_CALLs": 0,
+    "incoming_direct_rows": 4,
+    "all_owned_call_sites": [
+      "00a91806",
+      "00a91814",
+      "00a91824",
+      "00a91835",
+      "00a91842",
+      "00a91852",
+      "00a91862",
+      "00a91887"
+    ],
+    "qualifications": "All observed incoming callers read; native nonnull source branch is nevertheless implemented. Recognized library calls use explicit stateless source storage contracts."
+  },
+  "native_layout": {
+    "producer": "A91570: EDX starts backend+68h, EBX0 atA915A0; A915F9 stores requested0 then stride24 for3classes; A914C0 initializes six vector pointers; A90DC0 frees accepted then active allocation",
+    "class_record": "backend+68h+class*24h: count+0, active10h header+4, accepted-ID10h header+14; leading allocator DWORD in each header untouched",
+    "fixed_table": "backend+4 remains untouched; no typed InputDevice/InputFocusBackendState cast, shadow vector or second ownership"
+  },
+  "sequencing": {
+    "store": "A917FB requested count before validation/erase/allocation",
+    "active": "A917FE captures end; A91806 may return; A9180C captures current begin; A91814 may return; A91824 passes captured iterators with same header owner",
+    "identifiers": "A9182C captures end; A91835 may return; A9183A captures begin; A91842 may return; A91852 passes captured iterators",
+    "branch": "Optional source parameter tested after both erases atA91857..A9185D. Nonnull assigns source DWORDs independent of requested count; source self-alias already erased. Null source TEST/JBE atA91874/76 is zero test, then decrements rawDWORD loop count after each FFFFFFFF append",
+    "absent_effects": "No dirty/callback/publication/refcount/device/SDK operations"
+  },
+  "register_provenance": {
+    "edi": "Initially backend+class*24 until accepted header address formed; accepted end capture, then original requested count loaded atA91870 for decrement loop",
+    "esi": "Active header backend+6C+class*24 untilA91829; then accepted header backend+7C+class*24 throughout branch",
+    "ebx": "Active captured end initially, then accepted captured begin; EBX/ESI/EDI preserved by epilogue",
+    "ebp": "Temporary active captured begin betweenA9180B push andA91832 pop; all pushes/callee cleanups account for later argument offsets",
+    "floating_point": "No x87/SSE arithmetic in owned body"
+  },
+  "source_storage": {
+    "kind": "Stateless actual DWORD vector storage contracts, no original STL port or library naming/reconstruction claim",
+    "append": "Reuses insert_input_active_pointer_storage after native append fast path and captured-end check",
+    "erase": "Captured range, current end, real memmove_s when residual count positive, capacity retained",
+    "assignment": "Self-alias return after caller erase; empty source checked-clear; capacity reuse; insufficient capacity frees old storage then clears pointers before allocation, reloads source endpoints afterward",
+    "allocation": "singleton_lifetime_allocate/free, 3FFFFFFF element limit, source length-error transport; no private allocator or domain",
+    "limits": "Complete valid DWORD ranges and correctly sized backing after returning handlers. Original CRT exception identity/heap/frame, arbitrary malformed storage and library instruction/EH identity not claimed"
+  },
+  "dependency_gaps": [
+    {
+      "function": "004f60e0",
+      "omitted_start": "004f61c4",
+      "omitted_end_inclusive": "004f61c6",
+      "raw_bytes": "83c404",
+      "meaning": "ADD ESP,4 after free4F61BF",
+      "end_inclusive": "004f6204",
+      "end_exclusive": "004f6205",
+      "ownership": "unowned recognized library; reported to primary, no worker mutation"
+    },
+    {
+      "function": "00441860",
+      "omitted_start": "00441961",
+      "omitted_end_inclusive": "00441963",
+      "raw_bytes": "83c404",
+      "meaning": "ADD ESP,4 after free44195C",
+      "end_inclusive": "00441a13",
+      "end_exclusive": "00441a14",
+      "ownership": "unowned recognized library; reported to primary, no worker mutation"
+    }
+  ],
+  "application_bridge": "Invoke exact API on current canonical F8BBF4 for each OnInitOnce first-time call4DD6B4/C5/D6 after4DD6A3, not at A982D0 construction. Rebind67C9C6 likewise uses freshly reloaded backend. Complete OnInitOnce and application SettingsApplyHost remain outside this packet.",
+  "validation": {
+    "seed_count": 8,
+    "all_seeds_match": true,
+    "build": "scripts/build.ps1 Win32 Release exit0; MSBUILDDISABLENODEREUSE=1",
+    "ctests": "2/2 passed",
+    "probe": "one ignored manifested actual-storage fixture; exit0",
+    "results": "invalid_returns1; count before validation; captured erase suffix; wildcard words3; explicit IDs3; copy capacity reuse; self-alias clear; untouched fixed/dirty/callback fields; class buffer fields0",
+    "runner": "local/run_native_input_class_configuration_probe.ps1 [-PrimaryWorktree path]",
+    "probe_log": "local/native_input_class_configuration_probe.log",
+    "core_archive_sha256": "bbbef04e1796866fa885caf4bceb9b2c6651febc494b957d56119a213586a4ed",
+    "probe_log_sha256": "687024f3c8efa50ae8bccb8f45ab0ef4101e3de333e374842eab06b34e19cbd8"
+  },
+  "limitations": [
+    "New C++ ABI with stateless source storage contracts; no native binary ABI/FH3/SEH proof",
+    "No game, window, SDK, polling or force effects exercised",
+    "No fabricated mouse scale/invert setter or class defaults; separate settings discovery is local/input_settings_producers_af_handoff.md",
+    "No application OnInitOnce edits; no broad/permanent test additions"
+  ]
+}
