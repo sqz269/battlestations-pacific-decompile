@@ -415,3 +415,13 @@ One row per native call site the reconstruction models.
 | `00926E80`, `00926700`, `009239A0` | complete |
 | `0098B370` | complete; `0098ADD0` broadphase read, narrowphase `contract: unread` |
 | `0084B380`, `0084B4B0`, `0084B8C0`, `0084BAD0`, `0084B000`, `0084AFD0`, `007BC4E0` | `contract: unread` |
+
+## Correction from docs/HIT_NARROWPHASE.md (packet cc2_hit_narrowphase)
+
+The third argument of the segment query `0098ADD0` that `0084BF00` passes is the **exclude
+entity** (compared with `!=` against each candidate's owner), not a collision mask; the query is
+`__thiscall(index; from, to, excludeEntity, record, kindFilter)`, RET 14h, over a 150x150 grid at
+`index+84h` and a loose array at `index+8h`. The bytes `projectile+5Ch` / `+5Dh` are the scene-node
+base's active and torn-down flags (written by `00922F30`, `00922F80`, `00922FD0`, `009263C0`,
+`00925F20`, `009274CE`), not projectile fields. A segment hit carries hull damage only: the record's
+damage `+28h`, centre and radius `+24h` come from the blast path `00904470` / `0084BAD0`.
