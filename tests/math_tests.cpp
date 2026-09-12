@@ -1,4 +1,5 @@
 #include "bsp/ai_planner_tails.hpp"
+#include "bsp/ship_ai_path_corridor.hpp"
 #include "bsp/land_and_structures.hpp"
 #include "bsp/air_operations.hpp"
 #include "bsp/ship_buoyancy_elements.hpp"
@@ -3312,6 +3313,30 @@ int main() {
         check(std::fabs(displacement - 10.0f * hull.mass) < 1.0f,
               "0082D64B: the list's coefficients normalise to 10 * Mass, so 00937C90's "
               "displacement sum cancels Gravitacio * Mass exactly");
+    }
+
+    {
+        // 009ED3E0's head: docs/SHIP_AI_PATH_CORRIDOR.md states that a plan is
+        // thrown away only once an extent moves by more than 25 units, which is
+        // two image rules composed - the +20 margin at 00CE3D88 and the 25.0
+        // epsilon at 00CE3880 - plus the floor at 00CE3850. The boundary is the
+        // number a reader will rely on, so it is the one worth pinning.
+        bsp::ShipAiUnitGroupMember member{};
+        member.lateral[0] = 30.0f;
+        bsp::ShipAiUnitGroupView group{};
+        group.members = &member;
+        group.count = 1;
+        group.column = 0;
+        check(bsp::ship_ai_unit_group_extent_positive_0070d400(group) == 30.0f &&
+                  bsp::ship_ai_unit_group_extent_negative_0070d5d0(group) == 5.0f,
+              "0070D400 / 0070D5D0: a lone member 30 units to one side gives that side's "
+              "extent and leaves the other at the 5.0f floor at 00CE3850");
+        check(bsp::ship_ai_group_corridor_width_009ed41f(30.0f) == 50.0f,
+              "009ED41F: a corridor width is the extent plus the 20.0 at 00CE3D88");
+        check(!bsp::ship_ai_group_corridor_extent_change_invalidates(5.0f, 30.0f) &&
+                  bsp::ship_ai_group_corridor_extent_change_invalidates(5.0f, 31.0f),
+              "009D9DE0: the JA at 009D9E09 is strict, so an extent moving exactly 25 keeps "
+              "the plan and 26 throws it away");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

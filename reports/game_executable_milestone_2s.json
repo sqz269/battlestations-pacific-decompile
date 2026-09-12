@@ -1,0 +1,486 @@
+{
+  "packet": "cc_exe_2s",
+  "owner": "agent/cc-exe-2s",
+  "milestone": "2s: a ship goes where it is sent",
+  "doc": "docs/GAME_EXECUTABLE.md, section `## Milestone 2s`",
+  "ghidra": "C:/Users/sqz269/bsp.gpr, /battlestationspacific.exe, read-only for this packet. No Ghidra mutation: no name added, no comment written.",
+  "sources": [
+    "src/game_hosts_units.cpp",
+    "include/bsp/game_hosts_units.hpp",
+    "src/game_hosts.cpp",
+    "src/game_main.cpp"
+  ],
+  "hydrodynamics_steps": [
+    {
+      "method": "ShipMotion::force_model",
+      "address": "00826a6d",
+      "native": "00937440",
+      "function": "00825f20",
+      "status": "concrete",
+      "note": "Unchanged from milestone 2i as a call site. What it does is not: it now applies its own rudder torque and then runs the hydrodynamics."
+    },
+    {
+      "method": "ShipMotion::add_rudder_torque",
+      "address": "00937613",
+      "native": "00c35330",
+      "function": "00937440",
+      "status": "concrete",
+      "note": "Milestone 2r said of 00937440's torque that nothing applies it, because the hydrodynamic tail and the rigid-body solver are external. 00937440 applies it itself, nine instructions before the call into 009329C0. `python tools/bsp.py ghidra xrefs 00c35330` reports three call sites and this is one of them. The block is gated: 00937449 CMP byte ptr [EAX+5Dh],0 and 0093744D JNZ 00937618 skip it and land one instruction before the hydrodynamic call, so the hydrodynamics run either way. The argument is the float3 at ESP+34h..+3Ch that 00937598's LEA takes the address of, each component divided by the double 10000.0 at 00CE4BD8. It carries the zero vector in this process, because the gain is multiplied by settings+588h and that field has no recovered producer."
+    },
+    {
+      "method": "ShipMotion::hydrodynamics",
+      "address": "00937622",
+      "native": "009329c0",
+      "function": "00937440",
+      "status": "concrete",
+      "note": "The last call of 00937440, a CALL and not a JMP: 00937618 FLD [ESP+40h], 0093761C PUSH ECX, 0093761D MOV ECX,EDI, 0093761F FSTP [ESP], 00937622 CALL 009329C0, then the epilogue POP EDI / ADD ESP,38h / RET 4 at 00937627. 009329C0 is slot 0 of the controller vtable 00D19630. This is the milestone's first item: the drag that removes a turning hull's lateral velocity and the buoyancy that cancels the world's gravity. docs/SHIP_HYDRO_FORCES.md."
+    },
+    {
+      "method": "ShipHydro::body_linear_velocity",
+      "address": "00932bb0",
+      "native": "00c31f40",
+      "function": "009329c0",
+      "status": "concrete",
+      "note": "M+00h. The velocity the drag is formed from, read before 0092D300 rewrites it, which is the native order inside 00825F20."
+    },
+    {
+      "method": "ShipHydro::body_angular_velocity",
+      "address": "00932be6",
+      "native": "00c31f20",
+      "function": "009329c0",
+      "status": "concrete",
+      "note": "M+0Ch, the omega of the point velocity v + omega x r."
+    },
+    {
+      "method": "ShipHydro::body_world_transform",
+      "address": "00932c28",
+      "native": "00c33650",
+      "function": "009329c0",
+      "status": "concrete",
+      "note": "00932C21 / 00C32000 returns body+8h and this expands the 3x4 into the 4x4 whose rows 0..2 are the lateral, up and forward axes. Supplied from the motion state's own pose rows, which the position phase 00C5B1B0 wrote last step."
+    },
+    {
+      "method": "ShipHydro::unit_category_8",
+      "address": "00cfc3d0+vtable5c",
+      "native": "unread",
+      "status": "record",
+      "note": "00932A42 and 00932E2F, the unit's vtable slot 5Ch with the literal 8. The callee body is unread (docs/SHIP_HYDRO_FORCES.md follow-up unit_vtable_5c), so the host answers the same way 00937D09's hull-body site does, from the recovered IsKindOf table. Indirect: no call-site address."
+    },
+    {
+      "method": "ShipHydro::water_height",
+      "address": "00932d6b",
+      "native": "0078cf20",
+      "function": "009329c0",
+      "status": "concrete",
+      "note": "The ocean under the element's world X and Z. Both of 0078CF20's own leaves stay records in this process, so the field answers its disabled 0.0f and the mask its open-sea 1.0f, exactly as the motion tick's own sample does."
+    },
+    {
+      "method": "ShipHydro::leak_tick",
+      "address": "00933a01",
+      "native": "0074f930",
+      "function": "009329c0",
+      "status": "concrete",
+      "note": "Runs over an empty leak-entry list, because nothing in this process damages a hull. A call, not a record: bsp/unit_forces.hpp's reconstruction is what answers it, and it leaves unit+10FCh at zero."
+    },
+    {
+      "method": "ShipHydro::leak_heel_torque",
+      "address": "00933a52",
+      "native": "0074f2e0",
+      "function": "009329c0",
+      "status": "concrete",
+      "note": "The same empty list, so the heeling torque is the zero the routine's own out vector starts at."
+    },
+    {
+      "method": "ShipHydro::add_force",
+      "address": "00933b01",
+      "native": "00c35360",
+      "function": "009329c0",
+      "status": "concrete",
+      "note": "The only AddForce site in the image. This is what the velocity phase 00C41550 integrates at the end of the step, and the only reason the hull has anything to integrate."
+    },
+    {
+      "method": "ShipHydro::add_torque",
+      "address": "00933b38",
+      "native": "00c35330",
+      "function": "009329c0",
+      "status": "concrete",
+      "note": "The torque reaches the body and changes nothing: the collision AABB's producer 00C5C940 is unread, so the box inertia is zero and 00C37E70 stored a zero inverse inertia. Packet ship_hull_shapes owns that."
+    },
+    {
+      "method": "ShipHydro::set_linear_velocity",
+      "address": "009329ec",
+      "native": "00c37e50",
+      "function": "009329c0",
+      "status": "concrete, never reached",
+      "note": "The disabled branch at 009329CF. controller+14h is clear on a live hull, so 009329CD jumps past it. Wired to the body anyway rather than left as a stub."
+    },
+    {
+      "method": "ShipHydro::set_angular_velocity",
+      "address": "00932a0e",
+      "native": "00c37e20",
+      "function": "009329c0",
+      "status": "concrete, never reached",
+      "note": "The same branch."
+    },
+    {
+      "method": "ShipHydro::set_body_no_gravity_flag",
+      "address": "00932a16",
+      "native": "not_a_call",
+      "status": "record",
+      "note": "OR dword ptr [body+50h], 4. The third and last thing the disabled branch does; an instruction, not a call, so it carries no callee."
+    }
+  ],
+  "world_registry_steps": [
+    {
+      "method": "UnitInstance::register_in_world_lists_dispatch",
+      "address": "00cfc3d0+vtable130",
+      "native": "006fe620",
+      "status": "record",
+      "note": "Entity virtual slot +130h. The dispatch site was NOT located: a byte scan of .text for `call dword ptr [reg + 130h]` (ff ?? 30 01 00 00) finds nothing, and neither do the neighbouring slots 12Ch and 134h, both of which return only JMP rel32 false positives. 00CFC500, which is 00CFC3D0+130h, is the only reference to 006FE620 in the image, so the slot is cited as data. The implementation body is read and it is the evidence."
+    },
+    {
+      "method": "GameEntity::register_in_parent_entity_list",
+      "address": "006fe623",
+      "native": "00928560",
+      "function": "006fe620",
+      "status": "concrete",
+      "note": "The first of the six. Its whole body is `PUSH ECX; MOV ECX,[ECX+30h]; ADD ECX,24h; CALL 00484540; RET`, and 0x24 == 0x18 + 1*0xC, so it joins list id 1."
+    },
+    {
+      "method": "UnitList::push_back_id1",
+      "address": "00928567",
+      "native": "00484540",
+      "function": "00928560",
+      "status": "concrete",
+      "note": "00484540 BSP_UnitList_PushBack, __thiscall void(list, void*), RET 4. The node is {prev, next, value}; the empty branch at 00484586 writes the head at list+4h and the other at 00484572 chains from the tail at list+8h; both set the tail and ADD dword ptr [ESI],1, the count at list+0h."
+    },
+    {
+      "method": "UnitList::push_back_id2",
+      "address": "006fe62f",
+      "native": "00484540",
+      "function": "006fe620",
+      "status": "concrete",
+      "note": "ADD ECX,0x30 at 006FE62C; 0x30 == 0x18 + 2*0xC."
+    },
+    {
+      "method": "UnitList::push_back_id4",
+      "address": "006fe63b",
+      "native": "00484540",
+      "function": "006fe620",
+      "status": "concrete",
+      "note": "ADD ECX,0x48 at 006FE638."
+    },
+    {
+      "method": "UnitList::push_back_id5",
+      "address": "006fe647",
+      "native": "00484540",
+      "function": "006fe620",
+      "status": "concrete",
+      "note": "ADD ECX,0x54 at 006FE644."
+    },
+    {
+      "method": "UnitList::push_back_id6",
+      "address": "006fe653",
+      "native": "00484540",
+      "function": "006fe620",
+      "status": "concrete",
+      "note": "ADD ECX,0x60 at 006FE650. This is the list the ship AI's brain pre-pass walks: 009F1877 loads [00E188A8], then +19CCh, then the head at +64h and the count at +60h, and 0x60 == 0x18 + 6*0xC."
+    },
+    {
+      "method": "UnitList::push_back_id7",
+      "address": "006fe65f",
+      "native": "00484540",
+      "function": "006fe620",
+      "status": "concrete",
+      "note": "ADD ECX,0x6C at 006FE65C."
+    }
+  ],
+  "arrival_steps": [
+    {
+      "method": "ShipAiMoveTo::set_navigation_goal",
+      "address": "009e580f",
+      "native": "009de050",
+      "function": "009e5770",
+      "status": "concrete",
+      "note": "Unchanged from milestone 2o. The goal handed to the navigation block is now a fixed point rather than a moving ship's position, which is what lets the arrival latch be reached at all."
+    },
+    {
+      "method": "ShipAiMoveTo::goal_reached_vtable2c",
+      "address": "009e5821",
+      "native": "009dab10",
+      "function": "009e5770",
+      "status": "concrete",
+      "note": "state->vtable[2Ch]. Both navigation vtables, 00D21628 movetopos and 00D21688 moveonpath, hold 009DAB10 at +2Ch and it tail-jumps to 009DA590, the shared arrival predicate. It answered true once in this milestone's point run, at 81.00 s of simulated time."
+    },
+    {
+      "method": "ShipAiMoveTo::message_text_assign",
+      "address": "009e58ef",
+      "native": "0041e870",
+      "function": "009e5770",
+      "status": "record",
+      "note": "BSP_NativeString_Assign(&text, \"finished\" at 00D09FD8). The callee body is unread, so the host records it; the string is the status parameter the mission Lua event carries."
+    },
+    {
+      "method": "ShipAiMoveTo::post_command_message",
+      "address": "009e595c",
+      "native": "00984300",
+      "function": "009e5770",
+      "status": "concrete",
+      "note": "00984300(unit, &payload, 00E08F68, &text), __stdcall RET 10h: the event channel named `command` with status `finished`. docs/COMMAND_COMPLETION.md section on the Lua handler. It fired exactly once."
+    },
+    {
+      "method": "ShipAiMoveTo::end_command",
+      "address": "009e5997",
+      "native": "0071e430",
+      "function": "009e5770",
+      "status": "concrete",
+      "note": "0071E430(director, 00E08F68, 1): the terminal argument is 1. Raising the stage to 2 sends MT_GAMEUNIT_CLEARCMD (5Dh); the queue advance happens when that message is received, in 00721A40's 5Dh arm, which is why the state stays movetopos for the rest of the step and becomes stop ten steps later."
+    },
+    {
+      "method": "ShipAiMoveTo::hold_heading_and_stop",
+      "address": "009e599e",
+      "native": "009e00a0",
+      "function": "009e5770",
+      "status": "concrete",
+      "note": "The last thing the finish arm does. The ship-AI sample line for the same step shows mode=heading dir=stopped throttle=0.000 with 41.33 m of path left, and the hull coasts the rest."
+    }
+  ],
+  "measurements": {
+    "kortenaer_drift_150s": {
+      "before": {
+        "drift_degrees": 77.7231,
+        "trajectory_speed": 85.4021,
+        "forward_speed": 18.16,
+        "peak_drift_degrees": 85.2854,
+        "peak_at_seconds": 132.0,
+        "position": [
+          2079.32,
+          -3114.38
+        ]
+      },
+      "after": {
+        "drift_degrees": 0.0692,
+        "trajectory_speed": 18.2533,
+        "forward_speed": 18.2537,
+        "peak_drift_degrees": 1.4046,
+        "peak_at_seconds": 54.95,
+        "position": [
+          -124.66,
+          -1909.46
+        ]
+      },
+      "source": "local/base_traj_conv.csv and local/v_traj_conv.csv, through local/drift.py, 3000 mission frames at 0.05 s, `--order moveto:Java --order-unit Kortenaer`. The drift is the angle in the horizontal plane between one step's displacement and the hull's bow; the trajectory speed is that displacement over the step."
+    },
+    "world_lists": {
+      "registrations": 32,
+      "pushes": 192,
+      "lists": {
+        "1": 32,
+        "2": 32,
+        "4": 32,
+        "5": 32,
+        "6": 32,
+        "7": 32
+      },
+      "note": "Every created unit joins six lists. Id 6 is the one 009F1877 walks; nothing walks it yet, because the consumer is in GameShipAiHost."
+    }
+  },
+  "probe_comparison": {
+    "command": "bsp_ship_motion_probe.exe --lua <install>/scripts/datatables/autoload/vehicleclasses.lua --class 265 --hydro --moveto 0,1500 --steps 3000 --dt 0.05",
+    "probe_peak_drift_degrees": {
+      "class_20": 1.2196,
+      "class_265": 1.3259
+    },
+    "probe_peak_drift_without_hydro_degrees": {
+      "class_20": 75.6212,
+      "class_265": 82.6785
+    },
+    "executable_peak_drift_degrees": 1.4046,
+    "shared_manoeuvre": {
+      "command": "python tools/motion_trace_compare.py --trace local/trace_2s_kortenaer_to_arrival.csv --probe local/probe_2s_c265_hydro.txt --align-origin",
+      "samples": 1600,
+      "span_seconds": [
+        0.0,
+        79.95
+      ],
+      "peak_delta": {
+        "speed_m_s": 11.859,
+        "heading_degrees": 0.6995,
+        "position_m": 42.4569,
+        "yaw_rad_s": 0.00413
+      },
+      "note": "The window ends at the executable's arrival, because the probe has no stop and the two diverge after it. The speed delta is the first step alone: the executable's Kortenaer is seeded at 12.0 m/s by its authored StartSpeed and the probe starts from rest. Milestone 2r's same comparison reported 12.97 m/s, 52.29 degrees and 1125.32 m."
+    }
+  },
+  "corrections": [
+    {
+      "target": "docs/GAME_EXECUTABLE.md milestone 2r, section 2's drift table and its closing paragraph",
+      "was": "The hull body was built and the drift got worse, and the probe that section 7 held up as the converging reference drifts harder than the executable does.",
+      "is": "Both sides converge once 009329C0 runs. Kortenaer's drift at 150 s falls from 77.72 degrees to 0.07 and its trajectory speed from 85.40 m/s to 18.25, which is its forward speed to four figures; the probe's peak drift falls from 82.68 degrees to 1.33 on the same class.",
+      "evidence": "local/base_traj_conv.csv against local/v_traj_conv.csv; local/probe_2s_c265_plain.txt against local/probe_2s_c265_hydro.txt."
+    },
+    {
+      "target": "src/game_hosts_units.cpp's milestone 2r note on the world step constants",
+      "was": "None of them has a recovered producer (docs/RIGID_BODY_INTEGRATION.md, follow-up dyn_world_construction), and the Dyn world object itself does not exist in this process, so they stay at zero: no gravity.",
+      "is": "They do have one. 004DDB90 builds the 40h-byte world descriptor on its own stack and 00C41AD0 copies it into the world; packet dyn_world_settings read both whole. Gravity is (0, -10, 0) from the double at 00CE6848 and both sleep speeds are the zero 004DE1C7 / 004DE1CD store.",
+      "evidence": "docs/DYN_WORLD_SETTINGS.md; include/bsp/dyn_world_settings.hpp's kDynWorldGravityY; the run's own `gravity_y=-10.0` in the hydrodynamics summary line."
+    },
+    {
+      "target": "src/ship_motion_probe.cpp line 1387, printed unconditionally by every probe run",
+      "was": "B's y falls because 00C41550 adds the world's gravity and nothing here cancels it: 009329C0's buoyancy is not reconstructed.",
+      "is": "False in a --hydro run. The buoyancy is reconstructed and it cancels gravity exactly: body B's final y is -99999.4844 without --hydro and 0.0000 with it, on the same class and the same 3000 steps. The note predates the switch and should be printed only when the switch is off.",
+      "evidence": "local/probe_2s_c265_plain.txt line 641 against local/probe_2s_c265_hydro.txt line 641; both carry the note at lines 650 and 655."
+    },
+    {
+      "target": "src/game_hosts_units.cpp's milestone 2r comment on ShipMotion::run_force_model, and docs/SHIP_HYDRO_FORCES.md's description of 00937622",
+      "was": "Its torque is computed so the run can report it; nothing applies it, because the hydrodynamic tail 009329c0 and the rigid-body solver are external. And: 00937440's tail call at 00937622.",
+      "is": "00937440 applies the torque itself, through 00C35330 AddTorque at 00937613, nine instructions before 00937622; and 00937622 is a CALL, not a tail jump, followed by the epilogue POP EDI / ADD ESP,38h / RET 4 at 00937627. Calling it a tail call is right about its position and wrong about the instruction.",
+      "evidence": "`python tools/bsp.py ghidra xrefs 00c35330` reports `From 00937613 in BSP_UnitController_ApplyShipForces`; `python tools/bsp.py ghidra callees 00937440` lists Dyn_Body_AddTorque; tools/verify_report_calls.py rejected a `kind: tail_jump` row for 00937622 against the live listing."
+    },
+    {
+      "target": "docs/GAME_EXECUTABLE.md milestone 2r section 6 and its correction 3",
+      "was": "Nothing in the AI is missing for an arrival any more, but the latch is still never set, because moveto:Java names a ship under way at 12.0 m/s that a 9.1 m/s chaser cannot catch.",
+      "is": "Confirmed and closed. Given a goal that does not move, the same AI latches on the first try: 41.33 m of path left at 81.00 s, one arrival latch, one 0071E430 with terminal 1, one `command` event with status `finished`, one queue advance, and the hull at rest 5.0 m from the point it was sent to.",
+      "evidence": "local/v_run_point.log: `arrival_latches=1`, `command completion events=1 end_commands=1 queue_advances=1`, `director completion ... command_events=1`; the ship-AI sample lines at steps 1610 to 1630."
+    }
+  ],
+  "blocked": [
+    {
+      "item": "the world registry's consumer, milestone item 2",
+      "files": [
+        "src/game_hosts_ship_ai.cpp",
+        "include/bsp/game_hosts_ship_ai.hpp"
+      ],
+      "held_by": "agent/orch6-20260912:orch6_game_avoid_zone_runtime until 2026-09-13T00:36Z",
+      "delivered": "The producer half only: the 97 {count, head, tail} triples, 006FE620's six push-backs and the two query methods GameUnitsHost::world_list_size / world_list_entry. The lists are filled and the run reports them.",
+      "left": "The candidate walk 009F1877..009F1A25 inside BSP_ShipAi_BrainPrePass: read id 6 through world_list_size / world_list_entry, skip self (009F18BB), apply the fifteen-metre altitude band (009F1929, the double at 00CF3F20) and ship_ai_neighbour_admission_radius_009f1987, and hand each survivor to ship_ai_neighbour_list_add_009f0d20. Both rules and the append are already reconstructed in include/bsp/ship_ai_sector_scan.hpp."
+    },
+    {
+      "item": "the follow and land state steps, milestone item 4",
+      "files": [
+        "src/game_hosts_ship_ai.cpp",
+        "include/bsp/game_hosts_ship_ai.hpp"
+      ],
+      "held_by": "agent/orch6-20260912:orch6_game_avoid_zone_runtime until 2026-09-13T00:36Z",
+      "delivered": "nothing",
+      "left": "Bind bsp::ShipAiFollowStepHost to 009E1610 and bsp::ShipAiLandStepHost to 009E1950 beside the existing stop, movetopos and attackmove arms of the state-step dispatcher. Neither state is entered on this mission: `summary mission ship ai states` reports cruise=13 stop=12 attackmove=6 movetopos=1 other=0 on every run of this milestone, and `summary mission director steps ... follow=0`, so both would be recorded rather than exercised even once wired.",
+      "call_sites": [
+        {
+          "method": "ShipAiState::follow_step",
+          "address": "00d215f8+vtable0c",
+          "native": "009e1610"
+        },
+        {
+          "method": "ShipAiState::land_step",
+          "address": "00d21658+vtable0c",
+          "native": "009e1950"
+        }
+      ]
+    },
+    {
+      "item": "the `--order moveto=<x>,<z>` spelling",
+      "files": [
+        "src/game_hosts.cpp",
+        "include/bsp/game_hosts.hpp"
+      ],
+      "held_by": "agent/orch6-20260912:orch6_shared_game_crt until 2026-09-13T01:02Z, released early at about 2026-09-12T20:08Z and claimed then",
+      "delivered": "Both spellings. `--order moveto=<x>,<z>` is the form the packet brief asked for and is what the validation runs use; `--order moveto:<x>,<z>` works too, because the host reads any target token that parses as two numbers as a point. The refusal milestone 2l wrote for every `--order <command>=<args>` form is replaced by a narrower one: a command with `=` must carry a comma, and a named target still goes through the colon form and 0046AAB0.",
+      "left": "nothing"
+    }
+  ],
+  "read_for_this_packet": [
+    "009329C0's host contract, from include/bsp/ship_hydro_forces.hpp and docs/SHIP_HYDRO_FORCES.md whole",
+    "006FE620 whole, 00928560 whole, 00484540 whole, from the live listing",
+    "009F1420's candidate walk 009F1877..009F1A44 whole, from the disk bytes, to settle which registry list it reads",
+    "docs/SHIP_AI_FOLLOW_LAND.md, docs/RECON_SLOT_LISTS.md, docs/GAMEPLAY_LOOSE_ENDS_1.md section 2, docs/COMMAND_COMPLETION.md, docs/DYN_WORLD_SETTINGS.md"
+  ],
+  "names_added": "none. No Ghidra mutation was made for this packet.",
+  "evidence_appended": "none.",
+  "no_ghidra_function": "none. Every address cited above lies inside an existing Ghidra function body; tools/verify_report_calls.py checks each address/native pair against the live bodies and the call graph.",
+  "coverage": {
+    "exported": "no new export",
+    "reconstructed": "no new reconstruction. Every routine wired here was reconstructed by an earlier packet and is consumed from main; the world registry's three list routines are read whole for this packet and projected inline in the units host.",
+    "build_tested": "scripts/build.ps1 Release Win32, /W4 /WX /fp:strict, no warnings, every target built",
+    "fixture_tested": "ctest -C Release: reconstructed_math passes, 1 of 1. No test cases were added",
+    "abi_compatible": "no: semantic C++ interfaces, not drop-in binary replacements",
+    "game_validated": "no. Runtime-validated in bsp_game.exe only, and under a stand-in xlive.dll, because the installed one access-violates during startup on this branch.",
+    "partial": "Milestone items 2 and 4 are partly and wholly blocked by another owner's lease; see `blocked`. The buoyancy element list at class+52Ch is a stand-in with no read producer, the same one the probe builds, and every figure that depends on it is a figure about that list."
+  },
+  "run": {
+    "command": "bsp_game.exe --frames 700 --press-start-frame 30 --menu-select USN02 --mission-frames 500 --mission-frame-seconds 0.05 --mission-complete-frame 490 --order moveto:Java --order-unit Kortenaer --order-frame 5 --trajectory-csv local/v_traj_all.csv --log local/v_run_all.log --xlive-dll local/xlive_stub.dll --game-root \"<install>\"",
+    "exit": 0,
+    "host_methods_concrete": 618,
+    "host_methods_unimplemented": 495,
+    "baseline_on_this_branch": {
+      "command": "the same line on the merged tree before the first edit",
+      "host_methods_concrete": 605,
+      "host_methods_unimplemented": 493,
+      "log": "local/base_run_all.log",
+      "note": "Its counters are milestone 2r’s published figures to the digit, which is what shows the xlive stand-in changes nothing this milestone measures."
+    },
+    "xlive_stand_in": {
+      "why": "bsp_game.exe on origin/main 95f39aa4 access-violates at startup inside the installed xlive.dll (Windows Application Error: module xlive.dll, exception 0xc0000005, fault offsets 0x0033dbeb and 0x00319049). XLiveLibrary throws when the load fails, so there is no degraded path and --xlive-dll is the only way to run the executable.",
+      "what": "local/xlive_stub.c and local/xlive_stub.def, a hand-built no-op DLL exporting ordinals 1, 2, 38, 84, 651, 5022, 5024, 5030, 5270, 5297, 5310 and 5315. Not part of the build, not committed.",
+      "effect": "It answers the way an absent Live service answers, which is the state the executable was in before commit 2c11966a."
+    },
+    "sequencing": "Runs must be sequential. bsp_game.exe takes a single-instance mutex at 008F8301 and a second process falls into 008F83C5’s message box, which blocks until dismissed by hand. local/validate_2s.ps1 waits for the previous process to be gone before starting the next.",
+    "variants": {
+      "frames_1200": {
+        "exit": 0,
+        "host_methods_concrete": 613,
+        "host_methods_unimplemented": 486,
+        "total_path": 12509.55,
+        "arrival_latches": 0,
+        "log": "local/v_run_long.log"
+      },
+      "frames_3000": {
+        "exit": 0,
+        "host_methods_concrete": 613,
+        "host_methods_unimplemented": 486,
+        "total_path": 31689.48,
+        "arrival_latches": 0,
+        "log": "local/v_run_conv.log"
+      },
+      "order_moveto_point": {
+        "command": "--frames 2700 --mission-frames 2500 --order moveto=0,-1000 --order-unit Kortenaer",
+        "exit": 0,
+        "host_methods_concrete": 619,
+        "host_methods_unimplemented": 486,
+        "arrival_latches": 1,
+        "command_completion_events": 1,
+        "end_commands": 1,
+        "queue_advances": 1,
+        "director_command_events": 1,
+        "latch_step": 1620,
+        "latch_seconds": 81.0,
+        "remaining_path_at_latch_m": 41.33,
+        "state_stop_at_step": 1630,
+        "moved_m": 1495.04,
+        "distance_from_point_m": 5.0,
+        "log": "local/v_run_point.log"
+      },
+      "title_120": {
+        "exit": 0,
+        "host_methods_concrete": 158,
+        "host_methods_unimplemented": 79,
+        "milestone_2r": "155 and 79",
+        "note": "The unimplemented figure is 2r’s exactly; the concrete figure is three higher, by the same three that took the baseline 500-frame run from 2r’s 602 to 605 before this packet changed anything. None of this packet’s host methods is on the title path, which creates no units."
+      },
+      "title_40": {
+        "exit": 0,
+        "host_methods_concrete": 133,
+        "host_methods_unimplemented": 48,
+        "milestone_2r": "130 and 48"
+      },
+      "vfs_probe_present": {
+        "exit": 0,
+        "probes": "4/4"
+      },
+      "vfs_probe_absent": {
+        "exit": 3,
+        "probes": "3/4"
+      }
+    }
+  },
+  "successor_note": "Packet ship_buoyancy_elements landed on main at c6de1e9a after every run here was taken. It is the producer this milestone could not read: 0082D040 generates the list from the model deckline and bottomline nodes through the class descriptor model-binding virtual 0082FE30, the vector base is descriptor+528h and not +52Ch, and the coefficient is solved so the list sums to 10 * Mass, the same total the stand-in solves for. Adopting it is follow-up 3 of the doc and replaces one block in create_units."
+}
