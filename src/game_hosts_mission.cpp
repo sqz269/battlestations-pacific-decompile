@@ -319,6 +319,8 @@ struct GameMissionHost::Impl {
     float order_throttle{0.0f};
     float order_rudder{0.0f};
     float mission_frame_seconds{0.0f};
+    // Milestone 2j, --trajectory-csv <path>.
+    std::string trajectory_csv;
     GameFrameProfiler* profiler{nullptr};
     std::string language;
     std::unique_ptr<GameMissionLuaHost> lua;
@@ -1280,7 +1282,7 @@ GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptH
     GameFrontendHost& frontend, LocaleTables& locale, std::string requested_mission_id,
     long mission_frames, GameFrameProfiler* profiler, std::string language,
     long mission_complete_frame, GameHudHost* hud, long order_frame, float order_throttle,
-    float order_rudder, float mission_frame_seconds)
+    float order_rudder, float mission_frame_seconds, std::string trajectory_csv)
     : impl_(std::make_unique<Impl>(log, vfs, scripts, frontend, locale,
           std::move(requested_mission_id), mission_frames, profiler,
           std::move(language))) {
@@ -1294,6 +1296,8 @@ GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptH
     impl_->order_throttle = order_throttle;
     impl_->order_rudder = order_rudder;
     impl_->mission_frame_seconds = mission_frame_seconds;
+    // Milestone 2j, --trajectory-csv.
+    impl_->trajectory_csv = std::move(trajectory_csv);
 }
 
 GameMissionHost::~GameMissionHost() = default;
@@ -1595,6 +1599,8 @@ void GameMissionHost::Impl::finish_scene_load() {
     // Milestone 2i: the player order and the deterministic frame delta.
     frame_host->set_player_order(order_frame, order_throttle, order_rudder);
     frame_host->set_mission_frame_seconds(mission_frame_seconds);
+    // Milestone 2j: where the per-step per-unit trace is written.
+    frame_host->set_trajectory_csv(trajectory_csv);
     // Milestone 2h. The load's release of the main-menu manager runs
     // BSP_MainMenu_Destroy 00686c90, which exits each of its seven screens,
     // clears both flag bytes and commits through 004f83b0 at 00686db9, then

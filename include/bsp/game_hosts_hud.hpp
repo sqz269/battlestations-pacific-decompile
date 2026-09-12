@@ -109,6 +109,16 @@ public:
     // acquired stay loaded through the mission.
     void select_front_end_layout_00518250();
 
+    // Milestone 2j. BSP_Game_ApplyInGameInterface 004c9ca0, both arms. The byte
+    // argument is tested at 004c9cc0 and the routine is two routines sharing a
+    // frame: the load calls it with 1 at 004e1873 and puts the loading element
+    // up, and the mission-state entry calls it with 0 at 004da746 and tears that
+    // element down, releases the front-end atlas, and runs the **committing**
+    // 00518250(3, 1) at 004c9e06. That committing call is what releases the
+    // front-end frame layouts the title bring-up acquired, which the load's own
+    // non-committing row could not do.
+    void apply_in_game_interface_004c9ca0(bool loading);
+
     // One in-mission frame of BSP_Game_UpdateInterfaceOnly 004c40f0, which is
     // where the screen pump runs while the game state is not 1, 2 or 4.
     void update_interface_only_004c40f0(float raw_delta);

@@ -31,6 +31,7 @@
 #include <vector>
 
 #include "bsp/mission_lua_host.hpp"
+#include "bsp/unit_rudder_curve.hpp"
 
 struct lua_State;
 
@@ -136,6 +137,22 @@ public:
     // `Type = E ShipClasses : <symbol>` resolved to, which is the same number
     // the installed table indexes its rows by.
     GameVehicleClassRow read_vehicle_class_row(int index);
+
+    // Milestone 2j. The head of the gameplay settings loader 0083b5e0: it
+    // formats `Scripts\datatables\ShipGlobals.lua` (the literal at 00d0b67c)
+    // into a path at 0083b6c3, runs it through the Lua state owner's own runner
+    // 00b69d40 at 0083b6e6, and takes the `ShipGlobals` global (00d0b670)
+    // through 00b67980 / 00b67800 at 0083b721 / 0083b73d. The executable has one
+    // Lua state, the mission machine's, so it runs the file through the
+    // recovered file runner 00885110 on that state and records 00b69d40.
+    // Returns true when the global is a table afterwards.
+    bool load_ship_globals_0083b6e6();
+
+    // 0083ce56..0083d10d of 0083b5e0, driven by the reconstruction in
+    // bsp/unit_rudder_curve.hpp over the live `ShipGlobals["Navigator"]` table.
+    // `found` is false when the machine or either table is missing, and the
+    // curve settings are then left untouched.
+    bool read_turn_multipliers_0083ce56(UnitRudderCurveSettings& out);
 
     bool started() const noexcept;
     const GameMissionLuaSummary& summary() const noexcept;

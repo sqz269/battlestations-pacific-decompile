@@ -37,6 +37,15 @@ struct GameHudHost::Impl {
     // 004bca50's answer during the mission. The load resolves a single-player
     // campaign mission to 8, the same value the scene contents pass uses.
     int effective_game_mode{8};
+    // Milestone 2j: 004c9ca0's loading element at [00e198c4]+D4h. The 1 arm
+    // allocates 34h bytes at 004c9cd7 and constructs with 00636d90, which has no
+    // reconstruction, so what this process holds is the object's identity and
+    // the two bytes the routine itself reads and writes: +4h at 004c9d1f /
+    // 004c9d82 and +5h at 004c9d72 / 004c9d85.
+    bool loading_element_present{false};
+    bool loading_element_4{false};
+    bool loading_element_5{false};
+    bool in_game_interface_applied{false};
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -585,12 +594,85 @@ void GameHudHost::apply_pending_interface_0068aca0() {
         pages.c_str());
 }
 
+void GameHudHost::apply_in_game_interface_004c9ca0(bool loading) {
+    Impl& host = *impl_;
+    // 004c9cc0 tests the one stack argument and branches on it, so this is two
+    // routines sharing a frame. The load calls it with 1 at 004e1873 and the
+    // mission-state entry with 0 at 004da746.
+    if (loading) {
+        // 004c9ccd..004c9d68, the arm that puts the loading element up. The
+        // element is allocated at 004c9cd7 and constructed by 00636d90, neither
+        // of which is reconstructed, so both are records; the two stores this
+        // process can make are the slot at manager+D4h and the byte at +4h.
+        if (!host.loading_element_present) {
+            host.record("MissionLoad::allocate_loading_element", 0x00bf681bu);
+            host.record("MissionLoad::construct_loading_element", 0x00636d90u);
+            host.loading_element_present = true;
+            // 004c9d11, the element's own vtable +10h right after the store.
+            host.record("MissionLoad::loading_element_init", 0x004c9d11u);
+        }
+        host.loading_element_4 = true;   // 004c9d1f
+        host.done("MissionLoad::apply_in_game_interface", 0x004c9ca0u);
+        host.log.notef("in-game interface applied with 1: the loading element at "
+            "[00e198c4]+D4h is up and its +4h byte is set; the single-player branch at "
+            "004c9d23 ends the routine, because game+1FE4h is zero here");
+        return;
+    }
+
+    // 004c9d6b..004c9ea2, the arm the mission-state entry takes.
+    if (host.loading_element_present) {
+        if (host.loading_element_5) {
+            // 004c9d7e, the element's exit virtual +1Ch, only when +5h is set.
+            host.record("MissionEntry::loading_element_exit", 0x004c9d7eu);
+        }
+        host.loading_element_4 = false;  // 004c9d82
+        host.loading_element_5 = false;  // 004c9d85
+        // 004c9d88, 004f83b0 on the element: the cleared bytes are committed
+        // into the page tree. No page is attached to this element, so the walk
+        // reaches nothing and the call is recorded rather than claimed.
+        host.record("MissionEntry::commit_loading_element", 0x004f83b0u);
+        // 004c9daa, the element's deleting destructor through vtable +0Ch with
+        // 1, then the slot is nulled at 004c9dac.
+        host.record("MissionEntry::destroy_loading_element", 0x004c9daau);
+        host.loading_element_present = false;
+    }
+    // 004c9dae..004c9dcf: the name at 00ce765c is assigned into a pooled string
+    // and handed to the atlas manager at 00f8c26c. The sprite bridge owns every
+    // atlas in this process, so the release is a record.
+    host.record("MissionEntry::release_front_end_atlas", 0x00aefa30u);
+    // 004c9dfb: PUSH 1; PUSH 3; CALL 004c1ac0; MOV ECX,EAX; CALL 00518250. The
+    // two pushes are 00518250's arguments (set 3, commit 1) and 004c1ac0 takes
+    // none: it is the lazy getter for the 164h front-end frame object at
+    // 00e18d80. This is the committing call, and it is what releases the front
+    // end's own layouts.
+    host.done("MissionEntry::front_end_frame_get", 0x004c1ac0u);
+    impl_->menu.select_front_end_frame_set_00518250(3, true);
+    // 004c9e1d: 007f8d60(game+650h, game+2198h) and the latch at game+1EE0h,
+    // which is the engine-movie flag the frame reads. The comparison is over the
+    // player profile's own record set, which this process does not own.
+    host.record("MissionEntry::engine_movie_check", 0x007f8d60u);
+    // 004c9e32: the single-player tail. game+1FE4h is zero in this process, so
+    // the branch at 004c9e38 jumps over the input-context push 004bec00 /
+    // 00a933f0, the controlled-unit registry walk 008053c0 / 008073c0, the unit
+    // list rebuild 004c3cb0 and the interface refresh 006485a0. Recording them
+    // would claim call sites this run does not reach, so it does not.
+    host.in_game_interface_applied = true;
+    host.done("MissionEntry::apply_in_game_interface", 0x004c9ca0u);
+    host.log.notef("in-game interface applied with 0: the loading element is torn down and "
+        "00518250(3, commit=1) at 004c9e06 releases every other set's layouts, so FE_frame "
+        "and FE_frame_title come off the screen and set 3's GUI_pause pair is acquired "
+        "hidden");
+}
+
 void GameHudHost::select_front_end_layout_00518250() {
-    // The load's own row: 004c1ac0(3,0) then 00518250(3,0). Set 3 is the pause
-    // pair GUI_pause / GUI_pause_title (bsp/title_init.hpp's
-    // FrontEndFrameSet::Pause). The 004c1ac0 half is the menu-layout selector on
-    // a second singleton and has no reconstruction here.
-    impl_->log.unimplemented("MissionLoad::select_menu_layout", "004c1ac0");
+    // The load's own row at 004e04e4: PUSH EBX (0); PUSH 3; CALL 004c1ac0; MOV
+    // ECX,EAX; CALL 00518250. Milestone 2i read the two pushes as 004c1ac0's
+    // arguments; they are 00518250's (set 3, commit 0). 004c1ac0 is
+    // BSP_FrontEndFrame_GetOrCreate, the lazy getter for the 164h front-end
+    // frame object at 00e18d80, and it takes none: it only supplies ECX. Set 3
+    // is the pause pair GUI_pause / GUI_pause_title
+    // (bsp/title_init.hpp, FrontEndFrameSet::Pause).
+    impl_->done("MissionLoad::front_end_frame_get", 0x004c1ac0u);
     impl_->menu.select_front_end_frame_set_00518250(3, false);
 }
 
@@ -622,6 +704,26 @@ void GameHudHost::report() {
         impl.summary.pump_frames, impl.summary.update_frames,
         impl.summary.audio_environment.empty() ? "(none)"
                                                : impl.summary.audio_environment.c_str());
+    // Milestone 2j. `minimap_islandmap_Icon` of GUI_minimap names the texture
+    // `error.tga` with the material `minimap_terrain.mshd`, and milestone 2h
+    // read that as the page's own authored texture. It is, and the material is
+    // not an ordinary single-texture one: the installed
+    // shaderfx/gui/minimap_terrain.shfx declares two samplers, `RadarMap` at
+    // texture register 0 with clamped addressing and `FadeBorder` at index 1,
+    // and names no texture file at all. Sampler 0 is the widget's own texture
+    // slot, which is why `error.tga` reaches it and why the icon already takes
+    // exactly the texture path every other HUD texture takes (the bridge's VFS
+    // loader standing in for the renderer's vtable +64h, 00aa5e60). What the
+    // running game puts there instead is the mission's own radar map, which the
+    // minimap screen 005bec50 binds after taking the widget by name at 005bed21
+    // through 00aa7e00, and which the renderer owner produces. There is no
+    // second texture for this process to load.
+    impl.record("HudMinimap::radar_map_texture", 0x00aa5e60u);
+    impl.log.note("minimap island-map icon: minimap_terrain.mshd is the two-sampler GUI "
+        "shader effect shaderfx/gui/minimap_terrain.shfx (RadarMap at register 0, "
+        "FadeBorder at index 1) and names no texture, so error.tga is sampler 0's authored "
+        "value and the icon is already on the same texture path as every other HUD texture; "
+        "what replaces it is the renderer owner's radar map");
 }
 
 bool GameHudHost::manager_active() const noexcept {
