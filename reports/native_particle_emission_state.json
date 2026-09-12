@@ -18,7 +18,7 @@
       "native_calling_convention": "__thiscall",
       "native_prototype": "void __thiscall BSP_NativeParticleEmission_InitializeState(void * definition, float time, void * emitter, float * position, float * direction, void * record)",
       "original_abi": "ECX actual6Ch state; stack(definition,time,emitter,position,direction,record); RET18; time unread",
-      "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated.",
+      "evidence": "AO review: descriptive hypothesis, not a recovered symbol. Full live/installed span and final RET verified. See docs/NATIVE_PARTICLE_EMISSION_STATE.md and reports/native_particle_emission_state.json. Actual6Ch state, PARTICLE virtual18 and same canonical PointLight/Model bindings; actual shared0108FF50 lock and01090AA0 manager use physical sections/current publications. Full source behavior through required real current dispatch; new C++ interfaces, original FH3 and gameplay unvalidated. AR integration: Optional same-domain state binding directly invokes all five captured current virtual18 initializers; preserves post-call actual state/definition/emitter/light reloads. Required real resource/renderer overrides, native FH3 and gameplay remain unvalidated. See docs/NATIVE_PARTICLE_TYPE_STATE_DISPATCH.md.",
       "coverage": "complete source body through required canonical services/current particle dispatch",
       "last_instruction": {
         "address": "00b0cc06",
@@ -205,7 +205,7 @@
   "no_ghidra_function": [],
   "validation": {
     "strict_win32_object_compile": "passed after review correction",
-    "combined_build": "passed2seededCTests",
+    "combined_build": "passed exact merged Win32 and both seeded CTests",
     "native_fixture": {
       "result": "PASS",
       "stdout": "PASS original B0CA40: 18 differential runs, full x87 lower-stack/status equality; one B04C80->AFDAF0/B0CA40 sparse-state composition; 7 full native byte bodies; linked null-root, canonical PointLight/Model links, real section depth, fast/slow lock and constructor/base/delete. Native FH3 not tested.",
@@ -1246,5 +1246,532 @@
     "direct_call_rows": 484,
     "failed_call_rows": 0,
     "original_fh3_and_gameplay": false
+  },
+  "integration_ar": {
+    "change": "Optional same-domain state binding directly invokes all five captured current virtual18 initializers; preserves post-call actual state/definition/emitter/light reloads. Required real resource/renderer overrides, native FH3 and gameplay remain unvalidated.",
+    "combined_build": "passed exact merged Win32 and both seeded CTests",
+    "fixture": "pending",
+    "original_fh3": false,
+    "gameplay": false
+  },
+  "integration_ar_review": {
+    "all_direct_call_rows_verified": true,
+    "saved_names_and_comments": 27,
+    "ordinary_native_signatures": 27,
+    "combined_validation": "passed exact merged Win32 build and seven current-library probes within documented coverage",
+    "analysis_repairs": {
+      "ar-flow-repair.json": {
+        "repairs": [
+          {
+            "function": "00af8350",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T21:34:18Z",
+            "decompile_lines_before": 28,
+            "gaps": [
+              {
+                "site": "00af839c",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af83a1",
+                "gap_end_exclusive": "00af83aa",
+                "bytes": 9,
+                "after_call": true,
+                "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af839c",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af83a1",
+                  "gap_end_exclusive": "00af83aa",
+                  "bytes": 9,
+                  "after_call": true,
+                  "sha256": "2a7ea53e1544290f2c14148fed51666fe04b900860ff3e8162ed21c93caee7c1"
+                },
+                "clear": "Success: Cleared flow override at 00af839c (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 9 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 31,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af8b00",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T21:41:57Z",
+            "decompile_lines_before": 46,
+            "gaps": [
+              {
+                "site": "00af8b76",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00af8b7b",
+                "gap_end_exclusive": "00af8b85",
+                "bytes": 10,
+                "after_call": true,
+                "sha256": "33d71ec3c907b8e3ff2b3c81153160e6dfe31997f86b18d47c6b14179ceb8d60"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af8b76",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00af8b7b",
+                  "gap_end_exclusive": "00af8b85",
+                  "bytes": 10,
+                  "after_call": true,
+                  "sha256": "33d71ec3c907b8e3ff2b3c81153160e6dfe31997f86b18d47c6b14179ceb8d60"
+                },
+                "clear": "Success: Cleared flow override at 00af8b76 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 10 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 45,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00b0b6a0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:00:37Z",
+            "decompile_lines_before": 617,
+            "gaps": [
+              {
+                "site": "00b0bf18",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0bf1d",
+                "gap_end_exclusive": "00b0bf20",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              {
+                "site": "00b0bfc6",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0bfcb",
+                "gap_end_exclusive": "00b0bfce",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b0bf18",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0bf1d",
+                  "gap_end_exclusive": "00b0bf20",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00b0bf18 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b0bfc6",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0bfcb",
+                  "gap_end_exclusive": "00b0bfce",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00b0bfc6 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 615,
+            "gaps_remaining": 0
+          }
+        ]
+      },
+      "ar-function-definitions.json": {
+        "events": [
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af80e0",
+              "end_address": "00af80e3"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af80e0",
+              "end_address": "00af80e2",
+              "bytes_disassembled": 3,
+              "message": "Successfully disassembled 3 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af80e0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af80e0",
+              "function_name": "FUN_00af80e0",
+              "entry_point": "00af80e0",
+              "body_size": 3,
+              "message": "Function created successfully at 00af80e0"
+            }
+          },
+          {
+            "defined": "00af80e0",
+            "end": "00af80e3",
+            "name": null,
+            "after": "Function: FUN_00af80e0 at 00af80e0\nSignature: undefined FUN_00af80e0(void)\nEntry: 00af80e0\nBody: 00af80e0 - 00af80e2"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b0a040",
+              "end_address": "00b0a043"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b0a040",
+              "end_address": "00b0a042",
+              "bytes_disassembled": 3,
+              "message": "Successfully disassembled 3 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b0a040",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b0a040",
+              "function_name": "FUN_00b0a040",
+              "entry_point": "00b0a040",
+              "body_size": 3,
+              "message": "Function created successfully at 00b0a040"
+            }
+          },
+          {
+            "defined": "00b0a040",
+            "end": "00b0a043",
+            "name": null,
+            "after": "Function: FUN_00b0a040 at 00b0a040\nSignature: undefined FUN_00b0a040(void)\nEntry: 00b0a040\nBody: 00b0a040 - 00b0a042"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "recreate": "00af8350",
+            "previous": "Function: FUN_00af8350 at 00af8350\nSignature: undefined FUN_00af8350(void)\nEntry: 00af8350\nBody: 00af8350 - 00af83ae",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00af8350"
+            },
+            "result": {
+              "success": true,
+              "address": "00af8350",
+              "deleted_function": "FUN_00af8350",
+              "body_size": 86,
+              "message": "Function 'FUN_00af8350' deleted at 00af8350"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af8350",
+              "end_address": "00af83af"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af8350",
+              "end_address": "00af83ae",
+              "bytes_disassembled": 95,
+              "message": "Successfully disassembled 95 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af8350",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af8350",
+              "function_name": "FUN_00af8350",
+              "entry_point": "00af8350",
+              "body_size": 95,
+              "message": "Function created successfully at 00af8350"
+            }
+          },
+          {
+            "defined": "00af8350",
+            "end": "00af83af",
+            "name": null,
+            "after": "Function: FUN_00af8350 at 00af8350\nSignature: undefined FUN_00af8350(void)\nEntry: 00af8350\nBody: 00af8350 - 00af83ae"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b007f0",
+              "end_address": "00b007fe"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b007f0",
+              "end_address": "00b007fd",
+              "bytes_disassembled": 14,
+              "message": "Successfully disassembled 14 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b007f0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b007f0",
+              "function_name": "FUN_00b007f0",
+              "entry_point": "00b007f0",
+              "body_size": 14,
+              "message": "Function created successfully at 00b007f0"
+            }
+          },
+          {
+            "defined": "00b007f0",
+            "end": "00b007fe",
+            "name": null,
+            "after": "Function: FUN_00b007f0 at 00b007f0\nSignature: undefined FUN_00b007f0(void)\nEntry: 00b007f0\nBody: 00b007f0 - 00b007fd"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "final_merged_validation_ar": {
+    "tested_commit": "52344eb45d758f89b80ac4323a89c085ae10f832",
+    "reviewed_source_commit": "5a13179fab31a5326078afddd0062f9a0208ef4b",
+    "build": "Strict MSVC Win32 and both seeded CTests passed; local/ar-final-combined-build.log",
+    "reviewed_source_header_hashes": {
+      "include/bsp/native_point_light_owner.hpp": "802c6428e480d16e32489eb4f76bcf29f5cd8b6341c226140db387ee6e533787",
+      "src/native_point_light_owner.cpp": "de3b22e625bbdd232067d5c78c8c1cf9363a7aaac5548f47966e3856fe98843e",
+      "include/bsp/native_particle_type_resources.hpp": "6df0dd204083c058f738be2d959f8469ed721204eb9d2d68f5d2a4fb92f6cb95",
+      "src/native_particle_type_resources.cpp": "1a3b959c8605c2413b58e5b786f61e0b0e62112c68f385ee375ee5f4dfa15c0b",
+      "include/bsp/native_particle_sprite_state.hpp": "e797a0a6fbdf5581afc8b10d9bb632a782d33275ddd5099a781d6514cb433fc8",
+      "src/native_particle_sprite_state.cpp": "e0656e906b4e8811ef77c48720e0434734d1469f2154dc629abd4d57df87254c",
+      "include/bsp/native_particle_object_state.hpp": "2e3064b43f7c8975695202f20c1e8c9466958aba2bc1edeb91bfb878ee122ac3",
+      "src/native_particle_object_state.cpp": "2e5454400c1de0863960fbc000d2f67e8542ee7c79a85bbbf816345a5126e201",
+      "include/bsp/native_particle_tracer_state.hpp": "9f5766be92d0f1007eb3bc430245d421a2632d06beeea0944b3d2e1682c88363",
+      "src/native_particle_tracer_state.cpp": "0d99045c57d203f71ac44e5e2f707e60997a5112ba4c69a4db7444af57b74327",
+      "include/bsp/native_particle_type_state_dispatch.hpp": "ca420bc80139e42ac1530102e3a43760b96f6d43e1e59b72c90565c459ebe50b",
+      "src/native_particle_type_state_dispatch.cpp": "8ca38efa9bb90a7d2a229b47345f24643714b07ff853f3fdf15ab984a26c9d7e",
+      "include/bsp/native_particle_type_property.hpp": "f58a87f0f68fef34db473dc5c7c9a645ab9adb38bb12c3012f3066dc0610de04",
+      "src/native_particle_type_property.cpp": "701834527b3bd1ae9c5ad4b3b2195db076bc2e1b25c20982cc6f17895e31e76f",
+      "include/bsp/native_particle_object_tracer_loading.hpp": "aef81209687429d0f73af2fbfd6badd7a1702aecfc8bf06655246a520619b21f",
+      "src/native_particle_object_tracer_loading.cpp": "6e0a06a4112d0e9384978b91643719f23bc842ffa62174f44efc3cbf301f8464",
+      "include/bsp/native_particle_emission_state.hpp": "dc08750f79263ebf64463f949629f1af5a679aa16a2752adbf29341723c072e4",
+      "src/native_particle_emission_state.cpp": "630da2771e0d5ca6731c6247297cebfb7c2dcd93eaf466167425e37aec793d23"
+    },
+    "library_sha256": {
+      "bsp_core": "f1ed96816ccfd822e64a29eefc078223e4c30f4a1bb80edf118b725546c354e3",
+      "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+      "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+    },
+    "current_library_replays": [
+      {
+        "label": "resources",
+        "exit_code": 0,
+        "log": "local\\ar-resources-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "f1ed96816ccfd822e64a29eefc078223e4c30f4a1bb80edf118b725546c354e3",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ar-resources\\native_bytes.hpp": "bd9a042151374fed15297720dcf0ec0a644c85162a26d381e4f1958dde09633d",
+          "C:\\Users\\sqz269\\bsp-ar-resources\\probe.cpp": "3749f849dd7699dcdd138b1571f0e51b5519eefc22bf65383a6a2b830298ea52"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ar\\resources-current.cmd",
+        "executable_sha256": "dd6ee8544c68fe86702c5a4944e2d8abcad9c0d2fe0967fdd35d0da7b2bd20df"
+      },
+      {
+        "label": "sprite",
+        "exit_code": 0,
+        "log": "local\\ar-sprite-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "f1ed96816ccfd822e64a29eefc078223e4c30f4a1bb80edf118b725546c354e3",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ar-sprite-state\\bind_original.inl": "d5918e04a971f471396046d226130fdd655a29acfb7b9e2f83dcfe6af75fac5f",
+          "C:\\Users\\sqz269\\bsp-ar-sprite-state\\original_bytes.hpp": "0883a0f0c34762362e3d1da40c75830411b00edfb159d684064faca12687b1a0",
+          "C:\\Users\\sqz269\\bsp-ar-sprite-state\\probe.cpp": "912559c8e6fc15ce151f6d384a9082dc39e3c8d714c6896cd42608d77a65628d"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ar\\sprite-current.cmd",
+        "executable_sha256": "1513eb62a58c5c9914b91760c736d09fd45c188e9eba2116572d3a0fd87ac141"
+      },
+      {
+        "label": "object",
+        "exit_code": 0,
+        "log": "local\\ar-object-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "f1ed96816ccfd822e64a29eefc078223e4c30f4a1bb80edf118b725546c354e3",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ar-object-state\\bind_original.inl": "38d1d7c40cc5ff977ee6d664166449acd44779db4fa774c1f1899a7029ea42de",
+          "C:\\Users\\sqz269\\bsp-ar-object-state\\original_bytes.hpp": "299866eb66330aa6eb4793d756ec1f123bbb90cea6173f881d583977805bb05f",
+          "C:\\Users\\sqz269\\bsp-ar-object-state\\probe.cpp": "b51eae24d4bbd10c022a93c7e627e52cb1f015ec36af323bc708757f308cca69"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ar\\object-current.cmd",
+        "executable_sha256": "8046ab426900fc3849e3ed1bd89d8e9ace5052872e34a9916023fe22d6f12d61"
+      },
+      {
+        "label": "tracer",
+        "exit_code": 0,
+        "log": "local\\ar-tracer-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "f1ed96816ccfd822e64a29eefc078223e4c30f4a1bb80edf118b725546c354e3",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ar-tracer-state\\original.hpp": "6fa9032a06ad2c750074eebf75792a62e0879c8724a63a59a2f9ced044095ef0",
+          "C:\\Users\\sqz269\\bsp-ar-tracer-state\\probe.cpp": "4d79a0fc9426f407e29009d0c3ce883f29ba3b15414e6eccb47037eea0b78d58"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ar\\tracer-current.cmd",
+        "executable_sha256": "bc4061925bb64768f3d14780e9432f0f6cd449f38ab49d84e4ba3355bd0e8427"
+      },
+      {
+        "label": "dispatch",
+        "exit_code": 0,
+        "log": "local\\ar-dispatch-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "f1ed96816ccfd822e64a29eefc078223e4c30f4a1bb80edf118b725546c354e3",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\bind_original.inl": "18990c2b5aa55c760b7dbac138e2e617fc60fd6f25d84ba7b20bca0c1c04e49e",
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\original_bytes.hpp": "67151ef5b596363dbf1b5491c5c5c04e034e72df57b02337624859c693711e5d",
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\probe.cpp": "41228226206e975673e5f12ad0873b0c79239faa5e3628b3c000b017a4dcd15e",
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\probe_support.hpp": "56d85cde9bc35e7004e63c73755729d89cd1e033f1d71ba0413692109b4b0d34",
+          "C:\\Users\\sqz269\\bsp-ar-dispatch\\state_body.inl": "1bb568b321bfb19ab94a56507bd790e74fd4cc27958d423ab220d3e7fe0de568"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ar\\dispatch-current.cmd",
+        "executable_sha256": "0a4ea20af46e7f80a85f1754715dac710a83f706af6b5459d7653f6689528a6d"
+      },
+      {
+        "label": "properties",
+        "exit_code": 0,
+        "log": "local\\ar-properties-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "f1ed96816ccfd822e64a29eefc078223e4c30f4a1bb80edf118b725546c354e3",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-properties\\literal_bytes.hpp": "fa3bd79cde1083ba8d430257941dc5f4f96c06a01c3b4cb539fcca3a4d58bddd",
+          "C:\\Users\\sqz269\\bsp-aq-properties\\native_bytes.hpp": "b992df3252e5e76cb31c4195574788f142259107a93a237972e47936143ac854",
+          "C:\\Users\\sqz269\\bsp-aq-properties\\probe.cpp": "add900f89be405a85215b6f97810c10636a251aa5ce01214957b9806e9a3499d"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ar\\properties-current.cmd",
+        "executable_sha256": "338d14de982d84746e7580334d98a2dc6ccff3e5c30faf2ce82c8066245613cf"
+      },
+      {
+        "label": "object_tracer_loading",
+        "exit_code": 0,
+        "log": "local\\ar-object_tracer_loading-current-replay.log",
+        "library_sha256": {
+          "bsp_core": "f1ed96816ccfd822e64a29eefc078223e4c30f4a1bb80edf118b725546c354e3",
+          "bsp_lua511": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7",
+          "bsp_zlib121": "f3f934925213a2ffb81f3aec2afbb065c1733cf43b28dddf31db6a69185c4102"
+        },
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-object-tracer\\probe.cpp": "3c52914ee95cd52af21c7eb3ba51d183ca0c9e6559e7ee1194d4d93a3a0a974d",
+          "C:\\Users\\sqz269\\bsp-aq-object-tracer\\probe_data.hpp": "3867d22139b02d784126b6d31dab8b97e0a79720917ab05ddaec801eef32887f"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ar\\object_tracer_loading-current.cmd",
+        "executable_sha256": "c1de1e94e12580d46baa01c87b83a0e3620d071d08986ad881b466dfafa9461b"
+      }
+    ],
+    "owned_native_entries": 27,
+    "ordinary_native_signatures": 27,
+    "checked_report_call_rows": 816,
+    "checked_rows_include_duplicate_embedded_fixture_evidence": true,
+    "indirect_targets": "Logged by verifier but not mechanically resolved; see per-report call-check logs and native profile evidence.",
+    "failed_call_rows": 0,
+    "game_validated": false,
+    "original_fh3_validated": false,
+    "remaining_boundaries": [
+      "Full application wiring must supply the optional actual resource/state bindings.",
+      "Tracer initializer comparison stops at the actual unavailable AF3440 application service; it does not prove successful mesh/material attachment.",
+      "Resource/VFS, current instance and renderer overrides retain required real services; controlled probe boundaries do not validate those internals.",
+      "Original native FH3/SEH unwind, full FP/register environment, concurrency scheduling and gameplay remain unvalidated."
+    ]
   }
 }

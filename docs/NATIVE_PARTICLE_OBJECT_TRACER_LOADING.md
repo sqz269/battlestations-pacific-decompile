@@ -155,3 +155,13 @@ library-only probe. Native FH3 unwind metadata, arbitrary invalid pointers,
 malformed string faults, heap-failure unwind equivalence and gameplay remain
 unvalidated. Model/shader/renderer services are explicit real application
 boundaries, not successful fixtures or fallback implementations.
+
+## Correction from docs/NATIVE_PARTICLE_TYPE_RESOURCES.md (AR)
+
+Optional same-base resource binding directly invokes complete AF9660 for the captured Object model20 target; current overrides and legacy callers retain the required real dispatcher.
+
+Earlier isolated dispatcher captures remain historical evidence; the optional
+composition does not establish complete application wiring or gameplay.
+The AQ final integration already repaired AF8BD0's free fall-through and
+validated its complete body/call rows; earlier pending-gap notes describe the
+pre-repair worker snapshot. AR keeps that repaired normal control flow.

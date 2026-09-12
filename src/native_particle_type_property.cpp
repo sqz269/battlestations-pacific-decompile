@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "bsp/native_particle_type_property.hpp"
+#include "bsp/native_particle_type_resources.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
 #include "bsp/native_pooled_text.hpp"
@@ -379,7 +380,8 @@ bool load_native_particle_type_property_00b015c0(void* definition,
             put(definition,0x74,found);
         } else if (i==2) {
             const auto target=read<std::uint32_t>(read<void*>(definition),0x10);
-            a.shader_virtual10(a.context,definition,target,token.value.data);
+            if (!dispatch_known_native_particle_shader(definition,target,token.value.data,storage))
+                a.shader_virtual10(a.context,definition,target,token.value.data);
         } else put<std::uint8_t>(definition,offsets[i],std::atol(token.value.data)>0?1:0);
         return true;
     }

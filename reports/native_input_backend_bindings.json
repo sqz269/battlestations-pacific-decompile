@@ -1,0 +1,390 @@
+{
+  "packet": "orch4_native_input_backend_bindings_af",
+  "source": [
+    "include/bsp/native_input_backend_bindings.hpp",
+    "src/native_input_backend_bindings.cpp"
+  ],
+  "analysis": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "verified read-only CLI batches, refreshed owned bodies and bounded dependency exports",
+    "ghidra_writes": false
+  },
+  "routines": [
+    {
+      "address": "00a91620",
+      "name": "activate_native_input_device_slot_00a91620",
+      "coverage": "complete game source body in documented valid actual-storage and captured-provider domain",
+      "abi": "ECX actualF8h backend; class,slot DWORD stack; semantic result unused; RET8",
+      "edx": "not a native input",
+      "last_instruction": "00a917d3",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a917d5",
+      "end_exclusive": "00a917d6",
+      "ret_argument_bytes": 8
+    },
+    {
+      "address": "00a90ee0",
+      "name": "remove_active_native_input_device_00a90ee0",
+      "coverage": "complete game source body in documented valid actual-storage and captured-provider domain",
+      "abi": "ECX actualF8h backend; actual device pointer stack; semantic result unused; RET4",
+      "edx": "not a native input",
+      "last_instruction": "00a90f8d",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a90f8f",
+      "end_exclusive": "00a90f90",
+      "ret_argument_bytes": 4
+    },
+    {
+      "address": "00bebf30",
+      "name": "delete_native_input_device_class_00bebf30",
+      "coverage": "complete game source body in documented valid actual-storage and captured-provider domain",
+      "abi": "ECX actualF8h backend; class DWORD stack; semantic result unused; RET4",
+      "edx": "not a native input",
+      "last_instruction": "00bebf61",
+      "last_instruction_length": 3,
+      "end_inclusive": "00bebf63",
+      "end_exclusive": "00bebf64",
+      "ret_argument_bytes": 4
+    },
+    {
+      "address": "00a983c0",
+      "name": "enumerate_native_input_devices_00a983c0",
+      "coverage": "complete game source body in documented valid actual-storage and captured-provider domain",
+      "abi": "ECX actualF8h backend; no stack arguments; EAX retains ignored SDK result; RET0",
+      "edx": "not a native input",
+      "last_instruction": "00a983df",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a983df",
+      "end_exclusive": "00a983e0",
+      "ret_argument_bytes": 0
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a91655",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a91668",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a91675",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a91682",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a9168c",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a9169b",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a916a9",
+      "native": "actual_device+vtable34",
+      "function": "00a91620",
+      "kind": "indirect_call",
+      "contract": "ECX once-captured candidate, current captured profile; no stack args; EAX identifier; accepted ID reread after return",
+      "membership": "live ghidra proto confirms exact containing function; listing contains CALL"
+    },
+    {
+      "address": "00a916b9",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a916d9",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a916e8",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a916f5",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a91702",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a9170c",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a9171e",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a91730",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a9173d",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a917a2",
+      "native": "00bf6713",
+      "function": "00a91620",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a917b5",
+      "native": "00a91430",
+      "function": "00a91620",
+      "contract": "Recognized checked STL single pointer insertion: ECX actual10h active header; output8h iterator, owner header, captured position, address of candidate word stack; RET10h. Supplied by explicit stateless source storage contract, not a port/native body reconstruction."
+    },
+    {
+      "address": "00a917ca",
+      "native": "backend+callbackD8",
+      "function": "00a91620",
+      "kind": "indirect_call",
+      "contract": "Captured current identity after insertion; ECX original class, EDX previous active count captured before allocation; no stack args, result unused",
+      "membership": "live ghidra proto confirms exact containing function; listing contains CALL"
+    },
+    {
+      "address": "00a90ef0",
+      "native": "actual_device+vtable08",
+      "function": "00a90ee0",
+      "kind": "indirect_call",
+      "contract": "ECX actual device, current captured profile; no stack args; EAX class retained through removal and callback",
+      "membership": "live ghidra proto confirms exact containing function; listing contains CALL"
+    },
+    {
+      "address": "00a90f08",
+      "native": "00bf6713",
+      "function": "00a90ee0",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a90f18",
+      "native": "00bf6713",
+      "function": "00a90ee0",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a90f21",
+      "native": "00bf6713",
+      "function": "00a90ee0",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points.",
+      "reachable": false,
+      "evidence": "CMP ESI,ESI at A90F1D and JZ A90F26 always skip this physical CALL"
+    },
+    {
+      "address": "00a90f2f",
+      "native": "00bf6713",
+      "function": "00a90ee0",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a90f41",
+      "native": "00bf6713",
+      "function": "00a90ee0",
+      "contract": "Real returning invalid-parameter CRT service; no native stack arguments; RET. Caller retains captured iterator/end and reloads later fields at listed points."
+    },
+    {
+      "address": "00a90f69",
+      "native": "00bf67a7",
+      "function": "00a90ee0",
+      "contract": "Recognized memmove_s; dest,dest_bytes,source,bytes stack; ADD ESP,10h after call; result ignored, current end reloaded afterward."
+    },
+    {
+      "address": "00a90f86",
+      "native": "backend+callbackD8",
+      "function": "00a90ee0",
+      "kind": "indirect_call",
+      "contract": "Captured current identity after erase; ECX captured class, EDX FFFFFFFF; no stack args/result used",
+      "membership": "live ghidra proto confirms exact containing function; listing contains CALL"
+    },
+    {
+      "address": "00bebf4f",
+      "native": "actual_device+vtable04",
+      "function": "00bebf30",
+      "kind": "indirect_call",
+      "contract": "ECX current fixed-slot pointer with captured profile; stack flags1, callee RET4; no decrement or BD30E0",
+      "membership": "live ghidra proto confirms exact containing function; listing contains CALL"
+    },
+    {
+      "address": "00a983dd",
+      "native": "captured_DirectInput+vtable10",
+      "function": "00a983c0",
+      "kind": "indirect_call",
+      "contract": "Captured backend+E0 before clearF4; stdcall explicit interface,type0,A982B0,backend,flags1; five DWORD arguments; SDK result ignored",
+      "membership": "live ghidra proto confirms exact containing function; listing contains CALL"
+    }
+  ],
+  "incoming_calls": [
+    {
+      "address": "00becab6",
+      "native": "00a91620",
+      "function": "00beca40",
+      "contract": "ECX reloaded F8BBF4; pushes slot0 then class1; target RET8"
+    },
+    {
+      "address": "0067d77c",
+      "native": "00a91620",
+      "function": "0067d6e0",
+      "contract": "ECX reloaded F8BBF4; pushes EDI then class2; EDI holds A3E470 result assigned at67D734; target RET8. No further A3E470 semantic contract claimed."
+    },
+    {
+      "address": "00a91902",
+      "native": "00a91620",
+      "function": "00a918a0",
+      "contract": "ECX EBP captured backend; pushes EDI slot0..7 then EBX class0..2; target RET8"
+    },
+    {
+      "address": "00beca8d",
+      "native": "00a90ee0",
+      "function": "00beca40",
+      "contract": "ECX backend; pushed first active mouse pointer; target RET4"
+    },
+    {
+      "address": "0067c9b5",
+      "native": "00a90ee0",
+      "function": "0067c970",
+      "contract": "ECX reloaded backend; captured nonnull first active class2 pointer pushed; target RET4"
+    },
+    {
+      "address": "00beca9a",
+      "native": "00bebf30",
+      "function": "00beca40",
+      "contract": "ECX reloaded F8BBF4; pushes class1; target RET4"
+    },
+    {
+      "address": "00becaaa",
+      "native": "current_backend+vtable0C",
+      "function": "00beca40",
+      "kind": "indirect_call",
+      "contract": "Current raw backend profile/slot0C captured; D5B72C slot0C atD5B738 is A983C0; ECX backend, no stack args"
+    }
+  ],
+  "call_audit": {
+    "owned_listing_CALLs": 29,
+    "owned_direct_CALLs": 23,
+    "owned_indirect_CALLs": 6,
+    "incoming_direct_rows": 6,
+    "incoming_indirect_rows": 1,
+    "complete_listing_sites": {
+      "00a91620": [
+        "00a91655",
+        "00a91668",
+        "00a91675",
+        "00a91682",
+        "00a9168c",
+        "00a9169b",
+        "00a916a9",
+        "00a916b9",
+        "00a916d9",
+        "00a916e8",
+        "00a916f5",
+        "00a91702",
+        "00a9170c",
+        "00a9171e",
+        "00a91730",
+        "00a9173d",
+        "00a917a2",
+        "00a917b5",
+        "00a917ca"
+      ],
+      "00a90ee0": [
+        "00a90ef0",
+        "00a90f08",
+        "00a90f18",
+        "00a90f21",
+        "00a90f2f",
+        "00a90f41",
+        "00a90f69",
+        "00a90f86"
+      ],
+      "00bebf30": [
+        "00bebf4f"
+      ],
+      "00a983c0": [
+        "00a983dd"
+      ]
+    },
+    "qualification": "All owned direct CALLs included, including physically present unreachableA90F21. Indirect rows require manual profile/ABI proof; live body membership confirmed."
+  },
+  "layout": {
+    "fixed": "backend+4+(class*8+slot)*4, three rows of8 actual device pointers",
+    "classes": "backend+68h+class*24h; requested count+0; active actual10h header+4; accepted ID actual10h header+14h",
+    "producer": "Existing A908A0/A91570/A982D0 and classA914C0 initialize actual fields; A90DC0 frees accepted then active storage. No second owner/vector.",
+    "ownership": "Active pointers borrow; activation/removal do not retain/release; BEBF30 invokes scalar04 flags1 without decrement/BD30E0; external SDK refs remain retained"
+  },
+  "register_provenance": {
+    "activation": "EBP class record until insertion, then original backend captured before library call; candidate localESP10 survives fixed-slot mutation; ESI/EDI iterators and EBX captured end/previous count; all accepted IDs scanned; ID memory reread after current profile identifier query",
+    "removal": "EBP backend, class savedESP10; ESI active header, EDI iterator, EBX captured end; current end ADD-4 occurs after memmove_s",
+    "class_delete": "ESI same cell, EDI8 remaining; capture ECX pointer and profile before direct scalar; same cell zero after callback",
+    "enumeration": "EAX captures +E0 atA983C0 before byteF4 clearA983CE; no backend interface reload"
+  },
+  "providers": {
+    "methods": "NativeInputBackendBindingsCalls class08/identifier34/scalar04, captured DirectInput enumeration, captured callbackD8; parent AE runtime/startup identity dispatcher supply them",
+    "CRT": "Source _invalid_parameter_noinfo and memmove_s may return; no synthesized throw or normalized container",
+    "callback": "A917CA ECX class/EDX preallocation count; A90F86 ECX captured class/EDX-1; both zero stack arguments; only supported native identity dispatched by caller"
+  },
+  "storage_boundary": {
+    "kind": "explicit stateless source storage adapter, no original STL port or names/reconstruction claim",
+    "entry": "insert_input_active_pointer_storage(actual8h iterator,actual10h header,captured position,actual value word)",
+    "allocation": "existing singleton_lifetime_allocate/free domain, maximum3FFFFFFF pointer elements, existing source length-error transport",
+    "mutation": "value captured before allocation; current begin after allocation, current end after prefix/fill, current begin/count after suffix, before free and publication; real memmove_s used",
+    "limits": "valid complete DWORD ranges and sufficient capacity/backing after callbacks; no arbitrary malformed checked iterator/native CRT heap/EH trace equivalence",
+    "native_library_gap": "A91260 observed gapA91361..A91363 is aligned ADD ESP4 after freecallA9135C; full final RET10 A91411..A91413. Unowned library, reported to primary; not reconstructed."
+  },
+  "exceptions": "No owning EH state in these four game bodies. Calls/allocation failure propagate; dirty may remain set; partial class deletion remains; no blanket rollback or SDK release.",
+  "validation": {
+    "build": "scripts/build.ps1 Win32 Release exit0, MSBUILDDISABLENODEREUSE=1",
+    "seed_count": 8,
+    "all_seeds_match": true,
+    "ctests": "2/2 passed",
+    "probe": "one ignored manifested actual-storage fixture; controlled mutable providers, genuine raw mouse scalars and real returning CRT invalid handler",
+    "results": "invalid_returns1; identifier_queries2; candidate and post-query ID reload preserved; growth2; callback indexes0,-1,-1; ordered removal; scalars2 with original refcounts7,7; same/later slot mutation; class buffers0",
+    "runner": "local/run_native_input_bindings_probe.ps1 [-PrimaryWorktree path]",
+    "probe_log": "local/native_input_bindings_probe.log",
+    "build_log": "local/native_input_backend_bindings_build.log",
+    "core_archive_sha256": "4ac5f1c57161247a668b5f7bc131e735bf063434450caf02fedf3466223f5930",
+    "probe_log_sha256": "a1c6613a8d0463abe7a149b922ba911626ddc3d77e5998bbece795bb7fdb9583"
+  },
+  "limitations": [
+    "New C++ ABI with required production bindings, not binary vtable replacement",
+    "Recognized checked STL remains explicit source storage contract; source/native CRT identity and malformed heap/frame behavior not claimed",
+    "SDK enumeration deliberately unreached in fixture; no window, polling, input, force or gameplay validation",
+    "All typed records preserved by add-fragment; no missing starts/excluded tails in four owned functions"
+  ]
+}

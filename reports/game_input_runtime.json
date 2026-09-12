@@ -1,0 +1,136 @@
+{
+  "packet": "orch4_game_input_runtime_af",
+  "status": "application_startup_bound_strict_build_and_real_sdk_lifecycle_verified",
+  "kind": "source_composition_no_original_function_claim",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": [
+    "include/bsp/game_input_runtime.hpp",
+    "src/game_input_runtime.cpp",
+    "include/bsp/game_hosts.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_platform_services.hpp",
+    "src/game_platform_services.cpp",
+    "include/bsp/game_sound_platform.hpp",
+    "src/game_sound_platform.cpp"
+  ],
+  "documentation": "docs/GAME_INPUT_RUNTIME.md",
+  "worker_commits": {
+    "startup": "32210b048e6db4c56ffb42dece43ea4e5e5d6609",
+    "bindings": "514c18ee664a60740dbe990de5ec427bdb8f3a68",
+    "cursor": "f106cbc9c1a2dc548a744e50e35434e968734e1b",
+    "cooperative_order": "d474459fe15432c93bc6be909584fa2082fe36ef"
+  },
+  "external_lookup": {
+    "source_commit": "7466e97a",
+    "integrated_commit": "104a2b5d",
+    "provider": "gui_raw_input_device_004ba6d0",
+    "domain": "actual valid raw active-vector storage; no typed owner cast"
+  },
+  "native_metadata": {
+    "signatures_saved_and_readback_verified": 13,
+    "report": "reports/native_input_af_prototypes.json",
+    "newly_defined_start": "00a90ed0",
+    "definition_report": "reports/native_input_af_function_definitions.json",
+    "exports_refreshed": 13,
+    "prior_comments_preserved": true
+  },
+  "ownership": "One existing raw singleton manager; actual backend/actions publications shared with sound/cursor; canonical source platform/clock; services and HWND outlive raw drain, explicit device then backend SDK release follows.",
+  "corrections": [
+    "Groups D5B5F8+0C is A90ED0 RET, not purecall; purecall is+10.",
+    "Cooperative receiver/slot reads preserve distinct setter/keyboard-constructor versus mouse-poll orders.",
+    "Fallback destructor logs unmet SDK-release precondition after native registration failure; it does not dereference or repair surviving publications."
+  ],
+  "validation": {
+    "utc": "2026-09-12T22:30:03.547894+00:00",
+    "code_revision": "e051dca800fd6fe7d930a5227f385ac03fbc09b5",
+    "source_tree_sha256": "843b0163b2688cd6c09256ab34057a1c28868233fe9f28eeeb3b7613fed1202f",
+    "source_manifest": "local/game_input_af_source_manifest.json",
+    "win32_release_build": true,
+    "ctests_passed": 2,
+    "native_seeds_match_disk": 8,
+    "primary_archive_sha256": "76fbf505338211076c4c0277a62086a2f9cb50880d2521e61581fe65129bce6f",
+    "game_executable_sha256": "63d7119f7d850ba54a6d28e68abebb1d3802570d9b5b4768f29182287e576d76",
+    "call_audits": {
+      "native_input_cursor": [
+        18,
+        0
+      ],
+      "native_input_backend_bindings": [
+        29,
+        0
+      ],
+      "native_input_backend_startup": [
+        14,
+        0
+      ],
+      "native_keyboard_mouse": [
+        21,
+        0
+      ]
+    },
+    "call_audit_note": "Counts are tool-reported numeric rows, not proof of indirect target identity. Register/memory calls and captured-profile targets were separately reviewed in worker reports.",
+    "fixtures": [
+      {
+        "path": "local/input_af_final_cursor.log",
+        "sha256": "ae7df49f4cb541ea72c39ce75082b317659ac1474903ee9b24c3a8caa4734c41",
+        "output": "native_input_cursor_probe.cpp\nPASS native A92840 differential: actions=2 bindings=4 modifiers=16 buffers=12; all bytes equal\nPASS cursor/focus: resets=2 getters=4 pump=1 update=1 cooperative_boundary=1 show=2 hide=1 lazy_handler=1 application=1; publication/section reloads and captured replacement verified\nPASS real BD0400/nonempty action cleanup: action_publication=0 manager_publication=0; throwing-remove propagation passed\nBOUNDARY explicit policy callbacks/known one-element getter result; no production getter reconstruction, SDK calls, real ShowCursor, device poll/force, app/game launch or input injection"
+      },
+      {
+        "path": "local/input_af_final_bindings.log",
+        "sha256": "a1c6613a8d0463abe7a149b922ba911626ddc3d77e5998bbece795bb7fdb9583",
+        "output": "native_input_bindings_probe.cpp\nactual raw bindings: invalid_returns=1 identifier_queries=2 captured_candidate=1 post_query_id_reload=1 grow_appends=2 callbacks=0,-1,-1\nordered removal=1 direct_native_scalars=2 refcounts_before_scalar=7,7 same_slot_clear=1 later_slot_reload=1 class_buffers=0\nfixture providers only; SDK enumeration/window/input polling/gameplay not exercised"
+      },
+      {
+        "path": "local/input_af_final_startup.log",
+        "sha256": "aa69c87d9d2cc55a47cd3db1d5ac3dd2981d7dda3159920fb8d48a71dc047c7f",
+        "output": "CoreWorktree=J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\nSourceCommit=e051dca800fd6fe7d930a5227f385ac03fbc09b5\nCoreArchiveSHA256=76fbf505338211076c4c0277a62086a2f9cb50880d2521e61581fe65129bce6f\nGameSourcesCompiledSeparately=False\nnative_input_startup_probe.cpp\nnative schedule: reset_calls=2 poll_calls=6 activity_calls=1 activation_provider_calls=3 mutable_trace_match=1 canonical_output_match=1 captured_device_activity=1 live_slot_activation=1\ncount/callback: null_begin_ignores_end=1 wrapped_SAR_count=1 supported_callback_calls=2 unknown_identity_rejected=1 SDK_calls=0 game_launches=0 real_activation_calls=0"
+      },
+      {
+        "path": "local/input_af_final_facade.log",
+        "sha256": "044b7d247d97ad6b429f9ccd1d67902006f86e0faa00a32f133b04e67b348fc3",
+        "output": "CoreWorktree=J:\\PROG\\battlestations-pacific-decompile-orch4-20260910\nSourceCommit=e051dca800fd6fe7d930a5227f385ac03fbc09b5\nCoreArchiveSHA256=76fbf505338211076c4c0277a62086a2f9cb50880d2521e61581fe65129bce6f\nGameSourcesCompiledSeparately=False\nDependency=real committed gui_raw_input_device_004ba6d0; never called by lifecycle probe\nBoundary=real DI inventory/controllers==0 guard, hidden own HWND, facade startup/action/raw-drain/explicit SDK release; no poll/cursor/ShowCursor/force/game\ninput_facade_lifecycle_probe.cpp\nINVENTORY type=18 product=Mouse\nINVENTORY type=19 product=Keyboard\nINVENTORY type=17 product=Virtual HID Framework (VHF) HID device\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=G502 LIGHTSPEED Wireless Gaming Mouse\nINVENTORY type=17 product=Keychron Link \nINVENTORY type=17 product=HyperX Cloud Alpha S\nINVENTORY type=17 product=HyperX Cloud Alpha S\nINVENTORY type=17 product=AL75PRO\nINVENTORY type=17 product=AL75PRO\nINVENTORY type=17 product=HyperX Cloud Alpha S\nINVENTORY type=17 product=AL75PRO\nINVENTORY type=17 product=Keychron Link \nINVENTORY type=17 product=AL75PRO\nINVENTORY total=18 keyboard=1 mouse=1 other=16 controllers=0 retained_interfaces=0; CreateDevice/Acquire/poll/reset not called\nSTART facade_backend=D5B72C callback_D8=004B4630 action=D5B630 registered=2 keyboard=1 mouse=1 xinput=4 device_refs=2 backend_refs=2 strings_live=0\nPASS facade BD0400: registered_before=2 backend_publication=0 action_publication=0 manager_publication=0 raw_members=0 device_refs_after_drain=2 backend_refs_after_drain=2 final_device_refs=0 final_backend_refs=0 strings=0/0 live=0 hidden_window_alive=1 visible=0\nBOUNDARY actual facade startup/callback/reset, empty lazy action owner and raw drain only; real GUI lookup bound but not called; no cursor/ShowCursor/backend poll/GetState/SetState/force/game/input injection/foreground activation; native base-registration failure is not injected"
+      }
+    ],
+    "sdk_lifecycle": {
+      "inventory_total": 18,
+      "controllers": 0,
+      "keyboard": 1,
+      "mouse": 1,
+      "xinput": 4,
+      "callback_d8": "004b4630",
+      "registered_objects_before_action": 1,
+      "registered_objects_after_action": 2,
+      "backend_actions_manager_publications_after_drain": [
+        0,
+        0,
+        0
+      ],
+      "sdk_refs_after_raw_drain": [
+        2,
+        2
+      ],
+      "sdk_refs_after_explicit_release": [
+        0,
+        0
+      ],
+      "hidden_nonactivating_hwnd_alive_through_drain": true,
+      "lookup_or_device_poll_or_force_exercised": false,
+      "application_launched": false
+    }
+  },
+  "limitations": [
+    "Source facade is not an original ABI or EH replacement.",
+    "Online-owner construction, interactive frame/actions, listener implementation and settings producers remain external application work.",
+    "Immutable one-value bit representation is borrowed separately from sound; mutable original input words are single source cells.",
+    "SSE2 mode uses Windows CPU+OS capability binding; original CRT initialization is not reimplemented.",
+    "Explicit zero joystick Xbox stack baseline does not prove ignored-failure arbitrary native stack behavior.",
+    "Registration-failure cleanup boundary was reviewed in source; not fault-injected.",
+    "No game launch, single-instance bypass, foreground activation, real ShowCursor, device polling or force delivery in this batch."
+  ],
+  "next_work": [
+    "Integrate worker raw A917E0 configuration producer and wire its exact OnInitOnce call sites.",
+    "Integrate worker raw A949A0/A94C50 rumble refresh/setter and bind the actual settings commit to the canonical word.",
+    "Connect raw input action/frame consumers and actual online/listener ownership before claiming interactive input."
+  ]
+}
