@@ -1,0 +1,482 @@
+{
+  "packet": "orch4_native_input_configuration_cleanup_ag",
+  "source": [
+    "include/bsp/native_input_configuration_cleanup.hpp",
+    "src/native_input_configuration_cleanup.cpp"
+  ],
+  "analysis": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "READ ONLY target-verified capped CLI exports/bodies/assembly/protos/xrefs/bytes; actual producer evidence",
+    "ghidra_writes": false
+  },
+  "routines": [
+    {
+      "address": "00698730",
+      "name": "clear_native_input_configuration_00698730",
+      "coverage": "complete game-body schedule; checked STL calls remain required actual-storage providers",
+      "native_return": "void",
+      "convention": "__thiscall",
+      "ecx": "actual embedded configuration",
+      "edx": "not an input",
+      "stack_arguments": [],
+      "ret_argument_bytes": 0,
+      "last_instruction": "006988e9",
+      "last_instruction_length": 1,
+      "end_inclusive": "006988e9",
+      "end_exclusive": "006988ea"
+    },
+    {
+      "address": "00a93920",
+      "name": "unregister_native_input_action_00a93920",
+      "coverage": "complete raw game-body schedule with existing concrete storage/listener providers",
+      "native_return": "void",
+      "convention": "__thiscall",
+      "ecx": "actual24h action owner",
+      "edx": "not an input",
+      "stack_arguments": [
+        "uint32 action index"
+      ],
+      "ret_argument_bytes": 4,
+      "last_instruction": "00a93934",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a93936",
+      "end_exclusive": "00a93937"
+    },
+    {
+      "address": "00a92260",
+      "name": "query_native_input_action_registered_00a92260",
+      "coverage": "complete raw game-body schedule with existing concrete storage/listener providers",
+      "native_return": "uint32_t EAX exactly0/1",
+      "convention": "__thiscall",
+      "ecx": "actual24h action owner",
+      "edx": "not an input",
+      "stack_arguments": [
+        "uint32 action index"
+      ],
+      "ret_argument_bytes": 4,
+      "last_instruction": "00a92282",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a92284",
+      "end_exclusive": "00a92285"
+    },
+    {
+      "address": "00a93880",
+      "name": "clear_native_input_action_registration_00a93880",
+      "coverage": "complete raw game-body schedule with existing concrete storage/listener providers",
+      "native_return": "void",
+      "convention": "__thiscall",
+      "ecx": "actual30h action",
+      "edx": "not an input",
+      "stack_arguments": [],
+      "ret_argument_bytes": 0,
+      "last_instruction": "00a938d6",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a938d6",
+      "end_exclusive": "00a938d7"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00698740",
+      "native": "004bec00",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "No native arguments; EAX actual current action owner, RET. Real borrowed publication/lifetime context. Called independently before each query and again for true unregister.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "00698748",
+      "native": "00a92260",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "ECX actual owner, stack uint32 index, RET4 EAX0/1. Unsigned bounds precede registered byte00.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "00698752",
+      "native": "004bec00",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "No native arguments; EAX actual current action owner, RET. Real borrowed publication/lifetime context. Called independently before each query and again for true unregister.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "00698759",
+      "native": "00a93920",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "ECX newly obtained actual owner, stack uint32 index, RET4; no extra bounds check; captured30h row toA93880.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "00698777",
+      "native": "00bf6713",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Recognized returning CRT invalid-parameter service, no stack arguments. Source calls real _invalid_parameter_noinfo; captured operands survive repair.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "0069878e",
+      "native": "00bf6713",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Recognized returning CRT invalid-parameter service, no stack arguments. Source calls real _invalid_parameter_noinfo; captured operands survive repair.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "006987c8",
+      "native": "00697bd0",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Required checked-STL contract: ECX captured destination10h, stack captured source10h, EAX destination RET4; no parallel storage; library semantics not implemented in this packet.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "006987e8",
+      "native": "00bf65ac",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Recognized returning CRT free: one allocation pointer stack, cdecl ADD ESP4 at6987ED; source same singleton allocation/free domain. Continue zeroing row triplet.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "0069881e",
+      "native": "00bf6713",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Recognized returning CRT invalid-parameter service, no stack arguments. Source calls real _invalid_parameter_noinfo; captured operands survive repair.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "0069882b",
+      "native": "00bf6713",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Recognized returning CRT invalid-parameter service, no stack arguments. Source calls real _invalid_parameter_noinfo; captured operands survive repair.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "0069883b",
+      "native": "006977f0",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Required checked-STL contract: ECX actual10h header; stack actual8h iterator output, first-owner, captured first, last-owner, captured last; EAX output RET14h. Owners both same header; current suffix move/end update.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "00698854",
+      "native": "00bf6713",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Recognized returning CRT invalid-parameter service, no stack arguments. Source calls real _invalid_parameter_noinfo; captured operands survive repair.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "00698861",
+      "native": "00bf6713",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Recognized returning CRT invalid-parameter service, no stack arguments. Source calls real _invalid_parameter_noinfo; captured operands survive repair.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "00698871",
+      "native": "006977f0",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Required checked-STL contract: ECX actual10h header; stack actual8h iterator output, first-owner, captured first, last-owner, captured last; EAX output RET14h. Owners both same header; current suffix move/end update.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "0069888a",
+      "native": "00bf6713",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Recognized returning CRT invalid-parameter service, no stack arguments. Source calls real _invalid_parameter_noinfo; captured operands survive repair.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "00698897",
+      "native": "00bf6713",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Recognized returning CRT invalid-parameter service, no stack arguments. Source calls real _invalid_parameter_noinfo; captured operands survive repair.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "006988a7",
+      "native": "006977f0",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Required checked-STL contract: ECX actual10h header; stack actual8h iterator output, first-owner, captured first, last-owner, captured last; EAX output RET14h. Owners both same header; current suffix move/end update.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "006988c0",
+      "native": "00bf6713",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Recognized returning CRT invalid-parameter service, no stack arguments. Source calls real _invalid_parameter_noinfo; captured operands survive repair.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "006988cd",
+      "native": "00bf6713",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Recognized returning CRT invalid-parameter service, no stack arguments. Source calls real _invalid_parameter_noinfo; captured operands survive repair.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "006988dd",
+      "native": "006977f0",
+      "function": "00698730",
+      "kind": "direct",
+      "contract": "Required checked-STL contract: ECX actual10h header; stack actual8h iterator output, first-owner, captured first, last-owner, captured last; EAX output RET14h. Owners both same header; current suffix move/end update.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "00a9392f",
+      "native": "00a93880",
+      "function": "00a93920",
+      "kind": "direct",
+      "contract": "ECX actual30h row, no stack args/result, RET; counts clear before listener release, registered clear last.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "00a93888",
+      "native": "00696e70",
+      "function": "00a93880",
+      "kind": "direct",
+      "contract": "ECX action+4 actual12h context header, stack signed0, RET4. Existing source count resize retains allocation.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "00a93892",
+      "native": "00a93500",
+      "function": "00a93880",
+      "kind": "direct",
+      "contract": "ECX action+10 actual12h binding header, stack signed0, RET4. Existing actual34h/14h destructor storage; outer capacity retained.",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "00a938b1",
+      "native": "InterlockedDecrement_IAT_CE2220",
+      "function": "00a93880",
+      "kind": "indirect",
+      "contract": "stdcall pointer to captured listener+4 on stack, RET4, signedLONG EAX; tests exactlyzero; saved IAT RVA A056E8 -> VA E056E8 hint/name InterlockedDecrement",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    },
+    {
+      "address": "00a938c1",
+      "native": "listener_vslot00",
+      "function": "00a93880",
+      "kind": "indirect",
+      "contract": "ECX captured actual listener; current profile and slot0 loaded only after decrement result0; no stack flags/result; source NativeInputActionRecordCalls finite provider",
+      "verification": "body/listing/ABI/current source read; direct membership mechanically checked, indirect membership/import/slot timing explicitly inspected"
+    }
+  ],
+  "incoming_calls": [
+    {
+      "address": "00698a2f",
+      "native": "00698730",
+      "function": "00698a10",
+      "contract": "ECX captured input configuration at loader entry; no stack arguments; before Lua/flags/parser"
+    },
+    {
+      "address": "00699bd7",
+      "native": "00698730",
+      "function": "00699b80",
+      "contract": "ECX captured configuration after four modifier byte writes when previous+520 was nonzero; no stack args; next call698A10"
+    },
+    {
+      "address": "00698759",
+      "native": "00a93920",
+      "function": "00698730",
+      "contract": "ECX second fresh lazy owner; stack current index0..128h RET4; no result"
+    },
+    {
+      "address": "00698748",
+      "native": "00a92260",
+      "function": "00698730",
+      "contract": "ECX current lazy owner; stack index0..128h RET4; testAL of full0/1 result"
+    },
+    {
+      "address": "006aa68f",
+      "native": "00a92260",
+      "function": "006aa640",
+      "contract": "ECX fresh lazy owner, stack128h RET4; after settings byte50==0/loaded5!=0 gates; testAL"
+    },
+    {
+      "address": "00a9392f",
+      "native": "00a93880",
+      "function": "00a93920",
+      "contract": "ECX current owner+4 base plus raw index*30h; no stack arguments; no bounds check"
+    }
+  ],
+  "call_audit": {
+    "direct_CALLs": 23,
+    "indirect_CALLs": 2,
+    "incoming_rows": 6,
+    "expected_numeric_rows": 29,
+    "indirect_policy": "A938B1/A938C1 manually verified by live containing proto plus import/receiver/stack evidence; no invented resolved game address"
+  },
+  "producers": [
+    {
+      "entry": "00698680",
+      "caller": "004ddbe2",
+      "actual_ecx": "game+3C, constructor passes sameECX toB66BD0 at698699",
+      "layout": "actual LuaStateStorage4C8 atbase0; vector triplets4D4/D8/DC,4E4/E8/EC,4F4/F8/FC,504/508/50C,514/518/51C initialized; vector opaque leadingwords untouched;4CC untouched by ctor, later lowbyte write699BCD",
+      "source_owner": "independent native_input_configuration_owner packet; not duplicated here"
+    },
+    {
+      "entry": "00698980",
+      "placement": "00698040 ->00557590",
+      "meaning": "actual10h checked DWORD-vector rows; row+4/+8/+C begin/end/capacity, row+0 preserved"
+    },
+    {
+      "entry": "00698a10",
+      "sites": [
+        "00698de6",
+        "00698e87",
+        "00698f28",
+        "00698fc9"
+      ],
+      "meaning": "697F40 appends parsed integer words to flat500/510/4E0/4F0"
+    },
+    {
+      "entry": "00a93da0",
+      "meaning": "actual24h action owner with count-based action header at4"
+    },
+    {
+      "entry": "00a93940",
+      "meaning": "actual30h record context04/binding10/listener2C and independent registered00/enabled01"
+    }
+  ],
+  "storage_boundaries": [
+    {
+      "entry": "00697bd0",
+      "coverage": "required_library_contract_not_reimplemented",
+      "interface": "NativeInputConfigurationStorageCalls::call_00697bd0",
+      "receiver": "actual10h checked DWORD-vector destination",
+      "arguments": [
+        "actual10h source"
+      ],
+      "return_value": "EAX destination",
+      "ret_bytes": 4,
+      "body_inspection": "self-alias, empty erase, retained-size/capacity branches and allocation branch inspected; complete generic provider remains required",
+      "existing_candidate": "private assign_identifier_storage in src/native_input_class_configuration.cpp; no public compatible source adapter exposed"
+    },
+    {
+      "entry": "006977f0",
+      "coverage": "required_library_contract_not_reimplemented",
+      "interface": "NativeInputConfigurationStorageCalls::call_006977f0",
+      "receiver": "actual10h checked DWORD vector",
+      "arguments": [
+        "actual8h iterator output",
+        "first-owner",
+        "first-position",
+        "last-owner",
+        "last-position"
+      ],
+      "return_value": "EAX output",
+      "ret_bytes": 20,
+      "body_inspection": "owner validation, suffix copy, current end update and output iterator inspected",
+      "existing_candidate": "private erase_captured_range in src/native_input_class_configuration.cpp; checked-call output/owner contract remains explicit"
+    }
+  ],
+  "mutation_schedule": [
+    "297 indices0..128h, actual lazy getter before every query and again before unregister",
+    "A93880 context count0 then binding count0, distinct current listener test/reload, Interlocked decrement then current profile/slot0, double listener clear and registered0 last",
+    "Outer end captured before first real returning CRT validation; begin captured before second; current end reloaded for suffix bound",
+    "Captured source/destination delta/end across library copy callbacks; current outer end loaded again before trailing nested frees",
+    "Each nested free returns to zero+4/+8/+C, retain row leadingword; store resulting outer end after all frees",
+    "Flat clear order500,510,4E0,4F0; captured end, begin validation/capture, current end validation, actual iterator args"
+  ],
+  "preserved": [
+    "action enabled/value/latch fields",
+    "context and binding outer capacities",
+    "owner context values",
+    "configuration Lua base, flags4C8..4CC and520",
+    "checked-header leadingwords and outer/flat allocation capacities"
+  ],
+  "flow_evidence": {
+    "missing_owned_starts": [],
+    "missing_owned_reachable_tails": [],
+    "primary_repair": "6987ED..6987EF ADD ESP4 after returningfree6987E8, already saved/exported before worker lease",
+    "alignment_gaps": [
+      {
+        "start": "0069873d",
+        "end_inclusive": "0069873f",
+        "bytes": "8d4900",
+        "meaning": "LEA ECX,[ECX], jumped over"
+      },
+      {
+        "start": "006987b9",
+        "end_inclusive": "006987bf",
+        "bytes": "8da42400000000",
+        "meaning": "LEA ESP,[ESP], jumped over"
+      }
+    ],
+    "worker_repairs": false
+  },
+  "validation": {
+    "build": "Win32 Release scripts/build.ps1 exit0; MSBUILDDISABLENODEREUSE=1",
+    "seed_count": 8,
+    "all_seeds_match": true,
+    "ctests": "2/2 passed",
+    "native_spans": [
+      {
+        "address": "00698730",
+        "length": 442,
+        "sha256": "63701e925b3f1476244a9e8f34f086d588e76e80f328223b3b6d580465a3f1eb",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00a93920",
+        "length": 23,
+        "sha256": "caec2eb6f41a6213c0e9ae17a911017320d884d6a76d2a0e6a6832c29fa79463",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00a92260",
+        "length": 37,
+        "sha256": "359f1689e258c5373dc6ca53c8fae366980d9bc4818de65c7c8ae76589efdf47",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00a93880",
+        "length": 87,
+        "sha256": "3e6fd88d98ac837af30ae7807416295780a485057891ef13defaa79531adb148",
+        "live_matches_disk": true
+      }
+    ],
+    "direct_relocations": 23,
+    "iat_relocations": 1,
+    "probe": "one ignored manifested original-native/actual-storage differential; /O2 /fp:strict /W4 /WX; exit0",
+    "cleanup_passes": 2,
+    "native_lazy_getter_calls": 597,
+    "listener_releases": 2,
+    "publication_switch": true,
+    "returning_CRT_repairs": 1,
+    "vector_assignments": 2,
+    "vector_erases": 8,
+    "nested_headers_cleared": 3,
+    "preserved_fields_and_capacities": true,
+    "runner": "local/run_native_input_cleanup_probe_ag.ps1 [-PrimaryWorktree path]",
+    "log": "local/native_input_cleanup_probe_ag.log",
+    "core_archive_sha256": "1bd2da94ade39141a0f4f1b16fcac039a0d4a27561d51281518f6f37cf10112d",
+    "probe_log_sha256": "355bc223c27d5e022a1d56339916e0c823f207803a6f38fe9137328625c1e035",
+    "report_call_rows_checked": 29,
+    "report_call_rows_failed": 0
+  },
+  "limitations": [
+    "Explicit checked-STL actual-storage providers remain required; fixture assignment deliberately restricted to preallocated equal-size two-DWORD vectors",
+    "No projected duplicate settings/configuration/Lua/action owner; production must supply canonical actual allocations and existing borrowed lifetime/publication",
+    "Original register/FH3/SEH ABI, arbitrary hardware faults, asynchronous races and native argument-spill aliases are outside source contract",
+    "Fixture exercises existing-publication fast path; no lazy raw manager allocation/registration proof",
+    "No SDK/window/input poll/force/cursor/game run; no permanent test suite"
+  ]
+}
