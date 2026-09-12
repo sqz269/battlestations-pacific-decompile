@@ -1,4 +1,5 @@
 #include "bsp/air_operations.hpp"
+#include "bsp/director_update_arms.hpp"
 #include "bsp/plane_squadron.hpp"
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/award_grant.hpp"
@@ -2741,6 +2742,40 @@ int main() {
             "009032E9 maps -0.10 rad to 0.5v - 0.01 = -0.06 rad");
         check(bsp::gun_bot_ballistic_vertical_correction_009030c0(-0.10f, true) == 0.0f,
             "009032B5 flattens the shot when the target answers IsKindOf(0Fh)");
+    }
+
+    {
+        // 0071F290's arm order, the one rule in this packet worth pinning: a
+        // begin-command refusal terminates that command by raising its stage to
+        // 2 (0071F346 / 0071F36A), and the session-mode-2 return at 0071F37F
+        // sits *after* both begin arms but *before* the two steps. A run in
+        // mode 2 therefore still terminates a refused command.
+        struct RefusingHost final : bsp::CommandControllerUpdateHost {
+            int begins = 0;
+            void reset_path_vector() override {}
+            bool begin_command(int) override { ++begins; return false; }
+            void raise_override_stage(int) override {}
+            void raise_queue_stage(int) override {}
+            void step_auto_target(float) override {}
+            void step_commands() override {}
+        };
+        bsp::CommandControllerUpdateState state;
+        state.session_present = true;
+        state.session_flags.flag_5c = true;
+        state.slot0_occupied = true;
+        state.override_command_present = true;
+        state.auto_target_present = true;
+        state.session_mode = bsp::kSessionModeNoSimulation;
+
+        RefusingHost host;
+        const bsp::CommandControllerUpdateTrace trace =
+            bsp::run_command_controller_update(state, 0.05f, host);
+        check(trace.mode_promoted && trace.mode == 1,
+            "0071F323 promotes an idle controller with an occupied slot 0 to mode 1");
+        check(host.begins == 2 && trace.override_terminated && trace.queue_terminated,
+            "0071F346 and 0071F36A terminate a command whose begin was refused");
+        check(!trace.auto_target_stepped && !trace.commands_stepped,
+            "0071F37F returns before both steps when the session mode is 2");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

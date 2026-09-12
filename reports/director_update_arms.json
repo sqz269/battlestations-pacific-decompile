@@ -1,0 +1,452 @@
+{
+  "packet": "cc2_director_update_arms",
+  "owner": "agent/cc2-director-update-arms",
+  "docs": "docs/DIRECTOR_UPDATE_ARMS.md",
+  "sources": "include/bsp/director_update_arms.hpp, src/director_update_arms.cpp",
+  "subject": "The command controller's per-frame update 0071F290 as a complete rule table, the consumers of the permission bytes +3Ch/+3Dh/+220h..+223h, 00721A40 whole with its two command entry paths, 00720180 whole, the owner of 009F6AD0 and the two Lua fire-target tails.",
+  "reuses": "include/bsp/command_execution.hpp for the controller offsets and CommandSlot; include/bsp/director_target_gate.hpp for update_auto_target_hold and command_category_owns_fire_target",
+  "answer": [
+    {
+      "question": "0071F290 as a per-frame rule table.",
+      "result": "Seven arms in a fixed order. (1) 0071F294-0071F2C1 abandons the frame unless the session object at +34h exists and reads set/clear/clear/clear at +5Ch/+5Dh/+60h/+5Eh. (2) 0071F2C7-0071F2F7 stores the shared default vector 00F87574/78/7C into path object 0's +30h/+34h/+38h. (3) 0071F2F8-0071F316 is the hold countdown of docs/DIRECTOR_TARGET_GATE.md. (4) 0071F317-0071F329 promotes mode 0 to 1 when queue slot 0 is occupied. (5) 0071F32A-0071F34E and (6) 0071F34F-0071F372 each ask vtable[78h] to begin one command (0 the override, 1 the queue head) while that command exists and has not accepted its target; a refusal raises that command's stage to the terminal 2 through 0071D9E0 or 0071D810. (7) 0071F373-0071F39F returns when the session mode at *(00E188A8)+1FE4h is 2, else ticks [+38h]->vtable[4](frameDelta) and then vtable[7Ch](). On the director those last two are 009F5DA0, the bot fire-target think, and 00836920 BSP_WeaponDirector_Step. So the update is the whole per-frame driver, not a timer with extras."
+    },
+    {
+      "question": "The consumers of +3Ch, +3Dh, +220h, +221h, +222h and what each permission gates.",
+      "result": "The four enables have recovered names from the reflection visitor 008360C0: +220h artilleryEnabled, +221h aaEnabled, +222h torpedoEnabled, +223h depthChargeEnabled; +238h fireTargetID and +23Ch fireTargetIsPrimary come from the same visitor. Consumers: 0080DC70 reads both stance bytes as one predicate (two call sites, 008171F6 and 009F83CB); 009F5610 BSP_WeaponDirector_AutoTargetEnabled reads +3Dh allowMove plus slot 0's category; 008624C0 mirrors all six into a weapon panel and is the only consumer that says what they gate, allowFire being the master switch over a twelve-byte per-weapon enable array and each named enable going to its own setter; 009F1BC0 caches the four enables into the ship-AI record at +12B8h..+12BBh; 00720450 copies the two stance bytes controller-to-controller; the network snapshot pair 00721280/007214C0 writes all six into a message and 00721890/00721980/007219C0 writes the four enables back; 008FFA20 reads only +221h. The gun-bot doc's 'artillery flag' at +221h is the anti-aircraft enable."
+    },
+    {
+      "question": "00721A40 whole and the two entry paths 0071E7F0 / 0071ECF0.",
+      "result": "Seven IsA arms, 5Ah through 60h, behind an entry gate that needs [[director+34h]->vtable[13Ch]()]+5Eh clear. The 5Eh arm closes docs/WEAPON_DIRECTOR.md's open question about who writes +238h: 00721BF1 calls 00836240 BSP_WeaponDirector_StoreFireTarget, which stores at [ESI+14h] with ESI = this+224h, which is why a scan for a +238h displacement missed it. 0071E7F0 is the receive side of the override: a no-op guard, a 0071D6D0 validity test, a queue veto that refuses while slot 0 holds a category 1 or 2 command, then the record copy and mode = 2 with both override accepted and stage cleared. 0071ECF0 is the send side of the queue path and differs only by the message flag 1 that 00721A40 branches on at 00721B36."
+    },
+    {
+      "question": "00720180 whole.",
+      "result": "__thiscall(this)(owner) -> this, RET 4 at 00720440, body 00720180-00720442, one SEH frame. The session endpoint is owner[+28h], not the argument itself (0072020B/00720219). It zeroes both stance bytes, sets all four weapon enables to 1, seeds +1CCh with 1FFh, fills twenty dwords at +1D0h..+21Fh with D01502F9h (a block docs/WEAPON_DIRECTOR.md's field table did not have), memsets the ten command slots, initialises the previous-command and override records, and allocates the ten 50h-byte path objects into the pointer array at +1A4h."
+    },
+    {
+      "question": "What holds 009F6AD0's address.",
+      "result": "Nothing. A scan of the whole file on disk for the little-endian dword and for every E8/E9 displacement resolving to it returns zero hits, so it is in no vtable, jump table or function-pointer table. It belongs to a family: the seven accessors at 00720D80-00720E0A and the six at 00861970-008619C6 are equally unreferenced, all on the same class. Whose this it takes cannot be settled from a call site; the controller reading is favoured because 00720D80 is the byte-for-byte same access on the controller and because the auto-target object's own +3Ch is a float set to FLT_MAX at 009F6AA8, which makes a byte compare against zero meaningless. Provisional."
+    },
+    {
+      "question": "The two Lua tails.",
+      "result": "0089C360 GetFireTarget: director->vtable[2Ch]() is the fire target; null pushes nil, otherwise the decimal form of the target's u16 id at +174h keys into the literal 'thisTable' and that value is pushed, then the temporary string block is returned to the sized storage pool. 0089A8B0 SetFireTarget: after the three argument branches it takes the director through vtable[114h] and calls 00835860(target, 1). The force argument is the constant 1, so a script set always wins over fireTargetIsPrimary while the network path can be refused. Neither tail pushes anything beyond that, so SetFireTarget returns zero Lua results."
+    }
+  ],
+  "functions": [
+    {
+      "address": "0071f290",
+      "name": "BSP_CommandControllerBase_Update",
+      "abi": "__thiscall(controller, float frameDelta), RET 4 at 0071F3A2, body 0071f290-0071f3a4",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "0071F290 PUSH ECX reserves the COMISS spill slot at [ESP+4]; the float argument is [ESP+0Ch] throughout, which is what fixes RET 4",
+        "0071F294-0071F2C1: s = [this+34h]; return unless s != 0 && s[+5Ch] != 0 && s[+5Dh] == 0 && s[+60h] == 0 && s[+5Eh] == 0. All four branches jump to the epilogue at 0071F3A0",
+        "0071F2C7-0071F2F7: when [this+1A4h] != 0, store 00F87574/78/7C into that object's +30h, +34h, +38h",
+        "0071F2F8-0071F316: COMISS [this+40h] against 00D7A218 = 0.0f; JB skips the subtraction, so below and unordered are both left alone; else [this+40h] = hold - frameDelta through FLD/FSUB/FSTP",
+        "0071F317-0071F329: if ([this+30h] == 0 && [this+54h] != 0) [this+30h] = 1",
+        "0071F32A-0071F34E: if ([this+4Ch] == 0 && [this+188h] != 0) { if (!this->vtable[78h](0)) 0071D9E0(2); }. ECX still holds this at 0071F339 because no call precedes it in the body",
+        "0071F34F-0071F372: if ([this+44h] == 0 && [this+54h] != 0) { if (!this->vtable[78h](1)) 0071D810(2); }",
+        "0071F373-0071F37F: return when *(00E188A8)[+1FE4h] == 2",
+        "0071F381-0071F395: if ([this+38h] != 0) [this+38h]->vtable[4](frameDelta); PUSH ECX reserves the argument slot and FSTP [ESP] overwrites it with the float, so the callee takes one stack float",
+        "0071F397-0071F39F: this->vtable[7Ch]()"
+      ]
+    },
+    {
+      "address": "00720180",
+      "name": "BSP_CommandControllerBase_Construct",
+      "abi": "__thiscall(this)(owner) -> this in EAX, RET 4 at 00720440, body 00720180-00720442, SEH handler 00C85357",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "007201AB-007201E4: vtable 00CFD99C at +0h, +4h/+8h/+0Ch = 0, +10h = 0, +11h = 1, +14h = 0, +18h = 2; then 00876020(owner)(this); then vtable 00CE3CD4 at +1Ch, +20h/+24h/+28h = 0, +2Ch = 0",
+        "007201FB-00720201: overwrite both vtable pointers with 00CFDA40 and 00CFDA28",
+        "0072020B-00720219: [this+34h] = owner[+28h]. The session endpoint is a field of the argument, not the argument",
+        "00720208-00720233: +30h = 0, +38h = 0, +3Ch = 0, +3Dh = 0, +40h = -1.0f from 00D7A260, +44h = 0, +48h = 0, +4Ch = 0, +50h = 0",
+        "00720236: 00BF7CD1 memsets the ten command slots at +54h, stride 1Ch, count 0Ah",
+        "0072023B-0072028E: the previous-command record +16Ch-+184h; +178h/+17Ch/+180h take the default vector",
+        "00720296-007202E6: the override record +188h-+1A0h, same shape",
+        "007202F3: [+1CCh] = 1FFh",
+        "007202FD-00720312: [+220h] = [+221h] = [+222h] = [+223h] = 1, so all four weapon enables default to permitted",
+        "00720319-00720329: [this+18h] = 1; when [this+4h] != 0, 00876120(this)",
+        "0072032E-007203A5: twenty dwords at +1D0h-+21Fh, each D01502F9h, about -1.004e10 as a float",
+        "007203AB-0072042A: ten path objects, operator_new(50h) each, stored through EDI walking the pointer array at +1A4h; each gets vtable 00CFDB24 at +0h and 00CFDB10 at +10h, +4h = controller, +8h = 1, +0Ch = 5, +1Ch = 1, +20h = 1, +24h = controller, +2Ch = -1, +3Ch = -1.0f"
+      ]
+    },
+    {
+      "address": "00721a40",
+      "name": "BSP_WeaponDirector_ApplyGameUnitMessage",
+      "abi": "__thiscall(wrapper, message), RET 4, body 00721a40-00721c58",
+      "coverage": "complete as an arm table; each arm's callee is owned elsewhere",
+      "no_ghidra_function": false,
+      "rules": [
+        "entry gate: *wrapper != 0, [director+34h] != 0, session->vtable[13Ch]() != 0 and that object's +5Eh byte clear",
+        "5Ah: director->vtable[38h](msg), the permission and enable receiver 00835640 over 0071C1E0",
+        "5Bh: director->vtable[60h](00E08F80, BSP_CommandTarget_FromEntity(00720FA0(0), 0)), then 0071C1B0(msg+24h)",
+        "5Ch: in session mode 2, resolve the descriptor or drop; msg[+20h] non-zero -> vtable[60h] = 008358D0 (queue), zero -> 0071E7F0 (override)",
+        "5Dh: msg[+20h] == 0 -> ClearOverrideCommand; msg[+24h] < 0 -> ClearAllCommandSlots; else InternalClearPrimaryCommand(msg[+24h])",
+        "5Eh: entity = msg->00720FE0(msg[+23h]); 00836240 BSP_WeaponDirector_StoreFireTarget(entity)",
+        "60h: 0071C0B0(msg[+20h])",
+        "5Fh: msg[+2Ch] non-zero -> 007207C0(msg+20h); else 0071F5D0()"
+      ]
+    },
+    {
+      "address": "0071e7f0",
+      "name": "BSP_WeaponDirector_SetOverrideCommand",
+      "abi": "__thiscall(director)(command, target), RET 8 at 0071E914, body 0071e7f0-0071e916",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "0071E7FD-0071E81B: already mode 2 with the same command and, per 0071E200, the same target record -> return with nothing changed",
+        "0071E823: 0071D6D0(command, target) must answer true",
+        "0071E832-0071E857: when slot 0 holds 00E08F78, the new target must resolve through 00521EA0 to the same object as slot 0's target, else return",
+        "0071E859-0071E870: otherwise a non-empty slot 0 whose command answers category 1 or 2 refuses the override",
+        "0071E876-0071E8F1: unregister the old observer pair, [+188h] = command, copy the 18h-byte parameter record into +18Ch, register the new pair",
+        "0071E8F3-0071E90E: [+30h] = 2, [+4Ch] = 0, [+50h] = 0, then this->vtable[6Ch](0)"
+      ]
+    },
+    {
+      "address": "00836240",
+      "name": "BSP_WeaponDirector_StoreFireTarget",
+      "abi": "__thiscall(director)(entity, force), RET 8, body 00836240-00836299",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "00836244: force non-zero jumps straight to the store",
+        "00836248-00836257: an unforced store returns when [this+23Ch] fireTargetIsPrimary is set and [this+238h] already holds a target",
+        "00836264: [this+23Ch] = force",
+        "0083626C-00836295: ESI = this+224h; when the target differs, 006952A0 unregisters the old pair, [ESI+14h] (= this+238h) = entity, then the new pair is registered"
+      ]
+    },
+    {
+      "address": "0080dc70",
+      "name": "BSP_WeaponDirector_AllowsFireAndMove",
+      "abi": "__thiscall(controller) -> bool in AL, RET 0, body 0080dc70-0080dc81",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "0080DC70 CMP byte [ECX+3Ch],0 / JZ 0080DC7F; 0080DC76 CMP byte [ECX+3Dh],0 / JZ 0080DC7F; 0080DC7C MOV AL,1. Either byte clear falls into XOR AL,AL",
+        "two call sites only: 008171F6 inside 00816E30's entity-command arms and 009F83CB in the ship AI; both load ECX from a controller in the preceding two instructions"
+      ]
+    },
+    {
+      "address": "009f5610",
+      "name": "BSP_WeaponDirector_AutoTargetEnabled",
+      "abi": "__thiscall(autoTarget) -> bool in EAX/AL, RET 0, body 009f5610-009f563c",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "009F5610: director = [autoTarget+0Ch], the field 009F6A20 writes at 009F6AA5",
+        "009F5613: director[+3Dh] allowMove clear returns false at 009F563A. The byte is allowMove, not allowFire",
+        "009F5619: [director+54h] null returns true at 009F5634",
+        "009F5620-009F562F: category = command->vtable[0Ch](); 1 or 2 returns false. Only slot 0 is examined, unlike 0071DF70's prefix walk"
+      ]
+    },
+    {
+      "address": "008624c0",
+      "name": "BSP_WeaponPanel_SyncDirectorPermissions",
+      "abi": "__thiscall(view)(char force), RET 4, body 008624c0-008625e8",
+      "coverage": "complete as a decision table; the four setters and the panel record are unread",
+      "no_ghidra_function": false,
+      "rules": [
+        "008624C6: panel[+7Ch] = controller[+3Dh] on every call, never diffed",
+        "008624E5: view[+8h] -= 1; force or a value at or below zero sets refreshAll and reloads the counter with 10",
+        "008624F2-00862560: on refreshAll or a change in controller[+3Ch], allowFire set fills panel[+70h]..[+7Bh] with 01010101 preserving +77h and +78h; allowFire clear zeroes the same twelve bytes, then re-sets +70h and +71h when panel[+50h] answers vtable[5Ch](0Fh)",
+        "00862566: torpedoEnabled +222h -> 00861D70 on refreshAll or change",
+        "0086258B: artilleryEnabled +220h -> 00861CD0 on refreshAll or change",
+        "008625B0: aaEnabled +221h -> 00861D20 on refreshAll or change",
+        "008625D3: depthChargeEnabled +223h -> 00861DC0 on a change only, never on the periodic refresh"
+      ]
+    },
+    {
+      "address": "008360c0",
+      "name": "BSP_WeaponDirector_VisitProperties",
+      "abi": "__thiscall(controller)(visitor), RET 4, body 008360c0-0083620d",
+      "coverage": "complete as the name source; the visitor's vtable[4]/[8]/[0Ch] are unread",
+      "no_ghidra_function": false,
+      "rules": [
+        "each field is emitted as a {0, namePointer} record followed by a {tag, value} record; tag 3 is a bool and tag 4 the fire-target id",
+        "008360F5 +220h with the name at 00D09E0C 'artilleryEnabled'",
+        "00836124 +221h with the name at 00D09E00 'aaEnabled'",
+        "00836153 +222h with the name at 00D09DF0 'torpedoEnabled'",
+        "00836182 +223h with the name at 00D09DDC 'depthChargeEnabled'",
+        "008361B1 +238h with the name at 00D09DCC 'fireTargetID'",
+        "008361DB +23Ch with the name at 00D09DB8 'fireTargetIsPrimary'"
+      ]
+    },
+    {
+      "address": "0071d9e0",
+      "name": "BSP_WeaponDirector_RaiseOverrideStage",
+      "abi": "__thiscall(controller)(int stage), RET 4, body 0071d9e0-0071da4f, SEH handler 00C85128",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "0071D9FF: return when [this+50h] >= stage, so the stage only ever rises",
+        "0071DA07: [this+50h] = stage",
+        "0071DA0A-0071DA18: only stage 2 sends, and only when *(00E188A8)[+1FE4h] != 2",
+        "0071DA1A-0071DA37: 0071C730(&stackMsg)(0, 0) builds the message, then 0077C2A0([this+34h], msg, 7, 0). The 0 distinguishes the override from 0071D810's 1"
+      ]
+    },
+    {
+      "address": "0089c360",
+      "name": "BSP_LuaBinding_GetFireTarget",
+      "abi": "lua_CFunction, __fastcall(lua_State*)",
+      "coverage": "the tail after the two virtual hops is now complete; the argument resolution stays with docs/WEAPON_DIRECTOR.md",
+      "no_ghidra_function": false,
+      "rules": [
+        "entity = BSP_ObjectHandle_FromLuaTable(argument 1); director = entity->vtable[114h]() = 0080E150; target = director->vtable[2Ch]() = 008364E0",
+        "a null target pushes nil",
+        "otherwise key = BSP_NativeString_FromInt(*(u16*)(target+174h)); GetByLiteral(\"thisTable\"); GetByNativeString(key); PushValue; then the temporary block is returned to the sized storage pool",
+        "returns BSP_LuaObject_ResultCount()"
+      ]
+    },
+    {
+      "address": "0089a8b0",
+      "name": "BSP_LuaBinding_SetFireTarget",
+      "abi": "lua_CFunction, __fastcall(lua_State*)",
+      "coverage": "the tail after the three argument branches is now complete",
+      "no_ghidra_function": false,
+      "rules": [
+        "entity->vtable[114h]() supplies the director as the ECX of the next call",
+        "00835860(target, 1): the force argument is the constant 1, so a script set is never refused by the fireTargetIsPrimary gate",
+        "nothing is pushed, so BSP_LuaObject_ResultCount() returns 0"
+      ]
+    }
+  ],
+  "host_steps": [
+    {
+      "step": "terminate the override command",
+      "address": "0071f34a",
+      "function": "0071f290",
+      "native": "0071d9e0",
+      "host_method": "raise_override_stage",
+      "arguments": "ECX = this; (2)",
+      "condition": "the override arm ran and vtable[78h](0) returned false"
+    },
+    {
+      "step": "terminate the queue-head command",
+      "address": "0071f36e",
+      "function": "0071f290",
+      "native": "0071d810",
+      "host_method": "raise_queue_stage",
+      "arguments": "ECX = this; (2)",
+      "condition": "the queue arm ran and vtable[78h](1) returned false"
+    },
+    {
+      "step": "begin the override command",
+      "address": "0071f340",
+      "function": "0071f290",
+      "native": "00cfda40+vtable78",
+      "host_method": "begin_command",
+      "arguments": "ECX = this; (0); ret bool",
+      "condition": "[+4Ch] == 0 && [+188h] != 0"
+    },
+    {
+      "step": "begin the queue-head command",
+      "address": "0071f364",
+      "function": "0071f290",
+      "native": "00cfda40+vtable78",
+      "host_method": "begin_command",
+      "arguments": "ECX = this; (1); ret bool",
+      "condition": "[+44h] == 0 && [+54h] != 0"
+    },
+    {
+      "step": "tick the auto-target object",
+      "address": "0071f395",
+      "function": "0071f290",
+      "native": "00d21b48+vtable04",
+      "host_method": "step_auto_target",
+      "arguments": "ECX = [this+38h]; (float frameDelta); RET 4",
+      "condition": "session mode != 2 and [this+38h] != 0. On the director the slot holds 009F5DA0"
+    },
+    {
+      "step": "step the commands",
+      "address": "0071f39e",
+      "function": "0071f290",
+      "native": "00d09f58+vtable7c",
+      "host_method": "step_commands",
+      "arguments": "ECX = this",
+      "condition": "session mode != 2. 00BF698E on the base table, 00836920 on the director"
+    }
+  ],
+  "call_sites": [
+    {
+      "step": "the base constructor is reached with ECX still the director",
+      "address": "00836403",
+      "function": "008363e0",
+      "native": "00720180",
+      "note": "008363FC MOV ESI,ECX; the only PUSH before the CALL is the first argument at 008363FE, which is what fixes RET 4"
+    },
+    {
+      "step": "register the controller with its owner",
+      "address": "007201cb",
+      "function": "00720180",
+      "native": "00876020",
+      "note": "ECX = the owner argument, one PUSH of the controller"
+    },
+    {
+      "step": "allocate one of the ten path objects",
+      "address": "007203c2",
+      "function": "00720180",
+      "native": "00bf681b",
+      "note": "PUSH 50h, ADD ESP,4; a null result stores a null pointer and the loop continues"
+    },
+    {
+      "step": "the 5Eh arm stores the fire target",
+      "address": "00721bf1",
+      "function": "00721a40",
+      "native": "00836240",
+      "note": "ECX = [EDI], the director; the pushed EAX is the entity 00720FE0 resolved"
+    },
+    {
+      "step": "the 5Eh arm resolves the entity from the message",
+      "address": "00721be9",
+      "function": "00721a40",
+      "native": "00720fe0",
+      "note": "ECX = the message; the pushed byte is msg[+23h]"
+    },
+    {
+      "step": "the entity-command arms test both permissions",
+      "address": "008171f6",
+      "function": "00816e30",
+      "native": "0080dc70",
+      "note": "008171EE MOV EDI,[EDI+738h] then 008171F4 MOV ECX,EDI. docs/ENTITY_COMMAND_ARMS.md owns the containing arm"
+    },
+    {
+      "step": "the ship AI tests both permissions",
+      "address": "009f83cb",
+      "function": "009f8160",
+      "native": "0080dc70",
+      "note": "009F83C1 MOV ESI,[EBX+4] then 009F83C9 MOV ECX,ESI; the arm only runs when the category 1 or 2 command is not the queue head"
+    },
+    {
+      "step": "the derived copy override calls the base copy",
+      "address": "00836689",
+      "function": "00836680",
+      "native": "00720450",
+      "note": "vtable +4Ch; 00720450 copies +3Ch, +3Dh, the previous-command record and the mode before the slot loop"
+    },
+    {
+      "step": "the gunnery AI tick syncs the weapon panel",
+      "address": "00865073",
+      "function": "00864fe0",
+      "native": "008624c0",
+      "note": "00864FE0 BSP_UnitGunneryAi_Tick belongs to packet cc2_unit_gunnery_pass; read here as a contract"
+    }
+  ],
+  "no_ghidra_function": [
+    {"address": "0071d5d0", "name": "BSP_CommandControllerBase_StoreFirePermission", "end_address": "0071d5d9", "note": "MOV AL,[ESP+4]; MOV [ECX+3Ch],AL; RET 4. Base vtable +64h at 00CFDAA4, overridden by 00836210 on the director"},
+    {"address": "00720d80", "name": "BSP_CommandController_GetAllowFire", "end_address": "00720d83", "note": "MOV AL,[ECX+3Ch]; RET. Unreferenced anywhere in the file"},
+    {"address": "00720d90", "name": "BSP_CommandController_GetAllowMove", "end_address": "00720d93", "note": "MOV AL,[ECX+3Dh]; RET. Unreferenced"},
+    {"address": "00720da0", "name": "BSP_CommandController_GetArtilleryEnabled", "end_address": "00720da6", "note": "MOV AL,[ECX+220h]; RET. Unreferenced"},
+    {"address": "00720db0", "name": "BSP_CommandController_GetAaEnabled", "end_address": "00720db6", "note": "MOV AL,[ECX+221h]; RET. Unreferenced"},
+    {"address": "00720dc0", "name": "BSP_CommandController_GetTorpedoEnabled", "end_address": "00720dc6", "note": "MOV AL,[ECX+222h]; RET. Unreferenced"},
+    {"address": "00720dd0", "name": "BSP_CommandController_GetDepthChargeEnabled", "end_address": "00720dd6", "note": "MOV AL,[ECX+223h]; RET. Unreferenced"},
+    {"address": "00720de0", "name": "BSP_CommandController_SetWeaponEnables", "end_address": "00720e0a", "note": "four byte arguments to +220h..+223h, RET 10h. Unreferenced"},
+    {"address": "00861970", "name": "BSP_DirectorWrapper_GetAllowFire", "end_address": "00861976", "note": "MOV EAX,[ECX+4]; MOV AL,[EAX+3Ch]; RET. Unreferenced"},
+    {"address": "00861980", "name": "BSP_DirectorWrapper_GetTorpedoEnabled", "end_address": "00861989", "note": "MOV EAX,[ECX+4]; MOV AL,[EAX+222h]; RET. Unreferenced"},
+    {"address": "00861990", "name": "BSP_DirectorWrapper_GetArtilleryEnabled", "end_address": "00861999", "note": "MOV EAX,[ECX+4]; MOV AL,[EAX+220h]; RET. Unreferenced"},
+    {"address": "008619a0", "name": "BSP_DirectorWrapper_GetAaEnabled", "end_address": "008619a9", "note": "MOV EAX,[ECX+4]; MOV AL,[EAX+221h]; RET. Unreferenced"},
+    {"address": "008619b0", "name": "BSP_DirectorWrapper_GetDepthChargeEnabled", "end_address": "008619b9", "note": "MOV EAX,[ECX+4]; MOV AL,[EAX+223h]; RET. Unreferenced"},
+    {"address": "008619c0", "name": "BSP_DirectorWrapper_GetAllowMove", "end_address": "008619c6", "note": "MOV EAX,[ECX+4]; MOV AL,[EAX+3Dh]; RET. Unreferenced"},
+    {"address": "009f6ac0", "name": "BSP_AutoTarget_GetDirector", "end_address": "009f6ac3", "note": "MOV EAX,[ECX+4]; RET. Unreferenced"},
+    {"address": "009f6ae0", "name": "BSP_AutoTargetNeighbour_SetFirstWord", "end_address": "009f6aea", "note": "MOV EAX,ECX; MOV ECX,[ESP+4]; MOV [EAX],ECX; RET 4. Unreferenced; the class is not settled"},
+    {"address": "009f6af0", "name": "BSP_AutoTargetNeighbour_GetIndirect", "end_address": "009f6af5", "note": "MOV EAX,[ECX]; MOV EAX,[EAX+4]; RET. Unreferenced"},
+    {"address": "009f6b00", "name": "BSP_AutoTargetNeighbour_InstallVtable", "end_address": "009f6b06", "note": "MOV dword [ECX],00D21B50; RET. Unreferenced"}
+  ],
+  "data": [
+    {"address": "00d09e0c", "value": "\"artilleryEnabled\"", "role": "the name 008360C0 emits for controller+220h"},
+    {"address": "00d09e00", "value": "\"aaEnabled\"", "role": "the name for controller+221h"},
+    {"address": "00d09df0", "value": "\"torpedoEnabled\"", "role": "the name for controller+222h"},
+    {"address": "00d09ddc", "value": "\"depthChargeEnabled\"", "role": "the name for controller+223h"},
+    {"address": "00d09dcc", "value": "\"fireTargetID\"", "role": "the name for controller+238h"},
+    {"address": "00d09db8", "value": "\"fireTargetIsPrimary\"", "role": "the name for controller+23Ch"},
+    {"address": "00cfda40", "value": "the base controller vtable, 32 slots to 00CFDABC", "role": "+0Ch 0071F290, +4Ch 00720450, +64h 0071D5D0, +68h 0071D5E0, +78h 0071F600, +7Ch 00BF698E"},
+    {"address": "00d09fd0", "value": "00835C70", "role": "derived vtable slot +78h, the begin-command override"},
+    {"address": "00d09fd4", "value": "00836920", "role": "derived vtable slot +7Ch, BSP_WeaponDirector_Step, the arm-7 command step"},
+    {"address": "00d21b4c", "value": "009F5DA0", "role": "slot +4h of the auto-target vtable 00D21B48 that 009F6A20 installs; the callee of 0071F395"},
+    {"address": "00d7a248", "value": "FLT_MAX, 3.40282e38", "role": "009F6AA8 writes it into the auto-target object's own +3Ch, which is why that field is a float and not a permission byte"},
+    {"address": "00d7a24c", "value": "1.0f", "role": "009F6A8A writes it into the auto-target object's +34h"},
+    {"address": "00f87574", "value": "the shared default vector, three floats", "role": "0071F2D1-0071F2F3 stores it into path object 0; 00720180 stores it into the previous-command and override records. It lies past the raw .data in the file, so it is zero at load unless a static initialiser writes it"},
+    {"address": "00e188a8", "value": "the GGame singleton pointer", "role": "+1FE4h is the session mode; 2 is the arm-7 return and the same value suppresses the sends inside 0071D810/0071D9E0"}
+  ],
+  "corrections": [
+    {
+      "document": "docs/WEAPON_DIRECTOR.md",
+      "was": "+221h 'sub-kind 4 flag' and +223h 'sub-kind 6 flag', with an open question asking what sub-kinds 4 and 6 mean",
+      "is": "+221h is aaEnabled and +223h is depthChargeEnabled; the four bytes are one enable per weapon category, not two pairs",
+      "evidence": "008360C0 hands its visitor the string pointers 00D09E00 ('aaEnabled') at 00836114 and 00D09DDC ('depthChargeEnabled') at 008361A1, beside 00D09E0C ('artilleryEnabled') and 00D09DF0 ('torpedoEnabled'). The four strings are literals in .rdata"
+    },
+    {
+      "document": "docs/WEAPON_DIRECTOR.md",
+      "was": "+238h 'fire target entity pointer' and +23Ch 'byte that gates an unforced fire-target change', both unnamed",
+      "is": "their names are fireTargetID (00D09DCC) and fireTargetIsPrimary (00D09DB8)",
+      "evidence": "008361C9 loads 00D09DCC and 008361FA pushes 00D09DB8 in the same visitor"
+    },
+    {
+      "document": "docs/WEAPON_DIRECTOR.md",
+      "was": "open question: who writes +238h; a full .text scan for mov [reg+238h], reg found only the constructor's zero and 00836230's clear",
+      "is": "00836240 BSP_WeaponDirector_StoreFireTarget writes it, reached from 00721A40's 5Eh arm at 00721BF1. The scan missed it because the store uses a different displacement",
+      "evidence": "0083626D LEA ESI,[ECX+224h]; 00836287 MOV [ESI+14h],EDI, and 224h + 14h = 238h"
+    },
+    {
+      "document": "docs/WEAPON_DIRECTOR.md",
+      "was": "open question: whether a periodic director step aims guns",
+      "is": "yes. 0071F290 arm 7 calls [controller+38h]->vtable[4](frameDelta), and that slot is 009F5DA0, the bot fire-target think, then vtable[7Ch] = 00836920 BSP_WeaponDirector_Step",
+      "evidence": "009F6A45 installs vtable 00D21B48; 00D21B4C holds 009F5DA0; 00D09FD4 holds 00836920"
+    },
+    {
+      "document": "docs/WEAPON_DIRECTOR.md",
+      "was": "the field table jumps from +1CCh to +220h",
+      "is": "+1D0h..+21Fh is twenty dwords the base constructor fills with D01502F9h",
+      "evidence": "0072032E MOV EAX,0D01502F9h then twenty stores from 00720333 to 007203A5"
+    },
+    {
+      "document": "docs/DIRECTOR_TARGET_GATE.md",
+      "was": "0071F290: 'Ghidra has no function here'",
+      "is": "Ghidra has BSP_CommandControllerBase_Update with body 0071F290-0071F3A4",
+      "evidence": "tools/bsp.py ghidra proto 0071F290 returns that body range"
+    },
+    {
+      "document": "docs/DIRECTOR_TARGET_GATE.md",
+      "was": "0071F290 'sends 0071D9E0(2) and 0071D810(2) behind the +4Ch and +44h accepted flags'",
+      "is": "the accepted flag only decides whether the arm runs; the raise happens when vtable[78h] refuses to begin the command",
+      "evidence": "0071F342 TEST AL,AL / JNZ 0071F34F skips the raise when the begin succeeded; the same shape at 0071F366"
+    },
+    {
+      "document": "docs/DIRECTOR_TARGET_GATE.md",
+      "was": "open question: what [+1A4h] is and what vtable[78h] answers for 0 and 1",
+      "is": "+1A4h is the array of ten pointers to the 50h-byte path objects 00720180 allocates; vtable[78h] is 0071F600, argument 0 selects the override pair and non-zero the queue-head pair",
+      "evidence": "007203AB LEA EDI,[ESI+1A4h] with EDI += 4 per iteration and a count of 10; the ledger entry on 0071F600"
+    },
+    {
+      "document": "docs/GUN_BOT_TICKS.md",
+      "was": "director+221h described as the artillery flag: 'the owning unit's weapon director must have its artillery flag set'",
+      "is": "+221h is aaEnabled; artilleryEnabled is +220h. The gun bot's block also runs when the byte is clear, not set",
+      "evidence": "008FFAD5 CMP byte ptr [EAX+221h],0 followed by JNZ 008FFAE9, which skips the block when the byte is non-zero"
+    }
+  ],
+  "names_added": [
+    {"address": "0080dc70", "name": "BSP_WeaponDirector_AllowsFireAndMove", "status": "hypothesis"},
+    {"address": "008624c0", "name": "BSP_WeaponPanel_SyncDirectorPermissions", "status": "hypothesis"},
+    {"address": "008360c0", "name": "BSP_WeaponDirector_VisitProperties", "status": "hypothesis"},
+    {"address": "0071d9e0", "name": "BSP_WeaponDirector_RaiseOverrideStage", "status": "hypothesis"},
+    {"address": "00836680", "name": "BSP_WeaponDirector_CopyStateFrom", "status": "hypothesis"},
+    {"address": "00720450", "name": "BSP_CommandControllerBase_CopyStateFrom", "status": "hypothesis"},
+    {"address": "009f6ad0", "name": "BSP_CommandController_FireForbidden_Orphan", "status": "provisional, no call site exists to settle the this pointer"},
+    {"address": "00721280", "name": "BSP_CommandControllerStateMessage_Build", "status": "hypothesis"},
+    {"address": "007214c0", "name": "BSP_WeaponDirectorStateMessage_BuildEnables", "status": "hypothesis"},
+    {"address": "00721890", "name": "BSP_CommandControllerStateMessage_Apply", "status": "hypothesis"},
+    {"address": "00721980", "name": "BSP_WeaponDirectorStateMessage_ApplyEnables", "status": "hypothesis"}
+  ],
+  "contracts": [
+    "00816E30 BSP_UnitInstance_ApplyEntityCommand and the arms at 00816F7C-00817330 belong to docs/ENTITY_COMMAND_ARMS.md; 008171F6 was read as a call site only and nothing there was annotated.",
+    "00864FE0 BSP_UnitGunneryAi_Tick and 00927F10 belong to the running packet cc2_unit_gunnery_pass; 00865073 was read as a call site only.",
+    "009F5DA0, 009F6A20 and the rest of the ship AI belong to docs/BOT_FIRE_TARGET.md and its owner; read here, not edited. 009F6AD0 was leased and is the only 009F address this packet names.",
+    "0071F600 BSP_WeaponDirector_BeginCommandBase, 00835C70, 00836920 BSP_WeaponDirector_Step, 00720850 and 008358D0 belong to docs/COMMAND_EXECUTION.md.",
+    "0071ECF0 BSP_WeaponDirector_IssueCommand belongs to docs/CRUISE_COMMAND.md; read here only as the contrast to the override path.",
+    "The session bytes at +5Ch/+5Dh/+5Eh/+60h are contract: unread. The predicate's shape is settled; its writers were not found."
+  ],
+  "run_time_evidence": "none. bsp_game.exe was not run for this packet, so every rule here is a static reading of the shipped image.",
+  "build": "scripts/build.ps1, Win32, warnings as errors, succeeded",
+  "tests": "one focused case added to tests/math_tests.cpp pinning 0071F290's arm order: a refused begin terminates the command, and the session-mode-2 return sits after both begin arms. 1/1 ctest passed"
+}
