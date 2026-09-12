@@ -859,6 +859,52 @@ bool GameUnitsHost::issue_player_command(const std::string& token,
     return true;
 }
 
+const GameCommandRow* GameUnitsHost::issue_script_command(std::size_t unit_index,
+    std::uint32_t command_object, const bsp::SceneCommandTarget& target, int flags,
+    const std::string& source, const std::string& target_name) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size()) return nullptr;
+    GameUnitSlot& slot = *host.slots[unit_index];
+    const float heading = host.pose_heading_radians(slot);
+    const GameCommandRow* row = host.commands.issue_command_object(unit_index,
+        command_object, target, flags, source, target_name, slot.ring, heading);
+    // The unit's own row keeps the token the scene authored: a scripted order is
+    // a second command on the same director, not a replacement for the first,
+    // and GameScriptOrdersHost reports it in its own table.
+    return row;
+}
+
+void GameUnitsHost::store_commanded_speed_00890e6f(std::size_t unit_index, float speed) {
+    Impl& host = *impl_;
+    host.commands.store_commanded_speed_00890e6f(unit_index, speed,
+        host.summary.simulated_seconds);
+}
+
+bsp::CruiseSpeedSetting GameUnitsHost::commanded_speed(std::size_t unit_index) const {
+    return impl_->commands.commanded_speed(unit_index);
+}
+
+float GameUnitsHost::mission_clock() const noexcept {
+    return impl_->summary.simulated_seconds;
+}
+
+void GameUnitsHost::run_director_steps_00836920() {
+    Impl& host = *impl_;
+    for (std::size_t index = 0; index < host.slots.size(); ++index) {
+        GameUnitSlot& slot = *host.slots[index];
+        if (!slot.state->active) continue;
+        const float heading = host.pose_heading_radians(slot);
+        const GameDirectorStepOutcome outcome = host.commands.director_step_00836920(
+            index, host.is_controlled(slot), host.summary.simulated_seconds, slot.ring,
+            heading);
+        if (outcome.reissued == bsp::DirectorDefaultCommand::None) continue;
+        // The idle tail's own choice becomes the unit's standing command when
+        // the slot push took it; 0071be40 is what answers that.
+        slot.row.command_current = slot.row.command_current
+            || host.commands.holds_cruise(index);
+    }
+}
+
 const GameCommandsHost& GameUnitsHost::commands() const noexcept { return impl_->commands; }
 
 void GameUnitsHost::set_controlled_unit_004c0890(std::size_t index) {
@@ -926,6 +972,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     }
     ++host.summary.motion_steps;
     host.summary.simulated_seconds += step_seconds;
+    // Milestone 2m: the weapon director's own step, before the motion pass that
+    // reads what the step decided. 00836920's caller is the unit update's
+    // director block, which this process does not reach, so the position is the
+    // executable's decision and is recorded as one.
+    run_director_steps_00836920();
     for (std::size_t index = 0; index < host.slots.size(); ++index) {
         GameUnitSlot& slot = *host.slots[index];
         if (!slot.state->active) continue;

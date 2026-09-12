@@ -73,6 +73,11 @@ struct GameDirector {
     int stage{0};
     bsp::CruiseAutopilotFields cruise{};
     bool latched{false};
+    // Milestone 2m: the last default command 00836dc9's idle tail chose for this
+    // director. The tail runs every step and re-issues the same command while
+    // nothing changes, so the executable records one row per distinct choice
+    // rather than one per step.
+    std::uint32_t last_idle_command{0};
 };
 
 struct GameCommandsHost::Impl {
@@ -81,12 +86,22 @@ struct GameCommandsHost::Impl {
     GameHostLog& log;
     std::vector<GameCommandUnit> units;
     std::vector<GameDirector> directors;
+    // Milestone 2m. One navigator parameter block per unit, the 0081f283
+    // allocation at *(unit+73Ch). Only the commanded-speed pair at +24h / +28h
+    // has a recovered producer, and it is the pair the director's stage reset
+    // 00835bf0, its `stop` arm 00836a8b, its idle tail 00836e59 and the cruise
+    // state 009e12ac all read. The seven tuning floats at +0h..+18h stay out of
+    // this process because 00822b70's only call site here passes the literal 0.
+    std::vector<bsp::CruiseSpeedSetting> navigator_params;
     std::vector<GameCommandRow> rows;
     bsp::SceneCommandRegistry registry;
     GameCommandsSummary summary{};
     bool logged_path{false};
     bool logged_block{false};
     bool logged_step{false};
+    bool logged_director_step{false};
+    bool logged_navigator_params{false};
+    bool logged_commanded_step{false};
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -126,6 +141,17 @@ struct GameCommandsHost::Impl {
 
     const bsp::EntityOrderCommandClass* class_of(std::uint32_t object) const noexcept {
         return bsp::entity_order_command_class_by_address(object);
+    }
+
+    bsp::CruiseSpeedSetting params_of(std::size_t index) const noexcept {
+        if (index >= navigator_params.size()) return bsp::CruiseSpeedSetting{};
+        return navigator_params[index];
+    }
+
+    // The store at 00835c54 and 009e13f8 into the block's +28h.
+    void set_commanded_speed_time(std::size_t index, float value) noexcept {
+        if (index >= navigator_params.size()) return;
+        navigator_params[index].enable = value;
     }
 
     int command_count(const GameDirector& director) const noexcept {
@@ -605,14 +631,14 @@ public:
         return reference;
     }
     bsp::CruiseSpeedSetting speed_setting() override {
-        // *(unit+73ch) +24h and +28h. 00822b70 copies the tuning singleton's
-        // +160h..+178h into the block's +0h..+18h and writes neither of these
-        // two, 009e11c6 stores the -1.0f that disables the override, and no
-        // direct-displacement store to +24h exists in the image
-        // (docs/CRUISE_COMMAND.md, follow-up `cruise_speed_setting`). So the
-        // block a created unit carries has the override off.
-        chain_.owner.record("CruiseState::commanded_speed_setting", 0x00822b70u);
-        return bsp::CruiseSpeedSetting{};
+        // *(unit+73ch) +24h and +28h, the navigator parameter block the unit
+        // constructor allocates at 0081f283. docs/UNIT_COMMANDED_SPEED.md
+        // corrects docs/CRUISE_COMMAND.md's "no producer": there are two, the
+        // Lua bindings 00890d30 luaMW_SetShipSpeed and 008a3600
+        // luaMW_NavigatorMoveOnPath, and both make the same store. This process
+        // owns the block, so the read is the field read the native makes.
+        chain_.owner.done("CruiseState::commanded_speed_setting", 0x009e12acu);
+        return chain_.owner.params_of(chain_.unit.index);
     }
     void set_desired_steering(float rudder) override {
         chain_.owner.record("CruiseState::set_desired_steering", 0x009dffb0u);
@@ -734,9 +760,19 @@ void GameCommandsHost::register_units(std::vector<GameCommandUnit> units) {
     Impl& host = *impl_;
     host.units = std::move(units);
     host.directors.assign(host.units.size(), GameDirector{});
+    // 0081f273 / 0081f278 leave the pair at -1.0f, which is what
+    // CruiseSpeedSetting's own defaults are, so a fresh block is the
+    // constructor's state rather than a zeroed one.
+    host.navigator_params.assign(host.units.size(), bsp::CruiseSpeedSetting{});
     host.summary.units = host.units.size();
     host.build_registry();
 }
+
+namespace {
+// Defined below, after the hop bindings it uses.
+const GameCommandRow* finish_issue(GameCommandsHost::Impl& host, ChainState& chain,
+    GameCommandRow& row, const bsp::UnitOrderRing& ring);
+}  // namespace
 
 const GameCommandRow* GameCommandsHost::issue(std::size_t unit_index,
     const std::string& token, const std::string& target_token,
@@ -794,7 +830,18 @@ const GameCommandRow* GameCommandsHost::issue(std::size_t unit_index,
     }
     resolve.clear_queue();
     host.done("SceneCommand::resolve_deferred_reference", 0x0046aab0u);
+    return finish_issue(host, chain, row, ring);
+}
 
+namespace {
+
+// The tail every issue shares, from 0071be40's current-command read to
+// 00835c70's own arm. Extracted at milestone 2m so the navigator bindings'
+// issue, which starts at 0077d600 with a fixed command object rather than at
+// 0046aab0's registry walk, runs exactly the same hops.
+const GameCommandRow* finish_issue(GameCommandsHost::Impl& host, ChainState& chain,
+    GameCommandRow& row, const bsp::UnitOrderRing& ring) {
+    const std::size_t unit_index = row.unit_index;
     GameDirector& director = host.directors[unit_index];
     // 0071be40 with the mode 0071e6c0 set: 1 means the current command is slot 0.
     const std::uint32_t current = bsp::director_current_command_0071be40(director.mode,
@@ -842,6 +889,239 @@ const GameCommandRow* GameCommandsHost::issue(std::size_t unit_index,
     return &host.rows.back();
 }
 
+}  // namespace
+
+const GameCommandRow* GameCommandsHost::issue_command_object(std::size_t unit_index,
+    std::uint32_t command_object, const bsp::SceneCommandTarget& target, int flags,
+    const std::string& source, const std::string& target_name,
+    const bsp::UnitOrderRing& ring, float heading_radians) {
+    Impl& host = *impl_;
+    if (unit_index >= host.units.size()) return nullptr;
+    host.build_registry();
+
+    GameCommandRow row;
+    row.unit_index = unit_index;
+    row.unit = host.units[unit_index].name;
+    row.source = source;
+    row.target_token = target_name;
+    row.resolve_outcome = "fixed_command_object";
+    const bsp::EntityOrderCommandClass* klass = host.class_of(command_object);
+    if (klass != nullptr) {
+        row.command = klass->name;
+        row.token = klass->name;
+        row.ordinal = klass->ordinal;
+        row.category = klass->category;
+    }
+    for (int lane = 0; lane < 3; ++lane) row.descriptor_position[lane] = target.position[lane];
+
+    ChainState chain{host, host.units[unit_index], host.directors[unit_index], &row,
+        &ring, heading_radians, bsp::SceneCommandTarget{}, 0u, 0u};
+    SceneResolveBinding resolve(chain);
+    resolve.issue_command(&host.units[unit_index],
+        reinterpret_cast<void*>(static_cast<std::uintptr_t>(command_object)), target, flags);
+    ++host.summary.script_issues;
+    const GameCommandRow* stored = finish_issue(host, chain, row, ring);
+    if (stored != nullptr && !stored->projected_arm) ++host.summary.script_blocked;
+    return stored;
+}
+
+void GameCommandsHost::store_commanded_speed_00890e6f(std::size_t unit_index,
+    float requested, float mission_clock) {
+    Impl& host = *impl_;
+    if (unit_index >= host.navigator_params.size()) return;
+    const bool was_active
+        = bsp::navigator_commanded_speed_active(host.navigator_params[unit_index]);
+    host.navigator_params[unit_index]
+        = bsp::navigator_commanded_speed_store_00890e6f(requested, mission_clock);
+    if (!was_active) ++host.summary.commanded_speeds;
+    if (!host.logged_navigator_params) {
+        host.logged_navigator_params = true;
+        host.log.notef("commanded speed stored on the navigator parameter block at "
+            "*(unit+73Ch): +24h = max(requested, 0) and +28h = the mission clock "
+            "DAT_00F876A4, the store 00890e6f and 008a38d5 both make. +28h is a timestamp, "
+            "not an enable: 00835c28 measures its age against 1.0f, and 00836e59 is what "
+            "turns an active pair into a `cruise` instead of a `stop`");
+    }
+    host.done("NavigatorParams::store_commanded_speed", 0x00890e6fu);
+}
+
+bsp::CruiseSpeedSetting GameCommandsHost::commanded_speed(std::size_t unit_index) const {
+    return impl_->params_of(unit_index);
+}
+
+namespace {
+
+// ---------------------------------------------------------------------------
+// bsp::WeaponDirectorStageHost, one method per call site inside 00836920
+// ---------------------------------------------------------------------------
+//
+// Milestone 2m. The director's stage ladder is what decides, every step, that a
+// unit with nothing to do should be told to `stop` or to `cruise`, and the
+// commanded-speed pair is the field that separates the two. Nothing here is a
+// reconstruction: the pre-pass, the `stop` arm, the idle tail and the stage
+// reset are docs/UNIT_COMMANDED_SPEED.md's routines.
+class DirectorStageBinding final : public bsp::WeaponDirectorStageHost {
+public:
+    DirectorStageBinding(ChainState& chain, float mission_clock)
+        : chain_(chain), clock_(mission_clock),
+          post_reset(chain.owner.params_of(chain.unit.index)) {}
+
+    int director_filled_command_slots_0071be60() override {
+        chain_.owner.done("WeaponDirector::filled_command_slots", 0x0071be60u);
+        return chain_.owner.command_count(chain_.director);
+    }
+    void director_raise_primary_stage_0071d810(int stage) override {
+        if (stage > chain_.director.stage) chain_.director.stage = stage;
+        // The stage-2 completion message 0071c730 builds and 0077c2a0 routes is
+        // the same session boundary every other hop in this file records.
+        if (stage == bsp::kDirectorCommandStageFinished) {
+            chain_.owner.record("WeaponDirector::route_stage_completion", 0x0071c730u);
+        }
+        chain_.owner.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
+    }
+    void director_raise_secondary_stage_0071d9e0(int stage) override {
+        if (stage > secondary_stage_) secondary_stage_ = stage;
+        chain_.owner.done("WeaponDirector::raise_secondary_stage", 0x0071d9e0u);
+    }
+    void director_clear_command_slot_0071c130(bool primary) override {
+        if (primary) {
+            chain_.director.stage = 0;
+        } else {
+            secondary_stage_ = 0;
+        }
+        chain_.owner.done("WeaponDirector::clear_command_stage_pair", 0x0071c130u);
+    }
+    void navigator_params_reset_from_tuning_00822b70(bool reset) override {
+        // 00835c65 passes the literal 0, and 00822b70's own body is skipped
+        // entirely when its char argument is zero, so the call does nothing.
+        // The projection makes it because the native makes it.
+        static_cast<void>(reset);
+        chain_.owner.done("NavigatorParams::reset_from_tuning", 0x00822b70u);
+    }
+    void set_navigator_commanded_speed_time(float value) override {
+        chain_.owner.set_commanded_speed_time(chain_.unit.index, value);
+    }
+    void director_reset_command_stage_vtable6c(bool primary) override {
+        // 00d09fc4, the derived director's vtable slot 6Ch, which is 00835bf0.
+        post_reset = bsp::weapon_director_reset_command_stage_00835bf0(primary,
+            chain_.owner.params_of(chain_.unit.index), clock_, *this);
+        chain_.owner.done("WeaponDirector::reset_command_stage", 0x00835bf0u);
+    }
+    bool unit_controller_belongs_to_another_007788b0() override {
+        // entity+284h, the controller back-pointer. No controller object exists
+        // in this process, which is the same boundary 0071ecf0's own AI-group
+        // block reports, so the answer is recorded rather than read.
+        chain_.owner.record("WeaponDirector::controller_belongs_to_another", 0x007788b0u);
+        return false;
+    }
+    std::uint32_t unit_controller_owner_007788d0() override {
+        chain_.owner.record("WeaponDirector::controller_owner", 0x007788d0u);
+        return 0;
+    }
+    std::uint32_t make_command_target_00465080(std::uint32_t object, float range) override {
+        static_cast<void>(range);
+        target_ = bsp::SceneCommandTarget{};
+        if (object != 0) {
+            target_.kind = 1;
+            target_.object = &chain_.unit;
+            target_.object_id = chain_.unit.object_id;
+        }
+        chain_.owner.done("WeaponDirector::make_command_target", 0x00465080u);
+        return object;
+    }
+    void director_issue_command_0071ecf0(std::uint32_t command,
+        std::uint32_t target) override {
+        static_cast<void>(target);
+        DirectorBinding director(chain_);
+        director.director_issue_command(command, target_);
+    }
+
+    bsp::CruiseSpeedSetting post_reset{};
+
+private:
+    ChainState& chain_;
+    float clock_{0.0f};
+    int secondary_stage_{0};
+    bsp::SceneCommandTarget target_{};
+};
+
+}  // namespace
+
+GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t unit_index,
+    bool player_controlled, float mission_clock, const bsp::UnitOrderRing& ring,
+    float heading_radians) {
+    Impl& host = *impl_;
+    GameDirectorStepOutcome outcome;
+    if (unit_index >= host.units.size()) return outcome;
+    if (!host.logged_director_step) {
+        host.logged_director_step = true;
+        host.log.notef("weapon director step 00836920 runs once per unit per fixed "
+            "simulation step: the pre-pass 00836941, the `stop` arm 00836a8b and the idle "
+            "tail 00836dc9 that re-issues a default command. Its own caller is the unit "
+            "update's director block, which this process does not reach, so the position "
+            "in the step is the executable's decision and is recorded as one. The `follow`, "
+            "`attackmove` and `moveonpath` arms 00836adc..00836d66 are read in "
+            "docs/UNIT_COMMANDED_SPEED.md and projected nowhere, so they are records");
+    }
+    host.record("WeaponDirector::step_command_arms", 0x00836adcu);
+
+    GameDirector& director = host.directors[unit_index];
+    GameCommandRow row;
+    row.unit_index = unit_index;
+    row.unit = host.units[unit_index].name;
+    row.source = "director idle tail";
+    row.resolve_outcome = "idle_reissue";
+
+    ChainState chain{host, host.units[unit_index], director, &row, &ring, heading_radians,
+        bsp::SceneCommandTarget{}, 0u, 0u};
+    DirectorStageBinding stage(chain, mission_clock);
+
+    bsp::WeaponDirectorCommandState state;
+    state.primary_stage = director.stage;
+    state.secondary_stage = 0;
+    state.primary_command = director.slot_command[0];
+    state.secondary_command = 0;
+    state.unit = static_cast<std::uint32_t>(unit_index + 1);
+    state.unit_player_controlled = player_controlled;
+
+    outcome.ran = true;
+    ++host.summary.director_steps;
+    outcome.prepass_flag = bsp::weapon_director_step_prepass_00836941(state, stage);
+    host.done("WeaponDirector::step_prepass", 0x00836941u);
+    state.primary_stage = director.stage;
+
+    outcome.stop_arm_raised = bsp::weapon_director_stop_arm_00836a8b(state,
+        host.params_of(unit_index), stage);
+    host.done("WeaponDirector::stop_arm", 0x00836a8bu);
+    state.primary_stage = director.stage;
+
+    outcome.reissued = bsp::weapon_director_idle_reissue_00836dc9(state,
+        outcome.prepass_flag, stage.post_reset, stage);
+    host.done("WeaponDirector::idle_reissue", 0x00836dc9u);
+
+    const std::uint32_t reissued_object = static_cast<std::uint32_t>(outcome.reissued);
+    if (outcome.reissued != bsp::DirectorDefaultCommand::None
+        && reissued_object != director.last_idle_command) {
+        director.last_idle_command = reissued_object;
+        ++host.summary.idle_reissues;
+        switch (outcome.reissued) {
+        case bsp::DirectorDefaultCommand::Stop: ++host.summary.idle_stop; break;
+        case bsp::DirectorDefaultCommand::Cruise: ++host.summary.idle_cruise; break;
+        case bsp::DirectorDefaultCommand::Follow: ++host.summary.idle_follow; break;
+        case bsp::DirectorDefaultCommand::None: break;
+        }
+        const bsp::EntityOrderCommandClass* klass = host.class_of(reissued_object);
+        if (klass != nullptr) {
+            row.command = klass->name;
+            row.token = klass->name;
+            row.ordinal = klass->ordinal;
+            row.category = klass->category;
+        }
+        finish_issue(host, chain, row, ring);
+    }
+    return outcome;
+}
+
 bool GameCommandsHost::holds_cruise(std::size_t unit_index) const {
     const Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return false;
@@ -883,6 +1163,18 @@ bool GameCommandsHost::cruise_step(std::size_t unit_index, bool player_controlle
     binding.reference = reference_speed;
     out = bsp::cruise_state_step_009e1170(binding);
     host.done("ShipAiState::cruise_step", 0x009e1170u);
+    const bsp::CruiseSpeedSetting speed = host.params_of(unit_index);
+    if (bsp::navigator_commanded_speed_active(speed) && !host.logged_commanded_step) {
+        host.logged_commanded_step = true;
+        host.log.notef("cruise state with an active commanded speed on \"%s\": "
+            "009e12bd divided +24h %.3f m/s by 0080fc30's reference %.3f and asked the AI "
+            "controller for throttle %.6f, steer mode %d, value %.4f. That triple reaches "
+            "009dbf90 / 009dffb0 / 009e0040 and stops there: the hop from the controller "
+            "block to unit+0fc4h / unit+0fdch has no recovered writer",
+            host.units[unit_index].name.c_str(), static_cast<double>(speed.speed),
+            static_cast<double>(reference_speed), static_cast<double>(out.throttle),
+            static_cast<int>(out.mode), static_cast<double>(out.steer_or_heading));
+    }
     ++host.summary.steps;
     for (GameCommandRow& row : host.rows) {
         if (row.unit_index == unit_index) ++row.steps;
@@ -901,11 +1193,12 @@ const GameCommandsSummary& GameCommandsHost::summary() const noexcept {
 void GameCommandsHost::report() {
     Impl& host = *impl_;
     if (host.rows.empty()) return;
-    host.log.notef("  %-20s %-11s %4s %4s %5s %5s %5s %9s %9s %9s", "unit", "command",
-        "ord", "cat", "issue", "slot", "curr", "latch", "steer", "thrust");
+    host.log.notef("  %-20s %-11s %-20s %4s %4s %5s %5s %5s %9s %9s %9s", "unit", "command",
+        "source", "ord", "cat", "issue", "slot", "curr", "latch", "steer", "thrust");
     for (const GameCommandRow& row : host.rows) {
-        host.log.notef("  %-20s %-11s %4d %4d %5d %5d %5d %9s %9.3f %9.3f",
+        host.log.notef("  %-20s %-11s %-20s %4d %4d %5d %5d %5d %9s %9.3f %9.3f",
             row.unit.c_str(), row.command.empty() ? row.token.c_str() : row.command.c_str(),
+            row.source.c_str(),
             row.ordinal, row.category, row.issued ? 1 : 0, row.slot_pushed ? 1 : 0,
             row.current ? 1 : 0,
             row.latched ? (row.fields.is_heading ? "heading" : "rudder") : "-",
@@ -950,6 +1243,11 @@ void GameCommandsHost::report() {
         host.summary.units, host.summary.resolved, host.summary.issued, host.summary.pushed,
         host.summary.current, host.summary.latched, host.summary.moving,
         host.summary.ai_groups, host.summary.ai_forwards, host.summary.steps);
+    host.log.notef("summary mission director steps=%llu idle_reissues=%llu stop=%zu "
+        "cruise=%zu follow=%zu script_issues=%zu blocked_at_00816f7c=%zu commanded_speeds=%zu",
+        host.summary.director_steps, host.summary.idle_reissues, host.summary.idle_stop,
+        host.summary.idle_cruise, host.summary.idle_follow, host.summary.script_issues,
+        host.summary.script_blocked, host.summary.commanded_speeds);
 }
 
 }  // namespace bsp::game

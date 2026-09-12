@@ -13,6 +13,7 @@
 #include "bsp/game_hosts_lua.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
 #include "bsp/mission_lobby_settings.hpp"
@@ -68,10 +69,18 @@ int binding_trampoline(lua_State* state) {
     const int row = static_cast<int>(lua_tointeger(state, lua_upvalueindex(2)));
     const int argc = lua_gettop(state);
     if (host == nullptr) return 0;
+    // Milestone 2m: the eight rows src/lua_binding_navigator.cpp reconstructs
+    // run their own bodies over this process's created instances. Every other
+    // row keeps milestone 2l's record.
+    const bsp::MissionLuaBinding& dispatch_row =
+        bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
+    GameScriptOrdersHost* orders = host->script_orders();
+    const bool handled = orders != nullptr
+        && GameScriptOrdersHost::handles(dispatch_row.name);
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
     if (!host->error_replay()) {
-        host->note_native_call(static_cast<std::size_t>(row), argc);
+        host->note_native_call(static_cast<std::size_t>(row), argc, handled);
         // Milestone 2l. Which created instance a binding was called on, read
         // off argument 1 when it is an entity table. The `ID` field is the one
         // 00928a00 seeds, so this is the same identity the native carries.
@@ -88,9 +97,7 @@ int binding_trampoline(lua_State* state) {
         // the name of the function that issues the mission's orders, and the
         // binding body is a record, so without the name there is nothing to run
         // later. The value is read, not invented, and no other row is read.
-        const bsp::MissionLuaBinding& row_binding =
-            bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
-        if (std::strcmp(row_binding.name, "CreateScript") == 0 && argc >= 1
+        if (std::strcmp(dispatch_row.name, "CreateScript") == 0 && argc >= 1
             && lua_type(state, 1) == LUA_TSTRING) {
             const char* name = lua_tolstring(state, 1, nullptr);
             if (name != nullptr) host->note_created_script(std::string(name));
@@ -103,8 +110,10 @@ int binding_trampoline(lua_State* state) {
     // is a recovered result rather than a substitute: a binding that returns one
     // value is different from one that returns none, and the shipped scripts
     // assign from these.
-    const bsp::MissionLuaBinding& binding =
-        bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
+    const bsp::MissionLuaBinding& binding = dispatch_row;
+    if (handled && !host->error_replay()) {
+        return orders->dispatch(state, binding.name, argc);
+    }
     if (bsp::mission_binding_returns_entity(binding.name)) {
         // 0089903C is the arm the native takes when the lookup produced
         // nothing. When it produced an entity the same tail pushes that
@@ -411,12 +420,43 @@ void GameMissionLuaHost::note_error(const std::string& message) {
     }
 }
 
-void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count) {
+void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noexcept {
+    script_orders_ = orders;
+}
+
+GameScriptOrdersHost* GameMissionLuaHost::script_orders() const noexcept {
+    return script_orders_;
+}
+
+void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count,
+    bool handled) {
     const bsp::MissionLuaBinding* rows = bsp::mission_lua_bindings();
     if (row >= bsp::mission_lua_binding_count()) return;
     const bsp::MissionLuaBinding& binding = rows[row];
     ++summary_.native_calls;
     auto found = native_index_.find(binding.name);
+    if (handled) {
+        // The row runs its own reconstructed body; GameScriptOrdersHost records
+        // the method as concrete at the row's address. Only the counters and the
+        // per-binding line belong here.
+        if (found == native_index_.end()) {
+            native_index_.emplace(binding.name, summary_.natives.size());
+            GameMissionNativeCall record;
+            record.name.assign(binding.name);
+            record.address = binding.address;
+            record.calls = 1;
+            record.last_argument_count = argument_count;
+            summary_.natives.push_back(record);
+            log_.notef("  binding %-28s argc=%d phase=%s (reconstructed body)",
+                binding.name, argument_count,
+                phase_.empty() ? "(none)" : phase_.c_str());
+            return;
+        }
+        GameMissionNativeCall& reached = summary_.natives[found->second];
+        ++reached.calls;
+        reached.last_argument_count = argument_count;
+        return;
+    }
     if (found == native_index_.end()) {
         native_index_.emplace(binding.name, summary_.natives.size());
         GameMissionNativeCall record;
@@ -446,6 +486,26 @@ void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count) {
     char method[96];
     std::snprintf(method, sizeof(method), "MissionLuaNative::%s", binding.name);
     log_.unimplemented(method, address);
+}
+
+std::vector<bsp::LuaGlobalEntry> GameMissionLuaHost::lua_global_entries() {
+    std::vector<bsp::LuaGlobalEntry> entries;
+    if (state_ == nullptr) return entries;
+    const int top = ::lua_gettop(state_);
+    lua_pushnil(state_);
+    while (::lua_next(state_, LUA_GLOBALSINDEX) != 0) {
+        // 00b662b0 GetString on the key; a non-string key has no name to insert.
+        if (lua_type(state_, -2) == LUA_TSTRING) {
+            bsp::LuaGlobalEntry entry;
+            const char* name = lua_tolstring(state_, -2, nullptr);
+            if (name != nullptr) entry.name.assign(name);
+            entry.is_function = lua_type(state_, -1) == LUA_TFUNCTION;
+            entries.push_back(entry);
+        }
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+    }
+    ::lua_settop(state_, top);
+    return entries;
 }
 
 int GameMissionLuaHost::run_dofile(const std::string& path) {
@@ -853,10 +913,17 @@ void GameMissionLuaHost::report_entity_subjects() {
             if (!seen) distinct.push_back(id);
         }
     }
+    std::size_t reconstructed = 0;
+    for (const GameMissionNativeCall& record : summary_.natives) {
+        if (record.entity_subjects.empty()) continue;
+        if (GameScriptOrdersHost::handles(record.name.c_str())) ++reconstructed;
+    }
     log_.notef("summary mission script orders instances=%zu/%zu bindings=%zu "
-        "entity_resolves=%llu: every one of those bindings is a host record with its own "
-        "row address, so the mission's own orders reach no ship",
-        distinct.size(), summary_.self_table_entities, bindings, summary_.entity_resolves);
+        "reconstructed=%zu entity_resolves=%llu: milestone 2m runs the reconstructed "
+        "bodies of the rows counted as reconstructed; the rest keep the record with "
+        "their own row address",
+        distinct.size(), summary_.self_table_entities, bindings, reconstructed,
+        summary_.entity_resolves);
 }
 
 void GameMissionLuaHost::note_created_script(std::string name) {

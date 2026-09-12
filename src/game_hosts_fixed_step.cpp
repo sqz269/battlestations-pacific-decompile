@@ -25,6 +25,7 @@
 #include "bsp/game_hosts_fixed_step.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_ready.hpp"
 #include "bsp/in_mission_subsystem_tick.hpp"
 
 #include <cstdio>
@@ -220,10 +221,18 @@ void GameFixedStepHost::apply_dynamics_buoyancy_004462d0(float step) {
     done("FixedStepFanout::apply_dynamics_buoyancy", 0x00875e24u);
 }
 
+void GameFixedStepHost::attach_subsystems(GameStepSubsystemsHost* subsystems) noexcept {
+    subsystems_ = subsystems;
+}
+
 void GameFixedStepHost::refresh_moved_spatial_nodes_0098bdb0(float step) {
-    static_cast<void>(step);
     summary_.fanout_calls += 2;  // 00875e33 the getter and 00875e3a the walk
-    record("FixedStepFanout::refresh_moved_spatial_nodes", 0x00875e3au);
+    if (subsystems_ == nullptr) {
+        record("FixedStepFanout::refresh_moved_spatial_nodes", 0x00875e3au);
+        return;
+    }
+    subsystems_->refresh_moved_spatial_nodes_0098bdb0(step);
+    done("FixedStepFanout::refresh_moved_spatial_nodes", 0x00875e3au);
 }
 
 void GameFixedStepHost::run_fixed_step_callbacks_00874de0(float step) {
@@ -236,20 +245,35 @@ void GameFixedStepHost::drain_deferred_entity_events_00926700() {
     ++summary_.fanout_calls;
     // Rows 6 and 14 are the same callee; the record carries the first site,
     // and the call count says it ran twice per step.
-    record("FixedStepFanout::drain_deferred_entity_events", 0x00875e44u);
+    if (subsystems_ == nullptr) {
+        record("FixedStepFanout::drain_deferred_entity_events", 0x00875e44u);
+        return;
+    }
+    subsystems_->drain_deferred_entity_events_00926700();
+    done("FixedStepFanout::drain_deferred_entity_events", 0x00875e44u);
 }
 
 void GameFixedStepHost::drain_queued_lua_calls_00888230() {
     ++summary_.fanout_calls;
-    // [game+1A08h], the mission Lua host this process does own; what 00888230
-    // drains is the cross-thread call list, which has no reconstruction.
-    record("FixedStepFanout::drain_queued_lua_calls", 0x00875e55u);
+    // [game+1A08h], the mission Lua host this process does own. 00888230 drains
+    // the deferred call list at its +8h, which is empty here because its
+    // producer 00887560 only runs for a named call made off the main thread.
+    if (subsystems_ == nullptr) {
+        record("FixedStepFanout::drain_queued_lua_calls", 0x00875e55u);
+        return;
+    }
+    subsystems_->drain_queued_lua_calls_00888230();
+    done("FixedStepFanout::drain_queued_lua_calls", 0x00875e55u);
 }
 
 void GameFixedStepHost::run_due_entity_think_00929460(float step) {
-    static_cast<void>(step);
     ++summary_.fanout_calls;
-    record("FixedStepFanout::run_due_entity_think", 0x00875e64u);
+    if (subsystems_ == nullptr) {
+        record("FixedStepFanout::run_due_entity_think", 0x00875e64u);
+        return;
+    }
+    subsystems_->run_due_entity_think_00929460(step);
+    done("FixedStepFanout::run_due_entity_think", 0x00875e64u);
 }
 
 void GameFixedStepHost::pump_session_00778450(float step) {
@@ -283,12 +307,22 @@ void GameFixedStepHost::flush_outbound_session_0076ffc0(float step, std::int32_t
 
 void GameFixedStepHost::flush_pending_entity_queues_009273a0() {
     ++summary_.fanout_calls;
-    record("FixedStepFanout::flush_pending_entity_queues", 0x00875ec9u);
+    if (subsystems_ == nullptr) {
+        record("FixedStepFanout::flush_pending_entity_queues", 0x00875ec9u);
+        return;
+    }
+    subsystems_->flush_pending_entity_queues_009273a0();
+    done("FixedStepFanout::flush_pending_entity_queues", 0x00875ec9u);
 }
 
 void GameFixedStepHost::release_expired_world_objects_00903610() {
     ++summary_.fanout_calls;
-    record("FixedStepFanout::release_expired_world_objects", 0x00875edau);
+    if (subsystems_ == nullptr) {
+        record("FixedStepFanout::release_expired_world_objects", 0x00875edau);
+        return;
+    }
+    subsystems_->release_expired_world_objects_00903610();
+    done("FixedStepFanout::release_expired_world_objects", 0x00875edau);
 }
 
 void GameFixedStepHost::run_tail_hook_00a317f0() {

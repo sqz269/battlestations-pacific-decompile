@@ -30,6 +30,7 @@
 #include <string>
 #include <vector>
 
+#include "bsp/mission_load_hosts.hpp"
 #include "bsp/mission_lua_host.hpp"
 #include "bsp/unit_rudder_curve.hpp"
 
@@ -43,6 +44,7 @@ namespace bsp::game {
 
 class GameHostLog;
 class GameVfsHost;
+class GameScriptOrdersHost;
 
 // One binding the running scripts actually reached, with the row address the
 // table at 00e0b7b8 carries for it.
@@ -248,8 +250,18 @@ public:
     // which is the `this` a script function takes. Returns how many ran.
     std::size_t run_created_scripts();
 
+    // Milestone 2m: the host that runs the eight reconstructed binding bodies.
+    // Attached once the created instances exist, because every one of the eight
+    // addresses an entity. A row the host does not handle keeps milestone 2l's
+    // record.
+    void attach_script_orders(GameScriptOrdersHost* orders) noexcept;
+    GameScriptOrdersHost* script_orders() const noexcept;
+
     // Called by the binding trampolines; public so the C callbacks can reach it.
-    void note_native_call(std::size_t row, int argument_count);
+    // `handled` says the row ran its reconstructed body rather than standing in
+    // for a native one, which is what separates a concrete record from the
+    // unimplemented policy.
+    void note_native_call(std::size_t row, int argument_count, bool handled = false);
     void note_created_script(std::string name);
     void note_binding_subject(std::size_t row, int entity_id);
     // A failed named call is replayed once with errfunc 0 purely to recover the
@@ -267,6 +279,11 @@ public:
     // state this process does not own and keeps the recovered nil arm.
     bool push_resolved_entity(lua_State* state, const char* binding_name, int argument_count);
     void note_entity_return();
+    // Milestone 2m. The globals walk 004d3167 performs: 00b67980 opens the
+    // table, 00b67080 / 00b67190 iterate it and 00b66200 is
+    // `lua_type(value) == LUA_TFUNCTION`. One entry per key, in the order the
+    // interpreter yields them.
+    std::vector<bsp::LuaGlobalEntry> lua_global_entries();
     int run_dofile(const std::string& path);
     void note_error(const std::string& message);
     void set_phase(std::string phase);
@@ -293,6 +310,7 @@ private:
     // Milestone 2l: the created instances by name, with the id their thisTable
     // slot is keyed by. This is the executable's stand-in for 00925a90.
     std::map<std::string, int> scene_entity_ids_;
+    GameScriptOrdersHost* script_orders_{nullptr};
     bool error_replay_{false};
     GameMissionLuaSummary summary_;
 };

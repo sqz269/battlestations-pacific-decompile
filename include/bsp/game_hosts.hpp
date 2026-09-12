@@ -173,6 +173,13 @@ struct GameExecutableOptions {
     long order_frame{-1};
     float order_throttle{0.0f};
     float order_rudder{0.0f};
+    // Milestone 2m: --order speed=<m/s> makes the store luaMW_SetShipSpeed
+    // 00890d30 makes on the controlled unit's navigator parameter block at
+    // *(unit+73Ch). It is not a throttle: it is what makes the weapon
+    // director's idle tail 00836e59 choose `cruise` over `stop`, and what
+    // 009e12bd divides by the reference speed to get one.
+    float order_speed{0.0f};
+    bool order_speed_set{false};
     // Milestone 2l: --order may also name a command class instead of a pair.
     // `order_command` is the token 0046aab0 resolves against the 26-row registry
     // and `order_command_target` the `CommandTarget` name, which for the

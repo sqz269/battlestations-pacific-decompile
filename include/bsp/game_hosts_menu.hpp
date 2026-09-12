@@ -148,7 +148,8 @@ public:
         long mission_complete_frame = -1, long order_frame = -1,
         float order_throttle = 0.0f, float order_rudder = 0.0f,
         float mission_frame_seconds = 0.0f, std::string trajectory_csv = {},
-        std::string order_command = {}, std::string order_command_target = {});
+        std::string order_command = {}, std::string order_command_target = {},
+        float order_speed = 0.0f, bool order_speed_set = false);
     ~GameMenuHost();
     GameMenuHost(const GameMenuHost&) = delete;
     GameMenuHost& operator=(const GameMenuHost&) = delete;
