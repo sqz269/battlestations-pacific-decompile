@@ -179,6 +179,30 @@ exist, not one, and the shipped world selects `Dyn::Scene::LCPSolverTask` (`00D7
 the `LCPSolver2Task` (`00D7A090`) whose RTTI that doc quoted. `LCPSolver2Task` is reachable
 only with `world+10h == 1`, which `004DDB90` never authors.
 
+**From packet `cc_dyn_constraints`, to "The solver split".** "Each task runs, per group in its
+range, `00C5C7A0` (`SolverPreStep`) then `00C5C710` (`SolveConstraints`)" is true of the
+`LCPSolver2Task` only. Both routines have exactly one caller and it is
+`Dyn_Scene_LCPSolver2Task_vslot0` (`00403850`), which `world+10h == 1` selects and the shipped
+world never does. The shipped `LCPSolverTask` body `00403784..004037DB` runs `00C4F040`, then
+`00C42530` and `00C42230` `world+38h` times, then `00C37B50` and `00C35020`. The row build is
+`00C4DE40` and the row block is allocated by `00C31C30`. See `docs/DYN_LCP_IMPULSE_MATH.md`.
+
+**From packet `cc_dyn_constraints`, to "The contact report" and to `DynContactPoint`.** `s`
+(`point+24h`) is the accumulated normal impulse, not the penetration depth. `00C4E0B2` seeds the
+solver row's impulse accumulator from it (scaled by `world+20h`), `00C35020` writes the solved
+impulse back to it, and `00C3F9BD` zeroes it only when the narrow phase appends a brand-new
+point. The record is `30h` bytes with six fields: `+28h` is the accumulated bias impulse and
+`+2Ch` the penetration depth. The manifold also has `+00h`, the combined friction coefficient,
+and `+04h`, the combined restitution, both written by `00C44090`. See
+`docs/DYN_COLLISION_PASS.md`. `include/bsp/dyn_contact_solver.hpp`'s four-field `DynContactPoint`
+is not edited by that packet; the whole record is `DynSolverContactPoint` in
+`include/bsp/dyn_lcp_impulse_math.hpp`.
+
+**From packet `cc_dyn_constraints`, to "The four-records-per-manifold allocation is the only
+statement anywhere in this routine about how many points a manifold may hold, and nothing checks
+it."** `00C3F943` checks it: a fifth candidate point takes the reduction branch instead of being
+appended, so a manifold never holds more than four.
+
 ## Coverage
 
 | routine | state | coverage |

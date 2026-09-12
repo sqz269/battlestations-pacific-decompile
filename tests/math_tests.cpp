@@ -29,6 +29,7 @@
 #include "bsp/mission_lobby_settings.hpp"
 #include "bsp/attack_commands.hpp"
 #include "bsp/command_execution.hpp"
+#include "bsp/dyn_lcp_impulse_math.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
 #include "bsp/spatial_index.hpp"
@@ -2606,6 +2607,49 @@ int main() {
             "a cleared prefer_ordnance sends 007EEC50 to the gun pass");
         check(bsp::attack_command_choose(in, false, false) == 0u,
             "a cleared allow_guns discards the gun-only answer");
+    }
+
+    {
+        // docs/DYN_LCP_IMPULSE_MATH.md: the shipped solver chain 00C4DE40 then ten
+        // passes of 00C42530 and 00C42230, for a 1000 kg hull resting on a fixed box one
+        // substep after gravity. The concrete risk this guards is the sign convention:
+        // body A takes the negated half of the Jacobian (00C4E1F7) while both apply
+        // steps add (00C425EB), so a flipped sign would leave the hull sinking through
+        // the box with an impulse that still looked plausible.
+        const float dt = 1.0f / 60.0f;
+        const float mass = 1000.0f;
+
+        bsp::DynConstraintBuildInput input;
+        input.body_a.solver_index = 0;                  // the fixed box, the static slot
+        input.body_b.solver_index = 1;                  // the hull
+        input.body_b.inverse_mass = 1.0f / mass;
+        input.body_b.position[1] = 1.0f;
+        input.body_b.linear_velocity[1] = -10.0f * dt;  // gravity already integrated
+        for (int i = 0; i < 9; i += 4) input.body_b.inverse_inertia[i] = 1.0e-4f;
+        input.point.normal[1] = 1.0f;                   // from the box up to the hull
+        input.point.local_point_b[1] = -1.0f;           // the keel, under the origin
+        input.point.depth = 0.02f;
+        input.friction = 0.5f;
+
+        bsp::DynConstraintRow rows[2];
+        const bsp::DynSolverWorldSettings settings;     // the shipped 0.1 / 1.0 / 0.5 / 10
+        bsp::dyn_build_contact_rows_00c4de40(input, settings, dt, rows[0], rows[1]);
+
+        bsp::DynSolverBodyVelocity velocities[2];
+        bsp::DynConstraintBatch batch;
+        batch.rows = rows;
+        batch.velocities = velocities;
+        batch.velocity_count = 2;
+        batch.normal_row_count = 1;
+        batch.friction_row_base = 1;
+        bsp::dyn_apply_warm_start_00c42ba0(batch);
+        bsp::dyn_solve_group_00403720(batch, settings.iterations);
+
+        const float weight_impulse = mass * 10.0f * dt;
+        check(std::fabs(rows[0].impulse - weight_impulse) < 0.01f,
+            "ten iterations of 00C42530 hold the hull up with its substep weight");
+        check(rows[1].impulse == 0.0f,
+            "00C42230 leaves friction at zero while nothing slides");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
