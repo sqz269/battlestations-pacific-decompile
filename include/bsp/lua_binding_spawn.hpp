@@ -208,7 +208,9 @@ struct LuaBindingSpawnHost {
     // creator call it feeds). It receives the origin, the three spans, the two angles and one
     // more byte, the result of 00438E10 at 00944EAD comparing a string against a literal. Contract: unread.
     virtual void place_spawn_directly(const SpawnBindingArguments& request, float out_position[3]) = 0;
-    // 004C6BA0 at 00944D8A, __thiscall(*(00E188A8), class name, instance name, 0). Body read in
+    // 004C6BA0 (BSP_Game_SpawnEntityByName) at 00944D8A, __thiscall(*(00E188A8), hidden entity name,
+    // instance name, 0): resolves the name in the hidden-entity record map at SceneDatabase+18h
+    // (docs/SCENE_RECORD_MAP.md), not a class table. Body read in
     // full, eight instructions: it forwards to 0046D930, the scene-database creator that
     // resolves a class by name (00468660 BSP_SceneDatabase_ClassIdToName is in its callee set),
     // and then calls BSP_Game_AssignPartyPlayerSlots(0) when game+1FE4h is non-zero. An absent

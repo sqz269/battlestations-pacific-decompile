@@ -242,3 +242,15 @@ key instead of `address`, and the four direct calls they make (`00414DB0`, `00B6
 | `tick_element_sublist` | 008759b0 00875280 00875340 | the sub-node list `008759B0` drains, its `vtable[+0Ch]` callee and the two lock singletons |
 | `job_pool_dispatch` | 004c1130 00be3020 00be3150 00be4800 | the queue and dispatch bodies, the worker wake-up and what the `00E0B6CE` byte selects |
 | `tick_group_semantics` | 00874c90 00875890 007f2c60 | why aircraft go to group 3 and everything read here to group 0, and whether groups 1, 2 and 4 are used at all |
+
+## Correction from docs/TICK_ELEMENT_OVERRIDES.md
+
+Packet `cc2-tick-element-overrides` (main 36d71a2b) read the six-slot interface at `00D0DEC8` and
+corrects three claims here: the unit's constructor argument is 0 but level 5 writes 1 into `node+14h`
+before the first splice, so units tick in group 1; `element+30h` is a time scale disabled at -1.0f, not a
+timer seed; only three of the five stubs are ever overridden. The interface is one fixed-step pose
+contract: slot `+4h` restores the committed pose and advances it by its float (wave 1 passes 0.05f, the
+interpolation wave passes the frame leftover and never commits; `00929CB0` divides its argument by 0.05f
+into the physics interpolator's alpha), `+8h` advances the simulation, `+0Ch` commits the pose, `+10h`/`+14h`
+are the base stub in all eight concrete tables. The group index picks the job-pool batch; every wave loops
+all five groups with the same admission test.

@@ -234,3 +234,15 @@ functions, confirmed with `python tools/bsp.py ghidra proto <addr> --brief`:
 | `00945A20` | `00945A20` - `00945C25` |
 | `00949530` | `00949530` - `0094960D` |
 | `00948CC0` | `00948CC0` - `009492FE` |
+
+## Correction from docs/SCENE_RECORD_MAP.md
+
+Packet `cc2-scene-record-map` (main 91b309c7) proved that the map at `SceneDatabase+18h` which
+`0046D930` (now `BSP_SceneDatabase_CreateEntityByName`) resolves names in is the hidden-entity record
+map, `std::map<NativeString, SceneHiddenEntityRecord*, LessCaseInsensitive>`, filled by
+`BSP_SceneFile_ReadEntityBlock` only for entities authored with the `Hidden` property. So `Spawn` and
+`GenerateObject` instantiate an authored hidden entity by name through `004C6BA0`
+(`BSP_Game_SpawnEntityByName`), not an arbitrary class, and an unknown name is null into the unguarded
+dereference; `004691B0` returns the record for `Spawn`, `0046DC10` is `0046D930` with a placement
+override. The `create_scene_object` host method's comment in `include/bsp/lua_binding_spawn.hpp` said
+"class name"; the first argument is the hidden entity's name.
