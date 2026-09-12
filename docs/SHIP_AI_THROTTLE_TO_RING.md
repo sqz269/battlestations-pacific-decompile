@@ -138,6 +138,25 @@ The ship turns onto the bearing and holds it: the heading error stays inside 0.0
 whole run and the rudder tracks it through `009DA250`. `class+524h` is a stand-in
 (`MaxRotAngle`, `class+4F8h`); `--yaw-authority` overrides it.
 
+### Correction, packet `cc_ai_class_field`
+
+The stand-in above is gone. `class+524h` has no Lua key: `00828F20`, the ship-class descriptor's
+virtual slot `+14h`, derives it once per class as
+`0.5 * MaxRotAngle / MaxRotAngleChangeRatio`. The same run, recomputed with the recovered value:
+
+| quantity | was, `MaxRotAngle` stand-in | is, `00828F20` derived | evidence |
+| --- | --- | --- | --- |
+| `class+524h` for `VehicleClass[20]` | `0.122173` | `0.099999994` | `00828F5A`, the double `0.5` at `00D7A280`; `MaxRotAngleChangeRatio` `0.610865` at line 13885 of the installed `vehicleclasses.lua` |
+| minimum distance | 849.88 | 842.31 | the run |
+| first step inside the 2000-unit radius | 4586 | 4580 | the run |
+| **time to that radius** | **229.31 s** | **229.01 s** | the run |
+| final heading error | 0.032551 rad | 0.027144 rad | the run |
+| final ring slot rudder | -0.222025 | -0.226200 | the run |
+
+The trajectory barely moves because this course never saturates the rudder; the threshold for
+full rudder does, from 8.4 deg of heading error to 6.9 deg. docs/SHIP_AI_CLASS_FIELD_0524.md has
+the derivation, the writer scan and the neighbouring fields.
+
 ## Corrections
 
 | what said it | what is true | evidence |
@@ -146,12 +165,15 @@ whole run and the rudder tracks it through `009DA250`. `class+524h` is a stand-i
 | the same follow-up lists `009F4DA0` among them | `009F4DA0` touches neither field. Its stores are `brain+34Ch` and `brain+350h`; it reaches `blk` only through the tail call | the exported pseudocode of `009F4DA0`, and `009F50C0 LEA ECX,[ESI+8]` |
 | `docs/SHIP_AI_STATES.md` follow-up `unit_ai_order_slot_reader`: "who reads the promoted slot and turns a heading target and two distances into the order ring's `+148h`/`+14Ch`" | Nothing does. The write slot is fed straight from `blk+1D0h` / `+1D4h`, and `00813020` then steps the live pair toward the read slot | `009F4CE8`, `009F4CFB`, `0080E17F` |
 | `src/ship_motion_probe.cpp` step 6, a proportional stand-in over the `+/-pi/4` window with the note that no native hop exists | replaced by the reconstructed hop and rudder law; one stand-in remains, `class+524h` | the run above |
+| "Uncertainties" item 1 below, and the follow-up `ship_ai_class_field_0524`: `class+524h` has no name, its Lua key is unknown, and a descriptor reader other than `00831840` must fill `+51Ch..+537h` | There is no Lua key and no missing reader. `00828F20`, virtual slot `+14h` of the ship-class vtable `00D1ACC4`, derives `class+524h = 0.5 * MaxRotAngle / MaxRotAngleChangeRatio` and `class+520h = MaxSpeed / MaxRotAngle` after the Lua load, and `00831840` does write `+51Ch` (`ExplosionEfx`), so the gap is `+520h..+537h` | `00828F5A`, `00828F66`, `00828F54` with `00D7A280`; the ordering from `009650E6` (slot `+8h`) before `0096515D` (slot `+14h`) in `00964790`; docs/SHIP_AI_CLASS_FIELD_0524.md |
 | the ledger name `BSP_UnitBot_RequestLoadLevels` for `009F3F80` (packet `unit_command_producers`) | superseded by `BSP_ShipAi_DriveOrderRing`. The six load-latch raises the old name described are real and its evidence is kept, but they are a side effect; the routine exists to drive the order ring | `009F4CE8`, `009F4CFB`, and the old record preserved in git history by `ledger add-name --replace` |
 
 ## Uncertainties
 
-1. `class+524h` has no name. `00831840` does not write it, so its Lua key is unknown and the
-   probe substitutes `MaxRotAngle`. Every number in the run above scales with it.
+1. ~~`class+524h` has no name. `00831840` does not write it, so its Lua key is unknown and the
+   probe substitutes `MaxRotAngle`. Every number in the run above scales with it.~~
+   **Settled** by packet `cc_ai_class_field`: the field has no Lua key and `00828F20` derives it.
+   See the Correction under "Run-time evidence" and docs/SHIP_AI_CLASS_FIELD_0524.md.
 2. `009D6B40`'s contract is unread past its first two arms. Its `this` is `blk+4h`
    (`009F44A7 LEA ECX,[ESI+4]`), it tests `this+41h`, and when `low >= high` it stores the
    midpoint. Beyond that it walks a byte table with three `00BF7420` results as indices; the
@@ -168,7 +190,7 @@ whole run and the rudder tracks it through `009DA250`. `class+524h` is a stand-i
 
 | packet | addresses and files | what is left |
 | --- | --- | --- |
-| `ship_ai_class_field_0524` | `class+524h`, `00831840`, `0082B170`, `009DA250` | Find the reader that writes `class+524h` and the Lua key behind it. `00831840` writes `+4F8h..+51Bh` and `+538h` onward, so a different descriptor reader fills the gap. Until it is named every AI turn rate is a scaled guess |
+| ~~`ship_ai_class_field_0524`~~ | `class+524h`, `00831840`, `0082B170`, `009DA250` | **Done**, packet `cc_ai_class_field`: no reader fills the field, `00828F20` derives it. docs/SHIP_AI_CLASS_FIELD_0524.md, which opens three narrower follow-ups |
 | `ship_ai_obstacle_tables` | `blk+81Ch`, `blk+848h`, `009F4034..009F4B98`, `009D6B40`, `009D8B90` | The two `2Ch`-stride tables and the reverse-manoeuvre arms: the six remaining writers of `blk+1D0h`, and the one thing that makes an AI ship back off an obstacle |
 | `ship_ai_throttle_ceiling` | `009EC7C0`, `009F4DA0`, `blk+0A84h`, `blk+344h`, `blk+37Ch`, `00419010` | What limits the AI's throttle: `009EC7C0`'s five interpolation stages over the tuning block at `00424C40`, and what `009F4DA0` computes into `brain+34Ch` / `+350h` |
 
