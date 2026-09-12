@@ -150,3 +150,5 @@ bytes only; they do not assert that a callback-corrupted tree remains valid.
 ## AW integration correction and replay
 
 The locked integrator cleared only BE0642's erroneous free-call override and recreated the existing BE063E catch throughBE0652 inclusive, retaining its name/comment. All17 call rows now pass. Integrated replay at04ff2710 passed29 states and281 checks with1072 frozen inputs and8 archive-equal objects. See `reports/native_aw_integration.json` for final evidence and scope.
+
+The first publication attempt merged concurrent main into `2df89bce`. Its strict Win32 build and both existing CTests passed, but the gate rejected three changed headers sealed by this insertion fixture. A fresh `integrated02` replay passed the same 29 states and 281 checks with 1078 frozen inputs and 8 linked objects. The four-family gate then passed with 1312 current source/header/object pins, 158 unique linked objects and 2384 frozen files. The earlier source-commit evidence and rejected promotion log remain preserved; see the aggregate report's `merged_head_validation` section.

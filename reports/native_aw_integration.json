@@ -231,5 +231,46 @@
     "Finite factory/selector/deletion targets; missing required borrowed contexts are explicit source errors.",
     "Failure callback application installation, remaining factories, raw physical-stream-open and full application composition remain open.",
     "Native repeated cached-provider mount hazards and stale factory cache are preserved; no invented ownership or rollback."
-  ]
+  ],
+  "merged_head_validation": {
+    "validated_merged_head": "2df89bcedb479bdfc928bbd19e795aeee0575a80",
+    "merged_main_commit": "fa74f3e9",
+    "reason": "The first promotion build passed, but its gate rejected changed insertion fixture header pins after concurrent main was merged. No fast-forward occurred. Only the affected insertion family was replayed into a fresh immutable attempt.",
+    "changed_sealed_headers": [
+      "include/bsp/native_particle_emission_state.hpp",
+      "include/bsp/native_particle_type_property.hpp",
+      "include/bsp/native_point_light_owner.hpp"
+    ],
+    "strict_win32_build": "passed",
+    "existing_ctests": 2,
+    "build_and_rejection_log": "local/native-aw-promotion.log",
+    "core_sha256": "5552d8097328874329f5984879795a66243797106d83cbfa1a53732b470bed0a",
+    "insertion_replay": {
+      "attempt": "local/native-aw-worker-deliveries/insertion/lab/integrated02",
+      "family": "mount_insert_aw",
+      "physical_inputs": 1078,
+      "linked_objects": 8,
+      "before_sha256": "489532d966ecdd13942142eb4fd46c346596c2a7d2b4cb1c6eef7f69eddccadd",
+      "after_sha256": "1ef6a0664fac65d23f5ac3df123a3b07c629511126f587146778f52a86d65fc5",
+      "recorded_states": 29,
+      "recorded_checks": 281,
+      "source_only_scope": "allocation/copy failures and length errors",
+      "library_sha256": "5552d8097328874329f5984879795a66243797106d83cbfa1a53732b470bed0a"
+    },
+    "replay_log": "local/native-aw-insertion-integrated02.log",
+    "unreplayed_families": "Selector, records and mounted manager retain their original execution evidence. The gate verified that their tested source, headers and linked object bytes still match the merged checkout and current archive members.",
+    "promotion_gate": {
+      "status": "passed at the recorded merged head; checked again before publication",
+      "inputs": "local/native-aw-promotion-inputs02.json",
+      "inputs_sha256": "a0ae785c7322cbdac9b4d8d4d4c242ddba1ba09b9170011e57a60599af879dfc",
+      "proof": "local/native-aw-promotion-checks/20260912T223313582482Z-2df89bce.json",
+      "current_source_header_object_pins": 1312,
+      "unique_linked_objects": 158,
+      "frozen_files": 2384,
+      "final_publication_audit": "local/native-aw-remote-publication.json"
+    },
+    "original_source_validation_preserved": true,
+    "new_native_source_comparisons_added": 0,
+    "limits": "Replay supersedes the insertion evidence for the merged checkout; it adds no reconstructed routines or new fixture cases. Gameplay and binary replacement remain unvalidated."
+  }
 }
