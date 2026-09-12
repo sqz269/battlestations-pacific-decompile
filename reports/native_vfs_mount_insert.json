@@ -443,5 +443,39 @@
     "original_source_validation_preserved": true,
     "new_native_source_comparisons_added": 0,
     "limits": "Replay supersedes the insertion evidence for the merged checkout; it adds no reconstructed routines or new fixture cases. Gameplay and binary replacement remain unvalidated."
-  }
+  },
+  "additional_merged_replays_aw": [
+    {
+      "validated_merged_head": "42909f1cdbc488741037953583d326b14efde3bd",
+      "merged_main_commit": "cea0edb9",
+      "strict_win32_build": "passed",
+      "existing_ctests": 2,
+      "build_and_rejection_log": "local/native-aw-promotion02.log",
+      "reason": "The second promotion merged newer main. Twenty sealed insertion headers changed; the gate stopped before fast-forward. The insertion family alone was replayed; all other tested pins and linked objects remained equal.",
+      "insertion_replay": {
+        "attempt": "local/native-aw-worker-deliveries/insertion/lab/integrated03",
+        "family": "mount_insert_aw",
+        "physical_inputs": 1094,
+        "linked_objects": 8,
+        "before_sha256": "e744c9f139d99fa3bfe91fe237c98ebea0748d0dfe23c98bf764f865fedbf6c6",
+        "after_sha256": "c0121e30321b845baec5d95e2fbeafd8be1dda9df1093634049c7e5ab9f2f353",
+        "recorded_states": 29,
+        "recorded_checks": 281,
+        "source_only_scope": "allocation/copy failures and length errors"
+      },
+      "core_sha256": "81c07cb5f02a17424a92399db844a345f2dd2cf959f22f994d5c90ca9db33dc5",
+      "replay_log": "local/native-aw-insertion-integrated03.log",
+      "promotion_gate": {
+        "inputs": "local/native-aw-promotion-inputs03.json",
+        "inputs_sha256": "c0a73859cc6c9e82258b4dbaa9a0f062e792ae614371ef0d5ee75f0c588c9246",
+        "proof": "local/native-aw-promotion-checks/20260912T224159760009Z-42909f1c.json",
+        "current_source_header_object_pins": 1327,
+        "unique_linked_objects": 158,
+        "frozen_files": 2400,
+        "final_publication_audit": "local/native-aw-remote-publication.json"
+      },
+      "original_source_and_first_merged_validation_preserved": true,
+      "new_native_source_comparisons_added": 0
+    }
+  ]
 }
