@@ -158,6 +158,27 @@ public:
     bool unit_is_kind_of(std::size_t index, int class_id) const;
     int unit_class_id(std::size_t index) const noexcept;
 
+    // ---- milestone 2k: what the two HUD world screens read off a unit ------
+    // 0043f080 BSP_UnitInstance_IsAliveAndVisible, the four-byte filter both the
+    // minimap walk (005c1628..005c164a) and the marker gate (006431a8) run.
+    // bsp/unit_instance.hpp carries +5Ch and +5Dh; +5Eh and +60h have no field
+    // there, so they are treated as the clear a created instance leaves them at.
+    bool unit_alive_and_visible(std::size_t index) const;
+    // The world matrix rows 0063a6c0 and 00427eb0 read: +CCh right, +DCh up,
+    // +ECh forward and +FCh translation. False when the index is out of range.
+    bool unit_pose(std::size_t index, float right[3], float up[3], float forward[3],
+        float translation[3]) const;
+    // [unit+538h] +A0h, +A4h and +A8h, the three class extents 0063a6c0 builds
+    // its eight corners from. Only +A0h and +A8h have a recovered Lua key
+    // (bsp::ShipMotionClass), and both are zero on this installation's ships;
+    // +A4h has no recovered producer at all and is reported as zero.
+    void unit_class_extents(std::size_t index, float& forward, float& right,
+        float& up) const;
+    // One row without rebuilding the flat table, for a per-frame reader.
+    const GameUnitRow* unit_row(std::size_t index) const noexcept;
+    bool controlled_bound() const noexcept;
+    std::size_t controlled_index() const noexcept;
+
     const std::vector<GameUnitRow>& units() const noexcept;
     const GameUnitsSummary& summary() const noexcept;
 

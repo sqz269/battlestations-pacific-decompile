@@ -21,8 +21,10 @@
 #include "bsp/vfs_mounts.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <cstring>
 #include <map>
+#include <memory>
 #include <set>
 #include <stdexcept>
 #include <string>
@@ -258,8 +260,9 @@ struct GameFrontendHost::Impl {
     }
 
     void record_widgets(const std::string& page, const GuiLayoutWidget& widget, int depth,
-        const std::string& parent_key) {
+        const std::string& parent_key, bool runtime = false) {
         GameWidgetRecord record;
+        record.runtime = runtime;
         record.page = page;
         record.key = widget.key;
         record.type = type_name(widget.type);
@@ -288,6 +291,17 @@ struct GameFrontendHost::Impl {
                 record.material = string_key(*widget.source, "ShaderName");
             }
             if (record.material.empty()) record.material = string_key(*widget.source, "Font");
+        }
+        if (runtime) {
+            // A run-time clone is one of dozens per frame, and it is not one of
+            // the page's authored widgets, so it neither logs a tree line nor
+            // counts in the authored totals the earlier milestones report.
+            widget_records.push_back(std::move(record));
+            widget_nodes.push_back(&widget);
+            for (const auto& child : widget.children) {
+                if (child) record_widgets(page, *child, depth + 1, widget.key, true);
+            }
+            return;
         }
         if (!record.texture.empty()) ++summary.widgets_with_texture;
         log.notef("  widget %*s%-28s type=%-9s pos=(%.4f,%.4f,%.1f) size=(%.4f,%.4f) "
@@ -811,6 +825,19 @@ void GameFrontendHost::Impl::build_quads() {
     std::vector<std::size_t> order;
     for (std::size_t index = 0; index < widget_records.size(); ++index) order.push_back(index);
     std::stable_sort(order.begin(), order.end(), [this](std::size_t left, std::size_t right) {
+        // Milestone 2k: the executable's own run-time clones are drawn after
+        // every authored quad. The authored Z is not the native draw order at
+        // all -- `GUI_minimap` puts its island map at Z -5 and its frame, glass
+        // and direction wedge at -22, -23 and -24, so a Z-only order buries the
+        // unit icons under the frame, while the page's own `geOrder` puts
+        // unit_marker_Group (0) in front of every one of them. geOrder is not a
+        // draw order either (`sidemarker_Group` gives HP_Icon 5 and HP_BG_Icon 3,
+        // which is front-to-back), and the native render order is another
+        // owner's, so the bridge keeps milestone 2b's Z rule for authored
+        // widgets and adds one rule of its own for the widgets it created.
+        const bool left_runtime = widget_records[left].runtime;
+        const bool right_runtime = widget_records[right].runtime;
+        if (left_runtime != right_runtime) return !left_runtime;
         return widget_records[left].z > widget_records[right].z;
     });
     for (std::size_t index : order) {
@@ -819,10 +846,28 @@ void GameFrontendHost::Impl::build_quads() {
         // 00aa5e20's visibility calls run after the pages load, so the record's own flag is
         // refreshed from the widget before the bridge reads it.
         if (node != nullptr) record.visible = node->visible;
+        // Milestone 2k: a run-time clone is moved every mission frame by the
+        // minimap icon pass or the marker pass, so its cached transform is stale
+        // by construction and is re-read here. An authored widget keeps the
+        // values the page load resolved, exactly as before.
+        if (node != nullptr && record.runtime) {
+            const GuiWidgetPoint point = resolved_point(*node);
+            record.x = point.x;
+            record.y = point.y;
+            record.z = point.z;
+            record.width = node->transform.size.width;
+            record.height = node->transform.size.height;
+            record.pivot_x = node->transform.pivot_x;
+            record.pivot_y = node->transform.pivot_y;
+        }
         if (!bridge_visible(node)) continue;
         // Milestone 2d: a Text widget carries a font, not a texture, so it takes the
         // reconstructed text path instead of the atlas lookup below.
         if (node != nullptr && node->type == GuiWidgetType::Text) {
+            // A run-time clone's Text run caches the origin it was laid out at,
+            // and the pass that owns the clone moves it every frame, so the
+            // cached run is dropped rather than reused.
+            if (record.runtime) text_runs.erase(node);
             append_text_quads(record, *node, screen_w, screen_h);
             continue;
         }
@@ -875,11 +920,40 @@ void GameFrontendHost::Impl::build_quads() {
         BridgeQuad quad;
         quad.texture = texture;
         quad.z = record.z;
-        const D3DCOLOR color = D3DCOLOR_ARGB(255, 255, 255, 255);
-        const BridgeVertex top_left{left, top, 0.0f, 1.0f, color, u1, v1};
-        const BridgeVertex top_right{right, top, 0.0f, 1.0f, color, u2, v1};
-        const BridgeVertex bottom_left{left, bottom, 0.0f, 1.0f, color, u1, v2};
-        const BridgeVertex bottom_right{right, bottom, 0.0f, 1.0f, color, u2, v2};
+        // Milestone 2k: a run-time clone carries its template's authored Color
+        // (the six minimap groups differ only by it) and the rotation the icon
+        // pass wrote. An authored widget keeps milestone 2b's constant white and
+        // its axis-aligned quad, so no earlier capture moves. Honouring the
+        // authored Color and Rotate on every quad is bridge work this milestone
+        // does not do; see the follow-ups.
+        const D3DCOLOR color = (node != nullptr && record.runtime)
+            ? bridge_color(node->color) : D3DCOLOR_ARGB(255, 255, 255, 255);
+        BridgeVertex top_left{left, top, 0.0f, 1.0f, color, u1, v1};
+        BridgeVertex top_right{right, top, 0.0f, 1.0f, color, u2, v1};
+        BridgeVertex bottom_left{left, bottom, 0.0f, 1.0f, color, u1, v2};
+        BridgeVertex bottom_right{right, bottom, 0.0f, 1.0f, color, u2, v2};
+        if (node != nullptr && record.runtime && node->transform.rotate != 0.0f) {
+            // The authored Rotate reaches the native Z rotation builder 00AA7250
+            // negated (bsp/gui_widget.hpp), and the GUI y axis points down, so a
+            // widget whose texture points along +x turns toward its own heading
+            // at -rotate. The rotation is about the widget's own pivot, which is
+            // where the resolved position sits.
+            const float pivot_x = record.x * screen_w;
+            const float pivot_y = record.y * screen_h;
+            const float angle = -node->transform.rotate;
+            const float cosine = std::cos(angle);
+            const float sine = std::sin(angle);
+            const auto spin = [&](BridgeVertex& vertex) {
+                const float dx = vertex.x - pivot_x;
+                const float dy = vertex.y - pivot_y;
+                vertex.x = pivot_x + dx * cosine - dy * sine;
+                vertex.y = pivot_y + dx * sine + dy * cosine;
+            };
+            spin(top_left);
+            spin(top_right);
+            spin(bottom_left);
+            spin(bottom_right);
+        }
         quad.vertices[0] = top_left;
         quad.vertices[1] = top_right;
         quad.vertices[2] = bottom_left;
@@ -1010,6 +1084,96 @@ void GameFrontendHost::set_widget_text_source(GuiLayoutWidget& widget, std::stri
 }
 
 void GameFrontendHost::invalidate_bridge() { impl_->quads_built = false; }
+
+// ---------------------------------------------------------------------------
+// Milestone 2k: run-time clones of a page's own authored template
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// A deep copy of one authored widget and its subtree. `source` keeps pointing at
+// the page's evaluated table, which outlives every clone because the registry
+// owns the page for the whole run. The scene-node id is not copied: a clone is
+// not one of the 00b75030 nodes the loader asked the host for.
+std::unique_ptr<GuiLayoutWidget> clone_widget_tree(const GuiLayoutWidget& source,
+    const std::string& key) {
+    auto clone = std::make_unique<GuiLayoutWidget>();
+    clone->key = key;
+    clone->type = source.type;
+    clone->transform = source.transform;
+    clone->transform.parent = nullptr;
+    clone->source = source.source;
+    clone->parent = nullptr;
+    clone->node_id = 0;
+    for (int lane = 0; lane < 4; ++lane) {
+        clone->color[lane] = source.color[lane];
+        clone->low_color[lane] = source.low_color[lane];
+        clone->high_color[lane] = source.high_color[lane];
+    }
+    clone->blend_factor = source.blend_factor;
+    clone->visible = source.visible;
+    for (const auto& child : source.children) {
+        if (!child) continue;
+        std::unique_ptr<GuiLayoutWidget> copy = clone_widget_tree(*child, child->key);
+        copy->parent = clone.get();
+        copy->transform.parent = &clone->transform;
+        clone->children.push_back(std::move(copy));
+    }
+    return clone;
+}
+
+void show_runtime_subtree(GameFrontendHost::Impl& host, GuiLayoutWidget& widget) {
+    widget.visible = true;
+    host.visibility_applied.insert(&widget);
+    for (const auto& child : widget.children) {
+        if (child) show_runtime_subtree(host, *child);
+    }
+}
+
+}  // namespace
+
+GuiLayoutWidget* GameFrontendHost::clone_runtime_widget(const std::string& page,
+    const GuiLayoutWidget& source, GuiLayoutWidget& parent, const std::string& key) {
+    Impl& host = *impl_;
+    std::unique_ptr<GuiLayoutWidget> clone = clone_widget_tree(source, key);
+    clone->parent = &parent;
+    clone->transform.parent = &parent.transform;
+    GuiLayoutWidget* borrowed = clone.get();
+    parent.children.push_back(std::move(clone));
+    // The clone and its subtree are drawn, so the bridge's substitute visibility
+    // rule must not hide them: the template the six minimap groups carry has no
+    // "Visible" key at all, and the marker template is authored with the
+    // lower-case `visible` the property reader never looks at.
+    show_runtime_subtree(host, *borrowed);
+    host.record_widgets(page, *borrowed, 0, parent.key, true);
+    host.quads_built = false;
+    return borrowed;
+}
+
+void GameFrontendHost::set_widget_local_position(GuiLayoutWidget& widget, float x, float y,
+    float z) {
+    Impl& host = *impl_;
+    widget.transform.position.x = x;
+    widget.transform.position.y = y;
+    widget.transform.position.z = z;
+    widget.transform.authored_x = x;
+    host.quads_built = false;
+}
+
+void GameFrontendHost::set_widget_rotation(GuiLayoutWidget& widget, float radians) {
+    Impl& host = *impl_;
+    if (widget.transform.rotate == radians) return;
+    widget.transform.rotate = radians;
+    host.quads_built = false;
+}
+
+std::size_t GameFrontendHost::runtime_widgets_drawn() const noexcept {
+    std::size_t drawn = 0;
+    for (const GameWidgetRecord& record : impl_->widget_records) {
+        if (record.runtime && record.drawn) ++drawn;
+    }
+    return drawn;
+}
 
 bool GameFrontendHost::save_back_buffer(IDirect3DDevice9& device, const std::string& path) {
     Impl& host = *impl_;

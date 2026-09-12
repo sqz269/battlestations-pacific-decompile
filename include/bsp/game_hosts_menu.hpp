@@ -33,6 +33,7 @@
 
 namespace bsp {
 class LocaleTables;
+struct GuiLayoutPage;
 }  // namespace bsp
 
 namespace bsp::game {
@@ -182,6 +183,13 @@ public:
         std::uint32_t register_virtual, std::uint32_t layout_virtual);
     bool attach_in_game_page(int slot, const std::string& page_name);
     bool in_game_page_has_child(int slot, const std::string& widget_name);
+    // Milestone 2k. The page one registered HUD screen loaded through 00aa5840,
+    // so a screen's own update virtual can reach its widgets. Null when the slot
+    // is not registered or never loaded that page.
+    GuiLayoutPage* in_game_page(int slot, const std::string& page_name);
+    // The sprite bridge and page owner. The HUD's two world screens draw through
+    // it, and it is this object's for the whole run.
+    GameFrontendHost& frontend() const noexcept;
     // 004f8530, level 1 of the screen-set stack at 00e18cf8.
     void publish_level1_screen_set_004f8530(const int* ids, std::size_t count);
     // 004d8a50, level 1 of the input-context stack at game+570h.

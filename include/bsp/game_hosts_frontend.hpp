@@ -94,6 +94,12 @@ struct GameWidgetRecord {
     // screen, so its visibility is the byte 004f83b0 published rather than the
     // bridge's substitute rule.
     bool screen_owned{false};
+    // Milestone 2k: a widget the executable cloned from a page's own authored
+    // template at run time, for one minimap unit icon or one unit marker. Its
+    // position, rotation and colour are re-read from the widget on every bridge
+    // rebuild, because the pass that places it runs once per mission frame. An
+    // authored widget keeps the cached values the page load produced.
+    bool runtime{false};
     // Milestone 2d, Text widgets only: what the reconstructed text path produced.
     // `text` is the resolved string, ASCII-folded for the report.
     std::string text;
@@ -197,6 +203,24 @@ public:
     // Makes the sprite bridge rebuild its quad list on the next draw, so a
     // visibility change or a newly loaded page is on screen the same frame.
     void invalidate_bridge();
+
+    // ---- milestone 2k: run-time clones of a page's own template ------------
+    // The native per-unit minimap icon entry (005bd590 constructs it, 005c0700
+    // inserts it and 00694a60 attaches it) and the per-marker widget writer
+    // 0063d1e0 both have no reconstruction, so the executable clones the page's
+    // own authored template widget under another widget of the same page and
+    // drives the clone itself. **The clone is an executable-side stand-in, not
+    // recovered behaviour**, and its records carry `runtime` so the difference
+    // stays visible in the report. `source` and `parent` must belong to `page`.
+    GuiLayoutWidget* clone_runtime_widget(const std::string& page,
+        const GuiLayoutWidget& source, GuiLayoutWidget& parent, const std::string& key);
+    // 00aa7dc0 BSP_GuiWidget_SetLocalPositionAndBounds and the widget rotation
+    // virtual +44h, as the two per-frame passes call them on an icon. Both
+    // invalidate the quad list.
+    void set_widget_local_position(GuiLayoutWidget& widget, float x, float y, float z);
+    void set_widget_rotation(GuiLayoutWidget& widget, float radians);
+    // How many run-time clones the bridge currently draws, for the run summary.
+    std::size_t runtime_widgets_drawn() const noexcept;
     // D3DXSaveSurfaceToFileA on the back buffer, through the same dynamic D3DX
     // import the font resources use. Executable plumbing, not a native routine.
     bool save_back_buffer(IDirect3DDevice9& device, const std::string& path);

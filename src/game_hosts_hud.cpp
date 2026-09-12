@@ -3,7 +3,9 @@
 #include "bsp/game_hosts_hud.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_hud_world.hpp"
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_hosts_units.hpp"
 
 #include "bsp/hud_screens.hpp"
 #include "bsp/in_mission_interface_runtime.hpp"
@@ -47,6 +49,15 @@ struct GameHudHost::Impl {
     bool loading_element_5{false};
     bool in_game_interface_applied{false};
 
+    // Milestone 2k. The two screens whose update virtual is reconstructed, and
+    // the controlled-unit payload the second interface request carries.
+    std::unique_ptr<GameHudMinimapHost> minimap;
+    std::unique_ptr<GameHudMarkersHost> markers;
+    GameUnitsHost* units{nullptr};
+    bool unit_request_pending{false};
+    bool unit_request_applied{false};
+    int unit_interface_id{0};
+
     void record(const char* method, std::uint32_t address) {
         char text[16];
         format_address(address, text);
@@ -65,14 +76,20 @@ struct GameHudHost::Impl {
 
 namespace {
 
-// The 20h arm's unit probe. 0068ae0b is reached only with a payload; this
-// process has no local player unit, so the arm takes its null-payload path and
-// none of these is called. They record rather than answer.
+// The 20h arm's unit probe, 0068ae0b. Milestone 2h reached it only with a null
+// payload, so none of these was called and all three recorded. Milestone 2k
+// makes the second request carry the controlled unit, and the probe is then the
+// recovered class test over the recovered chain: a ship answers IsKindOf(6), so
+// the arm re-enters its own virtual +10h with 25h INTF_CAPTAIN.
 class HudUnitQuery final : public InGameInterfaceUnitQuery {
 public:
     explicit HudUnitQuery(GameHudHost::Impl& owner) : owner_(owner) {}
     bool unit_is_kind_of(int type_code) override {
-        static_cast<void>(type_code);
+        if (owner_.units != nullptr && owner_.units->controlled_bound()) {
+            owner_.done("InGameInterface::unit_is_kind_of", 0x0068ae1cu);
+            return owner_.units->unit_is_kind_of(owner_.units->controlled_index(),
+                type_code);
+        }
         owner_.record("InGameInterface::unit_is_kind_of", 0x0068ae1cu);
         return false;
     }
@@ -168,14 +185,21 @@ public:
     InGameInterfaceUnitQuery& unit_query() override { return query_; }
     bool is_multiplayer() override { return false; }
     void redispatch(int interface_id, bool has_payload) override {
-        static_cast<void>(interface_id);
-        static_cast<void>(has_payload);
-        owner_.record("InGameInterface::redispatch", 0x0068afb4u);
+        // 0068AFB4, `this->vtable[10h](newId, payload)`, which is 0068ACA0
+        // itself. Milestone 2h recorded it because the null-payload arm chose no
+        // id; with the controlled unit as the payload the 20h arm is a unit-kind
+        // classifier and this re-entry is what publishes the ship HUD.
+        owner_.done("InGameInterface::redispatch", 0x0068afb4u);
+        if (depth_ >= 4) return;  // the native has no guard; a cycle would hang
+        ++depth_;
+        apply_in_game_interface_0068aca0(owner_.manager, *this, interface_id, has_payload);
+        --depth_;
     }
 
 private:
     GameHudHost::Impl& owner_;
     HudUnitQuery& query_;
+    int depth_{0};
 };
 
 // ---------------------------------------------------------------------------
@@ -549,19 +573,32 @@ void GameHudHost::build_manager_0068a990() {
 
 void GameHudHost::apply_pending_interface_0068aca0() {
     Impl& impl = *impl_;
-    if (!impl.summary.manager_built || impl.summary.interface_applied) return;
+    if (!impl.summary.manager_built) return;
+    bool has_payload = false;
+    if (!impl.summary.interface_applied) {
+        has_payload = false;
+    } else if (impl.unit_request_pending && !impl.unit_request_applied) {
+        // Milestone 2k: the second request, the one that carries the controlled
+        // unit. Serviced through the same 006840f0 / 00684600 path.
+        has_payload = true;
+        impl.unit_request_applied = true;
+    } else {
+        return;
+    }
     // 006840f0 services the pending record and 00684600 hands the id to the
     // manager's own virtual +10h.
     impl.record("InGameInterface::service_pending_request", 0x006840f0u);
     HudUnitQuery query(impl);
     HudInterfaceBinding binding(impl, query);
     const bool accepted = apply_in_game_interface_0068aca0(impl.manager, binding,
-        kInterfaceScene3d, false);
+        kInterfaceScene3d, has_payload);
     impl.done("InGameInterface::apply_pending_interface", 0x0068aca0u);
-    impl.summary.interface_applied = accepted;
+    if (!has_payload) impl.summary.interface_applied = accepted;
+    if (has_payload) impl.unit_interface_id = impl.summary.applied_interface_id;
 
     // Which of the level-1 screens hold a page, for the run's own report.
     impl.summary.level1_pages.clear();
+    for (GameHudScreenRecord& record : impl.summary.screens) record.in_level1_set = false;
     for (const int id : impl.summary.level1_screen_ids) {
         for (GameHudScreenRecord& record : impl.summary.screens) {
             if (record.registry_slot != id) continue;
@@ -589,9 +626,64 @@ void GameHudHost::apply_pending_interface_0068aca0() {
         if (!pages.empty()) pages += ' ';
         pages += page;
     }
-    impl.log.notef("in-mission level-1 set for INTF_SCENE3D (null payload, single player): "
-        "screens %s| contexts %s| pages %s", screens.c_str(), contexts.c_str(),
-        pages.c_str());
+    impl.log.notef("in-mission level-1 set for INTF_SCENE3D (%s payload, single player) "
+        "applied as %02Xh: screens %s| contexts %s| pages %s",
+        has_payload ? "controlled unit" : "null",
+        static_cast<unsigned>(impl.summary.applied_interface_id), screens.c_str(),
+        contexts.c_str(), pages.c_str());
+    if (has_payload) {
+        impl.log.note("the 20h arm classified the controlled unit through the recovered "
+            "IsKindOf chain and re-entered its own virtual +10h, which is what raises the "
+            "world markers screen (4Dh) and keeps the minimap (35h): both have a "
+            "reconstructed update virtual and the pump 004f8830 now calls them");
+    }
+}
+
+void GameHudHost::attach_world_2k(GameUnitsHost& units, GameMissionLuaHost& lua) {
+    Impl& impl = *impl_;
+    impl.units = &units;
+    if (!impl.minimap) impl.minimap = std::make_unique<GameHudMinimapHost>(impl.log, impl.menu);
+    if (!impl.markers) impl.markers = std::make_unique<GameHudMarkersHost>(impl.log, impl.menu);
+    impl.minimap->attach_world(units, lua);
+    impl.markers->attach_world(units);
+}
+
+void GameHudHost::request_scene_interface_for_unit_004cc460() {
+    Impl& impl = *impl_;
+    if (impl.units == nullptr || !impl.units->controlled_bound()) return;
+    if (impl.unit_request_pending) return;
+    // The load creates the units on its `load_scene_contents` row and builds the
+    // HUD manager on a later row, so the request outlives the push: it is
+    // serviced by the first 004c40f0 pass that finds the manager built, right
+    // after the null-payload request Init pushed. In the game the pusher is the
+    // HUD root, which by definition already has a manager; that ordering is the
+    // executable's and is the only part of this step that is.
+    // 004cc460(20h, unit). The native pushers are the HUD root's own 00649860,
+    // 006485a0 and 00647300, all of which read a HUD root object this process
+    // does not own, so the push is recorded and the executable makes it.
+    impl.record("InGameInterface::push_interface_request", 0x004cc460u);
+    impl.unit_request_pending = true;
+    impl.log.note("interface request 20h pushed with the controlled unit as its payload: "
+        "milestone 2h applied the null-payload request Init pushes at 0068d73a, whose arm "
+        "publishes only 29h 49h 44h 35h; the same arm with a unit is a classifier");
+}
+
+void GameHudHost::update_minimap_screen_005c0f20(float seconds) {
+    Impl& impl = *impl_;
+    if (!impl.minimap) {
+        impl.record("HudMinimap::update", 0x005c0f20u);
+        return;
+    }
+    impl.minimap->update_005c0f20(seconds);
+}
+
+void GameHudHost::update_markers_screen_006435d0(float seconds) {
+    Impl& impl = *impl_;
+    if (!impl.markers) {
+        impl.record("HudMarkers::update", 0x006435d0u);
+        return;
+    }
+    impl.markers->update_006435d0(seconds);
 }
 
 void GameHudHost::apply_in_game_interface_004c9ca0(bool loading) {
@@ -719,6 +811,8 @@ void GameHudHost::report() {
     // through 00aa7e00, and which the renderer owner produces. There is no
     // second texture for this process to load.
     impl.record("HudMinimap::radar_map_texture", 0x00aa5e60u);
+    if (impl.minimap) impl.minimap->report();
+    if (impl.markers) impl.markers->report();
     impl.log.note("minimap island-map icon: minimap_terrain.mshd is the two-sampler GUI "
         "shader effect shaderfx/gui/minimap_terrain.shfx (RadarMap at register 0, "
         "FadeBorder at index 1) and names no texture, so error.tga is sampler 0's authored "
