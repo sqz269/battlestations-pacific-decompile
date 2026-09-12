@@ -165,6 +165,11 @@ struct GameMissionFrameHost::Impl {
     // because the order slot the controller publishes lives on the unit.
     std::unique_ptr<GameShipAiHost> ship_ai;
     long order_frame{-1};             // --order-frame N
+    // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>, engaged on the same
+    // frame as the player order.
+    std::string ai_drive_unit;
+    float ai_drive_throttle{0.0f};
+    float ai_drive_rudder{0.0f};
     float order_throttle{0.0f};
     float order_rudder{0.0f};
     float order_speed{0.0f};
@@ -1534,6 +1539,12 @@ void GameMissionFrameHost::set_player_command(std::string token, std::string tar
     impl_->order_command_unit = std::move(unit);
 }
 
+void GameMissionFrameHost::set_ai_drive(std::string unit, float throttle, float rudder) {
+    impl_->ai_drive_unit = std::move(unit);
+    impl_->ai_drive_throttle = throttle;
+    impl_->ai_drive_rudder = rudder;
+}
+
 void GameMissionFrameHost::set_trajectory_csv(std::string path) {
     impl_->trajectory_csv_path = std::move(path);
 }
@@ -1632,6 +1643,13 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 host.order_command_target, host.order_command_unit);
         } else {
             host.units->issue_player_order(host.order_throttle, host.order_rudder);
+        }
+        // Milestone 2o: the diagnostic stand-in for the state step, engaged
+        // after the order that chose the state, so the two take effect on the
+        // same in-mission frame.
+        if (!host.ai_drive_unit.empty()) {
+            host.units->enable_ai_drive(host.ai_drive_unit, host.ai_drive_throttle,
+                host.ai_drive_rudder);
         }
         if (host.order_speed_set && host.units->controlled_bound()) {
             // Milestone 2m: the store luaMW_SetShipSpeed 00890d30 makes. This

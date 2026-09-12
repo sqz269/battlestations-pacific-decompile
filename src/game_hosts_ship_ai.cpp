@@ -20,7 +20,9 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/ship_ai_throttle_ring.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/unit_state_message.hpp"
 #include "bsp/weapon_director.hpp"
 
 namespace bsp::game {
@@ -118,6 +120,14 @@ struct GameShipAiHost::Impl {
         std::uint32_t active_state_command{0};
         bsp::NativeHandle fire_target{0};       // director+238h as this process holds it
         std::string sample;                     // the last line log_sample emitted
+        // Milestone 2o. `drive` is the labelled diagnostic stand-in of
+        // --ai-drive; the two live values are the previous step's ring+148h /
+        // +14Ch, so a change can be counted rather than assumed.
+        bool drive{false};
+        float drive_throttle{0.0f};
+        float drive_rudder{0.0f};
+        float live_throttle{0.0f};
+        float live_rudder{0.0f};
     };
     std::vector<Controller> controllers;
     std::vector<GameShipAiRow> rows;
@@ -135,6 +145,11 @@ struct GameShipAiHost::Impl {
         log.unimplemented(method, text);
     }
     void record_slot(const char* method, const char* text) { log.unimplemented(method, text); }
+    // Milestone 2o, chain slot 16: 009F4DA0's tail call at 009F50C6 into
+    // 009F3F80, and 009F3F80's own tail, which is the hop into the unit's
+    // order ring. Defined below the host bindings it builds.
+    void drive_order_ring_009f3f80(std::size_t index, Controller& ctl, GameShipAiRow& row,
+        float seconds);
     void done(const char* method, std::uint32_t address) {
         char text[16];
         std::snprintf(text, sizeof(text), "%08lx", static_cast<unsigned long>(address));
@@ -241,6 +256,65 @@ public:
 
 private:
     GameShipAiHost::Impl& owner_;
+};
+
+// ---------------------------------------------------------------------------
+// bsp::ShipAiRudderLawHost, the one call site inside 009DA250
+// ---------------------------------------------------------------------------
+
+class RudderLawBinding final : public bsp::ShipAiRudderLawHost {
+public:
+    RudderLawBinding(GameShipAiHost::Impl& owner, std::size_t index)
+        : owner_(owner), index_(index) {}
+    float unit_body_axis_speed_0092d730() override {
+        // 009DA2D7 with ECX = [unit+1018h] set at 009DA2D1: the hull's signed
+        // forward speed, the same value the trajectory dump's fwd_speed carries.
+        const float speed = owner_.units.unit_forward_speed_0092d730(index_);
+        owner_.done("ShipAiRudder::body_axis_speed", 0x0092d730u);
+        return speed;
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    std::size_t index_;
+};
+
+// ---------------------------------------------------------------------------
+// bsp::ShipAiRingHopHost, the three call sites of 009F4B99..009F4D04
+// ---------------------------------------------------------------------------
+
+class RingHopBinding final : public bsp::ShipAiRingHopHost {
+public:
+    RingHopBinding(GameShipAiHost::Impl& owner, GameShipAiRow& row, std::size_t index)
+        : owner_(owner), row_(row), index_(index) {}
+
+    float unit_body_axis_speed_0092d730() override {
+        // 009F4BD4, reached only when the throttle is already inside the
+        // 009F4BB9 deadband, which is what makes the zeroing arm a measurement.
+        const float speed = owner_.units.unit_forward_speed_0092d730(index_);
+        owner_.done("ShipAiRing::hop_body_axis_speed", 0x0092d730u);
+        return speed;
+    }
+    void set_ring_write_slot_rudder_0080e190(float value) override {
+        // 009F4CE8, 0080E190 with ECX = [blk+3FCh]: [unit + ([unit+97Ch]<<5) +
+        // 83Ch]. Always the first of the two.
+        owner_.units.unit_ring_set_write_slot_rudder_0080e190(index_, value);
+        owner_.done("ShipAiRing::set_write_slot_rudder", 0x0080e190u);
+        row_.ring_slot_rudder = value;
+    }
+    void set_ring_write_slot_throttle_0080e170(float value) override {
+        // 009F4CFB, 0080E170: [unit + ([unit+97Ch]<<5) + 838h].
+        owner_.units.unit_ring_set_write_slot_throttle_0080e170(index_, value);
+        owner_.done("ShipAiRing::set_write_slot_throttle", 0x0080e170u);
+        row_.ring_slot_throttle = value;
+        ++row_.ring_writes;
+        ++owner_.summary.ring_writes;
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiRow& row_;
+    std::size_t index_;
 };
 
 // ---------------------------------------------------------------------------
@@ -402,6 +476,20 @@ public:
         // vtable slot and its body was not read, so the step is a record with
         // its own address. `sub_attack`'s vtable was not read at all.
         ++owner_.summary.state_steps_recorded;
+        // Milestone 2o, --ai-drive: a LABELLED DIAGNOSTIC STAND-IN for exactly
+        // this gap. The state step has no body, so on this re-plan tick the two
+        // recovered setters are called on the unit's own control block with the
+        // pair the switch names. Nothing else on the chain is substituted: the
+        // clamps, the mode switch, 009ED6B0, 009F4D10, the hop and the ring are
+        // the game's own routines.
+        if (ctl_.drive) {
+            SetterBinding setters(owner_);
+            bsp::ship_ai_set_desired_throttle_009dbf90(ctl_.blk, ctl_.drive_throttle);
+            owner_.done("ShipAiDrive::set_desired_throttle", 0x009dbf90u);
+            bsp::ship_ai_set_desired_steering_009dffb0(ctl_.blk, ctl_.drive_rudder,
+                setters);
+            owner_.done("ShipAiDrive::set_desired_steering", 0x009dffb0u);
+        }
         if (state == nullptr || state->step == 0u) {
             owner_.record_slot("ShipAiState::step_vtable0c", "00d21598+vtable0c");
             return;
@@ -458,7 +546,16 @@ public:
         row_.slot_valid = result.slot.valid_4c;
     }
     void tail_009da8d0(float) override { owner_.record("ShipAi::tail_009da8d0", 0x009da8d0u); }
-    void tail_009f4da0(float) override { owner_.record("ShipAi::tail_009f4da0", 0x009f4da0u); }
+    void tail_009f4da0(float seconds) override {
+        // 009F5248, chain slot 16. 009F4DA0's own body is the throttle ceiling
+        // on brain+34Ch / +350h, which no packet has reconstructed, so it stays
+        // a record with its own address. It is not on the way to anything here:
+        // the routine's ONLY exit is the tail call at 009F50C6 with
+        // ECX = brain+8h = blk, taken whether or not brain+0B38h skipped the
+        // body (009F4DAF), so 009F3F80 runs on every step either way.
+        owner_.record("ShipAi::throttle_ceiling", 0x009f4da0u);
+        owner_.drive_order_ring_009f3f80(index_, ctl_, row_, seconds);
+    }
 
 private:
     GameShipAiHost::Impl& owner_;
@@ -665,6 +762,123 @@ private:
 }  // namespace
 
 // ---------------------------------------------------------------------------
+// Chain slot 16: 009F4DA0 -> 009F3F80, and 009F3F80's tail into the order ring
+// ---------------------------------------------------------------------------
+//
+// COVERAGE. 009F3F80's body is 009F3F80-009F4D06 and this runs three parts of
+// it and records the rest:
+//   009F3FEB..009F3FF2  the early-out gate on blk+3F5h                projected
+//   009F3FF8..009F402E  the ring slot under the write cursor          projected
+//   009F4034..009F40C6  the speed, the heading, the astern flip and
+//                       the heading error the rudder law is given     projected
+//   009F40CA..009F44E3  the ten writers of blk+1D0h                   RECORD
+//   009F44E4..009F44FC  the mode gate and the rudder law's store       projected
+//   009F4502..009F4B98  the obstacle and reverse-manoeuvre arms,
+//                       including the second rudder store at 009F46A0  RECORD
+//   009F4B99..009F4D04  the hop                                       projected
+// The recorded spans are the ones docs/SHIP_AI_THROTTLE_TO_RING.md read for the
+// fields they write and did not project. They can change blk+1D0h and blk+1D4h
+// before the hop reads them, so what this executable puts in the ring is the
+// hop applied to the state's own desired pair, not to whatever those arms would
+// have made of it. That is stated in the milestone and is a boundary, not a
+// result.
+
+void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controller& ctl,
+    GameShipAiRow& row, float seconds) {
+    done("ShipAi::drive_order_ring", 0x009f3f80u);
+    // 009F3FEB CMP byte [ESI+3F5h],0 / 009F3FF2 JNZ 009F4D00: the routine's one
+    // early out, and it jumps past the hop to the epilogue. blk+3F5h is the
+    // byte 009ED6B0 returns on (bsp::ShipAiControlBlock::early_out_3f5) and
+    // nothing in this process writes it, so the gate is open. The count is
+    // reported so a later reader does not have to take that on trust.
+    if (ctl.blk.early_out_3f5) {
+        done("ShipAiRing::early_out_3f5", 0x009f3ff2u);
+        ++row.ring_gated_3f5;
+        ++summary.ring_gated_3f5;
+        return;
+    }
+    done("ShipAiRing::early_out_3f5", 0x009f3ff2u);
+
+    // 009F3FF8..009F402E: two independent loads of [unit+97Ch], each shifted
+    // left by 5. 009F400D reads the slot's +83Ch (the rudder) and 009F4025 its
+    // +838h (the throttle). This is the slot the hop slews toward and then
+    // writes back, and it is NOT the 84-byte AI order slot 009F4D10 published.
+    const float previous_throttle = units.unit_ring_write_slot_throttle(index);
+    const float previous_rudder = units.unit_ring_write_slot_rudder(index);
+    done("ShipAiRing::write_slot_read", 0x009f400du);
+
+    // 009F4034, 0092D730 with ECX = [unit+1018h]. The routine reads the hull's
+    // signed forward speed once at its head and uses it for two byte flags.
+    const float speed = units.unit_forward_speed_0092d730(index);
+    done("ShipAi::drive_speed", 0x0092d730u);
+    // 009F4072..009F407B, CALL [[unit]+50h]: the unit's own heading getter.
+    float heading = units.unit_heading_radians(index);
+    record_slot("ShipAi::drive_heading_vtable50", "00cfc3d0+vtable50");
+    // 009F4081 CMP [ESI+35Ch],2 / 009F409E 00438AA0(heading, [00D7A264]): a
+    // ship latched astern is steered about the reciprocal of its own heading.
+    // 00D7A264 is the 3.14159265f bsp/unit_state_message.hpp names for the
+    // MT_SHIP_SYNC heading range, which is the same constant.
+    if (ctl.blk.direction == bsp::ShipAiThrottleDirection::Astern) {
+        heading = bsp::wrapped_angle_add_00438aa0(heading,
+            bsp::kUnitStateMessageHeadingRange);
+        done("ShipAi::drive_astern_heading", 0x00438aa0u);
+    }
+    // 009F40BB, 00438B10(blk+324h, heading): the heading error, the one value
+    // the rudder law is driven with.
+    const float error = bsp::wrapped_angle_subtract_00438b10(ctl.blk.heading_target_324,
+        heading);
+    done("ShipAi::drive_heading_error", 0x00438b10u);
+    row.heading_error = error;
+
+    // 009F40CA..009F44E3 and 009F4502..009F4B98, the spans this packet does not
+    // project: the ten writers of blk+1D0h that docs/SHIP_AI_THROTTLE_TO_RING.md
+    // tabulates, and the two 2Ch-stride obstacle tables at blk+81Ch / blk+848h
+    // with the second rudder store at 009F46A0. One record for the whole of it,
+    // so the host-method count carries the boundary.
+    record("ShipAi::drive_order_ring_body", 0x009f40cau);
+
+    // 009F44E4 CMP [ESI+1C4h],0 / JZ 009F4502: the rudder law runs only when
+    // the steering mode is NOT Rudder. A state that commanded a rudder through
+    // 009DFFB0 keeps the rudder it asked for; a Heading or Navigate state has
+    // its rudder built here from the heading error.
+    if (ctl.blk.mode != bsp::ShipAiSteeringMode::Rudder) {
+        RudderLawBinding law(*this, index);
+        // The one stand-in on this path: 009DA268 loads the divisor from
+        // [[blk+3FCh]+538h]+524h and 00831840 does not write class+524h, so the
+        // field has no recovered Lua key. MaxRotAngle (class+4F8h) stands in,
+        // exactly as src/ship_motion_probe.cpp does, and the record keeps that
+        // visible in the host-method table.
+        const float authority = units.unit_yaw_authority_stand_in_04f8(index);
+        record("ShipAiRudder::class_yaw_authority_0524", 0x009da268u);
+        // 009F44F7 009DA250, 009F44FC FSTP [ESI+1D4h].
+        ctl.blk.desired_rudder = bsp::ship_ai_rudder_from_heading_error_009da250(
+            ctl.blk.direction, error, authority, law);
+        done("ShipAiRudder::from_heading_error", 0x009da250u);
+        ++row.rudder_law_calls;
+        ++summary.rudder_law_calls;
+    }
+
+    // 009F4B99..009F4D04, the hop, reconstructed operation for operation by
+    // packet cc_ai_throttle_ring: the deadband that zeroes blk+1D4h, the slew of
+    // both desired values toward the slot by at most dt * 1.5, and the two
+    // setters that put them back.
+    RingHopBinding hop_host(*this, row, index);
+    const bsp::ShipAiRingHop hop = bsp::ship_ai_order_ring_hop_009f4b99(ctl.blk,
+        previous_throttle, previous_rudder, seconds, hop_host);
+    done("ShipAiRing::order_ring_hop", 0x009f4b99u);
+    ++row.ring_hops;
+    ++summary.ring_hops;
+    if (hop.rudder_zeroed) {
+        ++row.rudder_deadbands;
+        ++summary.rudder_deadbands;
+    }
+    // The head's speed is read by the native routine into two byte flags that
+    // only the unprojected arms consume ([ESP+6] at 009F4043 and BL at
+    // 009F4077), so the call site runs and the value goes nowhere here.
+    static_cast<void>(speed);
+}
+
+// ---------------------------------------------------------------------------
 
 GameShipAiHost::GameShipAiHost(GameHostLog& log, GameUnitsHost& units)
     : impl_(std::make_unique<Impl>(log, units)) {}
@@ -727,6 +941,19 @@ void GameShipAiHost::controller_step(float seconds) {
         row.distance_330 = ctl.blk.distance_330;
         row.distance_finite = std::isfinite(ctl.blk.distance_32c)
             && std::isfinite(ctl.blk.distance_330);
+        // Milestone 2o: ring+148h / +14Ch as 00813020 left them on the previous
+        // step. The tick runs inside 00825F20, after this pass, so reading them
+        // here samples the value the motion actually integrated.
+        const float live_a = host.units.unit_ring_current_throttle(index);
+        const float live_b = host.units.unit_ring_current_rudder(index);
+        if (live_a != ctl.live_throttle || live_b != ctl.live_rudder) {
+            ++row.live_pair_changes;
+            ++host.summary.live_pair_changes;
+        }
+        ctl.live_throttle = live_a;
+        ctl.live_rudder = live_b;
+        row.ring_live_throttle = live_a;
+        row.ring_live_rudder = live_b;
         // 009F5DA0 beside it, with the same step delta: the selector's own
         // countdown is what turns a per-step call into a once-a-second think.
         const float before = ctl.target.think_countdown;
@@ -764,6 +991,26 @@ bool GameShipAiHost::promote_order_00825f2c(std::size_t unit_index) {
             "packet cc_ai_order_hop, worker agent/cc-ai-order-hop");
     }
     return true;
+}
+
+void GameShipAiHost::set_ai_drive(std::size_t unit_index, float throttle, float rudder) {
+    Impl& host = *impl_;
+    if (unit_index >= host.controllers.size()) return;
+    Impl::Controller& ctl = host.controllers[unit_index];
+    if (!ctl.drive) ++host.summary.units_driven;
+    ctl.drive = true;
+    ctl.drive_throttle = throttle;
+    ctl.drive_rudder = rudder;
+    host.rows[unit_index].ai_driven = true;
+    host.log.notef("--ai-drive \"%s\" = throttle %.3f, rudder %.3f: a LABELLED DIAGNOSTIC "
+        "STAND-IN for the state step. Eight of the nine leaves of the family at 00d21598 "
+        "have no reconstructed body, so on every re-plan tick of this unit the executable "
+        "calls 009dbf90 and 009dffb0 on its own control block with this pair in place of "
+        "the state's decision. Everything after that point is the game's own recovered "
+        "path: 009ed6b0, 009f4d10, the 009f50c6 tail into 009f3f80, that routine's hop "
+        "through 0080e170 / 0080e190, 00813020's tick and 00825f20's motion",
+        host.rows[unit_index].unit.c_str(), static_cast<double>(throttle),
+        static_cast<double>(rudder));
 }
 
 const std::vector<GameShipAiRow>& GameShipAiHost::rows() const noexcept { return impl_->rows; }
@@ -827,6 +1074,25 @@ void GameShipAiHost::report() {
         "movetopos=%zu other=%zu", host.summary.states_cruise, host.summary.states_stop,
         host.summary.states_attackmove, host.summary.states_movetopos,
         host.summary.states_other);
+    // Milestone 2o: the hop's own table, one row per unit that wrote a ring
+    // slot, so a reader can see what reached the ring rather than only what the
+    // controller decided.
+    host.log.notef("  %-20s %-10s %8s %8s %8s %9s %9s %9s %9s %8s", "unit", "state",
+        "hops", "writes", "deadband", "slot_thr", "slot_rud", "live_thr", "live_rud",
+        "livechg");
+    for (const GameShipAiRow& row : host.rows) {
+        host.log.notef("  %-20s %-10s %8llu %8llu %8llu %9.4f %9.4f %9.4f %9.4f %8llu",
+            row.unit.c_str(), row.state.c_str(), row.ring_hops, row.ring_writes,
+            row.rudder_deadbands, static_cast<double>(row.ring_slot_throttle),
+            static_cast<double>(row.ring_slot_rudder),
+            static_cast<double>(row.ring_live_throttle),
+            static_cast<double>(row.ring_live_rudder), row.live_pair_changes);
+    }
+    host.log.notef("summary mission ship ai ring hops=%llu gated_3f5=%llu writes=%llu "
+        "rudder_law=%llu deadbands=%llu live_pair_changes=%llu driven=%zu",
+        host.summary.ring_hops, host.summary.ring_gated_3f5, host.summary.ring_writes,
+        host.summary.rudder_law_calls, host.summary.rudder_deadbands,
+        host.summary.live_pair_changes, host.summary.units_driven);
     host.log.notef("summary mission auto target thinks=%llu scans=%llu chose=%zu "
         "fire_target_sets=%llu attackmove_issues=%llu blocked_at=0071df70",
         host.summary.thinks, host.summary.scans, host.summary.units_with_fire_target,

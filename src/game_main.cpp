@@ -155,7 +155,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             " [--press-start-frame N] [--menu-select <mission id>] [--mission-frames N]"
             " [--mission-complete-frame N]"
             " [--order throttle=<f>,rudder=<f> | --order <command>[:<entity>]]"
-            " [--order-unit <name>]"
+            " [--order-unit <name>] [--ai-drive <unit>=<throttle>,<rudder>]"
             " [--order-frame N] [--mission-frame-seconds S]"
             " [--trajectory-csv <path>]"
             " [--screenshot <path>] [--screenshot-frame N]"
@@ -192,6 +192,13 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         static_cast<double>(options.mission_frame_seconds),
         options.trajectory_csv.empty() ? "(none)" : options.trajectory_csv.c_str(),
         options.log_path.empty() ? "(stdout only)" : options.log_path.c_str());
+    if (!options.ai_drive_unit.empty()) {
+        log.notef("--ai-drive %s=%.3f,%.3f: a labelled diagnostic stand-in for the ship AI "
+            "state step, engaged on --order-frame. It substitutes nothing after the two "
+            "setters 009dbf90 / 009dffb0",
+            options.ai_drive_unit.c_str(), static_cast<double>(options.ai_drive_throttle),
+            static_cast<double>(options.ai_drive_rudder));
+    }
 
     // The phase-2 mounts use GetCurrentDirectoryA at 0073d697, so pointing the run at an
     // installed game means setting the process current directory, not injecting a path. The

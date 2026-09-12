@@ -87,7 +87,12 @@ class Live:
         result = None
         if isinstance(text, dict):
             text = json.dumps(text)
-        if 'No function' not in text and 'error' not in text.lower():
+        # The bridge reports a failure either as "No function ..." or as text this
+        # client prefixed with "error:". Testing for the bare word "error" anywhere
+        # in the reply rejects any function whose NAME contains it: the recovered
+        # BSP_ShipAi_RudderFromHeadingError at 009da250 was reported as "not a
+        # Ghidra function" for exactly that reason (packet cc_exe_2o).
+        if 'No function' not in text and not text.lower().lstrip().startswith('error'):
             m = BODY.search(text)
             name = None
             fm = FN_AT.search(text)

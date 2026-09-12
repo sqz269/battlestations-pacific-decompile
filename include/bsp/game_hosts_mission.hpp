@@ -192,6 +192,10 @@ public:
     // of --order is issued to, instead of the controlled unit.
     void set_order_unit(std::string unit);
 
+    // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>: the labelled
+    // diagnostic stand-in for the state step, engaged on --order-frame.
+    void set_ai_drive(std::string unit, float throttle, float rudder);
+
     // True when --menu-select named a mission, so the run drives the path.
     bool requested() const noexcept;
 

@@ -328,6 +328,29 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 return false;
             }
             order_unit = argv[++index];
+        } else if (std::strcmp(argument, "--ai-drive") == 0) {
+            // Milestone 2o: <name>=<throttle>,<rudder>. The diagnostic stand-in
+            // for the state step, engaged on --order-frame.
+            if (index + 1 >= argc) {
+                error = "--ai-drive needs <unit>=<throttle>,<rudder>";
+                return false;
+            }
+            const std::string text = argv[++index];
+            const std::size_t equals = text.find('=');
+            const std::size_t comma = text.find(',', equals == std::string::npos ? 0
+                                                                                 : equals);
+            if (equals == std::string::npos || comma == std::string::npos) {
+                error = "--ai-drive needs <unit>=<throttle>,<rudder>";
+                return false;
+            }
+            ai_drive_unit = text.substr(0, equals);
+            ai_drive_throttle = static_cast<float>(
+                std::atof(text.substr(equals + 1, comma - equals - 1).c_str()));
+            ai_drive_rudder = static_cast<float>(std::atof(text.substr(comma + 1).c_str()));
+            if (ai_drive_unit.empty()) {
+                error = "--ai-drive needs a unit name before the '='";
+                return false;
+            }
         } else if (std::strcmp(argument, "--order") == 0) {
             // Milestone 2i: throttle=<f>,rudder=<f>, the two parameters
             // 00816a40 publishes into the controlled unit's order ring.
@@ -1289,6 +1312,11 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // keeps its signature.
     if (!options_.order_unit.empty() && menu_->mission() != nullptr) {
         menu_->mission()->set_order_unit(options_.order_unit);
+    }
+    // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>, the same way.
+    if (!options_.ai_drive_unit.empty() && menu_->mission() != nullptr) {
+        menu_->mission()->set_ai_drive(options_.ai_drive_unit, options_.ai_drive_throttle,
+            options_.ai_drive_rudder);
     }
     menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();

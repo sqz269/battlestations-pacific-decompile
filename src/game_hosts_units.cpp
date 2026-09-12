@@ -21,6 +21,7 @@
 #include "bsp/ocean_height.hpp"
 #include "bsp/pose_refresh.hpp"
 #include "bsp/rigid_body_integration.hpp"
+#include "bsp/ship_ai_throttle_ring.hpp"
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/ship_motion.hpp"
 #include "bsp/unit_controller.hpp"
@@ -1181,6 +1182,71 @@ bool GameUnitsHost::run_cruise_state_step_009e1170(std::size_t index,
         bsp::unit_reference_speed_0080fc30(slot.motion.max_speed,
             bsp::kUnitReferenceSpeedUnscaled),
         ordered, &blk, &setters);
+}
+
+// ---------------------------------------------------------------------------
+// Milestone 2o: the ring's write slot, which the tail of 009f3f80 reads and
+// then writes back through 0080e170 / 0080e190.
+// ---------------------------------------------------------------------------
+
+float GameUnitsHost::unit_ring_write_slot_throttle(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    const bsp::UnitOrderRing& ring = host.slots[index]->ring;
+    return bsp::ship_ai_ring_write_slot_throttle(ring);
+}
+
+float GameUnitsHost::unit_ring_write_slot_rudder(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    const bsp::UnitOrderRing& ring = host.slots[index]->ring;
+    return bsp::ship_ai_ring_write_slot_rudder(ring);
+}
+
+void GameUnitsHost::unit_ring_set_write_slot_throttle_0080e170(std::size_t index,
+    float value) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size()) return;
+    bsp::ship_ai_ring_set_write_slot_throttle_0080e170(host.slots[index]->ring, value);
+}
+
+void GameUnitsHost::unit_ring_set_write_slot_rudder_0080e190(std::size_t index,
+    float value) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size()) return;
+    bsp::ship_ai_ring_set_write_slot_rudder_0080e190(host.slots[index]->ring, value);
+}
+
+float GameUnitsHost::unit_ring_current_throttle(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    return host.slots[index]->ring.current_param_a;
+}
+
+float GameUnitsHost::unit_ring_current_rudder(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    return host.slots[index]->ring.current_param_b;
+}
+
+float GameUnitsHost::unit_yaw_authority_stand_in_04f8(std::size_t index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    return host.slots[index]->row.max_rot_angle;
+}
+
+bool GameUnitsHost::enable_ai_drive(const std::string& unit_name, float throttle,
+    float rudder) {
+    Impl& host = *impl_;
+    if (host.ship_ai == nullptr) return false;
+    for (std::size_t index = 0; index < host.slots.size(); ++index) {
+        if (host.slots[index]->row.name != unit_name) continue;
+        host.ship_ai->set_ai_drive(index, throttle, rudder);
+        return true;
+    }
+    host.log.notef("--ai-drive \"%s\" names no created instance; nothing was driven",
+        unit_name.c_str());
+    return false;
 }
 
 std::size_t GameUnitsHost::count() const noexcept { return impl_->slots.size(); }
