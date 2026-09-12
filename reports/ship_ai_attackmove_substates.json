@@ -1,0 +1,260 @@
+{
+  "packet": "cc_ai_attackmove_substates",
+  "owner": "agent/cc-ai-attackmove-substates",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_access": "read-only",
+  "doc": "docs/SHIP_AI_ATTACKMOVE_SUBSTATES.md",
+  "header": "include/bsp/ship_ai_attackmove_substates.hpp",
+  "source": "src/ship_ai_attackmove_substates.cpp",
+  "build": "scripts/build.ps1 clean at /W4 /WX; reconstructed_math passes; no new test added",
+  "note": "Descriptive names are hypotheses, not recovered symbols. Indirect rows carry a native that is not a plain address and are skipped by tools/verify_report_calls.py.",
+
+  "routines": [
+    {
+      "address": "009f3240",
+      "native": "009f3240",
+      "name": "BSP_ShipAi_AttackMoveApproachSubStateStep",
+      "abi": "__thiscall(sub)(float seconds), RET 4",
+      "body": "body 009f3240-009f3664",
+      "vtable_slot": "00d21994+0c",
+      "state_offset": "state+8h",
+      "coverage": "complete"
+    },
+    {
+      "address": "009e23b0",
+      "native": "009e23b0",
+      "name": "BSP_ShipAi_AttackMoveEngageSubStateStep",
+      "abi": "__thiscall(sub)(float seconds), RET 4",
+      "body": "body 009e23b0-009e26bd",
+      "vtable_slot": "00d2174c+0c",
+      "state_offset": "state+14C0h",
+      "coverage": "complete"
+    },
+    {
+      "address": "009e26c0",
+      "native": "009e26c0",
+      "name": "BSP_ShipAi_AttackMoveLeadPursuitSubStateStep",
+      "abi": "__thiscall(sub)(float seconds), RET 4",
+      "body": "body 009e26c0-009e2b58",
+      "vtable_slot": "00d2177c+0c",
+      "state_offset": "state+14CCh",
+      "coverage": "complete"
+    },
+    {
+      "address": "009f3670",
+      "native": "009f3670",
+      "name": "BSP_ShipAi_AttackMoveTangentSubStateStep",
+      "abi": "__thiscall(sub)(float seconds), RET 4",
+      "body": "body 009f3670-009f39b0",
+      "vtable_slot": "00d217ac+0c",
+      "state_offset": "state+14E0h",
+      "coverage": "complete"
+    },
+    {
+      "address": "007b3dd0",
+      "native": "shared_empty_stub_no_ghidra_function",
+      "name": "BSP_EmptyOneArgVirtualStub",
+      "abi": "__thiscall(this)(4 bytes), RET 4",
+      "body": "body 007b3dd0-007b3dd2 (no Ghidra function; see the doc's no_ghidra_function table)",
+      "vtable_slot": "00d2171c+0c",
+      "state_offset": "state+14F4h",
+      "coverage": "complete",
+      "note": "One RET 4. Twenty vtables reference it, so it is a COMDAT-folded empty virtual shared across classes, not an attackmove routine."
+    },
+    {
+      "address": "00852860",
+      "native": "00852860",
+      "name": "BSP_Entity_IsBelowAltitudeThird",
+      "abi": "__thiscall(entity) -> bool, RET 0",
+      "body": "body 00852860-008528ac",
+      "coverage": "complete"
+    },
+    {
+      "address": "009e85b0",
+      "native": "009e85b0",
+      "name": "BSP_ShipAi_AttackMoveEngageGate",
+      "abi": "__thiscall(sub) -> bool, RET 0",
+      "body": "body 009e85b0-009e86b5",
+      "coverage": "complete"
+    },
+    {
+      "address": "009e5ca0",
+      "native": "009e5ca0",
+      "name": "BSP_ShipAi_AttackMoveApproachConstruct",
+      "abi": "__thiscall(sub)(owner), RET 4",
+      "body": "body 009e5ca0-009e5cec",
+      "coverage": "complete"
+    },
+    {
+      "address": "009e5530",
+      "native": "009e5530",
+      "name": "BSP_ShipAi_AttackMoveRingConstruct",
+      "abi": "__thiscall(nested)(owner), RET 4",
+      "body": "body 009e5530-009e5769",
+      "coverage": "partial: the two loops and every field write are read; the sub-objects at nested+12C0h and nested+13B0h (00954940) and nested+14A0h (009DF8F0) are not projected, and record fields +18h..+3Ch have no reader in this packet"
+    },
+    {
+      "address": "009f3090",
+      "native": "009f3090",
+      "name": "BSP_ShipAi_AttackMoveRingUpdate",
+      "abi": "__thiscall(nested)(float seconds), RET 4",
+      "body": "body 009f3090-009f30e3",
+      "coverage": "partial: the call sequence and its ABI are established; none of the seven callee bodies was read. Follow-up packet ship_ai_attackmove_ring_update."
+    }
+  ],
+
+  "host_steps": [
+    {"routine": "009f3240", "address": "009f3647", "native": "009e00a0", "function": "009f3240", "method": "hold_heading_and_stop_009e00a0", "note": "exit arm only; ECX = sub+4h"},
+    {"routine": "009f3240", "address": "009f328f", "native": "009f3090", "function": "009f3240", "method": "nested_update_009f3090", "note": "ECX = sub+8h, the nested ring object"},
+    {"routine": "009f3240", "address": "009f332b", "native": "009de050", "function": "009f3240", "method": "set_navigation_goal_009de050", "note": "(blk, &goal, keep_mode=1, final_leg=0); PUSH 1 at 009f3308 is keep_mode, PUSH 0 at 009f32f5 is final_leg"},
+    {"routine": "009f3240", "address": "009f3360", "native": "00605070", "function": "009f3240", "method": "wrap_brain_heading_00605070", "note": "ECX = brain+1E0h"},
+    {"routine": "009f3240", "address": "009f33bf", "native": "target+vtable5c", "function": "009f3240", "method": "target_is_kind_vtable_005c", "note": "argument 1Ch; callee body unread"},
+    {"routine": "009f3240", "address": "009f3429", "native": "00778890", "function": "009f3240", "method": "unit_is_group_leader_00778890", "note": "body 00778890-007788a7 read: [group+14h] == unit"},
+    {"routine": "009f3240", "address": "009f3457", "native": "0070d060", "function": "009f3240", "method": "group_member_at_0070d060"},
+    {"routine": "009f3240", "address": "009f346b", "native": "member+vtable5c", "function": "009f3240", "method": "member_is_kind_vtable_005c", "note": "argument 6; callee body unread"},
+    {"routine": "009f3240", "address": "009f347e", "native": "member0538+vtable2c", "function": "009f3240", "method": "member_armament_ready_vtable_002c", "note": "callee body unread"},
+    {"routine": "009f3240", "address": "009f34b3", "native": "00427eb0", "function": "009f3240", "method": "target_position_xz_00427eb0"},
+    {"routine": "009f3240", "address": "009f34ea", "native": "0092d730", "function": "009f3240", "method": "candidate_body_speed_0092d730", "note": "ECX = [candidate+1018h]"},
+    {"routine": "009f3240", "address": "009f34fd", "native": "0080fc30", "function": "009f3240", "method": "candidate_reference_speed_0080fc30"},
+    {"routine": "009f3240", "address": "009f3521", "native": "00414db0", "function": "009f3240", "method": "refresh_candidate_pose_00414db0"},
+    {"routine": "009f3240", "address": "009f3592", "native": "candidate+vtable234", "function": "009f3240", "method": "candidate_accepts_warning_vtable_0234", "note": "callee body unread"},
+    {"routine": "009f3240", "address": "009f359c", "native": "0064a820", "function": "009f3240", "method": "route_warning_message_0077c2a0", "note": "builds the message object; body unread"},
+    {"routine": "009f3240", "address": "009f35b3", "native": "0077c2a0", "function": "009f3240", "method": "route_warning_message_0077c2a0", "note": "(candidate, msg, 2, 0); body unread"},
+    {"routine": "009f3240", "address": "009f35e3", "native": "unit0538+vtable2c", "function": "009f3240", "method": "unit_armament_ready_vtable_002c", "note": "non-leader arm; callee body unread"},
+
+    {"routine": "009e23b0", "address": "009e26b2", "native": "009e00a0", "function": "009e23b0", "method": "hold_heading_and_stop_009e00a0", "note": "exit arm only; ECX = sub+4h"},
+    {"routine": "009e23b0", "address": "009e23db", "native": "00414db0", "function": "009e23b0", "method": "refresh_target_pose_00414db0"},
+    {"routine": "009e23b0", "address": "009e2410", "native": "00414db0", "function": "009e23b0", "method": "refresh_unit_pose_00414db0"},
+    {"routine": "009e23b0", "address": "009e2465", "native": "00bf7030", "function": "009e23b0", "method": "(inline sqrt)", "note": "LIBCRT square root; only when distSq > 1e-10"},
+    {"routine": "009e23b0", "address": "009e24ca", "native": "target+vtable34", "function": "009e23b0", "method": "target_velocity_xz_vtable_0034", "note": "hidden return buffer; callee body unread"},
+    {"routine": "009e23b0", "address": "009e24db", "native": "unit+vtable34", "function": "009e23b0", "method": "unit_velocity_xz_vtable_0034", "note": "hidden return buffer; callee body unread"},
+    {"routine": "009e23b0", "address": "009e2562", "native": "target+vtable34", "function": "009e23b0", "method": "target_velocity_xz_vtable_0034", "note": "second fetch, used for the intercept point"},
+    {"routine": "009e23b0", "address": "009e25eb", "native": "00bf701a", "function": "009e23b0", "method": "(inline atan2)", "note": "run arm; ST1 = dz, ST0 = dx, so atan2(dz, dx)"},
+    {"routine": "009e23b0", "address": "009e2620", "native": "009dff40", "function": "009e23b0", "method": "set_heading_and_drop_path_009dff40", "note": "run arm; ECX = brain, not sub+4h"},
+    {"routine": "009e23b0", "address": "009e267b", "native": "009de050", "function": "009e23b0", "method": "set_navigation_goal_009de050", "note": "close arm; (blk, &intercept, 0, 0)"},
+    {"routine": "009e23b0", "address": "009e268a", "native": "009da610", "function": "009e23b0", "method": "plan_accepts_goal_009da610", "note": "body 009da610-009da66f read"},
+
+    {"routine": "009e26c0", "address": "009e26da", "native": "009e00a0", "function": "009e26c0", "method": "hold_heading_and_stop_009e00a0", "note": "exit arm only; ECX = sub+4h"},
+    {"routine": "009e26c0", "address": "009e26fa", "native": "00414db0", "function": "009e26c0", "method": "refresh_unit_pose_00414db0"},
+    {"routine": "009e26c0", "address": "009e2726", "native": "00414db0", "function": "009e26c0", "method": "refresh_target_pose_00414db0"},
+    {"routine": "009e26c0", "address": "009e2752", "native": "00414db0", "function": "009e26c0", "method": "refresh_target_pose_00414db0", "note": "second guard on the same byte"},
+    {"routine": "009e26c0", "address": "009e2773", "native": "target+vtable34", "function": "009e26c0", "method": "target_velocity_xz_vtable_0034", "note": "hidden return buffer; callee body unread"},
+    {"routine": "009e26c0", "address": "009e27ef", "native": "009db6c0", "function": "009e26c0", "method": "clamp_to_world_box_009db6c0", "note": "(sub, &lead, 10.0f); body not read in this packet"},
+    {"routine": "009e26c0", "address": "009e2814", "native": "00bf701a", "function": "009e26c0", "method": "(inline atan2)", "note": "ST1 = dx, ST0 = dz, so atan2(dx, dz)"},
+    {"routine": "009e26c0", "address": "009e283f", "native": "00438aa0", "function": "009e26c0", "method": "add_wrapped_angle_00438aa0", "note": "direct mode only; result discarded at 009e2844 (DD D8), a dead call"},
+    {"routine": "009e26c0", "address": "009e284e", "native": "0082e850", "function": "009e26c0", "method": "ship_class_turn_radius_0082e850"},
+    {"routine": "009e26c0", "address": "009e2890", "native": "unit+vtable50", "function": "009e26c0", "method": "unit_heading_vtable_0050", "note": "callee body unread"},
+    {"routine": "009e26c0", "address": "009e28a0", "native": "00438b10", "function": "009e26c0", "method": "subtract_wrapped_angle_00438b10"},
+    {"routine": "009e26c0", "address": "009e293c", "native": "unit+vtable50", "function": "009e26c0", "method": "unit_heading_vtable_0050", "note": "heading arm"},
+    {"routine": "009e26c0", "address": "009e294c", "native": "00438b10", "function": "009e26c0", "method": "subtract_wrapped_angle_00438b10", "note": "heading arm"},
+    {"routine": "009e26c0", "address": "009e2993", "native": "unit+vtable50", "function": "009e26c0", "method": "unit_heading_vtable_0050", "note": "only when the error leaves [-1, +1]"},
+    {"routine": "009e26c0", "address": "009e2999", "native": "00438aa0", "function": "009e26c0", "method": "add_wrapped_angle_00438aa0", "note": "(heading, +-1.0); only when the error leaves [-1, +1]"},
+    {"routine": "009e26c0", "address": "009e29ac", "native": "009e0040", "function": "009e26c0", "method": "set_desired_heading_009e0040", "note": "ECX = sub+4h"},
+    {"routine": "009e26c0", "address": "009e2a0e", "native": "00419010", "function": "009e26c0", "method": "interpolate_clamped_00419010", "note": "(10deg, 1.0, 60deg, 0.5, |error|); budget mode only"},
+    {"routine": "009e26c0", "address": "009e2a53", "native": "009de050", "function": "009e26c0", "method": "set_navigation_goal_009de050", "note": "goal arm; (blk, &lead, 0, 0)"},
+    {"routine": "009e26c0", "address": "009e2a85", "native": "unit+vtable38", "function": "009e26c0", "method": "unit_forward_speed_vtable_0038", "note": "budget-mode tail; callee body unread"},
+    {"routine": "009e26c0", "address": "009e2a97", "native": "0082ecb0", "function": "009e26c0", "method": "yaw_rate_from_rudder_0082ecb0", "note": "RET 0Ch, three stack floats"},
+    {"routine": "009e26c0", "address": "009e2b0d", "native": "00414c60", "function": "009e26c0", "method": "vector2_length_00414c60", "note": "direct-mode tail"},
+    {"routine": "009e26c0", "address": "009e2b18", "native": "0082e850", "function": "009e26c0", "method": "ship_class_turn_radius_0082e850", "note": "direct-mode tail"},
+
+    {"routine": "009f3670", "address": "009f3692", "native": "009e00a0", "function": "009f3670", "method": "hold_heading_and_stop_009e00a0", "note": "exit arm only; ECX = sub+4h"},
+    {"routine": "009f3670", "address": "009f369f", "native": "00424c40", "function": "009f3670", "method": "settings_weapon_release_delay_04d4"},
+    {"routine": "009f3670", "address": "009f36c3", "native": "unit+vtable114", "function": "009f3670", "method": "unit_director_vtable_0114", "note": "callee body unread"},
+    {"routine": "009f3670", "address": "009f36d9", "native": "unit+vtable114", "function": "009f3670", "method": "unit_director_vtable_0114", "note": "second fetch, for the +30h stage"},
+    {"routine": "009f3670", "address": "009f36e1", "native": "00424c40", "function": "009f3670", "method": "settings_weapon_release_delay_04d4", "note": "second read of +4D4h"},
+    {"routine": "009f3670", "address": "009f3714", "native": "unit+vtable114", "function": "009f3670", "method": "unit_director_vtable_0114", "note": "no args; the pushes at 009f370d/009f370f belong to 0071e430"},
+    {"routine": "009f3670", "address": "009f3718", "native": "0071e430", "function": "009f3670", "method": "raise_command_stage_0071e430", "note": "(director, 00E08F78, 1); RET 8"},
+    {"routine": "009f3670", "address": "009f3731", "native": "00414db0", "function": "009f3670", "method": "refresh_unit_pose_00414db0"},
+    {"routine": "009f3670", "address": "009f375a", "native": "0082e850", "function": "009f3670", "method": "ship_class_turn_radius_0082e850"},
+    {"routine": "009f3670", "address": "009f37c1", "native": "00bd2f10", "function": "009f3670", "method": "random_range_00bd2f10", "note": "(stream 1, 1.2f, 1.5f)"},
+    {"routine": "009f3670", "address": "009f3829", "native": "009d68b0", "function": "009f3670", "method": "circle_tangent_point_009d68b0", "note": "body not read; follow-up packet ship_ai_nav_circle_tangent"},
+    {"routine": "009f3670", "address": "009f383f", "native": "009db6c0", "function": "009f3670", "method": "clamp_to_world_box_009db6c0", "note": "(sub, &point, 10.0f)"},
+    {"routine": "009f3670", "address": "009f3869", "native": "unit+vtable50", "function": "009f3670", "method": "unit_heading_vtable_0050", "note": "read unconditionally, kept when distSq <= 1.0"},
+    {"routine": "009f3670", "address": "009f3895", "native": "00bf701a", "function": "009f3670", "method": "(inline atan2)", "note": "atan2(dx, dz); only when distSq > 1.0"},
+    {"routine": "009f3670", "address": "009f3920", "native": "009de050", "function": "009f3670", "method": "set_navigation_goal_009de050", "note": "goal arm; (blk, &point, 0, 0). Corrects the old claim that 009F3670 does not call 009DE050."},
+    {"routine": "009f3670", "address": "009f3943", "native": "009e0040", "function": "009f3670", "method": "set_desired_heading_009e0040", "note": "heading arm; ECX = sub+4h"},
+    {"routine": "009f3670", "address": "009f396a", "native": "009db820", "function": "009f3670", "method": "range_to_destination_009db820"},
+    {"routine": "009f3670", "address": "009f39a4", "native": "009e2b60", "function": "009f3670", "method": "notify_siblings_009e2b60", "note": "body not read"},
+
+    {"routine": "00852860", "address": "0085286c", "native": "00414db0", "function": "00852860", "method": "(inline pose refresh)", "note": "only when entity+0C8h == 0"},
+
+    {"routine": "009e85b0", "address": "009e8600", "native": "00414db0", "function": "009e85b0", "method": "refresh_unit_pose_00414db0"},
+    {"routine": "009e85b0", "address": "009e864c", "native": "0082adc0", "function": "009e85b0", "method": "avoid_zone_containing_004178f0", "note": "zone list for [unit+538h]+570h; body 0082adc0-0082add7 read"},
+    {"routine": "009e85b0", "address": "009e8658", "native": "004178f0", "function": "009e85b0", "method": "avoid_zone_containing_004178f0", "note": "loop read; the leaf 00416b50 was not read"},
+
+    {"routine": "009e5ca0", "address": "009e5cd6", "native": "009e5530", "function": "009e5ca0", "method": "(construction)", "note": "ECX = sub+8h"},
+
+    {"routine": "009e5530", "address": "009e55a1", "native": "00bd2f10", "function": "009e5530", "method": "(construction)", "note": "(stream 1, 0.0f, 2.0f) into record +48h"},
+    {"routine": "009e5530", "address": "009e55c9", "native": "00954940", "function": "009e5530", "method": "(construction)", "note": "nested+12C0h; body not read"},
+    {"routine": "009e5530", "address": "009e55d4", "native": "00954940", "function": "009e5530", "method": "(construction)", "note": "nested+13B0h; body not read"},
+    {"routine": "009e5530", "address": "009e55e1", "native": "009df8f0", "function": "009e5530", "method": "(construction)", "note": "nested+14A0h; body not read"},
+    {"routine": "009e5530", "address": "009e56aa", "native": "00bf857a", "function": "009e5530", "method": "(inline fmod)", "note": "_CIfmod computes fmod(ST1, ST0)"},
+
+    {"routine": "009f3090", "address": "009f309b", "native": "009f1bc0", "function": "009f3090", "method": "nested_update_009f3090", "note": "step 1 of 7; body not read"},
+    {"routine": "009f3090", "address": "009f30a2", "native": "009e7fc0", "function": "009f3090", "method": "nested_update_009f3090", "note": "step 2 of 7; body not read"},
+    {"routine": "009f3090", "address": "009f30a9", "native": "009e6e80", "function": "009f3090", "method": "nested_update_009f3090", "note": "step 3 of 7; body not read"},
+    {"routine": "009f3090", "address": "009f30b8", "native": "009e9190", "function": "009f3090", "method": "nested_update_009f3090", "note": "step 4 of 7, takes seconds; body not read"},
+    {"routine": "009f3090", "address": "009f30c7", "native": "009e74d0", "function": "009f3090", "method": "nested_update_009f3090", "note": "step 5 of 7, takes seconds; body not read"},
+    {"routine": "009f3090", "address": "009f30d6", "native": "009e76d0", "function": "009f3090", "method": "nested_update_009f3090", "note": "step 6 of 7, takes seconds; body not read"},
+    {"routine": "009f3090", "address": "009f30dd", "native": "009e6a90", "function": "009f3090", "method": "nested_update_009f3090", "note": "step 7 of 7; body not read"}
+  ],
+
+  "corrections": [
+    {
+      "where": "ledger evidence for 009f3240",
+      "was": "it calls 009DE050 at 009F332B with the final-leg flag 1 (009F3308)",
+      "is": "it calls 009DE050 at 009F332B with keep_mode = 1 (009F3308) and final_leg = 0 (009F32F5)",
+      "evidence": "009DE050 takes its first stack argument as goal2d (009DE063 MOV EDI,[ESP+18h]; 009DE0A0 FLD [EDI]) and its second as the keep byte (009DE087 CMP byte [ESP+1Ch],BL). Pushes are reverse order, so the middle PUSH 1 at 009F3308 is keep_mode and the first PUSH 0 at 009F32F5 is final_leg."
+    },
+    {
+      "where": "ledger evidence for 009f3670",
+      "was": "Body NOT read and it is not among the callers of 009DE050",
+      "is": "body 009F3670-009F39B0 read complete; it calls 009DE050 at 009F3920",
+      "evidence": "009F3920 CALL 0x009de050; 009F3670 appears in ghidra callers 009DE050"
+    },
+    {
+      "where": "docs/SHIP_AI_STATE_STEPS.md, the five sub-states section",
+      "was": "Three of the five steps are among the callers of 009DE050: 009F3240, 009E23B0 and 009E26C0",
+      "is": "four of the five, adding 009F3670",
+      "evidence": "009F3920 CALL 0x009de050"
+    },
+    {
+      "where": "docs/SHIP_AI_STATE_STEPS.md, the 009E23B0 paragraph",
+      "was": "its two arms are 009DE050(blk,&goal,0,0) followed by 009DA610(&goal) on one side and 009DFF40(brain, heading) on the other, with brain+3FCh set to 1 or 0",
+      "is": "the arms are selected by the latch byte at sub+8h, and the flag follows the arm: brain+3FCh = 1 on the goal arm and 0 on the heading arm",
+      "evidence": "009E25BC JZ 009E2663 tests the byte at sub+8h; 009E2669 writes 1 and 009E25CC writes 0"
+    },
+    {
+      "where": "the packet brief",
+      "was": "a nested object at +10h through 009E5530",
+      "is": "the nested object is at sub+8h, which is state+10h; both spellings name the same object",
+      "evidence": "009E5CC5 LEA ECX,[ESI+8] with ESI = the sub-state at state+8h"
+    }
+  ],
+
+  "no_ghidra_function": [
+    {
+      "start": "007b3dd0",
+      "end_inclusive": "007b3dd2",
+      "evidence": "Bytes C2 04 00 decode unambiguously as RET 4 and the routine has no branch, so control cannot reach past 007B3DD2. 007B3DD3-007B3DDF are all CC padding to the 16-byte boundary. The next routine starts at the aligned 007B3DE0 (B0 01 C3) and is separately referenced as vtable data from 00D056E0, 00D05790 and 00D057AC. The routine above ends at 007B3DC0 with C3 followed by CC padding, so there is no fall-through. ghidra xrefs reports no reference to 007B3DD1, 007B3DD2, 007B3DD3 or 007B3DD8; all twenty references land on 007B3DD0 and are DATA."
+    }
+  ],
+
+  "follow_up_packets": [
+    "ship_ai_attackmove_ring_update: 009F3090 and its seven callees 009F1BC0, 009E7FC0, 009E6E80, 009E9190, 009E74D0, 009E76D0, 009E6A90, which produce the approach sub-state's goal at sub+1230h/1238h and its commands at sub+1214h/1218h",
+    "ship_ai_nav_circle_tangent: 009D68B0, 009D6550, 004F3970, 004F47B0",
+    "ship_ai_unit_armament_component: the object at unit+538h (+0A0h speed, +510h/+514h readiness, +570h avoid-zone group, vtable +2Ch gate)",
+    "ship_ai_brain_speed_scale_0af0: brain+0AF0h is written by three sub-states and no reader was found",
+    "entity_velocity_vtable_0034: the hidden-return-buffer virtual 009E23B0 and 009E26C0 read as a velocity"
+  ],
+
+  "uncertainties": [
+    "Every float expression is transcribed from the listing, but the image computes in x87 80-bit registers with double memory operands; the C++ projection uses double and rounds to float at the same stores. Not bit-identical in general, and not fixture-tested.",
+    "vtable[34h] velocity, vtable[50h] heading, vtable[5Ch] kind predicate, vtable[2Ch] and vtable[234h] predicates and vtable[114h] director are readings from use; none of those callee bodies was read.",
+    "sub+11E8h, the approach throttle bias, is seeded to zero by 009E5530 and written by the unread nested update; its play-time value is unknown.",
+    "brain+0AF0h, brain+1D0h, [target+7C4h], [entity+1200h]/+1204h and [unit+538h]+510h have no producer or reader established here.",
+    "The class of the global at 00E08F78 was not established; its on-disk vtable 00CFB378 has __purecall at +0Ch.",
+    "No run-time evidence: this packet added no host implementations to bsp_game.exe, so none of these paths was exercised in a run log."
+  ]
+}
