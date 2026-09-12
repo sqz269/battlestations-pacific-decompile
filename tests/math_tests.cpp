@@ -1,6 +1,7 @@
 #include "bsp/ai_planner_tails.hpp"
 #include "bsp/land_and_structures.hpp"
 #include "bsp/air_operations.hpp"
+#include "bsp/ship_buoyancy_elements.hpp"
 #include "bsp/ship_hydro_forces.hpp"
 #include "bsp/submarine_model.hpp"
 #include "bsp/plane_flight.hpp"
@@ -3272,6 +3273,45 @@ int main() {
             "00A1E74B: the floor bites before 00A1E81D adds StrategicGain");
         check(std::fabs(t.own_value - 1.0f) < 1e-4f && std::fabs(t.enemy_value - 40.0f) < 1e-4f,
             "00A1E836: the six printed terms keep their unclamped values");
+    }
+
+    {
+        // 0082D040: the buoyancy element list the ship class builds from its model's
+        // deckline and bottomline. The shipped DeRuyter (VehicleClass[20]) numbers, the
+        // class row for the scalars and Deruyter.mmod for the two polylines. Two things
+        // the reconstruction could get wrong and the game would sink over: the station at
+        // z = -85.5 lies before the bottom line's first point at z = -81.63, so it must
+        // clamp rather than extrapolate, and the coefficients must normalise so that the
+        // sum of coefficient * draught over the whole list is exactly 10 * Mass.
+        bsp::ShipBuoyancyHullInputs hull{};
+        hull.length = 171.0f;
+        hull.width = 16.0f;
+        hull.mass = 7688.0f;
+        hull.hull_water_line_ratio = 0.55f;
+        hull.hull_segments = 5;
+        const std::vector<bsp::OceanVec3> deck{
+            {-0.0953f, 6.3400f, 52.4409f}, {-0.0953f, 6.1480f, 11.9249f},
+            {-0.0953f, 6.0555f, 9.2761f},  {-0.0953f, 6.1280f, -90.4472f}};
+        const std::vector<bsp::OceanVec3> bottom{
+            {-0.0487f, -4.9100f, 63.5168f},  {-0.0487f, -5.0100f, 55.5529f},
+            {-0.0487f, -4.9620f, 29.7489f},  {-0.0487f, -4.9620f, -45.8951f},
+            {-0.0487f, -4.9980f, -71.1791f}, {-0.0487f, -4.8860f, -81.6272f}};
+        const auto elements = bsp::ship_buoyancy_build_list_0082d4ca(hull, deck, bottom);
+        check(elements.size() == 10,
+              "0082D040: two elements per station, 2 * Hull.Segments in all");
+        check(std::fabs(elements[0].position.z + 85.5f) < 1e-3f &&
+                  std::fabs(bsp::ship_buoyancy_element_bottom_level(elements[0]) + 4.8860f) <
+                      1e-4f,
+              "0082A920: a station before the polyline's first point clamps to its y");
+        check(elements[0].position.x == 8.0f && elements[1].position.x == -8.0f,
+              "0082D65D: the second push of a station negates the lateral offset");
+        float displacement = 0.0f;
+        for (const auto& element : elements) {
+            displacement += element.coefficient * bsp::ship_buoyancy_element_draught(element);
+        }
+        check(std::fabs(displacement - 10.0f * hull.mass) < 1.0f,
+              "0082D64B: the list's coefficients normalise to 10 * Mass, so 00937C90's "
+              "displacement sum cancels Gravitacio * Mass exactly");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
