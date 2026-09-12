@@ -2426,6 +2426,126 @@
       "00af3750",
       "00af3960"
     ],
-    "combined_validation": "pending exact merged build/replay"
+    "combined_validation": "passed exact merged build and seven current-library probes"
+  },
+  "final_merged_validation_aq": {
+    "tested_commit": "cad90a51b1455deb797425951c4ed3d953e32878",
+    "reviewed_source_commit": "de95ab7f2ccc14b572512585330550d91973094e",
+    "build": "Strict MSVC Win32 and both seeded CTests passed; local/aq-final-combined-build.log",
+    "all10_reviewed_source_header_hashes_preserved": true,
+    "all36_name_evidence_rows_preserved": true,
+    "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+    "current_library_replays": [
+      {
+        "label": "properties",
+        "exit_code": 0,
+        "log": "local\\aq-properties-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-properties\\probe.cpp": "add900f89be405a85215b6f97810c10636a251aa5ce01214957b9806e9a3499d",
+          "C:\\Users\\sqz269\\bsp-aq-properties\\literal_bytes.hpp": "fa3bd79cde1083ba8d430257941dc5f4f96c06a01c3b4cb539fcca3a4d58bddd",
+          "C:\\Users\\sqz269\\bsp-aq-properties\\native_bytes.hpp": "b992df3252e5e76cb31c4195574788f142259107a93a237972e47936143ac854",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\properties-current.cmd",
+        "executable_sha256": "c619fb61968aa018785a041797b3c35ca5234988ca9782710094d55ad114e07d"
+      },
+      {
+        "label": "axial_math",
+        "exit_code": 0,
+        "log": "local\\aq-axial_math-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-axial\\math_probe.cpp": "6aabe86b4b3de41a661f6bd82a9b2b29be2ad9f2d567dfb33d755384bba02c9c",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\axial_math-current.cmd",
+        "executable_sha256": "678cded86b9a27b5128d4e63a9e45ca4716057dc6e23543b05a15b60bfc0480c"
+      },
+      {
+        "label": "axial_parser",
+        "exit_code": 0,
+        "log": "local\\aq-axial_parser-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-axial\\parser_probe.cpp": "196a195a6a4dd46c37855701d72dd5fc019e6823ff3cfe7c0e85ba94a5bf52c2",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\axial_parser-current.cmd",
+        "executable_sha256": "a66e233ca65445075bc80305e9b390bc3cba63fefce40ebca9d92ace5fd8d519"
+      },
+      {
+        "label": "object_tracer",
+        "exit_code": 0,
+        "log": "local\\aq-object_tracer-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-object-tracer\\probe.cpp": "3c52914ee95cd52af21c7eb3ba51d183ca0c9e6559e7ee1194d4d93a3a0a974d",
+          "C:\\Users\\sqz269\\bsp-aq-object-tracer\\probe_data.hpp": "3867d22139b02d784126b6d31dab8b97e0a79720917ab05ddaec801eef32887f",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\object_tracer-current.cmd",
+        "executable_sha256": "154fd4157b94f63e13bb2dbaab00eb947b5c5afa3cd8f554bedb73bcc27d3d0e"
+      },
+      {
+        "label": "sprite_floating",
+        "exit_code": 0,
+        "log": "local\\aq-sprite_floating-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-loading-sprite\\parser_probe.cpp": "e82a47d841ea750f4bda526dda5d1c815240c5a2ac5fdb92530ee4e7b9569f06",
+          "C:\\Users\\sqz269\\bsp-aq-loading-sprite\\probe_data.hpp": "66967bc12d37a337a62135f4195fe503786a2186129e32a9a51c2dda35e0eea6",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\sprite_floating-current.cmd",
+        "executable_sha256": "8a739a26a68a0d3ff8918d96adb443323ea3a6acefe3868503ae01cd4353cc5d"
+      },
+      {
+        "label": "bounds",
+        "exit_code": 0,
+        "log": "local\\aq-bounds-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-loading\\bound_probe.cpp": "21652df0f87f34b17ff2ab7a0c603b6f87b50ef6fe75ca59b8fd81824fd0f542",
+          "C:\\Users\\sqz269\\bsp-aq-loading\\bound_data.hpp": "67ebbd42f625117aa6b6dcffc893d39b327136b5247899f6fa043ca54ec8e8d1",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\bounds-current.cmd",
+        "executable_sha256": "9ae1017198ba17c0ec4a92e59439edc4054a14a3510f02b26a6eaede6600a624"
+      },
+      {
+        "label": "factory",
+        "exit_code": 0,
+        "log": "local\\aq-factory-current-replay.log",
+        "library_sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-aq-factory\\probe.cpp": "beae2a91cb4eb1e30b0786a8bad5ea8f72c46760b83f3dbeccf239d8ef096919",
+          "C:\\Users\\sqz269\\bsp-aq-factory\\constants.hpp": "d398630c9cee2f046cad03eba9ffa0c1631ec2a543e0bd77500ef17cc05f31b7",
+          "C:\\Users\\sqz269\\bsp-aq-factory\\native_bytes.hpp": "00be5632e62efbb7d6cbd1b2f828f1c89de94786910a0eae2d6f2b429d7bb742",
+          "C:\\Users\\sqz269\\bsp-aq-axial\\probe_data.hpp": "b7680582d3efa86ee69a80c905b651eb9ee9b72210fcdd3d287573dec51e5202"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-aq\\factory-current.cmd",
+        "executable_sha256": "bc4e8cb5554487e2679fddc6edac14aefa178fa45444849f29051925d2dc6507"
+      }
+    ],
+    "new_function_entries": 32,
+    "refined_interfaces": 3,
+    "revised_factory": 1,
+    "native_signatures": 34,
+    "custom_register_signatures_retained": [
+      "00af3750",
+      "00af3960"
+    ],
+    "checked_call_rows": 716,
+    "checked_rows_include_duplicate_embedded_fixture_evidence": true,
+    "failed_call_rows": 0,
+    "game_validated": false,
+    "original_fh3_validated": false,
+    "remaining_boundaries": [
+      "Actual shader/model/renderer services and unknown current parser targets",
+      "Factory callers must supply actual loading domains to select concrete dispatch",
+      "Sprite/Object/Tracer state initializers and full application/runtime ownership",
+      "Original FH3/invalid-storage faults and gameplay"
+    ]
   }
 }
