@@ -1,0 +1,938 @@
+{
+  "packet": "orch4_native_gamepad_xinput_ad",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "status": "raw_source_reconstructed_with_required_request_profile_dispatch",
+  "source": "src/native_gamepad_xinput.cpp",
+  "functions": [
+    {
+      "address": "00a95d70",
+      "end_inclusive": "00a95e32",
+      "name": "BSP_NativeGamepad_Construct",
+      "original_name": "FUN_00a95d70",
+      "implementation": "construct_native_gamepad_00a95d70",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX actual220h prefix; RET; EAX=this",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a95a80",
+      "end_inclusive": "00a95bc4",
+      "name": "BSP_NativeGamepad_Destroy",
+      "original_name": "BSP_GamepadForce_DestroyState",
+      "implementation": "destroy_native_gamepad_00a95a80",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX actual220h prefix; RET",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a95e40",
+      "end_inclusive": "00a95e5d",
+      "name": "BSP_NativeGamepad_ScalarDelete",
+      "original_name": "CG_scalar_deleting_dtor_00a95e40",
+      "implementation": "scalar_delete_native_gamepad_00a95e40",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX actual220h prefix; flags stack; RET4; captured EAX",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a954c0",
+      "end_inclusive": "00a95672",
+      "name": "BSP_NativeGamepad_PumpForce",
+      "original_name": "FUN_00a954c0",
+      "implementation": "pump_native_gamepad_force_00a954c0",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX actual220h prefix; float seconds stack; RET4",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a95890",
+      "end_inclusive": "00a9595c",
+      "name": "BSP_NativeGamepad_ClearForce",
+      "original_name": "FUN_00a95890",
+      "implementation": "clear_native_gamepad_force_00a95890",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX actual220h prefix; RET",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a95bd0",
+      "end_inclusive": "00a95bd5",
+      "name": "BSP_NativeGamepad_GetClass",
+      "original_name": "BSP_GamepadInputDevice_GetClass",
+      "implementation": "native_gamepad_class_00a95bd0",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX unconsumed; EAX2; RET",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a9a5a0",
+      "end_inclusive": "00a9a5e3",
+      "name": "BSP_NativeXInput_Construct",
+      "original_name": "FUN_00a9a5a0",
+      "implementation": "construct_native_xinput_00a9a5a0",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX actual240h; signed index stack; RET4; EAX=this",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a9a600",
+      "end_inclusive": "00a9a60a",
+      "name": "BSP_NativeXInput_Destroy",
+      "original_name": "BSP_XInputDevice_Destroy",
+      "implementation": "destroy_native_xinput_00a9a600",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX actual240h; tail A95A80; RET",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a9a7c0",
+      "end_inclusive": "00a9a7e3",
+      "name": "BSP_NativeXInput_ScalarDelete",
+      "original_name": "CG_scalar_deleting_dtor_00a9a7c0",
+      "implementation": "scalar_delete_native_xinput_00a9a7c0",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX actual240h; flags stack; RET4; captured EAX",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a9a5f0",
+      "end_inclusive": "00a9a5f2",
+      "name": "BSP_NativeXInput_GetIdentifier",
+      "original_name": "BSP_XInputDevice_IdentifierZero",
+      "implementation": "native_xinput_identifier_00a9a5f0",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX unconsumed; EAX0; RET",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a9a610",
+      "end_inclusive": "00a9a659",
+      "name": "BSP_NativeXInput_Query",
+      "original_name": "BSP_XInputDevice_QueryDown",
+      "implementation": "query_native_xinput_00a9a610",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX actual device; code stack; RET4; EAX0/1",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a9a660",
+      "end_inclusive": "00a9a78f",
+      "name": "BSP_NativeXInput_Value",
+      "original_name": "BSP_XInputDevice_Value",
+      "implementation": "value_native_xinput_00a9a660",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX actual240h; code stack; RET4; x87 ST0 after binary32 spill",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a9a790",
+      "end_inclusive": "00a9a7b1",
+      "name": "BSP_NativeXInput_StopVibration",
+      "original_name": "BSP_XInputDevice_StopVibration",
+      "implementation": "stop_native_xinput_vibration_00a9a790",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX actual240h; RET; EAX SDK result",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a9a7f0",
+      "end_inclusive": "00a9a9b7",
+      "name": "BSP_NativeXInput_Poll",
+      "original_name": "BSP_XInputDevice_Poll",
+      "implementation": "poll_native_xinput_00a9a7f0",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX actual240h; unused float stack; RET4; AL boolean",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a9a9c0",
+      "end_inclusive": "00a9aa3a",
+      "name": "BSP_NativeXInput_SetMotor",
+      "original_name": "BSP_XInputDevice_SetMotorValue",
+      "implementation": "set_native_xinput_motor_00a9a9c0",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX actual240h; channel,float stack; RET8",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    },
+    {
+      "address": "00a9aa40",
+      "end_inclusive": "00a9aaa5",
+      "name": "BSP_NativeXInput_GetControlName",
+      "original_name": "FUN_00a9aa40",
+      "implementation": "name_native_xinput_control_00a9aa40",
+      "source": "src/native_gamepad_xinput.cpp",
+      "native_abi": "ECX unconsumed; actual8h output,code stack; RET8; EAX output",
+      "coverage": "complete_normal_source_paths_with_required_raw_dispatch",
+      "native_abi_replacement": false,
+      "missing_start": false
+    }
+  ],
+  "calls": [
+    {
+      "address": "00a95da6",
+      "native": "00bf79f0",
+      "function": "00a95d70",
+      "instruction": "CALL 0x00bf79f0"
+    },
+    {
+      "address": "00a95db9",
+      "native": "00bf79f0",
+      "function": "00a95d70",
+      "instruction": "CALL 0x00bf79f0"
+    },
+    {
+      "address": "00a95dd7",
+      "native": "00a948c0",
+      "function": "00a95d70",
+      "instruction": "CALL 0x00a948c0"
+    },
+    {
+      "address": "00a95e1b",
+      "native": "00a954c0",
+      "function": "00a95d70",
+      "instruction": "CALL 0x00a954c0"
+    },
+    {
+      "address": "00a95adf",
+      "native": "00bf6713",
+      "function": "00a95a80",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00a95aee",
+      "native": "00bf6713",
+      "function": "00a95a80",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00a95af8",
+      "native": "00bf6713",
+      "function": "00a95a80",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00a95b0a",
+      "native": "request+vtable00",
+      "function": "00a95a80",
+      "instruction": "CALL EAX"
+    },
+    {
+      "address": "00a95b10",
+      "native": "00a94230",
+      "function": "00a95a80",
+      "instruction": "CALL 0x00a94230"
+    },
+    {
+      "address": "00a95b36",
+      "native": "00a94730",
+      "function": "00a95a80",
+      "instruction": "CALL 0x00a94730"
+    },
+    {
+      "address": "00a95b3e",
+      "native": "00bf65ac",
+      "function": "00a95a80",
+      "instruction": "CALL 0x00bf65ac"
+    },
+    {
+      "address": "00a95b6c",
+      "native": "00a954c0",
+      "function": "00a95a80",
+      "instruction": "CALL 0x00a954c0"
+    },
+    {
+      "address": "00a95b86",
+      "native": "00a95330",
+      "function": "00a95a80",
+      "instruction": "CALL 0x00a95330"
+    },
+    {
+      "address": "00a95b8f",
+      "native": "00bf65ac",
+      "function": "00a95a80",
+      "instruction": "CALL 0x00bf65ac"
+    },
+    {
+      "address": "00a95bad",
+      "native": "00bd30f0",
+      "function": "00a95a80",
+      "instruction": "CALL 0x00bd30f0"
+    },
+    {
+      "address": "00a95e43",
+      "native": "00a95a80",
+      "function": "00a95e40",
+      "instruction": "CALL 0x00a95a80"
+    },
+    {
+      "address": "00a95e50",
+      "native": "00bf65ac",
+      "function": "00a95e40",
+      "instruction": "CALL 0x00bf65ac"
+    },
+    {
+      "address": "00a95525",
+      "native": "00bf6713",
+      "function": "00a954c0",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00a9553c",
+      "native": "00a94230",
+      "function": "00a954c0",
+      "instruction": "CALL 0x00a94230"
+    },
+    {
+      "address": "00a95545",
+      "native": "00bf6713",
+      "function": "00a954c0",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00a9554f",
+      "native": "00bf6713",
+      "function": "00a954c0",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00a95564",
+      "native": "request+vtable10",
+      "function": "00a954c0",
+      "instruction": "CALL EAX"
+    },
+    {
+      "address": "00a9556b",
+      "native": "00bf6713",
+      "function": "00a954c0",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00a95578",
+      "native": "request+vtable0c",
+      "function": "00a954c0",
+      "instruction": "CALL EAX"
+    },
+    {
+      "address": "00a95583",
+      "native": "00bf6713",
+      "function": "00a954c0",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00a95595",
+      "native": "request+vtable00",
+      "function": "00a954c0",
+      "instruction": "CALL EAX"
+    },
+    {
+      "address": "00a955a0",
+      "native": "00a94e90",
+      "function": "00a954c0",
+      "instruction": "CALL 0x00a94e90"
+    },
+    {
+      "address": "00a955bc",
+      "native": "00bf6713",
+      "function": "00a954c0",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00a955c9",
+      "native": "request+vtable04",
+      "function": "00a954c0",
+      "instruction": "CALL EAX"
+    },
+    {
+      "address": "00a955d2",
+      "native": "00bf6713",
+      "function": "00a954c0",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00a955df",
+      "native": "request+vtable08",
+      "function": "00a954c0",
+      "instruction": "CALL EAX"
+    },
+    {
+      "address": "00a95658",
+      "native": "device+vtable38",
+      "function": "00a954c0",
+      "instruction": "CALL EDX"
+    },
+    {
+      "address": "00a958be",
+      "native": "00bf6713",
+      "function": "00a95890",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00a958cb",
+      "native": "00bf6713",
+      "function": "00a95890",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00a958d5",
+      "native": "00bf6713",
+      "function": "00a95890",
+      "instruction": "CALL 0x00bf6713"
+    },
+    {
+      "address": "00a958e7",
+      "native": "request+vtable00",
+      "function": "00a95890",
+      "instruction": "CALL EAX"
+    },
+    {
+      "address": "00a958ed",
+      "native": "00a94230",
+      "function": "00a95890",
+      "instruction": "CALL 0x00a94230"
+    },
+    {
+      "address": "00a95916",
+      "native": "00a94730",
+      "function": "00a95890",
+      "instruction": "CALL 0x00a94730"
+    },
+    {
+      "address": "00a9591e",
+      "native": "00bf65ac",
+      "function": "00a95890",
+      "instruction": "CALL 0x00bf65ac"
+    },
+    {
+      "address": "00a95950",
+      "native": "00a954c0",
+      "function": "00a95890",
+      "instruction": "CALL 0x00a954c0"
+    },
+    {
+      "address": "00a9a5a3",
+      "native": "00a95d70",
+      "function": "00a9a5a0",
+      "instruction": "CALL 0x00a95d70"
+    },
+    {
+      "address": "00a9a606",
+      "native": "00a95a80",
+      "function": "00a9a600",
+      "kind": "tail_jump",
+      "instruction": "JMP 0x00a95a80"
+    },
+    {
+      "address": "00a9a7c9",
+      "native": "00a95a80",
+      "function": "00a9a7c0",
+      "instruction": "CALL 0x00a95a80"
+    },
+    {
+      "address": "00a9a7d6",
+      "native": "00bf65ac",
+      "function": "00a9a7c0",
+      "instruction": "CALL 0x00bf65ac"
+    },
+    {
+      "address": "00a9a61f",
+      "native": "device+vtable24",
+      "function": "00a9a610",
+      "instruction": "CALL EAX"
+    },
+    {
+      "address": "00a9a635",
+      "native": "device+vtable24",
+      "function": "00a9a610",
+      "instruction": "CALL EAX"
+    },
+    {
+      "address": "00a9a7ac",
+      "native": "00c2f16c",
+      "function": "00a9a790",
+      "instruction": "CALL 0x00c2f16c"
+    },
+    {
+      "address": "00a9a803",
+      "native": "00c2f166",
+      "function": "00a9a7f0",
+      "instruction": "CALL 0x00c2f166"
+    },
+    {
+      "address": "00a9a84d",
+      "native": "00c2f16c",
+      "function": "00a9a7f0",
+      "instruction": "CALL 0x00c2f16c"
+    },
+    {
+      "address": "00a9a89c",
+      "native": "00bf7420",
+      "function": "00a9a7f0",
+      "instruction": "CALL 0x00bf7420"
+    },
+    {
+      "address": "00a9a8ec",
+      "native": "00bf7420",
+      "function": "00a9a7f0",
+      "instruction": "CALL 0x00bf7420"
+    },
+    {
+      "address": "00a9a93c",
+      "native": "00bf7420",
+      "function": "00a9a7f0",
+      "instruction": "CALL 0x00bf7420"
+    },
+    {
+      "address": "00a9a983",
+      "native": "00bf7420",
+      "function": "00a9a7f0",
+      "instruction": "CALL 0x00bf7420"
+    },
+    {
+      "address": "00a9a9a4",
+      "native": "00bf7420",
+      "function": "00a9a7f0",
+      "instruction": "CALL 0x00bf7420"
+    },
+    {
+      "address": "00a9aa61",
+      "native": "0041e870",
+      "function": "00a9aa40",
+      "instruction": "CALL 0x0041e870"
+    },
+    {
+      "address": "00a9aa83",
+      "native": "0041e870",
+      "function": "00a9aa40",
+      "instruction": "CALL 0x0041e870"
+    },
+    {
+      "address": "00a9aa9a",
+      "native": "0041e870",
+      "function": "00a9aa40",
+      "instruction": "CALL 0x0041e870"
+    }
+  ],
+  "library_adapters": [
+    {
+      "original": "00a94230",
+      "provider": "00869a20",
+      "instructions": [
+        38,
+        38
+      ],
+      "differences": []
+    },
+    {
+      "original": "00a94730",
+      "provider": "0086aa60",
+      "instructions": [
+        23,
+        23
+      ],
+      "differences": []
+    },
+    {
+      "original": "00a948c0",
+      "provider": "0086ac00",
+      "instructions": [
+        17,
+        17
+      ],
+      "differences": []
+    },
+    {
+      "original": "00a94e90",
+      "provider": "0086e8a0",
+      "instructions": [
+        231,
+        212
+      ],
+      "differences": [
+        {
+          "index": 2,
+          "original": "PUSH 0xcb6848",
+          "provider": "PUSH 0xc95bb8"
+        }
+      ],
+      "excluded_provider_tail": {
+        "start": "0086eb11",
+        "end_inclusive": "0086eb46",
+        "evidence": "19 aligned disk-decoded instructions match originalA95101..A95136. Complete source provider already includes this normal count/output/epilogue path; FH3 handler identity differs."
+      }
+    },
+    {
+      "original": "00a95330",
+      "provider": "0086ee50",
+      "instructions": [
+        76,
+        76
+      ],
+      "differences": []
+    },
+    {
+      "original": "00a95a40",
+      "provider": "0086fde0",
+      "instructions": [
+        23,
+        16
+      ],
+      "differences": [],
+      "excluded_provider_tail": {
+        "start": "0086fe04",
+        "end_inclusive": "0086fe13",
+        "evidence": "7 aligned disk-decoded instructions match originalA95A64..A95A73, already present in reused provider source."
+      }
+    }
+  ],
+  "layout": {
+    "gamepad_size": "220h",
+    "xinput_size": "240h",
+    "references": "actual+4 initialized1; no owner-destructor decrement",
+    "histories": "actual+C and+10C each100h",
+    "tree": "actual+20C allocator untouched, head+210,count+214; raw18h nodes key+C,payload+10,color+14,nil+15",
+    "amplitudes": "actual+218/+21C",
+    "xinput": "index+220, untouched+224, SDK state+228[10h], vibration+238[4],connected+23C; padding untouched"
+  },
+  "boundaries": [
+    "Required raw force-request vslot0/4/8/C/10 dispatch and raw request producer/insert caller remain external; typed GamepadForceRequest pointers are invalid here.",
+    "Current device vslot24/38 dispatch, backend attachment, raw refcount-zero and history callers are external.",
+    "Real XInputLibrary uses caller-selected DLL and actual raw SDK output slots; successful physical-controller polling is not claimed.",
+    "Original FH3/SEH, original CRT handler domain, C++ binary/vtable ABI compatibility and game validation are not claimed."
+  ],
+  "exception_evidence": {
+    "constructor": "CB68B6->DECC3C mapDECC2C; state1 CB68A8 tree+20C A95A40; state0 CB68A0 A93E70->BD30F0",
+    "destructor": "CB6896->DECC08 mapDECBF8; state1 CB6888 tree+20C A95A40; state0 CB6880 A93E70->BD30F0",
+    "payload_rule": "Unwind destroys raw tree nodes/head only; no second payload virtual deletion. Destructor sets state0 before final tree destruction."
+  },
+  "flow_evidence": {
+    "primary_repairs": [
+      "A95A80 complete throughA95BC4",
+      "A94730 complete throughA94764",
+      "A94E90 complete throughA95136",
+      "A95A40 complete throughA95A73"
+    ],
+    "excluded_tail_qualifications": [
+      {
+        "function": "00a95e40",
+        "start": "00a95e55",
+        "end_inclusive": "00a95e57",
+        "meaning": "ADD ESP4 after _free; three-byte internal listing gap independently decoded from aligned original disk bytes; source includes cleanup."
+      }
+    ],
+    "producer": "A982D0 allocates240h atA98360/A98365, passes sameEAX asECX toA9A5A0 atA9837D; indexEDI0..3; attaches returnedactualpointerA98390. A9A5A0 invokesA95D70 on identicalECX."
+  },
+  "native_prototypes": [
+    {
+      "address": "00a95d70",
+      "name": "BSP_NativeGamepad_Construct",
+      "return": "void*",
+      "ecx": "actual receiver pointer",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [],
+      "ret_bytes": 0,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a95e32"
+    },
+    {
+      "address": "00a95a80",
+      "name": "BSP_NativeGamepad_Destroy",
+      "return": "void",
+      "ecx": "actual receiver pointer",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [],
+      "ret_bytes": 0,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a95bc4"
+    },
+    {
+      "address": "00a95e40",
+      "name": "BSP_NativeGamepad_ScalarDelete",
+      "return": "void*",
+      "ecx": "actual receiver pointer",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [
+        "uint32 flags"
+      ],
+      "ret_bytes": 4,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a95e5d"
+    },
+    {
+      "address": "00a954c0",
+      "name": "BSP_NativeGamepad_PumpForce",
+      "return": "void",
+      "ecx": "actual receiver pointer",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [
+        "float seconds"
+      ],
+      "ret_bytes": 4,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a95672"
+    },
+    {
+      "address": "00a95890",
+      "name": "BSP_NativeGamepad_ClearForce",
+      "return": "void",
+      "ecx": "actual receiver pointer",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [],
+      "ret_bytes": 0,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a9595c"
+    },
+    {
+      "address": "00a95bd0",
+      "name": "BSP_NativeGamepad_GetClass",
+      "return": "int32",
+      "ecx": "unconsumed",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [],
+      "ret_bytes": 0,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a95bd5"
+    },
+    {
+      "address": "00a9a5a0",
+      "name": "BSP_NativeXInput_Construct",
+      "return": "void*",
+      "ecx": "actual receiver pointer",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [
+        "int32 controller_index"
+      ],
+      "ret_bytes": 4,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a9a5e3"
+    },
+    {
+      "address": "00a9a600",
+      "name": "BSP_NativeXInput_Destroy",
+      "return": "void",
+      "ecx": "actual receiver pointer",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [],
+      "ret_bytes": 0,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a9a60a"
+    },
+    {
+      "address": "00a9a7c0",
+      "name": "BSP_NativeXInput_ScalarDelete",
+      "return": "void*",
+      "ecx": "actual receiver pointer",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [
+        "uint32 flags"
+      ],
+      "ret_bytes": 4,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a9a7e3"
+    },
+    {
+      "address": "00a9a5f0",
+      "name": "BSP_NativeXInput_GetIdentifier",
+      "return": "int32",
+      "ecx": "unconsumed",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [],
+      "ret_bytes": 0,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a9a5f2"
+    },
+    {
+      "address": "00a9a610",
+      "name": "BSP_NativeXInput_Query",
+      "return": "uint32",
+      "ecx": "actual receiver pointer",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [
+        "uint32 code"
+      ],
+      "ret_bytes": 4,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a9a659"
+    },
+    {
+      "address": "00a9a660",
+      "name": "BSP_NativeXInput_Value",
+      "return": "float",
+      "ecx": "actual receiver pointer",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [
+        "uint32 code"
+      ],
+      "ret_bytes": 4,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a9a78f"
+    },
+    {
+      "address": "00a9a790",
+      "name": "BSP_NativeXInput_StopVibration",
+      "return": "uint32",
+      "ecx": "actual receiver pointer",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [],
+      "ret_bytes": 0,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a9a7b1"
+    },
+    {
+      "address": "00a9a7f0",
+      "name": "BSP_NativeXInput_Poll",
+      "return": "bool_AL",
+      "ecx": "actual receiver pointer",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [
+        "float seconds_unused"
+      ],
+      "ret_bytes": 4,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a9a9b7"
+    },
+    {
+      "address": "00a9a9c0",
+      "name": "BSP_NativeXInput_SetMotor",
+      "return": "void",
+      "ecx": "actual receiver pointer",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [
+        "uint32 channel",
+        "float value"
+      ],
+      "ret_bytes": 8,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a9aa3a"
+    },
+    {
+      "address": "00a9aa40",
+      "name": "BSP_NativeXInput_GetControlName",
+      "return": "void*",
+      "ecx": "unconsumed",
+      "edx": "unconsumed",
+      "stack_entry_order_esp_plus4_then8": [
+        "void* actual8h_output",
+        "uint32 code"
+      ],
+      "ret_bytes": 8,
+      "convention": "thiscall (source context excluded)",
+      "end_inclusive": "00a9aaa5"
+    }
+  ],
+  "validation": {
+    "seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "count": 8,
+      "matched": 8,
+      "log": "local/native_gamepad_seeds.log"
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "Win32 Release",
+      "exit_code": 0,
+      "ctests_passed": 2,
+      "log": "local/native_gamepad_final_build.log",
+      "archive_sha256": "a4a55a09068f5cb385f006f7dba4e37f8cea1c13c98b5147adbb5d35776764a4"
+    },
+    "call_audit": {
+      "command": "python tools/verify_report_calls.py reports/native_gamepad_xinput.json",
+      "checked": 50,
+      "failed": 0,
+      "indirect_explicit": 10
+    },
+    "focused_probe": {
+      "command": "./local/run_native_gamepad_probe.ps1",
+      "manifest_embedded": true,
+      "exit_code": 0,
+      "log": "local/native_gamepad_probe.log",
+      "log_sha256": "b02c110aa7d57f004e6b5ec1bce8f71cdb49a470913a03ffe08d0001dd5d6d10",
+      "raw_force": {
+        "updates": 3,
+        "expired": 1,
+        "request_pointer_replaced": 1,
+        "survivors": 2,
+        "payload_deletions_total": 3,
+        "motor_writes": 4,
+        "remaining_head": 0
+      },
+      "request_exception": {
+        "entered": 1,
+        "remaining_head": 0,
+        "surviving_payloads": 3,
+        "root_profile": "00ceb130",
+        "references": 1
+      },
+      "scripted_sdk_only": {
+        "conversion_modes": 2,
+        "actual_output_slots": true,
+        "axes": [
+          -32768,
+          0,
+          32767,
+          0
+        ],
+        "hardware_claim": false
+      },
+      "real_sdk": {
+        "library": "C:/Windows/SysWOW64/xinput1_3.dll",
+        "controller_index": 4,
+        "poll": false,
+        "connected_byte": 1,
+        "stop_result": 160,
+        "successful_controller_poll": false
+      }
+    }
+  },
+  "incoming_sites": [
+    {
+      "address": "00a9837d",
+      "native": "00a9a5a0",
+      "function": "00a982d0",
+      "evidence": "240h allocation atA98365; sameEAX->ECX, indexEDI0..3 stack; allocation caller cleansADDESP4; constructorRET4."
+    },
+    {
+      "address": "00a959e4",
+      "native": "00a954c0",
+      "function": "00a95960",
+      "evidence": "Current raw backendF8BBF4+class2 vectorB8 entry ECX; caller secondsfloatstack, RET4; backend reloaded after call."
+    },
+    {
+      "address": "00a95d2c",
+      "native": "00a95890",
+      "function": "00a95cb0",
+      "evidence": "Current raw class2 device entry or native null arm passed directly inECX, noextra caller nullguard; RET."
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "packet": "orch4_native_input_enumeration_ad",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "documentation": "docs/NATIVE_INPUT_ENUMERATION.md",
+  "status": "raw_callers_build_tested_required_guid_append_and_device_providers",
+  "functions": [
+    {
+      "address": "00a904e0",
+      "end_inclusive": "00a90523",
+      "name": "BSP_InputDeviceTable_AttachDevice",
+      "implementation": "attach_native_input_device_00a904e0",
+      "source": "src/native_input_enumeration.cpp",
+      "original_abi": "ECX backend; stack slot/device; RET8",
+      "coverage": "complete normal raw caller schedule over required providers; source callback failure transport qualified"
+    },
+    {
+      "address": "00a98030",
+      "end_inclusive": "00a982ac",
+      "name": "BSP_InputDeviceManager_OnDeviceEnumerated",
+      "implementation": "on_native_input_device_enumerated_00a98030",
+      "source": "src/native_input_enumeration.cpp",
+      "original_abi": "stdcall backend/instance; RET8; EAX=1 normally",
+      "coverage": "complete normal raw caller schedule over required providers; source callback failure transport qualified"
+    },
+    {
+      "address": "00a982b0",
+      "end_inclusive": "00a982c1",
+      "name": "BSP_InputDeviceManager_EnumDevicesCallbackA",
+      "implementation": "native_input_enum_callback_00a982b0",
+      "source": "src/native_input_enumeration.cpp",
+      "original_abi": "stdcall instance/backend; RET8; EAX forwarded from A98030",
+      "coverage": "complete normal raw caller schedule over required providers; source callback failure transport qualified"
+    }
+  ],
+  "direct_steps": [
+    {
+      "address": "00a9806d",
+      "function": "00a98030",
+      "native": "00bf681b"
+    },
+    {
+      "address": "00a9808e",
+      "function": "00a98030",
+      "native": "00a9a3e0"
+    },
+    {
+      "address": "00a980ad",
+      "function": "00a98030",
+      "native": "00bf681b"
+    },
+    {
+      "address": "00a980ce",
+      "function": "00a98030",
+      "native": "00a9a290"
+    },
+    {
+      "address": "00a980e4",
+      "function": "00a98030",
+      "native": "00a904e0"
+    },
+    {
+      "address": "00a98108",
+      "function": "00a98030",
+      "native": "0041e870"
+    },
+    {
+      "address": "00a98123",
+      "function": "00a98030",
+      "native": "00bf9440"
+    },
+    {
+      "address": "00a9813c",
+      "function": "00a98030",
+      "native": "00bf9440"
+    },
+    {
+      "address": "00a98155",
+      "function": "00a98030",
+      "native": "00bf9440"
+    },
+    {
+      "address": "00a9817e",
+      "function": "00a98030",
+      "native": "00bf9440"
+    },
+    {
+      "address": "00a981db",
+      "function": "00a98030",
+      "native": "00bf6713"
+    },
+    {
+      "address": "00a981ec",
+      "function": "00a98030",
+      "native": "00a972e0"
+    },
+    {
+      "address": "00a9821e",
+      "function": "00a98030",
+      "native": "00a97fa0"
+    },
+    {
+      "address": "00a9823a",
+      "function": "00a98030",
+      "native": "00bf681b"
+    },
+    {
+      "address": "00a98259",
+      "function": "00a98030",
+      "native": "00a99940"
+    },
+    {
+      "address": "00a9826b",
+      "function": "00a98030",
+      "native": "00a904e0"
+    },
+    {
+      "address": "00a98289",
+      "function": "00a98030",
+      "native": "00419cc0"
+    },
+    {
+      "address": "00a98290",
+      "function": "00a98030",
+      "native": "00bd1510"
+    },
+    {
+      "address": "00a982ba",
+      "function": "00a982b0",
+      "native": "00a98030"
+    },
+    {
+      "address": "00cb69e4",
+      "function": "00cb69e0",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00cb69ef",
+      "function": "00cb69eb",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00cb6a02",
+      "function": "00cb69fe",
+      "native": "00bf65ac"
+    },
+    {
+      "address": "00cb69f9",
+      "function": "00cb69f6",
+      "native": "0041dd20",
+      "kind": "tail_jump"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "00a904ef",
+      "function": "00a904e0",
+      "native": "EDX captured from device vtable+08 at A904E7",
+      "contract": "no stack args; captured device ECX; returns class EAX"
+    }
+  ],
+  "eh_map": {
+    "func_info": "00dece58",
+    "map": "00dece38",
+    "states": [
+      {
+        "state": 0,
+        "to": -1,
+        "cleanup": "00cb69e0"
+      },
+      {
+        "state": 1,
+        "to": -1,
+        "cleanup": "00cb69eb"
+      },
+      {
+        "state": 2,
+        "to": -1,
+        "cleanup": "00cb69f6"
+      },
+      {
+        "state": 3,
+        "to": 2,
+        "cleanup": "00cb69fe"
+      }
+    ]
+  },
+  "library_contracts": [
+    "00a97fa0: required append to actual E4h vector header; no production raw adapter in this packet",
+    "00bf681b/00bf65ac: existing singleton lifetime raw allocation/free domain",
+    "00bf9440: real CRT strstr"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1",
+    "log": "local/native_input_enumeration_ad_build.log",
+    "configuration": "MSVC Win32 Release",
+    "ctests_passed": 2,
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "probe": {
+      "source": "local/native_input_enumeration_ad_probe.cpp",
+      "source_sha256": "fddacaef6442802de363a8cd957dc32dcaad280441030e0cc5382eb6cd0ffc92",
+      "log": "local/native_input_enumeration_ad_probe.log",
+      "log_sha256": "24e0c90389fa0668f461d72fdd8075fa43573b931753189921faf18e6097b7df",
+      "result": "raw_GUIDs=2 duplicate_skipped=1 Xbox_before_append=1 occupied_slot_skipped=1 real_SDK_callback_failure=1 sdk_refs=0",
+      "limits": "required append uses a bounded fixture; real EnumDevices constructor intentionally throws before a device SDK constructor; not full backend or hardware input proof"
+    },
+    "independent_source_review": "keyboard/mouse worker reviewed native listings and DECE38 EH map; no caller defect; scalar allocator contract harmonized in worker packet"
+  }
+}
