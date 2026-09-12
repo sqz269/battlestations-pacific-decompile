@@ -1,0 +1,106 @@
+{
+  "packet": "orch5_menu_register",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "ghidra_mode": "verified_bsp_wrappers_read_only"
+  },
+  "source": "src/main_menu_registration.cpp",
+  "header": "include/bsp/main_menu_registration.hpp",
+  "documentation": "docs/MAIN_MENU_REGISTRATION.md",
+  "routine": {
+    "address": "00582f30",
+    "name": "register_main_menu_screen_00582f30",
+    "abi": "ECX containing main-menu screen, no stack arguments, bare RET",
+    "end_inclusive": "00583091",
+    "last_instruction": "00583091",
+    "last_instruction_length": 1,
+    "byte_length": 354,
+    "instruction_count": 86,
+    "flow_gaps": [],
+    "no_ghidra_function": false,
+    "coverage": "complete ordinary caller over required canonical screen/GUI/renderer service domain",
+    "body_checked": "complete assembly including callback register setup, every caller operand and epilogue"
+  },
+  "callee_bodies": [
+    {"entry": "004f71d0", "end_inclusive": "004f71e1", "last_instruction_length": 1, "abi": "ECX actual screen, current00 returns registry index, no stack args, bare RET", "reuse": "register_front_end_screen_004f71d0 on same table/base after current00; supported ids0..94"},
+    {"entry": "00590570", "end_inclusive": "00590575", "last_instruction_length": 1, "abi": "MOV EAX,1; RET", "coverage": "read-only profile evidence; caller still dispatches current00"},
+    {"entry": "00aa8530", "end_inclusive": "00aa85ae", "last_instruction_length": 3, "abi": "ECX actual widget, visible stack operand, RET4", "reuse": "actual owner's current34; base visibility includes ancestor predicates, propagation and node factor; derived profiles retain existing dispatch"},
+    {"entry": "00b29e60", "end_inclusive": "00b2a063", "last_instruction": "00b2a061", "last_instruction_length": 3, "instruction_count": 141, "flow_gaps": [], "abi": "ECX actual renderer; width,height,fullscreen byte,multisample type,sync byte,force byte; RET18; ordinary AL1 ignored by caller", "coverage": "complete callee body read; actual renderer implementation remains required, not implemented by this packet", "pseudocode_correction": "assembly has Boolean AL return and explicit optional guard reload; no unaff_EBX return contract"}
+  ],
+  "profile_table": {
+    "address": "00cefc5c",
+    "bytes": "7005590070754f0080754f00600d5900302f5800b0615800",
+    "current00": "00590570",
+    "current10": "00582f30",
+    "current14": "005861b0",
+    "dispatch": "current14 reloaded after current00/base registry publication; no unconditional fixed-id/fixed-table substitution"
+  },
+  "host_steps": [
+    {"address": "00582f37", "native": "004f71d0", "function": "00582f30", "contract": "same actual base and global registry, current00 first then publication"},
+    {"address": "00582f43", "native": "00582f30+vtable14", "function": "00582f30", "contract": "MOV EAX,[ESI]; EDX=[EAX+14]; ECX=ESI; CALL EDX; fresh current table"},
+    {"address": "00582f50", "native": "00aa6750", "function": "00582f30", "contract": "existing spacing fragment, +258 resolved Y, output pointer, RET4"},
+    {"address": "00582f67", "native": "00aa6750", "function": "00582f30", "contract": "existing spacing fragment, +24C resolved Y, output pointer, RET4"},
+    {"address": "00582f85", "native": "00ab6bd0", "function": "00582f30", "contract": "existing spacing fragment, reloaded +24C normalized height after binary64 difference spill"},
+    {"address": "00582f9f", "native": "00aa6750", "function": "00582f30", "contract": "existing spacing fragment, captured +25C resolved Y after2B0 store"},
+    {"address": "00582fb6", "native": "00aa6750", "function": "00582f30", "contract": "existing spacing fragment, reloaded +258 resolved Y"},
+    {"address": "00582fd4", "native": "00ab6bd0", "function": "00582f30", "contract": "existing spacing fragment, reloaded +258 normalized height after binary64 spill"},
+    {"address": "00582ff1", "native": "00582f30+vtable34", "function": "00582f30", "contract": "ECX captured+470 from582FDD; current34 on that same owner, false pushed582FE5"},
+    {"address": "00583087", "native": "00b29e60", "function": "00582f30", "contract": "ECX fresh[F8D394], width,height,fullscreen,samples,vsync,1; RET18; actual SettingsApplyHost operation required"}
+  ],
+  "base_call_steps": [
+    {"address": "004f71d7", "native": "004f71d0+vtable00", "function": "004f71d0", "contract": "ESI retains same screen; CALL current00, EAX indexes actual registry publication at4F71D9"}
+  ],
+  "reset_stores": [
+    {"site": "00582ff3", "operation": "capture liveCE54A0 raw bits through existing command.zoom_in reference"},
+    {"site": "00582ffb", "operation": "selection.field_64=0"},
+    {"site": "00582ffe", "operation": "selection.field_68=0"},
+    {"site": "00583001", "operation": "layout.objective_page_2c8=null"},
+    {"site": "00583007", "operation": "layout.objective_background_2ec=null"},
+    {"site": "0058300d", "operation": "same map_geometry.base_offset[0]=capturedCE54A0 raw bits"},
+    {"site": "00583015", "operation": "read liveCEF7BC raw bits"},
+    {"site": "0058301d", "operation": "same map_geometry.base_offset[1]=capturedCEF7BC raw bits"},
+    {"site": "00583028", "operation": "same map_geometry.base_offset[2]=positivezero"},
+    {"site": "00583030", "operation": "required same-screen map_offset_x_1a4 reference=positivezero"},
+    {"site": "00583038", "operation": "existing widget.screen.map_offset_y=positivezero"},
+    {"site": "00583040", "operation": "required same-screen map_offset_z_1ac reference=positivezero"},
+    {"site": "00583048", "operation": "selection.active_mission_group_110=null"},
+    {"site": "0058304e", "operation": "existing widget.screen.dlc_campaign=false"},
+    {"site": "00583054", "operation": "existing widget.screen.us_campaign=false"}
+  ],
+  "renderer_load_order": [
+    {"site": "0058305a", "global": "00f889e0", "field": "GameSettings.vsync_60"},
+    {"site": "00583061", "global": "00f889d8", "field": "GameSettings.antialias_58"},
+    {"site": "00583067", "global": "00f8899e", "field": "GameSettings.fullscreen_1e"},
+    {"site": "00583071", "global": "00f88998", "field": "GameSettings.height_18"},
+    {"site": "00583078", "global": "00f88994", "field": "GameSettings.width_14"},
+    {"site": "00583080", "global": "00f8d394", "field": "actual published renderer identity resolved to existing SettingsApplyHost"}
+  ],
+  "dependencies": [
+    {"entry": "005861b0", "status": "existing complete normal binder with required real resource/type providers; only current profile dispatch may choose it", "evidence": "reports/main_menu_layout_binding.json"},
+    {"entry": "00582f45", "status": "reuse existing complete spacing fragment and actual Text/position kernels", "evidence": "reports/main_menu_spacing.json"},
+    {"entry": "00b29e60", "status": "named but implementation incomplete; mandatory existing service with actual lock, optional guard, mode/recreation, parameter refresh, gamma/frame/EndScene and cleanup semantics", "evidence": "complete141-instruction body read; docs/NATIVE_RENDERER_PARAMETERS_NEXT.md103-121"},
+    {"entry": "00b29670", "status": "renderer-owned recreation dependency, not claimed or reconstructed by this packet"},
+    {"entry": "00b33ad0/00b33b00", "status": "renderer-owned optional guard dependencies, not replaced by no-op"},
+    {"entry": "current GUI34 and Text resources", "status": "same owner dispatch and existing supported synchronous domain; unresolved/pending calls stop where reached"}
+  ],
+  "uncertainty": [
+    "Reference associations must describe one live actual screen; no second storage/table/GUI tree is supplied",
+    "Native invalid-id out-of-bounds registry writes and invalid-pointer faults are outside supported domain",
+    "Existing GameSettings Boolean projection assumes normalized Boolean fields",
+    "No resumable registration continuation or original SEH/binary ABI claim",
+    "No complete renderer, complete executable registration, rendering, or gameplay claim"
+  ],
+  "executable_integration": {
+    "status": "parent integration required",
+    "existing_route": "src/game_hosts_menu.cpp register_screen(void*) at1012 currently performs base registration and manual main-menu page attachment from1026",
+    "new_route": "register_main_menu_screen_00582f30 with actual bound services, geometry, global settings and screen identity"
+  },
+  "verification": {
+    "report_calls": "python tools/verify_report_calls.py reports/main_menu_registration.json:8 direct rows checked,0 failures;3 indirect setups manually checked against full assembly and current profile table",
+    "win32_build": "scripts/build.ps1 Release Win32 passed; new source compiled with /W4 /WX /fp:strict; initial CTest1/1 and after verify-seeds8/8 matching live/disk, final CTest2/2 passed; local/menu-registration-build.log and local/menu-registration-build-final.log",
+    "new_permanent_tests": false,
+    "complete_registration_fixture": false,
+    "game_validated": false
+  }
+}
