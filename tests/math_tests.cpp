@@ -1,3 +1,4 @@
+#include "bsp/air_operations.hpp"
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/award_grant.hpp"
 #include "bsp/entity_event_queues.hpp"
@@ -2650,6 +2651,27 @@ int main() {
             "ten iterations of 00C42530 hold the hull up with its substep weight");
         check(rows[1].impulse == 0.0f,
             "00C42230 leaves friction at zero while nothing slides");
+    }
+
+    {
+        // 006CD350's launch branch: the plane limit, the free stock and the slot's
+        // own request all clamp the count, and a scripted launch leaves the 5.0
+        // second cooldown from 00CE3850 behind.
+        bsp::AirOpsLaunchInputs input;
+        input.plane_limit = 12;
+        input.committed_planes = 4;
+        input.class_stock = 6;
+        input.slot_requested = 3;
+        input.launch_requested = true;
+        const bsp::AirOpsLaunchDecision decision = bsp::air_ops_slot_launch_006cd350(input);
+        check(decision.launch_count == 3, "006CD40B clamps the launch to the slot's request");
+        check(decision.next_timer == bsp::kAirOpsSlotCooldownSeconds,
+            "006CD41F starts the 5.0 second cooldown a requested launch asks for");
+
+        input.class_stock = 0;
+        const bsp::AirOpsLaunchDecision starved = bsp::air_ops_slot_launch_006cd350(input);
+        check(starved.launch_count == 0 && starved.clear_slot,
+            "006CD414 empties the slot when no stock is free");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

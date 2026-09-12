@@ -497,3 +497,4 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_hosts_trajectory.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_hosts_units.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/game_hosts_world.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/air_operations.cpp)
