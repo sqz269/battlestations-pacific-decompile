@@ -8457,6 +8457,81 @@
       ],
       "evidence": "reports/native_renderer_reset_readiness_5.json",
       "qualification": "Discovery complete; four reset parents remain incomplete. Exact +4C logical-owner, cache+04 profile, +1A78 record-callback and CRT composition boundaries retained."
+    },
+    {
+      "id": "orch6_ship_ai_lateral_record",
+      "packet": "orch6_ship_ai_lateral_record",
+      "state": "bounded_reconstruction_integrated_build_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "orch6-lateral-record",
+      "function_addresses": [
+        "00417610",
+        "0041a200",
+        "009d58f0",
+        "0041ccd0",
+        "00423190"
+      ],
+      "output_files": [
+        "docs/SHIP_AI_LATERAL_RECORD.md",
+        "include/bsp/ship_ai_lateral_record.hpp",
+        "include/bsp/ship_ai_path_search.hpp",
+        "reports/ship_ai_lateral_record.json",
+        "src/ship_ai_lateral_record.cpp"
+      ],
+      "evidence": "reports/ship_ai_lateral_record.json",
+      "integration_report": "reports/orch6_navigation_geometry_batch.json",
+      "qualification": "Two routines reconstructed; record constructor and clearance cache retain the report's analysis-only coverage. New C++ interfaces; original ABI and game behavior are not validated."
+    },
+    {
+      "id": "orch6_ship_ai_circle_tangent",
+      "packet": "orch6_ship_ai_circle_tangent",
+      "state": "bounded_reconstruction_integrated_build_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "orch6-circle-tangent",
+      "function_addresses": [
+        "004f3560",
+        "004f4520",
+        "004f47b0",
+        "004f3970",
+        "009d6550",
+        "009d68b0"
+      ],
+      "output_files": [
+        "docs/SHIP_AI_NAV_CIRCLE_TANGENT.md",
+        "include/bsp/ship_ai_approach_update.hpp",
+        "include/bsp/ship_ai_nav_circle_tangent.hpp",
+        "include/bsp/ship_ai_path_follower.hpp",
+        "reports/ship_ai_nav_circle_tangent.json",
+        "src/ship_ai_approach_update.cpp",
+        "src/ship_ai_nav_circle_tangent.cpp",
+        "src/ship_ai_path_follower.cpp"
+      ],
+      "evidence": "reports/ship_ai_nav_circle_tangent.json",
+      "integration_report": "reports/orch6_navigation_geometry_batch.json",
+      "qualification": "Three geometry routines reconstructed, two existing projections corrected, one reused; native scratch uncertainty remains explicit. New C++ interfaces; original ABI and game behavior are not validated."
+    },
+    {
+      "id": "orch6_avoid_zone_boundary",
+      "packet": "orch6_avoid_zone_boundary",
+      "state": "bounded_reconstruction_integrated_build_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "orch6-avoid-geometry",
+      "function_addresses": [
+        "0041aea0",
+        "0041b840"
+      ],
+      "output_files": [
+        "docs/AVOID_ZONE_BOUNDARY.md",
+        "include/bsp/avoid_zone_boundary.hpp",
+        "reports/avoid_zone_boundary.json",
+        "src/avoid_zone_boundary.cpp"
+      ],
+      "evidence": "reports/avoid_zone_boundary.json",
+      "integration_report": "reports/orch6_navigation_geometry_batch.json",
+      "qualification": "Two control-flow projections through required geometry callees; no executable wiring or native storage adapter. New C++ interfaces; original ABI and game behavior are not validated."
     }
   ],
   "snapshot_after_analysis": {
