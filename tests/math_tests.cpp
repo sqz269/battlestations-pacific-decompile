@@ -78,6 +78,7 @@
 #include "bsp/unit_parts.hpp"
 #include "bsp/projectile_impact.hpp"
 #include "bsp/blast_damage.hpp"
+#include "bsp/collision_shapes.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -2425,6 +2426,21 @@ int main() {
         check(std::fabs(bsp::blast_falloff_fraction_004705c0(25.0f, 100.0f, true) - 1.0f)
                   < 1e-6f,
             "00470602 lifts a positive fraction to 1.0f");
+    }
+
+    {
+        // 0098AAE0's node reject, 0098AB4B-0098ABA2. Every branch rejects only on
+        // a strict separation, so a sphere that exactly touches the node bounds
+        // still reaches the shape array. An off-by-one to >= here would silently
+        // drop the grazing blast, which is the reason for this case.
+        const float node_min[3] = {0.0f, 0.0f, 0.0f};
+        const float node_max[3] = {10.0f, 10.0f, 10.0f};
+        const float touching[3] = {-2.0f, 5.0f, 5.0f};
+        const float clear[3] = {-3.0f, 5.0f, 5.0f};
+        check(bsp::collision_node_sphere_aabb_overlap(node_min, node_max, touching, 2.0f),
+            "0098AB62 keeps a sphere whose max exactly meets the node min");
+        check(!bsp::collision_node_sphere_aabb_overlap(node_min, node_max, clear, 2.0f),
+            "0098AB62 rejects once the sphere clears the node min");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
