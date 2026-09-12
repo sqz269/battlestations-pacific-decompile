@@ -480,3 +480,16 @@ the same correction under `installed_game_validation.correction`. Reproduce with
 ## Corrections from docs/SCENE_ENTITY_FACTORY.md
 
 `0046c550` constructs nothing: it is the per-entity generation predicate (`__thiscall` on the scene database, `RET 5Ch`, 23 stack dwords), and `00468660` maps a class id to its class name, not to a factory. The real class table is `004f2800` (formerly named `BSP_Scene_ResolveNamedObjects`), which registers 26 classes through `004ee250` as 12-byte descriptors (class id, instantiate-pass creator, registration-pass creator) into the scene database hash map at +34h. The seven unidentified ids resolve to Landscape (44h), Path (47h), LandFort (1Bh), CommandBuilding (1Ch), WaterMine (34h) and SpawnPoint (4Dh); 19h is not a registered id, so the comparison at `0046d492` can never match. Wreck, CameraPath, PeriodicEffect and FreeCamPos are registered but never authored in the 259 installed files.
+
+## Corrections from docs/SCENE_TRAFFIC_BLOCK.md and docs/SCENE_BROWSER_GROUPS.md (packet cc2_scene_traffic_groups)
+
+Two readings above are corrected: `0095CA10` is not the pass-2 traffic skip and holds no
+tokenizer reference; it drains the intrusive list at `00F8A0B0` (the multiplayer stock queued by
+the entity pass) into the preload registration, so the pass-2 `traffic` keyword is where that
+stock becomes census entries at `00F8A09C`. And `SceneBrowserGroups` has an entry layout
+(`GroupName`, `GroupID`, `Parent`) but nothing stores it: the entry reader never reads its
+`this`, frees both strings and writes the parsed id into a dead argument slot, so the block is
+editor metadata, validated and discarded. The `traffic` block is a brace counter in which only
+`item` dispatches; its record is `4Ch` bytes (path entity, startPt, endPt, cyclic, rowCount,
+columns, rowGap, columnGap, HP, speed, randomFactor, rowDev, columnDev, a class-id keyed weight
+map at `+34h` for `templates`).

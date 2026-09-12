@@ -164,7 +164,12 @@ struct MissionSceneLoadHost {
 
     // Participant tables, 004dfc13..004dfd80. Exactly one of these runs.
     virtual void reset_single_player_slots() = 0; // 004bb160 then 004bb440, sets game+18CCh/18ECh
-    virtual void reset_network_slots() = 0; // 004cec60, 004c1ff0, the 8 headers at game+758h, 00626930
+    // The 004dfc13..004dfd18 network arm (docs/MISSION_LOAD_HOSTS.md, packet
+    // cc2_mission_load_hosts): erases the two native-string sets 00E18A60/00E18A6C
+    // through 004cec60 (an MSVC tree erase, not a slot reset), clears the eight
+    // headers at game+758h, 00626930. A local session takes reset_single_player_slots
+    // instead, so this step leaves nothing behind there.
+    virtual void reset_network_slots() = 0;
 
     // Front-end teardown, 004dfd90..004dfdd0. The two managers are released
     // through virtual +0h with 1 and the globals nulled.
@@ -224,7 +229,11 @@ struct MissionSceneLoadHost {
     virtual void reload_locale_tables() = 0; // 00aa06d0(0)
 
     // Input and session handover, 004e0750..004e0870.
-    virtual void reset_objective_list() = 0; // the intrusive list at game+5CCh/5D0h, 004218e0, 00424d00
+    // 004e0754..004e07c2: clears an unidentified tree at game+5C8h and rebuilds the
+    // avoid-zone table through 004218e0 BSP_AvoidZoneManager_GetSingleton and
+    // 00424d00 (docs/MISSION_LOAD_HOSTS.md). The objective sets live at
+    // game+21A4h + slot*4; the old name reset_objective_list was wrong.
+    virtual void reset_avoid_zone_state() = 0;
     virtual void set_input_capture(bool capture) = 0; // [00F8BBF4]+64h
     virtual void input_update(float seconds) = 0; // 004bec00 then 00a92c40
     virtual void dispatch_session_ready_event() = 0; // 0075b430(0Ch) then 00770af0, mode 2
@@ -232,7 +241,10 @@ struct MissionSceneLoadHost {
     virtual void commit_scene_ready() = 0; // 0077f5e0
 
     // Mission scripts, 004e0870..004e0f60.
-    virtual void rebuild_scripted_name_list() = 0; // 004d30f0, ECX = game
+    // 004d30f0, ECX = game: fills the set at game+1930h with the name of every Lua
+    // global whose value is a function, the pre-script baseline that 004d32a0 nils
+    // against at teardown (docs/MISSION_LOAD_HOSTS.md).
+    virtual void rebuild_scripted_name_list() = 0;
     virtual void run_mission_script(const std::string& path) = 0; // 008860b0 -> 00885fb0(path, 1)
     virtual void lua_collect_garbage() = 0; // 006b8ad0("collectgarbage(\"collect\")", 0, 0, 2)
     virtual bool lua_script_mode_enabled() = 0; // [game+1A08h]+4h

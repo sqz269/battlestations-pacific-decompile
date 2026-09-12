@@ -1,0 +1,505 @@
+{
+  "packet": "cc_dyn_step",
+  "owner": "agent/cc-dyn-step",
+  "date": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": "none (read-only worker)",
+  "docs": [
+    "docs/DYN_PHYSICS_SUBSTEP.md",
+    "docs/DYN_CONTACT_SOLVER.md",
+    "docs/FIXED_STEP_CALLBACKS.md"
+  ],
+  "sources": [
+    "include/bsp/dyn_physics_substep.hpp",
+    "src/dyn_physics_substep.cpp",
+    "include/bsp/dyn_contact_solver.hpp",
+    "src/dyn_contact_solver.cpp",
+    "include/bsp/fixed_step_callbacks.hpp",
+    "src/fixed_step_callbacks.cpp",
+    "src/ship_motion_probe.cpp"
+  ],
+  "simulate_host_steps": [
+    {
+      "host_method": "reset_profiler_counter_tree_00c321b0",
+      "address": "00c5c586",
+      "native": "00c321b0",
+      "function": "00c5c540",
+      "abi": "__fastcall void(node), node = ECX",
+      "contract": "recurses over node+4h[0..node+8h) zeroing node+38h/+3Ch/+40h; the wrapper adds the root's own three and the frame counter at [[0109e9fc]+0ch]+8h"
+    },
+    {
+      "host_method": "push_profiler_scope(\"Simulate\")",
+      "address": "00c5c5c5",
+      "native": "00c50390",
+      "function": "00c5c540",
+      "abi": "__cdecl record*(const char* label, int id), RET, args pushed",
+      "contract": "creates the scope record the first time profiler+10h is empty; the push/pop itself is inline at 00c5c5d1 and 00c5c6ce"
+    },
+    {
+      "host_method": "flush_pending_body_removals_00c4d980",
+      "address": "00c5c5ff",
+      "native": "00c4d980",
+      "function": "00c5c540",
+      "abi": "__fastcall void(world), world = ECX",
+      "contract": "drains world+438h (count world+43ch) and returns each body to the pool at world+4ch or world+170h"
+    },
+    {
+      "host_method": "first_registered_body / next_registered_body",
+      "address": "00c5c604",
+      "native": null,
+      "function": "00c5c540",
+      "abi": "field reads, not a call: world+204h, sentinel world+208h, next B+84h",
+      "contract": "the body list the previous-transform publish walks"
+    },
+    {
+      "host_method": "run_substep_00c5bb30 (accumulator loop)",
+      "address": "00c5c66d",
+      "native": "00c5bb30",
+      "function": "00c5c540",
+      "abi": "__cdecl void(world, float dt), world pushed second",
+      "contract": "one full substep of world+00h; runs while world+00h < accumulator and the budget is non-zero"
+    },
+    {
+      "host_method": "run_substep_00c5bb30 (remainder)",
+      "address": "00c5c6bd",
+      "native": "00c5bb30",
+      "function": "00c5c540",
+      "abi": "__cdecl void(world, float dt)",
+      "contract": "one substep of the leftover accumulator when it exceeds the double at 00d7a398; the shipped world takes this branch and not the loop"
+    }
+  ],
+  "substep_host_steps": [
+    {
+      "host_method": "integrate_velocities_00c41550",
+      "address": "00c5bb5a",
+      "native": "00c41550",
+      "function": "00c5bb30",
+      "abi": "void(dt) with the world in ESI, dt on the stack",
+      "contract": "docs/RIGID_BODY_INTEGRATION.md, the velocity phase; runs before the collision pass"
+    },
+    {
+      "host_method": "run_collision_pass_00c57070",
+      "address": "00c5bb66",
+      "native": "00c57070",
+      "function": "00c5bb30",
+      "abi": "void(scene) with [world+444h] pushed, callee cleans up",
+      "contract": "partial: call site, argument and image strings read, body not read; producer of the manifold list"
+    },
+    {
+      "host_method": "push_profiler_scope(\"CreateGroups\")",
+      "address": "00c5bb83",
+      "native": "00c50390",
+      "function": "00c5bb30",
+      "abi": "__cdecl record*(label, id), id 0x16",
+      "contract": "scope record lookup, first use only"
+    },
+    {
+      "host_method": "create_contact_groups_00c4b610",
+      "address": "00c5bbbe",
+      "native": "00c4b610",
+      "function": "00c5bb30",
+      "abi": "void(manager) with world+448h pushed",
+      "contract": "flood-fills the manifold list into islands; sets world+450h and world+458h"
+    },
+    {
+      "host_method": "push_profiler_scope(\"Solve\"), solver mode 1",
+      "address": "00c5bc1e",
+      "native": "00c57020",
+      "function": "00c5bb30",
+      "abi": "void(label) pushed, id in EAX (0x18), EDI = a stack scope frame",
+      "contract": "opens the Solve scope; the label 00d79f34 and the id come from this site"
+    },
+    {
+      "host_method": "dispatch_solver_tasks_00c33140, solver mode 1",
+      "address": "00c5bcca",
+      "native": "00c33140",
+      "function": "00c5bb30",
+      "abi": "void(count) with the task-pointer vector world+480h in EAX, the scheduler [[0109e9fc]+10h] in ECX, count pushed",
+      "contract": "fork-join over Dyn::Scene::LCPSolver2Task; not the shipped mode"
+    },
+    {
+      "host_method": "push_profiler_scope(\"Solve\"), solver mode 0 (shipped)",
+      "address": "00c5c045",
+      "native": "00c57020",
+      "function": "00c5bb30",
+      "abi": "void(label) pushed, id in EAX (0x18)",
+      "contract": "the same scope from the mode-0 block"
+    },
+    {
+      "host_method": "dispatch_solver_tasks_00c33140, solver mode 0 (shipped)",
+      "address": "00c5c0e8",
+      "native": "00c33140",
+      "function": "00c5bb30",
+      "abi": "void(count) with the task-pointer vector world+468h in EAX, the scheduler in ECX, count pushed",
+      "contract": "fork-join over Dyn::Scene::LCPSolverTask; each task runs 00c5c7a0 then 00c5c710 per group in its range"
+    },
+    {
+      "host_method": "report_contacts_world_24h",
+      "address": "00c5c43a",
+      "native": "00c5c431+vtable00",
+      "function": "00c5bb30",
+      "abi": "__thiscall void(listener, const record* records, int count), RET 8, ECX = [world+24h], slot 0 of [[world+24h]]",
+      "contract": "indirect; the record array is freed at 00c5c449 so the listener must not retain it"
+    },
+    {
+      "host_method": "operator_new for the record array",
+      "address": "00c5c16d",
+      "native": "00bf55be",
+      "function": "00c5bb30",
+      "abi": "__cdecl void*(size), RET, size pushed",
+      "contract": "manifoldCount * 4 * 0x58 bytes"
+    },
+    {
+      "host_method": "free of the record array",
+      "address": "00c5c449",
+      "native": "00bf6989",
+      "function": "00c5bb30",
+      "abi": "__cdecl void(void*), RET, arg pushed",
+      "contract": "Ghidra marks this CALL_RETURN, so 00c5c44e..00c5c450 is undisassembled and the decompiler shows a spurious return; the disk bytes are ADD ESP,4 and the flow continues to 00c5c451"
+    },
+    {
+      "host_method": "push_profiler_scope(\"UpdatePosition\")",
+      "address": "00c5c469",
+      "native": "00c50390",
+      "function": "00c5bb30",
+      "abi": "__cdecl record*(label, id), id 0x1b",
+      "contract": "scope record lookup, first use only"
+    },
+    {
+      "host_method": "integrate_positions_00c5b1b0",
+      "address": "00c5c491",
+      "native": "00c5b1b0",
+      "function": "00c5bb30",
+      "abi": "void(dt) with the world in EBX, dt on the stack",
+      "contract": "docs/RIGID_BODY_INTEGRATION.md, the position phase"
+    },
+    {
+      "host_method": "push_profiler_scope(\"SleepGroups\")",
+      "address": "00c5c4ce",
+      "native": "00c50390",
+      "function": "00c5bb30",
+      "abi": "__cdecl record*(label, id), id 0x1c",
+      "contract": "scope record lookup, first use only"
+    },
+    {
+      "host_method": "sleep_contact_groups_00c4b550",
+      "address": "00c5c503",
+      "native": "00c4b550",
+      "function": "00c5bb30",
+      "abi": "void(manager) with world+448h pushed",
+      "contract": "last thing the substep does; a group that sleeps here is excluded from the NEXT substep"
+    }
+  ],
+  "contact_phase_steps": [
+    {
+      "host_method": "clear_groups_00c3f410 (CreateGroups entry)",
+      "address": "00c4b632",
+      "native": "00c3f410",
+      "function": "00c4b610",
+      "abi": "outlined block, manager in ESI",
+      "contract": "frees each group entry's array, zeroes manager+8h and manager+10h"
+    },
+    {
+      "host_method": "reset_marks_00c36ac0",
+      "address": "00c4b639",
+      "native": "00c36ac0",
+      "function": "00c4b610",
+      "abi": "__fastcall void(manager), manager in ECX",
+      "contract": "writes -1 into every B+64h on world+204h and every manifold+0d4h on the scene list"
+    },
+    {
+      "host_method": "append_to_group_00c36b60",
+      "address": "00c4b86c",
+      "native": "00c36b60",
+      "function": "00c4b610",
+      "abi": "outlined push_back, the group entry in ESI, the manifold pushed",
+      "contract": "grows the 0Ch-byte vector to 2*capacity+2 when full, then stores at data[size++]"
+    },
+    {
+      "host_method": "clear_groups_00c3f410 (SleepGroups exit)",
+      "address": "00c4b5ff",
+      "native": "00c3f410",
+      "function": "00c4b550",
+      "abi": "outlined block, manager in ESI",
+      "contract": "the group vector does not survive the substep"
+    },
+    {
+      "host_method": "solver task body, per group",
+      "address": "004038ce",
+      "native": "00c5c7a0",
+      "function": "00403850",
+      "abi": "void(group, float dt) with the solver context in EDI; group = [[task+8h]+44ch] + index*0ch, dt = task+14h",
+      "contract": "SolverPreStep: sizes the constraint-row array and runs 00c4f140 / 00c437d0"
+    },
+    {
+      "host_method": "solver iteration driver",
+      "address": "004038d5",
+      "native": "00c5c710",
+      "function": "00403850",
+      "abi": "void(void) with the solver context in EAX",
+      "contract": "SolveConstraints: [[context+0h]+38h] = world+38h = 10 iterations of 00c431d0 then 00c42ed0; the impulse math is not read"
+    },
+    {
+      "host_method": "profiler scope \"SolverPreStep\"",
+      "address": "00c5c7d3",
+      "native": "00c50390",
+      "function": "00c5c7a0",
+      "abi": "__cdecl record*(label, id), id 0x19",
+      "contract": "scope record lookup"
+    },
+    {
+      "host_method": "profiler scope \"SolveConstraints\"",
+      "address": "00c5c72f",
+      "native": "00c50390",
+      "function": "00c5c710",
+      "abi": "__cdecl record*(label, id), id 0x1a",
+      "contract": "scope record lookup"
+    }
+  ],
+  "fixed_step_callback_steps": [
+    {
+      "host_method": "run_fixed_step_callbacks_00874de0",
+      "address": "00875e3f",
+      "native": "00874de0",
+      "function": "00875bb0",
+      "abi": "__cdecl void(void), RET, no argument pushed",
+      "contract": "the callee loads the fixed step from 00d0de84 itself at 00874df2"
+    },
+    {
+      "host_method": "invoke_step_callback",
+      "address": "00874e01",
+      "native": "00874df0+vtable10",
+      "function": "00874de0",
+      "abi": "__thiscall void(node, float step), RET 4, ECX = node, slot 4 of [[node]]",
+      "contract": "indirect; next is read after the call so a callback may relink"
+    },
+    {
+      "host_method": "fixed_step_callback_register_00875a80, repeating registrant",
+      "address": "006f5767",
+      "native": "00875a80",
+      "function": "006f5610",
+      "abi": "__thiscall void(node, bool repeating), ECX = ESI+310h, PUSH 1 at 006f5735",
+      "contract": "node vtable 00cfafe0 written at 006f567c; its slot 4 is 006f7360"
+    },
+    {
+      "host_method": "fixed_step_callback_register_00875a80, one-shot registrant",
+      "address": "007ac095",
+      "native": "00875a80",
+      "function": "007ac000",
+      "abi": "__thiscall void(node, bool repeating), ECX = ESI+3e4h, PUSH 0 at 007ac086",
+      "contract": "unlinked by the first run; the node's vtable is written by the owner's constructor, not found"
+    }
+  ],
+  "coverage": [
+    {
+      "routine": "00c5c540",
+      "reconstruction": "dyn_physics_world_simulate_00c5c540",
+      "status": "semantic_sequence_over_host_strict_win32_build_and_probe_exercised",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c5c614..00c5c62f",
+      "reconstruction": "dyn_copy_previous_transform",
+      "status": "semantic_pure_rule_integrated_strict_win32_build_and_probe_exercised",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c5bb30",
+      "reconstruction": "dyn_world_substep_00c5bb30",
+      "status": "semantic_sequence_over_host_partial_projection_strict_win32_build",
+      "coverage": "partial: the per-constraint impulse math under 00403720 and 00403850 is not reconstructed (00c4f040, 00c42530, 00c42230, 00c37b50, 00c35020, 00c4f140, 00c437d0, 00c35160, 00c431d0, 00c42ed0, 00c37c40, 00c350c0); 00c57070 (00c57070..00c5787c) is a contract only"
+    },
+    {
+      "routine": "00c5c1be..00c5c40c",
+      "reconstruction": "dyn_build_contact_report_record",
+      "status": "semantic_pure_rule_integrated_strict_win32_build",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c5bc2b..00c5bcb9 and 00c5c04e..00c5c0d9",
+      "reconstruction": "dyn_solver_task_range",
+      "status": "semantic_pure_rule_integrated_strict_win32_build",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c4b610",
+      "reconstruction": "dyn_create_contact_groups_00c4b610",
+      "status": "semantic_sequence_over_host_strict_win32_build",
+      "coverage": "complete for the fill; the vector growth and allocation are host-side"
+    },
+    {
+      "routine": "00c4b550",
+      "reconstruction": "dyn_sleep_contact_groups_00c4b550",
+      "status": "semantic_sequence_over_host_strict_win32_build",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c321b0",
+      "reconstruction": "named only, contract in DynSimulateHost",
+      "status": "read_in_full",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c4d980",
+      "reconstruction": "named only, contract in DynSimulateHost",
+      "status": "read_in_full",
+      "coverage": "partial: 00c43aa0 and 00c43c00 are not read"
+    },
+    {
+      "routine": "00c3f410",
+      "reconstruction": "named only, contract in the group hosts",
+      "status": "read_in_full",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c36ac0",
+      "reconstruction": "named only, contract in DynGroupFormationHost",
+      "status": "read_in_full",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c36b60",
+      "reconstruction": "named only, contract in DynGroupFormationHost",
+      "status": "read_in_full",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c33140",
+      "reconstruction": "named only, contract in DynSubstepHost",
+      "status": "read_in_full",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c57070",
+      "reconstruction": "named only, contract in DynSubstepHost",
+      "status": "contract_only",
+      "coverage": "none of the body; call site, argument and image strings only"
+    },
+    {
+      "routine": "00c5c7a0",
+      "reconstruction": "named only",
+      "status": "read_for_sequence",
+      "coverage": "partial: 00c35160, 00c4f140 (00c4f140..00c5030f) and 00c437d0 (00c437d0..00c43a91) are not read"
+    },
+    {
+      "routine": "00c5c710",
+      "reconstruction": "named only",
+      "status": "read_for_sequence",
+      "coverage": "partial: 00c431d0 (00c431d0..00c437ca), 00c42ed0 (00c42ed0..00c431c2), 00c37c40 and 00c350c0 are not read"
+    },
+    {
+      "routine": "00874de0",
+      "reconstruction": "fixed_step_callback_list_run_00874de0",
+      "status": "semantic_sequence_over_host_strict_win32_build",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00875a80",
+      "reconstruction": "fixed_step_callback_register_00875a80",
+      "status": "semantic_pure_rule_integrated_strict_win32_build",
+      "coverage": "complete for the list surgery; the critical section is host-side"
+    },
+    {
+      "routine": "006f7360",
+      "reconstruction": "named only",
+      "status": "not_read",
+      "coverage": "none; no Ghidra function at this address"
+    }
+  ],
+  "corrections": [
+    {
+      "target": "docs/DYN_WORLD_SETTINGS.md descriptor table, row desc+38h",
+      "was": "desc+38h (0.02f, 00CE746C, stored at 004DE15A) is copied into world+24h",
+      "is": "there is no such copy. Dyn_World_Construct's fifteen copies at 00C41AE9..00C41B4A read desc+00h, +04h, +08h, +0Ch, +10h, +14h, +18h, +1Ch, +20h, +24h, +28h, +2Ch, +30h, +34h and +3Ch; desc+38h is not among them. world+24h is written once, with zero, at 00C41C2C (MOV [ESI+24h],EBP with EBP zeroed at 00C41B58), and its only reader is the contact-report dispatch at 00C5C124/00C5C431, which treats it as an object pointer",
+      "evidence": "00C41AE9..00C41B4A disassembled in full; 00C41B25/00C41B28 is the desc+3Ch -> world+28h copy; 00C41C2C is the only other write to world+24h in the constructor"
+    },
+    {
+      "target": "docs/DYN_WORLD_SETTINGS.md, kDynWorldSolverWord24",
+      "was": "10 is the shape of an iteration count, but that is a guess and the header says so",
+      "is": "it is the solver iteration count. desc+24h lands in world+38h at 00C41B31/00C41B34, and 00C5C71F inside 00C5C710 reads [[context+0h]+38h] as the loop bound over 00C431D0/00C42ED0 with context+0h the world. Ten iterations per group per substep",
+      "evidence": "00C41B31, 00C41B34, 00C5C71F; Dyn_Scene_LCPSolverTask_vslot0 at 00403720 reads the same field"
+    },
+    {
+      "target": "docs/RIGID_BODY_INTEGRATION.md, the coverage row for 00C5C540",
+      "was": "partial: the proxy transform copy and the profiler bookkeeping are described, not reconstructed",
+      "is": "complete. The copy is dyn_copy_previous_transform and the profiler bookkeeping is two host methods over the counter tree 00C321B0 clears",
+      "evidence": "00C5C55E..00C5C5AA and 00C5C614..00C5C62F"
+    },
+    {
+      "target": "docs/RIGID_BODY_INTEGRATION.md, the Dyn RTTI paragraph",
+      "was": "the solver being an LCP solver also says what the collision and constraint phases this packet does not read are (citing Dyn::Scene::LCPSolver2Task, vtable 00D7A090)",
+      "is": "there are two solver task classes and the shipped world selects the other one. world+10h is 0 (004DE19F stores EBX=0 into desc+20h, 00C41B06 copies it), which selects Dyn::Scene::LCPSolverTask, vtable 00D7A088, TypeDescriptor 00E17394, slot 0 00403720. LCPSolver2Task is reachable only with world+10h == 1",
+      "evidence": "00C5BBF2..00C5BC00 (the branch), 00C41E30/00C41E9A (00D7A090 into world+474h), 00C41C90/00C41C9D and 00C41D0A (00D7A088 into world+45Ch)"
+    },
+    {
+      "target": "Ghidra's stored listing of 00C5BB30 (and 00C4B610)",
+      "was": "the decompiler emits a return; immediately after the _free at 00C5C449, so the UpdatePosition and SleepGroups phases look unreachable from the contact-report branch",
+      "is": "an artifact of the CALL_RETURN override on the CRT free helper. The disk bytes at 00C5C44E are 83 C4 04 (ADD ESP,4) and control falls through to 00C5C451. 00C4B610 has four of the same gaps at 00C4B787, 00C4B7AB, 00C4B816 and 00C4B992",
+      "evidence": "python tools/bsp.py ghidra flow 00c5bb30 and 00c4b610; the disk bytes read back with ghidra bytes 00c5c440"
+    }
+  ],
+  "probe": {
+    "binary": "build/win32/Release/bsp_ship_motion_probe.exe",
+    "change": "the direct dyn_body_substep call is replaced by dyn_physics_world_simulate_00c5c540 over a ProbeSimulateHost, so the probe now runs the whole schedule: the counter reset, the removal flush, the previous-transform publish and the accumulator loop",
+    "command": "bsp_ship_motion_probe.exe --class 20",
+    "trajectory_changed": false,
+    "measurements": {
+      "00c5c540_calls": 400,
+      "00c5bb30_substeps": 400,
+      "class_built_hull": {
+        "x": -39.5626,
+        "y": -2005.0,
+        "z": 317.9185,
+        "heading_deg": -59.142,
+        "final_fwd_speed": 16.4163,
+        "peak_fwd_speed": 16.4562,
+        "peak_yaw_rad_s": 0.05513
+      },
+      "hand_built_stand_in": {
+        "x": -43.8903,
+        "y": 0.0,
+        "z": 320.8034,
+        "heading_deg": -62.2526,
+        "final_fwd_speed": 16.4114,
+        "peak_fwd_speed": 16.4555,
+        "peak_yaw_rad_s": 0.06109
+      }
+    },
+    "baseline": "the same seven numbers were produced by the HEAD build of src/ship_motion_probe.cpp, rebuilt and run before the change was restored, so the schedule is numerically transparent for the shipped world (fixed substep 0.05f, budget 1 -> one substep of the whole game step)"
+  },
+  "no_ghidra_function": [
+    {
+      "start": "006f7360",
+      "inclusive_end": "006f7665",
+      "evidence": "Start: slot 4 of the vtable 00CFAFE0 ([00CFAFF0] = 006F7360); the bytes are a fresh SEH prologue (64 A1 00 00 00 00 / PUSH -1 / PUSH 00C83690); the previous Ghidra function 006F6760 ends with RET at 006F7352 and 006F7353..006F735F is CC padding. End: C2 04 00 (RET 4) at 006F7663..006F7665, matching the __thiscall void(node, float) the caller uses, followed by CC padding to 006F766F and the next Ghidra function at 006F7670. Define with python tools/ghidra_define_function.py 006f7360 006f7666 before applying the ledger name BSP_FixedStepCallback_RepeatingStep."
+    }
+  ],
+  "flow_repair_requested": [
+    {
+      "function": "00c5bb30",
+      "gap": "00c5c44e..00c5c450",
+      "after_call": "00c5c449 -> 00bf6989"
+    },
+    {
+      "function": "00c4b610",
+      "gap": "00c4b78c..00c4b78f",
+      "after_call": "00c4b787 -> 00bf6989"
+    },
+    {
+      "function": "00c4b610",
+      "gap": "00c4b7b0..00c4b7b3",
+      "after_call": "00c4b7ab -> 00bf6989"
+    },
+    {
+      "function": "00c4b610",
+      "gap": "00c4b81b..00c4b822",
+      "after_call": "00c4b816 -> 00bf6989"
+    },
+    {
+      "function": "00c4b610",
+      "gap": "00c4b997..00c4b99a",
+      "after_call": "00c4b992 -> 00bf6989"
+    }
+  ]
+}
