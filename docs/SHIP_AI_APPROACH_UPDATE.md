@@ -416,3 +416,14 @@ site in `reports/ship_ai_approach_update.json` was checked against the live bodi
   projection models it as an indexed walk over a host; the order is the list's, not an array's.
 - No run-time evidence was gathered. `bsp_game.exe` implements no host from this packet, so none of
   these paths was exercised in a run log.
+
+## Correction from docs/SHIP_AI_RING_SCAN.md
+
+Packet `cc_ai_ring_scan` read `009E76D0` whole (both unrolled bodies) and its four slot scorers:
+`009E6640` is a planar obstacle probe owning the blocked byte at `slot+40h` and the probe fields
+`slot+44h`/`+48h`, `009E6870` writes `slot+30h` as the distance from the nearer edge of the
+standoff arc, `009E6400` writes `slot+2Ch` on the mode-4 arm as a beam preference, and `009E5DA0`
+asks the ship class to rate a bearing through `0095EB40` (unread). The accept/reject body starts
+at `009E7822`, not `009E78CC`, and three field meanings this doc had seen from one side are
+corrected in that doc's Corrections table; the two accessors `009E5E70` / `009E5E80` read the
+commanded heading and throttle.
