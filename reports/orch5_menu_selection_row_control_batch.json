@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "combined_win32_build_and_three_final_library_scoped_fixtures_passed",
+  "status": "promoted_exact_built_code_and_three_integrated_library_fixtures_passed",
   "ghidra_project": "C:/Users/sqz269/bsp.gpr",
   "ghidra_program": "/battlestationspacific.exe",
   "initial_baseline": "771085f2",
@@ -342,5 +342,147 @@
     "No actual Text/Icon resource effect fixture",
     "Non-null A9D750 insertion, full Listbox current40/properties/native teardown remain open",
     "Checkpoint/texture/profile/objective/transform/prompt/Movie providers and complete menu wiring remain required"
-  ]
+  ],
+  "promoted_validation": {
+    "source_commit": "bf54b1329913cfffc00d483a032a6bbb9d96cd1d",
+    "built_code_commit": "e0bd7c4b5b692253f5186263863937395d920885",
+    "promoted_commit": "e0bd7c4b5b692253f5186263863937395d920885",
+    "compiled_inputs_identical_after_promotion": true,
+    "changes_after_build": [],
+    "build_passed": true,
+    "tests_passed": 2,
+    "tests_failed": 0,
+    "integration_log": "local/orch5-menu-selection-integration.log",
+    "integration_log_sha256": "d660cdeb3fa610179a762f5708eafb701372e55f32165c3e366cb42857dfdcc8",
+    "final_library_sha256": "52480c53d6c3d15a14fa91f314b7b8cb7d2db78af3d7f8bb5d50993e37602c82",
+    "source_sha256_lf": {
+      "cmake/startup.cmake": "ed1ace611cf1704147d83df8657b1056492382e26d846ea131cc288e368d4f58",
+      "include/bsp/gui_listbox_listener_binding.hpp": "5af643a0bbec685e682b7e988962f38db817a9b936ea8cca5cfe81e031673f41",
+      "include/bsp/gui_listbox_row_control.hpp": "3590c5aada169eeeeba61b64547ed7d255f9e67b2f7275d29222596ef9e047f2",
+      "include/bsp/gui_listbox_runtime.hpp": "6e45017f13025d18d8f36d2049c1695af2a8478c4d5c5faa998e6c789746305c",
+      "include/bsp/gui_text_runtime_factory.hpp": "c06f354911ea4034771a9408e40ccf5ebc465053828c5f0c433a722e5ce84073",
+      "include/bsp/gui_type_dispatch.hpp": "8262d4c1a63cf1fc371efd3d64ab82f6bc03489eed5fb4913588cf62b280d3f8",
+      "include/bsp/main_menu_layout_native.hpp": "fd4bcf34fc5e1a34ea8be694b2ecf23a19a7219055eb46f612402cd7ae6d48b0",
+      "include/bsp/main_menu_runtime_listeners.hpp": "7ed61e667d4e6decf562b4558767141af5393f7fb850793216b7fd6318684e27",
+      "include/bsp/main_menu_selection_listener.hpp": "d8d600da4b91cb1aadd0e1d38ab6b680c168d9bd58a3f9c89054301c6ec6b6c8",
+      "include/bsp/main_menu_vehicle_unlock.hpp": "6d870834076411c77caf6213fc97f4b61eaebebd7947d4634ac77ea869127b67",
+      "include/bsp/native_lua_objects.hpp": "bccf6d4987d710dcbefd0f253cea939db64874f7394bedd432411ce88ae919cf",
+      "src/gui_listbox_listener_binding.cpp": "b7becd0a61fe8afcce3db355bc9500c502b8a96233d0f6a370ae6fc17b6b3a0e",
+      "src/gui_listbox_row_control.cpp": "419833ee05eee06f43e1bb5d6877b3c2db8a97e0e02441fed1f3a05993f115a3",
+      "src/gui_listbox_runtime.cpp": "2565d0af4f5325f05f735d36097864512a60b05cd03c7f2b2169b086b234ed6a",
+      "src/gui_text_runtime_factory.cpp": "acf7fee3ab1ac12d5855f21f53f6cb6538e8510355455c7538ae0672f996b5d7",
+      "src/gui_type_dispatch.cpp": "c7332d5c95c9a47efc027b7dc16815e3cc931f36003e0fb87901dedf115747f4",
+      "src/gui_widget_clip_refresh.cpp": "148a0e3d3be9cf00b10db45ee9d21647409006830aff974987a20cdd11c11d97",
+      "src/gui_widget_frame_runtime.cpp": "086966a31aea34b6f7d4f87eb6076bd57c6f2b18bb5cc7fc4b5c8e3ebd669a9d",
+      "src/main_menu_layout_native.cpp": "e1795b84f787a3cccb04ec10762be1dc0e70a9db548e20425da9637a4556e0ce",
+      "src/main_menu_runtime_listeners.cpp": "f16b820983816d1f087df0274fdebfcf03c688b92a4bcc99b47f0b38311c2c20",
+      "src/main_menu_selection_listener.cpp": "9de938bdc3c1996d84f88a19afc3c2c985caab50096e6c0e9eaa08e90bff98e0",
+      "src/main_menu_vehicle_unlock.cpp": "177dd797dbb6ddc115da524b50022ba2e5832f6b34c14c794f1e27c1d2d2eedc",
+      "src/native_lua_objects.cpp": "c2d70e3c7471688114c14677facb25ef318c224ce0cab8de0ab2ef3be43a0a2e"
+    },
+    "source_changes_from_initial_wave_build": [
+      "cmake/startup.cmake"
+    ],
+    "final_library_probes": [
+      {
+        "log": "local/orch5-menu-selection-promoted-workers/listbox-control/row_control_final_probe.log",
+        "sha256": "508dbcfbb756c52e5dc1c7f82b7c6287070b68ef9f12bb07d97ac1f44ab0fa0e",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-menu-selection-promoted-workers/vehicle-unlock/vehicle_unlock_final_probe.log",
+        "sha256": "91e86b01aef0bfc3ac8835398f82c72b7fca07e9a3823f6f4996081a69e80010",
+        "passed": true
+      },
+      {
+        "log": "local/orch5-menu-selection-promoted-workers/menu-selection/menu_selection_final_library.log",
+        "sha256": "2203f073dc1d976a418613707e42454b7586e36b3e8d44d6ef65e81a2798d69e",
+        "passed": true
+      }
+    ],
+    "worker_evidence_archives": [
+      {
+        "worker": "listbox-control",
+        "files": [
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-control\\local\\row_control_final_probe.log",
+            "archive": "local/orch5-menu-selection-promoted-workers/listbox-control/row_control_final_probe.log",
+            "bytes": 706,
+            "sha256": "508dbcfbb756c52e5dc1c7f82b7c6287070b68ef9f12bb07d97ac1f44ab0fa0e"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-control\\local\\row_control_final_validation.json",
+            "archive": "local/orch5-menu-selection-promoted-workers/listbox-control/row_control_final_validation.json",
+            "bytes": 1139,
+            "sha256": "45114933e8fd6ec1f5d8238acf44cefad33ff4dbe549065aeed35d07dad0089a"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-control\\local\\row_control_probe.cpp",
+            "archive": "local/orch5-menu-selection-promoted-workers/listbox-control/row_control_probe.cpp",
+            "bytes": 22939,
+            "sha256": "751bd579c2bc4a5674531f34c8d8f1488ee2a9a174d345b39021f5e7325a384f"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-listbox-control\\local\\run_row_control_final_probe.ps1",
+            "archive": "local/orch5-menu-selection-promoted-workers/listbox-control/run_row_control_final_probe.ps1",
+            "bytes": 1923,
+            "sha256": "1da4a0f6c435760ffaa3ef66218ad72c324a5158c117b7bc6b6e412cbd5b3967"
+          }
+        ]
+      },
+      {
+        "worker": "vehicle-unlock",
+        "files": [
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-vehicle-unlock\\local\\menu_selection_peer_review.json",
+            "archive": "local/orch5-menu-selection-promoted-workers/vehicle-unlock/menu_selection_peer_review.json",
+            "bytes": 3937,
+            "sha256": "f4c8a2f7d3fd1478d25bb98d24f0aad6c93e6f2dd52071916493c0b1f40f5034"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-vehicle-unlock\\local\\run_vehicle_unlock_final_probe.ps1",
+            "archive": "local/orch5-menu-selection-promoted-workers/vehicle-unlock/run_vehicle_unlock_final_probe.ps1",
+            "bytes": 2670,
+            "sha256": "e1c3b3bb62f9a9c496aa82609cf67c2d09415d95cc60fd58fc2ae27061f1ca98"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-vehicle-unlock\\local\\vehicle_unlock_final_probe.log",
+            "archive": "local/orch5-menu-selection-promoted-workers/vehicle-unlock/vehicle_unlock_final_probe.log",
+            "bytes": 2435,
+            "sha256": "91e86b01aef0bfc3ac8835398f82c72b7fca07e9a3823f6f4996081a69e80010"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-vehicle-unlock\\local\\vehicle_unlock_probe.cpp",
+            "archive": "local/orch5-menu-selection-promoted-workers/vehicle-unlock/vehicle_unlock_probe.cpp",
+            "bytes": 5236,
+            "sha256": "ee01eee83b458f97345a00c29bfbfc4107b409577e902bc1c4f6467ef56ce350"
+          }
+        ]
+      },
+      {
+        "worker": "menu-selection",
+        "files": [
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-selection\\local\\menu_selection_final_library.log",
+            "archive": "local/orch5-menu-selection-promoted-workers/menu-selection/menu_selection_final_library.log",
+            "bytes": 353,
+            "sha256": "2203f073dc1d976a418613707e42454b7586e36b3e8d44d6ef65e81a2798d69e"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-selection\\local\\menu_selection_strings_probe.cpp",
+            "archive": "local/orch5-menu-selection-promoted-workers/menu-selection/menu_selection_strings_probe.cpp",
+            "bytes": 1460,
+            "sha256": "8c6d5c65da89d6ca6689c3b087da6feb3b26855a3011a59bba0b1c7c91fdc01e"
+          },
+          {
+            "original": "J:\\PROG\\battlestations-pacific-decompile-orch5-menu-selection\\local\\run_menu_selection_final_library.ps1",
+            "archive": "local/orch5-menu-selection-promoted-workers/menu-selection/run_menu_selection_final_library.ps1",
+            "bytes": 1142,
+            "sha256": "3d87e080bd28710b652b5c6ecd96d4f22aa6a5ad335465ad310391739f85ca0d"
+          }
+        ]
+      }
+    ],
+    "runtime_scope": "Same three scoped fixture-only links rerun against integrated library. No full menu/resource/native ABI/game validation."
+  }
 }
