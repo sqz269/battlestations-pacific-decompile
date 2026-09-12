@@ -40,6 +40,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -124,7 +125,8 @@ bool run_load_session_slot_reset_004dfc13(GameHostLog& log, int session_mode,
 
 // 004e0754..004e07c2: the two clears, the tree erase and the avoid-zone rebuild
 // 00424d00 the singleton 004218e0 hands it.
-void run_load_avoid_zone_state_004e0754(GameHostLog& log);
+void run_load_avoid_zone_state_004e0754(GameHostLog& log,
+    const std::function<void()>& rebuild_geometry);
 
 // 004d30f0: the name of every Lua global that is a function at the moment the
 // scene reaches state 0Ch, which is the baseline teardown nils against.

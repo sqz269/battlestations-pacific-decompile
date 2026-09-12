@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "004f8940",
+    "end_address": "004f8941"
+   },
+   "result": {
+    "success": true,
+    "start_address": "004f8940",
+    "end_address": "004f8940",
+    "bytes_disassembled": 1,
+    "message": "Successfully disassembled 1 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "004f8940",
+    "disassemble_first": false,
+    "name": "BSP_MoviePlayer_Virtual18_NoOp"
+   },
+   "result": {
+    "success": true,
+    "address": "004f8940",
+    "function_name": "BSP_MoviePlayer_Virtual18_NoOp",
+    "entry_point": "004f8940",
+    "body_size": 1,
+    "message": "Function created successfully at 004f8940",
+    "warnings": [
+     "Function name 'BSP_MoviePlayer_Virtual18_NoOp' \u2014 main part 'MoviePlayer_Virtual18_NoOp' is not PascalCase. Expected: MovieplayerVirtual18Noop",
+     "Function name 'BSP_MoviePlayer_Virtual18_NoOp' \u2014 main part 'MoviePlayer_Virtual18_NoOp' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_MoviePlayer_Virtual18_NoOp' does not start with a recognized verb. First word 'Movie' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "004f8940",
+   "end": "004f8941",
+   "name": "BSP_MoviePlayer_Virtual18_NoOp",
+   "after": "Function: BSP_MoviePlayer_Virtual18_NoOp at 004f8940\nSignature: undefined BSP_MoviePlayer_Virtual18_NoOp(void)\nEntry: 004f8940\nBody: 004f8940 - 004f8940"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

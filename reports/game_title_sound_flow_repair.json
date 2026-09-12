@@ -1,0 +1,62 @@
+{
+  "repairs": [
+    {
+      "function": "00c6fdd0",
+      "owner": "agent/orch4-20260910",
+      "when": "2026-09-12T18:45:24Z",
+      "decompile_lines_before": 10,
+      "gaps": [
+        {
+          "site": "00c6fdd4",
+          "mnemonic": "CALL",
+          "operands": "0x00bf65ac",
+          "gap_start": "00c6fdd9",
+          "gap_end_exclusive": "00c6fddb",
+          "bytes": 2,
+          "after_call": true,
+          "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+        }
+      ],
+      "events": [
+        {
+          "gap": {
+            "site": "00c6fdd4",
+            "mnemonic": "CALL",
+            "operands": "0x00bf65ac",
+            "gap_start": "00c6fdd9",
+            "gap_end_exclusive": "00c6fddb",
+            "bytes": 2,
+            "after_call": true,
+            "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+          },
+          "clear": "Success: Cleared flow override at 00c6fdd4 (was: CALL_RETURN, now: NONE)",
+          "disassemble": "Successfully disassembled 2 byte(s)"
+        },
+        {
+          "explicit_tail_call": "00c6fdd4",
+          "clear": {
+            "status": "success",
+            "message": "Success: Cleared flow override at 00c6fdd4 (was: NONE, now: NONE)"
+          }
+        }
+      ],
+      "explicit_tail_end_exclusive": "00c6fddb",
+      "explicit_body_sha256": "926361cb56541f1f148bf104444632a0bc5dffda18a2a647896da25e798cf8e8",
+      "body_before": "Function: Unwind@00c6fdd0 at 00c6fdd0\nSignature: undefined Unwind@00c6fdd0(void)\nEntry: 00c6fdd0\nBody: 00c6fdd0 - 00c6fdd8",
+      "decompile_lines_after": 10,
+      "gaps_remaining": 1,
+      "body_after": "Function: Unwind@00c6fdd0 at 00c6fdd0\nSignature: undefined Unwind@00c6fdd0(void)\nEntry: 00c6fdd0\nBody: 00c6fdd0 - 00c6fdd8",
+      "stored_body_tail_complete": false,
+      "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+    }
+  ],
+  "final_repair": {
+    "mechanism": "Locked sanctioned function-definition workflow with existing-name retention; no script capability enabled",
+    "definition_report": "reports/game_title_sound_function_definitions.json",
+    "preserved_name": "Unwind@00c6fdd0",
+    "final_body": "00c6fdd0 - 00c6fdda",
+    "instructions": 5,
+    "gaps_remaining": 0,
+    "export_refreshed": true
+  }
+}

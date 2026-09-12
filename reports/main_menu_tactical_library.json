@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "abi_compatible": false,
+  "game_validated": false,
+  "packet": "orch5_tactical_library_request",
+  "status": "combined_win32_build_and_scoped_validation_recorded_in_parent_batch",
+  "documentation": "docs/MAIN_MENU_TACTICAL_LIBRARY.md",
+  "source": "src/main_menu_tactical_library.cpp",
+  "functions": [
+    {
+      "address": "005885d0",
+      "name": "request_tactical_library_with_selection_005885d0",
+      "source": "src/main_menu_tactical_library.cpp",
+      "coverage": "complete normal sequence",
+      "original_abi": "ECX caller screen forwarded to global-only selection getters; no stack arguments; RET",
+      "body_inclusive": [
+        "005885d0",
+        "00588633"
+      ]
+    },
+    {
+      "address": "005886c0",
+      "name": "request_tactical_library_005886c0",
+      "source": "src/main_menu_tactical_library.cpp",
+      "coverage": "complete normal sequence",
+      "original_abi": "ECX caller screen forwarded to global-only selection getters; no stack arguments; RET",
+      "body_inclusive": [
+        "005886c0",
+        "005886eb"
+      ]
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "005885d0",
+      "address": "005885d4",
+      "native": "005806a0",
+      "binding": "FIRST selected mission, actual manager+5C tables and live E194D8/DC"
+    },
+    {
+      "function": "005885d0",
+      "address": "005885db",
+      "native": "005c27e0",
+      "binding": "derive side from FIRST selected record"
+    },
+    {
+      "function": "005885d0",
+      "address": "005885e4",
+      "native": "005806a0",
+      "binding": "SECOND independent selected mission lookup"
+    },
+    {
+      "function": "005885d0",
+      "address": "0058862c",
+      "native": "004cc460",
+      "binding": "selection stores then mode5/selector99, then current manager request0B"
+    },
+    {
+      "function": "005886c0",
+      "address": "005886ca",
+      "native": "004cc460",
+      "binding": "request0B first, then reload manager/screen and write mode4/selector99"
+    }
+  ],
+  "field_correction": {
+    "009c": "SECOND selected mission pointer",
+    "00a0": "FIRST mission side index",
+    "00a4": "zero for5885D0; unchanged for5886C0"
+  },
+  "storage_contract": "Borrow same actual manager/screens/tables and existing payload ownership; accessors only bind storage, never callback or allocate",
+  "validation": {
+    "focused_fixture": "local/tactical_library_probe.cpp",
+    "result": "PASS",
+    "log": "local/orch5-tactical-library-probe.log",
+    "cases": [
+      "Observe selection and mode stores before old pending payload release",
+      "Rebind global manager during pending payload release;5886C0 writes newly current screen",
+      "Retain same actual queue/lock; pending versus applied state remains distinct"
+    ]
+  },
+  "limitations": [
+    "Invalid native STL iterators excluded",
+    "No concrete full TacticalLibrary constructor or screen implementation",
+    "Borrowed fields and MissionRecordData are semantic C++ projections; no binary or game validation"
+  ],
+  "parent_integration_2026_09_12": {
+    "report": "reports/orch5_menu_listbox_group_batch.json",
+    "combined_win32_build_passed": true,
+    "existing_tests_passed": 2,
+    "scope": "Final-library Group/Listbox/tactical probes passed; menu caller assembly/compile reviewed, no complete menu runtime claim",
+    "new_cpp_abi": true,
+    "game_validated": false
+  }
+}

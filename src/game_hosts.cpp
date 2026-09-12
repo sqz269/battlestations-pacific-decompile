@@ -14,6 +14,8 @@
 #include <cstdarg>
 #include <cstdlib>
 #include <cstring>
+#include <cerrno>
+#include <filesystem>
 
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/d3d9_startup.hpp"
@@ -29,9 +31,28 @@
 #include "bsp/native_renderer_parameters.hpp"
 #include "bsp/physical_file.hpp"
 #include "bsp/renderer_startup.hpp"
+#include "bsp/game_platform_services.hpp"
+#include "bsp/game_sound_runtime.hpp"
+#include "bsp/game_sound_dialog_runtime.hpp"
+#include "bsp/fmod_configuration_library.hpp"
+#include "bsp/sound_alternate_owner.hpp"
+#include "bsp/legacy_crt_math.hpp"
 
 namespace bsp::game {
 namespace {
+
+// Verified loader-zero CRT publication. Process lifetime is required because
+// other recovered arithmetic can run after the sound aggregate is destroyed.
+volatile std::uint32_t application_matherr_bypass_00e16bd0{};
+volatile std::uint32_t application_dispatch_bypass_0109dd78{};
+const LegacyCrtMathRuntime application_math_runtime{
+    &application_matherr_bypass_00e16bd0, &_errno};
+const CameraAxesCrtAccess application_axes_crt{
+    &application_dispatch_bypass_0109dd78, &legacy_crt_87except_00c27489};
+
+std::wstring selected_library_path(const std::wstring& selected, const wchar_t* name) {
+    return selected.empty() ? std::filesystem::absolute(name).wstring() : selected;
+}
 
 // 00bed3b0 keeps the platform object in window-extra offset zero. The extra-bytes layout
 // of the native object is not recovered, so the milestone binds one process-wide pointer.
@@ -78,6 +99,10 @@ std::vector<std::string> split_option_tokens(const std::string& text) {
 }
 
 }  // namespace
+
+const CameraAxesCrtAccess& application_camera_axes_crt() noexcept {
+    return application_axes_crt;
+}
 
 void set_active_platform_state(Win32PlatformState* state) noexcept {
     g_active_platform = state;
@@ -238,6 +263,24 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
             const DWORD length = GetFullPathNameA(input, required, settings_personal_root.data(), nullptr);
             if (!length || length >= required) { error = "cannot resolve settings personal root"; return false; }
             settings_personal_root.resize(length);
+        } else if (std::strcmp(argument, "--fmod-dll") == 0
+            || std::strcmp(argument, "--fmod-event-dll") == 0
+            || std::strcmp(argument, "--xlive-dll") == 0
+            || std::strcmp(argument, "--xlive-dependency") == 0) {
+            if (index + 1 >= argc) {
+                error = std::string(argument) + " needs a DLL path";
+                return false;
+            }
+            std::error_code path_error;
+            const auto path = std::filesystem::absolute(argv[++index], path_error);
+            if (path_error) {
+                error = std::string("cannot resolve library path: ") + path_error.message();
+                return false;
+            }
+            if (std::strcmp(argument, "--fmod-dll") == 0) fmod_dll = path.wstring();
+            else if (std::strcmp(argument, "--fmod-event-dll") == 0) fmod_event_dll = path.wstring();
+            else if (std::strcmp(argument, "--xlive-dll") == 0) xlive_dll = path.wstring();
+            else xlive_dependencies.push_back(path.wstring());
         } else if (std::strcmp(argument, "--vfs-probe") == 0) {
             if (index + 1 >= argc) {
                 error = "--vfs-probe needs a virtual path";
@@ -774,11 +817,9 @@ void GameFrameHost::profiler_end_frame() {
 
 bool GameLoopCallbacks::pretranslate(MSG& message) {
     // 00bec1d8 CALL 00c2f1d2, inside the PeekMessageA success arm, where 00c2f1d2 is
-    // JMP [00ce25dc] to XLivePreTranslateMessage (ordinal 5030). The XLive binding is not
-    // reconstructed, so no message is ever consumed here.
-    log_.unimplemented("PlatformLoopCallbacks::pretranslate", "00bec1d8");
-    static_cast<void>(message);
-    return false;
+    // JMP [00ce25dc] to XLivePreTranslateMessage (ordinal 5030).
+    log_.implemented("PlatformLoopCallbacks::pretranslate", "00bec1d8");
+    return xlive_.pretranslate(message);
 }
 
 void GameLoopCallbacks::frame() {
@@ -815,6 +856,47 @@ void GameLoopCallbacks::frame() {
 // GameStartupHost, 008f81f0
 // ---------------------------------------------------------------------------
 
+struct GameStartupHost::SoundServices {
+    // Shared actual lifecycle publications. Native online construction occurs
+    // at73DC7C and input backend construction at73DD8E, after sound/window.
+    // Until those owners exist, these verified loader-zero slots stay null.
+    // No independent online/input/action owner is constructed for sound loads.
+    InputFocusBackendState* volatile input_00f8bbf4{};
+    XLiveManagerOwner* volatile online_00f8abe8{};
+    InputFocusResetHost* volatile actions_provider{};
+    std::uint8_t cursor_shown_0109db8e{}, focus_reset_pending_0109db8f{}, previous_ui_0109db90{};
+    XLiveLibrary xlive;
+    GamePlatformServices platform;
+    void* volatile alternate_00f8bbcc{};
+    const std::array<std::uint32_t, 4> format_counts_00e12ef0{0, 1, 2, 6};
+    const volatile std::uint32_t one_00d7a24c{0x3f800000};
+    const volatile double fade_00ce3dc8{0.30000001192092896};
+    char null_integer_format_01090ab4{};
+    const CameraAxesCrtAccess& crt{application_camera_axes_crt()};
+    GameSoundDialogRuntime dialog;
+    GameSoundRuntime core;
+
+    explicit SoundServices(GameStartupHost& app)
+        : xlive(selected_library_path(app.options_.xlive_dll, L"xlive.dll"),
+              app.options_.xlive_dependencies),
+          platform(app.platform_, {cursor_shown_0109db8e, focus_reset_pending_0109db8f,
+              previous_ui_0109db90}, input_00f8bbf4, online_00f8abe8, actions_provider, xlive),
+          dialog({alternate_00f8bbcc, format_counts_00e12ef0, one_00d7a24c,
+              fade_00ce3dc8, &null_integer_format_01090ab4}),
+          core({app.vfs_->manager()->context(), app.vfs_->search_registrations(),
+              app.scripts_->files(), app.scripts_->runtime(), app.scripts_->globals(),
+              app.clock_, crt_string_storage(), platform.load_events(),
+              app.singletons_->sound_lifetime(), crt, dialog,
+              [this](void* owner, float seconds) { dialog.update(owner, seconds); },
+              &alternate_00f8bbcc}, selected_library_path(app.options_.fmod_dll, L"fmodex.dll"),
+              selected_library_path(app.options_.fmod_event_dll, L"fmod_event.dll")) {
+        dialog.attach(core, core.fmod());
+        // Registration happens in startup, after the raw deletion dispatcher
+        // has this exact core allocation available.
+        app.singletons_->bind_sound_runtime(&core);
+    }
+};
+
 GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
     const GameExecutableOptions& options) : log_(log), instance_(instance), options_(options) {
     initialize_static_game_settings_00cd2d80(settings_);
@@ -828,6 +910,10 @@ GameStartupHost::~GameStartupHost() {
     // device and before the font host whose registry its pages reference.
     if (device_) device_->set_overlay(nullptr);
     delete menu_;
+    // Retain sound callbacks, DLLs, VFS/Lua and lifetime publication cells
+    // through the actual raw singleton drain, including exceptional startup.
+    if (singletons_) singletons_->shutdown();
+    sound_.reset();
     delete singletons_;
     delete profiler_;
     delete decals_;
@@ -1149,8 +1235,31 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         settings_.options_file.vsync_60 ? 1 : 0, settings_.options_file.antialias_58, settings_.options_file.shader_model_88,
         settings_.options_file.language.empty() ? "(none)" : settings_.options_file.language.c_str());
 
+    bind_legacy_crt_math_runtime(application_math_runtime);
+    sound_ = std::make_unique<SoundServices>(*this);
+    sound_->core.startup(!settings_.audio.enabled_24);
+    log_.implemented("Phase 5 sound_system_initialize", "0073dafd");
+    sound_->dialog.startup();
+    log_.implemented("Phase 5 streamed_dialog_initialize", "0073db2b");
+
     // Native parser registration0073db41..db69 follows settings loading.
     run_vfs_startup_phase6(vfs_state, *vfs_);
+
+    // Native73DB7E/73DB8E reload the same current alternate publication for
+    // each direct store. Do not maintain separate music/speech gain copies.
+    std::memcpy(static_cast<std::byte*>(sound_->alternate_00f8bbcc) + 0x218,
+        &settings_.audio.music_28, sizeof(float));
+    std::memcpy(static_cast<std::byte*>(sound_->alternate_00f8bbcc) + 0x21c,
+        &settings_.audio.speech_30, sizeof(float));
+    const auto sound_start = sound_->core.summary();
+    log_.notef("sound startup before window: enabled=%d classes=%zu resources=%zu "
+        "resource_bytes=%u opens=%zu closes=%zu fmod_calls=%zu fmod_errors=%zu "
+        "load_pretranslations=%llu load_focus_calls=%llu",
+        sound_start.sound_enabled ? 1 : 0, sound_start.classes, sound_start.resources,
+        sound_start.resource_bytes, sound_start.file_opens, sound_start.file_closes,
+        sound_start.fmod_calls, sound_start.fmod_errors,
+        static_cast<unsigned long long>(sound_->platform.load_events().pretranslation_calls()),
+        static_cast<unsigned long long>(sound_->platform.load_events().focus_calls()));
 
     // The three VFS reads the later milestones depend on: a GUI script, the locale table the
     // settings language selects, and one texture.
@@ -1217,7 +1326,12 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         log_.note("window creation failed");
     }
 
-    // Phase 4, renderer (0073d9cc-0073da88): the device creation point.
+    // Native online owner follows window creation and precedes device setup.
+    // Its real source/SDK services exist, but this application still lacks the
+    // shared raw lifetime and IPC owner composition. Keep its publication null.
+    log_.unimplemented("Phase 5 online_manager_initialize", "0073dc7c");
+
+    // Device creation after window/online, corresponding to0073DD12.
     device_ = new GameDeviceHost(log_, *renderer_api_, *renderer_parameters_);
     if (summary_.window_created && renderer_request_.requested) {
         summary_.device_created = device_->create(renderer_request_);
@@ -1232,6 +1346,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         }
     }
     log_.unimplemented("Phase 4 renderer_resources", "00b14a10");
+    log_.unimplemented("Phase 5 input_backend_initialize", "0073dd8e");
 
     // Locale construction and exact setter/register/reload order0073e057..e135.
     locale_ = new GameLocaleHost(log_);
@@ -1262,8 +1377,6 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         log_.implemented("Phase 6 locale_lookup", "00a9ec70");
     }
 
-    // Required later owners remain outside the currently runnable spine.
-    log_.unimplemented("Phase 5 sound_system_initialize", "00a88770");
     if (!device_->device()) throw std::runtime_error("Font startup requires the renderer device");
     //Constructor00b32769 initializes renderer+1D84 to zero. The later ApplyAll
     //texture-detail setter is not bound by this startup path yet.
@@ -1364,7 +1477,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         };
     }
     loop_callbacks_ = new GameLoopCallbacks(log_, frame_state_, frame_color_, *frame_host_,
-        *device_, loop_, options_.frame_limit, std::move(capture),
+        *device_, loop_, options_.frame_limit, sound_->xlive, std::move(capture),
         options_.screenshot_frame, options_.screenshot_mission_frame);
 }
 
@@ -1490,6 +1603,14 @@ void GameStartupHost::application_destruct() {
 void GameStartupHost::destroy_singleton_lifetime_manager() {
     log_.implemented("StartupHost::destroy_singleton_lifetime_manager", "008f8449");
     singletons_->shutdown();
+    if (sound_) {
+        const auto state = sound_->core.summary();
+        log_.notef("sound after raw singleton drain: started=%d samples=%zu resources=%zu "
+            "classes=%zu opens=%zu sdk_closes=%zu host_reclaims=%zu pending=%zu fmod_errors=%zu",
+            state.started ? 1 : 0, state.samples, state.resources, state.classes,
+            state.file_opens, state.file_closes, state.file_reclaims,
+            state.file_handles_pending, state.fmod_errors);
+    }
 }
 
 }  // namespace bsp::game

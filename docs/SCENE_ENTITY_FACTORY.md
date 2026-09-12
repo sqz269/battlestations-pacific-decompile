@@ -353,3 +353,9 @@ sites agree.
 Class id 19h is `MLandVehicle`, a live class, not one removed before release; 1Fh is the one id
 in 00h..47h with no class test and no constructor stamping it. The +C4h id, the scene class id
 and the Lua entity-lookup bucket (class id minus six) are one space.
+
+## Correction from docs/LAND_AND_STRUCTURES.md (packet cc2_land_and_structures)
+
+- **Was:** the multiplayer stock walk 0046BF70 reads NumSlots, Slot %d, Stock %d and AlliedList for Shipyard
+  **Is:** the Shipyard branch reads only Stock %d, Type and Hidden; NumSlots and Slot %d belong to the AirField/MotherShipGen branch and AlliedList/JapanList to the SpawnPoint branch
+  **Evidence:** branch string refs Shipyard 0046C1D7 with 0046C215, 0046C247, 0046C259, 0046C268; AirField 0046BFB8 with 0046C0E9, 0046C10A, 0046C065; SpawnPoint 0046C2DA with 0046C3A6, 0046C30C

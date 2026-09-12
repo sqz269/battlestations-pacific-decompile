@@ -58,6 +58,67 @@ void GuiGroupTypeImplementation::set_visible34(GuiWidgetOwner& owner, bool visib
     owner.set_visible_00aa8530(visible);
 }
 
+GuiListboxTypeImplementation::GuiListboxTypeImplementation(GuiWidgetOwner& owner,
+    GuiListboxRuntimeServices services) : runtime_(owner, std::move(services)) {}
+class GuiListboxTypeImplementation::Operation {
+public:
+    explicit Operation(GuiListboxTypeImplementation& value) : owner_(value) { ++owner_.active_calls_; }
+    ~Operation() { --owner_.active_calls_; }
+private:
+    GuiListboxTypeImplementation& owner_;
+};
+void GuiListboxTypeImplementation::require_owner(GuiWidgetOwner& owner) const {
+    require(&runtime_.owner() == &owner, "Listbox type requires its same canonical owner");
+}
+bool GuiListboxTypeImplementation::has_active_operation() const noexcept {
+    return active_calls_ != 0 || runtime_.has_active_operation();
+}
+void GuiListboxTypeImplementation::constructed74(GuiWidgetOwner& owner) {
+    require_owner(owner); // A9AC30 is a bare RET, verified from installed bytes.
+}
+void GuiListboxTypeImplementation::before_properties(GuiWidgetOwner& owner, const GuiTable&) {
+    require_owner(owner);
+    throw std::logic_error("Listbox A9E400 properties require the actual derived reader");
+}
+void GuiListboxTypeImplementation::properties_bound(GuiWidgetOwner& owner, const GuiTable& table) {
+    before_properties(owner, table);
+}
+void GuiListboxTypeImplementation::loaded78(GuiWidgetOwner& owner) {
+    require_owner(owner);
+    runtime_.loaded78_00a9c050();
+}
+void GuiListboxTypeImplementation::set_visible34(GuiWidgetOwner& owner, bool visible) {
+    require_owner(owner);
+    Operation operation(*this);
+    // Host preflight excludes the unreconstructed manager/index AA0F50 tail.
+    require(runtime_.fields().highlight_index_118 == -1,
+        "Listbox A9CCE0 linked highlight page requires actual AA0F50 dispatch");
+    owner.set_visible_00aa8530(visible);
+    require(runtime_.fields().highlight_index_118 == -1,
+        "Listbox highlight page changed during current34 base callback");
+}
+void GuiListboxTypeImplementation::set_active60(GuiWidgetOwner& owner, bool active) {
+    require_owner(owner);
+    Operation operation(*this);
+    require(active || runtime_.fields().auto_control_11e == 0,
+        "Listbox A9CD20 automatic row control requires actual A9BA90 dispatch");
+    owner.base_set_active60_00aa6a30(active);
+    require(active || runtime_.fields().auto_control_11e == 0,
+        "Listbox automatic row control changed during current60 base callback");
+}
+void GuiListboxTypeImplementation::before_scene_release(GuiWidgetOwner& owner) {
+    before_host_tree_retirement(owner);
+}
+void GuiListboxTypeImplementation::before_host_tree_retirement(GuiWidgetOwner& owner) const {
+    require_owner(owner);
+    require(!has_active_operation() && runtime_.row_count_104() == 0,
+        "Host Listbox retirement requires idle operations and removed borrowed rows");
+}
+void GuiListboxTypeImplementation::before_scalar_deletion4(GuiWidgetOwner& owner) {
+    require_owner(owner);
+    throw std::logic_error("Listbox native scalar deletion requires its derived teardown");
+}
+
 GuiIconTypeImplementation::GuiIconTypeImplementation(GuiWidgetOwner& owner,
     GuiIconRuntimeServices services)
     : runtime_(owner.layout(), owner.extra_fields().overbright_94,
@@ -171,6 +232,9 @@ struct GuiTypeDispatchFactory::Shared {
         switch (owner.layout().type) {
         case GuiWidgetType::Group:
             return std::make_unique<GuiGroupTypeImplementation>();
+        case GuiWidgetType::Listbox:
+            require(services.listbox, "Listbox type factory has no actual runtime services");
+            return std::make_unique<GuiListboxTypeImplementation>(owner, services.listbox(owner));
         case GuiWidgetType::ClipBox:
             return std::make_unique<GuiClipBoxTypeImplementation>(owner, services.crt_sse2_conversion);
         case GuiWidgetType::Icon:
@@ -193,7 +257,7 @@ struct GuiTypeDispatchFactory::Shared {
                 services.crt_sse2_conversion);
         }
         default:
-            throw std::invalid_argument("GUI type factory supports only Screen1, Group2, Icon6, ClipBox16, Section17 and FrameBox18");
+            throw std::invalid_argument("GUI type factory has no implementation for this widget profile");
         }
     }
 };

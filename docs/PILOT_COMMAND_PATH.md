@@ -391,3 +391,9 @@ See `reports/pilot_command_path.json`'s `corrections` block for the machine-read
   `00779FC0`, `00779F80`, `00637620`, `005484F0`, `007BA7B0`: `contract: unread`.
 * `0099BF30` past `0099C130`, `007D1360` past `007D17C1`, `007D0B80`'s kind arms and
   `007D5D20` outside its Lua block.
+
+## Correction from docs/GAMEPLAY_LOOSE_ENDS_2.md (packet cc2_gameplay_loose_ends_2)
+
+- **Was:** line 389: docs/MOTION_DIFFERENTIAL.md reads unit+9C0h as a ship's maximum speed and +9C8h as a radius; the two layouts cannot both hold at the same base
+  **Is:** they hold at two different bases: the stride-8 byte record is the plane family's layout and the MaxSpeed float is the class-06 ship family's
+  **Evidence:** 00822C20 BSP_UnitInstance_SEntityInit writes the float at 00822C65 and appears in exactly five vtables (00CF9150, 00CFA818, 00CFB7D8, 00CFC470, 00D09718), each a class-06 family vtable + A0h; no plane vtable carries it, while 007CFE4C MOV byte [ESI+9C0h],BL in BSP_PlaneUnitInstance_Construct and the five stride-8 stores in FUN_007CDC70 treat the offset as bytes

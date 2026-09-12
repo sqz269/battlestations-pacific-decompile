@@ -1,0 +1,448 @@
+{
+  "packet": "orch3_cone_definition_an",
+  "status": "complete_reconstruction_strict_compiled_native_byte_fixture_tested",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "worker_ghidra_mutations": false,
+  "routines": [
+    {
+      "address": "00b03970",
+      "end_inclusive": "00b039e0",
+      "coverage": "complete",
+      "name": "BSP_NativeParticleConeDefinition_AllocateRecord",
+      "native_prototype": "void* __thiscall(void* definition, NativeNodeStorage* model, float time); RET8",
+      "last_instruction": "00b039de RET8 length3"
+    },
+    {
+      "address": "00b03b60",
+      "end_inclusive": "00b03ebe",
+      "coverage": "complete",
+      "name": "BSP_NativeParticleConeDefinition_GenerateVectors",
+      "native_prototype": "void __thiscall(void* definition, const void* record, float* position, float* velocity); RET0C",
+      "last_instruction": "00b03ebc RET0C length3"
+    },
+    {
+      "address": "00b03ac0",
+      "end_inclusive": "00b03b38",
+      "coverage": "complete",
+      "name": "BSP_NativeParticleConeDefinition_GenerateChild",
+      "native_prototype": "void __thiscall(void* definition, const void* record, float* position, float* velocity, void* matrix); RET10",
+      "last_instruction": "00b03b36 RET10 length3"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00b0398e",
+      "native": "00bf681b",
+      "function": "00b03970"
+    },
+    {
+      "address": "00b039b6",
+      "native": "00afe0a0",
+      "function": "00b03970"
+    },
+    {
+      "address": "00b03aeb",
+      "native": "004134f0",
+      "function": "00b03ac0"
+    },
+    {
+      "address": "00b03b05",
+      "native": "00b6db60",
+      "function": "00b03ac0"
+    },
+    {
+      "address": "00b03b0f",
+      "native": "004134f0",
+      "function": "00b03ac0"
+    },
+    {
+      "address": "00b03b20",
+      "native": "00b6db70",
+      "function": "00b03ac0"
+    },
+    {
+      "address": "00b03b30",
+      "native": "004134f0",
+      "function": "00b03ac0"
+    },
+    {
+      "address": "00b03bc7",
+      "native": "00affa70",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03bce",
+      "native": "00affae0",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03be7",
+      "native": "00bd2f40",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03c0c",
+      "native": "00bd2f40",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03ca2",
+      "native": "00b6db60",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03cb1",
+      "native": "00b6db70",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03cc8",
+      "native": "0042d0d0",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03d36",
+      "native": "00affa70",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03d3d",
+      "native": "00affae0",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03d70",
+      "native": "00affa70",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03d77",
+      "native": "00affae0",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03e20",
+      "native": "00affa70",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03e27",
+      "native": "00affae0",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03e5c",
+      "native": "00affa70",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03e63",
+      "native": "00affae0",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00cbb674",
+      "native": "00bf65ac",
+      "function": "00cbb670",
+      "contract": "same original allocation domain cleanup; POP ECX at CBB679"
+    },
+    {
+      "address": "00b03ad5",
+      "native": "00d5debc+vtable0c",
+      "function": "00b03ac0",
+      "contract": "capture at B03AC6; stack(record,position,velocity), RET0C"
+    },
+    {
+      "address": "00af6e6c",
+      "native": "00d5debc+vtable08",
+      "function": "00af6dd0",
+      "contract": "captured current definition; stack(model,time), RET8"
+    },
+    {
+      "address": "00afdb0d",
+      "native": "00d5debc+vtable0c",
+      "function": "00afdaf0",
+      "contract": "current recordA0 definition; stack(record,position,velocity), RET0C"
+    },
+    {
+      "address": "00afdc12",
+      "native": "00d5debc+vtable10",
+      "function": "00afdbf0",
+      "contract": "current recordA0 definition; stack(record,position,velocity,matrix), RET10"
+    }
+  ],
+  "byte_evidence": [
+    {
+      "address": "00b03970",
+      "end_inclusive": "00b039e0",
+      "length": 113,
+      "sha256": "e4ce9dc239ae1b847bdac921ee5b413e3795f8ae646ae80dcddf681d042be646",
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b03ac0",
+      "end_inclusive": "00b03b38",
+      "length": 121,
+      "sha256": "a7336408be4bd68fdbd1b8f2f466ec1381aef0a3d050f13b1cec9a782f82ad8a",
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b03b60",
+      "end_inclusive": "00b03ebe",
+      "length": 863,
+      "sha256": "84cd0ee65fd28153804259d555412446bdb7e45ddac3faf2167d860fb4df8560",
+      "live_equals_disk": true
+    }
+  ],
+  "static_xrefs": {
+    "00b03970": [
+      "00d5dec4 DATA"
+    ],
+    "00b03b60": [
+      "00d5dec8 DATA"
+    ],
+    "00b03ac0": [
+      "00d5decc DATA"
+    ]
+  },
+  "corrections": [
+    {
+      "was": "B03970 decompile suggests three explicit parameters",
+      "is": "two native stack words: model,time; definition in ECX",
+      "evidence": "B039A6..B039B6 setup and B039CA/B039DE RET8"
+    },
+    {
+      "was": "B03AC0 undefined at packet start",
+      "is": "complete 121-byte entry through B03B38; primary defined after address lease handoff",
+      "evidence": "live/disk bytes and B03B36 RET10 length3"
+    },
+    {
+      "was": "CBB670 live body ends CBB678 at BF65AC call",
+      "is": "raw function continues CBB679 POP ECX; CBB67A RET; ancillary flow gap remains for primary",
+      "evidence": "DF3748 EH unwind row and raw CBB670..CBB67A"
+    }
+  ],
+  "dependencies": {
+    "canonical_random": "NativeParticleUnitRandomAccess and native_particle_unit_random_00bd2f40 from sphere packet; same RandomThreads",
+    "canonical_dispatch": "NativeParticleEmissionSpawnAccess::definition_virtual0c; already-captured target",
+    "common_constructor": "construct_native_particle_record_00afe0a0 primary packet; borrowed current one",
+    "real_crt": [
+      "00bf681b cdecl allocation/throw/new-handler domain",
+      "00bf65ac cdecl original free/heap/error domain"
+    ]
+  },
+  "verification": {
+    "report_call_verifier": "PASS 23 direct call rows, 0 failures; 4 indirect rows documented but skipped by checker",
+    "strict_compile": "PASS MSVC Win32 /W4 /WX /fp:strict",
+    "seed_verification": "PASS 8 configured byte seeds",
+    "native_fixture": "PASS 7 scenarios; full storage, x87/MXCSR status and next canonical random draw identical",
+    "fixture_path": "C:/Users/sqz269/bsp-an-cone/cone_probe.cpp",
+    "runner_path": "C:/Users/sqz269/bsp-an-cone/probe.cmd",
+    "byte_generator_path": "C:/Users/sqz269/bsp-an-cone/native_data.py",
+    "manifest": "/MANIFEST:EMBED",
+    "full_cmake_build": "primary integration responsibility",
+    "game_validated": false,
+    "allocation_unwind_executed": false,
+    "permanent_tests_added": false
+  },
+  "limits": [
+    "New C++ borrowed access ABI, not drop-in binary compatibility",
+    "Native reference calls same shared reconstructed dependencies; those are outside differential claim",
+    "Allocator/EH path compiled and inspected only",
+    "No exhaustive NaN/control-word/callback-mutation or game runtime validation"
+  ],
+  "tool_problems": [
+    "initial B03AC0 export failed because no function existed; primary repaired after handoff",
+    "some rg globs were invalid PowerShell path arguments; replaced by explicit file paths or -g filters",
+    "initial scratch fixture /WX rejected alignment padding and unlike-pointer ternary; corrected scratch only before passing execution"
+  ],
+  "integration_an": {
+    "strict_win32_and_two_seeded_ctests": true,
+    "combined_library_sha256": "b603d7d61cc87aee9748a7ef5f5ad3f5310b7c4a3493aa423625374921fe9039",
+    "current_library_fixture": "local/an-cone-current-replay.log",
+    "native_signature_readback_verified": true,
+    "normalized_entries": [
+      {
+        "address": "00b03970",
+        "end_inclusive": "00b039e0",
+        "end_exclusive": "00b039e1",
+        "cpp_symbol": "allocate_native_particle_cone_record_00b03970",
+        "ghidra_name": "BSP_NativeParticleConeDefinition_AllocateRecord",
+        "source": "src/native_particle_cone_definition.cpp",
+        "header": "include/bsp/native_particle_cone_definition.hpp",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_NativeParticleConeDefinition_AllocateRecord(void * model, float time)",
+        "original_abi": "void* __thiscall(void* definition, NativeNodeStorage* model, float time); RET8",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_CONE_DEFINITION.md and reports/native_particle_cone_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+      },
+      {
+        "address": "00b03b60",
+        "end_inclusive": "00b03ebe",
+        "end_exclusive": "00b03ebf",
+        "cpp_symbol": "generate_native_particle_cone_vectors_00b03b60",
+        "ghidra_name": "BSP_NativeParticleConeDefinition_GenerateVectors",
+        "source": "src/native_particle_cone_definition.cpp",
+        "header": "include/bsp/native_particle_cone_definition.hpp",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_NativeParticleConeDefinition_GenerateVectors(void * parent, void * position, void * velocity)",
+        "original_abi": "void __thiscall(void* definition, const void* record, float* position, float* velocity); RET0C",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_CONE_DEFINITION.md and reports/native_particle_cone_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+      },
+      {
+        "address": "00b03ac0",
+        "end_inclusive": "00b03b38",
+        "end_exclusive": "00b03b39",
+        "cpp_symbol": "generate_native_particle_cone_child_00b03ac0",
+        "ghidra_name": "BSP_NativeParticleConeDefinition_GenerateChild",
+        "source": "src/native_particle_cone_definition.cpp",
+        "header": "include/bsp/native_particle_cone_definition.hpp",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_NativeParticleConeDefinition_GenerateChild(void * parent, void * position, void * velocity, void * matrix)",
+        "original_abi": "void __thiscall(void* definition, const void* record, float* position, float* velocity, void* matrix); RET10",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_CONE_DEFINITION.md and reports/native_particle_cone_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+      }
+    ],
+    "source_hashes": {
+      "include/bsp/native_particle_cone_definition.hpp": "d1d05574280a54584543d78d3f0c4ea330e7a299a2ad2117e5fefd1ab200cd53",
+      "src/native_particle_cone_definition.cpp": "0fec8d22c19509f26d3791010cd72c92ebde5e6dc4e77b18d4ac664e80e3b4a3"
+    },
+    "saved_names_and_comment_preimages": [
+      {
+        "address": "00b03970",
+        "before": {
+          "address": "00b03970",
+          "function_name": "FUN_00b03970"
+        },
+        "after": {
+          "address": "00b03970",
+          "name": "BSP_NativeParticleConeDefinition_AllocateRecord",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_CONE_DEFINITION.md and reports/native_particle_cone_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b03ac0",
+        "before": {
+          "address": "00b03ac0",
+          "function_name": "FUN_00b03ac0"
+        },
+        "after": {
+          "address": "00b03ac0",
+          "name": "BSP_NativeParticleConeDefinition_GenerateChild",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_CONE_DEFINITION.md and reports/native_particle_cone_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b03b60",
+        "before": {
+          "address": "00b03b60",
+          "function_name": "FUN_00b03b60"
+        },
+        "after": {
+          "address": "00b03b60",
+          "name": "BSP_NativeParticleConeDefinition_GenerateVectors",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_CONE_DEFINITION.md and reports/native_particle_cone_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ],
+    "native_signatures": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "save": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    },
+    "signature_before": {
+      "00b03970": "00b03970 BSP_NativeParticleConeDefinition_AllocateRecord  undefined BSP_NativeParticleConeDefinition_AllocateRecord(void)  body 00b03970 - 00b039e0\n",
+      "00b03b60": "00b03b60 BSP_NativeParticleConeDefinition_GenerateVectors  undefined BSP_NativeParticleConeDefinition_GenerateVectors(void)  body 00b03b60 - 00b03ebe\n",
+      "00b03ac0": "00b03ac0 BSP_NativeParticleConeDefinition_GenerateChild  undefined BSP_NativeParticleConeDefinition_GenerateChild(void)  body 00b03ac0 - 00b03b38\n"
+    },
+    "signature_after": [
+      {
+        "address": "00b03970",
+        "prototype": "void * __thiscall BSP_NativeParticleConeDefinition_AllocateRecord(void * model, float time)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b03970 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b03b60",
+        "prototype": "void __thiscall BSP_NativeParticleConeDefinition_GenerateVectors(void * parent, void * position, void * velocity)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b03b60 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b03ac0",
+        "prototype": "void __thiscall BSP_NativeParticleConeDefinition_GenerateChild(void * parent, void * position, void * velocity, void * matrix)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b03ac0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "game_validated": false,
+    "original_exception_abi_validated": false,
+    "independent_review": "Read-only sphere review: saved EDX access, native RETs, current-target and parent reloads, all22 cone/23 SmartArea register/implicit x87 operations match native listings.",
+    "fixture_limits": "Generation probe compares next canonical draw and FPstatus, not entire RandomState; no callback mutation. Allocation additionally executed by the extended sphere probe; original throwing unwind unvalidated."
+  },
+  "final_merged_validation_an": {
+    "tested_commit": "aeb10c0f969043fcf121648538993f7a70be4ed7",
+    "build": "local/an-final-combined-build.log: standard strict MSVC Win32 build and both seeded CTests passed",
+    "reviewed_source_commit": "1c54b97343db155c9be02ea5c6c27a1fbf1be235",
+    "all10_owned_source_header_hashes_preserved": true,
+    "all32_name_evidence_preserved": true,
+    "library_sha256": "32cd1b7077ca4f51c2a90aff1375eec6d087e9134591763b9022ebb880cd4af7",
+    "current_library_replays": [
+      {
+        "label": "cone",
+        "exit_code": 0,
+        "log": "local\\an-cone-current-replay.log",
+        "library_sha256": "32cd1b7077ca4f51c2a90aff1375eec6d087e9134591763b9022ebb880cd4af7"
+      },
+      {
+        "label": "sphere",
+        "exit_code": 0,
+        "log": "local\\an-sphere-current-replay.log",
+        "library_sha256": "32cd1b7077ca4f51c2a90aff1375eec6d087e9134591763b9022ebb880cd4af7"
+      },
+      {
+        "label": "smartarea",
+        "exit_code": 0,
+        "log": "local\\an-smartarea-current-replay.log",
+        "library_sha256": "32cd1b7077ca4f51c2a90aff1375eec6d087e9134591763b9022ebb880cd4af7"
+      },
+      {
+        "label": "definition",
+        "exit_code": 0,
+        "log": "local\\an-definition-current-replay.log",
+        "library_sha256": "32cd1b7077ca4f51c2a90aff1375eec6d087e9134591763b9022ebb880cd4af7"
+      }
+    ],
+    "functions": 26,
+    "analyzed_fh3_dispatchers": 6,
+    "direct_call_rows": 132,
+    "failed_call_rows": 0,
+    "original_throwing_abi_and_gameplay": false,
+    "fixture_carryforward": {
+      "from_commit": "2a74318ba0f1f9af3e906f114b97fd6013887e76",
+      "to_commit": "aeb10c0f969043fcf121648538993f7a70be4ed7",
+      "changed_files": [
+        "config/names/006d0000.jsonl",
+        "config/names/006f0000.jsonl",
+        "config/names/00740000.jsonl",
+        "config/names/00840000.jsonl",
+        "reports/land_and_structures_function_definitions.json"
+      ],
+      "only_annotation_metadata_changed": true,
+      "all_source_and_build_input_paths_unchanged": true,
+      "rebuilt_core_sha256_identical": "32cd1b7077ca4f51c2a90aff1375eec6d087e9134591763b9022ebb880cd4af7",
+      "full_standard_build_and_two_seeded_ctests_passed": true,
+      "replays_carried": "four focused current-library original-byte probes over identical library"
+    }
+  }
+}

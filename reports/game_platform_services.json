@@ -1,0 +1,70 @@
+{
+  "packet":"orch4_sound_platform_ab",
+  "project":"C:/Users/sqz269/bsp.gpr",
+  "program":"/battlestationspacific.exe",
+  "ghidra_mutations":false,
+  "source":["include/bsp/game_platform_services.hpp","src/game_platform_services.cpp"],
+  "documentation":"docs/GAME_PLATFORM_SERVICES.md",
+  "routines":[
+    {"address":"00beca40","name":"BSP_Platform_ResetMouseFocus_Provisional","coverage":"complete adapter to existing normal reset body in documented valid-backend/typed-device domain; no owner constructor added","abi":"ECX unused; RET","final_instruction":"00becb14","final_instruction_length":1,"end_exclusive":"00becb15","provider":"src/input_focus_reset.cpp"},
+    {"address":"00becb20","name":"BSP_Win32Platform_UpdateCursorFocusState","coverage":"complete load-service composition of existing cursor body; actual first absent-online guard retained","abi":"ECX platform; stack loading low byte; RET4","final_instruction":"00beccc5","final_instruction_length":3,"end_exclusive":"00beccc8","provider":"src/platform_cursor.cpp"},
+    {"address":"00a409f0","name":"BSP_XLiveSystem_Pump","coverage":"complete current-owner adapter into existing pump; online owner construction remains explicit","abi":"ECX online manager; RET","final_instruction":"00a40acf","final_instruction_length":1,"end_exclusive":"00a40ad0","provider":"src/xlive_system_pump.cpp"}
+  ],
+  "host_steps":[
+    {"address":"00becb43","native":"004ba6d0","caller":"00becb20","contract":"current canonical groups; class1/index0; RET8"},
+    {"address":"00becb5d","native":"00a409f0","caller":"00becb20","contract":"loading only, current online owner; concrete pump"},
+    {"address":"00becb9d","native":"00beca40","caller":"00becb20","contract":"entering system UI reset"},
+    {"address":"00becbae","native":"004ba6d0","caller":"00becb20","contract":"reload current mouse after reset; class1/index0; RET8"},
+    {"address":"00becbb7","native":"00a9a140","caller":"00becb20","contract":"flags6; actual DirectInput cooperation, ignored HRESULT; RET4"},
+    {"address":"00becbd8","native":"input+vtable04","caller":"00becb20","contract":"reload backend; float0.1 stack; concrete A918A0 domain"},
+    {"address":"00becbfc","native":"00beca40","caller":"00becb20","contract":"deferred/exit reset"},
+    {"address":"00becc1f","native":"input+vtable04","caller":"00becb20","contract":"reload backend; float0.1 stack"},
+    {"address":"00becc52","native":"ShowCursor+IAT00ce2344","caller":"00becb20","contract":"TRUE stdcall; repeat while signed count negative"},
+    {"address":"00becc7b","native":"00beca40","caller":"00becb20","contract":"hide transition reset only when not already reset"},
+    {"address":"00becc9b","native":"input+vtable04","caller":"00becb20","contract":"reload backend; float0.1 stack"},
+    {"address":"00beccb2","native":"ShowCursor+IAT00ce2344","caller":"00becb20","contract":"FALSE stdcall; repeat while signed count nonnegative"},
+    {"address":"00beca7c","native":"00bf6713","caller":"00beca40","contract":"native invalid-iterator path, outside existing valid-vector adapter domain"},
+    {"address":"00beca8d","native":"00a90ee0","caller":"00beca40","contract":"remove captured first mouse; RET4"},
+    {"address":"00beca9a","native":"00bebf30","caller":"00beca40","contract":"reload backend; delete class1; RET4"},
+    {"address":"00becaaa","native":"input+vtable0c","caller":"00beca40","contract":"reload backend; existing A983C0 enumeration implementation"},
+    {"address":"00becab6","native":"00a91620","caller":"00beca40","contract":"reload backend; activate class1/slot0; RET8"},
+    {"address":"00becade","native":"004bec00","caller":"00beca40","contract":"genuine lazy manager getter with captured null replacement already on stack"},
+    {"address":"00becae5","native":"00a92840","caller":"00beca40","contract":"retarget mouse action bindings to captured replacement; RET4"},
+    {"address":"00becafb","native":"00bf6713","caller":"00beca40","contract":"native invalid-iterator path, outside existing valid-vector adapter domain"},
+    {"address":"00becb06","native":"004bec00","caller":"00beca40","contract":"genuine lazy manager getter after capturing current replacement mouse"},
+    {"address":"00becb0d","native":"00a92840","caller":"00beca40","contract":"retarget same canonical action records; RET4"},
+    {"address":"00a409f6","native":"00a40110","caller":"00a409f0","contract":"existing notification drain"},
+    {"address":"00a409fd","native":"00a40510","caller":"00a409f0","contract":"existing sign-in UI pump"},
+    {"address":"00a40a1f","native":"00a3ef20","caller":"00a409f0","contract":"existing storage upload when current state7"},
+    {"address":"00a40a2f","native":"00a3ed60","caller":"00a409f0","contract":"existing storage download when reloaded state3"},
+    {"address":"00a40a38","native":"00a3fa70","caller":"00a409f0","contract":"existing achievements pump with force0; RET4"}
+  ],
+  "caller_steps":[
+    {"address":"00becd2a","native":"00becb20","caller":"00beccd0","contract":"load message pump passes loading1"},
+    {"address":"00bece81","native":"00becb20","caller":"00bece70","contract":"platform frame passes loading0 after application callback"},
+    {"address":"00a40ffb","native":"00a409f0","caller":"00a40df0","contract":"constructor pump of this newly published owner"},
+    {"address":"004db2bc","native":"00a409f0","caller":"004db290","contract":"session event path captures current owner"},
+    {"address":"00becd0d","native":"00c2f1d2","caller":"00beccd0","contract":"real ordinal5030 pretranslation, BOOL stdcall MSG*"}
+  ],
+  "startup_proof":[
+    {"address":"0073dafd","native":"00a88770","caller":"0073d410","contract":"sound startup, before online/input publication"},
+    {"address":"0073db2b","native":"00a79230","caller":"0073d410","contract":"dialog startup, before online/input publication"},
+    {"address":"0073dc25","native":"platform+vtable04","caller":"0073d410","contract":"window virtual call; ADD ESP2C at73DC2B"},
+    {"address":"0073dc7c","native":"00a40df0","caller":"0073d410","contract":"sole online constructor caller; two callback args; RET8"},
+    {"address":"00a40e13","native":"00a3f530","caller":"00a40df0","contract":"sole online base constructor caller; publishes F8ABE8 atA3F586"},
+    {"address":"0073dd8e","native":"00a982d0","caller":"0073d410","contract":"sole input backend constructor caller"},
+    {"address":"00a982f1","native":"00a91570","caller":"00a982d0","contract":"sole intermediate input-base constructor caller"},
+    {"address":"00a9158f","native":"00a908a0","caller":"00a91570","contract":"sole publication-base caller; writes F8BBF4 atA908F6"}
+  ],
+  "publication_evidence":{
+    "00f8abe8":{"initial_hex":"00000000","xref_count":191,"nonzero_write":"00a3f586","zero_write":"00a3f639","log":"local/platform_online_xrefs.log"},
+    "00f8bbf4":{"initial_hex":"00000000","xref_count":93,"nonzero_write":"00a908f6","zero_write":"00a909a9","log":"local/platform_input_xrefs.log"}
+  },
+  "corrections":[
+    {"was":"online/input owners must be constructed before sound load servicing","is":"initial sound precedes both owners; actual shared loader-zero slots satisfy BECB20's first online guard","evidence":"73DAFD/73DB2B precede73DC7C/73DD8E; full publication xrefs and sole constructor chains above"},
+    {"was":"window virtual call described as73DC0F","is":"CALL EAX at73DC25; caller cleanup ADD ESP2C at73DC2B","evidence":"verified0073D410 listing73DBEE..73DC2B"},
+    {"was":"GameScriptHost input settings or mission-local action state can stand in for the actual input owner","is":"settings006AB6B0 is distinct; later backend/action ownership must bind canonical publications and genuine004BEC00 getter","evidence":"input_script_startup.hpp; game_hosts_vfs.hpp; game_hosts_mission_frame.cpp; constructor producer chain"}
+  ],
+  "remaining_bindings":["Later real online owner/lifetime and input backend/COM ownership construction at their native phases","Genuine lazy004BEC00 provider only when native reset reaches that call","Application must retain same publication slots/platform/library through sound callbacks; no independent owner domains"],
+  "validation":{"build":"scripts/build.ps1 Release MSVC Win32 passed with MSBUILDDISABLENODEREUSE=1; local/game_platform_services_verified_build.log","ctest":"reconstructed_math and native_math_differential passed2/2 after verify-seeds enabled the native target","seeds":"all8 matched disk; local/platform_seeds.json","call_audit":"33 direct call rows checked,0 failed;7 indirect rows inspected separately; local/platform_calls.log","focused_probe":"One ignored /W4 /WX /MANIFEST:EMBED probe passed genuine pre-online guards and unchanged slots/cursor bytes, real private XLive ordinal5030 result0, balanced real ShowCursor counts1,0; local/game_platform_services_probe.log. Later live-owner/input paths not exercised.","game_validated":false,"native_abi_compatible":false}
+}

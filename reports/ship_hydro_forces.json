@@ -1,0 +1,439 @@
+{
+  "packet": "cc_hydro_forces",
+  "owner": "agent/cc-hydro-forces",
+  "date": "2026-09-12",
+  "doc": "docs/SHIP_HYDRO_FORCES.md",
+  "sources": [
+    "include/bsp/ship_hydro_forces.hpp",
+    "src/ship_hydro_forces.cpp",
+    "src/ship_motion_probe.cpp",
+    "tests/math_tests.cpp"
+  ],
+  "main_routine": {
+    "address": "009329c0",
+    "name": "BSP_UnitController_ApplyHydroForces",
+    "body": "009329c0-00933ba9",
+    "abi": "void __thiscall(controller, float dt), RET 4",
+    "reconstruction": "ship_hydro_apply_forces_009329c0",
+    "status": "semantic_build_tested",
+    "abi_compatible": false
+  },
+  "ghidra_mutation": "none. Ledger names only; no annotation applied to the program.",
+
+  "host_steps": [
+    {
+      "step": 1,
+      "address": "00932a22",
+      "native": "00424c40",
+      "function": "009329c0",
+      "host_method": "none (input)",
+      "note": "BSP_GameSettings_GetSingleton. Eleven call sites in the prologue, 00932A22 through 00932B64. The reconstruction takes the physics material record as a ShipHydroInputs field instead of a host method, because the settings singleton is another packet's address."
+    },
+    {
+      "step": 2,
+      "address": "00932a42",
+      "native": "00d19630+vtable5c",
+      "function": "009329c0",
+      "host_method": "unit_category_8_vtable5c",
+      "note": "Indirect: MOV EAX,[EDX+5Ch] then CALL EAX with the argument 8. The same slot is called again at 00932E2F inside the element loop. The callee's body was not read, so the method is named by the record it selects, not by a recovered meaning."
+    },
+    {
+      "step": 3,
+      "address": "00932a91",
+      "native": "00424c40",
+      "function": "009329c0",
+      "host_method": "none (input)",
+      "note": "The call whose returned pointer the MOVSS at 00932A96 indexes as settings+4E0h+material*38h. The seven coefficient reads are 00932A96, 00932AAD, 00932AC4, 00932ADB, 00932AF2, 00932B09 and 00932B20, each preceded by its own CALL 00424C40; the eighth read, at 00932B3F, is the Kitevo exponent at +50Ch."
+    },
+    {
+      "step": 4,
+      "address": "00932bb0",
+      "native": "00c31f40",
+      "function": "009329c0",
+      "host_method": "body_linear_velocity_00c31f40",
+      "note": "The body's linear velocity, M+00h. Returns a pointer the caller copies into three floats."
+    },
+    {
+      "step": 5,
+      "address": "00932be6",
+      "native": "00c31f20",
+      "function": "009329c0",
+      "host_method": "body_angular_velocity_00c31f20",
+      "note": "The body's angular velocity, M+0Ch."
+    },
+    {
+      "step": 6,
+      "address": "00932c21",
+      "native": "00c32000",
+      "function": "009329c0",
+      "host_method": "body_world_transform_00c33650",
+      "note": "LEA EAX,[ECX+8]; RET. Returns body+8h, the 3x4 world transform, which the next call expands."
+    },
+    {
+      "step": 7,
+      "address": "00932c28",
+      "native": "00c33650",
+      "function": "009329c0",
+      "host_method": "body_world_transform_00c33650",
+      "note": "Dyn_Transform_Expand3x4To4x4. Rows 0..2 become the body axes and row 3 the position; out+0Ch/+1Ch/+2Ch take 0.0f and out+3Ch the 1.0f at 00D7A24C."
+    },
+    {
+      "step": 8,
+      "address": "00932c5e",
+      "native": "00bf6713",
+      "function": "009329c0",
+      "host_method": "none",
+      "note": "The CRT invalid-argument handler, reached when the element list is empty. Not modelled: the reconstruction's loop simply does not run for a zero count."
+    },
+    {
+      "step": 9,
+      "address": "00932cbf",
+      "native": "004142e0",
+      "function": "009329c0",
+      "host_method": "none (pure rule ship_hydro_transform_point_004142e0)",
+      "note": "BSP_Vector3f_TransformAffinePoint on the element's local point at element+18h, giving the world point the water height is sampled under."
+    },
+    {
+      "step": 10,
+      "address": "00932d02",
+      "native": "004142e0",
+      "function": "009329c0",
+      "host_method": "none (pure rule ship_hydro_transform_point_004142e0)",
+      "note": "The same point with its local Y forced to zero (the XORPS at 00932CEE into the middle slot at 00932CF9). The world result less the transform's translation is the lever arm every torque uses."
+    },
+    {
+      "step": 11,
+      "address": "00932d6b",
+      "native": "0078cf20",
+      "function": "009329c0",
+      "host_method": "water_height_0078cf20",
+      "note": "BSP_GameWorld_SampleWaterHeight on the world at [00E188A8]+19F0h, arguments (world x, world z). The FSUBR at 00932D70 turns it into the element's height above water."
+    },
+    {
+      "step": 12,
+      "address": "00932d8b",
+      "native": "004f9b30",
+      "function": "009329c0",
+      "host_method": "none (pure rule cross_004f9b30)",
+      "note": "BSP_Vector3f_Cross with a = the angular velocity and b = the lever arm, so the result is omega x r and the element's point velocity is the linear velocity plus it."
+    },
+    {
+      "step": 13,
+      "address": "00932e2f",
+      "native": "00d19630+vtable5c",
+      "function": "009329c0",
+      "host_method": "unit_category_8_vtable5c",
+      "note": "The second site, per element. A non-zero answer makes the buoyancy shape mix 0.0f instead of the 0.5f at 00CE3800."
+    },
+    {
+      "step": 14,
+      "address": "00932f19",
+      "native": "00bf7030",
+      "function": "009329c0",
+      "host_method": "none (std::sqrt)",
+      "note": "The CRT square root on the squared point speed. Called again at 0093300B for the Kitevo == 0.5 branch of the exponent ladder."
+    },
+    {
+      "step": 15,
+      "address": "00933063",
+      "native": "0042b260",
+      "function": "009329c0",
+      "host_method": "none (pure rule ship_hydro_normalize_0042b260)",
+      "note": "BSP_Geometry_NormalizeVectorWithFloor in place on the copy of the point velocity at ESP+78h. Every drag projection is taken against the normalised vector, the magnitude coming from the separate speed and speed-squared terms."
+    },
+    {
+      "step": 16,
+      "address": "009338f6",
+      "native": "004f9b30",
+      "function": "009329c0",
+      "host_method": "none (pure rule ship_hydro_planing_torque_0093380a)",
+      "note": "The planing cross product, (magnitude * row1) x (Length * 0.5 * row2), subtracted from the torque accumulator at 00933918."
+    },
+    {
+      "step": 17,
+      "address": "009339a7",
+      "native": "004f9b30",
+      "function": "009329c0",
+      "host_method": "none (pure rule cross_004f9b30)",
+      "note": "The element's own torque, lever arm crossed with the element force, added to controller+384h."
+    },
+    {
+      "step": 18,
+      "address": "00933a01",
+      "native": "0074f930",
+      "function": "009329c0",
+      "host_method": "leak_tick_0074f930",
+      "note": "BSP_LeakManager_Update on unit+10D4h with the same dt. Already reconstructed in include/bsp/unit_forces.hpp; reused as a contract."
+    },
+    {
+      "step": 19,
+      "address": "00933a52",
+      "native": "0074f2e0",
+      "function": "009329c0",
+      "host_method": "leak_heel_torque_0074f2e0",
+      "note": "The leak model's heeling torque, staged into controller+74h..+7Ch and added to the torque accumulator at 00933AA7. Already reconstructed in include/bsp/unit_forces.hpp."
+    },
+    {
+      "step": 20,
+      "address": "00933b01",
+      "native": "00c35360",
+      "function": "009329c0",
+      "host_method": "add_force_00c35360",
+      "note": "Dyn_Body_AddForce with controller+378h..+380h. The only AddForce call site in the image."
+    },
+    {
+      "step": 21,
+      "address": "00933b38",
+      "native": "00c35330",
+      "function": "009329c0",
+      "host_method": "add_torque_00c35330",
+      "note": "Dyn_Body_AddTorque with controller+384h..+38Ch."
+    },
+    {
+      "step": 22,
+      "address": "009329ec",
+      "native": "00c37e50",
+      "function": "009329c0",
+      "host_method": "set_linear_velocity_00c37e50",
+      "note": "DISABLED PATH ONLY. Reached when controller+14h is non-zero (CMP at 009329C9, JZ to the live path at 00932A1F). Zeroes the linear velocity."
+    },
+    {
+      "step": 23,
+      "address": "00932a0e",
+      "native": "00c37e20",
+      "function": "009329c0",
+      "host_method": "set_angular_velocity_00c37e20",
+      "note": "The same path, zeroing the angular velocity. 00932A16 then ORs bit 2 into body+50h and 00932A1A jumps straight to the accumulator zeroing at 00933B40."
+    }
+  ],
+
+  "callee_contracts": [
+    {
+      "address": "00932d8b",
+      "native": "004f9b30",
+      "function": "009329c0",
+      "name": "BSP_Vector3f_Cross",
+      "kind": "pure_rule_reused",
+      "abi": "__fastcall(out = ECX, a = EDX, b = [ESP+4]), RET 4, out also in EAX",
+      "note": "Already reconstructed as cross_004f9b30 in include/bsp/world_ocean.hpp; not redone."
+    },
+    {
+      "address": "00933063",
+      "native": "0042b260",
+      "function": "009329c0",
+      "name": "BSP_Geometry_NormalizeVectorWithFloor",
+      "kind": "pure_rule",
+      "abi": "__thiscall(vec3* v), RET, in place",
+      "note": "Squared length against the double 1.084e-10 at 00CE3820; above it the divisor is sqrt, at or below it the double 1.0e-5 at 00CE3C70. A byte-exact naked reproduction already exists as normalize_camera_basis_0042b260; this packet adds a float32 rule under its own name."
+    },
+    {
+      "address": "00932cbf",
+      "native": "004142e0",
+      "function": "009329c0",
+      "name": "BSP_Vector3f_TransformAffinePoint",
+      "kind": "pure_rule",
+      "abi": "__thiscall(src = ECX, dst = [ESP+4], matrix = [ESP+8]), RET 8",
+      "note": "out = p.x*row0 + p.y*row1 + p.z*row2 + row3, read from the listing at 004142FE..0041435B."
+    },
+    {
+      "address": "00933a01",
+      "native": "0074f930",
+      "function": "009329c0",
+      "name": "BSP_LeakManager_Update",
+      "kind": "contract_reused",
+      "abi": "void __thiscall(leak_model, float dt), RET 4",
+      "note": "Reconstructed in include/bsp/unit_forces.hpp and src/unit_forces.cpp by packet unit_force_commands. Its total water lands at leak+28h, which is the unit+10FCh this routine reads at 00932A2C."
+    },
+    {
+      "address": "00933a52",
+      "native": "0074f2e0",
+      "function": "009329c0",
+      "name": "leak heeling torque",
+      "kind": "contract_reused",
+      "abi": "__thiscall(leak_model, vec3* out), RET 4",
+      "note": "Same packet; reused as a contract, not re-derived."
+    },
+    {
+      "address": "00932c28",
+      "native": "00c33650",
+      "function": "009329c0",
+      "name": "Dyn_Transform_Expand3x4To4x4",
+      "kind": "read_whole",
+      "abi": "void __thiscall(const float* src3x4, float* out4x4), RET 4",
+      "note": "Body 00C33650..00C336B9, read whole. Ledger name added by this packet."
+    },
+    {
+      "address": "00933b01",
+      "native": "00c35360",
+      "function": "009329c0",
+      "name": "Dyn_Body_AddForce",
+      "kind": "contract_reused",
+      "abi": "void __thiscall(body, const vec3* force), RET 4",
+      "note": "Reconstructed in include/bsp/rigid_body_integration.hpp as dyn_body_add_force_00c35360. Ledger name added by this packet."
+    },
+    {
+      "address": "00933b38",
+      "native": "00c35330",
+      "function": "009329c0",
+      "name": "Dyn_Body_AddTorque",
+      "kind": "contract_reused",
+      "abi": "void __thiscall(body, const vec3* torque), RET 4",
+      "note": "dyn_body_add_torque_00c35330. Ledger name added by this packet."
+    },
+    {
+      "address": "009329ec",
+      "native": "00c37e50",
+      "function": "009329c0",
+      "name": "Dyn_Body_SetLinearVelocity",
+      "kind": "contract_reused",
+      "abi": "void __thiscall(body, const vec3* v), RET 4",
+      "note": "dyn_body_set_linear_velocity_00c37e50. Ledger name added by this packet."
+    },
+    {
+      "address": "00932a0e",
+      "native": "00c37e20",
+      "function": "009329c0",
+      "name": "Dyn_Body_SetAngularVelocity",
+      "kind": "contract_reused",
+      "abi": "void __thiscall(body, const vec3* w), RET 4",
+      "note": "dyn_body_set_angular_velocity_00c37e20. Ledger name added by this packet."
+    }
+  ],
+
+  "physics_material_record": {
+    "base": "settings+4E0h + material*38h",
+    "producer": "0083B5E0 BSP_GameSettings_LoadFromLuaGlobals, the three-iteration loop 0083FEE7..008403B7",
+    "producer_read": true,
+    "fields": [
+      {"offset": "+00h", "key": "KozegellenallasiEgyutthatoL", "key_string": "00d0a764", "store": "0083ffe2", "default": "0.0025f (00CF01F4)", "read_by_009329c0": "00932a96", "role": "linear drag on the body up axis when the point moves downward"},
+      {"offset": "+04h", "key": "KozegellenallasiEgyutthatoN", "key_string": "00d0a748", "store": "00840025", "default": "0.01f (00D7A238)", "read_by_009329c0": "00932aad", "role": "quadratic, same axis and sign"},
+      {"offset": "+08h", "key": "KozegellenallasiEgyutthatoLFel", "key_string": "00d0a728", "store": "00840068", "default": "0.0025f", "read_by_009329c0": "00932ac4", "role": "linear drag on the body up axis when the point moves upward"},
+      {"offset": "+0Ch", "key": "KozegellenallasiEgyutthatoNFel", "key_string": "00d0a708", "store": "008400ab", "default": "0.01f", "read_by_009329c0": "00932adb", "role": "quadratic, same"},
+      {"offset": "+10h", "key": "KozegellenallasiEgyutthatoLOldalra", "key_string": "00d0a6e4", "store": "008400ee", "default": "0.0025f", "read_by_009329c0": "00932af2", "role": "linear drag on the body row-0 (lateral) axis"},
+      {"offset": "+14h", "key": "KozegellenallasiEgyutthatoNOldalra", "key_string": "00d0a6c0", "store": "00840131", "default": "0.01f", "read_by_009329c0": "00932b09", "role": "quadratic, lateral"},
+      {"offset": "+18h", "key": "KozegellenallasiEgyutthatoLElore", "key_string": "00d0a69c", "store": "00840174", "default": "0.0025f", "read_by_009329c0": "00932b20", "role": "linear drag on the body row-2 (forward) axis"},
+      {"offset": "+1Ch", "key": "KozegellenallasiEgyutthatoNElore", "key_string": "00d0a678", "store": "008401b7", "default": "0.01f", "read_by_009329c0": null, "role": "NEVER READ by 009329C0: the forward term at 0093324E is linear only"},
+      {"offset": "+20h..+28h", "key": "NyomatekSzorzo[1..3]", "key_string": "00d0a668", "store": "0084020c/00840272/008402e8", "default": "1.0f (FLD1)", "read_by_009329c0": null, "role": "read by 00939BCB for the hull body's inertia, not here"},
+      {"offset": "+2Ch", "key": "Kitevo", "key_string": "00d0a660", "store": "00840335", "default": "1.5f (00CE380C)", "read_by_009329c0": "00932b3f", "role": "the exponent the submerged fraction is raised to, by an equality ladder on 1.0 / 2.0 / 0.5"},
+      {"offset": "+30h", "key": "Gravitacio", "key_string": "00d0a654", "store": "00840378", "default": "10.0f (00CE38B8)", "read_by_009329c0": null, "role": "read by 00937C90's displacement sum; 009329C0 uses the literal double 10.0 at 00CE3DC0 instead"},
+      {"offset": "+34h", "key": "Friction", "key_string": "00d0a648", "store": "008403b7", "default": "1.0f (FLD1)", "read_by_009329c0": null, "role": "copied onto each collision shape at 00939365"}
+    ],
+    "installed_values": {
+      "source": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/shipglobals.lua, ShipGlobals[\"Physics\"]",
+      "Ship": {"L": 0.1, "N": 0.03, "LFel": 0.1, "NFel": 0.03, "LOldalra": 0.1, "NOldalra": 0.01, "LElore": 0.001, "NElore": 0.03, "NyomatekSzorzo": [1, 1, 2], "Kitevo": 1.0, "Gravitacio": 10.0, "Friction": 0.5},
+      "TBoat": {"L": 0.5, "N": 0.03, "LFel": 0.5, "NFel": 0.03, "LOldalra": 0.5, "NOldalra": 0.1, "LElore": 0.075, "NElore": 0.001, "NyomatekSzorzo": [1, 1, 2], "Kitevo": 0.5, "Gravitacio": 10.0, "Friction": 0.5},
+      "Submarine": {"L": 0.05, "N": 0.01, "LFel": 0.1, "NFel": 0.03, "LOldalra": 0.1, "NOldalra": 0.03, "LElore": 0.001, "NElore": 0.03, "NyomatekSzorzo": [1, 1, 1], "Kitevo": 1.0, "Gravitacio": 10.0, "Friction": 1.0},
+      "destroyer_selects": "Ship (material 0): every shipped destroyer has Mass >= 100.0, and slot 5Ch answers no for a surface ship."
+    }
+  },
+
+  "coverage": [
+    {"routine": "009329c0", "range": "009329c0-00933ba9", "coverage": "complete", "note": "Read whole from the listing. Four branch bodies inside the element loop are DEAD in this build because the loop index starts at zero and never goes negative: 00932DC9-00932DD4, 00932E16-00932E24, 00932E71-00932EE2 and 009339DA-009339E0. They are read and understood but not projected; the header says so."},
+    {"routine": "0042b260", "range": "0042b260-0042b2e9", "coverage": "complete"},
+    {"routine": "004f9b30", "range": "004f9b30-004f9ba8", "coverage": "complete", "note": "Reused from include/bsp/world_ocean.hpp; the contract was re-read at 004F9B33..004F9BA3 to settle which operand is the angular velocity."},
+    {"routine": "004142e0", "range": "004142e0-00414363", "coverage": "complete"},
+    {"routine": "00c33650", "range": "00c33650-00c336bb", "coverage": "complete"},
+    {"routine": "00c32000", "range": "00c32000-00c32003", "coverage": "complete"},
+    {"routine": "00c35330", "range": "00c35330-00c35359", "coverage": "contract only; the body was read for the RET form and the accumulator it writes, and the reconstruction is the existing dyn_body_add_torque_00c35330"},
+    {"routine": "00c35360", "range": "00c35360-00c35389", "coverage": "contract only; existing dyn_body_add_force_00c35360"},
+    {"routine": "00c37e20", "range": "00c37e20-00c37e43", "coverage": "contract only; existing dyn_body_set_angular_velocity_00c37e20"},
+    {"routine": "00c37e50", "range": "00c37e50-00c37e6f", "coverage": "contract only; existing dyn_body_set_linear_velocity_00c37e50"},
+    {"routine": "00c31f20", "range": "00c31f20-00c31f3d", "coverage": "contract only"},
+    {"routine": "00c31f40", "range": "00c31f40-00c31f59", "coverage": "contract only"},
+    {"routine": "0074f930", "range": "0074f930-0074fa78", "coverage": "contract only; reconstructed by packet unit_force_commands"},
+    {"routine": "0074f2e0", "range": "0074f2e0-0074f438", "coverage": "contract only; same packet"},
+    {"routine": "0078cf20", "range": "0078cf20-0078cf76", "coverage": "contract only; reconstructed in include/bsp/ocean_height.hpp"},
+    {"routine": "0083b5e0", "range": "0083fee7-008403b7", "coverage": "partial: only the physics-material loop of 0083B5E0 was read, for the key-to-offset binding. The rest of the settings loader is untouched."},
+    {"routine": "00937c90", "range": "not read", "coverage": "none: its element-list walk was read as corroboration only. The range 00937D3F-009399BF belongs to packet cc_hull_shapes and was not touched."},
+    {"routine": "class+528h buoyancy element list", "range": "producer unknown", "coverage": "none: no function in the exported set writes class+528h..+534h. The field roles in ShipBuoyancyElement are a hypothesis reconciled between the two readers."}
+  ],
+
+  "corrections": [
+    {
+      "target": "docs/GAME_EXECUTABLE.md milestone 2r, section 2",
+      "was": "It is the only code on a live hull's path that writes the body's linear velocity outside 0092D300: 009329EC calls 00C37E50 (set linear velocity) and 00932A0E calls 00C37E20 (set angular velocity).",
+      "is": "Both calls are on the DISABLED path. 009329C9 compares controller+14h with zero and jumps to the live path at 00932A1F when it is clear; 009329CF..00932A1A is the other branch, which zeroes both velocities, ORs bit 2 into body+50h and jumps to the accumulator zeroing. The live path never writes a velocity: it writes force and torque through 00C35360 and 00C35330.",
+      "evidence": "009329c9 CMP byte ptr [ESI + 0x14],0x0 / 009329cd JZ 0x00932a1f / 00932a1a JMP 0x00933b40. docs/UNIT_FORCE_CHANNEL.md lines 42 and 43 already had this right."
+    },
+    {
+      "target": "docs/GAME_EXECUTABLE.md milestone 2r, section 2 and follow-up 2",
+      "was": "eight floats out of settings + 4E0h + material*38h at 00932A96, 00932AAD, 00932AC4, 00932ADB, 00932AF2, 00932B09, 00932B20 and 00932B3F ... the six record fields ... the readers of KozegellenallasiEgyutthato*",
+      "is": "Seven drag coefficients are read, at +4E0h through +4F8h; the eighth address in that list, 00932B3F, reads Kitevo at +50Ch. KozegellenallasiEgyutthatoNElore at +4FCh is never read by 009329C0, which is why the forward drag term at 0093324E is linear only. The CALL 00424C40 at 00932B32 discards its result, which is where the eighth coefficient read would have been. The record has fourteen fields, not six.",
+      "evidence": "00932a96..00932b20 are the seven MOVSS reads; 00932b32 CALL 0x00424c40 with no use of EAX; 00932b3f MOVSS XMM0,[EAX + EDI*0x1 + 0x50c]; 0093324e FLD [ESP+0x1c] / 00933252 FMUL [ESP+0x1b4] / 00933259 FMUL ST1 with no speed-squared term."
+    },
+    {
+      "target": "docs/UNIT_RUDDER_CURVE.md, Corrections, the settings row at +4E0h",
+      "was": "This mapping is inferred from the key names and the row stride, not from a read of the loader's stores into that range.",
+      "is": "Confirmed, not corrected. The loader's own stores bind every offset to its key: 0083FFE2 stores +4E0h for the key pushed at 0083FFAA (00D0A764 KozegellenallasiEgyutthatoL) and the pattern continues to 008403B7 / +514h (Friction). The published order is right in every position.",
+      "evidence": "0083ffaa PUSH 0xd0a764 then 0083ffe2 FSTP [EDI + 0x4e0], and the eleven further key/store pairs listed under physics_material_record.fields."
+    },
+    {
+      "target": "docs/UNIT_RUDDER_CURVE.md, Corrections: 'The doc's note that variant 1 forces +50Ch to 2.0f conflicts with the shipped TBoat value of 0.5; a re-read of the branch around 00932B00 should settle which.'",
+      "was": "open question",
+      "is": "Settled: both are true and the override wins. 00932B3C compares the material index with 1 and 00932B53 overwrites the loaded exponent with the 2.0f at 00CE3958. The shipped TBoat Kitevo of 0.5 is therefore dead for this routine, though 00937C90's displacement sum reads +50Ch without the override and does use it.",
+      "evidence": "00932b3c CMP EBX,0x1 / 00932b51 JNZ 0x00932b64 / 00932b53 MOVSS XMM0,[0x00ce3958] / 00932b5b MOVSS [ESP+0xa0],XMM0; 00ce3958 = 40 00 00 00 = 2.0f."
+    },
+    {
+      "target": "docs/UNIT_RUDDER_CURVE.md, Corrections: 'Gravitacio = 10.0 the source of the 10.0 double at 00CE3DC0'",
+      "was": "the record's Gravitacio is the source of the 10.0 in 009329C0",
+      "is": "Not in 009329C0. The multiply at 0093303E is FMUL double ptr [0x00CE3DC0], a literal 10.0, and the buoyancy weight at 00933A41 is the same literal. The record's +30h Gravitacio is read by 00937C90's displacement sum, where it appears as Gravitacio divided by that same literal 10.0. The value 10.0 matches the world gravity magnitude at 00CE6848, which is why the buoyancy cancels it.",
+      "evidence": "0093303e FMUL double ptr [0x00ce3dc0] and 00933a41 FMUL double ptr [0x00ce3dc0]; no read of +510h anywhere in 009329C0."
+    },
+    {
+      "target": "the packet brief, 'the yaw/roll/pitch damping torques'",
+      "was": "the routine has separate angular damping terms",
+      "is": "It has none. Every torque in the routine is a lever-arm cross product of a linear force: the element's own r x F at 009339A7, the planing term at 009338F6 and the leak model's heeling torque at 00933A52. Angular damping is the rigid body's own M+BCh rate, which 00939A2F sets to 1.0f. What damps a turn is the lateral drag acting at each element's offset from the body origin, which is a yaw torque by geometry rather than by a coefficient.",
+      "evidence": "the three 004F9B30 / 0074F2E0 sites are the only writers of controller+384h..+38Ch in the body."
+    }
+  ],
+
+  "probe": {
+    "command_before": "bsp_ship_motion_probe.exe --class 20 --moveto 4000,4000 --steps 8000",
+    "command_after": "bsp_ship_motion_probe.exe --class 20 --moveto 4000,4000 --steps 8000 --hydro",
+    "body": "B, the class-built hull body (DeRuyter, mass 7688)",
+    "before": {
+      "start_distance_m": 5656.85,
+      "minimum_distance_m": 258.93,
+      "final_distance_m": 1483.99,
+      "first_step_inside_2000m": 4580,
+      "arrival_time_s": 229.01,
+      "final_heading_error_rad": 0.480076,
+      "peak_drift_deg": 75.2864,
+      "final_forward_speed": 14.4243
+    },
+    "after": {
+      "start_distance_m": 5656.85,
+      "minimum_distance_m": 0.34,
+      "final_distance_m": 567.05,
+      "first_step_inside_2000m": 4532,
+      "arrival_time_s": 226.61,
+      "final_heading_error_rad": -1.342620,
+      "peak_drift_deg": 1.2196,
+      "final_forward_speed": 16.4530
+    },
+    "staged_on_the_last_substep": {"force": [5050.05, 76880.0, -5475.96], "torque": [-0.06, 3035236.0, 0.0], "submerged_elements": "8 of 8"},
+    "notes": [
+      "The buoyancy total of 76880.0 is exactly mass * 10, the world gravity magnitude, so the hull neither sinks nor rises. That is the stand-in element list being solved for neutral buoyancy, not a recovered number.",
+      "The final distance is larger than the minimum because the ship AI has no stop: it reaches the goal and circles it. The minimum distance is the convergence measure.",
+      "The 3.0e6 yaw torque does nothing in this run: the probe attaches no collision shape, so the AABB span is zero, 00C37E70 stores a zero inverse inertia and no torque moves the hull. With a real span this term would be the turn damping.",
+      "Body A in the same run is the hand-built stand-in with a zero inverse mass, so the force cannot move it; its 87.5 degree drift is the no-body control, unchanged by --hydro."
+    ]
+  },
+
+  "follow_ups": [
+    {"packet": "ship_buoyancy_element_producer", "addresses": "the writer of class+528h..+534h, unit+538h's constructor", "answers": "which model nodes or Lua keys build the 24h-byte buoyancy elements, and therefore whether level_top / level_draft / level_base are the right names"},
+    {"packet": "ship_hull_shapes", "addresses": "00937D3F..009399BF, 00C5C940", "answers": "the collision AABB, without which the probe's inverse inertia stays zero and the routine's yaw torque is discarded. Carried over unchanged; owned by cc_hull_shapes."},
+    {"packet": "unit_flag_5d", "addresses": "the writer of unit+5Dh", "answers": "what gates the planing torque at 00933639"}
+  ],
+
+  "no_ghidra_function": "none. Every address named above lies inside an existing Ghidra function body, checked with python tools/bsp.py ghidra proto <addr> --brief.",
+
+  "ghidra_names_added": [
+    {"address": "00c35360", "name": "Dyn_Body_AddForce"},
+    {"address": "00c35330", "name": "Dyn_Body_AddTorque"},
+    {"address": "00c37e50", "name": "Dyn_Body_SetLinearVelocity"},
+    {"address": "00c37e20", "name": "Dyn_Body_SetAngularVelocity"},
+    {"address": "00c33650", "name": "Dyn_Transform_Expand3x4To4x4"},
+    {"address": "009329c0", "name": "BSP_UnitController_ApplyHydroForces (evidence appended, name unchanged)"}
+  ]
+}

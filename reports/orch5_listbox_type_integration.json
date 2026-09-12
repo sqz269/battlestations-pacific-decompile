@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "abi_compatible": false,
+  "game_validated": false,
+  "packet": "orch5_listbox_type_integration",
+  "status": "combined_win32_build_and_scoped_validation_recorded_in_parent_batch",
+  "source": "src/gui_type_dispatch.cpp",
+  "documentation": "docs/ORCH5_MENU_LISTBOX_GROUP_BATCH.md",
+  "functions": [
+    {
+      "address": "00a9ac30",
+      "name": "GuiListboxTypeImplementation::constructed74",
+      "coverage": "complete bare RET",
+      "original_abi": "ECX Listbox; RET"
+    },
+    {
+      "address": "00a9cce0",
+      "name": "GuiListboxTypeImplementation::set_visible34",
+      "coverage": "partial: highlight index118 stays -1 across base callback",
+      "original_abi": "ECX Listbox; low byte visible on stack; RET4"
+    },
+    {
+      "address": "00a9cd20",
+      "name": "GuiListboxTypeImplementation::set_active60",
+      "coverage": "partial: active true or auto_control11E stays zero across base callback",
+      "original_abi": "ECX Listbox; low byte active on stack; RET4"
+    }
+  ],
+  "call_sites": [
+    {
+      "function": "00a9cce0",
+      "address": "00a9cce9",
+      "native": "00aa8530",
+      "binding": "same canonical owner base visibility"
+    },
+    {
+      "function": "00a9cd20",
+      "address": "00a9cd2c",
+      "native": "00aa6a30",
+      "binding": "same canonical owner base activation"
+    }
+  ],
+  "table": {
+    "address": "00d5bbf8",
+    "slots": {
+      "34": "00a9cce0",
+      "38": "00a9e0d0",
+      "3c": "00a9e100",
+      "4c": "00aa6980",
+      "54": "00aa68f0",
+      "5c": "00a9e110",
+      "60": "00a9cd20",
+      "64": "00a9e120",
+      "70": "00aaa3e0",
+      "74": "00a9ac30",
+      "78": "00a9c050",
+      "7c": "00a9c0a0",
+      "80": "00a9c220"
+    }
+  },
+  "integration": [
+    "Actual type11 constructor gate and same GuiListboxRuntime companion; no Group relabel",
+    "Current78 delegates actual layout and selection routine; base alpha/color profiles verified against table",
+    "Host guards reject active continuation or borrowed nonempty rows at retirement; no native teardown claim"
+  ],
+  "limitations": [
+    "Full A9E400 properties, A9D030 frame, scalar/copy teardown unresolved",
+    "Linked highlight page AA0F50 and auto-row state A9BA90 tails explicitly rejected before unsupported operations",
+    "Host preflight is outside native ABI; failure after callback is not a completed native operation"
+  ],
+  "parent_integration_2026_09_12": {
+    "report": "reports/orch5_menu_listbox_group_batch.json",
+    "combined_win32_build_passed": true,
+    "existing_tests_passed": 2,
+    "scope": "Final-library Group/Listbox/tactical probes passed; menu caller assembly/compile reviewed, no complete menu runtime claim",
+    "new_cpp_abi": true,
+    "game_validated": false
+  }
+}

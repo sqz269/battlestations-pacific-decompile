@@ -20,6 +20,7 @@
 // See include/bsp/game_hosts_mission_frame.hpp for the address list.
 
 #include "bsp/game_hosts_mission_frame.hpp"
+#include <stdexcept>
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_fixed_step.hpp"
@@ -1160,7 +1161,14 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
         }
         if (method == "reset_objective_list" || method == "rebuild_avoid_zone_table"
             || method == "reset_avoid_zone_state") {
-            run_load_avoid_zone_state_004e0754(host.log);
+            run_load_avoid_zone_state_004e0754(host.log, [&host]() {
+                if (!host.scene_contents || !host.ship_ai)
+                    throw std::logic_error("Avoid-zone load precedes scene/AI creation");
+                host.ship_ai->load_avoid_zone_geometry(*host.scene_contents, host.lua,
+                    host.scene_state.script_slot,
+                    host.scene_state.script_slot_forced ? 1u : 0u,
+                    host.scene_state.session_mode);
+            });
             host.done(label, step.address);
             ++host.load.concrete;
             continue;
