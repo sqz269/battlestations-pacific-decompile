@@ -1,0 +1,282 @@
+{
+  "packet": "orch5_icon_state",
+  "status": "implemented_build_and_inactive_actual_resource_fixture_tested",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "Read-only verified CLI batches; no live mutations.",
+  "native_abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "00ab2690",
+      "coverage": "complete supported retained Icon projection",
+      "abi": "ECX Icon; DWORD state, borrowed texture, UV pointer; RET0C at00AB2791; body00AB2690..00AB2793",
+      "implementation": "GuiIconRuntime::set_state_texture_00ab2690"
+    },
+    {
+      "address": "00ab27a0",
+      "coverage": "complete supported retained Icon projection",
+      "abi": "ECX Icon; output pointer, DWORD state; RET8 at00AB27E4; body00AB27A0..00AB27E6; EAX output",
+      "implementation": "GuiIconRuntime::state_texture_size_00ab27a0"
+    },
+    {
+      "address": "00ab17b0",
+      "coverage": "complete supported retained texture callback projection",
+      "abi": "ECX output, EDX texture, stack UV pointer; RET4 at00AB1852; body00AB17B0..00AB1854; EAX output",
+      "implementation": "GuiIconRuntime::state_texture_size_00ab27a0 with x87 helpers"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00ab26b1",
+      "native": "00bf6713",
+      "function": "00ab2690",
+      "contract": "Native failure call becomes explicit checked exception."
+    },
+    {
+      "address": "00ab26d7",
+      "native": "IAT00CE221C InterlockedIncrement",
+      "function": "00ab2690",
+      "contract": "Store replacement first; nonthrowing retain only when unequal/non-null."
+    },
+    {
+      "address": "00ab26e5",
+      "native": "IAT00CE2220 InterlockedDecrement",
+      "function": "00ab2690",
+      "contract": "Release old after replacement retains."
+    },
+    {
+      "address": "00ab26f5",
+      "native": "old_texture+vtable00",
+      "function": "00ab2690",
+      "contract": "Old release destroys on zero."
+    },
+    {
+      "address": "00ab278d",
+      "native": "00ab3cb0",
+      "function": "00ab2690",
+      "contract": "Actual Icon current80; DWORD index equals sign-extended current state. Slot00D5C4C0+80=00D5C540."
+    },
+    {
+      "address": "00ab27c1",
+      "native": "00bf6713",
+      "function": "00ab27a0",
+      "contract": "Full unsigned state range check."
+    },
+    {
+      "address": "00ab27db",
+      "native": "00ab17b0",
+      "function": "00ab27a0",
+      "contract": "Capture texture, borrow resolved UV, same output."
+    },
+    {
+      "address": "00ab17c0",
+      "native": "texture+vtable48",
+      "function": "00ab17b0",
+      "contract": "Unsigned width, x87 divide960 then float spill before height."
+    },
+    {
+      "address": "00ab17e5",
+      "native": "texture+vtable4c",
+      "function": "00ab17b0",
+      "contract": "Same captured texture height, x87 divide720, float spill; then live UV reads."
+    }
+  ],
+  "caller_review": [
+    {
+      "address": "005d6c93",
+      "native": "00ab2690",
+      "function": "005d6c10"
+    },
+    {
+      "address": "005d9988",
+      "native": "00ab2690",
+      "function": "005d98e0"
+    },
+    {
+      "address": "00510df6",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "00510e3e",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "00510e87",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "00510f6a",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "00510fb2",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "00510ffb",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "005110de",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "00511126",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "0051116f",
+      "native": "00ab2690",
+      "function": "00510c20"
+    },
+    {
+      "address": "00ab458a",
+      "native": "00ab2690",
+      "function": "00ab44b0"
+    },
+    {
+      "address": "00619fd7",
+      "native": "00ab2690",
+      "function": "00619c50"
+    },
+    {
+      "address": "0061aba4",
+      "native": "00ab2690",
+      "function": "0061a6c0"
+    },
+    {
+      "address": "004fb16b",
+      "native": "00ab2690",
+      "function": "004fb150"
+    },
+    {
+      "address": "004fc08b",
+      "native": "00ab2690",
+      "function": "004fc070"
+    },
+    {
+      "address": "0066b9e7",
+      "native": "00ab2690",
+      "function": "0066b6c0"
+    },
+    {
+      "address": "0066beb8",
+      "native": "00ab2690",
+      "function": "0066b6c0"
+    },
+    {
+      "address": "0066c159",
+      "native": "00ab2690",
+      "function": "0066b6c0"
+    },
+    {
+      "address": "0066d21b",
+      "native": "00ab2690",
+      "function": "0066d020"
+    },
+    {
+      "address": "006753d9",
+      "native": "00ab2690",
+      "function": "00674b80"
+    },
+    {
+      "address": "0067551c",
+      "native": "00ab2690",
+      "function": "00674b80"
+    },
+    {
+      "address": "00677e02",
+      "native": "00ab2690",
+      "function": "00675c40"
+    },
+    {
+      "address": "00678108",
+      "native": "00ab2690",
+      "function": "00675c40"
+    },
+    {
+      "address": "00678e87",
+      "native": "00ab2690",
+      "function": "00675c40"
+    },
+    {
+      "address": "006791e6",
+      "native": "00ab2690",
+      "function": "00675c40"
+    },
+    {
+      "address": "00679e0c",
+      "native": "00ab2690",
+      "function": "00675c40"
+    },
+    {
+      "address": "00679f57",
+      "native": "00ab2690",
+      "function": "00675c40"
+    },
+    {
+      "address": "00596ddd",
+      "native": "00ab2690",
+      "function": "005966f0"
+    },
+    {
+      "address": "00596df4",
+      "native": "00ab27a0",
+      "function": "005966f0"
+    },
+    {
+      "address": "00ab2bbc",
+      "native": "00ab27a0",
+      "function": "00ab2b70"
+    },
+    {
+      "address": "00ab24c0",
+      "native": "00ab17b0",
+      "function": "00ab24b0"
+    },
+    {
+      "address": "00ab3972",
+      "native": "00ab17b0",
+      "function": "00ab3840"
+    },
+    {
+      "address": "00ab68b9",
+      "native": "00ab17b0",
+      "function": "00ab66c0"
+    }
+  ],
+  "caller_contract": "All direct xrefs inspected: mutator states0/2/3 or forwarded DWORD; UVs from stack/atlas records. Both state-size callers request state0. All pixel-size callers pass output, captured texture and resolved UV.",
+  "producer": "Existing GuiIconState reconciled with00AB66C0; one adopt per appended record. No duplicate native-layout struct.",
+  "ordering": "All input UV DWORDs read after old release, before stores; UCOMISS ordered flips retain FLD/FSTP versus MOVSS. Width store precedes vertical UV reads. No vector element reference retained across ownership-slot replacement.",
+  "limits": [
+    "Retain/release must not throw; logical lookup is observational. Callbacks preserve runtime/texture lifetimes. Reload cannot invalidate borrowed state storage.",
+    "Native OOM/SEH, malformed pointers and unsupported derived vtables excluded; failures can expose partial state.",
+    "Active current80 delegates existing retained geometry; fixture will cover inactive states only."
+  ],
+  "corrections": [
+    {
+      "was": "00AB27A0 named STL_inst_00ab27a0",
+      "is": "Provisional Icon state texture sizing wrapper",
+      "evidence": "00AB27CF texture EDX;00AB27D9 output ECX;00AB27DB calls00AB17B0;RET8."
+    }
+  ],
+  "validation": {
+    "build": "MSVC Win32 Release /W4 /WX /fp:strict; both existing CTests passed.",
+    "strict_compile": "Standalone optimized /W4 /WX /fp:strict compile passed; x87 callback/spill and output alias instructions inspected.",
+    "fixture": "Actual D3D9 COM textures/cache plus evaluated Lua5.1 Icon; inactive ownership, duplicate/equal/null, release UV mutation, record guard, captured width/height resource and output alias passed.",
+    "report_calls": "38 checked, zero failed; indirect calls explicitly distinguished.",
+    "seed_bytes": "8/8 matched",
+    "rerun": "local/run_gui_icon_state_probe.ps1",
+    "logs": ["local/gui_icon_state_probe.log", "local/gui_icon_state_build.log"],
+    "assembly": "local/gui_icon_runtime_strict.asm"
+  }
+}
