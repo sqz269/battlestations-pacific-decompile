@@ -1,0 +1,975 @@
+{
+  "packet": "orch2_native_vfs_ar_integration",
+  "created_utc": "2026-09-12T17:10:54.616695+00:00",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "scope": {
+    "full_bodies": 18,
+    "owned_original_bytes": 2314,
+    "separate_unwind_fragment": {
+      "entry": "00cc6c40",
+      "bytes": 8
+    },
+    "behavior": "Native path canonicalization/discard, physical-provider pool lifetime, pending record/vector lifetime, FileStore payload/subtree cleanup and successor iterators."
+  },
+  "fixture_checked_head": "eaf4a51ec87a55b7653fe486c4d92e07a3cb3163",
+  "worker_commits": {
+    "root_path": "2aecadef4131900b4e15e662924e0733c7043af0",
+    "pool": "6fc1644847db6db2291ee37fa0b2f28d6cc30ff4",
+    "pending": "aba66aee6a00bb85e79ecb5745c702e23420ae50",
+    "subtree": "ba77616104ca7d82a516b1439fd31285f9cc82a7"
+  },
+  "validation": {
+    "strict_msvc_win32_build": true,
+    "existing_ctests_passed": 2,
+    "source_report_call_rows": 69,
+    "source_report_failed_rows": 0,
+    "path_native_source_comparisons": 559,
+    "path_source_exception_schedules": 7,
+    "pool_compared_raw_values": 4525,
+    "pool_original_bytes_unchanged": 555,
+    "pool_source_SEH_and_real_CRT_exit_subprocesses": true,
+    "pending_native_source_cases": 7,
+    "pending_source_exception_cases": 1,
+    "subtree_native_source_cases": 17,
+    "subtree_source_exception_cases": 1,
+    "numeric_source_composition": "Actual D642C0 memory, D68DB0 adopted memory/physical chains and D691B0 physical disposal via BE5D70; real HANDLE closure, pool return/reuse, counters0, BE6720 resident leaf and canonical shutdown. No original instructions in this composition fixture.",
+    "common_fixture_library_sha256": "e54171375867ea0c40130091708f9277fe6a4618d825976d46d6b518b0cf2764",
+    "frozen_combined_inputs_verified": 1755,
+    "permanent_tests_added": 0,
+    "original_FH3_validated": false,
+    "binary_ABI_compatible": false,
+    "game_validated": false
+  },
+  "independent_reviews": {
+    "path": "Pending worker verified root code/bytes and52 frozen inputs.",
+    "pool": "Subtree worker verified final6fc16448 source, six native spans and849 final v4 inputs.",
+    "pending": "Subtree worker verified aba66aee source, five native spans,58 frozen inputs and50 relocation preimages.",
+    "subtree": "Pool worker verified ba776161 source, six native spans including cleanup fragment,18 frozen artifacts and11 call rows.",
+    "outcome": "All passed without parent C++ corrections; reviews preserved in delivery snapshots."
+  },
+  "annotations": {
+    "root_names_saved_exported": 2,
+    "worker_names_saved_exported": 17,
+    "defined_entry": "00cd9010",
+    "definition": {
+      "path": "local/native-ar-parent-annotations/definitions.json",
+      "bytes": 1998,
+      "sha256": "750669e95eece32ecf3bbe57404d3fa6c3153f6b9760cece3283dc160ded4677"
+    },
+    "flow_repairs": {
+      "path": "local/native-ar-parent-annotations/flow-repairs.json",
+      "bytes": 8474,
+      "sha256": "4413f425f7438ce98d3171e52297ec9b21108ec256ba6e30a688ec7ca6c53f84"
+    },
+    "interior_call_gaps_repaired": 7,
+    "decoded_tail": "00bf4b92..00bf4b96",
+    "remaining_stored_body_tail": "BF4B80 body still ends BF4B91; no unsupported body extension or global no-return edit.",
+    "previous_worker_comments_preserved": [
+      {
+        "entry": "00bf3250",
+        "old_name": "FUN_00bf3250",
+        "current_name": "BSP_NativePhysicalProviderPool_Construct",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00bf3430",
+        "old_name": "FUN_00bf3430",
+        "current_name": "BSP_NativePhysicalProviderPool_TrimEmptyBlocks",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00bf33a0",
+        "old_name": "FUN_00bf33a0",
+        "current_name": "BSP_NativePhysicalProviderPool_Destroy",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00bf2e30",
+        "old_name": "FUN_00bf2e30",
+        "current_name": "BSP_NativePhysicalProviderPool_FreePointerTable",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00ce10f0",
+        "old_name": "CG_static_init_00ce10f0",
+        "current_name": "BSP_Static_DestroyPhysicalProviderPool",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00bf3880",
+        "old_name": "BSP_PhysicalReadRequest_DestroyNames",
+        "current_name": "BSP_PhysicalReadRequest_DestroyNames",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00bf3c10",
+        "old_name": "BSP_PhysicalReadRequest_CopyConstruct",
+        "current_name": "BSP_PhysicalReadRequest_CopyConstruct",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00bf3da0",
+        "old_name": "BSP_PhysicalPendingQueue_Reserve",
+        "current_name": "BSP_PhysicalPendingQueue_Reserve",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00bf3ed0",
+        "old_name": "BSP_PhysicalPendingQueue_Resize",
+        "current_name": "BSP_PhysicalPendingQueue_Resize",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00bf4b80",
+        "old_name": "FUN_00bf4b80",
+        "current_name": "BSP_PhysicalPendingQueue_Destroy",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00be5d70",
+        "old_name": "FUN_00be5d70",
+        "current_name": "BSP_FileStorePayload_Destroy",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00be66c0",
+        "old_name": "FUN_00be66c0",
+        "current_name": "BSP_FileStorePendingTree_EraseSubtree",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00be6720",
+        "old_name": "FUN_00be6720",
+        "current_name": "BSP_FileStoreResidentTree_EraseSubtree",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00be4c30",
+        "old_name": "FUN_00be4c30",
+        "current_name": "BSP_FileStoreResidentIterator_Advance",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00be4e40",
+        "old_name": "FUN_00be4e40",
+        "current_name": "BSP_FileStorePendingIterator_Advance",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00cc6c40",
+        "old_name": "Unwind@00cc6c40",
+        "current_name": "BSP_FileStorePayload_UnwindString",
+        "earlier_comment_preserved": true
+      }
+    ],
+    "root_comments_preserved": [
+      {
+        "entry": "00bee390",
+        "old_name": "BSP_Path_CanonicalizeMountName",
+        "current_name": "BSP_Path_CanonicalizeMountName",
+        "earlier_comment_preserved": true
+      },
+      {
+        "entry": "00bdb970",
+        "old_name": "FUN_00bdb970",
+        "current_name": "BSP_Path_CanonicalizeAndDiscard",
+        "earlier_comment_preserved": true
+      }
+    ]
+  },
+  "limits": [
+    "The native257-byte final-parent path emits a terminator beyond its requested heap extent; source preserves this behavior and fixture supplies slack. No safety improvement is claimed.",
+    "Signed lowercase arguments are established; original39-byte BF9611 runs, but locale-active BF94FA is an explicit library boundary.",
+    "Original FH3 dispatch, forced pool allocation/atexit failure, concurrent trim, repeated startup, binary drop-in ABI and gameplay remain unvalidated.",
+    "Complete physical provider ownership, FileStore tree partial erase/rebalancing and manager base/full lifetime remain open.",
+    "Historical discovery report missing-body CALL rows and prior AQ stored-tail metadata limitations are not erased by this batch."
+  ],
+  "provenance_policy": "Worker original sources/reports and pre-execution proofs are copied unchanged. Parent documentation/annotations are recorded separately. Combined fixtures use the same immutable library; final moving-main build is a separate validation stage.",
+  "root_packet_artifacts_verified": 107,
+  "original_worker_deliveries": [
+    {
+      "worker": "pool",
+      "original_delivery": "J:\\PROG\\battlestations-pacific-decompile-orch2-provider-pool-lifecycle-ar\\local\\pool_ar_delivery",
+      "parent_delivery": "local/native-ar-worker-deliveries/pool",
+      "files_verified": 3504,
+      "manifest": {
+        "path": "local/native-ar-worker-deliveries/pool/manifest.json",
+        "bytes": 764643,
+        "sha256": "538e434fba580f58928274f3c37eb39bfd1694494b028ceb5f3a7cb00da87843"
+      }
+    },
+    {
+      "worker": "pending",
+      "original_delivery": "J:\\PROG\\battlestations-pacific-decompile-orch2-physical-pending-ar\\local\\pending_ar_delivery",
+      "parent_delivery": "local/native-ar-worker-deliveries/pending",
+      "files_verified": 198,
+      "manifest": {
+        "path": "local/native-ar-worker-deliveries/pending/manifest.json",
+        "bytes": 82419,
+        "sha256": "6e805f25f5be8ae796b0a1ba1ff4fe658317c7bcbe9fefd61096698ca961979c"
+      }
+    },
+    {
+      "worker": "subtree",
+      "original_delivery": "J:\\PROG\\battlestations-pacific-decompile-orch2-filestore-subtree-ar\\local\\subtree_ar_delivery",
+      "parent_delivery": "local/native-ar-worker-deliveries/subtree",
+      "files_verified": 3694,
+      "manifest": {
+        "path": "local/native-ar-worker-deliveries/subtree/manifest.json",
+        "bytes": 1698495,
+        "sha256": "814aab04cdee45842e38c41055263ef225ca9d6ecffa84c089f8574dea5db316"
+      }
+    }
+  ],
+  "combined_input_manifest": {
+    "path": "local/native-ar-combined-inputs/manifest.json",
+    "bytes": 474819,
+    "sha256": "2de0f1b808566016daf38783d5e0c54b4a6974035bc3918a5b6f83531137556a"
+  },
+  "combined_worker_deliveries": [
+    {
+      "worker": "pool",
+      "files_verified": 1775,
+      "verification": {
+        "path": "local/native-ar-combined-deliveries/pool-copy-verification.json",
+        "bytes": 391821,
+        "sha256": "b3c7d5a8235e6b1e8657357cf9785e211fbef4b96a6687a20e42377541640234"
+      },
+      "result": {
+        "path": "local/native-ar-combined-deliveries/pool/report.json",
+        "bytes": 4230,
+        "sha256": "20aa8cf6442dcfbce5181cc20730be263758661cf8be7b2e3c919b1569d523f4"
+      }
+    },
+    {
+      "worker": "pending",
+      "files_verified": 88,
+      "verification": {
+        "path": "local/native-ar-combined-deliveries/pending-copy-verification.json",
+        "bytes": 20822,
+        "sha256": "07837b2efaad15dcee45457e63f36cbdbbbb64e79f9852d213ba45c53dcc96d1"
+      },
+      "result": {
+        "path": "local/native-ar-combined-deliveries/pending/result.json",
+        "bytes": 4862,
+        "sha256": "2d610f62fd665ee52e00a59c891a9e271050457faea156f38aa98985ebf682d9"
+      }
+    },
+    {
+      "worker": "subtree",
+      "files_verified": 885,
+      "verification": {
+        "path": "local/native-ar-combined-deliveries/subtree-copy-verification.json",
+        "bytes": 201355,
+        "sha256": "be37a4a7037ea77071d9e636032c0a683eed509694e635421cdaf5b926dea6d8"
+      },
+      "result": {
+        "path": "local/native-ar-combined-deliveries/subtree/result.json",
+        "bytes": 553,
+        "sha256": "48c96e06b0ae70fe0efa33e17a61e0b17dbbd68c302fe85189b229be1681a244"
+      }
+    }
+  ],
+  "call_checks": [
+    {
+      "report": "reports/native_path_canonicalizer.json",
+      "checked": 24,
+      "failed": 0,
+      "log": {
+        "path": "local/native-ar-parent-annotations/calls-native_path_canonicalizer.log",
+        "bytes": 72,
+        "sha256": "ca232800a0cdeb783ee4fa216cfb02f6a7d862d855f5b69fed63ac7214db60c8"
+      }
+    },
+    {
+      "report": "reports/native_physical_provider_pool_lifecycle.json",
+      "checked": 6,
+      "failed": 0,
+      "log": {
+        "path": "local/native-ar-parent-annotations/calls-native_physical_provider_pool_lifecycle.log",
+        "bytes": 85,
+        "sha256": "2bb9064702db228fcb8725c913e541a3b65603ca47db12ffcdcaed2514af61e3"
+      }
+    },
+    {
+      "report": "reports/native_physical_pending_records.json",
+      "checked": 28,
+      "failed": 0,
+      "log": {
+        "path": "local/native-ar-parent-annotations/calls-native_physical_pending_records.log",
+        "bytes": 78,
+        "sha256": "d4796edae3de894b33407aee09e4ce8764d77c5686be8921d1424a79f0eea21f"
+      }
+    },
+    {
+      "report": "reports/native_filestore_subtree.json",
+      "checked": 11,
+      "failed": 0,
+      "log": {
+        "path": "local/native-ar-parent-annotations/calls-native_filestore_subtree.log",
+        "bytes": 71,
+        "sha256": "5f0bc78b1ccacab63e0f8e8f91339c8b5172d02fe3ec98a9c00f1d5b0e22af09"
+      }
+    }
+  ],
+  "current_packet_files": [
+    {
+      "path": "src/native_path_canonicalizer.cpp",
+      "bytes": 6735,
+      "sha256": "cb43008308875d890185e9e5e8d6dcd41e66575ea0941462f3e3a0eba6e7817e"
+    },
+    {
+      "path": "include/bsp/native_path_canonicalizer.hpp",
+      "bytes": 3406,
+      "sha256": "afcc9ed18ed1aed403edb625ecfb2c8b4f4a1fc4c9c4f926a0a80157c3c764ea"
+    },
+    {
+      "path": "reports/native_path_canonicalizer.json",
+      "bytes": 37361,
+      "sha256": "d66219e292ac130b5c0f5d2e3a5a88523058c46802580ca2c7ca6a9cab7dd98a"
+    },
+    {
+      "path": "docs/NATIVE_PATH_CANONICALIZER.md",
+      "bytes": 6889,
+      "sha256": "05435e1dff4e8febec437f935020a0ea83dae9bd75820cecb52f72e4fcedd3c8"
+    },
+    {
+      "path": "src/native_physical_provider_pool_lifecycle.cpp",
+      "bytes": 6639,
+      "sha256": "6da8617044b9bedb8762aa325f9041e38ded869aaf455f21c95e2a14b6aba9d7"
+    },
+    {
+      "path": "include/bsp/native_physical_provider_pool_lifecycle.hpp",
+      "bytes": 2892,
+      "sha256": "04175010f383b41ebaa628a2044af2cb408ed85636cb049bd7913c4f50c57e53"
+    },
+    {
+      "path": "reports/native_physical_provider_pool_lifecycle.json",
+      "bytes": 24505,
+      "sha256": "63d113ac8e7be86f29a948bd5dc4733457b47ee5496da828704b03d835e1db55"
+    },
+    {
+      "path": "docs/NATIVE_PHYSICAL_PROVIDER_POOL_LIFECYCLE.md",
+      "bytes": 10582,
+      "sha256": "ebc84be339e2d9b66c7a9226b16416a0192580e799e581231f23dab61bce022b"
+    },
+    {
+      "path": "src/native_physical_pending_records.cpp",
+      "bytes": 5405,
+      "sha256": "c6780fd7a6982073d299912775387a62b1a5c040e35d5870a906556e24f9189f"
+    },
+    {
+      "path": "include/bsp/native_physical_pending_records.hpp",
+      "bytes": 2404,
+      "sha256": "b8ee2df58fee24f572f705bf274f1a51d69f3405cab60865c5b8c1b9aa17364b"
+    },
+    {
+      "path": "reports/native_physical_pending_records.json",
+      "bytes": 32595,
+      "sha256": "1dca9e140f41eefe77613fa30c1ab0982ab460fab65e6eaf5dbb8955e10e7ca6"
+    },
+    {
+      "path": "docs/NATIVE_PHYSICAL_PENDING_RECORDS.md",
+      "bytes": 8472,
+      "sha256": "61e1f8b6bea66c433037923daefd0959efccfee785c7b6f49710b6c735e1d630"
+    },
+    {
+      "path": "src/native_filestore_subtree.cpp",
+      "bytes": 4753,
+      "sha256": "08992cf8c002fa647dce295078b7da85219cd40f554baac89c47c7c1acdb241c"
+    },
+    {
+      "path": "include/bsp/native_filestore_subtree.hpp",
+      "bytes": 2525,
+      "sha256": "337f302856908f35b3563c8f7517edffa54eaa0dd5a314c91e5f68cba400708f"
+    },
+    {
+      "path": "reports/native_filestore_subtree.json",
+      "bytes": 12979,
+      "sha256": "08ca89702ccf463794da7990259ec2335f2108a4bad86ea5c2d12b52e07f2ed6"
+    },
+    {
+      "path": "docs/NATIVE_FILESTORE_SUBTREE.md",
+      "bytes": 6865,
+      "sha256": "376ddfd8cbf07cc5a40e6eace736aaecc2e67f08c75c34dfb5895fc2e0a01365"
+    },
+    {
+      "path": "docs/NATIVE_PHYSICAL_FACTORY_PACKET_MAP.md",
+      "bytes": 13119,
+      "sha256": "6a6ee1fbeb5abe9e92de0924a694e66b1b29e4a0a2e75255bac6e39c7f0c870b"
+    },
+    {
+      "path": "docs/NATIVE_FILESTORE_OWNER_PACKET_MAP.md",
+      "bytes": 12848,
+      "sha256": "7e595a52fa47ede33710e7d165799192faadc17014e29642bea7008055c09823"
+    },
+    {
+      "path": "docs/NATIVE_VFS_MANAGER_CONTAINERS_PACKET_MAP.md",
+      "bytes": 14674,
+      "sha256": "eac3f5f96a5da098c3e9f6708d6ed2db2b46b8e2aa263b54ddfccc99f40d0521"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "local/native-ar-parent-annotations/annotate-corrections.log",
+      "bytes": 580,
+      "sha256": "1320c9902e7cb87f4573993ebe8cec3f3af0579f1015666d894430653a7bf8f2"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/annotate.log",
+      "bytes": 1014,
+      "sha256": "45b9e5e10f22c24a015c15a5d381196f77e18c03e4c8d1964dc801bf0808433f"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/annotation-log.json",
+      "bytes": 451,
+      "sha256": "3b740cbadd648c59cbdbd8f6f98d119a1e1362aa0d1b70621c119b5c1678bc4b"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/append-00be66c0.log",
+      "bytes": 459,
+      "sha256": "7906c1f8b886897fc5e7347ecff94a1100cad24f07ec4ebc98240f60a3da33d7"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/append-00be6720.log",
+      "bytes": 461,
+      "sha256": "96ddd4f32d390455efc6a554ce2dd701eebac856d05bce1b0cc0fe2f8f3fa27c"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/append-00bf2e30.log",
+      "bytes": 760,
+      "sha256": "1b88a3efe416284721919c5addd842540c9781e0991e03a670556bf66778463a"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/append-00bf3250.log",
+      "bytes": 902,
+      "sha256": "1c22a910e3ca2d20dad9bc410f55beb132fd88f285910679d3b5951b3effa450"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/append-00bf33a0.log",
+      "bytes": 870,
+      "sha256": "c8d556c975947c91baad500716754cb262c1d654518eb64014db975ff3a7d9af"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/append-00bf3430.log",
+      "bytes": 898,
+      "sha256": "1f9d91b59125b697e31497b636c0ab4f7a2a421c2461f4e125c0e65705bbba98"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/append-00bf4b80.log",
+      "bytes": 774,
+      "sha256": "8cf960808df715a465a7c46880da9b54a57559f51bad3b984529c3b09e7ea8a6"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/append-00cd9010.log",
+      "bytes": 760,
+      "sha256": "00807a745161c01e4096cfed2a513d5d7369cab936d382a4041fe1f7773d269e"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/calls-native_filestore_subtree.log",
+      "bytes": 71,
+      "sha256": "5f0bc78b1ccacab63e0f8e8f91339c8b5172d02fe3ec98a9c00f1d5b0e22af09"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/calls-native_path_canonicalizer.log",
+      "bytes": 72,
+      "sha256": "ca232800a0cdeb783ee4fa216cfb02f6a7d862d855f5b69fed63ac7214db60c8"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/calls-native_physical_pending_records.log",
+      "bytes": 78,
+      "sha256": "d4796edae3de894b33407aee09e4ce8764d77c5686be8921d1424a79f0eea21f"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/calls-native_physical_provider_pool_lifecycle.log",
+      "bytes": 85,
+      "sha256": "2bb9064702db228fcb8725c913e541a3b65603ca47db12ffcdcaed2514af61e3"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/comment-preservation.json",
+      "bytes": 2837,
+      "sha256": "379fbcd3e65020268547d3283b6d056e22dc035fc54ec937f4a5923760cff023"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/comments-after.json",
+      "bytes": 17797,
+      "sha256": "4eded4dee4b49ccde5b9d249edfcfbea50aaf84978fde50ba3541f32c233b114"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/comments-after.log",
+      "bytes": 85,
+      "sha256": "778dd531e0777b9836c0e76107308ca35526b00baaeae74b84eb0308b14232cb"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/comments-before.json",
+      "bytes": 5928,
+      "sha256": "29da2814bc247d98bdf9fdfa11bfe58844b6df1107f47e5cabfb211388151c7e"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/comments-before.log",
+      "bytes": 86,
+      "sha256": "59e4a220855c9df2b3ab683568a34bd11c5f348a6aad0a70c06083428144f1c7"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/comments-corrected.json",
+      "bytes": 12123,
+      "sha256": "350cc60345418de8de5a1e6d358633f8c4d1e4afe2f267094ad69f0853c6ff5e"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/comments-corrected.log",
+      "bytes": 88,
+      "sha256": "95ffc43919e537955d4a64c2a3538018cc9d2d0203be12237538cf4888f8e9dd"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/correction-annotation-log.json",
+      "bytes": 298,
+      "sha256": "e655e5b0e5737c6418574c9b2ee6065d65cdf4d76b8dedfad89dd46d7644ac42"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/define-cd9010.log",
+      "bytes": 216,
+      "sha256": "e694be2dd2cc20bb0e291a10219e5ae27ac973e11c9d6cdc99c80da0c05fade4"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/definitions.json",
+      "bytes": 1998,
+      "sha256": "750669e95eece32ecf3bbe57404d3fa6c3153f6b9760cece3283dc160ded4677"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/export-corrected.log",
+      "bytes": 885,
+      "sha256": "3cf05b47806dcc403406dfffb92518b1370832873688441d6d1487c6ee7505f5"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/export.log",
+      "bytes": 1809,
+      "sha256": "bd64cf72092c7b276fcd999604199fbf83e5350986b3b481a7329d2f88eb4720"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/flow-repairs.json",
+      "bytes": 8474,
+      "sha256": "4413f425f7438ce98d3171e52297ec9b21108ec256ba6e30a688ec7ca6c53f84"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/index-corrected.log",
+      "bytes": 142,
+      "sha256": "b55552019be195f68f1930065a43f26d692bad8f472b63e8b40908bb6d32a027"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/index.log",
+      "bytes": 142,
+      "sha256": "b55552019be195f68f1930065a43f26d692bad8f472b63e8b40908bb6d32a027"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/proto-after.log",
+      "bytes": 2189,
+      "sha256": "3e04630154785e5c19ed1f9b67f6c51f9b7ddfc49152060519f3ea616ba55dd8"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/proto-before.log",
+      "bytes": 1491,
+      "sha256": "6739e7ea12215ae51cfc62d486d6c23f064557570a127a1afe19e88bad6c7c11"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/repair-bf4b80-tail.log",
+      "bytes": 350,
+      "sha256": "c0cd4f80f20494b8eb32127c1433f66bd8c4b289e316b7233e7b6c1bcec7a717"
+    },
+    {
+      "path": "local/native-ar-parent-annotations/repair-interior.log",
+      "bytes": 1462,
+      "sha256": "3ac4ab51f2e6f87707169cde6e171aae92685be0cd9818b28a9cbe52854ac41e"
+    },
+    {
+      "path": "local/ghidra-annotations-20260912T170043Z.json",
+      "bytes": 19192,
+      "sha256": "2a5ec54ec73f11a64ca44bee5d949d1f5adf1ad5e75b7d0caeeea95738c92a8f"
+    },
+    {
+      "path": "local/ghidra-annotations-20260912T170509Z.json",
+      "bytes": 12994,
+      "sha256": "cb4ef5875626ca876118000f81a0967cd4d4a341e05ac7270bec148aa9ba42f2"
+    },
+    {
+      "path": "local/native-path-ar-combined/before-execution/build.log",
+      "bytes": 241,
+      "sha256": "635139e91a212396254a9c59e7183401e3d5ea2e181fafe6c327aab22cf2eca0"
+    },
+    {
+      "path": "local/native-path-ar-combined/before-execution/compile.log",
+      "bytes": 24,
+      "sha256": "6a4eedaa585097ce02e8683bc7ff1070b3c6c01c653564fde5e1053e76183bf3"
+    },
+    {
+      "path": "local/native-path-ar-combined/before-execution/compile.ps1",
+      "bytes": 1075,
+      "sha256": "c5319aeadeaa6f1af2e8b51fb392f3ec95bbe1ee0d2a4830815aaf7aeb428ef7"
+    },
+    {
+      "path": "local/native-path-ar-combined/before-execution/native.hpp",
+      "bytes": 4237,
+      "sha256": "bc6a5356dadfa9cfa968c1488d75481928f3f4a28c3b6bfd71f93fe51209318c"
+    },
+    {
+      "path": "local/native-path-ar-combined/before-execution/probe.asm",
+      "bytes": 1823384,
+      "sha256": "78cbce8082d775c6ab8b53e8eecb02b2bb373131ca152190eef24c4dc108add6"
+    },
+    {
+      "path": "local/native-path-ar-combined/before-execution/probe.cpp",
+      "bytes": 13430,
+      "sha256": "e9cfd6ffbe6227e010b4a5e43217e783ea0f78f37c92de91fd80e79a96b60f5d"
+    },
+    {
+      "path": "local/native-path-ar-combined/before-execution/probe.exe",
+      "bytes": 48128,
+      "sha256": "5b0dd7eabb2ec387c4d7fa7f2766e1584bbabd0ed6c5264ec8bbd39329a50ab5"
+    },
+    {
+      "path": "local/native-path-ar-combined/before-execution/probe.obj",
+      "bytes": 284073,
+      "sha256": "66ec9dcbc82ca931a9e180af07371b1d803848c8f3b01f7da64fa2b904d7e6fb"
+    },
+    {
+      "path": "local/native-path-ar-combined/build.log",
+      "bytes": 241,
+      "sha256": "635139e91a212396254a9c59e7183401e3d5ea2e181fafe6c327aab22cf2eca0"
+    },
+    {
+      "path": "local/native-path-ar-combined/compile.log",
+      "bytes": 24,
+      "sha256": "6a4eedaa585097ce02e8683bc7ff1070b3c6c01c653564fde5e1053e76183bf3"
+    },
+    {
+      "path": "local/native-path-ar-combined/compile.ps1",
+      "bytes": 1075,
+      "sha256": "c5319aeadeaa6f1af2e8b51fb392f3ec95bbe1ee0d2a4830815aaf7aeb428ef7"
+    },
+    {
+      "path": "local/native-path-ar-combined/native.hpp",
+      "bytes": 4237,
+      "sha256": "bc6a5356dadfa9cfa968c1488d75481928f3f4a28c3b6bfd71f93fe51209318c"
+    },
+    {
+      "path": "local/native-path-ar-combined/probe.asm",
+      "bytes": 1823384,
+      "sha256": "78cbce8082d775c6ab8b53e8eecb02b2bb373131ca152190eef24c4dc108add6"
+    },
+    {
+      "path": "local/native-path-ar-combined/probe.cpp",
+      "bytes": 13430,
+      "sha256": "e9cfd6ffbe6227e010b4a5e43217e783ea0f78f37c92de91fd80e79a96b60f5d"
+    },
+    {
+      "path": "local/native-path-ar-combined/probe.exe",
+      "bytes": 48128,
+      "sha256": "5b0dd7eabb2ec387c4d7fa7f2766e1584bbabd0ed6c5264ec8bbd39329a50ab5"
+    },
+    {
+      "path": "local/native-path-ar-combined/probe.obj",
+      "bytes": 284073,
+      "sha256": "66ec9dcbc82ca931a9e180af07371b1d803848c8f3b01f7da64fa2b904d7e6fb"
+    },
+    {
+      "path": "local/native-path-ar-combined/result.json",
+      "bytes": 774,
+      "sha256": "7766bfe066aeb51e233ba80d63d4e221e0baa4b79f0faf801d96cf3895524da0"
+    },
+    {
+      "path": "local/native-path-ar-combined/result.log",
+      "bytes": 322,
+      "sha256": "adb6348f318327bb3ee4eecd005f6d5e5bc27ee284c52cde1fc2c33da6baf023"
+    },
+    {
+      "path": "local/native-path-ar-combined/seal.json",
+      "bytes": 2581,
+      "sha256": "8939d0dd2d8549dd0bcb6d0ad66cbf9d4e9266493dd88fb851a7d194bf992fd8"
+    },
+    {
+      "path": "local/annotate_native_ar.py",
+      "bytes": 3007,
+      "sha256": "115775c78a90c5ce988d93cf1cbc04481d474b0b0b1738e8f22c58ac8e497f86"
+    },
+    {
+      "path": "local/document_native_ar.py",
+      "bytes": 7448,
+      "sha256": "613578c7052288b86241b6e02abb39bfea74d0fca350deaa4734624ce4e6bf0b"
+    },
+    {
+      "path": "local/freeze_native_ar_combined.py",
+      "bytes": 1721,
+      "sha256": "889fc2a9281b33b13a0727c9be4f19efc6b0e42f63c938b16e80d32c350b7458"
+    },
+    {
+      "path": "local/freeze_native_ar_deliveries.py",
+      "bytes": 1687,
+      "sha256": "df3bc8364ecc679d16fae055384e2d048eb184466c52e9e25dcd56be290b7af8"
+    },
+    {
+      "path": "local/record_native_ar_integration.py",
+      "bytes": 9184,
+      "sha256": "7ddc644798a8c6265944a5bf1d74da92f1a43ecb706e99b3ae4024a0c89b3b9d"
+    },
+    {
+      "path": "local/run_native_path_ar_combined.py",
+      "bytes": 3623,
+      "sha256": "1af092c31d6c5145f75d381fa624cb60ca39e700f0551a98eb54c78638d7accf"
+    },
+    {
+      "path": "local/native-ar-prepare-integration.log",
+      "bytes": 1305,
+      "sha256": "3a1f5071898496c7464f1a33ed7d504a6aeb8c37fd75e2c5d719e2448f8fa56f"
+    },
+    {
+      "path": "local/native-ar-annotation-batch.log",
+      "bytes": 828,
+      "sha256": "4879438106999cdbbd6b93780cc904cda7b8efced629f1d6798758a303a44b6b"
+    },
+    {
+      "path": "local/native-ar-documentation.log",
+      "bytes": 305,
+      "sha256": "d411b5a84a55f8fd9b83193319e434007d9b3f8bed15bc21bd19c9b989a6d09c"
+    },
+    {
+      "path": "local/native-ar-delivery-freeze.log",
+      "bytes": 98,
+      "sha256": "ea1c2624f6a1cb1d8835326a335878557edb3f460698a0a7715b41496e6c185a"
+    },
+    {
+      "path": "local/native-path-ar-combined-run.log",
+      "bytes": 394,
+      "sha256": "27edb63fc16f69d42ac594a789f8afa4f356bf59284f806561227c3c14e054a6"
+    },
+    {
+      "path": "local/resume_native_ar_record.py",
+      "bytes": 888,
+      "sha256": "42e829d95c32ccc7d1950dad364c60bb68052ec8cfdf772aaf667dbbd49101b4"
+    },
+    {
+      "path": "local/native-ar-record-integration.log",
+      "bytes": 1092,
+      "sha256": "e645fd9221c913317c8209663afb7eca3e98dc86d62844de17ab4c6249c487fe"
+    },
+    {
+      "path": "local/native-ar-record-resumed.log",
+      "bytes": 206,
+      "sha256": "5f03409d1dbd436ea3f3aa3c6e5f7232dbf8eba3cfd344bcc4c0600ea29b41f8"
+    },
+    {
+      "path": "local/native-ar-ntfs-compression.log",
+      "bytes": 35912,
+      "sha256": "41e5b389db14c6f7ad74abed54c8914a2f4807db4c5291ea9057663cf95f7f97"
+    }
+  ],
+  "evidence_copy_recovery": {
+    "failure": "WinError112 exhausted J: while copying final subtree library to parent delivery. Existing passing proofs preserved.",
+    "resolution": "NTFS-compressed only three new AR parent evidence directories; approximately718MB recovered. Resumed by verifying existing copies and copying missing files only. All delivery and1755 frozen combined hashes rechecked.",
+    "contents_changed_by_compression": false
+  },
+  "main_integration_build": {
+    "checked_head": "e0d1f994b1654385714339a58c23ca3a8f980468",
+    "recorded_utc": "2026-09-12T17:13:52.868024+00:00",
+    "strict_msvc_win32_build": true,
+    "existing_ctests_passed": 2,
+    "fixture_input_count": 1755,
+    "changed_existing_fixture_inputs": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "fixture_sha256": "e54171375867ea0c40130091708f9277fe6a4618d825976d46d6b518b0cf2764",
+        "checked_build_sha256": "31a3e5580ca917cdb8b8163fd9bdaef38c5fa2455b4f52e7a3bf1c71f8c557aa"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "fixture_sha256": "9375931e9b6f765297dfc703c5bfe603cf618cb5904400a452e5e86baea70e6c",
+        "checked_build_sha256": "a214cb2155b04b3030e0335864e18489088a0f23017c5c99a6beb3a9989e8132"
+      },
+      {
+        "path": "include/bsp/native_model_owner.hpp",
+        "fixture_sha256": "d5e1d7529f2d824ae1c2dd1a9181a9e40cb22ad08d9ea4fe363a8cf648d3c58f",
+        "checked_build_sha256": "8ad5bc6167d9fa913583b1cbd19fb9f944d9fc5552d224848c4e0ef113996326"
+      },
+      {
+        "path": "include/bsp/native_particle_model_construction.hpp",
+        "fixture_sha256": "adb624fb17b0cb70f5e830104417a87b5e4a06593cdbb07982fa83cb9aa90a67",
+        "checked_build_sha256": "3d7fb5c745fde8c07d4fa7dd3820380fd4848cc737040371c1ea0c548141dc60"
+      },
+      {
+        "path": "src/native_model_owner.cpp",
+        "fixture_sha256": "bb7a8bd8f053e9add33b4554bfe766e7a04ca1107367a1757f238f8a695cfe8b",
+        "checked_build_sha256": "8a0e4e81df6331933be4d21749d6ec4096da96ab5d060fc8e84ecf22e971e9a2"
+      },
+      {
+        "path": "src/native_particle_model_construction.cpp",
+        "fixture_sha256": "b9daba357f16783185049ac815054415e2e19db6d90932e6b3f9e4d5666b7144",
+        "checked_build_sha256": "91b2663f0aeab94186ea72f3572bb731087c9a1e907ff3b4dd7119461a8bf746"
+      }
+    ],
+    "new_source_header_files": [
+      "include/bsp/native_particle_model_lifetime.hpp",
+      "include/bsp/native_particle_model_manager.hpp",
+      "include/bsp/native_renderer_draw_primitive.hpp",
+      "include/bsp/native_renderer_format_check.hpp",
+      "include/bsp/native_tracer_construction.hpp",
+      "include/bsp/native_tracer_lifetime.hpp",
+      "include/bsp/ship_ai_bearing_rating.hpp",
+      "src/native_particle_model_lifetime.cpp",
+      "src/native_particle_model_manager.cpp",
+      "src/native_renderer_draw_primitive.cpp",
+      "src/native_renderer_format_check.cpp",
+      "src/native_tracer_construction.cpp",
+      "src/native_tracer_lifetime.cpp",
+      "src/ship_ai_bearing_rating.cpp"
+    ],
+    "AR_source_header_and_fixture_object_inputs_unchanged": true,
+    "interpretation": "Moving main adds source/header files and changes two model-related modules plus the registry and core archive. All AR source/header/object inputs and Lua/zlib archives remain identical. Focused fixture results stay tied to their preserved eaf4a51e archive; the latest main build and existing CTests are separate evidence.",
+    "installed_game_PE_hash_reverified": true,
+    "artifacts": [
+      {
+        "path": "local/native-ar-main-build/integration.log",
+        "bytes": 1260,
+        "sha256": "dcd0aacdb8f2505b429dee799dc98ec830f6a0fa545f944183ef40a2afa0a60e"
+      },
+      {
+        "path": "local/native-ar-main-build/bsp_core.lib",
+        "bytes": 46892956,
+        "sha256": "31a3e5580ca917cdb8b8163fd9bdaef38c5fa2455b4f52e7a3bf1c71f8c557aa"
+      },
+      {
+        "path": "local/native-ar-main-build/bsp_lua511.lib",
+        "bytes": 455244,
+        "sha256": "3152f1378e15bb0eea5391d3d9b8b2dbaed92e9355f6676cc5f05222a0aaac24"
+      },
+      {
+        "path": "local/native-ar-main-build/bsp_zlib121.lib",
+        "bytes": 71906,
+        "sha256": "c0b4c9ec00ae9019ea191da4cc2177d694fcd0b84886df725bffee8c9ca564ed"
+      },
+      {
+        "path": "local/native-ar-main-build/cmake/startup.cmake",
+        "bytes": 67143,
+        "sha256": "a214cb2155b04b3030e0335864e18489088a0f23017c5c99a6beb3a9989e8132"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_model_owner.hpp",
+        "bytes": 6041,
+        "sha256": "8ad5bc6167d9fa913583b1cbd19fb9f944d9fc5552d224848c4e0ef113996326"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_particle_model_construction.hpp",
+        "bytes": 8834,
+        "sha256": "3d7fb5c745fde8c07d4fa7dd3820380fd4848cc737040371c1ea0c548141dc60"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_particle_model_lifetime.hpp",
+        "bytes": 6829,
+        "sha256": "16f364973a92950a0405423eaa90f062bef05716842f87b93bf52915b44a7a96"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_particle_model_manager.hpp",
+        "bytes": 3702,
+        "sha256": "2575deb3981060303320cf0c51eaed2a6659dc7686ec1243c23375064c20005d"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_renderer_draw_primitive.hpp",
+        "bytes": 1258,
+        "sha256": "dcf8371a149880129b01144f941267fceea04f8a6a793f91912853d33e4d57ea"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_renderer_format_check.hpp",
+        "bytes": 1443,
+        "sha256": "d0165b331dc4274e735fe450a4a76ceb031d64937ace6b90614eb48a09da3f55"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_tracer_construction.hpp",
+        "bytes": 4945,
+        "sha256": "800696c0606a51e39c25dda3b5120f6bf3dd56d8036e34ae07e47ca6833168b9"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/native_tracer_lifetime.hpp",
+        "bytes": 5415,
+        "sha256": "e4a6b0c57a3e8e210b397023106e575f3c5850d69c2fca043cffb25d8b286e3e"
+      },
+      {
+        "path": "local/native-ar-main-build/include/bsp/ship_ai_bearing_rating.hpp",
+        "bytes": 21101,
+        "sha256": "83901e22993c63b1cc7000eab676f68526b232ca3331dfa366ce06ee5ea3fa2c"
+      },
+      {
+        "path": "local/native-ar-main-build/local/check_integrator_retry_guard.py",
+        "bytes": 744,
+        "sha256": "f4ea2a5c048949cd8fe6db949774a52cb4ba28f91967f607b354332ae2d6cb68"
+      },
+      {
+        "path": "local/native-ar-main-build/local/integrate_startup_workers.py",
+        "bytes": 3033,
+        "sha256": "28e87d4fa6e5b3bdc1185deab35b54363910f5581b6d464486f6f4b12f7695a2"
+      },
+      {
+        "path": "local/native-ar-main-build/local/pin_native_ar_main_build.py",
+        "bytes": 3357,
+        "sha256": "5053e27178b02c2feaefff351249049311a0bc34c5eb3914b28cf3aa849e7b08"
+      },
+      {
+        "path": "local/native-ar-main-build/scripts/build.ps1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_model_owner.cpp",
+        "bytes": 14403,
+        "sha256": "8a0e4e81df6331933be4d21749d6ec4096da96ab5d060fc8e84ecf22e971e9a2"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_particle_model_construction.cpp",
+        "bytes": 17003,
+        "sha256": "91b2663f0aeab94186ea72f3572bb731087c9a1e907ff3b4dd7119461a8bf746"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_particle_model_lifetime.cpp",
+        "bytes": 11898,
+        "sha256": "47e60f2fed80e33afbdefec4bccd721b6d7b20a75e45944984b9c1e1cc360e67"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_particle_model_manager.cpp",
+        "bytes": 9944,
+        "sha256": "8f4333c6485f219eb4e523a731f69c2c7fd02505f6de4d48f47fd033d40195fc"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_renderer_draw_primitive.cpp",
+        "bytes": 3090,
+        "sha256": "ebf22e08702e312df99a3ce193c58c79bf7c280779592e4a41cb523c44defe09"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_renderer_format_check.cpp",
+        "bytes": 1452,
+        "sha256": "07512586ca32dd7ce87eb7137342fc13168969b526ebc5c21ffaafd80f236e26"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_tracer_construction.cpp",
+        "bytes": 14418,
+        "sha256": "d5fc641f753ef4b6e5f1fa125771f0ecc960d0276ebd753ea37e67b84888d72b"
+      },
+      {
+        "path": "local/native-ar-main-build/src/native_tracer_lifetime.cpp",
+        "bytes": 12269,
+        "sha256": "9ac1a10fdcc3cf1edb6ee3c10e7776148140b4476459a05af7e9733027bf7adf"
+      },
+      {
+        "path": "local/native-ar-main-build/src/ship_ai_bearing_rating.cpp",
+        "bytes": 17524,
+        "sha256": "d7805505ab634e0881215eec63f31ea36e03a835886107c9fd4409cd11f2fe51"
+      },
+      {
+        "path": "local/native-ar-main-build/annotations-before-main.json",
+        "bytes": 44038,
+        "sha256": "89edbc5d6e176ab76f724b69a14d63735280d016ca7fc9332e290e3db807ee94"
+      }
+    ],
+    "publication": "Evidence commit and normal push still pending; verify remote ancestry afterward."
+  }
+}

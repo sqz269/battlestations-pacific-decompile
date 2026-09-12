@@ -4389,7 +4389,8 @@
         ],
         "required_contract": "Actual renderer/global/pool providers; exact original HRESULT equality retry, COM invocation, registration and FH3 cleanup order. No empty or semantic substitute recreation/owner/registry callback."
       },
-      "source_ready": false
+      "source_ready": false,
+      "current_readiness_report": "reports/native_renderer_reset_readiness_5.json"
     },
     {
       "id": "native_renderer_recreate_device_next",
@@ -4496,7 +4497,8 @@
         "Actual current registry owners and their virtual reset callbacks",
         "Actual XLive thunk/provider integration and CRT returning invalid-parameter contract"
       ],
-      "discovery_evidence": "reports/native_renderer_recreate_device_next.json"
+      "discovery_evidence": "reports/native_renderer_recreate_device_next.json",
+      "current_readiness_report": "reports/native_renderer_reset_readiness_5.json"
     },
     {
       "id": "orch4_scheduled_voice_c",
@@ -5943,7 +5945,8 @@
       ],
       "source_ready": false,
       "evidence": "reports/native_vertex_stream_owner_discovery.json",
-      "scope": "24freshspans2159bytes; fullB24840/B23710/B4B5D0/B4BF10/B62010/B61E20/B24BF0. Trace actualbase4C retainedowner before implementation. Originalreset repeats streamzero4times."
+      "scope": "24freshspans2159bytes; fullB24840/B23710/B4B5D0/B4BF10/B62010/B61E20/B24BF0. Trace actualbase4C retainedowner before implementation. Originalreset repeats streamzero4times.",
+      "current_readiness_report": "reports/native_renderer_reset_readiness_5.json"
     },
     {
       "id": "orch4_config_singleton_i",
@@ -6726,7 +6729,8 @@
         "native_logical_vertex_owner"
       ],
       "scope": "Full reset/provider/FH3 discovery only. General old logical owner final-zero terminal remains unresolved.",
-      "evidence": "reports/native_renderer_binding_reset_audit.json"
+      "evidence": "reports/native_renderer_binding_reset_audit.json",
+      "current_readiness_report": "reports/native_renderer_reset_readiness_5.json"
     },
     {
       "id": "native_logical_vertex_retained_4c_writers12",
@@ -8408,6 +8412,231 @@
       ],
       "integration_report": "reports/sound_z_aa_integration.json",
       "discovery_evidence": "docs/SOUND_STREAM_INTEGRATION.md"
+    },
+    {
+      "id": "gui_widget_shared_base_lifetime",
+      "packet": "gui_widget_shared_base_lifetime",
+      "state": "integrated_bounded_source_build_and_scoped_fixture_evidence",
+      "done": true,
+      "source_ready": true,
+      "worker": "agent/orch5-20260911",
+      "function_addresses": [
+        "00aa9730",
+        "00ac73e0",
+        "00aa8320"
+      ],
+      "evidence": "reports/orch5_section_frame_light_batch.json",
+      "qualification": "See batch limits. Source/build/fixture evidence only; no native ABI or game runtime promotion."
+    },
+    {
+      "id": "gui_widget_frame_canonical_runtime",
+      "packet": "gui_widget_frame_canonical_runtime",
+      "state": "integrated_bounded_source_build_and_scoped_fixture_evidence",
+      "done": true,
+      "source_ready": true,
+      "worker": "agent/orch5-20260911",
+      "function_addresses": [
+        "00aa87b0",
+        "00aa6a40",
+        "00a9e120",
+        "00a9a380"
+      ],
+      "evidence": "reports/orch5_section_frame_light_batch.json",
+      "qualification": "See batch limits. Source/build/fixture evidence only; no native ABI or game runtime promotion."
+    },
+    {
+      "id": "native_point_light_actual_owner",
+      "packet": "native_point_light_actual_owner",
+      "state": "integrated_bounded_source_build_and_scoped_fixture_evidence",
+      "done": true,
+      "source_ready": true,
+      "worker": "agent/orch5-20260911",
+      "function_addresses": [
+        "00b7c710",
+        "00b7c770",
+        "00b7c850",
+        "00b7c740",
+        "00cd81a0",
+        "00b7abd0",
+        "00b7b690",
+        "00b7b810",
+        "00b7b1d0",
+        "00b7b770",
+        "00b7b110",
+        "00b7bd30",
+        "00b7b600",
+        "00cd8060",
+        "00ce0ea0"
+      ],
+      "evidence": "reports/orch5_section_frame_light_batch.json",
+      "qualification": "See batch limits. Source/build/fixture evidence only; no native ABI or game runtime promotion."
+    },
+    {
+      "id": "gui_section_canonical_emission",
+      "packet": "gui_section_canonical_emission",
+      "state": "integrated_bounded_source_build_and_scoped_fixture_evidence",
+      "done": true,
+      "source_ready": true,
+      "worker": "agent/orch5-20260911",
+      "function_addresses": [
+        "00abe6e0",
+        "00abe7b0",
+        "00abe960",
+        "00abf420",
+        "00abeda0",
+        "00abf770",
+        "00abe630"
+      ],
+      "evidence": "reports/orch5_section_frame_light_batch.json",
+      "qualification": "See batch limits. Source/build/fixture evidence only; no native ABI or game runtime promotion."
+    },
+    {
+      "id": "native_shader_constants_actual5",
+      "packet": "native_shader_constants_actual5",
+      "state": "complete_primary_integration_and_qualified_evidence",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00b21820",
+        "00b218c0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_shader_constants.hpp",
+        "src/native_shader_constants.cpp",
+        "docs/NATIVE_SHADER_CONSTANTS.md",
+        "reports/native_shader_constants.json"
+      ],
+      "evidence": "reports/native_shader_constants.json",
+      "qualification": "Complete raw uploads, new EDX synchronization binding; original/source COM capture and source C++ cleanup; native FH3/SEH/original ABI/gameplay excluded."
+    },
+    {
+      "id": "native_renderer_draw_actual5",
+      "packet": "native_renderer_draw_actual5",
+      "state": "complete_primary_integration_and_qualified_evidence",
+      "done": true,
+      "source_ready": true,
+      "worker": "renderer_draw_actual5",
+      "function_addresses": [
+        "00b21b40"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_draw_primitive.hpp",
+        "src/native_renderer_draw_primitive.cpp",
+        "docs/NATIVE_RENDERER_DRAW_PRIMITIVE.md",
+        "reports/native_renderer_draw_primitive.json"
+      ],
+      "evidence": "reports/native_renderer_draw_primitive.json",
+      "qualification": "Complete raw draw source with actual optional guard/device; native/source COM capture and source unwind. Original FH3/ABI/gameplay excluded."
+    },
+    {
+      "id": "native_renderer_format_actual5",
+      "packet": "native_renderer_format_actual5",
+      "state": "complete_primary_integration_and_qualified_evidence",
+      "done": true,
+      "source_ready": true,
+      "worker": "renderer_format_actual5",
+      "function_addresses": [
+        "00b21ec0"
+      ],
+      "code_ownership": [
+        "include/bsp/native_renderer_format_check.hpp",
+        "src/native_renderer_format_check.cpp",
+        "docs/NATIVE_RENDERER_FORMAT_CHECK.md",
+        "reports/native_renderer_format_check.json"
+      ],
+      "evidence": "reports/native_renderer_format_check.json",
+      "qualification": "Complete raw format wrapper and existing flags source; native wrapper fixture shares source translator; actual D3D9 query evidence, no startup/gameplay claim."
+    },
+    {
+      "id": "native_renderer_reset_readiness5",
+      "packet": "native_renderer_reset_readiness5",
+      "state": "complete_read_only_current_dependency_audit_parents_not_ready",
+      "done": true,
+      "source_ready": false,
+      "worker": "renderer_reset_readiness5",
+      "function_addresses": [],
+      "code_ownership": [
+        "docs/NATIVE_RENDERER_RESET_READINESS_5.md",
+        "reports/native_renderer_reset_readiness_5.json"
+      ],
+      "evidence": "reports/native_renderer_reset_readiness_5.json",
+      "qualification": "Discovery complete; four reset parents remain incomplete. Exact +4C logical-owner, cache+04 profile, +1A78 record-callback and CRT composition boundaries retained."
+    },
+    {
+      "id": "orch6_ship_ai_lateral_record",
+      "packet": "orch6_ship_ai_lateral_record",
+      "state": "bounded_reconstruction_integrated_build_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "orch6-lateral-record",
+      "function_addresses": [
+        "00417610",
+        "0041a200",
+        "009d58f0",
+        "0041ccd0",
+        "00423190"
+      ],
+      "output_files": [
+        "docs/SHIP_AI_LATERAL_RECORD.md",
+        "include/bsp/ship_ai_lateral_record.hpp",
+        "include/bsp/ship_ai_path_search.hpp",
+        "reports/ship_ai_lateral_record.json",
+        "src/ship_ai_lateral_record.cpp"
+      ],
+      "evidence": "reports/ship_ai_lateral_record.json",
+      "integration_report": "reports/orch6_navigation_geometry_batch.json",
+      "qualification": "Two routines reconstructed; record constructor and clearance cache retain the report's analysis-only coverage. New C++ interfaces; original ABI and game behavior are not validated."
+    },
+    {
+      "id": "orch6_ship_ai_circle_tangent",
+      "packet": "orch6_ship_ai_circle_tangent",
+      "state": "bounded_reconstruction_integrated_build_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "orch6-circle-tangent",
+      "function_addresses": [
+        "004f3560",
+        "004f4520",
+        "004f47b0",
+        "004f3970",
+        "009d6550",
+        "009d68b0"
+      ],
+      "output_files": [
+        "docs/SHIP_AI_NAV_CIRCLE_TANGENT.md",
+        "include/bsp/ship_ai_approach_update.hpp",
+        "include/bsp/ship_ai_nav_circle_tangent.hpp",
+        "include/bsp/ship_ai_path_follower.hpp",
+        "reports/ship_ai_nav_circle_tangent.json",
+        "src/ship_ai_approach_update.cpp",
+        "src/ship_ai_nav_circle_tangent.cpp",
+        "src/ship_ai_path_follower.cpp"
+      ],
+      "evidence": "reports/ship_ai_nav_circle_tangent.json",
+      "integration_report": "reports/orch6_navigation_geometry_batch.json",
+      "qualification": "Three geometry routines reconstructed, two existing projections corrected, one reused; native scratch uncertainty remains explicit. New C++ interfaces; original ABI and game behavior are not validated."
+    },
+    {
+      "id": "orch6_avoid_zone_boundary",
+      "packet": "orch6_avoid_zone_boundary",
+      "state": "bounded_reconstruction_integrated_build_checked",
+      "done": true,
+      "source_ready": true,
+      "worker": "orch6-avoid-geometry",
+      "function_addresses": [
+        "0041aea0",
+        "0041b840"
+      ],
+      "output_files": [
+        "docs/AVOID_ZONE_BOUNDARY.md",
+        "include/bsp/avoid_zone_boundary.hpp",
+        "reports/avoid_zone_boundary.json",
+        "src/avoid_zone_boundary.cpp"
+      ],
+      "evidence": "reports/avoid_zone_boundary.json",
+      "integration_report": "reports/orch6_navigation_geometry_batch.json",
+      "qualification": "Two control-flow projections through required geometry callees; no executable wiring or native storage adapter. New C++ interfaces; original ABI and game behavior are not validated."
     }
   ],
   "snapshot_after_analysis": {

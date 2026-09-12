@@ -1,5 +1,6 @@
 #include "bsp/air_operations.hpp"
 #include "bsp/plane_flight.hpp"
+#include "bsp/pilot_controls.hpp"
 #include "bsp/cruise_speed_setting.hpp"
 #include "bsp/director_update_arms.hpp"
 #include "bsp/plane_squadron.hpp"
@@ -3030,6 +3031,24 @@ int main() {
             "009FB9B8: -min(DropAngle * clamp(-x/200, 0, ref), max(DropAngle*1.6, DEG(60)))");
         check(ceiling_demand == 0.0f,
             "009FB809: Dynamics/Ceiling minus 50 caps the demand before the error is taken");
+    }
+
+    {
+        // 007BB6E0, the signed-byte channel between the pilot command block unit+9FCh and
+        // the pilot control block unit+9E4h. Worth pinning because the saturation is on the
+        // quantised integer, not the float: the bias 128.5 with a truncating ftol makes
+        // q <= 1 and q >= 0FFh unreachable from any command inside [-1, 1] except at the
+        // ends, and the reconstructed value is quantised, never the command itself.
+        const float centre = bsp::quantize_pilot_axis_007bb6e0(0.0f);
+        const float high = bsp::quantize_pilot_axis_007bb6e0(1.0f);
+        const float low = bsp::quantize_pilot_axis_007bb6e0(-1.0f);
+        const float below_step = bsp::quantize_pilot_axis_007bb6e0(0.004f);
+
+        check(centre == 0.0f, "007BB6E0: ftol(0*127 + 128.5) = 128, so the centre survives");
+        check(high == 1.0f && low == -1.0f,
+            "007BB6E0: q >= 0FFh gives 1.0f and q <= 1 gives -1.0f, the two saturations");
+        check(below_step == 1.0f / bsp::kPilotQuantizeScale,
+            "007BB6E0: the 128.5 bias snaps a sub-step command up to exactly one step, 1/127");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

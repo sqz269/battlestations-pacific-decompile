@@ -216,3 +216,7 @@ Full-manager source, binary ABI and game validation remain unclaimed.
 ## AQ parent integration, 2026-09-12
 
 Correction from docs/NATIVE_VFS_SEQUENCE_LIFETIME.md: the four plain-list wrappers/lifetimes and five string-pair/vector lifetime bodies are reconstructed and bounded-fixture checked. Root review corrected the second string data-pointer read order. Manager tree ownership and the complete BE1F60 tail remain open; discovery readiness does not establish their independence. Three stored Ghidra sequence tails remain incomplete after supported flow repair.
+
+## AR parent integration, 2026-09-12
+
+Correction from docs/NATIVE_PATH_CANONICALIZER.md: actual BEE390 and the149-byte BDB970 discard wrapper are reconstructed with raw headers, signed lowercase arguments, allocation/reload timing and temporary cleanup. The locale-active library callee remains an explicit binding; the actual native257-byte terminal-parent case writes its NUL one byte beyond the requested scratch extent, which the source preserves and the slack-backed fixture records. This closes the canonicalizer dependency identified here. The complete manager base, tree ownership, partial erase/rebalancing and BE1F60 tail remain open; previous sequence-tail metadata limitations are unchanged.

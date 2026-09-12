@@ -107,16 +107,11 @@ public:
     // count108h records with a4h cookie, calling AFDAC0 and AFD9F0.
     virtual void call_00afd130(NativeParticleArrayStorage&, std::int32_t count) = 0;
     virtual void call_00afd220(NativeParticleArrayStorage&, std::int32_t count) = 0;
-    virtual void call_00afd0f0(NativeParticleArrayStorage&) = 0;
-    virtual void call_00afd1e0(NativeParticleArrayStorage&) = 0;
     // Must use the supplied canonical primary RandomThreads state, including
     // BD2E60's x87 unsigned scaling and binary32 spill before affine range.
     virtual float call_00bd2f10(RandomThreads&, RandomStream, float minimum, float maximum) = 0;
     // Store actual node48 and recurse through actual34/3C with the SAME mask.
     virtual void call_007099c0(NativeNodeStorage&, std::uint32_t mask) = 0;
-    // Append the raw model into actual manager+04/+08/+0C through AF0630.
-    // No retain, substitute registry, or successful no-op registration.
-    virtual void call_00af0950(void* actual_manager, NativeNodeStorage&) = 0;
 };
 
 struct NativeParticleModelConstructionAccess {

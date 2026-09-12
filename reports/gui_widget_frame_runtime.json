@@ -1,0 +1,331 @@
+{
+  "packet": "orch5_widget_frame_runtime",
+  "source": "src/gui_widget_frame_runtime.cpp",
+  "documentation": "docs/GUI_WIDGET_FRAME_RUNTIME.md",
+  "analysis_target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read_only_verified_wrappers"
+  },
+  "functions": [
+    {
+      "address": "00aa87b0",
+      "name": "GuiWidgetFrameRuntime::update_base_00aa87b0",
+      "end_inclusive": "00aa8af4",
+      "coverage": "complete normal sequence on canonical stable-owner domain with mandatory actual listener bindings; composes existing timed fragment",
+      "original_abi": "ECXwidget; float seconds stack; RET4"
+    },
+    {
+      "address": "00aa6a40",
+      "name": "GuiWidgetFrameRuntime::contains_pointer_00aa6a40",
+      "end_inclusive": "00aa6b08",
+      "coverage": "complete for established current64 profiles and existing AA6750 transform projection",
+      "original_abi": "ECXwidget; EAXboolean; RET"
+    },
+    {
+      "address": "00a9e120",
+      "name": "gui_widget_base_bounds64_00a9e120",
+      "coverage": "complete actual empty body",
+      "original_abi": "ECXwidget; four float pointers stack; RET10"
+    },
+    {
+      "address": "00a9a380",
+      "name": "gui_mouse_double_click_seconds_00a9a380",
+      "end_inclusive": "00a9a386",
+      "coverage": "complete seven-byte getter; matching-byte Ghidra function now defined through A9A386",
+      "original_abi": "ECXmouse; ST0float; RET",
+      "bytes": "d9 81 38 02 00 00 c3",
+      "decoded": "FLD dword ptr [ECX+238h]; RET"
+    }
+  ],
+  "profile_evidence": [
+    {
+      "type": "Screen1",
+      "table": "00d5be38",
+      "current40_word": "00d5be78",
+      "current40": "00aa87b0",
+      "current64_word": "00d5be9c",
+      "current64": "00a9e120"
+    },
+    {
+      "type": "Group2",
+      "table": "00d5cb80",
+      "current40_word": "00d5cbc0",
+      "current40": "00aa87b0",
+      "current64_word": "00d5cbe4",
+      "current64": "00a9e120"
+    },
+    {
+      "type": "Text3",
+      "table": "00d5c6c8",
+      "current40_word": "00d5c708",
+      "current40": "00aa87b0",
+      "current64_word": "00d5c72c",
+      "current64": "00ab6d70"
+    },
+    {
+      "type": "ClipBox16",
+      "table": "00d5d058",
+      "current40_word": "00d5d098",
+      "current40": "00aa87b0",
+      "current64_word": "00d5d0bc",
+      "current64": "00a9e120"
+    },
+    {
+      "type": "Section17",
+      "table": "00d5c8e8",
+      "current40_word": "00d5c928",
+      "current40": "00aa87b0",
+      "current64_word": "00d5c94c",
+      "current64": "00a9e120"
+    },
+    {
+      "type": "FrameBox18",
+      "table": "00d5d130",
+      "current40_word": "00d5d170",
+      "current40": "00aa87b0",
+      "current64_word": "00d5d194",
+      "current64": "00a9e120"
+    },
+    {
+      "type": "Icon6",
+      "table": "00d5c4c0",
+      "current40_word": "00d5c500",
+      "current40": "00ab1150",
+      "current64_word": "00d5c524",
+      "current64": "00a9e120",
+      "coverage": "current40 explicitly unsupported; body calls base then derived rotation/delay tail"
+    },
+    {
+      "type": "MouseInputDevice",
+      "table": "00d5b8b0",
+      "current38_word": "00d5b8e8",
+      "current38": "00a9a380",
+      "producer": "00a9a290"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00aa87ea",
+      "native": "00a9e0d0",
+      "function": "00aa87b0",
+      "profile": "supported non-Screen current38",
+      "contract": "actual implementation visibility query"
+    },
+    {
+      "address": "00aa87ea",
+      "native": "00aa38e0",
+      "function": "00aa87b0",
+      "profile": "Screen current38",
+      "contract": "actual derived F5 visibility"
+    },
+    {
+      "address": "00aa883b",
+      "native": "00aa87b0",
+      "function": "00aa87b0",
+      "profile": "supported current40 table",
+      "contract": "same child owner and original delta float spill"
+    },
+    {
+      "address": "00aa8880",
+      "native": "00aa6f30",
+      "function": "00aa87b0",
+      "contract": "existing timed-owner live reserve"
+    },
+    {
+      "address": "00aa88d0",
+      "native": "00aa77b0",
+      "function": "00aa87b0",
+      "contract": "existing timed-owner live resize"
+    },
+    {
+      "address": "00aa88e6",
+      "native": "00ad39a0",
+      "function": "00aa87b0",
+      "contract": "existing actual entry advance with original seconds"
+    },
+    {
+      "address": "00aa88f7",
+      "native": "00aa77b0",
+      "function": "00aa87b0",
+      "contract": "existing timed-owner reload before deletion"
+    },
+    {
+      "address": "00aa890e",
+      "native": "entry+vtable00",
+      "function": "00aa87b0",
+      "contract": "actual existing timed owner deleting profile, flags1"
+    },
+    {
+      "address": "00aa8946",
+      "native": "00aa6a40",
+      "function": "00aa87b0",
+      "contract": "same owner's live hit rectangle"
+    },
+    {
+      "address": "00aa896a",
+      "native": "listener+vtable18",
+      "function": "00aa87b0",
+      "contract": "actual listener owner; same widget and captured bool; dynamic target body not recovered"
+    },
+    {
+      "address": "00aa8a15",
+      "native": "listener+vtable04",
+      "function": "00aa87b0",
+      "contract": "actual current listener and same widget; dynamic target body not recovered"
+    },
+    {
+      "address": "00aa8a5c",
+      "native": "listener+vtable14",
+      "function": "00aa87b0",
+      "contract": "actual current listener and same widget; dynamic target body not recovered"
+    },
+    {
+      "address": "00aa8ace",
+      "native": "listener+vtable0c",
+      "function": "00aa87b0",
+      "contract": "actual current listener and same widget; dynamic target body not recovered"
+    },
+    {
+      "address": "00aa8aeb",
+      "native": "listener+vtable10",
+      "function": "00aa87b0",
+      "contract": "actual reloaded listener and same widget; dynamic target body not recovered"
+    },
+    {
+      "address": "00aa8a36",
+      "native": "mouse+vtable38",
+      "function": "00aa87b0",
+      "resolved_raw_entry": "00a9a380",
+      "contract": "captured actual mouse threshold; compare threshold greater than double-spilled elapsed"
+    },
+    {
+      "address": "00aa8a95",
+      "native": "mouse+vtable38",
+      "function": "00aa87b0",
+      "resolved_raw_entry": "00a9a380",
+      "contract": "same mouse threshold; compare double-spilled elapsed greater than threshold"
+    },
+    {
+      "address": "00aa6a6d",
+      "native": "00aa6750",
+      "function": "00aa6a40",
+      "contract": "existing canonical transform resolved position; helper preserves EDX"
+    },
+    {
+      "address": "00aa6ac2",
+      "native": "00a9e120",
+      "function": "00aa6a40",
+      "profile": "supported non-Text current64",
+      "contract": "actual RET10, four bounds unchanged"
+    },
+    {
+      "address": "00aa6ac2",
+      "native": "00ab6d70",
+      "function": "00aa6a40",
+      "profile": "Text current64",
+      "contract": "actual canonical Text owner alignment, four borrowed float references"
+    }
+  ],
+  "other_call_sites_reviewed": [
+    {
+      "address": "005f2410",
+      "native": "00aa6a40",
+      "function": "005f2290",
+      "contract": "MOV ECX,EDI at 005f240e; same no-argument hit test"
+    },
+    {
+      "address": "00a9d07c",
+      "native": "00aa87b0",
+      "function": "00a9d030",
+      "contract": "original delta from EBP+8 spilled at A9D079; widget ESI"
+    },
+    {
+      "address": "00ab115c",
+      "native": "00aa87b0",
+      "function": "00ab1150",
+      "contract": "original delta spill AB1157; Icon derived tail follows"
+    },
+    {
+      "address": "00aadf4b",
+      "native": "00aa87b0",
+      "function": "00aadf40",
+      "contract": "original delta spill AADF46; Movie derived tail follows"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "AA87B0 is every widget's complete current40",
+      "is": "Profile-gated base current40; Icon AB1150 and other derived profiles require their own tails",
+      "evidence": "D5C500 live word=AB1150; AB115C calls AA87B0 before derived work"
+    },
+    {
+      "was": "AA6A40 pseudocode suggests mixed pointer/float comparisons and two bound arguments",
+      "is": "Four pointer arguments, preserved EDX widget, inclusive ordered x87 rectangle tests",
+      "evidence": "AA6A40 full listing; AA6750 no EDX writes; A9E120 RET10"
+    },
+    {
+      "was": "elapsed timing may be a float subtraction",
+      "is": "x87 subtraction spills to double before threshold getter",
+      "evidence": "AA8A32 and AA8A91 FSTP double ptr [ESP+10h]"
+    }
+  ],
+  "original_state": {
+    "widget": "same GuiWidgetOwner/GuiLayoutWidget",
+    "children": "same owning and transform lists, stable captured-count domain",
+    "timed": "same GuiTimedEntryOwner and physical +88/+8C/+90 backing",
+    "listener": "actual live +DC identity reloaded at each call",
+    "mouse": "same canonical class1 first MouseInputDevice, current_down/previous_down/+238; captured after current18",
+    "clock": "existing fields_7c_80, no copy or new frame clock"
+  },
+  "integration_requirements": [
+    "implemented: one borrowed GuiWidgetFrameRuntime registers with the same GuiWidgetOwnerRuntime",
+    "implemented: owner.update40 dispatch and global destruction preflight; frame update preflight before active borrow",
+    "implemented: standalone contains_pointer current64 owner borrow; nested frame hit test reuses active owner",
+    "required: actual listener subobject owners supply mandatory slot adapters; stable tree and live services",
+    "unimplemented: executable configuration of canonical GUI runtime and native listener body recovery"
+  ],
+  "boundaries": [
+    "unreviewed dynamic listener target bodies remain required dependencies",
+    "Icon and unreviewed derived current40 profiles reject explicitly",
+    "stable canonical tree membership and lifetime required; local checks do not prove whole-tree mutation safety",
+    "callback exception propagates completed partial effects; no native EH continuation/retry/rollback",
+    "foreign/invalid input backend and physical native list corruption excluded",
+    "inherits existing canonical transform, Text and timed-owner domains",
+    "native physical widget/list/vtable/exception ABI not implemented"
+  ],
+  "verification": {
+    "standalone_compile": "PASS MSVC Win32 /std:c++17 /EHsc /W4 /WX /fp:strict",
+    "combined_build": "passed MSVC Win32 Release; 2/2 existing tests; final-library frame fixture passed",
+    "report_calls": "PASS: 15 numeric call rows, 0 failures; 5 resolved indirect rows require separate profile evidence, 8 symbolic rows remain explicit",
+    "fixture": "PASS linked actual parent bsp_core + bsp_lua511 and this new TU: canonical child-before-entry sequence, original delta, skipped child, live timed allocation, listener identity/history reloads, ordered timing/equality/NaN, reentry guard and exception partial stores; synthetic bound listener owners, no native callback-body parity",
+    "native_differential": false,
+    "game_validated": false,
+    "render_validated": false,
+    "ghidra_mutations": "parent defined A9A380; annotations recorded in batch archive"
+  },
+  "fixture_files": {
+    "source": "J:/PROG/battlestations-pacific-decompile-orch5-widget-update/local/gui_frame_probe.cpp",
+    "runtime_source_sha256": "6574c9be9cd50592fbc3ccaa77b882f8d5b42f8de9cac2738f7e4c1c9bf41f48",
+    "manifest": "embedded /MANIFEST:EMBED",
+    "log": "J:/PROG/battlestations-pacific-decompile-orch5-widget-update/local/gui_frame_probe.log",
+    "source_sha256": "e922ced21e4e99914cc6595133fab8fceee36fa044e0fdfb25b9920137647c15",
+    "linked_library_sha256": "302aa2280b95e17b7f9404cc1c26cd6cd8750d8cb9b04256764250da541f0d74",
+    "runner": "J:/PROG/battlestations-pacific-decompile-orch5-widget-update/local/run_gui_frame_probe.ps1"
+  },
+  "parent_validation": {
+    "build_log": "local/orch5-section-frame-point-final-build.log",
+    "build_log_sha256": "f8e9373ee8de71b75ea3368e94fb00def9769a4bade1830495a1c42535cdc9b0",
+    "fixture": {
+      "source": "local/gui_frame_probe.cpp",
+      "source_sha256": "e922ced21e4e99914cc6595133fab8fceee36fa044e0fdfb25b9920137647c15",
+      "log": "local/orch5-final-frame-probe.log",
+      "log_sha256": "924de5b82db64422039f70bf004ffde993771d44e3adbca6de369d39c54535bf",
+      "result": "passed",
+      "scope": "source fixture linked final bsp_core.lib; no original-byte execution"
+    },
+    "batch_report": "reports/orch5_section_frame_light_batch.json",
+    "game_validated": false,
+    "drop_in_abi_compatible": false
+  }
+}

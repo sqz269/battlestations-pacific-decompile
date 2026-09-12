@@ -1,4 +1,6 @@
 #include "bsp/native_particle_model_construction.hpp"
+#include "bsp/native_particle_model_manager.hpp"
+#include "bsp/native_particle_model_lifetime.hpp"
 #include "bsp/gui_text_material.hpp"
 #include "bsp/native_camera_matrix_copy.hpp"
 #include "bsp/native_particle_model_pool_allocate.hpp"
@@ -148,12 +150,6 @@ void finish_mesh(NativeMeshStorage*& current_mesh, NativeMeshSectionStorage& sec
     append_native_mesh_draw_section_00b73c60(required(current_mesh), &section);
     release_native_render_actual_owner(owners, &section);
 }
-void destroy_emitter_backing(NativeRenderPointerArrayStorage& array) noexcept {
-    // AF6B70 -> AF6180(0), then BF6989; raw cells are not released.
-    while (array.count_04 > 0) --array.count_04;
-    array.count_04 = 0;
-    singleton_lifetime_free(array.data_00);
-}
 } // namespace
 
 NativeParticleEmitterStorage* construct_native_particle_emitter_00aff5f0(
@@ -203,8 +199,8 @@ NativeParticleModelArraysStorage* construct_native_particle_model_arrays_00afd2e
         arrays->word_14 = 0;
     } catch (...) {
         try {
-            callees.call_00afd1e0(arrays->records_0c);
-            callees.call_00afd0f0(arrays->bytes_04);
+            destroy_native_particle_model_record_array_00afd1e0(arrays->records_0c);
+            destroy_native_particle_model_byte_array_00afd0f0(arrays->bytes_04);
         } catch (...) { std::terminate(); }
         throw;
     }
@@ -217,7 +213,8 @@ NativeNodeStorage* construct_native_particle_model_00af74a0(
         &base.environment.retained_owners != &access.materials.retained_owners ||
         &access.meshes.retained_owners != &access.materials.retained_owners ||
         &access.sections.retained_owners != &access.materials.retained_owners ||
-        &access.materials.parameter_names != &access.parameters.parameter_names)
+        &access.materials.parameter_names != &access.parameters.parameter_names ||
+        base.environment.actual_names != &access.parameters.parameter_names)
         throw std::invalid_argument("particle model requires a prepared actual slot and one canonical ownership domain");
     auto& node = base.storage.node;
     auto& tail = *place_preserving<NativeParticleModelTailStorage>(
@@ -326,10 +323,10 @@ NativeNodeStorage* construct_native_particle_model_00af74a0(
             access.callees.call_007099c0(*child, 0x1b);
             child = reinterpret_cast<NativeNodeStorage*>(child->next_sibling_3c);
         }
-        access.callees.call_00af0950(access.manager_00f8c274, node);
+        register_native_particle_model_00af0950(access.manager_00f8c274, &node);
     } catch (...) {
         try {
-            destroy_emitter_backing(tail.emitters_194);
+            destroy_native_particle_emitter_pointers_00af6b70(tail.emitters_194);
             destroy_native_model_00b750c0(base);
         } catch (...) { std::terminate(); }
         access.callees.retire_failed_particle_profile(base);

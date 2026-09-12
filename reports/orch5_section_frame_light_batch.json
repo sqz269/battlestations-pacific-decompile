@@ -1,0 +1,317 @@
+{
+  "packet": "orch5_section_frame_light_batch",
+  "base_commit": "9740f2db",
+  "worker_commits": [
+    "7f8e79f7",
+    "ff418124",
+    "7355365f",
+    "2a48a6c5",
+    "f752e836"
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "documents": [
+    "docs/GUI_WIDGET_BASE_LIFETIME.md",
+    "docs/GUI_WIDGET_FRAME_RUNTIME.md",
+    "docs/NATIVE_POINT_LIGHT_OWNER.md",
+    "docs/GUI_SECTION_RUNTIME.md"
+  ],
+  "reports": [
+    "reports/gui_widget_base_lifetime.json",
+    "reports/gui_widget_frame_runtime.json",
+    "reports/native_point_light_owner.json",
+    "reports/gui_section_runtime.json"
+  ],
+  "profile_report": "reports/orch5_section_profile_integration.json",
+  "review": {
+    "base_group_lifetime": "widget_update independently reviewed shared ordering and frame preflight; root corrected preflight before active frame",
+    "point_owner": "widget_update reviewed actual pool/reference/backlink and Directional shared adapter; no supported-domain issue found",
+    "section": "point_owner reviewed numeric/staged owner composition; section_owner reviewed parent guards and found factory gate, fixed by parent",
+    "frame_integration": "widget_update reviewed final binding, destructor, frame and standalone hit guards; no normal-path issue found"
+  },
+  "build": {
+    "result": "passed",
+    "target": "MSVC Win32 Release",
+    "existing_tests": "2/2 passed",
+    "log": "local/orch5-section-frame-point-final-build.log",
+    "log_sha256": "f8e9373ee8de71b75ea3368e94fb00def9769a4bade1830495a1c42535cdc9b0"
+  },
+  "fixtures": {
+    "base": {
+      "source": "local/gui_widget_base_probe.cpp",
+      "source_sha256": "a2d862f8e97690a5bf2e91fdc1172c8f8ba6f5a1f3fbb065e1f88f38797d855c",
+      "log": "local/orch5-final-base-probe.log",
+      "log_sha256": "6498a83341b5b5bd4d78ab7296faa0c136ab5294e687ba340e7fc69a6e692aac",
+      "result": "passed",
+      "scope": "source fixture linked final bsp_core.lib; no original-byte execution"
+    },
+    "frame": {
+      "source": "local/gui_frame_probe.cpp",
+      "source_sha256": "e922ced21e4e99914cc6595133fab8fceee36fa044e0fdfb25b9920137647c15",
+      "log": "local/orch5-final-frame-probe.log",
+      "log_sha256": "924de5b82db64422039f70bf004ffde993771d44e3adbca6de369d39c54535bf",
+      "result": "passed",
+      "scope": "source fixture linked final bsp_core.lib; no original-byte execution"
+    },
+    "point": {
+      "source": "local/point_owner_probe.cpp",
+      "source_sha256": "124f85e6135a257dba61e02437c40dcc6ac6b8546e0651cfeba420c66342bb6f",
+      "log": "local/orch5-final-point-probe.log",
+      "log_sha256": "35ffacb45317ee26d7c0500cb694827cc3397126c4d6a3f9db2b0caf678b3348",
+      "result": "passed",
+      "scope": "source fixture linked final bsp_core.lib; no original-byte execution"
+    },
+    "section_numeric": {
+      "source": "local/section_kernel_probe.cpp",
+      "source_sha256": "69736e03f44983d625897f370f841fbec9b907c1cf34460b440b2744523f001b",
+      "log": "local/orch5-final-section-numeric-probe.log",
+      "log_sha256": "b89f691d4f1bebc76c8608eeb9b693f71348001996387152adc4cae8eff0a9fe",
+      "result": "passed",
+      "scope": "exact current staged numeric kernel; no full owner/renderer fixture"
+    }
+  },
+  "source_sha256_lf": {
+    "cmake/startup.cmake": "cec5dcc71482e5b01be6a23e580fbaf291de3bb80dc0cfde754c062b4aa92172",
+    "include/bsp/directional_light_owner.hpp": "afa436a30516dcb1c66e7ca2058c0bf31a5e8910207fa1a13bdcc07ddff34bce",
+    "include/bsp/gui_material_binding.hpp": "9d6a380b2ea93fdf8910fa73733229c2a3bac0528f669bf8e655fc3e8f0cdafd",
+    "include/bsp/gui_section_runtime.hpp": "405b8395a28e7d432ec3f2a755c93d0fa1453de3ead780917286b9f8c6dba138",
+    "include/bsp/gui_text_child_lifetime.hpp": "e9f65b47da68105fad0281a6018ba9be348f8dfb17d94cc86eaf05d669e00ced",
+    "include/bsp/gui_type_dispatch.hpp": "8fe56312b5e6574b44dfd0cbf4eb6fdaf3193fa8ca9f5591f781e62a88c49499",
+    "include/bsp/gui_widget_base_lifetime.hpp": "1290fe07948c9946c09ef1ef19f5a9b93bb03ada8be0be304dfc26a078ab9d52",
+    "include/bsp/gui_widget_frame_runtime.hpp": "8cb8682cc80c41e10ecc035ff612b0b73b622cdba8a3f028bc7f67a91ef5a822",
+    "include/bsp/gui_widget_owner.hpp": "0fe09fec526cf557ffa84e6f6a4fa780b83082eec8526093d95dac449c66e8cc",
+    "include/bsp/native_point_light_owner.hpp": "45d721d47600268c16877f4f8b96e961abe41e97e16a9fe68f8d558a543d8dcc",
+    "include/bsp/native_point_light_pool.hpp": "2d7a53ed837c2832866461b2e891f1cb86af6ccc06b842124957a3c4b0696233",
+    "src/directional_light_owner.cpp": "ec841412e352009e5e0c02bab8bab75a928382fb0a568dc47aad6944504e4647",
+    "src/gui_material_binding.cpp": "de3312f993d3180fb7023c9869908a74134370c430bdb8844e20b1cadcac15e2",
+    "src/gui_section_runtime.cpp": "2f934834a43e3e03521ec41c42052ede28f406c74dff4aabaf1d128cbd400ae6",
+    "src/gui_text_child_lifetime.cpp": "1367f1d70595f33a187601752e286b4b306a0c86431751ad8e6a03c5bab50fcc",
+    "src/gui_timed_entry_types.cpp": "dd235a13bd9f26276a40d33c0c6517b2641f59004f45c0ee4c16d0aeebca071c",
+    "src/gui_type_dispatch.cpp": "ea1b584efae298a91a16d43a0b3fa8c5f7046b38d2c7c85291f2289ca0676ef5",
+    "src/gui_widget_base_lifetime.cpp": "24abae2f71a1e5945b02f8f943d370fbb43235ac6529142497f149f6fc56ebf0",
+    "src/gui_widget_clip_refresh.cpp": "6e7cf72ad36257b82e03e51289728faf6b0531661f44d16ce67363aadb034354",
+    "src/gui_widget_color_dispatch.cpp": "652c80178c334832f08085d4586c6843e5eb82d8c9eba5135d7a6553d6d11c87",
+    "src/gui_widget_frame_runtime.cpp": "b4e324018fe896619828419b7929ab1c6250e5d76c0c93dd6d8d2fb76e1395e9",
+    "src/gui_widget_owner.cpp": "d1b7550c36a1c5558d9f730a34f46ca300c3e1caa4ea7954cd65ea2e727111c5",
+    "src/native_point_light_owner.cpp": "649741e9b5357b06694027d398a45f4ba698f0cb0046ebcf9a1c8f24c7ef6c27",
+    "src/native_point_light_pool.cpp": "363e1f2220577bea8e007ec09c410d5dbe687d068feed325a375659f818b555f"
+  },
+  "annotation_addresses": [
+    "00aa9730",
+    "00aa8320",
+    "00ac73e0",
+    "00ac7260",
+    "00ab8ee0",
+    "00ab6a30",
+    "00a9e070",
+    "00aa87b0",
+    "00aa6a40",
+    "00a9a380",
+    "00a9e120",
+    "00abe6e0",
+    "00abe7b0",
+    "00abe960",
+    "00abf420",
+    "00abeda0",
+    "00abf770",
+    "00abe630",
+    "00b7c710",
+    "00b7c770",
+    "00b7c850",
+    "00b7c740",
+    "00cd81a0",
+    "00b7abd0",
+    "00b7b690",
+    "00b7b810",
+    "00b7b1d0",
+    "00b7b770",
+    "00b7b110",
+    "00b7bd30",
+    "00b7b600",
+    "00cd8060",
+    "00ce0ea0",
+    "00b7c4c0",
+    "00b7c5b0",
+    "00aa6870",
+    "00aa68f0",
+    "00aa6980",
+    "00aaa3e0",
+    "00a9e110"
+  ],
+  "annotation_archive": "reports/orch5_section_frame_light_annotations.json",
+  "definitions_and_repairs": [
+    "reports/orch5_section_definitions.json",
+    "reports/orch5_mouse_getter_definition.json",
+    "reports/orch5_point_owner_definitions.json",
+    "reports/orch5_point_owner_flow_repairs.json"
+  ],
+  "limits": [
+    "new C++ interfaces are not native ABI replacements",
+    "game executable does not configure canonical GUI runtime",
+    "Section full mapped owner/renderer runtime untested; property/texture load, copy and native pool/destruction remain open",
+    "Icon40 and concrete native listener bodies remain unresolved",
+    "no new original-byte differential or visual validation",
+    "source callbacks and valid storage must satisfy documented lifetime contracts; no exception rollback/replay"
+  ],
+  "new_permanent_tests": 0,
+  "game_validated": false,
+  "goal_complete": false,
+  "call_verification": {
+    "rows": [
+      {
+        "report": "reports/gui_widget_base_lifetime.json",
+        "numeric_rows": 18,
+        "failures": 0
+      },
+      {
+        "report": "reports/gui_widget_frame_runtime.json",
+        "numeric_rows": 15,
+        "failures": 0
+      },
+      {
+        "report": "reports/native_point_light_owner.json",
+        "numeric_rows": 29,
+        "failures": 0
+      },
+      {
+        "report": "reports/gui_section_runtime.json",
+        "numeric_rows": 37,
+        "failures": 0
+      }
+    ],
+    "total_numeric_rows": 99,
+    "resolved_indirect_rows": 8,
+    "log": "local/orch5-section-frame-light-call-verification.log",
+    "sha256": "1f79e7c9a9b817d0158402927a50e6856c4e3e6f21c5c23049b8a73e5fde6329",
+    "scope": "live stored body and direct instruction targets; resolved indirect rows still require separately reviewed profile evidence",
+    "symbolic_rows_not_mechanically_checked": 45
+  },
+  "integration": {
+    "tested_code_commit": "6dd1441418c652038a1394d3ec083638f6304692",
+    "build": "MSVC Win32 Release passed; 2/2 existing tests passed",
+    "tool": "tools/integrate_workers.py agent/orch5-20260911 --no-push",
+    "log": "local/orch5-section-frame-light-integration.log",
+    "log_sha256": "102c7364b57d9be747bae893eccb4002aa536ad28b6314375fe9c4c5412ee578",
+    "main_advanced_during_build_retry": false,
+    "mechanical_conflicts": [
+      "cmake/startup.cmake",
+      "config/parallel_work.json"
+    ],
+    "reviewed_implementation_sources_unchanged": true,
+    "source_sha256_lf": {
+      "cmake/startup.cmake": "51028073f424db1d0e6e1a1d838cf49ce241eaf6a21759106dd8938e97275fe1",
+      "include/bsp/directional_light_owner.hpp": "afa436a30516dcb1c66e7ca2058c0bf31a5e8910207fa1a13bdcc07ddff34bce",
+      "include/bsp/gui_material_binding.hpp": "9d6a380b2ea93fdf8910fa73733229c2a3bac0528f669bf8e655fc3e8f0cdafd",
+      "include/bsp/gui_section_runtime.hpp": "405b8395a28e7d432ec3f2a755c93d0fa1453de3ead780917286b9f8c6dba138",
+      "include/bsp/gui_text_child_lifetime.hpp": "e9f65b47da68105fad0281a6018ba9be348f8dfb17d94cc86eaf05d669e00ced",
+      "include/bsp/gui_type_dispatch.hpp": "8fe56312b5e6574b44dfd0cbf4eb6fdaf3193fa8ca9f5591f781e62a88c49499",
+      "include/bsp/gui_widget_base_lifetime.hpp": "1290fe07948c9946c09ef1ef19f5a9b93bb03ada8be0be304dfc26a078ab9d52",
+      "include/bsp/gui_widget_frame_runtime.hpp": "8cb8682cc80c41e10ecc035ff612b0b73b622cdba8a3f028bc7f67a91ef5a822",
+      "include/bsp/gui_widget_owner.hpp": "0fe09fec526cf557ffa84e6f6a4fa780b83082eec8526093d95dac449c66e8cc",
+      "include/bsp/native_point_light_owner.hpp": "45d721d47600268c16877f4f8b96e961abe41e97e16a9fe68f8d558a543d8dcc",
+      "include/bsp/native_point_light_pool.hpp": "2d7a53ed837c2832866461b2e891f1cb86af6ccc06b842124957a3c4b0696233",
+      "src/directional_light_owner.cpp": "ec841412e352009e5e0c02bab8bab75a928382fb0a568dc47aad6944504e4647",
+      "src/gui_material_binding.cpp": "de3312f993d3180fb7023c9869908a74134370c430bdb8844e20b1cadcac15e2",
+      "src/gui_section_runtime.cpp": "2f934834a43e3e03521ec41c42052ede28f406c74dff4aabaf1d128cbd400ae6",
+      "src/gui_text_child_lifetime.cpp": "1367f1d70595f33a187601752e286b4b306a0c86431751ad8e6a03c5bab50fcc",
+      "src/gui_timed_entry_types.cpp": "dd235a13bd9f26276a40d33c0c6517b2641f59004f45c0ee4c16d0aeebca071c",
+      "src/gui_type_dispatch.cpp": "ea1b584efae298a91a16d43a0b3fa8c5f7046b38d2c7c85291f2289ca0676ef5",
+      "src/gui_widget_base_lifetime.cpp": "24abae2f71a1e5945b02f8f943d370fbb43235ac6529142497f149f6fc56ebf0",
+      "src/gui_widget_clip_refresh.cpp": "6e7cf72ad36257b82e03e51289728faf6b0531661f44d16ce67363aadb034354",
+      "src/gui_widget_color_dispatch.cpp": "652c80178c334832f08085d4586c6843e5eb82d8c9eba5135d7a6553d6d11c87",
+      "src/gui_widget_frame_runtime.cpp": "b4e324018fe896619828419b7929ab1c6250e5d76c0c93dd6d8d2fb76e1395e9",
+      "src/gui_widget_owner.cpp": "d1b7550c36a1c5558d9f730a34f46ca300c3e1caa4ea7954cd65ea2e727111c5",
+      "src/native_point_light_owner.cpp": "649741e9b5357b06694027d398a45f4ba698f0cb0046ebcf9a1c8f24c7ef6c27",
+      "src/native_point_light_pool.cpp": "363e1f2220577bea8e007ec09c410d5dbe687d068feed325a375659f818b555f"
+    },
+    "post_merge_fixtures": {
+      "base": {
+        "result": "passed",
+        "log": "local/orch5-integrated-base-probe.log",
+        "sha256": "6498a83341b5b5bd4d78ab7296faa0c136ab5294e687ba340e7fc69a6e692aac",
+        "link": "fresh probe against merged bsp_core.lib; source fixture, not original-byte execution"
+      },
+      "frame": {
+        "result": "passed",
+        "log": "local/orch5-integrated-frame-probe.log",
+        "sha256": "924de5b82db64422039f70bf004ffde993771d44e3adbca6de369d39c54535bf",
+        "link": "fresh probe against merged bsp_core.lib; source fixture, not original-byte execution"
+      },
+      "point": {
+        "result": "passed",
+        "log": "local/orch5-integrated-point-probe.log",
+        "sha256": "35ffacb45317ee26d7c0500cb694827cc3397126c4d6a3f9db2b0caf678b3348",
+        "link": "fresh probe against merged bsp_core.lib; source fixture, not original-byte execution"
+      }
+    },
+    "runtime_limit": "no game/renderer execution; Section numeric fixture remains the exact-kernel test recorded before integration"
+  },
+  "follow_up_candidates": [
+    {
+      "packet": "Section property and texture ownership",
+      "addresses": [
+        "00ac0280",
+        "00abf6f0",
+        "00aa2660"
+      ],
+      "source_ready": false,
+      "gates": [
+        "actual retained texture and same atlas outputs",
+        "replacement release order and exception ownership"
+      ]
+    },
+    {
+      "packet": "Section copy",
+      "addresses": [
+        "00abf5b0",
+        "00aa9520"
+      ],
+      "source_ready": false,
+      "gates": [
+        "canonical base widget copy",
+        "texture/string lifetime and unwritten segment128"
+      ]
+    },
+    {
+      "packet": "Icon current40 tail",
+      "addresses": [
+        "00ab1150"
+      ],
+      "source_ready": false,
+      "gates": [
+        "128/12c/130 field producers",
+        "actual current44/current88 bodies and callback contracts"
+      ]
+    },
+    {
+      "packet": "Concrete widget listener owners",
+      "addresses": [
+        "00aa6bc0",
+        "005861b0"
+      ],
+      "source_ready": false,
+      "gates": [
+        "screen+40 actual table",
+        "adjusted-this and widget arguments",
+        "resolved concrete handlers"
+      ]
+    },
+    {
+      "packet": "PointLight source Model provider",
+      "addresses": [
+        "008740e0",
+        "00af90a0",
+        "00b08f60",
+        "00b0b6a0",
+        "00bc0510"
+      ],
+      "source_ready": false,
+      "gates": [
+        "prove actual Text-provider route",
+        "shared scene/link/destruction domains",
+        "real light references and render-value producers",
+        "node-first and light-first teardown"
+      ]
+    }
+  ]
+}

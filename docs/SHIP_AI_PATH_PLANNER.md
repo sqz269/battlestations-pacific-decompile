@@ -305,3 +305,21 @@ lies inside `009D8CE0`'s body. The search itself is a lazy binary expansion (`00
 graph, `009E3330` splits the first unproved edge on the cheapest route, `009D5A20` asks whether a
 resolved route exists, `009D9550` prunes forks, `009D96A0` smooths corners), four ticks on an open
 sea and usable after two.
+
+## Correction from docs/AVOID_ZONE_BOUNDARY.md
+
+For an outside point, `0041AEA0` subtracts the closest segment point from
+the query (`0041B09B-0041B0AB`) and normalizes that vector through `00419260`.
+`0041B840` then subtracts this direction times `(distance + push)` from the
+query (`0041B8BA-0041B8F3`). A positive push therefore continues toward and
+past that closest boundary point; it does not increase outside clearance.
+The inside case returns distance zero, and `0041B840` returns the original
+query when a newly best distance is nonpositive (`0041B8B1-0041B8B4`,
+`0041B941-0041B957`). `docs/AVOID_ZONE_BOUNDARY.md` distinguishes these
+contracts and the remaining injected geometry dependencies.
+
+The concrete game host inspected for this batch still returned the query
+unchanged from `nearest_zone_boundary_0041b840` and supplied a zero zone
+group in `src/game_hosts_ship_ai.cpp`. Reconstruction of the geometry alone
+does not establish that the executable uses it or that in-game avoidance
+has been validated.

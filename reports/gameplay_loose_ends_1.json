@@ -1,0 +1,199 @@
+{
+  "packet": "cc2_loose_ends_1",
+  "owner": "agent/cc2-loose-ends",
+  "document": "docs/GAMEPLAY_LOOSE_ENDS_1.md",
+  "ghidra": "read-only: no renames, comments, prototypes, function creation or saves",
+  "summary": "Five producer/consumer hunts. 1: of the three unit-owned pointers, unit+6DCh is released asynchronously by the tick node's sub-node sweeper after a retire flag, unit+360h is released by the unit class's own vtable slot +34Ch for eleven classes but not the destroyer's, and unit+738h leaks. 2: [[game+19CCh]+13Ch] is not a separate world list but the head of the per-class-id list for class id 24, and plane squadrons are pushed onto it by the squadron's +130h override. 3: the blast accumulator at unit+460h+cat*4 has no live reader; its only two readers are unreferenced accessors. 4: nothing inserts into the entity->int map at manager+1488h, and achievement row +44h is proven to be the Params column from the producer. 5: player+9h has no writer anywhere; it is zero-initialised with the 0x71A0-byte game block and stays 0.",
+  "method": "Every hunt began with a linear Capstone sweep of the shipped .text on disk (local/scan_disp.py, local/scan_regex.py) because ghidra xrefs under-reports data references and immediates. Direct call sites to addresses Ghidra has no function for were found by scanning for E8/E9 rel32 encodings (local/find_calls.py); absolute references by scanning .text/.rdata/.data for the dword (local/find_dword.py).",
+
+  "answers": [
+    {
+      "hunt": 1,
+      "question": "Does anything outside the release chain delete the weapon director at unit+738h, the gunnery pass at unit+6DCh or the 1ACh damage-state instance at unit+360h?",
+      "answer": "Two of the three are released; the weapon director leaks. unit+6DCh is retired with subnode->vtable[10h]() and then unlinked and deleted by BSP_TickElement_RunSubNodes on the owning node's next tick. unit+360h is deleted by the unit class's own slot +34Ch implementation FUN_008797b0, which eleven vtables install and which the destroyer's level-6 table replaces with FUN_006e1860, a body that never touches +360h. unit+738h has exactly one writer in .text, no site that nulls it, and is never enrolled as a tick sub-node, so nothing can reach its deleting destructor.",
+      "coverage": "complete for the release question; the unit-destructor-vs-sweeper race window is contract: unread"
+    },
+    {
+      "hunt": 2,
+      "question": "What inserts into the world list at [[game+19CCh]+13Ch]?",
+      "answer": "The question is mis-framed by the offset: registry+13Ch is the head dword of the per-class-id list triple for class id 24, because the triples are {count, head, tail} at registry+18h+id*0Ch and 0x13C = 0x18 + 24*0xC + 4. The producer is the entity virtual at vtable slot +130h, 'register in the world's class-id lists'. The plane squadron's override FUN_007f10b0 pushes the squadron onto ids 2 and 24 with ADD ECX,0x30 and ADD ECX,0x138 through BSP_UnitList_PushBack. So plane squadrons are what is on that list, added when the squadron registers with the world. No instruction in .text writes registry+13Ch by displacement, which is why the earlier scan found nothing: the insert reaches the triple with an immediate ADD, not a displacement.",
+      "coverage": "complete"
+    },
+    {
+      "hunt": 3,
+      "question": "Who reads the blast accumulator at unit+460h + category*4 written by 00956C20?",
+      "answer": "Nothing live. The category count is twelve (00956EC0 CMP ESI,0xC). The only indexed accesses in .text are 00956C20's own zero at 00956D6C and accumulation at 00956E94/00956E9B, plus 009F9BE4 inside the accessor at 009F9BE0. That accessor and its sibling 009F9BF0 (which sums categories 1, 5 and 6) have zero absolute occurrences in the image and zero E8/E9 call sites, so both are dead out-of-line copies. The sibling range array unit+430h+cat*4 does have two live indexed readers (00863A34, 0095EBC4), which is the control that the scan form works.",
+      "coverage": "partial: the indexed arm is complete; a reader that inlined a constant category would show as a fixed displacement in 0x460..0x48C, a block shared by dozens of unrelated classes (about 200 float accesses), and those were not resolved per site"
+    },
+    {
+      "hunt": 4,
+      "question": "What inserts into the entity -> int map at manager+1488h, and is achievement row +44h really Params?",
+      "answer": "Nothing inserts. A complete .text sweep for 0x1488 returns nine instructions; four compute the manager's map address and they are construction (0091D712), an inlined std::map::clear (009169B1 in BSP_MissionPlayerRecords_Reset), destruction (0091CCFF) and the find at 0091BE18. Two more belong to an unrelated class and three are library stack frames. So _Mysize at map+8h is 0 for the process and the find at 0091BE29/0091BE3F always misses. Row +44h is the Params column, now proven from the producer: FUN_006b9450's loop at 006B9BA0..006B9C49 pushes the literal string Params (00CF8530), subscripts it by EDI = 1..21 through BSP_LuaObject_GetByIndex, parses each with BSP_LuaReference_GetIntegerOrDefault and push_backs into the vector at row+44h, substituting 0 when index 1 is absent.",
+      "coverage": "complete"
+    },
+    {
+      "hunt": 5,
+      "question": "Is the participant record's gate byte at player+9h ever non-zero in a single-player mission?",
+      "answer": "No, and it is never non-zero in any mode. Packet cc2_unit_destructor_levels had already scanned for byte stores to [reg+9h] and found none on a record; what this hunt adds is that none of the three non-obvious writers exists and that the zero now has a provenance. The setter BSP_ParticipantRecord_SetGateByte9 at 004B5680 is compiled but unreferenced: no absolute occurrence in the image and no E8/E9 call site, so every call was inlined. All fifty MOV byte ptr [reg+9] accesses below 00520000 were examined and none has a record as its base; the two that look like it, 004DB143 and 004DB17E in BSP_Game_TogglePauseMenu, act on [[00E198C4]+A8h], and 00E198C4 is a menu-module object written at 0068CCFE, not the game singleton at 00E188A8. None of the three non-obvious writers exists: no REP MOVSD or memcpy of a 0x118 record, the record constructor 004D6BA0 writes eighteen other fields and never +8h or +9h, and BSP_Game_ClaimParticipantRecord writes +Bh, +8h, +19h, +50h, +58h and +78h only. The zero comes from BSP_Application_Initialize, which allocates the 0x71A0-byte game object and memsets it whole.",
+      "coverage": "complete"
+    }
+  ],
+
+  "host_steps": [
+    {"address": "00810f85", "native": "00bf681b", "function": "00810f60", "step": "operator_new(250h) for the weapon director"},
+    {"address": "00810fa0", "native": "008366d0", "function": "00810f60", "step": "BSP_WeaponDirector_Construct(block)(unit); the result is stored at unit+738h by 00810FA9, the only such store in .text"},
+    {"address": "00810e23", "native": "00bf681b", "function": "00810dd0", "step": "operator_new(558h) for the unit gunnery pass"},
+    {"address": "00810e3d", "native": "00864580", "function": "00810dd0", "step": "BSP_UnitGunneryAi_Construct(block); the result is stored at unit+6DCh by 00810E46"},
+    {"address": "00810e62", "via": "gunneryPass->vtable[+4h] = 00864bd0", "function": "00810dd0", "step": "attach the new pass to the unit's tick element node, ECX = unit+310h from 00810E51"},
+    {"address": "00864bd8", "native": "008fbc80", "function": "00864bd0", "step": "BSP_GunBot_Attach(node)"},
+    {"address": "008fbc8b", "native": "00876020", "function": "008fbc80", "step": "link the sub-node into the tick node's sub-list"},
+    {"address": "007b95c4", "via": "subnode->vtable[+10h] = 0071c4a0", "function": "007b9590", "step": "retire the gunnery pass: the stub sets subnode+10h = 1 and subnode+11h = 0; 007B95C6 then nulls unit+6DCh"},
+    {"address": "007bcb1a", "via": "subnode->vtable[+10h] = 0071c4a0", "function": "007bcaa0", "step": "the same retire-and-drop, in a function Ghidra has no record of (007BCAA0-007BCB27)"},
+    {"address": "008759e6", "native": "00875280", "function": "008759b0", "step": "the removal path taken when subnode+10h is set, entered from 008759E1"},
+    {"address": "00875a5a", "via": "subnode->vtable[0] = 00864660 for the gunnery pass", "function": "008759b0", "step": "PUSH 1 then the indirect call: the scalar deleting destructor, which frees the 558h block through operator delete at 00BF65AC"},
+    {"address": "008797f2", "via": "instance->vtable[+4h] = 00712fd0 on the 00CFD7B8 table", "function": "008797b0", "step": "PUSH 1 then the deleting destructor of the 1ACh damage-state instance; 008797F4 nulls unit+360h"},
+
+    {"address": "004de656", "native": "00bf55be", "function": "004de610", "step": "allocate the 4BCh-byte world registry"},
+    {"address": "004de664", "native": "00bf79f0", "function": "004de610", "step": "memset(registry, 0, 4BCh), so every class-id list head starts at 0"},
+    {"address": "004de67d", "native": "004cb030", "function": "004de610", "step": "BSP_World_Construct; the result is stored at game+19CCh by 004DE696"},
+    {"address": "004cb076", "native": "00bf7cd1", "function": "004cb030", "step": "vector constructor iterator over the 97 class-id list triples at registry+18h, stride 0Ch, element ctor 004B7EC0"},
+    {"address": "007f10b3", "native": "00928560", "function": "007f10b0", "step": "BSP_GameEntity_RegisterInParentEntityList, the first act of the squadron's +130h override"},
+    {"address": "007f10bf", "native": "00484540", "function": "007f10b0", "step": "BSP_UnitList_PushBack([squadron+30h] + 30h, squadron): class id 2"},
+    {"address": "007f10ce", "native": "00484540", "function": "007f10b0", "step": "BSP_UnitList_PushBack([squadron+30h] + 138h, squadron): class id 24, the list [[game+19CCh]+13Ch]"},
+    {"address": "006fe623", "native": "00928560", "function": "006fe620", "step": "the unit's +130h override does the same first step"},
+    {"address": "006fe62f", "native": "00484540", "function": "006fe620", "step": "class id 2 (ADD ECX,0x30)"},
+    {"address": "006fe63b", "native": "00484540", "function": "006fe620", "step": "class id 4 (ADD ECX,0x48)"},
+    {"address": "006fe647", "native": "00484540", "function": "006fe620", "step": "class id 5 (ADD ECX,0x54)"},
+    {"address": "006fe653", "native": "00484540", "function": "006fe620", "step": "class id 6 (ADD ECX,0x60)"},
+    {"address": "006fe65f", "native": "00484540", "function": "006fe620", "step": "class id 7 (ADD ECX,0x6C)"},
+
+    {"address": "0091d71f", "native": "0063b110", "function": "0091d640", "step": "the map at manager+1488h is constructed: map+4h receives the head node, whose +11h is cleared and whose three links point at itself"},
+    {"address": "009169c6", "native": "0063ad70", "function": "00916980", "step": "the inlined std::map::clear's per-node destroy"},
+    {"address": "009169ce", "native": "00bf65ac", "function": "00916980", "step": "operator delete per node; 009169E6 then sets _Mysize (map+8h) to 0"},
+
+    {"address": "006b9bb1", "native": "00b67800", "function": "006b9450", "step": "BSP_LuaObject_GetByName(\"Params\", 00CF8530) at the top of the row's column loop"},
+    {"address": "006b9bc6", "native": "00b67720", "function": "006b9450", "step": "BSP_LuaObject_GetByIndex(value, EDI) with EDI = 1..21, Lua's one-based index"},
+    {"address": "006b9c1d", "native": "00b66380", "function": "006b9450", "step": "BSP_LuaReference_GetIntegerOrDefault on that element"},
+    {"address": "006b9c3e", "native": "00442190", "function": "006b9450", "step": "push_back into the vector at row+44h, ECX = ESI+44h from 006B9C3B"},
+
+    {"address": "004ddd6c", "native": "00bf7cd1", "function": "004ddb90", "step": "vector constructor iterator over the eight 0x118-byte participant records at game+748h, element ctor 004D6BA0, dtor 004CB2F0"},
+    {"address": "004dd412", "callee": "00bf7c6e", "function": "none", "step": "the matching vector destructor iterator over the same array, with PUSH 0x4CB2F0 / PUSH 8 / PUSH 0x118 / LEA EAX,[ESI+0x748] at 004DD3D7-004DD40C. No `native` field: the site lies in no Ghidra function, so tools/verify_report_calls.py cannot check it. See boundary_problems."},
+    {"address": "0073e1a1", "native": "004ddb90", "function": "0073d410", "step": "the game object's constructor, run on the block allocated and cleared five instructions earlier"}
+  ],
+
+  "routines": [
+    {"address": "007b9590", "name": "BSP_UnitInstance_RetireAiSubNodes", "abi": "__thiscall void(Unit* this)", "body": "007b9590-007b95d7", "coverage": "complete", "note": "clears unit+520h, then retires and drops unit+DF4h and unit+6DCh through vtable slot +10h, then tail-calls 00951FB0 which clears [this+4A4h] and tail-calls 00779AF0 BSP_MissionEntity_OnKilledPlayerUnit with the same this. Installed in nine vtables (00D000F0, 00D00388, 00D05FA0, 00D066B8, 00D069A0, 00D0BB00, 00D19DA8, 00D1A080, 00D1A358); the slot index is not settled."},
+    {"address": "007bcaa0", "name": "aircraft_deactivate_sibling_007bcaa0", "abi": "__thiscall void(Unit* this)", "body": "007bcaa0-007bcb27", "coverage": "partial: the +DF4h/+6DCh tail (007BCAF0-007BCB27) was read; 007BCAA0-007BCAEF, which calls 00959450 and 007F3970 and writes [this+C14h] and [this+748h], was not", "note": "no Ghidra function; sits at 00D000EC, the slot before 007B9590"},
+    {"address": "0071c4a0", "name": "gun_bot_retire_stub_0071c4a0", "abi": "__thiscall void(SubNode* this)", "body": "0071c4a0-0071c4a8", "coverage": "complete", "note": "the whole body is two byte stores and a RET; sets the retire flag the tick sweeper tests"},
+    {"address": "008759b0", "name": "BSP_TickElement_RunSubNodes", "abi": "__thiscall void(Node* this)(float dt)", "body": "008759b0-00875a70", "coverage": "partial: the tick gate at 008759C4 and the whole removal path 008759E1-00875A69 were read for this packet; the pre-loop setup and anything after 00875A6F were not", "note": "this is the deleter of retired gun-bot-family sub-nodes"},
+    {"address": "008797b0", "name": "BSP_UnitInstance_ReleaseDamageStateInstance", "abi": "__thiscall void(Unit* this)", "body": "008797b0-00879805", "coverage": "partial: 008797E1-008797FE, the +360h release, and the 009277F0 tail jump were read; the 008797B3-008797DC prologue (two vtable[+18h] calls compared against [00E188DC], then 00878F80) was not", "note": "vtable slot +34Ch in eleven tables; also tail-called from 0095D487"},
+    {"address": "006e1860", "name": "BSP_MDestroyer_ReleaseSubObjects", "abi": "__thiscall void(Unit* this)", "body": "006e1860-006e1925", "coverage": "complete", "note": "the destroyer's slot +34Ch override: releases +464h through vtable[+4h](1), and +334h and +338h through an [00CE2220] refcount decrement then slot 0; never touches +360h; tail-jumps to 009277F0 like 008797b0"},
+    {"address": "004b79f0", "name": "world_class_list_head_getter_004b79f0", "abi": "__thiscall void*(void* this)", "body": "004b79f0-004b79f6", "coverage": "complete", "note": "LEA EAX,[ECX+13Ch]; RET. Dead code: no absolute reference and no E8/E9 call site"},
+    {"address": "004b7ec0", "name": "world_class_list_entry_ctor_004b7ec0", "abi": "__thiscall void*(Triple* this)", "body": "004b7ec0-004b7ecc", "coverage": "complete", "note": "zeroes three dwords; the element constructor the 004CB076 iterator runs 97 times"},
+    {"address": "00484540", "name": "BSP_UnitList_PushBack", "abi": "__thiscall void(List* this, void* value)", "body": "00484540-00484596", "coverage": "complete", "note": "confirms the triple layout: count at +0h, head at +4h, tail at +8h; node prev at +0h, next at +4h, value at +8h"},
+    {"address": "007f10b0", "name": "BSP_PlaneSquadron_RegisterInWorldLists", "abi": "__thiscall void(Squadron* this)", "body": "007f10b0-007f10d4", "coverage": "complete", "note": "vtable slot +130h at 00D087C0+130h; the producer of the class-id-24 list"},
+    {"address": "009f9be0", "name": "unit_blast_accumulator_get_009f9be0", "abi": "__thiscall float(Unit* this, int category)", "body": "009f9be0-009f9bed", "coverage": "complete", "note": "unreferenced"},
+    {"address": "009f9bf0", "name": "unit_blast_accumulator_sum_009f9bf0", "abi": "__thiscall float(Unit* this)", "body": "009f9bf0-009f9c0a", "coverage": "complete", "note": "returns [this+474h] + [this+464h] + [this+478h], categories 5 + 1 + 6; unreferenced"},
+    {"address": "004d6ba0", "name": "BSP_ParticipantRecord_Construct", "abi": "__thiscall void(Record* this)", "body": "004d6ba0-004d6cd2", "coverage": "partial: 004D6BA0-004D6C47, every field write up to the +98h sub-object, was read; 004D6C47-004D6CD2 was not", "note": "run eight times by the 004DDD6C iterator; writes neither +8h nor +9h"},
+    {"address": "004bb440", "name": "BSP_Game_ClaimParticipantRecord", "abi": "__thiscall Record*(Game* this, ...)", "body": "004bb440-004bb4d1", "coverage": "partial: the slot search 004BB446-004BB467 and the claim 004BB46A-004BB4AF were read", "note": "RET 0x24 at 004BB467; writes +Bh, +8h = 1, +19h = 0, +50h and two strings at +58h and +78h; never +9h"},
+    {"address": "004b5680", "name": "BSP_ParticipantRecord_SetGateByte9", "abi": "__thiscall void(Record* this, char value)", "body": "004b5680-004b5689", "coverage": "complete", "note": "unreferenced; the reason the byte has no writer"}
+  ],
+
+  "no_ghidra_function": [
+    {"address": "004b79f0", "name": "world_class_list_head_getter_004b79f0", "end_address": "004b79f6"},
+    {"address": "004b7ec0", "name": "world_class_list_entry_ctor_004b7ec0", "end_address": "004b7ecc"},
+    {"address": "0071c4a0", "name": "gun_bot_retire_stub_0071c4a0", "end_address": "0071c4a8"},
+    {"address": "007bcaa0", "name": "aircraft_deactivate_sibling_007bcaa0", "end_address": "007bcb27"},
+    {"address": "009f9be0", "name": "unit_blast_accumulator_get_009f9be0", "end_address": "009f9bed"},
+    {"address": "009f9bf0", "name": "unit_blast_accumulator_sum_009f9bf0", "end_address": "009f9c0a"}
+  ],
+
+  "boundary_problems": [
+    {
+      "function": "004dcf90",
+      "ghidra_body": "004dcf90-004dd122",
+      "real_extent": "004dcf90-004dd5a6",
+      "detail": "CG_vector_deleting_dtor_004dcf90's Ghidra body stops at 004DD122, but the instruction at 004DD123 is ADD ESP,4, a mid-stream continuation, not a prologue, and the code runs unbroken to the RET at 004DD5A6 with int3 padding only from 004DD5A7. So the game destructor's whole tail, including the participant-record vector destructor iterator call at 004DD412, lies outside any Ghidra function and cannot be attributed to one. Ghidra was read-only for this packet, so the body was not corrected."
+    }
+  ],
+
+  "flow_gaps": [
+    {
+      "function": "0073d410",
+      "call_site": "0073e13c",
+      "gap": "0073e141-0073e160",
+      "detail": "ghidra disasm of BSP_Application_Initialize jumps from 0073E13C CALL 0x0073BAE0 straight to 0073E161, omitting seven instructions. Read from the disk bytes with bsp.py disasm-raw 0073E141: MOV ECX,0xCFF1A8 / CALL 0x4C9C90 / CALL 0x4C14C0 / PUSH 0x71A0 / CALL 0xBF55BE / PUSH 0x71A0 / MOV ESI,EAX. This gap hides the game object's allocation and its size."
+    }
+  ],
+
+  "corrections": [
+    {
+      "document": "docs/UNIT_DESTRUCTOR_LEVELS.md",
+      "was": "Three unit-owned pointers are never released by any level: the weapon director at +738h, the gunnery pass at +6DCh and the 1ACh damage-state instance at +360h. Whether something outside the release owns them is contract: unread.",
+      "is": "Only the weapon director at +738h leaks. The gunnery pass at +6DCh is retired through subnode->vtable[10h]() and then unlinked and deleted by the owning tick node's sub-node sweeper, so the destructor levels never see it because the field is already 0. The 1ACh instance at +360h is deleted by the unit class's own vtable slot +34Ch implementation, which eleven unit vtables install; only the destroyer's override skips it.",
+      "evidence": "007B95B5-007B95C6 and 007BCB0B-007BCB1C read the field, call slot +10h (= 0071C4A0, whose entire body is MOV byte [ECX+10h],1 / MOV byte [ECX+11h],0 / RET) and null it. 008759E1 CMP byte ptr [ESI+0x10],BL then 00875A52 MOV EAX,[ESI] / MOV EDX,[EAX] / PUSH 1 / CALL EDX in BSP_TickElement_RunSubNodes deletes the retired sub-node, and slot 0 of the gunnery pass table 00D0D360 is 00864660, which calls operator delete at 00BF65AC. The sweeper half was already established for sub-nodes in general by packet cc_fixed_step (docs/FIXED_STEP_JOB_WAVES.md and the 008759B0 ledger record); what is new is the link from unit+6DCh to it. For +360h, 008797E1-008797F4 in FUN_008797b0 is MOV ECX,[ESI+0x360] / MOV EDX,[[ECX]+4] / PUSH 1 / CALL EDX / MOV [ESI+0x360],0."
+    },
+    {
+      "document": "docs/UNIT_DESTRUCTOR_LEVELS.md",
+      "was": "player+9h has no writer in .text.",
+      "is": "Correct as far as it goes, and the reason is now known: the writer is the compiled setter 004B5680 BSP_ParticipantRecord_SetGateByte9, which is unreferenced because every call was inlined, and no inlined copy survives either. The byte is zero-initialised with the whole 0x71A0-byte game block and is 0 for the life of the process in every mode.",
+      "evidence": "004B5680 has zero absolute occurrences in .text/.rdata/.data and zero E8/E9 call sites. 0073E150-0073E163 in BSP_Application_Initialize is PUSH 0x71A0 / CALL 0xBF55BE / PUSH 0x71A0 / MOV ESI,EAX / PUSH EDI / PUSH ESI / CALL 0xBF79F0 (_memset), with EDI zeroed once at 0073D433 and never rewritten in the function. The record constructor 004D6BA0 writes eighteen fields and neither +8h nor +9h."
+    },
+    {
+      "document": "docs/SENSOR_TABLES.md",
+      "was": "[[game+19CCh]+13Ch] is the world list; no writer of a +13Ch list head was found, so the head is written through a register-held address by a helper this packet did not find.",
+      "is": "There is no separate world list and no missing helper. registry+13Ch is the head dword of the per-class-id list triple for class id 24, in the same registry+18h+id*0Ch array the recon scan's own step 5 walks; plane squadrons are pushed onto it through BSP_UnitList_PushBack.",
+      "evidence": "0x13C = 0x18 + 24*0xC + 4, and the reader itself uses the array at 008074C7 LEA EAX,[EBX+EBX*0x2] / 008074CA MOV EBP,[EDX+EAX*0x4+0x1C]. The array is built by the 004CB076 vector constructor iterator with PUSH 0x61 count and PUSH 0xC stride. 00484540 BSP_UnitList_PushBack writes the head at list+4h. 007F10C8 ADD ECX,0x138 then 007F10CE CALL 0x00484540 in FUN_007f10b0, at 00D087C0+130h, is the insert; the squadron's primary vptr 00D087C0 is installed at 007F2CAD."
+    },
+    {
+      "document": "docs/RECON_SLOT_LISTS.md",
+      "was": "The world list step 4 resets is read but not identified; which units are on it is unread.",
+      "is": "It is the class-id-24 list and its members are plane squadrons, not units. Step 4 therefore resets one detection record per squadron, and 00807480's LEA ECX,[ECX + EAX*0x34 + 0x1E8] indexes a squadron's record block.",
+      "evidence": "The same arithmetic and insert as the docs/SENSOR_TABLES.md correction above. 006FE620 BSP_UnitInstance_RegisterInWorldLists, the unit's implementation of the same +130h virtual at 00CFC3D0+130h, joins ids 2, 4, 5, 6 and 7 only (ADD ECX,0x30/0x48/0x54/0x60/0x6C), never id 24."
+    },
+    {
+      "document": "docs/GUN_BOT_TICKS.md",
+      "was": "Primary vtable slot +10h is a stub (0071C4A0).",
+      "is": "The body is two byte stores, but the effect is not inert: it is the retire request that makes the owning tick node's sweeper unlink and delete the sub-node on its next pass.",
+      "evidence": "0071C4A0 sets [this+10h] = 1 and [this+11h] = 0; 008759E1 CMP byte ptr [ESI+0x10],BL in BSP_TickElement_RunSubNodes falls into the removal path at 008759E6 when it is set, and 00875A5A calls slot 0 with PUSH 1."
+    },
+    {
+      "document": "docs/GUNNERY_TABLES.md",
+      "was": "00956C20's blast accumulator unit+460h + cat*4 has no reader in this packet's reach; contract: unread on the consumer side.",
+      "is": "It has no live reader at all. The only two functions that read it are unreferenced accessors, so the field is written every pass and never consumed in the shipped build. There are twelve categories.",
+      "evidence": "The only indexed accesses to 0x460 in .text are 00956D6C, 00956E94, 00956E9B and 009F9BE4; 009F9BE0 and 009F9BF0 have zero absolute occurrences and zero E8/E9 call sites. 00956EC0 CMP ESI,0xC with JL sets the category count. By contrast the sibling array unit+430h+cat*4 has live indexed readers at 00863A34 and 0095EBC4."
+    },
+    {
+      "document": "docs/KILL_CREDIT.md",
+      "was": "Open: what inserts into the entity -> int map at manager+1488h that 0091BE3F consults.",
+      "is": "Nothing. The map is constructed, cleared and destroyed and only ever read, so the find always misses and the early return it guards never fires.",
+      "evidence": "A complete .text sweep for 0x1488 returns nine instructions. The four that compute the manager's map address are 0091D712 (construction, map+4h = 0063B110()), 009169B1 (an inlined std::map::clear in BSP_MissionPlayerRecords_Reset that ends with MOV dword ptr [EDI+0x8],EBX at 009169E6), 0091CCFF (destruction) and 0091BE18 (the find). The other five are an unrelated class at 008CB59D and 008CC44E and three library stack frames."
+    },
+    {
+      "document": "docs/KILL_CREDIT.md",
+      "was": "Open: whether +44h of an achievement row really is the Params column. The offset is settled by its consumer, not by 006B9450, so rule 4 is not satisfied for it.",
+      "is": "It is the Params column, now settled by the producer. row+44h is a vector filled from Params[1..21] in order, with 0 substituted when index 1 is absent, so the consumer's vector::at(0) is the first Params entry.",
+      "evidence": "006B9BA0 PUSH 0xCF8530, the literal string \"Params\", into BSP_LuaObject_GetByName at 006B9BB1; 006B9BC6 BSP_LuaObject_GetByIndex(value, EDI) with EDI = 1 at 006B9B92 and CMP EDI,0x16 at 006B9C46; 006B9C1D BSP_LuaReference_GetIntegerOrDefault; 006B9C3B LEA ECX,[ESI+0x44] then 006B9C3E CALL 0x00442190. 00CF8538, the neighbouring string, is XLastAchievement and feeds row+40h."
+    }
+  ],
+
+  "open_questions": [
+    "Whether the unit's destructor chain tears down the tick node's sub-list, and so whether a unit destructed before its node's next 008759B0 pass leaks the retired gunnery pass after all.",
+    "unit+DF4h, the second sub-node the same two sites retire, and the class owning the nine vtables that install 007B9590; their bases are not installed as vptrs at the offset the +348h/+34Ch alignment predicts, so 007B9590's slot index is not settled.",
+    "Whether the destroyer's missing +360h release is a shipped bug or whether MDestroyer never gets a damage-state instance; 0087BEA4 in BSP_UnitInstance_InitHealthAndParts is level-3/4 code common to all units, which suggests it does.",
+    "Which unit classes the eleven FUN_008797b0 vtables belong to, and why 00D0DFF4 is among them.",
+    "The fixed-displacement arm of hunt 3 (see that answer's coverage note).",
+    "What class id 24 is called in the game's own class table, and whether any entity other than the plane squadron installs a +130h override that joins it."
+  ],
+
+  "build": "docs and report only; no C++ was added, so nothing was compiled and no test was added or changed",
+  "tests": "none added; every hunt ended in a contract or a negative rather than a rule worth pinning in code",
+  "tool_problems": [
+    "ghidra disasm omitted 0073E141-0073E160 in BSP_Application_Initialize, hiding the game object's allocation and its 0x71A0 size; recorded under flow_gaps and read with bsp.py disasm-raw.",
+    "ghidra callers returns 'No callers found for function: null' for an address Ghidra has a function for when that function has only indirect (vtable) references, which reads like an error rather than an empty result.",
+    "ghidra xrefs reports 'No references found' for an address Ghidra has no function at, even when references exist, so a negative from it cannot be trusted; direct call sites had to be found by scanning for E8/E9 rel32 encodings over the disk bytes.",
+    "bsp.py show --asm --start refused two valid instruction addresses in an exported function ('no listing line starts at that address') and the export path exports/bsp/functions/008073c0/assembly.txt did not exist after a successful ghidra export.",
+    "Ghidra's function body for CG_vector_deleting_dtor_004dcf90 is truncated by 0x484 bytes (see boundary_problems), which puts a real call site in no function and made one report row uncheckable."
+  ],
+  "tool_calls": 86
+}

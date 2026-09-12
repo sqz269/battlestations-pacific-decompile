@@ -527,3 +527,9 @@ Both start after `int3` padding (`006DF4B3`-`006DF4BF` and `008FC07F`) and end a
 - **Was:** the friendly entity is projected forward by 1000 seconds of its own velocity and 004F3730 tests it against the torpedo run
   **Is:** the projection scales the entity's +94h/+9Ch forward vector, and 004F3730 is a two-dimensional segment crossing that reads only the x and z components
   **Evidence:** 00900630 and 00900647 read [EDI+0x94] and [EDI+0x9c]; 004f3730 and 004f3630 index only [0] and [1] of all their float arguments
+
+## Correction from docs/GAMEPLAY_LOOSE_ENDS_1.md (packet cc2_gameplay_loose_ends_1)
+
+- **Was:** Primary vtable slot +10h is a stub (0071C4A0).
+  **Is:** The body is two byte stores, but the effect is not inert: it is the retire request that makes the owning tick node's sweeper unlink and delete the sub-node on its next pass.
+  **Evidence:** 0071C4A0 sets [this+10h] = 1 and [this+11h] = 0; 008759E1 CMP byte ptr [ESI+0x10],BL in BSP_TickElement_RunSubNodes falls into the removal path at 008759E6 when it is set, and 00875A5A calls slot 0 with PUSH 1.

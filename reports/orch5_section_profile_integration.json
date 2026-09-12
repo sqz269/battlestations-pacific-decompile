@@ -1,0 +1,30 @@
+{
+  "packet": "orch5_section_profile_integration",
+  "table": "00d5c8e8",
+  "section_type": 17,
+  "current_slots": {
+    "40": "00aa87b0",
+    "4c": "00aa6980",
+    "50": "00aa6870",
+    "54": "00aa68f0",
+    "58": "00abe670",
+    "5c": "00a9e110",
+    "60": "00aa6a30",
+    "64": "00a9e120",
+    "68": "00aa7190",
+    "6c": "00aaa0f0",
+    "70": "00aaa3e0",
+    "74": "00abeda0",
+    "78": "00abe630",
+    "7c": "00abf770"
+  },
+  "evidence": "Live D5C8E8 table inspected by parent and Section worker; existing inherited implementations now admit Section17",
+  "original_abi": "native thiscall vtable entries retained as evidence; new typed C++ services are not a drop-in vtable",
+  "changes": [
+    "Section type gates for current4C/50/54/5C/70",
+    "actual service factory and AA6560 child gate",
+    "current5C-to-owner08 reload-to-Section timed composition"
+  ],
+  "validation": "combined build + six numeric cases; no full Section renderer/owner fixture",
+  "game_validated": false
+}

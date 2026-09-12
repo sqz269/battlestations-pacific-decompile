@@ -160,3 +160,7 @@ This discovery adds no tests and makes no runtime/startup claim.
 ## AQ parent integration, 2026-09-12
 
 Correction from docs/NATIVE_FILESTORE_FOUNDATIONS.md and docs/NATIVE_ADOPTED_SUBSTREAM.md: the two FileStore node allocators, provider-base construction/destruction, and adopted-substream body/dispatch are reconstructed with bounded native evidence. Full owner tree operations, pending-tree teardown and the native canonicalizer remain open. The discovery report still has three expected BE7BF0 tail CALL coverage failures; the passing source-packet checks do not erase that discovery limitation.
+
+## AR parent integration, 2026-09-12
+
+Correction from docs/NATIVE_FILESTORE_SUBTREE.md and docs/NATIVE_PATH_CANONICALIZER.md: actual payload release, pending/resident subtree cleanup, both successor iterators, and complete native canonicalization now have source reconstructions and bounded fixtures. Numeric memory/physical/adopted payload dispatch is source-composition checked. Full owner construction/destruction, partial erase/rebalancing and range routines remain open. The three historical BE7BF0 discovery CALL-coverage failures are separate from all passing AR source-packet rows.

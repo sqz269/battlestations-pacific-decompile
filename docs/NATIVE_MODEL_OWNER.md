@@ -180,3 +180,15 @@ arbitrary derived profiles, gameplay validation and drop-in binary compatibility
 remain outside this packet. Existing broader node/scene algorithms are reused;
 the focused native trajectory uses empty names and empty child/light/scene
 collections and does not establish new native coverage for their populated paths.
+
+## Correction from AL actual-name binding
+
+NativeModelEnvironment now accepts borrowed `NativeStringStorage* actual_names`.
+When bound, B75030 and B750C0 use the existing explicit native node string
+overloads for both construction and destruction. Existing semantic callers
+retain their null-binding interface. New actual particle/tracer constructors
+require the same binding as material parameter names. One focused C++ runtime
+case with a nonempty name verifies actual pool bump allocation, return to the
+same size ring and exact-pointer recycling. It also returns the real model
+slot. This is source routing evidence, not original-byte model or gameplay
+proof; see reports/native_model_actual_names.json.
