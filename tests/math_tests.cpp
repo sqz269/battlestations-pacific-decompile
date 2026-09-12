@@ -54,6 +54,7 @@
 #include "bsp/world_entities.hpp"
 #include "bsp/mission_events.hpp"
 #include "bsp/mission_result.hpp"
+#include "bsp/mission_load_hosts.hpp"
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_state_entry.hpp"
 #include "bsp/mission_lua_host.hpp"
@@ -2350,6 +2351,48 @@ int main() {
         check(std::fabs(bsp::gun_step_axis_0085ad80(near_delta, rate, 1.0f, true) - near_delta)
                   < 1e-6f,
             "MRFSGun skips the soft approach and turns at the full rate");
+    }
+
+    {
+        // 004C3840's round-robin. The risk is the cursor: it lives in the frame
+        // across the whole candidate walk (004C39B0 reads it, 004C3A3C writes it
+        // back), so two units vacated from the same party must land on different
+        // players, and the third must wrap to the first.
+        bsp::MissionSlotBinding slots[4]{};
+        slots[0].present_08 = true;              // bound, party 0
+        slots[1].present_08 = true;              // bound, party 0
+        slots[2].present_08 = true;              // bound, party 1
+        slots[2].party_28 = 1;
+        slots[3].present_08 = true;              // vacant: +9h set, +0Ah clear
+        slots[3].flag_09 = true;
+        bsp::MissionPartyRoster roster =
+            bsp::build_mission_party_roster(slots, 4);
+        check(roster.member_count[0] == 2 && roster.member_count[1] == 1,
+            "004C38A2 enrols the bound slots and drops the one with +9h set and +0Ah clear");
+
+        bsp::PartyOwnerCandidate unit{};
+        unit.active_5c = true;
+        unit.owner_slot_188 = 3;                 // the vacant slot, party 0
+        const bsp::PartyReassignDecision first =
+            bsp::decide_party_reassignment(unit, slots, 4, roster);
+        const bsp::PartyReassignDecision second =
+            bsp::decide_party_reassignment(unit, slots, 4, roster);
+        const bsp::PartyReassignDecision third =
+            bsp::decide_party_reassignment(unit, slots, 4, roster);
+        check(first.action == bsp::PartyReassignAction::kReassign && first.to_slot == 0,
+            "the first unit off a vacant slot goes to its party's first member");
+        check(second.to_slot == 1 && third.to_slot == 0,
+            "004C3A21's remainder advances the cursor and wraps at the member count");
+
+        // A party with no bound player unbinds the owner instead (004C3996).
+        slots[2].flag_09 = true;                 // slot 2 is now vacant too
+        slots[3].party_28 = 1;                   // and the owner slot is party 1
+        bsp::MissionPartyRoster empty_party =
+            bsp::build_mission_party_roster(slots, 4);
+        const bsp::PartyReassignDecision unbound =
+            bsp::decide_party_reassignment(unit, slots, 4, empty_party);
+        check(unbound.action == bsp::PartyReassignAction::kUnbindOwner,
+            "an empty party roster takes the vtable +148h(1FFh, 8) arm");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
