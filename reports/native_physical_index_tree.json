@@ -1,0 +1,759 @@
+{
+  "schema_version": 1,
+  "packet": "orch2_physical_index_tree_as",
+  "base_commit": "2708238f",
+  "status": "complete_actual_storage_strict_win32_and_focused_original_source_fixture_checked_with_explicit_exception_boundaries",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "owned_addresses": [
+    "00489d50",
+    "00bd9380",
+    "00bd93a0",
+    "00bd93e0",
+    "00bda090",
+    "00bdf7a0",
+    "00bdfd80",
+    "00be0c30",
+    "00be1700"
+  ],
+  "routines": [
+    {
+      "address": "00489d50",
+      "end_exclusive": "00489dc6",
+      "bytes": 118,
+      "sha256": "ee51a70ab93dc01ef7d65d6a6516842f973fd6f70291a935da06fb30cbcdeec4",
+      "live_disk_match": true,
+      "name": "destroy_native_physical_index_pair_00489d50",
+      "source": "src/native_physical_index_tree.cpp",
+      "header": "include/bsp/native_physical_index_tree.hpp",
+      "coverage": "complete logical storage behavior; explicit host pool/CRT/exception boundaries",
+      "original_abi": "ECX pair; RET0",
+      "proposed_ghidra_name": "BSP_TrafficStringPair_Destroy"
+    },
+    {
+      "address": "00bd9380",
+      "end_exclusive": "00bd939c",
+      "bytes": 28,
+      "sha256": "a1a71340820e4f46d62b14a2e51d5c4bed25947ae1cb4371b8aff50555b4c7fe",
+      "live_disk_match": true,
+      "name": "maximum_native_physical_index_node_00bd9380",
+      "source": "src/native_physical_index_tree.cpp",
+      "header": "include/bsp/native_physical_index_tree.hpp",
+      "coverage": "complete logical storage behavior; explicit host pool/CRT/exception boundaries",
+      "original_abi": "ECX node; EAX maximum; RET0",
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_Maximum_00BD9380"
+    },
+    {
+      "address": "00bd93a0",
+      "end_exclusive": "00bd93bb",
+      "bytes": 27,
+      "sha256": "a04a76571d0653ecc88f541646c5450f2cada3956007ce2f535b0bc9f76f61ce",
+      "live_disk_match": true,
+      "name": "minimum_native_physical_index_node_00bd93a0",
+      "source": "src/native_physical_index_tree.cpp",
+      "header": "include/bsp/native_physical_index_tree.hpp",
+      "coverage": "complete logical storage behavior; explicit host pool/CRT/exception boundaries",
+      "original_abi": "ECX node; EAX minimum; RET0",
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_Minimum_00BD93A0"
+    },
+    {
+      "address": "00bd93e0",
+      "end_exclusive": "00bd9432",
+      "bytes": 82,
+      "sha256": "6de63ca9db5165cceb5be9abc57092cb407a450fc6cfad440242ae4a4e3d0788",
+      "live_disk_match": true,
+      "name": "rotate_native_physical_index_right_00bd93e0",
+      "source": "src/native_physical_index_tree.cpp",
+      "header": "include/bsp/native_physical_index_tree.hpp",
+      "coverage": "complete logical storage behavior; explicit host pool/CRT/exception boundaries",
+      "original_abi": "ECX tree; stack node; RET4",
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_RotateRight_00BD93E0"
+    },
+    {
+      "address": "00bda090",
+      "end_exclusive": "00bda0de",
+      "bytes": 78,
+      "sha256": "0dec57332a043da366b38f7283f93ab15070184cc9e515c8e2f94f7590843ed6",
+      "live_disk_match": true,
+      "name": "rotate_native_physical_index_left_00bda090",
+      "source": "src/native_physical_index_tree.cpp",
+      "header": "include/bsp/native_physical_index_tree.hpp",
+      "coverage": "complete logical storage behavior; explicit host pool/CRT/exception boundaries",
+      "original_abi": "ECX tree; stack node; RET4",
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_RotateLeft_00BDA090"
+    },
+    {
+      "address": "00bdf7a0",
+      "end_exclusive": "00bdf7dd",
+      "bytes": 61,
+      "sha256": "fdc0440428d818ed2d1129450ad48cbdc0fbfffd05831ebb637823ed968b7f6d",
+      "live_disk_match": true,
+      "name": "destroy_native_physical_index_subtree_00bdf7a0",
+      "source": "src/native_physical_index_tree.cpp",
+      "header": "include/bsp/native_physical_index_tree.hpp",
+      "coverage": "complete logical storage behavior; explicit host pool/CRT/exception boundaries",
+      "original_abi": "ECX tree; stack root; RET4",
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_DestroySubtree_00BDF7A0"
+    },
+    {
+      "address": "00bdfd80",
+      "end_exclusive": "00be0033",
+      "bytes": 691,
+      "sha256": "5ff350b6ed2b8cbb8608e6fc187852a9954aee45344f1dfb9a941d2bbf5647f9",
+      "live_disk_match": true,
+      "name": "erase_native_physical_index_iterator_00bdfd80",
+      "source": "src/native_physical_index_tree.cpp",
+      "header": "include/bsp/native_physical_index_tree.hpp",
+      "coverage": "complete logical storage behavior; explicit host pool/CRT/exception boundaries",
+      "original_abi": "ECX tree; stack output/owner/node; RET0C; EAX output",
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_EraseIterator_00BDFD80"
+    },
+    {
+      "address": "00be0c30",
+      "end_exclusive": "00be0cf9",
+      "bytes": 201,
+      "sha256": "6f991f54bfbfa6c0cd18f82576ef0762f412f6d81d785524f18f6a3987a647b7",
+      "live_disk_match": true,
+      "name": "erase_native_physical_index_range_00be0c30",
+      "source": "src/native_physical_index_tree.cpp",
+      "header": "include/bsp/native_physical_index_tree.hpp",
+      "coverage": "complete logical storage behavior; explicit host pool/CRT/exception boundaries",
+      "original_abi": "ECX tree; stack output/firstowner/firstnode/lastowner/lastnode; RET14; EAX output",
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_EraseRange_00BE0C30"
+    },
+    {
+      "address": "00be1700",
+      "end_exclusive": "00be1734",
+      "bytes": 52,
+      "sha256": "c7dcc06a16f8bda81ce448c12ba58c4efdb3345882aa2770ed4050a1b84b4350",
+      "live_disk_match": true,
+      "name": "destroy_native_physical_index_00be1700",
+      "source": "src/native_physical_index_tree.cpp",
+      "header": "include/bsp/native_physical_index_tree.hpp",
+      "coverage": "complete logical storage behavior; explicit host pool/CRT/exception boundaries",
+      "original_abi": "ECX tree; RET0",
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_Destroy_00BE1700"
+    }
+  ],
+  "routine_count": 9,
+  "logical_body_bytes": 1338,
+  "live_disk_spans": [
+    {
+      "address": "00489d50",
+      "end_exclusive": "00489dc6",
+      "bytes": 118,
+      "sha256": "ee51a70ab93dc01ef7d65d6a6516842f973fd6f70291a935da06fb30cbcdeec4",
+      "live_disk_match": true
+    },
+    {
+      "address": "00bd9380",
+      "end_exclusive": "00bd939c",
+      "bytes": 28,
+      "sha256": "a1a71340820e4f46d62b14a2e51d5c4bed25947ae1cb4371b8aff50555b4c7fe",
+      "live_disk_match": true
+    },
+    {
+      "address": "00bd93a0",
+      "end_exclusive": "00bd93bb",
+      "bytes": 27,
+      "sha256": "a04a76571d0653ecc88f541646c5450f2cada3956007ce2f535b0bc9f76f61ce",
+      "live_disk_match": true
+    },
+    {
+      "address": "00bd93e0",
+      "end_exclusive": "00bd9432",
+      "bytes": 82,
+      "sha256": "6de63ca9db5165cceb5be9abc57092cb407a450fc6cfad440242ae4a4e3d0788",
+      "live_disk_match": true
+    },
+    {
+      "address": "00bda090",
+      "end_exclusive": "00bda0de",
+      "bytes": 78,
+      "sha256": "0dec57332a043da366b38f7283f93ab15070184cc9e515c8e2f94f7590843ed6",
+      "live_disk_match": true
+    },
+    {
+      "address": "00bdf7a0",
+      "end_exclusive": "00bdf7dd",
+      "bytes": 61,
+      "sha256": "fdc0440428d818ed2d1129450ad48cbdc0fbfffd05831ebb637823ed968b7f6d",
+      "live_disk_match": true
+    },
+    {
+      "address": "00bdfd80",
+      "end_exclusive": "00be0033",
+      "bytes": 691,
+      "sha256": "5ff350b6ed2b8cbb8608e6fc187852a9954aee45344f1dfb9a941d2bbf5647f9",
+      "live_disk_match": true
+    },
+    {
+      "address": "00be0c30",
+      "end_exclusive": "00be0cf9",
+      "bytes": 201,
+      "sha256": "6f991f54bfbfa6c0cd18f82576ef0762f412f6d81d785524f18f6a3987a647b7",
+      "live_disk_match": true
+    },
+    {
+      "address": "00be1700",
+      "end_exclusive": "00be1734",
+      "bytes": 52,
+      "sha256": "c7dcc06a16f8bda81ce448c12ba58c4efdb3345882aa2770ed4050a1b84b4350",
+      "live_disk_match": true
+    },
+    {
+      "address": "00bd9860",
+      "end_exclusive": "00bd98c3",
+      "bytes": 99,
+      "sha256": "eb9802b4bea7d62a85fa510a357e3c1af5a8110d23d54ca19ed5afb954af1884",
+      "live_disk_match": true
+    },
+    {
+      "address": "00bdaba0",
+      "end_exclusive": "00bdabd7",
+      "bytes": 55,
+      "sha256": "c267e23c97e68d19df6172aca9f643dc3b4e76e522f06f4a278908f2c8df1433",
+      "live_disk_match": true
+    },
+    {
+      "address": "00c62980",
+      "end_exclusive": "00c62988",
+      "bytes": 8,
+      "sha256": "7dcd5a64af1106511e0e32349319dcc079c164e2876340d761efad6ddc542ac9",
+      "live_disk_match": true
+    },
+    {
+      "address": "00c62988",
+      "end_exclusive": "00c62992",
+      "bytes": 10,
+      "sha256": "86b4fc048f2cd4cf36f445a1dfdea044d6da09aefe43df95372d2e93bc0ecec7",
+      "live_disk_match": true
+    },
+    {
+      "address": "00d8a4a0",
+      "end_exclusive": "00d8a4a8",
+      "bytes": 8,
+      "sha256": "0ccb2d1b05e3b035f7b8053e66267ea3375c498bef502ad1adebeb024a6c9a6d",
+      "live_disk_match": true
+    },
+    {
+      "address": "00d8a4a8",
+      "end_exclusive": "00d8a4cc",
+      "bytes": 36,
+      "sha256": "f2ad9e3176b41b4e80436b671b4422183e8481e518d442b205f2cdecee6c24c4",
+      "live_disk_match": true
+    },
+    {
+      "address": "00cc66a0",
+      "end_exclusive": "00cc66a8",
+      "bytes": 8,
+      "sha256": "5be85caf4095ee738492a96b68ef0fea79fc79baa1e2da5f2ca1b707280c3f3b",
+      "live_disk_match": true
+    },
+    {
+      "address": "00cc66a8",
+      "end_exclusive": "00cc66b2",
+      "bytes": 10,
+      "sha256": "6144d22b2f8348da7e724ebe510ba65681c4f4cd135437980b56b17d68f6b5f1",
+      "live_disk_match": true
+    },
+    {
+      "address": "00e00c90",
+      "end_exclusive": "00e00c98",
+      "bytes": 8,
+      "sha256": "ca593a70b1dab060e981a4309787e923b1ed44e2c6dff928c8381708bfe96aae",
+      "live_disk_match": true
+    },
+    {
+      "address": "00e00c98",
+      "end_exclusive": "00e00cbc",
+      "bytes": 36,
+      "sha256": "c556ae14c5bc635adb8a9e660d33c5e7fce69daec5ba29df4306eea1b21ee4ea",
+      "live_disk_match": true
+    }
+  ],
+  "span_count": 19,
+  "span_bytes": 1616,
+  "calls": [
+    {
+      "address": "00489d86",
+      "native": "00419cc0",
+      "containing_function": "00489d50",
+      "containing_proto": "00489d86 BSP_TrafficStringPair_Destroy  undefined BSP_TrafficStringPair_Destroy(void)  body 00489d50 - 00489dc5",
+      "callee_abi": "no arguments; RET0; EAX pool; pending caller pushes belong to following return"
+    },
+    {
+      "address": "00489d8d",
+      "native": "00bd1510",
+      "containing_function": "00489d50",
+      "containing_proto": "00489d8d BSP_TrafficStringPair_Destroy  undefined BSP_TrafficStringPair_Destroy(void)  body 00489d50 - 00489dc5",
+      "callee_abi": "ECX pool; stack block/size/unused; RET0C"
+    },
+    {
+      "address": "00489daa",
+      "native": "00419cc0",
+      "containing_function": "00489d50",
+      "containing_proto": "00489daa BSP_TrafficStringPair_Destroy  undefined BSP_TrafficStringPair_Destroy(void)  body 00489d50 - 00489dc5",
+      "callee_abi": "no arguments; RET0; EAX pool; pending caller pushes belong to following return"
+    },
+    {
+      "address": "00489db1",
+      "native": "00bd1510",
+      "containing_function": "00489d50",
+      "containing_proto": "00489db1 BSP_TrafficStringPair_Destroy  undefined BSP_TrafficStringPair_Destroy(void)  body 00489d50 - 00489dc5",
+      "callee_abi": "ECX pool; stack block/size/unused; RET0C"
+    },
+    {
+      "address": "00bdf7b7",
+      "native": "00bdf7a0",
+      "containing_function": "00bdf7a0",
+      "containing_proto": "00bdf7b7 FUN_00bdf7a0  undefined FUN_00bdf7a0(void)  body 00bdf7a0 - 00bdf7dc",
+      "callee_abi": "ECX tree; stack root; RET4"
+    },
+    {
+      "address": "00bdf7c1",
+      "native": "00489d50",
+      "containing_function": "00bdf7a0",
+      "containing_proto": "00bdf7c1 FUN_00bdf7a0  undefined FUN_00bdf7a0(void)  body 00bdf7a0 - 00bdf7dc",
+      "callee_abi": "ECX pair; RET0"
+    },
+    {
+      "address": "00bdf7c7",
+      "native": "00bf65ac",
+      "containing_function": "00bdf7a0",
+      "containing_proto": "00bdf7c7 FUN_00bdf7a0  undefined FUN_00bdf7a0(void)  body 00bdf7a0 - 00bdf7dc",
+      "callee_abi": "cdecl stack block; caller ADD ESP,4"
+    },
+    {
+      "address": "00bdfdc4",
+      "native": "00408720",
+      "containing_function": "00bdfd80",
+      "containing_proto": "00bdfdc4 STL_xlen_throw_00bdfd80  undefined STL_xlen_throw_00bdfd80(void)  body 00bdfd80 - 00bdfffc",
+      "callee_abi": "ECX raw SBO; stack chars/count; RET8; EAX destination"
+    },
+    {
+      "address": "00bdfdd6",
+      "native": "00411700",
+      "containing_function": "00bdfd80",
+      "containing_proto": "00bdfdd6 STL_xlen_throw_00bdfd80  undefined STL_xlen_throw_00bdfd80(void)  body 00bdfd80 - 00bdfffc",
+      "callee_abi": "ECX owner; stack source SBO; RET4; EAX owner"
+    },
+    {
+      "address": "00bdfded",
+      "native": "00bf6885",
+      "containing_function": "00bdfd80",
+      "containing_proto": "00bdfded STL_xlen_throw_00bdfd80  undefined STL_xlen_throw_00bdfd80(void)  body 00bdfd80 - 00bdfffc",
+      "callee_abi": "stdcall exception object/throw metadata; does not return"
+    },
+    {
+      "address": "00bdfdfe",
+      "native": "00bd9860",
+      "containing_function": "00bdfd80",
+      "containing_proto": "00bdfdfe STL_xlen_throw_00bdfd80  undefined STL_xlen_throw_00bdfd80(void)  body 00bdfd80 - 00bdfffc",
+      "callee_abi": "ECX iterator; RET0; sentinel invalid tail may return"
+    },
+    {
+      "address": "00bdfe63",
+      "native": "00bd93a0",
+      "containing_function": "00bdfd80",
+      "containing_proto": "00bdfe63 STL_xlen_throw_00bdfd80  undefined STL_xlen_throw_00bdfd80(void)  body 00bdfd80 - 00bdfffc",
+      "callee_abi": "ECX node; EAX minimum; RET0"
+    },
+    {
+      "address": "00bdfe85",
+      "native": "00bd9380",
+      "containing_function": "00bdfd80",
+      "containing_proto": "00bdfe85 STL_xlen_throw_00bdfd80  undefined STL_xlen_throw_00bdfd80(void)  body 00bdfd80 - 00bdfffc",
+      "callee_abi": "ECX node; EAX maximum; RET0"
+    },
+    {
+      "address": "00bdff23",
+      "native": "00bda090",
+      "containing_function": "00bdfd80",
+      "containing_proto": "00bdff23 STL_xlen_throw_00bdfd80  undefined STL_xlen_throw_00bdfd80(void)  body 00bdfd80 - 00bdfffc",
+      "callee_abi": "ECX tree; stack node; RET4"
+    },
+    {
+      "address": "00bdff52",
+      "native": "00bd93e0",
+      "containing_function": "00bdfd80",
+      "containing_proto": "00bdff52 STL_xlen_throw_00bdfd80  undefined STL_xlen_throw_00bdfd80(void)  body 00bdfd80 - 00bdfffc",
+      "callee_abi": "ECX tree; stack node; RET4"
+    },
+    {
+      "address": "00bdff6c",
+      "native": "00bda090",
+      "containing_function": "00bdfd80",
+      "containing_proto": "00bdff6c STL_xlen_throw_00bdfd80  undefined STL_xlen_throw_00bdfd80(void)  body 00bdfd80 - 00bdfffc",
+      "callee_abi": "ECX tree; stack node; RET4"
+    },
+    {
+      "address": "00bdff83",
+      "native": "00bd93e0",
+      "containing_function": "00bdfd80",
+      "containing_proto": "00bdff83 STL_xlen_throw_00bdfd80  undefined STL_xlen_throw_00bdfd80(void)  body 00bdfd80 - 00bdfffc",
+      "callee_abi": "ECX tree; stack node; RET4"
+    },
+    {
+      "address": "00bdffc7",
+      "native": "00bda090",
+      "containing_function": "00bdfd80",
+      "containing_proto": "00bdffc7 STL_xlen_throw_00bdfd80  undefined STL_xlen_throw_00bdfd80(void)  body 00bdfd80 - 00bdfffc",
+      "callee_abi": "ECX tree; stack node; RET4"
+    },
+    {
+      "address": "00bdffdf",
+      "native": "00bd93e0",
+      "containing_function": "00bdfd80",
+      "containing_proto": "00bdffdf STL_xlen_throw_00bdfd80  undefined STL_xlen_throw_00bdfd80(void)  body 00bdfd80 - 00bdfffc",
+      "callee_abi": "ECX tree; stack node; RET4"
+    },
+    {
+      "address": "00bdffee",
+      "native": "00489d50",
+      "containing_function": "00bdfd80",
+      "containing_proto": "00bdffee STL_xlen_throw_00bdfd80  undefined STL_xlen_throw_00bdfd80(void)  body 00bdfd80 - 00bdfffc",
+      "callee_abi": "ECX pair; RET0"
+    },
+    {
+      "address": "00bdfff8",
+      "native": "00bf65ac",
+      "containing_function": "00bdfd80",
+      "containing_proto": "00bdfff8 STL_xlen_throw_00bdfd80  undefined STL_xlen_throw_00bdfd80(void)  body 00bdfd80 - 00bdfffc",
+      "callee_abi": "cdecl stack block; caller ADD ESP,4"
+    },
+    {
+      "address": "00be0c4a",
+      "native": "00bf6713",
+      "containing_function": "00be0c30",
+      "containing_proto": "00be0c4a FUN_00be0c30  undefined FUN_00be0c30(void)  body 00be0c30 - 00be0cf8",
+      "callee_abi": "no explicit inputs; RET0 may return"
+    },
+    {
+      "address": "00be0c66",
+      "native": "00bf6713",
+      "containing_function": "00be0c30",
+      "containing_proto": "00be0c66 FUN_00be0c30  undefined FUN_00be0c30(void)  body 00be0c30 - 00be0cf8",
+      "callee_abi": "no explicit inputs; RET0 may return"
+    },
+    {
+      "address": "00be0c7a",
+      "native": "00bdf7a0",
+      "containing_function": "00be0c30",
+      "containing_proto": "00be0c7a FUN_00be0c30  undefined FUN_00be0c30(void)  body 00be0c30 - 00be0cf8",
+      "callee_abi": "ECX tree; stack root; RET4"
+    },
+    {
+      "address": "00be0cba",
+      "native": "00bf6713",
+      "containing_function": "00be0c30",
+      "containing_proto": "00be0cba FUN_00be0c30  undefined FUN_00be0c30(void)  body 00be0c30 - 00be0cf8",
+      "callee_abi": "no explicit inputs; RET0 may return"
+    },
+    {
+      "address": "00be0cc9",
+      "native": "00bd9860",
+      "containing_function": "00be0c30",
+      "containing_proto": "00be0cc9 FUN_00be0c30  undefined FUN_00be0c30(void)  body 00be0c30 - 00be0cf8",
+      "callee_abi": "ECX iterator; RET0; sentinel invalid tail may return"
+    },
+    {
+      "address": "00be0cd7",
+      "native": "00bdfd80",
+      "containing_function": "00be0c30",
+      "containing_proto": "00be0cd7 FUN_00be0c30  undefined FUN_00be0c30(void)  body 00be0c30 - 00be0cf8",
+      "callee_abi": "ECX tree; stack output/owner/node; RET0C; EAX output"
+    },
+    {
+      "address": "00be1716",
+      "native": "00be0c30",
+      "containing_function": "00be1700",
+      "containing_proto": "00be1716 FUN_00be1700  undefined FUN_00be1700(void)  body 00be1700 - 00be1723",
+      "callee_abi": "ECX tree; stack output/firstowner/firstnode/lastowner/lastnode; RET14; EAX output"
+    },
+    {
+      "address": "00be171f",
+      "native": "00bf65ac",
+      "containing_function": "00be1700",
+      "containing_proto": "00be171f FUN_00be1700  undefined FUN_00be1700(void)  body 00be1700 - 00be1723",
+      "callee_abi": "cdecl stack block; caller ADD ESP,4"
+    }
+  ],
+  "call_count": 29,
+  "corrections": [
+    {
+      "was": "STL_xlen_throw_00bdfd80, 637-byte stored body",
+      "is": "complete erase/rebalance, 691-byte logical body ending BE0033 exclusive",
+      "evidence": "BDFDF2-BDFFFC normal erase and assembly-only successor transplant; raw live/disk-matched BDFFFD-BE0032 current count/result/epilogue"
+    },
+    {
+      "was": "489D50 traffic fragment only",
+      "is": "independent complete raw string pair cleanup, retaining earlier traffic fragment record",
+      "evidence": "full118 bytes; current second data/length, then current first data/length, map D8A4A0"
+    }
+  ],
+  "stored_flow_gaps": [
+    {
+      "start": "00bdf7cc",
+      "end_exclusive": "00bdf7d7",
+      "first_instruction": "ADD ESP,4",
+      "containing_function": null
+    },
+    {
+      "start": "00bdfffd",
+      "end_exclusive": "00be0033",
+      "first_instruction": "MOV EAX,[EBP+8]",
+      "containing_function": null
+    },
+    {
+      "start": "00be1724",
+      "end_exclusive": "00be1734",
+      "first_instruction": "ADD ESP,4",
+      "containing_function": null
+    }
+  ],
+  "padding": [
+    {
+      "start": "00bd938d",
+      "end_exclusive": "00bd9390"
+    },
+    {
+      "start": "00be0caf",
+      "end_exclusive": "00be0cb0"
+    }
+  ],
+  "unwind_maps": [
+    {
+      "function": "00489d50",
+      "handler": "00c62988",
+      "func_info": "00d8a4a8",
+      "map": "00d8a4a0",
+      "max_state": 1,
+      "state0_cleanup": "00c62980",
+      "cleanup": "captured first pooled string through 0041dd20",
+      "arming": "before second-string release",
+      "disarming": "before first-string release",
+      "source_boundary": "existing NativeStringStorage.release noexcept terminates on throwing pool getter"
+    },
+    {
+      "function": "00bdfd80",
+      "handler": "00cc66a8",
+      "func_info": "00e00c98",
+      "map": "00e00c90",
+      "max_state": 1,
+      "state0_cleanup": "00cc66a0",
+      "cleanup": "completed raw SBO temporary at EBP-50 through004072d0",
+      "arming": "after00408720 succeeds, before00411700",
+      "source_boundary": "owning NativeHardwareLayoutInvalidIterator with native28h storage and host RTTI/catch ABI"
+    }
+  ],
+  "producer_evidence": [
+    "BDAFA0/BDB450 publish head+4, nil+1D, self-links0/4/8, count+8=0",
+    "BDABA0 allocates20h and writes links0/4/8, black+1C=1,nil+1D=0",
+    "BDCC60 initializes two eight-byte length/data headers"
+  ],
+  "build": {
+    "status": "passed",
+    "command": "process MSBUILDDISABLENODEREUSE=1; scripts/build.ps1",
+    "configuration": "MSVC Win32 Release /W4 /WX /fp:strict",
+    "initial_log": "local/physical-tree-build-initial.log",
+    "final_log": "local/physical-tree-build-final-v2.log",
+    "final_log_sha256": "fcdf85d74537216624b98035d05ba0c12988d88349c74440a0ab04b19014fb2a",
+    "verify_seeds": "eight original seed spans matched disk before native differential test configuration",
+    "ctests": "2/2 passed: reconstructed_math and native_math_differential",
+    "source_hashes": {
+      "src/native_physical_index_tree.cpp": "0023c10c7c44364874f84b2f2c1a6caa9081d18dcf5348d3a6c520ffd5b288fa",
+      "include/bsp/native_physical_index_tree.hpp": "6426542183b40a30e0a87acba0b0c20fb274c276680fc63e9024fbd2666cb893",
+      "build/win32/bsp_core.dir/Release/native_physical_index_tree.obj": "f40c45b172229edd4e2bf58ed038ca572215bfdc17360c05b2300f3f293b079b",
+      "build/win32/Release/bsp_core.lib": "c39db249c813005bde8952466e4634a1bfa6440c82b3f1d8c6bd0d96ebfa8453"
+    },
+    "prior_final_log": "local/physical-tree-build-final.log"
+  },
+  "fixture": {
+    "status": "passed",
+    "native_source_scenarios": 8,
+    "normalized_dword_observations": 1469,
+    "source_sentinel_exception": "passed native28h owning transport, D6926C profile, unchanged output/tree, no payload release",
+    "probe": "local/physical_tree_probe.cpp",
+    "probe_executable": "local/physical_tree_probe.exe",
+    "run_log": "local/physical-tree-probe-run-2.log",
+    "run_log_sha256": "136decba8561acf8067dbf3b7a755d2c42d4241652fb5f49304d669c90c8407e",
+    "compile_log": "local/physical-tree-probe-compile-2.log",
+    "compile_attempts": 2,
+    "execution_attempts": 2,
+    "first_attempt_passed": true,
+    "frozen_input_count": 1770,
+    "before_first_execution_manifest": "local/physical_tree_freeze_v2/manifest.json",
+    "manifest_sha256": "02128aba0af7783adc0d2ecb89f47c8e5fa575ab67d50ab3374acd8ceb85757a",
+    "after_execution": "local/physical_tree_freeze_v2/after.json",
+    "post_run_input_mismatches": 0,
+    "frozen_artifacts": [
+      {
+        "path": "src/native_physical_index_tree.cpp",
+        "bytes": 14598,
+        "sha256": "0023c10c7c44364874f84b2f2c1a6caa9081d18dcf5348d3a6c520ffd5b288fa"
+      },
+      {
+        "path": "include/bsp/native_physical_index_tree.hpp",
+        "bytes": 3001,
+        "sha256": "6426542183b40a30e0a87acba0b0c20fb274c276680fc63e9024fbd2666cb893"
+      },
+      {
+        "path": "local/physical_tree_probe.cpp",
+        "bytes": 7654,
+        "sha256": "5f6ce7eae923119aee7f942e8c4eedd8401869f0b52beb12c1808dc1b13735f9"
+      },
+      {
+        "path": "local/physical_tree_probe.obj",
+        "bytes": 240991,
+        "sha256": "9f67ec4bff4446cfdbf90a11d26ffcb78a2749c88b26ff3c5a5d13b23ca003eb"
+      },
+      {
+        "path": "local/physical_tree_probe.exe",
+        "bytes": 41472,
+        "sha256": "b1b0db06af5380e82e908f092d26f2930938e524340d8ef2af1e9da161895a99"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_physical_index_tree.obj",
+        "bytes": 9260,
+        "sha256": "f40c45b172229edd4e2bf58ed038ca572215bfdc17360c05b2300f3f293b079b"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 46915462,
+        "sha256": "c39db249c813005bde8952466e4634a1bfa6440c82b3f1d8c6bd0d96ebfa8453"
+      }
+    ],
+    "redirects": [
+      {
+        "entry": "00419cc0",
+        "to": "fixture getter returning active explicit storage",
+        "abi": "cdecl RET0"
+      },
+      {
+        "entry": "00bd1510",
+        "to": "fixture release log and current-field mutation",
+        "abi": "fastcall ECX pool, unused EDX; three stack args; RET0C"
+      },
+      {
+        "entry": "00bf65ac",
+        "to": "fixture CRT std::free",
+        "abi": "cdecl block, caller cleanup"
+      },
+      {
+        "entry": "00bf6713",
+        "to": "fixture returning invalid counter",
+        "abi": "cdecl no args"
+      }
+    ],
+    "scenarios": [
+      "balanced7-node erase order4,1,6,2,7,5,3 with current shape/color/successor snapshots",
+      "mirrored erase order4,7,2,6,1,3,5",
+      "second release mutates current first-string length/data and count before decrement",
+      "partial erase [node2,node6)",
+      "full range leaves self-linked head with zero count",
+      "full range release replaces current head; resets and output use new head",
+      "wrapper frees head then zeros head/count while preserving guard",
+      "returning wrong-owner validation on empty partial range"
+    ],
+    "limits": [
+      "private process only; ten original copied normal-path spans",
+      "original handler absolute addresses not relocated; original exception paths not executed",
+      "source sentinel transport uses host RTTI/FH3, not original D863A8 catch identity",
+      "pooled string returns are explicitly redirected; lazy production getter exceptions not exercised",
+      "fixture is bounded raw-storage evidence, not exhaustive red-black input coverage or game validation"
+    ],
+    "prior_revision": {
+      "manifest": "local/physical_tree_freeze_v1/manifest.json",
+      "sha256": "46f98e27ab368d401bf0c76165186529e67fb063fcbc1fb4dbe9119ec6978a3f",
+      "run_log": "local/physical-tree-probe-run-1.log",
+      "compile_log": "local/physical-tree-probe-compile-1.log",
+      "passed": true,
+      "reason_for_revision": "remove a trailing blank source line reported by git diff --check; no behavioral edits"
+    },
+    "all_attempts_passed": true
+  },
+  "game_validated": false,
+  "binary_abi_compatible": false,
+  "ghidra_mutations": false,
+  "call_verification": {
+    "checked": 29,
+    "failed": 0,
+    "log": "local/physical-tree-call-verification.log"
+  },
+  "previous_annotation_values": [
+    {
+      "address": "00489d50",
+      "previous_ghidra_name": "BSP_TrafficStringPair_Destroy",
+      "previous_ledger_name": "BSP_TrafficStringPair_Destroy",
+      "previous_ledger_evidence": "Hypothesis, not a recovered symbol. integrated_native_string_cleanup through 00489dc5; ECX=pair; RET. Full-span live/disk bytes match SHA256 ee51a70ab93dc01ef7d65d6a6516842f973fd6f70291a935da06fb30cbcdeec4. See docs/TRAFFIC_CONFIG.md. Native STL/SEH/ABI and gameplay remain unvalidated.",
+      "proposed_ghidra_name": "BSP_TrafficStringPair_Destroy"
+    },
+    {
+      "address": "00bd9380",
+      "previous_ghidra_name": "FUN_00bd9380",
+      "previous_ledger_name": null,
+      "previous_ledger_evidence": null,
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_Maximum_00BD9380"
+    },
+    {
+      "address": "00bd93a0",
+      "previous_ghidra_name": "FUN_00bd93a0",
+      "previous_ledger_name": null,
+      "previous_ledger_evidence": null,
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_Minimum_00BD93A0"
+    },
+    {
+      "address": "00bd93e0",
+      "previous_ghidra_name": "FUN_00bd93e0",
+      "previous_ledger_name": null,
+      "previous_ledger_evidence": null,
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_RotateRight_00BD93E0"
+    },
+    {
+      "address": "00bda090",
+      "previous_ghidra_name": "FUN_00bda090",
+      "previous_ledger_name": null,
+      "previous_ledger_evidence": null,
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_RotateLeft_00BDA090"
+    },
+    {
+      "address": "00bdf7a0",
+      "previous_ghidra_name": "FUN_00bdf7a0",
+      "previous_ledger_name": null,
+      "previous_ledger_evidence": null,
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_DestroySubtree_00BDF7A0"
+    },
+    {
+      "address": "00bdfd80",
+      "previous_ghidra_name": "STL_xlen_throw_00bdfd80",
+      "previous_ledger_name": null,
+      "previous_ledger_evidence": null,
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_EraseIterator_00BDFD80"
+    },
+    {
+      "address": "00be0c30",
+      "previous_ghidra_name": "FUN_00be0c30",
+      "previous_ledger_name": null,
+      "previous_ledger_evidence": null,
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_EraseRange_00BE0C30"
+    },
+    {
+      "address": "00be1700",
+      "previous_ghidra_name": "FUN_00be1700",
+      "previous_ledger_name": null,
+      "previous_ledger_evidence": null,
+      "proposed_ghidra_name": "BSP_NativePhysicalIndex_Destroy_00BE1700"
+    }
+  ]
+}
