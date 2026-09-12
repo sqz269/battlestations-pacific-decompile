@@ -1,0 +1,485 @@
+{
+  "packet": "cc_ai_path_search",
+  "owner": "agent/cc-ai-path-search",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only: no renames, comments, prototypes, function creation or saves",
+  "docs": ["docs/SHIP_AI_PATH_SEARCH.md"],
+  "sources": [
+    "include/bsp/ship_ai_path_search.hpp",
+    "src/ship_ai_path_search.cpp",
+    "cmake/startup.cmake"
+  ],
+  "verification": {
+    "checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md",
+    "argument_count": "009EC680 ends RET 4 at 009EC6B8, 009EC70F, 009EC729, 009EC73F and 009EC74A: one stack dword, the frame delta, plus ECX. 009E3330 ends RET 8 at 009E349E, 009E34BF, 009E352E, 009E356F, 009E36A6, 009E36C7, 009E3761 and 009E376F: two stack dwords, and the call site 009EC6ED-009EC6F6 pushes 0 then the float. 009E3040 ends RET 10h at 009E3305, 009E3319 and 009E3325: four stack dwords, and 009E337D-009E338C pushes the float, two out pointers and the side. 009D92E0 ends RET 4. 009D5A20, 009D9550, 009D96A0, 009D5930 and 009D58F0 end RET 0. 00422500 ends RET 28h, which is the 40 bytes 009E30CF-009E30F5 pushes, the first argument being a float2 by value.",
+    "boundary": "Every call site below was read back through `bsp.py ghidra proto <site> --brief`; the containing function is the `function` field. The 00424C40 sites are inside 009EC280, not 009EC680: 009EC680 itself calls only 009EC280, 009E3330, 009D5A20, 009D9550 and 009D96A0.",
+    "all_call_sites": "009EC680's two call sites 009ED59B and 009ED614 were both read: the first runs on the plan being computed after 009ED528 sets nav+2FCh, the second on the plan in use only when 009E3780 returned true at 009ED602. 0071C4F0 and 00BF681B each have several sites inside this packet and all are listed.",
+    "register_provenance": "009E3040's side argument and both out pointers were resolved by tracking ESP through 009E3330's SUB ESP,0xc plus four pushes (base = entry-0x1c) and reading every LEA against it. 009E3330's EBP is -1 from 009E333D until 009E33AF reloads it with the right candidate; EDI is the depth counter until 009E3411 reloads it with the left candidate, which is safe because no path after 009E3379 loops back.",
+    "run_time": "not applicable: bsp_game.exe's host tables in docs/GAME_EXECUTABLE.md do not reach 009EC680, and no claim here is about a particular frame.",
+    "not_done": [
+      "tests/math_tests.cpp was leased by agent/cc-scene-spawn-speed (packet cc_cruise_speed_setting_test) for the whole window, so the one permitted test case was left out. The behaviour it would have covered, a two-seed search on a flat sea reaching state 3 and then Ready in four ticks, is documented in docs/SHIP_AI_PATH_SEARCH.md instead.",
+      "00422500's tangent walk and 004179D0 were not read, so the rule that picks the two corners and the zone-versus-segment test itself are host contracts, not reconstructions."
+    ]
+  },
+  "routines": [
+    {
+      "address": "009ec680",
+      "name": "BSP_ShipAiPathSearch_Tick",
+      "abi": "__thiscall(plan)(float frame_delta), RET 4, body 009ec680-009ec74c",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_search_tick_009ec680"
+    },
+    {
+      "address": "009ec280",
+      "name": "BSP_ShipAiPathSearch_CostGraph",
+      "abi": "__thiscall(node)(float side_switch_penalty) -> float in ST0, RET 4, body 009ec280-009ec67e",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_search_cost_009ec280"
+    },
+    {
+      "address": "009e3330",
+      "name": "BSP_ShipAiPathSearch_ExpandEdge",
+      "abi": "__thiscall(node)(float margin, int depth), RET 8, body 009e3330-009e3771",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_expand_009e3330"
+    },
+    {
+      "address": "009e3040",
+      "name": "BSP_ShipAiPathSearch_ProbeEdge",
+      "abi": "__thiscall(node)(int side, node** out_left, node** out_right, float margin) -> bool in AL, RET 10h, body 009e3040-009e3327",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_probe_edge_009e3040"
+    },
+    {
+      "address": "009d5a20",
+      "name": "BSP_ShipAiPathNode_RouteResolved",
+      "abi": "__thiscall(node) -> bool in AL, RET 0, body 009d5a20-009d5a7a",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_search_route_resolved_009d5a20"
+    },
+    {
+      "address": "009d9550",
+      "name": "BSP_ShipAiPathSearch_PruneToChain",
+      "abi": "__thiscall(node), RET 0, body 009d9550-009d9690",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_prune_009d9550"
+    },
+    {
+      "address": "009d96a0",
+      "name": "BSP_ShipAiPathSearch_SmoothOnce",
+      "abi": "__thiscall(node) -> bool in AL, RET 0, body 009d96a0-009d98bb",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_smooth_009d96a0"
+    },
+    {
+      "address": "009d92e0",
+      "name": "BSP_ShipAiPathNode_LinkAlt",
+      "abi": "__thiscall(node)(next), RET 4, body 009d92e0-009d9380",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_node_link_alt_009d92e0"
+    },
+    {
+      "address": "009d58f0",
+      "name": "BSP_ShipAiPathNode_AttachCornerRecord",
+      "abi": "__thiscall(node), RET 0, body 009d58f0-009d5929",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_path_node_attach_corner_record_009d58f0"
+    },
+    {
+      "address": "009d5930",
+      "name": "unnamed: FUN_009d5930, owned by ship_ai_path_follower",
+      "abi": "__thiscall(node), RET 0, body 009d5930-009d5987",
+      "coverage": "complete, read but not named or leased",
+      "reconstruction": "ship_ai_path_node_choose_direction_009d5930"
+    },
+    {
+      "address": "00417e90",
+      "name": "unnamed: FUN_00417e90, owned by avoid_zone_geometry",
+      "abi": "__thiscall(manager)(int layer, const float2* from, const float2* to, void** out_zone, int* out_edge) -> bool in AL, RET 14h, body 00417e90-00417eed",
+      "coverage": "complete; its callee 004179d0 is unread, so which zone wins when a segment crosses several is not established",
+      "reconstruction": "host method segment_blocked_00417e90"
+    },
+    {
+      "address": "00417610",
+      "name": "unnamed: FUN_00417610, owned by avoid_zone_geometry",
+      "abi": "__thiscall(zone)(int index) -> void*, RET 4, body 00417610-00417623",
+      "coverage": "complete: zone[0][index % zone[1]], a signed IDIV at 0041761b",
+      "reconstruction": "host method zone_corner_record_00417610"
+    },
+    {
+      "address": "0071c4f0",
+      "name": "unnamed: FUN_0071c4f0",
+      "abi": "__thiscall(world)(const float3* point) -> bool in AL, RET 4, body 0071c4f0-0071c547",
+      "coverage": "complete: returns 1 when point.x or point.z is outside world+711Ch/+7128h and world+7124h/+7130h",
+      "reconstruction": "host method point_outside_world_bounds_0071c4f0"
+    },
+    {
+      "address": "00422500",
+      "name": "unnamed: FUN_00422500, owned by avoid_zone_geometry",
+      "abi": "__thiscall(zone)(float2 far_point, int edge_index, int near_corner_hint, int far_side_hint, float margin, float2* left, float2* right, int* left_index, int* right_index) -> int, RET 28h, body 00422500-0042318f",
+      "coverage": "partial: 00422500-00422580 only, for the argument use, the corner-record array at zone+0h and count at zone+4h, the hit-edge indexing and the one-unit margin floor. 00422580-0042318f unread",
+      "reconstruction": "host method zone_detour_corners_00422500"
+    },
+    {
+      "address": "00423190",
+      "name": "unnamed: FUN_00423190, owned by avoid_zone_geometry",
+      "abi": "__thiscall(zone)(record), body 00423190-004234f8",
+      "coverage": "partial: 00423190-004231ef and 004234bc-004234d5 only, for the record+20h guard against 00D7A218, the manager's critical section, the record+10h/+14h reads and the record+20h write. 004231f0-004234bb unread",
+      "reconstruction": "host method ensure_zone_corner_metric_00423190"
+    },
+    {
+      "address": "009ed3e0",
+      "name": "BSP_ShipAi_RefreshPathPlan",
+      "abi": "__thiscall(nav)(float dt), body 009ed3e0-009ed6a6",
+      "coverage": "partial: 009ED4E4-009ED683 only, for the two 009EC680 call sites and the plan swap at 009ED5A6-009ED5C3. The rest belongs to ship_ai_order_consumer",
+      "reconstruction": "none, referenced only"
+    },
+    {
+      "address": "009e3c00",
+      "name": "unnamed: FUN_009e3c00, owned by ship_ai_path_follower",
+      "abi": "__thiscall(plan)(record* out), body 009e3c00-009e432a",
+      "coverage": "partial: the plan+34h reads at 009E3C3F and 009E3C6C only, for the node-cursor question",
+      "reconstruction": "none, referenced only"
+    },
+    {
+      "address": "009d9e50",
+      "name": "BSP_ShipAiPathPlan_RemainingLength",
+      "abi": "__thiscall(plan)(const float2* pose) -> float, body 009d9e50-009d9f8c",
+      "coverage": "partial: the plan+34h read at 009D9E67 only; the walk itself is reconstructed by ship_ai_path_planner",
+      "reconstruction": "none in this packet"
+    }
+  ],
+  "host_steps": [
+    {
+      "step": "cost 1 the game settings singleton, once per ramp field",
+      "address": "009ec30b",
+      "native": "00424c40",
+      "function": "009ec280",
+      "method": "game_settings_turn_ramp_00424c40",
+      "note": "three calls, 009EC30B, 009EC31E and 009EC331, reading settings+6F0h, +6F4h and +6F8h at 009EC310, 009EC323 and 009EC336. They feed one 00419010 ramp whose y0 is the FLDZ at 009EC3AA."
+    },
+    {
+      "step": "cost 1b the second settings read",
+      "address": "009ec31e",
+      "native": "00424c40",
+      "function": "009ec280",
+      "method": "game_settings_turn_ramp_00424c40"
+    },
+    {
+      "step": "cost 1c the third settings read",
+      "address": "009ec331",
+      "native": "00424c40",
+      "function": "009ec280",
+      "method": "game_settings_turn_ramp_00424c40"
+    },
+    {
+      "step": "probe 1 the avoid-zone manager singleton",
+      "address": "009e3058",
+      "native": "004218e0",
+      "function": "009e3040",
+      "method": "avoid_zone_manager_004218e0",
+      "note": "009E3073 MOV ECX,EAX makes it the this of the next call."
+    },
+    {
+      "step": "probe 2 does this edge cross an avoid zone in this layer",
+      "address": "009e3075",
+      "native": "00417e90",
+      "function": "009e3040",
+      "method": "segment_blocked_00417e90",
+      "note": "the only host call the search makes on an empty sea: AL zero at 009E307C returns 0 and nothing else runs."
+    },
+    {
+      "step": "probe 3 the zone's two detour corners for this hit",
+      "address": "009e3105",
+      "native": "00422500",
+      "function": "009e3040",
+      "method": "zone_detour_corners_00422500",
+      "note": "contract partial, head only. The return is read as a side preference at 009E3256 TEST/JG and 009E32AA TEST/JL."
+    },
+    {
+      "step": "probe 4 is the left corner inside the world box",
+      "address": "009e3189",
+      "native": "0071c4f0",
+      "function": "009e3040",
+      "method": "point_outside_world_bounds_0071c4f0",
+      "note": "ECX is the global at 00E188A8; the argument is a float3 built as {x, 0, z} at 009E3163-009E3183."
+    },
+    {
+      "step": "probe 5 is the right corner inside the world box",
+      "address": "009e3207",
+      "native": "0071c4f0",
+      "function": "009e3040",
+      "method": "point_outside_world_bounds_0071c4f0"
+    },
+    {
+      "step": "probe 6 the node for the surviving left corner",
+      "address": "009e3263",
+      "native": "00bf681b",
+      "function": "009e3040",
+      "method": "allocate_path_node_00bf681b",
+      "note": "PUSH 54h; 009E327A then runs 009D9150 on it. A null return makes 009E328D fault in the image."
+    },
+    {
+      "step": "probe 7 the node for the surviving right corner",
+      "address": "009e32b7",
+      "native": "00bf681b",
+      "function": "009e3040",
+      "method": "allocate_path_node_00bf681b"
+    },
+    {
+      "step": "attach 1 the zone's corner record for the index this node sits on",
+      "address": "009d5917",
+      "native": "00417610",
+      "function": "009d58f0",
+      "method": "zone_corner_record_00417610",
+      "note": "ECX is node+8h, loaded at 009D58F9; the index is node+0Ch plus one when the side byte is negative (009D590B SETL, 009D5914 ADD)."
+    },
+    {
+      "step": "attach 2 refresh that record before it is stored",
+      "address": "009d5923",
+      "native": "00423190",
+      "function": "009d58f0",
+      "method": "ensure_zone_corner_metric_00423190",
+      "note": "contract partial. ECX is reloaded from node+8h at 009D591C and node+10h is already written at 009D5920."
+    },
+    {
+      "step": "expand 1 the copy of the far node when its other back pointer is taken",
+      "address": "009e34cc",
+      "native": "00bf681b",
+      "function": "009e3330",
+      "method": "allocate_path_node_00bf681b",
+      "note": "guarded by 009E34C5 CMP [EAX+2Ch],EBX; the mirror at 009E36D4 is guarded by 009E36CD CMP [EAX+28h],EBX."
+    },
+    {
+      "step": "expand 2 the copy of the node itself when it has no free link slot",
+      "address": "009e3533",
+      "native": "00bf681b",
+      "function": "009e3330",
+      "method": "allocate_path_node_00bf681b"
+    },
+    {
+      "step": "expand 3 the far-node copy on the link_plus edge",
+      "address": "009e36d4",
+      "native": "00bf681b",
+      "function": "009e3330",
+      "method": "allocate_path_node_00bf681b"
+    },
+    {
+      "step": "expand 4 the node copy on the link_plus edge",
+      "address": "009e3725",
+      "native": "00bf681b",
+      "function": "009e3330",
+      "method": "allocate_path_node_00bf681b"
+    },
+    {
+      "step": "expand 5 destroy a rejected right candidate",
+      "address": "009e340d",
+      "native": "none",
+      "function": "009e3330",
+      "method": "release_path_node_vtable0",
+      "note": "CALL EAX on candidate->vtable[0] with 1, the scalar deleting destructor. Contract unread. The other seven sites are 009E346E, 009E3615, 009E3676 in 009E3330, 009D95A9 and 009D95C9 and 009D9680 in 009D9550, and 009D98A9 in 009D96A0."
+    },
+    {
+      "step": "expand 6 destroy a rejected left candidate",
+      "address": "009e346e",
+      "native": "none",
+      "function": "009e3330",
+      "method": "release_path_node_vtable0"
+    },
+    {
+      "step": "prune 1 destroy the losing branch, link_plus side",
+      "address": "009d95a9",
+      "native": "none",
+      "function": "009d9550",
+      "method": "release_path_node_vtable0"
+    },
+    {
+      "step": "prune 2 destroy the losing branch, link_minus side",
+      "address": "009d95c9",
+      "native": "none",
+      "function": "009d9550",
+      "method": "release_path_node_vtable0"
+    },
+    {
+      "step": "prune 3 destroy a node spliced out of a link under one unit",
+      "address": "009d9680",
+      "native": "none",
+      "function": "009d9550",
+      "method": "release_path_node_vtable0"
+    },
+    {
+      "step": "smooth 1 destroy the node the turn no longer needs",
+      "address": "009d98a9",
+      "native": "none",
+      "function": "009d96a0",
+      "method": "release_path_node_vtable0"
+    }
+  ],
+  "internal_calls": [
+    {
+      "step": "tick, state 1 and 5: cost the whole graph",
+      "address": "009ec6e2",
+      "native": "009ec280",
+      "function": "009ec680",
+      "method": "ship_ai_path_search_cost_009ec280, ECX = plan+20h at 009EC6DC, the float argument is plan+2Ch"
+    },
+    {
+      "step": "tick, state 1 and 5: split one blocked edge",
+      "address": "009ec6f6",
+      "native": "009e3330",
+      "function": "009ec680",
+      "method": "ship_ai_path_expand_009e3330, ECX = plan+20h at 009EC6F0, arguments 30.0f and 0"
+    },
+    {
+      "step": "tick, state 1 and 5: is a resolved route in place",
+      "address": "009ec6fe",
+      "native": "009d5a20",
+      "function": "009ec680",
+      "method": "ship_ai_path_search_route_resolved_009d5a20, ECX = plan+20h at 009EC6FB"
+    },
+    {
+      "step": "tick, state 3: prune every fork to a chain",
+      "address": "009ec715",
+      "native": "009d9550",
+      "function": "009ec680",
+      "method": "ship_ai_path_prune_009d9550, ECX = plan+20h at 009EC712"
+    },
+    {
+      "step": "tick, state 4: remove one unneeded corner",
+      "address": "009ec72f",
+      "native": "009d96a0",
+      "function": "009ec680",
+      "method": "ship_ai_path_smooth_009d96a0, ECX = plan+20h at 009EC72C"
+    },
+    {
+      "step": "expand: decide this node's direction before reading the edge flag",
+      "address": "009e3355",
+      "native": "009d5930",
+      "function": "009e3330",
+      "method": "ship_ai_path_node_choose_direction_009d5930"
+    },
+    {
+      "step": "expand: probe the first unresolved edge",
+      "address": "009e3396",
+      "native": "009e3040",
+      "function": "009e3330",
+      "method": "ship_ai_path_probe_edge_009e3040, side -1; the mirror site is 009E359E with side 1"
+    },
+    {
+      "step": "probe: give the new corner node its zone record",
+      "address": "009e32a3",
+      "native": "009d58f0",
+      "function": "009e3040",
+      "method": "ship_ai_path_node_attach_corner_record_009d58f0; the right-corner site is 009E32F7"
+    },
+    {
+      "step": "expand: splice with the link_plus writer",
+      "address": "009e3502",
+      "native": "009d92e0",
+      "function": "009e3330",
+      "method": "ship_ai_path_node_link_alt_009d92e0"
+    },
+    {
+      "step": "expand: splice with the link_minus writer",
+      "address": "009e348a",
+      "native": "009d9230",
+      "function": "009e3330",
+      "method": "ship_ai_path_node_link_009d9230, already reconstructed by ship_ai_path_planner"
+    },
+    {
+      "step": "smooth: relink the node to its grandchild",
+      "address": "009d988e",
+      "native": "009d9230",
+      "function": "009d96a0",
+      "method": "ship_ai_path_node_link_009d9230"
+    },
+    {
+      "step": "the two tick call sites in the navigation refresh",
+      "address": "009ed59b",
+      "native": "009ec680",
+      "function": "009ed3e0",
+      "method": "ship_ai_path_search_tick_009ec680 on nav+2F8h, the plan being computed; the second site is 009ED614 on nav+2F4h, the plan in use"
+    },
+    {
+      "step": "the tick call site on the live plan",
+      "address": "009ed614",
+      "native": "009ec680",
+      "function": "009ed3e0",
+      "method": "ship_ai_path_search_tick_009ec680, reached only when 009E3780 returned true at 009ED602"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "the packet brief and docs/SHIP_AI_PATH_PLANNER.md's follow-up row list 009D9050 as one of the search routines",
+      "is": "there is no routine at 009D9050. The address is inside 009D8CE0 BSP_ShipAi_PredictTrackCrossing's body, 009D8CE0-009D9141, and nothing in 009EC680's call tree reaches it",
+      "evidence": "bsp.py lookup 009d9050 reports no function start and the enclosing candidate 009d8ce0; 009D9050 MOVSS dword ptr [ESP+48h],XMM0 is mid-expression"
+    },
+    {
+      "was": "docs/SHIP_AI_PATH_PLANNER.md describes plan+2Ch as 'the search context 009EC697 hands to 009EC280' and include/bsp/ship_ai_path_planner.hpp types it std::uint32_t search_context",
+      "is": "it is a float: the penalty a route pays when two consecutive corners sit on opposite sides of their zones. 009D9CE1 writes it zero and no other writer was found, so it is inert in the image",
+      "evidence": "009EC6D8 FLD float ptr [ESI+2Ch]; the adds at 009EC4D2, 009EC568, 009EC613 and 009EC62D, each guarded by an IMUL of the two signed +14h bytes at 009EC4CB, 009EC561, 009EC5FC and 009EC622"
+    },
+    {
+      "was": "include/bsp/ship_ai_path_planner.hpp names node+31h short_link, 'set when link_minus_length is below one unit'",
+      "is": "that is only its seed value. The flag means 'the link_minus edge has been proved clear', and +32h is the same flag for link_plus",
+      "evidence": "009E3573 and 009E3764 set them when the probe found no zone; 009D98AF sets +31h on a spliced link; 009D95CE clears it; 009D5A38/009D5A4C and 009E335F/009E336A are the only readers"
+    },
+    {
+      "was": "include/bsp/ship_ai_path_planner.hpp types node+2Ch as an unnamed std::uint32_t field_2c",
+      "is": "it is the back pointer of link_plus, exactly what +28h is for link_minus",
+      "evidence": "009D92F8 MOV dword ptr [EAX+2Ch],ESI inside 009D92E0 against 009D9248 MOV dword ptr [EAX+28h],ESI inside 009D9230; 009E34C5 and 009E36CD read the pair symmetrically before deciding whether to copy the far node"
+    },
+    {
+      "was": "include/bsp/ship_ai_path_planner.hpp types node+14h as std::uint8_t field_14",
+      "is": "the byte is read signed everywhere: -1 for the left corner, +1 for the right",
+      "evidence": "009D590B CMP byte ptr [ESI+14h],DL with 009D5911 SETL; 009D985B and 009D986D with JG and JL; 009EC4B1 and 009EC4C7 MOVSX"
+    },
+    {
+      "was": "the decompiler renders 009E3330's splice as repeated BSP_ShipAiPathNode_LinkNext(x) calls with no this pointer",
+      "is": "each is a __thiscall whose ECX is set on the preceding instruction, and half of them are 009D92E0, the link_plus mirror, not 009D9230",
+      "evidence": "009E3488 MOV ECX,EDI before 009E348A CALL 009D9230; 009E3500 MOV ECX,EDI before 009E3502 CALL 009D92E0"
+    },
+    {
+      "was": "the decompiler gives 009E3040 five scalar parameters and loses 00422500's by-value point",
+      "is": "00422500's first argument is the far endpoint as two floats on the stack",
+      "evidence": "009E30F0 SUB ESP,8 then 009E30F5 and 009E30FE store far.x and far.z there; RET 28h accounts for all 40 bytes"
+    },
+    {
+      "was": "the decompiler shows 009E3040 calling 004218E0 and discarding the result",
+      "is": "009E3073 MOV ECX,EAX makes the singleton the this pointer of 00417E90",
+      "evidence": "009E3058 CALL 004218E0; 009E3073 MOV ECX,EAX; 009E3075 CALL 00417E90"
+    }
+  ],
+  "no_ghidra_function": [],
+  "coverage_summary": {
+    "complete": [
+      "009ec680",
+      "009ec280",
+      "009e3330",
+      "009e3040",
+      "009d5a20",
+      "009d9550",
+      "009d96a0",
+      "009d92e0",
+      "009d58f0",
+      "009d5930",
+      "00417e90",
+      "00417610",
+      "0071c4f0"
+    ],
+    "partial": [
+      "00422500: 00422500-00422580 only",
+      "00423190: 00423190-004231ef and 004234bc-004234d5 only",
+      "009ed3e0: 009ED4E4-009ED683 only",
+      "009e3c00: the plan+34h reads only",
+      "009d9e50: the plan+34h read only"
+    ],
+    "open": [
+      "what advances plan+34h: nothing in 009EC680's tree writes it non-zero, and both walks read it as a step cursor",
+      "the zone polygon's shape and which corner each side code names: 004179D0 and 00422500's tangent walk are unread",
+      "what 00423190 computes into record+20h"
+    ]
+  }
+}

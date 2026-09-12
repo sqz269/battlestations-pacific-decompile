@@ -73,3 +73,11 @@ block of its own in its constructor (`+4BCh`..`+4C8h` zeroed, `+4CCh` = FFFFFFFF
   `0072E510` (`00CFE0A8`), which is where the write was seen.
 - `MDepthChargeLauncher` and `MCatapult` are in the same factory table and reach `0072E510`, but
   their own vtables and ids were not read: **contract: unread**.
+
+## Correction from docs/ENTITY_CLASS_IDS.md (packet cc2_class_id_table)
+
+The class table above is off by one record: the descriptor's creator is the dword immediately
+before the inline name in the node factory table, so the ids are `MRFSGun` 21h (under the base gun
+20h), `MRTGun` 23h, `MSTGun` 24h, `MBombPlatform` 25h, `MMultipleBombPlatform` 26h,
+`MDepthChargeLauncher` 27h and `MCatapult` 28h; seven ids the scene table registers as literal
+pushes settle the direction. `vtable[5Ch](20h)` still means "gun or any gun subclass".

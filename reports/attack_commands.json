@@ -1,0 +1,234 @@
+{
+  "packet": "cc2_attack_commands",
+  "owner": "agent/cc2-attack-commands",
+  "doc": "docs/ATTACK_COMMANDS.md",
+  "sources": [
+    "include/bsp/attack_commands.hpp",
+    "src/attack_commands.cpp"
+  ],
+  "headline": "The ten attack classes carry no behaviour. 007EE8F0 decides whether one class applies to one target with one loadout; 007EEC50 runs it over the classes in a fixed order and returns the winner. The controller's only arms for these classes are two rewrites in 00816E30.",
+  "routines": [
+    {
+      "address": "007ee8f0",
+      "name": "BSP_Unit_AttackCommandApplies",
+      "abi": "char __thiscall(ECX = unit)(CommandClass* klass, Entity* target, char target_is_surface, int loadout), RET 10h",
+      "coverage": "complete: 007ee8f0-007eebfb, read from the listing because Ghidra models the first argument as unaff_retaddr",
+      "abi_evidence": "007ee8f2 takes the target from [ESP+10h] and 007ee934 the class from [ESP+0Ch], after the two entry pushes; RET 10h at 007ee920 and six other exits; 009f823c supplies the same four in the same order"
+    },
+    {
+      "address": "007eec50",
+      "name": "BSP_Unit_ChooseAttackCommand",
+      "abi": "CommandClass* __thiscall(ECX = unit)(Entity* target, char prefer_ordnance, char allow_guns)",
+      "coverage": "complete"
+    },
+    {
+      "address": "007eec00",
+      "name": "BSP_Unit_AttackCommandAppliesWithLoadout",
+      "abi": "int __thiscall(ECX = unit)(CommandClass* klass, Entity* target, char target_is_surface, CommandClass** out)",
+      "coverage": "complete: computes the loadout index as (unit+369h && 00E17BF2) ? 1 : 0 and forwards to 007ee8f0"
+    },
+    {
+      "address": "007b91c0",
+      "name": "BSP_WeaponController_HasOrdnanceOfKind",
+      "abi": "int __thiscall(ECX = weapon controller)(int kind, int loadout)",
+      "coverage": "complete: loops the +994h slots at +974h, slot->vtable[220h](loadout) then descriptor->vtable[8](kind)"
+    },
+    {
+      "address": "007b9320",
+      "name": "BSP_WeaponController_HasGeneralBombOrdnance",
+      "abi": "int __thiscall(ECX = weapon controller)(int loadout)",
+      "coverage": "complete: kind 2Ah accepted only when the same descriptor answers none of 2Ch, 31h, 2Bh, 33h, 2Dh"
+    },
+    {
+      "address": "007b9480",
+      "name": "BSP_WeaponController_HasRocketOrdnance",
+      "abi": "int __thiscall(ECX = weapon controller)(int loadout)",
+      "coverage": "complete: kind 33h and descriptor +E0h greater than zero"
+    },
+    {
+      "address": "007b9230",
+      "name": "BSP_WeaponController_FirstSlotDescriptor",
+      "abi": "void* __fastcall(ECX = weapon controller)",
+      "coverage": "complete: slot[0]->vtable[220h](1), or 0 when +994h is zero"
+    },
+    {
+      "address": "00922b10",
+      "name": "BSP_Entity_IsAirborneTarget",
+      "abi": "int __fastcall(ECX = entity)",
+      "coverage": "complete: non-null, +5Dh clear, IsKindOf(0Fh) or IsKindOf(18h)"
+    },
+    {
+      "address": "00922c80",
+      "name": "BSP_Entity_IsSurfaceTarget",
+      "abi": "int __fastcall(ECX = entity, DL = allow_far)",
+      "coverage": "partial: the kind chain 6/45h/46h/1Ch and the SzurkeNyil set; the allow_far height branch past 00922cf0 was not read"
+    },
+    {
+      "address": "0099a170",
+      "name": "BSP_Bot_InstallCommandTask",
+      "abi": "void __fastcall(ECX = bot)",
+      "coverage": "complete: 168 decompiled lines, every arm read"
+    },
+    {
+      "address": "009f6d80",
+      "name": "BSP_Command_IsOrdnanceAttackClass",
+      "abi": "int __cdecl(CommandClass* klass)",
+      "coverage": "complete: seven compares, the category-2 classes"
+    },
+    {
+      "address": "009f8160",
+      "name": "BSP_Bot_RevalidateCurrentCommand",
+      "abi": "void __fastcall(ECX = bot)",
+      "coverage": "partial: the ordnance fast path, the land arm, the category gate at 009f8231 and the dogfight break-off; LAB_009f8412 itself and the 009f8460 tail were not read"
+    },
+    {
+      "address": "009f9770",
+      "name": "BSP_Ai_AttackClassWeightSlot",
+      "abi": "int __thiscall(ECX = ai record)(Entity* target, char prefer_ordnance)",
+      "coverage": "complete for the class-to-offset map; 009f7b00's use of the offset was not read"
+    },
+    {
+      "address": "009f3d00",
+      "name": "BSP_Bot_SubControllerForCommand",
+      "abi": "void* __thiscall(ECX = bot)(CommandClass* klass)",
+      "coverage": "complete for the class-to-offset map"
+    },
+    {
+      "address": "00534870",
+      "name": "BSP_Hud_UnitOrderIcon",
+      "abi": "__thiscall(ECX = hud widget)",
+      "coverage": "partial: the 18-arm class chain at 005348bf-005349bf only"
+    },
+    {
+      "address": "00811f50",
+      "name": "BSP_Unit_CommandBlocksAutoAction",
+      "abi": "int __thiscall(ECX = unit)(char check_player)",
+      "coverage": "complete. NOT a name table: docs/COMMAND_CLASSES.md's reading of this address is corrected here"
+    },
+    {
+      "address": "007f16d0",
+      "name": "BSP_Plane_ResolveReturnToBase",
+      "abi": "void* __thiscall(ECX = unit)(CommandRecord* out)",
+      "coverage": "partial: the two land branches and the retreat record head; the float block at 007f19xx was not decoded"
+    },
+    {
+      "address": "008a4f00",
+      "name": "BSP_LuaBinding_PilotBomb",
+      "abi": "int __fastcall(lua_State*)",
+      "coverage": "complete for the class choice; trace literal \"luaMW_PilotBomb failed:\""
+    },
+    {
+      "address": "008a50d0",
+      "name": "BSP_LuaBinding_PilotGunFire",
+      "abi": "int __fastcall(lua_State*)",
+      "coverage": "complete for the class choice; trace literal \"luaMW_PilotGunFire failed:\""
+    },
+    {
+      "address": "008a5310",
+      "name": "BSP_LuaBinding_PilotTorpedo",
+      "abi": "int __fastcall(lua_State*)",
+      "coverage": "complete: issues torpedo 00E08F18 unconditionally"
+    },
+    {
+      "address": "008a4960",
+      "name": "BSP_LuaBinding_PilotCloseToShip",
+      "abi": "int __fastcall(lua_State*)",
+      "coverage": "complete; trace literal \"luaMW_PilotCloseToShip failed:\""
+    },
+    {
+      "address": "008a4b10",
+      "name": "BSP_LuaBinding_PilotStopCloseToShip",
+      "abi": "int __fastcall(lua_State*)",
+      "coverage": "complete: entity vtable[114h], then controller+54h compared against closetoship"
+    }
+  ],
+  "calls": [
+    {"address": "007ee967", "function": "007ee8f0", "native": "007ed830", "role": "levelbomb: level-bomb ordnance, kind 31h"},
+    {"address": "007ee9a4", "function": "007ee8f0", "native": "007ed7e0", "role": "levelbomb fallback: general bomb ordnance, kind 2Ah"},
+    {"address": "007ee9f5", "function": "007ee8f0", "native": "007ed7e0", "role": "divebomb: general bomb ordnance"},
+    {"address": "007eea39", "function": "007ee8f0", "native": "007ed970", "role": "rocket: rocket ordnance, kind 33h"},
+    {"address": "007eea4e", "function": "007ee8f0", "native": "007ed8d0", "role": "torpedo: torpedo ordnance, kind 2Bh"},
+    {"address": "007eea63", "function": "007ee8f0", "native": "007b9230", "role": "torpedo: the first slot's descriptor, for the depth band"},
+    {"address": "007eeaa9", "function": "007ee8f0", "native": "00828ec0", "role": "torpedo: target+538h must answer 0"},
+    {"address": "007eead4", "function": "007ee8f0", "native": "007eda10", "role": "depthcharge: depth-charge ordnance, kind 2Ch"},
+    {"address": "007eeaf5", "function": "007ee8f0", "native": "00922b10", "role": "dogfight: the target must be airborne"},
+    {"address": "007eeb2c", "function": "007ee8f0", "native": "0047b850", "role": "dogfight: guns must not be suppressed"},
+    {"address": "007eeb74", "function": "007ee8f0", "native": "00827f70", "role": "kamikaze: the IsKindOf(6) target gate"},
+    {"address": "007eeb83", "function": "007ee8f0", "native": "00604a50", "role": "kamikaze: the controller half of the same gate"},
+    {"address": "007eebc2", "function": "007ee8f0", "native": "0047b850", "role": "strafe: guns must not be suppressed"},
+    {"address": "007eebe1", "function": "007ee8f0", "native": "007ed880", "role": "dropkamikaze: drop-kamikaze ordnance, kind 2Fh"}
+  ],
+  "no_ghidra_function": [
+    {"start": "009a54d0", "end": "009a54d5", "role": "depthcharge task: MOV EAX,00E08F38; RET", "read_with": "capstone over the raw image, local/raw_fn.py"},
+    {"start": "009a5db0", "end": "009a5e0d", "role": "depthcharge task still-valid; latched target at this+48Ch; calls 0071BE40 twice, 0071EB60, 00521EA0"},
+    {"start": "009d3280", "end": "009d3285", "role": "torpedo task: MOV EAX,00E08F18; RET"},
+    {"start": "009d3ef0", "end": "009d3f4d", "role": "torpedo task still-valid; latched target at this+4C4h"},
+    {"start": "009c79a0", "end": "009c79a5", "role": "divebomb task: MOV EAX,00E08F20; RET"},
+    {"start": "009c8060", "end": "009c80bd", "role": "divebomb task still-valid; latched target at this+440h"},
+    {"start": "009b7bb0", "end": "009b7bb5", "role": "levelbomb task: MOV EAX,00E08F28; RET"},
+    {"start": "009b81f0", "end": "009b824d", "role": "levelbomb task still-valid; latched target at this+440h"},
+    {"start": "009addc0", "end": "009addc5", "role": "dropkamikaze task: MOV EAX,00E08F30; RET"},
+    {"start": "009ae140", "end": "009ae19d", "role": "dropkamikaze task still-valid; latched target at this+440h"},
+    {"start": "009af060", "end": "009af065", "role": "kamikaze task: MOV EAX,00E08F50; RET"},
+    {"start": "009af560", "end": "009af5bd", "role": "kamikaze task still-valid; latched target at this+478h"},
+    {"start": "009a99e0", "end": "009a99e5", "role": "dogfight task: MOV EAX,00E08F58; RET"},
+    {"start": "009a9cc0", "end": "009a9d18", "role": "dogfight task still-valid; latched targets at this+4C4h and this+4ACh"},
+    {"start": "007b6cd0", "end": "007b6cd5", "role": "rocket task: MOV EAX,00E08F48; RET"},
+    {"start": "007b7200", "end": "007b725d", "role": "rocket task still-valid; latched target at this+468h"},
+    {"start": "009cc3d0", "end": "009cc3d5", "role": "strafe task: MOV EAX,00E08F40; RET"},
+    {"start": "009cc850", "end": "009cc8bd", "role": "strafe task still-valid; latched targets at this+44Ch and this+468h"},
+    {"start": "009a28b0", "end": "009a28b5", "role": "closetoship task: MOV EAX,00E08FA8; RET"},
+    {"start": "009a2920", "end": "009a2995", "role": "closetoship task still-valid; reads the entity vtable[174h]/[178h] rather than the director, does not accept attackmove, returns 0, 1 or 2"}
+  ],
+  "singleton_sites": {
+    "method": "the executable was scanned for the four-byte little-endian value of each of the 26 singletons (local/scan_cmd_singletons.py); 533 sites, reproducing docs/COMMAND_CLASSES.md's per-class counts exactly",
+    "artillery": ["00817229 00816E30 replaced by attackmove", "009f3d57 009F3D00 shares attackmove's bot slot", "005348bf 00534870 order icon 3", "00649352 the HUD unit rows, a peer's"],
+    "torpedo": ["007eea41 007EE8F0 arm", "007eed17 007EEC50 ordnance pass", "0099a2e9 0099A170 factory 009D4E30", "009f6d9a 009F6D80", "009f81a6 009F8160", "009f97f7 009F9770 weight +34h", "008a5461 the Lua binding", "009d3281 task getter", "009d3f16 task still-valid", "005348d0 order icon 3"],
+    "divebomb": ["007ee9c6", "007eed00", "0099a256", "009f6d93", "009f819e", "009f97da", "008a5071 Lua", "009c79a1", "009c8086", "005348e1"],
+    "levelbomb": ["007ee947", "007eecce", "0099a287", "009f6d85", "009f818c", "009f97bd", "008a506a Lua", "009b7bb1", "009b8216", "005348f2"],
+    "dropkamikaze": ["007eebcd", "007eece9", "0099a2b8", "009f6d8c", "009f8196", "009f984e", "008a5056 Lua", "009addc1", "009ae166", "00534947"],
+    "depthcharge": ["007eeab4", "007eed5c", "0099a445", "009f6daf", "009f81be", "009f8243", "009f9814", "009a54d1", "009a5dd6", "00534903"],
+    "strafe": ["007eeb95", "007eed9d", "0099a31b", "009f988f", "008a52a1 Lua", "009cc3d1", "009cc876", "00534914"],
+    "rocket": ["007eea21", "007eed2e", "0099a339", "009f6da8", "009f81b6", "009f986b", "007b6cd1", "007b7226", "00534925"],
+    "kamikaze": ["007eeb37", "007eed45", "0099a37d", "009f6da1", "009f81ae", "009f9831", "008a529a Lua", "009af061", "009af586", "00534936"],
+    "dogfight": ["007eeaed", "007eed7e", "0099a3ae", "009f831b", "009f9888", "008a52a8 Lua", "009a99e1", "009a9ce2", "00534955"],
+    "returntobase": ["0099a1c4 and 0099a1ed 0099A170 rewrite and resolve", "0084dbd3", "0084e4d4", "0067a77d and 0067a7aa and 0067aa67", "007f1aee", "00a120d3", "005f9af0", "005f9c07"],
+    "land": ["00816fc0 replaced by attackmove without IsKindOf(0Ch)", "0099a3d5 and 0099a1b4", "009f3d0f bot slot +C38h", "007205fa", "00835ec8", "005349bf order icon 4"],
+    "closetoship": ["008a4ab1 Lua", "008a4c38 the Lua stop", "0099a41e", "009a28b1", "009a294f"],
+    "Leave": ["0071df0f 0071DEE0 not an active order", "00816efe the controller one-shot", "0053ac91", "005f9c72"],
+    "disband": ["0071df16 0071DEE0 not an active order", "00816f43 calls 0077CA60", "00535b79", "005f9ca3"],
+    "tutorial": ["00cceb49 and 00cceb68 the constructor 00CCEB40", "00cdcce9 and 00cdccf4 the destructor 00CDCCE0"],
+    "tutorial_note": "four sites in the whole image, all four inside its own constructor and destructor: a registered class with no producer and no consumer"
+  },
+  "constants": {
+    "00d7a23c": "0.001f, bytes 6F 12 83 3A, the torpedo depth-band comparand at 007eea7a and 007eea87",
+    "ordnance_kinds": {"2a": "general bomb", "2b": "torpedo", "2c": "depth charge", "2f": "drop kamikaze", "31": "level bomb", "33": "rocket"},
+    "kind_ids": {"02": "surface vessel", "06": "kamikaze target ship", "08": "submarine", "0c": "land capable", "0e": "bomb excluded", "0f": "aircraft A", "10": "level bomber", "16": "dogfight excluded", "17": "kamikaze capable", "18": "aircraft B", "1c": "structure", "41": "strafe fallback"},
+    "ai_weight_offsets": {"depthcharge": "04", "divebomb": "14", "levelbomb": "24", "torpedo": "34", "dogfight_and_strafe": "54", "kamikaze_and_dropkamikaze": "64", "rocket": "74"},
+    "bot_slot_offsets": {"stop": "bd8", "cruise": "bc8", "follow": "be4", "land": "c38", "moveto": "c5c", "moveonpath": "c64", "artillery_and_attackmove": "c70 or 217c/2254"},
+    "hud_order_icons": {"0": "stop, retreat", "1": "follow, moveto, moveonpath", "2": "cruise", "3": "the ten attack classes and attackmove", "4": "land"}
+  },
+  "contracts": [
+    "docs/SCENE_COMMAND_TYPES.md owns the 26 class descriptors, names and categories",
+    "docs/COMMAND_CLASSES.md owns the vtables; its reading of 00811F50 as a name table is corrected here",
+    "docs/COMMAND_EXECUTION.md owns the ten-slot queue, the mode byte, the stages and 0071DEE0",
+    "docs/WEAPON_DIRECTOR.md owns the controller object, +220h/+222h/+240h and 00835860; vtable[5Ch] is its and docs/UNIT_TIMED_SUBUPDATES.md's IsKindOf",
+    "docs/CRUISE_COMMAND.md owns cruise 00E08F70",
+    "docs/UNIT_COMMANDED_SPEED.md owns 009E1170 and the commanded-speed stages; no arm read here enters them",
+    "docs/UNIT_COMMAND_PRODUCERS.md owns the PilotBot; this packet stops at the call site and reads only the Lua bindings",
+    "docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md owns 00A08460 and its attack-class immediates",
+    "docs/WEAPON_CLASS_DESCRIPTOR.md owns the weapon class descriptor"
+  ],
+  "unread": [
+    "moveonpath: only 0099a1dc and 009f3d00's +C64h; the path machinery 0071BDE0, 0071DC80, 0071E4C0, 0071FDE0, 007207C0 and the 50h path objects at controller+1A4h stay contract: unread",
+    "the thirteen bot task bodies 009C8C70, 009B9030, 009AEBE0, 009D4E30, 009CD300, 007B7FD0, 009AF720, 009AB570, 009B41C0, 009A2F40, 009A6970, 009CA2B0, 009BADB0",
+    "0047B850, 00604A50, 00827F70, 00828EC0 and 009229F0: cited by call site and result, not read",
+    "LAB_009F8412, the abandon path of 009F8160"
+  ],
+  "open_questions": [
+    "what kinds 0Eh, 1Ch, 41h, 45h, 46h and 35h are",
+    "whether 007B9320's sixth exclusion, kind 2Dh, has a command class",
+    "the three-value return of the task validity predicates: 009A5D80 reads 1 as failing and keys 2 against +46Eh, but the consumer was not read",
+    "tutorial's purpose"
+  ]
+}

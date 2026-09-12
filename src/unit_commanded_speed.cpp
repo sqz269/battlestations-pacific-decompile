@@ -156,7 +156,7 @@ DirectorDefaultCommand weapon_director_idle_reissue_00836dc9(
     if (host.unit_controller_belongs_to_another_007788b0()) {
         const std::uint32_t owner = host.unit_controller_owner_007788d0();
         const std::uint32_t target = host.make_command_target_00465080(owner, 0.0f);
-        host.director_issue_command_0071ecf0(kCommandObjectFollow, target);
+        host.director_issue_command_0071ecf0(kCommandedSpeedFollowObject, target);
         return DirectorDefaultCommand::Follow;
     }
 

@@ -304,3 +304,12 @@ asymmetry.
 ## Corrections from docs/PLANE_CLASS_FIELDS.md
 
 The plane reader `007d1f70` fills +138h..+608h of the 60Ch-byte plane descriptor from 70 key paths over 77 lookups. `WheelHeight` and `GroundPitch` are one gate (both non-nil sets the byte at +1F8h and converts both; the earlier `GroundPitch` +1F8h entry is that flag); `TravelSpeed` also writes +190h scaled by tuning+334h; `Accel` is scaled in place by tuning+320h * tuning+31Ch and, when that factor is not above 1.0f, `007d213c` writes 1.0f back into the shared tuning object; +218h holds the effect named by the `LowPlaneAlt` literal from no key; `GearsPullTime` defaults to 2.0f, or 4.0f for LevelBomber and LargeReconPlane; the `PartAnims` records hold elements [1], [2], their absolute difference and a present flag. 72 of the 633 installed rows are planes. The shipped `vehicleclasses.lua` measured 3,349,364 bytes on this pass against 3,158,242 recorded earlier for the same path, with an identical 633 rows; the difference is unresolved.
+
+## Correction from docs/SENSOR_TABLES.md (packet cc2_sensor_tables)
+
+- **Was:** the `ReconClass` row (`+B4h`) is "resolved through `00808F90`" at `009623F0`.
+  **Is:** the resolver call site is `00962419`; `00808F90` hands out one `2A8h` refcounted sensor
+  record per integer `ReconClass`, built by `00808CB0` (seven observer groups of eight list headers)
+  and filled by `008082A0` from the shipped `ReconClass` Lua table
+  (`scripts/datatables/classtables/{arcade,realistic}/reconclasses.lua`). `ReconModifier` (`+B8h`)
+  is the target signature the sensor test multiplies into the range scale.

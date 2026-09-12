@@ -182,10 +182,19 @@ public:
         GameHudHost* hud = nullptr, long order_frame = -1, float order_throttle = 0.0f,
         float order_rudder = 0.0f, float mission_frame_seconds = 0.0f,
         std::string trajectory_csv = {}, std::string order_command = {},
-        std::string order_command_target = {});
+        std::string order_command_target = {}, float order_speed = 0.0f,
+        bool order_speed_set = false);
     ~GameMissionHost();
     GameMissionHost(const GameMissionHost&) = delete;
     GameMissionHost& operator=(const GameMissionHost&) = delete;
+
+    // Milestone 2n, --order-unit <name>: the created instance the command form
+    // of --order is issued to, instead of the controlled unit.
+    void set_order_unit(std::string unit);
+
+    // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>: the labelled
+    // diagnostic stand-in for the state step, engaged on --order-frame.
+    void set_ai_drive(std::string unit, float throttle, float rudder);
 
     // True when --menu-select named a mission, so the run drives the path.
     bool requested() const noexcept;

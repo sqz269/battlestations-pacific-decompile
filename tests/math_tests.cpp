@@ -1,11 +1,21 @@
+#include "bsp/air_operations.hpp"
+#include "bsp/plane_flight.hpp"
+#include "bsp/cruise_speed_setting.hpp"
+#include "bsp/director_update_arms.hpp"
+#include "bsp/plane_squadron.hpp"
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/award_grant.hpp"
 #include "bsp/entity_event_queues.hpp"
+#include "bsp/entity_lifecycle_tails.hpp"
 #include "bsp/award_trackers.hpp"
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
 #include "bsp/game_settings.hpp"
 #include "bsp/gun_aiming.hpp"
+#include "bsp/gunnery_tables.hpp"
+#include "bsp/gun_platform_arc.hpp"
+#include "bsp/gun_bot_remainder.hpp"
+#include "bsp/gun_bot_ticks.hpp"
 #include "bsp/game_tuning_singleton.hpp"
 #include "bsp/gui_icon.hpp"
 #include "bsp/gui_layer.hpp"
@@ -27,6 +37,9 @@
 #include "bsp/game_render_frame.hpp"
 #include "bsp/lua_binding_entity_lookup.hpp"
 #include "bsp/mission_lobby_settings.hpp"
+#include "bsp/attack_commands.hpp"
+#include "bsp/command_execution.hpp"
+#include "bsp/dyn_lcp_impulse_math.hpp"
 #include "bsp/math.hpp"
 #include "bsp/simulation_gate.hpp"
 #include "bsp/spatial_index.hpp"
@@ -79,8 +92,13 @@
 #include "bsp/unit_hit_path.hpp"
 #include "bsp/unit_parts.hpp"
 #include "bsp/projectile_impact.hpp"
+#include "bsp/recon_slot_lists.hpp"
+#include "bsp/sensor_tables.hpp"
 #include "bsp/blast_damage.hpp"
+#include "bsp/bot_fire_target.hpp"
 #include "bsp/collision_shapes.hpp"
+#include "bsp/ship_ai_ring_scan.hpp"
+#include "bsp/unit_rudder.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -2525,6 +2543,493 @@ int main() {
             "0098AB62 keeps a sphere whose max exactly meets the node min");
         check(!bsp::collision_node_sphere_aabb_overlap(node_min, node_max, clear, 2.0f),
             "0098AB62 rejects once the sphere clears the node min");
+    }
+
+    {
+        // 00836A6C's arrival test. FLD double ptr [00D09FE8] loads 4000000.0 and
+        // FCOMIP/JBE raises stage 2 only on a strict less-than, so a unit exactly
+        // 2000 units out has not arrived. The distance uses x and z only
+        // (00836A40..00836A62 reads pfVar7[0] and pfVar7[2]); a y term or a
+        // non-strict compare would each complete the command a frame early.
+        check(!bsp::command_arrival_reached(0.0f, 0.0f, 2000.0f, 0.0f),
+            "00836A76 keeps the command at exactly the 2000-unit arrival radius");
+        check(bsp::command_arrival_reached(0.0f, 0.0f, 1999.0f, 0.0f),
+            "00836A76 completes the command just inside the radius");
+        check(bsp::command_arrival_reached(0.0f, 0.0f, 0.0f, 1999.0f),
+            "the arrival distance is built from x and z, not x and y");
+    }
+
+    {
+        // 009F5B70's score, 009F5CB2-009F5CD5. The tier is worth 10000 metres
+        // (00CE4BD8) and the running best starts at 0.0f (009F5D49), so the
+        // bottom tier of any list is unreachable however close the candidate
+        // is. Getting the 1-based counter wrong by one would silently shift
+        // every priority list by a tier, which is why this case exists.
+        const int count = 7;
+        check(bsp::auto_target_score_009f5b70(count, 0, 500.0f) == 59500.0f,
+            "009F5CBE gives the top tier six tier weights minus the distance");
+        check(bsp::auto_target_score_009f5b70(count, 6, 1.0f) == -1.0f,
+            "the bottom tier scores minus the distance");
+        check(!bsp::auto_target_score_beats_best_009f5b70(
+                  bsp::auto_target_score_009f5b70(count, 6, 1.0f), 0.0f),
+            "009F5CD5 rejects the bottom tier against the 0.0f start");
+        // 009F52F0 against the FLT_MAX seed and against a held target.
+        check(bsp::auto_target_switch_allowed_009f52f0(
+                  59500.0f, bsp::kAutoTargetRetainedScoreReset),
+            "the FLT_MAX seed lets the first candidate through");
+        check(!bsp::auto_target_switch_allowed_009f52f0(59500.0f, 59500.0f),
+            "009F52F8 keeps the held target against an equal score");
+    }
+
+    {
+        // 007EEC50's preference order. A unit that carries every ordnance and
+        // has guns matches seven classes at once, so only the order decides
+        // which one it flies. The chain is levelbomb, dropkamikaze, divebomb,
+        // torpedo, rocket, kamikaze, depthcharge (007EECCE..007EED5C), and the
+        // gun pass runs only when the ordnance pass found nothing or the caller
+        // cleared prefer_ordnance (007EED84..007EEDB2). A reordering would be
+        // silent: every candidate is individually applicable.
+        bsp::AttackFeasibilityInputs in;
+        in.unit_has_weapon_controller = true;
+        in.target_present = true;
+        in.unit_side = 1;
+        in.target_side = 3;
+        in.target_is_surface = true;
+        in.self_is_level_bomber = true;
+        in.target_is_structure = true;
+        in.has_level_bomb_ordnance = true;
+        in.has_general_bomb_ordnance = true;
+        in.has_drop_kamikaze_ordnance = true;
+        in.has_torpedo_ordnance = true;
+        in.has_rocket_ordnance = true;
+        in.has_depth_charge_ordnance = true;
+        in.target_is_submarine = true;
+        in.guns_available = true;
+        check(bsp::attack_command_choose(in, true, true) == bsp::kAttackCmdLevelBomb,
+            "007EEC50 tries levelbomb before every other ordnance class");
+        in.has_level_bomb_ordnance = false;
+        in.self_is_level_bomber = false;
+        check(bsp::attack_command_choose(in, true, true) == bsp::kAttackCmdDropKamikaze,
+            "dropkamikaze is tried before divebomb and torpedo");
+        in.has_drop_kamikaze_ordnance = false;
+        check(bsp::attack_command_choose(in, true, true) == bsp::kAttackCmdDiveBomb,
+            "divebomb is tried before torpedo and rocket");
+        // With prefer_ordnance clear the gun pass wins even though divebomb
+        // still applies, and strafe is the fallback because the target is not
+        // airborne so dogfight cannot match.
+        check(bsp::attack_command_choose(in, false, true) == bsp::kAttackCmdStrafe,
+            "a cleared prefer_ordnance sends 007EEC50 to the gun pass");
+        check(bsp::attack_command_choose(in, false, false) == 0u,
+            "a cleared allow_guns discards the gun-only answer");
+    }
+
+    {
+        // docs/DYN_LCP_IMPULSE_MATH.md: the shipped solver chain 00C4DE40 then ten
+        // passes of 00C42530 and 00C42230, for a 1000 kg hull resting on a fixed box one
+        // substep after gravity. The concrete risk this guards is the sign convention:
+        // body A takes the negated half of the Jacobian (00C4E1F7) while both apply
+        // steps add (00C425EB), so a flipped sign would leave the hull sinking through
+        // the box with an impulse that still looked plausible.
+        const float dt = 1.0f / 60.0f;
+        const float mass = 1000.0f;
+
+        bsp::DynConstraintBuildInput input;
+        input.body_a.solver_index = 0;                  // the fixed box, the static slot
+        input.body_b.solver_index = 1;                  // the hull
+        input.body_b.inverse_mass = 1.0f / mass;
+        input.body_b.position[1] = 1.0f;
+        input.body_b.linear_velocity[1] = -10.0f * dt;  // gravity already integrated
+        for (int i = 0; i < 9; i += 4) input.body_b.inverse_inertia[i] = 1.0e-4f;
+        input.point.normal[1] = 1.0f;                   // from the box up to the hull
+        input.point.local_point_b[1] = -1.0f;           // the keel, under the origin
+        input.point.depth = 0.02f;
+        input.friction = 0.5f;
+
+        bsp::DynConstraintRow rows[2];
+        const bsp::DynSolverWorldSettings settings;     // the shipped 0.1 / 1.0 / 0.5 / 10
+        bsp::dyn_build_contact_rows_00c4de40(input, settings, dt, rows[0], rows[1]);
+
+        bsp::DynSolverBodyVelocity velocities[2];
+        bsp::DynConstraintBatch batch;
+        batch.rows = rows;
+        batch.velocities = velocities;
+        batch.velocity_count = 2;
+        batch.normal_row_count = 1;
+        batch.friction_row_base = 1;
+        bsp::dyn_apply_warm_start_00c42ba0(batch);
+        bsp::dyn_solve_group_00403720(batch, settings.iterations);
+
+        const float weight_impulse = mass * 10.0f * dt;
+        check(std::fabs(rows[0].impulse - weight_impulse) < 0.01f,
+            "ten iterations of 00C42530 hold the hull up with its substep weight");
+        check(rows[1].impulse == 0.0f,
+            "00C42230 leaves friction at zero while nothing slides");
+    }
+
+    {
+        // 006CD350's launch branch: the plane limit, the free stock and the slot's
+        // own request all clamp the count, and a scripted launch leaves the 5.0
+        // second cooldown from 00CE3850 behind.
+        bsp::AirOpsLaunchInputs input;
+        input.plane_limit = 12;
+        input.committed_planes = 4;
+        input.class_stock = 6;
+        input.slot_requested = 3;
+        input.launch_requested = true;
+        const bsp::AirOpsLaunchDecision decision = bsp::air_ops_slot_launch_006cd350(input);
+        check(decision.launch_count == 3, "006CD40B clamps the launch to the slot's request");
+        check(decision.next_timer == bsp::kAirOpsSlotCooldownSeconds,
+            "006CD41F starts the 5.0 second cooldown a requested launch asks for");
+
+        input.class_stock = 0;
+        const bsp::AirOpsLaunchDecision starved = bsp::air_ops_slot_launch_006cd350(input);
+        check(starved.launch_count == 0 && starved.clear_slot,
+            "006CD414 empties the slot when no stock is free");
+    }
+
+    {
+        // 007F473A..007F476C: an absent WingCount is 3, not the " 1" the
+        // plane.props descriptor declares, and a present value below 1 is
+        // raised to 1. There is no upper clamp, so only the authored enum
+        // PlaneWingCount (1..5) keeps 007F4B55 inside the five-slot array.
+        bsp::SquadronSpawnProperties props;
+        check(bsp::squadron_resolve_wing_count_007f4747(props) == bsp::kSquadronDefaultWingCount,
+            "007F473A defaults an absent WingCount to 3");
+        props.wing_count_present = true;
+        props.wing_count_raw = 0;
+        check(bsp::squadron_resolve_wing_count_007f4747(props) == 1,
+            "007F4764 raises a WingCount below 1 to 1");
+        props.wing_count_raw = 6;
+        check(bsp::squadron_resolve_wing_count_007f4747(props) == 6,
+            "007F476E has no upper clamp on WingCount");
+        check(!bsp::squadron_wing_count_fits_array_007f4b55(6),
+            "six wings would write past the five pointers at squadron+3D0h");
+    }
+
+    {
+        // 007F669F is the one branch of 007F6530 that changes a delta's sign
+        // rather than its magnitude, so it is the branch worth pinning. Four
+        // windows partition the circle; the gun sits in the second at -1.5 rad
+        // and the target is at +1.5 rad in the fourth. The short way is +3.0
+        // rad and runs through the third window, so blocking that window has to
+        // send the gun the other way instead.
+        bsp::GunFiringArc windows[4] = {};
+        for (bsp::GunFiringArc& w : windows) {
+            w.flags = bsp::kGunArcFlagTraverse;
+            w.min_vert = -1.0f;
+            w.max_vert = 1.0f;
+        }
+        windows[0].min_horz = -3.14f; windows[0].max_horz = -2.0f;
+        windows[1].min_horz = -2.0f;  windows[1].max_horz = -1.0f;
+        windows[2].min_horz = -1.0f;  windows[2].max_horz = 1.0f;
+        windows[3].min_horz = 1.0f;   windows[3].max_horz = 3.14f;
+        const bsp::GunPlatformArcs arcs{windows, 4};
+
+        const bsp::GunArcRouteOutcome clear =
+            bsp::gun_arc_route_deltas_007f6530(arcs, -1.5f, 0.0f, 1.5f, 0.0f);
+        check(!clear.routed_around && clear.deltas.horz > 0.0f,
+            "007F6530 keeps the short way when every window on it allows traverse");
+
+        windows[2].flags = 0; // the third window forbids traversal
+        const bsp::GunArcRouteOutcome blocked =
+            bsp::gun_arc_route_deltas_007f6530(arcs, -1.5f, 0.0f, 1.5f, 0.0f);
+        check(blocked.routed_around && blocked.deltas.horz < 0.0f,
+            "007F669F reverses the traverse when a blocked window is in the way");
+    }
+
+    {
+        // 009032A8..009032E9: only a depression steeper than -0.02 rad is
+        // corrected, and the correction is v - (0.02 + v) * 0.5, which is
+        // 0.5v - 0.01, not a plain halving. A target of kind 0Fh flattens the
+        // shot instead (009032B5).
+        check(bsp::gun_bot_ballistic_vertical_correction_009030c0(0.25f, false) == 0.25f,
+            "009032A8 leaves an elevation untouched");
+        check(bsp::gun_bot_ballistic_vertical_correction_009030c0(-0.01f, false) == -0.01f,
+            "009032CE leaves a depression shallower than -0.02 rad untouched");
+        check(std::fabs(bsp::gun_bot_ballistic_vertical_correction_009030c0(-0.10f, false) -
+                        -0.06f) < 1e-6f,
+            "009032E9 maps -0.10 rad to 0.5v - 0.01 = -0.06 rad");
+        check(bsp::gun_bot_ballistic_vertical_correction_009030c0(-0.10f, true) == 0.0f,
+            "009032B5 flattens the shot when the target answers IsKindOf(0Fh)");
+    }
+
+    {
+        // 0071F290's arm order, the one rule in this packet worth pinning: a
+        // begin-command refusal terminates that command by raising its stage to
+        // 2 (0071F346 / 0071F36A), and the session-mode-2 return at 0071F37F
+        // sits *after* both begin arms but *before* the two steps. A run in
+        // mode 2 therefore still terminates a refused command.
+        struct RefusingHost final : bsp::CommandControllerUpdateHost {
+            int begins = 0;
+            void reset_path_vector() override {}
+            bool begin_command(int) override { ++begins; return false; }
+            void raise_override_stage(int) override {}
+            void raise_queue_stage(int) override {}
+            void step_auto_target(float) override {}
+            void step_commands() override {}
+        };
+        bsp::CommandControllerUpdateState state;
+        state.session_present = true;
+        state.session_flags.flag_5c = true;
+        state.slot0_occupied = true;
+        state.override_command_present = true;
+        state.auto_target_present = true;
+        state.session_mode = bsp::kSessionModeNoSimulation;
+
+        RefusingHost host;
+        const bsp::CommandControllerUpdateTrace trace =
+            bsp::run_command_controller_update(state, 0.05f, host);
+        check(trace.mode_promoted && trace.mode == 1,
+            "0071F323 promotes an idle controller with an occupied slot 0 to mode 1");
+        check(host.begins == 2 && trace.override_terminated && trace.queue_terminated,
+            "0071F346 and 0071F36A terminate a command whose begin was refused");
+        check(!trace.auto_target_stepped && !trace.commands_stepped,
+            "0071F37F returns before both steps when the session mode is 2");
+    }
+
+    {
+        // 008FB8D0 builds the intercept quadratic with a linear coefficient of
+        // dot(d, v) where the exact equation needs 2 dot(d, v), so the solution
+        // under-leads a receding target. A ship 1000 m away running straight
+        // away at half the torpedo's speed should be met at 100 s; the native
+        // answers 76.76 s. The pair is pinned so the deviation is not silently
+        // corrected into a "fix" that stops matching the game.
+        const std::array<float, 3> shooter{{0.0f, 0.0f, 0.0f}};
+        const std::array<float, 3> target{{1000.0f, 0.0f, 0.0f}};
+        const std::array<float, 3> velocity{{10.0f, 0.0f, 0.0f}};
+        const bsp::TorpedoInterceptRoots roots =
+            bsp::torpedo_intercept_time_008fb8d0(shooter, target, 20.0f, velocity);
+        check(roots.root_count == 1,
+            "008FBAE4 reports one root when the torpedo outruns the target");
+        check(std::fabs(roots.first - 76.7592f) < 1e-2f,
+            "008FBA95 under-leads a receding target: 76.76 s, not the exact 100 s");
+        check(std::fabs(bsp::torpedo_intercept_time_exact(shooter, target, 20.0f, velocity) -
+                        100.0f) < 1e-3f,
+            "the exact intercept of the same shot is 1000 / (20 - 10)");
+
+        std::array<float, 3> point{};
+        check(bsp::torpedo_intercept_point_008fbb00(shooter, target, 20.0f, velocity, point) &&
+              std::fabs(point[0] - 1767.59f) < 1e-1f,
+            "008FBB9E aims 1767.6 m out, 232 m short of the exact intercept");
+
+        // The one case the missing factor cannot spoil: a stationary target,
+        // where dot(d, v) is zero and both forms agree.
+        const std::array<float, 3> still{{0.0f, 0.0f, 0.0f}};
+        const bsp::TorpedoInterceptRoots parked =
+            bsp::torpedo_intercept_time_008fb8d0(shooter, target, 20.0f, still);
+        check(parked.root_count >= 1 && std::fabs(parked.first - 50.0f) < 1e-3f,
+            "008FB8D0 is exact against a stationary target: 1000 / 20");
+    }
+
+    {
+        // 008065FF..0080672B: the recon membership relation over every
+        // (slot index, unit party) pair the three slots can see. The slot 2 arm
+        // is its own branch, not the general rule, so it is pinned here.
+        using bsp::ReconRelation;
+        using bsp::recon_relation_for_008065ff;
+        check(recon_relation_for_008065ff(0, 0) == ReconRelation::own
+                && recon_relation_for_008065ff(0, 1) == ReconRelation::enemy
+                && recon_relation_for_008065ff(0, 2) == ReconRelation::neutral,
+            "008065FF: slot 0 sees party 0 own, party 1 enemy, party 2 neutral");
+        check(recon_relation_for_008065ff(1, 1) == ReconRelation::own
+                && recon_relation_for_008065ff(1, 0) == ReconRelation::enemy
+                && recon_relation_for_008065ff(1, 2) == ReconRelation::neutral,
+            "008065FF: slot 1 sees party 1 own, party 0 enemy, party 2 neutral");
+        check(recon_relation_for_008065ff(2, 2) == ReconRelation::own
+                && recon_relation_for_008065ff(2, 0) == ReconRelation::neutral
+                && recon_relation_for_008065ff(2, 1) == ReconRelation::neutral,
+            "00806721: slot 2 has no enemy, every other party is neutral");
+    }
+
+    {
+        // Packet cc_cruise_speed_setting. usn_2_java.scn authors
+        // `StartSpeed = F 12.0000 ;` on all fourteen of its `Cruise` units; the
+        // DeRuyter class MaxSpeed is 16.4622 m/s with the gameplay scale at 1.0.
+        // The risk this pins is 008235E1: the value 0092D770 receives is the
+        // reference speed multiplied back by the float32 ratio, not the authored
+        // speed passed straight through, and the two differ in the last bits.
+        bsp::SceneStartSpeedProperty record{};
+        record.present = true;
+        record.type = bsp::ScenePropertyType::Float;
+        record.value_float = 12.0f;
+
+        bsp::UnitOrderRing ring{};
+        const bsp::CruiseSpeedSettingOutcome cruise_seed =
+            bsp::scene_cruise_ship_speed(record, ring, 16.4622f, 1.25f, 0.0f);
+
+        check(std::fabs(cruise_seed.seed.ring_throttle - 0.7289426f) < 1e-6f,
+            "008235BF seeds ring +148h with 12.0 / 16.4622, not with 12.0");
+        // A reference speed that makes the round trip lossy, so the check tells
+        // the native's shape apart from passing the authored speed through. The
+        // authored 7.71667 m/s is the commonest StartSpeed in the shipped scenes.
+        const bsp::SceneStartSpeedSeed lossy =
+            bsp::scene_start_speed_seed_008235b0(7.71667f, 15.0f, 15.0f);
+        check(lossy.axial_speed != 7.71667f && std::fabs(lossy.axial_speed - 7.71667f) < 1e-5f,
+            "008235E1 hands 0092D770 the reference speed times the ratio, not the authored speed");
+        check(cruise_seed.latched.is_heading && std::fabs(cruise_seed.latched.steer_or_heading - 1.25f) < 1e-6f,
+            "00835AE0 keeps the spawn heading: the seed never touches the ring's rudder");
+        check(std::fabs(cruise_seed.ordered.throttle - cruise_seed.seed.ring_throttle) < 1e-6f &&
+              cruise_seed.ordered.mode == bsp::CruiseSteerMode::Heading,
+            "009E1265 orders the seeded throttle, so a scene `Cruise` ship makes way");
+    }
+
+    {
+        // 00727BD0 over the installed preference lists at 00E092C8. Pins the
+        // unclamped write index: category 0's single id 61h is one past the
+        // class-id space, so its rank lands on row 1 slot 0 and the next
+        // iteration's zeroing must erase it before row 1 is filled.
+        static std::array<int, bsp::kUnitGunneryCategoryCount * bsp::kUnitGunneryClassIdCount> ranks{};
+        bsp::build_rank_table_00727bd0(bsp::kGunneryPreferenceLists, ranks.data());
+        check(bsp::gunnery_rank(ranks.data(), 1, 0x17) == 1
+                && bsp::gunnery_rank(ranks.data(), 1, 0x41) == 12
+                && bsp::gunnery_rank(ranks.data(), 1, 0x07) == 0,
+            "00727BD0: AAMACHINEGUN ranks the kamikaze first, the navpoint last, no destroyer");
+        check(bsp::gunnery_rank(ranks.data(), 4, 0x0D) == 1
+                && bsp::gunnery_rank(ranks.data(), 2, 0x0D) == 8,
+            "00727BD0: HEAVYARTILLERY ranks the battleship first, LIGHTARTILLERY eighth");
+        check(bsp::gunnery_rank(ranks.data(), 1, 0) == 0,
+            "00727BEC: category 0's id 61h aliases row 1 slot 0 and is zeroed again");
+    }
+
+    {
+        // 009E76D0 -> 009E5E90 -> the 009E6A90 sentinel arm. The executable
+        // sailed its six attackmove ships on the 9999.0f that 009F1BF7 seeds
+        // into nested+1210h every frame, so the risk worth pinning is that the
+        // ring scan still hands 009E5E90 a real bearing and that the sentinel
+        // never survives to the throttle 009F3635 forwards.
+        struct ClearWaterHost final : bsp::ShipAiRingScanHost {
+            float committed_bearing = -1.0f;
+            bool committed = false;
+            float wrap_phase_00605070(float value) override { return value; }
+            std::uint32_t probe_space_vtable_0218() override { return 1u; }
+            bool unit_pose_fresh_00c8() override { return true; }
+            void refresh_unit_pose_00414db0() override {}
+            bsp::ShipAiAttackMoveXZ unit_world_xz() override { return {}; }
+            bsp::ShipAiAttackMoveXZ probe_origin_00417b10(std::uint32_t,
+                                                          const bsp::ShipAiAttackMoveXZ& point,
+                                                          float, int) override {
+                return point;
+            }
+            bool probe_hit_0041b4e0(std::uint32_t, const bsp::ShipAiAttackMoveXZ&,
+                                    const bsp::ShipAiAttackMoveXZ&,
+                                    bsp::ShipAiAttackMoveXZ&) override {
+                return false;
+            }
+            float planar_length_00414c60(const bsp::ShipAiAttackMoveXZ&) override { return 0.0f; }
+            float tune_reject_penalty_04() override { return 0.5f; }
+            void rebuild_unit_world_matrix() override {}
+            bsp::ShipAiAttackMoveXZ brain_goal_0b2c() override { return {}; }
+            float unit_cruise_speed_0490() override { return 0.0f; }
+            void commit_bearing_009e5e90(float bearing, float) override {
+                committed_bearing = bearing;
+                committed = true;
+            }
+        };
+
+        bsp::ShipAiAttackMoveRingSlot ring[bsp::kShipAiApproachSlotCount];
+        for (int i = 0; i < bsp::kShipAiApproachSlotCount; ++i) {
+            ring[i] = bsp::ship_ai_attackmove_ring_slot_009e5530(i, 1u, 2u);
+        }
+        bsp::ShipAiApproachSlotScore slots[bsp::kShipAiApproachSlotCount];
+        bsp::ShipAiApproachState state;
+        state.turn_radius_11f0 = 500.0f;
+        state.commanded_throttle_1210 = bsp::kApproachCommandUnset; // 009F1BF7
+        ClearWaterHost host;
+        bsp::ship_ai_ring_scan_009e76d0(state, ring, slots, 0.1f, host);
+
+        bool every_slot_accepted = true;
+        for (int i = 0; i < bsp::kShipAiApproachSlotCount; ++i) {
+            // 009E784B would have written -0.0f - tune+4h on a rejection.
+            if (slots[i].blocked_40 || slots[i].penalty_30 != 0.0f) every_slot_accepted = false;
+        }
+        check(every_slot_accepted,
+            "009E6640: a clear probe scores 1.0, so 009E7822 accepts every slot");
+        check(host.committed && host.committed_bearing == state.selected_bearing_11f8,
+            "009E7ECB: the ring scan hands 009E5E90 the winning slot's bearing");
+
+        bool blocked[bsp::kShipAiApproachSlotCount] = {};
+        bsp::ship_ai_approach_commit_bearing_009e5e90(state, blocked,
+                                                      host.committed_bearing);
+        const float error = std::fabs(
+            bsp::wrapped_angle_subtract_00438b10(0.0f, state.commanded_heading_120c));
+        // 009E6ADE: the sentinel is above 1000, so 009E6B12 replaces it.
+        check(state.commanded_throttle_1210 > 1000.0f,
+            "009F1BF7: the throttle still holds the 9999.0f sentinel here");
+        const float seeded = bsp::ship_ai_approach_throttle_seed_009e6a90(error);
+        const float limited = bsp::ship_ai_approach_command_limit_009e6a90(seeded, 1.0f);
+        check(limited >= -1.0f && limited <= 1.0f && limited != bsp::kApproachCommandUnset,
+            "009E6A90: the sentinel never reaches the throttle 009F3635 forwards");
+    }
+
+    {
+        // 00925825: the world+0Ch unit list is only left from the parentless
+        // branch of 00925780, so a child entity never reaches 004845A0 however
+        // large its +B8h counter is.
+        bsp::EntityReleaseState child{};
+        child.has_parent = true;
+        child.world_list_counter = 3;
+        const auto child_steps = bsp::entity_release_steps_006fe570(child);
+        check(std::find(child_steps.begin(), child_steps.end(),
+                        bsp::EntityReleaseStep::remove_from_world_unit_list) == child_steps.end(),
+            "00925835 is unreachable for an entity with a parent");
+
+        bsp::EntityReleaseState root = child;
+        root.has_parent = false;
+        const auto root_steps = bsp::entity_release_steps_006fe570(root);
+        check(std::find(root_steps.begin(), root_steps.end(),
+                        bsp::EntityReleaseStep::remove_from_world_unit_list) != root_steps.end(),
+            "00925835 runs for a parentless entity whose +B8h counter is set");
+    }
+
+    {
+        // 00852B90: a submarine's sensor category is a depth state, and the
+        // three comparisons run in one direction only. Getting a boundary
+        // backwards silently makes a surfaced boat sonar-visible or a deep one
+        // detectable by sight, with nothing else in the build to catch it.
+        bsp::SubmarineDepthBands bands;
+        bands.band_1200 = -2.0f;
+        bands.band_1204 = -4.0f;  // surface limit (-4 + -2) / 3 = -2
+        bands.band_1208 = -20.0f;
+        bands.band_120c = -30.0f; // deep limit (-30 + -20) * 0.5 = -25
+        using bsp::SensorCategory;
+        check(bsp::sensor_category_submarine_00852b90(0.0f, bands) == SensorCategory::surface &&
+              bsp::sensor_category_submarine_00852b90(-5.0f, bands) == SensorCategory::periscope_in &&
+              bsp::sensor_category_submarine_00852b90(-15.0f, bands) == SensorCategory::underwater &&
+              bsp::sensor_category_submarine_00852b90(-30.0f, bands) == SensorCategory::deep_underwater,
+            "00852B90 walks surface, periscope, underwater, deep as the hull sinks");
+        bands.periscope_raised = true;
+        check(bsp::sensor_category_submarine_00852b90(-5.0f, bands) == SensorCategory::periscope_out,
+            "00852C4C picks PeriscopeOut from the +1234h flag, PeriscopeIn without it");
+    }
+
+    {
+        // 009FB800 over a Shooting Star row (DropAngle 0.698132, no ClimbAngle key so
+        // class+1ECh is 0). Pins the asymmetry the two arms have: the climb arm falls
+        // back to the DEG(40) floor and so commands nothing, while the dive arm's
+        // DropAngle carries both the gain and the cap.
+        bsp::PlanePitchCommandInputs climb;
+        climb.desired_altitude = 400.0f;
+        climb.reference = 1.0f;
+        climb.unit_world_y = 100.0f;
+        climb.class_drop_angle = 0.698132f;
+        const float climb_demand = bsp::pitch_command_009fb800(climb);
+
+        bsp::PlanePitchCommandInputs dive = climb;
+        dive.desired_altitude = 100.0f;
+        dive.unit_world_y = 400.0f;
+        const float dive_demand = bsp::pitch_command_009fb800(dive);
+
+        bsp::PlanePitchCommandInputs at_ceiling = climb;
+        at_ceiling.desired_altitude = 9000.0f;
+        at_ceiling.unit_world_y = 1450.0f;
+        const float ceiling_demand = bsp::pitch_command_009fb800(at_ceiling);
+
+        check(climb_demand == 0.0f,
+            "009FB88D: class+1ECh has no Lua key, so every shipped plane climbs on a zero gain");
+        check(dive_demand < 0.0f && std::fabs(dive_demand + 0.698132f) < 1e-5f,
+            "009FB9B8: -min(DropAngle * clamp(-x/200, 0, ref), max(DropAngle*1.6, DEG(60)))");
+        check(ceiling_demand == 0.0f,
+            "009FB809: Dynamics/Ceiling minus 50 caps the demand before the error is taken");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

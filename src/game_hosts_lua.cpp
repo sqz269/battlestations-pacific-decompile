@@ -13,6 +13,7 @@
 #include "bsp/game_hosts_lua.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
 #include "bsp/mission_lobby_settings.hpp"
@@ -68,10 +69,18 @@ int binding_trampoline(lua_State* state) {
     const int row = static_cast<int>(lua_tointeger(state, lua_upvalueindex(2)));
     const int argc = lua_gettop(state);
     if (host == nullptr) return 0;
+    // Milestone 2m: the eight rows src/lua_binding_navigator.cpp reconstructs
+    // run their own bodies over this process's created instances. Every other
+    // row keeps milestone 2l's record.
+    const bsp::MissionLuaBinding& dispatch_row =
+        bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
+    GameScriptOrdersHost* orders = host->script_orders();
+    const bool handled = orders != nullptr
+        && GameScriptOrdersHost::handles(dispatch_row.name);
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
     if (!host->error_replay()) {
-        host->note_native_call(static_cast<std::size_t>(row), argc);
+        host->note_native_call(static_cast<std::size_t>(row), argc, handled);
         // Milestone 2l. Which created instance a binding was called on, read
         // off argument 1 when it is an entity table. The `ID` field is the one
         // 00928a00 seeds, so this is the same identity the native carries.
@@ -88,9 +97,7 @@ int binding_trampoline(lua_State* state) {
         // the name of the function that issues the mission's orders, and the
         // binding body is a record, so without the name there is nothing to run
         // later. The value is read, not invented, and no other row is read.
-        const bsp::MissionLuaBinding& row_binding =
-            bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
-        if (std::strcmp(row_binding.name, "CreateScript") == 0 && argc >= 1
+        if (std::strcmp(dispatch_row.name, "CreateScript") == 0 && argc >= 1
             && lua_type(state, 1) == LUA_TSTRING) {
             const char* name = lua_tolstring(state, 1, nullptr);
             if (name != nullptr) host->note_created_script(std::string(name));
@@ -103,8 +110,10 @@ int binding_trampoline(lua_State* state) {
     // is a recovered result rather than a substitute: a binding that returns one
     // value is different from one that returns none, and the shipped scripts
     // assign from these.
-    const bsp::MissionLuaBinding& binding =
-        bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
+    const bsp::MissionLuaBinding& binding = dispatch_row;
+    if (handled && !host->error_replay()) {
+        return orders->dispatch(state, binding.name, argc);
+    }
     if (bsp::mission_binding_returns_entity(binding.name)) {
         // 0089903C is the arm the native takes when the lookup produced
         // nothing. When it produced an entity the same tail pushes that
@@ -217,6 +226,9 @@ constexpr const char* kShipGlobalsGlobal = "ShipGlobals";   // 00d0b670
 // bracket the fragment (0083cdd7, 0083ce19) are the AutoThrust fields, so the
 // wrapper the fragment holds at [ESP+0BCh] is ShipGlobals["Navigator"].
 constexpr const char* kNavigatorKey = "Navigator";
+// Milestone 2p: the sub-table 0083cba8..0083ce3c reads the eleven AutoThrust
+// keys from, of which 009ec7c0 consumes seven.
+constexpr const char* kAutoThrustKey = "AutoThrust";
 // Milestone 2k, the two keys 0087d7b0 reads into global config +6Ch and +70h.
 constexpr const char* kGlobalConfigScriptPath = "scripts/datatables/globals.lua";
 constexpr const char* kGlobalsGlobal = "Globals";
@@ -356,6 +368,63 @@ bool GameMissionLuaHost::read_minimap_globals_0087d7b0(float& minimap_range,
     return true;
 }
 
+bool GameMissionLuaHost::read_auto_thrust_0083cc2c(bsp::ShipAiAutoThrustSettings& out) {
+    // Milestone 2p. 0083CBA8..0083CE3C of 0083B5E0, the eleven AutoThrust keys
+    // it writes into 00424C40()+6C4h..+6ECh. This reads the seven
+    // 009EC7C0 BSP_UnitBot_ComputeThrottleCeiling consumes
+    // (docs/GAMEPLAY_SETTINGS.md rows +6CCh, +6D0h, +6D4h, +6E0h, +6E4h, +6E8h
+    // and +6ECh) off the already-loaded `ShipGlobals` table. The loader
+    // fragment itself is not projected, so 0083CC2C stays a record and only
+    // its reads are performed; the values come from the installation's own
+    // Scripts/datatables/ShipGlobals.lua, not from this file.
+    if (state_ == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, kShipGlobalsGlobal);
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    ::lua_getfield(state_, -1, kNavigatorKey);
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    ::lua_getfield(state_, -1, kAutoThrustKey);
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    const int table = ::lua_gettop(state_);
+    struct KeyField {
+        const char* key;
+        float bsp::ShipAiAutoThrustSettings::* field;
+    };
+    static const KeyField kKeys[] = {
+        {"HdgDiffValueMin_Slow", &bsp::ShipAiAutoThrustSettings::hdg_diff_value_min_slow},
+        {"HdgDiffValueMax_Slow", &bsp::ShipAiAutoThrustSettings::hdg_diff_value_max_slow},
+        {"ThrustMin_Slow",       &bsp::ShipAiAutoThrustSettings::thrust_min_slow},
+        {"HdgDiffValueMin_Fast", &bsp::ShipAiAutoThrustSettings::hdg_diff_value_min_fast},
+        {"HdgDiffValueMax_Fast", &bsp::ShipAiAutoThrustSettings::hdg_diff_value_max_fast},
+        {"ThrustMin_Fast",       &bsp::ShipAiAutoThrustSettings::thrust_min_fast},
+        {"HdgDiffDangerMul",     &bsp::ShipAiAutoThrustSettings::hdg_diff_danger_mul},
+    };
+    bsp::ShipAiAutoThrustSettings settings{};
+    bool complete = true;
+    for (const KeyField& entry : kKeys) {
+        ::lua_getfield(state_, table, entry.key);
+        if (lua_type(state_, -1) != LUA_TNUMBER) {
+            complete = false;
+        } else {
+            settings.*(entry.field) = static_cast<float>(::lua_tonumber(state_, -1));
+        }
+        ::lua_pop(state_, 1);
+    }
+    ::lua_settop(state_, top);
+    if (!complete) return false;
+    out = settings;
+    return true;
+}
+
 bool GameMissionLuaHost::read_turn_multipliers_0083ce56(bsp::UnitRudderCurveSettings& out) {
     if (state_ == nullptr) return false;
     const int top = ::lua_gettop(state_);
@@ -411,12 +480,43 @@ void GameMissionLuaHost::note_error(const std::string& message) {
     }
 }
 
-void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count) {
+void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noexcept {
+    script_orders_ = orders;
+}
+
+GameScriptOrdersHost* GameMissionLuaHost::script_orders() const noexcept {
+    return script_orders_;
+}
+
+void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count,
+    bool handled) {
     const bsp::MissionLuaBinding* rows = bsp::mission_lua_bindings();
     if (row >= bsp::mission_lua_binding_count()) return;
     const bsp::MissionLuaBinding& binding = rows[row];
     ++summary_.native_calls;
     auto found = native_index_.find(binding.name);
+    if (handled) {
+        // The row runs its own reconstructed body; GameScriptOrdersHost records
+        // the method as concrete at the row's address. Only the counters and the
+        // per-binding line belong here.
+        if (found == native_index_.end()) {
+            native_index_.emplace(binding.name, summary_.natives.size());
+            GameMissionNativeCall record;
+            record.name.assign(binding.name);
+            record.address = binding.address;
+            record.calls = 1;
+            record.last_argument_count = argument_count;
+            summary_.natives.push_back(record);
+            log_.notef("  binding %-28s argc=%d phase=%s (reconstructed body)",
+                binding.name, argument_count,
+                phase_.empty() ? "(none)" : phase_.c_str());
+            return;
+        }
+        GameMissionNativeCall& reached = summary_.natives[found->second];
+        ++reached.calls;
+        reached.last_argument_count = argument_count;
+        return;
+    }
     if (found == native_index_.end()) {
         native_index_.emplace(binding.name, summary_.natives.size());
         GameMissionNativeCall record;
@@ -446,6 +546,53 @@ void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count) {
     char method[96];
     std::snprintf(method, sizeof(method), "MissionLuaNative::%s", binding.name);
     log_.unimplemented(method, address);
+}
+
+int GameMissionLuaHost::read_vehicle_class_integer(int index, const char* key,
+    const char* nested_key, int fallback) {
+    if (state_ == nullptr || index < 0 || key == nullptr) return fallback;
+    const int top = ::lua_gettop(state_);
+    int value = fallback;
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (nested_key != nullptr) {
+                if (::lua_type(state_, -1) == LUA_TTABLE) {
+                    ::lua_getfield(state_, -1, nested_key);
+                } else {
+                    ::lua_pushnil(state_);
+                }
+            }
+            if (::lua_type(state_, -1) == LUA_TNUMBER) {
+                value = static_cast<int>(::lua_tonumber(state_, -1));
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
+std::vector<bsp::LuaGlobalEntry> GameMissionLuaHost::lua_global_entries() {
+    std::vector<bsp::LuaGlobalEntry> entries;
+    if (state_ == nullptr) return entries;
+    const int top = ::lua_gettop(state_);
+    lua_pushnil(state_);
+    while (::lua_next(state_, LUA_GLOBALSINDEX) != 0) {
+        // 00b662b0 GetString on the key; a non-string key has no name to insert.
+        if (lua_type(state_, -2) == LUA_TSTRING) {
+            bsp::LuaGlobalEntry entry;
+            const char* name = lua_tolstring(state_, -2, nullptr);
+            if (name != nullptr) entry.name.assign(name);
+            entry.is_function = lua_type(state_, -1) == LUA_TFUNCTION;
+            entries.push_back(entry);
+        }
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+    }
+    ::lua_settop(state_, top);
+    return entries;
 }
 
 int GameMissionLuaHost::run_dofile(const std::string& path) {
@@ -853,10 +1000,17 @@ void GameMissionLuaHost::report_entity_subjects() {
             if (!seen) distinct.push_back(id);
         }
     }
+    std::size_t reconstructed = 0;
+    for (const GameMissionNativeCall& record : summary_.natives) {
+        if (record.entity_subjects.empty()) continue;
+        if (GameScriptOrdersHost::handles(record.name.c_str())) ++reconstructed;
+    }
     log_.notef("summary mission script orders instances=%zu/%zu bindings=%zu "
-        "entity_resolves=%llu: every one of those bindings is a host record with its own "
-        "row address, so the mission's own orders reach no ship",
-        distinct.size(), summary_.self_table_entities, bindings, summary_.entity_resolves);
+        "reconstructed=%zu entity_resolves=%llu: milestone 2m runs the reconstructed "
+        "bodies of the rows counted as reconstructed; the rest keep the record with "
+        "their own row address",
+        distinct.size(), summary_.self_table_entities, bindings, reconstructed,
+        summary_.entity_resolves);
 }
 
 void GameMissionLuaHost::note_created_script(std::string name) {

@@ -1,0 +1,500 @@
+{
+  "packet": "cc2_bot_task_states",
+  "owner": "agent/cc2-bot-task-states",
+  "doc": "docs/BOT_TASK_STATES.md",
+  "sources": [
+    "include/bsp/bot_task_states.hpp",
+    "src/bot_task_states.cpp"
+  ],
+  "headline": "A bot task state is a small polymorphic record embedded in the approach controller at task+3F8h, with a seven-slot interface: +0h dtor, +4h enter, +8h exit, +Ch tick(float dt), +10h/+14h/+18h unread predicates, and a moveto/follow-only +1Ch set_desired_speed. 00411E70 pushes {name, state} pairs into a plain vector at approach+FCh and the names are never looked up: every transition compares state pointers through the setter 009A56C0, which calls the outgoing state's +8h and the incoming state's +4h. The per-tick entry into a task is vtable slot +64h from 009998A0, not the +54h of docs/BOT_TASKS.md; +54h is called only on bot->+58h[0] at 0099AE28 and 0099AEAE. The depth-charge rule 009A5870 runs before the state's own tick and drives moveto/follow -> prepare -> attackrun/aim/turnto/goaway/leave -> done. Ordnance release is one shared request 007BBBA0(unit) that raises a flag on the device at unit+DECh; the depth charge drops from the aim tick 009A4010 and both classes also drop on leaving the done/prepare state (009A48D0, 009D2570). unit+9D8h is the unit's follow target: 007B8AD0 returns +9D8h == 0 and selects moveto over follow, in the constructor and again on every tick.",
+  "routines": [
+    {
+      "address": "00411e70",
+      "name": "BSP_BotStateRegistry_Add",
+      "abi": "void __thiscall(ECX = registry)(const char* name, void* state), RET 8",
+      "coverage": "complete: 00411e70-00411e8f",
+      "abi_evidence": "ECX = EDI = approach+FCh from LEA EDI,[ESI+0xFC] at 009a309b and MOV ECX,EDI before each of the nine calls; the two pushes are copied into one eight-byte local passed to 00411d90"
+    },
+    {
+      "address": "009c2ac0",
+      "name": "BSP_BotStateMoveTo_Construct",
+      "abi": "State* __thiscall(ECX = this)(Approach*, Entity* target, float near, float far, int mode)",
+      "coverage": "complete: 009c2ac0-009c2b6f",
+      "abi_evidence": "the argument order is fixed by 009a4e55-009a4e57, PUSH EBP (target) after PUSH ESI (approach) with the three floats already at [ESP], [ESP+4], [ESP+8]; param_1[0xb]/[0xc]/[0xd]/[0xe] map to +2Ch/+30h/+34h/+38h"
+    },
+    {
+      "address": "009c2980",
+      "name": "BSP_BotStateFollow_Construct",
+      "abi": "State* __thiscall(ECX = this)(Approach*, float)",
+      "coverage": "partial: only the call shape from 009a4e67-009a4e72, 009a4e88-009a4e8f, 009a4f39-009a4f40 and 009d2f6c; the body was not read",
+      "abi_evidence": "PUSH ESI (approach) with one float at [ESP] at all four sites; the vtable is overwritten by the caller at 009a4e9c and 009a4f4d"
+    },
+    {
+      "address": "009c18c0",
+      "name": "BSP_BotStateMoveTo_Tick",
+      "abi": "void __thiscall(ECX = this)(float dt), RET 4",
+      "coverage": "partial: complete for the no-target branch 009c1a50-009c1a9f and the +1Ch call; 009c1900-009c1a4f transcribed without resolving its constants",
+      "abi_evidence": "reached only through vtable 00D20AEC+0Ch; the decompiler models the float as unaff_EBX, and every sibling +Ch body (009a3770, 009a4010, 009d07b0) is __thiscall(this, float) with RET 4"
+    },
+    {
+      "address": "009c1850",
+      "name": "BSP_BotStateMoveTo_SetDesiredSpeed",
+      "abi": "void __thiscall(ECX = this)(float speed), RET 4",
+      "coverage": "complete: 009c1850-009c189f",
+      "abi_evidence": "vtable 00D20AEC+1Ch; called from 009c18c0 as (**(code**)(*this + 0x1c))(speed)"
+    },
+    {
+      "address": "009a56c0",
+      "name": "BSP_BotTask_SetState",
+      "abi": "void __thiscall(ECX = task)(void* next), RET 4",
+      "coverage": "complete: 009a56c0-009a56f0",
+      "abi_evidence": "MOV ECX,[EDI+310h] at 009a56c8 and MOV [EDI+310h],ESI at 009a56dd; two indirect calls on the outgoing +8h and the incoming +4h"
+    },
+    {
+      "address": "009a57d0",
+      "name": "BSP_BotTaskDepthCharge_EnterAttackState",
+      "abi": "void __fastcall(ECX = task)(), body 009a57d0-009a586c",
+      "coverage": "complete: 009a57d0-009a586c",
+      "abi_evidence": "no stack argument; the two inlined setters at 009a57e3/009a57fe and 009a5841/009a585c write task+310h directly"
+    },
+    {
+      "address": "009a5870",
+      "name": "BSP_BotTaskDepthCharge_UpdateState",
+      "abi": "void __thiscall(ECX = task)(float dt), RET 4",
+      "coverage": "complete: 009a5870-009a5aee",
+      "abi_evidence": "the caller at 009a6723-009a6729 pushes one float and sets ECX = ESI = task; the decompiler drops the unused float"
+    },
+    {
+      "address": "009a66c0",
+      "name": "BSP_BotTaskDepthCharge_Tick",
+      "abi": "void __thiscall(ECX = task)(float dt), RET 4",
+      "coverage": "complete: 009a66c0-009a67ba",
+      "abi_evidence": "RET 4 at 009a67ba with FLD dword ptr [ESP+8] at 009a66c1 after PUSH ECX; reached from 009998a0 as MOV EAX,[EDX+0x64]; CALL EAX"
+    },
+    {
+      "address": "009a36a0",
+      "name": "BSP_BotStateDepthChargeAttackRun_Construct",
+      "abi": "State* __thiscall(ECX = this)(Approach*), RET 4",
+      "coverage": "complete: 009a36a0-009a374f",
+      "abi_evidence": "one PUSH ESI at 009a4eb1-009a4ebc; sets +18h = 1.0f, +1Ch = -00BD2F10(0,1.0f), +20h = 0"
+    },
+    {
+      "address": "009a3770",
+      "name": "BSP_BotStateDepthChargeAttackRun_Tick",
+      "abi": "void __thiscall(ECX = this)(float dt), RET 4",
+      "coverage": "complete: 009a3770-009a38ff",
+      "abi_evidence": "vtable 00D1F64C+0Ch; the float is compared against state+1Ch at the head"
+    },
+    {
+      "address": "009a4010",
+      "name": "BSP_BotStateDepthChargeAim_Tick",
+      "abi": "void __thiscall(ECX = this)(float dt), RET 4",
+      "coverage": "partial: complete for 009a4588-009a4667 (the release tail); 009a4010-009a4587 transcribed without resolving the interpolation constants",
+      "abi_evidence": "RET 4 at 009a465a and 009a4667; vtable 00D1F6D8+0Ch"
+    },
+    {
+      "address": "009a3fa0",
+      "name": "BSP_BotApproachDepthCharge_InReleaseWindow",
+      "abi": "bool __fastcall(ECX = approach)()",
+      "coverage": "complete: 009a3fa0-009a3fdf",
+      "abi_evidence": "MOV ECX,EDI at 009a45e3 with EDI = approach; returns approach->+60h < approach->+5Ch + approach->+58h"
+    },
+    {
+      "address": "009a48d0",
+      "name": "BSP_BotStateDepthChargeDone_Exit",
+      "abi": "void __fastcall(ECX = this)()",
+      "coverage": "complete: 009a48d0-009a48ff",
+      "abi_evidence": "vtable 00D1F6FC+8h; tail call 009bde40 with ECX unchanged"
+    },
+    {
+      "address": "007bbba0",
+      "name": "BSP_Unit_RequestOrdnanceRelease",
+      "abi": "void __fastcall(ECX = unit)()",
+      "coverage": "complete: 007bbba0-007bbc1f",
+      "abi_evidence": "MOV EAX,[ESI]; MOV ECX,[EAX+4] at 009a461b-009a461d loads approach->+4h, the unit; no ADD ESP follows any of the 34 call sites"
+    },
+    {
+      "address": "009d06d0",
+      "name": "BSP_BotStateTorpedoAttackRun_Construct",
+      "abi": "State* __thiscall(ECX = this)(Approach*), RET 4",
+      "coverage": "complete: 009d06d0-009d077f",
+      "abi_evidence": "one PUSH ESI at 009d2eb1-009d2eb7; the same +18h/+1Ch/+20h shape as 009a36a0"
+    },
+    {
+      "address": "009d07b0",
+      "name": "BSP_BotStateTorpedoAttackRun_Tick",
+      "abi": "void __thiscall(ECX = this)(float dt), RET 4",
+      "coverage": "complete: 009d07b0-009d095f",
+      "abi_evidence": "vtable 00D212C4+0Ch; the float is compared against state+1Ch at the head"
+    },
+    {
+      "address": "009d2570",
+      "name": "BSP_BotStateTorpedoDone_Exit",
+      "abi": "void __fastcall(ECX = this)()",
+      "coverage": "complete: 009d2570-009d259d",
+      "abi_evidence": "PUSH ESI; MOV ESI,ECX at 009d2570-009d2571; JMP 009bde40 at 009d2599 with ECX = ESI"
+    },
+    {
+      "address": "009f9980",
+      "name": "BSP_BotApproach_BindToTask",
+      "abi": "void __thiscall(ECX = approach)(BotTask* task), RET 4",
+      "coverage": "complete: 009f9980-009f99af",
+      "abi_evidence": "PUSH ESI (task); MOV ECX,EDI (approach) at 009a52c9-009a52cc; sets approach+18h = task+4, +1Ch = task+314h, +20h = task+38Ch"
+    },
+    {
+      "address": "009a5f50",
+      "name": "BSP_BotApproachDepthCharge_Update",
+      "abi": "void __thiscall(ECX = approach)(float dt), RET 4",
+      "coverage": "partial: 009a5f50-009a6043 read; 009a6043-009a64f3 unread",
+      "abi_evidence": "MOV ECX,EDI at 009a66d3 with LEA EDI,[ESI+0x3F8] at 009a66ca, one float pushed at 009a66d0"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "009a30a8",
+      "native": "00411e70",
+      "function": "009a3090",
+      "note": "the first of nine state-name registrations, ECX = approach+FCh"
+    },
+    {
+      "address": "009a30e1",
+      "native": "00411e70",
+      "function": "009a3090",
+      "note": "DepthCharge/attackrun; the only reference to the string 00D1F5C4"
+    },
+    {
+      "address": "009a4e57",
+      "native": "009c2ac0",
+      "function": "009a4dc0",
+      "note": "builds the depth-charge moveto state at approach+110h"
+    },
+    {
+      "address": "009a4e72",
+      "native": "009c2980",
+      "function": "009a4dc0",
+      "note": "builds follow at approach+14Ch"
+    },
+    {
+      "address": "009a4e8f",
+      "native": "009c2980",
+      "function": "009a4dc0",
+      "note": "builds done at approach+1E4h, vtable overwritten at 009a4e9c"
+    },
+    {
+      "address": "009a4ebc",
+      "native": "009a36a0",
+      "function": "009a4dc0",
+      "note": "builds attackrun at approach+284h"
+    },
+    {
+      "address": "009a4f40",
+      "native": "009c2980",
+      "function": "009a4dc0",
+      "note": "builds prepare at approach+2ECh, vtable overwritten at 009a4f4d"
+    },
+    {
+      "address": "009a4fd3",
+      "native": "009a3090",
+      "function": "009a4dc0",
+      "note": "registers the nine names last"
+    },
+    {
+      "address": "009d2eb7",
+      "native": "009d06d0",
+      "function": "009d2da0",
+      "note": "builds the torpedo attackrun at approach+2BCh"
+    },
+    {
+      "address": "009d2f6c",
+      "native": "009c2980",
+      "function": "009d2da0",
+      "note": "builds the torpedo prepare at approach+348h, vtable overwritten at 009d2f79"
+    },
+    {
+      "address": "009a52cc",
+      "native": "009f9980",
+      "function": "009a5240",
+      "note": "binds the approach to the task; sets the command block pointer"
+    },
+    {
+      "address": "009a52a7",
+      "native": "007b8ad0",
+      "function": "009a5240",
+      "note": "TEST AL,AL then JNZ over LEA ECX,[ESI+0x544]: true selects moveto"
+    },
+    {
+      "address": "009a45e5",
+      "native": "009a3fa0",
+      "function": "009a4010",
+      "note": "the release window test, ECX = approach"
+    },
+    {
+      "address": "009a45fb",
+      "native": "00427eb0",
+      "function": "009a4010",
+      "note": "BSP_EntityPose_GetWorldPositionRefreshed for the altitude gate"
+    },
+    {
+      "address": "009a4620",
+      "native": "007bbba0",
+      "function": "009a4010",
+      "note": "the depth-charge release, ECX = approach->+4h"
+    },
+    {
+      "address": "009a4646",
+      "native": "00bd2f10",
+      "function": "009a4010",
+      "note": "the next release delay, ECX = 1"
+    },
+    {
+      "address": "009a48ea",
+      "native": "007bbba0",
+      "function": "009a48d0",
+      "note": "the drop on leaving done/prepare"
+    },
+    {
+      "address": "009d258a",
+      "native": "007bbba0",
+      "function": "009d2570",
+      "note": "the torpedo drop on leaving done/prepare"
+    },
+    {
+      "address": "009d25b3",
+      "native": "007bbba0",
+      "function": "009d25a0",
+      "note": "the sibling with an explicit bool argument, RET 4"
+    },
+    {
+      "address": "009a3140",
+      "native": "00411e70",
+      "function": "009a3090",
+      "note": "ADD ESI,0x3A8 before the ninth registration; this is why turnto reads +7A0h"
+    }
+  ],
+  "indirect_sites": [
+    {
+      "address": "009a52c7",
+      "native": "state->vtable[+4h]",
+      "note": "enter; MOV EDX,[ECX]; MOV EAX,[EDX+4]; CALL EAX at 009a52c2-009a52c7"
+    },
+    {
+      "address": "009a56db",
+      "native": "state->vtable[+8h]",
+      "note": "exit, on the outgoing state inside 009a56c0: MOV EAX,[ECX]; MOV EDX,[EAX+8]; CALL EDX at 009a56d6-009a56db"
+    },
+    {
+      "address": "009a56ea",
+      "native": "state->vtable[+4h]",
+      "note": "enter, on the incoming state inside 009a56c0: MOV EAX,[ESI]; MOV EDX,[EAX+4]; MOV ECX,ESI; CALL EDX at 009a56e3-009a56ea"
+    },
+    {
+      "address": "009a6741",
+      "native": "state->vtable[+Ch]",
+      "note": "the current state's tick; MOV ECX,[ESI+310h] at 009a6732, MOV EDX,[EAX+0xC] at 009a673a"
+    },
+    {
+      "address": "009a6771",
+      "native": "(*(unit+72Ch))->vtable[+38h]",
+      "note": "the manual-release request, ECX = unit+72Ch"
+    },
+    {
+      "address": "009998fb",
+      "native": "task->vtable[+64h]",
+      "note": "the per-tick entry, MOV EAX,[EDX+0x64] at 009998e8, ECX = ESI = task; 009998a0 is the peer's routine"
+    },
+    {
+      "address": "0099995a",
+      "native": "task->vtable[+64h]",
+      "note": "the second per-tick entry, after the (period, -phase) accumulator"
+    },
+    {
+      "address": "0099ae2b",
+      "native": "task->vtable[+54h]",
+      "note": "MOV ECX,[ESI+0x58]; MOV ECX,[ECX]; MOV EDX,[ECX]; MOV EAX,[EDX+0x54] at 0099ae21-0099ae28; ECX is the front task of the bot's task vector"
+    },
+    {
+      "address": "0099aeb1",
+      "native": "task->vtable[+54h]",
+      "note": "the second site, MOV ECX,EBX before the call"
+    }
+  ],
+  "raw_data": [
+    {
+      "range": "00d1f64c-00d1f667",
+      "what": "the depth-charge attackrun vtable: 009A47D0, 009A3750, 007B3DC0, 009A3770, 007B3DE0, 007B3DF0, 007B45E0",
+      "method": "ghidra bytes 00d1f640"
+    },
+    {
+      "range": "00d1f668-00d1f683",
+      "what": "the depth-charge leave vtable: 009A4D40, 009A39C0, 007B3DC0, 009A39F0, 007B3DE0, 007B3DF0, 007B45E0",
+      "method": "ghidra bytes 00d1f660"
+    },
+    {
+      "range": "00d1f684-00d1f69f",
+      "what": "the depth-charge turnto vtable: 009A4D60, 009A3AE0, 007B3DC0, 009A3B70, 007B3DE0, 007B3DF0, 007B45E0",
+      "method": "ghidra bytes 00d1f660"
+    },
+    {
+      "range": "00d1f6a0-00d1f6bb",
+      "what": "the depth-charge goaway vtable: 009A4D80, 009A3C60, 007B3DC0, 009A3E70, 007B3DE0, 007B3DF0, 007B45E0",
+      "method": "ghidra bytes 00d1f660"
+    },
+    {
+      "range": "00d1f6d8-00d1f6f3",
+      "what": "the depth-charge aim vtable: 009A4DA0, 009A3FE0, 007B3DC0, 009A4010, 007B3DE0, 007B3DF0, 007B45E0",
+      "method": "ghidra bytes 00d1f660"
+    },
+    {
+      "range": "00d1f6fc-00d1f717",
+      "what": "the depth-charge done/prepare vtable: 009A4CE0, 009A4890, 009A48D0, 009A4940, 007B3DE0, 009BE590, 009A4860",
+      "method": "ghidra bytes 00d1f660"
+    },
+    {
+      "range": "00d20aec-00d20b0b",
+      "what": "the moveto vtable, eight slots: 009C3D10, 007B3DB0, 007B3DC0, 009C18C0, 007B3DE0, 007B3DF0, 007B45E0, 009C1850",
+      "method": "ghidra bytes 00d20aec"
+    },
+    {
+      "range": "00d20ad4-00d20aeb",
+      "what": "the moveto observer sub-object vtable at state+18h: 009C2B70, 009BDEB0, 0042B120, 0042B130, 0042B140, 006935C0",
+      "method": "ghidra bytes 00d20ab0"
+    },
+    {
+      "range": "00d212c4-00d212df",
+      "what": "the torpedo attackrun vtable: 009D24C0, 009D0790, 007B3DC0, 009D07B0, 007B3DE0, 007B3DF0, 007B45E0",
+      "method": "ghidra bytes 00d212c4"
+    },
+    {
+      "range": "00d212e0-00d212fb",
+      "what": "the torpedo goaway vtable, with a +8h override: 009D2D60, 009D0D90, 009D0C00, 009D0F10, 007B3DE0, 007B3DF0, 007B45E0",
+      "method": "ghidra bytes 00d212c4"
+    },
+    {
+      "range": "00d212fc-00d21317",
+      "what": "the torpedo aim vtable: 009D2D80, 009D15D0, 009D1350, 009D15F0, 007B3DE0, 007B3DF0, 007B45E0",
+      "method": "ghidra bytes 00d212c4"
+    },
+    {
+      "range": "00d21320-00d2133b",
+      "what": "the torpedo done/prepare vtable: 009D2D00, 009D2530, 009D2570, 009D2720, 007B3DE0, ...",
+      "method": "ghidra bytes 00d212c4"
+    },
+    {
+      "range": "00d1f560-00d1f60f",
+      "what": "the nine DepthCharge state-name strings, confirming the registration order of 009a3090",
+      "method": "ghidra bytes 00d1f560"
+    },
+    {
+      "range": "007b3db0-007b3df0",
+      "what": "the five base state slot bodies: 007B3DB0 RET, 007B3DC0 RET, 007B3DE0 MOV AL,1/RET, 007B3DF0 RET",
+      "method": "ghidra bytes 007b3db0"
+    },
+    {
+      "range": "007b45e0-007b45e2",
+      "what": "007B45E0 XOR AL,AL / RET, the base +18h predicate",
+      "method": "ghidra bytes 007b45e0"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "009a66c0-009a67ba",
+      "what": "the depth-charge per-tick, vtable slot +64h",
+      "read": "PE .text decoded with capstone from local/decode_range.py; RET 4 at 009a67ba"
+    },
+    {
+      "address": "0099ae10-0099ae3f",
+      "what": "the first vtable +54h call site, ECX = bot->+58h[0]",
+      "read": "PE .text decoded with capstone; the enclosing function start was not located"
+    },
+    {
+      "address": "009d2570-009d259d",
+      "what": "the torpedo done/prepare exit slot +8h",
+      "read": "PE .text decoded with capstone; JMP 009bde40 at 009d2599"
+    },
+    {
+      "address": "009d25a0-009d25c5",
+      "what": "the sibling torpedo release with a bool argument",
+      "read": "PE .text decoded with capstone; RET 4 at 009d25c3"
+    },
+    {
+      "address": "00999a10-00999a58",
+      "what": "a three-slot predicate over bot->+58h[0], reached while looking for the +54h caller; not the tick loop",
+      "read": "PE .text decoded with capstone"
+    },
+    {
+      "address": "009a3750-009a376f",
+      "what": "the depth-charge attackrun enter, vtable 00D1F64C+4h",
+      "read": "identified from the vtable only; body not read"
+    },
+    {
+      "address": "009d15f0",
+      "what": "the torpedo aim tick, vtable 00D212FC+Ch",
+      "read": "identified from the vtable only; body not read"
+    },
+    {
+      "address": "009a66df",
+      "what": "CALL 009a5f50: step 2 of the per-tick (inside the undefined region 009a66c0-009a67ba; decoded from the PE)",
+      "read": "PE .text decoded with capstone (local/decode_range.py); the containing body 009a66c0-009a67ba has no Ghidra function, so tools/verify_report_calls.py cannot check it"
+    },
+    {
+      "address": "009a671a",
+      "what": "CALL 009bde80: step 3, refreshes the moveto ranges (inside the undefined region 009a66c0-009a67ba; decoded from the PE)",
+      "read": "PE .text decoded with capstone (local/decode_range.py); the containing body 009a66c0-009a67ba has no Ghidra function, so tools/verify_report_calls.py cannot check it"
+    },
+    {
+      "address": "009a6729",
+      "what": "CALL 009a5870: step 4, the transition rule (inside the undefined region 009a66c0-009a67ba; decoded from the PE)",
+      "read": "PE .text decoded with capstone (local/decode_range.py); the containing body 009a66c0-009a67ba has no Ghidra function, so tools/verify_report_calls.py cannot check it"
+    },
+    {
+      "address": "009a67ab",
+      "what": "CALL 007bbba0: the manual-release passthrough, ECX = task->+3FCh (inside the undefined region 009a66c0-009a67ba; decoded from the PE)",
+      "read": "PE .text decoded with capstone (local/decode_range.py); the containing body 009a66c0-009a67ba has no Ghidra function, so tools/verify_report_calls.py cannot check it"
+    }
+  ],
+  "negative_results": [
+    {
+      "claim": "The state registry is not a name lookup",
+      "evidence": "ghidra xrefs 00d1f5c4 (DepthCharge/attackrun) returns exactly one reference, the registration at 009a30da; every transition in 009a5870 and 009a57d0 compares state pointers"
+    },
+    {
+      "claim": "Slot +54h is not the per-tick entry",
+      "evidence": "009998a0 calls only MOV EAX,[EDX+0x64]; CALL EAX, at 009998fb and 0099995a; a scan of the whole .text for CALL dword ptr [reg+54h] finds one occurrence, 00c03b1b in the CRT; the two MOV EAX,[EDX+0x54] sites 0099ae28 and 0099aeae take ECX from bot->+58h[0], not from a task loop"
+    },
+    {
+      "claim": "Neither attackrun state releases ordnance",
+      "evidence": "009a3770 and 009d07b0 contain no call to 007bbba0; the scan of every E8 targeting 007bbba0 places the depth-charge sites at 009a4620 (aim), 009a48ea/009a4909 (done/prepare exit), 009a4a89, 009a5746 and 009a67ab"
+    },
+    {
+      "claim": "007BBBA0 does not spawn a projectile",
+      "evidence": "its body only raises dev->+61h, +68h, +11h on unit->+DECh and increments unit->+C20h; it has no callees"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "docs/BOT_TASKS.md: the scheduler's per-tick slot is +54h, with the loop over bot+58h not located",
+      "is": "the per-tick slot is +64h, called from 009998a0 at 009998fb and 0099995a; +54h is called on bot->+58h[0] from 0099ae28 and 0099aeae",
+      "evidence": "MOV EAX,[EDX+0x64] at 009998e8 and 00999947 with ECX = ESI = task; the depth-charge +64h body 009a66c0 calls the approach update, the transition rule and the state tick"
+    },
+    {
+      "was": "Ghidra's BSP_Unit_HasFollowTarget on 007b8ad0",
+      "is": "the body returns unit->+9D8h == 0, i.e. has NO follow target",
+      "evidence": "three instructions; 009a52ae-009a52bc selects moveto when the result is non-zero, and 009a5870 steps 4 and 5 make the same choice"
+    },
+    {
+      "was": "docs/BOT_TASKS.md: what the tasks write is the pilot control block at unit+9D4h",
+      "is": "unit+9D4h carries the altitude limits; the per-tick heading, speed and weapon requests go to the command block at task+4h, reached as approach->+18h",
+      "evidence": "009f9980 sets approach+18h = task+4; 009c18c0, 009c1850, 009a3770, 009a4010 and 009d07b0 all write through approach->+18h; 0099d300 is called on task+4h at 00999907"
+    }
+  ],
+  "unread": [
+    "009d15f0 the torpedo aim tick, and the torpedo release sites 009d26f8, 009d2938, 009d29cb, 009d3eb6, 009d4956",
+    "every dive-bomb, level-bomb, strafe, rocket, dogfight and kamikaze state body",
+    "009a5610, 009a5390, 009a53b0, the three depth-charge geometry predicates",
+    "009bde40, 009bde80, 009be590, 009becd0, 009fba50, 009fabe0, 009f9e40, 009a1a20, 0099b630, 007f0280, 00bd2f10",
+    "the device at unit+DECh and the projectile spawn behind dev->+11h",
+    "the producer of ctl->+370h and the writer of unit+9D8h",
+    "the function containing 0099ae28 and 0099aeae",
+    "the state slots +10h, +14h and +18h"
+  ]
+}

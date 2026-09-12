@@ -1,0 +1,358 @@
+{
+  "packet": "orch2_physical_conversion_ao",
+  "source": "src/native_physical_stream_conversion.cpp",
+  "header": "include/bsp/native_physical_stream_conversion.hpp",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "ownership": "Only BF4F20/BF4FF0 and four conversion files leased; one source registry line appended. No Ghidra writes. Parent owns BEF750 and runtime integration.",
+  "routines": [
+    {
+      "entry": "00bf4f20",
+      "inclusive_end": "00bf4f3f",
+      "exclusive_end": "00bf4f40",
+      "bytes": 32,
+      "sha256": "956d15aa55fd38f9f349ef3c873b984bd3fae3e02c78e78e949743f929dbb27c",
+      "hex": "8b44240c508b44240c8d5110528b54240c508b41085250ff15d822ce00c20c00",
+      "matches_installed_pe": true,
+      "stored_proto": "00bf4f20 BSP_PhysicalStream_Seek  undefined BSP_PhysicalStream_Seek(void)  body 00bf4f20 - 00bf4f3f",
+      "incoming_xrefs": "From 00d691cc [DATA]",
+      "listing": "00bf4f20 BSP_PhysicalStream_Seek: mov eax, dword ptr [esp + 0xc]\n00bf4f24: push eax\n00bf4f25: mov eax, dword ptr [esp + 0xc]\n00bf4f29: lea edx, [ecx + 0x10]\n00bf4f2c: push edx\n00bf4f2d: mov edx, dword ptr [esp + 0xc]\n00bf4f31: push eax\n00bf4f32: mov eax, dword ptr [ecx + 8]\n00bf4f35: push edx\n00bf4f36: push eax\n00bf4f37: call dword ptr [0xce22d8]\n00bf4f3d: ret 0xc\n(disk bytes, .text section; Ghidra state not consulted)",
+      "cpp": "seek_native_physical_stream_00bf4f20",
+      "proposed_name": "BSP_PhysicalStream_Seek",
+      "previous_ledger_name": "BSP_PhysicalStream_Seek",
+      "coverage": "complete",
+      "original_abi": "ECX actual raw20h stream; stack distance-low, distance-high, full origin; full BOOL EAX; RET0C",
+      "source_api": "std::int32_t seek_native_physical_stream_00bf4f20(void*, std::uint32_t low, std::uint32_t high, std::uint32_t origin) noexcept",
+      "register_provenance": "Entry ESP+4 low, ESP+8 high, ESP+C origin. BF4F20 EAX=origin then PUSH; BF4F25 EAX=high at shifted ESP+C; BF4F29 EDX=ECX+10 then PUSH; BF4F2D EDX=low at twice-shifted ESP+C; BF4F31 PUSH high; BF4F32 EAX=HANDLE+8; BF4F35/BF4F36 PUSH low/handle; BF4F37 API CALL; BF4F3D RET0C preserves full API EAX.",
+      "uncertainty": "Descriptive source name hypothesis; new C++ service interface, not a drop-in binary ABI replacement. Actual OS imported behavior is preserved without translation."
+    },
+    {
+      "entry": "00bf4ff0",
+      "inclusive_end": "00bf5017",
+      "exclusive_end": "00bf5018",
+      "bytes": 40,
+      "sha256": "98b2c13b13008e1c966ccf05c311e430ea18fba9cf4d3911ca0a4b12a3fd2d39",
+      "hex": "8b4c2404b830dc09018da424000000003908740f83c0043d3cdc090175f232c0c20400b001c20400",
+      "matches_installed_pe": true,
+      "stored_proto": "00bf4ff0 ?  ?  body ?",
+      "incoming_xrefs": "From 00d691bc [DATA]",
+      "listing": "00bf4ff0: mov ecx, dword ptr [esp + 4]\n00bf4ff4: mov eax, 0x109dc30\n00bf4ff9: lea esp, [esp]\n00bf5000: cmp dword ptr [eax], ecx\n00bf5002: je 0xbf5013\n00bf5004: add eax, 4\n00bf5007: cmp eax, 0x109dc3c\n00bf500c: jne 0xbf5000\n00bf500e: xor al, al\n00bf5010: ret 4\n00bf5013: mov al, 1\n00bf5015: ret 4\n(disk bytes, .text section; Ghidra state not consulted)",
+      "cpp": "query_native_physical_stream_type_00bf4ff0",
+      "proposed_name": "BSP_PhysicalStream_QueryType",
+      "previous_ledger_name": null,
+      "coverage": "complete raw body; saved Ghidra definition pending",
+      "original_abi": "ECX ignored; one stack token DWORD; only AL defined Boolean; RET4",
+      "source_api": "bool query_native_physical_stream_type_00bf4ff0(std::uint32_t token, const volatile std::uint32_t* ids_0109dc30) noexcept",
+      "register_provenance": "BF4FF0 overwrites ECX from ESP+4; BF4FF4 EAX=0109DC30; BF5000 CMP current DWORD at EAX with ECX; BF5004 ADD4; BF5007 compare exclusive 0109DC3C; hit BF5013 MOV AL,1; miss BF500E XOR AL,AL; BF5010/BF5015 RET4. Upper EAX retains incidental address bits.",
+      "uncertainty": "Descriptive name hypothesis; undefined saved Ghidra span established from all 40 original bytes. Caller must supply the actual current three-word ID publication; initialization semantics not reconstructed. New C++ service interface."
+    }
+  ],
+  "owned_complete_bytes": 72,
+  "raw_undefined_spans": [
+    {
+      "start": "00bf4ff0",
+      "inclusive_end": "00bf5017",
+      "exclusive_end": "00bf5018",
+      "bytes": 40,
+      "state_at_capture": "No saved Ghidra containing function; not attributed to preceding BF4FC0 or following BF5020.",
+      "definition_request": "Primary integrator: define exact BF4FF0..BF5017 (40 bytes), name BSP_PhysicalStream_QueryType, preserve prior comments and annotate evidence under write lock, then refresh affected exports. Worker remains read-only.",
+      "evidence": "Live proto and all Ghidra bytes captured; identical installed PE span and complete local Capstone listing in routines."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bf4f37",
+      "native": "IAT:00ce22d8:SetFilePointerEx",
+      "function": "00bf4f20",
+      "instruction": "CALL dword ptr [0x00ce22d8]",
+      "arguments_and_cleanup": "HANDLE+8, raw signed64 low/high distance, output actual stream+10, full origin; Win32 stdcall pops20; leaf BF4F3D RET0C.",
+      "callee_evidence": {
+        "address": "00ce22d8",
+        "dll": "KERNEL32.dll",
+        "name": "SetFilePointerEx"
+      },
+      "containing_evidence": "00bf4f37 BSP_PhysicalStream_Seek  undefined BSP_PhysicalStream_Seek(void)  body 00bf4f20 - 00bf4f3f",
+      "contract": "Complete OS import forwarding; full BOOL EAX returned, no last-error translation."
+    }
+  ],
+  "reviewed_consumers": [
+    {
+      "address": "00bef78f",
+      "native": "00d691b0+vtable0c",
+      "resolved_raw_target": "00bf4ff0",
+      "function": "00bef750",
+      "arguments_and_cleanup": "BEF781 loads current memory token from0109DBA0; BEF78C pushes token; BEF78D ECX=ESI; BEF78F CALL EDX current+0C; BF5010/BF5015 RET4; BEF791 TEST AL.",
+      "limitation": "Qualified current physical D691B0 table only; BF4FF0 is undefined in saved Ghidra at capture. Not an exhaustive indirect-call graph."
+    },
+    {
+      "address": "00bef7bc",
+      "native": "00bf4f20",
+      "function": "00bef750",
+      "arguments_and_cleanup": "BEF7AF reads current source+1C; BEF7B4/B6/B8 push zero origin/high/low; BEF7BA ECX=ESI; BEF7BC CALL EDX; callee BF4F3D RET0C.",
+      "limitation": "Qualified physical D691B0 table word D691CC=BF4F20; parent owns consuming implementation."
+    }
+  ],
+  "layout_evidence": {
+    "producer": "00bf50d0",
+    "source": "include/bsp/native_physical_stream_open.hpp",
+    "actual_storage": "Existing raw20h owner: identity D691B0, refs+4, HANDLE+8, untouched+C, position+10/+14, cached size+18/+1C.",
+    "producer_listing": "BF50E1 identity; BF50E7 invalid HANDLE+8; BF50EE/BF50F1 zero position; BF50F4/BF50F7 zero cached size. Source does not declare a replacement record.",
+    "ids": "Explicit const volatile pointer to actual contiguous current DWORDs0109DC30/34/38. Ordered early-exit loads, including zero and duplicate values.",
+    "vtable_bytes": "00d691b0  a0 55 bf 00 90 50 bf 00 e0 4e bf 00 f0 4f bf 00  .U...P...N...O..\n00d691c0  20 9d 6f 00 f0 4e bf 00 20 50 bf 00 20 4f bf 00   .o..N.. P.. O..\n00d691d0  40 4f bf 00 30 50 bf 00 50 4f bf 00 a0 4f bf 00  @O..0P..PO...O..\n00d691e0  90 4f bf 00  .O.."
+  },
+  "corrections": [
+    {
+      "was": "Existing typed seek API and ledger discussion exposed explicit Win32 error as a host result.",
+      "is": "Actual BF4F20 returns full SetFilePointerEx BOOL EAX and lets the OS write directly to raw stream+10; no translated error or shadow position.",
+      "evidence": "Complete BF4F20..BF4F3F listing, IAT CE22D8 import name, original/source real-file failure comparisons."
+    },
+    {
+      "was": "BF4FF0 had no saved Ghidra function and could be missed by export/function-only enumeration.",
+      "is": "Complete independent 40-byte body BF4FF0..BF5017 referenced by D691BC; original ECX ignored and only AL is Boolean.",
+      "evidence": "Raw installed/Ghidra byte equality, D691BC data xref, both RET4 exits. Definition requested from primary."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 MSVC Win32 Release /W4 /WX passed",
+    "initial_build_retry": "Sorting the appended registry line during the first build triggered parallel CMake regeneration/FetchContent file races. Initial log retained; unchanged-source full scripts/build.ps1 rerun after registry stabilization passed.",
+    "existing_tests": "100% tests passed, 0 tests failed out of 2: reconstructed_math and native_math_differential",
+    "seed_verification": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "ranges": 8,
+      "all_match": true
+    },
+    "original_bytes": {
+      "ranges": 2,
+      "bytes": 72,
+      "all_match": true
+    },
+    "focused_probe": {
+      "query_cases": 12,
+      "seek_cases": [
+        {
+          "name": "begin",
+          "result": 1,
+          "last_error": 305419896,
+          "position": 0
+        },
+        {
+          "name": "current",
+          "result": 1,
+          "last_error": 305419896,
+          "position": 12
+        },
+        {
+          "name": "end_negative",
+          "result": 1,
+          "last_error": 305419896,
+          "position": 29
+        },
+        {
+          "name": "high_distance",
+          "result": 1,
+          "last_error": 305419896,
+          "position": 4294967305
+        },
+        {
+          "name": "negative_begin",
+          "result": 0,
+          "last_error": 131,
+          "position": 1234605616436508552
+        },
+        {
+          "name": "invalid_origin",
+          "result": 0,
+          "last_error": 87,
+          "position": 1234605616436508552
+        },
+        {
+          "name": "invalid_handle",
+          "result": 0,
+          "last_error": 6,
+          "position": 1234605616436508552
+        }
+      ],
+      "all_original_source_comparisons_passed": true
+    },
+    "probe_scope": "One ignored fixture; original bytes execute in an isolated process with real SetFilePointerEx IAT and current ID storage. Independent real handles, existing source BF50D0 initializes actual raw owners. Full result/last-error/raw-byte/OS-cursor comparisons.",
+    "probe_compile": "MSVC Win32 /O2 /W4 /WX /MD linked bsp_core.lib, /link /MANIFEST:EMBED /BASE:0x20000000 /DYNAMICBASE:NO; probe.exe only.",
+    "report_call_check": {
+      "command": "python tools/verify_report_calls.py reports/native_physical_stream_conversion.json",
+      "passed": true,
+      "numeric_call_rows_checked": 1,
+      "failures": 0,
+      "output": "indirect  report.host_steps[0]: native='IAT:00ce22d8:SetFilePointerEx' (not checked)\n  indirect  report.reviewed_consumers[0]: native='00d691b0+vtable0c' (not checked)\n  indirect  report.reviewed_consumers[1]: 00bef7bc calls through a register or memory operand; the report resolves it to 00bf4f20 (not verifiable here)\nreports/native_physical_stream_conversion.json: 1 call rows checked, 0 failed",
+      "limitation": "Import and vtable rows are not mechanically resolved; independent installed import, table bytes and instruction listing evidence is preserved."
+    },
+    "artifacts": [
+      {
+        "path": "include/bsp/native_physical_stream_conversion.hpp",
+        "bytes": 1307,
+        "sha256": "8c24719755dd8719da843edeb2730598976d2d7dac702b733c0d399daec0d6ac"
+      },
+      {
+        "path": "src/native_physical_stream_conversion.cpp",
+        "bytes": 1077,
+        "sha256": "8c6beb3ab29e40fb71e42d4266076c27a354d72b7112b6c4e5731b1477e7454a"
+      },
+      {
+        "path": "docs/NATIVE_PHYSICAL_STREAM_CONVERSION.md",
+        "bytes": 6290,
+        "sha256": "90d00d32e100dd60ac48c12143c1366307b7972875b8dfe699310b118c4f20de"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "bytes": 53955,
+        "sha256": "a933f1640a993489c7b00e1d56140059d9072e8c6df1e2e51430928d943df9c5"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 43377068,
+        "sha256": "ace7a58dc62bc7ca4f0ae4ba852ddaa65f529b26110d422162499ba64a5bbdad"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_physical_stream_conversion.obj",
+        "bytes": 1069,
+        "sha256": "83d938ab63e4c52b9f954a34cd52e88778eff097c94c8e68190d37eb88e1b1bc"
+      },
+      {
+        "path": "build/win32/Release/bsp_math_tests.exe",
+        "bytes": 461824,
+        "sha256": "e8dcdaeed8197aeab08d2798712c0ff152fa13432fa0ba2ed19384f0cca9b049"
+      },
+      {
+        "path": "build/win32/Release/bsp_native_math_tests.exe",
+        "bytes": 18432,
+        "sha256": "08725c95978769f6f41955de2ef39571f5c7cde79eabca2786e89a8780ef34a9"
+      },
+      {
+        "path": "local/seed_reference.hpp",
+        "bytes": 2995,
+        "sha256": "26cdde71970ec8524c92d5e54e17c5587e817198ef16f3b6f2b8be25cd556d2c"
+      },
+      {
+        "path": "local/physical_conversion_ao/00bf4f20.bin",
+        "bytes": 32,
+        "sha256": "956d15aa55fd38f9f349ef3c873b984bd3fae3e02c78e78e949743f929dbb27c"
+      },
+      {
+        "path": "local/physical_conversion_ao/00bf4f20_bytes.log",
+        "bytes": 154,
+        "sha256": "f800e6978a1aafd7f9b6fc57b14a53d51b09e9357ab4742ef0754d637db90253"
+      },
+      {
+        "path": "local/physical_conversion_ao/00bf4ff0.bin",
+        "bytes": 40,
+        "sha256": "98b2c13b13008e1c966ccf05c311e430ea18fba9cf4d3911ca0a4b12a3fd2d39"
+      },
+      {
+        "path": "local/physical_conversion_ao/00bf4ff0_bytes.log",
+        "bytes": 199,
+        "sha256": "58ddfde2c48f8ea42ef1f4c94a76db351c616bd1495768aec4bc2302a4950b83"
+      },
+      {
+        "path": "local/physical_conversion_ao/add_ledgers.py",
+        "bytes": 2231,
+        "sha256": "db25a3a934b3116bdf780ea687aea8910b2436cbfe7c12ec14928fbb7f903bd1"
+      },
+      {
+        "path": "local/physical_conversion_ao/build.log",
+        "bytes": 5166,
+        "sha256": "0509590b1b81ba108f31e0ed9b85d7938a1a3cfd88b3416bc57f4b50216b9615"
+      },
+      {
+        "path": "local/physical_conversion_ao/build_initial_configure_race.log",
+        "bytes": 54539,
+        "sha256": "689b8f223735e033eeb365260a2a4f3c0c5112e1e563a3539e2efb2224f62fc5"
+      },
+      {
+        "path": "local/physical_conversion_ao/build_probe.cmd",
+        "bytes": 545,
+        "sha256": "29e6582715af3b0d0f6444931de6a4e7ed5c02c660c96936caadf35b8a155473"
+      },
+      {
+        "path": "local/physical_conversion_ao/capture_evidence.py",
+        "bytes": 2428,
+        "sha256": "5ade06955e0767fdb03e43f568aad7ab668acfa652ed9c266f392bbde4377e4f"
+      },
+      {
+        "path": "local/physical_conversion_ao/ledger_edits.log",
+        "bytes": 525,
+        "sha256": "df2e897a7a3de3611cd885a5171ad464ab1af441f46bb445e565b3933feda63e"
+      },
+      {
+        "path": "local/physical_conversion_ao/original_evidence.json",
+        "bytes": 2948,
+        "sha256": "d6323c6cf06db6fa745b0b0d981feacf02f62c1c2557f225336bf9f28f71a693"
+      },
+      {
+        "path": "local/physical_conversion_ao/probe.cpp",
+        "bytes": 6851,
+        "sha256": "f2bee63441116fe92e38ab5ef36b8d48778a9cee28208d6be6574b8f7b0426c7"
+      },
+      {
+        "path": "local/physical_conversion_ao/probe.exe",
+        "bytes": 12800,
+        "sha256": "3ff10c174e1be87f6c77206b3cde944be143dbd767e04e6b354abc14cb7525e5"
+      },
+      {
+        "path": "local/physical_conversion_ao/probe.map",
+        "bytes": 28909,
+        "sha256": "b37d65e9aabca8d0fc8676b8793467ea64bccec7ea0f02afc360b748e7acf6a9"
+      },
+      {
+        "path": "local/physical_conversion_ao/probe.obj",
+        "bytes": 13441,
+        "sha256": "2972db21d2b9f891920722898fa582ee71f2870107bb59b126019c6cc13bd7a3"
+      },
+      {
+        "path": "local/physical_conversion_ao/probe_build.log",
+        "bytes": 11,
+        "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+      },
+      {
+        "path": "local/physical_conversion_ao/probe_linked_library.json",
+        "bytes": 233,
+        "sha256": "4684b144444777f576dda79e40e76a41c2ba91260106235b5631916b7302b1f0"
+      },
+      {
+        "path": "local/physical_conversion_ao/probe_result.json",
+        "bytes": 617,
+        "sha256": "01a3df76d457acd438b166be191e9827254dc6b000d13c8ba6302d27007692a0"
+      },
+      {
+        "path": "local/physical_conversion_ao/report_calls.log",
+        "bytes": 404,
+        "sha256": "2286a99e29558838f8b34f2023386816a3421d2be6dba2f674fad6360e01266c"
+      },
+      {
+        "path": "local/physical_conversion_ao/verify_seeds.log",
+        "bytes": 3034,
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+      },
+      {
+        "path": "local/physical_conversion_ao/write_report.py",
+        "bytes": 9730,
+        "sha256": "256aa088df0f28fef776a3bbee6d712a79231a0173443361a3a1f059ee4424d1"
+      }
+    ]
+  },
+  "limits": [
+    "No game execution or game validation.",
+    "No drop-in ABI replacement claim.",
+    "No BEF750/native runtime integration in this packet.",
+    "No reconstruction of ID initialization policy.",
+    "Saved BF4FF0 definition pending primary; no worker Ghidra mutation.",
+    "Import/virtual resolution is independently evidenced, outside numeric report-call verifier resolution."
+  ]
+}

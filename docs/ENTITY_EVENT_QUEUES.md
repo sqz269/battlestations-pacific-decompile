@@ -322,3 +322,18 @@ listing does not already state.
 | what `vtable[0](1)` does for an entity | the release's real effect on the id tables, the Lua self table and the tick registry |
 | `009269B0`'s tail from `00926A56` | an unread branch through `0077A7E0` |
 | `00927050`'s `+5Dh` write at `009272EF` | a third teardown site, in a property-bag routine outside this packet |
+
+## Correction from docs/ENTITY_LIFECYCLE_TAILS.md (packet cc2_entity_lifecycle_tails)
+
+- **Was:** 009269B0's tail from 00926A56 is an unread branch through 0077A7E0
+  **Is:** the catch(...) rollback of the std::list range insert, reached only through the frame handler pushed at 009269B5 and ending in a rethrow; 0077A7E0 is the checked-iterator operator!=, library code
+  **Evidence:** the only jumps in 009269B0 target 009269F0, 009269F9, 009269FE, 00926A10, 00926A1A, 00926A4C, 00926AA8, 00926A70 and 00926AB1; 00926AAC PUSH 0; PUSH 0; CALL 00BF6885
+- **Was:** 00927050's +5Dh write at 009272EF, a third teardown site in a property-bag routine
+  **Is:** the mission Lua deadMeat property applied at creation; 00927050 is the spawn-descriptor apply at virtual slot +9Ch, which also writes entity+70h there
+  **Evidence:** 009272E3 CALL 00BD68D0 reads the field whose key string is at 00D190D8, 009272E8 tests the result, 009272EF and 009272F3 are the two stores; the routine's only direct caller is BSP_MissionEntity_CreateLuaSelfTable at 00928A1E and it sits at +9Ch of 31 vtables
+- **Was:** whether any vtable[ECh] handler reaches 00926E80 is contract: unread, so the drain's re-entrancy hazard is reachable in principle
+  **Is:** no handler reaches it; the hazard is not reachable through the hit path
+  **Evidence:** 564 vtables anchored on the code's own data references, 163 distinct +ECh bodies, 81 of them without a Ghidra function and scanned raw for E8/E9 targets, forward search eight levels: no path to 00926E80. The three producers 00819A20, 0084BAD0 and 0084BC60 have 19 ancestors, all projectile and explosion ticks.
+- **Was:** what the release does beyond vtable[0](1) is inside the destructor and is contract: unread
+  **Is:** eleven steps: the entity id table, the name string, the +168h reference, the children, the world update chain, the sibling chain, the world+0Ch unit list, two pooled strings, the weak and callback owners and the observer edges
+  **Evidence:** 009287B0, 00925780 and 00695760 read complete; the call sites are the host_steps rows

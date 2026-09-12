@@ -102,7 +102,7 @@ inline constexpr std::size_t kDirectorVtableSlotResetCommandStage = 0x6c;  // 00
 inline constexpr std::size_t kDirectorVtableSlotRetargetCommand = 0x70;    // 00D09FC8
 
 // The command class pointers this packet reads, from docs/SCENE_COMMAND_TYPES.md.
-inline constexpr std::uint32_t kCommandObjectFollow = 0x00e08f60u;      // 00836ADC
+inline constexpr std::uint32_t kCommandedSpeedFollowObject = 0x00e08f60u;      // 00836ADC
 inline constexpr std::uint32_t kCommandObjectCruise = 0x00e08f70u;      // 00836E8B
 inline constexpr std::uint32_t kCommandObjectAttackMove = 0x00e08f78u;  // 00836B45
 inline constexpr std::uint32_t kCommandObjectMoveOnPath = 0x00e08f80u;  // 00836BF0
@@ -125,7 +125,7 @@ struct WeaponDirectorCommandState {
 // Which default command the idle tail re-issues.
 enum class DirectorDefaultCommand : std::uint32_t {
     None = 0u,
-    Follow = kCommandObjectFollow,
+    Follow = kCommandedSpeedFollowObject,
     Stop = kCommandObjectStop,
     Cruise = kCommandObjectCruise,
 };

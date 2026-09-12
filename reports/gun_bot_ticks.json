@@ -1,0 +1,1291 @@
+{
+  "packet": "cc2_gun_bot_ticks",
+  "owner": "agent/cc2-gun-bot-ticks",
+  "docs": [
+    "docs/GUN_BOT_TICKS.md"
+  ],
+  "sources": [
+    "include/bsp/gun_bot_ticks.hpp",
+    "src/gun_bot_ticks.cpp"
+  ],
+  "subject": "The gun-side AI bots: the class family behind the five ticks that turn a unit's fire target into gun angles and a trigger, how one is attached to a gun and given a skill, and what the gun's aim step consumes afterwards.",
+  "reuses": [
+    "include/bsp/bot_fire_target.hpp for the 008FEF40 debounce, the 008FDAF0 angle pair and the 008FFA20 hysteresis constants",
+    "include/bsp/gun_aiming.hpp for kGunAimOffTargetHorzAngle, kGunAimOffHorzAngle and the 0085ABA0 / 0085AD80 contract",
+    "docs/FIXED_STEP_JOB_WAVES.md for 008759B0, the sub-list walker that calls slot +0Ch with 0.05f",
+    "docs/GUN_CLASS_FAMILY.md for the weapon descriptor sub-type at [gun+3F4h]+80h and the class ids 20h-27h"
+  ],
+  "functions": [
+    {
+      "address": "008ffa20",
+      "name": "BSP_GunBot_TurretAimAndFireTick",
+      "abi": "__thiscall(bot)(float dt), RET 4, body 008ffa20-008fff1f; primary vtable 00d18140 slot +0ch",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "008ffa2d",
+          "native": "00521ea0",
+          "role": "resolve the fire-target command record at bot+38h"
+        },
+        {
+          "address": "008ffa58",
+          "native": "00803510",
+          "role": "side relation between [gun+54h] and [target+54h]"
+        },
+        {
+          "address": "008ffa85",
+          "native": "008fbce0",
+          "role": "the idle return-to-rest timer, arguments (dt, gun)"
+        },
+        {
+          "address": "008ffa99",
+          "native": "00927f10",
+          "role": "the AI side gate on [gun+1ACh]"
+        },
+        {
+          "address": "008ffaa8",
+          "native": "00521ea0",
+          "role": "re-resolve before the weapon-director +221h gate"
+        },
+        {
+          "address": "008ffac9",
+          "native": "vtable[114h]",
+          "role": "the owning unit's weapon director; its +221h byte gates the whole tick"
+        },
+        {
+          "address": "008ffb1a",
+          "native": "00414db0",
+          "role": "refresh the target pose when target+0C8h is clear"
+        },
+        {
+          "address": "008ffb30",
+          "native": "004142e0",
+          "role": "transform the target pose origin target+0CCh"
+        },
+        {
+          "address": "008ffbc6",
+          "native": "vtable[100h]",
+          "role": "the FIRE TARGET entity's lead predictor, (out, (0.6,0.6,0.6), 00F87574, four skill scalars)"
+        },
+        {
+          "address": "008ffcaf",
+          "native": "00414e10",
+          "role": "the gun's derived affine inverse"
+        },
+        {
+          "address": "008ffcbd",
+          "native": "008fdaf0",
+          "role": "world direction to the gun-local angle pair"
+        },
+        {
+          "address": "008ffcd9",
+          "native": "00bd2f10",
+          "role": "horizontal aim-error draw in [0, bot+84h) degrees"
+        },
+        {
+          "address": "008ffd05",
+          "native": "00bd2f10",
+          "role": "vertical aim-error draw"
+        },
+        {
+          "address": "008ffd37",
+          "native": "00bd2f10",
+          "role": "the next aim period, rand(bot+88h, bot+8Ch)"
+        },
+        {
+          "address": "008ffd52",
+          "native": "0085aba0",
+          "role": "BSP_TurningGun_SetTargetAngles(gun, bot+70h, bot+74h)"
+        },
+        {
+          "address": "008ffd6e",
+          "native": "00b6db70",
+          "role": "refresh the muzzle node's world matrix"
+        },
+        {
+          "address": "008ffdb9",
+          "native": "0042b2f0",
+          "role": "the distance from the muzzle to the target origin"
+        },
+        {
+          "address": "008ffe16",
+          "native": "00438b10",
+          "role": "open-fire horizontal delta, gun+480h against the aim"
+        },
+        {
+          "address": "008ffe43",
+          "native": "00438b10",
+          "role": "open-fire vertical delta, gun+484h"
+        },
+        {
+          "address": "008ffea5",
+          "native": "00438b10",
+          "role": "cease-fire horizontal delta"
+        },
+        {
+          "address": "008ffed1",
+          "native": "00438b10",
+          "role": "cease-fire vertical delta"
+        },
+        {
+          "address": "008fff12",
+          "native": "008fef40",
+          "role": "the trigger debounce, which drives gun->vtable[1E8h]"
+        }
+      ]
+    },
+    {
+      "address": "009030c0",
+      "name": "BSP_GunBot_BallisticAimAndFireTick",
+      "abi": "__thiscall(bot)(float dt), RET 4, body 009030c0-0090341d; primary vtable 00d18238 slot +0ch",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "009030ca",
+          "native": "00521ea0",
+          "role": "resolve bot+38h"
+        },
+        {
+          "address": "009030f5",
+          "native": "00803510",
+          "role": "side relation"
+        },
+        {
+          "address": "00903122",
+          "native": "008fbce0",
+          "role": "idle timer, (dt, gun)"
+        },
+        {
+          "address": "00903136",
+          "native": "00927f10",
+          "role": "the AI side gate"
+        },
+        {
+          "address": "009031c6",
+          "native": "00427eb0",
+          "role": "the shooter world position for the solver"
+        },
+        {
+          "address": "009031cf",
+          "native": "00901c20",
+          "role": "the intercept solution, arm taken when [[gun+3F4h]+95h] is clear or bot+50h is not kind 5"
+        },
+        {
+          "address": "009031ed",
+          "native": "00414db0",
+          "role": "refresh the muzzle pose"
+        },
+        {
+          "address": "00903219",
+          "native": "00901c20",
+          "role": "the intercept solution, the [[gun+3F4h]+95h] arm"
+        },
+        {
+          "address": "00903230",
+          "native": "00b6db70",
+          "role": "refresh the elevation node's world matrix"
+        },
+        {
+          "address": "0090326d",
+          "native": "00414e10",
+          "role": "the gun's derived affine inverse"
+        },
+        {
+          "address": "0090327b",
+          "native": "008fdaf0",
+          "role": "world direction to the angle pair"
+        },
+        {
+          "address": "00903302",
+          "native": "0085aba0",
+          "role": "SetTargetAngles(gun, h + bot+58h, corrected v)"
+        },
+        {
+          "address": "0090331b",
+          "native": "008fdbe0",
+          "role": "run when bot+64h < [gun+474h]; contract: unread"
+        },
+        {
+          "address": "0090335e",
+          "native": "00438b10",
+          "role": "horizontal delta against gun+480h, one-degree window 00CE3984"
+        },
+        {
+          "address": "0090339a",
+          "native": "00438b10",
+          "role": "vertical delta against gun+484h"
+        },
+        {
+          "address": "00903410",
+          "native": "vtable[1e8h]",
+          "role": "tail JMP, the trigger byte at gun+454h"
+        }
+      ]
+    },
+    {
+      "address": "006df520",
+      "name": "BSP_GunBot_MuzzleSolutionAimTick",
+      "abi": "__thiscall(bot)(float dt), RET 4, body 006df520-006dfc6c; primary vtable 00cfe000 slot +0ch",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "006df52c",
+          "native": "00521ea0",
+          "role": "resolve bot+38h"
+        },
+        {
+          "address": "006df537",
+          "native": "00521ea0",
+          "role": "resolve again for the validity test"
+        },
+        {
+          "address": "006df541",
+          "native": "008fb890",
+          "role": "the target validity predicate; contract: unread"
+        },
+        {
+          "address": "006df563",
+          "native": "008fbce0",
+          "role": "idle timer, (dt, gun)"
+        },
+        {
+          "address": "006df577",
+          "native": "00927f10",
+          "role": "the AI side gate, inverted into an early return"
+        },
+        {
+          "address": "006df5d4",
+          "native": "00bd2f10",
+          "role": "the error period, rand(3.0, 8.0) from 00CE3854 and 00CE3918"
+        },
+        {
+          "address": "006df5e9",
+          "native": "006deff0",
+          "role": "re-roll the error envelope, 2^(k * rand(0,1))"
+        },
+        {
+          "address": "006df623",
+          "native": "00419010",
+          "role": "horizontal error = InterpolateClamped(0, bot+6Ch, bot+78h, bot+64h, bot+74h)"
+        },
+        {
+          "address": "006df651",
+          "native": "00419010",
+          "role": "vertical error over bot+70h and bot+68h"
+        },
+        {
+          "address": "006df694",
+          "native": "0042ac60",
+          "role": "step ErrorOffset.x toward its target at dt*30"
+        },
+        {
+          "address": "006df6b3",
+          "native": "0042ac60",
+          "role": "step ErrorOffset.y"
+        },
+        {
+          "address": "006df6d2",
+          "native": "0042ac60",
+          "role": "step ErrorOffset.z"
+        },
+        {
+          "address": "006df82e",
+          "native": "00414db0",
+          "role": "refresh the target pose"
+        },
+        {
+          "address": "006df861",
+          "native": "0042b2f0",
+          "role": "distance from the gun origin gun+0FCh to the aim point"
+        },
+        {
+          "address": "006df8bf",
+          "native": "0042cf10",
+          "role": "asin of the gravity drop ratio, clamped"
+        },
+        {
+          "address": "006df980",
+          "native": "0059bd20",
+          "role": "the no-target fallback point; contract: unread"
+        },
+        {
+          "address": "006dfa47",
+          "native": "00bf7030",
+          "role": "horizontal range sqrt for the second drop estimate"
+        },
+        {
+          "address": "006dfac4",
+          "native": "00427eb0",
+          "role": "the muzzle node world position"
+        },
+        {
+          "address": "006dfad4",
+          "native": "00955630",
+          "role": "the gravity solver, out pitch then out yaw"
+        },
+        {
+          "address": "006dfb1c",
+          "native": "00438aa0",
+          "role": "horizontal += bot+5Ch, wrapped"
+        },
+        {
+          "address": "006dfb36",
+          "native": "00438aa0",
+          "role": "vertical += bot+60h, wrapped"
+        },
+        {
+          "address": "006dfb54",
+          "native": "0085aba0",
+          "role": "SetTargetAngles(gun, horz, vert)"
+        },
+        {
+          "address": "006dfb8c",
+          "native": "006dee40",
+          "role": "gun+480h within 0.1 degree (00CF9054) of the commanded yaw"
+        },
+        {
+          "address": "006dfbb6",
+          "native": "006dee40",
+          "role": "gun+484h within 0.1 degree of the commanded pitch"
+        },
+        {
+          "address": "006dfbd6",
+          "native": "00bd2f10",
+          "role": "fireDelayTime = rand(0, 0.1) from 00D7A2F0"
+        }
+      ]
+    },
+    {
+      "address": "00902920",
+      "name": "BSP_GunBot_LeadAimTick",
+      "abi": "__thiscall(bot)(float dt), RET 4, body 00902920-009030b2; primary vtable 00d180a0 slot +0ch",
+      "coverage": "partial: the composition of the fire byte between 00903010 and 009030a8 was read from pseudocode only, the listing was not filtered for it",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0090292d",
+          "native": "00521ea0",
+          "role": "resolve bot+38h"
+        },
+        {
+          "address": "00902958",
+          "native": "00803510",
+          "role": "side relation"
+        },
+        {
+          "address": "00902985",
+          "native": "008fbce0",
+          "role": "idle timer, (dt, gun at bot+5Ch)"
+        },
+        {
+          "address": "00902999",
+          "native": "00927f10",
+          "role": "the AI side gate"
+        },
+        {
+          "address": "00902a29",
+          "native": "00427eb0",
+          "role": "the shooter world position"
+        },
+        {
+          "address": "00902a74",
+          "native": "00901c20",
+          "role": "the intercept solution"
+        },
+        {
+          "address": "00902a8e",
+          "native": "00b6db70",
+          "role": "refresh the elevation node"
+        },
+        {
+          "address": "00902acb",
+          "native": "00414e10",
+          "role": "the gun's derived affine inverse"
+        },
+        {
+          "address": "00902ad9",
+          "native": "008fdaf0",
+          "role": "the base angle pair"
+        },
+        {
+          "address": "00902b38",
+          "native": "00419010",
+          "role": "span = InterpolateClamped(0, 1.0, 6.0, 0.2, skill)"
+        },
+        {
+          "address": "00902b5c",
+          "native": "00bd2f10",
+          "role": "remaining time = rand(3.0, 8.0) * span"
+        },
+        {
+          "address": "00902c86",
+          "native": "008fdaf0",
+          "role": "the second sample's angle pair"
+        },
+        {
+          "address": "00902cac",
+          "native": "00438b10",
+          "role": "vertical difference between the two samples"
+        },
+        {
+          "address": "00902cc7",
+          "native": "00438b10",
+          "role": "horizontal difference"
+        },
+        {
+          "address": "00902cd0",
+          "native": "00438aa0",
+          "role": "the two differences combined"
+        },
+        {
+          "address": "00902cf0",
+          "native": "00bd2f10",
+          "role": "the degree spread from the skill record"
+        },
+        {
+          "address": "00902d35",
+          "native": "00521e70",
+          "role": "the slot test that chooses game setting +750h or +754h"
+        },
+        {
+          "address": "00902d3e",
+          "native": "00424c40",
+          "role": "BSP_GameSettings_GetSingleton for +754h"
+        },
+        {
+          "address": "00902d4f",
+          "native": "00424c40",
+          "role": "BSP_GameSettings_GetSingleton for +750h"
+        },
+        {
+          "address": "00902d77",
+          "native": "00bd2f90",
+          "role": "split the error over the horizontal axis"
+        },
+        {
+          "address": "00902d95",
+          "native": "00bd2f90",
+          "role": "split the error over the vertical axis"
+        },
+        {
+          "address": "00902e6d",
+          "native": "00415690",
+          "role": "clamp the horizontal error at 25/distance (00CE3880)"
+        },
+        {
+          "address": "00902ef7",
+          "native": "00415690",
+          "role": "clamp the vertical error"
+        },
+        {
+          "address": "00902f3e",
+          "native": "00438aa0",
+          "role": "horizontal += bot+64h"
+        },
+        {
+          "address": "00902f58",
+          "native": "00438aa0",
+          "role": "vertical += bot+68h"
+        },
+        {
+          "address": "00902fb0",
+          "native": "0085aba0",
+          "role": "SetTargetAngles(gun, h, v)"
+        },
+        {
+          "address": "00902ffc",
+          "native": "00438b10",
+          "role": "horizontal delta against gun+480h"
+        },
+        {
+          "address": "0090302a",
+          "native": "00438b10",
+          "role": "vertical delta against gun+484h"
+        },
+        {
+          "address": "009030a8",
+          "native": "vtable[1e8h]",
+          "role": "tail JMP, the trigger"
+        }
+      ]
+    },
+    {
+      "address": "008fff20",
+      "name": "BSP_GunBot_HeadingAimTick",
+      "abi": "__thiscall(bot)(float dt), RET 4, body 008fff20-0090099b; primary vtable 00d182b0 slot +0ch; weapon descriptor sub-type 7, the torpedo launcher",
+      "coverage": "partial: 008fbb00 (the torpedo intercept) and 004f3730 (the crossing test) are named from the call shape only",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "008fff4b",
+          "native": "00521ea0",
+          "role": "resolve bot+38h"
+        },
+        {
+          "address": "008fff76",
+          "native": "00803510",
+          "role": "side relation"
+        },
+        {
+          "address": "008fffa2",
+          "native": "008fbce0",
+          "role": "idle timer, (dt, gun at bot+58h)"
+        },
+        {
+          "address": "008fffe9",
+          "native": "00521ea0",
+          "role": "re-resolve for the kind-8 drop test"
+        },
+        {
+          "address": "00900018",
+          "native": "00852820",
+          "role": "the suppression predicate; contract: unread"
+        },
+        {
+          "address": "0090003b",
+          "native": "00927f10",
+          "role": "the AI side gate"
+        },
+        {
+          "address": "009000d8",
+          "native": "008fe140",
+          "role": "run when the target answers IsKindOf(6); contract: unread"
+        },
+        {
+          "address": "00900110",
+          "native": "008527e0",
+          "role": "the bot+64h gate; contract: unread"
+        },
+        {
+          "address": "00900120",
+          "native": "00427eb0",
+          "role": "the launcher world position"
+        },
+        {
+          "address": "009001a8",
+          "native": "0042b2f0",
+          "role": "distance to the target"
+        },
+        {
+          "address": "009001e6",
+          "native": "00415510",
+          "role": "BSP_Math_MinFloatByRef, the maximum-range test"
+        },
+        {
+          "address": "0090025e",
+          "native": "008fbb00",
+          "role": "the torpedo intercept solution; contract: unread"
+        },
+        {
+          "address": "009002eb",
+          "native": "0042b2f0",
+          "role": "distance to the intercept point"
+        },
+        {
+          "address": "00900311",
+          "native": "00415510",
+          "role": "the same range test on the intercept point"
+        },
+        {
+          "address": "00900328",
+          "native": "0042b260",
+          "role": "normalise the intercept direction"
+        },
+        {
+          "address": "0090032f",
+          "native": "00414e10",
+          "role": "the gun's derived affine inverse"
+        },
+        {
+          "address": "0090033f",
+          "native": "0042d0d0",
+          "role": "transform the direction into the gun frame"
+        },
+        {
+          "address": "00900348",
+          "native": "0042b260",
+          "role": "normalise again"
+        },
+        {
+          "address": "0090035a",
+          "native": "00521370",
+          "role": "the local direction to a pitch and yaw pair"
+        },
+        {
+          "address": "00900380",
+          "native": "0085ab50",
+          "role": "the traverse filter, (gun, -yaw, 00E0B588 = pi/4)"
+        },
+        {
+          "address": "009003dd",
+          "native": "0085aba0",
+          "role": "SetTargetAngles(gun, bot+60h, 0.0f), horizontal only"
+        },
+        {
+          "address": "009003f8",
+          "native": "00438b10",
+          "role": "the one-degree window against gun+480h"
+        },
+        {
+          "address": "0090044a",
+          "native": "00438b10",
+          "role": "the residual used to size the run-out projection"
+        },
+        {
+          "address": "0090049d",
+          "native": "00414260",
+          "role": "the run-out projection; contract: unread"
+        },
+        {
+          "address": "00900513",
+          "native": "00bf701a",
+          "role": "atan2 of the corrected run direction"
+        },
+        {
+          "address": "009006ee",
+          "native": "004f3730",
+          "role": "the friendly-crossing test for one kind-6 entity; contract: unread"
+        },
+        {
+          "address": "00900830",
+          "native": "00bd2f10",
+          "role": "the final jitter magnitude from the skill record"
+        },
+        {
+          "address": "0090083e",
+          "native": "00bd2fc0",
+          "role": "BSP_RandomThreads_NextU32, the jitter sign"
+        },
+        {
+          "address": "00900897",
+          "native": "004120d0",
+          "role": "the avoid-zone query"
+        },
+        {
+          "address": "009008df",
+          "native": "00417940",
+          "role": "the avoid-zone segment test"
+        },
+        {
+          "address": "00900912",
+          "native": "0072c970",
+          "role": "the fire command's value"
+        },
+        {
+          "address": "00900927",
+          "native": "007311b0",
+          "role": "build the fire command object"
+        },
+        {
+          "address": "0090093b",
+          "native": "0072ac20",
+          "role": "post the command to the gun"
+        },
+        {
+          "address": "00900951",
+          "native": "00951fc0",
+          "role": "the post-fire notification; contract: unread"
+        }
+      ]
+    },
+    {
+      "address": "00959c20",
+      "name": "BSP_Unit_ApplyGunAimMessage",
+      "abi": "__thiscall(unit)(CmdMsg* msg) -> bool, RET 4 at 0095a43e, body 00959c20-0095a5bf; five-way jump table at 0095a5c0 on [msg+1Ch]",
+      "coverage": "complete for the five arms' aim and trigger calls; the solution builders 00957bd0, 00955830 and 00957740 are contract: unread",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0095ace8",
+          "native": "00959c20",
+          "role": "the dispatch from BSP_Unit_HandleMessage",
+          "containing": "0095abe0 BSP_Unit_HandleMessage"
+        },
+        {
+          "address": "00959cd6",
+          "native": "00954210",
+          "role": "kind 1/2 device filter"
+        },
+        {
+          "address": "00959d2a",
+          "native": "00957bd0",
+          "role": "kind 1/2 solution builder; contract: unread"
+        },
+        {
+          "address": "00959d3f",
+          "native": "00955830",
+          "role": "split the solution into a pair; contract: unread"
+        },
+        {
+          "address": "00959d72",
+          "native": "007f60a0",
+          "role": "BSP_GunPlatform_AnglesInFireWindow on the platform"
+        },
+        {
+          "address": "00959e01",
+          "native": "0085aba0",
+          "role": "SetTargetAngles for kinds 1 and 2"
+        },
+        {
+          "address": "00959e8a",
+          "native": "00438b10",
+          "role": "horizontal delta against the three-degree window 00D1A8A0"
+        },
+        {
+          "address": "00959eb5",
+          "native": "00438b10",
+          "role": "vertical delta"
+        },
+        {
+          "address": "00959feb",
+          "native": "004b4d80",
+          "role": "kind 3: (msg+30h, msg+2Ch) to a world direction"
+        },
+        {
+          "address": "0095a019",
+          "native": "00954210",
+          "role": "kind 3 device filter"
+        },
+        {
+          "address": "0095a06e",
+          "native": "00957740",
+          "role": "kind 3 refinement; contract: unread"
+        },
+        {
+          "address": "0095a0aa",
+          "native": "00955630",
+          "role": "kind 3 gravity solver"
+        },
+        {
+          "address": "0095a0ef",
+          "native": "0085aba0",
+          "role": "SetTargetAngles for kind 3"
+        },
+        {
+          "address": "0095a139",
+          "native": "00438b10",
+          "role": "kind 3 vertical delta, two-degree window 00D0C26C"
+        },
+        {
+          "address": "0095a173",
+          "native": "00438b10",
+          "role": "kind 3 horizontal delta"
+        },
+        {
+          "address": "0095a1f2",
+          "native": "00954210",
+          "role": "kind 4 device filter"
+        },
+        {
+          "address": "0095a217",
+          "native": "00438b10",
+          "role": "kind 4 heading relative to the unit's own"
+        },
+        {
+          "address": "0095a238",
+          "native": "0085ab50",
+          "role": "the traverse filter with 00E0B588 = pi/4"
+        },
+        {
+          "address": "0095a28f",
+          "native": "0085aba0",
+          "role": "SetTargetAngles(device, filtered, 0.0f) for kind 4"
+        },
+        {
+          "address": "0095a2dd",
+          "native": "00438b10",
+          "role": "kind 4 delta, five-degree window 00CEDF5C"
+        },
+        {
+          "address": "0095a457",
+          "native": "004b4d80",
+          "role": "kind 5 direction"
+        },
+        {
+          "address": "0095a486",
+          "native": "00954210",
+          "role": "kind 5 device filter"
+        },
+        {
+          "address": "0095a4b6",
+          "native": "00957740",
+          "role": "kind 5 refinement"
+        },
+        {
+          "address": "0095a4e3",
+          "native": "00955630",
+          "role": "kind 5 gravity solver"
+        },
+        {
+          "address": "0095a4fc",
+          "native": "0085aba0",
+          "role": "SetTargetAngles for kind 5"
+        },
+        {
+          "address": "0095a52b",
+          "native": "00438b10",
+          "role": "kind 5 vertical delta"
+        },
+        {
+          "address": "0095a566",
+          "native": "00438b10",
+          "role": "kind 5 horizontal delta"
+        }
+      ]
+    },
+    {
+      "address": "0072c6a0",
+      "name": "BSP_Gun_CreateAiBots",
+      "abi": "__fastcall(gun), body 0072c6a0-0072c95f; reads [gun+3F4h]+80h and fills gun+390h..gun+3A4h",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0072c6eb",
+          "native": "00922e90",
+          "role": "walk the gun's parent chain for kind 0Fh"
+        },
+        {
+          "address": "0072c713",
+          "native": "008fe9f0",
+          "role": "the turret bot, 94h bytes"
+        },
+        {
+          "address": "0072c736",
+          "native": "008fe740",
+          "role": "the swinging-error bot, 74h bytes"
+        },
+        {
+          "address": "0072c79e",
+          "native": "008fefd0",
+          "role": "the ballistic bot, 6Ch bytes"
+        },
+        {
+          "address": "0072c81d",
+          "native": "0072be40",
+          "role": "the muzzle-solution bot, B8h bytes, sub-types 2/3/4/6"
+        },
+        {
+          "address": "0072c870",
+          "native": "008ff260",
+          "role": "the torpedo bot, 70h bytes"
+        },
+        {
+          "address": "0072c8cb",
+          "native": "008ff4a0",
+          "role": "the sub-type 8 bot, outside this packet"
+        },
+        {
+          "address": "0072c91d",
+          "native": "0072be40",
+          "role": "a second muzzle-solution bot for sub-type 9"
+        }
+      ]
+    },
+    {
+      "address": "008fbc80",
+      "name": "BSP_GunBot_Attach",
+      "abi": "__thiscall(bot)(TickNode* node), RET 4 at 008fbcc0 and 008fbcd0, body 008fbc80-008fbcd2",
+      "coverage": "complete",
+      "no_ghidra_function": true,
+      "end_address": "008fbcd2",
+      "calls": [
+        {
+          "address": "008fbc8b",
+          "native": "00876020",
+          "role": "link the bot into the tick node's sub-list"
+        }
+      ]
+    },
+    {
+      "address": "008fbce0",
+      "name": "BSP_GunBot_IdleRestTimer",
+      "abi": "__thiscall(bot)(float dt, Gun* gun), body 008fbce0-008fbdb2",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "008fbd10",
+          "native": "00927f10",
+          "role": "the AI side gate on [gun+1ACh] before the rest-angle arm"
+        },
+        {
+          "address": "008fbd61",
+          "native": "0085ad00",
+          "role": "BSP_TurningGun_AimToRestAngles, only when the gun answers IsKindOf(22h)"
+        },
+        {
+          "address": "008fbd7a",
+          "native": "00927f10",
+          "role": "the same gate on the reset arm, which restores bot+54h to [[bot+30h]+4h] * 0.25"
+        }
+      ]
+    },
+    {
+      "address": "0072bbd0",
+      "name": "BSP_GunBot_ConstructBase",
+      "abi": "__thiscall(bot)(void* classDescriptor), RET 4, body 0072bbd0-0072bc6a; installs 00cfdfa0 at +0h and 00cfdf88 at +1Ch",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": []
+    },
+    {
+      "address": "0072d2c0",
+      "name": "BSP_Gun_SetTriggerHeld",
+      "abi": "__thiscall(gun)(char wantFire), body 0072d2c0-0072d3a8; writes gun+454h",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": []
+    },
+    {
+      "address": "00727f10",
+      "name": "BSP_Gun_SetBotFireTarget",
+      "abi": "__thiscall(gun)(Entity* target, int flag), RET 8 at 00727fe9 and 00727ffc, body 00727f10-00727ffe; the second argument is not forwarded to any vtable[38h] call",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "00865833",
+          "native": "00727f10",
+          "role": "the unit-side gunnery pass pushes two dwords here",
+          "containing": "00864fe0"
+        }
+      ]
+    },
+    {
+      "address": "006dee40",
+      "name": "BSP_GunBot_AngleWithinTolerance",
+      "abi": "__stdcall(float a, float b, float tol) -> int, RET 0Ch at 006dee7b and 006dee80, body 006dee40-006dee80",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "006dee52",
+          "native": "00438b10",
+          "role": "BSP_Math_SubtractWrappedAngle; the result is made absolute with AND EAX,7FFFFFFFh at 006dee5b"
+        }
+      ]
+    },
+    {
+      "address": "00954210",
+      "name": "BSP_Unit_GunAimMessageAcceptsDevice",
+      "abi": "__cdecl(int kind, Device* dev) -> bool, RET 8, body 00954210-009542ac",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": []
+    },
+    {
+      "address": "00901c20",
+      "name": "BSP_GunBot_InterceptSolution",
+      "abi": "__fastcall(const float3* shooterPos, Entity* target)(float projSpeed, const float3* shooterVel, float3* outAimPoint, float* outDist), RET 10h at 00901cb0 and 0090227e, body 00901c20-0090227f; closed form, no loop",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "009020cc",
+          "native": "00bf7030",
+          "role": "sqrt of the quadratic discriminant"
+        },
+        {
+          "address": "0090217b",
+          "native": "00415690",
+          "role": "clamp the flight time into [0, 12] (00CEB4B8)"
+        },
+        {
+          "address": "00902180",
+          "native": "00424c40",
+          "role": "game settings +758h, a flat time bias"
+        },
+        {
+          "address": "0090219b",
+          "native": "00424c40",
+          "role": "game settings +75Ch, scaled by range/1000"
+        },
+        {
+          "address": "00901e7a",
+          "native": "0085e4d0",
+          "role": "build the turn-rate matrices; contract: unread"
+        }
+      ]
+    },
+    {
+      "address": "00955630",
+      "name": "BSP_Gun_SolveGravityArc",
+      "abi": "__fastcall(void* mount, const float3* aimPoint)(const float3* muzzlePos, float muzzleSpeed, float* outPitch, float* outYaw) -> bool, RET 10h at 0095581f, body 00955630-0095581f",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "00955671",
+          "native": "00bf7030",
+          "role": "horizontal range"
+        },
+        {
+          "address": "0095568e",
+          "native": "0042b260",
+          "role": "normalise the delta"
+        },
+        {
+          "address": "0095569b",
+          "native": "00bf701a",
+          "role": "atan2 for the yaw"
+        },
+        {
+          "address": "0095573c",
+          "native": "00bf8490",
+          "role": "atan of the low root's tangent"
+        },
+        {
+          "address": "00955765",
+          "native": "004b4d80",
+          "role": "pitch and yaw back to a world direction"
+        },
+        {
+          "address": "009557c7",
+          "native": "0042d0d0",
+          "role": "transform into the mount's local frame"
+        },
+        {
+          "address": "009557f3",
+          "native": "00521370",
+          "role": "re-extract the pair in mount space"
+        }
+      ]
+    },
+    {
+      "address": "0085ab50",
+      "name": "BSP_TurningGun_FilterHeadingToTraverse",
+      "abi": "__thiscall(gun)(float horz, float limit) -> float in ST0, RET 8 at 0085ab98, body 0085ab50-0085ab9a; returns FLT_MAX (00D7A278) when no traverse window accepts",
+      "coverage": "partial: 007f6190, which computes the value, is contract: unread",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0085ab75",
+          "native": "005471b0",
+          "role": "grow the platform array when gun+38Ch is at or past [[[gun+3F0h]+538h]+98h]"
+        },
+        {
+          "address": "0085ab91",
+          "native": "007f6190",
+          "role": "the platform-level filter that produces the value; contract: unread"
+        }
+      ]
+    },
+    {
+      "address": "00901610",
+      "name": "load_robot_config_00901610",
+      "abi": "the existing ledger name; body 00901610-00901aa3",
+      "coverage": "partial: only the eight 00900AF0 calls at 009019E1..00901A4A and their stores at 009019EB..00901A53, which pair each recovered class name with the class-descriptor global its bot constructor reads",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "009019e1",
+          "native": "00900af0",
+          "role": "build the PilotBot descriptor, name 00D17D44, stored at 009019EB into [00F8A30C]"
+        },
+        {
+          "address": "009019f0",
+          "native": "00900af0",
+          "role": "TailGunnerBot, name 00D17D5C, stored at 009019FA into [00E199A0], the 008FFA20 descriptor"
+        },
+        {
+          "address": "009019ff",
+          "native": "00900af0",
+          "role": "AAFlakBot, name 00D17D50, stored at 00901A09 into [00E1999C], the 009030C0 descriptor"
+        },
+        {
+          "address": "00901a0e",
+          "native": "00900af0",
+          "role": "AAGunnerBot, name 00D17D6C, stored at 00901A18 into [00E19998], the 00902920 descriptor"
+        },
+        {
+          "address": "00901a1d",
+          "native": "00900af0",
+          "role": "ArtillerySubDirectorBot, name 00D17D78, stored at 00901A27 into [00E19994]"
+        },
+        {
+          "address": "00901a2c",
+          "native": "00900af0",
+          "role": "ArtilleryGunnerBot, name 00D17D90, stored at 00901A36 into [00E19990], the 006DF520 descriptor"
+        },
+        {
+          "address": "00901a3b",
+          "native": "00900af0",
+          "role": "TorpedoBot, name 00D17DA4, stored at 00901A45 into [00E1998C], the 008FFF20 descriptor"
+        },
+        {
+          "address": "00901a4a",
+          "native": "00900af0",
+          "role": "DepthChargeBot, name 00D17DB0, stored at 00901A53 into [00E19988], the 008FC080 descriptor"
+        }
+      ]
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "008fbc80",
+      "name": "BSP_GunBot_Attach",
+      "note": "Ghidra's enclosing function is 008fbce0's predecessor; read from the raw listing",
+      "body": "008fbc80-008fbcd2"
+    },
+    {
+      "address": "008fbdc0",
+      "name": "BSP_GunBot_AttachLeadClass",
+      "note": "slot +4h of 00d180a0; bot+5Ch = bot+50h, then +60h..+70h zeroed",
+      "body": "008fbdc0-008fbdf2"
+    },
+    {
+      "address": "008fbec0",
+      "name": "BSP_GunBot_AttachTurretClass",
+      "note": "slot +4h of 00d18140; bot+68h = bot+50h, bot+58h = 0, bot+70h/+74h = 0",
+      "body": "008fbec0-008fbee7"
+    },
+    {
+      "address": "008fbef0",
+      "name": "BSP_GunBot_SetSkillTurretClass",
+      "note": "slot +18h of 00d18140; loads angleError, aimPeriodMin, aimPeriodMax and shootRange from [00E199A0] + skill*24h",
+      "body": "008fbef0-008fbf67"
+    },
+    {
+      "address": "006df1f0",
+      "name": "BSP_GunBot_AttachMuzzleClass",
+      "note": "slot +4h of 00cfe000; bot+58h = bot+50h, ErrorOffset zeroed, bot+74h = 0, bot+78h = 1.0f, then 006deff0",
+      "body": "006df1f0-006df252"
+    },
+    {
+      "address": "0072bd10",
+      "name": "BSP_GunBot_HasFireTarget",
+      "note": "slot +40h; bot+39h or bot+38h non-zero",
+      "body": "0072bd10-0072bd24"
+    },
+    {
+      "address": "0072bd30",
+      "name": "BSP_GunBot_GetFireTargetEntity",
+      "note": "slot +44h; tail JMP 00521EA0(bot+38h) when the record's first byte is set",
+      "body": "0072bd30-0072bd3f"
+    },
+    {
+      "address": "0072bd50",
+      "name": "BSP_GunBot_ClearFireTarget",
+      "note": "slot +30h",
+      "body": "0072bd50-0072bdc3"
+    },
+    {
+      "address": "0072bc80",
+      "name": "BSP_GunBot_SetSkillIndex",
+      "note": "slot +18h base; this+34h = arg",
+      "body": "0072bc80-0072bc89"
+    },
+    {
+      "address": "0072bce0",
+      "name": "BSP_GunBot_OnTargetDestroyed",
+      "note": "slot +8h of the second base 00cfdf88; clears the target when the destroyed entity matches",
+      "body": "0072bce0-0072bcff"
+    },
+    {
+      "address": "008fea40",
+      "name": "BSP_GunBot_SetFireTargetTurretClass",
+      "note": "slot +38h of 00d18140; calls 006df170 then bot+6Ch = -1.0f",
+      "body": "008fea40-008fea5d"
+    },
+    {
+      "address": "006df170",
+      "name": "BSP_GunBot_SetFireTarget",
+      "note": "slot +38h base; compares the resolved target and clears through vtable[30h] before re-binding",
+      "body": "006df170-006df1e8"
+    },
+    {
+      "address": "006df4c0",
+      "name": "BSP_GunBot_SetFireTargetArtilleryGunnerClass",
+      "body": "006df4c0-006df513",
+      "note": "ArtilleryGunnerBot's override of primary slot +38h, vtable 00cfe000. Calls the base 006df170 at 006df4c8, runs 0072d5b0(gun, 0, 0) at 006df4ec when the side gate passes, and tail-jumps gun->vtable[1e8h](0) at 006df50e when vtable[44h]() answers null. That tail dispatch is the 006df508 site docs/GUN_PLATFORM_ARC.md could not decode. Starts after int3 padding at 006df4b3-006df4bf and ends at the RET 4 at 006df511."
+    },
+    {
+      "address": "008fc080",
+      "name": "BSP_GunBot_DepthChargeTick",
+      "body": "008fc080-008fc3f2",
+      "note": "DepthChargeBot's tick, primary vtable 00d18338 slot +0Ch, weapon descriptor sub-type 8 at gun+3A0h. Same prologue shape as the five ticks this packet reconstructs: the [bot+50h]+1ACh side gate at 008fc116, the gun cache at bot+58h, bot->vtable[44h] at 008fc13b. It tail-jumps gun->vtable[1e8h](0) at 008fc232, which is the 008fc22c site docs/GUN_PLATFORM_ARC.md could not decode. Starts after the int3 at 008fc07f and ends at the RET 4 at 008fc3f0. Only the prologue and the tail were read; the body is contract: unread and outside this packet."
+    },
+    {
+      "address": "008fc060",
+      "name": "BSP_GunBot_AttachDepthChargeClass",
+      "body": "008fc060-008fc07e",
+      "note": "Primary slot +4h of vtable 00d18338: calls the base 008fbc80 at 008fc068, caches the gun as bot+58h = bot+50h and zeroes bot+5Ch."
+    },
+    {
+      "address": "009f6ad0",
+      "name": "BSP_Unknown_ByteAt3ChIsZero",
+      "body": "009f6ad0-009f6ad7",
+      "note": "cmp byte [ecx+3Ch], 0 / sete al / ret. The only genuine byte load at displacement 3Ch the image contains, found while looking for the reader of the weapon director's allowFire byte. A scan for the literal dword 009f6ad0 finds no reference to it anywhere, so it is not reachable through any vtable this packet can see. Listed because it is the negative evidence behind the allowFire correction, not because it is on a gun-bot path."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "docs/BOT_FIRE_TARGET.md section 3: 008FFA20 takes 'a lead point from gun->vtable[100h](out, spread, 00F87574, p0..p3)'",
+      "is": "the predictor is a virtual of the FIRE TARGET entity, not the gun",
+      "evidence": "008ffaf5 and 008ffb04 fetch the object with bot->vtable[44h] (= 0072bd30, which resolves bot+38h); 008ffbad loads its vtable slot +44h again and 008ffbc6 calls [thatObject + 100h]"
+    },
+    {
+      "was": "docs/BOT_FIRE_TARGET.md section 3: 009030C0 'takes a different branch when [[gun+3F4h]+95h] is set and the unit answers IsKindOf(5)'",
+      "is": "the object asked IsKindOf(5) is bot+50h, which is the gun, not the unit",
+      "evidence": "00903154 CALL EAX with ECX from [ESI+0x50]; 008fbc90 sets bot+50h from the tick node's payload, and each class copies it into the field every tick dereferences at gun offsets (008fbec0, 008fbdc0, 006df1f0)"
+    },
+    {
+      "was": "docs/BOT_FIRE_TARGET.md section 3: 00959C20's '0095A1C4 arm is unread'",
+      "is": "0095a1c4 is the loop advance of the kind-4 arm, which begins at 0095a1cc; that arm's aim call is 0095a28f and its filter is 0085ab50 at 0095a238",
+      "evidence": "the jump table at 0095a5c0 read through 00959c69-00959c8a"
+    },
+    {
+      "was": "docs/BOT_FIRE_TARGET.md section 3: 0085ABA0 is called 'at 00959E06 and 0095A0F4'",
+      "is": "those are the return addresses; the CALL instructions are at 00959e01 and 0095a0ef",
+      "evidence": "the listing of 00959c20"
+    },
+    {
+      "was": "include/bsp/bot_fire_target.hpp: kGunBotOffGun = 0x68 as a shared bot field",
+      "is": "+68h is the gun cache of the 008FFA20 and 009030C0 classes only; 00902920 caches at +5Ch and 008FFF20 and 006DF520 at +58h. The field every class shares is bot+50h",
+      "evidence": "the five slot +4h overrides: 008fbec0, 008fbdc0, 008ff040, 008ff310, 006df1f0"
+    },
+    {
+      "was": "docs/FIXED_STEP_JOB_WAVES.md: '008759B0's sub-list is covered as a rule but its vtable[+0Ch] callee is not'",
+      "is": "for a gun's tick node the sub-list holds these bots, so the callee is one of the five ticks and dt is the wave's 0.05f",
+      "evidence": "008fbc8b links the bot into the node at gun+310h with 00876020; the tick is slot +0Ch of every bot vtable (00d1814c, 00d180ac, 00d18244, 00d182bc, 00cfe00c)"
+    },
+    {
+      "was": "docs/GUN_PLATFORM_ARC.md: 'The allowFire path therefore runs through the two bodies another packet owns' (008FFF20 and 00959C20)",
+      "is": "neither body fetches a weapon director, so neither can read director+3Ch. The only director field any gun-side AI body reads is +221h, at 008FFAC9 in 008FFA20. The reader of allowFire is still contract: unread",
+      "evidence": "both listings filtered for the vtable[114h] displacement 0x114 have no hit; 008FFF20's four [reg+3Ch] reads at 008FFF62, 008FFFDF, 00900062 and 00900131 are the entity parent chain 00922E90 walks; 00959C20's only unit reads in that range are [unit+1B4h] at 00959DA4 and [unit+1BCh] at 0095A048; 00864FE0, which does fetch a director at 0086549C, has no [reg+3Ch] read at all"
+    },
+    {
+      "was": "docs/GUN_PLATFORM_ARC.md: 006DF508 and 008FC22C are 'no Ghidra function / not decoded'",
+      "is": "006DF508 is the tail dispatch of ArtilleryGunnerBot's SetFireTarget override 006DF4C0 (body 006df4c0-006df513) and 008FC22C is the tail dispatch of DepthChargeBot's tick 008FC080 (body 008fc080-008fc3f2). Both pass 0, so they release the fire request",
+      "evidence": "int3 padding at 006df4b3-006df4bf and at 008fc07f before each start; RET 4 at 006df511 and 008fc3f0; 008FC080 is slot +0Ch of vtable 00D18338, which 008FF4A0 installs"
+    },
+    {
+      "was": "this report's first revision: 009030C0 was 'the bomb and depth-charge bot' and the 008FF4A0 class 'the sub-type 8 bot, outside this packet'",
+      "is": "009030C0's class is AAFlakBot and the sub-type 8 class is DepthChargeBot. All six class names are recovered strings: AAGunnerBot, TailGunnerBot, AAFlakBot, ArtilleryGunnerBot, TorpedoBot, DepthChargeBot",
+      "evidence": "load_robot_config_00901610 pairs each name string with the class-descriptor global its constructor reads, at the eight stores 009019EB..00901A53; TorpedoBot landing on the weapon sub-type 7 tick cross-checks the pairing against docs/GUN_CLASS_FAMILY.md"
+    }
+  ],
+  "open_questions": [
+    "The property-name blocks of the AAGunnerBot, AAFlakBot and TorpedoBot classes at 00D180F0-00D18218 and 00D18288 were not attributed to offsets; their visitors are 008FE800/008FE8F0, 008FF060/008FF130 and 008FF360/008FF400.",
+    "Where the skill-record arrays begin inside the class descriptors. The class names are settled but the objects are not: 00900AF0 and the ledger's read_<name>_parameters_* routines (008FC6D0, 008FCA10, 008FCD60, 008FCF30, 008FD370, 008FD640, 008FD880, 009973B0) are contract: unread. Only descriptor-relative offsets are proven.",
+    "The meaning of the four skill scalars passed to the target entity's vtable[100h], and of the (0.6,0.6,0.6) direction at 00CE3D30 every caller passes as the second argument.",
+    "gun+474h and 008FDBE0, the pair 009030C0 uses at 0090330d and 0090331b.",
+    "Whether bit 1 of [unit+634h] means 'a human is aiming this gun'. 009030C0 tests bit 0, 006DF520 tests bit 1, 2 or 3 by muzzle kind, and 008FFF20 tests bit 2.",
+    "006FDF60, the vtable[1F0h] immediate fire that 008FFF20 and 006DF520 use; it exists only on the turning-gun vtables, the base 00CFE0A8 ending at +1ECh.",
+    "Who reads the weapon director's allowFire byte at director+3Ch. Proven here to be none of 008FFF20, 00959C20 or 00864FE0; a byte-pattern scan for the three plausible encodings of a byte load at displacement 3Ch found no reader. Handed back to the weapon director's owner.",
+    "008FC080, DepthChargeBot's tick, and the ArtillerySubDirectorBot and PilotBot classes at [00E19994] and [00F8A30C]."
+  ],
+  "tool_problems": [
+    {
+      "tool": "tools/verify_report_calls.py",
+      "symptom": "the row {address: 006df623, native: 006deff0} reports 'callee 006deff0 is not a Ghidra function' although Ghidra does have a function there, body 006deff0-006df12b. 184 of 185 rows pass; this is the only failure.",
+      "cause": "line 90 accepts the live get_function_by_address response only when \"'error' not in text.lower()\". The response carries the function's NAME, and once the integrator applied this packet's ledger name BSP_GunBot_RerollAimErrorEnvelope to Ghidra, the substring 'Error' in the name made the guard treat a good response as a bridge error. The same row passed before the name was applied.",
+      "fix": "tighten the guard so it matches an actual error response rather than any occurrence of the word, for example a leading 'error:' or the bridge's own error key, instead of a bare substring test over the whole payload. Any future symbol containing 'error' hits this.",
+      "workaround": "none applied. The name is accurate: the class's own property strings at 006DF260 are 'Error' and 'ErrorOffset', so the routine that rolls that envelope is named for them. Renaming to dodge the substring would hide the defect."
+    }
+  ]
+}

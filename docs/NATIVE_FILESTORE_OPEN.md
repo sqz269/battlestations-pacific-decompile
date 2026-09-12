@@ -118,3 +118,9 @@ executed. No game frame or gameplay validation is claimed by this packet.
 The primary defined BB8F60. CC7650 POP ECX/RET at CC7659..CC765A is decoded but remains outside its stored function body. NativeVfsRuntimeBindings now composes FileStore opens into actual Lua loads: seeded actual tree records and type IDs 11/22/33, fresh shared-backing wrappers, nested DoFile and duplicate suffix execution pass while stored cursors/references remain unchanged and shutdown counters reach zero. Native tree population/type registration and numeric physical/archive-to-memory conversion remain excluded.
 
 Evidence: reports/native_an_integration.json; reports/native_lua_vfs_binding.json.
+
+## Integration correction from docs/NATIVE_PHYSICAL_MEMORY_BINDING.md
+
+BEF750 now binds the actual numeric D691B0 physical profile through current physical type IDs and the BF4FF0/BF4F20/BF4F90/BF5030 routines. Four original-converter/physical-leaf comparisons cover ordinary, low-DWORD, retained short-read and zero-length copies, including cached and final OS cursors. A FileStore entry retaining an actual physical stream feeds its copied memory chunk into Lua. Source cursors stay consumed and source references stay unchanged. General archive ownership and native FileStore tree population remain separate.
+
+Evidence: reports/native_ao_integration.json; reports/native_physical_memory_binding.json.

@@ -26,8 +26,11 @@
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_hosts_ready.hpp"
+#include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_trajectory.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_vfs.hpp"
@@ -94,6 +97,9 @@ struct GameMissionFrameHost::Impl {
         // default constructed when this body runs.
         fixed_step = std::make_unique<GameFixedStepHost>(log, dynamics);
         result = std::make_unique<GameMissionResultHost>(log, control);
+        // Milestone 2m: the six fan-out rows whose reconstructions are on main.
+        step_subsystems = std::make_unique<GameStepSubsystemsHost>(log);
+        fixed_step->attach_subsystems(step_subsystems.get());
     }
 
     GameHostLog& log;
@@ -141,6 +147,8 @@ struct GameMissionFrameHost::Impl {
     // of state 0Dh. Both are constructed in the body above.
     std::unique_ptr<GameFixedStepHost> fixed_step;
     std::unique_ptr<GameMissionResultHost> result;
+    // Milestone 2m: the six fan-out rows' own reconstructions.
+    std::unique_ptr<GameStepSubsystemsHost> step_subsystems;
     // Milestone 2h: 004d4df0, the scene contents pass. Built on the load walk's
     // own row, because the "2_" file block it opens belongs to that step.
     std::unique_ptr<GameSceneContentsHost> scene_contents;
@@ -149,14 +157,29 @@ struct GameMissionFrameHost::Impl {
     // step that creates the instances.
     std::unique_ptr<GameUnitsHost> units;
     std::unique_ptr<GameWorldHost> world_host;
+    // Milestone 2m: the host the eight reconstructed binding bodies run over.
+    // Built with the units, because every one of the eight addresses an entity.
+    std::unique_ptr<GameScriptOrdersHost> script_orders;
+    // Milestone 2n: one ship AI controller per created unit, and the weapon
+    // director's automatic target selector beside it. Built with the units,
+    // because the order slot the controller publishes lives on the unit.
+    std::unique_ptr<GameShipAiHost> ship_ai;
     long order_frame{-1};             // --order-frame N
+    // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>, engaged on the same
+    // frame as the player order.
+    std::string ai_drive_unit;
+    float ai_drive_throttle{0.0f};
+    float ai_drive_rudder{0.0f};
     float order_throttle{0.0f};
     float order_rudder{0.0f};
+    float order_speed{0.0f};
+    bool order_speed_set{false};
     bool order_issued{false};
     // Milestone 2l: --order <command>[:<entity>], the same frame, issued
     // through the recovered command path instead of the order ring.
     std::string order_command;
     std::string order_command_target;
+    std::string order_command_unit;   // milestone 2n, --order-unit <name>
     float mission_frame_seconds{0.0f};  // --mission-frame-seconds S
     // Milestone 2j, --trajectory-csv <path>: one row per unit per fixed step.
     std::string trajectory_csv_path;
@@ -1113,10 +1136,43 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
 
         // The arms the driver never takes on a single-player load. They are
         // reported as skipped rather than as performed or as missing.
-        if (method == "reset_network_slots" || method == "detach_network_menu_manager"
+        // `assign_party_player_slots` stays here on the evidence of
+        // docs/MISSION_LOAD_HOSTS.md: 004e044d gates 004c3840 on
+        // game+1FE4h == 1 and this session's field is 0, so the party rule never
+        // runs on a local load, whatever its reconstruction can do.
+        if (method == "detach_network_menu_manager"
             || method == "assign_party_player_slots" || method == "activate_slot"
             || method == "dispatch_session_ready_event") {
             ++host.load.skipped_arms;
+            continue;
+        }
+
+        // Milestone 2m. The three rows packet cc2_mission_load_hosts
+        // reconstructed and renamed. Both spellings are accepted because the
+        // interface's own names are being corrected on main at the same time.
+        if (method == "reset_network_slots" || method == "erase_native_string_set") {
+            bool single_player_reset = false;
+            run_load_session_slot_reset_004dfc13(host.log,
+                host.scene_state.session_mode, single_player_reset);
+            host.done(label, step.address);
+            ++host.load.concrete;
+            continue;
+        }
+        if (method == "reset_objective_list" || method == "rebuild_avoid_zone_table"
+            || method == "reset_avoid_zone_state") {
+            run_load_avoid_zone_state_004e0754(host.log);
+            host.done(label, step.address);
+            ++host.load.concrete;
+            continue;
+        }
+        if (method == "rebuild_scripted_name_list"
+            || method == "record_script_function_baseline") {
+            std::vector<std::string> names;
+            const std::size_t inserted = run_load_scripted_name_baseline_004d30f0(
+                host.log, host.lua, names);
+            host.load.scripted_names = inserted;
+            host.done(label, step.address);
+            ++host.load.concrete;
             continue;
         }
 
@@ -1190,6 +1246,9 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                 host.scene_contents = std::make_unique<GameSceneContentsHost>(host.log,
                     host.vfs);
             }
+            // Milestone 2m: 0095c640's three reads of the live VehicleClass
+            // table, which the recovered global-script step already loaded.
+            host.scene_contents->attach_lua(&host.lua);
             // game+614h and game+61Ch are the two fields 004bca50 reads as the
             // raw game mode and its forced flag; MissionSceneLoadState names the
             // same pair script_slot / script_slot_forced, because 004e087b picks
@@ -1231,6 +1290,24 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                         static_cast<int>(unit) + 1, row->type_id});
                 }
                 host.lua.attach_scene_entities_00928a00(entities);
+            }
+            // Milestone 2m: with the slots built, the eight binding bodies
+            // src/lua_binding_navigator.cpp reconstructs can run over the
+            // created instances instead of being counted as records.
+            host.script_orders = std::make_unique<GameScriptOrdersHost>(host.log,
+                *host.units);
+            host.lua.attach_script_orders(host.script_orders.get());
+            // Milestone 2n: the ship AI controller family at 00d21598 over the
+            // same created units. 009f50e0's three gates read unit+5Ch, +5Dh and
+            // +61h, and 009f3dd0 reads the director 0071be40 answers for, so the
+            // host is built after the authored commands were issued.
+            host.ship_ai = std::make_unique<GameShipAiHost>(host.log, *host.units);
+            host.ship_ai->register_units();
+            host.units->set_ship_ai(host.ship_ai.get());
+            // Milestone 2m: row 16 of the fan-out walks the entity chain this
+            // step created, so the subsystem host learns about it here.
+            if (host.step_subsystems != nullptr) {
+                host.step_subsystems->attach_units(host.units.get());
             }
             // Milestone 2k: the two HUD screens that show the world read the same
             // created units. Once 004c0890 has bound one, the interface request
@@ -1450,9 +1527,22 @@ void GameMissionFrameHost::set_player_order(long frame, float throttle,
     impl_->order_rudder = rudder;
 }
 
-void GameMissionFrameHost::set_player_command(std::string token, std::string target) {
+void GameMissionFrameHost::set_player_commanded_speed(float speed) noexcept {
+    impl_->order_speed = speed;
+    impl_->order_speed_set = true;
+}
+
+void GameMissionFrameHost::set_player_command(std::string token, std::string target,
+    std::string unit) {
     impl_->order_command = std::move(token);
     impl_->order_command_target = std::move(target);
+    impl_->order_command_unit = std::move(unit);
+}
+
+void GameMissionFrameHost::set_ai_drive(std::string unit, float throttle, float rudder) {
+    impl_->ai_drive_unit = std::move(unit);
+    impl_->ai_drive_throttle = throttle;
+    impl_->ai_drive_rudder = rudder;
 }
 
 void GameMissionFrameHost::set_trajectory_csv(std::string path) {
@@ -1550,9 +1640,31 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
             // against the 26-row registry and the whole hop chain runs, which
             // is the path the authored scene command takes and not the ring.
             host.units->issue_player_command(host.order_command,
-                host.order_command_target);
+                host.order_command_target, host.order_command_unit);
         } else {
             host.units->issue_player_order(host.order_throttle, host.order_rudder);
+        }
+        // Milestone 2o: the diagnostic stand-in for the state step, engaged
+        // after the order that chose the state, so the two take effect on the
+        // same in-mission frame.
+        if (!host.ai_drive_unit.empty()) {
+            host.units->enable_ai_drive(host.ai_drive_unit, host.ai_drive_throttle,
+                host.ai_drive_rudder);
+        }
+        if (host.order_speed_set && host.units->controlled_bound()) {
+            // Milestone 2m: the store luaMW_SetShipSpeed 00890d30 makes. This
+            // mission's script never calls it, and neither does
+            // luaMW_NavigatorMoveOnPath 008a3600, so the switch is the only way
+            // the executable can put a commanded speed on a unit.
+            const std::size_t unit = host.units->controlled_index();
+            host.units->store_commanded_speed_00890e6f(unit, host.order_speed);
+            const bsp::CruiseSpeedSetting pair = host.units->commanded_speed(unit);
+            host.log.notef("commanded speed issued to the controlled unit: "
+                "navigatorParams+24h = %.3f m/s, +28h = %.3f (the mission clock). "
+                "00836e59 now answers active, so the director's idle tail re-issues "
+                "`cruise` instead of `stop`, and 009e12bd turns the speed into a "
+                "throttle by dividing it by 0080fc30's reference speed",
+                static_cast<double>(pair.speed), static_cast<double>(pair.enable));
         }
     }
 
@@ -1634,9 +1746,12 @@ void GameMissionFrameHost::report(long requested_frames) {
             "asked to leave state 0Dh; --mission-complete-frame builds one";
     }
     host.fixed_step->report();
+    if (host.step_subsystems != nullptr) host.step_subsystems->report();
     host.result->report();
     if (host.hud != nullptr) host.hud->report();
     if (host.world_host != nullptr) host.world_host->report();
+    if (host.script_orders != nullptr) host.script_orders->report();
+    if (host.ship_ai != nullptr) host.ship_ai->report();
     if (host.units != nullptr) host.units->report();
     if (!host.trajectory_csv_path.empty()) {
         host.log.notef("summary mission trajectory csv=%s rows=%llu",

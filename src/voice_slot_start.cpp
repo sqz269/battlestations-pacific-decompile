@@ -65,7 +65,7 @@ std::int32_t find_sound_type_00a7b0a0(const SoundConfigurationState& state,
     return 0; // native miss is zero, unlike the class lookup's -1
 }
 
-void assign_voice_reference_0054d4c0(void*& destination, void* source, VoiceLineHost& host)
+void assign_voice_reference_0054d4c0(void*& destination, void* source, VoiceReferenceHost& host)
 {
     void* old = destination;
     if (old == source) return;

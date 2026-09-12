@@ -33,6 +33,7 @@
 // docs/DYN_WORLD_SETTINGS.md, docs/UNIT_RUDDER_CURVE.md, docs/OCEAN_HEIGHT.md,
 // docs/CONTROLLED_UNIT.md.
 
+#include <array>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
@@ -42,6 +43,11 @@
 #include <vector>
 
 #include "bsp/cruise_command.hpp"
+#include "bsp/ship_ai_navigation.hpp"
+#include "bsp/ship_ai_states.hpp"
+#include "bsp/ship_ai_throttle_ring.hpp"
+#include "bsp/unit_autopilot_pair.hpp"
+#include "bsp/vector_helpers.hpp"
 #include "bsp/unit_commanded_speed.hpp"
 #include "bsp/dyn_physics_substep.hpp"
 #include "bsp/dyn_world_settings.hpp"
@@ -375,6 +381,82 @@ float heading_degrees(const bsp::ShipMotionState& state) {
 }
 
 // -------------------------------------------------------------------------
+// --moveto: the reconstructed ship AI chain
+// -------------------------------------------------------------------------
+// The host boundaries the chain needs here. Every method that returns a value
+// the probe cannot supply returns an explicit stand-in and is named in the run
+// report; none of them feeds the trajectory, only the published slot.
+
+struct MoveToSetterHost final : bsp::ShipAiSetterHost {
+    void on_steering_mode_change_009da4e0() override {}    // 009DA4E0 unread
+    void after_heading_stored_00605070(float) override {}  // 00605070 unread
+};
+
+struct MoveToDirectHost final : bsp::ShipAiDirectControlHost {
+    float speed{0.0f};
+    float heading{0.0f};
+    void prologue_0080e000(float) override {}              // 0080E000 unread
+    bool controller_belongs_to_another_007788b0() override { return false; }
+    float unit_body_axis_speed_0092d730() override { return speed; }
+    // Stand-ins: this probe has no value for the class field at +508h of
+    // [unit+538h] or for unit+9C8h. They only scale blk+32Ch on a stopped ship.
+    float ship_class_field_0508() override { return 1.0f; }
+    float unit_field_09c8() override { return 0.0f; }
+    float unit_heading_vtable_0050() override { return heading; }
+    float unit_current_yaw_rate_00811940() override { return 0.0f; }
+};
+
+struct MoveToHeadingHost final : bsp::UnitHeadingTargetHost {
+    float heading{0.0f};
+    float speed{0.0f};
+    float heading_virtual_0050() override { return heading; }
+    float forward_speed_0092d730() override { return speed; }
+};
+
+// The navigation arm's two host boundaries, 009EE6AC and 009EE8C7. The probe
+// steers at a single point rather than a path, so the remaining path length is
+// the distance to that point, which is what 009D9E50 returns for a one-leg path.
+struct MoveToNavHost final : bsp::ShipAiNavHost {
+    float path_length{0.0f};
+    float heading{0.0f};
+    float remaining_path_length_009d9e50() override { return path_length; }
+    float unit_heading_vtable_0050() override { return heading; }
+};
+
+struct MoveToPublishHost final : bsp::ShipAiPublishHost {
+    int index{0};
+    MoveToHeadingHost heading_host{};
+    int order_slot_index_0b40() override { return index; }
+    void set_heading_target_00811960(bsp::UnitHeadingTargetState& state,
+                                    float desired_heading) override {
+        bsp::unit_set_heading_target_00811960(state, desired_heading, heading_host);
+    }
+    void tail_009f0100(float) override {}   // 009F0100 unread
+    void tail_009ef350() override {}        // 009EF350 unread
+    void tail_009ef910(float) override {}   // 009EF910 unread
+};
+
+// The last link: 009DA250's one host call and 009F3F80's tail. Both take the
+// hull's signed forward speed through 0092D730, and the tail's two setters are
+// 0080E170 and 0080E190 on the unit that owns the ring.
+struct MoveToRudderLawHost final : bsp::ShipAiRudderLawHost {
+    float speed{0.0f};
+    float unit_body_axis_speed_0092d730() override { return speed; }
+};
+
+struct MoveToRingHopHost final : bsp::ShipAiRingHopHost {
+    bsp::UnitOrderRing* ring{nullptr};
+    float speed{0.0f};
+    float unit_body_axis_speed_0092d730() override { return speed; }
+    void set_ring_write_slot_rudder_0080e190(float value) override {
+        bsp::ship_ai_ring_set_write_slot_rudder_0080e190(*ring, value);
+    }
+    void set_ring_write_slot_throttle_0080e170(float value) override {
+        bsp::ship_ai_ring_set_write_slot_throttle_0080e170(*ring, value);
+    }
+};
+
+// -------------------------------------------------------------------------
 // One trajectory
 // -------------------------------------------------------------------------
 
@@ -480,6 +562,22 @@ struct TrajectoryInputs {
     // docs/UNIT_COMMANDED_SPEED.md.
     bool have_commanded_speed{false};
     float commanded_speed{0.0f};
+    // --moveto X,Z: drive the unit through the reconstructed ship AI chain of
+    // docs/SHIP_AI_STATES.md instead of a standing hand order. The two
+    // stand-ins the run needs are named in the report it prints.
+    bool moveto{false};
+    float moveto_x{0.0f};
+    float moveto_z{0.0f};
+    // The ship-class float 009DA268 loads for the division, [unit+538h]
+    // +524h. It has no Lua key: 00828F20, the descriptor's virtual slot +14h,
+    // derives it once per class as
+    // 0.5 * MaxRotAngle / MaxRotAngleChangeRatio. The run computes it from the
+    // installed class row unless --yaw-authority overrides it.
+    float yaw_authority_0524{0.0f};
+    bool yaw_authority_overridden{false};
+    // False when 00828F20's two gates reject the row, which leaves the field
+    // uninitialised in the image; the run header says so.
+    bool yaw_authority_derived{false};
 };
 
 struct TrajectoryResult {
@@ -503,6 +601,26 @@ struct TrajectoryResult {
     // (world+2Ch) and how many substeps of 00C5BB30 that came to.
     int schedule_calls{0};
     int substeps{0};
+    // Filled only under --moveto.
+    bool moveto{false};
+    float moveto_first_distance{0.0f};
+    float moveto_final_distance{0.0f};
+    float moveto_min_distance{0.0f};
+    int moveto_inside_step{-1};
+    float moveto_published_heading{0.0f};
+    float moveto_published_distance_40{0.0f};
+    float moveto_published_distance_48{0.0f};
+    int moveto_promotions{0};
+    float moveto_bearing{0.0f};   // blk+324h after the navigation arm
+    int moveto_turn_leads{0};     // steps on which the 009EE964 gate opened
+    float moveto_arrival_time{-1.0f};
+    // The hop, 009F4B99..009F4D04: the last values 0080E170 and 0080E190 wrote
+    // into the ring's write slot, the heading error 009DA250 was driven with,
+    // and how many steps took the 009F4BC6 deadband that zeroes blk+1D4h.
+    float moveto_heading_error{0.0f};
+    float moveto_ring_throttle{0.0f};
+    float moveto_ring_rudder{0.0f};
+    int moveto_rudder_deadbands{0};
 };
 
 TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup,
@@ -597,6 +715,27 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
     bsp::CruiseSpeedSetting cruise_speed_setting{};
 
     float t = 0.0f;
+    // --moveto state, carried across steps the way blk and the unit's two order
+    // slots are. docs/SHIP_AI_STATES.md, docs/UNIT_AUTOPILOT_PAIR.md.
+    bsp::ShipAiControlBlock blk{};
+    bsp::ShipAiNavState nav{};
+    // The two navigation fields the block is constructed with are not recovered:
+    // blk+3C8h (the look-ahead ceiling 009ED769 seeds blk+340h from) and blk+3D0h
+    // (the heading window the turn lead tolerates). The run uses 500.0f and a
+    // tenth of a radian so the arm's two gates are both exercised, and the
+    // report names them as run inputs, not as recovered values.
+    // The slot pair lives on the unit, so the run uses the one inside
+    // ShipMotionState: the AI publishes into it here and 00825F20's own head
+    // promotes it inside ship_motion_step_00825f20.
+    bsp::UnitAiOrderPromotion& promotion = state.ai_order;
+    MoveToSetterHost setter_host{};
+    MoveToNavHost nav_host{};
+    MoveToDirectHost direct_host{};
+    MoveToPublishHost publish_host{};
+    MoveToRudderLawHost rudder_law_host{};
+    MoveToRingHopHost hop_host{};
+    result.moveto = in.moveto;
+
     for (int step = 0; step <= in.steps; ++step) {
         if (verbose && step % 10 == 0) {
             std::printf("%7d %8.2f %9.2f %9.2f %9.2f %10.3f %9.4f %10.4f %9.4f %10.5f\n",
@@ -648,15 +787,133 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
             order_b = (ordered.mode == bsp::CruiseSteerMode::Rudder) ? ordered.steer_or_heading
                                                                     : 0.0f;
         }
-        queue.slot_index = ring.write_cursor;
-        bsp::issue_unit_order_record_00816a40(issue, queue, scratch, order_a, order_b, 0);
-        const int w = ring.write_cursor;
-        ring.slot[w].param_a = queue.slot[w].param_a;
-        ring.slot[w].param_b = queue.slot[w].param_b;
-        ring.slot[w].kind = queue.slot[w].kind;
-        ring.slot[w].predicted = queue.slot_active[w];
+        if (in.moveto) {
+            // 1. The goal. A `movetopos` state reads it from brain+0B2Ch and
+            //    brain+0B34h (009E57D0, 009E57B4); here it is the argument.
+            const float dx = in.moveto_x - state.position[0];
+            const float dz = in.moveto_z - state.position[2];
+            const std::array<float, 2> delta{dx, dz};
+            const float distance = bsp::length_2d_00414c60(delta);
+            if (step == 0) {
+                result.moveto_first_distance = distance;
+                result.moveto_min_distance = distance;
+            } else if (distance < result.moveto_min_distance) {
+                result.moveto_min_distance = distance;
+            }
+            if (result.moveto_inside_step < 0 && distance < bsp::kShipAiLookAheadBonus) {
+                result.moveto_inside_step = step;
+                result.moveto_arrival_time = t;
+            }
+            if (step == 0) {
+                // Run inputs, not recovered values: see the note by `nav`.
+                nav.look_ahead_max_3c8 = 500.0f;
+                nav.look_ahead_340 = 500.0f;
+                nav.turn_window_3d0 = 0.1f;
+                nav.hull_axis_19c = std::array<float, 2>{state.pose_row2[0], state.pose_row2[2]};
+            } else {
+                nav.hull_axis_19c = std::array<float, 2>{state.pose_row2[0], state.pose_row2[2]};
+            }
+            // 2. The AI setters and the direct-control arm, reconstructed. The
+            //    throttle goes in through 009DBF90; the heading setter is what
+            //    puts blk+1C4h in Heading, which is the mode the direct-control
+            //    arm needs to leave blk+324h alone for the navigation arm.
+            bsp::ship_ai_set_desired_throttle_009dbf90(blk, in.throttle);
+            bsp::ship_ai_set_desired_heading_009e0040(blk, 0.0f, setter_host);
+            direct_host.speed = host.forward_speed();
+            direct_host.heading = heading_radians(state);
+            bsp::ship_ai_direct_control_arm_009ed6b0(blk, in.dt, direct_host);
+            // 3. The navigation arm, 009EE671..009EEAA2, reconstructed here.
+            //    Its gate is blk+1C4h == Navigate, and no site writing that mode
+            //    was read in the image, so the probe sets it directly and says
+            //    so. docs/SHIP_AI_NAVIGATION_ARM.md.
+            //    It is what turns a point and the unit's pose into the bearing
+            //    at blk+324h, the distance at blk+32Ch and the path length at
+            //    blk+330h - the exact trio 009F4D10 publishes. The probe drives
+            //    it with a one-leg path, so `more_path` is false and the next
+            //    leg degenerates to the goal itself.
+            blk.mode = bsp::ShipAiSteeringMode::Navigate;
+            nav_host.path_length = distance;
+            nav_host.heading = heading_radians(state);
+            bsp::ShipAiNavWaypoint waypoint{};
+            waypoint.x = in.moveto_x;
+            waypoint.z = in.moveto_z;
+            waypoint.next_x = in.moveto_x;
+            waypoint.next_z = in.moveto_z;
+            waypoint.more_path = false;
+            waypoint.steer_enabled = true;
+            waypoint.side = bsp::ShipAiNavTurnSide::Unconstrained;
+            bsp::ShipAiNavPose nav_pose{};
+            nav_pose.x = state.position[0];
+            nav_pose.z = state.position[2];
+            const bsp::ShipAiNavResult navigated =
+                bsp::ship_ai_navigation_arm_009ee671(blk, nav, waypoint, nav_pose, nav_host);
+            result.moveto_bearing = navigated.heading_target;
+            if (navigated.turn_lead_applied) {
+                ++result.moveto_turn_leads;
+            }
+            // 4. 009F4D10 publishes into the unit's order slot; 00811960 limits
+            //    the heading to a quarter turn about the unit's own heading.
+            publish_host.index = promotion.index;
+            publish_host.heading_host.heading = heading_radians(state);
+            publish_host.heading_host.speed = host.forward_speed();
+            const bsp::ShipAiPublishResult published = bsp::ship_ai_publish_order_009f4d10(
+                blk.heading_target_324, blk.distance_32c, blk.distance_330, in.dt,
+                publish_host);
+            promotion.slots[promotion.index] = published.slot;
+            result.moveto_published_heading = published.slot.heading_44;
+            result.moveto_published_distance_40 = published.slot.distance_40;
+            result.moveto_published_distance_48 = published.slot.distance_48;
+            // 5. 00825F2C promotes it. That happens inside
+            //    ship_motion_step_00825f20 below, at the head of the tick,
+            //    exactly where 00825F2C sits in 00825F20.
 
-        bsp::ship_motion_step_00825f20(state, cls, host, in.dt);
+            // 6. The hop, recovered by packet cc_ai_throttle_ring: the tail of
+            //    009F3F80, which the controller reaches through 009F4DA0. The
+            //    AI does NOT read the slot it just published; it reads the ring
+            //    slot under the write cursor, slews blk+1D0h and blk+1D4h
+            //    toward it by at most dt * 1.5 and stores them back through
+            //    0080E170 / 0080E190. The rudder comes from 009DA250, the only
+            //    writer of blk+1D4h inside 009F3F80, driven by the same heading
+            //    error 009F43B6 builds from blk+324h.
+            //    docs/SHIP_AI_THROTTLE_TO_RING.md.
+            //
+            //    The one stand-in left: the ship-class float at class+524h that
+            //    009DA268 loads and 009DA280 divides by. 00831840 leaves +524h
+            //    so the Lua key behind it is unknown; the probe uses
+            //    MaxRotAngle (class+4F8h) and says so in the header and the
+            //    report. --yaw-authority overrides it.
+            const float error = bsp::wrapped_angle_subtract_00438b10(
+                blk.heading_target_324, heading_radians(state));
+            result.moveto_heading_error = error;
+            rudder_law_host.speed = host.forward_speed();
+            blk.desired_rudder = bsp::ship_ai_rudder_from_heading_error_009da250(
+                blk.direction, error, in.yaw_authority_0524, rudder_law_host);
+            hop_host.ring = &ring;
+            hop_host.speed = host.forward_speed();
+            const bsp::ShipAiRingHop hop = bsp::ship_ai_order_ring_hop_009f4b99(
+                blk, bsp::ship_ai_ring_write_slot_throttle(ring),
+                bsp::ship_ai_ring_write_slot_rudder(ring), in.dt, hop_host);
+            result.moveto_ring_throttle = hop.ring_throttle;
+            result.moveto_ring_rudder = hop.ring_rudder;
+            if (hop.rudder_zeroed) {
+                ++result.moveto_rudder_deadbands;
+            }
+        }
+        if (!in.moveto) {
+            queue.slot_index = ring.write_cursor;
+            bsp::issue_unit_order_record_00816a40(issue, queue, scratch, order_a, order_b, 0);
+            const int w = ring.write_cursor;
+            ring.slot[w].param_a = queue.slot[w].param_a;
+            ring.slot[w].param_b = queue.slot[w].param_b;
+            ring.slot[w].kind = queue.slot[w].kind;
+            ring.slot[w].predicted = queue.slot_active[w];
+        }
+
+        const bsp::ShipMotionStepResult motion_step =
+            bsp::ship_motion_step_00825f20(state, cls, host, in.dt);
+        if (motion_step.ai_order_promoted) {
+            ++result.moveto_promotions;
+        }
 
         // The game's own integrator, and now the game's own schedule around it: the
         // whole of 00C5C540, which resets the profiler counters, flushes the pending
@@ -696,6 +953,11 @@ TrajectoryResult run_trajectory(const TrajectoryInputs& in, HullBodySetup& setup
         }
     }
 
+    if (in.moveto) {
+        const std::array<float, 2> final_delta{in.moveto_x - state.position[0],
+                                               in.moveto_z - state.position[2]};
+        result.moveto_final_distance = bsp::length_2d_00414c60(final_delta);
+    }
     result.x = state.position[0];
     result.y = state.position[1];
     result.z = state.position[2];
@@ -722,6 +984,11 @@ int main(int argc, char** argv) {
     // executable runs under the authored `Cruise` before the injected order.
     bool cruise = false;
     int cruise_frame = 20;
+    bool moveto = false;
+    float moveto_x = 0.0f;
+    float moveto_z = 0.0f;
+    float yaw_authority = 0.0f;
+    bool have_yaw_authority = false;
     // --commanded-speed: the metres per second a Lua `SetShipSpeed` or
     // `NavigatorMoveOnPath` order would have put on the navigator parameter block,
     // which 009E1265's arm turns into a throttle of speed / reference.
@@ -748,6 +1015,19 @@ int main(int argc, char** argv) {
             throttle = static_cast<float>(std::atof(argv[++i]));
         } else if (arg == "--rudder" && has_next) {
             rudder = static_cast<float>(std::atof(argv[++i]));
+        } else if (arg == "--moveto" && has_next) {
+            const std::string value = argv[++i];
+            const std::string::size_type comma = value.find(',');
+            if (comma == std::string::npos) {
+                std::printf("ship motion probe: --moveto wants X,Z\n");
+                return 2;
+            }
+            moveto_x = static_cast<float>(std::atof(value.substr(0, comma).c_str()));
+            moveto_z = static_cast<float>(std::atof(value.substr(comma + 1).c_str()));
+            moveto = true;
+        } else if (arg == "--yaw-authority" && has_next) {
+            yaw_authority = static_cast<float>(std::atof(argv[++i]));
+            have_yaw_authority = true;
         } else if (arg == "--cruise") {
             cruise = true;
         } else if (arg == "--cruise-frame" && has_next) {
@@ -762,6 +1042,7 @@ int main(int argc, char** argv) {
         } else {
             std::printf("usage: %s [--lua <vehicleclasses.lua>] [--class N] [--type T]\n"
                         "          [--steps N] [--dt S] [--throttle X] [--rudder X]\n"
+                        "          [--moveto X,Z] [--yaw-authority RAD]\n"
                         "          [--cruise] [--cruise-frame N]"
                         " [--commanded-speed M_PER_S]\n"
                         "          [--hull-extent DX DY DZ]\n",
@@ -863,6 +1144,25 @@ int main(int argc, char** argv) {
     run_in.cruise_frame = cruise_frame;
     run_in.have_commanded_speed = have_commanded_speed;
     run_in.commanded_speed = commanded_speed;
+    run_in.moveto = moveto;
+    run_in.moveto_x = moveto_x;
+    run_in.moveto_z = moveto_z;
+    // class+524h, recovered: 00828F20 derives it from the same class row this
+    // probe already reads, so the run no longer substitutes MaxRotAngle for it.
+    const bsp::ShipClassAiDerivedMotion derived_0524 = bsp::ship_class_ai_derived_motion_00828f20(
+        chosen->max_rot_angle, chosen->max_rot_angle_change_ratio, chosen->max_speed);
+    run_in.yaw_authority_0524 =
+        have_yaw_authority ? yaw_authority : derived_0524.yaw_authority_0524;
+    run_in.yaw_authority_overridden = have_yaw_authority;
+    run_in.yaw_authority_derived = derived_0524.derived;
+    if (!have_yaw_authority && !derived_0524.derived) {
+        std::printf("  warning: 00828F20's gates reject this class row"
+                    " (MaxRotAngle %.6f, MaxRotAngleChangeRatio %.6f);\n"
+                    "           class+524h stays 0 and the rudder law saturates."
+                    " Pass --yaw-authority to override.\n",
+                    static_cast<double>(chosen->max_rot_angle),
+                    static_cast<double>(chosen->max_rot_angle_change_ratio));
+    }
 
     HullBodySetup stand_in = stand_in_body();
     HullBodySetup real = class_body(*chosen, hull_extent);
@@ -915,6 +1215,65 @@ int main(int argc, char** argv) {
     std::printf("  00C5BB30 substeps%12d %22d\n", a.substeps, b.substeps);
     std::printf("  B's y falls because 00C41550 adds the world's gravity and nothing here\n"
                 "  cancels it: 009329C0's buoyancy is not reconstructed.\n");
+
+    if (b.moveto) {
+        std::printf("\n  --moveto %.1f,%.1f through the reconstructed ship AI chain\n"
+                    "    009DBF90 / 009E0040 set blk+1D0h and blk+1D8h; 009ED6B0's\n"
+                    "    direct-control arm copies the held heading into blk+324h;\n"
+                    "    009EE671..009EEAA2, its navigation arm, writes the bearing\n"
+                    "    into blk+324h, the distance into blk+32Ch and the path\n"
+                    "    length into blk+330h; 009F4D10 publishes that trio through\n"
+                    "    00811960 into the unit's order slot; 00825F2C promotes it.\n"
+                    "    distance to the goal  start %.2f, minimum %.2f, final %.2f\n"
+                    "    first step inside %.1f (00CF0DD8): %s\n"
+                    "    last published slot   +44h %.6f rad, +40h %.4f, +48h %.4f\n"
+                    "    slot promotions       %d of %d steps\n"
+                    "    nav arm bearing       %.6f rad, turn leads applied %d\n"
+                    "    009F3F80's tail, the hop this run recovered:\n"
+                    "      heading error       %.6f rad (blk+324h less the heading)\n"
+                    "      class+524h used     %.6f  (%s)\n"
+                    "      ring write slot     throttle %.6f, rudder %.6f\n"
+                    "      009F4BC6 deadbands  %d of %d steps\n",
+                    static_cast<double>(run_in.moveto_x), static_cast<double>(run_in.moveto_z),
+                    static_cast<double>(b.moveto_first_distance),
+                    static_cast<double>(b.moveto_min_distance),
+                    static_cast<double>(b.moveto_final_distance),
+                    static_cast<double>(bsp::kShipAiLookAheadBonus),
+                    (b.moveto_inside_step >= 0) ? "yes" : "no",
+                    static_cast<double>(b.moveto_published_heading),
+                    static_cast<double>(b.moveto_published_distance_40),
+                    static_cast<double>(b.moveto_published_distance_48),
+                    b.moveto_promotions, run_in.steps,
+                    static_cast<double>(b.moveto_bearing), b.moveto_turn_leads,
+                    static_cast<double>(b.moveto_heading_error),
+                    static_cast<double>(run_in.yaw_authority_0524),
+                    run_in.yaw_authority_overridden
+                        ? "--yaw-authority"
+                        : (run_in.yaw_authority_derived
+                               ? "00828F20, 0.5 * MaxRotAngle / MaxRotAngleChangeRatio"
+                               : "00828F20 rejected the row, field left at 0"),
+                    static_cast<double>(b.moveto_ring_throttle),
+                    static_cast<double>(b.moveto_ring_rudder),
+                    b.moveto_rudder_deadbands, run_in.steps);
+        if (b.moveto_inside_step >= 0) {
+            std::printf("    reached that range at step %d, %.2f s\n", b.moveto_inside_step,
+                        static_cast<double>(b.moveto_arrival_time));
+        }
+        std::printf("    The slot-to-rudder stand-in is gone. The ring is fed by\n"
+                    "    009F3F80's tail through 0080E170 / 0080E190 and the\n"
+                    "    rudder by 009DA250, both reconstructed operation for\n"
+                    "    operation. The class+524h stand-in is gone too: the\n"
+                    "    field has no Lua key, and 00828F20, the descriptor's\n"
+                    "    virtual slot +14h, derives it once per class as\n"
+                    "    0.5 * MaxRotAngle / MaxRotAngleChangeRatio, which this\n"
+                    "    run computes from the same class row. The branches of\n"
+                    "    009F3F80 before 009F4B99 that also write blk+1D0h are\n"
+                    "    unprojected, so this run exercises the hop and the\n"
+                    "    rudder law, not the collision arms before them.\n"
+                    "    blk+3C8h and blk+3D0h remain run inputs.\n"
+                    "    docs/SHIP_AI_THROTTLE_TO_RING.md and\n"
+                    "    docs/SHIP_AI_CLASS_FIELD_0524.md.\n");
+    }
 
     if (b.cruise) {
         static const char* const kModeName[] = {"rudder", "heading", "straight"};

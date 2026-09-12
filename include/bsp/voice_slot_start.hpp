@@ -59,7 +59,7 @@ struct VoiceSlotStartContext {
 std::int32_t find_sound_type_00a7b0a0(const SoundConfigurationState&,
     const NativeString&, SoundLevelNameHost&);
 void assign_voice_reference_0054d4c0(void*& destination, void* source,
-    VoiceLineHost&);
+    VoiceReferenceHost&);
 // Containers require 0<=count<=capacity<=INT32_MAX/2 and stable structure
 // during intrusive releases. Retain is the native nonthrowing atomic primitive.
 void reserve_voice_sound_entries_00a7c080(SoundSystemOwner&, std::int32_t capacity,

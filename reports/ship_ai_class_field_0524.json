@@ -1,0 +1,246 @@
+{
+  "packet": "cc_ai_class_field",
+  "owner": "agent/cc-ai-class-field",
+  "doc": "docs/SHIP_AI_CLASS_FIELD_0524.md",
+  "question": "What is the ship-class field at class+524h that 009DA250 divides every AI heading error by, and what Lua key fills it?",
+  "answer": "No Lua key fills it. 00828F20, the ship-class descriptor's virtual slot +14h, derives it once per class as 0.5 * MaxRotAngle (class+4F8h) / MaxRotAngleChangeRatio (class+4FCh). The same routine derives class+520h = MaxSpeed (class+500h) / MaxRotAngle, the turn radius. For VehicleClass[20] DeRuyter the value is 0.099999994f.",
+  "ghidra": "read-only for this packet; names added to the ledger only",
+  "routines": [
+    {
+      "address": "00828f20",
+      "name": "BSP_ShipClass_DeriveTurnFields",
+      "abi": "bool __thiscall(descriptor)(void)",
+      "body": "00828f20-00828f79",
+      "ret": "00828f79",
+      "coverage": "complete",
+      "uncertainty": "The name is a hypothesis. The meaning of the 0.5 factor is provisional; the arithmetic is not. The returned bool comes from the tail jump to 00951F20, not from the derivation, and no caller reads it.",
+      "vtable_slot": "00d1acc4+14",
+      "reconstruction": "bsp::ship_class_ai_derived_motion_00828f20 in src/ship_ai_throttle_ring.cpp",
+      "gates": [
+        {
+          "site": "00828f2e",
+          "instruction": "COMISS XMM1,XMM0 with XMM1 = 0 and XMM0 = [ECX+4FCh]",
+          "branch": "00828f37 JNC 00828f74",
+          "meaning": "continue on 0 < MaxRotAngleChangeRatio, and also on an unordered pair, so a NaN passes"
+        },
+        {
+          "site": "00828f41",
+          "instruction": "COMISS XMM1,XMM0 with XMM1 = 0 and XMM0 = [ECX+4F8h]",
+          "branch": "00828f49 JNC 00828f74",
+          "meaning": "the same test on MaxRotAngle"
+        }
+      ],
+      "stores": [
+        {
+          "site": "00828f5a",
+          "field": "class+524h",
+          "expression": "0.5 * MaxRotAngle / MaxRotAngleChangeRatio",
+          "constant": "00d7a280 = 00 00 00 00 00 00 e0 3f, the double 0.5",
+          "readers": ["009da268"]
+        },
+        {
+          "site": "00828f66",
+          "field": "class+520h",
+          "expression": "MaxSpeed / MaxRotAngle (FDIVR at 00828f60 divides the memory operand by ST0)",
+          "readers": ["0082e853"]
+        }
+      ]
+    },
+    {
+      "address": "0082e850",
+      "name": "BSP_ShipClass_GetTurnRadius",
+      "abi": "float __thiscall(descriptor)(void)",
+      "body": "0082e850-0082e881",
+      "coverage": "complete for the value returned; which arm of the +18h query is the fallback was not settled",
+      "uncertainty": "The name is a hypothesis. Its callers were not enumerated.",
+      "note": "0082e853 MOVSS XMM0,[ECX+520h] is the only read of class+520h through a descriptor. 0082e866 CALL EDX is the descriptor's own slot +18h with the argument 0Eh; on a zero result 0082e871/0082e877 multiply by the float at +438h of the 00424C40 tuning singleton."
+    },
+    {
+      "address": "00951f20",
+      "name": "FUN_00951f20",
+      "body": "00951f20-00951f2a",
+      "coverage": "read for its shape only, not reconstructed",
+      "note": "return 00876180() != 0; it is 00828F20's tail jump target"
+    },
+    {
+      "address": "009da250",
+      "name": "BSP_ShipAi_RudderFromHeadingError",
+      "body": "009da250-009da3a4",
+      "coverage": "complete, unchanged from packet cc_ai_throttle_ring",
+      "note": "Only its class+524h argument is re-documented here: 009da268 is the single reader of that field in the image and 009da276 scales it by the double 1.2 at 00cec160."
+    }
+  ],
+  "calls": [
+    {
+      "address": "0096515d",
+      "native": "00d1acc4+14",
+      "function": "00964790",
+      "kind": "virtual_slot",
+      "note": "CALL EAX with EAX = [[ESI]+14h] and ECX = ESI, the descriptor. For a ship vtable that slot holds 00828F20. Its return is discarded; 0096515f decrements 00f8a098."
+    },
+    {
+      "address": "00828f6f",
+      "native": "00951f20",
+      "function": "00828f20",
+      "kind": "tail_jump",
+      "note": "JMP, not CALL: 00828F20 returns whatever 00951F20 returns."
+    },
+    {
+      "address": "009650e6",
+      "native": "00d1acc4+8",
+      "function": "00964790",
+      "kind": "virtual_slot",
+      "note": "The Lua field read, 00831840 for a ship, dispatched earlier in the same function than the derive pass at 0096515d. This is the ordering evidence that class+4F8h..+500h are populated before 00828F20 reads them."
+    }
+  ],
+  "field_writers_scan": {
+    "method": "byte scan of .text for every store encoding at the displacement, plus the LEA form for helper access",
+    "patterns": [
+      "D9 ?? <disp> (x87 FST/FSTP)",
+      "F3 0F 11 ?? <disp> (MOVSS store)",
+      "F2 0F 11 ?? <disp> (MOVSD store)",
+      "89 ?? <disp> (MOV r/m32, r32)",
+      "C7 ?? <disp> (MOV r/m32, imm32)",
+      "88 ?? <disp> (MOV r/m8, r8)",
+      "8D ?? <disp> (LEA)"
+    ],
+    "results": [
+      {
+        "field": "class+520h",
+        "writers": ["00828f66"],
+        "other_objects": ["007ea53f", "0079b67c", "0079d146", "007c49e1", "005882df", "006d05ce", "00902615"]
+      },
+      {
+        "field": "class+524h",
+        "writers": ["00828f5a"],
+        "other_objects": ["007ea5da", "006c3f14", "00956638", "0095ce21", "0079b696", "007c49d3", "0079d13e", "00590521", "00599490", "00bd34e0", "00bd3520", "00bd37ff", "00bd4832", "00509acc", "00514435"]
+      },
+      {
+        "field": "class+528h",
+        "writers": [],
+        "note": "unsettled: no store at that displacement in the image belongs to a descriptor, and 00963380 does not clear it"
+      },
+      {
+        "field": "class+52Ch, +530h, +534h",
+        "writers": ["009633d8", "009633de", "009633e4", "00963a7e", "00963a84", "00963a8a"],
+        "note": "a begin/end/capacity triple, zeroed by the constructor and torn down by CG_vector_deleting_dtor_00963600; nothing in the image appends to it"
+      },
+      {
+        "field": "class+4FCh (MaxRotAngleChangeRatio)",
+        "readers": ["00828f23"],
+        "note": "the only load of that field through a descriptor anywhere in the image"
+      }
+    ]
+  },
+  "lua_values": {
+    "source": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/scripts/datatables/autoload/vehicleclasses.lua, read-only",
+    "row": "VehicleClass[20], DeRuyter 1935, block starts at line 13618",
+    "keys": {
+      "MaxRotAngle": {"line": 13884, "value": 0.122173, "degrees_per_second": 7.0},
+      "MaxRotAngleChangeRatio": {"line": 13885, "value": 0.610865, "degrees_per_second_squared": 35.0},
+      "MaxSpeed": {"line": 13886, "value": 16.4622}
+    },
+    "derived": {
+      "class_0524": 0.099999994,
+      "class_0520": 134.745,
+      "full_rudder_heading_error_rad": 0.12,
+      "full_rudder_heading_error_deg": 6.875,
+      "stand_in_threshold_rad": 0.14660759,
+      "stand_in_threshold_deg": 8.4
+    }
+  },
+  "run": {
+    "command": "build/win32/Release/bsp_ship_motion_probe.exe --class 20 --moveto 4000,4000 --steps 6000",
+    "was": {
+      "class_0524": 0.122173,
+      "source": "MaxRotAngle, the stand-in",
+      "minimum_distance": 849.88,
+      "first_step_inside_2000": 4586,
+      "time_to_radius_s": 229.31,
+      "final_heading_error_rad": 0.032551,
+      "final_ring_rudder": -0.222025,
+      "deadband_steps": 0
+    },
+    "is": {
+      "class_0524": 0.1,
+      "source": "00828F20 derived",
+      "minimum_distance": 842.31,
+      "first_step_inside_2000": 4580,
+      "time_to_radius_s": 229.01,
+      "final_heading_error_rad": 0.027144,
+      "final_ring_rudder": -0.2262,
+      "deadband_steps": 0
+    },
+    "reading": "The run never saturates the rudder, so the smaller authority appears as a proportionally larger demand for the same error: the final heading error settles 17 per cent lower and the arrival is 0.3 s earlier. A saturating course would diverge further, because the threshold moves from 8.4 to 6.9 degrees."
+  },
+  "corrections": [
+    {
+      "was": "docs/SHIP_AI_THROTTLE_TO_RING.md Uncertainties item 1 and the packet brief: class+524h has no name, so its Lua key is unknown and a different descriptor reader must fill it",
+      "is": "There is no Lua key and no missing reader. 00828F20 derives the field from MaxRotAngle and MaxRotAngleChangeRatio after the Lua load",
+      "evidence": "00828f5a, 00828f54, 0096515d, 009650e6"
+    },
+    {
+      "was": "the brief: 00831840 writes +4F8h..+51Bh and +538h onward, so a reader fills +51Ch..+537h",
+      "is": "00831840 also writes +51Ch, ExplosionEfx, at site 00831cb7. The gap is +520h..+537h, and only +520h and +524h in it are ever written",
+      "evidence": "the key table in docs/SHIP_CLASS_FIELDS.md; 009633d2"
+    },
+    {
+      "was": "the brief's candidate 0082B170 for the missing writer",
+      "is": "0082B170 is the native-string append helper behind the camo TextureRemaps container and touches no motion field",
+      "evidence": "its callees 0041dd40 and 00bf7680, its single caller 00831840, docs/SHIP_CLASS_FIELDS.md"
+    },
+    {
+      "was": "src/ship_motion_probe.cpp --yaw-authority defaults to MaxRotAngle, a stand-in, and the probe report says the Lua key is unknown",
+      "is": "the default is ship_class_ai_derived_motion_00828f20(MaxRotAngle, MaxRotAngleChangeRatio, MaxSpeed).yaw_authority_0524; the switch is kept for overrides",
+      "evidence": "the was/is run above"
+    },
+    {
+      "was": "the ledger name FUN_00828f20",
+      "is": "BSP_ShipClass_DeriveTurnFields, a hypothesis",
+      "evidence": "00828f5a, 00828f66"
+    },
+    {
+      "was": "the ledger name FUN_0082e850",
+      "is": "BSP_ShipClass_GetTurnRadius, a hypothesis",
+      "evidence": "0082e853"
+    }
+  ],
+  "files": [
+    "docs/SHIP_AI_CLASS_FIELD_0524.md",
+    "reports/ship_ai_class_field_0524.json",
+    "docs/SHIP_AI_THROTTLE_TO_RING.md",
+    "include/bsp/ship_ai_throttle_ring.hpp",
+    "src/ship_ai_throttle_ring.cpp",
+    "src/ship_motion_probe.cpp"
+  ],
+  "build": "scripts/build.ps1, Win32 Release, /W4 /WX clean; 1 of 1 existing test passed. No tests added.",
+  "no_ghidra_function": [
+    {
+      "start": "00758140",
+      "end": "00758144",
+      "evidence": "E9 DB 0D 0D 00, JMP 00828F20 (00758145 + 000D0DDB). CC padding at 00758134..0075813F and 00758145..0075814F. The bridge lists it as an unconditional caller of 00828F20 and reports no function at or containing it; the nearest preceding function is FUN_00758090, body 00758090-0075812a."
+    },
+    {
+      "start": "00852200",
+      "end": "00852204",
+      "evidence": "E9 1B 6D FD FF, JMP 00828F20 (00852205 + FFFD6D1B). CC padding at 008521FC..008521FF and 00852205..0085220F. The bridge reports no function at 00852200; the nearest preceding function is FUN_00852140, body 00852140-00852186, and the stub at 008521F0..008521FB between them has no function either."
+    }
+  ],
+  "follow_up_packets": [
+    {
+      "packet": "ship_class_field_0528",
+      "addresses": ["class+528h", "class+52Ch..+534h", "00963380", "00963600"],
+      "what_is_left": "The one offset in the gap with no writer, and the vector member nothing appends to. Both need a search for computed-base accesses, which the displacement and LEA scans here do not cover."
+    },
+    {
+      "packet": "ship_class_turn_radius_consumers",
+      "addresses": ["0082e850", "00424c40+438h", "descriptor slot +18h with argument 0Eh"],
+      "what_is_left": "Who calls 0082E850, which arm of the +18h query is the fallback, and a name for the tuning multiplier at singleton+438h."
+    },
+    {
+      "packet": "ship_class_derive_pass_return",
+      "addresses": ["00828f20", "00951f20", "00876180"],
+      "what_is_left": "What 00951F20's 00876180 tests, and whether any other slot +14h override in the descriptor families returns something a caller reads."
+    }
+  ]
+}

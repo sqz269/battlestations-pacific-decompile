@@ -1,0 +1,333 @@
+{
+  "packet": "cc_ship_ai_state_steps",
+  "owner": "agent/cc-ship-ai-state-steps",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only: no renames, comments, prototypes, function creation or saves",
+  "docs": ["docs/SHIP_AI_STATE_STEPS.md"],
+  "sources": [
+    "include/bsp/ship_ai_state_steps.hpp",
+    "src/ship_ai_state_steps.cpp"
+  ],
+  "verification": {
+    "checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md",
+    "note": "Rows under undefined_region_steps use site/callee instead of address/native because 009E8820 and 009E59C0 have no Ghidra function, so tools/verify_report_calls.py cannot resolve a containing function for those sites. The integrator defines them first with python tools/ghidra_define_function.py 009e8820 009e88fa and 009e59c0 009e5c91, after which those rows become checkable.",
+    "unread_callees": [
+      "00852860", "009e85b0", "007adc30", "00605070", "00984300",
+      "0041e870 (named in the ledger, body not read this packet)"
+    ]
+  },
+
+  "routines": [
+    {
+      "address": "009de050",
+      "name": "BSP_ShipAi_SetNavigationGoal",
+      "abi": "__thiscall(blk)(const float* goal2d, char keep_mode, unsigned char final_leg), RET 0Ch",
+      "body": "009de050-009de1a6",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_set_navigation_goal_009de050"
+    },
+    {
+      "address": "009da4e0",
+      "name": "BSP_ShipAi_ClearPathPlan",
+      "abi": "__fastcall(blk), RET 0",
+      "body": "009da4e0-009da58d",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_clear_path_plan_009da4e0"
+    },
+    {
+      "address": "009dff40",
+      "name": "BSP_ShipAi_SetHeadingAndDropPath",
+      "abi": "__thiscall(brain)(float heading), RET 4",
+      "body": "009dff40-009dff91",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_set_heading_drop_path_009dff40"
+    },
+    {
+      "address": "009e00a0",
+      "name": "BSP_ShipAi_HoldHeadingAndStop",
+      "abi": "__thiscall(&state->owner)(), RET 0",
+      "body": "009e00a0-009e0126",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_hold_heading_and_stop_009e00a0"
+    },
+    {
+      "address": "009e14c0",
+      "name": "BSP_ShipAi_StopStateStep",
+      "abi": "__thiscall(state)(float), RET 4; the float is never read",
+      "body": "009e14c0-009e1605",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_stop_step_009e14c0"
+    },
+    {
+      "address": "009e5770",
+      "name": "BSP_ShipAi_MoveToPosStateStep",
+      "abi": "__thiscall(state)(float), RET 4; the float is never read",
+      "body": "009e5770-009e59b7",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_movetopos_step_009e5770"
+    },
+    {
+      "address": "009e8820",
+      "name": "BSP_ShipAi_AttackMoveStateStep",
+      "abi": "__thiscall(state)(float seconds), RET 4",
+      "body": "009e8820-009e88f9",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_attackmove_step_009e8820",
+      "ghidra_function": false
+    },
+    {
+      "address": "009e86f0",
+      "name": "BSP_ShipAi_AttackMoveSelectSubState",
+      "abi": "__thiscall(state)(float seconds), RET 4",
+      "body": "009e86f0-009e881a",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_attackmove_select_009e86f0"
+    },
+    {
+      "address": "0071bff0",
+      "name": "BSP_WeaponDirector_CommandSlot",
+      "abi": "__thiscall(director)(int index), RET 4",
+      "body": "0071bff0-0071c00f",
+      "coverage": "complete",
+      "reconstruction": "none; documented only"
+    },
+    {
+      "address": "007adc60",
+      "name": "BSP_EntityCommand_IsOnFinalLeg",
+      "abi": "__thiscall(slot)(), RET 0",
+      "body": "007adc60-007adcbd",
+      "coverage": "complete",
+      "reconstruction": "none; documented only"
+    },
+    {
+      "address": "0071c4f0",
+      "name": "BSP_World_PositionOutsideBounds",
+      "abi": "__thiscall(world)(const float* pos3), RET 4",
+      "body": "0071c4f0-0071c547",
+      "coverage": "complete",
+      "reconstruction": "none; documented only"
+    },
+    {
+      "address": "007b6ee0",
+      "name": "BSP_StateMachine_SetCurrentState",
+      "abi": "__thiscall(machine)(member), RET 4",
+      "body": "007b6ee0-007b6f0a",
+      "coverage": "complete",
+      "reconstruction": "none; documented only"
+    },
+    {
+      "address": "0070d060",
+      "name": "BSP_UnitGroup_MemberAt",
+      "abi": "__thiscall(group)(int index), RET 4",
+      "body": "0070d060-0070d06d",
+      "coverage": "complete",
+      "reconstruction": "none; documented only"
+    },
+    {
+      "address": "009e8450",
+      "name": "BSP_ShipAi_AttackMoveConstruct",
+      "abi": "__thiscall(state)(brain)",
+      "body": "009e8450-009e8533",
+      "coverage": "complete for the five sub-state slots; 009E5CA0 and 009E5530 read only for the vtable they install"
+    },
+    {
+      "address": "009e59c0",
+      "name": "BSP_ShipAi_MoveOnPathStateStep",
+      "abi": "__thiscall(state)(float), RET 4",
+      "body": "009e59c0-009e5c90",
+      "coverage": "partial: 009e59c0-009e5b16 projected; 009e5b17-009e5c8d, the target range test and the finished block, read as a call list only",
+      "ghidra_function": false
+    },
+    {
+      "address": "009e1610",
+      "name": "BSP_ShipAi_FollowStateStep",
+      "abi": "__fastcall(state), RET 0 per the live prototype",
+      "body": "009e1610-009e18c2",
+      "coverage": "partial: pseudocode only, nothing projected"
+    },
+    {
+      "address": "009e23b0",
+      "name": "attackmove sub-state step at state+14C0h",
+      "body": "009e23b0-009e26bd",
+      "coverage": "partial: pseudocode only, nothing projected"
+    },
+    {
+      "address": "009e2020",
+      "name": "BSP_ShipAi_KamikazeAttackStateStep",
+      "body": "009e2020-009e23ad",
+      "coverage": "not projected; call inventory only"
+    },
+    {
+      "address": "009e1950",
+      "name": "BSP_ShipAi_LandStateStep",
+      "body": "009e1950-009e201a",
+      "coverage": "not projected; call inventory only"
+    },
+    {
+      "address": "0071e430",
+      "name": "entity command end",
+      "body": "0071e430-0071e4b9",
+      "coverage": "partial: 0071e430-0071e48e, the director+30h dispatch; the +54h arm from 0071e489 is unread"
+    }
+  ],
+
+  "host_steps": [
+    {"step": "009DE050 1 clear path plan", "address": "009de082", "native": "009da4e0", "function": "009de050", "method": "clear_path_plan_009da4e0"},
+    {"step": "009DE050 2 plan length", "address": "009de193", "native": "00414c60", "function": "009de050", "method": "planar_length_00414c60"},
+
+    {"step": "009DFF40 1 clear path plan", "address": "009dff6c", "native": "009da4e0", "function": "009dff40", "method": "clear_path_plan_009da4e0"},
+    {"step": "009DFF40 2 after heading stored", "address": "009dff81", "native": "00605070", "function": "009dff40", "method": "after_heading_stored_00605070"},
+
+    {"step": "009E00A0 1 clear path plan", "address": "009e00e5", "native": "009da4e0", "function": "009e00a0", "method": "clear_path_plan_009da4e0"},
+    {"step": "009E00A0 2 after heading stored", "address": "009e00fa", "native": "00605070", "function": "009e00a0", "method": "after_heading_stored_00605070"},
+
+    {"step": "stop 1 refresh unit pose", "address": "009e14e1", "native": "00414db0", "function": "009e14c0", "method": "refresh_unit_pose_00414db0"},
+    {"step": "stop 2 world bounds", "address": "009e14f3", "native": "0071c4f0", "function": "009e14c0", "method": "position_outside_world_bounds_0071c4f0"},
+    {"step": "stop 3 goal to the origin", "address": "009e1518", "native": "009de050", "function": "009e14c0", "method": "set_navigation_goal_009de050"},
+    {"step": "stop 5 set desired heading", "address": "009e153c", "native": "009e0040", "function": "009e14c0", "method": "set_desired_heading_009e0040"},
+    {"step": "stop 6 body axis speed", "address": "009e1570", "native": "0092d730", "function": "009e14c0", "method": "unit_body_axis_speed_0092d730"},
+
+    {"step": "movetopos 1 refresh unit pose", "address": "009e57a5", "native": "00414db0", "function": "009e5770", "method": "refresh_unit_pose_00414db0"},
+    {"step": "movetopos 2 command slot", "address": "009e57ed", "native": "0071bff0", "function": "009e5770", "method": "director_command_slot_0071bff0"},
+    {"step": "movetopos 3 final leg", "address": "009e57f4", "native": "007adc60", "function": "009e5770", "method": "command_on_final_leg_007adc60"},
+    {"step": "movetopos 4 set navigation goal", "address": "009e580f", "native": "009de050", "function": "009e5770", "method": "set_navigation_goal_009de050"},
+    {"step": "movetopos 6 resolve command target", "address": "009e5847", "native": "00521ea0", "function": "009e5770", "method": "resolve_command_target_00521ea0"},
+    {"step": "movetopos 8 refresh target pose", "address": "009e5874", "native": "00414db0", "function": "009e5770", "method": "refresh_target_pose_00414db0"},
+    {"step": "movetopos 9 planar length", "address": "009e58b9", "native": "00414c60", "function": "009e5770", "method": "planar_length_00414c60"},
+    {"step": "movetopos 10 message text", "address": "009e58ef", "native": "0041e870", "function": "009e5770", "method": "message_text_assign_0041e870"},
+    {"step": "movetopos 11 post message", "address": "009e595c", "native": "00984300", "function": "009e5770", "method": "post_command_message_00984300"},
+    {"step": "movetopos 12a text pool", "address": "009e597c", "native": "00419cc0", "function": "009e5770", "method": "release_message_text_00419cc0"},
+    {"step": "movetopos 12b text release", "address": "009e5983", "native": "00bd1510", "function": "009e5770", "method": "release_message_text_00419cc0"},
+    {"step": "movetopos 13 end command", "address": "009e5997", "native": "0071e430", "function": "009e5770", "method": "end_command_0071e430"},
+    {"step": "movetopos 14 hold heading and stop", "address": "009e599e", "native": "009e00a0", "function": "009e5770", "method": "hold_heading_and_stop_009e00a0"},
+
+    {"step": "attackmove select 2 target predicate", "address": "009e873b", "native": "00852860", "function": "009e86f0", "method": "call_00852860"},
+    {"step": "attackmove select 4 switch sub-state", "address": "009e87bd", "native": "007b6ee0", "function": "009e86f0", "method": "set_current_substate_007b6ee0"},
+    {"step": "attackmove select 5 inner predicate", "address": "009e87cd", "native": "009e85b0", "function": "009e86f0", "method": "call_009e85b0"},
+    {"step": "attackmove select 6 switch to engage", "address": "009e87e3", "native": "007b6ee0", "function": "009e86f0", "method": "set_current_substate_007b6ee0"}
+  ],
+
+  "indirect_steps": [
+    {"step": "stop 4 unit heading", "site": "009e1534", "callee": "[unit]->vtable[50h]", "function": "009e14c0", "method": "unit_heading_vtable_0050"},
+    {"step": "movetopos 5 arrival test", "site": "009e5821", "callee": "[state]->vtable[2Ch]", "function": "009e5770", "method": "state_goal_reached_vtable_002c", "contract": "unread"},
+    {"step": "movetopos 7 target kind 1Ch", "site": "009e585f", "callee": "[target]->vtable[5Ch]", "function": "009e5770", "method": "target_is_kind_vtable_005c", "contract": "unread"},
+    {"step": "009E00A0 0 unit heading", "site": "009e00b2", "callee": "[unit]->vtable[50h]", "function": "009e00a0", "method": "unit_heading_vtable_0050"},
+    {"step": "attackmove select 1 target kind 8", "site": "009e8733", "callee": "[target]->vtable[5Ch]", "function": "009e86f0", "method": "target_is_kind_vtable_005c", "contract": "unread"},
+    {"step": "attackmove select 3 target kind 1Ch", "site": "009e8799", "callee": "[target]->vtable[5Ch]", "function": "009e86f0", "method": "target_is_kind_vtable_005c", "contract": "unread"},
+    {"step": "attackmove select 7 sub-state exit", "site": "009e8804", "callee": "[state+1508h]->vtable[8]", "function": "009e86f0", "method": "substate_exit_vtable_0008", "contract": "unread"},
+    {"step": "attackmove select 8 sub-state enter", "site": "009e8813", "callee": "[state+8h]->vtable[4]", "function": "009e86f0", "method": "substate_enter_vtable_0004", "contract": "unread"},
+    {"step": "009DA4E0 release path object A", "site": "009da4e9", "callee": "[blk+244h]->vtable[0]", "function": "009da4e0", "method": "release_path_object_vtable_0000", "contract": "unread"},
+    {"step": "009DA4E0 release path object B", "site": "009da524", "callee": "[blk+2ACh]->vtable[0]", "function": "009da4e0", "method": "release_path_object_vtable_0000", "contract": "unread"}
+  ],
+
+  "undefined_region_steps": [
+    {"step": "attackmove 1 unit kind 9", "site": "009e883f", "callee": "[unit]->vtable[5Ch]", "function": "009e8820 (no Ghidra function)", "method": "entity_is_kind_vtable_005c"},
+    {"step": "attackmove 2 group member", "site": "009e8873", "callee": "0070d060", "function": "009e8820 (no Ghidra function)", "method": "group_member_at_0070d060"},
+    {"step": "attackmove 3 member kind 9", "site": "009e888c", "callee": "[member]->vtable[5Ch]", "function": "009e8820 (no Ghidra function)", "method": "entity_is_kind_vtable_005c"},
+    {"step": "attackmove 4 director", "site": "009e88bd", "callee": "[unit]->vtable[114h]", "function": "009e8820 (no Ghidra function)", "method": "unit_director_vtable_0114"},
+    {"step": "attackmove 5 end command", "site": "009e88c1", "callee": "0071e430", "function": "009e8820 (no Ghidra function)", "method": "end_command_0071e430"},
+    {"step": "attackmove 6 select sub-state", "site": "009e88d8", "callee": "009e86f0", "function": "009e8820 (no Ghidra function)", "method": "select_substate_009e86f0"},
+    {"step": "attackmove 7 sub-state step", "site": "009e88f0", "callee": "[state+1508h]->vtable[0Ch]", "function": "009e8820 (no Ghidra function)", "method": "substate_step_vtable_000c"},
+
+    {"step": "moveonpath 1 command slot", "site": "009e59f1", "callee": "0071bff0", "function": "009e59c0 (no Ghidra function)", "method": "director_command_slot_0071bff0"},
+    {"step": "moveonpath 2 second predicate", "site": "009e59f8", "callee": "007adc30", "function": "009e59c0 (no Ghidra function)", "method": "call_007adc30", "contract": "unread"},
+    {"step": "moveonpath 3 final leg", "site": "009e5a15", "callee": "007adc60", "function": "009e59c0 (no Ghidra function)", "method": "command_on_final_leg_007adc60"},
+    {"step": "moveonpath 4 hold heading and stop", "site": "009e5a20", "callee": "009e00a0", "function": "009e59c0 (no Ghidra function)", "method": "hold_heading_and_stop_009e00a0"},
+    {"step": "moveonpath 5 waypoint", "site": "009e5a59", "callee": "[slot]->vtable[4]", "function": "009e59c0 (no Ghidra function)", "method": "command_waypoint_vtable_0004"},
+    {"step": "moveonpath 6 refresh unit pose", "site": "009e5a82", "callee": "00414db0", "function": "009e59c0 (no Ghidra function)", "method": "refresh_unit_pose_00414db0"},
+    {"step": "moveonpath 7 set navigation goal", "site": "009e5ae2", "callee": "009de050", "function": "009e59c0 (no Ghidra function)", "method": "set_navigation_goal_009de050"},
+    {"step": "moveonpath 8 arrival test", "site": "009e5af4", "callee": "[state]->vtable[2Ch]", "function": "009e59c0 (no Ghidra function)", "method": "state_goal_reached_vtable_002c"}
+  ],
+
+  "no_ghidra_function": [
+    {
+      "start": "009e59c0",
+      "end_inclusive": "009e5c90",
+      "evidence": "MOV EAX,FS:[0] / PUSH -1 SEH prologue at 009e59c0, the target of 00d21694 = vtable 00d21688 + 0Ch; the previous function 009e5770 ends at 009e59b7 with its RET 4 at 009e59b5 and eight INT3 at 009e59b8-009e59bf; the last RET 4 is at 009e5c8e, followed by fifteen INT3 at 009e5c91-009e5c9f and the next Ghidra function 009e5ca0 (body 009e5ca0-009e5cee). The RET 4 at 009e5a36 is an internal exit."
+    },
+    {
+      "start": "009e8820",
+      "end_inclusive": "009e88f9",
+      "evidence": "PUSH ECX / PUSH EBX / PUSH EBP / MOV EBP,ECX prologue at 009e8820, the target of 00d219dc = vtable 00d219d0 + 0Ch; the previous Ghidra function 009e86f0 has body end 009e881a with its RET 4 at 009e8818 and five INT3 at 009e881b-009e881f; the last RET 4 is at 009e88f7, followed by six INT3 at 009e88fa-009e88ff and the next Ghidra function 009e8900 (body 009e8900-009e8be3). The RET 4 at 009e88cb is the hand-back exit."
+    },
+    {
+      "start": "009dae20",
+      "end_inclusive": "009dae25",
+      "evidence": "MOV EAX,0E08F68h; RET, the movetopos command getter at vtable 00d21628 + 24h, followed by INT3 padding from 009dae26. Read from the disk bytes."
+    },
+    {
+      "start": "009e8540",
+      "end_inclusive": "009e8545",
+      "evidence": "MOV EAX,0E08F78h; RET, the attackmove command getter at vtable 00d219d0 + 24h, followed by INT3 padding from 009e8546. Read from the disk bytes."
+    }
+  ],
+
+  "attackmove_substates": [
+    {"state_offset": "0008", "vtable": "00d21994", "step": "009f3240", "constructed_at": "009e8486", "note": "built by 009E5CA0, which nests another object at +10h through 009E5530"},
+    {"state_offset": "14c0", "vtable": "00d2174c", "step": "009e23b0", "constructed_at": "009e8491"},
+    {"state_offset": "14cc", "vtable": "00d2177c", "step": "009e26c0", "constructed_at": "009e84a7"},
+    {"state_offset": "14e0", "vtable": "00d217ac", "step": "009f3670", "constructed_at": "009e84b7"},
+    {"state_offset": "14f4", "vtable": "00d2171c", "step": "007b3dd0", "constructed_at": "009e84ca", "note": "the initial member, stored at 009e850f"}
+  ],
+
+  "goal_call_sites": [
+    {"caller": "009e14c0", "address": "009e1518", "native": "009de050", "function": "009e14c0", "keep_mode": 0, "final_leg": 1, "goal": "(0,0), the world origin"},
+    {"caller": "009e1610", "address": "009e1837", "native": "009de050", "function": "009e1610", "keep_mode": 0, "final_leg": 1, "goal": "state+14h/state+18h, the formation point", "note": "the site address comes from the live listing; keep_mode and final_leg are the decompiler's arguments"},
+    {"caller": "009e1950", "address": "009e1eb6", "native": "009de050", "function": "009e1950", "keep_mode": 0, "final_leg": 0, "goal": "not projected"},
+    {"caller": "009e2020", "address": "009e22eb", "native": "009de050", "function": "009e2020", "keep_mode": 0, "final_leg": 0, "goal": "not projected"},
+    {"caller": "009e23b0", "address": "009e267b", "native": "009de050", "function": "009e23b0", "keep_mode": 0, "final_leg": 0, "goal": "not projected", "note": "site from the live listing"},
+    {"caller": "009e26c0", "address": "009e2a53", "native": "009de050", "function": "009e26c0", "keep_mode": 0, "final_leg": 0, "goal": "not projected"},
+    {"caller": "009e4b90", "address": "009e4c01", "native": "009de050", "function": "009e4b90", "keep_mode": 0, "final_leg": 1, "goal": "not projected"},
+    {"caller": "009e5770", "address": "009e580f", "native": "009de050", "function": "009e5770", "keep_mode": 0, "final_leg": "007ADC60", "goal": "brain+0B2Ch / brain+0B34h"},
+    {"caller": "009f3240", "address": "009f332b", "native": "009de050", "function": "009f3240", "keep_mode": "not transcribed", "final_leg": 1, "goal": "not projected"},
+    {"caller": "009e59c0", "site": "009e5ae2", "callee": "009de050", "function": "009e59c0 (no Ghidra function)", "keep_mode": 0, "final_leg": "007ADC60", "goal": "the command's current waypoint"}
+  ],
+
+  "corrections": [
+    {
+      "was": "include/bsp/ship_ai_states.hpp: 009ED6B0 tests blk+1C4h against 2 and 3; no site that writes 2 or 3 was read",
+      "is": "009DE050 writes 2 at 009DE091 and unconditionally again at 009DE152, so every state step but cruise's forces Navigate mode every time it runs",
+      "evidence": "009de091 MOV dword [ESI+1C4h],2; 009de152 the same, reached on both arms"
+    },
+    {
+      "was": "include/bsp/ship_ai_states.hpp ShipAiSetterHost::on_steering_mode_change_009da4e0: body unread",
+      "is": "009DA4E0 is the path-plan reset: it releases blk+244h and blk+2ACh through vtable[0](1) and clears fourteen fields and three bytes",
+      "evidence": "body 009da4e0-009da58d read complete"
+    },
+    {
+      "was": "docs/SHIP_AI_STATES.md: attackmove has four embedded sub-states at 00D2174C, 00D2177C, 00D217AC and 00D2171C",
+      "is": "five; the fifth is at state+8h with vtable 00D21994 and step 009F3240, and it is the selector's default",
+      "evidence": "009e8479 LEA ECX,[ESI+8]; 009e8486 CALL 009e5ca0; 009e5cd0 MOV dword [ESI],0D21994h; 00d219a0 = 009f3240"
+    },
+    {
+      "was": "docs/SHIP_AI_STATES.md: the attackmove row's step and command object are not read",
+      "is": "step 009E8820 and command getter 009E8540 returning 00E08F78",
+      "evidence": "00d219dc = 009e8820; 009e8540 MOV EAX,0E08F78h; RET"
+    },
+    {
+      "was": "docs/SHIP_AI_STATES.md: the kamikaze_attack row's step is not read",
+      "is": "009E2020, and moveonpath's step is 009E59C0",
+      "evidence": "00d216c4 = 009e2020; 00d21694 = 009e59c0"
+    },
+    {
+      "was": "docs/SHIP_AI_STATES.md: a state object's +8h and +0Ch are two floats seeded from 00CF5BFC (-99.0f)",
+      "is": "+8h is read and written as a BYTE latch by 009E14C0, 009E59C0 and 009E1610; the float seed still stands and its low byte is 0, so the latch starts false",
+      "evidence": "009e155d CMP byte [EDI+8],BL; 009e15b4; 009e59de; 009e5a39"
+    },
+    {
+      "was": "docs/SHIP_AI_STATES.md: 009E5770 partial, the 00E08F68 arm 009E5837-009E5891 and the arrival message 009E58E6-009E59B7 not projected",
+      "is": "complete; both arms are projected in ship_ai_movetopos_step_009e5770",
+      "evidence": "src/ship_ai_state_steps.cpp, docs/SHIP_AI_STATE_STEPS.md"
+    }
+  ],
+
+  "uncertainties": [
+    "state->vtable[2Ch] is called with the goal in both movetopos and moveonpath and no callee body was read; 'arrival test' is inferred from the call sites.",
+    "target+7A0h is an integer field loaded with FILD and no writer was read; calling it a range follows from the subtraction of unit+9C8h and the compare against a planar distance.",
+    "The keep_mode != 0 arm of 009DE050 is projected from the listing; every call site checked passes zero.",
+    "vtable[5Ch]'s kind ids 8, 9 and 1Ch are not established; 1Ch is the one movetopos uses on a command target that resolves to a unit.",
+    "The x87 chains in 009DE050 and 009E86F0 are reconstructed with one rounding per named store; the C++ projection rounds each operation."
+  ]
+}

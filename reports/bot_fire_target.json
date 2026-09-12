@@ -1,0 +1,1371 @@
+{
+  "packet": "cc2_bot_fire_target",
+  "owner": "agent/cc2-bot-fire-target",
+  "docs": [
+    "docs/BOT_FIRE_TARGET.md"
+  ],
+  "sources": [
+    "include/bsp/bot_fire_target.hpp",
+    "src/bot_fire_target.cpp"
+  ],
+  "subject": "How an AI-controlled unit chooses what its guns shoot at: the weapon director's automatic target selector at director+38h, and the six gun-side callers of 0085ABA0 that turn a chosen target into gun angles.",
+  "reuses": [
+    "include/bsp/gun_aiming.hpp for kGunAimSnapThreshold, the 00CE3D40 double that 009F52F0 also uses",
+    "include/bsp/weapon_director.hpp for kDirectorOffSubobject38h, kDirectorOffAllowMove and kDirectorOffCommandSlots",
+    "docs/SCENE_COMMAND_TYPES.md for the command singleton table at 00E08EF8 + 8*(k-1)"
+  ],
+  "functions": [
+    {
+      "address": "009f5da0",
+      "name": "BSP_WeaponDirector_AutoTargetTick",
+      "abi": "__thiscall(selector)(float dt), RET 4 at 009f5df4, 009f5e00 and 009f5f2c, body 009f5da0-009f5f45",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "009f5dc4",
+          "native": "007788b0",
+          "role": "BSP_Entity_ControllerBelongsToAnother, ECX = [selector+8h] the unit"
+        },
+        {
+          "address": "009f5deb",
+          "native": "0077c980",
+          "role": "release the controller, ECX = the unit, one argument 0"
+        },
+        {
+          "address": "009f5e15",
+          "native": "009f5610",
+          "role": "the enable gate, ECX = selector"
+        },
+        {
+          "address": "009f5e4b",
+          "native": "00465080",
+          "role": "build a command target from the director's current target, ECX = a stack scratch, arguments (entity, 0.0f)"
+        },
+        {
+          "address": "009f5e59",
+          "native": "0071d6d0",
+          "role": "BSP_WeaponDirector_CommandAcceptsTarget, ECX = director, arguments (00E08F78 attackmove, commandTarget)"
+        },
+        {
+          "address": "009f5e7f",
+          "native": "009f5d30",
+          "role": "scan the party list, ECX = selector+10h"
+        },
+        {
+          "address": "009f5ea7",
+          "native": "009f52f0",
+          "role": "the switch test, __stdcall(newScore, retainedScore), RET 8"
+        },
+        {
+          "address": "009f5ec4",
+          "native": "00521ea0",
+          "role": "BSP_CommandTarget_ResolveObject, ECX = director+18Ch"
+        },
+        {
+          "address": "009f5ed0",
+          "native": "0071df70",
+          "role": "the director's accept-a-new-target gate, ECX = director"
+        },
+        {
+          "address": "009f5eea",
+          "native": "00465080",
+          "role": "build a command target from the chosen entity, arguments (entity, 0.0f)"
+        },
+        {
+          "address": "009f5ef8",
+          "native": "0071d980",
+          "role": "issue the attackmove command, ECX = director, arguments (00E08F78, commandTarget)"
+        },
+        {
+          "address": "009f5f21",
+          "native": "00835860",
+          "role": "BSP_WeaponDirector_SetFireTarget, ECX = director, arguments (chosen, force = 0)"
+        }
+      ],
+      "reads": [
+        {
+          "address": "009f5da6",
+          "field": "selector+38h",
+          "value": "the think countdown"
+        },
+        {
+          "address": "009f5db9",
+          "field": "selector+34h",
+          "value": "the think interval, 1.0f"
+        },
+        {
+          "address": "009f5dd0",
+          "field": "director+54h",
+          "value": "the current command slot, compared with 00E08F60 follow at 009f5ddb"
+        },
+        {
+          "address": "009f5e06",
+          "field": "unit+184h",
+          "value": "a byte that suppresses targeting"
+        },
+        {
+          "address": "009f5e27",
+          "field": "director vtable+2Ch",
+          "value": "the director's current target"
+        },
+        {
+          "address": "009f5e37",
+          "field": "director+23Ch",
+          "value": "the fire-target lock byte"
+        },
+        {
+          "address": "009f5e69",
+          "field": "director+30h",
+          "value": "the command state, compared with 2"
+        },
+        {
+          "address": "009f5e84",
+          "field": "selector+28h",
+          "value": "the scan's best candidate"
+        },
+        {
+          "address": "009f5e8f",
+          "field": "selector+2Ch",
+          "value": "the scan's best score"
+        },
+        {
+          "address": "009f5ed9",
+          "field": "selector+30h",
+          "value": "the issue-attackmove byte"
+        }
+      ],
+      "writes": [
+        {
+          "address": "009f5dbe",
+          "field": "selector+38h",
+          "value": "countdown + interval - dt"
+        },
+        {
+          "address": "009f5df9",
+          "field": "selector+38h",
+          "value": "countdown - dt"
+        },
+        {
+          "address": "009f5e77",
+          "field": "selector+3Ch",
+          "value": "FLT_MAX from 00D7A248 when director+30h is not 2"
+        },
+        {
+          "address": "009f5eb6",
+          "field": "selector+3Ch",
+          "value": "the accepted score"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "009f5e2c",
+          "through": "director->vtable[2Ch](), the director's current target"
+        },
+        {
+          "address": "009f5f09",
+          "through": "director->vtable[2Ch](), the same slot on the second read"
+        }
+      ],
+      "tail_jump": "009f5f41 is a JMP to 0071d9e0, not a CALL: 009f5f39 rewrites the argument slot to 2 and the epilogue has already run, so tools/verify_report_calls.py cannot check it as a call row."
+    },
+    {
+      "address": "009f5610",
+      "name": "BSP_WeaponDirector_AutoTargetEnabled",
+      "abi": "__fastcall(selector) -> bool, body 009f5610-009f564x",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [],
+      "reads": [
+        {
+          "address": "009f5614",
+          "field": "director+3Dh",
+          "value": "allowMove per docs/WEAPON_DIRECTOR.md; clear means no autonomous selection"
+        },
+        {
+          "address": "009f561x",
+          "field": "director+54h",
+          "value": "the command slot; its vtable[0Ch] result 1 or 2 disables selection"
+        }
+      ]
+    },
+    {
+      "address": "009f52f0",
+      "name": "BSP_AutoTarget_SwitchAllowed",
+      "abi": "__stdcall(float candidate, float retained) -> bool, RET 8 at 009f5309 and 009f530e, body 009f52f0-009f5310",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [],
+      "reads": [
+        {
+          "address": "009f52f8",
+          "field": "00CE3D40",
+          "value": "the 0.8 double, the same constant gun_aiming.hpp calls kGunAimSnapThreshold"
+        }
+      ]
+    },
+    {
+      "address": "009f5d30",
+      "name": "BSP_AutoTarget_ScanPartyList",
+      "abi": "__fastcall(searchState), RET at 009f5d9d, body 009f5d30-009f5d9d",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "009f5d3a",
+          "native": "008053c0",
+          "role": "BSP_Recon_EnsureSlot, ECX = [[state+14h]+54h] the owner's party index; EAX is used as the list owner, which the existing void prototype does not express"
+        },
+        {
+          "address": "009f5d8e",
+          "native": "009f5b70",
+          "role": "score one candidate, ECX = searchState, one pushed argument ESI = the entity"
+        }
+      ],
+      "reads": [
+        {
+          "address": "009f5d4e",
+          "field": "slot+0DE8h",
+          "value": "the intrusive list head, next at +4h, payload at +8h, entity at payload+4h"
+        },
+        {
+          "address": "009f5d68",
+          "field": "entity vtable+140h",
+          "value": "called twice; a null result or a clear byte at result+1D4h lets the candidate through"
+        }
+      ],
+      "writes": [
+        {
+          "address": "009f5d42",
+          "field": "state+18h",
+          "value": "best candidate cleared"
+        },
+        {
+          "address": "009f5d49",
+          "field": "state+1Ch",
+          "value": "best score cleared to 0.0f"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "009f5d70",
+          "through": "entity->vtable[140h]()"
+        },
+        {
+          "address": "009f5d80",
+          "through": "entity->vtable[140h]() again, for the +1D4h byte"
+        }
+      ]
+    },
+    {
+      "address": "009f5b70",
+      "name": "BSP_AutoTarget_ScoreCandidate",
+      "abi": "__thiscall(searchState)(entity* candidate), RET 4 at 009f5d0a, body 009f5b70-009f5d2x",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "009f5ba2",
+          "native": "00414db0",
+          "role": "BSP_EntityPose_RefreshWorld on the candidate when [cand+0C8h] is clear"
+        },
+        {
+          "address": "009f5bb4",
+          "native": "0071c4f0",
+          "role": "a zone query on cand+0FCh, ECX = [00E188A8]"
+        },
+        {
+          "address": "009f5bc1",
+          "native": "00811f50",
+          "role": "a state query on the candidate, one argument 0"
+        },
+        {
+          "address": "009f5c3f",
+          "native": "00414db0",
+          "role": "BSP_EntityPose_RefreshWorld on the candidate"
+        },
+        {
+          "address": "009f5c52",
+          "native": "00414db0",
+          "role": "BSP_EntityPose_RefreshWorld on the owner [state+14h]"
+        },
+        {
+          "address": "009f5c8b",
+          "native": "0042b2f0",
+          "role": "BSP_Vector3_LengthFloatThreshold of ownerPos - candPos"
+        },
+        {
+          "address": "009f5cde",
+          "native": "009f59f0",
+          "role": "the owner-can-engage gate, ECX = searchState, arguments (owner, candidate)"
+        },
+        {
+          "address": "009f5cf9",
+          "native": "009f5860",
+          "role": "returns a pointer whose first byte becomes state+20h"
+        }
+      ],
+      "reads": [
+        {
+          "address": "009f5bfa",
+          "field": "cand+5Dh",
+          "value": "set means every priority entry is skipped"
+        },
+        {
+          "address": "009f5c98",
+          "field": "state+10h",
+          "value": "the max range; rejected on JBE at 009f5c9d"
+        },
+        {
+          "address": "009f5cca",
+          "field": "state+1Ch",
+          "value": "the running best; rejected on JBE at 009f5cd5"
+        },
+        {
+          "address": "009f5cbe",
+          "field": "00CE4BD8",
+          "value": "10000.0 double, the tier weight; FSUBRP at 009f5cc4 gives tiers*10000 - distance"
+        }
+      ],
+      "writes": [
+        {
+          "address": "009f5cf1",
+          "field": "state+18h",
+          "value": "the accepted candidate"
+        },
+        {
+          "address": "009f5cf4",
+          "field": "state+1Ch",
+          "value": "the accepted score"
+        },
+        {
+          "address": "009f5d02",
+          "field": "state+20h",
+          "value": "the byte 009f5860 returned"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "009f5b85",
+          "through": "candidate->vtable[5Ch](6), the IsKindOf gate"
+        },
+        {
+          "address": "009f5c16",
+          "through": "candidate->vtable[5Ch](entry+4h), the priority tier test"
+        }
+      ]
+    },
+    {
+      "address": "009f59f0",
+      "name": "BSP_AutoTarget_OwnerCanEngageKind",
+      "abi": "__thiscall(searchState)(owner, candidate) -> bool, body 009f59f0-009f5a5x",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "009f5a0a",
+          "native": "00852820",
+          "role": "the second question; a true answer accepts immediately"
+        }
+      ],
+      "reads": [
+        {
+          "address": "009f5a1x",
+          "field": "owner+48h",
+          "value": "the child list, next at +44h, each tested with IsKindOf(20h)"
+        },
+        {
+          "address": "009f5a2x",
+          "field": "[node+3F4h]+80h",
+          "value": "the weapon class; 8 or 9 accepts"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "009f5a02",
+          "through": "candidate->vtable[5Ch](8); a false answer accepts immediately"
+        },
+        {
+          "address": "009f5a29",
+          "through": "node->vtable[5Ch](20h) on the owner's +48h child list"
+        }
+      ]
+    },
+    {
+      "address": "009f65e0",
+      "name": "BSP_AutoTarget_BuildPriorityList",
+      "abi": "__cdecl(searchState, entity* owner), RET 8 at 009f66c5, 009f682f, 009f6906, 009f697a, body 009f65e0-009f69bx",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "009f662e",
+          "native": "009f6520",
+          "role": "append (flag 1, kind 8), ECX = searchState"
+        },
+        {
+          "address": "009f6642",
+          "native": "009f6520",
+          "role": "append (1, 0Eh)"
+        },
+        {
+          "address": "009f665a",
+          "native": "009f6520",
+          "role": "append (1, 7)"
+        },
+        {
+          "address": "009f6672",
+          "native": "009f6520",
+          "role": "append (1, 0Bh)"
+        },
+        {
+          "address": "009f668a",
+          "native": "009f6520",
+          "role": "append (1, 0Ah)"
+        },
+        {
+          "address": "009f66a2",
+          "native": "009f6520",
+          "role": "append (1, 9)"
+        },
+        {
+          "address": "009f66ba",
+          "native": "009f6520",
+          "role": "append (1, 0Dh)"
+        },
+        {
+          "address": "009f6703",
+          "native": "009f6520",
+          "role": "append (1, 9) in the kind-7 branch"
+        },
+        {
+          "address": "009f671b",
+          "native": "009f6520",
+          "role": "append (1, 8)"
+        },
+        {
+          "address": "009f6733",
+          "native": "009f6520",
+          "role": "append (1, 0Dh)"
+        },
+        {
+          "address": "009f674b",
+          "native": "009f6520",
+          "role": "append (1, 7); 009f6750 stages 0Ah and jumps to the shared tail"
+        },
+        {
+          "address": "009f6798",
+          "native": "009f6520",
+          "role": "append (1, 7) in the kind-0Ah branch"
+        },
+        {
+          "address": "009f67b0",
+          "native": "009f6520",
+          "role": "append (1, 0Ah)"
+        },
+        {
+          "address": "009f67c8",
+          "native": "009f6520",
+          "role": "append (1, 9)"
+        },
+        {
+          "address": "009f67e0",
+          "native": "009f6520",
+          "role": "append (1, 8); 009f67e5 stages 0Dh for the shared tail"
+        },
+        {
+          "address": "009f67f8",
+          "native": "009f6520",
+          "role": "the shared tail's staged entry"
+        },
+        {
+          "address": "009f6810",
+          "native": "009f6520",
+          "role": "append (1, 0Bh) in the shared tail"
+        },
+        {
+          "address": "009f6824",
+          "native": "009f6520",
+          "role": "append (1, 0Eh) in the shared tail"
+        },
+        {
+          "address": "009f686d",
+          "native": "009f6520",
+          "role": "append (1, 0Dh)"
+        },
+        {
+          "address": "009f6885",
+          "native": "009f6520",
+          "role": "append (1, 9)"
+        },
+        {
+          "address": "009f689d",
+          "native": "009f6520",
+          "role": "append (1, 0Ah)"
+        },
+        {
+          "address": "009f68b5",
+          "native": "009f6520",
+          "role": "append (1, 7)"
+        },
+        {
+          "address": "009f68ce",
+          "native": "009f6520",
+          "role": "append (0, 8), the flag byte cleared at 009f68c1"
+        },
+        {
+          "address": "009f68e6",
+          "native": "009f6520",
+          "role": "append (1, 0Bh)"
+        },
+        {
+          "address": "009f68fb",
+          "native": "009f6520",
+          "role": "append (0, 0Eh)"
+        },
+        {
+          "address": "009f6932",
+          "native": "009f65b0",
+          "role": "append (1, 9) through the pair helper"
+        },
+        {
+          "address": "009f693c",
+          "native": "009f65b0",
+          "role": "append (1, 0Bh)"
+        },
+        {
+          "address": "009f6946",
+          "native": "009f65b0",
+          "role": "append (1, 0Dh)"
+        },
+        {
+          "address": "009f6950",
+          "native": "009f65b0",
+          "role": "append (1, 0Ah)"
+        },
+        {
+          "address": "009f695a",
+          "native": "009f65b0",
+          "role": "append (1, 7)"
+        },
+        {
+          "address": "009f6965",
+          "native": "009f65b0",
+          "role": "append (0, 8)"
+        },
+        {
+          "address": "009f696f",
+          "native": "009f65b0",
+          "role": "append (0, 0Eh)"
+        }
+      ],
+      "writes": [
+        {
+          "address": "009f661d",
+          "field": "state+10h",
+          "value": "2500.0f from 00D20278, the kind-0Eh range"
+        },
+        {
+          "address": "009f66f2",
+          "field": "state+10h",
+          "value": "3500.0f from 00D04698, the kind-7 range"
+        },
+        {
+          "address": "009f6787",
+          "field": "state+10h",
+          "value": "3000.0f from 00CFA424, the kind-0Ah range"
+        },
+        {
+          "address": "009f685c",
+          "field": "state+10h",
+          "value": "3500.0f, the kind-0Dh range"
+        },
+        {
+          "address": "009f692d",
+          "field": "state+10h",
+          "value": "3000.0f, the kind-8 range"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "009f65fc",
+          "through": "owner->vtable[5Ch](0Eh)"
+        },
+        {
+          "address": "009f66d1",
+          "through": "owner->vtable[5Ch](7)"
+        },
+        {
+          "address": "009f6766",
+          "through": "owner->vtable[5Ch](0Ah)"
+        },
+        {
+          "address": "009f683b",
+          "through": "owner->vtable[5Ch](0Dh)"
+        },
+        {
+          "address": "009f6912",
+          "through": "owner->vtable[5Ch](8)"
+        },
+        {
+          "address": "009f6986",
+          "through": "owner->vtable[5Ch](0Bh), then 9 and 0Ch"
+        }
+      ]
+    },
+    {
+      "address": "009f69c0",
+      "name": "BSP_AutoTarget_SearchStateInit",
+      "abi": "__thiscall(searchState)(entity* owner), RET 4 at 009f6a18, body 009f69c0-009f6a18",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "009f6a02",
+          "native": "009f65e0",
+          "role": "build the priority list, ECX = searchState, arguments (searchState, owner)"
+        }
+      ],
+      "writes": [
+        {
+          "address": "009f69e2",
+          "field": "state+4h",
+          "value": "vector begin cleared"
+        },
+        {
+          "address": "009f69e5",
+          "field": "state+8h",
+          "value": "vector end cleared"
+        },
+        {
+          "address": "009f69e8",
+          "field": "state+0Ch",
+          "value": "vector capacity cleared"
+        },
+        {
+          "address": "009f69eb",
+          "field": "state+10h",
+          "value": "max range 0.0f"
+        },
+        {
+          "address": "009f69f5",
+          "field": "state+14h",
+          "value": "the owner entity"
+        },
+        {
+          "address": "009f69ff",
+          "field": "state+18h",
+          "value": "best candidate cleared"
+        }
+      ]
+    },
+    {
+      "address": "009f6a20",
+      "name": "BSP_WeaponDirector_AutoTargetConstruct",
+      "abi": "__thiscall(selector)(void* director) -> selector, RET 4 at 009f6abd, body 009f6a20-009f6abd",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "009f6a66",
+          "native": "009f69c0",
+          "role": "init the search state, ECX = selector+10h, argument [director+24Ch]"
+        },
+        {
+          "address": "009f6a8f",
+          "native": "00bd2f10",
+          "role": "a random float in [0, 1.0f); the negation seeds the think countdown"
+        }
+      ],
+      "writes": [
+        {
+          "address": "009f6a42",
+          "field": "selector+4h",
+          "value": "the director"
+        },
+        {
+          "address": "009f6a45",
+          "field": "selector+0h",
+          "value": "the derived vtable 00D21B48"
+        },
+        {
+          "address": "009f6a51",
+          "field": "selector+8h",
+          "value": "[director+24Ch], the unit entity"
+        },
+        {
+          "address": "009f6a7x",
+          "field": "selector+34h",
+          "value": "1.0f from 00D7A24C, the think interval"
+        },
+        {
+          "address": "009f6a8x",
+          "field": "selector+38h",
+          "value": "the negated random phase"
+        },
+        {
+          "address": "009f6a9x",
+          "field": "selector+0Ch",
+          "value": "the director again"
+        },
+        {
+          "address": "009f6aax",
+          "field": "selector+3Ch",
+          "value": "FLT_MAX from 00D7A248"
+        }
+      ]
+    },
+    {
+      "address": "009f6170",
+      "name": "CG_scalar_deleting_dtor_009f6170",
+      "abi": "__thiscall(selector)(byte flags) -> selector, body 009f6170-009f61b9",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "009f6181",
+          "native": "00bf65ac",
+          "role": "free the vector at selector+14h"
+        },
+        {
+          "address": "009f61ac",
+          "native": "00bf65ac",
+          "role": "free the object when the flags bit 0 is set"
+        }
+      ],
+      "writes": [
+        {
+          "address": "009f6175",
+          "field": "selector+0h",
+          "value": "00D21B48, the derived vtable"
+        },
+        {
+          "address": "009f61ax",
+          "field": "selector+0h",
+          "value": "00D21B40, the base vtable; this pair is what identifies the two tables"
+        }
+      ]
+    },
+    {
+      "address": "008ffa20",
+      "name": "BSP_GunBot_TurretAimAndFireTick",
+      "abi": "__thiscall(bot)(float dt), body 008ffa20-008fff1f",
+      "coverage": "complete for the aim and fire path; the 008FFBxx lead-solver arm is described by its call, not ported",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "008ffa2d",
+          "native": "00521ea0",
+          "role": "BSP_CommandTarget_ResolveObject, the first of two resolves"
+        },
+        {
+          "address": "008ffa58",
+          "native": "00803510",
+          "role": "the second half of the target-validity gate"
+        },
+        {
+          "address": "008ffa85",
+          "native": "008fbce0",
+          "role": "per-step gun bookkeeping, arguments (dt, gun)"
+        },
+        {
+          "address": "008ffa99",
+          "native": "00927f10",
+          "role": "a class test on [bot+50h]+1ACh; class 8 bypasses it"
+        },
+        {
+          "address": "008ffaa8",
+          "native": "00521ea0",
+          "role": "BSP_CommandTarget_ResolveObject, the second resolve"
+        },
+        {
+          "address": "008ffb1a",
+          "native": "00414db0",
+          "role": "BSP_EntityPose_RefreshWorld on the target"
+        },
+        {
+          "address": "008ffb30",
+          "native": "004142e0",
+          "role": "BSP_Vector3f_TransformAffinePoint of target+0CCh"
+        },
+        {
+          "address": "008ffc2b",
+          "native": "00414db0",
+          "role": "BSP_EntityPose_RefreshWorld before the second sample"
+        },
+        {
+          "address": "008ffc3d",
+          "native": "00414d10",
+          "role": "BSP_Vector3f_TransformAffinePointViaScratch of target+0CCh"
+        },
+        {
+          "address": "008ffcaf",
+          "native": "00414e10",
+          "role": "BSP_EntityPose_GetDerivedAffineInverse for the gun frame"
+        },
+        {
+          "address": "008ffcbd",
+          "native": "008fdaf0",
+          "role": "world direction to gun angles, writing bot+70h and bot+74h"
+        },
+        {
+          "address": "008ffcd9",
+          "native": "00bd2f10",
+          "role": "the horizontal aim error draw, rand(0, [bot+84h])"
+        },
+        {
+          "address": "008ffd05",
+          "native": "00bd2f10",
+          "role": "the vertical aim error draw"
+        },
+        {
+          "address": "008ffd37",
+          "native": "00bd2f10",
+          "role": "the next think interval, rand([bot+88h], [bot+8Ch])"
+        },
+        {
+          "address": "008ffd52",
+          "native": "0085aba0",
+          "role": "BSP_TurningGun_SetTargetAngles(bot+70h, bot+74h), ECX = the gun"
+        },
+        {
+          "address": "008ffdb9",
+          "native": "0042b2f0",
+          "role": "BSP_Vector3_LengthFloatThreshold, the gun-to-target distance"
+        },
+        {
+          "address": "008ffe16",
+          "native": "00438b10",
+          "role": "BSP_Math_SubtractWrappedAngle(gun+480h, aimHorz), the open-fire test"
+        },
+        {
+          "address": "008ffe43",
+          "native": "00438b10",
+          "role": "BSP_Math_SubtractWrappedAngle(gun+484h, aimVert), the open-fire test"
+        },
+        {
+          "address": "008ffea5",
+          "native": "00438b10",
+          "role": "BSP_Math_SubtractWrappedAngle(gun+480h, aimHorz), the cease-fire test"
+        },
+        {
+          "address": "008ffed1",
+          "native": "00438b10",
+          "role": "BSP_Math_SubtractWrappedAngle(gun+484h, aimVert), the cease-fire test"
+        },
+        {
+          "address": "008fff12",
+          "native": "008fef40",
+          "role": "the debounced trigger, arguments (wantFire, dt)"
+        }
+      ],
+      "reads": [
+        {
+          "address": "008ffec8",
+          "field": "00D7A378",
+          "value": "40.0 double, the open-fire range margin"
+        },
+        {
+          "address": "008ffefb",
+          "field": "00CE3D88",
+          "value": "20.0 double, the cease-fire range margin"
+        },
+        {
+          "address": "008ffef3",
+          "field": "00D18390",
+          "value": "0.10472 double, six degrees, the open-fire angle sum"
+        },
+        {
+          "address": "008fff01",
+          "field": "00D18388",
+          "value": "0.15708 double, nine degrees, the cease-fire angle sum"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "008ffa75",
+          "through": "bot->vtable[38h](0), clear the target"
+        },
+        {
+          "address": "008ffae7",
+          "through": "bot->vtable[44h](), the target entity"
+        },
+        {
+          "address": "008ffbc6",
+          "through": "gun->vtable[100h](out, spread, 00F87574, p0..p3) with the block 00E199A0 + 24h*[bot+34h]"
+        }
+      ]
+    },
+    {
+      "address": "008fdaf0",
+      "name": "BSP_GunBot_WorldDirectionToGunAngles",
+      "abi": "__cdecl(void* inverseFrame, float* outAngles), body 008fdaf0-008fdb3x",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "008fdb1e",
+          "native": "0042d0d0",
+          "role": "BSP_Vector3f_TransformDirectionOptionalNormalize(frame, 0)"
+        },
+        {
+          "address": "008fdb26",
+          "native": "00419440",
+          "role": "the length of the transformed direction"
+        },
+        {
+          "address": "008fdb80",
+          "native": "00521370",
+          "role": "local direction to the angle pair, then negated against 00D7A208"
+        }
+      ],
+      "reads": [
+        {
+          "address": "008fdb2x",
+          "field": "00D7A208",
+          "value": "-0.0f; the horizontal angle is negated against it"
+        }
+      ]
+    },
+    {
+      "address": "008fef40",
+      "name": "BSP_GunBot_DebouncedTrigger",
+      "abi": "__thiscall(bot)(char wantFire, float dt), body 008fef40-008fefcx",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [],
+      "reads": [
+        {
+          "address": "008fef7x",
+          "field": "00D17D3C",
+          "value": "0.1f, the press delay"
+        },
+        {
+          "address": "008fef8x",
+          "field": "00CE69C8",
+          "value": "0.3f, the release delay"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "008fefa1",
+          "through": "bot->vtable[44h](), the target entity"
+        },
+        {
+          "address": "008fefb0",
+          "through": "target->vtable[5Ch](2)"
+        },
+        {
+          "address": "008fefc2",
+          "through": "gun->vtable[1E8h](committedFireState)"
+        }
+      ]
+    },
+    {
+      "address": "008438b0",
+      "name": "BSP_EntityOrder_ApplyFireTargetOrder",
+      "abi": "__thiscall(holder)(order), body 008438b0-0084394c",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "008438ff",
+          "native": "0077a050",
+          "role": "BSP_EntityOrderMessage_CommandFromOrdinal, the command singleton"
+        },
+        {
+          "address": "00843911",
+          "native": "00521ea0",
+          "role": "BSP_CommandTarget_ResolveObject with one argument 1"
+        },
+        {
+          "address": "0084391d",
+          "native": "00835860",
+          "role": "SetFireTarget(resolved, force = 1) for 00E08EF8 settarget"
+        },
+        {
+          "address": "00843941",
+          "native": "00835860",
+          "role": "SetFireTarget(0, force = 1) for 00E08F00 cleartarget and 00E08F08 clearorders"
+        }
+      ]
+    },
+    {
+      "address": "00744a90",
+      "name": "BSP_EntityOrder_ApplyFireTargetOrderAlt",
+      "abi": "__thiscall(holder)(order), body 00744a90-00744b2c",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "00744adf",
+          "native": "0077a050",
+          "role": "BSP_EntityOrderMessage_CommandFromOrdinal"
+        },
+        {
+          "address": "00744af1",
+          "native": "00521ea0",
+          "role": "BSP_CommandTarget_ResolveObject with one argument 1"
+        },
+        {
+          "address": "00744afd",
+          "native": "00835860",
+          "role": "SetFireTarget(resolved, force = 1) for settarget"
+        },
+        {
+          "address": "00744b21",
+          "native": "00835860",
+          "role": "SetFireTarget(0, force = 1) for cleartarget and clearorders"
+        }
+      ]
+    },
+    {
+      "address": "004643a0",
+      "name": "BSP_FireTargetHolder_Apply",
+      "abi": "__thiscall(holder)(entity), RET 4 at 004643c3, body 004643a0-004643c5",
+      "coverage": "complete",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "004643bd",
+          "native": "00835860",
+          "role": "SetFireTarget([holder+14h], force = 1), ECX = the director EAX just returned"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "004643af",
+          "through": "entity->vtable[114h](), the weapon director; a null result skips everything"
+        }
+      ]
+    },
+    {
+      "address": "009030c0",
+      "name": "BSP_GunBot_BallisticAimAndFireTick",
+      "abi": "__thiscall(bot)(float dt), body 009030c0-0090341d",
+      "coverage": "partial: the ballistic solver 00901C20 and the 0090341x jump table are unread",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "009030ca",
+          "native": "00521ea0",
+          "role": "BSP_CommandTarget_ResolveObject"
+        },
+        {
+          "address": "00903122",
+          "native": "008fbce0",
+          "role": "per-step gun bookkeeping"
+        },
+        {
+          "address": "009031c6",
+          "native": "00427eb0",
+          "role": "BSP_EntityPose_GetWorldPositionRefreshed of the muzzle node"
+        },
+        {
+          "address": "009031cf",
+          "native": "00901c20",
+          "role": "the ballistic solve, the branch taken when the unit answers IsKindOf(5)"
+        },
+        {
+          "address": "00903219",
+          "native": "00901c20",
+          "role": "the ballistic solve, the other branch"
+        },
+        {
+          "address": "0090326d",
+          "native": "00414e10",
+          "role": "BSP_EntityPose_GetDerivedAffineInverse for the gun frame"
+        },
+        {
+          "address": "0090327b",
+          "native": "008fdaf0",
+          "role": "world direction to gun angles"
+        },
+        {
+          "address": "00903302",
+          "native": "0085aba0",
+          "role": "BSP_TurningGun_SetTargetAngles(h + dh, v)"
+        },
+        {
+          "address": "0090331b",
+          "native": "008fdbe0",
+          "role": "run when [bot+64h] is below gun+474h"
+        },
+        {
+          "address": "0090335e",
+          "native": "00438b10",
+          "role": "BSP_Math_SubtractWrappedAngle against gun+480h, threshold 00CE3984"
+        },
+        {
+          "address": "0090339a",
+          "native": "00438b10",
+          "role": "BSP_Math_SubtractWrappedAngle against gun+484h"
+        }
+      ]
+    },
+    {
+      "address": "008fff20",
+      "name": "BSP_GunBot_HeadingAimTick",
+      "abi": "__thiscall(bot)(float dt), body 008fff20-0090099b",
+      "coverage": "partial: only the 008FFF20-009003B0 aim arm is read",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "008fff4b",
+          "native": "00521ea0",
+          "role": "BSP_CommandTarget_ResolveObject"
+        },
+        {
+          "address": "008fffa2",
+          "native": "008fbce0",
+          "role": "per-step gun bookkeeping"
+        },
+        {
+          "address": "009002eb",
+          "native": "0042b2f0",
+          "role": "BSP_Vector3_LengthFloatThreshold of the delta"
+        },
+        {
+          "address": "00900328",
+          "native": "0042b260",
+          "role": "BSP_Geometry_NormalizeVectorWithFloor"
+        },
+        {
+          "address": "0090032f",
+          "native": "00414e10",
+          "role": "BSP_EntityPose_GetDerivedAffineInverse"
+        },
+        {
+          "address": "0090033f",
+          "native": "0042d0d0",
+          "role": "BSP_Vector3f_TransformDirectionOptionalNormalize"
+        },
+        {
+          "address": "0090035a",
+          "native": "00521370",
+          "role": "local direction to the angle pair, then negated"
+        },
+        {
+          "address": "00900380",
+          "native": "0085ab50",
+          "role": "filter the horizontal angle against 00E0B588"
+        },
+        {
+          "address": "009003dd",
+          "native": "0085aba0",
+          "role": "BSP_TurningGun_SetTargetAngles(h, 0.0f)"
+        },
+        {
+          "address": "009003f8",
+          "native": "00438b10",
+          "role": "BSP_Math_SubtractWrappedAngle(aimHorz, gun+480h)"
+        }
+      ]
+    },
+    {
+      "address": "00902920",
+      "name": "BSP_GunBot_LeadAimTick",
+      "abi": "__thiscall(bot)(float dt), body 00902920-009030b2",
+      "coverage": "partial: only the 00902B90-009030B0 aim arm is read",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "0090292d",
+          "native": "00521ea0",
+          "role": "BSP_CommandTarget_ResolveObject"
+        },
+        {
+          "address": "00902985",
+          "native": "008fbce0",
+          "role": "per-step gun bookkeeping"
+        },
+        {
+          "address": "00902a29",
+          "native": "00427eb0",
+          "role": "BSP_EntityPose_GetWorldPositionRefreshed"
+        },
+        {
+          "address": "00902a74",
+          "native": "00901c20",
+          "role": "the ballistic solve that seeds the lead"
+        },
+        {
+          "address": "00902acb",
+          "native": "00414e10",
+          "role": "BSP_EntityPose_GetDerivedAffineInverse"
+        },
+        {
+          "address": "00902ad9",
+          "native": "008fdaf0",
+          "role": "world direction to gun angles, the first sample"
+        },
+        {
+          "address": "00902b38",
+          "native": "00419010",
+          "role": "BSP_Math_InterpolateClamped for the lead blend"
+        },
+        {
+          "address": "00902c86",
+          "native": "008fdaf0",
+          "role": "world direction to gun angles, the second sample"
+        },
+        {
+          "address": "00902d3e",
+          "native": "00424c40",
+          "role": "BSP_GameSettings_GetSingleton"
+        },
+        {
+          "address": "00902f3e",
+          "native": "00438aa0",
+          "role": "BSP_Math_AddWrappedAngle for the horizontal aim"
+        },
+        {
+          "address": "00902f58",
+          "native": "00438aa0",
+          "role": "BSP_Math_AddWrappedAngle for the vertical aim"
+        },
+        {
+          "address": "00902fb0",
+          "native": "0085aba0",
+          "role": "BSP_TurningGun_SetTargetAngles(h, v)"
+        }
+      ]
+    },
+    {
+      "address": "006df520",
+      "name": "BSP_GunBot_MuzzleSolutionAimTick",
+      "abi": "__thiscall(bot)(float dt), body 006df520-006dfc6c",
+      "coverage": "partial: only the 006DF9xx aim arm is read",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "006df52c",
+          "native": "00521ea0",
+          "role": "BSP_CommandTarget_ResolveObject"
+        },
+        {
+          "address": "006df563",
+          "native": "008fbce0",
+          "role": "per-step gun bookkeeping"
+        },
+        {
+          "address": "006dfac4",
+          "native": "00427eb0",
+          "role": "BSP_EntityPose_GetWorldPositionRefreshed of the muzzle node"
+        },
+        {
+          "address": "006dfad4",
+          "native": "00955630",
+          "role": "the firing solution, returning a pair of angles"
+        },
+        {
+          "address": "006dfb1c",
+          "native": "00438aa0",
+          "role": "BSP_Math_AddWrappedAngle(h, [bot+5Ch])"
+        },
+        {
+          "address": "006dfb36",
+          "native": "00438aa0",
+          "role": "BSP_Math_AddWrappedAngle(v, [bot+60h])"
+        },
+        {
+          "address": "006dfb54",
+          "native": "0085aba0",
+          "role": "BSP_TurningGun_SetTargetAngles(h, v)"
+        },
+        {
+          "address": "006dfb8c",
+          "native": "006dee40",
+          "role": "the fire gate on gun+480h against the solution, tolerance 00CF9054"
+        }
+      ]
+    },
+    {
+      "address": "00959c20",
+      "name": "BSP_Unit_ApplyGunAimMessage",
+      "abi": "__thiscall(unit)(message), body 00959c20-0095a2xx",
+      "coverage": "partial: the device walk and the two 0085ABA0 sites are read; the 0095A1C4 arm is unread",
+      "no_ghidra_function": false,
+      "calls": [
+        {
+          "address": "00959ca3",
+          "native": "00521e30",
+          "role": "BSP_EntityHandleTable_Resolve when [msg+36h] is set"
+        },
+        {
+          "address": "00959cd6",
+          "native": "00954210",
+          "role": "filter the device against the message kind [msg+1Ch]"
+        },
+        {
+          "address": "00959d3f",
+          "native": "00955830",
+          "role": "build the angle pair from the message's world point"
+        },
+        {
+          "address": "00959d57",
+          "native": "005472d0",
+          "role": "std::vector::at for the device's platform index"
+        },
+        {
+          "address": "00959d72",
+          "native": "007f60a0",
+          "role": "BSP_GunPlatform_AnglesInFireWindow"
+        },
+        {
+          "address": "00959e01",
+          "native": "0085aba0",
+          "role": "BSP_TurningGun_SetTargetAngles, the kind-1 and kind-2 arm"
+        },
+        {
+          "address": "0095a019",
+          "native": "00954210",
+          "role": "the second arm's device filter"
+        },
+        {
+          "address": "0095a0aa",
+          "native": "00955630",
+          "role": "the firing solution of the second arm"
+        },
+        {
+          "address": "0095a0ef",
+          "native": "0085aba0",
+          "role": "BSP_TurningGun_SetTargetAngles, the second arm"
+        }
+      ],
+      "indirect_calls": [
+        {
+          "address": "00959cc5",
+          "through": "device->vtable[5Ch](20h), the weapon-device test on the unit+48h list"
+        },
+        {
+          "address": "00959deb",
+          "through": "device->vtable[1E8h](0), drop the trigger"
+        }
+      ]
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "009f5260",
+      "name": "the base constructor that installs 00D21B40",
+      "body": "009f5260-009f5271",
+      "note": "read from the PE image with capstone; three instructions, [eax] = 00D21B40 and [eax+4] = the argument. Ghidra has no function here, so tools/verify_report_calls.py cannot check it; it contains no calls."
+    },
+    {
+      "address": "009f7620",
+      "name": "a sibling deleting destructor in the same family",
+      "body": "009f7620-009f7644",
+      "note": "read from the PE image with capstone only to prove that 00D21B50 is a separate vtable head; it belongs to a different class and is not part of this packet."
+    }
+  ],
+  "unread": [
+    "The entity kind ids 6, 7 through 0Eh and 20h that entity vtable[5Ch] IsKindOf takes. 006FE530 BSP_UnitInstance_IsKindOf and its siblings were not read, so the priority lists in docs/BOT_FIRE_TARGET.md are ordered but unlabelled.",
+    "009F6520 and 009F65B0, the two priority-list append helpers: their element layout is inferred from the writes at 009F6622 and 009F6626 and from the scorer's read of entry+4h.",
+    "009F5860, whose first returned byte becomes the issue-attackmove flag at selector+30h.",
+    "009F5290, the base vtable's first slot; Ghidra has no function there and it was not decoded.",
+    "00901C20, 00955630, 0085AB50, 00852820, 0071C4F0, 00811F50 and 00927F10: called by the routines above and described by their call shape only.",
+    "The session message BSP_WeaponDirector_SetFireTarget sends through 00835740 and 0077C2A0, and the bot scheduler that drives the segment 59 and 62 ticks: both are contracts here, documented in docs/WEAPON_DIRECTOR.md and docs/BOT_SCHEDULER_OUTPUT.md.",
+    "008053C0 BSP_Recon_EnsureSlot is recorded as returning void; 009F5D30 uses its EAX as the list owner, so that prototype needs a correction in its own packet."
+  ]
+}

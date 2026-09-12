@@ -435,3 +435,45 @@ argument 5, and arguments 1 and 7 are never read. The descriptor's `+74h` is `Ex
 The sub-type at descriptor `+8h` is set by the class constructors, not by Lua: 1 Bullet,
 4 Artillery, 9 Bomb, 0Ah Torpedo, 0Bh DepthCharge, 0Ch DummyTarget, 0Dh DummyKamikazePlane,
 0Eh DummySubmarine, 0Fh Paratrooper, 10h Flak, 11h Kamikaze, 12h Rocket, 13h WaterMine.
+
+## Correction from docs/PROJECTILE_HELPERS.md (packet cc2_projectile_helpers)
+
+- **Was:** __fastcall(char replayFlag, uint flags, float segment[6], shot, owner, classDesc, extra), five stack arguments (docs/PROJECTILE_IMPACT.md, copied from Ghidra's signature)
+  **Is:** six stack arguments: the segment list, shot, owner, classDesc, a const float3 direction and a sixth pointer
+  **Evidence:** RET 0x18 at 0084c427 is six dwords. The prologue reads six slots: 0084bf71 [ESP+0DCh], then at push depth 0Ch 0084bfca [ESP+0ECh], 0084bfd1 [ESP+0F0h] and 0084bfd8 [ESP+0F4h], which are base+0E0h, +0E4h and +0E8h. 0084c430 pushes five forwarded dwords plus the buffer (0084c446, 0084c44e, 0084c456, 0084c47c, 0084c4a2, 0084c4b6) and 007c0910 passes six. The fifth is 00F87574 for a projectile and the sixth projectile+1C8h.
+- **Was:** the third argument is a float[6] holding one segment
+  **Is:** a 0C4h-byte segment list: eight {float3 from; float3 to} records at +0h and the count at +0C0h
+  **Evidence:** 0084c430 does SUB ESP,0xc4, writes six floats at base+0h..14h and MOV [ESP+0xd8],1 at 0084c4bd, which is base+0C0h after six pushes. 0084b388 reads [EDI+0C0h] as the count and 0084b38e scales it by 18h. 0C0h/18h = 8. 007c0910's local_c4 is the same 0C0h block, filled with one segment per collision point.
+- **Was:** step 3 [..+310h]->vtable[2Ch](&hitPos, extra) and step 4 shot->vtable[2Ch](&hitPos, extra)
+  **Is:** slot 2Ch takes no arguments; the two dwords pushed before each call are the following helper's
+  **Evidence:** 0084b000 is RET 10h, four stack arguments, but only PUSH EAX and PUSH EBP follow the virtual call at 0084bd81. 0084b8c0 is RET 0Ch, three, but only PUSH EAX follows the call at 0084bde2. The pushes at 0084bd67/0084bd77 and 0084bdc8/0084bdd8 make up the difference. The three other call sites of slot 2Ch, 0084c12d, 0084c364 and 0084c3e1, push nothing at all.
+- **Was:** place_decal, the decal placement (docs/PROJECTILE_IMPACT.md host table and coverage row)
+  **Is:** the impact-effect dispatch: a switch on (mode, medium) over six class-descriptor effect slots
+  **Evidence:** Every arm of 0084b8c0 calls 0084b6f0, which builds a matrix and calls BSP_PointEffect_CreateFromMatrix on the effect manager [00E188A8]+19ECh. No decal call exists anywhere in 0084b6f0's body.
+- **Was:** body 0070C370-0070C7AA
+  **Is:** body 0070C370-0070CAD3
+  **Evidence:** 0070c3e6 and 0070c400 jump to 0070c808, past the RET 4 at 0070c7aa; 0070c7c1 and 0070c7de jump there too. 0070c89b calls 0084c430 with the same eleven-dword shape as 006e657f. The last RET 4 is at 0070cad1 and int3 padding follows to 0070cadf.
+- **Was:** step 5 lists 008053C0, four virtual calls, 00427EB0 and 00901C20 without attributing arguments
+  **Is:** the four dwords pushed at 0070c656-0070c66e belong to 00901C20, not 00427EB0
+  **Evidence:** 00427eb0 BSP_EntityPose_GetWorldPositionRefreshed is __fastcall(ECX) with a plain RET at 00427ec8. 00901c20 is RET 10h at 0090227e, and its SUB ESP,0xcc / COMISS XMM0,[ESP+0xd0] at 00901c2e reads the first of the four, the muzzle speed classDesc[+50h].
+- **Was:** kScoringTarget = 3 and kUnit = 4
+  **Is:** mode 3 is a Landscape hit and mode 4 a plane hit
+  **Evidence:** 0084bc99 pushes 0x44 and 0084bcb0 pushes 0x0f to the hit entity's vtable[5Ch]. docs/ENTITY_CLASS_IDS.md maps class id 44h to Landscape and 0Fh to the plane base. The effect table confirms it: mode 3 selects the terrain slot d+38h and mode 4 the aircraft slot d+3Ch.
+- **Was:** 0x54, the owner id
+  **Is:** 0x54, the owner's party index
+  **Evidence:** 0070c512 loads [proj+54h] into ECX for BSP_Recon_EnsureSlot, whose table at 00F874BC has exactly three slots (docs/FIXED_STEP_COUNTDOWN.md). docs/BOT_FIRE_TARGET.md names the same field on a unit the owner's party index at 009f5d30.
+- **Was:** the [shot+0CCh] IsKindOf(0Fh) branch is contract: other caller unread
+  **Is:** the caller is 007C0910, the plane's swept collision test, and the branch binds the plane's crash effect
+  **Evidence:** 007c0910 passes p+72Ch as the shot, so [shot+0CCh] is the plane, whose class id is 0Fh, the plane base. 0084bf3f and 0084bf66 set EBP to that object and 0084c34b calls 007bc4e0 on it.
+
+## Correction from docs/KILL_CREDIT.md (packet cc2_kill_credit)
+
+- **Was:** the projectile is 284h bytes
+  **Is:** the base class is 284h; the flak subclass allocates and zero-fills 298h, which is what makes +290h and +294h legal
+  **Evidence:** 0070cc4e PUSH 0x298 into 00bf55be and 0070cc5c..0070cc67 memset(obj, 0, 0x298); 006e844b PUSH 0x284 for the base
+
+## Correction from docs/SHIP_HIT_RECORD.md (packet cc2_ship_hit_record)
+
+- **Was:** scope note only, not an error: 0077CE60 was listed in this packet's brief as part of the handler
+  **Is:** 0077CE60 is not called by 00826F10 at all; it is step 7 of the dispatcher 009239A0, which runs after the handler returns
+  **Evidence:** python tools/bsp.py callees 00826f10 lists 23 callees and 0077CE60 is not among them

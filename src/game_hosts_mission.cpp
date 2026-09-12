@@ -323,6 +323,13 @@ struct GameMissionHost::Impl {
     // throttle/rudder pair, with an optional target entity.
     std::string order_command;
     std::string order_command_target;
+    std::string order_unit;   // milestone 2n, --order-unit <name>
+    // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>.
+    std::string ai_drive_unit;
+    float ai_drive_throttle{0.0f};
+    float ai_drive_rudder{0.0f};
+    float order_speed{0.0f};
+    bool order_speed_set{false};
     // Milestone 2j, --trajectory-csv <path>.
     std::string trajectory_csv;
     GameFrameProfiler* profiler{nullptr};
@@ -1287,7 +1294,8 @@ GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptH
     long mission_frames, GameFrameProfiler* profiler, std::string language,
     long mission_complete_frame, GameHudHost* hud, long order_frame, float order_throttle,
     float order_rudder, float mission_frame_seconds, std::string trajectory_csv,
-    std::string order_command, std::string order_command_target)
+    std::string order_command, std::string order_command_target, float order_speed,
+    bool order_speed_set)
     : impl_(std::make_unique<Impl>(log, vfs, scripts, frontend, locale,
           std::move(requested_mission_id), mission_frames, profiler,
           std::move(language))) {
@@ -1306,9 +1314,22 @@ GameMissionHost::GameMissionHost(GameHostLog& log, GameVfsHost& vfs, GameScriptH
     // Milestone 2l, --order <command>[:<entity>].
     impl_->order_command = std::move(order_command);
     impl_->order_command_target = std::move(order_command_target);
+    // Milestone 2m, --order speed=<m/s>.
+    impl_->order_speed = order_speed;
+    impl_->order_speed_set = order_speed_set;
 }
 
 GameMissionHost::~GameMissionHost() = default;
+
+void GameMissionHost::set_order_unit(std::string unit) {
+    impl_->order_unit = std::move(unit);
+}
+
+void GameMissionHost::set_ai_drive(std::string unit, float throttle, float rudder) {
+    impl_->ai_drive_unit = std::move(unit);
+    impl_->ai_drive_throttle = throttle;
+    impl_->ai_drive_rudder = rudder;
+}
 
 bool GameMissionHost::requested() const noexcept { return !impl_->requested_id.empty(); }
 
@@ -1607,7 +1628,15 @@ void GameMissionHost::Impl::finish_scene_load() {
     // Milestone 2i: the player order and the deterministic frame delta.
     frame_host->set_player_order(order_frame, order_throttle, order_rudder);
     // Milestone 2l: --order <command>[:<entity>] takes the same frame.
-    frame_host->set_player_command(order_command, order_command_target);
+    frame_host->set_player_command(order_command, order_command_target, order_unit);
+    // Milestone 2o: --ai-drive engages on that frame too, so the order that
+    // puts a unit into a state and the stand-in for that state's step start
+    // together.
+    if (!ai_drive_unit.empty()) {
+        frame_host->set_ai_drive(ai_drive_unit, ai_drive_throttle, ai_drive_rudder);
+    }
+    // Milestone 2m: --order speed=<m/s> takes it too.
+    if (order_speed_set) frame_host->set_player_commanded_speed(order_speed);
     frame_host->set_mission_frame_seconds(mission_frame_seconds);
     // Milestone 2j: where the per-step per-unit trace is written.
     frame_host->set_trajectory_csv(trajectory_csv);

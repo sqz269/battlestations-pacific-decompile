@@ -58,11 +58,15 @@
 
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/ship_ai_obstacle_tables.hpp"
 
 namespace bsp::game {
 
 class GameHostLog;
 class GameMissionLuaHost;
+// Milestone 2n, defined in bsp/game_hosts_ship_ai.hpp. Held by pointer so this
+// header stays independent of the ship AI types.
+class GameShipAiHost;
 
 // One created scene unit as this process holds it, for the run log and the
 // report. Positions are world units; the heading is degrees of
@@ -153,7 +157,32 @@ public:
 
     // --order <command name>: the same path, issued to the controlled unit on
     // --order-frame. Returns false when no unit is bound.
-    bool issue_player_command(const std::string& token, const std::string& target_token);
+    // Milestone 2n: `unit_name` names the created instance the command goes to;
+    // empty keeps the controlled unit, which is what milestones 2l and 2m used.
+    bool issue_player_command(const std::string& token, const std::string& target_token,
+        const std::string& unit_name = {});
+
+    // Milestone 2m. The mission script's navigator bindings hand 0077d600 a
+    // fixed command object and the descriptor 0088a810 read, so the chain starts
+    // there rather than at 0046aab0's registry walk. Returns the row the command
+    // path produced, or null when the index is out of range.
+    const GameCommandRow* issue_script_command(std::size_t unit_index,
+        std::uint32_t command_object, const bsp::SceneCommandTarget& target,
+        int flags, const std::string& source, const std::string& target_name);
+
+    // Milestone 2m. The commanded-speed store 00890e6f makes on the navigator
+    // parameter block at *(unit+73Ch), and the pair as it stands.
+    void store_commanded_speed_00890e6f(std::size_t unit_index, float speed);
+    bsp::CruiseSpeedSetting commanded_speed(std::size_t unit_index) const;
+
+    // Milestone 2m. 00836920's stage ladder over every unit's weapon director,
+    // once per fixed simulation step: the pre-pass, the `stop` arm and the idle
+    // tail that re-issues a default command.
+    void run_director_steps_00836920();
+
+    // DAT_00F876A4 as this process advances it: the simulated seconds the fixed
+    // step has accumulated. 00835c28 measures a commanded speed's age against it.
+    float mission_clock() const noexcept;
 
     // The command path's own rows and counters, for the report.
     const GameCommandsHost& commands() const noexcept;
@@ -174,6 +203,122 @@ public:
     // call sites and reads none), so running it here is the executable's
     // decision and is recorded as one.
     void motion_step_00825f20(float step_seconds);
+
+    // ---- milestone 2n: what the ship AI controller reads off a unit -------
+    // The AI controller runs before the motion pass and its publish fills the
+    // unit's own 84-byte order slot, which the motion's head at 00825f2c then
+    // promotes. Both are the same object, so the host is attached here.
+    void set_ship_ai(GameShipAiHost* ai) noexcept;
+    // 0071be40 on the unit's own weapon director, which 009f3dd0 reads at
+    // 009f3de6 to decide which AI state the controller should be in.
+    std::uint32_t director_current_command_0071be40(std::size_t index) const;
+    // unit+184h, the player-controlled byte 009f3df3 and 009f5e06 read. In this
+    // process the byte is the unit 004c0890 bound.
+    bool unit_player_controlled_0184(std::size_t index) const;
+    // The controller's second and third gates, 009f50f2 and 009f50fc. Milestone
+    // 2i holds unit+5Dh clear for a live ship; unit+61h has no writer anywhere
+    // in .text outside the constructor (docs/UNIT_AUTOPILOT_PAIR.md).
+    bool unit_flag_005d(std::size_t index) const;
+    bool unit_flag_0061(std::size_t index) const;
+    // 0092d730 over the unit's body axis and linear velocity, the same value the
+    // trajectory dump's fwd_speed column carries.
+    float unit_forward_speed_0092d730(std::size_t index) const;
+    // [unit+538h]+508h, `Retardation` out of the installed VehicleClass row,
+    // which is the divisor 009ed8ec uses to build the stopping distance.
+    float unit_retardation_0508(std::size_t index) const;
+    // The unit's vtable[50h] heading, in radians, as atan2(row2.x, row2.z).
+    float unit_heading_radians(std::size_t index) const;
+    // 00811940 on the unit's live rudder state, the yaw rate 009ed9c1 folds into
+    // the heading target.
+    float unit_current_yaw_rate_00811940(std::size_t index);
+    // 009e1170's AI arm for one unit, with the three desired-value setters
+    // 009dbf90 / 009dffb0 / 009e0040 writing the control block the caller owns.
+    // False when the unit holds no current `cruise`, or when it is the player's.
+    bool run_cruise_state_step_009e1170(std::size_t index, bsp::ShipAiControlBlock& blk,
+        bsp::ShipAiSetterHost& setters);
+
+    // ---- milestone 2o: the hop from the AI's desired pair into the ring ----
+    // 009f3ff8..009f402e, the head of 009f3f80: the slot under the ring's write
+    // cursor at unit+97ch, read before the body rewrites the two desired values
+    // and slews them toward it. The two loads are independent
+    // (009f400d reads +83ch, 009f4025 reads +838h).
+    float unit_ring_write_slot_throttle(std::size_t index) const;
+    float unit_ring_write_slot_rudder(std::size_t index) const;
+    // 0080e170 at 009f4cfb and 0080e190 at 009f4ce8: the two five-instruction
+    // setters that put the slewed pair back into that same slot. They touch no
+    // cursor, no bound and neither live field.
+    void unit_ring_set_write_slot_throttle_0080e170(std::size_t index, float value);
+    void unit_ring_set_write_slot_rudder_0080e190(std::size_t index, float value);
+    // ring+148h / +14ch, the live pair 00813020 steps toward the read slot and
+    // 00825f20 reads. Only the run's own counting uses these.
+    float unit_ring_current_throttle(std::size_t index) const;
+    float unit_ring_current_rudder(std::size_t index) const;
+    // The divisor 009da268 loads from [[blk+3fch]+538h]+524h. Packet
+    // ship_ai_class_field_0524 found its producer: 00828f20 derives it as
+    // 0.5 * MaxRotAngle (class+4f8h) / MaxRotAngleChangeRatio (class+4fch), and
+    // both keys are already read out of the installed `VehicleClass` row here.
+    // `derived` is 00828f20's own gate: false means one of the two keys was not
+    // strictly positive and the field was never written.
+    float unit_yaw_authority_0524(std::size_t index, bool& derived) const;
+    // --ai-drive <name>=<throttle>,<rudder>: the diagnostic stand-in for the
+    // state steps that produce no desired throttle. Returns false when no
+    // created instance carries the name.
+    bool enable_ai_drive(const std::string& unit_name, float throttle, float rudder);
+
+    // ---- milestone 2o, second pass: what a state step reads off a unit -----
+    // unit+0C8h, the pose-valid byte 009e14d7 and 009e579a test before they ask
+    // for a refresh through 00414db0. Milestone 2h leaves it set.
+    bool unit_pose_valid_00c8(std::size_t index) const;
+    // unit+0FCh, the world translation of the pose. 009e14ec passes &unit+0FCh
+    // to the world-bounds test, so the y at +100h is part of it; 009e57aa and
+    // 009e57c2 read the x and z alone.
+    void unit_position_00fc(std::size_t index, float& x, float& y, float& z) const;
+
+    // [00E188A8] +711ch / +7124h / +7128h / +7130h, the box 0071c4f0 tests a
+    // position against. False when this process has no world object, which it
+    // does not: construct_world 004de610 is a load record.
+    bool world_bounds_box_00e188a8(float& min_x, float& max_x, float& min_z,
+        float& max_z) const;
+
+    // ---- milestone 2p: what the brain pre-pass 009f1420 reads --------------
+    // 0071eb60 on [brain+0ab8h], the unit's own weapon director. False is the
+    // empty singleton at 00e19b98; `mode` is director+30h.
+    bool active_command_descriptor_0071eb60(std::size_t index,
+        bsp::SceneCommandTarget& out, int& mode) const;
+    // 00521ea0 BSP_CommandTarget_ResolveObject on that descriptor. Returns a
+    // one-based created-instance handle, or 0 when the descriptor names no
+    // object or the object is not one of this process's instances.
+    std::uint32_t resolve_command_target_00521ea0(const bsp::SceneCommandTarget& target) const;
+    // 004142e0 BSP_Vector3f_TransformAffinePoint with the matrix at unit+0cch,
+    // which is what 009dbcc0 carries the latched offset out through.
+    void transform_by_unit_matrix_004142e0(std::size_t index, float in_x, float in_y,
+        float in_z, float& out_x, float& out_y, float& out_z) const;
+    // unit+54h, the side word 009f14db / 009f14e4 compare and 009e2588 copies.
+    int unit_side_0054(std::size_t index) const;
+    // 0071df70's two inputs on the unit's own director, forwarded.
+    float director_target_hold_0040(std::size_t index) const;
+    int director_leading_slot_categories_0071df83(std::size_t index, int* out,
+        int max_out) const;
+    std::uint32_t director_slot_command(std::size_t index, int slot_index) const;
+    const char* command_name_of(std::uint32_t command_object) const;
+    // The seven AutoThrust keys 009ec7c0 consumes, loaded once beside the turn
+    // multipliers. `loaded` is false when the sub-table was absent, in which
+    // case every field is the zero a fresh settings object carries.
+    const bsp::ShipAiAutoThrustSettings& auto_thrust_settings(bool& loaded) const;
+    // 009ec97b / 009ec9a4 / 009ec99c / 009ec9ab, the four live reads the
+    // throttle ceiling makes outside the tuning block.
+    bsp::ShipAiThrottleCeilingInputs throttle_ceiling_inputs(std::size_t index) const;
+    // unit+9cch, the half width the danger ramp divides the clearance by, and
+    // [[unit+538h]+500h] / +508h, the two class fields 009ef230 builds a
+    // sector's braking distance from.
+    float unit_half_width_09cc(std::size_t index) const;
+    float unit_class_max_speed_0500(std::size_t index) const;
+    // unit+102ch and unit+1034h, the two load latches 009f3f80's middle raises
+    // with the inlined bodies of 009d4fb0 and 009d4fe0.
+    void raise_turn_assist_load_102c(std::size_t index, float value);
+    void raise_secondary_load_1034(std::size_t index, float value);
+    float turn_assist_load_102c(std::size_t index) const;
+    float secondary_load_1034(std::size_t index) const;
 
     std::size_t count() const noexcept;
     bool unit_active(std::size_t index) const noexcept;

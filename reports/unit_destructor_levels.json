@@ -1,0 +1,332 @@
+{
+  "packet": "cc2_unit_destructor_levels",
+  "owner": "agent/cc2-unit-destructor-levels",
+  "doc": "docs/UNIT_DESTRUCTOR_LEVELS.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra": "read-only; no renames, comments, prototypes, function creation or saves",
+  "summary": "The unit release is seven levels deep and the most derived class contributes no destructor body: 00CFC3D0 slot 0 (006FE570) calls 0081F3A0, which rewrites the LEVEL-5 vptr set 00D096xx that 0081ED40 installs. The four unread levels are 0081F3A0 (level 5), 00959940 (level 4), 0087A410 (level 3) and 0077E380 (level 2); 009287B0 and 00925780 are docs/ENTITY_LIFECYCLE_TAILS.md. No level releases the weapon director at +738h, the gunnery pass at +6DCh or the damage-state instance at +360h, and no level removes a spatial-index node. The recon detection records at +1E8h are dropped by level 2's last step. No level nils the Lua self table. entity+70h is read once, by level 2, as the payload of a kind-4Fh session message. player+8h's producer is 004BB47D in BSP_Game_ClaimParticipantRecord 004BB440; player+9h has no writer in the image.",
+  "routines": [
+    {
+      "address": "0081f3a0",
+      "native": "0081f3a0",
+      "name": "BSP_UnitVehicleBase_Destruct",
+      "was": "CG_vector_deleting_dtor_0081f3a0",
+      "body": "0081f3a0-0081f8ad",
+      "ghidra_body": "0081f3a0-0081f56b",
+      "abi": "__thiscall(ECX = this), plain RET at 0081f8ad, no stack arguments; SEH scope table 00C915DD",
+      "coverage": "complete",
+      "note": "Level 5. Not a vector deleting destructor: no count argument and a plain RET. Both 00822700 (level-5 vtable 00D09678 slot 0) and 006FE570 (MDestroyer vtable 00CFC3D0 slot 0) call it. Rewrites eight vptrs at 0081f3c2..0081f408: 00D09678/+0h, 00D0965C/+10h, 00D09654/+24h, 00D09650/+170h, 00D09648/+1E4h, 00D09630/+310h, 00D0962C/+38Ch, 00D09628/+72Ch."
+    },
+    {
+      "address": "00959940",
+      "native": "00959940",
+      "name": "BSP_UnitGameObject_Destruct",
+      "was": "CG_vector_deleting_dtor_00959940",
+      "body": "00959940-00959be4",
+      "abi": "__thiscall(ECX = this), plain RET at 00959be4; SEH scope table 00CA914E",
+      "coverage": "complete",
+      "note": "Level 4. Rewrites seven vptrs at 0095995f..00959991: 00D1A698/+0h, 00D1A680/+10h, 00D1A678/+24h, 00D1A674/+170h, 00D1A66C/+1E4h, 00D1A654/+310h, 00D1A650/+38Ch."
+    },
+    {
+      "address": "0087a410",
+      "native": "0087a410",
+      "name": "BSP_UnitTickableEntity_Destruct",
+      "body": "0087a410-0087a4da",
+      "abi": "__thiscall(ECX = this), plain RET at 0087a4da; SEH scope table 00C96698",
+      "coverage": "complete",
+      "note": "Level 3. Rewrites six vptrs at 0087a435..0087a45d: 00D0DF70/+0h, 00D0DF54/+10h, 00D0DF4C/+24h, 00D0DF48/+170h, 00D0DF40/+1E4h, 00D0DF28/+310h (through EBX = this+310h, loaded at 0087a42a)."
+    },
+    {
+      "address": "0077e380",
+      "native": "0077e380",
+      "name": "BSP_UnitOwnerEntity_Destruct",
+      "was": "CG_vector_deleting_dtor_0077e380",
+      "body": "0077e380-0077e490",
+      "ghidra_body": "0077e380-0077e441",
+      "abi": "__thiscall(ECX = this), plain RET at 0077e490; SEH scope table 00C8A053",
+      "coverage": "complete",
+      "note": "Level 2. Rewrites five vptrs at 0077e3a0..0077e3be: 00D03E80/+0h, 00D03E68/+10h, 00D03E60/+24h, 00D03E5C/+170h, 00D03E54/+1E4h. 0077E4A0 and 0077E4B0 are its adjustor thunks (SUB ECX,24h / SUB ECX,10h then JMP 0077E810)."
+    },
+    {
+      "address": "006fe570",
+      "native": "006fe570",
+      "name": "BSP_MDestroyer_ScalarDeletingDtor",
+      "body": "006fe570-006fe58d",
+      "abi": "__thiscall(this, int flags), RET 4",
+      "coverage": "complete",
+      "note": "Level 6 vtable 00CFC3D0 slot 0. Calls the LEVEL-5 body 0081F3A0, so the most derived class has no destructor body."
+    },
+    {
+      "address": "00822700",
+      "native": "00822700",
+      "name": "BSP_UnitVehicleBase_ScalarDeletingDtor",
+      "body": "00822700-0082271d",
+      "abi": "__thiscall(this, int flags), RET 4",
+      "coverage": "complete",
+      "note": "Level-5 vtable 00D09678 slot 0; byte-identical to 006FE570."
+    },
+    {
+      "address": "0095a860",
+      "native": "0095a860",
+      "name": "BSP_UnitGameObject_ScalarDeletingDtor",
+      "body": "0095a860-0095a87d",
+      "abi": "__thiscall(this, int flags), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "0087ac60",
+      "native": "0087ac60",
+      "name": "BSP_UnitTickableEntity_ScalarDeletingDtor",
+      "body": "0087ac60-0087ac7d",
+      "abi": "__thiscall(this, int flags), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "0077e810",
+      "native": "0077e810",
+      "name": "BSP_UnitOwnerEntity_ScalarDeletingDtor",
+      "body": "0077e810-0077e82d",
+      "abi": "__thiscall(this, int flags), RET 4",
+      "coverage": "complete"
+    },
+    {
+      "address": "009289e0",
+      "native": "009289e0",
+      "name": "BSP_GameEntity_ScalarDeletingDtor",
+      "body": "009289e0-009289fd",
+      "abi": "__thiscall(this, int flags), RET 4",
+      "coverage": "complete",
+      "note": "GameEntity vtable 00D192E0 slot 0. The unit path never reaches it."
+    },
+    {
+      "address": "00925f00",
+      "native": "00925f00",
+      "name": "BSP_Entity_ScalarDeletingDtor",
+      "body": "00925f00-00925f1d",
+      "abi": "__thiscall(this, int flags), RET 4",
+      "coverage": "complete",
+      "note": "Entity-root vtable 00D19120 slot 0."
+    },
+    {
+      "address": "00875490",
+      "native": "00875490",
+      "name": "BSP_UnitTickElement_Destruct",
+      "body": "00875490-008754ad",
+      "abi": "__fastcall(ECX = unit+310h), tail-jump to 00874F00 at 008754ab",
+      "coverage": "complete",
+      "note": "The only tick-element unregistration in the chain. Base vptr 00D0DEC8, unlink over the +4h (prev) / +8h (next) pair, then ADD ECX,1Ch and JMP 00874F00 on unit+32Ch."
+    },
+    {
+      "address": "00874f00",
+      "native": "00874f00",
+      "name": "BSP_UnitTickElement_ClearSubList",
+      "body": "00874f00-00874f63",
+      "abi": "__thiscall(ECX = unit+32Ch), RET",
+      "coverage": "complete",
+      "note": "Drains the intrusive list whose count is at this+8h and whose head is at this+0h, fixing each node's +8h/+Ch pair."
+    },
+    {
+      "address": "00440a30",
+      "native": "00440a30",
+      "name": "BSP_RefPtrSlot_Release",
+      "body": "00440a30-00440a58",
+      "abi": "__thiscall(ECX = a one-pointer slot), RET",
+      "coverage": "complete",
+      "note": "The eh-vector element destructor for the 4-byte ref-pointer arrays: InterlockedDecrement on (*this)+4h through [00CE2220], (*this)->vtable[0]() at zero, then *this = 0."
+    },
+    {
+      "address": "0081c940",
+      "native": "0081c940",
+      "name": "BSP_RefPtrRange_Release",
+      "body": "0081c940-0081c97d",
+      "abi": "__fastcall(ECX = begin, EDX = end) plus two stack arguments, RET 8 at 0081c97b",
+      "coverage": "complete",
+      "note": "Walks [begin, end) releasing each refcounted pointer the way 00440A30 does. Argument count taken from the RET 8, not from the two pushes at the call site."
+    },
+    {
+      "address": "0074e7f0",
+      "native": "0074e7f0",
+      "name": "BSP_UnitSubObject10D4_Destruct",
+      "body": "0074e7f0-0074e82a",
+      "abi": "__thiscall(ECX = unit+10D4h), RET",
+      "coverage": "complete",
+      "note": "Base vptr 00D00514 at +0h, then free of the three buffers at +1Ch, +18h and +20h."
+    },
+    {
+      "address": "00779780",
+      "native": "00779780",
+      "name": "BSP_SessionMessage_ConstructEntityRelease",
+      "body": "00779780-007797af",
+      "abi": "__thiscall(ECX = a stack message buffer, int payload), RET 4, returns this in EAX",
+      "coverage": "complete",
+      "note": "BSP_SessionMessage_ConstructBase 0075B430 with kind 4Fh, zero +18h (word) / +1Ah / +1Ch, payload at +20h, 1 at +4h, vptr 00D02CCC at +0h. Its only caller is 0077E3F3 and the payload is entity+70h."
+    },
+    {
+      "address": "0092cfd0",
+      "native": "0092cfd0",
+      "name": "FUN_0092cfd0 (not renamed; the motion controller belongs to another packet)",
+      "body": "0092cfd0-0092cff0",
+      "abi": "__thiscall(ECX = motion controller), RET",
+      "coverage": "complete",
+      "note": "If ctl+2Ch is set, 00C34F70(ECX = [[00E188A8]+18h], proxy) and ctl+2Ch = 0. Called at 0081F488 with ECX = [unit+1018h] even when that is null. Cited from docs/UNIT_PARTS.md's +1018h correction; not annotated."
+    },
+    {
+      "address": "004bca80",
+      "native": "004bca80",
+      "name": "FUN_004bca80 (not renamed; the global it clears is unidentified)",
+      "body": "004bca80-004bca92",
+      "abi": "__fastcall(ECX = value), RET",
+      "coverage": "complete",
+      "note": "[00E188DC] = ECX then 00B0D7B0(ECX = [00F8D39C], value). Level 4 calls it with ECX = 0 at 009599DF when unit+4A4h is the object the global holds."
+    },
+    {
+      "address": "004bb440",
+      "native": "004bb440",
+      "name": "BSP_Game_ClaimParticipantRecord (already named; evidence added here only)",
+      "body": "004bb440-004bb541",
+      "abi": "__thiscall(ECX = session, ...), RET 24h",
+      "coverage": "partial: the claim path 004bb46a-004bb4?? read for the +8h store only",
+      "note": "ESI = session+748h at 004BB446, eight iterations (CMP EAX,8 at 004BB45E) stepping 0x118 at 004BB458, testing [ESI+8h] == 0 at 004BB450; the claim writes MOV byte ptr [ESI+8],1 at 004BB47D. This is the producer of the player+8h gate byte docs/ENTITY_LIFECYCLE_TAILS.md section 5 left unread. Not leased or annotated by this packet."
+    }
+  ],
+  "host_steps": [
+    {"address": "0081f43a", "native": "00867b10", "function": "0081f3a0", "host_method": "stop_point_effect", "level": 5, "step": 1, "gate": "count at +75Ch non-zero and the element non-null", "note": "then effect[+9h] = 1 at 0081f43f"},
+    {"address": "0081f488", "native": "0092cfd0", "function": "0081f3a0", "host_method": "release_motion_physics_proxy", "level": 5, "step": 2, "gate": "always, even when [unit+1018h] is null"},
+    {"address": "0081f499", "native": "00932840", "function": "0081f3a0", "host_method": "destroy_motion_controller", "level": 5, "step": 3, "gate": "[unit+1018h] != 0"},
+    {"address": "0081f49f", "native": "00bf65ac", "function": "0081f3a0", "host_method": "free_motion_controller", "level": 5, "step": 3, "gate": "[unit+1018h] != 0"},
+    {"address": "0081f4b2", "native": "00bf65ac", "function": "0081f3a0", "host_method": "free_field_73c", "level": 5, "step": 4, "gate": "[unit+73Ch] != 0"},
+    {"address": "0081f4e2", "native": "00bf65ac", "function": "0081f3a0", "host_method": "free_field_117c", "level": 5, "step": 6, "gate": "[unit+117Ch] != 0"},
+    {"address": "0081f517", "native": "0081c940", "function": "0081f3a0", "host_method": "release_ref_range_1114", "level": 5, "step": 7, "gate": "[unit+1118h] != 0"},
+    {"address": "0081f520", "native": "00bf65ac", "function": "0081f3a0", "host_method": "free_ref_range_buffer_1114", "level": 5, "step": 7, "gate": "[unit+1118h] != 0"},
+    {"address": "0081f53c", "native": "0074e7f0", "function": "0081f3a0", "host_method": "destroy_subobject_10d4", "level": 5, "step": 8, "gate": "always"},
+    {"address": "0081f54c", "native": "0081ec00", "function": "0081f3a0", "host_method": "destroy_subobject_10a0", "level": 5, "step": 9, "gate": "always"},
+    {"address": "0081f55f", "native": "004c9550", "function": "0081f3a0", "host_method": "resize_live_effect_refs_ffc", "level": 5, "step": 10, "gate": "always"},
+    {"address": "0081f567", "native": "00bf6989", "function": "0081f3a0", "host_method": "free_live_effect_refs_ffc", "level": 5, "step": 10, "gate": "always", "note": "the last instruction inside Ghidra's stored body"},
+
+    {"address": "0081f5a4", "native": "beyond Ghidra body end 0081f56b: 00bf65ac", "function": "0081f3a0", "host_method": "free_critical_section_bd4", "level": 5, "step": 12, "gate": "[unit+BD4h] != 0"},
+    {"address": "0081f705", "native": "beyond Ghidra body end 0081f56b: 00bf7c6e", "function": "0081f3a0", "host_method": "destroy_ref_slot_array_b54", "level": 5, "step": 14, "gate": "always", "note": "five elements of 4 bytes, element destructor 00440A30; the argument order is push dtor, push count, push size, push array"},
+    {"address": "0081f71f", "native": "beyond Ghidra body end 0081f56b: 00bf7c6e", "function": "0081f3a0", "host_method": "destroy_ref_slot_array_b44", "level": 5, "step": 15, "gate": "always", "note": "four elements of 4 bytes"},
+    {"address": "0081f72f", "native": "beyond Ghidra body end 0081f56b: 0093b920", "function": "0081f3a0", "host_method": "destroy_repair_task_a20", "level": 5, "step": 16, "gate": "always"},
+    {"address": "0081f742", "native": "beyond Ghidra body end 0081f56b: 004c9550", "function": "0081f3a0", "host_method": "resize_live_effect_refs_a14", "level": 5, "step": 17, "gate": "always"},
+    {"address": "0081f74a", "native": "beyond Ghidra body end 0081f56b: 00bf6989", "function": "0081f3a0", "host_method": "free_live_effect_refs_a14", "level": 5, "step": 17, "gate": "always"},
+    {"address": "0081f767", "native": "beyond Ghidra body end 0081f56b: 00bf7c6e", "function": "0081f3a0", "host_method": "destroy_ref_slot_array_a00", "level": 5, "step": 18, "gate": "always", "note": "four elements of 4 bytes"},
+    {"address": "0081f85f", "native": "beyond Ghidra body end 0081f56b: 00bf6989", "function": "0081f3a0", "host_method": "free_point_effect_array_758", "level": 5, "step": 20, "gate": "[unit+758h] != 0"},
+    {"address": "0081f874", "native": "beyond Ghidra body end 0081f56b: 00bf6989", "function": "0081f3a0", "host_method": "free_field_74c", "level": 5, "step": 21, "gate": "[unit+74Ch] != 0"},
+    {"address": "0081f887", "native": "beyond Ghidra body end 0081f56b: 00809650", "function": "0081f3a0", "host_method": "reset_owned_ref_slot_72c", "level": 5, "step": 22, "gate": "always"},
+    {"address": "0081f896", "native": "beyond Ghidra body end 0081f56b: 00959940", "function": "0081f3a0", "host_method": "destruct_level4", "level": 5, "step": 23, "gate": "always"},
+
+    {"address": "009599df", "native": "004bca80", "function": "00959940", "host_method": "clear_current_object_global", "level": 4, "step": 2, "gate": "[unit+4A4h] == [00E188DC]"},
+    {"address": "00959a7e", "native": "00bf65ac", "function": "00959940", "host_method": "free_list_node_424", "level": 4, "step": 6, "gate": "head at +428h non-null; the loop back-edge is at 00959a8c, inside the gap"},
+    {"address": "00959ad1", "native": "00bf65ac", "function": "00959940", "host_method": "free_gun_category_node", "level": 4, "step": 7, "gate": "twelve records at +394h; the loop back-edge is at 00959adb, inside the gap"},
+    {"address": "00959b02", "native": "00419cc0", "function": "00959940", "host_method": "pooled_string_pool_718", "level": 4, "step": 8, "gate": "[unit+718h] != 0"},
+    {"address": "00959b09", "native": "00bd1510", "function": "00959940", "host_method": "return_pooled_string_718", "level": 4, "step": 8, "gate": "[unit+718h] != 0"},
+    {"address": "00959b2a", "native": "00419cc0", "function": "00959940", "host_method": "pooled_string_pool_6d0", "level": 4, "step": 9, "gate": "[unit+6D0h] != 0"},
+    {"address": "00959b31", "native": "00bd1510", "function": "00959940", "host_method": "return_pooled_string_6d0", "level": 4, "step": 9, "gate": "[unit+6D0h] != 0"},
+    {"address": "00959b6c", "native": "00bf65ac", "function": "00959940", "host_method": "free_field_664", "level": 4, "step": 11, "gate": "[unit+664h] != 0"},
+    {"address": "00959b9b", "native": "00bf7c6e", "function": "00959940", "host_method": "destroy_record_array_53c", "level": 4, "step": 12, "gate": "always", "note": "ten elements of 0x18 bytes, element destructor 004BD350"},
+    {"address": "00959ba6", "native": "00955eb0", "function": "00959940", "host_method": "clear_gun_category_list_424", "level": 4, "step": 13, "gate": "always"},
+    {"address": "00959bbf", "native": "00bf7c6e", "function": "00959940", "host_method": "destroy_gun_category_array_394", "level": 4, "step": 14, "gate": "always", "note": "twelve elements of 0Ch bytes, element destructor 00957080"},
+    {"address": "00959bce", "native": "0087a410", "function": "00959940", "host_method": "destruct_level3", "level": 4, "step": 15, "gate": "always"},
+
+    {"address": "0087a474", "native": "00bf65ac", "function": "0087a410", "host_method": "free_vector_380", "level": 3, "step": 1, "gate": "[unit+380h] != 0"},
+    {"address": "0087a499", "native": "00bf65ac", "function": "0087a410", "host_method": "free_parts_descriptor_vector_348", "level": 3, "step": 2, "gate": "[unit+348h] != 0"},
+    {"address": "0087a4b5", "native": "00875490", "function": "0087a410", "host_method": "destroy_tick_element_310", "level": 3, "step": 3, "gate": "always"},
+    {"address": "0087a4c4", "native": "0077e380", "function": "0087a410", "host_method": "destruct_level2", "level": 3, "step": 4, "gate": "always"},
+
+    {"address": "0077e3f3", "native": "00779780", "function": "0077e380", "host_method": "build_release_session_message", "level": 2, "step": 1, "gate": "[00E0AF20] != 0 and [00E188A8] != 0 and [[00E188A8]+1FE4h] == 1", "note": "payload is entity+70h, read at 0077e3eb"},
+    {"address": "0077e404", "native": "0077c2a0", "function": "0077e380", "host_method": "route_release_session_message", "level": 2, "step": 1, "gate": "the same gate", "note": "__thiscall(unit, msg, 4, 0)"},
+    {"address": "0077e417", "native": "0077bea0", "function": "0077e380", "host_method": "erase_from_global_container_f87194", "level": 2, "step": 2, "gate": "always"},
+    {"address": "0077e427", "native": "006e0860", "function": "0077e380", "host_method": "destroy_subobject_2b0", "level": 2, "step": 3, "gate": "always"},
+    {"address": "0077e434", "native": "0077d930", "function": "0077e380", "host_method": "clear_list_2a4", "level": 2, "step": 4, "gate": "always"},
+    {"address": "0077e43d", "native": "00bf65ac", "function": "0077e380", "host_method": "free_list_buffer_2a8", "level": 2, "step": 4, "gate": "always", "note": "the last instruction inside Ghidra's stored body"},
+    {"address": "0077e452", "native": "beyond Ghidra body end 0077e441: 0077b980", "function": "0077e380", "host_method": "clear_list_298", "level": 2, "step": 5, "gate": "always"},
+    {"address": "0077e46c", "native": "beyond Ghidra body end 0077e441: 00bf7c6e", "function": "0077e380", "host_method": "destroy_recon_detection_records_1e8", "level": 2, "step": 6, "gate": "always", "note": "three elements of 0x34 bytes, element destructor 00804300"},
+    {"address": "0077e47b", "native": "beyond Ghidra body end 0077e441: 009287b0", "function": "0077e380", "host_method": "destruct_level1", "level": 2, "step": 7, "gate": "always"},
+
+    {"address": "008754ab", "native": "00874f00", "function": "00875490", "kind": "tail_jump", "host_method": "clear_tick_sub_list_32c", "level": 3, "step": 3, "gate": "always", "note": "ADD ECX,1Ch at 008754a8 retargets this to unit+32Ch first"},
+    {"address": "006fe573", "native": "0081f3a0", "function": "006fe570", "host_method": "destruct_level5", "level": 6, "step": 1, "gate": "always"},
+    {"address": "006fe580", "native": "00bf6989", "function": "006fe570", "host_method": "free_instance", "level": 6, "step": 2, "gate": "flags & 1"},
+    {"address": "00822703", "native": "0081f3a0", "function": "00822700", "host_method": "destruct_level5", "level": 5, "step": 0, "gate": "always"},
+    {"address": "0095a863", "native": "00959940", "function": "0095a860", "host_method": "destruct_level4", "level": 4, "step": 0, "gate": "always"},
+    {"address": "0087ac63", "native": "0087a410", "function": "0087ac60", "host_method": "destruct_level3", "level": 3, "step": 0, "gate": "always"},
+    {"address": "0077e813", "native": "0077e380", "function": "0077e810", "host_method": "destruct_level2", "level": 2, "step": 0, "gate": "always"},
+    {"address": "009289e3", "native": "009287b0", "function": "009289e0", "host_method": "destruct_level1", "level": 1, "step": 0, "gate": "always"},
+    {"address": "00925f03", "native": "00925780", "function": "00925f00", "host_method": "destruct_level0", "level": 0, "step": 0, "gate": "always"},
+    {"address": "004bb47d", "native": "004bb47d", "function": "004bb440", "host_method": "claim_participant_record", "gate": "the first record of eight at session+748h whose +8h byte is 0", "note": "MOV byte ptr [ESI+8],1 - a store, not a call; the producer of the player+8h gate byte"}
+  ],
+  "virtual_call_sites": [
+    {"address": "0081f465", "slot": "+0h", "note": "point-effect release: (*effect)->vtable[0]() when InterlockedDecrement on effect+4h reaches 0. Level 5 step 1."},
+    {"address": "0081f4cf", "slot": "+10h", "note": "[unit+740h]->vtable[10h](), then +740h = 0. Level 5 step 5. The concrete target was not resolved."},
+    {"address": "00959a1b", "slot": "+4h", "note": "[unit+6F4h]->vtable[4h](1), then +6F4h = 0. Level 4 step 4. The argument 1 is the deleting flag. Target not resolved."},
+    {"address": "00959a33", "slot": "+0h", "note": "[unit+724h]->vtable[0h](1), then +724h = 0. Level 4 step 5, a scalar deleting destructor call. Target not resolved."},
+    {"address": "0080966c", "slot": "+0h", "note": "inside BSP_UnitOwnedRefSlot_Reset 00809650: [unit+734h]->vtable[0](1). Level 5 step 22."}
+  ],
+  "flow_gaps": [
+    {"address": "0081f567", "function": "0081f3a0", "gap": "0081f56c-0081f8ad", "call": "00bf6989 _free", "note": "Ghidra's body for the level-5 destructor still ends at 0081f56b, immediately after this free. The real body runs to the plain RET at 0081f8ad and holds levels 5's steps 11 to 23 (the +BD0h vptr store, the critical section at +BD4h, the eight ref slots +BC0h..+BA4h, the three eh-vector arrays, the repair task at +A20h, the four ref slots +9F4h..+9E8h, the +758h buffer, +74Ch, the +72Ch ref slot and the CALL 00959940). The integrator's earlier repair closed two internal gaps (the listing is now 120 consecutive instructions) but not this tail one."},
+    {"address": "00959a7e", "function": "00959940", "gap": "00959a83-00959a8d", "call": "00bf65ac _free", "note": "ADD ESP,4; CMP dword ptr [ESI+0x428],EBX; JNE 00959a43 - the drain loop's back-edge. Without it the +428h list looks like a single-node unlink."},
+    {"address": "00959ad1", "function": "00959940", "gap": "00959ad6-00959adc", "call": "00bf65ac _free", "note": "ADD ESP,4; CMP dword ptr [EDI],EBX; JNE 00959aa4 - the same for the twelve gun-category lists at +394h."},
+    {"address": "0087a474", "function": "0087a410", "gap": "0087a479-0087a47b", "call": "00bf65ac _free", "note": "ADD ESP,4 only."},
+    {"address": "0087a499", "function": "0087a410", "gap": "0087a49e-0087a4a0", "call": "00bf65ac _free", "note": "ADD ESP,4 only."},
+    {"address": "0077e43d", "function": "0077e380", "gap": "0077e442-0077e490", "call": "00bf65ac _free", "note": "Ghidra's body for the level-2 destructor ends at 0077e441. The real body runs to the plain RET at 0077e490 and holds steps 4's tail, 5, 6 and the CALL 009287b0."}
+  ],
+  "no_ghidra_function": [
+    {"address": "00804300", "name": "BSP_ReconDetectionRecord_Destruct", "end_address": "0080430d", "note": "MOV dword ptr [ECX],0xD08E74; ADD ECX,0x14; JMP 004B7EF0. Enclosing candidate 008042B0 BSP_ReconList_Clear. The element destructor of the three 0x34-byte recon detection records at unit+1E8h, passed to the eh vector destructor iterator at 0077e46c."},
+    {"address": "004b5670", "name": "BSP_ParticipantRecord_SetClaimed", "end_address": "004b5679", "note": "MOV AL,[ESP+4]; MOV byte ptr [ECX+8],AL; RET 4. Enclosing candidate FUN_004B5530. The out-of-line setter for the player+8h gate byte; no E8 call site in .text, every real write inlined."},
+    {"address": "004b5680", "name": "BSP_ParticipantRecord_SetGateByte9", "end_address": "004b5689", "note": "MOV AL,[ESP+4]; MOV byte ptr [ECX+9],AL; RET 4. Enclosing candidate FUN_004B5530. The out-of-line setter for the player+9h gate byte; no E8 call site and no other store to the field anywhere in .text."},
+    {"address": "004bd350", "name": "thunk to 004B7EF0", "end_address": "004bd354", "note": "JMP 004B7EF0. Level 4's element destructor for the ten 0x18-byte records at unit+53Ch. Ghidra has a function here but it is a bare thunk; listed for the same reason as 00957080."},
+    {"address": "00957080", "name": "thunk to BSP_GunCategoryList_Clear 00955EB0", "end_address": "00957084", "note": "JMP 00955EB0. Level 4's element destructor for the twelve 0Ch-byte records at unit+394h; its target is what identifies that array as the gun category lists."}
+  ],
+  "not_released_by_any_level": [
+    {"address": "0081f3a0", "native": "0081f3a0", "field": "unit+738h", "what": "the weapon director (docs/WEAPON_DIRECTOR.md, produced at 00810FA9)", "evidence": "the string 0x738 does not occur in the listings of 0081f3a0, 00959940, 0087a410, 0077e380, 009287b0 or 00925780"},
+    {"address": "0081f3a0", "native": "0081f3a0", "field": "unit+6DCh", "what": "the gunnery pass, operator_new(558h) at 00810E1E (docs/UNIT_GUNNERY_PASS.md)", "evidence": "the string 0x6dc does not occur in any of the six listings"},
+    {"address": "0081f3a0", "native": "0081f3a0", "field": "unit+360h", "what": "the 1ACh damage-state model instance (docs/UNIT_PARTS.md)", "evidence": "the string 0x360 does not occur in any of the six listings"},
+    {"address": "0081f3a0", "native": "0081f3a0", "field": "entity+1C4h and the per-part spatial nodes", "what": "the spatial index (docs/SPATIAL_INDEX.md)", "evidence": "no reference to 0x1c4 and no call to 0098a500, 0098a3d0, 0042e630, 00929d70, 00710b80 or 00951f40 in any of the six listings"},
+    {"address": "0081f3a0", "native": "0081f3a0", "field": "the Lua self table entry", "what": "thisTable[name] (docs/MISSION_LUA_SELF_TABLE.md)", "evidence": "no reference to 00ce7494, 00b67350 or [00E188A8]+1A0Ch in any of the six listings; the two reads of 00E188A8 in the chain are the +1FE4h session gate at 0077e3d9 and the +18h physics world inside 0092cfd0"}
+  ],
+  "corrections": [
+    {
+      "document": "docs/ENTITY_LIFECYCLE_TAILS.md",
+      "was": "open question: the unit's own destructor levels above 009287B0 were not read",
+      "is": "four levels read and named - 0077E380 (level 2), 0087A410 (level 3), 00959940 (level 4), 0081F3A0 (level 5) - and level 6 has no destructor body at all: 006FE570 calls the level-5 body",
+      "evidence": "each level rewrites exactly the vptr set docs/UNIT_INSTANCE_LAYOUT.md records for its constructor: 0081f3c2..0081f408 = 00D096xx, 0095995f..00959991 = 00D1A6xx, 0087a435..0087a45d = 00D0DFxx, 0077e3a0..0077e3be = 00D03Exx"
+    },
+    {
+      "document": "docs/ENTITY_LIFECYCLE_TAILS.md",
+      "was": "0081F3A0's Ghidra body ends at 0081F56B but the real body continues",
+      "is": "still true after the integrator's repair; the real body ends at the plain RET at 0081F8AD and the remaining truncation is at the free at 0081F567",
+      "evidence": "disasm-raw 0081f56c on the PE bytes: MOV dword ptr [ESI+0xBD0],0xD09480 and on to the RET at 0081f8ad; Ghidra's proto still reports body 0081f3a0-0081f56b"
+    },
+    {
+      "document": "docs/ENTITY_LIFECYCLE_TAILS.md",
+      "was": "the producer of player+8h / player+9h was not found",
+      "is": "player+8h is written 1 at 004BB47D in BSP_Game_ClaimParticipantRecord 004BB440, the claim flag of the 0x118-byte participant record (eight at session+748h); player+9h has no writer anywhere in .text",
+      "evidence": "004BB446 LEA ESI,[ECX+0x748]; 004BB450 CMP byte ptr [ESI+8],BL; 004BB458 ADD ESI,0x118; 004BB45E CMP EAX,8; 004BB47D MOV byte ptr [ESI+8],1. For +9h: the only store in .text is the uncalled out-of-line setter at 004B5684, and a scan of every C6/88 byte store to [reg+9h] plus every disp32 byte store landing on field 9 of an eight-slot 0x118 array based at session+748h or session+1008h found nothing else"
+    },
+    {
+      "document": "docs/ENTITY_LIFECYCLE_TAILS.md",
+      "was": "open question: no step in the release chain was identified as a spatial-index removal",
+      "is": "none exists. The unit owns no node of its own; its grid presence is per part (docs/SPATIAL_INDEX.md's 00710B6D row) and the detach 00710B80 is reached only from 00951F40, which no destructor level calls. The entity+1C4h moving-entity node belongs to the class whose +0h vtable is 00D19500, not to the unit's branch",
+      "evidence": "the grep above; 00929E30 is the only vtable slot in the image holding the detach wrapper (00D19584, slot offset 84h of the vtable at 00D19500) and it tests [this+384h] as a byte while level 3 uses +384h as a vector end pointer"
+    },
+    {
+      "document": "docs/ENTITY_LIFECYCLE_TAILS.md",
+      "was": "entity+70h: written 1 only beside +5Dh in 00927050; no reader found",
+      "is": "read at 0077E3EB by the level-2 destructor and forwarded as the +20h payload of a kind-4Fh session message",
+      "evidence": "0077E3EB MOV EAX,[ESI+0x70]; 0077E3EF LEA ECX,[ESP+0x18]; 0077E3F3 CALL 00779780 (which stores the argument at msg+20h at 0077979A); 0077E3FD MOV ECX,ESI; 0077E3FF CALL BSP_Session_RouteMessage 0077C2A0, gated on [00E0AF20], [00E188A8] and [[00E188A8]+1FE4h] == 1"
+    },
+    {
+      "document": "docs/ENTITY_LIFECYCLE_TAILS.md",
+      "was": "the Lua self table is not cleared on the unit path, established from levels 0 and 1 alone",
+      "is": "confirmed for the whole seven-level chain",
+      "evidence": "no reference to 00ce7494, 00b67350 or [00E188A8]+1A0Ch in any of the six listings"
+    },
+    {
+      "document": "ledger",
+      "was": "CG_vector_deleting_dtor_0081f3a0, CG_vector_deleting_dtor_00959940, CG_vector_deleting_dtor_0077e380",
+      "is": "class-body destructors: __thiscall(ECX = this) with a plain RET and no count argument",
+      "evidence": "the plain RET at 0081f8ad, 00959be4 and 0077e490; the vector deleting destructor shape (this, size, count) appears at none of the three"
+    }
+  ],
+  "unread": "Bodies read only far enough to establish the entry contract: 00932840, 0093B920, 0081EC00, 004C9550, 006E0860, 0077D930, 0077B980, 004B7EF0, 00955EB0. Not resolved: the concrete targets of the four virtual slots in virtual_call_sites; the global 00E188DC that 004BCA80 clears and the notify 00B0D7B0(ECX = [00F8D39C]); the seven callers of 00951F40 that reach the per-part spatial detach; whether player+8h is ever set on the session+1008h record array. The motion controller at unit+1018h (0092CFD0, 00932840) and the deferred destroy 00904BF0 family belong to another orchestrator and are cited, not annotated."
+}

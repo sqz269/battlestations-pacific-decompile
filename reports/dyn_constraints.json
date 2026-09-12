@@ -1,0 +1,327 @@
+{
+  "packet": "cc_dyn_constraints",
+  "owner": "agent/cc-dyn-constraints",
+  "date": "2026-09-11",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": "none (read-only worker)",
+  "docs": [
+    "docs/DYN_LCP_IMPULSE_MATH.md",
+    "docs/DYN_COLLISION_PASS.md",
+    "docs/DYN_CONTACT_SOLVER.md"
+  ],
+  "sources": [
+    "include/bsp/dyn_lcp_impulse_math.hpp",
+    "src/dyn_lcp_impulse_math.cpp",
+    "include/bsp/dyn_collision_pass.hpp",
+    "src/dyn_collision_pass.cpp",
+    "tests/math_tests.cpp"
+  ],
+  "solver_task_steps": [
+    {
+      "host_method": "per_group_pre_step",
+      "address": "0040379a",
+      "native": "00c4f040",
+      "function": "00403720",
+      "abi": "context = ECX, group = EAX, dt pushed; RET 4",
+      "contract": "stores the group at context+0EA68h, sizes the row block through 00C31C30 to [group+4h]*8 rows, runs the row build 00C4DE40, grows and zeroes the per-body velocity accumulators to context+4h entries, then applies the warm start through 00C42BA0"
+    },
+    {
+      "host_method": "size_row_block",
+      "address": "00c4f053",
+      "native": "00c31c30",
+      "function": "00c4f040",
+      "abi": "context = ECX, row count = EDI",
+      "contract": "one allocation of rows*7Ch bytes carved into nine parallel arrays at context+0EA7Ch..+0EA9Ch: two of 30h bytes per row (J and M^-1 J^T) and seven of 4 (body pair, two right-hand sides, two accumulated impulses, effective mass, friction coefficient)"
+    },
+    {
+      "host_method": "build_constraint_rows",
+      "address": "00c4f060",
+      "native": "00c4de40",
+      "function": "00c4f040",
+      "abi": "context = ESI, dt pushed; RET 4",
+      "contract": "assigns solver body indices (static bodies all take 0), then per contact point writes one normal row at k and one friction row at k + [group+4h]*4; sets context+0EAA4h to the point count and context+0EAA8h to [group+4h]*4"
+    },
+    {
+      "host_method": "apply_warm_start",
+      "address": "00c4f135",
+      "native": "00c42ba0",
+      "function": "00c4f040",
+      "abi": "context = EAX",
+      "contract": "per normal row, pushes M^-1 J^T * impulse into the velocity accumulator pair and M^-1 J^T * biasImpulse into the bias pair, so the first iteration starts from the previous frame's answer"
+    },
+    {
+      "host_method": "solve_normal_rows",
+      "address": "004037b4",
+      "native": "00c42530",
+      "function": "00403720",
+      "abi": "context = ECX",
+      "contract": "two Gauss-Seidel sweeps per normal row over the same Jacobian and effective mass: the velocity row against context+0EA88h into the first accumulator pair, the bias row against context+0EA90h into the second; both clamp the accumulated impulse at zero from below"
+    },
+    {
+      "host_method": "solve_friction_rows",
+      "address": "004037b9",
+      "native": "00c42230",
+      "function": "00403720",
+      "abi": "context = ECX, preserved by 00C42530",
+      "contract": "one sweep per friction row into the velocity pair only, with the accumulated impulse clamped to +/- friction[k]*impulse[k] of the matching normal row k; one friction row per contact point, not two"
+    },
+    {
+      "host_method": "write_back_velocities",
+      "address": "004037c7",
+      "native": "00c37b50",
+      "function": "00403720",
+      "abi": "context = EDX",
+      "contract": "for solver index 1 to context+0EAA0h, adds the velocity pair to the motion state's M+00h/M+0Ch and the bias pair to M+20h/M+2Ch, then sets B+58h to -1; index 0 is the shared static slot and is skipped"
+    },
+    {
+      "host_method": "store_impulses_into_points",
+      "address": "004037cd",
+      "native": "00c35020",
+      "function": "00403720",
+      "abi": "context pushed",
+      "contract": "walks the group's manifolds and points in the row order and copies impulse[k] to point+24h and biasImpulse[k] to point+28h, which is what the next frame warm starts from"
+    }
+  ],
+  "collision_pass_steps": [
+    {
+      "host_method": "broad_phase_update_vslot3",
+      "address": "00c574c2+vtable03",
+      "native": null,
+      "function": "00c57070",
+      "abi": "__thiscall void(manager), manager = ECX = [scene+0ACh]",
+      "contract": "indirect through [[scene+0ACh]+0Ch]; the SAP radix manager re-sorts its axis lists and rebuilds the overlapping-pair set. Contract only, the manager's body is not read"
+    },
+    {
+      "host_method": "manifold_update",
+      "address": "00c5756c",
+      "native": "00c549d0",
+      "function": "00c57070",
+      "abi": "container = [scene+0B0h], pushed",
+      "contract": "refreshes every manifold whose two bodies are not both asleep through 00C4B9B0, then unlinks every manifold left with zero points, decrements the container count at +1D0h and pushes the node onto the free list at +0Ch"
+    },
+    {
+      "host_method": "broad_phase_pair_count_vslot4",
+      "address": "00c5759c+vtable04",
+      "native": null,
+      "function": "00c57070",
+      "abi": "__thiscall uint(manager)",
+      "contract": "indirect through [[scene+0ACh]+10h]; zero skips the whole IntersectLoop scope but not the notification step. 00C575AF then clears the contact-event count at scene+0DCh"
+    },
+    {
+      "host_method": "first_pair_vslot5",
+      "address": "00c576fb+vtable05",
+      "native": null,
+      "function": "00c57070",
+      "abi": "__thiscall pair*(manager)",
+      "contract": "indirect through [[scene+0ACh]+14h]; a pair's first two fields point at the two bodies"
+    },
+    {
+      "host_method": "next_pair_vslot6",
+      "address": "00c57737+vtable06",
+      "native": null,
+      "function": "00c57070",
+      "abi": "__thiscall pair*(manager, pair)",
+      "contract": "indirect through [[scene+0ACh]+18h]"
+    },
+    {
+      "host_method": "run_narrow_phase_batch",
+      "address": "00c577ee",
+      "native": "00c33140",
+      "function": "00c57070",
+      "abi": "task count in the scheduler's batch call",
+      "contract": "forks the IntersectTask2 batch at scene+0C0h and blocks on it; the pass is single threaded again on return"
+    },
+    {
+      "host_method": "dispatch_contact_events",
+      "address": "00c57827",
+      "native": "00c35480",
+      "function": "00c57070",
+      "abi": "scene = EAX/param, called outside the pair-count guard",
+      "contract": "per event in scene+0D8h (count scene+0DCh), calls slot 0 of each body's own callback object at B+68h with the shape pair, swapped for the second body. This, not world+24h, is the shipped game's contact notification"
+    },
+    {
+      "host_method": "narrow_phase_task_body",
+      "address": "00403ccb",
+      "native": "00c44090",
+      "function": "00403cc0",
+      "abi": "scene = ESI, first pair = EAX, last pair pushed",
+      "contract": "per pair, every shape of body A against every shape of body B: the group/mask filter, the six-by-six dispatch table, the friction and restitution combines into manifold+00h and +04h, the point inserts, and the contact-event append under the spin lock at scene+0E4h"
+    },
+    {
+      "host_method": "insert_contact_point",
+      "address": "00c441f4",
+      "native": "00c3f760",
+      "function": "00c44090",
+      "abi": "manifold = ECX, candidate = EAX",
+      "contract": "rejects a non-unit normal, refreshes a matched point in place keeping its two accumulated impulses at +24h and +28h, appends a new point with both zeroed, or takes the unread four-point reduction branch"
+    },
+    {
+      "host_method": "match_existing_point",
+      "address": "00c3f7b3",
+      "native": "00c3f650",
+      "function": "00c3f760",
+      "abi": "manifold = EAX, candidate = EDI",
+      "contract": "the first existing point whose local point on either body is within 0.0025 squared (0.05 units) of the candidate's, or the point count"
+    }
+  ],
+  "coverage": [
+    {
+      "routine": "00403720",
+      "reconstruction": "dyn_solve_group_00403720",
+      "status": "semantic_sequence_integrated_strict_win32_build_and_test",
+      "coverage": "complete for the per-group chain; the exception frame and the two frees at 004037EA/004037FE are not projected"
+    },
+    {
+      "routine": "00c4f040",
+      "reconstruction": "none (the arrays it sizes are the reconstruction's inputs)",
+      "status": "read_in_full",
+      "coverage": "complete; the allocation and growth are host-side"
+    },
+    {
+      "routine": "00c31c30",
+      "reconstruction": "the nine array base constants in include/bsp/dyn_lcp_impulse_math.hpp",
+      "status": "read_in_full",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c4de40",
+      "reconstruction": "dyn_build_contact_rows_00c4de40",
+      "status": "semantic_pure_rule_integrated_strict_win32_build_and_test",
+      "coverage": "partial: the per-manifold and per-body loop around the point body, including the solver-index assignment at 00C4DEDB..00C4DF43, is expressed as inputs rather than reconstructed"
+    },
+    {
+      "routine": "00c42ba0",
+      "reconstruction": "dyn_apply_warm_start_00c42ba0",
+      "status": "semantic_pure_rule_integrated_strict_win32_build_and_test",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c42530",
+      "reconstruction": "dyn_solve_normal_rows_00c42530",
+      "status": "semantic_pure_rule_integrated_strict_win32_build_and_test",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c42230",
+      "reconstruction": "dyn_solve_friction_rows_00c42230",
+      "status": "semantic_pure_rule_integrated_strict_win32_build_and_test",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c37b50",
+      "reconstruction": "dyn_write_back_velocities_00c37b50",
+      "status": "semantic_pure_rule_integrated_strict_win32_build",
+      "coverage": "complete for the arithmetic; the B+58h reset is host-side"
+    },
+    {
+      "routine": "00c35020",
+      "reconstruction": "dyn_store_impulses_00c35020",
+      "status": "semantic_pure_rule_integrated_strict_win32_build",
+      "coverage": "complete for the arithmetic; the manifold walk that produces the row order is host-side"
+    },
+    {
+      "routine": "00c57070",
+      "reconstruction": "dyn_run_collision_pass_00c57070",
+      "status": "semantic_sequence_over_host_strict_win32_build",
+      "coverage": "complete for the six steps and the partition; the profiler scope bookkeeping and the exception frame are not projected"
+    },
+    {
+      "routine": "00c5715c..00c5745e",
+      "reconstruction": "dyn_body_world_bounds_00c5715c",
+      "status": "semantic_pure_rule_integrated_strict_win32_build",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c549d0",
+      "reconstruction": "contract in DynCollisionPassHost",
+      "status": "read_in_full",
+      "coverage": "complete for the two passes; 00C4B9B0 and 00C37D30 are contracts only"
+    },
+    {
+      "routine": "00c35480",
+      "reconstruction": "contract in DynCollisionPassHost, the record and the two callbacks in the doc",
+      "status": "read_in_full",
+      "coverage": "partial: the callbacks and the event record are documented, not coded; the dead world-point transform at 00C354E6..00C35542 is not projected"
+    },
+    {
+      "routine": "00c44090",
+      "reconstruction": "dyn_shapes_overlap_filter, dyn_narrow_phase_dispatch_index, dyn_combine_friction, dyn_combine_restitution",
+      "status": "semantic_pure_rule_integrated_strict_win32_build_partial_projection",
+      "coverage": "partial: the 36 dispatch targets, 00C3F4D0 and the six shape kinds are not read"
+    },
+    {
+      "routine": "00c3f760",
+      "reconstruction": "dyn_insert_contact_point_00c3f760",
+      "status": "semantic_pure_rule_integrated_strict_win32_build_partial_projection",
+      "coverage": "partial: the four-point reduction 00C3FA46..00C3FFD5 is not read and is reported rather than performed"
+    },
+    {
+      "routine": "00c3f650",
+      "reconstruction": "dyn_match_contact_point_00c3f650",
+      "status": "semantic_pure_rule_integrated_strict_win32_build",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00403cc0",
+      "reconstruction": "the register contract in docs/DYN_COLLISION_PASS.md",
+      "status": "read_in_full",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00c431d0, 00c42ed0, 00c4f140, 00c437d0, 00c35160, 00c37c40, 00c350c0, 00c5c7a0, 00c5c710",
+      "reconstruction": "none",
+      "status": "read_for_shape_only",
+      "coverage": "none. The LCPSolver2Task chain, unreachable in the shipped world (world+10h is 0). Same formulation over a manifold-major row layout: context+0EAC4h manifolds, context+0EA88h per-manifold point counts, impulse arrays strided 10h per manifold"
+    }
+  ],
+  "corrections": [
+    {
+      "target": "docs/DYN_CONTACT_SOLVER.md, 'The solver split'",
+      "was": "Each solver task runs, per group in its range, 00C5C7A0 (SolverPreStep) then 00C5C710 (SolveConstraints), and the ten iterations run 00C431D0 then 00C42ED0",
+      "is": "00C5C7A0 and 00C5C710 each have exactly one caller and it is Dyn_Scene_LCPSolver2Task_vslot0 (00403850), which world+10h == 1 selects and the shipped world never does. The shipped Dyn_Scene_LCPSolverTask_vslot0 (00403720) runs 00C4F040 once per group, then 00C42530 and 00C42230 world+38h times, then 00C37B50 and 00C35020",
+      "evidence": "00403720 disassembled in full: 0040379A CALL 00C4F040, 004037A3 MOV EAX,[ECX+38h] with ECX = [context+0h], 004037B4 CALL 00C42530, 004037B9 CALL 00C42230, 004037C7 CALL 00C37B50, 004037CD CALL 00C35020. python tools/bsp.py lookup 00c5c7a0 and 00c5c710 both show one caller, 00403850"
+    },
+    {
+      "target": "docs/DYN_CONTACT_SOLVER.md, 'The contact report' and include/bsp/dyn_contact_solver.hpp DynContactPoint",
+      "was": "point+24h is provisional: 'Penetration depth and accumulated normal impulse both fit; this packet does not choose', and the contact point record has four fields",
+      "is": "point+24h is the accumulated normal impulse. The record is 30h bytes with six fields: +24h accumulated normal impulse, +28h accumulated bias impulse, +2Ch penetration depth. The manifold also carries +00h the combined friction coefficient and +04h the combined restitution",
+      "evidence": "00C3F760, the producer: 00C3F9BD and 00C3F9D2 zero +24h and +28h only on the append path and leave them untouched on the refresh path, while 00C3F93C writes the normal component of the world gap to +2Ch. 00C4E0B2 seeds the solver's impulse accumulator from +24h scaled by world+20h, 00C4E0C6 seeds the bias accumulator from +28h, and 00C3506B and 00C35076 write the solved values back"
+    },
+    {
+      "target": "docs/DYN_CONTACT_SOLVER.md, the manifold point cap",
+      "was": "The four-records-per-manifold allocation is the only statement anywhere in this routine about how many points a manifold may hold, and nothing checks it",
+      "is": "00C3F943 checks it. A fifth candidate against a full manifold takes the reduction branch at 00C3FA46 instead of being appended",
+      "evidence": "00C3F943 CMP ECX,4 with ECX = [manifold+0C8h]"
+    },
+    {
+      "target": "docs/DYN_PHYSICS_SUBSTEP.md, the dyn_contact_listener follow-up row",
+      "was": "The field is zero from 00C41C2C and this packet found no writer, so the shipped game may never build a contact report at all",
+      "is": "Correct about world+24h, but the shipped game does notify contacts, through a different mechanism: 00C35480 calls slot 0 of each body's own callback object at B+68h for every contact event the narrow phase appended to scene+0D8h, filtered by a group mask at listener+4h",
+      "evidence": "00C35551 and 00C35574 test and call [manifold+0CCh]+68h and [manifold+0D0h]+68h; 00C4420D and 00C44214 are the mask test that decides whether 00C44090 appends the event"
+    },
+    {
+      "target": "docs/DYN_WORLD_SETTINGS.md, the five carried world fields listed as unread",
+      "was": "world+14h, +18h, +1Ch, +20h and +28h are unread",
+      "is": "world+18h is the position-correction fraction the bias rows apply per substep (0.1f shipped), world+20h the warm-start attenuation (1.0f, so full warm starting), world+28h the deepest penetration the bias rows act on (0.5f). world+14h (0.0f) and world+1Ch (0.85f) still have no reader in anything this packet read",
+      "evidence": "register provenance for the world pointer at each site: 00C4E5D1 loads EAX = [context+0h] and 00C4E63F reads EAX+18h; 00C4E094 loads EAX and 00C4E0AF reads EAX+20h; 00C4E0DA loads EDX and 00C4E0DC reads EDX+28h. 00C4DEB6 loads EBX and 00C4DEBE reads EBX+2Ch, the per-substep body-indexing stamp, which is not a descriptor field"
+    }
+  ],
+  "probe": "unchanged. src/ship_motion_probe.cpp drives one hull in open water through 00C41550 and 00C5B1B0 only and supplies no collision geometry (its own banner names 00C5C940, the hull AABB producer, as unread), so the broad phase would produce no pairs, 00C4B610 would form no groups, 00C5BC06 would find the group count zero and neither the collision pass nor the solver chain would run. Neither reconstruction is on a path bsp_game.exe or any probe reaches; the one added test case in tests/math_tests.cpp builds a contact by hand instead",
+  "tests": [
+    {
+      "file": "tests/math_tests.cpp",
+      "case": "a 1000 kg hull one substep into gravity resting on a fixed box, ten iterations of 00C42530 and 00C42230 over rows built by 00C4DE40",
+      "asserts": "the accumulated normal impulse is the hull's substep weight m*g*dt within 0.01, and the friction impulse stays zero while nothing slides",
+      "risk": "the sign convention. Body A takes the negated half of the Jacobian (00C4E1F7) while both apply steps add (00C425EB), so a flipped sign would leave the hull sinking through the box with an impulse that still looked plausible"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "none",
+      "end": "",
+      "evidence": "Every address named or reconstructed lies inside an existing Ghidra function body, checked with python tools/bsp.py ghidra proto <addr> --brief for 00403720, 00403850, 00403CC0, 00C31C30, 00C35020, 00C35480, 00C37B50, 00C3F650, 00C3F760, 00C41AD0, 00C42230, 00C42530, 00C42BA0, 00C44090, 00C4DE40, 00C4F040, 00C549D0 and 00C57070"
+    }
+  ],
+  "flow_repair_requested": []
+}

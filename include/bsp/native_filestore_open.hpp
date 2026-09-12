@@ -6,12 +6,17 @@
 
 namespace bsp {
 struct SingletonLifetimeCallbacks;
+struct NativePhysicalStreamOpenContext;
 
 // Borrow the three actual type descriptor DWORDs at 0109DBA0..0109DBA8.
 // They are initialized by CD8FC0 and remain current reads, not synthesized IDs.
 struct NativeStoredStreamConversionContext {
     NativeRetainedMemoryOwnerContext& memory_owners;
     const volatile std::uint32_t* actual_memory_type_ids_0109dba0;
+    // Required together when converting an actual D691B0 physical stream.
+    // The original D691B0 table bytes must remain readable and unchanged.
+    NativePhysicalStreamOpenContext* physical = nullptr;
+    const volatile std::uint32_t* actual_physical_type_ids_0109dc30 = nullptr;
 };
 
 // Complete BB8F60: native ECX ignored, token stack, AL result, RET4.
@@ -40,9 +45,12 @@ void dispatch_native_memory_stream_seek(void* actual_stream,
 // new cursor. Otherwise seek(0,0,0), read current size low DWORD, allocate10h,
 // construct backing, read once without an actual-count output, wrap and release
 // the temporary backing. No short-read trim, source release or cursor restore.
-// Input domain: numeric D642C0 owners, or externally supplied actual callable
+// Input domain: numeric D642C0 owners; numeric D691B0 owners with explicit
+// physical services/type descriptors; or externally supplied actual callable
 // original-ABI tables (+0C type, +1C seek, +30 size, +24 read). No table is
-// rewritten; other numeric owner classes require their own concrete binding.
+// rewritten. Physical conversion uses current type/seek/cached-size/read slots,
+// ignores seek/read status and leaves the source cursor changed. Other numeric
+// owner classes require their own concrete binding.
 void* convert_native_stored_stream_00bef750(void* actual_source,
     NativeStoredStreamConversionContext&);
 

@@ -1,0 +1,399 @@
+{
+  "packet": "cc_ai_goal_vector",
+  "owner": "agent/cc-ai-goal-vector",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only: no renames, comments, prototypes, function creation or saves",
+  "docs": [
+    "docs/SHIP_AI_GOAL_VECTOR.md"
+  ],
+  "sources": [
+    "include/bsp/ship_ai_goal_vector.hpp",
+    "src/ship_ai_goal_vector.cpp"
+  ],
+  "verification": {
+    "checklist": "docs/WORKER_VERIFICATION_CHECKLIST.md",
+    "writer_search": "python tools/bsp.py scan-bytes '2C 0B 00 00' / '34 0B 00 00' / '38 0B 00 00' --section .text, and the same for 84/8C/90 0B over 009D0000-00A00000. Every hit was resolved to its containing Ghidra function and classified read or write from the listing. The method finds any instruction whose ModRM disp32 or immediate is the displacement; a base pointer built by adding two smaller constants would escape it.",
+    "unread_callees": [
+      "009dfbe0 (the recon test; contract taken from the call-site gate)",
+      "009e3c00 (the path point source; record layout is read-side)",
+      "009e3780 (the path planner 009ED3E0 hands the goal to)",
+      "009ec680 (the per-tick plan advance inside 009ED3E0)",
+      "00bd2f10 (the countdown seed helper)",
+      "0070d400, 0070d5d0, 00778890, 009d9d40, 009d9de0 (009ED3E0's other callees)"
+    ]
+  },
+  "routines": [
+    {
+      "address": "009f1420",
+      "name": "BSP_ShipAi_BrainPrePass",
+      "abi": "__thiscall(brain)(float seconds), RET 4, body 009f1420-009f1bba, call site 009f516c with ECX = ai+58h",
+      "coverage": "partial: 009f1420-009f158a projected. 009f158a-009f1bb8, the two further countdowns at brain+0B44h/+0B48h and +0B4Ch/+0B50h and the proximity scan they drive, is not projected",
+      "reconstruction": "ship_ai_refresh_goal_vector_009f1420"
+    },
+    {
+      "address": "009e2fb0",
+      "name": "BSP_ShipAi_LatchCommandTarget",
+      "abi": "__thiscall(record)(descriptor) -> record, RET 4, body 009e2fb0-009e303d",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_latch_command_target_009e2fb0"
+    },
+    {
+      "address": "009dbcc0",
+      "name": "BSP_ShipAi_ResolveCommandGoalPosition",
+      "abi": "__thiscall(record)(float out[3]), RET 4, body 009dbcc0-009dbd3b",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_resolve_goal_position_009dbcc0"
+    },
+    {
+      "address": "009db820",
+      "name": "BSP_ShipAi_HorizontalDistanceToGoal",
+      "abi": "float __thiscall(adapter)(void), RET, body 009db820-009db8cc",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_goal_planar_distance_009db820"
+    },
+    {
+      "address": "009ed6b0",
+      "name": "BSP_ShipAi_ControlsStep",
+      "abi": "__thiscall(blk)(float seconds), RET 4, body 009ed6b0-009ef228",
+      "coverage": "partial: 009ee580-009ee670, the path pick and publish, projected by this packet. 009ee671-009eeaa2 is src/ship_ai_navigation.cpp. 009eda28-009ee57b (the station-keeping arm) and 009eeaab-009ef228 are still unprojected; 009ed6b0-009eda25 stays as docs/SHIP_AI_STATES.md left it",
+      "reconstruction": "ship_ai_pick_path_point_009ee580"
+    },
+    {
+      "address": "009ed3e0",
+      "name": "BSP_ShipAi_RefreshPathPlan",
+      "abi": "__thiscall(blk)(float seconds), RET 4, body 009ed3e0-009ed6ab, sole call site 009ee5c2",
+      "coverage": "partial: read in full from the decompiler and used as a host contract, not projected as C++",
+      "reconstruction": "none (host method refresh_path_plan_009ed3e0)"
+    },
+    {
+      "address": "007adc30",
+      "name": "BSP_EntityCommand_SlotHasNoLegs",
+      "abi": "bool __thiscall(slot)(void), RET, body 007adc30-007adc50",
+      "coverage": "complete",
+      "reconstruction": "ship_ai_command_slot_has_no_legs_007adc30"
+    },
+    {
+      "address": "009f1160",
+      "name": "BSP_ShipAi_BrainRecordConstruct",
+      "abi": "__thiscall(brain)(owner) -> brain, RET 4, body 009f1160-009f1413, sole caller 009f39c0",
+      "coverage": "partial: read for the goal vector, the suppression byte and the refresh timer only (009f1290, 009f12b9, 009f12c9, 009f127d, 009f1358, 009f137a, 009f138c). The rest of the constructor is not read",
+      "reconstruction": "none"
+    }
+  ],
+  "host_steps": [
+    {
+      "step": "goal 1 the controller runs the pre-pass on the AI sub-tick",
+      "address": "009f516c",
+      "native": "009f1420",
+      "function": "009f50e0",
+      "method": "ship_ai_refresh_goal_vector_009f1420",
+      "note": "ECX = ESI+58h at 009f5166, the float argument is ai+0B18h; 009f515b gates the call on ai+0B18h having reached ai+0B14h"
+    },
+    {
+      "step": "goal 2 the entity's active command descriptor",
+      "address": "009f146b",
+      "native": "0071eb60",
+      "function": "009f1420",
+      "method": "active_command_0071eb60"
+    },
+    {
+      "step": "goal 3 latch the command target on brain+0AF8h",
+      "address": "009f1473",
+      "native": "009e2fb0",
+      "function": "009f1420",
+      "method": "ship_ai_latch_command_target_009e2fb0"
+    },
+    {
+      "step": "goal 4 resolve the descriptor's handle to an object",
+      "address": "009e2fe9",
+      "native": "00521ea0",
+      "function": "009e2fb0",
+      "method": "resolve_command_target_00521ea0"
+    },
+    {
+      "step": "goal 5 drop the observer pair on the old object",
+      "address": "009e2ffd",
+      "native": "006952a0",
+      "function": "009e2fb0",
+      "method": "observer_unregister_006952a0"
+    },
+    {
+      "step": "goal 6 take the observer pair on the new object",
+      "address": "009e300d",
+      "native": "00694a60",
+      "function": "009e2fb0",
+      "method": "observer_register_00694a60"
+    },
+    {
+      "step": "goal 7 this side's recon slot",
+      "address": "009f14ec",
+      "native": "008053c0",
+      "function": "009f1420",
+      "method": "recon_knows_target_009dfbe0"
+    },
+    {
+      "step": "goal 8 does that recon slot hold the target",
+      "address": "009f14fa",
+      "native": "009dfbe0",
+      "function": "009f1420",
+      "method": "recon_knows_target_009dfbe0"
+    },
+    {
+      "step": "goal 9 a surface target reopens the gate",
+      "address": "009f1519",
+      "native": "00922dc0",
+      "function": "009f1420",
+      "method": "target_is_surface_00922dc0"
+    },
+    {
+      "step": "goal 10 turn the latched target into a world position",
+      "address": "009f156b",
+      "native": "009dbcc0",
+      "function": "009f1420",
+      "method": "ship_ai_resolve_goal_position_009dbcc0"
+    },
+    {
+      "step": "goal 11 refresh the target's world pose",
+      "address": "009dbcd9",
+      "native": "00414db0",
+      "function": "009dbcc0",
+      "method": "refresh_target_pose_00414db0"
+    },
+    {
+      "step": "goal 12 carry the stored offset out of the target's frame",
+      "address": "009dbced",
+      "native": "004142e0",
+      "function": "009dbcc0",
+      "method": "transform_by_target_matrix_004142e0"
+    },
+    {
+      "step": "path 1 the latched goal becomes a plan",
+      "address": "009ee5c2",
+      "native": "009ed3e0",
+      "function": "009ed6b0",
+      "method": "refresh_path_plan_009ed3e0"
+    },
+    {
+      "step": "path 2 the plan is asked for the point nearest the pose",
+      "address": "009ee5f4",
+      "native": "009e3c00",
+      "function": "009ed6b0",
+      "method": "next_path_point_009e3c00"
+    },
+    {
+      "step": "path 3 raise the published band's floor to the path width",
+      "address": "009ee62b",
+      "native": "00415550",
+      "function": "009ed6b0",
+      "method": "path_width_2f4_08"
+    },
+    {
+      "step": "path 4 publish the lateral-offset bounds for the point",
+      "address": "009ee66c",
+      "native": "00815f30",
+      "function": "009ed6b0",
+      "method": "publish_lateral_offset_00815f30"
+    },
+    {
+      "step": "plan 1 hand the goal blk+1DCh to the planner (no plan, both paths idle)",
+      "address": "009ed523",
+      "native": "009e3780",
+      "function": "009ed3e0",
+      "method": "refresh_path_plan_009ed3e0"
+    },
+    {
+      "step": "plan 2 hand the goal to the planner (plan not ready)",
+      "address": "009ed588",
+      "native": "009e3780",
+      "function": "009ed3e0",
+      "method": "refresh_path_plan_009ed3e0"
+    },
+    {
+      "step": "plan 3 hand the goal to the planner (back path reset)",
+      "address": "009ed5fd",
+      "native": "009e3780",
+      "function": "009ed3e0",
+      "method": "refresh_path_plan_009ed3e0"
+    },
+    {
+      "step": "plan 4 hand the goal to the planner (back path status 0, 2 or 3)",
+      "address": "009ed692",
+      "native": "009e3780",
+      "function": "009ed3e0",
+      "method": "refresh_path_plan_009ed3e0"
+    },
+    {
+      "step": "plan 5 advance the plan by the tick delta",
+      "address": "009ed59b",
+      "native": "009ec680",
+      "function": "009ed3e0",
+      "method": "refresh_path_plan_009ed3e0"
+    },
+    {
+      "step": "distance 1 an attackmove sub-state asks how far the goal is",
+      "address": "009f396a",
+      "native": "009db820",
+      "function": "009f3670",
+      "method": "ship_ai_goal_planar_distance_009db820"
+    },
+    {
+      "step": "distance 2 refresh the unit's own pose first",
+      "address": "009db854",
+      "native": "00414db0",
+      "function": "009db820",
+      "method": "ship_ai_goal_planar_distance_009db820"
+    },
+    {
+      "step": "distance 3 the CRT square root",
+      "address": "009db8a7",
+      "native": "00bf7030",
+      "function": "009db820",
+      "method": "ship_ai_goal_planar_distance_009db820"
+    },
+    {
+      "step": "slot 1 the move-on-path step asks whether the slot has legs",
+      "address": "009e59f8",
+      "native": "007adc30",
+      "function": "009e59c0",
+      "method": "ship_ai_command_slot_has_no_legs_007adc30"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "step": "goal 2b the kind filter on the raw command target",
+      "site": "009f1491",
+      "callee": "[target]->vtable[5Ch](2)",
+      "function": "009f1420",
+      "method": "target_is_kind_vtable_005c",
+      "contract": "unread"
+    },
+    {
+      "step": "007ADC30 1 the command's leg count",
+      "site": "007adc45",
+      "callee": "[command]->vtable[0Ch]()",
+      "function": "007adc30",
+      "method": "ship_ai_command_slot_has_no_legs_007adc30",
+      "contract": "unread; the site takes the result as a signed count and answers false only when it is positive"
+    }
+  ],
+  "goal_writers": [
+    {
+      "address": "009f1572",
+      "field": "brain+0B2Ch",
+      "function": "009f1420",
+      "source": "009DBCC0 on the record latched from the active command"
+    },
+    {
+      "address": "009f157b",
+      "field": "brain+0B30h",
+      "function": "009f1420",
+      "source": "same"
+    },
+    {
+      "address": "009f1584",
+      "field": "brain+0B34h",
+      "function": "009f1420",
+      "source": "same"
+    },
+    {
+      "address": "009f1290",
+      "field": "brain+0B2Ch",
+      "function": "009f1160",
+      "source": "the zero vector at 00F87574, in the constructor"
+    },
+    {
+      "address": "009f12b9",
+      "field": "brain+0B34h",
+      "function": "009f1160",
+      "source": "same"
+    }
+  ],
+  "flag_0b38_sites": [
+    {"address": "009f1457", "function": "009f1420", "operation": "clear, every AI sub-tick"},
+    {"address": "009e11f2", "function": "009e1170", "operation": "set"},
+    {"address": "009e13e4", "function": "009e1170", "operation": "set"},
+    {"address": "009f12c9", "function": "009f1160", "operation": "clear, in the constructor"},
+    {"address": "009f4daf", "function": "009f4da0", "operation": "read; the only reader, skips the throttle ceiling"},
+    {"address": "009dabf0", "function": "none", "operation": "set; an inline accessor nothing in the image references"}
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "009dabf0",
+      "end_inclusive": "009dabf7",
+      "evidence": "MOV byte ptr [ECX+0B38h],1 at 009dabf0 (seven bytes) and RET at 009dabf7. The previous routine 009dabe0 ends with its RET 4 at 009dabea (009dabea-009dabec) and three INT3 at 009dabed-009dabef; eight INT3 follow at 009dabf8-009dabff before 009dac00. No CALL, JMP or 4-byte data reference to 009dabf0 exists anywhere in the image (whole-file scan), so it is an emitted but unused inline setter."
+    },
+    {
+      "start": "009dae30",
+      "end_inclusive": "009dae50",
+      "evidence": "MOV EAX,[ESP+4] at 009dae30, three FLD/FSTP pairs over [ECX+0B2Ch], [ECX+0B30h], [ECX+0B34h], and RET 4 at 009dae4e (009dae4e-009dae50). The previous routine 009dae20 ends with its RET at 009dae25 and ten INT3 at 009dae26-009dae2f; INT3 follows at 009dae51. No reference to 009dae30 exists anywhere in the image: an emitted but unused goal-vector getter."
+    },
+    {
+      "start": "009db7f0",
+      "end_inclusive": "009db813",
+      "evidence": "MOV ECX,[ECX+4] at 009db7f0, then the same three-component copy out of [ECX+0B2Ch], and RET 4 at 009db811 (009db811-009db813). The previous routine 009db7e0 ends with its RET at 009db7e5 and ten INT3 at 009db7e6-009db7ef; INT3 follows at 009db814. No reference to 009db7f0 exists anywhere in the image: the same getter reached through an adapter whose +4h is the brain, also unused."
+    }
+  ],
+  "corrections": [
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2o: 'brain+0B2Ch / +0B34h, the AI's goal vector, has no recovered writer anywhere'",
+      "is": "009F1572, 009F157B and 009F1584 in 009F1420 write all three components on every AI sub-tick, from the active command descriptor through 009E2FB0 and 009DBCC0. Outside those three stores the only writers in the image are the constructor's 009F1290 and 009F12B9",
+      "evidence": "scan of .text for the displacements 0B2Ch / 0B30h / 0B34h, each hit classified from the listing; 009F1569-009F1584"
+    },
+    {
+      "was": "docs/SHIP_AI_STATES.md: 'brain+0B2Ch..+0B38h is the AI's goal vector and its valid flag'",
+      "is": "brain+0B2Ch..+0B34h is the goal vector; brain+0B38h is an unrelated per-tick byte. 009F1457 clears it at the head of the pre-pass, the cruise step sets it at 009E11F2 and 009E13E4, and 009F4DAF is its only reader, where it skips the throttle-ceiling step. Nothing tests it before reading the goal. The goal's own refresh gate is brain+0B28h with the countdown brain+0B58h",
+      "evidence": "009F1457, 009E11F2, 009E13E4, 009F12C9, 009F4DAF, 009DABF0 are the six sites the displacement scan finds in the AI range"
+    },
+    {
+      "was": "docs/SHIP_AI_NAVIGATION_ARM.md and docs/GAME_EXECUTABLE.md: the unread first half of the arm starts at 009EDA26",
+      "is": "009EDA26 is not an instruction boundary. The RET 4 at 009EDA25 occupies 009EDA25-009EDA27 and the first instruction of the half is 009EDA28 CMP byte ptr [ESI+3A5h],0",
+      "evidence": "python tools/bsp.py ghidra disasm 009ed6b0 rejects 009eda26 as a start; the stored listing has 009eda25 RET 4 then 009eda28"
+    },
+    {
+      "was": "implied by the arm's structure: 009EDA28..009EE670 runs and then the output block at 009EE671 consumes its result",
+      "is": "009EDA28..009EE57B and 009EE580..009EEAA2 are alternatives. The first is entered only when blk+3A5h is set and blk+3A6h clear (009EDA34, 009EDA41) and it leaves through 009EE57B JMP 009EF206 without ever reaching 009EE580. That is also why EDI still holds the literal 2 that 009ED7EC put there when 009EE580 compares it against the steering mode",
+      "evidence": "009EDA34, 009EDA41, 009EE57B, 009ED7EC, 009EDFA1"
+    },
+    {
+      "was": "docs/GAME_EXECUTABLE.md milestone 2o: 'all 98 goal sets of the run are (0,0)', unexplained",
+      "is": "with no command installed, 0071EB60 returns the empty singleton at 00E19B98 whose +1h byte is zero, so 009E2FC4 substitutes the zero vector at 00F87574 and 00521EA0 resolves no object. 009DBCC0 then hands back the stored (0,0,0), and because 009F155C tests the stored goal against a squared length of 1.0 the refresh fires again on every tick instead of settling",
+      "evidence": "0071EB60's body, 009E2FBA, 009E2FC4, 009F1532-009F1562, and the 16 zero bytes at 00F87574"
+    },
+    {
+      "was": "the ledger name BSP_ShipAi_BrainConstruct on 009F39C0",
+      "is": "provisional correction, not applied: 009F39C0's `this` is the AI object and the brain is at ai+58h (009F5166 LEA ECX,[ESI+58h] before the 009F1420 call, whose body uses brain+0AA8h / +0AB8h / +0AF8h). The brain's own constructor is 009F1160, 009F39C0's sole callee of that shape. 009F39C0 is not leased by this packet and was not renamed",
+      "evidence": "009F5166, 009F1449, 009F1465, 009F39C0's call to 009F1160"
+    }
+  ],
+  "uncertainties": [
+    "009DFBE0's body was not read. 'this side's recon holds the target' is the reading the call-site gate supports (008053C0 BSP_Recon_EnsureSlot on the unit's own side word, the result stored straight into brain+0B28h), not a contract from the body.",
+    "009E3C00's body was not read. The 22h-byte record layout in ShipAiPathPointRecord is the consumer's reading of the slots 009ED6B0 writes before the call and reads after it; the producer owns it and the follow-up packet ship_ai_path_source should settle it.",
+    "00BD2F10 was not read. The countdown seed at 009F138C is described as the negation of its answer for the arguments (0.0f, 2.0f); that it is a uniform random draw is a hypothesis from the staggering effect, not from the body.",
+    "The vtable[5Ch] slot 009F1491 calls with the literal 2 was not read. The reconstruction keeps it as a host predicate with the argument spelled out.",
+    "blk+39Ch, which 009EE5BA pins to 1.25f on the path branch and the station-keeping arm computes instead, is not named. Its consumer was not read this packet."
+  ],
+  "follow_ups": [
+    {
+      "id": "ship_ai_station_keeping_arm",
+      "addresses": ["009eda28", "009edb6b", "009edd9b", "009ede87", "0082e850", "007789d0", "009d5b90", "009da0d0", "009da3b0", "009ddbc0", "009de5b0"],
+      "what": "The arm that runs instead of the path follower when blk+3A5h is set: the along-track and cross-track projection of the goal blk+1DCh onto the leader frame at blk+38Ch/+390h, the turn-radius closing test, and who fills the leader snapshot blk+38Ch..+3A6h"
+    },
+    {
+      "id": "ship_ai_path_source",
+      "addresses": ["009e3c00", "009e3780", "009ed3e0", "009d9e50", "00811d80"],
+      "what": "Unchanged from docs/SHIP_AI_NAVIGATION_ARM.md, plus 009E3780, the planner 009ED3E0 hands the goal to at four sites, and the 22h-byte record 009E3C00 fills"
+    },
+    {
+      "id": "ship_ai_command_slot_producers",
+      "addresses": ["0071eb60", "0071e7f0", "00721a40", "00e19b98"],
+      "what": "Who sets slot+30h to 1 or 2 and fills slot+58h / slot+18Ch, including the Lua navigator bindings. That is the only lever an executable milestone has on the AI's goal"
+    },
+    {
+      "id": "ship_ai_subtick_rate",
+      "addresses": ["009f50e0", "009f3dd0", "009f5191", "009f51a8"],
+      "what": "ai+0B14h and ai+0B18h, the accumulator and interval that decide how often the goal refresh runs, and what 009F3DD0 returning true forces"
+    }
+  ]
+}
