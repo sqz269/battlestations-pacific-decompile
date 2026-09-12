@@ -1,0 +1,140 @@
+{
+  "packet": "orch6_scene_landscape_class",
+  "analysis_mode": "read_only_ghidra",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/scene_landscape_class.cpp",
+  "header": "include/bsp/scene_landscape_class.hpp",
+  "document": "docs/SCENE_LANDSCAPE_CLASS.md",
+  "routines": [
+    {
+      "address": "004f1360",
+      "was": "BSP_Landscape_IsKindOf",
+      "name": "BSP_Landscape_IsKindOf",
+      "reconstruction": "scene_landscape_is_kind_of_004f1360",
+      "coverage": "complete predicate through explicit dynamic-class value interface",
+      "original_abi": "ECX entity; stack requested class; EAX0/1;RET4",
+      "native_end_inclusive": "004f1386",
+      "last_instruction_address": "004f1384",
+      "last_instruction_size": 3
+    },
+    {
+      "address": "007b38d0",
+      "was": "FUN_007b38d0",
+      "name": "BSP_ScenePathEntity_LoadHolderProperties",
+      "coverage": "partial evidence_only007B38D8..007B38FC; base setup and path loading are consumed boundaries",
+      "original_abi": "ECX entity; no stack args;RET",
+      "native_end_inclusive": "007b3912",
+      "last_instruction_address": "007b3912",
+      "last_instruction_size": 1
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "004f14ce",
+      "native": "004f11c0",
+      "function": "004f1460",
+      "contract": "Landscape creator reaches constructor installing actual vtable/class"
+    },
+    {
+      "address": "0041d089",
+      "native": "004f1360",
+      "function": "0041ccd0",
+      "contract": "indirect parent vtable5C with code44; Landscape target proved by ctor004F1272 and slot00CEA0EC"
+    },
+    {
+      "address": "0041d201",
+      "native": "007ac9d0",
+      "function": "0041d1e0",
+      "contract": "path interface from original entity before original entity+54 party gate"
+    },
+    {
+      "address": "007b38f4",
+      "native": "008f2260",
+      "function": "007b38d0",
+      "contract": "Party property producer; property+0C copied to entity+54 at007B38FC"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "function": "004f11c0",
+      "site": "004f1272",
+      "effect": "MOV[ESI],00CEA090"
+    },
+    {
+      "function": "004f11c0",
+      "site": "004f1338",
+      "effect": "MOV[ESI+C4],44"
+    },
+    {
+      "data": "00cea0ec",
+      "bytes": "60 13 4f 00",
+      "effect": "Landscape vtable+5C resolves004F1360"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "0041D206 kind2 gate not identified independently of PathPoints holder tag",
+      "is": "original entity+54 is Party; Neutral=2, independent of class47 and source-holder kind1",
+      "evidence": "EDI producer0041D1F9/gate0041D206; Party producer007B38F4..007B38FC; installed global.enums1705..1710"
+    }
+  ],
+  "gaps": [],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "result": "Win32 Release passed; existing reconstructed_math1/1 passed",
+      "log": "local/scene_landscape_class_build.log"
+    },
+    "native_fixture": {
+      "result": "six comparisons passed against actual39 byte004F1360 body in isolated Win32 manifested executable",
+      "queries": [
+        68,
+        1,
+        0,
+        4660,
+        71,
+        -1
+      ],
+      "dynamic_class_id": 4660,
+      "bytes": "8b44240483f844741683f801741185c0740d3b81c4000000740533c0c20400b801000000c20400",
+      "log": "local/scene_landscape_class_probe.log"
+    },
+    "installed_parents": {
+      "scene": "universe/Scenes/missions/USN/usn_1_marshall.scn",
+      "parse_errors": 0,
+      "parents": [
+        {
+          "scene_id": 1,
+          "name": "Landscape 03",
+          "class_id": 68
+        },
+        {
+          "scene_id": 93,
+          "name": "Landscape 04",
+          "class_id": 68
+        },
+        {
+          "scene_id": 99,
+          "name": "Landscape 05",
+          "class_id": 68
+        },
+        {
+          "scene_id": 105,
+          "name": "Landscape 06",
+          "class_id": 68
+        }
+      ],
+      "all_predicate_44": 1,
+      "avoid_zone_paths": 21,
+      "explicitly_authored_Party_Neutral": 21,
+      "neutral_enum_value": 2
+    },
+    "report_calls": {
+      "checked": 4,
+      "failed": 0,
+      "indirect_target_note": "0041D089 transfer verified; concrete004F1360 target separately proved by ctor/vtable bytes"
+    }
+  },
+  "names_are_hypotheses": true
+}
