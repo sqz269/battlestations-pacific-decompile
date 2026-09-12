@@ -1,0 +1,319 @@
+{
+  "packet": "orch4_native_input_cursor_af",
+  "status": "reconstructed_strict_build_native_retarget_and_raw_policy_fixture_verified",
+  "source": [
+    "include/bsp/native_input_cursor.hpp",
+    "src/native_input_cursor.cpp"
+  ],
+  "document": "docs/NATIVE_INPUT_CURSOR.md",
+  "baseline_commit": "9730292d",
+  "target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "verification": "bsp.py ghidra client verified project/program before each live query; read-only"
+  },
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "00becb20",
+      "implementation": "update_native_input_cursor_00becb20",
+      "coverage": "complete normal raw-input field/call schedule within documented source-provider and valid-storage domain",
+      "original_abi": "ECX actual native platform; EDX no input; stack loading byte in DWORD slot; void result; RET4.",
+      "last_instruction": "00beccc5",
+      "last_instruction_length": 3,
+      "end_inclusive": "00beccc7",
+      "end_exclusive": "00beccc8",
+      "span": 424,
+      "sha256": "d49521cd17d5c4bbd55280346ebbf30a23de86a24d5a947fc8ceda875aeef8e3",
+      "disk_analysis_equal": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00beca40",
+      "implementation": "reset_native_input_focus_00beca40",
+      "coverage": "complete normal raw-input field/call schedule within documented source-provider and valid-storage domain",
+      "original_abi": "No native input; ECX/EDX unused as inputs; void result; RET0.",
+      "last_instruction": "00becb14",
+      "last_instruction_length": 1,
+      "end_inclusive": "00becb14",
+      "end_exclusive": "00becb15",
+      "span": 213,
+      "sha256": "e842906326571c7c4e20d017dec3a7628c1b4fe505e50c865a787de3afdf7215",
+      "disk_analysis_equal": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00bece70",
+      "implementation": "run_native_platform_application_service_00bece70",
+      "coverage": "complete normal raw-input field/call schedule within documented source-provider and valid-storage domain",
+      "original_abi": "ECX actual native platform; EDX no input; no stack arguments; void result; RET0.",
+      "last_instruction": "00bece87",
+      "last_instruction_length": 1,
+      "end_inclusive": "00bece87",
+      "end_exclusive": "00bece88",
+      "span": 24,
+      "sha256": "44a912b280541cf2bdfa4a9b3fd010f385dd58c06b8db6276f9a3c615abb14f8",
+      "disk_analysis_equal": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a92840",
+      "implementation": "retarget_native_mouse_input_bindings_00a92840",
+      "coverage": "complete normal raw-input field/call schedule within documented source-provider and valid-storage domain",
+      "original_abi": "ECX actual24h action owner; EDX no input; stack replacement device pointer; void result; RET4.",
+      "last_instruction": "00a92903",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a92905",
+      "end_exclusive": "00a92906",
+      "span": 198,
+      "sha256": "334eefd0c81696b2fed49f905fac6fc1b0356ec51015ee414a0f8c70f1d90cc1",
+      "disk_analysis_equal": true,
+      "native_abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "no_ghidra_function": [],
+  "excluded_tail_calls": [],
+  "host_steps": [
+    {
+      "function": "00becb20",
+      "address": "00becb43",
+      "native": "004ba6d0",
+      "contract": "ECX captured initial backend, stack class1,index0; callee RET8"
+    },
+    {
+      "function": "00becb20",
+      "address": "00becb5d",
+      "native": "00a409f0",
+      "contract": "ECX reloaded current online manager; RET0"
+    },
+    {
+      "function": "00becb20",
+      "address": "00becb9d",
+      "native": "00beca40",
+      "contract": "ECX captured platform but callee unused; RET0"
+    },
+    {
+      "function": "00becb20",
+      "address": "00becbae",
+      "native": "004ba6d0",
+      "contract": "ECX reloaded backend after reset; class1,index0; RET8"
+    },
+    {
+      "function": "00becb20",
+      "address": "00becbb7",
+      "native": "00a9a140",
+      "contract": "ECX getter result; flags6; RET4; existing raw provider"
+    },
+    {
+      "function": "00becb20",
+      "address": "00becbd8",
+      "native": "backend+vtable04",
+      "contract": "ECX current backend; live FLD D7A2F0 before profile load; FSTP float stack; RET4"
+    },
+    {
+      "function": "00becb20",
+      "address": "00becbfc",
+      "native": "00beca40",
+      "contract": "deferred/immediate reset; RET0"
+    },
+    {
+      "function": "00becb20",
+      "address": "00becc1f",
+      "native": "backend+vtable04",
+      "contract": "current backend and captured profile; float step; RET4"
+    },
+    {
+      "function": "00becb20",
+      "address": "00becc52",
+      "native": "00ce2344+vtable00",
+      "contract": "captured ShowCursor import; stdcall TRUE; loop while signed result<0"
+    },
+    {
+      "function": "00becb20",
+      "address": "00becc7b",
+      "native": "00beca40",
+      "contract": "reset before hiding unless already reset; RET0"
+    },
+    {
+      "function": "00becb20",
+      "address": "00becc9b",
+      "native": "backend+vtable04",
+      "contract": "current backend and captured profile; float step; RET4"
+    },
+    {
+      "function": "00becb20",
+      "address": "00beccb2",
+      "native": "00ce2344+vtable00",
+      "contract": "captured ShowCursor import; stdcall FALSE; loop while signed result>=0"
+    },
+    {
+      "function": "00beca40",
+      "address": "00beca7c",
+      "native": "00bf6713",
+      "contract": "returning CRT invalid parameter; then reload removal receiver but retain old vector address"
+    },
+    {
+      "function": "00beca40",
+      "address": "00beca8d",
+      "native": "00a90ee0",
+      "contract": "ECX captured backend except diagnostic reload; stack old first mouse; RET4"
+    },
+    {
+      "function": "00beca40",
+      "address": "00beca9a",
+      "native": "00bebf30",
+      "contract": "ECX reloaded backend; stack class1; RET4"
+    },
+    {
+      "function": "00beca40",
+      "address": "00becaaa",
+      "native": "backend+vtable0c",
+      "contract": "ECX reloaded backend, captured current profile slot0C; no stack args"
+    },
+    {
+      "function": "00beca40",
+      "address": "00becab6",
+      "native": "00a91620",
+      "contract": "ECX reloaded backend; class1,fixedslot0; RET8"
+    },
+    {
+      "function": "00beca40",
+      "address": "00becade",
+      "native": "004bec00",
+      "contract": "no native args; replacement null already pushed for later A92840"
+    },
+    {
+      "function": "00beca40",
+      "address": "00becae5",
+      "native": "00a92840",
+      "contract": "ECX getter return; consumes earlier captured null replacement; RET4"
+    },
+    {
+      "function": "00beca40",
+      "address": "00becafb",
+      "native": "00bf6713",
+      "contract": "returning CRT invalid parameter; old vector retained"
+    },
+    {
+      "function": "00beca40",
+      "address": "00becb06",
+      "native": "004bec00",
+      "contract": "no native args; replacement pointer already captured/pushed"
+    },
+    {
+      "function": "00beca40",
+      "address": "00becb0d",
+      "native": "00a92840",
+      "contract": "ECX getter return; previously captured replacement; RET4"
+    },
+    {
+      "function": "00bece70",
+      "address": "00bece7b",
+      "native": "application+vtable10",
+      "contract": "captured current source application identity; required substantive virtual10; no stack args"
+    },
+    {
+      "function": "00bece70",
+      "address": "00bece81",
+      "native": "00becb20",
+      "contract": "ECX original platform; loading0; callee RET4"
+    },
+    {
+      "function": "00beccd0",
+      "address": "00becd2a",
+      "native": "00becb20",
+      "contract": "external verified caller body BECCD0..BECD36; ECX captured platform; loading1; callee RET4"
+    }
+  ],
+  "call_count": 25,
+  "producer_evidence": {
+    "owner": "A93DA0 actual24h +4 action base/+8 signed count, A93C10 30h row allocation",
+    "action": "A93940 +10 binding base/+14 count; A93500 34h stride; actual source providers reused",
+    "binding": "A93750 writes class+4 and cache+C; A93100 preserves34h scalar/padding and two nested headers",
+    "modifier": "A92EE0 copies five DWORDs at14h stride; A91E80 writes class-selected cache+8; required/forbidden headers18/24",
+    "platform": "BECDA0 initializes source-mapped +41 focus,+48 application; existing canonical Win32PlatformState borrowed",
+    "online": "existing PlatformManagerFlags/system_ui_visible source owner; no raw+3E8 layout invented"
+  },
+  "boundaries": [
+    "External004BA6D0 remains required and unleased by this packet; no typed groups substitute",
+    "Existing raw A9A140 is consumed, not duplicated or renamed",
+    "Other workers own actual backend activation/removal/delete/enumeration/update bodies; address-shaped required interfaces retain original arguments/profile captures",
+    "No default online state, private lifetime manager, shadow vectors, fake listener or action owner projection",
+    "Valid addressable native storage and sequential callbacks; malformed ranges/concurrent mutation/fault identity excluded",
+    "No original register/stack/FH3/SEH ABI claim",
+    "No game launch, actual device poll/force, window activation, injected input or real cursor-state changes"
+  ],
+  "verification": {
+    "seed_count": 8,
+    "seed_disk_analysis_equal": true,
+    "build": "scripts/build.ps1 Release Win32 exit0; MSBUILDDISABLENODEREUSE=1; both existing CTests passed",
+    "fixture": {
+      "runner": "local/run_native_input_cursor_probe.ps1",
+      "archive_only": true,
+      "actions": 2,
+      "bindings": 4,
+      "modifiers": 16,
+      "complete_buffers_compared": 12,
+      "resets": 2,
+      "getter_observations": 4,
+      "pumps": 1,
+      "load_updates": 1,
+      "cooperative_boundaries": 1,
+      "show_calls": 2,
+      "hide_calls": 1,
+      "lazy_registration_handler": 1,
+      "application_calls": 1,
+      "real_BD0400_nonempty_cleanup": true,
+      "throwing_remove_stops_sequence": true,
+      "SDK_or_real_ShowCursor_calls": 0
+    },
+    "call_audit": {
+      "direct_checked": 18,
+      "failed": 0,
+      "indirect_manually_checked": 7
+    }
+  },
+  "corrections": [
+    {
+      "was": "typed backend/action consumers cannot accept actual raw owners",
+      "is": "raw input allocations with canonical borrowed source platform/online state and explicit current-publication/profile reads",
+      "evidence": "BEC A40 five backend loads; A92840 raw30h/34h/14h producer layouts; BECB20 exact assembly"
+    },
+    {
+      "was": "Existing native_keyboard_mouse cooperate reads captured table slot before reloading receiver after BEC230",
+      "is": "Native A9A15C reloads receiver before A9A163 slot load; consumer contract requires that order; primary notified to repair shared provider",
+      "evidence": "A9A14E captures old table; A9A157 BEC230; A9A15C MOV EDX,[ESI+20C]; A9A163 MOV EAX,[EDI+34]; A9A167 CALL EAX. Provider external to this packet; own fixture does not execute SDK calls."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "build\\win32\\Release\\bsp_core.lib",
+      "sha256": "2e09c7631ec133667ea4a68e3da075571b8e95909761679387b3766dd70a9327"
+    },
+    {
+      "path": "local\\native_input_cursor_final_build.log",
+      "sha256": "d623cb608c53d1e7c9e526e1dddb9057068ceef2c646e86f9e502a07446c55f2"
+    },
+    {
+      "path": "local\\native_input_cursor_final_probe.log",
+      "sha256": "ae7df49f4cb541ea72c39ce75082b317659ac1474903ee9b24c3a8caa4734c41"
+    },
+    {
+      "path": "local\\native_input_cursor_call_audit.log",
+      "sha256": "2fd6027a0d0e4355f583c94ffc78b66bb46ae5afd0cf5819e82f045845bbda7a"
+    }
+  ],
+  "metadata_changes": {
+    "new_raw_fragments": 4,
+    "new_function_names": 0,
+    "ghidra_writes": 0,
+    "ledger_tool_sort_only_unchanged_rows": [
+      "00a93f90 update_native_constant_force_request_00a93f90",
+      "00a94510 update_native_alternating_force_request_00a94510"
+    ]
+  }
+}
