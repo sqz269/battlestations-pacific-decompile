@@ -1,0 +1,260 @@
+{
+  "packet": "orch3_cone_definition_an",
+  "status": "complete_reconstruction_strict_compiled_native_byte_fixture_tested",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "worker_ghidra_mutations": false,
+  "routines": [
+    {
+      "address": "00b03970",
+      "end_inclusive": "00b039e0",
+      "coverage": "complete",
+      "name": "BSP_NativeParticleConeDefinition_AllocateRecord",
+      "native_prototype": "void* __thiscall(void* definition, NativeNodeStorage* model, float time); RET8",
+      "last_instruction": "00b039de RET8 length3"
+    },
+    {
+      "address": "00b03b60",
+      "end_inclusive": "00b03ebe",
+      "coverage": "complete",
+      "name": "BSP_NativeParticleConeDefinition_GenerateVectors",
+      "native_prototype": "void __thiscall(void* definition, const void* record, float* position, float* velocity); RET0C",
+      "last_instruction": "00b03ebc RET0C length3"
+    },
+    {
+      "address": "00b03ac0",
+      "end_inclusive": "00b03b38",
+      "coverage": "complete",
+      "name": "BSP_NativeParticleConeDefinition_GenerateChild",
+      "native_prototype": "void __thiscall(void* definition, const void* record, float* position, float* velocity, void* matrix); RET10",
+      "last_instruction": "00b03b36 RET10 length3"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00b0398e",
+      "native": "00bf681b",
+      "function": "00b03970"
+    },
+    {
+      "address": "00b039b6",
+      "native": "00afe0a0",
+      "function": "00b03970"
+    },
+    {
+      "address": "00b03aeb",
+      "native": "004134f0",
+      "function": "00b03ac0"
+    },
+    {
+      "address": "00b03b05",
+      "native": "00b6db60",
+      "function": "00b03ac0"
+    },
+    {
+      "address": "00b03b0f",
+      "native": "004134f0",
+      "function": "00b03ac0"
+    },
+    {
+      "address": "00b03b20",
+      "native": "00b6db70",
+      "function": "00b03ac0"
+    },
+    {
+      "address": "00b03b30",
+      "native": "004134f0",
+      "function": "00b03ac0"
+    },
+    {
+      "address": "00b03bc7",
+      "native": "00affa70",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03bce",
+      "native": "00affae0",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03be7",
+      "native": "00bd2f40",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03c0c",
+      "native": "00bd2f40",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03ca2",
+      "native": "00b6db60",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03cb1",
+      "native": "00b6db70",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03cc8",
+      "native": "0042d0d0",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03d36",
+      "native": "00affa70",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03d3d",
+      "native": "00affae0",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03d70",
+      "native": "00affa70",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03d77",
+      "native": "00affae0",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03e20",
+      "native": "00affa70",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03e27",
+      "native": "00affae0",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03e5c",
+      "native": "00affa70",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00b03e63",
+      "native": "00affae0",
+      "function": "00b03b60"
+    },
+    {
+      "address": "00cbb674",
+      "native": "00bf65ac",
+      "function": "00cbb670",
+      "contract": "same original allocation domain cleanup; POP ECX at CBB679"
+    },
+    {
+      "address": "00b03ad5",
+      "native": "00d5debc+vtable0c",
+      "function": "00b03ac0",
+      "contract": "capture at B03AC6; stack(record,position,velocity), RET0C"
+    },
+    {
+      "address": "00af6e6c",
+      "native": "00d5debc+vtable08",
+      "function": "00af6dd0",
+      "contract": "captured current definition; stack(model,time), RET8"
+    },
+    {
+      "address": "00afdb0d",
+      "native": "00d5debc+vtable0c",
+      "function": "00afdaf0",
+      "contract": "current recordA0 definition; stack(record,position,velocity), RET0C"
+    },
+    {
+      "address": "00afdc12",
+      "native": "00d5debc+vtable10",
+      "function": "00afdbf0",
+      "contract": "current recordA0 definition; stack(record,position,velocity,matrix), RET10"
+    }
+  ],
+  "byte_evidence": [
+    {
+      "address": "00b03970",
+      "end_inclusive": "00b039e0",
+      "length": 113,
+      "sha256": "e4ce9dc239ae1b847bdac921ee5b413e3795f8ae646ae80dcddf681d042be646",
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b03ac0",
+      "end_inclusive": "00b03b38",
+      "length": 121,
+      "sha256": "a7336408be4bd68fdbd1b8f2f466ec1381aef0a3d050f13b1cec9a782f82ad8a",
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b03b60",
+      "end_inclusive": "00b03ebe",
+      "length": 863,
+      "sha256": "84cd0ee65fd28153804259d555412446bdb7e45ddac3faf2167d860fb4df8560",
+      "live_equals_disk": true
+    }
+  ],
+  "static_xrefs": {
+    "00b03970": [
+      "00d5dec4 DATA"
+    ],
+    "00b03b60": [
+      "00d5dec8 DATA"
+    ],
+    "00b03ac0": [
+      "00d5decc DATA"
+    ]
+  },
+  "corrections": [
+    {
+      "was": "B03970 decompile suggests three explicit parameters",
+      "is": "two native stack words: model,time; definition in ECX",
+      "evidence": "B039A6..B039B6 setup and B039CA/B039DE RET8"
+    },
+    {
+      "was": "B03AC0 undefined at packet start",
+      "is": "complete 121-byte entry through B03B38; primary defined after address lease handoff",
+      "evidence": "live/disk bytes and B03B36 RET10 length3"
+    },
+    {
+      "was": "CBB670 live body ends CBB678 at BF65AC call",
+      "is": "raw function continues CBB679 POP ECX; CBB67A RET; ancillary flow gap remains for primary",
+      "evidence": "DF3748 EH unwind row and raw CBB670..CBB67A"
+    }
+  ],
+  "dependencies": {
+    "canonical_random": "NativeParticleUnitRandomAccess and native_particle_unit_random_00bd2f40 from sphere packet; same RandomThreads",
+    "canonical_dispatch": "NativeParticleEmissionSpawnAccess::definition_virtual0c; already-captured target",
+    "common_constructor": "construct_native_particle_record_00afe0a0 primary packet; borrowed current one",
+    "real_crt": [
+      "00bf681b cdecl allocation/throw/new-handler domain",
+      "00bf65ac cdecl original free/heap/error domain"
+    ]
+  },
+  "verification": {
+    "report_call_verifier": "PASS 23 direct call rows, 0 failures; 4 indirect rows documented but skipped by checker",
+    "strict_compile": "PASS MSVC Win32 /W4 /WX /fp:strict",
+    "seed_verification": "PASS 8 configured byte seeds",
+    "native_fixture": "PASS 7 scenarios; full storage, x87/MXCSR status and next canonical random draw identical",
+    "fixture_path": "C:/Users/sqz269/bsp-an-cone/cone_probe.cpp",
+    "runner_path": "C:/Users/sqz269/bsp-an-cone/probe.cmd",
+    "byte_generator_path": "C:/Users/sqz269/bsp-an-cone/native_data.py",
+    "manifest": "/MANIFEST:EMBED",
+    "full_cmake_build": "primary integration responsibility",
+    "game_validated": false,
+    "allocation_unwind_executed": false,
+    "permanent_tests_added": false
+  },
+  "limits": [
+    "New C++ borrowed access ABI, not drop-in binary compatibility",
+    "Native reference calls same shared reconstructed dependencies; those are outside differential claim",
+    "Allocator/EH path compiled and inspected only",
+    "No exhaustive NaN/control-word/callback-mutation or game runtime validation"
+  ],
+  "tool_problems": [
+    "initial B03AC0 export failed because no function existed; primary repaired after handoff",
+    "some rg globs were invalid PowerShell path arguments; replaced by explicit file paths or -g filters",
+    "initial scratch fixture /WX rejected alignment padding and unlike-pointer ternary; corrected scratch only before passing execution"
+  ]
+}
