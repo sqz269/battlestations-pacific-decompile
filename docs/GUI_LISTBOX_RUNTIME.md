@@ -106,3 +106,7 @@ tails, and the actual native derived destructor/copy/pool paths.
 ## Correction from docs/ORCH5_MENU_SELECTION_ROW_CONTROL_BATCH.md
 
 The later selection/row-control batch implements menu current08 and actual vehicle unlock, canonical listener/layout bindings, Listbox row predicate/state/current60, null-position D8 append and existing native table64/70 profiles. BA90 retains an explicit visited-prefix callback domain. Full Listbox frame/properties/teardown, non-null insertion and complete menu/resource providers remain open. Earlier validation remains pinned to its original commit; see the new batch report for current scope and integrated validation.
+
+## Correction from docs/GUI_LISTBOX_NAVIGATION.md
+
+A9C540 consumes row, paging low byte and depth; its second parameter is not a selected flag. E230 produces the separate borrowed14C list and D870 rebuilds the actual FC window with live callback reloads. Both lists retain row identity, and14C borrowers must remain alive until reset. Current40 selector0 handling, directional84, non-null insertion and native teardown remain open.

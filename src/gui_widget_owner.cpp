@@ -172,6 +172,15 @@ std::int32_t GuiWidgetTypeImplementation::type5c(GuiWidgetOwner& owner) {
         throw std::logic_error("current GUI type5C profile is not established");
     return owner.layout().transform.type_id;
 }
+void GuiWidgetTypeImplementation::set_size58(GuiWidgetOwner& owner, const GuiWidgetSize& size) {
+    // Verified Group D5CB80, Screen D5BE38 and Listbox D5BBF8 current58.
+    // Section has its own ABE670; unsupported profiles must not use this base.
+    const auto type = owner.layout().type;
+    if (type != GuiWidgetType::Group && type != GuiWidgetType::Screen &&
+        type != GuiWidgetType::Listbox)
+        throw std::logic_error("Current GUI size58 profile has no established implementation");
+    owner.base_set_size58_00aa7970(size);
+}
 void GuiWidgetOwner::refresh_clip70() {
     implementation().refresh_clip70(*this);
 }
@@ -263,6 +272,19 @@ void GuiWidgetOwner::set_position_00aa7dc0(const GuiWidgetPoint& position) {
     layout_.transform.position = position;
     recompose_00aa7220();
     refresh_bounds_00aa70e0();
+}
+void GuiWidgetOwner::base_set_size58_00aa7970(const GuiWidgetSize& size) {
+    const auto* input = &size;
+    auto* output = &layout_.transform.size;
+    __asm {
+        mov eax, input
+        mov edx, output
+        fld dword ptr [eax]
+        fstp dword ptr [edx]
+        fld dword ptr [eax + 4]
+        fstp dword ptr [edx + 4]
+    }
+    recompose_00aa7220(); // Native base58 does not refresh bounds.
 }
 void GuiWidgetOwner::release_scene_nodes_00aa8320() {
     require_no_active_owned_operation();
@@ -513,6 +535,12 @@ void GuiWidgetOwnerRuntime::stamp_visibility(NativeNodeBinding& binding, float f
             stamp_visibility(environment_.native.resolve_node(*child), child_factor, recurse);
         }
     }
+}
+void GuiWidgetOwnerRuntime::set_node_visibility_factor_00b6da70(
+    NativeNodeBinding& binding, float factor, bool recurse) {
+    if (&node(identity(&binding)) != &binding)
+        throw std::logic_error("GUI visibility factor requires the same actual widget node");
+    stamp_visibility(binding, factor, recurse);
 }
 void GuiWidgetOwnerRuntime::propagate_visibility(GuiWidgetOwner& retained,
     const GuiWidgetVisibilityArgs& args) {
