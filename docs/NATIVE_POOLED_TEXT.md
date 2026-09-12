@@ -115,3 +115,14 @@ and count-copy are host boundaries; only the exercised ASCII comparison is
 differentially established. Native SEH handlers/stack unwinding and allocation
 failure are not covered. C++ unwinding releases a constructed temporary through
 the canonical storage interface; it does not claim native SEH compatibility.
+
+## AO combined integration
+
+The combined strict Win32 build and both seeded CTests passed. Four focused
+original-byte probes were linked only to the current combined production
+libraries. The batch contains45 new reconstructed bodies and the directB04C80
+state call,46 native signatures and8 analyzed cleanup/static bodies. All54
+names/comments were saved and read back, preserving prior comments; exports
+were refreshed. Five reports verify484 direct call/tail rows with no failures.
+The accompanying report records per-probe coverage and exact hashes. Native
+FH3, full application composition, concurrency and gameplay are unvalidated.

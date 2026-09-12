@@ -62,3 +62,14 @@ The fixture uses one actual caller-owned parameter pool initialized through the 
 Only unused endpoint tangent scratch and coefficients not yet produced are omitted from key comparisons. Emitted runtime segment payloads are compared completely. Original throwing FH3 unwind, exceptional CRT sqrt handling, byte-count overflow, extreme signed arithmetic, invalid null-token faults, native drop-in ABI compatibility and gameplay are not claimed. Full repository build and any annotation/ledger integration belong to the primary integrator.
 
 Scratch is preserved under `C:/Users/sqz269/bsp-ao-parameters`: `make_fixture.py`, raw live byte captures, `byte_evidence.json`, `call_evidence.json`, `original_bytes.hpp`, `bind_original.inl`, `parameter_probe.cpp`, `probe.cmd`, `fixture.log`, `fixture_result.json`, `generate_kernels.py`, and `finalize_report.py`. `probe.cmd` compiles this source and the pooled-text sibling source against the current primary `build/win32/Release/bsp_core.lib`, `bsp_lua511.lib`, `bsp_zlib121.lib`, plus `user32`, `ws2_32`, and `advapi32`. The exact library hash is recorded in the report. Probe executable names are neutral and link with `/MANIFEST:EMBED`.
+
+## AO combined integration
+
+The combined strict Win32 build and both seeded CTests passed. Four focused
+original-byte probes were linked only to the current combined production
+libraries. The batch contains45 new reconstructed bodies and the directB04C80
+state call,46 native signatures and8 analyzed cleanup/static bodies. All54
+names/comments were saved and read back, preserving prior comments; exports
+were refreshed. Five reports verify484 direct call/tail rows with no failures.
+The accompanying report records per-probe coverage and exact hashes. Native
+FH3, full application composition, concurrency and gameplay are unvalidated.

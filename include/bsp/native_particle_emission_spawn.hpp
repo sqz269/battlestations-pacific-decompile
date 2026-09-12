@@ -3,6 +3,7 @@
 #include <cstdint>
 
 namespace bsp {
+struct NativeParticleEmissionStateAccess;
 struct NativeParticleEmissionSpawnAccess {
     // Actual CRT floor, including current0109EEA0/MXCSR/x87 dispatch and
     // exceptional-input/control-word behavior. Cdecl(double), ST0 result.
@@ -17,13 +18,10 @@ struct NativeParticleEmissionSpawnAccess {
     void (__fastcall* definition_virtual0c)(void* actual_definition,
         std::uint32_t captured_target, const void* actual_record,
         float* actual_position, float* actual_direction);
-    // Complete B0CA40, including definition64 virtual18, actual point-light
-    // positioning/clamp and locked B7B090 registration. ECX6Ch state, ignored
-    // EDX, six stack words, RET18. No successful initializer fallback exists.
-    void (__fastcall* initialize_state_00b0ca40)(void* actual_state, void* unused_edx,
-        void* actual_definition, float time, void* actual_emitter,
-        const float* actual_position, const float* actual_direction,
-        const void* actual_record);
+    // Borrow complete B0CA40 bindings: actual particle virtual18, point-light
+    // positioning/population and canonical shared lock. B04C80 calls the
+    // concrete initializer directly, retaining its six stack words/RET18.
+    const NativeParticleEmissionStateAccess* state;
 };
 
 // Complete B04C80..B04DE6 through the required actual bindings above. Native

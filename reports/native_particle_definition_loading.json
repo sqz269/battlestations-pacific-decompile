@@ -2050,7 +2050,9 @@
       },
       {
         "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\generate_probe.py",
-        "sha256": "f9a123312a5d5752ba09e4329e9e2eb5818c79195190279d7c803c8b4856c485"
+        "sha256": "ae632a31d9bfd2ddbc9991a4d8c72387fab6d4a171bd5c122258bfe9e1b0c036",
+        "original_worker_sha256": "f9a123312a5d5752ba09e4329e9e2eb5818c79195190279d7c803c8b4856c485",
+        "original_preimage": "C:/Users/sqz269/bsp-ao-definition-replay-debug/original-generate_probe.py"
       },
       {
         "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\report.py",
@@ -2062,7 +2064,9 @@
       },
       {
         "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\probe.cpp",
-        "sha256": "6540037c4672f0d7e4383e20168ac7ecf241be3c35597f471539ce5e9d99693a"
+        "sha256": "01fe7404a896ff634fd05e114351533b0146a66bcdd6025808217935a11809b6",
+        "original_worker_sha256": "6540037c4672f0d7e4383e20168ac7ecf241be3c35597f471539ce5e9d99693a",
+        "original_preimage": "C:/Users/sqz269/bsp-ao-definition-replay-debug/original-probe.cpp"
       },
       {
         "path": "C:\\Users\\sqz269\\bsp-ao-definition-loading\\probe.cmd",
@@ -2183,5 +2187,988 @@
       "native": "00af9fb0+vtable14",
       "contract": "Concrete AF9FB0 reused; owner parser dispatcher must invoke these actual shape parsers for current known targets or a required foreign application target; no shadow table/retained object."
     }
-  ]
+  ],
+  "integration_ao": {
+    "strict_win32_build_and_two_seeded_ctests": true,
+    "combined_library_sha256": "0eb8e2a94a7fe7a48b15b36f472d7ed33813be49fdc55058a44525a0416a273a",
+    "current_library_fixture": {
+      "label": "definition-loading",
+      "exit_code": 0,
+      "log": "local\\ao-definition-loading-current-replay.log",
+      "library_sha256": "0eb8e2a94a7fe7a48b15b36f472d7ed33813be49fdc55058a44525a0416a273a",
+      "source_sha256": "01fe7404a896ff634fd05e114351533b0146a66bcdd6025808217935a11809b6",
+      "runner": "C:\\Users\\sqz269\\bsp-orch3-ao\\definition-loading-current.cmd",
+      "executable_sha256": "26d994b29e413870c893f83b35911c4264630a5bc38ad34eda9e09316f825872"
+    },
+    "source_hashes": {
+      "include/bsp/native_particle_definition_loading.hpp": "7d2f54b361dbf7b242a7d6f11bab940eec6175da99f9f9bd610767888e27cab1",
+      "src/native_particle_definition_loading.cpp": "774a868ae048d80cc8f59df411c1726b503c66fd1ca7434d704043c97c770b74"
+    },
+    "normalized_entries": [
+      {
+        "address": "00b03ec0",
+        "end_exclusive": "00b04824",
+        "end_inclusive": "00b04823",
+        "length": 2404,
+        "sha256": "18d11da33c20bfd3e52bff630d92c4f8a107c891e3abe613119ecba60a1adc67",
+        "live_disk_equal": true,
+        "cpp_symbol": "load_native_particle_cone_definition_00b03ec0",
+        "ghidra_name": "BSP_ConeEmissionDefinition_Load",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "bool __thiscall BSP_ConeEmissionDefinition_Load(void *text)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00b04821",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00b02fd0",
+        "end_exclusive": "00b03895",
+        "end_inclusive": "00b03894",
+        "length": 2245,
+        "sha256": "302cfa113269cdd3b09441dc6f0782694f3d1bf71ffa6412a524369d6a3ada80",
+        "live_disk_equal": true,
+        "cpp_symbol": "load_native_particle_sphere_definition_00b02fd0",
+        "ghidra_name": "BSP_SphereEmissionDefinition_Load",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "bool __thiscall BSP_SphereEmissionDefinition_Load(void *text)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00b03892",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00b02210",
+        "end_exclusive": "00b02b25",
+        "end_inclusive": "00b02b24",
+        "length": 2325,
+        "sha256": "9c8530f97e4767338706215e81f70802542faa27075d43d264b8c44a300b8e83",
+        "live_disk_equal": true,
+        "cpp_symbol": "load_native_particle_smartarea_definition_00b02210",
+        "ghidra_name": "BSP_SmartAreaEmissionDefinition_Load",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "bool __thiscall BSP_SmartAreaEmissionDefinition_Load(void *text)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00b02b22",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00af9d00",
+        "end_exclusive": "00af9e8f",
+        "end_inclusive": "00af9e8e",
+        "length": 399,
+        "sha256": "b4b6f66b530baaf60175ac0445312105150dce28c5fee6456ab07d52a184c7cc",
+        "live_disk_equal": true,
+        "cpp_symbol": "load_native_particle_base_parameter_00af9d00",
+        "ghidra_name": "BSP_ParticleDefinition_LoadBaseParameter",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "bool __thiscall BSP_ParticleDefinition_LoadBaseParameter(void *name, void *builder, float scalar)",
+        "original_abi": "ECX actual definition; stack pooled-name header, actual10h builder, float scalar; RET0C/AL boolean",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00af9e8c",
+          "length": 3,
+          "bytes": "c20c00",
+          "text": "ret 0xc"
+        }
+      },
+      {
+        "address": "00af9f00",
+        "end_exclusive": "00af9f1f",
+        "end_inclusive": "00af9f1e",
+        "length": 31,
+        "sha256": "ce0ff7d460c2477c3519ba5ee0c2250d5097f76dc1a2e3a98e5c067a814ca26a",
+        "live_disk_equal": true,
+        "cpp_symbol": "publish_native_particle_emitter_member_00af9f00",
+        "ghidra_name": "BSP_ParticleDefinition_AppendEmitter",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleDefinition_AppendEmitter(void *child)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; no defined return value",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00af9f1c",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00af9f20",
+        "end_exclusive": "00af9f42",
+        "end_inclusive": "00af9f41",
+        "length": 34,
+        "sha256": "16b5ce441a9569d25fc45661f159bc378258f4af8157d6eeec732d6fc4b4c136",
+        "live_disk_equal": true,
+        "cpp_symbol": "publish_native_particle_particle_member_00af9f20",
+        "ghidra_name": "BSP_ParticleDefinition_AppendParticle",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_ParticleDefinition_AppendParticle(void *child)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; EAX current published address word",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00af9f3f",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00afa650",
+        "end_exclusive": "00afa9aa",
+        "end_inclusive": "00afa9a9",
+        "length": 858,
+        "sha256": "f588d7bdd8400ec942862742938fa707eb0ea5bfd3ffdf294a7d246201fd8247",
+        "live_disk_equal": true,
+        "cpp_symbol": "load_native_particle_definition_flag_00afa650",
+        "ghidra_name": "BSP_ParticleDefinition_LoadFlag",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "bool __thiscall BSP_ParticleDefinition_LoadFlag(void *line)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; AL boolean, high EAX unspecified",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00afa9a7",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00afa370",
+        "end_exclusive": "00afa4dd",
+        "end_inclusive": "00afa4dc",
+        "length": 365,
+        "sha256": "7559368150f9f892cf1e353ffd67ab151586eb108a49f9645326b4bbd856475f",
+        "live_disk_equal": true,
+        "cpp_symbol": "set_native_particle_part_emission_type_00afa370",
+        "ghidra_name": "BSP_ParticleDefinition_SetPartEmissionType",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleDefinition_SetPartEmissionType(char *text)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; no defined return value",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00afa4da",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00afa4e0",
+        "end_exclusive": "00afa64d",
+        "end_inclusive": "00afa64c",
+        "length": 365,
+        "sha256": "82d5b1e6731519545820dd81984d00d30a7aacd6582c60fdc620a32a8c89d783",
+        "live_disk_equal": true,
+        "cpp_symbol": "set_native_particle_emit_emission_type_00afa4e0",
+        "ghidra_name": "BSP_ParticleDefinition_SetEmitEmissionType",
+        "source": "src/native_particle_definition_loading.cpp",
+        "header": "include/bsp/native_particle_definition_loading.hpp",
+        "coverage": "complete native body through canonical reconstructed dependencies and two required actual application services",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleDefinition_SetEmitEmissionType(char *text)",
+        "original_abi": "ECX actual definition; one stack argument; RET4; no defined return value",
+        "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated.",
+        "last_instruction": {
+          "address": "00afa64a",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      }
+    ],
+    "native_signatures_readback_verified": true,
+    "saved_names_and_evidence": [
+      {
+        "address": "00af9d00",
+        "before": {
+          "address": "00af9d00",
+          "function_name": "FUN_00af9d00"
+        },
+        "after": {
+          "address": "00af9d00",
+          "name": "BSP_ParticleDefinition_LoadBaseParameter",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af9f00",
+        "before": {
+          "address": "00af9f00",
+          "function_name": "FUN_00af9f00"
+        },
+        "after": {
+          "address": "00af9f00",
+          "name": "BSP_ParticleDefinition_AppendEmitter",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00af9f20",
+        "before": {
+          "address": "00af9f20",
+          "function_name": "FUN_00af9f20"
+        },
+        "after": {
+          "address": "00af9f20",
+          "name": "BSP_ParticleDefinition_AppendParticle",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afa370",
+        "before": {
+          "address": "00afa370",
+          "function_name": "FUN_00afa370"
+        },
+        "after": {
+          "address": "00afa370",
+          "name": "BSP_ParticleDefinition_SetPartEmissionType",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afa4e0",
+        "before": {
+          "address": "00afa4e0",
+          "function_name": "FUN_00afa4e0"
+        },
+        "after": {
+          "address": "00afa4e0",
+          "name": "BSP_ParticleDefinition_SetEmitEmissionType",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afa650",
+        "before": {
+          "address": "00afa650",
+          "function_name": "FUN_00afa650"
+        },
+        "after": {
+          "address": "00afa650",
+          "name": "BSP_ParticleDefinition_LoadFlag",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b02210",
+        "before": {
+          "address": "00b02210",
+          "function_name": "FUN_00b02210"
+        },
+        "after": {
+          "address": "00b02210",
+          "name": "BSP_SmartAreaEmissionDefinition_Load",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b02fd0",
+        "before": {
+          "address": "00b02fd0",
+          "function_name": "FUN_00b02fd0"
+        },
+        "after": {
+          "address": "00b02fd0",
+          "name": "BSP_SphereEmissionDefinition_Load",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b03ec0",
+        "before": {
+          "address": "00b03ec0",
+          "function_name": "FUN_00b03ec0"
+        },
+        "after": {
+          "address": "00b03ec0",
+          "name": "BSP_ConeEmissionDefinition_Load",
+          "evidence": "Descriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+        },
+        "status": "applied"
+      }
+    ],
+    "previous_comments": {
+      "00b02210": {
+        "address": "00b02210",
+        "function_name": "FUN_00b02210"
+      },
+      "00af9f20": {
+        "address": "00af9f20",
+        "function_name": "FUN_00af9f20"
+      },
+      "00af9f00": {
+        "address": "00af9f00",
+        "function_name": "FUN_00af9f00"
+      },
+      "00afa370": {
+        "address": "00afa370",
+        "function_name": "FUN_00afa370"
+      },
+      "00afa4e0": {
+        "address": "00afa4e0",
+        "function_name": "FUN_00afa4e0"
+      },
+      "00b02fd0": {
+        "address": "00b02fd0",
+        "function_name": "FUN_00b02fd0"
+      },
+      "00afa650": {
+        "address": "00afa650",
+        "function_name": "FUN_00afa650"
+      },
+      "00b03ec0": {
+        "address": "00b03ec0",
+        "function_name": "FUN_00b03ec0"
+      },
+      "00af9d00": {
+        "address": "00af9d00",
+        "function_name": "FUN_00af9d00"
+      }
+    },
+    "current_comments": {
+      "00b02210": {
+        "address": "00b02210",
+        "function_name": "BSP_SmartAreaEmissionDefinition_Load",
+        "comment": "[BSP reconstruction 00b02210]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00af9f20": {
+        "address": "00af9f20",
+        "function_name": "BSP_ParticleDefinition_AppendParticle",
+        "comment": "[BSP reconstruction 00af9f20]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00af9f00": {
+        "address": "00af9f00",
+        "function_name": "BSP_ParticleDefinition_AppendEmitter",
+        "comment": "[BSP reconstruction 00af9f00]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00afa370": {
+        "address": "00afa370",
+        "function_name": "BSP_ParticleDefinition_SetPartEmissionType",
+        "comment": "[BSP reconstruction 00afa370]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00afa4e0": {
+        "address": "00afa4e0",
+        "function_name": "BSP_ParticleDefinition_SetEmitEmissionType",
+        "comment": "[BSP reconstruction 00afa4e0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00b02fd0": {
+        "address": "00b02fd0",
+        "function_name": "BSP_SphereEmissionDefinition_Load",
+        "comment": "[BSP reconstruction 00b02fd0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00afa650": {
+        "address": "00afa650",
+        "function_name": "BSP_ParticleDefinition_LoadFlag",
+        "comment": "[BSP reconstruction 00afa650]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00b03ec0": {
+        "address": "00b03ec0",
+        "function_name": "BSP_ConeEmissionDefinition_Load",
+        "comment": "[BSP reconstruction 00b03ec0]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      },
+      "00af9d00": {
+        "address": "00af9d00",
+        "function_name": "BSP_ParticleDefinition_LoadBaseParameter",
+        "comment": "[BSP reconstruction 00af9d00]\nDescriptive hypotheses, not recovered symbols. Full live/installed spans and terminal instructions verified; original normal-path slices versus concrete C++ fixture. Shapes consume actual four-byte pooled line headers, actual TextBuffer and actual parameter pool. Current scalar double, fields/counts and parent members preserved. Native EH and application particle/foreign parser dispatch remain unvalidated."
+      }
+    },
+    "game_validated": false,
+    "original_fh3_abi_validated": false,
+    "independent_review": "Parameter worker verified builder/parse/convert calls, ignored parser failure result, cleanup order,7base curve offsets and shape fields, currentD7A358 load after conversion and curve multiplier before pointer publication; no concrete mismatch.",
+    "worker_fixture_exit_correction": "Original worker fixture printed all matching observations but exited1; the shell subsequently printed its log and masked that status. Primary current-library replay caught it. MSVC19.51.36244.0/O2 main containing an inlined asm helper omitted implicit return0; minimal reproduction and executable disassembly confirmed it. Scratch probe now explicitly returns0, and corrected process exit is checked. No production-code change was required.",
+    "fixture_exit_diagnosis": "C:/Users/sqz269/bsp-ao-definition-replay-debug/DIAGNOSIS.md",
+    "function_repairs": {
+      "ao-loader-flow.json": {
+        "repairs": [
+          {
+            "function": "00b03ec0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T18:59:56Z",
+            "decompile_lines_before": 436,
+            "gaps": [
+              {
+                "site": "00b041cb",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b041d0",
+                "gap_end_exclusive": "00b04203",
+                "bytes": 51,
+                "after_call": true,
+                "sha256": "7e1dbdfea776d9aa685852c398ff5566e2b7cc88ff5a71e7cb942233469f9797"
+              },
+              {
+                "site": "00b04239",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0423e",
+                "gap_end_exclusive": "00b04289",
+                "bytes": 75,
+                "after_call": true,
+                "sha256": "8dad3cbbdf9c7635e31a00c2481451a2ae7b1eb0884596f5a85b5d8c4577e1d9"
+              },
+              {
+                "site": "00b042f7",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b042fc",
+                "gap_end_exclusive": "00b04321",
+                "bytes": 37,
+                "after_call": true,
+                "sha256": "84a732692d4d7fe136956b7661e922f560e2c870d38df5d89812076fbc8cb334"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b041cb",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b041d0",
+                  "gap_end_exclusive": "00b04203",
+                  "bytes": 51,
+                  "after_call": true,
+                  "sha256": "7e1dbdfea776d9aa685852c398ff5566e2b7cc88ff5a71e7cb942233469f9797"
+                },
+                "clear": "Success: Cleared flow override at 00b041cb (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 51 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b04239",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0423e",
+                  "gap_end_exclusive": "00b04289",
+                  "bytes": 75,
+                  "after_call": true,
+                  "sha256": "8dad3cbbdf9c7635e31a00c2481451a2ae7b1eb0884596f5a85b5d8c4577e1d9"
+                },
+                "clear": "Success: Cleared flow override at 00b04239 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 75 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b042f7",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b042fc",
+                  "gap_end_exclusive": "00b04321",
+                  "bytes": 37,
+                  "after_call": true,
+                  "sha256": "84a732692d4d7fe136956b7661e922f560e2c870d38df5d89812076fbc8cb334"
+                },
+                "clear": "Success: Cleared flow override at 00b042f7 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 37 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00b041cb",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b041cb (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00b04239",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b04239 (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00b042f7",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b042f7 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00b04824",
+            "explicit_body_sha256": "18d11da33c20bfd3e52bff630d92c4f8a107c891e3abe613119ecba60a1adc67",
+            "body_before": "Function: FUN_00b03ec0 at 00b03ec0\nSignature: undefined FUN_00b03ec0(void)\nEntry: 00b03ec0\nBody: 00b03ec0 - 00b04823",
+            "decompile_lines_after": 476,
+            "gaps_remaining": 0,
+            "body_after": "Function: FUN_00b03ec0 at 00b03ec0\nSignature: undefined FUN_00b03ec0(void)\nEntry: 00b03ec0\nBody: 00b03ec0 - 00b04823",
+            "stored_body_tail_complete": true
+          },
+          {
+            "function": "00b02fd0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T19:00:10Z",
+            "decompile_lines_before": 410,
+            "gaps": [
+              {
+                "site": "00b032db",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b032e0",
+                "gap_end_exclusive": "00b03313",
+                "bytes": 51,
+                "after_call": true,
+                "sha256": "7e1dbdfea776d9aa685852c398ff5566e2b7cc88ff5a71e7cb942233469f9797"
+              },
+              {
+                "site": "00b03349",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0334e",
+                "gap_end_exclusive": "00b03399",
+                "bytes": 75,
+                "after_call": true,
+                "sha256": "e6c88361500b418328b6dcf3a0e5ea20d4509bd979f9e69a853be0bf285b9213"
+              },
+              {
+                "site": "00b033cf",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b033d4",
+                "gap_end_exclusive": "00b033f9",
+                "bytes": 37,
+                "after_call": true,
+                "sha256": "af6e8a80a4c85f0b15b189c17ca86b4cb56a717e7a5008f6d534b19cf92748ee"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b032db",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b032e0",
+                  "gap_end_exclusive": "00b03313",
+                  "bytes": 51,
+                  "after_call": true,
+                  "sha256": "7e1dbdfea776d9aa685852c398ff5566e2b7cc88ff5a71e7cb942233469f9797"
+                },
+                "clear": "Success: Cleared flow override at 00b032db (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 51 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b03349",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0334e",
+                  "gap_end_exclusive": "00b03399",
+                  "bytes": 75,
+                  "after_call": true,
+                  "sha256": "e6c88361500b418328b6dcf3a0e5ea20d4509bd979f9e69a853be0bf285b9213"
+                },
+                "clear": "Success: Cleared flow override at 00b03349 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 75 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b033cf",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b033d4",
+                  "gap_end_exclusive": "00b033f9",
+                  "bytes": 37,
+                  "after_call": true,
+                  "sha256": "af6e8a80a4c85f0b15b189c17ca86b4cb56a717e7a5008f6d534b19cf92748ee"
+                },
+                "clear": "Success: Cleared flow override at 00b033cf (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 37 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00b032db",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b032db (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00b03349",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b03349 (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00b033cf",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b033cf (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00b03895",
+            "explicit_body_sha256": "302cfa113269cdd3b09441dc6f0782694f3d1bf71ffa6412a524369d6a3ada80",
+            "body_before": "Function: FUN_00b02fd0 at 00b02fd0\nSignature: undefined FUN_00b02fd0(void)\nEntry: 00b02fd0\nBody: 00b02fd0 - 00b03894",
+            "decompile_lines_after": 453,
+            "gaps_remaining": 0,
+            "body_after": "Function: FUN_00b02fd0 at 00b02fd0\nSignature: undefined FUN_00b02fd0(void)\nEntry: 00b02fd0\nBody: 00b02fd0 - 00b03894",
+            "stored_body_tail_complete": true
+          },
+          {
+            "function": "00b02210",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T19:00:20Z",
+            "decompile_lines_before": 423,
+            "gaps": [
+              {
+                "site": "00b0251b",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b02520",
+                "gap_end_exclusive": "00b02553",
+                "bytes": 51,
+                "after_call": true,
+                "sha256": "7e1dbdfea776d9aa685852c398ff5566e2b7cc88ff5a71e7cb942233469f9797"
+              },
+              {
+                "site": "00b02589",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0258e",
+                "gap_end_exclusive": "00b025d9",
+                "bytes": 75,
+                "after_call": true,
+                "sha256": "5bb6914555e2488fbb6a9b5a8787d351dd50a73902a85032dae9c8838a9f1d94"
+              },
+              {
+                "site": "00b02647",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b0264c",
+                "gap_end_exclusive": "00b02671",
+                "bytes": 37,
+                "after_call": true,
+                "sha256": "8687ba236f53cf3e18de16b8ffe97af449af5bd53d007ae7769bb7c88b3f746b"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00b0251b",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b02520",
+                  "gap_end_exclusive": "00b02553",
+                  "bytes": 51,
+                  "after_call": true,
+                  "sha256": "7e1dbdfea776d9aa685852c398ff5566e2b7cc88ff5a71e7cb942233469f9797"
+                },
+                "clear": "Success: Cleared flow override at 00b0251b (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 51 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b02589",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0258e",
+                  "gap_end_exclusive": "00b025d9",
+                  "bytes": 75,
+                  "after_call": true,
+                  "sha256": "5bb6914555e2488fbb6a9b5a8787d351dd50a73902a85032dae9c8838a9f1d94"
+                },
+                "clear": "Success: Cleared flow override at 00b02589 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 75 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00b02647",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00b0264c",
+                  "gap_end_exclusive": "00b02671",
+                  "bytes": 37,
+                  "after_call": true,
+                  "sha256": "8687ba236f53cf3e18de16b8ffe97af449af5bd53d007ae7769bb7c88b3f746b"
+                },
+                "clear": "Success: Cleared flow override at 00b02647 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 37 byte(s)"
+              },
+              {
+                "explicit_tail_call": "00b0251b",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b0251b (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00b02589",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b02589 (was: NONE, now: NONE)"
+                }
+              },
+              {
+                "explicit_tail_call": "00b02647",
+                "clear": {
+                  "status": "success",
+                  "message": "Success: Cleared flow override at 00b02647 (was: NONE, now: NONE)"
+                }
+              }
+            ],
+            "explicit_tail_end_exclusive": "00b02b25",
+            "explicit_body_sha256": "9c8530f97e4767338706215e81f70802542faa27075d43d264b8c44a300b8e83",
+            "body_before": "Function: FUN_00b02210 at 00b02210\nSignature: undefined FUN_00b02210(void)\nEntry: 00b02210\nBody: 00b02210 - 00b02b24",
+            "decompile_lines_after": 463,
+            "gaps_remaining": 0,
+            "body_after": "Function: FUN_00b02210 at 00b02210\nSignature: undefined FUN_00b02210(void)\nEntry: 00b02210\nBody: 00b02210 - 00b02b24",
+            "stored_body_tail_complete": true
+          }
+        ]
+      },
+      "ao-loader-definitions.json": {
+        "events": [
+          {
+            "recreate": "00b03ec0",
+            "previous": "Function: FUN_00b03ec0 at 00b03ec0\nSignature: undefined FUN_00b03ec0(void)\nEntry: 00b03ec0\nBody: 00b03ec0 - 00b04823",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00b03ec0"
+            },
+            "result": {
+              "success": true,
+              "address": "00b03ec0",
+              "deleted_function": "FUN_00b03ec0",
+              "body_size": 2238,
+              "message": "Function 'FUN_00b03ec0' deleted at 00b03ec0"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b03ec0",
+              "end_address": "00b04824"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b03ec0",
+              "end_address": "00b04823",
+              "bytes_disassembled": 2404,
+              "message": "Successfully disassembled 2404 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b03ec0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b03ec0",
+              "function_name": "FUN_00b03ec0",
+              "entry_point": "00b03ec0",
+              "body_size": 2401,
+              "message": "Function created successfully at 00b03ec0"
+            }
+          },
+          {
+            "defined": "00b03ec0",
+            "end": "00b04824",
+            "name": null,
+            "after": "Function: FUN_00b03ec0 at 00b03ec0\nSignature: undefined FUN_00b03ec0(void)\nEntry: 00b03ec0\nBody: 00b03ec0 - 00b04823"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "recreate": "00b02fd0",
+            "previous": "Function: FUN_00b02fd0 at 00b02fd0\nSignature: undefined FUN_00b02fd0(void)\nEntry: 00b02fd0\nBody: 00b02fd0 - 00b03894",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00b02fd0"
+            },
+            "result": {
+              "success": true,
+              "address": "00b02fd0",
+              "deleted_function": "FUN_00b02fd0",
+              "body_size": 2082,
+              "message": "Function 'FUN_00b02fd0' deleted at 00b02fd0"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b02fd0",
+              "end_address": "00b03895"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b02fd0",
+              "end_address": "00b03894",
+              "bytes_disassembled": 2245,
+              "message": "Successfully disassembled 2245 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b02fd0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b02fd0",
+              "function_name": "FUN_00b02fd0",
+              "entry_point": "00b02fd0",
+              "body_size": 2245,
+              "message": "Function created successfully at 00b02fd0"
+            }
+          },
+          {
+            "defined": "00b02fd0",
+            "end": "00b03895",
+            "name": null,
+            "after": "Function: FUN_00b02fd0 at 00b02fd0\nSignature: undefined FUN_00b02fd0(void)\nEntry: 00b02fd0\nBody: 00b02fd0 - 00b03894"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "recreate": "00b02210",
+            "previous": "Function: FUN_00b02210 at 00b02210\nSignature: undefined FUN_00b02210(void)\nEntry: 00b02210\nBody: 00b02210 - 00b02b24",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00b02210"
+            },
+            "result": {
+              "success": true,
+              "address": "00b02210",
+              "deleted_function": "FUN_00b02210",
+              "body_size": 2162,
+              "message": "Function 'FUN_00b02210' deleted at 00b02210"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00b02210",
+              "end_address": "00b02b25"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00b02210",
+              "end_address": "00b02b24",
+              "bytes_disassembled": 2325,
+              "message": "Successfully disassembled 2325 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00b02210",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00b02210",
+              "function_name": "FUN_00b02210",
+              "entry_point": "00b02210",
+              "body_size": 2325,
+              "message": "Function created successfully at 00b02210"
+            }
+          },
+          {
+            "defined": "00b02210",
+            "end": "00b02b25",
+            "name": null,
+            "after": "Function: FUN_00b02210 at 00b02210\nSignature: undefined FUN_00b02210(void)\nEntry: 00b02210\nBody: 00b02210 - 00b02b24"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    }
+  }
 }
