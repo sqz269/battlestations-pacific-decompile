@@ -317,3 +317,18 @@ provenance - but their triggers are unresolved.
 - **Was:** message 7Ah senders 00813830 and 009CFBA4
   **Is:** three senders: 0081386D, 009CFC1B and 00760511 inside FUN_007604C0, which sets the message target from DAT_00E188A8+18CCh + idx*4, the local player's own unit slot
   **Evidence:** all four references to the arm vptr 00D03310 are 0081386D, 009CFC1B, 0080F984 (the constructor itself) and 00760511
+
+## Correction from docs/GAMEPLAY_LOOSE_ENDS_2.md (packet cc2_gameplay_loose_ends_2)
+
+- **Was:** [208h] (MT_VEHICLE_UNIT_LAUNCH: (slot, float)) as one unresolved unit virtual
+  **Is:** slot +208h is index 130, one past the end of the class-05 base vtable, so four families put unrelated virtuals there with different signatures; (slot, float) is the ship family's contract only
+  **Evidence:** measured code-pointer runs: class 05 00D1A698 = 204h, plane base 00D05F20 = 20Ch, ship base 00D09678 = 240h, MAirfield 00CF8C08 = 20Ch, MShipyard 00D0B770 = 204h; the five slot-208h load sites 00821F12, 007CCFBC, 00744C0C, 006D293F and 007B9279 sit in four different message handlers
+- **Was:** [220h], [224h] and [238h] as unresolved unit virtuals whose concrete bodies were not resolved
+  **Is:** the three slots exist only on the class-06 ship family; every other unit vtable ends before them. 220h = 008198A0 with MMothership 007583A0; 224h = 008137B0 with MMothership 007583F0; 238h = 008206F0 with MLandingShip 0074A4C0
+  **Evidence:** the measured vtable lengths above, and the three slots' only message call sites (00822122, 00822142, 00821F63) all lying inside BSP_UnitInstance_HandleMessage, body 00821E80-00822393
+- **Was:** 71h-79h: default; the base arms 79h
+  **Is:** 72h MT_AIRBASE_SET_RUNWAYFAILURE, 73h MT_AIRBASE_CLEAR_RUNWAYFAILURE, 74h MT_AIRBASE_SET_HANGARFAILURE and 75h MT_AIRBASE_CLEAR_HANGARFAILURE are not defaults for MMothership (unit+11A4h/+11A5h) or MAirfield (unit+748h/+749h)
+  **Evidence:** the MT_* literal table gives index = 234 - kind against three anchors (6Ah, 79h, 7Ah, all matching the existing doc); 007583AD PUSH 72h, 007583C8 PUSH 74h, 007583FD PUSH 73h, 00758418 PUSH 75h, 006D0D9D PUSH 73h, 006D0DB8 PUSH 75h
+- **Was:** 6Ch MT_SHIP_SET_ENGINEJAMFAILURE producer: unresolved, kind computed
+  **Is:** the kind is a byte immediate inside the dedicated constructor 007619B0, and the producer is FUN_008132C0's "EngineJam" branch
+  **Evidence:** 007619C8 C6 40 10 6C MOV byte ptr [EAX+10h],6Ch; 00813519 PUSH 0CF6124h ("EngineJam"), 00813530 CALL 007619B0, 00813546 CALL 0077C2A0 with (unit, msg, 7, 0); the sibling kinds are PUSH 6Ah at 008133D5 and PUSH 6Bh at 008134C4 in the same function
