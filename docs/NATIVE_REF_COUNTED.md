@@ -1,6 +1,6 @@
 # Raw reference-counted deletion entries
 
-Addresses: 00BD30E0, 00BD30F0.
+Addresses: 00BD30E0, 00BD30F0, 00A93E70.
 
 The common raw device root now has reusable source entries. Existing recovered
 names are retained. BD30E0 takes ECX owner and no stack arguments, returns with
@@ -20,3 +20,9 @@ were checked. BD30EB is an indirect EDX call: vtable+4 was captured atBD30E6 and
 flags1 pushed atBD30E9. The provider preserves this target identity even if later
 host lookup has side effects. Device-family fixtures validate use through their
 actual source scalar bodies; this initial shared leaf is build validation only.
+
+A93E70 is the existing compiler destructor wrapper used by the common gamepad
+constructor/destructor EH map. Its complete eleven bytes stamp D5B638 and tail
+jump to BD30F0. The reusable source keeps both stores and uses the shared root
+body; it does not release COM references or touch payloads. Its existing compiler
+name is retained. The native tail instruction is at A93E76 and ends A93E7A.

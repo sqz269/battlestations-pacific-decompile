@@ -17,4 +17,10 @@ __declspec(naked) void __fastcall destroy_native_ref_counted_base_00bd30f0(void*
         ret
     }
 }
+__declspec(naked) void __fastcall destroy_native_input_device_base_00a93e70(void*) noexcept {
+    __asm {
+        mov dword ptr [ecx], 00d5b638h
+        jmp destroy_native_ref_counted_base_00bd30f0
+    }
+}
 } // namespace bsp

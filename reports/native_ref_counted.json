@@ -23,6 +23,16 @@
       "native_hex": "c70130b1ce00c3",
       "original_abi": "ECX owner; no stack arguments; RET; no semantic EAX result",
       "coverage": "complete seven-byte profile stamp"
+    },
+    {
+      "address": "00a93e70",
+      "name": "CG_adjustor_thunk_00a93e70",
+      "implementation": "destroy_native_input_device_base_00a93e70",
+      "source": "src/native_ref_counted.cpp",
+      "end_inclusive": "00a93e7a",
+      "native_hex": "c70138b6d500e975f21300",
+      "original_abi": "ECX owner; no stack arguments; tail JMP BD30F0; RET in shared base",
+      "coverage": "complete two-instruction compiler destructor wrapper; compiler name retained"
     }
   ],
   "indirect_steps": [
@@ -38,9 +48,17 @@
   "game_validated": false,
   "build": {
     "command": "scripts/build.ps1",
-    "log": "local/native_ref_counted_ad_build.log",
+    "log": "local/native_input_enumeration_ad_build.log",
     "configuration": "MSVC Win32 Release",
     "ctests_passed": 2,
     "exit_code": 0
-  }
+  },
+  "direct_steps": [
+    {
+      "address": "00a93e76",
+      "function": "00a93e70",
+      "native": "00bd30f0",
+      "contract": "stamp D5B638 then tail-jump to shared root, preserving ECX"
+    }
+  ]
 }

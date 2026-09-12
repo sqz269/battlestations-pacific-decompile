@@ -18,4 +18,8 @@ void invoke_native_ref_counted_delete_00bd30e0(void*, NativeRefCountedDeleteCall
 // BD30F0's complete seven-byte body: ECX owner, stampCEB130, RET. No reference
 // decrement, null check, other field write or allocation release occurs here.
 void __fastcall destroy_native_ref_counted_base_00bd30f0(void*) noexcept;
+
+// Compiler destructor wrapper A93E70: stamp the input-device base D5B638,
+// then tail-jump to BD30F0. No payload, COM, allocation or refcount operation.
+void __fastcall destroy_native_input_device_base_00a93e70(void*) noexcept;
 } // namespace bsp
