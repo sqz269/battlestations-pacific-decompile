@@ -1,0 +1,775 @@
+{
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "bridge": 8089,
+  "relocation_directory_size": 0,
+  "packet": "orch3_traceline_pool_as",
+  "functions": [
+    {
+      "address": "00af19d0",
+      "end_inclusive": "00af1a12",
+      "end_exclusive": "00af1a13",
+      "size": 67,
+      "final_instruction": "00af1a10: ret 4",
+      "final_instruction_length": 3,
+      "sha256": "be672f57d7be5c455877051bdb7ea85f3f826b39b4ea66760b9afb0b76d47485",
+      "live_disk_equal": true,
+      "direct_calls": [],
+      "fixes": [],
+      "proposed_ghidra_name": "BSP_NativeTracelineSlab_Initialize",
+      "cpp_symbol": "initialize_native_traceline_slab_00af19d0",
+      "source": "src/native_traceline_pool.cpp",
+      "header": "include/bsp/native_traceline_pool.hpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual37C4h slab; stack DWORD slab ID; EAX same slab; AF1A10 RET4",
+      "saved_prototype_before": "00af19d0 FUN_00af19d0  undefined FUN_00af19d0(void)  body 00af19d0 - 00af1a12",
+      "saved_comments_before": [
+        {
+          "address": "00af19d0",
+          "annotation": {
+            "address": "00af19d0",
+            "function_name": "FUN_00af19d0"
+          }
+        }
+      ],
+      "evidence": "Write32 free count, reverse31..0 WORD indices and32 retained IDs; preserve1B8h payloads and final padding. Descriptive name is a hypothesis, not a recovered symbol. New MSVC Win32 C++ interface; original ABI/FH3/gameplay unvalidated. Full live/disk spans and original-byte normal-path fixture. docs/NATIVE_TRACELINE_POOL.md."
+    },
+    {
+      "address": "00af32f0",
+      "end_inclusive": "00af342b",
+      "end_exclusive": "00af342c",
+      "size": 316,
+      "final_instruction": "00af342b: ret",
+      "final_instruction_length": 1,
+      "sha256": "f4b0fd86e2c4de8d7fd40fe18e27d8b894f065b02423e4b0eb5e01391dcab0c8",
+      "live_disk_equal": true,
+      "direct_calls": [
+        {
+          "address": "00af331b",
+          "native": "00bf681b",
+          "function": "00af32f0"
+        },
+        {
+          "address": "00af332d",
+          "native": "00af19d0",
+          "function": "00af32f0"
+        },
+        {
+          "address": "00af334f",
+          "native": "00bf55be",
+          "function": "00af32f0"
+        },
+        {
+          "address": "00af3381",
+          "native": "00bf6989",
+          "function": "00af32f0"
+        }
+      ],
+      "fixes": [
+        {
+          "offset": 12,
+          "target": "00ce2218",
+          "relative": false
+        },
+        {
+          "offset": 44,
+          "target": "00bf681b",
+          "relative": true
+        },
+        {
+          "offset": 62,
+          "target": "00af19d0",
+          "relative": true
+        },
+        {
+          "offset": 96,
+          "target": "00bf55be",
+          "relative": true
+        },
+        {
+          "offset": 146,
+          "target": "00bf6989",
+          "relative": true
+        },
+        {
+          "offset": 285,
+          "target": "00ce2210",
+          "relative": false
+        },
+        {
+          "offset": 305,
+          "target": "00ce2210",
+          "relative": false
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracelinePool_AllocateRawSlot",
+      "cpp_symbol": "allocate_native_traceline_slot_00af32f0",
+      "source": "src/native_traceline_pool.cpp",
+      "header": "include/bsp/native_traceline_pool.hpp",
+      "coverage": "complete",
+      "original_abi": "ECX initialized actual38h pool; EAX raw1BCh slot; AF3417 or AF342B RET",
+      "saved_prototype_before": "00af32f0 FUN_00af32f0  undefined FUN_00af32f0(void)  body 00af32f0 - 00af342b",
+      "saved_comments_before": [
+        {
+          "address": "00af32f0",
+          "annotation": {
+            "address": "00af32f0",
+            "function_name": "FUN_00af32f0"
+          }
+        }
+      ],
+      "evidence": "Enter actualCS/depth; publish earliest before37C4 slab allocation; wrapped table growth/copy/free/publication; pop WORD index and later-slab scan; no exceptional unlock. Descriptive name is a hypothesis, not a recovered symbol. New MSVC Win32 C++ interface; original ABI/FH3/gameplay unvalidated. Full live/disk spans and original-byte normal-path fixture. docs/NATIVE_TRACELINE_POOL.md."
+    },
+    {
+      "address": "00af1d30",
+      "end_inclusive": "00af1d9b",
+      "end_exclusive": "00af1d9c",
+      "size": 108,
+      "final_instruction": "00af1d99: ret 4",
+      "final_instruction_length": 3,
+      "sha256": "e3beab010959fdaf516d382db08f2e6ca2de1785506fe58144d1b3f5a63fe392",
+      "live_disk_equal": true,
+      "direct_calls": [],
+      "fixes": [
+        {
+          "offset": 12,
+          "target": "00ce2218",
+          "relative": false
+        },
+        {
+          "offset": 97,
+          "target": "00ce2210",
+          "relative": false
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracelinePool_ReturnRawSlot",
+      "cpp_symbol": "return_native_traceline_slot_00af1d30",
+      "source": "src/native_traceline_pool.cpp",
+      "header": "include/bsp/native_traceline_pool.hpp",
+      "coverage": "complete",
+      "original_abi": "ECX actualpool; stacked rawslot; AF1D99 RET4",
+      "saved_prototype_before": "00af1d30 FUN_00af1d30  undefined FUN_00af1d30(void)  body 00af1d30 - 00af1d9b",
+      "saved_comments_before": [
+        {
+          "address": "00af1d30",
+          "annotation": {
+            "address": "00af1d30",
+            "function_name": "FUN_00af1d30"
+          }
+        }
+      ],
+      "evidence": "Retained1B8 slab ID; signed wrapped displacement/444 truncation; WORD free-index store followed by count reload/increment; unsigned earliest lowering. Descriptive name is a hypothesis, not a recovered symbol. New MSVC Win32 C++ interface; original ABI/FH3/gameplay unvalidated. Full live/disk spans and original-byte normal-path fixture. docs/NATIVE_TRACELINE_POOL.md."
+    },
+    {
+      "address": "00af1ea0",
+      "end_inclusive": "00af1eab",
+      "end_exclusive": "00af1eac",
+      "size": 12,
+      "final_instruction": "00af1eab: ret",
+      "final_instruction_length": 1,
+      "sha256": "03cfe51dd5429225506e55eb471da6a7d5135480d628b6b2e273592894016367",
+      "live_disk_equal": true,
+      "direct_calls": [
+        {
+          "address": "00af1ea6",
+          "native": "00af1d30",
+          "function": "00af1ea0"
+        }
+      ],
+      "fixes": [
+        {
+          "offset": 2,
+          "target": "00f8c288",
+          "relative": false
+        },
+        {
+          "offset": 7,
+          "target": "00af1d30",
+          "relative": true
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTraceline_ReturnRawSlot",
+      "cpp_symbol": "return_native_traceline_00af1ea0",
+      "source": "src/native_traceline_pool.cpp",
+      "header": "include/bsp/native_traceline_pool.hpp",
+      "coverage": "complete",
+      "original_abi": "ECX actual rawslot; selectsF8C288 and callsAF1D30; AF1EAB RET",
+      "saved_prototype_before": "00af1ea0 FUN_00af1ea0  undefined FUN_00af1ea0(void)  body 00af1ea0 - 00af1eab",
+      "saved_comments_before": [
+        {
+          "address": "00af1ea0",
+          "annotation": {
+            "address": "00af1ea0",
+            "function_name": "FUN_00af1ea0"
+          }
+        }
+      ],
+      "evidence": "Same initialized pool borrowed explicitly; raw return without payload destruction, including constructor-unwind callers. Descriptive name is a hypothesis, not a recovered symbol. New MSVC Win32 C++ interface; original ABI/FH3/gameplay unvalidated. Full live/disk spans and original-byte normal-path fixture. docs/NATIVE_TRACELINE_POOL.md."
+    },
+    {
+      "address": "00af1ac0",
+      "end_inclusive": "00af1acd",
+      "end_exclusive": "00af1ace",
+      "size": 14,
+      "final_instruction": "00af1acd: ret",
+      "final_instruction_length": 1,
+      "sha256": "473a39fe09e2862d9a03765be9a274843f8ffca8f7754d31990674f2e6c52a3b",
+      "live_disk_equal": true,
+      "direct_calls": [
+        {
+          "address": "00af1ac7",
+          "native": "00bf6989",
+          "function": "00af1ac0"
+        }
+      ],
+      "fixes": [
+        {
+          "offset": 8,
+          "target": "00bf6989",
+          "relative": true
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracelinePoolTable_FreeBacking",
+      "cpp_symbol": "free_native_traceline_pool_table_00af1ac0",
+      "source": "src/native_traceline_pool.cpp",
+      "header": "include/bsp/native_traceline_pool.hpp",
+      "coverage": "complete",
+      "original_abi": "ECX tableheader; AF1ACD RET",
+      "saved_prototype_before": "00af1ac0 FUN_00af1ac0  undefined FUN_00af1ac0(void)  body 00af1ac0 - 00af1acd",
+      "saved_comments_before": [
+        {
+          "address": "00af1ac0",
+          "annotation": {
+            "address": "00af1ac0",
+            "function_name": "FUN_00af1ac0"
+          }
+        }
+      ],
+      "evidence": "Free nonnull current backing; preserve stale pointer/count/capacity; returning-free POP ECX atAF1ACC. Descriptive name is a hypothesis, not a recovered symbol. New MSVC Win32 C++ interface; original ABI/FH3/gameplay unvalidated. Full live/disk spans and original-byte normal-path fixture. docs/NATIVE_TRACELINE_POOL.md."
+    },
+    {
+      "address": "00af3170",
+      "end_inclusive": "00af3242",
+      "end_exclusive": "00af3243",
+      "size": 211,
+      "final_instruction": "00af3242: ret",
+      "final_instruction_length": 1,
+      "sha256": "fbcb964bf1efa19baff6b9fb41623e57d94209e5c17313e69fb369ccd3c487a4",
+      "live_disk_equal": true,
+      "direct_calls": [
+        {
+          "address": "00af31f2",
+          "native": "00bf55be",
+          "function": "00af3170"
+        },
+        {
+          "address": "00af3224",
+          "native": "00bf6989",
+          "function": "00af3170"
+        }
+      ],
+      "fixes": [
+        {
+          "offset": 3,
+          "target": "00cbaa6e",
+          "relative": false
+        },
+        {
+          "offset": 38,
+          "target": "00e188b4",
+          "relative": false
+        },
+        {
+          "offset": 46,
+          "target": "00e188b4",
+          "relative": false
+        },
+        {
+          "offset": 64,
+          "target": "00e188b4",
+          "relative": false
+        },
+        {
+          "offset": 84,
+          "target": "00ce220c",
+          "relative": false
+        },
+        {
+          "offset": 131,
+          "target": "00bf55be",
+          "relative": true
+        },
+        {
+          "offset": 181,
+          "target": "00bf6989",
+          "relative": true
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracelinePool_Construct",
+      "cpp_symbol": "initialize_native_traceline_pool_00af3170",
+      "source": "src/native_traceline_pool.cpp",
+      "header": "include/bsp/native_traceline_pool.hpp",
+      "coverage": "complete",
+      "original_abi": "ECX fresh38h pool; EAX same; AF3242 RET",
+      "saved_prototype_before": "00af3170 FUN_00af3170  undefined FUN_00af3170(void)  body 00af3170 - 00af3242",
+      "saved_comments_before": [
+        {
+          "address": "00af3170",
+          "annotation": {
+            "address": "00af3170",
+            "function_name": "FUN_00af3170"
+          }
+        }
+      ],
+      "evidence": "SameE188B4 list prepend; profileD5D924/realCS/depth/table/count/capacity/earliest, reserve32 pointers; FH3 cleanup actions table/section/base. Descriptive name is a hypothesis, not a recovered symbol. New MSVC Win32 C++ interface; original ABI/FH3/gameplay unvalidated. Full live/disk spans and original-byte normal-path fixture. docs/NATIVE_TRACELINE_POOL.md."
+    },
+    {
+      "address": "00af1c70",
+      "end_inclusive": "00af1cf9",
+      "end_exclusive": "00af1cfa",
+      "size": 138,
+      "final_instruction": "00af1cf9: ret",
+      "final_instruction_length": 1,
+      "sha256": "16c9c6e0737fa1a00ba0eea857f391ba3eb27685628dbf60d00d05b2ef16b01f",
+      "live_disk_equal": true,
+      "direct_calls": [
+        {
+          "address": "00af1c88",
+          "native": "00bf65ac",
+          "function": "00af1c70"
+        },
+        {
+          "address": "00af1ca0",
+          "native": "00bf6989",
+          "function": "00af1c70"
+        }
+      ],
+      "fixes": [
+        {
+          "offset": 25,
+          "target": "00bf65ac",
+          "relative": true
+        },
+        {
+          "offset": 49,
+          "target": "00bf6989",
+          "relative": true
+        },
+        {
+          "offset": 68,
+          "target": "00ce2210",
+          "relative": false
+        },
+        {
+          "offset": 89,
+          "target": "00ce2214",
+          "relative": false
+        },
+        {
+          "offset": 118,
+          "target": "00e188b4",
+          "relative": false
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracelinePool_Destroy",
+      "cpp_symbol": "destroy_native_traceline_pool_00af1c70",
+      "source": "src/native_traceline_pool.cpp",
+      "header": "include/bsp/native_traceline_pool.hpp",
+      "coverage": "complete",
+      "original_abi": "ECX pool; AF1CF9 RET",
+      "saved_prototype_before": "00af1c70 FUN_00af1c70  undefined FUN_00af1c70(void)  body 00af1c70 - 00af1cf9",
+      "saved_comments_before": [
+        {
+          "address": "00af1c70",
+          "annotation": {
+            "address": "00af1c70",
+            "function_name": "FUN_00af1c70"
+          }
+        }
+      ],
+      "evidence": "Ascending slab free then nonnull table free; drain positive signed depth/DeleteCS; same-list base unlink; preserve stale metadata; no payload destruction. Descriptive name is a hypothesis, not a recovered symbol. New MSVC Win32 C++ interface; original ABI/FH3/gameplay unvalidated. Full live/disk spans and original-byte normal-path fixture. docs/NATIVE_TRACELINE_POOL.md."
+    },
+    {
+      "address": "00af3250",
+      "end_inclusive": "00af32ef",
+      "end_exclusive": "00af32f0",
+      "size": 160,
+      "final_instruction": "00af32ef: ret",
+      "final_instruction_length": 1,
+      "sha256": "361ff59be1a619b215bf4fa23f329afa85870a680d01759ce35091ffde76479b",
+      "live_disk_equal": true,
+      "direct_calls": [
+        {
+          "address": "00af3271",
+          "native": "00bf65ac",
+          "function": "00af3250"
+        }
+      ],
+      "fixes": [
+        {
+          "offset": 34,
+          "target": "00bf65ac",
+          "relative": true
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracelinePool_TrimEmptySlabs",
+      "cpp_symbol": "trim_native_traceline_pool_00af3250",
+      "source": "src/native_traceline_pool.cpp",
+      "header": "include/bsp/native_traceline_pool.hpp",
+      "coverage": "complete",
+      "original_abi": "ECX pool; D5D924 virtual0; AF32E9 or AF32EF RET",
+      "saved_prototype_before": "00af3250 FUN_00af3250  undefined FUN_00af3250(void)  body 00af3250 - 00af32ef",
+      "saved_comments_before": [
+        {
+          "address": "00af3250",
+          "annotation": {
+            "address": "00af3250",
+            "function_name": "FUN_00af3250"
+          }
+        }
+      ],
+      "evidence": "Free empty32-slot slabs; move last pointer before count decrement; rewrite all32 IDs and retry hole; recompute earliest; no internal lock or capacity shrink. Descriptive name is a hypothesis, not a recovered symbol. New MSVC Win32 C++ interface; original ABI/FH3/gameplay unvalidated. Full live/disk spans and original-byte normal-path fixture. docs/NATIVE_TRACELINE_POOL.md."
+    },
+    {
+      "address": "00cd77f0",
+      "end_inclusive": "00cd7805",
+      "end_exclusive": "00cd7806",
+      "size": 22,
+      "final_instruction": "00cd7805: ret",
+      "final_instruction_length": 1,
+      "sha256": "20e7c21cb543d5bc8c9a4777cbc3c455d138512a27f87ddd99981593213e3c68",
+      "live_disk_equal": true,
+      "direct_calls": [
+        {
+          "address": "00cd77f5",
+          "native": "00af3170",
+          "function": "00cd77f0"
+        },
+        {
+          "address": "00cd77ff",
+          "native": "00bf6ff5",
+          "function": "00cd77f0"
+        }
+      ],
+      "fixes": [
+        {
+          "offset": 1,
+          "target": "00f8c288",
+          "relative": false
+        },
+        {
+          "offset": 6,
+          "target": "00af3170",
+          "relative": true
+        },
+        {
+          "offset": 11,
+          "target": "00ce0b70",
+          "relative": false
+        },
+        {
+          "offset": 16,
+          "target": "00bf6ff5",
+          "relative": true
+        }
+      ],
+      "proposed_ghidra_name": "BSP_StaticNativeTracelinePool_Initialize",
+      "cpp_symbol": "initialize_static_native_traceline_pool_00cd77f0",
+      "source": "src/native_traceline_pool.cpp",
+      "header": "include/bsp/native_traceline_pool.hpp",
+      "coverage": "complete",
+      "original_abi": "No arguments; EAX actualatexit status; CD7804 POP ECX cleans4; CD7805 RET",
+      "saved_prototype_before": "00cd77f0 ?  ?  body ?",
+      "saved_comments_before": [],
+      "evidence": "SelectF8C288, constructAF3170, registerCE0B70 with realatexit; no rollback or repeated-startup guarantee. Descriptive name is a hypothesis, not a recovered symbol. New MSVC Win32 C++ interface; original ABI/FH3/gameplay unvalidated. Full live/disk spans and original-byte normal-path fixture. docs/NATIVE_TRACELINE_POOL.md.",
+      "analysis_status": "no_ghidra_function",
+      "required_definition": {
+        "start": "00cd77f0",
+        "end_exclusive": "00cd7806",
+        "end_inclusive": "00cd7805",
+        "final_instruction_length": 1
+      }
+    },
+    {
+      "address": "00ce0b70",
+      "end_inclusive": "00ce0b79",
+      "end_exclusive": "00ce0b7a",
+      "size": 10,
+      "final_instruction": "00ce0b75: jmp 0xaf1c70",
+      "final_instruction_length": 5,
+      "sha256": "d17ad81421679578d4504593cddcdba1950a61f9e056e42563b83bd19c48e526",
+      "live_disk_equal": true,
+      "direct_calls": [
+        {
+          "address": "00ce0b75",
+          "native": "00af1c70",
+          "function": "00ce0b70",
+          "kind": "tail_jump"
+        }
+      ],
+      "fixes": [
+        {
+          "offset": 1,
+          "target": "00f8c288",
+          "relative": false
+        },
+        {
+          "offset": 6,
+          "target": "00af1c70",
+          "relative": true
+        }
+      ],
+      "proposed_ghidra_name": "BSP_StaticNativeTracelinePool_DestroyAtExit",
+      "cpp_symbol": "destroy_static_native_traceline_pool_00ce0b70",
+      "source": "src/native_traceline_pool.cpp",
+      "header": "include/bsp/native_traceline_pool.hpp",
+      "coverage": "complete",
+      "original_abi": "No arguments; ECX=F8C288; CE0B75 tailJMP AF1C70",
+      "saved_prototype_before": "00ce0b70 CG_static_init_00ce0b70  undefined CG_static_init_00ce0b70(void)  body 00ce0b70 - 00ce0b79",
+      "saved_comments_before": [
+        {
+          "address": "00ce0b70",
+          "annotation": {
+            "address": "00ce0b70",
+            "function_name": "CG_static_init_00ce0b70",
+            "comment": "[BSP inventory 00ce0b70] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+          }
+        }
+      ],
+      "evidence": "Destroy same borrowedstatic pool and sharedAllocatorListDomain. Descriptive name is a hypothesis, not a recovered symbol. New MSVC Win32 C++ interface; original ABI/FH3/gameplay unvalidated. Full live/disk spans and original-byte normal-path fixture. docs/NATIVE_TRACELINE_POOL.md."
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00af32f0",
+      "address": "00af32fa",
+      "native": "Win32:EnterCriticalSection@IAT00ce2218",
+      "evidence": "Actual Win32 imported operation; IAT address resolved in fixture; indirect transfer not checked by direct-call verifier."
+    },
+    {
+      "function": "00af32f0",
+      "address": "00af340b",
+      "native": "Win32:LeaveCriticalSection@IAT00ce2210",
+      "evidence": "Actual Win32 imported operation; IAT address resolved in fixture; indirect transfer not checked by direct-call verifier."
+    },
+    {
+      "function": "00af32f0",
+      "address": "00af341f",
+      "native": "Win32:LeaveCriticalSection@IAT00ce2210",
+      "evidence": "Actual Win32 imported operation; IAT address resolved in fixture; indirect transfer not checked by direct-call verifier."
+    },
+    {
+      "function": "00af1d30",
+      "address": "00af1d3a",
+      "native": "Win32:EnterCriticalSection@IAT00ce2218",
+      "evidence": "Actual Win32 imported operation; IAT address resolved in fixture; indirect transfer not checked by direct-call verifier."
+    },
+    {
+      "function": "00af1d30",
+      "address": "00af1d8f",
+      "native": "Win32:LeaveCriticalSection@IAT00ce2210",
+      "evidence": "Actual Win32 imported operation; IAT address resolved in fixture; indirect transfer not checked by direct-call verifier."
+    },
+    {
+      "function": "00af3170",
+      "address": "00af31c2",
+      "native": "Win32:InitializeCriticalSection@IAT00ce220c",
+      "evidence": "Actual Win32 imported operation; IAT address resolved in fixture; indirect transfer not checked by direct-call verifier."
+    },
+    {
+      "function": "00af1c70",
+      "address": "00af1cbd",
+      "native": "Win32:LeaveCriticalSection@IAT00ce2210",
+      "evidence": "Actual Win32 imported operation; IAT address resolved in fixture; indirect transfer not checked by direct-call verifier."
+    },
+    {
+      "function": "00af1c70",
+      "address": "00af1cc7",
+      "native": "Win32:DeleteCriticalSection@IAT00ce2214",
+      "evidence": "Actual Win32 imported operation; IAT address resolved in fixture; indirect transfer not checked by direct-call verifier."
+    },
+    {
+      "function": "00cbaa50",
+      "address": "00cbaa53",
+      "native": "00403970",
+      "kind": "tail_jump",
+      "contract": "same allocator base unlink"
+    },
+    {
+      "function": "00cbaa58",
+      "address": "00cbaa5e",
+      "native": "00402f70",
+      "kind": "tail_jump",
+      "contract": "drain positive signed depth then DeleteCriticalSection"
+    },
+    {
+      "function": "00cbaa63",
+      "address": "00cbaa69",
+      "native": "00af1ac0",
+      "kind": "tail_jump",
+      "contract": "free table backing preserving header"
+    }
+  ],
+  "layout_producers": {
+    "pool": "00af3170",
+    "slab": "00af19d0",
+    "actual_static_pool": "00f8c288",
+    "native_pool_bytes": 56,
+    "critical_section_offset": 12,
+    "depth_offset": 36,
+    "slab_table_offset": 40,
+    "slab_count_offset": 44,
+    "slab_capacity_offset": 48,
+    "earliest_available_offset": 52,
+    "slab_bytes": 14276,
+    "slots_per_slab": 32,
+    "slot_bytes": 444,
+    "slot_id_offset": 440,
+    "free_indices_offset": 14208,
+    "free_count_offset": 14272,
+    "retained_padding_offset": 14274,
+    "profile": "00d5d924",
+    "virtual0": "00af3250"
+  },
+  "fh3": {
+    "handler": "00cbaa6e",
+    "function_info": "00df2868",
+    "unwind_map": "00df2850",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cbaa50"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "action": "00cbaa58"
+      },
+      {
+        "state": 2,
+        "next": 1,
+        "action": "00cbaa63"
+      }
+    ],
+    "original_dispatch_tested": false,
+    "source_cleanup": "__try/__finally with same table/section/base action order"
+  },
+  "returning_free_gaps": [
+    {
+      "function": "00af1ac0",
+      "start": "00af1acc",
+      "end_inclusive": "00af1acc",
+      "meaning": "POP ECX caller cleanup4"
+    },
+    {
+      "function": "00af1c70",
+      "start": "00af1c8d",
+      "end_inclusive": "00af1c97",
+      "meaning": "increment slab index, ADD ESP4, unsigned loop"
+    },
+    {
+      "function": "00af1c70",
+      "start": "00af1ca5",
+      "end_inclusive": "00af1ca7",
+      "meaning": "ADD ESP4"
+    },
+    {
+      "function": "00af3170",
+      "start": "00af3229",
+      "end_inclusive": "00af322b",
+      "meaning": "ADD ESP4"
+    },
+    {
+      "function": "00af3250",
+      "start": "00af3276",
+      "end_inclusive": "00af32af",
+      "meaning": "move last table pointer, decrement count, ADD ESP4, rewrite32 IDs, retry hole"
+    },
+    {
+      "function": "00af32f0",
+      "start": "00af3386",
+      "end_inclusive": "00af3388",
+      "meaning": "ADD ESP4 before replacement publication"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Saved pseudocode returns at each CRT free and omits reachable continuation.",
+      "is": "All six recorded gaps return normally and are implemented from full disk/live bytes.",
+      "evidence": "bsp.py ghidra flow, whole saved listings, Capstone complete spans, and original-byte differential."
+    },
+    {
+      "was": "CD77F0 has no saved Ghidra function.",
+      "is": "Complete22-byte routine is CD77F0..CD7805 inclusive, final RET length1; root defines end-exclusiveCD7806.",
+      "evidence": "Live/disk equality and fully decoded final instruction; no worker mutation."
+    }
+  ],
+  "verification": {
+    "exported": true,
+    "reconstructed": true,
+    "strict_win32_current_source": "passed /W4 /WX /MD /O2 /fp:strict; manifest embedded; both standalone allocator-list source and root-library replay",
+    "fixture_tested": true,
+    "assertions": 74946,
+    "repeated_pool_state_comparisons": 2204,
+    "repeated_full_slab_bytes": 807821736,
+    "independent_test_case_count_claimed": false,
+    "acquisitions": 1100,
+    "growth_capacity_before": 32,
+    "growth_capacity_after": 66,
+    "malformed_backed_case": "negative slot at freecount32 aliases count; both truncate signed -1 toFFFF and reload/increment to0",
+    "real_CRT_atexit": "normal exit0; observation callback verified no tracked allocations and shared head null after pool callback",
+    "binary_abi_compatible": false,
+    "game_validated": false,
+    "repository_build": "scripts/build.ps1 passed, reconstructed_math1/1; excludes current new source until root CMake registration, current source separately strict-compiled and replayed",
+    "report_calls": "17direct call rows checked,15passed,2failed solely CD77F5/CD77FF in no Ghidra function; root definesCD77F0..CD7805 then reruns",
+    "artifact_sha256": {
+      "src/native_traceline_pool.cpp": "7349f8e83893ca739fa713463aeb43deb4fc90cbaeffdfeb320173dd52b58bb1",
+      "include/bsp/native_traceline_pool.hpp": "a960be62f1ef301881f6792d07ec4b08c4981192db2a97f273e3702d54e3d8b6",
+      "local/traceline-pool/probe.cpp": "eeeaef97dc50ebb9f9baf0b96bac60fedf8abd1bc844f668de7280eb4bc79e47",
+      "local/traceline-pool/replay.exe": "0c8ba3510920214dfa2253b8a0066bd3248bc4dc9159d51ad60f2d6a060486a3",
+      "local/traceline-pool/repository-build.log": "e40abd4cd2db40a33891f97f41da08e08ccf197ddbdb20cc4d345a16e2069db0"
+    }
+  },
+  "fixture": {
+    "generator": "local/traceline_fixture.py",
+    "source": "local/traceline-pool/probe.cpp",
+    "build": "local/traceline-pool/build.ps1",
+    "root_library_replay": "local/traceline-pool/replay.ps1",
+    "root_libraries": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release",
+    "normal_original_spans": 10,
+    "allocation_instrumentation": "Both copies call recovered real malloc/_callnewh/free boundary; track allocations/free order and fill fresh bytesA5 for payload preservation comparison. No semantic pool or dummy successful payload constructor.",
+    "native_atexit_endpoint": "records actual callback and returns-7 sentinel; source uses real std::atexit and observes callback after process main return",
+    "original_EH_handler": "fixture mapped unexercised handler; original allocation failure/FH3 dispatch unvalidated",
+    "logs": [
+      "local/traceline-pool/build.log",
+      "local/traceline-pool/replay.log",
+      "local/traceline-pool/repository-build.log",
+      "local/traceline-pool/report-calls.log"
+    ],
+    "initial_failure": "Fixture synthetic tail had no concrete virtual0 binding; changed trim comparison to direct recovered trim and separately checked real domain dispatch with a single initialized pool. No production source change needed.",
+    "preserved_directory": "C:/Users/sqz269/bsp-as-traceline-pool",
+    "preserved_replay": "replay.ps1 -SourceRoot <repository>; default integrator checkout after merge; passed now with worker SourceRoot"
+  },
+  "limits": [
+    "New C++ ABI, not original binary entries.",
+    "No original FH3/allocator-failure differential, concurrent access proof or gameplay claim.",
+    "Parent owns CMake/ledgers/Ghidra definitions, flow repair, annotation and integration.",
+    "Host membership proves exact current slab boundary and ID, not allocation/live object state.",
+    "AF3430 allocator adapter,858260 constructor and858380 derived lifetime are separate owners; no AF1C20,AF1DB0 orAF2650 reconstruction."
+  ],
+  "review_rules": {
+    "callee_before_contract": "read allocator CRT thunks/body, free andatexit bodies; unwind403970/402F70/AF1AC0 bodies; directslab constructor producer",
+    "boundary_before_attribution": "record all live prototypes; CD77F0 absence explicit; directcall rows carry containing function",
+    "all_sites_before_contract": "live xrefs AF19D0/AF32F0/AF1D30/AF1EA0/AF1AC0/AF3170/AF1C70/AF3250 andF8C288; contracts expose actualpool/rawslot and retainedID, not one caller assumption",
+    "producer_before_layout": "AF3170 allowner writes; AF19D0 allslab writes",
+    "partial_coverage_explicit": "ten complete byte spans; sourceABI/EH/runtime boundaries stated separately",
+    "runtime_evidence": "scratch original-byte execution only; docs/GAME_EXECUTABLE.md has no Traceline path claim",
+    "stack_cleanup": "AF1A10 RET4,AF1D99 RET4,CD7804 POP ECX,allCRT allocation/free cleanups in full instruction fixture",
+    "register_provenance": "wholeAF32F0/AF1D30/AF3170/AF1C70/AF3250 listings and full native decode",
+    "lease_scope": "10reconstructed bodies and4owned files only",
+    "address_native_rows": "all direct external CALL/JMP operands retained, imports markedindirect, missingfunction verifier failures explicit"
+  }
+}
