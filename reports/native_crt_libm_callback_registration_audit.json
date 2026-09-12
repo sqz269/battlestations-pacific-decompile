@@ -861,5 +861,95 @@
     }
   ],
   "replay": "local/libm_callback_registration/REPLAY.md; copy scripts/inputs into fresh output, strict build -> freeze --first -> static link(no execution) -> freeze closure -> verify. Historical seal unchanged.",
-  "seal": "local/libm_callback_registration/sealed.json pins all four tracked files, scripts, original spans, source/header/archive/COFF/link images, failed and final build evidence. Its hash is reported in final handoff to avoid a self-referential hash."
+  "seal": "local/libm_callback_registration/sealed.json pins all four tracked files, scripts, original spans, source/header/archive/COFF/link images, failed and final build evidence. Its hash is reported in final handoff to avoid a self-referential hash.",
+  "primary_review": {
+    "utc": "2026-09-12T00:15:21.647862+00:00",
+    "passed": true,
+    "integration_state": "complete_source_main_build_static_proof_saved_and_registered",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\lifecycle_pointer_build_frozen\\manifest.json",
+      "bytes": 19140,
+      "sha256": "c00dc631fd4c8f561de91e132179b352a6278499cc0acddff24e6efba6da9c73"
+    },
+    "main_library_sha256": "d79113e724e5752d46764e2b69a9cc6cfc3f342dd6d6915c9b3b5cefe713a438",
+    "unchanged_prebuild_inputs": 46,
+    "strict_Win32": true,
+    "existing_CTests": 2,
+    "fresh_seed_matches": 8,
+    "proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\lifecycle_pointer_replay\\local\\libm_callback_registration\\verified.json",
+      "bytes": 74147,
+      "sha256": "19308667f90f11c506bc50cce17ebd637b29d6c1b4e23cbb0dd86f8863c9eb89"
+    },
+    "summary": "Full151/46 mapped to128+55bytes/63instructions;2actualobjects24mappedsections/30relocs,fullbridge19,7compiler layoutaccessors and exact136strcmp.",
+    "no_new_runtime": true,
+    "native_SEH_compatible": false,
+    "game_validated": false,
+    "saved_function_definition": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\native_lifecycle_pointer_batch\\registration_function_definition.json",
+      "bytes": 21244,
+      "sha256": "b44223ce9efafbe2f25d36b4cdb911afc23b0c18212d0caa0201934a367eb5e6"
+    },
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_crt_libm_callback_registration_annotations.json",
+      "bytes": 2407,
+      "sha256": "d9d1a9b9e2b478791768582806975aefc7d34cd5073ba49a1284f3210d587f0f"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "00c04f67",
+        "name": "native_crt_encode_pointer_00c04f67",
+        "cpp_symbol": "bsp::native_crt_encode_pointer_00c04f67",
+        "source": "src/native_crt_libm_callback_registration.cpp",
+        "native_end_exclusive": "00c04fd5",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_crt_libm_callback_registration_audit.json",
+        "original_abi": "cdecl firstcallerpointerword E+4; EAXpointer;RET",
+        "source_abi": "nakedcdecl firstactualcallerword E+4, addedstablecontext E+8; caller cleans twoargs",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00c0f0bb",
+        "name": "register_native_crt_libm_callback_00c0f0bb",
+        "cpp_symbol": "bsp::register_native_crt_libm_callback_00c0f0bb",
+        "source": "src/native_crt_libm_callback_registration.cpp",
+        "native_end_exclusive": "00c0f0e4",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_crt_libm_callback_registration_audit.json",
+        "original_abi": "cdeclrawcallbackword E+4;RET; nosemanticresult",
+        "source_abi": "nakedcdecl actualfirstslot +addedstablecontextsecondword;voidsemanticresult",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00c04f67",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c04f67\\decompiled.c",
+        "bytes": 1796,
+        "sha256": "e2bcc1485c05f66be322a1bb7c2514f39a65288d7f9ec63d9be46544fd767ab9"
+      },
+      {
+        "address": "00c0f0bb",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c0f0bb\\decompiled.c",
+        "bytes": 1116,
+        "sha256": "97ac9a66a122c97b6b0f4840554b0df7c0baaeed7f509f161615f2976e9a0505"
+      }
+    ],
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_LIBM_CALLBACK_REGISTRATION.md",
+      "bytes": 11688,
+      "sha256": "ae6b88ef7af391a2b16b187fc004ec8ccfac66fc6bcb51c3166983676e7960e7"
+    },
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\lifecycle_pointer_replay\\sealed.json",
+      "bytes": 67254,
+      "sha256": "72597c1eb704f96f8338ce50d8e1089283660df8523b4c44eef939620578f136"
+    }
+  }
 }

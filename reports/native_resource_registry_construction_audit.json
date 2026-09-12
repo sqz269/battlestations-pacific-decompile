@@ -771,5 +771,111 @@
       "bytes": 6659,
       "sha256": "46173bc2bc72b20544a82a99b474a0e94e493274a4f1a213c7e97e915443d0ca"
     }
-  ]
+  ],
+  "primary_review": {
+    "utc": "2026-09-12T00:15:21.641455+00:00",
+    "passed": true,
+    "integration_state": "complete_source_main_build_static_proof_saved_and_registered",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\lifecycle_pointer_build_frozen\\manifest.json",
+      "bytes": 19140,
+      "sha256": "c00dc631fd4c8f561de91e132179b352a6278499cc0acddff24e6efba6da9c73"
+    },
+    "main_library_sha256": "d79113e724e5752d46764e2b69a9cc6cfc3f342dd6d6915c9b3b5cefe713a438",
+    "unchanged_prebuild_inputs": 46,
+    "strict_Win32": true,
+    "existing_CTests": 2,
+    "fresh_seed_matches": 8,
+    "proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\lifecycle_pointer_replay\\local\\registry_construction\\object_proof.json",
+      "bytes": 528539,
+      "sha256": "185d7d673a0fbaef9ab4735c60e47180cf11f93bb5902c5d41899a7812e5f0d8"
+    },
+    "summary": "All177 original bytes accounted, exact55/18/56 streams,3whole actualobjects173 COFFsections and sourceEH/provider binding proof.",
+    "no_new_runtime": true,
+    "native_SEH_compatible": false,
+    "game_validated": false,
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_resource_registry_construction_annotations.json",
+      "bytes": 2948,
+      "sha256": "00229aa0d95c118780db47054fcae7de6e3db8ffd9030738788aa6e044007b16"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "00b19c30",
+        "name": "allocate_native_resource_registry_sentinel_00b19c30",
+        "cpp_symbol": "bsp::allocate_native_resource_registry_sentinel_00b19c30",
+        "source": "src/native_resource_registry_construction.cpp",
+        "native_end_exclusive": "00b19c67",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_resource_registry_construction_audit.json",
+        "original_abi": "no consumed input,EAX allocation,RET",
+        "source_abi": "cdecl,noargs",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b1aa70",
+        "name": "construct_native_resource_registry_00b1aa70",
+        "cpp_symbol": "bsp::construct_native_resource_registry_00b1aa70",
+        "source": "src/native_resource_registry_construction.cpp",
+        "native_end_exclusive": "00b1aad8",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_resource_registry_construction_audit.json",
+        "original_abi": "ECXowner,EAXsame,RET;nativeFH3",
+        "source_abi": "fastcall ECXactualowner,EDXstableactualpublicationreference,EAXowner,RET;sourceC++catch",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00b1b6e0",
+        "name": "construct_native_resource_registry_00b1b6e0",
+        "cpp_symbol": "bsp::construct_native_resource_registry_00b1b6e0",
+        "source": "src/native_resource_registry_construction.cpp",
+        "native_end_exclusive": "00b1b6f2",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_resource_registry_construction_audit.json",
+        "original_abi": "ECXowner,EAXsame,RET",
+        "source_abi": "same normal shape plusEDXstableactualpublicationreference",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00b19c30",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b19c30\\decompiled.c",
+        "bytes": 1104,
+        "sha256": "83e04507ba088a933143e1bcc0c6ba7860e21dcd11444b38f6610d38ecf59616"
+      },
+      {
+        "address": "00b1aa70",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b1aa70\\decompiled.c",
+        "bytes": 1544,
+        "sha256": "5012c46bc5518319727683502fb8b1e892286e3c020b8d70ed138aebc0e584f0"
+      },
+      {
+        "address": "00b1b6e0",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00b1b6e0\\decompiled.c",
+        "bytes": 893,
+        "sha256": "0143fb65591e5a81433adf6cf97a8206657a3559c9592ca788e608241a834c18"
+      }
+    ],
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_RESOURCE_REGISTRY_CONSTRUCTION.md",
+      "bytes": 7438,
+      "sha256": "6714f1e8356e89e153c34d4a8754b3fae5a26724db45f9e01c37b61f88632abc"
+    },
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\lifecycle_pointer_replay\\sealed.json",
+      "bytes": 67254,
+      "sha256": "72597c1eb704f96f8338ce50d8e1089283660df8523b4c44eef939620578f136"
+    }
+  }
 }

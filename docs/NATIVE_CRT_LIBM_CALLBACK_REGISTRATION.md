@@ -164,3 +164,6 @@ Replay inputs and results are under ignored
 verification order; `sealed.json` pins the final evidence. No runtime IAT/PTD
 values, installed callback lifetime, native caller/SEH/fault-site equivalence,
 CRT startup closure, game behavior or arbitrary provider ABI is established.
+
+
+Primary integrated these entries into the main Win32 library and replayed the unchanged complete static verifiers against its frozen actual objects. Full151/46 mapped to128+55bytes/63instructions;2actualobjects24mappedsections/30relocs,fullbridge19,7compiler layoutaccessors and exact136strcmp. The same46 prebuild source/header/build inputs remained unchanged; both existing CTests and8 seed comparisons passed. The main artifact is frozen under `local/lifecycle_pointer_build_frozen/`; fresh native captures and complete static replay are under `local/lifecycle_pointer_replay/`. Reviewed names/comments are saved and all affected exports refreshed. The formerly missing C0F0BB function now spans the complete41 bytes through C0F0E3; surrounding metadata was retained. These checks do not execute the new routines or establish native SEH, original caller ABI or game behavior.

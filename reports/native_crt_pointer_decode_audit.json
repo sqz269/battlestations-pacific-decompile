@@ -1725,5 +1725,80 @@
     "manifest": "local/pointer_decode_layout_supplement/manifest.json",
     "manifest_sha256": "External handoff; omitted here to avoid a recursive hash.",
     "limits": "Actual compiler field-layout evidence supplements original instruction/provider proof; current runtime IAT/TLS/PTD domain and native fault/SEH limits remain unchanged."
+  },
+  "primary_review": {
+    "utc": "2026-09-12T00:15:21.642794+00:00",
+    "passed": true,
+    "integration_state": "complete_source_main_build_static_proof_saved_and_registered",
+    "main_build_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\lifecycle_pointer_build_frozen\\manifest.json",
+      "bytes": 19140,
+      "sha256": "c00dc631fd4c8f561de91e132179b352a6278499cc0acddff24e6efba6da9c73"
+    },
+    "main_library_sha256": "d79113e724e5752d46764e2b69a9cc6cfc3f342dd6d6915c9b3b5cefe713a438",
+    "unchanged_prebuild_inputs": 46,
+    "strict_Win32": true,
+    "existing_CTests": 2,
+    "fresh_seed_matches": 8,
+    "proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\lifecycle_pointer_replay\\local\\pointer_decode_archive_provenance.json",
+      "bytes": 9397,
+      "sha256": "fd50dd2c2a12fbb418b4484875ae2d9db04c901c05785c004b767b95906437af"
+    },
+    "summary": "Full110/36 mapped to127/46;2actualobjects7CODEsections640B/10relocs,3linkedsections493B; all10fixedbindings and argument-slot/stack map.",
+    "no_new_runtime": true,
+    "native_SEH_compatible": false,
+    "game_validated": false,
+    "binding_proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\lifecycle_pointer_replay\\local\\pointer_decode_binding_proof.json",
+      "bytes": 15121,
+      "sha256": "3725bf03446471f4ff2ad2eeea0ea59a5f3421ed96c20d53b26ee08c4371bba5"
+    },
+    "layout_supplement": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\lifecycle_pointer_replay\\decoder_layout_supplement\\manifest.json",
+      "bytes": 5361,
+      "sha256": "aa842743d1ccb33149c39864b2b0821d8c559853964a307f11aa97deb392a6a0"
+    },
+    "main_headers_LF_equal_to_layout_inputs": true,
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_crt_pointer_decode_annotations.json",
+      "bytes": 1312,
+      "sha256": "974daf7f87965bf100450a050dec307da740f44f68976566a67ceda73a16beae"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "00c04fde",
+        "name": "native_crt_decode_pointer_00c04fde",
+        "cpp_symbol": "bsp::native_crt_decode_pointer_00c04fde",
+        "source": "src/native_crt_pointer_decode.cpp",
+        "native_end_exclusive": "00c0504c",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_crt_pointer_decode_audit.json",
+        "original_abi": "cdecl one actual caller stack argument, original ESI save, plainRET, EAX reload of actual argument word; selected stdcall providers.",
+        "source_abi": "Naked cdecl first original pointer argument atentryESP+4; addedstablecontextreference atentryESP+8. OnlyoriginalESIsave. Caller cleans8bytes; exactactualfirstargumentwriteback/reload retained.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00c04fde",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00c04fde\\decompiled.c",
+        "bytes": 1850,
+        "sha256": "7ff768d3f8f4312b469331c8726509b09a9bb8f7bad8c1795f5e321880fca339"
+      }
+    ],
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_CRT_POINTER_DECODE.md",
+      "bytes": 10710,
+      "sha256": "6ae839e119fc692fec500ea66cfd350670506c2d6df543f9f5ab521b33883799"
+    },
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\lifecycle_pointer_replay\\sealed.json",
+      "bytes": 67254,
+      "sha256": "72597c1eb704f96f8338ce50d8e1089283660df8523b4c44eef939620578f136"
+    }
   }
 }
