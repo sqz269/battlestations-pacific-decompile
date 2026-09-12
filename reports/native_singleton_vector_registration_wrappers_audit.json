@@ -1,0 +1,366 @@
+{
+  "schema_version": 1,
+  "packet": "native_singleton_vector_registration_wrappers3",
+  "status": "complete_raw_source_main_build_and_static_archive_proof_checked",
+  "source": "src/native_singleton_vector_registration_wrappers.cpp",
+  "header": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+  "document": "docs/NATIVE_SINGLETON_VECTOR_REGISTRATION_WRAPPERS.md",
+  "owned_functions": [
+    {
+      "address": "00bd08d0",
+      "symbol": "?insert_one_native_singleton_slots_checked_00bd08d0@bsp@@YIPAXPAX00PBX01@Z",
+      "object": "native_singleton_vector_registration_wrappers",
+      "native_bytes": 137,
+      "emitted_bytes": 137,
+      "instructions": 56,
+      "nonrelocation_bytes": 117,
+      "complete_bytes_match_except_named_call_targets": true,
+      "ret_immediates": [
+        "0x10"
+      ],
+      "calls": [
+        {
+          "native_site": "00bd08f6",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 39,
+            "symbol": "?current_crt_invalid_parameter@?A0x8e28de2a@bsp@@YAXXZ",
+            "type": 20
+          },
+          "actual_provider": {
+            "object": "native_singleton_vector_registration_wrappers",
+            "section": 4,
+            "value": 0,
+            "bytes": 6
+          }
+        },
+        {
+          "native_site": "00bd0903",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 52,
+            "symbol": "?current_crt_invalid_parameter@?A0x8e28de2a@bsp@@YAXXZ",
+            "type": 20
+          },
+          "actual_provider": {
+            "object": "native_singleton_vector_registration_wrappers",
+            "section": 4,
+            "value": 0,
+            "bytes": 6
+          }
+        },
+        {
+          "native_site": "00bd0920",
+          "native_target": "00bd0700",
+          "relocation": {
+            "offset": 81,
+            "symbol": "?insert_count_native_singleton_slots_00bd0700@bsp@@YIXPAX0PBX0I1@Z",
+            "type": 20
+          },
+          "actual_provider": {
+            "object": "native_singleton_vector_insert_count",
+            "section": 4,
+            "value": 0,
+            "bytes": 436
+          }
+        },
+        {
+          "native_site": "00bd092d",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 94,
+            "symbol": "?current_crt_invalid_parameter@?A0x8e28de2a@bsp@@YAXXZ",
+            "type": 20
+          },
+          "actual_provider": {
+            "object": "native_singleton_vector_registration_wrappers",
+            "section": 4,
+            "value": 0,
+            "bytes": 6
+          }
+        },
+        {
+          "native_site": "00bd0943",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 116,
+            "symbol": "?current_crt_invalid_parameter@?A0x8e28de2a@bsp@@YAXXZ",
+            "type": 20
+          },
+          "actual_provider": {
+            "object": "native_singleton_vector_registration_wrappers",
+            "section": 4,
+            "value": 0,
+            "bytes": 6
+          }
+        }
+      ],
+      "ghidra_name": "BSP_PointerVector_InsertOneChecked",
+      "source_symbol": "insert_one_native_singleton_slots_checked_00bd08d0",
+      "original_abi": "ECX original owner; EDX unconsumed; stack result_iterator, iterator_owner, position, value_slot; EAX result_iterator, RET10h.",
+      "source_abi": "Full naked MSVC Win32 raw argument/register schedule with actual source CRT allocation/copy/free/invalid-handler and source C++ exception contracts.",
+      "behavior": "Null begin or zero signed-shift size selects index0 and skips owner validation. Otherwise retain captured begin/owner around returning validation. Call actual full BD0700 in original container. Preserve current result argument reload, position-argument overwrite, captured result position and result+4 before result+0 stores.",
+      "native_end_exclusive": "00bd0959"
+    },
+    {
+      "address": "00bd0bc0",
+      "symbol": "?append_native_singleton_slot_00bd0bc0@bsp@@YIXPAX0PBX@Z",
+      "object": "native_singleton_vector_registration_wrappers",
+      "native_bytes": 105,
+      "emitted_bytes": 105,
+      "instructions": 44,
+      "nonrelocation_bytes": 97,
+      "complete_bytes_match_except_named_call_targets": true,
+      "ret_immediates": [
+        "4",
+        "4"
+      ],
+      "calls": [
+        {
+          "native_site": "00bd0c09",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 74,
+            "symbol": "?current_crt_invalid_parameter@?A0x8e28de2a@bsp@@YAXXZ",
+            "type": 20
+          },
+          "actual_provider": {
+            "object": "native_singleton_vector_registration_wrappers",
+            "section": 4,
+            "value": 0,
+            "bytes": 6
+          }
+        },
+        {
+          "native_site": "00bd0c1c",
+          "native_target": "00bd08d0",
+          "relocation": {
+            "offset": 93,
+            "symbol": "?insert_one_native_singleton_slots_checked_00bd08d0@bsp@@YIPAXPAX00PBX01@Z",
+            "type": 20
+          },
+          "actual_provider": {
+            "object": "native_singleton_vector_registration_wrappers",
+            "section": 6,
+            "value": 0,
+            "bytes": 137
+          }
+        }
+      ],
+      "ghidra_name": "BSP_PointerVector_Append",
+      "source_symbol": "append_native_singleton_slot_00bd0bc0",
+      "original_abi": "ECX owner; EDX unconsumed; one stack value_slot pointer; RET4, no semantic result.",
+      "source_abi": "Full naked MSVC Win32 raw argument/register schedule with actual source CRT allocation/copy/free/invalid-handler and source C++ exception contracts.",
+      "behavior": "Preserve raw unsigned size/capacity comparison. Spare-capacity path captures current end, reads value through current argument, writes value then captured end+4. Growth retains captured end through validation and invokes checked insertion with a real eight-byte stack iterator result.",
+      "native_end_exclusive": "00bd0c29"
+    },
+    {
+      "address": "00bd0c30",
+      "symbol": "?register_native_singleton_object_00bd0c30@bsp@@YIXPAX00@Z",
+      "object": "native_singleton_vector_registration_wrappers",
+      "native_bytes": 39,
+      "emitted_bytes": 39,
+      "instructions": 14,
+      "nonrelocation_bytes": 31,
+      "complete_bytes_match_except_named_call_targets": true,
+      "ret_immediates": [
+        "4"
+      ],
+      "calls": [
+        {
+          "native_site": "00bd0c3b",
+          "native_target": "00bf6713",
+          "relocation": {
+            "offset": 12,
+            "symbol": "?current_crt_invalid_parameter@?A0x8e28de2a@bsp@@YAXXZ",
+            "type": 20
+          },
+          "actual_provider": {
+            "object": "native_singleton_vector_registration_wrappers",
+            "section": 4,
+            "value": 0,
+            "bytes": 6
+          }
+        },
+        {
+          "native_site": "00bd0c4e",
+          "native_target": "00bd0bc0",
+          "relocation": {
+            "offset": 31,
+            "symbol": "?append_native_singleton_slot_00bd0bc0@bsp@@YIXPAX0PBX@Z",
+            "type": 20
+          },
+          "actual_provider": {
+            "object": "native_singleton_vector_registration_wrappers",
+            "section": 3,
+            "value": 0,
+            "bytes": 105
+          }
+        }
+      ],
+      "ghidra_name": "BSP_SingletonLifetime_Register",
+      "source_symbol": "register_native_singleton_object_00bd0c30",
+      "original_abi": "ECX owner; EDX unconsumed; one stack object pointer; RET4, no semantic result.",
+      "source_abi": "Full naked MSVC Win32 raw argument/register schedule with actual source CRT allocation/copy/free/invalid-handler and source C++ exception contracts.",
+      "behavior": "Validate current bounds before current object argument null test. Nonnull passes the address of the actual invocation argument to append. No lock, duplicate check, retain or local exception frame. Registered-owner destruction remains separate.",
+      "native_end_exclusive": "00bd0c57"
+    }
+  ],
+  "owned_native_bytes": 281,
+  "owned_emitted_code_bytes": 287,
+  "source_draft_provenance": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_primary\\draft_ingest.json",
+    "bytes": 1377,
+    "sha256": "bb3545017f600eb5913757269736264c9645da59889ea5d2ed580a37a6901e0e"
+  },
+  "worker_build_or_seal_claimed": false,
+  "main_build": {
+    "manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_build_frozen\\manifest.json",
+      "bytes": 81427,
+      "sha256": "9eeeb7ed8aa8a1b056a1b7aac34126ddcd736548c4adcc613c1a960edcfd83a3"
+    },
+    "library_sha256": "c257efd65c865acafc48711f2333c05a7820444fb6c283de9c8399afc521931e",
+    "strict_Win32": true,
+    "existing_CTests_passed": 2,
+    "fresh_seed_spans_matched": 8,
+    "unchanged_prebuild_inputs": 29,
+    "exact_archive_objects": 7,
+    "actual_compiler_commands": 7,
+    "frozen_compiler_dependencies": 195
+  },
+  "native_and_emitted_proof": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_primary\\complete_body_proof.json",
+    "bytes": 13292,
+    "sha256": "da1154e0b3e4d08d525b6918e0e7f1e03529bbf443d060591e217476645982b6"
+  },
+  "existing_provider_parity": {
+    "proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_primary\\full_object_parity.json",
+      "bytes": 345642,
+      "sha256": "c53305fdb9abc9a99bc4fc5058d78f95d3eb64365d12067f6539694b25b19b40"
+    },
+    "object_pairs": 5,
+    "complete_sections": 268,
+    "complete_CODE_sections": 133,
+    "CODE_bytes": 8705,
+    "comparison": "All CODE, initialized rdata/xdata and zero storage; SafeSEH symbol indices resolved to their exact canonical names. Only compiler anonymous namespace and lambda identifiers normalized; collision-free section identities asserted."
+  },
+  "actual_provider_bindings": {
+    "proof": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_primary\\actual_provider_bindings.json",
+      "bytes": 9751,
+      "sha256": "ab813746684fc83eccdc3c4d34e8d03adfba8e7a528e46d8aaff590e94eb10cc"
+    },
+    "unique_external_symbols": 9,
+    "all_resolved": true,
+    "source_provider_bodies_unchanged": 5,
+    "previous_primary_pins_rechecked": 972
+  },
+  "source_service_boundaries": [
+    "Actual shared source CRT malloc/new-handler/free domain; original heap/encoded handler/newmode identities remain separate.",
+    "Actual owning40-byte legacy exception transport has new source catch type/RTTI/FH3 identity.",
+    "Actual SDK memmove_s and invalid-parameter service allow returning handlers; current UCRT thread-local-then-global ownership differs from original encoded109DD64 global.",
+    "Raw normal instruction schedule and argument aliases are retained; original service-internal registers/flags, arbitrary hardware-fault addresses and SEH identities are not claimed."
+  ],
+  "scope_limits": [
+    "No local exception frame, rollback storage, synchronization, deduplication or registered-owner lifetime dispatch is invented.",
+    "These source entries are actual static-library members; current bsp_game linking or execution of them is not established.",
+    "Raw manager removal/reorder/destruction and remaining native caller integration are separate work."
+  ],
+  "new_tests_added": 0,
+  "native_runtime_executed": false,
+  "fixture_tested": false,
+  "original_runtime_ABI_compatible": false,
+  "game_validated": false,
+  "primary_review": {
+    "utc": "2026-09-12T03:40:34.034480+00:00",
+    "integration_state": "complete_source_main_build_static_proof_saved_and_registered",
+    "main_library_sha256": "c257efd65c865acafc48711f2333c05a7820444fb6c283de9c8399afc521931e",
+    "saved_annotations": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\reports\\native_singleton_vector_registration_wrappers_annotations.json",
+      "bytes": 7069,
+      "sha256": "0f950fe1ac22beb0c78eae74038da86a3fee66e259e0f79784070d302aa38bd4"
+    },
+    "registered_records": [
+      {
+        "kind": "function",
+        "address": "00bd08d0",
+        "name": "insert_one_native_singleton_slots_checked_00bd08d0",
+        "cpp_symbol": "bsp::insert_one_native_singleton_slots_checked_00bd08d0",
+        "source": "src/native_singleton_vector_registration_wrappers.cpp",
+        "native_end_exclusive": "00bd0959",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_registration_wrappers_audit.json",
+        "original_abi": "ECX original owner; EDX unconsumed; stack result_iterator, iterator_owner, position, value_slot; EAX result_iterator, RET10h.",
+        "source_abi": "Full naked MSVC Win32 raw argument/register schedule with actual source CRT allocation/copy/free/invalid-handler and source C++ exception contracts.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00bd0bc0",
+        "name": "append_native_singleton_slot_00bd0bc0",
+        "cpp_symbol": "bsp::append_native_singleton_slot_00bd0bc0",
+        "source": "src/native_singleton_vector_registration_wrappers.cpp",
+        "native_end_exclusive": "00bd0c29",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_registration_wrappers_audit.json",
+        "original_abi": "ECX owner; EDX unconsumed; one stack value_slot pointer; RET4, no semantic result.",
+        "source_abi": "Full naked MSVC Win32 raw argument/register schedule with actual source CRT allocation/copy/free/invalid-handler and source C++ exception contracts.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      },
+      {
+        "kind": "function",
+        "address": "00bd0c30",
+        "name": "register_native_singleton_object_00bd0c30",
+        "cpp_symbol": "bsp::register_native_singleton_object_00bd0c30",
+        "source": "src/native_singleton_vector_registration_wrappers.cpp",
+        "native_end_exclusive": "00bd0c57",
+        "status": "complete_source_main_archive_static_proof_checked",
+        "evidence": "reports/native_singleton_vector_registration_wrappers_audit.json",
+        "original_abi": "ECX owner; EDX unconsumed; one stack object pointer; RET4, no semantic result.",
+        "source_abi": "Full naked MSVC Win32 raw argument/register schedule with actual source CRT allocation/copy/free/invalid-handler and source C++ exception contracts.",
+        "original_owned_body_executed": false,
+        "abi_compatible": false,
+        "game_validated": false
+      }
+    ],
+    "refreshed_exports": [
+      {
+        "address": "00bd08d0",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd08d0\\decompiled.c",
+        "bytes": 2874,
+        "sha256": "b50f139093d456b7ce5e7e001f40bd0141fe45ffdc687c0f297f81aae5d5a1a5"
+      },
+      {
+        "address": "00bd0bc0",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd0bc0\\decompiled.c",
+        "bytes": 2899,
+        "sha256": "38af34062dcec9a48ecfd5785798ab1a6005f02f1f5ce6c968b9fdd9fe162649"
+      },
+      {
+        "address": "00bd0c30",
+        "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00bd0c30\\decompiled.c",
+        "bytes": 2479,
+        "sha256": "78d59b780e31c24b12d26fe70890c594d4b7c601257a57cca92dbefbe6cb7254"
+      }
+    ],
+    "current_document": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\docs\\NATIVE_SINGLETON_VECTOR_REGISTRATION_WRAPPERS.md",
+      "bytes": 5813,
+      "sha256": "a17b94c0363dd516ddd15487acb8d65638ab2ee3a35294043a338de2fb4052c2"
+    },
+    "new_routine_runtime_executed": false,
+    "original_caller_ABI_compatible": false,
+    "game_validated": false,
+    "primary_seal": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\local\\vector_insertion_primary\\sealed.json",
+      "bytes": 381638,
+      "sha256": "d4b423fa1270e1a3b50fc2c00dc521320cd1d01d3c52c5136bfd4ec5c506f59b"
+    }
+  }
+}

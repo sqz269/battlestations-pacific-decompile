@@ -7891,6 +7891,44 @@
         "reports/native_singleton_vector_reserve_construct_audit.json"
       ],
       "evidence": "reports/native_singleton_vector_reserve_construct_audit.json"
+    },
+    {
+      "id": "native_singleton_vector_insert_count1",
+      "packet": "native_singleton_vector_insert_count1",
+      "state": "complete_source_main_build_static_proof_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00bd0700"
+      ],
+      "code_ownership": [
+        "src/native_singleton_vector_insert_count.cpp",
+        "include/bsp/native_singleton_vector_insert_count.hpp",
+        "docs/NATIVE_SINGLETON_VECTOR_INSERT_COUNT.md",
+        "reports/native_singleton_vector_insert_count_audit.json"
+      ],
+      "evidence": "reports/native_singleton_vector_insert_count_audit.json"
+    },
+    {
+      "id": "native_singleton_vector_registration_wrappers3",
+      "packet": "native_singleton_vector_registration_wrappers3",
+      "state": "complete_source_main_build_static_proof_saved_and_registered",
+      "done": true,
+      "source_ready": true,
+      "worker": "main",
+      "function_addresses": [
+        "00bd08d0",
+        "00bd0bc0",
+        "00bd0c30"
+      ],
+      "code_ownership": [
+        "src/native_singleton_vector_registration_wrappers.cpp",
+        "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+        "docs/NATIVE_SINGLETON_VECTOR_REGISTRATION_WRAPPERS.md",
+        "reports/native_singleton_vector_registration_wrappers_audit.json"
+      ],
+      "evidence": "reports/native_singleton_vector_registration_wrappers_audit.json"
     }
   ],
   "snapshot_after_analysis": {
