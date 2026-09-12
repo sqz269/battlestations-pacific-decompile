@@ -1,0 +1,341 @@
+{
+  "schema_version": 1,
+  "packet": "orch2_native_physical_provider_as",
+  "status": "complete_actual_storage_build_and_bounded_native_source_fixture_checked",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routines": [
+    {
+      "entry": "00bf4d30",
+      "end_exclusive": "00bf4dc8",
+      "bytes": 152,
+      "sha256": "037319e4fb015711b7b6d67a2f7c5c1d94286147e78ef6f26635940ab01aac89",
+      "live_equals_installed_PE": true,
+      "name": "construct_native_physical_provider_00bf4d30",
+      "proposed_ghidra_name": "BSP_NativePhysicalProvider_Construct",
+      "original_abi": "ECX owner; stack system-header, full flag DWORD; RET8; EAX owner",
+      "coverage": "complete logical storage behavior through explicit shared service and source exception boundaries",
+      "source": "src/native_physical_provider.cpp",
+      "native_abi_compatible": false
+    },
+    {
+      "entry": "00bf4df0",
+      "end_exclusive": "00bf4eab",
+      "bytes": 187,
+      "sha256": "caee6daefb37dcd5628b48e3e152ca4710fa9eadf66089c1d46345157ef26077",
+      "live_equals_installed_PE": true,
+      "name": "create_native_physical_provider_00bf4df0",
+      "proposed_ghidra_name": "BSP_PhysicalDirectoryFactory_Create",
+      "original_abi": "incoming factory ECX unused; stack system-header, virtual-header; RET8; EAX slot or null",
+      "coverage": "complete logical storage behavior through explicit shared service and source exception boundaries",
+      "source": "src/native_physical_provider.cpp",
+      "native_abi_compatible": false
+    },
+    {
+      "entry": "00bf4c70",
+      "end_exclusive": "00bf4d2e",
+      "bytes": 190,
+      "sha256": "517e3e32cf7f2b1b7d34965001f4a30b712fb3d73fe3b9d26388d4105dee76df",
+      "live_equals_installed_PE": true,
+      "name": "destroy_native_physical_provider_00bf4c70",
+      "proposed_ghidra_name": "BSP_PhysicalDirectory_Destroy",
+      "original_abi": "ECX owner; no stacked arguments; RET0",
+      "coverage": "complete logical storage behavior through explicit shared service and source exception boundaries",
+      "source": "src/native_physical_provider.cpp",
+      "native_abi_compatible": false
+    },
+    {
+      "entry": "00bf4dd0",
+      "end_exclusive": "00bf4df0",
+      "bytes": 32,
+      "sha256": "45cc5261ce3236482e9f5ee478671a39e36a24683b7e4b2ca64203a3e578a88e",
+      "live_equals_installed_PE": true,
+      "name": "delete_native_physical_provider_00bf4dd0",
+      "proposed_ghidra_name": "BSP_NativePhysicalProvider_DeletingDestroy",
+      "original_abi": "ECX owner; stack flags; RET4; EAX original possibly returned slot",
+      "coverage": "complete logical storage behavior through explicit shared service and source exception boundaries",
+      "source": "src/native_physical_provider.cpp",
+      "native_abi_compatible": false
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00bf4d54",
+      "native": "00bb5590",
+      "function": "00bf4d30"
+    },
+    {
+      "address": "00bf4d85",
+      "native": "00bdaba0",
+      "function": "00bf4d30"
+    },
+    {
+      "address": "00bf4daa",
+      "native": "004254b0",
+      "function": "00bf4d30"
+    },
+    {
+      "address": "00bf4e27",
+      "native": "00425850",
+      "function": "00bf4df0"
+    },
+    {
+      "address": "00bf4e35",
+      "native": "00bf34d0",
+      "function": "00bf4df0"
+    },
+    {
+      "address": "00bf4e4f",
+      "native": "00bf4d30",
+      "function": "00bf4df0"
+    },
+    {
+      "address": "00bf4e66",
+      "native": "00bf34d0",
+      "function": "00bf4df0"
+    },
+    {
+      "address": "00bf4e80",
+      "native": "00bf4d30",
+      "function": "00bf4df0"
+    },
+    {
+      "address": "00bf4cb1",
+      "native": "00be0c30",
+      "function": "00bf4c70"
+    },
+    {
+      "address": "00bf4cba",
+      "native": "00bf65ac",
+      "function": "00bf4c70"
+    },
+    {
+      "address": "00bf4dd3",
+      "native": "00bf4c70",
+      "function": "00bf4dd0"
+    },
+    {
+      "address": "00bf4de5",
+      "native": "00bf2fc0",
+      "function": "00bf4dd0"
+    }
+  ],
+  "raw_tail_calls_not_in_stored_body": [
+    {
+      "instruction_address": "00bf4ce6",
+      "callee": "0x419cc0",
+      "logical_entry": "00bf4c70",
+      "qualification": "Installed/live raw instruction beyond current stored BF4C70 body; not attributed by the live call-row checker."
+    },
+    {
+      "instruction_address": "00bf4ced",
+      "callee": "0xbd1510",
+      "logical_entry": "00bf4c70",
+      "qualification": "Installed/live raw instruction beyond current stored BF4C70 body; not attributed by the live call-row checker."
+    },
+    {
+      "instruction_address": "00bf4cfe",
+      "callee": "0xbf3ed0",
+      "logical_entry": "00bf4c70",
+      "qualification": "Installed/live raw instruction beyond current stored BF4C70 body; not attributed by the live call-row checker."
+    },
+    {
+      "instruction_address": "00bf4d06",
+      "callee": "0xbf6989",
+      "logical_entry": "00bf4c70",
+      "qualification": "Installed/live raw instruction beyond current stored BF4C70 body; not attributed by the live call-row checker."
+    },
+    {
+      "instruction_address": "00bf4d18",
+      "callee": "0xbb5380",
+      "logical_entry": "00bf4c70",
+      "qualification": "Installed/live raw instruction beyond current stored BF4C70 body; not attributed by the live call-row checker."
+    }
+  ],
+  "native_capture": {
+    "spans": 24,
+    "bytes": 1307,
+    "all_live_installed_match": true,
+    "artifact": {
+      "path": "local/native-provider-as-evidence/spans.json",
+      "bytes": 10940,
+      "sha256": "a86132d7d8ffce403f349b245e6b102f8ecac8e18a230056891e72519e8abb80"
+    }
+  },
+  "storage_contract": {
+    "producer": "BF4D30 complete152 bytes, BB5590 actual base constructor, BDABA0 actual20h allocator; previous AR actual3Ch provider-pool slot.",
+    "fields": {
+      "00": "D69168 profile",
+      "08_0c": "base system name header",
+      "14_18_1c": "pending record vector",
+      "20_24": "cached string header",
+      "28": "low flag byte",
+      "29_2b": "untouched padding",
+      "2c": "untouched tree allocator state",
+      "30": "index sentinel",
+      "34": "index count",
+      "38": "untouched pool metadata"
+    },
+    "reuse": [
+      "BB5590/BB5380 actual provider base",
+      "BF34D0/BF2FC0/BF3200 actual provider pool and same application AllocatorListDomain",
+      "BE0C30 complete actual index range erase",
+      "BF3ED0/BF4B80 actual pending record ownership",
+      "BDABA0 actual node allocator",
+      "425850 counted-header vs case-insensitive C-string comparison",
+      "ActualNativeStringPoolStorage canonical production binding"
+    ],
+    "diagnostic": "4254B0 is a verified one-byte RET. Omitting its no-op call is established behavior, not an unresolved stub.",
+    "reloads": "Ctor reloads head before each self-link. Dtor frees current index head, captures cache data before state1 and its length before release, then resizes/frees current pending backing and finally destroys current base name.",
+    "factory": "Nonzero recorded root length and last recorded byte 5C only; no disk check or normalization. Native425850 virtual name vs CFF208 persistent_data selects constructor low flag1 or0. Preserve null slot result and same-pool constructor failure return.",
+    "deleting": "Always destruct; only bit0 returns slot through BF2FC0. No additional allocation/free or registry."
+  },
+  "exception_evidence": {
+    "constructor": {
+      "handler": "00cc7cbe",
+      "func_info": "00e02a64",
+      "unwind_map": "00e02a4c",
+      "states": [
+        "0 -> -1: CC7CA0 -> BB5380 base",
+        "1 -> 0: CC7CA8 -> BF4B80 pending owner+14",
+        "2 -> 1: CC7CB3 -> 41DD20 cache owner+20"
+      ]
+    },
+    "destructor": {
+      "handler": "00cc7c8e",
+      "func_info": "00e02a28",
+      "unwind_map": "00e02a10",
+      "states": [
+        "0 -> -1: CC7C70 -> BB5380 base",
+        "1 -> 0: CC7C78 -> BF4B80 pending owner+14",
+        "2 -> 1: CC7C83 -> 41DD20 cache owner+20"
+      ]
+    },
+    "factory": {
+      "handler": "00cc7ce0",
+      "func_info": "00e02a98",
+      "unwind_map": "00e02a88",
+      "states": [
+        "0 -> -1: CC7CD0 -> BF3200 captured slot",
+        "1 -> -1: CC7CD8 -> BF3200 captured slot"
+      ]
+    },
+    "scope": "Source cleanup follows these state chains; original FH3/SEH dispatch, throwing singleton getter and simultaneous cleanup failure remain unvalidated. Index cleanup is not a native unwind action."
+  },
+  "verification": {
+    "build": "scripts/build.ps1 strict MSVC Win32 Release /W4 /WX /fp:strict; process MSBUILDDISABLENODEREUSE=1; two existing CTests passed",
+    "fixture": {
+      "exit_code": 0,
+      "frozen_input_count": 1850,
+      "input_hashes_unchanged": true,
+      "stdout": "PASS source factory failures: base allocation and populated state2 index allocation cleanup; same slot returned. Original FH3 not executed.\nPASS actual canonical string pool, populated provider ownership, provider slot reuse and canonical shutdown.\nPASS 14 native/source cases, 580 normalized observations;561 owned bytes unchanged. External callees use reviewed source/services; original FH3 and game not executed.\n",
+      "stderr": "",
+      "manifest_sha256": "5086fc31145881bbffdc25f147852983491bd958fe69d2b5251348ae6fb9e135",
+      "normal_cases": 14,
+      "normalized_observations": 580,
+      "owned_body_bytes_unchanged": 561,
+      "mapping": "Private original normal bodies shifted +30000000 without editing their561 bytes; external callee entries redirect to reviewed source/shared service bridges. Original FH3 handlers not executed.",
+      "coverage": [
+        "low flag byte and untouched dirty padding/allocator/slot metadata",
+        "self-header alias",
+        "populated three-node index, pending record with two names and cache",
+        "deleting flags0/1/2 and real pool slot reuse",
+        "head/cache/pending free/release callbacks mutate current later fields",
+        "persistent name case variants and null-data virtual header",
+        "empty root and forward-slash final byte rejection",
+        "source base-allocation and populated state2 node-allocation failure returns same slot",
+        "actual canonical string pool, populated provider teardown, slot reuse and publication shutdown"
+      ],
+      "artifact": {
+        "path": "local/native-provider-as-evidence/result.json",
+        "bytes": 633,
+        "sha256": "2825eb84c4ff0257da61ec5f0d3c9ed475219a0118b47aa026f44f389e9a64b5"
+      },
+      "manifest": {
+        "path": "local/native-provider-as-evidence/before-execution/manifest.json",
+        "bytes": 526079,
+        "sha256": "5086fc31145881bbffdc25f147852983491bd958fe69d2b5251348ae6fb9e135"
+      }
+    },
+    "source_pins": [
+      {
+        "path": "src/native_physical_provider.cpp",
+        "bytes": 5910,
+        "sha256": "7b8670babf13b89cac98cb6844afdf8801a7a20ddab8796e7ae7f4b4ebae7b8c"
+      },
+      {
+        "path": "include/bsp/native_physical_provider.hpp",
+        "bytes": 2745,
+        "sha256": "ed89add3153c7c0c1b80ba77addfab88e82f20ba48c8670e937ff21a49d2b2aa"
+      }
+    ],
+    "build_artifacts": [
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "bytes": 46914504,
+        "sha256": "29da9eeea559e389d5b18caa14e2fe11adf6a10aeb589a07660041930cf0b1ee"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_physical_provider.obj",
+        "bytes": 9667,
+        "sha256": "5597d5df9fcf2442055c9b92e64e5352a54e7d5bb3740a25ca3bf39fc92c5c93"
+      },
+      {
+        "path": "local/native-provider-as-initial-build.log",
+        "bytes": 2428,
+        "sha256": "d8107fcec336acef086889bda86994eb56e38caf1618efd8a82de9bb84ab5f8e"
+      },
+      {
+        "path": "local/native-provider-as-evidence/probe.exe",
+        "bytes": 41984,
+        "sha256": "78a7ae2d03462a4c4b845107108c3d8615b69a8c8105a67e403ece80f1e61e4d"
+      }
+    ],
+    "independent_review": {
+      "reviewer": "physical_index_tree_as",
+      "status": "accepted; no blocking defects",
+      "original_artifact": "J:/PROG/battlestations-pacific-decompile-orch2-physical-index-tree-as/local/provider_as_parent_review/review.json",
+      "source_sha256": "7b8670babf13b89cac98cb6844afdf8801a7a20ddab8796e7ae7f4b4ebae7b8c",
+      "header_sha256": "ed89add3153c7c0c1b80ba77addfab88e82f20ba48c8670e937ff21a49d2b2aa"
+    },
+    "game_validated": false,
+    "native_abi_compatible": false
+  },
+  "ghidra": {
+    "flow_record": "reports/native_physical_provider_flow_repair.json",
+    "stored_destructor_body": "00bf4c70..00bf4cbe inclusive",
+    "full_destructor_end_exclusive": "00bf4d2e",
+    "stored_body_tail_complete": false,
+    "repair": "Cleared local CALL_RETURN and decoded111-byte tail under lock; stored body remains truncated. Keep full-tail evidence separately. No global no-return mutation or body extension."
+  },
+  "corrections": [
+    {
+      "was": "BF4DF0 had only the earlier typed/shared-ownership fragment.",
+      "is": "Separate actual3Ch pool-slot factory, construction, complete destructor and deleting wrapper now implemented; preserve historical fragment.",
+      "evidence": "561 owned live/PE bytes and source/native fixture."
+    }
+  ],
+  "limits": [
+    "New explicit C++ service interfaces, not drop-in binary ABI replacements.",
+    "Pending teardown destroys names and vector storage only; no I/O cancellation, HANDLE close or OVERLAPPED allocation release in this body.",
+    "NativeStringStorage::release noexcept excludes original throwing lazy-getter equivalence.",
+    "Pool-acquisition failure locking behavior is inherited unchanged, not repaired.",
+    "Null normal slot branch preserved statically; source factory failure cleanup exercised, original FH3 not executed.",
+    "Private bounded fixtures are neither exhaustive malformed/concurrent-state coverage nor startup, game or gameplay validation.",
+    "Complete manager ownership/startup remains open."
+  ],
+  "next": [
+    "Compose new provider factory with actual BF4BA0 opening and real local file I/O.",
+    "Recover manager base BDA6F0/BDA790 and request-list ownership before full manager BE1DC0/BE1F60 composition."
+  ]
+}
