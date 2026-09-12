@@ -37,6 +37,7 @@
 namespace bsp {
 class LocaleTables;
 struct GuiLayoutPage;
+struct MissionPictureTextureServices;
 }  // namespace bsp
 
 namespace bsp::game {
@@ -92,6 +93,7 @@ struct GameMissionSummary {
     std::string requested_id;          // --menu-select
     // 005caaf0
     bool tree_loaded{false};
+    bool tree_pictures_loaded{false}; // actual resource reader, separate from metadata
     bool tree_script_ran{false};
     std::string tree_error;
     std::size_t tree_groups{0};
@@ -200,6 +202,10 @@ public:
     bool requested() const noexcept;
 
     // 005caaf0, the mission-tree screen's slot +10h override (screen id 2).
+    // Bind before any load. Services and native-owner backing must outlive
+    // this host and all its retained records. COM sprite textures do not
+    // satisfy the native +04/current0 texture contract.
+    void bind_mission_picture_services(const MissionPictureTextureServices&);
     void load_mission_tree_005caaf0();
     // 005861b0, the main-menu screen's slot +14h override: FE_worldmap_historical,
     // FE_briefing_grid and FE_briefing, and the fourteen widget handles 0058c010

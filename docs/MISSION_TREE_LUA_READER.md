@@ -393,3 +393,13 @@ reader share these same values; the executable's post-load copy pass is removed.
 keys are multiunitsidIC1v1/IC2v2/IC3v3/IC4v4. Real Lua5.1.1 and installed table
 checks passed; full executable startup still failed before tree loading and is
 not evidence of gameplay equivalence.
+
+
+## Correction from docs/ORCH5_MENU_INPUT_BATCH.md
+
+MissionRecordData now owns its retained native picture and UV subobject.
+Full readers require real texture services; explicitly named metadata readers
+leave the optional picture unresolved. GameMissionHost can borrow the real
+services before loading and reports picture completion separately. Picture
+reference/copy fixtures pass, but no full executable or render claim is made.
+See MISSION_PICTURE_OWNER.md and ORCH5_MENU_INPUT_BATCH.md.

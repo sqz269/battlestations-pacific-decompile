@@ -32,3 +32,11 @@ mismatch. Focused fixture results and exact promoted commit are recorded in
 
 Follow-up packets: bind AA3910 to its canonical typed input/cursor providers;
 exercise actual registered Screen traversal with live resource ownership.
+
+
+## Correction from docs/ORCH5_MENU_INPUT_BATCH.md
+
+AA3910 now has a complete normal caller in GuiPointerRuntime, sharing the
+frame runtime's actual input publication and manager pointer fields. Native
+AA2F10/AA8BD0 hit testing and actual enabled cursor execution remain separate.
+See GUI_INPUT_POINTER_RUNTIME.md and ORCH5_MENU_INPUT_BATCH.md.

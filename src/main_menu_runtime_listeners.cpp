@@ -1,13 +1,70 @@
 #include "bsp/main_menu_runtime_listeners.hpp"
+#include "bsp/main_menu_objective_rows.hpp"
 #include "bsp/gui_type_dispatch.hpp"
 #include <exception>
 #include <stdexcept>
 
 namespace bsp {
+MainMenuActivationBindings make_main_menu_activation_bindings(
+    MainMenuSelectionListenerBindings& selection, MainMenuActivationServices& services,
+    MainMenuTacticalLibraryBindings& tactical, volatile std::uint32_t& d0,
+    volatile std::uint32_t& d4) {
+    if (&tactical.selected_mission_00e194dc != &selection.command.selected_00e194dc ||
+        &tactical.selected_group_00e194d8 != &selection.group_00e194d8)
+        throw std::logic_error("Activation and selection require the same mission globals");
+    return {selection.command, services, tactical, selection.selected_00e194c8,
+        selection.selected_00e194cc, d0, d4};
+}
 MainMenuCanonicalCommandServices::MainMenuCanonicalCommandServices(
     GuiWidgetOwnerRuntime& owners, MainMenuVehicleUnlockStorage& game,
     NativeStringStorage& strings, MainMenuTacticalLibraryBindings& tactical)
     : owners_(owners), game_(game), strings_(strings), tactical_(tactical) {}
+void MainMenuCanonicalCommandServices::bind_activation(MainMenuActivationBindings& binding) {
+    if (activation_ || active_activation_calls_ || active_objective_calls_ ||
+        (objective_rows_ && &objective_rows_->selection.command != &binding.command) ||
+        &binding.command.services != this ||
+        &binding.command.widget.owners != &owners_ || &binding.command.strings != &strings_ ||
+        &binding.tactical != &tactical_)
+        throw std::logic_error("Activation binding requires its idle canonical command services");
+    activation_ = &binding;
+}
+void MainMenuCanonicalCommandServices::unbind_activation(MainMenuActivationBindings& binding) {
+    if (active_activation_calls_ || activation_ != &binding)
+        throw std::logic_error("Activation binding must remain alive through active callbacks");
+    activation_ = nullptr;
+}
+void MainMenuCanonicalCommandServices::call_00598b60(GuiWidgetOwner* selected, GuiWidgetOwner& listbox) {
+    if (!activation_) throw std::logic_error("598B60 requires the actual activation bindings");
+    struct Active {
+        std::uint32_t& count;
+        explicit Active(std::uint32_t& value) : count(value) { ++count; }
+        ~Active() { --count; }
+    } active(active_activation_calls_);
+    main_menu_listbox_current04_00598b60(*activation_, selected, listbox);
+}
+void MainMenuCanonicalCommandServices::bind_objective_rows(MainMenuObjectiveRowsBindings& binding) {
+    if (objective_rows_ || active_objective_calls_ || active_activation_calls_ ||
+        &binding.selection.command.services != this ||
+        &binding.selection.command.widget.owners != &owners_ ||
+        &binding.selection.command.strings != &strings_ ||
+        (activation_ && &activation_->command != &binding.selection.command))
+        throw std::logic_error("Objective rows require their idle canonical command services");
+    objective_rows_ = &binding;
+}
+void MainMenuCanonicalCommandServices::unbind_objective_rows(MainMenuObjectiveRowsBindings& binding) {
+    if (active_objective_calls_ || objective_rows_ != &binding)
+        throw std::logic_error("Objective row binding must survive active callbacks");
+    objective_rows_ = nullptr;
+}
+void MainMenuCanonicalCommandServices::call_00594bf0() {
+    if (!objective_rows_) throw std::logic_error("594BF0 requires the actual objective row bindings");
+    struct Active {
+        std::uint32_t& count;
+        explicit Active(std::uint32_t& value) : count(value) { ++count; }
+        ~Active() { --count; }
+    } active(active_objective_calls_);
+    build_main_menu_objective_rows_00594bf0(*objective_rows_);
+}
 GuiListboxRuntime& MainMenuCanonicalCommandServices::listbox_runtime(GuiWidgetOwner& owner) {
     auto* implementation = dynamic_cast<GuiListboxTypeImplementation*>(&owner.implementation());
     if (&owner.runtime() != &owners_ || !implementation || &implementation->runtime().owner() != &owner)

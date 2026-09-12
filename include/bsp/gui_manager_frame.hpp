@@ -3,9 +3,8 @@
 #include "bsp/gui_widget_frame_runtime.hpp"
 
 namespace bsp {
-// AA3910's pointer-device, globals, movement, hit-test and cursor-state body
-// remains an explicit required provider. It receives this same resource owner.
-// No update callback or successful fallback is supplied for a missing owner.
+// GuiPointerRuntime supplies AA3910's recovered caller over this same resource
+// owner. It still requires the actual AA2F10 hit-test provider and GUI owners.
 struct GuiManagerPointerCalls {
     virtual ~GuiManagerPointerCalls() = default;
     virtual void update_pointer_00aa3910(GuiResourceOwner&) = 0;
