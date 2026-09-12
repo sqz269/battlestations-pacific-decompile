@@ -1,0 +1,748 @@
+{
+  "schema_version": 1,
+  "packet": "orch2_physical_pending_ar",
+  "base_commit": "b44ac4fa",
+  "status": "actual_storage_reconstructed_strict_win32_and_focused_original_source_fixture_tested_with_exception_domain_limits",
+  "owned_addresses": [
+    "00bf3880",
+    "00bf3c10",
+    "00bf3da0",
+    "00bf3ed0",
+    "00bf4b80"
+  ],
+  "owned_files": [
+    "include/bsp/native_physical_pending_records.hpp",
+    "src/native_physical_pending_records.cpp",
+    "docs/NATIVE_PHYSICAL_PENDING_RECORDS.md",
+    "reports/native_physical_pending_records.json"
+  ],
+  "build_registry_append": "cmake/startup.cmake: bsp_core src/native_physical_pending_records.cpp",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "routine_count": 5,
+  "logical_body_bytes": 755,
+  "routines": [
+    {
+      "address": "00bf3880",
+      "name": "destroy_native_physical_pending_names_00bf3880",
+      "proposed_ghidra_name": "BSP_PhysicalReadRequest_DestroyNames",
+      "coverage": "complete normal storage behavior; native throwing-getter EH excluded by existing noexcept release boundary",
+      "original_abi": "ECX record; RET0",
+      "source_abi": "C++ source interface with explicit NativeStringStorage; not original ABI",
+      "ret_instruction": "00bf38f6",
+      "end_inclusive": "00bf38f6",
+      "end_exclusive": "00bf38f7",
+      "logical_bytes": 119,
+      "original_sha256": "db3e5b9a91a10a06d0250f70c18789469812826ca38ea85dfb5ee2e26dfd6f64",
+      "source": "src/native_physical_pending_records.cpp",
+      "header": "include/bsp/native_physical_pending_records.hpp",
+      "stored_body_end_inclusive": "00bf38f6"
+    },
+    {
+      "address": "00bf3c10",
+      "name": "copy_construct_native_physical_pending_record_00bf3c10",
+      "proposed_ghidra_name": "BSP_PhysicalReadRequest_CopyConstruct",
+      "coverage": "complete; no unread logical branches",
+      "original_abi": "ECX destination; stack source; EAX destination; RET4",
+      "source_abi": "C++ source interface with explicit NativeStringStorage; not original ABI",
+      "ret_instruction": "00bf3cee",
+      "end_inclusive": "00bf3cf0",
+      "end_exclusive": "00bf3cf1",
+      "logical_bytes": 225,
+      "original_sha256": "b3b637f7106f3bdd6d194ed9f43c21394e782d1afcc88de1633b08d6cd3e3261",
+      "source": "src/native_physical_pending_records.cpp",
+      "header": "include/bsp/native_physical_pending_records.hpp",
+      "stored_body_end_inclusive": "00bf3cf0"
+    },
+    {
+      "address": "00bf3da0",
+      "name": "reserve_native_physical_pending_records_00bf3da0",
+      "proposed_ghidra_name": "BSP_PhysicalPendingQueue_Reserve",
+      "coverage": "complete; no unread logical branches",
+      "original_abi": "ECX queue; signed capacity stack; RET4",
+      "source_abi": "C++ source interface with explicit NativeStringStorage; not original ABI",
+      "ret_instruction": "00bf3e8a",
+      "end_inclusive": "00bf3e8c",
+      "end_exclusive": "00bf3e8d",
+      "logical_bytes": 237,
+      "original_sha256": "37128bc6e4d9a6f1eee9286b5fd2d16299cd76b3dc8f3b4526c19f7ca0655709",
+      "source": "src/native_physical_pending_records.cpp",
+      "header": "include/bsp/native_physical_pending_records.hpp",
+      "stored_body_end_inclusive": "00bf3e8c"
+    },
+    {
+      "address": "00bf3ed0",
+      "name": "resize_native_physical_pending_records_00bf3ed0",
+      "proposed_ghidra_name": "BSP_PhysicalPendingQueue_Resize",
+      "coverage": "complete; no unread logical branches",
+      "original_abi": "ECX queue; signed count stack; RET4",
+      "source_abi": "C++ source interface with explicit NativeStringStorage; not original ABI",
+      "ret_instruction": "00bf3f64",
+      "end_inclusive": "00bf3f66",
+      "end_exclusive": "00bf3f67",
+      "logical_bytes": 151,
+      "original_sha256": "63c737b24098088852f7083ad626a09ae4d56462fde6bd458940468696679ddb",
+      "source": "src/native_physical_pending_records.cpp",
+      "header": "include/bsp/native_physical_pending_records.hpp",
+      "stored_body_end_inclusive": "00bf3f66"
+    },
+    {
+      "address": "00bf4b80",
+      "name": "destroy_native_physical_pending_records_00bf4b80",
+      "proposed_ghidra_name": "BSP_PhysicalPendingQueue_Destroy",
+      "coverage": "complete; no unread logical branches",
+      "original_abi": "ECX queue; RET0",
+      "source_abi": "C++ source interface with explicit NativeStringStorage; not original ABI",
+      "ret_instruction": "00bf4b96",
+      "end_inclusive": "00bf4b96",
+      "end_exclusive": "00bf4b97",
+      "logical_bytes": 23,
+      "original_sha256": "21e3d4110d32d8d00655b8ee3c93680b4d82043ec4f2ad86ba85f622731150eb",
+      "source": "src/native_physical_pending_records.cpp",
+      "header": "include/bsp/native_physical_pending_records.hpp",
+      "stored_body_end_inclusive": "00bf4b91"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bf38b6",
+      "native": "00419cc0",
+      "function": "00bf3880"
+    },
+    {
+      "address": "00bf38bd",
+      "native": "00bd1510",
+      "function": "00bf3880"
+    },
+    {
+      "address": "00bf38db",
+      "native": "00419cc0",
+      "function": "00bf3880"
+    },
+    {
+      "address": "00bf38e2",
+      "native": "00bd1510",
+      "function": "00bf3880"
+    },
+    {
+      "address": "00bf3c7b",
+      "native": "0041dd40",
+      "function": "00bf3c10"
+    },
+    {
+      "address": "00bf3c91",
+      "native": "00bf7680",
+      "function": "00bf3c10"
+    },
+    {
+      "address": "00bf3cb6",
+      "native": "0041dd40",
+      "function": "00bf3c10"
+    },
+    {
+      "address": "00bf3ccc",
+      "native": "00bf7680",
+      "function": "00bf3c10"
+    },
+    {
+      "address": "00bf3dec",
+      "native": "00bf55be",
+      "function": "00bf3da0"
+    },
+    {
+      "address": "00bf3e2c",
+      "native": "00bf3c10",
+      "function": "00bf3da0"
+    },
+    {
+      "address": "00bf3e54",
+      "native": "00bf3880",
+      "function": "00bf3da0"
+    },
+    {
+      "address": "00bf3e6b",
+      "native": "00bf6989",
+      "function": "00bf3da0"
+    },
+    {
+      "address": "00bf3edf",
+      "native": "00bf3da0",
+      "function": "00bf3ed0"
+    },
+    {
+      "address": "00bf3f54",
+      "native": "00bf3880",
+      "function": "00bf3ed0"
+    },
+    {
+      "address": "00bf4b85",
+      "native": "00bf3ed0",
+      "function": "00bf4b80"
+    },
+    {
+      "address": "00bf4b8d",
+      "native": "00bf6989",
+      "function": "00bf4b80"
+    },
+    {
+      "address": "00cc7b3e",
+      "native": "00401130",
+      "function": "00cc7b30"
+    }
+  ],
+  "tail_transfers": [
+    {
+      "address": "00cc7ab6",
+      "native": "0041dd20",
+      "function": "00cc7ab0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc7b16",
+      "native": "0041dd20",
+      "function": "00cc7b10",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc7c7e",
+      "native": "00bf4b80",
+      "function": "00cc7c78",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cc7cae",
+      "native": "00bf4b80",
+      "function": "00cc7ca8",
+      "kind": "tail_jump"
+    }
+  ],
+  "incoming_sites": [
+    {
+      "address": "00bf3903",
+      "native": "00bf3880",
+      "function": "00bf3900",
+      "kind": "call"
+    },
+    {
+      "address": "00bf462d",
+      "native": "00bf3880",
+      "function": "00bf43b0",
+      "kind": "call"
+    },
+    {
+      "address": "00bf468b",
+      "native": "00bf3880",
+      "function": "00bf43b0",
+      "kind": "call"
+    },
+    {
+      "address": "00bf4292",
+      "native": "00bf3880",
+      "function": "00bf4240",
+      "kind": "call"
+    },
+    {
+      "address": "00cc7bd3",
+      "native": "00bf3880",
+      "function": "00cc7bd0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00bf421f",
+      "native": "00bf3c10",
+      "function": "00bf41c0",
+      "kind": "call"
+    },
+    {
+      "address": "00bf41f4",
+      "native": "00bf3da0",
+      "function": "00bf41c0",
+      "kind": "call"
+    }
+  ],
+  "raw_incoming_transfer": [
+    {
+      "instruction": "00bf4cfe",
+      "target": "00bf3ed0",
+      "logical_owner": "00bf4c70",
+      "kind": "CALL",
+      "evidence": "Raw BF4CF2 LEA ESI,[EDI+14]; BF4CF5 PUSH0; BF4CF7 MOVECX,ESI. Live stored body does not contain site; excluded from CALL rows until flow repair."
+    }
+  ],
+  "required_missing_listing_intervals": [
+    {
+      "function": "00bf4b80",
+      "start": "00bf4b92",
+      "end_inclusive": "00bf4b96",
+      "end_exclusive": "00bf4b97",
+      "last_instruction_start": "00bf4b96",
+      "action": "Existing body needs returning tail; no new definition; integrator may repair under write lock."
+    }
+  ],
+  "missing_owned_function_definitions": [],
+  "exception_maps": [
+    {
+      "owner": "00bf3880",
+      "handler": "00cc7abb",
+      "func_info": "00e027fc",
+      "map": "00e027f4",
+      "action": "state0 -> -1: CC7AB0 destroys captured record+20; source release noexcept excludes throwing getter"
+    },
+    {
+      "owner": "00bf3c10",
+      "handler": "00cc7b1b",
+      "func_info": "00e02880",
+      "map": "00e02878",
+      "action": "state0 -> -1: CC7B10 destroys current first name after second-name failure"
+    },
+    {
+      "owner": "00bf3da0",
+      "handler": "00cc7b47",
+      "func_info": "00e028ac",
+      "map": "00e028a4",
+      "action": "state0 -> -1: CC7B30 calls RET401130; ADDESP8; no replacement/completed-element rollback"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "BF4B80 appears to end at free and can appear trivial when constructor zeroed queue",
+      "is": "Complete nontrivial general destructor: resize0, free current backing, returning tail; retained pointer/capacity",
+      "evidence": "BF4B80..96 live/disk bytes; native/source nonempty destructor comparison"
+    },
+    {
+      "was": "Earlier lifetime audit supported only nonnegative normal counts and omitted exception/overflow contract",
+      "is": "Signed branches and DWORD arithmetic reconstructed; no defensive bounds; native no-rollback schedule recorded",
+      "evidence": "Whole five stored/raw listings, E027FC/E02880/E028AC maps, native/source allocation multiply-wrap comparison"
+    }
+  ],
+  "limits": [
+    "No original ABI replacement or game validation",
+    "Original FH3 throw/unwind not executed",
+    "NativeStringStorage release noexcept excludes throwing lazy-pool-getter unwind domain",
+    "Allocator service uses current CRT, not original CRT globals and binary exception representation",
+    "Native/source fixture intercepts allocation/pool/free services; separate actual current CRT composition smoke",
+    "No permanent tests added; complete physical provider deletion, IO resource ownership and FileStore readiness remain outside packet"
+  ],
+  "validation": {
+    "full_build": {
+      "status": "passed",
+      "command": "$env:MSBUILDDISABLENODEREUSE='1'; ./scripts/build.ps1 *> local/physical_pending_ar/build.log",
+      "log": "local/physical_pending_ar/build.log"
+    },
+    "seed_verified_build": {
+      "status": "passed",
+      "command": "python tools/ghidra_export.py verify-seeds; $env:MSBUILDDISABLENODEREUSE='1'; ./scripts/build.ps1 *> local/physical_pending_ar/build_seed_verified.log",
+      "log": "local/physical_pending_ar/build_seed_verified.log"
+    },
+    "ctest": {
+      "passed": 2,
+      "failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "probe": {
+      "status": "passed",
+      "compile_script": "local/physical_pending_ar/build_probe.ps1",
+      "compile_command": "& cl /nologo /std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /Iinclude /Folocal/physical_pending_ar/pending_probe.obj /Felocal/physical_pending_ar/pending_probe.exe local/physical_pending_ar/pending_probe.cpp build/win32/Release/bsp_core.lib /link /MANIFEST:EMBED /BASE:0x30000000 /DYNAMICBASE:NO *> local/physical_pending_ar/probe_build.log",
+      "command": "& ./local/physical_pending_ar/pending_probe.exe 'I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe' *> local/physical_pending_ar/probe.log",
+      "log": "local/physical_pending_ar/probe.log",
+      "native_source_cases": 7,
+      "source_exception_cases": 1,
+      "original_FH3_execution": false,
+      "unintercepted_current_CRT_service_smoke": true,
+      "memory_comparison": "complete8192-byte arena and ordered native/source service traces",
+      "cases": [
+        "name destroy reloads current first name after second-name release",
+        "record copy reloads current source header and leaves14/34 untouched",
+        "self-copy zeroes both names without allocating/releasing",
+        "reserve observes count change during first copy and publishes after free",
+        "resize grow preserves14/34 while zeroing established fields",
+        "vector destruction decrements live count, reloads backing during shrink and for final free",
+        "reserve capacity20000000h wraps multiply38h to zero allocation bytes"
+      ],
+      "source_exception": "second-record second-name allocation throws; only current first name released, no replacement/finished-record rollback, original queue unpublished",
+      "private_image_fixups": "local/physical_pending_ar/native_fixups.json",
+      "private_image_fixup_count": 50,
+      "native_dependencies": "Original41DD40 and BF7680 exercised with intercepted getter/allocate/release; original new/free thunk targets and source allocator services intercepted. No game process touched."
+    },
+    "report_call_check": {
+      "status": "passed",
+      "command": "python tools/verify_report_calls.py reports/native_physical_pending_records.json",
+      "checked": 28,
+      "failed": 0,
+      "log": "local/physical_pending_ar/report_call_check.log"
+    }
+  },
+  "evidence_policy": "bsp.py live queries verify configured bsp.gpr, /battlestationspacific.exe, language and image base; all Ghidra operations read only; no game modifications",
+  "provenance": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch2-physical-pending-ar",
+    "frozen_manifest": "local/physical_pending_ar/seal.json",
+    "frozen_manifest_sha256": "cf9fc634ed10f3bec892f6f1928a1e3d7cb029ecc62fb7384608860d0f8a7a34",
+    "before_execution": true,
+    "frozen_artifacts": [
+      {
+        "path": "src/native_physical_pending_records.cpp",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/src/native_physical_pending_records.cpp",
+        "bytes": 5405,
+        "sha256": "c6780fd7a6982073d299912775387a62b1a5c040e35d5870a906556e24f9189f"
+      },
+      {
+        "path": "include/bsp/native_physical_pending_records.hpp",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/include/bsp/native_physical_pending_records.hpp",
+        "bytes": 2404,
+        "sha256": "b8ee2df58fee24f572f705bf274f1a51d69f3405cab60865c5b8c1b9aa17364b"
+      },
+      {
+        "path": "src/native_string.cpp",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/src/native_string.cpp",
+        "bytes": 6430,
+        "sha256": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a"
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/include/bsp/native_string.hpp",
+        "bytes": 6719,
+        "sha256": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72"
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/src/singleton_lifetime.cpp",
+        "bytes": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/include/bsp/singleton_lifetime.hpp",
+        "bytes": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/cmake/startup.cmake",
+        "bytes": 64455,
+        "sha256": "ea1086992f309aa07be8b06bb816fe6398f9ceb32565d16251982dfea9f44670"
+      },
+      {
+        "path": "scripts/build.ps1",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/scripts/build.ps1",
+        "bytes": 1657,
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/build/win32/Release/bsp_core.lib",
+        "bytes": 45599008,
+        "sha256": "324aebc62cc9a5c91ab0b77c7b480f2bda458156175a41d000255b893fb1a635"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_physical_pending_records.obj",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/build/win32/bsp_core.dir/Release/native_physical_pending_records.obj",
+        "bytes": 7163,
+        "sha256": "d2fcd46853ad430f9ad29aa5b82d6d92e0225a676189fc06f9b23ce710f20a60"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string.obj",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/build/win32/bsp_core.dir/Release/native_string.obj",
+        "bytes": 15049,
+        "sha256": "2049e94488b9212046f89213756cf304469e16d6e0c3bf9794e0c3eaba96cae2"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+        "bytes": 32967,
+        "sha256": "6bf72915b10bc7092b34c9032bb82c36b2e2ff7bd583ac7f2d54973ff947eba1"
+      },
+      {
+        "path": "local/physical_pending_ar/00401130.bytes.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/00401130.bytes.txt",
+        "bytes": 17,
+        "sha256": "e2047fc967fda44e95c2166da84c09f7e2cbd6a9d36b76d38e29235712de5fe8"
+      },
+      {
+        "path": "local/physical_pending_ar/0041dd20.bytes.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/0041dd20.bytes.txt",
+        "bytes": 142,
+        "sha256": "6067ce8f2a1ee404080bab647c771b6ee0d782dc9b8d61b710a9e04b3c4b8850"
+      },
+      {
+        "path": "local/physical_pending_ar/0041dd40.bytes.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/0041dd40.bytes.txt",
+        "bytes": 799,
+        "sha256": "35ab49464fb315caa5eeaac9ea5f17aade682fc2169ec1e656b7c378cd8ccdae"
+      },
+      {
+        "path": "local/physical_pending_ar/00bf3880.bytes.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/00bf3880.bytes.txt",
+        "bytes": 580,
+        "sha256": "00036d0e0fde69e4962be0d5a35cb50a6c18b02d05995675f5409a9b55d2a73a"
+      },
+      {
+        "path": "local/physical_pending_ar/00bf3c10.bytes.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/00bf3c10.bytes.txt",
+        "bytes": 1095,
+        "sha256": "940af81873f8c45f6ff4c91ae4ac72823a0962562c1e0bb9bc73bb43e6d328a1"
+      },
+      {
+        "path": "local/physical_pending_ar/00bf3da0.bytes.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/00bf3da0.bytes.txt",
+        "bytes": 1143,
+        "sha256": "1a9ab893952e31a4f5264c0a9414871169fa0bca7b41c40a6fc808f8616849d3"
+      },
+      {
+        "path": "local/physical_pending_ar/00bf3ed0.bytes.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/00bf3ed0.bytes.txt",
+        "bytes": 734,
+        "sha256": "1564015272574beb624d066f04c12a3041a78942db838560a2b10ddc37eda7f3"
+      },
+      {
+        "path": "local/physical_pending_ar/00bf4b80.bytes.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/00bf4b80.bytes.txt",
+        "bytes": 118,
+        "sha256": "09f5f385ae5f7956bfc412ba8b3eeb941c886b3ee5a81b5e117a36dbdfb88a64"
+      },
+      {
+        "path": "local/physical_pending_ar/00bf7680.disasm.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/00bf7680.disasm.txt",
+        "bytes": 7924,
+        "sha256": "1468ffcddcbc8ca84ce9dabac0c0f07bdd5d89e2c1d6325b7768d73c7920a288"
+      },
+      {
+        "path": "local/physical_pending_ar/00cc7ab0.bytes.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/00cc7ab0.bytes.txt",
+        "bytes": 57,
+        "sha256": "3abf63e3aefab83a36108069dd9dee354e6ef637841364d82723c1d2676b65b6"
+      },
+      {
+        "path": "local/physical_pending_ar/00cc7b10.bytes.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/00cc7b10.bytes.txt",
+        "bytes": 57,
+        "sha256": "f41d4b9ae730f5545052390a26abc9e7e6a30123065d87200cf67a5386e4d053"
+      },
+      {
+        "path": "local/physical_pending_ar/00cc7b30.bytes.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/00cc7b30.bytes.txt",
+        "bytes": 118,
+        "sha256": "26b2650cadb8525f222e32e2e6907fa2730444333860cff3513073afdbedad54"
+      },
+      {
+        "path": "local/physical_pending_ar/00e027f4.bytes.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/00e027f4.bytes.txt",
+        "bytes": 215,
+        "sha256": "4c97c0539f901ac1734f232f22a8948582db200b1d779fb32064362efd44fa90"
+      },
+      {
+        "path": "local/physical_pending_ar/00e02878.bytes.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/00e02878.bytes.txt",
+        "bytes": 215,
+        "sha256": "bd7e92001f4e2a6b3edfd2f97744f78550b05aa8739bbf41d8a40068706f048a"
+      },
+      {
+        "path": "local/physical_pending_ar/00e028a4.bytes.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/00e028a4.bytes.txt",
+        "bytes": 215,
+        "sha256": "c9ae0c04e4695449892ac9333ef3a9074cc59be70c93dbd584c6f595ec686295"
+      },
+      {
+        "path": "local/physical_pending_ar/build.log",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/build.log",
+        "bytes": 30828,
+        "sha256": "1963fb258fbd8c0f440200d82692d607ca3c7f8445f5047b38477eb6eebe396b"
+      },
+      {
+        "path": "local/physical_pending_ar/build_probe.ps1",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/build_probe.ps1",
+        "bytes": 932,
+        "sha256": "569b4f220b6e7e9306395a20084ccf10bdd0122a280e1bbd826346f2a4d5f06a"
+      },
+      {
+        "path": "local/physical_pending_ar/build_seed_verified.log",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/build_seed_verified.log",
+        "bytes": 4041,
+        "sha256": "bc044c0228092da39959a25f4f5f73ffb1af425d748f135741f39edfe3ad5a49"
+      },
+      {
+        "path": "local/physical_pending_ar/devshell.log",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/devshell.log",
+        "bytes": 241,
+        "sha256": "635139e91a212396254a9c59e7183401e3d5ea2e181fafe6c327aab22cf2eca0"
+      },
+      {
+        "path": "local/physical_pending_ar/native_fixups.hpp",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/native_fixups.hpp",
+        "bytes": 487,
+        "sha256": "97a78504054d6d4f20f6886d437572b6f8dba0fe9fc2b1638701fc92613f98c1"
+      },
+      {
+        "path": "local/physical_pending_ar/native_fixups.json",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/native_fixups.json",
+        "bytes": 4023,
+        "sha256": "209d3b38c2892f562eee440ca77c74991f049fef07db7b1c6c2499d147e910b1"
+      },
+      {
+        "path": "local/physical_pending_ar/original.json",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original.json",
+        "bytes": 3245,
+        "sha256": "c6fd3d0e3b05477beaae39571f1dc9a3c1f88b491628cb62e72d73d152487002"
+      },
+      {
+        "path": "local/physical_pending_ar/pending_probe.cpp",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/pending_probe.cpp",
+        "bytes": 13433,
+        "sha256": "042dd28d42b61c72ae306deb57b63072c490adb72e85b8439f6d913e81fa7513"
+      },
+      {
+        "path": "local/physical_pending_ar/pending_probe.exe",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/pending_probe.exe",
+        "bytes": 20480,
+        "sha256": "2b553dc0f98ca0800eb11a25a73c15cfdbccb2ee293af88aaeaa20f6ea41f550"
+      },
+      {
+        "path": "local/physical_pending_ar/pending_probe.obj",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/pending_probe.obj",
+        "bytes": 61533,
+        "sha256": "bb1b1b893a22d18b8a0fb0fd5b23ededdcd69ebd04e4635bb0e92bf2e8a9397b"
+      },
+      {
+        "path": "local/physical_pending_ar/prepare.py",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/prepare.py",
+        "bytes": 2285,
+        "sha256": "edae81643c9944b76bce60d982726ade61c2f306617882855e83d0d9f8fb4c0b"
+      },
+      {
+        "path": "local/physical_pending_ar/probe_build.log",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/probe_build.log",
+        "bytes": 19,
+        "sha256": "2cf9fe93aba3c3b3edb3a28c0f798b8b22e86bc251d2b9e4b8bc11dba811f965"
+      },
+      {
+        "path": "local/physical_pending_ar/probe_tail.txt",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/probe_tail.txt",
+        "bytes": 6460,
+        "sha256": "8350cf32be8a5dd11fcd93bdb7d0155c372934ca448f339c51a8dac69b50b569"
+      },
+      {
+        "path": "local/physical_pending_ar/relocate_probe.py",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/relocate_probe.py",
+        "bytes": 2307,
+        "sha256": "6e013625e24e518dadf797fc8860a31c7a7a98903caf88a73ce4d7dbfc379cdf"
+      },
+      {
+        "path": "local/physical_pending_ar/report.py",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/report.py",
+        "bytes": 6596,
+        "sha256": "771b3dedc3bc5f9c52596fbad467a5ac97d5e764deeb6c4775ba3af312aba2dc"
+      },
+      {
+        "path": "local/physical_pending_ar/report_call_check.log",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/report_call_check.log",
+        "bytes": 78,
+        "sha256": "d4796edae3de894b33407aee09e4ce8764d77c5686be8921d1424a79f0eea21f"
+      },
+      {
+        "path": "local/physical_pending_ar/seal.py",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/seal.py",
+        "bytes": 1769,
+        "sha256": "750ee9374a37c334068464d3eb37880459363cbea3247feaef6978d1e2e08fb5"
+      },
+      {
+        "path": "local/physical_pending_ar/original/00401130.bin",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original/00401130.bin",
+        "bytes": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e"
+      },
+      {
+        "path": "local/physical_pending_ar/original/0041dd20.bin",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original/0041dd20.bin",
+        "bytes": 29,
+        "sha256": "d67a4742a33b9e89d42784926feb00cfefac93d212ffb06a281eade38be8a626"
+      },
+      {
+        "path": "local/physical_pending_ar/original/0041dd40.bin",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original/0041dd40.bin",
+        "bytes": 164,
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977"
+      },
+      {
+        "path": "local/physical_pending_ar/original/00bf3880.bin",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original/00bf3880.bin",
+        "bytes": 119,
+        "sha256": "db3e5b9a91a10a06d0250f70c18789469812826ca38ea85dfb5ee2e26dfd6f64"
+      },
+      {
+        "path": "local/physical_pending_ar/original/00bf3c10.bin",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original/00bf3c10.bin",
+        "bytes": 225,
+        "sha256": "b3b637f7106f3bdd6d194ed9f43c21394e782d1afcc88de1633b08d6cd3e3261"
+      },
+      {
+        "path": "local/physical_pending_ar/original/00bf3da0.bin",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original/00bf3da0.bin",
+        "bytes": 237,
+        "sha256": "37128bc6e4d9a6f1eee9286b5fd2d16299cd76b3dc8f3b4526c19f7ca0655709"
+      },
+      {
+        "path": "local/physical_pending_ar/original/00bf3ed0.bin",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original/00bf3ed0.bin",
+        "bytes": 151,
+        "sha256": "63c737b24098088852f7083ad626a09ae4d56462fde6bd458940468696679ddb"
+      },
+      {
+        "path": "local/physical_pending_ar/original/00bf4b80.bin",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original/00bf4b80.bin",
+        "bytes": 23,
+        "sha256": "21e3d4110d32d8d00655b8ee3c93680b4d82043ec4f2ad86ba85f622731150eb"
+      },
+      {
+        "path": "local/physical_pending_ar/original/00cc7ab0.bin",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original/00cc7ab0.bin",
+        "bytes": 11,
+        "sha256": "9d81a98ed658fad8cfaa909cfeed00531f4751724c070a98c74e2e799987bb7a"
+      },
+      {
+        "path": "local/physical_pending_ar/original/00cc7b10.bin",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original/00cc7b10.bin",
+        "bytes": 11,
+        "sha256": "2b99b8dad9ee3f61d1e24aba87b00b6fa06bc189002f6b443a9d5e38b54a8fc4"
+      },
+      {
+        "path": "local/physical_pending_ar/original/00cc7b30.bin",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original/00cc7b30.bin",
+        "bytes": 23,
+        "sha256": "ff58f9a9b11fc95378d7686f0aeb7ec5f11be3c3408693f9d83070a90cf13331"
+      },
+      {
+        "path": "local/physical_pending_ar/original/00e027f4.bin",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original/00e027f4.bin",
+        "bytes": 44,
+        "sha256": "f2368c22b4f50e11668f3504e4c14ac033ea2d113adc2bb3321c70eddf929461"
+      },
+      {
+        "path": "local/physical_pending_ar/original/00e02878.bin",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original/00e02878.bin",
+        "bytes": 44,
+        "sha256": "6861329ed197bcf03a4d3cf679e60f2713755fb22e230d233e54523791adcc08"
+      },
+      {
+        "path": "local/physical_pending_ar/original/00e028a4.bin",
+        "frozen_path": "local/physical_pending_ar/frozen-before-execution/local/physical_pending_ar/original/00e028a4.bin",
+        "bytes": 44,
+        "sha256": "175f262f84ba0dc4f95040800d1edf1b885143e2d8ef1d44e746a665f78cfab6"
+      }
+    ],
+    "sealed_current_and_frozen_mismatches": [],
+    "probe_log_sha256": "3fa37160c7b6da408911173581b00ea7bcb675f2f6b544209e5b248dcfffbad0",
+    "source_modified_after_passing_build_or_probe": false
+  }
+}
