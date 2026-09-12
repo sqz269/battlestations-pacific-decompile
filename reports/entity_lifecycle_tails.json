@@ -1,0 +1,415 @@
+{
+  "packet": "cc2_entity_lifecycle_tails",
+  "owner": "agent/cc2-entity-lifecycle-tails",
+  "doc": "docs/ENTITY_LIFECYCLE_TAILS.md",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "summary": "The release rule table for an entity's vtable[0](1): eleven unregistration steps across the GameEntity level 009287B0, the entity root 00925780 and the observer endpoint 00695760. 00927050 is not a teardown site but the spawn-descriptor apply at virtual slot +9Ch, and its +5Dh write is the mission Lua deadMeat property applied at creation. No vtable[ECh] handler reaches 00926E80 (163 handlers over 564 vtables, 81 scanned raw because Ghidra has no function for them), so the drain's re-entrancy hazard is not reachable through the hit path. 006DE3F0 only drops a marker and may unregister the unit/marker-manager observer pair, which makes 008DFE50 a clear rather than a refresh. Ghidra was read-only.",
+  "routines": [
+    {
+      "address": "00927050",
+      "native": "00927050",
+      "name": "BSP_MissionEntity_ApplySpawnDescriptor",
+      "body": "00927050-0092739d",
+      "abi": "__fastcall(ECX = entity), RET at 0092721A and 00927399, no stack arguments",
+      "coverage": "partial: the kind-1 property-bag branch 00927089-0092720A read as its key list only; the kind-3 Lua branch 0092721B-00927386 complete",
+      "evidence": "00927080 tests entity[+C0h]; 00927086 CMP ECX,1 and 0092721B CMP ECX,3 on *(entity[+C0h]+4h). Virtual slot +9Ch in 31 vtables, the slot 00928A00 occupies in 10 (local/slot_of.py); 00928A00 also calls it at 00928A1E. 009272E3 reads the Lua field deadMeat (key string at 00D190D8) and 009272EF/009272F3 set entity+5Dh and entity+70h; 00927295 reads active (00CE4A08) and 0092729F calls 00922F80 BSP_SceneNode_Disable when it is clear."
+    },
+    {
+      "address": "009269b0",
+      "native": "009269b0",
+      "name": "STL_list_InsertRange_009269b0",
+      "body": "009269b0-00926ac3",
+      "abi": "__thiscall(list* this, iterator where at +8h/+0Ch, iterator first at +10h/+14h, iterator last at +18h/+1Ch), RET 1Ch at 00926AC1",
+      "coverage": "complete",
+      "evidence": "The insert loop is 009269F0-00926A54 and exits by JZ 00926AB1 at 00926A01. No jump in the body targets 00926A56; that address is reached only through the frame handler pushed at 009269B5, so the tail is the catch(...) rollback: it erases one node per consumed source element and ends at 00926AAC PUSH 0; PUSH 0; CALL 00BF6885 (rethrow)."
+    },
+    {
+      "address": "0077a7e0",
+      "native": "0077a7e0",
+      "name": "STL_ListIterator_NotEqual_0077a7e0",
+      "body": "0077a7e0-0077a808",
+      "abi": "__thiscall(iterator* this, const iterator* other) -> bool, RET 4 at 0077A806",
+      "coverage": "complete",
+      "evidence": "0077A7E3-0077A7F2 is the checked-iterator _Compat (this->_Mycont == 0 or != other->_Mycont calls 00BF6713); 0077A7F7-0077A803 SETNZ on this->_Ptr != other->_Ptr. Library code, not entity code."
+    },
+    {
+      "address": "008dfe50",
+      "native": "008dfe50",
+      "name": "BSP_Objective_ClearUnitMarkersAndEmpty",
+      "body": "008dfe50-008e005c",
+      "abi": "__thiscall(ObjectiveSet* this, Objective* objective), RET 4 at 008E005A",
+      "coverage": "complete",
+      "evidence": "The walk collects every live unit and hands each to 008DFC00, and its per-unit marker call 006DE3F0 only drops (006DE418-006DE426 destroys the slot object and nulls the slot; no insert anywhere in 006DE3F0-006DE4BA). Both callers are the completed and failed transitions, so the routine empties the objective and clears its markers; the existing RefreshUnitMarkers name is replaced."
+    },
+    {
+      "address": "006de3f0",
+      "native": "006de3f0",
+      "name": "BSP_MarkerManager_DropUnitMarker",
+      "body": "006de3f0-006de4ba",
+      "abi": "__thiscall(MarkerManager* this, const NativeString* name, Entity* unit), RET 8 at 006DE4B8",
+      "coverage": "complete",
+      "evidence": "006DE000 is an operator[]-shaped red-black-tree lookup on the map at this+14h keyed by the unit pointer (_Isnil at node+1Dh, key at node+0Ch); 006DBD40 resolves the name to a slot. 006DE418: if *slot then slot->vtable[0](1) at 006DE424 and *slot = 0 at 006DE426. The loop 006DE447-006DE491 returns at 006DE47E on the first remaining entry whose +14h is set; otherwise 006DE49F tests the observer pair and 006DE4AC unregisters it."
+    },
+    {
+      "address": "008de6a0",
+      "native": "008de6a0",
+      "name": "STL_SetPtr_Insert_008de6a0",
+      "body": "008de6a0-008de758",
+      "abi": "__thiscall(_Tree* this, pair<iterator,bool>* result, const void** key), RET 8 at 008DE71D and 008DE756",
+      "coverage": "complete",
+      "evidence": "Node layout _Left +0h, _Parent +4h, _Right +8h, key +0Ch (4 bytes), _Isnil +11h. 008DE74E writes the bool 0 on the found path and 008DE715 writes 1 after 008DE010 inserts. At the 008DF3D7 call site this = EBX+18h with EBX the ObjectiveSet (008DF2D2 stores ECX at E-18h, 008DF330 reloads it), the key is the address of the unit argument and the pair is discarded."
+    },
+    {
+      "address": "008dc3e0",
+      "native": "008dc3e0",
+      "name": "BSP_Objective_EraseUnitEntries",
+      "body": "008dc3e0-008dc498",
+      "abi": "__thiscall(Objective* this, Entity* unit), RET 4 at 008DC496",
+      "coverage": "complete",
+      "evidence": "Walks the std::list at this+20h (_Myhead +24h, _Mysize +28h). 008DC423 CMP dword ptr [ECX],EDX compares record+0h against the unit. 008DC439 frees the record and 008DC441 nulls node+8h; 008DC460-008DC468 unlink; 008DC46B frees the node and 008DC473 ADD dword ptr [EBP+8],-1 decrements _Mysize. It continues past the first match. 008DC43E-008DC447 and 008DC470-008DC476 were read from the PE bytes because the listing omits the runs after the free calls."
+    },
+    {
+      "address": "00694af0",
+      "native": "00694af0",
+      "name": "BSP_Observer_IsPairRegistered",
+      "body": "00694af0-00694b8c",
+      "abi": "__fastcall(ECX = subject endpoint, EDX = callback owner) -> bool, RET at 00694B69 and 00694B8C, no stack arguments",
+      "coverage": "complete",
+      "evidence": "00694B0F BSP_ObserverLockOwner_Get, 00694B28 EnterCriticalSection through [00CE2218] with the recursion count kept by hand at cs+18h, 00694B3E 006949D0 BSP_Observer_FindPair with ECX and EDX unchanged, then leave through [00CE2210] and return AL = 1 or 0. Argument order confirmed at both call sites: 006DE49F ECX = unit, EDX = marker manager; 008DF338 ECX = EBP the unit, EDX = EBX the ObjectiveSet."
+    },
+    {
+      "address": "009287b0",
+      "native": "009287b0",
+      "name": "BSP_GameEntity_Destruct",
+      "body": "009287b0-0092885b",
+      "abi": "__fastcall(ECX = entity), RET at 0092885A",
+      "coverage": "complete",
+      "evidence": "Installs 00D192E0/00D192C8/00D192C0/00D192BC at +0h/+10h/+24h/+170h (009287CD-009287E1). 009287EB reads the u16 id at +174h and 009287F5 chooses the registry 00F89A08 or 00F89A5C by id < [00F89A10]. 00928815-00928838 releases the name NativeString at +178h/+17Ch through 00419CC0 and 00BD1510. Reached on the unit path because BSP_UnitOwnerEntity_Construct 0077EED0 calls BSP_GameEntity_Construct 00928630."
+    },
+    {
+      "address": "00925780",
+      "native": "00925780",
+      "name": "BSP_Entity_DestructBase",
+      "body": "00925780-009258c2",
+      "abi": "__fastcall(ECX = entity), RET at 009258C2",
+      "coverage": "complete",
+      "evidence": "Installs 00D19120/00D19104/00D190FC at +0h/+10h/+24h, the level-1 vptr set of docs/UNIT_INSTANCE_LAYOUT.md. Steps 3 through 10 of the rule table, each with the call site listed in host_steps."
+    },
+    {
+      "address": "00928920",
+      "native": "00928920",
+      "name": "BSP_ScriptEntity_Destruct",
+      "body": "00928920-009289de",
+      "abi": "__fastcall(ECX = entity), RET at 009289DE",
+      "coverage": "complete",
+      "evidence": "Installs 00D11138/00D11120/00D11118/00D11114, fetches the Lua globals at [00E188A8]+1A0Ch (00928976), reads thisTable (00CE7494, 0092898C) and calls 00B67350 with &entity[+178h], the entity's own name, as the key before tail-calling 009287B0. Its only caller is the scalar deleting destructor 00888ED0, the script-entity branch of BSP_LuaBinding_CreateScript 00898750, so the unit path never reaches it."
+    },
+    {
+      "address": "00695760",
+      "native": "00695760",
+      "name": "BSP_ObserverEndpoint_Destruct",
+      "body": "00695760-00695820",
+      "abi": "__fastcall(ECX = endpoint), RET at 00695820",
+      "coverage": "complete",
+      "evidence": "Installs 00CECCC8 at +0h, the most-base vtable of the 00925CE0 column. Takes the observer lock twice through BSP_ObserverLockOwner_Get, reads endpoint[+8h], releases the inner lock, calls 006953C0 when the list is non-empty, releases the outer lock and frees endpoint[+4h]. 006953C0 walks the global edge table at 00E198E4 under the same lock. BSP_Recon_DestroySlot 00805240 calls the same routine."
+    },
+    {
+      "address": "00903f30",
+      "native": "00903f30",
+      "name": "BSP_World_UnlinkFromUpdateChain",
+      "body": "00903f30-00903f82",
+      "abi": "__thiscall(ChainHead* this, Entity* node), RET 4 at 00903F80",
+      "coverage": "complete",
+      "evidence": "Link pair at node+34h/+38h, head fields first/last/count at this+0h/+4h/+8h. 00903F39-00903F44 skips the work only when both links are null AND the count is at most 1. 00903F7B decrements the count. The head is *(entity[+30h]+4h), the chain 00904BF0 BSP_World_UpdateEntities walks."
+    },
+    {
+      "address": "00924710",
+      "native": "00924710",
+      "name": "BSP_Entity_UnlinkFromSiblingChain",
+      "body": "00924710-00924762",
+      "abi": "__thiscall(ChainHead* this, Entity* node), RET 4 at 00924760",
+      "coverage": "complete",
+      "evidence": "The same body as 00903F30 over the +40h/+44h link pair. Called with ECX = parent+48h when the entity has a parent and ECX = *(entity[+30h]+8h), the world root list, when it does not. 00922FD0 walks the same chain through +48h and +44h."
+    },
+    {
+      "address": "004845a0",
+      "native": "004845a0",
+      "name": "BSP_UnitList_Remove",
+      "body": "004845a0-004845cd",
+      "abi": "__thiscall(UnitList* this, Entity* entity), RET at 004845CD",
+      "coverage": "complete",
+      "evidence": "Walks this[+4h] through +4h for the node whose +8h is the entity and calls 004837D0 on it. The membership flag is the counter at entity+B8h that 009245A0 maintains: BSP_UnitList_PushBack on the 0 to non-zero edge and 004845A0 on the non-zero to 0 edge."
+    },
+    {
+      "address": "006fe570",
+      "native": "006fe570",
+      "name": "CG_scalar_deleting_dtor_006fe570",
+      "body": "006fe570-006fe58d",
+      "abi": "__thiscall(entity, int flags), RET 4 at 006FE58B",
+      "coverage": "complete",
+      "evidence": "00CFC3D0[0h]. 006FE573 calls the MDestroyer class body 0081F3A0 and 006FE578 TEST byte ptr [ESP+8],1 gates the free at 006FE580. Existing name kept."
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00928810",
+      "native": "009516d0",
+      "function": "009287b0",
+      "host_method": "release_entity_id",
+      "this_args_ret": "registry chosen by id < [00F89A10] / u16 id at entity+174h / void",
+      "gate": "always"
+    },
+    {
+      "address": "00928831",
+      "native": "00419cc0",
+      "function": "009287b0",
+      "host_method": "free_pooled_string",
+      "this_args_ret": "- / entity+17Ch pointer, entity+178h length + 1, 1 / pool block",
+      "gate": "entity[+17Ch] != 0 (0092881B)"
+    },
+    {
+      "address": "00928838",
+      "native": "00bd1510",
+      "function": "009287b0",
+      "host_method": "free_pooled_string",
+      "this_args_ret": "pool / block / void",
+      "gate": "the same branch"
+    },
+    {
+      "address": "00928847",
+      "native": "00925780",
+      "function": "009287b0",
+      "host_method": "(the base level, not a host method)",
+      "this_args_ret": "entity / - / void",
+      "gate": "always"
+    },
+    {
+      "address": "009257cf",
+      "native": "00740270",
+      "function": "00925780",
+      "host_method": "release_owned_ref",
+      "this_args_ret": "ECX = [00E1AEA0] / entity+168h / void",
+      "gate": "always; the InterlockedDecrement inside is what gates the vtable[0] call"
+    },
+    {
+      "address": "009257fc",
+      "native": "00903f30",
+      "function": "00925780",
+      "host_method": "unlink_update_chain",
+      "this_args_ret": "*(entity[+30h]+4h) / entity / void",
+      "gate": "always"
+    },
+    {
+      "address": "0092580c",
+      "native": "00924710",
+      "function": "00925780",
+      "host_method": "unlink_sibling_chain(parent_head = true)",
+      "this_args_ret": "parent+48h / entity / void",
+      "gate": "entity[+3Ch] != 0 (00925804); 00925811 then clears +3Ch"
+    },
+    {
+      "address": "00925820",
+      "native": "00924710",
+      "function": "00925780",
+      "host_method": "unlink_sibling_chain(parent_head = false)",
+      "this_args_ret": "*(entity[+30h]+8h) / entity / void",
+      "gate": "entity[+3Ch] == 0"
+    },
+    {
+      "address": "00925835",
+      "native": "004845a0",
+      "function": "00925780",
+      "host_method": "remove_from_world_unit_list",
+      "this_args_ret": "entity[+30h]+0Ch / entity / void",
+      "gate": "parentless and entity[+B8h] != 0 (00925825)"
+    },
+    {
+      "address": "00925856",
+      "native": "00419cc0",
+      "function": "00925780",
+      "host_method": "free_pooled_string(0x160)",
+      "this_args_ret": "- / entity+160h pointer, entity+15Ch length + 1, 1 / pool block",
+      "gate": "entity[+160h] != 0 (00925840)"
+    },
+    {
+      "address": "0092587e",
+      "native": "00419cc0",
+      "function": "00925780",
+      "host_method": "free_pooled_string(0x158)",
+      "this_args_ret": "- / entity+158h pointer, entity+154h length + 1, 1 / pool block",
+      "gate": "entity[+158h] != 0 (00925868)"
+    },
+    {
+      "address": "00925891",
+      "native": "00925540",
+      "function": "00925780",
+      "host_method": "destroy_weak_owner",
+      "this_args_ret": "entity+24h / - / void",
+      "gate": "always"
+    },
+    {
+      "address": "0092589d",
+      "native": "00695870",
+      "function": "00925780",
+      "host_method": "destroy_callback_owner",
+      "this_args_ret": "entity+10h / - / void",
+      "gate": "always"
+    },
+    {
+      "address": "009258ac",
+      "native": "00695760",
+      "function": "00925780",
+      "host_method": "detach_observer_edges",
+      "this_args_ret": "entity / - / void",
+      "gate": "always; the inner 006953C0 is gated on entity[+8h] != 0"
+    },
+    {
+      "address": "006de40a",
+      "native": "006de000",
+      "function": "006de3f0",
+      "host_method": "marker_map_for_unit",
+      "this_args_ret": "markers+14h / &unit / container",
+      "gate": "always"
+    },
+    {
+      "address": "006de411",
+      "native": "006dbd40",
+      "function": "006de3f0",
+      "host_method": "marker_slot_for_name",
+      "this_args_ret": "container / name / slot",
+      "gate": "always"
+    },
+    {
+      "address": "006de484",
+      "native": "006d7d20",
+      "function": "006de3f0",
+      "host_method": "marker_entry_advance",
+      "this_args_ret": "&iterator / - / void",
+      "gate": "the current entry's +14h is clear"
+    },
+    {
+      "address": "006de49f",
+      "native": "00694af0",
+      "function": "006de3f0",
+      "host_method": "observer_pair_registered",
+      "this_args_ret": "- / ECX = unit, EDX = markers / bool",
+      "gate": "no remaining entry has +14h set"
+    },
+    {
+      "address": "006de4ac",
+      "native": "006952a0",
+      "function": "006de3f0",
+      "host_method": "observer_unregister_pair",
+      "this_args_ret": "- / ECX = unit, EDX = markers / void",
+      "gate": "the predicate returned true"
+    },
+    {
+      "address": "008df338",
+      "native": "00694af0",
+      "function": "008df2b0",
+      "host_method": "observer_pair_registered",
+      "this_args_ret": "- / ECX = unit, EDX = ObjectiveSet / bool",
+      "gate": "the objective name matched"
+    },
+    {
+      "address": "008df3d7",
+      "native": "008de6a0",
+      "function": "008df2b0",
+      "host_method": "objective_set_unit_insert",
+      "this_args_ret": "ObjectiveSet+18h / &pair out, &unit / void",
+      "gate": "the objective is not hidden-and-uncompleted"
+    },
+    {
+      "address": "00923a74",
+      "native": "indirect",
+      "function": "009239a0",
+      "host_method": "entity_hit_handler",
+      "this_args_ret": "entity / hit record / bool",
+      "gate": "vtable[ECh]; false walks up entity+3Ch and retries at 00923A72"
+    }
+  ],
+  "virtual_call_sites": [
+    {
+      "address": "00923a74",
+      "slot": "+ECh",
+      "note": "the hit handler. 163 distinct bodies across 564 vtables; none reaches 00926E80 in eight static levels (local/vt_ech_scan2.py, local/vt_ech_reach.py). 00CFC3D0 and 00D09678 -> 00826F10; 00D1A698 and 00D0DF70 -> 008777D0 BSP_UnitInstance_ApplyHitRecord; 00D03E80 and 00D19120 -> 0042BAF0."
+    },
+    {
+      "address": "00927050+vtable9C",
+      "slot": "+9Ch",
+      "note": "00927050 occupies the spawn-descriptor apply slot in 31 vtables, the same slot 00928A00 occupies in 10 (docs/MISSION_ENTITY_LUA_ATTACH.md records it as virtual slot 39)."
+    },
+    {
+      "address": "006de424",
+      "slot": "+0h",
+      "note": "the marker object's scalar deleting destructor, called with the free flag 1."
+    },
+    {
+      "address": "009257ed",
+      "slot": "+0h",
+      "note": "entity[+48h]->vtable[0](1) repeated while entity[+50h] != 0, the inlined form of 009035E0."
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "0042baf0",
+      "name": "BSP_Entity_HitNotHandledStub",
+      "end_address": "0042baf4",
+      "note": "XOR AL,AL; RET 4. The vtable[ECh] entry of 54 vtables including 00D03E80 and 00D19120. Not annotated: outside this packet's lease."
+    },
+    {
+      "address": "00826f10",
+      "name": "BSP_ShipEntity_ApplyHitRecord",
+      "end_address": "0082781b",
+      "note": "The vtable[ECh] entry of 9 vtables including MDestroyer's 00CFC3D0 and 00D09678. 22 direct call targets, among them 008777D0 BSP_UnitInstance_ApplyHitRecord, 00470510, 004705C0 and 0093BED0; none of them reaches 00926E80. Not annotated: outside this packet's lease."
+    }
+  ],
+  "corrections": [
+    {
+      "document": "docs/ENTITY_EVENT_QUEUES.md",
+      "was": "009269B0's tail from 00926A56 is an unread branch through 0077A7E0",
+      "is": "the catch(...) rollback of the std::list range insert, reached only through the frame handler pushed at 009269B5 and ending in a rethrow; 0077A7E0 is the checked-iterator operator!=, library code",
+      "evidence": "the only jumps in 009269B0 target 009269F0, 009269F9, 009269FE, 00926A10, 00926A1A, 00926A4C, 00926AA8, 00926A70 and 00926AB1; 00926AAC PUSH 0; PUSH 0; CALL 00BF6885"
+    },
+    {
+      "document": "docs/ENTITY_EVENT_QUEUES.md",
+      "was": "00927050's +5Dh write at 009272EF, a third teardown site in a property-bag routine",
+      "is": "the mission Lua deadMeat property applied at creation; 00927050 is the spawn-descriptor apply at virtual slot +9Ch, which also writes entity+70h there",
+      "evidence": "009272E3 CALL 00BD68D0 reads the field whose key string is at 00D190D8, 009272E8 tests the result, 009272EF and 009272F3 are the two stores; the routine's only direct caller is BSP_MissionEntity_CreateLuaSelfTable at 00928A1E and it sits at +9Ch of 31 vtables"
+    },
+    {
+      "document": "docs/ENTITY_EVENT_QUEUES.md",
+      "was": "whether any vtable[ECh] handler reaches 00926E80 is contract: unread, so the drain's re-entrancy hazard is reachable in principle",
+      "is": "no handler reaches it; the hazard is not reachable through the hit path",
+      "evidence": "564 vtables anchored on the code's own data references, 163 distinct +ECh bodies, 81 of them without a Ghidra function and scanned raw for E8/E9 targets, forward search eight levels: no path to 00926E80. The three producers 00819A20, 0084BAD0 and 0084BC60 have 19 ancestors, all projectile and explosion ticks."
+    },
+    {
+      "document": "docs/ENTITY_EVENT_QUEUES.md",
+      "was": "what the release does beyond vtable[0](1) is inside the destructor and is contract: unread",
+      "is": "eleven steps: the entity id table, the name string, the +168h reference, the children, the world update chain, the sibling chain, the world+0Ch unit list, two pooled strings, the weak and callback owners and the observer edges",
+      "evidence": "009287B0, 00925780 and 00695760 read complete; the call sites are the host_steps rows"
+    },
+    {
+      "document": "docs/OBJECTIVE_UNIT_LIST.md",
+      "was": "006DE3F0's insert half is contract: unread, so whether 008DFE50 refreshes or clears is open",
+      "is": "006DE3F0 has no insert half: it destroys the marker in the (unit, name) slot and, when no entry of the unit's container still has +14h set, unregisters the unit/marker-manager observer pair. 008DFE50 is a clear",
+      "evidence": "006DE418-006DE426 destroy and null; the loop 006DE447-006DE491 returns at 006DE47E on the first surviving entry; 006DE49F 00694AF0 then 006DE4AC 006952A0; nothing between 006DE3F0 and 006DE4BA writes a non-zero value into a slot"
+    },
+    {
+      "document": "docs/OBJECTIVE_UNIT_LIST.md",
+      "was": "host row 008DF338 / 00694AF0 / observer_pair_registered / -/objective,unit/bool",
+      "is": "the arguments are ECX = unit and EDX = the ObjectiveSet; no objective pointer is passed",
+      "evidence": "008DF2C9 MOV EBP,[ESP+0x24] loads the second argument, the unit whose +5Dh and +5Eh are tested at 008DF2CD and 008DF2DC; 008DF2D2 stores ECX (the set) into the local at E-18h and 008DF330 MOV EBX,[ESP+0x10] reloads it before 008DF334 MOV EDX,EBX"
+    }
+  ],
+  "unread": [
+    "The unit destructor levels above 009287B0. Ghidra's stored body for 0081F3A0 ends at 0081F56B but the real body continues (raw bytes at 0081F56C are C7 86 D0 0B 00 00 80 94 D0 00, a vptr store), so the listing is not a safe basis for a completeness claim about the derived levels.",
+    "The producer of player+8h and player+9h. Six readers agree on the gate (008CDF58/008CDF5E, 004C38A2/004C38A8, 004C396F/004C3975, 008BD534, 008BDAF4, 008CE708) but an image-wide scan for immediate byte stores to [reg+8h] or [reg+9h] near a 0x18CC reference found only 008C8980, a NativeString assign on an unrelated object. The two bytes are left unnamed.",
+    "Whether anything takes a unit's thisTable[name] entry back. 00928920 is the only destructor found that nils one and the unit path does not reach it.",
+    "The spatial index. No step of the release chain was identified as a spatial-index removal.",
+    "entity+70h. Written 1 only beside +5Dh at 009272F3; no reader found.",
+    "006DBD40, 006DE000's insert behaviour when the unit has no entry, and 006D7D20's tree-iterator increment beyond its _Isnil walk.",
+    "The kind-1 property-bag branch of 00927050 beyond its key list (Race, Party, GuiName, SetHierarchy, HierarchyParent, HierarchyMatrix) and the two virtual calls at 00927109 (vtable[0Ch]) and 00927201 (vtable[98h])."
+  ]
+}
