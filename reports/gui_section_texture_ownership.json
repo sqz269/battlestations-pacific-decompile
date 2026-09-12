@@ -1,0 +1,314 @@
+{
+  "packet": "orch5_section_texture",
+  "status": "canonical_section_properties_texture_reference_and_derived_cleanup_strict_win32_and_focused_resolver_fixture_passed",
+  "documentation": "docs/GUI_SECTION_TEXTURE_OWNERSHIP.md",
+  "source": "src/gui_section_runtime.cpp",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "address": "00ac0280",
+      "name": "BSP_GuiSection_ReadProperties",
+      "original_abi": "ECX Section; reader pointer stack; RET4",
+      "end_inclusive": "00ac058b",
+      "coverage": "complete nine derived descriptors and setter over evaluated table after canonical loader AAA710; live Lua/SEH ABI external"
+    },
+    {
+      "address": "00abf6f0",
+      "name": "BSP_GuiSection_SetTexture",
+      "original_abi": "ECX Section; native8h string pointer stack; RET4",
+      "end_inclusive": "00abf76c",
+      "coverage": "complete successful actual-resource sequence with explicit required two-DWORD caller scratch; no original unwritten stack recovery"
+    },
+    {
+      "address": "00abf4f0",
+      "name": "GuiSectionRuntimeImplementation::before_scene_release",
+      "original_abi": "ECX Section; RET",
+      "end_inclusive": "00abf58d",
+      "coverage": "partial_projection ABF514..ABF56D derived texture/string cleanup; primary owns metadata/profile/base AA9730; native pool and full SEH unwind external"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00ac0280",
+      "address": "00ac02a2",
+      "native": "00aaa710",
+      "contract": "Existing canonical loader base/children pass exactly once before this derived companion"
+    },
+    {
+      "function": "00ac0280",
+      "address": "00ac02fd",
+      "native": "reader+vtable0c",
+      "resolved_native": "00bd68d0",
+      "contract": "Value field/default, reader RET18h"
+    },
+    {
+      "function": "00ac0280",
+      "address": "00ac0347",
+      "native": "reader+vtable0c",
+      "resolved_native": "00bd68d0",
+      "contract": "StartAngle field/default, reader RET18h"
+    },
+    {
+      "function": "00ac0280",
+      "address": "00ac0386",
+      "native": "reader+vtable0c",
+      "resolved_native": "00bd68d0",
+      "contract": "Texture field/default, reader RET18h"
+    },
+    {
+      "function": "00ac0280",
+      "address": "00ac03cc",
+      "native": "reader+vtable0c",
+      "resolved_native": "00bd68d0",
+      "contract": "ClockWise field/default, reader RET18h"
+    },
+    {
+      "function": "00ac0280",
+      "address": "00ac0416",
+      "native": "reader+vtable0c",
+      "resolved_native": "00bd68d0",
+      "contract": "TextureAngle field/default, reader RET18h"
+    },
+    {
+      "function": "00ac0280",
+      "address": "00ac0460",
+      "native": "reader+vtable0c",
+      "resolved_native": "00bd68d0",
+      "contract": "U0 field/default, reader RET18h"
+    },
+    {
+      "function": "00ac0280",
+      "address": "00ac04af",
+      "native": "reader+vtable0c",
+      "resolved_native": "00bd68d0",
+      "contract": "U1 field/default, reader RET18h"
+    },
+    {
+      "function": "00ac0280",
+      "address": "00ac04fe",
+      "native": "reader+vtable0c",
+      "resolved_native": "00bd68d0",
+      "contract": "RimWidthPercent field/default, reader RET18h"
+    },
+    {
+      "function": "00ac0280",
+      "address": "00ac0543",
+      "native": "reader+vtable0c",
+      "resolved_native": "00bd68d0",
+      "contract": "TextureMode field/default, reader RET18h"
+    },
+    {
+      "function": "00ac0280",
+      "address": "00ac054c",
+      "native": "00abf6f0",
+      "contract": "Pass native temporary Texture header"
+    },
+    {
+      "function": "00ac0280",
+      "address": "00ac056c",
+      "native": "00419cc0",
+      "contract": "Existing NativeStringStorage replaces singleton lookup; pushed return arguments remain"
+    },
+    {
+      "function": "00ac0280",
+      "address": "00ac0573",
+      "native": "00bd1510",
+      "contract": "Temporary current buffer,length+1,1; RET0Ch"
+    },
+    {
+      "function": "00abf6f0",
+      "address": "00abf705",
+      "native": "00435c40",
+      "contract": "Existing native header length/CRT insensitive equality"
+    },
+    {
+      "function": "00abf6f0",
+      "address": "00abf719",
+      "native": "0041dd40",
+      "contract": "Native current header resize(requested length,true); RET8"
+    },
+    {
+      "function": "00abf6f0",
+      "address": "00abf72e",
+      "native": "00bf7680",
+      "contract": "Current destination, source and destination-length; ADD ESP,0Ch at733"
+    },
+    {
+      "function": "00abf6f0",
+      "address": "00abf736",
+      "native": "004c12b0",
+      "contract": "Existing GuiStartupHost lazy manager getter"
+    },
+    {
+      "function": "00abf6f0",
+      "address": "00abf750",
+      "native": "00aa2660",
+      "contract": "Same stored name header, canonical118 UVs, explicit size scratch and FLD1; RET10h"
+    },
+    {
+      "function": "00abf6f0",
+      "address": "00abf762",
+      "native": "Section+vtable7c",
+      "resolved_native": "00abf770",
+      "contract": "Emit actual geometry after storing returned texture at114, without release-old"
+    },
+    {
+      "function": "00aa2660",
+      "address": "00aa2679",
+      "native": "00aefb20",
+      "contract": "Borrow actual existing atlas lookup and item"
+    },
+    {
+      "function": "00aa2660",
+      "address": "00aa2723",
+      "native": "texture+vtable3c",
+      "resolved_native": null,
+      "contract": "Read current item texture width, conditional on both scratch floats zero"
+    },
+    {
+      "function": "00aa2660",
+      "address": "00aa2743",
+      "native": "texture+vtable40",
+      "resolved_native": null,
+      "contract": "Reload current item texture, read height"
+    },
+    {
+      "function": "00aa2660",
+      "address": "00aa27bd",
+      "native": "import:00ce221c",
+      "resolved_native": null,
+      "contract": "InterlockedIncrement actual current item texture+04"
+    },
+    {
+      "function": "00aa2660",
+      "address": "00aa27da",
+      "native": "renderer+vtable64",
+      "resolved_native": null,
+      "contract": "Current actual renderer receives same NativeString header and0; no extra retain"
+    },
+    {
+      "function": "00abf4f0",
+      "address": "00abf52a",
+      "native": "import:00ce2220",
+      "resolved_native": null,
+      "contract": "InterlockedDecrement captured current texture+04"
+    },
+    {
+      "function": "00abf4f0",
+      "address": "00abf53a",
+      "native": "texture+vtable0",
+      "resolved_native": null,
+      "contract": "Current deleting owner only on zero, before clear114"
+    },
+    {
+      "function": "00abf4f0",
+      "address": "00abf562",
+      "native": "00419cc0",
+      "contract": "Existing string storage getter boundary"
+    },
+    {
+      "function": "00abf4f0",
+      "address": "00abf569",
+      "native": "00bd1510",
+      "contract": "Current string data/current length+1; RET0Ch"
+    },
+    {
+      "function": "00abf4f0",
+      "address": "00abf578",
+      "native": "00aa9730",
+      "contract": "Primary canonical base lifetime, never called by derived companion"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Section properties throw; nonempty texture/string retirement unsupported",
+      "is": "AC0280 derived descriptors, ABF6F0 actual texture resolution and ABF4F0 derived cleanup compose on canonical owner",
+      "evidence": "AC02FD..AC054C; ABF705..ABF762; ABF514..ABF569"
+    },
+    {
+      "was": "Possible assumption that replacement releases old texture",
+      "is": "ABF755 overwrites114 without release; only current114 is released in destructor, so earlier acquired references can be abandoned",
+      "evidence": "Complete ABF6F0 disassembly, ABF750 call/ABF755 store/ABF762 virtual7C"
+    },
+    {
+      "was": "Possible zero initialization of resolver size scratch",
+      "is": "Required two DWORD caller-state seed; zero pair can invoke observable width/height getters",
+      "evidence": "ABF6F0 SUB ESP,8 without writes; ABF741 LEA stack scratch; AA26F8..AA2715"
+    },
+    {
+      "was": "Four individual UV fields need temporary std::array adapter",
+      "is": "SAME native118..124 is one canonical std::array; resolver writes directly before callbacks",
+      "evidence": "ABF420 producer and static_assert atlas offset2C in tail; AA26B5..AA26C9 precedes AA2723"
+    }
+  ],
+  "ownership": {
+    "canonical": "One GuiWidgetOwner/Section40h tail with same actual Model/mesh/stream/material/retained owner domains",
+    "string": "Existing NativeStringStorage; native post-resize source/data/length reloads; no implicit NativeString destructor",
+    "texture": "Atlas +04 retained once; renderer64 result adopts its one reference including null; native overwrite does not release-old",
+    "release": "Current captured114 decremented/current0 on zero before clear; current string released next; primary base teardown once",
+    "lookup": "Borrow existing atlas lookup callback in place; current raw texture3C/40 and renderer64 must be callable actual native-ABI bindings",
+    "scratch": "Required borrowed array<uint32_t,2>; copied bitwise into discarded float2; no default seed",
+    "exceptions": "Property temp string cleaned; destructor state1 string cleanup preserved if actual-owner lookup throws. Existing failed/active guard terminal; full native base SEH and rollback excluded"
+  },
+  "repaired_by_primary": [
+    {
+      "address": "00abf4f0",
+      "end_inclusive": "00abf58d",
+      "evidence": "Exact function restored under primary ownership; worker readonly proto/decompile/disasm verified"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00abf4c0",
+      "end_inclusive": "00abf4e7",
+      "relevance": "Separate type membership leaf, not required by these implemented routines; raw bytes show RET4 at4E0 and4E5"
+    }
+  ],
+  "seh_evidence": {
+    "handler": "00cb8476",
+    "function_info": "00def334",
+    "unwind_map": "00def324",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "funclet": "00cb8460",
+        "tail": "00aa9730"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "funclet": "00cb8468",
+        "tail": "0041dd20",
+        "this_adjustment": "EC"
+      }
+    ]
+  },
+  "verification": {
+    "strict_tu": {
+      "command": "cl /nologo /std:c++17 /EHsc /W4 /WX /fp:strict /permissive- /c /I include src/gui_section_runtime.cpp /Folocal/section_texture.obj",
+      "result": "pass; MSVC x86"
+    },
+    "local_fixture": {
+      "path": "local/section_texture_probe.cpp",
+      "result": "pass; canonical UV callback visibility, atlas texture rereads, actual+04 retain, explicit scratch branches and miss preservation",
+      "link": "/MANIFEST:EMBED",
+      "scope": "Existing resolver plus updated canonical Section field storage only; no full new Section owner/setter execution"
+    },
+    "report_calls": "pass: 13 direct call rows checked, 0 failed; 16 indirect rows explicitly listed and inspected in live disassembly",
+    "combined_build": "primary integrator",
+    "abi_compatible": false,
+    "game_validated": false,
+    "visual_validated": false,
+    "native_differential": false
+  },
+  "remaining": [
+    "ABF5B0 copy",
+    "ABEC40/native Section pool and original raw allocation ABI",
+    "full native SEH/base unwind and rollback",
+    "actual production GUI singleton/atlas/current renderer/callable texture profiles supplied by existing domains",
+    "full Section owner runtime/gameplay/visual proof"
+  ]
+}
