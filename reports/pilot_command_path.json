@@ -1,0 +1,479 @@
+{
+  "packet": "cc2_pilot_command_path",
+  "worker": "agent/cc2-pilot-command-path",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": "none (read-only: no rename, comment, function creation, prototype or save)",
+  "document": "docs/PILOT_COMMAND_PATH.md",
+  "sources": ["include/bsp/pilot_command_path.hpp", "src/pilot_command_path.cpp"],
+  "build": "scripts/build.ps1 clean, Win32 Release, warnings as errors; ctest 1/1 reconstructed_math passed",
+  "headline": "Both producers' callers are found and the five axes have the game's own names. The bot's caller is 0099ACD0 (PilotBot vtable +0Ch) at call site 0099B0A0; the player's is 00519BB0 (pilot HUD screen vtable 00CEC578+38h) at call site 00519CF7. 007D5D20 reads the control block out of the unit's Lua property bag field by field, and the key string that follows each field pointer names it: +9E4h yawInput, +9E8h pitchInput, +9ECh rollInput, +9F0h pwrInput, +9F4h airBrakeInput, +9F9h turboInput, +9FAh gunFire.",
+
+  "routines": [
+    {
+      "address": "0099acd0",
+      "native": "0099acd0",
+      "name": "BSP_PilotBot_Tick",
+      "abi": "__thiscall(bot, float dt), RET 4",
+      "body": "0099acd0-0099b1a3 (raw; no Ghidra function)",
+      "vtable": "00d1f348+0ch",
+      "coverage": "partial: 0099acd0-0099ae6b (the task-list maintenance pass) unread; the command-production window 0099ae6c-0099b1a3 is complete",
+      "status": "reconstructed",
+      "role": "the pilot bot's think tick; the only caller of 0099BEE0 and the bot's route into unit+9FCh"
+    },
+    {
+      "address": "00519bb0",
+      "native": "00519bb0",
+      "name": "BSP_HudPilotScreen_Update",
+      "abi": "__thiscall(screen, float dt), RET 4",
+      "body": "00519bb0-00519d3d (raw; no Ghidra function)",
+      "vtable": "00cec578+38h",
+      "coverage": "complete",
+      "status": "reconstructed",
+      "role": "the pilot HUD screen's per-frame update; the only caller of 00519520"
+    },
+    {
+      "address": "00519520",
+      "native": "00519520",
+      "name": "BSP_PlanePilotView_BuildPlayerCommand",
+      "abi": "__thiscall(view, float dt), RET 4",
+      "body": "00519520-00519823",
+      "coverage": "signature and terminal call only; the body is docs/PILOT_CONTROLS.md's",
+      "status": "analyzed"
+    },
+    {
+      "address": "007bb9a0",
+      "native": "007bb9a0",
+      "name": "BSP_Plane_IsLocalInputEnabled",
+      "abi": "bool __thiscall(unit), RET 0",
+      "body": "007bb9a0-007bba0c",
+      "coverage": "complete",
+      "status": "reconstructed",
+      "role": "the gate 00519BB0 uses to decide between piloting and handing the unit to the spectator HUD"
+    },
+    {
+      "address": "007c2810",
+      "native": "007c2810",
+      "name": "BSP_PlaneStateRecord_GetOrCreate",
+      "abi": "__thiscall(owner) returning owner+0Ch, RET 4",
+      "body": "007c2810-007c2874",
+      "coverage": "complete",
+      "status": "analyzed",
+      "role": "the lazy 0x84-byte session-message payload cached at owner+0Ch; NOT the pilot command block"
+    },
+    {
+      "address": "007c2880",
+      "native": "007c2880",
+      "name": "BSP_Plane_SendControlStateMessage",
+      "abi": "__thiscall(unit, ctx, flag), RET 8",
+      "body": "007c2880-007c29e8 (raw; no Ghidra function)",
+      "vtable": "00d05f20+188h",
+      "coverage": "complete",
+      "status": "analyzed",
+      "role": "builds the 0C1h control-state message from unit+9E4h and sends it; the peer of 007D1360"
+    },
+    {
+      "address": "007d0b80",
+      "native": "007d0b80",
+      "name": "BSP_Plane_HandleStateMessageKinds",
+      "abi": "__thiscall(unit, msg), RET 4",
+      "body": "007d0b80-007d1353 (RET 4 at 007d1351)",
+      "vtable": "00d05f20+208h",
+      "coverage": "partial: the kind arms past 007d0da8 unread; the single control write is complete",
+      "status": "analyzed",
+      "role": "dispatches on message kinds 63h-67h; its only control-block write is unit+9E8h = 0.0f"
+    },
+    {
+      "address": "007d1360",
+      "native": "007d1360",
+      "name": "BSP_Plane_ApplyControlStateMessage",
+      "abi": "__thiscall(unit, msg), RET 4",
+      "body": "007d1360-007d1b4b",
+      "vtable": "00d05f20+18ch",
+      "coverage": "partial: the two restore passes complete, 007d17c1-007d1b4b unread",
+      "status": "reconstructed",
+      "role": "writes msg+38h..+4Ch into BOTH unit+9E4h..+9F8h and unit+9FCh..+A10h and never sets unit+A14h, so it bypasses the quantiser"
+    },
+    {
+      "address": "007d5d20",
+      "native": "007d5d20",
+      "name": "BSP_Plane_ReadPropertyBag",
+      "abi": "__thiscall(unit), RET 0",
+      "body": "007d5d20-007d771e (raw; no Ghidra function)",
+      "vtable": "00d05f20+a0h",
+      "coverage": "partial: the Lua block 007d67cc-007d6cff only",
+      "status": "analyzed",
+      "role": "reads the control and dynamics groups out of the unit's Lua property bag; the source of the recovered axis names and a producer of unit+9E4h..+9FAh"
+    },
+    {
+      "address": "0099b450",
+      "native": "0099b450",
+      "name": "BSP_PilotBot_SeedPlanSlots",
+      "abi": "__thiscall(task+4h), RET 0",
+      "body": "0099b450-0099b588",
+      "coverage": "complete for the five slots",
+      "status": "analyzed"
+    },
+    {
+      "address": "0099bb40",
+      "native": "0099bb40",
+      "name": "BSP_PilotBot_SlewSlot",
+      "abi": "__thiscall(slot, float rate, float dt) returning float, RET 8",
+      "body": "0099bb40-0099bbf8",
+      "coverage": "complete",
+      "status": "reconstructed"
+    },
+    {
+      "address": "0099bc00",
+      "native": "0099bc00",
+      "name": "BSP_PilotBot_EvaluatePlanSlotAxes",
+      "abi": "__thiscall(slots, void* out, float rate, float dt), RET 0Ch",
+      "body": "0099bc00-0099bda0",
+      "coverage": "complete",
+      "status": "reconstructed"
+    },
+    {
+      "address": "0099bee0",
+      "native": "0099bee0",
+      "name": "BSP_PilotBot_EvaluatePlanSlots",
+      "abi": "__thiscall(bot, void* out, float rate, float dt), RET 0Ch",
+      "body": "0099bee0-0099bf25",
+      "coverage": "complete",
+      "status": "reconstructed"
+    },
+    {
+      "address": "0099bf30",
+      "native": "0099bf30",
+      "name": "BSP_PilotBot_RepairCommandBands",
+      "abi": "__thiscall(bot, float* cmd), RET 4",
+      "body": "0099bf30-0099c202",
+      "coverage": "partial: past 0099c130 unread",
+      "status": "analyzed"
+    }
+  ],
+
+  "host_steps": [
+    {
+      "address": "0099bf01",
+      "native": "0099bc00",
+      "function": "0099bee0",
+      "step": "0099BEE0 hands the plan-slot array task+278h to the per-axis evaluator",
+      "evidence": "0099BEF7 LEA ECX,[ESI+274h] with ESI the routine's this = task+4h"
+    },
+    {
+      "address": "0099bc17",
+      "native": "0099bb40",
+      "function": "0099bc00",
+      "step": "slot 0 (+274h, pwrInput) slewed; the result is clamped to [0,1] and stored at out+0Ch",
+      "evidence": "ECX = EDI, the array base; MOVSS [ESI+0Ch],XMM0 at 0099BC5D"
+    },
+    {
+      "address": "0099bc65",
+      "native": "0099bb40",
+      "function": "0099bc00",
+      "step": "slot 1 (+280h, yawInput) slewed; clamped to [-1,1] and stored at out+0h",
+      "evidence": "0099BC56 LEA ECX,[EDI+0Ch]; MOVSS [ESI],XMM0 at 0099BCB0"
+    },
+    {
+      "address": "0099bcb7",
+      "native": "0099bb40",
+      "function": "0099bc00",
+      "step": "slot 2 (+28Ch, rollInput) slewed; clamped to [-1,1] and stored at out+8h",
+      "evidence": "0099BCA9 LEA ECX,[EDI+18h]; MOVSS [ESI+8],XMM0 at 0099BD02"
+    },
+    {
+      "address": "0099bd0a",
+      "native": "0099bb40",
+      "function": "0099bc00",
+      "step": "slot 3 (+298h, pitchInput) slewed; clamped to [-1,1] and stored at out+4h",
+      "evidence": "0099BCFB LEA ECX,[EDI+24h]"
+    },
+    {
+      "address": "0099bd5d",
+      "native": "0099bb40",
+      "function": "0099bc00",
+      "step": "slot 4 (+2A4h, airBrakeInput) slewed; clamped to [0,1] and stored at out+10h",
+      "evidence": "0099BD4E LEA ECX,[EDI+30h]"
+    },
+    {
+      "address": "009998d2",
+      "native": "0099b450",
+      "function": "009998a0",
+      "step": "BSP_PilotBot_Update seeds both halves of the five slots from the live control block before the task states run",
+      "evidence": "0099B450 MOV EAX,[ECX+2F0h] then the five MOVSS pairs at 0099B456-0099B4E0"
+    },
+    {
+      "address": "00999907",
+      "native": "0099d300",
+      "function": "009998a0",
+      "step": "BSP_PilotBot_PlanControls writes the slots' desired halves and their active bytes",
+      "evidence": "0099D35A/0099D362, 0099D36F/0099D377, 0099D384/0099D38C, 0099D399/0099D3A1, 0099D3A8"
+    },
+    {
+      "address": "009999aa",
+      "native": "0099d300",
+      "function": "009998a0",
+      "step": "the second BSP_PilotBot_PlanControls call site",
+      "evidence": "ghidra xrefs 0099d300"
+    },
+    {
+      "address": "00519818",
+      "native": "007b8c90",
+      "function": "00519520",
+      "step": "the player's command block reaches unit+9FCh; unit+A14h becomes 1",
+      "evidence": "00519810 MOV ECX,[ESI+1Ch]; 00519813 LEA EDX,[ESP+14h]; 00519817 PUSH EDX"
+    },
+    {
+      "address": "007c2a62",
+      "native": "007c2810",
+      "function": "007c29f0",
+      "step": "the 0x84 record's second lazy-getter call site, in the sibling send path",
+      "evidence": "ghidra xrefs 007c2810"
+    },
+    {
+      "address": "007c2be7",
+      "native": "007c2810",
+      "function": "007c2af0",
+      "step": "the 0x84 record's third lazy-getter call site, in the two-way serialiser",
+      "evidence": "ghidra xrefs 007c2810"
+    }
+  ],
+
+  "undisassembled_call_sites": [
+    {
+      "site": "0099b0a0",
+      "callee": "0099bee0",
+      "enclosing": "0099acd0",
+      "note": "the single E8 displacement in the image that lands on 0099BEE0; the call site is in undisassembled code, so tools/verify_report_calls.py cannot check it",
+      "evidence": "0099B07C LEA EDI,[EBX+4]; 0099B084 MOV ECX,EDI; the two floats at [ESP] = 4.0f (00CE3D34) and [ESP+4] = dt, and the out pointer [ESP+10h] pushed at 0099B07F"
+    },
+    {
+      "site": "0099b0ac",
+      "callee": "0099bf30",
+      "enclosing": "0099acd0",
+      "note": "the band repair over the same buffer",
+      "evidence": "0099B0A5 LEA EDX,[ESP+10h]; 0099B0A9 PUSH EDX; 0099B0AA MOV ECX,EDI"
+    },
+    {
+      "site": "0099b0b9",
+      "callee": "007b8c90",
+      "enclosing": "0099acd0",
+      "note": "the bot's commit into unit+9FCh - the link docs/PILOT_CONTROLS.md left open",
+      "evidence": "0099B0B1 MOV ECX,[ESI+50h]; 0099B0B4 LEA EAX,[ESP+10h]; 0099B0B8 PUSH EAX"
+    },
+    {
+      "site": "0099af1c",
+      "callee": "009998a0",
+      "enclosing": "0099acd0",
+      "note": "the task state machine; this = ebx, the task",
+      "evidence": "0099AF16 PUSH ECX; 0099AF17 MOV ECX,EBX; 0099AF19 FSTP [ESP]"
+    },
+    {
+      "site": "0099b055",
+      "callee": "007bb150",
+      "enclosing": "0099acd0",
+      "note": "unit+DF0h = scratch ? unit+9C3h[prev*8] : 0",
+      "evidence": "0099B04D MOV EAX,[ESP+0Ch]; 0099B051 MOV ECX,[ESI+50h]; 0099B054 PUSH EAX"
+    },
+    {
+      "site": "00519cf7",
+      "callee": "00519520",
+      "enclosing": "00519bb0",
+      "note": "the single E8 displacement in the image that lands on 00519520; the caller is in undisassembled code",
+      "evidence": "00519CED FLD [ESP+24h]; 00519CF1 PUSH ECX; 00519CF2 MOV ECX,ESI; 00519CF4 FSTP [ESP]"
+    },
+    {
+      "site": "00519c9a",
+      "callee": "007bb9a0",
+      "enclosing": "00519bb0",
+      "note": "the local-input gate; false hands the unit to the spectator HUD and returns",
+      "evidence": "00519C97 MOV ECX,[ESI+1Ch]; 00519C9F TEST AL,AL; 00519CA1 JNZ 00519CDE"
+    },
+    {
+      "site": "00519bf0",
+      "callee": "00927f30",
+      "enclosing": "00519bb0",
+      "note": "BSP_UnitInstance_IsLocalPlayerRole(unit, 1) chooses ingame.pilotplayer vs ingame.pilotai",
+      "evidence": "00519BEB MOV ECX,[ESI+1Ch]; 00519BEE PUSH 1"
+    },
+    {
+      "site": "00519cb6",
+      "callee": "00647300",
+      "enclosing": "00519bb0",
+      "note": "BSP_InGameHudRoot_SetSpectatedUnit on the gate's false arm",
+      "evidence": "00519CA6 MOV EAX,[EDX+9D4h]; 00519CB5 PUSH EAX"
+    },
+    {
+      "site": "00519cc7",
+      "callee": "004cc460",
+      "enclosing": "00519bb0",
+      "note": "BSP_FrontEndManager_PushInterfaceRequest(mgr, 24h, unit) on the gate's false arm",
+      "evidence": "00519CC4 PUSH EDX; 00519CC5 PUSH 24h"
+    },
+    {
+      "site": "007c299a",
+      "callee": "007bdd30",
+      "enclosing": "007c2880",
+      "note": "the 0C1h control-state message; the last push is LEA ECX,[ESI+9E4h] at 007C2979, so the control block is the message's source",
+      "evidence": "007C2987 PUSH EAX; 007C2988 PUSH EBX; 007C2989 PUSH EDI; 007C2991 PUSH EAX; 007C2992 PUSH ESI; 007C2993 LEA ECX,[ESP+84h]"
+    },
+    {
+      "site": "007c298c",
+      "callee": "007c2810",
+      "enclosing": "007c2880",
+      "note": "the 0x84 record handed to 007BDD30 as its third argument",
+      "evidence": "007C298A MOV ECX,ESI; 007C2991 PUSH EAX"
+    },
+    {
+      "site": "007c2904",
+      "callee": "007c2810",
+      "enclosing": "007c2880",
+      "note": "the first lazy-getter call; record+2Ch and record+30h are tested at 007C291F and 007C291A",
+      "evidence": "007C28FD PUSH EDI; 007C28FE MOV ECX,ESI"
+    },
+    {
+      "site": "007d696f",
+      "callee": "00bd8e20",
+      "enclosing": "007d5d20",
+      "note": "BSP_LuaReader_EnterKey(reader, 0, \"control\") opens the axis group",
+      "evidence": "007D6968 MOV [EAX+4],00D05DAC"
+    },
+    {
+      "site": "007d69a6",
+      "callee": "00bd6830",
+      "enclosing": "007d5d20",
+      "note": "BSP_LuaReader_ReadField(reader, 0, \"pwrInput\", 2, &unit+9F0h) - the pattern that names all five axes",
+      "evidence": "007D697D MOV [EAX],2; 007D6983 LEA ECX,[ESI+9F0h]; 007D699F MOV [EAX+4],00D05DA0"
+    }
+  ],
+
+  "no_ghidra_function": [
+    {
+      "address": "0099acd0",
+      "name": "BSP_PilotBot_Tick",
+      "end_address": "0099b1a3",
+      "evidence": "0099ABD0 (after ten int3 from 0099ABC6) ends RET 4 at 0099ACCC with one int3 at 0099ACCF; 0099ACD0 opens SUB ESP,1Ch; PUSH ESI; MOV ESI,ECX; the only RET after it besides the same-shaped early-out at 0099AD65 is 0099B1A3, followed by int3 to 0099B1AF"
+    },
+    {
+      "address": "00519bb0",
+      "name": "BSP_HudPilotScreen_Update",
+      "end_address": "00519d3d",
+      "evidence": "three int3 from 00519BAD after 00519B00's stored body ends at 00519BAC; SEH prologue MOV EAX,FS:[0]; PUSH -1; PUSH 00C6AA60 at 00519BB0; RET 4 at 00519D3D; 00519D40 begins the next routine"
+    },
+    {
+      "address": "007c2880",
+      "name": "BSP_Plane_SendControlStateMessage",
+      "end_address": "007c29e8",
+      "evidence": "eleven int3 from 007C2875 after 007C2810's body; SEH prologue PUSH -1; MOV EAX,FS:[0] at 007C2880; MOV ESI,ECX at 007C289E; RET 8 at 007C29E8 with int3 to 007C29EF"
+    },
+    {
+      "address": "007d5d20",
+      "name": "BSP_Plane_ReadPropertyBag",
+      "end_address": "007d771e",
+      "evidence": "007D5AC0's stored body ends RET at 007D5D1F; SEH prologue PUSH -1; MOV EAX,FS:[0]; PUSH 00C8D786 at 007D5D20; SUB ESP,744h; MOV ESI,ECX at 007D5D41; the only RET in 007D5D20-007D771F is at 007D771E after MOV FS:[0],ECX at 007D7710 and ADD ESP,750h; int3 at 007D771F and the next defined function at 007D7720"
+    }
+  ],
+
+  "flow_gaps": [
+    {
+      "address": "007d5ac0",
+      "site": "007d6983",
+      "note": "closed, not a gap: docs/PILOT_CONTROLS.md attributed 007D6983 and 007D69BA to 007D5AC0 because the index does. 007D5AC0's body really ends at its RET at 007D5D1F; both sites are inside 007D5D20, which the disk bytes establish as a separate function."
+    }
+  ],
+  "free_call_gaps": "none: no _free-class call in any routine read here produced a spurious return",
+
+  "axes": [
+    {"pointer_site": "007d69ba", "reader": "00bd6830", "offset": "unit+9e4h", "name": "yawInput", "key": "00d05d94", "latched": "unit+bb0h yawF", "command": "unit+9fch", "clamp": "[-1,1]", "plan_slot": "task+4h+280h"},
+    {"pointer_site": "007d6a28", "reader": "00bd6830", "offset": "unit+9e8h", "name": "pitchInput", "key": "00d05d7c", "latched": "unit+bb4h pitchF", "command": "unit+a00h", "clamp": "[-1,1]", "plan_slot": "task+4h+298h"},
+    {"pointer_site": "007d69f1", "reader": "00bd6830", "offset": "unit+9ech", "name": "rollInput", "key": "00d05d88", "latched": "unit+bb8h rollF", "command": "unit+a04h", "clamp": "[-1,1]", "plan_slot": "task+4h+28ch"},
+    {"pointer_site": "007d6983", "reader": "00bd6830", "offset": "unit+9f0h", "name": "pwrInput", "key": "00d05da0", "latched": "unit+bbch pwrF", "command": "unit+a08h", "clamp": "[0,1]", "plan_slot": "task+4h+274h"},
+    {"pointer_site": "007d6a5f", "reader": "00bd6830", "offset": "unit+9f4h", "name": "airBrakeInput", "key": "00d05d6c", "latched": "unit+bc0h airBrakeF", "command": "unit+a0ch", "clamp": "[0,1]", "plan_slot": "task+4h+2a4h"},
+    {"pointer_site": "007d6acd", "reader": "00bd6830", "offset": "unit+9f9h", "name": "turboInput", "key": "00d05d58", "latched": "unit+bcah", "command": "none established", "clamp": "byte", "plan_slot": "none"},
+    {"pointer_site": "007d6a90", "reader": "00bd6830", "offset": "unit+9fah", "name": "gunFire", "key": "00d05d64", "latched": "unit+bc9h", "command": "none established", "clamp": "byte", "plan_slot": "none"}
+  ],
+
+  "names_added": [
+    {"address": "0099acd0", "name": "BSP_PilotBot_Tick", "kind": "new"},
+    {"address": "00519bb0", "name": "BSP_HudPilotScreen_Update", "kind": "new"},
+    {"address": "007bb9a0", "name": "BSP_Plane_IsLocalInputEnabled", "kind": "new"},
+    {"address": "007c2810", "name": "BSP_PlaneStateRecord_GetOrCreate", "kind": "new"},
+    {"address": "007c2880", "name": "BSP_Plane_SendControlStateMessage", "kind": "new"},
+    {"address": "007d0b80", "name": "BSP_Plane_HandleStateMessageKinds", "kind": "new"},
+    {"address": "007d1360", "name": "BSP_Plane_ApplyControlStateMessage", "kind": "new"},
+    {"address": "007d5d20", "name": "BSP_Plane_ReadPropertyBag", "kind": "new"},
+    {"address": "0099bb40", "name": "BSP_PilotBot_SlewSlot", "kind": "new"},
+    {"address": "0099bc00", "name": "BSP_PilotBot_EvaluatePlanSlotAxes", "kind": "new"},
+    {"address": "0099bf30", "name": "BSP_PilotBot_RepairCommandBands", "kind": "new"},
+    {"address": "00519520", "name": "BSP_PlanePilotView_BuildPlayerCommand", "kind": "evidence appended (signature and caller)"},
+    {"address": "0099bee0", "name": "BSP_PilotBot_EvaluatePlanSlots", "kind": "evidence appended (caller and out identity)"},
+    {"address": "0099b450", "name": "BSP_PilotBot_SeedPlanSlots", "kind": "evidence appended (slot-to-axis map)"}
+  ],
+
+  "corrections": [
+    {
+      "document": "docs/PLANE_FLIGHT.md",
+      "was": "unit+9E4h is roll, unit+9ECh is yaw, and unit+9F4h is an unnamed fifth axis",
+      "is": "unit+9E4h is yawInput, unit+9ECh is rollInput, and unit+9F4h is airBrakeInput",
+      "evidence": "007D5D20 reads each field through BSP_LuaReader_ReadField(reader, 0, key, 2, &field), pushing {2,&field} then {0,key}: 007D69BA/007D69D6 pairs unit+9E4h with 00D05D94 'yawInput', 007D69F1/007D6A0D pairs unit+9ECh with 00D05D88 'rollInput', 007D6A5F/007D6A7B pairs unit+9F4h with 00D05D6C 'airBrakeInput'. The dynamics group names the latched copies the same way (unit+BB0h yawF, unit+BB8h rollF, unit+BC0h airBrakeF), matching the latch 007B9770's permutation. 0099BC00 clamps only the +9F0h and +9F4h commands to [0,1]."
+    },
+    {
+      "document": "docs/PLANE_FLIGHT.md",
+      "was": "the rate law's yaw term is classDesc+1B0h YawSpd times the latched roll unit+0BB0h",
+      "is": "unit+BB0h is yawF, the latched yawInput, so the term is YawSpd times the latched yaw; the two readings docs/PILOT_CONTROLS.md called contradictory agree once the labels are fixed, because unit+9ECh carrying the horizontal aim error is a bank-to-turn roll command",
+      "evidence": "007D6BB2 pairs unit+BB0h with 00D05D30 'yawF'; 007B9770 copies unit+9E4h to unit+BB0h"
+    },
+    {
+      "document": "docs/PILOT_CONTROLS.md",
+      "was": "0099BEE0's out record is the 0x84-byte block 007C2810 allocates, and the bot's axes reach unit+9E4h over the session message path (marked a hypothesis)",
+      "is": "out is a six-dword stack buffer in 0099ACD0 at [ESP+10h], handed straight to 007B8C90 at 0099B0B9. The 0x84 record is the 0C1h session-message payload cached at owner+0Ch; its first six dwords only share the control block's default (0,0,0,1.0f,0,0)",
+      "evidence": "0099B086-0099B09A zeroes [ESP+1Ch]..[ESP+30h] and sets [ESP+28h] to 1.0f; 0099B07F pushes LEA ECX,[ESP+18h]; 0099B0B4 LEA EAX,[ESP+10h] then 0099B0B9 CALL 007B8C90 with ECX = [ESI+50h]. 007BDD30 pre-sets msg+38h..+4Ch to the same defaults at 007BDD88-007BDD9B and 007BDEAF-007BDED6 fills them from [&unit+9E4h]"
+    },
+    {
+      "document": "docs/PILOT_CONTROLS.md",
+      "was": "00519520 BSP_PlanePilotView_BuildPlayerCommand(view)",
+      "is": "__thiscall(view, float dt), RET 4",
+      "evidence": "00519520 SUB ESP,28h; PUSH ESI; MOV ESI,ECX, epilogue RET 4 at 00519821; the caller pushes the float at 00519CED-00519CF4"
+    },
+    {
+      "document": "docs/PILOT_CONTROLS.md",
+      "was": "the control-block writer list names 007D5AC0",
+      "is": "007D5D20, and it does not store to the block: it passes the field pointers to BSP_LuaReader_ReadField, which writes them",
+      "evidence": "007D5AC0's Ghidra body ends at its RET at 007D5D1F; 007D5D20 is a separate SEH function ending at 007D771E; its only references to the block are LEA at 007D6983, 007D69BA, 007D69F1, 007D6A28, 007D6A5F, 007D6A90 and 007D6ACD, each stored into a {2, ptr} argument record"
+    },
+    {
+      "document": "docs/PILOT_CONTROLS.md",
+      "was": "the call sites of 00519520 and 0099BEE0 are open questions (no xref, no vtable entry)",
+      "is": "00519CF7 inside 00519BB0 and 0099B0A0 inside 0099ACD0, both in undisassembled code; each is the only E8 displacement in the image that lands on its target, and neither target appears as a dword anywhere",
+      "evidence": "a scan of every executable section of the disk image for E8/E9 rel32 targets and for the four-byte little-endian address"
+    },
+    {
+      "document": "docs/PILOT_CONTROLS.md",
+      "was": "007D0B80 writes unit+9E8h at 007D1331 and unit+9F0h at 007D134E (the packet brief's reading)",
+      "is": "007D1331 is the only control-block store in 007D0B80; 007D134E is inside the epilogue (MOV FS:[0],ECX at 007D1343, POP EBX at 007D134A, ADD ESP,88h at 007D134B)",
+      "evidence": "a grep of the exported listing for every 9Exh/9Fxh/A0xh/A1xh displacement returns the single line 007D1331 MOVSS [ESI+9E8h],XMM0"
+    }
+  ],
+
+  "open_questions": [
+    "the caller of 0099ACD0 (PilotBot vtable +0Ch) and of 00519BB0 (00CEC578+38h); both are virtual-only and no vtable-slot call-site scan was run",
+    "what sets unit+C0Ch, the 007BB9A0 gate that 007D5D20 clears at 007D5D52",
+    "unit+C68h: an angle in radians, compared against ten degrees at 007D1325 and used for the repair sign in 0099BF30; its producer is outside this packet",
+    "who writes unit+9F9h turboInput and unit+9FAh gunFire, given 0099BEE0's out+15h and out+16h land at unit+A11h and unit+A12h and a mod=10 modrm scan of .text finds no reference to either",
+    "unit+9C0h, the eight-byte double-buffered per-step record whose bytes +9C1h, +9C2h and +9C3h gate the bot tick; docs/MOTION_DIFFERENTIAL.md reads unit+9C0h as a ship's maximum speed and +9C8h as a radius, and the two layouts cannot both hold at one base",
+    "contract: unread - 0099B940 (the band table), 0099CFF40, 00999F50, 0099A4C0, 007B9140, 0042A7E0, 007D7A80, 007D8330, 00779FC0, 00779F80, 00637620, 005484F0, 007BA7B0",
+    "coverage gaps: 0099ACD0 before 0099AE6C, 0099BF30 past 0099C130, 007D1360 past 007D17C1, 007D0B80's kind arms past 007D0DA8, 007D5D20 outside its Lua block"
+  ],
+
+  "run_time_evidence": "none taken. The two producers are reached only with a live mission and a plane the local player pilots, which bsp_game.exe does not reach (docs/GAME_EXECUTABLE.md); every claim here is static.",
+
+  "tool_problems": [
+    "ghidra xrefs under-reports: 0099BEE0, 00519520, 0099ACD0, 007C2880 and 007D5D20 all had callers or vtable slots it did not list. Every caller in this report came from scanning the disk image for E8/E9 rel32 targets and for four-byte little-endian addresses.",
+    "bsp.py show --asm resolves exports under the main checkout's exports/bsp, so the listing files are at J:/PROG/battlestations-pacific-decompile/exports/bsp/functions/<addr>/assembly.txt and not under the worktree; Get-ChildItem on the worktree path fails.",
+    "PowerShell in this environment has no rg; Select-String or the Grep tool is needed instead.",
+    "tools/verify_report_calls.py requires a call site to lie inside a Ghidra function, so the twelve call sites inside undisassembled code are listed under undisassembled_call_sites with site/callee keys rather than address/native; the tool structurally cannot check them and Ghidra is read-only for this packet."
+  ],
+
+  "tool_calls": 134
+}
