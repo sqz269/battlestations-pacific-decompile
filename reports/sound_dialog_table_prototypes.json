@@ -1,0 +1,85 @@
+{
+  "reason": "Original ECX, stack cleanup and result verified in assembly; unused_edx records register storage only.",
+  "entries": [
+    {
+      "address": "00a87060",
+      "proposed": "void __fastcall BSP_DialogStreamTable_Parse(void* self, void* unused_edx, void* filename)",
+      "before": "Function: BSP_DialogStreamTable_Parse at 00a87060\nSignature: undefined BSP_DialogStreamTable_Parse(void)\nEntry: 00a87060\nBody: 00a87060 - 00a87370",
+      "apply": "Successfully set prototype for function at 00a87060 with __fastcall calling convention",
+      "after": "Function: BSP_DialogStreamTable_Parse at 00a87060\nSignature: void __fastcall BSP_DialogStreamTable_Parse(void * self, void * unused_edx, void * filename)\nEntry: 00a87060\nBody: 00a87060 - 00a87370",
+      "readback_verified": true
+    },
+    {
+      "address": "00a77ef0",
+      "proposed": "void* __fastcall BSP_DialogChannelRecord_Copy(void* self, void* unused_edx, void* source)",
+      "before": "Function: BSP_DialogChannelRecord_Copy at 00a77ef0\nSignature: undefined BSP_DialogChannelRecord_Copy(void)\nEntry: 00a77ef0\nBody: 00a77ef0 - 00a77f7f",
+      "apply": "Successfully set prototype for function at 00a77ef0 with __fastcall calling convention",
+      "after": "Function: BSP_DialogChannelRecord_Copy at 00a77ef0\nSignature: void * __fastcall BSP_DialogChannelRecord_Copy(void * self, void * unused_edx, void * source)\nEntry: 00a77ef0\nBody: 00a77ef0 - 00a77f7f",
+      "readback_verified": true
+    },
+    {
+      "address": "00a78dc0",
+      "proposed": "void __fastcall BSP_DialogChannelRecords_Reserve(void* self, void* unused_edx, int capacity)",
+      "before": "Function: FUN_00a78dc0 at 00a78dc0\nSignature: undefined FUN_00a78dc0(void)\nEntry: 00a78dc0\nBody: 00a78dc0 - 00a78eb4",
+      "apply": "Successfully set prototype for function at 00a78dc0 with __fastcall calling convention",
+      "after": "Function: BSP_DialogChannelRecords_Reserve at 00a78dc0\nSignature: void __fastcall BSP_DialogChannelRecords_Reserve(void * self, void * unused_edx, int capacity)\nEntry: 00a78dc0\nBody: 00a78dc0 - 00a78eb4",
+      "readback_verified": true
+    },
+    {
+      "address": "00a77ea0",
+      "proposed": "void __fastcall BSP_DialogChannelRecord_Destroy(void* self)",
+      "before": "Function: FUN_00a77ea0 at 00a77ea0\nSignature: undefined FUN_00a77ea0(void)\nEntry: 00a77ea0\nBody: 00a77ea0 - 00a77ebc",
+      "apply": "Successfully set prototype for function at 00a77ea0 with __fastcall calling convention",
+      "after": "Function: BSP_DialogChannelRecord_Destroy at 00a77ea0\nSignature: void __fastcall BSP_DialogChannelRecord_Destroy(void * self)\nEntry: 00a77ea0\nBody: 00a77ea0 - 00a77ebc",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a87060",
+        "prototype": "void __fastcall BSP_DialogStreamTable_Parse(void* self, void* unused_edx, void* filename)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a87060 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a77ef0",
+        "prototype": "void* __fastcall BSP_DialogChannelRecord_Copy(void* self, void* unused_edx, void* source)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a77ef0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a78dc0",
+        "prototype": "void __fastcall BSP_DialogChannelRecords_Reserve(void* self, void* unused_edx, int capacity)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a78dc0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a77ea0",
+        "prototype": "void __fastcall BSP_DialogChannelRecord_Destroy(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a77ea0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

@@ -177,8 +177,13 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost {
         scalar_delete_sound_sample_cache_00a88750(object, flags, samples.sample_cache_context(), lifetime);
     }
     void destroy_query(std::uint32_t flags) {
-        if (auto* object = current_query_lock)
+        if (auto* object = current_query_lock) {
+            // A89B40 clears publication and frees storage, but does not remove
+            // its shared-domain entry. Explicit host teardown must remove that
+            // pointer before freeing it; it is safe after a drain popped it too.
+            services.lifetime.get_manager_00415350()->unregister_object(object);
             scalar_delete_sound_event_query_lock_00a89b40(object, flags, query_lifetime);
+        }
     }
     void recover_failed_constructor() {
         // A88770's recovered EH destroys only the completed base. This is an
