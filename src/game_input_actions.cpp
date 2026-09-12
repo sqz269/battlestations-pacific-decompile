@@ -1,6 +1,17 @@
 #include "bsp/game_input_actions.hpp"
+#include <stdexcept>
 
 namespace bsp::game {
+GameInputDeadlineCallback::GameInputDeadlineCallback(GameInputRuntime& runtime,
+    void* volatile& game, void* map, const volatile double& delay,
+    NativeInputActionDeadlineCalls& calls)
+    : game_(game), deadlines_{runtime.action_context(), map, delay, calls} {}
+void GameInputDeadlineCallback::post_tick(std::uint32_t identity) {
+    if (identity != 0x006965a0)
+        throw std::invalid_argument("unbound native input deadline callback identity");
+    invoke_native_input_action_deadline_callback_006965a0(game_, deadlines_);
+}
+
 struct GameInputActions::Impl final : NativeInputActionTickCalls {
     GameInputRuntime& runtime;
     GameInputActionServices bound;
@@ -39,5 +50,9 @@ void GameInputActions::configure(std::uint32_t index, const void* contexts,
     void* const owner = impl_->runtime.action_owner();
     configure_native_input_action_00a93c80(owner, index, contexts, replace_listener,
         impl_->configuration);
+}
+void GameInputActions::set_context_level(std::uint32_t index, std::uint32_t level) {
+    void* const owner = impl_->runtime.action_owner();
+    set_native_input_context_level_00a933f0(owner, index, level, impl_->configuration);
 }
 } // namespace bsp::game
