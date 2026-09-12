@@ -73,6 +73,7 @@
 #include "bsp/unit_hit_path.hpp"
 #include "bsp/unit_parts.hpp"
 #include "bsp/projectile_impact.hpp"
+#include "bsp/blast_damage.hpp"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -2291,6 +2292,20 @@ int main() {
             bsp::kHudMinimapDepthSelf);
         check(std::fabs(turned.x) < 1e-4f && std::fabs(turned.y - 40.0f / 768.0f) < 1e-4f,
             "005C1B93 rotates by +heading in the mx*cos + my*sin sense");
+    }
+
+    {
+        // 004705C0's blast falloff. The three constants are complete: the 1.0f
+        // the fraction is subtracted from, the strict "> 0" the ignore flag is
+        // gated on, and the unguarded divide by the record's +24h range.
+        check(std::fabs(bsp::blast_falloff_fraction_004705c0(25.0f, 100.0f, false) - 0.75f)
+                  < 1e-6f,
+            "004705E7 scales the part distance by the explosion radius");
+        check(bsp::blast_falloff_fraction_004705c0(150.0f, 100.0f, true) < 0.0f,
+            "00470602 leaves a hit outside the radius negative even when the flag is set");
+        check(std::fabs(bsp::blast_falloff_fraction_004705c0(25.0f, 100.0f, true) - 1.0f)
+                  < 1e-6f,
+            "00470602 lifts a positive fraction to 1.0f");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
