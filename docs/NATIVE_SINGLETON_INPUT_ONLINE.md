@@ -70,7 +70,10 @@ passed. The six report audits checked117 direct CALL/JMP rows with zero failures
 indirect calls were qualified separately. The two-frame application regression
 created its window/device, presented twice, exited0 and drained its three
 existing registrations. That run did not instantiate the new input/online owners.
-No permanent tests or hardware-input/gameplay validation were added.
+No permanent tests or hardware-input/gameplay validation were added. The promoted
+8afc372d application attempt reached the already-running guard while another
+orchestrator's executable was open; the runner ended that test after180 seconds.
+The earlier two-frame pass is not final promoted application runtime proof.
 
 Analysis corrections: four scalar/vector post-free gaps were repaired. A93D80,
 C64D48 andCB6A36 cleanup tails were decoded and their stored bodies recreated

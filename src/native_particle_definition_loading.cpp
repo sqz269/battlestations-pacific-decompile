@@ -1,4 +1,7 @@
 #include "bsp/native_particle_definition_loading.hpp"
+#include "bsp/native_particle_type_factory.hpp"
+#include "bsp/native_particle_type_base.hpp"
+#include "bsp/native_pooled_text_suffix.hpp"
 #include "bsp/native_particle_definition.hpp"
 #include "bsp/native_particle_parameter_loading.hpp"
 #include "bsp/native_pooled_text.hpp"
@@ -38,9 +41,7 @@ public:
     }
     Pooled(const void* line, std::int32_t index,
         NativeParticleDefinitionLoadingBindings& b) : storage_(b.owners.strings) {
-        if (!b.suffix_00af44c0)
-            throw std::logic_error("particle definition requires actual AF44C0 suffix service");
-        b.suffix_00af44c0(b.context,line,&header,index);
+        get_native_pooled_text_suffix_00af44c0(line,&header,index,storage_);
     }
     ~Pooled() { destroy_native_pooled_text_00aee2a0(&header,storage_); }
     Pooled(const Pooled&) = delete;
@@ -278,9 +279,10 @@ void load_child_lines(void* definition,const void* line,void* text,
             String name(name_token.header.data,b.owners.strings);
             Pooled kind_token(line,2,b.owners.strings);
             String kind(kind_token.header.data,b.owners.strings);
-            if (!b.particle_factory_00b00ce0)
-                throw std::logic_error("particle definition requires actual B00CE0 child factory");
-            child=b.particle_factory_00b00ce0(b.context,&kind.header,&name.header,definition,text);
+            if (!b.particle_types || &b.particle_types->base.owners != &b.owners)
+                throw std::logic_error("particle definition requires its actual particle type domain");
+            child=create_native_particle_type_definition_00b00ce0(
+                &kind.header,&name.header,definition,text,*b.particle_types);
         }
         (void)publish_native_particle_particle_member_00af9f20(definition,child);
     }

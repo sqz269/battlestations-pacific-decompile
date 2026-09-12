@@ -1,0 +1,1074 @@
+{
+  "packet": "orch3_particle_base_ap",
+  "recorded_utc": "2026-09-12T13:07:56.114965-07:00",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "no_pe_relocations": true,
+  "functions": [
+    {
+      "address": "00b01150",
+      "end_inclusive": "00b012e8",
+      "bytes": 409,
+      "sha256": "9e050dfdc0518d504504a7de96ace1faa2996b72fc9e34385d2b3eaa2f5cf15c",
+      "live_disk_equal": true,
+      "last_instruction": "00b012e6: ret 0xc",
+      "calls": [
+        {
+          "address": "00b011b4",
+          "native": "0041dd40",
+          "function": "00b01150",
+          "offset": 101
+        },
+        {
+          "address": "00b011cc",
+          "native": "00bf7680",
+          "function": "00b01150",
+          "offset": 125
+        },
+        {
+          "address": "00b01274",
+          "native": "00c2dfce",
+          "function": "00b01150",
+          "offset": 293
+        },
+        {
+          "address": "00b01290",
+          "native": "00b00c20",
+          "function": "00b01150",
+          "offset": 321
+        }
+      ],
+      "proposed_name": "BSP_ParticleTypeBase_Construct",
+      "original_abi": "ECX actual owner; stack(name8h,word14,parent18); RET0C; EAX owner",
+      "coverage": "complete_native_body",
+      "uncertainty": "new C++ interface, no original FH3 ABI; constructor record+18 explicitly supplied native stack residue",
+      "end_exclusive": "00b012e9",
+      "source": "src/native_particle_type_base.cpp",
+      "header": "include/bsp/native_particle_type_base.hpp",
+      "cpp_symbol": "construct_native_particle_type_base_00b01150",
+      "ghidra_name": "BSP_ParticleTypeBase_Construct",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ParticleTypeBase_Construct(void * name, unsigned int word, void * parent)",
+      "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated.",
+      "prototype_qualification_note": "Ghidra API cannot resolve const void pointer; ABI annotation uses void pointer. Source/header retain read-only input contract; original C++ type not recovered."
+    },
+    {
+      "address": "00b00c20",
+      "end_inclusive": "00b00ca4",
+      "bytes": 133,
+      "sha256": "9306985af1f23d030900a90f906f94530587b1baa161ade5fd4b16b324f7cfde",
+      "live_disk_equal": true,
+      "last_instruction": "00b00ca2: ret 4",
+      "calls": [
+        {
+          "address": "00b00c4f",
+          "native": "00bf55be",
+          "function": "00b00c20",
+          "offset": 48
+        },
+        {
+          "address": "00b00c90",
+          "native": "00bf6989",
+          "function": "00b00c20",
+          "offset": 113
+        }
+      ],
+      "proposed_name": "BSP_ParticleTypeRecords_Reserve",
+      "original_abi": "ECX actual descriptor; stack(signed requested capacity); RET4; EAX unspecified",
+      "coverage": "complete_native_body",
+      "uncertainty": "descriptive name is a hypothesis; no gameplay validation",
+      "end_exclusive": "00b00ca5",
+      "source": "src/native_particle_type_base.cpp",
+      "header": "include/bsp/native_particle_type_base.hpp",
+      "cpp_symbol": "reserve_native_particle_type_records_00b00c20",
+      "ghidra_name": "BSP_ParticleTypeRecords_Reserve",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleTypeRecords_Reserve(int requested)",
+      "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated."
+    },
+    {
+      "address": "00b00fb0",
+      "end_inclusive": "00b0112f",
+      "bytes": 384,
+      "sha256": "76e902238cbf803a2d3db479884151944440be4c75039308a7905c89db622c72",
+      "live_disk_equal": true,
+      "last_instruction": "00b0112f: ret ",
+      "calls": [
+        {
+          "address": "00b00fe5",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 54
+        },
+        {
+          "address": "00b00fec",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 61
+        },
+        {
+          "address": "00b00ffa",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 75
+        },
+        {
+          "address": "00b01001",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 82
+        },
+        {
+          "address": "00b0100f",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 96
+        },
+        {
+          "address": "00b01016",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 103
+        },
+        {
+          "address": "00b01024",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 117
+        },
+        {
+          "address": "00b0102b",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 124
+        },
+        {
+          "address": "00b01040",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 145
+        },
+        {
+          "address": "00b01047",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 152
+        },
+        {
+          "address": "00b01055",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 166
+        },
+        {
+          "address": "00b0105c",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 173
+        },
+        {
+          "address": "00b0106a",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 187
+        },
+        {
+          "address": "00b01071",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 194
+        },
+        {
+          "address": "00b0107f",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 208
+        },
+        {
+          "address": "00b01086",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 215
+        },
+        {
+          "address": "00b01094",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 229
+        },
+        {
+          "address": "00b0109b",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 236
+        },
+        {
+          "address": "00b010a9",
+          "native": "00affdf0",
+          "function": "00b00fb0",
+          "offset": 250
+        },
+        {
+          "address": "00b010b0",
+          "native": "00b00090",
+          "function": "00b00fb0",
+          "offset": 257
+        },
+        {
+          "address": "00b010c7",
+          "native": "00b00c20",
+          "function": "00b00fb0",
+          "offset": 280
+        },
+        {
+          "address": "00b010e6",
+          "native": "00bf6989",
+          "function": "00b00fb0",
+          "offset": 311
+        },
+        {
+          "address": "00b01104",
+          "native": "00419cc0",
+          "function": "00b00fb0",
+          "offset": 341
+        },
+        {
+          "address": "00b0110b",
+          "native": "00bd1510",
+          "function": "00b00fb0",
+          "offset": 348
+        },
+        {
+          "address": "00b0111a",
+          "native": "00bd30f0",
+          "function": "00b00fb0",
+          "offset": 363
+        }
+      ],
+      "proposed_name": "BSP_ParticleTypeBase_Destroy",
+      "original_abi": "ECX owner; RET; EAX unspecified",
+      "coverage": "complete_native_body",
+      "uncertainty": "descriptive name is a hypothesis; no gameplay validation",
+      "end_exclusive": "00b01130",
+      "source": "src/native_particle_type_base.cpp",
+      "header": "include/bsp/native_particle_type_base.hpp",
+      "cpp_symbol": "destroy_native_particle_type_base_00b00fb0",
+      "ghidra_name": "BSP_ParticleTypeBase_Destroy",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleTypeBase_Destroy(void)",
+      "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated."
+    },
+    {
+      "address": "00b01130",
+      "end_inclusive": "00b0114d",
+      "bytes": 30,
+      "sha256": "fa054ba7cf26b60af55f8db7b6b3c8fafee796b27c9dba5485750ca32729b32b",
+      "live_disk_equal": true,
+      "last_instruction": "00b0114b: ret 4",
+      "calls": [
+        {
+          "address": "00b01133",
+          "native": "00b00fb0",
+          "function": "00b01130",
+          "offset": 4
+        },
+        {
+          "address": "00b01140",
+          "native": "00bf65ac",
+          "function": "00b01130",
+          "offset": 17
+        }
+      ],
+      "proposed_name": "BSP_ParticleTypeBase_ScalarDeletingDestructor",
+      "original_abi": "ECX owner; stack(flags); RET4; EAX captured owner",
+      "coverage": "complete_native_body",
+      "uncertainty": "descriptive name is a hypothesis; no gameplay validation",
+      "end_exclusive": "00b0114e",
+      "source": "src/native_particle_type_base.cpp",
+      "header": "include/bsp/native_particle_type_base.hpp",
+      "cpp_symbol": "delete_native_particle_type_base_00b01130",
+      "ghidra_name": "BSP_ParticleTypeBase_ScalarDeletingDestructor",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ParticleTypeBase_ScalarDeletingDestructor(unsigned int flags)",
+      "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated."
+    },
+    {
+      "address": "00b00920",
+      "end_inclusive": "00b00940",
+      "bytes": 33,
+      "sha256": "d62e5888af5c8054989b3299d58a64e057345f37c1139b494dc793c239f3497e",
+      "live_disk_equal": true,
+      "last_instruction": "00b00940: ret ",
+      "calls": [],
+      "proposed_name": "BSP_ParticleTypeBase_ClampRecordRange",
+      "original_abi": "ECX owner; RET; EAX new+54",
+      "coverage": "complete_native_body",
+      "uncertainty": "descriptive name is a hypothesis; no gameplay validation",
+      "ghidra_function_at_capture": false,
+      "end_exclusive": "00b00941",
+      "source": "src/native_particle_type_base.cpp",
+      "header": "include/bsp/native_particle_type_base.hpp",
+      "cpp_symbol": "clamp_native_particle_type_record_range_00b00920",
+      "ghidra_name": "BSP_ParticleTypeBase_ClampRecordRange",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "int __thiscall BSP_ParticleTypeBase_ClampRecordRange(void)",
+      "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated."
+    },
+    {
+      "address": "00b00740",
+      "end_inclusive": "00b00742",
+      "bytes": 3,
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "live_disk_equal": true,
+      "last_instruction": "00b00740: ret 4",
+      "calls": [],
+      "proposed_name": "BSP_ParticleTypeBase_NoOpWord",
+      "original_abi": "ECX ignored; one ignored stack word; RET4; EAX untouched",
+      "coverage": "complete_native_body",
+      "uncertainty": "descriptive name is a hypothesis; no gameplay validation",
+      "ghidra_function_at_capture": false,
+      "end_exclusive": "00b00743",
+      "source": "src/native_particle_type_base.cpp",
+      "header": "include/bsp/native_particle_type_base.hpp",
+      "cpp_symbol": "native_particle_type_noop_00b00740",
+      "ghidra_name": "BSP_ParticleTypeBase_NoOpWord",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleTypeBase_NoOpWord(unsigned int ignored)",
+      "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated."
+    }
+  ],
+  "bindings": {
+    "owners": "SAME NativeParticleDefinitionBindings strings/F8D344/refprofile/native allocation domains",
+    "half_import": "actual d3dx9_40 HMODULE; named D3DXFloat32To16Array export",
+    "globals": [
+      "D5DDC0 11word profile",
+      "D7A24C",
+      "CE3804",
+      "CE6650"
+    ],
+    "native_uninitialized_record_word": "explicit initial_record_stack_word18; no synthesized zero"
+  },
+  "corrections": [
+    {
+      "was": "B00C20 gap B00C95..B00C9E after no-return BF6989",
+      "is": "ADD ESP4, store pointer/capacity, POP EDI/EBP; inclusive body B00CA4",
+      "evidence": "live bytes match installed PE full 133-byte span"
+    },
+    {
+      "was": "B00FB0 body ends B010EA",
+      "is": "extend through B0112F RET, including three calls in restored tail",
+      "evidence": "live bytes match installed PE full 384-byte span"
+    },
+    {
+      "was": "B01130 gap B01145..B01147",
+      "is": "ADD ESP4 before EAX return; inclusive body B0114D",
+      "evidence": "full 30-byte span"
+    },
+    {
+      "was": "B00920 and B00740 have no Ghidra function",
+      "is": "create inclusive B00920..B00940 and B00740..B00742",
+      "evidence": "33-byte signed clamp and 3-byte RET4; live=disk"
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/native_particle_type_base.hpp": "28afa3e93f423326a0943350de5fbb518657b475708ba084c8aa78ddc2fd3e99",
+    "src/native_particle_type_base.cpp": "d02cc6784c30d1a928bd05ca69f3c07419e800be25579868d583401cb4ff0746"
+  },
+  "verification": {
+    "strict_compile_command": "C:\\Users\\sqz269\\bsp-ap-base\\compile.cmd",
+    "strict_compile_exit_code": 0,
+    "probe_command": "C:\\Users\\sqz269\\bsp-ap-base\\probe.cmd",
+    "probe_execution_exit_code": 0,
+    "probe_stdout": "PASS: 3 constructor/destructor comparisons including all ten parameter slots, live scalar bits and explicit stack residue; 3 reserve comparisons; 8 scalar deletes; 36 signed range cases; RET4 no-op. Actual d3dx9_40 library import, shared actual parameter pool. Native FH3 normal paths only.",
+    "probe_source_sha256": "7acca887865dc22339456236336d0a720c3b99d71dcf4cf8ec65165ce6c17bfe",
+    "probe_executable_sha256": "8a096b43403686505aa3a69422242ea0bd666fbcafa3a6c1678d3382396d450c",
+    "d3dx9_40_sha256": "16fd909aeb68d0d1aca8529dc7f78880b97d6649d70ce8d03a2c858bc28e216b",
+    "bound_library": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_core.lib",
+    "bound_library_sha256": "effed0d99bdddd3b9273114b158c1aeba65bccabf0b31ec0ed7a3023bac2c9cf",
+    "native_exceptions": "not executed; original FH3 handler addresses unused on normal paths",
+    "permanent_tests_added": 0,
+    "full_project_build": "integrator pending",
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "call_verification_before_repairs": {
+      "command": "python tools/verify_report_calls.py reports/native_particle_type_base.json",
+      "exit_code": 1,
+      "rows_checked": 33,
+      "failures": 3,
+      "failing_sites": [
+        "00b01104",
+        "00b0110b",
+        "00b0111a"
+      ],
+      "reason": "Live Ghidra B00FB0 body is truncated at B010EA; integrator body repair then replay required. All three sites are verified in matching complete live/disk bytes."
+    }
+  },
+  "no_ghidra_function": [
+    {
+      "address": "00b00920",
+      "end_inclusive": "00b00940",
+      "status": "defined_by_primary_under_write_lock"
+    },
+    {
+      "address": "00b00740",
+      "end_inclusive": "00b00742",
+      "status": "defined_by_primary_under_write_lock"
+    }
+  ],
+  "integration_ap_function_repairs": {
+    "ap-base-flow-repair.json": {
+      "repairs": [
+        {
+          "function": "00b00c20",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T20:10:42Z",
+          "decompile_lines_before": 40,
+          "gaps": [
+            {
+              "site": "00b00c90",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b00c95",
+              "gap_end_exclusive": "00b00c9f",
+              "bytes": 10,
+              "after_call": true,
+              "sha256": "f0d2a892bb94936f17e8e780b901b1e7b196e70b62a9401277c270b7d0696b84"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b00c90",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b00c95",
+                "gap_end_exclusive": "00b00c9f",
+                "bytes": 10,
+                "after_call": true,
+                "sha256": "f0d2a892bb94936f17e8e780b901b1e7b196e70b62a9401277c270b7d0696b84"
+              },
+              "clear": "Success: Cleared flow override at 00b00c90 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 10 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00b00c90",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b00c90 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00b00ca5",
+          "explicit_body_sha256": "9306985af1f23d030900a90f906f94530587b1baa161ade5fd4b16b324f7cfde",
+          "body_before": "Function: FUN_00b00c20 at 00b00c20\nSignature: undefined FUN_00b00c20(void)\nEntry: 00b00c20\nBody: 00b00c20 - 00b00ca4",
+          "decompile_lines_after": 43,
+          "gaps_remaining": 0,
+          "body_after": "Function: FUN_00b00c20 at 00b00c20\nSignature: undefined FUN_00b00c20(void)\nEntry: 00b00c20\nBody: 00b00c20 - 00b00ca4",
+          "stored_body_tail_complete": true
+        },
+        {
+          "function": "00b00fb0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T20:10:50Z",
+          "decompile_lines_before": 80,
+          "gaps": [
+            {
+              "site": "00b010e6",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00b010eb",
+              "gap_end_exclusive": "00b01130",
+              "bytes": 69,
+              "after_call": true,
+              "sha256": "ce1674f25e8be2b6dbbfe6b097d31672dacc4a590df629ab0428eaa53df5156d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b010e6",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00b010eb",
+                "gap_end_exclusive": "00b01130",
+                "bytes": 69,
+                "after_call": true,
+                "sha256": "ce1674f25e8be2b6dbbfe6b097d31672dacc4a590df629ab0428eaa53df5156d"
+              },
+              "clear": "Success: Cleared flow override at 00b010e6 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 69 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00b010e6",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b010e6 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00b01130",
+          "explicit_body_sha256": "76e902238cbf803a2d3db479884151944440be4c75039308a7905c89db622c72",
+          "body_before": "Function: FUN_00b00fb0 at 00b00fb0\nSignature: undefined FUN_00b00fb0(void)\nEntry: 00b00fb0\nBody: 00b00fb0 - 00b010ea",
+          "decompile_lines_after": 93,
+          "gaps_remaining": 1,
+          "body_after": "Function: FUN_00b00fb0 at 00b00fb0\nSignature: undefined FUN_00b00fb0(void)\nEntry: 00b00fb0\nBody: 00b00fb0 - 00b010ea",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        },
+        {
+          "function": "00b01130",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T20:11:03Z",
+          "decompile_lines_before": 14,
+          "gaps": [
+            {
+              "site": "00b01140",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00b01145",
+              "gap_end_exclusive": "00b01148",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b01140",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00b01145",
+                "gap_end_exclusive": "00b01148",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00b01140 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00b01140",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b01140 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00b0114e",
+          "explicit_body_sha256": "fa054ba7cf26b60af55f8db7b6b3c8fafee796b27c9dba5485750ca32729b32b",
+          "body_before": "Function: CG_scalar_deleting_dtor_00b01130 at 00b01130\nSignature: undefined CG_scalar_deleting_dtor_00b01130(void)\nEntry: 00b01130\nBody: 00b01130 - 00b0114d",
+          "decompile_lines_after": 11,
+          "gaps_remaining": 0,
+          "body_after": "Function: CG_scalar_deleting_dtor_00b01130 at 00b01130\nSignature: undefined CG_scalar_deleting_dtor_00b01130(void)\nEntry: 00b01130\nBody: 00b01130 - 00b0114d",
+          "stored_body_tail_complete": true
+        }
+      ]
+    },
+    "ap-base-function-definitions.json": {
+      "events": [
+        {
+          "recreate": "00b00c20",
+          "previous": "Function: FUN_00b00c20 at 00b00c20\nSignature: undefined FUN_00b00c20(void)\nEntry: 00b00c20\nBody: 00b00c20 - 00b00ca4",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b00c20"
+          },
+          "result": {
+            "success": true,
+            "address": "00b00c20",
+            "deleted_function": "FUN_00b00c20",
+            "body_size": 123,
+            "message": "Function 'FUN_00b00c20' deleted at 00b00c20"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b00c20",
+            "end_address": "00b00ca5"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b00c20",
+            "end_address": "00b00ca4",
+            "bytes_disassembled": 133,
+            "message": "Successfully disassembled 133 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b00c20",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b00c20",
+            "function_name": "FUN_00b00c20",
+            "entry_point": "00b00c20",
+            "body_size": 133,
+            "message": "Function created successfully at 00b00c20"
+          }
+        },
+        {
+          "defined": "00b00c20",
+          "end": "00b00ca5",
+          "name": null,
+          "after": "Function: FUN_00b00c20 at 00b00c20\nSignature: undefined FUN_00b00c20(void)\nEntry: 00b00c20\nBody: 00b00c20 - 00b00ca4"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00b00fb0",
+          "previous": "Function: FUN_00b00fb0 at 00b00fb0\nSignature: undefined FUN_00b00fb0(void)\nEntry: 00b00fb0\nBody: 00b00fb0 - 00b010ea",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b00fb0"
+          },
+          "result": {
+            "success": true,
+            "address": "00b00fb0",
+            "deleted_function": "FUN_00b00fb0",
+            "body_size": 315,
+            "message": "Function 'FUN_00b00fb0' deleted at 00b00fb0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b00fb0",
+            "end_address": "00b01130"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b00fb0",
+            "end_address": "00b0112f",
+            "bytes_disassembled": 384,
+            "message": "Successfully disassembled 384 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b00fb0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b00fb0",
+            "function_name": "FUN_00b00fb0",
+            "entry_point": "00b00fb0",
+            "body_size": 384,
+            "message": "Function created successfully at 00b00fb0"
+          }
+        },
+        {
+          "defined": "00b00fb0",
+          "end": "00b01130",
+          "name": null,
+          "after": "Function: FUN_00b00fb0 at 00b00fb0\nSignature: undefined FUN_00b00fb0(void)\nEntry: 00b00fb0\nBody: 00b00fb0 - 00b0112f"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00b01130",
+          "previous": "Function: CG_scalar_deleting_dtor_00b01130 at 00b01130\nSignature: undefined CG_scalar_deleting_dtor_00b01130(void)\nEntry: 00b01130\nBody: 00b01130 - 00b0114d",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b01130"
+          },
+          "result": {
+            "success": true,
+            "address": "00b01130",
+            "deleted_function": "CG_scalar_deleting_dtor_00b01130",
+            "body_size": 27,
+            "message": "Function 'CG_scalar_deleting_dtor_00b01130' deleted at 00b01130"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b01130",
+            "end_address": "00b0114e"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b01130",
+            "end_address": "00b0114d",
+            "bytes_disassembled": 30,
+            "message": "Successfully disassembled 30 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b01130",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b01130",
+            "function_name": "CG_scalar_deleting_dtor_00b01130",
+            "entry_point": "00b01130",
+            "body_size": 30,
+            "message": "Function created successfully at 00b01130"
+          }
+        },
+        {
+          "defined": "00b01130",
+          "end": "00b0114e",
+          "name": null,
+          "after": "Function: CG_scalar_deleting_dtor_00b01130 at 00b01130\nSignature: undefined CG_scalar_deleting_dtor_00b01130(void)\nEntry: 00b01130\nBody: 00b01130 - 00b0114d"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b00920",
+            "end_address": "00b00941"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b00920",
+            "end_address": "00b00940",
+            "bytes_disassembled": 33,
+            "message": "Successfully disassembled 33 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b00920",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b00920",
+            "function_name": "FUN_00b00920",
+            "entry_point": "00b00920",
+            "body_size": 33,
+            "message": "Function created successfully at 00b00920"
+          }
+        },
+        {
+          "defined": "00b00920",
+          "end": "00b00941",
+          "name": null,
+          "after": "Function: FUN_00b00920 at 00b00920\nSignature: undefined FUN_00b00920(void)\nEntry: 00b00920\nBody: 00b00920 - 00b00940"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b00740",
+            "end_address": "00b00743"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b00740",
+            "end_address": "00b00742",
+            "bytes_disassembled": 3,
+            "message": "Successfully disassembled 3 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b00740",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b00740",
+            "function_name": "FUN_00b00740",
+            "entry_point": "00b00740",
+            "body_size": 3,
+            "message": "Function created successfully at 00b00740"
+          }
+        },
+        {
+          "defined": "00b00740",
+          "end": "00b00743",
+          "name": null,
+          "after": "Function: FUN_00b00740 at 00b00740\nSignature: undefined FUN_00b00740(void)\nEntry: 00b00740\nBody: 00b00740 - 00b00742"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    }
+  },
+  "integration_ap": {
+    "native_signatures_readback_verified": true,
+    "names_and_comments_saved": true,
+    "old_prototypes": [
+      "00b01150 FUN_00b01150  undefined FUN_00b01150(void)  body 00b01150 - 00b012e8",
+      "00b00c20 FUN_00b00c20  undefined FUN_00b00c20(void)  body 00b00c20 - 00b00ca4",
+      "00b00fb0 FUN_00b00fb0  undefined FUN_00b00fb0(void)  body 00b00fb0 - 00b0112f",
+      "00b01130 CG_scalar_deleting_dtor_00b01130  undefined CG_scalar_deleting_dtor_00b01130(void)  body 00b01130 - 00b0114d",
+      "00b00920 FUN_00b00920  undefined FUN_00b00920(void)  body 00b00920 - 00b00940",
+      "00b00740 FUN_00b00740  undefined FUN_00b00740(void)  body 00b00740 - 00b00742"
+    ],
+    "current_prototypes": [
+      "00b01150 BSP_ParticleTypeBase_Construct  void * __thiscall BSP_ParticleTypeBase_Construct(void * this, void * name, uint word, void * parent)  body 00b01150 - 00b012e8",
+      "00b00c20 BSP_ParticleTypeRecords_Reserve  void __thiscall BSP_ParticleTypeRecords_Reserve(void * this, int requested)  body 00b00c20 - 00b00ca4",
+      "00b00fb0 BSP_ParticleTypeBase_Destroy  void __thiscall BSP_ParticleTypeBase_Destroy(void * this)  body 00b00fb0 - 00b0112f",
+      "00b01130 BSP_ParticleTypeBase_ScalarDeletingDestructor  void * __thiscall BSP_ParticleTypeBase_ScalarDeletingDestructor(void * this, uint flags)  body 00b01130 - 00b0114d",
+      "00b00920 BSP_ParticleTypeBase_ClampRecordRange  int __thiscall BSP_ParticleTypeBase_ClampRecordRange(void * this)  body 00b00920 - 00b00940",
+      "00b00740 BSP_ParticleTypeBase_NoOpWord  void __thiscall BSP_ParticleTypeBase_NoOpWord(void * this, uint ignored)  body 00b00740 - 00b00742"
+    ],
+    "previous_comments": [
+      {
+        "address": "00b01150",
+        "annotation": {
+          "address": "00b01150",
+          "function_name": "FUN_00b01150"
+        }
+      },
+      {
+        "address": "00b00c20",
+        "annotation": {
+          "address": "00b00c20",
+          "function_name": "FUN_00b00c20"
+        }
+      },
+      {
+        "address": "00b00fb0",
+        "annotation": {
+          "address": "00b00fb0",
+          "function_name": "FUN_00b00fb0"
+        }
+      },
+      {
+        "address": "00b01130",
+        "annotation": {
+          "address": "00b01130",
+          "function_name": "CG_scalar_deleting_dtor_00b01130"
+        }
+      },
+      {
+        "address": "00b00920",
+        "annotation": {
+          "address": "00b00920",
+          "function_name": "FUN_00b00920"
+        }
+      },
+      {
+        "address": "00b00740",
+        "annotation": {
+          "address": "00b00740",
+          "function_name": "FUN_00b00740"
+        }
+      }
+    ],
+    "current_comments": [
+      {
+        "address": "00b01150",
+        "annotation": {
+          "address": "00b01150",
+          "function_name": "BSP_ParticleTypeBase_Construct",
+          "comment": "[BSP reconstruction 00b01150]\nAP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated."
+        }
+      },
+      {
+        "address": "00b00c20",
+        "annotation": {
+          "address": "00b00c20",
+          "function_name": "BSP_ParticleTypeRecords_Reserve",
+          "comment": "[BSP reconstruction 00b00c20]\nAP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated."
+        }
+      },
+      {
+        "address": "00b00fb0",
+        "annotation": {
+          "address": "00b00fb0",
+          "function_name": "BSP_ParticleTypeBase_Destroy",
+          "comment": "[BSP reconstruction 00b00fb0]\nAP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated."
+        }
+      },
+      {
+        "address": "00b01130",
+        "annotation": {
+          "address": "00b01130",
+          "function_name": "BSP_ParticleTypeBase_ScalarDeletingDestructor",
+          "comment": "[BSP reconstruction 00b01130]\nAP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated."
+        }
+      },
+      {
+        "address": "00b00920",
+        "annotation": {
+          "address": "00b00920",
+          "function_name": "BSP_ParticleTypeBase_ClampRecordRange",
+          "comment": "[BSP reconstruction 00b00920]\nAP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated."
+        }
+      },
+      {
+        "address": "00b00740",
+        "annotation": {
+          "address": "00b00740",
+          "function_name": "BSP_ParticleTypeBase_NoOpWord",
+          "comment": "[BSP reconstruction 00b00740]\nAP review: descriptive hypothesis, not a recovered symbol. Full live/installed byte span and final RET verified; sparse actual80h particle definition, same native string/parameter pool and1Ch record array; actual named D3DXFloat32To16Array import. Native unknown record18 is explicit input. See docs/NATIVE_PARTICLE_TYPE_BASE.md and reports/native_particle_type_base.json. Strict isolated Win32/native-byte fixture passed; combined integration pending; original FH3/invalid faults/gameplay unvalidated."
+        }
+      }
+    ],
+    "direct_call_check": "local/ap-final-call-checks.log: all5 reports passed",
+    "combined_build_pending": false,
+    "combined_library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+    "current_library_fixture": {
+      "label": "base",
+      "exit_code": 0,
+      "log": "local\\ap-base-current-replay.log",
+      "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+      "probe_input_hashes": {
+        "C:\\Users\\sqz269\\bsp-ap-base\\probe.cpp": "7acca887865dc22339456236336d0a720c3b99d71dcf4cf8ec65165ce6c17bfe",
+        "C:\\Users\\sqz269\\bsp-ap-base\\native_bytes.hpp": "e70dabafabbb48561d5155a0d102eb269bd8c8148b1852d91567f401a0c356b4"
+      },
+      "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\base-current.cmd",
+      "executable_sha256": "f0b956b87f5594f8aadb95a7c17099e1452b0d8099777c48fa7b98d6742610c1"
+    }
+  },
+  "final_merged_validation_ap": {
+    "tested_commit": "b6b68f13520e848d3f111393c19c9bba17192866",
+    "reviewed_source_commit": "c7a911003baa0d2933c41611696cfa809350c065",
+    "build": "local/ap-final-combined-build.log: strict MSVC Win32 and both seeded CTests passed",
+    "all10_reviewed_source_header_hashes_preserved": true,
+    "all26_name_evidence_rows_preserved": true,
+    "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+    "current_library_replays": [
+      {
+        "label": "suffix",
+        "exit_code": 0,
+        "log": "local\\ap-suffix-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-suffix\\probe.cpp": "04f393444c6bb18bb5f343145b839c3792c32c3f398c22c1cb636479eaa8de57",
+          "C:\\Users\\sqz269\\bsp-ap-suffix\\native_bytes.hpp": "1738d180e41a8bf4f4fee9bc71040bdc19c67b1fd6ad1844571a7c27688325c9",
+          "C:\\Users\\sqz269\\bsp-ap-suffix\\relocations.hpp": "d73415e87f4f87a215259d511099a866947ad03ba122b7bc153c9bd3ccfe0dc0"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\suffix-current.cmd",
+        "executable_sha256": "f6dd8d0990c49144d821594f1a98cd94ebd5f8271856fbfc8829001eec52a04f"
+      },
+      {
+        "label": "base",
+        "exit_code": 0,
+        "log": "local\\ap-base-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-base\\probe.cpp": "7acca887865dc22339456236336d0a720c3b99d71dcf4cf8ec65165ce6c17bfe",
+          "C:\\Users\\sqz269\\bsp-ap-base\\native_bytes.hpp": "e70dabafabbb48561d5155a0d102eb269bd8c8148b1852d91567f401a0c356b4"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\base-current.cmd",
+        "executable_sha256": "f0b956b87f5594f8aadb95a7c17099e1452b0d8099777c48fa7b98d6742610c1"
+      },
+      {
+        "label": "state",
+        "exit_code": 0,
+        "log": "local\\ap-state-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-state\\probe.cpp": "04cd9379b52aa9c9ef0b8da76612557cf91cd9d69804ff22ea53846a7507608b",
+          "C:\\Users\\sqz269\\bsp-ap-state\\original_bytes.hpp": "9d350efa3b9ad1c3d94af79e3bdca999b2f0641a0345e58fa9ab54a9016eb674"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\state-current.cmd",
+        "executable_sha256": "4814104c8bb4a5c7e99b460ff7e40e896b6ef22c18ec0a09f74f1f800f781674"
+      },
+      {
+        "label": "factory",
+        "exit_code": 0,
+        "log": "local\\ap-factory-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-factory\\probe.cpp": "10762cfddd5a492736a072262509a6503c088edcdb38e24eb1d4f01223924944",
+          "C:\\Users\\sqz269\\bsp-ap-factory\\native_bytes.hpp": "00be5632e62efbb7d6cbd1b2f828f1c89de94786910a0eae2d6f2b429d7bb742"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\factory-current.cmd",
+        "executable_sha256": "c5c61b5ef886cb56c60b76c44bb835058a9eae385c6a23acd5295d47f027b967"
+      },
+      {
+        "label": "loading",
+        "exit_code": 0,
+        "log": "local\\ap-loading-current-replay.log",
+        "library_sha256": "f5ac82c0edf8718cd73db313bcc1d716092728bc19d0b28601da3050b881538c",
+        "probe_input_hashes": {
+          "C:\\Users\\sqz269\\bsp-ap-loading\\probe.cpp": "522ba8dc90496cd4ba43a03db8526d033b86927c46e24dd83ff493cdeb5e62e8",
+          "C:\\Users\\sqz269\\bsp-ap-loading\\probe_data.hpp": "320f96f8e2dd70d0d50b5dc3310b45ac9a13a799b4f328053c717e9459e0a220"
+        },
+        "runner": "C:\\Users\\sqz269\\bsp-orch3-ap\\loading-current.cmd",
+        "executable_sha256": "970ba9ac42cda871e6e54318389a8af34bfcea463209d707e3ac94f4264b8c3c"
+      }
+    ],
+    "new_functions": 17,
+    "revised_loader_functions": 3,
+    "native_signatures": 20,
+    "analyzed_bodies": 6,
+    "direct_call_rows": 495,
+    "failed_call_rows": 0,
+    "original_fh3_and_gameplay": false,
+    "remaining_application_boundaries": [
+      "five actual particle text parsers",
+      "Sprite/Object/Tracer state initializers and their real resource dependencies"
+    ]
+  }
+}
