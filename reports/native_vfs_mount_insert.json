@@ -379,5 +379,28 @@
     "Oldresidentfixtureworktree no longer existed; authoredself-containedAWrelinkdriver",
     "Attempt01 preservedimmutable withwrongtestpriorityexpectation; sourceunchanged forattempt02",
     "Strictcallownership cannotpass BE064E until parent-approvedstoredbodyrepair afterlease release"
-  ]
+  ],
+  "integration_aw": {
+    "source_commit": "04ff2710ea2ef9f1d42d3569884db32eca8d06ce",
+    "strict_win32_build": "passed",
+    "existing_ctests": 2,
+    "fixture": {
+      "attempt": "local/native-aw-worker-deliveries/insertion/lab/integrated01",
+      "before_sha256": "149bf71765557e6ed49ffbf37271bcf34817191b54ba654ebf74faef0098766e",
+      "after_sha256": "ccf7071214c24d45c6bddc1e40a37fe165eae282a111894c26d527c2dfcdc116",
+      "library_sha256": "164b27c8f6406e12c6546362a36ba3937b2bbb6a8bb3ee0a8c42c64dbe37c8ed",
+      "physical_inputs": 1072,
+      "linked_objects": 8,
+      "scope": {
+        "recorded_states": 29,
+        "recorded_checks": 281,
+        "source_only_scope": "allocation/copy failures and length errors"
+      }
+    },
+    "current_numeric_call_rows": 17,
+    "current_failed_call_rows": 0,
+    "historical_worker_evidence_preserved": true,
+    "aggregate_report": "reports/native_aw_integration.json",
+    "correction": "BE063E body now includes BE064E rethrow throughBE0652 after a locked local free override repair; all17 rows pass."
+  }
 }

@@ -127,3 +127,7 @@ an embedded manifest/fixed high base, seals before execution, and compares the
 results and hashes afterward. Whole archive hashes and unlinked code are not
 runtime coverage. These are source and bounded native-body composition proofs,
 not drop-in original ABI/FH3 compatibility or `bsp_game`/gameplay validation.
+
+## AW integration correction and replay
+
+All28 numeric call rows pass with the corrected entry-aware checker. The original27/28 failure above is retained as historical evidence; _strchr was not changed. Integrated replay at04ff2710 passed9 native/source pairs and711 checks with519 frozen inputs and120 archive-equal objects. See `reports/native_aw_integration.json` for final evidence and scope.

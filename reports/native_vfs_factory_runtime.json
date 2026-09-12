@@ -149,9 +149,44 @@
   ],
   "validation": {
     "strict_build": "passed",
-    "source_binding_fixture": "pending mounted-manager attempt",
+    "source_binding_fixture": "passed",
     "existing_ctests": "2 passed",
     "build_log": "local/native-aw-integrated-build01.log",
-    "built_core_sha256": "164b27c8f6406e12c6546362a36ba3937b2bbb6a8bb3ee0a8c42c64dbe37c8ed"
+    "built_core_sha256": "164b27c8f6406e12c6546362a36ba3937b2bbb6a8bb3ee0a8c42c64dbe37c8ed",
+    "source_commit": "04ff2710ea2ef9f1d42d3569884db32eca8d06ce",
+    "fixture": {
+      "attempt": "local/native-aw-worker-deliveries/mount_final/lab/attempt05",
+      "before_sha256": "e552d631cfa95331b5c0149631ad659a497de1eefbc54e5cb079b8ced194bd4c",
+      "after_sha256": "2f269417eb16f15364b285bddffb908ea3f292c38c60e0a62c2f518934932160",
+      "library_sha256": "164b27c8f6406e12c6546362a36ba3937b2bbb6a8bb3ee0a8c42c64dbe37c8ed",
+      "physical_inputs": 629,
+      "linked_objects": 156,
+      "scope": {
+        "recorded_comparisons": 3,
+        "recorded_binary_pairs": 3,
+        "source_only_checks": 2,
+        "source_only_result_files": 1,
+        "recorded_checks": 7866
+      }
+    },
+    "independent_reviews": {
+      "wrapper": {
+        "manifest": "local/native-aw-worker-deliveries/wrapper_review/lab/manifest.json",
+        "sha256": "d5acf0bffb0742f8ad1df43c3f1d9a3b0092a83a71463388b1e2f4d6897ccf62",
+        "accepted": true
+      },
+      "runtime": {
+        "manifest": "local/native-aw-worker-deliveries/runtime_review/lab/manifest.json",
+        "sha256": "c00c2ef94628537aa86be84eb4cc18be83bdfdc7e21dffd240fbcd95491506ba",
+        "accepted": true
+      },
+      "mount_fixture": {
+        "manifest": "local/native-aw-worker-deliveries/mount_review/lab/manifest.json",
+        "sha256": "1bcef5db2173d9184b0bf62ddd7c7a4b0612d8d59588b6db14a8fd4ae5be30c2",
+        "accepted": true,
+        "qualification": "Review covered unchanged attempt04 probe and native inputs. Attempt05 preserves probe/launcher bytes and adds explicit source-only output metadata; all-four gate validates05."
+      }
+    },
+    "aggregate_report": "reports/native_aw_integration.json"
   }
 }

@@ -450,5 +450,28 @@
     "Original bodies execute with five explicit bridges to actual reviewed source/CRT dependencies. Native exception handler paths unexecuted; one exception case is source-only.",
     "No unlinked code, bsp_game reachability, gameplay, binary replacement, provider ownership or other mount registration paths are validated."
   ],
-  "documentation": "docs/NATIVE_VFS_MOUNT_RECORDS.md"
+  "documentation": "docs/NATIVE_VFS_MOUNT_RECORDS.md",
+  "integration_aw": {
+    "source_commit": "04ff2710ea2ef9f1d42d3569884db32eca8d06ce",
+    "strict_win32_build": "passed",
+    "existing_ctests": 2,
+    "fixture": {
+      "attempt": "local/native-aw-worker-deliveries/records/lab/integrated01",
+      "before_sha256": "4685652839a5ff98dea5ead54bb18190664545047be6de232f2efb6fff320613",
+      "after_sha256": "0259a3ec8f3c9daf5fd3186d34e19856239a12f95e639f6e38d11414f2ad85bb",
+      "library_sha256": "164b27c8f6406e12c6546362a36ba3937b2bbb6a8bb3ee0a8c42c64dbe37c8ed",
+      "physical_inputs": 519,
+      "linked_objects": 120,
+      "scope": {
+        "recorded_states": 9,
+        "recorded_checks": 711,
+        "source_only_unwind_cases": 1
+      }
+    },
+    "current_numeric_call_rows": 28,
+    "current_failed_call_rows": 0,
+    "historical_worker_evidence_preserved": true,
+    "aggregate_report": "reports/native_aw_integration.json",
+    "correction": "The initial27/28 result was a checker entry-vs-body-minimum defect, corrected without changing _strchr. All28 rows now pass."
+  }
 }

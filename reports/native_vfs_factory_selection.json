@@ -196,5 +196,26 @@
     "Concurrent head mutation between consecutive reads and arbitrary stack aliases untested",
     "No original FileStore dependency-body retest or populated provider composition",
     "BE1890/BE1740 parent AW packet and MPKG BB9D90/MPAK BB83A0 separate; full startup/game unvalidated"
-  ]
+  ],
+  "integration_aw": {
+    "source_commit": "04ff2710ea2ef9f1d42d3569884db32eca8d06ce",
+    "strict_win32_build": "passed",
+    "existing_ctests": 2,
+    "fixture": {
+      "attempt": "local/native-aw-worker-deliveries/selector/lab/integrated01",
+      "before_sha256": "2afb986e9b70044c51d7e02341bcb21b83e8a428747125fd6e8d829c6732acda",
+      "after_sha256": "6ee45eab0c148ba3db6da57c54ba166546785765d40097dcdfe879b9166765a6",
+      "library_sha256": "164b27c8f6406e12c6546362a36ba3937b2bbb6a8bb3ee0a8c42c64dbe37c8ed",
+      "physical_inputs": 119,
+      "linked_objects": 28,
+      "scope": {
+        "recorded_states": 5,
+        "recorded_checks": 67
+      }
+    },
+    "current_numeric_call_rows": 3,
+    "current_failed_call_rows": 0,
+    "historical_worker_evidence_preserved": true,
+    "aggregate_report": "reports/native_aw_integration.json"
+  }
 }

@@ -109,3 +109,7 @@ aliases, complete startup mounting and gameplay remain unvalidated. BE1890 and
 BE1740 belong to the parent's current mount packet; broader MPKG BB9D90 and
 MPAK BB83A0 native factory reconstruction remains separate. No such target is
 silently treated as a declining factory by this selector.
+
+## AW integration correction and replay
+
+Integrated replay at04ff2710 passed5 native/source cases and67 checks with119 frozen inputs and28 archive-equal objects. The actual manager mounting fixture also composes this selector with the reconstructed records and insertion bodies. See `reports/native_aw_integration.json` for final evidence and scope.

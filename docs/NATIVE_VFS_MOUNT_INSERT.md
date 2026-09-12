@@ -146,3 +146,7 @@ FH3/SEH, throwing lazy pool release, arbitrary stack aliases, concurrent changes
 binary replacement or gameplay. `NativeStringStorage::release` retains its
 existing noexcept boundary. Current-head mutation comparisons verify resulting
 bytes only; they do not assert that a callback-corrupted tree remains valid.
+
+## AW integration correction and replay
+
+The locked integrator cleared only BE0642's erroneous free-call override and recreated the existing BE063E catch throughBE0652 inclusive, retaining its name/comment. All17 call rows now pass. Integrated replay at04ff2710 passed29 states and281 checks with1072 frozen inputs and8 archive-equal objects. See `reports/native_aw_integration.json` for final evidence and scope.
