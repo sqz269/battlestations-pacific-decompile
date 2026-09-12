@@ -1,4 +1,5 @@
 #include "bsp/gui_widget_frame_runtime.hpp"
+#include "bsp/gui_listbox_pointer_runtime.hpp"
 #include "bsp/gui_text_runtime_factory.hpp"
 #include "bsp/gui_type_dispatch.hpp"
 #include "bsp/gui_timed_entry_owner.hpp"
@@ -221,6 +222,17 @@ void GuiWidgetFrameRuntime::unbind_listbox_frames(const GuiListboxFrameServices&
         "Listbox frame services must own the binding and survive active frames");
     listbox_frames_ = nullptr;
 }
+void GuiWidgetFrameRuntime::bind_listbox_pointer(const GuiListboxPointerServices& services) {
+    require(!active_ && !listbox_pointer_ && &services.frame.base_frames == this &&
+        services.frame.input_groups_00f8bbf4.same_publication(services_.input_groups_00f8bbf4),
+        "Listbox pointer binding requires its idle same runtime and input publication");
+    listbox_pointer_ = &services;
+}
+void GuiWidgetFrameRuntime::unbind_listbox_pointer(const GuiListboxPointerServices& services) {
+    require(!active_ && listbox_pointer_ == &services,
+        "Listbox pointer services must own the binding and survive active callbacks");
+    listbox_pointer_ = nullptr;
+}
 bool gui_widget_uses_base_frame40_profile(GuiWidgetType type) noexcept {
     switch (type) {
     case GuiWidgetType::Screen:
@@ -287,9 +299,20 @@ GuiWidgetFrameListenerOwner& GuiWidgetFrameRuntime::listener(GuiWidgetOwner& wid
     require(found != listeners_.end(), "GUI current listener has no actual owner adapter");
     return *found->second;
 }
-void GuiWidgetFrameRuntime::dispatch_current68(GuiWidgetOwner& widget, GuiWidgetOwner*) {
+void GuiWidgetFrameRuntime::dispatch_current68(GuiWidgetOwner& widget, GuiWidgetOwner* incoming_child) {
     require(&widget.runtime() == &services_.widgets,
         "GUI current68 requires the same widget runtime");
+    if (widget.layout().type == GuiWidgetType::Listbox) {
+        require(listbox_pointer_ != nullptr,
+            "Listbox current68 requires its same bound pointer services");
+        auto* listbox = dynamic_cast<GuiListboxTypeImplementation*>(&widget.implementation());
+        require(listbox && &listbox->runtime().owner() == &widget,
+            "Listbox current68 requires its canonical companion");
+        widget.require_no_active_owned_operation();
+        ActiveFrame call(*this, widget);
+        listbox->runtime().pointer68_00a9ca60(incoming_child, *listbox_pointer_);
+        return;
+    }
     require(gui_widget_uses_base_frame40_profile(widget.layout().type) ||
         widget.layout().type == GuiWidgetType::Icon,
         "GUI current68 profile has no established implementation");
