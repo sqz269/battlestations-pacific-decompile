@@ -1,0 +1,270 @@
+{
+  "packet": "orch4_native_input_action_records_ac",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "module": "native_input_action_records",
+  "source": [
+    "include/bsp/native_input_action_records.hpp",
+    "src/native_input_action_records.cpp"
+  ],
+  "document": "docs/NATIVE_INPUT_ACTION_RECORDS.md",
+  "functions": [
+    {
+      "address": "00a93940",
+      "name": "BSP_NativeInputActionRecord_Construct",
+      "implementation": "construct_native_input_action_record_00a93940",
+      "source": "src/native_input_action_records.cpp",
+      "document": "docs/NATIVE_INPUT_ACTION_RECORDS.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; no stack arguments; EAX captured pointer; RET ",
+      "end_exclusive": "00a939bd",
+      "end_inclusive": "00a939bc",
+      "last_instruction": "00a939bc",
+      "last_instruction_length": 1,
+      "span": 125,
+      "sha256": "dcafd6cdd5661cd1de4e698ca69977d7d3b3bbacb00c191d06ee8b3a0c8b8df7",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a939c0",
+      "name": "BSP_NativeInputActionRecord_Destroy",
+      "implementation": "destroy_native_input_action_record_00a939c0",
+      "source": "src/native_input_action_records.cpp",
+      "document": "docs/NATIVE_INPUT_ACTION_RECORDS.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; no stack arguments; no semantic result; RET ",
+      "end_exclusive": "00a93a56",
+      "end_inclusive": "00a93a55",
+      "last_instruction": "00a93a55",
+      "last_instruction_length": 1,
+      "span": 150,
+      "sha256": "55cf5615f99c3f619ae0cb5b681cb5f2a16cf80192b4775880e90493b6ff6d6f",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a93a60",
+      "name": "BSP_NativeInputActionRecord_ScalarDelete",
+      "implementation": "delete_native_input_action_record_00a93a60",
+      "source": "src/native_input_action_records.cpp",
+      "document": "docs/NATIVE_INPUT_ACTION_RECORDS.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; EAX captured pointer; RET 0x4",
+      "end_exclusive": "00a93a7e",
+      "end_inclusive": "00a93a7d",
+      "last_instruction": "00a93a7b",
+      "last_instruction_length": 3,
+      "span": 30,
+      "sha256": "5b88aaf5ab03e44393cf044d702f7123c9b9864e844fb0f47d272eb2757a610e",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a93a80",
+      "name": "BSP_NativeInputActionRecord_CopyConstruct",
+      "implementation": "copy_native_input_action_record_00a93a80",
+      "source": "src/native_input_action_records.cpp",
+      "document": "docs/NATIVE_INPUT_ACTION_RECORDS.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; EAX captured pointer; RET 0x4",
+      "end_exclusive": "00a93b22",
+      "end_inclusive": "00a93b21",
+      "last_instruction": "00a93b1f",
+      "last_instruction_length": 3,
+      "span": 162,
+      "sha256": "bbc87f29bbeb3fa44c84789e6d194906167091b21d4705e904fbb0e66846ae9c",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a93b30",
+      "name": "BSP_NativeInputActionVector_Reserve",
+      "implementation": "reserve_native_input_actions_00a93b30",
+      "source": "src/native_input_action_records.cpp",
+      "document": "docs/NATIVE_INPUT_ACTION_RECORDS.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; no semantic result; RET 0x4",
+      "end_exclusive": "00a93c0d",
+      "end_inclusive": "00a93c0c",
+      "last_instruction": "00a93c0a",
+      "last_instruction_length": 3,
+      "span": 221,
+      "sha256": "14b1a7bb054865735993c7b6dbaec00f1f8734f480332e2a22dc0451a2d54dcc",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "address": "00a93c10",
+      "name": "BSP_NativeInputActionVector_Resize",
+      "implementation": "resize_native_input_actions_00a93c10",
+      "source": "src/native_input_action_records.cpp",
+      "document": "docs/NATIVE_INPUT_ACTION_RECORDS.md",
+      "coverage": "complete normal schedule and documented C++ unwind over valid native ranges",
+      "original_abi": "ECX receiver; one DWORD stack argument; no semantic result; RET 0x4",
+      "end_exclusive": "00a93c73",
+      "end_inclusive": "00a93c72",
+      "last_instruction": "00a93c70",
+      "last_instruction_length": 3,
+      "span": 99,
+      "sha256": "684b05dd5a8a4ac8229261fa6b7fa89e47c1c9c6054226b03523684c2db0b2b0",
+      "disk_analysis_equal": true,
+      "existing_projection_preserved": false,
+      "native_abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a93a16",
+      "caller": "00a939c0",
+      "native": "00a93500",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93a1e",
+      "caller": "00a939c0",
+      "native": "00bf6989",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93a35",
+      "caller": "00a939c0",
+      "native": "00696e70",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93a3d",
+      "caller": "00a939c0",
+      "native": "00bf6989",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93a63",
+      "caller": "00a93a60",
+      "native": "00a939c0",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93a70",
+      "caller": "00a93a60",
+      "native": "00bf65ac",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93abf",
+      "caller": "00a93a80",
+      "native": "00a92e70",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93ad7",
+      "caller": "00a93a80",
+      "native": "00a937e0",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93b73",
+      "caller": "00a93b30",
+      "native": "00bf55be",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93bae",
+      "caller": "00a93b30",
+      "native": "00a93a80",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93bd4",
+      "caller": "00a93b30",
+      "native": "00a939c0",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93beb",
+      "caller": "00a93b30",
+      "native": "00bf6989",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93c1f",
+      "caller": "00a93c10",
+      "native": "00a93b30",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93c3c",
+      "caller": "00a93c10",
+      "native": "00a93940",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93c60",
+      "caller": "00a93c10",
+      "native": "00a939c0",
+      "coverage": "owned body instruction"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "address": "00a939f1",
+      "caller": "00a939c0",
+      "native": "dword ptr [0x00ce2220]",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93a01",
+      "caller": "00a939c0",
+      "native": "EAX",
+      "coverage": "owned body instruction"
+    },
+    {
+      "address": "00a93b06",
+      "caller": "00a93a80",
+      "native": "dword ptr [0x00ce221c]",
+      "coverage": "owned body instruction"
+    }
+  ],
+  "no_ghidra_function": [],
+  "coverage": "Complete normal schedules for valid raw containers and the documented source C++ exception domain. Original ABI/FH3/SEH and arbitrary listener providers are not supplied.",
+  "game_validated": false,
+  "native_abi_compatible": false,
+  "source_sha256": {
+    "include/bsp/native_input_action_records.hpp": "5c6c411d3aaccd15ac9debaf760dc21333280351acc4813295309e2a88df6deb",
+    "src/native_input_action_records.cpp": "cda40a46350c2913f8f4d3714bd72dd9d579e17afcc523b85290f3aa66f1aa23"
+  },
+  "validation": {
+    "build": "Win32 Release scripts/build.ps1 passed; both existing CTests passed",
+    "build_log": "local/native_input_records_ac_build.log",
+    "direct_call_audit": {
+      "checked": 15,
+      "failed": 0,
+      "log": "local/native_input_storage_ac_calls.log"
+    },
+    "all_body_bytes_match": true,
+    "peer_review": "Independent owner workers reviewed live reloads, padding, refcounts and native EH order; growth-only constant load corrected before passing build/fixture",
+    "nonempty_fixture": "Passed against primary provider archive plus worker owner source; final archive-only raw drain evidence tracked separately",
+    "fixture_log": "../battlestations-pacific-decompile-orch4-input-actions-ac/local/input_action_owner_nonempty_probe.log",
+    "permanent_tests_added": 0,
+    "application_input_validated": false,
+    "native_abi_compatible": false
+  },
+  "boundaries": [
+    "Valid actual Win32 engine array headers and addressable ranges required; not STL layout.",
+    "Existing CRT allocation boundary; original FH3/SEH and arbitrary allocator/new-handler identity not supplied.",
+    "Placement cleanup00401130 is actual no-op; no stronger reserve rollback or replacement reclamation.",
+    "Listener current-profile slot-zero body remains required; native call has no stack flags.",
+    "Field and x87 behavior do not establish game/frame input integration."
+  ]
+}
