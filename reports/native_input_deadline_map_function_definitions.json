@@ -1,0 +1,82 @@
+{
+ "events": [
+  {
+   "recreate": "00cd9ec0",
+   "previous": "Function: CG_static_init_00cd9ec0 at 00cd9ec0\nSignature: undefined CG_static_init_00cd9ec0(void)\nEntry: 00cd9ec0\nBody: 00cd9ec0 - 00cd9eeb",
+   "plate": "[BSP inventory 00cd9ec0] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00cd9ec0"
+   },
+   "result": {
+    "success": true,
+    "address": "00cd9ec0",
+    "deleted_function": "CG_static_init_00cd9ec0",
+    "body_size": 44,
+    "message": "Function 'CG_static_init_00cd9ec0' deleted at 00cd9ec0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cd9ec0",
+    "end_address": "00cd9f00"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cd9ec0",
+    "end_address": "00cd9eff",
+    "bytes_disassembled": 64,
+    "message": "Successfully disassembled 64 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cd9ec0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00cd9ec0",
+    "function_name": "CG_static_init_00cd9ec0",
+    "entry_point": "00cd9ec0",
+    "body_size": 64,
+    "message": "Function created successfully at 00cd9ec0"
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00cd9ec0",
+    "comment": "[BSP inventory 00cd9ec0] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00cd9ec0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00cd9ec0",
+   "end": "00cd9f00",
+   "name": null,
+   "after": "Function: CG_static_init_00cd9ec0 at 00cd9ec0\nSignature: undefined CG_static_init_00cd9ec0(void)\nEntry: 00cd9ec0\nBody: 00cd9ec0 - 00cd9eff"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

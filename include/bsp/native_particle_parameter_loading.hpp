@@ -52,4 +52,11 @@ float first_native_particle_parameter_value_00afc1b0(const void*);
 // Native ECX owner, RET. Free captured records then clear CURRENT+0/+4/+8.
 // Leaves kind+C unchanged; uses owners.free_array_00bf6989.
 void destroy_native_particle_parameter_builder_00af4110(void*, NativeParticleParameterLoadingBindings&) noexcept;
+// Existing complete AFFCB0/AFFD20 bodies, exposed for Tracer updates. ECX
+// actual parameter, EDX current bindings, stack time, RET4/ST0. Tail entries
+// preserve any caller-owned x87 stack values; no float-return wrapper spill.
+float __fastcall integrate_native_particle_parameter_hermite_00affcb0(
+    const void*, const NativeParticleParameterLoadingBindings*, float);
+float __fastcall integrate_native_particle_parameter_linear_00affd20(
+    const void*, const NativeParticleParameterLoadingBindings*, float);
 } // namespace bsp

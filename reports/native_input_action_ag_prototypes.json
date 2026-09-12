@@ -1,0 +1,136 @@
+{
+  "reason": "Native registers, stack arguments and RET cleanup verified in original listings. unused EDX represents an unconsumed register, not an original argument; source contexts are excluded. Prior names and signatures are preserved in each receipt.",
+  "entries": [
+    {
+      "address": "00a92b70",
+      "proposed": "void __fastcall BSP_InputAction_ReplaceListener(void* self)",
+      "before": "Function: BSP_InputAction_ReplaceListener at 00a92b70\nSignature: undefined BSP_InputAction_ReplaceListener(void)\nEntry: 00a92b70\nBody: 00a92b70 - 00a92bfe",
+      "apply": "Successfully set prototype for function at 00a92b70 with __fastcall calling convention",
+      "after": "Function: BSP_InputAction_ReplaceListener at 00a92b70\nSignature: void __fastcall BSP_InputAction_ReplaceListener(void * self)\nEntry: 00a92b70\nBody: 00a92b70 - 00a92bfe",
+      "readback_verified": true
+    },
+    {
+      "address": "00a92150",
+      "proposed": "void* __fastcall BSP_InputActionListener_ScalarDelete(void* self, void* unused_edx, uint flags)",
+      "before": "Function: BSP_InputActionListener_ScalarDelete at 00a92150\nSignature: undefined BSP_InputActionListener_ScalarDelete(void)\nEntry: 00a92150\nBody: 00a92150 - 00a92173",
+      "apply": "Successfully set prototype for function at 00a92150 with __fastcall calling convention",
+      "after": "Function: BSP_InputActionListener_ScalarDelete at 00a92150\nSignature: void * __fastcall BSP_InputActionListener_ScalarDelete(void * self, void * unused_edx, uint flags)\nEntry: 00a92150\nBody: 00a92150 - 00a92173",
+      "readback_verified": true
+    },
+    {
+      "address": "00a922a0",
+      "proposed": "void __fastcall BSP_InputManager_RebindAllActions(void* self)",
+      "before": "Function: BSP_InputManager_RebindAllActions at 00a922a0\nSignature: undefined BSP_InputManager_RebindAllActions(void)\nEntry: 00a922a0\nBody: 00a922a0 - 00a922d2",
+      "apply": "Successfully set prototype for function at 00a922a0 with __fastcall calling convention",
+      "after": "Function: BSP_InputManager_RebindAllActions at 00a922a0\nSignature: void __fastcall BSP_InputManager_RebindAllActions(void * self)\nEntry: 00a922a0\nBody: 00a922a0 - 00a922d2",
+      "readback_verified": true
+    },
+    {
+      "address": "00a91e80",
+      "proposed": "void __fastcall BSP_InputAction_RebindDeviceReferences(void* self)",
+      "before": "Function: BSP_InputAction_RebindDeviceReferences at 00a91e80\nSignature: undefined BSP_InputAction_RebindDeviceReferences(void)\nEntry: 00a91e80\nBody: 00a91e80 - 00a9204b",
+      "apply": "Successfully set prototype for function at 00a91e80 with __fastcall calling convention",
+      "after": "Function: BSP_InputAction_RebindDeviceReferences at 00a91e80\nSignature: void __fastcall BSP_InputAction_RebindDeviceReferences(void * self)\nEntry: 00a91e80\nBody: 00a91e80 - 00a9204b",
+      "readback_verified": true
+    },
+    {
+      "address": "00a92370",
+      "proposed": "void __fastcall BSP_InputAction_PollBindings(void* self)",
+      "before": "Function: BSP_InputAction_PollBindings at 00a92370\nSignature: undefined BSP_InputAction_PollBindings(void)\nEntry: 00a92370\nBody: 00a92370 - 00a926e0",
+      "apply": "Successfully set prototype for function at 00a92370 with __fastcall calling convention",
+      "after": "Function: BSP_InputAction_PollBindings at 00a92370\nSignature: void __fastcall BSP_InputAction_PollBindings(void * self)\nEntry: 00a92370\nBody: 00a92370 - 00a926e0",
+      "readback_verified": true
+    },
+    {
+      "address": "00a91d60",
+      "proposed": "float __stdcall BSP_InputBinding_AdjustPairedValue(float primary, float paired)",
+      "before": "Function: BSP_InputBinding_AdjustPairedValue at 00a91d60\nSignature: undefined BSP_InputBinding_AdjustPairedValue(void)\nEntry: 00a91d60\nBody: 00a91d60 - 00a91e1d",
+      "apply": "Successfully set prototype for function at 00a91d60 with __stdcall calling convention",
+      "after": "Function: BSP_InputBinding_AdjustPairedValue at 00a91d60\nSignature: float __stdcall BSP_InputBinding_AdjustPairedValue(float primary, float paired)\nEntry: 00a91d60\nBody: 00a91d60 - 00a91e1d",
+      "readback_verified": true
+    },
+    {
+      "address": "00a92090",
+      "proposed": "byte __fastcall BSP_InputAction_HasDeviceQuery1C(void* self)",
+      "before": "Function: BSP_InputAction_HasDeviceQuery1C at 00a92090\nSignature: undefined BSP_InputAction_HasDeviceQuery1C(void)\nEntry: 00a92090\nBody: 00a92090 - 00a920d4",
+      "apply": "Successfully set prototype for function at 00a92090 with __fastcall calling convention",
+      "after": "Function: BSP_InputAction_HasDeviceQuery1C at 00a92090\nSignature: byte __fastcall BSP_InputAction_HasDeviceQuery1C(void * self)\nEntry: 00a92090\nBody: 00a92090 - 00a920d4",
+      "readback_verified": true
+    }
+  ],
+  "actions": [
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a92b70",
+        "prototype": "void __fastcall BSP_InputAction_ReplaceListener(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a92b70 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a92150",
+        "prototype": "void* __fastcall BSP_InputActionListener_ScalarDelete(void* self, void* unused_edx, uint flags)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a92150 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a922a0",
+        "prototype": "void __fastcall BSP_InputManager_RebindAllActions(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a922a0 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a91e80",
+        "prototype": "void __fastcall BSP_InputAction_RebindDeviceReferences(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a91e80 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a92370",
+        "prototype": "void __fastcall BSP_InputAction_PollBindings(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a92370 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a91d60",
+        "prototype": "float __stdcall BSP_InputBinding_AdjustPairedValue(float primary, float paired)",
+        "calling_convention": "__stdcall"
+      },
+      "result": "Successfully set prototype for function at 00a91d60 with __stdcall calling convention"
+    },
+    {
+      "endpoint": "set_function_prototype",
+      "body": {
+        "function_address": "00a92090",
+        "prototype": "byte __fastcall BSP_InputAction_HasDeviceQuery1C(void* self)",
+        "calling_convention": "__fastcall"
+      },
+      "result": "Successfully set prototype for function at 00a92090 with __fastcall calling convention"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": "{\"success\": true, \"program\": \"battlestationspacific.exe\", \"message\": \"Program saved successfully\"}"
+    }
+  ],
+  "save": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+  }
+}

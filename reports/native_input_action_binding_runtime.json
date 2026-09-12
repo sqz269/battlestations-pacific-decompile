@@ -1,0 +1,426 @@
+{
+  "packet": "orch4_native_input_action_binding_runtime_ag",
+  "source": [
+    "include/bsp/native_input_action_binding_runtime.hpp",
+    "src/native_input_action_binding_runtime.cpp"
+  ],
+  "analysis": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read-only verified CLI batches; capped bodies/assembly/protos/xrefs/bytes and actual producers",
+    "ghidra_writes": false
+  },
+  "routines": [
+    {
+      "address": "00a922a0",
+      "name": "rebind_all_native_input_actions_00a922a0",
+      "coverage": "complete reachable raw game flow in documented storage/provider domain",
+      "return_type": "void",
+      "return_register": "no consumed result",
+      "convention": "__thiscall",
+      "ecx": "actual24h owner",
+      "edx": "not an input",
+      "stack_arguments": [],
+      "ret_argument_bytes": 0,
+      "last_instruction": "00a922d2",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a922d2",
+      "end_exclusive": "00a922d3"
+    },
+    {
+      "address": "00a91e80",
+      "name": "rebind_native_input_action_00a91e80",
+      "coverage": "complete reachable raw game flow in documented storage/provider domain",
+      "return_type": "void",
+      "return_register": "no consumed result",
+      "convention": "__thiscall",
+      "ecx": "actual30h action",
+      "edx": "not an input",
+      "stack_arguments": [],
+      "ret_argument_bytes": 0,
+      "last_instruction": "00a9204b",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a9204b",
+      "end_exclusive": "00a9204c"
+    },
+    {
+      "address": "00a92370",
+      "name": "poll_native_input_action_00a92370",
+      "coverage": "complete reachable raw game flow in documented storage/provider domain",
+      "return_type": "void",
+      "return_register": "no consumed result",
+      "convention": "__thiscall",
+      "ecx": "actual30h action",
+      "edx": "not an input",
+      "stack_arguments": [],
+      "ret_argument_bytes": 0,
+      "last_instruction": "00a926e0",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a926e0",
+      "end_exclusive": "00a926e1"
+    },
+    {
+      "address": "00a91d60",
+      "name": "adjust_native_input_binding_pair_00a91d60",
+      "coverage": "complete reachable raw game flow in documented storage/provider domain",
+      "return_type": "float",
+      "return_register": "ST0",
+      "convention": "stack callee-cleanup (__stdcall)",
+      "ecx": "unused",
+      "edx": "not an input",
+      "stack_arguments": [
+        "float primary",
+        "float paired"
+      ],
+      "ret_argument_bytes": 8,
+      "last_instruction": "00a91e1b",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a91e1d",
+      "end_exclusive": "00a91e1e"
+    },
+    {
+      "address": "00a92090",
+      "name": "query_native_input_action_relative_00a92090",
+      "coverage": "complete reachable raw game flow in documented storage/provider domain",
+      "return_type": "uint8_t",
+      "return_register": "AL0/1; upper EAX not specified",
+      "convention": "__thiscall",
+      "ecx": "actual30h action",
+      "edx": "not an input",
+      "stack_arguments": [],
+      "ret_argument_bytes": 0,
+      "last_instruction": "00a920d4",
+      "last_instruction_length": 1,
+      "end_inclusive": "00a920d4",
+      "end_exclusive": "00a920d5"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a922b8",
+      "native": "00a91e80",
+      "function": "00a922a0",
+      "contract": "ECX actual current30h action; no stack args; RET. All-action caller reloads owner count/base after return."
+    },
+    {
+      "address": "00a91eec",
+      "native": "00bf6713",
+      "function": "00a91e80",
+      "contract": "Real returning CRT invalid-parameter call, no stack args; RET. Current captured active-header and index retained; begin reloaded before slot read."
+    },
+    {
+      "address": "00a91f59",
+      "native": "00bf6713",
+      "function": "00a91e80",
+      "contract": "Real returning CRT invalid-parameter call, no stack args; RET. Current captured active-header and index retained; begin reloaded before slot read."
+    },
+    {
+      "address": "00a91fe9",
+      "native": "00bf6713",
+      "function": "00a91e80",
+      "contract": "Real returning CRT invalid-parameter call, no stack args; RET. Current captured active-header and index retained; begin reloaded before slot read."
+    },
+    {
+      "address": "00a92390",
+      "native": "00a92090",
+      "function": "00a92370",
+      "contract": "ECX actual action; no stack args; AL0/1 RET. Poll calls after previous/current shift, before override scan."
+    },
+    {
+      "address": "00a9240c",
+      "native": "device_vslot20",
+      "function": "00a92370",
+      "kind": "indirect_call",
+      "contract": "ECX required modifier cached+8, profile then code+C captured; stack code RET4; AL0 rejects, any nonzero continues; endpoint reloaded",
+      "membership": "live proto and function listing verified; finite provider targets external"
+    },
+    {
+      "address": "00a92454",
+      "native": "device_vslot20",
+      "function": "00a92370",
+      "kind": "indirect_call",
+      "contract": "ECX forbidden modifier cached+8, profile then code+C captured; stack code RET4; exactlyAL1 rejects; endpoint reloaded even on rejection",
+      "membership": "live proto and function listing verified; finite provider targets external"
+    },
+    {
+      "address": "00a9248b",
+      "native": "device_vslot24",
+      "function": "00a92370",
+      "kind": "indirect_call",
+      "contract": "ECX current primary cached+C, profile then current code+10 captured; stack code RET4; ST0 immediately spilled binary32 atA9248D",
+      "membership": "live proto and function listing verified; finite provider targets external"
+    },
+    {
+      "address": "00a924de",
+      "native": "device_vslot1C",
+      "function": "00a92370",
+      "kind": "indirect_call",
+      "contract": "Current primary/profile, stack3D RET4; nonzero falls to fresh comparison of current binding code",
+      "membership": "live proto and function listing verified; finite provider targets external"
+    },
+    {
+      "address": "00a92502",
+      "native": "device_vslot1C",
+      "function": "00a92370",
+      "kind": "indirect_call",
+      "contract": "Current primary/profile, stack3C RET4; nonzero falls to fresh comparison of current binding code",
+      "membership": "live proto and function listing verified; finite provider targets external"
+    },
+    {
+      "address": "00a9251c",
+      "native": "device_vslot1C",
+      "function": "00a92370",
+      "kind": "indirect_call",
+      "contract": "Current primary/profile, stack3F RET4; nonzero falls to fresh comparison of current binding code",
+      "membership": "live proto and function listing verified; finite provider targets external"
+    },
+    {
+      "address": "00a92536",
+      "native": "device_vslot1C",
+      "function": "00a92370",
+      "kind": "indirect_call",
+      "contract": "Current primary/profile, stack3E RET4; nonzero skips pair adjustment",
+      "membership": "live proto and function listing verified; finite provider targets external"
+    },
+    {
+      "address": "00a92546",
+      "native": "device_vslot24",
+      "function": "00a92370",
+      "kind": "indirect_call",
+      "contract": "Cached receiver/profile reloaded AFTER paired query; stack selected paired code RET4; ST0 spill beforeA91D60",
+      "membership": "live proto and function listing verified; finite provider targets external"
+    },
+    {
+      "address": "00a92556",
+      "native": "00a91d60",
+      "function": "00a92370",
+      "contract": "Stack primary float then paired float, RET8, ST0 float; caller spills returned value immediately. No ECX/EDX input."
+    },
+    {
+      "address": "00a926b0",
+      "native": "device_vslot20",
+      "function": "00a92370",
+      "kind": "indirect_call",
+      "contract": "Current cached primary/profile/code captured only when current action byte28 remains0; AL normalized to0/1 after return",
+      "membership": "live proto and function listing verified; finite provider targets external"
+    },
+    {
+      "address": "00a91def",
+      "native": "00bf7030",
+      "function": "00a91d60",
+      "contract": "Recognized CRT sqrt with operand already ST0 and ST0 result, no native stack arguments; existing native_crt_sqrt_st0_00bf7030 source binding adds ECX CameraAxesCrtAccess only. No extra replacement sqrt."
+    },
+    {
+      "address": "00a920b5",
+      "native": "device_vslot1C",
+      "function": "00a92090",
+      "kind": "indirect_call",
+      "contract": "ECX cached primary after null check, captured profile before code load; stack code, RET4; AL nonzero becomes1 regardless resolved byte",
+      "membership": "live proto and function listing verified; finite provider targets external"
+    }
+  ],
+  "incoming_calls": [
+    {
+      "address": "00a92c71",
+      "native": "00a922a0",
+      "function": "00a92c40",
+      "contract": "ECX captured owner; after current backend+D4 cleared and prior nonzero tested; no stack args"
+    },
+    {
+      "address": "00a922b8",
+      "native": "00a91e80",
+      "function": "00a922a0",
+      "contract": "ECX current30h row, including disabled records; no stack args"
+    },
+    {
+      "address": "00a937b7",
+      "native": "00a91e80",
+      "function": "00a93750",
+      "contract": "ECX action whose actual34h binding was just installed; no stack args"
+    },
+    {
+      "address": "00a92c90",
+      "native": "00a92370",
+      "function": "00a92c40",
+      "contract": "ECX actual row when enable byte+1 nonzero; no stack args"
+    },
+    {
+      "address": "00a92a29",
+      "native": "00a92370",
+      "function": "00a92a20",
+      "contract": "ECX actual action when enable byte+1 nonzero; no stack args"
+    },
+    {
+      "address": "00a92e03",
+      "native": "00a92370",
+      "function": "00a92d40",
+      "contract": "ECX ESI actual action after branch toA92E01; no stack args"
+    },
+    {
+      "address": "00a92556",
+      "native": "00a91d60",
+      "function": "00a92370",
+      "contract": "Primary/paired floats written to two stackDWORDs; RET8, ST0 float immediately spilled"
+    },
+    {
+      "address": "00a92390",
+      "native": "00a92090",
+      "function": "00a92370",
+      "contract": "ECX actual action; no stack args; AL cached for whole poll"
+    },
+    {
+      "address": "0051eab9",
+      "native": "00a92090",
+      "function": "0051eaa0",
+      "contract": "ECX [lazy004BEC00 result+4]+15C0, no stack args; tests AL"
+    },
+    {
+      "address": "0051ead0",
+      "native": "00a92090",
+      "function": "0051eaa0",
+      "contract": "ECX [fresh lazy004BEC00 result+4]+2A00, no stack args; tests AL"
+    },
+    {
+      "address": "0064b8d6",
+      "native": "00a92090",
+      "function": "0064b870",
+      "contract": "ECX [lazy004BEC00 result+4]+1B90, no stack args; tests AL"
+    },
+    {
+      "address": "0067c60c",
+      "native": "00a92090",
+      "function": "0067c4f0",
+      "contract": "ECX [lazy004BEC00 result+4]+1B90, no stack args; tests AL"
+    }
+  ],
+  "call_audit": {
+    "owned_CALLs": 17,
+    "owned_direct_CALLs": 7,
+    "owned_indirect_CALLs": 10,
+    "assigned_incoming_rows": 12,
+    "owned_sites": [
+      "00a922b8",
+      "00a91eec",
+      "00a91f59",
+      "00a91fe9",
+      "00a92390",
+      "00a9240c",
+      "00a92454",
+      "00a9248b",
+      "00a924de",
+      "00a92502",
+      "00a9251c",
+      "00a92536",
+      "00a92546",
+      "00a92556",
+      "00a926b0",
+      "00a91def",
+      "00a920b5"
+    ],
+    "qualification": "Every owned CALL row included; all assigned incoming rows included. Explicitly unassigned external incoming site kept separate below, not falsely attributed. Indirect profiles are required finite raw-device services; manual body/ABI evidence retained."
+  },
+  "unassigned_incoming_sites": [
+    {
+      "site": "0060bc03",
+      "callee": "00a92090",
+      "raw_bytes": "e888644800",
+      "membership": null,
+      "observed_aligned_context": "60BBF5 CALL4BEC00;60BBFA ECX=[EAX+4];60BBFD ADD ECX,1E90;60BC03 CALLA92090;60BC08 TEST AL,AL",
+      "bounds": "Nearest candidate609BD0 ends60ABCC, not this caller. Actual enclosing start/end not established.",
+      "audit": "Not a containing-function claim; raw read-only evidence only. Primary explicitly approved preserving this qualification rather than widening/repairing the caller for audit."
+    }
+  ],
+  "native_layout": {
+    "owner": "Actual24h, array at+4/count+8 stride30h",
+    "action": "Actual30h: bindings+10/count+14 stride34h; previous float1C/byte20; current float24/byte28; retained listener2C remains untouched",
+    "binding": "Actual34h: resolved0,curve1,class4,index8,cacheC,code10,unit_scale_byte14,required header18,forbidden header24,scale30",
+    "modifier": "Actual14h class0,index4,cache8,codeC; fifth word untouched",
+    "backend": "Published actualF8h; active checked vector header+6C+class*24 with begin4,end8; no typed-group substitution",
+    "producers": "native_input_action_owner/records and native_input_binding_storage source; A93940/A93500 initialization, A93750 source install, existing owning destructors"
+  },
+  "sequencing": {
+    "rebind": "Primary class before resolved clear; primary classFFFFFFFF preserves old cache. Reload backend for each primary/modifier; unsigned index bounds and real returning CRT; current header endpoints after work; stop each modifier array at first missing device while retaining later caches.",
+    "poll": "Previous/current shift once, A92090 over caches regardless resolved, action-wide unit-scale scan regardless resolved, exact required nonzero/forbidden==1 tests, ST0 spills, mutable four-way paired-code chain and receiver reload, response curve, scale, accumulation, short-circuit final query, endpoint reload.",
+    "registers": "A91E80 EBX currentbinding, EBP binding+28, ESI captured backend vector, EDI index/device/modifier; saved EDX action restored around clobber. A92370 EBP action, EBX binding, ESI binding+28, EDI modifier; current-relative/override bytes saved stack, constants borrowed live.",
+    "x87": "A91D60 component/sum/root/product binary32 spills with shared CRT; A92370 FLD/FSTP shift, FUCOMIP nonzero/unordered gate, x87 curve/multiply, x87/SSE signed-zero/unordered accumulation; source uses explicit assembly schedules"
+  },
+  "constants": {
+    "half_00ce3800": "3f000000",
+    "negative_zero_00d7a208": "80000000",
+    "one_00d7a24c": "3f800000",
+    "quarter_00d7a348": "3fd0000000000000",
+    "half_00d7a280": "3fe0000000000000",
+    "seven_eighths_00ce42e0": "3fec000000000000",
+    "eighth_00d04380": "3fc0000000000000",
+    "policy": "Required borrowed cells, not new defaults; same image words must share source lifetime"
+  },
+  "providers": {
+    "devices": "NativeInputActionBindingCalls captured-profile1C/20/24 -> primary finite NativeInputDeviceRuntime; no numeric function pointer invocation in production, no SDK poll method",
+    "crt": "Existing native_crt_sqrt_st0_00bf7030 + caller supplied CameraAxesCrtAccess; same native CRT storage/handler lifetime; no fake square-root service",
+    "tick": "A92C40/A91A50 owned by separate worker, primary facade routes actual owner/actions to this packet"
+  },
+  "code_gaps": [
+    {
+      "function": "00a91e80",
+      "start": "00a91f1a",
+      "end_inclusive": "00a91f1f",
+      "bytes": "8d9b00000000",
+      "meaning": "LEA EBX,[EBX] alignment; jumped over byA91F18->A91F20; no omitted reachable operation",
+      "worker_mutation": false
+    }
+  ],
+  "exceptions": "No allocating/owning EH state in these five bodies. Required provider or real CRT exceptions leave preceding native writes. Original stack/FH3/SEH, arbitrary hardware faults and asynchronous data races are outside the source API.",
+  "validation": {
+    "build": "Win32 Release scripts/build.ps1 exit0, MSBUILDDISABLENODEREUSE=1",
+    "seed_count": 8,
+    "all_seeds_match": true,
+    "ctests": "2/2 passed",
+    "probe": "one ignored manifested actual-storage differential, both sides use real recovered CRT sqrt and controlled raw device callbacks; /O2 /fp:strict /W4 /WX, exit0",
+    "native_spans": [
+      {
+        "address": "00a922a0",
+        "length": 51,
+        "sha256": "e1b021f1cb4e70b81ebec54313ad744e960b6693abd54e68af5b6adca5734d14",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00a91e80",
+        "length": 460,
+        "sha256": "c5d5f6836a669241b867593ee2b428200c49d9cc828e488272023e7f25cac8e9",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00a92370",
+        "length": 881,
+        "sha256": "a0ec5cbc5e11d364263871441782b8f55270f5de9cfcbd7008c25f0515fe9ad1",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00a91d60",
+        "length": 190,
+        "sha256": "d8fb1ff2cf60fb49c6c660ac49d28f5932d3eb9a25c4ba6c2e8edc53a93dc13e",
+        "live_matches_disk": true
+      },
+      {
+        "address": "00a92090",
+        "length": 69,
+        "sha256": "7eaf6bfdf5cd198188610508329b9ddafc6bceb813e2fa033656325fd4992e75",
+        "live_matches_disk": true
+      }
+    ],
+    "direct_relocations": 7,
+    "absolute_relocations": 10,
+    "results": "13 ordered device calls match; value bits3EE00000; previous byte2/current byte1; mutable paired code/receiver; forbidden2 accepted; endpoint shrink; preserved unresolved and later-modifier caches; unwritten padding excluded",
+    "runner": "local/run_native_action_binding_probe_ag.ps1 [-PrimaryWorktree path]",
+    "log": "local/native_action_binding_probe_ag.log",
+    "core_archive_sha256": "68dcc35f90a65faa1bd94da945f3ffa81de44fe5b73a84ef2e8f829bda5234f2",
+    "probe_log_sha256": "f106f5dd5d32038085ce258ca250986c706ed77cecf82ecaa7a8e57e4013808b"
+  },
+  "limitations": [
+    "New explicit C++ service ABI, not original vtable or FH3/SEH replacement",
+    "Finite numerical differential under default masked FP mode; signaling NaN payloads, exception status and other control modes not tested",
+    "No SDK, hardware, window, polling, cursor, force or gameplay effects; fixture device callbacks are not production devices",
+    "One unassigned external incoming caller documented without invented function bounds",
+    "No permanent test suite; old typed implementations preserved with additive raw fragments"
+  ]
+}
