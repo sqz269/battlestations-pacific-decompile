@@ -1,0 +1,378 @@
+{
+  "packet": "orch4_native_input_virtuals_ae",
+  "source": [
+    "include/bsp/native_input_device_virtuals.hpp",
+    "src/native_input_device_virtuals.cpp"
+  ],
+  "analysis": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read-only queries and refreshed exports; CLI target verification per live batch",
+    "ghidra_writes": false
+  },
+  "routines": [
+    {
+      "address": "00a93e80",
+      "name": "reset_native_input_device_00a93e80",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX ignored; RET",
+      "end_inclusive": "00a93e80",
+      "end_exclusive": "00a93e81",
+      "native_return": "void",
+      "ret_argument_bytes": 0,
+      "analysis_body": "refreshed full Ghidra body",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed"
+    },
+    {
+      "address": "00a93e90",
+      "name": "set_native_input_relative_noop_00a93e90",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX ignored; RET 8",
+      "end_inclusive": "00a93e92",
+      "end_exclusive": "00a93e93",
+      "native_return": "void",
+      "ret_argument_bytes": 8,
+      "analysis_body": "missing Ghidra start; aligned disk bytes only",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed",
+      "missing_entry_evidence": "RET 8; CC starts A93E93"
+    },
+    {
+      "address": "00a93ea0",
+      "name": "query_native_input_relative_false_00a93ea0",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX ignored; XOR AL,AL; RET 4; upper EAX not promised",
+      "end_inclusive": "00a93ea4",
+      "end_exclusive": "00a93ea5",
+      "native_return": "AL byte zero",
+      "ret_argument_bytes": 4,
+      "analysis_body": "refreshed full Ghidra body",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed"
+    },
+    {
+      "address": "00a95be0",
+      "name": "native_gamepad_device_name_00a95be0",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX ignored; EAX D5B6AC; RET",
+      "end_inclusive": "00a95be5",
+      "end_exclusive": "00a95be6",
+      "native_return": "EAX const char*",
+      "ret_argument_bytes": 0,
+      "analysis_body": "missing Ghidra start; aligned disk bytes only",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed",
+      "missing_entry_evidence": "MOV EAX,D5B6AC; RET; CC starts A95BE6"
+    },
+    {
+      "address": "00a96360",
+      "name": "native_keyboard_device_name_00a96360",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX ignored; EAX D5B6FC; RET",
+      "end_inclusive": "00a96365",
+      "end_exclusive": "00a96366",
+      "native_return": "EAX const char*",
+      "ret_argument_bytes": 0,
+      "analysis_body": "refreshed full Ghidra body",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed"
+    },
+    {
+      "address": "00a9a100",
+      "name": "native_mouse_device_name_00a9a100",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX ignored; EAX D5B8A4; RET",
+      "end_inclusive": "00a9a105",
+      "end_exclusive": "00a9a106",
+      "native_return": "EAX const char*",
+      "ret_argument_bytes": 0,
+      "analysis_body": "refreshed full Ghidra body",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed"
+    },
+    {
+      "address": "00a93f30",
+      "name": "native_gamepad_has_activity_00a93f30",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX raw device; no native stack args; RET",
+      "end_inclusive": "00a93f53",
+      "end_exclusive": "00a93f54",
+      "native_return": "AL byte Boolean",
+      "ret_argument_bytes": 0,
+      "analysis_body": "refreshed full Ghidra body",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed"
+    },
+    {
+      "address": "00a93f60",
+      "name": "native_gamepad_buttons_active_00a93f60",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX raw device; no native stack args; RET",
+      "end_inclusive": "00a93f83",
+      "end_exclusive": "00a93f84",
+      "native_return": "AL byte Boolean",
+      "ret_argument_bytes": 0,
+      "analysis_body": "refreshed full Ghidra body",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed"
+    },
+    {
+      "address": "00a95ed0",
+      "name": "native_keyboard_has_activity_00a95ed0",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX raw device; no native stack args; RET",
+      "end_inclusive": "00a95ef6",
+      "end_exclusive": "00a95ef7",
+      "native_return": "AL byte Boolean",
+      "ret_argument_bytes": 0,
+      "analysis_body": "refreshed full Ghidra body",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed"
+    },
+    {
+      "address": "00a9aab0",
+      "name": "native_mouse_has_activity_00a9aab0",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX raw device; no native stack args; RET",
+      "end_inclusive": "00a9aad3",
+      "end_exclusive": "00a9aad4",
+      "native_return": "AL byte Boolean",
+      "ret_argument_bytes": 0,
+      "analysis_body": "refreshed full Ghidra body",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed"
+    },
+    {
+      "address": "00a9aae0",
+      "name": "native_mouse_buttons_active_00a9aae0",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX raw device; no native stack args; RET",
+      "end_inclusive": "00a9ab03",
+      "end_exclusive": "00a9ab04",
+      "native_return": "AL byte Boolean",
+      "ret_argument_bytes": 0,
+      "analysis_body": "refreshed full Ghidra body",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed"
+    },
+    {
+      "address": "00a95f00",
+      "name": "native_keyboard_buttons_active_00a95f00",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX raw device unchanged; no native stack args; tail JMP EDX to current vslot28",
+      "end_inclusive": "00a95f06",
+      "end_exclusive": "00a95f07",
+      "native_return": "AL callee byte unchanged",
+      "ret_argument_bytes": 0,
+      "analysis_body": "missing Ghidra start; aligned disk bytes only",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed",
+      "missing_entry_evidence": "MOV EAX,[ECX]; MOV EDX,[EAX+28h]; JMP EDX at A95F05; CC starts A95F07"
+    },
+    {
+      "address": "00a95f10",
+      "name": "select_native_keyboard_control_00a95f10",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX raw device; no native stack args; RET",
+      "end_inclusive": "00a95f39",
+      "end_exclusive": "00a95f3a",
+      "native_return": "EAX signed int32",
+      "ret_argument_bytes": 0,
+      "analysis_body": "refreshed full Ghidra body",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed"
+    },
+    {
+      "address": "00a94440",
+      "name": "select_native_gamepad_control_00a94440",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX raw device; no native stack args; RET; binary32 ST0 spill of indirect value",
+      "end_inclusive": "00a944f1",
+      "end_exclusive": "00a944f2",
+      "native_return": "EAX signed int32",
+      "ret_argument_bytes": 0,
+      "analysis_body": "refreshed full Ghidra body",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed"
+    },
+    {
+      "address": "00a9ab10",
+      "name": "select_native_mouse_control_00a9ab10",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX raw device; no native stack args; RET; binary32 ST0 spill of indirect value",
+      "end_inclusive": "00a9abc1",
+      "end_exclusive": "00a9abc2",
+      "native_return": "EAX signed int32",
+      "ret_argument_bytes": 0,
+      "analysis_body": "refreshed full Ghidra body",
+      "source_abi": "new C++ provider interface; native register upper bits/stack identity not claimed"
+    },
+    {
+      "address": "00a9a380",
+      "name": "native_mouse_double_click_seconds_00a9a380",
+      "coverage": "complete source control flow within documented raw storage and required provider contracts",
+      "abi": "ECX actual mouse; no native stack args; FLD [ECX+238h]; RET",
+      "end_inclusive": "00a9a386",
+      "end_exclusive": "00a9a387",
+      "native_return": "ST0 float",
+      "ret_argument_bytes": 0,
+      "analysis_body": "refreshed full Ghidra body",
+      "source_abi": "naked Win32 fastcall ECX/FLD/ST0/RET leaf"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00a93f3e",
+      "native": "actual_device+vtable20",
+      "function": "00a93f30",
+      "kind": "indirect_call",
+      "instruction": "CALL EDX",
+      "contract": "same raw ECX receiver; captured raw+0 profile; one DWORD code stack argument; native callee RET 4; AL query byte",
+      "membership": "live ghidra proto confirms claimed containing function; full listing contains instruction"
+    },
+    {
+      "address": "00a93f6e",
+      "native": "actual_device+vtable20",
+      "function": "00a93f60",
+      "kind": "indirect_call",
+      "instruction": "CALL EDX",
+      "contract": "same raw ECX receiver; captured raw+0 profile; one DWORD code stack argument; native callee RET 4; AL query byte",
+      "membership": "live ghidra proto confirms claimed containing function; full listing contains instruction"
+    },
+    {
+      "address": "00a95ede",
+      "native": "actual_device+vtable20",
+      "function": "00a95ed0",
+      "kind": "indirect_call",
+      "instruction": "CALL EDX",
+      "contract": "same raw ECX receiver; captured raw+0 profile; one DWORD code stack argument; native callee RET 4; AL query byte",
+      "membership": "live ghidra proto confirms claimed containing function; full listing contains instruction"
+    },
+    {
+      "address": "00a9aabe",
+      "native": "actual_device+vtable20",
+      "function": "00a9aab0",
+      "kind": "indirect_call",
+      "instruction": "CALL EDX",
+      "contract": "same raw ECX receiver; captured raw+0 profile; one DWORD code stack argument; native callee RET 4; AL query byte",
+      "membership": "live ghidra proto confirms claimed containing function; full listing contains instruction"
+    },
+    {
+      "address": "00a9aaee",
+      "native": "actual_device+vtable20",
+      "function": "00a9aae0",
+      "kind": "indirect_call",
+      "instruction": "CALL EDX",
+      "contract": "same raw ECX receiver; captured raw+0 profile; one DWORD code stack argument; native callee RET 4; AL query byte",
+      "membership": "live ghidra proto confirms claimed containing function; full listing contains instruction"
+    },
+    {
+      "address": "00a95f1e",
+      "native": "actual_device+vtable20",
+      "function": "00a95f10",
+      "kind": "indirect_call",
+      "instruction": "CALL EDX",
+      "contract": "same raw ECX receiver; captured raw+0 profile; one DWORD code stack argument; native callee RET 4; AL query byte",
+      "membership": "live ghidra proto confirms claimed containing function; full listing contains instruction"
+    },
+    {
+      "address": "00a9445e",
+      "native": "actual_device+vtable20",
+      "function": "00a94440",
+      "kind": "indirect_call",
+      "instruction": "CALL EDX",
+      "contract": "same raw ECX receiver; captured raw+0 profile; one DWORD code stack argument; native callee RET 4; AL query byte",
+      "membership": "live ghidra proto confirms claimed containing function; full listing contains instruction"
+    },
+    {
+      "address": "00a9446c",
+      "native": "actual_device+vtable24",
+      "function": "00a94440",
+      "kind": "indirect_call",
+      "instruction": "CALL EDX",
+      "contract": "same raw ECX receiver; captured raw+0 profile; one DWORD code stack argument; native callee RET 4; ST0 value spilled to binary32; profile reloaded after query",
+      "membership": "live ghidra proto confirms claimed containing function; full listing contains instruction"
+    },
+    {
+      "address": "00a9ab2e",
+      "native": "actual_device+vtable20",
+      "function": "00a9ab10",
+      "kind": "indirect_call",
+      "instruction": "CALL EDX",
+      "contract": "same raw ECX receiver; captured raw+0 profile; one DWORD code stack argument; native callee RET 4; AL query byte",
+      "membership": "live ghidra proto confirms claimed containing function; full listing contains instruction"
+    },
+    {
+      "address": "00a9ab3c",
+      "native": "actual_device+vtable24",
+      "function": "00a9ab10",
+      "kind": "indirect_call",
+      "instruction": "CALL EDX",
+      "contract": "same raw ECX receiver; captured raw+0 profile; one DWORD code stack argument; native callee RET 4; ST0 value spilled to binary32; profile reloaded after query",
+      "membership": "live ghidra proto confirms claimed containing function; full listing contains instruction"
+    },
+    {
+      "address": "00a95f05",
+      "native": "actual_device+vtable28",
+      "function": "00a95f00",
+      "kind": "tail_jump",
+      "instruction": "JMP EDX",
+      "contract": "same raw ECX receiver; captured raw+0 profile; no stack arguments; preserve AL",
+      "membership": "missing function start; aligned disk only"
+    }
+  ],
+  "call_audit": {
+    "direct_CALL_count": 0,
+    "indirect_CALL_count": 10,
+    "indirect_tail_JMP_count": 1,
+    "live_membership_confirmed_CALLs": 10,
+    "missing_membership_tail": "00a95f05",
+    "mechanical_verifier": "exit0: zero direct rows; all eleven explicit indirect rows skipped, not automatically resolved",
+    "complete_listing_check": "local/native_input_virtuals_listing_audit.log: exact set equality between all CALLs in 13 refreshed function listings and all 10 reported indirect CALL sites; passed"
+  },
+  "providers": {
+    "raw_dispatch": "NativeInputDeviceVirtualCalls: explicit captured profile and same actual receiver; query20/value24/activity28; finite composition not supplied by this packet",
+    "existing_bodies": [
+      "native_keyboard_mouse.hpp/.cpp",
+      "native_gamepad_xinput.hpp/.cpp",
+      "native_joystick.hpp/.cpp"
+    ],
+    "literals": "Borrow actual canonical D5B6FC Keyboard, D5B8A4 Mouse, D5B6AC GameController addresses; no allocation",
+    "constants": "Borrow live volatile D7A208 negative-zero and D7A218 zero words; load at recovered arithmetic branch",
+    "abstract_profile": "D5B670 query20/value24 remain BF698E purecall; no empty successful substitute"
+  },
+  "profile_extents": {
+    "keyboard": "D5B904 through slot34; no slot38",
+    "mouse": "D5B8B0 slot38 A9A380 returns ST0; not force output",
+    "gamepad": "D5B670/D5BB48/D5B7F0 slot38 force output"
+  },
+  "register_provenance": {
+    "scans": "ECX copied to EDI, ESI counter; raw+0 reloaded each loop; EDX slot20; ECX restored to EDI before call",
+    "selection": "EDI raw receiver; ESI code; EBX selected=-1; current profile reloaded after query; original signed value retained; exact FCOMIP/COMISS/SUBSS path",
+    "keyboard_tail": "ECX unchanged; EAX=[ECX], EDX=[EAX+28], JMP EDX; AL byte unnormalized"
+  },
+  "producer_evidence": [
+    "A962F0/A9A3E0 write raw310h keyboard profile and +20C byte array",
+    "A9A290 writes raw23Ch mouse profile and +238 float via actual platform interval",
+    "A95D70 produces common220h; A9A5A0 derived240h XInput; A99940 actualB48h joystick",
+    "Vtable byte extents and data xrefs independently inspected in readiness handoff"
+  ],
+  "native_EH": "No FH3/SEH maps or owning cleanup in these 16 bodies; explicit source provider exceptions propagate",
+  "typed_preservation": "All source records are add-fragment entries; existing typed counterparts remain unchanged",
+  "validation": {
+    "build": "scripts/build.ps1 Win32 Release exit0; MSBUILDDISABLENODEREUSE=1",
+    "seed_count": 8,
+    "seeds_match_disk": true,
+    "ctests": "2/2 passed",
+    "probe": "One ignored manifested local/native_input_virtuals_probe.cpp; actual AD raw keyboard query plus explicitly controlled dispatch callbacks; no hardware or SDK polling",
+    "counters": {
+      "raw_keyboard_queries": 512,
+      "keyboard_selected": 255,
+      "preserved_tail_AL": 128,
+      "no_write_leaves": 3,
+      "literal_identity_checks": 3,
+      "gamepad_queries": 90,
+      "mouse_queries": 17,
+      "profile_reloads": 107,
+      "selected": 7,
+      "mouse_x87_value": 0.375
+    },
+    "build_log": "local/native_input_virtuals_build.log",
+    "probe_log": "local/native_input_virtuals_probe.log",
+    "probe_runner": "local/run_native_input_virtuals_probe.ps1 [-PrimaryWorktree path]",
+    "core_archive_sha256": "5717a631163c23b7c17f596e9eabb8a39607c4184cf156db642d01d958667e39",
+    "probe_log_sha256": "f2c3e7208ad3cc1930d799aa3fb9311829161a56b24bb6d35a4a8df2feb5d99b"
+  },
+  "remaining": [
+    "Three missing Ghidra starts require primary repair after lease release; inclusive ends recorded per routine",
+    "Finite production raw dispatch/composition, GUID storage, SDK ownership and application hookup remain external",
+    "No hardware, gameplay, arbitrary native call-stack or complete vtable binary compatibility claim"
+  ]
+}
