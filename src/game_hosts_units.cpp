@@ -17,7 +17,9 @@
 
 #include "bsp/camera_projection.hpp"
 #include "bsp/controlled_unit.hpp"
+#include "bsp/ocean_height.hpp"
 #include "bsp/pose_refresh.hpp"
+#include "bsp/rigid_body_integration.hpp"
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/ship_motion.hpp"
 #include "bsp/unit_controller.hpp"
@@ -25,6 +27,7 @@
 #include "bsp/unit_instance.hpp"
 #include "bsp/unit_order_record.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/unit_rudder_curve.hpp"
 #include "bsp/unit_state_message.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/world_ocean.hpp"
@@ -40,21 +43,6 @@ namespace bsp::game {
 namespace {
 
 constexpr double kPi = 3.14159265358979323846;
-
-// docs/SHIP_MOTION.md: the rudder curve settings at 00424c40()+438h..+44Ch were
-// never recovered from the image or from the installed data. Forcing the three
-// denominator knots to 1.0 makes 0082e890 answer 1.0 at every speed, which is
-// the same stand-in src/ship_motion_probe.cpp uses and reports.
-bsp::UnitRudderCurveSettings identity_rudder_curve() {
-    bsp::UnitRudderCurveSettings settings{};
-    settings.value_0438 = 1.0f;
-    settings.speed_043c = 1.0f;
-    settings.value_0440 = 1.0f;
-    settings.speed_0444 = 0.0f;
-    settings.value_0448 = 1.0f;
-    settings.speed_044c = 0.5f;
-    return settings;
-}
 
 float heading_degrees_of(const bsp::ShipMotionState& state) {
     return static_cast<float>(std::atan2(static_cast<double>(state.pose_row2[0]),
@@ -91,7 +79,15 @@ struct GameUnitSlot {
     bsp::UnitOrderQueue queue{};
     bsp::UnitOrderRecordStorage scratch{};
     bsp::UnitControllerState controller{};
-    bsp::UnitRudderCurveSettings rudder_curve = identity_rudder_curve();
+
+    // The hull's rigid body. `motion_state` is M = *(B+4h) and `body` is B, which
+    // the unit's force-model controller holds at controller+2Ch. No producer for
+    // the mass, the inertia or either damping rate was found
+    // (docs/RIGID_BODY_INTEGRATION.md, follow-up `ship_hull_body_creation`), so
+    // 00c37f40, 00c37e70, 00c37e00 and 00c37de0 are never called here and the
+    // fields keep the values a freshly constructed body has.
+    bsp::DynMotionState motion_state{};
+    bsp::DynBody body{};
 
     int class_id{bsp::kUnitDestroyerClassId};  // unit+C4h, the descriptor's kind
     bool standing_order{false};
@@ -113,7 +109,22 @@ struct GameUnitsHost::Impl {
     // no unit pointers; `bound` is the `!= 0` every reader of the global makes.
     bool controlled_bound{false};
     std::size_t controlled_index{0};
-    // The stand-in records are logged once per kind, not once per unit tick.
+    // 00424c40 is a singleton, so the curve block is one table shared by every
+    // ship in the mission, not a per-unit or per-class tuning. It is filled once
+    // by load_gameplay_settings_0083b5e0; until then it carries the zeroes a
+    // freshly allocated settings object has, which is why the load runs first.
+    bsp::UnitRudderCurveSettings rudder_curve{};
+    bool rudder_curve_loaded{false};
+
+    // The world fields 00c41550 and 00c5b1b0 read: gravity at world+04h..+0Ch,
+    // the two sleep speed thresholds at world+3Ch/+40h and the countdown reload
+    // at world+44h. None of them has a recovered producer
+    // (docs/RIGID_BODY_INTEGRATION.md, follow-up `dyn_world_construction`), and
+    // the Dyn world object itself does not exist in this process, so they stay
+    // at zero: no gravity, and any non-zero speed keeps a body awake.
+    bsp::DynWorldStepConstants physics_world{};
+
+    // The notes are logged once per kind, not once per unit tick.
     bool logged_ocean{false};
     bool logged_scale{false};
     bool logged_curve{false};
@@ -160,6 +171,52 @@ struct GameUnitsHost::Impl {
 namespace {
 
 // ---------------------------------------------------------------------------
+// 0078cf20's two leaves, and the gameplay-modifier filter
+// ---------------------------------------------------------------------------
+
+// bsp::OceanHeightHost. The sampler itself is recovered and runs; what is not
+// available is its receiver. 0078cf20 takes [[00e188a8]+19F0h] and hands
+// [world+A8h] to both leaves, and that sub-object is the renderer/scene owner's
+// (the foliage builder 00af0c50 takes its camera from the same pointer, and
+// `construct_world` 004de610 is still a load record), so each leaf is a host
+// record that answers the open-sea state docs/OCEAN_HEIGHT.md evidences: the
+// wave field returns exactly 0.0f when field+F9h is set or field+24h is zero,
+// and the coverage mask returns exactly 1.0f when no region covers the point.
+class OceanFieldBinding final : public bsp::OceanHeightHost {
+public:
+    explicit OceanFieldBinding(GameUnitsHost::Impl& owner) : owner_(owner) {}
+
+    float wave_height_0078c890(float, float) override {
+        if (!owner_.logged_ocean) {
+            owner_.logged_ocean = true;
+            owner_.log.notef("ocean sampler 0078cf20 runs, both of its leaves are records: "
+                "its receiver is [[00e188a8]+19F0h] and both calls take [world+A8h], the "
+                "renderer/scene owner's field object, so the wave field answers its own "
+                "disabled value 0.0f and the coverage mask its own open-sea value 1.0f, and "
+                "the product 0078cf64 is exactly 0.0f");
+        }
+        owner_.record("ShipMotion::ocean_wave_field", 0x0078c890u);
+        return 0.0f;
+    }
+    float coverage_mask_00b9cf50(float, float) override {
+        owner_.record("ShipMotion::ocean_coverage_mask", 0x00b9cf50u);
+        return 1.0f;
+    }
+
+private:
+    GameUnitsHost::Impl& owner_;
+};
+
+// bsp::GameplayModifierHost. 008e6430 walks the list at manager+80h+category*0Ch
+// and this process registers no modifier record, so the walk visits nothing and
+// the filter is never reached; the product is the routine's own 1.0f at
+// 00d7a24c rather than a literal a host returns.
+class NoGameplayModifiers final : public bsp::GameplayModifierHost {
+public:
+    bool entry_matches_008e4680(const bsp::GameplayModifierEntry&) override { return false; }
+};
+
+// ---------------------------------------------------------------------------
 // bsp::UnitInstanceHost, one method per native call site of 008255b0
 // ---------------------------------------------------------------------------
 
@@ -179,11 +236,10 @@ public:
     void release_submerged_effect(std::size_t) override {
         owner_.record("UnitInstance::release_submerged_effect", 0x00867b10u);
     }
-    // The ocean object at [game+19FCh]. construct_world 004de610 is a load
-    // record, so there is none; the flat sea at y = 0 this process answers with
-    // is the docs/SHIP_MOTION.md stand-in for 0078cf20 and nothing more. Step 2
-    // of 008255b0 runs only while the ocean's world Y is below zero, so a flat
-    // sea leaves the bubble block alone, which is why it is not a claim.
+    // The ocean object's own world Y, which step 2 of 008255b0 gates on. That is
+    // the object's pose, not a sample of the sampler, and its producer is the
+    // renderer/scene owner; a surface at y = 0 leaves the bubble block alone,
+    // which is why it is a stated contract rather than a claim.
     bool ocean_exists() override { return true; }
     float ocean_world_y() override { return 0.0f; }
     float draw_bubble_interval() override {
@@ -221,7 +277,13 @@ public:
         owner_.record("UnitInstance::transform_stern_anchor", 0x00413920u);
         return {};
     }
-    float sample_ocean_height(float, float) override { return 0.0f; }
+    // The same 0078cf20 the motion tick's wave gate calls, run whole.
+    float sample_ocean_height(float x, float z) override {
+        OceanFieldBinding sea(owner_);
+        const float height = bsp::ocean_water_height_0078cf20(x, z, sea);
+        owner_.done("UnitInstance::ocean_height", 0x0078cf20u);
+        return height;
+    }
     void publish_bow_anchor(const bsp::UnitAnchorPoint&) override {
         owner_.record("UnitInstance::publish_bow_anchor", 0x004842c0u);
     }
@@ -287,21 +349,24 @@ public:
     UnitRudderBinding(GameUnitsHost::Impl& owner, GameUnitSlot& slot)
         : owner_(owner), slot_(slot) {}
 
+    // 0082e890 calls 00424c40 four times on the low branch and three on the
+    // high one and reads +438h..+44Ch off each returned pointer. The settings
+    // object is the singleton the Lua-driven loader 0083b5e0 filled, so this
+    // hands back the one shared block rather than a per-unit copy.
     const bsp::UnitRudderCurveSettings& settings_00424c40() override {
-        if (!owner_.logged_curve) {
-            owner_.logged_curve = true;
-            owner_.log.notef("ship motion stand-in: the rudder curve settings at "
-                "00424c40()+438h..+44Ch were never recovered, so the three denominator "
-                "knots are forced to 1 (the same stand-in src/ship_motion_probe.cpp uses)");
-        }
-        owner_.record("ShipMotion::rudder_curve_settings", 0x00424c40u);
-        return slot_.rudder_curve;
+        owner_.done("ShipMotion::rudder_curve_settings", 0x00424c40u);
+        return owner_.rudder_curve;
     }
     bool scale_manager_present() override { return false; }
     const bsp::ShipClassFields& ship_class() override { return slot_.fields; }
     bool gameplay_scale_enabled() override { return false; }
     bool scale_manager_enabled() override { return false; }
-    float gameplay_scale_008e6430(int) override { return 1.0f; }
+    float gameplay_scale_008e6430(int) override {
+        NoGameplayModifiers modifiers;
+        const float scale = bsp::gameplay_modifier_product_008e6430(nullptr, 0, modifiers);
+        owner_.done("ShipMotion::gameplay_scale", 0x008e6430u);
+        return scale;
+    }
     float turn_efficiency() override { return slot_.motion.turn_efficiency; }
     float forward_speed_0092d730() override { return forward_speed; }
     float steering_command() override { return slot_.motion.to_turn; }
@@ -352,33 +417,30 @@ public:
         owner_.done("ShipMotion::order_ring_tick", 0x00813020u);
     }
 
-    // 0078cf20 on the ocean. There is no ocean object in this process, so the
-    // flat sea at y = 0 is the stand-in docs/SHIP_MOTION.md names; it keeps the
-    // keel point below the surface for an upright hull, which is the case the
-    // throttle gate at 00826994 is meant to pass.
-    float ocean_height(float, float) override {
-        if (!owner_.logged_ocean) {
-            owner_.logged_ocean = true;
-            owner_.log.notef("ship motion stand-in: the ocean sampler 0078cf20 has no "
-                "object here (construct_world 004de610 is a load record), so every "
-                "sample answers a flat sea at y = 0");
-        }
-        owner_.record("ShipMotion::ocean_height", 0x0078cf20u);
-        return 0.0f;
+    // 0078cf20 at 00826985, run whole: the wave field times the coverage mask,
+    // formed at x87 precision and rounded once. Both leaves are records.
+    float ocean_height(float x, float z) override {
+        OceanFieldBinding sea(owner_);
+        const float height = bsp::ocean_water_height_0078cf20(x, z, sea);
+        owner_.done("ShipMotion::ocean_height", 0x0078cf20u);
+        return height;
     }
 
-    // 008e6430 was never analysed. The literal at 00d7a24c is what the listing
-    // uses when the two globals tested at 00826a06 are clear, which is the
-    // single-player case this run is in.
+    // 008e6430 at 00826a21, run whole over an empty category list. The
+    // accumulator starts at the 1.0f at 00d7a24c and nothing multiplies into it,
+    // so the result is the routine's own value.
     float gameplay_scale() override {
         if (!owner_.logged_scale) {
             owner_.logged_scale = true;
-            owner_.log.notef("ship motion stand-in: the gameplay scale hook 008e6430 was "
-                "never analysed; the two globals at 00826a06 are clear in single player, "
-                "so the literal 1.0f at 00d7a24c is used");
+            owner_.log.notef("gameplay scale 008e6430 runs over an empty category list: no "
+                "modifier record is registered in this process, so the product is the 1.0f "
+                "the accumulator starts at (00d7a24c) and the filter 008e4680 is never "
+                "reached");
         }
-        owner_.record("ShipMotion::gameplay_scale", 0x008e6430u);
-        return bsp::kUnitReferenceSpeedUnscaled;
+        NoGameplayModifiers modifiers;
+        const float scale = bsp::gameplay_modifier_product_008e6430(nullptr, 0, modifiers);
+        owner_.done("ShipMotion::gameplay_scale", 0x008e6430u);
+        return scale;
     }
 
     // controller->vtable[0](dt), which for a surface ship is 00937440. Its
@@ -540,6 +602,7 @@ void GameUnitsHost::Impl::refresh_row(GameUnitSlot& slot) {
     speed.axis[2] = slot.motion.pose_row2[2];
     row.forward_speed = bsp::unit_forward_speed_0092d730(speed);
     row.throttle = slot.motion.throttle;
+    row.ordered_rudder = slot.motion.to_turn;
     row.rudder = slot.motion.smoothed_rudder;
     row.yaw_rate = slot.motion.angular_velocity.y;
     const double dx = static_cast<double>(row.position[0]) - static_cast<double>(row.start[0]);
@@ -572,6 +635,37 @@ GameUnitsHost::GameUnitsHost(GameHostLog& log, GameMissionLuaHost& lua)
     : impl_(std::make_unique<Impl>(log, lua)) {}
 
 GameUnitsHost::~GameUnitsHost() = default;
+
+void GameUnitsHost::load_gameplay_settings_0083b5e0() {
+    Impl& host = *impl_;
+    if (host.rudder_curve_loaded) return;
+    // 0083b5e0's head: run Scripts\datatables\ShipGlobals.lua and take the
+    // `ShipGlobals` global. Then the fragment 0083ce56..0083d10d, which is what
+    // fills +438h..+44Ch of the settings object 00424c40 hands out.
+    const bool table = host.lua.load_ship_globals_0083b6e6();
+    host.record("GameSettings::load_from_lua_globals", 0x0083b5e0u);
+    if (!table) {
+        host.log.notef("rudder curve: `ShipGlobals` did not load, so 00424c40()+438h..+44Ch "
+            "keeps the zeroes a fresh settings object has and 0082e890 would divide "
+            "MaxRotAngle by zero; the motion path is left with the curve unset");
+        return;
+    }
+    bsp::UnitRudderCurveSettings settings{};
+    if (!host.lua.read_turn_multipliers_0083ce56(settings)) {
+        host.log.notef("rudder curve: ShipGlobals[\"Navigator\"][\"TurnMultipliers\"] is "
+            "incomplete, so the six fields stay unset");
+        return;
+    }
+    host.rudder_curve = settings;
+    host.rudder_curve_loaded = true;
+    host.done("GameSettings::load_turn_multipliers", 0x0083ce56u);
+    host.log.notef("rudder curve loaded from ShipGlobals[\"Navigator\"][\"TurnMultipliers\"]: "
+        "min (%.3f, %.3f) med (%.3f, %.3f) max (%.3f, %.3f); index 1 is the throttle "
+        "coordinate and index 2 the turn-circle multiplier 0082ecb0 divides MaxRotAngle by",
+        static_cast<double>(settings.speed_0444), static_cast<double>(settings.value_0440),
+        static_cast<double>(settings.speed_044c), static_cast<double>(settings.value_0448),
+        static_cast<double>(settings.speed_043c), static_cast<double>(settings.value_0438));
+}
 
 void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entities) {
     Impl& host = *impl_;
@@ -635,6 +729,15 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         slot->motion.class_id = slot->class_id;
 
         bsp::construct_unit_order_ring_00812d40(slot->ring);
+
+        // M+18h and M+1Ch, the two speed clamps 00c5b1b0 applies at the end of
+        // every substep. Their producer was not found either, and a zero there
+        // would zero the velocity on the first substep, so they are set out of
+        // range and the clamps never fire. That is a stated contract, not a
+        // recovered value.
+        slot->motion_state.max_linear_speed = 1.0e30f;
+        slot->motion_state.max_angular_speed = 1.0e30f;
+        slot->body.motion = &slot->motion_state;
 
         slot->parent = nullptr;
         slot->pose = std::make_unique<bsp::PoseRefreshView>(
@@ -745,17 +848,44 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         const bsp::ShipMotionStepResult result
             = bsp::ship_motion_step_00825f20(slot.motion, slot.motion_class, motion,
                 step_seconds);
-        // Not a reconstruction: the game advances position and attitude in the
-        // external physics library reached through 00c32000 / 00c37e20 /
-        // 00c37e50, none of which was read.
+        // The Dyn library's own two integration phases, in the order 00c5bb30
+        // runs them. The motion tick has just written both velocities onto the
+        // body through 00c37e50 / 00c37e20, so the velocity phase 00c41550 sees
+        // no force, no gravity and no damping and only rebuilds the world
+        // inverse inertia, and the position phase 00c5b1b0 is what turns the two
+        // velocities into a pose. docs/RIGID_BODY_INTEGRATION.md.
         if (!host.logged_integrator) {
             host.logged_integrator = true;
-            host.log.notef("ship motion stand-in: position and attitude are advanced by an "
-                "explicit Euler step, because the game integrates in the physics library "
-                "behind 00c32000 / 00c37e20 / 00c37e50 and none of it was read");
+            host.log.notef("rigid body: 00c41550 then 00c5b1b0, one substep of the whole "
+                "%.4f s game step. The substep schedule 00c5c540 is a record because "
+                "world+00h has no recovered producer, and the hull body carries no mass, "
+                "inertia or damping because 00c37f40 / 00c37e70 / 00c37e00 / 00c37de0 have "
+                "no caller on the hull path", static_cast<double>(step_seconds));
         }
-        bsp::ship_integrate_stand_in(slot.motion, step_seconds);
-        host.record("ShipMotion::rigid_body_integrate", 0x00c37e50u);
+        host.record("ShipMotion::rigid_body_substep_schedule", 0x00c5bb30u);
+        slot.motion_state.linear_velocity = slot.motion.linear_velocity;
+        slot.motion_state.angular_velocity = slot.motion.angular_velocity;
+        slot.body.motion = &slot.motion_state;
+        for (int i = 0; i < 3; ++i) {
+            slot.body.row0[i] = slot.motion.pose_row0[i];
+            slot.body.row1[i] = slot.motion.pose_row1[i];
+            slot.body.row2[i] = slot.motion.pose_row2[i];
+            slot.body.position[i] = slot.motion.position[i];
+        }
+        bsp::dyn_body_integrate_velocity_00c41550(slot.body, host.physics_world,
+            step_seconds);
+        host.done("ShipMotion::rigid_body_velocity_phase", 0x00c41550u);
+        bsp::dyn_body_integrate_position_00c5b1b0(slot.body, host.physics_world,
+            step_seconds);
+        host.done("ShipMotion::rigid_body_position_phase", 0x00c5b1b0u);
+        slot.motion.linear_velocity = slot.motion_state.linear_velocity;
+        slot.motion.angular_velocity = slot.motion_state.angular_velocity;
+        for (int i = 0; i < 3; ++i) {
+            slot.motion.pose_row0[i] = slot.body.row0[i];
+            slot.motion.pose_row1[i] = slot.body.row1[i];
+            slot.motion.pose_row2[i] = slot.body.row2[i];
+            slot.motion.position[i] = slot.body.position[i];
+        }
         Impl::publish_pose(slot);
         const double dx = static_cast<double>(slot.motion.position[0]) - before[0];
         const double dy = static_cast<double>(slot.motion.position[1]) - before[1];

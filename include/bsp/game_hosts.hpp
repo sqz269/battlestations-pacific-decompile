@@ -168,6 +168,11 @@ struct GameExecutableOptions {
     // does not depend on how fast the machine presents. Zero keeps the wall
     // clock, which is what every earlier milestone's run used.
     float mission_frame_seconds{0.0f};
+    // --trajectory-csv <path>, milestone 2j: one row per unit per fixed
+    // simulation step, so an external comparison against a trace taken from the
+    // running game can be made. Empty writes nothing. The column contract is in
+    // include/bsp/game_hosts_trajectory.hpp.
+    std::string trajectory_csv;
     // --hardware-probe-commit: let the phase-2 probe 0073c3b0 raise its message box and
     // write the machine profile back to HKLM. Off by default so an unattended run cannot
     // block on a dialog or rewrite a machine's stored profile.

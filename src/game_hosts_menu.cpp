@@ -580,7 +580,19 @@ public:
         return page != nullptr ? page->reference_count : 0;
     }
     void gui_manager_release_layout(void* layout) override {
-        owner_.frontend.release_screen_page(static_cast<GuiLayoutPage*>(layout));
+        // 00518330: the last reference goes, and the GUI manager destroys the
+        // layout, so its widget tree stops existing and nothing draws it.
+        // GuiPageRegistry in this process owns every page for the whole run and
+        // has no destroy path, so the substitute for that destruction is to push
+        // the page hidden before releasing it. Milestone 2j: without this the
+        // committing 00518250 at 004c9e06 released the handle and the sprite
+        // bridge kept drawing FE_frame and FE_frame_title from widget records
+        // that outlive the page.
+        auto* page = static_cast<GuiLayoutPage*>(layout);
+        if (page != nullptr && page->root) {
+            owner_.frontend.commit_page_visibility(*page, false);
+        }
+        owner_.frontend.release_screen_page(page);
     }
     void gui_layout_release_ref(void* layout) override {
         auto* page = static_cast<GuiLayoutPage*>(layout);
@@ -1517,7 +1529,8 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     long press_start_frame, GameVfsHost& vfs, GameScriptHost& scripts, LocaleTables& locale,
     std::string menu_select, long mission_frames, GameFrameProfiler* profiler,
     std::string language, long mission_complete_frame, long order_frame,
-    float order_throttle, float order_rudder, float mission_frame_seconds)
+    float order_throttle, float order_rudder, float mission_frame_seconds,
+    std::string trajectory_csv)
     : impl_(std::make_unique<Impl>(log, frontend, state, press_start_frame)) {
     // Milestone 2h: the in-mission HUD registers into the same registry this
     // object owns, so the HUD host is built here and handed to the mission.
@@ -1526,7 +1539,7 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
         impl_->mission = std::make_unique<GameMissionHost>(log, vfs, scripts, frontend,
             locale, std::move(menu_select), mission_frames, profiler, std::move(language),
             mission_complete_frame, impl_->hud.get(), order_frame, order_throttle,
-            order_rudder, mission_frame_seconds);
+            order_rudder, mission_frame_seconds, std::move(trajectory_csv));
     }
 }
 
@@ -1546,11 +1559,17 @@ void GameMenuHost::select_front_end_frame_set_00518250(int set, bool commit) {
     bsp::select_front_end_frame_set(host.frame_layouts, layouts, set, commit);
     host.acquire_hidden = false;
     host.log.implemented("MissionLoad::select_front_end_frame_set", "00518250");
-    host.log.notef("front-end frame set %d requested with commit=%d: the active set stays %d "
-        "and nothing is released, because 00518250 releases the other sets and records the "
-        "new one only on a committing call (00518272, 0051864a)", set, commit ? 1 : 0,
-        host.frame_layouts.active_set);
-    static_cast<void>(previous);
+    if (commit) {
+        host.log.notef("front-end frame set %d selected with commit=1: 00518250 released "
+            "every other set's backdrop, panel and title layouts and made %d the active set "
+            "(it was %d), so the layouts the title bring-up acquired are gone", set,
+            host.frame_layouts.active_set, previous);
+    } else {
+        host.log.notef("front-end frame set %d requested with commit=0: the active set stays "
+            "%d and nothing is released, because 00518250 releases the other sets and records "
+            "the new one only on a committing call (00518272, 0051864a)", set,
+            host.frame_layouts.active_set);
+    }
     host.frontend.invalidate_bridge();
 }
 

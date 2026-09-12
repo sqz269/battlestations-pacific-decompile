@@ -1,0 +1,344 @@
+{
+  "packet": "cc_exe_2j",
+  "owner": "agent/cc-exe-2j",
+  "date": "2026-09-11",
+  "title": "bsp_game.exe milestone 2j: the game's own motion inputs, a trajectory dump and an honest mission picture",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": "none; read-only queries only",
+  "doc": "docs/GAME_EXECUTABLE.md, section \"Milestone 2j\"",
+  "sources": [
+    "src/game_hosts_units.cpp",
+    "include/bsp/game_hosts_units.hpp",
+    "src/game_hosts_trajectory.cpp",
+    "include/bsp/game_hosts_trajectory.hpp",
+    "src/game_hosts_lua.cpp",
+    "include/bsp/game_hosts_lua.hpp",
+    "src/game_hosts_hud.cpp",
+    "include/bsp/game_hosts_hud.hpp",
+    "src/game_hosts_menu.cpp",
+    "include/bsp/game_hosts_menu.hpp",
+    "src/game_hosts_mission.cpp",
+    "include/bsp/game_hosts_mission.hpp",
+    "src/game_hosts_mission_frame.cpp",
+    "include/bsp/game_hosts_mission_frame.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_hosts.hpp",
+    "src/game_main.cpp",
+    "cmake/startup.cmake"
+  ],
+
+  "rudder_curve_steps": [
+    {
+      "method": "GameSettings::load_from_lua_globals",
+      "address": "00424bfc",
+      "function": "00424a10",
+      "native": "0083b5e0",
+      "status": "record",
+      "note": "The settings singleton's constructor tails into the Lua-driven loader. The executable runs only the loader's rudder-curve head and fragment, so the whole routine stays a record."
+    },
+    {
+      "method": "GameSettings::run_ship_globals_script",
+      "address": "0083b6e6",
+      "function": "0083b5e0",
+      "native": "00b69d40",
+      "status": "record",
+      "note": "The Lua state owner's own runner with its override list. This process has one Lua state (the mission machine), so the file Scripts\\datatables\\ShipGlobals.lua (the literal at 00d0b67c, formatted into the path buffer at 0083b6c3) is run through the recovered file runner 00885110 instead and the native call is recorded."
+    },
+    {
+      "method": "GameSettings::get_ship_globals_table",
+      "address": "0083b73d",
+      "function": "0083b5e0",
+      "native": "00b67800",
+      "status": "concrete",
+      "note": "BSP_LuaObject_GetByName with the literal ShipGlobals at 00d0b670, after BSP_LuaStateOwner_GetGlobals 00b67980 at 0083b721."
+    },
+    {
+      "method": "GameSettings::load_turn_multipliers",
+      "address": "0083ce56",
+      "native": "0083ce56",
+      "status": "concrete",
+      "note": "The loader fragment 0083ce56..0083d10d itself, run through bsp::unit_rudder_curve_load_0083ce56 over the live interpreter. Entry row, not a call site."
+    },
+    {
+      "method": "GameSettings::lua_assign_current_table",
+      "address": "0083ce84",
+      "function": "0083b5e0",
+      "native": "00b67690",
+      "status": "concrete",
+      "note": "Assigns the TurnMultipliers wrapper into the fragment's current-table slot, which is what makes the three key lookups run against the sub-table."
+    },
+    {
+      "method": "GameSettings::release_lua_temporary",
+      "address": "0083ce98",
+      "function": "0083b5e0",
+      "native": "00b67700",
+      "status": "concrete"
+    },
+    {
+      "method": "GameSettings::lua_get_by_name",
+      "address": "0083ceb1",
+      "function": "0083b5e0",
+      "native": "00b67800",
+      "status": "concrete"
+    },
+    {
+      "method": "GameSettings::lua_get_by_index",
+      "address": "0083ceca",
+      "function": "0083b5e0",
+      "native": "00b67720",
+      "status": "concrete"
+    },
+    {
+      "method": "GameSettings::lua_get_number",
+      "address": "0083ced9",
+      "function": "0083b5e0",
+      "native": "00b66270",
+      "status": "concrete"
+    },
+    {
+      "method": "ShipMotion::rudder_curve_settings",
+      "address": "0082e893",
+      "function": "0082e890",
+      "native": "00424c40",
+      "status": "concrete",
+      "note": "Was a record in milestone 2i with the three denominator knots forced to 1. It now returns the one shared block the loader filled: min (0.0, 0.4), med (0.5, 1.5), max (1.0, 2.0)."
+    }
+  ],
+
+  "ocean_steps": [
+    {
+      "method": "ShipMotion::ocean_height",
+      "address": "00826985",
+      "function": "00825f20",
+      "native": "0078cf20",
+      "status": "concrete",
+      "note": "The sampler runs whole: the wave field times the coverage mask, formed at x87 precision and rounded once at 0078cf69."
+    },
+    {
+      "method": "UnitInstance::ocean_height",
+      "address": "00825972",
+      "function": "008255b0",
+      "native": "0078cf20",
+      "status": "concrete",
+      "note": "The unit update's own sample. 008255b0 has two call sites of 0078cf20, 00825972 and 0082599f; both take the same host."
+    },
+    {
+      "method": "ShipMotion::ocean_wave_field",
+      "address": "0078cf3e",
+      "function": "0078cf20",
+      "native": "0078c890",
+      "status": "record",
+      "note": "The receiver is [world+A8h] on the object at [[00e188a8]+19F0h], which is the renderer/scene owner's. The record answers 0.0f, the value the field itself returns when field+F9h is set or the amplitude at field+24h is zero."
+    },
+    {
+      "method": "ShipMotion::ocean_coverage_mask",
+      "address": "0078cf5f",
+      "function": "0078cf20",
+      "native": "00b9cf50",
+      "status": "record",
+      "note": "Same receiver. The record answers 1.0f, which is what the mask returns when no region of the array at field+620h covers the point: the open-sea case."
+    },
+    {
+      "method": "ShipMotion::gameplay_scale",
+      "address": "00826a21",
+      "function": "00825f20",
+      "native": "008e6430",
+      "status": "concrete",
+      "note": "Run over an empty category list. The accumulator starts at the 1.0f at 00d7a24c and nothing multiplies into it, so the filter 008e4680 is never reached and the result is the routine's own value rather than a literal a host returns."
+    }
+  ],
+
+  "rigid_body_steps": [
+    {
+      "method": "ShipMotion::rigid_body_substep_schedule",
+      "address": "00c5c66d",
+      "function": "00c5c540",
+      "native": "00c5bb30",
+      "status": "record",
+      "note": "world+00h, the substep size, has no recovered producer (docs/RIGID_BODY_INTEGRATION.md follow-up dyn_world_construction), so the executable takes one substep of the whole 0.05 s game step and records the schedule."
+    },
+    {
+      "method": "ShipMotion::rigid_body_velocity_phase",
+      "address": "00c5bb5a",
+      "function": "00c5bb30",
+      "native": "00c41550",
+      "status": "concrete",
+      "note": "Replaces milestone 2i's explicit Euler step. With no force, no gravity and no damping on the hull body the phase only rebuilds the world inverse inertia."
+    },
+    {
+      "method": "ShipMotion::rigid_body_position_phase",
+      "address": "00c5c491",
+      "function": "00c5bb30",
+      "native": "00c5b1b0",
+      "status": "concrete",
+      "note": "The UpdatePosition phase: position from velocity plus bias, a Rodrigues rotation of rows 2 and 1 with the Gram-Schmidt rebuild, damping, the two speed clamps and the sleep countdown."
+    }
+  ],
+
+  "mission_entry_steps": [
+    {
+      "method": "MissionLoad::apply_in_game_interface",
+      "address": "004e1873",
+      "function": "004dfb70",
+      "native": "004c9ca0",
+      "status": "concrete",
+      "note": "The argument-1 arm, 004c9ccd..004c9d68: it puts the loading element up. It exists here so the entry's argument-0 arm has the element the native teardown at 004c9d6c reads without a null check."
+    },
+    {
+      "method": "MissionLoad::allocate_loading_element",
+      "address": "004c9cd7",
+      "function": "004c9ca0",
+      "native": "00bf681b",
+      "status": "record"
+    },
+    {
+      "method": "MissionLoad::construct_loading_element",
+      "address": "004c9ced",
+      "function": "004c9ca0",
+      "native": "00636d90",
+      "status": "record"
+    },
+    {
+      "method": "MissionLoad::loading_element_init",
+      "address": "004c9d11",
+      "function": "004c9ca0",
+      "native": "loading_element_vtable+10h",
+      "status": "record"
+    },
+    {
+      "method": "MissionEntry::apply_in_game_interface",
+      "address": "004da746",
+      "function": "004da6c0",
+      "native": "004c9ca0",
+      "status": "concrete",
+      "note": "The argument-0 arm, 004c9d6b..004c9ea2. Milestone 2i recorded this step; running it is what takes the front-end frame off the mission picture."
+    },
+    {
+      "method": "MissionEntry::loading_element_exit",
+      "address": "004c9d7e",
+      "function": "004c9ca0",
+      "native": "loading_element_vtable+1ch",
+      "status": "record",
+      "note": "Only reached when the element's +5h byte is set, which it is not here."
+    },
+    {
+      "method": "MissionEntry::commit_loading_element",
+      "address": "004c9d88",
+      "function": "004c9ca0",
+      "native": "004f83b0",
+      "status": "record",
+      "note": "The cleared +4h/+5h bytes are committed into the element's page tree. No page is attached to this element, so the walk reaches nothing."
+    },
+    {
+      "method": "MissionEntry::destroy_loading_element",
+      "address": "004c9daa",
+      "function": "004c9ca0",
+      "native": "loading_element_vtable+0ch",
+      "status": "record"
+    },
+    {
+      "method": "MissionEntry::release_front_end_atlas",
+      "address": "004c9dcf",
+      "function": "004c9ca0",
+      "native": "00aefa30",
+      "status": "record",
+      "note": "The name at 00ce765c, interface/textures/allbutingame.ats, handed to the atlas manager at 00f8c26c. The sprite bridge owns every atlas in this process."
+    },
+    {
+      "method": "MissionEntry::front_end_frame_get",
+      "address": "004c9dff",
+      "function": "004c9ca0",
+      "native": "004c1ac0",
+      "status": "concrete",
+      "note": "BSP_FrontEndFrame_GetOrCreate takes no arguments and returns the 164h singleton at 00e18d80 in EAX; the PUSH 1 and PUSH 3 before it are 00518250's."
+    },
+    {
+      "method": "MissionLoad::select_front_end_frame_set",
+      "address": "004c9e06",
+      "function": "004c9ca0",
+      "native": "00518250",
+      "status": "concrete",
+      "note": "set 3, commit 1. The committing call: it releases every other set's backdrop, panel and title layouts, which is what takes FE_frame and FE_frame_title down, and records set 3 as active at 0051864a."
+    },
+    {
+      "method": "MissionEntry::engine_movie_check",
+      "address": "004c9e1d",
+      "function": "004c9ca0",
+      "native": "007f8d60",
+      "status": "record",
+      "note": "The comparison whose inverted result is latched into game+1EE0h at 004c9e2c. It reads the player profile's own record set at game+650h."
+    },
+    {
+      "method": "MissionLoad::front_end_frame_get",
+      "address": "004e04e7",
+      "function": "004dfb70",
+      "native": "004c1ac0",
+      "status": "concrete",
+      "note": "The load's own non-committing row. Milestone 2i recorded this as a menu-layout selector taking (3,0); it takes no arguments. See correction 1."
+    }
+  ],
+
+  "minimap": [
+    {
+      "method": "HudMinimap::radar_map_texture",
+      "address": null,
+      "native": "renderer_vtable+64h (00aa5e60)",
+      "status": "record",
+      "note": "minimap_terrain.mshd is the installed shaderfx/gui/minimap_terrain.shfx, a GUI post-pipeline shader effect with two samplers, RadarMap at texture register 0 with clamped addressing and FadeBorder at index 1. It names no texture file, so there is no material texture to load: error.tga is sampler 0's authored value on minimap_islandmap_Icon and the icon already takes the same texture path every other HUD texture takes. What replaces it at run time is the mission's own radar map, which BSP_HudMinimapScreen_Register 005bec50 binds after taking the widget by name at 005bed21 through 00aa7e00, and which the renderer owner produces. No reachable call site exists in this process, so the row carries no call address."
+    }
+  ],
+
+  "switches": {
+    "--trajectory-csv <path>": "one row per unit per fixed simulation step; columns step,t,unit,class,x,y,z,heading,forward_speed,throttle,rudder,yaw_rate with a header row. The path is resolved before --game-root changes the current directory."
+  },
+
+  "trajectory": {
+    "command": "bsp_game.exe --frames 600 --press-start-frame 30 --menu-select USN02 --mission-frames 300 --mission-frame-seconds 0.05 --order-frame 20 --order throttle=1,rudder=0.5 --mission-complete-frame 280",
+    "unit": "DeRuyter (scene class DestroyerGen, VehicleClass row 20, MaxSpeed 16.4622, MaxRotAngle 0.122173)",
+    "before": {
+      "measured_on": "this worktree with the milestone 2i stand-ins, built from the stashed tree",
+      "forward_speed_t14": 16.431,
+      "heading_degrees_t14": -38.591,
+      "yaw_rate_t14": -0.06109,
+      "straight_line_moved_m": 195.17,
+      "host_methods": "305 concrete, 331 unimplemented",
+      "bridge_quads": 70
+    },
+    "after": {
+      "forward_speed_t14": 16.454,
+      "heading_degrees_t14": -20.302,
+      "yaw_rate_t14": -0.03054,
+      "straight_line_moved_m": 187.81,
+      "host_methods": "319 concrete, 339 unimplemented",
+      "bridge_quads": 57
+    },
+    "why": "The shipped TurnMultipliers curve divides MaxRotAngle by 2.0 at full throttle, so the steady yaw rate at rudder 0.5 halves from MaxRotAngle/2 to MaxRotAngle/4. The forward speed rises slightly because a slower turn keeps more of the velocity on the hull's forward axis and 0092d300 rewrites only the axial component."
+  },
+
+  "validation": {
+    "build": "scripts/build.ps1, Release Win32, /W4 /WX /fp:strict, no warnings",
+    "tests": "ctest reconstructed_math 1/1 passed; no test cases added",
+    "run": "exit 0; 32 units, 8960 walks, 8960 motion ticks over 14.00 s of simulated time; trajectory csv 8960 rows",
+    "regressions": [
+      "--frames 120 --press-start-frame 30 (no --menu-select): exit 0, 154 concrete / 80 unimplemented, same as milestones 2d and 2i",
+      "--frames 40 title only: exit 0, 129 concrete / 49 unimplemented, same as milestones 2d and 2i",
+      "--vfs-probe fonts/fonts.lua: exit 0",
+      "--vfs-probe does/not/exist.lua: exit 3",
+      "--mission-frames 60 with no --mission-complete-frame: exit 0, summary mission exit reachable=0",
+      "the wall-clock 300 frame run with --mission-complete-frame 280: exit 0, still leaves state 0Dh through 004d7970 and exits on the front-end request"
+    ]
+  },
+
+  "no_ghidra_function": [],
+
+  "follow_ups": [
+    "dyn_world_construction: world+00h, world+34h and world+3Ch..+44h, which are the substep size, the substep budget and the sleep thresholds this milestone had to leave at zero.",
+    "ship_hull_body_creation: the writer of controller+2Ch and the mass, inertia and damping it gets, plus M+18h and M+1Ch, which this milestone had to set out of range so the position phase's clamps never fire.",
+    "unit_force_channel: 0074f2e0 and unit+10D4h, the list through which thrust, damage and explosions push force onto a body. Nothing pushes force here, so the velocity phase integrates nothing.",
+    "ocean_wave_field_sample and ocean_coverage_regions: the two leaves of 0078cf20 this milestone records, and the producer of the object at [[00e188a8]+19F0h]+A8h.",
+    "construct_world 004de610, unchanged from milestones 2h and 2i.",
+    "The minimap's own scale, unchanged from milestone 2i follow-up 2.",
+    "The Cruise command object and the CommandType registry 0046aab0 resolves against, unchanged from milestone 2i follow-up 3."
+  ]
+}

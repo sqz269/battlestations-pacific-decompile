@@ -144,6 +144,10 @@ public:
     // Milestone 2i, --mission-frame-seconds S: a fixed in-mission frame delta
     // instead of the wall clock. Zero keeps the wall clock.
     void set_mission_frame_seconds(float seconds) noexcept;
+    // Milestone 2j, --trajectory-csv <path>: one row per unit per fixed
+    // simulation step. An empty path writes nothing. The file is opened on the
+    // first step that has units and closed when the run reports.
+    void set_trajectory_csv(std::string path);
 
     // game+2198h, the mission key the record commit 009205e0 writes under.
     void set_mission_key(std::string key);
