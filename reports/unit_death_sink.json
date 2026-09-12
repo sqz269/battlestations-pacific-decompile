@@ -1,0 +1,476 @@
+{
+  "packet": "cc2_death_sink",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc2-death-sink",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "read-only: no renames, comments, prototypes, function creation or saves"
+  },
+  "names_are_hypotheses": true,
+  "doc": "docs/UNIT_DEATH_MESSAGE_AND_SINK.md",
+  "subject": "The death message receiver 00814560, the wreck handler 00824B60 behind vtable slot 7Ch, the breakup receiver 00814520 and the sink state 008110F0 writes.",
+  "run_time_evidence": "none: the bsp_game.exe harness does not load a mission, so no frame reaches these paths (checklist rule 6).",
+  "headline": [
+    "00814560 is __thiscall(unit) with RET 0 and reads no part of the 9Ah message; the class field +B0h is read by the sender 00827A90, not by the receiver.",
+    "A damage death reaches the kill list, and therefore on-killed slot 80h, only when the class descriptor's KamikazeDamage +510h or KamikazeBlastDamage +514h is above zero.",
+    "vtable slot 7Ch is a third death slot, tail-dispatched by slot 74h at 009263AE; the ship override 00824B60 is where the wreck's physics is set.",
+    "There is no sink timer: +828h (sinkTime, named by the executable's own _ship dump) is written only as zero by 008110F0 and 00824B60 and is read by nothing in the image."
+  ],
+  "corrections": [
+    {
+      "doc": "docs/UNIT_DAMAGE_AND_DEATH.md step 8",
+      "was": "id 9Ah when [[this+538h]+B0h] < 0.0f, otherwise a breakup message",
+      "is": "the constant at 00D7A220 is the double 100.0, not zero. 00827ACA FLD float [desc+B0h], 00827AD0 FLD double [00D7A220], 00827AD6 FCOMIP ST0,ST1, 00827ADA JBE 00827B14: the breakup branch is taken when 100.0 <= [desc+B0h], so 9Ah is sent when [desc+B0h] < 100.0."
+    },
+    {
+      "doc": "docs/UNIT_DAMAGE_AND_DEATH.md, 'a unit that is shot to death never runs the on-killed hook'",
+      "was": "damage reaches only the destroy list, so slot 32 (vtable+80h) never runs for a damage death",
+      "is": "true only when the class has no kamikaze damage. The 9Ah receiver 00814560 calls 00926D90 BSP_MissionEntity_Kill(unit, 1) at 00814595 when [desc+510h] > 0 or [desc+514h] > 0, which queues the entity on the kill list 00F899B4; the same fixed step's flush at 0092751F then dispatches vtable[80h]. The delivery is local and in-step: 0077C2A0 copies the message into session+24Ch with the current tick and fixed-step row 9 (00778450 BSP_Session_PumpStep) drains it before row 15 (009273A0)."
+    },
+    {
+      "doc": "docs/EXPLOSION_RADIAL_DAMAGE.md, '[unit+538h]+514h/+518h ... contract: unread'",
+      "was": "the mapping from a class file field to +514h/+518h is unread",
+      "is": "docs/SHIP_CLASS_FIELDS.md names them: +510h KamikazeDamage (00831A05), +514h KamikazeBlastDamage (00831A4A), +518h KamikazeBlastRange (00831A8F), all NumberOr with default 0.0f. The unit death explosion at 00819C14 therefore uses the kamikaze blast damage and range."
+    },
+    {
+      "doc": "docs/SESSION_MESSAGE_DISPATCH.md, '00814560 contract: unread' and '00780090 was not opened'",
+      "was": "the 9Ah receiver and the second caller of 0077FE80 were unread",
+      "is": "both are read in full here. 00780090 is __thiscall(entity, message) RET 4 and passes a null third argument to 0077FE80; its only caller 007F0030 fans a 4Bh message out to the members of a group."
+    }
+  ],
+  "calls": [
+    {
+      "routine": "00814560",
+      "step": "death message 9Ah: detach every part that still has health",
+      "address": "00814569",
+      "native": "00935c70",
+      "this": "[unit+1018h], the parts object",
+      "args": "none (RET 0)",
+      "ret": "void",
+      "gate": "none"
+    },
+    {
+      "routine": "00814560",
+      "step": "kill the entity, which queues it on the kill list 00F899B4",
+      "address": "00814595",
+      "native": "00926d90",
+      "this": "unit (ECX preserved from the switch entry)",
+      "args": "1 (PUSH 0x1 at 00814591, callee RET 4)",
+      "ret": "void",
+      "gate": "[[unit+538h]+510h] > 0.0f or [[unit+538h]+514h] > 0.0f"
+    },
+    {
+      "routine": "00814560",
+      "step": "clear +2Ch and +30h on every shape of the hull body",
+      "address": "008145a1",
+      "native": "0092bd30",
+      "kind": "tail_jump",
+      "this": "[unit+1018h], the motion controller",
+      "args": "none (RET 0)",
+      "ret": "void",
+      "gate": "same kamikaze gate; reached only after the kill"
+    },
+    {
+      "routine": "0092bd30",
+      "step": "first shape of the hull body",
+      "address": "0092bd38",
+      "native": "00c31dc0",
+      "this": "[controller+2Ch]",
+      "args": "none",
+      "ret": "shape or 0",
+      "gate": "[controller+2Ch] non-null"
+    },
+    {
+      "routine": "0092bd30",
+      "step": "shape+30h = 0",
+      "address": "0092bd47",
+      "native": "00c48020",
+      "this": "shape",
+      "args": "0 (PUSH 0x0 at 0092BD43, callee RET 4)",
+      "ret": "void",
+      "gate": "loop over [shape+208h]"
+    },
+    {
+      "routine": "0092bd30",
+      "step": "shape+2Ch = 0",
+      "address": "0092bd50",
+      "native": "00c48050",
+      "this": "shape",
+      "args": "0 (PUSH 0x0 at 0092BD4C, callee RET 4)",
+      "ret": "void",
+      "gate": "loop over [shape+208h]"
+    },
+    {
+      "routine": "00814520",
+      "step": "breakup message 98h: does the class define breakup pieces",
+      "address": "00814529",
+      "native": "0080f9f0",
+      "this": "[unit+538h], the class descriptor",
+      "args": "none",
+      "ret": "bool in AL",
+      "gate": "none"
+    },
+    {
+      "routine": "00814520",
+      "step": "register the wreck with the manager at [00E188A8]+21D0h",
+      "address": "00814547",
+      "native": "004a5aa0",
+      "this": "[[00E188A8]+21D0h]",
+      "args": "unit (PUSH ESI at 00814546)",
+      "ret": "void",
+      "gate": "pieces present and the manager pointer non-null"
+    },
+    {
+      "routine": "00814520",
+      "step": "break the parts up",
+      "address": "00814553",
+      "native": "00935d30",
+      "kind": "tail_jump",
+      "this": "[unit+1018h], the motion controller",
+      "args": "none",
+      "ret": "void",
+      "gate": "none"
+    },
+    {
+      "routine": "00926390",
+      "step": "observer-lock helper before the wreck dispatch",
+      "address": "009263a1",
+      "native": "00925c90",
+      "this": "entity",
+      "args": "none",
+      "ret": "void",
+      "gate": "[entity+5Dh] was still 0"
+    },
+    {
+      "routine": "00824b60",
+      "step": "reset the leak manager block",
+      "address": "00824feb",
+      "native": "0074ec50",
+      "this": "&unit+10D4h",
+      "args": "none",
+      "ret": "void",
+      "gate": "none"
+    },
+    {
+      "routine": "00824b60",
+      "step": "read the hull body's inertia into a stack buffer",
+      "address": "00825001",
+      "native": "00c37f10",
+      "this": "[[unit+1018h]+2Ch], the hull body",
+      "args": "&buffer at ESP+94h",
+      "ret": "the buffer in EAX",
+      "gate": "none"
+    },
+    {
+      "routine": "00824b60",
+      "step": "write back twice the inertia: (2*I.x, 2*I.y, 2*I.z), scale 2.0 at 00D7A308",
+      "address": "00825044",
+      "native": "00c37e70",
+      "this": "[[unit+1018h]+2Ch]",
+      "args": "&float3 pushed at 0082501D (callee RET 4)",
+      "ret": "void",
+      "gate": "none"
+    },
+    {
+      "routine": "00824b60",
+      "step": "angular damping 2.5f from 00CF87C8",
+      "address": "0082505c",
+      "native": "00c37de0",
+      "this": "[[unit+1018h]+2Ch]",
+      "args": "2.5f on the stack (callee RET 4)",
+      "ret": "void",
+      "gate": "none"
+    },
+    {
+      "routine": "00824b60",
+      "step": "linear damping 0.5f from 00CE3800",
+      "address": "00825074",
+      "native": "00c37e00",
+      "this": "[[unit+1018h]+2Ch]",
+      "args": "0.5f on the stack (callee RET 4)",
+      "ret": "void",
+      "gate": "none"
+    },
+    {
+      "routine": "00824b60",
+      "step": "release the effect handles at +BB0h, +BC0h and +BACh",
+      "address": "0082508e",
+      "native": "00818970",
+      "this": "unit",
+      "args": "none",
+      "ret": "void",
+      "gate": "none"
+    },
+    {
+      "routine": "00824b60",
+      "step": "game settings singleton for the bubble-timer pair",
+      "address": "0082509d",
+      "native": "00424c40",
+      "this": "-",
+      "args": "none",
+      "ret": "settings",
+      "gate": "[unit+70h] == 1"
+    },
+    {
+      "routine": "00824b60",
+      "step": "seed the underwater bubble timer [unit+BC8h]",
+      "address": "008250bd",
+      "native": "00bd2f10",
+      "this": "ECX = 1",
+      "args": "[cfg+64Ch] at ESP, [cfg+650h] at ESP+4",
+      "ret": "float on the x87 stack, stored at 008250C8",
+      "gate": "[unit+70h] == 1"
+    },
+    {
+      "routine": "00824b60",
+      "step": "scatter draw for slot.z from the hull length [desc+A0h]",
+      "address": "0082513e",
+      "native": "00bd2f10",
+      "this": "ECX = 1",
+      "args": "-L/2.0 at ESP, +L/2.0 at ESP+4 (2.0 is the double at 00CE3DE0)",
+      "ret": "float added into [EDI]",
+      "gate": "[unit+70h] == 1 and [desc+6A8h] != 0"
+    },
+    {
+      "routine": "00824b60",
+      "step": "scatter draw for slot.x from the hull width [desc+A4h]",
+      "address": "00825186",
+      "native": "00bd2f10",
+      "this": "ECX = 1",
+      "args": "-W/2.0 at ESP, +W/2.0 at ESP+4",
+      "ret": "float added into [EDI-8]",
+      "gate": "same"
+    },
+    {
+      "routine": "00824b60",
+      "step": "scatter draw for slot.y from the hull height [desc+A8h]",
+      "address": "008251bc",
+      "native": "00bd2f10",
+      "this": "ECX = 1",
+      "args": "0.0f at ESP (FLDZ), H/3.0 at ESP+4 (3.0 is the double at 00D7A2B0)",
+      "ret": "float added into [EDI-4]",
+      "gate": "same"
+    },
+    {
+      "routine": "00824b60",
+      "step": "register the wreck with the same manager as the breakup receiver",
+      "address": "0082523a",
+      "native": "004a5aa0",
+      "this": "[[00E188A8]+21D0h]",
+      "args": "unit (PUSH ESI at 00825239)",
+      "ret": "void",
+      "gate": "class has breakup pieces and the manager pointer is non-null"
+    },
+    {
+      "routine": "00780090",
+      "step": "member arm a",
+      "address": "007800b3",
+      "native": "0077fe80",
+      "this": "the member entity (EDI, from ECX at 0078009A)",
+      "args": "msg, 0 (null status; callee RET 8)",
+      "ret": "bool",
+      "gate": "msg[20h] != 0"
+    },
+    {
+      "routine": "00780090",
+      "step": "member arm c",
+      "address": "007800f6",
+      "native": "0077fe80",
+      "this": "the member entity",
+      "args": "msg, 0",
+      "ret": "bool",
+      "gate": "msg[2Ch] == 1"
+    },
+    {
+      "routine": "007f0030",
+      "step": "fan a 4Bh message out to each group member",
+      "address": "007f00a4",
+      "native": "00780090",
+      "this": "the member entity from [group+3D0h + 4*i]",
+      "args": "msg (RET 4)",
+      "ret": "void",
+      "gate": "msg[10h] == 4Bh and i < [group+3CCh]"
+    }
+  ],
+  "indirect_calls": [
+    {
+      "routine": "00926390",
+      "address": "009263ae",
+      "slot": "vtable+7Ch",
+      "kind": "tail_jump",
+      "resolved": "ship 00824B60; vtable base 00CF90B0 holds 0077D1A0 at +70h (00CF9120) and 00824B60 at +7Ch (00CF912C). All eight references to 00824B60 (00CF912C, 00CFA7F4, 00CFB7B4, 00CFC44C, 00D016AC, 00D096F4, 00D0BFFC, 00D0C6C4) sit 0Ch after a 0077D1A0 entry.",
+      "this": "entity",
+      "args": "none"
+    },
+    {
+      "routine": "00821e80",
+      "address": "00821eb7",
+      "slot": "JMP [EAX*4 + 00822394]",
+      "resolved": "kind 9Ah -> table byte 0082244F = 14h -> target 008223E4 = 00821FD6; kind 98h -> byte 0082244D = 12h -> target 008223DC = 00821FBC; kind 70h -> byte 00822425 = 05h -> target 008223A8 = 0082217D",
+      "this": "the unit, still in ECX (last ECX write before the jump is 00821EA8 MOV EDI,ECX)",
+      "args": "the message in ESI"
+    },
+    {
+      "routine": "00780090",
+      "address": "007800ac",
+      "slot": "vtable+144h",
+      "this": "the member entity",
+      "args": "msg[28h]"
+    },
+    {
+      "routine": "00780090",
+      "address": "007800d5",
+      "slot": "vtable+148h",
+      "this": "the member entity",
+      "args": "msg[24h], msg[28h]"
+    },
+    {
+      "routine": "00780090",
+      "address": "007800ef",
+      "slot": "vtable+150h",
+      "this": "the member entity",
+      "args": "msg[24h], msg[28h]"
+    },
+    {
+      "routine": "008110f0",
+      "address": "00811111",
+      "slot": "vtable+70h",
+      "this": "unit",
+      "args": "1"
+    },
+    {
+      "routine": "008110f0",
+      "address": "00811135",
+      "slot": "[[unit+740h]]+10h",
+      "this": "the object at +740h",
+      "args": "none"
+    }
+  ],
+  "no_ghidra_function": [],
+  "raw_listing_calls": [],
+  "routines": [
+    {
+      "address": "00814560",
+      "name": "BSP_UnitInstance_OnDeathMessage",
+      "abi": "__thiscall(unit), RET 0",
+      "body": "00814560-008145A7",
+      "coverage": "complete"
+    },
+    {
+      "address": "0092bd30",
+      "name": "BSP_UnitController_ClearHullShapeFields",
+      "abi": "__thiscall(controller), RET 0",
+      "body": "0092BD30-0092BD60",
+      "coverage": "complete"
+    },
+    {
+      "address": "00814520",
+      "name": "BSP_UnitInstance_OnBreakupMessage",
+      "abi": "__thiscall(unit), RET 0",
+      "body": "00814520-00814553",
+      "coverage": "complete for the body; 00935D30 and 004A5AA0 are contracts"
+    },
+    {
+      "address": "00824b60",
+      "name": "BSP_UnitInstance_OnWrecked",
+      "abi": "__thiscall(ship), RET 0 (epilogue unread)",
+      "body": "00824B60-008252B0",
+      "coverage": "partial: 00824FE5-0082523F complete, 00824B60-00824FE4 outline, 00825240-008252B0 unread"
+    },
+    {
+      "address": "00926390",
+      "name": "BSP_MissionEntity_OnDestroyedHook",
+      "abi": "__thiscall(entity), RET 0",
+      "body": "00926390-009263B1",
+      "coverage": "complete"
+    },
+    {
+      "address": "00761310",
+      "name": "BSP_BreakupMessage_Construct",
+      "abi": "__thiscall(message), RET 0",
+      "body": "00761310-00761368",
+      "coverage": "complete"
+    },
+    {
+      "address": "00780090",
+      "name": "BSP_Session_DispatchEntityMessageToMember",
+      "abi": "__thiscall(entity, message), RET 4",
+      "body": "00780090-00780110",
+      "coverage": "complete"
+    },
+    {
+      "address": "008110f0",
+      "name": "BSP_UnitInstance_Sink",
+      "abi": "__thiscall(unit, const float pivot[3]), RET 4",
+      "body": "008110F0-00811144",
+      "coverage": "complete; the pivot argument is never read"
+    },
+    {
+      "address": "007f0030",
+      "name": "unnamed group message handler",
+      "abi": "__thiscall(group, message)",
+      "body": "007F0030-007F01E5",
+      "coverage": "partial: the 4Bh arm only"
+    }
+  ],
+  "layout": {
+    "unit": [
+      {"offset": "+5Dh", "type": "byte", "name": "released", "producer": "00926390 at 0092639B, also 009274CE", "readers": "008110F3 refuses a sink, 0082568F gates the bubble timer"},
+      {"offset": "+60h", "type": "byte", "name": "destroyed", "producer": "00926390 at 0092639E, 00926C80"},
+      {"offset": "+70h", "type": "int", "name": "destroy cause", "producer": "00926C80", "readers": "00825093 gates the whole wreck-effect block on == 1"},
+      {"offset": "+740h", "type": "ptr", "name": "sink attachment", "producer": "unread", "readers": "00811126 releases it through vtable+10h and nulls it"},
+      {"offset": "+828h", "type": "float", "name": "sinkTime", "producer": "zeroed at 00811116 and 0082507E", "readers": "none in native code; 0081838C prints it in the _ship dump and 0081FAC5 registers its address as a float property"},
+      {"offset": "+82Ch", "type": "float", "name": "unnamed companion of sinkTime", "producer": "zeroed at 0081111E and 00825086", "readers": "none found"},
+      {"offset": "+B68h", "type": "float3[5]", "name": "hull effect anchors, stride 0Ch", "producer": "008250F0-008251CD", "readers": "00825C11-00825D4D, step 10 of BSP_UnitInstance_Update"},
+      {"offset": "+BC8h", "type": "float", "name": "underwater bubble timer", "producer": "008250C8", "readers": "008256D3, 008256E8, 00825722, step 2 of BSP_UnitInstance_Update"},
+      {"offset": "+1018h", "type": "ptr", "name": "motion controller / parts object", "readers": "00814563, 0081459A, 0081454C, 00824FF0"}
+    ],
+    "class_descriptor": [
+      {"offset": "+A0h", "name": "Length", "use": "half-extent for the scatter's z draw and the Lua sink pivot's z"},
+      {"offset": "+A4h", "name": "Width", "use": "half-extent for the scatter's x draw and the Lua sink pivot's x"},
+      {"offset": "+A8h", "name": "height-like third extent", "use": "the scatter's y draw, divided by 3.0"},
+      {"offset": "+B0h", "name": "breakup selector", "use": "00827ACA: < 100.0 sends the 9Ah death message, >= 100.0 takes the breakup path"},
+      {"offset": "+510h", "name": "KamikazeDamage", "use": "00814574: > 0 makes the death message kill the entity"},
+      {"offset": "+514h", "name": "KamikazeBlastDamage", "use": "00814584: same gate; also the unit death explosion's damage at 00819C14"},
+      {"offset": "+6A8h", "name": "anchor presence flag", "use": "008250CE gates the scatter, 00825C11 gates the attachment step"},
+      {"offset": "+6E0h/+6E4h", "name": "breakup piece vector, stride 14h", "use": "0080F9F0 and 008251D9"},
+      {"offset": "+700h/+704h", "name": "second breakup piece vector, stride 1Ch", "use": "0080F9F0 and 008251FE"}
+    ]
+  },
+  "death_sequence": [
+    {"order": 1, "fixed_step_row": "6 or 14", "site": "00926700", "what": "the deferred hit queue applies the damage (contract)"},
+    {"order": 2, "site": "00877C04", "what": "the health write"},
+    {"order": 3, "site": "00877C40", "what": "vtable[1B0h] -> ship 00827A90"},
+    {"order": 4, "site": "00958DBE", "what": "vtable[70h](1) -> 0077D1A0 destroy message 4Eh -> 00926C80 queues the destroy list 00F899A8"},
+    {"order": 5, "site": "00827ADA", "what": "selector: 100.0 > [desc+B0h] sends 9Ah, otherwise the 98h breakup message from 00761310 behind two controller tests and a random roll against [00424C40()+65Ch]"},
+    {"order": 6, "site": "00827B77", "what": "0077C2A0(unit, msg, 7, 0) copies it into session+24Ch with the current tick"},
+    {"order": 7, "fixed_step_row": "9", "site": "00778450", "what": "the session pump drains it, the ladder falls to 0077FE80, the default dispatches vtable[164h], 00821FD6 calls 00814560"},
+    {"order": 8, "fixed_step_row": "9", "site": "00814595", "what": "kamikaze classes only: Kill(unit, 1) queues the kill list 00F899B4"},
+    {"order": 9, "fixed_step_row": "15", "site": "0092747F", "what": "009273A0 dispatches vtable[74h] = 00926390: +5Dh = 1, +60h = 1, 00925C90, then vtable[7Ch] = 00824B60"},
+    {"order": 10, "fixed_step_row": "15", "site": "0092751F", "what": "the same flush dispatches vtable[80h] for the kill list, non-empty only after order 8"},
+    {"order": 11, "fixed_step_row": "16", "site": "00903610", "what": "world expiry, which skips this entity: +6Ch is set by 00922FD0 BSP_SceneNode_Kill, not by this path"}
+  ],
+  "sink_rule": {
+    "statement": "The wreck settles and rolls because 00824B60 makes three one-off physics writes; nothing integrates a sink timer.",
+    "inertia": "(2*I.x, 2*I.y, 2*I.z) from the double 2.0 at 00D7A308, written with 00C37E70",
+    "angular_damping": "2.5f at 00CF87C8, written with 00C37DE0",
+    "linear_damping": "0.5f at 00CE3800, written with 00C37E00",
+    "integrator": "004462D0 BSP_GameDynamicsList_ApplyBuoyancyStep, fixed-step row 2 (contract)",
+    "sink_refusal": "008110F0 refuses when [unit+5Dh] != 0 or [unit+150h] > 0.0f (00D7A218 is 0.0f)"
+  },
+  "open_questions": [
+    "Whether 0077FE80 tolerates the null status pointer 00780090 passes at 007800B3, 007800F6 and 0078010B.",
+    "The meaning of shape+2Ch and shape+30h, which decides whether 0092BD30 disables collision or reclassifies it.",
+    "Why sinkTime exists: named, script-visible, zeroed twice, read by nothing native.",
+    "00BD2F10's argument order: the seed at 008250BD passes ([cfg+64Ch], [cfg+650h]) and the reload in BSP_UnitInstance_Update passes ([cfg+650h], [cfg+64Ch]).",
+    "00824B60's first 480h bytes and 00935D30, where the visible breakup lives.",
+    "How 007F0030 is installed: no absolute reference to its address exists in the image."
+  ],
+  "build": "cmake/startup.cmake registers src/unit_death_sink.cpp on bsp_core; ./scripts/build.ps1 from the worktree.",
+  "files": [
+    "docs/UNIT_DEATH_MESSAGE_AND_SINK.md",
+    "reports/unit_death_sink.json",
+    "include/bsp/unit_death_sink.hpp",
+    "src/unit_death_sink.cpp"
+  ]
+}
