@@ -361,5 +361,37 @@
     "Real model resource ownership/publication in GameUnits is absent. Core requires actual local box; fixture model boxes are synthetic.",
     "Installed row coverage does not establish which77 represented units were created or prove full live-game navigation.",
     "Width adapter uses lua_tonumber plus existing native float32 spill helper, including numeric strings. The pre-existing Length reader still uses its numeric-or-zero tag helper. Dynamic descriptor reload is not established by this fixture."
-  ]
+  ],
+  "integrator_verification": {
+    "native_fixture": {
+      "comparisons": 1449,
+      "mismatches": 0,
+      "edge_and_control": 816,
+      "installed_rows": 633,
+      "positive_width_rows": 633,
+      "log": "local/orch6_extent_probe_run.log"
+    },
+    "call_check": {
+      "checked": 11,
+      "failed": 0,
+      "indirect": 1,
+      "log": "local/orch6_extent_calls.log"
+    },
+    "runtime": {
+      "report": "reports/game_ship_navigation_binding.json",
+      "log": "local/orch6_pre_step_e.log",
+      "registered_extent_rows": 77,
+      "actual_ship_rows": 14,
+      "mission_frames": 120,
+      "model_domain": "represented absent model; native class+A0/A4 dimensions"
+    },
+    "ghidra": {
+      "prior_values": "local/ghidra-annotations-20260912T213900Z.json",
+      "existing_comments_preserved": true,
+      "project_saved": true,
+      "exports_refreshed": true,
+      "annotation_log": "local/orch6_worker_annotations_e.log",
+      "export_log": "local/orch6_worker_exports_e.log"
+    }
+  }
 }

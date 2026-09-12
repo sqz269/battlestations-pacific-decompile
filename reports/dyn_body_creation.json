@@ -932,7 +932,8 @@
       "reports/dyn_body_creation_flow_repair.json",
       "reports/dyn_body_creation_dependency_flow_repair.json",
       "reports/dyn_body_world_flow_repair.json"
-    ]
+    ],
+    "integrator_world_fragment_report": "reports/dyn_body_world_flow_repair.json"
   },
   "limits": [
     "Native world/scene collision dispatch, thread tasks, SAP endpoint insertion and body destruction are not implemented here.",
@@ -1101,6 +1102,46 @@
       "direct_checked": 107,
       "failed": 0,
       "indirect_documented": 7
+    }
+  },
+  "integrator_verification": {
+    "build": "MSVC Win32 Release and existing CTest2/2 passed",
+    "build_log": "local/orch6_dyn_body_e_build.log",
+    "native_probe": {
+      "log": "local/orch6_dyn_body_probe_run.log",
+      "bodies": 4100,
+      "attached_shapes": 7494,
+      "sap_proxies": 4100,
+      "installed_hulls": 706,
+      "slot_reuse_checks": 130,
+      "live_owned_buffers_compared": 4190,
+      "tracked_allocations_after_fixture_disposal": 0,
+      "matching_record_sha256": "7c0261fba7730951c24c70d61fc6da85fda471affb44e8b1131b371f781de967"
+    },
+    "independent_review": "unit-extents-e worker accepted valid-allocation/type4 scope; ownership and lifetime limits reviewed; no code blockers.",
+    "cross_run_hash_audit": {
+      "worker_record_sha256": "9a44aca7d386b637f92ec0e318b979fcd2c3cd3be3bf015c944ac64474abfd72",
+      "integrator_record_sha256": "7c0261fba7730951c24c70d61fc6da85fda471affb44e8b1131b371f781de967",
+      "differing_words": 14988,
+      "distinct_borrowed_hulls": 706,
+      "cause": "Every difference is a borrowed hull-data pointer at shape+210, serialized once per attached shape and once in its owning pool slot. Null-arena hull allocations bypass current creation-arena pointer normalization. These pointers match between native and rebuilt within a run but vary across processes.",
+      "other_bytes_differ": false,
+      "validated_hull_id_normalized_sha256": "a58e17a99c043f1d4b8a203bd45442c38fe9cedc605b606f2df75cf4f45d1491",
+      "scope": "Original-byte body creation comparisons remain valid. Raw record digest is run-specific; normalization audit is separate from C++ probe execution."
+    },
+    "call_check": {
+      "direct_checked": 107,
+      "failed": 0,
+      "indirect_documented": 7,
+      "log": "local/orch6_dyn_body_calls.log"
+    },
+    "ghidra": {
+      "prior_values": "local/ghidra-annotations-20260912T213900Z.json",
+      "existing_comments_preserved": true,
+      "project_saved": true,
+      "exports_refreshed": true,
+      "annotation_log": "local/orch6_worker_annotations_e.log",
+      "export_log": "local/orch6_worker_exports_e.log"
     }
   }
 }

@@ -124,8 +124,19 @@ are excluded. Page metadata and the allocation/return/reuse effects were compare
 All tested proxies retained inserted byte +38 = 0; actual inserted endpoint
 updates remain an untested borrowed virtual-call boundary.
 
-Both canonical record files have SHA256
+Both worker record files have SHA256
 `9a44aca7d386b637f92ec0e318b979fcd2c3cd3be3bf015c944ac64474abfd72`.
+The integrator reproduced all counts against the merged Release library; its
+two files match SHA256
+`7c0261fba7730951c24c70d61fc6da85fda471affb44e8b1131b371f781de967`.
+A separate audit found exactly 14,988 differing words between runs: the 7,494
+borrowed hull pointers at shape+210, serialized both per body and in their pool
+slots. These 706 shared hull allocations bypass creation-arena normalization.
+They match between native and rebuilt within each run but retain process heap
+addresses. No other bytes differ. Normalizing only those validated occurrences
+to ordered hull IDs gives the same SHA256
+`a58e17a99c043f1d4b8a203bd45442c38fe9cedc605b606f2df75cf4f45d1491`.
+Raw record hashes therefore identify a run, not a stable cross-run artifact.
 The fixture released all tracked allocations after discarding its quiescent
 storage; this is not a native body/world destructor test. Its world storage came
 from real pool constructors plus a hand transcription of the shared-motion

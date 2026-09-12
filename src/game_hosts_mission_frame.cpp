@@ -1310,7 +1310,7 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // +61h, and 009f3dd0 reads the director 0071be40 answers for, so the
             // host is built after the authored commands were issued.
             host.ship_ai = std::make_unique<GameShipAiHost>(host.log, *host.units);
-            host.ship_ai->register_units();
+            host.ship_ai->register_units(host.lua, host.scene_state.session_mode);
             host.units->set_ship_ai(host.ship_ai.get());
             // Milestone 2m: row 16 of the fan-out walks the entity chain this
             // step created, so the subsystem host learns about it here.

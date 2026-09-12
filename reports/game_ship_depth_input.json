@@ -1282,5 +1282,36 @@
     {
       "path": "local/game_ship_depth_report_calls.log"
     }
-  ]
+  ],
+  "integrator_verification": {
+    "reader_excerpt_fixture": {
+      "supported_rows": 160,
+      "rejected_non_ship_rows": 473,
+      "keys": 10,
+      "boundary_failures": 0,
+      "log": "local/orch6_depth_probe_run.log"
+    },
+    "call_check": {
+      "checked": 65,
+      "failed": 0,
+      "log": "local/orch6_depth_calls.log"
+    },
+    "runtime": {
+      "report": "reports/game_ship_navigation_binding.json",
+      "log": "local/orch6_pre_step_e.log",
+      "actual_ship_rows": 14,
+      "session_mode": 0,
+      "depth_scalar": 0,
+      "mission_frames": 120,
+      "width_host_rows": 77
+    },
+    "ghidra": {
+      "prior_values": "local/ghidra-annotations-20260912T213900Z.json",
+      "existing_comments_preserved": true,
+      "project_saved": true,
+      "exports_refreshed": true,
+      "annotation_log": "local/orch6_worker_annotations_e.log",
+      "export_log": "local/orch6_worker_exports_e.log"
+    }
+  }
 }

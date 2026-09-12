@@ -85,8 +85,7 @@ inline constexpr int kShipAiNavBlockSectorCount = 12;       // 009E43ED
 inline constexpr int kShipAiNavBlockSectorStride = 0x2C;    // 009E43F9
 inline constexpr int kShipAiNavBlockSectorBase = 0x808;     // 009E43E7
 
-// 009E466F `PUSH 1`.  009E0270 takes a float; this call site pushes the raw
-// dword 1, whose float reading is the denormal 1.4e-45, not 1.0f.
+// 009E466F `PUSH 1`. Full009E0270 consumes one unused stack word, RET4.
 inline constexpr std::uint32_t kShipAiNavBlockSectorBuildArgumentRaw = 1u; // 009E466F
 
 // ---------------------------------------------------------------------------
@@ -191,7 +190,7 @@ struct ShipAiNavBlockFields {
 
     // 009E435F, set before the `_memset` at 009E4363 clears blk+4h..blk+44h,
     // so it survives.  009E4372, likewise, before blk+46h..blk+145h is cleared.
-    bool flag_45{true};
+    std::uint8_t flag_45{1};
     bool flag_146{true};
 
     float random_phase_148{0.0f}; // 009E4381 then 009E4669, `-uniform(0,1)`
@@ -203,9 +202,9 @@ struct ShipAiNavBlockFields {
     std::uint32_t value_164{0};   // 009E43B0
     std::uint32_t class_reference_168{0}; // 009E43B6 then 009E44B4
 
-    bool flag_3e8{false}; // 009E43E1
-    bool flag_3e9{false}; // 009E43DB
-    bool flag_3ea{false}; // 009E43D5
+    std::uint8_t flag_3e8{0}; // 009E43E1; actual byte storage borrowed by009E0270
+    std::uint8_t flag_3e9{0}; // 009E43DB
+    std::uint8_t flag_3ea{0}; // 009E43D5
 
     // 009E43F0..009E43FF, twelve records of kShipAiNavBlockSectorStride bytes
     // starting at blk+808h: byte +0h = 1, byte +14h = 0, dword +24h = 0.
