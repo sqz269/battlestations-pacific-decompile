@@ -51,6 +51,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"GetMeasure", 0x0088d8e0u},
     {"GameTime", 0x008a9320u},
     {"random", 0x0088c160u},
+    // Packet cc_mission_blackout: the fade whose completion callback is the only
+    // route from the intro movie to `luaIn`. src/mission_blackout.cpp.
+    {"Blackout", 0x008d1340u},
 };
 
 // The id the first script entity takes. The created scene instances number from 1
@@ -486,6 +489,41 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = bsp::lua_binding_game_time(*this);
     } else if (std::strcmp(binding->name, "random") == 0) {
         results = bsp::lua_binding_random(*this, *this, *this);
+    } else if (std::strcmp(binding->name, "Blackout") == 0) {
+        // 008D142F..008D1612 reads the frame; the marshalling stays here and the
+        // decode, the arm and the immediate step are src/mission_blackout.cpp.
+        bsp::MissionBlackoutLuaCall call;
+        call.argument_count = count();
+        call.enable = get_boolean(0);
+        if (call.argument_count > 1) call.callback = get_string(1);
+        if (call.argument_count > 2) {
+            call.duration_is_boolean
+                = lua_type(state_, stack_slot(2)) == LUA_TBOOLEAN;  // 00B66000
+            if (call.duration_is_boolean) {
+                call.duration_boolean = get_boolean(2);
+            } else {
+                call.duration_number = static_cast<float>(get_number(2));
+            }
+        }
+        if (call.argument_count > 3) {
+            call.level_number = static_cast<float>(get_number(3));
+        }
+        if (call.argument_count <= 2
+            || (call.duration_is_boolean && !call.duration_boolean)) {
+            // The one path that consumes *(00432650() + E0h), which this packet
+            // did not read. Reported rather than silently taken as zero.
+            blackout_configured_duration_used_ = true;
+        }
+        bsp::mission_blackout_binding_008d1340(call, blackout_configured_duration_,
+            blackout_, *this);
+        ++blackout_summary_.arms;
+        blackout_summary_.level = blackout_.level;
+        blackout_summary_.remaining = blackout_.remaining;
+        log_.notef("  Blackout(%s, \"%s\") target=%.3f remaining=%.4f",
+            call.enable ? "true" : "false", call.callback.c_str(),
+            static_cast<double>(blackout_.target),
+            static_cast<double>(blackout_.remaining));
+        results = 0;  // 008D163E, nothing pushed
     } else {
         // 008a2f20, 008a2bc0 and 008a2d70 are one body with one command object.
         results = bsp::lua_binding_navigator_move_to(*this, *this);
@@ -966,8 +1004,136 @@ void GameScriptOrdersHost::clear_pending_00928330(bsp::EntityThinkList& pending)
     pending.nodes.clear();
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc_mission_blackout: bsp::MissionBlackoutHost
+// ---------------------------------------------------------------------------
+
+void GameScriptOrdersHost::blackout_icon_set_visible(bool visible) {
+    // Widget vtable +34h at 005B99B7 and 005B9A3B. This process has no GUI page,
+    // so the widget state is recorded and nothing is drawn.
+    log_.implemented("BlackoutIcon::set_visible", "005b99b7");
+    static_cast<void>(visible);
+}
+
+void GameScriptOrdersHost::blackout_icon_set_colour(const bsp::BlackoutFillColour& colour) {
+    // Widget vtable +50h at 005B9A3B.
+    log_.implemented("BlackoutIcon::set_colour", "005b9a3b");
+    blackout_colour_ = colour;
+}
+
+void GameScriptOrdersHost::blackout_icon_get_colour(bsp::BlackoutFillColour& colour) {
+    // Widget vtable +54h at 005B99C9. The native reads the widget's own colour;
+    // this process answers with the last colour it was given, which starts at the
+    // opaque black bsp::BlackoutFillColour defaults to.
+    log_.implemented("BlackoutIcon::get_colour", "005b99c9");
+    colour = blackout_colour_;
+}
+
+void GameScriptOrdersHost::mission_lua_call_named_00887e50(const std::string& name) {
+    // 00887E50 at 005B9969 with self key 0, no argument record and no stack
+    // range, so the call is `_G[name]()` with zero arguments
+    // (docs/MISSION_NAMED_CALL_ARGS.md: nargs starts at 0 off the self-key path).
+    log_.implemented("MissionLuaHost::call_named", "00887e50");
+    ++blackout_summary_.callbacks;
+    blackout_summary_.last_callback = name;
+    lua_State* const machine = (state_ != nullptr) ? state_ : machine_state_;
+    if (machine == nullptr || name.empty()) return;
+    const int base = lua_gettop(machine);
+    lua_getfield(machine, LUA_GLOBALSINDEX, name.c_str());
+    if (!lua_isfunction(machine, -1)) {
+        log_.notef("  blackout callback %s is not a global function", name.c_str());
+        lua_settop(machine, base);
+        return;
+    }
+    if (lua_pcall(machine, 0, 0, 0) != 0) {
+        ++timers_.call_failures;
+        const char* message = lua_tolstring(machine, -1, nullptr);
+        if (timers_.first_error.empty() && message != nullptr) {
+            timers_.first_error = message;
+        }
+        log_.notef("  blackout callback %s failed: %s", name.c_str(),
+            message != nullptr ? message : "(no message)");
+    } else {
+        log_.notef("  blackout callback %s ran", name.c_str());
+    }
+    lua_settop(machine, base);
+}
+
+void* GameScriptOrdersHost::local_player_unit_00e188d8() {
+    // 00E188D8, read at 005B9867 and 005B9893. This executable never publishes a
+    // local player unit, so the interface request the completion arm would push
+    // is not reached. It is a HUD transition, not a script gate.
+    log_.unimplemented("Game::local_player_unit", "00e188d8");
+    return nullptr;
+}
+
+bool GameScriptOrdersHost::interface_request_pending_005b66d0() {
+    // 005B66D0's body: `*(manager+20h)` against 29h, 2Bh, 2Ch and 2Dh. This
+    // process pushes no interface request, so no id is ever pending.
+    log_.implemented("InGameInterfaceManager::request_pending", "005b66d0");
+    return false;
+}
+
+void GameScriptOrdersHost::ingame_interface_store_1c_00644220(int value) {
+    // 00644220's whole body is `[this+1Ch] = argument`, on `*(00E198C4 + 40h)`.
+    log_.unimplemented("InGameInterface::store_1c", "00644220");
+    static_cast<void>(value);
+}
+
+void GameScriptOrdersHost::push_interface_request_004cc460(int request_id, void* payload) {
+    log_.unimplemented("FrontEndManager::push_interface_request", "004cc460");
+    static_cast<void>(payload);
+    if (request_id == bsp::kMissionBlackoutCompletionInterfaceRequest) {
+        ++blackout_summary_.interface_requests;
+    }
+}
+
+int GameScriptOrdersHost::game_session_kind_1fe4h() {
+    // The same field game_session_mode() answers, `[00e188a8]+1fe4h`.
+    return game_session_mode();
+}
+
+void GameScriptOrdersHost::session_broadcast_blackout_0076d310(float level, float duration) {
+    // 0076D310 at 005B9C36, session message kind 2Bh. Offline, so unreachable.
+    log_.unimplemented("Session::broadcast_blackout", "0076d310");
+    static_cast<void>(level);
+    static_cast<void>(duration);
+}
+
+void GameScriptOrdersHost::force_show_please_wait_screen_00e19698() {
+    // 005B9A04..005B9A20 on the process-lifetime `_PleaseWait` screen. Only on
+    // the `game+1FE4h != 0` arm, which this process never takes.
+    log_.unimplemented("PleaseWaitScreen::force_show", "005b9a04");
+}
+
+void GameScriptOrdersHost::run_blackout_update(float step) {
+    // 004C40F0 at 004C4290..004C429A: BSP_FrontEndScreen_Update(*(00E198C4+A4h),
+    // game+21F0h) -> vtable 00CF0ED8 +20h = 005BC920 -> 005B9800 at 005BC9FC.
+    // The native gates on the screen's visibility bytes +4h and +5h and on
+    // `game+21F0h > 0` (005BC9B0); this process has neither a screen set nor a
+    // separate scaled delta and steps with the frame delta it is given.
+    if (machine_state_ == nullptr) return;
+    if (!(step > 0.0f)) return;  // 005BC9B0, the COMISS against zero
+    lua_State* const outer_state = state_;
+    const int outer_argument_count = argument_count_;
+    state_ = machine_state_;
+    argument_count_ = 0;
+    const bsp::MissionBlackoutStep record
+        = bsp::mission_blackout_update_005b9800(blackout_, step, *this);
+    ++blackout_summary_.updates;
+    if (record.reached_target) ++blackout_summary_.completions;
+    blackout_summary_.level = blackout_.level;
+    blackout_summary_.remaining = blackout_.remaining;
+    state_ = outer_state;
+    argument_count_ = outer_argument_count;
+}
+
 void GameScriptOrdersHost::run_script_timers(float step) {
-    if (machine_state_ == nullptr || script_entities_.empty()) return;
+    if (machine_state_ == nullptr) return;
+    if (script_entities_.empty()) {
+        run_blackout_update(step);
+        return;
+    }
     state_ = machine_state_;
     argument_count_ = 0;
     mission_clock_ += step;
@@ -1005,6 +1171,12 @@ void GameScriptOrdersHost::run_script_timers(float step) {
     ++timers_.passes;
     timers_.timed_fires += run.thinks_run;
     state_ = nullptr;
+    // Packet cc_mission_blackout. GGame::OnMove step 18 runs 004C40A0, which
+    // drives the fixed-step fan-out and so the think walk, and only then 004C40F0,
+    // which steps the fade. Keeping that order here means a `luaDelay` that
+    // expires on this frame arms its blackout before the same frame steps it,
+    // exactly as the native does.
+    run_blackout_update(step);
 }
 
 void GameScriptOrdersHost::report() {
@@ -1027,6 +1199,20 @@ void GameScriptOrdersHost::report() {
             timers_.clears, timers_.deletes, timers_.passes, timers_.timed_fires,
             timers_.call_failures,
             timers_.first_error.empty() ? "" : timers_.first_error.c_str());
+    }
+    if (blackout_summary_.arms != 0 || blackout_summary_.updates != 0) {
+        log_.notef("summary mission blackout (packet cc_mission_blackout, 008D1340 / "
+            "005B9BA0 / 005B9800): arms=%zu updates=%zu completions=%zu callbacks=%zu "
+            "interface_requests=%zu last_callback=%s level=%.3f remaining=%.3f "
+            "configured_default_used=%d",
+            blackout_summary_.arms, blackout_summary_.updates,
+            blackout_summary_.completions, blackout_summary_.callbacks,
+            blackout_summary_.interface_requests,
+            blackout_summary_.last_callback.empty()
+                ? "(none)" : blackout_summary_.last_callback.c_str(),
+            static_cast<double>(blackout_summary_.level),
+            static_cast<double>(blackout_summary_.remaining),
+            blackout_configured_duration_used_ ? 1 : 0);
     }
     if (rows_.empty()) return;
     log_.notef("the mission script's own orders, run through the eight reconstructed "
