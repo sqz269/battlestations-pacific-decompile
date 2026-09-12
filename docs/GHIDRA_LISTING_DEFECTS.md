@@ -35,3 +35,11 @@ unconditional `JMP`s in 004e4a40, padding, left alone; none in 006435d0) and
 `ghidra_annotate.py --apply --addresses 004c9800`. `verify_report_calls.py
 reports/game_executable_milestone_2f.json` went from 51 failures to 96 rows checked, 0 failed.
 The three rows above are repaired; the table stays as the record of what the bridge cannot do.
+
+### Second run, 2026-09-12
+
+Run again from the Script Manager after the `00643c1c..00643c68` row was added: the hole inside
+`BSP_InGameHudMarkersScreen_Update` now decodes (28 instructions, the target-group member loop,
+`00643C1C: JLE 00643C69` onward), the body stays `006435d0-00643d96`,
+`ghidra_flow_repair.py 006435d0` reports 0 gaps, and `snapshot --force` / `index` were refreshed
+(62924 functions). All four rows are repaired.
