@@ -2,6 +2,7 @@
 #include "bsp/native_input_backend_startup.hpp"
 #include "bsp/native_input_backend_bindings.hpp"
 #include "bsp/native_input_class_configuration.hpp"
+#include "bsp/native_input_action_listener_owner.hpp"
 #include "bsp/native_gamepad_rumble.hpp"
 #include "bsp/xlive_manager_owner.hpp"
 #include <stdexcept>
@@ -16,6 +17,7 @@ struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
     NativeInputBackendOwnerContext backend;
     NativeInputBackendStartupDeviceRuntime device_calls;
     NativeInputBackendBindingsContext bindings;
+    NativeInputActionListenerCalls native_listeners;
     NativeInputActionRecordsContext records;
     NativeInputActionStorageCalls record_storage;
     NativeInputActionOwnerContext actions;
@@ -95,9 +97,8 @@ struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
     }
     void call_listener_slot0(void* p, std::uint32_t profile) override {
         auto* const calls = bound.listener_calls;
-        if (!calls)
-            throw std::logic_error("input action listener release reached an unbound application provider");
-        calls->call_listener_slot0(p, profile);
+        if (calls) calls->call_listener_slot0(p, profile);
+        else native_listeners.call_listener_slot0(p, profile);
     }
     void set_force_vslot38(void* p, std::uint32_t profile, std::uint32_t channel,
         float value) override {

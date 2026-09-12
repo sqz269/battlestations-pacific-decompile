@@ -18,8 +18,8 @@ struct GameInputRuntimeBindings {
     void* volatile& backend_00f8bbf4;
     void* volatile& actions_00f8bbf8;
     const volatile std::uint32_t& binding_one_bits_00d7a24c;
-    // A source provider publication, not a native field or substitute listener.
-    // Required only when an actual record releases a nonnull listener to zero.
+    // Optional source provider publication. With no override the facade binds
+    // actual D5B610 listeners to their recovered finite deletion bodies.
     NativeInputActionRecordCalls* volatile& listener_calls;
     PlatformCursorGlobals cursor_globals;
     XLiveManagerOwner* volatile& online_00f8abe8;
