@@ -1,0 +1,489 @@
+{
+  "packet": "orch4_native_input_configuration_storage_ag",
+  "source": [
+    "include/bsp/native_input_configuration_storage.hpp",
+    "src/native_input_configuration_storage.cpp",
+    "src/native_input_class_configuration.cpp"
+  ],
+  "analysis": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "mode": "READ ONLY target-verified bounded CLI listings/protos/xrefs/bytes and existing source comparison",
+    "ghidra_writes": false,
+    "library_names_retained": true
+  },
+  "routines": [
+    {
+      "address": "00697bd0",
+      "name": "NativeInputConfigurationStorage::call_00697bd0",
+      "coverage": "concrete stateless extracted library source contract on documented valid actual storage; not original STL or binary ABI implementation",
+      "native_return": "void* in EAX",
+      "convention": "__thiscall",
+      "ecx": "actual10h checked DWORD-vector header",
+      "edx": "not an input",
+      "stack_arguments": [
+        "const void* source actual10h header"
+      ],
+      "ret_argument_bytes": 4,
+      "last_instruction": "00697cf2",
+      "last_instruction_length": 3,
+      "end_inclusive": "00697cf4",
+      "end_exclusive": "00697cf5"
+    },
+    {
+      "address": "006977f0",
+      "name": "NativeInputConfigurationStorage::call_006977f0",
+      "coverage": "concrete stateless extracted library source contract on documented valid actual storage; not original STL or binary ABI implementation",
+      "native_return": "void* in EAX",
+      "convention": "__thiscall",
+      "ecx": "actual10h checked DWORD-vector header",
+      "edx": "not an input",
+      "stack_arguments": [
+        "void* output actual8h iterator",
+        "const void* first owner",
+        "void* first position",
+        "const void* last owner",
+        "void* last position"
+      ],
+      "ret_argument_bytes": 20,
+      "last_instruction": "00697850",
+      "last_instruction_length": 3,
+      "end_inclusive": "00697852",
+      "end_exclusive": "00697853"
+    },
+    {
+      "address": "00a917e0",
+      "return_type": "void",
+      "convention": "__thiscall",
+      "ecx": "void* actual_backend_F8h",
+      "edx": "not consumed as input",
+      "stack_arguments": [
+        "uint32 class_index",
+        "uint32 requested_count",
+        "const void* optional_actual10h_identifier_vector"
+      ],
+      "ret_argument_bytes": 12,
+      "return_value": "No native caller consumes a result; EAX is not a semantic return contract",
+      "body_start": "00a917e0",
+      "last_instruction": "00a91897",
+      "last_instruction_length": 3,
+      "end_inclusive": "00a91899",
+      "end_exclusive": "00a9189a",
+      "name": "configure_native_input_class_00a917e0",
+      "coverage": "existing complete raw game schedule; private clear/assign extracted to shared source storage contracts without native ABI claim",
+      "missing_starts": [],
+      "excluded_tails": []
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00697bf5",
+      "native": "00697890",
+      "function": "00697bd0",
+      "kind": "direct",
+      "contract": "ECX actual10h destination, no stack arguments, RET. Captures end, validates begin then current end through returning CRT, invokes erase with two same-header iterator owners."
+    },
+    {
+      "address": "00697c1d",
+      "native": "00697080",
+      "function": "00697bd0",
+      "kind": "direct",
+      "contract": "cdecl stack first,last,destination, EAX resulting end, RET; caller ADD ESP0Ch at697C25 or697C91. Forward DWORD copy; existing memmove_s contract equivalent only on documented valid ranges."
+    },
+    {
+      "address": "00697c86",
+      "native": "00697080",
+      "function": "00697bd0",
+      "kind": "direct",
+      "contract": "cdecl stack first,last,destination, EAX resulting end, RET; caller ADD ESP0Ch at697C25 or697C91. Forward DWORD copy; existing memmove_s contract equivalent only on documented valid ranges."
+    },
+    {
+      "address": "00697c99",
+      "native": "006974b0",
+      "function": "00697bd0",
+      "kind": "direct",
+      "contract": "ECX destination header; stack first,last,destination; EAX resulting end, RET0Ch. Wrapper of696D40 placement-copy contract; null placement and malformed overlap are excluded from source equivalence."
+    },
+    {
+      "address": "00697caf",
+      "native": "00bf65ac",
+      "function": "00697bd0",
+      "kind": "direct",
+      "contract": "cdecl pointer argument, no semantic result; native free thunk. ADD ESP4 at697CB4..B6 is excluded from listing but verified live/disk83C404. Existing singleton_lifetime_free retained."
+    },
+    {
+      "address": "00697ccd",
+      "native": "00557200",
+      "function": "00697bd0",
+      "kind": "direct",
+      "contract": "ECX actual10h destination, stack DWORD count, AL success, RET4. Zeros+4/+8/+C before zero/max checks; publishes begin/end/capacity after allocation. Source uses existing allocation and length-error services."
+    },
+    {
+      "address": "00697ce4",
+      "native": "006974b0",
+      "function": "00697bd0",
+      "kind": "direct",
+      "contract": "ECX destination header; stack first,last,destination; EAX resulting end, RET0Ch. Wrapper of696D40 placement-copy contract; null placement and malformed overlap are excluded from source equivalence."
+    },
+    {
+      "address": "00697803",
+      "native": "00bf6713",
+      "function": "006977f0",
+      "kind": "direct",
+      "contract": "No native arguments, RET; real returning CRT invalid-parameter service. Retain captured first owner and receiver, read positions/current end after the callback; no owner==receiver test."
+    },
+    {
+      "address": "00a91806",
+      "native": "00bf6713",
+      "function": "00a917e0",
+      "contract": "Actual returning invalid-parameter CRT; no stack args, RET. Retain captured end, reload begin/current end at later game instructions."
+    },
+    {
+      "address": "00a91814",
+      "native": "00bf6713",
+      "function": "00a917e0",
+      "contract": "Actual returning invalid-parameter CRT; no stack args, RET. Retain captured end, reload begin/current end at later game instructions."
+    },
+    {
+      "address": "00a91824",
+      "native": "00a90d00",
+      "function": "00a917e0",
+      "contract": "Recognized checked pointer erase: ECX actual10h active header; five stack DWORDs output8h iterator, first-owner, first-pointer, last-owner, last-pointer; RET14h. Stateless source storage contract preserves captured range and current end; no device release."
+    },
+    {
+      "address": "00a91835",
+      "native": "00bf6713",
+      "function": "00a917e0",
+      "contract": "Actual returning invalid-parameter CRT; no stack args, RET. Retain captured end, reload begin/current end at later game instructions."
+    },
+    {
+      "address": "00a91842",
+      "native": "00bf6713",
+      "function": "00a917e0",
+      "contract": "Actual returning invalid-parameter CRT; no stack args, RET. Retain captured end, reload begin/current end at later game instructions."
+    },
+    {
+      "address": "00a91852",
+      "native": "004685a0",
+      "function": "00a917e0",
+      "contract": "Recognized checked DWORD erase: ECX actual10h accepted-ID header; five stack DWORDs output8h iterator, first-owner, first-pointer, last-owner, last-pointer; RET14h. Stateless source storage contract preserves capacity."
+    },
+    {
+      "address": "00a91862",
+      "native": "004f60e0",
+      "function": "00a917e0",
+      "contract": "Recognized actual10h DWORD-vector assignment: ECX destination, stack actual source header; EAX destination ignored; RET4. Source storage contract covers actual nonnull vector, capacity reuse, free-before-allocation and postallocation endpoint reload; original STL/CRT/EH implementation not claimed."
+    },
+    {
+      "address": "00a91887",
+      "native": "00442190",
+      "function": "00a917e0",
+      "contract": "Recognized append: ECX actual10h accepted-ID header; one stack pointer to captured FFFFFFFF word; RET4. Reuses source DWORD insertion storage contract, never a typed device container."
+    }
+  ],
+  "incoming_calls": [
+    {
+      "address": "00698026",
+      "native": "00697bd0",
+      "function": "00698010",
+      "contract": "ECX current10h row, stack captured common source; loop advances row10h. Full live listing698010..698035 read."
+    },
+    {
+      "address": "006987c8",
+      "native": "00697bd0",
+      "function": "00698730",
+      "contract": "ECX current destination row, stack current source row in captured outer range; native assignment RET4."
+    },
+    {
+      "address": "006978bd",
+      "native": "006977f0",
+      "function": "00697890",
+      "contract": "ECX header; output stack8h, same-header first/last owners and separately captured positions; RET14h."
+    },
+    {
+      "address": "0069883b",
+      "native": "006977f0",
+      "function": "00698730",
+      "contract": "Flat header500h, captured begin/end with same owner; output stack8h."
+    },
+    {
+      "address": "00698871",
+      "native": "006977f0",
+      "function": "00698730",
+      "contract": "Flat header510h, captured begin/end with same owner; output stack8h."
+    },
+    {
+      "address": "006988a7",
+      "native": "006977f0",
+      "function": "00698730",
+      "contract": "Flat header4E0h, captured begin/end with same owner; output stack8h."
+    },
+    {
+      "address": "006988dd",
+      "native": "006977f0",
+      "function": "00698730",
+      "contract": "Flat header4F0h, captured begin/end with same owner; output stack8h."
+    }
+  ],
+  "equivalence": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "live_bytes_match_installed_image": true,
+    "normalization": "Mask only 4-byte displacements of listed and byte-verified E8 CALL instructions; compare every other byte including excluded ADD ESP4 tail.",
+    "pairs": [
+      {
+        "left": "00697bd0",
+        "right": "004f60e0",
+        "length": 293,
+        "equal_except_direct_call_displacements": true,
+        "normalized_sha256": "35cb57a460c15fd0dcf3685d8b508fd89f7e9308926aac29b5ac724c9fd50df3",
+        "left_calls": [
+          {
+            "offset": 37,
+            "site": "00697bf5",
+            "target": "00697890"
+          },
+          {
+            "offset": 77,
+            "site": "00697c1d",
+            "target": "00697080"
+          },
+          {
+            "offset": 182,
+            "site": "00697c86",
+            "target": "00697080"
+          },
+          {
+            "offset": 201,
+            "site": "00697c99",
+            "target": "006974b0"
+          },
+          {
+            "offset": 223,
+            "site": "00697caf",
+            "target": "00bf65ac"
+          },
+          {
+            "offset": 253,
+            "site": "00697ccd",
+            "target": "00557200"
+          },
+          {
+            "offset": 276,
+            "site": "00697ce4",
+            "target": "006974b0"
+          }
+        ],
+        "right_calls": [
+          {
+            "offset": 37,
+            "site": "004f6105",
+            "target": "00468af0"
+          },
+          {
+            "offset": 77,
+            "site": "004f612d",
+            "target": "00467d90"
+          },
+          {
+            "offset": 182,
+            "site": "004f6196",
+            "target": "00467d90"
+          },
+          {
+            "offset": 201,
+            "site": "004f61a9",
+            "target": "004f54a0"
+          },
+          {
+            "offset": 223,
+            "site": "004f61bf",
+            "target": "00bf65ac"
+          },
+          {
+            "offset": 253,
+            "site": "004f61dd",
+            "target": "00441b20"
+          },
+          {
+            "offset": 276,
+            "site": "004f61f4",
+            "target": "004f54a0"
+          }
+        ]
+      },
+      {
+        "left": "00697890",
+        "right": "00468af0",
+        "length": 57,
+        "equal_except_direct_call_displacements": true,
+        "normalized_sha256": "05e6cd9b8e55bfeea025099c6f6eacb671748f052fdfbd161f41d913f527b5eb",
+        "left_calls": [
+          {
+            "offset": 16,
+            "site": "006978a0",
+            "target": "00bf6713"
+          },
+          {
+            "offset": 29,
+            "site": "006978ad",
+            "target": "00bf6713"
+          },
+          {
+            "offset": 45,
+            "site": "006978bd",
+            "target": "006977f0"
+          }
+        ],
+        "right_calls": [
+          {
+            "offset": 16,
+            "site": "00468b00",
+            "target": "00bf6713"
+          },
+          {
+            "offset": 29,
+            "site": "00468b0d",
+            "target": "00bf6713"
+          },
+          {
+            "offset": 45,
+            "site": "00468b1d",
+            "target": "004685a0"
+          }
+        ]
+      },
+      {
+        "left": "00557200",
+        "right": "00441b20",
+        "length": 71,
+        "equal_except_direct_call_displacements": true,
+        "normalized_sha256": "1e7b315bdc32d31399fdc8f021cf4d905e6ee54391ae799a3ba37661f187cfc3",
+        "left_calls": [
+          {
+            "offset": 38,
+            "site": "00557226",
+            "target": "00556c20"
+          },
+          {
+            "offset": 47,
+            "site": "0055722f",
+            "target": "00553260"
+          }
+        ],
+        "right_calls": [
+          {
+            "offset": 38,
+            "site": "00441b46",
+            "target": "00441440"
+          },
+          {
+            "offset": 47,
+            "site": "00441b4f",
+            "target": "0043f6a0"
+          }
+        ]
+      }
+    ]
+  },
+  "extraction": {
+    "source": "src/native_input_class_configuration.cpp",
+    "before_sha256": "81cc478489648b9fe16d81ead92d77f9b745cac4941d2e6db9537351e075e3df",
+    "extracted_assignment_sha256": "226da93c32e6ac45dec482c46da9698c1180f24c9ff1b36d27df867ac1fa0e99",
+    "assignment_text_unchanged": true,
+    "erase_change": "only split equal-header validation from existing erase contents, permitting full owner-pair adapter validation without extra receiver-null check",
+    "class_changes": "replace private clear/assign calls with extracted public wrappers; append_identifier and game body unchanged"
+  },
+  "actual_storage": {
+    "header": "actual10h {opaque,begin,end,capacity} offsets0/4/8/C; output actual8h {owner,position}",
+    "producer_evidence": "Existing raw backend owner/class configuration producers and actual configuration checked10h rows; byte-equivalent allocation helpers557200/441B20 write triplet4/8/C only. Actual configuration LuaStateStorage remains atbase0; adapter introduces no configuration layout or owner.",
+    "allocation": "existing singleton_lifetime_allocate/free and native_singleton_length_error source contracts; destination triplet zeroed before replacement allocation",
+    "alias": "same-header assignment no-op; distinct owning allocations required; valid erase shifts suffix down. Output may alias header and writes+4 before0; opaque0 otherwise unmodified. Arbitrary original call-stack aliases not claimed.",
+    "returning_validation": "first owner captured; positions and current end used after returning handler. No owner==receiver guard. Clear preserves captured end and reloads begin/current end."
+  },
+  "register_and_abi_evidence": [
+    "697BD0 ESI captures destination, EDI source; EBX first/middle and EBP last; inspect all writes and calls. Source and destination endpoints reloaded after copy/free/allocation at697C22,697C8B/8E,697CB7/CC2,697CD6/D9/DC.",
+    "6977F0 EBP first owner, EDI receiver, ESI first position; EAX last position then output. Native forward loop temporarily uses EBP and reloads original owner from stack69783C after nonempty suffix; source excludes arbitrary aliases into that original frame.",
+    "No x87 or SSE numerical operation in these owned bodies; pointer-count arithmetic is DWORD subtraction/SAR2. Native stack cleanups and all direct calls are recorded separately from source context methods.",
+    "No EH map in these short bodies; source allocation/CRT boundary is inherited, original exception/SEH identity is not claimed."
+  ],
+  "missing_starts": [],
+  "excluded_listing_ranges": [
+    {
+      "start": "00697cb4",
+      "end_inclusive": "00697cb6",
+      "end_exclusive": "00697cb7",
+      "bytes": "83c404",
+      "meaning": "ADD ESP4 after free; raw bytes included in normalized293-byte comparison; original body not repaired"
+    },
+    {
+      "start": "004f61c4",
+      "end_inclusive": "004f61c6",
+      "end_exclusive": "004f61c7",
+      "bytes": "83c404",
+      "meaning": "same excluded free fallthrough in original class-assignment counterpart; evidence only, not leased/source-modified"
+    }
+  ],
+  "limitations": [
+    "Source storage adapters preserve supported valid owning ranges, not arbitrary overlapping distinct owners, malformed ranges or null placement destinations.",
+    "Existing memmove_s operations have equivalent values and endpoints to forward native DWORD loops on supported ranges; their internal copy instruction order is not claimed.",
+    "No append/reserve or nested-row producer added. No private owner/default provider, raw profile dispatcher, Lua setup, SDK, window, input polling, force, or gameplay run.",
+    "Original STL symbols and library bodies are not reconstructed or renamed; public C++ signatures carry source contracts, not drop-in native ABI.",
+    "Allocation failure/postallocation endpoint schedule inspected and unchanged by extraction; no new allocation-failure fixture."
+  ],
+  "validation": {
+    "win32_release_build_exit": 0,
+    "existing_ctests_passed": 2,
+    "seed_comparisons_passed": 8,
+    "owned_direct_call_rows": 16,
+    "incoming_direct_call_rows": 7,
+    "call_audit": "PASS:23 call rows checked,0 failed;16 owned internal sites plus7 incoming sites",
+    "class_fixture": "invalid_returns=1 requested_before_validation=1 captured_erase_suffix=1 wildcard_words=3 explicit_ids=3 copy_reuse=1 self_alias_clear=1 fixed_slots_unchanged=1 dirty_callback_unchanged=1 class_buffers=0",
+    "cleanup_fixture": "5 native spans;24 direct relocations;1 IAT relocation;2 cleanup passes;597 native lazy gets;2 listener releases;1 publication switch;1 returning CRT repair;2 assignments;8 erases;3 nested headers cleared;flags/values/capacity preserved",
+    "focused_case": "one added direct original6977F0 versus source case: returning invalid handler repairs current end, unequal nonreceiver owners are retained, output aliasesheader, full normalized snapshot/EAX match",
+    "runners": [
+      "./local/run_native_input_class_configuration_probe.ps1",
+      "./local/run_native_input_storage_probe_ag.ps1"
+    ],
+    "runner_integration": "Both accept -PrimaryWorktree and use only selected tree include/core/Lua archives plus system libraries; ignored probe executable embeds manifest.",
+    "class_caller_evidence": "A917E0 signature/callers unchanged; prior reports/native_input_class_configuration.json covers4DD6B4/4DD6C5/4DD6D6 and67C9C6. Current packet rereads full A917E0 body and verifies all8 internal calls."
+  },
+  "artifacts": [
+    {
+      "path": "local/native_input_configuration_storage_build.log",
+      "sha256": "37e16d30cdcc20de8302c55c6a62be88a9c867b0f677f8d4acbdc1bae80c1408"
+    },
+    {
+      "path": "local/native_input_configuration_storage_seeds.log",
+      "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773"
+    },
+    {
+      "path": "local/native_input_configuration_storage_class_probe.log",
+      "sha256": "687024f3c8efa50ae8bccb8f45ab0ef4101e3de333e374842eab06b34e19cbd8"
+    },
+    {
+      "path": "local/native_input_configuration_storage_cleanup_probe.log",
+      "sha256": "96c38605f4db26a9087ce41595f23939c754df93a78a7164a25049321770fcec"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "sha256": "5add0fb72017699b58e5209afa35fdd6ba0b9dfec74bba1c14be80ea76d41718"
+    },
+    {
+      "path": "local/native_input_storage_probe_ag.exe",
+      "sha256": "27d93ac4aef06189a1ec7311a095e3c28d95d23e44d4daeca91c5fd9a8bbb2d7"
+    },
+    {
+      "path": "local/native_input_class_configuration_probe.exe",
+      "sha256": "12036db53e6e06794d4e4097f6e209b1d97ec2862d593c0bab18a05371ba7358"
+    },
+    {
+      "path": "local/native_input_storage_equivalence_ag.json",
+      "sha256": "3c597916ae515815cb0d50b534d102053131dd4da2db07e6e80dffcc7a12193d"
+    },
+    {
+      "path": "local/native_input_configuration_storage_call_audit.log",
+      "sha256": "1766b8d3b808d83f98162af52b7b2627234816544ceca70bb22d43b5e1920e2b"
+    }
+  ]
+}
