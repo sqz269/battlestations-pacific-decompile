@@ -48,3 +48,15 @@ Follow-up packets: implement B08AC0/B064A0/B07D60/AF8BD0/B0AD50 current parser08
 targets; recover Sprite/Object/Tracer virtual18 initialization and their real
 PointLight/model resource dependencies; compose those bindings with the existing
 B0CA40 initializer and validate a game startup/particle path when reachable.
+
+## Correction from docs/NATIVE_PARTICLE_TYPE_LOADING.md
+
+AQ supplies concrete text parsers for all five reviewed native virtual08 targets.
+The factory accepts an optional actual loading-domain binding. When present,
+it checks that the factory base, property base and parameter owners are the same
+domains and dispatches the captured current target directly. Unknown current
+targets, including the reused-parent path, retain the required real application
+dispatcher; callers without the loading binding retain the earlier AP boundary.
+Thus this is concrete opt-in composition, not a claim that every application
+caller has been wired. Shader/model/renderer services, native FH3 and gameplay
+remain open. The original AP capture-only fixture results remain historical.
