@@ -98,3 +98,13 @@ reconstructed helpers and controlled actual fixture storage. Thus it checks
 these three methods' sequencing/storage behavior, without independently proving
 every shared dependency, game loading, native EH, exceptional CRT inputs, NaN
 curves, or every overlapping-output combination. No permanent tests were added.
+
+## AN combined integration
+
+The combined strict MSVC Win32 build and both seeded CTests passed. Focused
+original-byte probes were relinked to the current combined library. All26
+reconstruction names/signatures and six analyzed FH3 dispatcher comments were
+saved and read back, preserving prior annotations; affected exports refreshed.
+Four reports verify132 direct call rows with zero failures. The integration
+report records exact per-probe limits and supersedes earlier worker pending
+notes; application composition, native throwing ABI and gameplay are unvalidated.

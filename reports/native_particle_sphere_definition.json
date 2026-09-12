@@ -351,5 +351,174 @@
     "concurrent mutations are not validated",
     "no game/render validation"
   ],
-  "worker_mutations": "no Ghidra writes, annotations, prototype edits or saves; missing-body repair performed by primary integrator"
+  "worker_mutations": "no Ghidra writes, annotations, prototype edits or saves; missing-body repair performed by primary integrator",
+  "integration_an": {
+    "strict_win32_and_two_seeded_ctests": true,
+    "combined_library_sha256": "b603d7d61cc87aee9748a7ef5f5ad3f5310b7c4a3493aa423625374921fe9039",
+    "current_library_fixture": "local/an-sphere-current-replay.log",
+    "native_signature_readback_verified": true,
+    "normalized_entries": [
+      {
+        "address": "00b02bc0",
+        "end_inclusive": "00b02c30",
+        "end_exclusive": "00b02c31",
+        "cpp_symbol": "create_native_particle_sphere_record_00b02bc0",
+        "ghidra_name": "BSP_SphereEmitter_CreateParticleRecord",
+        "source": "src/native_particle_sphere_definition.cpp",
+        "header": "include/bsp/native_particle_sphere_definition.hpp",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_SphereEmitter_CreateParticleRecord(void * model, float time)",
+        "original_abi": "ECX actual8Ch definition; stack(model,time), RET8; EAX actual108h pointer",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_SPHERE_DEFINITION.md and reports/native_particle_sphere_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+      },
+      {
+        "address": "00b02ce0",
+        "end_inclusive": "00b02f26",
+        "end_exclusive": "00b02f27",
+        "cpp_symbol": "generate_native_particle_sphere_00b02ce0",
+        "ghidra_name": "BSP_SphereEmitter_GeneratePositionVelocity",
+        "source": "src/native_particle_sphere_definition.cpp",
+        "header": "include/bsp/native_particle_sphere_definition.hpp",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_SphereEmitter_GeneratePositionVelocity(void * parent, void * position, void * velocity)",
+        "original_abi": "ECX actual8Ch definition; stack(parent108h,position,velocity), RET0C",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_SPHERE_DEFINITION.md and reports/native_particle_sphere_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+      },
+      {
+        "address": "00b02f30",
+        "end_inclusive": "00b02fa8",
+        "end_exclusive": "00b02fa9",
+        "cpp_symbol": "generate_native_particle_sphere_matrix_00b02f30",
+        "ghidra_name": "BSP_SphereEmitter_ProduceChildTransform",
+        "source": "src/native_particle_sphere_definition.cpp",
+        "header": "include/bsp/native_particle_sphere_definition.hpp",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_SphereEmitter_ProduceChildTransform(void * parent, void * position, void * velocity, void * matrix)",
+        "original_abi": "ECX actual8Ch definition; stack(parent108h,position,velocity,matrix), RET10",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_SPHERE_DEFINITION.md and reports/native_particle_sphere_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+      },
+      {
+        "address": "00bd2f40",
+        "end_inclusive": "00bd2f84",
+        "end_exclusive": "00bd2f85",
+        "cpp_symbol": "native_particle_unit_random_00bd2f40",
+        "ghidra_name": "BSP_RandomThreads_DrawUnsignedFraction",
+        "source": "src/native_particle_unit_random.cpp",
+        "header": "include/bsp/native_particle_unit_random.hpp",
+        "native_calling_convention": "__fastcall",
+        "native_prototype": "float __fastcall BSP_RandomThreads_DrawUnsignedFraction(uint stream)",
+        "original_abi": "ECX unchecked stream; RET; ST0 float; ECX exits with float result bits popped from scratch",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_SPHERE_DEFINITION.md and reports/native_particle_sphere_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+      }
+    ],
+    "source_hashes": {
+      "include/bsp/native_particle_sphere_definition.hpp": "b27fec1f848fded3e0169eaec17523126311aeec7122e4931332915235afe0ba",
+      "include/bsp/native_particle_unit_random.hpp": "501766c0821558cffca46956ae4019ee130249e3f25b6e09b9bb5b39bef10579",
+      "src/native_particle_sphere_definition.cpp": "d4ab8ce2ac03d92752df7621a4f4125feb6d714756a0bbc44e8863851cbb0273",
+      "src/native_particle_unit_random.cpp": "70483515c563167f2d96b3cc3e15fb99816d4f41129c17a4520194ef8b8cfe36"
+    },
+    "saved_names_and_comment_preimages": [
+      {
+        "address": "00b02bc0",
+        "before": {
+          "address": "00b02bc0",
+          "function_name": "FUN_00b02bc0"
+        },
+        "after": {
+          "address": "00b02bc0",
+          "name": "BSP_SphereEmitter_CreateParticleRecord",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_SPHERE_DEFINITION.md and reports/native_particle_sphere_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b02ce0",
+        "before": {
+          "address": "00b02ce0",
+          "function_name": "FUN_00b02ce0"
+        },
+        "after": {
+          "address": "00b02ce0",
+          "name": "BSP_SphereEmitter_GeneratePositionVelocity",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_SPHERE_DEFINITION.md and reports/native_particle_sphere_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b02f30",
+        "before": {
+          "address": "00b02f30",
+          "function_name": "FUN_00b02f30"
+        },
+        "after": {
+          "address": "00b02f30",
+          "name": "BSP_SphereEmitter_ProduceChildTransform",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_SPHERE_DEFINITION.md and reports/native_particle_sphere_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bd2f40",
+        "before": {
+          "address": "00bd2f40",
+          "function_name": "FUN_00bd2f40"
+        },
+        "after": {
+          "address": "00bd2f40",
+          "name": "BSP_RandomThreads_DrawUnsignedFraction",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_SPHERE_DEFINITION.md and reports/native_particle_sphere_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ],
+    "native_signatures": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "save": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    },
+    "signature_before": {
+      "00b02bc0": "00b02bc0 BSP_SphereEmitter_CreateParticleRecord  undefined BSP_SphereEmitter_CreateParticleRecord(void)  body 00b02bc0 - 00b02c30\n",
+      "00b02ce0": "00b02ce0 BSP_SphereEmitter_GeneratePositionVelocity  undefined BSP_SphereEmitter_GeneratePositionVelocity(void)  body 00b02ce0 - 00b02f26\n",
+      "00b02f30": "00b02f30 BSP_SphereEmitter_ProduceChildTransform  undefined BSP_SphereEmitter_ProduceChildTransform(void)  body 00b02f30 - 00b02fa8\n",
+      "00bd2f40": "00bd2f40 BSP_RandomThreads_DrawUnsignedFraction  undefined BSP_RandomThreads_DrawUnsignedFraction(void)  body 00bd2f40 - 00bd2f84\n"
+    },
+    "signature_after": [
+      {
+        "address": "00b02bc0",
+        "prototype": "void * __thiscall BSP_SphereEmitter_CreateParticleRecord(void * model, float time)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b02bc0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b02ce0",
+        "prototype": "void __thiscall BSP_SphereEmitter_GeneratePositionVelocity(void * parent, void * position, void * velocity)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b02ce0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b02f30",
+        "prototype": "void __thiscall BSP_SphereEmitter_ProduceChildTransform(void * parent, void * position, void * velocity, void * matrix)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b02f30 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bd2f40",
+        "prototype": "float __fastcall BSP_RandomThreads_DrawUnsignedFraction(uint stream)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bd2f40 with __fastcall calling convention"
+        }
+      }
+    ],
+    "game_validated": false,
+    "original_exception_abi_validated": false,
+    "independent_review": "Read-only sphere review: saved EDX access, native RETs, current-target and parent reloads, all22 cone/23 SmartArea register/implicit x87 operations match native listings.",
+    "extra_cone_allocation_replay": "local/an-sphere-extended-replay.log: finite time, masked signaling NaN and null; current scalar changed during allocation, full108h bytes/FPstatus/call count equal."
+  }
 }

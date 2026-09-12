@@ -121,3 +121,13 @@ compiled, not executed by this fixture. Exceptional inputs, callback mutation,
 all floating control modes and game reachability were not exhaustively tested.
 The fixture linked the then-current common AFE0A0 source and existing main
 `bsp_core.lib`; final CMake registration/full build belongs to the integrator.
+
+## AN combined integration
+
+The combined strict MSVC Win32 build and both seeded CTests passed. Focused
+original-byte probes were relinked to the current combined library. All26
+reconstruction names/signatures and six analyzed FH3 dispatcher comments were
+saved and read back, preserving prior annotations; affected exports refreshed.
+Four reports verify132 direct call rows with zero failures. The integration
+report records exact per-probe limits and supersedes earlier worker pending
+notes; application composition, native throwing ABI and gameplay are unvalidated.

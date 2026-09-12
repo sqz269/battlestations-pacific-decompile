@@ -1,0 +1,2908 @@
+{
+  "packet": "orch3_definition_common_an",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "address": "00afe0a0",
+      "end_inclusive": "00afe192",
+      "end_exclusive": "00afe193",
+      "length": 243,
+      "sha256": "0e18fa537ebfa67bf486c2c67c831ebaa5ad6792eaf185ac3d3041edab119d84",
+      "live_disk_equal": true,
+      "cpp_symbol": "construct_native_particle_record_00afe0a0",
+      "ghidra_name": "BSP_ParticleRecord_CreateBare",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ParticleRecord_CreateBare(void * model, void * definition, float time)",
+      "original_abi": "ECX actual owner; void * model, void * definition, float time; ret 0xc",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00afe190",
+        "length": 3,
+        "bytes": "c20c00",
+        "text": "ret 0xc"
+      }
+    },
+    {
+      "address": "00afa280",
+      "end_inclusive": "00afa34e",
+      "end_exclusive": "00afa34f",
+      "length": 207,
+      "sha256": "61a61758abe7966b66af1300bf6b79fde3b92b7b996791d5f5df226f0fed4003",
+      "live_disk_equal": true,
+      "cpp_symbol": "construct_native_particle_definition_00afa280",
+      "ghidra_name": "BSP_ParticleDefinition_ConstructBase",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ParticleDefinition_ConstructBase(void * name, uint word10, uint word70, uint flag14)",
+      "original_abi": "ECX actual owner; void * name, uint word10, uint word70, uint flag14; ret 0x10",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00afa34c",
+        "length": 3,
+        "bytes": "c21000",
+        "text": "ret 0x10"
+      }
+    },
+    {
+      "address": "00af9fb0",
+      "end_inclusive": "00afa0f8",
+      "end_exclusive": "00afa0f9",
+      "length": 329,
+      "sha256": "ab4869dd41d323153500cd24016a8eed143ca99960768740086d493c824bb91e",
+      "live_disk_equal": true,
+      "cpp_symbol": "create_native_particle_definition_00af9fb0",
+      "ghidra_name": "BSP_ParticleDefinition_CreateNamedType",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__fastcall",
+      "native_prototype": "void * __fastcall BSP_ParticleDefinition_CreateNamedType(void * kind, void * name, uint word10, uint word70, void * text)",
+      "original_abi": "ECX actual kind8h; EDX actual name8h; stack(word10,word70,text); RET0C; EAX actual definition",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00afa0f6",
+        "length": 3,
+        "bytes": "c20c00",
+        "text": "ret 0xc"
+      }
+    },
+    {
+      "address": "00b03940",
+      "end_inclusive": "00b03969",
+      "end_exclusive": "00b0396a",
+      "length": 42,
+      "sha256": "ef2611885619b7db1aa05d2cfd2e8ba77b35a0f06a515ac450bb94a01c83bb85",
+      "live_disk_equal": true,
+      "cpp_symbol": "construct_native_particle_cone_definition_00b03940",
+      "ghidra_name": "BSP_ConeEmissionDefinition_Construct",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ConeEmissionDefinition_Construct(void * name, uint word10, uint word70, uint flag14)",
+      "original_abi": "ECX actual owner; void * name, uint word10, uint word70, uint flag14; ret 0x10",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00b03967",
+        "length": 3,
+        "bytes": "c21000",
+        "text": "ret 0x10"
+      }
+    },
+    {
+      "address": "00b02b90",
+      "end_inclusive": "00b02bb9",
+      "end_exclusive": "00b02bba",
+      "length": 42,
+      "sha256": "fca9fc62600854aa303a87c4392d162aa3fd29679ef4f5c627cce231cd6cc64a",
+      "live_disk_equal": true,
+      "cpp_symbol": "construct_native_particle_sphere_definition_00b02b90",
+      "ghidra_name": "BSP_SphereEmissionDefinition_Construct",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_SphereEmissionDefinition_Construct(void * name, uint word10, uint word70, uint flag14)",
+      "original_abi": "ECX actual owner; void * name, uint word10, uint word70, uint flag14; ret 0x10",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00b02bb7",
+        "length": 3,
+        "bytes": "c21000",
+        "text": "ret 0x10"
+      }
+    },
+    {
+      "address": "00b01cb0",
+      "end_inclusive": "00b01cd9",
+      "end_exclusive": "00b01cda",
+      "length": 42,
+      "sha256": "3c86878e8badec401e8b0f614913725c87f35a7b48ae9a0756b4b4bda589bb0f",
+      "live_disk_equal": true,
+      "cpp_symbol": "construct_native_particle_smartarea_definition_00b01cb0",
+      "ghidra_name": "BSP_SmartAreaEmissionDefinition_Construct",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_SmartAreaEmissionDefinition_Construct(void * name, uint word10, uint word70, uint flag14)",
+      "original_abi": "ECX actual owner; void * name, uint word10, uint word70, uint flag14; ret 0x10",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00b01cd7",
+        "length": 3,
+        "bytes": "c21000",
+        "text": "ret 0x10"
+      }
+    },
+    {
+      "address": "00affdf0",
+      "end_inclusive": "00affe19",
+      "end_exclusive": "00affe1a",
+      "length": 42,
+      "sha256": "9d37ee7f523c5d884b2d42d54bbfec27e7cbc0fc749c4dbfb1f8c7fb6636ef8b",
+      "live_disk_equal": true,
+      "cpp_symbol": "destroy_native_particle_parameter_00affdf0",
+      "ghidra_name": "BSP_ParticleParameter_DisposePayload",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleParameter_DisposePayload(void)",
+      "original_abi": "ECX actual owner; void; ret ",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00affe19",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      }
+    },
+    {
+      "address": "00b00090",
+      "end_inclusive": "00b0009b",
+      "end_exclusive": "00b0009c",
+      "length": 12,
+      "sha256": "68336969729b709e6055af7996911729fd2fdbc0f28921d7b182037b764b3c43",
+      "live_disk_equal": true,
+      "cpp_symbol": "return_native_particle_parameter_00b00090",
+      "ghidra_name": "BSP_ParticleParameter_ReturnPoolSlot",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleParameter_ReturnPoolSlot(void)",
+      "original_abi": "ECX actual owner; void; ret ",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00b0009b",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      }
+    },
+    {
+      "address": "00afa100",
+      "end_inclusive": "00afa279",
+      "end_exclusive": "00afa27a",
+      "length": 378,
+      "sha256": "5023f0e9ce37b874fd1dbeb43bd3dac91de3b71722649a93e117f77881aba714",
+      "live_disk_equal": true,
+      "cpp_symbol": "destroy_native_particle_definition_00afa100",
+      "ghidra_name": "BSP_ParticleDefinition_DestroyBase",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleDefinition_DestroyBase(void)",
+      "original_abi": "ECX actual owner; void; ret ",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00afa279",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      }
+    },
+    {
+      "address": "00b039f0",
+      "end_inclusive": "00b03ab3",
+      "end_exclusive": "00b03ab4",
+      "length": 196,
+      "sha256": "b098d216b396f63012d6eb8ff8a6c2d5ac763dc55e3b60b865991a954d0ea2ca",
+      "live_disk_equal": true,
+      "cpp_symbol": "destroy_native_particle_cone_definition_00b039f0",
+      "ghidra_name": "BSP_ConeEmissionDefinition_Destroy",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ConeEmissionDefinition_Destroy(void)",
+      "original_abi": "ECX actual owner; void; ret ",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00b03ab3",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      }
+    },
+    {
+      "address": "00b02c40",
+      "end_inclusive": "00b02cd3",
+      "end_exclusive": "00b02cd4",
+      "length": 148,
+      "sha256": "57bda87ad108a811a013accee7e55070413498d024058ed790b4a7f5b1a59475",
+      "live_disk_equal": true,
+      "cpp_symbol": "destroy_native_particle_sphere_definition_00b02c40",
+      "ghidra_name": "BSP_SphereEmissionDefinition_Destroy",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_SphereEmissionDefinition_Destroy(void)",
+      "original_abi": "ECX actual owner; void; ret ",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00b02cd3",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      }
+    },
+    {
+      "address": "00b01d60",
+      "end_inclusive": "00b01e1f",
+      "end_exclusive": "00b01e20",
+      "length": 192,
+      "sha256": "ebdc532f40e4f999e5a289516268ca686b218be5dda1de1639727b9223e44876",
+      "live_disk_equal": true,
+      "cpp_symbol": "destroy_native_particle_smartarea_definition_00b01d60",
+      "ghidra_name": "BSP_SmartAreaEmissionDefinition_Destroy",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_SmartAreaEmissionDefinition_Destroy(void)",
+      "original_abi": "ECX actual owner; void; ret ",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00b01e1f",
+        "length": 1,
+        "bytes": "c3",
+        "text": "ret "
+      }
+    },
+    {
+      "address": "00afa350",
+      "end_inclusive": "00afa36d",
+      "end_exclusive": "00afa36e",
+      "length": 30,
+      "sha256": "10fadaf9f55be1464eb9c067d85dd7ce7d7639f81b347db287af7bc51826cd4c",
+      "live_disk_equal": true,
+      "cpp_symbol": "delete_native_particle_definition_00afa350",
+      "ghidra_name": "BSP_ParticleDefinition_DeleteBase",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ParticleDefinition_DeleteBase(uint flags)",
+      "original_abi": "ECX actual owner; uint flags; ret 4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00afa36b",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00b03b40",
+      "end_inclusive": "00b03b5d",
+      "end_exclusive": "00b03b5e",
+      "length": 30,
+      "sha256": "001203d14a194dc1a070534573ddb2e2f49a6fb7ad54e7bf0464b328e77689ca",
+      "live_disk_equal": true,
+      "cpp_symbol": "delete_native_particle_cone_definition_00b03b40",
+      "ghidra_name": "BSP_ConeEmissionDefinition_Delete",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ConeEmissionDefinition_Delete(uint flags)",
+      "original_abi": "ECX actual owner; uint flags; ret 4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00b03b5b",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00b02fb0",
+      "end_inclusive": "00b02fcd",
+      "end_exclusive": "00b02fce",
+      "length": 30,
+      "sha256": "10a996c9b67fc891aa8856af59edd92fad2c3e97a7ca26459e5ddf521a3b9005",
+      "live_disk_equal": true,
+      "cpp_symbol": "delete_native_particle_sphere_definition_00b02fb0",
+      "ghidra_name": "BSP_SphereEmissionDefinition_Delete",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_SphereEmissionDefinition_Delete(uint flags)",
+      "original_abi": "ECX actual owner; uint flags; ret 4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00b02fcb",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      }
+    },
+    {
+      "address": "00b01ea0",
+      "end_inclusive": "00b01ebd",
+      "end_exclusive": "00b01ebe",
+      "length": 30,
+      "sha256": "57714821e510016fd5b6bf4f2b2db144db4de825fd39d184497c8090adfb190a",
+      "live_disk_equal": true,
+      "cpp_symbol": "delete_native_particle_smartarea_definition_00b01ea0",
+      "ghidra_name": "BSP_SmartAreaEmissionDefinition_Delete",
+      "source": "src/native_particle_definition.cpp",
+      "header": "include/bsp/native_particle_definition.hpp",
+      "coverage": "complete body through required canonical services and current dispatch",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_SmartAreaEmissionDefinition_Delete(uint flags)",
+      "original_abi": "ECX actual owner; uint flags; ret 4",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+      "last_instruction": {
+        "address": "00b01ebb",
+        "length": 3,
+        "bytes": "c20400",
+        "text": "ret 4"
+      }
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00afa2e0",
+      "native": "0041dd40",
+      "function": "00afa280"
+    },
+    {
+      "address": "00afa2f5",
+      "native": "00bf7680",
+      "function": "00afa280"
+    },
+    {
+      "address": "00af9fd9",
+      "native": "00bf7fbf",
+      "function": "00af9fb0"
+    },
+    {
+      "address": "00af9fef",
+      "native": "00bf681b",
+      "function": "00af9fb0"
+    },
+    {
+      "address": "00afa016",
+      "native": "00b03940",
+      "function": "00af9fb0"
+    },
+    {
+      "address": "00afa031",
+      "native": "00425850",
+      "function": "00af9fb0"
+    },
+    {
+      "address": "00afa03f",
+      "native": "00bf681b",
+      "function": "00af9fb0"
+    },
+    {
+      "address": "00afa066",
+      "native": "00b02b90",
+      "function": "00af9fb0"
+    },
+    {
+      "address": "00afa08c",
+      "native": "00425850",
+      "function": "00af9fb0"
+    },
+    {
+      "address": "00afa09a",
+      "native": "00bf681b",
+      "function": "00af9fb0"
+    },
+    {
+      "address": "00afa0c1",
+      "native": "00b01cb0",
+      "function": "00af9fb0"
+    },
+    {
+      "address": "00afa0e2",
+      "native": "edx",
+      "function": "00af9fb0"
+    },
+    {
+      "address": "00b03959",
+      "native": "00afa280",
+      "function": "00b03940"
+    },
+    {
+      "address": "00b02ba9",
+      "native": "00afa280",
+      "function": "00b02b90"
+    },
+    {
+      "address": "00b01cc9",
+      "native": "00afa280",
+      "function": "00b01cb0"
+    },
+    {
+      "address": "00affe09",
+      "native": "00bf6989",
+      "function": "00affdf0"
+    },
+    {
+      "address": "00b00096",
+      "native": "00924420",
+      "function": "00b00090"
+    },
+    {
+      "address": "00afa139",
+      "native": "00affdf0",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa140",
+      "native": "00b00090",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa151",
+      "native": "00affdf0",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa158",
+      "native": "00b00090",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa169",
+      "native": "00affdf0",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa170",
+      "native": "00b00090",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa181",
+      "native": "00affdf0",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa188",
+      "native": "00b00090",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa199",
+      "native": "00affdf0",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa1a0",
+      "native": "00b00090",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa1b1",
+      "native": "00affdf0",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa1b8",
+      "native": "00b00090",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa1c9",
+      "native": "00affdf0",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa1d0",
+      "native": "00b00090",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa1e9",
+      "native": "dword ptr [0xce2220]",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa1f9",
+      "native": "eax",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa217",
+      "native": "dword ptr [0xce2220]",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa227",
+      "native": "eax",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa24c",
+      "native": "00419cc0",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa253",
+      "native": "00bd1510",
+      "function": "00afa100"
+    },
+    {
+      "address": "00afa262",
+      "native": "00bd30f0",
+      "function": "00afa100"
+    },
+    {
+      "address": "00b03a28",
+      "native": "00affdf0",
+      "function": "00b039f0"
+    },
+    {
+      "address": "00b03a2f",
+      "native": "00b00090",
+      "function": "00b039f0"
+    },
+    {
+      "address": "00b03a40",
+      "native": "00affdf0",
+      "function": "00b039f0"
+    },
+    {
+      "address": "00b03a47",
+      "native": "00b00090",
+      "function": "00b039f0"
+    },
+    {
+      "address": "00b03a58",
+      "native": "00affdf0",
+      "function": "00b039f0"
+    },
+    {
+      "address": "00b03a5f",
+      "native": "00b00090",
+      "function": "00b039f0"
+    },
+    {
+      "address": "00b03a70",
+      "native": "00affdf0",
+      "function": "00b039f0"
+    },
+    {
+      "address": "00b03a77",
+      "native": "00b00090",
+      "function": "00b039f0"
+    },
+    {
+      "address": "00b03a88",
+      "native": "00affdf0",
+      "function": "00b039f0"
+    },
+    {
+      "address": "00b03a8f",
+      "native": "00b00090",
+      "function": "00b039f0"
+    },
+    {
+      "address": "00b03a9e",
+      "native": "00afa100",
+      "function": "00b039f0"
+    },
+    {
+      "address": "00b02c78",
+      "native": "00affdf0",
+      "function": "00b02c40"
+    },
+    {
+      "address": "00b02c7f",
+      "native": "00b00090",
+      "function": "00b02c40"
+    },
+    {
+      "address": "00b02c90",
+      "native": "00affdf0",
+      "function": "00b02c40"
+    },
+    {
+      "address": "00b02c97",
+      "native": "00b00090",
+      "function": "00b02c40"
+    },
+    {
+      "address": "00b02ca8",
+      "native": "00affdf0",
+      "function": "00b02c40"
+    },
+    {
+      "address": "00b02caf",
+      "native": "00b00090",
+      "function": "00b02c40"
+    },
+    {
+      "address": "00b02cbe",
+      "native": "00afa100",
+      "function": "00b02c40"
+    },
+    {
+      "address": "00b01d98",
+      "native": "00affdf0",
+      "function": "00b01d60"
+    },
+    {
+      "address": "00b01d9f",
+      "native": "00b00090",
+      "function": "00b01d60"
+    },
+    {
+      "address": "00b01db0",
+      "native": "00affdf0",
+      "function": "00b01d60"
+    },
+    {
+      "address": "00b01db7",
+      "native": "00b00090",
+      "function": "00b01d60"
+    },
+    {
+      "address": "00b01dc8",
+      "native": "00affdf0",
+      "function": "00b01d60"
+    },
+    {
+      "address": "00b01dcf",
+      "native": "00b00090",
+      "function": "00b01d60"
+    },
+    {
+      "address": "00b01dea",
+      "native": "00affdf0",
+      "function": "00b01d60"
+    },
+    {
+      "address": "00b01df1",
+      "native": "00b00090",
+      "function": "00b01d60"
+    },
+    {
+      "address": "00b01e0a",
+      "native": "00afa100",
+      "function": "00b01d60"
+    },
+    {
+      "address": "00afa353",
+      "native": "00afa100",
+      "function": "00afa350"
+    },
+    {
+      "address": "00afa360",
+      "native": "00bf65ac",
+      "function": "00afa350"
+    },
+    {
+      "address": "00b03b43",
+      "native": "00b039f0",
+      "function": "00b03b40"
+    },
+    {
+      "address": "00b03b50",
+      "native": "00bf65ac",
+      "function": "00b03b40"
+    },
+    {
+      "address": "00b02fb3",
+      "native": "00b02c40",
+      "function": "00b02fb0"
+    },
+    {
+      "address": "00b02fc0",
+      "native": "00bf65ac",
+      "function": "00b02fb0"
+    },
+    {
+      "address": "00b01ea3",
+      "native": "00b01d60",
+      "function": "00b01ea0"
+    },
+    {
+      "address": "00b01eb0",
+      "native": "00bf65ac",
+      "function": "00b01ea0"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "strict_win32_object_compile": true,
+    "combined_build": true,
+    "original_byte_fixture": {
+      "status": "passed",
+      "log": "definition original-byte fixture: cases=27 routines=16 ctor_cases=12 factory_cases=4 teardown_cases=8 record_cases=2 hosted_throw_cases=1 failures=0",
+      "library": "J:/PROG/battlestations-pacific-decompile-orch3-20260910/build/win32/Release/bsp_core.lib",
+      "library_sha256": "B603D7D61CC87AEE9748A7EF5F5AD3F5310B7C4A3493AA423625374921FE9039",
+      "source_sha256": "6637DD4B554767165E8736A3346988EB4A7D08B704CF779B35C93DC9300C4D34",
+      "compiler": "/std:c++20 /O2 /MD /EHsc /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+      "source": "definition_probe.cpp",
+      "build": "probe.cmd",
+      "byte_generator": "make_fixture.py",
+      "byte_evidence": "byte_evidence.json",
+      "limits": [
+        "Native FH3 throwing unwind not exercised",
+        "One hosted C++ string-allocation throw only",
+        "External CRT/string pool/00924420/parser/member boundaries instrumented",
+        "Original internal control flow unchanged; external direct calls and absolute profile/global operands relocated",
+        "Unknown factory kind tested with actual fallback owner; null allocation fault not invoked"
+      ]
+    },
+    "game_validated": false
+  },
+  "limitations": [
+    "AFA280 initializes only documented sparse base fields; parser must produce derived parameter pointers and remaining base fields before destruction/use.",
+    "Original CEB130/D5DBC4/D5DEBC/D5DE88/D5DE48 tables have explicitly supplied relocated physical counterparts. Real parser14/member00 dispatch is required.",
+    "Parameter pool borrows the actual F8D344 physical storage through the existing generic NativeWeakHandlePool 10h slot-return code. No second pool/refcount domain.",
+    "Unknown factory kind reinterprets word70 as an owner; null allocation still dereferences it for parser dispatch, preserving the native unsupported domain.",
+    "Host C++ exception cleanup follows observed FH3 state/actions, but original FH3 ABI/nonlocal exception execution and gameplay are unvalidated."
+  ],
+  "integration_an": {
+    "strict_win32_and_two_seeded_ctests": true,
+    "combined_library_sha256": "b603d7d61cc87aee9748a7ef5f5ad3f5310b7c4a3493aa423625374921fe9039",
+    "current_library_fixture": "local/an-definition-current-replay.log",
+    "native_signature_readback_verified": true,
+    "normalized_entries": [
+      {
+        "address": "00afe0a0",
+        "end_inclusive": "00afe192",
+        "end_exclusive": "00afe193",
+        "length": 243,
+        "sha256": "0e18fa537ebfa67bf486c2c67c831ebaa5ad6792eaf185ac3d3041edab119d84",
+        "live_disk_equal": true,
+        "cpp_symbol": "construct_native_particle_record_00afe0a0",
+        "ghidra_name": "BSP_ParticleRecord_CreateBare",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_ParticleRecord_CreateBare(void * model, void * definition, float time)",
+        "original_abi": "ECX actual owner; void * model, void * definition, float time; ret 0xc",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00afe190",
+          "length": 3,
+          "bytes": "c20c00",
+          "text": "ret 0xc"
+        }
+      },
+      {
+        "address": "00afa280",
+        "end_inclusive": "00afa34e",
+        "end_exclusive": "00afa34f",
+        "length": 207,
+        "sha256": "61a61758abe7966b66af1300bf6b79fde3b92b7b996791d5f5df226f0fed4003",
+        "live_disk_equal": true,
+        "cpp_symbol": "construct_native_particle_definition_00afa280",
+        "ghidra_name": "BSP_ParticleDefinition_ConstructBase",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_ParticleDefinition_ConstructBase(void * name, uint word10, uint word70, uint flag14)",
+        "original_abi": "ECX actual owner; void * name, uint word10, uint word70, uint flag14; ret 0x10",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00afa34c",
+          "length": 3,
+          "bytes": "c21000",
+          "text": "ret 0x10"
+        }
+      },
+      {
+        "address": "00af9fb0",
+        "end_inclusive": "00afa0f8",
+        "end_exclusive": "00afa0f9",
+        "length": 329,
+        "sha256": "ab4869dd41d323153500cd24016a8eed143ca99960768740086d493c824bb91e",
+        "live_disk_equal": true,
+        "cpp_symbol": "create_native_particle_definition_00af9fb0",
+        "ghidra_name": "BSP_ParticleDefinition_CreateNamedType",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__fastcall",
+        "native_prototype": "void * __fastcall BSP_ParticleDefinition_CreateNamedType(void * kind, void * name, uint word10, uint word70, void * text)",
+        "original_abi": "ECX actual kind8h; EDX actual name8h; stack(word10,word70,text); RET0C; EAX actual definition",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00afa0f6",
+          "length": 3,
+          "bytes": "c20c00",
+          "text": "ret 0xc"
+        }
+      },
+      {
+        "address": "00b03940",
+        "end_inclusive": "00b03969",
+        "end_exclusive": "00b0396a",
+        "length": 42,
+        "sha256": "ef2611885619b7db1aa05d2cfd2e8ba77b35a0f06a515ac450bb94a01c83bb85",
+        "live_disk_equal": true,
+        "cpp_symbol": "construct_native_particle_cone_definition_00b03940",
+        "ghidra_name": "BSP_ConeEmissionDefinition_Construct",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_ConeEmissionDefinition_Construct(void * name, uint word10, uint word70, uint flag14)",
+        "original_abi": "ECX actual owner; void * name, uint word10, uint word70, uint flag14; ret 0x10",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00b03967",
+          "length": 3,
+          "bytes": "c21000",
+          "text": "ret 0x10"
+        }
+      },
+      {
+        "address": "00b02b90",
+        "end_inclusive": "00b02bb9",
+        "end_exclusive": "00b02bba",
+        "length": 42,
+        "sha256": "fca9fc62600854aa303a87c4392d162aa3fd29679ef4f5c627cce231cd6cc64a",
+        "live_disk_equal": true,
+        "cpp_symbol": "construct_native_particle_sphere_definition_00b02b90",
+        "ghidra_name": "BSP_SphereEmissionDefinition_Construct",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_SphereEmissionDefinition_Construct(void * name, uint word10, uint word70, uint flag14)",
+        "original_abi": "ECX actual owner; void * name, uint word10, uint word70, uint flag14; ret 0x10",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00b02bb7",
+          "length": 3,
+          "bytes": "c21000",
+          "text": "ret 0x10"
+        }
+      },
+      {
+        "address": "00b01cb0",
+        "end_inclusive": "00b01cd9",
+        "end_exclusive": "00b01cda",
+        "length": 42,
+        "sha256": "3c86878e8badec401e8b0f614913725c87f35a7b48ae9a0756b4b4bda589bb0f",
+        "live_disk_equal": true,
+        "cpp_symbol": "construct_native_particle_smartarea_definition_00b01cb0",
+        "ghidra_name": "BSP_SmartAreaEmissionDefinition_Construct",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_SmartAreaEmissionDefinition_Construct(void * name, uint word10, uint word70, uint flag14)",
+        "original_abi": "ECX actual owner; void * name, uint word10, uint word70, uint flag14; ret 0x10",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00b01cd7",
+          "length": 3,
+          "bytes": "c21000",
+          "text": "ret 0x10"
+        }
+      },
+      {
+        "address": "00affdf0",
+        "end_inclusive": "00affe19",
+        "end_exclusive": "00affe1a",
+        "length": 42,
+        "sha256": "9d37ee7f523c5d884b2d42d54bbfec27e7cbc0fc749c4dbfb1f8c7fb6636ef8b",
+        "live_disk_equal": true,
+        "cpp_symbol": "destroy_native_particle_parameter_00affdf0",
+        "ghidra_name": "BSP_ParticleParameter_DisposePayload",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleParameter_DisposePayload(void)",
+        "original_abi": "ECX actual owner; void; ret ",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00affe19",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        }
+      },
+      {
+        "address": "00b00090",
+        "end_inclusive": "00b0009b",
+        "end_exclusive": "00b0009c",
+        "length": 12,
+        "sha256": "68336969729b709e6055af7996911729fd2fdbc0f28921d7b182037b764b3c43",
+        "live_disk_equal": true,
+        "cpp_symbol": "return_native_particle_parameter_00b00090",
+        "ghidra_name": "BSP_ParticleParameter_ReturnPoolSlot",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleParameter_ReturnPoolSlot(void)",
+        "original_abi": "ECX actual owner; void; ret ",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00b0009b",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        }
+      },
+      {
+        "address": "00afa100",
+        "end_inclusive": "00afa279",
+        "end_exclusive": "00afa27a",
+        "length": 378,
+        "sha256": "5023f0e9ce37b874fd1dbeb43bd3dac91de3b71722649a93e117f77881aba714",
+        "live_disk_equal": true,
+        "cpp_symbol": "destroy_native_particle_definition_00afa100",
+        "ghidra_name": "BSP_ParticleDefinition_DestroyBase",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ParticleDefinition_DestroyBase(void)",
+        "original_abi": "ECX actual owner; void; ret ",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00afa279",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        }
+      },
+      {
+        "address": "00b039f0",
+        "end_inclusive": "00b03ab3",
+        "end_exclusive": "00b03ab4",
+        "length": 196,
+        "sha256": "b098d216b396f63012d6eb8ff8a6c2d5ac763dc55e3b60b865991a954d0ea2ca",
+        "live_disk_equal": true,
+        "cpp_symbol": "destroy_native_particle_cone_definition_00b039f0",
+        "ghidra_name": "BSP_ConeEmissionDefinition_Destroy",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_ConeEmissionDefinition_Destroy(void)",
+        "original_abi": "ECX actual owner; void; ret ",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00b03ab3",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        }
+      },
+      {
+        "address": "00b02c40",
+        "end_inclusive": "00b02cd3",
+        "end_exclusive": "00b02cd4",
+        "length": 148,
+        "sha256": "57bda87ad108a811a013accee7e55070413498d024058ed790b4a7f5b1a59475",
+        "live_disk_equal": true,
+        "cpp_symbol": "destroy_native_particle_sphere_definition_00b02c40",
+        "ghidra_name": "BSP_SphereEmissionDefinition_Destroy",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_SphereEmissionDefinition_Destroy(void)",
+        "original_abi": "ECX actual owner; void; ret ",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00b02cd3",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        }
+      },
+      {
+        "address": "00b01d60",
+        "end_inclusive": "00b01e1f",
+        "end_exclusive": "00b01e20",
+        "length": 192,
+        "sha256": "ebdc532f40e4f999e5a289516268ca686b218be5dda1de1639727b9223e44876",
+        "live_disk_equal": true,
+        "cpp_symbol": "destroy_native_particle_smartarea_definition_00b01d60",
+        "ghidra_name": "BSP_SmartAreaEmissionDefinition_Destroy",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_SmartAreaEmissionDefinition_Destroy(void)",
+        "original_abi": "ECX actual owner; void; ret ",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00b01e1f",
+          "length": 1,
+          "bytes": "c3",
+          "text": "ret "
+        }
+      },
+      {
+        "address": "00afa350",
+        "end_inclusive": "00afa36d",
+        "end_exclusive": "00afa36e",
+        "length": 30,
+        "sha256": "10fadaf9f55be1464eb9c067d85dd7ce7d7639f81b347db287af7bc51826cd4c",
+        "live_disk_equal": true,
+        "cpp_symbol": "delete_native_particle_definition_00afa350",
+        "ghidra_name": "BSP_ParticleDefinition_DeleteBase",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_ParticleDefinition_DeleteBase(uint flags)",
+        "original_abi": "ECX actual owner; uint flags; ret 4",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00afa36b",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00b03b40",
+        "end_inclusive": "00b03b5d",
+        "end_exclusive": "00b03b5e",
+        "length": 30,
+        "sha256": "001203d14a194dc1a070534573ddb2e2f49a6fb7ad54e7bf0464b328e77689ca",
+        "live_disk_equal": true,
+        "cpp_symbol": "delete_native_particle_cone_definition_00b03b40",
+        "ghidra_name": "BSP_ConeEmissionDefinition_Delete",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_ConeEmissionDefinition_Delete(uint flags)",
+        "original_abi": "ECX actual owner; uint flags; ret 4",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00b03b5b",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00b02fb0",
+        "end_inclusive": "00b02fcd",
+        "end_exclusive": "00b02fce",
+        "length": 30,
+        "sha256": "10a996c9b67fc891aa8856af59edd92fad2c3e97a7ca26459e5ddf521a3b9005",
+        "live_disk_equal": true,
+        "cpp_symbol": "delete_native_particle_sphere_definition_00b02fb0",
+        "ghidra_name": "BSP_SphereEmissionDefinition_Delete",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_SphereEmissionDefinition_Delete(uint flags)",
+        "original_abi": "ECX actual owner; uint flags; ret 4",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00b02fcb",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00b01ea0",
+        "end_inclusive": "00b01ebd",
+        "end_exclusive": "00b01ebe",
+        "length": 30,
+        "sha256": "57714821e510016fd5b6bf4f2b2db144db4de825fd39d184497c8090adfb190a",
+        "live_disk_equal": true,
+        "cpp_symbol": "delete_native_particle_smartarea_definition_00b01ea0",
+        "ghidra_name": "BSP_SmartAreaEmissionDefinition_Delete",
+        "source": "src/native_particle_definition.cpp",
+        "header": "include/bsp/native_particle_definition.hpp",
+        "coverage": "complete body through required canonical services and current dispatch",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_SmartAreaEmissionDefinition_Delete(uint flags)",
+        "original_abi": "ECX actual owner; uint flags; ret 4",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated.",
+        "last_instruction": {
+          "address": "00b01ebb",
+          "length": 3,
+          "bytes": "c20400",
+          "text": "ret 4"
+        }
+      }
+    ],
+    "source_hashes": {
+      "include/bsp/native_particle_definition.hpp": "3a8500ab45353cb0d701fa3c0b2b1d85a301c982c14af23d82d31b379b8cd898",
+      "src/native_particle_definition.cpp": "6637dd4b554767165e8736a3346988eb4a7d08b704cf779b35c93dc9300c4d34"
+    },
+    "saved_names_and_comment_preimages": [
+      {
+        "address": "00af9fb0",
+        "before": {
+          "address": "00af9fb0",
+          "function_name": "FUN_00af9fb0"
+        },
+        "after": {
+          "address": "00af9fb0",
+          "name": "BSP_ParticleDefinition_CreateNamedType",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afa100",
+        "before": {
+          "address": "00afa100",
+          "function_name": "FUN_00afa100"
+        },
+        "after": {
+          "address": "00afa100",
+          "name": "BSP_ParticleDefinition_DestroyBase",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afa280",
+        "before": {
+          "address": "00afa280",
+          "function_name": "FUN_00afa280"
+        },
+        "after": {
+          "address": "00afa280",
+          "name": "BSP_ParticleDefinition_ConstructBase",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afa350",
+        "before": {
+          "address": "00afa350",
+          "function_name": "CG_scalar_deleting_dtor_00afa350"
+        },
+        "after": {
+          "address": "00afa350",
+          "name": "BSP_ParticleDefinition_DeleteBase",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00afe0a0",
+        "before": {
+          "address": "00afe0a0",
+          "function_name": "FUN_00afe0a0"
+        },
+        "after": {
+          "address": "00afe0a0",
+          "name": "BSP_ParticleRecord_CreateBare",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00affdf0",
+        "before": {
+          "address": "00affdf0",
+          "function_name": "FUN_00affdf0"
+        },
+        "after": {
+          "address": "00affdf0",
+          "name": "BSP_ParticleParameter_DisposePayload",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b00090",
+        "before": {
+          "address": "00b00090",
+          "function_name": "FUN_00b00090"
+        },
+        "after": {
+          "address": "00b00090",
+          "name": "BSP_ParticleParameter_ReturnPoolSlot",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b01cb0",
+        "before": {
+          "address": "00b01cb0",
+          "function_name": "FUN_00b01cb0"
+        },
+        "after": {
+          "address": "00b01cb0",
+          "name": "BSP_SmartAreaEmissionDefinition_Construct",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b01d60",
+        "before": {
+          "address": "00b01d60",
+          "function_name": "FUN_00b01d60"
+        },
+        "after": {
+          "address": "00b01d60",
+          "name": "BSP_SmartAreaEmissionDefinition_Destroy",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b01ea0",
+        "before": {
+          "address": "00b01ea0",
+          "function_name": "CG_scalar_deleting_dtor_00b01ea0"
+        },
+        "after": {
+          "address": "00b01ea0",
+          "name": "BSP_SmartAreaEmissionDefinition_Delete",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b02b90",
+        "before": {
+          "address": "00b02b90",
+          "function_name": "FUN_00b02b90"
+        },
+        "after": {
+          "address": "00b02b90",
+          "name": "BSP_SphereEmissionDefinition_Construct",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b02c40",
+        "before": {
+          "address": "00b02c40",
+          "function_name": "FUN_00b02c40"
+        },
+        "after": {
+          "address": "00b02c40",
+          "name": "BSP_SphereEmissionDefinition_Destroy",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b02fb0",
+        "before": {
+          "address": "00b02fb0",
+          "function_name": "CG_scalar_deleting_dtor_00b02fb0"
+        },
+        "after": {
+          "address": "00b02fb0",
+          "name": "BSP_SphereEmissionDefinition_Delete",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b03940",
+        "before": {
+          "address": "00b03940",
+          "function_name": "FUN_00b03940"
+        },
+        "after": {
+          "address": "00b03940",
+          "name": "BSP_ConeEmissionDefinition_Construct",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b039f0",
+        "before": {
+          "address": "00b039f0",
+          "function_name": "FUN_00b039f0"
+        },
+        "after": {
+          "address": "00b039f0",
+          "name": "BSP_ConeEmissionDefinition_Destroy",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b03b40",
+        "before": {
+          "address": "00b03b40",
+          "function_name": "CG_scalar_deleting_dtor_00b03b40"
+        },
+        "after": {
+          "address": "00b03b40",
+          "name": "BSP_ConeEmissionDefinition_Delete",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Complete live/installed bytes and final native RET verified. See docs/NATIVE_PARTICLE_DEFINITION.md and reports/native_particle_definition.json. Same actual string/pool/retained objects; current field/table/count reloads. New C++ interface except AFE0A0 explicit EDX scalar binding. Parser and current virtual00 require actual application dispatch; original FH3 ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cbafd1",
+        "before": {
+          "address": "00cbafd1",
+          "function_name": "FUN_00cbafd1"
+        },
+        "after": {
+          "address": "00cbafd1",
+          "name": "BSP_FH3_ParticleDefinitionFactory",
+          "evidence": "Compiler FH3 dispatcher, analyzed only, not reimplemented. Verified ten live/installed bytes 00cbafd1..00cbafda: MOV EAX,00DF2E84; tail JMP BF6B43 existing CRT CxxFrameHandler3. Original register-input exception ABI retained. Descriptive label is provisional, not a recovered symbol; see docs/NATIVE_PARTICLE_DEFINITION.md. Parent cleanup state/calls reviewed, native throwing unwind unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cbaff3",
+        "before": {
+          "address": "00cbaff3",
+          "function_name": "FUN_00cbaff3"
+        },
+        "after": {
+          "address": "00cbaff3",
+          "name": "BSP_FH3_ParticleDefinitionBaseDestruction",
+          "evidence": "Compiler FH3 dispatcher, analyzed only, not reimplemented. Verified ten live/installed bytes 00cbaff3..00cbaffc: MOV EAX,00DF2EB8; tail JMP BF6B43 existing CRT CxxFrameHandler3. Original register-input exception ABI retained. Descriptive label is provisional, not a recovered symbol; see docs/NATIVE_PARTICLE_DEFINITION.md. Parent cleanup state/calls reviewed, native throwing unwind unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cbb013",
+        "before": {
+          "address": "00cbb013",
+          "function_name": "FUN_00cbb013"
+        },
+        "after": {
+          "address": "00cbb013",
+          "name": "BSP_FH3_ParticleDefinitionBaseConstruction",
+          "evidence": "Compiler FH3 dispatcher, analyzed only, not reimplemented. Verified ten live/installed bytes 00cbb013..00cbb01c: MOV EAX,00DF2EEC; tail JMP BF6B43 existing CRT CxxFrameHandler3. Original register-input exception ABI retained. Descriptive label is provisional, not a recovered symbol; see docs/NATIVE_PARTICLE_DEFINITION.md. Parent cleanup state/calls reviewed, native throwing unwind unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cbb4db",
+        "before": {
+          "address": "00cbb4db",
+          "function_name": "FUN_00cbb4db"
+        },
+        "after": {
+          "address": "00cbb4db",
+          "name": "BSP_FH3_ParticleSmartAreaRecordAllocation",
+          "evidence": "Compiler FH3 dispatcher, analyzed only, not reimplemented. Verified ten live/installed bytes 00cbb4db..00cbb4e4: MOV EAX,00DF3568; tail JMP BF6B43 existing CRT CxxFrameHandler3. Original register-input exception ABI retained. Descriptive label is provisional, not a recovered symbol; see docs/NATIVE_PARTICLE_DEFINITION.md. Parent cleanup state/calls reviewed, native throwing unwind unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cbb5ab",
+        "before": {
+          "address": "00cbb5ab",
+          "function_name": "FUN_00cbb5ab"
+        },
+        "after": {
+          "address": "00cbb5ab",
+          "name": "BSP_FH3_ParticleSphereRecordAllocation",
+          "evidence": "Compiler FH3 dispatcher, analyzed only, not reimplemented. Verified ten live/installed bytes 00cbb5ab..00cbb5b4: MOV EAX,00DF365C; tail JMP BF6B43 existing CRT CxxFrameHandler3. Original register-input exception ABI retained. Descriptive label is provisional, not a recovered symbol; see docs/NATIVE_PARTICLE_DEFINITION.md. Parent cleanup state/calls reviewed, native throwing unwind unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cbb67b",
+        "before": {
+          "address": "00cbb67b",
+          "function_name": "FUN_00cbb67b"
+        },
+        "after": {
+          "address": "00cbb67b",
+          "name": "BSP_FH3_ParticleConeRecordAllocation",
+          "evidence": "Compiler FH3 dispatcher, analyzed only, not reimplemented. Verified ten live/installed bytes 00cbb67b..00cbb684: MOV EAX,00DF3750; tail JMP BF6B43 existing CRT CxxFrameHandler3. Original register-input exception ABI retained. Descriptive label is provisional, not a recovered symbol; see docs/NATIVE_PARTICLE_DEFINITION.md. Parent cleanup state/calls reviewed, native throwing unwind unvalidated."
+        },
+        "status": "applied"
+      }
+    ],
+    "native_signatures": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "save": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    },
+    "signature_before": {
+      "00afe0a0": "00afe0a0 BSP_ParticleRecord_CreateBare  undefined BSP_ParticleRecord_CreateBare(void)  body 00afe0a0 - 00afe192\n",
+      "00afa280": "00afa280 BSP_ParticleDefinition_ConstructBase  undefined BSP_ParticleDefinition_ConstructBase(void)  body 00afa280 - 00afa34e\n",
+      "00af9fb0": "00af9fb0 BSP_ParticleDefinition_CreateNamedType  undefined BSP_ParticleDefinition_CreateNamedType(void)  body 00af9fb0 - 00afa0f8\n",
+      "00b03940": "00b03940 BSP_ConeEmissionDefinition_Construct  undefined BSP_ConeEmissionDefinition_Construct(void)  body 00b03940 - 00b03969\n",
+      "00b02b90": "00b02b90 BSP_SphereEmissionDefinition_Construct  undefined BSP_SphereEmissionDefinition_Construct(void)  body 00b02b90 - 00b02bb9\n",
+      "00b01cb0": "00b01cb0 BSP_SmartAreaEmissionDefinition_Construct  undefined BSP_SmartAreaEmissionDefinition_Construct(void)  body 00b01cb0 - 00b01cd9\n",
+      "00affdf0": "00affdf0 BSP_ParticleParameter_DisposePayload  undefined BSP_ParticleParameter_DisposePayload(void)  body 00affdf0 - 00affe19\n",
+      "00b00090": "00b00090 BSP_ParticleParameter_ReturnPoolSlot  undefined BSP_ParticleParameter_ReturnPoolSlot(void)  body 00b00090 - 00b0009b\n",
+      "00afa100": "00afa100 BSP_ParticleDefinition_DestroyBase  undefined BSP_ParticleDefinition_DestroyBase(void)  body 00afa100 - 00afa279\n",
+      "00b039f0": "00b039f0 BSP_ConeEmissionDefinition_Destroy  undefined BSP_ConeEmissionDefinition_Destroy(void)  body 00b039f0 - 00b03ab3\n",
+      "00b02c40": "00b02c40 BSP_SphereEmissionDefinition_Destroy  undefined BSP_SphereEmissionDefinition_Destroy(void)  body 00b02c40 - 00b02cd3\n",
+      "00b01d60": "00b01d60 BSP_SmartAreaEmissionDefinition_Destroy  undefined BSP_SmartAreaEmissionDefinition_Destroy(void)  body 00b01d60 - 00b01e1f\n",
+      "00afa350": "00afa350 BSP_ParticleDefinition_DeleteBase  undefined BSP_ParticleDefinition_DeleteBase(void)  body 00afa350 - 00afa36d\n",
+      "00b03b40": "00b03b40 BSP_ConeEmissionDefinition_Delete  undefined BSP_ConeEmissionDefinition_Delete(void)  body 00b03b40 - 00b03b5d\n",
+      "00b02fb0": "00b02fb0 BSP_SphereEmissionDefinition_Delete  undefined BSP_SphereEmissionDefinition_Delete(void)  body 00b02fb0 - 00b02fcd\n",
+      "00b01ea0": "00b01ea0 BSP_SmartAreaEmissionDefinition_Delete  undefined BSP_SmartAreaEmissionDefinition_Delete(void)  body 00b01ea0 - 00b01ebd\n"
+    },
+    "signature_after": [
+      {
+        "address": "00afe0a0",
+        "prototype": "void * __thiscall BSP_ParticleRecord_CreateBare(void * model, void * definition, float time)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afe0a0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afa280",
+        "prototype": "void * __thiscall BSP_ParticleDefinition_ConstructBase(void * name, uint word10, uint word70, uint flag14)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afa280 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00af9fb0",
+        "prototype": "void * __fastcall BSP_ParticleDefinition_CreateNamedType(void * kind, void * name, uint word10, uint word70, void * text)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00af9fb0 with __fastcall calling convention"
+        }
+      },
+      {
+        "address": "00b03940",
+        "prototype": "void * __thiscall BSP_ConeEmissionDefinition_Construct(void * name, uint word10, uint word70, uint flag14)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b03940 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b02b90",
+        "prototype": "void * __thiscall BSP_SphereEmissionDefinition_Construct(void * name, uint word10, uint word70, uint flag14)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b02b90 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b01cb0",
+        "prototype": "void * __thiscall BSP_SmartAreaEmissionDefinition_Construct(void * name, uint word10, uint word70, uint flag14)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b01cb0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00affdf0",
+        "prototype": "void __thiscall BSP_ParticleParameter_DisposePayload(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00affdf0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b00090",
+        "prototype": "void __thiscall BSP_ParticleParameter_ReturnPoolSlot(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b00090 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afa100",
+        "prototype": "void __thiscall BSP_ParticleDefinition_DestroyBase(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afa100 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b039f0",
+        "prototype": "void __thiscall BSP_ConeEmissionDefinition_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b039f0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b02c40",
+        "prototype": "void __thiscall BSP_SphereEmissionDefinition_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b02c40 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b01d60",
+        "prototype": "void __thiscall BSP_SmartAreaEmissionDefinition_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b01d60 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00afa350",
+        "prototype": "void * __thiscall BSP_ParticleDefinition_DeleteBase(uint flags)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00afa350 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b03b40",
+        "prototype": "void * __thiscall BSP_ConeEmissionDefinition_Delete(uint flags)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b03b40 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b02fb0",
+        "prototype": "void * __thiscall BSP_SphereEmissionDefinition_Delete(uint flags)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b02fb0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b01ea0",
+        "prototype": "void * __thiscall BSP_SmartAreaEmissionDefinition_Delete(uint flags)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b01ea0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "game_validated": false,
+    "original_exception_abi_validated": false
+  },
+  "analyzed_dispatchers": [
+    {
+      "address": "00cbafd1",
+      "end_inclusive": "00cbafda",
+      "info": "00df2e84",
+      "target": "00bf6b43",
+      "name": "BSP_FH3_ParticleDefinitionFactory",
+      "evidence": "Compiler FH3 dispatcher, analyzed only, not reimplemented. Verified ten live/installed bytes 00cbafd1..00cbafda: MOV EAX,00DF2E84; tail JMP BF6B43 existing CRT CxxFrameHandler3. Original register-input exception ABI retained. Descriptive label is provisional, not a recovered symbol; see docs/NATIVE_PARTICLE_DEFINITION.md. Parent cleanup state/calls reviewed, native throwing unwind unvalidated.",
+      "sha256": "386a42b42aed997b6b075f699a841106f44d2d871f6da25ac24e215900737d77",
+      "live_disk_equal": true,
+      "status": "analyzed_compiler_dispatcher_only"
+    },
+    {
+      "address": "00cbaff3",
+      "end_inclusive": "00cbaffc",
+      "info": "00df2eb8",
+      "target": "00bf6b43",
+      "name": "BSP_FH3_ParticleDefinitionBaseDestruction",
+      "evidence": "Compiler FH3 dispatcher, analyzed only, not reimplemented. Verified ten live/installed bytes 00cbaff3..00cbaffc: MOV EAX,00DF2EB8; tail JMP BF6B43 existing CRT CxxFrameHandler3. Original register-input exception ABI retained. Descriptive label is provisional, not a recovered symbol; see docs/NATIVE_PARTICLE_DEFINITION.md. Parent cleanup state/calls reviewed, native throwing unwind unvalidated.",
+      "sha256": "319c3bc5a9f9bdaa8580b726780b12b5f8e7cbc7662c19401af74c5bc599f02c",
+      "live_disk_equal": true,
+      "status": "analyzed_compiler_dispatcher_only"
+    },
+    {
+      "address": "00cbb013",
+      "end_inclusive": "00cbb01c",
+      "info": "00df2eec",
+      "target": "00bf6b43",
+      "name": "BSP_FH3_ParticleDefinitionBaseConstruction",
+      "evidence": "Compiler FH3 dispatcher, analyzed only, not reimplemented. Verified ten live/installed bytes 00cbb013..00cbb01c: MOV EAX,00DF2EEC; tail JMP BF6B43 existing CRT CxxFrameHandler3. Original register-input exception ABI retained. Descriptive label is provisional, not a recovered symbol; see docs/NATIVE_PARTICLE_DEFINITION.md. Parent cleanup state/calls reviewed, native throwing unwind unvalidated.",
+      "sha256": "6f295c2f6bb4c8b844f3f45ab1dc438067818e4a0e51d0171da820cfefe92b4d",
+      "live_disk_equal": true,
+      "status": "analyzed_compiler_dispatcher_only"
+    },
+    {
+      "address": "00cbb67b",
+      "end_inclusive": "00cbb684",
+      "info": "00df3750",
+      "target": "00bf6b43",
+      "name": "BSP_FH3_ParticleConeRecordAllocation",
+      "evidence": "Compiler FH3 dispatcher, analyzed only, not reimplemented. Verified ten live/installed bytes 00cbb67b..00cbb684: MOV EAX,00DF3750; tail JMP BF6B43 existing CRT CxxFrameHandler3. Original register-input exception ABI retained. Descriptive label is provisional, not a recovered symbol; see docs/NATIVE_PARTICLE_DEFINITION.md. Parent cleanup state/calls reviewed, native throwing unwind unvalidated.",
+      "sha256": "f04ff0f5344073053e31e790bec05e5689e5f245324f9244ab7353879f158c48",
+      "live_disk_equal": true,
+      "status": "analyzed_compiler_dispatcher_only"
+    },
+    {
+      "address": "00cbb5ab",
+      "end_inclusive": "00cbb5b4",
+      "info": "00df365c",
+      "target": "00bf6b43",
+      "name": "BSP_FH3_ParticleSphereRecordAllocation",
+      "evidence": "Compiler FH3 dispatcher, analyzed only, not reimplemented. Verified ten live/installed bytes 00cbb5ab..00cbb5b4: MOV EAX,00DF365C; tail JMP BF6B43 existing CRT CxxFrameHandler3. Original register-input exception ABI retained. Descriptive label is provisional, not a recovered symbol; see docs/NATIVE_PARTICLE_DEFINITION.md. Parent cleanup state/calls reviewed, native throwing unwind unvalidated.",
+      "sha256": "fd825dc2f23b432f77691b96588002baae778a14357e1a5f676b439e10da565a",
+      "live_disk_equal": true,
+      "status": "analyzed_compiler_dispatcher_only"
+    },
+    {
+      "address": "00cbb4db",
+      "end_inclusive": "00cbb4e4",
+      "info": "00df3568",
+      "target": "00bf6b43",
+      "name": "BSP_FH3_ParticleSmartAreaRecordAllocation",
+      "evidence": "Compiler FH3 dispatcher, analyzed only, not reimplemented. Verified ten live/installed bytes 00cbb4db..00cbb4e4: MOV EAX,00DF3568; tail JMP BF6B43 existing CRT CxxFrameHandler3. Original register-input exception ABI retained. Descriptive label is provisional, not a recovered symbol; see docs/NATIVE_PARTICLE_DEFINITION.md. Parent cleanup state/calls reviewed, native throwing unwind unvalidated.",
+      "sha256": "7cbdde8dbcb4cbf6cff9c8a2861acbd42802ec454e53e56bf635f6251ac99363",
+      "live_disk_equal": true,
+      "status": "analyzed_compiler_dispatcher_only"
+    }
+  ],
+  "function_creation_and_repairs": {
+    "an-missing-definitions.json": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b03ac0",
+            "end_address": "00b03b39"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b03ac0",
+            "end_address": "00b03b38",
+            "bytes_disassembled": 121,
+            "message": "Successfully disassembled 121 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b03ac0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b03ac0",
+            "function_name": "FUN_00b03ac0",
+            "entry_point": "00b03ac0",
+            "body_size": 121,
+            "message": "Function created successfully at 00b03ac0"
+          }
+        },
+        {
+          "defined": "00b03ac0",
+          "end": "00b03b39",
+          "name": null,
+          "after": "Function: FUN_00b03ac0 at 00b03ac0\nSignature: undefined FUN_00b03ac0(void)\nEntry: 00b03ac0\nBody: 00b03ac0 - 00b03b38"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b01e20",
+            "end_address": "00b01e99"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b01e20",
+            "end_address": "00b01e98",
+            "bytes_disassembled": 121,
+            "message": "Successfully disassembled 121 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b01e20",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b01e20",
+            "function_name": "FUN_00b01e20",
+            "entry_point": "00b01e20",
+            "body_size": 121,
+            "message": "Function created successfully at 00b01e20"
+          }
+        },
+        {
+          "defined": "00b01e20",
+          "end": "00b01e99",
+          "name": null,
+          "after": "Function: FUN_00b01e20 at 00b01e20\nSignature: undefined FUN_00b01e20(void)\nEntry: 00b01e20\nBody: 00b01e20 - 00b01e98"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b02f30",
+            "end_address": "00b02fa9"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b02f30",
+            "end_address": "00b02fa8",
+            "bytes_disassembled": 121,
+            "message": "Successfully disassembled 121 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b02f30",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b02f30",
+            "function_name": "FUN_00b02f30",
+            "entry_point": "00b02f30",
+            "body_size": 121,
+            "message": "Function created successfully at 00b02f30"
+          }
+        },
+        {
+          "defined": "00b02f30",
+          "end": "00b02fa9",
+          "name": null,
+          "after": "Function: FUN_00b02f30 at 00b02f30\nSignature: undefined FUN_00b02f30(void)\nEntry: 00b02f30\nBody: 00b02f30 - 00b02fa8"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "an-curve-flow-repair.json": {
+      "repairs": [
+        {
+          "function": "00affdf0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T18:20:22Z",
+          "decompile_lines_before": 12,
+          "gaps": [
+            {
+              "site": "00affe09",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00affe0e",
+              "gap_end_exclusive": "00affe18",
+              "bytes": 10,
+              "after_call": true,
+              "sha256": "68d5cbdc3d83cebf7ae3ece669ad3851c6ddcdda4b90b34acb95876255f33a06"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00affe09",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00affe0e",
+                "gap_end_exclusive": "00affe18",
+                "bytes": 10,
+                "after_call": true,
+                "sha256": "68d5cbdc3d83cebf7ae3ece669ad3851c6ddcdda4b90b34acb95876255f33a06"
+              },
+              "clear": "Success: Cleared flow override at 00affe09 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 10 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00affe09",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00affe09 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00affe1a",
+          "explicit_body_sha256": "9d37ee7f523c5d884b2d42d54bbfec27e7cbc0fc749c4dbfb1f8c7fb6636ef8b",
+          "body_before": "Function: FUN_00affdf0 at 00affdf0\nSignature: undefined FUN_00affdf0(void)\nEntry: 00affdf0\nBody: 00affdf0 - 00affe19",
+          "decompile_lines_after": 12,
+          "gaps_remaining": 0,
+          "body_after": "Function: FUN_00affdf0 at 00affdf0\nSignature: undefined FUN_00affdf0(void)\nEntry: 00affdf0\nBody: 00affdf0 - 00affe19",
+          "stored_body_tail_complete": true
+        }
+      ]
+    },
+    "an-common-flow.json": {
+      "repairs": [
+        {
+          "function": "00afa350",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T18:25:38Z",
+          "decompile_lines_before": 14,
+          "gaps": [
+            {
+              "site": "00afa360",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00afa365",
+              "gap_end_exclusive": "00afa368",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00afa360",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00afa365",
+                "gap_end_exclusive": "00afa368",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00afa360 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00afa360",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00afa360 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00afa36e",
+          "explicit_body_sha256": "10fadaf9f55be1464eb9c067d85dd7ce7d7639f81b347db287af7bc51826cd4c",
+          "body_before": "Function: CG_scalar_deleting_dtor_00afa350 at 00afa350\nSignature: undefined CG_scalar_deleting_dtor_00afa350(void)\nEntry: 00afa350\nBody: 00afa350 - 00afa36d",
+          "decompile_lines_after": 11,
+          "gaps_remaining": 0,
+          "body_after": "Function: CG_scalar_deleting_dtor_00afa350 at 00afa350\nSignature: undefined CG_scalar_deleting_dtor_00afa350(void)\nEntry: 00afa350\nBody: 00afa350 - 00afa36d",
+          "stored_body_tail_complete": true
+        },
+        {
+          "function": "00b03b40",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T18:25:46Z",
+          "decompile_lines_before": 14,
+          "gaps": [
+            {
+              "site": "00b03b50",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00b03b55",
+              "gap_end_exclusive": "00b03b58",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b03b50",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00b03b55",
+                "gap_end_exclusive": "00b03b58",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00b03b50 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00b03b50",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b03b50 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00b03b5e",
+          "explicit_body_sha256": "001203d14a194dc1a070534573ddb2e2f49a6fb7ad54e7bf0464b328e77689ca",
+          "body_before": "Function: CG_scalar_deleting_dtor_00b03b40 at 00b03b40\nSignature: undefined CG_scalar_deleting_dtor_00b03b40(void)\nEntry: 00b03b40\nBody: 00b03b40 - 00b03b5d",
+          "decompile_lines_after": 11,
+          "gaps_remaining": 0,
+          "body_after": "Function: CG_scalar_deleting_dtor_00b03b40 at 00b03b40\nSignature: undefined CG_scalar_deleting_dtor_00b03b40(void)\nEntry: 00b03b40\nBody: 00b03b40 - 00b03b5d",
+          "stored_body_tail_complete": true
+        },
+        {
+          "function": "00b02fb0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T18:25:54Z",
+          "decompile_lines_before": 14,
+          "gaps": [
+            {
+              "site": "00b02fc0",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00b02fc5",
+              "gap_end_exclusive": "00b02fc8",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b02fc0",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00b02fc5",
+                "gap_end_exclusive": "00b02fc8",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00b02fc0 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00b02fc0",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b02fc0 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00b02fce",
+          "explicit_body_sha256": "10a996c9b67fc891aa8856af59edd92fad2c3e97a7ca26459e5ddf521a3b9005",
+          "body_before": "Function: CG_scalar_deleting_dtor_00b02fb0 at 00b02fb0\nSignature: undefined CG_scalar_deleting_dtor_00b02fb0(void)\nEntry: 00b02fb0\nBody: 00b02fb0 - 00b02fcd",
+          "decompile_lines_after": 11,
+          "gaps_remaining": 0,
+          "body_after": "Function: CG_scalar_deleting_dtor_00b02fb0 at 00b02fb0\nSignature: undefined CG_scalar_deleting_dtor_00b02fb0(void)\nEntry: 00b02fb0\nBody: 00b02fb0 - 00b02fcd",
+          "stored_body_tail_complete": true
+        },
+        {
+          "function": "00b01ea0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T18:26:06Z",
+          "decompile_lines_before": 14,
+          "gaps": [
+            {
+              "site": "00b01eb0",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00b01eb5",
+              "gap_end_exclusive": "00b01eb8",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00b01eb0",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00b01eb5",
+                "gap_end_exclusive": "00b01eb8",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00b01eb0 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00b01eb0",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00b01eb0 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00b01ebe",
+          "explicit_body_sha256": "57714821e510016fd5b6bf4f2b2db144db4de825fd39d184497c8090adfb190a",
+          "body_before": "Function: CG_scalar_deleting_dtor_00b01ea0 at 00b01ea0\nSignature: undefined CG_scalar_deleting_dtor_00b01ea0(void)\nEntry: 00b01ea0\nBody: 00b01ea0 - 00b01ebd",
+          "decompile_lines_after": 11,
+          "gaps_remaining": 0,
+          "body_after": "Function: CG_scalar_deleting_dtor_00b01ea0 at 00b01ea0\nSignature: undefined CG_scalar_deleting_dtor_00b01ea0(void)\nEntry: 00b01ea0\nBody: 00b01ea0 - 00b01ebd",
+          "stored_body_tail_complete": true
+        },
+        {
+          "function": "00cbb670",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T18:26:19Z",
+          "decompile_lines_before": 10,
+          "gaps": [
+            {
+              "site": "00cbb674",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00cbb679",
+              "gap_end_exclusive": "00cbb67b",
+              "bytes": 2,
+              "after_call": true,
+              "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00cbb674",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00cbb679",
+                "gap_end_exclusive": "00cbb67b",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              },
+              "clear": "Success: Cleared flow override at 00cbb674 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 2 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00cbb674",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00cbb674 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00cbb67b",
+          "explicit_body_sha256": "1d1e8bd53f83428a7e3ab1c82a1b199ad6444dcc562006e21746d60a76177c61",
+          "body_before": "Function: Unwind@00cbb670 at 00cbb670\nSignature: undefined Unwind@00cbb670(void)\nEntry: 00cbb670\nBody: 00cbb670 - 00cbb678",
+          "decompile_lines_after": 10,
+          "gaps_remaining": 1,
+          "body_after": "Function: Unwind@00cbb670 at 00cbb670\nSignature: undefined Unwind@00cbb670(void)\nEntry: 00cbb670\nBody: 00cbb670 - 00cbb678",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        },
+        {
+          "function": "00cbb4d0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T18:26:31Z",
+          "decompile_lines_before": 10,
+          "gaps": [
+            {
+              "site": "00cbb4d4",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00cbb4d9",
+              "gap_end_exclusive": "00cbb4db",
+              "bytes": 2,
+              "after_call": true,
+              "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00cbb4d4",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00cbb4d9",
+                "gap_end_exclusive": "00cbb4db",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              },
+              "clear": "Success: Cleared flow override at 00cbb4d4 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 2 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00cbb4d4",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00cbb4d4 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00cbb4db",
+          "explicit_body_sha256": "d8dba1b7227afaee2989dd4de37b15503d26fc9e51ec583a78f2830f7e05ffd3",
+          "body_before": "Function: Unwind@00cbb4d0 at 00cbb4d0\nSignature: undefined Unwind@00cbb4d0(void)\nEntry: 00cbb4d0\nBody: 00cbb4d0 - 00cbb4d8",
+          "decompile_lines_after": 10,
+          "gaps_remaining": 1,
+          "body_after": "Function: Unwind@00cbb4d0 at 00cbb4d0\nSignature: undefined Unwind@00cbb4d0(void)\nEntry: 00cbb4d0\nBody: 00cbb4d0 - 00cbb4d8",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        },
+        {
+          "function": "00cbb5a0",
+          "owner": "agent/orch3-20260910",
+          "when": "2026-09-12T18:29:52Z",
+          "decompile_lines_before": 10,
+          "gaps": [
+            {
+              "site": "00cbb5a4",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00cbb5a9",
+              "gap_end_exclusive": "00cbb5ab",
+              "bytes": 2,
+              "after_call": true,
+              "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00cbb5a4",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00cbb5a9",
+                "gap_end_exclusive": "00cbb5ab",
+                "bytes": 2,
+                "after_call": true,
+                "sha256": "1f59811a465fb09b61196131fe0491445d618c6f82a85a293e2af63c6a1e8a5d"
+              },
+              "clear": "Success: Cleared flow override at 00cbb5a4 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 2 byte(s)"
+            },
+            {
+              "explicit_tail_call": "00cbb5a4",
+              "clear": {
+                "status": "success",
+                "message": "Success: Cleared flow override at 00cbb5a4 (was: NONE, now: NONE)"
+              }
+            }
+          ],
+          "explicit_tail_end_exclusive": "00cbb5ab",
+          "explicit_body_sha256": "56265a89004f3c963696de25bb7807c64a4a1ac3515a9bde309c86c4a382e2f4",
+          "body_before": "Function: Unwind@00cbb5a0 at 00cbb5a0\nSignature: undefined Unwind@00cbb5a0(void)\nEntry: 00cbb5a0\nBody: 00cbb5a0 - 00cbb5a8",
+          "decompile_lines_after": 10,
+          "gaps_remaining": 1,
+          "body_after": "Function: Unwind@00cbb5a0 at 00cbb5a0\nSignature: undefined Unwind@00cbb5a0(void)\nEntry: 00cbb5a0\nBody: 00cbb5a0 - 00cbb5a8",
+          "stored_body_tail_complete": false,
+          "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+        }
+      ]
+    },
+    "an-common-definitions.json": {
+      "events": [
+        {
+          "recreate": "00afa350",
+          "previous": "Function: CG_scalar_deleting_dtor_00afa350 at 00afa350\nSignature: undefined CG_scalar_deleting_dtor_00afa350(void)\nEntry: 00afa350\nBody: 00afa350 - 00afa36d",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00afa350"
+          },
+          "result": {
+            "success": true,
+            "address": "00afa350",
+            "deleted_function": "CG_scalar_deleting_dtor_00afa350",
+            "body_size": 27,
+            "message": "Function 'CG_scalar_deleting_dtor_00afa350' deleted at 00afa350"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00afa350",
+            "end_address": "00afa36e"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00afa350",
+            "end_address": "00afa36d",
+            "bytes_disassembled": 30,
+            "message": "Successfully disassembled 30 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00afa350",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00afa350",
+            "function_name": "CG_scalar_deleting_dtor_00afa350",
+            "entry_point": "00afa350",
+            "body_size": 30,
+            "message": "Function created successfully at 00afa350"
+          }
+        },
+        {
+          "defined": "00afa350",
+          "end": "00afa36e",
+          "name": null,
+          "after": "Function: CG_scalar_deleting_dtor_00afa350 at 00afa350\nSignature: undefined CG_scalar_deleting_dtor_00afa350(void)\nEntry: 00afa350\nBody: 00afa350 - 00afa36d"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00b03b40",
+          "previous": "Function: CG_scalar_deleting_dtor_00b03b40 at 00b03b40\nSignature: undefined CG_scalar_deleting_dtor_00b03b40(void)\nEntry: 00b03b40\nBody: 00b03b40 - 00b03b5d",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b03b40"
+          },
+          "result": {
+            "success": true,
+            "address": "00b03b40",
+            "deleted_function": "CG_scalar_deleting_dtor_00b03b40",
+            "body_size": 27,
+            "message": "Function 'CG_scalar_deleting_dtor_00b03b40' deleted at 00b03b40"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b03b40",
+            "end_address": "00b03b5e"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b03b40",
+            "end_address": "00b03b5d",
+            "bytes_disassembled": 30,
+            "message": "Successfully disassembled 30 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b03b40",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b03b40",
+            "function_name": "CG_scalar_deleting_dtor_00b03b40",
+            "entry_point": "00b03b40",
+            "body_size": 30,
+            "message": "Function created successfully at 00b03b40"
+          }
+        },
+        {
+          "defined": "00b03b40",
+          "end": "00b03b5e",
+          "name": null,
+          "after": "Function: CG_scalar_deleting_dtor_00b03b40 at 00b03b40\nSignature: undefined CG_scalar_deleting_dtor_00b03b40(void)\nEntry: 00b03b40\nBody: 00b03b40 - 00b03b5d"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00b02fb0",
+          "previous": "Function: CG_scalar_deleting_dtor_00b02fb0 at 00b02fb0\nSignature: undefined CG_scalar_deleting_dtor_00b02fb0(void)\nEntry: 00b02fb0\nBody: 00b02fb0 - 00b02fcd",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b02fb0"
+          },
+          "result": {
+            "success": true,
+            "address": "00b02fb0",
+            "deleted_function": "CG_scalar_deleting_dtor_00b02fb0",
+            "body_size": 27,
+            "message": "Function 'CG_scalar_deleting_dtor_00b02fb0' deleted at 00b02fb0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b02fb0",
+            "end_address": "00b02fce"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b02fb0",
+            "end_address": "00b02fcd",
+            "bytes_disassembled": 30,
+            "message": "Successfully disassembled 30 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b02fb0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b02fb0",
+            "function_name": "CG_scalar_deleting_dtor_00b02fb0",
+            "entry_point": "00b02fb0",
+            "body_size": 30,
+            "message": "Function created successfully at 00b02fb0"
+          }
+        },
+        {
+          "defined": "00b02fb0",
+          "end": "00b02fce",
+          "name": null,
+          "after": "Function: CG_scalar_deleting_dtor_00b02fb0 at 00b02fb0\nSignature: undefined CG_scalar_deleting_dtor_00b02fb0(void)\nEntry: 00b02fb0\nBody: 00b02fb0 - 00b02fcd"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00b01ea0",
+          "previous": "Function: CG_scalar_deleting_dtor_00b01ea0 at 00b01ea0\nSignature: undefined CG_scalar_deleting_dtor_00b01ea0(void)\nEntry: 00b01ea0\nBody: 00b01ea0 - 00b01ebd",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00b01ea0"
+          },
+          "result": {
+            "success": true,
+            "address": "00b01ea0",
+            "deleted_function": "CG_scalar_deleting_dtor_00b01ea0",
+            "body_size": 27,
+            "message": "Function 'CG_scalar_deleting_dtor_00b01ea0' deleted at 00b01ea0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00b01ea0",
+            "end_address": "00b01ebe"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00b01ea0",
+            "end_address": "00b01ebd",
+            "bytes_disassembled": 30,
+            "message": "Successfully disassembled 30 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00b01ea0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00b01ea0",
+            "function_name": "CG_scalar_deleting_dtor_00b01ea0",
+            "entry_point": "00b01ea0",
+            "body_size": 30,
+            "message": "Function created successfully at 00b01ea0"
+          }
+        },
+        {
+          "defined": "00b01ea0",
+          "end": "00b01ebe",
+          "name": null,
+          "after": "Function: CG_scalar_deleting_dtor_00b01ea0 at 00b01ea0\nSignature: undefined CG_scalar_deleting_dtor_00b01ea0(void)\nEntry: 00b01ea0\nBody: 00b01ea0 - 00b01ebd"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00cbb670",
+          "previous": "Function: Unwind@00cbb670 at 00cbb670\nSignature: undefined Unwind@00cbb670(void)\nEntry: 00cbb670\nBody: 00cbb670 - 00cbb678",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00cbb670"
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb670",
+            "deleted_function": "Unwind@00cbb670",
+            "body_size": 9,
+            "message": "Function 'Unwind@00cbb670' deleted at 00cbb670"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbb670",
+            "end_address": "00cbb67b"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbb670",
+            "end_address": "00cbb67a",
+            "bytes_disassembled": 11,
+            "message": "Successfully disassembled 11 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbb670",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb670",
+            "function_name": "Unwind@00cbb670",
+            "entry_point": "00cbb670",
+            "body_size": 11,
+            "message": "Function created successfully at 00cbb670"
+          }
+        },
+        {
+          "defined": "00cbb670",
+          "end": "00cbb67b",
+          "name": null,
+          "after": "Function: Unwind@00cbb670 at 00cbb670\nSignature: undefined Unwind@00cbb670(void)\nEntry: 00cbb670\nBody: 00cbb670 - 00cbb67a"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00cbb4d0",
+          "previous": "Function: Unwind@00cbb4d0 at 00cbb4d0\nSignature: undefined Unwind@00cbb4d0(void)\nEntry: 00cbb4d0\nBody: 00cbb4d0 - 00cbb4d8",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00cbb4d0"
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb4d0",
+            "deleted_function": "Unwind@00cbb4d0",
+            "body_size": 9,
+            "message": "Function 'Unwind@00cbb4d0' deleted at 00cbb4d0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbb4d0",
+            "end_address": "00cbb4db"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbb4d0",
+            "end_address": "00cbb4da",
+            "bytes_disassembled": 11,
+            "message": "Successfully disassembled 11 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbb4d0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb4d0",
+            "function_name": "Unwind@00cbb4d0",
+            "entry_point": "00cbb4d0",
+            "body_size": 11,
+            "message": "Function created successfully at 00cbb4d0"
+          }
+        },
+        {
+          "defined": "00cbb4d0",
+          "end": "00cbb4db",
+          "name": null,
+          "after": "Function: Unwind@00cbb4d0 at 00cbb4d0\nSignature: undefined Unwind@00cbb4d0(void)\nEntry: 00cbb4d0\nBody: 00cbb4d0 - 00cbb4da"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "recreate": "00cbb5a0",
+          "previous": "Function: Unwind@00cbb5a0 at 00cbb5a0\nSignature: undefined Unwind@00cbb5a0(void)\nEntry: 00cbb5a0\nBody: 00cbb5a0 - 00cbb5a8",
+          "plate": null
+        },
+        {
+          "endpoint": "delete_function",
+          "body": {
+            "address": "00cbb5a0"
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb5a0",
+            "deleted_function": "Unwind@00cbb5a0",
+            "body_size": 9,
+            "message": "Function 'Unwind@00cbb5a0' deleted at 00cbb5a0"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbb5a0",
+            "end_address": "00cbb5ab"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbb5a0",
+            "end_address": "00cbb5aa",
+            "bytes_disassembled": 11,
+            "message": "Successfully disassembled 11 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbb5a0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb5a0",
+            "function_name": "Unwind@00cbb5a0",
+            "entry_point": "00cbb5a0",
+            "body_size": 11,
+            "message": "Function created successfully at 00cbb5a0"
+          }
+        },
+        {
+          "defined": "00cbb5a0",
+          "end": "00cbb5ab",
+          "name": null,
+          "after": "Function: Unwind@00cbb5a0 at 00cbb5a0\nSignature: undefined Unwind@00cbb5a0(void)\nEntry: 00cbb5a0\nBody: 00cbb5a0 - 00cbb5aa"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbb5ab",
+            "end_address": "00cbb5b5"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbb5ab",
+            "end_address": "00cbb5b4",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbb5ab",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb5ab",
+            "function_name": "FUN_00cbb5ab",
+            "entry_point": "00cbb5ab",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbb5ab"
+          }
+        },
+        {
+          "defined": "00cbb5ab",
+          "end": "00cbb5b5",
+          "name": null,
+          "after": "Function: FUN_00cbb5ab at 00cbb5ab\nSignature: undefined FUN_00cbb5ab(void)\nEntry: 00cbb5ab\nBody: 00cbb5ab - 00cbb5b4"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbb013",
+            "end_address": "00cbb01d"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbb013",
+            "end_address": "00cbb01c",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbb013",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb013",
+            "function_name": "FUN_00cbb013",
+            "entry_point": "00cbb013",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbb013"
+          }
+        },
+        {
+          "defined": "00cbb013",
+          "end": "00cbb01d",
+          "name": null,
+          "after": "Function: FUN_00cbb013 at 00cbb013\nSignature: undefined FUN_00cbb013(void)\nEntry: 00cbb013\nBody: 00cbb013 - 00cbb01c"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbaff3",
+            "end_address": "00cbaffd"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbaff3",
+            "end_address": "00cbaffc",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbaff3",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbaff3",
+            "function_name": "FUN_00cbaff3",
+            "entry_point": "00cbaff3",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbaff3"
+          }
+        },
+        {
+          "defined": "00cbaff3",
+          "end": "00cbaffd",
+          "name": null,
+          "after": "Function: FUN_00cbaff3 at 00cbaff3\nSignature: undefined FUN_00cbaff3(void)\nEntry: 00cbaff3\nBody: 00cbaff3 - 00cbaffc"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbafd1",
+            "end_address": "00cbafdb"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbafd1",
+            "end_address": "00cbafda",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbafd1",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbafd1",
+            "function_name": "FUN_00cbafd1",
+            "entry_point": "00cbafd1",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbafd1"
+          }
+        },
+        {
+          "defined": "00cbafd1",
+          "end": "00cbafdb",
+          "name": null,
+          "after": "Function: FUN_00cbafd1 at 00cbafd1\nSignature: undefined FUN_00cbafd1(void)\nEntry: 00cbafd1\nBody: 00cbafd1 - 00cbafda"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbb67b",
+            "end_address": "00cbb685"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbb67b",
+            "end_address": "00cbb684",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbb67b",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb67b",
+            "function_name": "FUN_00cbb67b",
+            "entry_point": "00cbb67b",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbb67b"
+          }
+        },
+        {
+          "defined": "00cbb67b",
+          "end": "00cbb685",
+          "name": null,
+          "after": "Function: FUN_00cbb67b at 00cbb67b\nSignature: undefined FUN_00cbb67b(void)\nEntry: 00cbb67b\nBody: 00cbb67b - 00cbb684"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00cbb4db",
+            "end_address": "00cbb4e5"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00cbb4db",
+            "end_address": "00cbb4e4",
+            "bytes_disassembled": 10,
+            "message": "Successfully disassembled 10 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00cbb4db",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00cbb4db",
+            "function_name": "FUN_00cbb4db",
+            "entry_point": "00cbb4db",
+            "body_size": 10,
+            "message": "Function created successfully at 00cbb4db"
+          }
+        },
+        {
+          "defined": "00cbb4db",
+          "end": "00cbb4e5",
+          "name": null,
+          "after": "Function: FUN_00cbb4db at 00cbb4db\nSignature: undefined FUN_00cbb4db(void)\nEntry: 00cbb4db\nBody: 00cbb4db - 00cbb4e4"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    }
+  },
+  "independent_review": "Cone worker reviewed16 roots, found BF7680 backward overlap; corrected to memmove and exercised by original-byte fixture. FH3 cleanup maps and actual F8D344 pool producer CD78B0->B004B0/profileD5DCBC verified; no further actionable finding."
+}

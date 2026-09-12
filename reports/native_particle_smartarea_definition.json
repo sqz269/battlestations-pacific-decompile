@@ -271,5 +271,138 @@
     }
   ],
   "runtime_validation": "none; no gameplay or successful loader/application binding supplied",
-  "ownership": "Four owned files only; common AFE0A0 owned by primary, BD2F40 owned by sphere worker; Ghidra writes performed only by primary."
+  "ownership": "Four owned files only; common AFE0A0 owned by primary, BD2F40 owned by sphere worker; Ghidra writes performed only by primary.",
+  "integration_an": {
+    "strict_win32_and_two_seeded_ctests": true,
+    "combined_library_sha256": "b603d7d61cc87aee9748a7ef5f5ad3f5310b7c4a3493aa423625374921fe9039",
+    "current_library_fixture": "local/an-smartarea-current-replay.log",
+    "native_signature_readback_verified": true,
+    "normalized_entries": [
+      {
+        "address": "00b01ce0",
+        "end_inclusive": "00b01d50",
+        "end_exclusive": "00b01d51",
+        "cpp_symbol": "create_native_particle_smartarea_record_00b01ce0",
+        "ghidra_name": "BSP_SmartAreaEmitter_CreateParticleRecord",
+        "source": "src/native_particle_smartarea_definition.cpp",
+        "header": "include/bsp/native_particle_smartarea_definition.hpp",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void * __thiscall BSP_SmartAreaEmitter_CreateParticleRecord(void * model, float time)",
+        "original_abi": "ECX actual definition; stack(actual model,time); EAX actual108h allocation/null; RET8",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_SMARTAREA_DEFINITION.md and reports/native_particle_smartarea_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+      },
+      {
+        "address": "00b01ec0",
+        "end_inclusive": "00b0220e",
+        "end_exclusive": "00b0220f",
+        "cpp_symbol": "generate_native_particle_smartarea_00b01ec0",
+        "ghidra_name": "BSP_SmartAreaEmitter_EmitVectors",
+        "source": "src/native_particle_smartarea_definition.cpp",
+        "header": "include/bsp/native_particle_smartarea_definition.hpp",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_SmartAreaEmitter_EmitVectors(void * parent, void * position, void * velocity)",
+        "original_abi": "ECX actual definition; stack(actual parent108h,position,velocity); RET0C",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_SMARTAREA_DEFINITION.md and reports/native_particle_smartarea_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+      },
+      {
+        "address": "00b01e20",
+        "end_inclusive": "00b01e98",
+        "end_exclusive": "00b01e99",
+        "cpp_symbol": "generate_native_particle_smartarea_with_matrix_00b01e20",
+        "ghidra_name": "BSP_SmartAreaEmitter_ProduceChildTransform",
+        "source": "src/native_particle_smartarea_definition.cpp",
+        "header": "include/bsp/native_particle_smartarea_definition.hpp",
+        "native_calling_convention": "__thiscall",
+        "native_prototype": "void __thiscall BSP_SmartAreaEmitter_ProduceChildTransform(void * parent, void * position, void * velocity, void * matrix)",
+        "original_abi": "ECX actual definition; stack(actual parent108h,position,velocity,matrix); RET10",
+        "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_SMARTAREA_DEFINITION.md and reports/native_particle_smartarea_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+      }
+    ],
+    "source_hashes": {
+      "include/bsp/native_particle_smartarea_definition.hpp": "50f38302bac883267cba7283ade0977ad5aa0fa945e0ec643f7ede313555ecb0",
+      "src/native_particle_smartarea_definition.cpp": "101b32245ac6a1a267b6bf87be96bdf298326c2df92eb2815d35afe421617547"
+    },
+    "saved_names_and_comment_preimages": [
+      {
+        "address": "00b01ce0",
+        "before": {
+          "address": "00b01ce0",
+          "function_name": "FUN_00b01ce0"
+        },
+        "after": {
+          "address": "00b01ce0",
+          "name": "BSP_SmartAreaEmitter_CreateParticleRecord",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_SMARTAREA_DEFINITION.md and reports/native_particle_smartarea_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b01e20",
+        "before": {
+          "address": "00b01e20",
+          "function_name": "FUN_00b01e20"
+        },
+        "after": {
+          "address": "00b01e20",
+          "name": "BSP_SmartAreaEmitter_ProduceChildTransform",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_SMARTAREA_DEFINITION.md and reports/native_particle_smartarea_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00b01ec0",
+        "before": {
+          "address": "00b01ec0",
+          "function_name": "FUN_00b01ec0"
+        },
+        "after": {
+          "address": "00b01ec0",
+          "name": "BSP_SmartAreaEmitter_EmitVectors",
+          "evidence": "Descriptive hypothesis, not a recovered symbol. Full live/installed bytes, native register/stack setup and final RET; see docs/NATIVE_PARTICLE_SMARTAREA_DEFINITION.md and reports/native_particle_smartarea_definition.json. Reuses canonical current RandomThreads, actual 108h records and model transforms; added EDX access is a new interface. Current-target override dispatch remains required. Native FH3 ABI/application composition/gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ],
+    "native_signatures": {
+      "project": "C:/Users/sqz269/bsp.gpr",
+      "program": "/battlestationspacific.exe",
+      "save": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    },
+    "signature_before": {
+      "00b01ce0": "00b01ce0 BSP_SmartAreaEmitter_CreateParticleRecord  undefined BSP_SmartAreaEmitter_CreateParticleRecord(void)  body 00b01ce0 - 00b01d50\n",
+      "00b01ec0": "00b01ec0 BSP_SmartAreaEmitter_EmitVectors  undefined BSP_SmartAreaEmitter_EmitVectors(void)  body 00b01ec0 - 00b0220e\n",
+      "00b01e20": "00b01e20 BSP_SmartAreaEmitter_ProduceChildTransform  undefined BSP_SmartAreaEmitter_ProduceChildTransform(void)  body 00b01e20 - 00b01e98\n"
+    },
+    "signature_after": [
+      {
+        "address": "00b01ce0",
+        "prototype": "void * __thiscall BSP_SmartAreaEmitter_CreateParticleRecord(void * model, float time)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b01ce0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b01ec0",
+        "prototype": "void __thiscall BSP_SmartAreaEmitter_EmitVectors(void * parent, void * position, void * velocity)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b01ec0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00b01e20",
+        "prototype": "void __thiscall BSP_SmartAreaEmitter_ProduceChildTransform(void * parent, void * position, void * velocity, void * matrix)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00b01e20 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      }
+    ],
+    "game_validated": false,
+    "original_exception_abi_validated": false,
+    "independent_review": "Read-only sphere review: saved EDX access, native RETs, current-target and parent reloads, all22 cone/23 SmartArea register/implicit x87 operations match native listings.",
+    "fixture_limits": "Disjoint outputs; float status not compared. Callback changes mode70, not parentA0/A4 or current vtable. Source reload/alias order reviewed, application override composition unvalidated."
+  }
 }
