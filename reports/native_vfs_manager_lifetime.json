@@ -1,0 +1,1522 @@
+{
+  "packet": "orch2_native_vfs_manager_lifetime_at",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "status": "complete_actual_source_strict_win32_build_and_frozen_original_instruction_source_composition_checked",
+  "routines": [
+    {
+      "entry": "00be1dc0",
+      "source_name": "construct_native_vfs_manager_00be1dc0",
+      "proposed_name": "BSP_NativeVfsManager_ConstructStorage",
+      "previous_name": "FUN_00be1dc0",
+      "native_abi": "ECX A0h owner; RET0; EAX original owner",
+      "logical_end_exclusive": "00be1f5b",
+      "logical_bytes": 411,
+      "sha256": "b293bc3a23b1ea909546ab50e2c69bd3a081050d93bb33325014c9c6124f8d6e",
+      "live_equals_installed_PE": true,
+      "stored_body_end_before_inclusive": "00be1f5a",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_manager_lifetime.cpp"
+    },
+    {
+      "entry": "00be1f60",
+      "source_name": "destroy_native_vfs_manager_00be1f60",
+      "proposed_name": "BSP_NativeVfsManager_DestroyStorage",
+      "previous_name": "FUN_00be1f60",
+      "native_abi": "ECX owner; RET0; no semantic result",
+      "logical_end_exclusive": "00be21e3",
+      "logical_bytes": 643,
+      "sha256": "20c9962c30ead46b4a4e5f334566b68b86ab523b0078c25c5d9676d6dc60458c",
+      "live_equals_installed_PE": true,
+      "stored_body_end_before_inclusive": "00be2028",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_manager_lifetime.cpp"
+    },
+    {
+      "entry": "00be25c0",
+      "source_name": "delete_native_vfs_manager_00be25c0",
+      "proposed_name": "BSP_NativeVfsManager_ScalarDeletingDestructor",
+      "previous_name": "FUN_00be25c0",
+      "native_abi": "ECX owner; stack DWORD flags; RET4; EAX original possibly freed owner",
+      "logical_end_exclusive": "00be25de",
+      "logical_bytes": 30,
+      "sha256": "e4181ef54a2a7aeff2cefd5fac008bd7e2c49fbfb2f8822270dab509257d4c17",
+      "live_equals_installed_PE": true,
+      "stored_body_end_before_inclusive": "00be25dd",
+      "coverage": "complete_logical_body",
+      "source": "src/native_vfs_manager_lifetime.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00be1ddf",
+      "native": "00bda6f0",
+      "function": "00be1dc0",
+      "contract": "Actual base construction/publication and lifetime registration"
+    },
+    {
+      "address": "00be1e1f",
+      "native": "00bda960",
+      "function": "00be1dc0",
+      "contract": "Actual 0Ch plain-list sentinel allocation"
+    },
+    {
+      "address": "00be1e34",
+      "native": "00bdabf0",
+      "function": "00be1dc0",
+      "contract": "Actual 24h mount-tree node allocation"
+    },
+    {
+      "address": "00be1e67",
+      "native": "00bdaba0",
+      "function": "00be1dc0",
+      "contract": "Actual 20h physical-index node allocation"
+    },
+    {
+      "address": "00be1e91",
+      "native": "00bda980",
+      "function": "00be1dc0",
+      "contract": "Actual 28h request-list sentinel allocation"
+    },
+    {
+      "address": "00be1ea6",
+      "native": "004c26b0",
+      "function": "00be1dc0",
+      "contract": "Actual 18h string-tree node allocation"
+    },
+    {
+      "address": "00be1ed7",
+      "native": "007f82f0",
+      "function": "00be1dc0",
+      "contract": "Actual 0Ch plain-list sentinel allocation"
+    },
+    {
+      "address": "00be1f10",
+      "native": "00bdb970",
+      "function": "00be1dc0",
+      "contract": "Actual canonicalize/discard path with one required original literal"
+    },
+    {
+      "address": "00be1f1a",
+      "native": "00bdb970",
+      "function": "00be1dc0",
+      "contract": "Actual canonicalize/discard path with one required original literal"
+    },
+    {
+      "address": "00be1f24",
+      "native": "00bdb970",
+      "function": "00be1dc0",
+      "contract": "Actual canonicalize/discard path with one required original literal"
+    },
+    {
+      "address": "00be1f2e",
+      "native": "00bdb970",
+      "function": "00be1dc0",
+      "contract": "Actual canonicalize/discard path with one required original literal"
+    },
+    {
+      "address": "00be1f38",
+      "native": "00bdb970",
+      "function": "00be1dc0",
+      "contract": "Actual canonicalize/discard path with one required original literal"
+    },
+    {
+      "address": "00be1f42",
+      "native": "00bdb970",
+      "function": "00be1dc0",
+      "contract": "Actual canonicalize/discard path with one required original literal"
+    },
+    {
+      "address": "00be1fc5",
+      "native": "00bf6713",
+      "function": "00be1f60",
+      "contract": "Returning invalid-parameter boundary; native captured iterator/end scheduling"
+    },
+    {
+      "address": "00be1fd8",
+      "native": "00bf6713",
+      "function": "00be1f60",
+      "contract": "Returning invalid-parameter boundary; native captured iterator/end scheduling"
+    },
+    {
+      "address": "00be1fe6",
+      "native": "00bf6713",
+      "function": "00be1f60",
+      "contract": "Returning invalid-parameter boundary; native captured iterator/end scheduling"
+    },
+    {
+      "address": "00be2003",
+      "native": "00bd97e0",
+      "function": "00be1f60",
+      "contract": "Actual mount iterator advancement; reload iterator owner afterwards"
+    },
+    {
+      "address": "00be201c",
+      "native": "00bdec70",
+      "function": "00be1f60",
+      "contract": "Actual pair vector resize0 before backing release"
+    },
+    {
+      "address": "00be2024",
+      "native": "00bf6989",
+      "function": "00be1f60",
+      "contract": "CRT free current vector backing; no header clearing"
+    },
+    {
+      "address": "00be25c3",
+      "native": "00be1f60",
+      "function": "00be25c0",
+      "contract": "Complete actual manager destruction before deleting flags test"
+    },
+    {
+      "address": "00be25d0",
+      "native": "00bf65ac",
+      "function": "00be25c0",
+      "contract": "CRT free captured or current allocation as specified by the complete raw listing"
+    }
+  ],
+  "raw_logical_tail_steps": [
+    {
+      "raw_site": "00be2053",
+      "raw_target": "00bf65ac",
+      "logical_owner": "00be1f60",
+      "contract": "CRT free captured or current allocation as specified by the complete raw listing",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be206c",
+      "raw_target": "00bf65ac",
+      "logical_owner": "00be1f60",
+      "contract": "CRT free captured or current allocation as specified by the complete raw listing",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be2092",
+      "raw_target": "004d1a50",
+      "logical_owner": "00be1f60",
+      "contract": "Actual full-range string tree erasure; five stacked DWORD arguments, RET0x14 (20 bytes)",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be209b",
+      "raw_target": "00bf65ac",
+      "logical_owner": "00be1f60",
+      "contract": "CRT free captured or current allocation as specified by the complete raw listing",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be20cc",
+      "raw_target": "00be1220",
+      "logical_owner": "00be1f60",
+      "contract": "Actual nested request payload destruction at node+8 before node free",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be20d2",
+      "raw_target": "00bf65ac",
+      "logical_owner": "00be1f60",
+      "contract": "CRT free captured or current allocation as specified by the complete raw listing",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be20e7",
+      "raw_target": "00bf65ac",
+      "logical_owner": "00be1f60",
+      "contract": "CRT free captured or current allocation as specified by the complete raw listing",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be210a",
+      "raw_target": "00be0c30",
+      "logical_owner": "00be1f60",
+      "contract": "Actual full-range physical index erasure; five stacked DWORD arguments, RET0x14 (20 bytes)",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be2113",
+      "raw_target": "00bf65ac",
+      "logical_owner": "00be1f60",
+      "contract": "CRT free captured or current allocation as specified by the complete raw listing",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be212c",
+      "raw_target": "00427110",
+      "logical_owner": "00be1f60",
+      "contract": "Actual native string vector resize0 before backing release",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be2134",
+      "raw_target": "00bf6989",
+      "logical_owner": "00be1f60",
+      "contract": "CRT free current vector backing; no header clearing",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be2151",
+      "raw_target": "00be0d00",
+      "logical_owner": "00be1f60",
+      "contract": "Actual full-range mount tree erasure; five stacked DWORD arguments, RET0x14 (20 bytes)",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be215a",
+      "raw_target": "00bf65ac",
+      "logical_owner": "00be1f60",
+      "contract": "CRT free captured or current allocation as specified by the complete raw listing",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be2183",
+      "raw_target": "00bf65ac",
+      "logical_owner": "00be1f60",
+      "contract": "CRT free captured or current allocation as specified by the complete raw listing",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be2196",
+      "raw_target": "00bf65ac",
+      "logical_owner": "00be1f60",
+      "contract": "CRT free captured or current allocation as specified by the complete raw listing",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be21b6",
+      "raw_target": "00419cc0",
+      "logical_owner": "00be1f60",
+      "contract": "Current canonical pool getter after capturing string data and length+1",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be21bd",
+      "raw_target": "00bd1510",
+      "logical_owner": "00be1f60",
+      "contract": "Actual captured native string block return; data,length+1,alignment1; RET0x0C (12 bytes)",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    },
+    {
+      "raw_site": "00be21cc",
+      "raw_target": "00bda790",
+      "logical_owner": "00be1f60",
+      "contract": "Actual base unregistration/current publication clear after state -1",
+      "attribution": "outside stored body; exact live/PE span and linear raw assembly only"
+    }
+  ],
+  "indirect_steps": [
+    {
+      "raw_site": "00be1fa1",
+      "captured_register": "edx",
+      "original_abi": "ECX captured owner; stack flags1; target RET4",
+      "required_binding": "captured current log vtable0"
+    },
+    {
+      "raw_site": "00be1ffd",
+      "captured_register": "eax",
+      "original_abi": "ECX captured owner; stack flags1; target RET4",
+      "required_binding": "captured current provider vtable4; node+1C ignored"
+    }
+  ],
+  "native_eh_transfer_evidence": [
+    {
+      "label": "construct_unwind_0",
+      "raw_entry": "00cc6910",
+      "raw_transfers": [
+        {
+          "site": "00cc6913",
+          "mnemonic": "jmp",
+          "target": "0xbda790"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "construct_unwind_1",
+      "raw_entry": "00cc6918",
+      "raw_transfers": [
+        {
+          "site": "00cc691e",
+          "mnemonic": "jmp",
+          "target": "0x41dd20"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "construct_unwind_2",
+      "raw_entry": "00cc6923",
+      "raw_transfers": [
+        {
+          "site": "00cc6929",
+          "mnemonic": "jmp",
+          "target": "0xbdb3c0"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "construct_unwind_3",
+      "raw_entry": "00cc692e",
+      "raw_transfers": [
+        {
+          "site": "00cc6934",
+          "mnemonic": "jmp",
+          "target": "0xbe16c0"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "construct_unwind_4",
+      "raw_entry": "00cc6939",
+      "raw_transfers": [
+        {
+          "site": "00cc693f",
+          "mnemonic": "jmp",
+          "target": "0x4d0fa0"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "construct_unwind_5",
+      "raw_entry": "00cc6944",
+      "raw_transfers": [
+        {
+          "site": "00cc694a",
+          "mnemonic": "jmp",
+          "target": "0xbe1700"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "construct_unwind_6",
+      "raw_entry": "00cc694f",
+      "raw_transfers": [
+        {
+          "site": "00cc6955",
+          "mnemonic": "jmp",
+          "target": "0xbe1d60"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "construct_unwind_7",
+      "raw_entry": "00cc695a",
+      "raw_transfers": [
+        {
+          "site": "00cc6960",
+          "mnemonic": "jmp",
+          "target": "0x4d74a0"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "construct_unwind_8",
+      "raw_entry": "00cc6965",
+      "raw_transfers": [
+        {
+          "site": "00cc696b",
+          "mnemonic": "jmp",
+          "target": "0x7f8770"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "construct_unwind_9",
+      "raw_entry": "00cc6970",
+      "raw_transfers": [
+        {
+          "site": "00cc6979",
+          "mnemonic": "jmp",
+          "target": "0xbe0350"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "construct_handler",
+      "raw_entry": "00cc697e",
+      "raw_transfers": [
+        {
+          "site": "00cc6983",
+          "mnemonic": "jmp",
+          "target": "0xbf6b43"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "destroy_unwind_0",
+      "raw_entry": "00cc6990",
+      "raw_transfers": [
+        {
+          "site": "00cc6993",
+          "mnemonic": "jmp",
+          "target": "0xbda790"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "destroy_unwind_1",
+      "raw_entry": "00cc6998",
+      "raw_transfers": [
+        {
+          "site": "00cc699e",
+          "mnemonic": "jmp",
+          "target": "0x41dd20"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "destroy_unwind_2",
+      "raw_entry": "00cc69a3",
+      "raw_transfers": [
+        {
+          "site": "00cc69a9",
+          "mnemonic": "jmp",
+          "target": "0xbdb3c0"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "destroy_unwind_3",
+      "raw_entry": "00cc69ae",
+      "raw_transfers": [
+        {
+          "site": "00cc69b4",
+          "mnemonic": "jmp",
+          "target": "0xbe16c0"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "destroy_unwind_4",
+      "raw_entry": "00cc69b9",
+      "raw_transfers": [
+        {
+          "site": "00cc69bf",
+          "mnemonic": "jmp",
+          "target": "0x4d0fa0"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "destroy_unwind_5",
+      "raw_entry": "00cc69c4",
+      "raw_transfers": [
+        {
+          "site": "00cc69ca",
+          "mnemonic": "jmp",
+          "target": "0xbe1700"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "destroy_unwind_6",
+      "raw_entry": "00cc69cf",
+      "raw_transfers": [
+        {
+          "site": "00cc69d5",
+          "mnemonic": "jmp",
+          "target": "0xbe1d60"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "destroy_unwind_7",
+      "raw_entry": "00cc69da",
+      "raw_transfers": [
+        {
+          "site": "00cc69e0",
+          "mnemonic": "jmp",
+          "target": "0x4d74a0"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "destroy_unwind_8",
+      "raw_entry": "00cc69e5",
+      "raw_transfers": [
+        {
+          "site": "00cc69eb",
+          "mnemonic": "jmp",
+          "target": "0x7f8770"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "destroy_unwind_9",
+      "raw_entry": "00cc69f0",
+      "raw_transfers": [
+        {
+          "site": "00cc69f9",
+          "mnemonic": "jmp",
+          "target": "0xbe0350"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    },
+    {
+      "label": "destroy_handler",
+      "raw_entry": "00cc69fe",
+      "raw_transfers": [
+        {
+          "site": "00cc6a03",
+          "mnemonic": "jmp",
+          "target": "0xbf6b43"
+        }
+      ],
+      "scope": "verified dependency/EH evidence only; no new annotation or routine count"
+    }
+  ],
+  "no_ghidra_function": [],
+  "native_capture": {
+    "path": "local/native-manager-at-evidence",
+    "span_count": 28,
+    "bytes": 1668,
+    "spans": [
+      {
+        "label": "construct",
+        "entry": "00be1dc0",
+        "end_exclusive": "00be1f5b",
+        "bytes": 411,
+        "sha256": "b293bc3a23b1ea909546ab50e2c69bd3a081050d93bb33325014c9c6124f8d6e",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00be1ddf",
+            "mnemonic": "call",
+            "target": "0xbda6f0"
+          },
+          {
+            "site": "00be1e1f",
+            "mnemonic": "call",
+            "target": "0xbda960"
+          },
+          {
+            "site": "00be1e34",
+            "mnemonic": "call",
+            "target": "0xbdabf0"
+          },
+          {
+            "site": "00be1e67",
+            "mnemonic": "call",
+            "target": "0xbdaba0"
+          },
+          {
+            "site": "00be1e91",
+            "mnemonic": "call",
+            "target": "0xbda980"
+          },
+          {
+            "site": "00be1ea6",
+            "mnemonic": "call",
+            "target": "0x4c26b0"
+          },
+          {
+            "site": "00be1ed7",
+            "mnemonic": "call",
+            "target": "0x7f82f0"
+          },
+          {
+            "site": "00be1f10",
+            "mnemonic": "call",
+            "target": "0xbdb970"
+          },
+          {
+            "site": "00be1f1a",
+            "mnemonic": "call",
+            "target": "0xbdb970"
+          },
+          {
+            "site": "00be1f24",
+            "mnemonic": "call",
+            "target": "0xbdb970"
+          },
+          {
+            "site": "00be1f2e",
+            "mnemonic": "call",
+            "target": "0xbdb970"
+          },
+          {
+            "site": "00be1f38",
+            "mnemonic": "call",
+            "target": "0xbdb970"
+          },
+          {
+            "site": "00be1f42",
+            "mnemonic": "call",
+            "target": "0xbdb970"
+          }
+        ]
+      },
+      {
+        "label": "destroy",
+        "entry": "00be1f60",
+        "end_exclusive": "00be21e3",
+        "bytes": 643,
+        "sha256": "20c9962c30ead46b4a4e5f334566b68b86ab523b0078c25c5d9676d6dc60458c",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00be1fa1",
+            "mnemonic": "call",
+            "target": "edx"
+          },
+          {
+            "site": "00be1fc5",
+            "mnemonic": "call",
+            "target": "0xbf6713"
+          },
+          {
+            "site": "00be1fd8",
+            "mnemonic": "call",
+            "target": "0xbf6713"
+          },
+          {
+            "site": "00be1fe6",
+            "mnemonic": "call",
+            "target": "0xbf6713"
+          },
+          {
+            "site": "00be1ffd",
+            "mnemonic": "call",
+            "target": "eax"
+          },
+          {
+            "site": "00be2003",
+            "mnemonic": "call",
+            "target": "0xbd97e0"
+          },
+          {
+            "site": "00be200c",
+            "mnemonic": "jmp",
+            "target": "0xbe1fb6"
+          },
+          {
+            "site": "00be201c",
+            "mnemonic": "call",
+            "target": "0xbdec70"
+          },
+          {
+            "site": "00be2024",
+            "mnemonic": "call",
+            "target": "0xbf6989"
+          },
+          {
+            "site": "00be2053",
+            "mnemonic": "call",
+            "target": "0xbf65ac"
+          },
+          {
+            "site": "00be206c",
+            "mnemonic": "call",
+            "target": "0xbf65ac"
+          },
+          {
+            "site": "00be2092",
+            "mnemonic": "call",
+            "target": "0x4d1a50"
+          },
+          {
+            "site": "00be209b",
+            "mnemonic": "call",
+            "target": "0xbf65ac"
+          },
+          {
+            "site": "00be20cc",
+            "mnemonic": "call",
+            "target": "0xbe1220"
+          },
+          {
+            "site": "00be20d2",
+            "mnemonic": "call",
+            "target": "0xbf65ac"
+          },
+          {
+            "site": "00be20e7",
+            "mnemonic": "call",
+            "target": "0xbf65ac"
+          },
+          {
+            "site": "00be210a",
+            "mnemonic": "call",
+            "target": "0xbe0c30"
+          },
+          {
+            "site": "00be2113",
+            "mnemonic": "call",
+            "target": "0xbf65ac"
+          },
+          {
+            "site": "00be212c",
+            "mnemonic": "call",
+            "target": "0x427110"
+          },
+          {
+            "site": "00be2134",
+            "mnemonic": "call",
+            "target": "0xbf6989"
+          },
+          {
+            "site": "00be2151",
+            "mnemonic": "call",
+            "target": "0xbe0d00"
+          },
+          {
+            "site": "00be215a",
+            "mnemonic": "call",
+            "target": "0xbf65ac"
+          },
+          {
+            "site": "00be2183",
+            "mnemonic": "call",
+            "target": "0xbf65ac"
+          },
+          {
+            "site": "00be2196",
+            "mnemonic": "call",
+            "target": "0xbf65ac"
+          },
+          {
+            "site": "00be21b6",
+            "mnemonic": "call",
+            "target": "0x419cc0"
+          },
+          {
+            "site": "00be21bd",
+            "mnemonic": "call",
+            "target": "0xbd1510"
+          },
+          {
+            "site": "00be21cc",
+            "mnemonic": "call",
+            "target": "0xbda790"
+          }
+        ]
+      },
+      {
+        "label": "deleting",
+        "entry": "00be25c0",
+        "end_exclusive": "00be25de",
+        "bytes": 30,
+        "sha256": "e4181ef54a2a7aeff2cefd5fac008bd7e2c49fbfb2f8822270dab509257d4c17",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00be25c3",
+            "mnemonic": "call",
+            "target": "0xbe1f60"
+          },
+          {
+            "site": "00be25d0",
+            "mnemonic": "call",
+            "target": "0xbf65ac"
+          }
+        ]
+      },
+      {
+        "label": "eh_tables",
+        "entry": "00e0107c",
+        "end_exclusive": "00e01164",
+        "bytes": 232,
+        "sha256": "e14743f0a73c44d2a3904b280bb8840c5d2968df40a291ec27108320253a0d4c",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "profile",
+        "entry": "00d685b4",
+        "end_exclusive": "00d685b8",
+        "bytes": 4,
+        "sha256": "a9e7b70eadf1955b3bf41c1ee2623cbd040f51c874681f8f206b65e640ef4449",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "path_literals",
+        "entry": "00d68400",
+        "end_exclusive": "00d6846c",
+        "bytes": 108,
+        "sha256": "39dcbee34d4ae4643a320964152ad06e2047860bcd837b0a9ee9ecb814d8d0f8",
+        "live_equals_installed_PE": true
+      },
+      {
+        "label": "construct_unwind_0",
+        "entry": "00cc6910",
+        "end_exclusive": "00cc6918",
+        "bytes": 8,
+        "sha256": "f22038c6d3009e3287a05c28cc32ce252d74a805abe33f9537d247f98f7b3ad2",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc6913",
+            "mnemonic": "jmp",
+            "target": "0xbda790"
+          }
+        ]
+      },
+      {
+        "label": "construct_unwind_1",
+        "entry": "00cc6918",
+        "end_exclusive": "00cc6923",
+        "bytes": 11,
+        "sha256": "40277d904ca109ac16a24ae22797fd60848bdab1b97ef532de01d389bf2f29fc",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc691e",
+            "mnemonic": "jmp",
+            "target": "0x41dd20"
+          }
+        ]
+      },
+      {
+        "label": "construct_unwind_2",
+        "entry": "00cc6923",
+        "end_exclusive": "00cc692e",
+        "bytes": 11,
+        "sha256": "11323546f04c6ef88470e02ac65776ff11cc629ac4799d8d32434a3e4e805419",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc6929",
+            "mnemonic": "jmp",
+            "target": "0xbdb3c0"
+          }
+        ]
+      },
+      {
+        "label": "construct_unwind_3",
+        "entry": "00cc692e",
+        "end_exclusive": "00cc6939",
+        "bytes": 11,
+        "sha256": "d6a74a5e2d858f862aaadac3639b753b2ca57143cfb8946a4b5592faa39e7559",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc6934",
+            "mnemonic": "jmp",
+            "target": "0xbe16c0"
+          }
+        ]
+      },
+      {
+        "label": "construct_unwind_4",
+        "entry": "00cc6939",
+        "end_exclusive": "00cc6944",
+        "bytes": 11,
+        "sha256": "73d5ca2def7060d7e51b643b5db7dca7e32c92ba6864f8f1bce6929574f520b3",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc693f",
+            "mnemonic": "jmp",
+            "target": "0x4d0fa0"
+          }
+        ]
+      },
+      {
+        "label": "construct_unwind_5",
+        "entry": "00cc6944",
+        "end_exclusive": "00cc694f",
+        "bytes": 11,
+        "sha256": "2d4494090b7ee685e313dc979134b35ea5bd63f0d67c6fb23c0ea44820008164",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc694a",
+            "mnemonic": "jmp",
+            "target": "0xbe1700"
+          }
+        ]
+      },
+      {
+        "label": "construct_unwind_6",
+        "entry": "00cc694f",
+        "end_exclusive": "00cc695a",
+        "bytes": 11,
+        "sha256": "471687bb439776ece78eae966b3510c3c79cd9a807b69d82461f6e61cc4d68f7",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc6955",
+            "mnemonic": "jmp",
+            "target": "0xbe1d60"
+          }
+        ]
+      },
+      {
+        "label": "construct_unwind_7",
+        "entry": "00cc695a",
+        "end_exclusive": "00cc6965",
+        "bytes": 11,
+        "sha256": "f4bebf139a4f5dceac77d548d723662cd4cd977da4ab8cd873f810a698985af3",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc6960",
+            "mnemonic": "jmp",
+            "target": "0x4d74a0"
+          }
+        ]
+      },
+      {
+        "label": "construct_unwind_8",
+        "entry": "00cc6965",
+        "end_exclusive": "00cc6970",
+        "bytes": 11,
+        "sha256": "7a86e2971614854ae1bf4a6ed4413864f485b9598eacc576eb15d8817b766c6d",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc696b",
+            "mnemonic": "jmp",
+            "target": "0x7f8770"
+          }
+        ]
+      },
+      {
+        "label": "construct_unwind_9",
+        "entry": "00cc6970",
+        "end_exclusive": "00cc697e",
+        "bytes": 14,
+        "sha256": "ab67e2931c670f47f8287ab3b37d9ab05957e79609c63fe1c9988edaf93cf2d2",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc6979",
+            "mnemonic": "jmp",
+            "target": "0xbe0350"
+          }
+        ]
+      },
+      {
+        "label": "construct_handler",
+        "entry": "00cc697e",
+        "end_exclusive": "00cc6988",
+        "bytes": 10,
+        "sha256": "fecbd8fa8bba283c26bfdd817678fd9e081b8339264e140da5154263486022b6",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc6983",
+            "mnemonic": "jmp",
+            "target": "0xbf6b43"
+          }
+        ]
+      },
+      {
+        "label": "destroy_unwind_0",
+        "entry": "00cc6990",
+        "end_exclusive": "00cc6998",
+        "bytes": 8,
+        "sha256": "939898a5a228869b0e4256cfa5d871a0ad6ec8ab4def818ceecf65b886d91053",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc6993",
+            "mnemonic": "jmp",
+            "target": "0xbda790"
+          }
+        ]
+      },
+      {
+        "label": "destroy_unwind_1",
+        "entry": "00cc6998",
+        "end_exclusive": "00cc69a3",
+        "bytes": 11,
+        "sha256": "ec1b21941bf09ddc6355368981932d6500d573396da9b5c900df17774a4b5ab9",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc699e",
+            "mnemonic": "jmp",
+            "target": "0x41dd20"
+          }
+        ]
+      },
+      {
+        "label": "destroy_unwind_2",
+        "entry": "00cc69a3",
+        "end_exclusive": "00cc69ae",
+        "bytes": 11,
+        "sha256": "7a8b202248f3d8e30bec69fa57f7e70e08d789e1a3acace034183f9666240c8c",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc69a9",
+            "mnemonic": "jmp",
+            "target": "0xbdb3c0"
+          }
+        ]
+      },
+      {
+        "label": "destroy_unwind_3",
+        "entry": "00cc69ae",
+        "end_exclusive": "00cc69b9",
+        "bytes": 11,
+        "sha256": "ed5320be4a6a123b150f79d2a15a88ac85e484832b92fd67d9202d4e6817f9c9",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc69b4",
+            "mnemonic": "jmp",
+            "target": "0xbe16c0"
+          }
+        ]
+      },
+      {
+        "label": "destroy_unwind_4",
+        "entry": "00cc69b9",
+        "end_exclusive": "00cc69c4",
+        "bytes": 11,
+        "sha256": "15f963d57a1f68fdc767cc495a9ef060d830be7cebb68a9cfcbeda3376828652",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc69bf",
+            "mnemonic": "jmp",
+            "target": "0x4d0fa0"
+          }
+        ]
+      },
+      {
+        "label": "destroy_unwind_5",
+        "entry": "00cc69c4",
+        "end_exclusive": "00cc69cf",
+        "bytes": 11,
+        "sha256": "e338dc55dbd014a8d00025bd6962b2e01c8beb15e0cc35e04128547956421301",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc69ca",
+            "mnemonic": "jmp",
+            "target": "0xbe1700"
+          }
+        ]
+      },
+      {
+        "label": "destroy_unwind_6",
+        "entry": "00cc69cf",
+        "end_exclusive": "00cc69da",
+        "bytes": 11,
+        "sha256": "6d469e5b953dc591dac2f1ce7aba447c090b2dc4de2360f030c68f958a9d7b9f",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc69d5",
+            "mnemonic": "jmp",
+            "target": "0xbe1d60"
+          }
+        ]
+      },
+      {
+        "label": "destroy_unwind_7",
+        "entry": "00cc69da",
+        "end_exclusive": "00cc69e5",
+        "bytes": 11,
+        "sha256": "3a4aa109df19d5ff593ce51d64cc85cf22f8f915fcd2b3503912e0a18f3c3d9b",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc69e0",
+            "mnemonic": "jmp",
+            "target": "0x4d74a0"
+          }
+        ]
+      },
+      {
+        "label": "destroy_unwind_8",
+        "entry": "00cc69e5",
+        "end_exclusive": "00cc69f0",
+        "bytes": 11,
+        "sha256": "8d570373c6c5c7dbc821d5417644555ab45668f2c2af703c819f8ad52d221df1",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc69eb",
+            "mnemonic": "jmp",
+            "target": "0x7f8770"
+          }
+        ]
+      },
+      {
+        "label": "destroy_unwind_9",
+        "entry": "00cc69f0",
+        "end_exclusive": "00cc69fe",
+        "bytes": 14,
+        "sha256": "d874892216bf412d986dc03c0e64a7262375f0e87c81e96a7e7475050a6b6d6d",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc69f9",
+            "mnemonic": "jmp",
+            "target": "0xbe0350"
+          }
+        ]
+      },
+      {
+        "label": "destroy_handler",
+        "entry": "00cc69fe",
+        "end_exclusive": "00cc6a08",
+        "bytes": 10,
+        "sha256": "bd5c65e4850b02179c69a66be17c9b4b2370db887e1f79948e7d74a21553a772",
+        "live_equals_installed_PE": true,
+        "raw_transfers": [
+          {
+            "site": "00cc6a03",
+            "mnemonic": "jmp",
+            "target": "0xbf6b43"
+          }
+        ]
+      }
+    ],
+    "path_arguments": [
+      {
+        "site": "00be1f10",
+        "pointer": "00d68464",
+        "bytes_hex": "2f615c622f"
+      },
+      {
+        "site": "00be1f1a",
+        "pointer": "00d68454",
+        "bytes_hex": "415c5c5c4e414759424554552f5c43"
+      },
+      {
+        "site": "00be1f24",
+        "pointer": "00d68444",
+        "bytes_hex": "612f622f2e2f2e2f632f2e2f64"
+      },
+      {
+        "site": "00be1f2e",
+        "pointer": "00d68438",
+        "bytes_hex": "612f622f2e2e2f632f64"
+      },
+      {
+        "site": "00be1f38",
+        "pointer": "00d68414",
+        "bytes_hex": "2f612f622f612e2e2f642e2e792f64792e785c2e2e2f2e2e2f2f2e5c2f632f64"
+      },
+      {
+        "site": "00be1f42",
+        "pointer": "00d68400",
+        "bytes_hex": "2e2e2f2e2e2f612f622f632f2e2e2f642f2e2f"
+      }
+    ]
+  },
+  "cleanup_maps": [
+    {
+      "owner": "00be1dc0",
+      "func_info": "00e0107c",
+      "map": "00e010a0",
+      "handler": "00cc697e",
+      "owner_spill": "EBP-10h"
+    },
+    {
+      "owner": "00be1f60",
+      "func_info": "00e010f0",
+      "map": "00e01114",
+      "handler": "00cc69fe",
+      "owner_spill": "EBP-18h"
+    }
+  ],
+  "cleanup_states": [
+    {
+      "state": 0,
+      "previous": -1,
+      "member_offset": "00",
+      "callee": "00bda790"
+    },
+    {
+      "state": 1,
+      "previous": 0,
+      "member_offset": "0c",
+      "callee": "0041dd20"
+    },
+    {
+      "state": 2,
+      "previous": 1,
+      "member_offset": "30",
+      "callee": "00bdb3c0"
+    },
+    {
+      "state": 3,
+      "previous": 2,
+      "member_offset": "3c",
+      "callee": "00be16c0"
+    },
+    {
+      "state": 4,
+      "previous": 3,
+      "member_offset": "48",
+      "callee": "004d0fa0"
+    },
+    {
+      "state": 5,
+      "previous": 4,
+      "member_offset": "54",
+      "callee": "00be1700"
+    },
+    {
+      "state": 6,
+      "previous": 5,
+      "member_offset": "60",
+      "callee": "00be1d60"
+    },
+    {
+      "state": 7,
+      "previous": 6,
+      "member_offset": "6c",
+      "callee": "004d74a0"
+    },
+    {
+      "state": 8,
+      "previous": 7,
+      "member_offset": "7c",
+      "callee": "007f8770"
+    },
+    {
+      "state": 9,
+      "previous": 8,
+      "member_offset": "94",
+      "callee": "00be0350"
+    }
+  ],
+  "dependencies": [
+    "reports/native_vfs_manager_base.json",
+    "reports/native_vfs_request_list_lifetime.json",
+    "reports/native_file_access_log_owner.json"
+  ],
+  "build": {
+    "command": "scripts/build.ps1",
+    "target": "MSVC Win32 /W4 /WX /fp:strict",
+    "log": "local/native-at-all-source-build.log",
+    "result": "passed",
+    "existing_ctests_passed": 2
+  },
+  "independent_source_review": {
+    "path": "J:/PROG/battlestations-pacific-decompile-orch2-manager-base-at/local/manager_parent_at_review/review.json",
+    "result": "no blocking findings",
+    "input_pins": 59
+  },
+  "fixture": {
+    "status": "passed",
+    "original_attempt_path": "J:/PROG/battlestations-pacific-decompile-orch2-manager-base-at/local/manager_parent_at_fixture/attempt11",
+    "summary": {
+      "completed_utc": "2026-09-12T19:35:28.214161+00:00",
+      "result": "PASS: five native/source comparisons and one source-only constructor state9 unwind",
+      "checks": 12605,
+      "child_exit_code": 0,
+      "parent_source_sha256": "78211679dc5a22bf5094d848b7b0b15012ac9d234ea982ff386cdcbdb110cd6b",
+      "parent_header_sha256": "65a07959ad3e0e74b7249363ca1b1767bfa0ab16f236c4dab351336201bd019d",
+      "library_sha256": "02f5b1a91660950f7c7ad93b9cec2b438fac448dc07031e33e3cb6439735b724",
+      "input_files_pinned_before_execution": 192,
+      "input_files_changed_after_execution": [],
+      "linked_object_files_physically_retained_and_archive_equal": 38,
+      "manifest_before_sha256": "9ba526a3de580ffbded2bf8ce740aec116a45efdef58aec4ebceb62f42db5cc9",
+      "probe_sha256": "31b86d78b2da64340c6314109237f9232fe93df99777c93b1f52a63c98c5377c",
+      "probe_object_sha256": "30e0afbe26f4976a8a908107a283b857492ee8c8c7ddcf0dfddd52ba46902c6c",
+      "probe_executable_sha256": "70b2a51b8f2a9b33b954e857d92ed05867cfd2cbd1bf8fe4acbd42e44c40384a",
+      "launcher_source_sha256": "32fe7073d20f48cdcd61b6ab7cc5a6fb0806714bdfe43f94efd3afcb6436e6a6",
+      "launcher_object_sha256": "edaefdbb83616e5313c7190b1ba227ff6a9df14c850a29a9735b79d8a2abf0bb",
+      "launcher_executable_sha256": "a0c302877f385785f0c74cc25ea44bd885b40131abbc9dc562dca5980f19b9f3",
+      "probe_image_base": "20000000",
+      "launcher_image_base": "22000000",
+      "both_embed_manifest": true,
+      "native_code": {
+        "unchanged_bodies": {
+          "00be1dc0": 411,
+          "00be1f60": 643,
+          "00be25c0": 30
+        },
+        "unchanged_total_bytes": 1084,
+        "shift": "30000000",
+        "direct_calls_checked": 39,
+        "all_relative_calls_and_branches_checked": 55,
+        "original_profiles_and_path_literals": "Exact installed PE pages00CF0000/00D60000 mapped read-only; original7376A0/737CC0/BF4DD0 targets remain unchanged.",
+        "external_calls": "Separate JMP bridges at shifted original callee addresses call actual reviewed source services; no original body instruction is edited."
+      },
+      "launcher_contract": "Create only manager_probe.exe suspended; VirtualAllocEx exactly five required64KiB pages00730000/00BF0000/00CF0000/00D60000/01090000 in that child, write42535046 ownership markers, resume, wait, return child status. Code pages executable writable until child fills/protects; data pages writable until exact PE copy/read-only protection. Child verifies MEM_PRIVATE allocation base/extent/marker before writing. No unrelated process or existing mapping is modified.",
+      "runtime_services": "One canonical SingletonLifetimeDomain with NativeStringPoolLifetimeBinding/ActualNativeStringPoolStorage, actual physical provider pool/allocator list, original six C-string literals, actual logger base/derived deleting bodies and physical provider deleting body. Required virtual calls validate captured target/owner/flags and invoke real source bodies.",
+      "source_only_unwind": "Deliberate exception from supplied lowercase library binding after constructor state9 arms; actual owning BDB970 cleanup, all six member heads, base publication and caller-owned allocation checked. Original native FH3/SEH is not executed.",
+      "limits": [
+        "No original FH3/SEH, native throwing-getter identity or hardware-fault cleanup proof.",
+        "External callees use canonical source service bridges; this is bounded original-instruction/source composition, not unmodified original game execution.",
+        "Only actual logger base/derived and physical-provider virtual targets are exercised; other provider targets remain required caller bindings.",
+        "Fixture uses real CRT allocation/free with observation hooks and deterministic initial allocation fill; original game CRT/global identity and original calling interfaces of added C++ contexts are not reproduced.",
+        "No game startup or gameplay validation."
+      ],
+      "cases_file": "cases.json",
+      "execution_log": "execution01.log"
+    },
+    "cases": [
+      {
+        "case": 0,
+        "populated": false,
+        "deleting_wrapper": false,
+        "flags": "00000000",
+        "logger_target": null,
+        "provider_target": null,
+        "native_result": "case_0_native.bin",
+        "source_result": "case_0_source.bin",
+        "result_sha256": "0fb7168aed9a9daea05d8ff158c6a70a3c1e3e8dca618681f36d46dc76984401",
+        "result_bytes": 131088,
+        "result_bytes_identical": true,
+        "comparisons": [
+          "normalized complete A0h owner after construction",
+          "normalized complete A0h owner after non-freeing destruction",
+          "actual string pool class counts and ordered returned block/content bytes",
+          "actual malloc/free, captured virtual call and lowercase argument event order",
+          "all observed allocations released after fixture owner destruction"
+        ]
+      },
+      {
+        "case": 1,
+        "populated": true,
+        "deleting_wrapper": false,
+        "flags": "00000000",
+        "logger_target": "00737cc0",
+        "provider_target": "00bf4dd0",
+        "native_result": "case_1_native.bin",
+        "source_result": "case_1_source.bin",
+        "result_sha256": "82dd3d45a54efc460048a7d895cf98345afb3261a4240f2bbffe60c10ea9619a",
+        "result_bytes": 131088,
+        "result_bytes_identical": true,
+        "comparisons": [
+          "normalized complete A0h owner after construction",
+          "normalized complete A0h owner after non-freeing destruction",
+          "actual string pool class counts and ordered returned block/content bytes",
+          "actual malloc/free, captured virtual call and lowercase argument event order",
+          "all observed allocations released after fixture owner destruction"
+        ]
+      },
+      {
+        "case": 2,
+        "populated": true,
+        "deleting_wrapper": true,
+        "flags": "00000000",
+        "logger_target": "007376a0",
+        "provider_target": "00bf4dd0",
+        "native_result": "case_2_native.bin",
+        "source_result": "case_2_source.bin",
+        "result_sha256": "d94c5b90f4572b418dd9b97bc5331edc4db6cf7b62ea2b9f220897bc10ac29ae",
+        "result_bytes": 131088,
+        "result_bytes_identical": true,
+        "comparisons": [
+          "normalized complete A0h owner after construction",
+          "normalized complete A0h owner after non-freeing destruction",
+          "actual string pool class counts and ordered returned block/content bytes",
+          "actual malloc/free, captured virtual call and lowercase argument event order",
+          "all observed allocations released after fixture owner destruction"
+        ]
+      },
+      {
+        "case": 3,
+        "populated": true,
+        "deleting_wrapper": true,
+        "flags": "80000000",
+        "logger_target": "00737cc0",
+        "provider_target": "00bf4dd0",
+        "native_result": "case_3_native.bin",
+        "source_result": "case_3_source.bin",
+        "result_sha256": "82dd3d45a54efc460048a7d895cf98345afb3261a4240f2bbffe60c10ea9619a",
+        "result_bytes": 131088,
+        "result_bytes_identical": true,
+        "comparisons": [
+          "normalized complete A0h owner after construction",
+          "normalized complete A0h owner after non-freeing destruction",
+          "actual string pool class counts and ordered returned block/content bytes",
+          "actual malloc/free, captured virtual call and lowercase argument event order",
+          "all observed allocations released after fixture owner destruction"
+        ]
+      },
+      {
+        "case": 4,
+        "populated": true,
+        "deleting_wrapper": true,
+        "flags": "80000001",
+        "logger_target": "007376a0",
+        "provider_target": "00bf4dd0",
+        "native_result": "case_4_native.bin",
+        "source_result": "case_4_source.bin",
+        "result_sha256": "d5d4f3d899c0cf4282521517e25d090e9c7088f3bf5e8577b70beff8f2e9a8c7",
+        "result_bytes": 131088,
+        "result_bytes_identical": true,
+        "comparisons": [
+          "normalized complete A0h owner after construction",
+          "normalized complete A0h owner after non-freeing destruction",
+          "actual string pool class counts and ordered returned block/content bytes",
+          "actual malloc/free, captured virtual call and lowercase argument event order",
+          "all observed allocations released after fixture owner destruction"
+        ]
+      }
+    ],
+    "summary_sha256": "776236dd328956e67895819a2b8dd0fb50a6a262374a38bb5dc563677dfdfde5",
+    "cases_sha256": "946fed9ff490166e60994b06b9b391b4b8d0a6f004f153c4483117dc0fa5afc4",
+    "root_reverified_all_192_inputs_and_five_result_pairs": true,
+    "final_independent_review": {
+      "status": "accepted; no blocking findings; no probe rerun",
+      "path": "local/native-at-worker-deliveries/parent_fixture_review",
+      "manifest_sha256": "3746f2f660a6aae30010ad8e7eff2fa30c3460452fb8f9bfd88054c187e08a0c",
+      "checked": "192 frozen inputs,38archiveobjects,28spans1668bytes,original1084bodybytes,39calls55relative transfers,5resultpairs,launcherownership,scope-before-allocation-audit and explicit exception limits"
+    },
+    "sealed_full_delivery": {
+      "path": "local/native-at-worker-deliveries/parent_fixture",
+      "manifest_sha256": "7d7ece6c8aa0c68924730e51c5000c5b8afaa8bc718469478dee2340e066dac0",
+      "physical_files_including_manifest_and_digest": 1892,
+      "all_original_11_attempts_preserved": true,
+      "copy_verification": "local/native-at-worker-deliveries/parent_fixture-copy-verification.json",
+      "attempt11_relative_path": "fixture/attempt11"
+    },
+    "owner_snapshot_scope": "All cases compare constructed owner bytes. Post-destruction owner snapshots cover only non-freeing cases; flags80000001 checks original pointer return/free bit and skips the freed owner snapshot. This qualifies repeated comparison labels in the unchanged sealed cases.json."
+  },
+  "ghidra_sync": {
+    "status": "15 names read back with prior comments preserved; program saved;15 exports forced;9 flow gaps decoded;4 stored tails remain incomplete",
+    "flow_report": "reports/native_at_flow_repair.json",
+    "body_limit": "BE1F60 remains stored through BE2028 after verified tail decoding",
+    "verification": "local/native-at-annotation-readback-verification.json",
+    "final_fixture_updates_verified": 3,
+    "final_annotation_log": "local/ghidra-annotations-20260912T193803Z.json",
+    "final_root_export_log": "local/native-at-final-root-export.log"
+  },
+  "boundaries": [
+    "Source interfaces are not original ABI/FH3/SEH replacements",
+    "Original throwing pool-getter identity, mutable EH frame spill aliases and simultaneous cleanup exceptions are unvalidated",
+    "Required virtual bindings preserve captured target,owner,flags and cannot be no-ops; other concrete provider implementations remain application dependencies",
+    "No game startup or gameplay validation"
+  ],
+  "source_pins": {
+    "include/bsp/native_vfs_manager_lifetime.hpp": "65a07959ad3e0e74b7249363ca1b1767bfa0ab16f236c4dab351336201bd019d",
+    "src/native_vfs_manager_lifetime.cpp": "78211679dc5a22bf5094d848b7b0b15012ac9d234ea982ff386cdcbdb110cd6b"
+  },
+  "independent_final_report_review": {
+    "source_and_pre_fixture_report": "local/native-at-worker-deliveries/parent_report_review",
+    "manifest_sha256": "a13677df41edfe331d3b4554954eb5d26cf94b2b1ce7d7ac9ea4d3a9a4e80953",
+    "source_and_native_evidence_accepted": true,
+    "runtime_appendix": "Independent final fixture review accepted; root reverified192inputs/five fullbinaryresultpairs before incorporating frozen summary/cases",
+    "runtime_editorial_check": "Fixture author accepted embedded summary/cases and all runtime counts; clarification added for post-destruction snapshot scope. Sealed inputs/results remain unchanged."
+  }
+}
