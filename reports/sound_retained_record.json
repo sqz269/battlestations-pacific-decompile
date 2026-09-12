@@ -1,0 +1,198 @@
+{
+  "packet": "orch4_retained_record_x",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00a7c5f0",
+      "name": "copy_sound_retained_source_record_00a7c5f0",
+      "proposed_name": "BSP_SoundRetainedSourceRecord_CopyConstruct",
+      "previous_name": "FUN_00a7c5f0",
+      "source": "src/sound_retained_record.cpp",
+      "document": "docs/SOUND_RETAINED_RECORD.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; C++ exception-domain limits documented",
+      "original_abi": "ECX actual14h destination; stack source; EAX destination; RET4.",
+      "abi": "ECX actual14h destination; stack source; EAX destination; RET4.",
+      "meaning": "Clear sample before source read; publish/actual+4 retain; construct actual string; current-header overlap-safe copy; sequential x87 floats C/10; state0 unwind releases only current sample slot.",
+      "name_is_hypothesis": true,
+      "last_instruction": "00a7c690",
+      "last_instruction_length": 3,
+      "end_exclusive": "00a7c693",
+      "byte_span": 163,
+      "sha256": "2428459b6bc4ef37cfca6a02fc6df8eb2784425f9e94827c1fecabd0ccdaee2a",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual14h destination; stack source; EAX destination; RET4. Clear sample before source read; publish/actual+4 retain; construct actual string; current-header overlap-safe copy; sequential x87 floats C/10; state0 unwind releases only current sample slot. Full disk/live span SHA256 2428459b6bc4ef37cfca6a02fc6df8eb2784425f9e94827c1fecabd0ccdaee2a. See docs/SOUND_RETAINED_RECORD.md. New Win32 C++ interface; native ABI/SEH and game behavior unvalidated. Full Win32 build, existing two checks, focused actual-record lifetime/x87 probe and four direct call-site audit rows passed."
+    },
+    {
+      "address": "004c7fa0",
+      "name": "destroy_sound_retained_source_record_004c7fa0",
+      "proposed_name": "BSP_SoundRetainedSourceRecord_Destruct",
+      "previous_name": "FUN_004c7fa0",
+      "source": "src/sound_retained_record.cpp",
+      "document": "docs/SOUND_RETAINED_RECORD.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; C++ exception-domain limits documented",
+      "original_abi": "ECX actual14h record; RET.",
+      "abi": "ECX actual14h record; RET.",
+      "meaning": "Capture/free string data with current length+1, leave string header stale; reload sample, actual+4 atomic decrement, current zero-slot callback, clear record sample after callback. Explicit noexcept string storage excludes native getter SEH.",
+      "name_is_hypothesis": true,
+      "last_instruction": "004c801d",
+      "last_instruction_length": 1,
+      "end_exclusive": "004c801e",
+      "byte_span": 126,
+      "sha256": "e501d5c9de5bfa5283fd7add240a6c3be066c5c4304b0a907542c07152cbaf57",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not recovered symbol. ECX actual14h record; RET. Capture/free string data with current length+1, leave string header stale; reload sample, actual+4 atomic decrement, current zero-slot callback, clear record sample after callback. Explicit noexcept string storage excludes native getter SEH. Full disk/live span SHA256 e501d5c9de5bfa5283fd7add240a6c3be066c5c4304b0a907542c07152cbaf57. See docs/SOUND_RETAINED_RECORD.md. New Win32 C++ interface; native ABI/SEH and game behavior unvalidated. Full Win32 build, existing two checks, focused actual-record lifetime/x87 probe and four direct call-site audit rows passed."
+    },
+    {
+      "address": "004e7bb0",
+      "name": "assign_sound_sample_reference_004e7bb0",
+      "proposed_name": "BSP_SoundSampleReference_Assign",
+      "previous_name": "FUN_004e7bb0",
+      "source": "src/sound_retained_record.cpp",
+      "document": "docs/SOUND_RETAINED_RECORD.md",
+      "status": "reconstructed_complete_host_semantics",
+      "coverage": "complete normal body; C++ exception-domain limits documented",
+      "original_abi": "ECX destination pointer slot; stack source pointer slot; EAX destination; RET4.",
+      "abi": "ECX destination pointer slot; stack source pointer slot; EAX destination; RET4.",
+      "meaning": "Capture incoming and old pointers; equal values no-op; publish incoming before actual+4 retain and old actual+4 release; zero callback on captured old; do not restore or clear destination.",
+      "name_is_hypothesis": true,
+      "last_instruction": "004e7bee",
+      "last_instruction_length": 3,
+      "end_exclusive": "004e7bf1",
+      "byte_span": 65,
+      "sha256": "f68d6350dd1e3f1ae0212fed0b60692631dd2a25a2b23b8ea7ab98db3801b352",
+      "disk_live_bytes_equal": true,
+      "evidence": "Hypothesis, not recovered symbol. ECX destination pointer slot; stack source pointer slot; EAX destination; RET4. Capture incoming and old pointers; equal values no-op; publish incoming before actual+4 retain and old actual+4 release; zero callback on captured old; do not restore or clear destination. Full disk/live span SHA256 f68d6350dd1e3f1ae0212fed0b60692631dd2a25a2b23b8ea7ab98db3801b352. See docs/SOUND_RETAINED_RECORD.md. New Win32 C++ interface; native ABI/SEH and game behavior unvalidated. Full Win32 build, existing two checks, focused actual-record lifetime/x87 probe and four direct call-site audit rows passed."
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00a7c5f0",
+      "address": "00a7c627",
+      "native": "00ce221c+IAT",
+      "contract": "InterlockedIncrement actual sample+4"
+    },
+    {
+      "function": "00a7c5f0",
+      "address": "00a7c653",
+      "native": "0041dd40",
+      "contract": "resize actual name header from current source length, preserve1; RET8"
+    },
+    {
+      "function": "00a7c5f0",
+      "address": "00a7c668",
+      "native": "00bf7680",
+      "contract": "overlap-safe CRT copy; caller ADD ESP,0Ch at00A7C66D"
+    },
+    {
+      "function": "004c7fa0",
+      "address": "004c7fd7",
+      "native": "00419cc0",
+      "contract": "no-argument pool getter, EAX pool; pushed release arguments remain"
+    },
+    {
+      "function": "004c7fa0",
+      "address": "004c7fde",
+      "native": "00bd1510",
+      "contract": "pool release buffer,current length+1,1; RET0Ch"
+    },
+    {
+      "function": "004c7fa0",
+      "address": "004c7ff5",
+      "native": "00ce2220+IAT",
+      "contract": "InterlockedDecrement captured sample+4"
+    },
+    {
+      "function": "004c7fa0",
+      "address": "004c8005",
+      "native": "sample+vtable00",
+      "contract": "current sample vtable0; ECX sample, no stack args"
+    },
+    {
+      "function": "004e7bb0",
+      "address": "004e7bca",
+      "native": "00ce221c+IAT",
+      "contract": "InterlockedIncrement incoming sample+4"
+    },
+    {
+      "function": "004e7bb0",
+      "address": "004e7bd8",
+      "native": "00ce2220+IAT",
+      "contract": "InterlockedDecrement captured old sample+4"
+    },
+    {
+      "function": "004e7bb0",
+      "address": "004e7be8",
+      "native": "old_sample+vtable00",
+      "contract": "current old sample vtable0; ECX old sample, no stack args"
+    }
+  ],
+  "tail_transfers": [
+    {
+      "tail_site": "00cb51a3",
+      "callee": "004c3810",
+      "funclet": "00cb51a0",
+      "owner_function": "00a7c5f0",
+      "native_bytes": "8b4df0e968e680ff",
+      "contract": "saved record [EBP-10h], state0 sample-slot cleanup"
+    },
+    {
+      "tail_site": "00c65283",
+      "callee": "004c3810",
+      "funclet": "00c65280",
+      "owner_function": "004c7fa0",
+      "native_bytes": "8b4df0e988e585ff",
+      "contract": "saved record [EBP-10h], native string-stage sample-slot cleanup"
+    }
+  ],
+  "eh": [
+    {
+      "function": "00a7c5f0",
+      "handler": "00cb51a8",
+      "func_info": "00deb12c",
+      "unwind_map": "00deb124",
+      "state": 0,
+      "next_state": -1,
+      "action": "00cb51a0"
+    },
+    {
+      "function": "004c7fa0",
+      "handler": "00c65288",
+      "func_info": "00d8d9d8",
+      "unwind_map": "00d8d9d0",
+      "state": 0,
+      "next_state": -1,
+      "action": "00c65280"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Pseudocode treats +C/+10 as integer copies.",
+      "evidence": "00A7C670 FLD [source+C],00A7C677 FSTP [dest+C],00A7C67C FLD [source+10],00A7C67F FSTP [dest+10].",
+      "is": "Sequential native x87 float32 load/store pairs."
+    },
+    {
+      "was": "00419CC0 appears to consume the three pushed destructor release arguments.",
+      "evidence": "004C7FD7 CALL00419CC0;004C7FDC MOV ECX,EAX;004C7FDE CALL00BD1510, whose callee RET0Ch consumes buffer,size,1.",
+      "is": "No-argument pool getter leaves them for00BD1510."
+    }
+  ],
+  "validation": {
+    "ghidra_read_only": true,
+    "seeds": "verified; local/retained_record_seed.log",
+    "win32_build": "scripts/build.ps1 passed: MSVC Win32 /W4 /WX /fp:strict; reconstructed_math and native_math_differential passed; local/retained_record_build.log",
+    "call_site_audit": "tools/verify_report_calls.py: 4 direct rows checked, 0 failed; six IAT/vtable rows inspected in native assembly",
+    "focused_probe": "local/retained_record_probe.cpp compiled /W4 /WX /fp:strict and /link /MANIFEST:EMBED; deep copy, x87 sNaN/-0, allocation failure unwind, post-string-release sample reload, stale headers, assignment callback mutation all passed",
+    "native_abi_compatible": false,
+    "game_validated": false,
+    "focused_probe_log": "local/retained_record_probe.log",
+    "probe_boundary": "Packet source compiled directly; shared native-string code linked from existing main bsp_core.lib. Semantic fixture, not native binary differential testing."
+  },
+  "limits": [
+    "NativeStringStorage release is noexcept, so native lazy-pool-getter exceptions and original MSVC SEH are outside the supplied host boundary.",
+    "Zero-length CRT copies are omitted as in existing actual string helpers.",
+    "Float field meanings remain provisional; no FMOD or runtime-game claim."
+  ]
+}
