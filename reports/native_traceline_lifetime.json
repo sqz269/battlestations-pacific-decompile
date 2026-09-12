@@ -339,5 +339,546 @@
     "native payload terminal providers must be actual canonical owners; missing bindings fail instead of successful no-op release",
     "no game/runtime rendering claim; this path is not wired into the repository executable by this packet"
   ],
-  "ghidra_mutations": []
+  "ghidra_mutations": [],
+  "integration_as_review": {
+    "new_native_functions": 4,
+    "full_game_validated": false,
+    "combined_validation": "pending exact merged build and current-library replays",
+    "native_signatures": [
+      {
+        "address": "00af1980",
+        "name": "BSP_NativeTraceline_Destroy",
+        "prototype": "void BSP_NativeTraceline_Destroy(void)",
+        "calling_convention": "__thiscall"
+      },
+      {
+        "address": "00858380",
+        "name": "BSP_NativeTraceline_ScalarDelete",
+        "prototype": "void * BSP_NativeTraceline_ScalarDelete(unsigned int flags)",
+        "calling_convention": "__thiscall"
+      },
+      {
+        "address": "0086ad50",
+        "name": "BSP_NativeTracelinePayload_Destroy",
+        "prototype": "void BSP_NativeTracelinePayload_Destroy(void)",
+        "calling_convention": "__thiscall"
+      },
+      {
+        "address": "0086ade0",
+        "name": "BSP_NativeTracelinePayload_ScalarDelete",
+        "prototype": "void * BSP_NativeTracelinePayload_ScalarDelete(unsigned int flags)",
+        "calling_convention": "__thiscall"
+      }
+    ],
+    "call_rows_verified": true,
+    "call_checks": [
+      [
+        "native_traceline_pool",
+        "reports/native_traceline_pool.json: 17 call rows checked, 0 failed"
+      ],
+      [
+        "native_traceline_lifetime",
+        "reports/native_traceline_lifetime.json: 8 call rows checked, 0 failed"
+      ],
+      [
+        "native_traceline_update",
+        "reports/native_traceline_update.json: 25 call rows checked, 0 failed"
+      ],
+      [
+        "native_traceline_geometry",
+        "reports/native_traceline_geometry.json: 26 call rows checked, 0 failed"
+      ]
+    ],
+    "saved_names_and_original_signatures": 24,
+    "original_signature_readback": "00af19d0 BSP_NativeTracelineSlab_Initialize  void * __thiscall BSP_NativeTracelineSlab_Initialize(void * this, uint slab_id)  body 00af19d0 - 00af1a12\n00af32f0 BSP_NativeTracelinePool_AllocateRawSlot  void * __thiscall BSP_NativeTracelinePool_AllocateRawSlot(void * this)  body 00af32f0 - 00af342b\n00af1d30 BSP_NativeTracelinePool_ReturnRawSlot  void __thiscall BSP_NativeTracelinePool_ReturnRawSlot(void * this, void * slot)  body 00af1d30 - 00af1d9b\n00af1ea0 BSP_NativeTraceline_ReturnRawSlot  void __thiscall BSP_NativeTraceline_ReturnRawSlot(void * this)  body 00af1ea0 - 00af1eab\n00af1ac0 BSP_NativeTracelinePoolTable_FreeBacking  void __thiscall BSP_NativeTracelinePoolTable_FreeBacking(void * this)  body 00af1ac0 - 00af1acd\n00af3170 BSP_NativeTracelinePool_Construct  void * __thiscall BSP_NativeTracelinePool_Construct(void * this)  body 00af3170 - 00af3242\n00af1c70 BSP_NativeTracelinePool_Destroy  void __thiscall BSP_NativeTracelinePool_Destroy(void * this)  body 00af1c70 - 00af1cf9\n00af3250 BSP_NativeTracelinePool_TrimEmptySlabs  void __thiscall BSP_NativeTracelinePool_TrimEmptySlabs(void * this)  body 00af3250 - 00af32ef\n00cd77f0 BSP_StaticNativeTracelinePool_Initialize  int __cdecl BSP_StaticNativeTracelinePool_Initialize(void)  body 00cd77f0 - 00cd7805\n00ce0b70 BSP_StaticNativeTracelinePool_DestroyAtExit  void __cdecl BSP_StaticNativeTracelinePool_DestroyAtExit(void)  body 00ce0b70 - 00ce0b79\n00af1980 BSP_NativeTraceline_Destroy  void __thiscall BSP_NativeTraceline_Destroy(void * this)  body 00af1980 - 00af19a3\n00858380 BSP_NativeTraceline_ScalarDelete  void * __thiscall BSP_NativeTraceline_ScalarDelete(void * this, uint flags)  body 00858380 - 0085839b\n0086ad50 BSP_NativeTracelinePayload_Destroy  void __thiscall BSP_NativeTracelinePayload_Destroy(void * this)  body 0086ad50 - 0086addf\n0086ade0 BSP_NativeTracelinePayload_ScalarDelete  void * __thiscall BSP_NativeTracelinePayload_ScalarDelete(void * this, uint flags)  body 0086ade0 - 0086adfd\n00af22b0 BSP_NativeTraceline_AppendPoint  void __fastcall BSP_NativeTraceline_AppendPoint(void * node, void * point, float interval)  body 00af22b0 - 00af2620\n00af2630 BSP_NativeTraceline_SetPoint  void __thiscall BSP_NativeTraceline_SetPoint(void * this, void * point, float interval)  body 00af2630 - 00af2643\n00b0a110 BSP_NativeParticleTracer_Update  uint __thiscall BSP_NativeParticleTracer_Update(void * this, void * state, float age, uint word, void * matrix, float delta)  body 00b0a110 - 00b0a3eb\n00af3440 BSP_NativeTraceline_AttachGeometry  void __thiscall BSP_NativeTraceline_AttachGeometry(void * this, void * payload, void * root)  body 00af3440 - 00af3748\n00af3430 BSP_NativeTraceline_AllocateSlot  void * __cdecl BSP_NativeTraceline_AllocateSlot(void)  body 00af3430 - 00af3439\n00b0b6a0 BSP_NativeParticleTracer_InitializeState  void __thiscall BSP_NativeParticleTracer_InitializeState(void * this, void * state, void * record)  body 00b0b6a0 - 00b0c80e\n00b0a840 BSP_NativeParticleTracer_CleanupState  uchar __thiscall BSP_NativeParticleTracer_CleanupState(void * this, void * state, uint force)  body 00b0a840 - 00b0a91a\n00affcb0 BSP_ParticleParameter_IntegrateHermite  float __thiscall BSP_ParticleParameter_IntegrateHermite(void * this, float time)  body 00affcb0 - 00affd19\n00affd20 BSP_ParticleParameter_IntegrateLinear  float __thiscall BSP_ParticleParameter_IntegrateLinear(void * this, float time)  body 00affd20 - 00affd6f\n00af26a0 BSP_NativeTraceline_FillAndSubmitGeometry  void __thiscall BSP_NativeTraceline_FillAndSubmitGeometry(void * this, void * render_context, float arg1, float arg2, uint flags)  body 00af26a0 - 00af3168\n",
+    "previous_signature_snapshot": "00af19d0 FUN_00af19d0  undefined FUN_00af19d0(void)  body 00af19d0 - 00af1a12\n00af32f0 FUN_00af32f0  undefined FUN_00af32f0(void)  body 00af32f0 - 00af342b\n00af1d30 FUN_00af1d30  undefined FUN_00af1d30(void)  body 00af1d30 - 00af1d9b\n00af1ea0 FUN_00af1ea0  undefined FUN_00af1ea0(void)  body 00af1ea0 - 00af1eab\n00af1ac0 FUN_00af1ac0  undefined FUN_00af1ac0(void)  body 00af1ac0 - 00af1acd\n00af3170 FUN_00af3170  undefined FUN_00af3170(void)  body 00af3170 - 00af3242\n00af1c70 FUN_00af1c70  undefined FUN_00af1c70(void)  body 00af1c70 - 00af1cf9\n00af3250 FUN_00af3250  undefined FUN_00af3250(void)  body 00af3250 - 00af32ef\n00cd77f0 FUN_00cd77f0  undefined FUN_00cd77f0(void)  body 00cd77f0 - 00cd7805\n00ce0b70 CG_static_init_00ce0b70  undefined CG_static_init_00ce0b70(void)  body 00ce0b70 - 00ce0b79\n00af1980 FUN_00af1980  undefined FUN_00af1980(void)  body 00af1980 - 00af19a3\n00858380 FUN_00858380  undefined FUN_00858380(void)  body 00858380 - 0085839b\n0086ad50 FUN_0086ad50  undefined FUN_0086ad50(void)  body 0086ad50 - 0086addf\n0086ade0 CG_scalar_deleting_dtor_0086ade0  undefined CG_scalar_deleting_dtor_0086ade0(void)  body 0086ade0 - 0086adfd\n00af22b0 FUN_00af22b0  undefined FUN_00af22b0(void)  body 00af22b0 - 00af2620\n00af2630 FUN_00af2630  undefined FUN_00af2630(void)  body 00af2630 - 00af2643\n00b0a110 FUN_00b0a110  undefined FUN_00b0a110(void)  body 00b0a110 - 00b0a3eb\n00af3440 FUN_00af3440  undefined FUN_00af3440(void)  body 00af3440 - 00af3748\n00af3430 BSP_NativeTraceline_AllocateSlot  void * __cdecl BSP_NativeTraceline_AllocateSlot(void)  body 00af3430 - 00af3439\n00b0b6a0 BSP_NativeParticleTracer_InitializeState  void __thiscall BSP_NativeParticleTracer_InitializeState(void * this, void * state, void * record)  body 00b0b6a0 - 00b0c80e\n00b0a840 BSP_NativeParticleTracer_CleanupState  uchar __thiscall BSP_NativeParticleTracer_CleanupState(void * this, void * state, uint force)  body 00b0a840 - 00b0a91a\n00affcb0 BSP_ParticleParameter_IntegrateHermite  float __thiscall BSP_ParticleParameter_IntegrateHermite(void * this, float time)  body 00affcb0 - 00affd19\n00affd20 BSP_ParticleParameter_IntegrateLinear  float __thiscall BSP_ParticleParameter_IntegrateLinear(void * this, float time)  body 00affd20 - 00affd6f\n00af26a0 FUN_00af26a0  undefined FUN_00af26a0(void)  body 00af26a0 - 00af3168\n",
+    "analysis_repairs": {
+      "as-flow-repair.json": {
+        "repairs": [
+          {
+            "function": "00af1ac0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:49:22Z",
+            "decompile_lines_before": 11,
+            "gaps": [
+              {
+                "site": "00af1ac7",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af1acc",
+                "gap_end_exclusive": "00af1acd",
+                "bytes": 1,
+                "after_call": true,
+                "sha256": "18f5384d58bcb1bba0bcd9e6a6781d1a6ac2cc280c330ecbab6cb7931b721552"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af1ac7",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af1acc",
+                  "gap_end_exclusive": "00af1acd",
+                  "bytes": 1,
+                  "after_call": true,
+                  "sha256": "18f5384d58bcb1bba0bcd9e6a6781d1a6ac2cc280c330ecbab6cb7931b721552"
+                },
+                "clear": "Success: Cleared flow override at 00af1ac7 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 1 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 10,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af1c70",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:49:29Z",
+            "decompile_lines_before": 35,
+            "gaps": [
+              {
+                "site": "00af1c88",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00af1c8d",
+                "gap_end_exclusive": "00af1c98",
+                "bytes": 11,
+                "after_call": true,
+                "sha256": "8dce4cab274cdcac18669cd33a5a3e3b2d5ee45271375a49c6d6aa389c0cfee8"
+              },
+              {
+                "site": "00af1ca0",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af1ca5",
+                "gap_end_exclusive": "00af1ca8",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af1c88",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00af1c8d",
+                  "gap_end_exclusive": "00af1c98",
+                  "bytes": 11,
+                  "after_call": true,
+                  "sha256": "8dce4cab274cdcac18669cd33a5a3e3b2d5ee45271375a49c6d6aa389c0cfee8"
+                },
+                "clear": "Success: Cleared flow override at 00af1c88 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 11 byte(s)"
+              },
+              {
+                "gap": {
+                  "site": "00af1ca0",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af1ca5",
+                  "gap_end_exclusive": "00af1ca8",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00af1ca0 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 38,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af3170",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:49:36Z",
+            "decompile_lines_before": 55,
+            "gaps": [
+              {
+                "site": "00af3224",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af3229",
+                "gap_end_exclusive": "00af322c",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af3224",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af3229",
+                  "gap_end_exclusive": "00af322c",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00af3224 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 53,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af3250",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:49:42Z",
+            "decompile_lines_before": 35,
+            "gaps": [
+              {
+                "site": "00af3271",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00af3276",
+                "gap_end_exclusive": "00af32b0",
+                "bytes": 58,
+                "after_call": true,
+                "sha256": "67e700ce4ec9949f0ca8112ff9b32d25d93f8c1af32c1baff831c05cd6cc67e8"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af3271",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "00af3276",
+                  "gap_end_exclusive": "00af32b0",
+                  "bytes": 58,
+                  "after_call": true,
+                  "sha256": "67e700ce4ec9949f0ca8112ff9b32d25d93f8c1af32c1baff831c05cd6cc67e8"
+                },
+                "clear": "Success: Cleared flow override at 00af3271 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 58 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 49,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af32f0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:49:49Z",
+            "decompile_lines_before": 78,
+            "gaps": [
+              {
+                "site": "00af3381",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af3386",
+                "gap_end_exclusive": "00af3389",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af3381",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af3386",
+                  "gap_end_exclusive": "00af3389",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00af3381 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 76,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "00af1980",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:49:56Z",
+            "decompile_lines_before": 13,
+            "gaps": [
+              {
+                "site": "00af1994",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "00af1999",
+                "gap_end_exclusive": "00af199c",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "00af1994",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "00af1999",
+                  "gap_end_exclusive": "00af199c",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 00af1994 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 12,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "0086ad50",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:50:03Z",
+            "decompile_lines_before": 39,
+            "gaps": [
+              {
+                "site": "0086adc2",
+                "mnemonic": "CALL",
+                "operands": "0x00bf6989",
+                "gap_start": "0086adc7",
+                "gap_end_exclusive": "0086adcd",
+                "bytes": 6,
+                "after_call": true,
+                "sha256": "2e3a4266eda0d7957574d1720071ed1c87c21c000210142825732dd1fba0216f"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "0086adc2",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf6989",
+                  "gap_start": "0086adc7",
+                  "gap_end_exclusive": "0086adcd",
+                  "bytes": 6,
+                  "after_call": true,
+                  "sha256": "2e3a4266eda0d7957574d1720071ed1c87c21c000210142825732dd1fba0216f"
+                },
+                "clear": "Success: Cleared flow override at 0086adc2 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 6 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 39,
+            "gaps_remaining": 0
+          },
+          {
+            "function": "0086ade0",
+            "owner": "agent/orch3-20260910",
+            "when": "2026-09-12T22:50:09Z",
+            "decompile_lines_before": 14,
+            "gaps": [
+              {
+                "site": "0086adf0",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "0086adf5",
+                "gap_end_exclusive": "0086adf8",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              }
+            ],
+            "events": [
+              {
+                "gap": {
+                  "site": "0086adf0",
+                  "mnemonic": "CALL",
+                  "operands": "0x00bf65ac",
+                  "gap_start": "0086adf5",
+                  "gap_end_exclusive": "0086adf8",
+                  "bytes": 3,
+                  "after_call": true,
+                  "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+                },
+                "clear": "Success: Cleared flow override at 0086adf0 (was: CALL_RETURN, now: NONE)",
+                "disassemble": "Successfully disassembled 3 byte(s)"
+              }
+            ],
+            "decompile_lines_after": 11,
+            "gaps_remaining": 0
+          }
+        ]
+      },
+      "as-function-definitions.json": {
+        "events": [
+          {
+            "recreate": "00af1980",
+            "previous": "Function: FUN_00af1980 at 00af1980\nSignature: undefined FUN_00af1980(void)\nEntry: 00af1980\nBody: 00af1980 - 00af19a3",
+            "plate": null
+          },
+          {
+            "endpoint": "delete_function",
+            "body": {
+              "address": "00af1980"
+            },
+            "result": {
+              "success": true,
+              "address": "00af1980",
+              "deleted_function": "FUN_00af1980",
+              "body_size": 33,
+              "message": "Function 'FUN_00af1980' deleted at 00af1980"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af1980",
+              "end_address": "00af19a4"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af1980",
+              "end_address": "00af19a3",
+              "bytes_disassembled": 36,
+              "message": "Successfully disassembled 36 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af1980",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af1980",
+              "function_name": "FUN_00af1980",
+              "entry_point": "00af1980",
+              "body_size": 36,
+              "message": "Function created successfully at 00af1980"
+            }
+          },
+          {
+            "defined": "00af1980",
+            "end": "00af19a4",
+            "name": null,
+            "after": "Function: FUN_00af1980 at 00af1980\nSignature: undefined FUN_00af1980(void)\nEntry: 00af1980\nBody: 00af1980 - 00af19a3"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00cd77f0",
+              "end_address": "00cd7806"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00cd77f0",
+              "end_address": "00cd7805",
+              "bytes_disassembled": 22,
+              "message": "Successfully disassembled 22 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00cd77f0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00cd77f0",
+              "function_name": "FUN_00cd77f0",
+              "entry_point": "00cd77f0",
+              "body_size": 22,
+              "message": "Function created successfully at 00cd77f0"
+            }
+          },
+          {
+            "defined": "00cd77f0",
+            "end": "00cd7806",
+            "name": null,
+            "after": "Function: FUN_00cd77f0 at 00cd77f0\nSignature: undefined FUN_00cd77f0(void)\nEntry: 00cd77f0\nBody: 00cd77f0 - 00cd7805"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          },
+          {
+            "endpoint": "disassemble_bytes",
+            "body": {
+              "start_address": "00af26a0",
+              "end_address": "00af3169"
+            },
+            "result": {
+              "success": true,
+              "start_address": "00af26a0",
+              "end_address": "00af3168",
+              "bytes_disassembled": 2761,
+              "message": "Successfully disassembled 2761 byte(s)"
+            }
+          },
+          {
+            "endpoint": "create_function",
+            "body": {
+              "address": "00af26a0",
+              "disassemble_first": false
+            },
+            "result": {
+              "success": true,
+              "address": "00af26a0",
+              "function_name": "FUN_00af26a0",
+              "entry_point": "00af26a0",
+              "body_size": 2761,
+              "message": "Function created successfully at 00af26a0"
+            }
+          },
+          {
+            "defined": "00af26a0",
+            "end": "00af3169",
+            "name": null,
+            "after": "Function: FUN_00af26a0 at 00af26a0\nSignature: undefined FUN_00af26a0(void)\nEntry: 00af26a0\nBody: 00af26a0 - 00af3168"
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "error": "Unable to lock due to active transaction"
+            }
+          },
+          {
+            "endpoint": "save_program",
+            "body": {},
+            "result": {
+              "success": true,
+              "program": "battlestationspacific.exe",
+              "message": "Program saved successfully"
+            }
+          }
+        ]
+      }
+    },
+    "worker_review": "Pool reviewed full AF3440; lifetime reviewed canonical Tracer composition; update reviewed captured dispatch and x87 clock/curve boundaries. Sentinel-cell and matching allocator binding gaps fixed and focused probes passed.",
+    "historical_missing_function_correction": "CD77F0 and analyzed-only AF26A0 now defined with verified full ranges. Returning-free gaps in owned pool/lifetime functions repaired without changing CRT callee no-return flags. All listed direct call rows now pass."
+  }
 }
