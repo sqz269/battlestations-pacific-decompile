@@ -1,0 +1,682 @@
+{
+  "packet": "orch3_particle_object_state_ar",
+  "status": "complete_reconstruction_strict_compile_and_installed_differential_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "read_only_ghidra": true,
+  "functions": [
+    {
+      "address": "00af90a0",
+      "end_inclusive": "00af9650",
+      "cpp_symbol": "bsp::initialize_native_particle_object_state_00af90a0",
+      "ghidra_name": "BSP_ParticleObject_InitializeState",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void __thiscall BSP_ParticleObject_InitializeState(void *state, void *record)",
+      "original_abi": "ECX actual Object definition; stack actual6Ch state,actual108h record; RET8; incidental EAX unestablished",
+      "source": "src/native_particle_object_state.cpp",
+      "header": "include/bsp/native_particle_object_state.hpp",
+      "evidence": "Complete installed/live 1457-byte span SHA256 5953dfcd022308a84df760779c16a1ad025254c109f4b9c1952e0166471f7ace; whole listing and exact stack cleanup reviewed; docs/NATIVE_PARTICLE_OBJECT_STATE.md. Descriptive hypothesis/new EDX access ABI; native FH3 and gameplay unvalidated.",
+      "coverage": "complete",
+      "saved_name_before": "FUN_00af90a0"
+    },
+    {
+      "address": "00af8b00",
+      "end_inclusive": "00af8ba9",
+      "cpp_symbol": "bsp::clear_native_particle_object_state_00af8b00",
+      "ghidra_name": "BSP_ParticleObject_ClearState",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "bool __thiscall BSP_ParticleObject_ClearState(void *state, uint argument)",
+      "original_abi": "ECX unused actual definition; stack actual6Ch state,unused argument DWORD; RET8; AL true",
+      "source": "src/native_particle_object_state.cpp",
+      "header": "include/bsp/native_particle_object_state.hpp",
+      "evidence": "Complete installed/live 170-byte span SHA256 aa9e048067272774e77aebbd963b4cdb711bbf81c0c3906c5a0dce4c1ed65bab; whole listing and exact stack cleanup reviewed; docs/NATIVE_PARTICLE_OBJECT_STATE.md. Descriptive hypothesis/new EDX access ABI; native FH3 and gameplay unvalidated.",
+      "coverage": "complete",
+      "saved_name_before": "FUN_00af8b00"
+    },
+    {
+      "address": "00af8440",
+      "end_inclusive": "00af84ff",
+      "cpp_symbol": "bsp::construct_native_particle_object_matrix_00af8440",
+      "ghidra_name": "BSP_ParticleObject_ConstructRandomMatrix",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ParticleObject_ConstructRandomMatrix()",
+      "original_abi": "ECX actual40h matrix; RET; EAX same matrix",
+      "source": "src/native_particle_object_state.cpp",
+      "header": "include/bsp/native_particle_object_state.hpp",
+      "evidence": "Complete installed/live 192-byte span SHA256 740bec77a0531c6ac412a3872d32779f3477cd373b39d210fb3dd7a4e6909839; whole listing and exact stack cleanup reviewed; docs/NATIVE_PARTICLE_OBJECT_STATE.md. Descriptive hypothesis/new EDX access ABI; native FH3 and gameplay unvalidated.",
+      "coverage": "complete",
+      "saved_name_before": "FUN_00af8440"
+    },
+    {
+      "address": "00af8270",
+      "end_inclusive": "00af82ad",
+      "cpp_symbol": "bsp::compose_native_particle_record_matrix_00af8270",
+      "ghidra_name": "BSP_ParticleRecord_ComposeObjectMatrix",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "void * __thiscall BSP_ParticleRecord_ComposeObjectMatrix(void *output)",
+      "original_abi": "ECX actual108h record; stack output40h; RET4; EAX output",
+      "source": "src/native_particle_object_state.cpp",
+      "header": "include/bsp/native_particle_object_state.hpp",
+      "evidence": "Complete installed/live 62-byte span SHA256 0bb92a5808e5d44df1c995cae664ee3fe692b8d403f7f82df3c9746e9fd4a359; whole listing and exact stack cleanup reviewed; docs/NATIVE_PARTICLE_OBJECT_STATE.md. Descriptive hypothesis/new EDX access ABI; native FH3 and gameplay unvalidated.",
+      "coverage": "complete",
+      "saved_name_before": "FUN_00af8270"
+    },
+    {
+      "address": "00bd2f10",
+      "end_inclusive": "00bd2f30",
+      "cpp_symbol": "bsp::native_particle_random_range_00bd2f10",
+      "ghidra_name": "BSP_Random_UniformFloatRange",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "float __thiscall BSP_Random_UniformFloatRange(float minimum, float maximum)",
+      "original_abi": "ECX integer stream selector; stack minimum,maximum; RET8; ST0 float32",
+      "source": "src/native_particle_object_state.cpp",
+      "header": "include/bsp/native_particle_object_state.hpp",
+      "evidence": "Complete installed/live 33-byte span SHA256 a66023eb262d4976f95f49cf16ef0cb8e2afeda0dc71d74466408ae9a17c163e; whole listing and exact stack cleanup reviewed; docs/NATIVE_PARTICLE_OBJECT_STATE.md. Descriptive hypothesis/new EDX access ABI; native FH3 and gameplay unvalidated.",
+      "coverage": "complete",
+      "saved_name_before": "BSP_Random_UniformFloatRange"
+    },
+    {
+      "address": "00bd2e60",
+      "end_inclusive": "00bd2ecd",
+      "cpp_symbol": "bsp::native_particle_random_state_range_00bd2e60",
+      "ghidra_name": "BSP_RandomState_UniformFloatRange",
+      "native_calling_convention": "__thiscall",
+      "native_prototype": "float __thiscall BSP_RandomState_UniformFloatRange(float minimum, float maximum)",
+      "original_abi": "ECX actual RandomState; stack minimum,maximum; RET8; ST0 float32",
+      "source": "src/native_particle_object_state.cpp",
+      "header": "include/bsp/native_particle_object_state.hpp",
+      "evidence": "Complete installed/live 110-byte span SHA256 2e66b9e051f1ed069bf305ba4fc78e0dfc3df94eb92bf39ad2ff3ee31630f4dd; whole listing and exact stack cleanup reviewed; docs/NATIVE_PARTICLE_OBJECT_STATE.md. Descriptive hypothesis/new EDX access ABI; native FH3 and gameplay unvalidated.",
+      "coverage": "complete",
+      "saved_name_before": "FUN_00bd2e60"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00af90d7",
+      "native": "0072b740",
+      "function": "00af90a0",
+      "binding": "Existing actual shared population lock getter; no arguments/EAX owner. Captured physical section and depth are preserved."
+    },
+    {
+      "address": "00af910e",
+      "native": "00b7bd30",
+      "function": "00af90a0",
+      "binding": "Complete existing wrapper ignores incoming ECX=1FCh and allocates same actual PointLight pool200h slot; no separate owner."
+    },
+    {
+      "address": "00af912e",
+      "native": "0041e870",
+      "function": "00af90a0",
+      "binding": "Existing raw8h nonnull string constructor through same supplied NativeStringStorage; ECX destination, stack text, RET4."
+    },
+    {
+      "address": "00af9151",
+      "native": "004261a0",
+      "function": "00af90a0",
+      "binding": "Existing actual string concat; ECX prefix, stack(output,current parent+8 name), RET8; current reload after prefix allocation."
+    },
+    {
+      "address": "00af9169",
+      "native": "00b7c710",
+      "function": "00af90a0",
+      "binding": "Existing actual raw PointLight constructor, ECX slot, stack native8h name, RET4; canonical adoption adds no native allocation/retain."
+    },
+    {
+      "address": "00af919f",
+      "native": "00419cc0",
+      "function": "00af90a0",
+      "binding": "Existing actual string pool publication getter through NativeStringStorage; release stack args remain on stack; no native args."
+    },
+    {
+      "address": "00af91a6",
+      "native": "00bd1510",
+      "function": "00af90a0",
+      "binding": "Same actual storage release(block,uint32 length+1,unused1); native ECX pool, RET0C; no extra pool domain."
+    },
+    {
+      "address": "00af91ce",
+      "native": "00419cc0",
+      "function": "00af90a0",
+      "binding": "Existing actual string pool publication getter through NativeStringStorage; release stack args remain on stack; no native args."
+    },
+    {
+      "address": "00af91d5",
+      "native": "00bd1510",
+      "function": "00af90a0",
+      "binding": "Same actual storage release(block,uint32 length+1,unused1); native ECX pool, RET0C; no extra pool domain."
+    },
+    {
+      "address": "00af9227",
+      "native": "00bd2fc0",
+      "function": "00af90a0",
+      "binding": "Existing actual application RandomThreads::next_00bd2fc0; ECX primary stream, RET/EAX rawuint32; initializer uses SIGNED FILD."
+    },
+    {
+      "address": "00af926e",
+      "native": "00affa70",
+      "function": "00af90a0",
+      "binding": "Existing exact actual linear curve at time zero; ECX curve, stack float0, RET4/ST0."
+    },
+    {
+      "address": "00af9275",
+      "native": "00affae0",
+      "function": "00af90a0",
+      "binding": "Existing exact actual cubic curve at time zero; ECX curve, stack float0, RET4/ST0."
+    },
+    {
+      "address": "00af929d",
+      "native": "00bd2f10",
+      "function": "00af90a0",
+      "binding": "New complete shared exact range provider; ECX primary stream, stack(min,max), RET8/ST0; original endpoint spills retained."
+    },
+    {
+      "address": "00af92d8",
+      "native": "00bd2fc0",
+      "function": "00af90a0",
+      "binding": "Existing actual application RandomThreads::next_00bd2fc0; ECX primary stream, RET/EAX rawuint32; initializer uses SIGNED FILD."
+    },
+    {
+      "address": "00af933c",
+      "native": "00bd2fc0",
+      "function": "00af90a0",
+      "binding": "Existing actual application RandomThreads::next_00bd2fc0; ECX primary stream, RET/EAX rawuint32; initializer uses SIGNED FILD."
+    },
+    {
+      "address": "00af938d",
+      "native": "00bd2fc0",
+      "function": "00af90a0",
+      "binding": "Existing actual application RandomThreads::next_00bd2fc0; ECX primary stream, RET/EAX rawuint32; initializer uses SIGNED FILD."
+    },
+    {
+      "address": "00af93e7",
+      "native": "00bd2fc0",
+      "function": "00af90a0",
+      "binding": "Existing actual application RandomThreads::next_00bd2fc0; ECX primary stream, RET/EAX rawuint32; initializer uses SIGNED FILD."
+    },
+    {
+      "address": "00af9413",
+      "native": "00bd2f40",
+      "function": "00af90a0",
+      "binding": "Existing complete shared unit fraction provider; ECX primary stream; RET/ST0 float32; current correction/scale."
+    },
+    {
+      "address": "00af948c",
+      "native": "00affa70",
+      "function": "00af90a0",
+      "binding": "Existing exact actual linear curve at time zero; ECX curve, stack float0, RET4/ST0."
+    },
+    {
+      "address": "00af9493",
+      "native": "00affae0",
+      "function": "00af90a0",
+      "binding": "Existing exact actual cubic curve at time zero; ECX curve, stack float0, RET4/ST0."
+    },
+    {
+      "address": "00af94d3",
+      "native": "00bd2f10",
+      "function": "00af90a0",
+      "binding": "New complete shared exact range provider; ECX primary stream, stack(min,max), RET8/ST0; original endpoint spills retained."
+    },
+    {
+      "address": "00af94d8",
+      "native": "00bf7420",
+      "function": "00af90a0",
+      "binding": "Required actual CRT ST0 truncation with current0109EEA4 dispatch; RET/EAX, pops ST0. Fixture uses original BF7420 and BF7456 bytes."
+    },
+    {
+      "address": "00af94fa",
+      "native": "00bf681b",
+      "function": "00af90a0",
+      "binding": "Required actual matching application object allocation service; CDECL stack40h, ADD ESP,4; EAX allocation/null; no fixture success fallback in production."
+    },
+    {
+      "address": "00af9517",
+      "native": "00af8440",
+      "function": "00af90a0",
+      "binding": "New complete random actual40h matrix constructor; ECX destination, RET/EAX same actual storage."
+    },
+    {
+      "address": "00af952a",
+      "native": "0072b740",
+      "function": "00af90a0",
+      "binding": "Existing actual shared population lock getter; no arguments/EAX owner. Captured physical section and depth are preserved."
+    },
+    {
+      "address": "00af956b",
+      "native": "00b6d890",
+      "function": "00af90a0",
+      "binding": "Existing complete canonical actual node/root propagation under captured population section; ECX node, stack current roots, RET4."
+    },
+    {
+      "address": "00af95a1",
+      "native": "00af8270",
+      "function": "00af90a0",
+      "binding": "New complete record matrix composition; ECX record, stack actual40h output, RET4/EAX output."
+    },
+    {
+      "address": "00af8b19",
+      "native": "0072b740",
+      "function": "00af8b00",
+      "binding": "Existing actual shared population lock getter; no arguments/EAX owner. Captured physical section and depth are preserved."
+    },
+    {
+      "address": "00af8b76",
+      "native": "00bf65ac",
+      "function": "00af8b00",
+      "binding": "Retain correct CRT _free name; required matching real application free; CDECL stack pointer, returning ADD ESP,4 at AF8B7B."
+    },
+    {
+      "address": "00af845d",
+      "native": "00bd2f10",
+      "function": "00af8440",
+      "binding": "New complete shared exact range provider; ECX primary stream, stack(min,max), RET8/ST0; original endpoint spills retained."
+    },
+    {
+      "address": "00af847a",
+      "native": "00bd2f10",
+      "function": "00af8440",
+      "binding": "New complete shared exact range provider; ECX primary stream, stack(min,max), RET8/ST0; original endpoint spills retained."
+    },
+    {
+      "address": "00af8497",
+      "native": "00bd2f10",
+      "function": "00af8440",
+      "binding": "New complete shared exact range provider; ECX primary stream, stack(min,max), RET8/ST0; original endpoint spills retained."
+    },
+    {
+      "address": "00af84a8",
+      "native": "00b646e0",
+      "function": "00af8440",
+      "binding": "Existing current-global Y rotation; ECX matrix, EDX angle pointer, RET/EAX matrix."
+    },
+    {
+      "address": "00af84be",
+      "native": "00b64640",
+      "function": "00af8440",
+      "binding": "Existing current-global X rotation; ECX matrix, EDX angle pointer, RET/EAX matrix."
+    },
+    {
+      "address": "00af84d7",
+      "native": "00b64780",
+      "function": "00af8440",
+      "binding": "Existing current-global Z rotation overload; ECX matrix, EDX angle pointer, RET/EAX matrix via adapter."
+    },
+    {
+      "address": "00af84de",
+      "native": "00413920",
+      "function": "00af8440",
+      "binding": "Existing complete exact raw matrix multiply; ECX left, stack(output,right), RET8/EAX output."
+    },
+    {
+      "address": "00af84e5",
+      "native": "00413920",
+      "function": "00af8440",
+      "binding": "Existing complete exact raw matrix multiply; ECX left, stack(output,right), RET8/EAX output."
+    },
+    {
+      "address": "00af84f1",
+      "native": "004134f0",
+      "function": "00af8440",
+      "binding": "Existing complete raw16-pair x87 matrix copy; ECX output, stack source, RET4/EAX output."
+    },
+    {
+      "address": "00af8298",
+      "native": "00b6db60",
+      "function": "00af8270",
+      "binding": "Existing complete actual node local matrix pointer getter; ECX node, RET/EAX node+B0."
+    },
+    {
+      "address": "00af829f",
+      "native": "00413920",
+      "function": "00af8270",
+      "binding": "Existing complete exact raw matrix multiply; ECX left, stack(output,right), RET8/EAX output."
+    },
+    {
+      "address": "00bd2f22",
+      "native": "00bd2ed0",
+      "function": "00bd2f10",
+      "binding": "Existing canonical RandomThreads state lookup; ECX stream selector, RET/EAX same actual RandomState."
+    },
+    {
+      "address": "00bd2f29",
+      "native": "00bd2e60",
+      "function": "00bd2f10",
+      "binding": "New complete actual RandomState range; ECX actual state, stack(min,max), RET8/ST0."
+    },
+    {
+      "address": "00bd2e91",
+      "native": "00ba2c20",
+      "function": "00bd2e60",
+      "binding": "Existing complete actual RandomState generator; ECX actual state, RET/EAX uint32; native guard/refill retained."
+    },
+    {
+      "address": "00af90f4",
+      "native": "IAT:00ce2218",
+      "function": "00af90a0",
+      "binding": "EnterCriticalSection; stdcall(section), RET4"
+    },
+    {
+      "address": "00af91f0",
+      "native": "IAT:00ce2210",
+      "function": "00af90a0",
+      "binding": "LeaveCriticalSection; stdcall(section), RET4"
+    },
+    {
+      "address": "00af9543",
+      "native": "IAT:00ce2218",
+      "function": "00af90a0",
+      "binding": "EnterCriticalSection; stdcall(section), RET4"
+    },
+    {
+      "address": "00af9582",
+      "native": "IAT:00ce2210",
+      "function": "00af90a0",
+      "binding": "LeaveCriticalSection; stdcall(section), RET4"
+    },
+    {
+      "address": "00af94f3",
+      "native": "resource+vtable08",
+      "function": "00af90a0",
+      "binding": "Captured CURRENT actual resource virtual08; ECX resource, stack(uint0,float1), RET8; EAX actual instance"
+    },
+    {
+      "address": "00af9634",
+      "native": "definition+vtable28",
+      "function": "00af90a0",
+      "binding": "Captured CURRENT actual definition virtual28; ECX definition, stack(state,float0,uint0,matrix,float0), RET14"
+    },
+    {
+      "address": "00af8b32",
+      "native": "IAT:00ce2218",
+      "function": "00af8b00",
+      "binding": "EnterCriticalSection; stdcall(section), RET4"
+    },
+    {
+      "address": "00af8b55",
+      "native": "IAT:00ce2220",
+      "function": "00af8b00",
+      "binding": "InterlockedDecrement; stdcall(actual instance+4), RET4/EAX new count"
+    },
+    {
+      "address": "00af8b65",
+      "native": "instance+vtable00",
+      "function": "00af8b00",
+      "binding": "Captured CURRENT actual instance virtual00; ECX instance, no stack arguments; RET"
+    },
+    {
+      "address": "00af8b90",
+      "native": "IAT:00ce2210",
+      "function": "00af8b00",
+      "binding": "LeaveCriticalSection; stdcall(section), RET4"
+    }
+  ],
+  "no_ghidra_function": [],
+  "free_continuations": [
+    {
+      "address": "00af8b76",
+      "function": "00af8b00",
+      "was": "Per-call false-no-return annotation hides ten bytes after returning BF65AC free.",
+      "is": "Returning CDECL free; ADD ESP,4 then MOV DWORD PTR [EDI+30h],0.",
+      "start": "00af8b7b",
+      "end_inclusive": "00af8b84",
+      "bytes": "83c404c7473000000000",
+      "evidence": "Whole native function span and the ten-byte live/disk read match; all resource/matrix cleanup fixture branches return AL=true."
+    }
+  ],
+  "verification": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "relocation_directory_size": 0,
+    "full_spans": [
+      {
+        "address": "00af90a0",
+        "end_inclusive": "00af9650",
+        "size": 1457,
+        "sha256": "5953dfcd022308a84df760779c16a1ad025254c109f4b9c1952e0166471f7ace",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00af8b00",
+        "end_inclusive": "00af8ba9",
+        "size": 170,
+        "sha256": "aa9e048067272774e77aebbd963b4cdb711bbf81c0c3906c5a0dce4c1ed65bab",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00af8440",
+        "end_inclusive": "00af84ff",
+        "size": 192,
+        "sha256": "740bec77a0531c6ac412a3872d32779f3477cd373b39d210fb3dd7a4e6909839",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00af8270",
+        "end_inclusive": "00af82ad",
+        "size": 62,
+        "sha256": "0bb92a5808e5d44df1c995cae664ee3fe692b8d403f7f82df3c9746e9fd4a359",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00bd2f10",
+        "end_inclusive": "00bd2f30",
+        "size": 33,
+        "sha256": "a66023eb262d4976f95f49cf16ef0cb8e2afeda0dc71d74466408ae9a17c163e",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00bd2e60",
+        "end_inclusive": "00bd2ecd",
+        "size": 110,
+        "sha256": "2e66b9e051f1ed069bf305ba4fc78e0dfc3df94eb92bf39ad2ff3ee31630f4dd",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00affa70",
+        "end_inclusive": "00affad2",
+        "size": 99,
+        "sha256": "03ded3de90d7bba2632b36e57d10ac6ac4da7a259f94340287bea90e82686224",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00affae0",
+        "end_inclusive": "00affb56",
+        "size": 119,
+        "sha256": "6b80757fff83b19b32d13272e4b85f48476062f424b3b299456f305b128ee85d",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00413920",
+        "end_inclusive": "00413c89",
+        "size": 874,
+        "sha256": "a2ae101c6235ce95cd7cffdc28deb5797b9d844dbc809e729db5ac5b134e29d9",
+        "live_disk_equal": true
+      },
+      {
+        "address": "004134f0",
+        "end_inclusive": "00413556",
+        "size": 103,
+        "sha256": "53914f4a6160375e4674eafefab73925952464b1edc62bd48edfa56c19068f10",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b64640",
+        "end_inclusive": "00b646de",
+        "size": 159,
+        "sha256": "b80e6bf8d0debabd9bf1b0577c9b905d0ece579f188579433a59bc45eee3201c",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b646e0",
+        "end_inclusive": "00b6477e",
+        "size": 159,
+        "sha256": "bf50bf1402d4fdd6068817d1735fe9b90ed05e12c1e6b73c3d452f1ba96ba4ff",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00b64780",
+        "end_inclusive": "00b6481e",
+        "size": 159,
+        "sha256": "0af68adacbc3e9cc638f6c18ca99d75462fc721c285da1ed80602503a6b73994",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00bd2f40",
+        "end_inclusive": "00bd2f84",
+        "size": 69,
+        "sha256": "3f4e848120f36b3f98af12f610e6ffc086a71ba5805ee44a575ee12a1fe8aee9",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00bf7420",
+        "end_inclusive": "00bf743b",
+        "size": 28,
+        "sha256": "ca03c44f225ec07ccb8fd4dbaf388d22ba816472e788e49ecdb1db7b85f11cc6",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00bf7456",
+        "end_inclusive": "00bf74ca",
+        "size": 117,
+        "sha256": "5333b186c02836974c6f792303aeb2c00d856316b93ccbbe65f51def6ae661b4",
+        "live_disk_equal": true
+      }
+    ],
+    "globals_and_tables": [
+      {
+        "address": "00d7a218",
+        "size": 4,
+        "bytes": "00000000",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d7a24c",
+        "size": 4,
+        "bytes": "0000803f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d5da30",
+        "size": 8,
+        "bytes": "000000000000003e",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d7a210",
+        "size": 8,
+        "bytes": "000000000000f03f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00ce3d9c",
+        "size": 4,
+        "bytes": "db0fc940",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00ce3800",
+        "size": 4,
+        "bytes": "0000003f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d7a260",
+        "size": 4,
+        "bytes": "000080bf",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d7a208",
+        "size": 4,
+        "bytes": "00000080",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00ce3978",
+        "size": 4,
+        "bytes": "0000804f",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d63b80",
+        "size": 8,
+        "bytes": "000000000000f03d",
+        "live_disk_equal": true
+      },
+      {
+        "address": "0109eea4",
+        "size": 4,
+        "bytes": "00000000",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d5db00",
+        "size": 44,
+        "bytes": "e030bd00b08baf00d08baf002009b000e080af00308aaf00a090af00008baf006096af00b082af00b085af00",
+        "live_disk_equal": true
+      },
+      {
+        "address": "00d0de04",
+        "size": 15,
+        "bytes": "64796e616d69635f6c696768745f00",
+        "live_disk_equal": true
+      }
+    ],
+    "scratch": "C:\\Users\\sqz269\\bsp-ar-object-state",
+    "native_fixture": {
+      "exit_code": 0,
+      "stdout": "PASS 36 Object initializer+cleanup cases: 12 scenarios x 3 x87 precision modes; actual state/RNG/matrix/light/ownership/events/status/control/sentinel.\nPASS 48 range cases: 8 endpoint scenarios x 2 canonical streams x 3 x87 precision modes.\n",
+      "stderr": "",
+      "object_cases": 36,
+      "range_cases": 48,
+      "compiler": "MSVC Win32 /MD /W4 /WX /fp:strict /O2, explicit /MANIFEST:EMBED",
+      "artifacts": [
+        {
+          "path": "C:\\Users\\sqz269\\bsp-ar-object-state\\probe.exe",
+          "sha256": "9fc24c1c7689f720a746927575d52a0f629b21c746426138f284a9bb04db21ff"
+        },
+        {
+          "path": "C:\\Users\\sqz269\\bsp-ar-object-state\\probe.cpp",
+          "sha256": "11a5b50935d78207a0bd86a410d38ffb435739ad0277294466db05081ecd3335"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-particle-object-state-ar\\src\\native_particle_object_state.cpp",
+          "sha256": "2e5454400c1de0863960fbc000d2f67e8542ee7c79a85bbbf816345a5126e201"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-particle-object-state-ar\\include\\bsp\\native_particle_object_state.hpp",
+          "sha256": "2e3064b43f7c8975695202f20c1e8c9466958aba2bc1edeb91bfb878ee122ac3"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_point_light_owner.cpp",
+          "sha256": "a27fedeb63682735ff55f86eae587c473760c37af17e7848cd478e48552eabd7"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_core.lib",
+          "sha256": "4679f587dac2956bcb7eb6f542c96cb736f30ccf3be0a7c1b55f2431d17c2095"
+        },
+        {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\build\\win32\\Release\\bsp_lua511.lib",
+          "sha256": "71e114b0ff6244852d678a5779fcbf28589bdcecbad811aff228ffd5007fe8c7"
+        }
+      ]
+    },
+    "worktree_build": "./scripts/build.ps1 exit0; existing full CMake graph and one CTest passed; new source strictly compiled separately until root registration",
+    "relocation_method": "Capstone decoded absolute and relative operands; external rel8 CRT conditional uses local rel32 stub; no PE relocation directory.",
+    "comparisons": [
+      "all6Ch state and cleanup state,98h Object definition,108h record,10h fixture instance",
+      "actual40h random/composed/identity matrices",
+      "actual1FCh PointLight slot with pooled-name pointer normalized",
+      "complete RandomState for both canonical streams",
+      "ordered ownership/string/array/virtual events and observed physical lock depth",
+      "x87 status/control and preexisting80-bit sentinel; not full FP environment"
+    ]
+  },
+  "dependencies_and_limits": [
+    "Root CMake/shared-ledger/Ghidra annotation integration remains required. No original game or saved analysis mutation.",
+    "Root native_point_light_owner adoption implementation is compiled in scratch until present in integrated library.",
+    "Actual resource factory can override returned classes; virtual08/instance00/definition28 dispatch is required, captured and never defaulted to success.",
+    "Controlled native-ABI fixture boundaries validate caller selection, arguments and physical ownership effects, not actual factory parsing/model loading/AF85B0 renderer behavior.",
+    "Original FH3, allocation/hardware-fault unwind, arbitrary invalid pointers and whole FP environment remain unvalidated.",
+    "AF8B7B..84 free continuation requires integration repair/export refresh. No missing Ghidra function starts or invented library names."
+  ]
+}
