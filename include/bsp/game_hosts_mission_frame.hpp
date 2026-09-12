@@ -147,7 +147,7 @@ public:
     void set_player_order(long frame, float throttle, float rudder) noexcept;
     // Milestone 2l: --order <command>[:<entity>] on the same --order-frame,
     // issued through 0046aab0 -> 0077d600 instead of through the order ring.
-    void set_player_command(std::string token, std::string target);
+    void set_player_command(std::string token, std::string target, std::string unit = {});
     // Milestone 2m: --order speed=<m/s> on the same --order-frame, the store
     // luaMW_SetShipSpeed 00890d30 makes on *(unit+73Ch) +24h / +28h.
     void set_player_commanded_speed(float speed) noexcept;

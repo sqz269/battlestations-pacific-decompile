@@ -188,6 +188,10 @@ public:
     GameMissionHost(const GameMissionHost&) = delete;
     GameMissionHost& operator=(const GameMissionHost&) = delete;
 
+    // Milestone 2n, --order-unit <name>: the created instance the command form
+    // of --order is issued to, instead of the controlled unit.
+    void set_order_unit(std::string unit);
+
     // True when --menu-select named a mission, so the run drives the path.
     bool requested() const noexcept;
 

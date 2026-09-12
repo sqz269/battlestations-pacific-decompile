@@ -49,6 +49,7 @@
 
 #include "bsp/cruise_command.hpp"
 #include "bsp/scene_deferred_refs.hpp"
+#include "bsp/ship_ai_states.hpp"
 #include "bsp/unit_commanded_speed.hpp"
 #include "bsp/unit_state_message.hpp"
 
@@ -179,6 +180,9 @@ public:
 
     // 0071be40 with the director's own mode: does this unit hold `cruise`?
     bool holds_cruise(std::size_t unit_index) const;
+    // Milestone 2n. The same read without the `cruise` test, which is what
+    // 009f3dd0 asks the director for at 009f3de6 before it picks an AI state.
+    std::uint32_t current_command_0071be40(std::size_t unit_index) const;
 
     // 009e1170's AI arm for one unit. False when the unit holds no current
     // `cruise`, which is the state 009f3dd0 would have left the AI state in.
@@ -186,8 +190,15 @@ public:
     // arm at 009e11e8 instead, which forwards the ring's confirmed pair at
     // +15ch / +160h and touches no cruise field. That arm is not projected, so
     // it is recorded and the AI arm is not run in its place.
+    //
+    // Milestone 2n: `blk` and `setters` are the AI controller's own control
+    // block, blk = brain+8h. With them the three setters run the reconstructions
+    // include/bsp/ship_ai_states.hpp carries instead of recording the three
+    // addresses, so the desired throttle, rudder and heading are the clamped
+    // values 009dbf90 and 009dffb0 store and 009ed6b0 reads.
     bool cruise_step(std::size_t unit_index, bool player_controlled,
-        float body_axis_speed, float reference_speed, bsp::CruiseOrderedValues& out);
+        float body_axis_speed, float reference_speed, bsp::CruiseOrderedValues& out,
+        bsp::ShipAiControlBlock* blk = nullptr, bsp::ShipAiSetterHost* setters = nullptr);
 
     const std::vector<GameCommandRow>& rows() const noexcept;
     const GameCommandsSummary& summary() const noexcept;

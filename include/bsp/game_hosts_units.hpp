@@ -63,6 +63,9 @@ namespace bsp::game {
 
 class GameHostLog;
 class GameMissionLuaHost;
+// Milestone 2n, defined in bsp/game_hosts_ship_ai.hpp. Held by pointer so this
+// header stays independent of the ship AI types.
+class GameShipAiHost;
 
 // One created scene unit as this process holds it, for the run log and the
 // report. Positions are world units; the heading is degrees of
@@ -153,7 +156,10 @@ public:
 
     // --order <command name>: the same path, issued to the controlled unit on
     // --order-frame. Returns false when no unit is bound.
-    bool issue_player_command(const std::string& token, const std::string& target_token);
+    // Milestone 2n: `unit_name` names the created instance the command goes to;
+    // empty keeps the controlled unit, which is what milestones 2l and 2m used.
+    bool issue_player_command(const std::string& token, const std::string& target_token,
+        const std::string& unit_name = {});
 
     // Milestone 2m. The mission script's navigator bindings hand 0077d600 a
     // fixed command object and the descriptor 0088a810 read, so the chain starts
@@ -196,6 +202,39 @@ public:
     // call sites and reads none), so running it here is the executable's
     // decision and is recorded as one.
     void motion_step_00825f20(float step_seconds);
+
+    // ---- milestone 2n: what the ship AI controller reads off a unit -------
+    // The AI controller runs before the motion pass and its publish fills the
+    // unit's own 84-byte order slot, which the motion's head at 00825f2c then
+    // promotes. Both are the same object, so the host is attached here.
+    void set_ship_ai(GameShipAiHost* ai) noexcept;
+    // 0071be40 on the unit's own weapon director, which 009f3dd0 reads at
+    // 009f3de6 to decide which AI state the controller should be in.
+    std::uint32_t director_current_command_0071be40(std::size_t index) const;
+    // unit+184h, the player-controlled byte 009f3df3 and 009f5e06 read. In this
+    // process the byte is the unit 004c0890 bound.
+    bool unit_player_controlled_0184(std::size_t index) const;
+    // The controller's second and third gates, 009f50f2 and 009f50fc. Milestone
+    // 2i holds unit+5Dh clear for a live ship; unit+61h has no writer anywhere
+    // in .text outside the constructor (docs/UNIT_AUTOPILOT_PAIR.md).
+    bool unit_flag_005d(std::size_t index) const;
+    bool unit_flag_0061(std::size_t index) const;
+    // 0092d730 over the unit's body axis and linear velocity, the same value the
+    // trajectory dump's fwd_speed column carries.
+    float unit_forward_speed_0092d730(std::size_t index) const;
+    // [unit+538h]+508h, `Retardation` out of the installed VehicleClass row,
+    // which is the divisor 009ed8ec uses to build the stopping distance.
+    float unit_retardation_0508(std::size_t index) const;
+    // The unit's vtable[50h] heading, in radians, as atan2(row2.x, row2.z).
+    float unit_heading_radians(std::size_t index) const;
+    // 00811940 on the unit's live rudder state, the yaw rate 009ed9c1 folds into
+    // the heading target.
+    float unit_current_yaw_rate_00811940(std::size_t index);
+    // 009e1170's AI arm for one unit, with the three desired-value setters
+    // 009dbf90 / 009dffb0 / 009e0040 writing the control block the caller owns.
+    // False when the unit holds no current `cruise`, or when it is the player's.
+    bool run_cruise_state_step_009e1170(std::size_t index, bsp::ShipAiControlBlock& blk,
+        bsp::ShipAiSetterHost& setters);
 
     std::size_t count() const noexcept;
     bool unit_active(std::size_t index) const noexcept;

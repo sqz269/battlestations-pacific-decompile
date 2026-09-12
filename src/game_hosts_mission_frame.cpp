@@ -30,6 +30,7 @@
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_trajectory.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_vfs.hpp"
@@ -159,6 +160,10 @@ struct GameMissionFrameHost::Impl {
     // Milestone 2m: the host the eight reconstructed binding bodies run over.
     // Built with the units, because every one of the eight addresses an entity.
     std::unique_ptr<GameScriptOrdersHost> script_orders;
+    // Milestone 2n: one ship AI controller per created unit, and the weapon
+    // director's automatic target selector beside it. Built with the units,
+    // because the order slot the controller publishes lives on the unit.
+    std::unique_ptr<GameShipAiHost> ship_ai;
     long order_frame{-1};             // --order-frame N
     float order_throttle{0.0f};
     float order_rudder{0.0f};
@@ -169,6 +174,7 @@ struct GameMissionFrameHost::Impl {
     // through the recovered command path instead of the order ring.
     std::string order_command;
     std::string order_command_target;
+    std::string order_command_unit;   // milestone 2n, --order-unit <name>
     float mission_frame_seconds{0.0f};  // --mission-frame-seconds S
     // Milestone 2j, --trajectory-csv <path>: one row per unit per fixed step.
     std::string trajectory_csv_path;
@@ -1286,6 +1292,13 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             host.script_orders = std::make_unique<GameScriptOrdersHost>(host.log,
                 *host.units);
             host.lua.attach_script_orders(host.script_orders.get());
+            // Milestone 2n: the ship AI controller family at 00d21598 over the
+            // same created units. 009f50e0's three gates read unit+5Ch, +5Dh and
+            // +61h, and 009f3dd0 reads the director 0071be40 answers for, so the
+            // host is built after the authored commands were issued.
+            host.ship_ai = std::make_unique<GameShipAiHost>(host.log, *host.units);
+            host.ship_ai->register_units();
+            host.units->set_ship_ai(host.ship_ai.get());
             // Milestone 2m: row 16 of the fan-out walks the entity chain this
             // step created, so the subsystem host learns about it here.
             if (host.step_subsystems != nullptr) {
@@ -1514,9 +1527,11 @@ void GameMissionFrameHost::set_player_commanded_speed(float speed) noexcept {
     impl_->order_speed_set = true;
 }
 
-void GameMissionFrameHost::set_player_command(std::string token, std::string target) {
+void GameMissionFrameHost::set_player_command(std::string token, std::string target,
+    std::string unit) {
     impl_->order_command = std::move(token);
     impl_->order_command_target = std::move(target);
+    impl_->order_command_unit = std::move(unit);
 }
 
 void GameMissionFrameHost::set_trajectory_csv(std::string path) {
@@ -1614,7 +1629,7 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
             // against the 26-row registry and the whole hop chain runs, which
             // is the path the authored scene command takes and not the ring.
             host.units->issue_player_command(host.order_command,
-                host.order_command_target);
+                host.order_command_target, host.order_command_unit);
         } else {
             host.units->issue_player_order(host.order_throttle, host.order_rudder);
         }
@@ -1718,6 +1733,7 @@ void GameMissionFrameHost::report(long requested_frames) {
     if (host.hud != nullptr) host.hud->report();
     if (host.world_host != nullptr) host.world_host->report();
     if (host.script_orders != nullptr) host.script_orders->report();
+    if (host.ship_ai != nullptr) host.ship_ai->report();
     if (host.units != nullptr) host.units->report();
     if (!host.trajectory_csv_path.empty()) {
         host.log.notef("summary mission trajectory csv=%s rows=%llu",

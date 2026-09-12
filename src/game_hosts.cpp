@@ -321,6 +321,13 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 return false;
             }
             order_frame = std::strtol(argv[++index], nullptr, 10);
+        } else if (std::strcmp(argument, "--order-unit") == 0) {
+            // Milestone 2n: the created instance --order's command form goes to.
+            if (index + 1 >= argc) {
+                error = "--order-unit needs a unit name";
+                return false;
+            }
+            order_unit = argv[++index];
         } else if (std::strcmp(argument, "--order") == 0) {
             // Milestone 2i: throttle=<f>,rudder=<f>, the two parameters
             // 00816a40 publishes into the controlled unit's order ring.
@@ -1277,6 +1284,12 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         options_.order_throttle, options_.order_rudder, options_.mission_frame_seconds,
         options_.trajectory_csv, options_.order_command, options_.order_command_target,
         options_.order_speed, options_.order_speed_set);
+    // Milestone 2n, --order-unit <name>. It is a setter rather than another
+    // constructor argument so the menu host, which this packet does not own,
+    // keeps its signature.
+    if (!options_.order_unit.empty() && menu_->mission() != nullptr) {
+        menu_->mission()->set_order_unit(options_.order_unit);
+    }
     menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();
     summary_.gui_pages_loaded = frontend.pages_loaded;
