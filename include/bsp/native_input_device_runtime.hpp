@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/native_gamepad_force_requests.hpp"
+#include "bsp/native_input_action_binding_runtime.hpp"
 #include "bsp/native_input_backend_owner.hpp"
 #include "bsp/native_input_device_virtuals.hpp"
 #include "bsp/native_input_enumeration.hpp"
@@ -41,7 +42,8 @@ struct NativeInputDeviceRuntimeServices {
 class NativeInputDeviceRuntime final : public NativeInputBackendHost,
     public NativeInputEnumerationCalls, public NativeInputHistoryHost,
     public NativeInputDeviceVirtualCalls, public NativeJoystickCalls,
-    public NativeRefCountedDeleteCalls, public NativeGamepadForceRequestDispatch {
+    public NativeRefCountedDeleteCalls, public NativeGamepadForceRequestDispatch,
+    public NativeInputActionBindingCalls {
 public:
     explicit NativeInputDeviceRuntime(NativeInputDeviceRuntimeServices);
     NativeInputDeviceRuntime(const NativeInputDeviceRuntime&) = delete;
@@ -85,7 +87,7 @@ public:
     bool poll_device_vslot10(void*, float seconds);
     void set_relative_vslot18(void*, std::uint32_t code, std::uint32_t raw_value);
     std::uint8_t relative_vslot1c(void*, std::uint32_t code);
-    std::uint8_t relative_vslot1c(void*, std::uint32_t captured_profile, std::uint32_t code);
+    std::uint8_t relative_vslot1c(void*, std::uint32_t captured_profile, std::uint32_t code) override;
     std::uint8_t buttons_active_vslot2c(void*);
     std::int32_t select_control_vslot30(void*);
     std::int32_t identifier_vslot34(void*);
