@@ -1,0 +1,919 @@
+{
+  "packet": "cc_hud_minimap",
+  "binary": "battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "doc": [
+    "docs/HUD_MARKERS_RUNTIME.md",
+    "docs/HUD_MINIMAP.md"
+  ],
+  "header": [
+    "include/bsp/hud_markers_runtime.hpp",
+    "include/bsp/hud_minimap.hpp"
+  ],
+  "source": [
+    "src/hud_markers_runtime.cpp",
+    "src/hud_minimap.cpp"
+  ],
+  "evidence_date": "2026-09-11",
+  "summary": "The slot 4Dh marker pool under 006435D0 and the slot 35h minimap icon pass under 005C0F20: the projection chain 0043A660 / 00638E50, the four pools 00640620 releases, the classification and dispatch in 006430C0, the screen-bounds rule 0063A6C0, the marker widget names 0063D1E0 binds, and the camera-relative rotated world-to-minimap transform with its two global-config radii.",
+  "reconstruction_scope": "Pure rules plus injected hosts. Nothing here is a binary-compatible replacement; the native routines keep their own ABI and the reconstruction exposes new C++ interfaces.",
+  "routines": [
+    {
+      "address": "0043a660",
+      "old_name": "FUN_0043a660",
+      "proposed_name": "BSP_Camera_ProjectWorldToScreen",
+      "implementation": "camera_project_world_to_screen_0043a660",
+      "native_abi": "__fastcall(ECX=const float3* world, EDX=float3* out, int mode, char clampDepth) -> uint clip mask; RET 8",
+      "body": "0043a660..0043a869",
+      "coverage": "complete for the divide, the clip mask and all four modes; the caller-side matrix fetch (00B70490) and transform (00B62D10) stay with the host"
+    },
+    {
+      "address": "00638e50",
+      "old_name": "FUN_00638e50",
+      "proposed_name": "BSP_HudMarker_ProjectAndClip",
+      "implementation": "hud_marker_project_and_clip_00638e50",
+      "native_abi": "__fastcall(ECX=const float3* world, EDX=float3* outScreen) -> bool; RET",
+      "body": "00638e50..00638f41",
+      "coverage": "complete"
+    },
+    {
+      "address": "006430c0",
+      "old_name": "FUN_006430c0",
+      "proposed_name": "BSP_InGameHudMarkers_AddUnitMarker",
+      "implementation": "hud_markers_add_unit_marker_006430c0, hud_marker_flags_006430c0, hud_marker_dispatch_006430c0",
+      "native_abi": "__thiscall(this, UnitInstance* unit, char forceObjectiveColour, int kindA, int kindB); RET 10h",
+      "body": "006430c0..0064335d",
+      "coverage": "complete for the five rejection gates, the three flags, the objective reclassification and the seven-way dispatch; the builders themselves are separate routines"
+    },
+    {
+      "address": "00640620",
+      "old_name": "FUN_00640620",
+      "proposed_name": "BSP_InGameHudMarkers_ResetMarkerPools",
+      "implementation": "constants only (kHudMarkerPool* in include/bsp/hud_markers_runtime.hpp)",
+      "native_abi": "__fastcall(this); RET",
+      "body": "00640620..0064079b",
+      "coverage": "complete: all four pools, their headers, cursors and release actions, and the +A0h asymmetry"
+    },
+    {
+      "address": "0063a6c0",
+      "old_name": "FUN_0063a6c0",
+      "proposed_name": "BSP_HudMarker_ProjectUnitScreenBounds",
+      "implementation": "hud_marker_accumulate_corner_0063a6c0, hud_marker_apply_minimum_size_0063a6c0, hud_marker_corner_signs_0063a6c0",
+      "native_abi": "__thiscall(this, float3 anchor by value, UnitInstance* unit, char* outCollapsed, float* outMinX, float* outMinY, float* outMaxX, float* outMaxY); RET 24h",
+      "body": "0063a6c0..0063abcd",
+      "coverage": "complete for the anchor lift, the eight-corner loop, the accumulate and the minimum-size widening; the final anchor reprojection at 0063AB75 is modelled as the collapsed flag rather than re-executed"
+    },
+    {
+      "address": "0063d1e0",
+      "old_name": "FUN_0063d1e0",
+      "proposed_name": "BSP_HudMarker_WriteUnitMarkerWidgets",
+      "implementation": "kHudMarkerWidget* names and the HudMarkersRuntimeHost widget methods",
+      "native_abi": "__thiscall(this, ...); SEH handler 00C7A010",
+      "body": "0063d1e0..0063debd",
+      "coverage": "partial: 0063D1E0..0063D700 read for the widget slots, the six child names and the position/text/size calls. 0063D700..0063DEBD (the icon-state selection and the second placement block) analyzed only"
+    },
+    {
+      "address": "00642040",
+      "old_name": "FUN_00642040",
+      "proposed_name": "BSP_InGameHudMarkers_BuildUnitMarker",
+      "implementation": "reached through hud_markers_add_unit_marker_006430c0's Ship and Delegating branches",
+      "native_abi": "__thiscall(this, UnitInstance* unit, char isSelf, char isFriendly, char isTarget, int kindA, int kindB); RET 18h",
+      "body": "00642040..00642957",
+      "coverage": "partial: 00642040..006421C0 read from the listing for the gate, the inlined 0043F080 test, the colour index and the world position; 006421C0..00642957 analyzed for its call sites only"
+    },
+    {
+      "address": "00642b80",
+      "old_name": "FUN_00642b80",
+      "proposed_name": "BSP_InGameHudMarkers_AddSubUnitMarkers",
+      "implementation": "not reconstructed; documented",
+      "native_abi": "__thiscall(this, UnitInstance* unit, char isSelf, char isFriendly, char isTarget, int kind)",
+      "body": "00642b80..00642c10",
+      "coverage": "complete as read: the vector at unit+398h and the forwarded 00642040 call"
+    },
+    {
+      "address": "00642c20",
+      "old_name": "FUN_00642c20",
+      "proposed_name": "BSP_InGameHudMarkers_AddCommandUnitMarker",
+      "implementation": "not reconstructed; documented",
+      "native_abi": "__thiscall(this, UnitInstance* unit); RET 4; SEH handler 00C7A450",
+      "body": "00642c20..006430be",
+      "coverage": "partial: 00642C20..00642D50 read from the listing for the position, the water flatten and the 0063A6C0 call; the rest analyzed"
+    },
+    {
+      "address": "006434e0",
+      "old_name": "FUN_006434e0",
+      "proposed_name": "BSP_InGameHudMarkers_AddGroupMemberMarker",
+      "implementation": "not reconstructed; documented",
+      "native_abi": "__thiscall(this, UnitInstance* unit, int flag)",
+      "body": "006434e0..006435ce",
+      "coverage": "complete as read from pseudocode: the dedupe, the pose refresh, the clip test and the two gates"
+    },
+    {
+      "address": "00640d70",
+      "old_name": "FUN_00640d70",
+      "proposed_name": "BSP_InGameHudMarkers_UpdateTargetSectionCallout",
+      "implementation": "kHudMarkerSection* keys only",
+      "native_abi": "__fastcall(this); RET; SEH handler 00C7A37B",
+      "body": "00640d70..00641903",
+      "coverage": "partial: the part sweep, the AABB projection and the three localisation keys read; the fallback sweep at 0064139A and the cleanup tail analyzed from pseudocode"
+    },
+    {
+      "address": "0043a290",
+      "old_name": "FUN_0043a290",
+      "proposed_name": "BSP_Camera_PickWorldPointOnHorizontalPlane",
+      "implementation": "not reconstructed; documented",
+      "native_abi": "__fastcall(ECX, EDX=float3* out, float screenX, float screenY, float planeY, float3* rayScratch) -> bool",
+      "body": "0043a290..0043a3b2",
+      "coverage": "complete as read from pseudocode"
+    },
+    {
+      "address": "0043f080",
+      "old_name": "FUN_0043f080",
+      "proposed_name": "BSP_UnitInstance_IsAliveAndVisible",
+      "implementation": "HudMarkersRuntimeHost::is_alive_and_visible, HudMinimapHost::unit_is_alive_and_visible",
+      "native_abi": "__fastcall(UnitInstance* unit) -> bool; RET",
+      "body": "0043f080..0043f0a0",
+      "coverage": "complete"
+    },
+    {
+      "address": "0063abd0",
+      "old_name": "STL_inst_0063abd0",
+      "proposed_name": "BSP_InGameHudMarkers_ContainsMarkedUnit",
+      "implementation": "HudMarkersRuntimeHost::already_marked",
+      "native_abi": "__thiscall(this, void* unit) -> bool; RET 4",
+      "body": "0063abd0..0063ac22",
+      "coverage": "complete"
+    },
+    {
+      "address": "004323d0",
+      "old_name": "FUN_004323d0",
+      "proposed_name": "BSP_PointerVector_PushBack",
+      "implementation": "HudMarkersRuntimeHost::mark_unit",
+      "native_abi": "__thiscall(vector, const void* const* value); RET 4",
+      "body": "004323d0..0043243f",
+      "coverage": "partial: the fast path 004323D0..0043240E read; the grow path from 00432411 analyzed only"
+    },
+    {
+      "address": "006374b0",
+      "old_name": "FUN_006374b0",
+      "proposed_name": "BSP_HudMarkerEntry_HideAllWidgets",
+      "implementation": "kHudMarkerEntryWidget* constants",
+      "native_abi": "__fastcall(entry)",
+      "body": "006374b0..0063753c",
+      "coverage": "partial: the 24-widget loop and the entry+68h slot read; 006374F0..0063753C analyzed"
+    },
+    {
+      "address": "00639990",
+      "old_name": "FUN_00639990",
+      "proposed_name": "BSP_InGameHudMarkers_ResolveMarkerColourIndex",
+      "implementation": "HudMarkersRuntimeHost::marker_colour_index",
+      "native_abi": "__fastcall(UnitInstance* unit) -> int",
+      "body": "00639990..00639a3f",
+      "coverage": "partial: the three default results and the objective remap read from pseudocode; the remaining 008DD240 sub-cases analyzed"
+    },
+    {
+      "address": "00427eb0",
+      "old_name": "FUN_00427eb0",
+      "proposed_name": "BSP_EntityPose_GetWorldPositionRefreshed",
+      "implementation": "HudMinimapHost::world_position",
+      "native_abi": "__fastcall(Entity* e) -> const float3*; RET",
+      "body": "00427eb0..00427ec8",
+      "coverage": "complete"
+    },
+    {
+      "address": "00427e30",
+      "old_name": "FUN_00427e30",
+      "proposed_name": "BSP_Vector3f_LengthSquared",
+      "implementation": "hud_minimap_within_visibility",
+      "native_abi": "__fastcall(const float3* v) -> float in ST0; RET",
+      "body": "00427e30..00427e50",
+      "coverage": "complete"
+    },
+    {
+      "address": "005c0f20",
+      "old_name": "BSP_HudMinimapScreen_Update",
+      "proposed_name": "BSP_HudMinimapScreen_Update",
+      "implementation": "hud_minimap_place_unit_icons_005c154e, hud_minimap_icon_position_005c1b62, hud_minimap_clamp_to_rim_005c1a3c, hud_minimap_headings_005c1788, hud_minimap_icon_rotation_005c1ca1",
+      "native_abi": "__thiscall(this, float seconds); RET 4; SEH handler 00C729CC",
+      "body": "005c0f20..005c27db",
+      "coverage": "partial: 005C154E..005C1CD0, the gate, both distance culls, the icon-entry lookup, the heading, the rim clamp, the rotation and the placement, read instruction by instruction. The animation block 005C0F20..005C154E is covered by docs/HUD_CENTRAL_UPDATES.md, and the three tail passes 005C1F90.., 005C239E.. and 005C2523.. remain analyzed only"
+    }
+  ],
+  "host_steps": [
+    {
+      "step": "gui_extent",
+      "address": "00643616",
+      "native": "00aa1fe0",
+      "function": "006435d0"
+    },
+    {
+      "step": "camera_unit",
+      "address": "0064368b",
+      "native": "004b4b00",
+      "function": "006435d0"
+    },
+    {
+      "step": "pool_reset",
+      "address": "00643695",
+      "native": "00640620",
+      "function": "006435d0"
+    },
+    {
+      "step": "clear_marked_set",
+      "address": "006436a3",
+      "native": "0063bcd0",
+      "function": "006435d0"
+    },
+    {
+      "step": "displayed_self_unit",
+      "address": "006436b7",
+      "native": "00927880",
+      "function": "006435d0"
+    },
+    {
+      "step": "add_unit_marker_self",
+      "address": "006436e5",
+      "native": "006430c0",
+      "function": "006435d0"
+    },
+    {
+      "step": "refresh_pose_squad_mate",
+      "address": "006437c2",
+      "native": "00414db0",
+      "function": "006435d0"
+    },
+    {
+      "step": "viewport_descriptor",
+      "address": "00643892",
+      "native": "00b6fde0",
+      "function": "006435d0"
+    },
+    {
+      "step": "pick_crosshair_world_point",
+      "address": "006438e8",
+      "native": "0043a290",
+      "function": "006435d0"
+    },
+    {
+      "step": "add_objective_marker",
+      "address": "00643a58",
+      "native": "00643360",
+      "function": "006435d0"
+    },
+    {
+      "step": "add_command_unit_marker",
+      "address": "00643ba9",
+      "native": "00642c20",
+      "function": "006435d0"
+    },
+    {
+      "step": "add_group_member_marker",
+      "address": "00643c72",
+      "native": "006434e0",
+      "function": "006435d0",
+      "note": "00643C42 is the first of four 006434E0 sites but lies in the 00643C1C..00643C68 hole in the function body address set; 00643C72 is the same step at a site Ghidra covers."
+    },
+    {
+      "step": "target_section_callout",
+      "address": "00643c8e",
+      "native": "00640d70",
+      "function": "006435d0"
+    },
+    {
+      "step": "pool_reset_end_of_frame",
+      "address": "00643d41",
+      "native": "00640620",
+      "function": "006435d0"
+    },
+    {
+      "step": "parts_object",
+      "address": "006430e4",
+      "native": "0080e490",
+      "function": "006430c0"
+    },
+    {
+      "step": "already_marked",
+      "address": "0064311c",
+      "native": "0063abd0",
+      "function": "006430c0"
+    },
+    {
+      "step": "mark_unit",
+      "address": "00643131",
+      "native": "004323d0",
+      "function": "006430c0"
+    },
+    {
+      "step": "objective_container_contains",
+      "address": "00643183",
+      "native": "008ddf90",
+      "function": "006430c0"
+    },
+    {
+      "step": "is_alive_and_visible",
+      "address": "006431a8",
+      "native": "0043f080",
+      "function": "006430c0"
+    },
+    {
+      "step": "build_group_owner_marker",
+      "address": "006431d9",
+      "native": "00642960",
+      "function": "006430c0"
+    },
+    {
+      "step": "build_sub_unit_markers",
+      "address": "00643206",
+      "native": "00642b80",
+      "function": "006430c0"
+    },
+    {
+      "step": "build_delegating_marker",
+      "address": "0064326b",
+      "native": "00642040",
+      "function": "006430c0"
+    },
+    {
+      "step": "build_close_marker",
+      "address": "006432a9",
+      "native": "00641910",
+      "function": "006430c0"
+    },
+    {
+      "step": "build_unit_marker",
+      "address": "006432db",
+      "native": "00642040",
+      "function": "006430c0"
+    },
+    {
+      "step": "tracked_set_insert",
+      "address": "00643311",
+      "native": "0063f1e0",
+      "function": "006430c0"
+    },
+    {
+      "step": "lock_marker_tail",
+      "address": "00643351",
+      "native": "00641e30",
+      "function": "006430c0"
+    },
+    {
+      "step": "mark_unit_in_builder",
+      "address": "006420a8",
+      "native": "004323d0",
+      "function": "00642040"
+    },
+    {
+      "step": "marker_colour_index",
+      "address": "006420d8",
+      "native": "00639990",
+      "function": "00642040"
+    },
+    {
+      "step": "refresh_pose",
+      "address": "006420ee",
+      "native": "00414db0",
+      "function": "00642040"
+    },
+    {
+      "step": "screen_bounds",
+      "address": "00642211",
+      "native": "0063a6c0",
+      "function": "00642040"
+    },
+    {
+      "step": "unit_class_name",
+      "address": "006422f0",
+      "native": "00803dc0",
+      "function": "00642040"
+    },
+    {
+      "step": "unit_health",
+      "address": "0064240b",
+      "native": "0077a2f0",
+      "function": "00642040"
+    },
+    {
+      "step": "write_marker_widgets",
+      "address": "006426e6",
+      "native": "0063d1e0",
+      "function": "00642040"
+    },
+    {
+      "step": "group_marker_tail",
+      "address": "00642938",
+      "native": "00640a20",
+      "function": "00642040"
+    },
+    {
+      "step": "project_and_clip_corner",
+      "address": "0063a9d6",
+      "native": "00638e50",
+      "function": "0063a6c0"
+    },
+    {
+      "step": "project_and_clip_anchor",
+      "address": "0063ab80",
+      "native": "00638e50",
+      "function": "0063a6c0"
+    },
+    {
+      "step": "project_world_to_screen",
+      "address": "00638e58",
+      "native": "0043a660",
+      "function": "00638e50"
+    },
+    {
+      "step": "view_projection_matrix",
+      "address": "0043a6a0",
+      "native": "00b70490",
+      "function": "0043a660"
+    },
+    {
+      "step": "transform_vec4",
+      "address": "0043a6af",
+      "native": "00b62d10",
+      "function": "0043a660"
+    },
+    {
+      "step": "gui_extent_for_mode1",
+      "address": "0043a7bb",
+      "native": "00aa1fe0",
+      "function": "0043a660"
+    },
+    {
+      "step": "set_local_position",
+      "address": "0063d3af",
+      "native": "00aa7dc0",
+      "function": "0063d1e0"
+    },
+    {
+      "step": "find_child_unit_name",
+      "address": "0063d42a",
+      "native": "00aa7e00",
+      "function": "0063d1e0"
+    },
+    {
+      "step": "find_child_distance",
+      "address": "0063d4a5",
+      "native": "00aa7e00",
+      "function": "0063d1e0"
+    },
+    {
+      "step": "find_child_hp",
+      "address": "0063d51d",
+      "native": "00aa7e00",
+      "function": "0063d1e0"
+    },
+    {
+      "step": "find_child_hp_bg",
+      "address": "0063d595",
+      "native": "00aa7e00",
+      "function": "0063d1e0"
+    },
+    {
+      "step": "find_child_type_icon",
+      "address": "0063d60b",
+      "native": "00aa7e00",
+      "function": "0063d1e0"
+    },
+    {
+      "step": "set_localised_text",
+      "address": "0063d694",
+      "native": "00abaed0",
+      "function": "0063d1e0"
+    },
+    {
+      "step": "set_localised_cstring",
+      "address": "0063d751",
+      "native": "00abbe50",
+      "function": "0063d1e0"
+    },
+    {
+      "step": "widget_size",
+      "address": "0063d7fd",
+      "native": "00aa6740",
+      "function": "0063d1e0"
+    },
+    {
+      "step": "set_resolved_position",
+      "address": "0063d8b9",
+      "native": "00aa8240",
+      "function": "0063d1e0"
+    },
+    {
+      "step": "find_child_commandbuilding",
+      "address": "0063dcb0",
+      "native": "00aa7e00",
+      "function": "0063d1e0"
+    },
+    {
+      "step": "command_marker_refresh_pose",
+      "address": "00642c53",
+      "native": "00414db0",
+      "function": "00642c20"
+    },
+    {
+      "step": "command_marker_project",
+      "address": "00642cd5",
+      "native": "00638e50",
+      "function": "00642c20"
+    },
+    {
+      "step": "command_marker_bounds",
+      "address": "00642d2d",
+      "native": "0063a6c0",
+      "function": "00642c20"
+    },
+    {
+      "step": "command_marker_global_config",
+      "address": "00642feb",
+      "native": "00432650",
+      "function": "00642c20"
+    },
+    {
+      "step": "command_marker_set_local_xy",
+      "address": "0064304c",
+      "native": "00aa7d00",
+      "function": "00642c20"
+    },
+    {
+      "step": "minimap_prepare_frame",
+      "address": "005c0f3f",
+      "native": "005bd420",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_capture_ring_fill",
+      "address": "005c1010",
+      "native": "006f1f90",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_camera_unit",
+      "address": "005c154e",
+      "native": "004b4b00",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_range_config",
+      "address": "005c157e",
+      "native": "00432650",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_visibility_range_config",
+      "address": "005c158a",
+      "native": "00432650",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_refresh_camera_pose",
+      "address": "005c15bb",
+      "native": "00414db0",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_displayed_self_unit",
+      "address": "005c15f2",
+      "native": "00927880",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_world_position",
+      "address": "005c1687",
+      "native": "00427eb0",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_length_squared",
+      "address": "005c16ce",
+      "native": "00427e30",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_find_icon_entry",
+      "address": "005c170a",
+      "native": "005be110",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_allocate_icon_entry",
+      "address": "005c171c",
+      "native": "00bf681b",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_construct_icon_entry",
+      "address": "005c173a",
+      "native": "005bd590",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_insert_icon_entry",
+      "address": "005c175b",
+      "native": "005c0700",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_attach_icon",
+      "address": "005c1767",
+      "native": "00694a60",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_refresh_renderer_basis",
+      "address": "005c17a7",
+      "native": "00b6db70",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_atan2",
+      "address": "005c17e0",
+      "native": "00bf701a",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_rim_clamp_sqrt",
+      "address": "005c1a52",
+      "native": "00bf7030",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_set_icon_position",
+      "address": "005c1c99",
+      "native": "00aa7dc0",
+      "function": "005c0f20"
+    },
+    {
+      "step": "minimap_page_root",
+      "address": "005beccc",
+      "native": null,
+      "function": "005bec50",
+      "note": "00AA5840 result stored at this+1Ch; the call itself is at 005BECC7"
+    },
+    {
+      "step": "minimap_bind_islandmap",
+      "address": "005bed41",
+      "native": "00aa7e00",
+      "function": "005bec50"
+    },
+    {
+      "step": "minimap_bind_compass",
+      "address": "005be2a7",
+      "native": "00aa7e00",
+      "function": "005be240"
+    },
+    {
+      "step": "minimap_bind_first_unit_icon",
+      "address": "005be392",
+      "native": "00aa7e00",
+      "function": "005be240"
+    },
+    {
+      "step": "minimap_bind_dir_icon",
+      "address": "005beb68",
+      "native": "00aa7e00",
+      "function": "005be240"
+    },
+    {
+      "step": "minimap_bind_marker_group",
+      "address": "005bebd8",
+      "native": "00aa7e00",
+      "function": "005be240"
+    }
+  ],
+  "indirect_call_sites": [
+    {
+      "step": "is_kind_of",
+      "native": "006fe530+vtable5C",
+      "sites": [
+        "006430dc",
+        "006430fc",
+        "0064310f",
+        "006431bf",
+        "006431ec",
+        "00643219",
+        "0064327e",
+        "006432b9",
+        "006432eb",
+        "005c165d"
+      ]
+    },
+    {
+      "step": "set_visible",
+      "native": "00aa7d00+vtable34",
+      "sites": [
+        "00640690",
+        "006406b4",
+        "006406c8",
+        "006406dc",
+        "0064070c"
+      ]
+    },
+    {
+      "step": "set_rotation",
+      "native": "00aa7d00+vtable44",
+      "sites": [
+        "005c1825",
+        "005c184f",
+        "005c1872",
+        "005c1cd0"
+      ]
+    },
+    {
+      "step": "minimap_icon_world_position",
+      "native": "00427eb0+vtableC4",
+      "sites": [
+        "005c19e0"
+      ]
+    },
+    {
+      "step": "minimap_unit_shows_on_minimap",
+      "native": "0043f080+vtableB8",
+      "sites": [
+        "005c1675"
+      ]
+    }
+  ],
+  "widget_fields": [
+    {
+      "widget": "Unit_name_Text",
+      "string": "00cf58cc",
+      "length": 14,
+      "page": "gui_markers.lua sidemarker_Group",
+      "written_by": "0063d1e0"
+    },
+    {
+      "widget": "Distance_Text",
+      "string": "00cf58bc",
+      "length": 13,
+      "page": "gui_markers.lua sidemarker_Group",
+      "written_by": "0063d1e0"
+    },
+    {
+      "widget": "HP_Icon",
+      "string": "00cf58b4",
+      "length": 7,
+      "page": "gui_markers.lua sidemarker_Group",
+      "written_by": "0063d1e0"
+    },
+    {
+      "widget": "HP_BG_Icon",
+      "string": "00cf58a8",
+      "length": 10,
+      "page": "gui_markers.lua sidemarker_Group",
+      "written_by": "0063d1e0"
+    },
+    {
+      "widget": "type_Icon",
+      "string": "00cf57b4",
+      "length": 9,
+      "page": "gui_markers.lua sidemarker_Group, 34 texture states",
+      "written_by": "0063d1e0"
+    },
+    {
+      "widget": "commandbuilding_Icon",
+      "string": "00cf5818",
+      "length": 20,
+      "page": "gui_markers.lua commandbuilding_Group, 3 states",
+      "written_by": "0063d1e0"
+    },
+    {
+      "widget": "minimap_islandmap_Icon",
+      "string": "00cf13c8",
+      "length": 22,
+      "page": "gui_minimap.lua, ShaderName minimap_terrain.mshd, texture error.tga",
+      "written_by": "005bec50"
+    },
+    {
+      "widget": "minimap_compass_Icon",
+      "string": "00cf1280",
+      "length": 20,
+      "page": "gui_minimap.lua",
+      "written_by": "005be240"
+    },
+    {
+      "widget": "minimap_dir_Icon",
+      "string": "00cf1170",
+      "length": 16,
+      "page": "gui_minimap.lua",
+      "written_by": "005be240"
+    },
+    {
+      "widget": "item_ship_Icon",
+      "string": "00cf1254",
+      "length": 14,
+      "page": "gui_minimap.lua, child of each of the six minimap_units_*_Group",
+      "written_by": "005be240"
+    },
+    {
+      "widget": "unit_marker_Group",
+      "string": "00cf115c",
+      "length": 17,
+      "page": "gui_minimap.lua",
+      "written_by": "005be240"
+    }
+  ],
+  "installed_data": [
+    {
+      "file": "scripts/datatables/globals.lua",
+      "key": "Globals[\"Minimap\"][\"MinimapRange\"]",
+      "value": 4000,
+      "field": "[00432650()+6Ch]",
+      "writer": "0087d7b0"
+    },
+    {
+      "file": "scripts/datatables/globals.lua",
+      "key": "Globals[\"Minimap\"][\"VisibilityRange\"]",
+      "value": 4000,
+      "field": "[00432650()+70h]",
+      "writer": "0087d7b0"
+    },
+    {
+      "file": "shaderfx/gui/minimap_terrain.shfx",
+      "key": "OneOverWorldSize",
+      "value": 3.3333e-05,
+      "note": "1/30000; uv = (world + 15000)/30000 with z inverted"
+    },
+    {
+      "file": "shaderfx/gui/minimap_terrain.shfx",
+      "key": "CenterBorderDistPow2",
+      "value": 0.018,
+      "note": "circular mask radius 0.13416 in UV, 4025 world units, agreeing with MinimapRange"
+    },
+    {
+      "file": "interface/gui_minimap.lua",
+      "key": "minimap_islandmap_Icon.States[1].Texture",
+      "value": "error.tga",
+      "note": "the authored placeholder the rebuilt executable currently shows"
+    }
+  ],
+  "source_corrections": [
+    {
+      "subject": "docs/HUD_CENTRAL_UPDATES.md clip rectangle",
+      "was": "00E197C4..00E197D8 is written as two overlapping rectangles; whether it is one rectangle plus a duplicate or two distinct rectangles was not settled",
+      "is": "One rectangle with duplicated x bounds. 00638E50 picks 00E197D0/00E197CC when the widescreen byte is set and 00E197D8/00E197D4 otherwise, and both pairs receive the same value",
+      "evidence": "00638e9f, 00638ead, 00638ed0, 00638ee0, 00638f08, 00638f18"
+    },
+    {
+      "subject": "docs/HUD_CENTRAL_UPDATES.md minimap map bounds",
+      "was": "00432650() a world descriptor whose +6Ch and +70h are the map half-extents",
+      "is": "Minimap.MinimapRange (rim clamp and scale denominator) and Minimap.VisibilityRange (cull radius), both 4000 in the shipped data. The map bounds are the shader constant cWorldBorderNWSE",
+      "evidence": "0087d7b0 writes both fields from BSP_LuaObject_GetNumber; scripts/datatables/globals.lua lines 22-26; use sites 005c15a0, 005c16d3, 005c1799, 005c19b1, 005c1a3c"
+    },
+    {
+      "subject": "docs/HUD_CENTRAL_UPDATES.md minimap icon placement",
+      "was": "pos.x = world_dx * 1/1024; pos.y = -world_dz / 768",
+      "is": "Correct in shape but incomplete: the deltas are first rim-clamped to MinimapRange, scaled by 80/MinimapRange and rotated by the camera heading",
+      "evidence": "005c1a3c..005c1b5a for the clamp, 005c1b62..005c1bff for the scale and rotation"
+    },
+    {
+      "subject": "00427EB0 return value",
+      "was": "returns an icon-space float3",
+      "is": "returns unit+FCh, the world-matrix translation row, after a lazy pose refresh",
+      "evidence": "00427eb0..00427ec8"
+    },
+    {
+      "subject": "docs/HUD_CENTRAL_UPDATES.md compass divisor",
+      "was": "the result is divided into 00CF1440 (80.0) for the compass at this->[4Ch]",
+      "is": "80.0/MinimapRange is computed before the atan2 and is the icon scale; the compass receives SetRotation(+atan2)",
+      "evidence": "005c1788..005c179f is the divide, 005c17e0 the atan2, 005c1825 the compass rotation"
+    }
+  ],
+  "external_dependencies_analyzed_only": [
+    "00642960 the IsKindOf(18h) group-owner builder",
+    "00641910 the IsKindOf(1Ch) close-marker builder",
+    "00641e30 the IsKindOf(1Eh)/(1Fh) tail builder",
+    "00643360 the objective marker placer and its container helpers 008DA180, 008DA140, 008DACD0, 008DAD30",
+    "0063c620 the four-corner box emitter and 006407a0",
+    "005be110, 005bd590, 005c0700 and 00694a60, the per-unit minimap icon entry",
+    "00b70490 and 00b62d10, the camera matrix and the vec4 transform"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1, MSVC Win32 /W4 /WX, clean",
+    "tests": "ctest reconstructed_math passed, including one new case pinning the world-to-minimap projection at three known input/output pairs",
+    "report_calls": "tools/verify_report_calls.py reports/hud_minimap.json",
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "uncertainties": [
+    "The IsKindOf class ids 18h, 1Ah, 1Bh, 1Ch, 1Eh, 1Fh, 45h and 46h are recorded as raw ids; only 5 and 6 have an established meaning (ship and ship leaf, docs/GAME_EXECUTABLE.md).",
+    "The y-zeroing at 00642CC7 and 006421xx applies when [[00E188A8+1ED4h]+100h] is positive. The object at game+1ED4h was not identified, so the rule is transcribed rather than explained.",
+    "0063A6C0's outCollapsed flag is only set when both screen axes had to be widened. Whether a caller treats a cleared flag as a failure was not established; 00642040's use of the four bounds past 00642211 is analyzed only.",
+    "The pairing of the three class-record extents at [unit+538h]+A0h/+A4h/+A8h with the forward, right and up matrix rows follows the loop order at 0063A8B1, 0063A8E8 and 0063A91F; the field names are inferred from that pairing, not from a producer.",
+    "The byte [0109CF04+0Dh] that selects the widescreen path in 00638E50 was not traced to a writer.",
+    "The six colour indices 00639990 returns are matched to the six minimap_units_*_Group names by count and by the shared use of the same routine, not by a per-index proof."
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00643c1c",
+      "end_inclusive": "00643c68",
+      "containing_function": "006435d0",
+      "evidence": "bsp.py ghidra proto 006435d0 reports body 006435D0..00643D96 and the stored listing decodes every instruction from 00643C1C to 00643C67, but get_function_by_address returns \"No function found\" for all 24 instruction starts in 00643C1C..00643C67 and returns 006435D0 for every start from 00643C12 down and from 00643C69 up. The hole begins one instruction after 00643C18, the end of the desynchronised range docs/HUD_CENTRAL_UPDATES.md records at 00643C0C, so it is a leftover of that repair. The block is the target-group member loop: members at [target+3D0h] with the count at [target+3CCh], index capped at 4 by CMP EDI,4 / JA 00643C35, 006434E0 at 00643C42 and 004323D0 at 00643C54."
+    }
+  ],
+  "ghidra_writes": "none. This packet made no Ghidra mutation; all annotation is in the repository ledger shards.",
+  "annotation_state": "20 names added through bsp.py ledger add-name under lease agent/cc-hud-minimap:cc_hud_minimap. Ghidra itself is unchanged and will pick the names up at integration."
+}
