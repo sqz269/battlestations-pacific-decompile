@@ -222,7 +222,10 @@ void set_fire_target_00835860(WeaponDirectorHost& host,
                               bool force);
 
 // 00720CD0 (vtable[58h]): clear every occupied command slot, then issue one.
-inline constexpr std::uint32_t kDirectorAttackCommandDescriptor = 0x00e08f60;
+// 00E08F60 is the `follow` command singleton (category 3), so 00720CD0 issues a follow
+// order (docs/COMMAND_CLASSES.md, packet cc2_director_commands); the constant was first
+// named as an attack descriptor from the call site alone.
+inline constexpr std::uint32_t kDirectorFollowCommandDescriptor = 0x00e08f60;
 void issue_target_command_00720cd0(WeaponDirectorHost& host,
                                    NativeHandle target,
                                    const float position[3]);
