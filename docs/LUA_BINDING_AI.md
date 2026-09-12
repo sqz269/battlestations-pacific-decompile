@@ -318,3 +318,9 @@ under a loaded mission script.
 - **Was:** the 00F8A8BC defend-percent array and the 1Ch records at 00F8A8C8 are not disjoint for slots 3 and above (flagged as unresolved)
   **Is:** the Defend_ResourcePercent array is exactly three dwords, indexed by difficulty 0..2, and the globals loader guards the index so it never overflows; only the unguarded Lua setter can reach the collision
   **Evidence:** 00A16B46 bounds the brain array with CMP EDI,0xF8A8BC and 00A182EE starts the party records at EBP = 0xF8A8C8 with stride 1Ch and bound 0xF8A9A8, so only three dwords lie between. 00A360F5 is CMP EDI,3 / JGE 00A3613E, skipping the store at 00A36126 for modes 3..6; EDI's only writes before that store are XOR EDI,EDI at 00A3374B and ADD EDI,1 at 00A370D4 (whole-listing filter). The key string at 00D23500 is 'Defend_ResourcePercent'. 00A37E4B stores with ESI = 009FFC80() (0..6) and no bound check.
+
+## Correction from docs/AI_PLANNERS.md (packet cc2_ai_planners)
+
+- **Was:** BSP_AiGroup_SetCommand ... Sole call site 00a37ade, the AISetCommand Lua binding
+  **Is:** 00A2BD00 has eight call sites. 00A228BA in the Sell planner's think is one of them, alongside 00A12C3E, 00A13325, 00A2DCF5, 00A1006A, 00A10079, 00A15473 and 00A37ADE.
+  **Evidence:** python tools/bsp.py ghidra xrefs 00a2bd00; the plate comment on 00A2BD00 still carries the old claim
