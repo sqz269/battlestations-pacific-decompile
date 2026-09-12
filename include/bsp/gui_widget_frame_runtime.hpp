@@ -1,7 +1,7 @@
 #pragma once
 #include "bsp/gui_widget_owner.hpp"
 #include "bsp/gui_timed_entry_types.hpp"
-#include "bsp/input_action_classifier.hpp"
+#include "bsp/gui_input_runtime.hpp"
 #include <unordered_map>
 
 namespace bsp {
@@ -34,7 +34,7 @@ struct GuiWidgetFrameServices {
     const volatile float& pointer_y_00f8bc78;
     // Reference to the actual current backend's canonical device-group binding.
     // Re-read after current18, at AA8972. No copied input sample/vector.
-    InputBindingDeviceGroups* const& input_groups_00f8bbf4;
+    GuiInputSource input_groups_00f8bbf4;
 };
 
 bool gui_widget_uses_base_frame40_profile(GuiWidgetType) noexcept;
@@ -58,6 +58,7 @@ public:
     GuiWidgetFrameRuntime(const GuiWidgetFrameRuntime&) = delete;
     GuiWidgetFrameRuntime& operator=(const GuiWidgetFrameRuntime&) = delete;
     GuiWidgetOwnerRuntime& widgets() const noexcept { return services_.widgets; }
+    const GuiInputSource& input_source() const noexcept { return services_.input_groups_00f8bbf4; }
     void bind_listener(GuiWidgetFrameListenerOwner&);
     void unbind_listener(GuiWidgetFrameListenerOwner&);
     bool operation_active(const GuiWidgetOwner&) const noexcept;
