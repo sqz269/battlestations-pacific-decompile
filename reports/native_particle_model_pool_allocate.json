@@ -12,7 +12,10 @@
       "live_disk_equal": true,
       "coverage": "complete",
       "cpp_symbol": "initialize_native_particle_model_slab_00af5c20",
-      "original_abi": "ECX actual slab; stack slab ID; EAX same slab; RET4"
+      "original_abi": "ECX actual slab; stack slab ID; EAX same slab; RET4",
+      "source": "src/native_particle_model_pool_allocate.cpp",
+      "ghidra_name": "BSP_NativeParticleModelPool_InitializeSlab",
+      "evidence": "Initialize32 slab IDs at payload2DC stride2E0 and WORD free indices31..0 at5C00; freecount5C40=32, payload/padding preserved. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md."
     },
     {
       "address": "00af69e0",
@@ -22,7 +25,10 @@
       "live_disk_equal": true,
       "coverage": "complete",
       "cpp_symbol": "allocate_native_particle_model_slot_00af69e0",
-      "original_abi": "ECX actual initialized38h pool; EAX raw2E0h slot; RET"
+      "original_abi": "ECX actual initialized38h pool; EAX raw2E0h slot; RET",
+      "source": "src/native_particle_model_pool_allocate.cpp",
+      "ghidra_name": "BSP_NativeParticleModelPool_AllocateSlot",
+      "evidence": "Actual F8D2D0 pool lock/depth, raw5C44 slab creation, wrapped2cap+2 table growth/publication, restored AF6A76 free continuation, free-stack pop and subsequent nonfull scan. Native allocation exceptions retain lock/depth and earlier publications, including cap; no rollback. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md."
     },
     {
       "address": "00af60b0",
@@ -32,7 +38,10 @@
       "live_disk_equal": true,
       "coverage": "complete",
       "cpp_symbol": "return_native_particle_model_slot_00af60b0",
-      "original_abi": "ECX actual initialized38h pool; stack raw slot; RET4"
+      "original_abi": "ECX actual initialized38h pool; stack raw slot; RET4",
+      "source": "src/native_particle_model_pool_allocate.cpp",
+      "ghidra_name": "BSP_NativeParticleModelPool_ReturnSlot",
+      "evidence": "Same actual pool lock; slot2DC ID, signed wrapped slot-minus-slab division by736, WORD stack push with aliased freecount reload, unsigned earliest minimum, decrement/leave. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md."
     },
     {
       "address": "00af6b60",
@@ -42,7 +51,10 @@
       "live_disk_equal": true,
       "coverage": "complete",
       "cpp_symbol": "allocate_native_particle_model_00af6b60",
-      "original_abi": "overwrite ECX with00F8D2D0; tailJMP AF69E0; EAX slot"
+      "original_abi": "overwrite ECX with00F8D2D0; tailJMP AF69E0; EAX slot",
+      "source": "src/native_particle_model_pool_allocate.cpp",
+      "ghidra_name": "BSP_ParticleModel_AllocateStorage",
+      "evidence": "Discard incoming ECX, select same actualF8D2D0, tail AF69E0 allocation. Corrects misleading static destructor stub name. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md."
     },
     {
       "address": "00af62f0",
@@ -52,7 +64,10 @@
       "live_disk_equal": true,
       "coverage": "complete",
       "cpp_symbol": "return_native_particle_model_00af62f0",
-      "original_abi": "ECX raw slot; select00F8D2D0; CALL AF60B0; RET"
+      "original_abi": "ECX raw slot; select00F8D2D0; CALL AF60B0; RET",
+      "source": "src/native_particle_model_pool_allocate.cpp",
+      "ghidra_name": "BSP_ParticleModel_ReturnStorage",
+      "evidence": "Capture ECX raw slot, select actualF8D2D0, pass one stack word to AF60B0, RET. Constructor unwind raw storage return only, no payload destruction. Complete original-body fixture with actual owner and OS lock passed, including1057 allocations, table32->66, full slabs, reuse, aliasing and real FFFFFFF8 allocation failure. docs/NATIVE_PARTICLE_MODEL_POOL_ALLOCATE.md."
     }
   ],
   "packet": "orch3_particle_pool_allocate_aj",
@@ -155,10 +170,11 @@
     },
     {
       "address": "00af6b65",
-      "native": "tail JMP 00af69e0",
+      "native": "00af69e0",
       "function": "00af6b60",
       "contract": "Ignore incoming ECX; select00F8D2D0",
-      "cleanup": "no stack argument"
+      "cleanup": "no stack argument",
+      "kind": "tail_jump"
     },
     {
       "address": "00874327",
@@ -169,10 +185,11 @@
     },
     {
       "address": "00c9636b",
-      "native": "tail JMP 00af62f0",
+      "native": "00af62f0",
       "function": "00c96368",
       "contract": "Forward saved raw slot for construction unwind",
-      "cleanup": "no stack argument"
+      "cleanup": "no stack argument",
+      "kind": "tail_jump"
     },
     {
       "address": "00af7f55",
@@ -416,5 +433,52 @@
       "path": "J:\\PROG\\battlestations-pacific-decompile-orch3-20260910\\src\\native_particle_model_pool_owner.cpp",
       "sha256": "39e9d789d6d19d61e3b50ce8b26d4fe2c2fcdd30d99db07103be42417baf40ce"
     }
-  ]
+  ],
+  "integration_flow_repair": {
+    "repairs": [
+      {
+        "function": "00af69e0",
+        "owner": "agent/orch3-20260910",
+        "when": "2026-09-12T04:18:17Z",
+        "decompile_lines_before": 78,
+        "gaps": [
+          {
+            "site": "00af6a71",
+            "mnemonic": "CALL",
+            "operands": "0x00bf6989",
+            "gap_start": "00af6a76",
+            "gap_end_exclusive": "00af6a79",
+            "bytes": 3,
+            "after_call": true,
+            "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+          }
+        ],
+        "events": [
+          {
+            "gap": {
+              "site": "00af6a71",
+              "mnemonic": "CALL",
+              "operands": "0x00bf6989",
+              "gap_start": "00af6a76",
+              "gap_end_exclusive": "00af6a79",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            },
+            "clear": "Success: Cleared flow override at 00af6a71 (was: CALL_RETURN, now: NONE)",
+            "disassemble": "Successfully disassembled 3 byte(s)"
+          }
+        ],
+        "decompile_lines_after": 76,
+        "gaps_remaining": 0
+      }
+    ]
+  },
+  "integration_validation": {
+    "build": "local/particle-model-aj-combined-build.log: strict MSVC Win32 and both existing CTests passed",
+    "call_verification": "Pending final combined check",
+    "game_validated": false,
+    "source_sha256": "e9677140a01fc6b7d8ea00dfdf9a11048806145e03b27fa4348dcf6d3cf82086",
+    "newline_note": "Worker hashes retain their recorded raw CRLF preimages; integrated source is Git-normalized LF, compared after newline normalization."
+  }
 }

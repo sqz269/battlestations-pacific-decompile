@@ -23,7 +23,7 @@
       "sha256": "4d0db9ab8e72818c1b84fdf1e8ec7ad8dd0e656f210f067e77863f57c5154669",
       "disk_sha256": "4d0db9ab8e72818c1b84fdf1e8ec7ad8dd0e656f210f067e77863f57c5154669",
       "live_disk_equal": true,
-      "evidence": "Complete bounded actual-storage body; native-byte boundary fixture passed; required application callees remain. Descriptive names provisional; no Ghidra writes. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
+      "evidence": "Load current model1C and tail AF6BE0 completion; no event ownership change. Original-byte boundary/ownership/x87/reentry fixture passed. Required AF6DD0/AFF690/B04F00 and AF74A0 physical model constructor remain unvalidated. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
     },
     {
       "address": "00872740",
@@ -40,7 +40,7 @@
       "sha256": "b71824ade2ac86b217fe69cda8bf2a7ebc5a63892110d24738322feecc414e0d",
       "disk_sha256": "b71824ade2ac86b217fe69cda8bf2a7ebc5a63892110d24738322feecc414e0d",
       "live_disk_equal": true,
-      "evidence": "Complete bounded actual-storage body; native-byte boundary fixture passed; required application callees remain. Descriptive names provisional; no Ghidra writes. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
+      "evidence": "Capture delta through x87 FLD before actual reference+198==3 comparison, capture current model1C then FSTP argument to required full AF6DD0. Actual reference must cover198 and is not a114h point. Original-byte boundary/ownership/x87/reentry fixture passed. Required AF6DD0/AFF690/B04F00 and AF74A0 physical model constructor remain unvalidated. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
     },
     {
       "address": "00871fe0",
@@ -57,7 +57,7 @@
       "sha256": "8730927c205c6ec38170469f70700accee6e0045a3e232821e98988a3195da32",
       "disk_sha256": "8730927c205c6ec38170469f70700accee6e0045a3e232821e98988a3195da32",
       "live_disk_equal": true,
-      "evidence": "Complete bounded actual-storage body; native-byte boundary fixture passed; required application callees remain. Descriptive names provisional; no Ghidra writes. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
+      "evidence": "Load model1C and tail AF5F20 stop. Direct entry leaves event.active0C; current-slot dispatcher clears it before entry. Original-byte boundary/ownership/x87/reentry fixture passed. Required AF6DD0/AFF690/B04F00 and AF74A0 physical model constructor remain unvalidated. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
     },
     {
       "address": "00af6be0",
@@ -74,7 +74,7 @@
       "sha256": "a7cffd85c9bf63038fc8c95300aed031285edb4e1613dfb6854ceff322523e7a",
       "disk_sha256": "a7cffd85c9bf63038fc8c95300aed031285edb4e1613dfb6854ceff322523e7a",
       "live_disk_equal": true,
-      "evidence": "Complete bounded actual-storage body; native-byte boundary fixture passed; required application callees remain. Descriptive names provisional; no Ghidra writes. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
+      "evidence": "Actual0051F6B0 option04 gate, model1A5 flag, captured emitter194/198 range, conditional requiredAFF690/current container1C, model190/current14 count. No fake emitter/container construction. Original-byte boundary/ownership/x87/reentry fixture passed. Required AF6DD0/AFF690/B04F00 and AF74A0 physical model constructor remain unvalidated. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
     },
     {
       "address": "00af5f20",
@@ -91,7 +91,7 @@
       "sha256": "b1c42be6c6d9cfef6059f7057d4eea9c9035de8fc567aea99680332c35b486e5",
       "disk_sha256": "b1c42be6c6d9cfef6059f7057d4eea9c9035de8fc567aea99680332c35b486e5",
       "live_disk_equal": true,
-      "evidence": "Complete bounded actual-storage body; native-byte boundary fixture passed; required application callees remain. Descriptive names provisional; no Ghidra writes. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
+      "evidence": "Capture actual emitter194 before clearing model1A4; capture count198/end once, visit raw emitter pointers through completeAFF570 despite callback span changes. Original-byte boundary/ownership/x87/reentry fixture passed. Required AF6DD0/AFF690/B04F00 and AF74A0 physical model constructor remain unvalidated. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
     },
     {
       "address": "00aff570",
@@ -108,7 +108,7 @@
       "sha256": "094526503b8ed57bf541fc4e0ab3849a572c34af90c5d9c1fd59fac752d94ee4",
       "disk_sha256": "094526503b8ed57bf541fc4e0ab3849a572c34af90c5d9c1fd59fac752d94ee4",
       "live_disk_equal": true,
-      "evidence": "Complete bounded actual-storage body; native-byte boundary fixture passed; required application callees remain. Descriptive names provisional; no Ghidra writes. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
+      "evidence": "Capture nullable emitter10; nonnull tail B05070, no ownership/active changes. Original-byte boundary/ownership/x87/reentry fixture passed. Required AF6DD0/AFF690/B04F00 and AF74A0 physical model constructor remain unvalidated. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
     },
     {
       "address": "00b05070",
@@ -125,7 +125,7 @@
       "sha256": "a9d23b15e0aecde7e50a3910a5b93cb41b3da9975132f194268020ae34504cc3",
       "disk_sha256": "a9d23b15e0aecde7e50a3910a5b93cb41b3da9975132f194268020ae34504cc3",
       "live_disk_equal": true,
-      "evidence": "Complete bounded actual-storage body; native-byte boundary fixture passed; required application callees remain. Descriptive names provisional; no Ghidra writes. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
+      "evidence": "Signed live row-count loop and definition28 filter; required B04F00(state,0) return ignored; reload current row backing/count after callback, swap WORD id and value4 while preserving padding; forward value copy through x87; retry moved row, decrement count. Original-byte boundary/ownership/x87/reentry fixture passed. Required AF6DD0/AFF690/B04F00 and AF74A0 physical model constructor remain unvalidated. docs/REGISTERED_MODEL_EFFECT_BEHAVIOR.md."
     }
   ],
   "host_steps": [
@@ -280,5 +280,95 @@
     "supply required callees, real AF74A0 and shared F8D2D0 pool",
     "define two missing entries and annotate/name/export seven covered routines under integrator lock",
     "add owned ledger records and run final call verifier/build"
-  ]
+  ],
+  "integration_definitions": {
+    "events": [
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00872010",
+          "end_address": "00872018"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00872010",
+          "end_address": "00872017",
+          "bytes_disassembled": 8,
+          "message": "Successfully disassembled 8 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00872010",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00872010",
+          "function_name": "FUN_00872010",
+          "entry_point": "00872010",
+          "body_size": 8,
+          "message": "Function created successfully at 00872010"
+        }
+      },
+      {
+        "defined": "00872010",
+        "end": "00872018",
+        "name": null,
+        "after": "Function: FUN_00872010 at 00872010\nSignature: undefined FUN_00872010(void)\nEntry: 00872010\nBody: 00872010 - 00872017"
+      },
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00872740",
+          "end_address": "00872762"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00872740",
+          "end_address": "00872761",
+          "bytes_disassembled": 34,
+          "message": "Successfully disassembled 34 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00872740",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00872740",
+          "function_name": "FUN_00872740",
+          "entry_point": "00872740",
+          "body_size": 34,
+          "message": "Function created successfully at 00872740"
+        }
+      },
+      {
+        "defined": "00872740",
+        "end": "00872762",
+        "name": null,
+        "after": "Function: FUN_00872740 at 00872740\nSignature: undefined FUN_00872740(void)\nEntry: 00872740\nBody: 00872740 - 00872761"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ]
+  },
+  "integration_validation": {
+    "build": "local/particle-model-aj-combined-build.log: strict MSVC Win32 and both existing CTests passed",
+    "call_verification": "Pending final combined check",
+    "game_validated": false,
+    "source_sha256": "3c29b1d88bc8e3352a5faf93e713af855fdabcdadbacd2e3a9dcf967121e8c7a",
+    "newline_note": "Worker hashes retain their recorded raw CRLF preimages; integrated source is Git-normalized LF, compared after newline normalization."
+  }
 }
