@@ -199,15 +199,15 @@ inline constexpr int kAwardIdMin = 1; // 004e437a..004e4380, LEA/CMP 62h/JA
 inline constexpr int kAwardIdMax = 99;
 
 // One method per native call site 004e4000 reaches, in body order.
-struct FrontEndShellHost {
-    virtual ~FrontEndShellHost() = default;
+struct FrontEndShellServices {
+    virtual ~FrontEndShellServices() = default;
     // 004e4022..004e4062. 00F8D394+18h = 20000000h, then three labelled memory
     // probes. The sound one (00a7a460) only samples FMOD::Memory_GetStats and
     // discards both results and the label, so these are stripped instrumentation.
     virtual void renderer_set_budget(std::uint32_t value) = 0;
     virtual void probe_texture_memory(const char* label) = 0; // vtable +70h
     virtual void probe_sound_memory(const char* label) = 0; // 00a7a460
-    virtual GameplayEffectManagerContext& effect_manager_context() = 0;
+    virtual void probe_effect_memory(const char* label) = 0; // 004c1650 -> 0086b0b0
     virtual bool title_screen_present() = 0; // 00E198C8
     virtual void destroy_title_screen() = 0; // vtable +0h with 1, then null it
     virtual bool front_end_manager_b8_present() = 0; // 00E198B8
@@ -246,6 +246,13 @@ struct FrontEndShellHost {
     virtual void send_network_quit() = 0; // 0076fad0(0), ECX = game+1EF0h
 };
 
+// Existing typed clients retain their concrete getter/probe adapter. The game
+// host implements the operation through its raw singleton publications.
+struct FrontEndShellHost : FrontEndShellServices {
+    virtual GameplayEffectManagerContext& effect_manager_context() = 0;
+    void probe_effect_memory(const char* label) override;
+};
+
 // How 004e4000 left.
 enum class FrontEndShellOutcome {
     // 004e4159. The platform poll moved game+5D4h off the 3 that OnInit wrote,
@@ -260,5 +267,5 @@ enum class FrontEndShellOutcome {
 // return value; the drain at 004e44fa ignores it. Runs to completion inside one
 // call: the front-end resources load synchronously on this thread while the
 // render worker started by begin_loading_screen animates the loading screen.
-FrontEndShellOutcome enter_front_end_shell(FrontEndShellState& state, FrontEndShellHost& host);
+FrontEndShellOutcome enter_front_end_shell(FrontEndShellState& state, FrontEndShellServices& host);
 }

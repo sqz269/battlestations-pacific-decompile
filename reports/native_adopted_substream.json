@@ -1,0 +1,1042 @@
+{
+  "packet": "native_adopted_substream_aq",
+  "created_utc": "2026-09-12T15:56:37.783437+00:00",
+  "tested_base_commit": "ccf56196eb12567579dce20b124884aa3668e2a7",
+  "tested_uncommitted_source_snapshot": "source_sha256",
+  "target": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "functions": [
+    {
+      "address": "00bf1000",
+      "name": "read_native_adopted_substream_00bf1000",
+      "source": "src/native_adopted_substream.cpp",
+      "status": "complete_actual_storage_strict_Win32_original_instruction_and_numeric_composition_checked",
+      "coverage": "complete",
+      "original_abi": "ECX owner; stack buffer/request/optional_actual; EAX actual; RET0C",
+      "evidence": [
+        "docs/NATIVE_ADOPTED_SUBSTREAM.md",
+        "reports/native_adopted_substream.json"
+      ],
+      "native_bytes": 53,
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00bf1040",
+      "name": "write_native_adopted_substream_00bf1040",
+      "source": "src/native_adopted_substream.cpp",
+      "status": "complete_actual_storage_strict_Win32_original_instruction_and_numeric_composition_checked",
+      "coverage": "complete",
+      "original_abi": "ECX owner; stack buffer/request/optional_actual; EAX actual; RET0C",
+      "evidence": [
+        "docs/NATIVE_ADOPTED_SUBSTREAM.md",
+        "reports/native_adopted_substream.json"
+      ],
+      "native_bytes": 53,
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00bf1080",
+      "name": "position_native_adopted_substream_00bf1080",
+      "source": "src/native_adopted_substream.cpp",
+      "status": "complete_actual_storage_strict_Win32_original_instruction_and_numeric_composition_checked",
+      "coverage": "complete",
+      "original_abi": "ECX owner; EDX:EAX wrapping current-start; RET",
+      "evidence": [
+        "docs/NATIVE_ADOPTED_SUBSTREAM.md",
+        "reports/native_adopted_substream.json"
+      ],
+      "native_bytes": 13,
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00bf1090",
+      "name": "open_native_adopted_substream_00bf1090",
+      "source": "src/native_adopted_substream.cpp",
+      "status": "complete_actual_storage_strict_Win32_original_instruction_and_numeric_composition_checked",
+      "coverage": "complete",
+      "original_abi": "ECX owner; source slot18 tail dispatch; AL result",
+      "evidence": [
+        "docs/NATIVE_ADOPTED_SUBSTREAM.md",
+        "reports/native_adopted_substream.json"
+      ],
+      "native_bytes": 10,
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00bf10a0",
+      "name": "length_native_adopted_substream_00bf10a0",
+      "source": "src/native_adopted_substream.cpp",
+      "status": "complete_actual_storage_strict_Win32_original_instruction_and_numeric_composition_checked",
+      "coverage": "complete",
+      "original_abi": "ECX owner; EDX:EAX wrapping end-start; RET",
+      "evidence": [
+        "docs/NATIVE_ADOPTED_SUBSTREAM.md",
+        "reports/native_adopted_substream.json"
+      ],
+      "native_bytes": 13,
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00bf10b0",
+      "name": "origin_native_adopted_substream_00bf10b0",
+      "source": "src/native_adopted_substream.cpp",
+      "status": "complete_actual_storage_strict_Win32_original_instruction_and_numeric_composition_checked",
+      "coverage": "complete",
+      "original_abi": "ECX owner; stack origin; EDX:EAX absolute base; RET4",
+      "evidence": [
+        "docs/NATIVE_ADOPTED_SUBSTREAM.md",
+        "reports/native_adopted_substream.json"
+      ],
+      "native_bytes": 40,
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00bf10e0",
+      "name": "seek_native_adopted_substream_00bf10e0",
+      "source": "src/native_adopted_substream.cpp",
+      "status": "complete_actual_storage_strict_Win32_original_instruction_and_numeric_composition_checked",
+      "coverage": "complete",
+      "original_abi": "ECX owner; stack low/high/origin; source EAX; RET0C",
+      "evidence": [
+        "docs/NATIVE_ADOPTED_SUBSTREAM.md",
+        "reports/native_adopted_substream.json"
+      ],
+      "native_bytes": 68,
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00bf1130",
+      "name": "construct_native_adopted_substream_00bf1130",
+      "source": "src/native_adopted_substream.cpp",
+      "status": "complete_actual_storage_strict_Win32_original_instruction_and_numeric_composition_checked",
+      "coverage": "complete",
+      "original_abi": "ECX raw28h; stack source/startlow/high/lengthlow/high; EAX owner; RET14h",
+      "evidence": [
+        "docs/NATIVE_ADOPTED_SUBSTREAM.md",
+        "reports/native_adopted_substream.json"
+      ],
+      "native_bytes": 142,
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00bf11c0",
+      "name": "destroy_native_adopted_substream_00bf11c0",
+      "source": "src/native_adopted_substream.cpp",
+      "status": "complete_actual_storage_strict_Win32_original_instruction_and_numeric_composition_checked",
+      "coverage": "complete",
+      "original_abi": "ECX owner; no stack arguments; RET",
+      "evidence": [
+        "docs/NATIVE_ADOPTED_SUBSTREAM.md",
+        "reports/native_adopted_substream.json"
+      ],
+      "native_bytes": 118,
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00bf1240",
+      "name": "delete_native_adopted_substream_00bf1240",
+      "source": "src/native_adopted_substream.cpp",
+      "status": "complete_actual_storage_strict_Win32_original_instruction_and_numeric_composition_checked",
+      "coverage": "complete",
+      "original_abi": "ECX owner; stack flags; EAX original owner; RET4; retain compiler deleting behavior",
+      "evidence": [
+        "docs/NATIVE_ADOPTED_SUBSTREAM.md",
+        "reports/native_adopted_substream.json"
+      ],
+      "native_bytes": 30,
+      "name_is_hypothesis": true
+    },
+    {
+      "address": "00bb8b80",
+      "name": "query_native_file_stream_type_00bb8b80",
+      "source": "src/native_adopted_substream.cpp",
+      "status": "complete_actual_storage_strict_Win32_original_instruction_and_numeric_composition_checked",
+      "coverage": "complete",
+      "original_abi": "ECX ignored; stack token; AL; RET4; current two file IDs",
+      "evidence": [
+        "docs/NATIVE_ADOPTED_SUBSTREAM.md",
+        "reports/native_adopted_substream.json"
+      ],
+      "native_bytes": 40,
+      "name_is_hypothesis": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bf101a",
+      "native": "source+vtable24",
+      "function": "00bf1000"
+    },
+    {
+      "address": "00bf105a",
+      "native": "source+vtable28",
+      "function": "00bf1040"
+    },
+    {
+      "address": "00bf111e",
+      "native": "source+vtable1c",
+      "function": "00bf10e0"
+    },
+    {
+      "address": "00bf119a",
+      "native": "source+vtable1c",
+      "function": "00bf1130"
+    },
+    {
+      "address": "00bf11f7",
+      "native": "IAT[00ce2220]",
+      "function": "00bf11c0"
+    },
+    {
+      "address": "00bf1207",
+      "native": "source+vtable00",
+      "function": "00bf11c0"
+    },
+    {
+      "address": "00bf1220",
+      "native": "00bd30f0",
+      "function": "00bf11c0"
+    },
+    {
+      "address": "00bf1243",
+      "native": "00bf11c0",
+      "function": "00bf1240"
+    },
+    {
+      "address": "00bf1250",
+      "native": "00bf65ac",
+      "function": "00bf1240"
+    },
+    {
+      "address": "00bef78f",
+      "native": "source+vtable0c",
+      "function": "00bef750",
+      "contract": "current source type slot, stack current0109DBA0, AL result, RET4; BB8F60 for numeric memory profile"
+    },
+    {
+      "address": "00bef798",
+      "native": "00bef6d0",
+      "function": "00bef750",
+      "contract": "true type result: ECX current source+8 backing, EAX new14h wrapper, RET"
+    },
+    {
+      "address": "00bef7bc",
+      "native": "source+vtable1c",
+      "function": "00bef750",
+      "contract": "current seek slot; three stack zeros low/high/origin, RET0C"
+    },
+    {
+      "address": "00bef7c5",
+      "native": "source+vtable30",
+      "function": "00bef750",
+      "contract": "current size slot; no arguments; EDX:EAX, RET; low saved, high ignored"
+    },
+    {
+      "address": "00bef7cf",
+      "native": "00bf681b",
+      "function": "00bef750",
+      "contract": "raw10h allocation, cdecl ADD ESP4 at BEF7D4"
+    },
+    {
+      "address": "00bef7ea",
+      "native": "008d43c0",
+      "function": "00bef750",
+      "contract": "ECX raw10h, signed low DWORD length stack, RET4"
+    },
+    {
+      "address": "00bef80b",
+      "native": "source+vtable24",
+      "function": "00bef750",
+      "contract": "current read slot; data/low count/null output stack, RET0C; no read-result check"
+    },
+    {
+      "address": "00bef80f",
+      "native": "00bef6d0",
+      "function": "00bef750",
+      "contract": "ECX backing, new14h wrapper/retain, RET"
+    },
+    {
+      "address": "00bef81a",
+      "native": "IAT[00ce2220]",
+      "function": "00bef750",
+      "contract": "InterlockedDecrement(backing+4), stdcall one pointer"
+    },
+    {
+      "address": "00bef82a",
+      "native": "backing+vtable00",
+      "function": "00bef750",
+      "contract": "current zero-reference dispatch only at count0; existing BD30E0/8D4470 numeric owner chain"
+    }
+  ],
+  "verified_spans": [
+    {
+      "label": "read",
+      "address": "00bf1000",
+      "end_exclusive": "00bf1035",
+      "bytes": 53,
+      "sha256": "30a018ab0508f2c9fef77681347656f4592caecb0c1c52a7370dce856fe87450",
+      "live_matches_disk": true,
+      "calls": [
+        {
+          "instruction_address": "00bf101a",
+          "operand": "eax"
+        }
+      ],
+      "tail_transfers": []
+    },
+    {
+      "label": "write",
+      "address": "00bf1040",
+      "end_exclusive": "00bf1075",
+      "bytes": 53,
+      "sha256": "06463b15136c88dd6f757c471d4b432879451458bc8a674715fad4652cffab9b",
+      "live_matches_disk": true,
+      "calls": [
+        {
+          "instruction_address": "00bf105a",
+          "operand": "eax"
+        }
+      ],
+      "tail_transfers": []
+    },
+    {
+      "label": "position",
+      "address": "00bf1080",
+      "end_exclusive": "00bf108d",
+      "bytes": 13,
+      "sha256": "af8d2c80b9dabfd96faf72f2c55b2b6fadae59b37cd2b9f294d0ff3cd254946e",
+      "live_matches_disk": true,
+      "calls": [],
+      "tail_transfers": []
+    },
+    {
+      "label": "open",
+      "address": "00bf1090",
+      "end_exclusive": "00bf109a",
+      "bytes": 10,
+      "sha256": "8a7f285c4167ad79d802d45914d39bd73afddbbe2160e3c9a1531eee42cd1934",
+      "live_matches_disk": true,
+      "calls": [],
+      "tail_transfers": [
+        {
+          "instruction_address": "00bf1098",
+          "operand": "edx"
+        }
+      ]
+    },
+    {
+      "label": "length",
+      "address": "00bf10a0",
+      "end_exclusive": "00bf10ad",
+      "bytes": 13,
+      "sha256": "0602a776d9f09253da058e64d8646987ad434c750832c83098996bc3629814e0",
+      "live_matches_disk": true,
+      "calls": [],
+      "tail_transfers": []
+    },
+    {
+      "label": "origin",
+      "address": "00bf10b0",
+      "end_exclusive": "00bf10d8",
+      "bytes": 40,
+      "sha256": "8bc0350da9d6f248add0d45a9973715895069d3abf54bea5df317f4da8f8c3ae",
+      "live_matches_disk": true,
+      "calls": [],
+      "tail_transfers": []
+    },
+    {
+      "label": "seek",
+      "address": "00bf10e0",
+      "end_exclusive": "00bf1124",
+      "bytes": 68,
+      "sha256": "ca824d2b1937a8533944c91a372e2f79eb432d3c8c0ae0549efed72f0ec76049",
+      "live_matches_disk": true,
+      "calls": [
+        {
+          "instruction_address": "00bf111e",
+          "operand": "eax"
+        }
+      ],
+      "tail_transfers": []
+    },
+    {
+      "label": "construct",
+      "address": "00bf1130",
+      "end_exclusive": "00bf11be",
+      "bytes": 142,
+      "sha256": "7c87769b698e9a5c940abe24502923ad2d061cd04c03c90310a063ac81b4af66",
+      "live_matches_disk": true,
+      "calls": [
+        {
+          "instruction_address": "00bf119a",
+          "operand": "eax"
+        }
+      ],
+      "tail_transfers": []
+    },
+    {
+      "label": "destroy",
+      "address": "00bf11c0",
+      "end_exclusive": "00bf1236",
+      "bytes": 118,
+      "sha256": "5ad352e34ec5cfc2d4303a16e6d12b2e6010d41a4b9ac4d7149ce79988c725b4",
+      "live_matches_disk": true,
+      "calls": [
+        {
+          "instruction_address": "00bf11f7",
+          "operand": "dword ptr [0xce2220]"
+        },
+        {
+          "instruction_address": "00bf1207",
+          "operand": "eax"
+        },
+        {
+          "instruction_address": "00bf1220",
+          "operand": "0xbd30f0"
+        }
+      ],
+      "tail_transfers": []
+    },
+    {
+      "label": "delete",
+      "address": "00bf1240",
+      "end_exclusive": "00bf125e",
+      "bytes": 30,
+      "sha256": "e8d19a616d7b8947a844c1739c394a7eb6862e86ecac00029690f9abf0d9429d",
+      "live_matches_disk": true,
+      "calls": [
+        {
+          "instruction_address": "00bf1243",
+          "operand": "0xbf11c0"
+        },
+        {
+          "instruction_address": "00bf1250",
+          "operand": "0xbf65ac"
+        }
+      ],
+      "tail_transfers": []
+    },
+    {
+      "label": "query",
+      "address": "00bb8b80",
+      "end_exclusive": "00bb8ba8",
+      "bytes": 40,
+      "sha256": "88b17b85ae9461dfb76140ab1a07467bfd902d49fec143dd09a4fa731bbb02d1",
+      "live_matches_disk": true,
+      "calls": [],
+      "tail_transfers": []
+    },
+    {
+      "label": "stream_base",
+      "address": "00bb86e0",
+      "end_exclusive": "00bb86eb",
+      "bytes": 11,
+      "sha256": "d9ef5a05ac2b30551b9b3d76dbdad36b0b47b260cae31ffac740dde9fc5f3c54",
+      "live_matches_disk": true,
+      "calls": [],
+      "tail_transfers": [
+        {
+          "instruction_address": "00bb86e6",
+          "operand": "0xbd30f0"
+        }
+      ]
+    },
+    {
+      "label": "ref_base",
+      "address": "00bd30f0",
+      "end_exclusive": "00bd30f7",
+      "bytes": 7,
+      "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+      "live_matches_disk": true,
+      "calls": [],
+      "tail_transfers": []
+    },
+    {
+      "label": "ctor_unwind",
+      "address": "00cc78a0",
+      "end_exclusive": "00cc78a8",
+      "bytes": 8,
+      "sha256": "67fad53e27ba1cd41454029946412524158446809669c6aca676f5757debb952",
+      "live_matches_disk": true,
+      "calls": [],
+      "tail_transfers": [
+        {
+          "instruction_address": "00cc78a3",
+          "operand": "0xbb86e0"
+        }
+      ]
+    },
+    {
+      "label": "dtor_unwind",
+      "address": "00cc78c0",
+      "end_exclusive": "00cc78c8",
+      "bytes": 8,
+      "sha256": "de2f45d8312fedfb059de72c0f6d759218cdebbc3e520586c634269dc3fe8422",
+      "live_matches_disk": true,
+      "calls": [],
+      "tail_transfers": [
+        {
+          "instruction_address": "00cc78c3",
+          "operand": "0xbb86e0"
+        }
+      ]
+    },
+    {
+      "label": "ctor_handler",
+      "address": "00cc78a8",
+      "end_exclusive": "00cc78b2",
+      "bytes": 10,
+      "sha256": "9e2f6e6b714f62c412f18dc50e1142fd2a1f79fbc5e83d2fdc0b4e08abd8ca07",
+      "live_matches_disk": true,
+      "calls": [],
+      "tail_transfers": [
+        {
+          "instruction_address": "00cc78ad",
+          "operand": "0xbf6b43"
+        }
+      ]
+    },
+    {
+      "label": "dtor_handler",
+      "address": "00cc78c8",
+      "end_exclusive": "00cc78d2",
+      "bytes": 10,
+      "sha256": "4501ac9ca9e55193927f2c4a01feeda627a7cfc36ab8365004d4ebab52770196",
+      "live_matches_disk": true,
+      "calls": [],
+      "tail_transfers": [
+        {
+          "instruction_address": "00cc78cd",
+          "operand": "0xbf6b43"
+        }
+      ]
+    },
+    {
+      "label": "substream_table",
+      "address": "00d68db0",
+      "end_exclusive": "00d68de4",
+      "bytes": 52,
+      "sha256": "24a19cd7fc9b6ab713bef80143dcab517e7d017d8ee83d5997408b8d749e4d20",
+      "live_matches_disk": true
+    },
+    {
+      "label": "ctor_fh3_data",
+      "address": "00e0250c",
+      "end_exclusive": "00e02538",
+      "bytes": 44,
+      "sha256": "b8fe6771ab3031f50a3acd190a16a81e18fd593477ce56b024f3ad0aff994c04",
+      "live_matches_disk": true
+    },
+    {
+      "label": "dtor_fh3_data",
+      "address": "00e02538",
+      "end_exclusive": "00e02564",
+      "bytes": 44,
+      "sha256": "0ee0f6993d2c64d9d8fc6bb56a992b02cd2d70af67a220f1fd5d00350e11838e",
+      "live_matches_disk": true
+    }
+  ],
+  "defined_originally_missing": [
+    "00bf1040",
+    "00bf1080",
+    "00bf1090",
+    "00bf10a0",
+    "00bf10b0",
+    "00bf10e0",
+    "00bb8b80"
+  ],
+  "function_definition_record": "local/native-adopted-substream/function-definitions.json",
+  "unwind": {
+    "constructor": "E02514/E0250C state0 -> CC78A0 -> BB86E0 -> BD30F0",
+    "destructor": "E02540/E02538 state0 -> CC78C0 -> BB86E0 -> BD30F0",
+    "effects": "Write D5C104 then CEB130 only; constructor does not release source; throwing terminal leaves owner+8 unchanged by destructor",
+    "validation": "Three source-only C++ unwind cases; original FH3/SEH not executed"
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "paired_comparisons": 98,
+    "pairs": "All11 original bodies, hosted source callbacks, actual atomic decrement and sourceCRT free; real freeing tested independently of nonnull-source destruction",
+    "core_fixture": "local/native-adopted-substream/result.log",
+    "composition_fixture": "local/native-substream-binding-composition-result.log",
+    "composition": "Actual memory conversion, nested physical unclamped reads/cached and OS cursors, real HANDLE closure, BEF540 EAX comparison, binding restoration, null BD30E0 branch, FileStore-adopted-physical-to-memory-to-Lua load with Platform cleared/restored, canonical shutdown",
+    "existing_paths": "Earlier physical conversion4pairs, memory FileStore and physical FileStore Lua paths also pass in current composition",
+    "abi_compatible": false,
+    "game_validated": false,
+    "direct_call_rows_checked": 7,
+    "indirect_boundary": "Direct checker skips indirect/IAT rows; numeric profiles and current calls covered by byte evidence and focused fixtures."
+  },
+  "review_correction": {
+    "was": "Callable zero-reference adapter passed null EDX; original first96 fixture callback ignored that register",
+    "is": "Capture current source table once at BF1201 and pass it explicitly to callable EDX; callback now records it;98pairs rerun pass including two subsequent changed-table transfers",
+    "evidence": "BF1201..BF1207 saved assembly; independent worker review; final probe/result",
+    "other_fix": "Numeric BD30E0 dispatcher now preserves original null branch, exercised in composition"
+  },
+  "reference_boundary": {
+    "translation": "30000000 common code shift, all11 bodies unchanged",
+    "bindings": "External source callbacks and source CRT free; atomic wrapper executes real InterlockedDecrement; original FH3 targets not installed",
+    "remaining": [
+      "Seeded manager/mount/FileStore trees",
+      "Original startup initializer ordering",
+      "NativeMPKG provider/directory and inflater owner",
+      "Numeric physical/memory writes",
+      "OriginalCRT/FH3/SEH identity",
+      "Arbitrary stack aliasing/concurrent mutation/all fault orders",
+      "Full application startup and gameplay"
+    ]
+  },
+  "source_sha256": {
+    "include/bsp/allocator_list.hpp": "39ef9a5be06269f83af556cd80d0d68af3e983e1912154b2255ed7060f6fdae8",
+    "include/bsp/camera_affine.hpp": "fb6ba92f9d2409946714f0ee378ede994bce207849bb567a7d387ac7a8e5f570",
+    "include/bsp/camera_frame_state.hpp": "3908727ef594797d30acfba72d87366683c61d7768e7cf3038f5a0164f7428df",
+    "include/bsp/camera_inverse.hpp": "b41cb1166a51cd588af4017498d51985f4f3689b1f08f58c4eb69840d2e43248",
+    "include/bsp/camera_multiply.hpp": "3c35ae95652cd16a0e232cccc628a4cc3791256f94d527edb422149918e9bcca",
+    "include/bsp/camera_projection.hpp": "bbfe251c983ec82bd132108c32364798a1731f3e4456a77959139e13c0f0c9a4",
+    "include/bsp/camera_transform.hpp": "1f2de265a3479686c68e74802cca45038374bf9be1f882aa8ccbee0086e2635d",
+    "include/bsp/d3d9_buffers.hpp": "e8bc19c4630661b83969b53cac94134748f3c9af2a98002f1f2906ed93dedc83",
+    "include/bsp/d3d9_query.hpp": "eed94276982e03c602fb1fda17559e3d26426350ef587637b9525c03a5f44d44",
+    "include/bsp/d3d9_resources.hpp": "5703cd93356283a5032d4a075ced05542ce5505cbe9c87ec44ed722a9b3dd176",
+    "include/bsp/d3d9_startup.hpp": "cb5b822fd9129419b2d3d47a1dd590af05038c9b59a606a50b6dd0102048d843",
+    "include/bsp/d3d9_states.hpp": "d6f143ad718a3d931f4371ac14235a41006cb616c9b9df4cdd9c3faaf6c91288",
+    "include/bsp/d3d9_vertex_layout.hpp": "b20c6b94d7bb3128e0315780a1a9693d110b45703a9c7396ae23a7bb223792ef",
+    "include/bsp/frame_clock.hpp": "c5ca70e98942784432bfbee0e543d601a495d5ee2c43b17631985288ae98850b",
+    "include/bsp/frontend_screen_animation.hpp": "5bf3429e1c6032def440ccebd3d804fd087896401ec16bf94b456b1dc73865e0",
+    "include/bsp/game_entry.hpp": "055793fab1e425595a1e114160bb5ec76e5656f470527d88e52dfca31f0d916f",
+    "include/bsp/gui_layout_loader.hpp": "3ede9dc470a4d5a3285d1578483428b548025b0b2eba9ab6ecc79967b242d8b1",
+    "include/bsp/gui_lua_reader.hpp": "8770f952be9d1ab4a5f7de4bc59780c78f662acec3c6dff0919e7f1ec67ce433",
+    "include/bsp/gui_widget.hpp": "846d1f6378e3459fb585917289d2f3342de37ba98dafc7fc952c9c48ea8061f9",
+    "include/bsp/instance_geometry.hpp": "02bd2ae826198ca341a2a14fbf0f58ced99ccd20a5833a6eef48a11f932b75d4",
+    "include/bsp/instance_grouping.hpp": "dd9f4b459ad6403464acfdf2461d3736938c0364fda4b96ec746c0a78063c308",
+    "include/bsp/instance_sort.hpp": "c3a892e5b69db70699daaa5c301f5b00aa17fe4f93f929fdc43dcc16e797b1f3",
+    "include/bsp/instance_upload.hpp": "271e956b6dd3801fff1edab447fb03bb929ec562e227ae0357debbe95c1239fb",
+    "include/bsp/light_type_bootstrap.hpp": "0f591f8d094713dd75dc6e1bfc7c1d1a90970b1c77a1a29674a95ba75f9e5e34",
+    "include/bsp/lua_numeric.hpp": "a8de255e2aaaad540cec67717e7d0efd7cc5f50d206bdd2137cabe1ed81acf60",
+    "include/bsp/material_sort_metadata.hpp": "244be13046cc21bd64870eaa388954d5c6a637b2ced23d3d35e161205ec73212",
+    "include/bsp/native_adopted_substream.hpp": "391c56e99383fd6cbbb409b21ae4f663e8d0f8cdc10c5ed6cd3931a42640f6da",
+    "include/bsp/native_filestore_open.hpp": "f62f1e6f985759e15203c0c146ee72fb10dc954a1666fca12abe7b3ccd7a8fe3",
+    "include/bsp/native_lua_bootstrap.hpp": "b9c5bad802213d87665c1c4f82320184ef8970902dcd9dd7b22b40ce4493a45c",
+    "include/bsp/native_lua_file_loading.hpp": "13bcab4bbc7eb973b7ccceb87b198e19326bed0320d2d3dca7b32ae91cba3108",
+    "include/bsp/native_lua_fundamentals.hpp": "dc1ab903fcc4d44f715da895a12f24591c03d32d7cf4b7f4cefde90820d0f596",
+    "include/bsp/native_lua_objects.hpp": "067f4943d13c86cd34a0c019b8bd644129d3aad6b49488360bfab786d55f86dc",
+    "include/bsp/native_lua_script_overrides.hpp": "5b6ff12e3b560ad2b417eb69e631f9f15e0f5921da3deb5d746447198bf3871e",
+    "include/bsp/native_lua_vfs_dispatch.hpp": "da795f3a43a6acf1664d6ac00474a170d7196bf4383ca1695960ab685c67bfb2",
+    "include/bsp/native_memory_stream.hpp": "0c673ab73fe7cc5c900dd7f0d746f5b048334706c16242f32eb94a8e95eeaa42",
+    "include/bsp/native_mesh_owner.hpp": "540fa95aafcd3b67697998361f9a6b1689bf90348c9c0cdc09bdeb6b9c6ac42c",
+    "include/bsp/native_mesh_pool.hpp": "e5b30e590ec675510a879c071e509f55b642f80a808e7204c093758af61cbc52",
+    "include/bsp/native_physical_file_date.hpp": "78fa2bd31ebe6c8b786ecdf4dcfdaafbfb577aa7b529e5a6cc53320798787939",
+    "include/bsp/native_physical_stream_conversion.hpp": "8c24719755dd8719da843edeb2730598976d2d7dac702b733c0d399daec0d6ac",
+    "include/bsp/native_physical_stream_open.hpp": "ffbceae195d62c626fcce2bc120b86b662a8489a8d239f8db3cd5f6bfb313d58",
+    "include/bsp/native_pooled_resource_path.hpp": "2b9b1dad7f2843e0ddcc4d4bf609343ddf02a1516b9c54c2028ea4e78f56bc26",
+    "include/bsp/native_pooled_string_substring.hpp": "1ab8439842d42ad82c129a30ed5d80867fb6ec6175bc7fdf5a4c585dd628905f",
+    "include/bsp/native_render_batch_keys.hpp": "a3a1ce7ea3eb18f2483454eb7d6f71a6843a808aed313005cdcc3a29f5b12bf1",
+    "include/bsp/native_render_batch_lifetime.hpp": "112f1204c6f7b8633dee691a09c967c2002a1d3cdf6b64e37d42e2b3ef74dead",
+    "include/bsp/native_render_context.hpp": "eb4ace9d59bdc3b8b393927206aafd98f835b6b9cf2d7f0337ccd96f1c8c168f",
+    "include/bsp/native_render_pointer_arrays.hpp": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881",
+    "include/bsp/native_renderer_parameters.hpp": "e611c56944aced8136d129fd00c0ff2689a424bb36ec29dc66ab5c97f1ba0605",
+    "include/bsp/native_retained_memory_owners.hpp": "c559f53cca95dd93ba9133740e0570b2705c9b4cb9593ab1d050404d8470708c",
+    "include/bsp/native_stream_type_ids.hpp": "fe99f6ed873cdfae84f3df91aca2b1ade64060d6abfa35cd2ed6834b2b772222",
+    "include/bsp/native_string.hpp": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72",
+    "include/bsp/native_string_pool_owner.hpp": "c434ef6a756fe1df206dddcdef70d4444159e4e5e756ec5bb43fc9b20a7f35bc",
+    "include/bsp/native_string_pool_storage.hpp": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749",
+    "include/bsp/native_string_vector.hpp": "50103278e30ffed29738b02acf97008c16c6efd0ac66669ff25ed177694ce7d2",
+    "include/bsp/native_vfs_date_leaf_providers.hpp": "ab6ba39ac240f79db04b7eb083eec54b58e27a93973c421d4fb03147b7a0a3e0",
+    "include/bsp/native_vfs_date_route.hpp": "22bd52024880018152e4ce93cccdcfecb5bd097cfb228f63c9f0538d706d99b2",
+    "include/bsp/native_vfs_lookup_leaves.hpp": "4f6e3200837a0c32aedf425d9a030ce14145a2d79e02f96d0b4d1153f512f55c",
+    "include/bsp/native_vfs_lookup_routes.hpp": "9129b3c1d7c4409a075fd52dbb043c11a711eb2f0c37b8ff3963181cdd2b1f6c",
+    "include/bsp/native_vfs_open_logging.hpp": "237b67d1bfa321d9ee74562ff093104f2423bb266a831bd75d15c7a18f2eff4c",
+    "include/bsp/native_vfs_open_route.hpp": "dd2479b97bdfd53bbd5c3e47b1956039c366884faba59caf6422976bd28636fe",
+    "include/bsp/native_vfs_runtime_bindings.hpp": "c68bbb5de2a3144f478217cba847ece689edb2dec8635160d5f9a829cd8e06d4",
+    "include/bsp/native_viewport_owner.hpp": "07dd92936d850d9a388edcaa980b7418a24b66547cf7026378f0f5011fe49687",
+    "include/bsp/particle_clock_lifetime.hpp": "b54ea8e3be7dd654e869ff009d6adb812f5acfc6029d903dac18006a01341919",
+    "include/bsp/random.hpp": "7c38db60d138add04d7abf759d23272c357d23bdd64d042ba4a27733c05f630c",
+    "include/bsp/random_threads.hpp": "41b1402062fdf2afb99afa5b0d2beda697cc0c1b92a13806103b4bc4879d09b9",
+    "include/bsp/render_command_queue.hpp": "bc5b28823becf3dbe9628f7393be7f3ba399895d6935829921113a7496fe8f1a",
+    "include/bsp/render_sort.hpp": "6d0e6ff254d4aaafbea40ff0e00f8e5fec3e5c4315157bb722f5cef23a9762fe",
+    "include/bsp/render_tail.hpp": "7ded157910928589128f7a1569d18e42877ed2c943649957612fa6060b4646fc",
+    "include/bsp/scene_attachment.hpp": "b48a89664f398733f8fd1f0067a816af12f7b9fc5a05fa128cdb797b0e84bbed",
+    "include/bsp/shader_lua.hpp": "2e7053bd455292ba8348f5df8e8d22f31b55c7efba7f204ae6ec63d28706dc4e",
+    "include/bsp/shader_source.hpp": "eaadee6df7c0693e5b73575124df0fe2431ea9449f2d7df71bf7d128944fdf04",
+    "include/bsp/singleton_lifetime.hpp": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+    "include/bsp/storage_pool.hpp": "da1c9a4f88fff56634f69cfb8dc113dc013680ae753a434e1a14aa458d410e33",
+    "include/bsp/system_fog_constants.hpp": "9378d355dad5f5ee78ce8fa41cb6275f9e5b00e9bcbd07592f051c147a0d0663",
+    "include/bsp/system_fog_owner.hpp": "1c50b77e0e9ac0188aeb1a578ec7aec81a2faa6448304d7b2f771dc53c70ee03",
+    "include/bsp/system_fog_slot.hpp": "778ddcf121dd7b693a2104c43ad8dd1224eb401e06ba4fb48e7aa18617d9b1fb",
+    "include/bsp/system_lighting_constants.hpp": "9c98d892bac479fdf3d661c98c996333df0821a3daea26a5e36ba40339b722c9",
+    "include/bsp/system_time_constants.hpp": "36d88206bf9dbf4e6cceaab5e0aa6bf4b71172305b79bb98a571063add672ba9",
+    "include/bsp/vertex_declaration.hpp": "0f03c6a960da3547644b3e5bc8b5934a35fe26f42abc2746559a31f0af2452a0",
+    "src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+    "src/camera_affine.cpp": "dc83d91929e3f52aaa8a310918830396c7bee5b74e27a6e9af83cdef88d8abfd",
+    "src/camera_frame_state.cpp": "e05983d2625a6276f15b4fc8b84c8b6c1c81e864a95909bde50b0d8610dc811e",
+    "src/camera_inverse.cpp": "f29f900fcff8921724ba308a3b56462e3d753c4c55262aa782441088124f3a13",
+    "src/camera_multiply.cpp": "46fc6ea58c5cc7fddb30e5dc25c8f9a2d3f311b6d355e4ba7a9787c864cab531",
+    "src/camera_projection.cpp": "6584f17e3893365d1960dfad4bcdefe078ca5010fc5080199b3bea97958cd96c",
+    "src/camera_transform.cpp": "55d1ab50deaf9d3eca0812aecf3c1079f38798f2d7a55e7aa525575b1147cf97",
+    "src/d3d9_buffers.cpp": "cae2266baec93413bcc2fb98e033f0aab21d12d38fd4f2e1049aa790c88225fb",
+    "src/d3d9_query.cpp": "a7a4ca80d084acb3241ff9229d258dcd1b0085503db452af3798e055a1813b58",
+    "src/d3d9_resources.cpp": "f99bedc31baf65009085e09f7e98932fc278fa19b7bc951d16a246a148d65f2a",
+    "src/d3d9_startup.cpp": "59363f8139e450a298564a1be6ad3a89b3609645090741b3ddfce4295c1377ed",
+    "src/d3d9_states.cpp": "0482129429656ed126106ffed85c1a504b0f2bc6dcccc2d2afc54706cce02e9f",
+    "src/d3d9_vertex_layout.cpp": "018b8ebc46702a6c7b005c899ccdeea066065b3661d64c5a6c9fdad7c8335718",
+    "src/frame_clock.cpp": "85689c22573c3724489e6341e0fd48573033c893f5fe7ca81a6793f714c903a6",
+    "src/frontend_screen_animation.cpp": "e2c5afafb689f6662e6e1782a678b67bfae8cf9da995f98ff080ace92cb93aeb",
+    "src/game_entry.cpp": "da35e8db068d745c0880cdf6c878ead3fa9bd4f2827582b5e68b15b80702a6d9",
+    "src/gui_layout_loader.cpp": "f28200fd7ffc94302ec3a987657e8b45e1e69ebdc41fc94f8a6c9265d8480f8d",
+    "src/gui_lua_reader.cpp": "d7bd22187f235cd436005f676dcc2eca13492661a9e67ed89c157fb6267f0293",
+    "src/gui_widget.cpp": "c59c3b3a8f6aad8bdd8ebf72c830df870ca8a491835d92e4f9e50b342e8a4fdf",
+    "src/instance_geometry.cpp": "2eff689daae905e776b7c23c2599faa5b50a96995a4d7d6804dd6fe9d0b01cff",
+    "src/instance_grouping.cpp": "06c4328b8c7cd75af5c3d8e9f41e41efc151508145dc2b8b17324e8177b67aa9",
+    "src/instance_sort.cpp": "845cc7172422040b563bc3c75b1a635f0dba571ee685aa2cf02ec83ba579fcc9",
+    "src/instance_upload.cpp": "194d00d2130eb1b433e8b6433bbb0951c7f0becc8ad3c25403bf0d25ae1e97b0",
+    "src/light_type_bootstrap.cpp": "435c3f58482ca2ca0ee0c7c9c58f9441dc27caac93ac1cc491de9166f49d24c9",
+    "src/lua_numeric.cpp": "4c19ba962c8964626d224a273a416794d1330efcca1ef953ca359f28f28f585c",
+    "src/material_sort_metadata.cpp": "3fa67876fe50117cfa47a2461c7f289cd02d0f5c6833817451cc8f1343982be2",
+    "src/native_adopted_substream.cpp": "7d14188400196e6c1526cbc7a65d03b97582df7be5c9173128e4c090689618e6",
+    "src/native_filestore_open.cpp": "2b0cb03527c110c15c1d02d7ad4f4e16521adf3c48b9f7a3a6563ca85ba52f61",
+    "src/native_lua_bootstrap.cpp": "61bce46a66102ae24c8781ce30d6a03c914f5f6b5852c85453427cc8227b6a3a",
+    "src/native_lua_file_loading.cpp": "5429158efe57f0c14d3829562ee38ca63ab8c526f3282476d419babdeac959ac",
+    "src/native_lua_fundamentals.cpp": "169084c1fe4e15d34e16949bad86d939a66c634c29f0c9c5841379184ea8be0d",
+    "src/native_lua_objects.cpp": "640b3e9923ae41a0acf7ff8a068a1968c69bf1895e2fdac127514a5031ce4f9e",
+    "src/native_lua_script_overrides.cpp": "e88f7dce14f48c8cdc7d461938ce2a863e81583f91dc2ce4bef18332d0501cbe",
+    "src/native_lua_vfs_dispatch.cpp": "f9950170205ffe503f729b3ae4ec86434f19e9625fea5da4f54a4e61a114f86a",
+    "src/native_memory_stream.cpp": "5b40e8f8d11255a9389805c81386458db8b06c0b3c34f12a314653dda7d370d5",
+    "src/native_mesh_owner.cpp": "fb263bbe9a631354e3e6943293befdf18fcd7da26a7969df4827e4ea97fb6fd3",
+    "src/native_mesh_pool.cpp": "4b9fc9871b003a25e357a3d7460c7d890431115b8289a012567280e8ca31fa44",
+    "src/native_physical_file_date.cpp": "6c7671a3b07969df77952f3a7338fc1e5e6369120944bdb67c045e2cd304905f",
+    "src/native_physical_stream_conversion.cpp": "8c6beb3ab29e40fb71e42d4266076c27a354d72b7112b6c4e5731b1477e7454a",
+    "src/native_physical_stream_open.cpp": "c2be9674386b55e5f3afab8e46feeb6c2703ccba590b4f964cbcba92b61f196d",
+    "src/native_pooled_resource_path.cpp": "dcdbbd55b83fc4cea7666498bf9d9b81bf2b6b03b50373339f9f17b2fa72dfa0",
+    "src/native_pooled_string_substring.cpp": "3310d48a69a0a20f1d7466fcba1688d8dcc856c7bf4a8048700ccd1fa02db4bc",
+    "src/native_render_batch_keys.cpp": "fe3101c51500415607fc9513a7528853b2285a64d1560bc8684e87b2b05e75e1",
+    "src/native_render_batch_lifetime.cpp": "f032e95d64804b970b623c9d364e37b8badf65d6eaae9e8955f8629e073ef8dc",
+    "src/native_render_context.cpp": "ee62d05164d69ba93eea4ffd34691dfd777aec5d629ad1753a8954b18468cc1e",
+    "src/native_render_pointer_arrays.cpp": "ac16b7251f6df37193b88d5d92e8288044872bc2df39b71f29ed83c7291b193c",
+    "src/native_renderer_parameters.cpp": "7f5a2439342111b7a1f03d6992e88893c704497638f17f74e858e7fd91ba72c3",
+    "src/native_retained_memory_owners.cpp": "f069566ab280cb05fbdaa55474a6174bd143c52d6cbbaa0f0795511770932e93",
+    "src/native_stream_type_ids.cpp": "acfce0bd756342e1c2a3537d3848fcba540a4d34cc97827aae905d323ba6669f",
+    "src/native_string.cpp": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a",
+    "src/native_string_pool_owner.cpp": "622c833e2ebc66dde76b36603d9e5391099e6af078bd3b3169c133dd6884b66c",
+    "src/native_string_pool_storage.cpp": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8",
+    "src/native_string_vector.cpp": "1075734174ec56a36ff118d9e7d6e6371288f1c5260d6df8a07f262aa2326f9e",
+    "src/native_vfs_date_leaf_providers.cpp": "8a3615bec143538b10b50448e9e44948f3f36374b33cdc6878ad50de27f36559",
+    "src/native_vfs_date_route.cpp": "96ca6bf65359a09b52ff70141cba7ca2fc029030e670e47601ba6832f1b6d991",
+    "src/native_vfs_lookup_leaves.cpp": "ed7d36a5959696343eef37d46f5b7c32b4a1c46438fea5fc24ced56d9e9043f8",
+    "src/native_vfs_lookup_routes.cpp": "265ec2c0fc71979cf42e20b86a20ba6ad024b3481fb172aa64ac6bf266f0eb4a",
+    "src/native_vfs_open_logging.cpp": "17a92fec81fe417f33e98438b95f75205db87d4915e2490901b8cfc429bd92e0",
+    "src/native_vfs_open_route.cpp": "1ca16445450c1d8dfaa069d948827dfbcc42c63cccea95f1828d627f29a95aef",
+    "src/native_vfs_runtime_bindings.cpp": "c2c36b94f3c17aed17d09cc0f791015c1317934aaa1f40a55953182a0b731b0e",
+    "src/native_viewport_owner.cpp": "af6cf3a6d23b94f43e6117144b287cd25ddd4d3af581d639e9b0f1c309af3160",
+    "src/particle_clock_lifetime.cpp": "841a2eace4497456da6e8dfbf39f51fb83ae52e668a87797a314a8243256ed89",
+    "src/random.cpp": "6fd6bc59ffa3efb09f2ae5fb0f18484d6d907e6195fff9db20973dbf95743f85",
+    "src/random_threads.cpp": "3e9c3253132b3c94ab9a81262406d6871e4388101d4adbd6aebc1ca4b9995e3d",
+    "src/render_command_queue.cpp": "5ec78b4d95eef3cb597d789b04ab7bb6f0a44915932b721cb8e2e2a65418cb02",
+    "src/render_sort.cpp": "43a0478ff42d807856294ef891a7afb9659c382fc6c7fe718d0a54ba9922e02d",
+    "src/render_tail.cpp": "41c44beddd52b87c71ba8a4809ff1e289fa30e0a9bc4375152360a7aff9712b0",
+    "src/scene_attachment.cpp": "a2f73ada6803160003e5cadcd3f7ec9dc77f4829c5f6358d0f5e0eb53aeb916e",
+    "src/shader_lua.cpp": "e94195adb37ba34d0278960be991a212d68db329049b04710b0c1a29f1b71df0",
+    "src/shader_source.cpp": "611e44595dc6a11882ba6b1b8e607e1457b58a189ef235f08ce073a2818ffff2",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "src/storage_pool.cpp": "47aab0a00fe12ecd2f28b24b4374e79c640f821e1dec0c735910c88afb9ae5f8",
+    "src/system_fog_constants.cpp": "eb085bcd9a2c05fd703177a9766a56b7ce5e701e23e4c141a768d9a08ceb35a1",
+    "src/system_fog_owner.cpp": "a745ea0d569f296fa6de9d3bf4730a30ef4b1691e5723a71366ac678040bd998",
+    "src/system_fog_slot.cpp": "9d5781b2a998af2efb2b470162adfc6581c96f170b0d8168a989e211a9657838",
+    "src/system_lighting_constants.cpp": "1c163e9f843d392a791fcb780af7f9ed3362c78abe0bcb745c9d6988966648c8",
+    "src/system_time_constants.cpp": "4281c8bba03dc6726c29a84441b4a52da98b0143ee0aa3bd7e3018bb8192e45c",
+    "src/vertex_declaration.cpp": "a3844409f7ade1fb02d4dfd9115441d0b1897de84c10d19cb970e497b0684e04"
+  },
+  "frozen_libraries": [
+    {
+      "path": "local/native-aq-frozen-build/bsp_core.lib",
+      "sha256": "08a7be89bcb586897e010473c9f96e1f3f869d415f16cd4afc841c92400c6fae"
+    },
+    {
+      "path": "local/native-aq-frozen-build/bsp_lua511.lib",
+      "sha256": "3152f1378e15bb0eea5391d3d9b8b2dbaed92e9355f6676cc5f05222a0aaac24"
+    },
+    {
+      "path": "local/native-aq-frozen-build/bsp_zlib121.lib",
+      "sha256": "c0b4c9ec00ae9019ea191da4cc2177d694fcd0b84886df725bffee8c9ca564ed"
+    }
+  ],
+  "ghidra_annotations": {
+    "names": 12,
+    "saved": true,
+    "exports_force_refreshed": 12,
+    "checks": [
+      {
+        "address": "00bf1000",
+        "previous_name": "BSP_Substream_ReadUnchecked",
+        "current_name": "BSP_Substream_ReadUnchecked",
+        "earlier_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bf1040",
+        "previous_name": "FUN_00bf1040",
+        "current_name": "BSP_Substream_WriteUnchecked",
+        "earlier_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bf1080",
+        "previous_name": "FUN_00bf1080",
+        "current_name": "BSP_Substream_GetRelativePosition",
+        "earlier_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bf1090",
+        "previous_name": "FUN_00bf1090",
+        "current_name": "BSP_Substream_IsSourceOpen",
+        "earlier_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bf10a0",
+        "previous_name": "FUN_00bf10a0",
+        "current_name": "BSP_Substream_GetLength",
+        "earlier_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bf10b0",
+        "previous_name": "FUN_00bf10b0",
+        "current_name": "BSP_Substream_GetOriginBase",
+        "earlier_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bf10e0",
+        "previous_name": "FUN_00bf10e0",
+        "current_name": "BSP_Substream_SeekAbsoluteSource",
+        "earlier_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bf1130",
+        "previous_name": "BSP_Substream_ConstructAdoptingSource",
+        "current_name": "BSP_Substream_ConstructAdoptingSource",
+        "earlier_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bf11c0",
+        "previous_name": "BSP_Substream_Destroy",
+        "current_name": "BSP_Substream_Destroy",
+        "earlier_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bf1240",
+        "previous_name": "BSP_Substream_ScalarDeletingDestructor",
+        "current_name": "BSP_Substream_ScalarDeletingDestructor",
+        "earlier_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bb8b80",
+        "previous_name": "FUN_00bb8b80",
+        "current_name": "BSP_FileStream_QueryType",
+        "earlier_comment_preserved": true,
+        "current_evidence_present": true
+      },
+      {
+        "address": "00bef750",
+        "previous_name": "BSP_Stream_ConvertToMemory",
+        "current_name": "BSP_Stream_ConvertToMemory",
+        "earlier_comment_preserved": true,
+        "current_evidence_present": true
+      }
+    ],
+    "prior_values": "local/native-adopted-substream/ledger-before.json",
+    "before": "local/native-adopted-substream/comments-pre-annotation.json",
+    "after": "local/native-adopted-substream/comments-after.json",
+    "saved_log": "local/ghidra-annotations-20260912T155721Z.json",
+    "phase": "The four existing function comments and all11 prototypes were also captured before creating seven missing leaves. The12-comment snapshot preceded naming after definition."
+  },
+  "raw_instruction_metadata_note": "CALL contracts appear once in host_steps. verified_spans retains raw disassembly operands including JMP tail transfers; those are byte evidence, not CALL rows. Initial verifier rejected five tail transfers mislabeled by generic address/native metadata; schema corrected without changing source or raw bytes.",
+  "artifacts_sha256": {
+    "local/annotate_native_substream_aq.py": "2f206112234cc005350ee22439e2d9e18f10da4f88c3a250b8df0ee4f57f0a57",
+    "local/capture_native_adopted_substream.py": "fa14ccea281d66cfb77715bfdc19f62bf3966aefcd4d793a61622b187a5c7430",
+    "local/finalize_native_substream_aq.py": "7e421e1336d3787ec364c0a2dba18f9e0b3dee179aa816f86aebdd8901b9434a",
+    "local/ghidra-annotations-20260912T155721Z.json": "eca7f9abc8636b89bb581ab9b4591da522f112d5a6201508b5aa86dbe7da3e89",
+    "local/native-adopted-substream-build-corrected.log": "374efc5fa19118a392546d25e6fd7158f6eaadf4fc3bed3008df5b53524c6f33",
+    "local/native-adopted-substream-build-fixed.log": "253e8109eef894e0381154d991d75b026c5ca86a3dfec9a50bfc0263e64c7d68",
+    "local/native-adopted-substream-build.log": "f04209a241579e46ffa1a33bc9055b3e95cff559af0ead136adee5e604edfb96",
+    "local/native-adopted-substream-capture.log": "6b804f6231788f322172a1e368eabfa987746300055eeff2af9e1edc0cd873c9",
+    "local/native-adopted-substream-core-before-binding/build/win32/Release/bsp_core.lib": "f1fe1f4e42fd9be53f7566337a177e95bff8df226dee2c47f41aacf286dad0b3",
+    "local/native-adopted-substream-core-before-binding/comments-before-existing.json": "8f0548e832ad5c0b7ef040406df0441b7123b3aaed59f9de08aac327b327a5d0",
+    "local/native-adopted-substream-core-before-binding/compile.cmd": "12908edef27c245b0413fe352c47af58a3f114b37eb8252e6b74052e9d516706",
+    "local/native-adopted-substream-core-before-binding/compile.log": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+    "local/native-adopted-substream-core-before-binding/construct.asm.txt": "e5ab65e7e78934744370bad34b4df31cae16374bd78286af1b933420e1e6e46f",
+    "local/native-adopted-substream-core-before-binding/construct.bin": "7c87769b698e9a5c940abe24502923ad2d061cd04c03c90310a063ac81b4af66",
+    "local/native-adopted-substream-core-before-binding/construct.bytes.txt": "595e5d09e3a8167369b0104115f2ceb24fac722edd7cfa9b652603249f56625b",
+    "local/native-adopted-substream-core-before-binding/ctor_fh3_data.bin": "b8fe6771ab3031f50a3acd190a16a81e18fd593477ce56b024f3ad0aff994c04",
+    "local/native-adopted-substream-core-before-binding/ctor_fh3_data.bytes.txt": "5f095907e4e4e9540af30c251a411e520c3799c291cdf0d05a57cc32c8966d17",
+    "local/native-adopted-substream-core-before-binding/ctor_handler.asm.txt": "a7bcbeb3a701aeb8d89e9ec979e8f845c203d9eca544887a2918da83cf50f397",
+    "local/native-adopted-substream-core-before-binding/ctor_handler.bin": "9e2f6e6b714f62c412f18dc50e1142fd2a1f79fbc5e83d2fdc0b4e08abd8ca07",
+    "local/native-adopted-substream-core-before-binding/ctor_handler.bytes.txt": "ac85c309c843b3dd3375b4eed0687d1e851c8fa7861d2ecca5884bbe2e25e0ed",
+    "local/native-adopted-substream-core-before-binding/ctor_unwind.asm.txt": "4452dbc5eb1be5a7fd95b7499b8fa23b3e453f44f31a3ebe0c9aceaeefdd876b",
+    "local/native-adopted-substream-core-before-binding/ctor_unwind.bin": "67fad53e27ba1cd41454029946412524158446809669c6aca676f5757debb952",
+    "local/native-adopted-substream-core-before-binding/ctor_unwind.bytes.txt": "6231b1e3e136dd1b732472a2b922390cbb416bfdfa6b4872ed645ffd09f2a684",
+    "local/native-adopted-substream-core-before-binding/definitions.log": "c14e29e367461a571b7ae14fbf0cd82a2cbd9ca892b45920fdcdb41136140609",
+    "local/native-adopted-substream-core-before-binding/delete.asm.txt": "979c7d9bd3b2906028e9e1daa7a2a818b09d78e539bf60291e833d7b9ddf97ea",
+    "local/native-adopted-substream-core-before-binding/delete.bin": "e8d19a616d7b8947a844c1739c394a7eb6862e86ecac00029690f9abf0d9429d",
+    "local/native-adopted-substream-core-before-binding/delete.bytes.txt": "ac1f5838981e40b0619721ae94f2ad8ecf17ed0f744fccc30aeda4b3db343aec",
+    "local/native-adopted-substream-core-before-binding/destroy.asm.txt": "64b154ddfc80555c1ac174eff601f6fbbeaaae1958f6d31f679cb19664f5ce71",
+    "local/native-adopted-substream-core-before-binding/destroy.bin": "5ad352e34ec5cfc2d4303a16e6d12b2e6010d41a4b9ac4d7149ce79988c725b4",
+    "local/native-adopted-substream-core-before-binding/destroy.bytes.txt": "bf029f3b0b3838335a5c663c479fc579db685f848d696e1d2d06c18c0f8821ee",
+    "local/native-adopted-substream-core-before-binding/dtor_fh3_data.bin": "0ee0f6993d2c64d9d8fc6bb56a992b02cd2d70af67a220f1fd5d00350e11838e",
+    "local/native-adopted-substream-core-before-binding/dtor_fh3_data.bytes.txt": "48d9f382d4518750db4599da628338411b11162b4775762c7edd8d452570667e",
+    "local/native-adopted-substream-core-before-binding/dtor_handler.asm.txt": "0f02f3a6931b80264a9cff59ffff0d181f3f2b3ebb2a67424312b3337f8929a7",
+    "local/native-adopted-substream-core-before-binding/dtor_handler.bin": "4501ac9ca9e55193927f2c4a01feeda627a7cfc36ab8365004d4ebab52770196",
+    "local/native-adopted-substream-core-before-binding/dtor_handler.bytes.txt": "fd01825d0bce71d6f3bf5a645028f40b5f44a4a4ac8ff25b15e13714eccd2ffc",
+    "local/native-adopted-substream-core-before-binding/dtor_unwind.asm.txt": "1fdfd5799414b18281772aaaaa7e1a65fca2f4f0bce3f9b0df17379303c42f32",
+    "local/native-adopted-substream-core-before-binding/dtor_unwind.bin": "de2f45d8312fedfb059de72c0f6d759218cdebbc3e520586c634269dc3fe8422",
+    "local/native-adopted-substream-core-before-binding/dtor_unwind.bytes.txt": "ce4a9a30ba470359d9acea4874277ce3eadec49704aa501f46925bd3542db47f",
+    "local/native-adopted-substream-core-before-binding/function-definitions.json": "1c91b5136aeead0d3b76d7c03a5d6803c69456aa1ca17b793a771a12ebbf1fec",
+    "local/native-adopted-substream-core-before-binding/include/bsp/native_adopted_substream.hpp": "9e7a1fe85a0bee6e3f2bcdf22003a549bc7927fb0da7805ed1eda8a4d605e983",
+    "local/native-adopted-substream-core-before-binding/length.asm.txt": "cce0529bac5e952e935bc504d64ab1ddd3a1e39c7f1f1ac5f4ccc87d8483a4e3",
+    "local/native-adopted-substream-core-before-binding/length.bin": "0602a776d9f09253da058e64d8646987ad434c750832c83098996bc3629814e0",
+    "local/native-adopted-substream-core-before-binding/length.bytes.txt": "0bec83d5e2b300917f16fa1a35d505c9136d8a5199702899eb33d06638fe51ba",
+    "local/native-adopted-substream-core-before-binding/names-before.txt": "4702f857015b22a593c0a84c23dea8ef392c4a17bf08138f9d6480ded3311988",
+    "local/native-adopted-substream-core-before-binding/native.hpp": "9339e2e212e3d54b299db2d0214d68985394dc76422aa5e569bec5379432f4ce",
+    "local/native-adopted-substream-core-before-binding/open.asm.txt": "56fd3a49ebb5d876f687bdcce7c531814249997cc76d877a8c0b5bf9c35cb441",
+    "local/native-adopted-substream-core-before-binding/open.bin": "8a7f285c4167ad79d802d45914d39bd73afddbbe2160e3c9a1531eee42cd1934",
+    "local/native-adopted-substream-core-before-binding/open.bytes.txt": "ad59ea9243baf10b20c85ad703faab79a6e4b923723d2a31ebc789e5560d7306",
+    "local/native-adopted-substream-core-before-binding/origin.asm.txt": "f95529d06c7dd1b8c4a5396f89fd348c7f507dbd69ebd0d57142cf1107a44027",
+    "local/native-adopted-substream-core-before-binding/origin.bin": "8bc0350da9d6f248add0d45a9973715895069d3abf54bea5df317f4da8f8c3ae",
+    "local/native-adopted-substream-core-before-binding/origin.bytes.txt": "5d5758d51d8eab1bcc9e624054cc9f078979c7faef7f97b9542d12600e883f6d",
+    "local/native-adopted-substream-core-before-binding/position.asm.txt": "f62a9df1543cef63ad0c2cb8f4d122bb5f2825ed948cdcbd3e67bd191c5ce200",
+    "local/native-adopted-substream-core-before-binding/position.bin": "af8d2c80b9dabfd96faf72f2c55b2b6fadae59b37cd2b9f294d0ff3cd254946e",
+    "local/native-adopted-substream-core-before-binding/position.bytes.txt": "39bc3f0faddf734bab262f8092fa57b42793641ba6591e21f9a917200ec97d82",
+    "local/native-adopted-substream-core-before-binding/probe.cpp": "f1d774bf71bdf0f7a4824c5e2e40f3ea733e1350b79183a3ef1d1aab27e6bb64",
+    "local/native-adopted-substream-core-before-binding/probe.exe": "2a3592a354158bfb182efd5e163f140d3362cb61d46e6d664d159e1221baf437",
+    "local/native-adopted-substream-core-before-binding/probe.obj": "93ebd44d8f22a5757ee217a633eb4b5723ed686b88a9b63d66194f72ef6beb91",
+    "local/native-adopted-substream-core-before-binding/query.asm.txt": "cb84c3801c31f25c53472eba7c0fd62c053c9383144d2b7af155768ebc61a478",
+    "local/native-adopted-substream-core-before-binding/query.bin": "88b17b85ae9461dfb76140ab1a07467bfd902d49fec143dd09a4fa731bbb02d1",
+    "local/native-adopted-substream-core-before-binding/query.bytes.txt": "ca523dac8ab013003470711080d954028c9f06196f543d60c563a118735a763a",
+    "local/native-adopted-substream-core-before-binding/read.asm.txt": "9754a737ce8236b2ac87c5f3404b27e29a8837d7dee48afecd0eef98d7e96df1",
+    "local/native-adopted-substream-core-before-binding/read.bin": "30a018ab0508f2c9fef77681347656f4592caecb0c1c52a7370dce856fe87450",
+    "local/native-adopted-substream-core-before-binding/read.bytes.txt": "16d12aff5409e37345930d9a5de027020e4c12bdf6a5017d1dacd03d5d00b22b",
+    "local/native-adopted-substream-core-before-binding/ref_base.asm.txt": "d3270b08bcbe6b797b85847eec41a47757903644ba88ad43948ac1765be48f63",
+    "local/native-adopted-substream-core-before-binding/ref_base.bin": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+    "local/native-adopted-substream-core-before-binding/ref_base.bytes.txt": "d149296eaa70886958deab82ed0f56710a49d0fd05255bf152da01b4bb23c889",
+    "local/native-adopted-substream-core-before-binding/result.log": "a3aa7f7c52d5d9576280b3c1b8042cb26ef4cb5a7f7ef2f5a1b93c727e06274c",
+    "local/native-adopted-substream-core-before-binding/seek.asm.txt": "b7f7c50c01ae4d18bf9990c0c0af93866dda607501bccd9bfd5cde1256608577",
+    "local/native-adopted-substream-core-before-binding/seek.bin": "ca824d2b1937a8533944c91a372e2f79eb432d3c8c0ae0549efed72f0ec76049",
+    "local/native-adopted-substream-core-before-binding/seek.bytes.txt": "fe31acee48d19eecbe3d31054024fc48ac498cf858ecc970603393e7d33b2385",
+    "local/native-adopted-substream-core-before-binding/spans.json": "7d81638555fffeb8856476ce218d250f84445f337201e79376a0d09e5fb93d83",
+    "local/native-adopted-substream-core-before-binding/src/native_adopted_substream.cpp": "5194a7b971fcd2674a53cf5204aae6124a8cd3f94ad88051ab85aaf31047d7a3",
+    "local/native-adopted-substream-core-before-binding/stream_base.asm.txt": "b8705a7bf22df6b03b18be0ad18299faf1749ca715f83066a345a9c21231b91b",
+    "local/native-adopted-substream-core-before-binding/stream_base.bin": "d9ef5a05ac2b30551b9b3d76dbdad36b0b47b260cae31ffac740dde9fc5f3c54",
+    "local/native-adopted-substream-core-before-binding/stream_base.bytes.txt": "e8b6c43a2cb68a0e19c9671ecf4e2428bf573cfea930e56731515f963d1b2952",
+    "local/native-adopted-substream-core-before-binding/substream_table.bin": "24a19cd7fc9b6ab713bef80143dcab517e7d017d8ee83d5997408b8d749e4d20",
+    "local/native-adopted-substream-core-before-binding/substream_table.bytes.txt": "636c0c8ae767673ea59445d53b79e2afbd351d7c6746215987cc2d3eaf098576",
+    "local/native-adopted-substream-core-before-binding/write.asm.txt": "df40b2437c26ed9468c8077880bf39aa3062c0096a53e5009ad8fc1322ace3d9",
+    "local/native-adopted-substream-core-before-binding/write.bin": "06463b15136c88dd6f757c471d4b432879451458bc8a674715fad4652cffab9b",
+    "local/native-adopted-substream-core-before-binding/write.bytes.txt": "03fc2df7c3cea9be018981d22df4946a119206a1a29a016afb4c8da0eee7d2b9",
+    "local/native-adopted-substream-probe-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "local/native-adopted-substream-probe-retry.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "local/native-adopted-substream-probe-reviewed.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "local/native-adopted-substream-probe-run.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "local/native-adopted-substream/annotation-log.json": "1c298824a63dd78ba9c1dd46ba926902cfe8d83349c884eb4d83905fca432b86",
+    "local/native-adopted-substream/calls-verification.log": "6af11b5a64c65a5dd7ed4456d769b326b89c56f2bc77080ae0820372596d1678",
+    "local/native-adopted-substream/comments-after.json": "176d5a4eb5b6fc50fb8a4785a8ab5b8eee52a01dd40b199388861b9b7db77309",
+    "local/native-adopted-substream/comments-before-existing.json": "8f0548e832ad5c0b7ef040406df0441b7123b3aaed59f9de08aac327b327a5d0",
+    "local/native-adopted-substream/comments-pre-annotation.json": "b651c3ce4b768ef2bd895d70d5d53ffcc940764a76bb5baa053e2b5f564aa6c3",
+    "local/native-adopted-substream/compile.cmd": "12908edef27c245b0413fe352c47af58a3f114b37eb8252e6b74052e9d516706",
+    "local/native-adopted-substream/compile.log": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+    "local/native-adopted-substream/construct.asm.txt": "e5ab65e7e78934744370bad34b4df31cae16374bd78286af1b933420e1e6e46f",
+    "local/native-adopted-substream/construct.bin": "7c87769b698e9a5c940abe24502923ad2d061cd04c03c90310a063ac81b4af66",
+    "local/native-adopted-substream/construct.bytes.txt": "595e5d09e3a8167369b0104115f2ceb24fac722edd7cfa9b652603249f56625b",
+    "local/native-adopted-substream/ctor_fh3_data.bin": "b8fe6771ab3031f50a3acd190a16a81e18fd593477ce56b024f3ad0aff994c04",
+    "local/native-adopted-substream/ctor_fh3_data.bytes.txt": "5f095907e4e4e9540af30c251a411e520c3799c291cdf0d05a57cc32c8966d17",
+    "local/native-adopted-substream/ctor_handler.asm.txt": "a7bcbeb3a701aeb8d89e9ec979e8f845c203d9eca544887a2918da83cf50f397",
+    "local/native-adopted-substream/ctor_handler.bin": "9e2f6e6b714f62c412f18dc50e1142fd2a1f79fbc5e83d2fdc0b4e08abd8ca07",
+    "local/native-adopted-substream/ctor_handler.bytes.txt": "ac85c309c843b3dd3375b4eed0687d1e851c8fa7861d2ecca5884bbe2e25e0ed",
+    "local/native-adopted-substream/ctor_unwind.asm.txt": "4452dbc5eb1be5a7fd95b7499b8fa23b3e453f44f31a3ebe0c9aceaeefdd876b",
+    "local/native-adopted-substream/ctor_unwind.bin": "67fad53e27ba1cd41454029946412524158446809669c6aca676f5757debb952",
+    "local/native-adopted-substream/ctor_unwind.bytes.txt": "6231b1e3e136dd1b732472a2b922390cbb416bfdfa6b4872ed645ffd09f2a684",
+    "local/native-adopted-substream/definitions.log": "c14e29e367461a571b7ae14fbf0cd82a2cbd9ca892b45920fdcdb41136140609",
+    "local/native-adopted-substream/delete.asm.txt": "979c7d9bd3b2906028e9e1daa7a2a818b09d78e539bf60291e833d7b9ddf97ea",
+    "local/native-adopted-substream/delete.bin": "e8d19a616d7b8947a844c1739c394a7eb6862e86ecac00029690f9abf0d9429d",
+    "local/native-adopted-substream/delete.bytes.txt": "ac1f5838981e40b0619721ae94f2ad8ecf17ed0f744fccc30aeda4b3db343aec",
+    "local/native-adopted-substream/destroy.asm.txt": "64b154ddfc80555c1ac174eff601f6fbbeaaae1958f6d31f679cb19664f5ce71",
+    "local/native-adopted-substream/destroy.bin": "5ad352e34ec5cfc2d4303a16e6d12b2e6010d41a4b9ac4d7149ce79988c725b4",
+    "local/native-adopted-substream/destroy.bytes.txt": "bf029f3b0b3838335a5c663c479fc579db685f848d696e1d2d06c18c0f8821ee",
+    "local/native-adopted-substream/dtor_fh3_data.bin": "0ee0f6993d2c64d9d8fc6bb56a992b02cd2d70af67a220f1fd5d00350e11838e",
+    "local/native-adopted-substream/dtor_fh3_data.bytes.txt": "48d9f382d4518750db4599da628338411b11162b4775762c7edd8d452570667e",
+    "local/native-adopted-substream/dtor_handler.asm.txt": "0f02f3a6931b80264a9cff59ffff0d181f3f2b3ebb2a67424312b3337f8929a7",
+    "local/native-adopted-substream/dtor_handler.bin": "4501ac9ca9e55193927f2c4a01feeda627a7cfc36ab8365004d4ebab52770196",
+    "local/native-adopted-substream/dtor_handler.bytes.txt": "fd01825d0bce71d6f3bf5a645028f40b5f44a4a4ac8ff25b15e13714eccd2ffc",
+    "local/native-adopted-substream/dtor_unwind.asm.txt": "1fdfd5799414b18281772aaaaa7e1a65fca2f4f0bce3f9b0df17379303c42f32",
+    "local/native-adopted-substream/dtor_unwind.bin": "de2f45d8312fedfb059de72c0f6d759218cdebbc3e520586c634269dc3fe8422",
+    "local/native-adopted-substream/dtor_unwind.bytes.txt": "ce4a9a30ba470359d9acea4874277ce3eadec49704aa501f46925bd3542db47f",
+    "local/native-adopted-substream/function-definitions.json": "1c91b5136aeead0d3b76d7c03a5d6803c69456aa1ca17b793a771a12ebbf1fec",
+    "local/native-adopted-substream/ledger-before.json": "74a8798e3b300e472610f44896cdcfe3d6ce6c3baead6f2bd3e66a0e606a72c7",
+    "local/native-adopted-substream/length.asm.txt": "cce0529bac5e952e935bc504d64ab1ddd3a1e39c7f1f1ac5f4ccc87d8483a4e3",
+    "local/native-adopted-substream/length.bin": "0602a776d9f09253da058e64d8646987ad434c750832c83098996bc3629814e0",
+    "local/native-adopted-substream/length.bytes.txt": "0bec83d5e2b300917f16fa1a35d505c9136d8a5199702899eb33d06638fe51ba",
+    "local/native-adopted-substream/names-before.txt": "4702f857015b22a593c0a84c23dea8ef392c4a17bf08138f9d6480ded3311988",
+    "local/native-adopted-substream/native.hpp": "9339e2e212e3d54b299db2d0214d68985394dc76422aa5e569bec5379432f4ce",
+    "local/native-adopted-substream/open.asm.txt": "56fd3a49ebb5d876f687bdcce7c531814249997cc76d877a8c0b5bf9c35cb441",
+    "local/native-adopted-substream/open.bin": "8a7f285c4167ad79d802d45914d39bd73afddbbe2160e3c9a1531eee42cd1934",
+    "local/native-adopted-substream/open.bytes.txt": "ad59ea9243baf10b20c85ad703faab79a6e4b923723d2a31ebc789e5560d7306",
+    "local/native-adopted-substream/origin.asm.txt": "f95529d06c7dd1b8c4a5396f89fd348c7f507dbd69ebd0d57142cf1107a44027",
+    "local/native-adopted-substream/origin.bin": "8bc0350da9d6f248add0d45a9973715895069d3abf54bea5df317f4da8f8c3ae",
+    "local/native-adopted-substream/origin.bytes.txt": "5d5758d51d8eab1bcc9e624054cc9f078979c7faef7f97b9542d12600e883f6d",
+    "local/native-adopted-substream/position.asm.txt": "f62a9df1543cef63ad0c2cb8f4d122bb5f2825ed948cdcbd3e67bd191c5ce200",
+    "local/native-adopted-substream/position.bin": "af8d2c80b9dabfd96faf72f2c55b2b6fadae59b37cd2b9f294d0ff3cd254946e",
+    "local/native-adopted-substream/position.bytes.txt": "39bc3f0faddf734bab262f8092fa57b42793641ba6591e21f9a917200ec97d82",
+    "local/native-adopted-substream/probe.cpp": "a4c453ae636fc0a28ca4b22647e3ef0976fca010028ae20be39c64e45556d306",
+    "local/native-adopted-substream/probe.exe": "8ad67ba7da517af1271ec0cad3c2ad5e799a706262978edc95b14a9fe379b4f6",
+    "local/native-adopted-substream/probe.obj": "cfa7065385a827c19c5c816bf9841ec08c2afdf4786d88b1efcc9592e6549d31",
+    "local/native-adopted-substream/query.asm.txt": "cb84c3801c31f25c53472eba7c0fd62c053c9383144d2b7af155768ebc61a478",
+    "local/native-adopted-substream/query.bin": "88b17b85ae9461dfb76140ab1a07467bfd902d49fec143dd09a4fa731bbb02d1",
+    "local/native-adopted-substream/query.bytes.txt": "ca523dac8ab013003470711080d954028c9f06196f543d60c563a118735a763a",
+    "local/native-adopted-substream/read.asm.txt": "9754a737ce8236b2ac87c5f3404b27e29a8837d7dee48afecd0eef98d7e96df1",
+    "local/native-adopted-substream/read.bin": "30a018ab0508f2c9fef77681347656f4592caecb0c1c52a7370dce856fe87450",
+    "local/native-adopted-substream/read.bytes.txt": "16d12aff5409e37345930d9a5de027020e4c12bdf6a5017d1dacd03d5d00b22b",
+    "local/native-adopted-substream/ref_base.asm.txt": "d3270b08bcbe6b797b85847eec41a47757903644ba88ad43948ac1765be48f63",
+    "local/native-adopted-substream/ref_base.bin": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16",
+    "local/native-adopted-substream/ref_base.bytes.txt": "d149296eaa70886958deab82ed0f56710a49d0fd05255bf152da01b4bb23c889",
+    "local/native-adopted-substream/result.log": "ca080bee8904d2b8d54f6728c40a660c96bd17f53fc2a6f080382ddc25014567",
+    "local/native-adopted-substream/seek.asm.txt": "b7f7c50c01ae4d18bf9990c0c0af93866dda607501bccd9bfd5cde1256608577",
+    "local/native-adopted-substream/seek.bin": "ca824d2b1937a8533944c91a372e2f79eb432d3c8c0ae0549efed72f0ec76049",
+    "local/native-adopted-substream/seek.bytes.txt": "fe31acee48d19eecbe3d31054024fc48ac498cf858ecc970603393e7d33b2385",
+    "local/native-adopted-substream/spans.json": "7d81638555fffeb8856476ce218d250f84445f337201e79376a0d09e5fb93d83",
+    "local/native-adopted-substream/stream_base.asm.txt": "b8705a7bf22df6b03b18be0ad18299faf1749ca715f83066a345a9c21231b91b",
+    "local/native-adopted-substream/stream_base.bin": "d9ef5a05ac2b30551b9b3d76dbdad36b0b47b260cae31ffac740dde9fc5f3c54",
+    "local/native-adopted-substream/stream_base.bytes.txt": "e8b6c43a2cb68a0e19c9671ecf4e2428bf573cfea930e56731515f963d1b2952",
+    "local/native-adopted-substream/substream_table.bin": "24a19cd7fc9b6ab713bef80143dcab517e7d017d8ee83d5997408b8d749e4d20",
+    "local/native-adopted-substream/substream_table.bytes.txt": "636c0c8ae767673ea59445d53b79e2afbd351d7c6746215987cc2d3eaf098576",
+    "local/native-adopted-substream/write.asm.txt": "df40b2437c26ed9468c8077880bf39aa3062c0096a53e5009ad8fc1322ace3d9",
+    "local/native-adopted-substream/write.bin": "06463b15136c88dd6f757c471d4b432879451458bc8a674715fad4652cffab9b",
+    "local/native-adopted-substream/write.bytes.txt": "03fc2df7c3cea9be018981d22df4946a119206a1a29a016afb4c8da0eee7d2b9",
+    "local/native-substream-aq-annotations.log": "7950a4263b13d361fc5d169cb4d79ef2a13af3aaa194eff5cf9f68e45ea2e9eb",
+    "local/native-substream-aq-finalization-retry.log": "8688215d901c143bee5751e79c4b87236f3be741468896523dec641a95b673c8",
+    "local/native-substream-aq-finalization.log": "b7eac4690b9461b4862479a031c6b1fc25dcd5025c6325340fa9e3c616666bea",
+    "local/native-substream-aq-record.log": "c540f30a7776001eee98180e9e7175ebadd6c50285e65ea343eaeba6d39c68b7",
+    "local/native-substream-binding-build.log": "455c34a53fab27873aca83cb0c9b5e99728374832a871d534564c30a54e92438",
+    "local/native-substream-binding-composition-final-run.log": "f98f74ebd44e6b5c95ef4edce31c9507b7e1ef9da52b42215814d092d5187e09",
+    "local/native-substream-binding-composition-result.log": "8ae70f2e3e122c2ca535262678f9ae46e15dfb73a9a70c756eacffece34074e3",
+    "local/native-substream-binding-composition-run.log": "f98f74ebd44e6b5c95ef4edce31c9507b7e1ef9da52b42215814d092d5187e09",
+    "local/native-substream-binding-composition.asm": "5748d84d9e25c77f9e61ddee7d32e8eed0c8bf5226ad871f10c704d6cb3dc8e0",
+    "local/native-substream-binding-composition.cpp": "4acbc14d4c2ab7a4212ed86ac15a4938ed2d178f352d5306c0e879a3905899f2",
+    "local/native-substream-binding-composition.exe": "238869aabdc0bdc3a274ecb79bd9e6a58a42c49ee8b4eacb6a4d3bb9f5843d31",
+    "local/native-substream-binding-composition.obj": "142c466c1790e3a651596f82845a6a58ea13332f48c0588c083c86a75ce84329",
+    "local/native-substream-binding-composition_compile.log": "d8fe1a20a1ab49a551c96d488b8f5c3a5187cd95ad2a7791fd55dd7c29feddcf",
+    "local/native-substream-binding-final-build.log": "a0637b96bcad419c70c7fdde871e415c2bfd218d9e38e68b18aae833da7f3d62",
+    "local/native-substream-binding-reviewed-build.log": "3a3a18a4347cdbeb401307cee104f2d5066d311b4ecf2cab9f46a982deb123ad",
+    "local/prepare_native_substream_binding.py": "3a387d6d2784ba38c9d6f3ee1e3a09df0608a0c814ea3f13f15b036306f5e6c6",
+    "local/prepare_native_substream_composition.py": "652c8a0cccaa2364d0ea6af5166298ddfe936baa3be0148f9dd5bee64e9d8fe0",
+    "local/record_native_substream_aq.py": "8a2c326d1d32faa8a157ab5329e4e9579ce4d71b1ade46ad234d0b43884c99a6",
+    "local/run_native_adopted_substream_probe.ps1": "5619580e05f5f72a238ba56f54a02c5175f940451405d92cbe94ba66dbb7cc44",
+    "local/run_native_substream_binding_composition.ps1": "5e7503a8b68cbb0d58d79d1ea20a716eaaaea0bbbd70a60cd985b32d9d61050b",
+    "local/qualify_native_substream_span_metadata.py": "25e763b3a392bbde41799066abfa9ed8d79aedfe60f296d14492140e309ab5c3"
+  }
+}

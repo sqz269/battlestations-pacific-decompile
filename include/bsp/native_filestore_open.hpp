@@ -7,6 +7,7 @@
 namespace bsp {
 struct SingletonLifetimeCallbacks;
 struct NativePhysicalStreamOpenContext;
+class NativeAdoptedSubstreamDispatch;
 
 // Borrow the three actual type descriptor DWORDs at 0109DBA0..0109DBA8.
 // They are initialized by CD8FC0 and remain current reads, not synthesized IDs.
@@ -17,6 +18,10 @@ struct NativeStoredStreamConversionContext {
     // The original D691B0 table bytes must remain readable and unchanged.
     NativePhysicalStreamOpenContext* physical = nullptr;
     const volatile std::uint32_t* actual_physical_type_ids_0109dc30 = nullptr;
+    // Required together for numeric D68DB0 adopted-source streams. The shared
+    // file descriptor has two IDs; its third DWORD is a name address.
+    NativeAdoptedSubstreamDispatch* adopted_substreams = nullptr;
+    const volatile std::uint32_t* actual_file_type_ids_0109db58 = nullptr;
 };
 
 // Complete BB8F60: native ECX ignored, token stack, AL result, RET4.
@@ -50,7 +55,8 @@ void dispatch_native_memory_stream_seek(void* actual_stream,
 // original-ABI tables (+0C type, +1C seek, +30 size, +24 read). No table is
 // rewritten. Physical conversion uses current type/seek/cached-size/read slots,
 // ignores seek/read status and leaves the source cursor changed. Other numeric
-// owner classes require their own concrete binding.
+// D68DB0 owners use the explicit adopted-source dispatch and current file IDs.
+// Other numeric owner classes require their own concrete binding.
 void* convert_native_stored_stream_00bef750(void* actual_source,
     NativeStoredStreamConversionContext&);
 

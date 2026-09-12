@@ -1,15 +1,14 @@
 #pragma once
 
-#include "bsp/gameplay_effect_manager.hpp"
+#include "bsp/native_singleton_destruction.hpp"
 
 namespace bsp::game {
 class GameHostLog;
 
-// One application-owned source lifetime domain. The menu borrows its effect
-// context; both publication and destructor bindings outlive the menu. The
-// current executable admits only GameplayEffectManager through this domain.
-// Add each concrete owner's deleting binding before admitting another type.
-// This integrates the existing typed source contracts, not native raw layout.
+// One application-owned raw14h manager and raw10h gameplay-effect owner.
+// Private publications outlive the menu and all shutdown calls. The only
+// admitted registration is raw004C1650's D0DA64 owner; its fixed actual
+// deletion binding is established before that getter can run.
 class GameSingletonHost final {
 public:
     explicit GameSingletonHost(GameHostLog&);
@@ -17,21 +16,15 @@ public:
     GameSingletonHost(const GameSingletonHost&) = delete;
     GameSingletonHost& operator=(const GameSingletonHost&) = delete;
 
-    GameplayEffectManagerContext& gameplay_effect_context() noexcept {
-        return effect_context_;
-    }
-    // 008F8449: drain while publication/context remain alive, then free and
-    // clear the manager through SingletonLifetimeDomain::shutdown.
+    void probe_gameplay_effect_memory(const char* label);
+    // 008F8449: capture current manager, rawBD0400 drain, free captured manager,
+    // then clear its actual publication, while all bindings remain alive.
     void shutdown();
 
 private:
-    static void destroy_registered(void*, void*, std::uint32_t) noexcept;
-    static void invalid_parameter(void*);
-
     GameHostLog& log_;
-    GameplayEffectManager* volatile effect_publication_00f87664_{nullptr};
-    GameplayEffectManagerAllocationWords effect_allocation_words_{0};
-    SingletonLifetimeDomain lifetime_01090aa0_;
-    GameplayEffectManagerContext effect_context_;
+    void* volatile manager_publication_01090aa0_{nullptr};
+    void* volatile effect_publication_00f87664_{nullptr};
+    NativeSingletonDeletionBindings deletion_bindings_;
 };
 } // namespace bsp::game

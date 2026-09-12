@@ -1,0 +1,600 @@
+{
+  "packet": "cc_ai_clearance_profile",
+  "owner": "agent/cc-ai-clearance-profile",
+  "date": "2026-09-12",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra": "read-only; no annotation applied, no write lock taken",
+  "doc": "docs/SHIP_AI_CLEARANCE_PROFILE.md",
+  "sources": [
+    "include/bsp/ship_ai_clearance_profile.hpp",
+    "src/ship_ai_clearance_profile.cpp"
+  ],
+  "question": "What 009EF910 computes into blk+37Ch and what blk+33Ch really is; how the 65 throttle bins at blk+4h..blk+45h are produced by 009E04E0; any other writer of those three.",
+  "answer": [
+    "blk+37Ch is a clearance distance, not a danger level. 009EF910 writes the sentinel 9999.0f (00CE3D64) into it at 009EF96F on every refresh and only ever lowers it, from the static avoid-zone segment tree (00415D70 at 009EFD4A, or 0.0f at 009EFD10 when 009D57E0 reports an overlap) and from the neighbour footprints (009EFF3C, or 0.0f at 009EFF60 when 009DD010 reports a blocker). 009F3F80 forms the danger level blk+0A84h from blk+37Ch / unit+9CCh at 009F416E.",
+    "The measurement is taken from a shoulder point, not the hull centre: 009DE2F0 builds blk+18Ch/+190h and blk+194h/+198h as the hull position blk+184h/+188h plus and minus blk+1B8h along the port beam normal blk+19Ch/+1A0h, and 009EF910 picks one by the sign of the heading error and the steering mode. The measured region is the arc the beam sweeps from the hull heading (pulled back by the half-angle blk+1B4h) to the commanded beam bearing, intersected with the wedge of the hull forward axis and the negated commanded-heading direction.",
+    "An open-sea ship with no neighbours and no zone tree leaves the routine at 009EF9FF with 9999.0f in place, so the danger level ramps to 0.0, not 1.0. The executable's 1.0 saturation comes from its substitute record leaving blk+37Ch at zero: the ratio is then 0, below kShipAiDangerClearanceMin, and InterpolateClamped clamps to y0 = 1.0.",
+    "blk+33Ch is not computed by 009EF910 at all. 009F4D10 stores the constant -1.0f (00D7A260) into it at 009F4D27, and 009EF350 replaces it with a real distance at 009EF876. The rudder clamp at 009F451D runs only when blk+33Ch is negative (009F4514 COMISS 0.0 against it, JBE skips), so -1.0f opens the gate and a block left at zero keeps it shut.",
+    "The 65 bins are written only by 009D56F0, whose only callers are its cost-1 wrapper 009D67F0 and 009E04E0. 009E04E0 marks, per contact track, the window of own-ship throttles that would put the hull in the contact's path within the horizon (cost 1, three sites), and then lays a cost-10 band over one half of the axis when any track could not be banded. The control-block constructor 009E4330 memsets blk+4h..blk+44h to zero and sets the bypass byte blk+45h to 1 at 009E435F, so an untouched profile is switched off, not merely empty; the first 009D56F0 call clears the bypass at 009D5748."
+  ],
+  "routines": [
+    {
+      "address": "009ef910",
+      "name": "BSP_ShipAi_RefreshTurnClearance",
+      "abi": "void __thiscall(blk)(float seconds), RET 4",
+      "body": "009ef910-009f00f3",
+      "projection": "ship_ai_refresh_turn_clearance_009ef910",
+      "coverage": "complete",
+      "not_projected": []
+    },
+    {
+      "address": "009d56f0",
+      "name": "BSP_ShipAi_AddThrottleProfileBand",
+      "abi": "void __thiscall(profile)(float low, float high, char cost), RET 0Ch",
+      "body": "009d56f0-009d575c",
+      "projection": "ship_ai_add_throttle_band_009d56f0",
+      "coverage": "complete",
+      "not_projected": []
+    },
+    {
+      "address": "009d67f0",
+      "name": "BSP_ShipAi_MarkThrottleBandBlocked",
+      "abi": "void __thiscall(blk)(float low, float high), RET 8",
+      "body": "009d67f0-009d680c",
+      "projection": "ship_ai_mark_throttle_band_009d67f0",
+      "coverage": "complete",
+      "not_projected": []
+    },
+    {
+      "address": "009e04e0",
+      "name": "BSP_ShipAi_BuildThrottleCostProfile",
+      "abi": "void __thiscall(blk)(float seconds), RET 4",
+      "body": "009e04e0-009e1167",
+      "projection": "ship_ai_build_throttle_profile_009e04e0",
+      "coverage": "partial: the throttle-band pipeline (009E04E0..009E0C4D), the list maintenance and the tail (009E1089..009E1165) are projected from the listing. 009E0C7C..009E0FBD is projected from the Ghidra pseudocode with the listing spot-checked only at 009E0C7C, 009E0C86, 009E0CA2, 009E0D07, 009E0D18, 009E0D30..009E0D46 and 009E0D71. 009E0FBD..009E104C is modelled as one host call and not projected.",
+      "not_projected": [
+        "009e0db4-009e0fbd",
+        "009e0fbd-009e104c"
+      ]
+    },
+    {
+      "address": "009de2f0",
+      "name": "FUN_009de2f0",
+      "abi": "not established",
+      "body": "009de2f0-009de5a0",
+      "projection": "none; read as the producer of the geometry inputs",
+      "coverage": "partial: 009DE2F0..009DE49C read for blk+174h..blk+1B8h. 009DE52A-009DE5A0 not read.",
+      "not_projected": [
+        "009de52a-009de5a0"
+      ]
+    },
+    {
+      "address": "009e4330",
+      "name": "FUN_009e4330",
+      "abi": "not established",
+      "body": "009e4330-009e46c2",
+      "projection": "none; read as the producer of the per-ship constants and the profile memset",
+      "coverage": "partial: 009E434C..009E4606 read. The rest was not.",
+      "not_projected": [
+        "009e4607-009e46c2"
+      ]
+    }
+  ],
+  "host_steps": [
+    {
+      "step": 1,
+      "routine": "009ef910",
+      "host_method": "hull_heading_vtable50",
+      "address": "009ef97c",
+      "function": "009ef910",
+      "native": "unit->vtable[50h]",
+      "note": "MOV ECX,[ESI+3FCh]; MOV EAX,[ECX]; MOV EDX,[EAX+50h]; CALL EDX. No push before the call, so the slot takes no argument and returns the hull heading on the x87 stack."
+    },
+    {
+      "step": 2,
+      "routine": "009ef910",
+      "host_method": "obstacle_category_enabled_009ec770",
+      "address": "009efa08",
+      "function": "009ef910",
+      "native": "009ec770",
+      "note": "Called three times with 0, 1 and 2 (009EFA05 PUSH EDI, 009EFA14 CMP EDI,3). Contract read from the callee body: blk+3F0h >= 0, unit+738h+241h set, settings+4 set, and the category matches blk+3F0h with 3 a wildcard on either side."
+    },
+    {
+      "step": 3,
+      "routine": "009ef910",
+      "host_method": "avoidance_globally_enabled_0080e160_242",
+      "address": "009efcb8",
+      "function": "009ef910",
+      "native": "0080e160",
+      "note": "0080E160's whole body is `return unit->+738h`; the caller tests the byte at +242h."
+    },
+    {
+      "step": 4,
+      "routine": "009ef910",
+      "host_method": "static_zone_blocks_009d57e0",
+      "address": "009efd00",
+      "function": "009ef910",
+      "native": "009d57e0",
+      "note": "this = &blk+0A24h. Stack low to high: &pivot, blk+3CCh, sweep_from, &sweep_to; RET 10h. Body: tests the byte at blk+0A24h then forwards to 00415970 with this = blk+0A3Ch (009D57FE ADD ECX,0x18)."
+    },
+    {
+      "step": 5,
+      "routine": "009ef910",
+      "host_method": "static_zone_clearance_00415d70",
+      "address": "009efd4a",
+      "function": "009ef910",
+      "native": "00415d70",
+      "note": "this = &blk+0A3Ch (009EFD48 MOV ECX,EDI). Six stack arguments, RET 18h: &pivot, blk+3CCh, &dir_a, &dir_b, sweep_from, &sweep_to. The body uses only the first four and returns FLT_MAX (00D7A248) when no segment survives the wedge."
+    },
+    {
+      "step": 6,
+      "routine": "009ef910",
+      "host_method": "neighbour_blocks_sweep_009dd010",
+      "address": "009efdbd",
+      "function": "009ef910",
+      "native": "009dd010",
+      "note": "this = the neighbour pointer from blk+608h (009EFD7E MOV ECX,[EBX]). The same four-argument signature as 009D57E0, RET 10h. The body builds the footprint rectangle's four corners from +44h..+60h and answers whether it meets the swept circle."
+    },
+    {
+      "step": 7,
+      "routine": "009ef910",
+      "host_method": "neighbour_support_point_009d8860",
+      "address": "009efe0f",
+      "function": "009ef910",
+      "native": "009d8860",
+      "note": "First of two calls (009EFE0F with dir_a, 009EFE69 with dir_b), RET 8. The body returns the footprint corner extreme along the direction: centre (+44h,+48h) plus or minus +5Ch along (+4Ch,+50h) and plus or minus +60h along (+54h,+58h); the centre when +68h is set."
+    },
+    {
+      "step": 8,
+      "routine": "009ef910",
+      "host_method": "neighbour_support_point_009d8860",
+      "address": "009efe69",
+      "function": "009ef910",
+      "native": "009d8860",
+      "note": "Second call, with dir_b = the negated commanded-heading direction."
+    },
+    {
+      "step": 9,
+      "routine": "009ef910",
+      "host_method": "neighbour_closest_point_009d8a30",
+      "address": "009efec3",
+      "function": "009ef910",
+      "native": "009d8a30",
+      "note": "RET 8. The body clamps the two local coordinates of `point` into the half extents and maps them back, so it is the closest point of the same rectangle."
+    },
+    {
+      "step": 10,
+      "routine": "009ef910",
+      "host_method": "neighbour_speed_0092d730",
+      "address": "009eff7f",
+      "function": "009ef910",
+      "native": "0092d730",
+      "note": "this = owner->+1018h (009EFF6F MOV ECX,[ESI+ECX*4+608h]; MOV EAX,[ECX+14h]; MOV ECX,[EAX+1018h]). |result| > 2.0f (00CE3958) selects outcome 2 rather than 3."
+    },
+    {
+      "step": 11,
+      "routine": "009ef910",
+      "host_method": "path_fade_applies_00778890",
+      "address": "009f0000",
+      "function": "009ef910",
+      "native": "00778890",
+      "note": "One of two disjuncts; the other is the vtable identity test at 009F0019 against 00E08F80 on unit+738h+54h, and the whole thing is guarded by unit != 0 at 009EFFF8. Modelled as one predicate."
+    },
+    {
+      "step": 12,
+      "routine": "009ef910",
+      "host_method": "class_length_unit_00811a30",
+      "address": "009f0038",
+      "function": "009ef910",
+      "native": "00811a30",
+      "note": "this = unit, argument 1.0f (009F0033 FLD1). The body scales through 0082E960 and divides by the gameplay modifier product for channel 5, so the result is one class-scaled unit of length."
+    },
+    {
+      "step": 13,
+      "routine": "009e04e0",
+      "host_method": "hull_heading_vtable50",
+      "address": "009e0509",
+      "function": "009e04e0",
+      "native": "unit->vtable[50h]",
+      "note": "The result is discarded at 009E050B (FSTP ST0). The call is kept because it is where the unit's pose can refresh."
+    },
+    {
+      "step": 14,
+      "routine": "009e04e0",
+      "host_method": "own_body_speed_0092d730",
+      "address": "009e053a",
+      "function": "009e04e0",
+      "native": "0092d730",
+      "note": "this = unit->+1018h. The value feeds both the quadratic correction and the tail ratio at 009E10B8."
+    },
+    {
+      "step": 15,
+      "routine": "009e04e0",
+      "host_method": "avoidance_active_009da1d0",
+      "address": "009e061b",
+      "function": "009e04e0",
+      "native": "009da1d0",
+      "note": "this = blk. Body: false when the unit answers vtable[5Ch] with 0Eh, false when unit+100h is below 00CE3D58, otherwise blk+3ECh and the gameplay byte +240h."
+    },
+    {
+      "step": 16,
+      "routine": "009e04e0",
+      "host_method": "refresh_track_009dc060",
+      "address": "009e0631",
+      "function": "009e04e0",
+      "native": "009dc060",
+      "note": "this = the track. Body: rewrites the track's +2Ch/+30h from the tracked entity's pose, +24h/+28h from its normalised 2D velocity, +18h from that velocity's length plus +1Ch, and +20h from entity+46Ch."
+    },
+    {
+      "step": 17,
+      "routine": "009e04e0",
+      "host_method": "hull_heading_vtable50",
+      "address": "009e0648",
+      "function": "009e04e0",
+      "native": "unit->vtable[50h]",
+      "note": "The heading used for the relative bearing. 009E0644 reserves the slot that 009E064A then fills for 00438B10, so the vtable slot itself still takes no argument."
+    },
+    {
+      "step": 18,
+      "routine": "009e04e0",
+      "host_method": "class_length_three_quarters_00811a30",
+      "address": "009e0723",
+      "function": "009e04e0",
+      "native": "00811a30",
+      "note": "Same callee as step 12, argument 0.75f (00CEE07C). The result scales the lateral gap."
+    },
+    {
+      "step": 19,
+      "routine": "009e04e0",
+      "host_method": "destroy_track",
+      "address": "009e0fee",
+      "function": "009e04e0",
+      "native": "006952a0",
+      "note": "First of the four teardown calls (009E0FEE and 009E1023 are 006952A0, 009E0FFD and 009E1035 are 00695870) before the _free at 009E103B. Modelled as one host method."
+    },
+    {
+      "step": 20,
+      "routine": "009e04e0",
+      "host_method": "destroy_track",
+      "address": "009e0ffd",
+      "function": "009e04e0",
+      "native": "00695870"
+    },
+    {
+      "step": 21,
+      "routine": "009e04e0",
+      "host_method": "destroy_track",
+      "address": "009e1023",
+      "function": "009e04e0",
+      "native": "006952a0"
+    },
+    {
+      "step": 22,
+      "routine": "009e04e0",
+      "host_method": "destroy_track",
+      "address": "009e1035",
+      "function": "009e04e0",
+      "native": "00695870"
+    },
+    {
+      "step": 23,
+      "routine": "009e04e0",
+      "host_method": "destroy_track",
+      "address": "009e103b",
+      "function": "009e04e0",
+      "native": "00bf65ac",
+      "note": "Ghidra's non-returning discovery left 009E1040..009E1046 undisassembled after this call; the bytes are 0F 57 C0 83 C4 04 (XORPS XMM0,XMM0; ADD ESP,4) and the decompiler drops the list compaction that follows at 009E104C."
+    }
+  ],
+  "pure_calls": [
+    {
+      "name": "settings singleton",
+      "address": "009ef943",
+      "function": "009ef910",
+      "native": "00424c40",
+      "note": "Read as a value input (ShipAiClearanceSettings), not a host method. Repeated at 009F0076 for the two error gates."
+    },
+    {
+      "name": "settings singleton",
+      "address": "009f0076",
+      "function": "009ef910",
+      "native": "00424c40"
+    },
+    {
+      "name": "wrapped_angle_add_00438aa0",
+      "address": "009ef9a3",
+      "function": "009ef910",
+      "native": "00438aa0",
+      "note": "Astern only: hull heading + pi (00D7A264)."
+    },
+    {
+      "name": "wrapped_angle_add_00438aa0",
+      "address": "009efb14",
+      "function": "009ef910",
+      "native": "00438aa0",
+      "note": "The adding arm's sweep_from."
+    },
+    {
+      "name": "wrapped_angle_add_00438aa0",
+      "address": "009efb33",
+      "function": "009ef910",
+      "native": "00438aa0",
+      "note": "The adding arm's sweep_to."
+    },
+    {
+      "name": "wrapped_angle_subtract_00438b10",
+      "address": "009ef9c0",
+      "function": "009ef910",
+      "native": "00438b10",
+      "note": "The heading error, blk+324h minus the hull heading."
+    },
+    {
+      "name": "wrapped_angle_subtract_00438b10",
+      "address": "009efb4e",
+      "function": "009ef910",
+      "native": "00438b10",
+      "note": "The adding arm's difference; the FCOMIP at 009EFC81 reads it against the FLDZ at 009EFB53 after an FXCH."
+    },
+    {
+      "name": "wrapped_angle_subtract_00438b10",
+      "address": "009efc7a",
+      "function": "009ef910",
+      "native": "00438b10",
+      "note": "The subtracting arm's difference; the same FCOMIP reads it with the operands the other way round."
+    },
+    {
+      "name": "clamped_interpolate_00419010",
+      "address": "009f0069",
+      "function": "009ef910",
+      "native": "00419010",
+      "note": "__stdcall(x0, y0, x1, y1, x), RET 14h. The five pushes at 009F0060..009F004C read as (1.0, 1.0, 2.0, 0.0, blk+330h / class length)."
+    },
+    {
+      "name": "sqrt",
+      "address": "009eff0f",
+      "function": "009ef910",
+      "native": "00bf7030",
+      "note": "Only reached when the squared distance exceeds the squared hull radius (009EFF09 FCOMI, 009EFF0D JBE)."
+    },
+    {
+      "name": "wrapped_angle_subtract_00438b10",
+      "address": "009e064e",
+      "function": "009e04e0",
+      "native": "00438b10",
+      "note": "The relative bearing, hull heading minus track+20h."
+    },
+    {
+      "name": "acos (hypothesis)",
+      "address": "009e06e8",
+      "function": "009e04e0",
+      "native": "00bf9940",
+      "note": "Guarded by 1.0 above and -1.0 below, with 0.0 and pi as the out-of-domain answers, which is the acos clamp pattern. The body was not read."
+    },
+    {
+      "name": "max_by_ref_00415550",
+      "address": "009e087f",
+      "function": "009e04e0",
+      "native": "00415550",
+      "note": "__fastcall(const float* a, const float* b) with ECX = &1.0f and EDX = &(distance / track speed)."
+    },
+    {
+      "name": "sqrt",
+      "address": "009e09ab",
+      "function": "009e04e0",
+      "native": "00bf7030",
+      "note": "The upper end of the speed window; the lower end's is at 009E0ABA."
+    },
+    {
+      "name": "sqrt",
+      "address": "009e0aba",
+      "function": "009e04e0",
+      "native": "00bf7030"
+    },
+    {
+      "name": "ship_ai_mark_throttle_band_009d67f0",
+      "address": "009e0bec",
+      "function": "009e04e0",
+      "native": "009d67f0",
+      "note": "(window.low, 2.0). Cost 1. Written as a pure rule, not a host method."
+    },
+    {
+      "name": "ship_ai_mark_throttle_band_009d67f0",
+      "address": "009e0c19",
+      "function": "009e04e0",
+      "native": "009d67f0",
+      "note": "(-2.0, window.high) when the low end runs off the astern side."
+    },
+    {
+      "name": "ship_ai_mark_throttle_band_009d67f0",
+      "address": "009e0c45",
+      "function": "009e04e0",
+      "native": "009d67f0",
+      "note": "(window.low, window.high)."
+    },
+    {
+      "name": "ship_ai_apply_throttle_profile_009d6b40",
+      "address": "009e10e2",
+      "function": "009e04e0",
+      "native": "009d6b40",
+      "note": "this = blk+4h after 009E10D9 ADD ESI,4. Arguments (&ratio, -1.0f, 1.0f); the ratio is own speed / blk+3C4h. Already projected by packet cc_ai_obstacle_tables."
+    },
+    {
+      "name": "ship_ai_add_throttle_band_009d56f0",
+      "address": "009e114b",
+      "function": "009e04e0",
+      "native": "009d56f0",
+      "note": "The commitment band, cost 10 (009E10ED / 009E111D PUSH 0xA). this = blk+4h from either 009E10D9 or 009E111F LEA ECX,[ESI+4]."
+    }
+  ],
+  "producer_chain": [
+    {
+      "name": "009F4D10 calls 009EF910",
+      "address": "009f4d87",
+      "function": "009f4d10",
+      "native": "009ef910",
+      "note": "The only caller. 009F4D10 stores blk+33Ch = -1.0f at 009F4D27 before this."
+    },
+    {
+      "name": "009F4D10 calls 009EF350",
+      "address": "009f4d78",
+      "function": "009f4d10",
+      "native": "009ef350",
+      "note": "The routine that can replace blk+33Ch with a real distance, at 009EF876."
+    },
+    {
+      "name": "009F50E0 calls 009E04E0",
+      "address": "009f51f3",
+      "function": "009f50e0",
+      "native": "009e04e0",
+      "note": "Chain slot 11, this = blk, argument seconds."
+    },
+    {
+      "name": "009F50E0 calls 009F4D10",
+      "address": "009f5227",
+      "function": "009f50e0",
+      "native": "009f4d10",
+      "note": "Chain slot 14, after slot 11."
+    },
+    {
+      "name": "009F50E0 calls 009F4DA0",
+      "address": "009f5248",
+      "function": "009f50e0",
+      "native": "009f4da0",
+      "note": "The last slot; 009F4DA0 is the only caller of 009F3F80, which reads all three products in the same step."
+    },
+    {
+      "name": "009D67F0 forwards to 009D56F0",
+      "address": "009d6807",
+      "function": "009d67f0",
+      "native": "009d56f0",
+      "note": "After ADD ECX,0x4 at 009D67FD and PUSH 0x1 at 009D67F4."
+    },
+    {
+      "name": "the constructor memsets the profile",
+      "address": "009e4363",
+      "function": "009e4330",
+      "native": "00bf79f0",
+      "note": "memset(blk+4h, 0, 0x41) with blk+45h set to 1 first at 009E435F: 65 zero bins and the bypass byte on. The second array at blk+46h gets the same treatment at 009E4379."
+    }
+  ],
+  "constants": {
+    "00ce3d64": "9999.0f, the clearance sentinel, 009EF94E",
+    "00d0c26c": "0.034906585f (2 degrees), the heading-error deadband, 009EF9C5",
+    "00ce3c64": "1.5707964f, the beam quarter turn, 009EFB20 and 009EFC4C",
+    "00ce3830": "1.5707963705062866 read as a float, 009EFA25 and 009E0C7C",
+    "00ce3828": "6.283185307, the wrap, 009EFA5B",
+    "00d7a208": "-0.0f, the negation source, 009EFA89",
+    "00d7a218": "0.0f, 009EFAAF and 009E10F2",
+    "00d7a260": "-1.0f, blk+33Ch's value, 009F4D10",
+    "00d7a264": "3.14159274f, the astern half turn, 009EF98F",
+    "00ce3958": "2.0f, the blocker speed test at 009EFF9C and the path fade span at 009F0056",
+    "00ce3854": "3.0f, the hold blk+354h is raised to, 009F00D2",
+    "00d7a248": "FLT_MAX, 00415D70's own sentinel",
+    "00cf1748": "0.45, blk+3E4h = unit+9C8h * 0.45, 009E44DB",
+    "00ce3d78": "1.5, the divisor in blk+1B4h and in unit+9CCh / 1.5, 009E45C9 and 009E0521",
+    "00ce3860": "0.9f, the hull radius argument, 009E454B",
+    "00d7a348": "0.25 in the constructor (009E45E3) and 4.0 in the quadratic (009E0989); two different addresses, 00D7A348 is 0.25 and 00D7A328 is 4.0",
+    "00ced9f8": "16.0, the bin scale, 009D5700",
+    "00d7a308": "2.0, the bin origin and the avoidance course step, 009D56F5 and 009E0E42",
+    "00ce7d7c": "-2.0f, the low end of the throttle axis, 009E0C10",
+    "00ce69d0": "-0.5f, the astern edge of a window, 009E0B70",
+    "00cf0b58": "0.85, the settled threshold after a widened band, 009E0C1E",
+    "00ce6650": "0.98f, the inner edge of the ahead commitment band, 009E10FD",
+    "00d21858": "-0.48f, the inner edge of the astern commitment band, 009E1142",
+    "00d20a18": "0.13962634f (8 degrees), 009E073C",
+    "00d2185c": "3.0019646f (172 degrees), 009E0775",
+    "00ceff98": "0.6, the beam fraction of the margin, 009E08F5",
+    "00ce3dc0": "10.0, the length pad of the margin, 009E090D",
+    "00ce3d88": "20.0, the width pad, 009E0755",
+    "00ce7630": "30.0, the avoidance band pad, 009E0D22",
+    "00cee07c": "0.75f, the class-length argument, 009E06FF",
+    "00d19660": "-2.0, the avoidance course step and the quadratic b factor, 009E0963",
+    "00d7a280": "0.5, the upper root halving, 009E09C6",
+    "00cec9e0": "-0.5, the lower root halving, 009E0AD0"
+  },
+  "corrections": [
+    {
+      "was": "The packet brief and docs/GAME_EXECUTABLE.md follow-up 4: 'blk+37Ch (the danger level) and blk+33Ch (the clearance?)'.",
+      "is": "Reversed. blk+37Ch is the clearance distance; the danger level is blk+0A84h, which 009F3F80 derives from it. blk+33Ch is neither: it is a -1.0f sentinel that gates the rudder clamp.",
+      "evidence": "009EF96F stores 9999.0f into blk+37Ch; 009F416E divides blk+37Ch by unit+9CCh to form the danger; 009F4D27 stores 00D7A260 = -1.0f into blk+33Ch."
+    },
+    {
+      "was": "The same brief: 'the danger level saturates at 1.0 for every ship on every step'.",
+      "is": "The real routine leaves 9999.0f on an open sea, which ramps the danger to 0.0. The 1.0 is the signature of a block whose blk+37Ch was never written.",
+      "evidence": "009EF9F9 JZ 009EFFC2 when blk+604h == 0 and blk+0A3Ch == 0; 009F4189..009F41A2 InterpolateClamped(1.0, 1.0, 4.0, 0.0, ratio) clamps to y0 = 1.0 at ratio 0 and to y1 = 0.0 past 4.0."
+    },
+    {
+      "was": "The same brief: 'the rudder limit's gate at 009F4514 never opens'.",
+      "is": "The gate is open while blk+33Ch is negative and shut once it is non-negative, so -1.0f opens it. It never opens because the field is left at zero, not because a producer is missing.",
+      "evidence": "009F4511 XORPS XMM0,XMM0; 009F4514 COMISS XMM0,[ESI+33Ch]; 009F451B JBE 009F454C skips the 00415690 clamp at 009F4544."
+    },
+    {
+      "was": "docs/SHIP_AI_OBSTACLE_TABLES.md uncertainty 2: 'blk+33Ch, the gate on the rudder limit, is published by 009F4D10 at 009F4D2B. Its producer was not read.'",
+      "is": "Resolved, and the store instruction starts at 009F4D27 (009F4D2B is the displacement inside that eight-byte MOVSS). The value is the constant -1.0f; the only routine that replaces it is 009EF350 at 009EF876, with a square root of the smaller of two squared distances.",
+      "evidence": "The listing of 009F4D10; a whole-image search for the displacement bytes 3C 03 00 00 finds exactly 009EF878, 009F4517 and 009F4D2B."
+    },
+    {
+      "was": "docs/SHIP_AI_OBSTACLE_TABLES.md uncertainty 6: 'Nothing read here writes the 65 profile bytes at blk+4h or the bypass byte at blk+45h.'",
+      "is": "Resolved. 009D56F0 writes both; 009D67F0 is its cost-1 wrapper; 009E04E0 is the only caller of either. The constructor 009E4330 memsets the bins and sets the bypass byte to 1.",
+      "evidence": "The call graph of 009D56F0 (callers 009D67F0 and 009E04E0) and of 009D67F0 (caller 009E04E0); 009D5748 MOV byte ptr [EDI+41h],0; 009E435F MOV byte ptr [EAX+41h],1 with EAX = blk+4h."
+    },
+    {
+      "was": "docs/SHIP_AI_OBSTACLE_TABLES.md uncertainty 1: 'blk+37Ch is written only inside 009EF910 (six sites) ... what the clearance measures is a hypothesis from its use.'",
+      "is": "The six sites are confirmed and are the only writers in the image. What it measures is now read from the routine: the distance from the inside-of-turn shoulder point to the nearest footprint or avoid-zone segment inside the swept wedge, less the hull radius.",
+      "evidence": "A whole-image search for the displacement bytes 7C 03 00 00 finds 009EF973, 009EFD14, 009EFD51, 009EFF2C, 009EFF40, 009EFF67 and the read at 009F4170; nothing else."
+    },
+    {
+      "was": "The Ghidra pseudocode of 009EF910 renders the sweep test as `if ((fVar8 > fVar9) && ...)`.",
+      "is": "The operands are swapped. One FCOMIP at 009EFC81 serves both arms, reached with the difference and the zero on opposite x87 slots, and the measurement runs when BL is clear.",
+      "evidence": "009EFB53 FLDZ; FXCH versus 009EFC7F FLDZ; then 009EFC81 FCOMIP ST0,ST1; 009EFC85 JC; 009EFCA0 JNZ and 009EFD6C JNZ both skip."
+    },
+    {
+      "was": "The profile writer and reader share an index rule (ship_ai_obstacle_tables.hpp documents the reader's as (value + 2.0) * 16.0 + 0.5).",
+      "is": "They do not. 009D56F0 truncates (value + 2.0) * 16.0 with no rounding term, so the writer rounds down while the reader rounds to nearest.",
+      "evidence": "009D56F0..009D570A has no 00D7A280 term, unlike 009D6B8F."
+    }
+  ],
+  "no_ghidra_function": [],
+  "uncertainties": [
+    "00BF9940 at 009E06E8 is identified as acos from its domain guard alone; its body was not read, and the routine feeds it a wrapped angle difference rather than a cosine.",
+    "blk+19Ch/+1A0h is called the port beam normal from 009DE465's construction (-forward_z, forward_x); which side of the hull that is in world terms was not confirmed against a run.",
+    "009DD010's sweep test was read only to 009DD0B0. That the arc runs from sweep_from to sweep_to rather than the other way round comes from 009EF910's argument order, not from that body.",
+    "The track fields +0h, +4h and +0Ch are named from how 009E04E0 uses them; their producer was not found.",
+    "blk+3C4h is called the reference speed after ship_ai_obstacle_tables.hpp. Whether +2.0 on the throttle axis is reachable was not checked against the ship classes.",
+    "No run-time evidence is quoted. bsp_game.exe reaches 009F50E0's chain, so the sentinel claim is testable by instrumenting the substitute record for 009EF910; this packet did not run it."
+  ],
+  "build": {
+    "command": "./scripts/build.ps1",
+    "result": "bsp_core, bsp_game and the probes built; ctest 1/1 reconstructed_math passed",
+    "registered": "cmake/startup.cmake, one appended cmake_language(DEFER ...) line for src/ship_ai_clearance_profile.cpp",
+    "new_tests": "none"
+  },
+  "follow_ups": [
+    {
+      "packet": "ship_ai_clearance_33c_producer",
+      "addresses": "009EF350 009EF35C..009EF907, 009DCEB0, 009D7AF0, blk+33Ch, neighbour+74h/+75h",
+      "left": "Which neighbour closes the rudder gate, and the pass-side bytes 009DCEB0 writes. Read here only far enough to find the 009EF876 store."
+    },
+    {
+      "packet": "ship_ai_hull_frame_009de2f0",
+      "addresses": "009DE2F0 009DE2F0-009DE5A0, 00414DB0, 004142E0, 00419260, blk+174h..blk+1C0h",
+      "left": "The producer of every geometric input both routines in this packet read. 009DE4A0..009DE524 is settled; the bow/stern points, the normalisation and the tail at 009DE52A are not."
+    },
+    {
+      "packet": "ship_ai_control_block_ctor_009e4330",
+      "addresses": "009E4330 009E4330-009E46C2, 009DFCB0, 0082E960, 008E6430",
+      "left": "The per-ship constants blk+3C8h, blk+3CCh, blk+3D0h, blk+3D4h, blk+3D8h, blk+3E4h, blk+340h, blk+1B4h, blk+1B8h, and the second 256-entry profile at blk+46h nothing has touched."
+    },
+    {
+      "packet": "ship_ai_contact_track_source",
+      "addresses": "blk+400h, blk+404h, 009DC060, 006952A0, 00695870",
+      "left": "Who creates a contact track and sets +0h, +4h, +0Ch and +10h. 009E04E0 only consumes and destroys them."
+    },
+    {
+      "packet": "ship_ai_avoidance_vector_consumer",
+      "addresses": "blk+34Ch, blk+350h",
+      "left": "009E04E0 fills the vector every step; nothing read so far reads it back. 009F4DA0 writes brain+34Ch/brain+350h, a different pair on a different object, which is worth reconciling before either is named."
+    }
+  ]
+}

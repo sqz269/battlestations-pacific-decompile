@@ -1,0 +1,1008 @@
+{
+  "packet": "orch3_tracer_pool_ak",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "functions": [
+    {
+      "array": "tracer_pool_slab",
+      "address": "00ba9b50",
+      "end_exclusive": "00ba9b93",
+      "length": 67,
+      "sha256": "28440845ac061a314f24bf63a7b30d6a103d391b712d6d6fcec7a75c9d395521",
+      "live_disk_equal": true,
+      "end_inclusive": "00ba9b92",
+      "saved_prototype_before": "00ba9b50 FUN_00ba9b50  undefined FUN_00ba9b50(void)  body 00ba9b50 - 00ba9b92",
+      "saved_comments_before": [
+        {
+          "address": "00ba9b50",
+          "annotation": {
+            "address": "00ba9b50",
+            "function_name": "FUN_00ba9b50"
+          }
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracerSlab_Initialize",
+      "cpp_symbol": "initialize_native_tracer_slab_00ba9b50",
+      "source": "src/native_tracer_pool.cpp",
+      "header": "include/bsp/native_tracer_pool.hpp",
+      "original_abi": "ECX actual3D94h slab; stack slab ID; EAX same slab; BA9B90 RET4",
+      "coverage": "complete",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. First write WORD3D90=8; then eight WORD free indices7..0 at3D80 and DWORD captured slab IDs at7AC stride7B0. Preserve payloads and final padding. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual3D94h slab; stack slab ID; EAX same slab; BA9B90 RET4. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_NativeTracerSlab_Initialize",
+      "native_prototype": "void * __thiscall BSP_NativeTracerSlab_Initialize(uint slab_id)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "array": "tracer_pool_allocate",
+      "address": "00bac4a0",
+      "end_exclusive": "00bac5dc",
+      "length": 316,
+      "sha256": "a7563156aaa6523f686e76f05a23171ad9e4fa12e52427f6ab0c0093125f5b99",
+      "live_disk_equal": true,
+      "end_inclusive": "00bac5db",
+      "saved_prototype_before": "00bac4a0 FUN_00bac4a0  undefined FUN_00bac4a0(void)  body 00bac4a0 - 00bac5db",
+      "saved_comments_before": [
+        {
+          "address": "00bac4a0",
+          "annotation": {
+            "address": "00bac4a0",
+            "function_name": "FUN_00bac4a0"
+          }
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracerPool_AllocateRawSlot",
+      "cpp_symbol": "allocate_native_tracer_slot_00bac4a0",
+      "source": "src/native_tracer_pool.cpp",
+      "header": "include/bsp/native_tracer_pool.hpp",
+      "original_abi": "ECX actual initialized38h owner; EAX raw7B0 slot; BAC5DB RET",
+      "coverage": "complete",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Enter real section0C/increment depth24. Publish earliest before slab allocation. Wrapped capacity*2+2/byte size before table allocation; current copy/free/publication/append. Decrement/reload WORD3D90, pop free index, unsigned later-slab scan; decrement/leave. No EH frame or rollback. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual initialized38h owner; EAX raw7B0 slot; BAC5DB RET. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_NativeTracerPool_AllocateRawSlot",
+      "native_prototype": "void * __thiscall BSP_NativeTracerPool_AllocateRawSlot(void)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "array": "tracer_pool_release",
+      "address": "00babf70",
+      "end_exclusive": "00babfd8",
+      "length": 104,
+      "sha256": "e56fddf15d2a5b56eea7209c32f132b46c5e2deacac29274d1147a74f18e0b52",
+      "live_disk_equal": true,
+      "end_inclusive": "00babfd7",
+      "saved_prototype_before": "00babf70 FUN_00babf70  undefined FUN_00babf70(void)  body 00babf70 - 00babfd7",
+      "saved_comments_before": [
+        {
+          "address": "00babf70",
+          "annotation": {
+            "address": "00babf70",
+            "function_name": "FUN_00babf70"
+          }
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracerPool_ReturnRawSlot",
+      "cpp_symbol": "return_native_tracer_slot_00babf70",
+      "source": "src/native_tracer_pool.cpp",
+      "header": "include/bsp/native_tracer_pool.hpp",
+      "original_abi": "ECX actual initialized38h owner; stack raw slot; BABFD5 RET4",
+      "coverage": "complete",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Real section/depth; slot7AC slab ID, signed wrapped delta/1968 (214D0215 IMUL,SAR8,sign correction), truncated WORD free index, reloaded count increment, unsigned earliest lowering. No payload destruction or validation. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual initialized38h owner; stack raw slot; BABFD5 RET4. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_NativeTracerPool_ReturnRawSlot",
+      "native_prototype": "void __thiscall BSP_NativeTracerPool_ReturnRawSlot(void * slot)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "array": "tracer_pool_model_allocate",
+      "address": "00bac660",
+      "end_exclusive": "00bac66a",
+      "length": 10,
+      "sha256": "f11438ba4ce5cd59d91cabf1ce811cf9d83a4215f828d25232d930cdd8479093",
+      "live_disk_equal": true,
+      "end_inclusive": "00bac669",
+      "saved_prototype_before": "00bac660 CG_static_dtor_stub_00bac660  undefined CG_static_dtor_stub_00bac660(void)  body 00bac660 - 00bac669",
+      "saved_comments_before": [
+        {
+          "address": "00bac660",
+          "annotation": {
+            "address": "00bac660",
+            "function_name": "CG_static_dtor_stub_00bac660"
+          }
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracerPool_AllocateStaticRawSlot",
+      "cpp_symbol": "allocate_native_tracer_00bac660",
+      "source": "src/native_tracer_pool.cpp",
+      "header": "include/bsp/native_tracer_pool.hpp",
+      "original_abi": "Overwrite incoming ECX (caller7AC) with0109049C; BAC665 tail JMP BAC4A0",
+      "coverage": "complete",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Source adapter borrows the actual static owner; no other pool, substitute descriptor or duplicate count. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; Overwrite incoming ECX (caller7AC) with0109049C; BAC665 tail JMP BAC4A0. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_NativeTracerPool_AllocateStaticRawSlot",
+      "native_prototype": "void * __cdecl BSP_NativeTracerPool_AllocateStaticRawSlot(void)",
+      "native_calling_convention": "__cdecl"
+    },
+    {
+      "array": "tracer_pool_model_release",
+      "address": "00bac2b0",
+      "end_exclusive": "00bac2bc",
+      "length": 12,
+      "sha256": "6ff0ec74a238b87d55c89f725c5088d8d2b10e66958b895bc63d332c30051bdb",
+      "live_disk_equal": true,
+      "end_inclusive": "00bac2bb",
+      "saved_prototype_before": "00bac2b0 FUN_00bac2b0  undefined FUN_00bac2b0(void)  body 00bac2b0 - 00bac2bb",
+      "saved_comments_before": [
+        {
+          "address": "00bac2b0",
+          "annotation": {
+            "address": "00bac2b0",
+            "function_name": "FUN_00bac2b0"
+          }
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracerPool_ReturnStaticRawSlot",
+      "cpp_symbol": "return_native_tracer_00bac2b0",
+      "source": "src/native_tracer_pool.cpp",
+      "header": "include/bsp/native_tracer_pool.hpp",
+      "original_abi": "ECX raw slot; push it; select0109049C; call BABF70; BAC2BB RET",
+      "coverage": "complete",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Constructor unwind returns unconstructed storage without repeating tracer destruction. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX raw slot; push it; select0109049C; call BABF70; BAC2BB RET. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_NativeTracerPool_ReturnStaticRawSlot",
+      "native_prototype": "void __thiscall BSP_NativeTracerPool_ReturnStaticRawSlot(void)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "array": "owner_construct",
+      "address": "00bac3c0",
+      "end_exclusive": "00bac493",
+      "length": 211,
+      "sha256": "b09dd210f64b417d94a4d0864da4fb22ba1abdc243ce5e5d5366c83858ed402c",
+      "live_disk_equal": true,
+      "end_inclusive": "00bac492",
+      "saved_prototype_before": "00bac3c0 FUN_00bac3c0  undefined FUN_00bac3c0(void)  body 00bac3c0 - 00bac492",
+      "saved_comments_before": [
+        {
+          "address": "00bac3c0",
+          "annotation": {
+            "address": "00bac3c0",
+            "function_name": "FUN_00bac3c0"
+          }
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracerPool_Construct",
+      "cpp_symbol": "initialize_native_tracer_pool_00bac3c0",
+      "source": "src/native_tracer_pool.cpp",
+      "header": "include/bsp/native_tracer_pool.hpp",
+      "original_abi": "ECX actual fresh38h owner; EAX same owner; BAC492 RET",
+      "coverage": "complete",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Same E188B4 allocator-list prepend, D63F90 profile, real section0C/depth24, table28/count2C/cap30/earliest34. Publish cap32 before80h allocation; current copy/free/backing publication. DFD518 FH3 state0 base/1 section/2 table; main0 directly to2. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual fresh38h owner; EAX same owner; BAC492 RET. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_NativeTracerPool_Construct",
+      "native_prototype": "void * __thiscall BSP_NativeTracerPool_Construct(void)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "array": "owner_destroy",
+      "address": "00babdd0",
+      "end_exclusive": "00babe5a",
+      "length": 138,
+      "sha256": "46ebcaf13bafa46ed1a4dd746e4d400f06bb19999cc30c5aa8003694ebb7bb12",
+      "live_disk_equal": true,
+      "end_inclusive": "00babe59",
+      "saved_prototype_before": "00babdd0 FUN_00babdd0  undefined FUN_00babdd0(void)  body 00babdd0 - 00babe59",
+      "saved_comments_before": [
+        {
+          "address": "00babdd0",
+          "annotation": {
+            "address": "00babdd0",
+            "function_name": "FUN_00babdd0"
+          }
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracerPool_Destroy",
+      "cpp_symbol": "destroy_native_tracer_pool_00babdd0",
+      "source": "src/native_tracer_pool.cpp",
+      "header": "include/bsp/native_tracer_pool.hpp",
+      "original_abi": "ECX actual38h owner; BABE59 RET",
+      "coverage": "complete",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Capture count comparison before profile store. Ascending current slab frees, current table free, positive signed depth drain/DeleteCS, base profile/unlink same element. No payload destruction, metadata clearing or physical owner free. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual38h owner; BABE59 RET. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_NativeTracerPool_Destroy",
+      "native_prototype": "void __thiscall BSP_NativeTracerPool_Destroy(void)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "array": "owner_trim",
+      "address": "00babed0",
+      "end_exclusive": "00babf70",
+      "length": 160,
+      "sha256": "eb1f7fa7ebc06f308603a4896608d0662f274600104a49f014d8bbb09f4f8047",
+      "live_disk_equal": true,
+      "end_inclusive": "00babf6f",
+      "saved_prototype_before": "00babed0 FUN_00babed0  undefined FUN_00babed0(void)  body 00babed0 - 00babf6f",
+      "saved_comments_before": [
+        {
+          "address": "00babed0",
+          "annotation": {
+            "address": "00babed0",
+            "function_name": "FUN_00babed0"
+          }
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracerPool_TrimEmptySlabs",
+      "cpp_symbol": "trim_native_tracer_pool_00babed0",
+      "source": "src/native_tracer_pool.cpp",
+      "header": "include/bsp/native_tracer_pool.hpp",
+      "original_abi": "ECX actual38h owner; D63F90 virtual0; BABF6F RET",
+      "coverage": "complete",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. No lock. Free slabs with WORD3D90==8, reload table/count, move last/decrement, rewrite all8 IDs at7AC stride7B0, retry hole. Reset earliest then captured-table/current-count scan. Retain capacity. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual38h owner; D63F90 virtual0; BABF6F RET. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_NativeTracerPool_TrimEmptySlabs",
+      "native_prototype": "void __thiscall BSP_NativeTracerPool_TrimEmptySlabs(void)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "array": "owner_free_table",
+      "address": "00ba9c80",
+      "end_exclusive": "00ba9c8e",
+      "length": 14,
+      "sha256": "f4d239eb11f528a31f6410e112677c4f8c3021de72bf8a1fe4c0531ea9ad4e55",
+      "live_disk_equal": true,
+      "end_inclusive": "00ba9c8d",
+      "saved_prototype_before": "00ba9c80 FUN_00ba9c80  undefined FUN_00ba9c80(void)  body 00ba9c80 - 00ba9c8d",
+      "saved_comments_before": [
+        {
+          "address": "00ba9c80",
+          "annotation": {
+            "address": "00ba9c80",
+            "function_name": "FUN_00ba9c80"
+          }
+        }
+      ],
+      "proposed_ghidra_name": "BSP_NativeTracerPool_FreePointerTable",
+      "cpp_symbol": "free_native_tracer_pool_table_00ba9c80",
+      "source": "src/native_tracer_pool.cpp",
+      "header": "include/bsp/native_tracer_pool.hpp",
+      "original_abi": "ECX0Ch table header; BA9C8D RET",
+      "coverage": "complete",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Capture/free nonnull backing; preserve pointer/count/capacity. Returning-free POP ECX atBA9C8C. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX0Ch table header; BA9C8D RET. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_NativeTracerPool_FreePointerTable",
+      "native_prototype": "void __thiscall BSP_NativeTracerPool_FreePointerTable(void)",
+      "native_calling_convention": "__thiscall"
+    },
+    {
+      "array": "owner_static_init",
+      "address": "00cd88d0",
+      "end_exclusive": "00cd88e6",
+      "length": 22,
+      "sha256": "734e3bb99d23d000241fb51f9dd0890cada86686c36ca6fa7b39b8bc2febdb0c",
+      "live_disk_equal": true,
+      "end_inclusive": "00cd88e5",
+      "saved_prototype_before": "00cd88d0 ?  ?  body ?",
+      "saved_comments_before": {
+        "missing_function_query_error": "Traceback (most recent call last):\n  File \"J:\\PROG\\battlestations-pacific-decompile-orch3-tracer-pool-ak\\tools\\bsp.py\", line 990, in <module>\n    main()\n    ~~~~^^\n  File \"J:\\PROG\\battlestations-pacific-decompile-orch3-tracer-pool-ak\\tools\\bsp.py\", line 986, in main\n    args.func(args)\n    ~~~~~~~~~^^^^^^\n  File \"J:\\PROG\\battlestations-pacific-decompile-orch3-tracer-pool-ak\\tools\\bsp.py\", line 651, in ghidra_cmd\n    rows = [{'address': norm(a), 'annotation': c.get('get_plate_comment', address=norm(a))}\n                                               ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"J:\\PROG\\battlestations-pacific-decompile-orch3-tracer-pool-ak\\tools\\ghidra_export.py\", line 96, in get\n    raise RuntimeError(f'{endpoint}: {result}')\nRuntimeError: get_plate_comment: {'error': 'No function at address: 00cd88d0'}"
+      },
+      "proposed_ghidra_name": "BSP_Static_InitializeTracerPool",
+      "cpp_symbol": "initialize_static_native_tracer_pool_00cd88d0",
+      "source": "src/native_tracer_pool.cpp",
+      "header": "include/bsp/native_tracer_pool.hpp",
+      "original_abi": "No arguments; EAX actual atexit status; CD88E5 RET",
+      "coverage": "complete",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Select actual0109049C, construct BAC3C0, register CE0F90 through BF6FF5 atexit. Borrow owner/list and preserve actual registration result without rollback. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; No arguments; EAX actual atexit status; CD88E5 RET. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_Static_InitializeTracerPool",
+      "native_prototype": "int __cdecl BSP_Static_InitializeTracerPool(void)",
+      "native_calling_convention": "__cdecl"
+    },
+    {
+      "array": "owner_static_destroy",
+      "address": "00ce0f90",
+      "end_exclusive": "00ce0f9a",
+      "length": 10,
+      "sha256": "1c10981cd6df58a7cd5bf225773ca78efa0c99f988c5b5af06d879630aa9613c",
+      "live_disk_equal": true,
+      "end_inclusive": "00ce0f99",
+      "saved_prototype_before": "00ce0f90 CG_static_init_00ce0f90  undefined CG_static_init_00ce0f90(void)  body 00ce0f90 - 00ce0f99",
+      "saved_comments_before": [
+        {
+          "address": "00ce0f90",
+          "annotation": {
+            "address": "00ce0f90",
+            "function_name": "CG_static_init_00ce0f90",
+            "comment": "[BSP inventory 00ce0f90] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+          }
+        }
+      ],
+      "proposed_ghidra_name": "BSP_Static_DestroyTracerPool",
+      "cpp_symbol": "destroy_static_native_tracer_pool_00ce0f90",
+      "source": "src/native_tracer_pool.cpp",
+      "header": "include/bsp/native_tracer_pool.hpp",
+      "original_abi": "No arguments; MOV ECX,0109049C; CE0F95 tail JMP BABDD0",
+      "coverage": "complete",
+      "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Actual exit callback registered byCD88D0. Correct saved static-initializer classification. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; No arguments; MOV ECX,0109049C; CE0F95 tail JMP BABDD0. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated.",
+      "ghidra_name": "BSP_Static_DestroyTracerPool",
+      "native_prototype": "void __cdecl BSP_Static_DestroyTracerPool(void)",
+      "native_calling_convention": "__cdecl"
+    }
+  ],
+  "compiler_handlers": [
+    {
+      "array": "owner_fh3_dispatch",
+      "address": "00cc3d3e",
+      "end_exclusive": "00cc3d48",
+      "length": 10,
+      "sha256": "54183341accd6cc505116688b979ae065b96dd84749b3bee4f7d74bbf03830cd",
+      "live_disk_equal": true,
+      "end_inclusive": "00cc3d47",
+      "saved_prototype_before": "00cc3d3e ?  ?  body ?",
+      "saved_comments_before": {
+        "missing_function_query_error": "Traceback (most recent call last):\n  File \"J:\\PROG\\battlestations-pacific-decompile-orch3-tracer-pool-ak\\tools\\bsp.py\", line 990, in <module>\n    main()\n    ~~~~^^\n  File \"J:\\PROG\\battlestations-pacific-decompile-orch3-tracer-pool-ak\\tools\\bsp.py\", line 986, in main\n    args.func(args)\n    ~~~~~~~~~^^^^^^\n  File \"J:\\PROG\\battlestations-pacific-decompile-orch3-tracer-pool-ak\\tools\\bsp.py\", line 651, in ghidra_cmd\n    rows = [{'address': norm(a), 'annotation': c.get('get_plate_comment', address=norm(a))}\n                                               ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"J:\\PROG\\battlestations-pacific-decompile-orch3-tracer-pool-ak\\tools\\ghidra_export.py\", line 96, in get\n    raise RuntimeError(f'{endpoint}: {result}')\nRuntimeError: get_plate_comment: {'error': 'No function at address: 00cc3d3e'}"
+      },
+      "proposed_ghidra_name": "BSP_NativeTracerPool_Construct_ExceptionHandler",
+      "coverage": "complete analyzed compiler dispatcher; no C++ entry",
+      "cpp_reconstructed": false,
+      "evidence": "EAX=DFD530; tail JMP BF6B43. DFD518 map0->-1 CC3D20/403970,1->0 CC3D28/402F70,2->1 CC3D33/BA9C80. Original dispatch not executed.",
+      "ghidra_name": "BSP_NativeTracerPool_Construct_ExceptionHandler"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00bac3c0",
+      "address": "00bac442",
+      "native": "00bf55be",
+      "kind": "call"
+    },
+    {
+      "function": "00bac3c0",
+      "address": "00bac474",
+      "native": "00bf6989",
+      "kind": "call"
+    },
+    {
+      "function": "00babdd0",
+      "address": "00babde8",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "function": "00babdd0",
+      "address": "00babe00",
+      "native": "00bf6989",
+      "kind": "call"
+    },
+    {
+      "function": "00babed0",
+      "address": "00babef1",
+      "native": "00bf65ac",
+      "kind": "call"
+    },
+    {
+      "function": "00ba9c80",
+      "address": "00ba9c87",
+      "native": "00bf6989",
+      "kind": "call"
+    },
+    {
+      "function": "00bac4a0",
+      "address": "00bac4cb",
+      "native": "00bf681b",
+      "kind": "call"
+    },
+    {
+      "function": "00bac4a0",
+      "address": "00bac4dd",
+      "native": "00ba9b50",
+      "kind": "call"
+    },
+    {
+      "function": "00bac4a0",
+      "address": "00bac4ff",
+      "native": "00bf55be",
+      "kind": "call"
+    },
+    {
+      "function": "00bac4a0",
+      "address": "00bac531",
+      "native": "00bf6989",
+      "kind": "call"
+    },
+    {
+      "function": "00bac2b0",
+      "address": "00bac2b6",
+      "native": "00babf70",
+      "kind": "call"
+    },
+    {
+      "function": "00bac660",
+      "address": "00bac665",
+      "native": "00bac4a0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cd88d0",
+      "address": "00cd88d5",
+      "native": "00bac3c0",
+      "kind": "call"
+    },
+    {
+      "function": "00cd88d0",
+      "address": "00cd88df",
+      "native": "00bf6ff5",
+      "kind": "call"
+    },
+    {
+      "function": "00ce0f90",
+      "address": "00ce0f95",
+      "native": "00babdd0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc3d20",
+      "address": "00cc3d23",
+      "native": "00403970",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc3d28",
+      "address": "00cc3d2e",
+      "native": "00402f70",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc3d33",
+      "address": "00cc3d39",
+      "native": "00ba9c80",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc3d3e",
+      "address": "00cc3d43",
+      "native": "00bf6b43",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00872790",
+      "address": "008728c8",
+      "native": "00bac660",
+      "kind": "call"
+    },
+    {
+      "function": "00c96170",
+      "address": "00c96176",
+      "native": "00bac2b0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00bacb90",
+      "address": "00bacba5",
+      "native": "00babf70",
+      "kind": "call"
+    }
+  ],
+  "indirect_os_sites": [
+    {
+      "function": "00bac3c0",
+      "address": "00bac412",
+      "native": "IAT00CE220C:InitializeCriticalSection"
+    },
+    {
+      "function": "00babdd0",
+      "address": "00babe1d",
+      "native": "EBX=IAT00CE2210:LeaveCriticalSection"
+    },
+    {
+      "function": "00babdd0",
+      "address": "00babe27",
+      "native": "IAT00CE2214:DeleteCriticalSection"
+    },
+    {
+      "function": "00bac4a0",
+      "address": "00bac4aa",
+      "native": "IAT00CE2218:EnterCriticalSection"
+    },
+    {
+      "function": "00bac4a0",
+      "address": "00bac5bb",
+      "native": "IAT00CE2210:LeaveCriticalSection"
+    },
+    {
+      "function": "00bac4a0",
+      "address": "00bac5cf",
+      "native": "IAT00CE2210:LeaveCriticalSection"
+    },
+    {
+      "function": "00babf70",
+      "address": "00babf79",
+      "native": "IAT00CE2218:EnterCriticalSection"
+    },
+    {
+      "function": "00babf70",
+      "address": "00babfcc",
+      "native": "IAT00CE2210:LeaveCriticalSection"
+    }
+  ],
+  "physical_storage": {
+    "actual_global": "0109049c",
+    "owner_bytes": 56,
+    "list_head": "00e188b4",
+    "profile": "00d63f90",
+    "trim": "00babed0",
+    "slots_per_slab": 8,
+    "payload_bytes": 1964,
+    "slot_bytes": 1968,
+    "slab_bytes": 15764,
+    "free_indices_offset": 15744,
+    "free_count_offset": 15760
+  },
+  "eh": {
+    "descriptor": "00dfd530",
+    "map": "00dfd518",
+    "states": [
+      "0->-1 CC3D20/403970 base",
+      "1->0 CC3D28/402F70 section",
+      "2->1 CC3D33/BA9C80 table"
+    ],
+    "main": "state0 directly to2 after section and table metadata initialization",
+    "original_dispatch_executed": false
+  },
+  "saved_analysis": {
+    "worker_read_only": true,
+    "missing_starts": [
+      {
+        "address": "00cd88d0",
+        "end_inclusive": "00cd88e5",
+        "final_instruction": "00cd88e5 RET",
+        "final_instruction_bytes": 1,
+        "length": 22
+      },
+      {
+        "address": "00cc3d3e",
+        "end_inclusive": "00cc3d47",
+        "final_instruction": "00cc3d43 JMP BF6B43",
+        "final_instruction_bytes": 5,
+        "length": 10
+      }
+    ],
+    "returning_free_gaps": [
+      {
+        "start": "00ba9c8c",
+        "end_inclusive": "00ba9c8c",
+        "bytes": "59",
+        "meaning": "POP ECX after BA9C87 returning free"
+      },
+      {
+        "start": "00babded",
+        "end_inclusive": "00babdf7",
+        "bytes": "83 c6 01 83 c4 04 3b 77 2c 72 e9",
+        "meaning": "Ascending slab-free loop after BABDE8"
+      },
+      {
+        "start": "00babe05",
+        "end_inclusive": "00babe07",
+        "bytes": "83 c4 04",
+        "meaning": "ADD ESP,4 after BABE00"
+      },
+      {
+        "start": "00babef6",
+        "end_inclusive": "00babf2f",
+        "bytes": null,
+        "meaning": "Move last slab pointer, decrement count, rewrite all8 IDs and retry hole after BABEF1"
+      },
+      {
+        "start": "00bac479",
+        "end_inclusive": "00bac47b",
+        "bytes": "83 c4 04",
+        "meaning": "ADD ESP,4 after BAC474"
+      },
+      {
+        "start": "00bac536",
+        "end_inclusive": "00bac538",
+        "bytes": "83 c4 04",
+        "meaning": "ADD ESP,4 after BAC531"
+      }
+    ],
+    "skipped_alignment_gaps": [
+      {
+        "start": "00babedd",
+        "end_inclusive": "00babedf",
+        "bytes": "8d 49 00",
+        "instruction": "LEA ECX,[ECX]"
+      },
+      {
+        "start": "00bac599",
+        "end_inclusive": "00bac59f",
+        "bytes": "8d a4 24 00 00 00 00",
+        "instruction": "LEA ESP,[ESP]"
+      }
+    ]
+  },
+  "corrections": [
+    {
+      "was": "CG_static_dtor_stub_00bac660",
+      "evidence": "BAC660 MOV ECX,0109049C; BAC665 JMP BAC4A0; caller8728C8 ECX7AC discarded",
+      "is": "raw allocation thunk selecting0109049C"
+    },
+    {
+      "was": "CG_static_init_00ce0f90",
+      "evidence": "CD88DA pushes CE0F90 for atexit; CE0F95 tails BABDD0",
+      "is": "static pool destructor callback"
+    },
+    {
+      "was": "Decompiler returns at returning free calls",
+      "evidence": "Verified live/disk continuation bytes listed under saved_analysis",
+      "is": "continue loop/compaction/table publication/cleanup"
+    },
+    {
+      "was": "Unrecovered slab/free-slot ABI",
+      "evidence": "BA9B56 MOV EAX,ECX, preserved through RET4; BABF97..BABFA6 IMUL214D0215/SAR8/sign correction",
+      "is": "BA9B50 returns same slab; BABF70 signed truncated displacement/1968"
+    }
+  ],
+  "verification": {
+    "strict_win32_compile": {
+      "status": "passed",
+      "flags": "/std:c++20 /EHsc /W4 /WX /O2 /fp:strict /MD",
+      "object": "local/native_tracer_pool.obj",
+      "assembly": "local/native_tracer_pool.asm",
+      "division": "MSVC emits IMUL214D0215/SAR8/sign correction for signed /1968",
+      "source_sha256": "776f52a76462b0a472e10fb639b8f52d5553302a482293f7105190fd162028d3"
+    },
+    "project_build": {
+      "status": "passed",
+      "log": "local/tracer_build.log",
+      "source_registered": false,
+      "note": "Primary owns CMake registration; worker separately compiles exact owned source.",
+      "existing_ctests_passed": 2,
+      "seed_spans_verified": 8
+    },
+    "fixture": {
+      "status": "passed",
+      "log": "local/tracer_pool_fixture.log",
+      "sources": [
+        "local/tracer_pool_allocate_probe.cpp",
+        "local/tracer_pool_owner_probe.cpp"
+      ],
+      "runner": "local/run_tracer_pool_probe.cmd",
+      "new_permanent_tests": 0,
+      "native_bytes_verified": 1074,
+      "native_body_span_bytes": 1064,
+      "original_bodies_exercised": 11,
+      "handler_bytes_not_executed": 10,
+      "unmodified_outside_declared_four_byte_rebindings": true,
+      "allocation": [
+        "all509 bytes across5 original bodies",
+        "265 initial allocations;34 slabs;capacity32->66",
+        "whole3D94 preimage/8 payloads/final padding preserved",
+        "first slot0;full slab skipping;LIFO reuse;ignored callerECX varies",
+        "nested real OS section/depth",
+        "7 additional allocations and exhausted33 later full slabs",
+        "backed displacement-1969/free-index write aliases free-count then reloads to0",
+        "actual mallocFFFFFFF8 failure and zero new-handler response throw bad_alloc; handler/caller and another thread observe retained OS lock;depth1/count and earliest1FFFFFFE/capacity3FFFFFFE/old table unchanged"
+      ],
+      "owner": [
+        "all555 owner/static bytes checked outside declared rebindings",
+        "real original constructor/slab allocation/return/trim/destructor composed against source",
+        "same explicit allocator-list domain per side;real OS sections",
+        "17 allocations;middle slab compaction;all8 moved IDs;7AC payload preserved;return after compaction",
+        "empty retries and real shared-list virtual0 trim dispatch",
+        "positive depth2 drain,base profile/unlink with own stale links preserved",
+        "nonnull/null table cleanup preserves stale header",
+        "separate native-static/rebuilt-static processes use actual std::atexit and actual exit callbacks"
+      ],
+      "frozen_core_sha256": "b9e2e249cf2e3ce64e611583d0b1b955fd0f5aeb6950e6d52c9bf0b204f0afb9"
+    },
+    "limitations": [
+      "New source ABI; no native ABI drop-in claim",
+      "Original FH3 dispatch and constructor allocation failure not executed",
+      "Actual BAD6F0 tracer construction/update/render/gameplay not executed",
+      "Allocation failure retains an unpublished slab;fixture records before explicitly releasing lock/restoring descriptor bounds for real destruction",
+      "Source registration/ledgers/Ghidra mutation/integration owned by primary"
+    ],
+    "call_checker": {
+      "exit_code": 1,
+      "rows": 22,
+      "failures": 3,
+      "passed": 19,
+      "indirect_os_rows": 8,
+      "log": "local/tracer_report_calls.log",
+      "remaining": [
+        "CD88D5 and CD88DF containing startupCD88D0 is undefined",
+        "CC3D43 containing compiler dispatcherCC3D3E is undefined"
+      ],
+      "worker_left_ghidra_read_only": true
+    }
+  },
+  "integration_validation": {
+    "build": "local/ak-final-build.log: all7 AK modules in strict MSVC Win32 bsp_core; serial --parallel 1 workaround for parallel MSBuild MSB3491",
+    "tests": "local/ak-final-ctest.log: both existing seeded CTests passed",
+    "call_checks": "local/ak-final-call-checks.log: 245 rows across7 reports, zero failures; indirect IAT/current-slot behavior remains outside mechanical checker",
+    "fixtures": [
+      "local/tracer-pool-merged-ak.log"
+    ],
+    "fixture_note": "Focused native/source comparison within original worker/root reports limits; all fixture source compilations use /fp:strict and root combined-library linking. Root tracer and earlier pool/curve fixtures were replayed before adding independent emitter/model-update sources; relevant source unchanged. Exact final merged-head replay is recorded separately.",
+    "combined_library_sha256": "d7393d8246d01614b1ce3f0de3ea7a0fc25e567d9ca79218070d07d11ede603a",
+    "source_sha256": {
+      "src/native_tracer_pool.cpp": "08740a52a961f10cf12937323dc72275ed13e4a5d1f023895435057f45e91995"
+    },
+    "game_validated": false,
+    "original_binary_replacement": false,
+    "worker_historical_note": "Earlier worker read-only/Ghidra repair/CMake pending observations describe the pre-integration snapshot; this section and saved audits are the current result.",
+    "flow_repairs": "reports/native_tracer_pool_flow_repairs.json",
+    "function_definitions": "reports/native_tracer_pool_function_definitions.json"
+  },
+  "status": "reconstructed_strict_win32_build_tested_bounded_original_byte_fixture_tested_saved_analysis_verified",
+  "ghidra_annotation_audit": {
+    "record": "local/ghidra-annotations-20260912T160551Z.json",
+    "readback": "local/ak-comment-readback.json",
+    "project_saved": true,
+    "old_comments_preserved": true,
+    "changes": [
+      {
+        "address": "00ba9b50",
+        "before": {
+          "address": "00ba9b50",
+          "function_name": "FUN_00ba9b50"
+        },
+        "after": {
+          "address": "00ba9b50",
+          "name": "BSP_NativeTracerSlab_Initialize",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. First write WORD3D90=8; then eight WORD free indices7..0 at3D80 and DWORD captured slab IDs at7AC stride7B0. Preserve payloads and final padding. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual3D94h slab; stack slab ID; EAX same slab; BA9B90 RET4. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ba9c80",
+        "before": {
+          "address": "00ba9c80",
+          "function_name": "FUN_00ba9c80"
+        },
+        "after": {
+          "address": "00ba9c80",
+          "name": "BSP_NativeTracerPool_FreePointerTable",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Capture/free nonnull backing; preserve pointer/count/capacity. Returning-free POP ECX atBA9C8C. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX0Ch table header; BA9C8D RET. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00babdd0",
+        "before": {
+          "address": "00babdd0",
+          "function_name": "FUN_00babdd0"
+        },
+        "after": {
+          "address": "00babdd0",
+          "name": "BSP_NativeTracerPool_Destroy",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Capture count comparison before profile store. Ascending current slab frees, current table free, positive signed depth drain/DeleteCS, base profile/unlink same element. No payload destruction, metadata clearing or physical owner free. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual38h owner; BABE59 RET. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00babed0",
+        "before": {
+          "address": "00babed0",
+          "function_name": "FUN_00babed0"
+        },
+        "after": {
+          "address": "00babed0",
+          "name": "BSP_NativeTracerPool_TrimEmptySlabs",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. No lock. Free slabs with WORD3D90==8, reload table/count, move last/decrement, rewrite all8 IDs at7AC stride7B0, retry hole. Reset earliest then captured-table/current-count scan. Retain capacity. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual38h owner; D63F90 virtual0; BABF6F RET. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00babf70",
+        "before": {
+          "address": "00babf70",
+          "function_name": "FUN_00babf70"
+        },
+        "after": {
+          "address": "00babf70",
+          "name": "BSP_NativeTracerPool_ReturnRawSlot",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Real section/depth; slot7AC slab ID, signed wrapped delta/1968 (214D0215 IMUL,SAR8,sign correction), truncated WORD free index, reloaded count increment, unsigned earliest lowering. No payload destruction or validation. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual initialized38h owner; stack raw slot; BABFD5 RET4. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bac2b0",
+        "before": {
+          "address": "00bac2b0",
+          "function_name": "FUN_00bac2b0"
+        },
+        "after": {
+          "address": "00bac2b0",
+          "name": "BSP_NativeTracerPool_ReturnStaticRawSlot",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Constructor unwind returns unconstructed storage without repeating tracer destruction. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX raw slot; push it; select0109049C; call BABF70; BAC2BB RET. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bac3c0",
+        "before": {
+          "address": "00bac3c0",
+          "function_name": "FUN_00bac3c0"
+        },
+        "after": {
+          "address": "00bac3c0",
+          "name": "BSP_NativeTracerPool_Construct",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Same E188B4 allocator-list prepend, D63F90 profile, real section0C/depth24, table28/count2C/cap30/earliest34. Publish cap32 before80h allocation; current copy/free/backing publication. DFD518 FH3 state0 base/1 section/2 table; main0 directly to2. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual fresh38h owner; EAX same owner; BAC492 RET. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bac4a0",
+        "before": {
+          "address": "00bac4a0",
+          "function_name": "FUN_00bac4a0"
+        },
+        "after": {
+          "address": "00bac4a0",
+          "name": "BSP_NativeTracerPool_AllocateRawSlot",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Enter real section0C/increment depth24. Publish earliest before slab allocation. Wrapped capacity*2+2/byte size before table allocation; current copy/free/publication/append. Decrement/reload WORD3D90, pop free index, unsigned later-slab scan; decrement/leave. No EH frame or rollback. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; ECX actual initialized38h owner; EAX raw7B0 slot; BAC5DB RET. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00bac660",
+        "before": {
+          "address": "00bac660",
+          "function_name": "CG_static_dtor_stub_00bac660"
+        },
+        "after": {
+          "address": "00bac660",
+          "name": "BSP_NativeTracerPool_AllocateStaticRawSlot",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Source adapter borrows the actual static owner; no other pool, substitute descriptor or duplicate count. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; Overwrite incoming ECX (caller7AC) with0109049C; BAC665 tail JMP BAC4A0. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cc3d3e",
+        "before": {
+          "address": "00cc3d3e",
+          "function_name": "FUN_00cc3d3e"
+        },
+        "after": {
+          "address": "00cc3d3e",
+          "name": "BSP_NativeTracerPool_Construct_ExceptionHandler",
+          "evidence": "Provisional descriptive hypothesis, not a recovered symbol. EAX=DFD530; tail JMP BF6B43. DFD518 map0->-1 CC3D20/403970,1->0 CC3D28/402F70,2->1 CC3D33/BA9C80. Original dispatch not executed. Analyzed compiler dispatcher only; original EH not executed."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cd88d0",
+        "before": {
+          "address": "00cd88d0",
+          "function_name": "FUN_00cd88d0"
+        },
+        "after": {
+          "address": "00cd88d0",
+          "name": "BSP_Static_InitializeTracerPool",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Select actual0109049C, construct BAC3C0, register CE0F90 through BF6FF5 atexit. Borrow owner/list and preserve actual registration result without rollback. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; No arguments; EAX actual atexit status; CD88E5 RET. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00ce0f90",
+        "before": {
+          "address": "00ce0f90",
+          "function_name": "CG_static_init_00ce0f90",
+          "comment": "[BSP inventory 00ce0f90] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)"
+        },
+        "after": {
+          "address": "00ce0f90",
+          "name": "BSP_Static_DestroyTracerPool",
+          "evidence": "Descriptive name is a hypothesis, not a recovered symbol. Actual exit callback registered byCD88D0. Correct saved static-initializer classification. Complete live/disk byte equality and focused native-byte fixture. New C++ ABI; original FH3, actual BAD6F0 tracer construction and gameplay unvalidated. AK integration: descriptive name is a provisional hypothesis, not a recovered symbol. complete; No arguments; MOV ECX,0109049C; CE0F95 tail JMP BABDD0. See docs/NATIVE_TRACER_POOL.md and reports/native_tracer_pool.json for actual ownership, required real callees, original-byte verification and limits. New C++ interface; native exception ABI and gameplay unvalidated."
+        },
+        "status": "applied"
+      }
+    ]
+  },
+  "ghidra_signature_audit": {
+    "record": "local/ak-signature-audit.json",
+    "project_saved": true,
+    "readback_verified": true,
+    "before": {
+      "00ba9b50": "00ba9b50 BSP_NativeTracerSlab_Initialize  undefined BSP_NativeTracerSlab_Initialize(void)  body 00ba9b50 - 00ba9b92\n",
+      "00bac4a0": "00bac4a0 BSP_NativeTracerPool_AllocateRawSlot  undefined BSP_NativeTracerPool_AllocateRawSlot(void)  body 00bac4a0 - 00bac5db\n",
+      "00babf70": "00babf70 BSP_NativeTracerPool_ReturnRawSlot  undefined BSP_NativeTracerPool_ReturnRawSlot(void)  body 00babf70 - 00babfd7\n",
+      "00bac660": "00bac660 BSP_NativeTracerPool_AllocateStaticRawSlot  undefined BSP_NativeTracerPool_AllocateStaticRawSlot(void)  body 00bac660 - 00bac669\n",
+      "00bac2b0": "00bac2b0 BSP_NativeTracerPool_ReturnStaticRawSlot  undefined BSP_NativeTracerPool_ReturnStaticRawSlot(void)  body 00bac2b0 - 00bac2bb\n",
+      "00bac3c0": "00bac3c0 BSP_NativeTracerPool_Construct  undefined BSP_NativeTracerPool_Construct(void)  body 00bac3c0 - 00bac492\n",
+      "00babdd0": "00babdd0 BSP_NativeTracerPool_Destroy  undefined BSP_NativeTracerPool_Destroy(void)  body 00babdd0 - 00babe59\n",
+      "00babed0": "00babed0 BSP_NativeTracerPool_TrimEmptySlabs  undefined BSP_NativeTracerPool_TrimEmptySlabs(void)  body 00babed0 - 00babf6f\n",
+      "00ba9c80": "00ba9c80 BSP_NativeTracerPool_FreePointerTable  undefined BSP_NativeTracerPool_FreePointerTable(void)  body 00ba9c80 - 00ba9c8d\n",
+      "00cd88d0": "00cd88d0 BSP_Static_InitializeTracerPool  undefined BSP_Static_InitializeTracerPool(void)  body 00cd88d0 - 00cd88e5\n",
+      "00ce0f90": "00ce0f90 BSP_Static_DestroyTracerPool  undefined BSP_Static_DestroyTracerPool(void)  body 00ce0f90 - 00ce0f99\n"
+    },
+    "changes": [
+      {
+        "address": "00ba9b50",
+        "prototype": "void * __thiscall BSP_NativeTracerSlab_Initialize(uint slab_id)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba9b50 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bac4a0",
+        "prototype": "void * __thiscall BSP_NativeTracerPool_AllocateRawSlot(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bac4a0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00babf70",
+        "prototype": "void __thiscall BSP_NativeTracerPool_ReturnRawSlot(void * slot)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00babf70 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bac660",
+        "prototype": "void * __cdecl BSP_NativeTracerPool_AllocateStaticRawSlot(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bac660 with __cdecl calling convention"
+        }
+      },
+      {
+        "address": "00bac2b0",
+        "prototype": "void __thiscall BSP_NativeTracerPool_ReturnStaticRawSlot(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bac2b0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00bac3c0",
+        "prototype": "void * __thiscall BSP_NativeTracerPool_Construct(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00bac3c0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00babdd0",
+        "prototype": "void __thiscall BSP_NativeTracerPool_Destroy(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00babdd0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00babed0",
+        "prototype": "void __thiscall BSP_NativeTracerPool_TrimEmptySlabs(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00babed0 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00ba9c80",
+        "prototype": "void __thiscall BSP_NativeTracerPool_FreePointerTable(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ba9c80 with __thiscall calling convention\n\nWARNING: __thiscall ECX auto-parameter 'this' cannot be retyped via API. Ghidra accepts the prototype but the decompiler will still show 'this' as void*. Document the intended type in the plate comment Parameters section instead."
+        }
+      },
+      {
+        "address": "00cd88d0",
+        "prototype": "int __cdecl BSP_Static_InitializeTracerPool(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00cd88d0 with __cdecl calling convention"
+        }
+      },
+      {
+        "address": "00ce0f90",
+        "prototype": "void __cdecl BSP_Static_DestroyTracerPool(void)",
+        "result": {
+          "raw_response": "Successfully set prototype for function at 00ce0f90 with __cdecl calling convention"
+        }
+      }
+    ],
+    "note": "Original native calling convention/arguments only; implicit this is ECX. Added C++ bindings do not change this recovered native signature. Compiler handler remains opaque."
+  },
+  "final_merged_validation": {
+    "tested_commit": "aab1373abde21d9a8d03ad113f8a53317cfd8ff5",
+    "build": "local/ak-integrate.log: repository standard scripts/build.ps1 completed successfully after merge with current main; strict MSVC Win32 and both existing seeded CTests passed",
+    "earlier_parallel_issue": "Intermittent MSB3491 creating Lua/zlib tlog temporary files occurred before C++ compilation, including a later documentation-only integration rerun. Standard integration build at the pinned source commit passed. Serial final full build and both CTests passed again; no ACL/global workaround installed.",
+    "original_byte_fixture": "local/tracer-pool-final-merged-ak.log",
+    "fixture_compiler": "MSVC Win32 /std:c++20 /W4 /WX /O2 /fp:strict /MD; /link /MANIFEST:EMBED",
+    "combined_library_sha256": "3ca30054b3287e5612c4b6fc9c684a8927805b4591db28a95d9367a4e05977ef",
+    "owned_sources_unchanged_from_review": "local/ak-merged-source-audit.json: all14 source/header files unchanged from020d8f85",
+    "game_validated": false,
+    "native_binary_replacement": false,
+    "documentation_only_retry": {
+      "build": "local/ak-documentation-final-build.log: serial strict Win32 full build passed",
+      "tests": "local/ak-documentation-final-ctest.log: both seeded tests passed",
+      "source_unchanged": true,
+      "library_sha256": "3ca30054b3287e5612c4b6fc9c684a8927805b4591db28a95d9367a4e05977ef"
+    }
+  }
+}

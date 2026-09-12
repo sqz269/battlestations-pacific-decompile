@@ -1,0 +1,1658 @@
+{
+  "schema_version": 1,
+  "packet": "orch2_manager_sequences_aq",
+  "base_commit": "5144ebe7",
+  "status": "actual_storage_reconstructed_strict_win32_and_focused_original_source_fixture_tested_with_exception_domain_limits",
+  "owned_addresses": [
+    "00bdaed0",
+    "007f8310",
+    "00bdb3c0",
+    "007f8770",
+    "00bdb850",
+    "00bdcc60",
+    "00bdcd10",
+    "00bdec70",
+    "00be0350"
+  ],
+  "owned_files": [
+    "include/bsp/native_vfs_sequence_lifetime.hpp",
+    "src/native_vfs_sequence_lifetime.cpp",
+    "docs/NATIVE_VFS_SEQUENCE_LIFETIME.md",
+    "reports/native_vfs_sequence_lifetime.json"
+  ],
+  "build_registry_append": "cmake/startup.cmake: bsp_core src/native_vfs_sequence_lifetime.cpp (coordinate integration)",
+  "target": {
+    "project": "bsp",
+    "program": "battlestationspacific.exe",
+    "program_path": "/battlestationspacific.exe",
+    "language": "x86:LE:32:default",
+    "image_base": "00400000",
+    "ghidra_url": "http://127.0.0.1:8089",
+    "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "coordination_dir": "C:/Users/sqz269/.bsp"
+  },
+  "installed_pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "evidence_policy": "Every live BSP CLI query verifies configured bsp.gpr/program/language/base. Read-only Ghidra and installed PE; no saved-body repair or annotations. Nine names recorded only in repository ledger.",
+  "routine_count": 9,
+  "logical_body_bytes": 792,
+  "routines": [
+    {
+      "address": "00bdaed0",
+      "end_inclusive": "00bdaf17",
+      "logical_bytes": 72,
+      "coverage": "complete normal storage behavior; no unread logical branches",
+      "original_abi": "ECX raw list owner; RET0; incoming EDX unused",
+      "name": "destroy_native_vfs_plain_list_00bdaed0",
+      "proposed_ghidra_name": "BSP_NativeVfsPlainList_Destroy_00BDAED0",
+      "source": "src/native_vfs_sequence_lifetime.cpp",
+      "header": "include/bsp/native_vfs_sequence_lifetime.hpp",
+      "source_abi": "MSVC Win32 fastcall adapter, unused EDX, no stack args",
+      "saved_proto": "00bdaed0 FUN_00bdaed0  undefined FUN_00bdaed0(void)  body 00bdaed0 - 00bdaf0b",
+      "original_sha256": "161a76739263c4ce8242dc71e2b06b05e9628d6be5e44090788a1dc369e2a331",
+      "required_missing_listing_intervals": [
+        {
+          "start": "00bdaef8",
+          "end_inclusive": "00bdaf02"
+        },
+        {
+          "start": "00bdaf0c",
+          "end_inclusive": "00bdaf17"
+        }
+      ],
+      "skipped_alignment": [],
+      "source_entry_provider": {
+        "api": "destroy_native_vfs_plain_list_00bdaed0",
+        "coff_symbol": "?destroy_native_vfs_plain_list_00bdaed0@bsp@@YIXPAX0@Z",
+        "section": 12,
+        "entry_offset": 0,
+        "entry_section_bytes": 8,
+        "sha256": "856887e3b12418873dd2afba7209c0735d4339eede0b7a476153b7400b832c6e",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_plain_list_00bdaed0.bin",
+        "relocations": [
+          {
+            "offset": 2,
+            "type": 20,
+            "symbol": "?destroy_plain_list@?A0xb0761153@bsp@@YAXPAX@Z"
+          }
+        ]
+      }
+    },
+    {
+      "address": "007f8310",
+      "end_inclusive": "007f8357",
+      "logical_bytes": 72,
+      "coverage": "complete normal storage behavior; no unread logical branches",
+      "original_abi": "ECX raw list owner; RET0; incoming EDX unused",
+      "name": "destroy_native_vfs_plain_list_007f8310",
+      "proposed_ghidra_name": "BSP_NativeVfsPlainList_Destroy_007F8310",
+      "source": "src/native_vfs_sequence_lifetime.cpp",
+      "header": "include/bsp/native_vfs_sequence_lifetime.hpp",
+      "source_abi": "MSVC Win32 fastcall adapter, unused EDX, no stack args",
+      "saved_proto": "007f8310 FUN_007f8310  undefined FUN_007f8310(void)  body 007f8310 - 007f834b",
+      "original_sha256": "5b102a401ce4bccec413f964ac96573b1f65ffa24bcffba9cda73cfffd25a3de",
+      "required_missing_listing_intervals": [
+        {
+          "start": "007f8338",
+          "end_inclusive": "007f8342"
+        },
+        {
+          "start": "007f834c",
+          "end_inclusive": "007f8357"
+        }
+      ],
+      "skipped_alignment": [],
+      "source_entry_provider": {
+        "api": "destroy_native_vfs_plain_list_007f8310",
+        "coff_symbol": "?destroy_native_vfs_plain_list_007f8310@bsp@@YIXPAX0@Z",
+        "section": 10,
+        "entry_offset": 0,
+        "entry_section_bytes": 8,
+        "sha256": "856887e3b12418873dd2afba7209c0735d4339eede0b7a476153b7400b832c6e",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_plain_list_007f8310.bin",
+        "relocations": [
+          {
+            "offset": 2,
+            "type": 20,
+            "symbol": "?destroy_plain_list@?A0xb0761153@bsp@@YAXPAX@Z"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00bdb3c0",
+      "end_inclusive": "00bdb3c4",
+      "logical_bytes": 5,
+      "coverage": "complete normal storage behavior; no unread logical branches",
+      "original_abi": "Tail JMP 00BDAED0 with unchanged inputs",
+      "name": "destroy_native_vfs_plain_list_thunk_00bdb3c0",
+      "proposed_ghidra_name": "BSP_NativeVfsPlainList_DestroyThunk_00BDB3C0",
+      "source": "src/native_vfs_sequence_lifetime.cpp",
+      "header": "include/bsp/native_vfs_sequence_lifetime.hpp",
+      "source_abi": "MSVC Win32 fastcall adapter, unused EDX, no stack args",
+      "saved_proto": "00bdb3c0 FUN_00bdb3c0  undefined FUN_00bdb3c0(void)  body 00bdb3c0 - 00bdb3c4",
+      "original_sha256": "638bd53f0cd04c4271a7205b9e7a03de5d9456366ddea7279c2ed4f096a61748",
+      "required_missing_listing_intervals": [],
+      "skipped_alignment": [],
+      "source_entry_provider": {
+        "api": "destroy_native_vfs_plain_list_thunk_00bdb3c0",
+        "coff_symbol": "?destroy_native_vfs_plain_list_thunk_00bdb3c0@bsp@@YIXPAX0@Z",
+        "section": 15,
+        "entry_offset": 0,
+        "entry_section_bytes": 5,
+        "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_plain_list_thunk_00bdb3c0.bin",
+        "relocations": [
+          {
+            "offset": 1,
+            "type": 20,
+            "symbol": "?destroy_native_vfs_plain_list_00bdaed0@bsp@@YIXPAX0@Z"
+          }
+        ]
+      }
+    },
+    {
+      "address": "007f8770",
+      "end_inclusive": "007f8774",
+      "logical_bytes": 5,
+      "coverage": "complete normal storage behavior; no unread logical branches",
+      "original_abi": "Tail JMP 007F8310 with unchanged inputs",
+      "name": "destroy_native_vfs_plain_list_thunk_007f8770",
+      "proposed_ghidra_name": "BSP_NativeVfsPlainList_DestroyThunk_007F8770",
+      "source": "src/native_vfs_sequence_lifetime.cpp",
+      "header": "include/bsp/native_vfs_sequence_lifetime.hpp",
+      "source_abi": "MSVC Win32 fastcall adapter, unused EDX, no stack args",
+      "saved_proto": "007f8770 FUN_007f8770  undefined FUN_007f8770(void)  body 007f8770 - 007f8774",
+      "original_sha256": "4ee929c6da7156a3b1e634d383733f3c1806083f2f98ec4267a3e6aae2251a46",
+      "required_missing_listing_intervals": [],
+      "skipped_alignment": [],
+      "source_entry_provider": {
+        "api": "destroy_native_vfs_plain_list_thunk_007f8770",
+        "coff_symbol": "?destroy_native_vfs_plain_list_thunk_007f8770@bsp@@YIXPAX0@Z",
+        "section": 14,
+        "entry_offset": 0,
+        "entry_section_bytes": 5,
+        "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_plain_list_thunk_007f8770.bin",
+        "relocations": [
+          {
+            "offset": 1,
+            "type": 20,
+            "symbol": "?destroy_native_vfs_plain_list_007f8310@bsp@@YIXPAX0@Z"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00bdb850",
+      "end_inclusive": "00bdb8c5",
+      "logical_bytes": 118,
+      "coverage": "complete normal storage behavior; no unread logical branches; native throwing-getter/FH3 cleanup outside noexcept source release domain",
+      "original_abi": "ECX raw 10h pair; RET0",
+      "name": "destroy_native_vfs_string_pair_00bdb850",
+      "proposed_ghidra_name": "BSP_NativeVfsStringPair_Destroy",
+      "source": "src/native_vfs_sequence_lifetime.cpp",
+      "header": "include/bsp/native_vfs_sequence_lifetime.hpp",
+      "source_abi": "New C++ interface with explicit NativeStringStorage reference; not original ABI",
+      "saved_proto": "00bdb850 FUN_00bdb850  undefined FUN_00bdb850(void)  body 00bdb850 - 00bdb8c5",
+      "original_sha256": "9e8544f6f5d25f77bc08af112cf12fe68b5db579a7e97777c71a35d39c18db7a",
+      "required_missing_listing_intervals": [],
+      "skipped_alignment": [],
+      "source_entry_provider": {
+        "api": "destroy_native_vfs_string_pair_00bdb850",
+        "coff_symbol": "?destroy_native_vfs_string_pair_00bdb850@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+        "section": 16,
+        "entry_offset": 0,
+        "entry_section_bytes": 34,
+        "sha256": "ced114384956a27077634c2b8a0739871a62764dc5884a7c5bf24c99a9a4f625",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_string_pair_00bdb850.bin",
+        "relocations": [
+          {
+            "offset": 15,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z"
+          },
+          {
+            "offset": 24,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00bdcc60",
+      "end_inclusive": "00bdcd0e",
+      "logical_bytes": 175,
+      "coverage": "complete normal storage behavior; no unread logical branches; verified native cleanup schedule projected into source exceptions; original FH3 throw/unwind untested",
+      "original_abi": "ECX destination; stack source; EAX destination; RET4 at 00BDCD0C",
+      "name": "copy_construct_native_vfs_string_pair_00bdcc60",
+      "proposed_ghidra_name": "BSP_NativeVfsStringPair_CopyConstruct",
+      "source": "src/native_vfs_sequence_lifetime.cpp",
+      "header": "include/bsp/native_vfs_sequence_lifetime.hpp",
+      "source_abi": "New C++ interface with explicit NativeStringStorage reference; not original ABI",
+      "saved_proto": "00bdcc60 FUN_00bdcc60  undefined FUN_00bdcc60(void)  body 00bdcc60 - 00bdcd0e",
+      "original_sha256": "c3d415ea8b4849e4a9fde629501176bcb24adb7cd3a8cd6e46888aac09651422",
+      "required_missing_listing_intervals": [],
+      "skipped_alignment": [],
+      "source_entry_provider": {
+        "api": "copy_construct_native_vfs_string_pair_00bdcc60",
+        "coff_symbol": "?copy_construct_native_vfs_string_pair_00bdcc60@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z",
+        "section": 6,
+        "entry_offset": 0,
+        "entry_section_bytes": 236,
+        "sha256": "5eeabfaf7ed8f58a9c6d1615506f0c5bee1a46cae6cf17b47acdd9169b6d5ccc",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/copy_construct_native_vfs_string_pair_00bdcc60.bin",
+        "relocations": [
+          {
+            "offset": 6,
+            "type": 6,
+            "symbol": "__ehhandler$?copy_construct_native_vfs_string_pair_00bdcc60@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z"
+          },
+          {
+            "offset": 22,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 74,
+            "type": 20,
+            "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z"
+          },
+          {
+            "offset": 103,
+            "type": 20,
+            "symbol": "_memmove"
+          },
+          {
+            "offset": 151,
+            "type": 20,
+            "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z"
+          },
+          {
+            "offset": 180,
+            "type": 20,
+            "symbol": "_memmove"
+          },
+          {
+            "offset": 214,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z"
+          },
+          {
+            "offset": 226,
+            "type": 20,
+            "symbol": "__CxxThrowException@8"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00bdcd10",
+      "end_inclusive": "00bdcdec",
+      "logical_bytes": 221,
+      "coverage": "complete normal storage behavior; no unread logical branches; verified native cleanup schedule projected into source exceptions; original FH3 throw/unwind untested",
+      "original_abi": "ECX raw vector; signed stack capacity; RET4 at 00BDCDEA",
+      "name": "reserve_native_vfs_pair_vector_00bdcd10",
+      "proposed_ghidra_name": "BSP_NativeVfsPairVector_Reserve",
+      "source": "src/native_vfs_sequence_lifetime.cpp",
+      "header": "include/bsp/native_vfs_sequence_lifetime.hpp",
+      "source_abi": "New C++ interface with explicit NativeStringStorage reference; not original ABI",
+      "saved_proto": "00bdcd10 FUN_00bdcd10  undefined FUN_00bdcd10(void)  body 00bdcd10 - 00bdcdec",
+      "original_sha256": "c769288dee5e87fa1a546b0c2f4469822538e73d80bb196397b2fb0bb3d849fb",
+      "required_missing_listing_intervals": [
+        {
+          "start": "00bdcdd0",
+          "end_inclusive": "00bdcdd9"
+        }
+      ],
+      "skipped_alignment": [
+        "00bdcd6d-00bdcd6f"
+      ],
+      "source_entry_provider": {
+        "api": "reserve_native_vfs_pair_vector_00bdcd10",
+        "coff_symbol": "?reserve_native_vfs_pair_vector_00bdcd10@bsp@@YAXPAXHAAVNativeStringStorage@1@@Z",
+        "section": 20,
+        "entry_offset": 0,
+        "entry_section_bytes": 224,
+        "sha256": "32caf65983ebd252d51cc5fb87685b5056893ac8582c95bdf97faf4c95701f92",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/reserve_native_vfs_pair_vector_00bdcd10.bin",
+        "relocations": [
+          {
+            "offset": 7,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 78,
+            "type": 20,
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "offset": 117,
+            "type": 20,
+            "symbol": "?copy_construct_native_vfs_string_pair_00bdcc60@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z"
+          },
+          {
+            "offset": 161,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z"
+          },
+          {
+            "offset": 170,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z"
+          },
+          {
+            "offset": 189,
+            "type": 20,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          },
+          {
+            "offset": 216,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00bdec70",
+      "end_inclusive": "00bdecd4",
+      "logical_bytes": 101,
+      "coverage": "complete normal storage behavior; no unread logical branches; existing noexcept release exception-domain boundary inherited",
+      "original_abi": "ECX raw vector; signed stack count; RET4 at 00BDECD2",
+      "name": "resize_native_vfs_pair_vector_00bdec70",
+      "proposed_ghidra_name": "BSP_NativeVfsPairVector_Resize",
+      "source": "src/native_vfs_sequence_lifetime.cpp",
+      "header": "include/bsp/native_vfs_sequence_lifetime.hpp",
+      "source_abi": "New C++ interface with explicit NativeStringStorage reference; not original ABI",
+      "saved_proto": "00bdec70 FUN_00bdec70  undefined FUN_00bdec70(void)  body 00bdec70 - 00bdecd4",
+      "original_sha256": "77b637ffa883f6ddf2e76739c984b975227f9e5943915b7865cf30f6f294cd3d",
+      "required_missing_listing_intervals": [],
+      "skipped_alignment": [],
+      "source_entry_provider": {
+        "api": "resize_native_vfs_pair_vector_00bdec70",
+        "coff_symbol": "?resize_native_vfs_pair_vector_00bdec70@bsp@@YAXPAXHAAVNativeStringStorage@1@@Z",
+        "section": 21,
+        "entry_offset": 0,
+        "entry_section_bytes": 380,
+        "sha256": "b3fc408bf3955d9a8bd47478c12bf18b8f5deac75aa148db37c9340dfded46ed",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/resize_native_vfs_pair_vector_00bdec70.bin",
+        "relocations": [
+          {
+            "offset": 7,
+            "type": 6,
+            "symbol": "___security_cookie"
+          },
+          {
+            "offset": 89,
+            "type": 20,
+            "symbol": "?singleton_lifetime_allocate@bsp@@YAPAXABUSingletonAllocationRequest@1@@Z"
+          },
+          {
+            "offset": 132,
+            "type": 20,
+            "symbol": "?copy_construct_native_vfs_string_pair_00bdcc60@bsp@@YAPAXPAXPBXAAVNativeStringStorage@1@@Z"
+          },
+          {
+            "offset": 177,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z"
+          },
+          {
+            "offset": 186,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z"
+          },
+          {
+            "offset": 205,
+            "type": 20,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          },
+          {
+            "offset": 316,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z"
+          },
+          {
+            "offset": 323,
+            "type": 20,
+            "symbol": "?destroy_native_string_header_0041dd20@bsp@@YAXPAXAAVNativeStringStorage@1@@Z"
+          },
+          {
+            "offset": 352,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          },
+          {
+            "offset": 372,
+            "type": 20,
+            "symbol": "@__security_check_cookie@4"
+          }
+        ]
+      }
+    },
+    {
+      "address": "00be0350",
+      "end_inclusive": "00be0366",
+      "logical_bytes": 23,
+      "coverage": "complete normal storage behavior; no unread logical branches; existing noexcept release exception-domain boundary inherited",
+      "original_abi": "ECX raw vector; RET0",
+      "name": "destroy_native_vfs_pair_vector_00be0350",
+      "proposed_ghidra_name": "BSP_NativeVfsPairVector_Destroy",
+      "source": "src/native_vfs_sequence_lifetime.cpp",
+      "header": "include/bsp/native_vfs_sequence_lifetime.hpp",
+      "source_abi": "New C++ interface with explicit NativeStringStorage reference; not original ABI",
+      "saved_proto": "00be0350 FUN_00be0350  undefined FUN_00be0350(void)  body 00be0350 - 00be0361",
+      "original_sha256": "7dc0dd071b6ef78d6b3e16215e1ace2e3ce84be3e460cec6d432c5eda08564ee",
+      "required_missing_listing_intervals": [
+        {
+          "start": "00be0362",
+          "end_inclusive": "00be0366"
+        }
+      ],
+      "skipped_alignment": [],
+      "source_entry_provider": {
+        "api": "destroy_native_vfs_pair_vector_00be0350",
+        "coff_symbol": "?destroy_native_vfs_pair_vector_00be0350@bsp@@YAXPAXAAVNativeStringStorage@1@@Z",
+        "section": 9,
+        "entry_offset": 0,
+        "entry_section_bytes": 32,
+        "sha256": "dc16589311abdb682c6701e2746489805f4fa8dc063ed9f3cb535881b8668c3f",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_pair_vector_00be0350.bin",
+        "relocations": [
+          {
+            "offset": 14,
+            "type": 20,
+            "symbol": "?resize_native_vfs_pair_vector_00bdec70@bsp@@YAXPAXHAAVNativeStringStorage@1@@Z"
+          },
+          {
+            "offset": 22,
+            "type": 20,
+            "symbol": "?singleton_lifetime_free@bsp@@YAXPAX@Z"
+          }
+        ]
+      }
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00bdaed0",
+      "instruction": "call 0xbf65ac",
+      "address": "00bdaef3",
+      "native": "00bf65ac",
+      "callee_contract_and_abi": "Returning cdecl free(pointer); one stack word, caller ADD ESP,4",
+      "source_service": "singleton_lifetime_free"
+    },
+    {
+      "function": "00bdaed0",
+      "instruction": "call 0xbf65ac",
+      "address": "00bdaf07",
+      "native": "00bf65ac",
+      "callee_contract_and_abi": "Returning cdecl free(pointer); one stack word, caller ADD ESP,4",
+      "source_service": "singleton_lifetime_free"
+    },
+    {
+      "function": "007f8310",
+      "instruction": "call 0xbf65ac",
+      "address": "007f8333",
+      "native": "00bf65ac",
+      "callee_contract_and_abi": "Returning cdecl free(pointer); one stack word, caller ADD ESP,4",
+      "source_service": "singleton_lifetime_free"
+    },
+    {
+      "function": "007f8310",
+      "instruction": "call 0xbf65ac",
+      "address": "007f8347",
+      "native": "00bf65ac",
+      "callee_contract_and_abi": "Returning cdecl free(pointer); one stack word, caller ADD ESP,4",
+      "source_service": "singleton_lifetime_free"
+    },
+    {
+      "function": "00bdb850",
+      "instruction": "call 0x419cc0",
+      "address": "00bdb886",
+      "native": "00419cc0",
+      "callee_contract_and_abi": "No-argument getter; RET0/EAX pool; preceding three pushes belong to following BD1510",
+      "source_service": "NativeStringStorage release bridge"
+    },
+    {
+      "function": "00bdb850",
+      "instruction": "call 0xbd1510",
+      "address": "00bdb88d",
+      "native": "00bd1510",
+      "callee_contract_and_abi": "ECX pool; stack (captured data, wrapping length+1, 1); third word unused; RET0Ch at BD152F/BD156C",
+      "source_service": "destroy_native_string_header_0041dd20"
+    },
+    {
+      "function": "00bdb850",
+      "instruction": "call 0x419cc0",
+      "address": "00bdb8aa",
+      "native": "00419cc0",
+      "callee_contract_and_abi": "No-argument getter; RET0/EAX pool; preceding three pushes belong to following BD1510",
+      "source_service": "NativeStringStorage release bridge"
+    },
+    {
+      "function": "00bdb850",
+      "instruction": "call 0xbd1510",
+      "address": "00bdb8b1",
+      "native": "00bd1510",
+      "callee_contract_and_abi": "ECX pool; stack (captured data, wrapping length+1, 1); third word unused; RET0Ch at BD152F/BD156C",
+      "source_service": "destroy_native_string_header_0041dd20"
+    },
+    {
+      "function": "00bdcc60",
+      "instruction": "call 0x41dd40",
+      "address": "00bdcc99",
+      "native": "0041dd40",
+      "callee_contract_and_abi": "ECX destination header; stack (source length,true); RET8 at 41DD7F/41DDE1; reload fields after callbacks",
+      "source_service": "resize_native_string_header_0041dd40"
+    },
+    {
+      "function": "00bdcc60",
+      "instruction": "call 0xbf7680",
+      "address": "00bdccae",
+      "native": "00bf7680",
+      "callee_contract_and_abi": "cdecl (destination,source,current destination length); ADD ESP,0Ch; BF7694-BF769A selects BF7844 backward overlap branch",
+      "source_service": "std::memmove for direct pair copies"
+    },
+    {
+      "function": "00bdcc60",
+      "instruction": "call 0x41dd40",
+      "address": "00bdccdc",
+      "native": "0041dd40",
+      "callee_contract_and_abi": "ECX destination header; stack (source length,true); RET8 at 41DD7F/41DDE1; reload fields after callbacks",
+      "source_service": "resize_native_string_header_0041dd40"
+    },
+    {
+      "function": "00bdcc60",
+      "instruction": "call 0xbf7680",
+      "address": "00bdccf1",
+      "native": "00bf7680",
+      "callee_contract_and_abi": "cdecl (destination,source,current destination length); ADD ESP,0Ch; BF7694-BF769A selects BF7844 backward overlap branch",
+      "source_service": "std::memmove for direct pair copies"
+    },
+    {
+      "function": "00bdcd10",
+      "instruction": "call 0xbf55be",
+      "address": "00bdcd52",
+      "native": "00bf55be",
+      "callee_contract_and_abi": "Tail JMP BF681B operator_new; cdecl byte count, caller ADD ESP,4 at BDCD59",
+      "source_service": "singleton_lifetime_allocate"
+    },
+    {
+      "function": "00bdcd10",
+      "instruction": "call 0xbdcc60",
+      "address": "00bdcd8d",
+      "native": "00bdcc60",
+      "callee_contract_and_abi": "ECX pair destination; stack source; EAX destination; RET4 at BDCD0C",
+      "source_service": "copy_construct_native_vfs_string_pair_00bdcc60"
+    },
+    {
+      "function": "00bdcd10",
+      "instruction": "call 0xbdb850",
+      "address": "00bdcdb4",
+      "native": "00bdb850",
+      "callee_contract_and_abi": "ECX current pair; release +8 then reloaded +0; RET0",
+      "source_service": "destroy_native_vfs_string_pair_00bdb850"
+    },
+    {
+      "function": "00bdcd10",
+      "instruction": "call 0xbf6989",
+      "address": "00bdcdcb",
+      "native": "00bf6989",
+      "callee_contract_and_abi": "Tail JMP BF65AC returning cdecl free; caller ADD ESP,4",
+      "source_service": "singleton_lifetime_free"
+    },
+    {
+      "function": "00bdec70",
+      "instruction": "call 0xbdcd10",
+      "address": "00bdec7f",
+      "native": "00bdcd10",
+      "callee_contract_and_abi": "ECX vector; one signed capacity stack word; RET4 at BDCDEA",
+      "source_service": "reserve_native_vfs_pair_vector_00bdcd10"
+    },
+    {
+      "function": "00bdec70",
+      "instruction": "call 0xbdb850",
+      "address": "00bdecc2",
+      "native": "00bdb850",
+      "callee_contract_and_abi": "ECX current pair; release +8 then reloaded +0; RET0",
+      "source_service": "destroy_native_vfs_string_pair_00bdb850"
+    },
+    {
+      "function": "00be0350",
+      "instruction": "call 0xbdec70",
+      "address": "00be0355",
+      "native": "00bdec70",
+      "callee_contract_and_abi": "ECX vector; one signed count stack word; RET4 at BDECD2",
+      "source_service": "resize_native_vfs_pair_vector_00bdec70"
+    },
+    {
+      "function": "00be0350",
+      "instruction": "call 0xbf6989",
+      "address": "00be035d",
+      "native": "00bf6989",
+      "callee_contract_and_abi": "Tail JMP BF65AC returning cdecl free; caller ADD ESP,4",
+      "source_service": "singleton_lifetime_free"
+    },
+    {
+      "address": "00cc627e",
+      "native": "00401130",
+      "function": "00cc6270",
+      "owner": "00bdcd10",
+      "callee_contract_and_abi": "Entire 401130 body RET; two cdecl words; ADD ESP,8 at CC6283",
+      "source_service": "No completed-pair or new-backing rollback"
+    }
+  ],
+  "non_call_transfers": [
+    {
+      "site": "00bdb3c0",
+      "target": "00bdaed0",
+      "kind": "tail jump, not a CALL row",
+      "live_listing": true
+    },
+    {
+      "site": "007f8770",
+      "target": "007f8310",
+      "kind": "tail jump, not a CALL row",
+      "live_listing": true
+    },
+    {
+      "site": "00cc60b3",
+      "target": "0041dd20",
+      "function": "00cc60b0",
+      "owner": "00bdb850",
+      "kind": "EH action tail JMP, not CALL",
+      "argument": "ECX captured pair at [EBP-10]"
+    },
+    {
+      "site": "00cc6253",
+      "target": "0041dd20",
+      "function": "00cc6250",
+      "owner": "00bdcc60",
+      "kind": "EH action tail JMP, not CALL",
+      "argument": "ECX captured destination at [EBP-10]"
+    }
+  ],
+  "native_exception_states": [
+    {
+      "owner": "00bdb850",
+      "func_info": "00e00440",
+      "unwind_map": "00e00438",
+      "live_data_matches_disk": true,
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc60b0",
+          "raw_instructions": [
+            {
+              "site": "00cc60b0",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc60b3",
+              "instruction": "jmp 0x41dd20"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "00bdcc60",
+      "func_info": "00e006a8",
+      "unwind_map": "00e006a0",
+      "live_data_matches_disk": true,
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc6250",
+          "raw_instructions": [
+            {
+              "site": "00cc6250",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc6253",
+              "instruction": "jmp 0x41dd20"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "owner": "00bdcd10",
+      "func_info": "00e006d4",
+      "unwind_map": "00e006cc",
+      "live_data_matches_disk": true,
+      "states": [
+        {
+          "state": 0,
+          "previous": -1,
+          "action": "00cc6270",
+          "raw_instructions": [
+            {
+              "site": "00cc6270",
+              "instruction": "mov eax, dword ptr [ebp - 0x18]"
+            },
+            {
+              "site": "00cc6273",
+              "instruction": "shl eax, 4"
+            },
+            {
+              "site": "00cc6276",
+              "instruction": "add eax, dword ptr [ebp - 0x14]"
+            },
+            {
+              "site": "00cc6279",
+              "instruction": "push eax"
+            },
+            {
+              "site": "00cc627a",
+              "instruction": "mov ecx, dword ptr [ebp - 0x10]"
+            },
+            {
+              "site": "00cc627d",
+              "instruction": "push ecx"
+            },
+            {
+              "site": "00cc627e",
+              "instruction": "call 0x401130"
+            },
+            {
+              "site": "00cc6283",
+              "instruction": "add esp, 8"
+            },
+            {
+              "site": "00cc6286",
+              "instruction": "ret "
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stored_body_check": {
+    "result": "known_original_saved_body_incomplete",
+    "affected_functions": 4,
+    "required_missing_intervals": 6,
+    "functions": [
+      {
+        "address": "00bdaed0",
+        "missing_intervals": [
+          {
+            "start": "00bdaef8",
+            "end_inclusive": "00bdaf02"
+          },
+          {
+            "start": "00bdaf0c",
+            "end_inclusive": "00bdaf17"
+          }
+        ]
+      },
+      {
+        "address": "007f8310",
+        "missing_intervals": [
+          {
+            "start": "007f8338",
+            "end_inclusive": "007f8342"
+          },
+          {
+            "start": "007f834c",
+            "end_inclusive": "007f8357"
+          }
+        ]
+      },
+      {
+        "address": "00bdcd10",
+        "missing_intervals": [
+          {
+            "start": "00bdcdd0",
+            "end_inclusive": "00bdcdd9"
+          }
+        ]
+      },
+      {
+        "address": "00be0350",
+        "missing_intervals": [
+          {
+            "start": "00be0362",
+            "end_inclusive": "00be0366"
+          }
+        ]
+      }
+    ],
+    "boundary": "Live CALL verification does not repair these bodies. Source uses verified full disk spans. Ghidra untouched."
+  },
+  "corrections": [
+    {
+      "was": "Manager map describes BF7680 as memcpy, which may suggest standard overlap restrictions",
+      "is": "Direct pair copy must support the actual BF7680 backward overlapping path; source uses memmove",
+      "evidence": "BF7694-BF769A tests source < destination < source+length and enters BF7844; original/source overlapping-copy fixture passes"
+    },
+    {
+      "was": "AP missing-listing inventory includes BDCD6D-BDCD6F",
+      "is": "Skipped LEA alignment is excluded from required executed-continuation gaps; BDCDD0-BDCDD9 remains required",
+      "evidence": "BDCD6B jumps directly to BDCD70; tail publication after returning free is at BDCDD4/BDCDD6"
+    }
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "result": "saved passing strict MSVC Win32 build",
+      "flags": [
+        "/W4",
+        "/WX",
+        "/fp:strict"
+      ],
+      "existing_ctests_passed": [
+        "reconstructed_math",
+        "native_math_differential"
+      ],
+      "seed_verification": "local/sequence_lifetime/seeds.json",
+      "log": "local/sequence_lifetime/build.log"
+    },
+    "focused_probe": {
+      "source": "local/sequence_lifetime/sequence_probe.cpp",
+      "executable": "local/sequence_lifetime/sequence_probe.exe",
+      "log": "local/sequence_lifetime/probe.log",
+      "compile": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+      "native_source_cases": [
+        "list BDAED0",
+        "list7F8310 current-head reload",
+        "thunk BDB3C0",
+        "thunk7F8770 current-head reload",
+        "pair destroy current-first reload",
+        "pair copy backward overlap",
+        "pair copy self identity",
+        "pair copy header reload",
+        "pair copy overlapping headers",
+        "reserve complete values",
+        "reserve live count and post-free publication",
+        "reserve DWORD capacity shift wrap",
+        "reserve signed clamp",
+        "resize grow zero stores",
+        "resize shrink count-before-destroy",
+        "resize signed negative index wrap",
+        "vector destroy current-backing free"
+      ],
+      "native_source_comparison": "Complete 8192-byte arena and event trace; 17 passing cases",
+      "source_exception_cases": "Allocation failures 1,2,3; 3 passing source cases compared against static native EH map, not original FH3 execution",
+      "real_service_smoke": "Passing source pair/vector operations with crt_string_storage and existing lifetime allocation/free before fixture patching",
+      "original_execution": "Private relocated installed PE image; 50 recorded relevant code/table fixups; original BF7680 copy executes; allocation/getter/return/free boundaries use matched callbacks",
+      "private_image_fixups": {
+        "scope": "Private probe image only; nine owned spans, resize helper and BF7680 actual copy branches/tables",
+        "sites": [
+          {
+            "address": "00bdb853",
+            "original": "b860cc00"
+          },
+          {
+            "address": "00bdcc63",
+            "original": "5862cc00"
+          },
+          {
+            "address": "00bdcd19",
+            "original": "8762cc00"
+          },
+          {
+            "address": "00bf76aa",
+            "original": "a4ee0901"
+          },
+          {
+            "address": "00bf76df",
+            "original": "f477bf00"
+          },
+          {
+            "address": "00bf76f8",
+            "original": "0877bf00"
+          },
+          {
+            "address": "00bf76ff",
+            "original": "0478bf00"
+          },
+          {
+            "address": "00bf7707",
+            "original": "8877bf00"
+          },
+          {
+            "address": "00bf770c",
+            "original": "1877bf00"
+          },
+          {
+            "address": "00bf7710",
+            "original": "4477bf00"
+          },
+          {
+            "address": "00bf7714",
+            "original": "6877bf00"
+          },
+          {
+            "address": "00bf773d",
+            "original": "f477bf00"
+          },
+          {
+            "address": "00bf7763",
+            "original": "f477bf00"
+          },
+          {
+            "address": "00bf7781",
+            "original": "f477bf00"
+          },
+          {
+            "address": "00bf7788",
+            "original": "eb77bf00"
+          },
+          {
+            "address": "00bf778c",
+            "original": "d877bf00"
+          },
+          {
+            "address": "00bf7790",
+            "original": "d077bf00"
+          },
+          {
+            "address": "00bf7794",
+            "original": "c877bf00"
+          },
+          {
+            "address": "00bf7798",
+            "original": "c077bf00"
+          },
+          {
+            "address": "00bf779c",
+            "original": "b877bf00"
+          },
+          {
+            "address": "00bf77a0",
+            "original": "b077bf00"
+          },
+          {
+            "address": "00bf77a4",
+            "original": "a877bf00"
+          },
+          {
+            "address": "00bf77ee",
+            "original": "f477bf00"
+          },
+          {
+            "address": "00bf77f4",
+            "original": "0478bf00"
+          },
+          {
+            "address": "00bf77f8",
+            "original": "0c78bf00"
+          },
+          {
+            "address": "00bf77fc",
+            "original": "1878bf00"
+          },
+          {
+            "address": "00bf7800",
+            "original": "2c78bf00"
+          },
+          {
+            "address": "00bf7866",
+            "original": "9079bf00"
+          },
+          {
+            "address": "00bf7871",
+            "original": "4079bf00"
+          },
+          {
+            "address": "00bf788c",
+            "original": "9478bf00"
+          },
+          {
+            "address": "00bf7893",
+            "original": "9079bf00"
+          },
+          {
+            "address": "00bf7898",
+            "original": "a478bf00"
+          },
+          {
+            "address": "00bf789c",
+            "original": "c878bf00"
+          },
+          {
+            "address": "00bf78a0",
+            "original": "f078bf00"
+          },
+          {
+            "address": "00bf78c1",
+            "original": "9079bf00"
+          },
+          {
+            "address": "00bf78eb",
+            "original": "9079bf00"
+          },
+          {
+            "address": "00bf791d",
+            "original": "9079bf00"
+          },
+          {
+            "address": "00bf7924",
+            "original": "4479bf00"
+          },
+          {
+            "address": "00bf7928",
+            "original": "4c79bf00"
+          },
+          {
+            "address": "00bf792c",
+            "original": "5479bf00"
+          },
+          {
+            "address": "00bf7930",
+            "original": "5c79bf00"
+          },
+          {
+            "address": "00bf7934",
+            "original": "6479bf00"
+          },
+          {
+            "address": "00bf7938",
+            "original": "6c79bf00"
+          },
+          {
+            "address": "00bf793c",
+            "original": "7479bf00"
+          },
+          {
+            "address": "00bf7940",
+            "original": "8779bf00"
+          },
+          {
+            "address": "00bf798a",
+            "original": "9079bf00"
+          },
+          {
+            "address": "00bf7990",
+            "original": "a079bf00"
+          },
+          {
+            "address": "00bf7994",
+            "original": "a879bf00"
+          },
+          {
+            "address": "00bf7998",
+            "original": "b879bf00"
+          },
+          {
+            "address": "00bf799c",
+            "original": "cc79bf00"
+          }
+        ],
+        "original_FH3_execution": false,
+        "copy_fixture_sizes": "all below256 bytes; no native SSE helper/locale/global-runtime execution"
+      },
+      "limits": [
+        "Original FH3 throw/unwind not executed",
+        "Actual pool lazy-getter exception domain not exercised by CRT smoke",
+        "Copy dispatch/CRT branches not exercised by fixtures remain unvalidated",
+        "Not a game run"
+      ]
+    },
+    "report_call_check": {
+      "command": "python tools/verify_report_calls.py reports/native_vfs_sequence_lifetime.json",
+      "status": "passed",
+      "expected_calls": 21,
+      "log": "local/sequence_lifetime/resume_report_call_check.log",
+      "calls_checked": 21,
+      "failures": 0
+    },
+    "resume": {
+      "seal_audit": {
+        "sealed_sha256": "6df72c8ff4576665f862b7b66c3fb403f8806f9b33a7112b0faef403c7fa5b6b",
+        "frozen_artifact_count": 59,
+        "frozen_mismatches": [],
+        "current_mismatches": [],
+        "selected_artifacts": [
+          {
+            "path": "include/bsp/native_vfs_sequence_lifetime.hpp",
+            "frozen_path": "local/sequence_lifetime/frozen-final/source/include/bsp/native_vfs_sequence_lifetime.hpp",
+            "sha256": "c2f8fdb899fcadecd189845c1a740a9c78f640568a7ba757cc56e8a77961e2d9",
+            "bytes": 3289
+          },
+          {
+            "path": "src/native_vfs_sequence_lifetime.cpp",
+            "frozen_path": "local/sequence_lifetime/frozen-final/source/src/native_vfs_sequence_lifetime.cpp",
+            "sha256": "18d3cdc0e847ec6f514315b619152408008629fafd80f822c44dd8571ea36b82",
+            "bytes": 6885
+          },
+          {
+            "path": "local/sequence_lifetime/build.log",
+            "frozen_path": "local/sequence_lifetime/frozen-final/probe/build.log",
+            "sha256": "6b3114418b109d8f9be9efd10588c1864ba7f4e2d93610940cafaa2979d1583e",
+            "bytes": 5238
+          },
+          {
+            "path": "local/sequence_lifetime/sequence_probe.exe",
+            "frozen_path": "local/sequence_lifetime/frozen-final/probe/sequence_probe.exe",
+            "sha256": "c14fc7e4b0f5fc3e58d95f303b3c64ba2b9090c10fcd334be1a002dde3de07f3",
+            "bytes": 22528
+          },
+          {
+            "path": "local/sequence_lifetime/probe.log",
+            "frozen_path": "local/sequence_lifetime/frozen-final/probe/probe.log",
+            "sha256": "dedb1724df63e206cc0fbae91ef48b8143dbd48e1b2020c09296b228161d9796",
+            "bytes": 1140
+          },
+          {
+            "path": "build/win32/Release/bsp_core.lib",
+            "frozen_path": "local/sequence_lifetime/frozen-final/bsp_core.lib",
+            "sha256": "2f27f91d20218a39e2049a61c19b509217c694f117a167f4593b5306a97d4882",
+            "bytes": 43768960
+          },
+          {
+            "path": "build/win32/bsp_core.dir/Release/native_vfs_sequence_lifetime.obj",
+            "frozen_path": "local/sequence_lifetime/frozen-final/objects/native_vfs_sequence_lifetime.obj",
+            "sha256": "068f0812a9e578db11132f597fe325b97dc02b35de8d3d4a8ed25685b8d51026",
+            "bytes": 7419
+          }
+        ]
+      },
+      "live_and_installed_recheck": "local/sequence_lifetime/resume-read-only/verification.json",
+      "spans_reverified": 18,
+      "source_changed_after_passing_build": false,
+      "passing_logs_overwritten": false
+    }
+  },
+  "provenance": {
+    "worktree": "J:\\PROG\\battlestations-pacific-decompile-orch2-manager-sequences-aq",
+    "frozen_manifest": "local/sequence_lifetime/sealed.json",
+    "frozen_manifest_sha256": "6df72c8ff4576665f862b7b66c3fb403f8806f9b33a7112b0faef403c7fa5b6b",
+    "frozen_artifacts": [
+      {
+        "path": "include/bsp/native_vfs_sequence_lifetime.hpp",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source/include/bsp/native_vfs_sequence_lifetime.hpp",
+        "sha256": "c2f8fdb899fcadecd189845c1a740a9c78f640568a7ba757cc56e8a77961e2d9",
+        "bytes": 3289
+      },
+      {
+        "path": "src/native_vfs_sequence_lifetime.cpp",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source/src/native_vfs_sequence_lifetime.cpp",
+        "sha256": "18d3cdc0e847ec6f514315b619152408008629fafd80f822c44dd8571ea36b82",
+        "bytes": 6885
+      },
+      {
+        "path": "include/bsp/native_string.hpp",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source/include/bsp/native_string.hpp",
+        "sha256": "da175f7edd3aa2228c4fecae76bb637f92ee1377618957e5987e6c0add104f72",
+        "bytes": 6719
+      },
+      {
+        "path": "src/native_string.cpp",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source/src/native_string.cpp",
+        "sha256": "766956ef99c0d3cd30cada7e9942ac8147172812aede18dd689d5f28fb00707a",
+        "bytes": 6430
+      },
+      {
+        "path": "include/bsp/singleton_lifetime.hpp",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source/include/bsp/singleton_lifetime.hpp",
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "bytes": 4372
+      },
+      {
+        "path": "src/singleton_lifetime.cpp",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source/src/singleton_lifetime.cpp",
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "bytes": 13257
+      },
+      {
+        "path": "include/bsp/native_string_pool_storage.hpp",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source/include/bsp/native_string_pool_storage.hpp",
+        "sha256": "2e9074ec71b5fff046026c9d47f8ab4f706b005906681b149d5f58a6b95ae749",
+        "bytes": 2488
+      },
+      {
+        "path": "src/native_string_pool_storage.cpp",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source/src/native_string_pool_storage.cpp",
+        "sha256": "7c5abc18b5d19a362b18614b74912baa29e5076b9370808da82b804724c846f8",
+        "bytes": 4579
+      },
+      {
+        "path": "include/bsp/native_string_pool_owner.hpp",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source/include/bsp/native_string_pool_owner.hpp",
+        "sha256": "c434ef6a756fe1df206dddcdef70d4444159e4e5e756ec5bb43fc9b20a7f35bc",
+        "bytes": 5399
+      },
+      {
+        "path": "CMakeLists.txt",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source/CMakeLists.txt",
+        "sha256": "85387175773f9b3f06b1b7e0235df0241f654855537e8608a2d2c2352784ade7",
+        "bytes": 14508
+      },
+      {
+        "path": "cmake/startup.cmake",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source/cmake/startup.cmake",
+        "sha256": "ede2cfc4cf7aaa2ae9cf731029c2eb4949b421f155a40214df6e57b0fa967f44",
+        "bytes": 55290
+      },
+      {
+        "path": "scripts/build.ps1",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source/scripts/build.ps1",
+        "sha256": "87b1f7f177977e4800c6e427c13cc916779f412daa7490f37fbb1b50cb3d295c",
+        "bytes": 1657
+      },
+      {
+        "path": "config/target.json",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source/config/target.json",
+        "sha256": "626d61b987acdf60ffb156c9a753df9632453dc26d6cbdfab5740df26f93dbb2",
+        "bytes": 405
+      },
+      {
+        "path": "local/sequence_lifetime/build.log",
+        "frozen_path": "local/sequence_lifetime/frozen-final/probe/build.log",
+        "sha256": "6b3114418b109d8f9be9efd10588c1864ba7f4e2d93610940cafaa2979d1583e",
+        "bytes": 5238
+      },
+      {
+        "path": "local/sequence_lifetime/seeds.json",
+        "frozen_path": "local/sequence_lifetime/frozen-final/probe/seeds.json",
+        "sha256": "edd871f38f1fa9ef42c1d8b3d9b676cf8de1da735114dc045e2dcbc3ba6f8773",
+        "bytes": 3034
+      },
+      {
+        "path": "local/sequence_lifetime/capture.log",
+        "frozen_path": "local/sequence_lifetime/frozen-final/probe/capture.log",
+        "sha256": "306693f144e331ce3fabe830047d0ea64d8ea39341500f856d6259a27c188f45",
+        "bytes": 467
+      },
+      {
+        "path": "local/sequence_lifetime/original.json",
+        "frozen_path": "local/sequence_lifetime/frozen-final/probe/original.json",
+        "sha256": "9ce62c7100922269bd393884f5b9bd2174a4e746769688b2b44fd5cd08a13014",
+        "bytes": 16531
+      },
+      {
+        "path": "local/sequence_lifetime/body_coverage.json",
+        "frozen_path": "local/sequence_lifetime/frozen-final/probe/body_coverage.json",
+        "sha256": "77e105bb7a73372a090e0550e6c8377c2fe07c164a76c35a499744126e809ea8",
+        "bytes": 1168
+      },
+      {
+        "path": "local/sequence_lifetime/sequence_probe.cpp",
+        "frozen_path": "local/sequence_lifetime/frozen-final/probe/sequence_probe.cpp",
+        "sha256": "d81d01ce1027dd456208db5f4b5929f1d09a915a45100df32afd7df785e8f717",
+        "bytes": 15335
+      },
+      {
+        "path": "local/sequence_lifetime/sequence_probe.exe",
+        "frozen_path": "local/sequence_lifetime/frozen-final/probe/sequence_probe.exe",
+        "sha256": "c14fc7e4b0f5fc3e58d95f303b3c64ba2b9090c10fcd334be1a002dde3de07f3",
+        "bytes": 22528
+      },
+      {
+        "path": "local/sequence_lifetime/probe_build.log",
+        "frozen_path": "local/sequence_lifetime/frozen-final/probe/probe_build.log",
+        "sha256": "ac94ad1a07fdfd9b08df8754b7bbe4e6923ccafd54e3f2ddca3e8028deccfe37",
+        "bytes": 20
+      },
+      {
+        "path": "local/sequence_lifetime/probe.log",
+        "frozen_path": "local/sequence_lifetime/frozen-final/probe/probe.log",
+        "sha256": "dedb1724df63e206cc0fbae91ef48b8143dbd48e1b2020c09296b228161d9796",
+        "bytes": 1140
+      },
+      {
+        "path": "local/sequence_lifetime/build_probe.ps1",
+        "frozen_path": "local/sequence_lifetime/frozen-final/probe/build_probe.ps1",
+        "sha256": "0bd48c61e78fb14e46088af246f63addacbc020ebc8556959d66afa9b7004d51",
+        "bytes": 1208
+      },
+      {
+        "path": "local/sequence_lifetime/capture.py",
+        "frozen_path": "local/sequence_lifetime/frozen-final/probe/capture.py",
+        "sha256": "b7205670706fffd690b19808ce8f9e9163546b71a93b562225fd08f2034b248f",
+        "bytes": 2152
+      },
+      {
+        "path": "local/sequence_lifetime/native_fixups.hpp",
+        "frozen_path": "local/sequence_lifetime/frozen-final/probe/native_fixups.hpp",
+        "sha256": "1d2daf829b49fea09d62df10caa8df44e96f144c0c5e9310409d6b829217c376",
+        "bytes": 487
+      },
+      {
+        "path": "local/sequence_lifetime/native_fixups.json",
+        "frozen_path": "local/sequence_lifetime/frozen-final/probe/native_fixups.json",
+        "sha256": "8e695a57b388953f778bc70377f09f9137b788f4a245a33a9af4cc7e976b7b68",
+        "bytes": 4023
+      },
+      {
+        "path": "local/sequence_lifetime/relocate_probe.py",
+        "frozen_path": "local/sequence_lifetime/frozen-final/probe/relocate_probe.py",
+        "sha256": "0b11d3912a134712b1b3c2c4b5414bb77849c0aed4d6293411537f68cb270b1b",
+        "bytes": 2270
+      },
+      {
+        "path": "local/sequence_lifetime/00bdaed0.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00bdaed0.bin",
+        "sha256": "161a76739263c4ce8242dc71e2b06b05e9628d6be5e44090788a1dc369e2a331",
+        "bytes": 72
+      },
+      {
+        "path": "local/sequence_lifetime/007f8310.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/007f8310.bin",
+        "sha256": "5b102a401ce4bccec413f964ac96573b1f65ffa24bcffba9cda73cfffd25a3de",
+        "bytes": 72
+      },
+      {
+        "path": "local/sequence_lifetime/00bdb3c0.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00bdb3c0.bin",
+        "sha256": "638bd53f0cd04c4271a7205b9e7a03de5d9456366ddea7279c2ed4f096a61748",
+        "bytes": 5
+      },
+      {
+        "path": "local/sequence_lifetime/007f8770.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/007f8770.bin",
+        "sha256": "4ee929c6da7156a3b1e634d383733f3c1806083f2f98ec4267a3e6aae2251a46",
+        "bytes": 5
+      },
+      {
+        "path": "local/sequence_lifetime/00bdb850.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00bdb850.bin",
+        "sha256": "9e8544f6f5d25f77bc08af112cf12fe68b5db579a7e97777c71a35d39c18db7a",
+        "bytes": 118
+      },
+      {
+        "path": "local/sequence_lifetime/00bdcc60.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00bdcc60.bin",
+        "sha256": "c3d415ea8b4849e4a9fde629501176bcb24adb7cd3a8cd6e46888aac09651422",
+        "bytes": 175
+      },
+      {
+        "path": "local/sequence_lifetime/00bdcd10.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00bdcd10.bin",
+        "sha256": "c769288dee5e87fa1a546b0c2f4469822538e73d80bb196397b2fb0bb3d849fb",
+        "bytes": 221
+      },
+      {
+        "path": "local/sequence_lifetime/00bdec70.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00bdec70.bin",
+        "sha256": "77b637ffa883f6ddf2e76739c984b975227f9e5943915b7865cf30f6f294cd3d",
+        "bytes": 101
+      },
+      {
+        "path": "local/sequence_lifetime/00be0350.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00be0350.bin",
+        "sha256": "7dc0dd071b6ef78d6b3e16215e1ace2e3ce84be3e460cec6d432c5eda08564ee",
+        "bytes": 23
+      },
+      {
+        "path": "local/sequence_lifetime/0041dd40.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/0041dd40.bin",
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+        "bytes": 164
+      },
+      {
+        "path": "local/sequence_lifetime/00bf7680.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00bf7680.bin",
+        "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+        "bytes": 869
+      },
+      {
+        "path": "local/sequence_lifetime/00401130.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00401130.bin",
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "bytes": 1
+      },
+      {
+        "path": "local/sequence_lifetime/00cc60b0.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00cc60b0.bin",
+        "sha256": "82ee85cd5526659b1a7f4cf882d84005963ba7684d008ab28bdcf3961833a0c9",
+        "bytes": 8
+      },
+      {
+        "path": "local/sequence_lifetime/00cc6250.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00cc6250.bin",
+        "sha256": "ccf1bf30874d72e92900231d71bc754a39fe60ee8580d43585901ee33bdc1407",
+        "bytes": 8
+      },
+      {
+        "path": "local/sequence_lifetime/00cc6270.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00cc6270.bin",
+        "sha256": "9570e4bdc8a5842dee7f870ee0a731b7535f6db9b6198a4ff9e8e981a04042bb",
+        "bytes": 23
+      },
+      {
+        "path": "local/sequence_lifetime/00e00438.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00e00438.bin",
+        "sha256": "27f20d46f79fd0e0bfb019814bad1a6f2a4e4a5fdc16076a4aaeb7d1bdfc8b52",
+        "bytes": 44
+      },
+      {
+        "path": "local/sequence_lifetime/00e006a0.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00e006a0.bin",
+        "sha256": "72e5d6c4c1edb7817472141b08496c46a5735f33380f41e990a7e5dec98083c4",
+        "bytes": 44
+      },
+      {
+        "path": "local/sequence_lifetime/00e006cc.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/original/00e006cc.bin",
+        "sha256": "47ae107c19200984d6acfd3227af079523c837c51ab978716b0d944d822bf378",
+        "bytes": 44
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "frozen_path": "local/sequence_lifetime/frozen-final/bsp_core.lib",
+        "sha256": "2f27f91d20218a39e2049a61c19b509217c694f117a167f4593b5306a97d4882",
+        "bytes": 43768960
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_vfs_sequence_lifetime.obj",
+        "frozen_path": "local/sequence_lifetime/frozen-final/objects/native_vfs_sequence_lifetime.obj",
+        "sha256": "068f0812a9e578db11132f597fe325b97dc02b35de8d3d4a8ed25685b8d51026",
+        "bytes": 7419
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string.obj",
+        "frozen_path": "local/sequence_lifetime/frozen-final/objects/native_string.obj",
+        "sha256": "16948226d3903f46adefc4a85ccc27317006453d2cee6bc3a2945f34ddf236bc",
+        "bytes": 15049
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+        "frozen_path": "local/sequence_lifetime/frozen-final/objects/singleton_lifetime.obj",
+        "sha256": "a9c0dddb6d8e3ea4a72702ca608a94abe485f3e0023c0ef43666f0314a9de0b1",
+        "bytes": 32967
+      },
+      {
+        "path": "local/sequence_lifetime/source_providers.json",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_providers.json",
+        "sha256": "8b97b485af3a71aeb4122b03e77ea6503317d80aaa0791032dab4f6731a309a3",
+        "bytes": 8868
+      },
+      {
+        "path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_plain_list_00bdaed0.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_plain_list_00bdaed0.bin",
+        "sha256": "856887e3b12418873dd2afba7209c0735d4339eede0b7a476153b7400b832c6e",
+        "bytes": 8
+      },
+      {
+        "path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_plain_list_007f8310.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_plain_list_007f8310.bin",
+        "sha256": "856887e3b12418873dd2afba7209c0735d4339eede0b7a476153b7400b832c6e",
+        "bytes": 8
+      },
+      {
+        "path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_plain_list_thunk_00bdb3c0.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_plain_list_thunk_00bdb3c0.bin",
+        "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+        "bytes": 5
+      },
+      {
+        "path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_plain_list_thunk_007f8770.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_plain_list_thunk_007f8770.bin",
+        "sha256": "e8ebd827d1f36d7cfa5e5220610aa6370284d1589989363f48ac40166362d449",
+        "bytes": 5
+      },
+      {
+        "path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_string_pair_00bdb850.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_string_pair_00bdb850.bin",
+        "sha256": "ced114384956a27077634c2b8a0739871a62764dc5884a7c5bf24c99a9a4f625",
+        "bytes": 34
+      },
+      {
+        "path": "local/sequence_lifetime/frozen-final/source_bytes/copy_construct_native_vfs_string_pair_00bdcc60.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/copy_construct_native_vfs_string_pair_00bdcc60.bin",
+        "sha256": "5eeabfaf7ed8f58a9c6d1615506f0c5bee1a46cae6cf17b47acdd9169b6d5ccc",
+        "bytes": 236
+      },
+      {
+        "path": "local/sequence_lifetime/frozen-final/source_bytes/reserve_native_vfs_pair_vector_00bdcd10.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/reserve_native_vfs_pair_vector_00bdcd10.bin",
+        "sha256": "32caf65983ebd252d51cc5fb87685b5056893ac8582c95bdf97faf4c95701f92",
+        "bytes": 224
+      },
+      {
+        "path": "local/sequence_lifetime/frozen-final/source_bytes/resize_native_vfs_pair_vector_00bdec70.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/resize_native_vfs_pair_vector_00bdec70.bin",
+        "sha256": "b3fc408bf3955d9a8bd47478c12bf18b8f5deac75aa148db37c9340dfded46ed",
+        "bytes": 380
+      },
+      {
+        "path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_pair_vector_00be0350.bin",
+        "frozen_path": "local/sequence_lifetime/frozen-final/source_bytes/destroy_native_vfs_pair_vector_00be0350.bin",
+        "sha256": "dc16589311abdb682c6701e2746489805f4fa8dc063ed9f3cb535881b8668c3f",
+        "bytes": 32
+      }
+    ],
+    "original_spans": [
+      {
+        "address": "00bdaed0",
+        "length": 72,
+        "sha256": "161a76739263c4ce8242dc71e2b06b05e9628d6be5e44090788a1dc369e2a331",
+        "live_matches_installed": true
+      },
+      {
+        "address": "007f8310",
+        "length": 72,
+        "sha256": "5b102a401ce4bccec413f964ac96573b1f65ffa24bcffba9cda73cfffd25a3de",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bdb3c0",
+        "length": 5,
+        "sha256": "638bd53f0cd04c4271a7205b9e7a03de5d9456366ddea7279c2ed4f096a61748",
+        "live_matches_installed": true
+      },
+      {
+        "address": "007f8770",
+        "length": 5,
+        "sha256": "4ee929c6da7156a3b1e634d383733f3c1806083f2f98ec4267a3e6aae2251a46",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bdb850",
+        "length": 118,
+        "sha256": "9e8544f6f5d25f77bc08af112cf12fe68b5db579a7e97777c71a35d39c18db7a",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bdcc60",
+        "length": 175,
+        "sha256": "c3d415ea8b4849e4a9fde629501176bcb24adb7cd3a8cd6e46888aac09651422",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bdcd10",
+        "length": 221,
+        "sha256": "c769288dee5e87fa1a546b0c2f4469822538e73d80bb196397b2fb0bb3d849fb",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bdec70",
+        "length": 101,
+        "sha256": "77b637ffa883f6ddf2e76739c984b975227f9e5943915b7865cf30f6f294cd3d",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00be0350",
+        "length": 23,
+        "sha256": "7dc0dd071b6ef78d6b3e16215e1ace2e3ce84be3e460cec6d432c5eda08564ee",
+        "live_matches_installed": true
+      },
+      {
+        "address": "0041dd40",
+        "length": 164,
+        "sha256": "d8be6108b8964c3b25a68dfa85a0a6f6bc7721d1d7d5e9ebe9125ef446557977",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00bf7680",
+        "length": 869,
+        "sha256": "2eb4a27b7f2608f44cc78077c476658ebbc91ea1f736a39cde93a0194d5dd6c3",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00401130",
+        "length": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00cc60b0",
+        "length": 8,
+        "sha256": "82ee85cd5526659b1a7f4cf882d84005963ba7684d008ab28bdcf3961833a0c9",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00cc6250",
+        "length": 8,
+        "sha256": "ccf1bf30874d72e92900231d71bc754a39fe60ee8580d43585901ee33bdc1407",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00cc6270",
+        "length": 23,
+        "sha256": "9570e4bdc8a5842dee7f870ee0a731b7535f6db9b6198a4ff9e8e981a04042bb",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00e00438",
+        "length": 44,
+        "sha256": "27f20d46f79fd0e0bfb019814bad1a6f2a4e4a5fdc16076a4aaeb7d1bdfc8b52",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00e006a0",
+        "length": 44,
+        "sha256": "72e5d6c4c1edb7817472141b08496c46a5735f33380f41e990a7e5dec98083c4",
+        "live_matches_installed": true
+      },
+      {
+        "address": "00e006cc",
+        "length": 44,
+        "sha256": "47ae107c19200984d6acfd3227af079523c837c51ab978716b0d944d822bf378",
+        "live_matches_installed": true
+      }
+    ]
+  },
+  "boundaries": [
+    "Full VFS manager lifetime not reconstructed by this packet",
+    "Pair/vector public interfaces take explicit storage and do not match native ABI",
+    "NativeStringStorage release is noexcept; throwing lazy getter during release terminates instead of native FH3 cleanup",
+    "Existing 41DD40 source retains its standard CRT buffer/zero-copy/failure boundary",
+    "No rollback of completed copies or replacement backing on reserve exception",
+    "Original CRT global/new-handler/FH3 identity is not reproduced",
+    "Four original saved functions retain six required missing listing intervals",
+    "Ghidra annotations, game validation, and drop-in replacement compatibility are unclaimed"
+  ],
+  "checklist": {
+    "callee_before_contract": "Bodies and original stack cleanups reviewed; existing raw string/pool/lifetime service contracts retained",
+    "boundary_before_attribution": "21 exact CALL rows plus separate JMP records; six body gaps remain explicit",
+    "all_call_sites_before_contract": "Both string release/copy sites and all packet vector/list sites represented, including their differing receiver and stack values",
+    "producer_before_layout": "NativeString existing header reconciled with full raw 41DD40; list/vector stores read from complete logical bodies",
+    "partial_projection_labelled": "All normal logical branches read; documented native throwing-getter/FH3 source exception-domain limitation",
+    "runtime_evidence": "No frame/game causal claim; focused native-byte probe only",
+    "argument_counts_from_cleanup": "cdecl ADD ESP4/0Ch/8 and thiscall RET4/8/0Ch documented",
+    "register_provenance": "Whole raw bodies reviewed including register restore/publication tails, without assigning raw holes to saved bodies",
+    "lease_only_annotated": "Nine owned reconstruction/name addresses; callee and EH evidence read only",
+    "report_carries_evidence": "Per-routine coverage/ABI/provider; per-call address/native/function; corrections was/is/evidence"
+  }
+}

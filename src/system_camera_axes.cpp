@@ -445,4 +445,8 @@ FrameClock* write_system_camera_axes_00b46c50(CameraFrameState& frame, float* pr
     }
     return captured;
 }
+__declspec(naked) float* __fastcall camera_vector_normalize_00419510(
+    float*, const float*, const CameraAxesCrtAccess*) {
+    __asm { jmp axis_normalize_kernel }
+}
 } // namespace bsp
