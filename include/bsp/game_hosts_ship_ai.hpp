@@ -129,6 +129,17 @@ struct GameShipAiRow {
     float ring_live_rudder{0.0f};    // ring+14Ch
     float heading_error{0.0f};       // 00438B10(blk+324h, heading) at 009F40BB
     bool ai_driven{false};           // --ai-drive named this unit
+    // Milestone 2o, second pass: the real state steps of packet
+    // ship_ai_state_steps, once they were on main.
+    unsigned long long state_step_real{0};   // 009E14C0 / 009E5770 / 009E8820 bodies run
+    unsigned long long goal_sets{0};         // 009DE050 calls
+    unsigned long long goal_replans{0};      // calls that re-planned the path
+    unsigned long long substate_steps{0};    // attackmove's vtable +0Ch records
+    float goal_x{0.0f};                      // blk+1DCh after the last 009DE050
+    float goal_z{0.0f};                      // blk+1E0h
+    bool goal_final_leg{false};              // blk+1E4h
+    bool avoidance_enabled{false};           // blk+3ECh, what `stop` asks for
+    int avoidance_side{-1};                  // blk+3F0h
     // 009F5DA0, the automatic target selector
     unsigned long long target_thinks{0};   // ticks whose countdown was spent
     unsigned long long target_scans{0};
@@ -157,6 +168,13 @@ struct GameShipAiSummary {
     unsigned long long rudder_deadbands{0};
     unsigned long long live_pair_changes{0};
     std::size_t units_driven{0};
+    // Milestone 2o, second pass.
+    unsigned long long state_steps_real{0};
+    unsigned long long goal_sets{0};
+    unsigned long long goal_replans{0};
+    unsigned long long substate_steps{0};
+    unsigned long long navigate_mode_steps{0};  // controller steps that ended in Navigate
+    std::size_t units_with_goal{0};
     unsigned long long thinks{0};
     unsigned long long scans{0};
     unsigned long long fire_target_sets{0};

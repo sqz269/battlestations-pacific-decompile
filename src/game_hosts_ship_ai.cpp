@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_ship_ai.hpp"
 
+#include <array>
 #include <cmath>
 #include <cstdio>
 #include <memory>
@@ -20,9 +21,11 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/ship_ai_state_steps.hpp"
 #include "bsp/ship_ai_throttle_ring.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/unit_state_message.hpp"
+#include "bsp/vector_helpers.hpp"
 #include "bsp/weapon_director.hpp"
 
 namespace bsp::game {
@@ -128,6 +131,18 @@ struct GameShipAiHost::Impl {
         float drive_rudder{0.0f};
         float live_throttle{0.0f};
         float live_rudder{0.0f};
+        // The state steps that landed with packet ship_ai_state_steps. Each is
+        // a different C++ object over the same native block or state object:
+        // `goal` is the blk fields 009DE050 owns (+1C4h, +1C8h, +1CCh,
+        // +1DCh..+1F0h, +314h, +2FDh, +2FEh), `path` the fields 009DA4E0
+        // clears, `avoidance` the trio `stop` writes at blk+3ECh / +3F0h /
+        // +3F4h, `stop_state` the `stop` leaf's own state+8h byte latch and
+        // `selector` the attackmove leaf's +14FCh..+1508h.
+        bsp::ShipAiGoalPlan goal{};
+        bsp::ShipAiPathPlan path{};
+        bsp::ShipAiAvoidanceRequest avoidance{};
+        bsp::ShipAiStopStepState stop_state{};
+        bsp::ShipAiAttackMoveSelector selector{};
     };
     std::vector<Controller> controllers;
     std::vector<GameShipAiRow> rows;
@@ -150,6 +165,12 @@ struct GameShipAiHost::Impl {
     // order ring. Defined below the host bindings it builds.
     void drive_order_ring_009f3f80(std::size_t index, Controller& ctl, GameShipAiRow& row,
         float seconds);
+    // 009DE050, the navigation goal setter every state step but `cruise`'s goes
+    // through. It owns a different set of blk fields than ShipAiControlBlock
+    // covers, so the three both describe (+1C4h, +1C8h, +1CCh) are mirrored
+    // across the call. Defined below the host bindings it builds.
+    void run_navigation_goal_009de050(Controller& ctl, GameShipAiRow& row, std::size_t index,
+        float goal_x, float goal_z, bool keep_mode, bool final_leg);
     void done(const char* method, std::uint32_t address) {
         char text[16];
         std::snprintf(text, sizeof(text), "%08lx", static_cast<unsigned long>(address));
@@ -256,6 +277,371 @@ public:
 
 private:
     GameShipAiHost::Impl& owner_;
+};
+
+// ---------------------------------------------------------------------------
+// The state steps, packet ship_ai_state_steps
+// ---------------------------------------------------------------------------
+//
+// 009DE050 is the one writer of the AI's navigation goal and every state step
+// but `cruise`'s exists to produce the two floats it takes
+// (docs/SHIP_AI_STATE_STEPS.md). It forces blk+1C4h to Navigate, which is what
+// hands the steering to 009ED6B0's navigation arm 009EDA26..009EF228 - a span
+// this executable records. So a navigation state's step running is not the same
+// thing as a navigation state producing a desired throttle, and the run counts
+// both separately.
+
+class PathPlanBinding final : public bsp::ShipAiPathPlanHost {
+public:
+    explicit PathPlanBinding(GameShipAiHost::Impl& owner) : owner_(owner) {}
+    void release_path_object_vtable_0000(std::uint32_t) override {
+        // 009DA4E9 and 009DA524, (*object)->vtable[0](1). Callee body unread.
+        // Both fields are null here because nothing in this process builds a
+        // path object, so the arm is recorded and never taken.
+        owner_.record_slot("ShipAiPath::release_object", "path+0000+vtable00");
+    }
+    std::uint32_t path_limit_default_00cf58ec() override {
+        // [00CF58EC], read once at 009DA4FB. No producer in this process.
+        owner_.record("ShipAiPath::limit_default", 0x00cf58ecu);
+        return 0u;
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+};
+
+class GoalBinding final : public bsp::ShipAiGoalHost {
+public:
+    explicit GoalBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl)
+        : owner_(owner), ctl_(ctl) {}
+    void clear_path_plan_009da4e0() override {
+        PathPlanBinding path(owner_);
+        bsp::ship_ai_clear_path_plan_009da4e0(ctl_.path, path);
+        owner_.done("ShipAiGoal::clear_path_plan", 0x009da4e0u);
+    }
+    float planar_length_00414c60(float dx, float dz) override {
+        owner_.done("ShipAiGoal::planar_length", 0x00414c60u);
+        return bsp::length_2d_00414c60(std::array<float, 2>{dx, dz});
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+};
+
+class HeadingHoldBinding final : public bsp::ShipAiHeadingHoldHost {
+public:
+    HeadingHoldBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                       std::size_t index)
+        : owner_(owner), ctl_(ctl), index_(index) {}
+    float unit_heading_vtable_0050() override {
+        owner_.done("ShipAiHold::unit_heading", 0x009e00b2u);
+        return owner_.units.unit_heading_radians(index_);
+    }
+    void clear_path_plan_009da4e0() override {
+        PathPlanBinding path(owner_);
+        bsp::ship_ai_clear_path_plan_009da4e0(ctl_.path, path);
+        owner_.done("ShipAiHold::clear_path_plan", 0x009da4e0u);
+    }
+    void after_heading_stored_00605070(float) override {
+        owner_.record("ShipAiControls::after_heading_stored", 0x00605070u);
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    std::size_t index_;
+};
+
+class StopStepBinding final : public bsp::ShipAiStopStepHost {
+public:
+    StopStepBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                    GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
+
+    bool unit_pose_valid_00c8() override {
+        owner_.done("ShipAiStop::unit_pose_valid", 0x009e14d7u);
+        return owner_.units.unit_pose_valid_00c8(index_);
+    }
+    void refresh_unit_pose_00414db0() override {
+        owner_.record("ShipAiStop::refresh_unit_pose", 0x00414db0u);
+    }
+    void unit_position_00fc(float& x, float& y, float& z) override {
+        owner_.done("ShipAiStop::unit_position", 0x009e14ecu);
+        owner_.units.unit_position_00fc(index_, x, y, z);
+    }
+    bool position_outside_world_bounds_0071c4f0(float, float, float) override {
+        // 0071C4F0 tests the position against the world object's own box at
+        // [00E188A8] +711Ch / +7124h / +7128h / +7130h. construct_world 004DE610
+        // is a load record in this process, so there is no world object and no
+        // box: the answer is recorded, and the neutral one is "inside", which is
+        // the arm that stops the ship rather than the one that sails it to the
+        // origin.
+        owner_.record("ShipAiStop::outside_world_bounds", 0x0071c4f0u);
+        return false;
+    }
+    void set_navigation_goal_009de050(float goal_x, float goal_z, bool keep_mode,
+                                      bool final_leg) override {
+        owner_.run_navigation_goal_009de050(ctl_, row_, index_, goal_x, goal_z, keep_mode,
+                                            final_leg);
+    }
+    float unit_heading_vtable_0050() override {
+        owner_.done("ShipAiStop::unit_heading", 0x009e1534u);
+        return owner_.units.unit_heading_radians(index_);
+    }
+    void set_desired_heading_009e0040(float heading) override {
+        SetterBinding setters(owner_);
+        bsp::ship_ai_set_desired_heading_009e0040(ctl_.blk, heading, setters);
+        owner_.done("ShipAiStop::set_desired_heading", 0x009e0040u);
+    }
+    float unit_body_axis_speed_0092d730() override {
+        owner_.done("ShipAiStop::body_axis_speed", 0x0092d730u);
+        return owner_.units.unit_forward_speed_0092d730(index_);
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+};
+
+class MoveToPosStepBinding final : public bsp::ShipAiMoveToPosStepHost {
+public:
+    MoveToPosStepBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                         GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
+
+    bool unit_pose_valid_00c8() override {
+        owner_.done("ShipAiMoveTo::unit_pose_valid", 0x009e579au);
+        return owner_.units.unit_pose_valid_00c8(index_);
+    }
+    void refresh_unit_pose_00414db0() override {
+        owner_.record("ShipAiMoveTo::refresh_unit_pose", 0x00414db0u);
+    }
+    void unit_position_xz_00fc(float& x, float& z) override {
+        float y = 0.0f;
+        owner_.done("ShipAiMoveTo::unit_position", 0x009e57aau);
+        owner_.units.unit_position_00fc(index_, x, y, z);
+    }
+    void brain_goal_xz_0b2c(float& x, float& z) override {
+        // 009E57D0 and 009E57B4, brain+0B2Ch and brain+0B34h. THIS IS THE GAP.
+        // The AI's goal vector has no recovered writer anywhere - milestone 2n's
+        // follow-up 5 `ship_ai_goal_vector` is exactly this pair - so the
+        // executable records the read and hands the step the zeroes the block
+        // carries. A `movetopos` ship therefore navigates toward (0,0), which is
+        // the record's neutral value and not a recovered goal.
+        owner_.record("ShipAiMoveTo::brain_goal_0b2c", 0x009e57d0u);
+        x = 0.0f;
+        z = 0.0f;
+    }
+    std::uint32_t director_command_slot_0071bff0(int index) override {
+        // 009E57ED, 0071BFF0(director, 0). Milestone 2n established through
+        // 0071BE48 that the first command slot holds the command object itself,
+        // so this process's own slot 0 answers it.
+        owner_.done("ShipAiMoveTo::director_command_slot", 0x0071bff0u);
+        static_cast<void>(index);
+        return owner_.units.director_current_command_0071be40(index_);
+    }
+    bool command_on_final_leg_007adc60(std::uint32_t) override {
+        // 007ADC60's body was read by packet ship_ai_state_steps: it answers
+        // true when the command's waypoint list is absent or empty. No command
+        // in this process carries a waypoint list - `moveto` is issued with a
+        // target or a position, never a path - so that is the arm the rule
+        // itself selects here.
+        owner_.done("ShipAiMoveTo::command_final_leg", 0x007adc60u);
+        return true;
+    }
+    void set_navigation_goal_009de050(float goal_x, float goal_z, bool keep_mode,
+                                      bool final_leg) override {
+        owner_.run_navigation_goal_009de050(ctl_, row_, index_, goal_x, goal_z, keep_mode,
+                                            final_leg);
+    }
+    bool state_goal_reached_vtable_002c(float, float) override {
+        // 009E5821, state->vtable[2Ch]. Callee body unread: contract unread.
+        owner_.record_slot("ShipAiMoveTo::goal_reached_vtable2c", "00d21628+vtable2c");
+        return false;
+    }
+    std::uint32_t director_current_command_0054() override {
+        owner_.done("ShipAiMoveTo::director_current_command", 0x009e5831u);
+        return owner_.units.director_current_command_0071be40(index_);
+    }
+    std::uint32_t resolve_command_target_00521ea0() override {
+        // 009E5847 on director+58h. GameCommandsHost holds the command's own
+        // target descriptor, but nothing in this process turns director+58h into
+        // an entity for the AI, so the resolve is recorded and the target arm
+        // short-circuits on the null at 009E584E.
+        owner_.record("ShipAiMoveTo::resolve_command_target", 0x00521ea0u);
+        return 0u;
+    }
+    bool target_is_kind_vtable_005c(std::uint32_t, int) override {
+        owner_.record_slot("ShipAiMoveTo::target_is_kind", "00cfc3d0+vtable5c");
+        return false;
+    }
+    bool target_pose_valid_00c8(std::uint32_t) override {
+        owner_.record("ShipAiMoveTo::target_pose_valid", 0x009e5869u);
+        return true;
+    }
+    void refresh_target_pose_00414db0(std::uint32_t) override {
+        owner_.record("ShipAiMoveTo::refresh_target_pose", 0x00414db0u);
+    }
+    void target_position_xz_00fc(std::uint32_t, float& x, float& z) override {
+        owner_.record("ShipAiMoveTo::target_position", 0x009e5879u);
+        x = 0.0f;
+        z = 0.0f;
+    }
+    int target_range_07a0(std::uint32_t) override {
+        owner_.record("ShipAiMoveTo::target_range_07a0", 0x009e58ceu);
+        return 0;
+    }
+    float unit_radius_09c8() override {
+        owner_.record("ShipAiMoveTo::unit_radius_09c8", 0x009e58d4u);
+        return 0.0f;
+    }
+    float planar_length_00414c60(float dx, float dz) override {
+        owner_.done("ShipAiMoveTo::planar_length", 0x009e58b9u);
+        return bsp::length_2d_00414c60(std::array<float, 2>{dx, dz});
+    }
+    void message_text_assign_0041e870(const char*) override {
+        owner_.record("ShipAiMoveTo::message_text_assign", 0x0041e870u);
+    }
+    void post_command_message_00984300(std::uint32_t) override {
+        owner_.record("ShipAiMoveTo::post_command_message", 0x00984300u);
+    }
+    void release_message_text_00419cc0() override {
+        owner_.record("ShipAiMoveTo::release_message_text", 0x00419cc0u);
+    }
+    void end_command_0071e430(std::uint32_t, int) override {
+        owner_.record("ShipAiMoveTo::end_command", 0x0071e430u);
+    }
+    void hold_heading_and_stop_009e00a0() override {
+        HeadingHoldBinding hold(owner_, ctl_, index_);
+        bsp::ship_ai_hold_heading_and_stop_009e00a0(ctl_.blk, hold);
+        owner_.done("ShipAiMoveTo::hold_heading_and_stop", 0x009e00a0u);
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+};
+
+class AttackMoveSelectorBinding final : public bsp::ShipAiAttackMoveSelectorHost {
+public:
+    AttackMoveSelectorBinding(GameShipAiHost::Impl& owner,
+                              GameShipAiHost::Impl::Controller& ctl)
+        : owner_(owner), ctl_(ctl) {}
+
+    std::uint32_t brain_attack_target_0b20() override {
+        // 009E8714, [brain+0B20h]. The automatic target selector 009F5DA0 picks
+        // a target every second in this process, but it stops at 0071DF70 and
+        // 00835860 is never reached, so nothing writes this field and the
+        // selector takes its no-target arm.
+        owner_.record("ShipAiAttack::brain_target_0b20", 0x009e8714u);
+        return 0u;
+    }
+    bool target_is_kind_vtable_005c(std::uint32_t, int) override {
+        owner_.record_slot("ShipAiAttack::target_is_kind", "00cfc3d0+vtable5c");
+        return false;
+    }
+    bool call_00852860(std::uint32_t) override {
+        owner_.record("ShipAiAttack::call_00852860", 0x00852860u);
+        return false;
+    }
+    bool brain_flag_0b28() override {
+        owner_.record("ShipAiAttack::brain_flag_0b28", 0x009e8747u);
+        return false;
+    }
+    void set_current_substate_007b6ee0(std::uint32_t member) override {
+        owner_.record("ShipAiAttack::set_current_substate", 0x007b6ee0u);
+        ctl_.selector.current_1508 = member;
+    }
+    bool call_009e85b0() override {
+        owner_.record("ShipAiAttack::call_009e85b0", 0x009e85b0u);
+        return false;
+    }
+    void substate_exit_vtable_0008(std::uint32_t) override {
+        owner_.record_slot("ShipAiAttack::substate_exit", "00d21994+vtable08");
+    }
+    void substate_enter_vtable_0004(std::uint32_t) override {
+        owner_.record_slot("ShipAiAttack::substate_enter", "00d21994+vtable04");
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+};
+
+class AttackMoveStepBinding final : public bsp::ShipAiAttackMoveStepHost {
+public:
+    AttackMoveStepBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                          GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
+
+    std::uint32_t brain_unit_0aa8() override {
+        // 009E8828, [brain+0AA8h]. Every controller this process builds owns a
+        // created instance, so the field is the unit and never zero; the handle
+        // is this process's own index, one-based so 0 stays "no unit".
+        owner_.done("ShipAiAttack::brain_unit_0aa8", 0x009e8828u);
+        return static_cast<std::uint32_t>(index_) + 1u;
+    }
+    bool entity_is_kind_vtable_005c(std::uint32_t entity, int kind) override {
+        // 009E883F and 009E888C, entity->vtable[5Ch](9), answered through the
+        // recovered class chain 006FE530 this process already uses for the
+        // automatic target scan. Only the owner's own handle can be resolved
+        // here; a group member cannot, and no group exists.
+        owner_.done("ShipAiAttack::entity_is_kind", 0x009e883fu);
+        if (entity == 0u) return false;
+        return owner_.units.unit_is_kind_of(static_cast<std::size_t>(entity - 1u), kind);
+    }
+    std::uint32_t unit_group_0284() override {
+        // 009E8852, [unit+284h]. No AI group object exists in this process
+        // (milestone 2m: ai_groups=0), so the null arm runs and the member walk
+        // at 009E8867..009E889C is not reached.
+        owner_.record("ShipAiAttack::unit_group_0284", 0x009e8852u);
+        return 0u;
+    }
+    int group_member_count_04f8(std::uint32_t) override {
+        owner_.record("ShipAiAttack::group_member_count", 0x009e8861u);
+        return 0;
+    }
+    std::uint32_t group_member_at_0070d060(std::uint32_t, int) override {
+        owner_.record("ShipAiAttack::group_member_at", 0x0070d060u);
+        return 0u;
+    }
+    std::uint32_t unit_director_vtable_0114() override {
+        owner_.record_slot("ShipAiAttack::unit_director", "00cfc3d0+vtable114");
+        return 0u;
+    }
+    void end_command_0071e430(std::uint32_t, std::uint32_t, int) override {
+        owner_.record("ShipAiAttack::end_command", 0x0071e430u);
+    }
+    void select_substate_009e86f0(float seconds) override {
+        AttackMoveSelectorBinding selector(owner_, ctl_);
+        bsp::ship_ai_attackmove_select_009e86f0(ctl_.selector, kAttackMoveStateBase, seconds,
+                                                selector);
+        owner_.done("ShipAiAttack::select_substate", 0x009e86f0u);
+    }
+    void substate_step_vtable_000c(float) override {
+        // 009E88F0, [state+1508h]->vtable[0Ch]. None of the five sub-state steps
+        // 009E8450 builds (009F3240, 009E23B0, 009E26C0, 009F3670, 007B3DD0) has
+        // a reconstruction, so this is where an `attackmove` ship's frame ends.
+        owner_.record_slot("ShipAiAttack::substate_step_vtable0c", "00d21994+vtable0c");
+        ++row_.substate_steps;
+        ++owner_.summary.substate_steps;
+    }
+
+private:
+    // The attackmove state object's own base. This process holds no native
+    // pointers, so the sub-state members are named by their offsets from an
+    // arbitrary non-zero base; only their identity matters to the selector.
+    static constexpr std::uint32_t kAttackMoveStateBase = 0x10000000u;
+
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
 };
 
 // ---------------------------------------------------------------------------
@@ -463,6 +849,9 @@ public:
             SetterBinding setters(owner_);
             if (owner_.units.run_cruise_state_step_009e1170(index_, ctl_.blk, setters)) {
                 ++owner_.summary.state_steps_concrete;
+                ++row_.state_step_real;
+                ++owner_.summary.state_steps_real;
+                apply_ai_drive();
                 return;
             }
             // 009E1170 ran and took its 009E11E8 player arm, which is not
@@ -472,24 +861,49 @@ public:
             ++owner_.summary.state_steps_recorded;
             return;
         }
-        // Every other leaf's step was named by docs/SHIP_AI_STATES.md as a
+        // Milestone 2o, second pass: three of the eight leaves now have a body.
+        // Packet ship_ai_state_steps projected 009E14C0 `stop`, 009E5770
+        // `movetopos` and 009E8820 `attackmove` with its selector 009E86F0
+        // complete, so those run here instead of being recorded. `follow`,
+        // `land`, `moveonpath`, `kamikaze_attack` and `sub_attack` are still
+        // records with their own addresses.
+        if (state != nullptr && state->step == 0x009e14c0u) {
+            StopStepBinding stop(owner_, ctl_, row_, index_);
+            bsp::ship_ai_stop_step_009e14c0(ctl_.stop_state, ctl_.blk, ctl_.avoidance, stop);
+            owner_.done("ShipAiState::stop_step", 0x009e14c0u);
+            row_.avoidance_enabled = ctl_.avoidance.enable_3f4;
+            row_.avoidance_side = ctl_.avoidance.side_filter_3f8;
+            ++owner_.summary.state_steps_concrete;
+            ++row_.state_step_real;
+            ++owner_.summary.state_steps_real;
+            apply_ai_drive();
+            return;
+        }
+        if (state != nullptr && state->step == 0x009e5770u) {
+            MoveToPosStepBinding move(owner_, ctl_, row_, index_);
+            bsp::ship_ai_movetopos_step_009e5770(move);
+            owner_.done("ShipAiState::movetopos_step", 0x009e5770u);
+            ++owner_.summary.state_steps_concrete;
+            ++row_.state_step_real;
+            ++owner_.summary.state_steps_real;
+            apply_ai_drive();
+            return;
+        }
+        if (state != nullptr && state->step == 0x009e8820u) {
+            AttackMoveStepBinding attack(owner_, ctl_, row_, index_);
+            bsp::ship_ai_attackmove_step_009e8820(elapsed, attack);
+            owner_.done("ShipAiState::attackmove_step", 0x009e8820u);
+            ++owner_.summary.state_steps_concrete;
+            ++row_.state_step_real;
+            ++owner_.summary.state_steps_real;
+            apply_ai_drive();
+            return;
+        }
+        // Every remaining leaf's step was named by docs/SHIP_AI_STATES.md as a
         // vtable slot and its body was not read, so the step is a record with
         // its own address. `sub_attack`'s vtable was not read at all.
         ++owner_.summary.state_steps_recorded;
-        // Milestone 2o, --ai-drive: a LABELLED DIAGNOSTIC STAND-IN for exactly
-        // this gap. The state step has no body, so on this re-plan tick the two
-        // recovered setters are called on the unit's own control block with the
-        // pair the switch names. Nothing else on the chain is substituted: the
-        // clamps, the mode switch, 009ED6B0, 009F4D10, the hop and the ring are
-        // the game's own routines.
-        if (ctl_.drive) {
-            SetterBinding setters(owner_);
-            bsp::ship_ai_set_desired_throttle_009dbf90(ctl_.blk, ctl_.drive_throttle);
-            owner_.done("ShipAiDrive::set_desired_throttle", 0x009dbf90u);
-            bsp::ship_ai_set_desired_steering_009dffb0(ctl_.blk, ctl_.drive_rudder,
-                setters);
-            owner_.done("ShipAiDrive::set_desired_steering", 0x009dffb0u);
-        }
+        apply_ai_drive();
         if (state == nullptr || state->step == 0u) {
             owner_.record_slot("ShipAiState::step_vtable0c", "00d21598+vtable0c");
             return;
@@ -499,6 +913,21 @@ public:
         owner_.record(method, state->step);
         static_cast<void>(elapsed);
     }
+    // --ai-drive, milestone 2o: a LABELLED DIAGNOSTIC STAND-IN, applied after
+    // whatever the state step did. It exists because no state step except
+    // `cruise`'s produces a desired throttle at all: the navigation states hand
+    // 009DE050 a goal and let the navigation arm 009EDA26..009EF228 steer, and
+    // that span is a record here. The two calls are the game's own recovered
+    // setters and nothing after them is substituted.
+    void apply_ai_drive() {
+        if (!ctl_.drive) return;
+        SetterBinding setters(owner_);
+        bsp::ship_ai_set_desired_throttle_009dbf90(ctl_.blk, ctl_.drive_throttle);
+        owner_.done("ShipAiDrive::set_desired_throttle", 0x009dbf90u);
+        bsp::ship_ai_set_desired_steering_009dffb0(ctl_.blk, ctl_.drive_rudder, setters);
+        owner_.done("ShipAiDrive::set_desired_steering", 0x009dffb0u);
+    }
+
     float state_interval_vtable28() override {
         const StateDescriptor* state = state_for_ai_offset(ctl_.active_state_ai_offset);
         const bool cruise = state != nullptr && state->interval == kCruiseIntervalGetter;
@@ -783,6 +1212,46 @@ private:
 // have made of it. That is stated in the milestone and is a boundary, not a
 // result.
 
+void GameShipAiHost::Impl::run_navigation_goal_009de050(Controller& ctl, GameShipAiRow& row,
+    std::size_t index, float goal_x, float goal_z, bool keep_mode, bool final_leg) {
+    // The three fields ShipAiControlBlock and ShipAiGoalPlan both describe, in
+    // before 009DE050 runs and out after it: +1C4h the steering mode, +1C8h the
+    // throttle hold and +1CCh the requested direction.
+    ctl.goal.mode = ctl.blk.mode;
+    ctl.goal.throttle_hold_1c8 = ctl.blk.throttle_hold_1c8;
+    ctl.goal.requested_direction = ctl.blk.requested_direction;
+    // 009DE17C and 009DE189 read the pose the per-frame chain leaves on the
+    // block at +184h / +188h. This process has no recovered writer for that
+    // pair, so it supplies the unit's own world position, which is what the
+    // plan length is meant to measure from, and says so.
+    float x = 0.0f, y = 0.0f, z = 0.0f;
+    units.unit_position_00fc(index, x, y, z);
+    record("ShipAiGoal::block_pose_0184", 0x009de17cu);
+    ctl.goal.pose_x_184 = x;
+    ctl.goal.pose_z_188 = z;
+
+    const float planned_x = ctl.goal.planned_x_1e8;
+    const float planned_z = ctl.goal.planned_z_1ec;
+    GoalBinding goal(*this, ctl);
+    bsp::ship_ai_set_navigation_goal_009de050(ctl.goal, goal_x, goal_z, keep_mode, final_leg,
+                                              goal);
+    done("ShipAiState::set_navigation_goal", 0x009de050u);
+
+    ctl.blk.mode = ctl.goal.mode;
+    ctl.blk.throttle_hold_1c8 = ctl.goal.throttle_hold_1c8;
+    ctl.blk.requested_direction = ctl.goal.requested_direction;
+
+    ++row.goal_sets;
+    ++summary.goal_sets;
+    if (ctl.goal.planned_x_1e8 != planned_x || ctl.goal.planned_z_1ec != planned_z) {
+        ++row.goal_replans;
+        ++summary.goal_replans;
+    }
+    row.goal_x = ctl.goal.goal_x_1dc;
+    row.goal_z = ctl.goal.goal_z_1e0;
+    row.goal_final_leg = ctl.goal.final_leg_1e4;
+}
+
 void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controller& ctl,
     GameShipAiRow& row, float seconds) {
     done("ShipAi::drive_order_ring", 0x009f3f80u);
@@ -843,13 +1312,19 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
     // its rudder built here from the heading error.
     if (ctl.blk.mode != bsp::ShipAiSteeringMode::Rudder) {
         RudderLawBinding law(*this, index);
-        // The one stand-in on this path: 009DA268 loads the divisor from
-        // [[blk+3FCh]+538h]+524h and 00831840 does not write class+524h, so the
-        // field has no recovered Lua key. MaxRotAngle (class+4F8h) stands in,
-        // exactly as src/ship_motion_probe.cpp does, and the record keeps that
-        // visible in the host-method table.
-        const float authority = units.unit_yaw_authority_stand_in_04f8(index);
-        record("ShipAiRudder::class_yaw_authority_0524", 0x009da268u);
+        // 009DA268 loads the divisor from [[blk+3FCh]+538h]+524h. That field is
+        // no longer a stand-in: packet ship_ai_class_field_0524 found its
+        // producer, 00828F20, which derives it as
+        // 0.5 * MaxRotAngle / MaxRotAngleChangeRatio, and both keys come out of
+        // the installed `VehicleClass` row this process already reads. The gate
+        // is 00828F20's own: both keys must be strictly positive.
+        bool derived = false;
+        const float authority = units.unit_yaw_authority_0524(index, derived);
+        if (derived) {
+            done("ShipAiRudder::class_yaw_authority_0524", 0x00828f20u);
+        } else {
+            record("ShipAiRudder::class_yaw_authority_ungated", 0x009da268u);
+        }
         // 009F44F7 009DA250, 009F44FC FSTP [ESI+1D4h].
         ctl.blk.desired_rudder = bsp::ship_ai_rudder_from_heading_error_009da250(
             ctl.blk.direction, error, authority, law);
@@ -954,6 +1429,13 @@ void GameShipAiHost::controller_step(float seconds) {
         ctl.live_rudder = live_b;
         row.ring_live_throttle = live_a;
         row.ring_live_rudder = live_b;
+        // 009DE050 forces blk+1C4h to Navigate on every state step but
+        // `cruise`'s, which is what hands the steering to the unprojected
+        // navigation arm rather than to the three setters.
+        if (ctl.blk.mode == bsp::ShipAiSteeringMode::Navigate
+            || ctl.blk.mode == bsp::ShipAiSteeringMode::NavigateAstern) {
+            ++host.summary.navigate_mode_steps;
+        }
         // 009F5DA0 beside it, with the same step delta: the selector's own
         // countdown is what turns a per-step call into a once-a-second think.
         const float before = ctl.target.think_countdown;
@@ -1088,6 +1570,14 @@ void GameShipAiHost::report() {
             static_cast<double>(row.ring_live_throttle),
             static_cast<double>(row.ring_live_rudder), row.live_pair_changes);
     }
+    for (const GameShipAiRow& row : host.rows) {
+        if (row.goal_sets > 0) ++host.summary.units_with_goal;
+    }
+    host.log.notef("summary mission ship ai state steps real=%llu goal_sets=%llu "
+        "goal_replans=%llu units_with_goal=%zu substate_steps=%llu navigate_mode_steps=%llu",
+        host.summary.state_steps_real, host.summary.goal_sets, host.summary.goal_replans,
+        host.summary.units_with_goal, host.summary.substate_steps,
+        host.summary.navigate_mode_steps);
     host.log.notef("summary mission ship ai ring hops=%llu gated_3f5=%llu writes=%llu "
         "rudder_law=%llu deadbands=%llu live_pair_changes=%llu driven=%zu",
         host.summary.ring_hops, host.summary.ring_gated_3f5, host.summary.ring_writes,
