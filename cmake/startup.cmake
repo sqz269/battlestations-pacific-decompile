@@ -13,6 +13,7 @@
 #
 # The integrator folds entries into CMakeLists.txt when the owning packet closes.
 cmake_minimum_required(VERSION 3.19)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/native_input_class_configuration.cpp")
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/air_operations.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/avoid_zone_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/game_sound_dialog_runtime.cpp)
