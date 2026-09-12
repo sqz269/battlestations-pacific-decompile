@@ -4,6 +4,7 @@
 namespace bsp {
 struct NativeParticleDefinitionBindings;
 struct NativeParticleParameterLoadingBindings;
+struct NativeParticleTypeFactoryBindings;
 
 // Borrow the SAME owner services and incoming native TextBuffer. The shared
 // scratch is the relocated F8C2C8 buffer; capacity and reentrancy are native
@@ -13,18 +14,12 @@ struct NativeParticleDefinitionLoadingBindings {
     NativeParticleParameterLoadingBindings& parameters;
     char* text_scratch_00f8c2c8;
     const volatile double* percentage_scale_00d7a358;
-    void* context;
-    // Required real AF44C0 implementation: ECX actual four-byte pooled line,
-    // stack(output header,index), RET8, EAX output. It constructs a suffix
-    // owner using AF4450/AEE2E0; it is not a single-token extraction.
-    void* (*suffix_00af44c0)(void*, const void* actual_line,
-        void* actual_output, std::int32_t index);
-    // Required real B00CE0 particle factory: ECX actual8h kind, EDX actual8h
-    // name, stack(parent definition,text), RET8, EAX actual child. Includes
-    // the child's current virtual08 parser. Unknown kind reuses the parent;
-    // allocation failure still reaches dispatch. No fabricated child/result.
-    void* (*particle_factory_00b00ce0)(void*, const void* actual_kind,
-        const void* actual_name, void* actual_parent, void* actual_text);
+    // AF44C0 suffix extraction calls its concrete implementation in the same
+    // strings domain. Particle entries call concrete B00CE0 with this required
+    // binding; its current virtual08 parser remains an application service.
+    // Must borrow the SAME owners through particle_types->base.owners.
+    // May be null while parsing text that never selects a Particle entry.
+    NativeParticleTypeFactoryBindings* particle_types;
 };
 
 // Original ECX definition, stack(pooled name,builder,float), RET0C/AL bool.

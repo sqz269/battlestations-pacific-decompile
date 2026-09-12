@@ -4,68 +4,6 @@
   "project": "C:/Users/sqz269/bsp.gpr",
   "program": "/battlestationspacific.exe",
   "read_only_ghidra": true,
-  "routines": [
-    {
-      "address": "00b059c0",
-      "size": 795,
-      "end_inclusive": "00b05cda",
-      "sha256": "dcba5dc547945ac49bac4d8b8cef2df13d7a695997e43225e88f740b05b87a1e",
-      "last_instruction": {
-        "address": "00b05cd8",
-        "size": 3,
-        "text": "ret 8"
-      },
-      "live_disk_equal": true,
-      "name": "BSP_ParticleAxial_InitializeState",
-      "cpp_name": "initialize_native_particle_axial_state_00b059c0",
-      "coverage": "complete",
-      "original_abi": "ECX actual definition; stack(actual6Ch state,actual108h record); RET8; record unread; incidental EAX",
-      "new_abi": "fastcall with required borrowed NativeParticleTypeStateAccess in EDX; void return",
-      "uncertainty": "Descriptive names are hypotheses; original return type is not established (EAX is incidental and caller ignores it); void is a side-effect annotation choice. ECX definition is implicit in original thiscall; native_prototype lists only the two stack arguments. New borrowed EDX means no drop-in binary replacement.",
-      "cpp_symbol": "initialize_native_particle_axial_state_00b059c0",
-      "ghidra_name": "BSP_ParticleAxial_InitializeState",
-      "native_prototype": "void BSP_ParticleAxial_InitializeState(void *state, const void *record)",
-      "native_calling_convention": "__thiscall",
-      "source": "src/native_particle_type_state.cpp",
-      "header": "include/bsp/native_particle_type_state.hpp",
-      "evidence": [
-        "docs/NATIVE_PARTICLE_TYPE_STATE.md",
-        "exports/bsp/functions/00b059c0/assembly.txt",
-        "C:/Users/sqz269/bsp-ap-state/byte_evidence.json",
-        "C:/Users/sqz269/bsp-ap-state/results.json"
-      ]
-    },
-    {
-      "address": "00b077d0",
-      "size": 1045,
-      "end_inclusive": "00b07be4",
-      "sha256": "91c5585303fa4583b7dbd9c4fc8f07797499130455d0c639c3d8a36737ba64fc",
-      "last_instruction": {
-        "address": "00b07be2",
-        "size": 3,
-        "text": "ret 8"
-      },
-      "live_disk_equal": true,
-      "name": "BSP_ParticleFloating_InitializeState",
-      "cpp_name": "initialize_native_particle_floating_state_00b077d0",
-      "coverage": "complete",
-      "original_abi": "ECX actual definition; stack(actual6Ch state,actual108h record); RET8; record unread; incidental EAX",
-      "new_abi": "fastcall with required borrowed NativeParticleTypeStateAccess in EDX; void return",
-      "uncertainty": "Descriptive names are hypotheses; original return type is not established (EAX is incidental and caller ignores it); void is a side-effect annotation choice. ECX definition is implicit in original thiscall; native_prototype lists only the two stack arguments. New borrowed EDX means no drop-in binary replacement.",
-      "cpp_symbol": "initialize_native_particle_floating_state_00b077d0",
-      "ghidra_name": "BSP_ParticleFloating_InitializeState",
-      "native_prototype": "void BSP_ParticleFloating_InitializeState(void *state, const void *record)",
-      "native_calling_convention": "__thiscall",
-      "source": "src/native_particle_type_state.cpp",
-      "header": "include/bsp/native_particle_type_state.hpp",
-      "evidence": [
-        "docs/NATIVE_PARTICLE_TYPE_STATE.md",
-        "exports/bsp/functions/00b077d0/assembly.txt",
-        "C:/Users/sqz269/bsp-ap-state/byte_evidence.json",
-        "C:/Users/sqz269/bsp-ap-state/results.json"
-      ]
-    }
-  ],
   "host_steps": [
     {
       "address": "00b059f4",
@@ -421,5 +359,121 @@
     "Game or visual validation",
     "Sprite, Tracer, Object or other actual particle initializers",
     "Reconstruction of reused library/service callees"
-  ]
+  ],
+  "functions": [
+    {
+      "address": "00b059c0",
+      "size": 795,
+      "end_inclusive": "00b05cda",
+      "sha256": "dcba5dc547945ac49bac4d8b8cef2df13d7a695997e43225e88f740b05b87a1e",
+      "last_instruction": {
+        "address": "00b05cd8",
+        "size": 3,
+        "text": "ret 8"
+      },
+      "live_disk_equal": true,
+      "name": "BSP_ParticleAxial_InitializeState",
+      "cpp_name": "initialize_native_particle_axial_state_00b059c0",
+      "coverage": "complete",
+      "original_abi": "ECX actual definition; stack(actual6Ch state,actual108h record); RET8; record unread; incidental EAX",
+      "new_abi": "fastcall with required borrowed NativeParticleTypeStateAccess in EDX; void return",
+      "uncertainty": "Descriptive names are hypotheses; original return type is not established (EAX is incidental and caller ignores it); void is a side-effect annotation choice. ECX definition is implicit in original thiscall; native_prototype lists only the two stack arguments. New borrowed EDX means no drop-in binary replacement.",
+      "cpp_symbol": "initialize_native_particle_axial_state_00b059c0",
+      "ghidra_name": "BSP_ParticleAxial_InitializeState",
+      "native_prototype": "void __thiscall BSP_ParticleAxial_InitializeState(void *state, void *record)",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_particle_type_state.cpp",
+      "header": "include/bsp/native_particle_type_state.hpp",
+      "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full live/installed initializer bytes and RET8 verified; actual current definition/state and RandomThreads domain, original signed FILD RNG conversion, curves at time zero and shared floating counter. See docs/NATIVE_PARTICLE_TYPE_STATE.md and reports/native_particle_type_state.json.72 original-byte comparisons across3 x87 precisions passed. Original return type unestablished; void annotates side effects, incidental EAX preserved. New borrowed EDX binding, no drop-in binary or gameplay claim.",
+      "end_exclusive": "00b05cdb",
+      "evidence_references": [
+        "docs/NATIVE_PARTICLE_TYPE_STATE.md",
+        "exports/bsp/functions/00b059c0/assembly.txt",
+        "C:/Users/sqz269/bsp-ap-state/byte_evidence.json",
+        "C:/Users/sqz269/bsp-ap-state/results.json"
+      ],
+      "prototype_qualification_note": "Ghidra API cannot resolve const void pointer; ABI annotation uses void pointer. Source/header retain read-only input contract; original C++ type not recovered."
+    },
+    {
+      "address": "00b077d0",
+      "size": 1045,
+      "end_inclusive": "00b07be4",
+      "sha256": "91c5585303fa4583b7dbd9c4fc8f07797499130455d0c639c3d8a36737ba64fc",
+      "last_instruction": {
+        "address": "00b07be2",
+        "size": 3,
+        "text": "ret 8"
+      },
+      "live_disk_equal": true,
+      "name": "BSP_ParticleFloating_InitializeState",
+      "cpp_name": "initialize_native_particle_floating_state_00b077d0",
+      "coverage": "complete",
+      "original_abi": "ECX actual definition; stack(actual6Ch state,actual108h record); RET8; record unread; incidental EAX",
+      "new_abi": "fastcall with required borrowed NativeParticleTypeStateAccess in EDX; void return",
+      "uncertainty": "Descriptive names are hypotheses; original return type is not established (EAX is incidental and caller ignores it); void is a side-effect annotation choice. ECX definition is implicit in original thiscall; native_prototype lists only the two stack arguments. New borrowed EDX means no drop-in binary replacement.",
+      "cpp_symbol": "initialize_native_particle_floating_state_00b077d0",
+      "ghidra_name": "BSP_ParticleFloating_InitializeState",
+      "native_prototype": "void __thiscall BSP_ParticleFloating_InitializeState(void *state, void *record)",
+      "native_calling_convention": "__thiscall",
+      "source": "src/native_particle_type_state.cpp",
+      "header": "include/bsp/native_particle_type_state.hpp",
+      "evidence": "AP review: descriptive hypothesis, not a recovered symbol. Full live/installed initializer bytes and RET8 verified; actual current definition/state and RandomThreads domain, original signed FILD RNG conversion, curves at time zero and shared floating counter. See docs/NATIVE_PARTICLE_TYPE_STATE.md and reports/native_particle_type_state.json.72 original-byte comparisons across3 x87 precisions passed. Original return type unestablished; void annotates side effects, incidental EAX preserved. New borrowed EDX binding, no drop-in binary or gameplay claim.",
+      "end_exclusive": "00b07be5",
+      "evidence_references": [
+        "docs/NATIVE_PARTICLE_TYPE_STATE.md",
+        "exports/bsp/functions/00b077d0/assembly.txt",
+        "C:/Users/sqz269/bsp-ap-state/byte_evidence.json",
+        "C:/Users/sqz269/bsp-ap-state/results.json"
+      ],
+      "prototype_qualification_note": "Ghidra API cannot resolve const void pointer; ABI annotation uses void pointer. Source/header retain read-only input contract; original C++ type not recovered."
+    }
+  ],
+  "integration_ap": {
+    "native_signatures_readback_verified": true,
+    "names_and_comments_saved": true,
+    "old_prototypes": [
+      "00b059c0 FUN_00b059c0  undefined FUN_00b059c0(void)  body 00b059c0 - 00b05cda",
+      "00b077d0 FUN_00b077d0  undefined FUN_00b077d0(void)  body 00b077d0 - 00b07be4"
+    ],
+    "current_prototypes": [
+      "00b059c0 BSP_ParticleAxial_InitializeState  void __thiscall BSP_ParticleAxial_InitializeState(void * this, void * state, void * record)  body 00b059c0 - 00b05cda",
+      "00b077d0 BSP_ParticleFloating_InitializeState  void __thiscall BSP_ParticleFloating_InitializeState(void * this, void * state, void * record)  body 00b077d0 - 00b07be4"
+    ],
+    "previous_comments": [
+      {
+        "address": "00b059c0",
+        "annotation": {
+          "address": "00b059c0",
+          "function_name": "FUN_00b059c0"
+        }
+      },
+      {
+        "address": "00b077d0",
+        "annotation": {
+          "address": "00b077d0",
+          "function_name": "FUN_00b077d0"
+        }
+      }
+    ],
+    "current_comments": [
+      {
+        "address": "00b059c0",
+        "annotation": {
+          "address": "00b059c0",
+          "function_name": "BSP_ParticleAxial_InitializeState",
+          "comment": "[BSP reconstruction 00b059c0]\nAP review: descriptive hypothesis, not a recovered symbol. Full live/installed initializer bytes and RET8 verified; actual current definition/state and RandomThreads domain, original signed FILD RNG conversion, curves at time zero and shared floating counter. See docs/NATIVE_PARTICLE_TYPE_STATE.md and reports/native_particle_type_state.json.72 original-byte comparisons across3 x87 precisions passed. Original return type unestablished; void annotates side effects, incidental EAX preserved. New borrowed EDX binding, no drop-in binary or gameplay claim."
+        }
+      },
+      {
+        "address": "00b077d0",
+        "annotation": {
+          "address": "00b077d0",
+          "function_name": "BSP_ParticleFloating_InitializeState",
+          "comment": "[BSP reconstruction 00b077d0]\nAP review: descriptive hypothesis, not a recovered symbol. Full live/installed initializer bytes and RET8 verified; actual current definition/state and RandomThreads domain, original signed FILD RNG conversion, curves at time zero and shared floating counter. See docs/NATIVE_PARTICLE_TYPE_STATE.md and reports/native_particle_type_state.json.72 original-byte comparisons across3 x87 precisions passed. Original return type unestablished; void annotates side effects, incidental EAX preserved. New borrowed EDX binding, no drop-in binary or gameplay claim."
+        }
+      }
+    ],
+    "direct_call_check": "local/ap-final-call-checks.log: all5 reports passed",
+    "combined_build_pending": true
+  }
 }

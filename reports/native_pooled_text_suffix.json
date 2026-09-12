@@ -721,5 +721,53 @@
       "path": "C:\\Users\\sqz269\\bsp-ap-suffix\\build-seeded.log",
       "sha256": "918cd40c1dd16172975af2873621498d33930ca3f793a11482b59e9639c4f78f"
     }
-  ]
+  ],
+  "integration_ap": {
+    "native_signatures_readback_verified": true,
+    "names_and_comments_saved": true,
+    "old_prototypes": [
+      "00af4450 FUN_00af4450  undefined FUN_00af4450(void)  body 00af4450 - 00af44be",
+      "00af44c0 FUN_00af44c0  undefined FUN_00af44c0(void)  body 00af44c0 - 00af45cf"
+    ],
+    "current_prototypes": [
+      "00af4450 BSP_NativePooledText_AssignSuffix  uint __thiscall BSP_NativePooledText_AssignSuffix(void * this, char * text)  body 00af4450 - 00af44be",
+      "00af44c0 BSP_NativePooledText_GetSuffix  void * __thiscall BSP_NativePooledText_GetSuffix(void * this, void * output, int index)  body 00af44c0 - 00af45cf"
+    ],
+    "previous_comments": [
+      {
+        "address": "00af4450",
+        "annotation": {
+          "address": "00af4450",
+          "function_name": "FUN_00af4450"
+        }
+      },
+      {
+        "address": "00af44c0",
+        "annotation": {
+          "address": "00af44c0",
+          "function_name": "FUN_00af44c0"
+        }
+      }
+    ],
+    "current_comments": [
+      {
+        "address": "00af4450",
+        "annotation": {
+          "address": "00af4450",
+          "function_name": "BSP_NativePooledText_AssignSuffix",
+          "comment": "[BSP reconstruction 00af4450]\nComplete AP pooled suffix body from live/installed-equal bytes. Actual4h NativePooledTextStorage and same canonical NativeStringStorage; signed ASCII, selection-before-space-skip, source capture/publication/reloads, scanned-count padding and allocation/copy/cleanup order retained. Descriptive symbol is a hypothesis. Genuine CRT dependency excludes overlapping byte ranges. Strict Win32 probe passed386 observations/449 pool events; native FH3, allocation failure and gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_SUFFIX.md."
+        }
+      },
+      {
+        "address": "00af44c0",
+        "annotation": {
+          "address": "00af44c0",
+          "function_name": "BSP_NativePooledText_GetSuffix",
+          "comment": "[BSP reconstruction 00af44c0]\nComplete AP pooled suffix body from live/installed-equal bytes. Actual4h NativePooledTextStorage and same canonical NativeStringStorage; signed ASCII, selection-before-space-skip, source capture/publication/reloads, scanned-count padding and allocation/copy/cleanup order retained. Descriptive symbol is a hypothesis. Genuine CRT dependency excludes overlapping byte ranges. Strict Win32 probe passed386 observations/449 pool events; native FH3, allocation failure and gameplay unvalidated. See docs/NATIVE_POOLED_TEXT_SUFFIX.md."
+        }
+      }
+    ],
+    "direct_call_check": "local/ap-final-call-checks.log: all5 reports passed",
+    "combined_build_pending": true
+  }
 }
