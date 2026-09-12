@@ -1,0 +1,252 @@
+{
+  "packet": "cc2_director_commands",
+  "owner": "agent/cc2-director-commands",
+  "program": "/battlestationspacific.exe",
+  "docs": ["docs/COMMAND_EXECUTION.md", "docs/COMMAND_CLASSES.md"],
+  "sources": ["include/bsp/command_execution.hpp", "src/command_execution.cpp"],
+  "headline": "The unit command controller is a ten-slot command queue at +54h (stride 1Ch) plus a one-slot override at +188h. A command is a pointer to one of the 26 eight-byte singletons in 00E08EF8..00E08FC7; the per-command data is a separate 18h-byte parameter record stored at slot+4h. The command classes carry no behaviour: every class vtable is five constant getters (six for moveto and moveonpath), so there is no per-class begin/step/end. All execution is in the controller, which dispatches by comparing the command pointer against the singleton addresses.",
+  "routines": [
+    {
+      "address": "00720CD0",
+      "name": "BSP_WeaponDirector_IssueTargetCommand",
+      "abi": "__thiscall(controller)(entity), RET 4 at 00720D76",
+      "body": "00720CD0-00720D76",
+      "coverage": "complete",
+      "note": "Clears every occupied slot through 00720850 (index 9 down to 0), builds an 18h-byte parameter record on the stack and issues this->vtable[60h](00E08F60, &record). 00E08F60 is the follow singleton, not an attack command."
+    },
+    {
+      "address": "00720CA0",
+      "name": "BSP_WeaponDirector_ClearAllCommandSlots",
+      "abi": "__fastcall(controller), RET 0",
+      "body": "00720CA0-00720CBF",
+      "coverage": "complete",
+      "note": "The clear-all loop of 00720CD0 as a standalone routine."
+    },
+    {
+      "address": "00720850",
+      "name": "BSP_WeaponDirector_InternalClearPrimaryCommand",
+      "abi": "__thiscall(controller)(index)",
+      "body": "00720850-00720C95",
+      "coverage": "complete",
+      "note": "Name recovered from the trace literal '---InternalClearPrimaryCommand: %s (%d), mode:%d, (%s, %d)'. The only routine that removes a command. index != 0 drops a queued command and closes the gap; index == 0 completes or replaces the current command, copying slot 0 into the previous-command record at +16Ch and snapping the slot to the target's world position when fewer than two commands remain."
+    },
+    {
+      "address": "0071E610",
+      "name": "BSP_WeaponDirector_ClearOverrideCommand",
+      "abi": "__fastcall(controller), RET 0",
+      "body": "0071E610-0071E6BC",
+      "coverage": "complete"
+    },
+    {
+      "address": "0071E7F0",
+      "name": "BSP_WeaponDirector_SetOverrideCommand",
+      "abi": "__thiscall(controller)(command, params)",
+      "body": "0071E7F0-0071E916",
+      "coverage": "complete",
+      "note": "Writes the whole 18h-byte record into +18Ch..+1A3h, which is what fixes the record layout."
+    },
+    {
+      "address": "0071DEE0",
+      "name": "BSP_WeaponDirector_SlotHasActiveOrder",
+      "abi": "__thiscall(controller)(index)",
+      "body": "0071DEE0-0071DF5B",
+      "coverage": "complete",
+      "note": "Director vtable +20h. False for an empty slot and for stop, cruise, Leave and disband; for moveonpath only when the slot's path object reports points."
+    },
+    {
+      "address": "0071F600",
+      "name": "BSP_WeaponDirector_BeginCommandBase",
+      "abi": "__thiscall(controller)(useQueueHead)",
+      "body": "0071F600-0071F91F",
+      "coverage": "partial: the moveonpath path build 0071F6A6-0071F885 is described but not projected",
+      "note": "Base vtable +78h, overridden by 00835C70. Sends the 'start' message through 00984300 and rewrites a friendly-fire command head to moveto at 0071F67B."
+    },
+    {
+      "address": "00835F60",
+      "name": "BSP_WeaponDirector_ReleaseInvalidFireTarget",
+      "abi": "__fastcall(controller), RET 0",
+      "body": "00835F60-0083603A",
+      "coverage": "complete",
+      "note": "Base vtable +7Ch and the first call of 00836920. Not a command step: it drops the fire target at +238h and routes a kind 5Eh message."
+    },
+    {
+      "address": "008358D0",
+      "name": "BSP_WeaponDirector_SetCommand",
+      "abi": "__thiscall(controller)(command, params), RET 8 at 0083593A",
+      "body": "008358D0-0083593C",
+      "coverage": "complete"
+    },
+    {
+      "address": "00835C70",
+      "name": "BSP_WeaponDirector_BeginCurrentCommand",
+      "abi": "__thiscall(controller)(useQueueHead), RET 4",
+      "body": "00835C70-00835E83",
+      "coverage": "partial: the cruise latch at 00835E58 (00835AC0) is docs/CRUISE_COMMAND.md's contract",
+      "note": "Four arms by command identity: follow, cruise/stop, attackmove. cruise and stop enter stage 1 at 00835E12; the other 24 classes are begun without a stage call."
+    }
+  ],
+  "layout": {
+    "command_slot": {
+      "stride": "0x1C",
+      "fields": [
+        {"offset": "0x00", "name": "command", "note": "singleton pointer or 0"},
+        {"offset": "0x04", "name": "params.hasTargetEntity", "type": "u8"},
+        {"offset": "0x05", "name": "params.hasPosition", "type": "u8"},
+        {"offset": "0x06", "name": "params.targetEntityId", "type": "u16"},
+        {"offset": "0x08", "name": "params.targetEntity", "type": "ptr"},
+        {"offset": "0x0C", "name": "params.positionX", "type": "f32"},
+        {"offset": "0x10", "name": "params.positionY", "type": "f32"},
+        {"offset": "0x14", "name": "params.positionZ", "type": "f32"},
+        {"offset": "0x18", "name": "params.trailing", "type": "u32"}
+      ],
+      "evidence": "00720850's shift loop moves exactly these eight fields one slot down; 0071E7F0 copies the same eight into +18Ch..+1A3h"
+    },
+    "controller": [
+      {"offset": "0x30", "name": "commandMode", "evidence": "0071BE40"},
+      {"offset": "0x44", "name": "queueAccepted", "evidence": "0071F600"},
+      {"offset": "0x48", "name": "queueStage", "evidence": "00836A81"},
+      {"offset": "0x4C", "name": "overrideAccepted", "evidence": "0071F600"},
+      {"offset": "0x50", "name": "overrideStage", "evidence": "0071E7F0"},
+      {"offset": "0x54", "name": "commandSlots[10]", "evidence": "00720CA0"},
+      {"offset": "0x16C", "name": "previousCommandRecord", "evidence": "00720850"},
+      {"offset": "0x188", "name": "overrideCommandRecord", "evidence": "0071E7F0, 0071BE40"},
+      {"offset": "0x1A4", "name": "pathObjects[10]", "evidence": "0071DEE0, 00720850"}
+    ]
+  },
+  "constants": [
+    {"address": "00D09FE8", "value": "4000000.0", "type": "double", "evidence": "00836A6C: FLD double ptr [0x00d09fe8]; 00836A72 FCOMIP; 00836A76 JBE", "meaning": "generic arrival: squared horizontal distance below it raises stage 2"},
+    {"address": "00D7A218", "value": "0.0", "type": "float", "evidence": "00836AC1: COMISS XMM0,dword ptr [0x00d7a218]; 00836AC8 JC", "meaning": "stop completes unless the motion controller's speed is below zero"},
+    {"address": "00F87574", "value": "past .data raw size, zero at load", "type": "f32[3]", "evidence": "PE section table; 00720CFA..00720D24 three MOVSS", "meaning": "the default position an emptied slot receives"},
+    {"address": "00E19A7C", "value": "{0,0,1,1} after the first call", "type": "f32[4]", "evidence": "006F8960 lazy static guarded by bit 0 of 00E19A8C, 1.0f at 00D7A24C", "meaning": "moveto's vtable[14h] default parameter record"}
+  ],
+  "command_class_vtable": {
+    "base": "00CFB378",
+    "slots": [
+      {"slot": "0x00", "base": "006F7F90", "meaning": "scalar deleting destructor"},
+      {"slot": "0x04", "base": "006F7F30", "meaning": "const char* name()"},
+      {"slot": "0x08", "base": "006F7F40", "meaning": "bool requiresTarget()"},
+      {"slot": "0x0C", "base": "00BF698E", "meaning": "int category()"},
+      {"slot": "0x10", "base": "006F7F50", "meaning": "int, zero for 23 of 26 classes"},
+      {"slot": "0x14", "base": "absent", "meaning": "only moveto (006F8960) and moveonpath (006F8F30): const float* defaultParameters()"}
+    ],
+    "evidence": "raw .rdata dump 00CFB378..00CFB69F; each table is followed by its own name literal inline, which bounds it. 006F8010/20/30/40 decode as MOV EAX,00CF8B0C / MOV EAX,1 / XOR EAX,EAX / MOV AL,1."
+  },
+  "address": [
+    {"address": "00720CEB", "native": "00720850", "containing": "00720CD0", "host": "clear_command_slot", "this": "ECX = controller", "args": "PUSH index", "ret": "void", "gate": "slot command pointer non-null"},
+    {"address": "00720CB8", "native": "00720850", "containing": "00720CA0", "host": "clear_command_slot", "this": "ECX = controller", "args": "PUSH index", "ret": "void", "gate": "slot command pointer non-null"},
+    {"address": "007208B1", "native": "004254B0", "containing": "00720850", "host": "trace_clear_primary_command", "this": "n/a (cdecl varargs)", "args": "format, name, index, mode, session value", "ret": "void", "gate": "none"},
+    {"address": "007208EF", "native": "0071E610", "containing": "00720850", "host": "clear_override_command", "this": "ECX = controller", "args": "none", "ret": "void", "gate": "mode == 2 on the index-0 arm"},
+    {"address": "00720916", "native": "00521EA0", "containing": "00720850", "host": "resolve_target", "this": "ECX = params record", "args": "none", "ret": "entity or 0", "gate": "index-0 arm"},
+    {"address": "0072092A", "native": "006952A0", "containing": "00720850", "host": "unregister_target_observer", "this": "ECX = controller+1Ch", "args": "target", "ret": "void", "gate": "target resolved"},
+    {"address": "0072099B", "native": "00414DB0", "containing": "00720850", "host": "refresh_target_pose", "this": "ECX = target", "args": "none", "ret": "void", "gate": "target+0C8h == 0"},
+    {"address": "00720B1B", "native": "00BF681B", "containing": "00720850", "host": "(operator new)", "this": "n/a", "args": "PUSH 0x50", "ret": "block", "gate": "index-0 arm, occupied > 0"},
+    {"address": "00720B36", "native": "0071FB90", "containing": "00720850", "host": "create_path_object", "this": "ECX = the new block", "args": "controller", "ret": "path object", "gate": "operator new succeeded"},
+    {"address": "00720C57", "native": "00BF681B", "containing": "00720850", "host": "(operator new)", "this": "n/a", "args": "PUSH 0x50", "ret": "block", "gate": "index != 0 arm"},
+    {"address": "00720C72", "native": "0071FB90", "containing": "00720850", "host": "create_path_object", "this": "ECX = the new block", "args": "controller", "ret": "path object", "gate": "operator new succeeded"},
+    {"address": "008358DF", "native": "0071E6C0", "containing": "008358D0", "host": "push_command_slot", "this": "ECX = controller", "args": "command, params", "ret": "bool", "gate": "none"},
+    {"address": "00835907", "native": "00521EA0", "containing": "008358D0", "host": "resolve_target", "this": "ECX = params record", "args": "none", "ret": "entity or 0", "gate": "category 1 or 2"},
+    {"address": "00835928", "native": "00521EA0", "containing": "008358D0", "host": "resolve_target", "this": "ECX = params record", "args": "none", "ret": "entity or 0", "gate": "session mode 0 or 1"},
+    {"address": "00835930", "native": "00835860", "containing": "008358D0", "host": "set_fire_target", "this": "ECX = controller", "args": "target, forced = 1", "ret": "void", "gate": "category 1 or 2 and session mode 0 or 1 and target resolved"},
+    {"address": "00835CE6", "native": "0071BDB0", "containing": "00835C70", "host": "invalidate_path_object", "this": "ECX = controller", "args": "slot 0", "ret": "path object", "gate": "controller+1A4h non-null"},
+    {"address": "00835CF9", "native": "0071BDB0", "containing": "00835C70", "host": "invalidate_path_object", "this": "ECX = controller", "args": "slot 1", "ret": "path object", "gate": "controller+1A8h non-null"},
+    {"address": "00835D33", "native": "0071F600", "containing": "00835C70", "host": "begin_command_base", "this": "ECX = controller", "args": "PUSH useQueueHead", "ret": "bool", "gate": "the unit+184h cruise/stop early return did not fire"},
+    {"address": "00835D66", "native": "00521EA0", "containing": "00835C70", "host": "resolve_target", "this": "ECX = params record", "args": "none", "ret": "entity or 0", "gate": "command is follow"},
+    {"address": "00835D92", "native": "007788B0", "containing": "00835C70", "host": "group_leader", "this": "ECX = the unit's group", "args": "none", "ret": "unit or 0", "gate": "command is follow"},
+    {"address": "00835DC2", "native": "00521E70", "containing": "00835C70", "host": "attack_move_gate", "this": "n/a", "args": "PUSH 0", "ret": "bool", "gate": "command is attackmove"},
+    {"address": "00835DEC", "native": "00521EA0", "containing": "00835C70", "host": "resolve_target", "this": "ECX = params record", "args": "none", "ret": "entity or 0", "gate": "command is attackmove"},
+    {"address": "00835DFF", "native": "00521EA0", "containing": "00835C70", "host": "resolve_target", "this": "ECX = params record", "args": "none", "ret": "entity or 0", "gate": "fire target differs"},
+    {"address": "00835E07", "native": "00835860", "containing": "00835C70", "host": "set_fire_target", "this": "ECX = controller", "args": "target, useQueueHead", "ret": "void", "gate": "command is attackmove and the fire target differs"},
+    {"address": "00835E12", "native": "0071D810", "containing": "00835C70", "host": "raise_queue_stage", "this": "ECX = controller", "args": "PUSH 1", "ret": "void", "gate": "command is cruise or stop"},
+    {"address": "00835E58", "native": "00835AC0", "containing": "00835C70", "host": "(contract, docs/CRUISE_COMMAND.md)", "this": "ECX = controller", "args": "unit+984h, unit->vtable[50h](), unit+980h", "ret": "void", "gate": "command is cruise"},
+    {"address": "0071E814", "native": "0071E200", "containing": "0071E7F0", "host": "(contract) command slot target matches", "this": "ECX = controller+18Ch", "args": "none", "ret": "bool", "gate": "mode == 2 and the same command"},
+    {"address": "0071E825", "native": "0071D6D0", "containing": "0071E7F0", "host": "command_accepts_target", "this": "n/a (cdecl)", "args": "command, params", "ret": "bool", "gate": "the no-op test failed"},
+    {"address": "0071E841", "native": "00521EA0", "containing": "0071E7F0", "host": "resolve_target", "this": "ECX = params record", "args": "none", "ret": "entity or 0", "gate": "queue head is attackmove"},
+    {"address": "0071E84A", "native": "00521EA0", "containing": "0071E7F0", "host": "resolve_target", "this": "ECX = params record", "args": "none", "ret": "entity or 0", "gate": "queue head is attackmove"},
+    {"address": "0071E895", "native": "006952A0", "containing": "0071E7F0", "host": "unregister_target_observer", "this": "ECX = controller+1Ch", "args": "old target", "ret": "void", "gate": "the old override target resolved"},
+    {"address": "0071E8EE", "native": "00694A60", "containing": "0071E7F0", "host": "register_target_observer", "this": "ECX = controller+1Ch", "args": "new target", "ret": "void", "gate": "the new target resolved"},
+    {"address": "0071E640", "native": "00521EA0", "containing": "0071E610", "host": "resolve_target", "this": "ECX = controller+18Ch", "args": "none", "ret": "entity or 0", "gate": "the override is engaged"},
+    {"address": "0071E656", "native": "00414DB0", "containing": "0071E610", "host": "refresh_target_pose", "this": "ECX = target", "args": "none", "ret": "void", "gate": "target+0C8h == 0"},
+    {"address": "0071E69C", "native": "006952A0", "containing": "0071E610", "host": "unregister_target_observer", "this": "ECX = controller+1Ch", "args": "target", "ret": "void", "gate": "the target resolved"},
+    {"address": "0071DF4F", "native": "0059CAC0", "containing": "0071DEE0", "host": "(contract) path point count", "this": "n/a", "args": "the path object's vtable[8] result", "ret": "int", "gate": "slot command is moveonpath and the path object exists"},
+    {"address": "0071F686", "native": "0071D6D0", "containing": "0071F600", "host": "command_accepts_target", "this": "n/a (cdecl)", "args": "override command, +18Ch", "ret": "bool", "gate": "useQueueHead == 0 and +188h non-null"},
+    {"address": "0071F750", "native": "0071D6D0", "containing": "0071F600", "host": "command_accepts_target", "this": "n/a (cdecl)", "args": "slot 0 command, +58h", "ret": "bool", "gate": "useQueueHead != 0 and the head is non-null"},
+    {"address": "0071F79B", "native": "00984300", "containing": "0071F600", "host": "send_command_message", "this": "ECX = session endpoint", "args": "+18Ch, +188h, \"start\"", "ret": "void", "gate": "+4Ch set"},
+    {"address": "0071F7E8", "native": "00984800", "containing": "0071F600", "host": "notify_command_target", "this": "ECX = session endpoint", "args": "target", "ret": "void", "gate": "the target resolved"},
+    {"address": "0071F8C0", "native": "00984300", "containing": "0071F600", "host": "send_command_message", "this": "ECX = session endpoint", "args": "+58h, slot 0 command, \"start\"", "ret": "void", "gate": "+44h set and DAT_00F8A0C4 non-null"},
+    {"address": "0071F909", "native": "00984800", "containing": "0071F600", "host": "notify_command_target", "this": "ECX = session endpoint", "args": "target", "ret": "void", "gate": "the target resolved"},
+    {"address": "0071F6CD", "native": "007AC9D0", "containing": "0071F600", "host": "(contract) path source for an entity target", "this": "ECX = resolved target", "args": "none", "ret": "path", "gate": "command is moveonpath and the record names an entity"},
+    {"address": "0071F880", "native": "0071F3B0", "containing": "0071F600", "host": "(contract) commit the built path", "this": "ECX = controller", "args": "none", "ret": "void", "gate": "command is moveonpath"},
+    {"address": "00835FDC", "native": "005457C0", "containing": "00835F60", "host": "(contract) fire-target side test", "this": "n/a", "args": "target+54h", "ret": "bool", "gate": "the fire target failed vtable[5Ch](41h)"},
+    {"address": "0083602A", "native": "0077C2A0", "containing": "00835F60", "host": "(contract) route the kind 5Eh message", "this": "ECX = controller+34h", "args": "message, 7, 0", "ret": "void", "gate": "the fire target is invalid"}
+  ],
+  "native": [
+    {"address": "00720889", "native": "indirect", "containing": "00720850", "host": "command_name", "this": "ECX = the slot's command", "args": "vtable[4]", "ret": "const char*", "gate": "slot non-empty"},
+    {"address": "007208A3", "native": "indirect", "containing": "00720850", "host": "session_trace_value", "this": "ECX = controller+34h", "args": "vtable[10h], DAT_00F876B0", "ret": "u32", "gate": "none"},
+    {"address": "00720AA1", "native": "indirect", "containing": "00720850", "host": "destroy_path_object", "this": "ECX = the path object", "args": "vtable[0], PUSH 1", "ret": "void", "gate": "the pointer is non-null"},
+    {"address": "00720B56", "native": "indirect", "containing": "00720850", "host": "on_command_changed", "this": "ECX = controller", "args": "vtable[6Ch], PUSH 1", "ret": "void", "gate": "end of the index-0 arm"},
+    {"address": "00720B85", "native": "indirect", "containing": "00720850", "host": "destroy_path_object", "this": "ECX = the path object", "args": "vtable[0], PUSH 1", "ret": "void", "gate": "the pointer is non-null"},
+    {"address": "00720D6E", "native": "indirect", "containing": "00720CD0", "host": "set_command", "this": "ECX = controller", "args": "vtable[60h], PUSH &record, PUSH 0x00E08F60", "ret": "bool", "gate": "none"},
+    {"address": "008358F9", "native": "indirect", "containing": "008358D0", "host": "command_category", "this": "ECX = the command", "args": "vtable[0Ch]", "ret": "int", "gate": "controller non-null"},
+    {"address": "00835DD2", "native": "indirect", "containing": "00835C70", "host": "controller_belongs_to_another", "this": "ECX = the resolved target", "args": "none", "ret": "bool", "gate": "command is follow and the group test failed"},
+    {"address": "00835DE4", "native": "indirect", "containing": "00835C70", "host": "fire_target", "this": "ECX = controller", "args": "vtable[2Ch]", "ret": "entity or 0", "gate": "command is attackmove"},
+    {"address": "00835E46", "native": "indirect", "containing": "00835C70", "host": "(contract) unit heading", "this": "ECX = the owning unit", "args": "vtable[50h]", "ret": "float", "gate": "command is cruise"},
+    {"address": "0071E862", "native": "indirect", "containing": "0071E7F0", "host": "command_category", "this": "ECX = the queue head", "args": "vtable[0Ch]", "ret": "int", "gate": "the queue head is not attackmove and is non-null"},
+    {"address": "0071E90E", "native": "indirect", "containing": "0071E7F0", "host": "on_command_changed", "this": "ECX = controller", "args": "vtable[6Ch], PUSH 0", "ret": "void", "gate": "the override was stored"},
+    {"address": "0071E6B5", "native": "indirect", "containing": "0071E610", "host": "on_command_changed", "this": "ECX = controller", "args": "vtable[6Ch], PUSH 0", "ret": "void", "gate": "the override was engaged"},
+    {"address": "0071DF39", "native": "indirect", "containing": "0071DEE0", "host": "(contract) path object point list", "this": "ECX = the slot's path object", "args": "vtable[8]", "ret": "list", "gate": "slot command is moveonpath"},
+    {"address": "0071DF4B", "native": "indirect", "containing": "0071DEE0", "host": "(contract) path object point list", "this": "ECX = the slot's path object", "args": "vtable[8]", "ret": "list", "gate": "the first call answered non-zero"},
+    {"address": "0071F653", "native": "indirect", "containing": "0071F600", "host": "command_category", "this": "ECX = the queue head", "args": "vtable[0Ch]", "ret": "int", "gate": "useQueueHead != 0 and the target passes vtable[5Ch](1Ch)"},
+    {"address": "0071F661", "native": "indirect", "containing": "0071F600", "host": "command_category", "this": "ECX = the queue head", "args": "vtable[0Ch]", "ret": "int", "gate": "the previous answer was not 1"},
+    {"address": "00835F93", "native": "indirect", "containing": "00835F60", "host": "(contract) fire target class test", "this": "ECX = controller+238h", "args": "vtable[5Ch], PUSH 0x41", "ret": "bool", "gate": "the fire target is non-null"}
+  ],
+  "no_ghidra_function": [],
+  "corrections": [
+    {
+      "target": "include/bsp/weapon_director.hpp:225",
+      "was": "kDirectorAttackCommandDescriptor = 0x00e08f60",
+      "is": "00E08F60 is the follow singleton: name 'follow', category 3 (movement), requiresTarget true. 00720CD0 therefore clears the queue and issues a follow order on the entity, not an attack order.",
+      "evidence": "docs/SCENE_COMMAND_TYPES.md row 14; vtable 00CFB518 slot +4h is 006F8830 = MOV EAX,00CFB52C; RET, and 00CFB52C is the inline .rdata literal 'follow'; slot +0Ch is 006F8840 = MOV EAX,3; RET."
+    },
+    {
+      "target": "docs/WEAPON_DIRECTOR.md, 'The per-step work'",
+      "was": "00720CD0 builds a parameter block holding (entity != 0) as a u16",
+      "is": "hasTargetEntity is a byte at record +0h. 00720D2A zeroes the u16 covering +0h and +1h (hasTargetEntity and hasPosition), and 00720D42 then writes only the byte at +0h.",
+      "evidence": "00720D2A: MOV word ptr [ESP+0xc],0x0; 00720D42: MOV byte ptr [ESP+0xc],0x1; 00720850's shift loop copies +4h and +5h as two separate bytes and +6h as a u16."
+    },
+    {
+      "target": "docs/WEAPON_DIRECTOR.md, 'The per-step work'",
+      "was": "calls 00720850(index) for each non-empty slot",
+      "is": "correct, and 00720850 is __thiscall with ECX = the controller and the index as the only stack argument; it is not a free function of the index.",
+      "evidence": "00720CE9: MOV ECX,EBP (EBP = the controller from 00720CD5) before 00720CEB: CALL 0x00720850."
+    },
+    {
+      "target": "this packet's own brief, item (2) and (3)",
+      "was": "the base command class has construct-from-descriptor, begin, step, end, 'is done' and target accessors past vtable[0Ch]; the 25 non-cruise classes have execute/step methods",
+      "is": "the command classes have no behaviour at all. Every class vtable is five slots (destructor, name, requiresTarget, category, one more int constant), six for moveto and moveonpath whose +14h returns a static default-parameter record. All the begin/step/end behaviour is in the controller and dispatches by comparing the command pointer against the 26 singleton addresses.",
+      "evidence": "raw .rdata 00CFB378..00CFB69F: each table is immediately followed by its own name literal, so no table exceeds six dwords. 006F8020 is MOV EAX,1; RET (six bytes), 006F8030 is XOR EAX,EAX; RET, 006F8040 is MOV AL,1; RET. The tiny function block 006F8010..006F8040 is 16 bytes per entry."
+    },
+    {
+      "target": "Ghidra's data-reference set for the command singletons",
+      "was": "ghidra xrefs / the index's datarefs table list 4 references to 00E08F60",
+      "is": "there are 19 in .text; the comparisons are CMP reg,imm32 operands that Ghidra did not turn into references. The complete map is in docs/COMMAND_CLASSES.md and was produced by scanning the PE for the 4-byte little-endian singleton addresses.",
+      "evidence": "local/cmdref_scan.py against I:/SteamLibrary/.../battlestationspacific.exe; 00835C70 compares against 00E08F60, 00E08F70, 00E08F78 and 00E08F88 and appears in none of Ghidra's reference rows for those four."
+    }
+  ],
+  "contract_unread": [
+    "0071DB50 (parameter assignment inside PushCommandSlot)",
+    "00836040 BSP_WeaponDirector_NormalizeSelfTarget",
+    "0071FB90 and the 50h path object it builds",
+    "0059CAC0, 007ADD70, 007AC9D0, 007B1D30, 007B2250, 007B22A0 (path machinery)",
+    "00984300, 00984800 (session command messages)",
+    "0071F3B0, 00521E70, 005457C0, 007788B0, 007788D0",
+    "00811F50 (names six command singletons; the shape of a name-to-object table)",
+    "the 17 command classes listed as contract: unread in docs/COMMAND_CLASSES.md"
+  ],
+  "coverage_summary": {
+    "reconstructed": ["00720CD0", "00720CA0", "00720850", "0071E610", "0071E7F0", "008358D0", "00835C70", "0071BE40", "0071D780", "0071DEE0"],
+    "analysed_not_projected": ["0071F600", "00835F60", "0071D6D0", "0071E6C0", "00836920"],
+    "classes_read_in_full": ["settarget", "cleartarget", "clearorders", "attackmove", "moveto", "stop", "follow"],
+    "classes_partial": ["retreat"],
+    "classes_unread": ["artillery", "torpedo", "divebomb", "levelbomb", "dropkamikaze", "depthcharge", "strafe", "rocket", "kamikaze", "dogfight", "moveonpath", "returntobase", "land", "closetoship", "Leave", "disband", "tutorial"]
+  }
+}
