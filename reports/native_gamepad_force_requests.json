@@ -1,0 +1,660 @@
+{
+  "packet": "orch4_native_force_requests_ae",
+  "source": "src/native_gamepad_force_requests.cpp",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_read_only": true,
+  "status": "canonical_raw_request_owners_and_finite_dispatch; event submission and application binding excluded",
+  "functions": [
+    {
+      "address": "008722d0",
+      "implementation": "construct_native_constant_force_request_008722d0",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "008722ff",
+      "final_instruction_address": "008722fc",
+      "final_instruction_length": 3,
+      "final_instruction": "RET 0xc",
+      "listed_instructions": 10,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "channel:uint32, amplitude:float, remaining:float",
+        "stack_cleanup_bytes": 12,
+        "return": "this",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "00872310",
+      "implementation": "native_constant_force_request_channel_00872310",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "00872314",
+      "final_instruction_address": "00872313",
+      "final_instruction_length": 1,
+      "final_instruction": "RET",
+      "listed_instructions": 2,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "none",
+        "stack_cleanup_bytes": 0,
+        "return": "uint32 channel",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "00872320",
+      "implementation": "native_constant_force_request_value_00872320",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "00872324",
+      "final_instruction_address": "00872323",
+      "final_instruction_length": 1,
+      "final_instruction": "RET",
+      "listed_instructions": 2,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "none",
+        "stack_cleanup_bytes": 0,
+        "return": "ST0 float",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "00872330",
+      "implementation": "native_constant_force_request_expired_00872330",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "00872342",
+      "final_instruction_address": "00872341",
+      "final_instruction_length": 1,
+      "final_instruction": "RET",
+      "listed_instructions": 7,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "none",
+        "stack_cleanup_bytes": 0,
+        "return": "EAX 0/1",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "00872350",
+      "implementation": "construct_native_fading_force_request_00872350",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "00872387",
+      "final_instruction_address": "00872384",
+      "final_instruction_length": 3,
+      "final_instruction": "RET 0xc",
+      "listed_instructions": 12,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "channel:uint32, amplitude:float, duration:float",
+        "stack_cleanup_bytes": 12,
+        "return": "this",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "008723a0",
+      "implementation": "native_fading_force_request_channel_008723a0",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "008723a4",
+      "final_instruction_address": "008723a3",
+      "final_instruction_length": 1,
+      "final_instruction": "RET",
+      "listed_instructions": 2,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "none",
+        "stack_cleanup_bytes": 0,
+        "return": "uint32 channel",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "008723b0",
+      "implementation": "native_fading_force_request_value_008723b0",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "008723cc",
+      "final_instruction_address": "008723cb",
+      "final_instruction_length": 1,
+      "final_instruction": "RET",
+      "listed_instructions": 12,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "none",
+        "stack_cleanup_bytes": 0,
+        "return": "ST0 float",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "008723d0",
+      "implementation": "native_fading_force_request_expired_008723d0",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "008723e5",
+      "final_instruction_address": "008723e4",
+      "final_instruction_length": 1,
+      "final_instruction": "RET",
+      "listed_instructions": 9,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "none",
+        "stack_cleanup_bytes": 0,
+        "return": "EAX 0/1",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "008723f0",
+      "implementation": "construct_native_alternating_force_request_008723f0",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "0087244f",
+      "final_instruction_address": "0087244c",
+      "final_instruction_length": 3,
+      "final_instruction": "RET 0x1c",
+      "listed_instructions": 20,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "channel:uint32, selector:byte in DWORD slot, first_value:float, second_value:float, first_period:float, second_period:float, duration:float",
+        "stack_cleanup_bytes": 28,
+        "return": "this",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "00872460",
+      "implementation": "native_alternating_force_request_channel_00872460",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "00872464",
+      "final_instruction_address": "00872463",
+      "final_instruction_length": 1,
+      "final_instruction": "RET",
+      "listed_instructions": 2,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "none",
+        "stack_cleanup_bytes": 0,
+        "return": "uint32 channel",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "00872470",
+      "implementation": "native_alternating_force_request_value_00872470",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "00872493",
+      "final_instruction_address": "00872492",
+      "final_instruction_length": 1,
+      "final_instruction": "RET",
+      "listed_instructions": 15,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "none",
+        "stack_cleanup_bytes": 0,
+        "return": "ST0 float",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "008724a0",
+      "implementation": "native_alternating_force_request_expired_008724a0",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "008724b5",
+      "final_instruction_address": "008724b4",
+      "final_instruction_length": 1,
+      "final_instruction": "RET",
+      "listed_instructions": 9,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "none",
+        "stack_cleanup_bytes": 0,
+        "return": "EAX 0/1",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "008724c0",
+      "implementation": "delete_native_force_request_base_008724c0",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "008724df",
+      "final_instruction_address": "008724dc",
+      "final_instruction_length": 3,
+      "final_instruction": "RET 0x4",
+      "listed_instructions": 11,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "flags:uint32",
+        "stack_cleanup_bytes": 4,
+        "return": "EAX captured allocation even after free",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "008724e0",
+      "implementation": "delete_native_constant_force_request_008724e0",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "008724ff",
+      "final_instruction_address": "008724fc",
+      "final_instruction_length": 3,
+      "final_instruction": "RET 0x4",
+      "listed_instructions": 11,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "flags:uint32",
+        "stack_cleanup_bytes": 4,
+        "return": "EAX captured allocation even after free",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "00872500",
+      "implementation": "delete_native_fading_force_request_00872500",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "0087251f",
+      "final_instruction_address": "0087251c",
+      "final_instruction_length": 3,
+      "final_instruction": "RET 0x4",
+      "listed_instructions": 11,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "flags:uint32",
+        "stack_cleanup_bytes": 4,
+        "return": "EAX captured allocation even after free",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "00872520",
+      "implementation": "delete_native_alternating_force_request_00872520",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "0087253f",
+      "final_instruction_address": "0087253c",
+      "final_instruction_length": 3,
+      "final_instruction": "RET 0x4",
+      "listed_instructions": 11,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "flags:uint32",
+        "stack_cleanup_bytes": 4,
+        "return": "EAX captured allocation even after free",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "00a93f90",
+      "implementation": "update_native_constant_force_request_00a93f90",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "00a93fbf",
+      "final_instruction_address": "00a93fbc",
+      "final_instruction_length": 3,
+      "final_instruction": "RET 0x4",
+      "listed_instructions": 19,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "seconds:float",
+        "stack_cleanup_bytes": 4,
+        "return": "void",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "00a93fc0",
+      "implementation": "update_native_fading_force_request_00a93fc0",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "00a93fcd",
+      "final_instruction_address": "00a93fca",
+      "final_instruction_length": 3,
+      "final_instruction": "RET 0x4",
+      "listed_instructions": 4,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "seconds:float",
+        "stack_cleanup_bytes": 4,
+        "return": "void",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": null
+    },
+    {
+      "address": "00a94510",
+      "implementation": "update_native_alternating_force_request_00a94510",
+      "source": "src/native_gamepad_force_requests.cpp",
+      "coverage": "complete",
+      "end_exclusive": "00a94544",
+      "final_instruction_address": "00a94541",
+      "final_instruction_length": 3,
+      "final_instruction": "RET 0x4",
+      "listed_instructions": 16,
+      "listing_gaps": 0,
+      "native_abi": {
+        "convention": "thiscall",
+        "ecx": "actual raw request allocation",
+        "edx": "scratch, no recovered input",
+        "stack_arguments_in_order": "seconds:float",
+        "stack_cleanup_bytes": 4,
+        "return": "void",
+        "source_abi_replacement": false
+      },
+      "recognized_library_boundary": "std::fmod substitutes the identified CRT operation; original CRT hook/FPU environment binary identity excluded"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "008724d1",
+      "native": "00bf65ac",
+      "function": "008724c0",
+      "contract": "existing CRT free thunk / singleton_lifetime_free",
+      "stack_or_register_evidence": "PUSH ESI at8724D0, ADD ESP4 at8724D6; ESI captures ECX; outer RET4"
+    },
+    {
+      "address": "008724f1",
+      "native": "00bf65ac",
+      "function": "008724e0",
+      "contract": "existing CRT free thunk / singleton_lifetime_free",
+      "stack_or_register_evidence": "PUSH ESI at8724F0, ADD ESP4 at8724F6; ESI captures ECX; outer RET4"
+    },
+    {
+      "address": "00872511",
+      "native": "00bf65ac",
+      "function": "00872500",
+      "contract": "existing CRT free thunk / singleton_lifetime_free",
+      "stack_or_register_evidence": "PUSH ESI at872510, ADD ESP4 at872516; ESI captures ECX; outer RET4"
+    },
+    {
+      "address": "00872531",
+      "native": "00bf65ac",
+      "function": "00872520",
+      "contract": "existing CRT free thunk / singleton_lifetime_free",
+      "stack_or_register_evidence": "PUSH ESI at872530, ADD ESP4 at872536; ESI captures ECX; outer RET4"
+    },
+    {
+      "address": "00a94530",
+      "native": "00bf857a",
+      "function": "00a94510",
+      "contract": "recognized real CRT fmod, reused via std::fmod",
+      "stack_or_register_evidence": "ST1 rounded seconds+phase, ST0 rounded second_period+first_period; no pushed CRT operands; caller RET4 consumes seconds"
+    }
+  ],
+  "library_evidence": {
+    "free": "BF65AC full thunk JMP BF9DC8; existing singleton_lifetime_free uses std::free",
+    "allocation": "BF681B existing singleton allocation provider uses malloc/_callnewh, not the source operator-new family",
+    "fmod": {
+      "thunk": "00bf857a",
+      "body": "MOV EDX,00E15500; JMP 00C07EE0",
+      "tail_site": "00bf857f",
+      "callee": "00c07ee0",
+      "descriptor": "E15500 begins 04 66 6d 6f 64; fmod",
+      "original_crt_internal_abi_claimed": false
+    },
+    "purecall": "Base four nondelete slots point BF698E; full body reads installed handler, invokes it if present, then enters genuine CRT fatal path. Source uses _purecall; no empty fallback."
+  },
+  "profiles": [
+    {
+      "profile": "00d0db64",
+      "slots": [
+        "008724c0",
+        "00bf698e",
+        "00bf698e",
+        "00bf698e",
+        "00bf698e"
+      ]
+    },
+    {
+      "profile": "00d0db78",
+      "allocation_bytes": 20,
+      "kind_at_4": 0,
+      "slots": [
+        "008724e0",
+        "00872310",
+        "00872320",
+        "00872330",
+        "00a93f90"
+      ]
+    },
+    {
+      "profile": "00d0db8c",
+      "allocation_bytes": 24,
+      "kind_at_4": 1,
+      "slots": [
+        "00872500",
+        "008723a0",
+        "008723b0",
+        "008723d0",
+        "00a93fc0"
+      ]
+    },
+    {
+      "profile": "00d0dba0",
+      "allocation_bytes": 40,
+      "kind_at_4": 2,
+      "slots": [
+        "00872520",
+        "00872460",
+        "00872470",
+        "008724a0",
+        "00a94510"
+      ],
+      "unwritten_offsets": [
+        "0d",
+        "0e",
+        "0f"
+      ]
+    }
+  ],
+  "producer_evidence": [
+    {
+      "function": "00873450",
+      "allocation_site": "008734b2",
+      "allocation_bytes": 20,
+      "post_allocation_definition_read_and_store_range": "008734be..008734e0"
+    },
+    {
+      "function": "00873560",
+      "allocation_site": "00873696",
+      "allocation_bytes": 24,
+      "post_allocation_definition_read_and_store_range": "008736a2..008736d4"
+    },
+    {
+      "function": "00873750",
+      "allocation_site": "008737b2",
+      "allocation_bytes": 40,
+      "post_allocation_definition_read_and_store_range": "008737be..0087380c"
+    }
+  ],
+  "all_sites_audit": "Standalone constructors have no direct callers; constructor/data-profile producers inspected. Update entries have only their profile data xrefs. All five direct CALL instructions in the 19 bodies are enumerated above.",
+  "eh": "No EH registrations or member cleanup in the 19 standalone bodies. The inline event producer ownership/exception paths remain separate.",
+  "live_global": {
+    "address": "00d7a278",
+    "bytes_little_endian": "000000e0ffffef47",
+    "contract": "borrowed volatile double; read on each constant update; default equals double(FLT_MAX), mutable binding preserved"
+  },
+  "corrections": [
+    {
+      "was": "008724C0 missing Ghidra function",
+      "is": "Primary defined/saved/exported31-byte body; read-back11instructions0gaps",
+      "evidence": "Final8724DC RET4 length3/end-exclusive8724DF; primary definition receipt202928e4 reports/native_gamepad_force_requests_definitions.json"
+    },
+    {
+      "was": "Only typed request ownership available to the new raw consumer",
+      "is": "Additional fragments expose canonical14h/18h/28h allocations and current-profile slots without changing typed records",
+      "evidence": "Standalone constructors/profile tables and three independent inline producers"
+    }
+  ],
+  "required_bindings": [
+    "Borrow live D7A278 for dispatch lifetime",
+    "Concrete inherited device set_force_vslot38 and device_value_vslot24 operations"
+  ],
+  "unfinished": [
+    "Raw event producer allocation-to-definition reload bridge",
+    "A95BF0 submission dispatch and A95680/A949A0 request insertion",
+    "Application attachment and physical controller delivery"
+  ],
+  "validation": {
+    "status": "MSVC_Win32_Release_build_existing_tests_and_focused_archive_fixture_passed",
+    "build_command": "MSBUILDDISABLENODEREUSE=1; ./scripts/build.ps1",
+    "build_log": "local/native_force_requests_ae_build.log",
+    "build_log_sha256": "55f4ef248901c28a51e7065e6ef77a98caa955b7d216345efa4d3393b9832d20",
+    "ctests": {
+      "passed": 2,
+      "failed": 0,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential"
+      ]
+    },
+    "seed_ranges": 8,
+    "seed_ranges_match_original_disk": true,
+    "call_audit": {
+      "command": "python tools/verify_report_calls.py reports/native_gamepad_force_requests.json",
+      "direct_rows": 5,
+      "failed": 0,
+      "log": "local/native_force_requests_ae_calls.log"
+    },
+    "core_archive": "build/win32/Release/bsp_core.lib",
+    "core_archive_sha256": "b06973b3363c2efaca4996709d1da7330ce3db5a487e19b1c3915aa923460b7c",
+    "fixture": {
+      "command": "cmd /d /c local\\native_force_requests_probe.cmd",
+      "log": "local/native_force_requests_ae_probe.log",
+      "log_sha256": "fd0be66f64384f7f5db6ee67462fff479a6abbddd1e137623af43c0d284d53f1",
+      "source": "local/native_force_requests_probe.cpp",
+      "source_sha256": "65a9dacf30811605431296a1728ea78e40072363251a65a02c8971ac8236c0c2",
+      "runner_sha256": "f8b5c77d1c2b4c99bfc4026d5f84c1b7fa960441ed2fac80abec4456ed447201",
+      "manifest_embedded": true,
+      "game_sources_recompiled_separately": false,
+      "native_byte_ranges": [
+        {
+          "address": "008723f0",
+          "length": 95,
+          "fixture_matches_disk": true,
+          "sha256": "d790e5566fbf29a4af47091edd7c63ccf41c08b38cff2dc7af216b0f4e404864"
+        },
+        {
+          "address": "008723b0",
+          "length": 28,
+          "fixture_matches_disk": true,
+          "sha256": "c51e6bff53a9fb96a6194ccf1f65fbcc071408d223287731dd1ae94ea6264f13"
+        },
+        {
+          "address": "00a93f90",
+          "length": 47,
+          "fixture_matches_disk": true,
+          "sha256": "8dfc9a19be40a6f621501580008721b1822c805ff9834b607ba7a2e5050dd084"
+        }
+      ],
+      "constructor_preimage_bytes": 40,
+      "selector_byte": 128,
+      "untouched_padding_hex": "a5a5a5",
+      "fading_x87_cases": 4,
+      "live_sentinel_cases": 2,
+      "raw_profiles_in_tree": 3,
+      "expired_removed": 1,
+      "remaining_after_pump": 2,
+      "amplitudes": [
+        0.375,
+        0.75
+      ],
+      "force_writes": 4,
+      "count_after_clear": 0,
+      "head_after_destroy": 0,
+      "device_final_profile": "00ceb130",
+      "scalar_flags2_preserved_allocations": 3,
+      "base_flags1_calls": 3,
+      "captured_scalar_returns": 6,
+      "sdk_calls": 0,
+      "application_or_hardware_validation": false
+    },
+    "dependency_fetch": {
+      "initial_failure": "Lua download SSL connect error; before C++ compilation",
+      "preserved_log": "local/native_force_requests_ae_fetch_failure.log",
+      "resolution": "Copied cached Lua/zlib/D3DX archives from completed keyboard/mouse worktree into this build only, verifying each SHA256 against unchanged CMake declarations; normal scripts/build.ps1 rerun passed",
+      "source_worktree": "J:/PROG/battlestations-pacific-decompile-orch4-keyboard-mouse-ad"
+    }
+  }
+}
