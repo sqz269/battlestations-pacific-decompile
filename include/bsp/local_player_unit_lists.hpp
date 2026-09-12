@@ -233,9 +233,14 @@ bool build_local_player_unit_lists_004c3cb0(UnitListsGate& gate,
 // 20); the class string "SzurkeNyil" sits at 00D16100, immediately before its
 // vtable 00D1610C.
 inline constexpr std::size_t kObjectiveSetArrayOffset = 0x21a4;  // 004C3E88
-inline constexpr std::size_t kObjectiveSetTreeOffset = 0x18;     // 008DDF09, 008DF931
-inline constexpr std::size_t kObjectiveSetHeadOffset = 0x1c;     // 008DDF04, 008DF948
-inline constexpr std::size_t kObjectiveSetSizeOffset = 0x20;     // 008DDF93
+// The three offsets below were read inside 008DDF90 / 008DF900, which docs/OBJECTIVE_UNIT_LIST.md
+// (packet cc2-mission-objectives) shows operate on the marker object (008DDF90 is
+// BSP_SzurkeNyil_ContainsUnit), not on the objective set; they are kept under their real owner.
+inline constexpr std::size_t kUnitMarkerTreeOffset = 0x18;       // 008DDF09, 008DF931 (marker object)
+inline constexpr std::size_t kUnitMarkerHeadOffset = 0x1c;       // 008DDF04, 008DF948 (marker object)
+inline constexpr std::size_t kUnitMarkerSizeOffset = 0x20;       // 008DDF93 (marker object)
+// The objective set's own unit list (16-byte {unit, marker position} records, read once by
+// 008DFE50) sits at +24h/+28h: docs/OBJECTIVE_UNIT_LIST.md, include/bsp/objective_units.hpp.
 // A squadron is looked up by its plane instead of itself.
 inline constexpr std::size_t kSquadronPlaneOffset = 0x3d0;       // 008DDFC2, 004C08C8
 

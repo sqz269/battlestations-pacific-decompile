@@ -323,3 +323,14 @@ through `bsp.py disasm-raw` or the byte dump, and every end is the last byte of 
 
 `006FE530..006FE56A`, the `MDestroyer` instance `IsKindOf`, is already recorded in
 `docs/UNIT_INSTANCE_UPDATE.md` and is not repeated here.
+
+## Correction from docs/OBJECTIVE_UNIT_LIST.md
+
+Packet `cc2-mission-objectives` found that `008DDF90` is `BSP_SzurkeNyil_ContainsUnit` and that the
+`+18h`/`+1Ch`/`+20h` offsets this packet declared as `kObjectiveSetTreeOffset` / `HeadOffset` /
+`SizeOffset` belong to the marker object it walks, not to the objective set, whose own unit list
+sits at `+24h`/`+28h` (16-byte `{unit, marker position}` records, read exactly once by `008DFE50`,
+a `__thiscall` on the objective set, never a completion test). The three constants are renamed
+`kUnitMarkerTreeOffset` / `kUnitMarkerHeadOffset` / `kUnitMarkerSizeOffset` in
+`include/bsp/local_player_unit_lists.hpp` (no source used them); the objective list is declared in
+`include/bsp/objective_units.hpp`.
